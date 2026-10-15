@@ -122,12 +122,53 @@
     ],
     "source": "completed SBO scope armed after counted assignment; existing owning28h carrier; host exception transport, not original FH3 ABI"
   },
-  "status": "source_reconstructed_review_and_build_pending",
+  "status": "complete_source_independently_assembly_reviewed_combined_win32_and_three_existing_checks_passed",
   "abi_compatible": false,
   "game_validated": false,
   "uncertainties": [
     "New Source interfaces use explicit live caller-owned argument/scratch backing and allocator contexts; original physical private-stack aliases and exception ABI are unproved.",
     "Current host CRT locale, invalid-parameter/new-handler and exception services; no original runtime provider ABI or game proof.",
     "Existing CTests are regression checks; no new native differential execution of these two bodies."
-  ]
+  ],
+  "caller_sites": [
+    {
+      "address": "0046d75f",
+      "native": "0046b340",
+      "function": "0046cf40",
+      "contract": "ECX SceneDatabase+18h; hidden caller output and copied pair; nativeRET8"
+    }
+  ],
+  "review": {
+    "reviewer": "/root/string_erase",
+    "result": "no remaining behavioral mismatch found; full original listings, helper balancing, frame volatility, live argument schedules, private cleanup and typed call rows checked",
+    "new_tests": false
+  },
+  "verification": {
+    "combined_build": {
+      "revision": "b102c4845",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_insert_combined_build.log",
+      "log_sha256": "200c1be23fcfae8ff57b00709ede300ff541c8fddd3e302cea08dd8bf475da1f",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 8.95,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "scope": "existing regression checks; native math seeds do not execute these map routines"
+    },
+    "live_spans_match_installed": true,
+    "typed_transfer_rows_checked": 14,
+    "typed_transfer_rows_failed": 0,
+    "annotation_receipt": "local/ghidra-annotations-20261015T202018Z.json",
+    "exports_refreshed": [
+      "0046ad70",
+      "0046b340",
+      "00c61cb0"
+    ]
+  }
 }

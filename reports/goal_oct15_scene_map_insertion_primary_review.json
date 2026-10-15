@@ -1,0 +1,131 @@
+{
+  "packet": "goal_oct15_scene_map_insertion_primary_review",
+  "status": "complete_source_review_and_combined_win32_existing_checks_passed",
+  "normal_source_functions": 7,
+  "private_source_cleanup_actions": 3,
+  "native_bytes": 1229,
+  "typed_transfer_rows_checked": 36,
+  "typed_transfer_rows_failed": 0,
+  "combined_build": {
+    "revision": "b102c4845",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_insert_combined_build.log",
+    "log_sha256": "200c1be23fcfae8ff57b00709ede300ff541c8fddd3e302cea08dd8bf475da1f",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 8.95,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "scope": "existing regression checks; native math seeds do not execute these map routines"
+  },
+  "packets": [
+    {
+      "report": "reports/goal_oct15_scene_map_rotations.json",
+      "packet": "goal_oct15_scene_map_rotations",
+      "routines": [
+        {
+          "address": "00467620",
+          "coverage": "complete_actual_storage_Source_with_private_frame_binary_ABI_qualifications"
+        },
+        {
+          "address": "00467670",
+          "coverage": "complete_actual_storage_Source_with_private_frame_binary_ABI_qualifications"
+        }
+      ]
+    },
+    {
+      "report": "reports/goal_oct15_scene_map_node_leaves.json",
+      "packet": "goal_oct15_scene_map_node_leaves",
+      "routines": [
+        {
+          "address": "00469f50",
+          "end_exclusive": "00469fc0",
+          "coverage": "complete",
+          "live_disk_equal": true,
+          "sha256": "7902c5368dfc437092f1cc62221d557e629eb9ba63c84834b7ef04b6a55dab29"
+        },
+        {
+          "address": "00468b30",
+          "end_exclusive": "00468b4d",
+          "coverage": "complete",
+          "live_disk_equal": true,
+          "sha256": "00e9fb66afafc389c2409c507a2e28b2d16ff3a2b4062719687131c5397b1bfc"
+        }
+      ]
+    },
+    {
+      "report": "reports/goal_oct15_scene_map_node_allocate.json",
+      "packet": "goal_oct15_scene_map_node_allocate",
+      "routines": [
+        {
+          "address": "0046a340",
+          "coverage": "complete_at_existing_concrete_crt_raw_string_current_cpp_eh_boundaries"
+        },
+        {
+          "address": "0046a3b2",
+          "coverage": "complete_source_catch_fragment_through_existing_provider_not_native_frame_entry"
+        },
+        {
+          "address": "00c61c30",
+          "coverage": "complete_source_placement_fragment_through_existing_provider_not_native_frame_entry"
+        }
+      ]
+    },
+    {
+      "report": "reports/goal_oct15_scene_map_insert.json",
+      "packet": "goal_oct15_scene_map_insert",
+      "routines": [
+        {
+          "address": "0046ad70",
+          "end_exclusive": "0046af5c",
+          "coverage": "complete ordinary Source function",
+          "sha256": "206bc87717d078530091e0ce8799ff7f5fd8d37c4956e7fa58b6fd3a5aee1907",
+          "live_disk_equal": true
+        },
+        {
+          "address": "0046b340",
+          "end_exclusive": "0046b454",
+          "coverage": "complete ordinary Source function",
+          "sha256": "4fabf34b5ec545a43d4b863ea5f49a0c6a25983077b5988fe01265d487f9ed40",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00c61cb0",
+          "end_exclusive": "00c61cb8",
+          "coverage": "complete qualified Source cleanup action",
+          "sha256": "dbf7aad5e79c68a9d6d942dd90ed4def4bce38c5b7ec5401d6510cb0a2b05bc9",
+          "live_disk_equal": true
+        }
+      ]
+    }
+  ],
+  "unvalidated": [
+    "original binary ABI and physical private-frame aliases",
+    "original CRT/FH3/heap/provider compatibility",
+    "direct native differential execution of new map bodies",
+    "application adoption and game behavior"
+  ],
+  "archive_identity": {
+    "library": "build\\win32\\Release\\bsp_core.lib",
+    "sha256": "3e04776a4ebaa7a88b0729492ad8f645652f15a955b3065898223da6ab1199b2",
+    "unique_owned_objects": {
+      "native_scene_record_map_insert": [
+        "bsp_core.dir\\Release\\native_scene_record_map_insert.obj"
+      ],
+      "native_scene_record_map_node_allocate": [
+        "bsp_core.dir\\Release\\native_scene_record_map_node_allocate.obj"
+      ],
+      "native_scene_record_map_node_leaves": [
+        "bsp_core.dir\\Release\\native_scene_record_map_node_leaves.obj"
+      ],
+      "native_scene_record_map_rotations": [
+        "bsp_core.dir\\Release\\native_scene_record_map_rotations.obj"
+      ]
+    }
+  }
+}

@@ -27,7 +27,7 @@ void* link_native_scene_record_map_node_0046ad70(void* actual_map,
 
 // Complete0046B340. Native ECX map, stacked hidden output,pair; RET8/EAX output.
 // actual_arguments8 contains those two live DWORDs. Pair is captured at entry;
-// output is read at publication. Result is actual12h {owner,node,inserted-byte},
+// output is read at publication. Result is actual0Ch {owner,node,inserted-byte},
 // with final three padding bytes untouched. Duplicate does not allocate/retain.
 // Reached allocation requires fresh acquired state; duplicate leaves it alone.
 void* insert_native_scene_record_map_pair_0046b340(void* actual_map,
