@@ -7,6 +7,7 @@
 #include <cstring>
 #include <exception>
 #include <stdexcept>
+#include <windows.h>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Actual material compiler requires MSVC Win32.
@@ -24,6 +25,7 @@ template<class T> T read(const void* p, U offset = 0) noexcept {
 template<class T> void put(void* p, U offset, T value) noexcept {
     *reinterpret_cast<volatile T*>(static_cast<char*>(p) + offset) = value;
 }
+#include "native_sampler_entry_word_boundary.inc"
 void require(bool condition, const char* text) {
     if (!condition) throw std::logic_error(text);
 }
@@ -222,6 +224,11 @@ void cached_shader(Frame& a, bool pixel) {
     site(a, pixel ? 0x00b3bd66 : 0x00b3b7fb);
     auto* row = find_native_shader_binary_cache_record_00b34890(c.actual_cache_0108d6ec,
         &a.names[joined].name, c.source_mode_0108d6f1, lookup);
+    if (pixel) {
+        a.sampler_entry.cached_path = true;
+        a.sampler_entry.cache = lookup.cache;
+        a.sampler_entry.row = row; // Native MOV EBX,EAX at B3BD6B.
+    }
     release_name(a, joined, pixel ? 0x00b3bd86 : 0x00b3b81b);
     a.exception_state = 0;
     release_name(a, suffix, pixel ? 0x00b3bda5 : 0x00b3b83a);
@@ -229,6 +236,7 @@ void cached_shader(Frame& a, bool pixel) {
     reflect_cached(a, pixel, row, pixel ? 0x00b3bdbf : 0x00b3b854);
     site(a, pixel ? 0x00b3bdca : 0x00b3b85f);
     auto* device = static_cast<IDirect3DDevice9*>(get_native_renderer_device_00b1fef0(c.actual_renderer_00f8d394));
+    if (pixel) a.sampler_entry.device = device;
     // The native COM table is captured before the current row code reload.
     const auto* table = read<const volatile U*>(device);
     const DWORD* code = read<const DWORD*>(row, 8);
@@ -257,11 +265,25 @@ void construct_shader_owner(Frame& a, bool pixel) {
             : construct_native_vertex_shader_00b5faf0(raw, a.vertex_shader, c.shader_construction);
         c.registration.bind_shader(c.registration.context, *a.shader_owners[index]);
         a.shader_registered[index] = true;
+        if (pixel) a.sampler_entry.owner_count_at_constructor =
+            a.shader_owners[index]->references_04.load(std::memory_order_seq_cst);
     }
     a.exception_state = 0;
     if (pixel ? a.pixel_shader != nullptr : a.vertex_shader != nullptr) {
         site(a, pixel ? 0x00b3bfd7 : 0x00b3bcbf);
-        if (pixel) { (void)a.pixel_shader->Release(); a.pixel_com_released = true; }
+        if (pixel) {
+            if (prepare_sampler_entry_release(a)) {
+                auto& e = a.sampler_entry;
+                SamplerEntryReleaseCall call{e.builder, e.row, e.owner, e.shader,
+                    static_cast<U>(e.release_target)};
+                e.release_entered = true;
+                release_pixel_sampler_entry_word(&call); // Sole B3BFD7 release.
+                e.word = call.word; e.com_release_result = call.result; e.release_target = call.target;
+                e.release_returned = true;
+                e.device_count_after = read<U>(e.device, 0x38);
+            } else (void)a.pixel_shader->Release();
+            a.pixel_com_released = true;
+        }
         else { (void)a.vertex_shader->Release(); a.vertex_com_released = true; }
     }
     auto& operation = child(a.slots[index]);
@@ -270,7 +292,15 @@ void construct_shader_owner(Frame& a, bool pixel) {
     if (pixel) set_native_material_pass_pixel_shader_00b5f080(a.pass->base, a.shader_owners[index], owners, operation);
     else set_native_material_pass_vertex_shader_00b5f0c0(a.pass->base, a.shader_owners[index], owners, operation);
     site(a, pixel ? 0x00b3bfe7 : 0x00b3bcd1);
-    release_native_render_actual_owner(owners, a.shader_owners[index]);
+    if (pixel) {
+        // Same atomic and zero dispatch as the canonical shared release helper;
+        // retain its real fetch_sub result to prove the B3BFF7 arm was skipped.
+        a.sampler_entry.owner_release_previous_count =
+            a.shader_owners[index]->references_04.fetch_sub(1, std::memory_order_seq_cst);
+        if (a.sampler_entry.owner_release_previous_count == 1)
+            dispatch_native_render_actual_owner_zero(owners, a.shader_owners[index]);
+        finish_sampler_entry_release(a, operation);
+    } else release_native_render_actual_owner(owners, a.shader_owners[index]);
     if (pixel) a.pixel_owner_released = true; else a.vertex_owner_released = true;
 }
 
@@ -326,6 +356,14 @@ void final_states(Frame& a) {
         (&root_context.stack_b_minus_16 == &mode_context.stack_b_minus_16 &&
             root_context.stack_knowledge && root_context.stack_knowledge == mode_context.stack_knowledge),
         "root/mode sampler calls require their same physical-word knowledge");
+    if (a.sampler_call_scope && a.sampler_entry.known) {
+        require(!a.sampler_entry.published, "native sampler entry word cannot replay");
+        require(!root_context.stack_knowledge->known || root_context.stack_b_minus_16 == a.sampler_entry.word,
+            "caller sampler entry capture conflicts with the actual predecessor release");
+        root_context.stack_b_minus_16 = a.sampler_entry.word;
+        root_context.stack_knowledge->known = true;
+        a.sampler_entry.published = true;
+    }
     auto& first = child(a.samplers[0]);
     site(a, 0x00b3c018);
     append_native_material_descriptor_samplers_00b3b280(b, *a.pass, *first_descriptor, root_context, first);

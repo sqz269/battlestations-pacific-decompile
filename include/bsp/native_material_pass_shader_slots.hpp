@@ -19,6 +19,8 @@ struct NativeMaterialPassShaderSlotsOperation final {
     NativeRenderActualOwners* owners{};
     void* old_identity{};
     void* incoming_identity{};
+    // The actual fetch_add result, never a second counter probe.
+    std::int32_t incoming_previous_count{};
     bool slot_published{}, incoming_incremented{}, old_release_entered{}, old_release_returned{};
     NativeMaterialPassShaderSlotsOperation() = default;
     ~NativeMaterialPassShaderSlotsOperation();

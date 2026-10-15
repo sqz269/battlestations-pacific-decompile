@@ -34,7 +34,8 @@ void assign(NativeMaterialPassBaseStorage& pass, void* incoming, NativeRenderAct
                 a.native_site = increment_site;
                 auto* count = std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(
                     static_cast<char*>(incoming) + 4));
-                count->fetch_add(1, std::memory_order_seq_cst); a.incoming_incremented = true;
+                a.incoming_previous_count = count->fetch_add(1, std::memory_order_seq_cst);
+                a.incoming_incremented = true;
             }
             if (a.old_identity) {
                 a.native_site = release_site; a.old_release_entered = true;
