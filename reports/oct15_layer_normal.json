@@ -24,7 +24,7 @@
     }
   ],
   "host_steps": [
-    {"function": "0041bd10", "address": "0041bd31", "native": "00417fa0", "contract": "Complete callee body/listing read; out/x/z, RET0Ch; float-stored transform and clamps; required sampling binding"},
+    {"function": "0041bd10", "address": "0041bd31", "native": "00417fa0", "contract": "Complete callee body/listing read; out/x/z, RET0Ch; native x87 transform then float stores; ordered0>c selects+0, otherwise ordered c>upper selects upper, equality/unordered retain c; required sampling binding, game-host double arithmetic not proved identical"},
     {"function": "0041bd10", "address": "0041bd44", "native": "0041bae0", "contract": "Complete callee body/listing read; x0/z0, RET8; clamped indices, native 32-bit row index, byte*scale; exact invalid-span policy required"},
     {"function": "0041bd10", "address": "0041bd57", "native": "00bf7420", "contract": "Complete direct callee listing and existing implementation read; consume ST0=(extended cell.x+1.0), actual mutable0109EEA4 selects conversion path; low EAX index"},
     {"function": "0041bd10", "address": "0041bd62", "native": "0041bae0", "contract": "x1/z0, same complete cell-height contract"},
@@ -62,6 +62,7 @@
   "limitations": [
     "Provisional semantic name and new typed ABI; primary handles Ghidra mutation",
     "Required world/cell sampling bindings, stable borrowed layer and actual CRT state/handlers; nonoverlapping typed buffers",
+    "Existing game-host WorldToCell ternaries preserve equality/unordered selection, but its double arithmetic is not proved identical to the native x87 schedule",
     "Existing game-host CellHeight invalid-storage zero substitute is not accepted as exact native behavior",
     "Existing00419440 finite nonnegative sqrt core is reconstructed; native exceptional diagnostics require actual CRT state/handler and are not independently validated here",
     "No new tests, native-byte differential execution of this routine, game wiring or gameplay validation",

@@ -14,8 +14,10 @@ namespace bsp {
 struct AvoidZoneLayerNormalHost {
     virtual ~AvoidZoneLayerNormalHost() = default;
 
-    // 00417FA0: (world+half_extent)/cell_size, float stores, then clamp each
-    // coordinate to [0, dimension-2]. Preserve the native unordered branches.
+    // 00417FA0: x87 (world+half_extent)/cell_size, float stores. For each c:
+    // ordered 0>c selects +0; else ordered c>float(dimension-2) selects that
+    // upper value; otherwise keep c, including equality and unordered values.
+    // Existing game-host double arithmetic is not proved kernel-identical.
     // Original ECX layer, stack out/x/z, EAX out, RET 0Ch.
     virtual void world_to_cell_00417fa0(const TerrainGridLayerRecord& layer,
         std::array<float, 2>& out, float world_x, float world_z) = 0;
