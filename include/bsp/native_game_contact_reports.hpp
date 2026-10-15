@@ -31,6 +31,16 @@ void* erase_native_checked_vector12_004c82b0(void* vector,void* output_pair,
     void* first_owner,void* first,void* last_owner,void* last,const NativeGameContactReportContext&);
 std::int32_t native_checked_vector12_size_00415290(const void* vector);
 
+// Typed public tail entry to the existing instruction-audited 00419330 kernel.
+// Six cdecl stack words; EAX is the computed destination end. The last three
+// words are ignored by that actual kernel. Retains x87 per-word forward copy,
+// overlap order and native signed truncating divide12 address computation.
+// Normal admitted ranges require all native source/destination accesses valid.
+// No duplicate loop, allocator, context or callback is introduced.
+void* __cdecl move_native_vector12_00419330(const void* first, const void* last,
+    void* destination, const void* metadata4, const void* metadata5,
+    std::uint32_t ignored_tag) noexcept;
+
 // Complete one-slot CE78C0 source table. Stable owner borrows the allocator and
 // calls object. bind() publishes only the table; the actual receiver's vector
 // must already be initialized and must outlive every call through this table.
