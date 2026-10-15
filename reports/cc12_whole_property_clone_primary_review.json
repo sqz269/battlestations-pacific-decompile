@@ -1,6 +1,6 @@
 {
   "schema": "cc12_whole_property_clone_primary_review_v1",
-  "stage": "whole_Source_integrated_and_focused_runtime_pass_registered_Main_build_pending",
+  "stage": "whole_Source_and_fullchain_FP_fixture_accepted_registered_Main_3checks_and_actual_archive_machine_review_passed",
   "packet": "FullRecursivePropertyCloneSource01",
   "addresses": [
     "008f41f0",
@@ -26,8 +26,8 @@
     "independent_emitted_FP_review_complete": true,
     "worker_focused_fullchain_FP_probe_pass": true,
     "worker_existing_normal_build_pass": true,
-    "registered_Main_build_pass": false,
-    "registered_Main_archive_object_review_complete": false
+    "registered_Main_build_pass": true,
+    "registered_Main_archive_object_review_complete": true
   },
   "limitations": [
     "Successful nonthrowing finite unshared acyclic owning domain only; positive array constructor input domains.",
@@ -128,7 +128,7 @@
     "affected_exports_refreshed": "43af7e/exit0"
   },
   "source_domain_chain_accepted_by_primary": true,
-  "Main_CMake_registration_queue": "Lease9bb9b1 granted, new clone registration staged for next Main build",
+  "Main_CMake_registration_queue": "granted; both TUs registered in e1701591b and built by4af431/exit0",
   "pre_registration_Main_build": {
     "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_whole_property_clone_Main_build01\\pre_registration\\result.DATA.json",
     "bytes": 1094,
@@ -138,5 +138,29 @@
     "selected6inputs_unchanged": true,
     "exact_entire_Main_revision_claimed": false,
     "clone_TU_registered": false
+  },
+  "registered_Main_build": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_whole_property_clone_Main_build01\\result.DATA.json",
+    "bytes": 1297,
+    "sha256": "2d3c0b8b234075acfe5b358fb780f61e97f1f965bdc73e22e822d6ad41eed972",
+    "actual_terminal": "4af431/exit0",
+    "existing_tests_passed": 3,
+    "selected8inputs_unchanged": true,
+    "whole_archive_membership_verified": true,
+    "current_Main_emitted_review_pending": false
+  },
+  "independent_registered_Main_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\MainCloneResetCOFFIndependentReview01\\complete_Main_objects_review.DATA.json",
+    "bytes": 169652,
+    "sha256": "7879db042b3f6108800764e5e30cb81434f3ec348672f29493e70e176729c862",
+    "primary_all20_current_inputs_verified": true,
+    "selected_functions": 16,
+    "section_bytes": 1282,
+    "instruction_bytes": 1233,
+    "instructions": 437,
+    "table_bytes": 48,
+    "padding_bytes": 1,
+    "relocations": 54,
+    "scope": "whole clone and Reset objects; canonical new getter only"
   }
 }

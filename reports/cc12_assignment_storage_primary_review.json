@@ -1,0 +1,42 @@
+{
+  "schema": "cc12_assignment_storage_primary_review_v1",
+  "Source_commit": "92b3eea9c",
+  "addresses": [
+    "004357f0",
+    "008f03b0"
+  ],
+  "whole_Source_and_Hpp_read": true,
+  "whole_original_26B11_and63B27_listings_read": true,
+  "physical_order_review": [
+    "nullfreeclear path performs neither provider nor store",
+    "nonnullfree precedes physical slotclear",
+    "array sourcepointer then bytecount capture before old destination read/free",
+    "old pointer clear afterfree; size before allocation; newpointer before realmemcpy"
+  ],
+  "independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyAssignmentStorageIndependentReview01\\independent_Source_COFF_review.DATA.json",
+    "bytes": 13700,
+    "sha256": "c91d84d730676f445c68281252888ad8f34524615f2f3ead19f0a83389d73cce",
+    "all8_current_direct_inputs_verified": true,
+    "whole5_emitted_functions_bytes": 312,
+    "instructions": 95,
+    "unknown_CFG_edges": 0,
+    "FP_instructions": 0
+  },
+  "worker_strict_terminal": "fa4db2/exit0",
+  "worker_normal_build_terminal": "eaf6f8/exit0",
+  "existing_worker_tests_passed": 2,
+  "gates": {
+    "whole_Source_and_current_standalone_COFF_passed": true,
+    "registered_Main_build_passed": false,
+    "actual_Main_codegen_review_passed": false
+  },
+  "Source_runtime_claim": false,
+  "Original_ABI_CRT_EH_OOM_class_game_claim": false,
+  "domain": "Positive byte count, genuine sole-owned canonical old allocation, stable disjoint source/data/headers/frames. No self/shared UAF repair, ownership-byte mutation, zero shortcut, alias or pointer-inequality claim.",
+  "ghidra_annotations": {
+    "actual_apply_and_export_terminal": "c58c85/exit0",
+    "prior_values": "local/ghidra-annotations-20261015T012921Z.json",
+    "project_saved": true
+  }
+}
