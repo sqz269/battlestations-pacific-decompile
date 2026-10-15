@@ -26,6 +26,8 @@
 #include "bsp/native_post_effect_submission.hpp"
 #include "bsp/native_material_pass_execution.hpp"
 #include "bsp/native_render_command_owner.hpp"
+#include "bsp/native_renderer_texture_binding.hpp"
+#include "bsp/native_surface_dimensions.hpp"
 #include <cstddef>
 #include <cstring>
 #include <exception>
@@ -1540,6 +1542,117 @@ void continue_native_main_scene_scne_batches_00b161f5(void* command,
         frame.failed=true;
         label.failed=true;
         unwind_native_main_scene_scne_label(scne.label,label);
+        throw;
+    }
+}
+namespace {
+struct SurfaceCopyRectangle {
+    std::int32_t left, top;
+    std::uint32_t right, bottom;
+};
+using SurfaceGetDevice = std::int32_t (__stdcall*)(void*, void**);
+using DeviceStretchRectangle = std::int32_t (__stdcall*)(void*, void*,
+    const SurfaceCopyRectangle*, void*, const SurfaceCopyRectangle*, std::uint32_t);
+using SurfaceCopyRelease = std::uint32_t (__stdcall*)(void*);
+const volatile std::uint32_t* surface_copy_profile(void* surface,
+    const NativeSurfaceCopyContext& c) {
+    if(word(surface)!=0x00d619a0 || !c.actual_surface_profile_00d619a0)
+        throw std::logic_error("surface copy requires current actual D619A0 profile");
+    return c.actual_surface_profile_00d619a0;
+}
+} // namespace
+
+void copy_native_surface_00b3cda0(void* destination,void* source,
+    const NativeSurfaceCopyContext& c) {
+    void* captured_device=nullptr;
+    void* const initial_destination=current_member(destination,0x2c);
+    auto get_device=reinterpret_cast<SurfaceGetDevice>(word(
+        static_cast<const unsigned char*>(current_member(initial_destination,0))+0x0c));
+    (void)get_device(initial_destination,&captured_device);
+    const auto* width_profile=surface_copy_profile(destination,c);
+    const std::uint32_t width_target=width_profile[0x1c/4];
+    SurfaceCopyRectangle rectangle{};
+    if(width_target!=0x00b3cd10)
+        throw std::logic_error("surface copy requires current B3CD10 width");
+    const std::uint32_t width=get_native_surface_width_00b3cd10(destination);
+    const auto* height_profile=surface_copy_profile(destination,c);
+    const std::uint32_t height_target=height_profile[0x20/4];
+    rectangle.right=width;
+    if(height_target!=0x00b3cd20)
+        throw std::logic_error("surface copy requires current B3CD20 height");
+    const std::uint32_t height=get_native_surface_height_00b3cd20(destination);
+    void* const destination_surface=current_member(destination,0x2c);
+    void* const source_surface=current_member(source,0x2c);
+    rectangle.bottom=height;
+    auto stretch=reinterpret_cast<DeviceStretchRectangle>(word(
+        static_cast<const unsigned char*>(current_member(captured_device,0))+0x88));
+    (void)stretch(captured_device,source_surface,nullptr,destination_surface,&rectangle,2);
+    auto release=reinterpret_cast<SurfaceCopyRelease>(word(
+        static_cast<const unsigned char*>(current_member(captured_device,0))+8));
+    (void)release(captured_device);
+}
+
+void capture_native_render_holder_00b4caf0(void* holder,const NativeSurfaceCopyContext& c) {
+    if(*reinterpret_cast<const volatile std::uint8_t*>(static_cast<const unsigned char*>(holder)+0x14)==0)
+        return;
+    void* const source=current_member(holder,0x0c);
+    void* const destination=current_member(holder,0x10);
+    copy_native_surface_00b3cda0(destination,source,c);
+}
+
+void continue_native_main_scene_scne_capture_00b162fe(void* service,
+    const NativeMainSceneScneCaptureContext& c,NativeMainSceneScneLabelFrame& label,
+    NativeMainSceneScneCaptureFrame& frame,NativeMainSceneExecutionPrefixState& state) {
+    if(!state.reached_scne_capture_stage || state.reached_post_label_stage ||
+       !label.completed || label.failed || label.native_cleanup_state!=5 ||
+       label.cleanup_started || frame.started)
+        throw std::logic_error("SCNE capture requires its fresh reached state5 frame");
+    frame.started=true;
+    const auto site=[&](std::uint32_t at) noexcept {
+        label.active_native_site=frame.active_native_site=state.active_native_site=at;
+    };
+    site(0x00b162fe);
+    try {
+        const auto& system=c.label.domains.system;
+        auto& textures=c.textures;
+        auto& notification=textures.actual_texture_2d_owner.renderer_notification;
+        if(!system.actual_renderer_00f8d394 || !system.actual_service_00f8d39c ||
+           system.actual_synchronization!=&textures.actual_synchronization_0108d6dc ||
+           static_cast<const volatile void*>(system.actual_renderer_00f8d394)!=
+               static_cast<const volatile void*>(&notification.actual_renderer_00f8d394) ||
+           &notification!=&textures.actual_cube_owner.renderer_notification ||
+           &notification!=&textures.actual_volume_owner.renderer_notification ||
+           system.actual_manager_01090aa0!=&c.label.domains.strings.actual_manager_publication_01090aa0)
+            throw std::logic_error("SCNE capture requires the same actual renderer and label domains");
+        const auto selected=*reinterpret_cast<const volatile std::uint8_t*>(
+            static_cast<const unsigned char*>(service)+0x22d);
+        void* const holder=current_member(service,selected?0x48:0x44);
+        site(0x00b1630f);
+        capture_native_render_holder_00b4caf0(holder,c.surface_copy);
+        frame.capture_completed=true;
+        for(std::uint32_t sampler=0;sampler<8;++sampler) {
+            void* const renderer=*system.actual_renderer_00f8d394;
+            const std::uint32_t profile=word(renderer);
+            site(0x00b16330);
+            if(profile!=0x00d5f0a8 || !c.actual_renderer_profile_00d5f0a8 ||
+               c.actual_renderer_profile_00d5f0a8[0x130/4]!=0x00b24710)
+                throw std::logic_error("SCNE capture requires current D5F0A8:B24710 binding");
+            bind_native_renderer_texture_00b24710(renderer,sampler,nullptr,textures);
+            ++frame.samplers_completed;
+        }
+        site(0x00b1633e);
+        label.native_cleanup_state=-1;
+        label.cleanup_started=true;
+        label.cleanup_native_site=0x00b16349;
+        site(0x00b16349);
+        reset_native_render_diagnostic_label_00b13510(*system.actual_service_00f8d39c,c.label.domains.strings);
+        label.cleanup_completed=frame.label_reset_completed=true;
+        site(0x00b1634e);
+        frame.completed=true;
+        state.reached_post_label_stage=true;
+    } catch(...) {
+        frame.failed=true;label.failed=true;
+        unwind_native_main_scene_scne_label(c.label,label);
         throw;
     }
 }
