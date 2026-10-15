@@ -1,0 +1,50 @@
+{
+  "schema": "bsp.enum_symbol_reader_primary_review.v1",
+  "address": "008f31a0",
+  "Source_commit": "70e0e57ed3329004d1574d8be5ee9c1e7b3973f6",
+  "status": "whole_ordinary_Source_primary_peer_accepted_CMake_registration_queued_Main_build_pending",
+  "primary_complete_Source_header_and_Original_listing_read": true,
+  "Original_whole_bytes": 193,
+  "Source": "src/native_enum_symbol_reader.cpp",
+  "independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_enum_reader_review_oct15\\local\\EnumSymbolReaderIndependentReview01\\review.compact.DATA.json",
+    "bytes": 3344,
+    "sha256": "e2d771f2514189d50334338c8f27392bf714b669108995e0991affcbceca515b"
+  },
+  "primary_peer_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_enum_symbol_reader_integration_20261015\\primary_peer_input_pins.DATA.json",
+    "bytes": 25366,
+    "sha256": "0fc373ba78356d7c425180a244ba2b032b0a95f834b6b6fbd43153ec702acd4a"
+  },
+  "Original_ABI": "ECX genuine19Ch CEnum, live838h tokenizer entry stack+4, RET4; AL forwards final expect-close. Original incoming tokenizer stack-slot low-byte alias is not reproduced by the new local flag byte.",
+  "contract": [
+    "Exact at-most-two-byte REPE comparison against genuine CE4CD4 closing bytes; re-peek, NUL-inclusive copy into actual F89758 scratch, then consume.",
+    "Expect equals, pass its byte flag to typed integer read, optional case-insensitive semicolon consume, and unconditional enum declaration even when the flag is false; re-peek and repeat, then final expect-close.",
+    "Genuine same-authority raw strings, real initialized E17578 symbol pool and distinct E186ED/E17654 roles; actual immutable CE4CD4/CE55BC/CE5698 punctuator bindings.",
+    "Scratch physical capacity is unknown; caller must prove each NUL-inclusive name fits actual genuine storage and both 400h token buffers. No invented array, owner, callback, model, EOF, nesting, iteration or error exit.",
+    "Live tokenizer precondition closes the reader independently of still-unadmitted file constructor8D9CF0. Accepted concrete token-value std::sscanf/current CRT and ASCII C-locale services remain explicit boundaries."
+  ],
+  "strict": {
+    "initial_chunk": "86b00d",
+    "exit_code": 0,
+    "code_sections": 2,
+    "code_bytes": 226,
+    "runtime_REL32": 11
+  },
+  "author_normal": {
+    "initial_chunk": "ec4370",
+    "session": 74528,
+    "terminal_chunk": "0d8b07",
+    "exit_code": 0,
+    "configured_tests": 2,
+    "new_TU_registered": false
+  },
+  "Main_registered": false,
+  "Main_build": "pending",
+  "new_Source_runtime_executed": false,
+  "Original_ABI_compatible": false,
+  "Original_EH_or_private_CRT_compatible": false,
+  "global_application_startup_publication": false,
+  "game_validated": false,
+  "whole_loader_equivalent": false
+}
