@@ -1,6 +1,6 @@
 {
   "batch": "oct15_tenth_reconstruction_batch",
-  "status": "reviewed_build_verified_ready_for_main",
+  "status": "integrated_main_build_verified",
   "ordinary_entries": 10,
   "parent_bound_fragments": 9,
   "fragment_count_note": "Includes6A5EA8 normal parent cleanup, not an independent Ghidra function.18 actual function/catch/unwind entries are annotated;19 total ledger entries/scopes.",
@@ -73,5 +73,8 @@
     "Original native bytes, instruction order, EH tables and physical conventions reviewed; current Source interfaces are qualified reconstructions.",
     "No new-entry native differential execution, game startup or gameplay validation."
   ],
-  "continuing_goal": "active; isolated workers continue owning-parameter resize, actual outer assignment, and general group insertion with independently verified allocator dependencies."
+  "continuing_goal": "active; isolated workers continue owning-parameter resize, actual outer assignment, and general group insertion with independently verified allocator dependencies.",
+  "main_source_integration_commit": "68ee07adf",
+  "main_source_matches_tested_commit": true,
+  "coordination": "Recorded short CMake queue jump only for already-tested fast-forward promotion while earlier registration was free after notification; prior registrations remain queued."
 }
