@@ -1514,22 +1514,24 @@ void apply_net_table_sync_text_00780b90(const NetTableSyncText& text, NetTableSy
 
 NetTableCreateMessage build_net_table_create_00780a70(const net_cc13::EntityCreateSource& entity,
                                                       net_cc13::EntityCreateHost& entity_host,
-                                                      std::int32_t local_player) {
+                                                      NetTableCreateHost& host) {
     NetTableCreateMessage m;
     // 00780A75..00780A81: PUSH 0 (with_name), entity, 0 (word), DFh; CALL 00766FC0.
     m.base = net_cc13::build_entity_create_00766fc0(kNetTableCreateMessageType, 0, entity, false,
                                                      entity_host);
     m.vtable = kNetTableCreateMessageVtable;                    // 00780A86
     m.base.byte_c4 = 0;                                         // 00780A8C
-    m.base.word_10c = static_cast<std::uint32_t>(local_player);  // 00780A9F, game+18C8h
+    // 00780A93..00780A9F: [[00E188A8]+18C8h], read only now, after the base constructor.
+    m.base.word_10c = static_cast<std::uint32_t>(host.game_local_player_18c8());
     return m;
 }
 
 void send_net_table_create_00780ae0(const void* entity, const net_cc13::EntityCreateSource& source,
                                     net_cc13::EntityCreateHost& entity_host, void* peer,
-                                    std::int32_t local_player, NetTableCreateHost& host) {
-    // 00780AFC..00780B2C: the same construction inline on the stack.
-    NetTableCreateMessage m = build_net_table_create_00780a70(source, entity_host, local_player);
+                                    NetTableCreateHost& host) {
+    // 00780AFC..00780B2C: the same construction inline on the stack (the
+    // game+18C8h read at 00780B11/00780B26 also follows 00766FC0).
+    NetTableCreateMessage m = build_net_table_create_00780a70(source, entity_host, host);
     host.send_to_peer_00779fc0(entity, peer, m);  // 00780B4D
 }   // 00780B69: 007668E0 = the base's string/vector destructors
 

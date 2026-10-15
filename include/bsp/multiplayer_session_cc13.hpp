@@ -1271,12 +1271,13 @@ struct NetTableCreateMessage {
     std::uint32_t vtable{kNetTableCreateMessageVtable};
     net_cc13::EntityCreateMessage base;   // type_10 = DFh from 00766FC0
 };
-NetTableCreateMessage build_net_table_create_00780a70(const net_cc13::EntityCreateSource& entity,
-                                                      net_cc13::EntityCreateHost& entity_host,
-                                                      std::int32_t local_player);
 
 struct NetTableCreateHost {
     virtual ~NetTableCreateHost() = default;
+    // [[00E188A8]+18C8h], the local player index; 00780A70 (00780A93/00780A99)
+    // and 00780AE0 (00780B11/00780B26) read it after the 00766FC0 base
+    // constructor returns.
+    virtual std::int32_t game_local_player_18c8() = 0;
     // 00779FC0 __thiscall(entity, peer, msg): msg+18h = entity+174h, then
     // 00770B50(peer, msg).
     virtual void send_to_peer_00779fc0(const void* entity, void* peer,
@@ -1287,13 +1288,17 @@ struct NetTableCreateHost {
     virtual void* construct_multiscore_00780db0(void* object, std::uint16_t id) = 0;
 };
 
+NetTableCreateMessage build_net_table_create_00780a70(const net_cc13::EntityCreateSource& entity,
+                                                      net_cc13::EntityCreateHost& entity_host,
+                                                      NetTableCreateHost& host);
+
 // 00780AE0 __thiscall(entity, peer) RET 4: build DFh on the stack (as
 // 00780A70), send it to the peer through 00779FC0, destroy it (007668E0, which
 // frees the base's +C0h string and +4Ch vector: the members' destructors here).
 // `entity` is the same object `source`/`entity_host` describe.
 void send_net_table_create_00780ae0(const void* entity, const net_cc13::EntityCreateSource& source,
                                     net_cc13::EntityCreateHost& entity_host, void* peer,
-                                    std::int32_t local_player, NetTableCreateHost& host);
+                                    NetTableCreateHost& host);
 
 // 007813B0 __fastcall(ECX = DFh msg), the message's vtable[1Ch]: the
 // receiver-side factory 0077EC20 calls when msg+1Ch names no registered
