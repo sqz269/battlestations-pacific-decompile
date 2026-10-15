@@ -14,7 +14,7 @@
   "source": "src/native_string_copy_construct.cpp",
   "header": "include/bsp/native_string_copy_construct.hpp",
   "documentation": "docs/GOAL_OCT15_NATIVE_STRING_COPY.md",
-  "status": "actual_storage_complete_source_annotated_exported_build_pending",
+  "status": "actual_storage_complete_source_annotated_combined_strict_win32_ctest_and_compiled_x87_checked",
   "routines": [
     {
       "address": "00444070",
@@ -155,14 +155,69 @@
   "verification": {
     "live_project_program_guard": "bsp.py uses Client.verify before each live query; project bsp, program /battlestationspacific.exe, x86:LE:32:default, image base00400000",
     "live_proto_disassembly_bytes_and_xrefs": "passed; full bodies147 bytes/57 instructions; no live xrefs",
-    "compiled_x87_pair": "pending",
-    "strict_win32_build_and_existing_ctest": "pending",
+    "compiled_x87_pair": "passed; actual combined CMake object has D900/D91A after the concrete raw00426060 call in both public wrappers; no early scalar read, extra FWAIT or SSE/DWORD replacement",
+    "strict_win32_build_and_existing_ctest": "passed in primary combined scripts/build.ps1 Release atff5b6fb1a6350c36224f1f53e3bbcbf6c01deb5a; all3 existing CTests passed; exact source/header byte identity verified",
     "verify_report_calls": "passed; 4 native call-site rows checked,0 failed; markdown18 addresses,0 failed",
-    "diff_check": "pending",
+    "diff_check": "passed",
     "new_tests_added": false,
     "native_differential": "not run",
     "game_validation": "not run",
-    "verify_seeds": "passed; all8 seed bodies match installed disk bytes; this is not a native differential for the new functions"
+    "verify_seeds": "passed; all8 seed bodies match installed disk bytes; this is not a native differential for the new functions",
+    "worker_local_build": "canceled duplicate fresh worker run after primary combined strict Win32/CTest pass; no worker-local pass claimed",
+    "combined_build": {
+      "revision": "ff5b6fb1a6350c36224f1f53e3bbcbf6c01deb5a",
+      "command": "scripts/build.ps1",
+      "configuration": "Release / MSVC Win32 / W4 / WX / fp:strict",
+      "parallel_only_change": "CL=/MP4",
+      "log": "J:/PROG/battlestations-pacific-decompile-goal_oct15_integrator/local/goal_oct15_combined_build.log",
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "result": "3/3 passed,0 failed; 8.07 seconds total CTest time",
+      "new_packet_native_differential": "not run; existing native_math_differential does not exercise these two routines",
+      "source_sha256": "fa0eeb895fc8e94631c0c32dd19bcec60289d01bb1351d0333ed8ba91fc1375e",
+      "header_sha256": "4a50e62f1c33ceea11d14cdfbe03395558312b5f0a6a18df4e78e6068f0067f8",
+      "source_header_byte_identical_to_combined": true
+    },
+    "compiled_object": {
+      "path": "J:/PROG/battlestations-pacific-decompile-goal_oct15_integrator/build/win32/bsp_core.dir/Release/native_string_copy_construct.obj",
+      "sha256": "72aa5189cd63b63c2b7a117b9d4282031068d8a128e558368cefb210b7e3f3b5",
+      "bytes": 1871,
+      "inspection": "MSVC14.51.36231 dumpbin /DISASM /SYMBOLS",
+      "receipt": "local/goal_oct15_native_string_copy_object.txt",
+      "public_wrappers": [
+        {
+          "implementation": "copy_construct_native_string_with_scalar_00444070",
+          "coff_section": 4,
+          "code_bytes": 43,
+          "raw_header_call_relative_offset": "0e",
+          "scalar_input_pointer_load_relative_offset": "1c",
+          "fld_relative_offset": "22",
+          "fld_bytes": "d900",
+          "fstp_relative_offset": "24",
+          "fstp_bytes": "d91a",
+          "return_relative_offset": "2a",
+          "compiled_abi": "__cdecl; stacked destination,source,scalar_address,context; EAX destination; RET"
+        },
+        {
+          "implementation": "copy_construct_native_string_with_scalar_004440c0",
+          "coff_section": 5,
+          "code_bytes": 52,
+          "raw_header_call_relative_offset": "10",
+          "source_plus8_address_relative_offset": "15",
+          "scalar_input_pointer_load_relative_offset": "24",
+          "fld_relative_offset": "2a",
+          "fld_bytes": "d900",
+          "fstp_relative_offset": "2c",
+          "fstp_bytes": "d91a",
+          "return_relative_offset": "33",
+          "compiled_abi": "__cdecl; stacked destination,source,context; EAX destination; RET"
+        }
+      ],
+      "separate_internal_helper": "15-byte local helper also emitted with D900/D91A; the public wrappers inline the pair"
+    }
   },
   "limits": [
     "Complete Source bodies at accepted concrete raw-storage dependency and valid-memory/ownership domains; new C++ explicit-context ABI.",
