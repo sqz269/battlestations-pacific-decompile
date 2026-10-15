@@ -28,8 +28,8 @@
   "existing_worker_tests_passed": 2,
   "gates": {
     "whole_Source_and_current_standalone_COFF_passed": true,
-    "registered_Main_build_passed": false,
-    "actual_Main_codegen_review_passed": false
+    "registered_Main_build_passed": true,
+    "actual_Main_codegen_review_passed": true
   },
   "Source_runtime_claim": false,
   "Original_ABI_CRT_EH_OOM_class_game_claim": false,
@@ -38,5 +38,28 @@
     "actual_apply_and_export_terminal": "c58c85/exit0",
     "prior_values": "local/ghidra-annotations-20261015T012921Z.json",
     "project_saved": true
+  },
+  "registered_Main_build": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_assignment_storage_Main_build01\\result.DATA.json",
+    "bytes": 1934,
+    "sha256": "3c249ef95b7043426b728a52013d3a89232ecdc6a54bbe9995c75db72f6baecc",
+    "actual_terminal": "d63a08/exit0",
+    "existing_tests_passed": 3,
+    "selected4inputs_unchanged": true,
+    "previous2validated_objects_unchanged": true,
+    "unique_actual_archive_member_verified": true
+  },
+  "stage": "whole_ordinary_Source_accepted_registered_Main_3checks_unique_archive_member_and_complete_current_COFF_passed",
+  "independent_registered_Main_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyAssignmentStorageMainCOFFReview01\\compact_Main_COFF_review.DATA.json",
+    "bytes": 6583,
+    "sha256": "4c55a747dacf56e7b07254a8c62b1887e265d08b2ecdcfc33f139df8b96f7b4c",
+    "primary_frozen_actual_Main_object_verified": true,
+    "functions": 5,
+    "code_bytes": 299,
+    "instructions": 110,
+    "relocations": 6,
+    "unknown_CFG_edges": 0,
+    "FP_instructions": 0
   }
 }
