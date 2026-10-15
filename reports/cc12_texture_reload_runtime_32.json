@@ -1,0 +1,731 @@
+{
+  "schema": 1,
+  "packet": "cc12_texture_reload_runtime_32",
+  "captured_utc": "2026-10-15T19:10:08.696915+00:00",
+  "status": "independent_Root_Original747_Source_normal_2D_texture_reload_passed_frozen_and_combined_builds",
+  "source_body_changed": false,
+  "original_installed_executable_preserved": true,
+  "native_body": {
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "start": "00b3fa90",
+    "size": 747,
+    "sha256": "2040b2711596de753d0e87c2119184dc72ea843f173cc9fc7037efab5bee0b09",
+    "current_disk_live_frozen_equal": true
+  },
+  "unchanged_source_files": [
+    {
+      "path": "src/native_texture_reload.cpp",
+      "sha256": "d8fbb28a3837e660d54eaefb1448b770d3bcd3fa69d117703097c5ba39b0b8c0",
+      "frozen_equal": true
+    },
+    {
+      "path": "include/bsp/native_texture_reload.hpp",
+      "sha256": "bee703c38df1335e740b6e5433566bdfcb24d2051e98f1e1834f03d8b3b8350e",
+      "frozen_equal": true
+    }
+  ],
+  "cases": [
+    {
+      "case": "Root 05",
+      "directory": "local\\cc12_texture_reload_parent_review_05",
+      "prepared_sha256": "c2383e8008b45160f583096ca35661fea0882467b392c5a1c9836930131427d9",
+      "build_result_sha256": "3e22661932d6ad12837212177eef4a5031a095aadc3fe359667234b31babebe3",
+      "source_commit": null,
+      "frozen_worker_commit": "f083778606ab47ce99e3b28d43bd2458c57e320f",
+      "frozen_worker_base": "dbcb8a3a4b7566d8dec9419c3be88a285e768292",
+      "production_application_objects": 137,
+      "production_libraries": 3,
+      "production_objects_recompiled": 0,
+      "forwarding_main_translation_units": 1,
+      "executable_sha256": "1a4d42c118f7e64c44f9e645d45e2c8c5f68b7014b2f510c8edca6395adc2010",
+      "wrapper_pid": 60944,
+      "exit_code": 0,
+      "seconds": 2.7911367,
+      "actual_attempts": 1,
+      "launcher_checkout_head": "a17cca944dd1cc21710c4ad913907341cb0b018a",
+      "launch_manifest": "local\\cc12_texture_reload_parent_review_05\\runtime_artifacts\\runtime.log.manifest.json",
+      "runtime": {
+        "started_utc": "2026-10-15T19:01:38.4612291Z",
+        "wrapper_pid": 60944,
+        "status": "TERMINAL",
+        "target_attempts": 1,
+        "executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_texture_reload_parent_review_05\\build\\parent_reload_probe.exe",
+        "executable_sha256": "1a4d42c118f7e64c44f9e645d45e2c8c5f68b7014b2f510c8edca6395adc2010",
+        "font_probe": 0,
+        "gui_effect_probe": 0,
+        "post_cache_probe": 0,
+        "initial_settings_sha256": "ff5cf3959932cb634374b8a9bf5e6c0d04c50699cc6ba585e7fa7969f7b563d8",
+        "wrapper": "tools/run_game.ps1",
+        "instance_and_affinity": "Assigned by the shared launcher slot",
+        "exit_code": 0,
+        "seconds": 2.7911367,
+        "finished_utc": "2026-10-15T19:01:41.6070692Z"
+      },
+      "artifacts": {
+        "passed": true,
+        "native_bytes": 747,
+        "native_sha256": "2040b2711596de753d0e87c2119184dc72ea843f173cc9fc7037efab5bee0b09",
+        "relocated_sha256": "bd197f7290ea5a6fbcc7d2e06d64623ccc6d26d67424031f4097df912bdbc7e7",
+        "operand_count": 24,
+        "allowed_operand_bytes": 96,
+        "other_bytes_unchanged": true,
+        "operands": [
+          {
+            "site": "00b3faf0",
+            "kind": "rel32_call",
+            "native_target": "00bef750",
+            "fixture_target": "10008dd0",
+            "provider": "convert"
+          },
+          {
+            "site": "00b3fb1b",
+            "kind": "rel32_call",
+            "native_target": "00b33e40",
+            "fixture_target": "10009d50",
+            "provider": "name"
+          },
+          {
+            "site": "00b3fb2e",
+            "kind": "rel32_call",
+            "native_target": "00b27d40",
+            "fixture_target": "1000f180",
+            "provider": "unregister"
+          },
+          {
+            "site": "00b3fb33",
+            "kind": "rel32_call",
+            "native_target": "00b3e730",
+            "fixture_target": "1000ece0",
+            "provider": "support"
+          },
+          {
+            "site": "00b3fb49",
+            "kind": "rel32_call",
+            "native_target": "00bef610",
+            "fixture_target": "10009150",
+            "provider": "data"
+          },
+          {
+            "site": "00b3fca8",
+            "kind": "rel32_call",
+            "native_target": "00bef610",
+            "fixture_target": "10009150",
+            "provider": "data"
+          },
+          {
+            "site": "00b3fb4f",
+            "kind": "rel32_call",
+            "native_target": "00c2dfec",
+            "fixture_target": "100099b0",
+            "provider": "image_info"
+          },
+          {
+            "site": "00b3fba5",
+            "kind": "rel32_call",
+            "native_target": "00bf9440",
+            "fixture_target": "10409fb6",
+            "provider": "strstr"
+          },
+          {
+            "site": "00b3fbca",
+            "kind": "rel32_call",
+            "native_target": "00bf9440",
+            "fixture_target": "10409fb6",
+            "provider": "strstr"
+          },
+          {
+            "site": "00b3fbeb",
+            "kind": "rel32_call",
+            "native_target": "00bf9440",
+            "fixture_target": "10409fb6",
+            "provider": "strstr"
+          },
+          {
+            "site": "00b3fc72",
+            "kind": "rel32_call",
+            "native_target": "00b1fef0",
+            "fixture_target": "10009270",
+            "provider": "device"
+          },
+          {
+            "site": "00b3fcaf",
+            "kind": "rel32_call",
+            "native_target": "00c2dfe6",
+            "fixture_target": "10008ee0",
+            "provider": "create"
+          },
+          {
+            "site": "00b3fd33",
+            "kind": "rel32_call",
+            "native_target": "00b3f5d0",
+            "fixture_target": "10009280",
+            "provider": "diagnostic"
+          },
+          {
+            "site": "00b3fd3c",
+            "kind": "rel32_call",
+            "native_target": "00b3e730",
+            "fixture_target": "1000ece0",
+            "provider": "support"
+          },
+          {
+            "site": "00b3fd5e",
+            "kind": "rel32_call",
+            "native_target": "00419cc0",
+            "fixture_target": "1000a5b0",
+            "provider": "pool"
+          },
+          {
+            "site": "00b3fd65",
+            "kind": "rel32_call",
+            "native_target": "00bd1510",
+            "fixture_target": "1000d500",
+            "provider": "release"
+          },
+          {
+            "operand": "00b3faae",
+            "kind": "absolute_cell",
+            "native_target": "0109ceec",
+            "fixture_target": "006ce664",
+            "provider": "current_vfs"
+          },
+          {
+            "operand": "00b3fb0f",
+            "kind": "absolute_cell",
+            "native_target": "00f8d394",
+            "fixture_target": "006d33ac",
+            "provider": "current_renderer"
+          },
+          {
+            "operand": "00b3fb29",
+            "kind": "absolute_cell",
+            "native_target": "00f8d394",
+            "fixture_target": "006d33ac",
+            "provider": "current_renderer"
+          },
+          {
+            "operand": "00b3fb83",
+            "kind": "absolute_cell",
+            "native_target": "00f8d394",
+            "fixture_target": "006d33ac",
+            "provider": "current_renderer"
+          },
+          {
+            "operand": "00b3fc01",
+            "kind": "absolute_cell",
+            "native_target": "00f8d394",
+            "fixture_target": "006d33ac",
+            "provider": "current_renderer"
+          },
+          {
+            "operand": "00b3fc6e",
+            "kind": "absolute_cell",
+            "native_target": "00f8d394",
+            "fixture_target": "006d33ac",
+            "provider": "current_renderer"
+          },
+          {
+            "operand": "00b3fafd",
+            "kind": "absolute_cell",
+            "native_target": "00ce2220",
+            "fixture_target": "10527000",
+            "provider": "real_interlocked_decrement_iat"
+          },
+          {
+            "operand": "00b3fd0f",
+            "kind": "absolute_cell",
+            "native_target": "00ce2220",
+            "fixture_target": "10527000",
+            "provider": "real_interlocked_decrement_iat"
+          }
+        ],
+        "owner_size": 80,
+        "normalization": {
+          "0c": "distinct actual name allocation",
+          "10": "distinct real D3D texture COM",
+          "20": "distinct monotonic native serial",
+          "4c": "distinct actual retained memory owner"
+        },
+        "equivalent_owner_preimages": true,
+        "equivalent_owner_postimages": true,
+        "unchanged_owner_fields": [
+          "00",
+          "04",
+          "08",
+          "0c",
+          "1c",
+          "20",
+          "3c",
+          "40",
+          "44",
+          "48",
+          "4c"
+        ],
+        "actual_outputs_equal": true,
+        "runtime_exit_code": 0,
+        "runtime_seconds": 2.7911367,
+        "artifacts": [
+          {
+            "file": "original_desc_output.bin",
+            "bytes": 32,
+            "sha256": "ed8c51bf8c47906d292e96f634ba9031c7635e57f58f1a506c38e3f1258c0005"
+          },
+          {
+            "file": "original_image_output.bin",
+            "bytes": 28,
+            "sha256": "614d51dd68fb56c78a5becaabcf61b378ce59b9b3c96fb5f39b2c5bb4d9d4637"
+          },
+          {
+            "file": "original_owner_after.bin",
+            "bytes": 80,
+            "sha256": "5f998d4a44f099f897b670cdf788cd1ad228afd45f6cd378815e41dae0704e9c"
+          },
+          {
+            "file": "original_owner_before.bin",
+            "bytes": 80,
+            "sha256": "cc4060bc84771409b6ed7dc48ff7627accd86bd8ed740da9f91eb790d514a7ec"
+          },
+          {
+            "file": "original_relocated.bin",
+            "bytes": 747,
+            "sha256": "bd197f7290ea5a6fbcc7d2e06d64623ccc6d26d67424031f4097df912bdbc7e7"
+          },
+          {
+            "file": "original_relocation_base.bin",
+            "bytes": 4,
+            "sha256": "e87caccccc775b2726f99dba298385a402d8e54197ecc09d219eee524f035e5a"
+          },
+          {
+            "file": "reload.bin",
+            "bytes": 747,
+            "sha256": "2040b2711596de753d0e87c2119184dc72ea843f173cc9fc7037efab5bee0b09"
+          },
+          {
+            "file": "source_desc_output.bin",
+            "bytes": 32,
+            "sha256": "ed8c51bf8c47906d292e96f634ba9031c7635e57f58f1a506c38e3f1258c0005"
+          },
+          {
+            "file": "source_image_output.bin",
+            "bytes": 28,
+            "sha256": "614d51dd68fb56c78a5becaabcf61b378ce59b9b3c96fb5f39b2c5bb4d9d4637"
+          },
+          {
+            "file": "source_owner_after.bin",
+            "bytes": 80,
+            "sha256": "e058439c21076cbe904686361a7d4ed565d7c774445ac06f7dbcbe45f5e409f5"
+          },
+          {
+            "file": "source_owner_before.bin",
+            "bytes": 80,
+            "sha256": "2270eac484a7a297e288365dd7e204f6f3614c3b42c87846ad380f0ceed1a711"
+          }
+        ]
+      },
+      "successful_observation_rows": [
+        [
+          "Original747",
+          "32",
+          "32",
+          "6",
+          "32",
+          "32",
+          "827611204",
+          "1",
+          "1",
+          "1",
+          "2"
+        ],
+        [
+          "Source",
+          "32",
+          "32",
+          "6",
+          "32",
+          "32",
+          "827611204",
+          "1",
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "normal_startup_shadow": false
+    },
+    {
+      "case": "Root 06",
+      "directory": "local\\cc12_texture_reload_parent_review_06",
+      "prepared_sha256": "b1cf9b478824b37dcd5ea3c0b388414f6df1489b1c56c0140a4206d5f2386638",
+      "build_result_sha256": "07bcffbb438609aa188a1c4d82602074bc317dce242f766272b7fee51b6e2e06",
+      "source_commit": "cdaf687819b79632f2d78713a696cb0b36f2aaa1",
+      "frozen_worker_commit": null,
+      "frozen_worker_base": null,
+      "production_application_objects": 138,
+      "production_libraries": 3,
+      "production_objects_recompiled": 0,
+      "forwarding_main_translation_units": 1,
+      "executable_sha256": "65310c59bee54cf30789b6c71d7e723fb62e17414c5aa5a0eab4623c0951475f",
+      "wrapper_pid": 73668,
+      "exit_code": 0,
+      "seconds": 3.0500895,
+      "actual_attempts": 1,
+      "launcher_checkout_head": "a17cca944dd1cc21710c4ad913907341cb0b018a",
+      "launch_manifest": "local\\cc12_texture_reload_parent_review_06\\runtime_artifacts\\runtime.log.manifest.json",
+      "runtime": {
+        "started_utc": "2026-10-15T19:06:08.0922214Z",
+        "wrapper_pid": 73668,
+        "status": "TERMINAL",
+        "target_attempts": 1,
+        "executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_texture_reload_parent_review_06\\build\\parent_reload_probe.exe",
+        "executable_sha256": "65310c59bee54cf30789b6c71d7e723fb62e17414c5aa5a0eab4623c0951475f",
+        "font_probe": 0,
+        "gui_effect_probe": 0,
+        "post_cache_probe": 0,
+        "initial_settings_sha256": "ff5cf3959932cb634374b8a9bf5e6c0d04c50699cc6ba585e7fa7969f7b563d8",
+        "wrapper": "tools/run_game.ps1",
+        "instance_and_affinity": "Assigned by the shared launcher slot",
+        "exit_code": 0,
+        "seconds": 3.0500895,
+        "finished_utc": "2026-10-15T19:06:11.5738200Z"
+      },
+      "artifacts": {
+        "passed": true,
+        "native_bytes": 747,
+        "native_sha256": "2040b2711596de753d0e87c2119184dc72ea843f173cc9fc7037efab5bee0b09",
+        "relocated_sha256": "a6cef949259f070afd8548426c6dee8151f34ead62bc820d829cc530486c6e79",
+        "operand_count": 24,
+        "allowed_operand_bytes": 96,
+        "other_bytes_unchanged": true,
+        "operands": [
+          {
+            "site": "00b3faf0",
+            "kind": "rel32_call",
+            "native_target": "00bef750",
+            "fixture_target": "10008dd0",
+            "provider": "convert"
+          },
+          {
+            "site": "00b3fb1b",
+            "kind": "rel32_call",
+            "native_target": "00b33e40",
+            "fixture_target": "10009d50",
+            "provider": "name"
+          },
+          {
+            "site": "00b3fb2e",
+            "kind": "rel32_call",
+            "native_target": "00b27d40",
+            "fixture_target": "1000f180",
+            "provider": "unregister"
+          },
+          {
+            "site": "00b3fb33",
+            "kind": "rel32_call",
+            "native_target": "00b3e730",
+            "fixture_target": "1000ece0",
+            "provider": "support"
+          },
+          {
+            "site": "00b3fb49",
+            "kind": "rel32_call",
+            "native_target": "00bef610",
+            "fixture_target": "10009150",
+            "provider": "data"
+          },
+          {
+            "site": "00b3fca8",
+            "kind": "rel32_call",
+            "native_target": "00bef610",
+            "fixture_target": "10009150",
+            "provider": "data"
+          },
+          {
+            "site": "00b3fb4f",
+            "kind": "rel32_call",
+            "native_target": "00c2dfec",
+            "fixture_target": "100099b0",
+            "provider": "image_info"
+          },
+          {
+            "site": "00b3fba5",
+            "kind": "rel32_call",
+            "native_target": "00bf9440",
+            "fixture_target": "1040f646",
+            "provider": "strstr"
+          },
+          {
+            "site": "00b3fbca",
+            "kind": "rel32_call",
+            "native_target": "00bf9440",
+            "fixture_target": "1040f646",
+            "provider": "strstr"
+          },
+          {
+            "site": "00b3fbeb",
+            "kind": "rel32_call",
+            "native_target": "00bf9440",
+            "fixture_target": "1040f646",
+            "provider": "strstr"
+          },
+          {
+            "site": "00b3fc72",
+            "kind": "rel32_call",
+            "native_target": "00b1fef0",
+            "fixture_target": "10009270",
+            "provider": "device"
+          },
+          {
+            "site": "00b3fcaf",
+            "kind": "rel32_call",
+            "native_target": "00c2dfe6",
+            "fixture_target": "10008ee0",
+            "provider": "create"
+          },
+          {
+            "site": "00b3fd33",
+            "kind": "rel32_call",
+            "native_target": "00b3f5d0",
+            "fixture_target": "10009280",
+            "provider": "diagnostic"
+          },
+          {
+            "site": "00b3fd3c",
+            "kind": "rel32_call",
+            "native_target": "00b3e730",
+            "fixture_target": "1000ece0",
+            "provider": "support"
+          },
+          {
+            "site": "00b3fd5e",
+            "kind": "rel32_call",
+            "native_target": "00419cc0",
+            "fixture_target": "1000a5b0",
+            "provider": "pool"
+          },
+          {
+            "site": "00b3fd65",
+            "kind": "rel32_call",
+            "native_target": "00bd1510",
+            "fixture_target": "1000d500",
+            "provider": "release"
+          },
+          {
+            "operand": "00b3faae",
+            "kind": "absolute_cell",
+            "native_target": "0109ceec",
+            "fixture_target": "006e0e5c",
+            "provider": "current_vfs"
+          },
+          {
+            "operand": "00b3fb0f",
+            "kind": "absolute_cell",
+            "native_target": "00f8d394",
+            "fixture_target": "006e7764",
+            "provider": "current_renderer"
+          },
+          {
+            "operand": "00b3fb29",
+            "kind": "absolute_cell",
+            "native_target": "00f8d394",
+            "fixture_target": "006e7764",
+            "provider": "current_renderer"
+          },
+          {
+            "operand": "00b3fb83",
+            "kind": "absolute_cell",
+            "native_target": "00f8d394",
+            "fixture_target": "006e7764",
+            "provider": "current_renderer"
+          },
+          {
+            "operand": "00b3fc01",
+            "kind": "absolute_cell",
+            "native_target": "00f8d394",
+            "fixture_target": "006e7764",
+            "provider": "current_renderer"
+          },
+          {
+            "operand": "00b3fc6e",
+            "kind": "absolute_cell",
+            "native_target": "00f8d394",
+            "fixture_target": "006e7764",
+            "provider": "current_renderer"
+          },
+          {
+            "operand": "00b3fafd",
+            "kind": "absolute_cell",
+            "native_target": "00ce2220",
+            "fixture_target": "10530000",
+            "provider": "real_interlocked_decrement_iat"
+          },
+          {
+            "operand": "00b3fd0f",
+            "kind": "absolute_cell",
+            "native_target": "00ce2220",
+            "fixture_target": "10530000",
+            "provider": "real_interlocked_decrement_iat"
+          }
+        ],
+        "owner_size": 80,
+        "normalization": {
+          "0c": "distinct actual name allocation",
+          "10": "distinct real D3D texture COM",
+          "20": "distinct monotonic native serial",
+          "4c": "distinct actual retained memory owner"
+        },
+        "equivalent_owner_preimages": true,
+        "equivalent_owner_postimages": true,
+        "unchanged_owner_fields": [
+          "00",
+          "04",
+          "08",
+          "0c",
+          "1c",
+          "20",
+          "3c",
+          "40",
+          "44",
+          "48",
+          "4c"
+        ],
+        "actual_outputs_equal": true,
+        "runtime_exit_code": 0,
+        "runtime_seconds": 3.0500895,
+        "artifacts": [
+          {
+            "file": "original_desc_output.bin",
+            "bytes": 32,
+            "sha256": "ed8c51bf8c47906d292e96f634ba9031c7635e57f58f1a506c38e3f1258c0005"
+          },
+          {
+            "file": "original_image_output.bin",
+            "bytes": 28,
+            "sha256": "614d51dd68fb56c78a5becaabcf61b378ce59b9b3c96fb5f39b2c5bb4d9d4637"
+          },
+          {
+            "file": "original_owner_after.bin",
+            "bytes": 80,
+            "sha256": "2ca2eb1b85e1f5e1386318673e4108c3f6438f48386b5e089d25681974390ea7"
+          },
+          {
+            "file": "original_owner_before.bin",
+            "bytes": 80,
+            "sha256": "7bbb10ebb1fa9f1bd3c94579dfe184c47b37c6ef6dd7d3be517c7a480bf76b43"
+          },
+          {
+            "file": "original_relocated.bin",
+            "bytes": 747,
+            "sha256": "a6cef949259f070afd8548426c6dee8151f34ead62bc820d829cc530486c6e79"
+          },
+          {
+            "file": "original_relocation_base.bin",
+            "bytes": 4,
+            "sha256": "8bd769b3ecfc2ddc675c67444cc543ab448e9999c48f5c650d2b5037e464e730"
+          },
+          {
+            "file": "reload.bin",
+            "bytes": 747,
+            "sha256": "2040b2711596de753d0e87c2119184dc72ea843f173cc9fc7037efab5bee0b09"
+          },
+          {
+            "file": "source_desc_output.bin",
+            "bytes": 32,
+            "sha256": "ed8c51bf8c47906d292e96f634ba9031c7635e57f58f1a506c38e3f1258c0005"
+          },
+          {
+            "file": "source_image_output.bin",
+            "bytes": 28,
+            "sha256": "614d51dd68fb56c78a5becaabcf61b378ce59b9b3c96fb5f39b2c5bb4d9d4637"
+          },
+          {
+            "file": "source_owner_after.bin",
+            "bytes": 80,
+            "sha256": "423fea9ea70150d22cc1d4189227da81b58c4ebffd3ebe7e11243f7b5f421ba3"
+          },
+          {
+            "file": "source_owner_before.bin",
+            "bytes": 80,
+            "sha256": "423fea9ea70150d22cc1d4189227da81b58c4ebffd3ebe7e11243f7b5f421ba3"
+          }
+        ]
+      },
+      "successful_observation_rows": [
+        [
+          "Original747",
+          "32",
+          "32",
+          "6",
+          "32",
+          "32",
+          "827611204",
+          "1",
+          "1",
+          "1",
+          "2"
+        ],
+        [
+          "Source",
+          "32",
+          "32",
+          "6",
+          "32",
+          "32",
+          "827611204",
+          "1",
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "normal_startup_shadow": true
+    }
+  ],
+  "original_abi": "B3FA90: ECX actual80-byte D61948 owner, no stack arguments, RET. Relocated normal control body only; Source contexts/output frames and bridges have new interfaces.",
+  "verified_behavior": [
+    "Complete747 Original body differs only at24 named operands,96 operand bytes; current disk/live/frozen bytes equal.",
+    "Both sides cold-load black.tga through genuine application cache/VFS; same normal error.tga fallback remains.",
+    "Real image-info/create/COM descriptor providers each succeed once,32x32 DXT1,6 source mips,actual outputs agree.",
+    "Explicit disjoint A5/5A output preimages;80-byte owner pre/post agreement after four declared identity/serial normalizations.",
+    "Per-call canonical companion,retained source identity/count and untouched native owner fields preserved.",
+    "Actual cache removal,empty renderer-array unregister,terminal texture/canonical retirement,Source acquired completion and replay rejection pass.",
+    "Eight numeric vtable boundary words plus COM descriptor/provider hooks restored before comparison completes.",
+    "Shared singleton/renderer drain,worker join and final real COM device/API0/0; current case includes canonical startup shadow."
+  ],
+  "validation": {
+    "probe_compile": "MSVC Win32 /O2 /MD /EHsc /W4 /WX /fp:strict",
+    "probe_link": "Win32 manifested /BASE:0x10000000 /DYNAMICBASE:NO /FIXED:NO",
+    "current_production_build_receipt": "local/cc12_sampler_provider_combined_31/build_snapshot/manifest.json",
+    "current_production_existing_suites": 3,
+    "current_production_suite_seconds": 6.97,
+    "existing_suites_rerun_here": false,
+    "reason": "No production C++ changes; exact previously checked libraries/objects reused. New native comparisons are independent execution coverage.",
+    "source_side_stream_trace_comparison": false,
+    "reason_for_trace_scope": "Only Original child bridges increment these counters; Source counters are not instrumented."
+  },
+  "native_text_readiness": {
+    "default_shader": "AB8CE0 reads signed actual platform+28 before default font-effect selection.",
+    "current_host": "Normal GameStartupHost uses the44-byte HWND/focus receiver; only+30/+41 are established fields.",
+    "full_platform": "Existing NativePlatformConstructionContext and complete184-byte construction/deletion Source are not activated by the host.",
+    "persistent_services": "GameNativeTextApplication privately owns its buffer services but does not bind them to GameNativeGuiEffectApplication Text consumer.",
+    "required": "Compose actual platform/font/widget owners,effect consumer,canonical cache order,buffers/pass/draw and retirement before activation."
+  },
+  "not_established": [
+    "Nonempty renderer1B00 array removal,failed HRESULTs,invalid inputs,provider exceptions or fullB24FB0 activation.",
+    "Original child-body execution,Original FH3/SEH/register ABI or native drop-in binary equivalence.",
+    "Cube/volume/effect reload,Native Text construction/drawing,world drawing,POST drawing or visual parity.",
+    "Full startup fidelity or gameplay. Current bounded run still reports43 unimplemented host methods.",
+    "Runtime proof for Source changes after cdaf687819b79632f2d78713a696cb0b36f2aaa1."
+  ],
+  "evidence": {
+    "seal_pending": false,
+    "local_root": "local\\cc12_texture_reload_runtime_32",
+    "manifest": "local\\cc12_texture_reload_runtime_32\\evidence_manifest.json",
+    "archive": "local\\cc12_texture_reload_runtime_32\\evidence_family.zip",
+    "payload_count": 5527,
+    "payload_bytes": 447214608,
+    "archive_bytes": 96976183,
+    "archive_sha256": "90699c05d0e982e0577c2da3ce3cd91db020d2a7ede06d02ed4c0894ef9c71ba",
+    "manifest_sha256": "fa75a962c4394d85139fb54075235918c7a9d619ea78934d4803291f9e994f30",
+    "all_archive_payloads_verified": true
+  }
+}

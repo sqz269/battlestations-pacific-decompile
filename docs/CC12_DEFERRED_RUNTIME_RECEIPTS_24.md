@@ -2,9 +2,11 @@
 
 The genuine direct Source factory/owner fixture now completes normal construction,
 zero-terminal resource retirement, table retirement and singleton parent drain.
-The deferred texture comparison still stops before its body because D3D9 device
-creation fails under the currently observed remote/session state. Neither result
-establishes startup or gameplay completion.
+At this receipt's capture, the deferred texture comparison stopped before its
+body after D3D9 device creation failed in the observed remote/session state.
+The later [runtime receipt 32](CC12_TEXTURE_RELOAD_RUNTIME_32.md) closes that
+additional Root comparison with successful frozen-family and combined-Source
+runs. These bounded results do not establish startup or gameplay completion.
 
 The machine-readable receipt is
 [`cc12_deferred_runtime_receipts_24.json`](../reports/cc12_deferred_runtime_receipts_24.json).
