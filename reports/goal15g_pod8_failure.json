@@ -1,0 +1,650 @@
+{
+  "packet": "goal15g_pod8_failure",
+  "worker": "agent/goal15f_pod8",
+  "source_base": "17c49517efbde26d3e93dde3cb7c09d832afeac1",
+  "status": "complete_source_raw_payload_lifetime_msvc_x86_derived_coff_and_combined_probe_verified_pending_primary_build",
+  "source": "src/native_pod8_failure.cpp",
+  "header": "include/bsp/native_pod8_failure.hpp",
+  "documentation": "docs/GOAL15G_POD8_FAILURE.md",
+  "functions": [
+    {
+      "address": "00413390",
+      "end_inclusive": "004133e4",
+      "bytes": 85,
+      "name": "allocate_native_pod8_records_00413390",
+      "retained_native_name": "STL_allocate_8B_00413390",
+      "original_abi": "ECX uint32 count, no consumed EDX/stack input; plain RET; EAX actual storage",
+      "source_abi": "MSVC Win32 fastcall count plus unused EDX Source placeholder; Original has no EDX argument",
+      "semantics": "Exact guarded unsigned FFFFFFFF/count<8 predicate; zero still calls actual allocation(0). Direct overflow constructs/throws owning raw12 null-message/owns1/D6923C payload, actual derived copy/destruction, Unknown exception what. Admitted current allocation/new-handler provider and matching free domain; provider std::bad_alloc failure remains explicit current-CRT boundary.",
+      "source": "src/native_pod8_failure.cpp",
+      "header": "include/bsp/native_pod8_failure.hpp",
+      "coverage": "complete_function",
+      "status": "complete_source_raw_payload_lifetime_msvc_x86_derived_coff_and_combined_probe_verified_pending_primary_build"
+    },
+    {
+      "address": "004203a0",
+      "end_inclusive": "00420408",
+      "bytes": 105,
+      "name": "throw_native_pod8_vector_length_error_004203a0",
+      "retained_native_name": "STL_xlen_throw_004203a0",
+      "original_abi": "No consumed input, no normal return",
+      "source_abi": "noreturn cdecl no arguments; actual complete matched BD0590 Source service",
+      "semantics": "No-init1Ch SBO capacity15/length0/NUL; assign18 vector message; arm cleanup only after assignment; actual41170028h owner/D69260; owning NativeSingletonVectorLengthError throw/copy/destruction. Full matching one-state temporary cleanup; no generic length_error or duplicate guard.",
+      "source": "src/native_pod8_failure.cpp",
+      "header": "include/bsp/native_pod8_failure.hpp",
+      "coverage": "complete_function",
+      "status": "complete_source_raw_payload_lifetime_msvc_x86_derived_coff_and_combined_probe_verified_pending_primary_build"
+    },
+    {
+      "address": "004010e0",
+      "end_inclusive": "004010ea",
+      "bytes": 11,
+      "name": "destroy_native_pod8_allocation_exception_004010e0",
+      "retained_native_name": "Unwind@004010e0",
+      "original_abi": "ECX actual raw12 owner, no stack input, tail into BF6454/plain RET; no semantic result",
+      "source_abi": "Exact naked Win32 fastcall receiver plus unused EDX Source placeholder, not an Original argument",
+      "semantics": "Complete derived D6923C publication then tail-JMP genuine BF6454; full base ownership test before D69370 publication and late free including null; no reset or added nullguard.",
+      "source": "src/native_pod8_failure.cpp",
+      "header": "include/bsp/native_pod8_failure.hpp",
+      "coverage": "complete_function",
+      "status": "complete_source_raw_payload_lifetime_msvc_x86_derived_coff_and_combined_probe_verified_pending_primary_build"
+    },
+    {
+      "address": "0040d810",
+      "end_inclusive": "0040d828",
+      "bytes": 25,
+      "name": "copy_native_pod8_allocation_exception_0040d810",
+      "retained_native_name": "Unwind@0040d810",
+      "original_abi": "ECX actual raw12 destination, one stack source address, RET4/EAX captured destination",
+      "source_abi": "Exact naked Win32 fastcall destination plus unused EDX Source placeholder plus stack source; placeholder not Original input",
+      "semantics": "Complete capture destination; actual BF63A6 copy; publish D6923C after child; return captured destination and preserve ESI. Full actual base copy ownership/nullable allocation/alias policy retained.",
+      "source": "src/native_pod8_failure.cpp",
+      "header": "include/bsp/native_pod8_failure.hpp",
+      "coverage": "complete_function",
+      "status": "complete_source_raw_payload_lifetime_msvc_x86_derived_coff_and_combined_probe_verified_pending_primary_build"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "004133a1",
+      "native": "00bf681b",
+      "function": "00413390",
+      "contract": "cdecl actual count*8; includes count0; Source genuine singleton_lifetime_allocate current malloc/_callnewh/retry service"
+    },
+    {
+      "address": "004133c9",
+      "native": "00bf6340",
+      "function": "00413390",
+      "contract": "ECX actual raw12 backing; actual null pointer-slot address pushed; Source real raw owned-message constructor with Source EDX placeholder0"
+    },
+    {
+      "address": "004133e0",
+      "native": "00bf6885",
+      "function": "00413390",
+      "contract": "Native owner + E03CC0; Source distinct owning NativePod8AllocationOverflow class preserving raw12 data/lifetime/what; no Native throw identity claim"
+    },
+    {
+      "address": "004203d8",
+      "native": "00408720",
+      "function": "004203a0",
+      "contract": "Actual SBO temporary; counted18 vector literal; cleanup not armed until success"
+    },
+    {
+      "address": "004203ed",
+      "native": "00411700",
+      "function": "004203a0",
+      "contract": "Actual28h owner from completed temporary; Source actual complete matched BD0590/NativeSingletonVectorLengthError service"
+    },
+    {
+      "address": "00420404",
+      "native": "00bf6885",
+      "function": "004203a0",
+      "contract": "Native owner + D83F98; Source genuine owning vector-family catch transport, distinct current Source EH identity"
+    },
+    {
+      "address": "004010e6",
+      "native": "00bf6454",
+      "function": "004010e0",
+      "kind": "tail_jump",
+      "contract": "Actual raw12 owner unchanged; complete D6923C publication before real base tail"
+    },
+    {
+      "address": "0040d818",
+      "native": "00bf63a6",
+      "function": "0040d810",
+      "contract": "Captured actual raw12 destinationECX; actual stack source; base RET4; derived publication/return after child"
+    },
+    {
+      "address": "0042104b",
+      "native": "00413390",
+      "function": "00420f80",
+      "contract": "ECX chosen capacityEDI; XOR EDX,EDX at421047; genuine allocation pointer EAX"
+    },
+    {
+      "address": "00420fea",
+      "native": "004203a0",
+      "function": "00420f80",
+      "contract": "No consumed throw input; uint32(1FFFFFFF-used)<requested; preserve corrupt count subtraction wrap"
+    },
+    {
+      "address": "00418706",
+      "native": "00413390",
+      "function": "00418700",
+      "kind": "no_ghidra_function",
+      "contract": "Full raw14B wrapper: ECX stack count,EDX0,CALL;RET4; no live function/instruction"
+    },
+    {
+      "address": "00420aef",
+      "native": "00413390",
+      "function": "00420ac0",
+      "kind": "no_ghidra_function",
+      "contract": "Raw constructor: ECX unsigned countEDI,EDX0; CALL; publish actual EAX begin/end/capacity; no live function/instruction"
+    },
+    {
+      "address": "00420ae6",
+      "native": "004203a0",
+      "function": "00420ac0",
+      "kind": "no_ghidra_function",
+      "contract": "Raw constructor count>1FFFFFFF; no consumed throw input; no live function/instruction"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00418700",
+      "end_inclusive": "0041870d",
+      "bytes": 14
+    },
+    {
+      "address": "00420ac0",
+      "end_inclusive": "00420b06",
+      "bytes": 71
+    }
+  ],
+  "scope_expansion": {
+    "authorized_by": "Primary explicitly approved004010E0/0040D810 after public provider search; full four-address lease claimed before Source edits",
+    "extra_output_files": 0,
+    "public_provider_search": "No address/name occurrences or public Source providers for either derived schedule; no prior Source reconstruction records; base raw providers are reused"
+  },
+  "evidence": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "target_verification": "Every live bsp.py ghidra batch verifies project/program/language/base; existing analysis retained, no import/mutation",
+    "original_ghidra_comments_and_names": [
+      {
+        "address": "00413390",
+        "annotation": {
+          "address": "00413390",
+          "function_name": "STL_allocate_8B_00413390",
+          "comment": "[BSP reconstruction 00413390]\nProvisional; descriptive, not a recovered symbol. cc13-dyn1 segment-0 library pass, docs/CC13_DYN_LIBRARY.md. std::_Allocate for 8-byte elements."
+        }
+      },
+      {
+        "address": "004203a0",
+        "annotation": {
+          "address": "004203a0",
+          "function_name": "STL_xlen_throw_004203a0"
+        }
+      },
+      {
+        "address": "004010e0",
+        "annotation": {
+          "address": "004010e0",
+          "function_name": "Unwind@004010e0"
+        }
+      },
+      {
+        "address": "0040d810",
+        "annotation": {
+          "address": "0040d810",
+          "function_name": "Unwind@0040d810"
+        }
+      }
+    ],
+    "original_ghidra_prototypes": [
+      "00413390 STL_allocate_8B_00413390  undefined STL_allocate_8B_00413390(void)  body 00413390 - 004133e4",
+      "004203a0 STL_xlen_throw_004203a0  undefined STL_xlen_throw_004203a0(void)  body 004203a0 - 00420408",
+      "004010e0 Unwind@004010e0  undefined Unwind@004010e0(void)  body 004010e0 - 004010ea",
+      "0040d810 Unwind@0040d810  undefined Unwind@0040d810(void)  body 0040d810 - 0040d828"
+    ],
+    "prototype_policy": "Source unused EDX placeholders must not be installed as Original arguments. Original C++ template/return types and EH identity remain unrecovered.",
+    "native": {
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "original_function_bytes": {
+        "00413390": "83ec1085c9771633c98d14cd0000000052e875347e0083c40483c410c383c8ff33d2f7f183f80873e08d0424508d4c2408c744240400000000e8722f7e0068c03ce0008d4c240851c744240c3c92d600e8a0347e00",
+        "0042bf40": "83ec1085c9771633c98d14cd0000000052e8c5a87c0083c40483c410c383c8ff33d2f7f183f80873e08d0424508d4c2408c744240400000000e8c2a37c0068c03ce0008d4c240851c744240c3c92d600e8f0a87c00",
+        "004203a0": "6aff6878e4c50064a100000000506489250000000083ec446a1268e037ce008d4c2408c74424200f000000c744241c00000000c644240c00e84383feff8d0424508d4c2420c744245000000000e80e13ffff68983fd8008d4c242051c74424246092d600e87c647d00",
+        "00bd0590": "6aff687854cc0064a100000000506489250000000083ec446a1268e037ce008d4c2408c74424200f000000c744241c00000000c644240c00e8538183ff8d0424508d4c2420c744245000000000e81e1184ff68983fd8008d4c242051c74424246092d600e88c620200"
+      },
+      "normalized_allocator": {
+        "original": "00413390",
+        "existing_original": "0042bf40",
+        "bytes": 85,
+        "compared_nonoperand_bytes": 73,
+        "call_operands": [
+          {
+            "operand_offset": 18,
+            "target": "00bf681b"
+          },
+          {
+            "operand_offset": 58,
+            "target": "00bf6340"
+          },
+          {
+            "operand_offset": 81,
+            "target": "00bf6885"
+          }
+        ],
+        "other_normalized_operands": [],
+        "differences": []
+      },
+      "normalized_length_throw": {
+        "original": "004203a0",
+        "existing_original": "00bd0590",
+        "bytes": 105,
+        "compared_nonoperand_bytes": 89,
+        "call_operands": [
+          {
+            "operand_offset": 57,
+            "target": "00408720"
+          },
+          {
+            "operand_offset": 78,
+            "target": "00411700"
+          },
+          {
+            "operand_offset": 101,
+            "target": "00bf6885"
+          }
+        ],
+        "other_normalized_operands": [
+          3
+        ],
+        "differences": []
+      },
+      "length_fh3": {
+        "funcinfo": "00d84728",
+        "raw_words": [
+          "19930522",
+          "00000001",
+          "00d84720",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "state_count": 1,
+        "unwind_map": "00d84720",
+        "unwind_to": "ffffffff",
+        "action": "00c5e470",
+        "action_bytes": "8d4db0e9588e7aff",
+        "action_semantics": "LEA ECX,[EBP-50h]; JMP004072D0; complete8B"
+      },
+      "accepted_length_fh3": {
+        "funcinfo": "00dff4bc",
+        "raw_words": [
+          "19930522",
+          "00000001",
+          "00dff4b4",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "state_count": 1,
+        "unwind_map": "00dff4b4",
+        "unwind_to": "ffffffff",
+        "action": "00cc5470",
+        "action_bytes": "8d4db0e9581e74ff",
+        "action_semantics": "LEA ECX,[EBP-50h]; JMP004072D0; complete8B"
+      },
+      "bad_alloc_throw_info": {
+        "address": "00e03cc0",
+        "attributes": 0,
+        "destructor": "004010e0",
+        "forward_compat": 0,
+        "catchable_array": "00e03cb4",
+        "catchable_types": [
+          {
+            "address": "00e03c98",
+            "properties": 0,
+            "type_descriptor": "00e17510",
+            "type_name": ".?AVbad_alloc@std@@",
+            "pmd_mdisp": 0,
+            "pmd_pdisp": "ffffffff",
+            "pmd_vdisp": 0,
+            "size": 12,
+            "copy": "0040d810"
+          },
+          {
+            "address": "00e03c7c",
+            "properties": 0,
+            "type_descriptor": "00e174f0",
+            "type_name": ".?AVexception@std@@",
+            "pmd_mdisp": 0,
+            "pmd_pdisp": "ffffffff",
+            "pmd_vdisp": 0,
+            "size": 12,
+            "copy": "00bf63a6"
+          }
+        ]
+      },
+      "length_error_throw_info": {
+        "address": "00d83f98",
+        "attributes": 0,
+        "destructor": "00411780",
+        "forward_compat": 0,
+        "catchable_array": "00d83fd4",
+        "catchable_types": [
+          {
+            "address": "00d83fe4",
+            "properties": 0,
+            "type_descriptor": "00e08000",
+            "type_name": ".?AVlength_error@std@@",
+            "pmd_mdisp": 0,
+            "pmd_pdisp": "ffffffff",
+            "pmd_vdisp": 0,
+            "size": 40,
+            "copy": "00411940"
+          },
+          {
+            "address": "00d84000",
+            "properties": 0,
+            "type_descriptor": "00e08020",
+            "type_name": ".?AVlogic_error@std@@",
+            "pmd_mdisp": 0,
+            "pmd_pdisp": "ffffffff",
+            "pmd_vdisp": 0,
+            "size": 40,
+            "copy": "004118d0"
+          },
+          {
+            "address": "00e03c7c",
+            "properties": 0,
+            "type_descriptor": "00e174f0",
+            "type_name": ".?AVexception@std@@",
+            "pmd_mdisp": 0,
+            "pmd_pdisp": "ffffffff",
+            "pmd_vdisp": 0,
+            "size": 12,
+            "copy": "00bf63a6"
+          }
+        ]
+      },
+      "payloads": {
+        "bad_alloc": {
+          "bytes": 12,
+          "native_vtable": "00d6923c",
+          "message_04": 0,
+          "owns_message_08": 1,
+          "constructor": "00bf6340 with actual null pointer-slot address",
+          "throw_destructor": "004010e0: publishD6923C;tailBF6454",
+          "copy": "0040d810:callBF63A6;publishD6923C;EAXreceiver;RET4",
+          "what": "00bf646a:returns+4 or literal Unknown exception"
+        },
+        "length_error": {
+          "bytes": 40,
+          "native_vtable": "00d69260",
+          "base_message_04": 0,
+          "owns_base_08": 0,
+          "member_sbo_offset": 12,
+          "member_bytes": 28,
+          "message": "vector<T> too long",
+          "count": 18,
+          "message_what": "00411550:returnheap+10h when capacity+24h>15 elseinline+10h",
+          "temporary": "uninitialized1Ch;capacity15,length0,firstNUL;assign18;armstate0onlyafterassignment",
+          "copy": "00411940",
+          "destroy": "00411780"
+        }
+      },
+      "caller_420f80": [
+        {
+          "site": "00420fea",
+          "callee": "004203a0",
+          "contract": "No consumed input. Called iff unsigned(1FFFFFFF-used_count)<requested; used_count=0 for nullbegin else SAR3(end-begin). Preserve uint32 underflow on corrupt counts."
+        },
+        {
+          "site": "0042104b",
+          "callee": "00413390",
+          "contract": "XOR EDX,EDX;MOV ECX,EDI chosen capacity;CALL. EAX actual allocation; zero-count function itself still calls BF681B(0)."
+        }
+      ]
+    },
+    "caller_census": "3 allocatorCALL,2 lengthCALL; extra uncreated heads418700 and420AC0 confirmed from full raw setups. Derived helpers reached by ThrowInfo/CatchableType data; nearest-index ownership not accepted. Literal candidateD77595 unclassified, not promoted to a proven semantic consumer."
+  },
+  "source_transport": {
+    "name": "NativePod8AllocationOverflow",
+    "size": 12,
+    "fields": [
+      "native_vtable_00 uint32",
+      "base_message_04 char*",
+      "owns_base_message_08 uint32"
+    ],
+    "constructor": "Actual BF6340 raw body with actual null slot; uninitialized12B member; D6923C publication afterward",
+    "copy": "Actual complete derived0040D810 adapter -> actualBF63A6",
+    "destruction": "Actual complete derived004010E0 adapter -> actualBF6454",
+    "what": "Actual message pointer or exact Unknown exception fallback",
+    "caught_source_identity": "New Source class; no inheritance or Native std::bad_alloc/exception catch compatibility claim",
+    "length_provider": "Matched complete native_singleton_length_error_00bd0590 / NativeSingletonVectorLengthError preserving actual28h legacy owner/1Ch temporary",
+    "admitted_allocation_provider": "Actual singleton_lifetime_allocate object-byte request count*8; current malloc/_callnewh/retry/std::bad_alloc; singleton_lifetime_free pair",
+    "boundaries": [
+      "Direct overflow retains recoverable raw12 payload; provider heap failure remains current-CRT std::bad_alloc policy",
+      "No fabricated native staticbadalloc globals/producer or Original heap/handler state",
+      "Source vtable DWORDs are data, Source classRTTI/EH are current; Native FH3/BF6885/RTTI/catch identity not installed"
+    ]
+  },
+  "coff_evidence": {
+    "status": "pass",
+    "checked_object": "J:\\PROG\\battlestations-pacific-decompile-goal15f_pod8\\local\\goal15g_pod8\\native_pod8_failure.obj",
+    "object_sha256": "3180d9abb055accee424b70c2f3d80560d0f115a776330faebb629b923c246d4",
+    "raw_derived_functions": [
+      {
+        "address": "004010e0",
+        "source_name": "destroy_native_pod8_allocation_exception_004010e0",
+        "coff_section": 13,
+        "bytes": 11,
+        "matched_nonrelocation_bytes": 7,
+        "native_bytes": "c7013c92d600e969537f00",
+        "compiled_bytes": "c7013c92d600e900000000",
+        "relocation_operand": 7,
+        "relocation_type": "IMAGE_REL_I386_REL32",
+        "target_symbol": "?cleanup_native_allocator_base_00bf6454@bsp@@YIXPAXI@Z",
+        "native_target": "00bf6454",
+        "target_binding": "External actual existing public base provider; resolved by real bsp_core.lib probe",
+        "differences": []
+      },
+      {
+        "address": "0040d810",
+        "source_name": "copy_native_pod8_allocation_exception_0040d810",
+        "coff_section": 12,
+        "bytes": 25,
+        "matched_nonrelocation_bytes": 21,
+        "native_bytes": "8b44240456508bf1e8898b7e00c7063c92d6008bc65ec20400",
+        "compiled_bytes": "8b44240456508bf1e800000000c7063c92d6008bc65ec20400",
+        "relocation_operand": 9,
+        "relocation_type": "IMAGE_REL_I386_REL32",
+        "target_symbol": "?construct_native_allocator_base_copy_00bf63a6@bsp@@YIPAXPAXIPBX@Z",
+        "native_target": "00bf63a6",
+        "target_binding": "External actual existing public base provider; resolved by real bsp_core.lib probe",
+        "differences": []
+      }
+    ],
+    "derived_native_bytes": 36,
+    "derived_matching_nonrelocation_bytes": 28,
+    "source_throw_metadata": {
+      "throw_info": "__TI1?AVNativePod8AllocationOverflow@bsp@@",
+      "destructor": "??1NativePod8AllocationOverflow@bsp@@QAE@XZ",
+      "catchable_count": 1,
+      "payload_size": 12,
+      "copy": "??0NativePod8AllocationOverflow@bsp@@QAE@ABV01@@Z",
+      "native_identity_claim": false
+    },
+    "source_function_graph": [
+      {
+        "symbol": "?destroy_native_pod8_allocation_exception_004010e0@bsp@@YIXPAXI@Z",
+        "section": 13,
+        "bytes": 11,
+        "relocations": [
+          {
+            "offset": 7,
+            "type": 20,
+            "target": "?cleanup_native_allocator_base_00bf6454@bsp@@YIXPAXI@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?copy_native_pod8_allocation_exception_0040d810@bsp@@YIPAXPAXIPBX@Z",
+        "section": 12,
+        "bytes": 25,
+        "relocations": [
+          {
+            "offset": 9,
+            "type": 20,
+            "target": "?construct_native_allocator_base_copy_00bf63a6@bsp@@YIPAXPAXIPBX@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "??0NativePod8AllocationOverflow@bsp@@QAE@XZ",
+        "section": 6,
+        "bytes": 35,
+        "relocations": [
+          {
+            "offset": 20,
+            "type": 20,
+            "target": "?construct_native_allocator_owned_message_00bf6340@bsp@@YIPAXPAXIPBX@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "??0NativePod8AllocationOverflow@bsp@@QAE@ABV01@@Z",
+        "section": 4,
+        "bytes": 20,
+        "relocations": [
+          {
+            "offset": 10,
+            "type": 20,
+            "target": "?copy_native_pod8_allocation_exception_0040d810@bsp@@YIPAXPAXIPBX@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "??1NativePod8AllocationOverflow@bsp@@QAE@XZ",
+        "section": 8,
+        "bytes": 7,
+        "relocations": [
+          {
+            "offset": 3,
+            "type": 20,
+            "target": "?destroy_native_pod8_allocation_exception_004010e0@bsp@@YIXPAXI@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?what@NativePod8AllocationOverflow@bsp@@QBEPBDXZ",
+        "section": 16,
+        "bytes": 14,
+        "relocations": [
+          {
+            "offset": 4,
+            "type": 6,
+            "target": "??_C@_0BC@EOODALEL@Unknown?5exception@"
+          }
+        ]
+      },
+      {
+        "symbol": "?allocate_native_pod8_records_00413390@bsp@@YIPAXIPAX@Z",
+        "section": 10,
+        "bytes": 103,
+        "relocations": [
+          {
+            "offset": 4,
+            "type": 6,
+            "target": "___security_cookie"
+          },
+          {
+            "offset": 57,
+            "type": 20,
+            "target": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "offset": 71,
+            "type": 20,
+            "target": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 83,
+            "type": 20,
+            "target": "??0NativePod8AllocationOverflow@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 88,
+            "type": 6,
+            "target": "__TI1?AVNativePod8AllocationOverflow@bsp@@"
+          },
+          {
+            "offset": 98,
+            "type": 20,
+            "target": "__CxxThrowException@8"
+          }
+        ]
+      },
+      {
+        "symbol": "?throw_native_pod8_vector_length_error_004203a0@bsp@@YAXXZ",
+        "section": 14,
+        "bytes": 5,
+        "relocations": [
+          {
+            "offset": 1,
+            "type": 20,
+            "target": "?native_singleton_length_error_00bd0590@bsp@@YAXXZ"
+          }
+        ]
+      }
+    ],
+    "object_relocation_count": 25
+  },
+  "verification": {
+    "compiler": "Microsoft MSVC x86 14.51.36244.0",
+    "flags": "/std:c++17 /MD /O2 /W4 /WX /EHsc /fp:strict /permissive-",
+    "focused_compile": "PASS without warnings; local/goal15g_pod8/compile.cmd",
+    "emitted_allocator": "Actual TEST/zero-branch, unsigned DIV/CMP8/JB, sizeLEA and current allocation call; direct overflow calls actual owning constructor and current Source EH",
+    "emitted_owner": "Actual null slot initialized locally; genuine BF6340 call then D6923C store. Class copy/dtor call actual derived adapters; Source ThrowInfo0Ch copy/dtor links verified.",
+    "derived_bytes": "PASS:36 full bytes,28 fixed bytes match live captures and PE;2actual base provider REL32 bindings",
+    "length_full_body": "PASS:105 native bytes versus acceptedBD0590;89fixed bytes,3same CALL targets, equivalent one-state temporarySBO FH3 cleanup",
+    "combined_source_probe": "PASS:one ignored pod8_failure_probe.cpp;new object + actual current integrator bsp_core.lib; /MANIFEST:EMBED",
+    "combined_source_probe_cases": [
+      "real0/small allocation/free",
+      "direct overflow raw12/null/owns1/D6923C",
+      "actual derived owning copy/Unknown exception/cleanup profile/control",
+      "full28h length owning catch/deep copy/member+base teardown"
+    ],
+    "report_calls": "PASS:13 exact rows,0 failed;10 live instruction/body checks and3 explicitly uncreated raw caller rows with independently inspected argument setups",
+    "diff_check": "PASS:git diff --check; staged final check before commit",
+    "registered_build_archive_and_existing_checks": "Primary integrator after registration; worker does not claim registered new object/archive membership",
+    "captured_native_execution": false,
+    "native_exception_abi_installation": false,
+    "original_crt_runtime_identity": false,
+    "game_validation": false,
+    "new_test_targets": 0,
+    "ghidra_mutations": 0
+  },
+  "source_hashes": {
+    "src/native_pod8_failure.cpp": "588351829b73175c5967106c0491be87feecf775f5bfa968b2db480cebba42e0",
+    "include/bsp/native_pod8_failure.hpp": "130e9c825361686175f9060286986320653906eb663228cbc1ff0d82382cc356"
+  },
+  "integration": {
+    "target": "bsp_core",
+    "add_source": "src/native_pod8_failure.cpp",
+    "primary_owned": "CMake registration, final registered Win32 build/existing suites/archive/probe; Ghidra lock/annotations/save/exports; main integration",
+    "probe": "cwd worker worktree: cmd /d /c local\\goal15g_pod8\\probe_registered.cmd <actual-bsp_core.lib> [optional-new-standalone.obj]; omit optional obj for final registered archive proof",
+    "comparer": "python local/goal15g_pod8/verify_coff.py --object <final-registered.obj> --output <receipt.json>"
+  }
+}
