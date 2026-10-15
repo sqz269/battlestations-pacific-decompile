@@ -4,7 +4,7 @@
     "008f2db0",
     "00469b60"
   ],
-  "status": "Complete Source/header/Original assembly and independent current-object byte/relocation review PASS; worker normal/Main gates pending",
+  "status": "Complete ordinary Source, independent current full-object review, worker strict/normal PASS; Main registration queued",
   "primary_complete_Source_header_Original_and_all_emitted_instructions_read": true,
   "Source": [
     {
@@ -70,12 +70,26 @@
   "gates": {
     "primary_Original_Source_pass": true,
     "independent_current_COFF_pass": true,
-    "worker_normal_build_pass": false,
+    "worker_normal_build_pass": true,
     "registered_Main_build_pass": false,
     "actual_Main_compiler_review_pass": false
   },
   "new_Source_runtime_executed": false,
   "Original_ABI_compatible": false,
   "game_validated": false,
-  "limits": "Ordinary Source and selected current compiler evidence only. Genuine stable raw owners/maps/keys and currentASCIIClocale/successfulproviders; no Originalclass/FS/EH/privateCRT/game transport."
+  "limits": "Ordinary Source and selected current compiler evidence only. Genuine stable raw owners/maps/keys and currentASCIIClocale/successfulproviders; no Originalclass/FS/EH/privateCRT/game transport.",
+  "Source_commit": "08985ef7816f221a1ddf69119ef8ae6ba8616009",
+  "worker_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\reports\\native_property_library_readers_cc12.json",
+    "bytes": 11924,
+    "sha256": "12fb1a725f543b07d1da65c1f671032e206e38634bcac23b76018b467eb9440f"
+  },
+  "worker_original_build": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyLibraryReadersSource01\\repository_build_result.DATA.json",
+    "bytes": 2228,
+    "sha256": "28f2ceed3032d83aa25c03fb78701a93c8563c90220f16c8b564a0bd66958b14"
+  },
+  "worker_existing_checks_passed": 2,
+  "worker_existing_checks_seconds": 7.28,
+  "Main_registration": "Queued shared CMake ownership; new TU not yet registered"
 }
