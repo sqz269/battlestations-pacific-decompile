@@ -15,9 +15,9 @@ Names below are provisional descriptions, not recovered symbols.
 | `004174A0` / `BSP_AvoidZone_QueryExpandedBoundsBoundaryPoint` | `004174A0..0041757B` | ECX zone; stack point,margin,out; AL admission; `RET 0Ch` at `00417564` / `00417579` | complete caller body; existing geometry APIs |
 | `004F49F0` / existing `BSP_Segment2f_SegmentDistance` | `004F49F0..004F4AD0` | ECX a0; EDX a1; stack b0,b1; ST0 distance; `RET 8` at `004F4A1C`, `004F4ABA`, `004F4ACE` | complete outer body; actual public dependencies |
 
-`bsp.py` verified the configured `C:/Users/sqz269/bsp.gpr` project (`bsp`),
-`/battlestationspacific.exe`, x86 language and image base before each live
-analysis/export command. Both initially missing bodies were freshly exported,
+The configured project is `C:/Users/sqz269/bsp.gpr`. `bsp.py` verified live
+project name `bsp`, program `/battlestationspacific.exe`, x86 language and image
+base before each live analysis/export command. Both initially missing bodies were freshly exported,
 then all three were read as pseudocode and assembly. No existing implementation
 of the first two addresses was found in `src` / `include`. Live caller queries
 for those two returned no callers. No Ghidra
@@ -87,8 +87,17 @@ query/output storage. The wrapper does
 not allocate, synthesize a candidate, normalize an edge or apply the margin to
 the returned point.
 
-Validation: pending the worker Win32 build, existing CTests, report-call checker
-and `git diff --check`. No new test cases or native differential fixture were
+Validation: the integrator's complete build at `0db8158e2` passed all three
+existing suites (`reconstructed_math`, `native_math_differential`, `tool_tests`)
+and the source packet was integrated into main. The report-call checker passed
+all eight rows; `git diff --check` passed. The worker's complete
+`./scripts/build.ps1` also passed both suites enabled in its fresh build tree
+(`reconstructed_math`, `tool_tests`), 2/2, in 7.12 test seconds. Its full log is
+`local/oct15_avoid_distance_build.log`. The native seed suite was enabled in the
+integrator tree, where it passed; this packet adds no native fixture.
+The worker object timestamp `2026-10-15T16:39:15Z` is later than the final source
+and header, so the compiled file includes the concrete wrapper and required no
+incremental rebuild. No new test cases or native differential fixture were
 added. Source coverage and compilation will not establish original
 register/exception ABI, semantic containment's exact
 x87 parity, complete floating-point exception equivalence, or gameplay. The

@@ -127,7 +127,10 @@
     }
   ],
   "validation": {
-    "win32_build_and_existing_ctest": "pending",
+    "win32_build_and_existing_ctest": "pass: full ./scripts/build.ps1; fresh worker tree enabled reconstructed_math and tool_tests, 2/2 passed, 7.12 test seconds",
+    "worker_build_log": "local/oct15_avoid_distance_build.log",
+    "integrator_build_and_existing_ctest": "pass at 0db8158e2: reconstructed_math, native_math_differential, tool_tests; source integrated into main",
+    "exact_source_object": "build/win32/bsp_core.dir/Release/avoid_zone_distance_followup.obj 2026-10-15T16:39:15Z, newer than final source/header",
     "verify_report_calls": "pass: 8 call rows checked, 0 failed",
     "git_diff_check": "pass",
     "new_tests": 0,
