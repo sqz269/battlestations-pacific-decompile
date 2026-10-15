@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_map_node_leaves",
+  "source": "src/native_scene_record_map_node_leaves.cpp",
+  "header": "include/bsp/native_scene_record_map_node_leaves.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_MAP_NODE_LEAVES.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "00469f50",
+      "end_exclusive": "00469fc0",
+      "coverage": "complete",
+      "cpp_symbol": "construct_native_scene_record_map_node_00469f50",
+      "original_abi": "ECX actual1Ch node; stack left,parent,right,pair,color; RET14; EAX original node",
+      "bytes": "8b 44 24 04 8b 54 24 0c 55 8b 6c 24 14 56 8b f1 8b 4c 24 10 57 8d 7e 0c 3b fd 89 06 89 4e 04 89 56 08 c7 07 00 00 00 00 c7 47 04 00 00 00 00 74 26 8b 45 00 6a 01 50 8b cf e8 b2 3d fb ff 83 7d 00 00 74 13 8b 0f 8b 55 04 8b 47 04 51 52 50 e8 dc d6 78 00 83 c4 0c 8b 4d 08 8a 54 24 20 89 4f 08 5f 88 56 18 c6 46 19 00 8b c6 5e 5d c2 14 00",
+      "live_disk_equal": true,
+      "live_callers": 1,
+      "sha256": "7902c5368dfc437092f1cc62221d557e629eb9ba63c84834b7ef04b6a55dab29"
+    },
+    {
+      "address": "00468b30",
+      "end_exclusive": "00468b4d",
+      "coverage": "complete",
+      "cpp_symbol": "destroy_native_scene_record_map_string_header_00468b30",
+      "original_abi": "ECX actual8h header; RET; no semantic result",
+      "bytes": "8b 51 04 85 d2 74 15 8b 01 6a 01 83 c0 01 50 52 e8 7b 11 fb ff 8b c8 e8 c4 89 76 00 c3",
+      "live_disk_equal": true,
+      "live_tail_callers": 2,
+      "legacy_source_preserved": "src/engine_seg4_6_9_cc13.cpp:kPooledStringReleases",
+      "sha256": "00e9fb66afafc389c2409c507a2e28b2d16ff3a2b4062719687131c5397b1bfc"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00469f89",
+      "native": "0041dd40",
+      "function": "00469f50",
+      "contract": "current source length and preserve1; actual destination header=node+C; callee RET8"
+    },
+    {
+      "address": "00469f9f",
+      "native": "00bf7680",
+      "function": "00469f50",
+      "contract": "current destination length/source pointer/destination pointer in observed read order; caller ADD ESP,C at00469FA4"
+    },
+    {
+      "address": "00468b40",
+      "native": "00419cc0",
+      "function": "00468b30",
+      "contract": "current actual pool getter; no native arguments consumed"
+    },
+    {
+      "address": "00468b47",
+      "native": "00bd1510",
+      "function": "00468b30",
+      "contract": "captured data, wrapped length+1, unread1; callee RETC"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "0046a398",
+      "native": "00469f50",
+      "function": "0046a340",
+      "contract": "ECX allocation; five current argument words copied from caller frame"
+    },
+    {
+      "address": "00c61bfb",
+      "native": "00468b30",
+      "function": "00c61be8",
+      "kind": "tail_jump",
+      "contract": "after current cleanup bit0 cleared, ECX current saved header"
+    },
+    {
+      "address": "00c61df8",
+      "native": "00468b30",
+      "function": "00c61df2",
+      "kind": "tail_jump",
+      "contract": "ECX frame header atEBP-124h"
+    }
+  ],
+  "source_dependencies": [
+    {
+      "routine": "00b1aca0",
+      "symbol": "construct_native_resource_registry_node_00b1aca0",
+      "source": "src/native_resource_registry_node_leaves.cpp",
+      "modified": false
+    },
+    {
+      "routine": "0041dd20",
+      "symbol": "destroy_native_string_header_0041dd20 raw context overload",
+      "source": "src/native_string.cpp",
+      "modified": false
+    }
+  ],
+  "prior_annotations": [
+    {
+      "address": "00469f50",
+      "name": "STL_Tree_ConstructNode_00469F50",
+      "comment": "[BSP reconstruction 00469f50]\ncc13-sweep45: body-identical copy of STL_NativeStringIntNode1c_Construct 00502170 / BSP_ResourceRegistry_ConstructNode 00B1ACA0"
+    },
+    {
+      "address": "00468b30",
+      "name": "BSP_NativeString_DestroyStorage_00468B30",
+      "comment": "[BSP reconstruction 00468b30]\ncc13-sweep45: body-identical copy of BSP_NativeString_DestroyStorage 0041DD20 (returns the pooled block when data!=0)"
+    }
+  ],
+  "source_registration": "cmake/startup.cmake unique bsp_core append while registry unleased; no exclusive shared registry lease",
+  "validation": {
+    "build": "pending",
+    "existing_ctests": "pending",
+    "report_call_verification": "PASS7/7 native call/tail rows; markdown0failures,0unchecked,0warnings",
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_executed": false,
+    "game_validated": false,
+    "diff_check": "PASS git diff --check"
+  },
+  "qualification": "Complete ordinary actual raw node/header Source reusing accepted concrete normal providers; current storage reads and write footprint preserved; no nominal key/mapped type, new host callback, FH3/SEH original ABI, candidate-specific native differential or game claim",
+  "canonical_body_comparisons": [
+    {
+      "candidate": "00469f50",
+      "canonical": "00b1aca0",
+      "length": 112,
+      "normalized_relative_operand_offsets": [
+        58,
+        80
+      ],
+      "equal_other_bytes": true,
+      "same_call_targets": [
+        "0041dd40",
+        "00bf7680"
+      ]
+    },
+    {
+      "candidate": "00469f50",
+      "canonical": "00502170",
+      "length": 112,
+      "normalized_relative_operand_offsets": [
+        58,
+        80
+      ],
+      "equal_other_bytes": true,
+      "same_call_targets": [
+        "0041dd40",
+        "00bf7680"
+      ]
+    },
+    {
+      "candidate": "00468b30",
+      "canonical": "0041dd20",
+      "length": 29,
+      "normalized_relative_operand_offsets": [
+        17,
+        24
+      ],
+      "equal_other_bytes": true,
+      "same_call_targets": [
+        "00419cc0",
+        "00bd1510"
+      ]
+    }
+  ],
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "annotation": {
+    "applied": true,
+    "names_retained": true,
+    "prior_values_log": "local/ghidra-annotations-20261015T201049Z.json",
+    "program_saved": true,
+    "exports_refreshed": true
+  }
+}
