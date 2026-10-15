@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_integer_set_constructor_aliases",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_scene_integer_set_construct_aliases.cpp",
+  "header": "include/bsp/native_scene_integer_set_construct_aliases.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_INTEGER_SET_CONSTRUCT_ALIASES.md",
+  "base_revision": "21279d6961b7721eb19832d686391e40474a0635",
+  "status": "whole_actual_storage_source_strict_win32_existing_ctest_and_compiler_checked",
+  "routines": [
+    {
+      "address": "00468940",
+      "body_end_inclusive": "00468968",
+      "body_bytes": 41,
+      "instructions": 14,
+      "blocks": 1,
+      "physical_calls": 1,
+      "implementation": "construct_native_scene_integer_set_head_00468940",
+      "retained_name": "STL_Tree_Construct_00468940",
+      "coverage": "complete_actual_storage_ordinary_source_at_accepted_current_crt_head_provider",
+      "original_abi": "ECX actual tree;EDX unused;ESI preserved;no stacked words/plain RET;raw EAX third current-head capture;semantic return type unestablished",
+      "live_callers": 0,
+      "live_code_or_data_xrefs": 0,
+      "live_hex": "568bf1e868f9ffff894604c64011018b46048940048b460489008b4604894008c74608000000005ec3",
+      "disk_hex": "568bf1e868f9ffff894604c64011018b46048940048b460489008b4604894008c74608000000005ec3",
+      "live_installed_pe_equal": true,
+      "sha256": "010432904baa39a66d32687e9871682025f8f4ed58887c893ceac2215f1d835b"
+    },
+    {
+      "address": "0046cf10",
+      "body_end_inclusive": "0046cf3a",
+      "body_bytes": 43,
+      "instructions": 15,
+      "blocks": 1,
+      "physical_calls": 1,
+      "implementation": "construct_native_scene_integer_set_head_0046cf10",
+      "retained_name": "STL_Tree_Construct_0046cf10",
+      "coverage": "complete_actual_storage_ordinary_source_at_accepted_current_crt_head_provider",
+      "original_abi": "ECX actual tree;EDX unused;ESI preserved;no stacked words/plain RET;EAX original captured tree",
+      "live_callers": 0,
+      "live_code_or_data_xrefs": 0,
+      "live_hex": "568bf1e898b3ffff894604c64011018b46048940048b460489008b4604894008c74608000000008bc65ec3",
+      "disk_hex": "568bf1e898b3ffff894604c64011018b46048940048b460489008b4604894008c74608000000008bc65ec3",
+      "live_installed_pe_equal": true,
+      "sha256": "7f7aa886c52527f7db0735fd4f3e38ce2c7bd2e70f418781e04be6ec72b1fd1a"
+    }
+  ],
+  "coverage_totals": {
+    "native_bytes": 84,
+    "instructions": 29,
+    "blocks": 2,
+    "physical_calls": 2
+  },
+  "host_steps": [
+    {
+      "address": "00468943",
+      "native": "004682b0",
+      "function": "00468940",
+      "kind": "call"
+    },
+    {
+      "address": "0046cf13",
+      "native": "004682b0",
+      "function": "0046cf10",
+      "kind": "call"
+    }
+  ],
+  "implementation_search": "tag-only ledger/no indexed or unindexed whole Source;new APIs absent before work;actual provider and canonical constructor Source fully read with full native listings",
+  "source_composition": "68940 separately implements exact late-head raw EAX schedule;CF10 reuses accepted00468EA0 ordinary Source with identical memory/result schedule. Native aliases each CALL004682B0 directly;no native call to00468EA0. Canonical native entry has unread stackwords+4/+8/RET8;both owned variants have no stackedwords/RET.",
+  "storage_and_failure": "actual14h head,nil11,color10;captured allocation then3independent current tree.head reloads;parent,left,right selflinks,countlast;tree+0/key/padding untouched. Real currentCRT provider nonnull-or-throw,allocation before tree writes;no callback,stub,positive-only admission,extra cleanup or rollback.",
+  "annotation": {
+    "before_comments": "local/goal_oct15_scene_integer_set_construct_aliases_before_comments.json",
+    "before_documentation": "local/goal_oct15_scene_integer_set_construct_aliases_before_documentation.json",
+    "preserve_correct_library_names_old_values_comments_evidence": true,
+    "locked_apply_save": "passed;local/ghidra-annotations-20261015T214228Z.json;both prior values retained;correct library names/comments/evidence retained;project saved",
+    "refreshed_exports": "passed;both owned addresses forced after annotation",
+    "readback": "passed;local/goal_oct15_scene_integer_set_construct_aliases_after_comments.json;expected names,old comments and added evidence verified"
+  },
+  "verification": {
+    "project_program_guard": "bsp.py Client.verify every live batch;bsp,/battlestationspacific.exe,x86:LE:32:default,image00400000",
+    "whole_assembly_original_abi_actual_providers_and_xrefs": "passed",
+    "live_installed_bytes": "passed;84 bytes/29 instructions;both whole bodies including RET",
+    "typed_native_transfer_verification": "passed;2 typed rows and 2 Markdown call claims;8 cited addresses;0 failed/unchecked/warnings",
+    "cmake_registration": "passed;unique append after immediate unleased check and own queue removal;no exclusive whole-file lease",
+    "strict_win32_build_and_existing_ctest": {
+      "result": "passed",
+      "command": "./scripts/build.ps1",
+      "build_revision": "09729637cf30e923462890ab428becbac55154a3",
+      "source_revision": "01a59b48453ea5ad3731b0387757d5b909f86c0e",
+      "configuration": "MSVC Release Win32;process-local CL /MP4",
+      "log": "local/goal_oct15_scene_integer_set_construct_aliases_build.log",
+      "log_sha256": "561ba559d9f020ff05819ed68a3a0e150c8556c5e798295c39f32cc96c58ec27",
+      "ctest": "3/3 passed: reconstructed_math0.22s,native_math_differential0.05s,tool_tests8.06s;total8.38s",
+      "source_and_header_unchanged_from_reviewed_draft": true,
+      "qualification": "existing unrelated LNK4006 duplicate spawn_request_id_matches Lua objects;no packet compile warning;existing math differential checks do not execute these new constructor entries"
+    },
+    "compiled_object_review": {
+      "result": "passed focused actual MSVC Release Win32 objects",
+      "object": "build/win32/bsp_core.dir/Release/native_scene_integer_set_construct_aliases.obj",
+      "bytes": 1453,
+      "sha256": "a2cd18a9346c4f5db4299d4e71ac960432800d4354f1a60ab7029413842e178a",
+      "dumpbin_version": "14.51.36244.0",
+      "receipt": "local/goal_oct15_scene_integer_set_construct_aliases_object.txt",
+      "entry_00468940": "44B;real accepted allocator CALL+3,head publication+B,captured nil11 store+E;three independent current-head reloads+12/+18/+1D;count store+23;RET+2B retaining last head in EAX;one REL32 allocator relocation+4",
+      "entry_0046cf10": "9B;tail JMP+4 to accepted construct_native_scene_integer_set_head_00468ea0;one REL32 Source provider relocation+5;separate from actual native direct head allocator CALL",
+      "provider_object": "build/win32/bsp_core.dir/Release/native_scene_integer_set_head.obj",
+      "provider_object_bytes": 2366,
+      "provider_sha256": "dc294205fac7d711c424618c06842e5f4d9b5fe483b40384da3b07b20c27c0c9",
+      "provider_receipt": "local/goal_oct15_scene_integer_set_construct_aliases_provider_object.txt",
+      "provider_schedule": "143B canonical Source entry inlines actual allocation and conditional link/color/nil initialization before constructor publication+62,nil11+65,current head reloads+69/+6F/+74,count+7A;original tree retained in EAX",
+      "qualification": "ordinary Source value/argument and current compiler evidence;no native stack/register/private-frame/argument-home/instruction/COFF/fault identity"
+    },
+    "source_file_sha256": {
+      "src/native_scene_integer_set_construct_aliases.cpp": "ae9806e830461ee251b053edf4e61350e9077ee97cc48978c6c30653bae35147",
+      "include/bsp/native_scene_integer_set_construct_aliases.hpp": "45b1bbed828cce914632acc85a5efd5ceb6d0559cbd2e0072f39ac2c3a5797f2"
+    },
+    "new_tests": false,
+    "packet_native_differential": "not run",
+    "game_validation": "not run",
+    "diff_check": "passed",
+    "primary_independent_source_review": "passed;all native instructions,ABI and exact Source/header at 01a59b48453ea5ad3731b0387757d5b909f86c0e;no mismatch;final hashes verified identical"
+  },
+  "limits": [
+    "New ordinary C++ interfaces;no Original register/stack/private-frame/CRT/instruction/fault identity.",
+    "Raw EAX68940 exposed without caller-supported semantic return type;descriptive original STL names retained as hypotheses.",
+    "Reached actual raw backing/provider domain;no implicit Source/native frame aliases or concurrency.",
+    "No new packet native differential/application/game validation."
+  ]
+}

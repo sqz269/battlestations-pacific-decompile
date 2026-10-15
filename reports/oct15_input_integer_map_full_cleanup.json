@@ -1,0 +1,1462 @@
+{
+  "packet": "oct15_input_integer_map_full_cleanup",
+  "worker": "agent/oct15_avoid_distance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis_and_export": true,
+  "ghidra_read_only": true,
+  "owned_addresses": [
+    "004cef40",
+    "0055b230",
+    "0055b490"
+  ],
+  "source": "src/native_input_integer_map_full_cleanup.cpp",
+  "header": "include/bsp/native_input_integer_map_full_cleanup.hpp",
+  "documentation": "docs/OCT15_INPUT_INTEGER_MAP_FULL_CLEANUP.md",
+  "routines": [
+    {
+      "address": "004cef40",
+      "kind": "fragment",
+      "retained_name": "STL_IntOnlyTree_EraseRange_N14_004CEF40",
+      "implementation": "clear_native_input_int_only_tree_full_prefix_004cef40",
+      "ranges": [
+        [
+          "004cef40",
+          "004cefbe"
+        ]
+      ],
+      "bytes": 127,
+      "instructions": 49,
+      "ordinary_entry_complete": false,
+      "status": "admitted_full_path_fragment_source_build_tested_whole_ordinary_incomplete",
+      "coverage": "Only positive non-diagnostic full path. Raw comparisons/current captures, actual owning subtree, current head reload/reset/output and EAXoutput.",
+      "native_abi": "ECXtree,unusedEDX; five stackedwords(output,firstowner,firstnode,lastowner,lastnode),RET14h/EAXoutput.",
+      "source_abi": "Newfastcall Source same physical words, explicit admitted contract/privatehelper frame; not native ABI validation.",
+      "preconditions": "Valid nonnull actualownedtree/head; firstowner=lastowner=tree,firstnode=initialhead.left,lastnode=freshhead, stable through selection; writable private8B output.",
+      "field_order": "firstownerTEST; initialhead.left load; ownerCMP/firstCMP; lastownerTEST; freshhead load; ownerCMP/lastCMP; freshroot. Positive outcomes preconditions, no badpath guards/diagnosticcallbacks/stubs.",
+      "actual_owning_callee": "004c1890",
+      "cleanup_order": "Actual owning subtree; CURRENT head parent=self; reloadhead BEFOREcount0 thenleft=self; reloadhead right=self; reloadhead.left captured BEFORE outputowner/tree thennode/result; EAXoutput.",
+      "excluded_ranges": [
+        [
+          "004cefc0",
+          "004cf008"
+        ]
+      ],
+      "diagnostics_source_implemented": false,
+      "padding": "entry+7F isNOP90 outside both typedbodyranges, no Sourcecoverage.",
+      "eh": "No local EH registration/catch in complete current body; no Sourcecatch. Producer EH separate.",
+      "native_instruction_evidence": [
+        {
+          "address": "004cef40",
+          "bytes": "83ec08",
+          "mnemonic": "sub",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "004cef43",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "004cef44",
+          "bytes": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "004cef45",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "004cef46",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "004cef47",
+          "bytes": "8b7c2420",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esp + 0x20]"
+        },
+        {
+          "address": "004cef4b",
+          "bytes": "85ff",
+          "mnemonic": "test",
+          "operands": "edi, edi"
+        },
+        {
+          "address": "004cef4d",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "004cef4f",
+          "bytes": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "address": "004cef52",
+          "bytes": "8b28",
+          "mnemonic": "mov",
+          "operands": "ebp, dword ptr [eax]"
+        },
+        {
+          "address": "004cef54",
+          "bytes": "7404",
+          "mnemonic": "je",
+          "operands": "0x4cef5a"
+        },
+        {
+          "address": "004cef56",
+          "bytes": "3bfe",
+          "mnemonic": "cmp",
+          "operands": "edi, esi"
+        },
+        {
+          "address": "004cef58",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x4cef5f"
+        },
+        {
+          "address": "004cef5a",
+          "bytes": "e8b4777200",
+          "mnemonic": "call",
+          "operands": "0xbf6713"
+        },
+        {
+          "address": "004cef5f",
+          "bytes": "8b5c2424",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esp + 0x24]"
+        },
+        {
+          "address": "004cef63",
+          "bytes": "3bdd",
+          "mnemonic": "cmp",
+          "operands": "ebx, ebp"
+        },
+        {
+          "address": "004cef65",
+          "bytes": "7559",
+          "mnemonic": "jne",
+          "operands": "0x4cefc0"
+        },
+        {
+          "address": "004cef67",
+          "bytes": "8b442428",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0x28]"
+        },
+        {
+          "address": "004cef6b",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "004cef6d",
+          "bytes": "8b6e04",
+          "mnemonic": "mov",
+          "operands": "ebp, dword ptr [esi + 4]"
+        },
+        {
+          "address": "004cef70",
+          "bytes": "7404",
+          "mnemonic": "je",
+          "operands": "0x4cef76"
+        },
+        {
+          "address": "004cef72",
+          "bytes": "3bc6",
+          "mnemonic": "cmp",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "004cef74",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x4cef7b"
+        },
+        {
+          "address": "004cef76",
+          "bytes": "e898777200",
+          "mnemonic": "call",
+          "operands": "0xbf6713"
+        },
+        {
+          "address": "004cef7b",
+          "bytes": "396c242c",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esp + 0x2c], ebp"
+        },
+        {
+          "address": "004cef7f",
+          "bytes": "753f",
+          "mnemonic": "jne",
+          "operands": "0x4cefc0"
+        },
+        {
+          "address": "004cef81",
+          "bytes": "8b4e04",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 4]"
+        },
+        {
+          "address": "004cef84",
+          "bytes": "8b5104",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ecx + 4]"
+        },
+        {
+          "address": "004cef87",
+          "bytes": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "004cef88",
+          "bytes": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "004cef8a",
+          "bytes": "e80129ffff",
+          "mnemonic": "call",
+          "operands": "0x4c1890"
+        },
+        {
+          "address": "004cef8f",
+          "bytes": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "address": "004cef92",
+          "bytes": "894004",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 4], eax"
+        },
+        {
+          "address": "004cef95",
+          "bytes": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "address": "004cef98",
+          "bytes": "c7460800000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 8], 0"
+        },
+        {
+          "address": "004cef9f",
+          "bytes": "8900",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax], eax"
+        },
+        {
+          "address": "004cefa1",
+          "bytes": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "address": "004cefa4",
+          "bytes": "894008",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 8], eax"
+        },
+        {
+          "address": "004cefa7",
+          "bytes": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "address": "004cefaa",
+          "bytes": "8b08",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [eax]"
+        },
+        {
+          "address": "004cefac",
+          "bytes": "8b44241c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0x1c]"
+        },
+        {
+          "address": "004cefb0",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "004cefb1",
+          "bytes": "8930",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax], esi"
+        },
+        {
+          "address": "004cefb3",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "004cefb4",
+          "bytes": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": "004cefb5",
+          "bytes": "894804",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 4], ecx"
+        },
+        {
+          "address": "004cefb8",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "004cefb9",
+          "bytes": "83c408",
+          "mnemonic": "add",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "004cefbc",
+          "bytes": "c21400",
+          "mnemonic": "ret",
+          "operands": "0x14"
+        }
+      ]
+    },
+    {
+      "address": "0055b230",
+      "kind": "fragment",
+      "retained_name": "STL_IntIntTreeTree_EraseRange_N20_0055B230",
+      "implementation": "clear_native_input_nested_int_tree_full_prefix_0055b230",
+      "ranges": [
+        [
+          "0055b230",
+          "0055b2ae"
+        ]
+      ],
+      "bytes": 127,
+      "instructions": 49,
+      "ordinary_entry_complete": false,
+      "status": "admitted_full_path_fragment_source_build_tested_whole_ordinary_incomplete",
+      "coverage": "Only positive non-diagnostic full path. Raw comparisons/current captures, actual owning subtree, current head reload/reset/output and EAXoutput.",
+      "native_abi": "ECXtree,unusedEDX; five stackedwords(output,firstowner,firstnode,lastowner,lastnode),RET14h/EAXoutput.",
+      "source_abi": "Newfastcall Source same physical words, explicit admitted contract/privatehelper frame; not native ABI validation.",
+      "preconditions": "Valid nonnull actualownedtree/head; firstowner=lastowner=tree,firstnode=initialhead.left,lastnode=freshhead, stable through selection; writable private8B output.",
+      "field_order": "firstownerTEST; initialhead.left load; ownerCMP/firstCMP; lastownerTEST; freshhead load; ownerCMP/lastCMP; freshroot. Positive outcomes preconditions, no badpath guards/diagnosticcallbacks/stubs.",
+      "actual_owning_callee": "0055af60",
+      "cleanup_order": "Actual owning subtree; CURRENT head parent=self; reloadhead BEFOREcount0 thenleft=self; reloadhead right=self; reloadhead.left captured BEFORE outputowner/tree thennode/result; EAXoutput.",
+      "excluded_ranges": [
+        [
+          "0055b2b0",
+          "0055b2f8"
+        ]
+      ],
+      "diagnostics_source_implemented": false,
+      "padding": "entry+7F isNOP90 outside both typedbodyranges, no Sourcecoverage.",
+      "eh": "No local EH registration/catch in complete current body; no Sourcecatch. Producer EH separate.",
+      "native_instruction_evidence": [
+        {
+          "address": "0055b230",
+          "bytes": "83ec08",
+          "mnemonic": "sub",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "0055b233",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "0055b234",
+          "bytes": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "0055b235",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "0055b236",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "0055b237",
+          "bytes": "8b7c2420",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esp + 0x20]"
+        },
+        {
+          "address": "0055b23b",
+          "bytes": "85ff",
+          "mnemonic": "test",
+          "operands": "edi, edi"
+        },
+        {
+          "address": "0055b23d",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "0055b23f",
+          "bytes": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "address": "0055b242",
+          "bytes": "8b28",
+          "mnemonic": "mov",
+          "operands": "ebp, dword ptr [eax]"
+        },
+        {
+          "address": "0055b244",
+          "bytes": "7404",
+          "mnemonic": "je",
+          "operands": "0x55b24a"
+        },
+        {
+          "address": "0055b246",
+          "bytes": "3bfe",
+          "mnemonic": "cmp",
+          "operands": "edi, esi"
+        },
+        {
+          "address": "0055b248",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x55b24f"
+        },
+        {
+          "address": "0055b24a",
+          "bytes": "e8c4b46900",
+          "mnemonic": "call",
+          "operands": "0xbf6713"
+        },
+        {
+          "address": "0055b24f",
+          "bytes": "8b5c2424",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esp + 0x24]"
+        },
+        {
+          "address": "0055b253",
+          "bytes": "3bdd",
+          "mnemonic": "cmp",
+          "operands": "ebx, ebp"
+        },
+        {
+          "address": "0055b255",
+          "bytes": "7559",
+          "mnemonic": "jne",
+          "operands": "0x55b2b0"
+        },
+        {
+          "address": "0055b257",
+          "bytes": "8b442428",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0x28]"
+        },
+        {
+          "address": "0055b25b",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0055b25d",
+          "bytes": "8b6e04",
+          "mnemonic": "mov",
+          "operands": "ebp, dword ptr [esi + 4]"
+        },
+        {
+          "address": "0055b260",
+          "bytes": "7404",
+          "mnemonic": "je",
+          "operands": "0x55b266"
+        },
+        {
+          "address": "0055b262",
+          "bytes": "3bc6",
+          "mnemonic": "cmp",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "0055b264",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x55b26b"
+        },
+        {
+          "address": "0055b266",
+          "bytes": "e8a8b46900",
+          "mnemonic": "call",
+          "operands": "0xbf6713"
+        },
+        {
+          "address": "0055b26b",
+          "bytes": "396c242c",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esp + 0x2c], ebp"
+        },
+        {
+          "address": "0055b26f",
+          "bytes": "753f",
+          "mnemonic": "jne",
+          "operands": "0x55b2b0"
+        },
+        {
+          "address": "0055b271",
+          "bytes": "8b4e04",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 4]"
+        },
+        {
+          "address": "0055b274",
+          "bytes": "8b5104",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ecx + 4]"
+        },
+        {
+          "address": "0055b277",
+          "bytes": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "0055b278",
+          "bytes": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "0055b27a",
+          "bytes": "e8e1fcffff",
+          "mnemonic": "call",
+          "operands": "0x55af60"
+        },
+        {
+          "address": "0055b27f",
+          "bytes": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "address": "0055b282",
+          "bytes": "894004",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 4], eax"
+        },
+        {
+          "address": "0055b285",
+          "bytes": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "address": "0055b288",
+          "bytes": "c7460800000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 8], 0"
+        },
+        {
+          "address": "0055b28f",
+          "bytes": "8900",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax], eax"
+        },
+        {
+          "address": "0055b291",
+          "bytes": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "address": "0055b294",
+          "bytes": "894008",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 8], eax"
+        },
+        {
+          "address": "0055b297",
+          "bytes": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "address": "0055b29a",
+          "bytes": "8b08",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [eax]"
+        },
+        {
+          "address": "0055b29c",
+          "bytes": "8b44241c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0x1c]"
+        },
+        {
+          "address": "0055b2a0",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "0055b2a1",
+          "bytes": "8930",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax], esi"
+        },
+        {
+          "address": "0055b2a3",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "0055b2a4",
+          "bytes": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": "0055b2a5",
+          "bytes": "894804",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 4], ecx"
+        },
+        {
+          "address": "0055b2a8",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "0055b2a9",
+          "bytes": "83c408",
+          "mnemonic": "add",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "0055b2ac",
+          "bytes": "c21400",
+          "mnemonic": "ret",
+          "operands": "0x14"
+        }
+      ]
+    },
+    {
+      "address": "0055b490",
+      "kind": "whole_ordinary_function",
+      "retained_name": "STL_IntScalarTreeMap_Destroy_N20_0055B490",
+      "implementation": "destroy_native_input_nested_int_map_0055b490",
+      "ranges": [
+        [
+          "0055b490",
+          "0055b4c3"
+        ]
+      ],
+      "bytes": 52,
+      "instructions": 23,
+      "status": "complete_ordinary_source_build_tested_current_crt_boundary",
+      "coverage": "Whole actual header destructor via proven full55B230 branch; captures head/left, privateoutput, CURRENT headfree,4/8 zero, opaque0 untouched, definedDWORD EAX0.",
+      "native_abi": "ECXactual12Bheader,EDXunused,no stackinputs,plainRET,definedDWORD EAX0 despite pseudocodevoid.",
+      "source_abi": "uint32_t __fastcall(tree,uint32_t unused_edx), no invented null/repeated-destroy guard; new Source input shape not native ABI validation.",
+      "preconditions": "Valid stable actualheaded owned tree, finite uniquelyowned nested nodes/sentinels in matching currentCRT.",
+      "effects": "Capture CURRENThead thenhead.left; owner twice/private8Boutput/capturedfirst,last prove fullpath; callnew55B230fragment; reloadandfree CURRENThead; zeroheader4 then8; return0.",
+      "eh": "No local EH registration/catch, no Sourcecatch; physical EH callers remain context and unowned.",
+      "native_instruction_evidence": [
+        {
+          "address": "0055b490",
+          "bytes": "83ec08",
+          "mnemonic": "sub",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "0055b493",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "0055b494",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "0055b496",
+          "bytes": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "address": "0055b499",
+          "bytes": "8b08",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [eax]"
+        },
+        {
+          "address": "0055b49b",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "0055b49c",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "0055b49d",
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "0055b49e",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "0055b49f",
+          "bytes": "8d442414",
+          "mnemonic": "lea",
+          "operands": "eax, [esp + 0x14]"
+        },
+        {
+          "address": "0055b4a3",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "0055b4a4",
+          "bytes": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "0055b4a6",
+          "bytes": "e885fdffff",
+          "mnemonic": "call",
+          "operands": "0x55b230"
+        },
+        {
+          "address": "0055b4ab",
+          "bytes": "8b4e04",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 4]"
+        },
+        {
+          "address": "0055b4ae",
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "0055b4af",
+          "bytes": "e8f8b06900",
+          "mnemonic": "call",
+          "operands": "0xbf65ac"
+        },
+        {
+          "address": "0055b4b4",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "0055b4b7",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0055b4b9",
+          "bytes": "894604",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 4], eax"
+        },
+        {
+          "address": "0055b4bc",
+          "bytes": "894608",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 8], eax"
+        },
+        {
+          "address": "0055b4bf",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "0055b4c0",
+          "bytes": "83c408",
+          "mnemonic": "add",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "0055b4c3",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    }
+  ],
+  "destructor_selection_proof": [
+    {
+      "native": "0055b496..0055b499",
+      "effect": "Capture CURRENT header.head then its left, in that order."
+    },
+    {
+      "native": "0055b49b..0055b4a6",
+      "effect": "Both owners are nonnull actualself, first=capturedhead.left,last=capturedhead, writable private8B output. Only stackwrites between captures and child selection."
+    },
+    {
+      "native": "0055b23b..0055b26f",
+      "effect": "Stable actualownedheader selects positive first/last checks; no diagnostic or partialroute."
+    },
+    {
+      "native": "0055b4ab..0055b4c3",
+      "effect": "Reread CURRENT head, free it, zerohead then count, definedEAX0/plainRET. Opaque0 untouched."
+    }
+  ],
+  "actual_dependencies": [
+    {
+      "native": "004c1890",
+      "source": "destroy_native_input_int_only_subtree_004c1890",
+      "header": "include/bsp/native_input_int_subtrees.hpp",
+      "accepted_pin": "2ebdba074ea983134ede5451bbab2f2d26eba749"
+    },
+    {
+      "native": "0055af60",
+      "source": "destroy_native_input_nested_int_subtree_0055af60",
+      "header": "include/bsp/native_input_nested_int_subtree.hpp",
+      "accepted_pin": "5a50f0eba0e751fd8caf93c29ab98d36273dc1fd"
+    },
+    {
+      "native": "00bf65ac",
+      "source": "singleton_lifetime_free",
+      "header": "include/bsp/singleton_lifetime.hpp",
+      "scope": "Actual currentstd::free boundary; originalstaticCRT identity qualified."
+    }
+  ],
+  "old_projections_preserved": {
+    "004cef40": "Existing clear_native_input_int_only_full_range_004cef40 guard/provider fragment unchanged.",
+    "0055b230": "Existing provider-bearing AV scale range eraser unchanged; no wholepartial promotion.",
+    "0055b490": "Existing native_input_scale_maps.cpp destroy_native_input_scale_map_0055b490 guarded/cached-head voidprojection unchanged. New exact ordinary identity has no nullguard, CURRENT headfree, definedEAX0."
+  },
+  "producer_context": "4C2700/4C4DF0 actual14hhead/nil11;554CD0/555360 actual20hhead/nil1D; headeropaque0/head4/count8, selflinks0/4/8/count0.55A290 actual20h populatednode/keyC/nestedheader10/color1C/nil1D. Producer FH3/copy children are not leased or reconstructed.",
+  "native_byte_evidence": {
+    "original_image": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "derivation": "PE32 section-table VA-to-raw; Capstone5.0.7 x86-32; complete live/disk envelopes have NO masks. Only explicit different-address prefix comparison masks3 provedrel32 fields.",
+    "typed_capture": "local/oct15_input_integer_map_full_cleanup_typed_flow.json",
+    "typed_capture_sha256": "69f0c7fd0048b8fe6322ec945475b2ebf370b4a999a7427e23517270bdad5722",
+    "summary": {
+      "native_body_bytes": 978,
+      "current_instruction_starts": 360,
+      "owned_covered_bytes": 306,
+      "owned_covered_instructions": 121,
+      "native_call_rows": 26,
+      "all_live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true
+    }
+  },
+  "native_units": [
+    {
+      "address": "004cef40",
+      "ranges": [
+        [
+          "004cef40",
+          "004cefbe"
+        ],
+        [
+          "004cefc0",
+          "004cf008"
+        ]
+      ],
+      "envelope_bytes": 201,
+      "body_bytes": 200,
+      "instructions": 76,
+      "raw_envelope": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e8b47772008b5c24243bdd75598b44242885c08b6e0474043bc67405e898777200396c242c753f8b4e048b5104528bcee80129ffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c214009085ff74063b7c24287405e8447772003b5c242c74218d4c2420e862affeff53578d542418528bcee8d4eeffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false,
+      "source_covered_ranges": [
+        [
+          "004cef40",
+          "004cefbe"
+        ]
+      ],
+      "role": "owned fullprefix only, ordinary partial excluded",
+      "owned_scope_no_local_eh_registration": true,
+      "source_excluded_ranges": [
+        [
+          "004cefc0",
+          "004cf008"
+        ]
+      ],
+      "nonbody_padding": "entry+7F NOP90 outside both typed body ranges"
+    },
+    {
+      "address": "0055b230",
+      "ranges": [
+        [
+          "0055b230",
+          "0055b2ae"
+        ],
+        [
+          "0055b2b0",
+          "0055b2f8"
+        ]
+      ],
+      "envelope_bytes": 201,
+      "body_bytes": 200,
+      "instructions": 76,
+      "raw_envelope": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e8c4b469008b5c24243bdd75598b44242885c08b6e0474043bc67405e8a8b46900396c242c753f8b4e048b5104528bcee8e1fcffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c214009085ff74063b7c24287405e854b469003b5c242c74218d4c2420e8527bffff53578d542418528bcee8a4f9ffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false,
+      "source_covered_ranges": [
+        [
+          "0055b230",
+          "0055b2ae"
+        ]
+      ],
+      "role": "owned fullprefix only, ordinary partial excluded",
+      "owned_scope_no_local_eh_registration": true,
+      "source_excluded_ranges": [
+        [
+          "0055b2b0",
+          "0055b2f8"
+        ]
+      ],
+      "nonbody_padding": "entry+7F NOP90 outside both typed body ranges"
+    },
+    {
+      "address": "0055b490",
+      "ranges": [
+        [
+          "0055b490",
+          "0055b4c3"
+        ]
+      ],
+      "envelope_bytes": 52,
+      "body_bytes": 52,
+      "instructions": 23,
+      "raw_envelope": "83ec08568bf18b46048b08505651568d442414508bcee885fdffff8b4e0451e8f8b0690083c40433c08946048946085e83c408c3",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false,
+      "source_covered_ranges": [
+        [
+          "0055b490",
+          "0055b4c3"
+        ]
+      ],
+      "role": "owned complete ordinary destructor",
+      "owned_scope_no_local_eh_registration": true
+    },
+    {
+      "address": "005572f0",
+      "ranges": [
+        [
+          "005572f0",
+          "0055736e"
+        ],
+        [
+          "00557370",
+          "005573b8"
+        ]
+      ],
+      "envelope_bytes": 201,
+      "body_bytes": 200,
+      "instructions": 76,
+      "raw_envelope": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e804f469008b5c24243bdd75598b44242885c08b6e0474043bc67405e8e8f36900396c242c753f8b4e048b5104528bcee8d1dbffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c214009085ff74063b7c24287405e894f369003b5c242c74218d4c2420e862beffff53578d542418528bcee824faffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false,
+      "source_covered_ranges": [],
+      "role": "accepted fullprefix comparator context"
+    },
+    {
+      "address": "004c2700",
+      "ranges": [
+        [
+          "004c2700",
+          "004c2736"
+        ]
+      ],
+      "envelope_bytes": 55,
+      "body_bytes": 55,
+      "instructions": 17,
+      "raw_envelope": "6a14e81441730083c40485c07406c700000000008d480485c97406c701000000008d480885c97406c70100000000c6401001c6401100c3",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false,
+      "source_covered_ranges": [],
+      "role": "producer/layout context only"
+    },
+    {
+      "address": "004c4df0",
+      "ranges": [
+        [
+          "004c4df0",
+          "004c4e18"
+        ]
+      ],
+      "envelope_bytes": 41,
+      "body_bytes": 41,
+      "instructions": 14,
+      "raw_envelope": "568bf1e808d9ffff894604c64011018b46048940048b460489008b4604894008c74608000000005ec3",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false,
+      "source_covered_ranges": [],
+      "role": "producer/layout context only"
+    },
+    {
+      "address": "0055a290",
+      "ranges": [
+        [
+          "0055a290",
+          "0055a315"
+        ]
+      ],
+      "envelope_bytes": 134,
+      "body_bytes": 134,
+      "instructions": 47,
+      "raw_envelope": "558bec6aff6811dbc60064a100000000506489250000000083ec0c5356578965f06a20e863c569008bf083c4048975ecc745fc000000008975e885f6c645fc01742f8b45088b4d0c8b551089068b4514894e048956088b0883c004894e0c8d4e1050e879e2ffff8a551888561cc6461d008b4df45f8bc65e64890d000000005b8be55dc21400",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false,
+      "source_covered_ranges": [],
+      "role": "producer/layout context only",
+      "eh_limit": "Producer has own FS/FH3 C6DB11 registration. Only normal producer field layout is evidence, not an EH/Source claim."
+    },
+    {
+      "address": "00554cd0",
+      "ranges": [
+        [
+          "00554cd0",
+          "00554d06"
+        ]
+      ],
+      "envelope_bytes": 55,
+      "body_bytes": 55,
+      "instructions": 17,
+      "raw_envelope": "6a20e8441b6a0083c40485c07406c700000000008d480485c97406c701000000008d480885c97406c70100000000c6401c01c6401d00c3",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false,
+      "source_covered_ranges": [],
+      "role": "producer/layout context only"
+    },
+    {
+      "address": "00555360",
+      "ranges": [
+        [
+          "00555360",
+          "00555388"
+        ]
+      ],
+      "envelope_bytes": 41,
+      "body_bytes": 41,
+      "instructions": 14,
+      "raw_envelope": "568bf1e868f9ffff894604c6401d018b46048940048b460489008b4604894008c74608000000005ec3",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false,
+      "source_covered_ranges": [],
+      "role": "producer/layout context only"
+    }
+  ],
+  "prefix_equivalence": [
+    {
+      "entry": "004cef40",
+      "baseline": "005572f0",
+      "bytes": 127,
+      "masks": [
+        {
+          "field_offset_hex": "1b",
+          "size": 4,
+          "encoding": "E8 rel32 only",
+          "native_target": "00bf6713",
+          "baseline_target": "00bf6713",
+          "raw_field": "b4777200",
+          "baseline_raw_field": "04f46900"
+        },
+        {
+          "field_offset_hex": "37",
+          "size": 4,
+          "encoding": "E8 rel32 only",
+          "native_target": "00bf6713",
+          "baseline_target": "00bf6713",
+          "raw_field": "98777200",
+          "baseline_raw_field": "e8f36900"
+        },
+        {
+          "field_offset_hex": "4b",
+          "size": 4,
+          "encoding": "E8 rel32 only",
+          "native_target": "004c1890",
+          "baseline_target": "00554f10",
+          "raw_field": "0129ffff",
+          "baseline_raw_field": "d1dbffff"
+        }
+      ],
+      "all_other_bytes_identical": true,
+      "meaning": "Full native prefix includes its original branch encodings; Source admits only proven positive fullpath. No wholepartial equivalence/source claim."
+    },
+    {
+      "entry": "0055b230",
+      "baseline": "005572f0",
+      "bytes": 127,
+      "masks": [
+        {
+          "field_offset_hex": "1b",
+          "size": 4,
+          "encoding": "E8 rel32 only",
+          "native_target": "00bf6713",
+          "baseline_target": "00bf6713",
+          "raw_field": "c4b46900",
+          "baseline_raw_field": "04f46900"
+        },
+        {
+          "field_offset_hex": "37",
+          "size": 4,
+          "encoding": "E8 rel32 only",
+          "native_target": "00bf6713",
+          "baseline_target": "00bf6713",
+          "raw_field": "a8b46900",
+          "baseline_raw_field": "e8f36900"
+        },
+        {
+          "field_offset_hex": "4b",
+          "size": 4,
+          "encoding": "E8 rel32 only",
+          "native_target": "0055af60",
+          "baseline_target": "00554f10",
+          "raw_field": "e1fcffff",
+          "baseline_raw_field": "d1dbffff"
+        }
+      ],
+      "all_other_bytes_identical": true,
+      "meaning": "Full native prefix includes its original branch encodings; Source admits only proven positive fullpath. No wholepartial equivalence/source claim."
+    }
+  ],
+  "local_audit": "local/oct15_input_integer_map_full_cleanup_byte_audit.json",
+  "local_audit_sha256": "a977ce844c5774a5c2fd8d462c75106e9eb3434925698e0293cb0acb11688062",
+  "native_calls": [
+    {
+      "function": "004cef40",
+      "address": "004cef5a",
+      "native": "00bf6713",
+      "kind": "call",
+      "role": "excluded_diagnostic"
+    },
+    {
+      "function": "004cef40",
+      "address": "004cef76",
+      "native": "00bf6713",
+      "kind": "call",
+      "role": "excluded_diagnostic"
+    },
+    {
+      "function": "004cef40",
+      "address": "004cef8a",
+      "native": "004c1890",
+      "kind": "call",
+      "role": "admitted_full_cleanup"
+    },
+    {
+      "function": "004cef40",
+      "address": "004cefca",
+      "native": "00bf6713",
+      "kind": "call",
+      "role": "excluded_partial_context"
+    },
+    {
+      "function": "004cef40",
+      "address": "004cefd9",
+      "native": "004b9f40",
+      "kind": "call",
+      "role": "excluded_partial_context"
+    },
+    {
+      "function": "004cef40",
+      "address": "004cefe7",
+      "native": "004cdec0",
+      "kind": "call",
+      "role": "excluded_partial_context"
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b24a",
+      "native": "00bf6713",
+      "kind": "call",
+      "role": "excluded_diagnostic"
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b266",
+      "native": "00bf6713",
+      "kind": "call",
+      "role": "excluded_diagnostic"
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b27a",
+      "native": "0055af60",
+      "kind": "call",
+      "role": "admitted_full_cleanup"
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b2ba",
+      "native": "00bf6713",
+      "kind": "call",
+      "role": "excluded_partial_context"
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b2c9",
+      "native": "00552e20",
+      "kind": "call",
+      "role": "excluded_partial_context"
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b2d7",
+      "native": "0055ac80",
+      "kind": "call",
+      "role": "excluded_partial_context"
+    },
+    {
+      "function": "0055b490",
+      "address": "0055b4a6",
+      "native": "0055b230",
+      "kind": "call",
+      "role": "whole_destructor"
+    },
+    {
+      "function": "0055b490",
+      "address": "0055b4af",
+      "native": "00bf65ac",
+      "kind": "call",
+      "role": "whole_destructor"
+    },
+    {
+      "function": "005572f0",
+      "address": "0055730a",
+      "native": "00bf6713",
+      "kind": "call",
+      "role": "accepted_comparator_context"
+    },
+    {
+      "function": "005572f0",
+      "address": "00557326",
+      "native": "00bf6713",
+      "kind": "call",
+      "role": "accepted_comparator_context"
+    },
+    {
+      "function": "005572f0",
+      "address": "0055733a",
+      "native": "00554f10",
+      "kind": "call",
+      "role": "accepted_comparator_context"
+    },
+    {
+      "function": "005572f0",
+      "address": "0055737a",
+      "native": "00bf6713",
+      "kind": "call",
+      "role": "accepted_comparator_context"
+    },
+    {
+      "function": "005572f0",
+      "address": "00557389",
+      "native": "005531f0",
+      "kind": "call",
+      "role": "accepted_comparator_context"
+    },
+    {
+      "function": "005572f0",
+      "address": "00557397",
+      "native": "00556dc0",
+      "kind": "call",
+      "role": "accepted_comparator_context"
+    },
+    {
+      "function": "004c2700",
+      "address": "004c2702",
+      "native": "00bf681b",
+      "kind": "call",
+      "role": "producer_context"
+    },
+    {
+      "function": "004c4df0",
+      "address": "004c4df3",
+      "native": "004c2700",
+      "kind": "call",
+      "role": "producer_context"
+    },
+    {
+      "function": "0055a290",
+      "address": "0055a2b3",
+      "native": "00bf681b",
+      "kind": "call",
+      "role": "producer_context"
+    },
+    {
+      "function": "0055a290",
+      "address": "0055a2f2",
+      "native": "00558570",
+      "kind": "call",
+      "role": "producer_context"
+    },
+    {
+      "function": "00554cd0",
+      "address": "00554cd2",
+      "native": "00bf681b",
+      "kind": "call",
+      "role": "producer_context"
+    },
+    {
+      "function": "00555360",
+      "address": "00555363",
+      "native": "00554cd0",
+      "kind": "call",
+      "role": "producer_context"
+    }
+  ],
+  "compiled_source_inspection": {
+    "tool": "MSVCdumpbin14.51.36244.0 /DISASM",
+    "command": [
+      "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/dumpbin.exe",
+      "/DISASM",
+      "build/win32/bsp_core.dir/Release/native_input_integer_map_full_cleanup.obj"
+    ],
+    "object": "build/win32/bsp_core.dir/Release/native_input_integer_map_full_cleanup.obj",
+    "object_sha256": "ceb3a55f7ca8a10fa6b87feb3938496c9cf239011b2011714bc110a5949d1db9",
+    "dump": "local/oct15_input_integer_map_full_cleanup_coff.asm",
+    "dump_sha256": "d4764cd30aefabcdddf86c4ef051b64fae7f7a0e83021a5b431ba5028f4f0c15",
+    "extraction": "Address rows plus wrapped bytecontinuations, each nextoffset/fullCapstone decodechecked.",
+    "functions": [
+      {
+        "function": "clear_native_input_int_only_tree_full_prefix_004cef40",
+        "code_bytes": 117,
+        "instructions": 45,
+        "raw_unlinked_bytes": "558bec83ec08568bf18975fc8b450c85c08b4dfc8b51048b123bc18b45103bc28b451485c08b51043bc18b45183bc28b51048b52048955f88b55f88bce52e8000000008b4dfc8b41048940048b4104c741080000000089008b41048940088b41048b108b450889088950048b45085e8be55dc21400",
+        "observations": "Raw helpers inlined; exact TEST/field-capture/root/currentreload/reset/output schedule; one named actual owningcallee, RET14h. Unlinked bytes match accepted compiled72F0 schedule, symbolic relocationtarget independently checked.",
+        "relocation_note": "E8rel32 are zero in COFF, symbolic targetnames inspected; no original byte/ABI/runtime equivalence claim."
+      },
+      {
+        "function": "clear_native_input_nested_int_tree_full_prefix_0055b230",
+        "code_bytes": 117,
+        "instructions": 45,
+        "raw_unlinked_bytes": "558bec83ec08568bf18975fc8b450c85c08b4dfc8b51048b123bc18b45103bc28b451485c08b51043bc18b45183bc28b51048b52048955f88b55f88bce52e8000000008b4dfc8b41048940048b4104c741080000000089008b41048940088b41048b108b450889088950048b45085e8be55dc21400",
+        "observations": "Raw helpers inlined; exact TEST/field-capture/root/currentreload/reset/output schedule; one named actual owningcallee, RET14h. Unlinked bytes match accepted compiled72F0 schedule, symbolic relocationtarget independently checked.",
+        "relocation_note": "E8rel32 are zero in COFF, symbolic targetnames inspected; no original byte/ABI/runtime equivalence claim."
+      },
+      {
+        "function": "destroy_native_input_nested_int_map_0055b490",
+        "code_bytes": 85,
+        "instructions": 35,
+        "raw_unlinked_bytes": "558bec83ec18568bf18975fc8b4dfc8b41048945f88b108955f4ff75f88d45e833d256ff75f48bce5650e8000000008b4dfc8b41048945f0ff75f0e80000000083c4048b4dfc33c089410489410833c05e8be55dc3",
+        "observations": "Captured head thenleft, private8B fullarguments; named fullfragment; CURRENT head reload/free; zero4then8; EAX0/plainRET.",
+        "relocation_note": "E8rel32 are zero in COFF, symbolic targetnames inspected; no original byte/ABI/runtime equivalence claim."
+      }
+    ],
+    "scope": "Static emitted Source CODE BODY sizes, not stackframes/native ABI/runtime proof."
+  },
+  "frozen_files_sha256": {
+    "src/native_input_integer_map_full_cleanup.cpp": "b2b5edf15d1ae2efe8dbed53019388a51e5cb12158cdc65067b2e329c7ed0210",
+    "include/bsp/native_input_integer_map_full_cleanup.hpp": "9ff19bc567f8a7665239cd1193f1dfe6fcde5dd4d7eb8975fb6f5e7c4de2abe3"
+  },
+  "independent_source_review": {
+    "packet": "oct15_input_integer_map_full_cleanup",
+    "accepted_pin": "5a15a409427fba9a415883273382d2ebb35e5a81",
+    "reviewer": "primary",
+    "status": "passed_no_findings",
+    "files_sha256": {
+      "src/native_input_integer_map_full_cleanup.cpp": "b2b5edf15d1ae2efe8dbed53019388a51e5cb12158cdc65067b2e329c7ed0210",
+      "include/bsp/native_input_integer_map_full_cleanup.hpp": "9ff19bc567f8a7665239cd1193f1dfe6fcde5dd4d7eb8975fb6f5e7c4de2abe3"
+    },
+    "native_scope": {
+      "004cef40": "127B49instruction admitted fullprefix only",
+      "0055b230": "127B49instruction admitted fullprefix only",
+      "0055b490": "52B23instruction wholeordinary"
+    },
+    "checks": [
+      "Full Source/header reviewed against both complete fullprefix listings and wholeB490 listing.",
+      "Selection TEST/load/CMP captures and exact admitted stable fullpath preconditions preserved.",
+      "Actual4C1890/55AF60 direct subtrees, unconsumedEDX carries root bits; no callback/provider.",
+      "CURRENT head repeated reset/read and independently captured output owner/node stores preserve exact native order.",
+      "Whole B490 captures head thenhead.left, proves exactfullrange selection, reloads CURRENThead for free then clears4/8 and returnsDWORD0; opaque0 untouched.",
+      "Whole range erasers and diagnostic/partial paths remain incomplete, original qualifiedAV/guarded projections untouched.",
+      "Privateframe/ownership/currentCRT/nativeABI/fault/SEH/game limits explicit."
+    ],
+    "findings": []
+  },
+  "limits": [
+    "Valid finite uniquelyowned actual trees/head/sentinels and matching currentCRT; stable fullselection/writable privateoutput; no repairguards/callbacks.",
+    "Only admitted fullprefixes, not diagnostics/partialroute or whole ordinary4CEF40/55B230. No InputSettings record promotion.",
+    "Private Source/helper frames/outputplacement, ambientregs/flags, originalstaticCRT/faultSEH/stack/nativeABI/game remain unverified.",
+    "No x87 arithmetic; existing native differential seeds do not execute these entries."
+  ],
+  "validation": {
+    "source_build": "./scripts/build.ps1 exact MSVCWin32Release passed, zero compiler errors/warnings",
+    "prerequisite_main": "073ac362c92e81a426e401ac8fe2213458f9d93d",
+    "prerequisite_merge": "0cd426dc3",
+    "cmake_lease": "oct15_input_integer_map_full_cleanup_cmake; short sync/oneappend released before Source/build",
+    "existing_suites": {
+      "reconstructed_math": "passed",
+      "native_math_differential": "passed",
+      "tool_tests": "passed",
+      "total_ctest_seconds": 9.36
+    },
+    "build_log": "local/oct15_input_integer_map_full_cleanup_build.log",
+    "build_log_sha256": "a9af10b2da91b2ba2e5ab9ca0d6679df4ad46d8300a112f8457fdfe2eeaee05c",
+    "compiled_code_inspection": "3/3 emittedbodies exactorder/targets/RET/return checked",
+    "report_calls": "26/26 pass",
+    "markdown_claims": "26/26 pass; zero unchecked/warnings",
+    "git_diff_check": "Working/staged git diff --check passed",
+    "new_tests": false,
+    "native_entry_execution": false,
+    "original_binary_abi_compatible": false,
+    "game_validated": false
+  },
+  "independent_source_review_at_worker_commit": "Pending frozen-pin primary review after current thirteenth batch; not claimed complete by worker"
+}

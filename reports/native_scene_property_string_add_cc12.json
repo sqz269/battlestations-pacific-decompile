@@ -1,0 +1,346 @@
+{
+  "schema": "bsp.cc12.native-scene-property-string-add.v1",
+  "status": "whole_ordinary_Source_worker_first_strict_complete_COFF_and_single_normal_build_passed_Root_independent_Main_admission_pending",
+  "address": "008F38A0",
+  "Source_ready": true,
+  "Source_admission_credit": 0,
+  "Root_independent_Main_admission_pending": true,
+  "worker_base_commit": "2c611cd778d0309d52e6c6950ac429e21d90d52f",
+  "owned_new_files": [
+    "include/bsp/native_scene_property_string_add.hpp",
+    "src/native_scene_property_string_add.cpp",
+    "docs/SCENE_PROPERTY_STRING_ADD_CC12.md",
+    "reports/native_scene_property_string_add_cc12.json"
+  ],
+  "Source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\src\\native_scene_property_string_add.cpp",
+    "bytes": 1731,
+    "sha256": "8000a59a6e1a5f7426012944f1e079f7ac3af85e22b0f87741fb4decc10c0916"
+  },
+  "header": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\include\\bsp\\native_scene_property_string_add.hpp",
+    "bytes": 2811,
+    "sha256": "d9733d1b2cdf0fd818ed19935594047614c0ea7da8fefdd1aaba6344a5d1eb0d"
+  },
+  "Original": {
+    "begin": "008F38A0",
+    "end_exclusive": "008F3931",
+    "bytes": 145,
+    "instructions": 46,
+    "sha256": "02d029d7f631a17407aaf2423f23a1fbe964b7bcc01eba13b101ed8f3bab08d6",
+    "ABI": "ECXactual114hbag; entryESP+4key,+8nullableCString; RET8; EAXactualbag fromwhole33F0",
+    "evidence": "Root-admitted read-only readiness published on Main2c611cd77; exact complete Original/metadata/provider family retained locally and frozen without mutation.",
+    "EH": "CA49AB loadsDD7670 thenJMP BF6B43. FuncInfo magic19930522,maxstate1,unwindmapDD7668,EHF1,no try/IP map. State0->-1 callsCA49A0: saved[EBP-10h] root freed throughBF65AC; state0 after allocation saved, deactivated before33F0. No Original failure-unwind parity supplied."
+  },
+  "public_API": "void* add_native_scene_property_string_008f38a0(void* actual_bag,const char* actual_key,const char* nullable_value,NativeScenePropertyInsertionContext& context)",
+  "full_body": {
+    "allocation": "canonical singleton_lifetime_allocate({object,38h,38h}), genuine fresh uninitialized currentheap bytes",
+    "ordered_physical_stores": [
+      {
+        "call": "54",
+        "offset": "00",
+        "width": 4,
+        "value": "00CE89D4"
+      },
+      {
+        "call": "5E",
+        "offset": "04",
+        "width": 4,
+        "value": 2
+      },
+      {
+        "call": "68",
+        "offset": "18",
+        "width": 4,
+        "value": 0
+      },
+      {
+        "call": "72",
+        "offset": "1C",
+        "width": 4,
+        "value": 0
+      },
+      {
+        "call": "7C",
+        "offset": "20",
+        "width": 4,
+        "value": 0
+      },
+      {
+        "call": "86",
+        "offset": "24",
+        "width": 4,
+        "value": 0
+      },
+      {
+        "call": "93",
+        "offset": "30",
+        "width": 4,
+        "value": 0
+      },
+      {
+        "call": "A7",
+        "offset": "0C",
+        "width": 4,
+        "value": "full returned pointer"
+      },
+      {
+        "call": "B1",
+        "offset": "34",
+        "width": 4,
+        "value": 0
+      },
+      {
+        "call": "BB",
+        "offset": "2C",
+        "width": 1,
+        "value": 1
+      }
+    ],
+    "duplicate": {
+      "call": "9E",
+      "symbol": "?duplicate_native_string_00438e40@bsp@@YIPADPBD@Z",
+      "ECX": "same borrowed nullable value saved from actual by-value argument",
+      "result": "full EAX pushed unchanged for DWORD+C helper atA7"
+    },
+    "insertion": {
+      "call": "C9",
+      "arguments": "same actual bag/key/record/context; null JE4A->C3 still reaches it",
+      "return_value": "actualbag EAX retained through host GS return"
+    },
+    "written_bytes": 37,
+    "preserved_bytes": 19,
+    "preserved_ranges": [
+      "[08,0C)",
+      "[10,18)",
+      "[28,2C)",
+      "[2D,30)"
+    ],
+    "null_allocation": "Syntactic null branch reaches wholeinsertion; no successful null-root or OOM recovery is admitted.",
+    "nullable_value": "Borrowed null invokes genuine raw438E40 and yields null+C; borrowed nonnull empty CString yields distinct owned1BNUL copy. Both retain BYTE1+2C. Nonempty copies length+1 bytes in canonical allocation domain.",
+    "raw_type2_not_reused": "8EF1B0 clears+34 before+C; this body stores+C before+34. No constructor substitute, old CDECL duplicate, zero fill, borrowed child publication, fake map, numeric Sourcevtable dispatch or callback provider.",
+    "current_interface_limits": "Private physical helpers and current C++ pointer/frame staging add Sourceglue under stable valid disjoint/no-fault/no-throw/no-reentry contracts. No Original register/ECX/RET8/EFLAGS/FS/SEH/privateCRT/class ABI or failure parity."
+  },
+  "ownership": "Onlyfresh canonical38hroot and distinct duplicatedchild transfer on successful genuine owning map publication; input remainsborrowed. Type2 currentrecursive/scalar lifetime frees childandroot. No added cleanup/rollback/transaction or successful null allocation.",
+  "current_provider_contract": "Genuine raw61 actual114hbag/108hmap+4, same canonical heap/string/physical processes; explicit E175B0 startup before context, same generation/commonE188B4 list/rawkeys/manager/gate/E177E4/E17654 cells and allocator+10 membership; genuine finite unique unshared acyclic/disjoint graph; stable valid memory and serialized no-reentry/nonthrowing successful services.",
+  "strict": {
+    "original_receipt": {
+      "chunk_id": "19ea90",
+      "wall_time_seconds": 3.6987621,
+      "exit_code": 0,
+      "original_token_count": 0,
+      "output": ""
+    },
+    "compiler": "MSVC Win32 19.51.36244.0",
+    "flags": "/std:c++17 /MD /O2 /Ob2 /Oy- /W4 /WX /EHsc /Gy /GL- /fp:strict",
+    "count": 1,
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyStringAddSource01\\native_scene_property_string_add.obj",
+      "bytes": 2248,
+      "sha256": "3feee5e9570804c90710da7097fb7fe3f04c3ec5f8bcb859e3051212f59e07ce"
+    },
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyStringAddSource01\\strict_compile.log",
+      "bytes": 1138,
+      "sha256": "1acc8046a55a52f490e0aef4e40a12d72c57dd96e9ba26d93da9e2c85bb83e2a"
+    },
+    "complete_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyStringAddSource01\\complete_strict_review.DATA.json",
+      "bytes": 7148,
+      "sha256": "b83af2b9ec71f5e99f570ba39ff6d6d08980800f75e5612d5d5c8bd9b1d498d6"
+    }
+  },
+  "complete_COFF": {
+    "capture": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyStringAddSource01\\complete_COFF.DATA.json",
+      "bytes": 40884,
+      "sha256": "16f8503ffeebb13415b97b001a11a76250cad29b172b6aba4cbc1998e63baed0"
+    },
+    "listing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyStringAddSource01\\complete_COFF_listing.txt",
+      "bytes": 5231,
+      "sha256": "25b0180c79f09f9c1ddc9a8f428262e1040670398988b23c3ff072c95a8c6f0a"
+    },
+    "dumpbin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyStringAddSource01\\complete_COFF_dumpbin.txt",
+      "bytes": 14843,
+      "sha256": "033ba839cf198521b8397d8dede16eb4ba95a41bbb7e8aa9c3a80eaeb8188581"
+    },
+    "sections": 7,
+    "symbol_indices_including_aux": 25,
+    "primary_symbols": 18,
+    "code_sections": 3,
+    "code_bytes": 260,
+    "instructions": 101,
+    "code_relocations": 15,
+    "metadata_relocations": 0,
+    "all2248bytes_accounted": true,
+    "unaccounted_bytes": 0,
+    "private_helpers": "?A0x1c03bcbf literal binding;17B8instructions each, one pointed DWORD/BYTE store, no internal calls",
+    "all_undefined_bindings": [
+      "?insert_native_scene_property_bag_008f33f0@bsp@@YAPAXPAXPBD0AAVNativeScenePropertyInsertionContext@1@@Z",
+      "?duplicate_native_string_00438e40@bsp@@YIPADPBD@Z",
+      "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+      "@__security_check_cookie@4",
+      "___security_cookie"
+    ],
+    "metadata": "Exact305Bdirectives,236BCodeView object/compiler record,4Blogicalzero weakAVX BSS,56Bchecksums;allheader/aux/stringtable bytes. MD_DynamicRelease/MSVCRT/msvcprt/OLDNAMES directives and hostGS bindings retained."
+  },
+  "normal_repository_build": {
+    "count": 1,
+    "original_receipts": {
+      "terminal": {
+        "chunk_id": "d7fc84",
+        "wall_time_seconds": 8e-06,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      },
+      "initial": {
+        "chunk_id": "dcee0d",
+        "wall_time_seconds": 10.0127366,
+        "session_id": 36315,
+        "original_token_count": 0,
+        "output": ""
+      }
+    },
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyStringAddSource01\\normal_build.log",
+      "bytes": 89533,
+      "sha256": "242cc3c18ddccd7045a7b47caa785bf843a8595c453f677196b336d63d8c95fb"
+    },
+    "existing_checks": 2,
+    "seconds": 8.4,
+    "new_TU_registered": false,
+    "warning_lines": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\build\\win32\\bsp_core.vcxproj]"
+    ],
+    "credit": "Existingregistered targets/checks only; strictobject separately covers new TU. Root owns independent/CMake/metadata/analysis/Main build and admission gates."
+  },
+  "exact_inputs": {
+    "precompile": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyStringAddSource01\\precompile_inputs.DATA.json",
+      "bytes": 41432,
+      "sha256": "a4790ede49fbff882cf54a1e5748d9d7dd4e924fe8f4ad35bb847a21baea8b94"
+    },
+    "declared_compiler": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyStringAddSource01\\compiler_declared_inputs.DATA.json",
+      "bytes": 23183,
+      "sha256": "d630c69232de190448a3333b95ac42a47a056dc6fb1c4258f1ee6cdbd61e6b0e"
+    },
+    "frozen_compiler": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyStringAddSource01\\compiler_frozen_inputs.DATA.json",
+      "bytes": 59584,
+      "sha256": "a35b83ae3c938cce59271f9ead5667062bbfb28b3e49f4b3e838ce8d9eebb90a"
+    },
+    "compiler_Source_include_files": 84,
+    "tool_files": 9,
+    "current_provider_files": 19,
+    "prior_families": [
+      {
+        "name": "readiness",
+        "files": 14
+      },
+      {
+        "name": "float_review",
+        "files": 15
+      }
+    ]
+  },
+  "exact_raw_rollout_provenance": {
+    "record": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyStringAddSource01\\original_tool_provenance.DATA.json",
+      "bytes": 15278,
+      "sha256": "b08565c41e5b4b7d0352dad5ab38034c2df1bdcf2d7069831605d82f6b8fd791"
+    },
+    "source_uuid": "01a1415e-3662-7d21-bd71-3576099257ae",
+    "frozen_prefix": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyStringAddSource01\\source_rollout_prefix.jsonl",
+      "lines": 808,
+      "bytes": 2047916,
+      "sha256": "0fceedc30eb3953c20e92147891d75e987b29fae8d4fd37b8514a2bb8e2502b3"
+    },
+    "exact_original_tool_bindings": [
+      {
+        "label": "strict",
+        "output_line": 573,
+        "call_id": "call_85e7802945c54569bdce5e67531b61ac",
+        "receipt": {
+          "chunk_id": "19ea90",
+          "wall_time_seconds": 3.6987621,
+          "exit_code": 0,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "label": "normal_launch",
+        "output_line": 580,
+        "call_id": "call_e48b0080e28d4acbbc7fa7406de15540",
+        "receipt": {
+          "chunk_id": "dcee0d",
+          "wall_time_seconds": 10.0127366,
+          "session_id": 36315,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "label": "normal_poll_01.DATA.json",
+        "output_line": 609,
+        "call_id": "call_3ffd289e62ec4087ac3c986cd280005b",
+        "receipt": {
+          "chunk_id": "1d62bb",
+          "wall_time_seconds": 5.012489,
+          "session_id": 36315,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "label": "normal_poll_02.DATA.json",
+        "output_line": 772,
+        "call_id": "call_7706cf029d9e42ac9dbf1d1d3b532c3a",
+        "receipt": {
+          "chunk_id": "d71b76",
+          "wall_time_seconds": 5.0094364,
+          "session_id": 36315,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "label": "normal_poll_03.DATA.json",
+        "output_line": 808,
+        "call_id": "call_2cd8ab798a5a4d7a8addf1a02f1da7a9",
+        "receipt": {
+          "chunk_id": "d7fc84",
+          "wall_time_seconds": 8e-06,
+          "exit_code": 0,
+          "original_token_count": 0,
+          "output": ""
+        }
+      }
+    ]
+  },
+  "performed": {
+    "strict_compiles": 1,
+    "normal_builds": 1,
+    "new_tests": 0,
+    "ad_hoc_probes": 0,
+    "packet_Source_or_Original_runtime_execution": false,
+    "game": false,
+    "compile_build_replay": false,
+    "existing_Source_shared_config_CMake_ledger_Ghidra_wiring_edits": false,
+    "delegation": false
+  },
+  "evidence_limits": [
+    "Wholeordinary Source only; no OriginalABI/register/FS/SEH/privateCRT/class/failure parity.",
+    "Samegenuine heap/bag/map/key/string/physical/pool/cell/generation/lifetime/success/disjoint/noalias/noreentry contracts.",
+    "No startup/application/globalbinding, wholeparser, native runtime, game or Main admission credit."
+  ],
+  "final_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyStringAddSource01\\family_receipt.DATA.json",
+    "sealed_after_clean_four_file_commit": true
+  }
+}
