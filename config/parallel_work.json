@@ -39534,8 +39534,8 @@
     },
     {
       "id": "cc12_enum_lua_declaration",
-      "done": false,
-      "state": "whole_ordinary_current_CRT_Source_primary_peer_accepted_Main_build_pending",
+      "done": true,
+      "state": "whole_ordinary_current_CRT_Source_registered_Main3checks_actual_code_archive_identity_pass",
       "source_ready": true,
       "function_addresses": [
         "008f2f70"
@@ -39559,7 +39559,9 @@
       "worker": "scene_token_text_review",
       "code_revision": "945212e1d84ff761224986ea302822432d2ed396",
       "primary_review": "reports/cc12_enum_lua_declaration_primary_review.json",
-      "Main_build_gate": "pending"
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_enum_lua_declaration_Main_validation.json"
     },
     {
       "id": "cc12_scene_file_tokenizer",
@@ -40266,8 +40268,8 @@
     },
     {
       "id": "cc12_scene_property_string_add_008f38a0",
-      "done": false,
-      "state": "whole_ordinary_string_property_ready_no_Source_yet",
+      "done": true,
+      "state": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
       "source_ready": true,
       "function_addresses": [
         "008f38a0"
@@ -40283,13 +40285,18 @@
       "missing_provider_addresses": [],
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
-      "contract": "Genuine 114h bag and nullable CString value. Canonical 38h root, phase/tag and ordered zeros, raw nullable 438E40 duplicate, store +C BEFORE zero +34, final byte +2C, then whole insertion. Preserve 37 written and 19 untouched bytes. Same canonical ownership and process contracts; null and empty differ. Original saved-root construction unwind is pinned but ABI/EH/failure/private-CRT/startup/runtime/game parity remains unproved. Source is not yet implemented.",
-      "worker": "property_leaf_readiness_oct15"
+      "contract": "Whole145B/46Original instructions. Canonicalfreshuninitialized38hroot: phaseDWORD0CE89D4/tagDWORD4=2,zeroDWORD18/1c/20/24/30; genuine RAW duplicate00438E40(nullable) FASTCALL ECX/RET0; storeFULLreturnedpointer+C BEFOREzero34;BYTE1+2c;whole33F0.37written19preserved[08,0c),[10,18),[28,2c),[2d,30). No raw8EF1B0 or oldCDECLprojection. Nullinput->null/noallocation; nonnullempty->owned1BNUL. Borrowedinput remainscallerowned, distinctfreshroot+duplicatechild transfer toactualowningmap and existingtype2 lifetime. OriginalCA49AB/DD7670/DD7668/CA49A0savedrootfree state0 deactivatedbeforeinsertion is evidenceonly; noSourcefailedallocationcleanup/unwindtransport. Same genuine raw61-produced114hbag/actual108hmap+4, canonicalcurrentCRT heap/string/physical process/context, initializedE175B0/samegeneration/commonE188B4list/realrawkeys/manager/gate/distinctE177E4/E17654cells/allocator+10membership. Stable valid closedASCII/currentClocale keys, finite unique unshared acyclic disjoint owninggraphs, successful nonthrowing serialized services/noalias/no-reentry/concurrenttrim. Nullallocation syntacticallyreacheswhole33F0 but notsuccessful; no inventedrecovery/default/transaction. No Original calling/class/flags/fault/FS/EH/privateCRT/startup/wholeparser/runtime/game credit.",
+      "worker": "property_leaf_readiness_oct15",
+      "code_revision": "cef178a851f3ef157988724ee4b3ec1700171df1",
+      "primary_review": "reports/cc12_property_string_add_primary_review.json",
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_property_string_add_Main_validation.json"
     },
     {
       "id": "cc12_scene_property_bool_add",
-      "done": false,
-      "state": "whole_ordinary_byte_property_ready_no_Source_yet",
+      "done": true,
+      "state": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
       "source_ready": true,
       "function_addresses": [
         "008f3940"
@@ -40305,8 +40312,13 @@
       "missing_provider_addresses": [],
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
-      "contract": "Whole 97 bytes / 34 instructions. Preserve all low-byte patterns with uint8_t, ignoring upper24 bits; no Boolean normalization. Canonical38h root, phase/tag3, one byte at+C, ordered zero DWORDs, final byte+2C;34 written and22 untouched bytes. Same canonical bag/map/key/context ownership; no payload child, added cleanup, ABI/EH/private-CRT/startup/runtime/game or whole-parser credit. Source remains unimplemented.",
-      "worker": "property_bool_source_oct15"
+      "contract": "Whole97B/34Original instructions. Explicituint8_t acceptsall256patterns, noC++boolnormalization; upper24Originalslotbitsignored. Canonicalfreshuninitialized38hroot phaseDWORD0CE89D4,tagDWORD4=3,payloadBYTE+C,zeroDWORD18/1c/20/24/30/34,BYTE1+2c,whole33F0.34written22preserved[08,0c),[0d,18),[28,2c),[2d,30), noDWORDpayloadclear/nochild. Rootonlyownershiptransfer. Sourcebyvalueargumentloadafterphase/tag differsOriginalDLloadbeforephase; helpersloadonlyDL/storeonebyte. Stable disjoint frame/root andnoobserver/error domain only; noOriginalABI/flags/faulttiming. NoOriginalFS/EHbodyframe. Authorresource-onlyclui.dll capturedpostcompile, executablepasses83includespre-pinned; nohermeticclaim. Author176payloads+rootseal cover177of178actualfiles; omittednestedreadinessreceipt independentlyhashverified/frozen, complete reviewerfamily coversit. Originalauthorsealunchanged, nofalsewholefolderreadonlyclaim. Same genuine raw61-produced114hbag/actual108hmap+4, canonicalcurrentCRT heap/string/physical process/context, initializedE175B0/samegeneration/commonE188B4list/realrawkeys/manager/gate/distinctE177E4/E17654cells/allocator+10membership. Stable valid closedASCII/currentClocale keys, finite unique unshared acyclic disjoint owninggraphs, successful nonthrowing serialized services/noalias/no-reentry/concurrenttrim. Nullallocation syntacticallyreacheswhole33F0 but notsuccessful; no inventedrecovery/default/transaction. No Original calling/class/flags/fault/FS/EH/privateCRT/startup/wholeparser/runtime/game credit.",
+      "worker": "property_bool_source_oct15",
+      "code_revision": "d6fc29f4db5db0e422603e56575c0cb365adc8f0",
+      "primary_review": "reports/cc12_property_bool_add_primary_review.json",
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_property_bool_add_Main_validation.json"
     },
     {
       "id": "cc12_scene_property_float_add",
@@ -40539,6 +40551,349 @@
       "integrated_main_revision": "1572af356",
       "Main_build_gate": "passed; Original ABI, new-entry native differential and runtime gates remain unproved",
       "contract": "Whole bounded ordinary Source and qualified temporary cleanup where specified; explicit raw/live backing and actual current-CRT providers.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_constructor_aliases",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00468900",
+        "0046f130"
+      ],
+      "output_files": [
+        "src/native_scene_record_map_construct_aliases.cpp",
+        "include/bsp/native_scene_record_map_construct_aliases.hpp",
+        "docs/GOAL_OCT15_SCENE_MAP_CONSTRUCT_ALIASES.md",
+        "reports/goal_oct15_scene_map_construct_aliases.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_map_head"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_construct_aliases.json",
+      "primary_review": "reports/goal_oct15_integer_erase_primary_review.json",
+      "code_revision": "d9fafd3726b2566e7131350dd2f2c82fa73afb3f",
+      "integrated_main_revision": "476925766",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary Source; completed temporary cleanup is qualified Source only. Explicit raw/live backing and actual current-CRT providers.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_integer_set_extrema",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00466a40",
+        "00466a60"
+      ],
+      "output_files": [
+        "src/native_scene_integer_set_extrema.cpp",
+        "include/bsp/native_scene_integer_set_extrema.hpp",
+        "docs/GOAL_OCT15_SCENE_INTEGER_SET_EXTREMA.md",
+        "reports/goal_oct15_scene_integer_set_extrema.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_integer_set_extrema.json",
+      "primary_review": "reports/goal_oct15_integer_erase_primary_review.json",
+      "code_revision": "d9fafd3726b2566e7131350dd2f2c82fa73afb3f",
+      "integrated_main_revision": "476925766",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary Source; completed temporary cleanup is qualified Source only. Explicit raw/live backing and actual current-CRT providers.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_integer_set_increment",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00466ae0",
+        "00467b30",
+        "00468340"
+      ],
+      "output_files": [
+        "src/native_scene_integer_set_increment.cpp",
+        "include/bsp/native_scene_integer_set_increment.hpp",
+        "docs/GOAL_OCT15_SCENE_INTEGER_SET_INCREMENT.md",
+        "reports/goal_oct15_scene_integer_set_increment.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_integer_set_increment.json",
+      "primary_review": "reports/goal_oct15_integer_erase_primary_review.json",
+      "code_revision": "d9fafd3726b2566e7131350dd2f2c82fa73afb3f",
+      "integrated_main_revision": "476925766",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary Source; completed temporary cleanup is qualified Source only. Explicit raw/live backing and actual current-CRT providers.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_integer_set_erase",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "0046a740",
+        "00c61c90"
+      ],
+      "output_files": [
+        "src/native_scene_integer_set_erase.cpp",
+        "include/bsp/native_scene_integer_set_erase.hpp",
+        "docs/GOAL_OCT15_SCENE_INTEGER_SET_ERASE.md",
+        "reports/goal_oct15_scene_integer_set_erase.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_integer_set_extrema",
+        "goal_oct15_scene_integer_set_increment",
+        "goal_oct15_scene_integer_set_rotations"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_integer_set_erase.json",
+      "primary_review": "reports/goal_oct15_integer_erase_primary_review.json",
+      "code_revision": "d9fafd3726b2566e7131350dd2f2c82fa73afb3f",
+      "integrated_main_revision": "476925766",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary Source; completed temporary cleanup is qualified Source only. Explicit raw/live backing and actual current-CRT providers.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "cc12_scene_property_enum_add_008f39b0_008f3a20",
+      "done": false,
+      "state": "whole_ordinary_Source_ready_no_implementation_yet",
+      "source_ready": true,
+      "function_addresses": [
+        "008f39b0",
+        "008f3a20"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_property_enum_add.hpp",
+        "src/native_scene_property_enum_add.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_ENUM_ADD_CC12.md",
+        "reports/native_scene_property_enum_add_cc12.json"
+      ],
+      "depends_on": [],
+      "readiness_report": "reports/cc12_property_enum_add_readiness.json",
+      "missing_provider_addresses": [],
+      "worker": "property_bool_source_oct15",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "contract": "Whole39B0/3A20; canonical38h roots, explicit exact distinct store/getter order, borrowed fullDWORD enum/value and known-found raw symbol getter.41written15preserved each. No raw8EF230 substitution, payloadownership/default/rollback, OriginalABI/EH/privateCRT/startup/runtime/game/wholeparser credit."
+    },
+    {
+      "id": "goal_oct15_dword_iterator_cells",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00467a80",
+        "00467d50"
+      ],
+      "output_files": [
+        "src/native_scene_dword_iterator.cpp",
+        "include/bsp/native_scene_dword_iterator.hpp",
+        "docs/GOAL_OCT15_DWORD_ITERATOR_CELLS.md",
+        "reports/goal_oct15_dword_iterator_cells.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_dword_iterator_cells.json",
+      "primary_review": "reports/goal_oct15_integer_range_primary_review.json",
+      "code_revision": "1e0942d618c32effd04d1a9f9292e5cf878a1b97",
+      "integrated_main_revision": "d99b8af5e64bc2f9b8bfb6e603f4caa0593da667",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary Source; actual raw/live backing,current-CRT providers,full returnable diagnostics and wrapped arithmetic paths. Explicit Source/private-frame interfaces are qualified.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_integer_set_erase_range",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0046b170"
+      ],
+      "output_files": [
+        "src/native_scene_integer_set_erase_range.cpp",
+        "include/bsp/native_scene_integer_set_erase_range.hpp",
+        "docs/GOAL_OCT15_SCENE_INTEGER_SET_ERASE_RANGE.md",
+        "reports/goal_oct15_scene_integer_set_erase_range.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_integer_set_clear",
+        "goal_oct15_scene_integer_set_increment",
+        "goal_oct15_scene_integer_set_erase"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_integer_set_erase_range.json",
+      "primary_review": "reports/goal_oct15_integer_range_primary_review.json",
+      "code_revision": "1e0942d618c32effd04d1a9f9292e5cf878a1b97",
+      "integrated_main_revision": "d99b8af5e64bc2f9b8bfb6e603f4caa0593da667",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary Source; actual raw/live backing,current-CRT providers,full returnable diagnostics and wrapped arithmetic paths. Explicit Source/private-frame interfaces are qualified.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_integer_set_destroy",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0046b530",
+        "0046c4c0",
+        "0046ce90"
+      ],
+      "output_files": [
+        "src/native_scene_integer_set_destroy.cpp",
+        "include/bsp/native_scene_integer_set_destroy.hpp",
+        "docs/GOAL_OCT15_SCENE_INTEGER_SET_DESTROY.md",
+        "reports/goal_oct15_scene_integer_set_destroy.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_integer_set_erase_range"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_integer_set_destroy.json",
+      "primary_review": "reports/goal_oct15_integer_range_primary_review.json",
+      "code_revision": "1e0942d618c32effd04d1a9f9292e5cf878a1b97",
+      "integrated_main_revision": "d99b8af5e64bc2f9b8bfb6e603f4caa0593da667",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary Source; actual raw/live backing,current-CRT providers,full returnable diagnostics and wrapped arithmetic paths. Explicit Source/private-frame interfaces are qualified.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_integer_set_constructor_aliases",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00468940",
+        "0046cf10"
+      ],
+      "output_files": [
+        "src/native_scene_integer_set_construct_aliases.cpp",
+        "include/bsp/native_scene_integer_set_construct_aliases.hpp",
+        "docs/GOAL_OCT15_SCENE_INTEGER_SET_CONSTRUCT_ALIASES.md",
+        "reports/goal_oct15_scene_integer_set_construct_aliases.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_integer_set_head"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_integer_set_construct_aliases.json",
+      "primary_review": "reports/goal_oct15_integer_range_primary_review.json",
+      "code_revision": "1e0942d618c32effd04d1a9f9292e5cf878a1b97",
+      "integrated_main_revision": "d99b8af5e64bc2f9b8bfb6e603f4caa0593da667",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary Source; actual raw/live backing,current-CRT providers,full returnable diagnostics and wrapped arithmetic paths. Explicit Source/private-frame interfaces are qualified.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_dword_move",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00467d90"
+      ],
+      "output_files": [
+        "src/native_scene_dword_move.cpp",
+        "include/bsp/native_scene_dword_move.hpp",
+        "docs/GOAL_OCT15_DWORD_MOVE.md",
+        "reports/goal_oct15_dword_move.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_dword_move.json",
+      "primary_review": "reports/goal_oct15_integer_range_primary_review.json",
+      "code_revision": "1e0942d618c32effd04d1a9f9292e5cf878a1b97",
+      "integrated_main_revision": "d99b8af5e64bc2f9b8bfb6e603f4caa0593da667",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary Source; actual raw/live backing,current-CRT providers,full returnable diagnostics and wrapped arithmetic paths. Explicit Source/private-frame interfaces are qualified.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_raw_dword_list_node",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00467ba0"
+      ],
+      "output_files": [
+        "src/native_raw_dword_list_node.cpp",
+        "include/bsp/native_raw_dword_list_node.hpp",
+        "docs/GOAL_OCT15_RAW_DWORD_LIST_NODE.md",
+        "reports/goal_oct15_raw_dword_list_node.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_raw_dword_list_node.json",
+      "primary_review": "reports/goal_oct15_raw_storage_primary_review.json",
+      "code_revision": "b6423d4a21fc303170e0cba7a061557fd1c53f86",
+      "integrated_main_revision": "73982d384e302a7256f3da3ba26fd1ba99a21a11",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary raw Source,currentCRT allocation/free,late actual parameter reads and full native branches; opaque storage/payload meanings and fault/private-stack identity qualified.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_vector_storage_tidy",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00468840"
+      ],
+      "output_files": [
+        "src/native_vector_storage_tidy.cpp",
+        "include/bsp/native_vector_storage_tidy.hpp",
+        "docs/GOAL_OCT15_VECTOR_STORAGE_TIDY.md",
+        "reports/goal_oct15_vector_storage_tidy.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_vector_storage_tidy.json",
+      "primary_review": "reports/goal_oct15_raw_storage_primary_review.json",
+      "code_revision": "b6423d4a21fc303170e0cba7a061557fd1c53f86",
+      "integrated_main_revision": "73982d384e302a7256f3da3ba26fd1ba99a21a11",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary raw Source,currentCRT allocation/free,late actual parameter reads and full native branches; opaque storage/payload meanings and fault/private-stack identity qualified.",
       "Original_ABI_compatible": false,
       "game_validated": false
     }

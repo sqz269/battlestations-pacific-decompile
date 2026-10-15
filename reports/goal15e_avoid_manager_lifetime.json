@@ -1,0 +1,82 @@
+{
+  "packet": "goal15e_manager_lifetime",
+  "status": "complete_concrete_source_manager_chain_and_recovered_unwind_operations_strict_compile_static_and_source_fixture_checked",
+  "source": "src/native_avoid_manager_lifetime.cpp",
+  "header": "include/bsp/native_avoid_manager_lifetime.hpp",
+  "documentation": "docs/GOAL15E_AVOID_MANAGER_LIFETIME.md",
+  "target": {"project_file":"C:/Users/sqz269/bsp.gpr","project":"bsp","program":"/battlestationspacific.exe","language":"x86:LE:32:default","image_base":"00400000","verification":"target-verifying bsp.py client before live queries; whole owned listings/caller setup/maps/actions/dependency bodies read; no writes"},
+  "routines": [
+    {"address":"00421500","end":"004215aa","native_bytes":171,"coverage":"complete normal raw construction and recovered vector/list/base unwind operations via current Source C++ guard","original_abi":"ECX manager; no stackedargs; RET; EAX same manager; Native FH3","source_api":"fastcall construct_native_avoid_manager_00421500(manager*, const Context* inEDX)","source_main_bytes":208},
+    {"address":"0041f980","end":"0041fa10","native_bytes":145,"coverage":"complete normal raw destruction and recovered list/vector/base unwind operations via current Source C++ guard","original_abi":"ECX manager; no stackedargs; RET; Native FH3","source_api":"fastcall destroy_native_avoid_manager_0041f980(manager*, const Context* inEDX)","source_main_bytes":230},
+    {"address":"00420680","end":"0042069d","native_bytes":30,"coverage":"complete scalar-delete schedule, late flags read/bit0 free/original-pointer return/RET4","original_abi":"ECX manager; stacked flags DWORD; RET4; EAX original pointer","source_api":"fastcall scalar_delete_native_avoid_manager_00420680(manager*, const Context* inEDX, uint32 flags)","source_bytes":30},
+    {"address":"0041e200","end":"0041e23d","native_bytes":62,"coverage":"complete standalone raw-list clear schedule through actual current hull/free providers","original_abi":"ECX actual list header; no stackedargs; RET","source_api":"fastcall clear_native_avoid_hull_list_0041e200(void* actual_list_header)","source_bytes":62}
+  ],
+  "host_steps": [
+    {"address":"0042153e","native":"0041bf50","containing_function":"00421500","operation":"actual head allocation under state1 before publication"},
+    {"address":"0042158f","native":"00bd1860","containing_function":"00421500","operation":"actual tracked SDK section creation under state2"},
+    {"address":"0041f9ad","native":"0041f600","containing_function":"0041f980","operation":"concrete manager clear under state2"},
+    {"address":"0041f9b5","native":"0041cc80","containing_function":"0041f980","operation":"actual tracked section release, state2 still active"},
+    {"address":"0041f9c4","native":"0041e200","containing_function":"0041f980","operation":"normal standalone list clear after state1 transition"},
+    {"address":"0041f9cd","native":"00bf65ac","containing_function":"0041f980","operation":"unconditional current-head free then null, state1"},
+    {"address":"0041f9e2","native":"00bf65ac","containing_function":"0041f980","operation":"conditional captured vector-first free then all three nulls, state1"},
+    {"address":"00420683","native":"0041f980","containing_function":"00420680","operation":"destruct captured receiver with actual Source context"},
+    {"address":"00420690","native":"00bf65ac","containing_function":"00420680","operation":"free original receiver iff stacked flags lowbytebit0 after destructor returns"},
+    {"address":"0041e225","native":"00c37450","containing_function":"0041e200","operation":"destroy embedded handle after next capture"},
+    {"address":"0041e22b","native":"00bf65ac","containing_function":"0041e200","operation":"free captured node then compare next against reloaded current head"}
+  ],
+  "incoming_evidence": {
+    "constructor":"sole call00421953 in004218E0, MOV ECX,EAX after actual78h allocation; E17624 store occurs later at00421961, not in ctor; whole caller read",
+    "destructor":"sole direct caller00420683 owned scalar",
+    "scalar":"only live reference DATA00CE38F4; Source EDX context is not supplied by arbitrary original CALL EDX",
+    "list_clear":"0041F233 in0041F230 and0041E3A3 in0041E3A0 forward actual headerECX; owned0041F9C4 passes manager+6C; complete callers read"
+  },
+  "storage_and_schedule": {
+    "schema":"reuse exact78h Cc13AvoidZoneManagerNative, groups08..54/count58, vector60/64/68, listheader6C/head70/count74; reuse existing hull/node/group types",
+    "constructor":"derived Source table; state0; vector three zero stores; state1 before BF50; head/count stores, groupcount0, slots0..18 zero; state2 before slot19zero/SDK create; section stored only after return; no normal publication, no previous ownership release; proxies5C/6C and headvaluewords untouched",
+    "destructor":"derived Source table; state2 covers managerclear and sectionrelease; state1 BEFORE listclear/headfree; vector/base remains active through vectorfree/nulls, unconditional actual E17624zero and CE3818 marker; no unrelated reset",
+    "list_clear":"captured first, selflinknext, reloadhead/selflinkprevious, comparethen count0 preservingflags; each node capturesnext before actual hull/free; comparesagainst current reloadedhead; sentinel/proxy retained",
+    "scalar":"read stillstackedflags after destructor; lowbytebit0 only; Source EDX=context retained into actual destructor call; capturedpointer returned including afterfree; RET4"
+  },
+  "contexts_and_tables": {
+    "borrowed":"NativeAvoidManagerLifetimeContext holds actual E188A8 game-cell ADDRESS and actual E17624 manager-cell ADDRESS, stable bindings/lifetimes, changing publication values allowed; no replacement global/context owner",
+    "derived":"actual const kNativeAvoidManagerLifetimeSourceVtable slot0 relocates to real context-bearing scalar; replaces NativeCE38F4 identity",
+    "source_dispatch":"typed Source virtual call must provide EDX=context; original target-inEDX virtual CALL cannot satisfy this new ABI; production initialization/dispatcher not installed",
+    "base":"final CE3818 is numeric Native profile marker on raw destructed flag0 receiver, deliberately not Source callable; existing concrete base scalar provider inspected, no invented base slot/table/RTTI/extra Native class claim",
+    "publication":"normal ctor never publishes; base normal/unwind unconditionally clears actual E17624 even if a different pointer is currently published"
+  },
+  "dependencies": {
+    "manager_clear":"existing complete native_avoid_manager_clear + GOAL15D group/cache/queue chain, actual publication-cell address passed",
+    "head":"actual buy_native_hull_list_head_0041bf50 from native_hull_list_head.hpp/.cpp, commit003cc906cace2c63d26db9668fda23f2e6ae02f1",
+    "sdk_section":"existing actual create_native_tracked_critical_section_00bd1860/native_renderer_worker_lifetime and release_native_tracked_critical_section_0041cc80/native_tracked_critical_section_release; genuine1Ch raw malloc-backed section, actual Win32 APIs; no invented provider or reimplementation",
+    "hull":"existing repaired full typed avoid_zone_dyn_hull_destroy_00c37450 with actual singleton_lifetime allocation/free pair, captured data once/postcallfieldreloads; no new hull schema/history overwrite",
+    "free":"genuine singleton_lifetime_free ->std::free, matching current Source allocations; original private CRT/heap/error/fault/exception/synchronization/frame identity qualified"
+  },
+  "native_eh": {
+    "common":{"magic":"19930522","max_state":3,"catch_blocks":0,"ip_map_entries":0,"exception_spec_list":0,"eh_flags":1,"chain":"2->1->0->-1"},
+    "constructor":{"handler":"00c5e4fe","func_info":"00d84934","map":"00d8491c","state0_action":"00c5e4e0","state1_action":"00c5e4e8","state2_action":"00c5e4f3","phase":"state0 at00421527 before vectorzero, state1 at00421539 before BF50, state2 at00421587 before slot19zero and SDKcreate"},
+    "destructor":{"handler":"00c5e30e","func_info":"00d844b8","map":"00d844a0","state0_action":"00c5e2f0","state1_action":"00c5e2f8","state2_action":"00c5e303","phase":"state2 at0041F9A5 before managerclear/criticalrelease, state1 at0041F9BF before E200/headfree; stays1 through normal vector/base tail"},
+    "actions":"each loads saved manager[EBP-10]; state2 adds6C then listtidy0041F230(clear/currentheadfree/null); state1 adds5C then vectortidy0041DDF0(currentfirstconditionalfree/three nulls); state0 base004152B0(unconditionalactualE17624zero thenCE3818). Whole action/helper bodies read; consumed unowned evidence only"
+  },
+  "source_eh": {
+    "operation":"real current C++ scope guard with volatile logicalstate; lowers before each exact list/vector/base action, dismissed only after full normal completion; leaves partial group/count/body state intact; no catch/replacement exception",
+    "omissions_preserved":"no criticalsection cleanup on constructor/destructor unwind; no groupclear, deferredbodyqueue or extra rollback on unwind; state1 head-allocation failure does not touch unconstructedlist; normal listclear failure afterstate1 does not retrylist",
+    "emission":"ctor208B/dtor230B actual current __CxxFrameHandler3 registration + generated unwindfunclets to stagedguard; fixed local volatile entry pointers only to actual concrete providers retain phases against nonthrow inference; barriered memcpy DWORDs preserve orderedstores/freshloads withoutCPUfences/typealiasing invention",
+    "limits":"current SDK C++ propagation after successful guard, current noexcept cleanup/doubleexception termination policy; no Native FH3/SEH/frame/cookie/handler/funclet/exception identity transplant or runtimeEH proof"
+  },
+  "validation": {
+    "strict_compile":"PASS MSVC Win32 /std:c++17 /EHsc /MD /W4 /WX /permissive- /fp:strict /O2; local/goal15e_manager_lifetime_compile.cmd",
+    "normalized_coff":"PASS list62B+scalar30B exact except4 verified E8 I386_REL32 operands; exactsizes/sites/types/targets asserted; actualderivedtable slot0reloc and currentctor/dtor EH/provider/guardrelocations checked",
+    "compare_command":"python local/goal15e_compare_manager_bytes.py [optional_registered_object_path]",
+    "native_ctor_dtor_bytes":"Native171B/145B vs Source208B/230B mainbodies deliberately not normalized/equated; current normalandguard schedules reviewed",
+    "flow":"four listings zero byte gaps, typed flow/noreturn query unavailable; no repair/mutation",
+    "call_checker":"PASS all11 direct Native call rows,0failures; markdown30addresses/1callclaim/0unchecked/0warnings (2026-10-15)",
+    "source_fixture":"PASS one peer realheap lifecycle fixture: actual ctor/SDK lock, populated standaloneE200 frees actualnode/hulldata and restoresheadselflinks/count0 while retaining sentinel/proxies/lock; signedgroupinsert/find, populatedgroupclear/cache/bodyqueue, recreate, typedSource scalar flag0 andflag1, bothactualcells/unconditionalforeignpointerreset, proxyretention andbounded_heapwalk of group/record/lock/head/body frees, retained receiver/queue",
+    "fixture_source":"J:/PROG/battlestations-pacific-decompile-goal15_pool_cleanup/local/output/avoid_group_factory_probe.cpp",
+    "fixture_command":"peer local/output/run_avoid_group_factory_probe.cmd overlays factory/manager/head modules on actual existing Release archives; optional archivepath + archive-only mode for final registeredrerun; /MD /MANIFEST:EMBED",
+    "fixture_limits":"bounded current Source heap/normal composition observations, no wholeprocess leak proof, exceptioninjection, Nativeexecution/differential/ABI/gameplay proof",
+    "full_registered_build_ctest":"primary owns registration/build/CTest/registeredobject/archivefixture/annotationsexports; pending workercommit",
+    "native_execution_abi_gameplay":"not established; no injectedexception case or original process runtime/visual/gameplay/Native differential proof"
+  },
+  "history":"Older typed callback APIs/reconstruction records preserved under distinctnames. Append complete concrete entries and EH evidence at ownedaddresses only; retain correct STL/compiler-generated/reviewednames. No shared Ghidra/CMake/registry writes.",
+  "remaining_limits":["Source EDX context required; original virtual caller/production singleton factory adaptation not installed","Base finalword is a numeric Native profile on raw destructed storage, not a callable Source table","Native FH3/SEH/frame/original CRT/heap/exception identity not transplanted","Invalid storage/allocation/lifetime/threading retain existing provider preconditions; no new repairs","No Native execution/drop-in ABI/gameplay proof"]
+}

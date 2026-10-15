@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_dword_move",
+  "source": "src/native_scene_dword_move.cpp",
+  "header": "include/bsp/native_scene_dword_move.hpp",
+  "documentation": "docs/GOAL_OCT15_DWORD_MOVE.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "language": "x86:LE:32:default",
+  "image_base": "00400000",
+  "routines": [
+    {
+      "address": "00467d90",
+      "end_exclusive": "00467dc2",
+      "coverage": "complete",
+      "cpp_symbol": "move_native_scene_dword_range_00467d90",
+      "original_abi": "cdecl first,last,destination; plain RET; EAX pre-call captured result; ECX/EDX not inputs",
+      "instruction_count": 21,
+      "instruction_bytes": 50,
+      "bytes": "8b 44 24 08 8b 54 24 04 2b c2 56 c1 f8 02 85 c0 57 8b 7c 24 14 8d 0c 85 00 00 00 00 8d 34 39 7e 0c 51 52 51 57 e8 ed e9 78 00 83 c4 10 5f 8b c6 5e c3",
+      "live_disk_equal": true,
+      "sha256": "eceeaf68d2cd6c8f08290941b73a90a8aef53a1f32e04eec0105cce0a0ff9f71",
+      "live_caller_sites": 2
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00467db5",
+      "native": "00bf67a7",
+      "function": "00467d90",
+      "contract": "signed-positive SAR2 words only; push count,first,size,destination; size=count=scaled DWORD; ADD ESP10h; ignored status; result captured before call"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "004f612d",
+      "native": "00467d90",
+      "function": "004f60e0",
+      "contract": "captured source begin/end and current destination begin; ADD ESP0Ch"
+    },
+    {
+      "address": "004f6196",
+      "native": "00467d90",
+      "function": "004f60e0",
+      "contract": "captured source begin/prefix-end and current destination begin; ADD ESP0Ch"
+    }
+  ],
+  "source_dependencies": [
+    {
+      "native": "00bf67a7",
+      "symbol": "::memmove_s",
+      "status": "concrete current SDK CRT service already used by accepted byte-range and scene-database Source; native callee body read",
+      "modified": false,
+      "qualification": "does not claim original static CRT errno/encoded handler/fault/SEH/register ABI identity"
+    }
+  ],
+  "read_capture_schedule": [
+    "last stack value",
+    "first stack value",
+    "DWORD subtraction modulo32",
+    "SAR2 with explicit sign-fill bits; signed condition retained",
+    "destination stack value",
+    "scaled bytes modulo32",
+    "result destination+bytes modulo32 captured before CRT",
+    "only positive shifted words invoke actual current SDK memmove_s",
+    "return captured result for zero/negative and returning-CRT paths"
+  ],
+  "prior_annotations": [
+    {
+      "address": "00467d90",
+      "name": "STL_inst_00467d90",
+      "comment": ""
+    }
+  ],
+  "source_registration": "unique cmake/startup.cmake append after unleased ownership/queue check; no whole-file lease",
+  "validation": {
+    "source_ready": true,
+    "build": {
+      "command": "scripts/build.ps1",
+      "result": "PASS",
+      "exit_code": 0,
+      "revision": "983c031c6",
+      "platform": "MSVC Win32",
+      "log": "local/goal_oct15_dword_move_build.log",
+      "log_sha256": "ad7847d03d02ca97a363aa18557b745f8af37847ec9b030a624add64ef25aac4",
+      "warnings": [
+        "existing unrelated LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj"
+      ]
+    },
+    "existing_ctests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "seconds": 8.28,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "optional_native_differential_enabled": false
+    },
+    "report_call_verification": "PASS:3 typed rows; documentation0 failures/unchecked/warnings",
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_executed": false,
+    "game_validated": false,
+    "diff_check": "PASS"
+  },
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "qualification": "Complete ordinary Source with bit-exact wrapping/SAR2/zero-negative paths and fixed actual current SDK memmove_s. New Source interface; no physical argument/private-stack coincidence, stub/callback, nominal class meaning, original CRT errno/handler/SEH/native ABI/candidate differential/game proof.",
+  "annotation": {
+    "prior_values_logs": [
+      "local/ghidra-annotations-20261015T214608Z.json",
+      "local/ghidra-annotations-20261015T214804Z.json"
+    ],
+    "locked": true,
+    "saved": true,
+    "refreshed_export": "exports/bsp/functions/00467d90/decompiled.c",
+    "correct_callee_library_name_preserved": true
+  },
+  "source_sha256": "25534e8fd6f7db5d904832ca623ae9ade05f0c05a3f9848e1cb625b519a83386",
+  "header_sha256": "61294c3eb1ce7b42553587bbdfd206a3fbbf129dd15770a66e1da98a8ac9e9f2",
+  "independent_review": {
+    "reviewer": "primary /root",
+    "reviewed_draft": "983c031c6",
+    "result": "PASS full21-instruction listing against complete Source/header; exact unsigned SAR2 signfill,last-first wrapping,destination-before-bytes,preCRT result capture,signed-positive-only CRT call and full zero-negative paths; no Source edits",
+    "source_sha256": "25534e8fd6f7db5d904832ca623ae9ade05f0c05a3f9848e1cb625b519a83386",
+    "header_sha256": "61294c3eb1ce7b42553587bbdfd206a3fbbf129dd15770a66e1da98a8ac9e9f2"
+  }
+}

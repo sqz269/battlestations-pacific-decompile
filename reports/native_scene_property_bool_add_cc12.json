@@ -1,0 +1,333 @@
+{
+  "schema": "bsp.cc12.scene-property-bool-add.Source.v1",
+  "status": "whole_ordinary_Source_worker_strict_full_COFF_and_normal_build_passed_Root_independent_Main_admission_pending",
+  "address": "008F3940",
+  "Source_ready": true,
+  "Source_admission_credit": 0,
+  "Root_independent_Main_admission_pending": true,
+  "worker_base_commit": "756d90dd1da0fa4b6bbccf40ed3c8f1795352cbb",
+  "owned_new_files": [
+    "include/bsp/native_scene_property_bool_add.hpp",
+    "src/native_scene_property_bool_add.cpp",
+    "docs/NATIVE_SCENE_PROPERTY_BOOL_ADD_CC12.md",
+    "reports/native_scene_property_bool_add_cc12.json"
+  ],
+  "Source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\src\\native_scene_property_bool_add.cpp",
+    "bytes": 1592,
+    "sha256": "b6a18914c6f00b84f3176fb36351dcebb739dfd88aa5e9f708281f0175973046"
+  },
+  "header": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\include\\bsp\\native_scene_property_bool_add.hpp",
+    "bytes": 2576,
+    "sha256": "42ee22f1fa6afdf1b24be316a036d0d4285f97efaf7233b52794581425fe570e"
+  },
+  "document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\docs\\NATIVE_SCENE_PROPERTY_BOOL_ADD_CC12.md",
+    "bytes": 5832,
+    "sha256": "9a6b8a9b12a637f8b8ad6ea93675fd41300bc84b9606a46a1bc4e80254adfa58"
+  },
+  "Original": {
+    "begin": "008F3940",
+    "end_exclusive": "008F39A1",
+    "bytes": 97,
+    "instructions": 34,
+    "direct_CALL_sites": 3,
+    "unique_targets": [
+      "008F33F0",
+      "00BF681B"
+    ],
+    "indirect_calls": 0,
+    "x87_SSE": 0,
+    "disk_live_export_boundaries_equal": true,
+    "transport": "ECXactual114hbag;stackkey/DWORDslotLOWBYTEonly;upper24ignored;RET8;both exits insertionEAXbag",
+    "full_inventory": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\frozen_readiness\\complete_Original.DATA.json",
+      "bytes": 5322,
+      "sha256": "df2f353bf35dc15d2e7a98f0477bfff2ab8e0a9524f16e198efd3cfeff7f7b5c"
+    },
+    "EH": "No local FS/EH registration; no Source recovery/cleanup/transaction."
+  },
+  "public_API": "void* add_native_scene_property_bool_byte_008f3940(void* actual_bag,const char* actual_key,std::uint8_t actual_value_bits,NativeScenePropertyInsertionContext& context)",
+  "full_body": {
+    "allocation": "38: canonical object/native56/host56 request",
+    "null": "JE44->B4 skips all stores and passes null to insertionBA",
+    "ordered_physical_stores": [
+      {
+        "call": "4E",
+        "offset": "00",
+        "width": 4,
+        "value": "00CE89D4"
+      },
+      {
+        "call": "58",
+        "offset": "04",
+        "width": 4,
+        "value": "3"
+      },
+      {
+        "call": "63",
+        "offset": "0C",
+        "width": 1,
+        "value": "all256bytepatterns"
+      },
+      {
+        "call": "6D",
+        "offset": "18",
+        "width": 4,
+        "value": "0"
+      },
+      {
+        "call": "77",
+        "offset": "1C",
+        "width": 4,
+        "value": "0"
+      },
+      {
+        "call": "81",
+        "offset": "20",
+        "width": 4,
+        "value": "0"
+      },
+      {
+        "call": "8E",
+        "offset": "24",
+        "width": 4,
+        "value": "0"
+      },
+      {
+        "call": "98",
+        "offset": "30",
+        "width": 4,
+        "value": "0"
+      },
+      {
+        "call": "A2",
+        "offset": "34",
+        "width": 4,
+        "value": "0"
+      },
+      {
+        "call": "AC",
+        "offset": "2C",
+        "width": 1,
+        "value": "1"
+      }
+    ],
+    "written_bytes": 34,
+    "preserved_22bytes": [
+      "[08,0C)",
+      "[0D,18)",
+      "[28,2C)",
+      "[2D,30)"
+    ],
+    "insertion": "BA with actualbag/key/root/samecontext; EAX preserved through real GS epilogue",
+    "helpers": "Each17B8instructions; one pointed BYTE/DWORD store at0C; no other pointed access/call/relocation.",
+    "argument_staging_limit": "Compiler pushes full by-value slot at5D, but write_byte loads only DL from lowbyte at09 and stores only BYTE at0C. Upper24 are never observed in root memory or normalized. Source frame/root are disjoint; Original stack/register/fault/observer timing is not claimed."
+  },
+  "ownership": "Tag3 owns no child. Only fresh currentCRTroot transfers to actualbag with retained actual114h/map+4/E175B0/E188B4/rawkeys/E177E4/E17654/generation/lifetime. Stable closedASCII/currentClocale; finite unique disjoint acyclic owninggraphs; successful nonthrowing providers; external list serialization; no concurrenttrim/reentry.",
+  "strict": {
+    "first_only": true,
+    "receipt": {
+      "chunk_id": "4e870a",
+      "wall_time_seconds": 4.223161,
+      "exit_code": 0,
+      "original_token_count": 284,
+      "output": "Compiler Passes:\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\cl.exe:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1.dll:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll:      Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c2.dll:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll:      Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\link.exe:      Version 14.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\mspdb140.dll:  Version 14.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\1033\\clui.dll: Version 19.51.36244.0\r\n\r\nnative_scene_property_bool_add.cpp\r\n"
+    },
+    "compiler": "MSVC Win32 19.51.36244",
+    "flags": "/std:c++17 /MD /O2 /Ob2 /Oy- /W4 /WX /EHsc /Gy /GL- /fp:strict",
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\native_scene_property_bool_add.obj",
+      "bytes": 2150,
+      "sha256": "3d920d66fbcea61047b226133dbb02a545c783ff6c7cc11abbee980aa3acb06d"
+    },
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\strict_compile.log",
+      "bytes": 1136,
+      "sha256": "9d1bc299a349a1899b6769cc1c9e270379623f35f3533e9b2c7ef1ec14b73d9c"
+    },
+    "complete_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\complete_COFF.DATA.json",
+      "bytes": 43243,
+      "sha256": "746e30c72e4c2efb3b71c4501e118fd2db2486e6f8f4eaf54f620b31c9db40ab"
+    },
+    "complete_binary_audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\complete_COFF_binary_audit.DATA.json",
+      "bytes": 9598,
+      "sha256": "c95b0bce944c5a6e84a07add4383f209abbe18d0fa6751f331c5d252bf62cbe6"
+    },
+    "complete_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\complete_strict_review.DATA.json",
+      "bytes": 43134,
+      "sha256": "5afbe981ec2e541cf00260bcc5d11c68a1393d22e0db978fc3aef3e264ed56fe"
+    },
+    "code_sections": 3,
+    "code_bytes": 245,
+    "instructions": 96,
+    "code_relocations": 14,
+    "metadata_relocations": 0,
+    "symbol_indices_including_aux": 24,
+    "all_code_and_metadata_rows_reviewed": true
+  },
+  "normal_build": {
+    "original_launch": {
+      "chunk_id": "6398bb",
+      "wall_time_seconds": 10.0033181,
+      "session_id": 36572,
+      "original_token_count": 198,
+      "output": "-- Selecting Windows SDK version 10.0.26100.0 to target Windows 10.0.26200.\r\n-- The C compiler identification is MSVC 19.51.36244.0\r\n-- The CXX compiler identification is MSVC 19.51.36244.0\r\n-- Detecting C compiler ABI info\r\n-- Detecting C compiler ABI info - done\r\n-- Check for working C compiler: C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/cl.exe - skipped\r\n-- Detecting C compile features\r\n-- Detecting C compile features - done\r\n-- Detecting CXX compiler ABI info\r\n-- Detecting CXX compiler ABI info - done\r\n-- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/cl.exe - skipped\r\n-- Detecting CXX compile features\r\n-- Detecting CXX compile features - done\r\n"
+    },
+    "all_original_polls_and_terminal": [
+      {
+        "chunk_id": "a27f8d",
+        "wall_time_seconds": 5.016035,
+        "session_id": 36572,
+        "original_token_count": 1130,
+        "output": "-- Configuring done (8.8s)\r\n-- Generating done (0.3s)\r\n-- Build files have been written to: J:/PROG/battlestations-pacific-decompile-cc12_property_bool_source_oct15/build/win32\r\nMSBuild version 18.6.3+84d3e95b4 for .NET Framework\r\n\r\n  1>Checking Build System\r\n  Building Custom Rule J:/PROG/battlestations-pacific-decompile-cc12_property_bool_source_oct15/CMakeLists.txt\r\n  Building Custom Rule J:/PROG/battlestations-pacific-decompile-cc12_property_bool_source_oct15/CMakeLists.txt\r\n  Building Custom Rule J:/PROG/battlestations-pacific-decompile-cc12_property_bool_source_oct15/CMakeLists.txt\r\n  adler32.c\r\n  compress.c\r\n  crc32.c\r\n  lapi.c\r\n  deflate.c\r\n  lcode.c\r\n  inffast.c\r\n  ldebug.c\r\n  inflate.c\r\n  ldo.c\r\n  inftrees.c\r\n  trees.c\r\n  ldump.c\r\n  lfunc.c\r\n  uncompr.c\r\n  zutil.c\r\n  lgc.c\r\n  Generating Code...\r\n  llex.c\r\n  lmem.c\r\n  lobject.c\r\n  lopcodes.c\r\n  lparser.c\r\n  lstate.c\r\n  lstring.c\r\n  ltable.c\r\n  ltm.c\r\n  lundump.c\r\n  lvm.c\r\n  lzio.c\r\n  lauxlib.c\r\n  Generating Code...\r\n  bsp_zlib121.vcxproj -> J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\build\\win32\\Release\\bsp_zlib121.lib\r\n  xlive_stub.cpp\r\n     Creating library J:/PROG/battlestations-pacific-decompile-cc12_property_bool_source_oct15/build/win32/Release/xlive_stub.lib and object J:/PROG/battlestations-pacific-decompile-cc12_property_bool_source_oct15/build/win32/Release/xlive_stub.exp\r\n  Compiling...\r\n  lbaselib.c\r\n  bsp_xlive_stub.vcxproj -> J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\build\\win32\\Release\\xlive_stub.dll\r\n  loadlib.c\r\n  ltablib.c\r\n  liolib.c\r\n  loslib.c\r\n  lstrlib.c\r\n  lmathlib.c\r\n  ldblib.c\r\n  Generating Code...\r\n  bsp_lua511.vcxproj -> J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\build\\win32\\Release\\bsp_lua511.lib\r\n  Building Custom Rule J:/PROG/battlestations-pacific-decompile-cc12_property_bool_source_oct15/CMakeLists.txt\r\n  math.cpp\r\n  render_sort.cpp\r\n  random.cpp\r\n  random_threads.cpp\r\n  platform_loop.cpp\r\n  win32_event.cpp\r\n  d3d9_startup.cpp\r\n  d3d9_texture.cpp\r\n  texture_atlas.cpp\r\n  texture_atlas_lookup.cpp\r\n  gui_texture.cpp\r\n  gui_geometry.cpp\r\n  shader_source.cpp\r\n  shader_lua.cpp\r\n  material_constants.cpp\r\n  camera_projection.cpp\r\n  camera_inverse.cpp\r\n  camera_multiply.cpp\r\n  camera_affine.cpp\r\n  camera_transform.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  d3d9_states.cpp\r\n  d3d9_resources.cpp\r\n  d3d9_buffers.cpp\r\n  vertex_declaration.cpp\r\n  d3d9_vertex_layout.cpp\r\n  shader_reflection.cpp\r\n  material_samplers.cpp\r\n  native_material_pass_states.cpp\r\n  native_material_pass_base.cpp\r\n  material_shadow_samplers.cpp\r\n  material_lighting.cpp\r\n  resource_path.cpp\r\n  vfs_mounts.cpp\r\n  vfs_candidates.cpp\r\n  physical_directory.cpp\r\n  vfs_search_defaults.cpp\r\n  resource_lookup.cpp\r\n  vfs_mount_registration.cpp\r\n  package_mounts.cpp\r\n  package_scan.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  vfs_provider_manager.cpp\r\n  vfs_pending.cpp\r\n  file_store.cpp\r\n  file_store_requests.cpp\r\n  mounted_streams.cpp\r\n  resource_preload.cpp\r\n  inflate_stream.cpp\r\n  mpkg_archive.cpp\r\n  mpkg_provider.cpp\r\n  resource_enumeration.cpp\r\n  physical_pending_reads.cpp\r\n  frame_clock.cpp\r\n  text_input.cpp\r\n  physical_file.cpp\r\n  memory_stream.cpp\r\n  structured_reader.cpp\r\n  structured_resource.cpp\r\n  structured_hierarchy.cpp\r\n  compiled_material.cpp\r\n  mesh_decode_bindings.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  mesh_gpu_streams.cpp\r\n  building_instance.cpp\r\n  resource_parser_map.cpp\r\n  structured_resource_registry.cpp\r\n  instance_geometry.cpp\r\n  instance_upload.cpp\r\n  instance_grouping.cpp\r\n  structured_model.cpp\r\n  material_clone.cpp\r\n  instance_sort.cpp\r\n  scene_attachment.cpp\r\n  model_bounds.cpp\r\n  generated_model_lifetime.cpp\r\n  camera_frame_state.cpp\r\n  material_entry_dispatch.cpp\r\n  material_effect_plane.cpp\r\n  material_constant_builder.cpp\r\n  material_transform_constants.cpp\r\n  material_scalar_constants.cpp\r\n  material_point_light_constants.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  system_camera_constants.cpp\r\n  system_fog_constants.cpp\r\n  system_lighting_constants.cpp\r\n  system_camera_axes.cpp\r\n  system_time_constants.cpp\r\n  system_constant_builder.cpp\r\n  legacy_crt_math.cpp\r\n  singleton_lifetime.cpp\r\n  particle_clock_lifetime.cpp\r\n  system_fog_owner.cpp\r\n  environment_fog_apply.cpp\r\n  authored_fog_source.cpp\r\n  system_lighting_owners.cpp\r\n  native_node_construction.cpp\r\n  light_scene_retention.cpp\r\n  system_fog_world_factory.cpp\r\n  allocator_list.cpp\r\n  directional_light_pool.cpp\r\n"
+      },
+      {
+        "chunk_id": "b483be",
+        "wall_time_seconds": 5.0091263,
+        "session_id": 36572,
+        "original_token_count": 2859,
+        "output": "Warning: truncated output (original token count: 2859)\nTotal output lines: 332\n\n  native_node_destruction.cpp\r\n  light_type_bootstrap.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  directional_light_owner.cpp\r\n  lighting_configuration_apply.cpp\r\n  native_shadow_texture_access.cpp\r\n  native_viewport_owner.cpp\r\n  system_fog_slot.cpp\r\n  native_camera_pool.cpp\r\n  camera_look_at.cpp\r\n  camera_type_bootstrap.cpp\r\n  d3d9_surface_pool.cpp\r\n  camera_pose.cpp\r\n  camera_plane_initialization.cpp\r\n  native_camera_owner.cpp\r\n  native_resource_support.cpp\r\n  native_camera_reference.cpp\r\n  native_render_context.cpp\r\n  native_renderer_parameters.cpp\r\n  d3d9_texture2d_pool.cpp\r\n  native_render_pointer_arrays.cpp\r\n  native_render_group_storage.cpp\r\n  native_render_group_lifetime.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_render_resource_record.cpp\r\n  native_render_resource_alias_nodes.cpp\r\n  native_render_alias_checked_ops.cpp\r\n  native_render_alias_insertion.cpp\r\n  native_model_pool.cpp\r\n  model_type_bootstrap.cpp\r\n  native_model_owner.cpp\r\n  native_render_batch_lifetime.cpp\r\n  native_render_batch_reference.cpp\r\n  native_render_batch_keys.cpp\r\n  native_render_state_leaves.cpp\r\n  native_render_queue_rows.cpp\r\n  native_render_pointer_slot_sort.cpp\r\n  native_pooled_string_substring.cpp\r\n  native_pooled_resource_path.cpp\r\n  native_event_owner.cpp\r\n  native_render_diagnostic_labels.cpp\r\n  native_renderer_synchronization_actual.cpp\r\n  native_renderer_binding_getters.cpp\r\n  native_renderer_surface_bindings.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_physical_buffer_owner.cpp\r\n  native_physical_pool_acquire.cpp\r\n  native_tree_out_of_range_exception.cpp\r\n  native_hardware_layout_tree.cpp\r\n  native_hardware_layout_tree_key.cpp\r\n  native_hardware_layout_fields.cpp\r\n  native_hardware_layout_tree_insert.cpp\r\n  native_hardware_layout_pool_allocate.cpp\r\n  native_hardware_layout_construct.cpp\r\n  native_hardware_layout_factory.cpp\r\n  native_hardware_layout_pool_trim.cpp\r\n  native_hardware_layout_pool_lifetime.cpp\r\n  native_hardware_layout_pool_static.cpp\r\n  native_hardware_layout_tree_lifetime.cpp\r\n  native_hardware_layout_tree_static.cpp\r\n  native_cube_texture_pool_allocate.cpp\r\n  native_cube_texture_pool_trim.cpp\r\n  native_cube_texture_pool_lifetime.cpp\r\n  native_cube_texture_pool_static.cpp\r\n  native_cube_texture_base.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_cube_texture_owner_array_reserve.cpp\r\n  native_cube_texture_owner.cpp\r\n  native_volume_texture_owner.cpp\r\n  native_hardware_layout_device_release.cpp\r\n  native_shader_device_reset.cpp\r\n  native_dynamic_buffer_device_release.cpp\r\n  native_resource_creation_flags.cpp\r\n  native_physical_buffer_access.cpp\r\n  native_physical_buffer_lock.cpp\r\n  native_logical_buffer_device_save.cpp\r\n  native_logical_buffer_device_restore.cpp\r\n  native_logical_vertex_pool_return.cpp\r\n  native_renderer_vertex_layout_binding.cpp\r\n  native_renderer_index_binding.cpp\r\n  native_texture_device_reset.cpp\r\n  native_renderer_resource_restore.cpp\r\n  native_renderer_cached_states.cpp\r\n  native_renderer_stream_frequency.cpp\r\n  native_shader_owner_texture_release.cpp\r\n  native_renderer_texture_binding.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_frame_target_getters.cpp\r\n  native_frame_target_vector.cpp\r\n  native_frame_target_owner.cpp\r\n  native_renderer_frame_targets.cpp\r\n  native_renderer_clip_planes.cpp\r\n  native_renderer_indexed_draw.cpp\r\n  native_plane_set.cpp\r\n  native_camera_matrix_copy.cpp\r\u20261159 tokens truncated\u2026 native_world_activation_flush.cpp\r\n  native_world_child_retirement.cpp\r\n  native_world_expiry_pass.cpp\r\n  native_world_entity_chain_retirement.cpp\r\n  native_world_entity_chain_receiver.cpp\r\n  native_pending_registry_base_cleanup.cpp\r\n  native_pending_registry_constructor.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_pending_registry_getter.cpp\r\n  native_tick_registration_constructor.cpp\r\n  native_tick_sublist_unlink.cpp\r\n  native_tick_subnode_unlink_caller.cpp\r\n  native_tick_subnode_base_cleanup.cpp\r\n  native_tick_subnode_scalar_deletion.cpp\r\n  native_observer_endpoint_live_count_cleanup.cpp\r\n  native_invalid_parameter_noinfo_call.cpp\r\n  native_allocator_base_message_constructor.cpp\r\n  native_allocator_base_copy_constructor.cpp\r\n  native_allocator_base_default_constructor.cpp\r\n  native_lua_variant_link_repair_helpers.cpp\r\n  native_allocator_owned_message_constructor.cpp\r\n  native_lua_variant_small_link_helpers.cpp\r\n  native_pending_tick_group_initialization.cpp\r\n  native_allocator_base_cleanup.cpp\r\n  native_allocator_failure_object_constructor.cpp\r\n  native_pending_registry_scalar_retirement.cpp\r\n  native_mission_lua_variant_initializer.cpp\r\n  native_application_pointer_vector_resize.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_world_current_tick.cpp\r\n  native_mission_clock_reset.cpp\r\n  native_lua_variant_pair_advance.cpp\r\n  native_observer_member_cleanup.cpp\r\n  native_lua_variant_string_fields_cleanup.cpp\r\n  native_squadron_launch_task_cleanup.cpp\r\n  native_lua_variant_link_record_allocation.cpp\r\n  native_observer_member_initializer.cpp\r\n  native_squadron_launch_task_scalar_deletion.cpp\r\n  native_lua_variant_header_initializer.cpp\r\n  native_lua_variant_pair_retreat.cpp\r\n  native_lua_variant_pair_retreat_wrapper.cpp\r\n  native_tick_subnode_reparent.cpp\r\n  native_return_one_byte.cpp\r\n  native_tick_subnode_requeue.cpp\r\n  native_mlandfort_kind.cpp\r\n  native_mcommandbuilding_kind.cpp\r\n  native_crt_canonical_locale_reference.cpp\r\n  native_crt_cookie_initialization.cpp\r\n  native_crt_locale_reference_acquire.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_gui_widget_base_storage.cpp\r\n  native_gui_widget_bounds.cpp\r\n  native_gui_widget_child_links.cpp\r\n  native_gui_widget_visibility.cpp\r\n  native_input_action_binding_runtime.cpp\r\n  native_input_action_configuration.cpp\r\n  native_input_class_configuration.cpp\r\n  native_input_configuration_cleanup.cpp\r\n  native_input_configuration_storage.cpp\r\n  native_lua_reader.cpp\r\n  native_lua_reader_queries.cpp\r\n  native_lua_reader_support.cpp\r\n  native_material_texture_refresh.cpp\r\n  native_particle_resource_parser_raw.cpp\r\n  native_render_resource_init.cpp\r\n  native_render_resource_init_continuation.cpp\r\n  native_system_constant_registry.cpp\r\n  platform_control_messages.cpp\r\n  platform_renderer_activation.cpp\r\n  window_close_transport.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  air_operations.cpp\r\n  avoid_zone_owner.cpp\r\n  game_sound_dialog_runtime.cpp\r\n  game_sound_runtime.cpp\r\n  game_title_sound.cpp\r\n  native_shader_binary_cache.cpp\r\n  pilot_order_bindings.cpp\r\n  plane_advance_pose.cpp\r\n  plane_ai_control.cpp\r\n  plane_angular_velocity.cpp\r\n  plane_flight.cpp\r\n  plane_pose_commit.cpp\r\n  plane_squadron.cpp\r\n  sound_alternate_owner.cpp\r\n  sound_dialog_logical.cpp\r\n  sound_frame_service.cpp\r\n  sound_sample.cpp\r\n  sound_sample_runtime.cpp\r\n  sound_stream_owner.cpp\r\n  sound_stream_runtime.cpp\r\n"
+      },
+      {
+        "chunk_id": "32cfad",
+        "wall_time_seconds": 5.0029476,
+        "session_id": 36572,
+        "original_token_count": 1849,
+        "output": "Warning: truncated output (original token count: 1849)\nTotal output lines: 218\n\n  Generating Code...\r\n  Compiling...\r\n  aa_pick_ver_cc13.cpp\r\n  actions_seg5_cc13.cpp\r\n  avoid_zone_boundary.cpp\r\n  avoid_zone_offset.cpp\r\n  avoid_zone_segment_math.cpp\r\n  bot_task_states.cpp\r\n  classes_seg7_cc13.cpp\r\n  dyn_profile_scopes.cpp\r\n  dyn_world_factory.cpp\r\n  flak_ver_cc13.cpp\r\n  game_input_settings_runtime.cpp\r\n  game_native_data_bootstrap.cpp\r\n  game_native_dyn_process.cpp\r\n  game_native_frame_job_application.cpp\r\n  game_native_game_runtime.cpp\r\n  game_native_geometry_globals.cpp\r\n  game_native_input_settings_application.cpp\r\n  game_native_input_settings_process.cpp\r\n  game_native_mutable_crt_data.cpp\r\n  game_native_online_process.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  game_native_particle_pools.cpp\r\n  game_native_physical_pool.cpp\r\n  game_native_readonly_data.cpp\r\n  game_native_renderer_scalars.cpp\r\n  game_native_resource_application.cpp\r\n  game_native_resource_pools.cpp\r\n  game_native_scene_file_tokenizer.cpp\r\n  game_native_surface_pool.cpp\r\n  game_native_texture_owner_services.cpp\r\n  game_native_texture_pool.cpp\r\n  game_native_type_storage.cpp\r\n  game_native_vfs_constants.cpp\r\n  game_native_vfs_runtime.cpp\r\n  gun_dispersion.cpp\r\n  gun_gravity_arc.cpp\r\n  gun_heading_snap.cpp\r\n  gunnery_candidate_order.cpp\r\n  gunnery_recon_detection.cpp\r\n  input_binding_poll.cpp\r\n  sound_class_ownership.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  sound_configuration.cpp\r\n  fmod_configuration_library.cpp\r\n  input_device_state.cpp\r\n  sound_file_callbacks.cpp\r\n  sound_system_owner.cpp\r\n  sound_startup.cpp\r\n  main_menu_objective_runtime.cpp\r\n  mission_picture_owner.cpp\r\n  m\u20261049 tokens truncated\u2026nput_configuration_owner.cpp\r\n  native_input_configuration_runtime.cpp\r\n  native_input_device_index.cpp\r\n  native_input_device_sdk.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_input_enumeration.cpp\r\n  native_input_keyboard_iterators.cpp\r\n  native_input_keyboard_storage.cpp\r\n  native_input_scale_maps.cpp\r\n  native_input_settings_lifetime.cpp\r\n  native_input_settings_startup.cpp\r\n  native_input_settings_tables.cpp\r\n  native_input_settings_tree_cleanup.cpp\r\n  native_input_settings_tree_insertion.cpp\r\n  native_input_settings_vector_storage.cpp\r\n  native_input_vector_map_index.cpp\r\n  native_joystick.cpp\r\n  native_keyboard_mouse.cpp\r\n  native_land_approach_lifetime.cpp\r\n  native_land_approach_scalar_lifetime.cpp\r\n  native_land_approach_reference_point.cpp\r\n  native_land_follow_observer_callback.cpp\r\n  native_land_follow_observer_lifetime.cpp\r\n  native_land_follow_state_lifetime.cpp\r\n  native_land_moveto_constructor.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_land_moveto_observer_callback.cpp\r\n  native_land_moveto_scalar_lifetime.cpp\r\n  native_land_plane_leader.cpp\r\n  native_land_state_lifetime.cpp\r\n  native_land_state_registry.cpp\r\n  native_land_state_registry_lifetime.cpp\r\n  native_landing_queue.cpp\r\n  native_language_catalog_lifetime.cpp\r\n  native_language_catalog_producer.cpp\r\n  native_language_catalog_storage.cpp\r\n  native_lua_color.cpp\r\n  native_lua_field_setters.cpp\r\n  native_lua_object_boolean.cpp\r\n  native_lua_objects.cpp\r\n  native_shader_state_reader.cpp\r\n  native_lua_service_bindings.cpp\r\n  native_material_effect_owner.cpp\r\n  native_material_factory.cpp\r\n"
+      },
+      {
+        "chunk_id": "b791a0",
+        "wall_time_seconds": 5.014666,
+        "session_id": 36572,
+        "original_token_count": 3465,
+        "output": "Warning: truncated output (original token count: 3465)\nTotal output lines: 451\n\n  native_material_owner.cpp\r\n  native_material_pools.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_mission_progress_owner.cpp\r\n  native_mission_score_record.cpp\r\n  native_model_numbering.cpp\r\n  native_mpak_container_storage.cpp\r\n  native_mpak_entry.cpp\r\n  native_raw_inflate_owner.cpp\r\n  native_mpak_storage_services.cpp\r\n  native_mpkg_enumeration.cpp\r\n  native_network_console_receive.cpp\r\n  native_network_console_runtime.cpp\r\n  native_network_console_send.cpp\r\n  native_network_console_storage.cpp\r\n  native_network_console_owner.cpp\r\n  native_node_animator_lifetime.cpp\r\n  native_online_ipc.cpp\r\n  native_online_manager_lifetime.cpp\r\n  native_online_manager_owner.cpp\r\n  native_online_startup_sdk.cpp\r\n  native_parent_header_clear.cpp\r\n  native_parent_header_destructor_callback.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_parent_list_header_storage.cpp\r\n  native_pending_entity_drain.cpp\r\n  native_pending_entity_lock.cpp\r\n  native_physical_enumeration.cpp\r\n  native_physical_factory.cpp\r\n  native_physical_provider_pool.cpp\r\n  native_physical_stream_conversion.cpp\r\n  native_physical_stream_open.cpp\r\n  native_plane_derived_kind.cpp\r\n  native_plane_float_readers.cpp\r\n  native_plane_kind.cpp\r\n  native_plane_squadron_first_plane.cpp\r\n  native_plane_squadron_insert.cpp\r\n  native_plane_squadron_kind.cpp\r\n  native_plane_squadron_promote.cpp\r\n  native_plane_squadron_reindex.cpp\r\n  native_player_profile_owner.cpp\r\n  native_postprocess_pose.cpp\r\n  native_postprocess_storage.cpp\r\n  native_profile_collections.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_profile_counter_map.cpp\r\n  native_profile_hints_owner.cpp\r\n  native_profile_settings.cpp\r\n  native_property_library_lookup.cpp\r\n  native_property_library_readers.cpp\r\n  native_property_tree_library_storage.cpp\r\n  native_ref_counted.cpp\r\n  native_ref_counted_handle_initialize.cpp\r\n  native_reference_payload_copy.cpp\r\n  native_reference_payload_replace.cpp\r\n  native_resource_builtin_factories.cpp\r\n  native_resource_cach\u20262465 tokens truncated\u2026 Compiling...\r\n  fixed_step_job_waves.cpp\r\n  foliage_setup_cc13.cpp\r\n  font_registry_startup.cpp\r\n  force_event_spatial.cpp\r\n  frontend_entry.cpp\r\n  frontend_managers.cpp\r\n  frontend_menus.cpp\r\n  frontend_prompt_layout.cpp\r\n  frontend_prompts.cpp\r\n  frontend_screen_animation.cpp\r\n  frontend_screen_sets.cpp\r\n  frontend_screens_cc13.cpp\r\n  frontend_seg12_17_cc13.cpp\r\n  frontend_seg15_22_cc13.cpp\r\n  frontend_seg16_24_28_cc13.cpp\r\n  frontend_seg19_21_cc13.cpp\r\n  frontend_seg20_cc13.cpp\r\n  frontend_state_machine.cpp\r\n  frontend_states.cpp\r\n  game_dynamics_list.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  game_entry.cpp\r\n  game_frame_control.cpp\r\n  game_input_actions.cpp\r\n  game_input_runtime.cpp\r\n  game_mission_kind.cpp\r\n  game_native_particle_runtime.cpp\r\n  game_native_weak_pool.cpp\r\n  game_pending_entity_runtime.cpp\r\n  game_platform_services.cpp\r\n  game_render_frame.cpp\r\n  game_settings.cpp\r\n  game_ship_avoidance_tuning_lua.cpp\r\n  game_sound_platform.cpp\r\n  game_tuning_singleton.cpp\r\n  gamepad_force_events.cpp\r\n  gamepad_force_requests.cpp\r\n  gamepad_input_device.cpp\r\n  gameplay_effect_acquisition.cpp\r\n  gameplay_effect_components.cpp\r\n  gameplay_effect_definition.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  gameplay_effect_id_wrapper.cpp\r\n  gameplay_effect_manager.cpp\r\n  gameplay_effect_name_index.cpp\r\n  gameplay_effect_scalar_components.cpp\r\n  gameplay_effect_sound.cpp\r\n  gameplay_point_binding.cpp\r\n  gameplay_point_effect.cpp\r\n  gameplay_settings.cpp\r\n  gameplay_settings_tail.cpp\r\n  geometry_helpers.cpp\r\n  global_config.cpp\r\n  global_script_folders.cpp\r\n  global_subsystems.cpp\r\n  gui_camera_store_owner.cpp\r\n  gui_clip_box.cpp\r\n  gui_framebox.cpp\r\n  gui_group_bounds.cpp\r\n  gui_icon.cpp\r\n  gui_icon_runtime.cpp\r\n  gui_input_runtime.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  gui_layer.cpp\r\n  gui_layout_finished.cpp\r\n  gui_layout_loader.cpp\r\n  gui_listbox_listener_binding.cpp\r\n  gui_listbox_pointer_runtime.cpp\r\n  gui_listbox_row_control.cpp\r\n  gui_listbox_runtime.cpp\r\n"
+      },
+      {
+        "chunk_id": "bc3cb9",
+        "wall_time_seconds": 5.0101673,
+        "session_id": 36572,
+        "original_token_count": 2247,
+        "output": "Warning: truncated output (original token count: 2247)\nTotal output lines: 310\n\n  gui_locale_refresh.cpp\r\n  gui_lua_reader.cpp\r\n  gui_lua_runtime.cpp\r\n  gui_manager_cc13.cpp\r\n  gui_manager_frame.cpp\r\n  gui_material_binding.cpp\r\n  gui_native_clip_parameters.cpp\r\n  gui_native_geometry.cpp\r\n  gui_native_scene.cpp\r\n  gui_page_root.cpp\r\n  gui_page_script.cpp\r\n  gui_pointer_hit_runtime.cpp\r\n  gui_pointer_runtime.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  gui_render.cpp\r\n  gui_render_order.cpp\r\n  gui_resources.cpp\r\n  gui_screen_scene_runtime.cpp\r\n  gui_screens_3.cpp\r\n  gui_section_runtime.cpp\r\n  gui_startup.cpp\r\n  gui_text.cpp\r\n  gui_text_buffers.cpp\r\n  gui_text_child_lifetime.cpp\r\n  gui_text_clip_refresh.cpp\r\n  gui_text_content.cpp\r\n  gui_text_copy.cpp\r\n  gui_text_ellipsis.cpp\r\n  gui_text_factory.cpp\r\n  gui_text_geometry.cpp\r\n  gui_text_glyph_child.cpp\r\n  gui_text_glyph_child_runtime.cpp\r\n  gui_text_glyph_reference.cpp\r\n  gui_text_lifetime.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  gui_text_material.cpp\r\n  gui_text_native_layout.cpp\r\n  gui_text_native_renderer.cpp\r\n  gui_text_properties.cpp\r\n  gui_text_resource_names.cpp\r\n  gui_text_runtime_content.cpp\r\n  gui_text_runtime_factory.cpp\r\n  gui_text_runtime_submit.cpp\r\n  gui_text_sections.cpp\r\n  gui_text_single_line.cpp\r\n  gui_text_style.cpp\r\n  gui_text_type_dispatch.cpp\r\n  gui_text_wrapped.cpp\r\n  gui_timed_entry_owner.cpp\r\n  gui_timed_entry_types.cpp\r\n  gui_type_dispatch.cpp\r\n  gui_widget.cpp\r\n  gui_widget_atta\u20261547 tokens truncated\u2026_heap_init.cpp\r\n  native_crt_tls_callback_adapter.cpp\r\n  native_crt_vector_copy.cpp\r\n  native_crt_watson_failure.cpp\r\n  native_cube_volume_retained_recreation.cpp\r\n  native_d3d9_shader_construction.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_d3d9_shader_construction_actual.cpp\r\n  native_d3d9_shader_lifetime.cpp\r\n  native_d3dx9_texture_memory_imports.cpp\r\n  native_damageable_class_construction.cpp\r\n  native_damageable_class_lua.cpp\r\n  native_damageable_crew_tree.cpp\r\n  native_damageable_fake_effect_vector.cpp\r\n  native_damageable_section.cpp\r\n  native_damageable_section_fill.cpp\r\n  native_damageable_section_vector.cpp\r\n  native_debug_sphere_vertices.cpp\r\n  native_device_class_construction.cpp\r\n  native_device_registry.cpp\r\n  native_device_registry_array.cpp\r\n  native_directional_light_construction.cpp\r\n  native_directional_shadow_construction_block.cpp\r\n  native_directional_shadow_owner_construction.cpp\r\n  native_directional_shadow_owner_lifetime.cpp\r\n  native_distortion_initializer.cpp\r\n  native_distortion_lifetime.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_downscale_pass_initializers.cpp\r\n  native_dword_fill_ranges.cpp\r\n  native_checked_bit_iterators.cpp\r\n  native_dword_uninitialized_fill.cpp\r\n  native_dyn_release_queue.cpp\r\n  native_effect_component_reader.cpp\r\n  native_effect_handle_acquisition.cpp\r\n  native_effect_jobs.cpp\r\n  native_file_provider_base.cpp\r\n"
+      },
+      {
+        "chunk_id": "be6954",
+        "wall_time_seconds": 5.0056705,
+        "session_id": 36572,
+        "original_token_count": 2206,
+        "output": "Warning: truncated output (original token count: 2206)\nTotal output lines: 258\n\n  native_fileblock_gate_list.cpp\r\n  native_fileblock_identifier.cpp\r\n  native_fileblock_owner.cpp\r\n  native_filestore_completion.cpp\r\n  native_filestore_container_allocation.cpp\r\n  native_filestore_factory.cpp\r\n  native_filestore_open.cpp\r\n  native_filestore_pending_tree.cpp\r\n  native_filestore_provider_lifetime.cpp\r\n  native_filestore_remove.cpp\r\n  native_filestore_request.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_filestore_resident_insert.cpp\r\n  native_filestore_resident_tree.cpp\r\n  native_filestore_subtree.cpp\r\n  native_fixed_step_job_waves.cpp\r\n  native_fog_access.cpp\r\n  native_font_resources.cpp\r\n  native_frame_clock_actual.cpp\r\n  native_frame_clock_lifetime.cpp\r\n  native_frame_clock_publication.cpp\r\n  native_frame_job_execution.cpp\r\n  native_frame_job_lifetime.cpp\r\n  native_game_resource_classification.cpp\r\n  native_game_resource_factory.cpp\r\n  native_game_resource_lists.cpp\r\n  native_gamepad_force_event.cpp\r\n  native_gamepad_rumble.cpp\r\n  native_gamepad_xinput.cpp\r\n  native_grid_byte_vector_resize.cpp\r\n  native_grid_list_node.cpp\r\n  native_group_owner.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_group_pool.cpp\r\n  native_group_storage_lifetime.cpp\r\n  native_group_vector_erase_resize.cpp\r\n  native_group_vector_insert.cpp\r\n  native_group_vector_transfer.cpp\r\n  native_group_world_sphere.cpp\r\n  native_gui_camera_store_map.cpp\r\n  native_gui_group_factory.cpp\r\n\u20261506 tokens truncated\u2026ump.cpp\r\n  native_online_signin.cpp\r\n  native_online_signin_ui.cpp\r\n  native_online_storage.cpp\r\n  native_online_storage_requests.cpp\r\n  native_outer_insert_range_services.cpp\r\n  native_outer_string_vector_cleanup.cpp\r\n  native_outer_string_vector_cleanup_wrappers.cpp\r\n  native_outer_string_vector_copy_construct.cpp\r\n  native_outer_string_vector_fill.cpp\r\n  native_outer_string_vector_insert.cpp\r\n  native_outer_string_vector_placement.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_outer_vector_assignment.cpp\r\n  native_outer_vector_construct_services.cpp\r\n  native_outer_vector_erase_range.cpp\r\n  native_outer_vector_resize.cpp\r\n  native_pak_registry.cpp\r\n  native_pak_registry_block_callbacks.cpp\r\n  native_pak_registry_block_helpers.cpp\r\n  native_particle_array_resize.cpp\r\n  native_particle_axial_loading.cpp\r\n  native_particle_axial_raw.cpp\r\n  native_particle_bounds_reader.cpp\r\n  native_particle_clock_draw.cpp\r\n  native_particle_clock_publication_base.cpp\r\n  native_particle_clock_shutdown.cpp\r\n  native_particle_clock_singleton.cpp\r\n  native_particle_clock_sink_release.cpp\r\n  native_particle_component_lifetime.cpp\r\n  native_particle_component_reader_raw.cpp\r\n  native_particle_cone_definition.cpp\r\n  native_particle_cone_raw.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_particle_definition.cpp\r\n  native_particle_definition_loading.cpp\r\n  native_particle_emission_spawn.cpp\r\n"
+      },
+      {
+        "chunk_id": "2b78f6",
+        "wall_time_seconds": 5.0019207,
+        "session_id": 36572,
+        "original_token_count": 2657,
+        "output": "Warning: truncated output (original token count: 2657)\nTotal output lines: 284\n\n  native_particle_emission_state.cpp\r\n  native_particle_emitter_construction.cpp\r\n  native_particle_emitter_definition_lifetime.cpp\r\n  native_particle_emitter_derived_lifetimes.cpp\r\n  native_particle_emitter_factory_raw.cpp\r\n  native_particle_emitter_lifetime.cpp\r\n  native_particle_emitter_update.cpp\r\n  native_particle_layer_lifetime.cpp\r\n  native_particle_layer_reader.cpp\r\n  native_particle_model_construction.cpp\r\n  native_particle_model_lifetime.cpp\r\n  native_particle_model_manager.cpp\r\n  native_particle_model_pool_allocate.cpp\r\n  native_particle_model_pool_owner.cpp\r\n  native_particle_model_update.cpp\r\n  native_particle_object_raw.cpp\r\n  native_particle_object_resources_raw.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_particle_object_state.cpp\r\n  native_particle_object_tracer_lifetime.cpp\r\n  native_particle_object_tracer_loading.cpp\r\n  native_particle_parameter_loading.cpp\r\n  native_particle_parameter_pool_owner.cpp\r\n  native_particle_parameter_runtime_loading.cpp\r\n  native_particle_preparation.cpp\r\n  native_particle_record_children.cpp\r\n  native_particle_record_clear.cpp\r\n  native_particle_record_resize.cpp\r\n  native_particle_record_update.cpp\r\n  native_particle_resource_acquisition_raw.cpp\r\n  native_particle_resource_cache.cpp\r\n  native_particle_resource_cache_removal.cpp\r\n  native_particle_resource_lifetime.cpp\r\n  native_particle_resource_loader_raw.cpp\r\n  native_p\u20261957 tokens truncated\u2026\r\n  native_sampler_loader_context.cpp\r\n  native_sampler_parameter_record.cpp\r\n  native_sampler_parameter_write.cpp\r\n  native_scalar_float_by_ref.cpp\r\n  native_scene_database_release_pending.cpp\r\n  native_scene_integer_set_clear.cpp\r\n  native_scene_integer_set_head.cpp\r\n  native_scene_integer_set_insert.cpp\r\n  native_scene_integer_set_iterator.cpp\r\n  native_scene_integer_set_node.cpp\r\n  native_scene_integer_set_rotations.cpp\r\n  native_scene_property_assignment_storage.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_scene_property_bag_assign_existing.cpp\r\n  native_scene_property_bag_merge.cpp\r\n  native_scene_property_bag_reset.cpp\r\n  native_scene_property_clone.cpp\r\n  native_scene_property_insertion.cpp\r\n  native_scene_property_record_assignment.cpp\r\n  native_scene_record_map_clear.cpp\r\n  native_scene_record_map_destroy.cpp\r\n  native_scene_record_map_erase.cpp\r\n  native_scene_record_map_erase_range.cpp\r\n  native_scene_record_map_extrema.cpp\r\n  native_scene_record_map_head.cpp\r\n  native_scene_record_map_increment.cpp\r\n  native_scene_record_map_insert.cpp\r\n  native_scene_record_map_lookup.cpp\r\n  native_scene_record_map_node_allocate.cpp\r\n  native_scene_record_map_node_leaves.cpp\r\n  native_scene_record_map_pair.cpp\r\n  native_scene_record_map_rotations.cpp\r\n  native_scene_record_map_subtree_destroy.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_scene_registration_gates.cpp\r\n"
+      },
+      {
+        "chunk_id": "d7bf53",
+        "wall_time_seconds": 5.0128943,
+        "session_id": 36572,
+        "original_token_count": 2760,
+        "output": "Warning: truncated output (original token count: 2760)\nTotal output lines: 364\n\n  native_scene_registry_mutation_adapters.cpp\r\n  native_scene_registry_query_erase_leaves.cpp\r\n  native_scene_registry_registration.cpp\r\n  native_scene_registry_storage.cpp\r\n  native_scene_registry_storage_leaves.cpp\r\n  native_scene_registry_vector_mutation.cpp\r\n  native_scene_render_traversal.cpp\r\n  native_scene_resource_ambient.cpp\r\n  native_scene_resource_storage.cpp\r\n  native_session_message_be.cpp\r\n  native_session_transport_buffers.cpp\r\n  native_session_transport_flush.cpp\r\n  native_shader_combiner_reader.cpp\r\n  native_shader_compiler_lookups.cpp\r\n  native_shader_constant_header.cpp\r\n  native_shader_descriptor_owner.cpp\r\n  native_shader_descriptor_reader.cpp\r\n  native_shader_descriptor_samplers.cpp\r\n  native_shader_field_initialization.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  native_shader_field_reader.cpp\r\n  native_shader_interpolator_source.cpp\r\n  native_shader_interpolators.cpp\r\n  native_shader_pixel_source.cpp\r\n  native_shader_preload.cpp\r\n  native_shader_sampler_declarations.cpp\r\n  native_shader_sampler_owner.cpp\r\n  native_shader_sampler_reader.cpp\r\n  native_shader_shadow_source.cpp\r\n  native_shader_struct_declarations.cpp\r\n  native_shader_system_fields.cpp\r\n  native_shader_vertex_source.cpp\r\n  native_shadow_command_queue.cpp\r\n  native_shadow_depth_target_owner.cpp\r\n  native_shadow_draw_leaves.cpp\r\n  native_shadow_entry_iteration.cpp\r\n  native_shadow_job_lifetime\u20262060 tokens truncated\u2026 settings_archive_reader.cpp\r\n  settings_capabilities.cpp\r\n  settings_initial_state.cpp\r\n  settings_seg29_cc13.cpp\r\n  settings_text.cpp\r\n  shadow_cascades_cc13.cpp\r\n  ship_ai_approach_curves.cpp\r\n  ship_ai_approach_tune.cpp\r\n  ship_ai_approach_update.cpp\r\n  ship_ai_arm_final_step.cpp\r\n  ship_ai_attackmove_substates.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  ship_ai_avoid_zone_search.cpp\r\n  ship_ai_avoidance_request.cpp\r\n  ship_ai_bearing_rating.cpp\r\n  ship_ai_brain_prepass_schedule.cpp\r\n  ship_ai_brain_producers.cpp\r\n  ship_ai_clearance_profile.cpp\r\n  ship_ai_follow_land.cpp\r\n  ship_ai_formation.cpp\r\n  ship_ai_free_bearing.cpp\r\n  ship_ai_goal_vector.cpp\r\n  ship_ai_goal_vector_visibility.cpp\r\n  ship_ai_hull_geometry.cpp\r\n  ship_ai_kamikaze_attack.cpp\r\n  ship_ai_lateral_record.cpp\r\n  ship_ai_layer_selection.cpp\r\n  ship_ai_nav_block_ctor.cpp\r\n  ship_ai_navigation.cpp\r\n  ship_ai_navigation_arm_tail.cpp\r\n  ship_ai_neighbour_admission.cpp\r\n  ship_ai_neighbour_box.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  ship_ai_neighbour_candidates.cpp\r\n  ship_ai_neighbour_clips.cpp\r\n  ship_ai_neighbour_frame.cpp\r\n  ship_ai_obstacle_owner.cpp\r\n  ship_ai_obstacle_point.cpp\r\n  ship_ai_obstacle_tables.cpp\r\n  ship_ai_path_corridor.cpp\r\n  ship_ai_path_cursor.cpp\r\n  ship_ai_path_follower.cpp\r\n  ship_ai_path_planner.cpp\r\n  ship_ai_path_point.cpp\r\n  ship_ai_path_refresh.cpp\r\n  ship_ai_path_search.cpp\r\n"
+      },
+      {
+        "chunk_id": "829462",
+        "wall_time_seconds": 5.0064476,
+        "session_id": 36572,
+        "original_token_count": 2240,
+        "output": "Warning: truncated output (original token count: 2240)\nTotal output lines: 261\n\n  ship_ai_path_turn_ramp.cpp\r\n  ship_ai_ring_scan.cpp\r\n  ship_ai_rudder_hop.cpp\r\n  ship_ai_search_storage.cpp\r\n  ship_ai_sector_scan.cpp\r\n  ship_ai_settings_block.cpp\r\n  ship_ai_state_steps.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  ship_ai_states.cpp\r\n  ship_ai_station_keeping.cpp\r\n  ship_ai_sub_attack.cpp\r\n  ship_ai_throttle_ring.cpp\r\n  ship_ai_torpedo_response.cpp\r\n  ship_ai_wake_trail.cpp\r\n  ship_buoyancy_elements.cpp\r\n  ship_class_fields.cpp\r\n  ship_hull_body.cpp\r\n  ship_hull_shapes.cpp\r\n  ship_hydro_forces.cpp\r\n  ship_kill_ver_cc13.cpp\r\n  ship_motion.cpp\r\n  ship_nav_ver_cc13.cpp\r\n  shipyard_production.cpp\r\n  simulation_gate.cpp\r\n  sound_cc13.cpp\r\n  sound_channel_runtime.cpp\r\n  sound_configuration_shutdown.cpp\r\n  sound_dialog_table.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  sound_event_instance.cpp\r\n  sound_gameplay_methods.cpp\r\n  sound_instance.cpp\r\n  sound_lifetime_access.cpp\r\n  sound_listener.cpp\r\n  sound_manager_levels.cpp\r\n  sound_resource_asset.cpp\r\n  sound_resource_cache.cpp\r\n  sound_retained_channel.cpp\r\n  sound_retained_factory.cpp\r\n  sound_retained_record.cpp\r\n  sound_retained_update.cpp\r\n  sound_sample_cache.cpp\r\n  sound_sample_cache_shutdown.cpp\r\n  sound_shutdown.cpp\r\n  sound_spatial_instance.cpp\r\n  sound_streaming_cc13.cpp\r\n  sound_system_update.cpp\r\n  spatial_index.cpp\r\n  startup_frontend.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  storage_backend.cpp\r\n  storage_operation.cpp\r\n  storage_pool.cpp\r\n  strafe_task.cpp\r\n  strategic_map_cc13.cpp\r\n  submarine_model.cpp\r\n  support_seg61_cc13.cpp\r\n  terrain_particles_cc13.cpp\r\n  terrain_render.cpp\r\n  text_editor_activation.cpp\r\n  tick_element_overrides.cpp\r\n  title_init.cpp\r\n  torpedo_aim_tick.cpp\r\n  torpedo_first_release.cpp\r\n  torpedo_issue_timing.cpp\r\n  torpedo_release_spawn.cpp\r\n  tracer_parameter_cur\u20261340 tokens truncated\u2026urce_oct15\\build\\win32\\Release\\bsp_math_tests.exe\r\n  d3d9_mesh_probe.cpp\r\n  ai_close_attack_tick.cpp\r\n  ai_command_lifetime.cpp\r\n  ai_command_object.cpp\r\n  ai_command_tick.cpp\r\n  ai_group_think.cpp\r\n  ai_planners.cpp\r\n  ai_tuning_globals.cpp\r\n  airfield_marker_seg31_32_argon.cpp\r\n  airfield_taxi.cpp\r\n  airops_ver_cc13.cpp\r\n  band_0040_cc13.cpp\r\n  band_0045_cc13.cpp\r\n  native_camera_probe.cpp\r\n  band_004b_cc13.cpp\r\n  band_0060_cc13.cpp\r\n  band_0067_cc13.cpp\r\n  band_006b_cc13.cpp\r\n  inflate_stream_probe.cpp\r\n  mpkg_archive_probe.cpp\r\n  Generating Code...\r\n  resource_preload_probe.cpp\r\n  physical_pending_reads_probe.cpp\r\n  Compiling...\r\n  band_0071_cc13.cpp\r\n  band_007a_cc13.cpp\r\n  band_0090_cc13.cpp\r\n  band_0099_cc13.cpp\r\n  structured_resource_probe.cpp\r\n  band_009f_cc13.cpp\r\n  command_completion.cpp\r\n  Generating Code...\r\n  depth_charge_task_cc13.cpp\r\n  director_geommesh_seg38_39_argon.cpp\r\n  dive_bomb_aimdive_tail.cpp\r\n  dive_bomb_goaway_turn.cpp\r\n  dive_bomb_task.cpp\r\n  dogfight_task.cpp\r\n  dogfight_ver_cc13.cpp\r\n  dummy_depth_seg34_argon.cpp\r\n  entity_mission_seg60_argon.cpp\r\n  flak_note_seg36_37_argon.cpp\r\n  game_avoid_zone_runtime.cpp\r\n  game_hosts_ai.cpp\r\n  game_hosts_avoid_zones.cpp\r\n  game_hosts_commands.cpp\r\n  bsp_d3d9_probe.vcxproj -> J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\build\\win32\\Release\\bsp_d3d9_probe.exe\r\n  Generating Code...\r\n  Compiling...\r\n  game_hosts_fixed_step.cpp\r\n  game_hosts_frontend.cpp\r\n  game_hosts_gunnery.cpp\r\n  game_hosts_hud.cpp\r\n  game_hosts_hud_world.cpp\r\n  game_hosts_init_tail.cpp\r\n  game_hosts_lua.cpp\r\n  game_hosts_menu.cpp\r\n  game_hosts_mission.cpp\r\n  game_hosts_mission_frame.cpp\r\n  game_hosts_mission_result.cpp\r\n  game_hosts_ready.cpp\r\n  game_hosts_scene_contents.cpp\r\n  game_hosts_script_orders.cpp\r\n"
+      },
+      {
+        "chunk_id": "9ea62e",
+        "wall_time_seconds": 9e-06,
+        "exit_code": 0,
+        "original_token_count": 834,
+        "output": "  game_hosts_ship_ai.cpp\r\n  game_hosts_singletons.cpp\r\n  game_hosts_text.cpp\r\n  game_hosts_trajectory.cpp\r\n  game_hosts_units.cpp\r\n  game_hosts_world.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  game_native_entity_registry_process.cpp\r\n  game_native_font_application.cpp\r\n  game_native_font_probe.cpp\r\n  game_native_graphics_pools.cpp\r\n  game_native_gui_effect_application.cpp\r\n  game_native_gui_effect_probe.cpp\r\n  game_native_gui_sampler_application.cpp\r\n  game_native_hardware_layout_tree.cpp\r\n  game_native_lua_services.cpp\r\n  game_native_material_process.cpp\r\n  game_native_procedural_factory_application.cpp\r\n  game_native_shader_process.cpp\r\n  game_native_shadow_target_application.cpp\r\n  game_native_string_process.cpp\r\n  game_native_lua_globals.cpp\r\n  game_native_tick_registration_process.cpp\r\n  game_native_vertex_declarations.cpp\r\n  game_native_renderer_application.cpp\r\n  game_native_vfs_application.cpp\r\n  game_observer_runtime.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  gameplay_loose_ends_2.cpp\r\n  gameplay_seg33_cc13.cpp\r\n  gameplay_seg34_cc13.cpp\r\n  gameplay_seg38_cc13.cpp\r\n  gameplay_seg40_59_cc13.cpp\r\n  gameplay_seg41_cc13.cpp\r\n  gameplay_seg46_cc13.cpp\r\n  gameplay_seg47_cc13.cpp\r\n  gameplay_seg48_cc13.cpp\r\n  gameplay_seg50_cc13.cpp\r\n  gameplay_seg52_cc13.cpp\r\n  gameplay_seg53_cc13.cpp\r\n  gameplay_seg61_62_cc13.cpp\r\n  gameplay_seg69_70_cc13.cpp\r\n  geom_mesh_resource.cpp\r\n  hit_hull_segment.cpp\r\n  hud_ship_screen.cpp\r\n  hud_warning_screen.cpp\r\n  hud_weapon_group_screen.cpp\r\n  hull_terrain_contact.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  kamikaze_task_cc13.cpp\r\n  kamikaze_task_host.cpp\r\n  kill_credit.cpp\r\n  landscape_lua_seg55_argon.cpp\r\n  launch_ver_cc13.cpp\r\n  leftovers_cc13.cpp\r\n  leg_altitude_manager_cc13.cpp\r\n  mission_camera.cpp\r\n  mission_ver_cc13.cpp\r\n  moveonpath_task_cc13.cpp\r\n  narrowphase_unit_part_shape.cpp\r\n  near_field_probe.cpp\r\n  network_online_cc13.cpp\r\n  objectives_seg57_argon.cpp\r\n  part_damage_reachability.cpp\r\n  path_movcam_seg46_argon.cpp\r\n  pilot_command_path.cpp\r\n  plane_follow_hold.cpp\r\n  plane_follow_law.cpp\r\n  plane_ground_ops.cpp\r\n  Generating Code...\r\n  Compiling...\r\n  plane_release_ver_cc13.cpp\r\n  plane_wanderer.cpp\r\n  plane_water_law.cpp\r\n  radial_menu_cc13.cpp\r\n  script_natives_fix5_cc13.cpp\r\n  ship_hit_record.cpp\r\n  ship_motion_ver_cc13.cpp\r\n  ship_sub_entity_list.cpp\r\n  ship_torpedo_ver_cc13.cpp\r\n  soldier_traffic_cc13.cpp\r\n  target_validity_ver_cc13.cpp\r\n  unit_group_slot_swap.cpp\r\n  unit_gunnery_pass.cpp\r\n  unit_instance_step11.cpp\r\n  unit_message_arms.cpp\r\n  unit_neighbour_fields.cpp\r\n  game_native_game_tables.cpp\r\n  game_native_player_profile_context.cpp\r\n  game_native_game_application_frame.cpp\r\n  Generating Code...\r\n  bsp_game.vcxproj -> J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\build\\win32\\Release\\bsp_game.exe\r\n  Building Custom Rule J:/PROG/battlestations-pacific-decompile-cc12_property_bool_source_oct15/CMakeLists.txt\r\nTest project J:/PROG/battlestations-pacific-decompile-cc12_property_bool_source_oct15/build/win32\r\n    Start 1: reconstructed_math\r\n1/2 Test #1: reconstructed_math ...............   Passed    0.21 sec\r\n    Start 2: tool_tests\r\n2/2 Test #2: tool_tests .......................   Passed    7.82 sec\r\n\r\n100% tests passed, 0 tests failed out of 2\r\n\r\nTotal Test time (real) =   8.07 sec\r\n"
+      }
+    ],
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\normal_build.log",
+      "bytes": 89758,
+      "sha256": "4314cda7439ee6dc281287e5636cd43460f67487f40b4e6939abdb3aa666bc6c"
+    },
+    "one_build_no_replay": true,
+    "existing_checks_passed": 2,
+    "TU_unregistered": true,
+    "separate_strict_compile_gate": true,
+    "warnings": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\build\\win32\\bsp_core.vcxproj]"
+    ]
+  },
+  "inputs": {
+    "precompile": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\precompile_inputs.DATA.json",
+      "bytes": 70312,
+      "sha256": "05a9a6a1e9f3c274ecd7cc77daad2539bae40dceb314399d64327021ecf46720"
+    },
+    "postcompile": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\postcompile.DATA.json",
+      "bytes": 67961,
+      "sha256": "f69ba9dde71b6b1c3ac38997d09453e6c06d49588259534a610c7367cad23db1"
+    },
+    "prebuild": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\prebuild.DATA.json",
+      "bytes": 67958,
+      "sha256": "8e51ea0da2b5dc636cb88b0941c05c8ce1c803c5dc4c0a7260170408a94085fd"
+    },
+    "postbuild": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\postbuild.DATA.json",
+      "bytes": 67959,
+      "sha256": "808810290042cdea77769c90939a0707616cb5946b769cb39a05698a7374c6f4"
+    },
+    "compiler_declared": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\compiler_declared_inputs.DATA.json",
+      "bytes": 20504,
+      "sha256": "91e8f10851bdd01681c1aa7647090812325c55fcfabdd62c54056e34a5868b99"
+    },
+    "readiness_family_copy": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\frozen_readiness_copy.DATA.json",
+      "bytes": 18729,
+      "sha256": "107e3461cfce57050ca06c180d86675d0b38d83b25b5b9bbd34bc89cc285f068"
+    },
+    "actual_declared_inputs_precompile_frozen": 83,
+    "current_readiness_provider_files": 14,
+    "compiler_build_tools_precompile_frozen": 13,
+    "supplemental_resource": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\compiler_UI_resource.DATA.json",
+      "bytes": 812,
+      "sha256": "a96e4ae23bc9b120e0c3f73c6dd64ee09013fec6b66acff2ae138e232c4edb0c"
+    },
+    "resource_capture_qualification": "Resource-only clui.dll first captured after compile; all executable compiler passes precompile-pinned. No hermetic claim."
+  },
+  "original_tool_receipts": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\original_tool_receipts.DATA.json",
+    "bytes": 43925,
+    "sha256": "b5888ad7a263d9b487ff26870d95a6483d6d79c28913bb106684fd7c43f90047"
+  },
+  "original_tool_provenance": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\original_tool_provenance.DATA.json",
+    "bytes": 125447,
+    "sha256": "7df4f032ee453b0904e578990e9613af1b36c0328ff20533f46a9fac8125aab9"
+  },
+  "raw_provenance_prefix": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\source_rollout_prefix.jsonl",
+    "bytes": 963378,
+    "sha256": "94f7010a8fe4861c8687d6d96176904106e82ac586056c761307a0574d8a0fb2",
+    "lines": 352
+  },
+  "boundaries": {
+    "strict_compiles": 1,
+    "normal_builds": 1,
+    "new_tests": 0,
+    "new_probes": 0,
+    "runtime_replays": 0,
+    "game_launches": 0,
+    "no_Original_ABI_EH_privateCRT_startup_or_game_claim": true
+  },
+  "final_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyBoolAddSource01\\family_receipt.DATA.json"
+}

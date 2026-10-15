@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_raw_storage_primary_review",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 2,
+  "native_bytes": 85,
+  "native_instructions": 28,
+  "spans": [
+    {
+      "address": "00467ba0",
+      "native_bytes": 43,
+      "instructions": 15,
+      "scope": "complete ordinary Source",
+      "live_equals_installed": true,
+      "sha256": "443ef913af48a565bd09334b248a0922d89f942f7f1f47cd3dc381dc9439eb41"
+    },
+    {
+      "address": "00468840",
+      "native_bytes": 42,
+      "instructions": 13,
+      "scope": "complete ordinary Source",
+      "live_equals_installed": true,
+      "sha256": "4b509f3738d7d5a94205765eb2f06c8d7ed0060fb85bbe486307c86ab8db7af2"
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct15_raw_dword_list_node.json",
+    "reports/goal_oct15_vector_storage_tidy.json"
+  ],
+  "typed_transfer_rows_checked": 2,
+  "typed_transfer_rows_failed": 0,
+  "independent_reviews": [
+    "Primary: complete BA0 listing/Source/header match late parameter read after allocation/two zero stores and entire literal null tail",
+    "Primary: complete8840 listing/Source/header match opaque captured pointer/conditional free/ordered zero stores",
+    "Independent worker: complete listings/Source/header/doc reviews recorded in packet reports"
+  ],
+  "source_hashes": {
+    "src/native_raw_dword_list_node.cpp": "6f561076df3df8202db0a7ad80316a9ca002d2bbcb006fa437b068ae370ffc24",
+    "include/bsp/native_raw_dword_list_node.hpp": "f193d51a6e3a5fa672d8ee6d4a88dbe02b093fc96cd90581f5a40bc0531039ec",
+    "src/native_vector_storage_tidy.cpp": "07b2acf3d95a6135d6dc6918c9739ebf09f9d7f6d195e3da02c4438fff091383",
+    "include/bsp/native_vector_storage_tidy.hpp": "75c437ed87f0c201617b0c2dc1d2a8643061910c4d0ec431523533fc68d42a06"
+  },
+  "combined_build": {
+    "revision": "b6423d4a21fc303170e0cba7a061557fd1c53f86",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_raw_storage_combined_build.log",
+    "log_sha256": "7379af45f35b18bf02651f52b8cc30013fd9be5089c09decca55fee5f3ac0b25",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 7.89,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+    "scope": "existing regression checks; native math seeds do not execute these new bodies"
+  },
+  "project_source_counts": {
+    "native_raw_dword_list_node": 1,
+    "native_vector_storage_tidy": 1
+  },
+  "unique_archive_objects": {
+    "native_raw_dword_list_node": [
+      "bsp_core.dir\\Release\\native_raw_dword_list_node.obj"
+    ],
+    "native_vector_storage_tidy": [
+      "bsp_core.dir\\Release\\native_vector_storage_tidy.obj"
+    ]
+  },
+  "archive_sha256": "adf40c3620b52a2149bfe586278a490442a8d0d8c551115f137d0109b9c2e40e",
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "Actual currentCRT allocation/free,raw parameter backing and opaque storage Source interfaces; not Original binary/CRT/heap/private-frame/exception identity",
+    "Node null branch is represented; admitted allocation provider is nonnull-or-throw; fault-register instruction order is not claimed",
+    "Existing math differential seeds do not execute these new bodies; no application or game proof"
+  ]
+}

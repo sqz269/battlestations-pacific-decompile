@@ -1,0 +1,89 @@
+{
+  "packet": "goal15e_group_factory",
+  "source_base": "eb5dfa27d",
+  "status": "complete_native_storage_185_byte_kernel_strict_compile_normalized_coff_and_real_provider_overlay_fixture_passed_pending_primary_registered_build",
+  "owned_addresses": ["00417ca0"],
+  "owned_files": ["include/bsp/native_avoid_group_factory.hpp", "src/native_avoid_group_factory.cpp", "docs/GOAL15E_AVOID_GROUP_FACTORY.md", "reports/goal15e_avoid_group_factory.json"],
+  "functions": [{
+    "address": "00417ca0",
+    "name": "BSP_AvoidZoneManager_GroupForLayerOrCreate",
+    "cpp_symbol": "bsp::find_or_create_native_avoid_group_00417ca0",
+    "source": "src/native_avoid_group_factory.cpp",
+    "header": "include/bsp/native_avoid_group_factory.hpp",
+    "end_exclusive": "00417d59",
+    "bytes": 185,
+    "source_bytes": 185,
+    "coverage": "complete",
+    "original_abi": "ECX actual manager, signed layer stack DWORD, EAX actual group pointer, RET4; EBX/ESI/EDI and conditional EBP preserved",
+    "source_abi": "naked MSVC Win32 fastcall(manager ECX, ignored Source EDX, layer stacked); same result and stack cleanup",
+    "limits": "actual Source vtable and current allocator identity qualified; valid reached raw backing required; not original Native runtime/SEH or gameplay proof"
+  }],
+  "host_steps": [{
+    "address": "00417cc9",
+    "native": "00bf681b",
+    "containing_function": "00417ca0",
+    "contract": "cdecl raw14h allocation, ADD ESP4 at00417cce; Source fixed helper calls existing singleton_lifetime_allocate real malloc/new-handler/bad_alloc service"
+  }],
+  "consumer_calls": [
+    {"address": "00424dbe", "native": "00417ca0", "containing_function": "00424d00", "contract": "manager EBPtoECX, saved input key pushed; preceding EDI push belongs to following group operation; factory RET4"},
+    {"address": "00424dda", "native": "00417ca0", "containing_function": "00424d00", "contract": "manager EBPtoECX, zero key from ESI pushed; factory RET4"}
+  ],
+  "semantics": {
+    "input": "early MOV EBX,[ESP+8] at00417ca1 before search/allocation; no late key reload",
+    "find": "signed loop bound; each continuation reloads current manager+58h; first exact key returns reloaded current indexed manager slot",
+    "new_group": "real14h allocation; actual Source vtable then zero4/8/C, key-1, captured requested key; original null path still writes+10, no blanket null return",
+    "insertion": "snapshot current count once at00417cfc; signed first existing key greater scan; captured bound, actual reverse shifts, pointer publish then increment CURRENT count",
+    "no_extra_policy": "no20slot bound, fake allocator/constructor/shadowgroup, rollback or new exception frame",
+    "raw_arithmetic": "literal x86 DWORD addressing/flags/reloads retain wrapped computed addresses and alias-sensitive memory schedule"
+  },
+  "providers": {
+    "allocator": "singleton_lifetime_allocate({object,0x14,0x14}); current malloc/_callnewh/std::bad_alloc, existing real provider",
+    "vtable": "actual const kNativeAvoidGroupLifetimeSourceVtable slot0=complete scalar_delete_native_avoid_group_0041e940; no original table/RTTI identity claim",
+    "composition": "real manager constructor/BF50 sentinel/SDK critical section; full native manager clear, cache/queue and typed Source manager scalar-delete with explicit actual publication-cell context"
+  },
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "native_assembly": "complete00417ca0..00417d58;185B live listing incl3-byte RET4",
+    "caller_census": "2 live xrefs and2 physical E8 calls, both within00424d00; both argument setups read",
+    "allocator_body": "00bf681b malloc/new-handler retry/bad_alloc body and existing singleton_lifetime.cpp service read",
+    "schemas": "existing cc13_avoid1.hpp group14h fields0/4/8/C/10, manager slots8/count58; actual producers and Source deleting table read",
+    "source_listing": "local/output/native_avoid_group_factory.asm",
+    "native_byte_listing": "local/output/native_avoid_group_factory_bytes.txt",
+    "byte_script": "local/output/compare_avoid_group_factory_bytes.py [COFF-object] [native-byte-listing]",
+    "byte_result": "PASS185B with exactly allocator CALL REL32 offset2A and actual Source-vtable DIR32 offset37 masked; every other byte identical"
+  },
+  "historical_semantic": {
+    "name": "avoid_zone_group_find_or_create_00417ca0",
+    "source": "src/avoid_zone_geometry.cpp",
+    "status": "semantic_build_tested",
+    "handling": "unchanged separate index-returning API/record; new raw entry returns group pointer"
+  },
+  "corrections": [
+    {"was": "historical allocator callsite00417cc7", "is": "PUSH14h at00417cc7; CALL00bf681b at00417cc9", "evidence": "complete assembly and live callsite check"},
+    {"was": "task suggestion of late key argument load", "is": "early capture00417ca1 into EBX before search/allocation", "evidence": "complete assembly and185B normalized COFF comparison"},
+    {"was": "older00423c50 caller attribution", "is": "current direct xrefs/census show00424dbe and00424dda within00424d00", "evidence": "live xrefs, physical call census, caller stack setup"}
+  ],
+  "verification": {
+    "strict_msvc_x86": "PASS C++17/EHsc/W4/WX/permissive-/O2/c/FAcs",
+    "normalized_bytes": "PASS185 native and Source bytes; verified two operands only masked",
+    "source_fixture": "PASS one ignored real-provider composition; nonempty standaloneE200 actual hullnode/data free and sentinel/proxy/lock retention without sentinel payload read; signed order/repeat identity; initialized genuine groups; populated zone/record chain; fullclear/recreate; typed manager flag0 thenflag1; actual publication clear evenotherpointer; proxy preservation and retainedqueue",
+    "fixture_heap_observation": "PASS bounded current _heapwalk checks tracked group/array/zone/record/body/lock/head releases, flag0 receiver retained, flag1 receiver released, queue retained until explicit final free; no global no-leak claim",
+    "fixture_source": "local/output/avoid_group_factory_probe.cpp",
+    "fixture_script": "local/output/run_avoid_group_factory_probe.cmd [archive-path] [archive-only]; default3module overlay against existing primary Release archive; embedded manifest",
+    "fixture_log": "local/output/avoid_group_factory_probe.log",
+    "report_calls": "PASS3 exact report rows and3 markdown call claims;0 failures,0 warnings;3 table/historical-correction prose claims unpaired by parser and covered by explicit checked transfer lines/native assembly",
+    "diff_check": "PASS",
+    "full_registered_build": "primary-owned after registration",
+    "native_runtime_differential": "not run",
+    "gameplay": "not validated",
+    "new_tracked_test_targets": 0
+  },
+  "integration": {
+    "target": "bsp_core",
+    "target_sources_add": "src/native_avoid_group_factory.cpp",
+    "ghidra_mutations": "none; primary annotation/export owns saved evidence",
+    "lease": "release after closure commit for primary transfer"
+  }
+}

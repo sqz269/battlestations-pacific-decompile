@@ -1,0 +1,352 @@
+{
+  "packet": "goal_oct15_vector_storage_tidy",
+  "status": "complete_actual_opaque_storage_source_win32_build_and_two_enabled_existing_checks_passed",
+  "source_ready": true,
+  "source": "src/native_vector_storage_tidy.cpp",
+  "header": "include/bsp/native_vector_storage_tidy.hpp",
+  "documentation": "docs/GOAL_OCT15_VECTOR_STORAGE_TIDY.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Guarded CLI verifies expected project/program/x86/image base before every live batch",
+    "annotation": "Applied under shared write lock; prior values recorded; correct name/comments preserved; project saved; owned export refreshed; live name+appendedcomment readback matches",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "readiness": {
+    "indexed_reconstruction_before_packet": false,
+    "existing_whole_source": false,
+    "existing_source_search": "No own-address or alternate whole Source; historical inventory/free-flow repair references only",
+    "live_incoming_xrefs": [],
+    "named_incomplete_dependencies": [],
+    "actual_callee": "accepted concrete singleton_lifetime_free currentstd::free service boundary,not originalCRTbody claim"
+  },
+  "routines": [
+    {
+      "address": "00468840",
+      "name": "tidy_native_vector_storage_00468840",
+      "native_name_preserved": "STL_Vector_Tidy_00468840",
+      "body_end_inclusive": "00468869",
+      "native_bytes": 42,
+      "instructions": 13,
+      "coverage": "complete_actual_raw_opaque_storage_with_current_CRT_and_original_ABI_qualification",
+      "original_abi": "ECXactualopaque16Bstorage,incomingEDXunused,ESIpreserved,no stackarguments,plainRET; no semanticresult. Nullbranch EAX0,nonnullbranch ambientfreeEAX. Sourcevoidfastcall retains receiver shape,not binaryABI.",
+      "original_bytes_hex": "568bf18b460485c0740950e85cdd780083c404c7460400000000c7460800000000c7460c000000005ec3",
+      "original_bytes_sha256": "4b509f3738d7d5a94205765eb2f06c8d7ed0060fb85bbe486307c86ab8db7af2",
+      "live_equals_installed_PE": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0046884b",
+      "native": "00bf65ac",
+      "function": "00468840",
+      "kind": "call",
+      "contract": "only if capturedDWORD+4 nonzero;PUSH capturedpointer;CALL actualcdeclfree;ADDesp4;then ordered immediatezero stores+4,+8,+Ch"
+    }
+  ],
+  "storage": {
+    "bytes": 16,
+    "captured_pointer_word": 4,
+    "zero_store_order": [
+      4,
+      8,
+      12
+    ],
+    "field_roles": "opaque;no producer/caller binds begin/end/capacity/allocator or elementtype",
+    "direct_word0_access": false,
+    "element_payload_access": false,
+    "element_destructor_calls": false,
+    "diagnostic_calls": false,
+    "read_schedule": "receiveraddress captured;DWORD+4 read exactlyonce;no reread after actualfree",
+    "returning_schedule": "nonnullcapturedpointer actualfree thenzero+4,+8,+Ch;null skipsfree butsame3stores",
+    "admission": "valid backing for every reached rawread/write/release;no extra nonnull/state/element restriction"
+  },
+  "dependency": {
+    "address": "00bf65ac",
+    "source": "src/singleton_lifetime.cpp",
+    "api": "singleton_lifetime_free",
+    "actual_binding": "std::free",
+    "qualification": "accepted actual currentCRT heap service boundary;not originalCRT/FH3/SEH/fault/heap identity",
+    "native_thunk": "JMP00BF9DC8"
+  },
+  "typed_metadata": {
+    "path": "local/goal_oct15_vector_storage_tidy_typed.json",
+    "sha256": "124823ee9cf68e5ee48d61b0c1212a278c997ca10827e31834e164c4dde8eae9",
+    "endpoint": "get_flow_metadata",
+    "utc": "2026-10-15T21:50:44.749571+00:00",
+    "read_only": true,
+    "functions": [
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00468840"
+        },
+        "name": "STL_Vector_Tidy_00468840",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "42",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00468840"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00468869"
+              },
+              "length": "42"
+            }
+          ]
+        }
+      }
+    ],
+    "rows": [
+      {
+        "address": "00468848",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00468848"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "CONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": true,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": true,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "0046884a"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "0046884a"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00468853"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00468853"
+            }
+          ]
+        }
+      },
+      {
+        "address": "0046884b",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "0046884b"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00468850"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00468850"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf65ac"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf65ac"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00468853",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00468853"
+          },
+          "length": 7,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "0046885a"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "0046885a"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      }
+    ]
+  },
+  "validation": {
+    "original_live_bytes_match_installed_PE": true,
+    "complete_executable_bytes": 42,
+    "instructions": 13,
+    "exact_typed_body_branch_and_free_call_read": true,
+    "report_calls": "1exactcall row checked,0failed",
+    "build": "PASS scripts/build.ps1 Release Win32 exit0; registered ownedSource compiled and all targets linked",
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 7.42,
+      "native_math_differential_enabled": false,
+      "new_entry_native_differential": false
+    },
+    "cmake_registration": "Current ownership rechecked unleased;unique Source append without exclusive lease",
+    "new_tests": 0,
+    "direct_native_entry_execution": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "application_adoption": false,
+    "documentation_claim_check": "4addresses cited,1call checked,0failed,0unchecked,0warnings",
+    "annotation_readback": "Live comments response shows preserved STL_Vector_Tidy_00468840 and exact reconstruction marker/evidence",
+    "diff_check": "passed before Source draft,main registry-union merge and finalmetadata commit",
+    "source_commit": "fdcf899ae",
+    "tested_revision": "3d74e4c8d",
+    "main_batch_imported": "17abbeab5",
+    "base_sync": "main contains accepted970dc0942; sole startup append conflict resolved by required merge_resolve registry union,unique tidy registration retained once",
+    "build_log": "local/goal_oct15_vector_storage_tidy_build.log",
+    "build_log_sha256": "9a56d87c4b22ac41d26363b08d002922ac40e5fb333718eabb4533f88715bbfb",
+    "inherited_linker_warning": "LNK4006 spawn_request_id_matches duplicate in unchanged lua_binding_spawn.obj/lua_spawn_new.obj;second definition ignored"
+  },
+  "source_hashes": {
+    "src/native_vector_storage_tidy.cpp": {
+      "bytes_sha256": "07b2acf3d95a6135d6dc6918c9739ebf09f9d7f6d195e3da02c4438fff091383",
+      "normalized_lf_sha256": "07b2acf3d95a6135d6dc6918c9739ebf09f9d7f6d195e3da02c4438fff091383",
+      "git_blob_bytes_sha256": "07b2acf3d95a6135d6dc6918c9739ebf09f9d7f6d195e3da02c4438fff091383",
+      "accepted_source_revision": "fdcf899ae"
+    },
+    "include/bsp/native_vector_storage_tidy.hpp": {
+      "bytes_sha256": "75c437ed87f0c201617b0c2dc1d2a8643061910c4d0ec431523533fc68d42a06",
+      "normalized_lf_sha256": "75c437ed87f0c201617b0c2dc1d2a8643061910c4d0ec431523533fc68d42a06",
+      "git_blob_bytes_sha256": "75c437ed87f0c201617b0c2dc1d2a8643061910c4d0ec431523533fc68d42a06",
+      "accepted_source_revision": "fdcf899ae"
+    }
+  },
+  "cmake_source_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_vector_storage_tidy.cpp)",
+  "limits": [
+    "Unknown elementtype/fieldroles are deliberately opaque;tag/shape is not nominaltype evidence",
+    "Both null and nonnull states retained;no elementdestruction/diagnostic/callback/owner/validation invented",
+    "CurrentCRT release validity required;originalCRT/heap/FH3/SEH/fault/privateframe/register/flags/mangling/binaryidentity unestablished",
+    "Source/build/static proof doesnot establish directnative differential,application/game behavior"
+  ],
+  "annotation_history": [
+    {
+      "address": "00468840",
+      "before": {
+        "address": "00468840",
+        "function_name": "STL_Vector_Tidy_00468840"
+      },
+      "after": {
+        "address": "00468840",
+        "name": "STL_Vector_Tidy_00468840",
+        "evidence": "Complete42B/13op actualopaque16Bstorage Source src/native_vector_storage_tidy.cpp;correctSTL_Vector_Tidy libraryname retained,Source description not recovered element/fieldtype. ECXstorage,unusedEDX,ESIpreserved,plainRET/nosemanticresult. Capture+4ONCE;conditional actualcurrentCRTfree capturedpointer;both returning paths orderedzero+4,+8,+Ch;no reload/elementdtor/diagnostic/owner/state narrowing. LivePE all42B andexacttyped body/branch/freecall;no livecallers,named-incomplete depsnone at accepted currentCRTboundary. Locked annotation/readback and buildpending;privateframe/ABI/game limits. docs/GOAL_OCT15_VECTOR_STORAGE_TIDY.md"
+      },
+      "status": "applied"
+    }
+  ],
+  "independent_reviews": [
+    {
+      "reviewer": "primary /root",
+      "accepted": true,
+      "source_revision": "fdcf899ae",
+      "scope": "complete13-op native listing and full Source/header",
+      "finding": "captured4once,conditional actualfree,orderedzero4/8/C both returning paths,semanticvoid and opaque element/field roles allmatch"
+    },
+    {
+      "reviewer": "/root/string_allocate",
+      "accepted": true,
+      "source_revision": "fdcf899ae",
+      "scope": "complete42B/13ops native body and Source/header/doc",
+      "finding": "no mismatch;stablebase,capturedpointerfree,no+4reload/+0access/elementsemantics/EAXpromise;nativeECX/RET/libraryname and ABIqualifications correct",
+      "accepted_draft_doc_sha256": "0bd0a6b9b5a2e516ff0351f1437d22e41f64fcb891f4ef8241b0639d5fb8c452"
+    }
+  ]
+}
