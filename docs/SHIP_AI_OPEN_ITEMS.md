@@ -17929,3 +17929,31 @@ and group_for_layer is 004120D0's walk where the image calls 00412120.
 (020a12d06's tree build, whose 00416270 is the OFF code; the layout switch was OFF in both): USN10 24000, USN15 36000,
 JM06 36000. pair_diff exit 1, gameplay identical, unit tables identical; only the masked noise moved (ship ai free
 empty/refills, ShipAiSectorScan calls +2 on JM06). **Flipped ON** (faithful, no visible effect).
+
+## 254. Item 4 scope: troop kill hooks, 0092BEC0, seg-61 ShipSystems sites (cc9-ships51, 2026-10-14; lead item 4)
+
+Scope only; nothing bound.
+- **00428420 / 00428800** (projectile kill and BSP_Explosion_NotifyBlastSites): both call 00480C20, which applies the
+  member type's Damage (+1Ch) to the group's landing ship (vtable +1ACh, 0095DA00). Needs hosted landing-troop groups
+  (src/soldier_traffic_cc13.cpp is unwired and its members are driven by stream-0 draws); blocked on that wiring.
+- **0092BEC0** (callers 00813660, 00854650): with unit+394h non-null, stores 0.0 at [[unit+1Ch]+1254h] (the host's
+  periscope-repair deadline store), then 00B6DA70 BSP_SceneNode_SetVisibilityFactor(ECX = [[unit+1Ch]+1214h], 1.0, 0)
+  (presentation: the node is shown again) and 00C47FF0(ECX = unit+394h, 2), a Dynamics-library body call that ORs 2
+  into body+2Ch and clears the body's manifolds under the 0109ECD8 lock. The host models only the store. The body flag
+  2's meaning is not established; no RNG.
+- **seg-61 sites**, by host coverage (00BD2F10 = BSP_RandomThreads_NextU32 in the callee list marks an RNG draw):
+  | Address | Caller(s) | RNG | Host |
+  |---|---|---|---|
+  | 0092E5B0 ApplyNetworkCorrection | network | - | cc13_left61 reconstruction; multiplayer only |
+  | 0092F930 | 00811AB0 | no | unit_rudder.cpp |
+  | 00933BB0 | 008266AA (UpdateShipMotion when 40.0 [00CE685C] < unit+51Ch, the time both hull heights stayed below 0), 008546FC (submarine update) | yes: one U32 per call, two uniform floats and a point effect on 1 in 5 when the sampled point is below 0 | **not hosted** |
+  | 00933DA0 | 0082668B (UpdateShipMotion when unit+518h < 30.0 [00CE7630]) | yes | **not hosted** |
+  | 00935540 SpawnSinkingWreckDebris | 008255B0 | yes | recorded only (`UnitInstance::spawn_wake`, game_hosts_units.cpp) |
+  | 00935D30 | 00814520 breakup | yes | partial (unit_death_sink.hpp; gunnery lane) |
+  | 0093A2C0 / 0093AA00 | 0093BED0 RollComponentFailure | no | game_hosts_gunnery.cpp |
+  | 0093B920 | 0081F3A0 destructor | no | header only (unit_destructor_levels.hpp) |
+  | 0093BD80 AddEngineJamFailure | 008132C0 | no | game_hosts_gunnery.cpp / game_hosts_lua.cpp |
+  The two unhosted ECX = [unit+D08h] (ShipSystems) effect spawners and the recorded-only 00935540 consume the shared
+  stream 00BD2F10 in the image, so every pair touching sinking or damaged ships is RNG-shifted against the image
+  there (memory: shared stream). Next step for whichever lane owns ShipSystems effects: identify unit+518h's writer,
+  then model the draws (the effects themselves are presentation) behind OFF.
