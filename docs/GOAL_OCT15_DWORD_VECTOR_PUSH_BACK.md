@@ -71,5 +71,13 @@ Live batches verify C:/Users/sqz269/bsp.gpr, /battlestationspacific.exe,
 x86 language and image base. Complete live/installed bytes and typed edges,
 prior names/comments and Source hashes are recorded in JSON. Annotation uses
 the shared write lock, preserves old values, saves and refreshes the owned
-export. Initial complete Source status awaits required normal Win32 build and
-existing checks. No new routine tests, native differential or game claim.
+export. The primary independently reviewed the complete 44-op contract and
+unchanged Source/header at `fa9f7532c`; reviewed hashes are recorded in JSON.
+Required `scripts/build.ps1` passed at that Source revision, targeting MSVC
+Win32. Both enabled existing checks passed in 7.64 seconds: math and tool tests.
+The optional native differential fixtures are not enabled in this worker build.
+The existing unrelated LNK4006 duplicate `spawn_request_id_matches` warning
+remains. Four full typed rows and the raw orphan's callee-only check passed;
+the four documentation claims passed, with one expected no-function warning
+for the explicitly unowned raw wrapper span. No new routine tests, original
+native ABI, candidate differential or game claim is made.

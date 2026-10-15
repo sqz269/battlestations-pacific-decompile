@@ -65,7 +65,8 @@
       "live_disk_equal": true,
       "sha256": "1a7bdfeb77d27b1be268ef6bdc045e1e325042ed97546d5b488a588db4070176",
       "native_call_site": "0046c548",
-      "function_credit": false
+      "function_credit": false,
+      "decoded_raw_call_target": "0046c450"
     }
   ],
   "source_dependencies": [
@@ -109,8 +110,29 @@
   "source_registration": "unique cmake/startup.cmake append after fresh unheld ownership/queue check;no exclusive lease",
   "validation": {
     "source_ready": true,
-    "build": "pending required scripts/build.ps1",
-    "existing_ctests": "pending",
+    "build": {
+      "command": "scripts/build.ps1",
+      "result": "PASS",
+      "exit_code": 0,
+      "revision": "fa9f7532c",
+      "platform": "MSVC Win32",
+      "log": "local/goal_oct15_dword_vector_push_back_build.log",
+      "log_sha256": "522cc781029c2181f6affba51a067b4eec0424636bdd1b3db252c77eb9bc10eb",
+      "warnings": [
+        "existing unrelated LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj"
+      ]
+    },
+    "existing_ctests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "seconds": 7.64,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "optional_native_differential_enabled": false
+    },
     "report_call_verification": "PASS:4 full typed rows plus1 explicit raw orphan caller with callee-only tool check;raw16B instructions and bytes independently inspected. Documentation4 claims,0failures/unchecked,1 expected warning for the explicitly unowned/no-Ghidra-function raw span.",
     "new_tests": 0,
     "native_differential_fixture": false,
@@ -124,11 +146,20 @@
   "header_sha256": "f625398a8a8fdcf9db57aa37ed18090813ca530c2e03d2cc1083034e04f72a32",
   "annotation": {
     "prior_values_logs": [
-      "local/ghidra-annotations-20261015T224630Z.json"
+      "local/ghidra-annotations-20261015T224630Z.json",
+      "local/ghidra-annotations-20261015T224932Z.json"
     ],
     "locked": true,
     "saved": true,
     "existing_library_name_retained": true,
     "refreshed_export": "exports/bsp/functions/0046c450"
+  },
+  "independent_review": {
+    "reviewer": "primary /root",
+    "reviewed_draft": "fa9f7532c",
+    "result": "PASS full44-op native contract and complete Source/header; fast decision/current end before late value,captured end across returning diagnostic,late value before child metadata,native push-store order and real One/N/full paths;no Source edits",
+    "source_sha256": "e52eddf87ab208c36b4d0efea6cdcedea784c31ae43acccae381931e88b3b1ec",
+    "header_sha256": "f625398a8a8fdcf9db57aa37ed18090813ca530c2e03d2cc1083034e04f72a32",
+    "unchanged_hashes_asserted": true
   }
 }
