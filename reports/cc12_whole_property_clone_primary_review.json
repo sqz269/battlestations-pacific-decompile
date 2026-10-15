@@ -1,6 +1,6 @@
 {
   "schema": "cc12_whole_property_clone_primary_review_v1",
-  "stage": "whole_Source_integrated_static_reviews_passed_probe_and_registered_build_pending",
+  "stage": "whole_Source_integrated_and_focused_runtime_pass_registered_Main_build_pending",
   "packet": "FullRecursivePropertyCloneSource01",
   "addresses": [
     "008f41f0",
@@ -24,7 +24,7 @@
   "gates": {
     "independent_ownership_review_complete": true,
     "independent_emitted_FP_review_complete": true,
-    "worker_focused_fullchain_FP_probe_pass": false,
+    "worker_focused_fullchain_FP_probe_pass": true,
     "worker_existing_normal_build_pass": true,
     "registered_Main_build_pass": false,
     "registered_Main_archive_object_review_complete": false
@@ -71,7 +71,7 @@
     "fixture_FNINIT_FXSAVE_FXRSTOR_separate_from_production": true,
     "FP_source_before_environment_then_production_root_allocation_conversion_immediate_state_capture": true,
     "no_per_free_or_leak_or_Original_ABI_claim": true,
-    "execution_pending": true
+    "execution_pending": false
   },
   "Source_commit": "6b009c86e",
   "worker_normal_build": {
@@ -79,5 +79,53 @@
     "existing_tests_passed": 2,
     "clone_TU_registered": false,
     "canonical_changes_built": true
-  }
+  },
+  "focused_actual_process": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullRecursivePropertyCloneSource01\\actual_Source_probe_process.DATA.json",
+    "bytes": 18536,
+    "sha256": "8e7926ad5bc310ba913b9e193edae78f5ad705b838173f60c896a3972482c3fc",
+    "actual_terminal": "2cdc55/exit0",
+    "pid": 49956,
+    "single_launch": true,
+    "all14_current_inputs_verified": true,
+    "bags": 3,
+    "records": 15,
+    "types": 12,
+    "source_spans": 55,
+    "source_bytes": 2208,
+    "empty_keys": 1,
+    "colliding_buckets": 1,
+    "FP_cases": 6,
+    "subnormal_status": "0002",
+    "SNaN_input_result_status": [
+      "7f812345",
+      "7fc12345",
+      "0001"
+    ],
+    "stderr_bytes": 0,
+    "original_Native_execution": false
+  },
+  "independent_actual_process_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\RecursiveCloneProbeIndependentReview01\\actual_process_review.DATA.json",
+    "bytes": 14017,
+    "sha256": "38203d58f022a1b34126ecaa7a5621c9bfd9eb740ec737a7fbfd5d10c5fbf8c7",
+    "all14_current_inputs_verified_by_primary": true,
+    "all4_retained_sections_1048bytes_and44relocations_checked_by_independent_reviewer": true
+  },
+  "Type6_public_contract_followup": {
+    "commit": "a68383af7",
+    "comment_only": true,
+    "actual_header_bytes": 3235,
+    "actual_header_sha256": "55ca335d836a071eace11ebdfa179d9d11c7835741a677897dbe3474175924f6",
+    "primary_diff_reviewed": true,
+    "legacy_empty_fragment_and_Original_ABI_qualification_unchanged": true
+  },
+  "ghidra_annotations": {
+    "actual_apply_terminal": "28b9b4/exit0",
+    "prior_values": "local/ghidra-annotations-20261015T011001Z.json",
+    "project_saved": true,
+    "affected_exports_refreshed": "43af7e/exit0"
+  },
+  "source_domain_chain_accepted_by_primary": true,
+  "Main_CMake_registration_queue": "cc12_whole_property_clone_registration; waiting behind agent/cc13-seg69"
 }
