@@ -114,7 +114,7 @@ that order. After the child's RET0Ch it reloads current outer node then owner.
 This body and the Source's explicit private-cell contract were reviewed in full
 by the primary integrator, including retained near-child values and current free.
 
-Initial Source draft: full assembly/proto/caller/real provider and EH contracts
+Full assembly/proto/caller/real provider and EH contracts were
 reviewed. All687 live bytes/233 instructions match the installed PE;15 typed native
 transfers pass,with26 Markdown addresses and no failed/unchecked claims. Unique
 CMake registration was appended only after an immediate unleased check,without
@@ -123,6 +123,26 @@ corrected the misleading provisional label and saved the project; both exports
 were forced and expected-name/comment readback passed. Its prior-value log is
 `local/ghidra-annotations-20261015T213102Z.json`.
 
-Actual provider Source integration,required strict Win32 build and existing checks/
-object review remain pending. No new tests are added. Packet-specific native
-differential/game validation and original ABI/RTTI identity are unclaimed.
+Actual extrema/increment Source drafts were merged at
+`c46e1bedbff10428b00f5c1b947ccbadc7736f03`. Required `scripts/build.ps1` passed
+strict Win32 and all 3 existing CTests in 8.36s; log
+`local/goal_oct15_scene_integer_set_erase_build.log`. No new tests were added.
+Source/header hashes remain identical to draft
+`cd9d10a6d5a84545a9229368e81fbe7851381329`, independently reviewed with the complete
+native listing and EH scope by the primary integrator, without a mismatch.
+
+Focused MSVC object inspection confirms the reached nil guard precedes saved-node
+publication and increment. In the actual 694-byte entry, minimum reads head.min at
+`+8F` before the current saved-node value at `+91`; maximum reads the current
+saved-node at `+B4` before head.max at `+B9`. The color target is reloaded at `+14B`;
+near-child captures at `+1AA/+21B` survive far-child tests until recolors at
+`+1C6/+24F`. After repair, another current saved-node read at`+283` supplies the
+real free at `+286`, preceding current count at `+28B`. Current owner/output/node
+loads at `+29F/+2A2/+2A4` precede output stores at `+2A7/+2A9`. The actual 11 REL32
+entry relocations call the accepted concrete children/free and local owning-error
+helper. The helper's real assignment at `+42`, guard arming at `+54`, owning carrier
+construction at `+5B` and current C++ throw at `+69` retain a generated guard unwind
+through the actual completed-message destructor. Object receipt and offsets are
+recorded in the report and `local/goal_oct15_scene_integer_set_erase_object.txt`.
+These are current compiler checks; native frame/register/COFF/EH identity is not
+claimed. Packet-specific native differential/game validation remains unrun.
