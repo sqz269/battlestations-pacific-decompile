@@ -2,7 +2,7 @@
   "schema": "bsp.enum_symbol_declaration_primary_review.v1",
   "address": "008f2e40",
   "Source_commit": "1341be66a6ed83398c5577d62fb5048c9f038190",
-  "status": "whole_ordinary_Source_primary_and_peer_accepted_registered_Main_build_pending",
+  "status": "whole_ordinary_Source_registered_Main3checks_and_actual_code_archive_identity_pass",
   "primary_complete_Source_header_and_Original_listing_read": true,
   "Original_whole_bytes": 296,
   "Original_instructions": 95,
@@ -46,10 +46,26 @@
     "new_TU_registered": false
   },
   "Main_registered": true,
-  "Main_build": "pending",
+  "Main_build": "pass",
   "new_Source_runtime_executed": false,
   "Original_ABI_compatible": false,
   "Original_EH_or_private_CRT_compatible": false,
   "global_application_startup_publication": false,
-  "game_validated": false
+  "game_validated": false,
+  "registered_Main_build": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_enum_declaration_Main_build01\\build_result.DATA.json",
+    "bytes": 1104,
+    "sha256": "edf7bcedb7e6912643718a917291579aaa4715ca4031f9e96e0e1845ac67d1f7"
+  },
+  "Main_validation": "reports/cc12_enum_symbol_declaration_Main_validation.json",
+  "link_contract_qualification": "Strict /MT versus actual configured Main /MD. Three exact RuntimeLibrary/default-library differences retained; no full-object, link-directive, Original private-CRT or ABI equivalence.",
+  "static_Source_gate_pass": true,
+  "Ghidra_evidence_update": {
+    "annotate_chunk": "0879b3",
+    "annotate_exit": 0,
+    "project_saved": true,
+    "prior_journal": "local/ghidra-annotations-20261015T190651Z.json",
+    "exports_chunk": "7d7161",
+    "exports_exit": 0
+  }
 }
