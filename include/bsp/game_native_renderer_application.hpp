@@ -37,6 +37,7 @@ struct NativeMeshMetadataReadContext;
 struct NativeMeshTextureFieldContext;
 struct NativeMeshLightingConstants;
 struct NativeInstanceGeneratorContext;
+class NativePlatformLoadPublication;
 }
 namespace bsp::game {
 struct GameNativeMaterialCompilerOwners;
@@ -70,9 +71,19 @@ struct GameNativeMeshFieldServices {
 // retention; B32920 requires a completed device/default-surface lifetime.
 class GameNativeRendererApplication final {
 public:
+    // Legacy projected-focus entry. Retains the original pointer-value API and
+    // its renderer-owned focus cell; this is not an actual184h platform binding.
     GameNativeRendererApplication(GameHostLog&, GameSingletonHost&, GameVfsHost&,
         GameNativeLuaServices&, GameNativeReadOnlyData&, void* const volatile& clock,
         const void* actual_platform_window_focus);
+    // Borrow the caller's SAME publication cell through device reset/loading.
+    // Keep that cell and every reached receiver alive through renderer drain.
+    // For actual platform callers borrow the mutable0109CF04 cell used by raw
+    // construction; this interface does not install a game-process publication,
+    // create a platform/window, or admit the complete native message handler.
+    GameNativeRendererApplication(GameHostLog&, GameSingletonHost&, GameVfsHost&,
+        GameNativeLuaServices&, GameNativeReadOnlyData&, void* const volatile& clock,
+        NativePlatformLoadPublication actual_platform_0109cf04);
     ~GameNativeRendererApplication();
     GameNativeRendererApplication(const GameNativeRendererApplication&) = delete;
     GameNativeRendererApplication& operator=(const GameNativeRendererApplication&) = delete;
@@ -98,10 +109,15 @@ public:
     // release ordinary returned references before the shared renderer drain;
     // its own fallback reference follows the native cache cleanup schedule.
     NativeTextureCacheContext& texture_cache() noexcept;
-    // The SAME existing renderer focus publication. Its receiver aliases the
-    // actual window/focus cells at +30/+41; opaque bytes are not a whole native
-    // platform. Borrow only for the established load-pump/focus leaf domain.
+    // Legacy pointer-value entry only, with its original ready-phase guard.
+    // Its +30/+41 focus storage is not a whole native platform. Borrowed-entry
+    // callers use borrow_platform_publication_0109cf04 instead; this accessor
+    // rejects them rather than returning a fabricated const-pointer cell.
     const void* const volatile& loading_platform_focus_publication();
+    // Metadata borrow only; no phase transition, receiver read or native call.
+    // Copies preserve the external cell identity. The legacy entry returns its
+    // explicitly projected focus cell and gains no actual184h-owner admission.
+    NativePlatformLoadPublication borrow_platform_publication_0109cf04() const noexcept;
     NativeRenderActualOwnerRegistry& actual_owners() noexcept;
     // Borrowed until renderer teardown. Callers retain their actual grid
     // storage, operation records and explicit descriptor preimages, and must

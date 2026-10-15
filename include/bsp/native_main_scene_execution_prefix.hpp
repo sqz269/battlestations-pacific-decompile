@@ -63,6 +63,7 @@ struct NativeMainSceneExecutionPrefixState {
     bool reached_post_drsh_stage{};
     bool reached_scne_label_stage{};
     bool reached_scne_target_stage{};
+    bool reached_scne_batch_stage{};
 };
 
 // Complete raw leaves. Native ECX command / camera. B1BF40 uses RET and returns
@@ -378,4 +379,32 @@ void continue_native_main_scene_scne_label_00b1610a(
 // State4 -> (3,CBC47E) exists in the map but is not installed by this clause.
 void unwind_native_main_scene_scne_label(const NativeMainSceneScneLabelContext&,
     NativeMainSceneScneLabelFrame&) noexcept;
+
+struct NativeMainSceneScneTargetContext {
+    NativeRendererFrameTargetsContext& targets;
+    const NativeCameraFrameCommandContext& camera;
+    const NativeMainSceneScneLabelContext& label;
+};
+struct NativeMainSceneScneTargetFrame {
+    std::uint32_t active_native_site{};
+    bool started{};
+    bool color_installed{};
+    bool targets_bound{};
+    bool camera_executed{};
+    bool completed{};
+    bool failed{};
+};
+
+// B161AD..B161F4: current fields of the original ESI service select +48/+44
+// by byte+22D; borrow primary+C, install color0 in current+1CC, then capture
+// current renderer/profile BEFORE reloading current+1CC and slot98. Execute
+// B71360 on a fresh command camera. All descendants share the same actual
+// renderer, profile, synchronization and CRT domain used by SCNE's system.
+// State5 stays armed through success. Failure consumes it once using CURRENT
+// global service, preserving target/camera mutations; never rollback/replay.
+// Stops BEFORE B161F5 batch selection. New interface is not native caller ABI.
+void continue_native_main_scene_scne_targets_00b161ad(void* actual_service,
+    void* actual_command, const NativeMainSceneScneTargetContext&,
+    NativeMainSceneScneLabelFrame&, NativeMainSceneScneTargetFrame&,
+    NativeMainSceneExecutionPrefixState&);
 } // namespace bsp
