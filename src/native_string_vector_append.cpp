@@ -50,7 +50,7 @@ void __fastcall append_native_string_header_vector_00450540(
         if (size < capacity) {
             const Word end = word(vector, 8u);
             // Native supplies four physical stack words to CE20: value,
-            // owner, duplicate value, and a tag with only its low byte set.
+            // owner, duplicate value, and a tag with only its low byte zeroed.
             // The accepted actual service consumes only value and owner.
             fill_native_string_uninitialized_0044ce20(
                 pointer(end), 1u, value, header, strings);
