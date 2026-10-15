@@ -1,0 +1,214 @@
+{
+  "packet": "oct15_input_scalar_map_full_cleanup",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_input_scalar_map_full_cleanup.cpp",
+  "header": "include/bsp/native_input_scalar_map_full_cleanup.hpp",
+  "documentation": "docs/OCT15_INPUT_SCALAR_MAP_FULL_CLEANUP.md",
+  "routines": [
+    {
+      "address": "00444b10",
+      "bytes": 127,
+      "instructions": 49,
+      "last_inclusive": "00444b8e",
+      "sha256": "f8e974c1ac94ec2eace8a24a01f902ef44c0b8486108b7fcfa5f30e391b74603",
+      "old_name": "STL_StringScalarTree_EraseRange_N1C_00444B10",
+      "typed_complete": true,
+      "scope": "full_selected_prefix_only",
+      "disk_live_export_match": true,
+      "kind": "fragment",
+      "implementation": "clear_native_input_scalar_tree_full_prefix_00444b10"
+    },
+    {
+      "address": "00445900",
+      "bytes": 52,
+      "instructions": 23,
+      "last_inclusive": "00445933",
+      "sha256": "cc6a703b4b9561fce672ca1ecc359d69c5e2ea550a1a01fcf829a12e15c4dc33",
+      "old_name": "BSP_WeatherFloatMap_Destroy",
+      "typed_complete": true,
+      "scope": "whole",
+      "disk_live_export_match": true,
+      "kind": "function",
+      "implementation": "destroy_native_input_scalar_map_00445900"
+    }
+  ],
+  "supporting_units": [
+    {
+      "address": "00444760",
+      "bytes": 82,
+      "instructions": 34,
+      "last_inclusive": "004447b1",
+      "sha256": "abaf03bb4fae93e22287976e8e4b6bbecdcd5f7098d0e2523d666c97b29db051",
+      "old_name": "STL_StringScalarTree_DestroySubtree_N1C_00444760",
+      "typed_complete": true,
+      "scope": "whole",
+      "disk_live_export_match": true
+    },
+    {
+      "address": "005572f0",
+      "bytes": 127,
+      "instructions": 49,
+      "last_inclusive": "0055736e",
+      "sha256": "a973141523515b4e975f3d486cd4cedc54cd18fd0ce7d08dfb78aa85123bcd99",
+      "old_name": "STL_IntScalarTree_EraseRange_N18_005572F0",
+      "typed_complete": true,
+      "scope": "full_selected_prefix_only",
+      "disk_live_export_match": true
+    },
+    {
+      "address": "0055b490",
+      "bytes": 52,
+      "instructions": 23,
+      "last_inclusive": "0055b4c3",
+      "sha256": "774f6ab41ecd733990c8831c62283c8ff468996ae7428dfab3af5d62cf472c67",
+      "old_name": "STL_IntScalarTreeMap_Destroy_N20_0055B490",
+      "typed_complete": true,
+      "scope": "whole",
+      "disk_live_export_match": true
+    }
+  ],
+  "equivalence": [
+    {
+      "first": "00444b10",
+      "reference": "005572f0",
+      "all_other_bytes_equal": true,
+      "proved_call_target_pairs": [
+        [
+          "00bf6713",
+          "00bf6713"
+        ],
+        [
+          "00bf6713",
+          "00bf6713"
+        ],
+        [
+          "00444760",
+          "00554f10"
+        ]
+      ]
+    },
+    {
+      "first": "00445900",
+      "reference": "0055b490",
+      "all_other_bytes_equal": true,
+      "proved_call_target_pairs": [
+        [
+          "00444b10",
+          "0055b230"
+        ],
+        [
+          "00bf65ac",
+          "00bf65ac"
+        ]
+      ]
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00444b2a",
+      "function": "00444b10",
+      "native": "00bf6713"
+    },
+    {
+      "address": "00444b46",
+      "function": "00444b10",
+      "native": "00bf6713"
+    },
+    {
+      "address": "00444b5a",
+      "function": "00444b10",
+      "native": "00444760"
+    },
+    {
+      "address": "00445916",
+      "function": "00445900",
+      "native": "00444b10"
+    },
+    {
+      "address": "0044591f",
+      "function": "00445900",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00444777",
+      "function": "00444760",
+      "native": "00444760"
+    },
+    {
+      "address": "0044478f",
+      "function": "00444760",
+      "native": "00419cc0"
+    },
+    {
+      "address": "00444796",
+      "function": "00444760",
+      "native": "00bd1510"
+    },
+    {
+      "address": "0044479c",
+      "function": "00444760",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "0055730a",
+      "function": "005572f0",
+      "native": "00bf6713"
+    },
+    {
+      "address": "00557326",
+      "function": "005572f0",
+      "native": "00bf6713"
+    },
+    {
+      "address": "0055733a",
+      "function": "005572f0",
+      "native": "00554f10"
+    },
+    {
+      "address": "0055b4a6",
+      "function": "0055b490",
+      "native": "0055b230"
+    },
+    {
+      "address": "0055b4af",
+      "function": "0055b490",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "0055b7f1",
+      "function": "0055b690",
+      "native": "00444b10",
+      "binding": "Actual record member+24 full-selection consumer; parent stays separate."
+    }
+  ],
+  "current_start_validation": {
+    "owned": 72,
+    "all_inspected": 178,
+    "exact_set_and_mnemonics": true,
+    "all_transfers_disk_live_current_match": true,
+    "capture": "local/oct15_scalar_cleanup_current_context.json"
+  },
+  "typed_capture": "local/oct15_input_scalar_map_cleanup_typed_flow.json",
+  "typed_modification": "775",
+  "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source_hashes": {
+    "src/native_input_scalar_map_full_cleanup.cpp": "2e405a53164e42a369a6bd0781f26000f26ffc93331563e41b55ac682dbf57bf",
+    "include/bsp/native_input_scalar_map_full_cleanup.hpp": "e56641f96f8612950ffd2d6d231b071c8139e51b640a9ddf235edbad1a1d1da7"
+  },
+  "actual_dependencies_sha256": {
+    "src/native_soldier_loop_lengths.cpp": "603fe0285277401e7c76588ee40d6552e843a96db5ce00d9374dd8801aeffbb5",
+    "include/bsp/native_soldier_loop_lengths.hpp": "ffd4f34fc05ce4f8578f111023266399201d066d697ff24e47be7ec7ec0b3b70",
+    "src/native_soldier_registry_lifetime.cpp": "740daad23a895934570b9365f21888cf1d1036e65b48a61f5d56d47f9a84f59f",
+    "include/bsp/native_soldier_registry_lifetime.hpp": "36d02f233b4384f192d68f05b8d2a920abd10c7e45b1e47eece2b0f2e77a1761",
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+  },
+  "build": "pending",
+  "independent_source_review": "pending",
+  "source_domain": "Actual12B header,N1Ch/nil19h nodes,actual pooled-string RawPoolContext and current-CRT frees. Existing soldier-loop allcase callback API is real and preserved; direct actual444760 subtree needs no callback.",
+  "limits": [
+    "444B10 is only its admitted full-selection127B prefix; ordinary partial branch and diagnostics remain outside new scope.",
+    "Source context/private8B result/private-frame/register/flags/nativeCRT/FH3/SEH/fault/game equivalence remain qualified. No localEH/rollback/retry/nullguard/noexcept bridge is introduced.",
+    "Whole445900 observes native EAX0 and current-head free/4then8 reset. Getter failures preserve earlier effects and stop later operations."
+  ]
+}
