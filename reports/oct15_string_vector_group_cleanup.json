@@ -1,0 +1,58 @@
+{
+  "packet": "oct15_string_vector_group_cleanup",
+  "status": "complete_actual_header_source_current_cpp_eh_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_string_vector_group_cleanup.cpp",
+  "header": "include/bsp/native_string_vector_group_cleanup.hpp",
+  "documentation": "docs/OCT15_STRING_VECTOR_GROUP_CLEANUP.md",
+  "routines": [
+    {"address": "006a6ee0", "cpp_name": "destroy_native_string_vector_group_range_006a6ee0", "original_abi": "ECX first, EDX last; two unconsumed stacked DWORDs; RET8; no semantic result", "coverage": "complete_actual16B_outer_header_range_via_verified0055AFF0_per_element_schedule"},
+    {"address": "006a7190", "cpp_name": "destroy_native_string_vector_group_range_dispatch_006a7190", "original_abi": "ECX opaque receiver word, EDX unconsumed; stack first,last; RET8; no semantic result", "coverage": "complete_actual_range_dispatch_and_dead_metadata_forwarding"}
+  ],
+  "local_eh": "none; Source adds no catch/retry/rethrow/rollback",
+  "equivalence": {
+    "per_element_reuse": "accepted actual tidy_native_outer_string_vector_0055aff0",
+    "schedule": "capture begin/end onlyifnonnull; destroy captured16B inner headers through55A3A0; free CURRENT begin; always clear4/8/C in order; do notwrite opaque0; advance outercursor16 onlyafterreturn",
+    "metadata_difference": "006A6EE0 supplies currentheader/originalfirst to55A3A0 while55AFF0 supplies currentheader twice; full55A3A0 body consumes neither incoming metadata word",
+    "endpoints": "captured; DWORD wrap/equality; empty range performs no field/pool/free work"
+  },
+  "dispatch": "Load last twice intoEAX/EDX, push last/receiver dead words, load firstECX and call6A6EE0. Source keeps physical inputs plus context; no receiver dereference or allocator policy. Void result, no native residue/private-stack mutation promise.",
+  "preserved_projection": {
+    "name": "destroy_native_input_settings_group_range_006a6ee0",
+    "source": "src/native_input_settings_vector_storage.cpp",
+    "interface": "bounded settings projection with NativeStringStorage& and existing structural-mutation contract",
+    "fixtures": "unchanged; not relabeled as native fixtures for this new raw-context interface"
+  },
+  "host_steps": [
+    {"address": "006a6eff", "native": "0055a3a0", "function": "006a6ee0", "contract": "captured16B inner-header range with unconsumed metadata"},
+    {"address": "006a6f08", "native": "00bf65ac", "function": "006a6ee0", "contract": "CURRENT outer begin free after inner range"},
+    {"address": "006a719e", "native": "006a6ee0", "function": "006a7190", "contract": "physical endpoint/dead-metadata dispatch"},
+    {"address": "0055b004", "native": "0055a3a0", "function": "0055aff0", "contract": "accepted full per-element schedule equivalence"},
+    {"address": "0055b00d", "native": "00bf65ac", "function": "0055aff0", "contract": "accepted CURRENT-begin free equivalence"},
+    {"address": "006a7974", "native": "006a6ee0", "function": "006a7960", "contract": "incoming tidy site evidence only"},
+    {"address": "006a7670", "native": "006a6ee0", "function": "006a7630", "contract": "incoming site evidence only"},
+    {"address": "006a77d9", "native": "006a6ee0", "function": "006a7690", "contract": "incoming insertion site evidence only"},
+    {"address": "006aa579", "native": "006a6ee0", "contract": "incoming settings-destructor site; enclosing CURRENT backing free remains in caller"},
+    {"address": "006a7604", "native": "006a6ee0", "function": "006a75f0", "contract": "incoming tidy site evidence only"},
+    {"address": "006a7810", "native": "006a7190", "function": "006a7805", "contract": "incoming catch interface evidence only"},
+    {"address": "006a78a3", "native": "006a7190", "function": "006a788e", "contract": "incoming catch interface evidence only"}
+  ],
+  "validation": {
+    "win32_release": "passed",
+    "existing_tests": "3/3 passed",
+    "log": "local/oct15_string_vector_group_cleanup_build.log",
+    "ctest_seconds": 8.95,
+    "native_call_sites": "12 checked, 0 failed",
+    "documentation_calls": "12 checked, 0 failed, 0 unchecked, 0 warnings",
+    "preexisting_link_warning": "LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj; same preceding cleanup-wrapper warning; unrelated Source unchanged",
+    "new_tests": 0,
+    "complete_entry_bytes": {"006a6ee0": 72, "006a7190": 22}
+  },
+  "limits": [
+    "Added raw context and by-value physical words are not original native entry/stack/private-frame/register ABI.",
+    "Accepted current raw-pool/CRT/C++ domain, not original heap/handler/exception/FH3/SEH/fault or cleanup-failure personality.",
+    "No new group-cleanup native differential, failure-injection, original-game or gameplay proof.",
+    "Prior typed settings projection/fixtures, host views and pending cleanup-wrapper Source/doc/report files remain separate and unchanged; no incoming caller completeness promotion."
+  ]
+}
