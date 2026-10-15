@@ -1,0 +1,156 @@
+{
+  "schema": "bsp.reference_payload_reset_Main_validation.v1",
+  "status": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
+  "required_Main_build": {
+    "command": "./scripts/build.ps1",
+    "initial_chunk": "d9931c",
+    "session": 6737,
+    "terminal_chunk": "185492",
+    "exit_code": 0,
+    "configured_CTests_passed": 3,
+    "seconds": 8.32,
+    "before_commit": "7ac2ab8dbe301aa44ae57281ce2675019c899953",
+    "after_commit": "e3f88d58e7fde8c8143ddf1c23d65c5f925777af",
+    "stable_inputs": 166,
+    "all81_known_actual_inputs_before_Main_build": true
+  },
+  "before": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reference_payload_reset_Main_build01\\before.DATA.json",
+    "bytes": 39532,
+    "sha256": "ff71debba9df904d09a0f3cdc3808247f0ba65d44fc5120c7e0923af1ec85aad"
+  },
+  "after": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reference_payload_reset_Main_build01\\after.DATA.json",
+    "bytes": 40635,
+    "sha256": "6887b6b099f464e1bef29833f9e500a0a9e293435b6b53a0991b8fa578e1776b"
+  },
+  "actual_original_build_tools": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reference_payload_reset_Main_build01\\original_build_tools.DATA.json",
+    "bytes": 829,
+    "sha256": "ba4d8a5a88844601062fc647e48998936c39b8a9b29cd95e1da63db0847d9844"
+  },
+  "complete_Main_inventory": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_reference_payload_reset_integration_20261015\\Main_inventory.DATA.json",
+    "bytes": 7080,
+    "sha256": "3fcb553507dbcfb4b71c77320a86f6227b0fa317c3b024dae1d7e20597a14b38"
+  },
+  "complete_Main_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_reference_payload_reset_integration_20261015\\Main_primary_archive.DATA.json",
+    "bytes": 851051,
+    "sha256": "d18abbb9119d302acc354b326b79ee41c71ab46bbaaf47263efc854e064bec6b"
+  },
+  "all_primary_auxiliary_symbols": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_reference_payload_reset_integration_20261015\\Main_symbol_review.DATA.json",
+    "bytes": 1891,
+    "sha256": "568cc2a5da625e8727f7db2134c36e2aacdc1f52e129ddcb50a079519d06226e"
+  },
+  "registration": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_reference_payload_reset_integration_20261015\\registration_verification.DATA.json",
+    "bytes": 393,
+    "sha256": "67c7c1dadb4b8ab245e55d426950601037daa34c9d89aef6165240c64b8021b5"
+  },
+  "artifacts": [
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_reference_payload_reset.obj",
+        "bytes": 1196,
+        "sha256": "08ce17d35ded0ed444b7b63eeadbfe77cbba9a61b4ab5eb1495b2f5b36910300"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reference_payload_reset_Main_build01\\frozen\\native_reference_payload_reset.obj",
+        "bytes": 1196,
+        "sha256": "08ce17d35ded0ed444b7b63eeadbfe77cbba9a61b4ab5eb1495b2f5b36910300"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 93132098,
+        "sha256": "105e07e937f06fef3a748c7f2064315bf4ab81f2e5835b59aa1cd34c08476877"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reference_payload_reset_Main_build01\\frozen\\bsp_core.lib",
+        "bytes": 93132098,
+        "sha256": "105e07e937f06fef3a748c7f2064315bf4ab81f2e5835b59aa1cd34c08476877"
+      }
+    }
+  ],
+  "code": {
+    "code_bytes": 34,
+    "instructions": 12,
+    "code_sections": 1,
+    "code_relocations": 1,
+    "metadata_relocations": 0,
+    "all_code_runtime_data_relocation_fields_offsets_types_targets_literal": true,
+    "all_primary_auxiliary_records_compared": true,
+    "primary_symbols": 10,
+    "auxiliary_records": 5,
+    "private_runtime_name_differences": 0,
+    "MD_directives_literal_equal": true,
+    "whole_object_debug_checksum_identity": false
+  },
+  "archive": {
+    "members": 2328,
+    "symbols_per_index": 82104,
+    "both_indices_equal": true,
+    "unique_object": {
+      "header_offset": 19975338,
+      "payload_offset": 19975398,
+      "raw_name": "/0",
+      "bytes": 1196,
+      "header_hex": "2f302020202020202020202020202020313739323130383339382020202020202020202020202020313030363636202031313936202020202020600a",
+      "sha256": "08ce17d35ded0ed444b7b63eeadbfe77cbba9a61b4ab5eb1495b2f5b36910300"
+    },
+    "own_APIs": [
+      [
+        "?reset_native_reference_payload_008f0380@bsp@@YIXPAX@Z",
+        19975338
+      ]
+    ],
+    "all_public_bindings": [
+      {
+        "symbol": "__Avx2WmemEnabledWeakValue",
+        "binding": [
+          "__Avx2WmemEnabledWeakValue",
+          19975338
+        ],
+        "section_hex": "",
+        "raw_size": 4,
+        "relocations": [],
+        "provider_sha256": "08ce17d35ded0ed444b7b63eeadbfe77cbba9a61b4ab5eb1495b2f5b36910300"
+      },
+      {
+        "symbol": "?reset_native_reference_payload_008f0380@bsp@@YIXPAX@Z",
+        "binding": [
+          "?reset_native_reference_payload_008f0380@bsp@@YIXPAX@Z",
+          19975338
+        ],
+        "section_hex": "568bf18b460485c0741050e80000000083c404c7460400000000c706000000005ec3",
+        "raw_size": 34,
+        "relocations": [
+          {
+            "offset": 12,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          }
+        ],
+        "provider_sha256": "08ce17d35ded0ed444b7b63eeadbfe77cbba9a61b4ab5eb1495b2f5b36910300"
+      }
+    ]
+  },
+  "contract": [
+    "Whole008F0380 [008F0380,008F03A2),34 bytes/12 instructions. New naked void fastcall(void*) noexcept uses genuine ECX raw8 payload, opaque scalar+0 and owned pointer+4, no stack args, plain RET and ESI preservation. All30 non-CALL operand bytes are literal; only [12,16) binds actual canonical current singleton_lifetime_free.",
+    "Capture old+4; if nonnull free it, then clear DWORD+4 only after return. Always clear DWORD scalar+0. Null path never stores+4. No payload-root free, virtual dispatch, phase/tag/kind/owner changes or lookup/allocation/startup action. This is not the reversed pointer0/size4 array header03F0.",
+    "Actual accepted0310/0340/physical duplicate provenance; old pointer null or sole-owned matching-current-heap duplicate; live disjoint valid payload/allocation/frame and successful returning free. No alias, reentry, concurrent mutation, invalid memory, faults, overflow or failure rollback. EAX/flags/FP are not public semantic results. No class/vtable/caller/Original full ABI/privateCRT/EH/runtime/game credit; blocked0600 remains unimplemented.",
+    "Author81 actual Source/include inputs all own-precompile among119 candidates;34 readiness inputs and64 tools including both clui files stable. One strict086bfe exit0, object1228B/5sections/15symbolslots/34B12/1REL32/0noncode relocations. One normal70fcd9/session13724 to e9fdb5 exit0 passed2 existing checks7.30s; TU unregistered. Source phaseff543f is distinct from earlier authorized tasks in the same UUID. Config LF455B versus CRLF467B is literal-pinned and normalized/JSON equal; no hermetic environment claim or replay."
+  ],
+  "limits": [
+    "Existing configured checks and static artifacts do not execute this selected new body.",
+    "Current successful free domain only. No Original privateCRT/EH/full ABI/class/vtable/caller/parser/startup/runtime/game claim.",
+    "Original0600 remains blocked and unimplemented; no reversed03F0 array-header substitution."
+  ],
+  "Original_ABI_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false
+}

@@ -41274,8 +41274,8 @@
     },
     {
       "id": "cc12_scene_property_array_assignment_008f0460_008f04c0_008f0520_008f0580",
-      "done": false,
-      "state": "whole_ordinary_Source_ready_no_implementation_yet",
+      "done": true,
+      "state": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
       "source_ready": true,
       "function_addresses": [
         "008f0460",
@@ -41295,7 +41295,12 @@
       "worker": "property_array_readiness_oct15",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
-      "contract": "Whole359B139instructions:0460raw86B33,input/bytes/fullflags;04C0and0520each90B35,count/input/fullflags;058093B36,count/input/fullflags,stride12. ECXactualraw56record/unusedEDX,RET0C/EAXrecord. OnlyfullDWORDpointer20/size24(8bytes)/48preserved. Optionaloldfree\u2192zero20; CMP lowflagBYTE BEFOREsize24store thenbranch. Rawbytesloadedafterfree;typedsizecomputedbeforefree using2doublings orLEA3*count+2doublings. NonzeroLOWBYTE(upper24ignored/all256lowpatterns) exactpositiveallocation\u2192loadinputafterallocation\u2192storeallocation20 BEFORErealmemcpy; no-copy storesactualsoleownedmatchingheapincomingpointer withretirementresponsibilitytransfer, notborrowedclasslifetime. Genuinecompleteacceptedrawtype8/9/10/11producer/currentheapoldchild andpositivevalidnonwrappingallocatablesizes/ranges; sameacceptedbag/pool/generation/contractsifcomposed. Copyinputstable/disjointfromrecord/frame/old/newalloc; incomingretainedpayloadunique/disjoint/currentheap. Successfulreturningnonthrow/noalias/reentry/concurrenttrim/teardown/fault;zero-sizeexcluded,noaddedguards/defaults/phase/tag/constructors/context/startup/RAII/rollback. Directcurrentcanonicalfree/allocator+genuineCDECLsizebridge/memcpy existingpatterns, noNativebridgecredit. OriginalfullABI/privateCRT/EH/parser/loader/runtime/gameoutside."
+      "contract": "Four whole Original entries: 008F0460 [0460,04B6),86B/33 instructions; 008F04C0 [04C0,051A),90B/35; 008F0520 [0520,057A),90B/35; 008F0580 [0580,05DD),93B/36. New MSVC Win32 naked fastcall entries use ECX actual raw56 record, unused EDX, three stack DWORDs, EAX record and RET0C. All311 non-CALL operand bytes are literal; twelve CALL operands rebind48 bytes to current providers. Only pointer+20 and full byte-size DWORD+24 change, eight distinct record bytes. Optional old pointer free returns before its clear. Typed counts compute size before free; raw0460 reads bytes after free. Every low flag BYTE comparison precedes size store and branch. Copy allocates exact positive bytes, loads input after allocation and stores pointer before genuine memcpy; no-copy stores the supplied full pointer. All256 low-byte flag patterns and ignored high24 bits are preserved. Require complete actual accepted type8/9/10/11 raw producer provenance. Old child is null or uniquely owned matching-current-heap allocation; copied input is stable and disjoint. No-copy input is a genuine unique matching-current-heap allocation whose sole retirement responsibility transfers at the pointer store. A borrowed pointer or marker+2C does not establish ownership: accepted03F0/0640 frees every nonnull child irrespective of that marker. Only positive nonwrapping allocatable ranges: stride4 count1..3FFFFFFFh; stride12 count1..15555555h. Genuine canonical free/allocator and real current memcpy, valid flat ES, DF clear, successful returning providers and same real bag/process/pool/generation contracts if composed. Exclude zero size, failure, exceptions, alias, reentry, concurrency, trim and teardown. No new tag/phase/owner/default/context/lookup/startup/rollback action. All81 actual strict compiler inputs were freshly observed before compilation among151 candidates. All67 tools including both clui DLLs and28 current providers remained unchanged. One strict compile and one normal existing worker build passed; that worker TU was unregistered and native differential seeds absent. No hermetic environment, Original private CRT/EH, full class/calling ABI, caller/parser/startup/runtime/game claim. The58B current allocator adapter and compiler GS machinery receive no native reconstruction credit.",
+      "code_revision": "4464fe669c2bc229aaac7e134d61eb1a4931e927",
+      "primary_review": "reports/cc12_property_array_assignment_primary_review.json",
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_property_array_assignment_Main_validation.json"
     },
     {
       "id": "goal_oct15_scene_name_hash_iterator",
@@ -41387,8 +41392,8 @@
     },
     {
       "id": "cc12_reference_payload_reset_008f0380",
-      "done": false,
-      "state": "whole_ordinary_Source_ready_no_implementation_yet",
+      "done": true,
+      "state": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
       "source_ready": true,
       "function_addresses": [
         "008f0380"
@@ -41405,7 +41410,35 @@
       "worker": "reference_set_source_oct15",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
-      "contract": "Whole [008F0380,008F03A2),34 bytes/12 instructions. ECX is genuine live raw8 reference payload: opaque full scalar at+0, owned pointer at+4. Capture old pointer; if nonnull call canonical current free then clear DWORD+4; always clear DWORD scalar+0. The null path does not store+4. No root free, virtual dispatch, tag/kind reset or reversed 03F0 array header substitution. Proposed MSVC Win32 naked void __fastcall(void*) noexcept retains30 non-CALL operand bytes and rebinds only[12,16) to singleton_lifetime_free. Actual accepted0310/0340/current physical duplicate provenance; old pointer null or sole-owned current-heap duplicate, valid disjoint live payload/frame and successful normal free. No alias, reentry, concurrent mutation, fault, rollback or Original private CRT/EH/full ABI/caller/class/game claim. Existing scalar-deleting slot0600 is separately blocked and receives no Source authorization."
+      "contract": "Whole008F0380 [008F0380,008F03A2),34 bytes/12 instructions. New naked void fastcall(void*) noexcept uses genuine ECX raw8 payload, opaque scalar+0 and owned pointer+4, no stack args, plain RET and ESI preservation. All30 non-CALL operand bytes are literal; only [12,16) binds actual canonical current singleton_lifetime_free. Capture old+4; if nonnull free it, then clear DWORD+4 only after return. Always clear DWORD scalar+0. Null path never stores+4. No payload-root free, virtual dispatch, phase/tag/kind/owner changes or lookup/allocation/startup action. This is not the reversed pointer0/size4 array header03F0. Actual accepted0310/0340/physical duplicate provenance; old pointer null or sole-owned matching-current-heap duplicate; live disjoint valid payload/allocation/frame and successful returning free. No alias, reentry, concurrent mutation, invalid memory, faults, overflow or failure rollback. EAX/flags/FP are not public semantic results. No class/vtable/caller/Original full ABI/privateCRT/EH/runtime/game credit; blocked0600 remains unimplemented. Author81 actual Source/include inputs all own-precompile among119 candidates;34 readiness inputs and64 tools including both clui files stable. One strict086bfe exit0, object1228B/5sections/15symbolslots/34B12/1REL32/0noncode relocations. One normal70fcd9/session13724 to e9fdb5 exit0 passed2 existing checks7.30s; TU unregistered. Source phaseff543f is distinct from earlier authorized tasks in the same UUID. Config LF455B versus CRLF467B is literal-pinned and normalized/JSON equal; no hermetic environment claim or replay.",
+      "code_revision": "8af785915947b2bb429d1f9b61d19f85bfaf7ba7",
+      "primary_review": "reports/cc12_reference_payload_reset_primary_review.json",
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_reference_payload_reset_Main_validation.json"
+    },
+    {
+      "id": "cc12_scene_property_hash_iterator_008eeb10_008eeb60",
+      "done": false,
+      "state": "whole_ordinary_Source_ready_no_implementation_yet",
+      "source_ready": true,
+      "function_addresses": [
+        "008eeb10",
+        "008eeb60"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_property_hash_iterator.hpp",
+        "src/native_scene_property_hash_iterator.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_HASH_ITERATOR_CC12.md",
+        "reports/native_scene_property_hash_iterator_cc12.json"
+      ],
+      "depends_on": [],
+      "readiness_report": "reports/cc12_property_hash_iterator_readiness.json",
+      "missing_provider_addresses": [],
+      "worker": "array_assignment_peer_oct15",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "contract": "Two distinct whole entries: Begin008EEB10 [008EEB10,008EEB51)65B22; Next008EEB60 [008EEB60,008EEBBC)92B33. ECX actual writable12B iterator: table0/current4/index8; unused incoming EDX/no stack args/plainRET. Begin has no common EAX semantic return; Next returns full DWORD0/1 by rereading current. Table count/test+4, heads+8/index*4, node link+C. Preserve captured versus reloaded table/index/current values, every DWORD load/store and branch schedule. Begin count-zero clears current only and leaves index untouched; its original scan can read head64. Next initially-null path rereads current without table/index; link/success paths preserve index publication and final current reload; unsigned DWORD arithmetic and no head64 scan load. Actual caller-owned aligned iterator initialized only at table word; actual accepted raw61 bag+4/enum owner+4 map with genuine property E175B0 or symbol E17578 nodes, preserved allocator+10 and whole producer/context/process/list/pool/generation/ownership contracts. No fabricated sentinel from map+108 owner metadata; authentic coherent nonempty map stops at a real nonnull head. Disjoint valid iterator/map/nodes/private frames, finite stable unshared acyclic chains, no faults/alias/reentry/concurrency/trim/teardown. No direct providers/calls/dispatch/lifetime action or container/STL substitution. Other00466BB0/C00 byte-identical instances provide evidence only, no address credit. No Original full flags/register/privateCRT/EH/ABI, caller/key-list/parser/startup/runtime/game claim. String-list clear/append/growth and optional sort callback remain separate blockers."
     }
   ],
   "snapshot_after_analysis": {

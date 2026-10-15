@@ -1,0 +1,827 @@
+{
+  "packet": "oct15_native_dword_vector_copy_primitives",
+  "worker": "agent/oct15_avoid_distance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis": true,
+  "ghidra_read_only": true,
+  "source": "src/native_dword_vector_copy_primitives.cpp",
+  "header": "include/bsp/native_dword_vector_copy_primitives.hpp",
+  "documentation": "docs/OCT15_NATIVE_DWORD_VECTOR_COPY_PRIMITIVES.md",
+  "owned_addresses": [
+    "00555000",
+    "004cb130"
+  ],
+  "routines": [
+    {
+      "address": "00555000",
+      "kind": "whole_ordinary_function",
+      "coverage": "complete",
+      "native_name_preserved": "STL_UninitCopy_00555000",
+      "implementation": "copy_native_dword_uninitialized_00555000",
+      "new_name_is_hypothesis": true,
+      "ranges": [
+        [
+          "00555000",
+          "00555025"
+        ]
+      ],
+      "body_bytes": 38,
+      "instructions": 15,
+      "native_abi": "ECX first,EDX last;FOUR stacked words(destination,unusedowner,unusedmetadata,unusedtag);RET10h/EAXadvanceddestination;ESIpreserved.",
+      "source_api": "void* __fastcall copy_native_dword_uninitialized_00555000(const void* first,const void* last,void* destination,void* unused_owner,uint32_t unused_metadata,uint32_t unused_tag);",
+      "binding": "Direct accepted copy_native_dword_uninitialized_00696d40 with allsix values unchanged;no count/type/owner bridge.",
+      "return_proof": "Native00555002 captures destination before emptybranch;0055501B adds4 perstep;00555023 RET10h leaves advanceddestination inEAX.",
+      "status": "complete_ordinary_source_win32_build_checked_current_cpp_crt_domain"
+    },
+    {
+      "address": "004cb130",
+      "kind": "whole_ordinary_function",
+      "coverage": "complete",
+      "native_name_preserved": "STL_Vector_Tidy_004cb130",
+      "implementation": "tidy_native_dword_vector_004cb130",
+      "new_name_is_hypothesis": true,
+      "ranges": [
+        [
+          "004cb130",
+          "004cb159"
+        ]
+      ],
+      "body_bytes": 42,
+      "instructions": 13,
+      "native_abi": "ECX opaque16B storage,incomingEDX unconsumed;NOstackwords;plainRET;ESIpreserved;no semantic EAXresult.",
+      "source_api": "void __fastcall tidy_native_dword_vector_004cb130(void* actual_header);",
+      "binding": "Direct accepted tidy_native_vector_storage_00468840(actual_header);no clear/destructor/type/provider substitute.",
+      "return_proof": "No native result publication. Conditionalfree and nullskip paths leave ambientEAX;Sourcevoid explicitly excludes that residue.",
+      "status": "complete_ordinary_source_win32_build_checked_current_cpp_crt_domain"
+    }
+  ],
+  "duplicate_scope_check": {
+    "before": "Fresh lookup andsource/include grep found no complete named ordinary API for eitheraddress. Both freshaddress/fourfile lease claims succeeded before Source authoring.",
+    "ordinary_source_only": "Exactly two new ordinary entries;existing actual/qualified APIs and native/libraryidentities preserved. No constructor,catch,placement,handler,loop or model duplicated.",
+    "later_scope": "Whole557590/catch557654 andplacement697D40/697EC0 not reconstructed here. Historical placement same-body/physical-ABI correction remains explicit in unchanged readiness."
+  },
+  "equivalence": {
+    "00555000_to_00696d40": {
+      "all38bytes_equal_unmasked": true,
+      "native_sha256": "05af6819c3b96517ac02f40647d76ca373be619a871579246e5dd53f7248483b",
+      "all_physical_inputs_outputs_match": true,
+      "all_dead_stack_word_roles_match": true,
+      "Source_binding": "copy_native_dword_uninitialized_00696d40"
+    },
+    "004cb130_to_00468840": {
+      "all42bytes_equal_except_exact_free_rel32": true,
+      "mask_offsets": [
+        "000c",
+        "000d",
+        "000e",
+        "000f"
+      ],
+      "mask_only": "Four operandbytes of theE8 atoffset0B;no otherbytesmasked.",
+      "independent_rel32_targets": {
+        "004cb13b": "00bf65ac",
+        "0046884b": "00bf65ac"
+      },
+      "masked_sha256": "8d190b99f3d745f3d64b0a568d8694656971dac5480015166e206d50c937117f",
+      "all_physical_inputs_returns_and_schedule_match": true,
+      "Source_binding": "tidy_native_vector_storage_00468840"
+    }
+  },
+  "complete_effects": {
+    "copy": "Capture destination even onemptyinput;until first==capturedlast,nonnull output readsCURRENTsourceDWORD immediatelybeforestore,null output skipsboth accesses;advancebothcursors4 withDWORDwrap;returnactualadvancedoutput. Lastthree physicalstackwords aredead;forwardthemunchanged withno inventedownership/type.",
+    "tidy": "CaptureDWORD+4ONCE. Ifnonnull,free thatCAPTUREDpointer throughactualcurrentCRTservice. Alwayszero+4,+8,+C inthatorder afterward. No secondpointerread,earlynullreturn,elementdestructor,clear or extra diagnostic.",
+    "alias_order": "AcceptedvolatileDWORD/rawwrapping interfaces preserveprogressivecopy/self/overlapaliases andtidycapture/free/reset order;no memmove,countconversion,snapshot or guard.",
+    "storage": "Tidy actual16B rawstorage;no direct+0 access. Elements atcopy are4B rawDWORDs;no overlay,allocator,provider or owningelementmodel introduced."
+  },
+  "exception_and_qualification": {
+    "native_local_EH": "Neithercompletebody containslocalEHregistration,catch,action,ownedtemporary orcleanupstate. No originalEHimplementation added.",
+    "Source_local_EH": "No catch,guard,noexceptpromise,secondarycleanup or exceptionconversion added;accepted actualservice/currentCRT/C++policies propagate.",
+    "valid_reached_storage": "Every reachedrawaccess/release mustbevalid;copyequalityterminationfinite;headerwritablethroughpostfreeclears. TidyusesacceptedcurrentCRTfreeadmission,not originalheapidentity.",
+    "excluded": "Originalprivatearguments/frames,ambientregisters/flags,asynchronousmutation,fault/SEH/FH3/RTTI/CRT/heapidentity,binaryABI andgame/runtimeequivalence areunproved."
+  },
+  "dependencies": {
+    "actual_services": [
+      "copy_native_dword_uninitialized_00696d40",
+      "tidy_native_vector_storage_00468840"
+    ],
+    "source_files": {
+      "include/bsp/native_dword_uninitialized_copy.hpp": {
+        "sha256": "0693c7ad5327afc2d5d9b48413493f95a6d829c3fb96a979da964404a0422363",
+        "matches_current_main": "d5703f1b36955ad391abe4ba42e62ad660695528",
+        "matches_accepted_readiness_source": true
+      },
+      "src/native_dword_uninitialized_copy.cpp": {
+        "sha256": "a6a8fa0ad704f108fb8106a8bc2a4811d891b3c4532c4d0ca9b74e9a576574e6",
+        "matches_current_main": "d5703f1b36955ad391abe4ba42e62ad660695528",
+        "matches_accepted_readiness_source": true
+      },
+      "include/bsp/native_vector_storage_tidy.hpp": {
+        "sha256": "75c437ed87f0c201617b0c2dc1d2a8643061910c4d0ec431523533fc68d42a06",
+        "matches_current_main": "d5703f1b36955ad391abe4ba42e62ad660695528",
+        "matches_accepted_readiness_source": true
+      },
+      "src/native_vector_storage_tidy.cpp": {
+        "sha256": "07b2acf3d95a6135d6dc6918c9739ebf09f9d7f6d195e3da02c4438fff091383",
+        "matches_current_main": "d5703f1b36955ad391abe4ba42e62ad660695528",
+        "matches_accepted_readiness_source": true
+      }
+    },
+    "missing_native_stubs_callbacks_or_providers": [],
+    "not_dependencies": [
+      "00557590",
+      "00697d40",
+      "00697ec0",
+      "pending00697bd0 assignment"
+    ]
+  },
+  "native_evidence": {
+    "original_image": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "fresh_typed_capture": "local/oct15_native_dword_vector_copy_primitives_typed_flow.json",
+    "fresh_typed_capture_sha256": "3f244d5dd1464c621c198fd0204ed78c27df74b15da300c44aa6e0f36fb94846",
+    "derivation": "PE32 section-table VA-to-raw; Capstone5.0.7 x86-32; complete typed body ranges; no native-byte masks in raw evidence",
+    "fresh_units": [
+      {
+        "address": "00555000",
+        "ranges": [
+          [
+            "00555000",
+            "00555025"
+          ]
+        ],
+        "envelope_bytes": 38,
+        "body_bytes": 38,
+        "instructions": 15,
+        "raw_envelope": "3bca8b442404741b568da4240000000085c074048b31893083c10483c0043bca75ee5ec21000",
+        "live_equals_disk": true,
+        "all_current_listing_starts_match_capstone": true,
+        "no_return": false,
+        "instruction_evidence": [
+          {
+            "address": "00555000",
+            "bytes": "3bca",
+            "mnemonic": "cmp",
+            "operands": "ecx, edx"
+          },
+          {
+            "address": "00555002",
+            "bytes": "8b442404",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esp + 4]"
+          },
+          {
+            "address": "00555006",
+            "bytes": "741b",
+            "mnemonic": "je",
+            "operands": "0x555023"
+          },
+          {
+            "address": "00555008",
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": "00555009",
+            "bytes": "8da42400000000",
+            "mnemonic": "lea",
+            "operands": "esp, [esp]"
+          },
+          {
+            "address": "00555010",
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "address": "00555012",
+            "bytes": "7404",
+            "mnemonic": "je",
+            "operands": "0x555018"
+          },
+          {
+            "address": "00555014",
+            "bytes": "8b31",
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [ecx]"
+          },
+          {
+            "address": "00555016",
+            "bytes": "8930",
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax], esi"
+          },
+          {
+            "address": "00555018",
+            "bytes": "83c104",
+            "mnemonic": "add",
+            "operands": "ecx, 4"
+          },
+          {
+            "address": "0055501b",
+            "bytes": "83c004",
+            "mnemonic": "add",
+            "operands": "eax, 4"
+          },
+          {
+            "address": "0055501e",
+            "bytes": "3bca",
+            "mnemonic": "cmp",
+            "operands": "ecx, edx"
+          },
+          {
+            "address": "00555020",
+            "bytes": "75ee",
+            "mnemonic": "jne",
+            "operands": "0x555010"
+          },
+          {
+            "address": "00555022",
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "address": "00555023",
+            "bytes": "c21000",
+            "mnemonic": "ret",
+            "operands": "0x10"
+          }
+        ]
+      },
+      {
+        "address": "004cb130",
+        "ranges": [
+          [
+            "004cb130",
+            "004cb159"
+          ]
+        ],
+        "envelope_bytes": 42,
+        "body_bytes": 42,
+        "instructions": 13,
+        "raw_envelope": "568bf18b460485c0740950e86cb4720083c404c7460400000000c7460800000000c7460c000000005ec3",
+        "live_equals_disk": true,
+        "all_current_listing_starts_match_capstone": true,
+        "no_return": false,
+        "instruction_evidence": [
+          {
+            "address": "004cb130",
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": "004cb131",
+            "bytes": "8bf1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "address": "004cb133",
+            "bytes": "8b4604",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004cb136",
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "address": "004cb138",
+            "bytes": "7409",
+            "mnemonic": "je",
+            "operands": "0x4cb143"
+          },
+          {
+            "address": "004cb13a",
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "004cb13b",
+            "bytes": "e86cb47200",
+            "mnemonic": "call",
+            "operands": "0xbf65ac"
+          },
+          {
+            "address": "004cb140",
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "address": "004cb143",
+            "bytes": "c7460400000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 4], 0"
+          },
+          {
+            "address": "004cb14a",
+            "bytes": "c7460800000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 8], 0"
+          },
+          {
+            "address": "004cb151",
+            "bytes": "c7460c00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0xc], 0"
+          },
+          {
+            "address": "004cb158",
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "address": "004cb159",
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      },
+      {
+        "address": "00696d40",
+        "ranges": [
+          [
+            "00696d40",
+            "00696d65"
+          ]
+        ],
+        "envelope_bytes": 38,
+        "body_bytes": 38,
+        "instructions": 15,
+        "raw_envelope": "3bca8b442404741b568da4240000000085c074048b31893083c10483c0043bca75ee5ec21000",
+        "live_equals_disk": true,
+        "all_current_listing_starts_match_capstone": true,
+        "no_return": false,
+        "instruction_evidence": [
+          {
+            "address": "00696d40",
+            "bytes": "3bca",
+            "mnemonic": "cmp",
+            "operands": "ecx, edx"
+          },
+          {
+            "address": "00696d42",
+            "bytes": "8b442404",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esp + 4]"
+          },
+          {
+            "address": "00696d46",
+            "bytes": "741b",
+            "mnemonic": "je",
+            "operands": "0x696d63"
+          },
+          {
+            "address": "00696d48",
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": "00696d49",
+            "bytes": "8da42400000000",
+            "mnemonic": "lea",
+            "operands": "esp, [esp]"
+          },
+          {
+            "address": "00696d50",
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "address": "00696d52",
+            "bytes": "7404",
+            "mnemonic": "je",
+            "operands": "0x696d58"
+          },
+          {
+            "address": "00696d54",
+            "bytes": "8b31",
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [ecx]"
+          },
+          {
+            "address": "00696d56",
+            "bytes": "8930",
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax], esi"
+          },
+          {
+            "address": "00696d58",
+            "bytes": "83c104",
+            "mnemonic": "add",
+            "operands": "ecx, 4"
+          },
+          {
+            "address": "00696d5b",
+            "bytes": "83c004",
+            "mnemonic": "add",
+            "operands": "eax, 4"
+          },
+          {
+            "address": "00696d5e",
+            "bytes": "3bca",
+            "mnemonic": "cmp",
+            "operands": "ecx, edx"
+          },
+          {
+            "address": "00696d60",
+            "bytes": "75ee",
+            "mnemonic": "jne",
+            "operands": "0x696d50"
+          },
+          {
+            "address": "00696d62",
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "address": "00696d63",
+            "bytes": "c21000",
+            "mnemonic": "ret",
+            "operands": "0x10"
+          }
+        ]
+      },
+      {
+        "address": "00468840",
+        "ranges": [
+          [
+            "00468840",
+            "00468869"
+          ]
+        ],
+        "envelope_bytes": 42,
+        "body_bytes": 42,
+        "instructions": 13,
+        "raw_envelope": "568bf18b460485c0740950e85cdd780083c404c7460400000000c7460800000000c7460c000000005ec3",
+        "live_equals_disk": true,
+        "all_current_listing_starts_match_capstone": true,
+        "no_return": false,
+        "instruction_evidence": [
+          {
+            "address": "00468840",
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": "00468841",
+            "bytes": "8bf1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "address": "00468843",
+            "bytes": "8b4604",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "00468846",
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "address": "00468848",
+            "bytes": "7409",
+            "mnemonic": "je",
+            "operands": "0x468853"
+          },
+          {
+            "address": "0046884a",
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "0046884b",
+            "bytes": "e85cdd7800",
+            "mnemonic": "call",
+            "operands": "0xbf65ac"
+          },
+          {
+            "address": "00468850",
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "address": "00468853",
+            "bytes": "c7460400000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 4], 0"
+          },
+          {
+            "address": "0046885a",
+            "bytes": "c7460800000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 8], 0"
+          },
+          {
+            "address": "00468861",
+            "bytes": "c7460c00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0xc], 0"
+          },
+          {
+            "address": "00468868",
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "address": "00468869",
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      }
+    ],
+    "capture_commands": [
+      {
+        "command": [
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00555000",
+          "--length",
+          "38"
+        ],
+        "capture": "local/oct15_native_dword_vector_copy_primitives_evidence/00555000_bytes_length_38.txt",
+        "sha256": "d11f5166ae2e1ef59ed3932c313ad49b13259b34a4abb1e72d9b774583679b8c"
+      },
+      {
+        "command": [
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "00555000",
+          "--start",
+          "0",
+          "--lines",
+          "70"
+        ],
+        "capture": "local/oct15_native_dword_vector_copy_primitives_evidence/00555000_disasm_start_0_lines_70.txt",
+        "sha256": "a6c9d3c6b9e0d0cd6c83b2710860db7ee0ba7c9f23a84b939886274007131446"
+      },
+      {
+        "command": [
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "004cb130",
+          "--length",
+          "42"
+        ],
+        "capture": "local/oct15_native_dword_vector_copy_primitives_evidence/004cb130_bytes_length_42.txt",
+        "sha256": "0596d7acd1ecbbc93eb078cb2c9209948f096e0a1444c5853fd60b8666209af2"
+      },
+      {
+        "command": [
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "004cb130",
+          "--start",
+          "0",
+          "--lines",
+          "70"
+        ],
+        "capture": "local/oct15_native_dword_vector_copy_primitives_evidence/004cb130_disasm_start_0_lines_70.txt",
+        "sha256": "3e4d83d9d6a5391c316f1e4bd2dc1d8ecfb9e66d8ddbe5f66c94fffc9211abc1"
+      },
+      {
+        "command": [
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00696d40",
+          "--length",
+          "38"
+        ],
+        "capture": "local/oct15_native_dword_vector_copy_primitives_evidence/00696d40_bytes_length_38.txt",
+        "sha256": "bec55305351287b0f6e9b7e8857579158cf05740c41b7c2fb074baf4703fac5b"
+      },
+      {
+        "command": [
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "00696d40",
+          "--start",
+          "0",
+          "--lines",
+          "70"
+        ],
+        "capture": "local/oct15_native_dword_vector_copy_primitives_evidence/00696d40_disasm_start_0_lines_70.txt",
+        "sha256": "5fc75d8c304325570916dd6236d85c5c6dcdddbda13369fb6a786bae80e97a79"
+      },
+      {
+        "command": [
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00468840",
+          "--length",
+          "42"
+        ],
+        "capture": "local/oct15_native_dword_vector_copy_primitives_evidence/00468840_bytes_length_42.txt",
+        "sha256": "6387ef156eec19d77a75acd3b0267051b1afa349af0059f1c56d91522100656b"
+      },
+      {
+        "command": [
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "00468840",
+          "--start",
+          "0",
+          "--lines",
+          "70"
+        ],
+        "capture": "local/oct15_native_dword_vector_copy_primitives_evidence/00468840_disasm_start_0_lines_70.txt",
+        "sha256": "1e70ea5a6d8b05e5b7129514faf7c56e0c351c1aa6bfbbc8001eb135807655a0"
+      }
+    ],
+    "owned_distinct_bytes": 80,
+    "owned_distinct_current_starts": 28,
+    "readonly_reference_bytes": 80,
+    "readonly_reference_current_starts": 28,
+    "fresh_inspected_bytes": 160,
+    "fresh_inspected_current_starts": 56,
+    "all_live_disk_current_starts_verified": true,
+    "owned_CALLs": 1,
+    "reference_CALLs": 1,
+    "external_tail_JMPs": 0,
+    "readiness_receipt": "local/oct15_native_dword_vector_constructors_readiness.json",
+    "readiness_receipt_sha256": "06da405ded0970cf68b004b5fb014f2f350aba7e0ce497d355a644cdc4f76b33",
+    "bytes_equal_prior_complete_readiness": true
+  },
+  "calls": [
+    {
+      "address": "004cb13b",
+      "native": "00bf65ac",
+      "function": "004cb130"
+    },
+    {
+      "address": "0046884b",
+      "native": "00bf65ac",
+      "function": "00468840"
+    }
+  ],
+  "source_sha256": {
+    "src/native_dword_vector_copy_primitives.cpp": "bd87e6c832595d2da9e71678b8f27c52c032c3a9578e113104155edcfbe7d993",
+    "include/bsp/native_dword_vector_copy_primitives.hpp": "05de7aca0352c991ffb3492dee2f6d80931b881db82517a447af88a508394da0"
+  },
+  "validation": {
+    "build": "./scripts/build.ps1 MSVC Win32 succeeded",
+    "COFF": {
+      "method": "Direct COFFi386 section/symbol/relocation parse;exact E9/IMAGE_REL_I386_REL32 external symbol targets;complete dumpbin captures. No code/operand masks.",
+      "object": "build/win32/bsp_core.dir/Release/native_dword_vector_copy_primitives.obj",
+      "object_sha256": "55868ad788cb61a372b3b58ff4b838877467f16cf063bfe91705da3cd1bd7f1d",
+      "archive": "local/oct15_native_dword_vector_copy_primitives_evidence/native_dword_vector_copy_primitives.obj",
+      "machine": "IMAGE_FILE_MACHINE_I386",
+      "functions": [
+        {
+          "implementation": "copy_native_dword_uninitialized_00555000",
+          "source_symbol": {
+            "name": "?copy_native_dword_uninitialized_00555000@bsp@@YIPAXPBX0PAX1II@Z",
+            "value": 0,
+            "section": 3,
+            "type": 32,
+            "storage": 2
+          },
+          "code_section": ".text$mn",
+          "code_section_bytes": 9,
+          "raw_code": "558bec5de900000000",
+          "relocations": [
+            {
+              "offset": 5,
+              "kind": 20,
+              "symbol": "?copy_native_dword_uninitialized_00696d40@bsp@@YIPAXPBX0PAX1II@Z",
+              "target_section": 0,
+              "target_value": 0,
+              "raw_addend": 0
+            }
+          ],
+          "tail_target": "?copy_native_dword_uninitialized_00696d40@bsp@@YIPAXPBX0PAX1II@Z",
+          "physical_inputs": "All ECX/EDX and existing stack slots unchanged;optional EBP prologue restored before tailJMP.",
+          "return": "Accepted actual target returns directly to caller with unchanged EAX result policy and RET10h",
+          "callee_RET_stack_bytes": 16,
+          "no_wrapper_stack_context_arguments_or_adapter": true
+        },
+        {
+          "implementation": "tidy_native_dword_vector_004cb130",
+          "source_symbol": {
+            "name": "?tidy_native_dword_vector_004cb130@bsp@@YIXPAX@Z",
+            "value": 0,
+            "section": 4,
+            "type": 32,
+            "storage": 2
+          },
+          "code_section": ".text$mn",
+          "code_section_bytes": 5,
+          "raw_code": "e900000000",
+          "relocations": [
+            {
+              "offset": 1,
+              "kind": 20,
+              "symbol": "?tidy_native_vector_storage_00468840@bsp@@YIXPAX@Z",
+              "target_section": 0,
+              "target_value": 0,
+              "raw_addend": 0
+            }
+          ],
+          "tail_target": "?tidy_native_vector_storage_00468840@bsp@@YIXPAX@Z",
+          "physical_inputs": "All ECX/EDX and existing stack slots unchanged;optional EBP prologue restored before tailJMP.",
+          "return": "Accepted actual target returns directly to caller with unchanged EAX result policy and plainRET/no semantic result",
+          "callee_RET_stack_bytes": 0,
+          "no_wrapper_stack_context_arguments_or_adapter": true
+        }
+      ],
+      "no_current_CPP_wrapper_EH_tables": true,
+      "source_sha256": {
+        "src/native_dword_vector_copy_primitives.cpp": "bd87e6c832595d2da9e71678b8f27c52c032c3a9578e113104155edcfbe7d993",
+        "include/bsp/native_dword_vector_copy_primitives.hpp": "05de7aca0352c991ffb3492dee2f6d80931b881db82517a447af88a508394da0"
+      },
+      "dumpbin": {
+        "local/oct15_native_dword_vector_copy_primitives_coff.asm": "f87672b48845eb2439741fe6907a6fb055232cc1639b00369074a908cd4f59ac",
+        "local/oct15_native_dword_vector_copy_primitives_coff.relocations.txt": "ef613764d01212a322e60f61805735cfca3b65f588ecb76022ae1fbca6c294d4",
+        "local/oct15_native_dword_vector_copy_primitives_coff.symbols.txt": "0a3450a69e1e0410f862818527d2955dee46aa72971fc7ab685723c4c44670d8"
+      },
+      "limits": "New Source/compiler delegation and physical interface evidence only;not original native machine/frame/CRT/fault/exception/ABI or game equivalence. Native entries do not call these Source reference functions."
+    },
+    "new_tests": 0,
+    "primary_review": "pending frozen-pin review",
+    "fixture_native_or_game_execution": "none performed/claimed",
+    "precommit_primary_review": {
+      "status": "8 Source/header/native checks passed;no findings;final immutable-pin acceptance separate",
+      "receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct15_copy_primitives_eighteenth_primary_review.json",
+      "receipt_sha256": "4f2116118ed77a7de3a246046094a71fcc54a6ec8b0de7a904f4f7785f8972e0",
+      "checks": [
+        "Full new Source/header and all28 owned native instructions reviewed; direct accepted services without new body/model.",
+        "Copy complete38B/15starts exactly equals accepted696D40 with no masks; all six physical words are forwarded unchanged.",
+        "Copy retains destination capture even empty, progressive current-value access and null-destination skip before wrapped cursor advances.",
+        "Copy RET10h/advanced-destination result roles match; no count bridge, snapshot or validation invented.",
+        "Tidy full42B/13starts differs only in four-byte CALLrel32 operand; both independently resolve actual00BF65AC.",
+        "Tidy captures+4 once, frees captured nonzero value, then always zeroes4/8/C in order; no element cleanup or extra guard.",
+        "Accepted four Source/header fingerprints independently match; direct void tidy and private-frame/flag/fault/CRT/ABI/game limits explicit.",
+        "All160 owned/reference livePE bytes,56 currentstarts and two actualfreeCALL targets independently checked; owned80B/28count excludes references."
+      ],
+      "source_sha256": {
+        "src/native_dword_vector_copy_primitives.cpp": "bd87e6c832595d2da9e71678b8f27c52c032c3a9578e113104155edcfbe7d993",
+        "include/bsp/native_dword_vector_copy_primitives.hpp": "05de7aca0352c991ffb3492dee2f6d80931b881db82517a447af88a508394da0"
+      }
+    },
+    "build_log": "local/oct15_native_dword_vector_copy_primitives_build.log",
+    "build_log_sha256": "57bef73629ff4c9d5b58de10f2002b7b80ab239c188ae3170058d9a0647606a2",
+    "existing_tests": {
+      "passed": 3,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "seconds": "9.10"
+    },
+    "coverage": "Existing suite/seed coverage only,no new leaf fixture or native-equivalence claim.",
+    "existing_build_warning": "LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj;existing unrelated symbol,second definition ignored;no new leaf compiler warning/error.",
+    "COFF_path": "local/oct15_native_dword_vector_copy_primitives_coff.json",
+    "COFF_sha256": "a8e21d7810e43afe96d5e7b7cdfe75060676aebdd775b4015019fbee88cc818e",
+    "registration": {
+      "lease": "oct15_native_dword_vector_copy_primitives_cmake",
+      "FIFO_first_and_claim_success_verified": true,
+      "prerequisite_merge": "ba9172cf87ebed9d61f424be56b448329272158e",
+      "merged_main": "d5703f1b36955ad391abe4ba42e62ad660695528",
+      "source_registered": "src/native_dword_vector_copy_primitives.cpp",
+      "cmake_before_sha256": "bfaf341890c745165925478a450c16e851ae7c57d3fb76cb4f03d319feb68942",
+      "cmake_after_sha256": "8f21853126a319237b2c777f2474059c0ba07d702db602d557f84833aa29313c",
+      "lease_released_before_build": true,
+      "utc": "2026-10-15T23:42:21.167654+00:00"
+    },
+    "transfer_verifier": {
+      "report_rows": 2,
+      "Markdown_claims": 2,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "capture": "local/oct15_native_dword_vector_copy_primitives_callcheck.txt",
+      "sha256": "e6635241fe8f7dfbd917cb1c82c464231e28c6456c9c35d51c1a0298bbe27d08"
+    }
+  },
+  "generated_utc": "2026-10-15T23:44:41.640433+00:00"
+}
