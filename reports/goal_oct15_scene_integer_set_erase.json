@@ -13,7 +13,7 @@
     "0046a740",
     "00c61c90"
   ],
-  "status": "whole_actual_storage_source_dependency_build_pending",
+  "status": "whole_actual_storage_source_strict_win32_existing_ctest_and_compiler_checked",
   "routines": [
     {
       "address": "0046a740",
@@ -283,13 +283,39 @@
   "verification": {
     "project_program_guard": "bsp.py Client.verify before every live batch;bsp,/battlestationspacific.exe,x86:LE:32:default,image00400000",
     "whole_listing_boundaries_callers_eh_and_actual_provider_contracts": "passed",
-    "primary_independent_source_review": "passed entire231ops/full Source and EH scope;no mismatch;Source/header SHA recorded unchanged from reviewed actual draft",
+    "primary_independent_source_review": "passed;primary reviewed all231 native instructions,complete Source and EH cleanup scope;no mismatch;final Source/header hashes verified identical to reviewed draft cd9d10a6d5a84545a9229368e81fbe7851381329",
     "live_installed_full_bytes": "passed;687B/233instructions,whole normal+unwind spans",
     "verify_report_calls": "passed;15typed native transfers,0failed;Markdown26addresses,0failed/unchecked/warnings",
     "cmake_registration": "passed unique append after immediate unleased check,no exclusive wholefilelease",
-    "provider_source_integration": "pending actual extrema/increment drafts,no stubs",
-    "strict_win32_build_and_existing_ctest": "pending",
-    "compiled_object_review": "pending",
+    "provider_source_integration": "passed;actual extrema a98afc15f and increment 1e2ff85e3 Source merged at c46e1bedbff10428b00f5c1b947ccbadc7736f03;no stubs or provider edits",
+    "strict_win32_build_and_existing_ctest": {
+      "result": "passed",
+      "command": "./scripts/build.ps1",
+      "build_revision": "c46e1bedbff10428b00f5c1b947ccbadc7736f03",
+      "source_revision": "cd9d10a6d5a84545a9229368e81fbe7851381329",
+      "log": "local/goal_oct15_scene_integer_set_erase_build.log",
+      "ctest": "3/3 passed: reconstructed_math 0.22s,native_math_differential 0.04s,tool_tests 8.04s;total8.36s",
+      "source_and_header_unchanged_from_reviewed_draft": true,
+      "qualification": "existing unrelated LNK4006 duplicate spawn_request_id_matches Lua objects;no packet compile warning;existing native math checks do not exercise this new erase entry"
+    },
+    "compiled_object_review": {
+      "result": "passed focused actual MSVC Win32 Release object inspection",
+      "object": "build/win32/bsp_core.dir/Release/native_scene_integer_set_erase.obj",
+      "object_bytes": 6543,
+      "sha256": "4f5c9649e3a8dbfcf335cde75aa85c1e0f34d4db31cea57356323102dfb74a83",
+      "dumpbin_version": "14.51.36244.0",
+      "receipt": "local/goal_oct15_scene_integer_set_erase_object.txt",
+      "entry_code_bytes": 694,
+      "entry_rel32_relocations": 11,
+      "initial_nil_schedule": "original node read+0E,nil byte+11,error branch+16 precede saved-cell store+26 and increment+28",
+      "minimum_current_cell_schedule": "head.min load+8F then current saved-node load+91;concrete minimum call+A4 and captured-head publication+AF",
+      "maximum_current_cell_schedule": "current saved-node load+B4 then head.max load+B9;concrete maximum call+D7 and captured-head publication+DF",
+      "color_and_near_child_schedule": "separate current saved-node color target load+14B;left near-child capture+1AA/recolor+1C6,right capture+21B/recolor+24F;retained pointer across intervening far-child tests",
+      "ascent_schedule": "captured current head/root+231/+236 then parent.parent load+239 and pure comparison+23C;native flags/instruction identity not claimed",
+      "release_count_publication_schedule": "current saved-node value+283 to real free+286;post-free current count+28B;current owner+29F/output+2A2/node+2A4 before stores+2A7/+2A9",
+      "owning_error_scope": "helper real counted assignment+42,guard state0 armed+54,actual owning carrier construction+5B,current C++ throw+69;generated unwind tails to real CompletedMessage destructor and actual004072D0 service",
+      "qualification": "current Source/compiler code and real C++ cleanup evidence only;no native register/stack/private-frame/RTTI/basecatch/FH3/SEH/COFF identity"
+    },
     "diff_check": "passed",
     "new_tests": false,
     "packet_native_differential": "not run",
