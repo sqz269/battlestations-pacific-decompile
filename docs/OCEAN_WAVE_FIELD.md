@@ -1274,7 +1274,15 @@ Done (commits 3f09792a4, 7d613369d and this one):
 - Item B (recon listener sync): already ON on main (kForcedReconSyncNotifyBound, kReconListenerResetCycleBound).
 - Item C: read in section 34; the packet is written there, not started.
 
-Open, in order:
-1. Section 34's packet (`kCarrierRunwayFailureBound`), and the damage-section caller of vtable +19Ch/+21Ch.
-2. Recall-the-Zeros order lines for ESMP08 (lua61's lane) if lua61 has not tried them.
-3. IJN08 margin (above).
+Open, in order (the lead's queue of 2026-10-14; IJN08 margin work is closed, z is on main cbd691a6a):
+1. (B) recon listener sync: nothing left; both switches are ON on main (above).
+2. (C) section 34's packet (`kCarrierRunwayFailureBound`), and the damage-section caller of vtable +19Ch/+21Ch.
+3. (D) the ship catapult launch packet: no ship ever catapults a plane in the host. Chain 008141E0 (reconstructed,
+   cc13_seg30_seg50.cpp:458) -> 006EB680 queue -> 006ED1C0 / 006ED261 timeline (gameplay_seg33_cc13.cpp:386-462)
+   -> 00957450 (unbuilt: the slot +550h + 18h*i and +630h write, the stock decrement), plus SetCatapultStock
+   009539A0. Then GetLastCatapulted (game_hosts_lua.cpp:6937) answers from +630h, and the HUD hook
+   `turn_timer_expired_009539e0` (game_hosts_hud.cpp:2361) should be renamed to the spectate-last-catapulted
+   009539E0 and wired (cc13_seg62.cpp:171). Grep before reconstructing. OFF switch; pair JM02 / JM03 / JM05 (Pete
+   floatplanes: jm02.lua:2444, jm03.lua:1587/1615, jm05.lua:5479/5498); watch the RNG and keyed streams; flip by
+   mechanism.
+4. Recall-the-Zeros order lines for ESMP08: lua61 is running them (l61_e8_n / l61_e8_o).
