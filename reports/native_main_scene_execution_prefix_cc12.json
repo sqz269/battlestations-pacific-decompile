@@ -1,82 +1,122 @@
 {
-  "packet": "cc12_world_scne_capture",
-  "utc": "2026-10-15T00:48:22.159893+00:00",
-  "base_commit": "1da70abc5056fd25cd0636d5a9dffe25058ccc50",
-  "status": "actual_storage_SCNE_capture_strict_COFF_original_caller_genuine_D3D9_checked",
-  "scope": "Main-scene80B B162FE..B1634D capture/eight texture clears/normal state5 retirement, complete19B B4CAF0 and127B B3CDA0 actual storage children. BoundaryB1634E before POST construction. Earlier committed packets remain separate frozen evidence.",
+  "packet": "cc12_world_post_label",
+  "utc": "2026-10-15T01:03:13.201334+00:00",
+  "base_commit": "7bfdb9bcf254dabf0085838c21693a5d3b00afbe",
+  "status": "actual_storage_POST_label_strict_COFF_original_caller_raw_pool_actions_checked",
+  "scope": "Separate172B B1634E..B163F9 POST label clause, original-service+680 store and state6/8 ownership. BoundaryB163FA before post-rendering gate. Earlier committed prefix/capture packets remain separately frozen evidence.",
   "native_identity": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
     "bodies": [
       {
-        "name": "capture",
-        "address": "00b162fe",
-        "bytes": 80,
-        "sha256": "d9b2ef5f711ee74183bfbe70b5ec8c042a5637b89bfebc472255c367a6d6a1b1",
+        "name": "label",
+        "address": "00b1634e",
+        "bytes": 172,
+        "sha256": "5226e93bf1898066249f8047b4081d1b2e94ecb47351c340d7cc166728e40600",
         "saved_ghidra_matches_disk": true
       },
       {
-        "name": "holder",
-        "address": "00b4caf0",
-        "bytes": 19,
-        "sha256": "f7cb6af53557ba0f846803545b5905238f8650d09eb592a2bd4a814b504bff6f",
+        "name": "unwind_temporary",
+        "address": "00cbc486",
+        "bytes": 11,
+        "sha256": "9ebdc30159b4469fa9a3fd3ef2d7018290f7f8c149ea5b6ad2134bbc5140d4b5",
         "saved_ghidra_matches_disk": true
       },
       {
-        "name": "copy",
-        "address": "00b3cda0",
-        "bytes": 127,
-        "sha256": "5fbb55924b8d45e11b597b1373dc415bbad71a8d8ac7ee8b1fdbf3a693ae2bfb",
+        "name": "unwind_reset",
+        "address": "00cbc491",
+        "bytes": 8,
+        "sha256": "eb536483a0e41efe2795f20a145a50cad049399d3c74d65490372d5c4a2a481f",
         "saved_ghidra_matches_disk": true
       },
       {
-        "name": "width",
-        "address": "00b3cd10",
-        "bytes": 4,
-        "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+        "name": "handler",
+        "address": "00cbc499",
+        "bytes": 10,
+        "sha256": "e3e2ad413e482a75d3249425cf1e30e7d681e0cd0f6ab8a69303cbdddc2ecafe",
         "saved_ghidra_matches_disk": true
       },
       {
-        "name": "height",
-        "address": "00b3cd20",
-        "bytes": 4,
-        "sha256": "07ad3a50b1c271e07fb57fb47d2f0e77f3342d41bfa410990cb1320a45035fb2",
+        "name": "func_info",
+        "address": "00df4698",
+        "bytes": 36,
+        "sha256": "bba2e286bfbcca2cfae6c87890a7834476ea7b90563ef611fd40ba7e106842a9",
         "saved_ghidra_matches_disk": true
       },
       {
-        "name": "renderer_profile",
-        "address": "00d5f0a8",
-        "bytes": 328,
-        "sha256": "81b6ffba0bc0ddc59499163d761da9c9f15bfd57d099d61c08ba40df94550c4b",
+        "name": "unwind_map",
+        "address": "00df46bc",
+        "bytes": 72,
+        "sha256": "6dd6b0c046043b55b4e7976fd6436a5038a1dc2a2fe595f08abc9070ad5427d8",
         "saved_ghidra_matches_disk": true
       },
       {
-        "name": "surface_profile",
-        "address": "00d619a0",
-        "bytes": 44,
-        "sha256": "553be925bd752fde32b6a7c583af1573bd66fe01f3f908f700167b77a4d60d04",
+        "name": "post",
+        "address": "00d5e4f0",
+        "bytes": 8,
+        "sha256": "9ffc45a8ccc17f340f55397fd7b962e5bd562b34bf24c32a870bc09472a65c65",
         "saved_ghidra_matches_disk": true
+      }
+    ],
+    "constants": [
+      {
+        "name": "near_word",
+        "address": "00ce3800",
+        "bytes": "0000003f",
+        "value": 0.5
+      },
+      {
+        "name": "bias_word",
+        "address": "00ce3978",
+        "bytes": "0000804f",
+        "value": 4294967296.0
+      },
+      {
+        "name": "one_word",
+        "address": "00d7a24c",
+        "bytes": "0000803f",
+        "value": 1.0
+      },
+      {
+        "name": "half_word",
+        "address": "00d7a280",
+        "bytes": "000000000000e03f",
+        "value": 0.5
+      },
+      {
+        "name": "negative_half_word",
+        "address": "00ce69d0",
+        "bytes": "000000bf",
+        "value": -0.5
+      },
+      {
+        "name": "adaptation_word",
+        "address": "00ce3cb8",
+        "bytes": "000000000088d340",
+        "value": 20000.0
       }
     ]
   },
   "original_abi": {
-    "00b162fe": "Enclosing B156C0 ECX service/stacked command RET4. Fragment ESI service,EBP0,EBX sampler,cleanup word ESP+9C. New persistent Source frames/contexts, not private caller ABI.",
-    "00b4caf0": "ECX holder, plain RET; byte14 gate, source0C stacked, destination10 ECX into B3CDA0.",
-    "00b3cda0": "ECX destination wrapper, stacked source wrapper RET4. COM stdcall GetDevice,StretchRect,Release. All public Source interfaces require explicit context and are not drop-in native ABI."
+    "00b1634e": "Enclosing B156C0 ECX service/stacked command RET4. Fragment ESI original service,EBP0,EBX captured temp data,temporary ESP+18/+1C,cleanup word ESP+9C. New persistent Source frames/contexts, not native private caller ABI.",
+    "00cbc486": "LEA ECX,[EBP-88]; JMP41DD20 on CURRENT temporary header. Source adapter uses external frame and is not original FH3 entry.",
+    "00cbc491": "LEA ECX,[EBP-79]; JMPB13510. ECX ignored by provider, which reads current global service. Source adapter is not native FH3/private EBP ABI."
   },
   "evidence": {
-    "native_caller_bytes": 80,
-    "native_caller_instructions": 20,
-    "native_padding_bytes": 8,
-    "domains": "Same actual global renderer/service, retained SCNE label/string domain, canonical concrete texture owner/notification/synchronization contexts and borrowed current original-token profiles. Raw dimension leaves and real COM vtable targets, no supplied callback/default renderer/device or successful operation replacement.",
-    "direction_correction": "B4CAF0 current source is holder+0C and destination holder+10, correcting older provisional source-untraced/destination+0C name evidence while retaining it as history. Disabled byte14 never reads these native fields.",
-    "child_order": "GetDevice on current destination+2C; output cell initially null. After GetDevice, current destination profiles independently select widthB3CD10/heightB3CD20. Reload destination COM before source COM; captured device current StretchRect+88(source,NULL,destination,{0,0,width,height},2), ignore HRESULT; reload captured device current profile and Release+8. No native local EH or invented RAII cleanup.",
-    "caller_order": "Original ESI service current byte22D selects current48/44; capture then8 current global renderer/current profile130 B24710 null binds. State5 throughout. Only state write disarms before normal B13510 reset on current service publication. Catch consumes earlier armed state5; -1 makes unwind no-op after normal reset started.",
-    "fixture": "Four original80B+19B+127B/Source pairs on genuine D3D9 HAL.32x24 quadrant source ->16x12 destinations; compare all384 total destination pixels per lane, eight actual and logical samplers, old owner counts, changed counter, GetDevice/Release reference balance and reset label. Cases44/48/nonzero capture, zero/invalid skipped pointers, four unchanged samplers, and invalid destination rect with independently observed failing actual StretchRect HRESULT. Native bridge observes state5 at each sampler and -1 before reset. Source-only reached virtual130 rejection after copy preserves pixels, resets changed current service, retains original SCNE and proves second unwind unchanged.",
-    "original_adaptation": "Loader-reserved fixed-base fixture-owned PE pages preserve prior file sections/embedded manifest. Exact original80B caller+19B holder+127B copy+4B width+4B height. Only F8D394 operand relocated. Native wrapper preserves registers/seedsESI/EBP0/state5 and reservesA4 stack bytes; after80B copies final ESP+9C. Two genuine Source bridges bind B24710/B13510 and inspect state/order; raw original capture/copy executes actual COM itself. No native FH3 dispatcher.",
-    "fixture_limits": "Warm actual raw string pool. Sampler owner reference count stays positive, so terminal destruction is not exercised here. Synchronization mode0. Earlier batches/targets/label boundary seeded, not one whole prior native scene chain. No original childthrow/FH3/SEH/register/private-stack/fault ABI, arbitrary concurrent mutation, material draw, application or game route.",
-    "build": "Strict Win32 /MD /W4 /WX /O2 /fp:strict on prefix/far/post. Three actual COFF bodies512B/142ins,70B/21ins,737B/208ins with provider/order audit; inlined holder within caller.330 inherited x87 checked unchanged. Fresh-core manifested fixture and normal scripts/build.ps1/all3 existing checks pass. No persistent test/CMake/host route added.",
+    "native_caller_bytes": 172,
+    "native_caller_instructions": 52,
+    "domains": "Same retained actual SCNE/DRSH label.domains object, raw string-pool publication, manager-publication cell and current global service; original ESI service supplied separately. Actual POST bytes borrowed. Concrete raw resize, library memmove, actual getter/return/destroy/reset; no callback domain, replacement pool/service or default globals.",
+    "ordering": "Clear ORIGINAL service byte680 before temporary zeros and firstresize. Capture temp data once, copy current length+1. Capture current global service only after thatcopy and before state6. Preserve header-alias/current source length/current destination length gates across resize with captured data. Install8 before normal getter/return; capture current length+1 beforegetter and keep captured data forreturn.",
+    "ownership": "Fresh frame enters unarmed. Reached first-provider Source domain rejection preserves cleared680 and temporaryzeros without pool/cleanup changes. State6 ->(-1,CBC486 CURRENT header destruction); state8 ->(-1,CBC491 CURRENT service reset); intermediate7->(6,CBC491) exists but notinstalled. Success leaves8 armed. Adapterdisarms first, secondcleanup exception terminates, -1 no-op; no nativeFH3 delivery/retry/rollback.",
+    "fixture": "Four exact original172B/Source raw-pool/two-service pairs: null global,2->4 resize,disabledsmallreturns,and currentpublicationdifferentfromoriginalESI. All raw pool bytes,both service graphs,captured temporary words andfinal8 match; original680cleared whileotherflagretained. Four isolated originalCBC491 actionpairs switch currentservice beforecleanup, preserving formerlycapturedservice. One originalCBC486 actionpair uses currenttemporarydata distinctfromsavedcapture. Source-only reached-first-provider rejection preserves680clear/zeroheader/unarmed state; stage replay rejected.",
+    "original_adaptation": "Allocated executable buffer contains exact172B body with originalinternalbranches; genuine Source resize/getter/return bridges and memmove E8 targets, onlyPOST-data/global-service operands relocated. Wrapper preservesregisters/reserves90B+savedregisters,loadsESI fromcallerargument andseedsEBP0/state-1. Suffix reads temporary+18/+1C andstate+9C. Isolated11B/8B actioncopies bind realdestroy/reset with EBP-based frameadapter; fullFH3 handler notinstalled.",
+    "fixture_limits": "Warm actual string pool only. Null/resize/disabledreturn/currentpublication paths; alias guard audited but alias not fixtureexecuted. No cold manager/registration/allocationfailure, native childthrow/FH3/SEH/privateframe/register/fault ABI, arbitrary concurrent mutation, entireearlierscenechain, POST-effects, materialdraw, application/game route.",
+    "build": "StrictWin32 /MD /W4 /WX /O2 /fp:strict; actualCOFF caller677B/200ins andcleanup171B/61ins audited for provider relocations,currentreads,680-before-resize,6/8/disarm order. EarlierCPPprefix byte-for-byteunchanged fromsealed337;330inheritedx87 unchanged. Freshcore manifestedfixture and normal scripts/build.ps1/all3 existingchecksPASS. No persistenttests/CMake/host changes.",
     "prior_receipts": [
+      {
+        "path": "local/main_scene_scne_capture_receipt_337a794ac/receipt.json",
+        "artifacts_verified_unchanged": 80
+      },
       {
         "path": "local/main_scene_scne_batch_receipt_7b937fc7c/receipt.json",
         "artifacts_verified_unchanged": 71
@@ -128,6 +168,11 @@
     ],
     "prior_committed_file_receipts": [
       {
+        "path": "local/main_scene_scne_capture_receipt_337a794ac/manifest.json",
+        "section": "committed",
+        "verified": 10
+      },
+      {
         "path": "local/main_scene_scne_batch_receipt_7b937fc7c/manifest.json",
         "section": "committed",
         "verified": 6
@@ -145,206 +190,45 @@
     ],
     "emitted_code_audit": {
       "result": "PASS",
+      "native_caller_bytes": 172,
+      "native_caller_instructions": 52,
       "source_bodies": [
         {
-          "name": "copy_native_surface_00b3cda0",
-          "bytes": 512,
-          "instructions": 142,
-          "sha256": "6ad50b958afb1608c4e5407056e3871817361d20a9fc093be3abcdc3db43320f",
+          "name": "continue_native_main_scene_post_label_00b1634e",
+          "bytes": 677,
+          "instructions": 200,
+          "sha256": "a69466ad920915cd3cc7cf9d9a2d7ea1eeae2632cc320d34a75d5ccfdea6046c",
           "providers": [
             {
-              "offset": 161,
-              "symbol": "?get_native_surface_width_00b3cd10@bsp@@YIIPBX@Z",
+              "offset": 208,
+              "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
               "type": 20
             },
             {
-              "offset": 222,
-              "symbol": "?get_native_surface_height_00b3cd20@bsp@@YIIPBX@Z",
-              "type": 20
-            }
-          ],
-          "relocations": [
-            {
-              "offset": 4,
-              "symbol": "___security_cookie",
-              "type": 6
-            },
-            {
-              "offset": 161,
-              "symbol": "?get_native_surface_width_00b3cd10@bsp@@YIIPBX@Z",
+              "offset": 364,
+              "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
               "type": 20
             },
             {
-              "offset": 222,
-              "symbol": "?get_native_surface_height_00b3cd20@bsp@@YIIPBX@Z",
+              "offset": 500,
+              "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
               "type": 20
             },
             {
-              "offset": 387,
-              "symbol": "@__security_check_cookie@4",
+              "offset": 538,
+              "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
               "type": 20
             },
             {
-              "offset": 396,
-              "symbol": "??_C@_0DE@CFPOPPME@surface?5copy?5requires?5current?5ac@",
-              "type": 6
-            },
-            {
-              "offset": 405,
-              "symbol": "??0logic_error@std@@QAE@PBD@Z",
-              "type": 20
-            },
-            {
-              "offset": 410,
-              "symbol": "__TI2?AVlogic_error@std@@",
-              "type": 6
-            },
-            {
-              "offset": 420,
-              "symbol": "__CxxThrowException@8",
-              "type": 20
-            },
-            {
-              "offset": 425,
-              "symbol": "??_C@_0CL@CFEHJIAK@surface?5copy?5requires?5current?5B3@",
-              "type": 6
-            },
-            {
-              "offset": 434,
-              "symbol": "??0logic_error@std@@QAE@PBD@Z",
-              "type": 20
-            },
-            {
-              "offset": 439,
-              "symbol": "__TI2?AVlogic_error@std@@",
-              "type": 6
-            },
-            {
-              "offset": 449,
-              "symbol": "__CxxThrowException@8",
-              "type": 20
-            },
-            {
-              "offset": 454,
-              "symbol": "??_C@_0CM@BMPMLJOL@surface?5copy?5requires?5current?5B3@",
-              "type": 6
-            },
-            {
-              "offset": 463,
-              "symbol": "??0logic_error@std@@QAE@PBD@Z",
-              "type": 20
-            },
-            {
-              "offset": 468,
-              "symbol": "__TI2?AVlogic_error@std@@",
-              "type": 6
-            },
-            {
-              "offset": 478,
-              "symbol": "__CxxThrowException@8",
-              "type": 20
-            },
-            {
-              "offset": 483,
-              "symbol": "??_C@_0DE@CFPOPPME@surface?5copy?5requires?5current?5ac@",
-              "type": 6
-            },
-            {
-              "offset": 492,
-              "symbol": "??0logic_error@std@@QAE@PBD@Z",
-              "type": 20
-            },
-            {
-              "offset": 497,
-              "symbol": "__TI2?AVlogic_error@std@@",
-              "type": 6
-            },
-            {
-              "offset": 507,
-              "symbol": "__CxxThrowException@8",
-              "type": 20
-            }
-          ],
-          "checked_instruction_offsets": [
-            "0031",
-            "005e",
-            "0066",
-            "0088",
-            "00ab",
-            "00c9",
-            "00ec",
-            "00fd",
-            "0103",
-            "0113",
-            "011d",
-            "0130",
-            "013b",
-            "0145",
-            "0149",
-            "0155",
-            "015f",
-            "0174"
-          ],
-          "no_new_x87": true
-        },
-        {
-          "name": "capture_native_render_holder_00b4caf0",
-          "bytes": 70,
-          "instructions": 21,
-          "sha256": "fbff751806af71eff59d2d6ecdf3b3c940c036c3fa8a9c4e1cd4a21dc74a45d8",
-          "providers": [
-            {
-              "offset": 59,
-              "symbol": "?copy_native_surface_00b3cda0@bsp@@YAXPAX0ABUNativeSurfaceCopyContext@1@@Z",
-              "type": 20
-            }
-          ],
-          "relocations": [
-            {
-              "offset": 59,
-              "symbol": "?copy_native_surface_00b3cda0@bsp@@YAXPAX0ABUNativeSurfaceCopyContext@1@@Z",
-              "type": 20
-            }
-          ],
-          "checked_instruction_offsets": [
-            "0007",
-            "000b",
-            "0018",
-            "0028"
-          ],
-          "no_new_x87": true
-        },
-        {
-          "name": "continue_native_main_scene_scne_capture_00b162fe",
-          "bytes": 737,
-          "instructions": 208,
-          "sha256": "cc08073fe6eec1bafbc2a6d65b5f1b1709ba700bc72b47305ff506bde8f6f845",
-          "providers": [
-            {
-              "offset": 367,
-              "symbol": "?copy_native_surface_00b3cda0@bsp@@YAXPAX0ABUNativeSurfaceCopyContext@1@@Z",
-              "type": 20
-            },
-            {
-              "offset": 479,
-              "symbol": "?bind_native_renderer_texture_00b24710@bsp@@YAXPAXI0AAUNativeRendererTextureBindingContext@1@@Z",
-              "type": 20
-            },
-            {
-              "offset": 549,
-              "symbol": "?reset_native_render_diagnostic_label_00b13510@bsp@@YAXADSAXAAUNativeStringRawPoolContext@1@@Z",
-              "type": 20
-            },
-            {
-              "offset": 715,
-              "symbol": "?unwind_native_main_scene_scne_label@bsp@@YAXABUNativeMainSceneScneLabelContext@1@AAUNativeMainSceneScneLabelFrame@1@@Z",
+              "offset": 655,
+              "symbol": "?unwind_native_main_scene_post_label@bsp@@YAXABUNativeMainScenePostLabelContext@1@AAUNativeMainScenePostLabelFrame@1@@Z",
               "type": 20
             }
           ],
           "relocations": [
             {
               "offset": 6,
-              "symbol": "__ehhandler$?continue_native_main_scene_scne_capture_00b162fe@bsp@@YAXPAXABUNativeMainSceneScneCaptureContext@1@AAUNativeMainSceneScneLabelFrame@1@AAUNativeMainSceneScneCaptureFrame@1@AAUNativeMainSceneExecutionPrefixState@1@@Z",
+              "symbol": "__ehhandler$?continue_native_main_scene_post_label_00b1634e@bsp@@YAXPAXABUNativeMainScenePostLabelContext@1@AAUNativeMainScenePostLabelFrame@1@AAUNativeMainSceneExecutionPrefixState@1@@Z",
               "type": 6
             },
             {
@@ -353,179 +237,296 @@
               "type": 6
             },
             {
-              "offset": 367,
-              "symbol": "?copy_native_surface_00b3cda0@bsp@@YAXPAX0ABUNativeSurfaceCopyContext@1@@Z",
+              "offset": 208,
+              "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
               "type": 20
             },
             {
-              "offset": 479,
-              "symbol": "?bind_native_renderer_texture_00b24710@bsp@@YAXPAXI0AAUNativeRendererTextureBindingContext@1@@Z",
+              "offset": 275,
+              "symbol": "_memmove",
               "type": 20
             },
             {
-              "offset": 549,
-              "symbol": "?reset_native_render_diagnostic_label_00b13510@bsp@@YAXADSAXAAUNativeStringRawPoolContext@1@@Z",
+              "offset": 364,
+              "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
               "type": 20
             },
             {
-              "offset": 614,
-              "symbol": "??_C@_0DF@BPKAALLA@SCNE?5capture?5requires?5its?5fresh?5@",
+              "offset": 435,
+              "symbol": "_memmove",
+              "type": 20
+            },
+            {
+              "offset": 500,
+              "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+              "type": 20
+            },
+            {
+              "offset": 538,
+              "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+              "type": 20
+            },
+            {
+              "offset": 590,
+              "symbol": "??_C@_0DH@MCHAGHI@main?5scene?5POST?5requires?5its?5fre@",
               "type": 6
             },
             {
-              "offset": 622,
+              "offset": 598,
               "symbol": "??0logic_error@std@@QAE@PBD@Z",
               "type": 20
             },
             {
-              "offset": 627,
+              "offset": 603,
               "symbol": "__TI2?AVlogic_error@std@@",
               "type": 6
             },
             {
-              "offset": 636,
+              "offset": 612,
               "symbol": "__CxxThrowException@8",
               "type": 20
             },
             {
-              "offset": 641,
-              "symbol": "??_C@_0DE@KFNIBPGM@SCNE?5capture?5requires?5current?5D5@",
+              "offset": 617,
+              "symbol": "??_C@_0EP@IBLKEGMD@main?5scene?5POST?5requires?5the?5sam@",
               "type": 6
             },
             {
-              "offset": 649,
+              "offset": 625,
               "symbol": "??0logic_error@std@@QAE@PBD@Z",
               "type": 20
             },
             {
-              "offset": 654,
+              "offset": 630,
               "symbol": "__TI2?AVlogic_error@std@@",
               "type": 6
             },
             {
-              "offset": 663,
+              "offset": 639,
               "symbol": "__CxxThrowException@8",
               "type": 20
             },
             {
-              "offset": 668,
-              "symbol": "??_C@_0EB@GGAMOCO@SCNE?5capture?5requires?5the?5same?5a@",
-              "type": 6
-            },
-            {
-              "offset": 676,
-              "symbol": "??0logic_error@std@@QAE@PBD@Z",
+              "offset": 655,
+              "symbol": "?unwind_native_main_scene_post_label@bsp@@YAXABUNativeMainScenePostLabelContext@1@AAUNativeMainScenePostLabelFrame@1@@Z",
               "type": 20
             },
             {
-              "offset": 681,
-              "symbol": "__TI2?AVlogic_error@std@@",
-              "type": 6
-            },
-            {
-              "offset": 690,
-              "symbol": "__CxxThrowException@8",
-              "type": 20
-            },
-            {
-              "offset": 715,
-              "symbol": "?unwind_native_main_scene_scne_label@bsp@@YAXABUNativeMainSceneScneLabelContext@1@AAUNativeMainSceneScneLabelFrame@1@@Z",
-              "type": 20
-            },
-            {
-              "offset": 727,
+              "offset": 667,
               "symbol": "__CxxThrowException@8",
               "type": 20
             }
           ],
-          "checked_instruction_offsets": [
-            "0109",
-            "0142",
-            "0149",
-            "0154",
-            "0162",
-            "0180",
-            "0183",
-            "018b",
-            "0193",
-            "01c7",
-            "01da",
-            "01ed",
-            "01f2",
-            "01f9",
-            "0222",
-            "024f"
+          "concrete_call_order": [
+            {
+              "offset": 208,
+              "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
+              "type": 20
+            },
+            {
+              "offset": 275,
+              "symbol": "_memmove",
+              "type": 20
+            },
+            {
+              "offset": 364,
+              "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
+              "type": 20
+            },
+            {
+              "offset": 435,
+              "symbol": "_memmove",
+              "type": 20
+            },
+            {
+              "offset": 500,
+              "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+              "type": 20
+            },
+            {
+              "offset": 538,
+              "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+              "type": 20
+            },
+            {
+              "offset": 655,
+              "symbol": "?unwind_native_main_scene_post_label@bsp@@YAXABUNativeMainScenePostLabelContext@1@AAUNativeMainScenePostLabelFrame@1@@Z",
+              "type": 20
+            }
           ],
-          "no_new_x87": true
-        }
-      ],
-      "native": [
-        {
-          "name": "capture",
-          "address": "00b162fe",
-          "bytes": 80,
-          "decoded_instructions": 22,
-          "executed_region_instructions": 20,
-          "sha256": "d9b2ef5f711ee74183bfbe70b5ec8c042a5637b89bfebc472255c367a6d6a1b1"
+          "checked_instruction_offsets": [
+            "0071",
+            "007f",
+            "0085",
+            "00dd",
+            "00e2",
+            "00ef",
+            "0105",
+            "0123",
+            "012b",
+            "0146",
+            "014d",
+            "0176",
+            "0184",
+            "0196",
+            "01ae",
+            "01bd",
+            "01cb",
+            "01e6",
+            "0214",
+            "0217",
+            "0218",
+            "0237"
+          ]
         },
         {
-          "name": "holder",
-          "address": "00b4caf0",
-          "bytes": 19,
-          "decoded_instructions": 7,
-          "executed_region_instructions": 7,
-          "sha256": "f7cb6af53557ba0f846803545b5905238f8650d09eb592a2bd4a814b504bff6f"
-        },
-        {
-          "name": "copy",
-          "address": "00b3cda0",
-          "bytes": 127,
-          "decoded_instructions": 45,
-          "executed_region_instructions": 45,
-          "sha256": "5fbb55924b8d45e11b597b1373dc415bbad71a8d8ac7ee8b1fdbf3a693ae2bfb"
+          "name": "unwind_native_main_scene_post_label",
+          "bytes": 171,
+          "instructions": 61,
+          "sha256": "9b87f5573bb323f91e0aec0d586fdcc134b2bbceb2e4538eb387de8882f12ed2",
+          "providers": [
+            {
+              "offset": 114,
+              "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+              "type": 20
+            },
+            {
+              "offset": 137,
+              "symbol": "?reset_native_render_diagnostic_label_00b13510@bsp@@YAXADSAXAAUNativeStringRawPoolContext@1@@Z",
+              "type": 20
+            }
+          ],
+          "relocations": [
+            {
+              "offset": 6,
+              "symbol": "__ehhandler$?unwind_native_main_scene_post_label@bsp@@YAXABUNativeMainScenePostLabelContext@1@AAUNativeMainScenePostLabelFrame@1@@Z",
+              "type": 6
+            },
+            {
+              "offset": 22,
+              "symbol": "___security_cookie",
+              "type": 6
+            },
+            {
+              "offset": 70,
+              "symbol": "__imp__terminate",
+              "type": 6
+            },
+            {
+              "offset": 114,
+              "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+              "type": 20
+            },
+            {
+              "offset": 137,
+              "symbol": "?reset_native_render_diagnostic_label_00b13510@bsp@@YAXADSAXAAUNativeStringRawPoolContext@1@@Z",
+              "type": 20
+            }
+          ],
+          "concrete_call_order": [
+            {
+              "offset": 114,
+              "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+              "type": 20
+            },
+            {
+              "offset": 137,
+              "symbol": "?reset_native_render_diagnostic_label_00b13510@bsp@@YAXADSAXAAUNativeStringRawPoolContext@1@@Z",
+              "type": 20
+            }
+          ],
+          "checked_instruction_offsets": [
+            "002f",
+            "0032",
+            "0034",
+            "0039",
+            "004d",
+            "0057",
+            "0070",
+            "0086"
+          ]
         }
       ],
-      "dimension_leaves": {
-        "object": "build/win32/bsp_core.dir/Release/native_surface_dimensions.obj",
-        "sha256": "fc6552513eeee64927535aeb2b76193eec6c023f78550d9b58dcc1024d4e5166",
-        "leaves": [
-          {
-            "name": "width",
-            "address": "00b3cd10",
-            "bytes": 4,
-            "code": "8b411cc3",
-            "coff_matches_installed": true
-          },
-          {
-            "name": "height",
-            "address": "00b3cd20",
-            "bytes": 4,
-            "code": "8b4120c3",
-            "coff_matches_installed": true
-          }
+      "original_handler": {
+        "address": "00cbc499",
+        "func_info": "00df4698",
+        "unwind_map": "00df46bc",
+        "states": [
+          [
+            -1,
+            13354080
+          ],
+          [
+            0,
+            13354091
+          ],
+          [
+            -1,
+            13354091
+          ],
+          [
+            -1,
+            13354099
+          ],
+          [
+            3,
+            13354110
+          ],
+          [
+            -1,
+            13354110
+          ],
+          [
+            -1,
+            13354118
+          ],
+          [
+            6,
+            13354129
+          ],
+          [
+            -1,
+            13354129
+          ]
         ]
       },
+      "native_cleanup_actions": [
+        {
+          "address": "00cbc486",
+          "instructions": [
+            "lea ecx, [ebp - 0x88]",
+            "jmp 0x41dd20"
+          ]
+        },
+        {
+          "address": "00cbc491",
+          "instructions": [
+            "lea ecx, [ebp - 0x79]",
+            "jmp 0xb13510"
+          ]
+        }
+      ],
       "checks": [
-        "GetDevice before current dimension profiles and real four-byte leaves",
-        "current destination COM before current source COM",
-        "captured device current StretchRect and Release; null source rect/filter2; HRESULTs unused",
-        "holder gate before any native child field; source0C before destination10",
-        "eight separate current renderer/profile130 reads and concrete NULL texture binding",
-        "state5 unchanged through capture and binds; only disarm before normal reset; source unwind called after failure",
-        "all inherited330 x87 retained separately"
-      ]
+        "Original service byte680 clears before temporary zero stores and firstresize",
+        "Current service capture after firstcopy before state6",
+        "Exact header identity, captured data retained across resize, current temporary/current destination lengths",
+        "State8 before captured-data/current-length getter/return; no final-1 normal transition",
+        "Cleanup disarms before current temporary destruction/current global service reset",
+        "Earlier CPP prefix unchanged from sealed337; no new x87,330 inherited checked separately"
+      ],
+      "whole_native_FH3_dispatch_tested": false
     },
     "inherited_x87_audit": {
       "result": "PASS",
       "checks": [
         {
-          "listing": "local/main_scene_scne_capture/native_camera_far_corners.asm",
+          "listing": "local/main_scene_post_label/native_camera_far_corners.asm",
           "tagged_original_x87_instructions_checked": 164,
           "coverage": "all address-tagged unchanged x87 instructions; context-bound constant loads and source public-argument adapters are separately reviewed",
           "address_set_sha256": "9bb321e936d5809f930cf5f8d3f623aec5f9498eacd0ad2f2a30447e0cd591e3"
         },
         {
-          "listing": "local/main_scene_scne_capture/native_main_scene_execution_prefix.asm",
+          "listing": "local/main_scene_post_label/native_main_scene_execution_prefix.asm",
           "tagged_original_x87_instructions_checked": 166,
           "coverage": "all address-tagged unchanged x87 instructions; context-bound constant loads and source public-argument adapters are separately reviewed",
           "address_set_sha256": "c928641ab752330fe9c6fad2106fb014df53b44233382c37cecd74f0a4c06774"
@@ -534,12 +535,10 @@
       "recovered_ambiguity": "All one-register x87 arithmetic operands use verified installed instruction opcode direction."
     },
     "saved_ghidra_annotations": [
-      "local/ghidra-annotations-20261015T004537Z.json"
+      "local/ghidra-annotations-20261015T010107Z.json"
     ],
     "refreshed_exports": [
-      "00b156c0",
-      "00b3cda0",
-      "00b4caf0"
+      "00b156c0"
     ],
     "new_persistent_tests": 0
   },
@@ -547,80 +546,62 @@
     "profile": "00d5e13c",
     "admitted": false,
     "complete_enclosing_function": false,
-    "next_native_address": "00b1634e",
-    "native_cleanup_state": -1,
+    "next_native_address": "00b163fa",
+    "native_cleanup_state": 8,
     "next_concrete_dependency": {
-      "start": "00b1634e",
-      "operation": "POST temporary string construction, later current original service+680 store, remaining post scene body",
+      "start": "00b163fa",
+      "gate": "Original service current byte22D; false branchB164B8",
+      "true_branch": "Current renderer+98 NULL targets, service44 holderprimary into currentgroupcolor0, currentservice664 post-effect targets/texture/draw and camera work",
       "status": "Not composed by this packet"
     },
     "requires": [
       "Actual B17240 preparation",
-      "POST ownership and remaining scene/material/cockpit/distortion/statistics body",
+      "POST target/effect composition and remaining scene/material/cockpit/distortion/statistics body",
+      "POST state8 retirement and later cleanup states",
       "Full genuine body/domain closure before queue admission"
     ]
   },
   "unproved": [
     "Whole D5E13C execution/application route",
     "Original child/FH3/SEH/private-stack/register/fault ABI",
-    "Normal reset failure execution; disarm ordering is strict-COFF checked",
+    "Cold manager/pool creation and allocation failures",
+    "Header alias execution; current alias guard is strict-COFF checked",
     "Arbitrary concurrent publication or owner mutations",
-    "Terminal old texture destruction and enabled optional synchronization in this fixture",
     "Whole prior main-scene prefix in one original caller",
-    "Active material pass/shader/device draw",
+    "POST-effect or active material pass/shader/device draw",
     "Actual application scene/camera creation/invocation",
     "Visible world/gameplay"
   ],
   "artifacts": [
     {
       "path": "src/native_main_scene_execution_prefix.cpp",
-      "bytes": 82123,
-      "sha256": "7493b0ca666e9e7eb48b9741dcb20fabaef707574122cef765c3d2ee631f43d5"
+      "bytes": 86800,
+      "sha256": "fd84f57f285ffe8f2746237033656c2c9772bfce706b26f250f9ef94a5bdaa4c"
     },
     {
       "path": "include/bsp/native_main_scene_execution_prefix.hpp",
-      "bytes": 23874,
-      "sha256": "522f6aaf0443c3cfd01b98041c290f4c4b90328ecffa8178a6196a531eadd90d"
+      "bytes": 25604,
+      "sha256": "683e6b851c0c9ad7a6f918111be7159c56d0f6f0ec10b3fc3c46392fbbf1f60a"
     },
     {
       "path": "docs/NATIVE_MAIN_SCENE_EXECUTION_PREFIX_CC12.md",
-      "bytes": 58031,
-      "sha256": "9332ee5f0167cf00bb81ae9f5130a44ce84b81eb9abc122c808be331f8c5fd7c"
+      "bytes": 62476,
+      "sha256": "aa8e6a8612ab140e222f56aa935057a2439569eb970c27ef90d01ed07431a7c9"
     },
     {
       "path": "config/names/00b10000.jsonl",
-      "bytes": 360962,
-      "sha256": "a7f8d2ff9c50cb4e20b4a1937d0be89ae493bad37e55bb4a0029cae3c36c5686"
-    },
-    {
-      "path": "config/names/00b30000.jsonl",
-      "bytes": 303508,
-      "sha256": "7d5f18da215b7e4f3340579e587fd033852b44012398c0b17033212fce034992"
-    },
-    {
-      "path": "config/names/00b40000.jsonl",
-      "bytes": 329847,
-      "sha256": "fc7db7e568b050a32cb472fdf8ab4b41ee40120b48b2b944e401364ffbf0dad2"
+      "bytes": 362257,
+      "sha256": "37385a901d8323f93c4bad0652b78d35249eb8b6d3c0566ffe9962fe5cb11238"
     },
     {
       "path": "config/reconstruction/00b10000.jsonl",
-      "bytes": 429628,
-      "sha256": "557a8dc9a0fd2a982776cc2810558bfe9ae2f78a089ceacf6ed9826dc52720a3"
-    },
-    {
-      "path": "config/reconstruction/00b30000.jsonl",
-      "bytes": 350806,
-      "sha256": "895988b4a0c2d82e9cd1baf506db6ce77f7e1a1954b4fad15e07118a8fde394e"
-    },
-    {
-      "path": "config/reconstruction/00b40000.jsonl",
-      "bytes": 376050,
-      "sha256": "255be873fd7870e31d4fd70fcf95efe215d7141ecb27a1e6811823fdcb19b9a2"
+      "bytes": 432548,
+      "sha256": "1396c08d68cf6b7161f0419fa1074e421088de8714014696a321f212220f3f2d"
     },
     {
       "path": "build/win32/Release/bsp_core.lib",
-      "bytes": 92029412,
-      "sha256": "46a9d80deb728e0673cfeaf2a0b5543f7cb97ce96c2c9c81016ffc7cbcaa4387"
+      "bytes": 92090836,
+      "sha256": "0521a7feb92418f43b49974adc3eac809df709cd3881f6b7f09ae8e4388e3fc4"
     },
     {
       "path": "build/win32/Release/bsp_lua511.lib",
@@ -633,344 +614,284 @@
       "sha256": "1f4792601d3198471ab898fb8b2a6015fba928b164832817d46b4a0fa8bb11c9"
     },
     {
-      "path": "build/win32/bsp_core.dir/Release/native_surface_dimensions.obj",
-      "bytes": 882,
-      "sha256": "fc6552513eeee64927535aeb2b76193eec6c023f78550d9b58dcc1024d4e5166"
-    },
-    {
       "path": "local/main_scene_execution/native_camera_history.obj",
       "bytes": 7077,
       "sha256": "22baea6d710978e1c456204021e49924ac738d8b5a79e2b689d89123cadfee81"
     },
     {
-      "path": "local/ghidra-annotations-20261015T004537Z.json",
-      "bytes": 103067,
-      "sha256": "0841147e8bc2ba077d60ea9d3bda311fcc86e31b10ef0c93b67f503d1b2fe995"
+      "path": "local/ghidra-annotations-20261015T010107Z.json",
+      "bytes": 115212,
+      "sha256": "80909fc42b72644ec8d172bf6fe4934fa485f3eb3b306b1a09d2c3ff11f06229"
     },
     {
-      "path": "local/main_scene_scne_batch_receipt_7b937fc7c/report.json",
-      "bytes": 31709,
-      "sha256": "300f8a1dae6dbae79605f49eef933442d7e6165f622c1c293a740ba23fed1204"
+      "path": "local/main_scene_scne_capture_receipt_337a794ac/report.json",
+      "bytes": 37061,
+      "sha256": "14e36be0fb2c43db2e77b9331f75a6ea8c6367a8b3db3ebf7829fcf425d2fc97"
     },
     {
-      "path": "local/main_scene_scne_batch_receipt_7b937fc7c/receipt.json",
-      "bytes": 25946,
-      "sha256": "b202caf3327ebe56e7613e61ec2529b512b3d754e1e89272fd764be466bd358c"
+      "path": "local/main_scene_scne_capture_receipt_337a794ac/receipt.json",
+      "bytes": 29700,
+      "sha256": "6ca06592bc2ac3346458895f2e827e26b75b9d8ce4ef8e7a3adbb1ca5d2aee07"
     },
     {
-      "path": "local/main_scene_scne_batch_receipt_7b937fc7c/manifest.json",
-      "bytes": 28168,
-      "sha256": "336aa648e7a4ff94bd670b3a03e9af863a9fc85fa2febabcfb30296513ae3fc9"
+      "path": "local/main_scene_scne_capture_receipt_337a794ac/manifest.json",
+      "bytes": 32888,
+      "sha256": "dfcf611cdad9d9fa51bf14c20b9cd684424371b85deb43e187a27ec69074bec8"
     },
     {
-      "path": "local/main_scene_scne_capture/00b156c0_assembly.txt",
+      "path": "local/main_scene_post_label/00b156c0_assembly.txt",
       "bytes": 52624,
       "sha256": "f2fa4399f0b5bb667a5bd1adc8006d21498e262000293901a6abe1ce25b54510"
     },
     {
-      "path": "local/main_scene_scne_capture/00b156c0_decompiled.c",
+      "path": "local/main_scene_post_label/00b156c0_decompiled.c",
       "bytes": 34487,
       "sha256": "759128dc08776e2731ea34a947e168d9dd837f606c4e9ee89eda480271cc846d"
     },
     {
-      "path": "local/main_scene_scne_capture/00b156c0_metadata.json",
+      "path": "local/main_scene_post_label/00b156c0_metadata.json",
       "bytes": 276,
       "sha256": "0b3fadea1afe23121cd1edbd86c5e7f2607cedba56d68e27fbb72baa10e85da6"
     },
     {
-      "path": "local/main_scene_scne_capture/00b3cda0_assembly.txt",
-      "bytes": 1358,
-      "sha256": "e0dd2b6b86bb9e8803789e39ec6cd317bf92afd17abdb58060cf74ab7fd2426e"
+      "path": "local/main_scene_post_label/annotations.log",
+      "bytes": 202,
+      "sha256": "ec9b6bd4066a04f608d0bc0f4cbee3844d85e550a7ffedf53a171dc2c6214a58"
     },
     {
-      "path": "local/main_scene_scne_capture/00b3cda0_decompiled.c",
-      "bytes": 1052,
-      "sha256": "724b36af26fae77869c613179dc456c400e07dc4d7687c404edc466c6030a3bd"
+      "path": "local/main_scene_post_label/audit_emitted.py",
+      "bytes": 5341,
+      "sha256": "17b0933d7def2676965ce7d7f39253ce10b6fd71c024f068d146bf2d014aa0a8"
     },
     {
-      "path": "local/main_scene_scne_capture/00b3cda0_metadata.json",
-      "bytes": 274,
-      "sha256": "1b60cc25e1aea9731e4676a3e2fd3b324994b95424d28eb27bc68d451ebbfa29"
+      "path": "local/main_scene_post_label/audit_x87.py",
+      "bytes": 2165,
+      "sha256": "f48ee10036793e0c87268c8fa1daaba73eb73104a5b548d0219e0d2efc482e99"
     },
     {
-      "path": "local/main_scene_scne_capture/00b4caf0_assembly.txt",
-      "bytes": 211,
-      "sha256": "33eb535bb89583344717bca16886a3458bbd397c81889131d36183b049782e85"
+      "path": "local/main_scene_post_label/build.log",
+      "bytes": 3911,
+      "sha256": "38694ccf0bc498b3935b61ef363a4bb279aeac8d592fee53ed92ed4123cbf1c3"
     },
     {
-      "path": "local/main_scene_scne_capture/00b4caf0_decompiled.c",
-      "bytes": 555,
-      "sha256": "473942cefb13d06c3a10436afdb14443978b73fde672548f1fba08662c011dd0"
+      "path": "local/main_scene_post_label/byte_receipt.json",
+      "bytes": 2435,
+      "sha256": "59a44c644e123e747d5ea6bcec4b4d91b58ae7bb413d6ee48fc79c358397f570"
     },
     {
-      "path": "local/main_scene_scne_capture/00b4caf0_metadata.json",
-      "bytes": 282,
-      "sha256": "81a1da9809a9273fe925c29f5f6096aa2fb75b905df68958088ac31dba97a89d"
+      "path": "local/main_scene_post_label/byte_receipt.log",
+      "bytes": 1841,
+      "sha256": "830cf8b51314746f5325b0d5f09f55ed8c3fa0be0cf9f39383b98ae445c5aaeb"
     },
     {
-      "path": "local/main_scene_scne_capture/annotations.log",
-      "bytes": 292,
-      "sha256": "d968775f7988e411cd0caf0b1a97071d20a303a6583a30fb254b8a2be4589dc0"
+      "path": "local/main_scene_post_label/compile.ps1",
+      "bytes": 1353,
+      "sha256": "c66b4bed2c1eae276b8f464499187f573ec5cfcacc37abd7e2ee3f8da4bd68b4"
     },
     {
-      "path": "local/main_scene_scne_capture/audit_emitted.py",
-      "bytes": 5470,
-      "sha256": "f4b6d86a19a0f40e8fc7a704ab84d602d71294898ed099dae62043a1fbbab355"
+      "path": "local/main_scene_post_label/continue_native_main_scene_post_label_00b1634e.txt",
+      "bytes": 5606,
+      "sha256": "26f7f85c019e56047f992d295403017ff5a706d44221ceff4af773007aeaa0c0"
     },
     {
-      "path": "local/main_scene_scne_capture/audit_x87.py",
-      "bytes": 2169,
-      "sha256": "2f634aaa8207e6504d3a0379b8d1824b85b3c2ba7ef552606b3a2e2966a662e3"
+      "path": "local/main_scene_post_label/emitted_audit.json",
+      "bytes": 9211,
+      "sha256": "c9cb8d4c4e318f4d899c76cb3b218ff09406b7e165fe49464102d2da8901859e"
     },
     {
-      "path": "local/main_scene_scne_capture/build.log",
-      "bytes": 4125,
-      "sha256": "ad50a12e03e05da597de0d64310c805fffe285896ca2eda269558cf138315af2"
+      "path": "local/main_scene_post_label/emitted_audit.log",
+      "bytes": 897,
+      "sha256": "62821488be9a250597475840a6bc516f267b4c1e22d4cfb6d637e6b43d099870"
     },
     {
-      "path": "local/main_scene_scne_capture/byte_receipt.json",
-      "bytes": 1639,
-      "sha256": "15340a2f402f590639089f5e6de182127e3ebd5e748f5feca3a6fc50f0fe569c"
+      "path": "local/main_scene_post_label/emitted_initial.json",
+      "bytes": 5030,
+      "sha256": "403f22f7274f7d93b780f0761ec41b227dca6595e4ab5c6a1e25d74eaeecaa0f"
     },
     {
-      "path": "local/main_scene_scne_capture/byte_receipt.log",
-      "bytes": 64,
-      "sha256": "8b30eb1d4e8f6a57f1a0805ceaa6254bb8f2e42b19fffa9042f46cd1b52bd2bf"
+      "path": "local/main_scene_post_label/export_refresh.log",
+      "bytes": 104,
+      "sha256": "2c16df4e3befc768729913ee74ecb0abf7c4eff68ad4a8543e227d7adfd18d53"
     },
     {
-      "path": "local/main_scene_scne_capture/capture.bin",
-      "bytes": 80,
-      "sha256": "d9b2ef5f711ee74183bfbe70b5ec8c042a5637b89bfebc472255c367a6d6a1b1"
+      "path": "local/main_scene_post_label/freeze_receipt.py",
+      "bytes": 1961,
+      "sha256": "5ef365bee5a12af58c3a775232be845be8207fbbb1c2de1e6b8bd825e2065d04"
     },
     {
-      "path": "local/main_scene_scne_capture/capture_native.txt",
-      "bytes": 645,
-      "sha256": "c9a91fb3d1d2b8790d24e980e01b73a740034d342dd95f3cccb98bfb800dc2a6"
+      "path": "local/main_scene_post_label/func_info.bin",
+      "bytes": 36,
+      "sha256": "bba2e286bfbcca2cfae6c87890a7834476ea7b90563ef611fd40ba7e106842a9"
     },
     {
-      "path": "local/main_scene_scne_capture/capture_native_render_holder_00b4caf0.txt",
-      "bytes": 614,
-      "sha256": "4de59afed4a66d4e76e3dc5119125624dee25152f44141df150408ad9329fd96"
+      "path": "local/main_scene_post_label/handler.bin",
+      "bytes": 10,
+      "sha256": "e3e2ad413e482a75d3249425cf1e30e7d681e0cd0f6ab8a69303cbdddc2ecafe"
     },
     {
-      "path": "local/main_scene_scne_capture/capture_probe.cpp",
-      "bytes": 13409,
-      "sha256": "95b516069410d1559129ea509902dc951b51610a851c2e0defa4e23a2eb77f0f"
-    },
-    {
-      "path": "local/main_scene_scne_capture/capture_probe.exe",
-      "bytes": 253440,
-      "sha256": "32533748835b3fcd22030c8a44546b64f605b2ed170e8b52f1cdb27a0f4a5142"
-    },
-    {
-      "path": "local/main_scene_scne_capture/capture_probe.image_reservation.json",
-      "bytes": 1017,
-      "sha256": "d535258bc46e9ccd122d17d42649495b3b44718d27ad47170486119e7a54ff7f"
-    },
-    {
-      "path": "local/main_scene_scne_capture/capture_probe.log",
-      "bytes": 717,
-      "sha256": "37e0829b3bfc27999599a9df6b562862b1d7beb159b77e8d99b4a9a2a09e1a42"
-    },
-    {
-      "path": "local/main_scene_scne_capture/capture_probe.obj",
-      "bytes": 127160,
-      "sha256": "48c76094ffeecf8f03ab59b6bbb97f0f831fdc830d80ec8917ac6c8eab8f6c4b"
-    },
-    {
-      "path": "local/main_scene_scne_capture/compile.ps1",
-      "bytes": 1371,
-      "sha256": "373f1a405a6f384e666350e01a410ce4ffb083a0d4b156d09ada9e9b90fce42c"
-    },
-    {
-      "path": "local/main_scene_scne_capture/continue_native_main_scene_scne_capture_00b162fe.txt",
-      "bytes": 5888,
-      "sha256": "a0ba78b78e9c9e5808aabf8fc5dd0c0ea4b0f6a49557b0b5ae641a94017e99b7"
-    },
-    {
-      "path": "local/main_scene_scne_capture/copy.bin",
-      "bytes": 127,
-      "sha256": "5fbb55924b8d45e11b597b1373dc415bbad71a8d8ac7ee8b1fdbf3a693ae2bfb"
-    },
-    {
-      "path": "local/main_scene_scne_capture/copy_native.txt",
-      "bytes": 1364,
-      "sha256": "0ba8e36fc96cc2faa61726bd275f5fe2a2651368e06fffa9c9e4d10f99fa4af8"
-    },
-    {
-      "path": "local/main_scene_scne_capture/copy_native_surface_00b3cda0.txt",
-      "bytes": 4017,
-      "sha256": "cc9a84ade7dceb4871334b03babd1cff80205bdee14c722472797695c7af2b5d"
-    },
-    {
-      "path": "local/main_scene_scne_capture/emitted_audit.json",
-      "bytes": 10476,
-      "sha256": "60c656b1a75666d3d565c74ecabd89bfda2019add8eadb382c6787ea697d37f0"
-    },
-    {
-      "path": "local/main_scene_scne_capture/emitted_audit.log",
-      "bytes": 843,
-      "sha256": "b4cb469a901adf6f64eb9ad8d4b5ae5aa03388e696942244083ea112ae36366c"
-    },
-    {
-      "path": "local/main_scene_scne_capture/emitted_initial.json",
-      "bytes": 7101,
-      "sha256": "79dfe9419fa9766609fcd46fbce3223c4054930a350c67226b81f189ad89f2de"
-    },
-    {
-      "path": "local/main_scene_scne_capture/environment.hpp",
-      "bytes": 5213,
-      "sha256": "e48ad6743e574f6f4bcd27c47558865a92d69cf91119ccd9e89d62e233210989"
-    },
-    {
-      "path": "local/main_scene_scne_capture/export_refresh.log",
-      "bytes": 308,
-      "sha256": "e2aae4e731238293267b1739f2977f458b01a75f30422037faaef8df9689b2e4"
-    },
-    {
-      "path": "local/main_scene_scne_capture/freeze_receipt.py",
-      "bytes": 1994,
-      "sha256": "2357c97978e4ccdb184c07a9a21cf20c0798c430b69150fe855f107e9be397c8"
-    },
-    {
-      "path": "local/main_scene_scne_capture/height.bin",
-      "bytes": 4,
-      "sha256": "07ad3a50b1c271e07fb57fb47d2f0e77f3342d41bfa410990cb1320a45035fb2"
-    },
-    {
-      "path": "local/main_scene_scne_capture/holder.bin",
-      "bytes": 19,
-      "sha256": "f7cb6af53557ba0f846803545b5905238f8650d09eb592a2bd4a814b504bff6f"
-    },
-    {
-      "path": "local/main_scene_scne_capture/holder_native.txt",
-      "bytes": 209,
-      "sha256": "61fd23ba6d1ecc6dd14331c993a516b8680cbffa9e88773604e28d5101ab08bc"
-    },
-    {
-      "path": "local/main_scene_scne_capture/index.log",
+      "path": "local/main_scene_post_label/index.log",
       "bytes": 143,
-      "sha256": "b896ae8cb5d74782d77b785e98d1d73966977469dd4108f049b7ccbc97359d9b"
+      "sha256": "7c0256864dc86e081cfc6858c11dcb4f958e2766f84a19e87b073652c1a784d3"
     },
     {
-      "path": "local/main_scene_scne_capture/inspect_emitted.py",
-      "bytes": 2259,
-      "sha256": "22958536a7f5dc5245ecbefe96943a82418af794be810f0875963f84b24a11ae"
+      "path": "local/main_scene_post_label/inspect_emitted.py",
+      "bytes": 2222,
+      "sha256": "00e428ac6bf2bb4698a8096e1117a6003daa4061fa2a72cc438d6fb7fef3040c"
     },
     {
-      "path": "local/main_scene_scne_capture/ledger_update.log",
-      "bytes": 1938,
-      "sha256": "f9a70c4776f71123965b142c71c9dd4a736788cf869faae12c44a844e9f6a02d"
+      "path": "local/main_scene_post_label/label.bin",
+      "bytes": 172,
+      "sha256": "5226e93bf1898066249f8047b4081d1b2e94ecb47351c340d7cc166728e40600"
     },
     {
-      "path": "local/main_scene_scne_capture/make_fixture_bytes.py",
-      "bytes": 2448,
-      "sha256": "73d8e99b67b7a35e16c6759087a09d3cd9f3fbd01bd4eef1c40721071a3ec00a"
+      "path": "local/main_scene_post_label/label_probe.cpp",
+      "bytes": 13677,
+      "sha256": "e2c3899ab12a2012e0f425e4cbd60e2b617d7534877081c5855e7998ce565987"
     },
     {
-      "path": "local/main_scene_scne_capture/make_report.py",
-      "bytes": 8765,
-      "sha256": "29f037bae7af4bd48498d8c97b2270fc8bed7356a7483510f6e3ed0015fbd08b"
+      "path": "local/main_scene_post_label/label_probe.exe",
+      "bytes": 229376,
+      "sha256": "bc7620b3815b04ef44b135deae7e13956fb21167d2dcadeced97f40427718283"
     },
     {
-      "path": "local/main_scene_scne_capture/native_camera_far_corners.asm",
-      "bytes": 34709,
-      "sha256": "14bb5004f33c918fef59203f7dc765874c78d4c7ba2ecec1b79ec8e38cbc3dbc"
+      "path": "local/main_scene_post_label/label_probe.log",
+      "bytes": 707,
+      "sha256": "360d593ac7599c98c86361733adcf3ebb0fd27c731205b257748f759450798bb"
     },
     {
-      "path": "local/main_scene_scne_capture/native_camera_far_corners.obj",
-      "bytes": 2423,
-      "sha256": "4ac4e61c3338de872c7ba96efa846a743ecf070cb4623eaf60c4f2b172b73cbe"
+      "path": "local/main_scene_post_label/label_probe.obj",
+      "bytes": 58744,
+      "sha256": "51d132024e7f5f62e791278ddd8033ad4632c91283e6cd5d6a90e0ed81ccc060"
     },
     {
-      "path": "local/main_scene_scne_capture/native_main_scene_execution_prefix.asm",
-      "bytes": 446930,
-      "sha256": "2d8e361ff704e54fbc626cc463207bf65e23c89a429364f3ea1347993b71a2b5"
+      "path": "local/main_scene_post_label/ledger_update.log",
+      "bytes": 705,
+      "sha256": "cc8f81ca9f842dffa126e959c5afc4624582c971fd3960f8497ec904114e8c89"
     },
     {
-      "path": "local/main_scene_scne_capture/native_main_scene_execution_prefix.obj",
-      "bytes": 72572,
-      "sha256": "00b9472b92affe24739f5e70874c5d4cbff11c35882cf2970acfd20f347e81a7"
+      "path": "local/main_scene_post_label/make_fixture_bytes.py",
+      "bytes": 2956,
+      "sha256": "a899e902067b7c2d3ba8d509932b8ad57457ce621bcbbfeef144555a7a9700da"
     },
     {
-      "path": "local/main_scene_scne_capture/native_post_effect_submission.asm",
-      "bytes": 95792,
-      "sha256": "25a2a6780cc196332ef8451c498c078e10197d4880b0533372717c78eec85dc4"
+      "path": "local/main_scene_post_label/make_report.py",
+      "bytes": 8497,
+      "sha256": "8d09e897dbe00182f88aad3ca97d86d0c2d92c4bbde2313b0587e6c961a52785"
     },
     {
-      "path": "local/main_scene_scne_capture/native_post_effect_submission.obj",
-      "bytes": 20537,
-      "sha256": "34a1f042ad5ecbe2fe27eb156354eb81888c72c43b1556f9a144b5f9e703f992"
+      "path": "local/main_scene_post_label/native_camera_far_corners.asm",
+      "bytes": 34707,
+      "sha256": "334f66a4ad36ab43f378c643469bef73eccd984915a2271bb7d188b8d277238b"
     },
     {
-      "path": "local/main_scene_scne_capture/original_bytes.inc",
-      "bytes": 3480,
-      "sha256": "99e6183b691416939b0d2539af3a729431ae5f02931f129268923a02055a23f5"
+      "path": "local/main_scene_post_label/native_camera_far_corners.obj",
+      "bytes": 2419,
+      "sha256": "6027e464203eec3c59ab01a548f880876a99a79645d3e894209abb3e76624c49"
     },
     {
-      "path": "local/main_scene_scne_capture/prepare_audit.py",
-      "bytes": 1396,
-      "sha256": "60866c1256fa0dadf9aed8017bd83a84f1b40e36c1d171073672f5b8ea0adecb"
+      "path": "local/main_scene_post_label/native_clause_listing.txt",
+      "bytes": 1495,
+      "sha256": "63e8aa3099d729d0a4d94b2a0ee5cfedd64bb9289788520b6133f18e5aa2a427"
     },
     {
-      "path": "local/main_scene_scne_capture/prepare_fixture.py",
-      "bytes": 728,
-      "sha256": "31442b52cb201cf6a29c24595f1e982f1a28721e4a1af86f617c84bdd3fb5751"
+      "path": "local/main_scene_post_label/native_main_scene_execution_prefix.asm",
+      "bytes": 474280,
+      "sha256": "b942f6a567a102ea1d515cf453fccc78fde5ff43d5e04d854dbe206e1cc00835"
     },
     {
-      "path": "local/main_scene_scne_capture/probe_compile.log",
-      "bytes": 19,
-      "sha256": "9a756f52d87c5c7562f0dd60b7557a4025a0f8a6eb73a18a2eb6554770835b3c"
+      "path": "local/main_scene_post_label/native_main_scene_execution_prefix.obj",
+      "bytes": 77498,
+      "sha256": "aa9cbc516fd1600e1740ef9bdf97c2984def471401d8364a96115009aa2338d3"
     },
     {
-      "path": "local/main_scene_scne_capture/renderer_profile.bin",
-      "bytes": 328,
-      "sha256": "81b6ffba0bc0ddc59499163d761da9c9f15bfd57d099d61c08ba40df94550c4b"
+      "path": "local/main_scene_post_label/native_post_effect_submission.asm",
+      "bytes": 95790,
+      "sha256": "8bc3c6ea50aa6279a35cce7553ed6a10c3e72b8576b5faf26a24973fcf350820"
     },
     {
-      "path": "local/main_scene_scne_capture/reserve_image_section.py",
-      "bytes": 3239,
-      "sha256": "35a31aae58bc221f62e7d15ff6e171fedaab2d9b2c1b689f3d47c1a2bfafdb72"
+      "path": "local/main_scene_post_label/native_post_effect_submission.obj",
+      "bytes": 20533,
+      "sha256": "704e2486950d2bf552e7f473e74f1de15e74cd8ca2fffd9a0700d6c336b9cb3c"
     },
     {
-      "path": "local/main_scene_scne_capture/run_probe.ps1",
-      "bytes": 1631,
-      "sha256": "5f7aa036a879e6226f62478805e093f1189c659ee80a36779ae0d4e04cd5c3d2"
+      "path": "local/main_scene_post_label/original_bytes.inc",
+      "bytes": 2473,
+      "sha256": "98f7b7bf143d5a96bd19838f4662cd8ea75b2dd05f730938d4cb10dc06e36ca6"
     },
     {
-      "path": "local/main_scene_scne_capture/strict_compile.log",
+      "path": "local/main_scene_post_label/post.bin",
+      "bytes": 8,
+      "sha256": "9ffc45a8ccc17f340f55397fd7b962e5bd562b34bf24c32a870bc09472a65c65"
+    },
+    {
+      "path": "local/main_scene_post_label/prepare_audit.py",
+      "bytes": 507,
+      "sha256": "ff5139760cf327e1e1d091ca37e9874aa9339afbcecddd50b680133c7549663e"
+    },
+    {
+      "path": "local/main_scene_post_label/prepare_fixture.py",
+      "bytes": 6159,
+      "sha256": "f59cbb0c5672b4b00699a576e4eb29e1ce294e9d4fff191422d3733407149a2d"
+    },
+    {
+      "path": "local/main_scene_post_label/prepare_freeze.py",
+      "bytes": 631,
+      "sha256": "4b53009f68680141d9645c6ba14ffc9a3f51ec7cd318fe45d9ec3ae4f79b90a9"
+    },
+    {
+      "path": "local/main_scene_post_label/probe_compile.log",
+      "bytes": 17,
+      "sha256": "cb33925b1a3c7bb4077d17e57743e895455524726ed690ee7fd7ebba4e86ec23"
+    },
+    {
+      "path": "local/main_scene_post_label/run_probe.ps1",
+      "bytes": 1327,
+      "sha256": "04669c6d4e58001f5da516a056c45d88e88d3537e3e6de6d2ba8052d8239bcd2"
+    },
+    {
+      "path": "local/main_scene_post_label/strict_compile.log",
       "bytes": 106,
       "sha256": "66260c7a22c7fb4ee63d064ab898a6b6c5ea67021d6467bebeeb179edb681dd3"
     },
     {
-      "path": "local/main_scene_scne_capture/surface_profile.bin",
-      "bytes": 44,
-      "sha256": "553be925bd752fde32b6a7c583af1573bd66fe01f3f908f700167b77a4d60d04"
+      "path": "local/main_scene_post_label/unwind_map.bin",
+      "bytes": 72,
+      "sha256": "6dd6b0c046043b55b4e7976fd6436a5038a1dc2a2fe595f08abc9070ad5427d8"
     },
     {
-      "path": "local/main_scene_scne_capture/update_ledgers.py",
-      "bytes": 4570,
-      "sha256": "075c5f0bb0e6e3c3e39814e3c9923c4659a38f3d9177975502bc7b133bca7107"
+      "path": "local/main_scene_post_label/unwind_native_main_scene_post_label.txt",
+      "bytes": 1424,
+      "sha256": "cc89b59b8fe6186e580974461a40bc5f6c4dd1f34cc656e51c02643dbfa1b786"
     },
     {
-      "path": "local/main_scene_scne_capture/verify_prior.py",
-      "bytes": 1139,
-      "sha256": "623a19a72a72f0709801b183a185964534721d4d173de97735f82a10c6dd581a"
+      "path": "local/main_scene_post_label/unwind_reset.bin",
+      "bytes": 8,
+      "sha256": "eb536483a0e41efe2795f20a145a50cad049399d3c74d65490372d5c4a2a481f"
     },
     {
-      "path": "local/main_scene_scne_capture/width.bin",
-      "bytes": 4,
-      "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5"
+      "path": "local/main_scene_post_label/unwind_temporary.bin",
+      "bytes": 11,
+      "sha256": "9ebdc30159b4469fa9a3fd3ef2d7018290f7f8c149ea5b6ad2134bbc5140d4b5"
     },
     {
-      "path": "local/main_scene_scne_capture/x87_audit.json",
-      "bytes": 990,
-      "sha256": "47876abe29dd7ae085d2bda87014fa4dc7d0072bca4c37ee81bdb0e4c1fc1447"
+      "path": "local/main_scene_post_label/update_ledgers.py",
+      "bytes": 3405,
+      "sha256": "a481d7b3fd5c350efb1d5a674bc75d8a8e8a0f640ed261de12424c68bde87007"
     },
     {
-      "path": "local/main_scene_scne_capture/x87_audit.log",
-      "bytes": 893,
-      "sha256": "75ed3152b70e9d8eecad1e972f42dd4086d9e12ca05c008dc15298ea56394702"
+      "path": "local/main_scene_post_label/verify_prior.py",
+      "bytes": 1141,
+      "sha256": "4208685202f48a07b93bd92c1e74121dad6eab63291cffc5551af1a115a18b3c"
+    },
+    {
+      "path": "local/main_scene_post_label/x87_audit.json",
+      "bytes": 986,
+      "sha256": "d58d77f736b7788068fa0a2618e10af3c3d7391dd6702854bd3da6dfcae5cb1a"
+    },
+    {
+      "path": "local/main_scene_post_label/x87_audit.log",
+      "bytes": 889,
+      "sha256": "76bf007fc367f3a5bc983767fb85bb0a9d9204f932c3e7fb274ad49ea435e510"
     }
   ]
 }

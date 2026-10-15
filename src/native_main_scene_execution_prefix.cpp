@@ -1656,4 +1656,89 @@ void continue_native_main_scene_scne_capture_00b162fe(void* service,
         throw;
     }
 }
+void unwind_native_main_scene_post_label(const NativeMainScenePostLabelContext& c,
+    NativeMainScenePostLabelFrame& frame) noexcept {
+    const auto cleanup_state=frame.native_cleanup_state;
+    if(cleanup_state==-1) return;
+    if((cleanup_state!=6 && cleanup_state!=8) || frame.cleanup_started) std::terminate();
+    frame.native_cleanup_state=-1;
+    frame.cleanup_started=true;
+    try {
+        if(cleanup_state==6) {
+            frame.cleanup_native_site=0x00cbc486;
+            destroy_native_string_header_0041dd20(frame.temporary_header,c.domains.strings);
+        } else {
+            frame.cleanup_native_site=0x00cbc491;
+            reset_native_render_diagnostic_label_00b13510(*c.domains.system.actual_service_00f8d39c,c.domains.strings);
+        }
+        frame.cleanup_completed=true;
+    } catch(...) { std::terminate(); }
+}
+
+void continue_native_main_scene_post_label_00b1634e(void* original_service,
+    const NativeMainScenePostLabelContext& c,NativeMainScenePostLabelFrame& frame,
+    NativeMainSceneExecutionPrefixState& state) {
+    if(!state.reached_post_label_stage || state.reached_post_body_stage ||
+       frame.started || frame.native_cleanup_state!=-1)
+        throw std::logic_error("main scene POST requires its fresh reached label frame");
+    frame.started=true;
+    frame.active_native_site=state.active_native_site=0x00b16356;
+    try {
+        *reinterpret_cast<volatile std::uint8_t*>(static_cast<unsigned char*>(original_service)+0x680)=0;
+        frame.service_flag_cleared=true;
+        auto* const temporary=frame.temporary_header;
+        *static_cast<volatile std::uint32_t*>(temporary)=0;
+        *static_cast<volatile std::uint32_t*>(temporary+1)=0;
+        frame.active_native_site=state.active_native_site=0x00b16365;
+        if(!c.domains.system.actual_service_00f8d39c || !c.actual_post_bytes_00d5e4f0 ||
+           c.domains.system.actual_manager_01090aa0!=&c.domains.strings.actual_manager_publication_01090aa0)
+            throw std::logic_error("main scene POST requires the same actual service and raw string-manager domain");
+        resize_native_string_header_0041dd40(temporary,c.domains.strings,4,true);
+        void* const captured_data=current_member(temporary,4); // B1636A EBX.
+        frame.captured_data=captured_data;
+        if(captured_data) {
+            const std::uint32_t bytes=word(temporary)+1u;
+            frame.active_native_site=state.active_native_site=0x00b16380;
+            if(bytes) std::memmove(captured_data,c.actual_post_bytes_00d5e4f0,bytes);
+        }
+        void* const service=*c.domains.system.actual_service_00f8d39c; // B16388.
+        frame.captured_service=service;
+        frame.native_cleanup_state=6; // B1638F, AFTER publication capture.
+        if(service) {
+            void* const destination_header=reinterpret_cast<void*>(
+                reinterpret_cast<std::uintptr_t>(service)+0x684u);
+            frame.destination_header=destination_header;
+            if(destination_header!=temporary) {
+                const std::uint32_t requested=word(temporary);
+                frame.active_native_site=state.active_native_site=0x00b163b8;
+                resize_native_string_header_0041dd40(destination_header,c.domains.strings,requested,true);
+                if(word(temporary)!=0) {
+                    const std::uint32_t bytes=word(destination_header);
+                    void* const destination=current_member(destination_header,4);
+                    frame.active_native_site=state.active_native_site=0x00b163cf;
+                    if(bytes) std::memmove(destination,captured_data,bytes);
+                }
+            }
+        }
+        frame.native_cleanup_state=8; // B163D9, BEFORE normal pool getter/return.
+        if(captured_data) {
+            const std::uint32_t bytes=word(temporary)+1u;
+            frame.temporary_return_started=true;
+            frame.active_native_site=state.active_native_site=0x00b163ee;
+            auto* const pool=native_string_pool_get_or_create_00419cc0(
+                c.domains.strings.actual_published_01090aa8,c.domains.strings.actual_manager_publication_01090aa0);
+            frame.active_native_site=state.active_native_site=0x00b163f5;
+            return_native_string_pool_00bd1510(pool,captured_data,bytes,
+                c.domains.strings.actual_small_returns_disabled_01090aa4);
+            frame.temporary_return_completed=true;
+        }
+        frame.active_native_site=state.active_native_site=0x00b163fa;
+        frame.completed=true;
+        state.reached_post_body_stage=true;
+    } catch(...) {
+        frame.failed=true;
+        unwind_native_main_scene_post_label(c,frame);
+        throw;
+    }
+}
 } // namespace bsp

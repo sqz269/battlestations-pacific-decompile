@@ -880,10 +880,80 @@ not establish original native child exceptions, FH3/SEH/private caller ABI,
 arbitrary publication races, full earlier scene execution, active material
 draws or game rendering. These remain explicit new Source interfaces.
 
+## Actual POST label ownership, B1634E..B163F9
+
+The next 172-byte/52-instruction clause now has a separate
+`continue_native_main_scene_post_label_00b1634e` and fresh POST frame/context.
+It requires the reached B1634E boundary and keeps the same actual global
+service/string-pool/manager domain. The original ESI service is a separate
+argument: B16356 clears its byte+680 BEFORE zeroing and resizing the temporary
+header, regardless of the current global service publication. The source
+frame records that mutation. A reached first-provider domain rejection keeps
+the cleared flag and zeroed temporary, with cleanup still unarmed; no rollback
+or synthetic cleanup is added.
+
+The concrete raw resize creates length4. B1636A captures its data pointer once
+and the first copy uses the current temporary length+1 and borrowed original
+`POST` bytes at D5E4F0. Only after that copy does B16388 capture the current
+global service; B1638F then installs state6. A nonnull service receives POST
+through its actual +684/+688 header, retaining the native header-alias gate,
+captured source pointer, current source-length condition and current
+destination-length copy count. B163D9 installs state8 BEFORE the normal pool
+getter and captured-data/current-length return. The completed temporary header
+is not cleared. The boundary is B163FA with8 still armed, BEFORE the next
+service+22D rendering gate.
+
+The installed/saved CBC499 handler and FuncInfo DF4698 still identify the
+nine-entry unwind map at DF46BC. The POST entries are:
+
+- State6 -> (-1,CBC486): current temporary at EBP-88, tail-call 41DD20.
+- State7 -> (6,CBC491): exists in the map but is never installed by this clause.
+- State8 -> (-1,CBC491): ignored ECX at EBP-79, tail-call B13510 using the
+  current global service, independently of the earlier captured service.
+
+The explicit source cleanup adapter accepts reached6/8, disarms to-1 BEFORE
+the concrete action, and terminates a second C++ cleanup exception. It does
+not emulate the original FH3 dispatcher or private native frame. State-1
+cleanup is a no-op and replay of a completed stage is rejected.
+
+Four exact-original172B/Source pairs compare all raw pool bytes, both service
+objects and returned temporary-header words. They cover a null global
+publication, a2-to4 destination resize, disabled small-block returns, and a
+current global service distinct from the original ESI service. All cases
+confirm original-service byte680 becomes0 while the other service's flag stays
+unchanged. Four isolated original CBC491 comparisons change the current
+publication before cleanup; both complete service graphs and the raw pool
+match. One isolated CBC486 comparison deliberately makes the current temporary
+buffer differ from the saved capture and confirms current-header destruction.
+The source-only first-provider rejection confirms cleared flag/zeroed header
+survive without cleanup or pool changes. These action fixtures do not claim
+native exception delivery or child-throw equivalence.
+
+The fixture copies the172-byte clause to allocated executable storage, binds
+its real Source resize/getter/return and memmove calls, and relocates only the
+POST bytes and global-service cell. Its wrapper seeds ESI from the original
+service argument, preserves the registers, reserves native temporary/state
+storage and observes the final state. All seven original byte spans, including
+handler, FuncInfo, complete map and both actions, match the installed binary
+and saved live Ghidra. The pool publication is warm; cold manager creation,
+registration and allocation failure are not exercised.
+
+Strict Win32 COFF audit covers677B/200 instructions in the continuation and
+171B/61 instructions in its cleanup. It verifies the flag-before-zero/resize
+order, current reads and captured pointer, both memmove relocations, the
+6-to8 transition before the real pool getter/return, and disarm before both
+cleanup providers. The entire earlier C++ prefix remains byte-for-byte
+unchanged from the sealed337 source; all330 inherited x87 instructions still
+pass their existing audit. The normal build and all three existing checks
+pass. No persistent tests, shared CMake changes or post-effect/material calls
+were added. Artifacts are in `local/main_scene_post_label/`;664 prior artifact
+pins and28 committed snapshots were verified and remain frozen.
+
 ## Next executed clause
 
-The new boundary is B1634E with SCNE state -1, BEFORE POST string construction
-and the later service+680 store. POST ownership, remaining scene/material/
-cockpit/distortion/statistics passes, later cleanup states and independent
-B17240 preparation remain to compose. D5E13C stays unadmitted pending the
-complete raw body and application graph.
+The new boundary is B163FA with POST state8 armed. Its current original-service
+byte+22D gates the following target/post-effect composition; the true branch
+starts with current renderer+98 binding null before holder/group/effect work.
+That body, remaining scene/material/cockpit/distortion/statistics passes, later
+cleanup states and independent B17240 preparation remain. D5E13C stays
+unadmitted pending the complete raw body and application graph.
