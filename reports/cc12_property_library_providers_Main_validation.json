@@ -40,7 +40,80 @@
     "worker_fresh_build_pending": false,
     "independent_strict_COFF_pending": false,
     "worker_build_terminal": "a11381/exit0",
-    "Main_build_and_machine_gate_pass": false
+    "Main_build_and_machine_gate_pass": true,
+    "build_observation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_library_resume_20261015\\lookup_Main_recovered_build.DATA.json",
+      "bytes": 6902,
+      "sha256": "70f89219c16f58e2d4c0b8cec1d183bb309cea3f9f241de0b1f9c9ded0704361"
+    },
+    "selected_machine_identity": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\PropertyLibraryLookupMainIdentity01\\compact_review.DATA.json",
+      "bytes": 8423,
+      "sha256": "ea51b7911ed147dafda8523079ae46a087b76cff66d1105dc30852e7a9156f42"
+    },
+    "primary_consumption": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_library_resume_20261015\\lookup_Main_primary_identity.DATA.json",
+      "bytes": 4365,
+      "sha256": "e8e68559b20708cae6733fa577dfbd76c57f999fede2add21c57c336ff98c1c6"
+    },
+    "existing_checks_passed": 3,
+    "original_process_exit_code": null,
+    "code_sections": 18,
+    "function_entries": 19,
+    "code_section_bytes": 922,
+    "reachable_bytes": 917,
+    "reachable_instructions": 318,
+    "unreachable_padding_bytes": 5,
+    "code_relocations": 24,
+    "metadata_relocations": 13,
+    "relocation_target_names_literal_exact": true,
+    "only_private_helper_definitions_have_finite_TU_mapping": 3,
+    "archive_member_scope": "Unique lookup member in complete2152member core archive; string-process frozen separately from bsp_game target, absent from core archive."
   },
-  "scope": "Source/build/archive DATA only until remaining selected Main and lookup gates close. No new provider runtime,OriginalABI/EH/OOM/privateCRT/class/application/game qualification."
+  "scope": "Ordinary Source/build/archive and selected compiler correspondence only. No new property-provider runtime, Original ABI/EH/privateCRT/class/application/game qualification.",
+  "lifetime": {
+    "addresses": [
+      "008f4c50",
+      "008f56a0"
+    ],
+    "Main_build": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_tree_library_lifetime_Main_build01\\result.DATA.json",
+      "bytes": 3419,
+      "sha256": "8c592a7ac3246664707ce5f2a41c486e024c20781ad218d5c3bfe3415e40be84"
+    },
+    "Main_build_and_machine_gate_pass": true,
+    "existing_checks_passed": 3,
+    "existing_checks_seconds": 7.66,
+    "actual_Main_independent_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyTreeLibraryLifetimeResumeReview01\\Main_selected_object_review.DATA.json",
+      "bytes": 15918,
+      "sha256": "fbe57380ea5b471ec2f8fd2b6cb73028a46ddd013267b70e4595772142790325"
+    },
+    "primary_complete_code_and_relocation_consumption": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_library_resume_20261015\\lifetime_Main_primary_identity.DATA.json",
+      "bytes": 6010,
+      "sha256": "fca9a3047e90ee399fed09bb438dbc3d31944c1a1a497f39b0cad5e24cdd2053"
+    },
+    "code_sections": 9,
+    "code_bytes": 380,
+    "reachable_instructions": 146,
+    "code_relocations": 7,
+    "metadata_relocations": 3,
+    "Original_ABI_compatible": false,
+    "new_Source_runtime_executed": false,
+    "game_validated": false
+  },
+  "Ghidra_annotation_and_export": {
+    "annotations": "c8bd82/exit0",
+    "previous_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\ghidra-annotations-20261015T161243Z.json",
+      "bytes": 13886,
+      "sha256": "6a1be14274e780102529b5f327c3694d16ff71864d019367a060867e4e984bd3"
+    },
+    "project_saved": true,
+    "exports": "e5a5f7/exit0",
+    "snapshot_and_index": "a3d150/exit0; unchanged76769 functions, index rebuilt",
+    "Original_project": "C:/Users/sqz269/bsp.gpr",
+    "Original_program": "/battlestationspacific.exe"
+  }
 }
