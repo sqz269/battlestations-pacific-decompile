@@ -62,12 +62,48 @@
   "annotation_actual_terminal": "1fd52c/exit0",
   "affected_export_refresh": "b6995e/exit0",
   "historical_comments_and_names_preserved": true,
-  "focused_probe_pending": true,
-  "worker_original_baseline_build_pending": true,
+  "focused_probe_pending": false,
+  "worker_original_baseline_build_pending": false,
   "worker_original_build_session": 41015,
-  "primary_CMake_registration_pending": true,
+  "primary_CMake_registration_pending": false,
   "primary_registered_build_pending": true,
   "original_register_FS_SEH_fault_OOM_ABI_qualified": false,
   "full_populated_clone_qualified": false,
-  "application_or_game_qualified": false
+  "application_or_game_qualified": false,
+  "worker_validation_followup_commit": "dafa41ee0",
+  "worker_validation_report_pin": {
+    "path": "reports\\native_scene_property_insertion_cc12.json",
+    "bytes": 18854,
+    "sha256": "9357486af66de2c3dcca9d9f6e2a7ff7cf20169eafe2baba7fc068e13d76c141"
+  },
+  "focused_probe": {
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullPropertyInsertionSource01\\actual_Source_probe_process.DATA.json",
+      "bytes": 12862,
+      "sha256": "157a9473accf099caf8396f53bac54a5c45df814da8409c595cc76e8a3a72a92"
+    },
+    "actual_one_Source_process_pid": 63676,
+    "returncode": 0,
+    "current_input_pins_verified_by_Root": 14,
+    "Root_consumption_actual_terminal": "275444/exit0",
+    "observed_operations": [
+      "miss",
+      "hit_nonnull_record",
+      "miss_null_mapping",
+      "hit_null_record"
+    ],
+    "observed_ordinal_cases": [
+      "zero_first",
+      "nonzero_41",
+      "zero_next"
+    ],
+    "no_per_free_trace_leak_oracle_or_Original_execution": true
+  },
+  "worker_baseline_build_verified": {
+    "actual_terminal": "5d3baf/exit0",
+    "tests": 2,
+    "new_TU_registered": false
+  },
+  "primary_registration_commit": "d4a0af6b1",
+  "primary_registered_build_session": 69563
 }
