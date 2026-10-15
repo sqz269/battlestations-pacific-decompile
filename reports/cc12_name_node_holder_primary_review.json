@@ -1,6 +1,6 @@
 {
   "schema": "bsp.name_node_holder_primary_review.v1",
-  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_build_pending",
+  "status": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
   "Source_commit": "8f8e550756d99012f9c1e7329ec88e29acfe40dc",
   "Source": "src/native_scene_name_node_holder.cpp",
   "header": "include/bsp/native_scene_name_node_holder.hpp",
@@ -59,9 +59,11 @@
     "new_TU_registered": false
   },
   "Main_registered": true,
-  "Main_build": "pending",
+  "Main_build": "pass",
   "Original_ABI_compatible": false,
   "Original_EH_or_private_CRT_compatible": false,
   "new_Source_runtime_executed": false,
-  "game_validated": false
+  "game_validated": false,
+  "Main_validation": "reports/cc12_name_node_holder_Main_validation.json",
+  "actual_compiler_archive_gate": "pass"
 }
