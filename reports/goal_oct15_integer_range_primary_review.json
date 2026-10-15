@@ -5,9 +5,9 @@
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
-  "normal_source_functions": 8,
-  "native_envelope_bytes": 534,
-  "native_instruction_bytes": 533,
+  "normal_source_functions": 9,
+  "native_envelope_bytes": 584,
+  "native_instruction_bytes": 583,
   "unreachable_alignment_bytes_excluded": 1,
   "spans": [
     {
@@ -73,21 +73,31 @@
       "scope": "complete ordinary Source",
       "live_equals_installed": true,
       "sha256": "7f7aa886c52527f7db0735fd4f3e38ce2c7bd2e70f418781e04be6ec72b1fd1a"
+    },
+    {
+      "address": "00467d90",
+      "envelope_bytes": 50,
+      "instruction_bytes": 50,
+      "scope": "complete ordinary Source",
+      "live_equals_installed": true,
+      "sha256": "eceeaf68d2cd6c8f08290941b73a90a8aef53a1f32e04eec0105cce0a0ff9f71"
     }
   ],
   "packet_reports": [
     "reports/goal_oct15_dword_iterator_cells.json",
     "reports/goal_oct15_scene_integer_set_erase_range.json",
     "reports/goal_oct15_scene_integer_set_destroy.json",
-    "reports/goal_oct15_scene_integer_set_construct_aliases.json"
+    "reports/goal_oct15_scene_integer_set_construct_aliases.json",
+    "reports/goal_oct15_dword_move.json"
   ],
-  "typed_transfer_rows_checked": 26,
+  "typed_transfer_rows_checked": 29,
   "typed_transfer_rows_failed": 0,
   "independent_reviews": [
     "Worker: complete DWORD iterator listings and Source/header/doc match,including live argument cells and rawEAX",
     "Primary: complete range listing/Source matches full and partial returnable-diagnostic paths; lazy child metadata retained",
     "Primary: complete B530/CE90 destroy listings/sharedSource match; C4C0 equal-body transfer proof also checked",
-    "Primary: complete constructor aliases listings/Source preserve raw lasthead vs originaltree results and exact reload schedule"
+    "Primary: complete constructor aliases listings/Source preserve raw lasthead vs originaltree results and exact reload schedule",
+    "Primary: complete D90 listing/Source matches bit-exact SAR2 wrapping arithmetic,pre-CRT result capture and full signed distance paths"
   ],
   "source_hashes": {
     "src/native_scene_dword_iterator.cpp": "803a6c98606a8464aa78a5447da883d11204a4beff7855fbaba76f94e3c2f50c",
@@ -97,18 +107,20 @@
     "src/native_scene_integer_set_destroy.cpp": "f471943fccb193af8f3bc871b31c621da99be3cc12a2809fb7657d28b6ee23a5",
     "include/bsp/native_scene_integer_set_destroy.hpp": "5c92035aaab42d310625a5011fda9bde473bdf299b82694463312baadfd9c0e5",
     "src/native_scene_integer_set_construct_aliases.cpp": "ae9806e830461ee251b053edf4e61350e9077ee97cc48978c6c30653bae35147",
-    "include/bsp/native_scene_integer_set_construct_aliases.hpp": "45b1bbed828cce914632acc85a5efd5ceb6d0559cbd2e0072f39ac2c3a5797f2"
+    "include/bsp/native_scene_integer_set_construct_aliases.hpp": "45b1bbed828cce914632acc85a5efd5ceb6d0559cbd2e0072f39ac2c3a5797f2",
+    "src/native_scene_dword_move.cpp": "25534e8fd6f7db5d904832ca623ae9ade05f0c05a3f9848e1cb625b519a83386",
+    "include/bsp/native_scene_dword_move.hpp": "61294c3eb1ce7b42553587bbdfd206a3fbbf129dd15770a66e1da98a8ac9e9f2"
   },
   "combined_build": {
-    "revision": "1a4ab3115a268a160ebaf607e26424c806ebf94c",
+    "revision": "b1fa25fdfc3900726f9371a95227ee4e98c93164",
     "command": "scripts/build.ps1",
     "configuration": "MSVC Release Win32",
     "exit_code": 0,
     "log": "local\\goal_oct15_integer_range_combined_build.log",
-    "log_sha256": "5c1c59d759d398b591c5539b336137000ed202d47946657c1bc656eb3b254553",
+    "log_sha256": "1040ecb3a2119e928597682e88234b403ad8c970168e399f171b1133007e1eb7",
     "ctest_passed": 3,
     "ctest_failed": 0,
-    "ctest_seconds": 8.81,
+    "ctest_seconds": 8.27,
     "tests": [
       "reconstructed_math",
       "native_math_differential",
@@ -121,7 +133,8 @@
     "native_scene_dword_iterator": 1,
     "native_scene_integer_set_erase_range": 1,
     "native_scene_integer_set_destroy": 1,
-    "native_scene_integer_set_construct_aliases": 1
+    "native_scene_integer_set_construct_aliases": 1,
+    "native_scene_dword_move": 1
   },
   "unique_archive_objects": {
     "native_scene_dword_iterator": [
@@ -135,9 +148,12 @@
     ],
     "native_scene_integer_set_construct_aliases": [
       "bsp_core.dir\\Release\\native_scene_integer_set_construct_aliases.obj"
+    ],
+    "native_scene_dword_move": [
+      "bsp_core.dir\\Release\\native_scene_dword_move.obj"
     ]
   },
-  "archive_sha256": "a6d09e0a5bb1477d9409d70900d8a580171b1ea011f12515360d1e08d395f7b0",
+  "archive_sha256": "02e93bdef296ab0f6088c2727ace30a50cf063a214738c237caebd2bf93c35d8",
   "new_tests": 0,
   "abi_compatible": false,
   "game_validated": false,
