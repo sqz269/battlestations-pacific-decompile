@@ -1,0 +1,86 @@
+{
+  "packet": "oct15_avoid_tangent",
+  "status": "complete_bounded_source_validation_pending",
+  "owner": "agent/oct15_avoid_tangent",
+  "date": "2026-10-15",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "Read-only verifying bsp.py queries and exports; primary integrator owns annotations",
+  "docs": ["docs/OCT15_AVOID_TANGENT.md"],
+  "sources": ["include/bsp/avoid_zone_tangent_followup.hpp", "src/avoid_zone_tangent_followup.cpp"],
+  "routines": [
+    {
+      "address": "0041b4b0",
+      "name": "BSP_AvoidZoneGroup_AnySegmentHit",
+      "previous_ghidra_name": "FUN_0041b4b0",
+      "reconstruction": "avoid_zone_group_any_segment_hit_0041b4b0",
+      "abi": "ECX group; stack toward/from; AL boolean; RET 8 at 0041b4d4",
+      "body_start": "0041b4b0",
+      "body_end_inclusive": "0041b4d6",
+      "coverage": "complete through existing group segment-hit implementation",
+      "unread_ranges": [],
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0041b580",
+      "name": "BSP_AvoidZoneGroup_WeightedBoundaryDirection",
+      "previous_ghidra_name": "FUN_0041b580",
+      "reconstruction": "avoid_zone_group_weighted_boundary_direction_0041b580",
+      "abi": "ECX group; stack point/slack/full_weight_distance/out; ST0 minimum distance; RET 10h at 0041b675",
+      "body_start": "0041b580",
+      "body_end_inclusive": "0041b677",
+      "coverage": "complete control flow through existing required boundary bindings and interpolation",
+      "unread_ranges": [],
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0041b7e0",
+      "name": "BSP_AvoidZoneGroup_SlackTangent",
+      "previous_ghidra_name": "FUN_0041b7e0",
+      "reconstruction": "avoid_zone_group_slack_tangent_0041b7e0",
+      "abi": "ECX group; stack out/point/slack; EAX out; RET 0Ch at 0041b83c",
+      "body_start": "0041b7e0",
+      "body_end_inclusive": "0041b83e",
+      "coverage": "complete control flow through existing required per-zone tangent and merge bindings",
+      "unread_ranges": [],
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {"function": "0041b4b0", "address": "0041b4cc", "native": "004179d0", "contract": "Full callee body read; reuse group segment-hit, five stack arguments, AL bool, RET 14h; outputs discarded"},
+    {"function": "0041b580", "address": "0041b5d0", "native": "0041aea0", "contract": "Full callee body read; point/slack/out-direction, RET 0Ch, ST0 distance rounded by caller FSTP; existing required boundary bindings"},
+    {"function": "0041b580", "address": "0041b5ff", "native": "00419010", "contract": "Full callee body read; five float stack arguments (full_weight_distance,1,slack,0,distance), RET 14h; reuse existing x87 interpolation"},
+    {"function": "0041b7e0", "address": "0041b815", "native": "0041b290", "contract": "Full callee body and existing C++ read; zone tangent(out,point,slack), RET 0Ch; EAX temporary reused by merge"},
+    {"function": "0041b7e0", "address": "0041b81e", "native": "0041b700", "contract": "Full listing and existing C++ read; ECX accumulator/EDX addend, RET; reuse optional-vector merge"}
+  ],
+  "corrections": [
+    {"address": "0041b4b0", "was": "Decompiler declares the wrapper void", "is": "Semantic boolean result in AL", "evidence": "0041b4cc calls the AL-returning group query; ADD ESP,8 and RET 8 preserve AL; no other return-value write"},
+    {"address": "0041b580", "was": "Decompiler replaces the minimum only when distance <= minimum", "is": "Replace when not ordered distance > minimum, including unordered", "evidence": "0041b644 FCOMIP distance,minimum; 0041b648 JA skips replacement only for ordered greater; 0041b64a-0041b650 copy float bits"}
+  ],
+  "arithmetic": {
+    "sentinel": "00d7a248 bytes ff ff 7f 7f, FLT_MAX",
+    "weight": "Ordered positive only; zero/negative/unordered skipped by 0041b612 JBE",
+    "minimum": "JA at 0041b648: equality and unordered replace; no std::min substitution",
+    "multiply_bytes": "0041b618 D8 C9: ST0 *= ST1",
+    "rounding": "Both weighted components stored to float before separate x87 additions and float stores; assembly helper retains this schedule",
+    "dc_scan": "python tools/x87_dc_form_scan.py --range 0041b580-0041b677 --context 12: 0 sites in 0 functions"
+  },
+  "validation": {
+    "candidate_body_and_abi_review": "passed",
+    "callee_before_contract": "passed; existing APIs reused",
+    "live_incoming_xrefs": "none found for all three candidates",
+    "win32_build_and_existing_ctest": "pending; isolated worker build running, primary will also validate in staging before main promotion",
+    "verify_report_calls": "passed: five direct call rows, zero failed; markdown checker also passed",
+    "diff_check": "passed: git diff --cached --check"
+  },
+  "limitations": [
+    "Provisional semantic names; Ghidra annotations pending primary integration",
+    "Stable borrowed snapshots and nonaliasing point/output required; native loops reload membership after calls",
+    "Existing boundary/tangent host and CRT contracts remain required",
+    "No new tests, native-byte differential execution, ABI compatibility, game wiring or gameplay validation",
+    "No claim of floating-point exception or status-flag equivalence"
+  ]
+}
