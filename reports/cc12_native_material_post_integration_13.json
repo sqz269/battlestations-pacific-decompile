@@ -1,0 +1,460 @@
+{
+  "packet": "cc12_material_POST_integrated_release_13",
+  "source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
+  "captured_utc": "2026-10-15T01:25:25.356120+00:00",
+  "build": {
+    "target": "MSVC Win32 Release",
+    "status": "PASS3/3",
+    "test_seconds": 12.49,
+    "log": "local/cc12_material_post_combined_release_build_01.log",
+    "temporary_cmake_overlay": false
+  },
+  "material_refresh": {
+    "captured_utc": "2026-10-15T01:25:25.337841+00:00",
+    "source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
+    "Root_complete_changed_Source_header_review": true,
+    "Root_current_Source_blobs_equal_reviewed_commits": [
+      {
+        "path": "src/platform_renderer_activation.cpp",
+        "git_blob": "b078d554518ac1ae1756fdd69cd44729de6f629c",
+        "reviewed_commit": "ecec8a52c2bd19f63b15ffc4c9aa16cbb132e89e"
+      },
+      {
+        "path": "include/bsp/platform_renderer_activation.hpp",
+        "git_blob": "41eddf04b31c7be2b2a04aad4b46994d27bd0fa6",
+        "reviewed_commit": "ecec8a52c2bd19f63b15ffc4c9aa16cbb132e89e"
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "git_blob": "7f4d22297fbb6b92471e2ade052164efde07500c",
+        "reviewed_commit": "ecec8a52c2bd19f63b15ffc4c9aa16cbb132e89e"
+      },
+      {
+        "path": "include/bsp/game_native_renderer_application.hpp",
+        "git_blob": "1424ade2781559c946e4b1e5ce6841810c9ae981",
+        "reviewed_commit": "ecec8a52c2bd19f63b15ffc4c9aa16cbb132e89e"
+      },
+      {
+        "path": "src/native_main_scene_execution_prefix.cpp",
+        "git_blob": "d2e17ce3e93fef86abd20951128a7c4672dfdeaa",
+        "reviewed_commit": "1802809e3c33be432df876175dd7dec14a827a92"
+      },
+      {
+        "path": "include/bsp/native_main_scene_execution_prefix.hpp",
+        "git_blob": "ed41392cb27cec4fd8fb80e10c4885563734effa",
+        "reviewed_commit": "1802809e3c33be432df876175dd7dec14a827a92"
+      }
+    ],
+    "combined_build": {
+      "target": "MSVC Win32 Release",
+      "status": "PASS3/3",
+      "test_seconds": 12.49,
+      "log": "local/cc12_material_post_combined_release_build_01.log",
+      "temporary_cmake_overlay": false
+    },
+    "compiled_scope": "Registered Source only. Whole ordinary native_scene_property_clone.cpp remains absent from this snapshot registry; its other-primary focused Source result is preserved without Root runtime credit.",
+    "worker_commit": "ecec8a52c2bd19f63b15ffc4c9aa16cbb132e89e",
+    "status": "ACCEPTED_BOUNDED_CONCRETE_APPLICATION_MATERIAL_REFRESH",
+    "frozen_receipt": "local/cc12_native_parent_receipts/platform_ecec/receipt.json",
+    "verified_checkpoint_files": 2917,
+    "verified_checkpoint_bytes": 253771762,
+    "committed_outputs": 10,
+    "Root_frozen_forwarding_main_rerun": {
+      "pid": 7196,
+      "exit_code": 0,
+      "seconds": 2.4889236000017263,
+      "runtime": {
+        "path": "local/cc12_platform_ecec_parent_review_01/runtime.json",
+        "bytes": 2571,
+        "sha256": "8992e01dce37a1609f148a7a0a2a45e6c2888f492be22faa055898548b2a3932"
+      }
+    },
+    "whole_Original_caller_bytes": 65,
+    "whole_Original_child_bytes": 462,
+    "compared_material_bytes": 392,
+    "live_row_expansion": [
+      1,
+      2
+    ],
+    "actual_cache_calls_per_arm": 3,
+    "ownership": "Genuine cold black/white producers; compared hot acquisitions. Same canonical cache/Lua/owner domains, separate completed row frames, balanced replacement counts, creator terminals/unregistration, worker join and final device/API0.",
+    "limits": "Explicit fixture nil fallback, restored numeric cache-slot relocation, shared concrete Source child boundaries; no production F8D438, whole B24FB0/WM_ACTIVATE, Original zero-terminal/FH3/private ABI, reentry, device loss, pixels or game validation."
+  },
+  "POST": {
+    "captured_utc": "2026-10-15T01:25:25.337841+00:00",
+    "source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
+    "Root_complete_changed_Source_header_review": true,
+    "Root_current_Source_blobs_equal_reviewed_commits": [
+      {
+        "path": "src/platform_renderer_activation.cpp",
+        "git_blob": "b078d554518ac1ae1756fdd69cd44729de6f629c",
+        "reviewed_commit": "ecec8a52c2bd19f63b15ffc4c9aa16cbb132e89e"
+      },
+      {
+        "path": "include/bsp/platform_renderer_activation.hpp",
+        "git_blob": "41eddf04b31c7be2b2a04aad4b46994d27bd0fa6",
+        "reviewed_commit": "ecec8a52c2bd19f63b15ffc4c9aa16cbb132e89e"
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "git_blob": "7f4d22297fbb6b92471e2ade052164efde07500c",
+        "reviewed_commit": "ecec8a52c2bd19f63b15ffc4c9aa16cbb132e89e"
+      },
+      {
+        "path": "include/bsp/game_native_renderer_application.hpp",
+        "git_blob": "1424ade2781559c946e4b1e5ce6841810c9ae981",
+        "reviewed_commit": "ecec8a52c2bd19f63b15ffc4c9aa16cbb132e89e"
+      },
+      {
+        "path": "src/native_main_scene_execution_prefix.cpp",
+        "git_blob": "d2e17ce3e93fef86abd20951128a7c4672dfdeaa",
+        "reviewed_commit": "1802809e3c33be432df876175dd7dec14a827a92"
+      },
+      {
+        "path": "include/bsp/native_main_scene_execution_prefix.hpp",
+        "git_blob": "ed41392cb27cec4fd8fb80e10c4885563734effa",
+        "reviewed_commit": "1802809e3c33be432df876175dd7dec14a827a92"
+      }
+    ],
+    "combined_build": {
+      "target": "MSVC Win32 Release",
+      "status": "PASS3/3",
+      "test_seconds": 12.49,
+      "log": "local/cc12_material_post_combined_release_build_01.log",
+      "temporary_cmake_overlay": false
+    },
+    "compiled_scope": "Registered Source only. Whole ordinary native_scene_property_clone.cpp remains absent from this snapshot registry; its other-primary focused Source result is preserved without Root runtime credit.",
+    "worker_commit": "1802809e3c33be432df876175dd7dec14a827a92",
+    "status": "ACCEPTED_BOUNDED_POST_LABEL_OWNERSHIP_AND_CLEANUP",
+    "frozen_receipt": "local/cc12_native_parent_receipts/world_180/receipt.json",
+    "verified_artifacts": 64,
+    "committed_outputs": 6,
+    "Root_frozen_probe_rerun": "PASS4 complete172B Original/Source caller pairs,4CBC491 current-service actions,1CBC486 current-header action; Source unarmed failure/replay checks",
+    "reached_frontier": "B163FA with state8 armed; original service680 cleared before temporary work",
+    "strict_COFF": "677B/200instructions continuation and171B/61instructions cleanup; concrete provider/load/state ordering checked;330 inherited x87 preserved",
+    "limits": "Warm raw pool and seeded incoming boundary; real Source child bridges. No Original exception delivery/FH3/private frame, cold manager creation/failure, post-effect/material draw, D5E13C or gameplay validation."
+  },
+  "whole96_byte_bridge_current_Root_object_and_linked_game": "PASS identical frozen probe, no padding/relocations",
+  "frozen_build_receipt": "local/cc12_native_pre_gui07_build_receipts/d4edc832430c5e501a5f29c7115e8fc1d2d42da3/receipt.json",
+  "frozen_build_artifacts": [
+    {
+      "path": "local/cc12_material_post_combined_release_build_01.log",
+      "bytes": 5343,
+      "sha256": "8de7d7c4ed84a7b3dbde5418f5ecd8b121ce0487d905e7165a58be78ae6222fe"
+    },
+    {
+      "path": "build/win32/cc12_followup_release/bsp_game.exe",
+      "bytes": 5599744,
+      "sha256": "a1f40a029e9244125604138f0f31e7ca15bc8b577bddc577f4310e573122c833"
+    },
+    {
+      "path": "build/win32/cc12_followup_release/xlive_stub.dll",
+      "bytes": 32768,
+      "sha256": "b2416673d6d2fbcc02f0b6e4699f0b18ba691f8e2f33a1adeb2463d73d8c79f2"
+    },
+    {
+      "path": "build/win32/bsp_game.map",
+      "bytes": 8333679,
+      "sha256": "df223ef157ef409f1ec1aac6d0b1ca7de4aca25a2be0be12f8b0f1515c278402"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 92268034,
+      "sha256": "d3e4bb61a0c8bd2b6ea9ecee0f2944b84a90543a169f6fbb81b5d1808efe77d1"
+    },
+    {
+      "path": "build/win32/CMakeCache.txt",
+      "bytes": 19835,
+      "sha256": "dce4b4a92074e24d00695de30205f4e7ecadb90770f2740cbcf483cec092d2e4"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 227177,
+      "sha256": "d2f16c1538bae2bf59cfc16b2c7ea4f32c76373640e568293550290f2642848e"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_material_program_compiler_actual.obj",
+      "bytes": 223620,
+      "sha256": "fd5447e29e43cfc85d51edca18c988ddd1f09e789cb03ce55430b0aeb76cb8a3"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_material_pass_shader_slots.obj",
+      "bytes": 15274,
+      "sha256": "47a142b8809fcc361ac9da3a8ff6de0453e55d3971301d8fc6748b0779e33dfd"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_main_scene_execution_prefix.obj",
+      "bytes": 73539,
+      "sha256": "3c4716eff0ddf11c16343b90d21f6a8c7ae667971bce54fde3a324e7f15ccdc1"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/platform_renderer_activation.obj",
+      "bytes": 68714,
+      "sha256": "98b5c3580c130341d1539bfc3089fe6b0582a833f66e94a6c6337dffd900777a"
+    },
+    {
+      "path": "build/win32/bsp_game.dir/Release/game_native_gui_effect_probe.obj",
+      "bytes": 106670,
+      "sha256": "0232b8494c5313094e9ebab8a2190f436bfce6969790eeb64e6b562415089447"
+    },
+    {
+      "path": "build/win32/bsp_game.dir/Release/game_native_font_probe.obj",
+      "bytes": 155137,
+      "sha256": "bb8363999f495d5f909f4f0694c96074d508e036cbc84af39d9695330eba8e1b"
+    },
+    {
+      "path": "build/win32/bsp_game.dir/Release/game_native_font_application.obj",
+      "bytes": 179550,
+      "sha256": "a5983e7133e636fc0919556aaae29c3c3f1445a3398cc408eefef735956d25e5"
+    },
+    {
+      "path": "build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+      "bytes": 363303,
+      "sha256": "162c508c88ade056b625ce6c40acc42132068ffc1bacb66aea4d29602e5dbbfa"
+    },
+    {
+      "path": "src/native_sampler_entry_word_boundary.inc",
+      "bytes": 14008,
+      "sha256": "6b430b459c839ae8aff2ba7cb0e2e48d5facb96e727a9ab61adcf465a8d4e606"
+    },
+    {
+      "path": "src/native_material_program_compiler_actual.cpp",
+      "bytes": 29346,
+      "sha256": "8fff69fa386cd63678174f0c8582a4223c291f7e47d2948d40daaecbf5393698"
+    },
+    {
+      "path": "include/bsp/native_material_program_compiler_actual.hpp",
+      "bytes": 8556,
+      "sha256": "790bf45a49e30dd9c658a3aaae0ee45f419d3fc052f04ffa59f1d48a4204b557"
+    },
+    {
+      "path": "src/native_material_pass_shader_slots.cpp",
+      "bytes": 5435,
+      "sha256": "b67269c731e0bc5be863013c01ebb4bb19144e848b21af3a589f544e2e08ee88"
+    },
+    {
+      "path": "include/bsp/native_material_pass_shader_slots.hpp",
+      "bytes": 3500,
+      "sha256": "115394e43811e8f8a39fb980b9746bb7e5148b61d12e6c383d2a154b5b1a31ba"
+    },
+    {
+      "path": "src/native_main_scene_execution_prefix.cpp",
+      "bytes": 86800,
+      "sha256": "fd84f57f285ffe8f2746237033656c2c9772bfce706b26f250f9ef94a5bdaa4c"
+    },
+    {
+      "path": "include/bsp/native_main_scene_execution_prefix.hpp",
+      "bytes": 25604,
+      "sha256": "683e6b851c0c9ad7a6f918111be7159c56d0f6f0ec10b3fc3c46392fbbf1f60a"
+    },
+    {
+      "path": "src/platform_renderer_activation.cpp",
+      "bytes": 6826,
+      "sha256": "6003ba553a59df549dcdcfb09bc9a796cbc88c638affb31c3876a96ddfce277a"
+    },
+    {
+      "path": "include/bsp/platform_renderer_activation.hpp",
+      "bytes": 5847,
+      "sha256": "8702ea206a5bd239bb2536341c9a4ed8045b972fb31c96336c8ae04efefeed47"
+    },
+    {
+      "path": "src/game_native_gui_effect_probe.cpp",
+      "bytes": 25084,
+      "sha256": "4a1dd7f7948a43a6356a3ffcfd2d183f238a625a7e69a423636797296265aacb"
+    },
+    {
+      "path": "src/game_native_font_probe.cpp",
+      "bytes": 14751,
+      "sha256": "91e65a963e848ce1a4395011a5cb846ae4ca8237b9bb605f2df288fc367b4bed"
+    },
+    {
+      "path": "include/bsp/game_native_font_probe.hpp",
+      "bytes": 1469,
+      "sha256": "216f8be7c044755e16a6c7120f3393b2d6ca3e3307d238ed67f56b62a28df95f"
+    },
+    {
+      "path": "src/game_native_font_application.cpp",
+      "bytes": 12355,
+      "sha256": "c253e892ea5344edaf4da2ea3f53c07f00a16c32a433c0036b9ef5fcbf14c519"
+    },
+    {
+      "path": "include/bsp/game_native_font_application.hpp",
+      "bytes": 4616,
+      "sha256": "451468346bde9b7c64b4aaaa2b11e029e2b46e31ded23dc417e8d3c8318c4865"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "bytes": 52744,
+      "sha256": "f4a0c279954b047994158e601ffb2516a5421161efed3b867e5e535fe6ebf265"
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "bytes": 13783,
+      "sha256": "25d2673b1b06ba837cb9bda5d88c8eb67b0a87d7f6a92e38fbb716e09066176f"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 131365,
+      "sha256": "b239835d659f52c1a0cf5748385fa815cdb79b555acd047950bf2ace9b1f18a1"
+    },
+    {
+      "path": "src/game_hosts_mission.cpp",
+      "bytes": 103994,
+      "sha256": "fa3eb89f2c05ea9d5d43fe39e2f86978497db03ac75ab4cb46083b597daa96b3"
+    },
+    {
+      "path": "src/game_main.cpp",
+      "bytes": 75387,
+      "sha256": "8001bf3508e3250a2166fe168bbaa18191235cc8bd14598e9cea0d61693ac7fe"
+    },
+    {
+      "path": "local/cc12_world_180_parent_probe_01.log",
+      "bytes": 707,
+      "sha256": "360d593ac7599c98c86361733adcf3ebb0fd27c731205b257748f759450798bb"
+    },
+    {
+      "path": "local/cc12_platform_ecec_parent_rerun_01.log",
+      "bytes": 1095,
+      "sha256": "d2eaf9841f532cff689e706a173b05368daf86441e2bbcd233eeb8d24d41dde4"
+    },
+    {
+      "path": "local/cc12_platform_ecec_parent_review_01/runtime.json",
+      "bytes": 2571,
+      "sha256": "8992e01dce37a1609f148a7a0a2a45e6c2888f492be22faa055898548b2a3932"
+    }
+  ],
+  "latest_actual_GUI": {
+    "attempt": "06",
+    "actual_source_revision": "8df36847324ada1f5770f3e45712bb4f2cb298bf",
+    "exit_code": 0,
+    "presents": 119,
+    "both_effects_and_caller_retirements_and_shared_drain": true,
+    "receipt": "reports/cc12_native_gui_effect_startup_integration_12.json"
+  },
+  "pending_actual_GUI": {
+    "attempt": "07",
+    "source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
+    "status": "QUEUED_AS_OBSERVED_NO_GAME_PROCESS_OR_RUN_MANIFEST",
+    "exec_session": 11371,
+    "environment": {
+      "BSP_NATIVE_FONT_PROBE": "1",
+      "BSP_NATIVE_GUI_EFFECT_PROBE": "1"
+    },
+    "screenshot": "local/cc12_actual_native_gui_font_startup_07.png",
+    "screenshot_requested_frame": 90,
+    "immutable_build_artifacts": 37,
+    "observation": {
+      "observed_utc": "2026-10-15T01:24:24.3864485Z",
+      "source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
+      "launcher_unified_exec_session": 11371,
+      "session_confirmed_running_by_tool_before_this_snapshot": true,
+      "actual_snapshot_game_pids": [],
+      "actual_run_manifest_exists": false,
+      "actual_run_log_exists": false,
+      "slots": [
+        {
+          "slot": 0,
+          "owner_pid": 13244,
+          "owner_alive": true,
+          "tagged_game_pids": [
+            58196
+          ],
+          "lock_record": "battlestations-pacific-decompile-cc9-physics1 2026-10-14T18:18:49 pid=13244 log=J:\\PROG\\battlestations-pacific-decompile-cc9-physics1\\local\\p11on_e8.log"
+        },
+        {
+          "slot": 1,
+          "owner_pid": 73492,
+          "owner_alive": true,
+          "tagged_game_pids": [
+            83772
+          ],
+          "lock_record": "battlestations-pacific-decompile-cc9-gunnery36 2026-10-14T18:20:43 pid=73492 log=J:\\PROG\\battlestations-pacific-decompile-cc9-gunnery36\\local\\g47_u15ya_j20_5.log"
+        },
+        {
+          "slot": 2,
+          "owner_pid": 93012,
+          "owner_alive": true,
+          "tagged_game_pids": [
+            30464
+          ],
+          "lock_record": "battlestations-pacific-decompile-cc9-physics1 2026-10-14T18:20:44 pid=93012 log=J:\\PROG\\battlestations-pacific-decompile-cc9-physics1\\local\\p11off_e3.log"
+        },
+        {
+          "slot": 3,
+          "owner_pid": 82224,
+          "owner_alive": true,
+          "tagged_game_pids": [
+            4748
+          ],
+          "lock_record": "battlestations-pacific-decompile-cc9-ships44 2026-10-14T18:19:41 pid=82224 log=J:\\PROG\\battlestations-pacific-decompile-cc9-ships44\\local\\s51_t_a5.log"
+        },
+        {
+          "slot": 4,
+          "owner_pid": 23328,
+          "owner_alive": true,
+          "tagged_game_pids": [
+            84064
+          ],
+          "lock_record": "battlestations-pacific-decompile-cc9-gunnery36 2026-10-14T18:23:43 pid=23328 log=J:\\PROG\\battlestations-pacific-decompile-cc9-gunnery36\\local\\g47_u15yb_j20_3.log"
+        },
+        {
+          "slot": 5,
+          "owner_pid": 95332,
+          "owner_alive": true,
+          "tagged_game_pids": [
+            14224
+          ],
+          "lock_record": "battlestations-pacific-decompile-cc9-ships44 2026-10-14T18:12:42 pid=95332 log=J:\\PROG\\battlestations-pacific-decompile-cc9-ships44\\local\\s51_t_a6.log"
+        }
+      ]
+    }
+  },
+  "artifacts": [
+    {
+      "path": "local/cc12_native_pre_gui07_build_receipts/d4edc832430c5e501a5f29c7115e8fc1d2d42da3/receipt.json",
+      "bytes": 7401,
+      "sha256": "df023c03d125ae9a9b539e996c1b65af1dd1d24a07004df8cf6b6bb7fc45cf7e"
+    },
+    {
+      "path": "local/cc12_sampler_entry_combined_bridge_03.json",
+      "bytes": 9388,
+      "sha256": "dae40320ba0487f9c878aca190e46e2309dedabfddce1b41c49420b23fdf4656"
+    },
+    {
+      "path": "local/cc12_gui07_wait_observation_01.json",
+      "bytes": 2314,
+      "sha256": "bbba43633dc45e5f05edbf1536b109dd7525227ad47874500dc6778cf41ce08b"
+    },
+    {
+      "path": "local/cc12_platform_ecec_parent_review_01/runtime.json",
+      "bytes": 2571,
+      "sha256": "8992e01dce37a1609f148a7a0a2a45e6c2888f492be22faa055898548b2a3932"
+    },
+    {
+      "path": "local/cc12_platform_ecec_parent_review_01/runtime.log",
+      "bytes": 49773,
+      "sha256": "c15e338aa4e4e95bf705e4d5a472639682deb9d459c6fd2d92929024cbb594e7"
+    },
+    {
+      "path": "local/cc12_platform_ecec_parent_review_01/console.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local/cc12_platform_ecec_parent_rerun_01.log",
+      "bytes": 1095,
+      "sha256": "d2eaf9841f532cff689e706a173b05368daf86441e2bbcd233eeb8d24d41dde4"
+    },
+    {
+      "path": "local/cc12_world_180_parent_probe_01.log",
+      "bytes": 707,
+      "sha256": "360d593ac7599c98c86361733adcf3ebb0fd27c731205b257748f759450798bb"
+    }
+  ],
+  "original_abi_compatible": false,
+  "native_text_draw_validated": false,
+  "world_D5E13C_admitted": false,
+  "faithful_game_startup_validated": false,
+  "gameplay_validated": false,
+  "overall_goal": "ACTIVE"
+}

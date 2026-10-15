@@ -505,13 +505,12 @@
   "overall_goal": "active",
   "latest_actual_executable_source_revision": "8df36847324ada1f5770f3e45712bb4f2cb298bf",
   "latest_combined_build": {
-    "source_revision": "7bfdb9bcf254dabf0085838c21693a5d3b00afbe",
+    "source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
     "target": "MSVC Win32 Release",
     "tests": "PASS3/3",
-    "seconds": 12.25,
-    "permanent_platform_tu_registration": true,
+    "seconds": 12.49,
     "temporary_cmake_include": false,
-    "receipt": "reports/cc12_native_sampler_scene_capture_integration_11.json"
+    "receipt": "reports/cc12_native_material_post_integration_13.json"
   },
   "initial_probe_registration_source_revision": "23fbb8a1df1d79c0e3bbad7dbfa6fa5501b2d0d2",
   "initial_probe_registration_build": {
@@ -523,5 +522,83 @@
     "log": "local/cc12_native_gui_effect_startup_build_01.log",
     "new_tests": 0,
     "temporary_cmake_include": false
+  },
+  "pending_actual_attempt": {
+    "attempt": "07",
+    "source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
+    "status": "QUEUED_AS_OBSERVED_NO_GAME_PROCESS_OR_RUN_MANIFEST",
+    "exec_session": 11371,
+    "environment": {
+      "BSP_NATIVE_FONT_PROBE": "1",
+      "BSP_NATIVE_GUI_EFFECT_PROBE": "1"
+    },
+    "screenshot": "local/cc12_actual_native_gui_font_startup_07.png",
+    "screenshot_requested_frame": 90,
+    "immutable_build_artifacts": 37,
+    "observation": {
+      "observed_utc": "2026-10-15T01:24:24.3864485Z",
+      "source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
+      "launcher_unified_exec_session": 11371,
+      "session_confirmed_running_by_tool_before_this_snapshot": true,
+      "actual_snapshot_game_pids": [],
+      "actual_run_manifest_exists": false,
+      "actual_run_log_exists": false,
+      "slots": [
+        {
+          "slot": 0,
+          "owner_pid": 13244,
+          "owner_alive": true,
+          "tagged_game_pids": [
+            58196
+          ],
+          "lock_record": "battlestations-pacific-decompile-cc9-physics1 2026-10-14T18:18:49 pid=13244 log=J:\\PROG\\battlestations-pacific-decompile-cc9-physics1\\local\\p11on_e8.log"
+        },
+        {
+          "slot": 1,
+          "owner_pid": 73492,
+          "owner_alive": true,
+          "tagged_game_pids": [
+            83772
+          ],
+          "lock_record": "battlestations-pacific-decompile-cc9-gunnery36 2026-10-14T18:20:43 pid=73492 log=J:\\PROG\\battlestations-pacific-decompile-cc9-gunnery36\\local\\g47_u15ya_j20_5.log"
+        },
+        {
+          "slot": 2,
+          "owner_pid": 93012,
+          "owner_alive": true,
+          "tagged_game_pids": [
+            30464
+          ],
+          "lock_record": "battlestations-pacific-decompile-cc9-physics1 2026-10-14T18:20:44 pid=93012 log=J:\\PROG\\battlestations-pacific-decompile-cc9-physics1\\local\\p11off_e3.log"
+        },
+        {
+          "slot": 3,
+          "owner_pid": 82224,
+          "owner_alive": true,
+          "tagged_game_pids": [
+            4748
+          ],
+          "lock_record": "battlestations-pacific-decompile-cc9-ships44 2026-10-14T18:19:41 pid=82224 log=J:\\PROG\\battlestations-pacific-decompile-cc9-ships44\\local\\s51_t_a5.log"
+        },
+        {
+          "slot": 4,
+          "owner_pid": 23328,
+          "owner_alive": true,
+          "tagged_game_pids": [
+            84064
+          ],
+          "lock_record": "battlestations-pacific-decompile-cc9-gunnery36 2026-10-14T18:23:43 pid=23328 log=J:\\PROG\\battlestations-pacific-decompile-cc9-gunnery36\\local\\g47_u15yb_j20_3.log"
+        },
+        {
+          "slot": 5,
+          "owner_pid": 95332,
+          "owner_alive": true,
+          "tagged_game_pids": [
+            14224
+          ],
+          "lock_record": "battlestations-pacific-decompile-cc9-ships44 2026-10-14T18:12:42 pid=95332 log=J:\\PROG\\battlestations-pacific-decompile-cc9-ships44\\local\\s51_t_a6.log"
+        }
+      ]
+    }
   }
 }
