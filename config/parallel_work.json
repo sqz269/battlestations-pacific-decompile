@@ -41296,6 +41296,94 @@
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
       "contract": "Whole359B139instructions:0460raw86B33,input/bytes/fullflags;04C0and0520each90B35,count/input/fullflags;058093B36,count/input/fullflags,stride12. ECXactualraw56record/unusedEDX,RET0C/EAXrecord. OnlyfullDWORDpointer20/size24(8bytes)/48preserved. Optionaloldfree\u2192zero20; CMP lowflagBYTE BEFOREsize24store thenbranch. Rawbytesloadedafterfree;typedsizecomputedbeforefree using2doublings orLEA3*count+2doublings. NonzeroLOWBYTE(upper24ignored/all256lowpatterns) exactpositiveallocation\u2192loadinputafterallocation\u2192storeallocation20 BEFORErealmemcpy; no-copy storesactualsoleownedmatchingheapincomingpointer withretirementresponsibilitytransfer, notborrowedclasslifetime. Genuinecompleteacceptedrawtype8/9/10/11producer/currentheapoldchild andpositivevalidnonwrappingallocatablesizes/ranges; sameacceptedbag/pool/generation/contractsifcomposed. Copyinputstable/disjointfromrecord/frame/old/newalloc; incomingretainedpayloadunique/disjoint/currentheap. Successfulreturningnonthrow/noalias/reentry/concurrenttrim/teardown/fault;zero-sizeexcluded,noaddedguards/defaults/phase/tag/constructors/context/startup/RAII/rollback. Directcurrentcanonicalfree/allocator+genuineCDECLsizebridge/memcpy existingpatterns, noNativebridgecredit. OriginalfullABI/privateCRT/EH/parser/loader/runtime/gameoutside."
+    },
+    {
+      "id": "goal_oct15_scene_name_hash_iterator",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00466bb0",
+        "00466c00"
+      ],
+      "output_files": [
+        "src/native_scene_name_hash_iterator.cpp",
+        "include/bsp/native_scene_name_hash_iterator.hpp",
+        "docs/GOAL_OCT15_SCENE_NAME_HASH_ITERATOR.md",
+        "reports/goal_oct15_scene_name_hash_iterator.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_name_hash_iterator.json",
+      "primary_review": "reports/goal_oct15_scene_hash_clear_primary_review.json",
+      "code_revision": "55d382440cd0360de19adff1c5a86cd6e13c8f34",
+      "integrated_main_revision": "a332d1b0cb4a5700fdab624e178f09c96985dc05",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Complete actual raw iterator/erase/clear Source and full providers; native alias,reload,returning diagnostics,index64,captured bounds and current child result paths retained. Explicit Source frames and current CRT/SDK are qualified; no Original private-register/fault/mangling/binary ABI or game proof.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_dword_vector_clear_range",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "004687e0",
+        "00468d70"
+      ],
+      "output_files": [
+        "src/native_scene_dword_vector_range_erase.cpp",
+        "include/bsp/native_scene_dword_vector_range_erase.hpp",
+        "docs/GOAL_OCT15_DWORD_VECTOR_CLEAR_RANGE.md",
+        "reports/goal_oct15_dword_vector_clear_range.json"
+      ],
+      "depends_on": [
+        "goal_oct15_dword_vector_erase_range"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_dword_vector_clear_range.json",
+      "primary_review": "reports/goal_oct15_scene_hash_clear_primary_review.json",
+      "code_revision": "55d382440cd0360de19adff1c5a86cd6e13c8f34",
+      "integrated_main_revision": "a332d1b0cb4a5700fdab624e178f09c96985dc05",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Complete actual raw iterator/erase/clear Source and full providers; native alias,reload,returning diagnostics,index64,captured bounds and current child result paths retained. Explicit Source frames and current CRT/SDK are qualified; no Original private-register/fault/mangling/binary ABI or game proof.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_dword_vector_erase_wrappers",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00468af0",
+        "00468c90"
+      ],
+      "output_files": [
+        "src/native_scene_dword_erase_wrappers.cpp",
+        "include/bsp/native_scene_dword_erase_wrappers.hpp",
+        "docs/GOAL_OCT15_DWORD_VECTOR_ERASE_WRAPPERS.md",
+        "reports/goal_oct15_dword_vector_erase_wrappers.json"
+      ],
+      "depends_on": [
+        "goal_oct15_dword_vector_erase_range"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_dword_vector_erase_wrappers.json",
+      "primary_review": "reports/goal_oct15_scene_hash_clear_primary_review.json",
+      "code_revision": "55d382440cd0360de19adff1c5a86cd6e13c8f34",
+      "integrated_main_revision": "a332d1b0cb4a5700fdab624e178f09c96985dc05",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Complete actual raw iterator/erase/clear Source and full providers; native alias,reload,returning diagnostics,index64,captured bounds and current child result paths retained. Explicit Source frames and current CRT/SDK are qualified; no Original private-register/fault/mangling/binary ABI or game proof.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
