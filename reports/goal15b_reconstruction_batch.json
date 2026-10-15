@@ -97,7 +97,7 @@
   "resize_registered_build": {
     "command": "./scripts/build.ps1",
     "result": "pass",
-    "log": "local/goal15b_final_build.log",
+    "log": "local/goal15b_merged_final_build.log",
     "ctest_passed": 3,
     "ctest_failed": 0,
     "suites": [
@@ -106,10 +106,10 @@
       "tool_tests"
     ],
     "scope": "Existing suites; native_math_differential covers its established seeds, not new-entry Native execution.",
-    "source_revision": "60ef44d5d7d48def8fa28312f294c485f3e952d1",
+    "source_revision": "d634d302571ef9b9b7048156c5c24d327b09cfd2",
     "additional_compiled_registration": {
       "path": "cmake/startup.cmake",
-      "sha256": "31eddd169ab6096f87d2e385ccdc8589bca1cd34b55c070c3d1cc76014395483"
+      "sha256": "1403246b9e690094bca66b4173358c8bc4a4c65f9b312bff8cceacbd671817d1"
     }
   },
   "provider_registered_build": {
@@ -208,9 +208,9 @@
     "stderr": "",
     "objects_and_libraries_sha256": {
       "J:\\PROG\\battlestations-pacific-decompile-goal15_zone_leaf\\local\\goal15b_grid_byte_vector_probe.cpp": "78f7ef7b1e8a393aaaf584a786c1d456715b142dbe7106ea498cab6f3a596cfe",
-      "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15b_grid_byte_vector_probe.obj": "820284cb3c55f2b86a5ca6b69d048767af29f5f6ae289a94912053b01418441c",
-      "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15b_grid_byte_vector_probe.exe": "bde5514a2cf8edd7bacc63c8d4489b5acb0535138b517bdcaf058b425faa2b2a",
-      "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "4697caeca29eb379f597f88d0557db321d7b2f4f3f732134888d969eb8a7529f",
+      "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15b_grid_byte_vector_probe.obj": "77d46bb2a9f68cd53a32c21d6019db2b0b95f0a594b72b6a1a49adb777ea66eb",
+      "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15b_grid_byte_vector_probe.exe": "f28405a0660f281e21958582338258a7f69d04752f1e62f0d1afe058406780b1",
+      "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "f9713278ed46f5f438ce9e8c60aa3d79bac90fa0216aef2130e10ce7b84e8bb3",
       "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
       "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
     },
@@ -248,5 +248,13 @@
     "No production/drop-in Native binding or original-game execution is established for this batch.",
     "The Source fixture does not execute the six list/settings cleanup and node-construction routines.",
     "The full continuing reconstruction objective remains unfinished."
-  ]
+  ],
+  "post_main_merge_validation": {
+    "incoming_sources": 4,
+    "cmake_conflict": "resolved with repository deferred-registration union",
+    "registered_build": "pass",
+    "existing_ctest_suites": "3 passed, 0 failed",
+    "source_fixture_recompiled_and_relinked_to_current_archive": "pass, 0 failures",
+    "registered_coff_comparison": "pass, same 668 bytes with 20 CALL operands masked"
+  }
 }
