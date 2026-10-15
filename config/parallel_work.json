@@ -41392,8 +41392,8 @@
     },
     {
       "id": "cc12_reference_payload_reset_008f0380",
-      "done": false,
-      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_build_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
       "source_ready": true,
       "function_addresses": [
         "008f0380"
@@ -41413,7 +41413,9 @@
       "contract": "Whole008F0380 [008F0380,008F03A2),34 bytes/12 instructions. New naked void fastcall(void*) noexcept uses genuine ECX raw8 payload, opaque scalar+0 and owned pointer+4, no stack args, plain RET and ESI preservation. All30 non-CALL operand bytes are literal; only [12,16) binds actual canonical current singleton_lifetime_free. Capture old+4; if nonnull free it, then clear DWORD+4 only after return. Always clear DWORD scalar+0. Null path never stores+4. No payload-root free, virtual dispatch, phase/tag/kind/owner changes or lookup/allocation/startup action. This is not the reversed pointer0/size4 array header03F0. Actual accepted0310/0340/physical duplicate provenance; old pointer null or sole-owned matching-current-heap duplicate; live disjoint valid payload/allocation/frame and successful returning free. No alias, reentry, concurrent mutation, invalid memory, faults, overflow or failure rollback. EAX/flags/FP are not public semantic results. No class/vtable/caller/Original full ABI/privateCRT/EH/runtime/game credit; blocked0600 remains unimplemented. Author81 actual Source/include inputs all own-precompile among119 candidates;34 readiness inputs and64 tools including both clui files stable. One strict086bfe exit0, object1228B/5sections/15symbolslots/34B12/1REL32/0noncode relocations. One normal70fcd9/session13724 to e9fdb5 exit0 passed2 existing checks7.30s; TU unregistered. Source phaseff543f is distinct from earlier authorized tasks in the same UUID. Config LF455B versus CRLF467B is literal-pinned and normalized/JSON equal; no hermetic environment claim or replay.",
       "code_revision": "8af785915947b2bb429d1f9b61d19f85bfaf7ba7",
       "primary_review": "reports/cc12_reference_payload_reset_primary_review.json",
-      "Main_build_gate": "pending"
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_reference_payload_reset_Main_validation.json"
     },
     {
       "id": "cc12_scene_property_hash_iterator_008eeb10_008eeb60",
