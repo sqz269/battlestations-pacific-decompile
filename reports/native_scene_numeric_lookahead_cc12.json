@@ -1,0 +1,133 @@
+{
+  "schema": "bsp.native_scene_numeric_lookahead.cc12.v1",
+  "packet": "cc12_scene_numeric_lookahead",
+  "addresses": [
+    "008D8F10",
+    "008D8F40"
+  ],
+  "names_are_descriptive_hypotheses": true,
+  "status": "whole_conditional_ordinary_Source_first_strict_Win32_and_required_worktree_build_passed_unregistered_TU",
+  "source_ready_for_two_ordinary_wrappers": true,
+  "whole_parser_Source_ready": false,
+  "source_files": [
+    "include/bsp/native_scene_numeric_lookahead.hpp",
+    "src/native_scene_numeric_lookahead.cpp"
+  ],
+  "original": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ranges_exclusive": [
+      [
+        "008D8F10",
+        "008D8F33"
+      ],
+      [
+        "008D8F40",
+        "008D8F63"
+      ]
+    ],
+    "body_bytes_each": 35,
+    "instructions_each": 13,
+    "calls_each": [
+      "008D8A70",
+      "00BF7533"
+    ],
+    "disk_live_bytes_and_formats_exact": true,
+    "formats": {
+      "00CE3A34": "256400",
+      "00CE4334": "256600"
+    },
+    "ECX": "actual838h tokenizer",
+    "stack_argument_bytes": 0,
+    "return_value": "fullEAX0/1, RET0",
+    "temp": "4B owner-bit local beforePeek; ignored afterscan",
+    "predicate": "assignment_count==1"
+  },
+  "interface": "New context-bearing C++ bool wrappers with fixed verified Source format copies; caller borrows genuine live838h tokenizer and SAME existing NativeSceneTokenizerContext. No constructors, formats/callback arguments or global/startup binding.",
+  "provider_boundaries": {
+    "peek": "accepted whole raw008D8A70; no explicit consume/advance",
+    "scan": "directstd::sscanf linked currentCRT, exact%d/%f formats; no new arbitrary callback",
+    "ordinary_domain": "Stable NUL-terminated ASCII tokens fitting400h buffers; C locale; ordinary decimal prefixes in signed-int/finite-binary32 range; successful nonthrowing providers. No assignment returnsfalse; prefix success returns true.",
+    "ownership": "Stack-only ignored4B destination; no wrapper heap owner or token ownership transfer. Existing stream/buffer/key/delimiter owners remain live and canonical."
+  },
+  "strict": {
+    "flags": "/std:c++17 /MD /O2 /Ob2 /Oy- /W4 /WX /EHsc /Gy /GL- /fp:strict",
+    "compiler": "MSVC19.51.36244 Win32",
+    "first_tool": "32abe9",
+    "exit_code": 0,
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneNumericLookaheadSource01\\native_scene_numeric_lookahead.obj",
+      "bytes": 2766,
+      "sha256": "18a68094663ce3c7b9e25508c73f1e6354c14ca6ad8e211eb92c0e663ed3a2e7"
+    },
+    "sections": 13,
+    "symbol_indices_including_aux": 39,
+    "code_sections": 5,
+    "code_bytes": 170,
+    "instructions": 65,
+    "code_relocations": 11,
+    "metadata_relocations": 1,
+    "review": "Allcode/data/metadata/symbols/relocations/directives inspected; wrapper owner-bit store precedesPeek, exactformats, scanner count==1 andno consume/x87.",
+    "recompiled": false
+  },
+  "required_normal_build": {
+    "command": "./scripts/build.ps1",
+    "initial_tool": "caae0a",
+    "original_session": 14868,
+    "natural_terminal_tool": "0a90ed",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "seconds": 10.08,
+    "TU_registered": false,
+    "qualification": "Required project regression gate only; newTU strict gate is separate. No restart/replay or new test/probe/runtime."
+  },
+  "limitations": [
+    "OriginalECX/stack/RET/fullEAX/class/FS/EH transport unproven for newC++ABI",
+    "Historical privateCRT/scanf/locale/FP/error-state equivalence unproven",
+    "No8D9B40 floatreader, whole8F5A00 parser, loader, global/startup/app wiring or game-validation credit",
+    "No CMake/ledger/Ghidra/oldSource edits; Root owns integration/independent admission"
+  ],
+  "evidence": {
+    "directory": "local/WholeSceneNumericLookaheadSource01",
+    "strict_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneNumericLookaheadSource01\\complete_strict_review.DATA.json",
+      "bytes": 13567,
+      "sha256": "14a3a7674dfefa203fcf25ad1b90281004ee883e187f9729b1c262b9e45c47e6"
+    },
+    "complete_COFF": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneNumericLookaheadSource01\\complete_COFF.DATA.json",
+      "bytes": 43169,
+      "sha256": "b1757e744ba4008de69f63be50e3a52e34b676c5ab23600d0fd92479259ec8bb"
+    },
+    "precompile_inputs": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneNumericLookaheadSource01\\precompile_inputs.DATA.json",
+      "bytes": 7269,
+      "sha256": "0705e375c6b9a76f6e34499d0ee501e7e7636983e2d0b215fd62f27222c06420"
+    },
+    "compiler_inputs": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneNumericLookaheadSource01\\compiler_declared_inputs.DATA.json",
+      "bytes": 26102,
+      "sha256": "60409e1b964e8a9b9a44827a18ae433bc2772e2f9db1db4c85927dd671d9fd0e"
+    },
+    "original_tool_receipts": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneNumericLookaheadSource01\\original_tool_receipts.DATA.json",
+      "bytes": 885,
+      "sha256": "729384a5e70a402e9b2bf2174ec85995ef08953efd2d6b14a0729056e7a3cc26"
+    },
+    "normal_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneNumericLookaheadSource01\\normal_build.log",
+      "bytes": 5555,
+      "sha256": "08305dbc2461f0e9474ac6f8b39959bf7a8d52d7b952da6b45cdfcfc65f30cff"
+    }
+  },
+  "validation_labels": {
+    "Source": "two complete ordinary wrappers",
+    "strict_compile": "passed",
+    "project_build_existing_tests": "passed",
+    "new_fixtures": false,
+    "Original_ABI": false,
+    "private_CRT": false,
+    "game_or_runtime": false,
+    "independent_peer_admission": "Root-owned pending"
+  }
+}
