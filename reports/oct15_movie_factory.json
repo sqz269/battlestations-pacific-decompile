@@ -1,6 +1,6 @@
 {
   "packet": "oct15_movie_factory",
-  "status": "complete_bounded_source_validation_pending",
+  "status": "complete_bounded_source_build_tested_required_host_bindings",
   "source": "src/movie_factory_followup.cpp",
   "header": "include/bsp/movie_factory_followup.hpp",
   "documentation": "docs/OCT15_MOVIE_FACTORY.md",
@@ -23,7 +23,7 @@
           "native": "007366b0",
           "function": "00737710",
           "host": "register_movie_factory_007366b0",
-          "contract": "read: same owner publication at 00f8aefc and lifetime registration under captured optional critical-section guard; required existing-helper host binding"
+          "contract": "read decompilation and full assembly: publish owner at00f8aefc, second manager lookup, then reload current publication for registration under captured optional critical-section guard; required existing-helper host binding"
         },
         {
           "address": "00737725",
@@ -71,14 +71,36 @@
     }
   ],
   "checks": {
-    "call_report": "pending",
-    "build": "pending",
-    "new_tests": "none; existing build/CTest checks only"
+    "call_report": "4 exact call rows checked, 0 failed; documentation 0 failed with one unpaired prose claim",
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "log": "local/oct15_movie_factory_build.log",
+      "source_commit": "bf61a8788",
+      "suites_passed": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "native_math_differential": "not enabled in this worker build"
+    },
+    "new_tests": "none; existing build/CTest checks only",
+    "integrator_build": {
+      "revision": "0db8158e2",
+      "reported_by": "primary integrator",
+      "command": "./scripts/build.ps1",
+      "suites_passed": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "status": "primary reported full current-main staging validation passed and fast-forwarded to main"
+    }
   },
   "evidence_boundaries": {
     "exported": true,
     "reconstructed": true,
-    "build_tested": false,
+    "build_tested": true,
     "fixture_tested": false,
     "abi_compatible": false,
     "game_validated": false,
