@@ -15129,3 +15129,78 @@ order line cannot name it.
     interface (the gunnery host runs its own blast path), and nothing stands for `00428420`;
   - the gap is gameplay (landing ships take damage when their troops are shot) and is blocked on hosting the troop
     groups (cc13 section 9: the ships/landing lane).
+
+## 258. USN15 under 222: `usn15_g46_u15_tl` completes at 6331.16 s (reference run only; it fails both jitter checks) (cc9-gunnery46, 2026-10-14)
+
+Build: export of `a65c06700` (main with cc9-ships50's `3b30ed84a`, the surface-tube `torpedo <ship> at <target>`
+line), `local\g46_p2`, exe sha256 `9b25d503...`. The order file is `config/win_orders/usn15_g46_u15_tl.txt`, generated
+by `local\g46_plan.py` from `local\g46_u15tl.plan`. Run: 144000 mission frames at 0.05 s, reference env
+(`local\g46_p2_u15tl.log` and its manifest).
+
+**The plan** (base `r` from 257.1 to 2200 s):
+1. 0-1300 s are `r`: small ships 3 km north, BBs to the west station at 850 s, the attack on Yamashiro from
+   1000 s, cruisers west at 1000 s, small ships to (-3000, 10500) at 1100 s, BBs to (-3500, 7500) at 1300 s.
+   Nachi dies at 781 s and Yamashiro at 1171 s.
+2. From 2200 s the 16 Fletchers still alive in `r` stage south of Fuso's park point at (4800, 8000). At 3150 s
+   they form a column x=4800, z 9900..11250, heading north. Fuso parks at (6400, 10600) from 3200 s, so it lies
+   on their starboard beam at 1.6 km.
+3. From 3300 s each Fletcher in turn: `select`, `torpedo <ship> at Fuso`, then `release` after 120 frames, with
+   nothing else in between; 7 rounds. Fuso dies at 3840.3 s.
+4. At 3950 s there is ONE `attack Ashigara` for the cruisers and the live Fletchers, with no re-issue (see below).
+   Ashigara dies at 6326.47 s (Shropshire, cat 3, 1194 m). Then `luaCompleteAll`, `FLAGWIN`, and
+   `EndMission at 6331.16 s`. The exec guard logged `refused a mission script's process launch: sus_prog.exe`.
+
+**Mechanics this plan depends on:**
+- **Torpedo hits are what kill Fuso.** One 120-200-frame hold launches a spread, and a hit takes 15-30k off Fuso
+  (`ta`: 86240 to 54631 in one step). A target off the bow snaps the tube to its window edge (`player torpedo
+  tube ... snapped=-50`), and those spreads miss. In `ta`/`tb`, 160 launches against a bow-on or moving Fuso
+  did 0-35k.
+- **The map edge.** Ships beyond x = -6500 or z = 11000 start the out-of-map countdown `00826D70` (20 s, then
+  Kill(4) through `00811E80`). The countdown runs only while `00811F50` reports that the command blocks auto
+  action. A `moveto` blocks, and so does the first tick of a newly issued `attack`. A steady attackmove does not.
+  So moveto waypoints west of x=-6500 kill the ships (`tj`), and a re-issued attack every 150 s killed four
+  ships at once (`tk`, 4551 s). A single attack order lets the cruisers follow Ashigara into its bay at
+  (-11100, 7100), outside the map.
+- **Ashigara's bay** is outside the US map. The light cruisers alone (`tm`) stall at (-9100, 10000), 3.6 km
+  away; with the whole group (`tl`) they get through.
+
+**Jitter checks fail** (same exe): under `BSP_FRAME_JITTER 20,3` the mission fails at 1422.31 s, and under
+`20,5` at 1437.33 s. In both, Yamashiro survives (36.8k left at 1120 s under `20,5`): the 1171 s Yamashiro kill
+in `r`/`tl` is the deterministic Fubuki-class07 friendly torpedo, and it does not recur under jitter. The row
+is a reference-run win only. A robust plan still needs a reliable Yamashiro kill before about 1400 s: five
+BBs die in every variant that kills it (257.1).
+
+Variants of this section: `ta`/`tb` (bow-on torpedoes, Fuso 53.6k / 86.9k), `tc` (column at 1.3 km: no hits),
+`td` (1.6 km, 2 rounds: Fuso 41k), `te`/`tf` (3 / 4 rounds: 31.7k / 16.4k), `tg` (7 x 120: Fuso dead at 3840 s),
+`ti` (7 x 100: 18.9k), `tj`/`tk`/`tm` (Ashigara hunts lost to the map edge or stalled), `tl` (the win).
+
+## 259. Handoff (cc9-gunnery46, 2026-10-14, at about 75% context)
+
+**Done.**
+- `3d995f71a` (257): USN15 analysis, the 256 leftovers, and the backlog G1/G2/S4/S5/seg-1. Landed in main `adb82ca2f`.
+- `dc1c7efc8` (258): USN15 `usn15_g46_u15_tl` completes at 6331.16 s on the reference run and fails both
+  jitter checks. The times went to cc9-lua61 (WINS_TABLE).
+
+**Queue for the successor, in order:**
+1. **`008FFF20` `gun_bot_heading_accepted` is a placeholder** (cc13 blind audit, main `d33ab1c4d`).
+   `src/gun_bot_ticks.cpp` reduces a 2688-byte tick to a single FLT_MAX compare. It reaches the game through
+   `gun_bot_torpedo_ready` (`game_hosts_gunnery.cpp` near 8325), so it may gate AI torpedo readiness. Reconstruct
+   it from the listing:
+   - script it, because the body is too large to read by hand;
+   - check the x87 with `tools/x87_dc_form_scan.py --context`, because the listing misprints DC-form FMUL.
+   Bind it behind an OFF switch, pair on torpedo-using missions (USN12, USN15, IJN rows), and flip by
+   mechanism.
+2. **A jitter-robust Yamashiro kill for USN15.** The 1171 s kill in `r`/`tl` is a deterministic Fubuki-class07
+   friendly torpedo, and it does not happen under `BSP_FRAME_JITTER 20,3`/`20,5`. Untried idea: a Fletcher
+   torpedo column on Yamashiro's beam (its track is x of about -300, northbound at 12.6 m/s), fired around
+   950-1100 s from the west of the track. The out-of-map limit on x does not bind there.
+3. The seg-1 troop hooks `00428420`/`00428800` are in the ships-lane backlog (the lead's call).
+
+**Tools** (this tree's `local\`):
+- `g46_plan.py`: plan verbs `hold`, `goto`, `gotoabs`, `line`, `attack`, and `torp` (select, `torpedo at`, then
+  `release` after N frames, with nothing else in the window).
+- `g46_queue.ps1`: jobs file, one `exe|log|args` per line.
+- `g46_queue_j.ps1`: same, with a 4th field for `BSP_FRAME_JITTER`.
+- `g46_exports.ps1`: builds exports.
+- Readers: `g46_counts.py`, `g46_deaths.py`, `g46_hits.py`, `g46_hpseries.py`, `g46_traj.py`, `g46_mind.py`.
+- The export dirs are `g46_p1` (`3f25f26ce`) and `g46_p2` (`a65c06700`).
