@@ -1,0 +1,59 @@
+{
+  "packet": "oct15_outer_string_vector_cleanup_wrappers",
+  "status": "complete_actual_header_source_current_cpp_eh_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_outer_string_vector_cleanup_wrappers.cpp",
+  "header": "include/bsp/native_outer_string_vector_cleanup_wrappers.hpp",
+  "documentation": "docs/OCT15_OUTER_STRING_VECTOR_CLEANUP_WRAPPERS.md",
+  "routines": [
+    {"address": "0055ac60", "cpp_name": "destroy_native_outer_string_vector_range_dispatch_0055ac60", "original_abi": "ECX receiver, EDX unconsumed; stacked first,last; RET8; no semantic return", "coverage": "complete_actual_range_dispatch_preserving_dead_metadata_values"},
+    {"address": "0055b110", "cpp_name": "tidy_native_outer_string_vector_0055b110", "original_abi": "ECX actual16B outer header, EDX unconsumed; no stacked input; plain RET; no semantic return", "coverage": "complete_actual_tidy_via_full_0055AFF0_instruction_equivalence"}
+  ],
+  "dispatch": "Native reads last twice intoEAX/EDX, pushes last/receiver as helper's unconsumed metadata, loads firstECX and calls actual55A3A0. Source keeps original physical words and adds context; no receiver dereference or invented owner policy.",
+  "equivalence": {
+    "0055b110_reuses": "0055aff0",
+    "instruction_count": 21,
+    "complete_bytes": 61,
+    "rel32_byte_offsets_masked": [21,22,23,24,30,31,32,33],
+    "other_bytes_compared": 53,
+    "unexpected_differences": 0,
+    "decoded_call_targets_both": ["0055a3a0", "00bf65ac"],
+    "schedule": "capture range; destroy16B owning headers; free CURRENT begin; always clear4/8/C, do notwrite0; null begin skips end/range/free but still clears"
+  },
+  "native_return_observation": "No semantic EAX contract established. Dispatcher forwards child residue; empty child leaves initially loaded last. Source APIs are void, without register-residue/private-stack promises.",
+  "prior_projections": "frontend_seg12_17_cc13.cpp host range dispatcher and host outer tidy remain unchanged and separate, including old null-begin early-return limit; no promotion of bounded settings projections",
+  "host_steps": [
+    {"address": "0055ac6e", "native": "0055a3a0", "function": "0055ac60", "contract": "physical first/last plus dead receiver,last words"},
+    {"address": "0055b124", "native": "0055a3a0", "function": "0055b110", "contract": "captured actual16B header range"},
+    {"address": "0055b12d", "native": "00bf65ac", "function": "0055b110", "contract": "CURRENT begin free after captured range"},
+    {"address": "0055b004", "native": "0055a3a0", "function": "0055aff0", "contract": "accepted complete equivalent actual tidy dependency"},
+    {"address": "0055b00d", "native": "00bf65ac", "function": "0055aff0", "contract": "accepted CURRENT-begin free equivalence"},
+    {"address": "006a5dd0", "native": "0055ac60", "function": "006a5dc5", "contract": "incoming catch interface evidence only"},
+    {"address": "006a5e63", "native": "0055ac60", "function": "006a5e4e", "contract": "incoming catch interface evidence only"},
+    {"address": "006a6777", "native": "0055ac60", "function": "006a6680", "contract": "incoming assignment interface evidence only"},
+    {"address": "00c6dc10", "native": "0055b110", "function": "00c6dc0a", "kind": "tail_jump", "contract": "unwind parent header+5Ch, no Source frame adapter"},
+    {"address": "00c6dc80", "native": "0055b110", "function": "00c6dc7a", "kind": "tail_jump", "contract": "unwind parent header+5Ch, no Source frame adapter"},
+    {"address": "00c6dd10", "native": "0055b110", "function": "00c6dd0a", "kind": "tail_jump", "contract": "unwind parent header+5Ch, no Source frame adapter"},
+    {"address": "00c7f533", "native": "0055b110", "function": "00c7f530", "kind": "tail_jump", "contract": "unwind parent EBP-30h header interface only"},
+    {"address": "00c7f5c3", "native": "0055b110", "function": "00c7f5c0", "kind": "tail_jump", "contract": "unwind parent EBP-28h header interface only"},
+    {"address": "00c7f5e3", "native": "0055b110", "function": "00c7f5e0", "kind": "tail_jump", "contract": "unwind parent EBP+8 header interface only"}
+  ],
+  "validation": {
+    "win32_release": "passed",
+    "existing_tests": "3/3 passed",
+    "log": "local/oct15_outer_string_vector_cleanup_wrappers_build.log",
+    "ctest_seconds": 8.35,
+    "native_transfers": "14 checked, 0 failed; 8 CALL and6 tail JMP",
+    "documentation_transfers": "14 checked, 0 failed, 0 unchecked, 0 warnings",
+    "preexisting_link_warning": "LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj; same warning in preceding cleanup build; unrelated Source unchanged",
+    "new_tests": 0,
+    "complete_entry_bytes": {"0055ac60": 22, "0055b110": 61}
+  },
+  "limits": [
+    "Added actual raw context and by-value physical words do not reproduce original entry/stack/private-argument/register ABI.",
+    "Accepted current Source CPP/raw pool/current CRT boundaries, not original heap/exception/FH3/SEH/fault or cleanup-failure unwind identity.",
+    "Tail-jump funclet callers are evidence only, not standalone Source parent-frame bindings.",
+    "No new wrapper native differential, failure-injection, original-game or gameplay proof; old projections remain separate."
+  ]
+}

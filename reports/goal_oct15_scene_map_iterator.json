@@ -1,0 +1,196 @@
+{
+  "packet": "goal_oct15_scene_map_iterator",
+  "status": "complete_actual_raw_source_combined_win32_and_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "004678f0",
+      "name": "decrement_native_scene_record_map_iterator_004678f0",
+      "source": "src/native_scene_record_map_iterator.cpp",
+      "header": "include/bsp/native_scene_record_map_iterator.hpp",
+      "status": "complete_actual_raw_source_combined_win32_and_three_existing_checks_passed",
+      "coverage": "complete_with_current_SDK_CRT_provider_qualification",
+      "native_end_inclusive": "00467978",
+      "native_bytes": 137,
+      "native_sha256": "f7bfac79a92fe976d5a48d24a1f67c38c933c1a52477c23de1b7c409a279d7a6",
+      "live_equals_installed": true,
+      "original_abi": "ECX actual8h iterator; RET; no defined result",
+      "source_abi": "Win32 fastcall pointer interface retains ECX/RET shape; no private CRT/frame/flags equivalence claim",
+      "evidence": [
+        "docs/GOAL_OCT15_SCENE_MAP_ITERATOR.md",
+        "reports/goal_oct15_scene_map_iterator.json"
+      ],
+      "uncertainty": "Returning current SDK validation provider, Original CRT/FH3/flags/private-frame/fault-address/runtime/game identity unestablished."
+    },
+    {
+      "address": "00468200",
+      "name": "decrement_native_scene_record_map_iterator_00468200",
+      "source": "src/native_scene_record_map_iterator.cpp",
+      "header": "include/bsp/native_scene_record_map_iterator.hpp",
+      "status": "complete_actual_raw_source_combined_win32_and_three_existing_checks_passed",
+      "coverage": "complete_with_current_SDK_CRT_provider_qualification",
+      "native_end_inclusive": "0046820b",
+      "native_bytes": 12,
+      "native_sha256": "1ecf87e84c63e3b1a796438d629784a3aac9c2732f623365ccbe82b26f519ebf",
+      "live_equals_installed": true,
+      "original_abi": "ECX actual8h iterator; RET; EAX same iterator",
+      "source_abi": "Win32 fastcall pointer interface retains ECX/RET shape; no private CRT/frame/flags equivalence claim",
+      "evidence": [
+        "docs/GOAL_OCT15_SCENE_MAP_ITERATOR.md",
+        "reports/goal_oct15_scene_map_iterator.json"
+      ],
+      "uncertainty": "Returning current SDK validation provider, Original CRT/FH3/flags/private-frame/fault-address/runtime/game identity unestablished."
+    },
+    {
+      "address": "004688e0",
+      "name": "decrement_native_scene_record_map_iterator_004688e0",
+      "source": "src/native_scene_record_map_iterator.cpp",
+      "header": "include/bsp/native_scene_record_map_iterator.hpp",
+      "status": "complete_actual_raw_source_combined_win32_and_three_existing_checks_passed",
+      "coverage": "complete_with_current_SDK_CRT_provider_qualification",
+      "native_end_inclusive": "004688eb",
+      "native_bytes": 12,
+      "native_sha256": "4d96990dea5fa3a6da5359764d71da614900ab3d12d79b6eca451ae8546db415",
+      "live_equals_installed": true,
+      "original_abi": "ECX actual8h iterator; RET; EAX same iterator",
+      "source_abi": "Win32 fastcall pointer interface retains ECX/RET shape; no private CRT/frame/flags equivalence claim",
+      "evidence": [
+        "docs/GOAL_OCT15_SCENE_MAP_ITERATOR.md",
+        "reports/goal_oct15_scene_map_iterator.json"
+      ],
+      "uncertainty": "Returning current SDK validation provider, Original CRT/FH3/flags/private-frame/fault-address/runtime/game identity unestablished."
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "004678f8",
+      "native": "00bf6713",
+      "function": "004678f0"
+    },
+    {
+      "address": "00468203",
+      "native": "004678f0",
+      "function": "00468200"
+    },
+    {
+      "address": "004688e3",
+      "native": "004678f0",
+      "function": "004688e0"
+    },
+    {
+      "address": "0046b3ef",
+      "native": "004678f0",
+      "function": "0046b340"
+    },
+    {
+      "address": "00467913",
+      "native": "00bf6713",
+      "function": "004678f0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "0046796f",
+      "native": "00bf6713",
+      "function": "004678f0",
+      "kind": "tail_jump"
+    }
+  ],
+  "schedule": {
+    "initial_owner_failure_may_return": true,
+    "node_loaded_after_initial_handler": true,
+    "sentinel_right_published_before_validation": true,
+    "rightmost_left_subtree_publish_once": true,
+    "ascent_intermediate_node_stores": true,
+    "ascent_final_check_uses_current_node": true,
+    "tail_failure_does_not_publish_captured_parent": true,
+    "wrappers_return_captured_input": true
+  },
+  "dependency": {
+    "source": "src/native_invalid_parameter_noinfo_call.cpp",
+    "symbol": "invoke_native_invalid_parameter_00bf6713",
+    "qualification": "Existing exact owned Source schedule over real current-SDK _invalid_parameter_noinfo, not Original private CRT policy."
+  },
+  "listing": {
+    "decrement_instructions": 48,
+    "gaps": 0,
+    "typed_flow_properties_read": false
+  },
+  "validation": {
+    "report_calls": "6 native transfer rows:4 CALL and2 explicitly typed tail JMP edges",
+    "build": "PASS scripts/build.ps1 combined Release Win32",
+    "new_tests": 0,
+    "Original_ABI_compatible": false,
+    "new_entry_native_differential": false,
+    "game_validated": false,
+    "tested_revision": "026da884ef927effb85f118488357a83634eff48",
+    "build_log": "local/goal_oct15_scene_map_combined_build.log",
+    "build_log_sha256": "7b1e95f39ab98b075bb879e6daf15e2219354f017335a86ac823ccd282bc5d11",
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "existing_ctests_passed": 3
+  },
+  "tail_transfers": [
+    {
+      "site": "00467913",
+      "target": "00bf6713",
+      "enclosing_function": "004678f0",
+      "mnemonic": "JMP",
+      "verification": "Exact live full listing and live/installed body-byte equality; this is not a CALL row."
+    },
+    {
+      "site": "0046796f",
+      "target": "00bf6713",
+      "enclosing_function": "004678f0",
+      "mnemonic": "JMP",
+      "verification": "Exact live full listing and live/installed body-byte equality; this is not a CALL row."
+    }
+  ],
+  "ghidra_mutations": [
+    {
+      "address": "004678f0",
+      "before": {
+        "address": "004678f0",
+        "function_name": "STL_TreeIter_Dec_004678f0"
+      },
+      "after": {
+        "address": "004678f0",
+        "name": "STL_TreeIter_Dec_004678f0",
+        "evidence": "Complete actual8h iterator Source in src/native_scene_record_map_iterator.cpp; docs/GOAL_OCT15_SCENE_MAP_ITERATOR.md. Returning concrete BF6713 provider; post-owner-handler node reload, right/left/ascent intermediate publication and two validation tail exits preserved. ECX iterator/RET, no defined result. 137 live/installed bytes. Current SDK CRT/private-frame/flags/runtime/game remain qualified."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00468200",
+      "before": {
+        "address": "00468200",
+        "function_name": "STL_IterWrap_00468200"
+      },
+      "after": {
+        "address": "00468200",
+        "name": "STL_IterWrap_00468200",
+        "evidence": "Complete 12-byte actual iterator decrement wrapper Source; calls full004678F0 and returns captured ECX pointer in EAX, RET. src/native_scene_record_map_iterator.cpp; qualified current CRT provider; no Original ABI/runtime/game proof."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "004688e0",
+      "before": {
+        "address": "004688e0",
+        "function_name": "STL_IterWrap_004688e0"
+      },
+      "after": {
+        "address": "004688e0",
+        "name": "STL_IterWrap_004688e0",
+        "evidence": "Complete 12-byte actual iterator decrement wrapper Source; calls full004678F0 and returns captured ECX pointer in EAX, RET. src/native_scene_record_map_iterator.cpp; qualified current CRT provider; no Original ABI/runtime/game proof."
+      },
+      "status": "applied"
+    }
+  ],
+  "ghidra_project_saved": true,
+  "exports_refreshed": true
+}

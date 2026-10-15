@@ -1,0 +1,1344 @@
+{
+  "schema": "bsp.native_string_float_format_source.cc12.v1",
+  "UTC": "2026-10-15T20:17:02.046572+00:00",
+  "status": "whole_ordinary_CURRENT_CRT_Source_strict_MD_compiled_complete_COFF_reviewed_own_registered_baseline_build_passed_new_TUs_unregistered",
+  "Source_implemented": true,
+  "ordinary_Source_admitted_by_Root": false,
+  "new_TUs_registered": false,
+  "base_Main": "c9b875c6e71599491715149c3a6f1a794428a829",
+  "owned_addresses": [
+    "0043BDF0"
+  ],
+  "B68630_is_readonly_existing_provider": true,
+  "owned_files": [
+    "include/bsp/native_string_float_format.hpp",
+    "src/native_string_float_format.cpp",
+    "include/bsp/game_native_lua_display_string.hpp",
+    "src/game_native_lua_display_string.cpp",
+    "docs/NATIVE_STRING_FLOAT_FORMAT_CC12.md",
+    "reports/native_string_float_format_cc12.json"
+  ],
+  "scope": "Whole genuine raw8B float constructor plus concrete canonical NUMBER composition into existing actual-storage B68630. Formatting explicitly uses CURRENT-CRT std::sprintf and is not privateCRT equivalence.",
+  "readiness": {
+    "accepted_seal_SHA256": "c23e83ba7042a3d84ed15e313d7382cab7ad953798254a44160b47c5ac690eb6",
+    "frozen_local_artifacts_plus_seal": 324,
+    "snapshot": "local/WholeNativeStringFloatFormatSource01/readiness_snapshot",
+    "all_original_readiness_local_artifacts_unchanged": true,
+    "Source_ready_scope": "Whole ordinary raw8B 0043BDF0 constructor plus concrete canonical NUMBER binding into existing actual-storage B68630, explicitly using the CURRENT-CRT std::sprintf service boundary."
+  },
+  "Original": {
+    "address": "0043BDF0",
+    "name": "BSP_NativeString_ConstructFromFloat",
+    "ranges": [
+      {
+        "start": "0043BDF0",
+        "bytes": 229,
+        "sha256": "cbfaf7de62c13187cf510f4a6ff487f82a6a1d1f0bdca5f134390320aee5c838"
+      }
+    ],
+    "instructions": 82,
+    "direct_call_sites": 7,
+    "calls": [
+      {
+        "address": "0043BE29",
+        "bytes": "e83cbc7b00",
+        "size": 5,
+        "mnemonic": "call",
+        "operands": "0xbf7a6a",
+        "groups": [
+          2,
+          7,
+          161
+        ]
+      },
+      {
+        "address": "0043BE52",
+        "bytes": "e8e91efeff",
+        "size": 5,
+        "mnemonic": "call",
+        "operands": "0x41dd40",
+        "groups": [
+          2,
+          7,
+          161
+        ]
+      },
+      {
+        "address": "0043BE6D",
+        "bytes": "e80eb87b00",
+        "size": 5,
+        "mnemonic": "call",
+        "operands": "0xbf7680",
+        "groups": [
+          2,
+          7,
+          161
+        ]
+      },
+      {
+        "address": "0043BE86",
+        "bytes": "e8b51efeff",
+        "size": 5,
+        "mnemonic": "call",
+        "operands": "0x41dd40",
+        "groups": [
+          2,
+          7,
+          161
+        ]
+      },
+      {
+        "address": "0043BE97",
+        "bytes": "e8e4b77b00",
+        "size": 5,
+        "mnemonic": "call",
+        "operands": "0xbf7680",
+        "groups": [
+          2,
+          7,
+          161
+        ]
+      },
+      {
+        "address": "0043BEB2",
+        "bytes": "e809defdff",
+        "size": 5,
+        "mnemonic": "call",
+        "operands": "0x419cc0",
+        "groups": [
+          2,
+          7,
+          161
+        ]
+      },
+      {
+        "address": "0043BEB9",
+        "bytes": "e852567900",
+        "size": 5,
+        "mnemonic": "call",
+        "operands": "0xbd1510",
+        "groups": [
+          2,
+          7,
+          161
+        ]
+      }
+    ],
+    "x87": [
+      {
+        "address": "0043BE08",
+        "bytes": "d944244c",
+        "size": 4,
+        "mnemonic": "fld",
+        "operands": "dword ptr [esp + 0x4c]",
+        "groups": [
+          169
+        ]
+      },
+      {
+        "address": "0043BE13",
+        "bytes": "dd1c24",
+        "size": 3,
+        "mnemonic": "fstp",
+        "operands": "qword ptr [esp]",
+        "groups": [
+          169
+        ]
+      }
+    ],
+    "complete_body": true,
+    "ordinary_CFG_reachable_instructions": 82,
+    "unreachable_body_bytes": 0,
+    "ABI": "ECX is actual fresh8B NativeString header; entry ESP+4 is float32 by value; EAX returns the same header; RET4. No ST0 input. EBX/EBP/ESI/EDI are saved; a new context-bearing Source interface is not a drop-in ABI.",
+    "float_transport": [
+      "BE08 FLD DWORD [ESP+4C] reads entry ESP+4 after the 48h prologue displacement.",
+      "BE10 reserves8 bytes and BE13 FSTP QWORD [ESP] widens the loaded binary32 into one double vararg.",
+      "BE1E pushes immutable CE4334 `%f` format, BE23 pushes local scratch pointer; BE29 calls cdecl BF7A6A; BE32 adds10h, exactly two fixed pointers plus one8B double.",
+      "Lua B66270 first rounds lua_tonumber double to DWORD float at B66280 and reloads it into ST0 at B66283; B686F5 spills ST0 to a DWORD argument before calling43BDF0. Do not forward the original Lua double directly."
+    ],
+    "frame": {
+      "entry_stack_name": "S",
+      "temporary_header": "S-48h..S-41h",
+      "format_scratch_start": "S-40h",
+      "next_known_frame_object": "saved previous FS link at S-0Ch",
+      "available_region_before_that_link_bytes": 52,
+      "declared_array_extent_recovered": false,
+      "EH_handler_word": "S-8",
+      "EH_state": "S-4",
+      "initial_state": -1,
+      "extra_size_or_bounds_argument_to_sprintf": false
+    },
+    "access_and_ownership_schedule": [
+      {
+        "sites": "BE08..BE13",
+        "action": "Load float32 and produce double vararg before output header stores."
+      },
+      {
+        "sites": "BE24,BE26,BE29",
+        "action": "Write output length0 then dataNULL; call unbounded sprintf into local scratch. Old output ownership is abandoned; this is a fresh constructor, not assignment."
+      },
+      {
+        "sites": "BE35..BE49",
+        "action": "After formatting, zero the distinct local8B temporary header, scan scratch through its firstNUL, compute strlen excludingNUL."
+      },
+      {
+        "sites": "BE4B..BE61",
+        "action": "Resize temporary with preserve=true; AFTER that call capture its current data inEDI and its current length inEBP, even if dataNULL."
+      },
+      {
+        "sites": "BE63..BE72",
+        "action": "If captured data nonnull, copy captured_length+1 bytes from scratch, includingNUL, through BF7680."
+      },
+      {
+        "sites": "BE75..BE7F",
+        "action": "Compare output address with temporary header. Write EH state0 after the comparison and before its conditional branch. Retain the self-header branch in a whole-body Source implementation."
+      },
+      {
+        "sites": "BE81..BE9C",
+        "action": "If distinct, resize output using CAPTURED temporary length and preserve=true. Test captured length; when nonzero reload CURRENT output length and CURRENT output data after the call, and copy that current output length from CAPTURED temporary data. Final copy excludesNUL; resize supplied the terminator."
+      },
+      {
+        "sites": "BE9F..BEB9",
+        "action": "Write EH state-1 before any normal temporary release. If CAPTURED temporary data nonnull, resolve CURRENT00419CC0 and return CAPTURED data with CAPTURED length+1 to BD1510. Do not substitute a reread of a mutable temporary header on this normal path."
+      },
+      {
+        "sites": "BEBE..BED4",
+        "action": "Restore frame and return the same output pointer, RET4. Output buffer ownership survives to its actual caller, which releases it once through the same canonical raw pool."
+      }
+    ],
+    "exception_limits": {
+      "handler": "C5F318[10] loads FuncInfo D85B7C and jumps to the existing CxxFrameHandler. FuncInfo magic19930522, maxState1, mapD85B74.",
+      "unwind_map": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "funclet": "C5F310[8]",
+          "behavior": "LEA ECX,[EBP-48h]; tail0041DD20 destroys CURRENT temporary header data/length without clearing fields."
+        }
+      ],
+      "before_state0": "No local temporary cleanup is registered during formatting, temporary resize or the first copy. Do not add rollback there.",
+      "during_output_work": "State0 permits only temporary raw-string destruction on failure. No failed-output cleanup is registered.",
+      "normal_return_release": "State-1 is written before normal raw getter/return. If that release/getter fails, do not release temporary again.",
+      "Source_policy": "Use explicit construction-completed/state bookkeeping with the accepted throwing raw getter and raw header destructor. Do not invent an RAII NativeString destructor, noexcept raw cleanup, strong exception guarantee, output rollback, or private-CxxFrameHandler parity."
+    }
+  },
+  "new_Source_interface": {
+    "signature": "void* bsp::construct_native_string_float_header_0043bdf0(void* actual_fresh_header, NativeStringRawPoolContext& strings, float value)",
+    "not_Original_ABI": "New context-bearing C++ cdecl API; emitted plainRET with12B caller-owned arguments. Original ECX/stackfloat/EAX/RET4 is documentation/evidence, not ABI equivalence.",
+    "genuine_objects": "Fresh actual aligned8B output; separate genuinely default-constructed NativeString temporary. Compiled assertions establish size8/align4/nothrow default construction/trivial destructor and32-bit pointers, float32/double64. No raw-byte facade, std::string output, owning implicit destructor, semantic pool substitution or default callback.",
+    "header_ownership": "Output initialization abandons any prior buffer; caller supplies fresh storage. Two real raw pool allocations, captured temporary pointer/length normal return, current-header cleanup only in output-work catch; returned output survives and caller destroys it once through SAME canonical raw context.",
+    "argument_and_locale_domain": "Every input float32 reaches the fixed current service without finite/zero/null guards. Actual current locale, stdio options and FP controls are used; no forced C locale, rounding mode or privateCRT provider is invented.",
+    "scratch_precondition": "Source char scratch[52] is uninitialized.52B represents observed accessible Original prefix before saved-FS link; Original declared array extent is unproved. Current-service result includingNUL must fit actual accessible Source buffer/Original compared region. No clipping, size parameter, synthetic terminator, zero-fill or error replacement.",
+    "ordinary_memory_qualifications": "Genuine coherent raw pool/manager/gate ownership, valid current output/temporary fields and accessible disjoint live allocations, no data races/unsupported faults. Accepted raw nullable-allocation/getter/return/overlap qualifications remain. Zero-byte native memory copies are omitted under the existing Source memory-service policy; no stronger fault/read-site identity.",
+    "explicit_exception_scope": "Initial temporary resize and copy are before try; output resize/copy alone are inside catch-all. Catch destroys current temporary header and rethrows; output is never destroyed there. Captured normal temporary release is AFTER try. Raw getter failure there cannot cause repeated cleanup. Cleanup failure follows new C++ semantics without privateEH/double-exception parity or rollback."
+  },
+  "current_CRT_service": {
+    "firm_original_signature": "Complete BF7A6A123B/51instr establishes cdecl sprintf(dst,fmt,...); immutable CE4334 is256600;43BDF0 supplies true float32 FLD\u2192double FSTP vararg and two pointer arguments,16B caller cleanup.",
+    "concrete_Source": "Internal fixed format_current_crt(char*,double) calls std::sprintf(scratch,\"%f\",widened), ignored integer result. Explicit char* prevents secure array-overload selection. std::strlen becomes complete inline firstNUL scan; no std::string/snprintffloat projection is reused.",
+    "actual_emitted_library": "Current stdio header emits _sprintf\u2192__imp____stdio_common_vsprintf with SIZE_MAX,NULL locale,current options OR1. __vsprintf_l/__vsnprintf_l helpers are emitted and fully reviewed; these are current library wrappers, not Original private functions.",
+    "no_private_tables": "No reference to Original E15BE0 or guessed locale/PTD/formatting callback. Standard current stdio options/AVX fallback COMDATs are explicitly classified as compiler/header contributions, not native-global providers.",
+    "private_CRT_still_unclosed": [
+      "Genuine owning privateCRT startup/publication/encoding lifecycle for actual E15BE0 and an actually selected decoded C06768-compatible provider.",
+      "Concrete owning privateCRT locale/PTD/multibyte update context, liveE162B0/E160D0/E161C8 and thread flags, and C0522E/C01A7F/C0CC02 lifecycle/locking/failure contracts.",
+      "Original C0657E fixed float conversion, rounding and exceptional-value spelling/side effects, plus private FILE-writing/errno/invalid-parameter behavior where reached."
+    ],
+    "private_numeric_locale_limits": [
+      "Exact privateCRT versus UCRT decimal digits and tie handling, dependence on the actual FP rounding environment and CRT compatibility/rounding options.",
+      "Exact negative-zero, infinity, quiet/signalling NaN sign, payload, spelling, invalid/underflow flags and unmasked exception behavior.",
+      "Private game thread locale, decimal separator/multibyte state, concurrent locale updates and output byte-length bound across arbitrary locale configurations.",
+      "Private errno/invalid-parameter callbacks, allocation/failure behavior inside numeric conversion, private FILE layout and EH/FS/fault continuation identity."
+    ],
+    "numeric_text_or_FP_parity_with_game": false
+  },
+  "canonical_Lua_composition": {
+    "class": "bsp::game::GameNativeLuaDisplayStringBindings; noncopyable and nonmovable; one private NativeLuaDisplayStringCalls member, no caller-selected numeric provider.",
+    "matching_domain": "Constructor requires genuine GameNativeStringProcess&; calls.strings=&process.strings() and fixed adapter context=&process.raw_context(). Those existing members reference SAME actual pool01090AA8,gate01090AA4,manager01090AA0 cells;23 frozen immediate provider/source/tool inputs unchanged from accepted readiness.",
+    "emitted_holder_layout": "12B Source calls record: strings at0 (process+18h), fixed internal function pointer at4, raw context at8 (process+0Ch). Constructor emits only those stores/LEAs, no allocator/factory/Lua/formatter/startup call. Store order+4,+0,+8 is a new unpublished Source object, not Original class layout.",
+    "number_adapter": "MOVSS loads/stores actual float32 bits unchanged before calling the whole new constructor; no direct forwarding of a Lua double. Existing B66270 float32 rounding and B686F5 stackfloat transport remain supplied by unchanged B68630/native_lua_objects/lua_numeric Source.",
+    "direct_call": "to_display_string calls existing native_lua_to_display_string_00b68630 with the private fixed calls record. All existing non-NUMBER arms use the matching ActualNativeStringPoolStorage; no B68630 Source change or address ownership.",
+    "lifetime": "Holder owns no native string, pool, manager, Lua state or result. Canonical process and actual Lua owners remain valid through calls and returned-string release. Existing non-NUMBER NativeStringStorage noexcept-release qualification remains; new NUMBER formatter directly uses throwing raw context.",
+    "not_reconstructed": [
+      "whole enum/Lua8F2F70",
+      "canonical enum/table/symbol globals startup",
+      "Original privateCRT lifecycle",
+      "new Lua state construction",
+      "new native publication or app wiring",
+      "008D9B40 tokenizer float reader"
+    ]
+  },
+  "complete_COFF_review": {
+    "objects": [
+      {
+        "label": "native",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholeNativeStringFloatFormatSource01\\native_string_float_format.obj",
+          "bytes": 5938,
+          "sha256": "915f4e9d691742ac37c7da24ae9619bf5aa153dc016f2008f2868d31bf5e43c4"
+        },
+        "sections": 22,
+        "primary_symbols": 56,
+        "symbol_records_including_aux": 78,
+        "code_sections": 12,
+        "code_bytes": 669,
+        "instructions": 255,
+        "code_relocations": 28,
+        "metadata_relocations": 6,
+        "dependencies_including_Source": 105
+      },
+      {
+        "label": "game",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholeNativeStringFloatFormatSource01\\game_native_lua_display_string.obj",
+          "bytes": 3778,
+          "sha256": "214c94749cd3cfca4934f8972bc2852487180bbf6533342adcc3c4eb6fe2351f"
+        },
+        "sections": 14,
+        "primary_symbols": 28,
+        "symbol_records_including_aux": 42,
+        "code_sections": 6,
+        "code_bytes": 128,
+        "instructions": 55,
+        "code_relocations": 3,
+        "metadata_relocations": 2,
+        "dependencies_including_Source": 311
+      }
+    ],
+    "all_sections": 36,
+    "all_primary_symbols": 84,
+    "all_symbol_records_including_aux": 120,
+    "code_sections": 18,
+    "code_bytes": 797,
+    "code_instructions": 310,
+    "code_relocations": 31,
+    "metadata_relocations": 8,
+    "all_code_data_metadata_symbols_aux_records_relocations_directives_inspected": true,
+    "all_decoded_local_direct_jumps_are_instruction_starts": true,
+    "relocation_types": {
+      "code_REL32_0x14": 21,
+      "code_DIR32_0x06": 10,
+      "metadata_DIR32_0x06": 4,
+      "metadata_DIR32NB_0x07": 4,
+      "SECREL_0x0B": 0
+    },
+    "weak_external_symbol_records": 0,
+    "alternatename_directive": "__Avx2WmemEnabled=__Avx2WmemEnabledWeakValue is a standard header linker alias, not a COFF weak-external symbol.",
+    "directives": "Both objects have RuntimeLibrary=MD_DynamicRelease, MSVCRT/OLDNAMES/msvcprt, iterator level0 and STL mismatch directives. Game also retains two uuid.lib defaultlib directives from existing headers. _MSC_VER=1900 is the emitted STL compatibility directive, not the actual compiler version; complete CodeView/tool binaries are pinned.",
+    "native_core": {
+      "section": 9,
+      "bytes_including_catch_and_padding": 337,
+      "instructions": 127,
+      "normal_return_offset": "0132",
+      "catch_offset": "0133",
+      "padding_offsets": [
+        "014B",
+        "014C",
+        "014D",
+        "014E",
+        "014F",
+        "0150"
+      ],
+      "exact_sites": [
+        {
+          "offsets": [
+            "003D",
+            "0040"
+          ],
+          "behavior": "FLD DWORD float argument atSourceEBP+10h; FSTP QWORD to actual widened slot. No ST0 input or conversion of original Lua double."
+        },
+        {
+          "offsets": [
+            "0048",
+            "004A"
+          ],
+          "behavior": "Two separate physical DWORD output stores: length0 then pointerNULL."
+        },
+        {
+          "offsets": [
+            "004D",
+            "0058",
+            "005D",
+            "0062",
+            "0063"
+          ],
+          "behavior": "MOVSD bit-copies widened double into8B outgoing slot, fixed %f relocation, char* scratch, current _sprintf call;16B cleanup. No int result branch."
+        },
+        {
+          "offsets": [
+            "006B",
+            "0075",
+            "0080",
+            "0085"
+          ],
+          "behavior": "Temporary length/pointer zero AFTER formatting; byte loop reads through NUL; no seeded/error string."
+        },
+        {
+          "offsets": [
+            "0091",
+            "0096",
+            "009C"
+          ],
+          "behavior": "First raw resize then capture CURRENT temporary pointer/length intoEDI/EBX."
+        },
+        {
+          "offsets": [
+            "00A3",
+            "00AC"
+          ],
+          "behavior": "Copy captured length+1 bytes includingNUL through current memmove if captured pointer nonnull."
+        },
+        {
+          "offsets": [
+            "00B7",
+            "00BE",
+            "00C0"
+          ],
+          "behavior": "State0 store, register-only output/self compare and branch, all before output work."
+        },
+        {
+          "offsets": [
+            "00CA",
+            "00D2",
+            "00D6",
+            "00DE",
+            "00E1"
+          ],
+          "behavior": "Output raw resize; captured-length test; CURRENT output length/data reloaded after call; final current-length-only memmove."
+        },
+        {
+          "offsets": [
+            "00E9",
+            "00FC",
+            "010D"
+          ],
+          "behavior": "State-1 BEFORE normal current getter and captured pointer/length-sized return."
+        },
+        {
+          "offsets": [
+            "0115",
+            "0132"
+          ],
+          "behavior": "Return same output pointer, new C++ plainRET, not OriginalRET4."
+        },
+        {
+          "offsets": [
+            "0133",
+            "013A",
+            "0146"
+          ],
+          "behavior": "Only catch calls current-temp raw destructor and rethrows via new current C++ runtime; no output destructor or normal-release guard."
+        }
+      ]
+    },
+    "ordering_and_zero_copy_qualifications": [
+      "Original CMP self at43BE79 precedes state0 store43BE7B. Emitted state0 store+B7 precedes register-only CMP+BE. No memory/call/alias dependency changes under admitted stable ordinary domain; no literal instruction/flags/nativeEH claim.",
+      "Original increments captured size before normal getter; emitted +107 computes captured_length+1 after getter. Captured data/length stay in nonvolatile registers; pure unsigned arithmetic changes no observed raw fields/call arguments.",
+      "Source omits zero-byte final memory copy; emitted +D8/+DA also elides unused data-pointer load for current_length0. This is the established zero-size Source memory boundary, not native zero-copy fault/read-site parity or a numeric-zero filter.",
+      "No temp/captured-value or output-field reload is moved across its required raw resize; fields used for final copy remain current after output allocation."
+    ],
+    "all_other_native_code": "Three typed4B read_field bodies; genuine8B default constructor; current service helper; captured return helper; local stdio options accessor; current _sprintf/__vsprintf_l/__vsnprintf_l wrappers; complete Source EH/security-cookie handler. Every instruction/relocation retained and read.",
+    "all_game_code": "Concrete holder constructor, fixed numeric adapter, raw_context/strings LEA getters, direct display wrapper, and standard MSVC vector-constructor iterator helper. The latter is an emitted header/compiler COMDAT, not a newly exposed provider or called initializer for this holder.",
+    "data_metadata": "All section records below include exact role/size/relocations. Source .xdata has catch-all explicit cleanup scope, no implicit NativeString destructor. .sxdata57 points to defined native Source handler. Debug/FPO relocation type7 is DIR32NB, not SECREL. All .chks64 bytes retained. No .CRT initializer section or fabricated game vtable/formatter cell.",
+    "sections": [
+      {
+        "object": "native",
+        "number": 1,
+        "name": ".drectve",
+        "raw_size": 415,
+        "raw_file_bytes": 415,
+        "characteristics": "00100A00",
+        "relocations": [],
+        "role": "Current MSVC/STL/MD linker directives, no reconstructed Native publication"
+      },
+      {
+        "object": "native",
+        "number": 2,
+        "name": ".debug$S",
+        "raw_size": 216,
+        "raw_file_bytes": 216,
+        "characteristics": "42100040",
+        "relocations": [],
+        "role": "Compiler CodeView/FPO metadata, not Native runtime data"
+      },
+      {
+        "object": "native",
+        "number": 3,
+        "name": ".bss",
+        "raw_size": 4,
+        "raw_file_bytes": 0,
+        "characteristics": "C0301080",
+        "relocations": [],
+        "role": "4B standard STL AVX2 weak-alias fallback storage, not Original feature/formatter cell"
+      },
+      {
+        "object": "native",
+        "number": 4,
+        "name": ".text$mn",
+        "raw_size": 14,
+        "raw_file_bytes": 14,
+        "characteristics": "60501020",
+        "relocations": [],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "native",
+        "number": 5,
+        "name": ".text$mn",
+        "raw_size": 14,
+        "raw_file_bytes": 14,
+        "characteristics": "60501020",
+        "relocations": [],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "native",
+        "number": 6,
+        "name": ".text$mn",
+        "raw_size": 14,
+        "raw_file_bytes": 14,
+        "characteristics": "60501020",
+        "relocations": [],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "native",
+        "number": 7,
+        "name": ".text$mn",
+        "raw_size": 16,
+        "raw_file_bytes": 16,
+        "characteristics": "60501020",
+        "relocations": [],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "native",
+        "number": 8,
+        "name": ".debug$F",
+        "raw_size": 16,
+        "raw_file_bytes": 16,
+        "characteristics": "42101040",
+        "relocations": [
+          {
+            "offset": 0,
+            "symbol_index": 44,
+            "symbol": "??0NativeString@bsp@@QAE@XZ",
+            "type": 7,
+            "field_hex": "00000000"
+          }
+        ],
+        "role": "Compiler CodeView/FPO metadata, not Native runtime data"
+      },
+      {
+        "object": "native",
+        "number": 9,
+        "name": ".text$mn",
+        "raw_size": 337,
+        "raw_file_bytes": 337,
+        "characteristics": "60501020",
+        "relocations": [
+          {
+            "offset": 6,
+            "symbol_index": 57,
+            "symbol": "__ehhandler$?construct_native_string_float_header_0043bdf0@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@M@Z",
+            "type": 6,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 21,
+            "symbol_index": 74,
+            "symbol": "___security_cookie",
+            "type": 6,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 94,
+            "symbol_index": 73,
+            "symbol": "??_C@_02NJPGOMH@?$CFf@",
+            "type": 6,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 100,
+            "symbol_index": 41,
+            "symbol": "_sprintf",
+            "type": 20,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 146,
+            "symbol_index": 43,
+            "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
+            "type": 20,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 173,
+            "symbol_index": 56,
+            "symbol": "_memmove",
+            "type": 20,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 203,
+            "symbol_index": 43,
+            "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
+            "type": 20,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 226,
+            "symbol_index": 56,
+            "symbol": "_memmove",
+            "type": 20,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 253,
+            "symbol_index": 46,
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+            "type": 20,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 270,
+            "symbol_index": 47,
+            "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+            "type": 20,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 299,
+            "symbol_index": 53,
+            "symbol": "@__security_check_cookie@4",
+            "type": 20,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 315,
+            "symbol_index": 42,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+            "type": 20,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 327,
+            "symbol_index": 54,
+            "symbol": "__CxxThrowException@8",
+            "type": 20,
+            "field_hex": "00000000"
+          }
+        ],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "native",
+        "number": 10,
+        "name": ".text$x",
+        "raw_size": 39,
+        "raw_file_bytes": 39,
+        "characteristics": "60501020",
+        "relocations": [
+          {
+            "offset": 15,
+            "symbol_index": 53,
+            "symbol": "@__security_check_cookie@4",
+            "type": 20,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 25,
+            "symbol_index": 53,
+            "symbol": "@__security_check_cookie@4",
+            "type": 20,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 30,
+            "symbol_index": 64,
+            "symbol": "__ehfuncinfo$?construct_native_string_float_header_0043bdf0@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@M@Z",
+            "type": 6,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 35,
+            "symbol_index": 55,
+            "symbol": "___CxxFrameHandler3",
+            "type": 20,
+            "field_hex": "00000000"
+          }
+        ],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "native",
+        "number": 11,
+        "name": ".text$mn",
+        "raw_size": 34,
+        "raw_file_bytes": 34,
+        "characteristics": "60501020",
+        "relocations": [
+          {
+            "offset": 17,
+            "symbol_index": 73,
+            "symbol": "??_C@_02NJPGOMH@?$CFf@",
+            "type": 6,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 25,
+            "symbol_index": 41,
+            "symbol": "_sprintf",
+            "type": 20,
+            "field_hex": "00000000"
+          }
+        ],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "native",
+        "number": 12,
+        "name": ".text$mn",
+        "raw_size": 40,
+        "raw_file_bytes": 40,
+        "characteristics": "60501020",
+        "relocations": [
+          {
+            "offset": 13,
+            "symbol_index": 46,
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+            "type": 20,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 30,
+            "symbol_index": 47,
+            "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+            "type": 20,
+            "field_hex": "00000000"
+          }
+        ],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "native",
+        "number": 13,
+        "name": ".text$mn",
+        "raw_size": 6,
+        "raw_file_bytes": 6,
+        "characteristics": "60501020",
+        "relocations": [
+          {
+            "offset": 1,
+            "symbol_index": 70,
+            "symbol": "?_OptionsStorage@?1??__local_stdio_printf_options@@9@4_KA",
+            "type": 6,
+            "field_hex": "00000000"
+          }
+        ],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "native",
+        "number": 14,
+        "name": ".debug$F",
+        "raw_size": 16,
+        "raw_file_bytes": 16,
+        "characteristics": "42101040",
+        "relocations": [
+          {
+            "offset": 0,
+            "symbol_index": 37,
+            "symbol": "___local_stdio_printf_options",
+            "type": 7,
+            "field_hex": "00000000"
+          }
+        ],
+        "role": "Compiler CodeView/FPO metadata, not Native runtime data"
+      },
+      {
+        "object": "native",
+        "number": 15,
+        "name": ".text$mn",
+        "raw_size": 53,
+        "raw_file_bytes": 53,
+        "characteristics": "60501020",
+        "relocations": [
+          {
+            "offset": 4,
+            "symbol_index": 37,
+            "symbol": "___local_stdio_printf_options",
+            "type": 20,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 36,
+            "symbol_index": 38,
+            "symbol": "__imp____stdio_common_vsprintf",
+            "type": 6,
+            "field_hex": "00000000"
+          }
+        ],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "native",
+        "number": 16,
+        "name": ".text$mn",
+        "raw_size": 52,
+        "raw_file_bytes": 52,
+        "characteristics": "60501020",
+        "relocations": [
+          {
+            "offset": 4,
+            "symbol_index": 37,
+            "symbol": "___local_stdio_printf_options",
+            "type": 20,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 35,
+            "symbol_index": 38,
+            "symbol": "__imp____stdio_common_vsprintf",
+            "type": 6,
+            "field_hex": "00000000"
+          }
+        ],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "native",
+        "number": 17,
+        "name": ".text$mn",
+        "raw_size": 50,
+        "raw_file_bytes": 50,
+        "characteristics": "60501020",
+        "relocations": [
+          {
+            "offset": 4,
+            "symbol_index": 37,
+            "symbol": "___local_stdio_printf_options",
+            "type": 20,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 33,
+            "symbol_index": 38,
+            "symbol": "__imp____stdio_common_vsprintf",
+            "type": 6,
+            "field_hex": "00000000"
+          }
+        ],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "native",
+        "number": 18,
+        "name": ".sxdata",
+        "raw_size": 4,
+        "raw_file_bytes": 4,
+        "characteristics": "00300200",
+        "relocations": [],
+        "role": "Source SafeSEH index57, resolving defined Source handler in native section10"
+      },
+      {
+        "object": "native",
+        "number": 19,
+        "name": ".xdata$x",
+        "raw_size": 88,
+        "raw_file_bytes": 88,
+        "characteristics": "40301040",
+        "relocations": [
+          {
+            "offset": 12,
+            "symbol_index": 60,
+            "symbol": "__catch$?construct_native_string_float_header_0043bdf0@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@M@Z$0",
+            "type": 6,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 48,
+            "symbol_index": 67,
+            "symbol": "__catchsym$?construct_native_string_float_header_0043bdf0@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@M@Z$2",
+            "type": 6,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 60,
+            "symbol_index": 65,
+            "symbol": "__unwindtable$?construct_native_string_float_header_0043bdf0@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@M@Z",
+            "type": 6,
+            "field_hex": "00000000"
+          },
+          {
+            "offset": 68,
+            "symbol_index": 66,
+            "symbol": "__tryblocktable$?construct_native_string_float_header_0043bdf0@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@M@Z",
+            "type": 6,
+            "field_hex": "00000000"
+          }
+        ],
+        "role": "New Source catch-all/EH maps; one explicit catch entry, no Native frame parity"
+      },
+      {
+        "object": "native",
+        "number": 20,
+        "name": ".bss",
+        "raw_size": 8,
+        "raw_file_bytes": 0,
+        "characteristics": "C0401080",
+        "relocations": [],
+        "role": "8B standard current stdio options COMDAT; active current runtime owns options"
+      },
+      {
+        "object": "native",
+        "number": 21,
+        "name": ".rdata",
+        "raw_size": 3,
+        "raw_file_bytes": 3,
+        "characteristics": "40301040",
+        "relocations": [],
+        "role": "Immutable Source fixed %f NUL-terminated literal256600"
+      },
+      {
+        "object": "native",
+        "number": 22,
+        "name": ".chks64",
+        "raw_size": 176,
+        "raw_file_bytes": 176,
+        "characteristics": "00000A00",
+        "relocations": [],
+        "role": "Compiler checksum metadata; all raw bytes retained"
+      },
+      {
+        "object": "game",
+        "number": 1,
+        "name": ".drectve",
+        "raw_size": 461,
+        "raw_file_bytes": 461,
+        "characteristics": "00100A00",
+        "relocations": [],
+        "role": "Current MSVC/STL/MD linker directives, no reconstructed Native publication"
+      },
+      {
+        "object": "game",
+        "number": 2,
+        "name": ".debug$S",
+        "raw_size": 220,
+        "raw_file_bytes": 220,
+        "characteristics": "42100040",
+        "relocations": [],
+        "role": "Compiler CodeView/FPO metadata, not Native runtime data"
+      },
+      {
+        "object": "game",
+        "number": 3,
+        "name": ".rdata",
+        "raw_size": 200,
+        "raw_file_bytes": 200,
+        "characteristics": "40401040",
+        "relocations": [],
+        "role": "Standard STL digit pairs00..99, char200B/wchar400B; no formatter dispatch or Native owner"
+      },
+      {
+        "object": "game",
+        "number": 4,
+        "name": ".rdata",
+        "raw_size": 400,
+        "raw_file_bytes": 400,
+        "characteristics": "40401040",
+        "relocations": [],
+        "role": "Standard STL digit pairs00..99, char200B/wchar400B; no formatter dispatch or Native owner"
+      },
+      {
+        "object": "game",
+        "number": 5,
+        "name": ".bss",
+        "raw_size": 4,
+        "raw_file_bytes": 0,
+        "characteristics": "C0301080",
+        "relocations": [],
+        "role": "4B standard STL AVX2 weak-alias fallback storage, not Original feature/formatter cell"
+      },
+      {
+        "object": "game",
+        "number": 6,
+        "name": ".text$mn",
+        "raw_size": 30,
+        "raw_file_bytes": 30,
+        "characteristics": "60501020",
+        "relocations": [
+          {
+            "offset": 9,
+            "symbol_index": 38,
+            "symbol": "?construct_number@?A0x2cfaef93@game@bsp@@YAXPAXAAVNativeString@3@M@Z",
+            "type": 6,
+            "field_hex": "00000000"
+          }
+        ],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "game",
+        "number": 7,
+        "name": ".text$mn",
+        "raw_size": 38,
+        "raw_file_bytes": 38,
+        "characteristics": "60501020",
+        "relocations": [],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "game",
+        "number": 8,
+        "name": ".text$mn",
+        "raw_size": 30,
+        "raw_file_bytes": 30,
+        "characteristics": "60501020",
+        "relocations": [
+          {
+            "offset": 21,
+            "symbol_index": 37,
+            "symbol": "?construct_native_string_float_header_0043bdf0@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@M@Z",
+            "type": 20,
+            "field_hex": "00000000"
+          }
+        ],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "game",
+        "number": 9,
+        "name": ".text$mn",
+        "raw_size": 4,
+        "raw_file_bytes": 4,
+        "characteristics": "60501020",
+        "relocations": [],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "game",
+        "number": 10,
+        "name": ".debug$F",
+        "raw_size": 16,
+        "raw_file_bytes": 16,
+        "characteristics": "42101040",
+        "relocations": [
+          {
+            "offset": 0,
+            "symbol_index": 35,
+            "symbol": "?raw_context@GameNativeStringProcess@game@bsp@@QAEAAUNativeStringRawPoolContext@3@XZ",
+            "type": 7,
+            "field_hex": "00000000"
+          }
+        ],
+        "role": "Compiler CodeView/FPO metadata, not Native runtime data"
+      },
+      {
+        "object": "game",
+        "number": 11,
+        "name": ".text$mn",
+        "raw_size": 4,
+        "raw_file_bytes": 4,
+        "characteristics": "60501020",
+        "relocations": [],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "game",
+        "number": 12,
+        "name": ".debug$F",
+        "raw_size": 16,
+        "raw_file_bytes": 16,
+        "characteristics": "42101040",
+        "relocations": [
+          {
+            "offset": 0,
+            "symbol_index": 36,
+            "symbol": "?strings@GameNativeStringProcess@game@bsp@@QAEAAVActualNativeStringPoolStorage@3@XZ",
+            "type": 7,
+            "field_hex": "00000000"
+          }
+        ],
+        "role": "Compiler CodeView/FPO metadata, not Native runtime data"
+      },
+      {
+        "object": "game",
+        "number": 13,
+        "name": ".text$mn",
+        "raw_size": 22,
+        "raw_file_bytes": 22,
+        "characteristics": "60501020",
+        "relocations": [
+          {
+            "offset": 11,
+            "symbol_index": 32,
+            "symbol": "?native_lua_to_display_string_00b68630@bsp@@YAPAVNativeString@1@ABUNativeLuaObjectStorage@1@PAXABUNativeLuaDisplayStringCalls@1@@Z",
+            "type": 20,
+            "field_hex": "00000000"
+          }
+        ],
+        "role": "Complete decoded Source code/helper; see corresponding code JSON/text"
+      },
+      {
+        "object": "game",
+        "number": 14,
+        "name": ".chks64",
+        "raw_size": 112,
+        "raw_file_bytes": 112,
+        "characteristics": "00000A00",
+        "relocations": [],
+        "role": "Compiler checksum metadata; all raw bytes retained"
+      }
+    ],
+    "raw_artifacts": [
+      "native.COFF.complete.DATA.json",
+      "native.COFF.code.DATA.json",
+      "native.COFF.code.txt",
+      "game.COFF.complete.DATA.json",
+      "game.COFF.code.DATA.json",
+      "game.COFF.code.txt",
+      "COFF.metadata.txt",
+      "native.obj.all.txt",
+      "native.obj.disasm.txt",
+      "game.obj.all.txt",
+      "game.obj.disasm.txt"
+    ]
+  },
+  "build_receipts": {
+    "strict": {
+      "original_chunk": "699579",
+      "actual_shell_batch_exit": 0,
+      "stdout_ends": "strict_exit=0",
+      "compiler_only_exit_integer_separately_printed": false,
+      "batch": "local/WholeNativeStringFloatFormatSource01/strict_compile.cmd",
+      "flags": "/nologo /std:c++17 /c /MD /O2 /Ob2 /Oy- /W4 /WX /EHsc /Gy /GL- /fp:strict /sourceDependencies /FAsc",
+      "both_TUs_error_checked": true,
+      "logs_have_only_TU_names": true,
+      "compiler_headers_Source_closure_unique_files": 275
+    },
+    "normal": {
+      "original_initial_chunk": "4e5db2",
+      "session_id": 97403,
+      "initial_exit_field_present": false,
+      "original_natural_terminal_chunk": "8101d2",
+      "terminal_exit_code": 0,
+      "terminal_stdout": "repository_build_exit=0\r\n",
+      "replayed_cancelled_or_replaced": false,
+      "existing_configured_checks_passed": 2,
+      "existing_configured_checks_total": 2,
+      "seconds": 7.89,
+      "new_TUs_unregistered": true,
+      "existing_warning": "LNK4006 duplicate spawn_request_id_matches in existing lua_binding_spawn.obj/lua_spawn_new.obj",
+      "qualification": "Required own repository build validates registered baseline; strict object compilation covers both new unregistered TUs."
+    },
+    "original_exact_tool_objects": "paired_history.manifest.DATA.json and original_tools.paired.jsonl retain byte-preserved original paired calls/results from the actual author rollout, no manually inferred exit from a status field.",
+    "new_tests_or_ad_hoc_probes_added": 0,
+    "new_API_or_Original_target_or_game_invocations": 0
+  },
+  "owned_input_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_string_float_format.hpp",
+      "bytes": 1286,
+      "sha256": "2e78e8ad9fc6cfff8be51118529d66bc7421642ce3bd7f7948ddc37c1ba493bf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\native_string_float_format.cpp",
+      "bytes": 4031,
+      "sha256": "a919861027de7a67c6518239674d506f507bf6051835341778ee39373a6d8629"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\game_native_lua_display_string.hpp",
+      "bytes": 1350,
+      "sha256": "fefafa1c43c50ad574155b18ffb7672e8640b93f34175fbcb8525202e8a8070d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\game_native_lua_display_string.cpp",
+      "bytes": 851,
+      "sha256": "ca3f617a2e4ad1bbf735a52f46d185d98007293424f1c0acfa5d6bbf9f48757d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\docs\\NATIVE_STRING_FLOAT_FORMAT_CC12.md",
+      "bytes": 8622,
+      "sha256": "7eaa502dcc831330dcf17feacad15a6de5d114ebb903759898362187580e3505"
+    }
+  ],
+  "immutable_provider_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\cc13_seg87.hpp",
+      "relative": "include/bsp/cc13_seg87.hpp",
+      "bytes": 38234,
+      "sha256": "f6fcc3d37decb4e24874ac1f6c9c80ce1c65f5c8ffef90f8fad91a7915929264",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\cc13_seg87.cpp",
+      "relative": "src/cc13_seg87.cpp",
+      "bytes": 57885,
+      "sha256": "f2c6fa222c1062e66da7d645bc2b742668ffbab9b331a3b0567701e0f4dafaca",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_lua_objects.hpp",
+      "relative": "include/bsp/native_lua_objects.hpp",
+      "bytes": 10058,
+      "sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\native_lua_objects.cpp",
+      "relative": "src/native_lua_objects.cpp",
+      "bytes": 17434,
+      "sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_string.hpp",
+      "relative": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\native_string.cpp",
+      "relative": "src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_string_pool_storage.hpp",
+      "relative": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\native_string_pool_storage.cpp",
+      "relative": "src/native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_string_pool_owner.hpp",
+      "relative": "include/bsp/native_string_pool_owner.hpp",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\native_string_pool_owner.cpp",
+      "relative": "src/native_string_pool_owner.cpp",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\game_native_string_process.hpp",
+      "relative": "include/bsp/game_native_string_process.hpp",
+      "bytes": 4306,
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\game_native_string_process.cpp",
+      "relative": "src/game_native_string_process.cpp",
+      "bytes": 1407,
+      "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\multiplayer_session_cc13.cpp",
+      "relative": "src/multiplayer_session_cc13.cpp",
+      "bytes": 78589,
+      "sha256": "abd3940d828f89ccfe519ac53731a516cee5310ee5fe988d31128619f01d4ae1",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\tools\\bsp.py",
+      "relative": "tools/bsp.py",
+      "bytes": 84752,
+      "sha256": "133e2cf3f24f0402f6ed7d0e1dd5148c678c7ca10722633d1ec6cdc9b693a9ff",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\tools\\ghidra_export.py",
+      "relative": "tools/ghidra_export.py",
+      "bytes": 14518,
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\tools\\ghidra_typed_flow.py",
+      "relative": "tools/ghidra_typed_flow.py",
+      "bytes": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\lua_numeric.hpp",
+      "relative": "include/bsp/lua_numeric.hpp",
+      "bytes": 1086,
+      "sha256": "a8de255e2aaaad540cec67717e7d0efd7cc5f50d206bdd2137cabe1ed81acf60",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\lua_numeric.cpp",
+      "relative": "src/lua_numeric.cpp",
+      "bytes": 1354,
+      "sha256": "4c19ba962c8964626d224a273a416794d1330efcca1ef953ca359f28f28f585c",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_crt_pointer_decode.hpp",
+      "relative": "include/bsp/native_crt_pointer_decode.hpp",
+      "bytes": 2327,
+      "sha256": "b1e901d739c07419b55441988bf42177b0e6ace3ef27ef1251ecb3b36fb48a7f",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\native_crt_pointer_decode.cpp",
+      "relative": "src/native_crt_pointer_decode.cpp",
+      "bytes": 2271,
+      "sha256": "7a689a80bea666aa0941662a1bbde17500c92d1f7fd671c364aa2b3e0bf365c7",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\archive_text_writer.cpp",
+      "relative": "src/archive_text_writer.cpp",
+      "bytes": 6373,
+      "sha256": "2dff33d2f92be59b01ce7292a8817e59b70dbde917a0063aea2fcbf718196245",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\archive_text_writer.hpp",
+      "relative": "include/bsp/archive_text_writer.hpp",
+      "bytes": 3015,
+      "sha256": "e592546c43bf2f0d4e73daba4d39308efce00ea43e5398a7c66ef44aae9042b1",
+      "same_as_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\native_scene_token_values.cpp",
+      "relative": "src/native_scene_token_values.cpp",
+      "bytes": 3183,
+      "sha256": "20df9e1c1c2f898c57230524e6084df4e83549e2f7a6dd91c84291d245d9c7a4",
+      "same_as_readiness": true
+    }
+  ],
+  "compiler_inputs_and_tools": {
+    "strict_closure": "complete_COFF.DATA.json compiler_input_pins",
+    "compiler_tools": "compiler_tool_pins.DATA.json",
+    "normal_build_inputs": "normal_registration.DATA.json and build_inputs/"
+  },
+  "limitations": {
+    "Original_private_CRT_numeric_text_locale_errno_FP": false,
+    "Original_register_stack_binary_ABI": false,
+    "Original_FS_EH_fault_or_double_exception": false,
+    "original_target_runtime_or_game_validation": false,
+    "Main_registered_build_of_changed_TUs": false,
+    "Source_independent_admission": false,
+    "canonical_enum_or_app_startup": false
+  },
+  "packet": "whole_native_string_float_format_source_01",
+  "local_evidence": "local/WholeNativeStringFloatFormatSource01",
+  "lease_release": "After final commit/seal verification; actual bsp release receipt supplied separately."
+}

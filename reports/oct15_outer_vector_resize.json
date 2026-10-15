@@ -1,0 +1,285 @@
+{
+  "schema": 1,
+  "packet": "oct15_outer_vector_resize",
+  "title": "Actual outer-vector Resize with consumed by-value inner owner",
+  "state": "complete_actual_outer_vector_resize_source_build_tested",
+  "addresses": [
+    "006a6350",
+    "00c7f4b0"
+  ],
+  "sources": [
+    "include/bsp/native_outer_vector_resize.hpp",
+    "src/native_outer_vector_resize.cpp"
+  ],
+  "documentation": "docs/OCT15_OUTER_VECTOR_RESIZE.md",
+  "established_library_name": "STL_CheckedStringVectorVector_Resize_006A6350",
+  "source_functions": [
+    "resize_native_outer_vector_006a6350",
+    "unwind_native_outer_resize_parameter_00c7f4b0"
+  ],
+  "accepted_dependency_commit": "9c6606552",
+  "original_abi": {
+    "receiver": "ECX actual16B outer header",
+    "unused": "Incoming EDX",
+    "stack_words": [
+      "requested count",
+      "owned inner opaque bits",
+      "owned inner begin",
+      "owned inner end",
+      "owned inner capacity"
+    ],
+    "cleanup": "RET14h",
+    "result": "No semantic result",
+    "new_source_interface": "Five scalar Word inputs transfer the owned by-value header into one canonical private16B header; extra explicit RawPoolContext; no copy constructor/second owner",
+    "opaque": "Unconsumed bits, not newly owned or dereferenced; Source can supply defined dead bits without reading C++ indeterminate native opaque storage"
+  },
+  "storage": {
+    "outer_header_bytes": 16,
+    "outer_element_bytes": 16,
+    "inner_string_bytes": 8,
+    "fields": {
+      "opaque": 0,
+      "begin": 4,
+      "end": 8,
+      "capacity": 12
+    },
+    "arithmetic": "Wrapping DWORD difference,SAR4 bit pattern,unsigned comparisons; receiver capacity never read by this wrapper",
+    "required_domain": "Valid consumed actual fill ownership/raw-pool/CRT backing and admitted reached receiver/child operations; no extra validation"
+  },
+  "paths": [
+    {
+      "path": "growth",
+      "behavior": "Reread size from captured begin, capture end separately, report and retain both, actualInsertCount with borrowed owned-fill header"
+    },
+    {
+      "path": "nongrowth nonnull begin",
+      "behavior": "Capture end again and compare reread size; shrink only if request remains below it; preserve3 returning diagnostics,current-begin/end reloads,derived endpoint and saved last"
+    },
+    {
+      "path": "equal/zero/no shrink",
+      "behavior": "Still consume and destroy the already owned fill parameter; no extra prototype copy"
+    },
+    {
+      "path": "child or diagnostic C++ exception",
+      "behavior": "Unwind canonical owned parameter through actual4324A0 then rethrow; receiver partial changes are not rolled back"
+    }
+  ],
+  "ownership": {
+    "arm": "State0 after first receiver begin read, before first size-end read",
+    "growth_borrow": "InsertCount makes its own private deep copy; Resize retains and later consumes the parameter owner",
+    "normal": "Capture parameter begin while armed,disable state-1,nonnull current end capture,432050 destruction,free cached begin,no clears; outside Source owner catch",
+    "unwind": "C7F4B0 LEA ECX,[EBP+8]; JMP4324A0; Source explicit canonical header,actual current-begin free and4/8/C clears",
+    "failure": "Normal destructor failure is not retried; current C++ cleanup failure propagation qualified separately from native FH3 behavior"
+  },
+  "scratch": "Native output pair second word preset retained begin; accepted erase overwrites it and returns output address; Source private2Word scratch discards result,no iterator/allocator model or private-frame ABI claim",
+  "transfers": [
+    {
+      "address": "006a63a2",
+      "native": "00bf6713",
+      "function": "006a6350",
+      "kind": "call",
+      "contract": "Growth report: captured initial begin>separately captured end; returning handler retains count/end captures"
+    },
+    {
+      "address": "006a63b3",
+      "native": "006a5c50",
+      "function": "006a6350",
+      "kind": "call",
+      "contract": "Full actual InsertCount, owner receiver, captured end, requested-captured size, borrowed canonical owned-fill header"
+    },
+    {
+      "address": "006a63d0",
+      "native": "00bf6713",
+      "function": "006a6350",
+      "kind": "call",
+      "contract": "First shrink report: initial begin>saved end; reload begin only after returning handler"
+    },
+    {
+      "address": "006a63dd",
+      "native": "00bf6713",
+      "function": "006a6350",
+      "kind": "call",
+      "contract": "Second shrink report: reloaded begin>current end; retain begin across returning handler for derived first endpoint"
+    },
+    {
+      "address": "006a63f5",
+      "native": "00bf6713",
+      "function": "006a6350",
+      "kind": "call",
+      "contract": "Third shrink report: first>current end OR first<current begin, lower begin read only if upper check passes; retain endpoint and saved end"
+    },
+    {
+      "address": "006a6405",
+      "native": "006a5bf0",
+      "function": "006a6350",
+      "kind": "call",
+      "contract": "Full actual erase, private output pair, receiver both owners, retained derived first and originally captured last; discard EAX output address"
+    },
+    {
+      "address": "006a642a",
+      "native": "00432050",
+      "function": "006a6350",
+      "kind": "call",
+      "contract": "Normal owner disabled: destroy captured parameter begin/current end; original unused metadata requested count and parameter address"
+    },
+    {
+      "address": "006a6430",
+      "native": "00bf65ac",
+      "function": "006a6350",
+      "kind": "call",
+      "contract": "Normal cleanup frees cached parameter begin without reread or field clears"
+    },
+    {
+      "address": "00c7f4b3",
+      "native": "004324a0",
+      "function": "00c7f4b0",
+      "kind": "tail_jump",
+      "contract": "Exact owner-action tail to actual4324A0; explicit Source owned header, captured range/current-begin free/ordered clears"
+    },
+    {
+      "address": "006a8786",
+      "native": "006a6350",
+      "function": "006a7be0",
+      "kind": "call",
+      "contract": "Caller reserves16B parameter, writes4/8/C fromEBP bits, leaves opaque0 uninitialized, pushes ESI request, ECX outer receiver"
+    },
+    {
+      "address": "006a8f19",
+      "native": "006a6350",
+      "function": "006a7be0",
+      "kind": "call",
+      "contract": "Caller reserves16B parameter, zeroes4/8/C viaECX, leaves opaque0 uninitialized, pushes ESI request, ECX outer receiver"
+    }
+  ],
+  "bindings": [
+    {
+      "native": "006a5c50",
+      "source": "insert_native_outer_string_vector_count_006a5c50",
+      "state": "accepted complete actual general insertion"
+    },
+    {
+      "native": "006a5bf0",
+      "source": "erase_native_outer_vector_range_006a5bf0",
+      "state": "accepted complete actual erase at9c6606552"
+    },
+    {
+      "native": "00432050",
+      "source": "destroy_native_string_header_range_00432050",
+      "state": "accepted actual range cleanup"
+    },
+    {
+      "native": "004324a0",
+      "source": "destroy_native_string_header_vector_004324a0",
+      "state": "accepted actual inner tidy"
+    },
+    {
+      "native": "00bf6713",
+      "source": "invoke_native_invalid_parameter_00bf6713",
+      "state": "accepted current SDK adapter; original CRT encoded-handler/Watson identity qualified"
+    },
+    {
+      "native": "00bf65ac",
+      "source": "singleton_lifetime_free",
+      "state": "accepted current CRT free; original native CRT identity qualified"
+    }
+  ],
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "read_only": true,
+    "ghidra_mutation_or_repair": false,
+    "body": {
+      "start": "006a6350",
+      "end_exclusive": "006a644d",
+      "bytes": 253,
+      "instruction_count": 95,
+      "sha256": "0cd48b052eb368cadc2fc75e2337adc89dd77fb728419fb4542e93b718fa282f",
+      "disk_live_match": true,
+      "disk_export_instruction_starts_match": true,
+      "ranges": [
+        {
+          "start": {
+            "space": "ram",
+            "offset": "006a6350"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "006a644c"
+          },
+          "length": "253"
+        }
+      ]
+    },
+    "owner_action": {
+      "address": "00c7f4b0",
+      "end_exclusive": "00c7f4b8",
+      "bytes": 8,
+      "instruction_count": 2,
+      "bytes_hex": "8d4d08e9e82f7bff",
+      "sha256": "60f298b3ffd58cdaa8d282b57a9e5cd39810dbed30d393d5b5b327d55af5d9e6",
+      "disk_live_match": true,
+      "target": "004324a0",
+      "native_frame_header": "EBP+8"
+    },
+    "eh": {
+      "start": "00dac8f0",
+      "end_exclusive": "00dac91c",
+      "bytes": 44,
+      "sha256": "f90e07fc2030729e68e47cf567ee431ea7f4d2dd9a48b9c27a635b7a8e90aa9b",
+      "disk_live_match": true,
+      "funcinfo": "00dac8f8",
+      "magic": "19930522",
+      "max_state": 1,
+      "flags": 1,
+      "try_blocks": 0,
+      "unwind_map": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "action": "00c7f4b0"
+        }
+      ]
+    },
+    "unowned_handler_stub_metadata_only": {
+      "address": "00c7f4b8",
+      "bytes_hex": "b8f8c8da00e98176f7ff",
+      "funcinfo": "00dac8f8",
+      "tail_target": "00bf6b43",
+      "read_only_unowned_metadata": true
+    },
+    "action_claim": "Only after rawDAC8F8 FuncInfo/DAC8F0 unwind map andC7F4B0 disk/live action verified was lease extended from6350 to6350+C7F4B0",
+    "typed_metadata_modification_number": "267",
+    "direct_calls_owned": 8,
+    "tail_jumps_owned": 1,
+    "caller_sites": 2,
+    "containing_caller": "006a7be0",
+    "caller_scope": "Both bounded call setups inspected; not complete semantics of large InputSettings_LoadDataTables caller"
+  },
+  "preservation": "Old resize_native_input_settings_name_pairs_006a6350 field-storage fragment,fixtures,names/evidence and provenance remain separately qualified and untouched",
+  "verification": {
+    "warm_build": "./scripts/build.ps1 MSVC Win32 passed after accepted9c6606552 merge",
+    "existing_suites": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "suites_passed": 3,
+    "ctest_total_seconds": 8.85,
+    "new_tests": 0,
+    "native_differential_scope": "Established math seeds only; no new Resize runtime differential",
+    "report_call_verifier": "11 JSON rows passed (10 CALL,1 tail JMP); Markdown10 passed,0 unchecked,0 warnings",
+    "index": "python tools/bsp.py index --if-stale completed",
+    "diff_check": "git diff --check passed",
+    "owned_ledger_preservation": "Exactly2 owned addresses; prior name/evidence and reconstruction fragments preserved; two new actual Source functions; exact one-line CMake append",
+    "compile": "native_outer_vector_resize.cpp compiled without new C warnings",
+    "existing_warning": "Unrelated existing LNK4006 duplicate spawn_request_id_matches"
+  },
+  "limits": [
+    "Explicit RawPoolContext/scalar ownership/private header and output scratch are new Source interfaces,not original binary/private EBP ABI",
+    "Current SDK diagnostic/current CRT/C++ cleanup and exception services,not original CRT/FH3/SEH/RTTI/payload/handler-failure termination identity",
+    "Private argument/spill aliases,dead opaque/metadata/register residue,native invalid-memory faults,nonlocal jumps and concurrency equivalence excluded",
+    "No new Resize native runtime differential,application wiring or gameplay validation"
+  ]
+}

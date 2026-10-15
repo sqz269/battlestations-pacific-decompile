@@ -1,0 +1,205 @@
+{
+  "packet": "oct15_outer_string_vector_placement",
+  "worker": "agent/oct15_avoid_distance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis_and_export": true,
+  "ghidra_read_only": true,
+  "owned_addresses": [
+    "006a6810",
+    "006a6b60",
+    "00c7f4d0",
+    "00c7f510"
+  ],
+  "source": "src/native_outer_string_vector_placement.cpp",
+  "header": "include/bsp/native_outer_string_vector_placement.hpp",
+  "documentation": "docs/OCT15_OUTER_STRING_VECTOR_PLACEMENT.md",
+  "routines": [
+    {
+      "address": "006a6810",
+      "body_end_inclusive": "006a684f",
+      "bytes": 64,
+      "listed_instructions": 17,
+      "flow_gaps": [],
+      "coverage": "complete_ordinary_actual_placement_effects_with_void_Source_register_ABI_qualification",
+      "implementation": "placement_copy_native_outer_string_vector_006a6810",
+      "retained_name": "STL_ConstructStringVectorVector_006a6810",
+      "original_abi": "ECX slot,EDX source,no stacked inputs,plainRET. Native nonnullEAXslot/nullEAXentryFS0. Source keeps inputs/adds stacked actualcontext,RET4,void/non-register-residue contract.",
+      "effects": "Null no child/header/pool access. Nonnull directlyactual0055B150(slot,source), preserving sourcebits in ignoredEDX. No extra catch/free/rollback/owner object.",
+      "unwind": "state0 actionC7F4D0 passes slot words to actualRET-only401130; observable cleanup absent, Source elision proven."
+    },
+    {
+      "address": "006a6b60",
+      "body_end_inclusive": "006a6ba7",
+      "bytes": 72,
+      "listed_instructions": 19,
+      "flow_gaps": [],
+      "coverage": "complete_ordinary_actual_placement_effects_with_void_Source_register_ABI_qualification",
+      "implementation": "placement_copy_native_outer_string_vector_006a6b60",
+      "retained_name": "STL_ConstructStringVectorVector_006a6b60",
+      "original_abi": "EntryECX/EDX unconsumed,stack(slot,source),RET8/callee cleanup correcting oldcdecl label. Native nonnullEAXslot/nullEAXentryFS0. Source reservesunusedregs,keeps stackpositions/addscontext,RET0Ch,void.",
+      "effects": "Null no child/header/pool access; source stackword loaded onlynonnull. Nonnull direct0055B150; incomingEDX forwarded unchanged as ignored ctorword. Native duplicatefirstarg/localslot private-frame writes excluded from Source interface.",
+      "unwind": "state0 actionC7F510 passes slot words to actualRET-only401130; no new observable cleanup or catch."
+    },
+    {
+      "address": "00c7f4d0",
+      "body_end_inclusive": "00c7f4e0",
+      "bytes": 17,
+      "listed_instructions": 7,
+      "coverage": "complete_verified_noop_placement_unwind_Source_elision_parent_bound",
+      "implementation": "no-extra-cleanup Source scope of placement_copy_native_outer_string_vector_006a6810",
+      "retained_name": "Unwind@00c7f4d0",
+      "original_abi": "Native parent-bound EBP action,not independently callable SourceAPI; words fromEBP-14/-10,two outgoing args,ADD ESP8,RET.",
+      "binding": "Actual401130 isRET-only; no allocation/free/header effect; private-frame/register/fault identity excluded."
+    },
+    {
+      "address": "00c7f510",
+      "body_end_inclusive": "00c7f520",
+      "bytes": 17,
+      "listed_instructions": 7,
+      "coverage": "complete_verified_noop_placement_unwind_Source_elision_parent_bound",
+      "implementation": "no-extra-cleanup Source scope of placement_copy_native_outer_string_vector_006a6b60",
+      "retained_name": "Unwind@00c7f510",
+      "original_abi": "Native parent-bound EBP action,not independently callable SourceAPI; words fromEBP+4/-10,two outgoing args,ADD ESP8,RET.",
+      "binding": "Actual401130 RET-only; no extra Source catch or placementdeallocator introduced."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "006a683c",
+      "native": "0055b150",
+      "function": "006a6810",
+      "contract": "Complete native constructor inspected in priorpacket and root accepted actualSource/header inspected; all child ownership/diagnostic/exception limits inherited",
+      "arguments": "ECXslot,EDXsource,stacksource,RET4; Source explicit ignoredEDX sourcebits + actualcontext.",
+      "binding": "Direct construct_native_outer_string_vector_copy_0055b150, accepted rootcommita276944a8; null skips."
+    },
+    {
+      "address": "006a6b92",
+      "native": "0055b150",
+      "function": "006a6b60",
+      "contract": "Accepted actual constructor/publicpayload/ownership and complete native wrapper read",
+      "arguments": "ECXstackedslot,stackedsource loadednonnull,entryEDX preservedignoredword; Source explicit actualcontext.",
+      "binding": "Direct accepted actualconstructor; no stand-in copy/proxy/allocator."
+    }
+  ],
+  "eh_steps": [
+    {
+      "address": "00c7f4d8",
+      "native": "00401130",
+      "function": "00c7f4d0",
+      "contract": "Complete native action and actual targetRET-only body read; rawdisk assertion",
+      "arguments": "Parent slotwordsEBP-14/-10,caller8Bcleanup.",
+      "binding": "Proven no observable cleanup,elided in Source; no standalone actionAPI/stub."
+    },
+    {
+      "address": "00c7f518",
+      "native": "00401130",
+      "function": "00c7f510",
+      "contract": "Complete native action and actual targetRET-only body read; rawdisk assertion",
+      "arguments": "Parent slotwordsEBP+4/-10,caller8Bcleanup.",
+      "binding": "No allocation/free/header effect; inherited actual childcleanup solely."
+    }
+  ],
+  "eh_evidence": {
+    "first": "HandlerC7F4E1 loadsDAC924/JMPBF6B43; mapDAC91C state0to-1/actionC7F4D0.",
+    "second": "HandlerC7F521 loadsDAC984/JMPBF6B43; mapDAC97C state0to-1/actionC7F510.",
+    "tuples": "Both full36B FuncInfo:magic19930522,1state,ownmap,no try/catch/IP/ESType lists,flags1; state0armed before nullcheck outcome.",
+    "source_scope": "No wrapper cleanup/catch/rollback is observable after provenRET-onlyplacementaction; real child CPPcleanup/throw propagates. NativeFH3/SEH/RTTI/catch/privateframe/fault/cleanupfailure identity unclaimed."
+  },
+  "layout_and_ownership": "Actual16B outerchecked header(+0opaque,+4begin,+8end,+Ccapacity) owns backing of actual16B innercheckedheaders holding8B pooledstrings. Accepted0055B150 count-before-clear,+0preimage/no-self-guard/currentreads/realallocation/pool/cleanup inherited; null skips all pointedaccess. No borrowedassignment/hostvec/callback/newmodel.",
+  "corrections": [
+    {
+      "was": "Historical006A6B60 evidence labels cdecl/samebody.",
+      "is": "Complete native body endsC20800,callee cleanup2stackwords; entryregs unconsumed. Independently recovered ratherthan inferred from same-body label.",
+      "evidence": "Full72B rawinstalledspan and19instruction listing."
+    },
+    {
+      "was": "Null-placement wrapper can be treated as returning a null pointer.",
+      "is": "Native nullEAXisentryFS:[0],nonnullisactualctorslot. Bothlivecallerxrefsets empty; Sourcevoid/explicitregisterABIqualification,not forgednullresult.",
+      "evidence": "MOV EAX,FS:[0] prologues andcomplete branch/result flow."
+    }
+  ],
+  "dependency_acceptance": {
+    "constructor_commit": "a276944a8",
+    "dependency_branch_merged": "agent/oct15_integrator",
+    "worker_base_after_merge": "9667dda1f",
+    "condition": "Root accepted constructor + realcleanup/allocation dependencies; their registeredSource3/3 passed before worker placementbuild. No temporaryheader or unresolved callback bridge."
+  },
+  "cmake_registration": {
+    "lease": "oct15_outer_string_vector_placement_cmake_registration",
+    "status": "queued,granted,usedforstartupappend,released beforebuild; nextagent/oct15_integrator:oct15_eighth_resize_integration",
+    "previous_allocation_packet": "No separate CMake lease; prior standing append authorization acknowledged by primary."
+  },
+  "original_byte_audit": {
+    "original_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "image_base": "00400000",
+    "extraction": "Installed PE32 image base and section-table RVA-to-raw mapping; exact complete disk spans, no live execution.",
+    "wrappers": [
+      {
+        "entry": "006a6810",
+        "size": 64,
+        "bytes": "6aff68e1f4c70064a100000000506489250000000083ec08890c24894c240485c9c744241000000000740652e80f49ebff8b4c240864890d0000000083c414c3",
+        "constructor_site": "006a683c",
+        "constructor_target": "0055b150",
+        "ret_bytes": "c3",
+        "handler": "00c7f4e1",
+        "handler_bytes": "b824c9da00e95876f7ff",
+        "funcinfo": "00dac924",
+        "funcinfo_bytes": "22059319010000001cc9da00000000000000000000000000000000000000000001000000",
+        "unwind_map": "00dac91c",
+        "unwind_bytes": "ffffffffd0f4c700",
+        "action": "00c7f4d0",
+        "action_bytes": "8b45ec508b4df051e8531c78ff83c408c3",
+        "action_site": "00c7f4d8",
+        "action_target": "00401130"
+      },
+      {
+        "entry": "006a6b60",
+        "size": 72,
+        "bytes": "6aff6821f5c70064a1000000005064892500000000518b4c2414894c2414890c2485c9c744240c00000000740a8b44241850e8b945ebff8b4c240464890d0000000083c410c20800",
+        "constructor_site": "006a6b92",
+        "constructor_target": "0055b150",
+        "ret_bytes": "c20800",
+        "handler": "00c7f521",
+        "handler_bytes": "b884c9da00e91876f7ff",
+        "funcinfo": "00dac984",
+        "funcinfo_bytes": "22059319010000007cc9da00000000000000000000000000000000000000000001000000",
+        "unwind_map": "00dac97c",
+        "unwind_bytes": "ffffffff10f5c700",
+        "action": "00c7f510",
+        "action_bytes": "8b4504508b4df051e8131c78ff83c408c3",
+        "action_site": "00c7f518",
+        "action_target": "00401130"
+      }
+    ],
+    "assertions": "Both E8 constructor targets0055B150; initial MOV EAX,FS:[0]; native RET/RET8; full FuncInfo tuples(magic19930522,1state,ownmap,no try/catch/IP/ESType lists,flags1); state0to-1 own action; action E8target401130,ADD ESP8,RET; actual401130 singleC3RET.",
+    "scope": "Static original/native disk evidence only; no compiledSource byte identity, native EH/register ABI execution or gameplay claim."
+  },
+  "compiled_source_evidence": {
+    "object": "build/win32/bsp_core.dir/Release/native_outer_string_vector_placement.obj",
+    "dump_file": "local/oct15_outer_string_vector_placement_coff.asm",
+    "dumper": "MSVC dumpbin14.51.36244.0 /DISASM",
+    "first": "TESTECX/JE at03..05,sourceEDX pushed/retained,context pushed,actualctorCALL0B; RET4at11; no source/header access onnull.",
+    "second": "Stackslot loadedECXat03,TEST/JE06..08,context/sourcepushed at0A..0D,entryEDXunchanged,actualctorCALL10,RET0Chat16.",
+    "qualification": "No own cleanup/EHframe or synthetic placementdelete. Void null paths leaveentryEAX, not nativeentryFS0; newcontext/privateframes/return-register ABI explicit. Static exactSource inspection,not originalbyteidentity/nativeexecution."
+  },
+  "floating_point": "No nativewrapper/action x87/FP arithmetic,NaNs not involved.",
+  "uncertainties": [
+    "Descriptive names/original C++ returntypes not recovered; no livecallers establish semantic return.",
+    "VoidSource does not expose nativeconditional EAXresidue or original privateframe/register ABI.",
+    "Added actualcontext changes stack cleanup; nativeFH3/SEH/currentCRT/catch/RTTI/fault/unwind identity and childdiagnostic/zero-copy limits remain qualified.",
+    "No nativefixture/original exception execution,binary replacement,startup/gameplay validation."
+  ],
+  "checks": {
+    "build": "pass ./scripts/build.ps1 after accepted dependencymerge and granted CMake registration",
+    "build_log": "local/oct15_outer_string_vector_placement_build.log",
+    "existing_suites": "3/3 pass:reconstructed_math,native_math_differential,tool_tests;10.52s",
+    "verify_report_calls": "pass4/4 exact constructor/action sites with containing functions",
+    "verify_markdown_calls": "pass4/4,0failed,0unchecked,0warnings",
+    "git_diff_check": "pass",
+    "new_tests": 0,
+    "packet_native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}

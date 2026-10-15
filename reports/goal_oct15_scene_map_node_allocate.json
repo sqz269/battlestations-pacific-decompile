@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_map_node_allocate",
+  "worker": "agent/goal_oct15_copy",
+  "base_commit": "a2dd41aa351282105b43674560020777d3b40500",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis_and_export": true,
+  "source": "src/native_scene_record_map_node_allocate.cpp",
+  "header": "include/bsp/native_scene_record_map_node_allocate.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_MAP_NODE_ALLOCATE.md",
+  "owned_addresses": [
+    "0046a340",
+    "0046a3b2",
+    "00c61c30"
+  ],
+  "status": "whole_actual_storage_source_strict_win32_existing_ctest_and_compiler_checked",
+  "routines": [
+    {
+      "address": "0046a340",
+      "body_end_inclusive": "0046a3b1",
+      "body_bytes": 114,
+      "instructions": 43,
+      "coverage": "complete_at_existing_concrete_crt_raw_string_current_cpp_eh_boundaries",
+      "kind": "function",
+      "implementation": "allocate_native_scene_record_map_node_0046a340",
+      "retained_name": "STL_Tree_BuyNode_0046A340",
+      "original_abi": "incomingECX/EDXunused;5stackedDWORDleft,parent,right,pair,color;RET14,EAX captured allocation",
+      "binding": "complete canonical allocate_native_resource_registry_node_00b1ad10",
+      "live_xrefs": [
+        "0046adf4"
+      ]
+    },
+    {
+      "address": "0046a3b2",
+      "body_end_inclusive": "0046a3c6",
+      "body_bytes": 21,
+      "instructions": 7,
+      "coverage": "complete_source_catch_fragment_through_existing_provider_not_native_frame_entry",
+      "kind": "fragment",
+      "implementation": "scene_map_node_allocate_0046a3b2_canonical_catch_scope",
+      "retained_name": "Catch_All@0046a3b2",
+      "original_abi": "native parentEBP-14 current cleanup cell;free thenBF6885(0,0)rethrow",
+      "binding": "catch scope inside allocate_native_resource_registry_node_00b1ad10; canonical00B1AD82"
+    },
+    {
+      "address": "00c61c30",
+      "body_end_inclusive": "00c61c40",
+      "body_bytes": 17,
+      "instructions": 7,
+      "coverage": "complete_source_placement_fragment_through_existing_provider_not_native_frame_entry",
+      "kind": "fragment",
+      "implementation": "scene_map_node_allocate_00c61c30_canonical_placement_scope",
+      "retained_name": "Unwind@00c61c30",
+      "original_abi": "native parentEBP-14 read first,EBP-18 read second;CALL401130 no-op,ADDESP8,RET",
+      "binding": "state1 current volatile-read scope inside allocate_native_resource_registry_node_00b1ad10; canonical00CBC6D0"
+    }
+  ],
+  "coverage_totals": {
+    "normal_bytes": 114,
+    "normal_instructions": 43,
+    "source_eh_fragment_bytes": 38,
+    "source_eh_fragment_instructions": 14,
+    "total_owned_bytes": 152,
+    "total_owned_instructions": 57
+  },
+  "allocator_domain": {
+    "readiness": "ready through existing concrete singleton_lifetime_allocate/free current-CRT service; no provider edits or new callbacks",
+    "request": {
+      "kind": "object",
+      "native_bytes": 28,
+      "host_bytes": 28
+    },
+    "native_bf681b": "_malloc(size)retry;failure __callnewh(size),nonzero retry,zero throws native bad_alloc;handler exception propagates",
+    "source": "singleton_lifetime_allocate uses actual std::malloc/_callnewh retry/current std::bad_alloc; singleton_lifetime_free uses actual std::free",
+    "null": "native null branch retained in canonical Source; conforming native/current allocator returns storage or throws, no normal null or success-only restriction",
+    "failure_before_cleanup": "propagates with no armed cleanup/free/argument reads",
+    "free_contract": "BF65AC is free thunk toBF9DC8; Source paired current CRT free requires null or valid current-domain block; do not mix native game heap blocks",
+    "original_crt_static_exception_heap_global_handler_identity": false
+  },
+  "frame_and_schedule": {
+    "types": "NativeSceneRecordMapNodeAllocationFrame=NativeResourceRegistryNodeAllocationFrame; Acquired aliases existing fresh NativeResourceRegistryNodeAcquired",
+    "incoming_slots": "EBP+8left,+Cparent,+10right,+14pair,+18color",
+    "before_inputs": "actual allocation1Ch;captureESI;writeCURRENT allocation_cleanupEBP-14;state0;write placement_cleanupEBP-18;state1;null branch",
+    "argument_order": "readcolor,pair,right;writeconstructor.color;readparent;writeconstructor.pair;readleft;writeconstructor.right,parent,left;call exact raw ctor",
+    "return": "captured allocation,not current cleanup cell or child result",
+    "constructor": "canonicalB1ACA0 equals00469F50; current live five-word cell contract, raw actual1Ch node and string pool; no metadata/payload overlap",
+    "null_branch_argument_reads": false,
+    "placement_cleanup": "current allocation_cleanup read then current placement_cleanup read; actual401130RET-only; no destructor/free",
+    "catch_cleanup": "free CURRENT allocation_cleanup once;no partial-key destructor;rethrow current C++ exception",
+    "acquired": "fresh/default initialized; separate diagnostic metadata records frontiers/addresses,not blanket all-acquired-freed claim",
+    "alias_domain": "address-stable live distinct incoming/constructor/local cell locations; payload/current argument aliases admitted,metadata disjoint; original cross-provider private-stack coincidence and saved-register/FH3 identities excluded"
+  },
+  "eh": {
+    "handler_read_only": "00c61c41",
+    "funcinfo_read_only": "00d8932c",
+    "magic": "19930522",
+    "max_state": 3,
+    "eh_flags": 1,
+    "unwind_map": "00d89314",
+    "transitions": [
+      {
+        "state": 0,
+        "to": -1,
+        "action": null
+      },
+      {
+        "state": 1,
+        "to": 0,
+        "action": "00c61c30"
+      },
+      {
+        "state": 2,
+        "to": -1,
+        "action": null
+      }
+    ],
+    "try_block": {
+      "address": "00d89300",
+      "low": 0,
+      "high": 1,
+      "catch_high": 2,
+      "count": 1,
+      "handlers": "00d892f0"
+    },
+    "catch": {
+      "address": "00d892f0",
+      "flags": 64,
+      "type": null,
+      "object": null,
+      "target": "0046a3b2"
+    },
+    "canonical_funcinfo": "00df49f4; same scalar fields/state structure with corresponding addresses rebound",
+    "source_transport": "existing canonical Source placement/current-free/catch-rethrow projection, not original native FH3/SEH/private-frame entry"
+  },
+  "equivalence": {
+    "receipt": "local/goal_oct15_scene_map_node_allocate_equivalence.json",
+    "full_bytes": [
+      {
+        "native_address": "0046a340",
+        "canonical_address": "00b1ad10",
+        "bytes": 114,
+        "differences_confined_to": "handler immediate+6,allocation CALL operand+24,constructor CALL operand+59",
+        "verified_targets": "BF681B both;00469F50/B1ACA0 equivalent child"
+      },
+      {
+        "native_address": "00469f50",
+        "canonical_address": "00b1aca0",
+        "bytes": 112,
+        "differences_confined_to": "resize CALL operand+3A,byte-copy CALL operand+50",
+        "verified_targets": "0041DD40 andBF7680 both"
+      },
+      {
+        "native_address": "0046a3b2",
+        "canonical_address": "00b1ad82",
+        "bytes": 21,
+        "differences_confined_to": "free CALL operand+5,rethrow CALL operand+11",
+        "verified_targets": "BF65AC andBF6885 both"
+      },
+      {
+        "native_address": "00c61c30",
+        "canonical_address": "00cbc6d0",
+        "bytes": 17,
+        "differences_confined_to": "placement CALL operand+9",
+        "verified_targets": "00401130 both"
+      }
+    ],
+    "metadata": "full native/canonical FuncInfo,handler record,try block and unwind map read; structural/scalar equivalence with corresponding pointer rebinding",
+    "providers_edited": false
+  },
+  "host_steps": [
+    {
+      "address": "0046a363",
+      "native": "00bf681b",
+      "function": "0046a340",
+      "contract": "full allocator listing read;1Ch raw allocation,actual retry/newhandler/throw service",
+      "binding": "singleton_lifetime_allocate({object,28,28}) through canonicalB1AD10"
+    },
+    {
+      "address": "0046a398",
+      "native": "00469f50",
+      "function": "0046a340",
+      "contract": "full112B listing/bytes equivalent to canonicalB1ACA0,live current constructor cells,RET14",
+      "binding": "construct_native_resource_registry_node_00b1aca0 through canonicalB1AD10"
+    },
+    {
+      "address": "00c61c38",
+      "native": "00401130",
+      "function": "00c61c30",
+      "contract": "body is singleRET;two current cleanup-cell reads,ADDESP8",
+      "binding": "existing canonical current volatile reads,no release/no callback"
+    },
+    {
+      "address": "0046a3b6",
+      "native": "00bf65ac",
+      "function": "0046a3b2",
+      "contract": "live thunk/fullfree listing read;CURRENT cleanup allocation,ADDESP4",
+      "binding": "singleton_lifetime_free currentCRT"
+    },
+    {
+      "address": "0046a3c2",
+      "native": "00bf6885",
+      "function": "0046a3b2",
+      "contract": "full throw listing read;two stackedzeroDWORDs,stdcallRET8 rethrow transport inside active catch",
+      "binding": "canonical catch throw; at currentC++exception boundary"
+    }
+  ],
+  "caller_steps": [
+    {
+      "address": "0046adf4",
+      "native": "0046a340",
+      "function": "0046ad70",
+      "contract": "only live caller;capturespair,head,parent;pushescolor0,pair,head,parent,head;calleeRET14;capturedEAX node afterward;parent implementation outside this packet"
+    }
+  ],
+  "implementation_search": "no unindexed0046A340/newAPI implementation in include/src/tests; exact existing canonicalB1AD10 provider identified and reused",
+  "annotation": {
+    "before_comments": "local/goal_oct15_scene_map_node_allocate_before_comments.json",
+    "before_documentation": "local/goal_oct15_scene_map_node_allocate_before_documentation.json",
+    "preserve_names_comments": true,
+    "locked_apply_save": "passed;local/ghidra-annotations-20261015T201747Z.json;3 prior-value receipts and applied entries;project saved",
+    "refreshed_exports": "passed;all3 owned addresses refreshed --force;readback names/comments preserved",
+    "readback": "local/goal_oct15_scene_map_node_allocate_after_comments.json"
+  },
+  "verification": {
+    "project_program_guard": "bsp.py Client.verify before every live batch;bsp,/battlestationspacific.exe,x86:LE:32:default,image00400000",
+    "live_full_boundaries_listing_bytes_caller_eh_and_concrete_provider_review": "passed",
+    "full_normal_child_catch_placement_equivalence": "passed;non-address bytes equal,call targets decoded,EH scalar/structure match",
+    "verify_report_calls": "passed;6native rows,0 failed;markdown30addresses,1native claim checked,0fail0unchecked0warnings",
+    "strict_win32_build_and_existing_ctest": "passed worker scripts/build.ps1 Release at Source draft6723b0946638e7c20fc17eaa188936327770180d;all3 existing CTests8.10s;primary combined3/3 also8.95s before publication303a0b292",
+    "diff_check": "passed",
+    "new_tests": false,
+    "packet_native_differential": "not run",
+    "game_validation": "not run",
+    "worker_build": {
+      "command": "scripts/build.ps1",
+      "configuration": "Release MSVC Win32 /W4 /WX /fp:strict",
+      "parallel_only_addition": "CL=/MP4",
+      "source_revision": "6723b0946638e7c20fc17eaa188936327770180d",
+      "log": "local/goal_oct15_scene_map_node_allocate_build.log",
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "result": "3/3 pass,0 fail,total8.10s",
+      "packet_native_differential": "not run; existing math differential is unrelated to this new entry"
+    },
+    "primary_build": {
+      "publication_revision": "303a0b29256bfe7df267e1648a949a94cd5934ec",
+      "log": "J:/PROG/battlestations-pacific-decompile-goal_oct15_integrator/local/goal_oct15_insert_combined_build.log",
+      "result": "3/3 existing CTests pass,0 fail,total8.95s",
+      "exact_source_header_and_provider_identity": true,
+      "sha256": {
+        "src/native_scene_record_map_node_allocate.cpp": "9361a634f2c433fd3df5b508210e581cfd7d73ae12f4c67e2d6406aff6c12b04",
+        "include/bsp/native_scene_record_map_node_allocate.hpp": "3ad13215deb9a31cc4be465699a3381f54e62db6f7158480987ff3a199fe340a",
+        "src/native_resource_registry_node_leaves.cpp": "258da80cb7b2d32ad6455f64e1497f6704aff99568baa35bc8343e047acb188b",
+        "include/bsp/native_resource_registry_node_leaves.hpp": "f7edfcc707ce3659be8860a0450b87936bd0866878967f7e6036d310f652a206",
+        "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      }
+    },
+    "compiled_object": {
+      "path": "build/win32/bsp_core.dir/Release/native_scene_record_map_node_allocate.obj",
+      "bytes": 1568,
+      "sha256": "c5c2cc019d5182b3315b5db41bd2ab3036891309385a4770913a16fdd86bba05",
+      "inspection": "dumpbin14.51.36244.0 /DISASM /SYMBOLS /RELOCATIONS",
+      "receipt": "local/goal_oct15_scene_map_node_allocate_object.txt",
+      "entry_code_bytes": 9,
+      "entry_code_hex": "558bec5de900000000",
+      "tail_jump_relative_offset": "04",
+      "rel32_relative_offset": "05",
+      "target": "allocate_native_resource_registry_node_00b1ad10 with the same three typed reference parameters",
+      "argument_cell_snapshot_or_read_before_provider": false,
+      "new_callback_or_guard": false,
+      "native_coff_or_frame_identity": false
+    },
+    "verify_seeds": "passed;all8 seed bodies match installed disk; Source factory native differential not run"
+  },
+  "limits": [
+    "Whole factory and Source placement/catch composition at existing concrete current-CRT/raw-string/current C++ transport boundaries; no new callback or provider edit.",
+    "New explicit live-cell/context/fresh-diagnostic C++ ABI; no original native CRT static exception/global handler/heap/private FH3 frame or binary compatibility claim.",
+    "No partial-key destructor/rollback; mutated current cleanup cell can free a different valid current-domain block. Acquired diagnostics do not assert captured storage was freed.",
+    "Caller tree linking/rebalancing/count/output work, original-native execution and game validation outside this packet."
+  ],
+  "registration": {
+    "status": "registered;one unique append after immediate unleased-owner recheck;own queue removed;no exclusive lease",
+    "file": "cmake/startup.cmake",
+    "line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_scene_record_map_node_allocate.cpp)"
+  }
+}

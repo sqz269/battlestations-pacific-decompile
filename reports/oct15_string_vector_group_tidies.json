@@ -1,0 +1,67 @@
+{
+  "packet": "oct15_string_vector_group_tidies",
+  "status": "complete_actual_header_source_current_cpp_eh_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_string_vector_group_tidies.cpp",
+  "header": "include/bsp/native_string_vector_group_tidies.hpp",
+  "documentation": "docs/OCT15_STRING_VECTOR_GROUP_TIDIES.md",
+  "routines": [
+    {"address": "006a6ce0", "cpp_name": "tidy_native_outer_string_vector_stacked_006a6ce0", "original_abi": "ECX/EDX unconsumed; stacked actual16B outer header; RET4; no semantic result", "coverage": "complete_actual_header_schedule_via_verified0055AFF0_with_distinct_physical_stack_adapter"},
+    {"address": "006a75f0", "cpp_name": "tidy_native_string_vector_group_vector_006a75f0", "original_abi": "ECX actual16B group-vector header, EDX unconsumed; no stacked input; RET; no semantic result", "coverage": "complete_actual_group_vector_captured_range_current_begin_free_ordered_unconditional_clear"},
+    {"address": "006a7960", "cpp_name": "tidy_native_string_vector_group_vector_006a7960", "original_abi": "ECX actual16B group-vector header, EDX unconsumed; no stacked input; RET; no semantic result", "coverage": "complete_actual_group_vector_tidy_via_full_instruction_and_byte_equivalence_with006A75F0"}
+  ],
+  "local_eh": "none; Source adds no catch/retry/rethrow/rollback",
+  "equivalence": {
+    "006a6ce0": {
+      "reuse": "accepted tidy_native_outer_string_vector_0055aff0",
+      "schedule": "capture begin; onlyifnonnull capture end/destroy captured16B inner range with header twice as unused metadata/free CURRENT begin; always clear4/8/C; no write0",
+      "difference": "native stacked-header input and prologue/epilogue versus ECX-header entry; Source retains unused incoming ECX/EDX words and adds context; no private-frame equivalence claim",
+      "complete_bytes": [63, 61]
+    },
+    "006a7960": {
+      "reuse": "complete tidy_native_string_vector_group_vector_006a75f0",
+      "instruction_counts": [21, 21],
+      "complete_bytes": [61, 61],
+      "rel32_operand_byte_offsets": [21, 22, 23, 24, 30, 31, 32, 33],
+      "other_identical_bytes": 53,
+      "unexpected_byte_differences": 0,
+      "decoded_targets_both": ["006a6ee0", "00bf65ac"]
+    }
+  },
+  "group_vector_schedule": "capture begin; onlyifnonnull capture end/destroy captured16B outer range through accepted6A6EE0 with original header twice as dead metadata/free CURRENT begin; always clear4/8/C in order; no write0; no extra guard",
+  "failures": "Current Source C++ failure stops all later cleanup with earlier effects retained; no local catch, retry or rollback; no original fault/handler/unwind-personality equivalence",
+  "incoming": {"006a6ce0": "two catch sites with stacked completed header and dead ECX owner", "006a75f0": "no live xrefs returned, not proof of runtime unreachability", "006a7960": "two unwind tail jumps after owner+30h adjustment; enclosing bodies/maps not promoted"},
+  "host_steps": [
+    {"address": "006a6cf5", "native": "0055a3a0", "function": "006a6ce0", "contract": "captured16B inner-header range, header duplicated as dead metadata"},
+    {"address": "006a6cfe", "native": "00bf65ac", "function": "006a6ce0", "contract": "CURRENT begin free before unconditional clears"},
+    {"address": "006a7604", "native": "006a6ee0", "function": "006a75f0", "contract": "captured16B outer-header range, header duplicated as dead metadata"},
+    {"address": "006a760d", "native": "00bf65ac", "function": "006a75f0", "contract": "CURRENT begin free before unconditional clears"},
+    {"address": "006a7974", "native": "006a6ee0", "function": "006a7960", "contract": "full21instruction equivalence with75F0 range target"},
+    {"address": "006a797d", "native": "00bf65ac", "function": "006a7960", "contract": "full21instruction equivalence with75F0 free target"},
+    {"address": "0055b004", "native": "0055a3a0", "function": "0055aff0", "contract": "accepted complete6CE0 schedule equivalence"},
+    {"address": "0055b00d", "native": "00bf65ac", "function": "0055aff0", "contract": "accepted CURRENT-begin free equivalence"},
+    {"address": "006a6dc3", "native": "006a6ce0", "function": "006a6db0", "contract": "incoming catch stacked-header evidence only"},
+    {"address": "006a700b", "native": "006a6ce0", "function": "006a6ffb", "contract": "incoming catch stacked-header evidence only"},
+    {"address": "00c7f99f", "native": "006a7960", "function": "00c7f999", "kind": "tail_jump", "contract": "incoming owner+30h unwind tail jump only"},
+    {"address": "00c7fa7f", "native": "006a7960", "function": "00c7fa79", "kind": "tail_jump", "contract": "incoming owner+30h unwind tail jump only"}
+  ],
+  "validation": {
+    "win32_release": "passed",
+    "existing_tests": "3/3 passed",
+    "log": "local/oct15_string_vector_group_tidies_build.log",
+    "ctest_seconds": 8.56,
+    "native_transfer_sites": "12 checked (10 CALL, 2 tail JMP), 0 failed",
+    "documentation_transfers": "12 checked, 0 failed, 0 unchecked, 0 warnings",
+    "preexisting_link_warning": "LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj; same preceding group-cleanup warning; unrelated Source unchanged",
+    "new_tests": 0,
+    "complete_entry_bytes": {"006a6ce0": 63, "006a75f0": 61, "006a7960": 61},
+    "complete_instruction_counts": {"006a6ce0": 19, "006a75f0": 21, "006a7960": 21}
+  },
+  "limits": [
+    "Raw context and by-value Source words are not original native entry/stack/private-frame/register ABI.",
+    "Accepted actual raw-pool/current CRT/C++ domain; no native heap/CRT/handler/FH3/SEH/fault or exception personality identity.",
+    "No new group-tidy native differential, failure-injection, original-game or gameplay proof.",
+    "Prior settings projections, host views and fixtures remain unchanged; no enclosing caller/catch/unwind completion promotion."
+  ]
+}

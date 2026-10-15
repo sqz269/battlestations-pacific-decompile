@@ -1,0 +1,260 @@
+{
+  "date": "2026-10-15",
+  "state": "registered_13_routine_batch_build_and_source_fixture_passed",
+  "evidence_root": "J:/PROG/battlestations-pacific-decompile-goal15_integrator",
+  "packets": [
+    {
+      "id": "goal15b_list_tidy",
+      "entries": [
+        "0041d710",
+        "0041e290"
+      ],
+      "state": "registered_build_and_existing_checks_passed",
+      "worker_commit": "d62511b1337445757b27526f6258b22bfb81304b",
+      "report_rows_passed": 8,
+      "markdown_calls_passed": 4,
+      "peer_review": "no findings"
+    },
+    {
+      "id": "goal15b_vector_tidy",
+      "entries": [
+        "0041f950"
+      ],
+      "state": "registered_build_and_existing_checks_passed",
+      "worker_commit": "1e8817340db675ee017ae9070c4236ec50857fe3",
+      "report_rows_passed": 3,
+      "markdown_calls_passed": 3,
+      "peer_review": "no findings"
+    },
+    {
+      "id": "goal15b_grid_byte_vector_resize",
+      "entries": [
+        "004219a0",
+        "00420dd0",
+        "0041d7d0"
+      ],
+      "state": "registered_build_source_fixture_and_owned_byte_comparison_passed",
+      "worker_commit": "6d947352fc0bf06d23da42c9168761bbf5193f5e",
+      "report_rows_passed": 23,
+      "markdown_calls_passed": 0,
+      "peer_review": "no blockers in algorithm, aliases and fixture expectations; max effort ABI/static-byte review complete"
+    },
+    {
+      "id": "goal15b_registry_list_producers",
+      "entries": [
+        "0041bfd0",
+        "0041c1f0",
+        "0041e270"
+      ],
+      "state": "registered_build_and_existing_checks_passed",
+      "worker_commit": "25525297ee71ba3f3feb57dd603674c4024940a1",
+      "report_rows_passed": 8,
+      "markdown_calls_passed": 8,
+      "peer_review": "no findings; deferred payload load and header publication order checked"
+    },
+    {
+      "id": "goal15b_byte_range_primitives",
+      "entries": [
+        "0041f450",
+        "0041c630",
+        "0041c650",
+        "0041e630"
+      ],
+      "state": "registered_build_and_existing_checks_passed_with_shared_public_provider_interface",
+      "worker_commit": "72cb207f9c30d5f39a758378dbcff238173acb32",
+      "report_rows_passed": 9,
+      "markdown_calls_passed": 0,
+      "peer_review": "no findings; optimized per-byte access loops and distinct copy guards checked"
+    }
+  ],
+  "annotation_corrections": [
+    {
+      "address": "00418540",
+      "was": "Hypothesis, not a recovered symbol. docs/CC13_BAND_0040_0044.md. n == 0 -> null; if 0FFFFFFFFh / n == 0 throws std::bad_alloc (00E03CC0) else operator_new(n) (allocator<char>::allocate); caller 00420DD0",
+      "is": "Retain STL_allocator_allocate_00418540. A zero request calls operator_new(0); it does not return a literal null. For nonzero uint32 n, UINT_MAX/n is at least one, so the local allocation-error throw branch is unreachable for those inputs. The call to operator_new(n) can itself fail or throw under its own policy.",
+      "evidence": "00418547 TEST ECX,ECX; 00418549 JA positive; zero XOR ECX; PUSH ECX; CALL 00BF681B at 0041854E; ADD ESP,4; RET4. Positive path OR EAX,FFFFFFFF; XOR EDX,EDX; DIV ECX; CMP EAX,1; JNC 0041854D. Independent full assembly inspection; live body00418540..00418594.",
+      "state": "ledger_corrected_ghidra_comment_applied_and_saved_prior_value_recorded"
+    }
+  ],
+  "cleanup_registered_build": {
+    "command": "./scripts/build.ps1",
+    "result": "pass",
+    "log": "local/goal15b_cleanup_build.log",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "scope": "existing reconstructed_math/native_math_differential/tool_tests, not execution of these new entries"
+  },
+  "cleanup_annotations": {
+    "result": "applied_saved_exports_refreshed",
+    "addresses": [
+      "00418540",
+      "0041d710",
+      "0041e290",
+      "0041f950"
+    ],
+    "prior_values": "local/ghidra-annotations-20261015T194854Z.json"
+  },
+  "resize_registered_build": {
+    "command": "./scripts/build.ps1",
+    "result": "pass",
+    "log": "local/goal15b_merged_final_build.log",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "suites": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "scope": "Existing suites; native_math_differential covers its established seeds, not new-entry Native execution.",
+    "source_revision": "d634d302571ef9b9b7048156c5c24d327b09cfd2",
+    "additional_compiled_registration": {
+      "path": "cmake/startup.cmake",
+      "sha256": "1403246b9e690094bca66b4173358c8bc4a4c65f9b312bff8cceacbd671817d1"
+    }
+  },
+  "provider_registered_build": {
+    "command": "./scripts/build.ps1",
+    "result": "pass",
+    "log": "local/goal15b_providers_build.log",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "new_sources": [
+      "src/native_registry_list_producers.cpp",
+      "src/native_byte_range_primitives.cpp"
+    ]
+  },
+  "provider_annotations": {
+    "result": "applied_saved_exports_refreshed",
+    "addresses": [
+      "0041bfd0",
+      "0041c1f0",
+      "0041e270",
+      "0041f450",
+      "0041c630",
+      "0041c650",
+      "0041e630"
+    ],
+    "prior_values": "local/ghidra-annotations-20261015T200334Z.json"
+  },
+  "new_entry_native_abi_or_gameplay_proof": false,
+  "routine_count": 13,
+  "direct_report_rows_passed": 51,
+  "markdown_call_claims_passed": 15,
+  "resize_annotations": {
+    "result": "applied_saved_exports_refreshed",
+    "addresses": [
+      "004219a0",
+      "00420dd0",
+      "0041d7d0"
+    ],
+    "prior_values": "local/ghidra-annotations-20261015T201000Z.json"
+  },
+  "registered_owned_byte_comparison": {
+    "result": "pass",
+    "object": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\bsp_core.dir\\Release\\native_grid_byte_vector_resize.obj",
+    "object_sha256": "b8c3f1176b92bdf8f0e5eb45a4b0d86fc6b43fbfc026bf894d7c764dc268dda1",
+    "log": "local/goal15b_registered_byte_comparison.log",
+    "tool": "J:/PROG/battlestations-pacific-decompile-goal15_zone_leaf/local/goal15b_compare_owned_bytes.py",
+    "ranges": [
+      {
+        "entry": "004219a0",
+        "bytes": 169,
+        "masked_call_operands": 6
+      },
+      {
+        "entry": "00420dd0",
+        "bytes": 419,
+        "masked_call_operands": 12
+      },
+      {
+        "entry": "0041d7d0",
+        "bytes": 80,
+        "masked_call_operands": 2
+      }
+    ],
+    "unmasked_bytes": "Every other byte equal; no branch/register/immediate differences.",
+    "scope": "Static owned body comparison only; call targets/providers/ABI/Native execution are separate."
+  },
+  "native_capture_disk_comparison": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ranges": [
+      {
+        "entry": "004219a0",
+        "bytes": 169,
+        "matches_disk": true,
+        "range_sha256": "5ff991bb0e9794244dd9bc6097d73756f7fd10c092dfc40d5820477a97b96e7a"
+      },
+      {
+        "entry": "00420dd0",
+        "bytes": 419,
+        "matches_disk": true,
+        "range_sha256": "3d446b3674aff7ff223c78cabf62a7928d2f5a473181b7816340c7f1bd1579f8"
+      },
+      {
+        "entry": "0041d7d0",
+        "bytes": 80,
+        "matches_disk": true,
+        "range_sha256": "42d26ab2f32818166d5e11e55749eb0270fd6108e322c22017ce4d9a71dea0f5"
+      }
+    ],
+    "scope": "Only these three ranges, not whole-image saved-project identity."
+  },
+  "source_fixture": {
+    "kind": "Source-only fixture using real registered bsp_core and current CRT services",
+    "manifest_embedded": true,
+    "exit_code": 0,
+    "stdout": "Source grid-byte-vector fixture: PASS (0 failures)\n",
+    "stderr": "",
+    "objects_and_libraries_sha256": {
+      "J:\\PROG\\battlestations-pacific-decompile-goal15_zone_leaf\\local\\goal15b_grid_byte_vector_probe.cpp": "78f7ef7b1e8a393aaaf584a786c1d456715b142dbe7106ea498cab6f3a596cfe",
+      "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15b_grid_byte_vector_probe.obj": "77d46bb2a9f68cd53a32c21d6019db2b0b95f0a594b72b6a1a49adb777ea66eb",
+      "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15b_grid_byte_vector_probe.exe": "f28405a0660f281e21958582338258a7f69d04752f1e62f0d1afe058406780b1",
+      "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "f9713278ed46f5f438ce9e8c60aa3d79bac90fa0216aef2130e10ce7b84e8bb3",
+      "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+      "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+    },
+    "run_log": "local/goal15b_grid_probe_run.log",
+    "compile_link_log": "local/goal15b_grid_probe_link.log",
+    "compile_flags": "/std:c++17 /EHsc /MD /O2 /W4 /WX /fp:strict; actual integration include directory",
+    "scope": "Current Source resize/insert/erase and four shared primitives; six other batch routines were not fixture-executed.",
+    "exercised": [
+      "initial resize growth",
+      "reallocation with old-data fill alias",
+      "both spare-capacity tail branches with overwritten fill aliases",
+      "checked erase return and tail move",
+      "shrink",
+      "output-iterator/header overlap store order",
+      "valid count-zero header alias",
+      "real Source length_error with unchanged header",
+      "real thread-local returning invalid handler, cached null owner, continuation and handler restoration"
+    ],
+    "static_only": "The otherwise unobservable count-zero input read and unexercised guards are established by static evidence, not this fixture."
+  },
+  "new_committed_test_targets": 0,
+  "ignored_source_fixtures": 1,
+  "next_candidates": [
+    {
+      "entry": "00420140",
+      "note": "List count/length service suggested by producer worker; recheck readiness and leases."
+    },
+    {
+      "entry": "0041e960",
+      "note": "Named-but-incomplete owning geometry cleanup candidate; recheck source status and dependency closure."
+    }
+  ],
+  "remaining_limits": [
+    "Source interfaces and current CRT allocation/error/provider identities are qualified, not original Native identities.",
+    "No production/drop-in Native binding or original-game execution is established for this batch.",
+    "The Source fixture does not execute the six list/settings cleanup and node-construction routines.",
+    "The full continuing reconstruction objective remains unfinished."
+  ],
+  "post_main_merge_validation": {
+    "incoming_sources": 4,
+    "cmake_conflict": "resolved with repository deferred-registration union",
+    "registered_build": "pass",
+    "existing_ctest_suites": "3 passed, 0 failed",
+    "source_fixture_recompiled_and_relinked_to_current_archive": "pass, 0 failures",
+    "registered_coff_comparison": "pass, same 668 bytes with 20 CALL operands masked"
+  }
+}

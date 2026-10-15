@@ -1,0 +1,101 @@
+{
+  "packet": "oct15_group_vector_transfer_services",
+  "status": "complete_actual_header_source_current_cpp_eh_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_group_vector_transfer.cpp",
+  "header": "include/bsp/native_group_vector_transfer.hpp",
+  "documentation": "docs/OCT15_GROUP_VECTOR_TRANSFER.md",
+  "routines": [
+    {"address": "006a6d20", "cpp_name": "transfer_native_group_vector_to_empty_006a6d20", "original_abi": "ECX first, EDX last; stack destination,ownerWord,unusedDuplicate,unusedTag; RET10h/EAX finaldestination; Source adds context", "coverage": "complete_actual16B_outer_header_transfer_including_postcatch_normal_cleanup"},
+    {"address": "006a6db0", "cpp_scope": "transfer_native_group_vector_to_empty_006a6d20 inner catch", "original_abi": "parentEBP with originaldestination-18h,completedend+8,owner+C; no standalone ordinarycall ABI", "coverage": "complete_current_Source_CPP_completedprefix_cleanup_and_rethrow"},
+    {"address": "006a70e0", "cpp_name": "transfer_native_group_vector_dispatch_006a70e0", "original_abi": "ECX receiverWord,EDX unused; stack first,last,destination; RET0Ch; childEAX passes through; Source adds context", "coverage": "complete_actual_transfer_dispatch_and_dead_metadata"},
+    {"address": "006a6e20", "cpp_name": "swap_native_group_vector_backward_006a6e20", "original_abi": "cdecl sixstackwords:first,last,destinationEnd,threeunused; RET; no Source semanticresult; nativeEAX cursorresidue", "coverage": "complete_actual16B_backward_field_swaps_with_exact_read_write_order"},
+    {"address": "006a7110", "cpp_name": "move_native_group_vector_backward_006a7110", "original_abi": "cdecl first,last,destinationEnd; RET/EAX independentlycomputed destination-(SAR4(last-first)<<4)", "coverage": "complete_backward_dispatch_with_dead_ambient_tag_normalized0"}
+  ],
+  "typed_metadata": {
+    "complete": true,
+    "all_owned_entries_are_instructions": true,
+    "no_owned_entry_is_typed_thunk": true,
+    "catch_no_return_flag": false,
+    "catch_flag_qualification": "Full listing ends in rethrow; no metadata/analysis repair or no-return inference applied to Ghidra.",
+    "parent_ranges": [{"start": "006a6d20", "end": "006a6daf", "bytes": 144}, {"start": "006a6dd8", "end": "006a6e12", "bytes": 59}],
+    "parent_body_bytes": 203,
+    "catch_range": {"start": "006a6db0", "end": "006a6dd7", "bytes": 40},
+    "captures": ["local/oct15_group_vector_transfer_typed_flow.json", "local/oct15_group_vector_transfer_actions_typed_flow.json", "local/oct15_group_vector_transfer_instruction_context.json"],
+    "modification_numbers": [223, 242],
+    "each_capture_before_after_equal": true
+  },
+  "disk_live_complete_spans": [
+    {"address": "006a6d20", "bytes": 243, "instruction_starts": 87, "includes_separate_catch": true, "bytes_equal": true, "decode_complete": true, "missing_live_starts": 0, "extra_live_starts": 0},
+    {"address": "006a70e0", "bytes": 37, "instruction_starts": 14, "bytes_equal": true, "decode_complete": true, "missing_live_starts": 0, "extra_live_starts": 0},
+    {"address": "006a6e20", "bytes": 67, "instruction_starts": 26, "bytes_equal": true, "decode_complete": true, "missing_live_starts": 0, "extra_live_starts": 0},
+    {"address": "006a7110", "bytes": 64, "instruction_starts": 29, "bytes_equal": true, "decode_complete": true, "missing_live_starts": 0, "extra_live_starts": 0},
+    {"address": "00c7f530", "bytes": 8, "instruction_starts": 2, "bytes_equal": true, "decode_complete": true, "missing_live_starts": 0, "extra_live_starts": 0},
+    {"address": "00c7f538", "bytes": 17, "instruction_starts": 7, "bytes_equal": true, "decode_complete": true, "missing_live_starts": 0, "extra_live_starts": 0}
+  ],
+  "disk_live_evidence": "local/oct15_group_vector_transfer_evidence.json; ignored local script only compares captured read-only tool output and installed PE disk bytes, not executable probes or new tests",
+  "incoming_typed_evidence": {"capture": "local/oct15_group_vector_transfer_callers_typed_flow.json", "modification_before_after": 248, "sites": ["006a784a", "006a78c2", "006a78d0"], "enclosing_function_all": "006a7690", "qualification": "Current containing-function identity only; no enclosing catch or insertion completeness claim."},
+  "fh3": {
+    "handler": "00c7f549",
+    "func_info": "00dac9cc",
+    "func_info_words": ["19930522", "00000005", "00dac9f0", "00000001", "00dac9b8", "00000000", "00000000", "00000000", "00000001"],
+    "unwind_map": "00dac9f0",
+    "states": [{"state": 0, "to": -1, "action": "00c7f530"}, {"state": 1, "to": 0, "action": null}, {"state": 2, "to": 1, "action": "00c7f538"}, {"state": 3, "to": 1, "action": null}, {"state": 4, "to": 0, "action": null}],
+    "try_map": "00dac9b8",
+    "try_words": ["00000001", "00000003", "00000004", "00000001", "00dac9a8"],
+    "catch_record": "00dac9a8",
+    "catch_words": ["00000040", "00000000", "00000000", "006a6db0"],
+    "temporary_unwind": "00C7F530 LEA ECX,[EBP-30h]; tailJMP0055B110; current temporary fields, accepted complete actual tidy",
+    "placement_delete": "00C7F538 reloads current destination fromEBP-1Ch/-20h, pushes both and invokes RET-only00401130; no Source cleanup synthesized",
+    "source_scope": "Inner catch cleans completed destination prefix and rethrows; outer catch tidies temporary then rethrows; manual normal cleanup executes after both scopes, with no retry. Current Source C++ exceptions only."
+  },
+  "transfer_schedule": {
+    "temporary": "Actual16B private empty header; initialize4/8/C only, opaque0 uninitialized; cachedbegin starts0 and reloads only after successfulnonnull destinationconstructor55B150.",
+    "null_destination": "Skips constructor only; swaps still access header, no added guard.",
+    "swaps": "4:readsource/readDest/writeDest/writeSource;8:readDest/readSource/writeDest/writeSource;C:readSource/readDest/writeDest/advanceDest/writeSource/updateCompleted/advanceSource; no write0.",
+    "normal_cleanup": "State-1 before cleanup; if cachedbegin nonzero destroy cachedbegin..CURRENTtempEnd via55A3A0(temp,finaldest deadwords), then free same cachedbegin. No tidy substitution or second exceptional retry.",
+    "prefix": "Captured originaldestination..completedend, forward16B steps through6CE0(owner,normalizeddeadEDX0,current,ctx), then currentSource rethrow; failed currentctor excluded.",
+    "lower_level_comparison": "Complete6A3200 listing inclnormal tail compared; same instructionshape but ctor557BC0->55B150,prefix559DC0->6CE0,normalrange432050->55A3A0. No Source/projection reuse."
+  },
+  "dispatch": {
+    "006a70e0": "Child first/last from originalstack; stack destination,receiver,destination,receiver&FFFFFF00h; passes through childEAX. Source retains originalreceiver/unusedEDX plus context, excludes privateargument aliases.",
+    "006a6e20": "Sixword cdecl child reads only first3; loads source-12 before dest-12, decrementsboth16, capturescomparison, ordered4/8/C swaps; laterfields readsourcebeforedest. No ctor/destructor/pool/+0 access.",
+    "006a7110": "Original3word cdecl Source; child deadwords dest,dest,0. Native sixthdeadword is saved ambientECX&FFFFFF00h, fullyunconsumed bychild. Source normalization adds no semanticregister input; childEAX ignored; own unsignedSAR4/SHL4 return preserved."
+  },
+  "host_steps": [
+    {"address": "006a6d79", "native": "0055b150", "function": "006a6d20", "contract": "nonnullslot actual outer copy constructor from privateemptyheader"},
+    {"address": "006a6dc3", "native": "006a6ce0", "function": "006a6db0", "contract": "completed destination prefix cleanup"},
+    {"address": "006a6dd3", "native": "00bf6885", "function": "006a6db0", "contract": "native zero/zero rethrow evidence; Source uses current throw"},
+    {"address": "006a6df0", "native": "0055a3a0", "function": "006a6d20", "contract": "cached tempbegin to CURRENTtempend normalcleanup"},
+    {"address": "006a6df6", "native": "00bf65ac", "function": "006a6d20", "contract": "same cachedtempbegin free"},
+    {"address": "006a70fc", "native": "006a6d20", "function": "006a70e0", "contract": "physicaltransfer dispatch and deadmetadata"},
+    {"address": "006a7137", "native": "006a6e20", "function": "006a7110", "contract": "sixword backwardchild,threeignoredtags"},
+    {"address": "00c7f533", "native": "0055b110", "function": "00c7f530", "kind": "tail_jump", "contract": "actual currenttemporary unwind"},
+    {"address": "00c7f540", "native": "00401130", "function": "00c7f538", "contract": "RET-only placementdelete action"},
+    {"address": "00c7f54e", "native": "00bf6b43", "function": "00c7f549", "kind": "tail_jump", "contract": "rawFH3 handler/FuncInfo evidence only,unowned handler unchanged"},
+    {"address": "006a7780", "native": "006a6d20", "function": "006a7690", "contract": "incoming physicalcaller evidence only"},
+    {"address": "006a77ac", "native": "006a6d20", "function": "006a7690", "contract": "incoming physicalcaller evidence only"},
+    {"address": "006a784a", "native": "006a70e0", "function": "006a7690", "contract": "incoming site in current enclosing function; no enclosing catch/insert completion claim"},
+    {"address": "006a78c2", "native": "006a70e0", "function": "006a7690", "contract": "incoming site in current enclosing function; no enclosing catch/insert completion claim"},
+    {"address": "006a78d0", "native": "006a7110", "function": "006a7690", "contract": "incoming threewordcdecl evidence only; current enclosingfunction identity"}
+  ],
+  "validation": {
+    "win32_release": "passed",
+    "existing_tests": "3/3 passed",
+    "ctest_seconds": 9.04,
+    "log": "local/oct15_group_vector_transfer_build.log",
+    "report_transfers": "15 checked (13 CALL,2 tail JMP),0failed",
+    "documentation_transfers": "15 checked,0failed,0unchecked,0warnings",
+    "preexisting_link_warning": "LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj; same preceding packet warning; unrelated Source unchanged",
+    "new_tests": 0,
+    "ghidra_mutations": false
+  },
+  "limits": [
+    "Added raw context/by-value interfaces are not original native entry/stack/private-frame/register ABI; ambientdeadtag normalized0 and native registerresidue excluded.",
+    "Accepted actual raw-pool/current CRT/C++ domain only; original heap/CRT/handler/FH3/SEH/fault/exception identity and cleanup-failurepersonality not established.",
+    "Private temporary/stack aliases excluded; currentSource cleanup failures may replace prior exceptions. No retry/rollback or fabricated callbacks/allocator/container model.",
+    "Prior settings projections/hostviews/fixtures remain separate; no enclosing insertion/catch/unwind caller completion promotion.",
+    "No new native differential, failure-injection, original-game or gameplay proof."
+  ]
+}

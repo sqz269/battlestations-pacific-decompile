@@ -1,0 +1,306 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_map_pair",
+  "worker": "agent/goal_oct15_copy",
+  "base_commit": "c4b098b4e9d47fb05b46c00f0ed88155d0b4ca3b",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis_and_export": true,
+  "source": "src/native_scene_record_map_pair.cpp",
+  "header": "include/bsp/native_scene_record_map_pair.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_MAP_PAIR.md",
+  "owned_addresses": [
+    "00469980",
+    "00469a20",
+    "00469fc0",
+    "00c61be0",
+    "00c61be8"
+  ],
+  "status": "actual_storage_complete_source_combined_strict_win32_ctest_and_compiled_integer_cleanup_checked",
+  "routines": [
+    {
+      "address": "00469980",
+      "body_end_inclusive": "004699c7",
+      "body_bytes": 72,
+      "instructions": 28,
+      "coverage": "complete",
+      "implementation": "copy_construct_native_scene_record_map_pair_00469980",
+      "retained_name": "STL_PairNativeStringPtr_CopyConstruct_00469980",
+      "original_abi": "ECX actual destination12B; stack source12B; EAX destination; RET4",
+      "live_xrefs": []
+    },
+    {
+      "address": "00469a20",
+      "body_end_inclusive": "00469a67",
+      "body_bytes": 72,
+      "instructions": 28,
+      "coverage": "complete",
+      "implementation": "copy_construct_native_scene_record_map_pair_00469a20",
+      "retained_name": "STL_PairNativeStringPtr_CopyConstruct",
+      "original_abi": "ECX actual destination12B; stack source12B; EAX destination; RET4",
+      "live_xrefs": [
+        "0046d73e"
+      ]
+    },
+    {
+      "address": "00469fc0",
+      "body_end_inclusive": "0046a060",
+      "body_bytes": 161,
+      "instructions": 56,
+      "coverage": "complete_at_concrete_raw_storage_and_cpp_unwind_boundaries",
+      "implementation": "construct_native_scene_record_map_pair_00469fc0",
+      "retained_name": "STL_PairNativeStringPtr_Construct",
+      "original_abi": "__fastcall ECX actual destination12B,EDX mappedDWORD; stacked BY-VALUE8B key length/data; EAX destination; RET8",
+      "live_xrefs": [
+        "0046d729"
+      ]
+    },
+    {
+      "address": "00c61be0",
+      "body_end_inclusive": "00c61be7",
+      "body_bytes": 8,
+      "instructions": 2,
+      "coverage": "complete_source_unwind_scope_not_native_frame_entry",
+      "implementation": "unwind_scene_map_pair_key_00c61be0",
+      "retained_name": "Unwind@00c61be0",
+      "original_abi": "native EH virtualEBP+4 actual by-value key cell; tail jump0041DD20; Source passes cell explicitly during true unwind"
+    },
+    {
+      "address": "00c61be8",
+      "body_end_inclusive": "00c61c00",
+      "body_bytes": 25,
+      "instructions": 7,
+      "coverage": "complete_source_unwind_scope_not_native_frame_entry",
+      "implementation": "unwind_scene_map_pair_output_00c61be8",
+      "retained_name": "Unwind@00c61be8",
+      "original_abi": "native EH virtualEBP-14h flag bit0,EBP-10h output; clears bit before tail jump00468B30; Source private cleanup scope"
+    }
+  ],
+  "copy_schedule": {
+    "prefix": "raw00426060 matches compare,clear+0/+4 before identity branch,source length capture,resize(preserve1),current source length guard,current destination count/source data/destination data",
+    "tail": "late integer DWORD load source+8 then store destination+8, including self/empty",
+    "word_load_bytes": "8b4f08 at004699BB and00469A5B",
+    "word_store_bytes": "894e08 at004699BF and00469A5F",
+    "numeric_or_x87_conversion": false,
+    "initial_copy_cleanup": false
+  },
+  "consuming_constructor": {
+    "actual_parameter_cell": "caller-supplied actual callee-owned8B key storage; Source receives its address, no owner snapshot",
+    "mapped_capture": "00469FE0 EBX=EDX; caller maps record pointer or0",
+    "first_capture": "00469FEA EDI=key.data",
+    "second_capture": "00469FEE EBP=key.length",
+    "destination_clear": [
+      "00469FF2 length0",
+      "00469FF4 data0"
+    ],
+    "identity_compare": "00469FFB destination versus actual stacked-key ADDRESS, after clear",
+    "state1_arm": "00469FFD before resize",
+    "resize": "captured EBP length,preserve1",
+    "nonempty_guard": "0046A00F tests captured EBP, not current parameter header",
+    "copy": "CURRENT destination length/data from captured EDI; overlap-safe BF7680",
+    "mapped_store": "0046A023 destination+8=EBX",
+    "output_completion_flag": "0046A028=1 after mapped store",
+    "state0_transition": "0046A030 BEFORE normal parameter-buffer return",
+    "normal_return": "if captured EDI nonnull, raw00419CC0 then00BD1510(captured EDI,captured EBP+1 wrap,1); no parameter-header reload or clear",
+    "normal_cell_disposition": "caller discards cell without another destructor; its unchanged bytes can reference returned storage",
+    "identity_effect": "header still cleared, mapped stored, captured original parameter buffer returned",
+    "uses_copy00426060_for_consuming_constructor": false
+  },
+  "eh": {
+    "handler_read_only": "00c61c01",
+    "funcinfo_read_only": "00d892a0",
+    "magic": "19930522",
+    "max_state": 2,
+    "unwind_map": "00d89290",
+    "try_blocks": 0,
+    "eh_flags": 1,
+    "actions": [
+      {
+        "state": 1,
+        "to": 0,
+        "action": "00c61be0",
+        "effect": "destroy CURRENT actual parameter header through raw0041DD20"
+      },
+      {
+        "state": 0,
+        "to": -1,
+        "action": "00c61be8",
+        "effect": "if completed, clear output flag before destroy CURRENT actual output via raw canonical0041DD20, identical to00468B30"
+      }
+    ],
+    "initial_key_failure": "current parameter cleanup; output incomplete, no partial output release",
+    "normal_parameter_return_failure": "output cleanup only, parameter return not retried",
+    "source_mechanism": "noexcept RAII destructor during true C++ unwinding; propagating first getter exception; second cleanup exception terminates before later actions",
+    "native_fh3_seh_private_frame_resumption_identity": false
+  },
+  "host_steps": [
+    {
+      "address": "0046999e",
+      "native": "0041dd40",
+      "function": "00469980",
+      "contract": "callee body read; raw actual-header resize captured source length,preserve1",
+      "binding": "raw00426060 helper"
+    },
+    {
+      "address": "004699b3",
+      "native": "00bf7680",
+      "function": "00469980",
+      "contract": "callee body read; live destination count/source data/destination data,overlap-safe",
+      "binding": "raw00426060 helper"
+    },
+    {
+      "address": "00469a3e",
+      "native": "0041dd40",
+      "function": "00469a20",
+      "contract": "same actual resize",
+      "binding": "raw00426060 helper"
+    },
+    {
+      "address": "00469a53",
+      "native": "00bf7680",
+      "function": "00469a20",
+      "contract": "same current-field overlap-safe copy",
+      "binding": "raw00426060 helper"
+    },
+    {
+      "address": "0046a00a",
+      "native": "0041dd40",
+      "function": "00469fc0",
+      "contract": "captured length,preserve1; no current-parameter reload",
+      "binding": "resize_native_string_header_0041dd40 raw context"
+    },
+    {
+      "address": "0046a01b",
+      "native": "00bf7680",
+      "function": "00469fc0",
+      "contract": "current destination length/data,captured source data",
+      "binding": "std::memmove at accepted BF7680 boundary; zero count omitted after field reads"
+    },
+    {
+      "address": "0046a03e",
+      "native": "00419cc0",
+      "function": "00469fc0",
+      "contract": "callee body read; getter before EVERY nonnull captured parameter return, no stacked arguments consumed",
+      "binding": "native_string_pool_get_or_create_00419cc0 raw manager/publication"
+    },
+    {
+      "address": "0046a045",
+      "native": "00bd1510",
+      "function": "00469fc0",
+      "contract": "callee full listing read; pool, captured data and captured length+1, unused1; RET0C",
+      "binding": "return_native_string_pool_00bd1510 with actual return gate"
+    },
+    {
+      "address": "00c61be3",
+      "native": "0041dd20",
+      "function": "00c61be0",
+      "kind": "tail_jump",
+      "contract": "callee full listing read; current actual parameter header",
+      "binding": "destroy_native_string_header_0041dd20 raw context"
+    },
+    {
+      "address": "00c61bfb",
+      "native": "00468b30",
+      "function": "00c61be8",
+      "kind": "tail_jump",
+      "contract": "callee full listing read; instruction-identical to0041DD20; current output after flag clear",
+      "binding": "canonical destroy_native_string_header_0041dd20 raw context"
+    }
+  ],
+  "caller_steps": [
+    {
+      "address": "0046d71b",
+      "native": "0041e870",
+      "function": "0046cf40",
+      "contract": "construct actual by-value key in caller's SUBESP8 slot before pair entry"
+    },
+    {
+      "address": "0046d729",
+      "native": "00469fc0",
+      "function": "0046cf40",
+      "contract": "ECX actual pair,EDX constructed record or0,actual by-value8B key; RET8"
+    },
+    {
+      "address": "0046d73e",
+      "native": "00469a20",
+      "function": "0046cf40",
+      "contract": "ECX second pair,stack returned first pair pointer; RET4"
+    }
+  ],
+  "implementation_search": "no owned-address implementation in include/src/tests/CMake; existing scene_record_map source injects semantic host and only comments these pair helpers",
+  "layout_reconciliation": "existing scene_record_map.hpp has key+0/+4,mapped+8,size12; producer MOV stores confirm; Source uses actual bytes without duplicate overlay type",
+  "annotation": {
+    "before_comments": "local/goal_oct15_scene_map_pair_before_comments.json",
+    "before_documentation": "local/goal_oct15_scene_map_pair_before_documentation.json",
+    "before_funclet_comments": "local/goal_oct15_scene_map_pair_before_funclet_comments.json",
+    "before_funclet_documentation": "local/goal_oct15_scene_map_pair_before_funclet_documentation.json",
+    "preserve_names_and_comments": true,
+    "locked_apply_saved": "passed; tools/ghidra_annotate.py --apply; local/ghidra-annotations-20261015T195118Z.json;5 applied changes with prior values recorded; project saved",
+    "refreshed_exports": "passed; all5 owned functions --force through verified bsp target",
+    "readback": "local/goal_oct15_scene_map_pair_after_comments.json;5 previous names and comment prefixes preserved",
+    "final_locked_apply_saved": "passed;local/ghidra-annotations-20261015T195841Z.json;5 prior-value receipts,5 applied,project saved; all5 owned exports refreshed",
+    "final_readback": "local/goal_oct15_scene_map_pair_final_comments.json; all5 initial names/comments retained; final combined-build/compiler evidence appended"
+  },
+  "verification": {
+    "live_project_program_guard": "bsp.py Client.verify before every live batch; bsp,/battlestationspacific.exe,x86:LE:32:default,image00400000",
+    "live_boundaries_bytes_assembly_xrefs_caller_setup_and_eh": "passed",
+    "verify_report_calls": "passed;13 native call/tail-jump rows,0 failed; markdown56 addresses,0 failed,0 unchecked,0 warnings",
+    "strict_win32_build_and_existing_ctest": "passed in primary combined scripts/build.ps1 Release at026da884ef927effb85f118488357a83634eff48;all3 existing CTests pass8.72s; exact Source/header byte identity verified",
+    "diff_check": "passed",
+    "new_tests_added": false,
+    "packet_native_differential": "not run",
+    "game_validation": "not run",
+    "worker_local_build": "canceled duplicate fresh worker run after primary combined pass; not a worker-local build pass",
+    "verify_seeds": "passed;all8 seed bodies match installed disk; no new pair differential claimed",
+    "combined_build": {
+      "revision": "026da884ef927effb85f118488357a83634eff48",
+      "command": "scripts/build.ps1",
+      "configuration": "Release MSVC Win32 /W4 /WX /fp:strict",
+      "parallel_only_addition": "CL=/MP4",
+      "log": "J:/PROG/battlestations-pacific-decompile-goal_oct15_integrator/local/goal_oct15_scene_map_combined_build.log",
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "result": "3/3 pass,0 fail,total8.72s",
+      "pair_native_differential": "not run; existing native_math_differential exercises other routines",
+      "source_sha256": "76428fe198cb7123f63f733a1d2d217d40d47f87a2daf2d653e4f96ed5db5f4e",
+      "header_sha256": "188990893827b91e7bb2d642087c945408a2d95e3a339e4d20a60687f14a9cab",
+      "exact_source_header_identity_checked": true
+    },
+    "compiled_object": {
+      "path": "J:/PROG/battlestations-pacific-decompile-goal_oct15_integrator/build/win32/bsp_core.dir/Release/native_scene_record_map_pair.obj",
+      "sha256": "6b2a4efc806e469b44de7e07f606a152ffdd97ad59e4a6ceda7e5b90c340f631",
+      "bytes": 5784,
+      "inspection": "dumpbin14.51.36244.0 /DISASM /SYMBOLS /RELOCATIONS",
+      "receipt": "local/goal_oct15_scene_map_pair_object.txt",
+      "integer_suffix": "both public copy wrappers: raw header dependency+10,late source DWORD8B4E08+15,destination DWORD894F08+1B;36-byte cdecl wrappers; no x87/SSE scalar conversion in object",
+      "constructor_captures": "key.data+34,key.length+37 before output clear+3F/+45; data saved in private slot,lengthESI; captured normal source/return retained",
+      "completion_and_normal_return": "mapped DWORD store+91; state bytes+94 parameter0/output1 before raw getter+A2/sized return+AF",
+      "cpp_unwind": "constructor unwind action dispatches RAII destructor; parameter flag/current key call+37 before output flag; output flag clear+4D before current output call+51; EH metadata relocation __std_terminate",
+      "source_abi": "__cdecl copies stack(dest,source,context),ctor stack(dest,mappedDWORD,actual_parameter_cell,context),EAX destination,RET; separate from original thiscall/fastcall RET4/RET8 and native EH frames",
+      "native_private_frame_identity": false
+    }
+  },
+  "limits": [
+    "Whole actual storage Source at accepted concrete raw string/pool and valid access/ownership domains; new C++ context/parameter-cell ABI.",
+    "Private Source unwind scopes preserve current-cell reads and true C++ unwind sequencing, not original native FH3/SEH/frame ABI.",
+    "No callback/stub/provider edits, mapped-record destruction, owner snapshot, caller adoption, native differential or gameplay claim."
+  ],
+  "coverage_totals": {
+    "normal_bodies": 3,
+    "normal_bytes": 305,
+    "normal_instructions": 112,
+    "private_unwind_scopes": 2,
+    "unwind_bytes": 33,
+    "unwind_instructions": 9
+  },
+  "corrections": [
+    {
+      "was": "prior pair constructor evidence described deep copy and consuming the by-value key without separating capture/current-cell schedules",
+      "is": "normal resize/guard/copy-source/return use pre-clear captures; initial unwind uses CURRENT actual key and post-completion normal-return failure uses CURRENT output without parameter retry",
+      "evidence": "00469FEA/FEEnativecaptures,0046A00Fcapturedguard,0046A03DcapturedEDIreturn,FuncInfoD892A0/unwindmapD89290/C61BE0/C61BE8"
+    }
+  ]
+}

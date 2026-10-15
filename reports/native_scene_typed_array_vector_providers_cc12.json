@@ -1,0 +1,288 @@
+{
+  "schema": "bsp.cc12.native-scene-typed-array-vector-providers.v1",
+  "status": "whole_ordinary_Source_worker_strict_and_normal_build_passed_Root_independent_and_Main_admission_pending",
+  "addresses": [
+    "008F3590",
+    "008F3610",
+    "008F3690"
+  ],
+  "Source_ready": true,
+  "Source_admission_credit": 0,
+  "Root_independent_admission_pending": true,
+  "worker_base_commit": "e685f0fec",
+  "previous_packet_preserved_and_integrated": "029dc81d312b61cd2867d36225ea657c1cf25116",
+  "source_files": [
+    "include/bsp/native_scene_typed_array_vector_providers.hpp",
+    "src/native_scene_typed_array_vector_providers.cpp",
+    "docs/NATIVE_SCENE_TYPED_ARRAY_VECTOR_PROVIDERS_CC12.md",
+    "reports/native_scene_typed_array_vector_providers_cc12.json"
+  ],
+  "Source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\src\\native_scene_typed_array_vector_providers.cpp",
+    "bytes": 2362,
+    "sha256": "0cd720dfeeef667e4b3055679b9ed3964a908da16cdfb11af2ce5622ebb5efc8"
+  },
+  "header": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\include\\bsp\\native_scene_typed_array_vector_providers.hpp",
+    "bytes": 4798,
+    "sha256": "15644c1d0357f94a3827beeca3003564cbb94087f00657daad236b756fe29145"
+  },
+  "document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\docs\\NATIVE_SCENE_TYPED_ARRAY_VECTOR_PROVIDERS_CC12.md",
+    "bytes": 7565,
+    "sha256": "aab10fccc945cf7ce65fcfc67043a266c96449b95f9f595293addeb394c0c970"
+  },
+  "Original": {
+    "total_bytes": 345,
+    "instructions": 113,
+    "direct_CALL_sites": 9,
+    "unique_immediate_targets": [
+      "008EF3E0",
+      "008EF460",
+      "008F33F0",
+      "00BF681B"
+    ],
+    "indirect_calls": 0,
+    "x87_instructions": 0,
+    "bodies": [
+      {
+        "address": "008F3590",
+        "end_exclusive": "008F3604",
+        "bytes": 116,
+        "instructions": 36,
+        "transport": "ECXbag; stackkey/data/count/FULLDWORDflags; RET10h; EAXbag"
+      },
+      {
+        "address": "008F3610",
+        "end_exclusive": "008F3684",
+        "bytes": 116,
+        "instructions": 36,
+        "transport": "ECXbag; stackkey/data/count/FULLDWORDflags; RET10h; EAXbag"
+      },
+      {
+        "address": "008F3690",
+        "end_exclusive": "008F3701",
+        "bytes": 113,
+        "instructions": 41,
+        "transport": "ECXbag; stackkey/borrowed12Binput; RET8; EAXbag"
+      }
+    ],
+    "disk_live_export_bodies_equal": true,
+    "descriptive_names_are_hypotheses": true,
+    "cached_void_noarg_prototypes_not_treated_as_ABI": true,
+    "frozen_whole_inventory": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedArrayVectorProvidersSource01\\frozen_readiness\\complete_Original_bodies.DATA.json",
+      "bytes": 20147,
+      "sha256": "d1d69f9241c8e849016eaf5840f6139eb1835bef5d7511c76bb4ab08be15336e"
+    },
+    "EH": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedArrayVectorProvidersSource01\\Original_EH_review.DATA.json",
+      "bytes": 10241,
+      "sha256": "19be545a1d695d3f9b64fa39bcdbec0abdc754c7d4b847cdbee9a4689bd430d7"
+    }
+  },
+  "provider_contract": {
+    "allocation": "Genuine canonical singleton_lifetime_allocate({object,38h,38h}); current malloc/new-handler service boundary.",
+    "arrays": "Whole raw8EF3E0/type10 and8EF460/type11 receive count,data,FULLDWORDflags. No bool narrowing; lowBYTE0 retains even with nonzero upperbits. Positive counts and exact4*count/12*count stable nonwrapping spans under accepted raw-provider bounds. Raw constructors preserve27bytes including+30; no rootzero-fill.",
+    "scalar": "Explicit new Source reuse of accepted whole8EF270 where Original3690 inlines it. Exact45written/11preserved bytes and ordered memory effects; three opaqueDWORD copies, no float semantics. Additional call/return and scratchregister/staging differences documented for disjoint ordinarydomain.",
+    "type7_reuse": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedArrayVectorProvidersSource01\\type7_reuse_static_review.DATA.json",
+      "bytes": 1689,
+      "sha256": "7c22935c149fae3918722f1d63a85990e05fab045bfa06b6ff3c6447a65a0de8"
+    },
+    "publication": "Whole008F33F0 uses existing genuine actualbag/key/context; retains Original nullallocation-to-insertion path with no recovery. Actualbag result returned.",
+    "same_process_domain": "Actual114hraw61bag/map+4, same retained canonical string/physical processes, E175B0 pool/E188B4 allocator-list and E177E4/E17654 raw-key fallback authorities. Explicit startup before context; no wrapper/app/global autostart."
+  },
+  "ownership": {
+    "copy_branch": "Fresh owning child/root transfer on successful map publication; original input remains caller-owned.",
+    "retained_array": "Input already is a unique genuine same-currentCRT allocation; caller manages through construction, explicitly transfers withroot on successfulpublication. Raw retention ctor itself grants no transfer. No borrowed/stack/static/shared/foreign owningpayload.",
+    "release": "Tag10/11 lifetime unconditionally frees any nonnull storedarray pointer regardless ofcopyflag/+2C; bit+2C is1 in bothbranches. Retire child/root exactlyonce through existing lifetime context.",
+    "scalar_input": "Borrowed stable12B; only lane bits copied into root; pointer neverretained/freed/transferred. Tag7 has no owned inputchild.",
+    "graphs": "Finite unique unshared acyclic, incomingdisjointfromreplaced/key/query/map/node/frame; sameheap and livepoolgeneration/cells/list; external commonlist mutationserialization and retirepayloads/keys/nodes beforepoolteardown."
+  },
+  "strict_compile": {
+    "first_only": true,
+    "tool": "2f4341/exit0",
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedArrayVectorProvidersSource01\\native_scene_typed_array_vector_providers.obj",
+      "bytes": 2787,
+      "sha256": "5cad4a34b34f3a98733954bb2f22b01e711890028e7f58aaa6ea2e156d60c165"
+    },
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedArrayVectorProvidersSource01\\strict_compile.log",
+      "bytes": 1147,
+      "sha256": "08b01376905c3dbb07710dc8b4528103e28a6b1783adc8fdb870dcc5966fd021"
+    },
+    "settings": "/std:c++17 /MD /O2 /Ob2 /Oy- /W4 /WX /EHsc /Gy /GL- /fp:strict",
+    "warning_or_error": false
+  },
+  "complete_COFF": {
+    "sections": 7,
+    "symbol_indices_including_aux": 27,
+    "code_sections": 3,
+    "code_bytes": 378,
+    "instructions": 141,
+    "code_relocations": 15,
+    "metadata_relocations": 0,
+    "all_code_data_metadata_directives_symbols_relocations_and_file_bytes_reviewed": true,
+    "all2787_file_bytes_accounted": true,
+    "complete_report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedArrayVectorProvidersSource01\\complete_COFF.DATA.json",
+      "bytes": 55719,
+      "sha256": "840ec4651d3cbcc5f91c7d8d3c7fc73fae37ee4bebabec2b239265b210e4187d"
+    },
+    "complete_binary_audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedArrayVectorProvidersSource01\\complete_COFF_binary_audit.DATA.json",
+      "bytes": 12387,
+      "sha256": "63ceb55dcaf57bed63702c59f120c12160101e9bc5207f33f13f0d2086b19971"
+    },
+    "directives_literal": "   /FAILIFMISMATCH:\"_MSC_VER=1900\" /FAILIFMISMATCH:\"_ITERATOR_DEBUG_LEVEL=0\" /FAILIFMISMATCH:\"RuntimeLibrary=MD_DynamicRelease\" /DEFAULTLIB:\"msvcprt\" /FAILIFMISMATCH:\"_CRT_STDIO_ISO_WIDE_SPECIFIERS=0\" /alternatename:__Avx2WmemEnabled=__Avx2WmemEnabledWeakValue /DEFAULTLIB:\"MSVCRT\" /DEFAULTLIB:\"OLDNAMES\" ",
+    "all_undefined_bindings": [
+      {
+        "index": 15,
+        "name": "?insert_native_scene_property_bag_008f33f0@bsp@@YAPAXPAXPBD0AAVNativeScenePropertyInsertionContext@1@@Z",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_hex": ""
+      },
+      {
+        "index": 19,
+        "name": "?construct_native_scene_property_record_type10_raw_array_storage_008ef3e0@bsp@@YIPAXPAX0IPBXI@Z",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_hex": ""
+      },
+      {
+        "index": 20,
+        "name": "?construct_native_scene_property_record_type11_raw_array_storage_008ef460@bsp@@YIPAXPAX0IPBXI@Z",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_hex": ""
+      },
+      {
+        "index": 21,
+        "name": "?construct_native_scene_property_record_type7_storage_008ef270@bsp@@YIPAXPAX0PBX@Z",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_hex": ""
+      },
+      {
+        "index": 22,
+        "name": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_hex": ""
+      },
+      {
+        "index": 23,
+        "name": "@__security_check_cookie@4",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_hex": ""
+      },
+      {
+        "index": 24,
+        "name": "___security_cookie",
+        "value": 0,
+        "section": 0,
+        "type": 0,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_hex": ""
+      }
+    ]
+  },
+  "complete_Source_strict_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedArrayVectorProvidersSource01\\complete_strict_review.DATA.json",
+    "bytes": 51991,
+    "sha256": "44d5cf161995724cb3fc4b063e51909e3189865f930fca5cf4fa07422ed406a5"
+  },
+  "normal_repository_build": {
+    "original_launch": "6ca04e/session57901",
+    "natural_terminal": "9575c9/exit0",
+    "existing_checks": 2,
+    "seconds": 7.7,
+    "unregistered_new_TU": true,
+    "strict_compile_is_separate": true,
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedArrayVectorProvidersSource01\\normal_build.log",
+      "bytes": 3853,
+      "sha256": "8f970196f958343077f398012ea482942840102ed16c1d1028b77df1b8641ebd"
+    },
+    "unrelated_existing_warning": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\build\\win32\\bsp_core.vcxproj]"
+    ]
+  },
+  "exact_inputs": {
+    "precompile": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedArrayVectorProvidersSource01\\precompile_inputs.DATA.json",
+      "bytes": 25987,
+      "sha256": "de2da22c10120de0d1054f96411b0970560d7931fde42115fc4af7c14b5c1eae"
+    },
+    "accepted_providers": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedArrayVectorProvidersSource01\\provider_inputs.DATA.json",
+      "bytes": 19332,
+      "sha256": "5323c36a86b1d037ac2e098ffda42c72dc2aab8759b822bd5b691fe55a81216a"
+    },
+    "compiler_declared": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedArrayVectorProvidersSource01\\compiler_declared_inputs.DATA.json",
+      "bytes": 23637,
+      "sha256": "76b8e22225d2ac76fdc35d988fe5e11adb46493851125cbe93f2032f73105762"
+    },
+    "frozen45file_readiness": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedArrayVectorProvidersSource01\\frozen_readiness_copy.DATA.json",
+      "bytes": 30994,
+      "sha256": "ec1e98e0c22cef1c91130062f899c08f7b68eab7060fa26a1e99c9e40608a19d"
+    }
+  },
+  "original_tool_objects": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedArrayVectorProvidersSource01\\original_tool_receipts.DATA.json",
+    "bytes": 524,
+    "sha256": "2cb4669604678fcd752bc247af9d82af905076c90fc2e9f697f1952e220e45a8"
+  },
+  "original_raw_rollout_provenance": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedArrayVectorProvidersSource01\\original_tool_provenance.DATA.json",
+    "bytes": 9676,
+    "sha256": "510c18335e0920c9678fd29e99832b562141741e301d1ec2f33461f62d993b0a"
+  },
+  "new_TU_intentionally_unregistered": true,
+  "Root_owns_registration_metadata_analysis_and_Main_gate": true,
+  "evidence_limits": [
+    "New context-bearing C++ interfaces; Original ECX/RET/register/FS/EH/class ABI not supplied.",
+    "Current /MD provider boundary only; no historical privateCRT/FP/error-state/exception-unwind parity.",
+    "No native constructor-unwind free, exception cleanup, rollback, new ownership default or transactional recovery.",
+    "Ordinary successful nonthrowing valid/disjoint/live-provider domain; zero-size, overflow, OOM, invalidmemory, aliasing, reentry and concurrentmutation excluded by existing contracts.",
+    "No whole8F5A00 parser/loader, fakeclass/owner/callback, application startup/global binding, runtime/game or Source ABI admission credit from static/build evidence."
+  ],
+  "performed": {
+    "Source_reconstruction": true,
+    "complete_static_COFF_review": true,
+    "strict_compile_invocations": 1,
+    "normal_build_invocations": 1,
+    "new_tests": 0,
+    "ad_hoc_probes": 0,
+    "runtime_replay": false,
+    "game_launch": false,
+    "existing_Source_shared_CMake_ledger_Ghidra_app_edits": false,
+    "subagents": false
+  },
+  "final_local_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedArrayVectorProvidersSource01\\family_receipt.DATA.json"
+}

@@ -1,0 +1,171 @@
+{
+  "packet": "goal_oct15_scene_map_rotations",
+  "status": "complete_actual_raw_rotations_win32_build_and_two_enabled_existing_tests_passed",
+  "source_ready": true,
+  "source": "src/native_scene_record_map_rotations.cpp",
+  "header": "include/bsp/native_scene_record_map_rotations.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_MAP_ROTATIONS.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Every live bsp.py client verifies expected project/program/x86 language/image base before batch",
+    "annotation": "Applied under ghidra_annotate write lock; correct existing names preserved, prior values recorded in annotation_history/local log, project saved, both exports refreshed"
+  },
+  "readiness": {
+    "indexed_reconstruction_before_packet": false,
+    "existing_source_search": "no owned rotation implementation under either address or related spelling",
+    "dependencies": "none: neither native body has a callee; no host/provider/callback/allocator stand-in"
+  },
+  "routines": [
+    {
+      "address": "00467620",
+      "name": "rotate_left_native_scene_record_map_00467620",
+      "native_name_preserved": "STL_Tree_Rotate_00467620",
+      "body": "00467620-0046766d",
+      "native_bytes": 78,
+      "original_bytes_hex": "8b5424048b4208568b308972088b30807e190075038956048b72048970048b49043b51045e750b8941048910894204c204008b4a043b11750a89018910894204c204008941088910894204c20400",
+      "coverage": "complete_actual_storage_Source_with_private_frame_binary_ABI_qualifications",
+      "original_abi": "ECX actual map; incoming EDX unused; stack pivot pointer; all paths RET4; no semantic result. Native EAX retains promoted node but all known callers ignore it. Source fastcall explicit unused EDX retains physical slots without binary ABI claim.",
+      "interpretation": "Left rotation, descriptive hypothesis from actual links and producer/callers; established STL native name retained",
+      "schedule": "Capture pivot+8 promoted; read promoted+0, write pivot+8, REREAD promoted+0; test reread child+19 and only if zero write child+4=pivot. Read CURRENT pivot+4, publish promoted+4, THEN load CURRENT map+4 head/root. Root publishes captured head+4=promoted; nonroot rereads CURRENT pivot+4 and tests its current left+0, publishing parent+0 if equal or parent+8 otherwise. Finally ordered promoted+0=pivot then pivot+4=promoted.",
+      "host_steps": [],
+      "original_bytes_sha256": "0439f0befe0245fd4352ce96b0a1925cf906071c3d97d0d6b31232037d4a02b4"
+    },
+    {
+      "address": "00467670",
+      "name": "rotate_right_native_scene_record_map_00467670",
+      "native_name_preserved": "STL_Tree_Rotate_00467670",
+      "body": "00467670-004676c1",
+      "native_bytes": 82,
+      "original_bytes_hex": "8b5424048b02568b700889328b7008807e190075038956048b72048970048b49043b51045e750c894104895008894204c204008b4a043b5108750c894108895008894204c204008901895008894204c20400",
+      "coverage": "complete_actual_storage_Source_with_private_frame_binary_ABI_qualifications",
+      "original_abi": "ECX actual map; incoming EDX unused; stack pivot pointer; all paths RET4; no semantic result. Native EAX retains promoted node but all known callers ignore it. Source fastcall explicit unused EDX retains physical slots without binary ABI claim.",
+      "interpretation": "Right rotation, descriptive hypothesis from actual links and producer/callers; established STL native name retained",
+      "schedule": "Capture pivot+0 promoted; read promoted+8, write pivot+0, REREAD promoted+8; test reread child+19 and only if zero write child+4=pivot. Read CURRENT pivot+4, publish promoted+4, THEN load CURRENT map+4 head/root. Root publishes captured head+4=promoted; nonroot rereads CURRENT pivot+4 and tests its current right+8, publishing parent+8 if equal or parent+0 otherwise. Finally ordered promoted+8=pivot then pivot+4=promoted.",
+      "host_steps": [],
+      "original_bytes_sha256": "e42b0897d23d00413aefba0f2366246f1aae06cad9b22bfcdbe23fa0d8ffe502"
+    }
+  ],
+  "caller_evidence": [
+    {
+      "address": "0046a612",
+      "native": "00467620",
+      "function": "0046a470",
+      "contract": "ECX saved original map receiver, PUSH ESI pivot; RET4. EAX overwritten immediately after return. Exact instruction context read."
+    },
+    {
+      "address": "0046a661",
+      "native": "00467620",
+      "function": "0046a470",
+      "contract": "ECX map reloaded atA64D from current ESP+10h saved receiver; PUSH ESI pivot; RET4. Return goes to tail where EAX is ignored until overwritten."
+    },
+    {
+      "address": "0046a6bf",
+      "native": "00467620",
+      "function": "0046a470",
+      "contract": "ECX saved map receiver; PUSH EAX pivot; RET4. EAX overwritten immediately after return. Exact setup and receiver provenance read."
+    },
+    {
+      "address": "0046ae85",
+      "native": "00467620",
+      "function": "0046ad70",
+      "contract": "PUSH ESI pivot then ECX=EDI saved receiver; child RET4. EAX overwritten by current-parent read after return."
+    },
+    {
+      "address": "0046a645",
+      "native": "00467670",
+      "function": "0046a470",
+      "contract": "ECX map reloaded atA61A from saved receiver; PUSH EAX pivot; RET4. EAX overwritten immediately after return."
+    },
+    {
+      "address": "0046a676",
+      "native": "00467670",
+      "function": "0046a470",
+      "contract": "ECX saved map receiver; PUSH ESI pivot; RET4. EAX overwritten immediately after return. Exact before/after context read."
+    },
+    {
+      "address": "0046a6d9",
+      "native": "00467670",
+      "function": "0046a470",
+      "contract": "ECX map reloaded atA6C6 from saved receiver; PUSH ESI pivot; RET4. Tail ignores returned EAX until overwrite."
+    },
+    {
+      "address": "0046aea3",
+      "native": "00467670",
+      "function": "0046ad70",
+      "contract": "Read current parent/grandparent and PUSH ECX pivot, then ECX=EDI saved map receiver; RET4. Loop tail overwrites EAX with current parent-slot address."
+    },
+    {
+      "address": "0046aed1",
+      "native": "00467670",
+      "function": "0046ad70",
+      "contract": "PUSH ESI pivot then ECX=EDI saved receiver; RET4. EAX overwritten by current-parent read after return."
+    }
+  ],
+  "layout_authority": {
+    "reference": "docs/SCENE_RECORD_MAP.md read in same continuing stream",
+    "producer": "00469F50 full listing inspected in prior lookup packet: link writes+0/+4/+8 and node+19 sentinel;0046AD70 first insertion head+4/root and parent child publication;0046B340 insertion descent and00468140 lookup agree",
+    "new_record_or_owner_overlay": false,
+    "untouched_fields": "No key, mapped value, color, proxy or map-size access",
+    "alias_preservation": "Volatile raw DWORD loads/stores and sentinel byte; reread transferred child after pivot-link publication, publish promoted parent before current head/root lookup, fresh nonroot pivot parent, final write order retained"
+  },
+  "corrections": [],
+  "verification": {
+    "original_bytes": "Live originals retained; per-body lengths78+82=160 and SHA256 verified",
+    "verify_report_calls": "9 call rows checked,0 failed",
+    "win32_build": "scripts/build.ps1 Release Win32 passed exit0; registered new source compiled and all targets linked; local/goal_oct15_scene_map_rotations_build.log",
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 7.87,
+      "native_math_differential_enabled": false,
+      "dedicated_native_rotation_differential": false
+    },
+    "diff_check": "passed before Source draft",
+    "new_tests": 0,
+    "direct_native_rotation_execution": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "application_adoption": false,
+    "cmake_registration": "Shared holder released; checked unleased, left queue, appended exactly one unique source registration without exclusive registry lease",
+    "source_commit": "312322c24",
+    "registration_commit": "f3fb169f4",
+    "documentation_claim_check": "19 addresses cited,0 failed,0 unchecked,0 warnings;9 exact CALL edges checked in JSON",
+    "inherited_linker_warning": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-goal_oct15_erase\\build\\win32\\bsp_core.vcxproj]"
+    ]
+  },
+  "limits": [
+    "Complete static Source over actual raw storage; no original mangling/binary/private-frame/SEH or instruction-fault identity established",
+    "Valid backing for every taken DWORD/byte access required; no validation, cycle checks, normalization, color work, rollback or provider added",
+    "Native private argument/frame alias effects not exposed by Source value inputs",
+    "Existing tests and compilation do not provide direct original-byte rotation differential, application adoption or game proof"
+  ],
+  "annotation_history": [
+    {
+      "address": "00467620",
+      "before": {
+        "address": "00467620",
+        "function_name": "STL_Tree_Rotate_00467620"
+      },
+      "name_preserved": "STL_Tree_Rotate_00467620",
+      "status": "applied"
+    },
+    {
+      "address": "00467670",
+      "before": {
+        "address": "00467670",
+        "function_name": "STL_Tree_Rotate_00467670"
+      },
+      "name_preserved": "STL_Tree_Rotate_00467670",
+      "status": "applied"
+    }
+  ],
+  "cmake_source_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_scene_record_map_rotations.cpp)"
+}
