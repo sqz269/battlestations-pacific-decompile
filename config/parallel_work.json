@@ -39315,7 +39315,7 @@
     {
       "id": "cc12_property_library_CString_readers",
       "done": false,
-      "state": "in_progress_whole_ordinary_Source_authoring",
+      "state": "whole_Source_worker_strict_normal_and_primary_independent_COFF_pass_Main_registration_queued",
       "worker": "library_lookup_data_resume",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -39333,7 +39333,11 @@
         "cc12_property_library_lookup_whole"
       ],
       "source_ready": true,
-      "contract": "Complete CString wrappers: genuine raw key constructor, owner+4 raw lookup, bool membership without mapped read; value read node+8 before key cleanup and no invented missing-key guard. Same retained canonical string context and fallback authorities. New ordinary interfaces; no Original ABI/EH/privateCRT/game claim."
+      "contract": "Complete CString wrappers: genuine raw key constructor, owner+4 raw lookup, bool membership without mapped read; value read node+8 before key cleanup and no invented missing-key guard. Same retained canonical string context and fallback authorities. New ordinary interfaces; no Original ABI/EH/privateCRT/game claim.",
+      "code_revision": "08985ef7816f221a1ddf69119ef8ae6ba8616009",
+      "worker_normal_build": "f3a43c/exit0",
+      "worker_existing_checks_passed": 2,
+      "full_main_build_pending": true
     },
     {
       "id": "cc12_scene_token_text_wrappers",
