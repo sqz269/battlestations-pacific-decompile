@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/native_string.hpp"
+#include "bsp/gui_text_effect_consumer.hpp"
 #include <cstdint>
 
 namespace bsp {
@@ -63,11 +64,17 @@ struct GuiTextSectionOperation final : GuiTextAuxiliaryModelAcquired {
     // invented instruction inside its allocation/registration implementation.
     GuiTextSectionFactory factory_in_flight{GuiTextSectionFactory::none};
 
-    // The inherited name header serves Shadow, shadow effect and main effect.
+    // The inherited name serves Shadow and the legacy effect calls. A scoped
+    // consumer retains each effect-name header in its own published frame.
     // Its actual Model creator transfers to live Text+188 before name release.
     NativeMeshStorage* mesh{};
     NativeMeshSectionStorage* section{};
     NativeMaterialStorage* material{};
+    // Fresh required-null slot per invocation; completed history is never
+    // cleared to retry. Provider-owned name headers survive native cleanup.
+    std::vector<GuiTextEffectConsumerSectionCall*> effect_consumer_calls;
+    GuiTextEffectConsumerMaterialCall* active_effect_material{};
+    NativeString* active_effect_name{};
 
     // Descriptive observations of completed native calls, not replacement
     // mesh membership or ownership state. Reentrant calls still read originals.

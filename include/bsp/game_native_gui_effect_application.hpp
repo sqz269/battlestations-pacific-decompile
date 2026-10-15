@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/native_material_effect_cache.hpp"
 #include "bsp/native_material_factory.hpp"
+#include "bsp/gui_text_effect_consumer.hpp"
 #include <exception>
 #include <memory>
 
@@ -46,6 +47,9 @@ struct GameNativeGuiEffectLoadOperation final {
     std::uint32_t result_profile{};
     std::int32_t result_references{}; // Observed actual+04, never a replacement counter.
     std::exception_ptr failure;
+    // Appended Source bookkeeping preserves all existing diagnostic offsets.
+    bool input_name_borrow_active{};
+    bool caller_reference_transferred{};
 };
 
 enum class GameNativeGuiMaterialFactoryPhase { fresh, factory, registration, complete, failed };
@@ -73,6 +77,16 @@ struct GameNativeGuiMaterialFactoryOperation final {
     std::int32_t result_references{};
     bool caller_reference_transferred{};
     std::exception_ptr failure;
+};
+
+// Retained concrete children of the scoped Source callers. The required-null
+// acquisition slots stay published even if the nested producer throws. Their
+// diagnostic result pointers do not acquire another native reference.
+struct GameNativeGuiTextMaterialCall final : GuiTextEffectConsumerMaterialCall {
+    const GameNativeGuiMaterialFactoryOperation* acquisition{};
+};
+struct GameNativeGuiTextShaderCall final : GuiTextEffectConsumerShaderCall {
+    const GameNativeGuiEffectLoadOperation* acquisition{};
 };
 
 // Real numeric renderer48/cache/loader/program/compiler composition over the
@@ -103,6 +117,11 @@ public:
     // return transfers exactly the native caller reference: no additional
     // retain. Retire it through existing actual-owner paths before shared drain.
     void* acquire_effect_00b318b0(const void* stable_actual_name_header);
+    // The fresh output is published BEFORE any native effects and never
+    // cleared for retry. Caller cleanup may consume name contents after this
+    // entry returns/unwinds; retain header storage and never replay its data.
+    void* acquire_effect_00b318b0(const void* stable_actual_name_header,
+        const GameNativeGuiEffectLoadOperation*& published_operation);
     std::size_t operation_count() const noexcept;
     const GameNativeGuiEffectLoadOperation& operation(std::size_t) const;
     // Whole numeric535320 plus metadata-only canonical material admission.
@@ -118,6 +137,13 @@ public:
         const GameNativeGuiMaterialFactoryOperation*& published_operation);
     std::size_t material_operation_count() const noexcept;
     const GameNativeGuiMaterialFactoryOperation& material_operation(std::size_t) const;
+    // Bind once to this exact persistent services object, whose consumer slot
+    // must be null. This adds a Source capability without constructing Text,
+    // opening a shader-cache bracket, changing modes or acquiring an effect.
+    // The SAME access object/providers, services and this graph survive every
+    // creator/failure and shared drain. This graph also outlives any lifetime
+    // whose caller history refers to its frames. No retarget/unbind/replay.
+    void bind_text_effect_consumer(GuiTextBufferServices&);
     bool requires_process_retention() const noexcept;
     const std::exception_ptr& failure() const noexcept;
     // Keep this graph alive through renderer cache/effect/compiler retirement.
@@ -127,6 +153,11 @@ public:
     // graph may be destroyed without this call.
     void after_native_renderer_drain();
 private:
+    void* acquire_effect_for_caller(const void*, const GameNativeGuiEffectLoadOperation*&,
+        const GuiTextEffectConsumerShaderCall*);
+    NativeMaterialStorage* create_material_for_caller(const void*, GuiNativeGeometryOwners&,
+        NativeMaterialDestructionAccess&, const GameNativeGuiMaterialFactoryOperation*&,
+        const GuiTextEffectConsumerMaterialCall*);
     struct Impl;
     std::unique_ptr<Impl> impl_;
 };

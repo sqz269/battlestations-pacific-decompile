@@ -43,8 +43,10 @@ struct GuiTextShaderServices {
 // names use the actual NativeString pool. Publish returned owned shader into
 // lifetime's SAME+1EC before releasing a temporary name, even for null result.
 // True means selection attempted, NOT load success. No second shader cache.
-// Renderer48 must be a CURRENT callable native-ABI factory returning an actual
-// registered owned effect; original numeric addresses are not callable hosts.
+// A scoped buffers.native_effect_consumer retains the caller/header/acquisition
+// and supplies this SAME application's numeric effect producer. Without one,
+// legacy renderer48 must still be a CURRENT callable native-ABI factory;
+// original numeric addresses are not callable hosts.
 // Native Text string/vector ABI and SEH failure behavior are not reproduced.
 bool ensure_gui_text_font_shader_00ab8ce0(GuiTextLifetime&, GuiTextShaderServices&);
 } // namespace bsp

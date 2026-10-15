@@ -6,6 +6,7 @@
 #include "bsp/gui_text_native_renderer.hpp"
 
 namespace bsp {
+class GuiTextEffectConsumer;
 // Actual existing owner domains, not fake factory callbacks or Text storage.
 // All services/profile/global slots must outlive the resources they create.
 struct GuiTextBufferServices {
@@ -19,6 +20,10 @@ struct GuiTextBufferServices {
     // Required by AB8400/AB8910 when creating actual buffers. Missing binding
     // is an explicit source boundary; no numeric vtable is called as host code.
     GuiTextNativeRendererServices* native_renderer{};
+    // Optional scoped Source consumer for AB8530/AB8CE0. The exact services
+    // object, consumer and every borrowed provider survive creators/failures
+    // and the original shared drain. No global or numeric-vtable override.
+    GuiTextEffectConsumer* native_effect_consumer{};
 };
 
 enum class GuiTextGlyphBuffersPhase { not_started, running, complete, failed };
