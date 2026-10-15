@@ -1,0 +1,122 @@
+{
+  "packet": "goal_oct15_native_string_erase",
+  "status": "complete_actual_raw_pool_source_primary_combined_win32_build_and_existing_tests_passed",
+  "source_ready": true,
+  "source": "src/native_string_vector_erase_unordered.cpp",
+  "header": "include/bsp/native_string_vector_erase_unordered.hpp",
+  "documentation": "docs/GOAL_OCT15_NATIVE_STRING_ERASE.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py live clients verify project, program path, x86 language and image base before every batch",
+    "ghidra_mutations": "Evidence appended under ghidra_annotate write lock; native name and prior plate comment preserved; project saved; affected export refreshed"
+  },
+  "routines": [
+    {
+      "address": "0043ea00",
+      "name": "erase_native_string_vector_unordered_0043ea00",
+      "native_name": "BSP_NativeStringVector_EraseUnordered",
+      "body": "0043ea00-0043ea72",
+      "native_bytes": 115,
+      "coverage": "complete_with_inherited_provider_and_source_interface_qualifications",
+      "original_abi": "ECX actual0Ch vector; incoming EDX unused; stack iterator-pointer-cell address; RET4; no semantic return. Source adds NativeStringRawPoolContext in EDX.",
+      "schedule": "Capture count, data, then iterator-cell pointer value. Both equal-last checks use captured registers. Resize from captured last length; reload last length, then destination length/source data/destination data for overlap-safe copy. Reload vector count/data for inline last release. Read last data, then length+1 only if nonnull; concrete getter/return; reread and decrement current count after successful release.",
+      "host_steps": [
+        {
+          "address": "0043ea27",
+          "native": "0041dd40",
+          "function": "0043ea00",
+          "host": "resize_native_string_header_0041dd40(actual_destination, strings, captured_last_length, true)",
+          "contract": "Accepted concrete actual-header/raw-pool resize, same-length early return, preserving requested resize; native RET8. Body read before contract."
+        },
+        {
+          "address": "0043ea3c",
+          "native": "00bf7680",
+          "function": "0043ea00",
+          "host": "std::memmove",
+          "contract": "Native CRT body accepts backward overlap; destination length copied after current source-length guard. Retain destination-length/source-data/destination-data reads; omit accepted zero-count copy. Caller ADD ESP0Ch."
+        },
+        {
+          "address": "0043ea5e",
+          "native": "00419cc0",
+          "function": "0043ea00",
+          "host": "destroy_native_string_header_0041dd20 raw-pool composition",
+          "contract": "Resolve actual singleton on every nonnull return, including large/disabled returns. Getter has no explicit arguments; caller's pending block/size/1 words remain. Body read before contract."
+        },
+        {
+          "address": "0043ea65",
+          "native": "00bd1510",
+          "function": "0043ea00",
+          "host": "destroy_native_string_header_0041dd20 raw-pool composition",
+          "contract": "Return captured nonnull block and wrapped length+1 through actual pool; third stack word1 unused; native RET0Ch. Header untouched, getter exception propagates, decrement only after return. Body read before contract."
+        }
+      ]
+    }
+  ],
+  "caller_evidence": [
+    {
+      "address": "00bdd07d",
+      "native": "0043ea00",
+      "function": "00bdd020",
+      "coverage": "only live direct xref; full function listing read",
+      "contract": "Receiver manager+48h. Sole stacked argument is address of local iterator-pointer cell. Child return ignored. Caller retains its cursor on match and reloads vector count/data before comparing end. Parent separately owned by integrator."
+    }
+  ],
+  "layout_authority": [
+    "include/bsp/native_string.hpp actual8h string header and NativeStringRawPoolContext",
+    "include/bsp/native_string_vector.hpp existing NativeStringVectorStorage alias",
+    "include/bsp/native_mesh_owner.hpp existing NativeMeshWeightNamesStorage data+0/count+4/capacity+8",
+    "src/native_string_vector.cpp reserve/append producers publish the existing layout"
+  ],
+  "corrections": [],
+  "verification": {
+    "win32_build": "Primary combined scripts/build.ps1 passed at ff5b6fb1a6350c36224f1f53e3bbcbf6c01deb5a containing exact Source draft 0d3b8598d. Combined log inspected. Own fresh C++ build completed, then script canceled at primary request during final existing tool_tests; no own full-script pass claimed.",
+    "existing_tests": "Primary combined: reconstructed_math, native_math_differential, tool_tests; 3/3 passed, 0 failed, 8.07 seconds. Own run: reconstructed_math passed; tool_tests interrupted before reported completion.",
+    "verify_report_calls": "5 call rows checked, 0 failed",
+    "diff_check": "passed",
+    "new_tests": 0,
+    "native_execution": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "documentation_claim_check": "15 addresses, 0 failed, 1 unchecked caller sentence; exact caller edge is among 5 passing JSON rows",
+    "cmake_registration": "new target_sources entry occurs exactly once",
+    "source_commit": "0d3b8598d",
+    "primary_combined": {
+      "revision": "ff5b6fb1a6350c36224f1f53e3bbcbf6c01deb5a",
+      "command": "scripts/build.ps1",
+      "parallel_only_change": "CL /MP4",
+      "log": "J:/PROG/battlestations-pacific-decompile-goal_oct15_integrator/local/goal_oct15_combined_build.log",
+      "log_inspected": true,
+      "tests_passed": 3,
+      "tests_failed": 0,
+      "test_seconds": 8.07,
+      "specific_erase_native_differential": false
+    },
+    "own_build": {
+      "log": "local/goal_oct15_native_string_erase_build.log",
+      "cpp_targets_completed": true,
+      "full_script_completed": false,
+      "canceled_at_primary_request": true,
+      "interruption": "Ctrl-C while tool_tests was running, after bsp_core.lib and bsp_game.exe linked and reconstructed_math passed",
+      "shell_exit": 1,
+      "own_full_test_pass_claimed": false,
+      "inherited_linker_warning": "LNK4006 duplicate spawn_request_id_matches in unchanged lua_binding_spawn.obj and lua_spawn_new.obj; second definition ignored"
+    }
+  },
+  "limits": [
+    "Source receives additional concrete raw-pool context; no native binary/private-stack/SEH/FH3 or instruction-fault identity",
+    "Inherited actual pool/manager/current-CRT provider domains; no invented callback dispatch or unresolved-call substitute",
+    "Zero-byte native copy omitted while retaining its header reads; nonzero copies preserve native overlap support",
+    "No bounds/empty/null guards or rollback added; existing valid taken-memory requirements remain",
+    "Build and static evidence are distinct from native differential execution, ABI and game proof"
+  ],
+  "annotation": {
+    "old_name": "BSP_NativeStringVector_EraseUnordered",
+    "new_name": "BSP_NativeStringVector_EraseUnordered",
+    "old_comment": "[BSP reconstruction 0043ea00]\nHypothesis, not a recovered symbol. docs/CC13_BAND_0040_0044.md. assigns the last NativeString over *it and pops the back; only caller BSP_VFS_RemoveContentPackageName",
+    "prior_values_log": "local/ghidra-annotations-20261015T191804Z.json",
+    "saved": true,
+    "export_refreshed": true
+  }
+}

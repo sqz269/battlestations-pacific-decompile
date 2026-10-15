@@ -8,6 +8,7 @@
 namespace bsp::game {
 class GameHostLog;
 class GameNativeRendererApplication;
+class GameNativeGuiEffectApplication;
 
 // Required live application owners and native globals. There are no semantic
 // texture/FontResources substitutes or inferred constant/default preimages.
@@ -78,6 +79,18 @@ class GameNativeTextApplication final {
 public:
     GameNativeTextApplication(GameHostLog&, GameNativeRendererApplication&,
         GameNativeTextApplicationBindings);
+    // Compose the SAME persistent effect application with this application's
+    // private buffer services before any Text allocation. Pure domain admission
+    // precedes binding; this does not acquire an effect or open/reset a cache.
+    // configuration must borrow the renderer's exact publication cell and its
+    // receiver must independently support the native +28 height read.
+    //
+    // Retire all Texts and fonts, perform shared native drain, then close and
+    // destroy effect metadata WHILE THIS APPLICATION STILL EXISTS. Its
+    // destructor clears our consumer slot; only then may this metadata die.
+    // Further Text entries reject the closed binding. Retain both on failure.
+    GameNativeTextApplication(GameHostLog&, GameNativeRendererApplication&,
+        GameNativeTextApplicationBindings, GameNativeGuiEffectApplication&);
     ~GameNativeTextApplication() noexcept;
     GameNativeTextApplication(const GameNativeTextApplication&) = delete;
     GameNativeTextApplication& operator=(const GameNativeTextApplication&) = delete;
@@ -95,6 +108,8 @@ public:
     // Borrow before native operations; never cache it to bypass application
     // failure/reentry checks or discard its retained construction/copy frames.
     GuiTextRuntimeFactory& factory();
+    // Also true while the composed effect graph still borrows our services,
+    // including an otherwise idle graph with no Text allocations.
     bool requires_process_retention() const noexcept;
     std::uint32_t failure_entry() const noexcept;
     const std::exception_ptr& failure() const noexcept;
