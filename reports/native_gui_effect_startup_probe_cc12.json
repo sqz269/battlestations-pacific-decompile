@@ -1,6 +1,6 @@
 {
   "packet": "cc12_gui_effect_probe_startup",
-  "source_revision": "23fbb8a1df1d79c0e3bbad7dbfa6fa5501b2d0d2",
+  "source_revision": "8df36847324ada1f5770f3e45712bb4f2cb298bf",
   "worker_probe_revision": "22ce33474",
   "worker_unit_revision": "9847f44ac0474a2ae5ecf0e2dcbc3388c661688b",
   "activation": "BSP_NATIVE_GUI_EFFECT_PROBE=1 after genuine startup phase7; opt-in actual-resource probe only",
@@ -23,10 +23,11 @@
     "configuration": "MSVC Win32 Release",
     "tests_passed": 3,
     "tests_failed": 0,
-    "test_seconds": 10.55,
-    "log": "local/cc12_native_gui_effect_startup_build_01.log",
+    "test_seconds": 11.93,
+    "log": "local/cc12_sampler_entry_combined_gui06_release_build_01.log",
     "new_tests": 0,
-    "temporary_cmake_include": false
+    "temporary_cmake_include": false,
+    "actual_source_revision": "8df36847324ada1f5770f3e45712bb4f2cb298bf"
   },
   "parent_review": {
     "latest_worker_artifacts_preserved_and_verified": 120,
@@ -40,97 +41,83 @@
     "actual_unit_receiver_constructed": false
   },
   "runtime": {
-    "attempt": "05",
-    "status": "Terminal retained failure at first material texture-reference B-16 stack-word consumption",
-    "exec_session": "47143 terminal",
-    "actual_source_revision": "b8395fc39e553a20d6006fc26f146d2658efa7a9",
-    "actual_executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\b8395fc39e553a20d6006fc26f146d2658efa7a9\\build\\win32\\cc12_followup_release\\bsp_game.exe",
-    "actual_executable_sha256": "968dca03fc93a844d31f890f18b0fca7d7c8ec05e18c7ae4429368e08f49b7c1",
-    "launcher_checkout_head": "cdf41848f1e1c8acddbe68fd507f994d8baa2b95",
+    "attempt": "06",
+    "status": "PASS_BOUNDED_ACTUAL_GUI_EFFECT_STARTUP_AND_RETIREMENT",
+    "exec_session": "13746 terminal0",
+    "actual_source_revision": "8df36847324ada1f5770f3e45712bb4f2cb298bf",
+    "actual_executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\8df36847324ada1f5770f3e45712bb4f2cb298bf\\build\\win32\\cc12_followup_release\\bsp_game.exe",
+    "actual_executable_sha256": "996236bfa480b44f23d789f8c423a57dc7cfefd83e157c3036c3f891bf344487",
+    "launcher_checkout_head": "702d0b5c0fe5cf9f1a9745214118f5a51711a4ee",
     "launcher_checkout_head_is_build_source": false,
-    "slot": 2,
-    "affinity_core": 6,
-    "started_utc": "2026-10-14T23:31:02.9088160Z",
-    "finished_utc": "2026-10-14T23:31:04.2732961Z",
-    "exit_code": 1,
+    "source_authority": "Frozen prelaunch build receipt, immutable snapshot and exact executable hash; manifest build_checkout/host heads are launch-time checkout discovery only.",
+    "slot": 5,
+    "affinity_core": 12,
+    "started_utc": "2026-10-15T01:07:27.7544563Z",
+    "finished_utc": "2026-10-15T01:07:30.0293699Z",
+    "exit_code": 0,
     "actual_process_started": true,
-    "shader_cache": {
-      "creation_entered": true,
-      "creation_returned": true,
-      "release_entered": false,
-      "release_returned": false,
-      "identity_and_current": "0917a8c0",
-      "source_mode": 0,
-      "load_variants": 0,
-      "operation_phase": 2,
-      "function": "00b3a600",
-      "site": "00b3549a",
-      "reported_completed_records": 1628,
-      "reported_load_index": 1628,
-      "temporary_live": false,
-      "actual_query_bytes_or_lookup_cursor_captured": false
+    "environment": {
+      "BSP_NATIVE_FONT_PROBE": "0",
+      "BSP_NATIVE_GUI_EFFECT_PROBE": "1"
     },
-    "failure": "material texture reference consumes unknown native B-16 residue",
-    "private_sampler_word_guard_reached": true,
-    "failure_site": "00b3b328",
-    "compiler": {
-      "phase": 8,
-      "site": "00b3c018",
-      "resume": "00b3b536",
-      "retained": true
-    },
-    "compiler_tail": {
-      "phase": 3,
-      "site": "00b3c018",
-      "pass_registered": true,
-      "native_null": false
-    },
-    "root_sampler": {
-      "phase": 3,
-      "site": "00b3b328",
-      "index": 0,
-      "steps": 1,
-      "stack_known": false,
-      "captured_owner": "00000000",
-      "owner_obligation": false,
-      "release_entered": false,
-      "release_returned": false
-    },
-    "sampler_parent_scopes": 1,
-    "procedural_creators": 0,
-    "second_acquisition_entered": false,
-    "actual_effect_acquisition_observed": false,
-    "caller_retirement_observed": false,
-    "original_shared_drain_observed": false,
-    "failed_graph_retained_until_no_unwind_exit": true,
-    "installed_shader_cache_unchanged_after_run": true,
-    "installed_shader_cache_sha256": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
-    "log": "local/cc12_actual_native_gui_effect_startup_05.log",
-    "manifest": "local/cc12_actual_native_gui_effect_startup_05.log.manifest.json",
-    "launcher_result": {
-      "tool_session": "47143",
-      "terminal_exit_code": 1,
-      "separate_launcher_log": "not created; launcher output observed through exec/write_stdin"
-    },
-    "terminal_artifacts": [
+    "resources": [
       {
-        "path": "local\\cc12_native_shader_cache_bracket_receipt_07\\terminal_gui05\\cc12_actual_native_gui_effect_startup_05.log",
-        "bytes": 23745,
-        "sha256": "92615b3975fef4bc461d694d6bce95c0ad2dcdc0754ce65382da317ec5e01469"
+        "name": "GuiFont.mshd",
+        "actual_identity": "12A9C890",
+        "profile": "00d61a00",
+        "refs_on_return": 2,
+        "caller_retired_from": 2,
+        "caller_retired_to": 1,
+        "fallback": false
       },
       {
-        "path": "local\\cc12_native_shader_cache_bracket_receipt_07\\terminal_gui05\\cc12_actual_native_gui_effect_startup_05.log.manifest.json",
-        "bytes": 3354,
-        "sha256": "39ffe841b649046232b7dc65eb965ddf27fa6f5cb8542a84c1df5bfdbbacb690"
-      },
-      {
-        "path": "local\\cc12_native_shader_cache_bracket_receipt_07\\terminal_gui05\\root_launch_receipt_05.json",
-        "bytes": 3835,
-        "sha256": "5c2ead4fd4bf6514dd402e082a35baab719c948e06cdc00b879ccb864e6460c7"
+        "name": "GuiFontBilinear.mshd",
+        "actual_identity": "12A9DAF0",
+        "profile": "00d61a00",
+        "refs_on_return": 2,
+        "caller_retired_from": 2,
+        "caller_retired_to": 1,
+        "fallback": false
       }
     ],
+    "shader_cache": {
+      "identity": "09134628",
+      "source_mode": 0,
+      "load_variants": 0,
+      "creation_returned": true,
+      "release_guard_passed": true,
+      "evidence": "Both caller retirements require Source stage ready after release_shader_cache and its publication-null guard.",
+      "record_count_and_lookup_cursor_not_logged": true
+    },
+    "private_sampler_word_consumption_passed": true,
+    "unknown_word_guard_fired": false,
+    "actual_captured_word_logged": false,
+    "pre_entry_unknown_scope_words_are_not_captured_residue": true,
+    "second_acquisition_entered": true,
+    "actual_effect_acquisition_observed": true,
+    "caller_retirement_observed": true,
+    "original_shared_drain_observed": true,
+    "frames_requested": 120,
+    "frames_presented": 119,
+    "presents_skipped": 1,
+    "loop_finished": true,
+    "final_device_release": 0,
+    "final_api_release": 0,
+    "host_methods_concrete": 122,
+    "host_methods_unimplemented": 43,
+    "installed_original_unchanged_after_run": true,
+    "installed_shader_cache_unchanged_after_run": true,
+    "installed_shader_cache_sha256": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+    "log": "local/cc12_actual_native_gui_effect_startup_06.log",
+    "manifest": "local/cc12_actual_native_gui_effect_startup_06.log.manifest.json",
+    "launcher_result": "local/cc12_actual_native_gui_effect_startup_06_launcher.log",
+    "bounded_GUI_effect_startup_validated": true,
     "startup_validated": false,
+    "native_text_draw_validated": false,
+    "faithful_game_startup_validated": false,
     "gameplay_validated": false,
+    "limits": "Font resource probe disabled; no Native text draw, full D5E13C scene, Original private ABI/FH3 or faithful gameplay validation. Neutral/unimplemented host paths remain.",
+    "runtime_receipt": "reports/cc12_native_gui_effect_startup_integration_12.json",
     "attempts": [
       {
         "attempt": 1,
@@ -362,13 +349,87 @@
         ],
         "startup_validated": false,
         "gameplay_validated": false
+      },
+      {
+        "attempt": "06",
+        "status": "PASS_BOUNDED_ACTUAL_GUI_EFFECT_STARTUP_AND_RETIREMENT",
+        "exec_session": "13746 terminal0",
+        "actual_source_revision": "8df36847324ada1f5770f3e45712bb4f2cb298bf",
+        "actual_executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\8df36847324ada1f5770f3e45712bb4f2cb298bf\\build\\win32\\cc12_followup_release\\bsp_game.exe",
+        "actual_executable_sha256": "996236bfa480b44f23d789f8c423a57dc7cfefd83e157c3036c3f891bf344487",
+        "launcher_checkout_head": "702d0b5c0fe5cf9f1a9745214118f5a51711a4ee",
+        "launcher_checkout_head_is_build_source": false,
+        "source_authority": "Frozen prelaunch build receipt, immutable snapshot and exact executable hash; manifest build_checkout/host heads are launch-time checkout discovery only.",
+        "slot": 5,
+        "affinity_core": 12,
+        "started_utc": "2026-10-15T01:07:27.7544563Z",
+        "finished_utc": "2026-10-15T01:07:30.0293699Z",
+        "exit_code": 0,
+        "actual_process_started": true,
+        "environment": {
+          "BSP_NATIVE_FONT_PROBE": "0",
+          "BSP_NATIVE_GUI_EFFECT_PROBE": "1"
+        },
+        "resources": [
+          {
+            "name": "GuiFont.mshd",
+            "actual_identity": "12A9C890",
+            "profile": "00d61a00",
+            "refs_on_return": 2,
+            "caller_retired_from": 2,
+            "caller_retired_to": 1,
+            "fallback": false
+          },
+          {
+            "name": "GuiFontBilinear.mshd",
+            "actual_identity": "12A9DAF0",
+            "profile": "00d61a00",
+            "refs_on_return": 2,
+            "caller_retired_from": 2,
+            "caller_retired_to": 1,
+            "fallback": false
+          }
+        ],
+        "shader_cache": {
+          "identity": "09134628",
+          "source_mode": 0,
+          "load_variants": 0,
+          "creation_returned": true,
+          "release_guard_passed": true,
+          "evidence": "Both caller retirements require Source stage ready after release_shader_cache and its publication-null guard.",
+          "record_count_and_lookup_cursor_not_logged": true
+        },
+        "private_sampler_word_consumption_passed": true,
+        "unknown_word_guard_fired": false,
+        "actual_captured_word_logged": false,
+        "pre_entry_unknown_scope_words_are_not_captured_residue": true,
+        "second_acquisition_entered": true,
+        "actual_effect_acquisition_observed": true,
+        "caller_retirement_observed": true,
+        "original_shared_drain_observed": true,
+        "frames_requested": 120,
+        "frames_presented": 119,
+        "presents_skipped": 1,
+        "loop_finished": true,
+        "final_device_release": 0,
+        "final_api_release": 0,
+        "host_methods_concrete": 122,
+        "host_methods_unimplemented": 43,
+        "installed_original_unchanged_after_run": true,
+        "installed_shader_cache_unchanged_after_run": true,
+        "installed_shader_cache_sha256": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+        "log": "local/cc12_actual_native_gui_effect_startup_06.log",
+        "manifest": "local/cc12_actual_native_gui_effect_startup_06.log.manifest.json",
+        "launcher_result": "local/cc12_actual_native_gui_effect_startup_06_launcher.log",
+        "bounded_GUI_effect_startup_validated": true,
+        "startup_validated": false,
+        "native_text_draw_validated": false,
+        "faithful_game_startup_validated": false,
+        "gameplay_validated": false,
+        "limits": "Font resource probe disabled; no Native text draw, full D5E13C scene, Original private ABI/FH3 or faithful gameplay validation. Neutral/unimplemented host paths remain.",
+        "runtime_receipt": "reports/cc12_native_gui_effect_startup_integration_12.json"
       }
-    ],
-    "environment": {
-      "BSP_NATIVE_GUI_EFFECT_PROBE": "1",
-      "BSP_NATIVE_FONT_PROBE": "0"
-    },
-    "runtime_receipt": "reports/cc12_native_shader_cache_bracket_integration_07.json"
+    ]
   },
   "original_installation": {
     "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
@@ -442,7 +503,7 @@
   "original_abi_compatible": false,
   "gameplay_validated": false,
   "overall_goal": "active",
-  "latest_actual_executable_source_revision": "b8395fc39e553a20d6006fc26f146d2658efa7a9",
+  "latest_actual_executable_source_revision": "8df36847324ada1f5770f3e45712bb4f2cb298bf",
   "latest_combined_build": {
     "source_revision": "7bfdb9bcf254dabf0085838c21693a5d3b00afbe",
     "target": "MSVC Win32 Release",
@@ -452,78 +513,15 @@
     "temporary_cmake_include": false,
     "receipt": "reports/cc12_native_sampler_scene_capture_integration_11.json"
   },
-  "pending_actual_attempt": {
-    "attempt": "06",
-    "source_revision": "8df36847324ada1f5770f3e45712bb4f2cb298bf",
-    "status": "QUEUED_AS_OBSERVED_NO_GAME_PROCESS_OR_RUN_MANIFEST",
-    "observation": {
-      "observed_utc": "2026-10-15T00:59:10.5856966Z",
-      "source_revision": "8df36847324ada1f5770f3e45712bb4f2cb298bf",
-      "launcher_unified_exec_session": 13746,
-      "session_confirmed_running_by_tool_before_this_snapshot": true,
-      "actual_snapshot_game_pids": [],
-      "actual_run_manifest_exists": false,
-      "actual_run_log_exists": false,
-      "slots": [
-        {
-          "slot": 0,
-          "owner_pid": 94020,
-          "owner_alive": true,
-          "tagged_game_pids": [
-            89424
-          ],
-          "lock_record": "battlestations-pacific-decompile-cc9-lua52 2026-10-14T17:14:09 pid=94020 log=J:\\PROG\\battlestations-pacific-decompile-cc9-lua52\\local\\l61_nj3_e8.log"
-        },
-        {
-          "slot": 1,
-          "owner_pid": 95024,
-          "owner_alive": true,
-          "tagged_game_pids": [
-            97964
-          ],
-          "lock_record": "battlestations-pacific-decompile-cc9-lua52 2026-10-14T17:22:12 pid=95024 log=J:\\PROG\\battlestations-pacific-decompile-cc9-lua52\\local\\l61_oj3_e8.log"
-        },
-        {
-          "slot": 2,
-          "owner_pid": 98076,
-          "owner_alive": true,
-          "tagged_game_pids": [
-            98836
-          ],
-          "lock_record": "battlestations-pacific-decompile-cc9-ships44 2026-10-14T17:04:37 pid=98076 log=J:\\PROG\\battlestations-pacific-decompile-cc9-ships44\\local\\s51_t_a2.log"
-        },
-        {
-          "slot": 3,
-          "owner_pid": 45472,
-          "owner_alive": true,
-          "tagged_game_pids": [
-            97180
-          ],
-          "lock_record": "battlestations-pacific-decompile-cc9-lua52 2026-10-14T17:12:07 pid=45472 log=J:\\PROG\\battlestations-pacific-decompile-cc9-lua52\\local\\l61_n_e8.log"
-        },
-        {
-          "slot": 4,
-          "owner_pid": 92444,
-          "owner_alive": true,
-          "tagged_game_pids": [
-            100268
-          ],
-          "lock_record": "battlestations-pacific-decompile-cc9-ships44 2026-10-14T17:35:58 pid=92444 log=J:\\PROG\\battlestations-pacific-decompile-cc9-ships44\\local\\s51_t_a3.log"
-        },
-        {
-          "slot": 5,
-          "owner_pid": 64668,
-          "owner_alive": true,
-          "tagged_game_pids": [
-            78708
-          ],
-          "lock_record": "battlestations-pacific-decompile-cc9-ships44 2026-10-14T17:36:00 pid=64668 log=J:\\PROG\\battlestations-pacific-decompile-cc9-ships44\\local\\s51_t_a4.log"
-        }
-      ]
-    },
-    "immutable_snapshot_verified_before_wait": true,
-    "source_build_distinct_from_this_combined_build": true,
-    "host_checkout_metadata_may_advance_while_queued": true,
-    "no_restart_on_observation_timeout": true
+  "initial_probe_registration_source_revision": "23fbb8a1df1d79c0e3bbad7dbfa6fa5501b2d0d2",
+  "initial_probe_registration_build": {
+    "status": "passed",
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "test_seconds": 10.55,
+    "log": "local/cc12_native_gui_effect_startup_build_01.log",
+    "new_tests": 0,
+    "temporary_cmake_include": false
   }
 }
