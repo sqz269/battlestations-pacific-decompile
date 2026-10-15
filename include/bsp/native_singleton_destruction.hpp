@@ -5,6 +5,7 @@
 
 namespace bsp {
 struct NativeAllocationStatsConstructorContext;
+struct NativeAvoidManagerLifetimeContext;
 struct GlobalConfigContext;
 struct NativeGameClassCleanupContext;
 struct NativeProfileHintsOwnerContext;
@@ -78,6 +79,8 @@ namespace game { class GameSoundRuntime; }
 // D190C4 uses the actual process-static F899E8 publication directly. Owners
 // reconstructed against a different publication cell are outside that profile
 // binding; no new private pending-lock context or automatic teardown is added.
+// CE38F4 and the matched callable Source avoidance table require avoid_manager,
+// which supplies the lifetime context explicitly for the recovered deleting slot.
 // D190C0/D19284 likewise dispatch to the complete scalars using the permanent
 // NativeEntityRegistryProcess E4/FC cells. These distinct cells share the same
 // canonical game manager for construction; dispatch never creates a manager.
@@ -252,6 +255,11 @@ struct NativeSingletonDeletionBindings {
     // Pass the popped receiver; base cleanup independently reloads current
     // publication. Missing binding fails closed. No power-stop is scheduled.
     NativePlatformConstructionContext* platform{};
+    // CE38F4 -> 00420680, and the matched callable Source avoidance table.
+    // Borrow the same actual E188A8/E17624 cells as construction. Source
+    // dispatch supplies the required EDX context explicitly; original target-
+    // in-EDX virtual dispatch is not thereby made ABI compatible.
+    const NativeAvoidManagerLifetimeContext* avoid_manager{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -282,7 +290,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, allocation_stats) == 188
 static_assert(offsetof(NativeSingletonDeletionBindings, particle_manager) == 192);
 static_assert(offsetof(NativeSingletonDeletionBindings, fixed_step_jobs) == 196);
 static_assert(offsetof(NativeSingletonDeletionBindings, platform) == 200);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 204);
+static_assert(offsetof(NativeSingletonDeletionBindings, avoid_manager) == 204);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 208);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

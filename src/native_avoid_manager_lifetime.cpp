@@ -1,6 +1,7 @@
 #include "bsp/native_avoid_manager_lifetime.hpp"
 
 #include "bsp/native_avoid_manager_clear.hpp"
+#include "bsp/native_avoid_container_tidy.hpp"
 #include "bsp/native_hull_list_head.hpp"
 #include "bsp/native_renderer_worker_lifetime.hpp"
 #include "bsp/native_tracked_critical_section_release.hpp"
@@ -66,15 +67,23 @@ void free_current_list_head(Cc13AvoidZoneManagerNative* manager) noexcept {
     store_word(manager, 0x70, 0);
 }
 void tidy_current_hull_list(Cc13AvoidZoneManagerNative* manager) {
-    invoke_current_list_clear(list_header(manager));
-    free_current_list_head(manager);
+    // The recovered state-2 action calls this complete raw list-tidy entry.
+    using Entry = void (__fastcall*)(void*);
+    Entry volatile entry = tidy_native_avoid_hull_list_0041f230;
+    entry(list_header(manager));
 }
-void tidy_current_body_vector(Cc13AvoidZoneManagerNative* manager) noexcept {
+void release_current_body_vector_normal(Cc13AvoidZoneManagerNative* manager) noexcept {
     void* const first = reinterpret_cast<void*>(load_word(manager, 0x60));
     if (first != nullptr) singleton_lifetime_free(first);
     store_word(manager, 0x60, 0);
     store_word(manager, 0x64, 0);
     store_word(manager, 0x68, 0);
+}
+void tidy_current_body_vector(Cc13AvoidZoneManagerNative* manager) {
+    // The recovered state-1 action calls this complete raw vector-tidy entry.
+    using Entry = void (__fastcall*)(void*);
+    Entry volatile entry = tidy_native_avoid_body_vector_0041ddf0;
+    entry(reinterpret_cast<unsigned char*>(manager) + 0x5c);
 }
 void reset_current_manager_base(Cc13AvoidZoneManagerNative* manager,
     const NativeAvoidManagerLifetimeContext* context) noexcept {
@@ -191,7 +200,7 @@ __declspec(noinline) void __fastcall destroy_native_avoid_manager_0041f980(
     cleanup.state = 1;
     invoke_current_list_clear(list_header(manager));
     free_current_list_head(manager);
-    tidy_current_body_vector(manager);
+    release_current_body_vector_normal(manager);
     reset_current_manager_base(manager, context);
     cleanup.state = -1;
 }
