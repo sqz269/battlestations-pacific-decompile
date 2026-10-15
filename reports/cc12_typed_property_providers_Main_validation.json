@@ -1,0 +1,165 @@
+{
+  "schema": "bsp.scene_typed_property_providers_Main_validation.v1",
+  "status": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
+  "required_Main_build": {
+    "command": "./scripts/build.ps1",
+    "initial_chunk": "60058a",
+    "session": 96035,
+    "terminal_chunk": "453f6e",
+    "exit_code": 0,
+    "configured_CTests_passed": 3,
+    "seconds": 7.3,
+    "snapshot_commit": "e685f0fecfc08b79ba587e013e491879648b06d8",
+    "after_commit": "f64c8a54e506201b596911c029bab380dc569b5a",
+    "unchanged_inputs": 35,
+    "all_Source_inputs_unchanged": true,
+    "all36_current_inputs_unchanged": false,
+    "post_build_configuration_change": {
+      "before": {
+        "relative": "cmake\\startup.cmake",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
+        "bytes": 236440,
+        "sha256": "d02e53e0458671854f30e45ee4aac612ce21717f23b358c5d56b5e9af993fbd1"
+      },
+      "after": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
+        "bytes": 236828,
+        "sha256": "1403246b9e690094bca66b4173358c8bc4a4c65f9b312bff8cceacbd671817d1"
+      },
+      "exact_build_snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_typed_property_Main_build01\\startup_at_build.cmake",
+        "bytes": 236440,
+        "sha256": "d02e53e0458671854f30e45ee4aac612ce21717f23b358c5d56b5e9af993fbd1"
+      },
+      "changed_after_completed_build": true,
+      "CMake_mtime_ns": 1792095633513059800,
+      "completed_build_log_mtime_ns": 1792095568122393700,
+      "diff": "diff --git a/cmake/startup.cmake b/cmake/startup.cmake\nindex d482e6383..ded263b67 100644\n--- a/cmake/startup.cmake\n+++ b/cmake/startup.cmake\n@@ -871,6 +871,7 @@ cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_cor\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_bot_approach_head.cpp)\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_bright_pass_initializer.cpp)\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_bright_pass_lifetime.cpp)\n+cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_byte_range_primitives.cpp)\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_camera_axes.cpp)\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_camera_configuration_leaves.cpp)\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_camera_far_corners.cpp)\n@@ -969,6 +970,7 @@ cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_cor\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_gamepad_force_event.cpp)\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_gamepad_rumble.cpp)\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_gamepad_xinput.cpp)\n+cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_grid_byte_vector_resize.cpp)\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_group_owner.cpp)\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_group_pool.cpp)\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_group_storage_lifetime.cpp)\n@@ -1273,6 +1275,7 @@ cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_cor\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_raw_reader_construction.cpp)\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_raw_scalar_reader.cpp)\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_record_vector_tidy.cpp)\n+cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_registry_list_producers.cpp)\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_registry_list_tidy.cpp)\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_render_batch_preparation_actual.cpp)\n cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_render_command_execution.cpp)\n",
+      "qualification": "Only unrelated deferred Source registrations changed after completed build; exact original configuration recovered from recorded commit. No all36-current-input identity claim."
+    },
+    "original_tools": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_typed_property_Main_build01\\original_build_tools.DATA.json",
+      "bytes": 2309,
+      "sha256": "ef89dc44bf8cd6758a8660ead1d8d34248d7e4cff8b034e1be03b28c67be7018"
+    },
+    "build_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_typed_property_Main_build01\\build.log",
+      "bytes": 3578,
+      "sha256": "4c7a18dc19ab457be35de949de23eb3128d360de6fc50070c277a29ea69884d5"
+    }
+  },
+  "frozen_artifacts": [
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_scene_typed_property_providers.obj",
+        "bytes": 3863,
+        "sha256": "91f27f6e0b72cf3c01060076059fc8a31affa910ce2d6def8188a1727a9e2785"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_typed_property_Main_build01\\frozen\\native_scene_typed_property_providers.obj",
+        "bytes": 3863,
+        "sha256": "91f27f6e0b72cf3c01060076059fc8a31affa910ce2d6def8188a1727a9e2785"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 92730612,
+        "sha256": "410fd441c89b5849e6f527c8e46f8ef83327e136318a4f85b2b197be498fd283"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_typed_property_Main_build01\\frozen\\bsp_core.lib",
+        "bytes": 92730612,
+        "sha256": "410fd441c89b5849e6f527c8e46f8ef83327e136318a4f85b2b197be498fd283"
+      }
+    }
+  ],
+  "primary_complete_COFF_inventory": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_typed_property_providers_integration_20261015\\Main_inventory.DATA.json",
+    "bytes": 51426,
+    "sha256": "d29a06157dd109b4a7654e88aced641c072abc1a75c25ef2f2319db18c5df706"
+  },
+  "primary_archive_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_typed_property_providers_integration_20261015\\Main_primary_archive.DATA.json",
+    "bytes": 810963,
+    "sha256": "6f6e42494b2b51d1f871956745530c955dff1630fbded08ff2665ddbd3b6ab4f"
+  },
+  "complete_code": {
+    "sections": 6,
+    "bytes": 455,
+    "decoded_instructions": 182,
+    "code_relocations": 21,
+    "metadata_relocations": 1,
+    "all_code_and_runtime_data_bytes_literal_equal": true,
+    "all_relocation_fields_offsets_types_literal_equal": true,
+    "MD_directives_literal_equal": true,
+    "exact_private_definition_and_target_pairs": [
+      [
+        "?read_word@?A0x3840fd68@bsp@@YAIPBXI@Z",
+        "?read_word@?A0x03c191b3@bsp@@YAIPBXI@Z"
+      ],
+      [
+        "?write_word@?A0x3840fd68@bsp@@YAXPAXII@Z",
+        "?write_word@?A0x03c191b3@bsp@@YAXPAXII@Z"
+      ]
+    ],
+    "whole_object_debug_or_chks64_identity": false
+  },
+  "archive": {
+    "members": 2217,
+    "both_indices_equal": true,
+    "symbols_per_index": 81833,
+    "unique_object": {
+      "header_offset": 75872124,
+      "payload_offset": 75872184,
+      "raw_name": "/76762",
+      "bytes": 3863,
+      "header_hex": "2f373637363220202020202020202020313739323039353535352020202020202020202020202020313030363636202033383633202020202020600a",
+      "sha256": "91f27f6e0b72cf3c01060076059fc8a31affa910ce2d6def8188a1727a9e2785"
+    },
+    "public_symbol_bindings": [
+      [
+        "?assign_native_scene_property_from_token_008f3370@bsp@@YAPAXPAXPBDAAVGameNativeStringProcess@game@1@@Z",
+        75872124
+      ],
+      [
+        "?add_native_scene_property_byte_array_008f3490@bsp@@YAPAXPAXPBDPBXIIAAVNativeScenePropertyInsertionContext@1@@Z",
+        75872124
+      ],
+      [
+        "?add_native_scene_property_four_byte_array_008f3510@bsp@@YAPAXPAXPBDPBXIIAAVNativeScenePropertyInsertionContext@1@@Z",
+        75872124
+      ]
+    ],
+    "shared_raw_context_getter": {
+      "symbol": "?raw_context@GameNativeStringProcess@game@bsp@@QAEAAUNativeStringRawPoolContext@3@XZ",
+      "index_binding": [
+        [
+          "?raw_context@GameNativeStringProcess@game@bsp@@QAEAAUNativeStringRawPoolContext@3@XZ",
+          75186346
+        ]
+      ],
+      "provider_member": {
+        "header_offset": 75186346,
+        "payload_offset": 75186406,
+        "raw_name": "/74045",
+        "bytes": 67913,
+        "header_hex": "2f373430343520202020202020202020313739323038393737312020202020202020202020202020313030363636202036373931332020202020600a",
+        "sha256": "90b40f87d650db53c701a5d25c0bfb3e7ff8202d54a96b4f5ed4123e0c6a3a32"
+      },
+      "selected_COFPayload_sha256": "90b40f87d650db53c701a5d25c0bfb3e7ff8202d54a96b4f5ed4123e0c6a3a32",
+      "code_hex": "8d410cc3",
+      "relocations": [],
+      "matches_accepted_new_object_getter": true
+    }
+  },
+  "limits": [
+    "Configured tests and archive inspection do not execute the new Source routines.",
+    "Genuine canonical authorities, full DWORD flags, stable disjoint finite inputs and successful nonthrowing services remain required. Retained low-byte-zero payload must be genuine sole-owned matching-currentCRT storage transferred with the root.",
+    "Original EH construction cleanup and Original calling/class ABI are not reproduced. No private-CRT, startup/publication, runtime, game or whole-parser equivalence."
+  ],
+  "new_Source_runtime_executed": false,
+  "Original_ABI_compatible": false,
+  "game_validated": false,
+  "whole_parser_equivalent": false
+}
