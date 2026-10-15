@@ -63,4 +63,4 @@ Current-CRT/owning C++ transport does not prove original heap/staticCRT/
 RTTI/FH3/register/private-stack/fault ABI, new-body native differential behavior,
 application adoption or game validation.
 
-Final combined default MSVC Release Win32 build passed3/3 existing CTests in6.93s; all39 typed rows and six unique Source/project/archive objects were checked. Detailed receipt: reports/goal_oct15_dword_vector_insert_primary_review.json.
+Final combined default MSVC Release Win32 build passed 3/3 existing CTests in 8.14s; all 39 typed rows and six unique Source/project/archive objects were checked. Detailed receipt: reports/goal_oct15_dword_vector_insert_primary_review.json.
