@@ -253,6 +253,11 @@ struct GameNativeGuiEffectProbe::Impl {
     // Reverse destruction preserves parent scopes/header addresses through effect metadata.
     std::unique_ptr<GameNativeGuiSamplerApplication> sampler;
     std::unique_ptr<GameNativeGuiEffectApplication> effects;
+    // Read-only samples while the compiler child is still alive. The existing
+    // evidence hook returns empty evidence and never supplies a stack word.
+    std::size_t entry_observations{}, entry_frames{}, entry_profiles{}, entry_returns{}, entry_known{};
+    std::uint32_t last_entry_word{}, last_release_rva{}, last_shader_count{}, last_release_result{},
+        last_device_before{}, last_device_after{};
     Impl(GameHostLog& l, GameNativeRendererApplication& r, GameVfsHost& v,
         GameSingletonHost& s, GameNativeReadOnlyData& d, GameNativeShadowTargetApplication& shadow_application,
         GameInputRuntime& i, NativePlatformLoadPublication p)
@@ -288,6 +293,36 @@ struct GameNativeGuiEffectProbe::Impl {
             slot.requested_name, static_cast<const void*>(slot.input_name), slot.caller_reference,
             slot.profile, slot.references_on_return, slot.fallback_call_seen ? 1 : 0);
         note_resource(log, slot);
+        log.notef("native GUI sampler-entry summary resource=%s observed=%zu frames=%zu profiles=%zu returns=%zu known_ready=%zu has_word=%d last_word=%08x release_rva=%08x shader_before=%u result=%u device=%u/%u",
+            slot.requested_name, entry_observations, entry_frames, entry_profiles, entry_returns, entry_known,
+            entry_known ? 1 : 0, last_entry_word, last_release_rva, last_shader_count, last_release_result,
+            last_device_before, last_device_after);
+    }
+    void observe_entry(NativeMaterialProgramBuilderStorage& builder, NativeMaterialPassStorage& pass) {
+        ++entry_observations;
+        for (std::size_t index = 0; index < effects->operation_count(); ++index) {
+            for (const auto* cache = &effects->operation(index).cache; cache; cache = cache->loader.fallback.get()) {
+                if (!cache->loader.programs) continue;
+                auto* compiler = dynamic_cast<NativeMaterialProgramCompileOperation*>(cache->loader.programs->active_child());
+                if (!compiler || &compiler->frame().builder != &builder) continue;
+                auto* tail = dynamic_cast<NativeMaterialProgramCompilerActualFrame*>(compiler->frame().tail_child.get());
+                if (!tail || tail->pass != &pass) continue;
+                ++entry_frames;
+                const auto& entry = tail->sampler_entry;
+                if (entry.profile_matched) ++entry_profiles;
+                if (entry.release_returned) ++entry_returns;
+                if (entry.known) {
+                    ++entry_known;
+                    last_entry_word = entry.word;
+                    last_release_rva = static_cast<std::uint32_t>(entry.release_target - entry.d3d9_module);
+                    last_shader_count = entry.shader_count_before;
+                    last_release_result = entry.com_release_result;
+                    last_device_before = entry.device_count_before;
+                    last_device_after = entry.device_count_after;
+                }
+                return;
+            }
+        }
     }
     void inspect_fakemotion_descriptor(NativeShaderDescriptorStorage* descriptor,
         GameNativeGuiEffectProbeSelectedSampler& result) {
@@ -316,11 +351,12 @@ struct GameNativeGuiEffectProbe::Impl {
             result.vertex_sampler == 0 && result.scene_texture_name && result.mode_mask == 1 && result.dummy_combiner,
             "fakemotion probe selected a descriptor outside the bounded SceneTexture Source0 contract");
     }
-    static GameNativeGuiSamplerCallEvidence observe_fakemotion_sampler_call(void* context,
+    static GameNativeGuiSamplerCallEvidence observe_sampler_call(void* context,
         NativeMaterialProgramBuilderStorage& builder, NativeMaterialPassStorage& pass,
         NativeShaderDescriptorStorage& root, NativeShaderDescriptorStorage& mode) {
         auto& p = *static_cast<Impl*>(context);
         auto& o = p.observed;
+        p.observe_entry(builder, pass);
         if (o.include_fakemotion && o.stage == Stage::fakemotion_preload) {
             require(o.fakemotion_sampler_call_count < o.fakemotion_sampler_calls.size(),
                 "fakemotion probe exceeded its two retained variant sampler observations");
@@ -420,10 +456,8 @@ const GameNativeGuiEffectProbeObservation& GameNativeGuiEffectProbe::run(bool in
             static_cast<unsigned>(o.load_variants_on_create));
         o.stage = Stage::sampler_parent;
         GameNativeGuiSamplerApplicationBindings sampler_bindings{p.input, p.platform};
-        if (include_fakemotion) {
-            sampler_bindings.evidence_context = &p;
-            sampler_bindings.evidence = &Impl::observe_fakemotion_sampler_call;
-        }
+        sampler_bindings.evidence_context = &p;
+        sampler_bindings.evidence = &Impl::observe_sampler_call;
         p.sampler = std::make_unique<GameNativeGuiSamplerApplication>(p.log, p.renderer, p.vfs,
             p.singletons, p.data, sampler_bindings);
         // EMPTY MSG output preimage and no invocation/root/release stack capture.
