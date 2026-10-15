@@ -29,7 +29,7 @@ void destroy_native_string_range_dispatch_00432360(void* unused_owner,
     void* first, void* last, NativeStringRawPoolContext& strings);
 
 // These Source interfaces are not original stack/FH3/CRT ABI replacements.
-// No 00506C80 assignment is supplied: its remaining exact dispatch, allocation,
-// empty-clear and uninitialized-copy/EH dependencies are mapped in the report.
+// The complete00506C80 assignment composed from these accepted services is
+// declared separately in native_string_vector_assignment.hpp.
 
 } // namespace bsp
