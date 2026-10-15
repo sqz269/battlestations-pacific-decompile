@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_destroy_clear_primary_review",
+  "status": "whole_Source_independently_reviewed_default_Win32_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 5,
+  "native_bytes": 252,
+  "spans": [
+    {
+      "address": "00468300",
+      "bytes": 53,
+      "live_equals_installed": true,
+      "sha256": "7434159a87406ca00f5650b26a7267a2b5b621ba81583461ec8856bca229080d"
+    },
+    {
+      "address": "00468980",
+      "bytes": 43,
+      "live_equals_installed": true,
+      "sha256": "7a1ca484241520aaada780a08f110ca4403840c72ec79e9b53c90c791c160b64"
+    },
+    {
+      "address": "0046c500",
+      "bytes": 52,
+      "live_equals_installed": true,
+      "sha256": "5e55cece2df085c47c537788d47d4c0696e985377d2187d74c1ae838e9f689c0"
+    },
+    {
+      "address": "0046ced0",
+      "bytes": 52,
+      "live_equals_installed": true,
+      "sha256": "5709b02c65e206b3c7a9e3db8522199744a0c086360533b73874d7f26819b568"
+    },
+    {
+      "address": "0046ef70",
+      "bytes": 52,
+      "live_equals_installed": true,
+      "sha256": "6c9457d5d4f09f5e848b9e40038d26c12b70fe3b09aba820676b7aad22991cdc"
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct15_scene_integer_set_clear.json",
+    "reports/goal_oct15_scene_map_destroy.json"
+  ],
+  "typed_transfer_rows_checked": 12,
+  "typed_transfer_rows_failed": 0,
+  "independent_reviews": [
+    "Primary reviewed complete C500 listing and shared destroy Source; all three bodies equal except same-target relative CALL operands",
+    "Worker independently reviewed complete integer subtree/clear listings and Source/header/doc"
+  ],
+  "source_hashes": {
+    "src/native_scene_integer_set_clear.cpp": "473fc7986472c4dc60cd34b0f1d57508d55bdfddde53f99c83a3f96c2478c4e1",
+    "include/bsp/native_scene_integer_set_clear.hpp": "42306ae97002df9ba37f9823f940f1fd6c3e3d4e1729261b30bc2ec265b345ee",
+    "src/native_scene_record_map_destroy.cpp": "ce5a7e5bc32839128e21ccffa23e84b99fd1bc64fb1cb6c440c295b45d097089",
+    "include/bsp/native_scene_record_map_destroy.hpp": "331e5954fc6282b6d6afb1f3552fab34cbe8c515798b1582e3188ff1f9b1d6e7"
+  },
+  "combined_build": {
+    "revision": "a6490f8a07249787d57468a114147172fd8b0716",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_destroy_clear_combined_build.log",
+    "log_sha256": "facce5220ea26c940c8d6e6eb9f36218d6ba70793600dd7b519bb7df9889c9a1",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 7.86,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake"
+  },
+  "project_source_counts": {
+    "native_scene_integer_set_clear": 1,
+    "native_scene_record_map_destroy": 1
+  },
+  "unique_archive_objects": {
+    "native_scene_integer_set_clear": [
+      "bsp_core.dir\\Release\\native_scene_integer_set_clear.obj"
+    ],
+    "native_scene_record_map_destroy": [
+      "bsp_core.dir\\Release\\native_scene_record_map_destroy.obj"
+    ]
+  },
+  "archive_sha256": "c8884dd9ca28aa2d04bd248c3888be276b4a3d1357182ef15edd212e5a6d4190",
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "Explicit raw/frame/currentCRT Source interface; not Original binary/private-frame/register/CRT/heap identity",
+    "Existing math differential seeds do not exercise these new bodies",
+    "No new-body differential,application or game proof"
+  ]
+}
