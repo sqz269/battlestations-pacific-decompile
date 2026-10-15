@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_map_destroy",
+  "source": "src/native_scene_record_map_destroy.cpp",
+  "header": "include/bsp/native_scene_record_map_destroy.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_MAP_DESTROY.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "0046c500",
+      "end_exclusive": "0046c534",
+      "coverage": "complete",
+      "cpp_symbol": "destroy_native_scene_record_map_0046c500",
+      "original_abi": "ECX actual tree; RET; no semantic result; EAX cleared0",
+      "bytes": "83 ec 08 56 8b f1 8b 46 04 8b 08 50 56 51 56 8d 44 24 14 50 8b ce e8 55 f0 ff ff 8b 4e 04 51 e8 88 a0 78 00 83 c4 04 33 c0 89 46 04 89 46 08 5e 83 c4 08 c3",
+      "live_disk_equal": true,
+      "live_callers": 0,
+      "sha256": "5e55cece2df085c47c537788d47d4c0696e985377d2187d74c1ae838e9f689c0"
+    },
+    {
+      "address": "0046ced0",
+      "end_exclusive": "0046cf04",
+      "coverage": "complete",
+      "cpp_symbol": "destroy_native_scene_record_map_0046ced0",
+      "original_abi": "ECX actual tree; RET; no semantic result; EAX cleared0",
+      "bytes": "83 ec 08 56 8b f1 8b 46 04 8b 08 50 56 51 56 8d 44 24 14 50 8b ce e8 85 e6 ff ff 8b 4e 04 51 e8 b8 96 78 00 83 c4 04 33 c0 89 46 04 89 46 08 5e 83 c4 08 c3",
+      "live_disk_equal": true,
+      "live_callers": 0,
+      "sha256": "5709b02c65e206b3c7a9e3db8522199744a0c086360533b73874d7f26819b568"
+    },
+    {
+      "address": "0046ef70",
+      "end_exclusive": "0046efa4",
+      "coverage": "complete",
+      "cpp_symbol": "destroy_native_scene_record_map_0046ef70",
+      "original_abi": "ECX actual tree; RET; no semantic result; EAX cleared0",
+      "bytes": "83 ec 08 56 8b f1 8b 46 04 8b 08 50 56 51 56 8d 44 24 14 50 8b ce e8 e5 c5 ff ff 8b 4e 04 51 e8 18 76 78 00 83 c4 04 33 c0 89 46 04 89 46 08 5e 83 c4 08 c3",
+      "live_disk_equal": true,
+      "live_tail_callers": 2,
+      "sha256": "6c9457d5d4f09f5e848b9e40038d26c12b70fe3b09aba820676b7aad22991cdc"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0046c516",
+      "native": "0046b570",
+      "function": "0046c500",
+      "contract": "complete actual range; five outgoing words in push order; RET14"
+    },
+    {
+      "address": "0046c51f",
+      "native": "00bf65ac",
+      "function": "0046c500",
+      "contract": "free CURRENT head after range; caller ADD ESP,4 at0046C524"
+    },
+    {
+      "address": "0046cee6",
+      "native": "0046b570",
+      "function": "0046ced0",
+      "contract": "same complete actual range preparation; RET14"
+    },
+    {
+      "address": "0046ceef",
+      "native": "00bf65ac",
+      "function": "0046ced0",
+      "contract": "free CURRENT head after range; caller ADD ESP,4 at0046CEF4"
+    },
+    {
+      "address": "0046ef86",
+      "native": "0046b570",
+      "function": "0046ef70",
+      "contract": "same complete actual range preparation; RET14"
+    },
+    {
+      "address": "0046ef8f",
+      "native": "00bf65ac",
+      "function": "0046ef70",
+      "contract": "free CURRENT head after range; caller ADD ESP,4 at0046EF94"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "00c62001",
+      "native": "0046ef70",
+      "function": "00c61ffb",
+      "kind": "tail_jump",
+      "contract": "current saved object EBP-18 then embedded tree+18"
+    },
+    {
+      "address": "00c62081",
+      "native": "0046ef70",
+      "function": "00c6207b",
+      "kind": "tail_jump",
+      "contract": "current saved object EBP-1C then embedded tree+18"
+    }
+  ],
+  "source_dependencies": [
+    {
+      "routine": "0046b570",
+      "symbol": "erase_native_scene_record_map_range_0046b570",
+      "source": "src/native_scene_record_map_erase_range.cpp",
+      "modified": false
+    },
+    {
+      "routine": "00bf65ac",
+      "symbol": "singleton_lifetime_free",
+      "source": "src/singleton_lifetime.cpp",
+      "modified": false
+    }
+  ],
+  "prior_annotations": [
+    {
+      "address": "0046c500",
+      "name": "STL_Tree_Destroy_0046c500",
+      "comment": ""
+    },
+    {
+      "address": "0046ced0",
+      "name": "STL_Tree_Destroy_0046ced0",
+      "comment": ""
+    },
+    {
+      "address": "0046ef70",
+      "name": "STL_Tree_Destroy_0046ef70",
+      "comment": ""
+    }
+  ],
+  "source_registration": "unique bsp_core CMake append after fresh unleased check and only own queue removal; no exclusive whole-file lease",
+  "validation": {
+    "build": "PASS scripts/build.ps1; strict MSVC Win32; new TU compiled",
+    "existing_ctests": "PASS2/2 configured tests: reconstructed_math,tool_tests; native_math_differential not enabled in this worktree",
+    "report_call_verification": "PASS8/8 direct native call/tail rows; markdown0failures,0unchecked,0warnings",
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_executed": false,
+    "game_validated": false,
+    "diff_check": "PASS git diff --check",
+    "tested_commit": "7dda07ee6e19360e1ed36d070ef6604fa8c687b0",
+    "build_log": "local/goal-oct15-scene-map-destroy-build.log",
+    "build_warning": "LNK4006 duplicate spawn_request_id_matches in existing lua_binding_spawn.obj/lua_spawn_new.obj; outside packet scope"
+  },
+  "qualification": "Three complete ordinary raw bodies share verified equal implementation, full real range provider with distinct explicit argument/output/private backing and returning diagnostics; free current head, no mapped ownership/callback, private stack/CRT/FH3/ABI/candidate differential/game proof",
+  "canonical_body_comparisons": [
+    {
+      "candidate": "0046ced0",
+      "canonical": "0046c500",
+      "length": 52,
+      "normalized_relative_operand_offsets": [
+        23,
+        32
+      ],
+      "equal_other_bytes": true,
+      "same_call_targets": [
+        "0046b570",
+        "00bf65ac"
+      ]
+    },
+    {
+      "candidate": "0046ef70",
+      "canonical": "0046c500",
+      "length": 52,
+      "normalized_relative_operand_offsets": [
+        23,
+        32
+      ],
+      "equal_other_bytes": true,
+      "same_call_targets": [
+        "0046b570",
+        "00bf65ac"
+      ]
+    }
+  ],
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "annotation": {
+    "applied": true,
+    "names_retained": true,
+    "prior_values_log": "local/ghidra-annotations-20261015T212602Z.json",
+    "program_saved": true,
+    "exports_refreshed": true,
+    "caller_annotations_modified": false
+  }
+}

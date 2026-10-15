@@ -1,0 +1,667 @@
+{
+  "packet": "goal_oct15_scene_integer_set_increment",
+  "status": "complete_actual_raw_source_win32_build_and_two_enabled_existing_checks_passed",
+  "source_ready": true,
+  "source": "src/native_scene_integer_set_increment.cpp",
+  "header": "include/bsp/native_scene_integer_set_increment.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_INTEGER_SET_INCREMENT.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Guarded CLI verifies project/program/x86/image base before every live batch",
+    "annotation": "Applied under shared write lock; prior values recorded, correct native library names/comments preserved; project saved and all3exports refreshed; no flow/prototype repair",
+    "live_flow_or_prototype_repair": false,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "readiness": {
+    "indexed_reconstruction_before_packet": false,
+    "existing_source_search": "No owned core/wrapper Source or alternate spelling; historical inventory refs only",
+    "dependencies": "Complete concrete accepted current-SDK invalid-parameter provider; no record-map nil19h call"
+  },
+  "routines": [
+    {
+      "address": "00466ae0",
+      "body_end_inclusive": "00466b42",
+      "body_bytes": 99,
+      "instructions": 38,
+      "coverage": "complete_at_existing_concrete_current_crt_policy_boundary",
+      "name": "increment_native_scene_integer_set_iterator_00466ae0",
+      "native_name_preserved": "STL_TreeIter_Inc_00466ae0",
+      "original_abi": "ECX actual8h iterator,EDX input unused,no stack arguments,RET,ESI preserved;ambient EAX has no unified semantic result",
+      "original_bytes_hex": "568bf1833e007505e826fc78008b46048078110074065ee917fc78008b480880791100751a8b0180781100750d8d49008bc88b018078110074f6894e045ec38b40048078110075168b4e043b4808750e8946048bd08b42048078110074ea8946045ec3",
+      "original_bytes_sha256": "c7797adcbdaca1c755aa775766d01ab8ab5fdac88426fafedf76ffaadda301eb",
+      "live_equals_installed_PE": true,
+      "live_xrefs": [
+        "00467b33",
+        "00468343",
+        "0046a7be",
+        "0046b209"
+      ]
+    },
+    {
+      "address": "00467b30",
+      "body_end_inclusive": "00467b3b",
+      "body_bytes": 12,
+      "instructions": 6,
+      "coverage": "complete",
+      "name": "increment_native_scene_integer_set_iterator_00467b30",
+      "native_name_preserved": "STL_IterWrap_00467b30",
+      "original_abi": "ECX iterator,no stack arguments,RET,EAX captured original iterator pointer,ESI preserved",
+      "original_bytes_hex": "568bf1e8a8efffff8bc65ec3",
+      "original_bytes_sha256": "1aae80cd9812b60f44ae8e1e3ee6215bde74dc74574f96e58f71e1187beb7e4d",
+      "live_equals_installed_PE": true,
+      "live_xrefs": []
+    },
+    {
+      "address": "00468340",
+      "body_end_inclusive": "0046834b",
+      "body_bytes": 12,
+      "instructions": 6,
+      "coverage": "complete",
+      "name": "increment_native_scene_integer_set_iterator_00468340",
+      "native_name_preserved": "STL_IterWrap_00468340",
+      "original_abi": "ECX iterator,no stack arguments,RET,EAX captured original iterator pointer,ESI preserved",
+      "original_bytes_hex": "568bf1e898e7ffff8bc65ec3",
+      "original_bytes_sha256": "0dda5db1d88232dc57db1e8a623a824a5c04f70af7f51ee93357e75f5ede8de9",
+      "live_equals_installed_PE": true,
+      "live_xrefs": []
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00466ae8",
+      "native": "00bf6713",
+      "function": "00466ae0",
+      "kind": "call",
+      "contract": "owner zero; returning concrete currentCRT then CURRENT node reload"
+    },
+    {
+      "address": "00466af7",
+      "native": "00bf6713",
+      "function": "00466ae0",
+      "kind": "tail_jump",
+      "contract": "captured current node nil11; POPESI/JMP; returning report returns without later read/publication"
+    },
+    {
+      "address": "00467b33",
+      "native": "00466ae0",
+      "function": "00467b30",
+      "kind": "call",
+      "contract": "unchanged ECX actualiterator8; captured originalpointer returned inEAX; no stack args/plainRET"
+    },
+    {
+      "address": "00468343",
+      "native": "00466ae0",
+      "function": "00468340",
+      "kind": "call",
+      "contract": "unchanged ECX actualiterator8; captured originalpointer returned inEAX; no stack args/plainRET"
+    }
+  ],
+  "caller_steps": [
+    {
+      "address": "0046a7be",
+      "native": "00466ae0",
+      "function": "0046a740",
+      "contract": "ECX=ESP+6Ch actual stacked iterator backing; child result ignored, following MOV overwritesEAX; captured originalnode retained outside child"
+    },
+    {
+      "address": "0046b209",
+      "native": "00466ae0",
+      "function": "0046b170",
+      "contract": "ECX=ESP+20h actual firstiterator backing, owner initiallystack+20/node+24; ignoresEAX; erases capturedoldpair then reloads currentnode+24/currentowner+20"
+    }
+  ],
+  "storage": {
+    "iterator": {
+      "bytes": 8,
+      "owner": 0,
+      "node": 4
+    },
+    "node": {
+      "left": 0,
+      "parent": 4,
+      "right": 8,
+      "nil_byte": 17,
+      "bytes": 20,
+      "color_byte": 16
+    },
+    "access": "volatile actual DWORD/BYTE loads and DWORD stores;32-bit unsigned address addition",
+    "schedule": "owner check then CURRENT node reload after returning report;nil-node report then immediate return;right-leftmost final publish;ascent CURRENT node reload,parent.right compare,intermediate publish BEFORE parent reload,unconditional final publish",
+    "admission": "all raw storage reached valid;no nonnull-owner/nonnil-node narrowing;no disjoint iterator/node storage assumption;no unsynchronized concurrent mutation"
+  },
+  "current_crt": {
+    "binding": "invoke_native_invalid_parameter_00bf6713 from existing native_invalid_parameter_noinfo_call.cpp",
+    "provider": "actual current SDK _invalid_parameter_noinfo,zero semantic arguments;no noexcept/noreturn",
+    "returning_owner_failure": "continue and reload actual iterator.node,do not recheck owner",
+    "returning_nil_failure": "return without later node publication or link read",
+    "exception": "current provider exceptions propagate;no cleanup/rollback or conversion",
+    "qualification": "original encoded-global/debugger/Watson/private CRT/SEH/return/fault-address identity not established"
+  },
+  "layout_evidence": "Actual004681B0 producer alloc14h links0/4/8,key0Ch,color10h,nil11h. Full38-op core matches accepted record-map schedule except actualnil11h and native rel32 offsets; separately compiled Source invokes no19h body.",
+  "typed_metadata": {
+    "captures": [
+      {
+        "path": "local/goal_oct15_integer_next_typed_flow.json",
+        "sha256": "b29d83b882494203458102907d76469e8950c7298fa0323c6d7c24ab190a3e63",
+        "endpoint": "get_flow_metadata",
+        "utc": "2026-10-15T21:25:42.381881+00:00",
+        "read_only": true
+      },
+      {
+        "path": "local/goal_oct15_integer_next_transfers_typed.json",
+        "sha256": "628975deacda693fd05083d7c905030911cf9bd5707bae4bd4a8b8740754ab42",
+        "endpoint": "get_flow_metadata",
+        "utc": "2026-10-15T21:26:02.340775+00:00",
+        "read_only": true
+      }
+    ],
+    "functions": [
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00466ae0"
+        },
+        "name": "STL_TreeIter_Inc_00466ae0",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "99",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00466ae0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00466b42"
+              },
+              "length": "99"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00467b30"
+        },
+        "name": "STL_IterWrap_00467b30",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "12",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00467b30"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00467b3b"
+              },
+              "length": "12"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00468340"
+        },
+        "name": "STL_IterWrap_00468340",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "12",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00468340"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "0046834b"
+              },
+              "length": "12"
+            }
+          ]
+        }
+      }
+    ],
+    "rows": [
+      {
+        "address": "00466ae8",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00466ae8"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00466aed"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00466aed"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf6713"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf6713"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00466af7",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00466af7"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_flow": {
+          "flow_override": "CALL_RETURN",
+          "default_flow": {
+            "name": "UNCONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CALL_TERMINATOR",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf6713"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf6713"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00467b33",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00467b33"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00467b38"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00467b38"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00466ae0"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00466ae0"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00468343",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00468343"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00468348"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00468348"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00466ae0"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00466ae0"
+            }
+          ]
+        }
+      },
+      {
+        "address": "0046a7be",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "0046a7be"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "0046a7c3"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "0046a7c3"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00466ae0"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00466ae0"
+            }
+          ]
+        }
+      },
+      {
+        "address": "0046b209",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "0046b209"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "0046b20e"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "0046b20e"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00466ae0"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00466ae0"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "validation": {
+    "original_live_bytes_match_installed_PE": true,
+    "complete_executed_bytes": 123,
+    "instructions": 50,
+    "live_typed_body_and_transfer_metadata_read": true,
+    "existing_nil_tail_override": "AF7 encodedJMP/defaultUNCONDITIONAL_JUMP; CALL_RETURN effectiveCALL_TERMINATOR; no fallthrough; unchanged",
+    "report_calls": "6rows checked,0failed:5CALL+1explicit tailJMP",
+    "build": "PASS scripts/build.ps1 Release Win32 exit0; registered owned Source compiled, all targets linked",
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 7.76,
+      "native_math_differential_enabled": false,
+      "new_entry_native_differential": false
+    },
+    "new_tests": 0,
+    "cmake_registration": "Checked currentowner unleased; uniqueappend without exclusive lease",
+    "direct_native_increment_execution": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "source_commit": "1e2ff85e3",
+    "tested_revision": "1e2ff85e3",
+    "build_log": "local/goal_oct15_scene_integer_set_increment_build.log",
+    "build_log_sha256": "37ff03749eb6a8b31840d6337f9b0d2ac9f27e88d6ff6c0955734092327bbd3b",
+    "existing_checks": "Both enabled existing CTests pass",
+    "documentation_claim_check": "12addresses cited,2call claims checked,0failed,0unchecked,0warnings",
+    "diff_check": "passed before Source draft and final metadata commit",
+    "inherited_linker_warning": "LNK4006 spawn_request_id_matches duplicate in unchanged lua_binding_spawn.obj/lua_spawn_new.obj; second definition ignored"
+  },
+  "cmake_source_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_scene_integer_set_increment.cpp)",
+  "limits": [
+    "Complete actual raw backing, including owner/nil failure paths with returning concrete provider; no positive-only admission",
+    "CurrentSDK CRT policy differs from native encoded-global/debugger/Watson/FH3 delivery; no private frame/return/fault identity",
+    "Raw volatile external reads/writes and aliases retained, valid backing required; no owner conversion, validation, snapshot or normalization",
+    "Source/build does not establish native binary ABI, direct new-entry differential, application adoption or game behavior"
+  ],
+  "annotation_history": [
+    {
+      "address": "00466ae0",
+      "before": {
+        "address": "00466ae0",
+        "function_name": "STL_TreeIter_Inc_00466ae0"
+      },
+      "after": {
+        "address": "00466ae0",
+        "name": "STL_TreeIter_Inc_00466ae0",
+        "evidence": "Complete99B actual8h iterator/14hnode nil11h Source src/native_scene_integer_set_increment.cpp; correctSTL name preserved. owner check then CURRENT node reload after returning report;nil-node report then immediate return;right-leftmost final publish;ascent CURRENT node reload,parent.right compare,intermediate publish BEFORE parent reload,unconditional final publish; returning concrete BF6713; existing native AF7 JMP/CALL_RETURN typed state preserved. All live callers/full assembly/live-installed123B/typed complete bodies+6transfers checked. Buildpending; currentCRT/privateframe/binary/game limits. docs/GOAL_OCT15_SCENE_INTEGER_SET_INCREMENT.md"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00467b30",
+      "before": {
+        "address": "00467b30",
+        "function_name": "STL_IterWrap_00467b30"
+      },
+      "after": {
+        "address": "00467b30",
+        "name": "STL_IterWrap_00467b30",
+        "evidence": "Complete12B actual8h iterator/14hnode nil11h Source src/native_scene_integer_set_increment.cpp; correctSTL name preserved. Capture originalECX, call concrete actual679F0-independent increment66AE0, return same backingEAX/plainRET. All live callers/full assembly/live-installed123B/typed complete bodies+6transfers checked. Buildpending; currentCRT/privateframe/binary/game limits. docs/GOAL_OCT15_SCENE_INTEGER_SET_INCREMENT.md"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00468340",
+      "before": {
+        "address": "00468340",
+        "function_name": "STL_IterWrap_00468340"
+      },
+      "after": {
+        "address": "00468340",
+        "name": "STL_IterWrap_00468340",
+        "evidence": "Complete12B actual8h iterator/14hnode nil11h Source src/native_scene_integer_set_increment.cpp; correctSTL name preserved. Capture originalECX, call concrete actual679F0-independent increment66AE0, return same backingEAX/plainRET. All live callers/full assembly/live-installed123B/typed complete bodies+6transfers checked. Buildpending; currentCRT/privateframe/binary/game limits. docs/GOAL_OCT15_SCENE_INTEGER_SET_INCREMENT.md"
+      },
+      "status": "applied"
+    }
+  ],
+  "independent_review": {
+    "reviewer": "primary /root",
+    "accepted": true,
+    "scope": "Complete Source and full native extrema/increment/core/wrapper assembly independently compared; no mismatch",
+    "finding": "Returning initialCRT then CURRENT node, nil-tail/no publication, exact right-min/ascent live stores/rereads; wrappers return captured pointer",
+    "accepted_source_revision": "1e2ff85e3",
+    "source_hashes": {
+      "src/native_scene_integer_set_increment.cpp": {
+        "worktree_bytes_sha256": "9ff2ba73d5e36cd122641241d8a13715f140f0054b54af32fdd1d6e9449bfa51",
+        "git_blob_bytes_sha256": "dc929220a573fda5ffaf09976042f5d2cc5f0dc040a0609caab0bc72497686f3",
+        "normalized_lf_sha256": "dc929220a573fda5ffaf09976042f5d2cc5f0dc040a0609caab0bc72497686f3"
+      },
+      "include/bsp/native_scene_integer_set_increment.hpp": {
+        "worktree_bytes_sha256": "a0102c17d91c14ed9ba089cc6d6a6e24c03aaf927de74cfe9da004b5a888da95",
+        "git_blob_bytes_sha256": "a0102c17d91c14ed9ba089cc6d6a6e24c03aaf927de74cfe9da004b5a888da95",
+        "normalized_lf_sha256": "a0102c17d91c14ed9ba089cc6d6a6e24c03aaf927de74cfe9da004b5a888da95"
+      }
+    }
+  }
+}

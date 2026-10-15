@@ -1,0 +1,320 @@
+{
+  "schema": "bsp.native_enum_lua_declaration.cc12.Source.v1",
+  "status": "whole_ordinary_current_CRT_Source_primary_peer_accepted_Main_build_pending",
+  "address": "008F2F70",
+  "worker_base_commit": "839b44143beb4d621709c7603cf39710be018fb2",
+  "Source_ready": true,
+  "ordinary_Source_Main_admission": false,
+  "owned_new_files": [
+    "include/bsp/native_enum_lua_declaration.hpp",
+    "src/native_enum_lua_declaration.cpp",
+    "include/bsp/game_native_enum_lua_declaration.hpp",
+    "src/game_native_enum_lua_declaration.cpp",
+    "docs/NATIVE_ENUM_LUA_DECLARATION_CC12.md",
+    "reports/native_enum_lua_declaration_cc12.json"
+  ],
+  "Original": {
+    "begin": "008F2F70",
+    "end_exclusive": "008F3199",
+    "bytes": 553,
+    "sha256": "7da0908e4652cdd91600fa0e9486aebdbd83af44cfd8fa7e6d0bed8b84d73d18",
+    "instructions": 152,
+    "direct_calls": 24,
+    "unique_direct_targets": 16,
+    "indirect_calls": 0,
+    "conditional_branches": 9,
+    "x87_in_target": 0,
+    "transport": "ECX genuine19Ch enum; consumed owning8B length/data string on stack; RET8; no semantic EAX count/bool.",
+    "fresh_live_equals_accepted_disk_body": true,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "all34_current_control_sites_no_override": true,
+    "current_typed_modification_number": "431",
+    "provisional_name": "Cached property-bag ParseLuaSection name is misleading; descriptive Source name is a hypothesis, no recovered class/symbol assertion."
+  },
+  "public_API": "void declare_native_enum_symbols_from_lua_008f2f70(void* actual_raw_19c_enum,NativeString& consumed_key,NativeEnumLuaDeclarationContext&)",
+  "whole_normal_schedule": [
+    {
+      "range": "008F2F8A..008F2FBC",
+      "operation": "Retain ECX as the genuine19Ch enum. Read consumed8B key.data atentrySP+8. Null selects SAME stable clone-empty F89450 role. Copy one byte at a time through NUL into enum+11C, without truncation, clearing extra bytes or checking a model flag. Actual128B name area must fit."
+    },
+    {
+      "range": "008F2FBE..008F2FE4",
+      "operation": "Resize existing owning8B type header atenum+114 to5 preserve=false through raw0041DD40. Reload CURRENT data at+118; ifnonnull reload CURRENT length at+114 and memcpy exactly that many bytes fromD162D8. Immutable bytes are LUA_S NUL(6B); Original normally copies5, no extra terminator store/copy."
+    },
+    {
+      "range": "008F2FE7..008F3022",
+      "operation": "Only NOW read current world through actualE188A8 cell. Use SAME actual world+1A0C4C8h Lua owner, then B67980 globals and B68100 selectedtable with original consumed8B key. Destroy globals before testing selectedtable. Do not pre-capture world in binding constructor or create a substitute owner."
+    },
+    {
+      "range": "008F3027..008F307A",
+      "operation": "B661B0 table test. Nontable skips iteration. Table constructs two actual14h locals atstable addresses viaB65F50(key thenvalue), invokes rawB67080(selected,key,value), thenB66420(key) tests whether unbound."
+    },
+    {
+      "range": "008F3083..008F30CC",
+      "operation": "For EACH value, B67800(value,freshName,immutableName) constructs a tracked14h Name result. Fixed concrete display binding invokes actual-storageB68630 into genuine8B output. Read its current data; null selects SAMEF89450. Obtain currentkey integer through fullB66290/accepted conversion tail and call whole8F2E40 on SAME19Ch enum. There is no Lua type, number, name, finite or duplicate bypass invented here;8F2E40 itself retains duplicates."
+    },
+    {
+      "range": "008F30D1..008F312B",
+      "operation": "After declaration read CURRENT display.data. Ifnonnull read CURRENT length, add1 modulo32, resolve fresh00419CC0 and returnBD1510mode1. No clearing/stale copied header or double release. Destroy Name Lua temporary AFTER display release, then rawB67190(selected,key,value); retest unbound key and loop."
+    },
+    {
+      "range": "008F3132..008F3196",
+      "operation": "Destroy value thenkey on table path, then selectedtable on both paths. Finally consume/release incoming8B key CURRENTdata andCURRENTlength+1 viafresh00419CC0\u2192BD1510mode1 ifnonnull. Receiver/symbol map survive; caller does not destroy consumed buffer again. Source returnsvoid; native EAX is not a semantic count/bool."
+    }
+  ],
+  "concrete_Source": {
+    "name": "Bytewise volatile read/store loop through NUL into enum+11C; no bound/truncation/extra clearing. Actual128B inline area must fit.",
+    "type": "Raw0041DD40 enum+114 to5 preservefalse; physical CURRENTdata+118 read, ifnonnull CURRENTlength+114, current std::memcpy from actualD162D8. No extra terminator.",
+    "world": "Only after name/type copy, read actualE188A8 publication and use actual constructed world+1A0C4C8h NativeLuaStateStorage. No cached world, constructor or substitute state.",
+    "Lua": "All actual-storage14h objects have stable genuine addresses. Globals\u2192selected-by-consumed-key\u2192globals cleanup\u2192table test; key/value raw iteration; Name raw lookup\u2192fixed display\u2192numeric key\u2192whole8F2E40; display\u2192Name cleanup\u2192next; value\u2192key\u2192selected\u2192consumed input.",
+    "display": "Concrete GameNativeLuaDisplayStringBindings only, using SAMEGameNativeStringProcess strings()/raw_context(). No consumer formatter/default/callback or std::string projection.",
+    "ownership": "Consumed input current raw buffer returned once,last,header unchanged. Each completed display current data/length returned through fresh00419CC0\u2192BD1510mode1 before Name release. Actual enum/symbol map survives and owns newly inserted keys; duplicate provider retains first symbol."
+  },
+  "numeric": {
+    "key": "Actual linkedlua_tonumber on key.owner_00->state_04/key.index_08 THEN fullvolatileDWORD0109EEA4!=0 sample into genuinebool THEN acceptedlua_number_integer_00b66290 tail. No bool alias, CPU guess, integer cast/saturation/type filter.",
+    "difference": "OriginalB66290 spills/reloadsfloat32 before fullDWORD feature read inBF7420. NewSource samples before the accepted tail performs its localfloat32 spill/reload. Stable feature/noFP-traps/no-reentry/concurrent-mutation domain required; no literal x87/read/FP-status/exception transport parity.",
+    "display": "Admitted CURRENT-CRT43BDF0 fixed %f: float32 narrowing then explicit double materialization, unbounded std::sprintf(char*,\"%f\",double), ignoredreturn/fullNULscan. Actual resultincludingNUL mustfit52B accessibleSource/comparedOriginalprefix; this is not recoveredOriginaldeclaredarrayextent. No finite/NaN/Inf/zero/locale filter or forcedlocale.",
+    "unclosed": "Original/privateCRTBF7A6A/E15BE0/locale/PTD/numerictext/rounding/errno/FP/failure parity remain false. No8D9B40 tokenizer dependency."
+  },
+  "concrete_holder": {
+    "type": "game::GameNativeEnumLuaDeclarationBindings final; noncopyable/nonmovable; owns only Source contexts/fixeddisplay binding.",
+    "borrowers": [
+      "GameNativeStringProcess SAME raw/string cells01090AA8/01090AA4/01090AA0 and distinctF89450/E186ED/E17654 roles.",
+      "GameNativePhysicalPoolProcess alreadyinitialized actualE17578, sameE188B4 domain. Getter supplies no startup.",
+      "GameNativeSettingsProcess.game_00e188a8() actualCELL reference, not its current pointervalue.",
+      "GameNativeReadOnlyData.data_at(D162D8,6) and data_at(CE8ED0,5), already mapped actual immutable spans.",
+      "GameNativeMutableCrtData.feature_word() actualvolatile32b reference; no replacement boolcell."
+    ],
+    "layout": "56B: declaration0..0F,fixeddisplay10..1B,context1C..37. Contextrefs+1Cdeclaration,+20display,+24E188A8cell,+28featurecell,+2Ccloneempty,+30typebytes,+34Name. Ctor142B/50instr preserves actual stringprocess+0C raw ref; real symbolpool and distinct fallback accessors; ROdataD162D8/6,CE8ED0/5. No cachedworld, startup, substituteowner or callback.",
+    "qualification": "All services/processes/data/pool generations/owners remain live; caller supplies genuine constructed world/state and enum provenance. No application wiring/startup/global publication or owner provenance follows from accessor/binding construction."
+  },
+  "completed_cleanup": {
+    "Original": "CA48C8\u2192DD74FC magic19930522, eight native states atDD7520: input/globals/selected(2/3)/key/value/Name/display.",
+    "Source": "Seven completed-resource guards, with two actual raw string and five actual Lua objects. Guards arm only after completion, disarm before explicit cleanup. Failed B68630 output is not armed. C++ unwind funclets call the exact guard destructors; no enum/type/name/output rollback, blanket resource transaction or cleanup retry.",
+    "limits": "Native FS/FH/SEH, hardware faults, Lua nonlocal transfer/metamethod error, cleanup throw/double exception, register/stack and exceptional-unwind parity are not supplied. New C++ interface behavior applies.",
+    "emission": "Rawdisplay+24C,Name+25C,next+26D;value+298,key+2A8,selected+2BF,consumedkey+2CD. Seven emitted guard funclets bind exactly those completed resources; no enum/type/name rollback or failed-output destruction.",
+    "compiler_ordering": "Core+1E3 arms completed display before returneddata+1EA although Source and Original read data before state publication. Both are after successfulB68630; no intervening call or alias change. Private guard/frame ordering and fault/nativeEH parity remain outside stable/disjoint/nofault contract."
+  },
+  "admitted_domain": {
+    "entry": "OriginalECX genuine19Ch enum; owning8B by-value length/data atentrySP+4/+8; EAX unspecified semantic result; RET8. NewAPI uses explicit consumedNativeString& to avoid accidental extra ownership copies, not the Original stack ABI.",
+    "enum": "Existing8F4DD0/D16508 initializer and admitted current-CRT symbol ownership/map domain. type114/118 and inline11C..19B belong to same19Ch owner. Distinct E17578 symbol andE175E8 table pools are not property substitutes.8F2E40 retainsfirstduplicate and updates metadata/newownedkey only on insertion.",
+    "strings": "GameNativeStringProcess SAMEraw_context()/strings() cells01090AA8/01090AA4/01090AA0 across consumedkey, type resize, display nonNUMBER/NUMBER and declaration queries/ownedkeys. F89450 clone-empty, E186ED enum-empty, E17654 query-empty remain distinct genuine process roles.",
+    "Lua": "Borrow current GameNativeSettingsProcess.game_00e188a8() cell or exactsame actualcell explicitly. Current nonnull actualworld+1A0C is existing aligned constructedNativeLuaStateStorage4C8h with live Lua5.1.1 state_04, coherent stack/tracking, slots<50/references<5 and stable14h localaddresses. Same owner propagated by every raw API; do not call borrowed-state constructor/DoFile registration here.",
+    "lifetime": "Processes,data bands,worldLua owner,CRTfeatureauthority,enum/symbol pool and all actualcells remain live and synchronized through call and allresult/keycleanup. Retire enum keys/nodes beforepooldrain. No startup/publication/worldprovenance is established by obtaining an accessor.",
+    "errors": "RawLua APIs retain nonlocal Lua error/metamethod semantics. No protected-reader wrappers, private Lua frame, defaultcallback or invented rollback. Whole ordinary readiness is the admitted successful stable/disjoint/coherent nofault/noerror/nooverflow/noreentry/concurrent-mutation domain; nativeFS/EH/SEH/longjmp transport and failure-path equivalence remain outside."
+  },
+  "strict": {
+    "first_only": true,
+    "both_new_TUs": true,
+    "actual_original_tool_result": {
+      "chunk_id": "6f1a47",
+      "wall_time_seconds": 5.7063798,
+      "exit_code": 0,
+      "original_token_count": 583,
+      "output": "Pinned 9 tool files before strict compile\r\nCompiler Passes:\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\cl.exe:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1.dll:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll:      Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c2.dll:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll:      Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\link.exe:      Version 14.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\mspdb140.dll:  Version 14.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\1033\\clui.dll: Version 19.51.36244.0\r\n\r\nnative_enum_lua_declaration.cpp\r\nCompiler Passes:\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\cl.exe:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1.dll:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll:      Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c2.dll:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll:      Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\link.exe:      Version 14.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\mspdb140.dll:  Version 14.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\1033\\clui.dll: Version 19.51.36244.0\r\n\r\ngame_native_enum_lua_declaration.cpp\r\nstrict_exit=0\r\n"
+    },
+    "original_call_id": "call_40d050be73a245be9c77fbecd6492c45",
+    "original_call_line": 3447,
+    "original_result_line": 3450,
+    "cl_only_exit_integer_not_printed": true,
+    "checked_batch_immediately_exits_on_cl_failure": true,
+    "settings": "/std:c++17 /MD /O2 /Ob2 /Oy- /W4 /WX /EHsc /Gy /GL- /fp:strict /Bv; sourceDependencies/FAsc",
+    "compiler": "MSVC Win32 19.51.36244.0",
+    "receipts": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholeEnumLuaDeclarationSource01\\original_compile_tools.DATA.json",
+      "bytes": 10370,
+      "sha256": "15477788c136c236f5cb2b20f7b2e56d8b6d651f35132801e3eb6c0a38eb5481"
+    }
+  },
+  "complete_COFF": {
+    "objects": [
+      {
+        "label": "native",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholeEnumLuaDeclarationSource01\\native_enum_lua_declaration.obj",
+          "bytes": 10174,
+          "sha256": "b7f24ac273d7718ffdf08b821a3c5d322d3d4433ca4250c2e9dcfc96752afc06"
+        },
+        "sections": 31,
+        "primary_symbols": 80,
+        "symbol_slots": 111,
+        "code_sections": 15,
+        "code_bytes": 1099,
+        "instructions": 340,
+        "code_relocations": 44,
+        "metadata_relocations": 16
+      },
+      {
+        "label": "game",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholeEnumLuaDeclarationSource01\\game_native_enum_lua_declaration.obj",
+          "bytes": 6408,
+          "sha256": "7f040185aa065c9bbc23c1c1d43c85f8879dc54b559bafb9207136a48d0fa9f4"
+        },
+        "sections": 16,
+        "primary_symbols": 50,
+        "symbol_slots": 66,
+        "code_sections": 8,
+        "code_bytes": 938,
+        "instructions": 339,
+        "code_relocations": 42,
+        "metadata_relocations": 1
+      }
+    ],
+    "total_sections": 47,
+    "primary_symbols": 130,
+    "auxiliary_records": 47,
+    "symbol_slots": 177,
+    "code_sections": 23,
+    "code_bytes": 2037,
+    "instructions": 679,
+    "code_relocations": 86,
+    "metadata_relocations": 17,
+    "all_code_data_metadata_symbols_aux_directives_relocations_file_bytes_reviewed": true,
+    "core": "section22:753B/216instructions; all normal branches/provider calls and seven guard funclets inspected.",
+    "actual_numeric_schedule": "Lua tonumber+1FD; returnFSTPQWORD+208; fullDWORD actualfeature CMP+216, SETNE genuinebool+21D; MOVSD copies doublebits tocallargs; acceptedconversiontail+229. Existingtail later narrowsfloat32; Originalfloatspill/read-order/FP-status identity unclaimed.",
+    "actual_world_read": "Core+BF dereferences context actualE188A8 cell after type memcpy+A4; +C1 adds1A0C before actual globals+DF.",
+    "additional_contributions": "Two time_get<_W>315B COMDAT bodies, _Maklocwcs82B, _wmemcpy17B, constructoriterator38B copies, NativeString ctor/data and inline raw_context are current header/compiler contributions. All code and bindings inspected; they are not additional Original target callees.",
+    "metadata": "CurrentMD directives; CodeView compiler/object identity; char/wchar digitpair tables; 4B linker-zero weakAVX roles; nine16B function/frame records; nativeSafeSEH index and92B currentFH3 seven-state table; game26B wideAM/PM literal; per-sectionchecksum64. All bytes and literal private symbols retained, no normalization.",
+    "full_parse": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholeEnumLuaDeclarationSource01\\complete_COFF.DATA.json",
+      "bytes": 355915,
+      "sha256": "a5706766d8068e120e4d8e84c6d04c480e835461f8557e04cd15d7c591960e82"
+    },
+    "full_static_audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholeEnumLuaDeclarationSource01\\complete_static_audit.DATA.json",
+      "bytes": 34168,
+      "sha256": "ac2c2b99ff2cc5f384f617c0b157f96978b463983b83901dc65e4ee71f77a388"
+    }
+  },
+  "normal_build": {
+    "invocations": 1,
+    "initial": {
+      "chunk_id": "280d43",
+      "wall_time_seconds": 10.0006287,
+      "session_id": 21457,
+      "original_token_count": 0,
+      "output": ""
+    },
+    "intermediate": {
+      "chunk_id": "03eabc",
+      "wall_time_seconds": 5.0159926,
+      "session_id": 21457,
+      "original_token_count": 0,
+      "output": ""
+    },
+    "natural_terminal": {
+      "chunk_id": "c97872",
+      "wall_time_seconds": 8.4e-06,
+      "exit_code": 0,
+      "original_token_count": 7,
+      "output": "repository_build_exit=0\r\n"
+    },
+    "configured_checks": 2,
+    "passed_checks": 2,
+    "seconds": 7.9,
+    "new_TUs_registered": false,
+    "qualification": "Required own normal build/old configuredchecks; newTUs are separately strict-compiled, not runtime/API-tested or registered.",
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholeEnumLuaDeclarationSource01\\repository.build.log",
+      "bytes": 9312,
+      "sha256": "4d3f80d39a4a2d666a21e427cf2e7830415248470ffedd9044b4db54b82ca72e"
+    },
+    "warnings": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\build\\win32\\bsp_core.vcxproj]"
+    ],
+    "original_objects": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholeEnumLuaDeclarationSource01\\original_build_tools.DATA.json",
+      "bytes": 333,
+      "sha256": "357a3b231d0902c155fdd999e5e5b3eb71c585dd701186dbe63d3663b0745d99"
+    },
+    "exact_provenance": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholeEnumLuaDeclarationSource01\\original_build_provenance.DATA.json",
+      "bytes": 10301,
+      "sha256": "1ac5f84cbdbb6140a4ed739e393e75fd05de3e5822854bb0897b991a3fb860a0"
+    }
+  },
+  "exact_inputs": {
+    "readiness_files": 138,
+    "readiness_historical_pending_formatter_condition": "Closed by Root/Main1a76ba673 formatter gates and80d27d3e9 readiness, both ancestors of workerbase; frozen historical readiness is preserved.",
+    "current_provider_build_files": 34,
+    "before_after_unchanged_own_code_headers_doc": 5,
+    "before_after_unchanged_tools": 9,
+    "compiler_declared_sources_includes": 339,
+    "compiler_pin_timing": "Declared339 compiler inputs frozen after strict; own5/provider34/tool9 before/after hashes also agree. No claim of a separately measured precompile hash for every system include.",
+    "precompile": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholeEnumLuaDeclarationSource01\\precompile_inputs.DATA.json",
+      "bytes": 122030,
+      "sha256": "9a16be86469209c919bf17b62c22439c44b1f6699f7714aeb52672b80f7e065d"
+    },
+    "compiler": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholeEnumLuaDeclarationSource01\\compiler_inputs.DATA.json",
+      "bytes": 270602,
+      "sha256": "a5eb28b81d14300a74d17a999f50fa0da46be177f19f73ab67cde78c25d6d5ee"
+    }
+  },
+  "owned_inputs": [
+    {
+      "relative_path": "include/bsp/native_enum_lua_declaration.hpp",
+      "actual": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_enum_lua_declaration.hpp",
+        "bytes": 3235,
+        "sha256": "21227cbe8d21328c4dd2c81162ad44397e7b9392a96404e00764d692fba2737c"
+      }
+    },
+    {
+      "relative_path": "src/native_enum_lua_declaration.cpp",
+      "actual": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\native_enum_lua_declaration.cpp",
+        "bytes": 6186,
+        "sha256": "a2681f75b95d8b7838911252de37590eb8d380542a09aec701a060c2bd9d6802"
+      }
+    },
+    {
+      "relative_path": "include/bsp/game_native_enum_lua_declaration.hpp",
+      "actual": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\game_native_enum_lua_declaration.hpp",
+        "bytes": 1504,
+        "sha256": "7aaf346d49c8e073dc931369a79b7057615450eb4c23a9ed35ca0d69d4fcf3cd"
+      }
+    },
+    {
+      "relative_path": "src/game_native_enum_lua_declaration.cpp",
+      "actual": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\game_native_enum_lua_declaration.cpp",
+        "bytes": 1172,
+        "sha256": "7bf410f7a824910801d540e5b6c05f2e20f1ef17dbca79e337e955a8f3bec6ef"
+      }
+    },
+    {
+      "relative_path": "docs/NATIVE_ENUM_LUA_DECLARATION_CC12.md",
+      "actual": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\docs\\NATIVE_ENUM_LUA_DECLARATION_CC12.md",
+        "bytes": 6389,
+        "sha256": "e256d9b141d672466914b6e417f67af3d8d2c5595d1490fe084498e17d499b02"
+      }
+    }
+  ],
+  "evidence_limits": [
+    "New ordinary C++ context interface only, not Original ABI/register/FS/EH/class/privateCRT/game/runtime equivalence.",
+    "Stable/disjoint/coherent accessible genuine owners, finite valid graphs/chains, fitting128B name and52B formatter result, current-C-locale/closedASCII declaration domain, live Lua5.1.1 owner/stack/tracking and successful nonthrowing services.",
+    "Retain processes,cells,read-only spans,keys,pool generation andsharedlist lifetime; serialize mutation; retireenumkeys/nodesbeforepoolteardown. No startup/global wiring, wholeparser/loader or SourceABI admission.",
+    "No new tests/probes/runtime replay; Root owns independent review, registration, Main compiler/provider gates and admission."
+  ],
+  "final_local_family": "local/WholeEnumLuaDeclarationSource01",
+  "integration_metadata_corrections": [
+    {
+      "field": "Original.current_typed_modification_number",
+      "author_committed_value": "439",
+      "authoritative_typed_receipt_value": "431",
+      "original_author_report": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\reports\\native_enum_lua_declaration_cc12.json",
+        "bytes": 24268,
+        "sha256": "4e19a6e7dd65061860bf7d4c07cd327b38999a1cb7509425b1c6d5ae82fd92b7"
+      },
+      "Source_commit": "945212e1d84ff761224986ea302822432d2ed396",
+      "qualification": "Report label only. Original project/program/body identity, code, providers and sealed author evidence unchanged. Original author report remains in immutable author/reviewer packets."
+    }
+  ]
+}
