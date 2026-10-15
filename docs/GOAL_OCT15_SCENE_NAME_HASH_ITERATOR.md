@@ -29,5 +29,4 @@ and return 0 or 1. Unsigned increment and address arithmetic wrap modulo32.
 Reached actual storage may alias while every access stays valid. No native
 private-frame, implicit Source argument-home, asynchronous mutation, register,
 flags, fault, mangling or binary ABI identity is claimed. New-entry native
-differential, application adoption and gameplay proof remain open. Independent
-review, live/installed-byte evidence and default Win32 build are pending.
+differential, application adoption and gameplay proof remain open. Independent whole-body review and all 157 live/installed-identical bytes passed. The combined default MSVC Release Win32 build passed all three existing CTests in 7.77s, with six true incoming rows verified and no new tests. Receipt: reports/goal_oct15_scene_hash_clear_primary_review.json.

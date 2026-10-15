@@ -1,7 +1,7 @@
 {
   "packet": "goal_oct15_scene_name_hash_iterator",
-  "status": "whole_raw_Source_independently_reviewed_default_build_pending",
-  "source_ready": false,
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "source_ready": true,
   "source": "src/native_scene_name_hash_iterator.cpp",
   "header": "include/bsp/native_scene_name_hash_iterator.hpp",
   "documentation": "docs/GOAL_OCT15_SCENE_NAME_HASH_ITERATOR.md",
@@ -162,5 +162,34 @@
       "src/native_scene_name_hash_iterator.cpp": "69e1661e27018e38d57bf45e892c3fa11d021c166f9de0ee18aa9becc6746297",
       "include/bsp/native_scene_name_hash_iterator.hpp": "d067020450fc886c6d994dff94913a067d60023aa15a5581caff6ab489ba20ee"
     }
+  },
+  "validation": {
+    "combined_build": {
+      "revision": "55d382440cd0360de19adff1c5a86cd6e13c8f34",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_scene_hash_clear_combined_build.log",
+      "log_sha256": "d5159b3fba505b316999f1012f64c4a82fb17f2381bc58b4664680d50730f59e",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 7.77,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies"
+    },
+    "typed_incoming_rows_passed": 6,
+    "new_tests": 0
+  },
+  "annotation": {
+    "prior_values_log": "local/ghidra-annotations-20261015T231452Z.json",
+    "names_retained": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "readback": "local/goal_oct15_scene_name_hash_iterator_readback.json"
   }
 }
