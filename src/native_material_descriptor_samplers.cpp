@@ -47,8 +47,9 @@ void consume_release_stack(Op& a,NativeMaterialDescriptorSamplerStep& s) {
 }
 bool qualify_native_material_descriptor_sampler_release_provider(
     NativeMaterialDescriptorSamplerReleaseProvider& evidence) noexcept {
-    // Same complete nonforwarded20-byte Kernel32 profile as the cached-entry
-    // proof. No cached COM Release/96-byte bridge is used or changed here.
+    // Supported nonforwarded Kernel32 profiles have identical complete20-byte
+    // decrement bodies; only PE identity/export RVA differs. No cached COM
+    // Release/96-byte bridge is used or changed here.
     static constexpr unsigned char decrement[] = {
         0x8b,0xff,0x55,0x8b,0xec,0x8b,0x4d,0x08,0x83,0xc8,0xff,0xf0,0x0f,0xc1,0x01,0x48,
         0x5d,0xc2,0x04,0x00};
@@ -62,9 +63,13 @@ bool qualify_native_material_descriptor_sampler_release_provider(
         reinterpret_cast<const unsigned char*>(module)+dos->e_lfanew);
     if(nt->Signature!=IMAGE_NT_SIGNATURE||nt->FileHeader.Machine!=IMAGE_FILE_MACHINE_I386||
         nt->OptionalHeader.Magic!=IMAGE_NT_OPTIONAL_HDR32_MAGIC||
-        nt->FileHeader.TimeDateStamp!=0x0f052f7bu||nt->OptionalHeader.SizeOfImage!=0x000f0000u)return false;
+        nt->OptionalHeader.SizeOfImage!=0x000f0000u)return false;
+    std::uint32_t decrement_rva{};
+    if(nt->FileHeader.TimeDateStamp==0x0f052f7bu)decrement_rva=0x31ab0u;
+    else if(nt->FileHeader.TimeDateStamp==0x01212b3cu)decrement_rva=0x31e50u;
+    else return false;
     evidence.entry=reinterpret_cast<std::uintptr_t>(GetProcAddress(module,"InterlockedDecrement"));
-    if(evidence.entry!=evidence.module+0x31ab0u)return false;
+    if(evidence.entry!=evidence.module+decrement_rva)return false;
     evidence.matched=std::memcmp(reinterpret_cast<const void*>(evidence.entry),decrement,sizeof decrement)==0;
     return evidence.matched;
 }
