@@ -1,0 +1,315 @@
+{
+  "packet": "oct15_fourth_reconstruction_batch",
+  "status": "integrated_reviewed_build_checked_annotated",
+  "base_main": "5a45adc364b9b65a925ed2e103076230267545dc",
+  "primary_packet": {
+    "packet": "oct15_string_uninitialized_copy",
+    "commit": "1a28cb76e",
+    "functions": [
+      "00431f40",
+      "0044d0c0",
+      "00505ad0"
+    ],
+    "catch": "0044d10a",
+    "report": "reports/oct15_string_uninitialized_copy.json",
+    "status": "integrated_local_main_build_checked"
+  },
+  "workers": [
+    {
+      "agent": "/root/avoid_tangent",
+      "packet": "oct15_layer_bilinear",
+      "addresses": [
+        "0041bc20"
+      ],
+      "report": "reports/oct15_layer_bilinear.json",
+      "commit": "a3eebe668",
+      "status": "integrated_reviewed_build_checked"
+    },
+    {
+      "agent": "/root/avoid_distance",
+      "packet": "oct15_pod_range_wrappers",
+      "addresses": [
+        "0041c4d0",
+        "0041c580"
+      ],
+      "report": "reports/oct15_pod_range_wrappers.json",
+      "commit": "b6b5af176",
+      "status": "integrated_reviewed_build_checked"
+    },
+    {
+      "agent": "/root/lua_cache_tree",
+      "packet": "oct15_raw_string_range_assignment",
+      "addresses": [
+        "0048da50",
+        "0048f400"
+      ],
+      "report": "reports/oct15_raw_string_range_assignment.json",
+      "commit": "9d74546be",
+      "status": "integrated_reviewed_build_checked"
+    }
+  ],
+  "assignment_00506c80": {
+    "status": "incomplete",
+    "accepted_dependencies": [
+      "0048F400/0048DA50 raw-pool range assignment",
+      "00505AD0/0044D0C0 uninitialized copy plus actual00431F40 cleanup in current Source C++ exception domain"
+    ],
+    "remaining": [
+      "00498FF0/004954F0 actual erase/clear composition",
+      "00432090/0042BF40/00431F70 vector allocation/length-error composition"
+    ],
+    "active_workers": [
+      "oct15_raw_string_vector_erase",
+      "oct15_string_vector_allocation"
+    ],
+    "limits": "Original FH3/SEH exception identity remains unproved; accepted dependencies retain declared currentCRT/zero-byte-copy/FP diagnostics limits."
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "primary_reviews": [
+    "Reviewed complete actual raw string assignment Source/header against complete original core/dispatcher listings; identity skip, post-resize field reload order and independent signed SAR3 dispatcher return retained.",
+    "Reviewed both POD wrapper bodies against complete native listings, x87 per-word alias schedule and unchanged move-kernel exposure.",
+    "Reviewed complete79-instruction bilinear listing and Source stack/callee adaptations. Final integrated kernel includes explicit ECX reload; one finite comparison against full original three-function sampling chain passed after combined build."
+  ],
+  "validation": {
+    "primary_source_build": {
+      "log": "local/oct15_string_uninitialized_copy_build.log",
+      "passed_suites": 3,
+      "seconds": 7.44
+    },
+    "raw_assignment_combined_build": {
+      "log": "local/oct15_raw_assignment_integration_build.log",
+      "passed_suites": 3,
+      "seconds": 6.74
+    },
+    "bilinear_worker_original_probe": {
+      "result": {
+        "scope": "full original bilinear body calling relocated full original WorldToCell and CellHeight; one finite nonplanar grid; output bits only; default masked FP",
+        "world_x": "bff47ae1",
+        "world_z": "bfd1eb85",
+        "original": "40aaf1ac",
+        "source": "40aaf1ac",
+        "bits_match": true,
+        "invalid_sentinel_reached": false
+      },
+      "input": {
+        "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "function": "0041bc20",
+        "length": 227,
+        "code_hex": "83ec18d94424205355565783ec08d95c24048d442428d94424348bf1d91c2450e85bc3ffffd9442420f30f2c7c2420f30f2c5c2424897c2430da6424308d6b018d47015550895c2424d95c2418e86efeffff55d95c2418578bcee861feffffd95c2418538d4701508bcee851feffffd95c243053578bcee844feffffd95c242cd94424305fd94424285ed9c05ddeea5bd90424d9c0decbd9cadec1d95c241cd9442404d9442408d9c0deead9c9decadec1d95c2420d9442420d944241cd9c0deead9442414da64240cd95c2420d9442420decadec1d95c2420d944242083c418c20800",
+        "saved_ghidra_matches_full_disk_body": true,
+        "calls": [
+          {
+            "site": "0041bc40",
+            "offset": 32,
+            "target": "00417fa0"
+          },
+          {
+            "site": "0041bc6d",
+            "offset": 77,
+            "target": "0041bae0"
+          },
+          {
+            "site": "0041bc7a",
+            "offset": 90,
+            "target": "0041bae0"
+          },
+          {
+            "site": "0041bc8a",
+            "offset": 106,
+            "target": "0041bae0"
+          },
+          {
+            "site": "0041bc97",
+            "offset": 119,
+            "target": "0041bae0"
+          }
+        ],
+        "dependencies": "Full original159B WorldToCell and105B CellHeight, same existing byte-audit input.",
+        "scope": "One finite nonplanar actual-grid case, output binary32 only under masked default FP; no diagnostics, traps/status, ABI or gameplay proof."
+      },
+      "driver": "J:/PROG/battlestations-pacific-decompile/local/oct15_layer_sampling_probe/bilinear_probe.cpp",
+      "driver_sha256": "1c531da8631770cc028d9341ac8a2c69dd5c5ec8775b9c21b7d71a04a9f51548",
+      "manifest": "/link /MANIFEST:EMBED",
+      "scope_limit": "One finite case, output binary32 only, default masked FP; unused Cell invalid call sentinel not reached. Not trap/status, diagnostic continuation, full ABI, adapter or gameplay proof."
+    },
+    "combined_win32_release": {
+      "passed": true,
+      "source_commit": "54cc2b244e994a646d1870ff2484186a6bb32228",
+      "log": "local/oct15_fourth_batch_combined_build.log",
+      "existing_suites": {
+        "reconstructed_math": "passed",
+        "native_math_differential": "passed_existing_seed_routines_only",
+        "tool_tests": "passed"
+      },
+      "ctest_seconds": 6.57,
+      "new_tracked_test_cases": 0
+    },
+    "call_site_claims": {
+      "passed": 23,
+      "failed": 0,
+      "unchecked": 0,
+      "by_report": {
+        "oct15_string_uninitialized_copy": 9,
+        "oct15_raw_string_range_assignment": 8,
+        "oct15_layer_bilinear": 5,
+        "oct15_pod_range_wrappers": 1
+      },
+      "qualification": "15 calls in implemented native bodies/catch plus8 incoming caller ABI-evidence rows; not23new Source callees or proof of dynamic behavior. Markdown negative converter prose was clarified; all final checker outputs have0unchecked."
+    },
+    "bilinear_integrated_original_probe": {
+      "result": {
+        "scope": "full original bilinear body calling relocated full original WorldToCell and CellHeight; one finite nonplanar grid; output bits only; default masked FP",
+        "world_x": "bff47ae1",
+        "world_z": "bfd1eb85",
+        "original": "40aaf1ac",
+        "source": "40aaf1ac",
+        "bits_match": true,
+        "invalid_sentinel_reached": false
+      },
+      "input": {
+        "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "function": "0041bc20",
+        "length": 227,
+        "code_hex": "83ec18d94424205355565783ec08d95c24048d442428d94424348bf1d91c2450e85bc3ffffd9442420f30f2c7c2420f30f2c5c2424897c2430da6424308d6b018d47015550895c2424d95c2418e86efeffff55d95c2418578bcee861feffffd95c2418538d4701508bcee851feffffd95c243053578bcee844feffffd95c242cd94424305fd94424285ed9c05ddeea5bd90424d9c0decbd9cadec1d95c241cd9442404d9442408d9c0deead9c9decadec1d95c2420d9442420d944241cd9c0deead9442414da64240cd95c2420d9442420decadec1d95c2420d944242083c418c20800",
+        "saved_ghidra_matches_full_disk_body": true,
+        "calls": [
+          {
+            "site": "0041bc40",
+            "offset": 32,
+            "target": "00417fa0"
+          },
+          {
+            "site": "0041bc6d",
+            "offset": 77,
+            "target": "0041bae0"
+          },
+          {
+            "site": "0041bc7a",
+            "offset": 90,
+            "target": "0041bae0"
+          },
+          {
+            "site": "0041bc8a",
+            "offset": 106,
+            "target": "0041bae0"
+          },
+          {
+            "site": "0041bc97",
+            "offset": 119,
+            "target": "0041bae0"
+          }
+        ],
+        "dependencies": "Full original159B WorldToCell and105B CellHeight, same existing byte-audit input.",
+        "scope": "One finite nonplanar actual-grid case, output binary32 only under masked default FP; no diagnostics, traps/status, ABI or gameplay proof."
+      },
+      "driver": "J:/PROG/battlestations-pacific-decompile/local/oct15_layer_sampling_probe/bilinear_probe.cpp",
+      "driver_sha256": "1c531da8631770cc028d9341ac8a2c69dd5c5ec8775b9c21b7d71a04a9f51548",
+      "manifest": "/link /MANIFEST:EMBED",
+      "scope_limit": "One finite case, output binary32 only, default masked FP; unused Cell invalid call sentinel not reached. Not trap/status, diagnostic continuation, full ABI, adapter or gameplay proof.",
+      "source_commit": "54cc2b244e994a646d1870ff2484186a6bb32228",
+      "source_library": "build/win32/Release/bsp_core.lib",
+      "build_log": "J:/PROG/battlestations-pacific-decompile/local/oct15_layer_sampling_probe/bilinear_integrated_build.log",
+      "configuration": {
+        "dimension": 4,
+        "grid": [
+          0,
+          9,
+          21,
+          4,
+          7,
+          83,
+          13,
+          51,
+          204,
+          17,
+          99,
+          6,
+          12,
+          33,
+          44,
+          71
+        ],
+        "half_extent_bits": "40000000",
+        "cell_size_bits": "3e99999a",
+        "file_scalar_bits": "3dcccccd",
+        "world_x_bits": "bff47ae1",
+        "world_z_bits": "bfd1eb85"
+      },
+      "relocations": "Bilinear5CALL displacements point to full originalWorld/Cell bodies; World absolute double2operand points to identical constant bytes; unexercised Cell invalid-parameter CALL points to fail-fast sentinel."
+    },
+    "integrated_pod_coff_comparison": {
+      "source_commit": "54cc2b244e994a646d1870ff2484186a6bb32228",
+      "object": "build/win32/bsp_core.dir/Release/native_pod_range_wrappers.obj",
+      "method": "Independently parse MSVC COFF section/symbol tables, select full mangled function symbols and compare their exact emitted spans with worker-provenance expected bytes.",
+      "functions": [
+        {
+          "symbol": "?vector12_move_forward_dispatch_0041c4d0@bsp@@YAPAXPBX0PAX@Z",
+          "section": 5,
+          "value": 0,
+          "size": 43,
+          "matching_nonrelocation_bytes": 39,
+          "mask": [
+            35,
+            4
+          ]
+        },
+        {
+          "symbol": "?pod8_range_fill_0041c580@bsp@@YAPAXPAXPBX1@Z",
+          "section": 4,
+          "value": 0,
+          "size": 35,
+          "matching_nonrelocation_bytes": 35,
+          "mask": null
+        }
+      ],
+      "provenance": "reports/oct15_pod_range_wrappers.json includes full installed PE/worker COFF bytes and extraction/mask rules.",
+      "scope": "Static compiled-body equality, masking only dispatcher CALL displacement. Not native execution, FP traps, full ABI or gameplay proof."
+    }
+  },
+  "source_integration_commit": "54cc2b244e994a646d1870ff2484186a6bb32228",
+  "implemented_functions": [
+    "00431f40",
+    "0044d0c0",
+    "00505ad0",
+    "0048da50",
+    "0048f400",
+    "0041bc20",
+    "0041c4d0",
+    "0041c580"
+  ],
+  "additional_catch_fragment": "0044d10a",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "previous_annotation_logs": [
+      "local/ghidra-annotations-20261015T174035Z.json",
+      "local/ghidra-annotations-20261015T174052Z.json",
+      "local/ghidra-annotations-20261015T174505Z.json",
+      "local/ghidra-annotations-20261015T175041Z.json"
+    ],
+    "forced_snapshot_completed": true,
+    "forced_exports": [
+      "00431f40",
+      "0044d0c0",
+      "0044d10a",
+      "00505ad0",
+      "0048da50",
+      "0048f400",
+      "0041bc20",
+      "0041c4d0",
+      "0041c580"
+    ],
+    "old_names_comments_preserved": true
+  },
+  "integration_notes": [
+    "Mechanical CMake/address-ledger merge conflicts resolved using tools/merge_resolve.py; checked preserved CellHeight prior original-probe evidence and new bilinear evidence.",
+    "A prematurely started integration build failed at CMake due to unresolved conflict markers. After resolution, exact combined Source passed full build and3suites.",
+    "Only documentation/receipt edits followed the successful combined Source build.",
+    "Original game installation and unrelated untracked main files untouched."
+  ],
+  "goal_status": "active"
+}

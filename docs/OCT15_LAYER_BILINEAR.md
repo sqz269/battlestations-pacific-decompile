@@ -28,8 +28,7 @@ explicitly restored for each height call, honoring Source caller-volatility.
 
 `CVTTSS2SI` at `0041BC49/0041BC4F` forms ix/iz with hardware exceptional-range
 behavior. `LEA` at `0041BC5D/0041BC60/0041BC84` forms wrapped DWORD neighbors.
-This differs from adjacent normal `0041BD10`'s extended cell+1 CRT conversions;
-no such converter is called by this body. Signed C++ casts/increments are not
+Neighboring indices remain integer DWORDs. Signed C++ casts/increments are not
 used. The native h11/h01/h10/h00 call and result-store order is retained.
 
 Let F32 mean the explicit native float store. The arithmetic is:
