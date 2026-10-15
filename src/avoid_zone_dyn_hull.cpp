@@ -464,8 +464,14 @@ void avoid_zone_dyn_hull_copy_data_004039d0(AvoidZoneDynHullData& destination,
     std::memcpy(destination.support_seed,source.support_seed,sizeof(source.support_seed));
 }
 void avoid_zone_dyn_hull_destroy_00c37450(AvoidZoneDynHullHandle& handle,const AvoidZoneDynHullMemory& m) {
-    if(!handle.data) return;
-    release(m,handle.data->adjacency);release(m,handle.data->vertices);release(m,handle.data);
+    // Native captures [handle] once in ESI. A release can republish handle.data
+    // (or end the handle's lifetime); later frees still use the captured data.
+    auto* const data=handle.data;
+    if(!data) return;
+    release(m,data->adjacency);
+    // Keep this field read after the first release, as at 00C37467.
+    release(m,data->vertices);
+    release(m,data);
 }
 void avoid_zone_dyn_hull_replace_00c5deb0(AvoidZoneDynHullHandle& handle,
     const V* points,std::uint32_t count,const AvoidZoneDynHullMemory& m) {
