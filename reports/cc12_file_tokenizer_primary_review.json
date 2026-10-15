@@ -1,0 +1,61 @@
+{
+  "schema": "bsp.scene_file_tokenizer_primary_review.v1",
+  "address": "008d9cf0",
+  "Source_commit": "8f53d01c5189c9bf2f8991e2488a34760769d63b",
+  "status": "whole_ordinary_Source_concrete_VFS_primary_peer_accepted_registered_Main_build_pending",
+  "primary_complete_Original_and_all_four_Source_header_files_read": true,
+  "Original_whole_bytes": 520,
+  "Original_instructions": 162,
+  "Source": "src/native_scene_file_tokenizer.cpp",
+  "binding_Source": "src/game_native_scene_file_tokenizer.cpp",
+  "independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_enum_reader_review_oct15\\local\\SceneFileTokenizerIndependentReview01\\review.compact.DATA.json",
+    "bytes": 4372,
+    "sha256": "c3efd48f2116a4971570e6a6c7d7e9558327f8113f71c7ec4803aac788926f8d"
+  },
+  "primary_peer_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_file_tokenizer_integration_20261015\\primary_peer_input_pins.DATA.json",
+    "bytes": 101705,
+    "sha256": "ddff6f7a774c2008703a480139968055e117b929aae38c95dae0f39bce1513b8"
+  },
+  "Original_ABI": "ECX genuine838h tokenizer owner, owning8B by-value NativeString filename at entry stack+4/+8, extras+0C, EAXowner RET0C. New explicit-context C++ API consumes referenced owning NativeString without clearing its current header; not Original ABI.",
+  "contract": [
+    "Exact vtable/member820/824 initialization, two actual-feature-word CRT buffer clears and individual byte/word stores, preserving Original widths/order and untouched padding.",
+    "Copy filename into member using actual self-header equality and CURRENT header reloads after resize. Open CURRENT genuine0109CEEC manager with mode32 and acquire owned stream828 WITHOUT AddRef.",
+    "Null open leaves82C/830/834 untouched while818 remainszero. Later scan/destruction needs valid caller preimages/policy; no empty-buffer repair.",
+    "Nonnull reads actual stream size, allocates text, reloads CURRENT830/828 after allocation, writes82C and834, reads with null actual-count output. Extra delimiters allocate default_length+extra_length+2, copy current default includingNUL, then len(extra)+1 includingNUL; null extra borrows CURRENT default cell.",
+    "Concrete final NativeSceneFileTokenizerVfsCalls routes through accepted NativeVfsRuntimeBindings manager D685B4/D68D04 and stream D642C0/D691B0/D68DB0/D64400 profiles. SAME concrete calls/raw strings/retained memory/defaults must persist for token operations/destruction; Game binding owns Source contexts only, no native object or startup.",
+    "Consume CURRENT filename buffer once. C++ unwind attempts only proven member and incoming-string cleanup states; no invented stream/text/delimiter rollback or Original FS/EH guarantee. Stable/disjoint/coherent successful current-CRT storage/providers and genuine CPU/DF/feature domains remain required."
+  ],
+  "strict": {
+    "first_successful_chunk": "2fd229",
+    "final_chunk": "5770b6",
+    "exit_code": 0,
+    "only_Source_correction": "Explicit zero_byte asm prevents optimizer coalescing Original byte-width stores.",
+    "code_sections": 25,
+    "code_bytes": 1334,
+    "instructions": 482,
+    "unreachable_INT3_padding_bytes": 6,
+    "code_relocations": 36,
+    "metadata_relocations": 44,
+    "runtime_library": "MT"
+  },
+  "author_normal": {
+    "initial_chunk": "7f2b46",
+    "session": 21060,
+    "poll_chunk": "9b2ebf",
+    "terminal_chunk": "414930",
+    "exit_code": 0,
+    "configured_tests": 2,
+    "seconds": 8.76,
+    "new_TUs_registered": false
+  },
+  "Main_registered": true,
+  "Main_build": "pending",
+  "new_Source_runtime_executed": false,
+  "Original_ABI_compatible": false,
+  "Original_EH_or_private_CRT_compatible": false,
+  "global_application_startup_publication": false,
+  "game_validated": false,
+  "whole_loader_equivalent": false
+}
