@@ -1,0 +1,77 @@
+{
+  "batch": "oct15_tenth_reconstruction_batch",
+  "status": "reviewed_build_verified_ready_for_main",
+  "ordinary_entries": 10,
+  "parent_bound_fragments": 9,
+  "fragment_count_note": "Includes6A5EA8 normal parent cleanup, not an independent Ghidra function.18 actual function/catch/unwind entries are annotated;19 total ledger entries/scopes.",
+  "packets": [
+    {
+      "report": "reports/oct15_outer_string_vector_insert.json",
+      "verified_transfer_rows": 23
+    },
+    {
+      "report": "reports/oct15_outer_vector_erase_range.json",
+      "verified_transfer_rows": 6
+    },
+    {
+      "report": "reports/oct15_group_vector_transfer.json",
+      "verified_transfer_rows": 15
+    },
+    {
+      "report": "reports/oct15_outer_vector_construct_services.json",
+      "verified_transfer_rows": 10
+    }
+  ],
+  "source_commit_tested": "dda685794809624d5393bf3059ad817e6e65b450",
+  "build": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "status": "passed",
+    "suites_passed": 3,
+    "suites_total": 3,
+    "ctest_seconds": 7.39,
+    "log": "local/oct15_tenth_combined_build.log",
+    "native_math_scope": "Prior verified math seeds only; new packet entries not executed differentially."
+  },
+  "transfer_validation": {
+    "status": "all_pass",
+    "rows": 54,
+    "CALL_rows": 50,
+    "tail_JMP_rows": 4,
+    "distinct_site_target_kind": 54,
+    "failed": 0,
+    "documentation_claims": 47,
+    "unchecked": 0,
+    "warnings": 0,
+    "log": "local/oct15_tenth_transfer_verification.log"
+  },
+  "reviewed_commits": {
+    "general_insert": "3152889f7",
+    "erase_and_clear": "9c6606552",
+    "group_transfer": "0ba18313124ba0e5c1a69b81197f12cd5376ffc4",
+    "construction_services": "a4769141abac44aef03e1518ebbcd6d563fd17f9"
+  },
+  "annotation": {
+    "status": "saved_project",
+    "preimages": [
+      "local/oct15_tenth_source_annotation_preimage.json",
+      "local/oct15_tenth_support_annotation_preimage.json"
+    ],
+    "logs": [
+      "local/ghidra-annotations-20261015T200810Z.json",
+      "local/ghidra-annotations-20261015T201236Z.json"
+    ],
+    "snapshot_and_exports": "Forced saved-program snapshot after annotations; all18 affected function/catch/unwind exports force-refreshed.6A5EA8 remains an interior normal cleanup fragment.",
+    "retained_scope_names_added": [
+      "006a6db0",
+      "00c7f530",
+      "00c7f538"
+    ]
+  },
+  "limits": [
+    "Explicit actual RawPoolContext/current CRT/C++ cleanup/private frames do not establish native register/stack/FH3/SEH/RTTI/fault/exception identity.",
+    "Original native bytes, instruction order, EH tables and physical conventions reviewed; current Source interfaces are qualified reconstructions.",
+    "No new-entry native differential execution, game startup or gameplay validation."
+  ],
+  "continuing_goal": "active; isolated workers continue owning-parameter resize, actual outer assignment, and general group insertion with independently verified allocator dependencies."
+}
