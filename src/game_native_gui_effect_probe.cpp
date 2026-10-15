@@ -12,6 +12,7 @@
 #include "bsp/native_shader_binary_cache.hpp"
 #include <cstdio>
 #include <cstring>
+#include <initializer_list>
 #include <limits>
 #include <stdexcept>
 
@@ -19,6 +20,43 @@ namespace bsp::game {
 namespace {
 using Stage = GameNativeGuiEffectProbeStage;
 static_assert(sizeof(NativeString) == 8);
+// Failure-only observations of the loaded provider identities. These do not
+// qualify a module, enter the private release bridge, or supply a sampler word.
+void note_sampler_module_profile(GameHostLog& log, const wchar_t* name) {
+    const HMODULE module = GetModuleHandleW(name);
+    if (!module) {
+        log.notef("native GUI sampler provider name=%ls loaded=0", name);
+        return;
+    }
+    wchar_t path[MAX_PATH]{};
+    const DWORD path_length = GetModuleFileNameW(module, path, MAX_PATH);
+    path[MAX_PATH - 1] = L'\0';
+    const auto* dos = reinterpret_cast<const IMAGE_DOS_HEADER*>(module);
+    if (dos->e_magic != IMAGE_DOS_SIGNATURE || dos->e_lfanew <= 0 || dos->e_lfanew > 0x1000) {
+        log.notef("native GUI sampler provider name=%ls loaded=1 base=%p valid_pe=0 path_complete=%d path=%ls",
+            name, module, path_length > 0 && path_length < MAX_PATH ? 1 : 0, path);
+        return;
+    }
+    const auto* pe = reinterpret_cast<const IMAGE_NT_HEADERS32*>(
+        reinterpret_cast<const unsigned char*>(module) + dos->e_lfanew);
+    log.notef("native GUI sampler provider name=%ls loaded=1 base=%p signature=%08x machine=%04x magic=%04x timestamp=%08x image_size=%08x preferred_base=%08x path_complete=%d path=%ls",
+        name, module, static_cast<unsigned>(pe->Signature), static_cast<unsigned>(pe->FileHeader.Machine),
+        static_cast<unsigned>(pe->OptionalHeader.Magic), static_cast<unsigned>(pe->FileHeader.TimeDateStamp),
+        static_cast<unsigned>(pe->OptionalHeader.SizeOfImage), static_cast<unsigned>(pe->OptionalHeader.ImageBase),
+        path_length > 0 && path_length < MAX_PATH ? 1 : 0, path);
+}
+void note_sampler_loaded_providers(GameHostLog& log) {
+    for (const wchar_t* name : {L"d3d9.dll", L"ntdll.dll", L"kernel32.dll", L"kernelbase.dll", L"d3d9on12.dll"})
+        note_sampler_module_profile(log, name);
+    const HMODULE kernel = GetModuleHandleW(L"kernel32.dll");
+    for (const char* name : {"InterlockedDecrement", "InterlockedIncrement", "EnterCriticalSection"}) {
+        const FARPROC entry = kernel ? GetProcAddress(kernel, name) : nullptr;
+        MEMORY_BASIC_INFORMATION region{};
+        const bool queried = entry && VirtualQuery(reinterpret_cast<const void*>(entry), &region, sizeof(region)) == sizeof(region);
+        log.notef("native GUI sampler provider export=%s entry=%p allocation_base=%p queried=%d",
+            name, reinterpret_cast<const void*>(entry), region.AllocationBase, queried ? 1 : 0);
+    }
+}
 void require(bool condition, const char* message) {
     if (!condition) throw std::runtime_error(message);
 }
@@ -537,6 +575,7 @@ bool GameNativeGuiEffectProbe::requires_process_retention() const noexcept {
 void GameNativeGuiEffectProbe::emit_failure_observations() const noexcept {
     const auto& p = *impl_;
     try {
+        note_sampler_loaded_providers(p.log);
         p.log.notef("native GUI shader cache create=%d/%d release=%d/%d identity=%p current=%p source_mode=%u load_variants=%u",
             p.observed.cache_creation_entered ? 1 : 0, p.observed.cache_creation_returned ? 1 : 0,
             p.observed.cache_release_entered ? 1 : 0, p.observed.cache_release_returned ? 1 : 0,
