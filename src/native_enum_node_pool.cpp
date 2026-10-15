@@ -301,4 +301,51 @@ void destroy_static_native_property_library_node_pool_00cd9270() noexcept {
         actual_static_property_library_node_pool_00e17540,
         *actual_static_property_library_node_pool_list_00e188b4);
 }
+
+namespace {
+void* actual_static_enum_table_pool_00e175e8;
+AllocatorListDomain* actual_static_enum_table_pool_list_00e188b4;
+void* actual_static_enum_symbol_pool_00e17578;
+AllocatorListDomain* actual_static_enum_symbol_pool_list_00e188b4;
+} // namespace
+
+void bind_static_native_enum_table_pool_00e175e8(
+    void* actual_pool, AllocatorListDomain& actual_list) {
+    bind_native_enum_node_pool_virtual0_00ce37a4(actual_pool, actual_list);
+    actual_static_enum_table_pool_00e175e8 = actual_pool;
+    actual_static_enum_table_pool_list_00e188b4 = &actual_list;
+}
+
+int initialize_static_native_enum_table_pool_00cc8a10() {
+    initialize_native_enum_node_pool_00411050(
+        actual_static_enum_table_pool_00e175e8,
+        *actual_static_enum_table_pool_list_00e188b4);
+    return std::atexit(&destroy_static_native_enum_table_pool_00cd9290);
+}
+
+void destroy_static_native_enum_table_pool_00cd9290() noexcept {
+    destroy_native_enum_node_pool_00410a60(
+        actual_static_enum_table_pool_00e175e8,
+        *actual_static_enum_table_pool_list_00e188b4);
+}
+
+void bind_static_native_enum_symbol_pool_00e17578(
+    void* actual_pool, AllocatorListDomain& actual_list) {
+    bind_native_enum_node_pool_virtual0_00ce37a4(actual_pool, actual_list);
+    actual_static_enum_symbol_pool_00e17578 = actual_pool;
+    actual_static_enum_symbol_pool_list_00e188b4 = &actual_list;
+}
+
+int initialize_static_native_enum_symbol_pool_00cc8a50() {
+    initialize_native_enum_node_pool_00411050(
+        actual_static_enum_symbol_pool_00e17578,
+        *actual_static_enum_symbol_pool_list_00e188b4);
+    return std::atexit(&destroy_static_native_enum_symbol_pool_00cd9280);
+}
+
+void destroy_static_native_enum_symbol_pool_00cd9280() noexcept {
+    destroy_native_enum_node_pool_00410a60(
+        actual_static_enum_symbol_pool_00e17578,
+        *actual_static_enum_symbol_pool_list_00e188b4);
+}
 } // namespace bsp

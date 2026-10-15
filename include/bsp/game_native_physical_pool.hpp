@@ -60,6 +60,24 @@ public:
     // or payload/class lifetime follows from obtaining this mutable pointer.
     void* property_library_node_pool_storage_00e17540();
 
+    // Independent explicit startups for DISTINCT actual38h enum table E175E8
+    // and symbol E17578 owners on the SAME canonical E188B4 list. One-attempt
+    // Source policy: cache real atexit status (including nonzero); a thrown
+    // attempt never retries or rolls back. This is not an Original once guard.
+    // No constructor/application autostart or CEnum/global registry is wired.
+    int initialize_enum_table_pool_once_00cc8a10();
+    int initialize_enum_symbol_pool_once_00cc8a50();
+
+    // SAME private cells, accessible only after their respective startup
+    // returned; nonzero status still leaves an initialized owner. Externally
+    // serialize common-list mutations across all owners; separate mutexes do
+    // not supply that contract. Retire actual enum payloads/pooled keys/table
+    // and symbol slots before page teardown. Keep this retained process/list
+    // and every binding live through callbacks. No payload provenance follows
+    // merely from a numeric phase word or obtaining these borrowed pointers.
+    void* enum_table_pool_storage_00e175e8();
+    void* enum_symbol_pool_storage_00e17578();
+
 private:
     friend GameNativePhysicalPoolProcess& game_native_physical_pool_process();
     GameNativePhysicalPoolProcess() noexcept;
@@ -88,6 +106,18 @@ private:
     std::mutex property_library_startup_mutex_;
     StartupState property_library_startup_state_{StartupState::unattempted};
     int property_library_registration_status_{};
+
+    // Append only: retain every established field's offset and owner meaning.
+    // Neither loader-zero Source cell is a constructed pool before startup.
+    alignas(std::max_align_t) std::byte enum_table_pool_00e175e8_[0x38]{};
+    std::mutex enum_table_startup_mutex_;
+    StartupState enum_table_startup_state_{StartupState::unattempted};
+    int enum_table_registration_status_{};
+
+    alignas(std::max_align_t) std::byte enum_symbol_pool_00e17578_[0x38]{};
+    std::mutex enum_symbol_startup_mutex_;
+    StartupState enum_symbol_startup_state_{StartupState::unattempted};
+    int enum_symbol_registration_status_{};
 };
 
 // Function-local static construction finishes (and its C++ destructor is
