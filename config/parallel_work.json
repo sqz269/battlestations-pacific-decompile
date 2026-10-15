@@ -41393,7 +41393,7 @@
     {
       "id": "cc12_reference_payload_reset_008f0380",
       "done": false,
-      "state": "whole_ordinary_Source_ready_no_implementation_yet",
+      "state": "whole_ordinary_Source_primary_peer_accepted_Main_registration_build_pending",
       "source_ready": true,
       "function_addresses": [
         "008f0380"
@@ -41410,7 +41410,10 @@
       "worker": "reference_set_source_oct15",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
-      "contract": "Whole [008F0380,008F03A2),34 bytes/12 instructions. ECX is genuine live raw8 reference payload: opaque full scalar at+0, owned pointer at+4. Capture old pointer; if nonnull call canonical current free then clear DWORD+4; always clear DWORD scalar+0. The null path does not store+4. No root free, virtual dispatch, tag/kind reset or reversed 03F0 array header substitution. Proposed MSVC Win32 naked void __fastcall(void*) noexcept retains30 non-CALL operand bytes and rebinds only[12,16) to singleton_lifetime_free. Actual accepted0310/0340/current physical duplicate provenance; old pointer null or sole-owned current-heap duplicate, valid disjoint live payload/frame and successful normal free. No alias, reentry, concurrent mutation, fault, rollback or Original private CRT/EH/full ABI/caller/class/game claim. Existing scalar-deleting slot0600 is separately blocked and receives no Source authorization."
+      "contract": "Whole008F0380 [008F0380,008F03A2),34 bytes/12 instructions. New naked void fastcall(void*) noexcept uses genuine ECX raw8 payload, opaque scalar+0 and owned pointer+4, no stack args, plain RET and ESI preservation. All30 non-CALL operand bytes are literal; only [12,16) binds actual canonical current singleton_lifetime_free. Capture old+4; if nonnull free it, then clear DWORD+4 only after return. Always clear DWORD scalar+0. Null path never stores+4. No payload-root free, virtual dispatch, phase/tag/kind/owner changes or lookup/allocation/startup action. This is not the reversed pointer0/size4 array header03F0. Actual accepted0310/0340/physical duplicate provenance; old pointer null or sole-owned matching-current-heap duplicate; live disjoint valid payload/allocation/frame and successful returning free. No alias, reentry, concurrent mutation, invalid memory, faults, overflow or failure rollback. EAX/flags/FP are not public semantic results. No class/vtable/caller/Original full ABI/privateCRT/EH/runtime/game credit; blocked0600 remains unimplemented. Author81 actual Source/include inputs all own-precompile among119 candidates;34 readiness inputs and64 tools including both clui files stable. One strict086bfe exit0, object1228B/5sections/15symbolslots/34B12/1REL32/0noncode relocations. One normal70fcd9/session13724 to e9fdb5 exit0 passed2 existing checks7.30s; TU unregistered. Source phaseff543f is distinct from earlier authorized tasks in the same UUID. Config LF455B versus CRLF467B is literal-pinned and normalized/JSON equal; no hermetic environment claim or replay.",
+      "code_revision": "8af785915947b2bb429d1f9b61d19f85bfaf7ba7",
+      "primary_review": "reports/cc12_reference_payload_reset_primary_review.json",
+      "Main_build_gate": "pending"
     }
   ],
   "snapshot_after_analysis": {
