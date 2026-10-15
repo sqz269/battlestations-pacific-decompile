@@ -82,7 +82,7 @@
       "source": "actual Win32 __thiscall call through current vtable entry; slot+14 cleared before load/call; no callback adapter"
     }
   ],
-  "status": "complete_source_review_and_build_pending",
+  "status": "complete_whole_Source_reviewed_combined_win32_and_three_existing_checks_passed",
   "abi_compatible": false,
   "game_validated": false,
   "uncertainties": [
@@ -90,5 +90,33 @@
     "Current CRT returnable invalid-parameter, raw pool/free and actual callable deleting-destructor entries are Source service boundaries; original binary/provider/heap ABI not proved.",
     "Existing Seg6Host semantic source remains separate and unchanged; actual application adoption and game execution unproved.",
     "Existing math/tool checks are regression checks, not native differential execution of these routines."
-  ]
+  ],
+  "verification": {
+    "combined_build": {
+      "revision": "8b8a97abe15d095089600a6bce7923c2abf62432",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_cleanup_combined_build.log",
+      "log_sha256": "247ad0782759740552bdf0e83960d4b04a3c0d7750435aacbc6ace98ccdc411b",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 7.86,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "scope": "existing regression checks, not new scene-map native differential execution"
+    },
+    "independent_assembly_review": "passed; /root/string_allocate; complete0046B460/0046B680 and child-call setup",
+    "typed_transfer_rows_checked": 8,
+    "typed_transfer_rows_failed": 0,
+    "annotation_receipt": "local/ghidra-annotations-20261015T202936Z.json",
+    "exports_refreshed": [
+      "0046b460",
+      "0046b680"
+    ],
+    "new_tests": false
+  }
 }

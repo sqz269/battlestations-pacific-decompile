@@ -1,0 +1,110 @@
+{
+  "packet": "goal_oct15_scene_map_cleanup_primary_review",
+  "status": "complete_whole_Source_reviewed_combined_win32_and_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 8,
+  "native_bytes": 522,
+  "spans": [
+    {
+      "address": "00468260",
+      "bytes": 55,
+      "sha256": "abd5df9296f354d1c0729d45f82dfbefb99179ee5945fba930b1c34773c6881a",
+      "live_equals_installed": true
+    },
+    {
+      "address": "00468e70",
+      "bytes": 45,
+      "sha256": "94c659ba684bd4999bc5ca7e07c3f80bea640086b9b4421d02f85a3e636a2ab1",
+      "live_equals_installed": true
+    },
+    {
+      "address": "0046ad10",
+      "bytes": 82,
+      "sha256": "da13a2562fba82a266f8bc56fd8b400f67ec3ecf84bcec0c10a66e57a299b6ac",
+      "live_equals_installed": true
+    },
+    {
+      "address": "00467980",
+      "bytes": 99,
+      "sha256": "b9d0f41670ad5441a68501cc7b4dee85ab147a7638f187f73bfb321a687e796e",
+      "live_equals_installed": true
+    },
+    {
+      "address": "004681f0",
+      "bytes": 12,
+      "sha256": "b210175ce6b3adb07bb1cc53d0d208f87eefcb6668c9ff871f37c04e373379fe",
+      "live_equals_installed": true
+    },
+    {
+      "address": "004688d0",
+      "bytes": 12,
+      "sha256": "b23b88a576082c34544ea75c03e18d7bd57681f66d991d619ed66ac5142fc435",
+      "live_equals_installed": true
+    },
+    {
+      "address": "0046b460",
+      "bytes": 43,
+      "sha256": "a2175beff0dc81c28b81e19f3f6b91852f67db55cde3f30ace161a2dc116377d",
+      "live_equals_installed": true
+    },
+    {
+      "address": "0046b680",
+      "bytes": 174,
+      "sha256": "78448288b554ba09ab57f48e9797f16696b506397285508b7ce498f05ab9d588",
+      "live_equals_installed": true
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct15_scene_map_head.json",
+    "reports/goal_oct15_scene_map_subtree_destroy.json",
+    "reports/goal_oct15_scene_map_increment.json",
+    "reports/goal_oct15_scene_map_clear.json"
+  ],
+  "typed_transfer_rows_checked": 29,
+  "typed_transfer_rows_failed": 0,
+  "indirect_deleting_call": "0046B6EB current actual object vtable slot0; ECX captured mapped pointer,flag1,RET4; old slot cleared before call; no native dynamic-target execution proof",
+  "independent_clear_reviewer": "/root/string_allocate: full assembly schedules matched, no mismatch found",
+  "combined_build": {
+    "revision": "8b8a97abe15d095089600a6bce7923c2abf62432",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_cleanup_combined_build.log",
+    "log_sha256": "247ad0782759740552bdf0e83960d4b04a3c0d7750435aacbc6ace98ccdc411b",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 7.86,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "scope": "existing regression checks, not new scene-map native differential execution"
+  },
+  "archive_identity": {
+    "library": "build\\win32\\Release\\bsp_core.lib",
+    "sha256": "0c81947401fc394758bf182b993232f2154a8b1e7a9afa565e4a3c8e8e64b3e8",
+    "unique_owned_objects": {
+      "native_scene_record_map_head": [
+        "bsp_core.dir\\Release\\native_scene_record_map_head.obj"
+      ],
+      "native_scene_record_map_subtree_destroy": [
+        "bsp_core.dir\\Release\\native_scene_record_map_subtree_destroy.obj"
+      ],
+      "native_scene_record_map_increment": [
+        "bsp_core.dir\\Release\\native_scene_record_map_increment.obj"
+      ],
+      "native_scene_record_map_clear": [
+        "bsp_core.dir\\Release\\native_scene_record_map_clear.obj"
+      ]
+    }
+  },
+  "unvalidated": [
+    "Original binary ABI, original physical private-stack aliases and register residue",
+    "Original CRT/allocator/FH3/provider compatibility",
+    "Direct native differential execution of the new map bodies and indirect targets",
+    "Application adoption and game behavior"
+  ]
+}

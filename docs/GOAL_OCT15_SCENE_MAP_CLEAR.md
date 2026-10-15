@@ -61,5 +61,9 @@ Both full listings (16/62 instructions), original callers, direct transfers,
 indirect call setup, concrete child contracts and all alias-sensitive reloads
 were inspected. No Source function is substituted for missing branches; current
 CRT handler return paths remain complete. Native bytes match the preserved PE.
-Build/review results are recorded in the report when completed. Existing CTests
-are regression checks; no new native differential or game execution is claimed.
+An independent full-listing review found no remaining mismatch. The combined
+MSVC Release Win32 build passed all three enabled existing CTests in7.86s, with
+the four owned translation units present once each in the final archive. The
+primary receipt covers all eight normal functions/522 native bytes in this
+cleanup batch and29 typed direct transfer rows. Existing CTests are regression
+checks; no new native differential or game execution is claimed.
