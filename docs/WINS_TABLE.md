@@ -485,3 +485,18 @@ mechanism is in the cd761bb52 section above).
     re-plan against the refusal; variant x was not run.
   - **ESMP08 f** holds the reference on this main and stays at 13/15 under 20,3: knife-edge (state-3 slot limit, with
     cc9-physics10).
+- **ESMP08: the Zero recall does not help on this host** (cc9-lua61, 2026-10-14, main 9228d13fe). The test was f
+  plus `order <carrier> <slot> 2` every 4800 frames (slot 4 always, slots 1-3 from frame 30000; plan
+  `local\l61_e8_n.txt`, log `local\l61_n_e8.log`). Result: 6/15 sunk, and 6/15 again under 20,3.
+  - 35 recalls were applied, but the summary shows `stowed plane stock return ... slot_returns=2`.
+  - A recalled leader lands, stows and returns its stock. Wingmen still in `divebomb ai:close_attack` keep flying
+    (Zuiho_sqn15, Chiyoda_sqn13), so the squadron never empties and its slot stays in state 4.
+  - Routed to cc9-physics10 to settle whether this is a host gap. The ESMP08 row stays `esmp08_l61_e8_f`.
+  - Physics10's own r2 (on 610dc9bfd, `cc9-physics1\local\p10e8_r2*.log`): reference completed 5018.40 s, 20,5
+    completed 4500.43 s, and 20,3 reached 14/15 (Fanning survives; it never leaves its spawn). Not committed.
+- **IJN08 (cc9-physics10, exe 610dc9bfd, logs `cc9-physics1\local\p10i8_<tag>.log`)**:
+  `config/win_orders/ijn08_p10_i08_z.txt` (7d613369d) puts US_Airfield_03 first for three battleships and relies on
+  the dead-target refusal 0f70e9dee. Results: completed 3006.81 s; 20,3 completed 3947.73 s; 20,5 no end within
+  100000 frames (no fail); 20,11 failed at 1220 s. On the same exe, w completes 20,5 at 4566.03 s and 20,7 at
+  4441.52 s, and fails 20,3 at 1530 s and 20,11 at 1615 s. z is the IJN08 row from now on (plain and 20,3). Not
+  re-timed on 9228d13fe.
