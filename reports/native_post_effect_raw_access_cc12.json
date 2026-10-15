@@ -1,0 +1,713 @@
+{
+  "schema": "bsp.cc12.native-post-effect-raw-access.v1",
+  "packet": "cc12_native_post_effect_raw_access",
+  "status": "reconstructed_whole_bodies_COFF_verified_existing_build_passed_CMake_registration_pending",
+  "Source_credit": 0,
+  "Root_independent_validation_pending": true,
+  "source_inputs": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\include\\bsp\\native_post_effect_raw_access.hpp",
+      "bytes": 967,
+      "sha256": "2cfdf6fe61bd3ca0c15104d8cc53e3d1009d5f85d1500851fb8762b00b4cde50"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\src\\native_post_effect_raw_access.cpp",
+      "bytes": 625,
+      "sha256": "eed516e675c456854bec42b254e63237d8ad665fbc22c837e54e6f7f07a4d85c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\docs\\NATIVE_POST_EFFECT_RAW_ACCESS_CC12.md",
+      "bytes": 2037,
+      "sha256": "a857b8e91ef199663f5d36f6855787ad82e29756619b814143189f40175e3641"
+    }
+  ],
+  "original_saved_analysis": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "current_guarded_Ghidra_program": "battlestationspacific.exe",
+    "configuration": "config/target.json",
+    "verification_tools": [
+      "bcf61b",
+      "5dac09",
+      "24a015",
+      "68be03",
+      "0373bc"
+    ]
+  },
+  "installed_PE": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "ready_packet": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\ScenePostLeafFrontier01\\ready_full_raw_getters.DATA.json",
+    "bytes": 12188,
+    "sha256": "1f5846bb7abbfeafdede74a92a086da533647d806833bc01836989d3fa9160cc"
+  },
+  "whole_functions": [
+    {
+      "address": "00b4cb90",
+      "symbol": "?native_post_effect_pass_raw_08_00b4cb90@bsp@@YIIPBX@Z",
+      "section": 5,
+      "section_bytes": 4,
+      "symbol_value": 0,
+      "hex": "8b4108c3",
+      "sha256": "916ae10aa3fd76a4d5b25b2fb66e9df0fd04957c7ab10930268d1ed7808be689",
+      "relocations": 0,
+      "whole_original_PE_equals_current_COFF": true,
+      "inclusive_end": "00b4cb93",
+      "source_function": "native_post_effect_pass_raw_08_00b4cb90",
+      "ABI": {
+        "receiver": "ECX: readable original raw storage",
+        "result": "EAX: unchanged uint32_t / pointer bits",
+        "stack_arguments": 0,
+        "return_instruction": "RET",
+        "stack_effect": "consumes only the return address",
+        "other_registers_and_EFLAGS_unchanged": true
+      },
+      "operations": [
+        "one unconditional DWORD load",
+        "plain RET"
+      ],
+      "null_guard": false,
+      "retain_release": false,
+      "conversion": false,
+      "callees": [],
+      "proposed_name": "BSP_PostEffectPass_GetRaw08",
+      "previous_name": "TRIV_body_00b4cb90",
+      "role_names_are_hypotheses": true
+    },
+    {
+      "address": "00b4ec50",
+      "symbol": "?native_post_effect_pass_raw_18_00b4ec50@bsp@@YIIPBX@Z",
+      "section": 7,
+      "section_bytes": 4,
+      "symbol_value": 0,
+      "hex": "8b4118c3",
+      "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+      "relocations": 0,
+      "whole_original_PE_equals_current_COFF": true,
+      "inclusive_end": "00b4ec53",
+      "source_function": "native_post_effect_pass_raw_18_00b4ec50",
+      "ABI": {
+        "receiver": "ECX: readable original raw storage",
+        "result": "EAX: unchanged uint32_t / pointer bits",
+        "stack_arguments": 0,
+        "return_instruction": "RET",
+        "stack_effect": "consumes only the return address",
+        "other_registers_and_EFLAGS_unchanged": true
+      },
+      "operations": [
+        "one unconditional DWORD load",
+        "plain RET"
+      ],
+      "null_guard": false,
+      "retain_release": false,
+      "conversion": false,
+      "callees": [],
+      "proposed_name": "BSP_PostEffectPass_GetRaw18",
+      "previous_name": "TRIV_body_00b4ec50",
+      "role_names_are_hypotheses": true
+    },
+    {
+      "address": "00b4ffe0",
+      "symbol": "?native_post_effect_owner_raw_23c_00b4ffe0@bsp@@YIIPBX@Z",
+      "section": 3,
+      "section_bytes": 7,
+      "symbol_value": 0,
+      "hex": "8b813c020000c3",
+      "sha256": "64c9132b552962157ef9ebaff67dc61d0d64a735baee5f530a3baf4237f9f2c1",
+      "relocations": 0,
+      "whole_original_PE_equals_current_COFF": true,
+      "inclusive_end": "00b4ffe6",
+      "source_function": "native_post_effect_owner_raw_23c_00b4ffe0",
+      "ABI": {
+        "receiver": "ECX: readable original raw storage",
+        "result": "EAX: unchanged uint32_t / pointer bits",
+        "stack_arguments": 0,
+        "return_instruction": "RET",
+        "stack_effect": "consumes only the return address",
+        "other_registers_and_EFLAGS_unchanged": true
+      },
+      "operations": [
+        "one unconditional DWORD load",
+        "plain RET"
+      ],
+      "null_guard": false,
+      "retain_release": false,
+      "conversion": false,
+      "callees": [],
+      "proposed_name": "BSP_PostEffectOwner_GetRaw23C",
+      "previous_name": "TRIV_body_00b4ffe0",
+      "role_names_are_hypotheses": true
+    }
+  ],
+  "current_COFF": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\build\\native_post_effect_raw_access_cc12\\native_post_effect_raw_access.obj",
+    "bytes": 5585,
+    "sha256": "7da775137dc4c2aaa61463a0bb8cdaf0ee547c341d7d0a5727950aac0a023c02"
+  },
+  "whole_current_COFF_vs_installed_original_equal": true,
+  "total_complete_original_bytes": 15,
+  "compiler": {
+    "target": "MSVC Win32 x86",
+    "cl_version": "19.51.36244.0",
+    "toolset": "14.51.36231",
+    "strict_flags": [
+      "/std:c++17",
+      "/MD",
+      "/O2",
+      "/W4",
+      "/WX",
+      "/EHsc",
+      "/Gy",
+      "/GL-",
+      "/Z7",
+      "/c"
+    ],
+    "current_actual_tools": [
+      {
+        "tool": "exec_command",
+        "args": {
+          "cmd": "cmd.exe /d /c 'call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat\" >nul && cl /nologo /Bv /std:c++17 /MD /O2 /W4 /WX /EHsc /Gy /GL- /Z7 /c /Iinclude src\\native_post_effect_raw_access.cpp /Fobuild\\native_post_effect_raw_access_cc12\\native_post_effect_raw_access.obj && dumpbin /nologo /headers /symbols /rawdata:bytes build\\native_post_effect_raw_access_cc12\\native_post_effect_raw_access.obj >build\\native_post_effect_raw_access_cc12\\coff_dump.txt'\nexit $LASTEXITCODE",
+          "workdir": "J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data",
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "83a613",
+          "wall_time_seconds": 5.6459561,
+          "exit_code": 0,
+          "original_token_count": 284,
+          "output": "Compiler Passes:\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\cl.exe:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1.dll:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll:      Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c2.dll:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll:      Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\link.exe:      Version 14.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\mspdb140.dll:  Version 14.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\1033\\clui.dll: Version 19.51.36244.0\r\n\r\nnative_post_effect_raw_access.cpp\r\n"
+        }
+      }
+    ],
+    "whole_COFF_comparison_actual_tools": [
+      {
+        "tool": "exec_command",
+        "args": {
+          "cmd": "@'\nfrom pathlib import Path\nimport struct,hashlib,json\nroot=Path.cwd()\nbriefp=Path('J:/PROG/battlestations-pacific-decompile-cc12_type1011_native_gate/local/ScenePostLeafFrontier01/ready_full_raw_getters.DATA.json')\nbb=briefp.read_bytes(); assert len(bb)==12188 and hashlib.sha256(bb).hexdigest()=='1f5846bb7abbfeafdede74a92a086da533647d806833bc01836989d3fa9160cc'\nb=json.loads(bb); ip=b['installed_PE']; pe=Path(ip['path']).read_bytes(); assert len(pe)==ip['bytes'] and hashlib.sha256(pe).hexdigest()==ip['sha256']\ne=struct.unpack_from('<I',pe,0x3c)[0]; assert pe[e:e+4]==b'PE\\0\\0'; ns=struct.unpack_from('<H',pe,e+6)[0]; os=struct.unpack_from('<H',pe,e+20)[0]; ob=e+24; assert struct.unpack_from('<H',pe,ob)[0]==0x10b; base=struct.unpack_from('<I',pe,ob+28)[0]\nsections=[struct.unpack_from('<8sIIIIIIHHI',pe,ob+os+40*i) for i in range(ns)]\ndef span(va,n):\n rva=va-base\n for s in sections:\n  if s[2]<=rva<s[2]+s[3]: return pe[s[4]+rva-s[2]:s[4]+rva-s[2]+n]\n raise AssertionError('unmapped original span')\nop=root/'build/native_post_effect_raw_access_cc12/native_post_effect_raw_access.obj'; data=op.read_bytes(); m,ns,ts,st,nsy,os,ch=struct.unpack_from('<HHIIIHH',data); assert m==0x14c and os==0\nss=[struct.unpack_from('<8sIIIIIIHHI',data,20+40*i) for i in range(ns)]; strings=st+18*nsy\nentries=[]; i=0\nwhile i<nsy:\n name,v,sec,typ,storage,aux=struct.unpack_from('<8sIhHBB',data,st+18*i)\n if name[:4]==b'\\0'*4:\n  j=strings+struct.unpack_from('<I',name,4)[0]; name=data[j:data.index(b'\\0',j)]\n else: name=name.rstrip(b'\\0')\n name=name.decode('ascii')\n if storage==2 and typ==0x20 and sec>0 and 'native_post_effect_' in name:\n  s=ss[sec-1]; raw=data[s[4]+v:s[4]+s[3]]; f=next(x for x in b['whole_functions'] if x['address'] in name)\n  orig=span(int(f['address'],16),f['whole_native_bytes']); assert orig.hex()==f['hex'] and raw==orig and s[7]==0\n  entries.append(dict(address=f['address'],symbol=name,section=sec,section_bytes=s[3],symbol_value=v,hex=raw.hex(),sha256=hashlib.sha256(raw).hexdigest(),relocations=s[7],whole_original_PE_equals_current_COFF=True))\n i+=1+aux\nassert len(entries)==3 and sum(x['section_bytes'] for x in entries)==15\nout=dict(schema='cc12_post_effect_raw_getters_whole_COFF_comparison_v1',installed_PE=ip,ready_packet=dict(path=str(briefp),bytes=len(bb),sha256=hashlib.sha256(bb).hexdigest()),object=dict(path=str(op),bytes=len(data),sha256=hashlib.sha256(data).hexdigest()),machine='IMAGE_FILE_MACHINE_I386',functions=entries,all_three_whole_bodies_equal=True)\np=root/'build/native_post_effect_raw_access_cc12/whole_COFF_comparison.DATA.json'; p.write_text(json.dumps(out,indent=2)+'\\n',encoding='utf-8')\nprint(json.dumps(out))\n'@ | python -B -",
+          "workdir": "J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data",
+          "max_output_tokens": 1700
+        },
+        "result": {
+          "chunk_id": "8b8bd8",
+          "wall_time_seconds": 2.9119394,
+          "exit_code": 0,
+          "original_token_count": 456,
+          "output": "{\"schema\": \"cc12_post_effect_raw_getters_whole_COFF_comparison_v1\", \"installed_PE\": {\"path\": \"I:\\\\SteamLibrary\\\\steamapps\\\\common\\\\Battlestations Pacific\\\\battlestationspacific.exe\", \"bytes\": 12223752, \"sha256\": \"b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6\"}, \"ready_packet\": {\"path\": \"J:\\\\PROG\\\\battlestations-pacific-decompile-cc12_type1011_native_gate\\\\local\\\\ScenePostLeafFrontier01\\\\ready_full_raw_getters.DATA.json\", \"bytes\": 12188, \"sha256\": \"1f5846bb7abbfeafdede74a92a086da533647d806833bc01836989d3fa9160cc\"}, \"object\": {\"path\": \"J:\\\\PROG\\\\battlestations-pacific-decompile-cc12_native_resume_data\\\\build\\\\native_post_effect_raw_access_cc12\\\\native_post_effect_raw_access.obj\", \"bytes\": 5585, \"sha256\": \"7da775137dc4c2aaa61463a0bb8cdaf0ee547c341d7d0a5727950aac0a023c02\"}, \"machine\": \"IMAGE_FILE_MACHINE_I386\", \"functions\": [{\"address\": \"00b4cb90\", \"symbol\": \"?native_post_effect_pass_raw_08_00b4cb90@bsp@@YIIPBX@Z\", \"section\": 5, \"section_bytes\": 4, \"symbol_value\": 0, \"hex\": \"8b4108c3\", \"sha256\": \"916ae10aa3fd76a4d5b25b2fb66e9df0fd04957c7ab10930268d1ed7808be689\", \"relocations\": 0, \"whole_original_PE_equals_current_COFF\": true}, {\"address\": \"00b4ec50\", \"symbol\": \"?native_post_effect_pass_raw_18_00b4ec50@bsp@@YIIPBX@Z\", \"section\": 7, \"section_bytes\": 4, \"symbol_value\": 0, \"hex\": \"8b4118c3\", \"sha256\": \"38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941\", \"relocations\": 0, \"whole_original_PE_equals_current_COFF\": true}, {\"address\": \"00b4ffe0\", \"symbol\": \"?native_post_effect_owner_raw_23c_00b4ffe0@bsp@@YIIPBX@Z\", \"section\": 3, \"section_bytes\": 7, \"symbol_value\": 0, \"hex\": \"8b813c020000c3\", \"sha256\": \"64c9132b552962157ef9ebaff67dc61d0d64a735baee5f530a3baf4237f9f2c1\", \"relocations\": 0, \"whole_original_PE_equals_current_COFF\": true}], \"all_three_whole_bodies_equal\": true}\r\n"
+        }
+      }
+    ],
+    "first_compile_before_header_assertion": {
+      "chunk_id": "2ccf77",
+      "exit_code": 0,
+      "header": {
+        "bytes": 884,
+        "sha256": "6be044079d80c909f225d86c8ab04c6642573d718436dc9e885bed73215f9887"
+      },
+      "object": {
+        "bytes": 5585,
+        "sha256": "825afecf7c7f2f899db49ed9fd53317697b97b6ad5aab4ee95ee666000bb8193"
+      },
+      "superseded_by_current_strict_compile": true
+    }
+  },
+  "original_whole_live_reads": [
+    {
+      "chunk_id": "181538",
+      "wall_time_seconds": 3.921922,
+      "exit_code": 0,
+      "original_token_count": 28,
+      "output": "--- exports/bsp/functions/00b4cb90/assembly.txt ---\r\n00b4cb90: MOV EAX,dword ptr [ECX + 0x8] \r\n00b4cb93: RET \r\n"
+    },
+    {
+      "chunk_id": "0bcbcd",
+      "wall_time_seconds": 3.8703341,
+      "exit_code": 0,
+      "original_token_count": 28,
+      "output": "--- exports/bsp/functions/00b4ec50/assembly.txt ---\r\n00b4ec50: MOV EAX,dword ptr [ECX + 0x18] \r\n00b4ec53: RET \r\n"
+    },
+    {
+      "chunk_id": "24a015",
+      "wall_time_seconds": 4.1948772,
+      "exit_code": 0,
+      "original_token_count": 8,
+      "output": "00b4cb90  8b 41 08 c3  .A..\r\n"
+    },
+    {
+      "chunk_id": "68be03",
+      "wall_time_seconds": 4.1598597,
+      "exit_code": 0,
+      "original_token_count": 8,
+      "output": "00b4ec50  8b 41 18 c3  .A..\r\n"
+    },
+    {
+      "chunk_id": "0373bc",
+      "wall_time_seconds": 4.1447802,
+      "exit_code": 0,
+      "original_token_count": 11,
+      "output": "00b4ffe0  8b 81 3c 02 00 00 c3  ..<....\r\n"
+    }
+  ],
+  "original_whole_disk_disassembly_reads": [
+    {
+      "chunk_id": "903b28",
+      "wall_time_seconds": 3.8486175,
+      "exit_code": 0,
+      "original_token_count": 29,
+      "output": "00b4cb90: mov eax, dword ptr [ecx + 8]\r\n00b4cb93: ret \r\n(disk bytes, .text section; Ghidra state not consulted)\r\n"
+    },
+    {
+      "chunk_id": "eeeff8",
+      "wall_time_seconds": 3.8820961,
+      "exit_code": 0,
+      "original_token_count": 29,
+      "output": "00b4ec50: mov eax, dword ptr [ecx + 0x18]\r\n00b4ec53: ret \r\n(disk bytes, .text section; Ghidra state not consulted)\r\n"
+    },
+    {
+      "chunk_id": "04199c",
+      "wall_time_seconds": 4.0176157,
+      "exit_code": 0,
+      "original_token_count": 30,
+      "output": "00b4ffe0: mov eax, dword ptr [ecx + 0x23c]\r\n00b4ffe6: ret \r\n(disk bytes, .text section; Ghidra state not consulted)\r\n"
+    }
+  ],
+  "current_repository_build": {
+    "state": "completed",
+    "actual_tools": [
+      {
+        "tool": "exec_command",
+        "args": {
+          "cmd": "try {\n    & ./scripts/build.ps1 *> build/native_post_effect_raw_access_cc12/repository_build.log\n    if ($LASTEXITCODE -ne 0) { throw \"Build script returned $LASTEXITCODE\" }\n    Get-Content build/native_post_effect_raw_access_cc12/repository_build.log -Tail 16\n} catch {\n    Get-Content build/native_post_effect_raw_access_cc12/repository_build.log -Tail 22\n    Write-Output $_\n    exit 1\n}",
+          "workdir": "J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data",
+          "max_output_tokens": 1800,
+          "yield_time_ms": 1000
+        },
+        "result": {
+          "chunk_id": "d8a85c",
+          "wall_time_seconds": 10.0066338,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 1000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "24e08f",
+          "wall_time_seconds": 5.0071355,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 1000,
+          "max_output_tokens": 1600
+        },
+        "result": {
+          "chunk_id": "1cdce2",
+          "wall_time_seconds": 5.0118708,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 1000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "bb5f06",
+          "wall_time_seconds": 5.0008792,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "fcc8f4",
+          "wall_time_seconds": 30.0107891,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "44f991",
+          "wall_time_seconds": 30.0138335,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "1187b3",
+          "wall_time_seconds": 30.0099744,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "3628c3",
+          "wall_time_seconds": 30.0080777,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "bfc62b",
+          "wall_time_seconds": 30.0028884,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "311933",
+          "wall_time_seconds": 30.0117232,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "60ad2d",
+          "wall_time_seconds": 30.0033071,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "2a6646",
+          "wall_time_seconds": 30.002594,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "d18815",
+          "wall_time_seconds": 30.0062491,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "fb0c29",
+          "wall_time_seconds": 30.010037,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "d194c3",
+          "wall_time_seconds": 30.0118686,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "671953",
+          "wall_time_seconds": 30.0058107,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "06ec0d",
+          "wall_time_seconds": 30.0027684,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "598e3d",
+          "wall_time_seconds": 30.0031479,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "2da8f2",
+          "wall_time_seconds": 30.0055131,
+          "session_id": 33754,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "815910",
+          "wall_time_seconds": 8.7008966,
+          "exit_code": 0,
+          "original_token_count": 192,
+          "output": "  unit_neighbour_fields.cpp\r\n  game_native_game_tables.cpp\r\n  game_native_player_profile_context.cpp\r\n  game_native_game_application_frame.cpp\r\n  Generating Code...\r\n  bsp_game.vcxproj -> J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\build\\win32\\Release\\bsp_game.exe\r\n  Building Custom Rule J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data/CMakeLists.txt\r\nTest project J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data/build/win32\r\n    Start 1: reconstructed_math\r\n1/2 Test #1: reconstructed_math ...............   Passed    0.34 sec\r\n    Start 2: tool_tests\r\n2/2 Test #2: tool_tests .......................   Passed   11.48 sec\r\n\r\n100% tests passed, 0 tests failed out of 2\r\n\r\nTotal Test time (real) =  11.87 sec\r\n"
+        }
+      }
+    ],
+    "log_path": "build/native_post_effect_raw_access_cc12/repository_build.log",
+    "new_getter_TU_registered_in_this_build": false,
+    "scope": "Existing repository build/CTest only. New TU has separate strict x86 compilation; Root owns CMake registration and final integration build.",
+    "whole_actual_terminal": {
+      "tool": "write_stdin",
+      "args": {
+        "session_id": 33754,
+        "chars": "",
+        "yield_time_ms": 30000,
+        "max_output_tokens": 1800
+      },
+      "result": {
+        "chunk_id": "815910",
+        "wall_time_seconds": 8.7008966,
+        "exit_code": 0,
+        "original_token_count": 192,
+        "output": "  unit_neighbour_fields.cpp\r\n  game_native_game_tables.cpp\r\n  game_native_player_profile_context.cpp\r\n  game_native_game_application_frame.cpp\r\n  Generating Code...\r\n  bsp_game.vcxproj -> J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\build\\win32\\Release\\bsp_game.exe\r\n  Building Custom Rule J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data/CMakeLists.txt\r\nTest project J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data/build/win32\r\n    Start 1: reconstructed_math\r\n1/2 Test #1: reconstructed_math ...............   Passed    0.34 sec\r\n    Start 2: tool_tests\r\n2/2 Test #2: tool_tests .......................   Passed   11.48 sec\r\n\r\n100% tests passed, 0 tests failed out of 2\r\n\r\nTotal Test time (real) =  11.87 sec\r\n"
+      }
+    },
+    "observed_state": "original session33754 completed naturally with exit_code0",
+    "original_source_revision": "b056f789171fd29376c2b5faabab64cd593a5028",
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\build\\native_post_effect_raw_access_cc12\\repository_build.log",
+      "bytes": 84599,
+      "sha256": "8e3e22a5b2e00d9d6f889765779e8036c8363bf7c52804a2743bc7d5487df6f8"
+    },
+    "tests": {
+      "passed": 2,
+      "failed": 0,
+      "total": 2,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_test_time_seconds": 11.87
+    },
+    "qualification_scope": "Existing repository targets only; the new getter TU was unregistered. Separate strict current getter compilation and exact full COFF comparisons are recorded above."
+  },
+  "current_source_admission": {
+    "MSVC_and_M_IX86_guard": true,
+    "explicit_32bit_pointer_static_assert": true,
+    "no_invented_class_layout": true,
+    "raw_uint32_t_result": true,
+    "no_second_B4CB90_argument": true
+  },
+  "reachability": {
+    "evidence": "ready_packet current exact xrefs; no reconstructed caller execution",
+    "scene_renderer": "00b156c0",
+    "all_selected_scene_call_sites_after": "00b16109",
+    "B4CB90_other_caller": "00b50050"
+  },
+  "proposed_ledger_records": [
+    {
+      "address": "00b4cb90",
+      "name": "BSP_PostEffectPass_GetRaw08",
+      "source": "src/native_post_effect_raw_access.cpp",
+      "function": "native_post_effect_pass_raw_08_00b4cb90",
+      "status": "reconstructed_whole_original_MSVC_Win32_COFF_verified",
+      "evidence": "Entire 4-byte MOV EAX,[ECX+offset]; RET body matches fresh live and installed original PE with no relocations. ECX input, EAX unchanged DWORD, no stack arguments. Descriptive type role is a hypothesis.",
+      "Ghidra_mutation_performed": false
+    },
+    {
+      "address": "00b4ec50",
+      "name": "BSP_PostEffectPass_GetRaw18",
+      "source": "src/native_post_effect_raw_access.cpp",
+      "function": "native_post_effect_pass_raw_18_00b4ec50",
+      "status": "reconstructed_whole_original_MSVC_Win32_COFF_verified",
+      "evidence": "Entire 4-byte MOV EAX,[ECX+offset]; RET body matches fresh live and installed original PE with no relocations. ECX input, EAX unchanged DWORD, no stack arguments. Descriptive type role is a hypothesis.",
+      "Ghidra_mutation_performed": false
+    },
+    {
+      "address": "00b4ffe0",
+      "name": "BSP_PostEffectOwner_GetRaw23C",
+      "source": "src/native_post_effect_raw_access.cpp",
+      "function": "native_post_effect_owner_raw_23c_00b4ffe0",
+      "status": "reconstructed_whole_original_MSVC_Win32_COFF_verified",
+      "evidence": "Entire 7-byte MOV EAX,[ECX+offset]; RET body matches fresh live and installed original PE with no relocations. ECX input, EAX unchanged DWORD, no stack arguments. Descriptive type role is a hypothesis.",
+      "Ghidra_mutation_performed": false
+    }
+  ],
+  "evidence_levels": {
+    "exported_original": true,
+    "reconstructed_whole_body": true,
+    "strict_Win32_source_compiled": true,
+    "whole_COFF_body_equal": true,
+    "original_register_ABI_preserved_by_literal_body": true,
+    "runtime_fixture_executed": false,
+    "parent_scene_body_completed": false,
+    "class_layout_qualified": false,
+    "application_or_game_validated": false,
+    "existing_repository_build_passed": true,
+    "existing_repository_CTest_passed": 2,
+    "registered_getter_library_build_qualified": false
+  },
+  "exclusions": [
+    "No B156C0/shared scene-prefix changes",
+    "No D5E13C activation",
+    "No original class or pointee-type recovery",
+    "No broader owner/lifetime/allocator/EH contract",
+    "No reconstructed or original target execution"
+  ],
+  "blockers": [],
+  "Root_Source_and_current_independent_COFF_review": {
+    "actual_chunk_id": "175653",
+    "exit_code": 0,
+    "scope": "Source and complete three-section COFF only",
+    "reported_by_Root": true
+  },
+  "CMake_registration_pending": true,
+  "registered_library_build_qualification_pending": true,
+  "followup": "Root registers src/native_post_effect_raw_access.cpp in CMake, performs the registered integration build, and applies the proposed ledger/Ghidra names under its leases. No new getter runtime, parent scene, or game qualification is claimed."
+}

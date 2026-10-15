@@ -1,0 +1,89 @@
+{
+  "schema": "cc12_post_effect_raw_access_primary_review_v1",
+  "worker_commit": "68b3291f8",
+  "primary_source_review": {
+    "passed": true,
+    "whole_functions": 3,
+    "whole_original_bytes": 15,
+    "contract": "One actual ECX DWORD load at08/18/23C, EAX rawbits, plainRET and no stack argument. No checks, callbacks, ownership or conversions.",
+    "root_read_chunks": [
+      "427f2b",
+      "175653"
+    ]
+  },
+  "independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\NativePostEffectRawAccessReview01\\final_review.DATA.json",
+    "bytes": 4740,
+    "sha256": "26180cab4955634574a91c0f1db86d863fca844d4154fd40f1f4c87efa5b2e18"
+  },
+  "independent_COFF_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\NativePostEffectRawAccessReview01\\independent_COFF_review.DATA.json",
+    "bytes": 5963,
+    "sha256": "b128db9bc435d07890d044a22321819996f8e0039b0a00fc2357fcfbc4f1d2ca"
+  },
+  "independent_review_family_receipt": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\NativePostEffectRawAccessReview01\\family_receipt.DATA.json",
+    "bytes": 804,
+    "sha256": "a270852874d7f2335ba76d4122cd174330cdb25f5a5d49100fd2737fef1c06b7"
+  },
+  "source_pins": [
+    {
+      "path": "include\\bsp\\native_post_effect_raw_access.hpp",
+      "bytes": 967,
+      "sha256": "2cfdf6fe61bd3ca0c15104d8cc53e3d1009d5f85d1500851fb8762b00b4cde50"
+    },
+    {
+      "path": "src\\native_post_effect_raw_access.cpp",
+      "bytes": 625,
+      "sha256": "eed516e675c456854bec42b254e63237d8ad665fbc22c837e54e6f7f07a4d85c"
+    },
+    {
+      "path": "docs\\NATIVE_POST_EFFECT_RAW_ACCESS_CC12.md",
+      "bytes": 2037,
+      "sha256": "a857b8e91ef199663f5d36f6855787ad82e29756619b814143189f40175e3641"
+    }
+  ],
+  "saved_Ghidra_annotation": {
+    "path": "local\\ghidra-annotations-20261015T001910Z.json",
+    "bytes": 2201,
+    "sha256": "872bf3e10d6acc2fb55e6e036a370955200662bbed066478a8098ede5582a293"
+  },
+  "Ghidra_apply_actual_terminal": "6400e8/exit0",
+  "affected_exports_refreshed_actual_terminal": "d8bd1d/exit0",
+  "prior_names_preserved": [
+    "TRIV_body_00b4cb90",
+    "TRIV_body_00b4ec50",
+    "TRIV_body_00b4ffe0"
+  ],
+  "name_and_reconstruction_records_added": true,
+  "worker_repository_build": {
+    "actual_terminal_reported": "815910/exit0",
+    "existing_tests_passed": 2,
+    "existing_tests_names": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "native_math_differential_not_run": true,
+    "new_TU_registered_in_that_build": false,
+    "final_worker_report_update_pending": false,
+    "actual_terminal_verified": "815910/exit0",
+    "whole_log_verified": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\build\\native_post_effect_raw_access_cc12\\repository_build.log",
+      "bytes": 84599,
+      "sha256": "8e3e22a5b2e00d9d6f889765779e8036c8363bf7c52804a2743bc7d5487df6f8"
+    }
+  },
+  "primary_library_registration_pending": true,
+  "primary_registered_build_pending": true,
+  "CMake_queue_packet": "cc12_post_effect_raw_access_registration",
+  "runtime_execution": false,
+  "full_scene_parent_D5E13C_or_application_qualified": false,
+  "original_general_ABI_EH_game_qualified": false,
+  "worker_build_report_commit": "924a78ec8",
+  "worker_build_original_tools_consumed": 20,
+  "worker_build_report_pin": {
+    "path": "reports/native_post_effect_raw_access_cc12.json",
+    "bytes": 30994,
+    "sha256": "72865e63076224c0cb973709bb7c8339c761f2701fec5d7971ba0cf385e88fb0"
+  }
+}
