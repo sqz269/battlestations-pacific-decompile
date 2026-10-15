@@ -40969,6 +40969,179 @@
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
       "contract": "Whole58B19 setter0420. ECXactualrecord;stacknullabletarget/fullDWORDscalar/fullDWORDkind;RET0C/EAXrecord. Oldname+1C ifnonnull realcanonicalfreeBF6989\u2192BF65AC thenzero1C; onlynow physicalduplicate438E40; loadkind beforestore1C, thenloadscalar/store18/store8. Only12distinctbyteswritten, no otherroot/tag/phase/default/lookup/copy/startup. ThreefullDWORD fields/allbitpatterns. Genuine livewritable type5record, oldname soleowned same currentheap, borrowednullabletarget stable/disjointfromoldname; noalias/reentry/concurrency/failure/overflow. Reuse alreadyaccepted0340payloadcopy55B22; no new0340Source/credit. No fullparser/OriginalABI/EH/privateCRT/runtime/game credit."
+    },
+    {
+      "id": "goal_oct15_dword_vector_insert",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "0046afb0",
+        "0046b4a0"
+      ],
+      "output_files": [
+        "src/native_scene_dword_vector_insert.cpp",
+        "include/bsp/native_scene_dword_vector_insert.hpp",
+        "docs/GOAL_OCT15_DWORD_VECTOR_INSERT.md",
+        "reports/goal_oct15_dword_vector_insert.json"
+      ],
+      "depends_on": [
+        "goal_oct15_dword_vector_allocation",
+        "goal_oct15_dword_move_nonzero",
+        "goal_oct15_dword_vector_ranges",
+        "goal_oct15_dword_fill_alias"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_dword_vector_insert.json",
+      "primary_review": "reports/goal_oct15_dword_vector_insert_primary_review.json",
+      "code_revision": "01facb66eca9558de0d61f0b72452cd73632132f",
+      "integrated_main_revision": "18ccd65d4af1abff340e0af85f5d65350c2ed336",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole raw DWORD-vector paths and actual providers; explicit live argument reloads, native branch predicates and current CRT retained. C61C50 is a qualified completed-message guard mapping, not a binary entry. Original private stack, CRT, fault and game identity remain unproved.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_dword_vector_allocation",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00466ce0",
+        "0046a400",
+        "00c61c50"
+      ],
+      "output_files": [
+        "src/native_scene_dword_vector_allocation.cpp",
+        "include/bsp/native_scene_dword_vector_allocation.hpp",
+        "docs/GOAL_OCT15_DWORD_VECTOR_ALLOCATION.md",
+        "reports/goal_oct15_dword_vector_allocation.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_dword_vector_allocation.json",
+      "primary_review": "reports/goal_oct15_dword_vector_insert_primary_review.json",
+      "code_revision": "01facb66eca9558de0d61f0b72452cd73632132f",
+      "integrated_main_revision": "18ccd65d4af1abff340e0af85f5d65350c2ed336",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole raw DWORD-vector paths and actual providers; explicit live argument reloads, native branch predicates and current CRT retained. C61C50 is a qualified completed-message guard mapping, not a binary entry. Original private stack, CRT, fault and game identity remain unproved.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_dword_move_nonzero",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00468f60"
+      ],
+      "output_files": [
+        "src/native_scene_dword_move_nonzero.cpp",
+        "include/bsp/native_scene_dword_move_nonzero.hpp",
+        "docs/GOAL_OCT15_DWORD_MOVE_NONZERO.md",
+        "reports/goal_oct15_dword_move_nonzero.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_dword_move_nonzero.json",
+      "primary_review": "reports/goal_oct15_dword_vector_insert_primary_review.json",
+      "code_revision": "01facb66eca9558de0d61f0b72452cd73632132f",
+      "integrated_main_revision": "18ccd65d4af1abff340e0af85f5d65350c2ed336",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole raw DWORD-vector paths and actual providers; explicit live argument reloads, native branch predicates and current CRT retained. C61C50 is a qualified completed-message guard mapping, not a binary entry. Original private stack, CRT, fault and game identity remain unproved.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_dword_vector_ranges",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00468460",
+        "00469950"
+      ],
+      "output_files": [
+        "src/native_scene_dword_vector_ranges.cpp",
+        "include/bsp/native_scene_dword_vector_ranges.hpp",
+        "docs/GOAL_OCT15_DWORD_VECTOR_RANGES.md",
+        "reports/goal_oct15_dword_vector_ranges.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_dword_vector_ranges.json",
+      "primary_review": "reports/goal_oct15_dword_vector_insert_primary_review.json",
+      "code_revision": "01facb66eca9558de0d61f0b72452cd73632132f",
+      "integrated_main_revision": "18ccd65d4af1abff340e0af85f5d65350c2ed336",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole raw DWORD-vector paths and actual providers; explicit live argument reloads, native branch predicates and current CRT retained. C61C50 is a qualified completed-message guard mapping, not a binary entry. Original private stack, CRT, fault and game identity remain unproved.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_vector_storage_tidy_alias",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00468020"
+      ],
+      "output_files": [
+        "src/native_vector_storage_tidy_alias.cpp",
+        "include/bsp/native_vector_storage_tidy_alias.hpp",
+        "docs/GOAL_OCT15_VECTOR_STORAGE_TIDY_ALIAS.md",
+        "reports/goal_oct15_vector_storage_tidy_alias.json"
+      ],
+      "depends_on": [
+        "goal_oct15_vector_storage_tidy"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_vector_storage_tidy_alias.json",
+      "primary_review": "reports/goal_oct15_dword_vector_insert_primary_review.json",
+      "code_revision": "01facb66eca9558de0d61f0b72452cd73632132f",
+      "integrated_main_revision": "18ccd65d4af1abff340e0af85f5d65350c2ed336",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole raw DWORD-vector paths and actual providers; explicit live argument reloads, native branch predicates and current CRT retained. C61C50 is a qualified completed-message guard mapping, not a binary entry. Original private stack, CRT, fault and game identity remain unproved.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_dword_fill_alias",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00468440"
+      ],
+      "output_files": [
+        "src/native_scene_dword_fill_alias.cpp",
+        "include/bsp/native_scene_dword_fill_alias.hpp",
+        "docs/GOAL_OCT15_DWORD_FILL_ALIAS.md",
+        "reports/goal_oct15_dword_fill_alias.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_dword_fill_alias.json",
+      "primary_review": "reports/goal_oct15_dword_vector_insert_primary_review.json",
+      "code_revision": "01facb66eca9558de0d61f0b72452cd73632132f",
+      "integrated_main_revision": "18ccd65d4af1abff340e0af85f5d65350c2ed336",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole raw DWORD-vector paths and actual providers; explicit live argument reloads, native branch predicates and current CRT retained. C61C50 is a qualified completed-message guard mapping, not a binary entry. Original private stack, CRT, fault and game identity remain unproved.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
