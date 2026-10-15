@@ -1,0 +1,100 @@
+{
+  "packet": "oct15_thirteenth_reconstruction_batch",
+  "status": "eight_complete_ordinary_entries_one_consumed_prefix_verified_pending_main_integration",
+  "source_commit_tested": "c802a36d329e057fb30ae6f24517618c4005933e",
+  "component_pins": {
+    "dword_uninitialized_fill": "020a654f103a47dc9935056fdcc4d86fe360d8a0",
+    "dword_fill_ranges": "1aec7c3db797048cee329dd01b63d8e7daf50b08",
+    "nested_int_subtree_and_consumed_prefix": "5a50f0eba0e751fd8caf93c29ab98d36273dc1fd",
+    "checked_bit_iterators_source": "37fcbbcd8"
+  },
+  "complete_ordinary_functions": [
+    "0043f9e0",
+    "00441180",
+    "0048d3b0",
+    "0048f290",
+    "0048f2e0",
+    "0055af60",
+    "006970d0",
+    "00697760"
+  ],
+  "consumed_fragment": {
+    "address": "005572f0",
+    "last_inclusive": "0055736e",
+    "bytes": 127,
+    "instructions": 49,
+    "ordinary_helper_complete": false,
+    "domain": "Admitted stable owned full-path selection proved by whole55AF60; diagnostic and partial paths are not implemented or replaced with stubs."
+  },
+  "native_owned_scope": {
+    "ordinary_body_bytes": 640,
+    "ordinary_instruction_starts": 256,
+    "fragment_bytes": 127,
+    "fragment_starts": 49,
+    "total_owned_bytes": 767,
+    "total_owned_starts": 305
+  },
+  "packet_reports": [
+    "reports/oct15_native_dword_uninitialized_fill.json",
+    "reports/oct15_native_dword_fill_ranges.json",
+    "reports/oct15_input_nested_int_subtree.json",
+    "reports/oct15_native_checked_bit_iterators.json"
+  ],
+  "source_hashes_sha256": {
+    "include/bsp/native_dword_uninitialized_fill.hpp": "a137a867f7afd51fa063c9499adcfbc5d5086930eda7b0699f53d6a6727638d8",
+    "src/native_dword_uninitialized_fill.cpp": "8a9f1156d56d931a994b04f4262d73687d0dd7b75fa73c24013d0e6149bd63f0",
+    "include/bsp/native_dword_fill_ranges.hpp": "2aa80307d15cff371497456d97161b00b706de89a979d3398e2b8fe857919c5f",
+    "src/native_dword_fill_ranges.cpp": "613cb9e7d485fd7a52d25acf726a2c4dc9ad03cdb8009a6238de50439d09e412",
+    "include/bsp/native_input_nested_int_subtree.hpp": "0ab22617785b377490c7d91579e5a27dd064330789da033bf59072631c25970b",
+    "src/native_input_nested_int_subtree.cpp": "58cb26317ee04a06913cb205cf0ac8a0d6ada8e8cd981790314ba988864ecd13",
+    "include/bsp/native_checked_bit_iterators.hpp": "3e98fff184186cfc30e06bce55b851c79f83060d1780f2ea2bc90db3e608564b",
+    "src/native_checked_bit_iterators.cpp": "8185786c4dcca2fccf8abb5fa29b41cd4a46bdfacc068f8d4c0cf41999193bb7"
+  },
+  "behavior": [
+    "Complete raw DWORD uninitialized fill/dispatch and range/count fill retain current source rereads, zero/null rules, original calling-convention input shapes and independent wrapped return positions.",
+    "Whole nested-int subtree preserves inner head/left before outer-left capture, actual full-prefix clear, CURRENT head free/reset then outer free/next nil. The general eraser partial branch remains incomplete.",
+    "Complete checked-bit advance/end/copy retain returning-diagnostic field reloads, unsigned/SAR arithmetic, negative borrow, CURRENT word RMW and output alias/private storage publication order."
+  ],
+  "validation": {
+    "configuration": "MSVC Win32 Release",
+    "build": "passed",
+    "existing_tests": "3/3 passed",
+    "ctest_seconds": 7.65,
+    "log": "local/oct15_thirteenth_current_main_build.log",
+    "initial_eight_function_source": "37fcbbcd8",
+    "initial_eight_function_tests": "3/3 passed in7.43s; repeated after concurrent scene/integer-property Source merge.",
+    "native_transfer_rows_checked": 41,
+    "distinct_transfer_sites": 31,
+    "documentation_claims_checked": 31,
+    "duplicate_scoping": "Ten bit-helper CALL rows also occur inside its independent Source-review receipt;41 raw report rows are31 distinct native sites. Some nested helper/producer rows explicitly cover excluded context, not reconstructed paths.",
+    "failed_unchecked_warnings": 0,
+    "transfer_log": "local/oct15_thirteenth_transfer_verification.log",
+    "new_tests": 0,
+    "new_entries_natively_executed": false
+  },
+  "reviews": {
+    "worker_source": "Primary inspected all complete Source/header/native listings for all three immutable worker pins with no findings; exact hashes and limits are in component reports.",
+    "root_bit_source": "Independent14-check Source/native review found no discrepancies; hashes stable.",
+    "bit_native": "374 live/installed bytes and142 export/current instruction starts match, with only documented JZ/JE,JNZ/JNE,JNC/JAE spelling equivalences; all10 current CALL targets match native PE. Flow-property script backend disabled, not enabled or bypassed."
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved_annotations": 9,
+    "prior_names_comments_preserved": true,
+    "preimage_logs": [
+      "local/ghidra-annotations-20261015T211848Z.json",
+      "local/ghidra-annotations-20261015T212042Z.json",
+      "local/ghidra-annotations-20261015T212347Z.json"
+    ],
+    "forced_snapshot": "local/oct15_thirteenth_snapshot.log",
+    "nine_forced_exports": "local/oct15_thirteenth_exports.log"
+  },
+  "limits": [
+    "Valid reached actual storage/ownership and stable full-path selection contracts apply. No callbacks, unsupported-path stubs, snapshots, rollback or extra validation guards.",
+    "Current CRT/SDK policy, added C++ interfaces/private cells and dead EDX normalization do not establish original register/stack/private-frame aliases/FH3/SEH/fault/heap/exception identity.",
+    "Old bounded/provider-bearing projections and fixture evidence remain separate. Existing math differential tests execute older seeds, not these new ordinary entries. No failure injection/gameplay proof.",
+    "Whole5572F0 partial erasure, general DWORD/bit-vector insertion/erasure/resize and input record/pair destruction remain incomplete; this batch does not promote them."
+  ],
+  "main_source_integration_commit": null
+}

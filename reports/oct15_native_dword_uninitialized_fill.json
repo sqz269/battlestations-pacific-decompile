@@ -1,0 +1,284 @@
+{
+  "packet": "oct15_native_dword_uninitialized_fill",
+  "status": "complete_source_win32_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_dword_uninitialized_fill.cpp",
+  "header": "include/bsp/native_dword_uninitialized_fill.hpp",
+  "documentation": "docs/OCT15_NATIVE_DWORD_UNINITIALIZED_FILL.md",
+  "base_commit": "a7dd1413be9687da7d5f906389929b97fdb845e7",
+  "routines": [
+    {
+      "address": "006970d0",
+      "original_name": "STL_UninitFillN_006970d0",
+      "cpp_name": "fill_native_dword_uninitialized_006970d0",
+      "coverage": "complete_normal_loop",
+      "original_abi": "ECX destination, EDX unsigned count; four stacked DWORDs: value pointer, owner, duplicate value pointer, tag; RET10h; no semantic result",
+      "consumed_stack_slots": [
+        "ESP+4 value pointer on nonzero count only"
+      ],
+      "unused_stack_slots": [
+        "ESP+8 owner",
+        "ESP+C duplicate value pointer",
+        "ESP+10 tag"
+      ],
+      "body_end_exclusive": "006970f6"
+    },
+    {
+      "address": "00697760",
+      "original_name": "STL_TagDispatch_00697760",
+      "cpp_name": "fill_native_dword_uninitialized_n_dispatch_00697760",
+      "coverage": "complete_dispatch_and_wrapped_result",
+      "original_abi": "ECX owner, unconsumed EDX; stacked destination,count,value pointer; RET0Ch; EAX independently original destination+count*4 modulo2^32",
+      "core_stack_schedule": [
+        "value pointer",
+        "owner",
+        "duplicate value pointer",
+        "owner bits masked FFFFFF00"
+      ],
+      "body_end_exclusive": "00697792"
+    }
+  ],
+  "bindings": [
+    "00697760 directly calls the new actual 006970D0 Source body; no external dependency, allocation, callback, diagnostic or generic container service"
+  ],
+  "host_steps": [
+    {
+      "address": "00697784",
+      "native": "006970d0",
+      "function": "00697760",
+      "kind": "call",
+      "contract": "owned dispatch: four stack slots, count/destination captures, independent wrapped return",
+      "bytes_hex": "e847f9ffff",
+      "current_instruction_start": true,
+      "current_containing_body": true,
+      "default_and_effective_target_verified": true,
+      "current_flow_override": "NONE",
+      "disk_live_equal": true
+    },
+    {
+      "address": "00697f89",
+      "native": "006970d0",
+      "function": "00697f40",
+      "kind": "call",
+      "contract": "incoming actual DWORD Append fast path: count1, current end; publication after core is captured end+4",
+      "bytes_hex": "e842f1ffff",
+      "current_instruction_start": true,
+      "current_containing_body": true,
+      "default_and_effective_target_verified": true,
+      "current_flow_override": "NONE",
+      "disk_live_equal": true
+    },
+    {
+      "address": "00697a8a",
+      "native": "00697760",
+      "function": "00697990",
+      "kind": "call",
+      "contract": "incoming growth path: prior copy result, count, retained scalar address",
+      "bytes_hex": "e8d1fcffff",
+      "current_instruction_start": true,
+      "current_containing_body": true,
+      "default_and_effective_target_verified": true,
+      "current_flow_override": "NONE",
+      "disk_live_equal": true
+    },
+    {
+      "address": "00697b4b",
+      "native": "00697760",
+      "function": "00697990",
+      "kind": "call",
+      "contract": "incoming short-tail path: current end, count minus arithmetic tail length, retained scalar address",
+      "bytes_hex": "e810fcffff",
+      "current_instruction_start": true,
+      "current_containing_body": true,
+      "default_and_effective_target_verified": true,
+      "current_flow_override": "NONE",
+      "disk_live_equal": true
+    }
+  ],
+  "native_evidence": {
+    "utc": "2026-10-15T21:05:52.638470+00:00",
+    "typed_modification": "383",
+    "call_modification": "383",
+    "complete_current_body_ranges": true,
+    "owned_bytes": 88,
+    "owned_instruction_count": 36,
+    "current_live_owned_starts_confirmed": 36,
+    "owned_call_count": 1,
+    "external_incoming_call_count": 3,
+    "all_current_xrefs_accounted": true,
+    "total_transfer_rows": 4,
+    "unique_current_starts_including_external_producer_calls": 39,
+    "indirect_calls": 0,
+    "external_tail_jumps": 0,
+    "bodies": [
+      {
+        "address": "006970d0",
+        "name": "STL_UninitFillN_006970d0",
+        "end_exclusive": "006970f6",
+        "bytes": 38,
+        "sha256": "240e117dee314b7d4acc124791688150e9666c57c81bf8373dab968dceee7234",
+        "bytes_hex": "85d2761f8b442404568da4240000000085c974048b30893183ea0183c10485d277ee5ec21000",
+        "disk_live_equal": true,
+        "current_instruction_starts": [
+          "006970d0",
+          "006970d2",
+          "006970d4",
+          "006970d8",
+          "006970d9",
+          "006970e0",
+          "006970e2",
+          "006970e4",
+          "006970e6",
+          "006970e8",
+          "006970eb",
+          "006970ee",
+          "006970f0",
+          "006970f2",
+          "006970f3"
+        ],
+        "instruction_count": 15,
+        "disk_export_and_current_start_sets_equal": true,
+        "no_return": false,
+        "live_capture": "local/oct15_dword_fill_core_live.txt"
+      },
+      {
+        "address": "00697760",
+        "name": "STL_TagDispatch_00697760",
+        "end_exclusive": "00697792",
+        "bytes": 50,
+        "sha256": "0f64563514fad83375a8b9b4feae299ccdda5f4a17cf1f18575942b81b5a6ac7",
+        "bytes_hex": "518b542410568b742410578b7c2410c6442408008b442408508b44241c5251508bd68bcfe847f9ffff8d04b75f5e59c20c00",
+        "disk_live_equal": true,
+        "current_instruction_starts": [
+          "00697760",
+          "00697761",
+          "00697765",
+          "00697766",
+          "0069776a",
+          "0069776b",
+          "0069776f",
+          "00697774",
+          "00697778",
+          "00697779",
+          "0069777d",
+          "0069777e",
+          "0069777f",
+          "00697780",
+          "00697782",
+          "00697784",
+          "00697789",
+          "0069778c",
+          "0069778d",
+          "0069778e",
+          "0069778f"
+        ],
+        "instruction_count": 21,
+        "disk_export_and_current_start_sets_equal": true,
+        "no_return": false,
+        "live_capture": "local/oct15_dword_fill_dispatch_live.txt"
+      }
+    ],
+    "producer_ranges": [
+      {
+        "start": "00697f40",
+        "end_exclusive": "00697fc3",
+        "containing_function": "00697f40",
+        "bytes": 131,
+        "sha256": "5d03321f7205f5ba7b7648748d98d63467b8865f8613aa6f07ccefac345501b5",
+        "disk_live_equal": true,
+        "live_capture": "local/oct15_dword_fill_append_producer_live.txt",
+        "scope": "native producer byte and selected call-setup proof, not a complete Source or parent semantic/EH audit"
+      },
+      {
+        "start": "00697990",
+        "end_exclusive": "00697af1",
+        "containing_function": "00697990",
+        "bytes": 353,
+        "sha256": "a97fbd64486c81eb3d3f6399a2c29a7b3e5b91858446e463853c2552338145de",
+        "disk_live_equal": true,
+        "live_capture": "local/oct15_dword_fill_insert_producer_first_live.txt",
+        "scope": "native producer byte and selected call-setup proof, not a complete Source or parent semantic/EH audit"
+      },
+      {
+        "start": "00697b06",
+        "end_exclusive": "00697bcb",
+        "containing_function": "00697990",
+        "bytes": 197,
+        "sha256": "de228763021ff115a8a93936c78bf3e86b5cd7a0cf15ab18ef77743fe052723b",
+        "disk_live_equal": true,
+        "live_capture": "local/oct15_dword_fill_insert_producer_second_live.txt",
+        "scope": "native producer byte and selected call-setup proof, not a complete Source or parent semantic/EH audit"
+      }
+    ],
+    "ignored_receipts": [
+      "local/oct15_dword_fill_typed_flow.json",
+      "local/oct15_dword_fill_transfer_flow.json",
+      "local/oct15_dword_fill_current_starts.json",
+      "local/oct15_dword_fill_producer_contexts.json"
+    ],
+    "scope": "36 owned starts and one owned CALL; three external producer CALLs are separate and do not enlarge reconstructed ownership"
+  },
+  "captures_and_aliases": [
+    "Count0 branches before the native source-pointer slot load and before any pointed memory access; Source returns void without pointed access.",
+    "Nonzero captures value ADDRESS once. Each nonnull destination loads its current DWORD immediately before storing, preserving progressive aliases.",
+    "Null destination skips source read and destination store but unsigned count/cursor still advance, including DWORD address wrap.",
+    "Dispatcher retains original destination/count across the call and computes its own wrapped result; no result is taken from the void core.",
+    "Native saved ECX supplies upper24 dead-tag bits; only low byte is zero. Dead owner/value/tag words never create ownership or callbacks.",
+    "Private original stack-slot aliases, ambient EAX and callee-clobbered register state are outside the explicit Source interface contract"
+  ],
+  "corrections": [
+    {
+      "was": "Snapshot graph attributes a 00697760 caller to Catch_All@00697af1",
+      "is": "Current xrefs place sites00697A8A and00697B4B in00697990; no dispatcher CALL is inside00697AF1",
+      "evidence": "Current typed complete bodies at modification383:00697990 has[00697990,00697AF1) and[00697B06,00697BCB);00697AF1 owns[00697AF1,00697B06). Both current CALL instruction owners/targets are independently checked. No Ghidra mutation was performed."
+    }
+  ],
+  "ownership_and_eh": {
+    "backing_allocation": false,
+    "owner_cleanup": false,
+    "native_eh_frame_or_action": false,
+    "source_catch_or_cleanup": false,
+    "note": "Scalar load/store leaves have no registered native owner-EH or CRT service boundary. Current compiler C++/hardware fault/SEH identity is not original-native proof."
+  },
+  "prior_provenance_preserved": [
+    "src/native_input_configuration_modifiers.cpp append_input_checked_word_storage",
+    "reports/native_input_configuration_modifiers.json fill_word byte evidence",
+    "older checked-storage/settings-vector fragments and their fixtures"
+  ],
+  "parent_readiness": "00697F40 actual Append and00697990 actual general InsertCount remain incomplete; own fill leaves do not replace missing insertion/copy/allocation/length-error bodies.",
+  "frozen_root_review": {
+    "result": "No findings after complete Source/header and full owned native-listing review; parent message received before final commit.",
+    "files": [
+      {
+        "path": "src/native_dword_uninitialized_fill.cpp",
+        "sha256": "8a9f1156d56d931a994b04f4262d73687d0dd7b75fa73c24013d0e6149bd63f0"
+      },
+      {
+        "path": "include/bsp/native_dword_uninitialized_fill.hpp",
+        "sha256": "a137a867f7afd51fa063c9499adcfbc5d5086930eda7b0699f53d6a6727638d8"
+      }
+    ],
+    "scope": "These exact Source/header bytes are frozen; later report/doc/ledger-only validation edits do not change them."
+  },
+  "validation": {
+    "win32_release": "passed",
+    "existing_tests": "3/3 passed",
+    "new_tests": 0,
+    "build_log": "local/oct15_native_dword_uninitialized_fill_build.log",
+    "report_call_verifier": "4 call rows checked,0 failed",
+    "documentation_call_verifier": "4 call claims checked,0 failed,0 unchecked,0 warnings",
+    "git_diff_check": "passed",
+    "ctest_seconds": 7.83,
+    "build_exit_code": 0,
+    "existing_test_scope": "Established reconstructed-math/native-seed/tool suites; no dedicated execution of the new DWORD fill bodies",
+    "report_call_log": "local/oct15_dword_fill_report_calls.log",
+    "documentation_call_log": "local/oct15_dword_fill_doc_calls.log"
+  },
+  "limits": [
+    "New explicit C++ functions use __fastcall physical shapes but are not demonstrated original-binary replacements; native code generation, private stack, ambient registers and exception ABI are not promised.",
+    "Raw volatile DWORD pointer accesses and integer-address wrap target MSVC Win32/x86. Portable C++ provenance/alignment/fault semantics and original SEH identity are unproved; no new guards are inserted.",
+    "No original-native differential, new fixture, exception injection, game startup or gameplay validation was run.",
+    "Original STL names and earlier bounded fragment/source evidence are retained separately; parents are not marked reconstructed."
+  ]
+}
