@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_scene_integer_set_increment",
-  "status": "complete_actual_raw_source_build_pending",
+  "status": "complete_actual_raw_source_win32_build_and_two_enabled_existing_checks_passed",
   "source_ready": true,
   "source": "src/native_scene_integer_set_increment.cpp",
   "header": "include/bsp/native_scene_integer_set_increment.hpp",
@@ -569,14 +569,33 @@
     "instructions": 50,
     "live_typed_body_and_transfer_metadata_read": true,
     "existing_nil_tail_override": "AF7 encodedJMP/defaultUNCONDITIONAL_JUMP; CALL_RETURN effectiveCALL_TERMINATOR; no fallthrough; unchanged",
-    "report_calls": "6rows checked,0failed:5CALL and1explicit tailJMP",
-    "build": "pending",
-    "existing_tests": "pending",
+    "report_calls": "6rows checked,0failed:5CALL+1explicit tailJMP",
+    "build": "PASS scripts/build.ps1 Release Win32 exit0; registered owned Source compiled, all targets linked",
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 7.76,
+      "native_math_differential_enabled": false,
+      "new_entry_native_differential": false
+    },
     "new_tests": 0,
     "cmake_registration": "Checked currentowner unleased; uniqueappend without exclusive lease",
     "direct_native_increment_execution": false,
     "abi_compatible": false,
-    "game_validated": false
+    "game_validated": false,
+    "source_commit": "1e2ff85e3",
+    "tested_revision": "1e2ff85e3",
+    "build_log": "local/goal_oct15_scene_integer_set_increment_build.log",
+    "build_log_sha256": "37ff03749eb6a8b31840d6337f9b0d2ac9f27e88d6ff6c0955734092327bbd3b",
+    "existing_checks": "Both enabled existing CTests pass",
+    "documentation_claim_check": "12addresses cited,2call claims checked,0failed,0unchecked,0warnings",
+    "diff_check": "passed before Source draft and final metadata commit",
+    "inherited_linker_warning": "LNK4006 spawn_request_id_matches duplicate in unchanged lua_binding_spawn.obj/lua_spawn_new.obj; second definition ignored"
   },
   "cmake_source_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_scene_integer_set_increment.cpp)",
   "limits": [
@@ -625,5 +644,24 @@
       },
       "status": "applied"
     }
-  ]
+  ],
+  "independent_review": {
+    "reviewer": "primary /root",
+    "accepted": true,
+    "scope": "Complete Source and full native extrema/increment/core/wrapper assembly independently compared; no mismatch",
+    "finding": "Returning initialCRT then CURRENT node, nil-tail/no publication, exact right-min/ascent live stores/rereads; wrappers return captured pointer",
+    "accepted_source_revision": "1e2ff85e3",
+    "source_hashes": {
+      "src/native_scene_integer_set_increment.cpp": {
+        "worktree_bytes_sha256": "9ff2ba73d5e36cd122641241d8a13715f140f0054b54af32fdd1d6e9449bfa51",
+        "git_blob_bytes_sha256": "dc929220a573fda5ffaf09976042f5d2cc5f0dc040a0609caab0bc72497686f3",
+        "normalized_lf_sha256": "dc929220a573fda5ffaf09976042f5d2cc5f0dc040a0609caab0bc72497686f3"
+      },
+      "include/bsp/native_scene_integer_set_increment.hpp": {
+        "worktree_bytes_sha256": "a0102c17d91c14ed9ba089cc6d6a6e24c03aaf927de74cfe9da004b5a888da95",
+        "git_blob_bytes_sha256": "a0102c17d91c14ed9ba089cc6d6a6e24c03aaf927de74cfe9da004b5a888da95",
+        "normalized_lf_sha256": "a0102c17d91c14ed9ba089cc6d6a6e24c03aaf927de74cfe9da004b5a888da95"
+      }
+    }
+  }
 }

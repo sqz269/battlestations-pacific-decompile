@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_scene_integer_set_extrema",
-  "status": "complete_functional_actual_raw_source_build_pending",
+  "status": "complete_functional_actual_raw_source_win32_build_and_two_enabled_existing_checks_passed",
   "source_ready": true,
   "source": "src/native_scene_integer_set_extrema.cpp",
   "header": "include/bsp/native_scene_integer_set_extrema.hpp",
@@ -360,14 +360,33 @@
     "unreachable_alignment_bytes_excluded": 3,
     "live_typed_body_metadata_read": true,
     "report_calls": "2call rows checked,0failed",
-    "build": "pending",
-    "existing_checks": "pending",
+    "build": "PASS scripts/build.ps1 Release Win32 exit0; registered owned Source compiled, all targets linked",
+    "existing_checks": "Both enabled existing CTests pass",
     "cmake_registration": "Holder released; rechecked unleased, left queue and appended unique registration without exclusive lease",
     "new_tests": 0,
     "direct_native_extrema_execution": false,
     "abi_compatible": false,
     "game_validated": false,
-    "documentation_claim_check": "4addresses cited,0failed,0unchecked,0warnings"
+    "documentation_claim_check": "4addresses cited,0failed,0unchecked,0warnings",
+    "source_commit": "a98afc15f",
+    "tested_revision": "a98afc15f",
+    "build_log": "local/goal_oct15_scene_integer_set_extrema_build.log",
+    "build_log_sha256": "4554dfaff19de77b1bf46bfa7dbd01aab767cf0b23b6af052e88effecce5599d",
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 8.24,
+      "native_math_differential_enabled": false,
+      "new_entry_native_differential": false
+    },
+    "diff_check": "passed before Source draft and final metadata commit",
+    "inherited_linker_warning": "LNK4006 spawn_request_id_matches duplicate in unchanged lua_binding_spawn.obj/lua_spawn_new.obj; second definition ignored",
+    "also_included_in_following_build": "Exact unchanged extrema also included at1e2ff85e3; increment build and both existing checks passed7.76s"
   },
   "cmake_requested_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_scene_integer_set_extrema.cpp)",
   "limits": [
@@ -403,5 +422,24 @@
       },
       "status": "applied"
     }
-  ]
+  ],
+  "independent_review": {
+    "reviewer": "primary /root",
+    "accepted": true,
+    "scope": "Complete Source and full native extrema/increment/core/wrapper assembly independently compared; no mismatch",
+    "finding": "Read-child-first nil11h traversal without initial node shortcut; exact current-node EAX result",
+    "accepted_source_revision": "a98afc15f",
+    "source_hashes": {
+      "src/native_scene_integer_set_extrema.cpp": {
+        "worktree_bytes_sha256": "85966874eb96b8a05b58281d377a8658e4a2b29b8b18df277afcde5b6a53c587",
+        "git_blob_bytes_sha256": "79e8a33eabfe8723bccbad6384af1dca4a8ee0f0cf1fe4313a3cb000d1086cfb",
+        "normalized_lf_sha256": "79e8a33eabfe8723bccbad6384af1dca4a8ee0f0cf1fe4313a3cb000d1086cfb"
+      },
+      "include/bsp/native_scene_integer_set_extrema.hpp": {
+        "worktree_bytes_sha256": "53423ee639e1b24fcff3d2a44ea8a59ef912feeb27f0d40aff0600cc1f5f13ae",
+        "git_blob_bytes_sha256": "53423ee639e1b24fcff3d2a44ea8a59ef912feeb27f0d40aff0600cc1f5f13ae",
+        "normalized_lf_sha256": "53423ee639e1b24fcff3d2a44ea8a59ef912feeb27f0d40aff0600cc1f5f13ae"
+      }
+    }
+  }
 }

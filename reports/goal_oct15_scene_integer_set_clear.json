@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_integer_set_clear",
+  "source": "src/native_scene_integer_set_clear.cpp",
+  "header": "include/bsp/native_scene_integer_set_clear.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_INTEGER_SET_CLEAR.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00468300",
+      "end_exclusive": "00468335",
+      "coverage": "complete ordinary Source",
+      "cpp_symbol": "destroy_native_scene_integer_set_subtree_00468300",
+      "original_abi": "ECX forwarded tree,one stacked node,unused EDX,RET4,no semantic result",
+      "instruction_count": 23,
+      "native_bytes": 53,
+      "bytes": "53 56 57 8b 7c 24 10 80 7f 11 00 8b d9 8b f7 75 1e 8b 46 08 50 8b cb e8 e4 ff ff ff 8b 36 57 e8 88 e2 78 00 83 c4 04 80 7e 11 00 8b fe 74 e2 5f 5e 5b c2 04 00",
+      "sha256": "7434159a87406ca00f5650b26a7267a2b5b621ba81583461ec8856bca229080d",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00468980",
+      "end_exclusive": "004689ab",
+      "coverage": "complete ordinary Source",
+      "cpp_symbol": "clear_native_scene_integer_set_00468980",
+      "original_abi": "ECX tree,unused EDX,RET,no semantic result",
+      "instruction_count": 16,
+      "native_bytes": 43,
+      "bytes": "56 8b f1 8b 46 04 8b 48 04 51 8b ce e8 6f f9 ff ff 8b 46 04 89 40 04 8b 46 04 c7 46 08 00 00 00 00 89 00 8b 76 04 89 76 08 5e c3",
+      "sha256": "7a1ca484241520aaada780a08f110ca4403840c72ec79e9b53c90c791c160b64",
+      "live_disk_equal": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00468317",
+      "native": "00468300",
+      "function": "00468300"
+    },
+    {
+      "address": "0046831f",
+      "native": "00bf65ac",
+      "function": "00468300"
+    },
+    {
+      "address": "0046898c",
+      "native": "00468300",
+      "function": "00468980"
+    },
+    {
+      "address": "0046b1ba",
+      "native": "00468300",
+      "function": "0046b170"
+    }
+  ],
+  "source_dependency": {
+    "symbol": "singleton_lifetime_free",
+    "native": "00bf65ac",
+    "source": "src/singleton_lifetime.cpp",
+    "modified": false
+  },
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_and_three_existing_checks_passed",
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "Requires reached native14h/nil11 storage and currentCRT allocation domain.",
+    "No new-body native differential,original binary/CRT/heap ABI,application or game claim."
+  ],
+  "verification": {
+    "tested_source_revision": "e973f92de",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "build_log": "local\\goal_oct15_integer_clear_build.log",
+    "log_sha256": "8cc9cee93ef0b205c4488462c36bd0f0dab0f0822c09b5dfd11bcbd930d12b01",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 8.31,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "new_body_differential": false,
+    "scope": "existing regression checks; native math seeds do not exercise the new integer-set bodies",
+    "typed_rows_passed": 4,
+    "typed_rows_failed": 0,
+    "markdown_checked": 4,
+    "markdown_unchecked": 0,
+    "source_project_count": 1,
+    "archive_member": "bsp_core.dir\\Release\\native_scene_integer_set_clear.obj",
+    "archive_sha256": "93fd117640ef0c56e642074a7f03d9e247ad1dc7e3f01f76e09a59234fcc4be8",
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+    "new_tests": 0
+  },
+  "independent_review": {
+    "reviewer": "/root/string_allocate",
+    "scope": "complete listings and Source/header/doc",
+    "result": "passed; no mismatch",
+    "source_sha256": "473fc7986472c4dc60cd34b0f1d57508d55bdfddde53f99c83a3f96c2478c4e1",
+    "header_sha256": "42306ae97002df9ba37f9823f940f1fd6c3e3d4e1729261b30bc2ec265b345ee"
+  },
+  "annotation": {
+    "prior_values_log": "local/ghidra-annotations-20261015T212600Z.json",
+    "names_retained": true,
+    "program_saved": true,
+    "exports_refreshed": true,
+    "comment_readback": true
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "packet": "oct15_native_dword_fill_ranges",
+  "status": "complete_actual_raw_dword_source_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_dword_fill_ranges.cpp",
+  "header": "include/bsp/native_dword_fill_ranges.hpp",
+  "documentation": "docs/OCT15_NATIVE_DWORD_FILL_RANGES.md",
+  "routines": [
+    {
+      "address": "0043f9e0",
+      "cpp_name": "fill_native_dword_range_0043f9e0",
+      "preserved_library_name": "STL_Fill_0043f9e0",
+      "original_abi": "cdecl first,last,value_address; three physical stacked words, plain RET, EAX captured last including empty; incomingECX/EDX unconsumed.",
+      "coverage": "complete_callee_free_actual_raw4B_storage_all_native_paths"
+    },
+    {
+      "address": "00441180",
+      "cpp_name": "fill_native_dword_count_00441180",
+      "preserved_library_name": "STL_FillN_00441180",
+      "original_abi": "stdcall first,unsigned_count,value_address; three physical stacked words, RET0Ch, EAX originalfirst+(count<<2) modulo2^32; incomingECX/EDX unconsumed.",
+      "coverage": "complete_callee_free_actual_raw4B_storage_all_native_paths"
+    }
+  ],
+  "typed_metadata": {
+    "capture": "local/oct15_native_dword_fill_ranges_typed_flow.json",
+    "sha256": "eaa679f3669154a31f7bd5d684c4f728af97559dcc7fca4cd7787af634321b1f",
+    "complete": true,
+    "single_ranges": true,
+    "entry_kind": "instruction",
+    "both_no_return": false,
+    "both_is_thunk": false,
+    "modification_before_after": 389
+  },
+  "disk_live_complete_spans": [
+    {
+      "address": "0043f9e0",
+      "end": "0043f9fd",
+      "bytes": 30,
+      "instruction_starts": 13,
+      "bytes_equal": true,
+      "decode_complete": true,
+      "missing_live_starts": 0,
+      "extra_live_starts": 0,
+      "calls": 0,
+      "external_tail_jumps": 0,
+      "sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0",
+      "terminal": {
+        "address": "0043f9fd",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    },
+    {
+      "address": "00441180",
+      "end": "004411ad",
+      "bytes": 46,
+      "instruction_starts": 21,
+      "bytes_equal": true,
+      "decode_complete": true,
+      "missing_live_starts": 0,
+      "extra_live_starts": 0,
+      "calls": 0,
+      "external_tail_jumps": 0,
+      "sha256": "e6d4b9ce8c62170127c124969eb0a3018f99c8e4d1308e5f259b14bdce15995e",
+      "terminal": {
+        "address": "004411ab",
+        "mnemonic": "ret",
+        "operands": "0xc"
+      }
+    }
+  ],
+  "original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "evidence_capture": "local/oct15_native_dword_fill_ranges_evidence.json; ignored script compares read-only tool captures with installed PE bytes, no execution/newtests",
+  "current_starts": "All34 native starts independently decoded from all76 identical PE/live bytes and matched to complete live listings; instruction-context capture also retains both entries and all4 direct incoming callsites.",
+  "instruction_context": "local/oct15_native_dword_fill_ranges_instruction_context.json",
+  "schedule": {
+    "0043f9e0": [
+      "capture first then last",
+      "if equal return capturedlast without value-address or pointed-storage use",
+      "capture value ADDRESS once",
+      "repeat CURRENT4B load then4B store then cursor+=4 then compare capturedlast",
+      "return capturedlast"
+    ],
+    "00441180": [
+      "capture unsignedcount before originalfirst; retain independently",
+      "count0 skips value-address argument load",
+      "capture value ADDRESS only on nonzero count",
+      "repeat CURRENT4B load then4B store then remaining-=1 then cursor+=4 then unsignedtest",
+      "return originalfirst+(originalcount<<2) using uint32 wrap"
+    ],
+    "alias": "Progressive reads from fixed source address; no source DWORD snapshot, including partial-byte/forward aliases. Private argument/frame aliases excluded.",
+    "accesses": "std::memcpy exactly4B load/store via uint32 addresses; no typed-object or alignment precondition introduced."
+  },
+  "local_eh": "No calls, external tail transfers, FS/EH frame/state/action or local cleanup in either complete body.",
+  "incoming_evidence": {
+    "live_xrefs": "Exactly two direct sites per entry, all in00441860; both listed in host_steps.",
+    "producer": "Complete181instruction00441860 listing inspected: own valueDWORD snapshot at441868/44186A is its private producer word; later LEA passes that word address. Push order value,count,first or value,last,first. Leaf semantics remain progressive rereads.",
+    "cleanup": "4419D7 ADD ESP,0Ch after first cdeclfill;441A0A ADD ESP,18h also removes pending3word backwardcopy arguments. FillN has RET0Ch itself.",
+    "width": "00441860 SAR2/LEA scale4;00492210 SAR2/LEA scale4. Full78instruction upstream listing inspected as producer context only.",
+    "limits": "Larger441860/492210 parents remain uncompleted/unready; allocator/copy/length/free and erase/memmove_s contracts are not supplied by this packet."
+  },
+  "host_steps": [
+    {
+      "address": "0044192c",
+      "native": "00441180",
+      "function": "00441860"
+    },
+    {
+      "address": "004419ba",
+      "native": "00441180",
+      "function": "00441860"
+    },
+    {
+      "address": "004419d2",
+      "native": "0043f9e0",
+      "function": "00441860"
+    },
+    {
+      "address": "00441a05",
+      "native": "0043f9e0",
+      "function": "00441860"
+    },
+    {
+      "address": "0049225c",
+      "native": "00441860",
+      "function": "00492210"
+    }
+  ],
+  "registration": {
+    "baseline": "073ac362c92e81a426e401ac8fe2213458f9d93d",
+    "clean_fast_forward": true,
+    "fifo_queue": "oct15_native_dword_fill_ranges_registration",
+    "jump": false,
+    "change": "One deferred bsp_core Source registration appended. Lease released before Win32 build."
+  },
+  "preservation": "Correct existing STL names/tags retained; previous actual/projected fragments and fixtures untouched. No Ghidra mutation, callback, provider, pool, ownership/allocation model, guards, validation or std::fill snapshot.",
+  "validation": {
+    "win32_release": "passed;new Source compiled",
+    "existing_tests": "3/3 passed",
+    "new_tests": 0,
+    "ghidra_mutations": false,
+    "report_transfers": "5 incoming CALL rows checked;0failed",
+    "documentation_transfers": "5 checked;0failed;0unchecked;0warnings",
+    "log": "local/oct15_native_dword_fill_ranges_build.log",
+    "ctest_seconds": 8.97,
+    "preexisting_link_warning": "LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj; unrelated source unchanged"
+  },
+  "limits": [
+    "New Source interface over admitted reached raw storage, including reachable equality bound for range. No null skip or invalid-storage recovery.",
+    "Original calling-convention words/stable EAX are retained, but by-value Source/private-frame/register-spill/fault/SEH identity is not binaryABI proof.",
+    "Source/build/existing fixtures do not establish new native differential, runtime or gameplay validation.",
+    "No all-cases incoming parent completion claim; Source dependencies are closed/callee-free."
+  ]
+}

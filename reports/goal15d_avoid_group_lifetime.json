@@ -1,0 +1,107 @@
+{
+  "packet": "goal15d_group_lifetime",
+  "status": "registered_win32_build_3_existing_ctests_registered_source_fixture_and_documented_coff_checks_passed_native_abi_qualified",
+  "source": "src/native_avoid_group_lifetime.cpp",
+  "header": "include/bsp/native_avoid_group_lifetime.hpp",
+  "documentation": "docs/GOAL15D_AVOID_GROUP_LIFETIME.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "bsp.py client verifies project/program/language/base before each live query batch; complete listings, metadata and dependency bodies read; no writes"
+  },
+  "routines": [
+    {
+      "address": "0041d0c0", "end": "0041d143", "native_bytes": 132,
+      "coverage": "complete raw-storage direct record/array/zone free loop and final group count store",
+      "original_abi": "ECX group; no stacked arguments; RET; EDX scratch",
+      "source_api": "clear_native_avoid_group_0041d0c0: fastcall(group*)",
+      "source_bytes": 132
+    },
+    {
+      "address": "0041de70", "end": "0041dec6", "native_bytes": 87,
+      "coverage": "complete normal destructor operation and recovered current-field array-free unwind operation via actual current C++ guard; Native EH ABI excluded",
+      "original_abi": "ECX group; no stacked arguments; RET; original FH3 registration/state0/unwind action",
+      "source_api": "destroy_native_avoid_group_0041de70: fastcall(group*), actual relocated Source table plus current C++ EH",
+      "source_main_body_bytes": 95
+    },
+    {
+      "address": "0041e940", "end": "0041e95d", "native_bytes": 30,
+      "coverage": "complete scalar-delete instruction schedule including late flag read, bit0 object free, original-pointer return and RET4",
+      "original_abi": "ECX group, one stacked flags word, RET4, EAX original group",
+      "source_api": "scalar_delete_native_avoid_group_0041e940: fastcall(group*, ignored Source EDX, uint32 flags)",
+      "source_bytes": 30
+    }
+  ],
+  "host_steps": [
+    {"address":"0041d0eb","native":"00bf65ac","containing_function":"0041d0c0","operation":"free current indexed record"},
+    {"address":"0041d10b","native":"00bf6989","containing_function":"0041d0c0","operation":"free captured record array then null its field"},
+    {"address":"0041d11a","native":"00bf65ac","containing_function":"0041d0c0","operation":"free captured zone then null original slot"},
+    {"address":"0041de9b","native":"0041d0c0","containing_function":"0041de70","operation":"clear under active unwind state0"},
+    {"address":"0041dea8","native":"00bf6989","containing_function":"0041de70","operation":"free captured current zone array, then null field, state0 still active"},
+    {"address":"0041e943","native":"0041de70","containing_function":"0041e940","operation":"destruct original group"},
+    {"address":"0041e950","native":"00bf65ac","containing_function":"0041e940","operation":"free original group iff stacked flags low-byte bit0"}
+  ],
+  "incoming_evidence": {
+    "clear": "0041D1CF in0041D150 null-owner branch passes unchanged ECX, no new stack args;0041DE9B owned destructor forwards group",
+    "destructor": "sole direct reference0041E943 from scalar-delete wrapper",
+    "scalar_delete": "only live reference is DATA00CE3858; manager0041F600 indirect vtable[0] dispatch is peer-owned; no direct caller or gameplay inference"
+  },
+  "storage": {
+    "group": "reuse Cc13AvoidZoneNativeGroup:0x14 bytes=20decimal, not0x20; table00,array04,count08,capacity0C,layer10",
+    "zone": "reuse full0x24 AvoidZoneNativeStorage and record list: records00,count04; raw kernel interprets count bits unsigned",
+    "alias_schedule": "clear reloads record array each iteration/count after free; captures record-array pointer before count0; null stores after returned frees; captures zone/cursor across calls; reloads group array/count at each advance; only final normal completion resets group count",
+    "retention": "clear retains slot allocation/capacity/layer/table; destructor frees/nulls slot allocation and changes table only; scalar flag0 retains group capacity/layer and actual Source table"
+  },
+  "dependencies": {
+    "free": "existing genuine singleton_lifetime_free ->std::free; original00BF6989 direct-jumps00BF65AC, complete original body read; no abstract callback or success stub",
+    "heap": "must match actual current Source allocations, e.g.singleton_lifetime_allocate; original private CRT heap/error/synchronization/fault identity not claimed",
+    "allocation": "none in owned destruction chain; no invented allocator or exception constructor",
+    "source_table": "actual const kNativeAvoidGroupLifetimeSourceVtable.slot0 relocation to reconstructed scalar entry; replaces native00CE3858 identity; no additional virtual-slot contract or production initializer",
+    "dispatch": "Source scalar fastcall explicitly ignores EDX so actual manager CALL EDX shape is usable with ECX group and stackedflags1; pointer/RET4 placement retained, callee/frame/provider identity qualified"
+  },
+  "native_eh_recovery": {
+    "registration": "0041DE70..0041DE89 records previous FS0, handler00C5E1DB and saved group;0041DE93 writes state0 before0041DE9B clear; remains0 through0041DEA8 normal free/null",
+    "handler": "00C5E1DB MOV EAX,00D84330;00C5E1E0 JMP00BF6B43",
+    "func_info": {"location":"00d84330","magic":"19930522","max_state":1,"unwind_map":"00d84328","catch_blocks":0,"ip_map_entries":0,"exception_spec_list":0,"eh_flags":1},
+    "map": "00D84328:state0 ->-1, action00C5E1D0",
+    "action": "00C5E1D0 MOV ECX,[EBP-10]; ADD ECX,4;00C5E1D6 JMP00412CD0; helper captures current *field, nonnull free, null after return",
+    "ownership": "metadata/helper addresses consumed as evidence only; no extra function reconstruction or Ghidra mutation claimed"
+  },
+  "source_eh": {
+    "operation": "actual C++ scope guard remains active through concrete clear and normal current-field free/null, dismissed only after success; on unwind rereads current field, frees/nulls after return, leaves partial count/slots/state intact; no catch or replacement exception",
+    "optimizer_requirement": "local volatile pointer initialized only to actual concrete clear prevents MSVC in-TU naked-body nonthrow inference from deleting guard; no injectable provider/global/shadow object",
+    "emission": "optimized95B body has current __CxxFrameHandler3 registration, relocated Source table, fixed actual-clear pointer, state0 before CALL EAX, normal concrete free-null helper; generated unwind funclet reaches active scope guard and same helper",
+    "exception_limits": "successful current cleanup allows original current C++ exception propagation; noexcept cleanup uses current SDK termination policy on unexpected second throw; no Native FH3/frame/cookie/funclet/SEH/exception identity equivalence, no runtime exception injection"
+  },
+  "validation": {
+    "strict_compile": "PASS MSVC Win32 /std:c++17 /EHsc /MD /W4 /WX /fp:strict /O2; local/goal15d_group_lifetime_compile.cmd",
+    "normalized_coff": "PASS clear132B+scalar30B exact except5 verified E8 I386_REL32 operands; expected relocation sites/targets/exact lengths asserted; Source table slot0 and actual emitted EH guard/action chain also checked",
+    "compare_command": "python local/goal15d_compare_group_bytes.py [optional_registered_object_path]",
+    "destructor_bytes": "Source95B vsNative87B intentionally not normalized or claimed byte-equivalent; current Source EH composition reviewed",
+    "flow": "three whole listings no byte gaps; typed flow/no-return read unavailable in bridge; no mutation or repair",
+    "call_checker": "PASS seven direct native call rows,0 failures; markdown14addresses,0 unpaired claims/warnings (2026-10-15)",
+    "source_fixture": "PASS peer ignored Source composition fixture uses /MD and /MANIFEST:EMBED, real current heap, actual Source table/indirect manager call, nonempty direct-free chain plus null slot, slot19 array, deferred body queue/hull cache, capacity/sentinel retention and flags0 identity/field retention; genuine current _heapwalk observes all11 tracked group/zone/record/hull blocks USED before clear/not USED immediately afterward, with body/sentinel/preallocated queue retained; flag0 group USED/old array not USED",
+    "fixture_path": "J:/PROG/battlestations-pacific-decompile-goal15_pool_cleanup/local/output/avoid_manager_clear_probe.cpp",
+    "fixture_command": "peer local/output/run_avoid_manager_clear_probe.cmd; overlays two new Source modules on actual registered bsp_core.lib; registered-only primary rerun pending",
+    "fixture_limits": "bounded Source composition/current-heap observations only, no whole-process leak proof; no exception-path execution, Native differential, ABI or game/runtime proof",
+    "full_registered_build_ctest": "primary owns source registration, full build/CTest, registered COFF/fixture and annotations/exports; pending worker commit"
+  },
+  "history": "Earlier cc13_avoid_group_clear/destroy typed callback APIs and their reconstruction records/proofs remain intact; new concrete full-entry records added under distinct Source names; existing reviewed/compiler-generated/library names retained",
+  "remaining_limits": ["Native FH3/SEH/frame and original CRT/heap identities not transplanted", "Source table only consumed slot0, production object construction/binding not installed", "invalid allocation graphs/counts/alias lifetime retain original preconditions; no repairs", "no Native execution or game/gameplay/drop-in ABI proof"],
+  "primary_integration_validation": {
+  "registered_build": "PASS scripts/build.ps1; all3 existing CTests passed",
+  "build_log": "local/goal15d_integrated_registered_build.log",
+  "batch_report": "reports/goal15d_reconstruction_batch.json",
+  "saved_annotations_and_exports": "PASS; before annotations/prototype retained in local rollback JSON, program saved and exports refreshed",
+  "native_abi_and_gameplay": "not established",
+  "source_fixture": "PASS actual registered archive genuine Source vtable and clear/destruct/delete chain,11 tracked releases, flags0 group retention",
+  "registered_coff": "PASS132 clear+30 scalar bytes excluding5 expected CALL operands; real table relocation/current95B destructor EH/guard/action emitted",
+  "unwind": "static current guard/action verified; not dynamically exercised or proved equivalent to native FH3/SEH/double-exception ABI",
+  "report_rows": 7,
+  "markdown_claims": 0,
+  "worker_stage_status": "complete_concrete_source_group_chain_and_recovered_unwind_operation_strict_compiled_static_checked"
+}
+}
