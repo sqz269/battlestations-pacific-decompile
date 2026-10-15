@@ -27,8 +27,8 @@ comes from register provenance and stack cleanup, not those prototypes.
 1. Capture ECX as ESI and the stacked source as EDI. Compare their addresses.
 2. Store zero to destination length, then destination data, before branching
    on the comparison. Identity therefore abandons the old buffer too.
-3. For distinct headers, capture the source length and call `0041DD40` with
-   preserve `1`. This uses the actual raw pool publication cells, singleton
+3. For distinct headers, capture the source length and resize with preserve
+   `1`. This uses the actual raw pool publication cells, singleton
    manager, allocation, and return bodies through the accepted helper.
 4. Reload the source length for the nonempty guard. If nonzero, read current
    destination length, current source data, then current destination data and
@@ -92,3 +92,22 @@ The machine-readable report records the build, existing checks, annotation
 receipt, and compiled x87 inspection. Source/build evidence does not establish
 drop-in native ABI compatibility, native differential execution, a reachable
 `bsp_game` integration, or game validation. No new test case is added.
+
+The primary integration `scripts/build.ps1` Release run passed at
+`ff5b6fb1a6350c36224f1f53e3bbcbf6c01deb5a`, including `reconstructed_math`,
+`native_math_differential` and `tool_tests` (3/3). The math differential suite
+does not execute these two new routines. The combined source and header were
+verified byte-identical to this worker's draft. The worker's fresh duplicate
+build was canceled after that combined pass; no worker-local build pass is
+claimed. The primary's parallel-only `CL=/MP4` addition does not change the
+scalar instruction sequence under inspection.
+
+The actual combined CMake object was inspected with MSVC `dumpbin /DISASM
+/SYMBOLS`. In the `00444070` C++ wrapper, the raw-header relocation is at relative
+`+0E`; the scalar pointer is loaded afterward, then `+22: D9 00` / `+24: D9 1A`
+perform `FLD [EAX]` / `FSTP [EDX]`. The `004440C0` wrapper has the same raw-header
+relocation at `+10`, forms the source/destination `+8` addresses afterward, and
+executes the same pair at `+2A` / `+2C`. There is no early scalar load, extra
+`FWAIT`, or substituted SSE/DWORD scalar copy in either wrapper. Both return
+the destination in EAX through their new `__cdecl` interfaces. The object
+SHA-256 is `72aa5189cd63b63c2b7a117b9d4282031068d8a128e558368cefb210b7e3f3b5`.
