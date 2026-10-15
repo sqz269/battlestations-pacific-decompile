@@ -28,6 +28,12 @@ the existing x87 vector-length kernel and an explicitly stored reciprocal.
 | Height h11 | `0041BDB4` | `0041BAE0` | x1/z1; the first gradient is already visible in the output |
 | Vector length | `0041BE14` | `00419440` | ECX summed vector; ST0 float length; bare `RET`; existing `camera_vector_length_00419440` with borrowed actual CRT access |
 
+World-to-cell's clamp is comparison-based: ordered `0 > c` selects positive
+zero; otherwise ordered `c > upper` selects `float(dimension-2)`; equality
+and unordered values retain `c`. In particular, `COMISS zero,u` followed by
+`JBE` at `00417FDE` sends equality and unordered values to the upper comparison,
+whose `JBE` also retains unordered input. The same selection applies to z.
+
 The base indices are hardware `CVTTSS2SI` results: z0 in ESI at `0041BD36`,
 x0 in EBX at `0041BD3C`. The first converter result becomes EBP at `0041BD5C`;
 the second is saved at `0041BD7E` for the fourth sample. ESI becomes the output
@@ -61,7 +67,10 @@ Layer and sampling data must remain stable, borrowed CRT pointers must stay
 live, and the typed point/output/layer storage must not overlap.
 
 World-to-cell and cell-height remain required bindings. Their existing game
-host implementations live in the executable target; cell-height also explicitly
+host implementations live in the executable target. The world helper's
+comparison ternaries match the unordered/equality selection, but its double
+arithmetic is qualified relative to the native x87 add/divide schedule; full
+kernel identity is not established here. Cell-height also explicitly
 returns zero on invalid storage where native calls `00BF6713` and then resumes
 its access. That silent substitute is not accepted as an exact binding here.
 The existing native converter and vector-length implementations are reused
