@@ -133,3 +133,22 @@ build, call-check and compiler receipts. No new tests are added. Build/static
 and original-byte comparison evidence are distinct from packet-native
 differential execution, original ABI/CRT/FH3 identity, caller adoption and game
 validation; none of the latter is claimed.
+
+The worker `scripts/build.ps1` Release run at Source draft
+`6723b0946638e7c20fc17eaa188936327770180d` passed all three existing CTests:
+`reconstructed_math`, `native_math_differential`, and `tool_tests` (8.10s).
+The primary's combined run also passed 3/3 (8.95s) before publication at
+`303a0b29256bfe7df267e1648a949a94cd5934ec`. Exact Source/header bytes and
+the two existing provider source files match that primary tree. The math
+differential suite does not execute this new factory entry. `CL=/MP4` is a
+parallel-only build addition.
+
+The actual worker CMake object was inspected with `dumpbin /DISASM /SYMBOLS
+/RELOCATIONS`. Its nine-byte `__cdecl` entry emits only `PUSH EBP; MOV EBP,ESP;
+POP EBP`, then `E9` at relative+4 to the complete typed canonical factory.
+The REL32 operand is at+5. There are no argument-cell reads, value snapshots,
+additional guards, or callbacks in this forwarding entry; the three existing
+reference bindings pass unchanged to the verified current-cell provider.
+Object SHA-256 is `c5c2cc019d5182b3315b5db41bd2ab3036891309385a4770913a16fdd86bba05`.
+This is focused Source compiler evidence, not original native COFF/byte/frame
+identity or packet-native execution.
