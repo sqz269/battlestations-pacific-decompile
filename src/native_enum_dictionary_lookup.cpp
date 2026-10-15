@@ -82,7 +82,8 @@ std::uint32_t native_property_key_bucket_0043b760(const void* actual_key_header,
             std::toupper(read_property_byte(data)));
         hash ^= std::uint32_t(character) + (hash << 5) + (hash >> 2);
         remaining -= step;
-        ++data;
+        data = reinterpret_cast<const char*>(
+            reinterpret_cast<std::uintptr_t>(data) + 1u);
     }
     return hash & 0x3fu;
 }
