@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_scene_class_name_lookup",
-  "status": "whole_raw_Source_independent_review_and_default_build_pending",
+  "status": "whole_raw_Source_independently_reviewed_default_build_pending",
   "source_ready": false,
   "source": "src/native_scene_class_name_lookup.cpp",
   "header": "include/bsp/native_scene_class_name_lookup.hpp",
@@ -154,7 +154,7 @@
   "eh_evidence": {
     "handler": "00c61b38",
     "funcinfo": "00d891ac",
-    "funcinfo_bytes_hex": "2205931901000000a491d800000000000000000000000000000000000000000000",
+    "funcinfo_bytes_hex": "2205931901000000a491d8000000000000000000000000000000000000000000",
     "max_state": 1,
     "unwind_map": "00d891a4",
     "unwind_map_bytes_hex": "ffffffff301bc600",
@@ -176,5 +176,13 @@
     "Original CRT,register/private/FH3/fault/mangling/binary ABI,new-entry differential,application/game proof open"
   ],
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "independent_review": {
+    "reviewer": "string_copy_x87",
+    "result": "passed all94 operations,whole Source/header/docs,actual raw constructor/pool and unarmed EH metadata",
+    "source_hashes": {
+      "src/native_scene_class_name_lookup.cpp": "d43fdfb3f98fab644bf89df4ad405561bbe9699a65f3eca8d349504d4ef7ecfe",
+      "include/bsp/native_scene_class_name_lookup.hpp": "ae8cd105437d431dfd3427053cb0ca3a7a94a1d999b6dc314fd23440a8724a5c"
+    }
+  }
 }
