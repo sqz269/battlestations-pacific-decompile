@@ -1,0 +1,597 @@
+{
+  "packet": "cc12_native_text_draw_readiness",
+  "captured_utc": "2026-10-15T02:20:43.982127+00:00",
+  "source_revision": "b0d57d9f64d31f34f9e5a564534aca360d2b5641",
+  "branch": "agent/cc12_native_text_draw_readiness",
+  "status": "READ_ONLY_SOURCE_AND_SAVED_ORIGINAL_READINESS_NO_NATIVE_TEXT_DRAW",
+  "scope": {
+    "shared_source_mutation": false,
+    "cmake_mutation": false,
+    "ghidra_mutation": false,
+    "build_run": false,
+    "fixture_or_game_launch": false,
+    "new_tests": false,
+    "asset_or_cache_change": false,
+    "compiler_mode_change": false
+  },
+  "ghidra": {
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "verified_project_name": "bsp",
+    "verified_program_path": "/battlestationspacific.exe",
+    "verified_language": "x86:LE:32:default",
+    "verified_image_base": "00400000",
+    "method": "Each bsp.py ghidra bytes command calls client()->Client.verify() against config/target.json. ensure --status also returned up /battlestationspacific.exe. No inline Ghidra script or mutation.",
+    "verification_boundary": "Wrapper checks project name, program path, language and image base; project filesystem path is the configured saved project, not a separately returned live-path assertion.",
+    "fresh_byte_windows": [
+      {
+        "address": "00aa1395",
+        "length": 111,
+        "interpretation": "AA1380 allocates 1F4 bytes through AB79E0; source in ESI from ECX; nonnull ABB2C0 vs null AB9650; plain RET sites AA13CE/AA13F1/AA1403.",
+        "hex": "51 56 8b f1 b9 f4 01 00 00 e8 3d 66 01 00 85 f6 89 44 24 04 74 24 85 c0 c7 44 24 10 00 00 00 00 74 3b 56 8b c8 e8 01 9f 01 00 5e 8b 4c 24 04 64 89 0d 00 00 00 00 83 c4 10 c3 85 c0 c7 44 24 10 01 00 00 00 74 17 8b c8 e8 6e 82 01 00 5e 8b 4c 24 04 64 89 0d 00 00 00 00 83 c4 10 c3 8b 4c 24 08 33 c0 5e 64 89 0d 00 00 00 00 83 c4 10 c3"
+      },
+      {
+        "address": "00ab98d0",
+        "length": 32,
+        "interpretation": "AB98D8 E8 53 EC FF FF calls AB8530; AB98EE C3 is constructor RET.",
+        "hex": "8b ce 89 86 58 01 00 00 e8 53 ec ff ff 8b 4c 24 18 8b c6 5e 64 89 0d 00 00 00 00 83 c4 20 c3 cc"
+      },
+      {
+        "address": "00ab8643",
+        "length": 32,
+        "interpretation": "AB8643 constructs guidefault name; AB8654 E8 C7 CC A7 FF calls 00535320.",
+        "hex": "e8 28 62 96 ff 8d 4c 24 18 c7 44 24 28 04 00 00 00 e8 c7 cc a7 ff 8b e8 8b 44 24 1c 85 c0 c7 44"
+      },
+      {
+        "address": "00535330",
+        "length": 32,
+        "interpretation": "535340 MOV ECX,EAX; 535342 MOV EAX,[EDX+48]; 535345 FF D0 calls current renderer48.",
+        "hex": "25 00 00 00 00 51 a1 94 d3 f8 00 8b 10 56 57 51 8b c8 8b 42 48 ff d0 b9 10 01 00 00 8b f0 e8 2d"
+      },
+      {
+        "address": "00d5f0e0",
+        "length": 44,
+        "interpretation": "D5F0A8 slots38/40/48/5C/60 are B317E0/B2F710/B318B0/B287C0/B288B0, numeric Original tokens.",
+        "hex": "e0 17 b3 00 10 29 b3 00 10 f7 b2 00 c0 f4 b2 00 b0 18 b3 00 30 fe b1 00 40 fe b1 00 70 85 b2 00 50 fe b1 00 c0 87 b2 00 b0 88 b2 00"
+      },
+      {
+        "address": "00ab8e60",
+        "length": 13,
+        "interpretation": "AB8E6C C3 is AB8CE0 final plain RET.",
+        "hex": "c0 5e 64 89 0d 00 00 00 00 83 c4 1c c3"
+      }
+    ]
+  },
+  "first_binding": {
+    "application": "No production construction/caller of GameNativeTextApplication or binding of its factory to native font producer was found. Current frontend builds GameTextHost sprite quads.",
+    "internal_demonstrated_seam": "Default AB9650 -> AB8530 constructor shadow guidefault material -> legacy 535320 raw callable renderer48. AB8CE0 GuiFont acquisition is a later seam.",
+    "existing_reusable_bodies": [
+      "create_native_material_from_effect_cache_00535320",
+      "NativeMaterialFactoryAcquired",
+      "GuiNativeGeometryOwners::register_native_material_creator",
+      "GameNativeGuiEffectApplication::acquire_effect_00b318b0"
+    ],
+    "contract": "Retained SAME effect application operation, active SAME Lua binding, captured current renderer, stable actual name header, persistent per-call factory/cache frame, same canonical registration and actual owners; no replay, no cleanup rollback, graph retained through shared drain.",
+    "not_sufficient": [
+      "Bare private effect cache context accessor",
+      "Calling Original numeric vtable entries",
+      "Loading only GuiFont variants while omitting constructor guidefault",
+      "Historical frontend screenshot",
+      "Compilation/source registration"
+    ],
+    "qualification": "First proven effect-provider gap inside the composed default path, not proof that preceding application GUI/model/pool bindings are supplied.",
+    "consumed_name_contract": "Keep actual name-header/frame storage stable and record native cleanup liveness; do not restore a consumed header, bypass AB8530 cleanup, or replay failed input."
+  },
+  "inventory": [
+    {
+      "stage": "factory_and_identity",
+      "original": [
+        "00aa1380",
+        "00ab79e0",
+        "00ab9650",
+        "00ab8530"
+      ],
+      "source": [
+        "src/gui_text_factory.cpp",
+        "src/gui_text_runtime_factory.cpp",
+        "src/gui_text_lifetime.cpp",
+        "src/native_gui_text_identity.cpp"
+      ],
+      "status": "Concrete supported typed owner/raw prefix transport; not whole raw Text ABI"
+    },
+    {
+      "stage": "native_fonts",
+      "original": [
+        "00ad55c0",
+        "00ad4c30",
+        "00ad53a0",
+        "00ab8c30"
+      ],
+      "source": [
+        "src/game_native_font_application.cpp",
+        "src/native_font_resources.cpp",
+        "src/gui_text_resource_names.cpp"
+      ],
+      "status": "Genuine normal initial image/DAT production; stable descriptor + two owning image references; keep across Text draw"
+    },
+    {
+      "stage": "declaration_streams",
+      "original": [
+        "00ab8400",
+        "00b317e0",
+        "00b287c0",
+        "00b288b0"
+      ],
+      "source": [
+        "src/gui_text_buffers.cpp",
+        "src/gui_text_native_renderer.cpp"
+      ],
+      "status": "Concrete same-domain numeric dispatch; no application Text buffer invocation proof"
+    },
+    {
+      "stage": "layout_and_quad",
+      "original": [
+        "00ab9fd0",
+        "00aba270",
+        "00ab98f0",
+        "00b865a0",
+        "00b48ce0",
+        "00b2f710"
+      ],
+      "source": [
+        "src/gui_text_single_line.cpp",
+        "src/gui_text_wrapped.cpp",
+        "src/gui_text_geometry.cpp",
+        "src/gui_text_native_layout.cpp"
+      ],
+      "status": "Mapped actual storage/real retained layout providers exist; optional child must complete or remain pending"
+    },
+    {
+      "stage": "shader_material",
+      "original": [
+        "00ab8ce0",
+        "00b19210",
+        "00b189f0"
+      ],
+      "source": [
+        "src/gui_text_material.cpp",
+        "src/gui_text_content.cpp"
+      ],
+      "status": "Selection/effect/texture/parameter bodies exist; AB8CE0 still calls legacy renderer48"
+    },
+    {
+      "stage": "draw",
+      "original": [
+        "00b1d950",
+        "00b55550",
+        "00b45360",
+        "00b454d0",
+        "00b44750",
+        "00b43410",
+        "00b24010"
+      ],
+      "source": [
+        "src/native_render_queue_execution.cpp",
+        "src/native_render_command_execution.cpp",
+        "src/native_material_entry_dispatch.cpp",
+        "src/native_material_pass_execution.cpp",
+        "src/native_renderer_indexed_draw.cpp"
+      ],
+      "status": "Concrete providers registered; no application composition or Native Text draw established"
+    }
+  ],
+  "application_call_inventory": {
+    "method": "Bounded rg searches over src/game_*.cpp and global src for GameNativeTextApplication, bind_text_factory, NativeRenderCommandExecutionContext, NativeMaterialPassExecutionContext and execute_native_render_command_00b1d950.",
+    "text_definitions": "src/game_hosts_text.cpp:476-691",
+    "text_target_registration": "cmake/startup.cmake:1857",
+    "gui_text_core_registration": "cmake/startup.cmake:670-695",
+    "native_font_target_registration": "cmake/startup.cmake:1862-1863; core:937",
+    "render_command_registration": "cmake/startup.cmake:1236",
+    "pass_registration": "cmake/startup.cmake:1043,1047",
+    "found_application_context_constructors": false,
+    "absence_scope": "Source text search at pinned revision; not a whole-program call graph proof"
+  },
+  "historical_runtime": {
+    "receipt": "reports/cc12_native_gui_font_effect_startup_integration_14.json",
+    "source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
+    "not_rerun": true,
+    "fonts": 6,
+    "glyphs": 1060,
+    "actual_images": 3,
+    "retired_font_image_slots": 12,
+    "presents": 119,
+    "native_text_draw_proven": false,
+    "font_retirement_precedes_frame_loop": true,
+    "unimplemented_host_methods": 43,
+    "device_availability": "Unassumed. Integrator reported later CreateDevice HRESULT 0x88760868 before texture reload; this packet did not reproduce or investigate it."
+  },
+  "next_proof": {
+    "status": "PROPOSED_NOT_IMPLEMENTED_OR_LAUNCHED",
+    "minimal_content": "One canonical Text with installed Arial16, single-line properties and UTF16 A; natural GuiFont selection, no glyph or shader substitute.",
+    "prerequisites": [
+      "SAME renderer/VFS/strings/Lua/actual-owner/singleton domain",
+      "Persistent native fonts exported and same empty Text factory bound before construction",
+      "Owner/invocation bridge for guidefault material plus AB8CE0 effect acquisition",
+      "Common preload order and one-shot shader-cache closure coordinated with world stream",
+      "Actual camera/target/system/pass/constant frames supplied through existing draw providers"
+    ],
+    "observations": [
+      "4 actual vertices and 6 indices / 2 triangles",
+      "Completed real maps/unlocks and actual declaration/layout",
+      "Canonical font GFX/alpha identity and selected genuine effect/pass",
+      "Nonzero B24010 arguments and reached real DrawIndexedPrimitive, not only a provider return/Present",
+      "Output attributable to Native Text, without the frontend bridge contributing to the proof observation",
+      "Text and material retirement; empty same factory before retire_fonts; original shared drain; after_native_renderer_drain"
+    ],
+    "failure": "Preserve whole failed graph and frames; no replay, forced completion, cache recreation, compiler-mode switch or second drain."
+  },
+  "limits": [
+    "No Original register/class/private-stack or native strings/container allocation ABI claim",
+    "No FH3/SEH equivalence",
+    "No Native Text visual output or game execution in this packet",
+    "No full-scene B1645B resolution; world stream owns that readiness",
+    "No full GUI parity, faithful whole startup or gameplay claim",
+    "Source/hash/registration evidence is separate from runtime evidence"
+  ],
+  "source_files_unchanged_from_revision": true,
+  "source_pins": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256_worktree_bytes": "eb3c7f83231a2a8184041a981bcd912733b5f12801d0bba2345d1ad0e69c3d79",
+      "bytes": 20832,
+      "git_blob": "2718cee01c292f0f641606cd965c3d6a3ec638b3"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256_worktree_bytes": "fd172f4f19225d9edaafa3b31908dc73f0ab5df250bc66d0d9e589219d2aced1",
+      "bytes": 227824,
+      "git_blob": "a705fc5b510f33d40c206c60ce10aa7a6d1f5143"
+    },
+    {
+      "path": "config/target.json",
+      "sha256_worktree_bytes": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455,
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    },
+    {
+      "path": "tools/bsp.py",
+      "sha256_worktree_bytes": "133e2cf3f24f0402f6ed7d0e1dd5148c678c7ca10722633d1ec6cdc9b693a9ff",
+      "bytes": 84752,
+      "git_blob": "87bf468735a7cb65b72b8daa4130ebf100f5d4cc"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "sha256_worktree_bytes": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "bytes": 14518,
+      "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "sha256_worktree_bytes": "b239835d659f52c1a0cf5748385fa815cdb79b555acd047950bf2ace9b1f18a1",
+      "bytes": 131365,
+      "git_blob": "73036c1a42df1dfaa03fbb02c5217d1af58db07a"
+    },
+    {
+      "path": "src/game_hosts_frontend.cpp",
+      "sha256_worktree_bytes": "87b88b816c25e0638f38197413a36d4da1b0fd20763d17577d282c46e3374b70",
+      "bytes": 57002,
+      "git_blob": "5ca2d5dcce28203e7ad2f0800e668ac1b9dfa13b"
+    },
+    {
+      "path": "src/game_hosts_text.cpp",
+      "sha256_worktree_bytes": "7ab3c93d0e2f33f3d0f8edadd4239d3e00920d81251e3ada0c577ead1fb19c76",
+      "bytes": 31496,
+      "git_blob": "707fe651cc79b1b3ccbb93097d2faf795d4e927e"
+    },
+    {
+      "path": "include/bsp/game_native_text_application.hpp",
+      "sha256_worktree_bytes": "4f5c6343b5d0ebb091695a2b26ed3d00b59b62d957f0363339cece51b881a8c7",
+      "bytes": 5500,
+      "git_blob": "d8f081412cd5da5a390542f8bf903d20fd1bb96e"
+    },
+    {
+      "path": "src/game_native_font_application.cpp",
+      "sha256_worktree_bytes": "c253e892ea5344edaf4da2ea3f53c07f00a16c32a433c0036b9ef5fcbf14c519",
+      "bytes": 12355,
+      "git_blob": "61dd8c32677cb5eadd3676817cef87d67001d673"
+    },
+    {
+      "path": "include/bsp/game_native_font_application.hpp",
+      "sha256_worktree_bytes": "451468346bde9b7c64b4aaaa2b11e029e2b46e31ded23dc417e8d3c8318c4865",
+      "bytes": 4616,
+      "git_blob": "7bc29d564ddd29ccbb7b05b054bc65ed24ef6a04"
+    },
+    {
+      "path": "src/game_native_font_probe.cpp",
+      "sha256_worktree_bytes": "91e65a963e848ce1a4395011a5cb846ae4ca8237b9bb605f2df288fc367b4bed",
+      "bytes": 14751,
+      "git_blob": "109bc11a2adcd1685c2539077e26abb4ea7f7a6f"
+    },
+    {
+      "path": "src/native_font_resources.cpp",
+      "sha256_worktree_bytes": "8e61d9e701b0cc181749cdac04e45be5d4931da13bce2ceda28e90d3a5a9e26b",
+      "bytes": 6097,
+      "git_blob": "5cf3fc746c8fbf6ae0954ed996131ad4d26f8181"
+    },
+    {
+      "path": "include/bsp/native_font_resources.hpp",
+      "sha256_worktree_bytes": "86b054ccf2ae873195e803e1d97d01c31247cf4e0e174c12bcfcaf8b150e7e48",
+      "bytes": 4298,
+      "git_blob": "5fd7d4e25176f5ef8910a417e5b6ee380ead66aa"
+    },
+    {
+      "path": "src/game_native_gui_effect_application.cpp",
+      "sha256_worktree_bytes": "a6bf1114236353d69a99461e848cadeb40e9c46f3a80699d807b0621c42dad3d",
+      "bytes": 15134,
+      "git_blob": "23e891b7a529a360823d8664f32f52937da96eb8"
+    },
+    {
+      "path": "include/bsp/game_native_gui_effect_application.hpp",
+      "sha256_worktree_bytes": "8c70f812a075b46904dc3ff3a2bd9c4702eb4697ff4b3c16f105ae1a45ba36bd",
+      "bytes": 4833,
+      "git_blob": "8c25ebff039665fd5aa2339ccd1e965cc604f09b"
+    },
+    {
+      "path": "src/gui_text_runtime_factory.cpp",
+      "sha256_worktree_bytes": "421ae70122d77605639d007e5fd05f0dbaa8e32b4322e121938ce9a0350ab48e",
+      "bytes": 43835,
+      "git_blob": "4534d41576c5b91ea62c7b0f6f857d44fc66ad07"
+    },
+    {
+      "path": "include/bsp/gui_text_runtime_factory.hpp",
+      "sha256_worktree_bytes": "38d4dc64d03c5743c443c6d5adcc195e8936a203f4310c7f14ef406286428a93",
+      "bytes": 13628,
+      "git_blob": "4720e0d9fbba77ffb666f771836183386310edde"
+    },
+    {
+      "path": "src/gui_text_factory.cpp",
+      "sha256_worktree_bytes": "bde7d1a4130a2ba7d71381143daa58c26d050200638bd7f4f8a60b35579b03c8",
+      "bytes": 10917,
+      "git_blob": "4f361c10e8680f3984db49948a726819ef52c488"
+    },
+    {
+      "path": "src/gui_text_lifetime.cpp",
+      "sha256_worktree_bytes": "f85233209473db33be801eca99713889ce7eb932ab37d0c0222d9b23173bc1be",
+      "bytes": 12425,
+      "git_blob": "bd016ba32ab69e36c8b0128c2606db54be900984"
+    },
+    {
+      "path": "src/gui_text_sections.cpp",
+      "sha256_worktree_bytes": "b4043650d3caaa2d2811a40343c3fe600ba65b5db99872349b4b06cbafde378b",
+      "bytes": 11199,
+      "git_blob": "caa2afec2e4576e3e1f6368099a3d26dcb492a0d"
+    },
+    {
+      "path": "src/gui_native_geometry.cpp",
+      "sha256_worktree_bytes": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf",
+      "bytes": 30316,
+      "git_blob": "b60d0c7fd032e7f146980d91c6fb578690517b43"
+    },
+    {
+      "path": "include/bsp/gui_native_geometry.hpp",
+      "sha256_worktree_bytes": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf",
+      "bytes": 10778,
+      "git_blob": "6d2c181bb30aeb29dc21f3fb70e797bfc54da139"
+    },
+    {
+      "path": "src/native_material_factory.cpp",
+      "sha256_worktree_bytes": "6ef1b9855e65cec8e69a1d51001733adef2073d8ed08650fff0115307ec71bcd",
+      "bytes": 4716,
+      "git_blob": "42910336c8f1516b477c75a1fe7ca96b47bae1b0"
+    },
+    {
+      "path": "include/bsp/native_material_factory.hpp",
+      "sha256_worktree_bytes": "2cf4933dc2d616674b501ff1786c95c47f3251cf7dd4deda649ca95bba0a3563",
+      "bytes": 4221,
+      "git_blob": "d20a4260470b56a53b44517ebb986976acea4800"
+    },
+    {
+      "path": "src/gui_text_resource_names.cpp",
+      "sha256_worktree_bytes": "2479c9d8bbe99ffd5c69946c055767343daa59f6fb8889a8fb8a9bccd315fdac",
+      "bytes": 4110,
+      "git_blob": "2a855052567235b38fb914b325051b3d1c65394c"
+    },
+    {
+      "path": "src/gui_text_material.cpp",
+      "sha256_worktree_bytes": "9211f27a5191f717cedec20c1a11e139ae6811c5d066cedbb7c42f5a6e02e758",
+      "bytes": 6622,
+      "git_blob": "4615579c359ae0c2ce1cb5851e9c3cbcd42b120b"
+    },
+    {
+      "path": "src/gui_text_buffers.cpp",
+      "sha256_worktree_bytes": "a729a73760e188888f45d6deb24f1bd0f7effba466f7c6394d53c2bedea38edd",
+      "bytes": 3691,
+      "git_blob": "94e485723f1303a6e15833b9e142d7982b7fe383"
+    },
+    {
+      "path": "include/bsp/gui_text_native_renderer.hpp",
+      "sha256_worktree_bytes": "9ee3aeaa194ebf677efd3e96817b057d7093bf08bed72702fd44f45edee4a572",
+      "bytes": 2743,
+      "git_blob": "45aff1d95bc11528ebff9dba43c5b8b402747f61"
+    },
+    {
+      "path": "src/gui_text_native_renderer.cpp",
+      "sha256_worktree_bytes": "9f3753d2cc0232eea8dd990cc5c0e4a5f958145dbd8de35ba64860ab370c74e5",
+      "bytes": 5735,
+      "git_blob": "02a68b42f6d9f7cc81e9d66c90afe3794cedbe45"
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "sha256_worktree_bytes": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d",
+      "bytes": 8285,
+      "git_blob": "2df50c70e9af956403bba76a2c43281d1f63c0ef"
+    },
+    {
+      "path": "include/bsp/gui_text_native_layout.hpp",
+      "sha256_worktree_bytes": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3",
+      "bytes": 3064,
+      "git_blob": "a1662c4b968404f5e717169af7df9112161ba1ac"
+    },
+    {
+      "path": "src/gui_text_content.cpp",
+      "sha256_worktree_bytes": "ab6f17646b651c31ef3f1a6986617d8af116c7599e490160686427b19eb7196f",
+      "bytes": 22556,
+      "git_blob": "8170996b00c3fb179ea81a1cb92301a86ebd761d"
+    },
+    {
+      "path": "src/gui_text_single_line.cpp",
+      "sha256_worktree_bytes": "09fe14c9650c2bbdca921b7ae9c0ead47c4b24e4fd10dc5205bdff1319f9cc45",
+      "bytes": 7564,
+      "git_blob": "e11d62f3f99a712b126f4f57598ce1efdf52a952"
+    },
+    {
+      "path": "src/gui_text_wrapped.cpp",
+      "sha256_worktree_bytes": "eec753ea08c266c1eb9d60116801cfff135f18e9abd7f72dc8fa771f995b9945",
+      "bytes": 16488,
+      "git_blob": "413406795d0ffd40366f9845a2859bb7dde36454"
+    },
+    {
+      "path": "src/gui_text_geometry.cpp",
+      "sha256_worktree_bytes": "dd01f286b70447b34bc892557d1c450b34392b217bd1aaa68cdf790358aa2f4d",
+      "bytes": 3649,
+      "git_blob": "6b6b9dee7372aeceea022620c3eb20e9301a5f29"
+    },
+    {
+      "path": "include/bsp/gui_text_geometry.hpp",
+      "sha256_worktree_bytes": "7d4b3486714d3a45535f4bdf4d9917f38911ca9e48dd587e9e0c0b796493c474",
+      "bytes": 2233,
+      "git_blob": "f720fafb0fd560e5bbac7e8a9b4341492b1478e9"
+    },
+    {
+      "path": "include/bsp/native_gui_text_identity.hpp",
+      "sha256_worktree_bytes": "6de31247104e9d98b5b369846bd8c743058c14aeae8ce0520ce15fd3926335a6",
+      "bytes": 4245,
+      "git_blob": "002c6855b1de966a5a690fca0914971c4683a227"
+    },
+    {
+      "path": "src/native_gui_text_identity.cpp",
+      "sha256_worktree_bytes": "662d51258be8445f7adfce99e3796e9c2c10ade8d442e1c1cdb61ebd406b8928",
+      "bytes": 4761,
+      "git_blob": "131a978c9ca1e87ec3d94382fff07c5d0676144a"
+    },
+    {
+      "path": "include/bsp/gui_material_binding.hpp",
+      "sha256_worktree_bytes": "9d6a380b2ea93fdf8910fa73733229c2a3bac0528f669bf8e655fc3e8f0cdafd",
+      "bytes": 4787,
+      "git_blob": "11dac330582d021b1fc73fc5b530b74501ab3549"
+    },
+    {
+      "path": "src/native_render_queue_execution.cpp",
+      "sha256_worktree_bytes": "a87eacd86fc8da6eb7096ee688afaa66075e3e6ccc116830a6ee13b17caacb93",
+      "bytes": 5359,
+      "git_blob": "d7077269decf0f0c86524b94c9ef4935ea947d99"
+    },
+    {
+      "path": "src/native_render_command_execution.cpp",
+      "sha256_worktree_bytes": "305df8fec4e92d3d4ba38a759ac7b5d5c5cf43e165282a9b9b735e172397b6ca",
+      "bytes": 8734,
+      "git_blob": "55b1174c0e4176528b4aaf83f099ceff772ac476"
+    },
+    {
+      "path": "include/bsp/native_render_command_execution.hpp",
+      "sha256_worktree_bytes": "dddbcbcebced4048a9970290bc4cfc2756fe72fea9fadad90a76ddd488e77269",
+      "bytes": 2902,
+      "git_blob": "e25788ce44cdda9c0daf38ebefe064de499afec3"
+    },
+    {
+      "path": "src/native_material_entry_dispatch.cpp",
+      "sha256_worktree_bytes": "de585d7cf4c11a14f3e46f52571909d05311f0fe967191da29d1386821103329",
+      "bytes": 8586,
+      "git_blob": "9a7994db622445be96800f500b98b391111911c6"
+    },
+    {
+      "path": "include/bsp/native_material_entry_dispatch.hpp",
+      "sha256_worktree_bytes": "64807b0698c33ce5dcf5d78c18ba634e2f406ececcda168631b897953dbedb9b",
+      "bytes": 3308,
+      "git_blob": "5d9eb6e292517f922127450bb3ca5cdcecccb290"
+    },
+    {
+      "path": "src/native_material_pass_execution.cpp",
+      "sha256_worktree_bytes": "e687d5e19aaa8c226abf28f5467a037e316d29735d4a0df546e41964a3c0733d",
+      "bytes": 21471,
+      "git_blob": "ab91ac1b227b9a61af73d564b8583a5ff576b270"
+    },
+    {
+      "path": "include/bsp/native_material_pass_execution.hpp",
+      "sha256_worktree_bytes": "13d8637d8c9ee560e9ec5894c973dbb619a01c46da81aba3c513ece43a0bda88",
+      "bytes": 5739,
+      "git_blob": "ecccb62a280b14de31a756b63d81f08e8434aa67"
+    },
+    {
+      "path": "include/bsp/native_renderer_indexed_draw.hpp",
+      "sha256_worktree_bytes": "206a76f48354966bef4f27f8e2b64533b8e55a983ea87ccb7b7ece6a1ec68dd7",
+      "bytes": 1911,
+      "git_blob": "fcf8abda5c2fdaf86b69992640705d8f31416eca"
+    },
+    {
+      "path": "src/native_renderer_indexed_draw.cpp",
+      "sha256_worktree_bytes": "d4cf5ddebb4ddb41ac5c58fe86e68985ca10536fc2995835895f387a33a7e4ce",
+      "bytes": 4959,
+      "git_blob": "84e324a86386f4df37c69dbef6bc526dd1fec019"
+    },
+    {
+      "path": "include/bsp/native_renderer_draw_primitive.hpp",
+      "sha256_worktree_bytes": "dcf8371a149880129b01144f941267fceea04f8a6a793f91912853d33e4d57ea",
+      "bytes": 1258,
+      "git_blob": "9065963fa49f8dd05d1894599484d716ce0738a1"
+    },
+    {
+      "path": "src/native_renderer_draw_primitive.cpp",
+      "sha256_worktree_bytes": "ebf22e08702e312df99a3ce193c58c79bf7c280779592e4a41cb523c44defe09",
+      "bytes": 3090,
+      "git_blob": "599cf6a02fa5407cff3275b8b9e6010e512d3fa3"
+    },
+    {
+      "path": "include/bsp/native_renderer_material_state_binding.hpp",
+      "sha256_worktree_bytes": "68bb8fbe9fd8a6b51fa75ed3f320cfecb34db64309307b5e96025f3b186a91f2",
+      "bytes": 2965,
+      "git_blob": "e94c279a2268e1b62abb2ab3a20ed83839d6d708"
+    },
+    {
+      "path": "reports/cc12_native_gui_font_effect_startup_integration_14.json",
+      "sha256_worktree_bytes": "0bcd13acb8d02aac31cfb36e7261f0e6692bd4c1897f123144c03dbec70d9081",
+      "bytes": 8554,
+      "git_blob": "9d616e7a0ba7b8f963dbd63e15966f8699bef29e"
+    },
+    {
+      "path": "docs/GUI_TEXT_RUNTIME_FACTORY.md",
+      "sha256_worktree_bytes": "ea8d01931491448ce5036c4bb844bef898d94f884ebe93995d0e235b795c0996",
+      "bytes": 12504,
+      "git_blob": "eba798c5806e9c9f9424c65f4316ea425525dd2b"
+    },
+    {
+      "path": "docs/GUI_TEXT_NATIVE_RENDERER.md",
+      "sha256_worktree_bytes": "73520276e0dc30912b36700d6536dc19fbc007f0cf0c8a750eaf3f4c2e1bc274",
+      "bytes": 5749,
+      "git_blob": "f9ad343dc41e38ca1e9dfb263fb8ec047a4d5e08"
+    },
+    {
+      "path": "docs/FONT_RESOURCE_OWNERSHIP.md",
+      "sha256_worktree_bytes": "0136c9f8c7d68c14fddcc6a96352242b25f948d82d1a5b838006df21ce34ce8c",
+      "bytes": 9796,
+      "git_blob": "f549bba07cc11d785cb36bdc8afa9a8aba149203"
+    },
+    {
+      "path": "docs/GUI_TEXT_MATERIAL.md",
+      "sha256_worktree_bytes": "fe6f5153c64b16326548b537b49cc23019fa4f83c834a7a7341a3797ff6132fc",
+      "bytes": 8439,
+      "git_blob": "f0ea2ac98aa062e5ff14921f6b4f94e9259021cb"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "docs/CC12_NATIVE_TEXT_DRAW_READINESS.md",
+      "bytes": 13752,
+      "sha256": "7569fa5549d84fa80d280cbc307bbb540dd639ae9d949f53ba5bd354b7ee63ee"
+    },
+    {
+      "path": "local/cc12_native_text_draw_readiness/live_bytes.txt",
+      "bytes": 1277,
+      "sha256": "18b741e56deca0bf7e5c43a36f08f7b64790f09dcc6e96026cef37863c116a35"
+    },
+    {
+      "path": "local/cc12_native_text_draw_readiness/source_pins.json",
+      "bytes": 14435,
+      "sha256": "cff61f8d2364e317c6f4d7eb8ea1b6ec4e84ef108959e0bb3daa6c7a8bacd32c"
+    }
+  ]
+}
