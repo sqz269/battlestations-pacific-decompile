@@ -1,0 +1,246 @@
+{
+  "schema": "bsp.cc12.array_assignment.primary_readiness.v1",
+  "Source_ready": true,
+  "Source_implemented": false,
+  "Source_admission_credit": 0,
+  "packet": "cc12_scene_property_array_assignment_008f0460_008f04c0_008f0520_008f0580",
+  "addresses": [
+    "008F0460",
+    "008F04C0",
+    "008F0520",
+    "008F0580"
+  ],
+  "complete_Original_bytes": 359,
+  "complete_Original_instructions": 139,
+  "primary_whole_Original_and_contract_review": true,
+  "contract": "Whole359B139instructions:0460raw86B33,input/bytes/fullflags;04C0and0520each90B35,count/input/fullflags;058093B36,count/input/fullflags,stride12. ECXactualraw56record/unusedEDX,RET0C/EAXrecord. OnlyfullDWORDpointer20/size24(8bytes)/48preserved. Optionaloldfree\u2192zero20; CMP lowflagBYTE BEFOREsize24store thenbranch. Rawbytesloadedafterfree;typedsizecomputedbeforefree using2doublings orLEA3*count+2doublings. NonzeroLOWBYTE(upper24ignored/all256lowpatterns) exactpositiveallocation\u2192loadinputafterallocation\u2192storeallocation20 BEFORErealmemcpy; no-copy storesactualsoleownedmatchingheapincomingpointer withretirementresponsibilitytransfer, notborrowedclasslifetime. Genuinecompleteacceptedrawtype8/9/10/11producer/currentheapoldchild andpositivevalidnonwrappingallocatablesizes/ranges; sameacceptedbag/pool/generation/contractsifcomposed. Copyinputstable/disjointfromrecord/frame/old/newalloc; incomingretainedpayloadunique/disjoint/currentheap. Successfulreturningnonthrow/noalias/reentry/concurrenttrim/teardown/fault;zero-sizeexcluded,noaddedguards/defaults/phase/tag/constructors/context/startup/RAII/rollback. Directcurrentcanonicalfree/allocator+genuineCDECLsizebridge/memcpy existingpatterns, noNativebridgecredit. OriginalfullABI/privateCRT/EH/parser/loader/runtime/gameoutside.",
+  "missing_direct_providers": [],
+  "sealed_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\ScenePropertyArrayAssignmentReadiness01\\root_manifest.json",
+    "bytes": 63133,
+    "sha256": "97b401b248968eb450d7aedd7065d5b2e182720423e80ce67b139b0b4b8adf2c"
+  },
+  "primary_input_verification": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_array_assignment_primary_20261015\\verified_inputs.DATA.json",
+    "bytes": 50323,
+    "sha256": "8cf747293327fed5ddb701bad031711a98c3503c3e1217c1bcdfbcd12b4b3922"
+  },
+  "worker_proposal": {
+    "schema": "bsp.cc12.array_assignment.readiness.proposal.v1",
+    "verdict": "SOURCE_READY_BOUNDED_SUCCESSFUL_CURRENT_RAW_STORAGE",
+    "Source_admission_credit": 0,
+    "Main_commit": "150122cddf7a5b1e826b0939f7dfc52d9ef817bc",
+    "files": [
+      {
+        "path": "include/bsp/native_scene_property_array_assignment.hpp",
+        "purpose": "Declare four separate MSVC Win32 physical ECX/unused EDX/three stack DWORD entries. Full uint32_t flags, positive-size preconditions, exact ownership/lifetime domain, no noexcept."
+      },
+      {
+        "path": "src/native_scene_property_array_assignment.cpp",
+        "purpose": "Four complete naked bodies; independently retain original instruction schedule. Rebind only three CALL operands per body to canonical current free, private genuine CDECL size adapter, real memcpy. #pragma function(memcpy). No constructors, tag/phase/default stores or generic class wrapper."
+      },
+      {
+        "path": "docs/NATIVE_SCENE_PROPERTY_ARRAY_ASSIGNMENT_CC12.md",
+        "purpose": "Whole Original spans/hashes/instruction count/call operands, current dependencies, exact read/store/free/allocation schedule, byte-flag ABI, ownership provenance and all exclusions; separately report later build/COFF/fixture/admission evidence."
+      },
+      {
+        "path": "reports/native_scene_property_array_assignment_cc12.json",
+        "purpose": "Machine-readable four-entry evidence, Source/header/doc pins, canonical provider domain, exact gate outcomes and explicit Source credit=0 until Root admission; never relabel readiness as runtime/ABI evidence."
+      }
+    ],
+    "interfaces": [
+      {
+        "address": "008F0460",
+        "proposed_declaration": "void* __fastcall reassign_native_scene_property_raw_bytes_008f0460(void* actual_record_ecx, void* unused_edx, const void* actual_input, std::uint32_t byte_count, std::uint32_t copy_flag_bits);",
+        "native_form": "__declspec(naked)",
+        "whole": 86,
+        "instructions": 33,
+        "operand_rebindings": [
+          {
+            "instruction": "008F046C",
+            "target": "00BF6989",
+            "opcode_offset": 12,
+            "operand_interval": [
+              13,
+              17
+            ],
+            "original_bytes": "e818653000"
+          },
+          {
+            "instruction": "008F048A",
+            "target": "00BF55BE",
+            "opcode_offset": 42,
+            "operand_interval": [
+              43,
+              47
+            ],
+            "original_bytes": "e82f513000"
+          },
+          {
+            "instruction": "008F0499",
+            "target": "00BF7680",
+            "opcode_offset": 57,
+            "operand_interval": [
+              58,
+              62
+            ],
+            "original_bytes": "e8e2713000"
+          }
+        ],
+        "literal_bytes": 74
+      },
+      {
+        "address": "008F04C0",
+        "proposed_declaration": "void* __fastcall reassign_native_scene_property_four_byte_groups_008f04c0(void* actual_record_ecx, void* unused_edx, std::uint32_t element_count, const void* actual_input, std::uint32_t copy_flag_bits);",
+        "native_form": "__declspec(naked)",
+        "whole": 90,
+        "instructions": 35,
+        "operand_rebindings": [
+          {
+            "instruction": "008F04D4",
+            "target": "00BF6989",
+            "opcode_offset": 20,
+            "operand_interval": [
+              21,
+              25
+            ],
+            "original_bytes": "e8b0643000"
+          },
+          {
+            "instruction": "008F04EE",
+            "target": "00BF55BE",
+            "opcode_offset": 46,
+            "operand_interval": [
+              47,
+              51
+            ],
+            "original_bytes": "e8cb503000"
+          },
+          {
+            "instruction": "008F04FD",
+            "target": "00BF7680",
+            "opcode_offset": 61,
+            "operand_interval": [
+              62,
+              66
+            ],
+            "original_bytes": "e87e713000"
+          }
+        ],
+        "literal_bytes": 78
+      },
+      {
+        "address": "008F0520",
+        "proposed_declaration": "void* __fastcall reassign_native_scene_property_four_byte_groups_008f0520(void* actual_record_ecx, void* unused_edx, std::uint32_t element_count, const void* actual_input, std::uint32_t copy_flag_bits);",
+        "native_form": "__declspec(naked)",
+        "whole": 90,
+        "instructions": 35,
+        "operand_rebindings": [
+          {
+            "instruction": "008F0534",
+            "target": "00BF6989",
+            "opcode_offset": 20,
+            "operand_interval": [
+              21,
+              25
+            ],
+            "original_bytes": "e850643000"
+          },
+          {
+            "instruction": "008F054E",
+            "target": "00BF55BE",
+            "opcode_offset": 46,
+            "operand_interval": [
+              47,
+              51
+            ],
+            "original_bytes": "e86b503000"
+          },
+          {
+            "instruction": "008F055D",
+            "target": "00BF7680",
+            "opcode_offset": 61,
+            "operand_interval": [
+              62,
+              66
+            ],
+            "original_bytes": "e81e713000"
+          }
+        ],
+        "literal_bytes": 78
+      },
+      {
+        "address": "008F0580",
+        "proposed_declaration": "void* __fastcall reassign_native_scene_property_twelve_byte_groups_008f0580(void* actual_record_ecx, void* unused_edx, std::uint32_t element_count, const void* actual_input, std::uint32_t copy_flag_bits);",
+        "native_form": "__declspec(naked)",
+        "whole": 93,
+        "instructions": 36,
+        "operand_rebindings": [
+          {
+            "instruction": "008F0597",
+            "target": "00BF6989",
+            "opcode_offset": 23,
+            "operand_interval": [
+              24,
+              28
+            ],
+            "original_bytes": "e8ed633000"
+          },
+          {
+            "instruction": "008F05B1",
+            "target": "00BF55BE",
+            "opcode_offset": 49,
+            "operand_interval": [
+              50,
+              54
+            ],
+            "original_bytes": "e808503000"
+          },
+          {
+            "instruction": "008F05C0",
+            "target": "00BF7680",
+            "opcode_offset": 64,
+            "operand_interval": [
+              65,
+              69
+            ],
+            "original_bytes": "e8bb703000"
+          }
+        ],
+        "literal_bytes": 81
+      }
+    ],
+    "body_generated": false,
+    "Root_authorization_registration_and_admission_separate": true,
+    "private_size_adapter": {
+      "ABI": "__cdecl void*(std::size_t actual_bytes)",
+      "behavior": "singleton_lifetime_allocate({SingletonAllocationKind::object,actual_bytes,actual_bytes})",
+      "native_body_credit": 0
+    },
+    "gates_after_authorized_Source": "Root independent CPP/HPP/contract review; exact MSVC Win32 build and existing relevant checks; independently decode each production COFF whole body and require all non-CALL operand bytes/branches/RET0C unchanged and exact current-provider relocations. Whole helper/provider fixture and saved analysis publication remain separate Root steps. No new tests are requested by this proposal.",
+    "missing_direct_providers": [],
+    "unexpanded_outer": [
+      "Native008F5A00 parser call at008F6684 into008F0580; existing parse_scene_property_block_008f5a00 is a semantic SceneLexer/host-tree API, not native bag/parser/lifetime completion",
+      "Outer scene loader and selected populated Scene/World graph are outside leaf readiness"
+    ],
+    "no_new_implementation_build_tests_probes_or_target_execution": true
+  },
+  "source_proposal_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\ScenePropertyArrayAssignmentReadiness01\\four_file_Source_proposal.json",
+    "bytes": 7316,
+    "sha256": "8908054f994a424b0131f1b2ce4a7cbb59350c6c02d88d0c0f920ae0a07f694c"
+  },
+  "full_contract_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\ScenePropertyArrayAssignmentReadiness01\\readiness_contract.md",
+    "bytes": 8903,
+    "sha256": "27e9cdb25501a00ae1955044b2206dd36505d939b13a8d6028ff3b87a10a8ca1"
+  },
+  "worker_verdict_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\ScenePropertyArrayAssignmentReadiness01\\readiness_verdict.json",
+    "bytes": 4310,
+    "sha256": "3a619f2f06d0a89ea310aee2a02bd904c2478938b0b95759ecb3473dcca1fb20"
+  },
+  "Original_ABI_compatible": false,
+  "Original_EH_or_private_CRT_compatible": false,
+  "game_validated": false
+}
