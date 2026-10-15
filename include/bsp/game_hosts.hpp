@@ -701,6 +701,8 @@ private:
     void exit_if_particle_manager_failed() noexcept;
     void exit_if_native_lua_interrupted() noexcept;
     void exit_if_native_renderer_incomplete() noexcept;
+    void exit_if_native_fonts_interrupted() noexcept;
+    void retire_native_fonts_before_drain() noexcept;
     void exit_if_native_shadow_incomplete() noexcept;
     void exit_if_native_gui_probe_incomplete() noexcept;
     void close_native_gui_probe_after_drain() noexcept;

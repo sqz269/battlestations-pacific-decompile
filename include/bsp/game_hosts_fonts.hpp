@@ -3,7 +3,6 @@
 #include <cstdint>
 #include <memory>
 #include <string>
-struct IDirect3DDevice9;
 namespace bsp {
 class FontRegistryStartup;
 class FingerprintPayload;
@@ -11,15 +10,18 @@ namespace game {
 class GameHostLog;
 class GameVfsHost;
 class GameScriptHost;
+class GameNativeRendererApplication;
 
 // Application ownership for the font/payload portion of0073bae0. Uses the
-// existing mounted VFS, Lua environment and renderer device. Resources close
-// before their D3DX imports, device, script services and VFS. GUI scene/widget
-// ownership remains a separate required startup dependency.
+// existing mounted VFS, Lua environment and canonical native renderer/cache.
+// Registry rows borrow the sole native font data/image owners. Retire all Text
+// and sprite borrowers, then explicitly retire fonts before device release or
+// shared native drain. Keep this host/registry metadata through that drain.
+// GUI scene/widget ownership remains a separate startup dependency.
 class GameFontHost {
 public:
     GameFontHost(GameHostLog&, GameVfsHost&, GameScriptHost&,
-        IDirect3DDevice9&, std::uint32_t renderer_mip_reduction);
+        GameNativeRendererApplication&);
     ~GameFontHost();
     GameFontHost(const GameFontHost&) = delete;
     GameFontHost& operator=(const GameFontHost&) = delete;
@@ -32,8 +34,14 @@ public:
         const std::string& language_font_path);
     //0073bc0d..bc17, the forced payload preload whose data pointer is discarded.
     void preload_fingerprint_payload_00be9760();
+    // One successful native retirement; repeated host closure is metadata-only.
+    // Never retries a failed load/retirement or retires surviving borrowers.
+    void retire_native_fonts();
+    bool native_operation_interrupted() const noexcept;
     FontRegistryStartup& registry() noexcept;
     const FingerprintPayload& fingerprint() const noexcept;
+    // Successful DAT reads (one per completed native font) plus fingerprint
+    // payload reads. Image cache/provider opens belong to the native renderer.
     std::size_t resource_opens() const noexcept;
 private:
     struct Impl;
