@@ -1,0 +1,173 @@
+{
+  "schema": "native_property_library_lookup_cc12_v1",
+  "status": "whole ordinary Source implemented; first strict selected-TU compile, complete COFF review, independent review and original repository build passed",
+  "addresses": [
+    {
+      "address": "004689d0",
+      "end_exclusive": "00468a29",
+      "native_bytes": 89,
+      "native_instructions": 39,
+      "name": "native_property_library_key_bucket_004689d0",
+      "original_ABI": "stack actual header, EAX bucket,RET4; ECX unused"
+    },
+    {
+      "address": "00468ed0",
+      "end_exclusive": "00468f2d",
+      "native_bytes": 93,
+      "native_instructions": 41,
+      "name": "find_native_property_library_node_00468ed0",
+      "original_ABI": "ECX actual map; stack query,bucketout; EAX node or0; RET8"
+    }
+  ],
+  "data_role": {
+    "address": "00e18560",
+    "source": "GameNativeStringProcess::library_empty_00e18560",
+    "distinct_appended_const_zero": true,
+    "Original_writable_data_universally_immutable_claim": false
+  },
+  "source_files": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\include\\bsp\\native_property_library_lookup.hpp",
+      "bytes": 2296,
+      "sha256": "71940707d0d90e86c2b20e09f886e68c169c100453c6622974413b347feec284"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\src\\native_property_library_lookup.cpp",
+      "bytes": 2931,
+      "sha256": "0bb5e93cdf2a00500b375dae8b651c0825867adb43fdd0a72aaf767f2cffe754"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\include\\bsp\\game_native_string_process.hpp",
+      "bytes": 3833,
+      "sha256": "a45b9e64a8e5733c85967f629426e05f420ea704243dce0bf5d83666d6af7e19"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\src\\game_native_string_process.cpp",
+      "bytes": 1294,
+      "sha256": "e4efec1e0e57073bd94402d8dc22ce7f0f8ff41022810f04aed09990535cd347"
+    }
+  ],
+  "docs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\docs\\NATIVE_PROPERTY_LIBRARY_LOOKUP_CC12.md",
+    "bytes": 5956,
+    "sha256": "f70b2c13338cca9461218cc8bb8f268c4da52837eb1c55f8e07de43faed23fc4"
+  },
+  "readiness": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyLibraryInsertionReadiness01\\compact_readiness.DATA.json",
+    "bytes": 21653,
+    "sha256": "b81d842b3c3569d5aa4045d86e832aaedebdc2789c5443ef1b951b223f641064"
+  },
+  "first_strict_compile": {
+    "original_tools": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyLibraryLookupSource01\\original_compile_tools.DATA.json",
+      "bytes": 897,
+      "sha256": "b96f08f6d4038dbe38436646ad5505addd1d77e5a5da85652dfa02b9e1d46d7e"
+    },
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyLibraryLookupSource01\\strict_TU_compile.log",
+      "bytes": 1188,
+      "sha256": "564715e5d0c8390c938bc0386bdf9669f32ef63c20e34e49da96c7ca1c72e676"
+    },
+    "terminal": "0ac141/session72136 ->1ed4d4/exit0",
+    "frozen_Source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyLibraryLookupSource01\\frozen_Source_pins.DATA.json",
+      "bytes": 2288,
+      "sha256": "916767119c06a98f87e10ffde0233dba1351ac7b243e1ec685971218a0ef7b4c"
+    },
+    "objects": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyLibraryLookupSource01\\native_property_library_lookup.obj",
+        "bytes": 2468,
+        "sha256": "041b2178e3cd7a259f737c9446e3ab07b8bdbb96d6493b09be536d4cc6eb12d4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyLibraryLookupSource01\\game_native_string_process.obj",
+        "bytes": 6525,
+        "sha256": "26af91f2006f8c4413f73db0cca603cc35cb76975acaf0d5e2ae550354f58c92"
+      }
+    ]
+  },
+  "selected_COFF": {
+    "complete": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyLibraryLookupSource01\\complete_COFF.DATA.json",
+      "bytes": 194197,
+      "sha256": "e04b4714b3f32d4fd3193a59e41244f7f2f8ebba9128b671f7499504a13ae0f4"
+    },
+    "review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyLibraryLookupSource01\\complete_COFF_review.DATA.json",
+      "bytes": 5419,
+      "sha256": "06d7480a79f88cc4888891a8254b7c3b74a65fa6ee547611590cc3bf2027948c"
+    },
+    "lookup_bytes": 498,
+    "lookup_instructions": 193,
+    "process_section_bytes": 424,
+    "process_reachable_bytes": 419,
+    "process_reachable_instructions": 125,
+    "process_alignment_bytes": 5,
+    "code_relocations": 24,
+    "noncode_relocations": 13,
+    "FP_SIMD_environment_operations": 0
+  },
+  "required_original_repository_build": {
+    "initial": "f39ab4/session26262",
+    "natural_terminal": "a11381/exit0",
+    "terminal_pending": false,
+    "script": "./scripts/build.ps1",
+    "restarted": false,
+    "existing_CTests_passed": 2,
+    "result": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyLibraryLookupSource01\\repository_build_result.DATA.json",
+      "bytes": 4426,
+      "sha256": "f614ebff67e186f4fe85a444813974bc7ecd1600df4edcfc1437d3718bbed771"
+    },
+    "original_tools": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyLibraryLookupSource01\\original_build_tools.DATA.json",
+      "bytes": 2093,
+      "sha256": "99a9f14a621d1879e565ec70a91ab826eac5ed60da1339c45f2e7cce316b1785"
+    },
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyLibraryLookupSource01\\repository_build.log",
+      "bytes": 85129,
+      "sha256": "16d5e08701da0668aa1922a6021461e334c3ab694604276b7b77d876e3c75fd6"
+    },
+    "registration_boundary": "Existing process TU is registered in bsp_game; new lookup TU registration and actual Main compiler output remain for Root."
+  },
+  "new_tests_or_probe": false,
+  "Target_executed": false,
+  "CMake_shared_ledgers_Ghidra_or_app_wiring_changed": false,
+  "remaining_integration": [
+    "Root registers the new lookup TU, adds shared metadata and validates actual registered Main output."
+  ],
+  "contract": [
+    "Actual raw8h header data-before-length; signed-byte current CRTtoupper with low-byte result and moduloDWORD hash.",
+    "Unsigned remaining>=step but pointer advancesONE; same algorithm in standalone and inlined lookup emissions.",
+    "Physical bucket publication precedes head read; query length only after nonnull head; length-first node comparison; query data reread for every matching-length candidate; accepted comparison receives query first,node second.",
+    "Separate canonicalE18560/E17654 roles; no NativeString lifetime projection or access to count,mapped8,allocator10.",
+    "Stable closedNUL-freeASCII/currentC-locale/finiteconsistent14hchain/nonalias bucket; caller owns all borrowed storage."
+  ],
+  "limits": [
+    "New Source interfaces do not supply Original stack/register/class/vtable ABI, historical CRT, fault/SEH/EH, arbitrarylocale/nonASCII or game proof.",
+    "No new outerE17540 pool,008F29A0 insertion,outer cleanup,loader orglobal publication supplied.",
+    "Static compiler/object evidence does not establish executable retention, loaded address/provider resolution or runtime behavior."
+  ],
+  "independent_review": {
+    "status": "PASS; no Source correction or blocker",
+    "reviewer": "agent/cc12_type5_resume",
+    "review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\PropertyLibraryLookupIndependentReview01\\compact_review.DATA.json",
+      "bytes": 12197,
+      "sha256": "af69da484583de03d682a3b76c306d5cbd185ddd6c01645ee592c26efe8eca29"
+    },
+    "inputs": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\PropertyLibraryLookupIndependentReview01\\source_review_inputs.DATA.json",
+      "bytes": 12926,
+      "sha256": "958e1dcf968e63af21b2799636175febb6639ffedb3ed020ed0dc584c97f2354"
+    },
+    "family_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\PropertyLibraryLookupIndependentReview01\\family_receipt.DATA.json",
+      "bytes": 2161,
+      "sha256": "446a1495eface91798ed232d5f4bb489f7f5cc7ab5cfce91b3e29a1373450986"
+    },
+    "boundary": "Independent review pins Source and complete selected COFF. Its immutable pending worker-build note predates the natural terminal recorded separately above."
+  }
+}

@@ -165,6 +165,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_entity_kind
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_entity_pose.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_entity_root_kind.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_dictionary_lookup.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_property_library_lookup.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_dictionary_membership.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_dictionary_word_getters.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_map_lifetime.cpp)

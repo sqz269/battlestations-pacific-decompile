@@ -1,0 +1,47 @@
+{
+  "schema": "cc12_property_library_lookup_primary_review_v1",
+  "addresses": [
+    "004689d0",
+    "00468ed0"
+  ],
+  "status": "WholeSource/independentstrictCOFF/workerbuild pass; Mainregistration/compiler pending",
+  "whole_Original": {
+    "hash_bytes": 89,
+    "hash_instructions": 39,
+    "find_bytes": 93,
+    "find_instructions": 41
+  },
+  "primary_all_Original_instructions_and_Source_header_read": true,
+  "primary17current_readiness_pins_verified": true,
+  "reviewed_semantics": [
+    "physical query data before length; unsigned step counter but pointer advancesone",
+    "bucket publication before map head; query length only after nonnullhead",
+    "length-first candidates, querydata fallback each matchingcandidate, comparisonqueryfirst",
+    "mapped/count/page fields unread; first match ornull",
+    "distinct permanent appended E18560 byte in canonicalstringprocess; no NativeString projection"
+  ],
+  "gates": {
+    "primary_Original_and_Source_pass": true,
+    "independent_Source_and_COFF_pass": true,
+    "registered_Main_build_pass": false,
+    "actual_Main_selected_COFF_pass": false
+  },
+  "new_Source_runtime_executed": false,
+  "limits": [
+    "Closed ASCII/current C locale, actual stable rawheader/map/chains and nonaliasing bucket domain only.",
+    "No Original registerABI/EH/OOM/privateCRT/class/application/game claim."
+  ],
+  "independent_Source_and_strict_COFF": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\PropertyLibraryLookupIndependentReview01\\compact_review.DATA.json",
+    "bytes": 12197,
+    "sha256": "af69da484583de03d682a3b76c306d5cbd185ddd6c01645ee592c26efe8eca29"
+  },
+  "primary22current_review_inputs_verified": true,
+  "Source_commit": "0e61067c4",
+  "worker_normal_build": {
+    "terminal": "a11381/exit0",
+    "existing_checks_passed": 2,
+    "seconds": 51.0,
+    "new_lookup_TU_registered": false
+  }
+}

@@ -4,7 +4,7 @@
     "00cc8a70",
     "00cd9270"
   ],
-  "status": "Whole ordinary Source and independent selected COFF accepted; Main build/codegen pending",
+  "status": "Whole ordinary Source, Main3checks, unique archive members and selected actualMain identity to independent reviewed code passed",
   "whole_Original": {
     "initializer_bytes": 22,
     "initializer_instructions": 6,
@@ -23,8 +23,8 @@
   "gates": {
     "primary_Original_and_Source_pass": true,
     "independent_Source_and_COFF_pass": true,
-    "registered_Main_build_pass": false,
-    "actual_Main_selected_COFF_pass": false
+    "registered_Main_build_pass": true,
+    "actual_Main_selected_COFF_pass": true
   },
   "runtime_qualification": false,
   "limits": [
@@ -43,5 +43,34 @@
     "existing_checks_passed": 2,
     "seconds": 86.2
   },
-  "Source_commit": "f336ebf96"
+  "Source_commit": "f336ebf96",
+  "Source_evidence_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyLibraryNodePoolSource01\\family_receipt.DATA.json",
+    "bytes": 47252,
+    "sha256": "37546609aafdfe44c68e12bf0afb805d83e5f04cb076e73bd874c80b2466e0d1"
+  },
+  "registered_Main_build": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_library_pool_Main_build01\\result.DATA.json",
+    "bytes": 3477,
+    "sha256": "b7a9936b97f896a0bf0ab9f0a684a52c5d4a4aa6843c0bd01acdccd3e313444d"
+  },
+  "actual_Main_archive_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+    "bytes": 92290770,
+    "sha256": "e3da4cb4cdc150ab908428ab510b5bfa23d6a435903ada27a4ff3db0d0834c95",
+    "member_count": 2151,
+    "unique_selected_members": 2,
+    "primary_all13inputs_and_complete_boundaries_verified": true
+  },
+  "independent_owner_EH_boundary_correction": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\PropertyLibraryLookupIndependentReview01\\owner_EH_entry_boundary_correction.DATA.json",
+    "bytes": 2141,
+    "sha256": "7c23034113cdcdf68ee6dc22e4b93afc67ea4407a7b1f8588fa1592f2cc49af9"
+  },
+  "actual_Main_selected_identity_to_independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\PropertyLibraryPoolMainSelectedIdentity01\\compact_review.DATA.json",
+    "bytes": 2721,
+    "sha256": "1534b5b127e66baeb81ffad45c7906d474d972c9f772b566b96467c770971474"
+  },
+  "primary6current_identity_inputs_and_all11sections103relocs_verified": true
 }
