@@ -1,0 +1,74 @@
+{
+  "packet":"goal15c_dyn_release_queue",
+  "source_base":"ff24a27a76de483c84db4ed125298dace79e75a5",
+  "status":"complete_native_queue_kernel_146_bytes_call_normalized_and_real_provider_source_probe_checked_pending_primary_build",
+  "owned_addresses":["00c34f70"],
+  "owned_files":["include/bsp/native_dyn_release_queue.hpp","src/native_dyn_release_queue.cpp","docs/GOAL15C_DYN_RELEASE_QUEUE.md","reports/goal15c_dyn_release_queue.json"],
+  "functions":[{
+    "address":"00c34f70",
+    "name":"DYN_QueueBodyRelease_Provisional_00C34F70",
+    "cpp_symbol":"bsp::queue_native_dyn_body_release_00c34f70",
+    "source":"src/native_dyn_release_queue.cpp",
+    "header":"include/bsp/native_dyn_release_queue.hpp",
+    "end_exclusive":"00c35002",
+    "bytes":146,
+    "coverage":"complete",
+    "original_abi":"ECX manager; one stacked body DWORD; RET4; ESI preserved, EDI preserved on growth; no defined result claimed",
+    "source_abi":"MSVC Win32 fastcall ECX actual manager, unused EDX placeholder, one stacked uint32 body, RET4",
+    "uncertainty":"Owned naked schedule preserved including writable input cell; new source identity/provider frames/current CRT/global binding/SEH/gameplay equivalence unclaimed"
+  }],
+  "host_steps":[
+    {"address":"00c34f91","native":"00bf55be","containing_function":"00c34f70","contract":"body read: thunk to00bf681b; cdecl wrapped byte count; ADD ESP,4 at00c34f9a","source":"singleton_lifetime_allocate object request with equal exact native/host bytes; existing retry/new-handler/bad_alloc policy"},
+    {"address":"00c34fcf","native":"00bf6989","containing_function":"00c34f70","contract":"body read: thunk to00bf65ac real CRT free; cdecl current old pointer; ADD ESP,4 at00c34fd4","source":"singleton_lifetime_free backed by std::free"}
+  ],
+  "consumer_calls":[{"address":"0041e99f","native":"00c34f70","containing_function":"0041e960","contract":"complete caller listing read; body DWORD pushed, ECX actual game dynamics manager"}],
+  "semantics":{
+    "layout":"existing actual bytes only: pointer+438h,count+43Ch,capacity+440h; no full world struct; minimum touched extent444h",
+    "arithmetic":"uint32 modulo arithmetic for cap*2+2, cap*4, array addresses, indices and current count increment; no overflow guard or >=capacity check",
+    "growth_order":["read capacity then count","if equal publish cap*2+2","allocate captured newcap*4 bytes","copy with current count and pointer reloads, skip each computed null destination","free current old pointer if nonnull","publish captured new pointer"],
+    "append_order":["read current count then data","compute wrapped data+count*4","write body only if computed slot nonzero","reload current count after store and increment it"],
+    "aliasing":"exact naked native DWORD load/store and register schedule preserves manager/data/input-slot alias effects; no extra fences, guards or concurrency policy",
+    "failure":"capacity already published before allocator failure; existing real new-handler/bad_alloc behavior; no rollback",
+    "native_body_input":"exact conditional late [ESP+8] load at the corresponding00c34ff1 instruction, including current writable input-cell changes before use",
+    "not_performed":"no body dereference, destruction, reference release or queue drain"
+  },
+  "evidence":{
+    "project":"C:/Users/sqz269/bsp.gpr",
+    "program":"/battlestationspacific.exe",
+    "image_base":"00400000",
+    "native_assembly":"exports/bsp/functions/00c34f70/assembly.txt complete",
+    "callee_read":"00bf55be/00bf6989 live thunk listings,00bf681b actual body, existing singleton_lifetime_allocate/free source; real CRT free body read earlier in worker session",
+    "existing_schema":"dyn_physics_substep.hpp pending-removal pointer/count offsets; dyn_world_runtime.cpp initializes438/43c/440 tozero",
+    "source_listing":"local/output/native_dyn_release_queue.asm: exact naked capacity publish/copy reload/free-publish/append-current-count schedule checked",
+    "owned_byte_comparison":"PASS146 live native bytes versus COFF function; exactly2 CALL rel32 operands at offsets22h/60h masked; every other byte equal;local/output/compare_dyn_release_queue_bytes.py",
+    "physical_census":"11 disk rel32 calls versus10 live xref sites; raw extra00c37543 is unowned/unanalysed, not attributed by nearest earlier function",
+    "live_call_sites":["0041e99f","004470a7","00448279","00745b41","00748bbe","007d0425","00882738","0088278b","00929dcb","0092cfe3"],
+    "unowned_raw_wrapper":"00c37540 MOV ECX,[ECX];00c37542 PUSH EAX;00c37543 CALL00c34f70;00c37548 RET; no live Ghidra instruction/function;00c37450 body ends00c37480"
+  },
+  "corrections":[{
+    "was":{"name":"DYN_physics_00c34f70","inventory_category":"block_dyn","comment":"Dynamics/physics collision library body inventory; preserve existing comment"},
+    "is":{"name":"DYN_QueueBodyRelease_Provisional_00C34F70","inventory_category":"block_dyn","meaning":"queue body DWORD only; descriptive owner interpretation remains provisional"},
+    "evidence":"complete146-byte body and existing pending-removal field/consumer schema; no actual body-destruction call"
+  }],
+  "verification":{
+    "focused_msvc_x86_compile":"PASS:C++17 /EHsc /W4 /WX /permissive- /O2 /c /FAcs",
+    "emitted_listing":"PASS:all native field accesses/registers/update order/late writable body load and RET4",
+    "owned_bytes":"PASS:146 bytes equal with exactly2 CALL rel32 operands masked; all other bytes identical",
+    "source_probe":"PASS:real existing allocator/free; growth0to2/spare/growth2to6 old words, append-count alias7to8, wrapped zero slot/count wrap",
+    "source_probe_artifacts":"local/output/dyn_release_queue_probe.cpp and run_dyn_release_queue_probe.cmd; manifest-embedded ignored executable",
+    "oom_failure":"not forced; published-capacity partial state inspected statically",
+    "copy_header_alias":"current-pointer/count reloads and writable argument schedule proven by source/listing/owned bytes, not separate runtime probe",
+    "report_calls":"PASS:3 exact report rows and1 markdown call claim;0 failures,unchecked claims or warnings; unanalysed raw wrapper is explicitly not a containing-function claim",
+    "diff_check":"PASS",
+    "full_build_and_existing_ctest":"primary after target registration",
+    "new_repository_tests":0,
+    "native_differential":"not run",
+    "gameplay_runtime":"not validated"
+  },
+  "integration":{
+    "target":"bsp_core",
+    "target_sources_add":"src/native_dyn_release_queue.cpp",
+    "public_consumer":"parallel0041e960 cleanup packet; declaration sent promptly",
+    "ghidra_mutations":"none; primary owns annotation/export refresh"
+  }
+}
