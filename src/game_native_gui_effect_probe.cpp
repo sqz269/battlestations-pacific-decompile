@@ -171,6 +171,14 @@ void note_program(GameHostLog& log, const NativeMaterialEffectProgramOperation& 
                 reinterpret_cast<const void*>(entry.kernel32_module), reinterpret_cast<const void*>(entry.release_target),
                 entry.com_release_result, entry.shader_count_before, entry.device_count_before, entry.device_count_after,
                 entry.owner_count_at_constructor, entry.owner_release_previous_count);
+            log.notef("native GUI sampler-entry admission context=%p calls=%p pixel=%p owner=%p pass_registered=%d shader_registered=%d variants=%u source_mode=%u cache_same=%d",
+                static_cast<const void*>(tail->context),
+                tail->context ? static_cast<const void*>(tail->context->sampler_calls) : nullptr,
+                static_cast<const void*>(tail->pixel_shader), static_cast<const void*>(tail->shader_owners[1]),
+                tail->pass_registered ? 1 : 0, tail->shader_registered[1] ? 1 : 0,
+                tail->context ? static_cast<unsigned>(tail->context->load_variants_0108d6f0) : 0xffffffffu,
+                tail->context ? static_cast<unsigned>(tail->context->source_mode_0108d6f1) : 0xffffffffu,
+                tail->context && entry.cache == tail->context->actual_cache_0108d6ec ? 1 : 0);
             if (entry.release_returned)
                 log.notef("native GUI sampler-entry captured_word=%08x qualified=%d", entry.word, entry.known ? 1 : 0);
             for (std::size_t index = 0; index < tail->samplers.size(); ++index) {
