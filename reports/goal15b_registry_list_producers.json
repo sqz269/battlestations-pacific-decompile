@@ -1,0 +1,45 @@
+{
+  "schema": "bsp.goal15b.registry_list_producers.v1",
+  "packet": "goal15b_registry_list_producers",
+  "base_commit": "b59da16a6",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "status": "complete_reconstruction_focused_msvc_win32_compile_and_call_checks_passed",
+  "owned_addresses": ["0041bfd0", "0041c1f0", "0041e270"],
+  "outputs": ["include/bsp/native_registry_list_producers.hpp", "src/native_registry_list_producers.cpp", "docs/GOAL15B_REGISTRY_LIST_PRODUCERS.md", "reports/goal15b_registry_list_producers.json"],
+  "routines": [
+    {"address": "0041bfd0", "name": "STL_List_BuyHeadNode_0041bfd0", "body": "0041bfd0-0041bfe9", "bytes": 26, "coverage": "complete", "source": "src/native_registry_list_producers.cpp", "entry": "buy_native_registry_list_head_0041bfd0", "original_abi": "no receiver/arguments; EAX allocated node, plain RET", "source_abi": "cdecl no args, pointer return"},
+    {"address": "0041c1f0", "name": "STL_List_BuyNode_0041c1f0", "body": "0041c1f0-0041c222", "bytes": 51, "coverage": "complete", "source": "src/native_registry_list_producers.cpp", "entry": "buy_native_registry_list_node_0041c1f0", "original_abi": "three stacked args next/previous/value-slot address; incoming ECX unused; EAX allocated node; RET0Ch", "source_abi": "stdcall three by-value args, pointer return; original writable stack cells not modelled"},
+    {"address": "0041e270", "name": "STL_List_Construct_0041E270", "body": "0041e270-0041e285", "bytes": 22, "coverage": "complete", "source": "src/native_registry_list_producers.cpp", "entry": "construct_native_registry_list_0041e270", "original_abi": "ECX existing header, EAX same header, ESI preserved, plain RET", "source_abi": "Win32 fastcall one pointer, pointer return"}
+  ],
+  "host_steps": [
+    {"address": "0041bfd2", "native": "00bf681b", "function": "0041bfd0", "contract": "body read: genuine allocator request object12/12; one stack size0Ch balanced ADD ESP,4 at0041bfd7; raw nonnull return or existing bad_alloc policy"},
+    {"address": "0041c1f2", "native": "00bf681b", "function": "0041c1f0", "contract": "body read: same real allocation; payload slot dereference occurs after return and both link stores; ADD ESP,4 at0041c1f7"},
+    {"address": "0041e273", "native": "0041bfd0", "function": "0041e270", "contract": "complete head producer before header+4=head/header+8=0, header+0 untouched"}
+  ],
+  "consumer_calls": [
+    {"address": "00424763", "native": "0041bfd0", "function": "00424730", "contract": "registry+4 raw header constructor setup; sentinel stored header+4, count zero header+8"},
+    {"address": "004247b7", "native": "0041c1f0", "function": "00424730", "contract": "three arguments: next=sentinel, previous=tail, payload-local address; RET0Ch in callee"},
+    {"address": "00424813", "native": "0041c1f0", "function": "00424730", "contract": "same three inputs for second constructed layer"},
+    {"address": "0042486f", "native": "0041c1f0", "function": "00424730", "contract": "same three inputs for third constructed layer"},
+    {"address": "0042494f", "native": "0041c1f0", "function": "004248a0", "contract": "loader passes sentinel, previous tail, address of deserialized payload local"}
+  ],
+  "evidence": [
+    {"span": "0041bfd0-0041bfe9", "kind": "complete pseudocode and assembly, live prototype/xrefs", "conclusion": "0Ch allocation, self-links only, payload untouched"},
+    {"span": "0041c1f0-0041c222", "kind": "complete pseudocode and assembly, live prototype/xrefs", "conclusion": "0Ch allocation, next/previous stores, then indirect payload read/store; RET0Ch spans0041c220-0041c222"},
+    {"span": "0041e270-0041e285", "kind": "complete pseudocode and live assembly/prototype/xrefs", "conclusion": "allocates sentinel before stores, header+0 untouched, returns actual header; no live xrefs"},
+    {"span": "00424752-0042489b;00424938-0042496a", "kind": "caller assembly, paged to all four node sites", "conclusion": "existing raw header and Cc13TerrainGridLayerListNode schema reconciled with producer"},
+    {"span": "00bf681b", "kind": "callee pseudocode and complete assembly plus actual Source body", "conclusion": "existing malloc/new-handler retry/bad_alloc service, object12/12; no invented callback or failure policy"}
+  ],
+  "semantics": {
+    "node_schema": "existing Cc13TerrainGridLayerListNode; size0Ch,next0,previous4,value8; typed schema validated but byte writes leave unread fields uninitialized",
+    "payload_capture": "after allocation and next/previous stores; memcpy reads actual supplied slot at use time, no pre-allocation snapshot",
+    "guards": "individual base/base+4/base+8 field-address checks with unsigned32 wrap; no blanket null-allocation recovery",
+    "constructor": "raw existing0Ch header; allocate head first, store+4, zero+8, return same header; proxy+0 untouched",
+    "allocator": "singleton_lifetime_allocate({object,12,12}); returns valid nonnull raw bytes or uses existing Source new-handler/bad_alloc policy",
+    "limits": "qualified Source CRT identity; source by-value args do not model original frame-slot mutation; no outer owner or payload lifetime constructed"
+  },
+  "corrections": [],
+  "validation": {"focused_compile": "PASS: MSVC x86 /std:c++17 /EHsc /W4 /WX /permissive- /O2 /c /Iinclude src/native_registry_list_producers.cpp; zero warnings; local/goal15b_registry_list_producers/native_registry_list_producers.obj", "report_and_doc_calls": "PASS:8 report rows and8 markdown claims; zero failures, unchecked claims or warnings", "full_registered_build": "primary responsibility", "new_tests": 0, "ghidra_mutations": 0, "runtime_tested": false, "abi_compatible": false, "game_validated": false},
+  "integration": {"target": "bsp_core", "target_sources_add": "src/native_registry_list_producers.cpp", "saved_ghidra_annotation": "primary only", "lease": "hold until primary transfer"}
+}
