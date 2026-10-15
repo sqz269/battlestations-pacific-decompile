@@ -4,7 +4,7 @@
     "004689d0",
     "00468ed0"
   ],
-  "status": "WholeSource/independentstrictCOFF/workerbuild pass; Mainregistration/compiler pending",
+  "status": "Whole ordinary Source, registered Main build-log checks, and actual compiled object identity to independent review pass",
   "whole_Original": {
     "hash_bytes": 89,
     "hash_instructions": 39,
@@ -23,8 +23,8 @@
   "gates": {
     "primary_Original_and_Source_pass": true,
     "independent_Source_and_COFF_pass": true,
-    "registered_Main_build_pass": false,
-    "actual_Main_selected_COFF_pass": false
+    "registered_Main_build_pass": true,
+    "actual_Main_selected_COFF_pass": true
   },
   "new_Source_runtime_executed": false,
   "limits": [
@@ -43,5 +43,34 @@
     "existing_checks_passed": 2,
     "seconds": 51.0,
     "new_lookup_TU_registered": false
+  },
+  "registered_Main_build_observation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_library_resume_20261015\\lookup_Main_recovered_build.DATA.json",
+    "bytes": 6902,
+    "sha256": "70f89219c16f58e2d4c0b8cec1d183bb309cea3f9f241de0b1f9c9ded0704361"
+  },
+  "actual_Main_selected_identity": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\PropertyLibraryLookupMainIdentity01\\compact_review.DATA.json",
+    "bytes": 8423,
+    "sha256": "ea51b7911ed147dafda8523079ae46a087b76cff66d1105dc30852e7a9156f42"
+  },
+  "primary_complete_code_and_relocations_verified": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_library_resume_20261015\\lookup_Main_primary_identity.DATA.json",
+    "bytes": 4365,
+    "sha256": "e8e68559b20708cae6733fa577dfbd76c57f999fede2add21c57c336ff98c1c6"
+  },
+  "build_process_receipt_limit": "Original launch6ca243/session26778 was missing on resume; no recovered exit code. Completed build and3passing existing tests are evidenced by frozen original log/CTest records and actual target artifacts.",
+  "Ghidra_annotation_and_export": {
+    "annotations": "c8bd82/exit0",
+    "previous_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\ghidra-annotations-20261015T161243Z.json",
+      "bytes": 13886,
+      "sha256": "6a1be14274e780102529b5f327c3694d16ff71864d019367a060867e4e984bd3"
+    },
+    "project_saved": true,
+    "exports": "e5a5f7/exit0",
+    "snapshot_and_index": "a3d150/exit0; unchanged76769 functions, index rebuilt",
+    "Original_project": "C:/Users/sqz269/bsp.gpr",
+    "Original_program": "/battlestationspacific.exe"
   }
 }

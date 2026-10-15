@@ -1,0 +1,248 @@
+{
+  "schema": "bsp.native_property_tree_library_lifetime_cc12.v1",
+  "status": "complete_ordinary_Source_independent_review_and_strict_compile_passed; Root_registration_and_integration_separate",
+  "scope": "Two complete ordinary lifetime bodies and one concrete borrowed context; no Source fragments or callback/model providers.",
+  "owned_files": [
+    "include/bsp/native_property_tree_library_lifetime.hpp",
+    "src/native_property_tree_library_lifetime.cpp",
+    "docs/NATIVE_PROPERTY_TREE_LIBRARY_LIFETIME_CC12.md",
+    "reports/native_property_tree_library_lifetime_cc12.json"
+  ],
+  "source": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_property_tree_library_lifetime.hpp",
+      "bytes": 3423,
+      "sha256": "9ae08b4095cb8e5522ee8d8fae0e850e17648ba6ebce697b617b01bfe8411367",
+      "st_nlink": 1
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\native_property_tree_library_lifetime.cpp",
+      "bytes": 2804,
+      "sha256": "62e0363d6db38afc1af2357b8cb0b9882d4acf1d0aac1b87820190629d0f99c2",
+      "st_nlink": 1
+    }
+  ],
+  "source_bytes_and_mtimes_unchanged_since_first_compile": true,
+  "Original": [
+    {
+      "address": "008F4C50",
+      "exclusive_end": "008F4D4E",
+      "span_bytes": 254,
+      "reachable_instructions": 74,
+      "linear_decoded_instructions": 75,
+      "span_sha256": "449e2ed0501c60a69f61cf31f7dfeb896bcaf3a504324d8d57c8e8a8acad14ed",
+      "unreachable_alignment": "008F4C7D..008F4C80: 8D4900, LEA ECX,[ECX]",
+      "ABI": "Actual ECX is the borrowed 108h map at genuine 10Ch root+4; no stack arguments, plain RET, saved EBX/EBP/ESI/EDI. Normal EAX is the original map. Stale zero-formal metadata is not the ABI.",
+      "ordinary_signature": "void* clear_native_property_library_map_008f4c50(void*, NativePropertyTreeLibraryLifetimeContext&)"
+    },
+    {
+      "address": "008F56A0",
+      "exclusive_end": "008F56F8",
+      "span_bytes": 88,
+      "instructions": 22,
+      "span_sha256": "9a86a27776a90385f481ff310d1ee9e3a5afea76cc8eee4642a23f5b6ee878ce",
+      "ABI": "Actual ECX is the genuine 10Ch outer root; no stack arguments, plain RET, saved ESI and FS exception chain. No meaningful return value is established. Stale zero-formal metadata is not the ABI.",
+      "ordinary_signature": "void destroy_native_property_tree_library_008f56a0(void*, NativePropertyTreeLibraryLifetimeContext&)"
+    }
+  ],
+  "exact_normal_behavior": {
+    "context": [
+      "bags_ is constructed from the actual canonical strings and physical process.",
+      "library_pool_ is borrowed from the same physical.property_library_node_pool_storage_00e17540().",
+      "Outer E17540 and inner E175B0 are distinct retained canonical owners sharing E188B4.",
+      "Both startup functions must explicitly finish before construction; the context starts neither owner."
+    ],
+    "clear": [
+      "Iterate all 64 physical heads at map+8+4*bucket.",
+      "Physically capture node+8 mapped bag before node+C next, both before retirement.",
+      "For nonnull mapped bag, call existing complete scalar008F59E0 with flag1 and bags context; zero mapped+8 only after return.",
+      "Destroy the canonical pooled raw8h key using whole0041DD20.",
+      "Return genuine outer14h node with whole0043B0A0 and the same E17540 owner.",
+      "Advance only using captured next; do not reread the retired slot.",
+      "Zero each physical head after its chain, including empty heads; zero map+4 count last; return the original actual map."
+    ],
+    "destructor": [
+      "Physically write root+0=D1650C.",
+      "Fixed-call whole008F4C50 on map=root+4.",
+      "Physically write that map+0=D162C8.",
+      "Unconditionally fixed-call whole008F4C50 on the same map again.",
+      "No outer root free or invented ownership repair."
+    ]
+  },
+  "ordinary_domain": [
+    "Actual writable raw10Ch outer root / borrowed108h map with coherent64 heads/count.",
+    "Unique genuine live14h outer E17540 slots with intact allocator+10 membership and canonical pooled8h keys.",
+    "Nonnull mapped values are actual114h bags from admitted producers satisfying the existing complete bag/record lifetime contracts.",
+    "Finite unshared acyclic ownership graph; outer node/key storage disjoint from all mapped ownership; phase words alone do not establish provenance.",
+    "Retain both pool owners, shared E188B4 and canonical string contexts; externally serialize shared-list mutations.",
+    "Retire all keys/bags/inner and outer nodes before either pool page-retirement callback; honor current raw-string return gate and pool generation.",
+    "No concurrent mutation/trim, reentry, aliasing, malformed slots, arithmetic overflow, provider failure or faults; sufficient recursive stack."
+  ],
+  "direct_provider_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyTreeLibraryLifetimeSource01\\direct_ready_inputs.DATA.json",
+    "bytes": 4719,
+    "sha256": "507f409d954fc9030f771814a831013178063bc92ab4a55589ccd74a21ea38b0",
+    "st_nlink": 1
+  },
+  "direct_provider_inputs_unchanged_at_close": true,
+  "provider_ancestry_reproved": false,
+  "strict_compile": {
+    "actual_first_compile": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyTreeLibraryLifetimeSource01\\original_strict_compile_tools.DATA.json",
+      "bytes": 2453,
+      "sha256": "cf86520c31c734a2a1f390e654fbbdee647a5a5202b2fce3e06a7d04552265e0",
+      "st_nlink": 1
+    },
+    "compiler": "MSVC x86 19.51.36244.0",
+    "flags": "/std:c++17 /MD /O2 /Ob2 /Oy- /W4 /WX /EHsc /Gy /GL- /fp:strict /c",
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyTreeLibraryLifetimeSource01\\native_property_tree_library_lifetime.obj",
+      "bytes": 4039,
+      "sha256": "7f5cd8d45e5641a4e1d909d124b11aff4f81652fbac97e326a4c7e5921d21f63",
+      "st_nlink": 1
+    },
+    "complete_COFF": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyTreeLibraryLifetimeSource01\\complete_COFF.DATA.json",
+      "bytes": 53104,
+      "sha256": "5830ccae39e441c640dbff2042e664ae353c26d3474bdf1cf2f762cf2d7d8060",
+      "st_nlink": 1
+    },
+    "complete_COFF_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyTreeLibraryLifetimeSource01\\complete_COFF_review.DATA.json",
+      "bytes": 7083,
+      "sha256": "62060dfefeb8fbe13141d7ad81ab12110a645b94f629b23e908d3912c5aa76fa",
+      "st_nlink": 1
+    },
+    "complete_dumpbin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyTreeLibraryLifetimeSource01\\complete_COFF_dumpbin.txt",
+      "bytes": 26169,
+      "sha256": "a2608d8218c906fa4b38bd0a030bc9f562a55a449d361ddcbfdac290f7a16504",
+      "st_nlink": 1
+    },
+    "all_code_sections": 9,
+    "all_code_bytes": 380,
+    "all_instructions": 146,
+    "code_relocations": 7,
+    "debug_metadata_relocations": 3,
+    "unaccounted_or_unreachable_bytes": 0,
+    "FP_or_SIMD_instructions": 0,
+    "primary_clear": {
+      "bytes": 200,
+      "instructions": 71
+    },
+    "primary_destructor": {
+      "bytes": 72,
+      "instructions": 25
+    },
+    "all_helpers_and_context_constructor_reviewed": true,
+    "external_provider_resolution": "Symbolic COFF relocation targets only; actual registered Main archive/link evidence belongs to Root."
+  },
+  "independent_review": {
+    "schema": "bsp.library_lifetime_independent_review_consumption.v1",
+    "accepted": true,
+    "reviewer": "/root/type1011_native_gate",
+    "review_artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyTreeLibraryLifetimeIndependentReview01\\compact_review.DATA.json",
+        "bytes": 9957,
+        "sha256": "7217b644a3eea28e6f7b46b99659372f7c965242bc0380f5b038d99bfa6db3b0",
+        "st_nlink": 1
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyTreeLibraryLifetimeIndependentReview01\\family_receipt.DATA.json",
+        "bytes": 1632,
+        "sha256": "df908bfeb9351815cb6db3b1e1190ba06b4672a907caec8285c8d3d948ca5956",
+        "st_nlink": 1
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyTreeLibraryLifetimeIndependentReview01\\complete_COFF_review.DATA.json",
+        "bytes": 71934,
+        "sha256": "4207200a23d5b4802a055fe9748acb55ede1d688204611e8e50d0558fcaefef8",
+        "st_nlink": 1
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyTreeLibraryLifetimeIndependentReview01\\review_inputs.DATA.json",
+        "bytes": 7889,
+        "sha256": "1a2cd7c9aa716f8bb2282d718b7ddd3ac10ab3f7d9bb508e798825be1ed7546d",
+        "st_nlink": 1
+      }
+    ],
+    "actual_review_reader": "3c1940/exit0",
+    "reviewer_family_six_files_readonly_single_link_and_whole_receipt_verified": true,
+    "complete_review_consumed": [
+      "All Original/Source findings and exact emitted schedules",
+      "All9 code sections380B146 reachable instructions; all10 code/metadata relocations and primary symbols",
+      "Canonical context and all fixed provider references, correct return/phase ordering",
+      "Strict firstcompile receipt and29 stable input bookends",
+      "No normalbuild, target/probe, NativeABI, exceptional or game credit"
+    ],
+    "corrections_required": [],
+    "worker_Source_unchanged": true,
+    "Root_admission_separate": true
+  },
+  "required_repository_build": {
+    "schema": "bsp.whole_library_lifetime_original_normal_build_tools.v1",
+    "command": "./scripts/build.ps1",
+    "initial_tool_result": {
+      "chunk_id": "f2c5d6",
+      "session_id": 41183,
+      "terminal": false
+    },
+    "terminal_tool_result": {
+      "chunk_id": "47d783",
+      "exit_code": 0
+    },
+    "build_invocations": 1,
+    "normal_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyTreeLibraryLifetimeSource01\\normal_build.log",
+      "bytes": 18942,
+      "sha256": "96daebb15bfb30eb67e9e65b8a307a6f487a6a020b8bba79a5f2570513a1aeb8"
+    },
+    "tests": [
+      {
+        "name": "reconstructed_math",
+        "passed": true,
+        "seconds": 0.53
+      },
+      {
+        "name": "tool_tests",
+        "passed": true,
+        "seconds": 49.41
+      }
+    ],
+    "test_total_seconds": 50.0,
+    "warnings": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\build\\win32\\bsp_core.vcxproj]"
+    ],
+    "error_count": 0,
+    "new_lifetime_TU_registered_in_this_worker_build": false,
+    "registration_evidence": "Completed generated build/win32/bsp_core.vcxproj does not contain native_property_tree_library_lifetime.cpp; Root owns new-TU registration.",
+    "limits": [
+      "Original build was preserved to natural terminal; no timeout restart or replacement invocation.",
+      "Existing repository targets/tests passed. New TU compile evidence is the separately pinned strict first compile.",
+      "No newly added tests/probes/target process or populated graph execution."
+    ]
+  },
+  "claims": {
+    "whole_ordinary_Source_bodies": 2,
+    "strict_new_TU_compilation": true,
+    "complete_strict_COFF_inspection": true,
+    "independent_Source_COFF_review": true,
+    "required_existing_repository_build": true,
+    "new_TU_registered_in_worker_repository_build": false,
+    "Root_Source_admission_credit": 0,
+    "new_tests_added": 0,
+    "new_target_or_probe_processes": 0,
+    "populated_graph_execution": false,
+    "Original_register_ABI": false,
+    "Original_FS_EH_transport": false,
+    "Original_virtual_dispatch_or_class_identity": false,
+    "Original_native_execution": false,
+    "game_validated": false
+  },
+  "remaining_Root_work": [
+    "Review and integrate the four owned files; register the new TU in shared CMake and perform required registered-build validation.",
+    "Update shared reconstruction/name ledgers and Ghidra annotations under existing coordination policy.",
+    "A genuine populated Source exercise waits complete008F29A0 insertion/producer; lookup/producer is a validation dependency, not a direct callee of these lifetime bodies."
+  ]
+}
