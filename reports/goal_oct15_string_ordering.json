@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_string_ordering",
+  "source": "src/native_string_ordering_wrappers.cpp",
+  "header": "include/bsp/native_string_ordering_wrappers.hpp",
+  "documentation": "docs/GOAL_OCT15_STRING_ORDERING.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "00443cb0",
+      "end_exclusive": "00443cfd",
+      "coverage": "complete",
+      "cpp_symbol": "less_native_string_headers_00443cb0",
+      "original_abi": "ECX left actual8h header, stack right header; RET4; AL boolean; upper EAX not normalized",
+      "bytes": "83 39 00 8b 44 24 04 75 12 8b 00 f7 d8 1b c0 33 c9 85 c0 0f 9c c1 8a c1 c2 04 00 83 38 00 75 11 b8 01 00 00 00 33 c9 85 c0 0f 9c c1 8a c1 c2 04 00 8b 50 04 8b 41 04 52 50 e8 d1 42 7b 00 33 c9 83 c4 08 85 c0 0f 9c c1 8a c1 c2 04 00",
+      "live_disk_equal": true,
+      "live_callers": 1,
+      "sha256": "ac754a0cc35e6bab30dbc1d10764a1495f994bd0f5554ab4adca8be7c3fd91c7"
+    },
+    {
+      "address": "0076eaa0",
+      "end_exclusive": "0076eaf7",
+      "coverage": "complete",
+      "cpp_symbol": "less_native_string_scalar_keys_0076eaa0",
+      "original_abi": "ECX left actual16h record, EDX right record; RET; EAX0/1; ESI/EDI preserved",
+      "bytes": "56 57 8b f9 83 3f 00 8b f2 75 08 8b 06 f7 d8 1b c0 eb 15 83 3e 00 74 14 8b 46 04 8b 4f 04 50 51 e8 fa 94 48 00 83 c4 08 85 c0 7c 23 57 8b ce e8 dc 51 cd ff 84 c0 75 12 8b 57 0c 3b 56 0c 72 0f 77 08 8b 47 08 3b 46 08 72 05 5f 33 c0 5e c3 5f b8 01 00 00 00 5e c3",
+      "live_disk_equal": true,
+      "live_callers": 0,
+      "legacy_source_preserved": "src/mp_seg43_cc13.cpp:lan_host_key_less_0076eaa0",
+      "sha256": "fb7918f48ab4db3dbc5ac47b9d492710870e28c1235b7ac8e028e9a04f428efc"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00443ce9",
+      "native": "00bf7fbf",
+      "function": "00443cb0",
+      "contract": "signed CRT string compare; caller ADD ESP,8 at00443CF0"
+    },
+    {
+      "address": "0076eac0",
+      "native": "00bf7fbf",
+      "function": "0076eaa0",
+      "contract": "inlined forward string predicate; caller ADD ESP,8 at0076EAC5"
+    },
+    {
+      "address": "0076eacf",
+      "native": "00443cb0",
+      "function": "0076eaa0",
+      "contract": "reverse predicate: ECX right, stack left; callee RET4"
+    }
+  ],
+  "source_dependencies": [
+    {
+      "routine": "00443d00",
+      "symbol": "less_native_string_headers_00443d00",
+      "source": "src/native_vfs_date_leaf_providers.cpp",
+      "basis": "complete assembly predicate/read order equivalent to00443CB0 after different native argument setup",
+      "modified": false
+    }
+  ],
+  "prior_annotations": [
+    {
+      "address": "00443cb0",
+      "name": "BSP_NativeString_LessCaseInsensitive_00443CB0",
+      "comment": "[BSP reconstruction 00443cb0]\nHypothesis, not a recovered symbol. docs/CC13_BAND_0040_0044.md. null-data ordering then __stricmp(a.data, b.data) < 0; same predicate as BSP_NativeString_LessCaseInsensitive 00443D00 (COMDAT copy); caller 0076EAA0"
+    },
+    {
+      "address": "0076eaa0",
+      "name": "BSP_NativeString_LessCaseInsensitive_0076eaa0",
+      "comment": "[BSP reconstruction 0076eaa0]\ncc13-mopup1: null-aware __stricmp ordering of two NativeStrings (+0 length, +4 data); returns a < b\n\n[BSP reconstruction 0076eaa0] update\ncc13-mopup1: null-aware __stricmp ordering of two NativeStrings (+0 length, +4 data); returns a < b | cc13-mopup1: renamed to avoid a duplicate of an existing name at another address"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "00443CB0 null-data ordering",
+      "is": "stored length+0 determines empty; data+4 is read only when both lengths are nonzero",
+      "evidence": "00443CB0 CMP [ECX],0;00443CBB NEG EAX;00443CCB CMP [EAX],0;00443CE1/CE4 read data"
+    },
+    {
+      "was": "0076EAA0 string-only/null-aware description and AL original result",
+      "is": "string prefix then unsigned scalar high+Ch/low+8h tie-break; native EAX0/1",
+      "evidence": "0076EAD8..0076EAE8 unsigned JC/JA comparisons;0076EAEB XOR EAX,EAX and0076EAF0 MOV EAX,1"
+    }
+  ],
+  "source_registration": "cmake/startup.cmake unique bsp_core append after foreign lease released; queued registration removed; no exclusive registry lease",
+  "validation": {
+    "build": "pending",
+    "existing_ctests": "pending",
+    "report_call_verification": "PASS3 native call rows checked,0 failures; documentation native argument setup and call table inspected",
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_executed": false,
+    "game_validated": false,
+    "diff_check": "PASS git diff --check"
+  },
+  "qualification": "Complete ordinary actual-storage Source over existing concrete accepted header comparator; no hook substitution; current CRT boundary and new C++ ABI; no stronger suffix field meaning, candidate-specific native differential or gameplay claim",
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "annotation": {
+    "applied": true,
+    "names_retained": true,
+    "prior_values_log": "local/ghidra-annotations-20261015T194716Z.json",
+    "program_saved": true,
+    "exports_refreshed": true
+  }
+}
