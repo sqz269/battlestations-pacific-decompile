@@ -1,0 +1,65 @@
+{
+  "packet": "oct15_native_string_vector_casefold_equal",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_string_vector_casefold_equal.cpp",
+  "header": "include/bsp/native_string_vector_casefold_equal.hpp",
+  "documentation": "docs/OCT15_NATIVE_STRING_VECTOR_CASEFOLD_EQUAL.md",
+  "address": "008d48e0",
+  "implementation": "equal_native_string_vector_casefold_008d48e0",
+  "coverage": "complete_ordinary_actual_header_effects_current_CRT_boundary",
+  "native_abi": "thiscall ECX vector,stack other,RET4,AL boolean; upperEAX residue differs by exit",
+  "source_abi": "cdecl2pointer bool; distinct interface, no registerABI claim",
+  "layout": {
+    "vector": "0Ch data+0,count+4,capacity+8 unused",
+    "element": "8h stored_length+0,text+4"
+  },
+  "schedule": [
+    "Read other count then this count; unequal fails; equal signed nonpositive counts succeed without data access.",
+    "For each index, reload this data then other data; DWORD index*8 and base sums wrap.",
+    "Read left length; zero compares only right length and never data. Nonzero left requires nonzero right; then load right text before left text and use currentCRT_stricmp.",
+    "No comparison of unequal nonzero stored lengths; NUL terminators and currentCRT locale determine content comparison.",
+    "After successful element comparison increment index and compare signed against freshly loaded other count; stop at first mismatch."
+  ],
+  "host_steps": [
+    {
+      "address": "008d4929",
+      "native": "00bf7fbf",
+      "function": "008d48e0",
+      "binding": "currentCRT _stricmp, not Original CRT body"
+    },
+    {
+      "address": "008d4d1b",
+      "native": "008d48e0",
+      "function": "008d4af0",
+      "contract": "incomingECX=this+98h,stackother+98h,TEST AL immediately after"
+    }
+  ],
+  "evidence": {
+    "body_bytes": 109,
+    "instructions": 50,
+    "flow_gaps": [],
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "disk_body_hex": "53578b7c240c8b47048bd939430474075f32c05bc204005633f685c07e3f8bff8b038b0f8d14f50000000003c203ca83380075088b01f7d81bc0eb1583390074248b49048b50045152e89136320083c40885c0751083c6013b77047cc35e5fb0015bc204005e5f32c05bc20400",
+    "saved_live_bytes_match_disk": true,
+    "caller_inspection": "Prolog and exact local argument/return continuation read; not a complete caller reconstruction.",
+    "no_EH_or_local_cleanup": true
+  },
+  "validation": {
+    "status": "Win32 Release existing3suites passed",
+    "command": "./scripts/build.ps1",
+    "ctest_seconds": 6.84,
+    "log": "local/oct15_casefold_equal_build.log",
+    "call_rows_checked": 2,
+    "call_rows_failed": 0,
+    "markdown_unchecked": 0,
+    "new_tracked_tests": 0,
+    "differential_scope": "Existing native seed tests only, not this new function"
+  },
+  "preserved_prior_projection": "native_string_vector_equal_008d48e0 in options_hardware_cc13.cpp remains separately recorded with host projection limits",
+  "limits": [
+    "Taken raw DWORD words must be mapped/readable; buffers on taken CRT comparisons must satisfy its string/locale contracts.",
+    "No concurrent mutation or private-frame aliases. Source memcpy-based raw loads do not claim exact original fault width/address.",
+    "No allocation, snapshot, guards or substitute callbacks; no binaryABI, Original CRT identity or live game proof."
+  ]
+}
