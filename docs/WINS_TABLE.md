@@ -442,3 +442,46 @@ mechanism is in the cd761bb52 section above).
   (5ep). Launches therefore stop near 2400 s (~80 launches; about 30k "not in state 1 or 5" refusals against 2k "no
   stock"); routed to cc9-physics10. **f is committed as the most robust plan: 2 of 3 conditions complete, and it is a
   knife-edge under 20,3.** It still needs a re-time on current main.
+- **Re-time on main 9228d13fe** (cc9-lua61, 2026-10-14). This main includes 610dc9bfd, 3f25f26ce, 222 ON, the accept
+  gate, the blast mesh, the director leader fire target, the torpedo done formation, the level-bomb prepare, the
+  wanderer float trig and the harness dead-target refusal 0f70e9dee. Exe: tree build copied to
+  `cc9-lua52\local\l61_rt\` (A6266C343C18). Reference env, `--stop-after-end 40`. Logs are
+  `local\l61rt_<row>_<ref|j3>.log` with manifests; queue `local\l61_retime.ps1`, summary `local\l61_rt_sum.py`, helm
+  divergence `local\l61_helmdiff.py <old> <new>`.
+
+  | Row | Frames | Reference | 20,3 | Guard |
+  |---|---|---|---|---|
+  | USN02 `s36_u2_p7` | 16000 | completed 200.06 s | completed 200.06 s | yes |
+  | LOMP06 `l50_l6_q6` | 16000 | completed 383.83 s (was 376.83) | completed 355.84 s | yes |
+  | USN01 `p8_u1_i` | 26000 | completed 365.03 s (was 360.04) | completed 360.04 s | yes |
+  | PRCP01 `p9_p01_k` | 30000 | completed 536.29 s | completed 800.68 s | yes |
+  | USN12 `g45_u12_e7` | 36000 | completed 1675.51 s | completed 1675.51 s (jitter confirmed on) | yes |
+  | LOMP10 `p3_l10_b` | 36000 | completed 1003.43 s (was 1187.58) | completed 1245.64 s | yes |
+  | BSM01 `p6_b1_a` | 40000 | EndMission 833.92 s | EndMission 875.91 s | yes |
+  | IJN18 `s46_i18_a` | 64000 | EndMission 2162.98 s (was 2156.98) | EndMission 2166.99 s | yes |
+  | JM08 `p6_j8_f` | 110000 | **failed 940.94 s** ("The HQ has been destroyed!") | **no end** | - |
+  | JM06 `s49_j6_s` | 120000 | completed 2123.95 s (was 1991.82) | **no end** (was 2901.71) | ref yes |
+  | IJN08 `p9_i08_w` | 100000 | **failed 789.93 s** (Game Over) | **failed 1530.37 s** (Game Over) | - |
+  | ESMP08 `l61_e8_f` | 140000 | completed 6532.47 s (was 4196.63 on 8612ef146) | 13/15 (Washington, Cummings) | ref yes |
+
+  Losses, first divergence and suspect range (none bisected):
+  - **JM08 f.** Diffed against the last win `cc9-lua52\local\l59_m4s_j8.log` (fcee16d53, 1464.00 s). The first hit
+    moves from 5.00 to 4.65 s, so the run diverges from the opening salvo. The first helm divergence is at frame 6600:
+    `build Shipyard 01 class 77` is now built instead of being refused, and at 6800 `select Gyoraitei #Y1` is refused
+    (the byte filters), so its `attack` lines are refused. Headquarter 01 falls at 940.94 s. Range fcee16d53..9228d13fe;
+    the first-hit move points at the gunnery flips 01dcecf2e (accept gate / 222), 4aa1a549a (blast mesh) and
+    9428d8b8f (director leader fire target).
+  - **JM06 s, 20,3 only.** Diffed against `cc9-ships44\local\s49_j3_s.log` (fd6d92617). The first moved death is US
+    Cargo Transport 02 at 171.96 -> 172.01 s, then the run drifts. The decisive change: PlayerSub 01 is sunk at
+    1384.53 s by Lexington-class 01_sqn02|.-2 (cat 6, damaged from 726.65 s near US Tanker 02). In the win that
+    squadron was shot down, and the sub sank Tanker 02 at 1744.18 s. Range fd6d92617..9228d13fe; most likely the plane
+    lane (attack and formation flips), but not shown.
+  - **IJN08 w.** Diffed against `cc9-physics1\local\p9i8_w.log`. The first moved death is DLBarrak 03 at 8.30 -> 8.70 s
+    (killer DamagedBB -> HQ), so the exe moved it before any order line differs. The first helm divergence is at frame
+    5725: `attack JapSub2 -> Cargo6` is now `refused: target dead` (0f70e9dee). w was built on dead-target lines being
+    applied (the last line sticks), so the harness fix changes the plan's meaning. Maru2 dies at 684.06 s (bombed by
+    Jap_Airfield_sqn15, a friendly squadron) and Maru1 at 787.53 s (US_Airfield_03_sqn10); under 20,3 both die to
+    US_Airfield_03_sqn22 at 1476/1526 s. Range 25b98b1fa..9228d13fe, with 0f70e9dee a certain contributor. w needs a
+    re-plan against the refusal; variant x was not run.
+  - **ESMP08 f** holds the reference on this main and stays at 13/15 under 20,3: knife-edge (state-3 slot limit, with
+    cc9-physics10).
