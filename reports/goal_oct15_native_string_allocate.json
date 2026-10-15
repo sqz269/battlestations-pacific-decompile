@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_native_string_allocate",
+  "source": "src/native_string_allocate_storage.cpp",
+  "header": "include/bsp/native_string_allocate_storage.hpp",
+  "documentation": "docs/GOAL_OCT15_NATIVE_STRING_ALLOCATE.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "0041cb50",
+      "end_exclusive": "0041cb67",
+      "coverage": "complete",
+      "cpp_symbol": "allocate_native_string_storage_0041cb50",
+      "original_abi": "ECX uint32 length; EAX preserves allocator block; RET; ESI restored",
+      "bytes": "56 8b f1 e8 68 d1 ff ff 6a 01 83 c6 01 56 8b c8 e8 bb 45 7b 00 5e c3",
+      "live_disk_equal": true,
+      "original_callers": 0,
+      "live_xrefs": 0,
+      "sha256": "d136a9fba552c319a16d6d7e080eabf88d256367440e57e7d1dac16f59262146",
+      "disk_file_offset": 117584
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0041cb53",
+      "native": "00419cc0",
+      "function": "0041cb50",
+      "contract": "current shared actual pool getter, called before length increment"
+    },
+    {
+      "address": "0041cb60",
+      "native": "00bd1120",
+      "function": "0041cb50",
+      "contract": "allocate uint32(length+1), unread stack word1, nullable block returned unchanged"
+    }
+  ],
+  "prior_annotation": {
+    "name": "BSP_NativeString_AllocateStorage_0041CB50",
+    "comment": "[BSP reconstruction 0041cb50]\nHypothesis, not a recovered symbol. docs/CC13_BAND_0040_0044.md. BSP_SizedStoragePool_GetSingleton then BSP_SizedStoragePool_AllocateBlock(size + 1, 1); no static callers",
+    "prototype": "undefined BSP_NativeString_AllocateStorage_0041CB50(void)",
+    "prototype_mutated": false
+  },
+  "corrections": [
+    {
+      "was": "exported decompiler prints void and live prototype has no arguments",
+      "is": "assembly consumes ECX length and leaves the allocator block in EAX; this source exposes that observed contract",
+      "evidence": "0041CB51 MOV ESI,ECX; 0041CB5A ADD ESI,1; 0041CB5D PUSH ESI; 0041CB60 CALL 00BD1120; POP ESI; RET"
+    }
+  ],
+  "validation": {
+    "build": "pending",
+    "existing_ctests": "pending",
+    "report_call_verification": "PASS 2 call rows checked, 0 failed; markdown 0 failures or warnings",
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_executed": false,
+    "game_validated": false,
+    "diff_check": "PASS git diff --check"
+  },
+  "qualification": "Complete ordinary Source composition over existing actual raw native pool implementations; no callback substitution; added context argument is a new C++ ABI; no original-byte differential or game-validation claim",
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "annotation": {
+    "applied": true,
+    "name_retained": true,
+    "prior_values_log": "local/ghidra-annotations-20261015T191842Z.json",
+    "program_saved": true,
+    "export_refreshed": true
+  }
+}
