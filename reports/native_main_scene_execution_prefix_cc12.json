@@ -1,25 +1,25 @@
 {
-  "packet": "cc12_native_main_scene_scne_target_camera",
-  "utc": "2026-10-15T00:09:34.263345+00:00",
-  "base_commit": "40bd1030bb881c10f041f10013ee0190d4321449",
-  "status": "actual_storage_SCNE_targets_camera_clause_strict_COFF_original_caller_real_D3D_checked",
-  "scope": "B161AD..B161F4 current-service target selection, color0 installation, current renderer/profile/frame binding and fresh camera execution. Earlier entry/history/texture/far/bloom/target/camera/gather/DRSH/batch/excluded/depth-downscale/second-gather/SCNE-label stages retained. Stops BEFORE B161F5 batch selection with state5 armed. No full D5E13C or application route.",
+  "packet": "cc12_native_main_scene_scne_batches",
+  "utc": "2026-10-15T00:25:09.854834+00:00",
+  "base_commit": "f647c5c60136c3b33fc7a36b5492d619d559705f",
+  "status": "actual_storage_SCNE_batches_strict_COFF_original_caller_real_worker_lifecycle_checked",
+  "scope": "B161F5..B162FD SCNE synchronization/signed-count selection and concrete worker or inline preparation plus batch execution. Earlier entry/history/texture/far/bloom/target/camera/gather/DRSH/batch/excluded/depth-downscale/second-gather/SCNE-label/target-camera stages retained unchanged. Stops BEFORE B162FE capture selection with state5 armed. No full D5E13C/application route.",
   "native_identity": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
     "bodies": [
       {
-        "name": "targets",
-        "address": "00b161ad",
-        "bytes": 72,
-        "sha256": "353657c863e3ccb13588e1809399a59d528a0855525edb3e560ef0683e2aac37",
+        "name": "batch",
+        "address": "00b161f5",
+        "bytes": 265,
+        "sha256": "d7870a837c009c732d9dc825f5f8494d67f8eefab732171753cb1f969eef1f44",
         "saved_ghidra_matches_disk": true
       },
       {
-        "name": "holder",
-        "address": "00b4cb20",
+        "name": "count",
+        "address": "00b51b20",
         "bytes": 4,
-        "sha256": "2e339cdc5de837ec151dbde90057caeabba18ac3ea32e7c2cffc8f95df41a6ff",
+        "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
         "saved_ghidra_matches_disk": true
       },
       {
@@ -30,87 +30,75 @@
         "saved_ghidra_matches_disk": true
       },
       {
-        "name": "renderer_profile",
-        "address": "00d5f0a8",
-        "bytes": 328,
-        "sha256": "81b6ffba0bc0ddc59499163d761da9c9f15bfd57d099d61c08ba40df94550c4b",
-        "saved_ghidra_matches_disk": true
-      },
-      {
-        "name": "surface_profile",
-        "address": "00d619a0",
+        "name": "batch_profile",
+        "address": "00d5e5ac",
         "bytes": 16,
-        "sha256": "a9d9da354e43a861961abaf78e9c97aca2f1e5d72b54220e6152b8602cd98ed7",
+        "sha256": "9c2ccfe40604062125fec5fdef0e43142b1ed2d15a5f6dcc1ba679f9a5f45819",
         "saved_ghidra_matches_disk": true
       },
       {
-        "name": "group_profile",
-        "address": "00d5e600",
+        "name": "base_batch_profile",
+        "address": "00d62064",
+        "bytes": 16,
+        "sha256": "fd21f7b19ea8f13dd27af4a091df38081898f90eacbd9259f5a3b34cedb64822",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "job_profile",
+        "address": "00d5e160",
+        "bytes": 4,
+        "sha256": "e7d6d1986e421f13415a2d46a278cdb507889b3a53ee52ca1e19db31e5219af0",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "event_profile",
+        "address": "00d6821c",
+        "bytes": 16,
+        "sha256": "961065846b722b86f72bfe064bfcd47827f3cd7348a5c679e35ef20a8c1275a7",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "frame_profile",
+        "address": "00ce7554",
+        "bytes": 24,
+        "sha256": "2ebb201dffb89306044fd85b738ae180eb54dd22f5e16ac2b121a451a21cd93f",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "pool_profile",
+        "address": "00d68650",
+        "bytes": 24,
+        "sha256": "64cf20c66e4f8dc86a6020c0fc38300574a22f76f96edcb1e27051df60812a64",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "scne",
+        "address": "00d5e4f8",
         "bytes": 8,
-        "sha256": "b1ecc67d201a3405d2c2382c329b4233e9c30bd2c6da012c61e444134bb6cd9b",
+        "sha256": "bd79a65b5f5de8fb1615c07c6c5f372c65aa1a72ebab3b551f266141f9a9aa35",
         "saved_ghidra_matches_disk": true
-      },
-      {
-        "name": "viewport_profile",
-        "address": "00d5e5f8",
-        "bytes": 8,
-        "sha256": "7dec5b14114e377e30c7980a2cd07194263999b54a17e0ead5b1084fb373f9e9",
-        "saved_ghidra_matches_disk": true
-      }
-    ],
-    "constants": [
-      {
-        "name": "near_word",
-        "address": "00ce3800",
-        "bytes": "0000003f",
-        "value": 0.5
-      },
-      {
-        "name": "bias_word",
-        "address": "00ce3978",
-        "bytes": "0000804f",
-        "value": 4294967296.0
-      },
-      {
-        "name": "one_word",
-        "address": "00d7a24c",
-        "bytes": "0000803f",
-        "value": 1.0
-      },
-      {
-        "name": "half_word",
-        "address": "00d7a280",
-        "bytes": "000000000000e03f",
-        "value": 0.5
-      },
-      {
-        "name": "negative_half_word",
-        "address": "00ce69d0",
-        "bytes": "000000bf",
-        "value": -0.5
-      },
-      {
-        "name": "adaptation_word",
-        "address": "00ce3cb8",
-        "bytes": "000000000088d340",
-        "value": 20000.0
       }
     ]
   },
   "original_abi": {
-    "00b161ad": "Enclosing B156C0 ECX service and stacked command RET4. This interior clause retains original ESI service, EDI command and EBP0. No independent function entry. New explicit context and persistent frame are Source interfaces, not native caller ABI."
+    "00b161f5": "Enclosing B156C0 ECX service and stacked command RET4. Interior clause retains EDI command, initial/final EBP0; EBP carries captured pool/batch; EBX captures current profiles. Serial paths capture current batch at ESP+28. New explicit context/frame interfaces are Source ABI, not native private caller ABI."
   },
   "evidence": {
-    "native_caller_bytes": 72,
-    "native_caller_instructions": 20,
-    "domains": "Target owner, camera preparation and viewport/clear borrow the same actual renderer publication, synchronization and CRT domain as the existing SCNE system. Current captured profile supports D5F0A8:98=B24E70; B71360 uses that same borrowed profile. Concrete B4CB20, B1FAB0, B24E70, B1BF40 and B71360 providers; no success callback, manufactured target or default owner.",
-    "ordering": "Original ESI service current byte+22D selects current+48 for any nonzero value or current+44. Borrow primary+C, then first current+1CC for color0 setter. Capture current renderer then profile, reload current service+1CC, then read captured profile slot98. Bind frame, reload command camera and execute B71360. Both current+1CC reads and renderer/profile order checked in strict COFF.",
-    "ownership": "Requires completed SCNE label and state5. Success retains5 atB161F5. Source failure marks target frame failed and consumes existing CBC47E action: state-1 before current-global-service B13510 reset; earlier owner/device/camera effects persist. Repeated stage or cleanup cannot replay/retire twice. Original FH3 not installed.",
-    "fixture": "Four exact original72B/Source pairs with real D3D9 HAL: selector0/enabled camera, selector80/enabled camera, disabled camera, already-bound target group. Actual32x24/40x30 target identities, viewport/sRGB readbacks, raw camera/renderer/service/group/viewport bytes and surface reference increments match. Source-only reached slot98 rejection after color installation preserves the surface and resets a newly published service, then verifies second cleanup leaves pool/header unchanged.",
-    "original_adaptation": "Fixture-owned fixed-base PE section reserved before startup, existing section bytes including embedded manifest preserved. Original72B caller at native addresses with only F8D394 operand relocated to actual publication; original4B holder and7B camera leaves copied; B1FAB0/B24E70/B71360 targets bridge to genuine Source descendants. Wrapper preserves callee-saved registers and supplies ESI service/EDI command/EBP0, then jumps out atB161F5. No native FH3 dispatch or childthrow.",
-    "fixture_limits": "SCNE label boundary seeded; original and Source caller share Source target/camera descendants. No original child exception/FH3/SEH/fault ABI, active material draw, pixel comparison, arbitrary concurrent mutation, full prior prefix chain, full scene or gameplay evidence.",
-    "build": "Strict Win32 /MD /W4 /WX /O2 /fp:strict prefix/far/post compilation. Actual COFF708B/197instructions and6 provider relocations checked; compiled camera leaf equals7B original. All330 inherited tagged x87 instructions unchanged; no new floating arithmetic. Fresh-core manifested probe passes; ordinary scripts/build.ps1/all3 existing checks pass. No persistent tests/CMake/host changes.",
+    "native_caller_bytes": 265,
+    "native_caller_instructions": 90,
+    "domains": "Same retained actual SCNE label.domains object and established preparation, raw manager/publication, queue, frame-job execution/lifetime and material-entry context. NativeRenderPreparationJobDispatch uses real B1BF70/B51DF0 on actual batches; actual BE3150 wake/resume/drain/wait and real Win32 entry remain required. Optional providers are demanded at reached calls. No callback, owner, random registry, counter or successful scheduler replacement.",
+    "selection": "Raw synchronization byte nonzero selects inline without reading either count. Otherwise current command+0C count is read as signed; only >50 reads current command+10 count; only its signed >50 selects worker branch. Source retains JLE/SETG, no unsigned/count normalization.",
+    "ordering": "Parallel current mode08 stores precede frame getter; current batch and returned pool+4 captured before B0FFB0, current pool virtual04 validated afterward. Both submissions precede fresh frame getter and actual use_workers1 dispatch/wait. Inline prepare0/execute0/prepare1/execute1. Every execute reloads batch, captures current profile before fresh B1BF40, reads captured+08 after getter. B55550 independently reloads current renderer and ignores camera/index; material entries retain entry+10 camera.",
+    "ownership": "Requires completed SCNE state5 and fresh batch frame. Success reachesB162FE retaining5. Source failure marks batch/label failed then invokes existing CBC47E action: state-1 before CURRENT global-service B13510 reset. Prior preparation, queue slots, active scope and native mutations are not rolled back; second cleanup or stage replay cannot repeat retirement. Original FH3 not installed.",
+    "fixture": "Six exact original265B/Source pairs: sync80/51+51;50+51;51+50;-1+51 with actual first preparation disabled;51+51 with genuine one-worker construction/submit/dispatch/wait/stop;inactive current renderer. Raw batches/entries/keys/order/worker-pool/queue/service/string-pool graphs match. Command camera mode2 differs from entry camera mode6. Active renderer clears cached effect through nonempty descriptor/fade/mode6 traversal; inactive preserves it. Source-only after-preparation domain rejection preserves changed first batch and untouched second, resets newly published service leaving captured SCNE service intact, and verifies second cleanup changes no header/pool.",
+    "original_adaptation": "Fixture-owned fixed-base PE section reserved before startup; all previous section bytes including embedded manifest preserved. Exact265B caller copied with genuine Source bindings for E8 getters and fixed virtual targets; raw original4B count/7B camera leaves execute. Only108D6DC operand relocated to actual synchronization. Wrapper preserves registers, seeds EDI command/EBP0 and reserves64B for native ESP+28 capture. Internal branches land within copied clause/epilogue. No native FH3 dispatcher.",
+    "fixture_limits": "Genuine Source SCNE label construction precedes seeded target/camera boundary. Original caller and Source share Source descendants. Frame/preparation/queue/string-pool publications are warm; manager publication is trapping sentinel1, so no manager body/cold creation/registration is exercised. Nonempty material traversal stops at actual descriptor/fade/mode6 gate; no active pass/shader/device draw. No original childthrow/FH3/SEH/private-frame/fault ABI, arbitrary concurrency, whole prior main-scene chain, full scene/application/gameplay proof.",
+    "build": "Strict Win32 /MD /W4 /WX /O2 /fp:strict prefix/far/post compilation. Actual COFF1460B/421instructions17 provider/helper relocations checked; fresh core count leaf exactly4B8B4110C3 and strict camera leaf exactly7B. Earlier CPP prefix unchanged, all330 inherited tagged x87 encodings unchanged, no new FP arithmetic. Fresh-core manifested fixture and ordinary scripts/build.ps1/all3 existing checks pass. No persistent tests/CMake/host changes.",
     "prior_receipts": [
+      {
+        "path": "local/main_scene_scne_target_receipt_5adb0036f/receipt.json",
+        "artifacts_verified_unchanged": 55
+      },
       {
         "path": "local/main_scene_scne_label_receipt_f0a5963ff/receipt.json",
         "artifacts_verified_unchanged": 53
@@ -152,97 +140,197 @@
         "artifacts_verified_unchanged": 15
       }
     ],
-    "prior_committed_files": {
-      "path": "local/main_scene_scne_label_committed_f0a5963ff/receipt.json",
-      "verified": 6,
-      "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_parent_receipts\\world_f0\\receipt.json"
-    },
+    "prior_committed_file_receipts": [
+      {
+        "path": "local/main_scene_scne_target_receipt_5adb0036f/manifest.json",
+        "section": "committed",
+        "verified": 6
+      },
+      {
+        "path": "local/main_scene_scne_label_committed_f0a5963ff/receipt.json",
+        "section": null,
+        "verified": 6
+      }
+    ],
     "emitted_code_audit": {
       "result": "PASS",
       "coff": {
         "machine": "014c",
-        "function": "?continue_native_main_scene_scne_targets_00b161ad@bsp@@YAXPAX0ABUNativeMainSceneScneTargetContext@1@AAUNativeMainSceneScneLabelFrame@1@AAUNativeMainSceneScneTargetFrame@1@AAUNativeMainSceneExecutionPrefixState@1@@Z",
-        "section": 41,
-        "bytes": 708,
-        "sha256": "efa60ae6b825b189104870219659eb021b418dad9f4d25536610e295d19fee6b",
-        "instructions": 197,
-        "provider_call_order": [
-          "native_render_holder_primary_00b4cb20",
-          "set_native_frame_target_color_00b1fab0",
-          "bind_native_renderer_frame_targets_00b24e70",
-          "get_native_scene_command_camera_00b1bf40",
-          "execute_native_camera_frame_command_00b71360",
-          "unwind_native_main_scene_scne_label"
-        ],
-        "provider_rel32_relocations": [
+        "function": "?continue_native_main_scene_scne_batches_00b161f5@bsp@@YAXPAXAAUNativeMainSceneScneBatchContext@1@AAUNativeMainSceneScneLabelFrame@1@AAUNativeMainSceneBatchFrame@1@AAUNativeMainSceneExecutionPrefixState@1@@Z",
+        "section": 39,
+        "bytes": 1460,
+        "instructions": 421,
+        "sha256": "6945b2602d453c9b279c45f3da359426ad3b7e67b5deaad9fa68e4a4c6be409b",
+        "provider_relocations": [
           {
-            "offset": 339,
-            "symbol": "?native_render_holder_primary_00b4cb20@bsp@@YIPAUNativeSurfaceOwnerStorage@1@PBX@Z",
+            "offset": 286,
+            "symbol": "?native_render_batch_count_00b51b20@bsp@@YIHPBUNativeRenderBatchStorage@1@@Z",
             "type": 20
           },
           {
-            "offset": 385,
-            "symbol": "?set_native_frame_target_color_00b1fab0@bsp@@YAXAAUNativeFrameTargetOwnerStorage@1@IPAUNativeSurfaceOwnerStorage@1@AAUNativeFrameTargetOwnerContext@1@@Z",
+            "offset": 337,
+            "symbol": "?native_render_batch_count_00b51b20@bsp@@YIHPBUNativeRenderBatchStorage@1@@Z",
             "type": 20
           },
           {
-            "offset": 490,
-            "symbol": "?bind_native_renderer_frame_targets_00b24e70@bsp@@YAXPAXPAUNativeFrameTargetOwnerStorage@1@AAUNativeRendererFrameTargetsContext@1@@Z",
+            "offset": 434,
+            "symbol": "?main_scene_job_bindings@?A0xcde62dd3@bsp@@YAAAVNativeFrameJobLifetimeBindings@2@AAUNativeMainSceneBatchContext@2@@Z",
             "type": 20
           },
           {
-            "offset": 518,
-            "symbol": "?get_native_scene_command_camera_00b1bf40@bsp@@YIPAXPBX@Z",
+            "offset": 451,
+            "symbol": "?get_native_frame_jobs_actual_004c1130@bsp@@YAPAUNativeFrameJobOwnerStorage@1@AAUNativeRenderJobPublicationContext@1@@Z",
             "type": 20
           },
           {
-            "offset": 541,
-            "symbol": "?execute_native_camera_frame_command_00b71360@bsp@@YIXPAXPBUNativeCameraFrameCommandContext@1@@Z",
+            "offset": 515,
+            "symbol": "?get_native_preparation_job_actual_00b0ffb0@bsp@@YAPAUNativeRenderPreparationJobStorage@1@AAUNativeRenderJobPublicationContext@1@@Z",
+            "type": 20
+          },
+          {
+            "offset": 565,
+            "symbol": "?require_enqueue_virtual_04@NativeFrameJobExecution@bsp@@QBEXABUNativeFrameJobPoolStorage@2@@Z",
+            "type": 20
+          },
+          {
+            "offset": 583,
+            "symbol": "?enqueue_native_frame_job_00be3020@bsp@@YAXAAUNativeFrameJobPoolStorage@1@PAXI@Z",
+            "type": 20
+          },
+          {
+            "offset": 628,
+            "symbol": "?main_scene_job_bindings@?A0xcde62dd3@bsp@@YAAAVNativeFrameJobLifetimeBindings@2@AAUNativeMainSceneBatchContext@2@@Z",
+            "type": 20
+          },
+          {
+            "offset": 642,
+            "symbol": "?get_native_frame_jobs_actual_004c1130@bsp@@YAPAUNativeFrameJobOwnerStorage@1@AAUNativeRenderJobPublicationContext@1@@Z",
             "type": 20
           },
           {
             "offset": 686,
+            "symbol": "?require_dispatch_virtual_08@NativeFrameJobExecution@bsp@@QBEXABUNativeFrameJobPoolStorage@2@@Z",
+            "type": 20
+          },
+          {
+            "offset": 705,
+            "symbol": "?dispatch_native_frame_jobs_00be3150@bsp@@YAXAAUNativeFrameJobPoolStorage@1@EAAU?$atomic@H@std@@AAVNativeFrameJobExecution@1@@Z",
+            "type": 20
+          },
+          {
+            "offset": 860,
+            "symbol": "?main_scene_batch_profile@?A0xcde62dd3@bsp@@YAPDIPAUNativeRenderBatchStorage@2@AAUNativeRenderBatchPreparationContext@2@@Z",
+            "type": 20
+          },
+          {
+            "offset": 894,
+            "symbol": "?prepare_native_render_batch_actual_00b51df0@bsp@@YAXAAUNativeRenderBatchStorage@1@ACIAAUNativeRenderBatchPreparationContext@1@@Z",
+            "type": 20
+          },
+          {
+            "offset": 988,
+            "symbol": "?main_scene_batch_profile@?A0xcde62dd3@bsp@@YAPDIPAUNativeRenderBatchStorage@2@AAUNativeRenderBatchPreparationContext@2@@Z",
+            "type": 20
+          },
+          {
+            "offset": 1045,
+            "symbol": "?get_native_scene_command_camera_00b1bf40@bsp@@YIPAXPBX@Z",
+            "type": 20
+          },
+          {
+            "offset": 1153,
+            "symbol": "?execute_native_render_batch_entries_00b55550@bsp@@YAXPAXI0AAUNativeMaterialEntryDispatchContext@1@PAUNativeMaterialEntryDispatchFrame@1@@Z",
+            "type": 20
+          },
+          {
+            "offset": 1438,
             "symbol": "?unwind_native_main_scene_scne_label@bsp@@YAXABUNativeMainSceneScneLabelContext@1@AAUNativeMainSceneScneLabelFrame@1@@Z",
             "type": 20
           }
         ],
         "checked_instruction_positions": {
-          "0126": "mov al, byte ptr [esi + 0x22d]",
-          "0135": "lea eax, [esi + 0x44]",
-          "013e": "setne cl",
-          "0141": "lea eax, [eax + ecx*4]",
-          "014a": "mov eax, dword ptr [eax]",
-          "0165": "mov eax, dword ptr [eax]",
-          "018f": "mov ecx, dword ptr [eax]",
-          "0197": "mov eax, dword ptr [eax]",
-          "01a2": "mov eax, dword ptr [eax]",
-          "01d5": "cmp dword ptr [eax + 0x98], 0xb24e70",
-          "0211": "mov ecx, eax",
-          "0219": "mov edx, dword ptr [esi + 4]",
-          "02a3": "mov byte ptr [eax + 9], 1"
+          "005c": "cmp dword ptr [ebx + 0x14], 5",
+          "00ed": "cmp byte ptr [eax], cl",
+          "00ef": "jne 0x166",
+          "0122": "cmp eax, 0x32",
+          "0125": "jle 0x160",
+          "0155": "cmp eax, 0x32",
+          "0158": "setg cl",
+          "019d": "mov dword ptr [eax + 8], edi",
+          "01dc": "mov eax, dword ptr [eax]",
+          "01de": "mov dword ptr [ebp - 0x2c], eax",
+          "0239": "push dword ptr [ebp - 0x2c]",
+          "0255": "jmp 0x173",
+          "02bd": "push 1",
+          "02d9": "jae 0x494",
+          "02eb": "jne 0x38b",
+          "0399": "mov eax, dword ptr [eax]",
+          "03e3": "mov dword ptr [ebp - 0x30], eax",
+          "0423": "mov edx, dword ptr [edx + 8]",
+          "0479": "push dword ptr [ebp - 0x2c]",
+          "048f": "jmp 0x2d1",
+          "058c": "mov byte ptr [eax + 0xa], 1",
+          "0594": "mov byte ptr [eax + 0x22], 1"
         },
-        "camera_getter_byte_identical": true
+        "camera_getter_exact7B": true,
+        "earlier_source_prefix_unchanged": true,
+        "state5_disarm_before_reset": true
       },
       "native": {
-        "address": "00b161ad",
-        "bytes": 72,
-        "instructions": 20,
-        "sha256": "353657c863e3ccb13588e1809399a59d528a0855525edb3e560ef0683e2aac37"
+        "address": "00b161f5",
+        "bytes": 265,
+        "instructions": 90,
+        "sha256": "d7870a837c009c732d9dc825f5f8494d67f8eefab732171753cb1f969eef1f44",
+        "branches": [
+          [
+            11624956,
+            "jne",
+            "0xb162b0"
+          ],
+          [
+            11624973,
+            "jle",
+            "0xb162b0"
+          ],
+          [
+            11624990,
+            "jle",
+            "0xb162b0"
+          ],
+          [
+            11625134,
+            "jmp",
+            "0xb162fe"
+          ]
+        ],
+        "private_captured_batch_slot": "ESP+28 in each serial arm"
       },
-      "reviewed": "Current selector/selected holder; first current+1CC for color0; actual renderer/profile capture; second current+1CC read before captured-profile slot98; fresh camera getter then real B71360; failure flag before state5 unwind. No new x87 instructions.",
-      "native_FH3_dispatch_tested": false
+      "new_x87_instructions": 0,
+      "reviewed": "Actual byte/signed count gates; mode store before current frame getter; current batch/pool capture before preparation getter; current virtual04 after getter; actual use_workers1 dispatch/wait after both submissions. Serial prep then fresh batch/profile; camera getter then captured profile slot08. Interleaved serial execution; state5 untouched until existing cleanup; preserved job/scope partial-failure semantics.",
+      "native_FH3_tested": false
+    },
+    "count_leaf_audit": {
+      "result": "PASS",
+      "object": "build/win32/bsp_core.dir/Release/native_render_state_leaves.obj",
+      "machine": "014c",
+      "function": "?native_render_batch_count_00b51b20@bsp@@YIHPBUNativeRenderBatchStorage@1@@Z",
+      "bytes": 4,
+      "hex": "8b4110c3",
+      "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+      "native_address": "00b51b20",
+      "semantics": "Full EAX raw DWORD+10, RET; signed interpretation belongs to caller JLE/SETG."
     },
     "inherited_x87_audit": {
       "result": "PASS",
       "checks": [
         {
-          "listing": "local/main_scene_scne_target/native_camera_far_corners.asm",
+          "listing": "local/main_scene_scne_batch/native_camera_far_corners.asm",
           "tagged_original_x87_instructions_checked": 164,
           "coverage": "all address-tagged unchanged x87 instructions; context-bound constant loads and source public-argument adapters are separately reviewed",
           "address_set_sha256": "9bb321e936d5809f930cf5f8d3f623aec5f9498eacd0ad2f2a30447e0cd591e3"
         },
         {
-          "listing": "local/main_scene_scne_target/native_main_scene_execution_prefix.asm",
+          "listing": "local/main_scene_scne_batch/native_main_scene_execution_prefix.asm",
           "tagged_original_x87_instructions_checked": 166,
           "coverage": "all address-tagged unchanged x87 instructions; context-bound constant loads and source public-argument adapters are separately reviewed",
           "address_set_sha256": "c928641ab752330fe9c6fad2106fb014df53b44233382c37cecd74f0a4c06774"
@@ -251,7 +339,7 @@
       "recovered_ambiguity": "All one-register x87 arithmetic operands use verified installed instruction opcode direction."
     },
     "saved_ghidra_annotations": [
-      "local/ghidra-annotations-20261015T000736Z.json"
+      "local/ghidra-annotations-20261015T002315Z.json"
     ],
     "refreshed_exports": [
       "00b156c0"
@@ -262,68 +350,64 @@
     "profile": "00d5e13c",
     "admitted": false,
     "complete_enclosing_function": false,
-    "next_native_address": "00b161f5",
+    "next_native_address": "00b162fe",
     "native_cleanup_state": 5,
     "next_concrete_dependency": {
-      "start": "00b161f5",
-      "selector": "actual synchronization byte then signed current command+0C/+10 batch counts >50 via B51B20",
-      "providers": [
-        "00b51b20",
-        "004c1130",
-        "00b0ffb0",
-        "current FrameJobPool+4/+8",
-        "current batch+0C/+08",
-        "00b1bf40"
-      ],
-      "status": "Concrete count/job-publication/lifecycle/batch-dispatch descendants exist; this SCNE caller composition remains unimplemented with state5 still armed"
+      "start": "00b162fe",
+      "selector": "original service current+22D chooses current+48/+44",
+      "call_site": "00b1630f",
+      "callee": "00b4caf0",
+      "named_child": "00b3cda0",
+      "status": "Current ledgers expose typed render_fx_cc13 models for capture/StretchFrom; actual-storage capture caller/child composition remains unimplemented",
+      "following": "8 current renderer+130 calls, then state5 disarmB1633E and current-service resetB16349"
     },
     "requires": [
       "Actual B17240 preparation",
-      "SCNE batches with live state5",
-      "Remaining scene/material/post/cockpit/distortion/statistics body and cleanup states",
+      "Capture/sampler reset and normal SCNE state5 retirement",
+      "POST ownership and remaining scene/material/cockpit/distortion/statistics body",
       "Full genuine body/domain closure before queue admission"
     ]
   },
   "unproved": [
     "Whole D5E13C execution/application route",
     "Original descendant/FH3/SEH/private-stack/register/fault ABI",
-    "Native child failures and cold registration",
+    "Native child failures and cold manager/registration",
     "Arbitrary concurrent publication or owner mutations",
-    "Whole prior prefix/batch chain in one original caller",
-    "Active selected material/shader/device draw or pixel parity",
+    "Whole prior main-scene prefix in one original caller",
+    "Active material pass/shader/device draw",
     "Actual application scene/camera creation/invocation",
     "Visible world/gameplay"
   ],
   "artifacts": [
     {
       "path": "src/native_main_scene_execution_prefix.cpp",
-      "bytes": 69932,
-      "sha256": "a79af390d10782b7bab995bc45ec1cacdbc1faec1277e3b29abc0227b46c143b"
+      "bytes": 76065,
+      "sha256": "6da10609da665178e2f2f75e676d5cab6e6c6fa801f1daaabfc29e392fc1284d"
     },
     {
       "path": "include/bsp/native_main_scene_execution_prefix.hpp",
-      "bytes": 20237,
-      "sha256": "d04373e472cfc454cac7676e9a4649731652e8f60173662775730fc63651bc10"
+      "bytes": 21477,
+      "sha256": "b0e124c06d036a294623926983b25c20d68c2868e5dd205c67f4ed352ac613e5"
     },
     {
       "path": "docs/NATIVE_MAIN_SCENE_EXECUTION_PREFIX_CC12.md",
-      "bytes": 49584,
-      "sha256": "c81409be81b84c5543d11533fc08b10cc546843036a18d8e0b547882de7f760a"
+      "bytes": 54135,
+      "sha256": "544adc23b5ed4a2c9cb9294da1b2fd8b9245ed78aebd7752b506f674af845b63"
     },
     {
       "path": "config/names/00b10000.jsonl",
-      "bytes": 358254,
-      "sha256": "7174837ff584336f09e722094e9e9081140a3bd9d8db66b7c78ff43ca7b30064"
+      "bytes": 359805,
+      "sha256": "c9a83296e83c39b3c5fb83e8593f1a59cc634be0e5e0454f3be6a8e8098a5561"
     },
     {
       "path": "config/reconstruction/00b10000.jsonl",
-      "bytes": 423861,
-      "sha256": "1be54d2004934eb1f95c8d5aff4fad294f379675b14511ca863755e618222241"
+      "bytes": 427189,
+      "sha256": "42ac6140aabd9d5a4eeeb9955cf2902c5ed71ad8ca865aa4e3f5eee7398c0315"
     },
     {
       "path": "build/win32/Release/bsp_core.lib",
-      "bytes": 91964128,
-      "sha256": "3c08e1c20743627b11bac372fc4375baa03624553536d51ddcf3a31aa55d99bc"
+      "bytes": 91991598,
+      "sha256": "d9b6e3f1e259e1cd3adef5e761d831b183373425dbabccb0d7221152c8f20035"
     },
     {
       "path": "build/win32/Release/bsp_lua511.lib",
@@ -336,24 +420,34 @@
       "sha256": "1f4792601d3198471ab898fb8b2a6015fba928b164832817d46b4a0fa8bb11c9"
     },
     {
+      "path": "build/win32/bsp_core.dir/Release/native_render_state_leaves.obj",
+      "bytes": 1270,
+      "sha256": "964c2e36fb01c5d588b884780f634d51be199c06df12d4d690d036443386887e"
+    },
+    {
       "path": "local/main_scene_execution/native_camera_history.obj",
       "bytes": 7077,
       "sha256": "22baea6d710978e1c456204021e49924ac738d8b5a79e2b689d89123cadfee81"
     },
     {
-      "path": "local/ghidra-annotations-20261015T000736Z.json",
-      "bytes": 69339,
-      "sha256": "f61cbdf507e811e2014cc725984919f48a44f5fcd8e53da86bf94afc21065547"
+      "path": "local/ghidra-annotations-20261015T002315Z.json",
+      "bytes": 83427,
+      "sha256": "4a028142ec9247a0c0054393fa288a4abbfbdcb3c110219de53db0459a51a259"
     },
     {
-      "path": "local/main_scene_scne_label_receipt_f0a5963ff/report.json",
-      "bytes": 22354,
-      "sha256": "ea4f6c59e7ba890653a4411c23ae60a8cd643f5a10f4ecca36166c7a40cafccb"
+      "path": "local/main_scene_scne_target_receipt_5adb0036f/report.json",
+      "bytes": 24737,
+      "sha256": "8ae969a6a1780f07bea8f0be61610c53d56114b3379d53a97ff38e117c1ef2b5"
     },
     {
-      "path": "local/main_scene_scne_label_receipt_f0a5963ff/receipt.json",
-      "bytes": 19269,
-      "sha256": "29e963d5c84f822b081f134044c9e4dd5770cdc3313620a42111da1437bd119e"
+      "path": "local/main_scene_scne_target_receipt_5adb0036f/receipt.json",
+      "bytes": 20236,
+      "sha256": "3847a01f98d55b68eb5e2ca14b5cdde8aacffad73a6e9dd7a4b5d8a2045293e5"
+    },
+    {
+      "path": "local/main_scene_scne_target_receipt_5adb0036f/manifest.json",
+      "bytes": 22265,
+      "sha256": "7dfe3c19f36fa662c7cb9136121618b27f5f366fc47636760483a4d46ed8e6be"
     },
     {
       "path": "local/main_scene_scne_label_committed_f0a5963ff/receipt.json",
@@ -361,214 +455,284 @@
       "sha256": "34f216602ba0db8b9835ca003d101b3d07f077b5178144bfaf30e0454c8e1383"
     },
     {
-      "path": "local/main_scene_scne_target/annotations.log",
+      "path": "local/main_scene_scne_batch/annotations.log",
       "bytes": 202,
-      "sha256": "dd6d48bd2ff8c53ff211850bf18770c619f696f2ba15fb72d6e27fa095b1fad2"
+      "sha256": "ef7e2d82f280a8aa4685a70e38408fd6e90d0e9d7876bec77272cff763bb31ca"
     },
     {
-      "path": "local/main_scene_scne_target/audit_emitted.py",
-      "bytes": 4679,
-      "sha256": "15481298126b8b54a6ae4bf379a38a0eb641737113a7cfc0b549d703da3f5cb3"
+      "path": "local/main_scene_scne_batch/audit_count_leaf.py",
+      "bytes": 2026,
+      "sha256": "3e6ff12b0817277e045935b12910ac74b5cf36da3d92eef6e04c3862c96218d5"
     },
     {
-      "path": "local/main_scene_scne_target/audit_x87.py",
-      "bytes": 2167,
-      "sha256": "de0efd72fe228db0159aac71b4de33aaf2338ccd0ce40a2d68cf2f94b5f93da3"
+      "path": "local/main_scene_scne_batch/audit_emitted.py",
+      "bytes": 6396,
+      "sha256": "ca313902434c6a64f3150d10ea371488d8bf985d3d584713c276a62985f1bf33"
     },
     {
-      "path": "local/main_scene_scne_target/build.log",
-      "bytes": 3345,
-      "sha256": "4991882898a96103c071ca7b999c418ac6a16c0c6282ef958b5a4868ea2b09e8"
+      "path": "local/main_scene_scne_batch/audit_x87.py",
+      "bytes": 2165,
+      "sha256": "b633ab7229329e2cc239d70a0342343b123512ed4da84443e0bb7bf0a6308ea3"
     },
     {
-      "path": "local/main_scene_scne_target/byte_receipt.json",
-      "bytes": 2449,
-      "sha256": "e34f029fed7acacd12bbcb44497845cab79dbf6a2e9d9eade67ea062fdc7095c"
+      "path": "local/main_scene_scne_batch/base_batch_profile.bin",
+      "bytes": 16,
+      "sha256": "fd21f7b19ea8f13dd27af4a091df38081898f90eacbd9259f5a3b34cedb64822"
     },
     {
-      "path": "local/main_scene_scne_target/byte_receipt.log",
-      "bytes": 1855,
-      "sha256": "eb64873c624c349fb229074443f779f1832d0a28d7976c7538fa190b54152efa"
+      "path": "local/main_scene_scne_batch/batch.bin",
+      "bytes": 265,
+      "sha256": "d7870a837c009c732d9dc825f5f8494d67f8eefab732171753cb1f969eef1f44"
     },
     {
-      "path": "local/main_scene_scne_target/camera.bin",
+      "path": "local/main_scene_scne_batch/batch_probe.cpp",
+      "bytes": 19432,
+      "sha256": "5d14e8d24c419388aea56c9f4a7a35f794a3bb1b8102fb901d4729a4731139ea"
+    },
+    {
+      "path": "local/main_scene_scne_batch/batch_probe.exe",
+      "bytes": 316928,
+      "sha256": "fb7c818141ec1937fb00684235aa93fac424527d9030c503a75ced368828bfc7"
+    },
+    {
+      "path": "local/main_scene_scne_batch/batch_probe.image_reservation.json",
+      "bytes": 882,
+      "sha256": "3c926d43a026897b3078b8ceac857a2053353b820abf448c235fde9be7d2f2c5"
+    },
+    {
+      "path": "local/main_scene_scne_batch/batch_probe.log",
+      "bytes": 1373,
+      "sha256": "05a6914f8b7f94b9671f2abac89e734b836ac26d8557519c48827592db4475e9"
+    },
+    {
+      "path": "local/main_scene_scne_batch/batch_probe.obj",
+      "bytes": 121571,
+      "sha256": "9b03576d0273876600d26a3e759663d28c6b2e003f7a78973eb4ae9264d57633"
+    },
+    {
+      "path": "local/main_scene_scne_batch/batch_profile.bin",
+      "bytes": 16,
+      "sha256": "9c2ccfe40604062125fec5fdef0e43142b1ed2d15a5f6dcc1ba679f9a5f45819"
+    },
+    {
+      "path": "local/main_scene_scne_batch/build.log",
+      "bytes": 3421,
+      "sha256": "0e24dbc9881174b53cb0308f7331799fd794eac3bdb4508ae85cb87896e7d727"
+    },
+    {
+      "path": "local/main_scene_scne_batch/byte_receipt.json",
+      "bytes": 2307,
+      "sha256": "82db8a2d3ff89d24a149a83de8ef20c64b9c6e27ad1502c1227a2ef2d45056a2"
+    },
+    {
+      "path": "local/main_scene_scne_batch/byte_receipt.log",
+      "bytes": 65,
+      "sha256": "d1992d4f36b18d8911f7d494e56dacd8e08c8b99e0886e51711af1c865608dc0"
+    },
+    {
+      "path": "local/main_scene_scne_batch/camera.bin",
       "bytes": 7,
       "sha256": "f4abe596cc41722a8a210cb7f9749a94353b5fdc5832eb2e0053e453a38e9382"
     },
     {
-      "path": "local/main_scene_scne_target/compile.ps1",
-      "bytes": 1361,
-      "sha256": "cc971c39a0d245a9a10b884408a9df863d214dada3b43c0ef34df9a1eb4dd332"
+      "path": "local/main_scene_scne_batch/compile.ps1",
+      "bytes": 1353,
+      "sha256": "f716f1ceea7d5b5c0cb3893e7930bdb448128d27b44ff5a9093f19b706463840"
     },
     {
-      "path": "local/main_scene_scne_target/emitted_audit.json",
-      "bytes": 3111,
-      "sha256": "0479f689bf57708e08811f88ef7bf4213cc2cfc1233dcb76bd6f71396f1851ef"
+      "path": "local/main_scene_scne_batch/compose.py",
+      "bytes": 2281,
+      "sha256": "c876e35cb5e1e04905bf453b1ed0079198c2de7b06f8520827ac5f6681fe4fe3"
     },
     {
-      "path": "local/main_scene_scne_target/environment.hpp",
-      "bytes": 5213,
-      "sha256": "e48ad6743e574f6f4bcd27c47558865a92d69cf91119ccd9e89d62e233210989"
+      "path": "local/main_scene_scne_batch/count.bin",
+      "bytes": 4,
+      "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62"
     },
     {
-      "path": "local/main_scene_scne_target/export_refresh.log",
+      "path": "local/main_scene_scne_batch/count_leaf_audit.json",
+      "bytes": 471,
+      "sha256": "e54eff974294684c32148293df623873203812818c8eba1dbf664e965a32ad41"
+    },
+    {
+      "path": "local/main_scene_scne_batch/count_leaf_audit.log",
+      "bytes": 89,
+      "sha256": "aaad7520aa107f9f44af34279812994da9a11d340f25207371a0ecc5470d9c34"
+    },
+    {
+      "path": "local/main_scene_scne_batch/emitted_audit.json",
+      "bytes": 5849,
+      "sha256": "71b116f0ddbbbae03b25953cd8249155d37c0d4823df1a538a671acff9f7ab58"
+    },
+    {
+      "path": "local/main_scene_scne_batch/emitted_audit.log",
+      "bytes": 190,
+      "sha256": "2ce2a3036845d353d242a64995f8c886d702de53348686be4401c0d4ff9fda99"
+    },
+    {
+      "path": "local/main_scene_scne_batch/environment.hpp",
+      "bytes": 5157,
+      "sha256": "be830be362bcea11e38d74cc82b272e3d9d7d997b1326a6d982aca8feabeb634"
+    },
+    {
+      "path": "local/main_scene_scne_batch/event_profile.bin",
+      "bytes": 16,
+      "sha256": "961065846b722b86f72bfe064bfcd47827f3cd7348a5c679e35ef20a8c1275a7"
+    },
+    {
+      "path": "local/main_scene_scne_batch/export_refresh.log",
       "bytes": 104,
       "sha256": "2c16df4e3befc768729913ee74ecb0abf7c4eff68ad4a8543e227d7adfd18d53"
     },
     {
-      "path": "local/main_scene_scne_target/group_profile.bin",
-      "bytes": 8,
-      "sha256": "b1ecc67d201a3405d2c2382c329b4233e9c30bd2c6da012c61e444134bb6cd9b"
+      "path": "local/main_scene_scne_batch/finish_audit.py",
+      "bytes": 5379,
+      "sha256": "5741208dab23a5b7d8ae02269a103fcc1834bbc7ea0d447c3ebe00c7155a6184"
     },
     {
-      "path": "local/main_scene_scne_target/holder.bin",
-      "bytes": 4,
-      "sha256": "2e339cdc5de837ec151dbde90057caeabba18ac3ea32e7c2cffc8f95df41a6ff"
+      "path": "local/main_scene_scne_batch/frame_profile.bin",
+      "bytes": 24,
+      "sha256": "2ebb201dffb89306044fd85b738ae180eb54dd22f5e16ac2b121a451a21cd93f"
     },
     {
-      "path": "local/main_scene_scne_target/index.log",
+      "path": "local/main_scene_scne_batch/index.log",
       "bytes": 143,
-      "sha256": "5b3e337a3db7e4800bd63822daeb249c00aaccd54ac2d1a4e358189bd1ce7320"
+      "sha256": "1eae290261ed4e591c6ce8e36beaf10fd29b6597caf54884a7c58846b59e549d"
     },
     {
-      "path": "local/main_scene_scne_target/ledger_update.log",
-      "bytes": 708,
-      "sha256": "7878988705bbf04ac3d720d44e498611fca11c27dbd89f032b104a250cc8d2f3"
+      "path": "local/main_scene_scne_batch/inspect_coff.py",
+      "bytes": 2160,
+      "sha256": "bce166f96f06a78c41aa805d75a60dec43227c1a9144700f7196933636fd0c25"
     },
     {
-      "path": "local/main_scene_scne_target/make_fixture_bytes.py",
-      "bytes": 2973,
-      "sha256": "b4b0580fc58223d2015b585d28967bcfe5615551c669a5277cc7ed31e4a33b2c"
+      "path": "local/main_scene_scne_batch/job_profile.bin",
+      "bytes": 4,
+      "sha256": "e7d6d1986e421f13415a2d46a278cdb507889b3a53ee52ca1e19db31e5219af0"
     },
     {
-      "path": "local/main_scene_scne_target/make_report.py",
-      "bytes": 8701,
-      "sha256": "d6f7811033daa51b1d85b4856d364b8a2a3f12b463afe5efb3f268321e559746"
+      "path": "local/main_scene_scne_batch/ledger_update.log",
+      "bytes": 707,
+      "sha256": "6ea8794d1f408766b54f9539c19843bd530e9f9fd44e71be484f5f61933b2986"
     },
     {
-      "path": "local/main_scene_scne_target/native_camera_far_corners.asm",
-      "bytes": 34708,
-      "sha256": "dc9b82a586a1dee8ed170f85c528f416c6bba24d8f278c78719d8c5960600b6a"
+      "path": "local/main_scene_scne_batch/make_fixture_bytes.py",
+      "bytes": 2556,
+      "sha256": "3901955e12e1ec2a98bfcaec36ca9c3d91698398c2c705b62503182f7c8a26f9"
     },
     {
-      "path": "local/main_scene_scne_target/native_camera_far_corners.obj",
-      "bytes": 2423,
-      "sha256": "1ab4dd5cb51518dc308e2baced34b725dd2a4972760e04bed61f17b6f2bb25a1"
+      "path": "local/main_scene_scne_batch/make_report.py",
+      "bytes": 9780,
+      "sha256": "c9e0fbbd22f7420986fd6bab86d6cd015af8e998a622c6bb59d4f8bd87ae961f"
     },
     {
-      "path": "local/main_scene_scne_target/native_clause_listing.txt",
-      "bytes": 754,
-      "sha256": "58ab2b49c29a70e56b62dcb3bf85d42854da536ee54e0ac75426497c6c8b8f5c"
+      "path": "local/main_scene_scne_batch/native_camera_far_corners.asm",
+      "bytes": 34707,
+      "sha256": "e22064dbc9cc088f632d3606c61deb4a0d7d37dba7eb9684e3b7f3970f612026"
     },
     {
-      "path": "local/main_scene_scne_target/native_main_scene_execution_prefix.asm",
-      "bytes": 358518,
-      "sha256": "96b152ac4df131d84ce5fd846bbd6e89baf9df0a6a711fe1efb8076607d6ac1b"
+      "path": "local/main_scene_scne_batch/native_camera_far_corners.obj",
+      "bytes": 2419,
+      "sha256": "646f12f5c811f6fc231cb8b441158555eaf33c58b7825123ed2362375d3da8fc"
     },
     {
-      "path": "local/main_scene_scne_target/native_main_scene_execution_prefix.obj",
-      "bytes": 60071,
-      "sha256": "912ced3b117eded49473f74cb1130e3e97f9663ab9ac2021004f986a60ee400c"
+      "path": "local/main_scene_scne_batch/native_clause_listing.txt",
+      "bytes": 3218,
+      "sha256": "d9f8fc57bdc161ccd08d8628f92fd42c9108b8e273f51fe0f113092a782e393a"
     },
     {
-      "path": "local/main_scene_scne_target/native_post_effect_submission.asm",
-      "bytes": 95791,
-      "sha256": "f47b9b88b012a98288e57329a46ce18bfc9613d846bb0fd3c257b54e3188e4d4"
+      "path": "local/main_scene_scne_batch/native_main_scene_execution_prefix.asm",
+      "bytes": 401929,
+      "sha256": "3787c7077a8fb778def1896525a613908793eab00252f41273946dcd6cfdbcd2"
     },
     {
-      "path": "local/main_scene_scne_target/native_post_effect_submission.obj",
-      "bytes": 20537,
-      "sha256": "3d3368f27089eed7d288b8e7b6230afd2e55b7d51fad8fda0fa6ab9a2f74ce9c"
+      "path": "local/main_scene_scne_batch/native_main_scene_execution_prefix.obj",
+      "bytes": 65191,
+      "sha256": "9dfaebd4ec9aff7b82b0d683dcfff540c626f44b6ab1d7119d64866605066462"
     },
     {
-      "path": "local/main_scene_scne_target/original_bytes.inc",
-      "bytes": 3073,
-      "sha256": "466fc6a30f52da01f2ae3c0767c83c0a8598821d9651a5cdad0262205fb05c3c"
+      "path": "local/main_scene_scne_batch/native_post_effect_submission.asm",
+      "bytes": 95790,
+      "sha256": "63518276c00be179a349cd858e8f818fcc5367f1bbc8707aed9e8383b0a3c2c1"
     },
     {
-      "path": "local/main_scene_scne_target/prepare.py",
-      "bytes": 877,
-      "sha256": "3669e97a94b9e5ce1b06317f1b1246801aa9f0ae0c3ee11f8dbfe41c0fb93d14"
+      "path": "local/main_scene_scne_batch/native_post_effect_submission.obj",
+      "bytes": 20533,
+      "sha256": "eda4e5ce5700dbb43c3677c04c81d7c02ea0efc04c34c49a937df3aa45eced31"
     },
     {
-      "path": "local/main_scene_scne_target/preserve_prior.py",
-      "bytes": 836,
-      "sha256": "eed5b8de90c8bd4a9de683fb46f5f19f80839b39353d394bc0db691f63bcb4c4"
+      "path": "local/main_scene_scne_batch/original_bytes.inc",
+      "bytes": 2754,
+      "sha256": "3645f6e54b1e188693eb9a21021230a1a4fcebbac771d668f4b08ee4a54f8818"
     },
     {
-      "path": "local/main_scene_scne_target/probe_compile.log",
-      "bytes": 18,
-      "sha256": "4084c5ae3f0dbc6ceaeffd49838c873505751c151c3a2e9e44c0b98f94797d94"
+      "path": "local/main_scene_scne_batch/pool_profile.bin",
+      "bytes": 24,
+      "sha256": "64cf20c66e4f8dc86a6020c0fc38300574a22f76f96edcb1e27051df60812a64"
     },
     {
-      "path": "local/main_scene_scne_target/renderer_profile.bin",
-      "bytes": 328,
-      "sha256": "81b6ffba0bc0ddc59499163d761da9c9f15bfd57d099d61c08ba40df94550c4b"
+      "path": "local/main_scene_scne_batch/prepare_audit.py",
+      "bytes": 1092,
+      "sha256": "7f725f791ed773ba50ce866b2bf38857c3ccfe92f317b975a5f32707d35e15f7"
     },
     {
-      "path": "local/main_scene_scne_target/reserve_image_section.py",
-      "bytes": 3239,
-      "sha256": "35a31aae58bc221f62e7d15ff6e171fedaab2d9b2c1b689f3d47c1a2bfafdb72"
+      "path": "local/main_scene_scne_batch/prepare_count_audit.py",
+      "bytes": 1043,
+      "sha256": "d132b5e58a69417f30519aaaf9b782b650e5071aa51358af67c1f2a009936360"
     },
     {
-      "path": "local/main_scene_scne_target/run_probe.ps1",
-      "bytes": 1611,
-      "sha256": "e7e881d514c0247307eb5f212a379a8ec38d46bfa29f793c44ab46e87a19a708"
+      "path": "local/main_scene_scne_batch/prepare_fixture.py",
+      "bytes": 6287,
+      "sha256": "5a32158b9ec9756a1607ca683bbe33ca9b939b13d0b310ac3a0884dde9650291"
     },
     {
-      "path": "local/main_scene_scne_target/strict_compile.log",
+      "path": "local/main_scene_scne_batch/probe_compile.log",
+      "bytes": 17,
+      "sha256": "fbd00f236e60457c1f96fb0f6b81a42138af75d1787cfb1998343fa822228af8"
+    },
+    {
+      "path": "local/main_scene_scne_batch/reserve_image_section.py",
+      "bytes": 3194,
+      "sha256": "4eca92d6ebd0cb3f45d5362dc9da84802c086b9272e8ddf55537e0345537d86a"
+    },
+    {
+      "path": "local/main_scene_scne_batch/run_probe.ps1",
+      "bytes": 1593,
+      "sha256": "6bbcd7c08fdcd9f50dab58d4608313dedd47a813856988337bcc8daff7ed55f2"
+    },
+    {
+      "path": "local/main_scene_scne_batch/scne.bin",
+      "bytes": 8,
+      "sha256": "bd79a65b5f5de8fb1615c07c6c5f372c65aa1a72ebab3b551f266141f9a9aa35"
+    },
+    {
+      "path": "local/main_scene_scne_batch/source_clause_listing.txt",
+      "bytes": 14714,
+      "sha256": "9cf188d0240b2c60d2e8a0605e84032b29e3d41c3aea0dc9b1e59be4b6423298"
+    },
+    {
+      "path": "local/main_scene_scne_batch/strict_compile.log",
       "bytes": 106,
       "sha256": "66260c7a22c7fb4ee63d064ab898a6b6c5ea67021d6467bebeeb179edb681dd3"
     },
     {
-      "path": "local/main_scene_scne_target/surface_profile.bin",
-      "bytes": 16,
-      "sha256": "a9d9da354e43a861961abaf78e9c97aca2f1e5d72b54220e6152b8602cd98ed7"
+      "path": "local/main_scene_scne_batch/update_ledgers.py",
+      "bytes": 3813,
+      "sha256": "93e8dcec9904bd83864fad21903bbdeacb76db91aa000e57b1955578a22ff0bd"
     },
     {
-      "path": "local/main_scene_scne_target/target_probe.cpp",
-      "bytes": 13485,
-      "sha256": "fc0973c00738df9cef1fa0ac3f6ebad4e19b60ea234ddaa9eccc8b4898c27696"
+      "path": "local/main_scene_scne_batch/verify_prior.py",
+      "bytes": 999,
+      "sha256": "a85fc2c5119d43d8ead08c3f3cbedbdef1a6068749607d64d0927b5874d5ac04"
     },
     {
-      "path": "local/main_scene_scne_target/target_probe.exe",
-      "bytes": 252928,
-      "sha256": "76e9a22301bfbb4a417abc50844d399f08c904205f957fcf6addad922e32197f"
+      "path": "local/main_scene_scne_batch/x87_audit.json",
+      "bytes": 986,
+      "sha256": "6ae0ed75094d5f870e91ff7f686090a42560c3257571424ca2595ac665c2693f"
     },
     {
-      "path": "local/main_scene_scne_target/target_probe.image_reservation.json",
-      "bytes": 1017,
-      "sha256": "05888cb331ec76c3e6dfae46f054524ef445b598a7e592924027b863ce1e699e"
-    },
-    {
-      "path": "local/main_scene_scne_target/target_probe.log",
-      "bytes": 673,
-      "sha256": "4fed725c8122fc1b9b6484cfcb62eb3fa776d775bc5091b8ca63844e87c13702"
-    },
-    {
-      "path": "local/main_scene_scne_target/target_probe.obj",
-      "bytes": 105176,
-      "sha256": "b0fc8b598ae46a2b9d6969a8568c2b66902b4c426f17c83954f263d54653c41e"
-    },
-    {
-      "path": "local/main_scene_scne_target/targets.bin",
-      "bytes": 72,
-      "sha256": "353657c863e3ccb13588e1809399a59d528a0855525edb3e560ef0683e2aac37"
-    },
-    {
-      "path": "local/main_scene_scne_target/update_ledgers.py",
-      "bytes": 3302,
-      "sha256": "3c8484c8c36a8fc78664235f5f6db4920f2cd002278faeabf3cb58e9e2c0d573"
-    },
-    {
-      "path": "local/main_scene_scne_target/viewport_profile.bin",
-      "bytes": 8,
-      "sha256": "7dec5b14114e377e30c7980a2cd07194263999b54a17e0ead5b1084fb373f9e9"
-    },
-    {
-      "path": "local/main_scene_scne_target/x87_audit.json",
-      "bytes": 988,
-      "sha256": "c28ed0d46f739e873bf70a0d6a1f04f0bae5b862daf97c4c2d929f137eecc9b0"
+      "path": "local/main_scene_scne_batch/x87_audit.log",
+      "bytes": 889,
+      "sha256": "a17bc67ffbc8fc329e1e81db484faa59abc39b19cf1343dfb2223cdc34f7db28"
     }
   ]
 }

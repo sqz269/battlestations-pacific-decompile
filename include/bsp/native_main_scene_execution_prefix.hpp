@@ -64,6 +64,7 @@ struct NativeMainSceneExecutionPrefixState {
     bool reached_scne_label_stage{};
     bool reached_scne_target_stage{};
     bool reached_scne_batch_stage{};
+    bool reached_scne_capture_stage{};
 };
 
 // Complete raw leaves. Native ECX command / camera. B1BF40 uses RET and returns
@@ -407,4 +408,24 @@ void continue_native_main_scene_scne_targets_00b161ad(void* actual_service,
     void* actual_command, const NativeMainSceneScneTargetContext&,
     NativeMainSceneScneLabelFrame&, NativeMainSceneScneTargetFrame&,
     NativeMainSceneExecutionPrefixState&);
+
+struct NativeMainSceneScneBatchContext {
+    const NativeMainSceneScneLabelContext& label;
+    // Reuse the established actual preparation/publication/dispatch domain;
+    // providers.label must be this SAME label.domains object, not a copy.
+    NativeMainSceneBatchContext& providers;
+};
+
+// B161F5..B162FD. Same actual signed-count/synchronization gates, concrete
+// job publication/worker wait and batch operations as the DRSH clause, with
+// this clause's own call sites and state5. Current mode stores precede each
+// frame getter; current batch/pool capture precedes the preparation getter.
+// Capture batch/profile before each fresh camera; read captured slot8 after
+// that getter. B55550 independently reloads its actual renderer and ignores
+// its camera/index arguments. Keep the current-job scope/slot failure effects.
+// Success reaches B162FE with5 armed; failure disarms before CURRENT global
+// service reset. No retry, native FH3 dispatch or whole-scene admission.
+void continue_native_main_scene_scne_batches_00b161f5(void* actual_command,
+    NativeMainSceneScneBatchContext&, NativeMainSceneScneLabelFrame&,
+    NativeMainSceneBatchFrame&, NativeMainSceneExecutionPrefixState&);
 } // namespace bsp
