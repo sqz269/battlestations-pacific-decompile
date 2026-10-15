@@ -88,5 +88,13 @@
     "runtime_gameplay": "not run",
     "native_abi": "not proven; Source APIs/providers/frames explicitly qualified"
   },
-  "notes": "Only three leased entry records added, correct existing STL library names retained. No CMake/packet registry/Ghidra mutation by worker. Primary owns integration and annotation batch; lease retained."
+  "notes": "Only three leased entry records added, correct existing STL library names retained. No CMake/packet registry/Ghidra mutation by worker. Primary owns integration and annotation batch; lease retained.",
+  "primary_integration_validation": {
+    "receipt": "reports/goal15b_reconstruction_batch.json",
+    "registered_win32_build": "pass",
+    "existing_ctest_suites": "3 passed, 0 failed",
+    "ghidra_annotations_and_exports": "applied, saved, refreshed",
+    "source_fixture_exercised": true,
+    "native_execution_or_abi_equivalence": false
+  }
 }

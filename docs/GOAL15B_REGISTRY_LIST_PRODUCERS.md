@@ -105,3 +105,8 @@ Primary registers `src/native_registry_list_producers.cpp`, runs the required
 full Win32 build and existing checks, and owns saved Ghidra annotation/export
 refresh. No new tests, native differential execution, game runtime proof,
 original ABI compatibility or complete outer-class claim is included.
+
+Primary integration: registered MSVC Win32 build and all three existing
+CTest suites pass. Ghidra annotations are saved and exports refreshed.
+See [the batch receipt](../reports/goal15b_reconstruction_batch.json) for
+the precise Source fixture/static-proof scope and remaining Native limits.

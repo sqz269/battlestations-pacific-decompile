@@ -86,3 +86,8 @@ ABI, unwind execution, runtime, or game validation.
 The worker adds only this address's name/reconstruction ledger records and its
 four owned outputs. CMake registration, Ghidra annotations and affected export
 refresh remain primary-owned; the existing library-shaped name is preserved.
+
+Primary integration: registered MSVC Win32 build and all three existing
+CTest suites pass. Ghidra annotations are saved and exports refreshed.
+See [the batch receipt](../reports/goal15b_reconstruction_batch.json) for
+the precise Source fixture/static-proof scope and remaining Native limits.

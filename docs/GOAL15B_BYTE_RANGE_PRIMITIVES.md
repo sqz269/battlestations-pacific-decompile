@@ -112,3 +112,8 @@ checks. Primary registers `src/native_byte_range_primitives.cpp` in `bsp_core`
 and runs the required `scripts/build.ps1` build and existing CTests. No Ghidra,
 shared CMake, packet-registry or external-workstream edits are made here. Leases
 remain held through primary integration.
+
+Primary integration: registered MSVC Win32 build and all three existing
+CTest suites pass. Ghidra annotations are saved and exports refreshed.
+See [the batch receipt](../reports/goal15b_reconstruction_batch.json) for
+the precise Source fixture/static-proof scope and remaining Native limits.

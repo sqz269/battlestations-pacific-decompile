@@ -59,5 +59,13 @@
     "public_consumers":"goal15b_grid_byte_vector_resize packet reuses public declarations; no private duplicate needed",
     "retained_names":"All four existing STL helper names preserved",
     "ghidra_mutations":"none; primary owns annotation/export refresh"
+  },
+  "primary_integration_validation": {
+    "receipt": "reports/goal15b_reconstruction_batch.json",
+    "registered_win32_build": "pass",
+    "existing_ctest_suites": "3 passed, 0 failed",
+    "ghidra_annotations_and_exports": "applied, saved, refreshed",
+    "source_fixture_exercised": true,
+    "native_execution_or_abi_equivalence": false
   }
 }

@@ -57,5 +57,13 @@
     "abi_compatible": false,
     "game_validated": false
   },
-  "integration": {"target": "bsp_core", "target_sources_add": "src/native_registry_list_tidy.cpp", "ghidra_annotation": "primary only", "lease": "hold until primary integration"}
+  "integration": {"target": "bsp_core", "target_sources_add": "src/native_registry_list_tidy.cpp", "ghidra_annotation": "primary only", "lease": "hold until primary integration"},
+  "primary_integration_validation": {
+    "receipt": "reports/goal15b_reconstruction_batch.json",
+    "registered_win32_build": "pass",
+    "existing_ctest_suites": "3 passed, 0 failed",
+    "ghidra_annotations_and_exports": "applied, saved, refreshed",
+    "source_fixture_exercised": false,
+    "native_execution_or_abi_equivalence": false
+  }
 }

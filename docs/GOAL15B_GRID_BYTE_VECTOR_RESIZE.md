@@ -130,3 +130,8 @@ The kernels add no guards that would hide original accesses or returning-handler
   framework is added. No Native differential, game/runtime or drop-in ABI claim.
 - Only the three leased entry name/function records are added. No shared CMake,
   packet registry or Ghidra write is made. Keep the lease through integration.
+
+Primary integration: registered MSVC Win32 build and all three existing
+CTest suites pass. Ghidra annotations are saved and exports refreshed.
+See [the batch receipt](../reports/goal15b_reconstruction_batch.json) for
+the precise Source fixture/static-proof scope and remaining Native limits.

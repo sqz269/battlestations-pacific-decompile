@@ -41,5 +41,13 @@
   },
   "corrections": [],
   "validation": {"focused_compile": "PASS: MSVC x86 /std:c++17 /EHsc /W4 /WX /permissive- /O2 /c /Iinclude src/native_registry_list_producers.cpp; zero warnings; local/goal15b_registry_list_producers/native_registry_list_producers.obj", "report_and_doc_calls": "PASS:8 report rows and8 markdown claims; zero failures, unchecked claims or warnings", "full_registered_build": "primary responsibility", "new_tests": 0, "ghidra_mutations": 0, "runtime_tested": false, "abi_compatible": false, "game_validated": false},
-  "integration": {"target": "bsp_core", "target_sources_add": "src/native_registry_list_producers.cpp", "saved_ghidra_annotation": "primary only", "lease": "hold until primary transfer"}
+  "integration": {"target": "bsp_core", "target_sources_add": "src/native_registry_list_producers.cpp", "saved_ghidra_annotation": "primary only", "lease": "hold until primary transfer"},
+  "primary_integration_validation": {
+    "receipt": "reports/goal15b_reconstruction_batch.json",
+    "registered_win32_build": "pass",
+    "existing_ctest_suites": "3 passed, 0 failed",
+    "ghidra_annotations_and_exports": "applied, saved, refreshed",
+    "source_fixture_exercised": false,
+    "native_execution_or_abi_equivalence": false
+  }
 }

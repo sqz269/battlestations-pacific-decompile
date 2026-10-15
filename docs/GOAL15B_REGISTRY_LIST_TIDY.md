@@ -98,3 +98,8 @@ rows and four markdown call/jump claims with zero failures or warnings.
 `git diff --check` passed. Primary registers `src/native_registry_list_tidy.cpp` and runs the full Win32
 build and existing checks. No new tests, native differential test, game
 execution, ABI compatibility or runtime-equivalence claim is included.
+
+Primary integration: registered MSVC Win32 build and all three existing
+CTest suites pass. Ghidra annotations are saved and exports refreshed.
+See [the batch receipt](../reports/goal15b_reconstruction_batch.json) for
+the precise Source fixture/static-proof scope and remaining Native limits.
