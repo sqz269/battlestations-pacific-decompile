@@ -83,6 +83,23 @@ void note_program(GameHostLog& log, const NativeMaterialEffectProgramOperation& 
             log.notef("native GUI compiler-tail phase=%u site=%08x state=%08x raw_pass=%p pass=%p registered=%d native_null=%d",
                 static_cast<unsigned>(tail->phase), tail->native_site, tail->exception_state,
                 tail->raw_pass, tail->pass, tail->pass_registered ? 1 : 0, tail->native_null_return ? 1 : 0);
+            // Read only retained compiler metadata. Never probe or release a native owner.
+            const auto& entry = tail->sampler_entry;
+            log.notef("native GUI sampler-entry cached=%d profile=%d boundary=%d/%d pixel_com_released=%d known=%d published=%d cache=%p row=%p builder=%p pass=%p owner=%p shader=%p device=%p",
+                entry.cached_path ? 1 : 0, entry.profile_matched ? 1 : 0,
+                entry.release_entered ? 1 : 0, entry.release_returned ? 1 : 0,
+                tail->pixel_com_released ? 1 : 0,
+                entry.known ? 1 : 0, entry.published ? 1 : 0,
+                static_cast<const void*>(entry.cache), static_cast<const void*>(entry.row),
+                static_cast<const void*>(entry.builder), static_cast<const void*>(entry.pass),
+                static_cast<const void*>(entry.owner), static_cast<const void*>(entry.shader), static_cast<const void*>(entry.device));
+            log.notef("native GUI sampler-entry modules d3d9=%p ntdll=%p kernel32=%p release_target=%p result=%u shader_before=%u device=%u/%u owner_ctor=%d owner_release_previous=%d",
+                reinterpret_cast<const void*>(entry.d3d9_module), reinterpret_cast<const void*>(entry.ntdll_module),
+                reinterpret_cast<const void*>(entry.kernel32_module), reinterpret_cast<const void*>(entry.release_target),
+                entry.com_release_result, entry.shader_count_before, entry.device_count_before, entry.device_count_after,
+                entry.owner_count_at_constructor, entry.owner_release_previous_count);
+            if (entry.release_returned)
+                log.notef("native GUI sampler-entry captured_word=%08x qualified=%d", entry.word, entry.known ? 1 : 0);
             for (std::size_t index = 0; index < tail->samplers.size(); ++index) {
                 const auto* sampler = tail->samplers[index].get();
                 if (!sampler) continue;

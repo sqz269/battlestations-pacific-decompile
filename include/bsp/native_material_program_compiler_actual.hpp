@@ -46,6 +46,10 @@ struct NativeMaterialProgramCompilerActualContext {
     const char* actual_stream_empty_0109db64;
     // Production caller owns fresh per-invocation shared W/knowledge through
     // both root/mode operations. Null preserves qualified legacy contexts.
+    // The same renderer retains its current D3D device throughout compilation;
+    // exclude independent device retirement/replacement while these borrowed
+    // native calls run. The GUI parent holds that existing domain through its
+    // failed/successful acquisition and subsequent renderer drain.
     NativeMaterialDescriptorSamplersCallFactory* sampler_calls{};
 };
 
@@ -62,6 +66,24 @@ struct NativeMaterialProgramCompilerActualFrame final : NativeMaterialProgramChi
         std::uint32_t captured_length{};
         bool entered{}, live{}, captured{};
     };
+    // Qualified evidence for this invocation's W=P-30h. The cached row is the
+    // actual B34890 return saved in native EBX, not a lookup recomputed later.
+    // A checked B3BFD7 caller-shaped boundary performs the sole real COM release
+    // and captures W before another call. Later slot/owner atomic outcomes must
+    // prove that no destructor overwrote it. Unsupported profiles stay unknown.
+    struct SamplerEntryWord {
+        NativeShaderBinaryCacheStorage* cache{};
+        NativeShaderBinaryCacheRecordStorage* row{};
+        NativeMaterialProgramBuilderStorage* builder{};
+        NativeMaterialPassStorage* pass{};
+        NativeD3d9ShaderStorage* owner{};
+        IDirect3DPixelShader9* shader{};
+        IDirect3DDevice9* device{};
+        std::uintptr_t d3d9_module{}, ntdll_module{}, kernel32_module{}, release_target{};
+        std::uint32_t word{}, com_release_result{}, shader_count_before{}, device_count_before{}, device_count_after{};
+        std::int32_t owner_count_at_constructor{}, owner_release_previous_count{};
+        bool cached_path{}, profile_matched{}, release_entered{}, release_returned{}, known{}, published{};
+    } sampler_entry;
     NativeMaterialProgramCompilerActualFrame() {} // Preserve private scratch preimages.
     ~NativeMaterialProgramCompilerActualFrame() override;
     NativeMaterialProgramCompilerActualFrame(const NativeMaterialProgramCompilerActualFrame&) = delete;
