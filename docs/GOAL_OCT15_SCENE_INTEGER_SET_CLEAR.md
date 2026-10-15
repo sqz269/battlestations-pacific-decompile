@@ -23,8 +23,8 @@ Tree+0 and the sentinel allocation remain untouched. Reusing the record-map
 provider would read nil19h and destroy pooled string keys, so the actual nil11h
 key-only implementation is required.
 
-Native transfers are `00468317: CALL 00468300`, `0046831F: CALL 00BF65AC`,
-`0046898C: CALL 00468300`, and `0046B1BA: CALL 00468300`.
+Native transfers are `00468317 CALL 00468300`, `0046831F CALL 00BF65AC`,
+`0046898C CALL 00468300`, and `0046B1BA CALL 00468300`.
 These transfer claims refer to native instructions; the Source free service is
 singleton_lifetime_free. Complete source uses ordinary explicit raw pointers
 and current CRT, without callbacks, stubs, or invented mapped ownership.
@@ -34,3 +34,9 @@ layout and current-CRT allocation domain. Source compilation and existing
 regression checks do not prove original register/CRT/heap identity, private
 stack alias compatibility, new-body native differential behavior, application
 adoption, or game validation. No new tests were added for this direct cleanup.
+
+Independent complete-listing review passed. Default MSVC Release Win32 build
+and all three existing CTests passed in 8.31 seconds. Four typed transfer
+rows and four prose claims passed; the translation unit and archive member
+occur exactly once. Native math differential checks cover existing math seeds,
+not these new cleanup bodies. Detailed receipt: reports/goal_oct15_scene_integer_set_clear.json.
