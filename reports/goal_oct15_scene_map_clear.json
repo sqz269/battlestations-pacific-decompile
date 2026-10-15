@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_map_clear",
+  "source": "src/native_scene_record_map_clear.cpp",
+  "header": "include/bsp/native_scene_record_map_clear.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_MAP_CLEAR.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "0046b460",
+      "end_exclusive": "0046b48b",
+      "coverage": "complete ordinary Source function",
+      "cpp_symbol": "clear_native_scene_record_map_0046b460",
+      "original_abi": "ECX actual tree; RET/no semantic result",
+      "instructions": 16,
+      "bytes": "56 8b f1 8b 46 04 8b 48 04 51 8b ce e8 9f f8 ff ff 8b 46 04 89 40 04 8b 46 04 c7 46 08 00 00 00 00 89 00 8b 76 04 89 76 08 5e c3",
+      "sha256": "a2175beff0dc81c28b81e19f3f6b91852f67db55cde3f30ace161a2dc116377d",
+      "live_disk_equal": true
+    },
+    {
+      "address": "0046b680",
+      "end_exclusive": "0046b72e",
+      "coverage": "complete ordinary Source function",
+      "cpp_symbol": "clear_native_scene_database_hidden_records_0046b680",
+      "original_abi": "ECX database; RET/no semantic result; private8h iterator locals",
+      "instructions": 62,
+      "bytes": "83 ec 08 83 79 20 00 0f 84 9d 00 00 00 8b 41 1c 53 8b 18 55 56 8d 71 18 57 8b fe 89 5c 24 14 89 7c 24 10 85 ff 8b 6e 04 74 04 3b fe 74 05 e8 60 b0 78 00 3b dd 74 49 85 ff 75 05 e8 53 b0 78 00 3b 5f 04 75 05 e8 49 b0 78 00 3b 5f 04 8b 6b 14 75 05 e8 3c b0 78 00 85 ed c7 43 14 00 00 00 00 74 0b 8b 55 00 8b 02 6a 01 8b cd ff d0 8d 4c 24 10 e8 8a c2 ff ff 8b 5c 24 14 8b 7c 24 10 eb a3 8b 4e 04 8b 51 04 52 8b ce e8 02 f6 ff ff 8b 46 04 89 40 04 8b 46 04 c7 46 08 00 00 00 00 89 00 8b 76 04 5f 89 76 08 5e 5d 5b 83 c4 08 c3",
+      "sha256": "78448288b554ba09ab57f48e9797f16696b506397285508b7ce498f05ab9d588",
+      "live_disk_equal": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0046b46c",
+      "native": "0046ad10",
+      "function": "0046b460"
+    },
+    {
+      "address": "0046b6ae",
+      "native": "00bf6713",
+      "function": "0046b680"
+    },
+    {
+      "address": "0046b6bb",
+      "native": "00bf6713",
+      "function": "0046b680"
+    },
+    {
+      "address": "0046b6c5",
+      "native": "00bf6713",
+      "function": "0046b680"
+    },
+    {
+      "address": "0046b6d2",
+      "native": "00bf6713",
+      "function": "0046b680"
+    },
+    {
+      "address": "0046b6f1",
+      "native": "00467980",
+      "function": "0046b680"
+    },
+    {
+      "address": "0046b709",
+      "native": "0046ad10",
+      "function": "0046b680"
+    },
+    {
+      "address": "004d2bd4",
+      "native": "0046b680",
+      "function": "004d2bb0"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "0046b6eb",
+      "function": "0046b680",
+      "target": "current captured mapped object vtable slot0",
+      "native_abi": "ECX captured object,stackflag1,RET4;returned EAX unused",
+      "source": "actual Win32 __thiscall call through current vtable entry; slot+14 cleared before load/call; no callback adapter"
+    }
+  ],
+  "status": "complete_source_review_and_build_pending",
+  "abi_compatible": false,
+  "game_validated": false,
+  "uncertainties": [
+    "Explicit caller-owned iterator backing models live private cells, not original stack placement or cross-provider frame aliases.",
+    "Current CRT returnable invalid-parameter, raw pool/free and actual callable deleting-destructor entries are Source service boundaries; original binary/provider/heap ABI not proved.",
+    "Existing Seg6Host semantic source remains separate and unchanged; actual application adoption and game execution unproved.",
+    "Existing math/tool checks are regression checks, not native differential execution of these routines."
+  ]
+}
