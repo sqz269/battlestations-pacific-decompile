@@ -101,3 +101,10 @@ recorded in JSON. Required Win32 build/checks and locked annotation/export
 await the queued registry/ledger turns. No new tests are added. Original
 static-CRT heap/errno/handler/locale, RTTI/FH3/SEH/register/fault/binary identity,
 new-entry native differential, application and game proof remain unclaimed.
+
+Primary review accepted the full 123-op parent and both two-op actions against
+the complete Source/header at `ab49fb7b5`, after correcting the distinct normal
+cleanup orders. Reviewed hashes were asserted unchanged before recording the
+receipt. This accepts whole control flow at the explicit bounded provider and
+host-guard admission; it does not discharge the open unrestricted-parent or
+101-caller obligations.

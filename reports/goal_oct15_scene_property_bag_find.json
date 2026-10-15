@@ -328,9 +328,11 @@
   "header_sha256": "e478b3f070f7420db0e6619a8b1329e2acfd8cd1339b60c1bd82ae8a065ec945",
   "independent_review": {
     "reviewer": "primary /root",
-    "initial_draft": "e01f54002",
-    "status": "full123-op and both2-op review found one distinct cleanup-order correction,now applied;targeted followup pending",
-    "source_sha256_after_correction": "5867c1029e850797b21956b163020ae37d7ca116f9c558683aa89bb2f2ab9b07",
-    "header_sha256": "e478b3f070f7420db0e6619a8b1329e2acfd8cd1339b60c1bd82ae8a065ec945"
+    "reviewed_revision": "ab49fb7b5",
+    "result": "PASS full123-op parent and both2-op actions against complete Source/header after targeted distinct dot/no-dot cleanup-order correction",
+    "source_sha256": "5867c1029e850797b21956b163020ae37d7ca116f9c558683aa89bb2f2ab9b07",
+    "header_sha256": "e478b3f070f7420db0e6619a8b1329e2acfd8cd1339b60c1bd82ae8a065ec945",
+    "unchanged_hashes_asserted": true,
+    "qualification": "whole controlflow only at explicit bounded map-provider/host C++ guard admission;unrestricted raw/locale/alias,all101callers,OriginalFH3/privateABI remain unproved"
   }
 }
