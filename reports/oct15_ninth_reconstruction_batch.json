@@ -1,0 +1,82 @@
+{
+  "batch": "oct15_ninth_reconstruction_batch",
+  "status": "complete_review_build_verified_pending_main_publication",
+  "source_commit_tested": "4e6aca664de1f69647f06373432eb01af5a35edb",
+  "ordinary_entries": 18,
+  "parent_bound_fragments": 9,
+  "packets": [
+    {
+      "report": "reports/oct15_outer_string_vector_cleanup_wrappers.json",
+      "verified_transfer_rows": 14
+    },
+    {
+      "report": "reports/oct15_outer_string_vector_placement.json",
+      "verified_transfer_rows": 4
+    },
+    {
+      "report": "reports/oct15_string_vector_group_cleanup.json",
+      "verified_transfer_rows": 12
+    },
+    {
+      "report": "reports/oct15_native_string_vector_append.json",
+      "verified_transfer_rows": 153
+    },
+    {
+      "report": "reports/oct15_outer_string_vector_fill.json",
+      "verified_transfer_rows": 7
+    },
+    {
+      "report": "reports/oct15_outer_insert_range_services.json",
+      "verified_transfer_rows": 14
+    },
+    {
+      "report": "reports/oct15_string_vector_group_tidies.json",
+      "verified_transfer_rows": 12
+    }
+  ],
+  "transfer_rows": 216,
+  "CALL_rows": 206,
+  "tail_JMP_rows": 10,
+  "distinct_transfer_site_target_kind": 209,
+  "build": {
+    "status": "passed",
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "source_commit": "4e6aca664de1f69647f06373432eb01af5a35edb",
+    "log": "local/oct15_ninth_combined_build.log",
+    "suites_passed": 3,
+    "suites_total": 3,
+    "ctest_seconds": 9.15,
+    "native_math_scope": "Prior verified seeds only; new packet functions not executed."
+  },
+  "annotation": {
+    "status": "saved_project_all_27_owned_entries_scopes",
+    "preimages": [
+      "local/oct15_ninth_annotation_preimage.json",
+      "local/oct15_ninth_foundation_annotation_preimage.json"
+    ],
+    "logs": [
+      "local/ghidra-annotations-20261015T194621Z.json",
+      "local/ghidra-annotations-20261015T195440Z.json"
+    ],
+    "snapshot": "forced after annotation save; 76771 functions; all27 affected exports force-refreshed"
+  },
+  "limits": [
+    "Current Source context/CRT/C++ exception interfaces do not establish native ABI/FH3/SEH/RTTI/fault identity.",
+    "Existing native math differential suite covers previously verified seeds only; these new entries were not executed differentially.",
+    "No game startup, live runtime or gameplay validation."
+  ],
+  "continuing_goal": "active; general outer insertion and next-level transfer/construct services remain assigned to three isolated workers.",
+  "transfer_validation": {
+    "status": "all_pass",
+    "reports": 7,
+    "rows": 216,
+    "failed": 0,
+    "markdown_reports": 7,
+    "markdown_claims": 52,
+    "markdown_failed": 0,
+    "unchecked": 0,
+    "warnings": 0,
+    "log": "local/oct15_ninth_transfer_verification.log"
+  }
+}

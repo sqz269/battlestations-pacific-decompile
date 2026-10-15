@@ -420,12 +420,290 @@
     ]
   },
   "independent_live_disk_EH_audit": {
-    "result": "pass",
+    "schema": 1,
+    "audit": "independent_read_only_oct15_outer_insert_range_services_native_byte_body_EH",
+    "utc": "2026-10-15T19:50:13.916535+00:00",
     "auditor": "agent/oct15_avoid_distance",
-    "all_11_full_live_spans_equal_installed_PE": true,
-    "all_252_owned_instruction_starts_equal_Capstone": true,
-    "both_FuncInfo_try_unwind_maps_match": true,
-    "receipt": "pending final audit artifact path"
+    "read_only": true,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "no_source_edits_commits_ghidra_mutations_or_cmake_changes": true,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "typed_capture": {
+      "path": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/oct15_outer_range_typed_flow.json",
+      "sha256": "1e2ac6604e32de1dfa3476461bd4b05f7f6067389a429a405a70a73f643a6217",
+      "validation": {
+        "accepted": true,
+        "state": "accepted",
+        "errors": []
+      },
+      "modification_number": "191"
+    },
+    "reviewed_source": {
+      "path": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/src/native_outer_insert_range_services.cpp",
+      "sha256": "de6af92f8a7704360add72ae115b234563eab4eb715a803a5ec6b104f7fc9632",
+      "header_sha256": "b16d90c271eca0fd34fc981901aba4412f63d62c836d311f27d144c389653a44",
+      "qualification": "Read-only behavioral comparison of drafted Source; no build or native execution claim. Root may continue editing; hashes identify observed final artifacts."
+    },
+    "checks": {
+      "complete_live_disk_spans": 19,
+      "all_live_equals_installed_PE": true,
+      "capstone_version": "5.0.7",
+      "typed_functions_and_scopes": 11,
+      "instructions": 252,
+      "all_current_listing_starts_equal_capstone": true,
+      "direct_CALL_JMP_targets": 16,
+      "native_returns": 6,
+      "raw_EH_handlers_tables_actions": "pass",
+      "actual_401130": "singleC3RET",
+      "tidy_binding_exact_schedule": "pass",
+      "build_or_native_execution": "not performed by read-only audit"
+    },
+    "units": [
+      {
+        "entry": "006a3200",
+        "bytes": 203,
+        "instructions": 72,
+        "ranges": [
+          [
+            "006a3200",
+            "006a328f"
+          ],
+          [
+            "006a32b8",
+            "006a32f2"
+          ]
+        ]
+      },
+      {
+        "entry": "006a3290",
+        "bytes": 40,
+        "instructions": 15,
+        "ranges": [
+          [
+            "006a3290",
+            "006a32b7"
+          ]
+        ]
+      },
+      {
+        "entry": "006a3300",
+        "bytes": 67,
+        "instructions": 26,
+        "ranges": [
+          [
+            "006a3300",
+            "006a3342"
+          ]
+        ]
+      },
+      {
+        "entry": "006a4b50",
+        "bytes": 37,
+        "instructions": 14,
+        "ranges": [
+          [
+            "006a4b50",
+            "006a4b74"
+          ]
+        ]
+      },
+      {
+        "entry": "006a4b80",
+        "bytes": 64,
+        "instructions": 29,
+        "ranges": [
+          [
+            "006a4b80",
+            "006a4bbf"
+          ]
+        ]
+      },
+      {
+        "entry": "006a43a0",
+        "bytes": 110,
+        "instructions": 42,
+        "ranges": [
+          [
+            "006a43a0",
+            "006a43fa"
+          ],
+          [
+            "006a4420",
+            "006a4432"
+          ]
+        ]
+      },
+      {
+        "entry": "006a43fb",
+        "bytes": 37,
+        "instructions": 15,
+        "ranges": [
+          [
+            "006a43fb",
+            "006a441f"
+          ]
+        ]
+      },
+      {
+        "entry": "006a5170",
+        "bytes": 54,
+        "instructions": 23,
+        "ranges": [
+          [
+            "006a5170",
+            "006a51a5"
+          ]
+        ]
+      },
+      {
+        "entry": "00c7f260",
+        "bytes": 8,
+        "instructions": 2,
+        "ranges": [
+          [
+            "00c7f260",
+            "00c7f267"
+          ]
+        ]
+      },
+      {
+        "entry": "00c7f268",
+        "bytes": 17,
+        "instructions": 7,
+        "ranges": [
+          [
+            "00c7f268",
+            "00c7f278"
+          ]
+        ]
+      },
+      {
+        "entry": "00c7f370",
+        "bytes": 17,
+        "instructions": 7,
+        "ranges": [
+          [
+            "00c7f370",
+            "00c7f380"
+          ]
+        ]
+      }
+    ],
+    "EH": {
+      "transfer": {
+        "handler": "00c7f279",
+        "funcinfo": "00dac444",
+        "funcinfo_words": [
+          "19930522",
+          5,
+          "00dac468",
+          1,
+          "00dac430",
+          0,
+          0,
+          0,
+          1
+        ],
+        "unwind": [
+          [
+            -1,
+            "00c7f260"
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            "00c7f268"
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "try": [
+          1,
+          3,
+          4,
+          1,
+          "00dac420"
+        ],
+        "catch_handler": [
+          "40",
+          0,
+          0,
+          "006a3290"
+        ],
+        "actual_temporary_action": "C7F260 LEA ECX,[EBP-30]; JMP actual4324A0. State0 owns private temp; placement state2 only no-op action; catchstate4 reaches state0 on escape.",
+        "normal_cleanup": "State-1 before cleanup; cached private begin inEBX reloaded ONLY after successful ctor; ifnonnull destroy(cachedbegin,CURRENTtemp_end) then free cachedbegin; Source normal cleanup outside catch matches."
+      },
+      "fill": {
+        "handler": "00c7f381",
+        "funcinfo": "00dac684",
+        "funcinfo_words": [
+          "19930522",
+          3,
+          "00dac66c",
+          1,
+          "00dac658",
+          0,
+          0,
+          0,
+          1
+        ],
+        "unwind": [
+          [
+            -1,
+            0
+          ],
+          [
+            0,
+            "00c7f370"
+          ],
+          [
+            -1,
+            0
+          ]
+        ],
+        "try": [
+          0,
+          1,
+          2,
+          1,
+          "00dac648"
+        ],
+        "catch_handler": [
+          "40",
+          0,
+          0,
+          "006a43fb"
+        ]
+      },
+      "noop_actions": "C7F268/C7F370 both push EBP-1C/-20 words, CALL401130,ADDESP8,RET; actual401130 singleC3RET."
+    },
+    "source_contract_checks": {
+      "transfer": "Empty private+4/+8/+C initialized; +0 untouched.557BC0 nonnull construction before cachedemptybegin reload; null skips constructor only, later field accesses retained. Source-first+4, destination-first+8, source-first+C loads; output+=16 before source+C store, completed publication before source+=16. Prefix cleanup then actual tempA0 on Source C++ escape; normal cachedbegin cleanup after state-1 outside catch.",
+      "backward": "Only first three of six physical words consumed by3300; plainRET and stable EAX finaldestination, including empty. Source/destination decrement schedule and ordered4/8/C swaps match.4B80 passes captured dest twice, masks ambient incomingECX only as dead finaltag; Source0 qualifies unusedtag; independently SAR32(last-first,4),SHL4,subtract from captured dest.",
+      "fill": "Fixed value ADDRESS reread by actual557BC0; unsigned zero check, placement state before nullskip; count-- then16advance then completedpublication. Null skip joins prefix, catch432440 binding does not nullskip; dispatcher forwards tags and independently returns originaldest+count*16 DWORDwrap.",
+      "result": "No unresolved source/native-effect finding under stated admitted-storage, actual-child/currentCRT/SourceCPP/private-frame qualifications. Root Source draft was not built by this audit."
+    },
+    "resolved_handoff_corrections": [
+      "Temporary action actual target is JMP4324A0, not432440; root directSource binding corrected before final audit hash.",
+      "4B80 last dead tag retains ambient incomingECX high24bits, not simplyzero; Source zero is explicitly deadword qualification, not semantic incomingregister parameter.",
+      "Saved lookup lists4B80->43A0 edge but fresh native4B80 full64B body has only3300 directcall; full existing listing/Capstone/bytes used rather than old edge."
+    ],
+    "findings": [],
+    "full_evidence": "local/oct15_outer_range_independent/evidence.json",
+    "full_evidence_sha256": "391970595ec2cca0d19082a7ba15ffe2de1f5994bcea1ad265bb1c8e60690a8a",
+    "full_instruction_evidence": "local/oct15_outer_range_independent/instructions.json",
+    "capture_directory": "local/oct15_outer_range_independent",
+    "scope": "Static exact native/live/disk/listing/EH and read-only drafted Source review. Does not prove original physical ABI/FH3/SEH/RTTI/fault/exception/currentCRT/private frame equivalence, native runtime or gameplay. No build claimed."
   },
   "build": {
     "command": "./scripts/build.ps1",
