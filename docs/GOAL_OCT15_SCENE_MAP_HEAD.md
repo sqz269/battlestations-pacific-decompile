@@ -55,6 +55,9 @@ Live batches verify configured `C:/Users/sqz269/bsp.gpr` and
 `/battlestationspacific.exe`. Complete original bytes are compared with the
 installed PE. The report preserves prior function names and empty comments;
 new evidence is added under the Ghidra write lock before save and export.
-Strict MSVC Win32 build and existing CTests are pending in the initial draft.
+Strict MSVC Win32 `scripts/build.ps1` passed for Source revision
+`4e7a7b6f8e44ece9a35066ef744a26cf804889ef`, including both configured existing
+CTests (`reconstructed_math` and `tool_tests`). Native math differential tests
+were not enabled in this worktree.
 No new tests, candidate-specific original-byte differential, original ABI or
 FH3/SEH compatibility, startup/game execution or gameplay proof are claimed.
