@@ -39476,6 +39476,57 @@
       "actual_compiler_archive_gate": "pass",
       "Original_ABI_compatible": false,
       "game_validated": false
+    },
+    {
+      "id": "cc12_enum_symbol_reader",
+      "done": false,
+      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_build_pending",
+      "worker": "scene_token_text_source",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "008f31a0"
+      ],
+      "output_files": [
+        "docs/NATIVE_ENUM_SYMBOL_READER_CC12.md",
+        "include/bsp/native_enum_symbol_reader.hpp",
+        "reports/native_enum_symbol_reader_cc12.json",
+        "src/native_enum_symbol_reader.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "code_revision": "70e0e57ed3329004d1574d8be5ee9c1e7b3973f6",
+      "primary_review": "reports/cc12_enum_symbol_reader_primary_review.json",
+      "Main_build_gate": "pending",
+      "contract": "Whole193B enum name=integer reader over genuine enum/live tokenizer/process scratch and punctuator bindings. Unconditional declaration; no EOF or error-loop exit. New local flag differs from Original incoming argument slot alias. Concrete current-CRT service boundary; no Original ABI/EH/privateCRT/startup/runtime/game/whole-loader credit.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "cc12_scene_numeric_lookahead",
+      "done": false,
+      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_build_pending",
+      "worker": "library_insert_source",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "008d8f10",
+        "008d8f40"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_numeric_lookahead.hpp",
+        "src/native_scene_numeric_lookahead.cpp",
+        "docs/NATIVE_SCENE_NUMERIC_LOOKAHEAD_CC12.md",
+        "reports/native_scene_numeric_lookahead_cc12.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "code_revision": "4f585c389f33e40673c98b7f2599b5a55d8ad66e",
+      "primary_review": "reports/cc12_numeric_lookahead_primary_review.json",
+      "Main_build_gate": "pending",
+      "contract": "Whole35B/13 instructions each numeric lookahead wrapper, genuine tokenizer/context; owner-bit temporary initialization before Peek, fixed verified format copies and concrete current-CRT assignment_count==1. Prefix acceptance retained, no explicit consume. New bool API does not reproduce Original full-EAX transport; no8D9B40/parser/ABI/EH/privateCRT/runtime/game credit.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {

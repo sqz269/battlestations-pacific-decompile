@@ -1,0 +1,60 @@
+{
+  "packet": "oct15_outer_string_vector_cleanup",
+  "status": "complete_actual_header_source_current_cpp_eh_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_outer_string_vector_cleanup.cpp",
+  "header": "include/bsp/native_outer_string_vector_cleanup.hpp",
+  "documentation": "docs/OCT15_OUTER_STRING_VECTOR_CLEANUP.md",
+  "routines": [
+    {"address": "0055a3a0", "cpp_name": "destroy_native_outer_string_vector_range_0055a3a0", "original_abi": "ECX first, EDX last; two unconsumed stacked DWORDs; RET8; no semantic result", "coverage": "complete_actual_header_range_via_verified_00432440_per_element_equivalence"},
+    {"address": "0055aff0", "cpp_name": "tidy_native_outer_string_vector_0055aff0", "original_abi": "ECX actual16B outer header, EDX unconsumed; no stack input; plain RET; no semantic result", "coverage": "complete_actual_header_tidy_captured_range_current_begin_free_ordered_clears"}
+  ],
+  "local_eh": "none; Source adds no catch/retry/rethrow/rollback",
+  "dependencies": [
+    "accepted actual tidy_native_string_header_vector_00432440 composing actual004324A0",
+    "accepted actual00432050 captured8B-string range destruction and current raw pool publications/manager",
+    "accepted singleton_lifetime_free matching current std::free service; originalBF65AC thunk targetsBF9DC8"
+  ],
+  "captures_and_aliases": [
+    "Capture first/last endpoints and walk by16 DWORD wrap/equality. Empty range performs no storage/pool work.",
+    "Per header capture begin/end, destroy actual8B string range, free CURRENT begin, always clear+4,+8,+C in order including null begin; +0 is not written.",
+    "Outer tidy captures begin then end if nonnull; after full captured range destruction frees CURRENT outer begin, always clears4/8/C and does not write0.",
+    "Native55A3A0 duplicates original first from private scratch into inner32050 metadata; accepted432440 duplicates current header.32050 ignores both stack words. Outer range's own two stacked words are unconsumed.",
+    "Raw aliases and child mutations are not rejected or rolled back; cleanup failure stops all later applicable elements/free/clears."
+  ],
+  "historical_projections": {
+    "source": "src/frontend_seg12_17_cc13.cpp",
+    "range": "string_vector_range_destroy_0055a3a0 with Fe3TemplateHost; null inner begin skips stale end/capacity clearing",
+    "tidy": "string_vector_vector_tidy with Fe3TemplateHost; null outer begin returns early",
+    "preservation": "unchanged; distinct new actual APIs and ledger records, no promotion of older bounded settings projections"
+  },
+  "host_steps": [
+    {"address": "0055a3bf", "native": "00432050", "function": "0055a3a0", "contract": "captured per-header8B string range, ignored metadata verified"},
+    {"address": "0055a3c8", "native": "00bf65ac", "function": "0055a3a0", "contract": "CURRENT inner begin free after range"},
+    {"address": "0055b004", "native": "0055a3a0", "function": "0055aff0", "contract": "captured outer16B header range"},
+    {"address": "0055b00d", "native": "00bf65ac", "function": "0055aff0", "contract": "CURRENT outer begin free after whole range"},
+    {"address": "00432454", "native": "00432050", "function": "00432440", "contract": "accepted complete per-element exact-schedule equivalence"},
+    {"address": "0043245d", "native": "00bf65ac", "function": "00432440", "contract": "accepted CURRENT-begin free equivalence"},
+    {"address": "0055b219", "native": "0055aff0", "function": "0055b216", "contract": "root-owned copy-constructor catch interface only"},
+    {"address": "0055ac6e", "native": "0055a3a0", "function": "0055ac60", "contract": "range dispatcher interface/dead-metadata evidence only"},
+    {"address": "0055b124", "native": "0055a3a0", "function": "0055b110", "contract": "second outer tidy interface/dead-metadata evidence only"}
+  ],
+  "validation": {
+    "win32_release": "passed",
+    "existing_tests": "3/3 passed",
+    "log": "local/oct15_outer_string_vector_cleanup_build.log",
+    "ctest_seconds": 7.31,
+    "native_call_sites": "9 checked, 0 failed",
+    "documentation_calls": "9 checked, 0 failed, 0 unchecked, 0 warnings",
+    "preexisting_link_warning": "LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj; also present in prior InsertOne build log; unrelated Source left unchanged",
+    "new_tests": 0,
+    "complete_entry_bytes": {"0055a3a0": 72, "0055aff0": 61}
+  },
+  "limits": [
+    "Added context and by-value endpoints/metadata are not original native entry/stack/private-frame/register ABI.",
+    "Current Source CPP/raw pool/CRT composition, not original heap/handler/exception/FH3/SEH/fault or cleanup-failure unwind identity.",
+    "No new outer-cleanup native differential, failure-injection, original-game or gameplay proof.",
+    "Historical host and bounded settings projections remain separate; incoming caller evidence makes no completeness claim for those callers."
+  ]
+}
