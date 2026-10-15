@@ -1,0 +1,89 @@
+{
+  "batch": "oct15_eleventh_reconstruction_batch",
+  "status": "integrated_main_build_verified",
+  "ordinary_entries": 9,
+  "parent_bound_fragments": 7,
+  "scope_count_note": "Includes6A78E8 normal parent cleanup as an interior fragment, not a function;15 actual function/catch/unwind entries are annotated for16 total ledger entries/scopes.",
+  "packets": [
+    {
+      "report": "reports/oct15_outer_vector_resize.json",
+      "verified_transfer_rows": 11
+    },
+    {
+      "report": "reports/oct15_outer_vector_assignment.json",
+      "verified_transfer_rows": 14
+    },
+    {
+      "report": "reports/oct15_group_vector_insert.json",
+      "verified_transfer_rows": 32
+    },
+    {
+      "report": "reports/oct15_group_vector_erase_resize.json",
+      "verified_transfer_rows": 12
+    }
+  ],
+  "initial_combined_source_commit": "4ed40b4e51b54b63c8705bc0e2042620bbdd02cc",
+  "initial_combined_build": {
+    "status": "passed",
+    "suites_passed": 3,
+    "suites_total": 3,
+    "ctest_seconds": 8.46,
+    "log": "local/oct15_eleventh_final_build.log"
+  },
+  "source_commit_tested": "b4adc4ef75bfad0852698d33e0c5882e69ab229e",
+  "build": {
+    "status": "passed",
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "log": "local/oct15_eleventh_combined_publish_build.log",
+    "reason_for_repeat": "Published main added four scene-map cleanup modules after the initial combined build.",
+    "native_math_scope": "Prior verified math seeds only; new packet entries not executed differentially.",
+    "source_commit": "b4adc4ef75bfad0852698d33e0c5882e69ab229e",
+    "suites_passed": 3,
+    "suites_total": 3,
+    "ctest_seconds": 8.77
+  },
+  "transfer_validation": {
+    "status": "all_pass",
+    "reports": 4,
+    "rows": 69,
+    "CALL_rows": 63,
+    "tail_JMP_rows": 6,
+    "distinct_site_target_kind": 65,
+    "failed": 0,
+    "documentation_claims": 56,
+    "unchecked": 0,
+    "warnings": 0,
+    "log": "local/oct15_eleventh_transfer_verification.log"
+  },
+  "reviewed_commits": {
+    "outer_resize": "ca8c3970611aae1decc879d740622957ca0e9604",
+    "outer_assignment": "e33160ebce62e0812c2d22572d11f908612c7403",
+    "general_group_insert_and_supports": "370b530815e37e141f7e9d7d7aaa7ea5633cb76e",
+    "group_erase_resize": "4ed40b4e51b54b63c8705bc0e2042620bbdd02cc"
+  },
+  "annotation": {
+    "status": "saved_project_all15_actual_entries",
+    "preimages": [
+      "local/oct15_eleventh_accepted_annotation_preimage.json",
+      "local/oct15_eleventh_group_annotation_preimage.json",
+      "local/oct15_eleventh_insert_annotation_preimage.json"
+    ],
+    "logs": [
+      "local/ghidra-annotations-20261015T202322Z.json",
+      "local/ghidra-annotations-20261015T203951Z.json"
+    ],
+    "snapshot_and_exports": "Forced saved-program snapshot after annotations; all15 affected actual function/catch/unwind exports force-refreshed.6A78E8 remains an interior normal cleanup fragment."
+  },
+  "independent_reviews": {
+    "group_erase_resize_native": "134 owned starts/12 transfers plus one external caller site/transfer; full current native bytes and44B EH maps.",
+    "group_erase_resize_Source": "11 behavioral checks, no discrepancy; stable reviewed header/Source hashes embedded in component report."
+  },
+  "limits": [
+    "Explicit RawPoolContext/currentCRT/C++ canonical ownership/private frames do not establish original register/stack/FH3/SEH/RTTI/fault/exception identity.",
+    "Native body/byte/EH/call-site evidence and current Source interfaces are separated; no new-entry native differential or game/gameplay proof."
+  ],
+  "continuing_goal": "active; new readiness work selected propagating pooled-key and pureCRT tree subtrees, retaining legacy noexcept storage separately. Loader6A7BE0 dependency inventory continues.",
+  "main_source_integration_commit": "f8a2fff6f",
+  "main_source_matches_tested_commit": true
+}
