@@ -1,0 +1,176 @@
+{
+  "packet": "oct15_checked_string_vector_ranges",
+  "worker": "agent/oct15_avoid_distance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis": true,
+  "ghidra_read_only": true,
+  "source": "src/native_checked_string_vector_ranges.cpp",
+  "header": "include/bsp/native_checked_string_vector_ranges.hpp",
+  "documentation": "docs/OCT15_CHECKED_STRING_VECTOR_RANGES.md",
+  "routines": [
+    {
+      "address": "006a29c0",
+      "body_end_inclusive": "006a29f8",
+      "bytes": 57,
+      "listed_instructions": 27,
+      "flow_gaps": [],
+      "coverage": "complete_normal_admitted_range_effects_and_semantic_return_at_accepted_child_Source_boundaries",
+      "implementation": "copy_native_checked_string_vector_range_006a29c0",
+      "retained_name": "STL_CopyStringVectors_006a29c0",
+      "original_abi": "cdecl first,last,destination; three physical pointer words; plain RET/caller12-byte cleanup; EAX cached destination end. Source has fourth explicit context reference and different physicalABI.",
+      "schedule": "Capture pointer words; compute cached result=destination+((SAR4(native32(last-first)))<<4) before assignments; nonempty captures native32 destination-first delta; forward source+16/equality loop invokes actual00506C80(dst=cursor+delta,src=cursor). Return cached result, not last child result.",
+      "arithmetic": "All DWORD differences, shifts, addition and cursor progression wrap; unsigned Source sign-extension helper implements SAR4 without implementation-defined signed shift. No C++ out-of-array pointer arithmetic.",
+      "empty": "EAX destination; no pointed-storage access.",
+      "preconditions": "Actual live16B checked owner headers, child actual inner-string/pool/currentCRT/backing contracts, and reachable equality endpoint with every executed access admitted. Actual overlaps retained. Private frame aliases excluded."
+    },
+    {
+      "address": "006a2a00",
+      "body_end_inclusive": "006a2a25",
+      "bytes": 38,
+      "listed_instructions": 18,
+      "flow_gaps": [],
+      "coverage": "complete_normal_admitted_range_effects_with_void_Source_ambient_EAX_qualification",
+      "implementation": "fill_native_checked_string_vector_range_006a2a00",
+      "retained_name": "STL_FillStringVectors_006a2a00",
+      "original_abi": "cdecl first,last,value; three physical pointer words; plain RET/caller cleanup. Native wrapper writes no EAX instruction. Source void has fourth explicit context reference and different physicalABI.",
+      "schedule": "Capture source-value POINTER once on nonempty native entry, not its contents; repeat actual00506C80(destination_cursor,value), then native32 cursor+16/equality compare. No snapshot/overlap repair; current value header reread by each actual assignment.",
+      "native_eax": "Empty preserves ambient incomingEAX; nonempty leaves last assignment's destination result. Observed caller continuations do not consume a semantic result; no synthetic incoming_eax Source parameter or frozen register-return promise.",
+      "empty": "No pointed-storage access or value-header read.",
+      "preconditions": "Actual live16B destination and value owning headers, actual child pool/backing contracts, reachable equality endpoint and admitted accesses. Value may alias destination where child ownership/access contracts hold. Private frame aliases excluded."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "006a29e6",
+      "native": "00506c80",
+      "function": "006a29c0",
+      "contract": "complete original144-instruction callee listing and complete accepted Source/header read",
+      "arguments": "Original ECX=source_cursor+(captured destination-first), stacked source_cursor, child RET4; semantic child EAX ignored by wrapper.",
+      "binding": "Direct assign_native_string_header_vector_00506c80(destination,source,actual_context), complete actual owning service with inherited SourceCRT/EH limits."
+    },
+    {
+      "address": "006a2a16",
+      "native": "00506c80",
+      "function": "006a2a00",
+      "contract": "complete original144-instruction callee listing and complete accepted Source/header read",
+      "arguments": "Original ECX=destination_cursor, stacked captured value pointer, child RET4. Pointee is current each call, not copied into a borrowed projection.",
+      "binding": "Direct assign_native_string_header_vector_00506c80(destination,value,actual_context); void Source does not promise ambient nativeEAX bits."
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "006a5c1b",
+      "native": "006a29c0",
+      "function": "006a5bf0",
+      "arguments": "PUSH destination, last, first; ADD ESP,0Ch at6A5C24.",
+      "result_use": "MOV EDI,EAX at6A5C2B; used for destroy-range start and destination end publication."
+    },
+    {
+      "address": "006a66cd",
+      "native": "006a29c0",
+      "function": "006a6680",
+      "arguments": "PUSH destination, source_end, source_begin; cleanup0Ch. Caller SAR4 source count confirms16B outer headers.",
+      "result_use": "MOV ECX,EAX at6A66DE passes returned destination end to following destroy-range operation."
+    },
+    {
+      "address": "006a6748",
+      "native": "006a29c0",
+      "function": "006a6680",
+      "arguments": "PUSH destination, captured split, source_begin; cleanup0Ch; outer split computed with SHL4.",
+      "result_use": "EAX overwritten by current source-end load at6A6750 before use."
+    },
+    {
+      "address": "006a5e44",
+      "native": "006a2a00",
+      "function": "006a5c50",
+      "arguments": "PUSH address of temporary checked vector[EBP-28h], last, first; ADD ESP,0Ch at6A5E49.",
+      "result_use": "Jump to6A5EA8 common cleanup; no semanticEAX read before overwrite or ambient return."
+    },
+    {
+      "address": "006a5ea0",
+      "native": "006a2a00",
+      "function": "006a5c50",
+      "arguments": "PUSH same temporary, computed first+count*16, first; ADD ESP,18h also cleans three earlier6A4B80 args.",
+      "result_use": "Falls through6A5EA8 common cleanup; no semanticEAX read before overwrite or ambient return."
+    }
+  ],
+  "layout_and_ownership": {
+    "header": "Actual16B opaque/proxy0,begin4,end8,capacityC; inner actual pooled-string records8B; not NativeStringVectorStorage0Ch overlay.",
+    "evidence": "Complete00506C80 actual +4/+8/+C and SAR3; accepted producer00432090 clear/publication field contract; complete006A6680 outer SAR4/SHL4, three pointer arguments and real result use;006A5C50 passes address of temporary[EBP-28h] and destination ranges. Full temporary construction/insert behavior is outside this packet; valid live owning storage is the wrapper admission precondition.",
+    "binding": "Extra explicit NativeStringRawPoolContext references actual01090AA8 pool publication,01090AA4 gate,01090AA0 manager publication; context owns no storage and adds no callback.",
+    "effects": "Assignment into valid live owning headers delegates self/clear/shrink/grow/replacement and real inner assignment/construction/destruction/current-begin free/pool publication. No header construction, shallow host vector, borrowed uninitialized assignment or fake allocator.",
+    "exceptions": "No local catch/cleanup/rollback added. Earlier completed assignments survive child failure; current child C++EH/CRT/diagnostic/zero-copy limits retained."
+  },
+  "corrections": [
+    {
+      "was": "Reviewed fill-name evidence attributes callers to catch-all funclets.",
+      "is": "Live exact sites6A5E44 and6A5EA0 are both inside actual006A5C50 insertion body; original call continuations were inspected.",
+      "evidence": "Live xrefs/function containment, complete wrapper body and caller assembly around each site through return."
+    },
+    {
+      "was": "Historical names say same body as6A2200/6A2240.",
+      "is": "No semantic identity assumed from names. These complete bodies independently call actual00506C80 with16B outer progression and recovered three-word ABI.",
+      "evidence": "Full independent native listings and original installed disk spans."
+    },
+    {
+      "was": "Pseudocode copy call omits destination/register input; fill's void hides machineEAX facts.",
+      "is": "Copy has ECX derived destination and stacked source for child, cached semantic end return. Fill writes noEAX itself; semanticvoidSource follows observed callers with explicit ambient-register qualification.",
+      "evidence": "Full wrappers, actual child return convention, copy result consumers and both fill caller continuations."
+    }
+  ],
+  "original_byte_audit": {
+    "original_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "image_base": "00400000",
+    "extraction": "Original PE32 optional-header image base and section-table RVA-to-raw mapping; exact complete spans read from installed disk file.",
+    "checks": "Independently resolve each original E8 CALL target and final C3 RET; full raw spans retained. Complete instruction semantics separately inspected in exported assembly.",
+    "routines": [
+      {
+        "entry": "006a29c0",
+        "size": 57,
+        "end_inclusive": "006a29f8",
+        "call_site": "006a29e6",
+        "resolved_call_target": "00506c80",
+        "ret_opcode": "c3",
+        "bytes": "538b5c240c558b6c2414568b742410578bfb2bfec1ff04c1e70403fd3bf374122bee568d0c2ee89542e6ff83c6103bf375f08bc75f5e5d5bc3"
+      },
+      {
+        "entry": "006a2a00",
+        "size": 38,
+        "end_inclusive": "006a2a25",
+        "call_site": "006a2a16",
+        "resolved_call_target": "00506c80",
+        "ret_opcode": "c3",
+        "bytes": "568b742408578b7c24103bf77415538b5c2418538bcee86542e6ff83c6103bf775f15b5f5ec3"
+      }
+    ],
+    "scope": "Static original disk-byte evidence only; no compiled-source byte identity, native execution, ABI or gameplay claim."
+  },
+  "compiled_source_evidence": {
+    "object": "build/win32/bsp_core.dir/Release/native_checked_string_vector_ranges.obj",
+    "dump_file": "local/oct15_checked_string_vector_ranges_coff.asm",
+    "dumper": "MSVC dumpbin14.51.36244.0 /DISASM",
+    "copy": "Cached EDI result at0F..16 uses((last-first)&FFFFFFF0)+destination, equivalent SAR4/SHL4 for everyDWORD delta. Actual child CALL28, forward ADD10 at2D, result MOV EAX,EDI at38, plainRET3E.",
+    "fill": "Actual child CALL18, forward ADD10 at1D/equality23; plainRET2B. This exact void build writesEAX only through child, matching native conditional ambientEAX facts without a C++semantic-return promise.",
+    "frame_qualification": "Compiler reloads invariant copy last/fill value pointer from private parameter frame words rather than native saved registers; private frame aliases excluded. Each header/pointee remains live/current through actual child calls.",
+    "scope": "Static exact-source COFF inspection, not native/source byte identity, frozen original physicalABI or native execution."
+  },
+  "floating_point": "Neither native wrapper contains x87/FP arithmetic; no NaN behavior involved.",
+  "uncertainties": [
+    "Existing library-role names remain descriptive hypotheses; no reliance on old same-body identity claims.",
+    "Source has extra actual context argument and different physicalABI; original FH3/SEH/CRT identity, private frame aliases and ambient flags are outside contract.",
+    "Voidfill does not promise original ambientEAX bits although current compiled output preserves the native pattern.",
+    "Actual owning parent/child pool/currentCRT/diagnostic/zero-copy limits remain inherited; no original native exception/gameplay validation."
+  ],
+  "checks": {
+    "build": "pass ./scripts/build.ps1 after exact C++ source changes",
+    "build_log": "local/oct15_checked_string_vector_ranges_build.log",
+    "existing_suites": "3/3 pass: reconstructed_math, native_math_differential, tool_tests",
+    "verify_report_calls": "pass7/7:2direct child calls and5observed caller sites with containing functions",
+    "git_diff_check": "pass",
+    "new_tests": 0,
+    "packet_native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}
