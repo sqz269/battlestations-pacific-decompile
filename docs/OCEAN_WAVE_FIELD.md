@@ -1286,3 +1286,29 @@ Open, in order (the lead's queue of 2026-10-14; IJN08 margin work is closed, z i
    floatplanes: jm02.lua:2444, jm03.lua:1587/1615, jm05.lua:5479/5498); watch the RNG and keyed streams; flip by
    mechanism.
 4. Recall-the-Zeros order lines for ESMP08: lua61 is running them (l61_e8_n / l61_e8_o).
+
+## 36. `kCarrierRunwayFailureBound` (cc9-physics11, 2026-10-15; section 34's packet)
+
+Switch in `include/bsp/mothership_failure.hpp`, committed OFF. Three arms, all gated on `IsKindOf(09h)`
+(MMothership) and the case-blind names `RunwayFailure` (`_stricmp` 00BF7FBF) / `HangarFailure` (00425850):
+
+- **Lua.** `run_set_failure_0088eff0` (game_hosts_lua.cpp) takes the two names before the ship base, as
+  vtable `+194h` 00758750 does, and sets `deck.runway_failure` / `deck.hangar_failure` (block `+1Ch` / `+1Dh`,
+  unit `+11A4h` / `+11A5h` through 007583A0). The duration is ignored. Log arm 10 / 11.
+- **Section set.** The traced damage-section caller of `+21Ch` is `0093BED0` (`0093C0E5 MOV EDX,[EDX+21Ch]`; also
+  `0093C300` at `0093C4DA`, not hosted). On a carrier `+21Ch` = 00758890 takes the two names before 00827B90, so a
+  `runway` / `hangar` section failure (shipglobals.lua rows 3/4, FailureDuration 20, this installation 2024-07-13)
+  sets the flag. The host's FailureBinding `unit_on_failure` now routes them there.
+- **Section clear.** `0093C520` (`0093C622 MOV EDX,[EAX+19Ch]`) on expiry: `+19Ch` = 00758A50 sends 73h / 75h and
+  007583F0 clears the byte. FailureBinding `unit_named_state_dispatch` routes them. The other `+19Ch` caller,
+  `00958D2C` in 00958A30, passes `"InferiorFailure"` (00CF0B74), not these names. A scripted SetFailure keeps no
+  record, so only a section failure of the same name ever clears it (and its expiry does clear it).
+- The flatten now names shipglobals rows `RunwayFailure` / `HangarFailure` (effect 5 / 6) instead of `Failure#N`,
+  in both switch states (log text only; the record name was already unique per row).
+- Not bound: GetFailure on a mothership (007589D0) still answers false for the two names (no script asks).
+
+Predictions. BSM09 and ESMP03 move from the SetFailure line on (Lexington at bsm_09:1203 inside the scripted
+sinking, Zuiho at 03_south_pacific:1246/1400): the carrier's later launches are refused at the readiness gate
+(006BF620 / 006CD810 paths). Any row in which a carrier takes a runway/hangar section hit moves too: a 20 s launch
+blackout per section failure. ESMP08 and USN04 stay gameplay-identical unless their logs show `component failure
+RunwayFailure|HangarFailure` lines on a carrier.
