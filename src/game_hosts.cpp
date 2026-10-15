@@ -18,6 +18,9 @@
 #include "bsp/game_native_vfs_runtime.hpp"
 #include "bsp/native_renderer_reset_process.hpp"
 #include "bsp/native_renderer_reset_readiness.hpp"
+#include "bsp/native_platform_construction.hpp"
+#include "bsp/native_platform_load_messages.hpp"
+#include "bsp/game_native_hardware_layout_tree.hpp"
 #include "bsp/game_native_settings_process.hpp"
 #include "bsp/game_native_settings_application.hpp"
 #include "bsp/game_native_online_process.hpp"
@@ -29,6 +32,7 @@
 #include <shlobj.h>
 
 #include <cfloat>
+#include <array>
 #include <cstdarg>
 #include <cstdlib>
 #include <cstring>
@@ -1499,6 +1503,170 @@ struct GameStartupHost::InputServices {
     }
 };
 
+struct GameStartupHost::NativePlatformServices {
+    enum class Phase { prepared, allocating, views, constructing, ready, failed, closed };
+    GameHostLog& log;
+    GameSingletonHost& singletons;
+    NativeStringRawPoolContext& strings;
+    void* volatile publication{};
+    NativePlatformConstructionContext construction{publication, strings};
+    Phase phase{Phase::prepared};
+    void* allocated{}; // Opaque after native drain; never another owning pointer.
+    std::unique_ptr<Win32PlatformState> view;
+    std::unique_ptr<PlatformTextInput> text;
+    HWND cleanup_window{};
+    bool drain_prepared{};
+    bool deletion_bound{};
+    std::array<unsigned char, 0x184> incoming;
+
+    NativePlatformServices(GameHostLog& l, GameSingletonHost& s, NativeStringRawPoolContext& raw)
+        : log(l), singletons(s), strings(raw) {
+        if (&strings.actual_manager_publication_01090aa0 != &singletons.manager_publication_01090aa0() ||
+            singletons.native_deletion_bindings().platform)
+            throw std::logic_error("Platform requires the same unbound canonical manager/string domain");
+        singletons.native_deletion_bindings().platform = &construction;
+        deletion_bound = true; // No throwing work follows this metadata publication.
+    }
+    ~NativePlatformServices() noexcept {
+        if (phase != Phase::closed || deletion_bound || cleanup_window) std::terminate();
+        // Native BECE30 owns the allocation/title/queue. Metadata destruction
+        // never dereferences or frees that retired allocation.
+    }
+    bool incomplete() const noexcept {
+        return phase != Phase::prepared && phase != Phase::ready && phase != Phase::closed;
+    }
+    void construct() {
+        if (phase != Phase::prepared || publication)
+            throw std::logic_error("Platform construction cannot replay or replace a publication");
+        try {
+            phase = Phase::allocating;
+            // Guarded allocation/ECX constructor at73D8D1..73D8F3. Allocation
+            // bytes, including BE2AC0's incoming x87 operands, are not seeded.
+            allocated = singleton_lifetime_allocate({SingletonAllocationKind::object,
+                0x184, sizeof(NativePlatformObjectStorage)});
+            if (allocated) {
+                std::memcpy(incoming.data(), allocated, incoming.size());
+                phase = Phase::views;
+                auto& owner = *static_cast<NativePlatformObjectStorage*>(allocated);
+                view = std::make_unique<Win32PlatformState>(owner, strings);
+                text = std::make_unique<PlatformTextInput>(allocated,
+                    game_native_hardware_layout_tree_process().invalid_parameters());
+                if (std::memcmp(incoming.data(), allocated, incoming.size()) != 0)
+                    throw std::logic_error("Platform metadata changed incoming native allocation bytes");
+                phase = Phase::constructing;
+                void* const result = construct_native_win32_platform_00becda0(allocated, construction);
+                if (result != allocated || publication != allocated ||
+                    owner.window.profile_00 != reinterpret_cast<const void*>(0x00d68cc4u) ||
+                    owner.window.present_width_24 != 640 || owner.window.present_height_28 != 480 ||
+                    owner.queue_count_17c != 0 || !owner.queue_sentinel_178)
+                    throw std::logic_error("Platform constructor did not produce its canonical actual owner");
+                auto* const links = static_cast<void**>(owner.queue_sentinel_178);
+                if (links[0] != links || links[1] != links ||
+                    &view->present_height != &owner.window.present_height_28 ||
+                    &view->window != &owner.window.window_30 ||
+                    &view->frames_enabled != &owner.window.frames_enabled_42 ||
+                    &view->exit_requested != &owner.exit_requested_181 ||
+                    &text->enabled != &owner.text_enabled_170 ||
+                    &text->clipboard_requested != &owner.clipboard_requested_44 ||
+                    text->queue.native_header_identity() != &owner.queue_unused_174)
+                    throw std::logic_error("Platform view/text/loop do not borrow the same native cells");
+                std::uint32_t incoming_width{}, incoming_height{}, aspect_bits{};
+                std::memcpy(&incoming_width, incoming.data() + 0x24, 4);
+                std::memcpy(&incoming_height, incoming.data() + 0x28, 4);
+                std::memcpy(&aspect_bits, &owner.window.active_aspect_10, 4);
+                log.notef("native platform constructed: owner=%p cell=%p profile=%p extent=%dx%d sentinel=%p count=%u incoming_24=%08x incoming_28=%08x aspect_bits=%08x metadata_preserved_preimage=1 aliases=1",
+                    allocated, static_cast<void*>(const_cast<void**>(&publication)), owner.window.profile_00,
+                    owner.window.present_width_24, owner.window.present_height_28, owner.queue_sentinel_178,
+                    owner.queue_count_17c, incoming_width, incoming_height, aspect_bits);
+            }
+            phase = Phase::ready;
+        } catch (...) {
+            phase = Phase::failed;
+            throw; // Retain native effects, raw storage and the same context.
+        }
+    }
+    void require_ready() const {
+        if (phase != Phase::ready || !view || publication != allocated || drain_prepared)
+            throw std::logic_error("Platform borrow requires its same live completed actual owner");
+    }
+    void prepare_drain() {
+        if (phase == Phase::closed || drain_prepared) return;
+        if (phase != Phase::prepared && phase != Phase::ready)
+            throw std::logic_error("Incomplete platform cannot prepare native drain");
+        cleanup_window = view ? view->window : nullptr;
+        drain_prepared = true;
+    }
+    void after_drain() {
+        if (phase == Phase::closed) return;
+        if (!drain_prepared || incomplete() || publication || singletons.manager_publication_01090aa0())
+            throw std::logic_error("Platform closure requires the actual shared native manager drain");
+        if (!deletion_bound || singletons.native_deletion_bindings().platform != &construction)
+            throw std::logic_error("Platform deletion context changed during native drain");
+        singletons.native_deletion_bindings().platform = nullptr;
+        deletion_bound = false;
+        phase = Phase::closed;
+        log.note("native platform after shared drain: publication=null manager=null metadata=closed raw_reads=0");
+    }
+    void probe_queue() {
+        require_ready();
+        if (text->enabled || text->queue.size())
+            throw std::logic_error("Native queue probe requires its fresh disabled empty actual queue");
+        void* const sentinel = view->text_queue;
+        text->enable_00a965a0(true);
+        text->enqueue_message_00bed3b0_fragment(WM_CHAR, 'Q');
+        text->enqueue_message_00bed3b0_fragment(WM_KEYDOWN, VK_LEFT);
+        if (text->queue.size() != 2 || view->text_queue_count != 2 || !view->byte_170)
+            throw std::logic_error("Native queue append did not publish to the actual header");
+        TextInputEvent event{};
+        if (!text->queue.pop_00bece90(event) || event.value != 'Q' || event.key_event || view->text_queue_count != 1)
+            throw std::logic_error("Native queue pop did not preserve actual event and count");
+        text->enable_00a965a0(true); // Same-state enable must clear the other node.
+        text->enable_00a965a0(false);
+        if (view->text_queue != sentinel || text->queue.size() || text->queue.front() || view->byte_170)
+            throw std::logic_error("Native queue clear changed sentinel or left actual nodes/enable state");
+        log.note("native platform queue probe PASS: actual header append2/pop1/same-state-clear/disable; sentinel retained; synthetic Source events only");
+    }
+};
+
+void* const volatile& GameStartupHost::platform_publication_0109cf04() const {
+    if (!native_platform_) throw std::logic_error("Platform publication has not been constructed");
+    native_platform_->require_ready();
+    return native_platform_->publication;
+}
+
+void GameStartupHost::exit_if_native_platform_incomplete() noexcept {
+    if (!native_platform_ || !native_platform_->incomplete()) return;
+    try {
+        log_.notef("native platform incomplete: phase=%u owner=%p publication=%p; retaining canonical graph",
+            static_cast<unsigned>(native_platform_->phase), native_platform_->allocated,
+            static_cast<void*>(native_platform_->publication));
+        log_.close();
+    } catch (...) { std::fputs("bsp_game: native platform requires process retention\n", stderr); }
+    std::_Exit(1);
+}
+
+void GameStartupHost::prepare_native_platform_drain() noexcept {
+    if (!native_platform_) return;
+    try {
+        native_platform_->prepare_drain();
+        if (g_active_platform == platform_) set_active_platform_state(nullptr);
+    } catch (...) {
+        try { log_.note("native platform drain preparation failed; retaining canonical graph"); log_.close(); }
+        catch (...) { std::fputs("bsp_game: native platform drain preparation failed\n", stderr); }
+        std::_Exit(1);
+    }
+}
+
+void GameStartupHost::close_native_platform_after_drain() noexcept {
+    if (!native_platform_) return;
+    try { native_platform_->after_drain(); }
+    catch (...) {
+        try { log_.note("native platform closure failed; retaining canonical graph"); log_.close(); }
+        catch (...) { std::fputs("bsp_game: native platform closure requires process retention\n", stderr); }
+        std::_Exit(1);
+    }
+}
+
 GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
     const GameExecutableOptions& options, GameNativeReadOnlyData* native_data)
     : log_(log), instance_(instance), options_(options), native_data_(native_data) {
@@ -1649,6 +1817,7 @@ void GameStartupHost::close_native_shadow_after_drain() noexcept {
 }
 
 GameStartupHost::~GameStartupHost() {
+    exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
     exit_if_native_shadow_incomplete();
     if(settings_host_&&settings_host_->requires_process_retention()) {
@@ -1678,6 +1847,7 @@ GameStartupHost::~GameStartupHost() {
     // Retain sound callbacks, DLLs, VFS/Lua and lifetime publication cells
     // through the actual raw singleton drain, including exceptional startup.
     if (singletons_) {
+        prepare_native_platform_drain();
         if (native_renderer_) native_renderer_->drain_singletons();
         else singletons_->shutdown();
         if(scripts_)scripts_->input().after_singleton_drain();
@@ -1685,6 +1855,7 @@ GameStartupHost::~GameStartupHost() {
     }
     close_native_gui_probe_after_drain();
     close_native_shadow_after_drain();
+    close_native_platform_after_drain();
     if (input_) {
         try { input_->core.release_sdk_after_native_drain(); }
         catch (const std::exception& error) {
@@ -1714,6 +1885,10 @@ GameStartupHost::~GameStartupHost() {
     renderer_api_ = nullptr;
     native_renderer_.reset(); // all COM consumers closed; native owner already drained
     release_platform_window();
+    platform_ = nullptr;
+    loop_ = nullptr;
+    platform_text_ = nullptr;
+    native_platform_.reset(); // Closed native graph; callbacks/window already gone.
     delete window_host_;
     xinput_library_.reset();
     delete vfs_;
@@ -1778,6 +1953,7 @@ void GameStartupHost::game_explorer_release() {
 }
 
 void GameStartupHost::exit_process(int code) {
+    exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
     exit_if_native_shadow_incomplete();
     exit_if_native_renderer_incomplete();
@@ -1999,9 +2175,22 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // source SDK alive before any CreateWindow activation messages, then lend
     // that same module to InputServices when native input startup is reached.
     xinput_library_ = std::make_unique<XInputLibrary>(selected_xinput_path(options_.xinput_dll));
-    construct_win32_platform_00becda0(platform_, nullptr);
-    log_.implemented("Phase 3 construct_win32_platform", "00becda0");
-    set_active_platform_state(&platform_, &platform_text_);
+    native_platform_ = std::make_unique<NativePlatformServices>(log_, *singletons_, vfs_->raw_strings());
+    try { native_platform_->construct(); }
+    catch (...) { exit_if_native_platform_incomplete(); throw; }
+    native_platform_->require_ready();
+    platform_ = native_platform_->view.get();
+    loop_ = platform_;
+    platform_text_ = native_platform_->text.get();
+    log_.implemented("Phase 3 construct_actual_win32_platform", "00becda0");
+    set_active_platform_state(platform_, platform_text_);
+    char native_queue_probe[2]{};
+    if (GetEnvironmentVariableA("BSP_NATIVE_PLATFORM_QUEUE_PROBE", native_queue_probe,
+            sizeof(native_queue_probe)) == 1 && native_queue_probe[0] == '1') {
+        try { native_platform_->probe_queue(); }
+        catch (...) { native_platform_->phase = NativePlatformServices::Phase::failed;
+            exit_if_native_platform_incomplete(); throw; }
+    }
 
     GameSaveStorageHost save_storage(log_);
     if (initialize_save_storage_00beb2c0(save_storage, save_roots_)) {
@@ -2042,7 +2231,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     lua_services_ = std::make_unique<GameNativeLuaServices>(*singletons_, vfs_->borrow_raw_services());
     bind_legacy_crt_math_runtime(application_math_runtime);
     native_renderer_ = std::make_unique<GameNativeRendererApplication>(log_, *singletons_,
-        *vfs_, *lua_services_, *native_data_, clock_publication_01090ab0_, &platform_.native_window_focus());
+        *vfs_, *lua_services_, *native_data_, clock_publication_01090ab0_, NativePlatformLoadPublication(native_platform_->publication));
     native_renderer_->construct();
     renderer_api_ = &native_renderer_->api();
     renderer_parameters_ = &native_renderer_->parameters();
@@ -2230,21 +2419,35 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     window_host_->set_origin(window_origin_x_, window_origin_y_);
     log_.note(window_monitor_note_.c_str());
     summary_.window_created = configure_platform_window_00becee0(*window_host_, request,
-        platform_, renderer_request_);
+        *platform_, renderer_request_);
     if (summary_.window_created) {
         log_.implemented("Phase 3 configure_platform_window", "00becee0");
+        auto* const actual_platform = static_cast<NativePlatformObjectStorage*>(native_platform_->publication);
+        if (actual_platform != platform_->actual_native_object() ||
+            &platform_->present_height != &actual_platform->window.present_height_28 ||
+            platform_->present_height != request.height ||
+            actual_platform->window.title_length_04 != std::strlen(request.name) ||
+            !actual_platform->window.title_data_08 ||
+            std::memcmp(actual_platform->window.title_data_08, request.name,
+                actual_platform->window.title_length_04) != 0 ||
+            native_renderer_->borrow_platform_publication_0109cf04().identity() !=
+                NativePlatformLoadPublication(native_platform_->publication).identity())
+            throw std::logic_error("Configured window does not share actual platform height/title/publication");
+        log_.notef("native platform window bindings: owner=%p height_28=%d height_alias=1 title_length=%u renderer_cell_same=1 HWND_same=%u",
+            actual_platform, actual_platform->window.present_height_28, actual_platform->window.title_length_04,
+            actual_platform->window.window_30 == platform_->window ? 1u : 0u);
         log_.notef("window created %dx%d at %d,%d color_depth=%d",
-            platform_.present_width, platform_.present_height, platform_.x, platform_.y,
-            platform_.color_depth);
+            platform_->present_width, platform_->present_height, platform_->x, platform_->y,
+            platform_->color_depth);
         // Full B2AEB0 receives all ten slots, including VSync and multisampling.
         log_.notef("renderer init request %dx%d fullscreen=%d vsync=%d antialias=%u",
             renderer_request_.width, renderer_request_.height,
             renderer_request_.fullscreen ? 1 : 0,
             renderer_request_.color_depth_selector ? 1 : 0, renderer_request_.option);
-        const auto* native_focus = &platform_.native_window_focus();
+        const auto* native_focus = &platform_->native_window_focus();
         log_.notef("platform native focus cells: hwnd_matches=%d active=%d focused=%u",
-            native_platform_window_00bec230(native_focus) == platform_.window ? 1 : 0,
-            platform_.byte_041 ? 1 : 0, native_platform_has_focus_00b20c50(native_focus));
+            native_platform_window_00bec230(native_focus) == platform_->window ? 1 : 0,
+            platform_->byte_041 ? 1 : 0, native_platform_has_focus_00b20c50(native_focus));
     } else {
         log_.note("window creation failed");
     }
@@ -2380,7 +2583,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // `_Highlight`, are real GUI pages, so this is also the first phase that evaluates
     // page scripts. Evidence: docs/APP_INIT_FONTS_GUI.md.
     frontend_ = new GameFrontendHost(log_, *vfs_, *scripts_, *fonts_, *device_->device(),
-        platform_.widescreen);
+        platform_->widescreen);
     frontend_->run_font_and_gui_startup_0073bae0(language_font_path_008d4890(
         settings_host_->language_catalog(), settings_view_.gameplay.language_index_04));
     // 0073E14B follows the retail-stubbed After InitGui checkpoint. Borrow the
@@ -2409,7 +2612,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         // credits and names, then keeps parent bindings through the raw drain.
         native_gui_probe_ = std::make_unique<GameNativeGuiEffectProbe>(log_, *native_renderer_,
             *vfs_, *singletons_, *native_data_, *native_shadow_, *input_runtime_,
-            native_renderer_->loading_platform_focus_publication());
+            native_renderer_->borrow_platform_publication_0109cf04());
         try {
             (void)native_gui_probe_->run(include_native_post_cache);
             native_gui_probe_->retire_caller_references();
@@ -2509,7 +2712,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     summary_.screenshot_path = options_.screenshot_path;
     summary_.screenshot_frame = options_.screenshot_frame;
 
-    frame_host_ = new GameFrameHost(log_, require_frame_clock_context(), platform_, loop_, game_state_, profiler_,
+    frame_host_ = new GameFrameHost(log_, require_frame_clock_context(), *platform_, *loop_, game_state_, profiler_,
         menu_, *vfs_, settings_process_->online_00f8abe8());
     std::function<void(IDirect3DDevice9&)> capture;
     if (!options_.screenshot_path.empty()) {
@@ -2521,7 +2724,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         };
     }
     loop_callbacks_ = new GameLoopCallbacks(log_, frame_state_, frame_color_, *frame_host_,
-        *device_, loop_, options_.frame_limit, sound_->xlive, platform_, *input_runtime_, std::move(capture),
+        *device_, *loop_, options_.frame_limit, sound_->xlive, *platform_, *input_runtime_, std::move(capture),
         options_.screenshot_frame, options_.screenshot_mission_frame);
 }
 
@@ -2531,11 +2734,11 @@ void GameStartupHost::platform_run_loop_dispatch() {
         log_.note("no loop callbacks; initialize did not complete");
         return;
     }
-    if (!loop_.frames_enabled) {
+    if (!loop_->frames_enabled) {
         log_.note("frames are disabled; the loop would never call the frame callback");
     }
-    platform_run_loop_00bec1a0(loop_, *loop_callbacks_);
-    summary_.loop_finished = loop_.loop_finished;
+    platform_run_loop_00bec1a0(*loop_, *loop_callbacks_);
+    summary_.loop_finished = loop_->loop_finished;
     summary_.frames_presented = device_ != nullptr ? device_->presented() : 0ull;
     summary_.presents_skipped = device_ != nullptr ? device_->presents_skipped() : 0ull;
     log_.notef("loop finished=%d frames=%llu presented=%llu", summary_.loop_finished ? 1 : 0,
@@ -2543,17 +2746,23 @@ void GameStartupHost::platform_run_loop_dispatch() {
 }
 
 void GameStartupHost::release_platform_window() noexcept {
-    // Host cleanup also runs if a required startup service throws. Do not log:
-    // WinMain can close the log before this object's destructor executes.
-    if (g_active_platform == &platform_) set_active_platform_state(nullptr);
-    if (platform_.window != nullptr) {
-        DestroyWindow(platform_.window);
-        platform_.window = nullptr;
+    // Keep the HWND/window-extra metadata alive through native drain, while
+    // disarming our message adapters before the raw platform can be freed.
+    if (g_active_platform == platform_) set_active_platform_state(nullptr);
+    HWND window = nullptr;
+    if (native_platform_ && native_platform_->drain_prepared) {
+        window = native_platform_->cleanup_window;
+        native_platform_->cleanup_window = nullptr;
+    } else if (platform_) {
+        window = platform_->window;
+        platform_->window = nullptr;
     }
-    if (window_host_ != nullptr) window_host_->unregister_class(window_class_name_.c_str());
+    if (window) DestroyWindow(window);
+    if (window_host_) window_host_->unregister_class(window_class_name_.c_str());
 }
 
 void GameStartupHost::application_shutdown() {
+    exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
     exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
@@ -2657,6 +2866,7 @@ void GameStartupHost::application_destruct() {
 }
 
 void GameStartupHost::destroy_singleton_lifetime_manager() {
+    exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
     exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
@@ -2665,9 +2875,11 @@ void GameStartupHost::destroy_singleton_lifetime_manager() {
     exit_if_allocation_stats_failed();
     exit_if_particle_manager_failed();
     log_.implemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
+    prepare_native_platform_drain();
     if (native_renderer_) native_renderer_->drain_singletons();
     else singletons_->shutdown();
     close_native_gui_probe_after_drain();
+    close_native_platform_after_drain();
     if (lua_services_)
         log_.notef("native Lua after raw singleton drain: fundamentals=%s getters=%u",
             lua_services_->fundamentals_published() ? "non-null" : "null",
