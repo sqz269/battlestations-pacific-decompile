@@ -15,6 +15,7 @@
 #include "bsp/native_vertex_declaration_loading.hpp"
 #include "bsp/native_vertex_declaration_registry_lifetime.hpp"
 #include "bsp/native_vfs_date_route.hpp"
+#include "bsp/native_texture_reload.hpp"
 #include "bsp/native_material_effect_cache.hpp"
 #include "bsp/native_effect_registry_destroy.hpp"
 #include "bsp/native_renderer_cache_cleanup.hpp"
@@ -573,6 +574,17 @@ const NativeCockpitViewportReleaseContext& GameNativeRendererApplication::cockpi
 }
 NativeTextureCacheContext& GameNativeRendererApplication::texture_cache() noexcept {
     return impl_->texture_loading.cache;
+}
+void GameNativeRendererApplication::reload_activation_texture_2d(void* resource,
+    std::uint32_t target, NativeTextureReloadOutputs outputs,
+    NativeTextureReloadAcquired& acquired) {
+    check(impl_->phase==Impl::Phase::ready,"texture reload requires the ready renderer");
+    check(resource && impl_->owners.find(resource),
+        "texture reload requires this application's canonical actual owner");
+    check(*static_cast<const volatile std::uint32_t*>(resource)==0x00d61948 &&
+        target==0x00b3fa90 && impl_->profiles(0x00d61948)[2]==target,
+        "texture reload requires current D61948/B3FA90 dispatch");
+    reload_native_texture_00b3fa90(resource,impl_->texture_loading.loading,outputs,acquired);
 }
 NativeMaterialTextureRefreshContext GameNativeRendererApplication::material_texture_refresh_context(
     const NativeMaterialTextureNameLiterals& literals) {

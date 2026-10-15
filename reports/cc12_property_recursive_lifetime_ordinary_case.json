@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "cc12_property_recursive_lifetime_ordinary_case_execution",
-  "status": "PASS_ONE_ORDINARY_SOURCE_CASE_PENDING_PRIMARY_POST_RUN_REVIEW",
+  "status": "HISTORICAL_ORDINARY_CASE_PRESERVED_WITH_CURRENT_TWO_NODE_PROVIDER_CASE_PASS_PENDING_PRIMARY_REVIEW",
   "UTC": "2026-10-09T00:44:30.568179+00:00",
   "owned_versioned_files": [
     "docs/CC12_PROPERTY_RECURSIVE_LIFETIME_ORDINARY_CASE.md",
@@ -311,5 +311,395 @@
   },
   "primary_replay_command": "python \"J:\\PROG\\battlestations-pacific-decompile-cc12_property_type6_source_readiness_ast\\local\\cc12_property_recursive_lifetime_execution_design_update\\execution_attempt01\\ordinary_case_reader.py\" --verify --check-current",
   "historical_replay_after_later_Source_changes": "python \"J:\\PROG\\battlestations-pacific-decompile-cc12_property_type6_source_readiness_ast\\local\\cc12_property_recursive_lifetime_execution_design_update\\execution_attempt01\\ordinary_case_reader.py\" --verify",
-  "primary_post_run_review": "pending; no ledger mutation in this worker packet"
+  "primary_post_run_review": "pending; no ledger mutation in this worker packet",
+  "current_two_node_ordinary_source_execution": {
+    "schema": "bsp.cc12.recursive-lifetime-current-singleprocess.v1",
+    "status": "PRIMARY_ACCEPTED_ONE_CURRENT_ORDINARY_SOURCE_TWO_NODE_CASE",
+    "source_baseline": "52f3736d6fd1e876156cc119e664583481cae3b3",
+    "source_input_authority": "Exact clean Main physical source/header bytes copied before fresh whole-TU compilation; two CRLF/LF-only inputs explicitly refreshed without tracked Source edits.",
+    "new_runtime_admission_credit": 1,
+    "primary_review_pending": false,
+    "duplicate_Source_function_or_constructor_credit": false,
+    "process": {
+      "pid": 57936,
+      "returncode": 0,
+      "start_ns": 1792028135439205000,
+      "end_ns": 1792028135549038200,
+      "one_current_target_process": true,
+      "published_Main_after": "52f3736d6fd1e876156cc119e664583481cae3b3",
+      "top_level_ordinary_bag_scalar_calls": 1,
+      "per_function_or_free_trace": false
+    },
+    "graph": {
+      "path": "P -> R1(type6) -> C -> R2(type6) -> G(empty)",
+      "actual_bags": 3,
+      "actual_records": 2,
+      "actual_property_pool_nodes": 2,
+      "real_pooled_string_buffers": 3,
+      "temporary_query_buffer_reused_and_returned": true,
+      "keys": [
+        "root",
+        "leaf"
+      ],
+      "current_insertion_scope": "Two actual miss insertions through whole ordinary8F33F0 and8F28F0. Hit/replacement is not executed.",
+      "root_creation": "Actual canonical allocations, whole raw61 and real empty-child producer, whole raw58 Type6 constructors before population.",
+      "nonowning_backlinks": "C+110=R1 and G+110=R2; record+30 points to the genuine parent bag after real insertion."
+    },
+    "lifetime": {
+      "sole_top_level_entry": "scalar_delete_native_scene_property_bag_008f59e0(P,2,actual_context)",
+      "six_whole_bodies": [
+        "008f3f30",
+        "004e6730",
+        "008f0de0",
+        "008f0640",
+        "008f59e0",
+        "008f5410"
+      ],
+      "retained_parent_all276_bytes_verified": true,
+      "actual_free_stack_slots_before": 62,
+      "actual_free_stack_slots_after": 64,
+      "actual_returned_key_ring_before": 1,
+      "actual_returned_key_ring_after": 3,
+      "explicit_retained_parent_free_completed": 1,
+      "real_empty_node_page_trim_completed": 1,
+      "node_pages_after_trim": 0,
+      "table_capacity_retained": 32,
+      "manager_single_pool_registration_and_tracked_section_stable": true,
+      "no_retired_payload_read": true,
+      "no_per_function_or_free_trace": true
+    },
+    "fresh_compilation": {
+      "complete_current_provider_TUs": 24,
+      "new_probe_TUs": 1,
+      "current_source_header_files": 82,
+      "source_units": {
+        "type6": "native_scene_property_bag_storage",
+        "canonical": "singleton_lifetime",
+        "string_process": "game_native_string_process",
+        "physical": "game_native_physical_pool",
+        "allocator_list": "allocator_list",
+        "enum_pool": "native_enum_node_pool",
+        "strings": "native_string",
+        "string_owner": "native_string_pool_owner",
+        "string_storage": "native_string_pool_storage",
+        "insertion": "native_scene_property_insertion",
+        "lookup": "native_enum_dictionary_lookup",
+        "singleton_publication": "native_singleton_publication",
+        "vector_registration": "native_singleton_vector_registration_wrappers",
+        "vector_insert": "native_singleton_vector_insert_count",
+        "vector_reserve": "native_singleton_vector_reserve_construct",
+        "native_allocator_base_default_constructor": "native_allocator_base_default_constructor",
+        "native_legacy_exception_owner": "native_legacy_exception_owner",
+        "native_legacy_sbo_string": "native_legacy_sbo_string",
+        "native_renderer_worker_lifetime": "native_renderer_worker_lifetime",
+        "native_singleton_vector_allocation": "native_singleton_vector_allocation",
+        "native_singleton_vector_leaves": "native_singleton_vector_leaves",
+        "native_allocator_base_copy_constructor": "native_allocator_base_copy_constructor",
+        "native_allocator_base_cleanup": "native_allocator_base_cleanup",
+        "native_scene_property_array_block_release": "native_scene_property_array_block_release"
+      },
+      "new_normal_Core_build": false,
+      "flags": "/std:c++17 /MD /O2 /W4 /WX /EHsc /Gy /GL- /showIncludes; Win32 manifested asInvoker fixed-base image"
+    },
+    "code_gate": {
+      "all_fresh_objects": 25,
+      "retained_sections": 506,
+      "all_raw_relocation_records": 2568,
+      "retained_relocations": 1344,
+      "weak_entries": 30,
+      "complete_mapped_code_spans": 209,
+      "complete_mapped_bytes": 26073,
+      "entry_rooted_bodies": 157,
+      "rooted_instructions": 6663,
+      "rooted_edges": 1167,
+      "retained_uninvoked_siblings": 52,
+      "entry_root": "Actual current probe main, direct transfers, literal function-address bindings in invoked providers, and complete selected COFF sections. Actual constructors and CRT-registration callback bodies are included; vtable/data retention alone adds no call.",
+      "all_retained_loaded_code_bookends": true,
+      "all_retained_section_relocations_checked": true,
+      "independently_reparsed_standard_archives": true,
+      "embedded_switch": "Whole8F0640 Source section includes308 code/padding bytes, five relocated target DWORDs and ten tag-index bytes; unsigned range dominates both table reads and every bounded destination is a proved instruction boundary.",
+      "compiler_extra_entries": "Exact whole28-byte relocated SEH4 finally table; literal FH3 catch-return continuation and same-section branch. These code entries are included without exception/Original ABI execution credit.",
+      "explicit_failure_frontiers": "Current cookie report_gsfailure and actual CD29 fast-fail intrinsics; no failure equivalence or execution claim.",
+      "uninvoked_semantic_family": "Retained ConcreteSingletonLifetimeManager/unused ActualNativeStringPoolStorage vtable families remain fully mapped-byte covered, explicitly outside actual helper/execution credit."
+    },
+    "providers": {
+      "proved_IAT_slots": 43,
+      "snapshots": 2,
+      "entry_bytes_each": 32,
+      "actual_module_file_identity_and_export_forwarder_chain": true,
+      "all_current_disk_and_relocated_live_entry_bookends": true,
+      "api_set_scope": "Pinned current disk v6 schema and unique hashed-prefix alias are corroborated by actual loaded IAT module/export target; no generic loader or PEB namespace equivalence claim."
+    },
+    "decoder_revision": {
+      "v1_preserved": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\independent_recorded_reader.py",
+        "bytes": 15662,
+        "sha256": "2b60e490b48f305e4c3a8d162837c8d6edb4fe98196e0349bc2cc100a0d0efe1"
+      },
+      "v1_failure": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\independent_recorded_v1_failed.log",
+        "bytes": 3485,
+        "sha256": "d298688da5fb2f0509812d938cdd5564c995a885be97b9ff666c1c74962246b8"
+      },
+      "v2": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\independent_recorded_reader_v2.py",
+        "bytes": 16117,
+        "sha256": "018e382ed1374f23c0a1751dad7a9985e9a92eeaed89159cc1e625686f08309e"
+      },
+      "change": "Offline only: use a fresh PE object for each relocated DLL image instead of a cache instance whose mmap pefile closes. Same exact one-process observations, no target/probe/compiled input mutation or rerun."
+    },
+    "preflight_history": "Every failed preflight remains. Two earlier unexecuted current-input candidates preserved before Main updates. API-set alias failure occurred before target_attempt creation; only one target PID exists.",
+    "historical_resolver_archives": [
+      {
+        "actual_link_input": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_current01\\fresh_core02\\Release\\bsp_core.lib",
+          "bytes": 91798820,
+          "sha256": "80138b81fd24d1cbe0fbda4dc416fa8b1b6eb3b6bd066fa0de6332e8bf85fe24"
+        },
+        "retained_copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\historical_resolver_copies\\bsp_core.lib",
+          "bytes": 91798820,
+          "sha256": "80138b81fd24d1cbe0fbda4dc416fa8b1b6eb3b6bd066fa0de6332e8bf85fe24"
+        }
+      },
+      {
+        "actual_link_input": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_current01\\fresh_core02\\Release\\bsp_lua511.lib",
+          "bytes": 456216,
+          "sha256": "0fbd39aa0e4a87aba2619bacf9849bccd5288ac32e764a8323b34be72352704c"
+        },
+        "retained_copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\historical_resolver_copies\\bsp_lua511.lib",
+          "bytes": 456216,
+          "sha256": "0fbd39aa0e4a87aba2619bacf9849bccd5288ac32e764a8323b34be72352704c"
+        }
+      },
+      {
+        "actual_link_input": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_current01\\fresh_core02\\Release\\bsp_zlib121.lib",
+          "bytes": 72246,
+          "sha256": "84a0aca059aefce67e55f6be487c8a72f804f1cdea697869b0efb524a391b526"
+        },
+        "retained_copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\historical_resolver_copies\\bsp_zlib121.lib",
+          "bytes": 72246,
+          "sha256": "84a0aca059aefce67e55f6be487c8a72f804f1cdea697869b0efb524a391b526"
+        }
+      }
+    ],
+    "Native_dependencies": {
+      "whole58_and_raw61_current_Source_bytes_equal_fresh_Original": true,
+      "after_live_bookend": true,
+      "copied_Original_execution_this_packet": false,
+      "prior_constructor_runtime_credit_not_repeated": true
+    },
+    "selected_input_count": 478,
+    "evidence": {
+      "provenance.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\provenance.json",
+        "bytes": 51930,
+        "sha256": "2885bfae189d2ab9450e230ff48388d313bbcb16e14ea96c9b3099ea223c02d0"
+      },
+      "selected_inputs.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\selected_inputs.json",
+        "bytes": 117855,
+        "sha256": "07e1fca30d10ad6f23a1a5dc9304e8b2ad2b5a7a0887a5f70c65a260646d17d0"
+      },
+      "complete_gate.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\complete_gate.json",
+        "bytes": 5474706,
+        "sha256": "4d2d77f6129548796571dcdbb7c6d863a50e553426d8142a94d06f8f60b82218"
+      },
+      "independent_code.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\independent_code.json",
+        "bytes": 4026928,
+        "sha256": "c0c6aa00ddbd0f2a7804a96c997154840651da940388bc24dddf8036b17be393"
+      },
+      "independent_recorded.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\independent_recorded.json",
+        "bytes": 104623,
+        "sha256": "a44600ad09254a60f484af48991c120859aa1fb9ef8b577d88f390e86d9ff2a4"
+      },
+      "target_attempt.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\target_attempt.json",
+        "bytes": 3585,
+        "sha256": "57b413cb7a830c984eb294161d7bbde4a270dc0ed056c817784a6d1d3b483faf"
+      },
+      "target.status.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\target.status.json",
+        "bytes": 307,
+        "sha256": "55a25cb3759dc08c1b3fd19449cce226ddfe56821c2040da88ad0ffb2d199388"
+      },
+      "target.stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\target.stdout",
+        "bytes": 114,
+        "sha256": "ef7150263fba2e801ca8708beab7d901bdac6e1d66335294881995644ba0d425"
+      },
+      "target.stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\target.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "observations.bin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\observations.bin",
+        "bytes": 52338,
+        "sha256": "927b26a7ceb3c79e7783c2bf32f8487498224e40471399b32bd7d2ff53f25e83"
+      },
+      "gate.bin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\gate.bin",
+        "bytes": 27753,
+        "sha256": "a10ab09a32838cd8693ba3dbe5a179812843ed23449cadc5336d3b4eeccb2573"
+      },
+      "loaded_before.bin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\loaded_before.bin",
+        "bytes": 27753,
+        "sha256": "a10ab09a32838cd8693ba3dbe5a179812843ed23449cadc5336d3b4eeccb2573"
+      },
+      "loaded_after.bin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\loaded_after.bin",
+        "bytes": 27753,
+        "sha256": "a10ab09a32838cd8693ba3dbe5a179812843ed23449cadc5336d3b4eeccb2573"
+      },
+      "recursive_probe.exe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\recursive_probe.exe",
+        "bytes": 232448,
+        "sha256": "42efe6acf6458a299886f9d509da7e3885324881895504b28beedb0173fb4b5c"
+      },
+      "recursive_probe.map": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\recursive_probe.map",
+        "bytes": 331959,
+        "sha256": "693814b8f603bd8c25aed6cb37f9689ce03aab32bba1a9fc8c368ab46e6460b5"
+      },
+      "provider_slots.bin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\provider_slots.bin",
+        "bytes": 180,
+        "sha256": "c8a19ae0c1ae87d6afde750d0a233c017d2ca5a131e4e6a77308e125a2a5196b"
+      },
+      "provider_slots.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\provider_slots.json",
+        "bytes": 4393,
+        "sha256": "29f977322e8a2aeb4643b8b595a80993b113e05c1f3a646ccb56802de44ef5a3"
+      },
+      "provider_disk_inputs.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\provider_disk_inputs.json",
+        "bytes": 1303,
+        "sha256": "6f607175b932edf1fa6c4b006ffbcae052f5b1e6d242e52bbbf193585c7a663b"
+      },
+      "provider_resolution_preflight.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\provider_resolution_preflight.json",
+        "bytes": 26071,
+        "sha256": "635ce5968e1be3c64b538e9825b8a2d3a9f2120b75284561a9eb89e398bcf2af"
+      },
+      "original6.bin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\original6.bin",
+        "bytes": 58,
+        "sha256": "6ecd8cb72e2e8d06bf1f3f5c53f442d88c3b3606ffc3dacdc6a98f9c5a2f0450"
+      },
+      "original_bag61.bin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\original_bag61.bin",
+        "bytes": 61,
+        "sha256": "4d8da1738a25d34afd2e5cba2773ad15e2642ae2ae55831e304751ac62b43420"
+      },
+      "independent_recorded_reader.py": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\independent_recorded_reader.py",
+        "bytes": 15662,
+        "sha256": "2b60e490b48f305e4c3a8d162837c8d6edb4fe98196e0349bc2cc100a0d0efe1"
+      },
+      "independent_recorded_reader_v2.py": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\independent_recorded_reader_v2.py",
+        "bytes": 16117,
+        "sha256": "018e382ed1374f23c0a1751dad7a9985e9a92eeaed89159cc1e625686f08309e"
+      },
+      "independent_recorded_v1_failed.log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\independent_recorded_v1_failed.log",
+        "bytes": 3485,
+        "sha256": "d298688da5fb2f0509812d938cdd5564c995a885be97b9ff666c1c74962246b8"
+      },
+      "independent_recorded_v2.log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\independent_recorded_v2.log",
+        "bytes": 152,
+        "sha256": "bc4f71eef999de2916c8b3443dcde8e05dfdc02384d5b1ac5928ee0fcfbef194"
+      },
+      "prior_families_unchanged.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\prior_families_unchanged.json",
+        "bytes": 1973,
+        "sha256": "3b1079b8aa30abc93d1dd066e6842071ef828f86dcf73a1ed77569a5a5098fef"
+      }
+    },
+    "prior_sealed_families_unchanged": [
+      {
+        "family": "type10_current01",
+        "manifest": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02\\prior_failed_family_manifest.json",
+          "bytes": 21998,
+          "sha256": "b73853fda0ed5982d519bde52a4fdcb208629764d672d7424b9bc45bf9d9e262"
+        },
+        "files": 85,
+        "all_hashes_and_exact_membership_unchanged": true
+      },
+      {
+        "family": "type10_current02",
+        "manifest": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02\\artifact_manifest.json",
+          "bytes": 17882,
+          "sha256": "2bdb7613d726eb627505e374b7c6d6f38fee18325f6cae4f12bc4b61caf44f5b"
+        },
+        "files": 69,
+        "all_hashes_and_exact_membership_unchanged": true
+      },
+      {
+        "family": "type11_current01",
+        "manifest": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type11_current01\\artifact_manifest.json",
+          "bytes": 17387,
+          "sha256": "8975e590468de7fe5a1b31b25d8fe6887f98f33736bb9f37909601a14f6cf28f"
+        },
+        "files": 67,
+        "all_hashes_and_exact_membership_unchanged": true
+      },
+      {
+        "family": "type6_current01",
+        "manifest": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_current01\\artifact_manifest.json",
+          "bytes": 2595714,
+          "sha256": "81319c9fbe42880d6621024b9a610effb489df23234df484d60b16de407bed38"
+        },
+        "files": 8828,
+        "all_hashes_and_exact_membership_unchanged": true
+      },
+      {
+        "family": "type6_clone_current01",
+        "manifest": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_clone_current01\\artifact_manifest.json",
+          "bytes": 25994,
+          "sha256": "5a3327b07a421685c4c9201e268bf47bd5552377c912f6a09ca1281f1b6468e7"
+        },
+        "files": 97,
+        "all_hashes_and_exact_membership_unchanged": true
+      }
+    ],
+    "excluded": [
+      "Original ECX/register/stack/FS/SEH/FH3 or class/vtable ABI",
+      "Allocation failure, exception, invalid input, alias/cycle/shared-ownership behavior",
+      "Whole populated cloning, assignment, map replacement/hit, or arbitrary property types",
+      "Original private CRT/deep allocator equivalence, process-wide CRT startup/static initialization",
+      "Later CRT shutdown callback trace/order, global leak-free cleanup or string singleton disposal",
+      "Game startup, visuals, gameplay and whole-game equivalence"
+    ],
+    "qualification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\qualification.json",
+      "bytes": 20281,
+      "sha256": "7c53ab1acfd23d17cb545ccf1694a4520dc4821b47f28f6b3187d451ad7fc23c"
+    },
+    "artifact_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01",
+    "artifact_manifest_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\artifact_manifest.json",
+    "manifest_note": "Manifest covers every retained family file except itself, including final owned output snapshots; final manifest pin is handed to the primary outside the self-contained family.",
+    "primary_review": {
+      "report": "reports/cc12_recursive_lifetime_primary_review_16.json",
+      "target_relaunched": false,
+      "accepted_target_pid": 57936,
+      "worker_pending_qualification_retained_immutable": true,
+      "scope": "One successful ordinary current Source graph only; no Original ABI, failure/FH3 or gameplay credit."
+    }
+  }
 }

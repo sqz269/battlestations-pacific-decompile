@@ -28,6 +28,8 @@
 #include "bsp/native_render_command_owner.hpp"
 #include "bsp/native_renderer_texture_binding.hpp"
 #include "bsp/native_surface_dimensions.hpp"
+#include "bsp/native_mesh_texture_field.hpp"
+#include "bsp/native_render_resources_remap.hpp"
 #include <cstddef>
 #include <cstring>
 #include <exception>
@@ -1738,6 +1740,75 @@ void continue_native_main_scene_post_label_00b1634e(void* original_service,
     } catch(...) {
         frame.failed=true;
         unwind_native_main_scene_post_label(c,frame);
+        throw;
+    }
+}
+bool continue_native_main_scene_post_targets_00b163fa(void* service,
+    const NativeMainScenePostTargetContext& c,NativeMainScenePostLabelFrame& label,
+    NativeMainScenePostTargetFrame& frame,NativeMainSceneExecutionPrefixState& state) {
+    if(!state.reached_post_body_stage || state.post_targets_started ||
+       !label.completed || label.failed || label.native_cleanup_state!=8 ||
+       label.cleanup_started || frame.started)
+        throw std::logic_error("POST targets require their fresh reached state8 frame");
+    state.post_targets_started=frame.started=true;
+    const auto site=[&](std::uint32_t at) noexcept {
+        label.active_native_site=frame.active_native_site=state.active_native_site=at;
+    };
+    site(0x00b163fa);
+    try {
+        frame.entered=*reinterpret_cast<const volatile std::uint8_t*>(
+            static_cast<const unsigned char*>(service)+0x22d)!=0;
+        if(!frame.entered) {
+            site(0x00b164b8);
+            frame.next_native_address=0x00b164b8;
+            frame.completed=true;
+            return false;
+        }
+        const auto& system=c.label.domains.system;
+        auto& groups=c.targets.actual_group_owner;
+        auto& surfaces=groups.actual_surface_context;
+        auto& assignment=c.frame_assignment;
+        site(0x00b16416);
+        if(static_cast<const volatile void*>(system.actual_renderer_00f8d394)!=
+               static_cast<const volatile void*>(&surfaces.actual_renderer_00f8d394) ||
+           system.actual_synchronization!=&c.targets.actual_synchronization_0108d6dc ||
+           &assignment.frame_targets!=&groups || &c.surface_references.surfaces!=&surfaces ||
+           assignment.actual_frame_profile_00d5e600!=c.targets.actual_group_profile_00d5e600)
+            throw std::logic_error("POST targets require the same actual renderer, frame and surface domains");
+        void* const renderer=*system.actual_renderer_00f8d394;
+        const std::uint32_t profile=word(renderer);
+        if(profile!=0x00d5f0a8 || !assignment.actual_renderer_profile_00d5f0a8 ||
+           assignment.actual_renderer_profile_00d5f0a8[0x98/4]!=0x00b24e70)
+            throw std::logic_error("POST targets require current D5F0A8:B24E70 binding");
+        bind_native_renderer_frame_targets_00b24e70(renderer,nullptr,c.targets);
+        frame.renderer_unbound=true;
+        site(0x00b1641b);
+        auto* const primary=native_render_holder_primary_00b4cb20(current_member(service,0x44));
+        auto* const color_group=static_cast<NativeFrameTargetOwnerStorage*>(current_member(service,0x1cc));
+        site(0x00b16428);
+        set_native_frame_target_color_00b1fab0(*color_group,0,primary,groups);
+        frame.color_installed=true;
+        auto* const captured_group=static_cast<NativeFrameTargetOwnerStorage*>(current_member(service,0x1cc));
+        void* const frame_post=current_member(service,0x664);
+        site(0x00b1643a);
+        assign_native_post_effect_frame_00b4e2b0(frame_post,captured_group,assignment,
+            c.surface_references.actual_increment_00ce221c);
+        frame.frame_assigned=true;
+        site(0x00b16442);
+        void* const texture=native_shadow_holder_texture_00b4cb10(current_member(service,0x48));
+        void* const material_post=current_member(service,0x664);
+        site(0x00b1644f);
+        void* const material=native_post_effect_material_00b4cba0(material_post);
+        site(0x00b16456);
+        set_native_material_texture_unchecked_00b189f0(material,0,texture,c.owners);
+        frame.texture_assigned=true;
+        site(0x00b1645b);
+        frame.next_native_address=0x00b1645b;
+        frame.completed=true;
+        return true;
+    } catch(...) {
+        frame.failed=true;label.failed=true;
+        unwind_native_main_scene_post_label(c.label,label);
         throw;
     }
 }

@@ -1,118 +1,100 @@
 {
-  "packet": "cc12_world_post_label",
-  "utc": "2026-10-15T01:03:13.201334+00:00",
-  "base_commit": "7bfdb9bcf254dabf0085838c21693a5d3b00afbe",
-  "status": "actual_storage_POST_label_strict_COFF_original_caller_raw_pool_actions_checked",
-  "scope": "Separate172B B1634E..B163F9 POST label clause, original-service+680 store and state6/8 ownership. BoundaryB163FA before post-rendering gate. Earlier committed prefix/capture packets remain separately frozen evidence.",
+  "packet": "cc12_world_post_targets",
+  "utc": "2026-10-15T01:24:01.318534+00:00",
+  "base_commit": "dbcb8a3a4b7566d8dec9419c3be88a285e768292",
+  "status": "actual_storage_POST_targets_strict_COFF_original_caller_and_assignment_bodies_checked",
+  "scope": "Separate97B B163FA..B1645A POST target gate. False gate stopsB164B8; nonzero stopsB1645B before B4DCC0 submission. Both retainPOST8. Earlier prefix/SCNE/POST-label packets remain separately frozen evidence.",
   "native_identity": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
     "bodies": [
       {
-        "name": "label",
-        "address": "00b1634e",
-        "bytes": 172,
-        "sha256": "5226e93bf1898066249f8047b4081d1b2e94ecb47351c340d7cc166728e40600",
+        "name": "targets",
+        "address": "00b163fa",
+        "bytes": 97,
+        "sha256": "3aa024543eb447cb543f4f2ca990b6df46e3196e8ba44c1be27b755677950992",
         "saved_ghidra_matches_disk": true
       },
       {
-        "name": "unwind_temporary",
-        "address": "00cbc486",
-        "bytes": 11,
-        "sha256": "9ebdc30159b4469fa9a3fd3ef2d7018290f7f8c149ea5b6ad2134bbc5140d4b5",
+        "name": "assign_frame",
+        "address": "00b4e2b0",
+        "bytes": 59,
+        "sha256": "693f73fefb97d376ef6417ba3cfe243d6e052fba6fe1c4dc1e659231e00ee161",
         "saved_ghidra_matches_disk": true
       },
       {
-        "name": "unwind_reset",
-        "address": "00cbc491",
+        "name": "material_texture",
+        "address": "00b189f0",
+        "bytes": 80,
+        "sha256": "ddcd3b96b4cce2f22b205119a4e9cf9a648c23a228bf1bb608373d76cd2b9116",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "primary",
+        "address": "00b4cb20",
+        "bytes": 4,
+        "sha256": "2e339cdc5de837ec151dbde90057caeabba18ac3ea32e7c2cffc8f95df41a6ff",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "texture",
+        "address": "00b4cb10",
+        "bytes": 4,
+        "sha256": "916ae10aa3fd76a4d5b25b2fb66e9df0fd04957c7ab10930268d1ed7808be689",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "material",
+        "address": "00b4cba0",
+        "bytes": 4,
+        "sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "renderer_profile",
+        "address": "00d5f0a8",
+        "bytes": 328,
+        "sha256": "81b6ffba0bc0ddc59499163d761da9c9f15bfd57d099d61c08ba40df94550c4b",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "surface_profile",
+        "address": "00d619a0",
+        "bytes": 44,
+        "sha256": "553be925bd752fde32b6a7c583af1573bd66fe01f3f908f700167b77a4d60d04",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "group_profile",
+        "address": "00d5e600",
         "bytes": 8,
-        "sha256": "eb536483a0e41efe2795f20a145a50cad049399d3c74d65490372d5c4a2a481f",
+        "sha256": "b1ecc67d201a3405d2c2382c329b4233e9c30bd2c6da012c61e444134bb6cd9b",
         "saved_ghidra_matches_disk": true
-      },
-      {
-        "name": "handler",
-        "address": "00cbc499",
-        "bytes": 10,
-        "sha256": "e3e2ad413e482a75d3249425cf1e30e7d681e0cd0f6ab8a69303cbdddc2ecafe",
-        "saved_ghidra_matches_disk": true
-      },
-      {
-        "name": "func_info",
-        "address": "00df4698",
-        "bytes": 36,
-        "sha256": "bba2e286bfbcca2cfae6c87890a7834476ea7b90563ef611fd40ba7e106842a9",
-        "saved_ghidra_matches_disk": true
-      },
-      {
-        "name": "unwind_map",
-        "address": "00df46bc",
-        "bytes": 72,
-        "sha256": "6dd6b0c046043b55b4e7976fd6436a5038a1dc2a2fe595f08abc9070ad5427d8",
-        "saved_ghidra_matches_disk": true
-      },
-      {
-        "name": "post",
-        "address": "00d5e4f0",
-        "bytes": 8,
-        "sha256": "9ffc45a8ccc17f340f55397fd7b962e5bd562b34bf24c32a870bc09472a65c65",
-        "saved_ghidra_matches_disk": true
-      }
-    ],
-    "constants": [
-      {
-        "name": "near_word",
-        "address": "00ce3800",
-        "bytes": "0000003f",
-        "value": 0.5
-      },
-      {
-        "name": "bias_word",
-        "address": "00ce3978",
-        "bytes": "0000804f",
-        "value": 4294967296.0
-      },
-      {
-        "name": "one_word",
-        "address": "00d7a24c",
-        "bytes": "0000803f",
-        "value": 1.0
-      },
-      {
-        "name": "half_word",
-        "address": "00d7a280",
-        "bytes": "000000000000e03f",
-        "value": 0.5
-      },
-      {
-        "name": "negative_half_word",
-        "address": "00ce69d0",
-        "bytes": "000000bf",
-        "value": -0.5
-      },
-      {
-        "name": "adaptation_word",
-        "address": "00ce3cb8",
-        "bytes": "000000000088d340",
-        "value": 20000.0
       }
     ]
   },
   "original_abi": {
-    "00b1634e": "Enclosing B156C0 ECX service/stacked command RET4. Fragment ESI original service,EBP0,EBX captured temp data,temporary ESP+18/+1C,cleanup word ESP+9C. New persistent Source frames/contexts, not native private caller ABI.",
-    "00cbc486": "LEA ECX,[EBP-88]; JMP41DD20 on CURRENT temporary header. Source adapter uses external frame and is not original FH3 entry.",
-    "00cbc491": "LEA ECX,[EBP-79]; JMPB13510. ECX ignored by provider, which reads current global service. Source adapter is not native FH3/private EBP ABI."
+    "00b163fa": "Enclosing B156C0 ECX service/stacked command RET4. Fragment ESI original service,EBP0,cleanup word ESP+9C=8. Source uses persistent frame/context and bool entered result, not private caller ABI.",
+    "00b4e2b0": "Existing complete59B original ECX post-effect, stacked frame, RET4; executed nativebody in fixture with actual Win32 increment/decrement imports.",
+    "00b189f0": "Existing complete80B original ECX material, stacked slot and actual texture, RET8; executed nativebody in fixture with actual Win32 increment/decrement imports."
   },
   "evidence": {
-    "native_caller_bytes": 172,
-    "native_caller_instructions": 52,
-    "domains": "Same retained actual SCNE/DRSH label.domains object, raw string-pool publication, manager-publication cell and current global service; original ESI service supplied separately. Actual POST bytes borrowed. Concrete raw resize, library memmove, actual getter/return/destroy/reset; no callback domain, replacement pool/service or default globals.",
-    "ordering": "Clear ORIGINAL service byte680 before temporary zeros and firstresize. Capture temp data once, copy current length+1. Capture current global service only after thatcopy and before state6. Preserve header-alias/current source length/current destination length gates across resize with captured data. Install8 before normal getter/return; capture current length+1 beforegetter and keep captured data forreturn.",
-    "ownership": "Fresh frame enters unarmed. Reached first-provider Source domain rejection preserves cleared680 and temporaryzeros without pool/cleanup changes. State6 ->(-1,CBC486 CURRENT header destruction); state8 ->(-1,CBC491 CURRENT service reset); intermediate7->(6,CBC491) exists but notinstalled. Success leaves8 armed. Adapterdisarms first, secondcleanup exception terminates, -1 no-op; no nativeFH3 delivery/retry/rollback.",
-    "fixture": "Four exact original172B/Source raw-pool/two-service pairs: null global,2->4 resize,disabledsmallreturns,and currentpublicationdifferentfromoriginalESI. All raw pool bytes,both service graphs,captured temporary words andfinal8 match; original680cleared whileotherflagretained. Four isolated originalCBC491 actionpairs switch currentservice beforecleanup, preserving formerlycapturedservice. One originalCBC486 actionpair uses currenttemporarydata distinctfromsavedcapture. Source-only reached-first-provider rejection preserves680clear/zeroheader/unarmed state; stage replay rejected.",
-    "original_adaptation": "Allocated executable buffer contains exact172B body with originalinternalbranches; genuine Source resize/getter/return bridges and memmove E8 targets, onlyPOST-data/global-service operands relocated. Wrapper preservesregisters/reserves90B+savedregisters,loadsESI fromcallerargument andseedsEBP0/state-1. Suffix reads temporary+18/+1C andstate+9C. Isolated11B/8B actioncopies bind realdestroy/reset with EBP-based frameadapter; fullFH3 handler notinstalled.",
-    "fixture_limits": "Warm actual string pool only. Null/resize/disabledreturn/currentpublication paths; alias guard audited but alias not fixtureexecuted. No cold manager/registration/allocationfailure, native childthrow/FH3/SEH/privateframe/register/fault ABI, arbitrary concurrent mutation, entireearlierscenechain, POST-effects, materialdraw, application/game route.",
-    "build": "StrictWin32 /MD /W4 /WX /O2 /fp:strict; actualCOFF caller677B/200ins andcleanup171B/61ins audited for provider relocations,currentreads,680-before-resize,6/8/disarm order. EarlierCPPprefix byte-for-byteunchanged fromsealed337;330inheritedx87 unchanged. Freshcore manifestedfixture and normal scripts/build.ps1/all3 existingchecksPASS. No persistenttests/CMake/host changes.",
+    "native_caller_bytes": 97,
+    "native_caller_instructions": 25,
+    "domains": "Same actual renderer-publication cell, synchronization, frame-owner/surface-owner contexts, D5E600/D619A0/D5F0A8 profiles and actual current increment/decrement imports. B24E70/B1FAB0/B4E2B0/B189F0 and getter providers already Source/registered; composition only. No new callback/default graph/factory or CMake registration.",
+    "ordering": "Originalservice current22D gate BEFORE target-domain validation. True CURRENT renderer/profile98 bindsNULL. Current44/primary ->current1CC/color0; re-read1CC BEFORE current664/frameassignment. Current48/texture capture BEFORE re-read664/materialgetter/uncheckedslot0. FalseB164B8 andtrueB1645B remain distinct; both retainPOSTstate8.",
+    "ownership": "Each provider preserves its actual publication/retain/release semantics. B189F0 signed16 countupdate precedesidentity. Source catch marksattempt/POSTfailed and invokesexistingCBC491 disarm/currentglobalreset once; no rollback/retry/default resources. Success doesnotconsumePOST8.",
+    "fixture": "Four exact97Bcaller+native59BB4E2B0+80BB189F0+three4Bgetters/Source pairs: zero-invalid-descendants;changedowners;80identity;nulltexture. Complete raw renderer/group/surface/post/material/texture/service graphs, positivecounts,countbeforeidentity,POSTlabel/state8 match. RealHALD3D9 actualGetRenderTarget remains unchanged afterNULLbinding. ActualWin32Interlocked imports used in nativechildren. Source receivesconcreteNativeRenderActualOwnerRegistry, no terminalresolutionentered.",
+    "original_adaptation": "Fixed fixture-owned PE pages contain original caller/assignment/getter bodies and original profiles. OnlyF8D394 operand relocates tolivepublication. CallsB24E70/B1FAB0 bridge to establishedSource; nativeB4E2B0/B189F0 executeactualWin32 importcellsCE221C/CE2220. Register-preserving wrapper seedsESIoriginalservice/EBP0/ESP9C=8 andseparateepilogues recordB1645B/B164B8. No post-effect draw mapped or invoked.",
+    "source_failure": "Actual currentdecrementIATcell null atB4E2B0 reachedprovider validation; priorNULLrenderer/color changesandnewpostframepublication/retain remain; oldpostframe countnotdecremented. OriginalPOSTlabelunchanged; changedglobalservice resetsviaCBC491 once. This doesnot claim nativeexceptiondelivery, childthrow or FH3 equivalence.",
+    "fixture_limits": "Positive ownercounts and skipped synchronization only; terminalowner resolution/destruction andenabledguard unexercised. Warm string pool and seeded earlier boundary; no completeearliercaller, effectfactory/materialprogram/device draw, nativechildthrow/FH3/SEH/private-stack/register/fault ABI, arbitrary concurrent mutation, application/game route.",
+    "build": "StrictWin32 /MD /W4 /WX /O2 /fp:strict COFF939B/257ins,8providerrelocations,currentfieldloads/captureorder/separateexits/no normalstate8write audited. EarlierCPPprefixunchangedexcepttwoincludes;330inheritedx87 checked. Fresh normalcore manifestedfixture andnormal scripts/build.ps1/all3existingchecksPASS. No persistenttests/sharedCMake/hostchanges.",
+    "historical_verification": "728 inheritedartifactpins+34 committedsnapshots verified afterinitialSourceedit andagain whilebuildingreport; priorsealedfiles unchanged.",
     "prior_receipts": [
+      {
+        "path": "local/main_scene_post_label_receipt_1802809e3/receipt.json",
+        "artifacts_verified_unchanged": 64
+      },
       {
         "path": "local/main_scene_scne_capture_receipt_337a794ac/receipt.json",
         "artifacts_verified_unchanged": 80
@@ -168,6 +150,11 @@
     ],
     "prior_committed_file_receipts": [
       {
+        "path": "local/main_scene_post_label_receipt_1802809e3/manifest.json",
+        "section": "committed",
+        "verified": 6
+      },
+      {
         "path": "local/main_scene_scne_capture_receipt_337a794ac/manifest.json",
         "section": "committed",
         "verified": 10
@@ -190,37 +177,50 @@
     ],
     "emitted_code_audit": {
       "result": "PASS",
-      "native_caller_bytes": 172,
-      "native_caller_instructions": 52,
-      "source_bodies": [
+      "objects": [
         {
-          "name": "continue_native_main_scene_post_label_00b1634e",
-          "bytes": 677,
-          "instructions": 200,
-          "sha256": "a69466ad920915cd3cc7cf9d9a2d7ea1eeae2632cc320d34a75d5ccfdea6046c",
+          "name": "continue_native_main_scene_post_targets_00b163fa",
+          "bytes": 939,
+          "instructions": 257,
+          "sha256": "f69ac86555c6b93ad0183a3785923817f211e9b6e32a9309bc3006766d94e4fa",
           "providers": [
             {
-              "offset": 208,
-              "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
+              "offset": 429,
+              "symbol": "?bind_native_renderer_frame_targets_00b24e70@bsp@@YAXPAXPAUNativeFrameTargetOwnerStorage@1@AAUNativeRendererFrameTargetsContext@1@@Z",
               "type": 20
             },
             {
-              "offset": 364,
-              "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
+              "offset": 481,
+              "symbol": "?native_render_holder_primary_00b4cb20@bsp@@YIPAUNativeSurfaceOwnerStorage@1@PBX@Z",
               "type": 20
             },
             {
-              "offset": 500,
-              "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+              "offset": 536,
+              "symbol": "?set_native_frame_target_color_00b1fab0@bsp@@YAXAAUNativeFrameTargetOwnerStorage@1@IPAUNativeSurfaceOwnerStorage@1@AAUNativeFrameTargetOwnerContext@1@@Z",
               "type": 20
             },
             {
-              "offset": 538,
-              "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+              "offset": 619,
+              "symbol": "?assign_native_post_effect_frame_00b4e2b0@bsp@@YAXPAXPAUNativeFrameTargetOwnerStorage@1@AAUNativeRenderResourceInitEntryContext@1@ADS6GJPCJ@Z@Z",
               "type": 20
             },
             {
-              "offset": 655,
+              "offset": 671,
+              "symbol": "?native_shadow_holder_texture_00b4cb10@bsp@@YIPAXPBX@Z",
+              "type": 20
+            },
+            {
+              "offset": 716,
+              "symbol": "?native_post_effect_material_00b4cba0@bsp@@YAPAXPBX@Z",
+              "type": 20
+            },
+            {
+              "offset": 753,
+              "symbol": "?set_native_material_texture_unchecked_00b189f0@bsp@@YAXPAXI0AAVNativeRenderActualOwners@1@@Z",
+              "type": 20
+            },
+            {
+              "offset": 917,
               "symbol": "?unwind_native_main_scene_post_label@bsp@@YAXABUNativeMainScenePostLabelContext@1@AAUNativeMainScenePostLabelFrame@1@@Z",
               "type": 20
             }
@@ -228,7 +228,7 @@
           "relocations": [
             {
               "offset": 6,
-              "symbol": "__ehhandler$?continue_native_main_scene_post_label_00b1634e@bsp@@YAXPAXABUNativeMainScenePostLabelContext@1@AAUNativeMainScenePostLabelFrame@1@AAUNativeMainSceneExecutionPrefixState@1@@Z",
+              "symbol": "__ehhandler$?continue_native_main_scene_post_targets_00b163fa@bsp@@YA_NPAXABUNativeMainScenePostTargetContext@1@AAUNativeMainScenePostLabelFrame@1@AAUNativeMainScenePostTargetFrame@1@AAUNativeMainSceneExecutionPrefixState@1@@Z",
               "type": 6
             },
             {
@@ -237,296 +237,225 @@
               "type": 6
             },
             {
-              "offset": 208,
-              "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
+              "offset": 429,
+              "symbol": "?bind_native_renderer_frame_targets_00b24e70@bsp@@YAXPAXPAUNativeFrameTargetOwnerStorage@1@AAUNativeRendererFrameTargetsContext@1@@Z",
               "type": 20
             },
             {
-              "offset": 275,
-              "symbol": "_memmove",
+              "offset": 481,
+              "symbol": "?native_render_holder_primary_00b4cb20@bsp@@YIPAUNativeSurfaceOwnerStorage@1@PBX@Z",
               "type": 20
             },
             {
-              "offset": 364,
-              "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
+              "offset": 536,
+              "symbol": "?set_native_frame_target_color_00b1fab0@bsp@@YAXAAUNativeFrameTargetOwnerStorage@1@IPAUNativeSurfaceOwnerStorage@1@AAUNativeFrameTargetOwnerContext@1@@Z",
               "type": 20
             },
             {
-              "offset": 435,
-              "symbol": "_memmove",
+              "offset": 619,
+              "symbol": "?assign_native_post_effect_frame_00b4e2b0@bsp@@YAXPAXPAUNativeFrameTargetOwnerStorage@1@AAUNativeRenderResourceInitEntryContext@1@ADS6GJPCJ@Z@Z",
               "type": 20
             },
             {
-              "offset": 500,
-              "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+              "offset": 671,
+              "symbol": "?native_shadow_holder_texture_00b4cb10@bsp@@YIPAXPBX@Z",
               "type": 20
             },
             {
-              "offset": 538,
-              "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+              "offset": 716,
+              "symbol": "?native_post_effect_material_00b4cba0@bsp@@YAPAXPBX@Z",
               "type": 20
             },
             {
-              "offset": 590,
-              "symbol": "??_C@_0DH@MCHAGHI@main?5scene?5POST?5requires?5its?5fre@",
+              "offset": 753,
+              "symbol": "?set_native_material_texture_unchecked_00b189f0@bsp@@YAXPAXI0AAVNativeRenderActualOwners@1@@Z",
+              "type": 20
+            },
+            {
+              "offset": 816,
+              "symbol": "??_C@_0DG@MCCPIMBL@POST?5targets?5require?5their?5fresh@",
               "type": 6
             },
             {
-              "offset": 598,
+              "offset": 824,
               "symbol": "??0logic_error@std@@QAE@PBD@Z",
               "type": 20
             },
             {
-              "offset": 603,
+              "offset": 829,
               "symbol": "__TI2?AVlogic_error@std@@",
               "type": 6
             },
             {
-              "offset": 612,
+              "offset": 838,
               "symbol": "__CxxThrowException@8",
               "type": 20
             },
             {
-              "offset": 617,
-              "symbol": "??_C@_0EP@IBLKEGMD@main?5scene?5POST?5requires?5the?5sam@",
+              "offset": 843,
+              "symbol": "??_C@_0DD@FBPHHJLJ@POST?5targets?5require?5current?5D5F@",
               "type": 6
             },
             {
-              "offset": 625,
+              "offset": 851,
               "symbol": "??0logic_error@std@@QAE@PBD@Z",
               "type": 20
             },
             {
-              "offset": 630,
+              "offset": 856,
               "symbol": "__TI2?AVlogic_error@std@@",
               "type": 6
             },
             {
-              "offset": 639,
+              "offset": 865,
               "symbol": "__CxxThrowException@8",
               "type": 20
             },
             {
-              "offset": 655,
+              "offset": 870,
+              "symbol": "??_C@_0EJ@DDEIGBDL@POST?5targets?5require?5the?5same?5ac@",
+              "type": 6
+            },
+            {
+              "offset": 878,
+              "symbol": "??0logic_error@std@@QAE@PBD@Z",
+              "type": 20
+            },
+            {
+              "offset": 883,
+              "symbol": "__TI2?AVlogic_error@std@@",
+              "type": 6
+            },
+            {
+              "offset": 892,
+              "symbol": "__CxxThrowException@8",
+              "type": 20
+            },
+            {
+              "offset": 917,
               "symbol": "?unwind_native_main_scene_post_label@bsp@@YAXABUNativeMainScenePostLabelContext@1@AAUNativeMainScenePostLabelFrame@1@@Z",
               "type": 20
             },
             {
-              "offset": 667,
+              "offset": 929,
               "symbol": "__CxxThrowException@8",
               "type": 20
             }
           ],
+          "checked_instruction_offsets": [
+            "0059",
+            "0081",
+            "0099",
+            "00b0",
+            "00c8",
+            "00e4",
+            "016f",
+            "0177",
+            "0194",
+            "01a7",
+            "01d8",
+            "01f5",
+            "022c",
+            "023f",
+            "0296",
+            "02a6",
+            "02af",
+            "02ea",
+            "02ed",
+            "0310",
+            "0317",
+            "032e",
+            "0383",
+            "038b"
+          ],
           "concrete_call_order": [
             {
-              "offset": 208,
-              "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
+              "offset": 429,
+              "symbol": "?bind_native_renderer_frame_targets_00b24e70@bsp@@YAXPAXPAUNativeFrameTargetOwnerStorage@1@AAUNativeRendererFrameTargetsContext@1@@Z",
               "type": 20
             },
             {
-              "offset": 275,
-              "symbol": "_memmove",
+              "offset": 481,
+              "symbol": "?native_render_holder_primary_00b4cb20@bsp@@YIPAUNativeSurfaceOwnerStorage@1@PBX@Z",
               "type": 20
             },
             {
-              "offset": 364,
-              "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
+              "offset": 536,
+              "symbol": "?set_native_frame_target_color_00b1fab0@bsp@@YAXAAUNativeFrameTargetOwnerStorage@1@IPAUNativeSurfaceOwnerStorage@1@AAUNativeFrameTargetOwnerContext@1@@Z",
               "type": 20
             },
             {
-              "offset": 435,
-              "symbol": "_memmove",
+              "offset": 619,
+              "symbol": "?assign_native_post_effect_frame_00b4e2b0@bsp@@YAXPAXPAUNativeFrameTargetOwnerStorage@1@AAUNativeRenderResourceInitEntryContext@1@ADS6GJPCJ@Z@Z",
               "type": 20
             },
             {
-              "offset": 500,
-              "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+              "offset": 671,
+              "symbol": "?native_shadow_holder_texture_00b4cb10@bsp@@YIPAXPBX@Z",
               "type": 20
             },
             {
-              "offset": 538,
-              "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+              "offset": 716,
+              "symbol": "?native_post_effect_material_00b4cba0@bsp@@YAPAXPBX@Z",
               "type": 20
             },
             {
-              "offset": 655,
+              "offset": 753,
+              "symbol": "?set_native_material_texture_unchecked_00b189f0@bsp@@YAXPAXI0AAVNativeRenderActualOwners@1@@Z",
+              "type": 20
+            },
+            {
+              "offset": 917,
               "symbol": "?unwind_native_main_scene_post_label@bsp@@YAXABUNativeMainScenePostLabelContext@1@AAUNativeMainScenePostLabelFrame@1@@Z",
               "type": 20
             }
           ],
-          "checked_instruction_offsets": [
-            "0071",
-            "007f",
-            "0085",
-            "00dd",
-            "00e2",
-            "00ef",
-            "0105",
-            "0123",
-            "012b",
-            "0146",
-            "014d",
-            "0176",
-            "0184",
-            "0196",
-            "01ae",
-            "01bd",
-            "01cb",
-            "01e6",
-            "0214",
-            "0217",
-            "0218",
-            "0237"
-          ]
-        },
-        {
-          "name": "unwind_native_main_scene_post_label",
-          "bytes": 171,
-          "instructions": 61,
-          "sha256": "9b87f5573bb323f91e0aec0d586fdcc134b2bbceb2e4538eb387de8882f12ed2",
-          "providers": [
-            {
-              "offset": 114,
-              "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
-              "type": 20
-            },
-            {
-              "offset": 137,
-              "symbol": "?reset_native_render_diagnostic_label_00b13510@bsp@@YAXADSAXAAUNativeStringRawPoolContext@1@@Z",
-              "type": 20
-            }
-          ],
-          "relocations": [
-            {
-              "offset": 6,
-              "symbol": "__ehhandler$?unwind_native_main_scene_post_label@bsp@@YAXABUNativeMainScenePostLabelContext@1@AAUNativeMainScenePostLabelFrame@1@@Z",
-              "type": 6
-            },
-            {
-              "offset": 22,
-              "symbol": "___security_cookie",
-              "type": 6
-            },
-            {
-              "offset": 70,
-              "symbol": "__imp__terminate",
-              "type": 6
-            },
-            {
-              "offset": 114,
-              "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
-              "type": 20
-            },
-            {
-              "offset": 137,
-              "symbol": "?reset_native_render_diagnostic_label_00b13510@bsp@@YAXADSAXAAUNativeStringRawPoolContext@1@@Z",
-              "type": 20
-            }
-          ],
-          "concrete_call_order": [
-            {
-              "offset": 114,
-              "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
-              "type": 20
-            },
-            {
-              "offset": 137,
-              "symbol": "?reset_native_render_diagnostic_label_00b13510@bsp@@YAXADSAXAAUNativeStringRawPoolContext@1@@Z",
-              "type": 20
-            }
-          ],
-          "checked_instruction_offsets": [
-            "002f",
-            "0032",
-            "0034",
-            "0039",
-            "004d",
-            "0057",
-            "0070",
-            "0086"
-          ]
+          "normal_cleanup_state_writes": 0
         }
       ],
-      "original_handler": {
-        "address": "00cbc499",
-        "func_info": "00df4698",
-        "unwind_map": "00df46bc",
-        "states": [
-          [
-            -1,
-            13354080
-          ],
-          [
-            0,
-            13354091
-          ],
-          [
-            -1,
-            13354091
-          ],
-          [
-            -1,
-            13354099
-          ],
-          [
-            3,
-            13354110
-          ],
-          [
-            -1,
-            13354110
-          ],
-          [
-            -1,
-            13354118
-          ],
-          [
-            6,
-            13354129
-          ],
-          [
-            -1,
-            13354129
-          ]
-        ]
+      "native_caller": {
+        "bytes": 97,
+        "instructions": 25,
+        "false_boundary": "00b164b8",
+        "true_boundary": "00b1645b",
+        "normal_cleanup_state": 8
       },
-      "native_cleanup_actions": [
+      "original_child_bodies": [
         {
-          "address": "00cbc486",
-          "instructions": [
-            "lea ecx, [ebp - 0x88]",
-            "jmp 0x41dd20"
+          "name": "assign_frame",
+          "address": "00b4e2b0",
+          "bytes": 59,
+          "instructions": 24,
+          "actual_IAT_calls": [
+            "dword ptr [0xce221c]",
+            "dword ptr [0xce2220]"
           ]
         },
         {
-          "address": "00cbc491",
-          "instructions": [
-            "lea ecx, [ebp - 0x79]",
-            "jmp 0xb13510"
+          "name": "material_texture",
+          "address": "00b189f0",
+          "bytes": 80,
+          "instructions": 30,
+          "actual_IAT_calls": [
+            "dword ptr [0xce221c]",
+            "dword ptr [0xce2220]"
           ]
         }
       ],
-      "checks": [
-        "Original service byte680 clears before temporary zero stores and firstresize",
-        "Current service capture after firstcopy before state6",
-        "Exact header identity, captured data retained across resize, current temporary/current destination lengths",
-        "State8 before captured-data/current-length getter/return; no final-1 normal transition",
-        "Cleanup disarms before current temporary destruction/current global service reset",
-        "Earlier CPP prefix unchanged from sealed337; no new x87,330 inherited checked separately"
-      ],
-      "whole_native_FH3_dispatch_tested": false
+      "earlier_prefix_unchanged_except_two_new_includes": true,
+      "limit": "Caller/child control flow and strict emitted code checked; not original private ABI, native childthrow/FH3 or whole scene admission."
     },
     "inherited_x87_audit": {
       "result": "PASS",
       "checks": [
         {
-          "listing": "local/main_scene_post_label/native_camera_far_corners.asm",
+          "listing": "local/main_scene_post_targets/native_camera_far_corners.asm",
           "tagged_original_x87_instructions_checked": 164,
           "coverage": "all address-tagged unchanged x87 instructions; context-bound constant loads and source public-argument adapters are separately reviewed",
           "address_set_sha256": "9bb321e936d5809f930cf5f8d3f623aec5f9498eacd0ad2f2a30447e0cd591e3"
         },
         {
-          "listing": "local/main_scene_post_label/native_main_scene_execution_prefix.asm",
+          "listing": "local/main_scene_post_targets/native_main_scene_execution_prefix.asm",
           "tagged_original_x87_instructions_checked": 166,
           "coverage": "all address-tagged unchanged x87 instructions; context-bound constant loads and source public-argument adapters are separately reviewed",
           "address_set_sha256": "c928641ab752330fe9c6fad2106fb014df53b44233382c37cecd74f0a4c06774"
@@ -535,7 +464,7 @@
       "recovered_ambiguity": "All one-register x87 arithmetic operands use verified installed instruction opcode direction."
     },
     "saved_ghidra_annotations": [
-      "local/ghidra-annotations-20261015T010107Z.json"
+      "local/ghidra-annotations-20261015T012240Z.json"
     ],
     "refreshed_exports": [
       "00b156c0"
@@ -546,17 +475,19 @@
     "profile": "00d5e13c",
     "admitted": false,
     "complete_enclosing_function": false,
-    "next_native_address": "00b163fa",
+    "next_native_address": "00b1645b",
+    "false_gate_next_native_address": "00b164b8",
     "native_cleanup_state": 8,
     "next_concrete_dependency": {
-      "start": "00b163fa",
-      "gate": "Original service current byte22D; false branchB164B8",
-      "true_branch": "Current renderer+98 NULL targets, service44 holderprimary into currentgroupcolor0, currentservice664 post-effect targets/texture/draw and camera work",
-      "status": "Not composed by this packet"
+      "true_start": "00b1645b",
+      "true_call": "B4DCC0 atB16462; existingSource provider, next actual material/program/device composition and runtime evidence",
+      "false_start": "00b164b8",
+      "false_clause": "Later system/gather body; remainsseparatefrontier",
+      "status": "Not composed/executed by thispacket; noSourceabsenceclaim"
     },
     "requires": [
       "Actual B17240 preparation",
-      "POST target/effect composition and remaining scene/material/cockpit/distortion/statistics body",
+      "POST submission/camera and remaining scene/material/cockpit/distortion/statistics body",
       "POST state8 retirement and later cleanup states",
       "Full genuine body/domain closure before queue admission"
     ]
@@ -564,44 +495,44 @@
   "unproved": [
     "Whole D5E13C execution/application route",
     "Original child/FH3/SEH/private-stack/register/fault ABI",
+    "Terminalowner release/destruction andenabledsynchronization here",
     "Cold manager/pool creation and allocation failures",
-    "Header alias execution; current alias guard is strict-COFF checked",
     "Arbitrary concurrent publication or owner mutations",
     "Whole prior main-scene prefix in one original caller",
-    "POST-effect or active material pass/shader/device draw",
+    "B4DCC0 actual material/program/device draw and subsequentPOSTcamera work",
     "Actual application scene/camera creation/invocation",
     "Visible world/gameplay"
   ],
   "artifacts": [
     {
       "path": "src/native_main_scene_execution_prefix.cpp",
-      "bytes": 86800,
-      "sha256": "fd84f57f285ffe8f2746237033656c2c9772bfce706b26f250f9ef94a5bdaa4c"
+      "bytes": 90696,
+      "sha256": "19baed69a962d87d0b0c0ccc4a5f06dbcf88672fb7018bdd0868a7f57105b807"
     },
     {
       "path": "include/bsp/native_main_scene_execution_prefix.hpp",
-      "bytes": 25604,
-      "sha256": "683e6b851c0c9ad7a6f918111be7159c56d0f6f0ec10b3fc3c46392fbbf1f60a"
+      "bytes": 27387,
+      "sha256": "6d85a8e66f1bc915621eb15762dc6c6517d4f0a16044d8ebfe8fd305fb0c0a3e"
     },
     {
       "path": "docs/NATIVE_MAIN_SCENE_EXECUTION_PREFIX_CC12.md",
-      "bytes": 62476,
-      "sha256": "aa8e6a8612ab140e222f56aa935057a2439569eb970c27ef90d01ed07431a7c9"
+      "bytes": 66418,
+      "sha256": "379439b2150c2339945236138421eb9e6132dcb1cf863ddffbfb95214aa76a0b"
     },
     {
       "path": "config/names/00b10000.jsonl",
-      "bytes": 362257,
-      "sha256": "37385a901d8323f93c4bad0652b78d35249eb8b6d3c0566ffe9962fe5cb11238"
+      "bytes": 364429,
+      "sha256": "a760bd89ce043aa5273cd95a3137b7132803ee1387100ee4cee50a1a74ea53e3"
     },
     {
       "path": "config/reconstruction/00b10000.jsonl",
-      "bytes": 432548,
-      "sha256": "1396c08d68cf6b7161f0419fa1074e421088de8714014696a321f212220f3f2d"
+      "bytes": 436086,
+      "sha256": "a477a984ed9d1941714f9e4e6c76da47a581f29af557720fedeee8723e9f5a2c"
     },
     {
       "path": "build/win32/Release/bsp_core.lib",
-      "bytes": 92090836,
-      "sha256": "0521a7feb92418f43b49974adc3eac809df709cd3881f6b7f09ae8e4388e3fc4"
+      "bytes": 92277876,
+      "sha256": "b8b209f3a8ae9d59202e794384503ed5dc6e8e4fa5832407187b961086f59a0b"
     },
     {
       "path": "build/win32/Release/bsp_lua511.lib",
@@ -619,279 +550,276 @@
       "sha256": "22baea6d710978e1c456204021e49924ac738d8b5a79e2b689d89123cadfee81"
     },
     {
-      "path": "local/ghidra-annotations-20261015T010107Z.json",
-      "bytes": 115212,
-      "sha256": "80909fc42b72644ec8d172bf6fe4934fa485f3eb3b306b1a09d2c3ff11f06229"
+      "path": "local/ghidra-annotations-20261015T012240Z.json",
+      "bytes": 133121,
+      "sha256": "d0c8045b550fa949003e22a91059a89ba2c548e9f4ba68b9d12e5cf4336515e7"
     },
     {
-      "path": "local/main_scene_scne_capture_receipt_337a794ac/report.json",
-      "bytes": 37061,
-      "sha256": "14e36be0fb2c43db2e77b9331f75a6ea8c6367a8b3db3ebf7829fcf425d2fc97"
+      "path": "local/main_scene_post_label_receipt_1802809e3/report.json",
+      "bytes": 33661,
+      "sha256": "031458a0947bbdf52616ffdb06e98881cfd38de8dec36b64d867dfb75db85cfd"
     },
     {
-      "path": "local/main_scene_scne_capture_receipt_337a794ac/receipt.json",
-      "bytes": 29700,
-      "sha256": "6ca06592bc2ac3346458895f2e827e26b75b9d8ce4ef8e7a3adbb1ca5d2aee07"
+      "path": "local/main_scene_post_label_receipt_1802809e3/receipt.json",
+      "bytes": 23437,
+      "sha256": "f8afdd27ecb1cb4fad2e93d937e927c7733667741dba51618d26d25fef349b9e"
     },
     {
-      "path": "local/main_scene_scne_capture_receipt_337a794ac/manifest.json",
-      "bytes": 32888,
-      "sha256": "dfcf611cdad9d9fa51bf14c20b9cd684424371b85deb43e187a27ec69074bec8"
+      "path": "local/main_scene_post_label_receipt_1802809e3/manifest.json",
+      "bytes": 25699,
+      "sha256": "cba958d7e957ecca99e52f81c65f856cf459989a8d76899d097ad14d72b0c98f"
     },
     {
-      "path": "local/main_scene_post_label/00b156c0_assembly.txt",
+      "path": "local/main_scene_post_targets/00b156c0_assembly.txt",
       "bytes": 52624,
       "sha256": "f2fa4399f0b5bb667a5bd1adc8006d21498e262000293901a6abe1ce25b54510"
     },
     {
-      "path": "local/main_scene_post_label/00b156c0_decompiled.c",
+      "path": "local/main_scene_post_targets/00b156c0_decompiled.c",
       "bytes": 34487,
       "sha256": "759128dc08776e2731ea34a947e168d9dd837f606c4e9ee89eda480271cc846d"
     },
     {
-      "path": "local/main_scene_post_label/00b156c0_metadata.json",
+      "path": "local/main_scene_post_targets/00b156c0_metadata.json",
       "bytes": 276,
       "sha256": "0b3fadea1afe23121cd1edbd86c5e7f2607cedba56d68e27fbb72baa10e85da6"
     },
     {
-      "path": "local/main_scene_post_label/annotations.log",
+      "path": "local/main_scene_post_targets/annotations.log",
       "bytes": 202,
-      "sha256": "ec9b6bd4066a04f608d0bc0f4cbee3844d85e550a7ffedf53a171dc2c6214a58"
+      "sha256": "f844fb1907feb0f3ee5765035915e3603ab4552bfd22ecd72a2c2c997b18605b"
     },
     {
-      "path": "local/main_scene_post_label/audit_emitted.py",
-      "bytes": 5341,
-      "sha256": "17b0933d7def2676965ce7d7f39253ce10b6fd71c024f068d146bf2d014aa0a8"
+      "path": "local/main_scene_post_targets/assign_frame.bin",
+      "bytes": 59,
+      "sha256": "693f73fefb97d376ef6417ba3cfe243d6e052fba6fe1c4dc1e659231e00ee161"
     },
     {
-      "path": "local/main_scene_post_label/audit_x87.py",
-      "bytes": 2165,
-      "sha256": "f48ee10036793e0c87268c8fa1daaba73eb73104a5b548d0219e0d2efc482e99"
+      "path": "local/main_scene_post_targets/audit_emitted.py",
+      "bytes": 4730,
+      "sha256": "5ead1f482c1836ed53d601ebeb1cdef47f82cd13af4f8d3ccf558d162e41131f"
     },
     {
-      "path": "local/main_scene_post_label/build.log",
-      "bytes": 3911,
-      "sha256": "38694ccf0bc498b3935b61ef363a4bb279aeac8d592fee53ed92ed4123cbf1c3"
+      "path": "local/main_scene_post_targets/audit_x87.py",
+      "bytes": 2169,
+      "sha256": "645ca615b2bd49375319831d21d77c9fce72d6c4661069c0abae018c352d8dfd"
     },
     {
-      "path": "local/main_scene_post_label/byte_receipt.json",
-      "bytes": 2435,
-      "sha256": "59a44c644e123e747d5ea6bcec4b4d91b58ae7bb413d6ee48fc79c358397f570"
+      "path": "local/main_scene_post_targets/byte_receipt.json",
+      "bytes": 2098,
+      "sha256": "aec5bad2c47cfb7bd3ed8725927685dc247ef61a9b7da1238ccd3602707b2290"
     },
     {
-      "path": "local/main_scene_post_label/byte_receipt.log",
-      "bytes": 1841,
-      "sha256": "830cf8b51314746f5325b0d5f09f55ed8c3fa0be0cf9f39383b98ae445c5aaeb"
+      "path": "local/main_scene_post_targets/byte_receipt.log",
+      "bytes": 64,
+      "sha256": "d05c96eedb195f0dea7e9371bec6123ad6d39a49b4a35685201b4c0216704106"
     },
     {
-      "path": "local/main_scene_post_label/compile.ps1",
-      "bytes": 1353,
-      "sha256": "c66b4bed2c1eae276b8f464499187f573ec5cfcacc37abd7e2ee3f8da4bd68b4"
+      "path": "local/main_scene_post_targets/compile.ps1",
+      "bytes": 1369,
+      "sha256": "f755b376bc0a885fb379c09e3c6c8f1943c96f217c309e55b5800f0ef0465711"
     },
     {
-      "path": "local/main_scene_post_label/continue_native_main_scene_post_label_00b1634e.txt",
-      "bytes": 5606,
-      "sha256": "26f7f85c019e56047f992d295403017ff5a706d44221ceff4af773007aeaa0c0"
+      "path": "local/main_scene_post_targets/continue_native_main_scene_post_targets_00b163fa.txt",
+      "bytes": 7591,
+      "sha256": "6432ed9080adde30f17e7c48b545258efcfb23a0c59c73492b7cfa8cd09b96ce"
     },
     {
-      "path": "local/main_scene_post_label/emitted_audit.json",
-      "bytes": 9211,
-      "sha256": "c9cb8d4c4e318f4d899c76cb3b218ff09406b7e165fe49464102d2da8901859e"
+      "path": "local/main_scene_post_targets/emitted_audit.json",
+      "bytes": 8612,
+      "sha256": "f06c793b852d67381062faa1132119468628dc2a51f5d658f4bed52039ef04b3"
     },
     {
-      "path": "local/main_scene_post_label/emitted_audit.log",
-      "bytes": 897,
-      "sha256": "62821488be9a250597475840a6bc516f267b4c1e22d4cfb6d637e6b43d099870"
+      "path": "local/main_scene_post_targets/emitted_audit.log",
+      "bytes": 1109,
+      "sha256": "808b60e623caf2603b56ec94069384135bacfb1fc0cf1836d895b1036164f4a7"
     },
     {
-      "path": "local/main_scene_post_label/emitted_initial.json",
-      "bytes": 5030,
-      "sha256": "403f22f7274f7d93b780f0761ec41b227dca6595e4ab5c6a1e25d74eaeecaa0f"
+      "path": "local/main_scene_post_targets/emitted_initial.json",
+      "bytes": 5234,
+      "sha256": "d5fa943581fa13e046765320c0d93a990ecee9b78dc86461070c15b70773631b"
     },
     {
-      "path": "local/main_scene_post_label/export_refresh.log",
+      "path": "local/main_scene_post_targets/environment.hpp",
+      "bytes": 5213,
+      "sha256": "e48ad6743e574f6f4bcd27c47558865a92d69cf91119ccd9e89d62e233210989"
+    },
+    {
+      "path": "local/main_scene_post_targets/export.log",
       "bytes": 104,
       "sha256": "2c16df4e3befc768729913ee74ecb0abf7c4eff68ad4a8543e227d7adfd18d53"
     },
     {
-      "path": "local/main_scene_post_label/freeze_receipt.py",
-      "bytes": 1961,
-      "sha256": "5ef365bee5a12af58c3a775232be845be8207fbbb1c2de1e6b8bd825e2065d04"
+      "path": "local/main_scene_post_targets/freeze_receipt.py",
+      "bytes": 1965,
+      "sha256": "5294233b704ef7019aef06e313e22696e4413f09a0e1eded9a4cd2d273851bb6"
     },
     {
-      "path": "local/main_scene_post_label/func_info.bin",
-      "bytes": 36,
-      "sha256": "bba2e286bfbcca2cfae6c87890a7834476ea7b90563ef611fd40ba7e106842a9"
-    },
-    {
-      "path": "local/main_scene_post_label/handler.bin",
-      "bytes": 10,
-      "sha256": "e3e2ad413e482a75d3249425cf1e30e7d681e0cd0f6ab8a69303cbdddc2ecafe"
-    },
-    {
-      "path": "local/main_scene_post_label/index.log",
-      "bytes": 143,
-      "sha256": "7c0256864dc86e081cfc6858c11dcb4f958e2766f84a19e87b073652c1a784d3"
-    },
-    {
-      "path": "local/main_scene_post_label/inspect_emitted.py",
-      "bytes": 2222,
-      "sha256": "00e428ac6bf2bb4698a8096e1117a6003daa4061fa2a72cc438d6fb7fef3040c"
-    },
-    {
-      "path": "local/main_scene_post_label/label.bin",
-      "bytes": 172,
-      "sha256": "5226e93bf1898066249f8047b4081d1b2e94ecb47351c340d7cc166728e40600"
-    },
-    {
-      "path": "local/main_scene_post_label/label_probe.cpp",
-      "bytes": 13677,
-      "sha256": "e2c3899ab12a2012e0f425e4cbd60e2b617d7534877081c5855e7998ce565987"
-    },
-    {
-      "path": "local/main_scene_post_label/label_probe.exe",
-      "bytes": 229376,
-      "sha256": "bc7620b3815b04ef44b135deae7e13956fb21167d2dcadeced97f40427718283"
-    },
-    {
-      "path": "local/main_scene_post_label/label_probe.log",
-      "bytes": 707,
-      "sha256": "360d593ac7599c98c86361733adcf3ebb0fd27c731205b257748f759450798bb"
-    },
-    {
-      "path": "local/main_scene_post_label/label_probe.obj",
-      "bytes": 58744,
-      "sha256": "51d132024e7f5f62e791278ddd8033ad4632c91283e6cd5d6a90e0ed81ccc060"
-    },
-    {
-      "path": "local/main_scene_post_label/ledger_update.log",
-      "bytes": 705,
-      "sha256": "cc8f81ca9f842dffa126e959c5afc4624582c971fd3960f8497ec904114e8c89"
-    },
-    {
-      "path": "local/main_scene_post_label/make_fixture_bytes.py",
-      "bytes": 2956,
-      "sha256": "a899e902067b7c2d3ba8d509932b8ad57457ce621bcbbfeef144555a7a9700da"
-    },
-    {
-      "path": "local/main_scene_post_label/make_report.py",
-      "bytes": 8497,
-      "sha256": "8d09e897dbe00182f88aad3ca97d86d0c2d92c4bbde2313b0587e6c961a52785"
-    },
-    {
-      "path": "local/main_scene_post_label/native_camera_far_corners.asm",
-      "bytes": 34707,
-      "sha256": "334f66a4ad36ab43f378c643469bef73eccd984915a2271bb7d188b8d277238b"
-    },
-    {
-      "path": "local/main_scene_post_label/native_camera_far_corners.obj",
-      "bytes": 2419,
-      "sha256": "6027e464203eec3c59ab01a548f880876a99a79645d3e894209abb3e76624c49"
-    },
-    {
-      "path": "local/main_scene_post_label/native_clause_listing.txt",
-      "bytes": 1495,
-      "sha256": "63e8aa3099d729d0a4d94b2a0ee5cfedd64bb9289788520b6133f18e5aa2a427"
-    },
-    {
-      "path": "local/main_scene_post_label/native_main_scene_execution_prefix.asm",
-      "bytes": 474280,
-      "sha256": "b942f6a567a102ea1d515cf453fccc78fde5ff43d5e04d854dbe206e1cc00835"
-    },
-    {
-      "path": "local/main_scene_post_label/native_main_scene_execution_prefix.obj",
-      "bytes": 77498,
-      "sha256": "aa9cbc516fd1600e1740ef9bdf97c2984def471401d8364a96115009aa2338d3"
-    },
-    {
-      "path": "local/main_scene_post_label/native_post_effect_submission.asm",
-      "bytes": 95790,
-      "sha256": "8bc3c6ea50aa6279a35cce7553ed6a10c3e72b8576b5faf26a24973fcf350820"
-    },
-    {
-      "path": "local/main_scene_post_label/native_post_effect_submission.obj",
-      "bytes": 20533,
-      "sha256": "704e2486950d2bf552e7f473e74f1de15e74cd8ca2fffd9a0700d6c336b9cb3c"
-    },
-    {
-      "path": "local/main_scene_post_label/original_bytes.inc",
-      "bytes": 2473,
-      "sha256": "98f7b7bf143d5a96bd19838f4662cd8ea75b2dd05f730938d4cb10dc06e36ca6"
-    },
-    {
-      "path": "local/main_scene_post_label/post.bin",
+      "path": "local/main_scene_post_targets/group_profile.bin",
       "bytes": 8,
-      "sha256": "9ffc45a8ccc17f340f55397fd7b962e5bd562b34bf24c32a870bc09472a65c65"
+      "sha256": "b1ecc67d201a3405d2c2382c329b4233e9c30bd2c6da012c61e444134bb6cd9b"
     },
     {
-      "path": "local/main_scene_post_label/prepare_audit.py",
-      "bytes": 507,
-      "sha256": "ff5139760cf327e1e1d091ca37e9874aa9339afbcecddd50b680133c7549663e"
+      "path": "local/main_scene_post_targets/inspect_emitted.py",
+      "bytes": 2190,
+      "sha256": "4c80c0280e3cc07d523ee04f9bd051101c3200c21753017b793d42ef7038d2a3"
     },
     {
-      "path": "local/main_scene_post_label/prepare_fixture.py",
-      "bytes": 6159,
-      "sha256": "f59cbb0c5672b4b00699a576e4eb29e1ce294e9d4fff191422d3733407149a2d"
+      "path": "local/main_scene_post_targets/make_fixture_bytes.py",
+      "bytes": 2521,
+      "sha256": "a0a0ad7a9e784bfa062ec7928b67378437e3873350d1dca7946af416a2d30d5a"
     },
     {
-      "path": "local/main_scene_post_label/prepare_freeze.py",
-      "bytes": 631,
-      "sha256": "4b53009f68680141d9645c6ba14ffc9a3f51ec7cd318fe45d9ec3ae4f79b90a9"
+      "path": "local/main_scene_post_targets/make_report.py",
+      "bytes": 8683,
+      "sha256": "5c72c0c76f30948dc8e1c7f9e8c2690f0e57d0a03e2cb0003a2103d9a260f408"
     },
     {
-      "path": "local/main_scene_post_label/probe_compile.log",
-      "bytes": 17,
-      "sha256": "cb33925b1a3c7bb4077d17e57743e895455524726ed690ee7fd7ebba4e86ec23"
+      "path": "local/main_scene_post_targets/material.bin",
+      "bytes": 4,
+      "sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96"
     },
     {
-      "path": "local/main_scene_post_label/run_probe.ps1",
-      "bytes": 1327,
-      "sha256": "04669c6d4e58001f5da516a056c45d88e88d3537e3e6de6d2ba8052d8239bcd2"
+      "path": "local/main_scene_post_targets/material_texture.bin",
+      "bytes": 80,
+      "sha256": "ddcd3b96b4cce2f22b205119a4e9cf9a648c23a228bf1bb608373d76cd2b9116"
     },
     {
-      "path": "local/main_scene_post_label/strict_compile.log",
+      "path": "local/main_scene_post_targets/native_camera_far_corners.asm",
+      "bytes": 34709,
+      "sha256": "d673e4af1d64a10de518e562065d3fee5d8751ac4315ea247fb40a8aa54a37c1"
+    },
+    {
+      "path": "local/main_scene_post_targets/native_camera_far_corners.obj",
+      "bytes": 2423,
+      "sha256": "b27782e21ade2dbaa75a755b9226ee36acfe105bed229c8c6870120bdbf89dc0"
+    },
+    {
+      "path": "local/main_scene_post_targets/native_main_scene_execution_prefix.asm",
+      "bytes": 507762,
+      "sha256": "556544fa43d53507d6827ab230c269cac6d8ac5dcb2a5d2cac1fe7a6ab2bba7d"
+    },
+    {
+      "path": "local/main_scene_post_targets/native_main_scene_execution_prefix.obj",
+      "bytes": 82793,
+      "sha256": "d68be8e52b042e74d254d84d892961a0337cdcf39a4e53ac1a34c1c188767ade"
+    },
+    {
+      "path": "local/main_scene_post_targets/native_post_effect_submission.asm",
+      "bytes": 95792,
+      "sha256": "cbbb215275a03ced07499019fe69fc3b7267b59d2ff078d9128cd6410bb44966"
+    },
+    {
+      "path": "local/main_scene_post_targets/native_post_effect_submission.obj",
+      "bytes": 20537,
+      "sha256": "c05a184f6aa717c7f54d4ef98d58fb2750e38ead5c00a801052a72f771354290"
+    },
+    {
+      "path": "local/main_scene_post_targets/normal_build.log",
+      "bytes": 4384,
+      "sha256": "238e292778b560b5b06ed6e8cc5ec79d15a32c7213f385aebda4389a5ee17a3f"
+    },
+    {
+      "path": "local/main_scene_post_targets/original_bytes.inc",
+      "bytes": 3814,
+      "sha256": "b05b848d87dcdfc84b27b8f4856aed55c1c847822c703e61495a0c37d8786a60"
+    },
+    {
+      "path": "local/main_scene_post_targets/prepare.py",
+      "bytes": 1715,
+      "sha256": "92fe32a3c658a1d165fca32b9b159c480237afaa9b986d04d76a84c973a1b5cf"
+    },
+    {
+      "path": "local/main_scene_post_targets/primary.bin",
+      "bytes": 4,
+      "sha256": "2e339cdc5de837ec151dbde90057caeabba18ac3ea32e7c2cffc8f95df41a6ff"
+    },
+    {
+      "path": "local/main_scene_post_targets/probe_compile.log",
+      "bytes": 19,
+      "sha256": "74bfa31dd017f24ddf7daa98bd1f2103fc4e8432d571b12b7cb13a0c77a18378"
+    },
+    {
+      "path": "local/main_scene_post_targets/renderer_profile.bin",
+      "bytes": 328,
+      "sha256": "81b6ffba0bc0ddc59499163d761da9c9f15bfd57d099d61c08ba40df94550c4b"
+    },
+    {
+      "path": "local/main_scene_post_targets/reserve_image_section.py",
+      "bytes": 3239,
+      "sha256": "35a31aae58bc221f62e7d15ff6e171fedaab2d9b2c1b689f3d47c1a2bfafdb72"
+    },
+    {
+      "path": "local/main_scene_post_targets/run_probe.ps1",
+      "bytes": 1631,
+      "sha256": "fd2ef771d24ce5afd3733c59554405743468cd52a893b879d4f875d1e43328e4"
+    },
+    {
+      "path": "local/main_scene_post_targets/strict_compile.log",
       "bytes": 106,
       "sha256": "66260c7a22c7fb4ee63d064ab898a6b6c5ea67021d6467bebeeb179edb681dd3"
     },
     {
-      "path": "local/main_scene_post_label/unwind_map.bin",
-      "bytes": 72,
-      "sha256": "6dd6b0c046043b55b4e7976fd6436a5038a1dc2a2fe595f08abc9070ad5427d8"
+      "path": "local/main_scene_post_targets/surface_profile.bin",
+      "bytes": 44,
+      "sha256": "553be925bd752fde32b6a7c583af1573bd66fe01f3f908f700167b77a4d60d04"
     },
     {
-      "path": "local/main_scene_post_label/unwind_native_main_scene_post_label.txt",
-      "bytes": 1424,
-      "sha256": "cc89b59b8fe6186e580974461a40bc5f6c4dd1f34cc656e51c02643dbfa1b786"
+      "path": "local/main_scene_post_targets/targets.bin",
+      "bytes": 97,
+      "sha256": "3aa024543eb447cb543f4f2ca990b6df46e3196e8ba44c1be27b755677950992"
     },
     {
-      "path": "local/main_scene_post_label/unwind_reset.bin",
-      "bytes": 8,
-      "sha256": "eb536483a0e41efe2795f20a145a50cad049399d3c74d65490372d5c4a2a481f"
+      "path": "local/main_scene_post_targets/targets_probe.cpp",
+      "bytes": 13444,
+      "sha256": "0aeb0e9f8a5a351c37146105fe4367c394b37c65cc21f02ee3a35ea56028c791"
     },
     {
-      "path": "local/main_scene_post_label/unwind_temporary.bin",
-      "bytes": 11,
-      "sha256": "9ebdc30159b4469fa9a3fd3ef2d7018290f7f8c149ea5b6ad2134bbc5140d4b5"
+      "path": "local/main_scene_post_targets/targets_probe.exe",
+      "bytes": 244736,
+      "sha256": "455cb0466aae4e8be531f4029877c8a1c12991b6e8ddc72e15e05211799c1006"
     },
     {
-      "path": "local/main_scene_post_label/update_ledgers.py",
-      "bytes": 3405,
-      "sha256": "a481d7b3fd5c350efb1d5a674bc75d8a8e8a0f640ed261de12424c68bde87007"
+      "path": "local/main_scene_post_targets/targets_probe.image_reservation.json",
+      "bytes": 1017,
+      "sha256": "af935204db9318c71813674de09d58d48be352b2faf6bf215907f93de90a3091"
     },
     {
-      "path": "local/main_scene_post_label/verify_prior.py",
-      "bytes": 1141,
-      "sha256": "4208685202f48a07b93bd92c1e74121dad6eab63291cffc5551af1a115a18b3c"
+      "path": "local/main_scene_post_targets/targets_probe.log",
+      "bytes": 643,
+      "sha256": "866593772f644016e979cd7f7ed841c4d87289514cfa76e0137ee4acc93e572c"
     },
     {
-      "path": "local/main_scene_post_label/x87_audit.json",
-      "bytes": 986,
-      "sha256": "d58d77f736b7788068fa0a2618e10af3c3d7391dd6702854bd3da6dfcae5cb1a"
+      "path": "local/main_scene_post_targets/targets_probe.obj",
+      "bytes": 122126,
+      "sha256": "820736bb9541c3f08251761d1e56a259e3bd7b5f46c946ede78ba9a9ee0805d9"
     },
     {
-      "path": "local/main_scene_post_label/x87_audit.log",
-      "bytes": 889,
-      "sha256": "76bf007fc367f3a5bc983767fb85bb0a9d9204f932c3e7fb274ad49ea435e510"
+      "path": "local/main_scene_post_targets/texture.bin",
+      "bytes": 4,
+      "sha256": "916ae10aa3fd76a4d5b25b2fb66e9df0fd04957c7ab10930268d1ed7808be689"
+    },
+    {
+      "path": "local/main_scene_post_targets/update_ledgers.py",
+      "bytes": 3566,
+      "sha256": "4dc7640c36cf1cdda15199cff4529b552b3b34a520daf85486aede1425c6906e"
+    },
+    {
+      "path": "local/main_scene_post_targets/verify_prior.py",
+      "bytes": 1168,
+      "sha256": "59f509d170d82596ecc930400692535b7dfb8b18933094f0463f38884ce310f2"
+    },
+    {
+      "path": "local/main_scene_post_targets/x87_audit.json",
+      "bytes": 990,
+      "sha256": "de2c78b9271be9c23473860430eaa86f121d04afc0d975a972b59ad8126ec777"
     }
-  ]
+  ],
+  "primary_integration_review": {
+    "report": "reports/cc12_native_post_texture_integration_15.json",
+    "combined_build_source_revision": "cf6b62021a2f2368109ab9c5ed1d55b6dfcd6646",
+    "normal_existing_suites_passed": 3,
+    "gameplay_validated": false,
+    "Root_POST_target_fixture_pass": true
+  }
 }

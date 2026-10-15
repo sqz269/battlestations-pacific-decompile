@@ -116,3 +116,125 @@ changes the current checkout, `--verify` alone replays the retained historical
 evidence without pretending those later current files are unchanged. Neither
 mode launches the probe. The one execution attempt is consumed; no retry is
 authorized by this packet.
+
+## Current two-node ordinary Source case (2026-10-15 UTC)
+
+A separate current-provider case now passes in ignored
+`local/recursive_lifetime_current01`. The earlier 2026-10-09 worker execution
+record above remains historical, with its original primary-review field
+unchanged. It supplies no process, old-object, or old-header credit to this case.
+The worker handoff recorded pending primary review, credit 0. The primary
+review below admits one current ordinary Source case; existing Source-function
+and raw-constructor admissions are not repeated.
+
+The input baseline is published Main
+`52f3736d6fd1e876156cc119e664583481cae3b3`. Exact physical Main preimages cover
+82 Source/header files and 24 complete provider translation units, plus the new
+fixture TU. All 25 objects were freshly compiled as MSVC Win32 with
+`/std:c++17 /MD /O2 /W4 /WX /EHsc /Gy /GL-`, and linked into an embedded
+`asInvoker` image. Two earlier, unexecuted preparations were retained before
+Main updates. Two line-ending-only changes were refreshed as actual preimages;
+no tracked Source was altered to manufacture matching hashes. No new Core build
+is claimed. Exact copies of the earlier sealed Core/Lua/zlib archives remain
+historical sibling-symbol resolvers; their bodies receive no helper-closure or
+current execution credit. Other retained archive code, CRT startup and static
+initialization are outside this qualification.
+
+The genuine finite graph is `P -> R1(type6) -> C -> R2(type6) -> G(empty)`.
+Three actual 276-byte bags and two actual 56-byte records come from the canonical
+allocation domain, whole raw61, the real empty-child producer, and whole raw58.
+Both children are empty when their Type6 constructors run. Actual whole ordinary
+`008F33F0`/`008F28F0` then insert `root` into P and `leaf` into C using two real
+E175B0 nodes and the actual canonical raw string manager/pool. These are two miss
+insertions, not replacement/hit coverage. Three genuine pooled buffers suffice:
+the temporary query buffer is returned and reused, while the two copied node
+keys remain owned. C/G retain the actual nonowning R1/R2 backlinks; insertion
+publishes each record's real parent and ordinal.
+
+The sole top-level lifetime call is ordinary
+`scalar_delete_native_scene_property_bag_008f59e0(P, 2, actual_context)`. It enters
+the already implemented six-body family `008F3F30`, `004E6730`, `008F0DE0`,
+`008F0640`, `008F59E0`, and `008F5410` through the actual finite owning graph.
+The retained P is checked across all 276 bytes after return. Only live allocator
+metadata is then read: both node slots are back on the free stack (62 to 64
+available), both node-key pointers are back in the same pool ring (one to three
+returned buffers), and the same raw manager, singleton registration, tracked
+section, owner and allocator-list links remain coherent. P is freed exactly once
+by the fixture, and the real node-pool trim releases the empty page while
+retaining its 32-entry table. No retired record, child bag, node or key payload
+is read. Completion and terminal metadata support the Source schedule; this is
+not a per-function, per-free, or callback-order trace.
+
+The sole target PID **57936** exited **0**, producing the ordered
+`LIVE_GRAPH ROOTS=5 NODES=2 KEY_BUFFERS=3` and
+`PASS RECURSIVE_SOURCE GRAPH=2 RETAINED_PARENT_FREE=1 EMPTY_PAGE_TRIM=1` lines.
+Independent decoding passes every complete bag/record/node observation, both
+closed-ASCII bucket results, actual allocation disjointness/stack exclusion,
+retained-parent frame, live free-stack/ring metadata, manager registration and
+explicit trim result.
+
+The code gates cover 506 retained sections, all 2,568 raw relocation records,
+30 weak entries, and 209 complete mapped spans totaling 26,073 bytes. All 209
+mapped spans are compared before and after explicit graph cleanup. The actual
+entry-rooted closure has 157 bodies, 6,663 instructions and 1,167 control edges;
+52 retained siblings remain explicitly outside helper/execution credit.
+Vtable/data retention does not make every semantic lifetime callback an invoked
+helper. Actual constructors, literal function-address bindings and complete
+selected COFF sections remain included. The independent reader separately
+reparses the standard support archives, member identities, full COFF sections
+and their relocations.
+
+The release body's complete two-level switch retains 308 code/padding bytes,
+all five relocated target DWORDs and all ten index bytes. The unsigned range
+check dominates both table reads; every bounded destination is an actual
+instruction boundary. Exact compiler SEH4 finally metadata, a literal catch
+return continuation, and a same-section continuation branch are also retained
+and checked. They receive no exception/Original ABI execution credit. Current
+cookie failure and actual `CD 29` fast-fail instructions remain explicit failure
+frontiers. No unknown indirect edge is accepted in the rooted closure.
+
+All 43 independently proved IAT bindings have actual loaded module/file identity,
+resolved export/forwarder identity and 32 entry bytes captured before and after
+cleanup. They agree with the pre-pinned current Win32 DLL images. The current
+disk API-set namespace's hashed-prefix alias is corroborated by the actual IAT
+host/export; no generic loader or PEB namespace equivalence is claimed. Provider
+entry observations do not mean every failure import was invoked or prove deep
+private CRT behavior.
+
+The original prelaunch observation reader is preserved unchanged. Its graph
+checks passed, then `pefile` closed a cached provider mmap during relocation.
+The separately retained offline v2 reader uses a fresh PE instance for each
+relocated image and passes the **same sole observations**. No target, fixture,
+compiled input or recorded observation was changed or rerun. The earlier
+API-set preflight stop occurred before the target-attempt file was created.
+
+Fresh correct-project queries after execution still match the whole raw58 and
+raw61 dependency bytes. The failed Type10 family, accepted Type10/Type11/raw
+Type6 families and ordinary empty-child Type6 family retain exact membership and
+all hashes. The new qualification/report preserve all failed preflight records,
+unexecuted preparations, both observation readers, failed-reader output, and
+the final provider observations.
+
+This proves one successful ordinary Source two-node lifetime case in the actual
+canonical current-provider domain. It does not establish copied Native execution,
+Original register/frame/FS/SEH/FH3 or class/vtable ABI, failure/alias/cycle/shared
+ownership, arbitrary tags, populated cloning/assignment/replacement, later CRT
+shutdown callback order, global leak-free shutdown, or game equivalence. String
+singleton infrastructure intentionally remains live until process reclamation.
+The loaded-code/provider bookends cover explicit graph cleanup and trim, not
+the later CRT shutdown callbacks.
+
+Current qualification and independent evidence are linked by
+`reports/cc12_property_recursive_lifetime_ordinary_case.json` under
+`current_two_node_ordinary_source_execution`; the immutable family is sealed by
+its self-excluding `artifact_manifest.json`.
+
+Primary review: both independent offline readers passed again in a separate
+review copy using the same sole PID57936 observations; the target was not
+relaunched. All82 current Main physical Source/header pins match. Root has
+80 exact physical pins and two independently checked CRLF/LF-only
+differences, recorded explicitly. The506-file worker family remains
+immutable, including its pre-admission qualification. This accepts one
+ordinary Source graph case with209 mapped spans,157 entry-rooted bodies
+and43 actual IAT identities; it adds no Native/Original ABI, failure/FH3
+or gameplay claim. See `reports/cc12_recursive_lifetime_primary_review_16.json`.

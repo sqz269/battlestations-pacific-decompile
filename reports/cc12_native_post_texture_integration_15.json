@@ -1,0 +1,400 @@
+{
+  "packet": "cc12_post_target_and_texture_binding_primary_integration15",
+  "captured_utc": "2026-10-15T02:02:15.948061+00:00",
+  "source_revision": "cf6b62021a2f2368109ab9c5ed1d55b6dfcd6646",
+  "status": "SOURCE_REVIEWED_COMBINED_BUILD_PASS_WITH_RUNTIME_LIMITS",
+  "build": {
+    "target": "MSVC Win32 Release",
+    "existing_suites_passed": 3,
+    "seconds": 13.11,
+    "temporary_cmake_overlay": false,
+    "new_tests": 0,
+    "log": "local/cc12_post_targets_texture_combined_release_build_02.log"
+  },
+  "world": {
+    "worker_commit": "6d84c7d68f3752f2ed34d3c58c62acf0ba0d1f3a",
+    "parent_fixture": {
+      "pid": 37268,
+      "started_utc": "2026-10-15T01:49:50.227078+00:00",
+      "finished_utc": "2026-10-15T01:49:50.474533+00:00",
+      "exit_code": 0,
+      "exe": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_parent_receipts\\world_6d84\\local\\main_scene_post_targets\\targets_probe.exe",
+      "exe_sha256": "455cb0466aae4e8be531f4029877c8a1c12991b6e8ddc72e15e05211799c1006",
+      "log_sha256": "866593772f644016e979cd7f7ed841c4d87289514cfa76e0137ee4acc93e572c"
+    },
+    "four_original_Source_pairs_pass": true,
+    "actual_HAL_target_unchanged": true,
+    "Source_child_failure_cleanup_once_pass": true,
+    "stop_before_draw": "00B1645B",
+    "false_exit": "00B164B8",
+    "full_scene_validated": false
+  },
+  "platform": {
+    "worker_commit": "f083778606ab47ce99e3b28d43bd2458c57e320f",
+    "Source_API_reviewed": true,
+    "worker_Original747_Source_real_texture_comparison_pass": true,
+    "frozen_worker_files": 2934,
+    "frozen_committed_files": 7,
+    "parent_forwarded_main_only": true,
+    "unchanged_production_link_inputs": 140,
+    "additional_parent_runs": [
+      {
+        "directory": "local/cc12_texture_reload_parent_review_01",
+        "pid": 54668,
+        "exit_code": 2,
+        "seconds": 0.09057289999327622,
+        "reload_body_entered": false,
+        "reason": "Instance tag exceeds32 characters; argument parsing failed before startup."
+      },
+      {
+        "directory": "local/cc12_texture_reload_parent_review_02",
+        "pid": 98520,
+        "exit_code": 4,
+        "seconds": 3.4263181000133045,
+        "reload_body_entered": false,
+        "reason": "Window setup completed; Direct3D CreateDevice returned null, diagnostic retry HRESULT0x88760868; exit4 before texture reload."
+      }
+    ],
+    "parent_reload_comparison_pass": false,
+    "worker_successful_case_retained": true,
+    "nonempty_renderer_1B00_removal_validated": false,
+    "full_activation_validated": false
+  },
+  "sampler96_bridge": {
+    "receipt": "local/cc12_sampler_entry_combined_bridge_04.json",
+    "complete_current_object_and_linked_bytes_equal": true,
+    "sha256": "d480337b401359dd588edf03898dd6e7feb5e995f0149afa3fc96ce78268e06c"
+  },
+  "Source_blobs_equal_reviewed_workers": 5,
+  "artifacts": [
+    {
+      "path": "local/cc12_post_targets_texture_combined_release_build_02.log",
+      "bytes": 4062,
+      "sha256": "6af9f7bbc63b715991b86ff66de8b8113e8397a966d8e608fe3c9863b61a129f"
+    },
+    {
+      "path": "local/cc12_post_targets_texture_combined_release_build_02_source.txt",
+      "bytes": 42,
+      "sha256": "ec00401306591283d4a585947c6d015ea98769df30555893a668ce320b874ec2"
+    },
+    {
+      "path": "local/cc12_sampler_entry_combined_bridge_04.json",
+      "bytes": 9388,
+      "sha256": "678dcfccc5bef90ba0b038452d0708e3651db96e0df5535470a9566a75176080"
+    },
+    {
+      "path": "build/win32/cc12_followup_release/bsp_game.exe",
+      "bytes": 5599744,
+      "sha256": "1290e1d3e1585b3a0dc299c6dbbabf2fd5919c471a2429677ac9fe1f6e6cefe0"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 92324384,
+      "sha256": "5618afdcbcab78ea5446569c6136ee3088f2267e5eccc10b10a3d12a387897ef"
+    },
+    {
+      "path": "build/win32/bsp_game.map",
+      "bytes": 8333679,
+      "sha256": "9c5eead5c88f375a574dc09233835194cb7c822a48e0b286c1a2e8a60b593469"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 227824,
+      "sha256": "fd172f4f19225d9edaafa3b31908dc73f0ab5df250bc66d0d9e589219d2aced1"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_main_scene_execution_prefix.obj",
+      "bytes": 78358,
+      "sha256": "6072c1e834620e996cdc1223cc94d77e32c5512bbe781b0408445b21c19d6007"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_texture_reload.obj",
+      "bytes": 22728,
+      "sha256": "36e597cd1330daff6258ea2c6e001d529458ec7096fc2721375eefb284dddcd7"
+    },
+    {
+      "path": "build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+      "bytes": 364722,
+      "sha256": "a26361829dc070a72a9797c5dcddb6637b774baab076b588371ae3f66c6d989f"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/build_result.json",
+      "bytes": 1012,
+      "sha256": "021cf151d1bbcd08d1f44364755eb46a136c128b06dbb1027fb7835d47fc032c"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/frozen_after_run.json",
+      "bytes": 187,
+      "sha256": "93def3f9ab20d438ef37078185b7dfc88472f78c047a537c05059789cd0bbd85"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/frozen_before.json",
+      "bytes": 187,
+      "sha256": "93def3f9ab20d438ef37078185b7dfc88472f78c047a537c05059789cd0bbd85"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/frozen_before_run.json",
+      "bytes": 187,
+      "sha256": "93def3f9ab20d438ef37078185b7dfc88472f78c047a537c05059789cd0bbd85"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/prepared.json",
+      "bytes": 79342,
+      "sha256": "c97e91bffb28e763daac1138296553d6ddfdd852d913172231a92407de3ed2b1"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/build/build.log",
+      "bytes": 23,
+      "sha256": "74363d7c69921cb65c8bb252d51a1c13cd1a7cd91a1fd5ef1dd84ac45a82f11a"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/build/build_parent.cmd",
+      "bytes": 471,
+      "sha256": "c798449accb7eeaf93e13d6c3dce558d60b52182b16f97f2a09b513c0214c5fa"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/build/compile.rsp",
+      "bytes": 1009,
+      "sha256": "d042e9722c754766f36caefc90c129a75a74bf1cca9dfb445bf59f4c76347a01"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/build/forwarded_main.diff",
+      "bytes": 692,
+      "sha256": "7c19df867dc30e13ba8018166ab4f4a5139e879a2dedd23ef0f2b2021a48a856"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/build/forwarding.hpp",
+      "bytes": 2407,
+      "sha256": "7440af384a8c9a311e849e0bc7bce44a1a51a05dbb6343b7c980aa404bf08626"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/build/link.rsp",
+      "bytes": 25993,
+      "sha256": "6f73408fe3653c42e8b1a54c4b87d13ce57f6e3083f33db17be8f09aa1257c92"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/build/native_bytes.hpp",
+      "bytes": 3932,
+      "sha256": "f2751ebf06b2c8f4b9deeedf7a66408bd17ef4d2c91ee2ec790c5b30ed2580cf"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/build/parent_probe_main.asm",
+      "bytes": 4774264,
+      "sha256": "f1eb5f11a3b176363b73b32665dcbcdec0703282eb6749474db3c68a0012a540"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/build/parent_probe_main.cpp",
+      "bytes": 77028,
+      "sha256": "34a0047d07a87369615c1ff3c6d5a8ecb212404783e2e9ef5336a5696ee91ec8"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/build/parent_probe_main.obj",
+      "bytes": 682961,
+      "sha256": "453e3b2dc4c6c7dd7b4a30c6f5ab88f70ee06a88f279480ff6803211390c161a"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/build/parent_reload_probe.exe",
+      "bytes": 5612544,
+      "sha256": "7f8aada314619383eb9756983226b5ca44c469c8c21d089c65cb4e4caf869f30"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/build/parent_reload_probe.map",
+      "bytes": 8346565,
+      "sha256": "e00b9f56656fc8c4f6b84be438ddadac3eed241761f86101363e00262196a8a1"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/build/reload_fixture.hpp",
+      "bytes": 15732,
+      "sha256": "5647ec30238df0a8322f18afdd3b3ecf544b277e43ea973e89baa4c56d55a633"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/runtime_artifacts/console.log",
+      "bytes": 879,
+      "sha256": "a2ee027c4c86b936a3470e75dea3b93173f47bc09c2270fcd0c4a1e0f6d6eac5"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/runtime_artifacts/live_process.json",
+      "bytes": 2143,
+      "sha256": "19a9b61f418f32dc457ff496e9ac3a2cb3dd7efa4f735093a96ffb47479e9065"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/runtime_artifacts/native_pins.json",
+      "bytes": 338,
+      "sha256": "733340eb4cfb1362351c2974486dc2fc54a9699a656f3dac29f1303181ef4cb2"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/runtime_artifacts/reload.bin",
+      "bytes": 747,
+      "sha256": "2040b2711596de753d0e87c2119184dc72ea843f173cc9fc7037efab5bee0b09"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/runtime_artifacts/runtime.json",
+      "bytes": 2304,
+      "sha256": "58f0d01d223e993b11396a9173ae5d195fe8facda6b31467f59c5b33f5787d59"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/runtime_artifacts/run_claim.json",
+      "bytes": 2023,
+      "sha256": "110cb80146e3ccf224a4a4095a979b3e4e235f845ca206e9023b77ef6c4302a9"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/runtime_artifacts/verify_artifacts.py",
+      "bytes": 4215,
+      "sha256": "0c26a964797b0d7d09623930d82013f36b1db5f78f8fae694e6e8aa4198d892e"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_01/personal/Battlestations-Pacific/options.txt",
+      "bytes": 226,
+      "sha256": "ff5cf3959932cb634374b8a9bf5e6c0d04c50699cc6ba585e7fa7969f7b563d8"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/build_result.json",
+      "bytes": 1012,
+      "sha256": "8f89810bd61a9fc6e99f2a701fe70806ce652db6d399485e7498a92f07bb2f05"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/frozen_after_run.json",
+      "bytes": 187,
+      "sha256": "93def3f9ab20d438ef37078185b7dfc88472f78c047a537c05059789cd0bbd85"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/frozen_before.json",
+      "bytes": 187,
+      "sha256": "93def3f9ab20d438ef37078185b7dfc88472f78c047a537c05059789cd0bbd85"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/frozen_before_run.json",
+      "bytes": 187,
+      "sha256": "93def3f9ab20d438ef37078185b7dfc88472f78c047a537c05059789cd0bbd85"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/prepared.json",
+      "bytes": 79334,
+      "sha256": "d639dc50452f21afb0432f1363d4563ebb3c1346b8766f87f31642368230d3e3"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/build/build.log",
+      "bytes": 23,
+      "sha256": "74363d7c69921cb65c8bb252d51a1c13cd1a7cd91a1fd5ef1dd84ac45a82f11a"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/build/build_parent.cmd",
+      "bytes": 471,
+      "sha256": "a1f3e55b544432ba58917d170927cc6007da2f7f4b77a9bcf277025bf0786850"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/build/compile.rsp",
+      "bytes": 1009,
+      "sha256": "d8ad14270981b7908164be04ab5cd2c6faab6b7435010691c948e836ac283476"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/build/forwarded_main.diff",
+      "bytes": 692,
+      "sha256": "5b4253fa914586a5350bf662215e84ae6418b961bf5edd819361f296b6e8d466"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/build/forwarding.hpp",
+      "bytes": 2407,
+      "sha256": "7440af384a8c9a311e849e0bc7bce44a1a51a05dbb6343b7c980aa404bf08626"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/build/link.rsp",
+      "bytes": 25993,
+      "sha256": "45541a3e9974f43d18f03bdb69e51185591af55e9ed040155e6a450bafac2ed4"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/build/native_bytes.hpp",
+      "bytes": 3932,
+      "sha256": "f2751ebf06b2c8f4b9deeedf7a66408bd17ef4d2c91ee2ec790c5b30ed2580cf"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/build/parent_probe_main.asm",
+      "bytes": 4774264,
+      "sha256": "c2cfe0888dee51c90d4c04d8c644cd756c51dafb041a27f3d395d3463ba011c8"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/build/parent_probe_main.cpp",
+      "bytes": 77028,
+      "sha256": "fe1e4e23fabe1d9ab344ee79f28465996a7cd10b2e5c3baf53c674968bfafcfc"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/build/parent_probe_main.obj",
+      "bytes": 682961,
+      "sha256": "50f6e286a36751a8628b5e16bcc5eb8411e005965ceaf158d628801d9e6e0977"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/build/parent_reload_probe.exe",
+      "bytes": 5612544,
+      "sha256": "eed7dcbb7d57a5b0e3fe521795a0902a0f4b2a255004f8cc47ffc2ca4edcabf4"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/build/parent_reload_probe.map",
+      "bytes": 8346565,
+      "sha256": "80b09ad44f812dbb558ca1f94d6668cb547c179c4abbfea4fac8d436f90e51a7"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/build/reload_fixture.hpp",
+      "bytes": 15732,
+      "sha256": "5647ec30238df0a8322f18afdd3b3ecf544b277e43ea973e89baa4c56d55a633"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/runtime_artifacts/console.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/runtime_artifacts/live_process.json",
+      "bytes": 2135,
+      "sha256": "84c647e325a9724f0c3252afe14789174a0a22b2a6b8b8c2c1ec33c7bf61ba6b"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/runtime_artifacts/native_pins.json",
+      "bytes": 338,
+      "sha256": "733340eb4cfb1362351c2974486dc2fc54a9699a656f3dac29f1303181ef4cb2"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/runtime_artifacts/reload.bin",
+      "bytes": 747,
+      "sha256": "2040b2711596de753d0e87c2119184dc72ea843f173cc9fc7037efab5bee0b09"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/runtime_artifacts/runtime.json",
+      "bytes": 2420,
+      "sha256": "4d025c8f1896cdd8a59ed1fb0f2a45b3ec745f73330847bf6299ac6f436b87cd"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/runtime_artifacts/runtime.log",
+      "bytes": 9992,
+      "sha256": "7efcfdbf85e92d983f60da85db68ee899149ae0de0df78a7043440250205c2fc"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/runtime_artifacts/run_claim.json",
+      "bytes": 2015,
+      "sha256": "f24da7a7da355bde336d7808d7806a17c608f5754322bfef7c824febe66d370c"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/runtime_artifacts/verify_artifacts.py",
+      "bytes": 4215,
+      "sha256": "0c26a964797b0d7d09623930d82013f36b1db5f78f8fae694e6e8aa4198d892e"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_02/personal/Battlestations-Pacific/options.txt",
+      "bytes": 226,
+      "sha256": "ff5cf3959932cb634374b8a9bf5e6c0d04c50699cc6ba585e7fa7969f7b563d8"
+    },
+    {
+      "path": "local/cc12_world_6d84_parent_review_01/runtime.json",
+      "bytes": 498,
+      "sha256": "38b0ce24286d6f9543135e6a78f090e17038bcc237bc2231bb4c62a49160dab7"
+    },
+    {
+      "path": "local/cc12_world_6d84_parent_review_01/runtime.log",
+      "bytes": 643,
+      "sha256": "866593772f644016e979cd7f7ed841c4d87289514cfa76e0137ee4acc93e572c"
+    }
+  ],
+  "original_ABI_validated": false,
+  "native_text_draw_validated": false,
+  "gameplay_validated": false,
+  "overall_goal": "ACTIVE"
+}
