@@ -98,15 +98,18 @@
   },
   "source_registration": "cmake/startup.cmake unique bsp_core append while registry unleased; no exclusive shared registry lease",
   "validation": {
-    "build": "pending",
-    "existing_ctests": "pending",
+    "build": "PASS scripts/build.ps1; strict MSVC Win32; new TU compiled",
+    "existing_ctests": "PASS2/2 configured tests: reconstructed_math,tool_tests; native_math_differential not enabled in this worktree",
     "report_call_verification": "PASS5/5 direct native transfer rows; markdown0failures,0unchecked,0warnings",
     "new_tests": 0,
     "native_differential_fixture": false,
     "abi_compatible": false,
     "game_executed": false,
     "game_validated": false,
-    "diff_check": "PASS git diff --check"
+    "diff_check": "PASS git diff --check",
+    "tested_commit": "4e7a7b6f8e44ece9a35066ef744a26cf804889ef",
+    "build_log": "local/goal-oct15-scene-map-head-build.log",
+    "build_warning": "LNK4006 duplicate spawn_request_id_matches in existing lua_binding_spawn.obj/lua_spawn_new.obj; outside packet scope"
   },
   "qualification": "Complete ordinary raw Source over real existing current-CRT malloc/new-handler allocation; full conditional stores and current head reloads retained; no new host callbacks, private CRT/FH3/SEH ABI, candidate-specific native differential or gameplay claim",
   "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
