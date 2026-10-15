@@ -101,6 +101,13 @@ The two-iteration loop presents once and skips once. The closure log's
 instrumentation counter. The runtime still reports 43 unimplemented host
 methods, including native Text buffer and section production.
 
+The same case also passes after importing concurrent Main work, on combined
+Source `c5448d00df49eba0bbfa5165e0b1a085e2177066`. The nine owned C++/header
+inputs are unchanged. Its canonical build passes all three suites in 8.20
+seconds, its platform/bridge checks pass, and its fresh GUI/POST/actual-queue
+run again exits zero with the same height, alias, reference and drain checks.
+This remains evidence for those exact Source identities, not later changes.
+
 The window procedure still uses its Source C++ view transport, and platform
 `+48` is the existing Source application callback owner. This does not admit
 the Original complete window procedure, application vtable or binary class ABI.
