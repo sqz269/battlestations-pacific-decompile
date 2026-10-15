@@ -1,0 +1,147 @@
+{
+  "packet": "oct15_outer_string_vector_copy_construct",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_outer_string_vector_copy_construct.cpp",
+  "header": "include/bsp/native_outer_string_vector_copy_construct.hpp",
+  "documentation": "docs/OCT15_OUTER_STRING_VECTOR_COPY_CONSTRUCT.md",
+  "status": "complete_actual_header_Source_current_CPP_EH_win32_build_checked",
+  "routines": [
+    {
+      "address": "0055b150",
+      "name": "construct_native_outer_string_vector_copy_0055b150",
+      "coverage": "complete_normal_and_current_Source_CPP_catch",
+      "original_abi": "thiscallECX destination,stacksource,RET4,EAXdestination; EDXunconsumed; Source explicitunusedEDX+context differs",
+      "normal_instructions": 71,
+      "body_end": "0055b215",
+      "layout": "16B checkedouter header opaque0,begin4,end8,capacityC;16B checkedinner headers,8B actualpooledstrings"
+    },
+    {
+      "address": "0055b216",
+      "name": "construct_native_outer_string_vector_copy_0055b150_cleanup",
+      "coverage": "currentSourcecatchscope; nativeparent-framecatch notstandaloneAPI",
+      "instructions": 5,
+      "body_end": "0055b226"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0055b1a3",
+      "native": "00556c90",
+      "function": "0055b150"
+    },
+    {
+      "address": "0055b1ac",
+      "native": "00553300",
+      "function": "0055b150"
+    },
+    {
+      "address": "0055b1ce",
+      "native": "00bf6713",
+      "function": "0055b150"
+    },
+    {
+      "address": "0055b1de",
+      "native": "00bf6713",
+      "function": "0055b150"
+    },
+    {
+      "address": "0055b1f9",
+      "native": "00559e00",
+      "function": "0055b150"
+    },
+    {
+      "address": "0055b219",
+      "native": "0055aff0",
+      "function": "0055b216"
+    },
+    {
+      "address": "0055b222",
+      "native": "00bf6885",
+      "function": "0055b216"
+    },
+    {
+      "address": "006a683c",
+      "native": "0055b150",
+      "function": "006a6810",
+      "contract": "incomingECXslot,EDXsource thenPUSHsource; conditionalnonnullconstructor"
+    }
+  ],
+  "captures": [
+    "Sourcebegin/count captured before orderedzero4/8/C; opaque0preserved; no selfguard.",
+    "Zero count skipsallocation,diagnostics,nestedcopy.",
+    "Allocatecount16 rawbytes; publishbegin,end,capacityinorder. CaptureCURRENTsourceend andcompareCURRENTbegin beforearmingstate0.",
+    "Firstdiagnosticcontinues; capturesourcebegin thencomparefreshsourceend; secondreturn retainscapturedfirst.",
+    "ReloadCURRENTdestinationbegin; helperfirst=capturedbegin,last=capturedend; unusedtags=capturedbegin&FFFFFF00; ownerdestination; publishreturnedend onlyaftersuccess.",
+    "OnSourceC++failure inarmedregion,tidyCURRENTdestinationthenrethrow; failingnestedchildcleansowncompletedprefix. Length/allocationbeforearm do not enterthiscatch."
+  ],
+  "eh": {
+    "handler": "00c6dba0",
+    "funcinfo": "00d985e0",
+    "magic": "19930522",
+    "max_state": 2,
+    "unwind_map": "00d985bc",
+    "unwind": [
+      [
+        -1,
+        0
+      ],
+      [
+        -1,
+        0
+      ]
+    ],
+    "try_map": "00d985cc",
+    "try_low": 0,
+    "try_high": 0,
+    "catch_high": 1,
+    "handlers": 1,
+    "handler_record": "00d985ac",
+    "attributes": "00000040",
+    "catch": "0055b216",
+    "flags": 1,
+    "raw_live_tables_read": true
+  },
+  "native_evidence": {
+    "disk_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "span": "0055b150..0055b226",
+    "bytes": 215,
+    "span_sha256": "a29366623012decfc1f645a33045b5fa03d7b4e0ba2831f70bdc9ba20dfb2bf2",
+    "span_hex": "558bec6aff68a0dbc60064a100000000506489250000000083ec08538b5d088b430456578bf933c93bc18965f0897dec750433f6eb088b73082bf0c1fe043bf1894f04894f08894f0c746681feffffff0f7605e8e8baffff33d28bcee84f81ffffc1e60403f089470489470889770c8b7308397304c745fc000000007605e840b569008b4b043b4b08894d087608e830b569008b4d088b4704c64508008b5508528b55085257508bd6e802ecffff8947088b4df48bc75f5e64890d000000005b8be55dc204008b4dece8d2fdffff6a006a00e85eb66900",
+    "saved_live_bytes_match_disk": true,
+    "all_76_disk_instruction_starts_match_saved_listings": true,
+    "flow_gaps": [],
+    "incoming_scope": "One complete placementcaller inspected; five otherxrefs inventoried butnotpromoted."
+  },
+  "dependencies": [
+    "allocate_native_nested_string_vector_00553300",
+    "throw_native_nested_string_vector_length_error_00556c90",
+    "copy_native_nested_string_vector_uninitialized_range_00559e00",
+    "tidy_native_outer_string_vector_0055aff0",
+    "invoke_native_invalid_parameter_00bf6713"
+  ],
+  "validation": {
+    "build": "passed ./scripts/build.ps1",
+    "call_rows": {
+      "checked": 8,
+      "failed": 0,
+      "markdown_unchecked": 0
+    },
+    "new_tracked_tests": 0,
+    "existing_suites": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "ctest_seconds": 9.13,
+    "build_log": "local/oct15_outer_copy_combined_build.log",
+    "native_differential_scope": "Existing verified seed functions only; no new constructor execution."
+  },
+  "limits": [
+    "Sourcephysicalfastcall/context/privateframes differfromnativeABI; rawDWORDfaultidentitynotasserted.",
+    "CurrentSourceCPPcatch/CRT and actualchildprovidercontracts; noFH3/SEH/RTTI/cleanupfailureidentity proof.",
+    "No new-function differentialexecution,livegameor gameplayclaim.",
+    "Admittedtakenrawstorage and childownership/poolcontracts; parentprivateframealiases excluded."
+  ]
+}

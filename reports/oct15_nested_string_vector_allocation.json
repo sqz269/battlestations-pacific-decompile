@@ -1,0 +1,215 @@
+{
+  "packet": "oct15_nested_string_vector_allocation",
+  "worker": "agent/oct15_avoid_distance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis": true,
+  "ghidra_read_only": true,
+  "source": "src/native_nested_string_vector_allocation.cpp",
+  "header": "include/bsp/native_nested_string_vector_allocation.hpp",
+  "documentation": "docs/OCT15_NESTED_STRING_VECTOR_ALLOCATION.md",
+  "routines": [
+    {
+      "address": "00553300",
+      "body_end_inclusive": "00553350",
+      "bytes": 81,
+      "listed_instructions": 25,
+      "flow_gaps": [],
+      "coverage": "complete_at_accepted_current_CRT_allocation_and_bad_alloc_boundary",
+      "implementation": "allocate_native_nested_string_vector_00553300",
+      "retained_name": "STL_allocator_allocate_00553300",
+      "original_abi": "ECX unsigned count, EDX ignored, no stack arguments, EAX allocation, plain RET. Source fastcall reserves ignoredEDX; original complete binary/exceptionABI unclaimed.",
+      "range": "Native positive unsigned DIV FFFFFFFF/count>=16, exactly count<=0FFFFFFF. Zero stillcalls actual allocation with0. Maximum count requestsFFFFFFF0 bytes. No signed success branch or extra host cap.",
+      "binding": "singleton_lifetime_allocate object byte-domain,native_bytes=host_bytes=count*16,actual current malloc/_callnewh/retry/Sourcebad_alloc, matching singleton_lifetime_free.",
+      "overflow": "Same accepted0042BF40 Source std::bad_alloc boundary. Native BF6340 null-slot baseconstruction,D6923C word,E03CC0 ThrowInfo,staticCRT heap/new-handler/FH3/catch/RTTI identity explicitly not reproduced. Native failuretails independently matched36/36 nonrelocation bytes."
+    },
+    {
+      "address": "00556c90",
+      "body_end_inclusive": "00556cf8",
+      "bytes": 105,
+      "listed_instructions": 23,
+      "flow_gaps": [],
+      "coverage": "complete_by_exact_matched_accepted_owning_legacy_exception_service",
+      "implementation": "throw_native_nested_string_vector_length_error_00556c90",
+      "retained_name": "STL_xlen_throw_00556c90",
+      "original_abi": "No inputs or normal return; Sourcecdecl noreturn wrapper, original FH3/catchABI qualified.",
+      "binding": "Direct accepted throw_native_string_vector_length_error_00431f70, already native_singleton_length_error_00bd0590 owning actual28h payload; no generic std::length_error.",
+      "effects": "Actual no-init SBO cap15,len0,NUL; counted18-byte CE37E0 message; state0 after assignment; actual411700 legacy constructor,D69260 word,D83F98 throw; completedtemporary4072D0 cleanup. Owning copy411940/destroy411780 inherited.",
+      "equivalence": "Complete original105B bodies match89/89 nonrelocation bytes,3 independentlyequal CALL targets, all unmasked message/payload/vtable/ThrowInfo; complete rawEH fields/maps/actions matched.",
+      "exception_boundary": "NativeSingletonVectorLengthError owning actuallegacy payload, Sourcecatch/RTTI/C++EH instead of original D83F98/BF6885/FH3 identity; nativevtableword isdata, nothostcallable."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0055330d",
+      "native": "00bf681b",
+      "function": "00553300",
+      "contract": "Accepted complete actual current-CRT singleton_lifetime_allocate service read in this workstream; full caller listing inspected",
+      "arguments": "One stack bytecount(count<<4),including0; EAX allocation preserved by caller.",
+      "binding": "Actual existing current malloc/_callnewh/retry/Sourcebad_alloc service; static gameCRT identity qualified."
+    },
+    {
+      "address": "00553335",
+      "native": "00bf6340",
+      "function": "00553300",
+      "contract": "Native baseconstructor export previously read; full new overflowpath and rawtail matched to accepted0042BF40",
+      "arguments": "Actual local nativebase, address of null message slot.",
+      "binding": "Accepted current-CRT Source std::bad_alloc overflow boundary, not nativepayload/RTTI constructor identity."
+    },
+    {
+      "address": "0055334c",
+      "native": "00bf6885",
+      "function": "00553300",
+      "contract": "Library noreturn throw; complete native null-slot,vtable,ThrowInfo schedule inspected/matched",
+      "arguments": "Native exception D6923C firstword,E03CC0 ThrowInfo.",
+      "binding": "Qualified accepted Source std::bad_alloc boundary, not nativeFH3/catch identity."
+    },
+    {
+      "address": "00556cc8",
+      "native": "00408720",
+      "function": "00556c90",
+      "contract": "Accepted actual counted-assignment binding via complete matched owning throw service",
+      "arguments": "Actual no-init SBO cap15,len0,NUL,CE37E0 exact18bytes; state0 notyetarmed.",
+      "binding": "Via exact matched accepted00431F70 owning service; actualSBO growth sideeffects retained."
+    },
+    {
+      "address": "00556cdd",
+      "native": "00411700",
+      "function": "00556c90",
+      "contract": "Accepted actual legacy constructor binding via complete matched owning throw service/public payload contract",
+      "arguments": "Actual completed SBO message and28h legacy payload; completedtemporary cleanup armed.",
+      "binding": "NativeSingletonVectorLengthError construction in accepted service, no extra init/cleanup."
+    },
+    {
+      "address": "00556cf4",
+      "native": "00bf6885",
+      "function": "00556c90",
+      "contract": "Library noreturn throw; exact native payload/vtable/ThrowInfo schedule matches accepted00431F70",
+      "arguments": "Actual legacy payload withD69260 firstword,D83F98 ThrowInfo.",
+      "binding": "Accepted owning Source exception transport; nativecatch/RTTI/EH identity qualified."
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "0055b1ac",
+      "native": "00553300",
+      "function": "0055b150",
+      "arguments": "ECXcount,EDX0 after source count and unsigned0FFFFFFF check; SHL4 computescapacity and returnedEAX publishesbegin/end.",
+      "result_use": "0055B1B6/0055B1B9 storeEAX to actualowner+4/+8; full outerconstructor remains outside packet."
+    },
+    {
+      "address": "0055b1a3",
+      "native": "00556c90",
+      "function": "0055b150",
+      "arguments": "Noreturn lengthfailure after unsignedcount>0FFFFFFF; no consumed arguments.",
+      "result_use": "No normal return. Outerconstructor reconstruction is outside packet."
+    }
+  ],
+  "eh_evidence": {
+    "new": "HandlerC6D7B8 loadsFuncInfoD97B84 thenJMPBF6B43; mapD97B7C,state0->-1/actionC6D7B0; actionLEA ECX,[EBP-50h];JMP4072D0.",
+    "accepted": "HandlerC5EC38 loadsD8533C thenJMPBF6B43; mapD85334,state0->-1/actionC5EC30; identical completedtemporarycleanup.",
+    "full_funcinfo": "Both36B tuples:magic19930522,maxstate1,ownmap,no try/catch/IP/ESType lists,flags1. Only map/address identity differs; native statearm order matches full105B body.",
+    "scope": "Read-only rawEH evidence for exact service reuse; no added standalone Sourceaction or catch/mutation ownership needed. Original privateframe/FH3/SEH/RTTI/cleanupfailureABI qualified."
+  },
+  "original_byte_audit": {
+    "original_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "image_base": "00400000",
+    "extraction": "Original PE32 optional-header image base and section-table RVA-to-raw mapping; installed disk bytes, not native execution.",
+    "length_body": {
+      "new": "00556c90..00556cf8",
+      "accepted": "00431f70..00431fd8",
+      "size_each": 105,
+      "matching_nonrelocation_bytes": 89,
+      "mask": "Only offsets03..06 EH handler immediate and39..3C,4E..51,65..68 CALL displacements. Independently equal resolved CALL targets and full matched raw EH maps/actions.",
+      "calls": [
+        {
+          "new_site": "00556cc8",
+          "accepted_site": "00431fa8",
+          "resolved_target": "00408720"
+        },
+        {
+          "new_site": "00556cdd",
+          "accepted_site": "00431fbd",
+          "resolved_target": "00411700"
+        },
+        {
+          "new_site": "00556cf4",
+          "accepted_site": "00431fd4",
+          "resolved_target": "00bf6885"
+        }
+      ],
+      "new_bytes": "6aff68b8d7c60064a100000000506489250000000083ec446a1268e037ce008d4c2408c74424200f000000c744241c00000000c644240c00e8531aebff8d0424508d4c2420c744245000000000e81eaaebff68983fd8008d4c242051c74424246092d600e88cfb6900",
+      "accepted_bytes": "6aff6838ecc50064a100000000506489250000000083ec446a1268e037ce008d4c2408c74424200f000000c744241c00000000c644240c00e87367fdff8d0424508d4c2420c744245000000000e83ef7fdff68983fd8008d4c242051c74424246092d600e8ac487c00",
+      "message": "CE37E0 exact18-byte vector<T> too long plusNUL; no extra message/payload/vtable/ThrowInfo masks."
+    },
+    "eh": [
+      {
+        "handler": "00c6d7b8",
+        "funcinfo": "00d97b84",
+        "unwind_map": "00d97b7c",
+        "action": "00c6d7b0",
+        "handler_bytes": "b8847bd900e98193f8ff",
+        "funcinfo_bytes": "22059319010000007c7bd900000000000000000000000000000000000000000001000000",
+        "unwind_bytes": "ffffffffb0d7c600",
+        "action_bytes": "8d4db0e9189b79ff",
+        "state0": "to-1; LEA ECX,[EBP-50h]; JMP004072D0",
+        "flags": "1; no try/catch/IP/ESType lists"
+      },
+      {
+        "handler": "00c5ec38",
+        "funcinfo": "00d8533c",
+        "unwind_map": "00d85334",
+        "action": "00c5ec30",
+        "handler_bytes": "b83c53d800e9017ff9ff",
+        "funcinfo_bytes": "22059319010000003453d800000000000000000000000000000000000000000001000000",
+        "unwind_bytes": "ffffffff30ecc500",
+        "action_bytes": "8d4db0e998867aff",
+        "state0": "to-1; LEA ECX,[EBP-50h]; JMP004072D0",
+        "flags": "1; no try/catch/IP/ESType lists"
+      }
+    ],
+    "allocator": {
+      "new_span": "00553300..00553350",
+      "size": 81,
+      "bytes": "83ec1085c9771233c9c1e10451e809356a0083c40483c410c383c8ff33d2f7f183f81073e48d0424508d4c2408c744240400000000e806306a0068c03ce0008d4c240851c744240c3c92d600e834356a00",
+      "checks": "Actual E8new targetBF681B, plainC3RET, SHL ECX4, CMP EAX10h asserted. Full native listing separately inspected for unsigned DIV/JNC/zero and result semantics."
+    },
+    "overflow_tail": {
+      "new": "00553325..00553350",
+      "accepted": "0042bf69..0042bf94",
+      "size_each": 44,
+      "matching_nonrelocation_bytes": 36,
+      "mask": "Only two CALL displacement bytesets11..14 and28..2B; targetsBF6340/BF6885 independently equal. All other bytes, null-slot, vtableD6923C and ThrowInfoE03CC0 unchanged.",
+      "new_bytes": "8d0424508d4c2408c744240400000000e806306a0068c03ce0008d4c240851c744240c3c92d600e834356a00",
+      "accepted_bytes": "8d0424508d4c2408c744240400000000e8c2a37c0068c03ce0008d4c240851c744240c3c92d600e8f0a87c00"
+    },
+    "scope": "Static original-to-original/native-disk evidence only, not Source/native byte equality, original exception/CRT ABI execution or gameplay."
+  },
+  "compiled_source_evidence": {
+    "object": "build/win32/bsp_core.dir/Release/native_nested_string_vector_allocation.obj",
+    "dump_file": "local/oct15_nested_string_vector_allocation_coff.asm",
+    "dumper": "MSVC dumpbin14.51.36244.0 /DISASM",
+    "allocator": "Unsigned CMP0FFFFFFF/JA at10..16,SHL4 at18,currentbyteallocationCALL2C unconditionally on admittedpath including0,EAXpointer/plainRET41; currentstd::bad_alloc constructor/throw onoverflow42..53.",
+    "length": "OneE9 rel32 tailJMP to throw_native_string_vector_length_error_00431f70, actual namedCOFFsymbol inspected.",
+    "qualification": "Static exactSource output inspection, not Source/nativebyte identity or originalCRT/exceptionABI execution."
+  },
+  "floating_point": "No x87/FP instruction in either native body or cleanup action; NaNs not involved.",
+  "uncertainties": [
+    "Retained library-role names are descriptive hypotheses, not recovered source symbols.",
+    "Actual current-CRT allocation/bad_alloc boundary differs from original staticCRT heap/new-handler/nativebad_alloc payload/FH3/catch/RTTI identity.",
+    "Owning length Source transport retains actual28h legacy payload/sideeffects but has new compiler exception/catchABI and nativevtableword data only.",
+    "Original privateframe aliases, fault/unwind identity, complete binary replacementABI, packet-native fixtures and gameplay remain unclaimed."
+  ],
+  "checks": {
+    "build": "pass ./scripts/build.ps1 after exact C++ source changes",
+    "build_log": "local/oct15_nested_string_vector_allocation_build.log",
+    "existing_suites": "3/3 pass:reconstructed_math,native_math_differential,tool_tests",
+    "verify_report_calls": "pass8/8 exact direct/caller sites and containing functions",
+    "verify_markdown_calls": "pass7/7,0failed,0unchecked,0warnings",
+    "git_diff_check": "pass",
+    "new_tests": 0,
+    "packet_native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}

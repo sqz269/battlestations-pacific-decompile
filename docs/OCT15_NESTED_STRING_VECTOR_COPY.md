@@ -37,7 +37,7 @@ overlay, whole-record memcpy or borrowed uninitialized assignment is used.
 
 The helper captures first, last, initial destination and current completed end.
 For each source cursor it arms native state1 around the current placement
-construction, calls actual `00557BC0` only when destination is nonzero, then
+construction, uses the actual constructor service only when destination is nonzero, then
 advances destination by10h, resets state0, publishes completed end, and advances
 source by10h. The loop compares equality against captured last. All address
 arithmetic is native DWORD wrapping through unsigned Source words, without
@@ -114,3 +114,14 @@ added. Static original PE/EH assertions and actual compiled-output inspection
 are evidence, not packet-specific native execution or original ABI proof.
 The JSON report records exact call checks, extraction provenance and whitespace
 checks. No native exception execution, game startup or gameplay result is claimed.
+
+Exact native CALL sites:
+
+```text
+00559E47 CALL 00557BC0
+00559E6A CALL 00559DC0
+00559E7A CALL 00BF6885
+0055A96C CALL 00559E00
+00C6DAC8 CALL 00401130
+0055B1F9 CALL 00559E00
+```
