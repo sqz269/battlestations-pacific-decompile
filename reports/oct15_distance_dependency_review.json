@@ -1,0 +1,71 @@
+{
+  "packet": "oct15_distance_dependency_review",
+  "address": "004f49f0",
+  "coverage": "metadata correction only; source implementation remains an acknowledged substitution",
+  "corrections": [
+    {
+      "was": {
+        "address": "004f49f0",
+        "name": "segment_distance_2d_004f49f0",
+        "source": "src/game_hosts_ship_ai.cpp",
+        "header": "include/bsp/game_hosts_ship_ai.hpp",
+        "doc": "docs/CC13_SYS_3.md",
+        "status": "reconstructed_build_tested",
+        "packet": "cc13-sys3",
+        "native_abi": "__fastcall(ECX = segment a, EDX = segment b)",
+        "scope": "Backfill: 2D segment distance used by the ship AI.",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. __fastcall(ECX = segment a, EDX = segment b). Backfill: 2D segment distance used by the ship AI. docs/CC13_SYS_3.md.",
+        "abi_compatible": false,
+        "game_validated": false,
+        "kind": "function",
+        "notes": "cc13-sys3 backfill of an existing reconstruction, checked against the listing."
+      },
+      "is": {
+        "address": "004f49f0",
+        "name": "segment_distance_2d_004f49f0",
+        "source": "src/game_hosts_ship_ai.cpp",
+        "header": "include/bsp/game_hosts_ship_ai.hpp",
+        "doc": "docs/CC13_SYS_3.md",
+        "status": "substitution_build_tested_native_semantics_unverified",
+        "packet": "cc13-sys3",
+        "native_abi": "Native listing: ECX and EDX carry first two argument values; two additional stack arguments at entry ESP+4 and ESP+8; RET 8; result in x87 ST0. Existing C++ interface accepts two double[4] arrays and is not ABI-compatible.",
+        "scope": "Existing ship-AI segment-distance substitution; helper bodies were not read for this implementation.",
+        "evidence": "Source src/game_hosts_ship_ai.cpp:13312-13315 explicitly labels SUBSTITUTION with unread crossing and point-distance helpers. Native 004f49f0 listing calls 004f3730 and 00419ab0, accepts two stack arguments in addition to ECX/EDX, and rounds each point-distance result to float before selection; existing C++ uses double textbook calculations. No native equivalence demonstrated.",
+        "abi_compatible": false,
+        "game_validated": false,
+        "kind": "function",
+        "notes": "2026-10-15 integrator review corrects prior reconstructed_build_tested backfill classification; no source behavior changed. See reports/oct15_distance_dependency_review.json.",
+        "review_report": "reports/oct15_distance_dependency_review.json"
+      },
+      "evidence": "Source src/game_hosts_ship_ai.cpp:13312-13315 explicitly labels SUBSTITUTION with unread crossing and point-distance helpers. Native 004f49f0 listing calls 004f3730 and 00419ab0, accepts two stack arguments in addition to ECX/EDX, and rounds each point-distance result to float before selection; existing C++ uses double textbook calculations. No native equivalence demonstrated."
+    }
+  ],
+  "listing_evidence": [
+    {
+      "site": "004f49f4",
+      "instruction": "MOV EBX,[ESP+18h] after SUB ESP,0Ch and PUSH EBX; loads entry ESP+8"
+    },
+    {
+      "site": "004f49f9",
+      "instruction": "MOV EBP,[ESP+18h] after PUSH EBP; loads entry ESP+4"
+    },
+    {
+      "site": "004f4a29",
+      "instruction": "FSTP float ptr [ESP+10h]; native point-distance result rounded to binary32"
+    },
+    {
+      "site": "004f4ace",
+      "instruction": "RET 8"
+    }
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "validation": [
+    "inspected existing source and exported native pseudocode/listing",
+    "live proto confirmed body 004f49f0-004f4ad0"
+  ],
+  "remaining": [
+    "Read and reconstruct native helpers before promoting native semantic equivalence",
+    "Differential arithmetic and ABI validation are not provided by this correction"
+  ]
+}
