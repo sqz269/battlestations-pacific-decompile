@@ -1,0 +1,353 @@
+{
+  "schema": "bsp.reference_subbag_add_Main_validation.v1",
+  "status": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
+  "required_Main_build": {
+    "command": "./scripts/build.ps1",
+    "initial_chunk": "78969c",
+    "session": 67254,
+    "terminal_chunk": "7eaf9c",
+    "exit_code": 0,
+    "configured_CTests_passed": 3,
+    "seconds": 7.24,
+    "snapshot_commit": "cb6844b4b0a3568fe95a461450a41b3cb493e894",
+    "after_commit": "cb6844b4b0a3568fe95a461450a41b3cb493e894",
+    "unchanged_compiler_tool_configuration_current_Source_inputs": 167,
+    "all84_declared_inputs_pinned_before_Main_build": true,
+    "original_tools": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reference_subbag_Main_build01\\original_build_tools.DATA.json",
+      "bytes": 1082,
+      "sha256": "51edc204c39b237181b50a411879cec11f7aa13c4ccc68a27127869e16f1667e"
+    },
+    "build_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reference_subbag_Main_build01\\build.log",
+      "bytes": 4134,
+      "sha256": "8b1bafe64a2269dac54f74bcecb2b1c7f4134af8a5c1ac419c5a2609a161b7c2"
+    }
+  },
+  "frozen_artifacts": [
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_scene_property_reference_subbag_add.obj",
+        "bytes": 2960,
+        "sha256": "cb77c3e1868575defe20a572f1fcc63997257deb51cce7503244629a6374202a"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reference_subbag_Main_build01\\frozen\\native_scene_property_reference_subbag_add.obj",
+        "bytes": 2960,
+        "sha256": "cb77c3e1868575defe20a572f1fcc63997257deb51cce7503244629a6374202a"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 93060988,
+        "sha256": "b395d11f4e0e81b81aa82e8533abaa4d2de6efcc9b78f73dd6ef81f5be88bb39"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reference_subbag_Main_build01\\frozen\\bsp_core.lib",
+        "bytes": 93060988,
+        "sha256": "b395d11f4e0e81b81aa82e8533abaa4d2de6efcc9b78f73dd6ef81f5be88bb39"
+      }
+    }
+  ],
+  "primary_complete_COFF_inventory": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_reference_subbag_add_integration_20261015\\Main_inventory.DATA.json",
+    "bytes": 55836,
+    "sha256": "089ce99c73fb22bea3706e6584db9f1b8e68e9b7b347557674282c62e09583dc"
+  },
+  "primary_archive_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_reference_subbag_add_integration_20261015\\Main_primary_archive.DATA.json",
+    "bytes": 848577,
+    "sha256": "d6bb42c79b10896e5177dcd4ffbf6a369aef26b0aa57421eec9608fe86edab1e"
+  },
+  "complete_symbol_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_reference_subbag_add_integration_20261015\\Main_symbol_review.DATA.json",
+    "bytes": 10161,
+    "sha256": "e71af30c2c1c4e5683b9b8dfeddfc2baf883c9760ecf4a4520aa3aa50926ba7e"
+  },
+  "registration_preservation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_reference_subbag_add_integration_20261015\\registration_verification.DATA.json",
+    "bytes": 393,
+    "sha256": "9e6947071fa2672115a082d27d359ac03905bf0ecf0390be0d33ab7ece05d77f"
+  },
+  "complete_code": {
+    "sections": 5,
+    "bytes": 500,
+    "decoded_instructions": 191,
+    "code_relocations": 30,
+    "metadata_relocations": 0,
+    "all_code_runtime_data_bytes_literal_equal": true,
+    "all_relocation_fields_types_offsets_literal_equal": true,
+    "MD_directives_literal_equal": true,
+    "exact_private_helper_pairs": {
+      "?pointer_word@?A0xab2d64c6@bsp@@YAIPBX@Z": "?pointer_word@?A0xf8bdfcba@bsp@@YAIPBX@Z",
+      "?write_byte@?A0xab2d64c6@bsp@@YAXPAXIE@Z": "?write_byte@?A0xf8bdfcba@bsp@@YAXPAXIE@Z",
+      "?write_word@?A0xab2d64c6@bsp@@YAXPAXII@Z": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+    },
+    "primary_symbols": 22,
+    "auxiliary_records": 9,
+    "all_symbol_records_compared": true,
+    "whole_object_debug_checksum_identity": false,
+    "exact_private_relocation_target_pairs": {
+      "?write_byte@?A0xab2d64c6@bsp@@YAXPAXIE@Z": "?write_byte@?A0xf8bdfcba@bsp@@YAXPAXIE@Z",
+      "?write_word@?A0xab2d64c6@bsp@@YAXPAXII@Z": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+    }
+  },
+  "archive": {
+    "members": 2301,
+    "both_indices_equal": true,
+    "symbols_per_index": 82039,
+    "unique_object": {
+      "header_offset": 19964544,
+      "payload_offset": 19964604,
+      "raw_name": "/0",
+      "bytes": 2960,
+      "header_hex": "2f302020202020202020202020202020313739323130343436352020202020202020202020202020313030363636202032393630202020202020600a",
+      "sha256": "cb77c3e1868575defe20a572f1fcc63997257deb51cce7503244629a6374202a"
+    },
+    "two_APIs": [
+      [
+        "?add_native_scene_property_reference_008f3ac0@bsp@@YAPAXPAXPBD1IIAAVNativeScenePropertyInsertionContext@1@@Z",
+        19964544
+      ],
+      [
+        "?add_native_scene_property_subbag_008f3b60@bsp@@YAPAXPAXPBD0AAVNativeScenePropertyInsertionContext@1@@Z",
+        19964544
+      ]
+    ],
+    "all3_defined_public_code_data_bindings": [
+      {
+        "symbol": "__Avx2WmemEnabledWeakValue",
+        "binding": [
+          "__Avx2WmemEnabledWeakValue",
+          19964544
+        ],
+        "section_hex": "",
+        "raw_size": 4,
+        "relocations": [],
+        "provider_sha256": "cb77c3e1868575defe20a572f1fcc63997257deb51cce7503244629a6374202a"
+      },
+      {
+        "symbol": "?add_native_scene_property_reference_008f3ac0@bsp@@YAPAXPAXPBD1IIAAVNativeScenePropertyInsertionContext@1@@Z",
+        "binding": [
+          "?add_native_scene_property_reference_008f3ac0@bsp@@YAPAXPAXPBD1IIAAVNativeScenePropertyInsertionContext@1@@Z",
+          19964544
+        ],
+        "section_hex": "558bec83ec18a10000000033c58945fc8b4510538b5d0c8945ec8b451c568945e88d45f0578b7d0850c745f003000000c745f438000000c745f838000000e8000000008bf083c40485f6746c68d489ce006a0056e8000000006a056a0456e800000000ff75186a0856e800000000ff75146a1856e8000000008b4dec83c430e800000000506a1c56e8000000006a006a2056e8000000006a006a2456e8000000006a006a3456e8000000006a016a2c56e80000000083c43cff75e8565357e8000000008b4dfc83c41033cd5f5e5be8000000008be55dc3",
+        "raw_size": 215,
+        "relocations": [
+          {
+            "offset": 7,
+            "type": 6,
+            "field_hex": "00000000",
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 63,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "offset": 85,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 95,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 106,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 117,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 128,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?duplicate_native_string_00438e40@bsp@@YIPADPBD@Z"
+          },
+          {
+            "offset": 137,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 147,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 157,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 167,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 177,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_byte@?A0xf8bdfcba@bsp@@YAXPAXIE@Z"
+          },
+          {
+            "offset": 191,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?insert_native_scene_property_bag_008f33f0@bsp@@YAPAXPAXPBD0AAVNativeScenePropertyInsertionContext@1@@Z"
+          },
+          {
+            "offset": 207,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "@__security_check_cookie@4"
+          }
+        ],
+        "provider_sha256": "cb77c3e1868575defe20a572f1fcc63997257deb51cce7503244629a6374202a"
+      },
+      {
+        "symbol": "?add_native_scene_property_subbag_008f3b60@bsp@@YAPAXPAXPBD0AAVNativeScenePropertyInsertionContext@1@@Z",
+        "binding": [
+          "?add_native_scene_property_subbag_008f3b60@bsp@@YAPAXPAXPBD0AAVNativeScenePropertyInsertionContext@1@@Z",
+          19964544
+        ],
+        "section_hex": "558bec83ec18a10000000033c58945fc8b450c538b5d088945e88b4514568945ec8d45f0578b7d1050c745f003000000c745f438000000c745f838000000e8000000008bf083c40485f60f848200000068d489ce006a0056e8000000006a066a0456e800000000576a0c56e8000000006a006a1856e8000000006a006a1c56e8000000006a006a2056e80000000083c4486a006a2456e8000000006a006a3056e80000000056681001000057e8000000006a006a3456e8000000006a006a0856e8000000006a016a2c56e80000000083c448ff75ec56ff75e853e8000000008b4dfc83c41033cd5f5e5be8000000008be55dc3",
+        "raw_size": 243,
+        "relocations": [
+          {
+            "offset": 7,
+            "type": 6,
+            "field_hex": "00000000",
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 63,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "offset": 89,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 99,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 108,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 118,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 128,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 138,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 151,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 161,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 173,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 183,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 193,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_word@?A0xf8bdfcba@bsp@@YAXPAXII@Z"
+          },
+          {
+            "offset": 203,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?write_byte@?A0xf8bdfcba@bsp@@YAXPAXIE@Z"
+          },
+          {
+            "offset": 219,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?insert_native_scene_property_bag_008f33f0@bsp@@YAPAXPAXPBD0AAVNativeScenePropertyInsertionContext@1@@Z"
+          },
+          {
+            "offset": 235,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "@__security_check_cookie@4"
+          }
+        ],
+        "provider_sha256": "cb77c3e1868575defe20a572f1fcc63997257deb51cce7503244629a6374202a"
+      }
+    ]
+  },
+  "contract": [
+    "Whole reference008F3AC0 [3AC0,3B56)150B47/RET10/EAXbag andsubbag008F3B60 [3B60,3BCA)106B36/RET8/EAXbag, ECXactual114hbag. New explicit context C++ interfaces, noOriginalABI.",
+    "Reference canonicalfreshuninitialized38hroot: DWORDphase0CE89D4/tag4=5/fullword08at8/fullword18at18, onlynow actual rawnullable00438E40duplicate, fullownedresult1C, zeroDWORD20/24/34, BYTE1at2C, whole33F0. Exactly33written23preserved[0C,18),[28,2C),[2D,34). Full32bitopaqueindependentwords, nullabletargetborrowedstablebytes/notnecessarilyASCII, distinctownedduplicate/roottransferonpublication.",
+    "Subbag canonicalfreshuninitialized38hroot: DWORDphase0/tag4=6/fullchildC,zero18/1C/20/24/30, fullrootpointertoactualchild+110 BEFORErootzero34/zero8/BYTE1at2C/whole33F0. Exactly41rootbytes+4childbytes,15rootpreserved[10,18),[28,2C),[2D,30). Realadoptionofactualgenuineuniqueowningraw61live114hchild/initialbacklink0, notclone/copy/detach/borrowonly. Callerrelinquishesownershipsuccess, child+110nonowning, type6retirementscalar-deletesflags1. No8EF780orderflip/oldownerrepair/cyclecheck/rollback.",
+    "SAMEcanonicalcurrentheap/string/physicalprocess/insertioncontext/actualraw61live114hbag+4map/explicitCC8A30startup/E175B0nodegeneration/commonE188B4/rawkeys/gate/E177E4/E17654cells. Finiteuniqueunsharedacyclicdisjointstablevalidgraphs/keys/currentClocale, successfulnonthrowserializedservices, noalias/reentry/concurrenttrim. Own84actualcompilerinputs allprecompilefrozen in117prospective,25providers+64tools includingclui ownbefore; allunchanged.",
+    "Nullalloc structurallyskipseveryrootstore/duplicate/backlinkbutstillnullinsertion; notsuccessdomain. Nonnullroot/nullchild faultsnotguarded. Sourcebyvalue/helper/register/load/flags timing differsOriginal. ReferenceOriginalstate0savedrootfreeCA49E0/handlerCA49EB/FuncInfoDD76C8/unwindDD76C0 disarmedbeforeinsertion; SourceprovidesnoFS/EH/privateCRT/fault/recovery/rollbackparity. NoOriginalABI/privateCRT/EH/startup/parser/resolution/World/runtime/gamecredit."
+  ],
+  "limits": [
+    "Existing configured checks and static archive inspection do not execute these selected new routines.",
+    "All84 actual author includes were own-precompile frozen; Main captures all known declared inputs before its build. No hermetic environment claim.",
+    "Only three exact private helper definition name pairs, two relocation target name pairs and CodeView-length auxiliary differences are permitted. The unreferenced pointer_word body is emitted and compared. No blanket normalization or whole-object/debug/checksum identity.",
+    "Successful ordinary Source domain only; no Original ECX/RET/register/class/FS/EH/privateCRT/fault/startup/parser/reference resolution/World/runtime/game equivalence."
+  ],
+  "Original_ABI_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false,
+  "whole_parser_equivalent": false
+}

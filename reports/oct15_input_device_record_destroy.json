@@ -1,0 +1,1278 @@
+{
+  "packet": "oct15_input_device_record_pair_destroy",
+  "status": "complete_actual_raw_pool_source_current_cpp_unwind_win32_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_input_device_record_destroy.cpp",
+  "header": "include/bsp/native_input_device_record_destroy.hpp",
+  "documentation": "docs/OCT15_INPUT_DEVICE_RECORD_DESTROY.md",
+  "routines": [
+    {
+      "address": "0055b690",
+      "cpp_name": "destroy_native_input_device_record_0055b690",
+      "kind": "function",
+      "coverage": "complete_actual_parent_with_current_cpp_cleanup_composition",
+      "owned_end": "0055b8a5",
+      "original_abi": "Native ECX actual84h record; EDX unused; no stack input; RET; EAX unspecified residue. Source adds stacked RawCtx; normal/EH order and CurrentCpp failure policy recovered, not original FH3/frame ABI."
+    },
+    {
+      "address": "0055b8b0",
+      "cpp_name": "destroy_native_input_device_pair_0055b8b0",
+      "kind": "function",
+      "coverage": "complete_actual_parent_with_current_cpp_cleanup_composition",
+      "owned_end": "0055b910",
+      "original_abi": "Native ECX actual pair with key at0/4 and record+8; EDX unused; no stack input; RET; EAX unspecified record/pool residue, including null key. Source adds stacked RawCtx/private guard."
+    },
+    {
+      "address": "006a6eb0",
+      "cpp_name": "scalar_delete_native_input_device_pair_node_006a6eb0",
+      "kind": "function",
+      "coverage": "complete_actual_parent_with_current_cpp_cleanup_composition",
+      "owned_end": "006a6ed0",
+      "original_abi": "Native ECX original allocation; EDX unused; stacked DWORD flags; RET4; defined EAX original allocation. Pair+C first; flags low BYTE bit0 read only after pair returns; conditional current-CRT free. Source adds stacked RawCtx."
+    },
+    {
+      "address": "00c6dc30",
+      "cpp_name": "unwind_native_input_device_record_00c6dc30",
+      "kind": "fragment",
+      "coverage": "whole_parent_bound_native_action_body_logical_receiver_Source_service",
+      "owned_end": "00c6dc37",
+      "original_abi": "Native saved parent from runtime EBP-18h (record) or EBP-10h (pair); optional fixed member LEA/ADD then tail-JMP child; returns through runtime caller, no independent ordinary-ABI Source claim. Source explicit raw logical saved-parent receiver and RawCtx; child EAX residue omitted."
+    },
+    {
+      "address": "00c6dc38",
+      "cpp_name": "unwind_native_input_device_record_00c6dc38",
+      "kind": "fragment",
+      "coverage": "whole_parent_bound_native_action_body_logical_receiver_Source_service",
+      "owned_end": "00c6dc42",
+      "original_abi": "Native saved parent from runtime EBP-18h (record) or EBP-10h (pair); optional fixed member LEA/ADD then tail-JMP child; returns through runtime caller, no independent ordinary-ABI Source claim. Source explicit raw logical saved-parent receiver and RawCtx; child EAX residue omitted."
+    },
+    {
+      "address": "00c6dc43",
+      "cpp_name": "unwind_native_input_device_record_00c6dc43",
+      "kind": "fragment",
+      "coverage": "whole_parent_bound_native_action_body_logical_receiver_Source_service",
+      "owned_end": "00c6dc4d",
+      "original_abi": "Native saved parent from runtime EBP-18h (record) or EBP-10h (pair); optional fixed member LEA/ADD then tail-JMP child; returns through runtime caller, no independent ordinary-ABI Source claim. Source explicit raw logical saved-parent receiver and RawCtx; child EAX residue omitted."
+    },
+    {
+      "address": "00c6dc4e",
+      "cpp_name": "unwind_native_input_device_record_00c6dc4e",
+      "kind": "fragment",
+      "coverage": "whole_parent_bound_native_action_body_logical_receiver_Source_service",
+      "owned_end": "00c6dc58",
+      "original_abi": "Native saved parent from runtime EBP-18h (record) or EBP-10h (pair); optional fixed member LEA/ADD then tail-JMP child; returns through runtime caller, no independent ordinary-ABI Source claim. Source explicit raw logical saved-parent receiver and RawCtx; child EAX residue omitted."
+    },
+    {
+      "address": "00c6dc59",
+      "cpp_name": "unwind_native_input_device_record_00c6dc59",
+      "kind": "fragment",
+      "coverage": "whole_parent_bound_native_action_body_logical_receiver_Source_service",
+      "owned_end": "00c6dc63",
+      "original_abi": "Native saved parent from runtime EBP-18h (record) or EBP-10h (pair); optional fixed member LEA/ADD then tail-JMP child; returns through runtime caller, no independent ordinary-ABI Source claim. Source explicit raw logical saved-parent receiver and RawCtx; child EAX residue omitted."
+    },
+    {
+      "address": "00c6dc64",
+      "cpp_name": "unwind_native_input_device_record_00c6dc64",
+      "kind": "fragment",
+      "coverage": "whole_parent_bound_native_action_body_logical_receiver_Source_service",
+      "owned_end": "00c6dc6e",
+      "original_abi": "Native saved parent from runtime EBP-18h (record) or EBP-10h (pair); optional fixed member LEA/ADD then tail-JMP child; returns through runtime caller, no independent ordinary-ABI Source claim. Source explicit raw logical saved-parent receiver and RawCtx; child EAX residue omitted."
+    },
+    {
+      "address": "00c6dc6f",
+      "cpp_name": "unwind_native_input_device_record_00c6dc6f",
+      "kind": "fragment",
+      "coverage": "whole_parent_bound_native_action_body_logical_receiver_Source_service",
+      "owned_end": "00c6dc79",
+      "original_abi": "Native saved parent from runtime EBP-18h (record) or EBP-10h (pair); optional fixed member LEA/ADD then tail-JMP child; returns through runtime caller, no independent ordinary-ABI Source claim. Source explicit raw logical saved-parent receiver and RawCtx; child EAX residue omitted."
+    },
+    {
+      "address": "00c6dc7a",
+      "cpp_name": "unwind_native_input_device_record_00c6dc7a",
+      "kind": "fragment",
+      "coverage": "whole_parent_bound_native_action_body_logical_receiver_Source_service",
+      "owned_end": "00c6dc84",
+      "original_abi": "Native saved parent from runtime EBP-18h (record) or EBP-10h (pair); optional fixed member LEA/ADD then tail-JMP child; returns through runtime caller, no independent ordinary-ABI Source claim. Source explicit raw logical saved-parent receiver and RawCtx; child EAX residue omitted."
+    },
+    {
+      "address": "00c6dc85",
+      "cpp_name": "unwind_native_input_device_record_00c6dc85",
+      "kind": "fragment",
+      "coverage": "whole_parent_bound_native_action_body_logical_receiver_Source_service",
+      "owned_end": "00c6dc8f",
+      "original_abi": "Native saved parent from runtime EBP-18h (record) or EBP-10h (pair); optional fixed member LEA/ADD then tail-JMP child; returns through runtime caller, no independent ordinary-ABI Source claim. Source explicit raw logical saved-parent receiver and RawCtx; child EAX residue omitted."
+    },
+    {
+      "address": "00c6dca0",
+      "cpp_name": "unwind_native_input_device_pair_00c6dca0",
+      "kind": "fragment",
+      "coverage": "whole_parent_bound_native_action_body_logical_receiver_Source_service",
+      "owned_end": "00c6dca7",
+      "original_abi": "Native saved parent from runtime EBP-18h (record) or EBP-10h (pair); optional fixed member LEA/ADD then tail-JMP child; returns through runtime caller, no independent ordinary-ABI Source claim. Source explicit raw logical saved-parent receiver and RawCtx; child EAX residue omitted."
+    }
+  ],
+  "readiness": {
+    "authorized_by_primary": true,
+    "accepted_prerequisites_pin": "e8096362f",
+    "seven_consumed_bindings": [
+      {
+        "member_hex": "78",
+        "range_entry": "004cef40",
+        "parent_call": "0055b6cc",
+        "api": "clear_native_input_int_only_tree_full_prefix_004cef40",
+        "status": "accepted actual consumed full-selection prefix",
+        "pin": "5a15a409427fba9a415883273382d2ebb35e5a81",
+        "scope": "admitted full path ONLY;ordinary diagnostics/partial helpers not promoted"
+      },
+      {
+        "member_hex": "6c",
+        "range_entry": "00559280",
+        "parent_call": "0055b6fd",
+        "api": "clear_native_input_bit_vector_tree_full_prefix_00559280",
+        "status": "accepted actual consumed full-selection prefix",
+        "pin": "4d3ddc5893b8e884c376adb5170be24c254629dc",
+        "scope": "admitted full path ONLY;ordinary diagnostics/partial helpers not promoted"
+      },
+      {
+        "member_hex": "50",
+        "range_entry": "0055b230",
+        "parent_call": "0055b75e",
+        "api": "clear_native_input_nested_int_tree_full_prefix_0055b230",
+        "status": "accepted actual consumed full-selection prefix",
+        "pin": "5a15a409427fba9a415883273382d2ebb35e5a81",
+        "scope": "admitted full path ONLY;ordinary diagnostics/partial helpers not promoted"
+      },
+      {
+        "member_hex": "24",
+        "range_entry": "00444b10",
+        "parent_call": "0055b7f1",
+        "api": "clear_native_input_scalar_tree_full_prefix_00444b10",
+        "status": "accepted actual consumed full-selection prefix",
+        "pin": "e8096362f",
+        "scope": "admitted full path ONLY;ordinary diagnostics/partial helpers not promoted"
+      },
+      {
+        "member_hex": "18",
+        "range_entry": "00559a90",
+        "parent_call": "0055b820",
+        "api": "clear_native_input_sensitivity_tree_full_prefix_00559a90",
+        "status": "accepted actual consumed full-selection prefix",
+        "pin": "4d3ddc5893b8e884c376adb5170be24c254629dc",
+        "scope": "admitted full path ONLY;ordinary diagnostics/partial helpers not promoted"
+      },
+      {
+        "member_hex": "0c",
+        "range_entry": "005599c0",
+        "parent_call": "0055b84e",
+        "api": "clear_native_input_descriptor_vector_tree_full_prefix_005599c0",
+        "status": "accepted actual consumed full-selection prefix",
+        "pin": "bee75c0f8022f6409f623f237443187d92ac660e",
+        "scope": "admitted full path ONLY;ordinary diagnostics/partial helpers not promoted"
+      },
+      {
+        "member_hex": "00",
+        "range_entry": "00559110",
+        "parent_call": "0055b87d",
+        "api": "clear_native_input_word_vector_tree_full_prefix_00559110",
+        "status": "accepted actual consumed full-selection prefix",
+        "pin": "bee75c0f8022f6409f623f237443187d92ac660e",
+        "scope": "admitted full path ONLY;ordinary diagnostics/partial helpers not promoted"
+      }
+    ],
+    "six_whole_action_destructors": [
+      {
+        "member_hex": "00",
+        "entry": "0055a3f0",
+        "consumed_range": "00559110",
+        "status": "accepted actual whole destructor",
+        "pin": "bee75c0f8022f6409f623f237443187d92ac660e"
+      },
+      {
+        "member_hex": "0c",
+        "entry": "0055aab0",
+        "consumed_range": "005599c0",
+        "status": "accepted actual whole destructor",
+        "pin": "bee75c0f8022f6409f623f237443187d92ac660e"
+      },
+      {
+        "member_hex": "18",
+        "entry": "0055aaf0",
+        "consumed_range": "00559a90",
+        "status": "accepted actual whole destructor",
+        "pin": "4d3ddc5893b8e884c376adb5170be24c254629dc"
+      },
+      {
+        "member_hex": "24",
+        "entry": "00445900",
+        "consumed_range": "00444b10",
+        "status": "accepted actual whole destructor",
+        "pin": "e8096362f"
+      },
+      {
+        "member_hex": "50",
+        "entry": "0055b490",
+        "consumed_range": "0055b230",
+        "status": "accepted actual whole destructor",
+        "pin": "5a15a409427fba9a415883273382d2ebb35e5a81"
+      },
+      {
+        "member_hex": "6c",
+        "entry": "0055a430",
+        "consumed_range": "00559280",
+        "status": "accepted actual whole destructor",
+        "pin": "4d3ddc5893b8e884c376adb5170be24c254629dc"
+      }
+    ],
+    "other_actual_services": {
+      "0055a3a0": "actual RawCtx ascending16B owning-header range;fastcall first,last,unusedowner,unusedtag,RawCtx",
+      "00432050": "actual RawCtx ascending8B key-header range; Source omits native two dead stackwords by admitted ABI qualification",
+      "004324a0": "destroy_native_string_header_vector_004324a0(header,RawCtx), whole actual16B tidy",
+      "0055b110": "tidy_native_outer_string_vector_0055b110(header,RawCtx), whole actual16B outer tidy",
+      "0041dd20": "whole actual RawCtx current8B pooled-key cleanup, no key fields cleared",
+      "00bf65ac": "current CRT singleton_lifetime_free; original heap/CRT/fault identity not established"
+    },
+    "domain": "Nonnull finite exclusive actual record/pair/node and owned sentinels/payloads; writable private output, stable selection storage, actual borrowed raw-pool publication/gate/manager and matching current-CRT allocations. Ordinary partial tree erasers and their diagnostic continuations are not supplied or invoked by these proved full-selection arguments. Existing real AV domains remain unchanged."
+  },
+  "normal_record_schedule": [
+    {
+      "member_hex": "78",
+      "captures_before_arm": [
+        "0055b6b1",
+        "0055b6b4"
+      ],
+      "state_store": "0055b6c4",
+      "store_width": "DWORD",
+      "state": 8,
+      "child": "004cef40",
+      "child_call": "0055b6cc",
+      "current_free_call": "0055b6d5",
+      "ordered_clear_sites": [
+        "0055b6dc",
+        "0055b6df"
+      ],
+      "state_after_cleanup": 8,
+      "next_state_store": "0055b6f8"
+    },
+    {
+      "member_hex": "6c",
+      "captures_before_arm": [
+        "0055b6e2",
+        "0055b6e5"
+      ],
+      "state_store": "0055b6f8",
+      "store_width": "BYTE",
+      "state": 7,
+      "child": "00559280",
+      "child_call": "0055b6fd",
+      "current_free_call": "0055b706",
+      "ordered_clear_sites": [
+        "0055b70b",
+        "0055b70e"
+      ],
+      "state_after_cleanup": 7,
+      "next_state_store": "0055b71c"
+    },
+    {
+      "member_hex": "5c",
+      "captures_before_arm": [
+        "0055b711"
+      ],
+      "state_store": "0055b71c",
+      "store_width": "BYTE",
+      "state": 6,
+      "child": "0055a3a0",
+      "child_call": "0055b72c",
+      "current_free_call": "0055b735",
+      "ordered_clear_sites": [
+        "0055b73d",
+        "0055b740",
+        "0055b743"
+      ],
+      "state_after_cleanup": 6,
+      "next_state_store": "0055b759"
+    },
+    {
+      "member_hex": "50",
+      "captures_before_arm": [
+        "0055b746",
+        "0055b749"
+      ],
+      "state_store": "0055b759",
+      "store_width": "BYTE",
+      "state": 5,
+      "child": "0055b230",
+      "child_call": "0055b75e",
+      "current_free_call": "0055b767",
+      "ordered_clear_sites": [
+        "0055b76c",
+        "0055b76f"
+      ],
+      "state_after_cleanup": 5,
+      "next_state_store": "0055b77d"
+    },
+    {
+      "member_hex": "40",
+      "captures_before_arm": [
+        "0055b772"
+      ],
+      "state_store": "0055b77d",
+      "store_width": "BYTE",
+      "state": 4,
+      "child": "00432050",
+      "child_call": "0055b78d",
+      "current_free_call": "0055b796",
+      "ordered_clear_sites": [
+        "0055b79e",
+        "0055b7a1",
+        "0055b7a4"
+      ],
+      "state_after_cleanup": 4,
+      "next_state_store": "0055b7af"
+    },
+    {
+      "member_hex": "30",
+      "captures_before_arm": [
+        "0055b7a7"
+      ],
+      "state_store": "0055b7af",
+      "store_width": "BYTE",
+      "state": 3,
+      "child": "00432050",
+      "child_call": "0055b7bf",
+      "current_free_call": "0055b7c8",
+      "ordered_clear_sites": [
+        "0055b7d0",
+        "0055b7d3",
+        "0055b7d6"
+      ],
+      "state_after_cleanup": 3,
+      "next_state_store": "0055b7ec"
+    },
+    {
+      "member_hex": "24",
+      "captures_before_arm": [
+        "0055b7d9",
+        "0055b7dc"
+      ],
+      "state_store": "0055b7ec",
+      "store_width": "BYTE",
+      "state": 2,
+      "child": "00444b10",
+      "child_call": "0055b7f1",
+      "current_free_call": "0055b7fa",
+      "ordered_clear_sites": [
+        "0055b7ff",
+        "0055b802"
+      ],
+      "state_after_cleanup": 2,
+      "next_state_store": "0055b81b"
+    },
+    {
+      "member_hex": "18",
+      "captures_before_arm": [
+        "0055b805",
+        "0055b808"
+      ],
+      "state_store": "0055b81b",
+      "store_width": "BYTE",
+      "state": 1,
+      "child": "00559a90",
+      "child_call": "0055b820",
+      "current_free_call": "0055b829",
+      "ordered_clear_sites": [
+        "0055b82e",
+        "0055b831"
+      ],
+      "state_after_cleanup": 1,
+      "next_state_store": "0055b84a"
+    },
+    {
+      "member_hex": "0c",
+      "captures_before_arm": [
+        "0055b834",
+        "0055b837"
+      ],
+      "state_store": "0055b84a",
+      "store_width": "BYTE(BL0)",
+      "state": 0,
+      "child": "005599c0",
+      "child_call": "0055b84e",
+      "current_free_call": "0055b857",
+      "ordered_clear_sites": [
+        "0055b85f",
+        "0055b862"
+      ],
+      "state_after_cleanup": 0,
+      "next_state_store": "0055b875"
+    },
+    {
+      "member_hex": "00",
+      "captures_before_arm": [
+        "0055b865",
+        "0055b868"
+      ],
+      "state_store": "0055b875",
+      "store_width": "DWORD",
+      "state": -1,
+      "child": "00559110",
+      "child_call": "0055b87d",
+      "current_free_call": "0055b886",
+      "ordered_clear_sites": [
+        "0055b892",
+        "0055b895"
+      ],
+      "state_after_cleanup": -1,
+      "next_state_store": null
+    }
+  ],
+  "normal_record_details": {
+    "tree": "Each head and head.left captured BEFORE new state arm; owner=member twice,first=capturedleft,last=capturedhead,private8Boutput. Valid stable owned headers select full path before any subtree/getter. After child success free CURRENT head then clear+4/+8;opaque0 preserved. No null-head skip.",
+    "vector": "5C/40/30 capture begin BEFORE new state arm and null test branch. Nonnull path then captures CURRENT end, pushes member header and saved record pointer as two dead metadata words, calls range with captured begin/end, frees CURRENT begin. Always clear4/8/C after successful prior steps;opaque0 preserved. Null begin skips end/range/free only.",
+    "state": "Entry PUSH-1. State8 first armed after78 head/left captures; state8..0 remain through child/free/clears and next-member initial captures. Member00 armed-1 after its captures, so no record unwind action retries it. No vptr write."
+  },
+  "pair_and_scalar": {
+    "pair": "ECX pair;record at+8. State0 DWORD at55B8D0 BEFORE record call55B8D8. On successful return CURRENT data at55B8DD into ECX, TEST at55B8E0, disarm DWORD-1 at55B8E2 BEFORE branch/key length/getter. Nonnull CURRENT length at55B8EC,+1 DWORD;literal1/data/count arguments before419CC0\u2192BD1510. Key fields never cleared. Normal getter failure after disarm is NOT retried by key action.",
+    "pair_eax": "No semantic return. Null-key path retains record-dtor residue, NOT guaranteed0 (data was loaded into ECX). Nonnull path retains BD1510 residue. Source void should not invent stable EAX.",
+    "record_eax": "No semantic return; last current-head free residue survives epilogue, not guaranteed0/self. Source void excludes CRT/register residue.",
+    "scalar": "ECX original allocation;EDX unconsumed;55B8B0 on allocation+C. TEST byte[ESP+8]&1 at6A6EBB is AFTER pair return;free original allocation only if low bit is set. EAX original allocation even after free,RET4. On pair failure no scalar free. No localEH/vptr write;Source by-valueflags private-frame qualification required."
+  },
+  "native_abi": {
+    "0055b690": "ECXrecord,EDXunconsumed,no stacked input,plainRET;no stable semanticEAX. Native FS registration/private context as recorded.",
+    "0055b8b0": "ECXpair,EDXunconsumed,no stacked input,plainRET;no stable semanticEAX.",
+    "006a6eb0": "ECXoriginal allocation,EDXunconsumed,stackDWORDflags;TEST only low-byte mask1 afterpair;RET4/EAXoriginal allocation,includingafterfree."
+  },
+  "eh": {
+    "record": {
+      "handler": "00c6dc90",
+      "funcinfo": "00d986c8",
+      "raw_dwords": [
+        "19930522",
+        "00000009",
+        "00d986ec",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "unwind_map": "00d986ec",
+      "try_count": 0,
+      "frame_record": "[EBP-18h]",
+      "actions": [
+        {
+          "entry": "00c6dc30",
+          "state": 0,
+          "to_state": -1,
+          "member_hex": "00",
+          "target": "0055a3f0",
+          "frame_receiver": "[runtime EBP-18h]+member offset",
+          "binding_status": "accepted actual Source child"
+        },
+        {
+          "entry": "00c6dc38",
+          "state": 1,
+          "to_state": 0,
+          "member_hex": "0c",
+          "target": "0055aab0",
+          "frame_receiver": "[runtime EBP-18h]+member offset",
+          "binding_status": "accepted actual Source child"
+        },
+        {
+          "entry": "00c6dc43",
+          "state": 2,
+          "to_state": 1,
+          "member_hex": "18",
+          "target": "0055aaf0",
+          "frame_receiver": "[runtime EBP-18h]+member offset",
+          "binding_status": "accepted actual Source child"
+        },
+        {
+          "entry": "00c6dc4e",
+          "state": 3,
+          "to_state": 2,
+          "member_hex": "24",
+          "target": "00445900",
+          "frame_receiver": "[runtime EBP-18h]+member offset",
+          "binding_status": "accepted actual Source child"
+        },
+        {
+          "entry": "00c6dc59",
+          "state": 4,
+          "to_state": 3,
+          "member_hex": "30",
+          "target": "004324a0",
+          "frame_receiver": "[runtime EBP-18h]+member offset",
+          "binding_status": "accepted actual Source child"
+        },
+        {
+          "entry": "00c6dc64",
+          "state": 5,
+          "to_state": 4,
+          "member_hex": "40",
+          "target": "004324a0",
+          "frame_receiver": "[runtime EBP-18h]+member offset",
+          "binding_status": "accepted actual Source child"
+        },
+        {
+          "entry": "00c6dc6f",
+          "state": 6,
+          "to_state": 5,
+          "member_hex": "50",
+          "target": "0055b490",
+          "frame_receiver": "[runtime EBP-18h]+member offset",
+          "binding_status": "accepted actual Source child"
+        },
+        {
+          "entry": "00c6dc7a",
+          "state": 7,
+          "to_state": 6,
+          "member_hex": "5c",
+          "target": "0055b110",
+          "frame_receiver": "[runtime EBP-18h]+member offset",
+          "binding_status": "accepted actual Source child"
+        },
+        {
+          "entry": "00c6dc85",
+          "state": 8,
+          "to_state": 7,
+          "member_hex": "6c",
+          "target": "0055a430",
+          "frame_receiver": "[runtime EBP-18h]+member offset",
+          "binding_status": "accepted actual Source child"
+        }
+      ],
+      "normal_state_before_member": {
+        "78": 8,
+        "6c": 7,
+        "5c": 6,
+        "50": 5,
+        "40": 4,
+        "30": 3,
+        "24": 2,
+        "18": 1,
+        "0c": 0,
+        "00": -1
+      },
+      "effect": "Failure in a current member unwinds earlier members through map states; current member is not retried. First normal member78 has no separate unwind action."
+    },
+    "pair": {
+      "handler": "00c6dca8",
+      "funcinfo": "00d9873c",
+      "raw_dwords": [
+        "19930522",
+        "00000001",
+        "00d98734",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "unwind_map": "00d98734",
+      "try_count": 0,
+      "state": 0,
+      "to_state": -1,
+      "action": "00c6dca0",
+      "frame_pair": "[EBP-10h]",
+      "target": "0041dd20"
+    },
+    "raw_type_context": "Both FuncInfo magic19930522;maxState9/1;unwind mapsD986EC/D98734;trycount0,trymap0,IPmapcount0/IPmap0,pESTypeList0,rawEHFlags1. No local catch type table. These are actual native layouts, not Source RTTI/throw-type identity.",
+    "private_frames": "Record FS registration at entryESP-0C; savedself at entryESP-18. Pair savedself entryESP-10. CallSettingFrame C07B18..2B sets EBP=establisher+0C=entryESP before indirect action call. Thus native actions read record[EBP-18] or pair[EBP-10]; these are parent-bound runtime EBP contexts, not ordinary Source pointer inputs.",
+    "normal_failure": "A normal child/getter C++ failure uses current record state to unwind EARLIER members only, never retry current member. If record unwind completes, pair state0 invokes CURRENT key cleanup; if it completes, original exception can escape pair;scalarfree skipped.",
+    "secondary_cpp_failure": "Native FrameUnwindToState C069A2 selects toState and writes frame.state=toState atC06A09 BEFORE CallSettingFrame C06A19. ScopeE03398 points to filterC06A24\u2192C0695E. Filter recognizes E06D7363 C++ code, zerosPTD+90 and tail-jumps terminateC07A75 atC06980;terminate ultimately invokes abortC07AA3. A C++ failure from an unwind action routes termination, not exception replacement, retry or later cleanup continuation. Same applies if pair key action fails while unwinding record failure.",
+    "filter_evidence": {
+      "scope": "SEH4 E03398 header[-2,0,-30h,0],entry0[-2,0,C06A62],entry1[0,C06A24,C06A2E]",
+      "untyped_raw_spans": "C0695E..C069A1 (68B filter),C06A24..C06A3D (26B filter/handler),live bytes matched displayed disk decode;no Ghidra function/start repair or Source claim",
+      "other_codes": "E0434F4D special PTD counter decrement;other codes return0. Foreign/SEH/managed routing beyond this observed filter is not claimed identical to Source current C++."
+    },
+    "source_policy_contract": "Implemented with private CurrentCpp guards: logical state initialized-1; arm/disarm at recovered boundaries; state advances before each ordinary action service. Guard destructors are noexcept and are inactive on normal completion. A secondary C++ exception during exception cleanup therefore terminates through the current C++ runtime; normal child/getter operations remain propagating and are not wrapped in a noexcept storage bridge. No blanket catch/cleanup/rethrow that replaces the original exception."
+  },
+  "source_composition": {
+    "record": "Explicit raw4B inline-assembly loads/stores and ten state stages. Native low-byte state updates are represented by logical volatile int32 CurrentCpp state values; original frame/byte-slot identity is not asserted. The prior state persists through each clear and next initial captures.",
+    "tree_selection": "For each owned tree capture H thenH.left before state arm, pass captured H as last, captured left as first, member owner twice and private8B result; no callback or getter intervenes during stable selection, admitting only the accepted full prefix. After child reload CURRENT head for free and clear4 then8.",
+    "vectors": "At5C,40,30 capture begin/test before state; null skips end/range/free but still clears4/8/C. Nonnull captures end after state, composes exact native range target, reloads CURRENT begin for free, then unconditional ordered clears. 55A3A0 dead metadata remains member-header then saved-record word; 432050 accepted logical Source omits its two native dead stack words.",
+    "member40": "C6DC64 loads saved record, adds40h, then C6DC6A JMP4324A0. Both normal +40 range432050 and unwind whole-vector4324A0 operate on the same actual16B owning string-header vector. No native asymmetry is inferred. Pair actionC6DCA0 separately targets41DD20.",
+    "pair": "Arm key cleanup before record+8. After record returns capture key data and null-test, disarm, then read length+1 only if nonnull; getter before return of captured pointer/size; no key clears or retry. Native pre-pushes unused literal1, captured size and captured data before getter419CC0; BD1510 later consumes all three words. Accepted Source getter/return services use explicit publication/gate/manager and omit the physically unused1; private argument/read aliases and stack layout are qualified.",
+    "scalar_delete": "Destroy pair at original allocation+C before low-byte flag bit0 test; conditional free original allocation and return original pointer bits. C++ by-value parameter/private-frame aliases are qualified.",
+    "action_services": "Explicit logical saved-parent pointer plus RawCtx. No synthetic EBP readers, native funclet adapters or callbacks. Standalone services propagate; noexcept applies only to the private unwind guards."
+  },
+  "native_byte_proof": {
+    "capture": "local/oct15_input_device_record_destroy_byte_audit.json",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "typed_capture": "local/oct15_input_device_record_destroy_typed.json",
+    "typed_modification": "786",
+    "owned_spans": [
+      {
+        "entry": "0055b690",
+        "start": "0055b690",
+        "end": "0055b8a5",
+        "bytes": 534,
+        "instructions": 195,
+        "sha256": "fb15798e9e63ad6df0cd9f7916cc8d11d5226a58b35cc448679efebebe8021a7",
+        "live_equals_pe": true,
+        "live_capture": "local\\oct15_record_destroy_live_0055b690.txt"
+      },
+      {
+        "entry": "0055b8b0",
+        "start": "0055b8b0",
+        "end": "0055b910",
+        "bytes": 97,
+        "instructions": 29,
+        "sha256": "3551deb332952e54b6ccca81a76c5fb9dfffd4d50b45c148013fec995defd72d",
+        "live_equals_pe": true,
+        "live_capture": "local\\oct15_record_destroy_live_0055b8b0.txt"
+      },
+      {
+        "entry": "006a6eb0",
+        "start": "006a6eb0",
+        "end": "006a6ed0",
+        "bytes": 33,
+        "instructions": 12,
+        "sha256": "f3c24595c3f2b4b3504f279888c10903e101169f1c1bc62bbf4389c9dfb71e86",
+        "live_equals_pe": true,
+        "live_capture": "local\\oct15_record_destroy_live_006a6eb0.txt"
+      },
+      {
+        "entry": "00c6dc30",
+        "start": "00c6dc30",
+        "end": "00c6dc37",
+        "bytes": 8,
+        "instructions": 2,
+        "sha256": "99ac5e20dcbf5805d32e61568e9a22ae04d0b6da6607f05428bee904ea6e877d",
+        "live_equals_pe": true,
+        "live_capture": "local\\oct15_record_destroy_live_00c6dc30.txt"
+      },
+      {
+        "entry": "00c6dc38",
+        "start": "00c6dc38",
+        "end": "00c6dc42",
+        "bytes": 11,
+        "instructions": 3,
+        "sha256": "91182b1dfc44be281e551c3820551c7ed0a87398c5436a9c0f98d3a5dc015b17",
+        "live_equals_pe": true,
+        "live_capture": "local\\oct15_record_destroy_live_00c6dc38.txt"
+      },
+      {
+        "entry": "00c6dc43",
+        "start": "00c6dc43",
+        "end": "00c6dc4d",
+        "bytes": 11,
+        "instructions": 3,
+        "sha256": "0fa916f775657bfab5e207a59e7c191512402a0534d68029a4a249dcf22a0491",
+        "live_equals_pe": true,
+        "live_capture": "local\\oct15_record_destroy_live_00c6dc43.txt"
+      },
+      {
+        "entry": "00c6dc4e",
+        "start": "00c6dc4e",
+        "end": "00c6dc58",
+        "bytes": 11,
+        "instructions": 3,
+        "sha256": "d52bc43395a203aa72ce1196f021426c4807e8def69488da892cb6f91d2d8bac",
+        "live_equals_pe": true,
+        "live_capture": "local\\oct15_record_destroy_live_00c6dc4e.txt"
+      },
+      {
+        "entry": "00c6dc59",
+        "start": "00c6dc59",
+        "end": "00c6dc63",
+        "bytes": 11,
+        "instructions": 3,
+        "sha256": "d7f372fbecad062ead4ef690a31730e762a09667fbc2cdc6dbe97c211101d8be",
+        "live_equals_pe": true,
+        "live_capture": "local\\oct15_record_destroy_live_00c6dc59.txt"
+      },
+      {
+        "entry": "00c6dc64",
+        "start": "00c6dc64",
+        "end": "00c6dc6e",
+        "bytes": 11,
+        "instructions": 3,
+        "sha256": "18118d70fc882fcc0e4c1e16cb05a7da1ec1d87fe1a34dc507b88a54e7fdbb93",
+        "live_equals_pe": true,
+        "live_capture": "local\\oct15_record_destroy_live_00c6dc64.txt"
+      },
+      {
+        "entry": "00c6dc6f",
+        "start": "00c6dc6f",
+        "end": "00c6dc79",
+        "bytes": 11,
+        "instructions": 3,
+        "sha256": "59dccfe2235add15ff4fe39ff1666517783072076ff6532635d4583d2d644c3c",
+        "live_equals_pe": true,
+        "live_capture": "local\\oct15_record_destroy_live_00c6dc6f.txt"
+      },
+      {
+        "entry": "00c6dc7a",
+        "start": "00c6dc7a",
+        "end": "00c6dc84",
+        "bytes": 11,
+        "instructions": 3,
+        "sha256": "b4f1be66534bb8629ae13ebbbbd39be6e05aacd5a2def702127857710b8f04bb",
+        "live_equals_pe": true,
+        "live_capture": "local\\oct15_record_destroy_live_00c6dc7a.txt"
+      },
+      {
+        "entry": "00c6dc85",
+        "start": "00c6dc85",
+        "end": "00c6dc8f",
+        "bytes": 11,
+        "instructions": 3,
+        "sha256": "48697a54b65a88db480b5ed380d8632f73fefcfd3a12dc5a2626c1a9e61d781c",
+        "live_equals_pe": true,
+        "live_capture": "local\\oct15_record_destroy_live_00c6dc85.txt"
+      },
+      {
+        "entry": "00c6dca0",
+        "start": "00c6dca0",
+        "end": "00c6dca7",
+        "bytes": 8,
+        "instructions": 2,
+        "sha256": "c822d4383513eeba2263924f84c91bbbded2662ae5fa743cd4baabada49b30fc",
+        "live_equals_pe": true,
+        "live_capture": "local\\oct15_record_destroy_live_00c6dca0.txt"
+      }
+    ],
+    "owned_bytes": 768,
+    "owned_instructions": 264,
+    "current_starts": {
+      "checked": 264,
+      "failed": 0,
+      "mnemonics_match_after_je_jz_jne_jnz_aliases": true,
+      "context_sha256": "840bb9f10bed3eda10363de2fba1534c4a0042af6ecfa60b039ea4d1b3dfb610"
+    },
+    "fresh_read_only_eh_spans": [
+      {
+        "start": "00d986c8",
+        "bytes": 108,
+        "label": "record FuncInfo+unwind map",
+        "sha256": "ce483d1d64e83236dce8a8d47fa3f7a2c315844be23e3dbf5800c070900ad940",
+        "live_equals_pe": true
+      },
+      {
+        "start": "00d98734",
+        "bytes": 44,
+        "label": "pair unwind map+FuncInfo",
+        "sha256": "7c1684c9e30c2ea1e2ec3eed6a7a254a091cc4c33ed5de73267818e53ac42001",
+        "live_equals_pe": true
+      },
+      {
+        "start": "00c6dc90",
+        "bytes": 10,
+        "label": "record FH3 handler",
+        "sha256": "0334bcfedf6e1d03b9bc3caccd7e3e7ce3d74635ab5b667a663676ab2f35c310",
+        "live_equals_pe": true
+      },
+      {
+        "start": "00c6dca8",
+        "bytes": 10,
+        "label": "pair FH3 handler",
+        "sha256": "4eeb0f91d96a72fa48446c5f5e703766aab85e7d9b4001225bdaec2074718297",
+        "live_equals_pe": true
+      },
+      {
+        "start": "00c0695e",
+        "bytes": 68,
+        "label": "raw untyped secondary-exception filter",
+        "sha256": "957e6d68b64bea1eb02a08e938fb4cb91e4cd3398c90835062bc069cf1e6ef84",
+        "live_equals_pe": true
+      },
+      {
+        "start": "00c06a24",
+        "bytes": 26,
+        "label": "raw untyped filter thunk/handler",
+        "sha256": "3be31132b3709db34c5649ac93ad11aaf7ccc930e7c9b803bb6de2cbd56efc5f",
+        "live_equals_pe": true
+      },
+      {
+        "start": "00e03398",
+        "bytes": 40,
+        "label": "FrameUnwindToState SEH4 scope",
+        "sha256": "9c0440aeba09419242feaccd485fe0219357537ec969ebcf19eb5e600307c1b0",
+        "live_equals_pe": true
+      }
+    ],
+    "decoded_fh3": {
+      "record_funcinfo": [
+        429065506,
+        9,
+        14255852,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "record_unwind": [
+        [
+          -1,
+          13032496
+        ],
+        [
+          0,
+          13032504
+        ],
+        [
+          1,
+          13032515
+        ],
+        [
+          2,
+          13032526
+        ],
+        [
+          3,
+          13032537
+        ],
+        [
+          4,
+          13032548
+        ],
+        [
+          5,
+          13032559
+        ],
+        [
+          6,
+          13032570
+        ],
+        [
+          7,
+          13032581
+        ]
+      ],
+      "pair_unwind": [
+        [
+          -1,
+          13032608
+        ]
+      ],
+      "pair_funcinfo": [
+        429065506,
+        1,
+        14255924,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "scope_note": "Only the13 owned bodies are Source reconstruction coverage. Runtime handlers/filter/tables are read-only evidence, including explicitly untyped raw filter spans; no Ghidra repairs or new runtime Source coverage."
+  },
+  "host_steps": [
+    {
+      "address": "0055b6cc",
+      "native": "004cef40",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b6d5",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b6fd",
+      "native": "00559280",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b706",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b72c",
+      "native": "0055a3a0",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b735",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b75e",
+      "native": "0055b230",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b767",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b78d",
+      "native": "00432050",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b796",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b7bf",
+      "native": "00432050",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b7c8",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b7f1",
+      "native": "00444b10",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b7fa",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b820",
+      "native": "00559a90",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b829",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b84e",
+      "native": "005599c0",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b857",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b87d",
+      "native": "00559110",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b886",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b8d8",
+      "native": "0055b690",
+      "function": "0055b8b0"
+    },
+    {
+      "address": "0055b8f5",
+      "native": "00419cc0",
+      "function": "0055b8b0"
+    },
+    {
+      "address": "0055b8fc",
+      "native": "00bd1510",
+      "function": "0055b8b0"
+    },
+    {
+      "address": "006a6eb6",
+      "native": "0055b8b0",
+      "function": "006a6eb0"
+    },
+    {
+      "address": "006a6ec3",
+      "native": "00bf65ac",
+      "function": "006a6eb0"
+    },
+    {
+      "address": "00c6dc33",
+      "native": "0055a3f0",
+      "function": "00c6dc30",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc3e",
+      "native": "0055aab0",
+      "function": "00c6dc38",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc49",
+      "native": "0055aaf0",
+      "function": "00c6dc43",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc54",
+      "native": "00445900",
+      "function": "00c6dc4e",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc5f",
+      "native": "004324a0",
+      "function": "00c6dc59",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc6a",
+      "native": "004324a0",
+      "function": "00c6dc64",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc75",
+      "native": "0055b490",
+      "function": "00c6dc6f",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc80",
+      "native": "0055b110",
+      "function": "00c6dc7a",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc8b",
+      "native": "0055a430",
+      "function": "00c6dc85",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dca3",
+      "native": "0041dd20",
+      "function": "00c6dca0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc95",
+      "native": "00bf6b43",
+      "function": "00c6dc90",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dcad",
+      "native": "00bf6b43",
+      "function": "00c6dca8",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "0055a406",
+      "native": "00559110",
+      "function": "0055a3f0"
+    },
+    {
+      "address": "0055a40f",
+      "native": "00bf65ac",
+      "function": "0055a3f0"
+    },
+    {
+      "address": "0055aac6",
+      "native": "005599c0",
+      "function": "0055aab0"
+    },
+    {
+      "address": "0055aacf",
+      "native": "00bf65ac",
+      "function": "0055aab0"
+    },
+    {
+      "address": "0055ab06",
+      "native": "00559a90",
+      "function": "0055aaf0"
+    },
+    {
+      "address": "0055ab0f",
+      "native": "00bf65ac",
+      "function": "0055aaf0"
+    },
+    {
+      "address": "00445916",
+      "native": "00444b10",
+      "function": "00445900"
+    },
+    {
+      "address": "0044591f",
+      "native": "00bf65ac",
+      "function": "00445900"
+    },
+    {
+      "address": "0055b4a6",
+      "native": "0055b230",
+      "function": "0055b490"
+    },
+    {
+      "address": "0055b4af",
+      "native": "00bf65ac",
+      "function": "0055b490"
+    },
+    {
+      "address": "0055a446",
+      "native": "00559280",
+      "function": "0055a430"
+    },
+    {
+      "address": "0055a44f",
+      "native": "00bf65ac",
+      "function": "0055a430"
+    },
+    {
+      "address": "00bf6b64",
+      "native": "00c07991",
+      "function": "00bf6b43"
+    },
+    {
+      "address": "00c079f9",
+      "native": "00c069a2",
+      "function": "00c07991"
+    },
+    {
+      "address": "00c06a19",
+      "native": "00c07b10",
+      "function": "00c069a2"
+    },
+    {
+      "address": "00c07aa3",
+      "native": "00c04de2",
+      "function": "00c07a75"
+    }
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "existing_suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "passed": 3,
+      "failed": 0,
+      "seconds": 7.91,
+      "log": "local/oct15_input_device_record_destroy_build.log",
+      "qualification": "Existing tests pass; no dedicated parent/native differential or live game execution is claimed."
+    },
+    "new_tests": 0,
+    "transfer_checker": {
+      "command": "python tools/verify_report_calls.py reports/oct15_input_device_record_destroy.json docs/OCT15_INPUT_DEVICE_RECORD_DESTROY.md",
+      "json_rows": 53,
+      "markdown_claims": 53,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "capture": "local/oct15_input_device_record_destroy_transfer_check.txt"
+    },
+    "coff_inspection": {
+      "object": "build\\win32\\bsp_core.dir\\Release\\native_input_device_record_destroy.obj",
+      "object_sha256": "43094b9bf87ea83f4b366b9bfc480314ba573d81e8b98a1d06d444ba12232ca6",
+      "machine": "014c/MSVC Win32 COFF",
+      "guard_funcinfos": [
+        {
+          "symbol": "__ehfuncinfo$??1RecordUnwind@?A0x2ff25c81@bsp@@QAE@XZ",
+          "section": 29,
+          "raw_funcinfo_dwords": [
+            "19930522",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000005"
+          ]
+        },
+        {
+          "symbol": "__ehfuncinfo$??1PairUnwind@?A0x2ff25c81@bsp@@QAE@XZ",
+          "section": 30,
+          "raw_funcinfo_dwords": [
+            "19930522",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000005"
+          ]
+        }
+      ],
+      "observed": "Both private guard destructors retain current compiler EH metadata and explicit noexcept Source; normal paths remain outside guard bodies. Compiled guard state stores precede each child. Scalar Source has inlined pair body, then TEST BYTE[EBP+8],1 at compiled+C0, conditional free+D1 and original pointer return+D9. Native scalar had no localEH; this added Source frame/context/inlining is explicitly not native ABI.",
+      "symbols": "local/oct15_record_destroy_coff_symbols.txt",
+      "disassembly": "local/oct15_record_destroy_coff_disasm.txt",
+      "current_runtime_terminate_relocations": 3,
+      "no_runtime_test": true
+    },
+    "ghidra_mutations": false,
+    "game_or_abi_validation": false,
+    "registration": {
+      "fifo_success": true,
+      "earlier_claim_refused_without_merge": true,
+      "dependency_merge": "e8096362fab1db517ae803c33a18e2345ff4e3f6",
+      "merge_kind": "fast_forward_no_conflict",
+      "cmake_append": "bsp_core src/native_input_device_record_destroy.cpp",
+      "lease_released_before_build": true,
+      "jump": false
+    },
+    "known_unrelated_warning": "Existing LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj; untouched, build and suites still pass.",
+    "ledger": {
+      "owned_records": 13,
+      "native_names_preserved": 13,
+      "historical_fragments_replaced": false,
+      "receipt": "local/oct15_input_device_record_destroy_ledger_receipt.json"
+    }
+  },
+  "qualification": [
+    "CurrentCpp synchronous C++ propagation/secondary-unwind termination only; original FH3 registration/actions ABI, thrown-type/RTTI matching, unrestricted SEH/managed/fault/stack-exhaustion and terminate-handler identity remain distinct.",
+    "Added RawCtx, dead EDX normalization, by-value flags, private output/guard frames, register/flag/EAX residue and tail-JMP-to-ordinary-action adaptation are not binary-ABI compatibility.",
+    "Actual pool/current-CRT services and reached valid owned storage are explicit requirements; no NativeStringStorage noexcept bridge, provider, invented allocator, callbacks or fabricated globals.",
+    "No parent/projection replacement: old NativeStringStorage/AV full and partial services, fixtures and correct STL/compiler names remain intact.",
+    "Build/static/COFF proof is not runtime, original-heap or game validation."
+  ],
+  "evidence_correction": {
+    "superseded_statement": "Earlier readiness/message +40 unwind key41DD20 interpretation is incorrect.",
+    "actual": "C6DC64 loads saved record, adds40h, then C6DC6A JMP4324A0. Both normal +40 range432050 and unwind whole-vector4324A0 operate on the same actual16B owning string-header vector. No native asymmetry is inferred. Pair actionC6DCA0 separately targets41DD20.",
+    "proof": [
+      {
+        "address": "00c6dc64",
+        "size": 3,
+        "hex": "8b4de8",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [ebp - 0x18]",
+        "function": "00c6dc64"
+      },
+      {
+        "address": "00c6dc67",
+        "size": 3,
+        "hex": "83c140",
+        "mnemonic": "add",
+        "operands": "ecx, 0x40",
+        "function": "00c6dc64"
+      },
+      {
+        "address": "00c6dc6a",
+        "size": 5,
+        "hex": "e931487cff",
+        "mnemonic": "jmp",
+        "operands": "0x4324a0",
+        "function": "00c6dc64"
+      }
+    ],
+    "source_change_required": false,
+    "previous_v3_readiness": "The accepted v3 receipt action table already records4324A0; its stable historical file/hash is preserved."
+  },
+  "source_hashes": {
+    "src/native_input_device_record_destroy.cpp": "6edbd35b0b1ba90b743d491fc6a64e32231a620a4df5b649f0e5b7d96491427f",
+    "include/bsp/native_input_device_record_destroy.hpp": "ffe326a6939bbf2be7a24fa28da2ca616c4618cde37ae71fd02625650c6705bf"
+  }
+}
