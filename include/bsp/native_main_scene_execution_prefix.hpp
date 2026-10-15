@@ -22,6 +22,9 @@ struct NativeRenderQueueExecutionFrame;
 struct NativePostEffectExecutionContext;
 struct NativePostEffectDrawFrame;
 struct NativeRendererTextureBindingContext;
+struct NativeRenderResourceInitEntryContext;
+struct NativeTextureSurfaceGetterContext;
+class NativeRenderActualOwners;
 
 struct NativeMainSceneExecutionPrefixContext {
     void* const volatile& actual_renderer_00f8d394;
@@ -68,6 +71,7 @@ struct NativeMainSceneExecutionPrefixState {
     bool reached_scne_capture_stage{};
     bool reached_post_label_stage{};
     bool reached_post_body_stage{};
+    bool post_targets_started{};
 };
 
 // Complete raw leaves. Native ECX command / camera. B1BF40 uses RET and returns
@@ -514,4 +518,38 @@ void continue_native_main_scene_post_label_00b1634e(void* actual_service,
 // exception terminates. Map7->(6,CBC491) exists but this clause never installs7.
 void unwind_native_main_scene_post_label(const NativeMainScenePostLabelContext&,
     NativeMainScenePostLabelFrame&) noexcept;
+
+struct NativeMainScenePostTargetContext {
+    const NativeMainScenePostLabelContext& label;
+    NativeRendererFrameTargetsContext& targets;
+    NativeRenderResourceInitEntryContext& frame_assignment;
+    const NativeTextureSurfaceGetterContext& surface_references;
+    NativeRenderActualOwners& owners;
+};
+struct NativeMainScenePostTargetFrame {
+    std::uint32_t active_native_site{};
+    std::uint32_t next_native_address{};
+    bool started{};
+    bool entered{};
+    bool renderer_unbound{};
+    bool color_installed{};
+    bool frame_assigned{};
+    bool texture_assigned{};
+    bool completed{};
+    bool failed{};
+};
+
+// B163FA..B1645A, with two distinct exits. False gate jumps to B164B8 without
+// touching target providers. True captures current renderer/profile98, binds
+// NULL (native cache ownership only, no GPU-state change), installs current
+// service44 primary into current1CC color0, captures current1CC BEFORE current
+// service664 frame assignment, captures current48 texture BEFORE current664
+// material lookup, then performs unchecked material slot0 assignment.
+// Return true at B1645B BEFORE its B4DCC0 draw; false at B164B8 BEFORE gather.
+// Preserve POST state8 on both exits. Source failure consumes current-service
+// CBC491 once, retaining earlier native mutations. No effect-program/factory
+// invocation, POST draw, terminal fallback, local rollback or stage replay.
+bool continue_native_main_scene_post_targets_00b163fa(void* actual_service,
+    const NativeMainScenePostTargetContext&, NativeMainScenePostLabelFrame&,
+    NativeMainScenePostTargetFrame&, NativeMainSceneExecutionPrefixState&);
 } // namespace bsp
