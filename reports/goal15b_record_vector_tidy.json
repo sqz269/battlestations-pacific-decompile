@@ -72,5 +72,13 @@
     "target_sources_add": "src/native_record_vector_tidy.cpp",
     "retained_name": "STL_Vector_Tidy_0041f950",
     "ghidra_mutations": "none; primary owns annotation and export refresh"
+  },
+  "primary_integration_validation": {
+    "receipt": "reports/goal15b_reconstruction_batch.json",
+    "registered_win32_build": "pass",
+    "existing_ctest_suites": "3 passed, 0 failed",
+    "ghidra_annotations_and_exports": "applied, saved, refreshed",
+    "source_fixture_exercised": false,
+    "native_execution_or_abi_equivalence": false
   }
 }

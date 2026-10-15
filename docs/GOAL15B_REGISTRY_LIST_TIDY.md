@@ -31,7 +31,7 @@ Registry construction `00424730` establishes the observed header:
 * `0041BFD0..0041BFE9` allocates `0Ch` bytes and makes the `+0h/+4h` links
   self-referential. The PUSH 0Ch allocation is balanced by ADD ESP,4 at
   `0041BFD7`; the payload word is not initialized by this producer.
-* `0041C1F0..0041C220` allocates `0Ch` bytes, then stores supplied next,
+* `0041C1F0..0041C222` allocates `0Ch` bytes, then stores supplied next,
   previous and payload words at `+0h/+4h/+8h`. Its three stack arguments are
   established by RET 0Ch at `0041C220`; the allocation's own one argument is
   balanced by ADD ESP,4 at `0041C1F7`.
@@ -98,3 +98,8 @@ rows and four markdown call/jump claims with zero failures or warnings.
 `git diff --check` passed. Primary registers `src/native_registry_list_tidy.cpp` and runs the full Win32
 build and existing checks. No new tests, native differential test, game
 execution, ABI compatibility or runtime-equivalence claim is included.
+
+Primary integration: registered MSVC Win32 build and all three existing
+CTest suites pass. Ghidra annotations are saved and exports refreshed.
+See [the batch receipt](../reports/goal15b_reconstruction_batch.json) for
+the precise Source fixture/static-proof scope and remaining Native limits.
