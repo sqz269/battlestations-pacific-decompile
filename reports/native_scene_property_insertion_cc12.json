@@ -1,0 +1,258 @@
+{
+  "schema": "native_scene_property_insertion_cc12_v1",
+  "primary_source_status": "whole_ordinary_Source_implemented_strict_TU_compiled_static_review_accepted_build_and_probe_pending",
+  "scope": [
+    "complete 008F28F0 hit and miss",
+    "complete 008F33F0 key return, owner and ordinal publication"
+  ],
+  "source_base_commit": "327e516b3",
+  "source_files": [
+    {
+      "path": "include\\bsp\\native_scene_property_insertion.hpp",
+      "bytes": 4262,
+      "sha256": "bdb8cf2e287e6b995fb99db3fb7c83d6957fe907a65e8b7e08f0be111732a1a5"
+    },
+    {
+      "path": "src\\native_scene_property_insertion.cpp",
+      "bytes": 4156,
+      "sha256": "3013448b200d8b0cf6ce626ad5ea0aa56691dc61368b21da2443a6f580af60ab"
+    }
+  ],
+  "native": [
+    {
+      "entry": "008F28F0",
+      "end_exclusive": "008F299C",
+      "bytes": 172,
+      "instructions": 65,
+      "sha256": "352616a3d3506a800c42a875c8ea4d86ccdeb788250d77a8dcec8abee5520878",
+      "ABI": "ECX actual108h map; stack actual8h query header, incoming mapped DWORD; EAX current count; RET8; preserves EBX/ESI/EDI."
+    },
+    {
+      "entry": "008F33F0",
+      "end_exclusive": "008F348B",
+      "bytes": 155,
+      "instructions": 46,
+      "sha256": "546af6bc24638da2025274f378467e5e8ef4be515a2e80b0892b4ddc653cdffc",
+      "ABI": "ECX actual114h bag; stack nonnull C string, actual38h incoming record; EAX bag; RET8; preserves ESI/EDI; normal FS restoration only."
+    }
+  ],
+  "native_evidence": {
+    "whole_live_bytes_and_listing_equal_installed_and_full_decode": true,
+    "readiness_report": {
+      "path": "local\\CloneFullRoutingType013Discovery01\\compact_full_insertion_pair_READY_FOR_ROOT.DATA.json",
+      "bytes": 7781,
+      "sha256": "8888d1f938c636f652f9083d48d372086c83c600249ca53ee15f7325d30e9825"
+    },
+    "whole_body_evidence": {
+      "path": "local\\CloneFullRoutingType013Discovery01\\whole_body_and_state_map_evidence.DATA.json",
+      "bytes": 18433,
+      "sha256": "b902ff74bc856af48c7c2d4ec7d4011c26296f5d4aaddb3522cb81d99ec7fbbd"
+    },
+    "current_input_pin_books": {
+      "path": "local\\CloneFullRoutingType013Discovery01\\current_input_pin_books.DATA.json",
+      "bytes": 153075,
+      "sha256": "6179c07f7ed863b96e9c99c92f11520000c88754871a8d61608dc31576c36227"
+    },
+    "receipt": {
+      "path": "local\\CloneFullRoutingType013Discovery01\\receipt.DATA.json",
+      "bytes": 3113,
+      "sha256": "dc8b6c90a387bd8f12eecfc784032a0d3fc3b129ea414360505df5383998e952"
+    }
+  },
+  "actual_current_dependency_pins": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_resume/include/bsp/native_enum_dictionary_lookup.hpp",
+      "bytes": 5294,
+      "sha256": "643ecc08b9efc81172a5d328f25330f75d0d3ccfcbb030495d67a8dfe8113e87"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_resume/src/native_enum_dictionary_lookup.cpp",
+      "bytes": 6221,
+      "sha256": "da6e14d6a1802086a96c34ba31841d5095857c52e43e66c0328d1420c6b8b200"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_resume/include/bsp/native_scene_property_recursive_lifetime.hpp",
+      "bytes": 4337,
+      "sha256": "1cffe704d444d8511d8a0e448f2c05b8e11e9c1b3040e5f8bdf3406630fae6e1"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_resume/src/native_scene_property_bag_storage.cpp",
+      "bytes": 12600,
+      "sha256": "5a0ee52ea81c2eed2cff928bd7d1b4eaa93e6b46e87fad54f114fc7825678e1f"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_resume/include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_resume/src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_resume/include/bsp/game_native_string_process.hpp",
+      "bytes": 3108,
+      "sha256": "b8dde55aa8ef2dfe69a7ce14d6ba7752c6feae9c1716ef6962240b3eccadcace"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_resume/src/game_native_string_process.cpp",
+      "bytes": 1060,
+      "sha256": "ca2c2665dd5da2c3481fa6382520e60010c35919c86102d802e4d03c3eaf0b0a"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_resume/include/bsp/game_native_physical_pool.hpp",
+      "bytes": 3787,
+      "sha256": "96d7cda0fe9674648d77a97b0a5528f4fae5731774c33badc98a2ced4686246d"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_resume/src/game_native_physical_pool.cpp",
+      "bytes": 3147,
+      "sha256": "683649cc6ee36e57e3ec51c4682c2d5750805f62c71254d7186d835c6821dbe5"
+    }
+  ],
+  "binding": "NativeScenePropertyInsertionContext borrows the SAME canonical privately constructed string and physical processes, existing lifetime context, actual initialized E175B0 pool and two distinct permanent same-string-owner fallback cells. Explicit CC8A30 startup must already have returned.",
+  "domain": "MSVC Win32; actual raw61-produced bags/maps; stable valid closed NUL-free ASCII/current C-locale keys and canonical fallback cells; genuine unique14h nodes/pooled keys in same live initialized E175B0/E188B4 domain; actual accepted raw-record producers and same-current-CRT allocations; known CE89D4 profile established by provenance, not numeric equality. Finite unshared acyclic owning graphs. Incoming ownership disjoint from replaced record/graph; no concurrent mutation, trim, reentry, alias, invalid memory, overflow, allocation failure or provider throw. Processes/pools outlive payload borrowers and cleanup.",
+  "whole_map_schedule": [
+    "Whole current raw lookup writes actual bucket using actual canonical fallback cells.",
+    "On hit with old nonnull mapped record, fixed complete current scalar provider receives flags1 and SAME lifetime context; mapped+8 becomes zero only after return, then incoming word is published.",
+    "On hit with old null mapped record, publish incoming word. Every hit reloads count and preserves actual node key, chain, allocator page and map heads/count; no identity shortcut.",
+    "On miss, existing complete genuine producer tail owns copied pooled key, preserves node allocator+10 and publishes mapped8, nextC, bucket head, then incremented count."
+  ],
+  "whole_wrapper_schedule": [
+    "Real raw string constructor initializes an uninitialized actual8B temporary key; full map operation then existing raw key destructor returns it through the SAME key context.",
+    "Capture actual record+34 zero predicate BEFORE owner+30 publication.",
+    "If captured ordinal was zero, increment bag+10C first and then store its old value to record+34; otherwise preserve both. Return actual bag.",
+    "Zero remains both first ordinal and unstamped sentinel; no max, uniqueness, owner-reset or rollback repair."
+  ],
+  "strict_TU_compile": {
+    "status": "passed",
+    "target": "MSVC 19.51 I386",
+    "flags": "/std:c++17 /O2 /Ob2 /MD /EHsc /W4 /WX /fp:strict /DWIN32 /D_WINDOWS /DNDEBUG",
+    "log": {
+      "path": "local\\FullPropertyInsertionSource01\\new_TU_compile02.log",
+      "bytes": 2020,
+      "sha256": "97fbfd46c48bff17ff7cbb0c050b0c4c7bf72a050ff5b7eeae7ef69adc399509"
+    },
+    "object": {
+      "path": "local\\FullPropertyInsertionSource01\\native_scene_property_insertion.obj",
+      "bytes": 5504,
+      "sha256": "1f5a99148c794ba609e5fbcb6cb6be843f64d2154f18402c3279b2fd80e47d31"
+    },
+    "first_attempt": {
+      "status": "failed_no_object",
+      "reason": "MASM-reserved helper parameter offset; corrected to byte_offset before successful compilation",
+      "log": {
+        "path": "local\\FullPropertyInsertionSource01\\new_TU_compile.log",
+        "bytes": 2272,
+        "sha256": "7f34426205294f8d84ca3e502bc89a1dddd7e55134af7b16626c5a2a129ce2c4"
+      }
+    }
+  },
+  "complete_new_TU_COFF": {
+    "report": {
+      "path": "local\\FullPropertyInsertionSource01\\complete_new_TU_COFF.DATA.json",
+      "bytes": 39220,
+      "sha256": "1dc6be251830e77a7dd4e790535443cb52ff562f6f4a74cbb0c0860b84b35f6e"
+    },
+    "section_count": 24,
+    "code_function_count": 10,
+    "whole_code_bytes": 477,
+    "whole_instruction_count": 161,
+    "unknown_CFG_edges": 0,
+    "unreachable_instruction_count": 0,
+    "specific_evidence": {
+      "map_scalar_flags": 1,
+      "map_scalar_call": 71,
+      "post_scalar_mapped_zero": 93,
+      "incoming_publication": 109,
+      "wrapper_key_construct_map_key_destroy_calls": [
+        51,
+        67,
+        78
+      ],
+      "wrapper_original_ordinal_read": 95,
+      "wrapper_owner_store": 115,
+      "saved_ordinal_test": 118,
+      "counter_increment_store": 167,
+      "old_ordinal_store": 183,
+      "context_lifetime_property_fallback_query_fallback_calls": [
+        13,
+        20,
+        30
+      ]
+    },
+    "primary_functions": {
+      "context": [
+        45,
+        17
+      ],
+      "whole_map": [
+        171,
+        53
+      ],
+      "whole_wrapper": [
+        207,
+        68
+      ]
+    },
+    "remaining_functions": "Seven emitted helper/accessor bodies accounted for; linked retention is separate.",
+    "map_order": "scalar call+47 -> explicit zero store+5D -> incoming store+6D",
+    "wrapper_order": "key constructor/map/key return+33/+43/+4E; ordinal read+5F before owner store+73; saved predicate tested+76; counter store+A7 before ordinal store+B7"
+  },
+  "independent_static_review": {
+    "reported_to_worker_by": "Root and independent U worker",
+    "status": "accepted_without_findings",
+    "path": "J:/PROG/battlestations-pacific-decompile-cc12_type1011_native_gate/local/NativeScenePropertyInsertionReview01/final_review.DATA.json",
+    "bytes": 3187,
+    "sha256": "b822a1ad9a82178a815c7d3aefc9a58dc2b49db6687525ae5b948bc29d3873d0"
+  },
+  "normal_repository_build": {
+    "status": "pending",
+    "command": "./scripts/build.ps1",
+    "original_live_session": 41015,
+    "log": "local/FullPropertyInsertionSource01/normal_build.log",
+    "configured_tests": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "scope": "Current worker provider library; new TU CMake registration remains Root integration. Preserve the original naturally running build, no restart."
+  },
+  "minimal_actual_Source_probe": {
+    "status": "authored_not_compiled_linked_or_executed",
+    "source": {
+      "path": "local\\FullPropertyInsertionSource01\\insertion_source_probe.cpp",
+      "bytes": 7752,
+      "sha256": "f63f0a7b8cca4684919cbdfd584149bdd0be3bb028b12f717428da3ed701b843"
+    },
+    "cases": [
+      "wrapper new-key miss",
+      "case-insensitive nonnull record replacement",
+      "direct map miss with null mapped value",
+      "wrapper hit on actual null-mapped node"
+    ],
+    "ordinal_cases": [
+      "first zero -> ordinal0/counter1",
+      "retained nonzero41/counter1",
+      "next zero -> ordinal1/counter2"
+    ],
+    "cleanup": "Actual full map clear and actual bag scalar cleanup through SAME canonical lifetime context; completion is not an independent per-free event trace.",
+    "planned_link": "Exact strict new TU object plus this natural build current completed archive, embedded manifest; never another worker or stale archive."
+  },
+  "Root_integration": {
+    "CMake_registration": "pending_Root",
+    "main_library_membership": "pending_Root",
+    "ledger_Ghidra_annotations": "Root_owned",
+    "integrated_build": "separate_pending_Root"
+  },
+  "evidence_limits": [
+    "New ordinary C++ interfaces; no Original ECX/RET8/register/FS/SEH transport or drop-in game/class ABI.",
+    "No Original Native execution, historical private CRT, OOM/EH, allocator/new-handler/copy-fault/reentry/cookie-failure execution.",
+    "No arbitrary profile dispatch or provenance inferred from numeric callee/profile bits; admitted genuine current producers only.",
+    "No invalid alias/overflow/concurrent trim or mutation domain.",
+    "Complete full populated clone 008F4F60 remains a separate unimplemented entry; this packet supplies insertion prerequisites.",
+    "Build/static evidence is distinct from process fixtures, linked identity, ABI compatibility and game validation."
+  ],
+  "Native_runtime_credit_added": 0,
+  "game_credit_added": 0
+}
