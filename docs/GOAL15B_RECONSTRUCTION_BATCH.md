@@ -24,3 +24,14 @@ evidence in its packet report. The grid byte-vector family remains in progress.
 Source coverage, compiler/build checks, original ABI evidence and original-game
 execution remain separate claims. These existing tests do not execute the new
 cleanup entries or prove their original ABI/gameplay equivalence.
+
+The available workers were then refilled with the registry's sentinel/node
+producers and list constructor, and the four byte-range primitives consumed
+by grid-vector resizing. Their addresses and states are explicit in the batch
+receipt. The resize family will reuse the shared primitive implementations.
+
+The seven provider entries also pass their registered Win32 build and all three
+existing suites. Their 17 report rows and eight markdown call claims pass,
+with independent peer reviews reporting no blockers. Ghidra comments/names
+are saved and exports refreshed. The registry node producer's evidence span
+now includes all bytes of its final `RET 0Ch`, through `0041C222`.

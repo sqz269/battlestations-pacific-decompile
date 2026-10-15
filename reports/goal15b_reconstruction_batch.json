@@ -5,7 +5,9 @@
   "packets": [
     {"id": "goal15b_list_tidy", "entries": ["0041d710", "0041e290"], "state": "registered_build_and_existing_checks_passed", "worker_commit": "d62511b1337445757b27526f6258b22bfb81304b", "report_rows_passed": 8, "markdown_calls_passed": 4, "peer_review": "no findings"},
     {"id": "goal15b_vector_tidy", "entries": ["0041f950"], "state": "registered_build_and_existing_checks_passed", "worker_commit": "1e8817340db675ee017ae9070c4236ec50857fe3", "report_rows_passed": 3, "markdown_calls_passed": 3, "peer_review": "no findings"},
-    {"id": "goal15b_grid_byte_vector_resize", "entries": ["004219a0", "00420dd0", "0041d7d0"], "state": "max_effort_reconstruction"}
+    {"id": "goal15b_grid_byte_vector_resize", "entries": ["004219a0", "00420dd0", "0041d7d0"], "state": "max_effort_reconstruction"},
+    {"id": "goal15b_registry_list_producers", "entries": ["0041bfd0", "0041c1f0", "0041e270"], "state": "registered_build_and_existing_checks_passed", "worker_commit": "25525297ee71ba3f3feb57dd603674c4024940a1", "report_rows_passed": 8, "markdown_calls_passed": 8, "peer_review": "no findings; deferred payload load and header publication order checked"},
+    {"id": "goal15b_byte_range_primitives", "entries": ["0041f450", "0041c630", "0041c650", "0041e630"], "state": "registered_build_and_existing_checks_passed_with_shared_public_provider_interface", "worker_commit": "72cb207f9c30d5f39a758378dbcff238173acb32", "report_rows_passed": 9, "markdown_calls_passed": 0, "peer_review": "no findings; optimized per-byte access loops and distinct copy guards checked"}
   ],
   "annotation_corrections": [
     {
@@ -19,5 +21,7 @@
   "cleanup_registered_build": {"command": "./scripts/build.ps1", "result": "pass", "log": "local/goal15b_cleanup_build.log", "ctest_passed": 3, "ctest_failed": 0, "scope": "existing reconstructed_math/native_math_differential/tool_tests, not execution of these new entries"},
   "cleanup_annotations": {"result": "applied_saved_exports_refreshed", "addresses": ["00418540", "0041d710", "0041e290", "0041f950"], "prior_values": "local/ghidra-annotations-20261015T194854Z.json"},
   "resize_registered_build": "pending",
+  "provider_registered_build": {"command": "./scripts/build.ps1", "result": "pass", "log": "local/goal15b_providers_build.log", "ctest_passed": 3, "ctest_failed": 0, "new_sources": ["src/native_registry_list_producers.cpp", "src/native_byte_range_primitives.cpp"]},
+  "provider_annotations": {"result": "applied_saved_exports_refreshed", "addresses": ["0041bfd0", "0041c1f0", "0041e270", "0041f450", "0041c630", "0041c650", "0041e630"], "prior_values": "local/ghidra-annotations-20261015T200334Z.json"},
   "new_entry_native_abi_or_gameplay_proof": false
 }
