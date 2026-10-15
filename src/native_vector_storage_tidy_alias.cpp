@@ -8,4 +8,8 @@ void __fastcall tidy_native_vector_storage_00468020(void* actual_storage16) {
     tidy_native_vector_storage_00468840(actual_storage16);
 }
 
+void __fastcall tidy_native_vector_storage_00468d40(void* actual_storage16) {
+    tidy_native_vector_storage_00468840(actual_storage16);
+}
+
 } // namespace bsp
