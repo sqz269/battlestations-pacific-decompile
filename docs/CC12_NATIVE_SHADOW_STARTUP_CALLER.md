@@ -3,7 +3,8 @@
 The startup host now constructs and retains the existing canonical shadow target
 at the original application ordering point. The optional GUI/POST probe borrows
 that same completed application rather than creating a second owner. A real
-windowed startup and shared drain pass on the final combined Source build.
+windowed startup and shared drain pass on the combined Source build used for
+runtime validation.
 
 The machine-readable receipt is
 [`cc12_native_shadow_startup_caller.json`](../reports/cc12_native_shadow_startup_caller.json).
@@ -47,8 +48,15 @@ Source commit `76befc721ea64de4c8fc95d1677716b7b5712918` passes the canonical MS
 Win32 build and all three existing checks in 6.91 seconds. After importing the
 current Main avoidance/cache reconstruction, combined Source
 `19c2bad0eeb0923bd15040a32bd45796395205eb` passes the same checks in 6.78 seconds.
-No new test suite was added. Each compiled family freezes 161 artifacts,
+No new test suite was added. Each of those two compiled families freezes 161 artifacts,
 including all 139 application objects, linked executable/map and full libraries.
+
+Main subsequently added the separately reviewed avoidance owner/intersection
+packet. Final integration Source `c05287f4c2347def7b34a423dc39b5673a2d6249` passes
+the canonical build and the same three checks in 6.82 seconds. Its additional
+build artifacts are sealed separately. All four shadow-binding Source files
+match the runtime-validated tree; runtime proof remains at `19C2BAD0E`, and is
+not promoted to execution coverage for that later avoidance code.
 
 The first actual attempt had no private options file and selected fullscreen
 defaults. It exited 4 at device creation, before the shadow block. Its log is
@@ -63,7 +71,7 @@ entry consumed an unknown native `B-16` residue. The entry profile remained
 unmatched and POST acquisition was not reached. No evidence gate was loosened.
 
 Separate normal-startup invocations with optional probes disabled passed on both
-compiled trees. The final combined executable exited 0 with an 800x600 device,
+compiled trees. The runtime-validated combined executable exited 0 with an 800x600 device,
 two requested loop iterations, one presented frame, one skipped present and a
 completed loop. The shadow constructor ran exactly once before input startup.
 The genuine shared drain completed, the canonical publication-null precondition
