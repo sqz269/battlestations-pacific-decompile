@@ -1,0 +1,370 @@
+{
+  "schema": 1,
+  "packet": "cc12_native_platform_host_adoption_34",
+  "captured_utc": "2026-10-15T20:45:29.714752+00:00",
+  "status": "actual_canonical_platform_adopted_normal_host_real_queue_GUI_POST_same_cell_height_and_shared_drain_passed",
+  "source_commit": "e87607619542493b7d6185968f48a1c33af2b970",
+  "source_before": {
+    "base_commit": "c4b098b4e9d47fb05b46c00f0ed88155d0b4ca3b",
+    "files": [
+      {
+        "path": "include/bsp/platform_loop.hpp",
+        "sha256": "ac4c7389744b8ac8734c863aeef096314fcddb1b45529c6427c584e9a2d29929",
+        "bytes": 765
+      },
+      {
+        "path": "include/bsp/platform_window.hpp",
+        "sha256": "86ff92603f4fe79a8e829fab6655cf4d0e35ebfadc192bd7dcc9fd4e0115c205",
+        "bytes": 13824
+      },
+      {
+        "path": "src/platform_window.cpp",
+        "sha256": "65df336faf133b717496ad21d38c4218a7329c6f4e136e6dc570e7fc667fac03",
+        "bytes": 11783
+      },
+      {
+        "path": "include/bsp/text_input.hpp",
+        "sha256": "f71d568b01ca26f7229cd31a5b16bc49a57973837f02736697e6a6c559abde3c",
+        "bytes": 2551
+      },
+      {
+        "path": "src/text_input.cpp",
+        "sha256": "6a1515ea796ceee4566cf147b09e5866fff89f60f9ad4a8d9f45d9cf9585f050",
+        "bytes": 3674
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "sha256": "c78d744b88558ac3ab8ce0cd64629a06b6eb92505252c9fa8b5d29c4b8735d94",
+        "bytes": 40731
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "sha256": "539206b2626e02084d811cc78b99288ad844d0d0f5f9e7c5eff307eb2d5399c9",
+        "bytes": 134005
+      },
+      {
+        "path": "include/bsp/game_native_gui_effect_probe.hpp",
+        "sha256": "2ed49ba6f664210bd72f196a7ed0e177bd2b0aee7a105bd63bb7bbc403f980b6",
+        "bytes": 6628
+      },
+      {
+        "path": "src/platform_probe.cpp",
+        "sha256": "4f97e2fbc9f683c6a0aaff30b411f3cbcc9d98681b58186813d2248f05f60b2f",
+        "bytes": 4312
+      }
+    ]
+  },
+  "source_paths": [
+    "include/bsp/platform_loop.hpp",
+    "include/bsp/platform_window.hpp",
+    "src/platform_window.cpp",
+    "include/bsp/text_input.hpp",
+    "src/text_input.cpp",
+    "include/bsp/game_hosts.hpp",
+    "src/game_hosts.cpp",
+    "include/bsp/game_native_gui_effect_probe.hpp",
+    "src/platform_probe.cpp"
+  ],
+  "source_constructor": "Existing complete construct_native_win32_platform_00becda0; native_platform_construction.cpp/hpp unchanged.",
+  "storage": {
+    "actual_bytes": 388,
+    "constructor_value_initialization": false,
+    "metadata_preimage_equal": true,
+    "observed_owner": "007CB410",
+    "observed_cell": "007CB25C",
+    "profile": "00D68CC4",
+    "constructor_dimensions": [
+      640,
+      480
+    ],
+    "observed_sentinel": "007C3B20",
+    "count": 0,
+    "incoming_24": "00000000",
+    "incoming_28": "00000000",
+    "aspect_bits": "ffc00000",
+    "observed_zero_operands_are_not_required_defaults": true,
+    "configured_height_28": 600,
+    "title_length": 22,
+    "scalar_loop_text_aliases_checked": true,
+    "renderer_publication_identity_same": true,
+    "second_native_owner_or_sentinel": false
+  },
+  "queue": {
+    "actual_header": "platform+174",
+    "same_enable_170_and_clipboard_44": true,
+    "raw_append": "00bed370",
+    "valid_pop_erase": "existing engine_services_cc13::erase_text_queue_node_00bec990,actual process invalid-parameter callbacks",
+    "case": "enable,append2,pop1,same-state clear,disable; preserve sentinel and end empty/disabled",
+    "actual_case_passed": true,
+    "events_are_synthetic_Source_inputs": true,
+    "Windows_input_injected": false,
+    "empty_typed_pop_still_false_not_original_CRT_handler": true
+  },
+  "cleanup": {
+    "capture_HWND_before_native_drain": true,
+    "disarm_Source_message_adapters_before_native_free": true,
+    "actual_canonical_platform_and_manager_publications_null": true,
+    "source_view_metadata_survives_until_window_destroy": true,
+    "final_window_uses_captured_handle": true,
+    "additional_native_title_queue_owner_retirement": false,
+    "raw_reads_log_is_Source_path_marker_not_instrumentation": true,
+    "power_policy_producer_unchanged_and_gated": true
+  },
+  "validation": {
+    "canonical_build_exit": 0,
+    "existing_tests": 3,
+    "test_seconds": 8.28,
+    "platform_probe_exit": 0,
+    "new_persistent_cases": 1,
+    "new_case_scope": "Standalone projection copy/move independent cells; other existing queue/loop cases unchanged.",
+    "original_installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_bytes": [
+      {
+        "address": "0073d8d1",
+        "length": 39,
+        "sha256": "5566bea56d33293cf395926ffdf1db1c5148d94ab74bdad682352cdf5e91ea28",
+        "current_disk_live_equal": true
+      },
+      {
+        "address": "00becda0",
+        "length": 132,
+        "sha256": "fcdf28baaa13cf9b162a926984ceb7e42be8fc44163479690f8c52fbde57f7f9",
+        "current_disk_live_equal": true
+      },
+      {
+        "address": "00be2ac0",
+        "length": 74,
+        "sha256": "01219e9a90dc18596e5f37a5e7a1504012071a425729e8729bdd97f3ce9147e5",
+        "current_disk_live_equal": true
+      },
+      {
+        "address": "00beca00",
+        "length": 42,
+        "sha256": "c97073267739e0aa514052b7d5ffff33ede1546e83cbb8241922b875b85f6010",
+        "current_disk_live_equal": true
+      },
+      {
+        "address": "00bece30",
+        "length": 63,
+        "sha256": "e6747a00ac6cded472183cafa5a10f70c0d638e381ad1279f7dcdf3836949bdd",
+        "current_disk_live_equal": true
+      }
+    ],
+    "frozen_build_artifacts": 172,
+    "application_objects": 139,
+    "executable_sha256": "0f19963c13b9657e02dabe15808873a7f48409ce4db2fbb6506a8efa1406bc02",
+    "whole96_sampler_bridge_unchanged": true,
+    "runtime": {
+      "started_utc": "2026-10-15T20:36:11.8698378Z",
+      "wrapper_pid": 87924,
+      "status": "TERMINAL",
+      "target_attempts": 1,
+      "source_commit": "e87607619542493b7d6185968f48a1c33af2b970",
+      "settings_sha256": "ff5cf3959932cb634374b8a9bf5e6c0d04c50699cc6ba585e7fa7969f7b563d8",
+      "native_queue_probe": 1,
+      "font_probe": 0,
+      "gui_probe": 1,
+      "post_probe": 1,
+      "exit_code": 0,
+      "seconds": 5.86821,
+      "finished_utc": "2026-10-15T20:36:17.7431453Z"
+    },
+    "GUI_POST_sampler_rows": [
+      [
+        "GuiFont.mshd",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "0ed87c00",
+        "0007eab0",
+        "2",
+        "1",
+        "23",
+        "23"
+      ],
+      [
+        "GuiFontBilinear.mshd",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "1",
+        "0ed88808",
+        "0007eab0",
+        "2",
+        "1",
+        "25",
+        "25"
+      ],
+      [
+        "fakemotionblur.mshd",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "1",
+        "0ed87e30",
+        "0007eab0",
+        "2",
+        "1",
+        "27",
+        "27"
+      ],
+      [
+        "fakemotionblur.mshd (warm)",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "1",
+        "0ed87e30",
+        "0007eab0",
+        "2",
+        "1",
+        "27",
+        "27"
+      ]
+    ],
+    "qualified_compiler_observations": 3,
+    "POST_warm_same_effect_passed": true,
+    "device_reference_baselines": [
+      [
+        23,
+        23
+      ],
+      [
+        25,
+        25
+      ],
+      [
+        27,
+        27
+      ]
+    ],
+    "worker_joined": true,
+    "device_final_release": 0,
+    "api_final_release": 0,
+    "loop_iterations": 2,
+    "presents": 1,
+    "presents_skipped": 1,
+    "unimplemented_host_methods": 43,
+    "Ghidra": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "saved": true,
+      "exports_refreshed": [
+        "0073d410",
+        "00becda0",
+        "00becee0",
+        "00beca00",
+        "00bece30",
+        "00bec1a0",
+        "00a965a0",
+        "00bece90",
+        "00bed370"
+      ],
+      "old_names_comments_preserved": [
+        {
+          "address": "0073d410",
+          "name_unchanged": true,
+          "previous_comment_prefix_preserved": true,
+          "before_characters": 60753,
+          "after_characters": 72580
+        },
+        {
+          "address": "00a965a0",
+          "name_unchanged": true,
+          "previous_comment_prefix_preserved": true,
+          "before_characters": 281,
+          "after_characters": 1933
+        },
+        {
+          "address": "00bec1a0",
+          "name_unchanged": true,
+          "previous_comment_prefix_preserved": true,
+          "before_characters": 276,
+          "after_characters": 1923
+        },
+        {
+          "address": "00beca00",
+          "name_unchanged": true,
+          "previous_comment_prefix_preserved": true,
+          "before_characters": 1703,
+          "after_characters": 4369
+        },
+        {
+          "address": "00becda0",
+          "name_unchanged": true,
+          "previous_comment_prefix_preserved": true,
+          "before_characters": 8177,
+          "after_characters": 11948
+        },
+        {
+          "address": "00bece30",
+          "name_unchanged": true,
+          "previous_comment_prefix_preserved": true,
+          "before_characters": 1787,
+          "after_characters": 4511
+        },
+        {
+          "address": "00bece90",
+          "name_unchanged": true,
+          "previous_comment_prefix_preserved": true,
+          "before_characters": 294,
+          "after_characters": 1959
+        },
+        {
+          "address": "00becee0",
+          "name_unchanged": true,
+          "previous_comment_prefix_preserved": true,
+          "before_characters": 23914,
+          "after_characters": 30977
+        },
+        {
+          "address": "00bed370",
+          "name_unchanged": true,
+          "previous_comment_prefix_preserved": true,
+          "before_characters": 1536,
+          "after_characters": 4183
+        }
+      ]
+    }
+  },
+  "original_abi": {
+    "constructor": "BECDA0 ECX actual184h owner,EAX original owner,RET; added context is Source ABI.",
+    "destruction": "BECA00 ECX owner,tail BE2B10; BECE30 ECX owner/flags stack/RET4,onlybit0 additionally frees.",
+    "parent": "73D8D1..73D8F3 guarded184h allocation/constructor site; whole73D410 stack/FH3 not established.",
+    "window_and_loop": "Source view/callback interfaces; window-extra points to Source view and+48 remains Source application callback owner.",
+    "queue": "BED370 existing raw append ABI retained; typed pop false-on-empty and checked-iterator/register ABI remain separate."
+  },
+  "remaining": [
+    "Compose native font/widget/parent domains and the Text/effect graph in the real host.",
+    "Preserve cold guidefault/font-effect cache order and execute Native Text constructors,buffers,passes,draws and retirement.",
+    "Complete remaining startup/scene/world/POST drawing and gameplay validation."
+  ],
+  "not_established": [
+    "Original whole73D410/BECEE0/window-procedure/application-vtable/register/class/private-frame/FH3/SEH ABI.",
+    "Nonzero actual incoming x87 operands in this specific host run,allocation/provider failures,concurrency or arbitrary publication replacement.",
+    "Original empty-pop/invalid-storage checked-iterator behavior through the typed API.",
+    "Power-policy producer/normal-exit restoration adoption,Native Text/font/widget activation,drawing,visual parity or gameplay."
+  ],
+  "evidence": {
+    "seal_pending": false,
+    "local_root": "local/cc12_native_platform_host_adoption_34",
+    "payload_count": 287,
+    "payload_bytes": 140025531,
+    "manifest": "local/cc12_native_platform_host_adoption_34/evidence_manifest.json",
+    "manifest_sha256": "28cb61ad19799246c5e82011fab9eb47daf41e001ee5a777f6339c940fd71317",
+    "archive": "local/cc12_native_platform_host_adoption_34/evidence_family.zip",
+    "archive_sha256": "7eb575bd36b6a60aa52afb210f69ac4953e3c02513445a297bb5cb5e3adfd14b",
+    "archive_bytes": 32460747,
+    "all_payloads_verified": true,
+    "installed_game_and_OS_providers_remain_external": true
+  }
+}

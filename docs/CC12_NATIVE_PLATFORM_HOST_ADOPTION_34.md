@@ -75,7 +75,31 @@ The strict Win32 build and three existing suites pass. The existing platform
 probe also passes, including one new compatibility copy/move independence case.
 The complete 96-byte sampler bridge remains identical in its frozen probe,
 current object and linked executable, with no padding or relocations.
-Live application verification is pending for this checkpoint.
+The fresh windowed application run on Source
+`e87607619542493b7d6185968f48a1c33af2b970` exits zero with the actual queue
+probe, GUI acquisitions and POST cold/warm acquisition enabled. Its frozen
+build contains 139 application objects and the normal complete libraries.
+The machine-readable receipt is
+[`cc12_native_platform_host_adoption_34.json`](../reports/cc12_native_platform_host_adoption_34.json).
+
+The one observed allocation produces profile `D68CC4`, dimensions 640x480 and
+one self-linked sentinel with count zero. Its captured incoming `+24/+28`
+words are both zero, unchanged by metadata preparation. The unchanged x87
+constructor stores aspect bits `FFC00000`; zero inputs were observed, not
+seeded or required. Window configuration then produces height 600 and a live
+22-byte native title on that same owner. Height/handle/text/loop alias checks
+and the renderer's exact publication-cell identity check pass.
+
+The actual-owner queue case passes append2/pop1/same-state clear/disable while
+retaining its sentinel. Three qualified GUI/POST compiler observations retain
+the previous shader2-to1 and device23/23,25/25,27/27 checks. POST warm lookup
+uses the same effect with no fourth compiler observation. Caller references
+retire normally; the shared native drain clears platform and manager
+publications, joins the renderer worker and reaches final device/API COM0/0.
+The two-iteration loop presents once and skips once. The closure log's
+`raw_reads=0` is a marker for the inspected metadata-only path, not a memory
+instrumentation counter. The runtime still reports 43 unimplemented host
+methods, including native Text buffer and section production.
 
 The window procedure still uses its Source C++ view transport, and platform
 `+48` is the existing Source application callback owner. This does not admit
