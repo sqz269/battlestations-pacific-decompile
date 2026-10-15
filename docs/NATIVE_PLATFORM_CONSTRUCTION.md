@@ -1,5 +1,11 @@
 # Raw platform construction and retirement
 
+Normal host adoption is now verified in
+[receipt 34](CC12_NATIVE_PLATFORM_HOST_ADOPTION_34.md): one actual platform,
+same-cell renderer/height/window/loop/text bindings, a real queue case and
+successful shared native drain. The adoption history below describes the
+earlier capability-only checkpoint; its Source bodies remain unchanged.
+
 This module adopts the six raw source bodies from commit
 `0ca920c74f87df949340d01fbb66025973cd9959` onto Main
 `9228d13fe2594cb12405733fcdd5ec0160770b66`. The original six source bodies are
@@ -8,7 +14,7 @@ It provides source-callable construction for actual **0x184-byte (388-byte)**
 platform storage, publication through a borrowed raw singleton domain, and
 window-base and derived retirement. The D68CC4 canonical singleton deletion
 dispatch now borrows the same raw creation context. Application activation
-remains absent. Evidence: `reports/native_platform_construction.json`.
+was absent at that checkpoint. Evidence: `reports/native_platform_construction.json`.
 
 | Native body | Source operation | Original ABI |
 | --- | --- | --- |
