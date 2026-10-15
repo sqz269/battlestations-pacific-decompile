@@ -66,9 +66,14 @@ domain. The preflight receipt is
 Whole native assembly/prototype, live dependencies and actual provider Source
 were reviewed. All 90 live bytes match the installed PE. The two owned and two
 selected incoming native transfer rows are separate from Source composition.
+The primary independently reviewed every native instruction, the complete Source/
+header and positive provider. Recorded Source/header hashes are asserted against
+that review before recording it; no Source mismatch or edit was requested.
 Locked annotation preserves prior name/comments/evidence, saves the project and
 refreshes the affected export with readback recorded in the report. Shared CMake
-registration is queued while held; no exclusive registry lease is taken. Required
+registration was appended at this worker's queue turn, after removing only its
+own queue request and immediately verifying the registry is unleased. No exclusive
+registry lease was taken. Required
 normal Win32 build, existing checks and focused compiler inspection are pending.
 No new tests are added; packet-specific native differential/game and original ABI
 remain unproved.
