@@ -1,0 +1,200 @@
+{
+  "schema": "bsp.native_scene_property_clone_cc12.v1",
+  "packet": "FullRecursivePropertyCloneSource01",
+  "status": "whole ordinary Source implemented; strict whole object and worker build passed; focused Source runtime and registered-library gates pending",
+  "functions": [
+    {
+      "address": "008F41F0",
+      "original_bytes": 154,
+      "original_instructions": 49,
+      "source": "clone_native_scene_property_bag_008f41f0",
+      "scope": "whole ordinary successful-domain producer"
+    },
+    {
+      "address": "008F4F60",
+      "original_bytes": 854,
+      "original_instructions": 274,
+      "source": "clone_native_scene_property_record_008f4f60",
+      "scope": "whole ordinary successful-domain dispatcher, all twelve tags"
+    }
+  ],
+  "source_inputs": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_scene_property_clone.hpp",
+      "bytes": 4315,
+      "sha256": "bd33cc26468d30007c27fcfb3aa36914d3e0455a61afa744f86c9720ae2ee6f1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\native_scene_property_clone.cpp",
+      "bytes": 8850,
+      "sha256": "e3f5d4d54e50e1c59b436b6d5050b057633614c3b9b9c5168e6da5587178ae65"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\game_native_string_process.hpp",
+      "bytes": 3433,
+      "sha256": "300a5cad72caf566bd39a51a4fdc453663bbaad894205806159811f4482f19c5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\game_native_string_process.cpp",
+      "bytes": 1175,
+      "sha256": "17483ea80a0fdeba8398b2499b9bf36cd80d8122750daac980e011decd7b8641"
+    }
+  ],
+  "authoritative_contract": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyCloneFPContract01\\whole_clone_ready_contract.DATA.json",
+    "bytes": 53210,
+    "sha256": "ee7e032b1671758589a8bc2ebdca06de8274a0cc1964d6a08987bc4dd072c377"
+  },
+  "whole_current_input_verification": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullRecursivePropertyCloneSource01\\current_contract_inputs.DATA.json",
+    "bytes": 46048,
+    "sha256": "46006a61949e8199cded227c7013a0f93ad29c716288cc888c355950b46c4f5a"
+  },
+  "independent_reviews": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyCloneIndependentFPReview01\\independent_complete_clone_COFF.DATA.json",
+      "bytes": 111566,
+      "sha256": "db7bb43437b648295e1f5c74ca275e0f6e06313dd8f020790e6c3c0af9b212fe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\FullPopulatedCloneOwnershipIndependentReview01\\compact_ownership_review.DATA.json",
+      "bytes": 7353,
+      "sha256": "6ec6639ec7c3b28810bc9427d9ecc0df24444f328c69e9652ac47d9151faad82"
+    }
+  ],
+  "canonical_context": {
+    "same_actual_processes_for_clone_insertion_and_retirement": true,
+    "startup": "explicit CC8A30 has returned",
+    "clone_empty_role": "distinct permanent private const-zero byte appended after existing members in GameNativeStringProcess; getter clone_empty_00f89450",
+    "original_writable_zero_universally_immutable": false
+  },
+  "semantic_details": {
+    "bag": "actual 114h allocation and raw61 initialization before real iterator; capture key before fixed recursive record clone; full insertion; owner/counter not copied",
+    "record": "read tag; reject unsigned >11 without allocation; allocate actual38h before selected payload reads; exact raw constructor; late physical ordinal reread/store",
+    "type6": "record allocation precedes fixed whole recursive bag producer and actual raw child attachment",
+    "array_order": "Type8 count before pointer; Types9/10/11 pointer before real element-count call, full copy flag one",
+    "ordinary_stack_staging_difference": "current compiler stages copy flag after count call; Original stages it before. Original stack staging is not claimed",
+    "failure_transport": "Original root-null fault, SEH/EH states and allocation failure transport excluded; no invented cleanup"
+  },
+  "type1_domain": {
+    "inputs": "all binary32 bit patterns",
+    "x87_stack": "empty at each conversion",
+    "exception_masks": "all six already one",
+    "precision_control": [
+      24,
+      53,
+      64
+    ],
+    "rounding_control": "any valid mode",
+    "pending_unmasked_exception": false,
+    "exact_helper_hex": "d9410c51d91c2458c3",
+    "production_state_reset": false,
+    "excluded_oracles": [
+      "undefined condition bits",
+      "popped register payload",
+      "FIP/FDP/FOP address identity",
+      "Original parent register/stack/FS identity"
+    ]
+  },
+  "strict_standalone_compile": {
+    "passed": true,
+    "toolchain": "MSVC 19.51.36244.0 x86",
+    "flags": "/std:c++17 /O2 /Ob2 /MD /EHsc /W4 /WX /fp:strict /DNDEBUG /DWIN32 /D_WINDOWS",
+    "attempt_count": 1,
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullRecursivePropertyCloneSource01\\clone_TU_compile.log",
+      "bytes": 2016,
+      "sha256": "4d8c118fefa5ddaa120fa7038938b9b1801a4dcc73fe281fbe6354a6b7f2bed4"
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullRecursivePropertyCloneSource01\\native_scene_property_clone.obj",
+      "bytes": 7684,
+      "sha256": "30fe87bb7a883547477d6d47387345599724a4f22c61aa6d0a7d383ebf218ff0"
+    },
+    "complete_object_evidence": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullRecursivePropertyCloneSource01\\complete_clone_COFF.DATA.json",
+      "bytes": 100792,
+      "sha256": "d1696ddb7c1061666548db4cee7418cae67b0db3e6d2e40353fd8e3e91e9fd51"
+    },
+    "emitted_functions": 10,
+    "whole_section_bytes": 1117,
+    "instruction_bytes": 1068,
+    "instruction_count": 323,
+    "table_bytes": 48,
+    "padding_bytes": 1,
+    "normal_CFG_unknown_edges": 0,
+    "all12_constructor_targets_present_once": true,
+    "exact_count_provider_calls": 3
+  },
+  "worker_normal_build": {
+    "command": "./scripts/build.ps1",
+    "terminal_exit_code": 0,
+    "configured_tests_passed": 2,
+    "configured_tests_total": 2,
+    "tests": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullRecursivePropertyCloneSource01\\normal_build.log",
+      "bytes": 5737,
+      "sha256": "e396ab7a4b5669b78bd1416299b38d1b0a80b28bfa3464a7f1dd253b50663b2f"
+    },
+    "clone_TU_registered_in_this_build": false,
+    "canonical_string_process_changes_built": true
+  },
+  "focused_source_probe": {
+    "source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullRecursivePropertyCloneSource01\\recursive_clone_source_probe.cpp",
+      "bytes": 19994,
+      "sha256": "551c583c6817bd2dd219d59bddea75219972cbe64c2111898921d24101f5f37b"
+    },
+    "compiled": false,
+    "linked": false,
+    "launched": false,
+    "scope": "one actual three-bag/fifteen-record all-tag mixed graph plus six selected Type1 hardware-reference cases",
+    "review": "independent whole probe review pending before launch",
+    "claims_pending": [
+      "complete borrowed source span preservation",
+      "distinct output owning spans",
+      "empty key and bucket collision",
+      "late copied and zero-stamped ordinals",
+      "recursive child backlinks",
+      "ordinary recursive cleanup completion",
+      "six selected FP observations"
+    ]
+  },
+  "type6_header_widening": {
+    "applied": false,
+    "gate": "complete populated Source producer and full recursive chain must pass first",
+    "unchanged_header": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_scene_property_record_type6_storage.hpp",
+      "bytes": 2915,
+      "sha256": "b7cb92a00e9071a74407de89d41533820c94052fe89c90de0356220ab74e7fe8"
+    }
+  },
+  "integrator_owned_pending": [
+    "shared CMake registration",
+    "registered-library build and exact current linked evidence",
+    "name/reconstruction ledgers",
+    "Ghidra annotations and save"
+  ],
+  "claims": {
+    "ordinary_whole_Source_implemented": true,
+    "strict_object_build_tested": true,
+    "Source_runtime_tested": false,
+    "Native_profile_executed": false,
+    "Original_ABI_compatible": false,
+    "Original_EH_OOM_compatible": false,
+    "per_free_trace": false,
+    "leak_counter": false,
+    "game_validated": false
+  },
+  "limits": [
+    "successful same canonical current allocation/provider domain only",
+    "finite unshared acyclic stable owning graphs; no mutation, trim, reentry, overflow, invalid memory or alias",
+    "closed NUL-free ASCII keys in current C locale, including empty",
+    "Type8 positive byte count; Type9/10 positive count <=3FFFFFFFh; Type11 positive count <=15555555h",
+    "new ordinary C++ interfaces; no Original parent register/stack/FS/SEH/EH/OOM, historical CRT, class/vtable, World or gameplay claim"
+  ]
+}

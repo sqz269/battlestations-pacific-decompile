@@ -28,6 +28,10 @@ const char* GameNativeStringProcess::query_empty_00e17654() const noexcept {
     return &query_empty_00e17654_;
 }
 
+const char* GameNativeStringProcess::clone_empty_00f89450() const noexcept {
+    return &clone_empty_00f89450_;
+}
+
 GameNativeStringProcess& game_native_string_process() {
     static auto* const process = new GameNativeStringProcess;
     return *process;
