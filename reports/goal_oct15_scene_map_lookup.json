@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_scene_map_lookup",
-  "status": "complete_actual_raw_source_pending_registered_win32_build",
+  "status": "complete_actual_raw_source_win32_build_and_two_enabled_existing_tests_passed",
   "source_ready": true,
   "source": "src/native_scene_record_map_lookup.cpp",
   "header": "include/bsp/native_scene_record_map_lookup.hpp",
@@ -110,8 +110,19 @@
   },
   "corrections": [],
   "verification": {
-    "win32_build": "pending",
-    "existing_tests": "pending",
+    "win32_build": "scripts/build.ps1 Release Win32 passed, exit0; source draft45909c893 compiled and all targets linked; local/goal_oct15_scene_map_lookup_build.log",
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 8.5,
+      "native_math_differential_enabled": false,
+      "dedicated_native_lookup_differential": false
+    },
     "verify_report_calls": "8 call rows checked,0 failed",
     "diff_check": "passed before draft",
     "new_tests": 0,
@@ -120,7 +131,9 @@
     "game_validated": false,
     "application_adoption": false,
     "cmake_registration": "Exactly one unique source line appended after released owner check and queue removal; no exclusive shared-registry lease",
-    "original_bytes": "Live byte lengths checked:83+102=185 bytes; SHA256 per routine recorded"
+    "original_bytes": "Live byte lengths checked:83+102=185 bytes; SHA256 per routine recorded",
+    "source_commit": "45909c893",
+    "documentation_claim_check": "23 addresses,0 failed,2 unchecked sentences about concrete inlined-predicate sharing; all actual call edges among8 passing JSON rows"
   },
   "limits": [
     "Physical input/output slots preserved; Source does not establish native mangling, binary/private-frame/SEH or instruction-fault identity",

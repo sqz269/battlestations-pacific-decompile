@@ -94,10 +94,17 @@ language and image base before each batch; the configured project file is
 `C:/Users/sqz269/bsp.gpr`. Locked evidence annotation preserves prior comments
 and names, logs old values, saves the project and refreshes affected exports.
 
+`scripts/build.ps1` passed for source draft `45909c893`: the new source compiled,
+all Release Win32 targets linked, and both enabled existing CTests passed
+(`reconstructed_math`, `tool_tests`; 8.50 seconds). The worker log is
+`local/goal_oct15_scene_map_lookup_build.log`. The native math differential suite
+is not enabled in this worktree, and no direct native lookup execution is
+claimed. All eight report call rows and staged whitespace checks passed.
+
 The companion report records verification. After the shared CMake holder
 released its lease, this packet unqueued and appended only its unique source
-registration, without claiming an exclusive shared-registry lease. A registered
-build is required before a build-tested claim. No new tests are added. Source inherits
+registration, without claiming an exclusive shared-registry lease. No new tests
+are added. Source inherits
 the concrete current-CRT locale/handler/provider domains and requires valid
 taken backing. It does not expose native private argument slots or private
 iterator temporaries, reproduce native binary/SEH/fault-address identity, or
