@@ -1,0 +1,358 @@
+{
+  "schema": "bsp.native_scene_property_record_assignment_cc12.v1",
+  "packet": "WholePropertyRecordAssignmentSource01",
+  "base_after_Main_merge": "20f53a9637148080fb456d44c3e53d198e3250d6",
+  "retained_leaf_Source_commit": "92b3eea9c",
+  "status": "complete ordinary destination-tag assignment; independent whole Source/COFF/current-linked-file, ownership and focused actual-process reviews PASS; worker normal build PASS; integrator registration/publication separate",
+  "Source_admission_credit": 0,
+  "ordinary_whole_Source_functions": 1,
+  "Original": {
+    "address": "008F0700",
+    "end_exclusive": "008F07C1",
+    "bytes": 193,
+    "instructions": 69,
+    "table_address": "008F07C4",
+    "table_bytes": 48,
+    "body_sha256": "194e96b103e4c57eb2a605169350154b7b6c754b15d91aff81a2279ea4980251",
+    "table_sha256": "b847a360ad5f43ebc8923a6dfb6a3aa4cc8112210b11c927a51cfe3581336984"
+  },
+  "name_is_hypothesis": true,
+  "interface": "void* assign_native_scene_property_record_008f0700(void* actual_destination,const void* actual_source)",
+  "Source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\native_scene_property_record_assignment.cpp",
+    "bytes": 3590,
+    "sha256": "55b10c8c39f39cacf88c387975881437895e1693468710da04ad2e2053798aaa"
+  },
+  "header": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_scene_property_record_assignment.hpp",
+    "bytes": 2624,
+    "sha256": "223f590ffacfb0ebb5fad0b3d82bc4e6611fdc2abfc1ed4c3a784d1f4d6701dd"
+  },
+  "documentation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\docs\\NATIVE_SCENE_PROPERTY_RECORD_ASSIGNMENT_CC12.md",
+    "bytes": 4996,
+    "sha256": "016d0d7e6fd82e0235f68ae0b5acf0b68843cbcfbb64bf85243e57821fedb841"
+  },
+  "readiness": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\PropertyArrayAssignmentReadiness01\\compact_readiness.DATA.json",
+    "bytes": 10782,
+    "sha256": "6bc895cc0973912542fb0967f4ef5c4bf9eb5beaa1ce8a1be166fb2ed861596b"
+  },
+  "contracts": {
+    "dispatch": "Destination tag only; unsigned>11/tag6 return destination without source read. Active owning calls use matching tags but code adds no source-tag guard.",
+    "scalar_byte_vector": "0/4 physical DWORD+C;3 exact byte+C;4 identity+28 preserved;7 sequential physical DWORD read/write pairs C,10,14 without FP/bulk snapshot.",
+    "string": "Type2 complete free/clear destination+C BEFORE physical source+C reread, physical duplicate00438E40 then pointer store.",
+    "reference": "Type5 physical complete008F0340 on+18; destination+08 remains unchanged.",
+    "arrays": "Types8..11 full raw-byte008F03B0 on+20, positive source count; no stride/tag/flag check or repair, target owning+2C already1.",
+    "common_preservation": "No phase/tag/owner+30/ordinal+34 assignment; other untouched bytes retain their values.",
+    "aliases": "Distinct disjoint actual raw38h records/payloads and active frames. Type2 late-reread self behavior is not blanket self qualification; Type5/array capture-before-free owning aliases can UAF.",
+    "providers": "Actual current canonical heap and qualified current physical providers; nullable text or positive nonwrapping array contract, DF0, stable live storage, successful providers, no mutation/reentry/overflow/invalid access."
+  },
+  "Type1": {
+    "exact_private_helper_hex": "d9420cd9590cc3",
+    "bytes": 7,
+    "instructions": 3,
+    "operation": "actual FLD m32[source+C] then FSTP m32[destination+C], no intermediate C++ FP",
+    "inputs": "all binary32 bit patterns",
+    "x87_stack": "empty at conversion",
+    "exception_masks": "all six already one",
+    "precision_control": [
+      24,
+      53,
+      64
+    ],
+    "rounding_control": "any valid",
+    "pending_unmasked_exception": false,
+    "production_state_reset": false,
+    "retained": "hardware NaN quieting/sticky status, CW, net depth",
+    "excluded_oracles": [
+      "undefined condition bits",
+      "popped register contents",
+      "FIP/FDP/FOP address identity",
+      "Original parent register/stack/flags identity"
+    ]
+  },
+  "direct_provider_inputs": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\native_scene_property_assignment_storage.cpp",
+      "bytes": 2343,
+      "sha256": "ab87feb80b9df7108625e8a0e4adcb0db35c630bf3024d1e9981e84b86cadc03"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_scene_property_assignment_storage.hpp",
+      "bytes": 2395,
+      "sha256": "867640962264853c461f224c23895222ab49f11bce66c2f561461e8400e6d5d4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\native_reference_payload_copy.cpp",
+      "bytes": 1287,
+      "sha256": "2dd4c318484b467528818199365f95c2516f076735866f82afc767c95a6a7797"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_reference_payload_copy.hpp",
+      "bytes": 1859,
+      "sha256": "b72aeeafdae774cf4fd83299b07e89e9165c491bba1373943f7afea7dd9d1857"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\native_string_duplicate.cpp",
+      "bytes": 1554,
+      "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_string_duplicate.hpp",
+      "bytes": 933,
+      "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477"
+    }
+  ],
+  "strict_TU": {
+    "first_attempt": true,
+    "terminal_chunk": "555e50",
+    "exit_code": 0,
+    "toolchain": "MSVC19.51.36244.0 Win32",
+    "flags": "/std:c++17 /O2 /Ob2 /MD /EHsc /W4 /WX /fp:strict /DWIN32 /D_WINDOWS /DNDEBUG",
+    "command": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyRecordAssignmentSource01\\compile_assignment_TU.cmd",
+      "bytes": 932,
+      "sha256": "622aeabc72880601cdd04ed705954496e51e8df9d63ba195823c04be14d05a4f"
+    },
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyRecordAssignmentSource01\\TU_compile.log",
+      "bytes": 1390,
+      "sha256": "70786c85c5c18e9f695986823ea2de75f1e76626ca32352d9cb08f7223069992"
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyRecordAssignmentSource01\\native_scene_property_record_assignment.obj",
+      "bytes": 2900,
+      "sha256": "81a0e42f7265dd466d76e0f364e82802c424a78660277656744769876dea5dfb"
+    },
+    "whole_COFF": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyRecordAssignmentSource01\\complete_assignment_COFF.DATA.json",
+      "bytes": 42962,
+      "sha256": "d92d62ab23450b961458f4f635860becc12bd69b83f6b8607e3a77f1e9a66e31"
+    },
+    "emitted_functions": 5,
+    "section_bytes": 466,
+    "instruction_bytes": 415,
+    "instructions": 135,
+    "table_bytes": 48,
+    "padding_bytes": 3,
+    "relocations": 18,
+    "normal_CFG_unknown_edges": 0,
+    "physical_order": {
+      "tag_read": 11,
+      "unsigned_guard": 29,
+      "tag6_and_invalid_return": 352,
+      "Type2_free_clear_call": 107,
+      "Type2_source_pointer_reread": 124,
+      "Type2_duplicate_call": 135,
+      "Type2_store": 157,
+      "Type7_ordered_pairs": [
+        [
+          216,
+          244
+        ],
+        [
+          256,
+          284
+        ],
+        [
+          296,
+          324
+        ]
+      ],
+      "Type3_byte_read": 169,
+      "Type3_byte_write": 176
+    }
+  },
+  "worker_required_normal_build": {
+    "started_chunk": "c0c0a6",
+    "session_id": 93544,
+    "natural_terminal_chunk": "9e37e3",
+    "exit_code": 0,
+    "command": "./scripts/build.ps1",
+    "configured_tests_passed": 2,
+    "configured_tests_total": 2,
+    "tests": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyRecordAssignmentSource01\\normal_build.log",
+      "bytes": 3006,
+      "sha256": "ac81af1f09099eda63aff615cdf8a775067697e146428120976b816bfaea70b6"
+    },
+    "assignment_and_leaf_TUs_registered_in_this_build": false,
+    "existing_warning": "Unrelated LNK4006 spawn_request_id_matches duplicate from lua_binding_spawn/lua_spawn_new; build exit0."
+  },
+  "independent_reviews": {
+    "static": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholeRecordAssignmentIndependentReview01\\complete_static_review.DATA.json",
+      "bytes": 66473,
+      "sha256": "6e1bf891f3d92f884c2541882f9bf6d34b56908e956979ee936437e19972da49"
+    },
+    "prelaunch": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholeRecordAssignmentIndependentReview01\\prelaunch_source_review.DATA.json",
+      "bytes": 2746,
+      "sha256": "91eacc3c7524799386d19f28981946f587878baa138215c9add2c4d751c9eaae"
+    },
+    "final_process_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholeRecordAssignmentIndependentReview01\\actual_process_review.DATA.json",
+      "bytes": 21025,
+      "sha256": "23b9c4555ff534535b9d1763d9937d12d0a40a06a7ac9430f7330605d6915079"
+    },
+    "compact_complete_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholeRecordAssignmentIndependentReview01\\compact_review.DATA.json",
+      "bytes": 5361,
+      "sha256": "22a2b196a1292a07bc7bbff4c2c79fbc0a11ff477616f6a401a62c3c592ddb92"
+    },
+    "complete_review_family_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholeRecordAssignmentIndependentReview01\\family_receipt.DATA.json",
+      "bytes": 1434,
+      "sha256": "cf0fc2222c041a6b147b4d7b7153e406da929ac39abae9f8940ee313e7902b87"
+    },
+    "ownership_contract_review": {
+      "status": "PASS, no blockers",
+      "evidence": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyRecordAssignmentOwnershipReview01\\compact_ownership_review.DATA.json",
+        "bytes": 18357,
+        "sha256": "c61fb43b45e7eda32d65df55b204baa005d8d1791b8660798c133a602578024a"
+      },
+      "actual_read_tools": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyRecordAssignmentOwnershipReview01\\original_ownership_review_tools.DATA.json",
+        "bytes": 2863,
+        "sha256": "77e3c8735654560a8ae0cece2b5a5994aefea7b32ffa6d0b3c9755749859fd1b"
+      },
+      "family_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyRecordAssignmentOwnershipReview01\\family_receipt.DATA.json",
+        "bytes": 1414,
+        "sha256": "6a56a675f485311c132c6f23d3c1cea9b4d517fac0c343002fd3f42637ac2a41"
+      },
+      "direct_inputs_stable": 13,
+      "author_report_excluded_to_avoid_receipt_cycle": true
+    },
+    "status": "PASS; no concrete Source, ownership or machine-code blocker",
+    "terminal_attribution": "Reviewer explicitly attributes first compile/link 5ade85/0 and Source process e20a6a/0 to the producer original tool metadata alongside the actual saved process receipt; reviewer did not replay."
+  },
+  "focused_probe": {
+    "source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyRecordAssignmentSource01\\assignment_source_probe.cpp",
+      "bytes": 9850,
+      "sha256": "4fe5cc06ca699547b38ebb04fcd7da03d1dd57f5dbaba8bbb31610977f33dad5"
+    },
+    "first_compile_link_terminal": "5ade85",
+    "compile_link_exit": 0,
+    "compile_link_wall_seconds": 6.7851117,
+    "command": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyRecordAssignmentSource01\\compile_link_probe.cmd",
+      "bytes": 2105,
+      "sha256": "fb070547d3b83b467196622ea27dd5a2964034c96aa0b2a53d60c07a646b634e"
+    },
+    "compile_link_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyRecordAssignmentSource01\\probe_compile_link.log",
+      "bytes": 14256559,
+      "sha256": "ea2665e1c2c3e40366fda4378c16e44a040153983561cd502516682f229a7496"
+    },
+    "current_build_inputs": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyRecordAssignmentSource01\\completed_build_inputs.DATA.json",
+      "bytes": 9084,
+      "sha256": "7f8227726c4aa61d332bb0c2840ed62fb9e1ce7f185e2c9b3b0f189b4bbdf3b3"
+    },
+    "leaf_current_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyRecordAssignmentSource01\\assignment_storage_current.obj",
+      "bytes": 2885,
+      "sha256": "5e0ae6baa77ed5bbd424e9f17cee80082d0d3abf5d635730e66489f498e60d69"
+    },
+    "whole_leaf_evidence": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyRecordAssignmentSource01\\complete_leaf_COFF.DATA.json",
+      "bytes": 29146,
+      "sha256": "4495ab62bf5d1c9c4935deacd8230772106028a48080e41d218934849daaf8b9"
+    },
+    "fresh_leaf_function_code_CFG_relocations_equal_accepted_leaf": true,
+    "whole_linked_evidence": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyRecordAssignmentSource01\\linked_assignment_evidence.DATA.json",
+      "bytes": 24490,
+      "sha256": "e08b42f1f65d73b674a3ceaef628cf821d0d2dc52bd972f1b332eb1dddfdf43c"
+    },
+    "retained_functions": 4,
+    "retained_section_bytes": 686,
+    "retained_instruction_bytes": 635,
+    "retained_instructions": 197,
+    "actual_discarded_helpers": 6,
+    "actual_process_count": 1,
+    "terminal_chunk": "e20a6a",
+    "actual_PID": 26076,
+    "exit_code": 0,
+    "stderr_bytes": 0,
+    "actual_process_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyRecordAssignmentSource01\\actual_Source_probe_process.DATA.json",
+      "bytes": 19561,
+      "sha256": "727b72bdd4d2e1c3597996fb4e9b03bdd84cd287194bcb90add7d015e2b992b2"
+    },
+    "stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyRecordAssignmentSource01\\probe_stdout.json",
+      "bytes": 639,
+      "sha256": "7893c69dee843ffaf7d381af8fb8b3e517dc4b4aa70dceaf3acba9b9ac78748f"
+    },
+    "selected_input_count": 20,
+    "selected_inputs_and_stamps_stable": true,
+    "actual_observations": {
+      "schema": "whole_assignment_focused_Source_probe_v1",
+      "checks_passed": true,
+      "string": {
+        "source": "00d30790",
+        "destination": "00d30350",
+        "old": "00d22458",
+        "new": "00d22458",
+        "source_payload": "00d22438"
+      },
+      "array": {
+        "source": "00d30410",
+        "destination": "00d30350",
+        "old": "00d2df20",
+        "new": "00d2df10",
+        "source_payload": "00d2de80"
+      },
+      "selected_snan": {
+        "input": "7f812345",
+        "result": "7fc12345",
+        "reference": "7fc12345",
+        "cw": "0f7f",
+        "status": "0001",
+        "reference_status": "0001",
+        "mxcsr": "00001f80"
+      },
+      "ordinary_cleanup_completed": true,
+      "source_and_untouched_destination_bytes_preserved": true,
+      "independent_per_free_or_leak_claim": false,
+      "Original_Native_ABI_EH_game_claim": false
+    },
+    "scope": "Exactly three whole calls: owned string replacement, owned Type8 byte-array replacement, one selected SNaN/CW case. No matrix or unrelated arm expansion.",
+    "limitations": "Static code supports ordering; no independent dynamic per-free/event trace, leak counter, full transitive provider or loaded-DLL/export audit."
+  },
+  "claims": {
+    "ordinary_whole_Source_implemented": true,
+    "strict_whole_TU_tested": true,
+    "focused_Source_runtime_passed": true,
+    "new_TU_registered_library_verified": false,
+    "Original_Native_executed": false,
+    "Original_ABI_compatible": false,
+    "Original_EH_OOM_compatible": false,
+    "per_free_or_leak_counter": false,
+    "game_validated": false
+  },
+  "new_permanent_tests": 0,
+  "integrator_owned": [
+    "shared CMake registration",
+    "name/reconstruction ledgers",
+    "Ghidra annotations/save",
+    "current registered-library build and review"
+  ],
+  "history": [
+    "Own accepted leaf commit retained while merging current Main, then exact new address/file lease applied.",
+    "Production Source first strict compile and whole COFF inspection passed without changes.",
+    "Before first probe hash/review/compile, fixture lifetime include/class spelling was corrected to the existing actual recursive-lifetime API.",
+    "Probe first compile/link, current fresh-leaf whole comparison, whole linked inspection and sole process all passed on first attempts.",
+    "No Original target or completed family replay; no new broad tests or production state reset.",
+    "Independent U whole static/linked and actual-process review sealed PASS; independent W complete ownership/contracts review sealed PASS. Final report adds their pinned closed receipts; production/header/probe unchanged since their first accepted compilation."
+  ]
+}
