@@ -16,7 +16,7 @@
     "00c61be0",
     "00c61be8"
   ],
-  "status": "actual_storage_complete_source_annotated_exported_build_pending",
+  "status": "actual_storage_complete_source_combined_strict_win32_ctest_and_compiled_integer_cleanup_checked",
   "routines": [
     {
       "address": "00469980",
@@ -237,17 +237,51 @@
     "preserve_names_and_comments": true,
     "locked_apply_saved": "passed; tools/ghidra_annotate.py --apply; local/ghidra-annotations-20261015T195118Z.json;5 applied changes with prior values recorded; project saved",
     "refreshed_exports": "passed; all5 owned functions --force through verified bsp target",
-    "readback": "local/goal_oct15_scene_map_pair_after_comments.json;5 previous names and comment prefixes preserved"
+    "readback": "local/goal_oct15_scene_map_pair_after_comments.json;5 previous names and comment prefixes preserved",
+    "final_locked_apply_saved": "passed;local/ghidra-annotations-20261015T195841Z.json;5 prior-value receipts,5 applied,project saved; all5 owned exports refreshed",
+    "final_readback": "local/goal_oct15_scene_map_pair_final_comments.json; all5 initial names/comments retained; final combined-build/compiler evidence appended"
   },
   "verification": {
     "live_project_program_guard": "bsp.py Client.verify before every live batch; bsp,/battlestationspacific.exe,x86:LE:32:default,image00400000",
     "live_boundaries_bytes_assembly_xrefs_caller_setup_and_eh": "passed",
-    "verify_report_calls": "passed;13 native rows checked,0 failed; markdown53 addresses,0 failed,0 unchecked,0 warnings",
-    "strict_win32_build_and_existing_ctest": "pending",
+    "verify_report_calls": "passed;13 native call/tail-jump rows,0 failed; markdown56 addresses,0 failed,0 unchecked,0 warnings",
+    "strict_win32_build_and_existing_ctest": "passed in primary combined scripts/build.ps1 Release at026da884ef927effb85f118488357a83634eff48;all3 existing CTests pass8.72s; exact Source/header byte identity verified",
     "diff_check": "passed",
     "new_tests_added": false,
     "packet_native_differential": "not run",
-    "game_validation": "not run"
+    "game_validation": "not run",
+    "worker_local_build": "canceled duplicate fresh worker run after primary combined pass; not a worker-local build pass",
+    "verify_seeds": "passed;all8 seed bodies match installed disk; no new pair differential claimed",
+    "combined_build": {
+      "revision": "026da884ef927effb85f118488357a83634eff48",
+      "command": "scripts/build.ps1",
+      "configuration": "Release MSVC Win32 /W4 /WX /fp:strict",
+      "parallel_only_addition": "CL=/MP4",
+      "log": "J:/PROG/battlestations-pacific-decompile-goal_oct15_integrator/local/goal_oct15_scene_map_combined_build.log",
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "result": "3/3 pass,0 fail,total8.72s",
+      "pair_native_differential": "not run; existing native_math_differential exercises other routines",
+      "source_sha256": "76428fe198cb7123f63f733a1d2d217d40d47f87a2daf2d653e4f96ed5db5f4e",
+      "header_sha256": "188990893827b91e7bb2d642087c945408a2d95e3a339e4d20a60687f14a9cab",
+      "exact_source_header_identity_checked": true
+    },
+    "compiled_object": {
+      "path": "J:/PROG/battlestations-pacific-decompile-goal_oct15_integrator/build/win32/bsp_core.dir/Release/native_scene_record_map_pair.obj",
+      "sha256": "6b2a4efc806e469b44de7e07f606a152ffdd97ad59e4a6ceda7e5b90c340f631",
+      "bytes": 5784,
+      "inspection": "dumpbin14.51.36244.0 /DISASM /SYMBOLS /RELOCATIONS",
+      "receipt": "local/goal_oct15_scene_map_pair_object.txt",
+      "integer_suffix": "both public copy wrappers: raw header dependency+10,late source DWORD8B4E08+15,destination DWORD894F08+1B;36-byte cdecl wrappers; no x87/SSE scalar conversion in object",
+      "constructor_captures": "key.data+34,key.length+37 before output clear+3F/+45; data saved in private slot,lengthESI; captured normal source/return retained",
+      "completion_and_normal_return": "mapped DWORD store+91; state bytes+94 parameter0/output1 before raw getter+A2/sized return+AF",
+      "cpp_unwind": "constructor unwind action dispatches RAII destructor; parameter flag/current key call+37 before output flag; output flag clear+4D before current output call+51; EH metadata relocation __std_terminate",
+      "source_abi": "__cdecl copies stack(dest,source,context),ctor stack(dest,mappedDWORD,actual_parameter_cell,context),EAX destination,RET; separate from original thiscall/fastcall RET4/RET8 and native EH frames",
+      "native_private_frame_identity": false
+    }
   },
   "limits": [
     "Whole actual storage Source at accepted concrete raw string/pool and valid access/ownership domains; new C++ context/parameter-cell ABI.",
@@ -261,5 +295,12 @@
     "private_unwind_scopes": 2,
     "unwind_bytes": 33,
     "unwind_instructions": 9
-  }
+  },
+  "corrections": [
+    {
+      "was": "prior pair constructor evidence described deep copy and consuming the by-value key without separating capture/current-cell schedules",
+      "is": "normal resize/guard/copy-source/return use pre-clear captures; initial unwind uses CURRENT actual key and post-completion normal-return failure uses CURRENT output without parameter retry",
+      "evidence": "00469FEA/FEEnativecaptures,0046A00Fcapturedguard,0046A03DcapturedEDIreturn,FuncInfoD892A0/unwindmapD89290/C61BE0/C61BE8"
+    }
+  ]
 }

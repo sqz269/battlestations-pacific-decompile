@@ -39,6 +39,8 @@ conversion or x87 operation. A prior destination buffer is abandoned even on
 identity. Initial construction failure adds no output cleanup. Aliases must
 remain within the accepted live-memory/ownership domain of the header helper;
 the late trailing-word load observes completed header/allocation/copy work.
+Each native byte-copy transfer pushes three DWORD arguments and uses
+`ADD ESP,0Ch` at `004699B8`, `00469A58`, or `0046A020` to discard them.
 
 ## By-value constructor and cleanup
 
@@ -130,3 +132,31 @@ standalone native funclet entries, original FH3/SEH ABI, binary replacement,
 packet-native differential execution, caller adoption, or game validation is
 claimed. The accepted raw helpers omit a zero-count host copy after reading
 the same fields. No source/overflow/null validation or rollback is added.
+
+Primary combined `scripts/build.ps1` Release passed at
+`026da884ef927effb85f118488357a83634eff48`, including `reconstructed_math`,
+`native_math_differential`, and `tool_tests` (3/3, 8.72 seconds). The math
+differential suite does not execute these pair routines. This worker's exact
+source/header bytes match the combined build. The duplicate worker build was
+canceled after that pass; no worker-local build pass is claimed. `CL=/MP4` is
+the parallel-only build addition.
+
+The actual combined CMake object was inspected with `dumpbin /DISASM /SYMBOLS
+/RELOCATIONS`. Both public pair-copy wrappers invoke the raw header dependency
+at relative `+10`, THEN emit `+15: 8B 4E 08` (load source DWORD) and
+`+1B: 89 4F 08` (store destination DWORD). No x87 or SSE scalar-conversion
+instruction occurs in the object. The consuming constructor captures the key
+data at `+34` and length at `+37`, before output clearing at `+3F`/`+45`.
+Its captured data remains in a private slot and captured length in ESI across
+resize/copy; normal return still uses those values. It publishes the mapped
+word at `+91`, then `+94` sets parameter-armed=false/output-completed=true
+before the normal raw getter at `+A2` and sized return at `+AF`.
+
+The emitted constructor unwind action dispatches to `PairConstructionUnwind`.
+Its destructor checks parameter-armed before the current-key destructor at
+relative `+37`, then checks output-completed and clears it at `+4D` before
+the current-output destructor at `+51`. Its EH metadata has a relocation to
+`__std_terminate`, preserving the qualified second-failure C++ boundary. This
+is focused compiler evidence, not a packet-native runtime differential or a
+claim that the emitted FH3 frame matches the original game frame. Object
+SHA-256: `6b2a4efc806e469b44de7e07f606a152ffdd97ad59e4a6ceda7e5b90c340f631`.
