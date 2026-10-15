@@ -1,0 +1,212 @@
+{
+  "schema": "native_property_library_node_pool_cc12_v1",
+  "status": "complete_ordinary_Source_worker_build_passed",
+  "addresses": [
+    "00CC8A70",
+    "00CD9270"
+  ],
+  "original_complete_functions": [
+    {
+      "address": "00CC8A70",
+      "end": "00CC8A85",
+      "bytes": 22,
+      "instructions": 6,
+      "behavior": "00411050(E17540), real atexit(CD9270), return actual registration status; no Original once guard or rollback"
+    },
+    {
+      "address": "00CD9270",
+      "end": "00CD9279",
+      "bytes": 10,
+      "instructions": 2,
+      "behavior": "same E17540 owner tail-destroy through00410A60"
+    }
+  ],
+  "Original_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\PropertyLibraryPoolLifecycleOriginal01\\compact_Original_review.DATA.json",
+    "bytes": 2967,
+    "sha256": "48d975abe0dfa3c9075ba0baad147b2f1baeca2f7793a895bd9d3f2da3fafac3"
+  },
+  "current_Source_files": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\include\\bsp\\native_enum_node_pool.hpp",
+      "bytes": 4744,
+      "sha256": "ec46e03a36a544294e35742d1d7df3c8c8d5f539eb827bc01499a324db662bcb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\src\\native_enum_node_pool.cpp",
+      "bytes": 12129,
+      "sha256": "0036e542a353fc8ce0a41ea381aad47fdbdf1fa868dea1b1cc79f76e4e980465"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\include\\bsp\\game_native_physical_pool.hpp",
+      "bytes": 5193,
+      "sha256": "f969d8764b353f5f000b33849208a5282cc6e7dc0d9b182e4c77304fd3e29e8b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\src\\game_native_physical_pool.cpp",
+      "bytes": 4479,
+      "sha256": "6c4ec638928e4309046c399ca70c9526d51220849096fdaf4d2cc4a0a2d64311"
+    }
+  ],
+  "API": [
+    {
+      "name": "bind_static_native_property_library_node_pool_00e17540",
+      "role": "Bind actual owner and common E188B4 list once before startup; CE37A4/410CD0 virtual binding precedes pointer publication"
+    },
+    {
+      "name": "initialize_static_native_property_library_node_pool_00cc8a70",
+      "role": "Whole ordinary wrapper: construct actual bound pool, then real std::atexit matching callback; pass through status"
+    },
+    {
+      "name": "destroy_static_native_property_library_node_pool_00cd9270",
+      "role": "Whole ordinary callback destroys same bound pool/list once after payload retirement"
+    },
+    {
+      "name": "GameNativePhysicalPoolProcess::initialize_property_library_node_pool_once_00cc8a70",
+      "role": "Explicit one-attempt Source policy; state set before binding; real return cached even nonzero; thrown attempt never retried"
+    },
+    {
+      "name": "GameNativePhysicalPoolProcess::property_library_node_pool_storage_00e17540",
+      "role": "Guarded borrowed mutable pointer to same canonical owner only after startup returned"
+    }
+  ],
+  "composition": {
+    "owner": "distinct aligned 0x38 Source cell for E17540; 0x14 slots",
+    "common_list": "existing canonical E188B4",
+    "unchanged_generic_algorithms": true,
+    "unchanged_E175B0_sibling_binding": true,
+    "old_fields_position_preserved": true,
+    "fields_appended": true,
+    "compiled_process_offsets": {
+      "E17540_cell": 272,
+      "E17540_mutex": 328,
+      "E17540_startup_state": 376,
+      "E17540_registration_status": 380,
+      "existing_list": 60,
+      "existing_E175B0_cell": 160
+    },
+    "synchronization": "Externally serialize all shared-list initialization/trim/teardown; separate startup mutexes do not establish cross-owner list concurrency",
+    "lifetime": "Canonical process exists before explicit pool callback registrations. Retire mapped bags/inner records/keys/nodes and outer keys/nodes before either pool page teardown; process/list and static binding remain live through callbacks",
+    "nonzero_registration": "Initialized owner retained without automatic callback, no rollback",
+    "exceptions": "One Source attempt remains failed, no retry/reconstruction/rollback",
+    "excluded_alias_lifecycles": [
+      "00CD9F60",
+      "00CDEB50"
+    ]
+  },
+  "evidence": {
+    "finite_Source_and_order_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyLibraryNodePoolSource01\\finite_Source_and_order_review.DATA.json",
+      "bytes": 12516,
+      "sha256": "08154a3c758d9f4cd67e764f2fa8fe30d25b136a7d523cf679be48ac84163dc6"
+    },
+    "selected_complete_COFF": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyLibraryNodePoolSource01\\selected_complete_COFF02.DATA.json",
+      "bytes": 226408,
+      "sha256": "ca74b87ff4ab742cb03b422843eef84650a5ab528452b90448b2c9cab9be8172"
+    },
+    "selected_emission": {
+      "sections": 11,
+      "bytes": 1468,
+      "instructions": 339,
+      "includes": "five new APIs, affected process constructor/accessor/destructor/generated atexit thunk and both new EH fragments",
+      "code_sections_inventoried": true,
+      "selected_sections_completely_decoded": true,
+      "instructions_note": "movups/movq/xorps used for descriptor/zero initialization; no absence-of-SIMD claim"
+    },
+    "strict_compile": {
+      "original_tools": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyLibraryNodePoolSource01\\actual_strict_compile_tools.DATA.json",
+        "bytes": 2954,
+        "sha256": "92e3bbe4fb75e746abecce90862a38f04e95675aabf52e5ac98c18a6652bf0a6"
+      },
+      "first_chunk": "f403d6",
+      "original_session": 74306,
+      "terminal_chunk": "1aae49",
+      "exit_code": 0,
+      "target": "MSVC Win32",
+      "flags": "/std:c++17 /MD /O2 /Ob2 /Oy- /W4 /WX /EHsc /Gy /GL- /fp:strict /Z7",
+      "objects": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyLibraryNodePoolSource01\\native_enum_node_pool.obj",
+          "bytes": 159461,
+          "sha256": "a91183ef0af37ee7d81f85fa566108cfcd96cd522fd2dc54115c1f0c594eda76"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyLibraryNodePoolSource01\\game_native_physical_pool.obj",
+          "bytes": 338758,
+          "sha256": "04dbbade86bfbe72846947b68761e449b47ca822afd75de704363c660adc69e7"
+        }
+      ]
+    },
+    "required_worker_repository_build": {
+      "original_tools": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyLibraryNodePoolSource01\\actual_repository_build_tools.DATA.json",
+        "bytes": 2438,
+        "sha256": "184f74d6a559d2cb78d0a5b80b4cd6f49f8e4a1e38a5ef99996942000004293e"
+      },
+      "log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyLibraryNodePoolSource01\\repository_build.log",
+        "bytes": 4309,
+        "sha256": "3226370d3057e7059f9aca0b68ab69f3e5fa6ab0296c4d04aea6208ede28ccf8"
+      },
+      "first_chunk": "3418e3",
+      "original_session": 14138,
+      "terminal_chunk": "41a1f9",
+      "exit_code": 0,
+      "existing_tests_passed": 2,
+      "existing_tests_total": 2,
+      "existing_tests_seconds": 86.2,
+      "registered_Main_validation": false,
+      "existing_warning": "LNK4006 spawn_request_id_matches already defined in lua_spawn_new.obj; second definition ignored (unrelated existing objects)"
+    },
+    "initial_inventory_diagnostic": "selected_complete_COFF.DATA.json retained: initial selector omitted generated process atexit thunk only; complete current02 corrects inventory without Source/object changes"
+  },
+  "independent_review": {
+    "status": "PASS",
+    "reviewer": "type5_reconstruction",
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\PropertyLibraryNodePoolIndependentReview01\\compact_review.DATA.json",
+        "bytes": 10725,
+        "sha256": "cbf28aeaf5acf05b295683b7502722af402b83560ba5ed2f0bc96c1905e39428"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\PropertyLibraryNodePoolIndependentReview01\\source_review_inputs.DATA.json",
+        "bytes": 9787,
+        "sha256": "fbbc2ce2b1f9366d06082a8dc8c2a2c627e7be1a3d118ab2d295aabd91321b8a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\PropertyLibraryNodePoolIndependentReview01\\family_receipt.DATA.json",
+        "bytes": 2106,
+        "sha256": "15a4de4ca500cd7b15d9223bc7c5e2281af666fd8c5f646c9ee213d72ffead07"
+      }
+    ],
+    "reported_actual_tool": "869044/exit0",
+    "scope": "Independent whole selected Source/COFF and Original22B6/10B2; 17 current direct inputs stable, all11 selected sections1468B339 instructions103 relocations matched, no Source correction"
+  },
+  "Root_metadata_proposals": [
+    {
+      "address": "00CC8A70",
+      "name": "initialize_static_native_property_library_node_pool_00cc8a70",
+      "kind": "whole ordinary Source wrapper; descriptive name hypothesis"
+    },
+    {
+      "address": "00CD9270",
+      "name": "destroy_static_native_property_library_node_pool_00cd9270",
+      "kind": "whole ordinary Source callback; descriptive name hypothesis"
+    }
+  ],
+  "boundaries": {
+    "new_tests": false,
+    "target_or_lifecycle_process_executed": false,
+    "populated_library_producer_admitted": false,
+    "E18560_or_string_process_changed": false,
+    "application_startup_wired": false,
+    "registered_Main_validation_pending": true,
+    "Original_register_ABI_or_private_CRT_or_EH_equivalence": false,
+    "game_validated": false,
+    "Native_qualification_credit": 0
+  },
+  "naming": "C++ names are descriptive reconstruction hypotheses, not recovered symbols"
+}

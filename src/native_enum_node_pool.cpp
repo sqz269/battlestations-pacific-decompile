@@ -276,4 +276,29 @@ void destroy_static_native_property_record_pool_00cd9260() noexcept {
         actual_static_property_record_pool_00e175b0,
         *actual_static_property_record_pool_list_00e188b4);
 }
+
+namespace {
+void* actual_static_property_library_node_pool_00e17540;
+AllocatorListDomain* actual_static_property_library_node_pool_list_00e188b4;
+} // namespace
+
+void bind_static_native_property_library_node_pool_00e17540(
+    void* actual_pool, AllocatorListDomain& actual_list) {
+    bind_native_enum_node_pool_virtual0_00ce37a4(actual_pool, actual_list);
+    actual_static_property_library_node_pool_00e17540 = actual_pool;
+    actual_static_property_library_node_pool_list_00e188b4 = &actual_list;
+}
+
+int initialize_static_native_property_library_node_pool_00cc8a70() {
+    initialize_native_enum_node_pool_00411050(
+        actual_static_property_library_node_pool_00e17540,
+        *actual_static_property_library_node_pool_list_00e188b4);
+    return std::atexit(&destroy_static_native_property_library_node_pool_00cd9270);
+}
+
+void destroy_static_native_property_library_node_pool_00cd9270() noexcept {
+    destroy_native_enum_node_pool_00410a60(
+        actual_static_property_library_node_pool_00e17540,
+        *actual_static_property_library_node_pool_list_00e188b4);
+}
 } // namespace bsp
