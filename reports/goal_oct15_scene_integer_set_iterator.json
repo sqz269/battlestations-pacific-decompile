@@ -1,0 +1,200 @@
+{
+  "packet": "goal_oct15_scene_integer_set_iterator",
+  "status": "complete_actual_raw_source_build_pending",
+  "source_ready": true,
+  "source": "src/native_scene_integer_set_iterator.cpp",
+  "header": "include/bsp/native_scene_integer_set_iterator.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_INTEGER_SET_ITERATOR.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Guarded CLI verifies expected project/program/x86/image base before every batch",
+    "annotation": "Applied under shared write lock; prior values recorded; correct library names/comments preserved; project saved and all three exports refreshed"
+  },
+  "readiness": {
+    "indexed_whole_reconstruction_before_packet": false,
+    "existing_source_search": "no owned address or related Source implementation; inventory references only",
+    "dependencies": "complete concrete accepted current-CRT provider; no stub/callback or record-map nil19h call"
+  },
+  "functions": [
+    {
+      "address": "004679f0",
+      "name": "decrement_native_scene_integer_set_iterator_004679f0",
+      "native_name_preserved": "STL_TreeIter_Dec_004679f0",
+      "source": "src/native_scene_integer_set_iterator.cpp",
+      "header": "include/bsp/native_scene_integer_set_iterator.hpp",
+      "status": "complete_actual_raw_source_build_pending",
+      "coverage": "complete_with_current_SDK_CRT_provider_qualification",
+      "native_end_inclusive": "00467a78",
+      "native_bytes": 137,
+      "original_bytes_hex": "568bf1833e007505e816ed78008b46048078110074128b40088946048078110074655ee9fbec78008b088079110075208b41088078110075128da424000000008bc88b41088078110074f5894e045ec38b400480781100751c8da424000000008b4e043b08750e8946048bd08b42048078110074eb8b4e048079110074065ee99fec78008946045ec3",
+      "native_sha256": "32811476db2312e963481196e5bf7bb16198cdb22e17e4f43b6109076e83d477",
+      "live_equals_installed": true,
+      "original_abi": "ECX actual8h iterator; RET; no defined result",
+      "source_abi": "Win32 fastcall pointer interface retains ECX/RET shape; no private CRT/frame/flags equivalence claim",
+      "uncertainty": "Returning current SDK validation provider, Original CRT/FH3/flags/private-frame/fault-address/runtime/game identity unestablished."
+    },
+    {
+      "address": "00468210",
+      "name": "decrement_native_scene_integer_set_iterator_00468210",
+      "native_name_preserved": "STL_IterWrap_00468210",
+      "source": "src/native_scene_integer_set_iterator.cpp",
+      "header": "include/bsp/native_scene_integer_set_iterator.hpp",
+      "status": "complete_actual_raw_source_build_pending",
+      "coverage": "complete_with_current_SDK_CRT_provider_qualification",
+      "native_end_inclusive": "0046821b",
+      "native_bytes": 12,
+      "original_bytes_hex": "568bf1e8d8f7ffff8bc65ec3",
+      "native_sha256": "15e4196f9290e744b251677d42c5d6dc6018461705a0015102053f20af7ac199",
+      "live_equals_installed": true,
+      "original_abi": "ECX actual8h iterator; RET; EAX same iterator",
+      "source_abi": "Win32 fastcall pointer interface retains ECX/RET shape; no private CRT/frame/flags equivalence claim",
+      "uncertainty": "Returning current SDK validation provider, Original CRT/FH3/flags/private-frame/fault-address/runtime/game identity unestablished."
+    },
+    {
+      "address": "004688f0",
+      "name": "decrement_native_scene_integer_set_iterator_004688f0",
+      "native_name_preserved": "STL_IterWrap_004688f0",
+      "source": "src/native_scene_integer_set_iterator.cpp",
+      "header": "include/bsp/native_scene_integer_set_iterator.hpp",
+      "status": "complete_actual_raw_source_build_pending",
+      "coverage": "complete_with_current_SDK_CRT_provider_qualification",
+      "native_end_inclusive": "004688fb",
+      "native_bytes": 12,
+      "original_bytes_hex": "568bf1e8f8f0ffff8bc65ec3",
+      "native_sha256": "e5ad97815f48888d94d685fcc1c29ac9381f0af91daecc4ecbf75e163e997d0e",
+      "live_equals_installed": true,
+      "original_abi": "ECX actual8h iterator; RET; EAX same iterator",
+      "source_abi": "Win32 fastcall pointer interface retains ECX/RET shape; no private CRT/frame/flags equivalence claim",
+      "uncertainty": "Returning current SDK validation provider, Original CRT/FH3/flags/private-frame/fault-address/runtime/game identity unestablished."
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "004679f8",
+      "native": "00bf6713",
+      "function": "004679f0",
+      "kind": "call"
+    },
+    {
+      "address": "00467a13",
+      "native": "00bf6713",
+      "function": "004679f0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00467a6f",
+      "native": "00bf6713",
+      "function": "004679f0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00468213",
+      "native": "004679f0",
+      "function": "00468210",
+      "kind": "call"
+    },
+    {
+      "address": "004688f3",
+      "native": "004679f0",
+      "function": "004688f0",
+      "kind": "call"
+    },
+    {
+      "address": "0046acd0",
+      "native": "004679f0",
+      "function": "0046ac50",
+      "kind": "call"
+    }
+  ],
+  "schedule": {
+    "initial_owner_failure_may_return": true,
+    "node_loaded_after_initial_handler": true,
+    "sentinel_right_published_before_validation": true,
+    "rightmost_left_subtree_publish_once": true,
+    "ascent_intermediate_node_stores": true,
+    "ascent_final_check_uses_current_node": true,
+    "tail_failure_does_not_publish_captured_parent": true,
+    "wrappers_return_captured_input": true
+  },
+  "dependency": {
+    "source": "src/native_invalid_parameter_noinfo_call.cpp",
+    "symbol": "invoke_native_invalid_parameter_00bf6713",
+    "qualification": "Existing exact owned Source schedule over real current-SDK _invalid_parameter_noinfo, not Original private CRT policy."
+  },
+  "caller_evidence": {
+    "insertion": "0046AC50 stores selectedESI atESP+14h, actual ownerEDI atESP+10h, LEAECX=ESP+10h; CALL atACD0. After return reloads currentnode fromESP+14h then currentkey+0Ch, ignoresEAX; selectedESI remains insertion parent.",
+    "wrappers": "Both preserve incomingECX inESI, call core with unchangedECX, return capturedESI inEAX; no live incoming xrefs to either wrapper",
+    "boundaries": "live proto confirms ACD0 belongs0046AC50..0046AD08; wrapper sites belong their own12B bodies"
+  },
+  "layout_evidence": "004681B0 actual14h producer links0/4/8,key0Ch,color10h,nil11h. Whole137B core has same48-op schedule as accepted004678F0 with nil11h instead19h; no gaps, two executed7B LEAESP no-ops included.",
+  "validation": {
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "original_live_and_installed_bytes_match": true,
+    "complete_executed_bytes": 161,
+    "original_body_instruction_counts": [
+      48,
+      6,
+      6
+    ],
+    "report_calls": "6 native transfer rows checked,0failed:4CALL and2typed tailJMP",
+    "build": "pending",
+    "existing_tests": "pending",
+    "new_tests": 0,
+    "Original_ABI_compatible": false,
+    "new_entry_native_differential": false,
+    "game_validated": false,
+    "application_adoption": false,
+    "documentation_claim_check": "9addresses cited,0failed,0unchecked,0warnings",
+    "cmake_registration": "Current owner/queue checked unleased; unique Source line appended without exclusive registry lease"
+  },
+  "limits": [
+    "Complete raw Source including invalid-owner and invalid-tail paths, not a positive-only projection",
+    "Concrete currentSDK invalid-parameter policy qualified; native encoded handler/debugger/Watson/FH3 delivery not reproduced",
+    "External alias-sensitive reloads/stores preserved; private frame/return-slot/mangling/flags/fault-address/binary identity not established",
+    "Valid backing for each taken raw access required; no added validation/cycle checking/rollback",
+    "Build and existing tests do not establish direct native differential, application adoption or game proof"
+  ],
+  "annotation_history": [
+    {
+      "address": "004679f0",
+      "before": {
+        "address": "004679f0",
+        "function_name": "STL_TreeIter_Dec_004679f0"
+      },
+      "after": {
+        "address": "004679f0",
+        "name": "STL_TreeIter_Dec_004679f0",
+        "evidence": "Complete137B actual8h iterator /14hnode nil11h Source in src/native_scene_integer_set_iterator.cpp; correct library name preserved. Returning concrete BF6713; owner failure continues with CURRENT node reload; endright publication before nilcheck; left-right descent; live ascent intermediate stores and currentnode finalcheck; two report tail exits do not publish capturedparent. Full body/live callers/original161B installedPE evidence; build pending; currentCRT/privateframe/binary/game limits. docs/GOAL_OCT15_SCENE_INTEGER_SET_ITERATOR.md"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00468210",
+      "before": {
+        "address": "00468210",
+        "function_name": "STL_IterWrap_00468210"
+      },
+      "after": {
+        "address": "00468210",
+        "name": "STL_IterWrap_00468210",
+        "evidence": "Complete12B actual8h iterator /14hnode nil11h Source in src/native_scene_integer_set_iterator.cpp; correct library name preserved. Capture originalECX, call actual nil11h decrement679F0, return same originaliteratorEAX, plainRET. Full body/live callers/original161B installedPE evidence; build pending; currentCRT/privateframe/binary/game limits. docs/GOAL_OCT15_SCENE_INTEGER_SET_ITERATOR.md"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "004688f0",
+      "before": {
+        "address": "004688f0",
+        "function_name": "STL_IterWrap_004688f0"
+      },
+      "after": {
+        "address": "004688f0",
+        "name": "STL_IterWrap_004688f0",
+        "evidence": "Complete12B actual8h iterator /14hnode nil11h Source in src/native_scene_integer_set_iterator.cpp; correct library name preserved. Capture originalECX, call actual nil11h decrement679F0, return same originaliteratorEAX, plainRET. Full body/live callers/original161B installedPE evidence; build pending; currentCRT/privateframe/binary/game limits. docs/GOAL_OCT15_SCENE_INTEGER_SET_ITERATOR.md"
+      },
+      "status": "applied"
+    }
+  ]
+}
