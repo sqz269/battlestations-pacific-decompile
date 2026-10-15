@@ -1,0 +1,369 @@
+{
+  "schema": "bsp.cc12.property_hash_iterator.primary_readiness.v1",
+  "Source_ready": true,
+  "Source_implemented": false,
+  "Source_admission_credit": 0,
+  "packet": "cc12_scene_property_hash_iterator_008eeb10_008eeb60",
+  "output_files": [
+    "include/bsp/native_scene_property_hash_iterator.hpp",
+    "src/native_scene_property_hash_iterator.cpp",
+    "docs/NATIVE_SCENE_PROPERTY_HASH_ITERATOR_CC12.md",
+    "reports/native_scene_property_hash_iterator_cc12.json"
+  ],
+  "contract": "Two distinct whole entries: Begin008EEB10 [008EEB10,008EEB51)65B22; Next008EEB60 [008EEB60,008EEBBC)92B33. ECX actual writable12B iterator: table0/current4/index8; unused incoming EDX/no stack args/plainRET. Begin has no common EAX semantic return; Next returns full DWORD0/1 by rereading current. Table count/test+4, heads+8/index*4, node link+C. Preserve captured versus reloaded table/index/current values, every DWORD load/store and branch schedule. Begin count-zero clears current only and leaves index untouched; its original scan can read head64. Next initially-null path rereads current without table/index; link/success paths preserve index publication and final current reload; unsigned DWORD arithmetic and no head64 scan load. Actual caller-owned aligned iterator initialized only at table word; actual accepted raw61 bag+4/enum owner+4 map with genuine property E175B0 or symbol E17578 nodes, preserved allocator+10 and whole producer/context/process/list/pool/generation/ownership contracts. No fabricated sentinel from map+108 owner metadata; authentic coherent nonempty map stops at a real nonnull head. Disjoint valid iterator/map/nodes/private frames, finite stable unshared acyclic chains, no faults/alias/reentry/concurrency/trim/teardown. No direct providers/calls/dispatch/lifetime action or container/STL substitution. Other00466BB0/C00 byte-identical instances provide evidence only, no address credit. No Original full flags/register/privateCRT/EH/ABI, caller/key-list/parser/startup/runtime/game claim. String-list clear/append/growth and optional sort callback remain separate blockers.",
+  "whole_Original_and_contract_primary_review": true,
+  "sealed_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\ScenePropertyBagIteratorReadiness01\\family_receipt.json",
+    "bytes": 27952,
+    "sha256": "4e15ddbfa23d24dfdf71dfa88772b63a9a8fdc308ffb791fd5d019404d260fc0"
+  },
+  "primary_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_hash_iterator_readiness_primary_20261015\\verified_inputs.DATA.json",
+    "bytes": 27725,
+    "sha256": "db0c827a64c37df061a8249b62a8468f5fc7d50b62d5dec1ad815310a45e24b6"
+  },
+  "readiness_verdict": {
+    "schema": "bsp.cc12.scene_property_hash_iterator.readiness.v1",
+    "status": "SOURCE_READY_BOUNDED_ORDINARY_RAW_ITERATOR_PAIR",
+    "Source_ready": true,
+    "Source_implemented": false,
+    "Source_admission_credit": 0,
+    "own_uuid": "01a141e7-20d9-7ac0-ab53-2c6d976cb469",
+    "Main_HEAD": "d5703f1b36955ad391abe4ba42e62ad660695528",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "whole_targets": [
+      {
+        "address": "008EEB10",
+        "end_exclusive": "008EEB51",
+        "bytes": 65,
+        "instructions": 22,
+        "sha256": "b9167301cb1875e13c9fd0c9075479b79b62210969d8a67cd5f3108c2aeaff2c",
+        "live_disk_equal": true,
+        "peer_address": "00466BB0",
+        "peer_full_bytes_literal_equal": true,
+        "peer_Source_not_counted_as_this_address": true
+      },
+      {
+        "address": "008EEB60",
+        "end_exclusive": "008EEBBC",
+        "bytes": 92,
+        "instructions": 33,
+        "sha256": "3609759b0297a57d1d5234c1cad5899352502be03a0dbbcc6973a0768a7e91a5",
+        "live_disk_equal": true,
+        "peer_address": "00466C00",
+        "peer_full_bytes_literal_equal": true,
+        "peer_Source_not_counted_as_this_address": true
+      }
+    ],
+    "total_new_candidate_bytes": 157,
+    "total_new_candidate_instructions": 55,
+    "Original_ABI": {
+      "receiver": "ECX actual writable iterator12",
+      "EDX": "incoming unused",
+      "stack_arguments": 0,
+      "return_transport": "two plainRET exits per body",
+      "begin_EAX": "No common semantic result; countzero preserves incoming bits, otherwise selectedindex",
+      "next_EAX": "full zero-extended0/1",
+      "callee_saved": "Begin EDI saved/restored on scan path; EBX/ESI/EBP untouched; Next no callee-saved writes",
+      "ordinary_interface_does_not_prove": "flags/volatile residual/privateframe/implicitstackalias/fullbinaryABI"
+    },
+    "actual_layout": {
+      "iterator": {
+        "table": 0,
+        "current": 4,
+        "index": 8,
+        "bytes": 12
+      },
+      "map": {
+        "test_word": 4,
+        "first_head": 8,
+        "head_stride": 4,
+        "normal_heads": 64,
+        "raw_bytes": 264
+      },
+      "node": {
+        "link": 12,
+        "untouched_key": [
+          0,
+          4
+        ],
+        "untouched_mapped": 8,
+        "untouched_allocator": 16,
+        "actual_slot_bytes": 20
+      }
+    },
+    "begin_order": [
+      "capture table once from iterator+0",
+      "compare table+4 before touching index",
+      "zero test word: store current+4=0 only; do not touch index",
+      "nonzero: store index+8=0 then read head0",
+      "empty head: reload index each iteration; compare unsigned>=64 before increment; increment, publish index, then read captured table head[index]",
+      "head64 read remains possible; no count-based repair or extra guard",
+      "reload index and reread selected head through captured table; publish current+4"
+    ],
+    "next_order": [
+      "capture current+4; if nonnull capture node+0xC",
+      "nonnull link: publish current then reload actual current for return",
+      "null link: increment actual index in memory then reload index",
+      "when index<64 capture scan table once",
+      "scan with cached index; empty head increments, compares against64, publishes index; no head64 read in scan",
+      "reload actual index after scan",
+      "index>=64: clear current; otherwise reload CURRENT table, read selected head and publish current",
+      "every return XOR full EAX, compare actual reloaded current, SETNZ AL, yielding full0/1"
+    ],
+    "provider_closure": {
+      "direct_calls": [],
+      "indirect_calls": [],
+      "missing_direct": [],
+      "globals": [],
+      "allocation": false,
+      "string_provider": false,
+      "context_constructor": false
+    },
+    "callers": [
+      {
+        "address": "008F0D80",
+        "end_exclusive": "008F0DD2",
+        "bytes": 82,
+        "instructions": 29,
+        "sha256": "64f77f885e114f72425380c0ec859d7f0589bbe711a93a0916c8af72587fcb27",
+        "calls": [
+          {
+            "site": "008F0D8E",
+            "target": "008EEB10"
+          },
+          {
+            "site": "008F0DA9",
+            "target": "008EEB60"
+          }
+        ]
+      },
+      {
+        "address": "008F3270",
+        "end_exclusive": "008F3361",
+        "bytes": 241,
+        "instructions": 83,
+        "sha256": "3eabcb0a46070b34488dfa699e9e99428aaa05383aa6af8de966d1326aa53954",
+        "calls": [
+          {
+            "site": "008F3293",
+            "target": "0094F3E0"
+          },
+          {
+            "site": "008F32A3",
+            "target": "008EEB10"
+          },
+          {
+            "site": "008F32C7",
+            "target": "00BF681B"
+          },
+          {
+            "site": "008F32F7",
+            "target": "0041DD40"
+          },
+          {
+            "site": "008F330B",
+            "target": "00BF7680"
+          },
+          {
+            "site": "008F3324",
+            "target": "0094F270"
+          },
+          {
+            "site": "008F332D",
+            "target": "008EEB60"
+          },
+          {
+            "site": "008F3348",
+            "target": "0094F1B0"
+          }
+        ]
+      }
+    ],
+    "caller_actual_iterator_producer": {
+      "bytes": 12,
+      "table_init": "only actual owner+4 pointer is stored before Begin",
+      "current_index_not_fabricated_zero": true,
+      "enum_begin_site": "008F0D8E",
+      "enum_next_site": "008F0DA9",
+      "bag_begin_site": "008F32A3",
+      "bag_next_site": "008F332D",
+      "no_class_constructor_or_heap_owner": true
+    },
+    "concrete_producer_closure": [
+      {
+        "domain": "propertybag",
+        "producer": "initialize_native_scene_property_bag_storage_008f41a0",
+        "actual_owner_bytes": 276,
+        "map": "same bag+4 borrowed108h",
+        "publication": [
+          "insert_native_scene_property_bag_008f33f0",
+          "insert_or_replace_native_scene_property_map_008f28f0",
+          "publish_native_property_map_new_node_008f2930_fragment"
+        ],
+        "node_pool": "same initialized canonical E175B0/E188B4",
+        "node": "genuine14h unique allocated slot; real owning key0/4,mapped8,nextC,allocator+10 retained",
+        "current_process": "retained game_native_physical_pool_process guarded property_node_pool_storage_00e175b0"
+      },
+      {
+        "domain": "enumcaller",
+        "producer": "initialize_native_scene_enum_owner_008f4dd0",
+        "actual_owner_bytes": 412,
+        "map": "same enum+4 borrowed108h",
+        "publication": [
+          "insert_native_enum_symbol_word_008f2850",
+          "declare_native_enum_symbol_008f2e40"
+        ],
+        "node_pool": "DISTINCT initialized canonical E17578/E188B4",
+        "node": "same first16B layout; genuine symbol slot and owning key; no E175B0/E17540/E175E8 substitution",
+        "current_process": "retained game_native_physical_pool_process guarded enum_symbol_pool_storage_00e17578"
+      }
+    ],
+    "admission_contract": {
+      "actual_producer_provenance": true,
+      "borrow_only": "No ownership transfer or retirement; keep iterator/map/every reached node and their existing owners/bindings/generations live",
+      "storage": "aligned valid DWORD reads/writes, stable sufficient reached ranges; disjoint iterator/map/node/privateframes in conservative producer-backed domain",
+      "traversal": "finite valid acyclic unshared chains; externally serialize map/node mutation and trim; finish before clearing/retiring owners or pool teardown",
+      "native_arithmetic": "retain unsignedDWORD wrap and original bounds without added guards",
+      "countzero": "Begin clears current only; prior index not initialized or read",
+      "head64": "Begin retains raw possible head64 read. In actual owner layout map+108 is owner+10C metadata, not a real bucket. Coherent authentic map with nonzero count has a nonnull normal head; broad raw access domain must separately validate every reached access",
+      "no_substitute": [
+        "nominal projected container",
+        "phase-derived class/vtable identity",
+        "syntheticzero3DWORD iterator constructor",
+        "new owner/pool/context/startup",
+        "default/countrepair/sentinel",
+        "keycopy/free/refcount"
+      ]
+    },
+    "finite_missing_contracts_for_this_leaf": [],
+    "Astra_boundary_register_listing_repair_needed": false,
+    "four_file_Source_proposal": {
+      "kind": "proposal_only_no_Source_implementation",
+      "addresses": [
+        "008EEB10",
+        "008EEB60"
+      ],
+      "whole_bytes": 157,
+      "whole_instructions": 55,
+      "files": [
+        "include/bsp/native_scene_property_hash_iterator.hpp",
+        "src/native_scene_property_hash_iterator.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_HASH_ITERATOR_CC12.md",
+        "reports/native_scene_property_hash_iterator_cc12.json"
+      ],
+      "functions": [
+        "void __fastcall begin_native_scene_property_hash_008eeb10(void* actual_iterator12)",
+        "std::uint32_t __fastcall next_native_scene_property_hash_008eeb60(void* actual_iterator12)"
+      ],
+      "ordinary_MSVC_Win32": true,
+      "new_address_specific_bodies_required": true,
+      "Source_credit": 0,
+      "Root_registration_and_admission_separate": true,
+      "missing_direct_providers": [],
+      "Astra_repair_needed": false,
+      "leaf_provider_closure": "No calls, indirect dispatch, globals, callbacks, allocator or string provider in either complete body.",
+      "implementation_plan": "Distinct address-specific ordinary raw DWORD functions preserving all captured/current loads and stores; not forwarding address credit from other template instances."
+    },
+    "outer_unclosed": {
+      "addresses": [
+        "008F3270",
+        "008F0D80"
+      ],
+      "Source_ready_by_this_packet": false,
+      "key_list_still_missing": [
+        "actual string-list clear/append/growth/producer binding",
+        "optional0094F180 sort callback and Original empty-role binding/listing"
+      ],
+      "no_property_serialization_or_Lua_credit": true
+    },
+    "evidence": {
+      "whole": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\ScenePropertyBagIteratorReadiness01\\whole_Original_and_peer_comparison.json",
+        "bytes": 31690,
+        "sha256": "f6d614f77831034f87a85be4577ac53b1cbe29f7fd96269be40b4b22265c954c"
+      },
+      "current_Source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\ScenePropertyBagIteratorReadiness01\\current_Source_pins.json",
+        "bytes": 21282,
+        "sha256": "f98b725e295affcb2abf8e3cab842c06f227a14d4574600722dc0f1a6d03fedc"
+      },
+      "queries": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\ScenePropertyBagIteratorReadiness01\\original_raw_query_receipts.json",
+        "bytes": 122590,
+        "sha256": "668bd11b44bbd97cf3d58a2c9d155100992502f28830c7bef2c3a6895e71b400"
+      },
+      "typed": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\ScenePropertyBagIteratorReadiness01\\typed_flow.json",
+        "bytes": 26154,
+        "sha256": "24bddf3c5bfc91feb55a061dee2805ebbe56f9c612b130af085691c26eac533f"
+      },
+      "caller_typed": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\ScenePropertyBagIteratorReadiness01\\callers_typed_flow.json",
+        "bytes": 14640,
+        "sha256": "9dcad67d064a66ef6e6cd3380ebf604b19db1c7a6e5884bd84a8935130cfacdb"
+      },
+      "contract": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\ScenePropertyBagIteratorReadiness01\\readiness_contract.md",
+        "bytes": 10598,
+        "sha256": "9ee5563d90dae6e7d4b42d4e7b8a0a0a6182bcd73fdd038a8ae69e5ea40cf0ce"
+      },
+      "prior_writeall": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\ScenePropertyBagIteratorReadiness01\\prior_writeall_basis.json",
+        "bytes": 2867,
+        "sha256": "3c13c68d2a07319856dc4fa6f4ff15ce88b9c8cecff47ce0f0c56bb8fc944595"
+      }
+    },
+    "Root_later_gates": [
+      "separate Source authorization and actual address-specific implementation",
+      "independent whole-Source and actual compiler/COFF review",
+      "required existing build and relevant Source qualification",
+      "Main registration/admission and saved-analysis publication"
+    ],
+    "no_compile_build_replay_tests_probes_target_execution": true,
+    "no_Ghidra_mutation_or_listing_repair": true,
+    "exclusions": [
+      "Original privateCRT/EH",
+      "full register/flags/stack/binaryABI",
+      "faults/unwind/reentry/concurrentmutation/trim/teardown",
+      "native parser/loader/selectedpopulatedgraph",
+      "startup/runtime/gamevalidation"
+    ],
+    "scaffold_qualification": "Collector schema expected function summary body; corrected to matching full functions entry. Seven raw tool-call pairs batch multiple queries; removed an arbitrary eight-pair threshold. Original failed static collection records and versions remain. No Source, Ghidra or Original evidence changed."
+  },
+  "proposal": {
+    "kind": "proposal_only_no_Source_implementation",
+    "addresses": [
+      "008EEB10",
+      "008EEB60"
+    ],
+    "whole_bytes": 157,
+    "whole_instructions": 55,
+    "files": [
+      "include/bsp/native_scene_property_hash_iterator.hpp",
+      "src/native_scene_property_hash_iterator.cpp",
+      "docs/NATIVE_SCENE_PROPERTY_HASH_ITERATOR_CC12.md",
+      "reports/native_scene_property_hash_iterator_cc12.json"
+    ],
+    "functions": [
+      "void __fastcall begin_native_scene_property_hash_008eeb10(void* actual_iterator12)",
+      "std::uint32_t __fastcall next_native_scene_property_hash_008eeb60(void* actual_iterator12)"
+    ],
+    "ordinary_MSVC_Win32": true,
+    "new_address_specific_bodies_required": true,
+    "Source_credit": 0,
+    "Root_registration_and_admission_separate": true,
+    "missing_direct_providers": [],
+    "Astra_repair_needed": false,
+    "leaf_provider_closure": "No calls, indirect dispatch, globals, callbacks, allocator or string provider in either complete body.",
+    "implementation_plan": "Distinct address-specific ordinary raw DWORD functions preserving all captured/current loads and stores; not forwarding address credit from other template instances."
+  },
+  "Original_ABI_compatible": false,
+  "game_validated": false
+}

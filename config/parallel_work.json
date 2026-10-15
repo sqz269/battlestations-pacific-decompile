@@ -41393,7 +41393,7 @@
     {
       "id": "cc12_reference_payload_reset_008f0380",
       "done": false,
-      "state": "whole_ordinary_Source_primary_peer_accepted_Main_registration_build_pending",
+      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_build_pending",
       "source_ready": true,
       "function_addresses": [
         "008f0380"
@@ -41414,6 +41414,29 @@
       "code_revision": "8af785915947b2bb429d1f9b61d19f85bfaf7ba7",
       "primary_review": "reports/cc12_reference_payload_reset_primary_review.json",
       "Main_build_gate": "pending"
+    },
+    {
+      "id": "cc12_scene_property_hash_iterator_008eeb10_008eeb60",
+      "done": false,
+      "state": "whole_ordinary_Source_ready_no_implementation_yet",
+      "source_ready": true,
+      "function_addresses": [
+        "008eeb10",
+        "008eeb60"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_property_hash_iterator.hpp",
+        "src/native_scene_property_hash_iterator.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_HASH_ITERATOR_CC12.md",
+        "reports/native_scene_property_hash_iterator_cc12.json"
+      ],
+      "depends_on": [],
+      "readiness_report": "reports/cc12_property_hash_iterator_readiness.json",
+      "missing_provider_addresses": [],
+      "worker": "array_assignment_peer_oct15",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "contract": "Two distinct whole entries: Begin008EEB10 [008EEB10,008EEB51)65B22; Next008EEB60 [008EEB60,008EEBBC)92B33. ECX actual writable12B iterator: table0/current4/index8; unused incoming EDX/no stack args/plainRET. Begin has no common EAX semantic return; Next returns full DWORD0/1 by rereading current. Table count/test+4, heads+8/index*4, node link+C. Preserve captured versus reloaded table/index/current values, every DWORD load/store and branch schedule. Begin count-zero clears current only and leaves index untouched; its original scan can read head64. Next initially-null path rereads current without table/index; link/success paths preserve index publication and final current reload; unsigned DWORD arithmetic and no head64 scan load. Actual caller-owned aligned iterator initialized only at table word; actual accepted raw61 bag+4/enum owner+4 map with genuine property E175B0 or symbol E17578 nodes, preserved allocator+10 and whole producer/context/process/list/pool/generation/ownership contracts. No fabricated sentinel from map+108 owner metadata; authentic coherent nonempty map stops at a real nonnull head. Disjoint valid iterator/map/nodes/private frames, finite stable unshared acyclic chains, no faults/alias/reentry/concurrency/trim/teardown. No direct providers/calls/dispatch/lifetime action or container/STL substitution. Other00466BB0/C00 byte-identical instances provide evidence only, no address credit. No Original full flags/register/privateCRT/EH/ABI, caller/key-list/parser/startup/runtime/game claim. String-list clear/append/growth and optional sort callback remain separate blockers."
     }
   ],
   "snapshot_after_analysis": {
