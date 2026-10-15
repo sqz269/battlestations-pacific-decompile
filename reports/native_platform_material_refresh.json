@@ -1,0 +1,228 @@
+{
+  "packet": "cc14_platform_material_refresh",
+  "base_commit": "1da70abc5056fd25cd0636d5a9dffe25058ccc50",
+  "status": "concrete_b24dd0_b19000_same_application_domains_whole_original_source_fixture_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "new_unique_native_bodies": 0,
+  "original_abi_compatible": false,
+  "game_validated": false,
+  "source_b19000_cache_runtime_validated": true,
+  "contracts": {
+    "00b24dd0": {
+      "source": "src/platform_renderer_activation.cpp",
+      "name": "refresh_native_renderer_material_textures_00b24dd0",
+      "native_end_exclusive": "00b24e11",
+      "native_bytes": 65,
+      "original_abi": "ECX actual renderer; RET0; preserves ESI/EDI",
+      "coverage": "Same complete caller loop, existing abstract overload and concrete B19000 overload. Original cursor; reload count then data after each child. Fresh persistent per-row child frames; failure retained; replay rejected."
+    },
+    "00b19000": {
+      "source": "src/native_material_texture_refresh.cpp",
+      "name": "refresh_native_material_textures_00b19000",
+      "native_end_exclusive": "00b191ce",
+      "native_bytes": 462,
+      "original_abi": "ECX actual C4h/derived material; RET0; preserves EBP/EBX/ESI/EDI",
+      "coverage": "Existing complete normal source unchanged; now reached via concrete caller and actual application context. Whole-original/source fixture exercises Lua override/fallback/empty names and real hot-cache acquisition/reference schedules."
+    }
+  },
+  "application_binding": {
+    "api": "GameNativeRendererApplication::material_texture_refresh_context",
+    "ready_only": true,
+    "borrows": [
+      "same texture_loading.cache",
+      "same canonical owners",
+      "same current lua_publication cell",
+      "mapped original D5F0A8 profile",
+      "caller supplied current F8D438 mutable C-string and CE3A0C literal"
+    ],
+    "native_work_when_borrowed": false
+  },
+  "native_evidence": {
+    "original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "name": "caller",
+        "start": "00b24dd0",
+        "size": 65,
+        "sha256": "546c5e92b87cea6a70b1ecf786b9a6f721a51ae8e4e043eef7ee854cb622152b",
+        "live_match": true
+      },
+      {
+        "name": "child",
+        "start": "00b19000",
+        "size": 462,
+        "sha256": "efac483a85ca420e0c670bd25547e6678b8ce87779d1490f34ab2211f4899c56",
+        "live_match": true
+      }
+    ]
+  },
+  "fixture": {
+    "recipe": "local/platform_material_refresh/",
+    "linked_application_objects": 137,
+    "original_entries": [
+      "complete 65-byte B24DD0",
+      "complete 462-byte B19000"
+    ],
+    "original_relocations": [
+      "B24DD0 B19000 direct call",
+      "B19000 B1BC70 real Source Lua/string provider",
+      "B19000 41DD40 actual pooled resize",
+      "BF7680 overlap-capable CRT memmove",
+      "419CC0/BD1510 adapter over actual canonical pool",
+      "F8D434/F8D394 operands to same current application cells",
+      "Interlocked increment/decrement import cells",
+      "verified D5F0A8+64 numeric B319B0 data slot temporarily relocated to actual Source cache adapter, restored with read-only protection before Source"
+    ],
+    "actual_producers": [
+      "normal canonical application startup",
+      "B18D60 material base through real fallback cache",
+      "B18FB0 actual names",
+      "B30410 actual effect-record array growth; fixture supplies material+28 identities",
+      "cold B319B0/B30B40/B2C2D0 installed textures through actual VFS/D3DX/canonical registration"
+    ],
+    "compared_material_bytes": 392,
+    "material_rows": 2,
+    "live_count_change": [
+      1,
+      2
+    ],
+    "real_cache_calls_per_side": 3,
+    "separate_source_child_frames": 2,
+    "matched_reference_counts": {
+      "black": 3,
+      "white": 3
+    },
+    "covered": [
+      "Lua string override",
+      "nil override uses original nonempty name",
+      "lowercase actual cache lookup",
+      "different-owner replacement",
+      "same-owner assignment",
+      "empty selected name preserves old slot/count",
+      "caller live count reload",
+      "same real Lua stack balance",
+      "all actual material bytes",
+      "completed-operation replay rejection"
+    ],
+    "cleanup": [
+      "real row shrink",
+      "real material fallback/texture/name destruction",
+      "real creator terminals and canonical unregistration",
+      "original platform event host restored",
+      "isolated Lua key restored",
+      "normal raw singleton drain",
+      "worker joined",
+      "device/API final Release0"
+    ],
+    "runtime": {
+      "started": "2026-10-15T00:51:14.774236+00:00",
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner",
+      "arguments": [
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_material_refresh\\refresh_probe.exe",
+        "--game-root",
+        "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\xlive_stub.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_material_refresh\\runtime.log",
+        "--settings-personal-root",
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_material_refresh\\personal",
+        "--instance-tag",
+        "cc14-material-refresh",
+        "--affinity-core",
+        "7",
+        "--window-resolution",
+        "800x600",
+        "--present-interval",
+        "immediate",
+        "--window-monitor",
+        "smallest",
+        "--frames",
+        "2"
+      ],
+      "env": {
+        "BSP_NATIVE_FONT_PROBE": "0",
+        "BSP_NATIVE_GUI_EFFECT_PROBE": "0"
+      },
+      "input_sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_material_refresh\\refresh_probe.exe": "3aed45251e1b9c13f3110f3ed90fff037d6600292475c247b0c6c585e840ddd3",
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\xlive_stub.dll": "a4854e3dd42edd2387a6c85edcea5468a7524ff5ec645d1c6186c903bcb33c8b",
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_material_refresh\\personal\\Battlestations-Pacific\\options.txt": "ff5cf3959932cb634374b8a9bf5e6c0d04c50699cc6ba585e7fa7969f7b563d8"
+      },
+      "pid": 58616,
+      "exit_code": 0,
+      "seconds": 2.4964442999917082,
+      "runtime.log": {
+        "size": 49664,
+        "sha256": "8a62b129323014089700747c063c3ab3086e46a02ff421bae54b02f0e25675f1"
+      },
+      "console.log": {
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "observations": [
+      "CC14 material texture name=black.tga owner=12978944 COM=12871740 size=32x32 format=827611204 cold_loader=complete registered=1 retained_source=1292D2F8",
+      "CC14 material texture name=white.tga owner=12978998 COM=12871060 size=128x128 format=827611204 cold_loader=complete registered=1 retained_source=1292CFB8",
+      "CC14 material refresh PASS original=B24DD0[65]+B19000[462] source=normal_core actual_material_bytes=392 rows=2 live_count=1_to_2 cache_calls=3 source_children=2 black_refs=3 white_refs=3",
+      "CC14 material refresh cleanup PASS native record shrink, material fallback/texture/name retirement, creator releases, original platform event provider restored; shared application drain follows",
+      "native renderer after raw drain: owner=null lua=null definitions=null system=null entry_cache=null queue=null worker=joined",
+      "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=800x600 frames_presented=1 presents_skipped=1 loop_finished=1 exit_code=0",
+      "native renderer final COM release: device=0 api=0"
+    ],
+    "initial_failed_attempt": "late numeric B319B0 trampoline reservation failed before native-body execution; original failure artifacts in local/platform_material_refresh/first_mapping_failure; successful fixture uses explicit restored virtual-slot relocation"
+  },
+  "validation": {
+    "normal_build": "scripts/build.ps1",
+    "build_log": "local/platform-material-build.log",
+    "existing_ctests_passed": 3,
+    "new_repository_tests": 0,
+    "shared_cmake_edits": false,
+    "probe_build_log": "local/platform_material_refresh/build.log"
+  },
+  "limits": [
+    "No full B24FB0 resource slot08 provider, WM_ACTIVATE scheduling, full BED3B0/window admission or lost-device hold proof.",
+    "F8D438 fixture is explicit mutable zero storage; full production-window literal binding remains required.",
+    "Compared refresh accesses are hot-cache hits. Cold loader is exercised separately in the same actual application preload.",
+    "Fixture uses actual B30410 records and source-constructed C4h material bases; this is not a complete effect-file/D61A00 reload producer proof.",
+    "Original zero-reference virtual terminals/FH3 are not entered. Real Source creator terminals are checked during explicit cleanup.",
+    "No registry relocation, reentry, malformed counts, entered failure recovery/native EH/ABI, device loss, pixels or gameplay parity.",
+    "XLive stub is an explicit startup fixture dependency; no online/account/runtime-XLive equivalence is claimed."
+  ],
+  "source_sha256": {
+    "include/bsp/platform_renderer_activation.hpp": "8702ea206a5bd239bb2536341c9a4ed8045b972fb31c96336c8ae04efefeed47",
+    "src/platform_renderer_activation.cpp": "6003ba553a59df549dcdcfb09bc9a796cbc88c638affb31c3876a96ddfce277a",
+    "include/bsp/game_native_renderer_application.hpp": "25d2673b1b06ba837cb9bda5d88c8eb67b0a87d7f6a92e38fbb716e09066176f",
+    "src/game_native_renderer_application.cpp": "f4a0c279954b047994158e601ffb2516a5421161efed3b867e5e535fe6ebf265",
+    "include/bsp/native_material_texture_refresh.hpp": "cd59810b46f61ae558e801e84cb5f958870bae5b58190fa215839face2cf89df",
+    "src/native_material_texture_refresh.cpp": "4d70c30778238b22f565bf467ab8f36ea55a365bc7edf4a364701a3935f8bb6c",
+    "src/game_native_renderer_textures.inc": "e178152527c7b2b39a63608346c6cc555a0306cb05c53af83f2cc654146e824e",
+    "src/game_native_renderer_effect_owners.inc": "55bf626d3a4b85fd0a08598c1aa8cc13d584074df8591b07968359ae9c445962",
+    "src/native_texture_loading_cache.cpp": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+    "src/native_material_effect_owner.cpp": "1a19bafced64bda09691cdbd0d7254ce000afb976144fb1cb01936377d16698b",
+    "src/native_shader_descriptor_samplers.cpp": "7dd8abef1228cb57962a632f4ef3ff111825b63a67f1698d7fb32c29a3393d13",
+    "src/native_renderer_cache_cleanup.cpp": "3de7e55978f7f8a43b6cae152ed6d2eef7b84737b498f84ab71550d0fafe9d2f"
+  },
+  "artifact_sha256": {
+    "local\\platform_material_refresh\\refresh_probe.exe": "3aed45251e1b9c13f3110f3ed90fff037d6600292475c247b0c6c585e840ddd3",
+    "local\\platform_material_refresh\\refresh_probe.map": "df011f729e6956ba55839dc4f2dd4e130dc8ceaf0333d3cf33307803f6f1cb37",
+    "local\\platform_material_refresh\\probe_main.obj": "05f46b5de84ede03406ce09883be02e6db94c99e5e43ed70b75761404f9d0616",
+    "build\\win32\\Release\\bsp_core.lib": "f294a948269848f2205d3789a1342696818a327aca2489f638c20ef70e13181c",
+    "build\\win32\\bsp_core.dir\\Release\\platform_renderer_activation.obj": "36f750dabc80b9944455c6d1594188dd19d35f109900d0966da9673f2df630ef",
+    "build\\win32\\bsp_core.dir\\Release\\native_material_texture_refresh.obj": "077b5419219499c0963ea435b388364ef49ab0363ca7d29d47c8fb4f0d9d23f3",
+    "build\\win32\\bsp_game.dir\\Release\\game_native_renderer_application.obj": "5fcb562a9180aea2f61bbd6a9c18403372b07b5019307570271bcf02c5e8258e",
+    "local\\platform_material_refresh\\runtime.log": "8a62b129323014089700747c063c3ab3086e46a02ff421bae54b02f0e25675f1",
+    "local\\platform_material_refresh\\runtime.json": "cb5acdddd2f999b85f24ddc4ae630337752fe138823e90c1bbf98f8a503e3629"
+  },
+  "checkpoint": "local/checkpoints/cc14-platform-material-refresh/final/manifest.json",
+  "documentation": "docs/NATIVE_PLATFORM_MATERIAL_REFRESH.md",
+  "retention": {
+    "linked_core_members_observed_in_map": 1062,
+    "selected_production_source_units": 1199,
+    "selected_file_count": 2917,
+    "basis": "Full exact application objects/libraries plus linker-map selected core source units and MSVC CL.read dependency closure; recipe/native spans/logs/annotation prior values/owned files.",
+    "excludes": "Not a full Windows/toolchain/game-asset installation copy. System DLL/import-library and all installed asset bytes are not frozen by this packet."
+  }
+}
