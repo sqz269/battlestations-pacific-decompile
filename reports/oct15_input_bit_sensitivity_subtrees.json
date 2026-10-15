@@ -1,0 +1,210 @@
+{
+  "packet": "oct15_input_bit_sensitivity_subtrees",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_input_bit_sensitivity_subtrees.cpp",
+  "header": "include/bsp/native_input_bit_sensitivity_subtrees.hpp",
+  "documentation": "docs/OCT15_INPUT_BIT_SENSITIVITY_SUBTREES.md",
+  "routines": [
+    {
+      "address": "00558420",
+      "implementation": "destroy_native_input_bit_vector_subtree_00558420",
+      "kind": "function",
+      "old_name": "STL_StringBitVectorTree_DestroySubtree_N2C_00558420",
+      "last_inclusive": "0055848f",
+      "bytes": 112,
+      "instructions": 47,
+      "sha256": "e615d259af468feb886c20643cddad550e84abd1d11f0218dbf1e69a0c9f9c5c",
+      "complete_typed_body": true,
+      "live_equals_installed_PE": true,
+      "all_export_starts_equal_disk_capstone": true,
+      "original_abi": "ECX opaque tree forwarded through recursion only, EDX unconsumed; one stacked node pointer, RET4; no semantic result. Source adds actual pool context and normalizes dead recursive EDX to0."
+    },
+    {
+      "address": "00558ed0",
+      "implementation": "destroy_native_input_sensitivity_subtree_00558ed0",
+      "kind": "function",
+      "old_name": "STL_StringSensitivityTree_DestroySubtree_N2C_00558ED0",
+      "last_inclusive": "00558f3c",
+      "bytes": 109,
+      "instructions": 46,
+      "sha256": "890a737c34dbd95af06317ec0fc81b6d2212f9cbdc47328a949f00736a8f5c0a",
+      "complete_typed_body": true,
+      "live_equals_installed_PE": true,
+      "all_export_starts_equal_disk_capstone": true,
+      "original_abi": "ECX opaque tree forwarded through recursion only, EDX unconsumed; one stacked node pointer, RET4; no semantic result. Source adds actual pool context and normalizes dead recursive EDX to0."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00558439",
+      "function": "00558420",
+      "native": "00558420",
+      "binding": "Direct complete own right-recursive subtree service, left is iterative."
+    },
+    {
+      "address": "0055844b",
+      "function": "00558420",
+      "native": "00bf65ac",
+      "binding": "Current accepted CRT singleton_lifetime_free: captured payload backing, then current node. No extra null-node or ownership guard."
+    },
+    {
+      "address": "0055846d",
+      "function": "00558420",
+      "native": "00419cc0",
+      "binding": "Complete actual raw-pool getter via Raw41DD20, invoked for each nonnull CURRENT key data; getter failures propagate."
+    },
+    {
+      "address": "00558474",
+      "function": "00558420",
+      "native": "00bd1510",
+      "binding": "Complete actual raw-pool block return, using captured key data, captured unsigned length+1 and flag1; no key field writes."
+    },
+    {
+      "address": "0055847a",
+      "function": "00558420",
+      "native": "00bf65ac",
+      "binding": "Current accepted CRT singleton_lifetime_free: captured payload backing, then current node. No extra null-node or ownership guard."
+    },
+    {
+      "address": "00558ee9",
+      "function": "00558ed0",
+      "native": "00558ed0",
+      "binding": "Direct complete own right-recursive subtree service, left is iterative."
+    },
+    {
+      "address": "00558ef8",
+      "function": "00558ed0",
+      "native": "00bf65ac",
+      "binding": "Current accepted CRT singleton_lifetime_free: captured payload backing, then current node. No extra null-node or ownership guard."
+    },
+    {
+      "address": "00558f1a",
+      "function": "00558ed0",
+      "native": "00419cc0",
+      "binding": "Complete actual raw-pool getter via Raw41DD20, invoked for each nonnull CURRENT key data; getter failures propagate."
+    },
+    {
+      "address": "00558f21",
+      "function": "00558ed0",
+      "native": "00bd1510",
+      "binding": "Complete actual raw-pool block return, using captured key data, captured unsigned length+1 and flag1; no key field writes."
+    },
+    {
+      "address": "00558f27",
+      "function": "00558ed0",
+      "native": "00bf65ac",
+      "binding": "Current accepted CRT singleton_lifetime_free: captured payload backing, then current node. No extra null-node or ownership guard."
+    }
+  ],
+  "typed_capture": "local/oct15_input_bit_sensitivity_typed_flow.json",
+  "typed_modification": "366",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "build": {
+    "status": "passed",
+    "configuration": "MSVC Win32 Release",
+    "source_commit": "68920b203",
+    "existing_tests": "3/3 passed",
+    "ctest_seconds": 7.72,
+    "log": "local/oct15_twelfth_subtrees_build.log",
+    "new_tests": 0,
+    "new_entries_natively_executed": false
+  },
+  "schedule": {
+    "00558420": "Initial nil29; right recurse; capture left; clear14; read backing1C and free if nonnull; clear1C/20/24; CURRENT pooled key at+C via full Raw41DD20; free node; read captured-left nil29; iterate left.",
+    "00558ed0": "Initial nil29; right recurse; capture backing1C and compare; capture left; free captured backing if nonnull; clear1C/20/24; CURRENT pooled key at+C via full Raw41DD20; free node; read captured-left nil29; iterate left. No14/18 write."
+  },
+  "dependencies": {
+    "pooled_key": "Accepted full Raw41DD20 NativeStringRawPoolContext overload and actual419CC0/BD1510 chain; getter exceptions escape.",
+    "heap": "Accepted singleton_lifetime_free current CRT service."
+  },
+  "limits": [
+    "Valid reached actual native node/payload/key ownership and pool/CRT contracts. Nil is any nonzero29 byte; nil nodes are not freed.",
+    "No local exception frame or catches; earlier effects persist when key getter fails, and current node/later left chain remain unfreed.",
+    "No added callbacks, NativeStringStorage bridge, snapshots, rollback, traversal validation or parent/head/count reset.",
+    "Source adds actual pool context and uses current CRT/C++ services; no original stack/register/SEH/fault/exception/CRT identity claim.",
+    "Existing generic AV projections and their fixtures remain separate. No whole input record/pair destruction promotion, new-entry native differential or live game validation."
+  ],
+  "independent_source_review": {
+    "review": "oct15_input_bit_sensitivity_subtrees_source_behavior",
+    "reviewer": "agent/oct15_string_fill",
+    "status": "passed_no_behavioral_discrepancy_found",
+    "root_worktree": "J:/PROG/battlestations-pacific-decompile-oct15_integrator",
+    "files": [
+      {
+        "path": "include/bsp/native_input_bit_sensitivity_subtrees.hpp",
+        "sha256": "84445822C1A59A937FAB41FEC865714E640756E122D1291CF5F4F50FCE25B559"
+      },
+      {
+        "path": "src/native_input_bit_sensitivity_subtrees.cpp",
+        "sha256": "D8D2B8E9DFA3AFC93878857F7658F16127152274D36B9A5A392B1077A115DAFA"
+      }
+    ],
+    "hashes_stable_before_after_review": true,
+    "scope": "Complete root Source/header compared with complete current cached native00558420..0055848F and00558ED0..00558F3C via project/program-verifying bsp.py show --asm. Read-only behavioral review, no duplicate live/disk span audit.",
+    "checks": [
+      {
+        "area": "entry and ABI",
+        "result": "pass",
+        "finding": "Both use native ECX tree forwarded only, EDX unused, stacked node/RET4, void semantic result. Source preserves inputs and adds context; nil byte29 is read once at entry, any nonzero nil returns, tree/head metadata is not dereferenced or reset."
+      },
+      {
+        "area": "right recursion",
+        "result": "pass",
+        "finding": "Capture current right+8 and invoke the matching whole subtree before current payload/key work. A right-child failure skips current left/payload/key/node effects. No generic traversal or host callbacks."
+      },
+      {
+        "area": "bit capture and count",
+        "result": "pass",
+        "finding": "Native5843E captures left0,58440 clears count14,58443 reads backing1C. Source preserves that exact sequence, conditionally frees the captured backing, then always clears1C/20/24 in order. Mapped opaque18 is retained."
+      },
+      {
+        "area": "sensitivity capture",
+        "result": "pass",
+        "finding": "Native58EEE reads backing1C,58EF1 compares captured pointer,58EF3 captures left0 before optional free. Source captures/tests backing before left and frees that capture without reload; always clears1C/20/24, with no count14 clear. Opaque14/18 retained."
+      },
+      {
+        "area": "key fields and getter",
+        "result": "pass",
+        "finding": "After all mapped stores, native reads CURRENT keydata10 once and only nonnull reads CURRENT lengthC+1 before419CC0/BD1510. Accepted raw41DD20(current+C,RawCtx) has exactly those captures/getter/return effects without key rereads/clears or noexcept bridge; both Source sites use it in the correct position."
+      },
+      {
+        "area": "node and left nil",
+        "result": "pass",
+        "finding": "Current node address is freed only after successful key return. Captured left's nil29 is then read before current-cursor update. No second mapped-begin load or left-pointer refresh replaces captured values; getter effects may affect the later nil-byte read as native does."
+      },
+      {
+        "area": "EH and failures",
+        "result": "pass",
+        "finding": "Neither complete native entry creates a local EH frame/state/action/catch. Source has no catch, retry or rollback. Getter failure retains prior mapped free/clears while skipping current node free/left continuation; actual RawCtx failures propagate. Native FH3/SEH/fault/CRT/handler/exception/cleanup-personality identity remains qualified."
+      },
+      {
+        "area": "header qualification",
+        "result": "pass",
+        "finding": "Header records both distinct schedules and2Ch/nil29 layout, raw pool/current CRT ownership requirements, added context/dead recursive EDX normalization and non-native ABI/runtime limits. It does not promote parent record destruction or old AV fixture proofs."
+      }
+    ],
+    "blocking_findings": [],
+    "source_change_requests": [],
+    "static_transfer_check": {
+      "report": "reports/oct15_input_bit_sensitivity_subtrees.json",
+      "rows_checked": 10,
+      "failed": 0,
+      "qualification": "Exact native direct-call targets only, not build/runtime execution."
+    },
+    "validation_limits": [
+      "Root build was pending at review time; this receipt is Source behavior acceptance only, not build/game/native differential proof.",
+      "Root report's221B/93-start live proof was not duplicated; this review inspected the full listed schedules and current Source independently.",
+      "No root Source/header/metadata/CMake/Ghidra mutation, tests, build, commits or push; only this ignored local receipt written."
+    ],
+    "reviewer_prior_leaf_lease": "Retained throughout read-only audit; released after root subsequently accepted dfbcdaee Source and explicitly requested release. No new address claim."
+  },
+  "source_hashes": {
+    "src/native_input_bit_sensitivity_subtrees.cpp": "d8d2b8e9dfa3afc93878857f7658f16127152274d36b9a5a392b1077a115dafa",
+    "include/bsp/native_input_bit_sensitivity_subtrees.hpp": "84445822c1a59a937fab41fec865714e640756e122d1291cf5f4f50fce25b559"
+  },
+  "transfer_validation": {
+    "report": "10/10 passed",
+    "documentation": "10/10 passed;0 failed/unchecked/warnings"
+  }
+}
