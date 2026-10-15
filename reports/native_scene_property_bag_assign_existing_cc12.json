@@ -1,0 +1,258 @@
+{
+  "schema": "native_scene_property_bag_assign_existing_cc12_v1",
+  "address": "008F23E0",
+  "proposed_name": "assign_existing_native_scene_property_bag_008f23e0",
+  "name_is_hypothesis": true,
+  "scope": {
+    "start": "008F23E0",
+    "end_exclusive": "008F253F",
+    "original_bytes": 351,
+    "original_instructions": 118,
+    "blocks": 22,
+    "edges": 31,
+    "call_sites": 12,
+    "complete_body": true,
+    "Original_raw_ABI": "Root cf1f3a verified ECX destination, stack source resolving entry ESP+4, RET4; Source uses new void/context C++ ABI. Formal Ghidra prototype is stale metadata; worker did not mutate it.",
+    "fresh_original_span_sha256": "ed7fe3811ef6513c40bf1d04702492103db201d41b0f170b30d47aa2d821d8df"
+  },
+  "implementation": {
+    "header": "include/bsp/native_scene_property_bag_assign_existing.hpp",
+    "source": "src/native_scene_property_bag_assign_existing.cpp",
+    "documentation": "docs/NATIVE_SCENE_PROPERTY_BAG_ASSIGN_EXISTING_CC12.md",
+    "API": "void assign_existing_native_scene_property_bag_008f23e0(void*,const void*,NativeScenePropertyInsertionContext&)",
+    "Source_complete": true,
+    "shared_metadata_or_consumers_changed": false
+  },
+  "whole_behavior": [
+    "Allocate/begin/free a real12B iterator, including empty source; no null-source/allocator-failure shortcut.",
+    "Construct actual pooled8B query and find the actual destination map via the same canonical context. Capture a hit's mapped+8 before raw query retirement.",
+    "Miss skips without reading source mapped record or changing topology.",
+    "Hit physically reads destination tag FIRST. Tag6 then reloads source iterator/node/record/child and recurses; other tags then reload source record and invoke full assignment.",
+    "Same context and current canonical key/property pools throughout. Existing E177E4/E17654 lookup roles and IteratorKey E186ED role; no new cell/callback/wrapper/model.",
+    "No clone, insertion, keep flag, ordinal reread/publication, counter or map topology update. Only admitted existing payloads/descendants are assigned."
+  ],
+  "contracts": {
+    "inputs": "Nonnull actual raw61-produced114h bags/maps with finite live unique correctly bucketed chains/nonzero mapped raw38h records; disjoint unshared acyclic owning graphs/payloads; matching hit tags, valid compatible Type6 children.",
+    "providers": "Current canonical owners/pool generation after explicit CC8A30 startup, stable raw key context and current heap; closed NUL-free ASCII keys/current C locale; sufficient stack/DF0 and normal successful providers.",
+    "assignment": "Complete008F0700 owning text/reference replacement, positive nonwrapping byte spans/existing array owning flag1 and accepted Type1 FP domain. This TU emits no FP and adds no FP conversion/reset.",
+    "source_preservation": "Source graph/key/record/payload topology stays borrowed and unchanged within the disjoint valid domain. No self/ancestor/shared-old-buffer alias guarantee.",
+    "destination_preservation": "Counts, heads, keys, nodes, counter/owner topology and record tag/phase/owner/ordinal/Type4identity/Type5+08/array+2C retain destination roles. Array data/count and other admitted payload bytes may be assigned.",
+    "failures": "No overflow/concurrency/trim/reentry/invalid access, allocator failure, exception cleanup/rollback or provider-throw guarantee. Old dead miss-stack read is not expressed as an indeterminate C++ pointer read.",
+    "qualification": "Ordinary Source only; no Original register/flags/FS/SEH/EH/OOM transport, historical private CRT, class/vtable, application retention or game equivalence."
+  },
+  "COFF": {
+    "all_current_functions": 8,
+    "all_current_code_bytes": 503,
+    "all_current_instructions": 174,
+    "entry_bytes": 432,
+    "entry_instructions": 138,
+    "entry_relocations": 13,
+    "unknown_CFG_edges": 0,
+    "FP_or_SIMD_instructions": 0,
+    "complete_raw_dumpbin_comparison_passed": true,
+    "whole_section_coverage": true,
+    "ordering": "Mapped captureB7 BEFORE query returnCE; missDA\u2192186 skips all source payload reads. Destination tag loadE8/CMPee/JNEf2 before Source loadsFC/110/124 (Type6) or160/174 (other); Source child124 before destination child132. Codegen duplicates next across mutually exclusive branches.",
+    "original_byte_or_ABI_equal": false
+  },
+  "validation": {
+    "first_strict_compile_passed": true,
+    "complete_COFF_review_passed": true,
+    "required_existing_repository_build_passed": true,
+    "existing_test_count": 2,
+    "existing_test_passed": 2,
+    "existing_tests_seconds": 62.02,
+    "registered_Main_TU": false,
+    "registered_Main_build": false,
+    "focused_Source_runtime_executed": false,
+    "new_tests_added": false,
+    "Original_Native_executed": false,
+    "game_qualified": false
+  },
+  "actual_tools": {
+    "strict_compile": [
+      {
+        "tool": "exec_command",
+        "args": {
+          "cmd": "New-Item -ItemType Directory -Path local/WholePropertyBagAssignExistingSource01 -Force | Out-Null\ncmd.exe /d /c 'call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat\" >nul && cl /nologo /Bv /std:c++17 /MD /O2 /Ob2 /Oy- /W4 /WX /EHsc /Gy /GL- /fp:strict /Z7 /c /Iinclude /sourceDependencies local\\WholePropertyBagAssignExistingSource01\\source_dependencies.json src\\native_scene_property_bag_assign_existing.cpp /Folocal\\WholePropertyBagAssignExistingSource01\\native_scene_property_bag_assign_existing.obj && dumpbin /nologo /headers /symbols /disasm local\\WholePropertyBagAssignExistingSource01\\native_scene_property_bag_assign_existing.obj >local\\WholePropertyBagAssignExistingSource01\\COFF_disassembly.txt'\nexit $LASTEXITCODE",
+          "workdir": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data",
+          "max_output_tokens": 700
+        },
+        "result": {
+          "chunk_id": "458b3d",
+          "wall_time_seconds": 10.0150412,
+          "session_id": 9478,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 9478,
+          "chars": "",
+          "yield_time_ms": 1000,
+          "max_output_tokens": 600
+        },
+        "result": {
+          "chunk_id": "c98101",
+          "wall_time_seconds": 1.19e-05,
+          "exit_code": 0,
+          "original_token_count": 287,
+          "output": "Compiler Passes:\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\cl.exe:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1.dll:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll:      Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c2.dll:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll:      Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\link.exe:      Version 14.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\mspdb140.dll:  Version 14.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\1033\\clui.dll: Version 19.51.36244.0\r\n\r\nnative_scene_property_bag_assign_existing.cpp\r\n"
+        }
+      }
+    ],
+    "complete_COFF_review": {
+      "tool": "exec_command",
+      "args": {
+        "cmd": "python -B local/WholePropertyBagAssignExistingSource01/verify_complete_COFF.py",
+        "workdir": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data",
+        "max_output_tokens": 500
+      },
+      "result": {
+        "chunk_id": "9d2e20",
+        "wall_time_seconds": 4.6666776,
+        "exit_code": 0,
+        "original_token_count": 43,
+        "output": "{\"status\": \"PASS\", \"bytes\": 7366, \"sha256\": \"3f40648b3fa8df6081af4dde207fd4be6d62f5fc39ae7260b3272bfd0bc4743f\", \"functions\": 8, \"code_bytes\": 503, \"instructions\": 174}\r\n"
+      }
+    },
+    "required_existing_repository_build": [
+      {
+        "tool": "exec_command",
+        "args": {
+          "cmd": "try {\n    & ./scripts/build.ps1 *> local/WholePropertyBagAssignExistingSource01/repository_build.log\n    if ($LASTEXITCODE -ne 0) { throw \"Build script returned $LASTEXITCODE\" }\n    Get-Content local/WholePropertyBagAssignExistingSource01/repository_build.log -Tail 16\n} catch {\n    Get-Content local/WholePropertyBagAssignExistingSource01/repository_build.log -Tail 22\n    Write-Output $_\n    exit 1\n}",
+          "workdir": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data",
+          "yield_time_ms": 1000,
+          "max_output_tokens": 1000
+        },
+        "result": {
+          "chunk_id": "6b1643",
+          "wall_time_seconds": 10.0010034,
+          "session_id": 57458,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 57458,
+          "chars": "",
+          "yield_time_ms": 1000,
+          "max_output_tokens": 650
+        },
+        "result": {
+          "chunk_id": "20d090",
+          "wall_time_seconds": 5.0079034,
+          "session_id": 57458,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 57458,
+          "chars": "",
+          "yield_time_ms": 1000,
+          "max_output_tokens": 700
+        },
+        "result": {
+          "chunk_id": "aee916",
+          "wall_time_seconds": 1.18e-05,
+          "exit_code": 0,
+          "original_token_count": 188,
+          "output": "  bsp_math_tests.vcxproj -> J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\build\\win32\\Release\\bsp_math_tests.exe\r\n  game_hosts_hud.cpp\r\n  game_hosts_hud_world.cpp\r\n  game_hosts_menu.cpp\r\n  game_hosts_mission.cpp\r\n  Generating Code...\r\n  bsp_game.vcxproj -> J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\build\\win32\\Release\\bsp_game.exe\r\nTest project J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data/build/win32\r\n    Start 1: reconstructed_math\r\n1/2 Test #1: reconstructed_math ...............   Passed    0.56 sec\r\n    Start 2: tool_tests\r\n2/2 Test #2: tool_tests .......................   Passed   61.39 sec\r\n\r\n100% tests passed, 0 tests failed out of 2\r\n\r\nTotal Test time (real) =  62.02 sec\r\n"
+        }
+      }
+    ]
+  },
+  "readiness_references": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data/local/PropertyAssignExistingReadiness01/compact_readiness.DATA.json",
+      "bytes": 5983,
+      "sha256": "1955945e8ea8683489d483573b885fa794b9ed0abafc1c83c8ded8babe87610f",
+      "note": "Root subsequently closed stale-prototype question cf1f3a; destination tag-before-conditional-source order explicit."
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data/local/WholePropertyMergeAPIReadiness01/compact_API_readiness.DATA.json",
+      "bytes": 6016,
+      "sha256": "5b6962daa47f37e43527f1a42f1ef7944d42dea774ea7c5f2cd7ec76361fe5f0",
+      "note": "Existing direct APIs/context owner closure; no repeated ancestry proof."
+    }
+  ],
+  "proposed_ledger_record": {
+    "address": "008F23E0",
+    "source": "src/native_scene_property_bag_assign_existing.cpp",
+    "status": "whole ordinary Source reconstructed, first strict compile and complete COFF passed; required existing2/2 tests passed; Root registration/independent review pending",
+    "Original_ABI": "ECX outer destination, stack source, RET4; new void/context API does not supply it",
+    "evidence": "Complete351B118 original listing and Root cf1f3a; full emitted503B174 all8functions; primary report and actual local compile/build tools",
+    "uncertainty": "Name hypothetical; normal finite disjoint owning/current canonical domain only, no Native/class/EH/game qualification"
+  },
+  "current_Source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\include\\bsp\\native_scene_property_bag_assign_existing.hpp",
+      "bytes": 2353,
+      "sha256": "c98c6d099daec7c59bea689f4a82bf33838d9e98c48708f305795857e6028144"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\src\\native_scene_property_bag_assign_existing.cpp",
+      "bytes": 3319,
+      "sha256": "cfe90dab4a8c8a4931f1993ecce18855ba06a4c0513f368d4ad0467e4d2d8351"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\docs\\NATIVE_SCENE_PROPERTY_BAG_ASSIGN_EXISTING_CC12.md",
+      "bytes": 2501,
+      "sha256": "c2b417bdb3818a519c9445c04a451041ee471640225559103cec94c6bc81ae87"
+    }
+  ],
+  "current_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyBagAssignExistingSource01\\native_scene_property_bag_assign_existing.obj",
+      "bytes": 94012,
+      "sha256": "6885f184c41c164b80ff0bc390a8430a9c9dd9d9c55822f93c6b61e9f885af36"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyBagAssignExistingSource01\\COFF_disassembly.txt",
+      "bytes": 31501,
+      "sha256": "70ebf512b4e2657b17818643570dab398305b92904a7c588b83f6ea0d88a208c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyBagAssignExistingSource01\\complete_COFF.DATA.json",
+      "bytes": 30892,
+      "sha256": "a7afbb0a6bb5955b5d50ec23161e05c91b2236a5ba5d264c0a0a37ccdd2eed4c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyBagAssignExistingSource01\\complete_disassembly.txt",
+      "bytes": 10009,
+      "sha256": "bc8e950c911252e554f0988cd0be42e20f780576ed80706b7ecb71b3a25b6cc5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyBagAssignExistingSource01\\complete_COFF_review.DATA.json",
+      "bytes": 7366,
+      "sha256": "3f40648b3fa8df6081af4dde207fd4be6d62f5fc39ae7260b3272bfd0bc4743f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyBagAssignExistingSource01\\source_dependencies.json",
+      "bytes": 13049,
+      "sha256": "af9663998fff86eeb0bcc5a1664852a002dd27ed01a711f6a0be9b8c9bca5517"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyBagAssignExistingSource01\\TU_compile.log",
+      "bytes": 1137,
+      "sha256": "aad2bc498ea734c7849823462d57a4b413b9f03033dd95cc448a5b2a838f84b4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyBagAssignExistingSource01\\repository_build.log",
+      "bytes": 4105,
+      "sha256": "fb117e43a1eeb0312d6047b2486fbcee8524358c13d7640761759feba29dfda6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyBagAssignExistingSource01\\original_compile_and_build_tools.DATA.json",
+      "bytes": 6033,
+      "sha256": "25b0a9976bb338f37a25cc5ce6a33db8373fa97b80a530a3ac65382940801c76"
+    }
+  ],
+  "W_base_HEAD": "cbbffe1eb"
+}

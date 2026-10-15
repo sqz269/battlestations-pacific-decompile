@@ -1,0 +1,441 @@
+{
+  "schema": "bsp.native_scene_property_bag_merge_cc12.v1",
+  "packet": "WholePropertyBagMergeSource01",
+  "base_Main": "37eb2b90a97ecf0bf5851c15bbd4bf9d7d71d10e",
+  "status": "complete ordinary whole bag merge; independent whole Source/static/current-linked-file and sole focused actual-process review PASS; required normal build PASS; integrator registration/admission/publication separate",
+  "Source_admission_credit": 0,
+  "ordinary_whole_Source_functions": 1,
+  "name_is_hypothesis": true,
+  "interface": "void merge_native_scene_property_bag_008f54f0(void* destination,const void* source,uint32_t keep,NativeScenePropertyCloneContext& context)",
+  "Original": {
+    "address": "008F54F0",
+    "end_exclusive": "008F566F",
+    "bytes": 383,
+    "instructions": 131,
+    "call_sites": 15,
+    "distinct_callees": 14,
+    "sha256": "66424cb2f16f0162b174e088caacc1c55fd3aece87871e71a7e3565ab4298bea",
+    "ABI": "Original ECX destination, source/keep DWORD stack arguments, RET8; no defined return inferred."
+  },
+  "Source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\native_scene_property_bag_merge.cpp",
+    "bytes": 4354,
+    "sha256": "c38dfb1f82265b7e10621aad911dd1aa18b2848f3a153e2abcfda6168e0b5f4d"
+  },
+  "header": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_scene_property_bag_merge.hpp",
+    "bytes": 2727,
+    "sha256": "475f85efb0f7dba3f0dd9ca28387f348a9296972f2ff35eb9aa7380d1c1c7940"
+  },
+  "documentation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\docs\\NATIVE_SCENE_PROPERTY_BAG_MERGE_CC12.md",
+    "bytes": 6027,
+    "sha256": "634b741cb719708eccf52ad048b8e758c55a3b4bc645bae57c21f35788dbdbb4"
+  },
+  "readiness": {
+    "Original_and_current_contracts": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyMergeReadinessIndependentReview01\\compact_readiness.DATA.json",
+      "bytes": 16680,
+      "sha256": "bb92c41c5d39f5db0f69ba2588586cea6c243f9c458f830113b7e2b8658f73e1"
+    },
+    "exact_API_and_ownership": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyMergeAPIReadiness01\\compact_API_readiness.DATA.json",
+      "bytes": 6016,
+      "sha256": "5b6962daa47f37e43527f1a42f1ef7944d42dea774ea7c5f2cd7ec76361fe5f0"
+    },
+    "API_readiness_family": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyMergeAPIReadiness01\\family_receipt.DATA.json",
+      "bytes": 949,
+      "sha256": "0b5d6d0a747341fc8554bfb2bab67a0dc08f0e875e74efec7d17f995319ec2e4"
+    },
+    "current_Main_and_worker_input_check": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\current_readiness_inputs.DATA.json",
+      "bytes": 17520,
+      "sha256": "eee41401c6b45ce10c0b30c2eb840cc2f9db99c01484877b5e729c507f3134e5"
+    },
+    "original_selected_pins_verified": 18,
+    "current_worker_counterparts_verified": 15
+  },
+  "fixed_Original_call_mapping": [
+    {
+      "site": "008F5510",
+      "target": "00BF681B",
+      "current_Source": "singleton_lifetime_allocate({object,12,12}); actual current heap; no model host"
+    },
+    {
+      "site": "008F552B",
+      "target": "00480690",
+      "current_Source": "cc13_seg7::property_bag_iterator_begin_00480690 on actual12B iterator"
+    },
+    {
+      "site": "008F5545",
+      "target": "00484D20",
+      "current_Source": "cc13_seg7::property_bag_iterator_key_00484d20; actual node+4 or stable static NUL role E186ED"
+    },
+    {
+      "site": "008F5569",
+      "target": "0041DD40",
+      "current_Source": "resize_native_string_header_0041dd40(raw8B, context.insertion().lifetimes().keys(), length, true); inline zero/strlen/resize/copy may compose existing construct_native_string_header_0041e870"
+    },
+    {
+      "site": "008F5580",
+      "target": "00BF7680",
+      "current_Source": "existing construct_native_string_header_0041e870 uses current memmove(length+1); nonoverflowing stable ASCII length and successful pool domain"
+    },
+    {
+      "site": "008F559D",
+      "target": "0043B8B0",
+      "current_Source": "find_native_property_map_node_0043b8b0(dest+4,raw8B,bucket,insertion.property_empty(),insertion.query_empty())"
+    },
+    {
+      "site": "008F55CE",
+      "target": "00419CC0",
+      "current_Source": "destroy_native_string_header_0041dd20(raw8B,same actual raw key context) -> RawStringPoolAccess.current_pool -> actual00419CC0 on every nonnull return"
+    },
+    {
+      "site": "008F55D5",
+      "target": "00BD1510",
+      "current_Source": "same raw destructor -> return_native_string_pool_00bd1510 with current canonical gate; no pool caching"
+    },
+    {
+      "site": "008F55F6",
+      "target": "008F54F0",
+      "current_Source": "fixed direct recursion to this new whole Source function, same context and keep word"
+    },
+    {
+      "site": "008F560D",
+      "target": "008F0700",
+      "current_Source": "assign_native_scene_property_record_008f0700(actual_destination_record,actual_source_record); exact reviewed Source now present on Main"
+    },
+    {
+      "site": "008F561D",
+      "target": "008F4F60",
+      "current_Source": "clone_native_scene_property_record_008f4f60(actual_source_record,same clone context)"
+    },
+    {
+      "site": "008F5631",
+      "target": "00484D20",
+      "current_Source": "cc13_seg7::property_bag_iterator_key_00484d20; actual node+4 or stable static NUL role E186ED"
+    },
+    {
+      "site": "008F563B",
+      "target": "008F33F0",
+      "current_Source": "insert_native_scene_property_bag_008f33f0(actual_destination_bag,key,clone,context.insertion())"
+    },
+    {
+      "site": "008F5642",
+      "target": "0047E480",
+      "current_Source": "cc13_seg7::property_bag_iterator_next_0047e480(actual_iterator)"
+    },
+    {
+      "site": "008F5654",
+      "target": "00BF65AC",
+      "current_Source": "singleton_lifetime_free(actual12B_iterator)"
+    }
+  ],
+  "operation_schedule": [
+    "Allocate actual12B iterator even for empty source; publish source+4 into iterator+0 then begin00480690. No null source/null iterator/count-shortcut repair. Failed allocation branch later dereferences iterator and is outside successful domain.",
+    "At each live iterator node, key00484D20 first. Construct actual8B pooled query with two initial zero words, strlen, resize preserving, current length+1 copy if allocated. Empty key leaves both query words0; its canonical fallback lookup remains valid.",
+    "Lookup actual destination+4 using distinct E177E4 property and E17654 query cells. Capture hit node+8 mapped pointer and separate hit flag BEFORE query pool return. Null node means miss; valid nonnull hit mapped record is a domain requirement. The source stack-argument slot is reused as mapped scratch in Original; new Source need not reproduce stack layout.",
+    "Destroy/return actual query BEFORE any branch operation. For nonnull query data actual00419CC0 resolves first then BD1510 returns through same pool/gate. No RAII second return or added failure cleanup. The destructor reload versus Original captured EDI is equivalent only in stated stable/no-reentry query domain.",
+    "Hit destination tag6 is checked BEFORE keep; physically load current source iterator node+8 then source child+C and destination child+C, recurse directly with same keep argument/context. No source-tag guard and no keep-based skip on Type6.",
+    "Other hit: test ONLY low keep byte. Nonzero skips assignment; zero physically loads current source mapped record and calls full008F0700 selected by destination tag. Preserve provider-specific release-before-read, ownership flag and metadata rules.",
+    "Miss: physically load current iterator node+8 and call full008F4F60. AFTER clone return, physically reread iterator+4, then node+8, then source record+34, and store clone+34 again. This additional reread/store is required even though clone itself copied ordinal. Do not cache earlier source/ordinal or omit redundant physical store.",
+    "Only after additional ordinal store call key00484D20 again, then full008F33F0. The full insertion controls ownership, zero-ordinal stamping and map publication. Do not use a miss-only fragment or repair ordinal uniqueness.",
+    "Advance real iterator with0047E480, test current iterator+4, repeat. Normal completion frees actual iterator once and returns. Existing source iteration order determines insertion/overwrite order."
+  ],
+  "admitted_domain": [
+    "Actual raw61-produced114h bags with consistent maps at+4, count and64heads; real live14h nodes and canonical8B pooled keys from SAME initialized E175B0/E188B4 domain. Nonnull real38h records and raw constructor provenance; no phase-word-only proof.",
+    "Finite unshared acyclic disjoint source/destination owning graphs with stable source. Initially matching tags on colliding keys is the simple whole-graph contract; especially destination Type6 requires actual compatible source child despite no source-tag check. Do not add compatibility guards to Source.",
+    "No blanket self/ancestor/descendant/shared-owned alias claim. Type5/array assignment can free source storage under aliases. Source graphs, keys, frames and all read payloads must be disjoint from old destination owning allocations. No iterator invalidation by mutation/reentry.",
+    "Closed NUL-free stable ASCII keys including empty; matching lengths, nonoverflowing length+1, C-locale CRT and live canonical fallback cells. Bound key-pool generation, capacity/membership and real return gate throughout.",
+    "All clone constructor/assignment payload domains apply. Array spans positive and nonwrapping; destination assignment arrays already sole-owned with flag1. Source Type9/10 strides4 and Type11 stride12 obey clone limits. No zero-count/ownership/stride repair.",
+    "At EVERY Type1 clone or assignment conversion: empty x87 stack, all6 masks1, valid PC24/53/64 and any RC, no pending unmasked exception. All binary32 bits allowed; production preserves CW/MXCSR and cumulative defined sticky status. No FP reset or C++ conversion added.",
+    "DF0, sufficient recursion stack, successful current canonical providers; no invalid memory, OOM, provider throw, concurrent mutation/trim, or historical CRT/Original EH/class/game ABI claim."
+  ],
+  "production_choices": {
+    "actual_context": "existing NativeScenePropertyCloneContext; same insertion and raw key context recursively",
+    "actual_query": "aligned raw8B header passed through existing raw constructor/destructor overloads",
+    "actual_iterator": "current canonical12B heap allocation even for nonnull empty source",
+    "hit": "capture mapped before raw query return; Type6 recursion before low-byte keep test; no source tag guard",
+    "miss": "whole clone then physical iterator/node/source ordinal reread and clone ordinal store; second key getter then whole insertion",
+    "new_fallback_cells": false,
+    "model_hosts_or_semantic_callbacks": false,
+    "provider_wrappers": false,
+    "existing_consumers_changed": false,
+    "alias_ordinal_zero_OOM_repairs": false,
+    "production_FP_state_reset": false
+  },
+  "strict_compile": {
+    "first_attempt": true,
+    "terminal": "221a51",
+    "exit_code": 0,
+    "flags": "/std:c++17 /O2 /Ob2 /MD /EHsc /W4 /WX /fp:strict /DWIN32 /D_WINDOWS /DNDEBUG",
+    "command": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\compile_merge_TU.cmd",
+      "bytes": 861,
+      "sha256": "ee5d64c365365d7ca60f3a44b2e6868b92d7d784ff82bd01610bc761e3433f94"
+    },
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\TU_compile.log",
+      "bytes": 1382,
+      "sha256": "d668f912314b31e79b05e0649ce0930a621b949551506f760e7c9217a2ffd309"
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\native_scene_property_bag_merge.obj",
+      "bytes": 5628,
+      "sha256": "0f0c7af21b325586cf4d6251bad94153581046d22a108e3a7ac11e7b681c6120"
+    },
+    "dependencies": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\source_dependencies.json",
+      "bytes": 13057,
+      "sha256": "2d0e8232804f757a4f770029a5d4eeb2e7377f34ff5e364e3129b2d4ffa9e20a"
+    }
+  },
+  "complete_COFF": {
+    "evidence": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\complete_merge_COFF.DATA.json",
+      "bytes": 66685,
+      "sha256": "b28ec013d1fc269a2895e4f2f1fef1aa0afb0f5499b380198229bb95529ab453"
+    },
+    "emitted_functions": 9,
+    "all_instruction_bytes": 776,
+    "instructions": 223,
+    "main_bytes": 718,
+    "main_instructions": 198,
+    "relocations": 17,
+    "main_calls": 16,
+    "FP_SSE_operations": 0,
+    "unknown_normal_CFG_edges": 0,
+    "table_bytes": 0,
+    "padding_bytes": 0,
+    "physical_order": {
+      "actual12B_allocation": 71,
+      "actual_map_store": 109,
+      "begin": 113,
+      "loop_node_read": 141,
+      "first_key": 160,
+      "raw_query_construct": 172,
+      "raw_lookup": 197,
+      "hit_mapped_capture": 235,
+      "raw_query_return": 256,
+      "hit_branch": 264,
+      "destination_tag_read": 284,
+      "type6_compare": 291,
+      "recursive_source_node": 307,
+      "recursive_source_record": 331,
+      "recursive_source_child": 355,
+      "recursive_destination_child": 371,
+      "same_DWORD_recursive_call": 394,
+      "low_keep_compare": 420,
+      "full_assignment": 479,
+      "full_clone": 550,
+      "postclone_iterator_reread": 573,
+      "postclone_node_reread": 597,
+      "postclone_ordinal_reread": 621,
+      "second_ordinal_store": 649,
+      "second_key": 653,
+      "full_insert": 665,
+      "next_sites": [
+        403,
+        488,
+        674
+      ],
+      "iterator_free": 691
+    },
+    "calls_note": "Three compiler-duplicated iterator-next sites and compiler security-cookie support are explicit."
+  },
+  "required_worker_normal_build": {
+    "initial_terminal": "476f54",
+    "original_session": 36065,
+    "natural_terminal": "3faa81",
+    "exit_code": 0,
+    "tests_passed": 2,
+    "tests_total": 2,
+    "tests": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\normal_build.log",
+      "bytes": 3009,
+      "sha256": "2dcd9fee28b9bd4262064fe3edb0f1f0a9dd5ae2b5da945c7657f52ba3da77d9"
+    },
+    "new_merge_TU_registered": false,
+    "whole_assignment_and_storage_leaf_TUs_registered": true,
+    "existing_warning": "Unrelated LNK4006 duplicate spawn_request_id_matches from lua_binding_spawn/lua_spawn_new; build exit0."
+  },
+  "independent_reviews": {
+    "static": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyBagMergeIndependentReview01\\complete_static_review.DATA.json",
+      "bytes": 71174,
+      "sha256": "fda91a34c33a8720d2a45d6fb6521b1dca656b650c9c5fb4c6b7873ac5950345"
+    },
+    "prelaunch": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyBagMergeIndependentReview01\\prelaunch_probe_source_review.DATA.json",
+      "bytes": 2478,
+      "sha256": "fbb3215614223618a3af53338e3d290fe9d6fbc9ec95dd29ce943e866bd8f0a1"
+    },
+    "final_actual_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyBagMergeIndependentReview01\\actual_process_review.DATA.json",
+      "bytes": 29887,
+      "sha256": "7dcba8060e6b64c04aa82259645d02e3e5db69c22cef7cbe367e0c54650dc201"
+    },
+    "status": "PASS; no Source correction or concrete blocker identified",
+    "complete_compact_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyBagMergeIndependentReview01\\compact_review.DATA.json",
+      "bytes": 6478,
+      "sha256": "eabe3c94792fa61ca937a296de7636e29011187abf2d4331f9fc9e757563e6cc"
+    },
+    "closed_family_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyBagMergeIndependentReview01\\family_receipt.DATA.json",
+      "bytes": 1374,
+      "sha256": "5936d465629302c0f71332e05cd22c77c129a43f9beba25a4dc83d2155ce4815"
+    },
+    "author_report_excluded_from_review_input_books_to_avoid_receipt_cycle": true,
+    "reviewer_Target_execution": false,
+    "terminal_attribution": "Actual original compile/link bacecf/session98539 -> a5f12f/0 and sole process c535fd/0 are explicitly producer-attributed beside the complete saved process receipt."
+  },
+  "focused_probe": {
+    "source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\merge_source_probe.cpp",
+      "bytes": 11397,
+      "sha256": "dc19dd7c7e3db9363ab29aeb68fadab81f45a2d29f5b822fab131facc515f0e8"
+    },
+    "first_compile_link_initial_terminal": "bacecf",
+    "original_link_session": 98539,
+    "natural_link_terminal": "a5f12f",
+    "compile_link_exit_code": 0,
+    "command": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\compile_link_probe.cmd",
+      "bytes": 1529,
+      "sha256": "3d9763c8910e83bc6c167137bbdf3e2af78db2af84a7c7d7ec744c0645e076e8"
+    },
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\probe_compile_link.log",
+      "bytes": 14335783,
+      "sha256": "d9ef3bfa4a6dbe200505b42bccfeefb8cb559e0507bc5a3cdf975c630567fc6b"
+    },
+    "current_build_inputs": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\completed_build_inputs.DATA.json",
+      "bytes": 11406,
+      "sha256": "4609755a94a09afb8c3e8e29f4d041257c5daa788684db715a7743e35a641d62"
+    },
+    "probe_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\merge_source_probe.obj",
+      "bytes": 74827,
+      "sha256": "ea85d3ed0f26c11cf2416e621a3ad2fc36ff88ce737993514c45ecddb55db740"
+    },
+    "executable": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\merge_source_probe.exe",
+      "bytes": 240640,
+      "sha256": "5adc539e303da46d348c8a775d11b140fdb80c1b00287aa829789528eccd5165"
+    },
+    "map": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\merge_source_probe.map",
+      "bytes": 364486,
+      "sha256": "9b8d632df2960df2f9596d98533079048fa090b9052f7f204ddeaef7c98be805"
+    },
+    "embedded_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\merge_source_probe.manifest",
+      "bytes": 406,
+      "sha256": "be8918559280a2e74748bf8f6238b568ed7cbf75183b2180a6a8a979a1ebf243"
+    },
+    "embedded_asInvoker": true,
+    "complete_linked_evidence": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\linked_merge_evidence.DATA.json",
+      "bytes": 22405,
+      "sha256": "8fb939bb8ba02a5498299ebed9ad7ba2a0ea28ca8bcc284625341c73a2fddb40"
+    },
+    "retained_Merge_bytes": 718,
+    "retained_instructions": 198,
+    "retained_relocations": 17,
+    "all_nine_emitted_function_dispositions_accounted": true,
+    "own_file_positive_discard_records": 5,
+    "same_named_identical_probe_COMDAT_definitions_then_discarded": 3,
+    "COMDAT_caveat": "Insertion/keys/lifetimes exact3B/no-reloc selected probe definitions have positive Discarded records; no independent own-file discard line is claimed for those duplicates.",
+    "sole_actual_process_terminal": "c535fd",
+    "tool_wall_seconds": 6.5208039,
+    "PID": 99680,
+    "actual_process_count": 1,
+    "exit_code": 0,
+    "stderr_bytes": 0,
+    "actual_process_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\actual_Source_probe_process.DATA.json",
+      "bytes": 18996,
+      "sha256": "0c76b426744d9ae3637a0ed605a26c7534bca6617e767c38f1886761b0fc0c20"
+    },
+    "stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\probe_stdout.json",
+      "bytes": 598,
+      "sha256": "60b0d85ca00c12149672ef1516f47effe918d1423cfc5d24923b13e11f83f173"
+    },
+    "stderr": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyBagMergeSource01\\probe_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current_input_count": 20,
+    "all_selected_input_pins_and_stamps_stable": true,
+    "observations": {
+      "schema": "whole_bag_merge_focused_Source_probe_v1",
+      "checks_passed": true,
+      "top_level_merge_calls": 3,
+      "overwrite": {
+        "keep_word": 256,
+        "bag": "01202750",
+        "value": 202,
+        "empty_key_value": 303,
+        "child_hit": 404,
+        "child_miss": 505,
+        "new_ordinal": 3,
+        "counter": 4
+      },
+      "keep": {
+        "keep_word": 257,
+        "bag": "011ff420",
+        "value": 11,
+        "empty_key_value": 22,
+        "child_hit": 33,
+        "child_miss": 505,
+        "new_ordinal": 3,
+        "counter": 4
+      },
+      "source_snapshot_spans": 19,
+      "source_and_hit_metadata_preserved": true,
+      "empty_source_unchanged": true,
+      "same_context_cleanup_completed": true,
+      "independent_per_free_or_leak_claim": false,
+      "Original_Native_ABI_EH_game_claim": false
+    },
+    "scope": "Three top-level calls on real Type0/Type6 graphs: low-byte-zero overwrite0x100, keep0x101 with nested recursion/miss, nonnull empty source. Nineteen complete source spans plus hit metadata/identity and ordinal/counter checks.",
+    "limits": "No runtime-all-payload/FP matrix, independent per-free/leak instrumentation, full transitive provider or loaded-DLL/export audit."
+  },
+  "claims": {
+    "ordinary_whole_Source_implemented": true,
+    "complete_static_and_linked_tested": true,
+    "focused_Source_runtime_passed": true,
+    "new_merge_TU_registered_library_verified": false,
+    "Original_Native_executed": false,
+    "Original_ABI_compatible": false,
+    "Original_EH_OOM_compatible": false,
+    "per_free_or_leak_counter": false,
+    "game_validated": false
+  },
+  "new_permanent_tests": 0,
+  "integrator_owned": [
+    "shared CMake registration",
+    "name/reconstruction ledgers",
+    "Ghidra annotations/save",
+    "current Main registered-library build/review",
+    "Source admission and publication"
+  ],
+  "history": [
+    "Fresh brief, fast-forward to Main37eb2b90a and exclusive address/four-file/new-family lease before authoring.",
+    "Production/header first strict compilation and whole COFF inspection passed unchanged.",
+    "Independent full static and frozen focused-probe Source GO preceded the one actual launch.",
+    "First probe compile/link, full current linked check and sole actual Source process passed without changes or rerun.",
+    "No additional tests, replay, Original target, new provider cell/wrapper, or existing consumer edits.",
+    "Independent final review sealed PASS after all20 pins/stamps, complete598B stdout/0 stderr, all718 linked bytes/17relocations and all9 emitted-function dispositions were checked; no source correction, replay or additional test."
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "cc12_property_bag_assign_existing_primary_review_v1",
+  "address": "008f23e0",
+  "Source_commit": "00a4e3912",
+  "whole_Original": {
+    "bytes": 351,
+    "instructions": 118,
+    "call_sites": 12
+  },
+  "primary_Source_header_Original_listing_read": true,
+  "Original_ordinary_input_observation": "ECX destination, one stack source entryESP+4, RET4; stale Ghidra formal prototype unchanged; cf1f3a/exit0",
+  "worker_strict_compile": "c98101/exit0",
+  "worker_normal_build": {
+    "terminal": "aee916/exit0",
+    "existing_tests_passed": 2,
+    "new_TU_registered": false
+  },
+  "reviewed_semantics": [
+    "real12B iterator including empty source and actual8B pooled query lifecycle",
+    "mapped capture before query return; miss skips all source-record loads",
+    "destination tag read before conditional source-record/child loads",
+    "tag6 fixed recursion; other hits full record assignment",
+    "no clone/insertion/keep/new topology or counter/ordinal writes"
+  ],
+  "focused_Source_runtime_executed": false,
+  "gates": {
+    "primary_Source_pass": true,
+    "independent_Source_and_COFF_pass": false,
+    "registered_Main_build_pass": false,
+    "actual_Main_COFF_review_pass": false
+  },
+  "limits": [
+    "Ordinary Source API and stated disjoint live canonical graph domain only.",
+    "No Original Native execution, register/FS/EH/OOM/privateCRT/class/application/game qualification.",
+    "No new runtime probe or tests; required existing checks and machine inspection only."
+  ]
+}
