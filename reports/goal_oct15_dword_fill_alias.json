@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_dword_fill_alias",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_scene_dword_fill_alias.cpp",
+  "header": "include/bsp/native_scene_dword_fill_alias.hpp",
+  "documentation": "docs/GOAL_OCT15_DWORD_FILL_ALIAS.md",
+  "base_revision": "1c20583def997ea3a8dcdd2c151b39727f764a49",
+  "status": "whole_actual_raw_source_build_pending",
+  "routine": {
+    "address": "00468440",
+    "body_end_inclusive": "0046845d",
+    "body_bytes": 30,
+    "instructions": 13,
+    "blocks": 5,
+    "physical_calls": 0,
+    "implementation": "fill_native_dword_range_00468440",
+    "retained_name": "STL_Fill_00468440",
+    "coverage": "complete_actual_raw_dword_source_composed_from_body_identical_accepted_provider",
+    "original_abi": "cdecl first/last/value_address atentryESP+4/+8/+Ch;plainRET;rawEAX capturedlast;ESI saved/restored onlynonemptyrange;incomingECX/EDX/ESI noinput role",
+    "live_callers": [
+      "0046afb0"
+    ],
+    "physical_incoming_call_sites": [
+      "0046b122",
+      "0046b155"
+    ]
+  },
+  "byte_evidence": [
+    {
+      "address": "00468440",
+      "bytes": 30,
+      "instructions": 13,
+      "live_hex": "8b4424048b4c24083bc174118b54240c568b32893083c0043bc175f55ec3",
+      "disk_hex": "8b4424048b4c24083bc174118b54240c568b32893083c0043bc175f55ec3",
+      "live_installed_equal": true,
+      "sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0"
+    },
+    {
+      "address": "0043f9e0",
+      "bytes": 30,
+      "instructions": 13,
+      "live_hex": "8b4424048b4c24083bc174118b54240c568b32893083c0043bc175f55ec3",
+      "disk_hex": "8b4424048b4c24083bc174118b54240c568b32893083c0043bc175f55ec3",
+      "live_installed_equal": true,
+      "sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0046b122",
+      "native": "00468440",
+      "function": "0046afb0",
+      "kind": "call"
+    },
+    {
+      "address": "0046b155",
+      "native": "00468440",
+      "function": "0046afb0",
+      "kind": "call"
+    }
+  ],
+  "implementation_search": "no indexed/unindexed whole00468440 or new API before work;complete accepted canonical actual Source/header and both full native listings read;correct library name retained",
+  "source_composition": "ordinary alias delegates fill_native_dword_range_0043f9e0(void*first,constvoid*last,constvoid*value);native owned body has NO outgoing CALL. Body-identical exact30 bytes,raw memcpy4 storage/uint32 cursor admission unchanged,no provider edits.",
+  "storage_contract": "capturefirst/last;empty skips native thirdstackword and allvaluebacking reads;nonnullrange capturesvalueADDRESS once,FRESH rawDWORD load/store EACH iteration,cursor+4 modulo32 until equality,returncapturedlast. No alignment/order/count/null/overlap guard,snapshot,ownership,EH,cleanup,callback or stub. Valid reached raw4B backing/reachable equality canonical domain;progressive source/destination aliases retained;private Source/native argument/frame aliases and asyncmutation excluded.",
+  "caller_contract": {
+    "context_receipt": "local/goal_oct15_dword_fill_alias_caller_context.json",
+    "0046b122": "push valueaddrEDX,lastESI,firstEDI;ADDESP0Ch;no EAX consumer beforeRET10h",
+    "0046b155": "push valueaddrEAX,lastECX,firstEDI;ADDESP18h clears pending backward-copy triple and fill triple;no EAX consumer beforeRET10h",
+    "qualification": "no nominal caller returntype or owner inferred;canonical raw value/backing/private-frame admission retained"
+  },
+  "annotation": {
+    "before_comments": "local/goal_oct15_dword_fill_alias_before_comments.json",
+    "before_documentation": "local/goal_oct15_dword_fill_alias_before_documentation.json",
+    "preserve_correct_library_name_prior_values_comments_evidence": true,
+    "locked_apply_save": "passed;local/ghidra-annotations-20261015T220105Z.json;correct descriptive library name and all prior values/comments/evidence retained;project saved",
+    "refreshed_exports": "passed;owned address forced after annotation",
+    "readback": "passed;local/goal_oct15_dword_fill_alias_after_comments.json;expected name,prior comments and added evidence verified"
+  },
+  "verification": {
+    "project_program_guard": "bsp.py Client.verify each live batch;bsp,/battlestationspacific.exe,x86:LE:32:default,image00400000",
+    "whole_assembly_abi_actual_provider_and_callers": "passed",
+    "live_installed_bytes_and_canonical_identity": "passed;whole30B/13instructions;owned live=installedPE=canonical live/PE",
+    "typed_native_transfers": "passed;2 true incoming typed rows and2 Markdown claims;6 cited addresses;0 failed/unchecked/warnings;owned native body has no outgoing call",
+    "cmake_registration": "passed;unique append after immediate unleased check;no exclusive file lease",
+    "strict_win32_build_and_existing_ctest": "pending",
+    "compiled_object_review": "pending",
+    "source_file_sha256": {
+      "src/native_scene_dword_fill_alias.cpp": "2c7843c82c7fef4016b816225f075d4d2baccffbb2115d0530fcfa23d0751866",
+      "include/bsp/native_scene_dword_fill_alias.hpp": "f9371b7d36c772157f381f72bf04877281f40e7ed23c9a4dddd8fd6c80cfe7f4"
+    },
+    "accepted_provider_file_sha256": {
+      "src/native_dword_fill_ranges.cpp": "613cb9e7d485fd7a52d25acf726a2c4dc9ad03cdb8009a6238de50439d09e412",
+      "include/bsp/native_dword_fill_ranges.hpp": "2aa80307d15cff371497456d97161b00b706de89a979d3398e2b8fe857919c5f"
+    },
+    "new_tests": false,
+    "packet_native_differential": "not run",
+    "game_validation": "not run",
+    "diff_check": "passed"
+  },
+  "limits": [
+    "New ordinary raw Source composition/calling-convention keyword;no original binary/register/stack/private-frame/fault/SEH/COFF/game identity.",
+    "No native outgoing call claim from Source delegation;typed rows only actual incoming transfers.",
+    "Valid actual raw4B/equality domain inherited unchanged;no stronger alignment/order or hidden argument-frame/async alias model.",
+    "No packet-specific native differential/application/game validation or semantic caller returntype inference."
+  ]
+}
