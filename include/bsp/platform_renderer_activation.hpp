@@ -2,6 +2,9 @@
 
 #include "bsp/native_render_resource_record.hpp"
 #include "bsp/native_startup_shader_modes.hpp"
+#include "bsp/native_material_texture_refresh.hpp"
+#include <memory>
+#include <vector>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Platform renderer activation requires MSVC Win32.
@@ -59,6 +62,32 @@ void refresh_native_texture_registry_dates_00b21f70(void* actual_registry,
 // array must preserve readability just as the original native caller requires.
 void refresh_native_renderer_material_textures_00b24dd0(void* actual_renderer,
     NativeRendererActivationBindings&);
+
+struct NativeRendererMaterialTextureRefreshStep final {
+    void* actual_material{};
+    NativeMaterialTextureRefreshOperation refresh;
+};
+struct NativeRendererMaterialTextureRefreshOperation final {
+    enum class Phase { fresh, running, complete, failed };
+    Phase phase{Phase::fresh};
+    void* captured_renderer{};
+    // Stable child frames, not retained resource references. Keep a failed
+    // invocation alive until its reached native children have been reconciled.
+    std::vector<std::unique_ptr<NativeRendererMaterialTextureRefreshStep>> steps;
+    NativeRendererMaterialTextureRefreshOperation() = default;
+    ~NativeRendererMaterialTextureRefreshOperation();
+    NativeRendererMaterialTextureRefreshOperation(
+        const NativeRendererMaterialTextureRefreshOperation&) = delete;
+    NativeRendererMaterialTextureRefreshOperation& operator=(
+        const NativeRendererMaterialTextureRefreshOperation&) = delete;
+};
+
+// Same complete B24DD0 loop, with each captured actual C4h/178h material sent
+// to the concrete B19000 provider using the SAME canonical cache/owner/Lua
+// domains. A fresh persistent operation holds every reached child separately.
+// This does not bind effect/texture slot+8 reload or admit the full B24FB0.
+void refresh_native_renderer_material_textures_00b24dd0(void* actual_renderer,
+    NativeMaterialTextureRefreshContext&, NativeRendererMaterialTextureRefreshOperation&);
 
 // Complete normal control body B24FB0 for current slot120 target B24DD0.
 // Sample canonical108D4BB once; capture actual_renderer once, including across

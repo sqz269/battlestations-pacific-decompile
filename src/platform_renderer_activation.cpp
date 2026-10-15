@@ -2,6 +2,7 @@
 #include "bsp/native_vfs_date_route.hpp"
 
 #include <stdexcept>
+#include <exception>
 
 namespace bsp {
 namespace {
@@ -21,6 +22,17 @@ void* pointer(void* p, Word offset) noexcept {
 }
 volatile unsigned char& byte(void* p, Word offset) noexcept {
     return *static_cast<volatile unsigned char*>(at(p, offset));
+}
+template<class Refresh> void refresh_materials(void* renderer, Refresh&& refresh) {
+    Word count = word(renderer, 0x1aa0);
+    Word current = word(renderer, 0x1a9c);
+    Word end = current + count * 0x2cu;
+    while (current != end) {
+        refresh(pointer(reinterpret_cast<void*>(current), 0x28));
+        count = word(renderer, 0x1aa0);
+        end = word(renderer, 0x1a9c) + count * 0x2cu;
+        current += 0x2c;
+    }
 }
 void refresh_registry_dates(void* registry, NativeRendererActivationContext& c) {
     const Word count = word(registry, 8);
@@ -65,15 +77,35 @@ void refresh_native_texture_registry_dates_00b21f70(void* registry,
 
 void refresh_native_renderer_material_textures_00b24dd0(void* renderer,
     NativeRendererActivationBindings& calls) {
-    Word count = word(renderer, 0x1aa0);
-    Word current = word(renderer, 0x1a9c);
-    Word end = current + count * 0x2cu;
-    while (current != end) {
-        calls.refresh_material_textures_00b19000(pointer(
-            reinterpret_cast<void*>(current), 0x28));
-        count = word(renderer, 0x1aa0);
-        end = word(renderer, 0x1a9c) + count * 0x2cu;
-        current += 0x2c;
+    refresh_materials(renderer, [&](void* material) {
+        calls.refresh_material_textures_00b19000(material);
+    });
+}
+
+NativeRendererMaterialTextureRefreshOperation::~NativeRendererMaterialTextureRefreshOperation() {
+    if (phase == Phase::running || phase == Phase::failed) std::terminate();
+}
+
+void refresh_native_renderer_material_textures_00b24dd0(void* renderer,
+    NativeMaterialTextureRefreshContext& c, NativeRendererMaterialTextureRefreshOperation& a) {
+    using Phase = NativeRendererMaterialTextureRefreshOperation::Phase;
+    if (a.phase != Phase::fresh)
+        throw std::logic_error("renderer material refresh cannot replay");
+    a.phase = Phase::running;
+    a.captured_renderer = renderer;
+    try {
+        refresh_materials(renderer, [&](void* material) {
+            auto child = std::make_unique<NativeRendererMaterialTextureRefreshStep>();
+            child->actual_material = material;
+            a.steps.push_back(std::move(child));
+            refresh_native_material_textures_00b19000(
+                *static_cast<NativeMaterialEffectBaseStorage*>(material), c,
+                a.steps.back()->refresh);
+        });
+        a.phase = Phase::complete;
+    } catch (...) {
+        a.phase = Phase::failed;
+        throw;
     }
 }
 
