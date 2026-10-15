@@ -1,7 +1,7 @@
 {
   "schema": "bsp.native_scene_property_clone_cc12.v1",
   "packet": "FullRecursivePropertyCloneSource01",
-  "status": "whole ordinary Source implemented; strict whole object and worker build passed; focused Source runtime and registered-library gates pending",
+  "status": "whole ordinary Source implemented, strict whole-object and exact linked-object checks passed, worker two-test build passed, single focused Source recursive/FP process passed; integrator registered-library evidence separate",
   "functions": [
     {
       "address": "008F41F0",
@@ -60,6 +60,11 @@
       "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\FullPopulatedCloneOwnershipIndependentReview01\\compact_ownership_review.DATA.json",
       "bytes": 7353,
       "sha256": "6ec6639ec7c3b28810bc9427d9ecc0df24444f328c69e9652ac47d9151faad82"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\RecursiveCloneProbeIndependentReview01\\prelaunch_source_review.DATA.json",
+      "bytes": 5442,
+      "sha256": "d51b802d66a9748be64c2bda83439aeb48b30a76e3d11695917da3279f36c088"
     }
   ],
   "canonical_context": {
@@ -149,40 +154,265 @@
       "bytes": 19994,
       "sha256": "551c583c6817bd2dd219d59bddea75219972cbe64c2111898921d24101f5f37b"
     },
-    "compiled": false,
-    "linked": false,
-    "launched": false,
-    "scope": "one actual three-bag/fifteen-record all-tag mixed graph plus six selected Type1 hardware-reference cases",
-    "review": "independent whole probe review pending before launch",
-    "claims_pending": [
-      "complete borrowed source span preservation",
-      "distinct output owning spans",
-      "empty key and bucket collision",
-      "late copied and zero-stamped ordinals",
-      "recursive child backlinks",
-      "ordinary recursive cleanup completion",
-      "six selected FP observations"
-    ]
+    "first_strict_compile_link_passed": true,
+    "compile_link_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullRecursivePropertyCloneSource01\\probe_compile_link.log",
+      "bytes": 14405589,
+      "sha256": "25de6a2b8efe2be737facda7ce173daf7b38be6b33b8d9e534ffac2a0259e75d"
+    },
+    "compiled": true,
+    "linked": true,
+    "launched": true,
+    "actual_process_count": 1,
+    "actual_pid": 49956,
+    "terminal_exit_code": 0,
+    "stderr_bytes": 0,
+    "actual_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullRecursivePropertyCloneSource01\\actual_Source_probe_process.DATA.json",
+      "bytes": 18536,
+      "sha256": "8e7926ad5bc310ba913b9e193edae78f5ad705b838173f60c896a3972482c3fc"
+    },
+    "stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullRecursivePropertyCloneSource01\\probe_stdout.json",
+      "bytes": 3044,
+      "sha256": "2e31e0e0402ff67842d0df138361ffa930f9e5347ce0f4b9a38e832eacd9e75f"
+    },
+    "selected_input_count": 14,
+    "selected_inputs_and_stamps_stable": true,
+    "actual_observations": {
+      "schema": "whole_recursive_clone_focused_Source_probe_v1",
+      "source_bag": "0105dbb8",
+      "output_bag": "0105fed8",
+      "source_owner": "0105ba40",
+      "clone_empty": "010573ad",
+      "bags": 3,
+      "records": 15,
+      "empty_keys": 1,
+      "colliding_buckets": 1,
+      "source_preserved_spans": 55,
+      "source_preserved_bytes": 2208,
+      "graph_rows": [
+        {
+          "key": "",
+          "depth": 0,
+          "tag": 0,
+          "source": "0105b700",
+          "output": "01066c60",
+          "source_ordinal": 0,
+          "output_ordinal": 0
+        },
+        {
+          "key": "key24",
+          "depth": 0,
+          "tag": 2,
+          "source": "0105b6c0",
+          "output": "01067060",
+          "source_ordinal": 2,
+          "output_ordinal": 2
+        },
+        {
+          "key": "key0",
+          "depth": 0,
+          "tag": 1,
+          "source": "0105b880",
+          "output": "01066de0",
+          "source_ordinal": 1,
+          "output_ordinal": 1
+        },
+        {
+          "key": "words9",
+          "depth": 0,
+          "tag": 9,
+          "source": "0105b800",
+          "output": "01066aa0",
+          "source_ordinal": 101,
+          "output_ordinal": 101
+        },
+        {
+          "key": "triples",
+          "depth": 0,
+          "tag": 11,
+          "source": "0105bb00",
+          "output": "01066c20",
+          "source_ordinal": 8,
+          "output_ordinal": 8
+        },
+        {
+          "key": "identity",
+          "depth": 0,
+          "tag": 4,
+          "source": "0105b8c0",
+          "output": "010669e0",
+          "source_ordinal": 41,
+          "output_ordinal": 41
+        },
+        {
+          "key": "named",
+          "depth": 0,
+          "tag": 5,
+          "source": "0105b780",
+          "output": "01066a60",
+          "source_ordinal": 99,
+          "output_ordinal": 99
+        },
+        {
+          "key": "vector",
+          "depth": 0,
+          "tag": 7,
+          "source": "0105b900",
+          "output": "01066ae0",
+          "source_ordinal": 5,
+          "output_ordinal": 5
+        },
+        {
+          "key": "child",
+          "depth": 0,
+          "tag": 6,
+          "source": "0105b740",
+          "output": "01066be0",
+          "source_ordinal": 4,
+          "output_ordinal": 4
+        },
+        {
+          "key": "deeper",
+          "depth": 1,
+          "tag": 6,
+          "source": "0105b7c0",
+          "output": "01066ea0",
+          "source_ordinal": 1,
+          "output_ordinal": 1
+        },
+        {
+          "key": "deep-text",
+          "depth": 2,
+          "tag": 5,
+          "source": "0105bcc0",
+          "output": "01067020",
+          "source_ordinal": 0,
+          "output_ordinal": 0
+        },
+        {
+          "key": "nested-byte",
+          "depth": 1,
+          "tag": 3,
+          "source": "0105b9c0",
+          "output": "01066920",
+          "source_ordinal": 0,
+          "output_ordinal": 0
+        },
+        {
+          "key": "bytes",
+          "depth": 0,
+          "tag": 8,
+          "source": "0105b940",
+          "output": "01066b20",
+          "source_ordinal": 6,
+          "output_ordinal": 6
+        },
+        {
+          "key": "byte",
+          "depth": 0,
+          "tag": 3,
+          "source": "0105bac0",
+          "output": "010669a0",
+          "source_ordinal": 3,
+          "output_ordinal": 3
+        },
+        {
+          "key": "words10",
+          "depth": 0,
+          "tag": 10,
+          "source": "0105b840",
+          "output": "01066fe0",
+          "source_ordinal": 7,
+          "output_ordinal": 7
+        }
+      ],
+      "fp_rows": [
+        {
+          "input": "3f9e0419",
+          "result": "3f9e0419",
+          "reference": "3f9e0419",
+          "cw": "007f",
+          "status": "0000",
+          "reference_status": "0000",
+          "mxcsr": "00001f80"
+        },
+        {
+          "input": "00000000",
+          "result": "00000000",
+          "reference": "00000000",
+          "cw": "067f",
+          "status": "0000",
+          "reference_status": "0000",
+          "mxcsr": "00001f80"
+        },
+        {
+          "input": "80000000",
+          "result": "80000000",
+          "reference": "80000000",
+          "cw": "0b7f",
+          "status": "0000",
+          "reference_status": "0000",
+          "mxcsr": "00001f80"
+        },
+        {
+          "input": "00000001",
+          "result": "00000001",
+          "reference": "00000001",
+          "cw": "0c7f",
+          "status": "0002",
+          "reference_status": "0002",
+          "mxcsr": "00001f80"
+        },
+        {
+          "input": "7fc12345",
+          "result": "7fc12345",
+          "reference": "7fc12345",
+          "cw": "027f",
+          "status": "0000",
+          "reference_status": "0000",
+          "mxcsr": "00001f80"
+        },
+        {
+          "input": "7f812345",
+          "result": "7fc12345",
+          "reference": "7fc12345",
+          "cw": "0f7f",
+          "status": "0001",
+          "reference_status": "0001",
+          "mxcsr": "00001f80"
+        }
+      ],
+      "checks_passed": true,
+      "recursive_cleanup_completed": true,
+      "source_preserved_after_output_retirement": true,
+      "Original_Native_execution": false,
+      "Original_ABI_EH_game_claim": false,
+      "independent_per_free_or_leak_claim": false
+    },
+    "FP_scope": "six selected cases across valid PC/RC values; not a cross-product or all-bit runtime proof",
+    "cleanup_scope": "real same-context recursive cleanup completed; no independent per-free trace or outstanding allocation counter",
+    "event_order_scope": "allocation-before-conversion follows Source/whole COFF evidence; no added dynamic allocation-event observation"
   },
   "type6_header_widening": {
-    "applied": false,
-    "gate": "complete populated Source producer and full recursive chain must pass first",
-    "unchanged_header": {
+    "applied": true,
+    "gate": "complete populated Source producer and full recursive chain passed before comment change; Root accepted the actual receipt",
+    "current_header": {
       "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_scene_property_record_type6_storage.hpp",
-      "bytes": 2915,
-      "sha256": "b7cb92a00e9071a74407de89d41533820c94052fe89c90de0356220ab74e7fe8"
-    }
+      "bytes": 3235,
+      "sha256": "55ca335d836a071eace11ebdfa179d9d11c7835741a677897dbe3474175924f6"
+    },
+    "change": "comment only: admit real empty/populated child from new whole producer under its same canonical ordinary contract; preserve prior empty-fragment and Native fixture limits"
   },
   "integrator_owned_pending": [
-    "shared CMake registration",
-    "registered-library build and exact current linked evidence",
-    "name/reconstruction ledgers",
-    "Ghidra annotations and save"
+    "shared registration and registered-library build/linked receipt status is owned and reported separately by the integrator",
+    "name/reconstruction ledgers and Ghidra annotations/save are integrator-owned"
   ],
   "claims": {
     "ordinary_whole_Source_implemented": true,
     "strict_object_build_tested": true,
-    "Source_runtime_tested": false,
+    "Source_runtime_tested": true,
     "Native_profile_executed": false,
     "Original_ABI_compatible": false,
     "Original_EH_OOM_compatible": false,
@@ -196,5 +426,46 @@
     "closed NUL-free ASCII keys in current C locale, including empty",
     "Type8 positive byte count; Type9/10 positive count <=3FFFFFFFh; Type11 positive count <=15555555h",
     "new ordinary C++ interfaces; no Original parent register/stack/FS/SEH/EH/OOM, historical CRT, class/vtable, World or gameplay claim"
-  ]
+  ],
+  "source_commit": "6b009c86e",
+  "whole_linked_clone": {
+    "evidence": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullRecursivePropertyCloneSource01\\linked_clone_evidence.DATA.json",
+      "bytes": 35642,
+      "sha256": "4b79a687180aafdb87f1d204bac2ddfc8e4ed900a904ef4ae00dbd2b10dfee3e"
+    },
+    "current_completed_build_inputs": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullRecursivePropertyCloneSource01\\completed_build_inputs.DATA.json",
+      "bytes": 8214,
+      "sha256": "e3269a29247cef9ec0958f21b245d1812de8af862f4fe3271fc22aec6d7e4192"
+    },
+    "retained_functions": 4,
+    "retained_section_bytes": 1048,
+    "retained_instruction_bytes": 999,
+    "retained_instructions": 296,
+    "table_bytes": 48,
+    "padding_bytes": 1,
+    "actual_linker_discarded_functions": 6,
+    "whole_current_code_table_padding_and_every_relocation_match": true,
+    "exact_linked_type1_helper_hex": "d9410c51d91c2458c3",
+    "transitive_provider_whole_code_or_loaded_export_audit": false
+  },
+  "documentation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\docs\\NATIVE_SCENE_PROPERTY_CLONE_CC12.md",
+    "bytes": 7008,
+    "sha256": "a95779529641cd2ec4ff9a268e5aa9af3298dc05b6780d16c63d04e02faf640c"
+  },
+  "validation_history": [
+    "Initial contract-input checks encountered worktree CRLF/LF-only differences in target config and Type4 report; exact normalized bytes AND parsed JSON identities were required. Source dependencies were not normalized or relaxed.",
+    "New production clone TU strict compile passed on its first attempt; required original worker normal build naturally completed with its two configured tests passing.",
+    "Focused probe Source remained exactly the independent prelaunch-reviewed pin. Its first strict compile/link passed, using actual current build dependencies frozen only after the original build completed.",
+    "First static linked-inspection script incorrectly compared object-local $LN spellings to unrelated Lua map labels. Corrected lookup uses the actual COFF owning section/function and local symbol value; same-object map entries are additionally checked. Corrected whole linked proof passed before any process launch.",
+    "Exactly one Source process launched and passed. No replay, Original Native target or additional test matrix was run.",
+    "A combined comment/doc apply_patch attempt had a missing context line and applied no changes; the corrected comment/doc-only patch succeeded. Production clone and canonical process files stayed unchanged."
+  ],
+  "tool_terminals": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullRecursivePropertyCloneSource01\\tool_terminal_receipt.DATA.json",
+    "bytes": 2410,
+    "sha256": "f455c5f09c4a941b1590aacdc063f1345c1292167dc138db9057e19e92d358d0"
+  }
 }

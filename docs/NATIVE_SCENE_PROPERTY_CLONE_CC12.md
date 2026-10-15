@@ -72,14 +72,33 @@ distinct owning output spans, key traversal/head insertion, copied ordinals,
 zero-ordinal stamping and child backlinks, then uses the same concrete lifetime
 context for recursive cleanup. Six selected Type 1 hardware-reference cases
 cover finite, signed zeros, subnormal, QNaN and SNaN inputs with selected PC/RC
-controls. Fixture code alone sets and restores FP state. The report states
-whether this probe has actually linked and run; this description alone is not
-runtime evidence. Completion of cleanup is not an independent per-free trace
-or a leak counter.
+controls. Fixture code alone sets and restores FP state. Its first strict
+compile/link passed, and its single actual Source process exited zero with no
+stderr. All graph checks passed: three bags/fifteen records, one empty key and
+one colliding bucket, 55 borrowed source spans/2,208 bytes preserved through
+output retirement, distinct owning outputs, ordinals and child backlinks.
+The six FP results matched the direct hardware reference; the subnormal set
+status `0002`, the SNaN became `7FC12345` with status `0001`, and the remaining
+selected cases set neither. All selected CW/empty-stack/MXCSR checks passed.
+Completion of cleanup is not an independent per-free trace or a leak counter.
+
+Before launch, whole linked inspection matched the four retained clone
+functions, including the private FP helper: 1,048 section bytes comprising
+999 instruction bytes/296 instructions, the 48-byte table and one padding
+byte, with every relocation resolved to its actual target. The other six
+emitted helper functions have positive linker discard records. This proves
+the selected current PE file, separately from live image or Original ABI
+identity. All fourteen selected input pins and file stamps remained stable
+across the one process. The report pins the receipts and exact current build
+dependencies; it also records the inspection-script correction for object-local
+`$LN` labels that share names with unrelated Lua labels.
 
 Original ECX/stack/RET, FS/SEH and failure unwind, root-null faults, OOM,
 historical CRT, class/vtable dispatch, World/startup, and game behavior remain
 outside this ordinary contract. Earlier empty-only fragments and their narrow
 ABI qualifications remain unchanged. No Native profile is launched by this
-packet. The Type 6 public storage comment can be widened to this producer only
-after the complete populated Source producer and recursive chain have passed.
+packet. After this complete populated Source producer and recursive chain
+passed, the Type 6 public storage comment was widened to admit its real child
+output. The earlier empty-only fragment and Native fixture boundaries remain
+explicit. Shared registration and the integrator's registered-library build
+are separate evidence from this worker's standalone object and Source probe.
