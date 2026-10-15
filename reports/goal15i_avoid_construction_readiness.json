@@ -1,0 +1,189 @@
+{
+  "packet": "goal15i_avoid_construction_readiness",
+  "status": "complete_physical_analysis_candidate_raw_source_contract_pending_genuine_children_and_borrowed_world_binding",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "functions": [
+    {
+      "address": "0041ccd0",
+      "bytes": 994,
+      "instructions": 279,
+      "gaps": 0,
+      "abi": "ECX owner; stack raw path/layer; RET8/EAX owner",
+      "source_state": "existing typed interface is distinct; no new raw Source implementation claimed"
+    },
+    {
+      "address": "0041d1e0",
+      "bytes": 305,
+      "instructions": 103,
+      "gaps": 0,
+      "abi": "ECX group; stack entity; RET4/void",
+      "source_state": "existing partial projection remains; full raw parent not claimed"
+    }
+  ],
+  "transfer_rows": [
+    {
+      "address": "0041cd32",
+      "native": "007af800",
+      "containing_function": "0041ccd0"
+    },
+    {
+      "address": "0041cd7d",
+      "native": "00bf681b",
+      "containing_function": "0041ccd0"
+    },
+    {
+      "address": "0041cdfa",
+      "native": "00bf55be",
+      "containing_function": "0041ccd0"
+    },
+    {
+      "address": "0041ce27",
+      "native": "00bf6989",
+      "containing_function": "0041ccd0"
+    },
+    {
+      "address": "0041ce7e",
+      "native": "007af800",
+      "containing_function": "0041ccd0"
+    },
+    {
+      "address": "0041cef1",
+      "native": "00bf681b",
+      "containing_function": "0041ccd0"
+    },
+    {
+      "address": "0041cf6e",
+      "native": "00bf55be",
+      "containing_function": "0041ccd0"
+    },
+    {
+      "address": "0041cf9b",
+      "native": "00bf6989",
+      "containing_function": "0041ccd0"
+    },
+    {
+      "address": "0041cfb9",
+      "native": "00415010",
+      "containing_function": "0041ccd0"
+    },
+    {
+      "address": "0041d053",
+      "native": "0041a540",
+      "containing_function": "0041ccd0"
+    },
+    {
+      "address": "0041d063",
+      "native": "0041a200",
+      "containing_function": "0041ccd0"
+    },
+    {
+      "address": "0041d06d",
+      "native": "00923810",
+      "containing_function": "0041ccd0"
+    },
+    {
+      "address": "0041d07b",
+      "native": "00923810",
+      "containing_function": "0041ccd0"
+    },
+    {
+      "address": "0041d094",
+      "native": "00923810",
+      "containing_function": "0041ccd0"
+    },
+    {
+      "address": "0041d201",
+      "native": "007ac9d0",
+      "containing_function": "0041d1e0"
+    },
+    {
+      "address": "0041d214",
+      "native": "00bf681b",
+      "containing_function": "0041d1e0"
+    },
+    {
+      "address": "0041d233",
+      "native": "0041ccd0",
+      "containing_function": "0041d1e0"
+    },
+    {
+      "address": "0041d278",
+      "native": "00bf55be",
+      "containing_function": "0041d1e0"
+    },
+    {
+      "address": "0041d2a8",
+      "native": "00bf6989",
+      "containing_function": "0041d1e0"
+    },
+    {
+      "address": "0041d2d7",
+      "native": "004167c0",
+      "containing_function": "0041d1e0"
+    },
+    {
+      "address": "0041d2e4",
+      "native": "00bf6989",
+      "containing_function": "0041d1e0"
+    },
+    {
+      "address": "0041d2f4",
+      "native": "00bf65ac",
+      "containing_function": "0041d1e0"
+    },
+    {
+      "address": "00c5e193",
+      "native": "00412dc0",
+      "containing_function": "00c5e190",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c5e1b4",
+      "native": "00bf65ac",
+      "containing_function": "00c5e1b0"
+    }
+  ],
+  "indirect_call": {
+    "address": "0041d089",
+    "instruction": "CALL EAX",
+    "contract": "current second parent getter result supplies actual vtable+5C, ECX actual parent, one stack code44, AL predicate; reread original path+14 and call ancestor1 again for publication"
+  },
+  "constructor": {
+    "initialization": "zero owner0/4/8, load actual layerword then publish+C,zero+10; bounds remain uninitialized on empty input",
+    "input": "actual incoming path word reloaded inside loop; ACTUAL layer argument word reused for computed signed pointcount after first append; positive-loop bounds compare signed",
+    "growth": "only count==capacity and unsignedcandidate2cap+2>oldcap; publishcap BEFORE MUL4 with overflow=>FFFFFFFF byte request; current record-array/count reloads, lateoldfree thennewarraypub; no generic checked allocator",
+    "filter": "diffX/diffZ floatspills, two extended squares/add thenfloatspill, ordered compare to exact CE3880=25; no ordinarydouble/SSE math substitution",
+    "world": "capture CURRENT value from fixed E188A8 pointercell only AFTER all path/allocation work; ordered fieldloads/scratchstores min711C,7120,7130 andmax7128,712C,7124; mustnot accept an earlier copied-bound snapshot",
+    "post_clip": "reloadcurrentcount; ifnonzero deriveflag1 then three separate ancestor1 calls with actual parentkind44 dispatch between them; publish third result toowner+10",
+    "eh": "FuncInfoD842D8 max1,mapD842D0[-1,C5E190],zero tryblocks; state0 beforepointwork persists throughclip/winding/association; actionMOVECX[EBP-68]/JMP412DC0, frees pointerarray andzeroes0 only; count/cap and pointed-record leak are not repaired"
+  },
+  "group_add": {
+    "selection": "call actualpathinterface BEFORE checking entity+54==2; capture returnedpath; allocate24h then overwrite ACTUAL incoming entityword withallocatedzone",
+    "constructor": "state0 beforector call, late group+10layer load after allocation; ctor return rawzone, derefcount even retainednullbranch; state-1 aftercountread",
+    "nonempty": "grow group pointerarray with same preallocationcap/saturatingMUL4/currentreload schedule, append then ADDcurrentcount1",
+    "empty": "167C0 then conditionalpointerarrayfree+zero0, finallyfree actualzone; no pointerguardinvented",
+    "eh": "FuncInfoD84304 max1,mapD842FC[-1,C5E1B0],zero tryblocks; onlyCtor phasearmed; actionMOV EAX,[EBP+4]/PUSH EAX/CALL BF65AC/POP ECX/RET reads CURRENT reused incomingentityword; no pending-record guard outside ctor"
+  },
+  "raw_child_gates": {
+    "00415010": "new primary whole127B rawslot entry complete standalone, final registration pending",
+    "004167c0": "concurrent genuine cleanup Source; acceptancepending",
+    "00412dc0": "additional26B actualconstructor-unwind cleanup authorized to same cleanupworker; acceptancepending",
+    "0041a540": "concurrent whole rawclip Source, exactlytwo currentcellguards/no deriveedge; acceptancepending",
+    "0041a200": "concurrent whole rawwinding+117B reciprocal+110B x87angle; actual current _CI* boundaryexplicit; acceptancepending",
+    "007af800/007ac9d0/00923810": "accepted complete raw Source fromGOAL15H"
+  },
+  "future_source_contract": {
+    "constructor": "candidate void*fastcall(rawzoneECX,borrowed actual world pointercelladdressEDX,pathstack,layerstack); Source world-cell address captured atentry, its value loaded late; do not put SourceEDX inOriginalprototype",
+    "group_add": "candidate voidfastcall(rawgroupECX,sameborrowedworldcellEDX,entitystack); mustforwardgenuineconstructor and preserveactual incomingcell cleanup",
+    "scope": "candidateinterfaces are hypotheses, not current implementation/adoption. Borrowed data binding must be real; no invented world/defaultbounds/class/vtable/providercallback. Private NativeCRT/frame/SEH/ABI and game-runtime proof remain required separately."
+  },
+  "capture_sha256": {
+    "goal15i_constructor_bytes.txt": "2b146253071fafae0756f1de0b55813482a52bd16933302a6090b83b694cee20",
+    "goal15i_group_add_bytes.txt": "6163a678ab015b5c27f6e5a056b2e20dde1af69c5115df02ad5402ff0f7688da",
+    "goal15i_parent_flow.txt": "ffde5b60b1e5532ef69e2f196004ed1b21c0244b01bfec53cb4676df795272e4"
+  },
+  "limits": "bsp flow checked279/103 listedinstructions andzero gaps; its typed flow/no-return query unavailable, so no stronger fallthrough/noreturn assertion; no Ghidra mutation or new raw parent Source claim in this readiness record"
+}
