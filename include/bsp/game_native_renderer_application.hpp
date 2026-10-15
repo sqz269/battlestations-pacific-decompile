@@ -14,6 +14,8 @@ class NativeXLiveDeviceAdapter;
 class XLiveLibrary;
 struct NativeRendererPresentObservation;
 struct NativeTextureCacheContext;
+struct NativeTextureReloadOutputs;
+struct NativeTextureReloadAcquired;
 struct NativeMaterialTextureRefreshContext;
 struct NativeMaterialTextureNameLiterals;
 struct NativeEffectRegistryDestructionContext;
@@ -111,6 +113,13 @@ public:
     // release ordinary returned references before the shared renderer drain;
     // its own fallback reference follows the native cache cleanup schedule.
     NativeTextureCacheContext& texture_cache() noexcept;
+    // Ready-only captured slot+08 dispatch for this application's canonical
+    // D61948 owners and B3FA90 target. Borrow the SAME loading graph; caller
+    // supplies explicit output preimages and retains the acquired frame.
+    // This does not bind other resource profiles or the full activation scan.
+    void reload_activation_texture_2d(void* actual_resource,
+        std::uint32_t captured_slot_08, NativeTextureReloadOutputs,
+        NativeTextureReloadAcquired&);
     // Ready-only B19000 domain: SAME texture cache, actual owners, CURRENT
     // F8D434 publication and mapped renderer profile. The caller supplies the
     // actual F8D438 mutable/CE3A0C literal bindings and keeps them alive.

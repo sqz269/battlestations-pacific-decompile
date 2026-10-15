@@ -1,0 +1,610 @@
+{
+  "packet": "cc14_platform_texture_reload",
+  "generated_utc": "2026-10-15T01:24:28.320628+00:00",
+  "base_commit": "dbcb8a3a4b7566d8dec9419c3be88a285e768292",
+  "status": "bounded_D61948_B3FA90_actual_application_dispatch_built_and_whole_native_body_compared",
+  "source_entry": "GameNativeRendererApplication::reload_activation_texture_2d",
+  "source_files": [
+    "include/bsp/game_native_renderer_application.hpp",
+    "src/game_native_renderer_application.cpp",
+    "include/bsp/native_texture_reload.hpp"
+  ],
+  "source_body": "Existing reload_native_texture_00b3fa90 implementation unchanged; same complete normal control body and declared caller output-preimage/provider domain.",
+  "entry_contract": [
+    "Application phase ready before any resource inspection.",
+    "The actual resource has its canonical companion in this SAME application owner registry.",
+    "Current raw owner profile D61948, captured slot08 target B3FA90, same mapped profile current slot08 B3FA90.",
+    "Borrow this application TextureLoadingGraph.loading; no duplicate native services, pools, renderer, COM owner, current-publication cell or compiler graph.",
+    "Caller owns disjoint NativeTextureReloadOutputs image/descriptor preimages and retains NativeTextureReloadAcquired; no resource retention or rollback is added.",
+    "Existing acquired state rejects replay; failed child state/side effects follow the existing core contract."
+  ],
+  "native_body": {
+    "original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "start": "00b3fa90",
+    "size": 747,
+    "sha256": "2040b2711596de753d0e87c2119184dc72ea843f173cc9fc7037efab5bee0b09",
+    "live_match": true
+  },
+  "original_abi": "ECX actual D61948 owner, RET; source application entry has a new C++ API, not native ABI compatibility.",
+  "original_body_verification": {
+    "passed": true,
+    "native_bytes": 747,
+    "native_sha256": "2040b2711596de753d0e87c2119184dc72ea843f173cc9fc7037efab5bee0b09",
+    "relocated_sha256": "ea1ac2caf1b58873095b791792267963a8434b91418e2e97c4f75385210eddd1",
+    "operand_count": 24,
+    "allowed_operand_bytes": 96,
+    "other_bytes_unchanged": true,
+    "operands": [
+      {
+        "site": "00b3faf0",
+        "kind": "rel32_call",
+        "native_target": "00bef750",
+        "fixture_target": "10008dd0",
+        "provider": "convert"
+      },
+      {
+        "site": "00b3fb1b",
+        "kind": "rel32_call",
+        "native_target": "00b33e40",
+        "fixture_target": "10009d50",
+        "provider": "name"
+      },
+      {
+        "site": "00b3fb2e",
+        "kind": "rel32_call",
+        "native_target": "00b27d40",
+        "fixture_target": "1000f180",
+        "provider": "unregister"
+      },
+      {
+        "site": "00b3fb33",
+        "kind": "rel32_call",
+        "native_target": "00b3e730",
+        "fixture_target": "1000ece0",
+        "provider": "support"
+      },
+      {
+        "site": "00b3fb49",
+        "kind": "rel32_call",
+        "native_target": "00bef610",
+        "fixture_target": "10009150",
+        "provider": "data"
+      },
+      {
+        "site": "00b3fca8",
+        "kind": "rel32_call",
+        "native_target": "00bef610",
+        "fixture_target": "10009150",
+        "provider": "data"
+      },
+      {
+        "site": "00b3fb4f",
+        "kind": "rel32_call",
+        "native_target": "00c2dfec",
+        "fixture_target": "100099b0",
+        "provider": "image_info"
+      },
+      {
+        "site": "00b3fba5",
+        "kind": "rel32_call",
+        "native_target": "00bf9440",
+        "fixture_target": "10409fb6",
+        "provider": "strstr"
+      },
+      {
+        "site": "00b3fbca",
+        "kind": "rel32_call",
+        "native_target": "00bf9440",
+        "fixture_target": "10409fb6",
+        "provider": "strstr"
+      },
+      {
+        "site": "00b3fbeb",
+        "kind": "rel32_call",
+        "native_target": "00bf9440",
+        "fixture_target": "10409fb6",
+        "provider": "strstr"
+      },
+      {
+        "site": "00b3fc72",
+        "kind": "rel32_call",
+        "native_target": "00b1fef0",
+        "fixture_target": "10009270",
+        "provider": "device"
+      },
+      {
+        "site": "00b3fcaf",
+        "kind": "rel32_call",
+        "native_target": "00c2dfe6",
+        "fixture_target": "10008ee0",
+        "provider": "create"
+      },
+      {
+        "site": "00b3fd33",
+        "kind": "rel32_call",
+        "native_target": "00b3f5d0",
+        "fixture_target": "10009280",
+        "provider": "diagnostic"
+      },
+      {
+        "site": "00b3fd3c",
+        "kind": "rel32_call",
+        "native_target": "00b3e730",
+        "fixture_target": "1000ece0",
+        "provider": "support"
+      },
+      {
+        "site": "00b3fd5e",
+        "kind": "rel32_call",
+        "native_target": "00419cc0",
+        "fixture_target": "1000a5b0",
+        "provider": "pool"
+      },
+      {
+        "site": "00b3fd65",
+        "kind": "rel32_call",
+        "native_target": "00bd1510",
+        "fixture_target": "1000d500",
+        "provider": "release"
+      },
+      {
+        "operand": "00b3faae",
+        "kind": "absolute_cell",
+        "native_target": "0109ceec",
+        "fixture_target": "006946bc",
+        "provider": "current_vfs"
+      },
+      {
+        "operand": "00b3fb0f",
+        "kind": "absolute_cell",
+        "native_target": "00f8d394",
+        "fixture_target": "0069c024",
+        "provider": "current_renderer"
+      },
+      {
+        "operand": "00b3fb29",
+        "kind": "absolute_cell",
+        "native_target": "00f8d394",
+        "fixture_target": "0069c024",
+        "provider": "current_renderer"
+      },
+      {
+        "operand": "00b3fb83",
+        "kind": "absolute_cell",
+        "native_target": "00f8d394",
+        "fixture_target": "0069c024",
+        "provider": "current_renderer"
+      },
+      {
+        "operand": "00b3fc01",
+        "kind": "absolute_cell",
+        "native_target": "00f8d394",
+        "fixture_target": "0069c024",
+        "provider": "current_renderer"
+      },
+      {
+        "operand": "00b3fc6e",
+        "kind": "absolute_cell",
+        "native_target": "00f8d394",
+        "fixture_target": "0069c024",
+        "provider": "current_renderer"
+      },
+      {
+        "operand": "00b3fafd",
+        "kind": "absolute_cell",
+        "native_target": "00ce2220",
+        "fixture_target": "10527000",
+        "provider": "real_interlocked_decrement_iat"
+      },
+      {
+        "operand": "00b3fd0f",
+        "kind": "absolute_cell",
+        "native_target": "00ce2220",
+        "fixture_target": "10527000",
+        "provider": "real_interlocked_decrement_iat"
+      }
+    ],
+    "owner_size": 80,
+    "normalization": {
+      "0c": "distinct actual name allocation",
+      "10": "distinct real D3D texture COM",
+      "20": "distinct monotonic native serial",
+      "4c": "distinct actual retained memory owner"
+    },
+    "equivalent_owner_preimages": true,
+    "equivalent_owner_postimages": true,
+    "unchanged_owner_fields": [
+      "00",
+      "04",
+      "08",
+      "0c",
+      "1c",
+      "20",
+      "3c",
+      "40",
+      "44",
+      "48",
+      "4c"
+    ],
+    "actual_outputs_equal": true,
+    "runtime_exit_code": 0,
+    "runtime_seconds": 2.7422306999797,
+    "artifacts": [
+      {
+        "file": "original_desc_output.bin",
+        "bytes": 32,
+        "sha256": "ed8c51bf8c47906d292e96f634ba9031c7635e57f58f1a506c38e3f1258c0005"
+      },
+      {
+        "file": "original_image_output.bin",
+        "bytes": 28,
+        "sha256": "614d51dd68fb56c78a5becaabcf61b378ce59b9b3c96fb5f39b2c5bb4d9d4637"
+      },
+      {
+        "file": "original_owner_after.bin",
+        "bytes": 80,
+        "sha256": "2841cd6e2d2a000bb114eedc7ab7db2145323b12f1f515ddaf099b379b760c09"
+      },
+      {
+        "file": "original_owner_before.bin",
+        "bytes": 80,
+        "sha256": "3ac57976819e7183077ee617a899636eaa2d75faac309b255cc556948c27c223"
+      },
+      {
+        "file": "original_relocated.bin",
+        "bytes": 747,
+        "sha256": "ea1ac2caf1b58873095b791792267963a8434b91418e2e97c4f75385210eddd1"
+      },
+      {
+        "file": "original_relocation_base.bin",
+        "bytes": 4,
+        "sha256": "63bcac972f398101298cfa91e0fca6a055cdb4ffb6c4bb1051bfd27b66772ffa"
+      },
+      {
+        "file": "reload.bin",
+        "bytes": 747,
+        "sha256": "2040b2711596de753d0e87c2119184dc72ea843f173cc9fc7037efab5bee0b09"
+      },
+      {
+        "file": "source_desc_output.bin",
+        "bytes": 32,
+        "sha256": "ed8c51bf8c47906d292e96f634ba9031c7635e57f58f1a506c38e3f1258c0005"
+      },
+      {
+        "file": "source_image_output.bin",
+        "bytes": 28,
+        "sha256": "614d51dd68fb56c78a5becaabcf61b378ce59b9b3c96fb5f39b2c5bb4d9d4637"
+      },
+      {
+        "file": "source_owner_after.bin",
+        "bytes": 80,
+        "sha256": "eafb654bd6a7bb04c5c29b6e3f0c6ca032d9fd01e3ad746c45caa503adcc80f6"
+      },
+      {
+        "file": "source_owner_before.bin",
+        "bytes": 80,
+        "sha256": "65e389b57ca4f5c312ef54a4554e9712df8cf6c82e0db14eba58457e41932f10"
+      }
+    ]
+  },
+  "native_boundary_bridges": {
+    "copied_body_bytes": 747,
+    "direct_call_operands": 16,
+    "publication_or_import_cells": 8,
+    "allowed_operand_bytes": 96,
+    "all_other_body_bytes_unchanged": true,
+    "real_children": "Original calls use existing concrete Source VFS/open, conversion, stream release, name notification, unregister, support, device getter and diagnostic/string-pool providers; real Interlocked, strstr, D3DX imports and actual COM methods.",
+    "virtual_slots": [
+      {
+        "slot": "00d68d08",
+        "native_target": "00bdf310",
+        "restored": true
+      },
+      {
+        "slot": "00d5f114",
+        "native_target": "00b32250",
+        "restored": true
+      },
+      {
+        "slot": "00d691b0",
+        "native_target": "00bf55a0",
+        "restored": true
+      },
+      {
+        "slot": "00d691c8",
+        "native_target": "00bf5020",
+        "restored": true
+      },
+      {
+        "slot": "00d691e0",
+        "native_target": "00bf4f90",
+        "restored": true
+      },
+      {
+        "slot": "00d642c0",
+        "native_target": "00bd30e0",
+        "restored": true
+      },
+      {
+        "slot": "00d642d8",
+        "native_target": "00bef4c0",
+        "restored": true
+      },
+      {
+        "slot": "00d642f0",
+        "native_target": "00bef600",
+        "restored": true
+      }
+    ],
+    "restoration": "Numeric virtual slots are restored during every nested Source dispatch and after Original. Actual COM GetLevelDesc and loading import hooks are restored before cleanup/Source publication exit.",
+    "not_claimed": "Original code of bridged children, native FH3/SEH equivalence or arbitrary numeric profiles."
+  },
+  "output_provenance": {
+    "native_image_range": "ESP+34..4F (28 bytes)",
+    "native_descriptor_range": "ESP+50..6F (32 bytes)",
+    "image_preimage_byte": "a5",
+    "descriptor_preimage_byte": "5a",
+    "original": "Exact native stack ranges seeded by the fixture image-info boundary, then the real D3DX import is called. The real COM GetLevelDesc boundary verifies its actual stack preimage and calls the saved actual COM entry.",
+    "source": "Separate explicit caller-owned image/descriptor objects contain identical nonzero seed bytes before entering the production application dispatcher.",
+    "observed_results": "Both sides complete exactly one genuine image-info, D3DX create and COM descriptor call successfully; outputs agree byte-for-byte.",
+    "failed_hresult_validation": false
+  },
+  "actual_runtime": {
+    "receipt": {
+      "started": "2026-10-15T01:21:47.744843+00:00",
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner",
+      "arguments": [
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\reload_probe.exe",
+        "--game-root",
+        "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\xlive_stub.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\runtime.log",
+        "--settings-personal-root",
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\personal",
+        "--instance-tag",
+        "cc14-texture-reload",
+        "--affinity-core",
+        "7",
+        "--window-resolution",
+        "800x600",
+        "--present-interval",
+        "immediate",
+        "--window-monitor",
+        "smallest",
+        "--frames",
+        "2"
+      ],
+      "env": {
+        "BSP_NATIVE_FONT_PROBE": "0",
+        "BSP_NATIVE_GUI_EFFECT_PROBE": "0"
+      },
+      "input_sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\reload_probe.exe": "376e41a1424192b89681fcaba8cab39f7049bc0685f59897da572ce7f8511be4",
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\xlive_stub.dll": "a4854e3dd42edd2387a6c85edcea5468a7524ff5ec645d1c6186c903bcb33c8b",
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\personal\\Battlestations-Pacific\\options.txt": "ff5cf3959932cb634374b8a9bf5e6c0d04c50699cc6ba585e7fa7969f7b563d8"
+      },
+      "pid": 65344,
+      "exit_code": 0,
+      "seconds": 2.7422306999797,
+      "runtime.log": {
+        "size": 50278,
+        "sha256": "70dc941a839f0a9a64210027337a161ea9dd428fe8a7f4c299e002d8aa186c56"
+      },
+      "console.log": {
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "objects": 137,
+    "libraries": [
+      "bsp_core.lib",
+      "bsp_lua511.lib",
+      "bsp_zlib121.lib"
+    ],
+    "startup": "Normal GameStartupHost forwarded by isolated fixture at end of application_initialize; no Root GUI/compiler/font fixture edits.",
+    "resource": "Two genuine cold installed black.tga B319B0 acquisitions, each with actual canonical registration and cache publication.",
+    "fallback": "First acquisition lazily constructs error.tga fallback; both comparison preimages have2 records, postimages1 fallback record.",
+    "image": {
+      "width": 32,
+      "height": 32,
+      "mips": 6
+    },
+    "texture": {
+      "width": 32,
+      "height": 32,
+      "format": 827611204,
+      "format_name": "DXT1"
+    },
+    "owner_comparison": {
+      "native_bytes": 80,
+      "preimages_equal_normalized": true,
+      "postimages_equal_normalized": true,
+      "excluded_distinct_words": {
+        "0c": "distinct actual name allocation",
+        "10": "distinct real D3D texture COM",
+        "20": "distinct monotonic native serial",
+        "4c": "distinct actual retained memory owner"
+      }
+    },
+    "per_owner_invariants": [
+      "Same canonical companion before/after reload",
+      "Same retained4C identity and reference count",
+      "Name/flags/serial/requested_mips/surface-cache words unchanged",
+      "Same +04 count",
+      "Actual cache record removed",
+      "Actual canonical texture terminal retires companion"
+    ],
+    "original_stream_calls": {
+      "open": 1,
+      "convert": 1,
+      "zero_reference": 2
+    },
+    "source_acquired": "Complete, source/memory released, oldCOM release started, diagnostic constructed/released; replay rejected.",
+    "renderer_pointer_array": "Actual1B00 array empty on entry/exit; no nonempty unregister claim.",
+    "cleanup": "All provider hooks restored, actual resource creators released, native publications cleared, renderer worker joined, device/API references0, process exit0."
+  },
+  "validation": {
+    "normal_build": "./scripts/build.ps1",
+    "existing_checks_passed": 3,
+    "new_CTest_cases": 0,
+    "fixture_exit": 0,
+    "native_differential_fixture": true,
+    "actual_application_runtime_validated": true,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "failed_fixture_attempts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\first_fixture_failure",
+      "cause": "Incorrect fixture expected cache count before lazy fallback creation; actual Native body ran, then fixture assertion failed. Fixed expected equivalent post-fallback baseline."
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\artifact_path_failure",
+      "cause": "Added artifact writer used relative path after normal startup changed working directory. No artifact was written there; fixed generated absolute output directory."
+    }
+  ],
+  "remaining": [
+    "Full B24FB0/resource_reload_slot_08 abstract binding is not implemented.",
+    "Same effect program service and raw nested sampler numeric terminal provenance remain separate.",
+    "Cube D61870/B3DF40 and volume D618B0/B3E080 actual reload provider hosts remain separate.",
+    "F8D438 has no new production authority; no fabricated literal/global binding.",
+    "Invalid stream, failed HRESULT, exception/SEH/FH3 and nonempty1B00 unregister paths are not runtime validated here.",
+    "Full BED3B0/BECEE0/window activation, lost-device hold divergence, visuals and gameplay are not admitted."
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "address": "00b3fa90",
+    "name_retained": "BSP_D3D9Texture_ReloadFromCurrentVfs",
+    "previous_annotations": "local/ghidra-annotations-20261015T012321Z.json",
+    "changes": "Append evidence preserving prior comments; save project and refresh affected exports."
+  },
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\include\\bsp\\game_native_renderer_application.hpp",
+      "size": 14330,
+      "sha256": "fd0138775559105dc13d1dbb7babea07af58ed476e03baf943da26e030ea3677"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\src\\game_native_renderer_application.cpp",
+      "size": 53505,
+      "sha256": "516443547ed6f071a13ed531a53dd286f8ff1c09d1140e2336d55ea25cd7f1b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\include\\bsp\\native_texture_reload.hpp",
+      "size": 3003,
+      "sha256": "bee703c38df1335e740b6e5433566bdfcb24d2051e98f1e1834f03d8b3b8350e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\src\\native_texture_reload.cpp",
+      "size": 12851,
+      "sha256": "d8fbb28a3837e660d54eaefb1448b770d3bcd3fa69d117703097c5ba39b0b8c0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\docs\\NATIVE_PLATFORM_TEXTURE_RELOAD.md",
+      "size": 5007,
+      "sha256": "2b675d87029b676f7e938be5a5a530bd89ee2cab6f9ebf16dcfbc0dcfb3bf091"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform-texture-build.log",
+      "size": 3245,
+      "sha256": "99fba3c8578f80c518493870606d54cb3cc0cdaa6bfa3846d9786ba7f50af4cf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\ghidra-annotations-20261015T012321Z.json",
+      "size": 2855,
+      "sha256": "cc55c1e7ecea0f1613be30173b9b03f0eeadc321277a54f681632c1ebca3851a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_core.lib",
+      "size": 92261570,
+      "sha256": "18587c184787f095632a2a6219d6a3016d0a16b72fe14df1d5a722f7ccad639c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_game.exe",
+      "size": 5591040,
+      "sha256": "203ce5bbd152385fcd8e23085bcdda1ebe83bfdb44bcf7960344f477e2f98011"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\bsp_game.dir\\Release\\game_native_renderer_application.obj",
+      "size": 364718,
+      "sha256": "71603b84524be35644eb088d676aecc974f4d1128c7b32d0f8e88293ae6320ec"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\reload_probe.exe",
+      "size": 5612544,
+      "sha256": "376e41a1424192b89681fcaba8cab39f7049bc0685f59897da572ce7f8511be4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\probe_main.obj",
+      "size": 682894,
+      "sha256": "6f9c6483a03f60d08606e23adbe9586a2f2afd5850c1ac352059304b31ab7761"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\reload_probe.map",
+      "size": 8338454,
+      "sha256": "c4ae8c5c7902756c43b40a3169acb39bc960302fb40115894af6da629fdb0769"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\reload_fixture.hpp",
+      "size": 15732,
+      "sha256": "5647ec30238df0a8322f18afdd3b3ecf544b277e43ea973e89baa4c56d55a633"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\prepare.py",
+      "size": 3282,
+      "sha256": "9c9bd615229df20214fe1f9fee77e81fc36c598521a6903cd92c82d40f256367"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\build_probe.cmd",
+      "size": 922,
+      "sha256": "1ded4abf84fa2c240d2bc057ee370590a244f85784ffc9400a656973bbbbb33c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\run_probe.py",
+      "size": 2567,
+      "sha256": "f9aabe101300f2f0f949ef972044bbb86f1a79b0ebb8b82ab27871b3fd2b28a9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\verify_artifacts.py",
+      "size": 4215,
+      "sha256": "0c26a964797b0d7d09623930d82013f36b1db5f78f8fae694e6e8aa4198d892e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\input_pins.json",
+      "size": 35886,
+      "sha256": "9e06f527cc4a4668e3b4bf2aae10930e59651f24b545e56baee7aa5492ea804e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\native_pins.json",
+      "size": 338,
+      "sha256": "733340eb4cfb1362351c2974486dc2fc54a9699a656f3dac29f1303181ef4cb2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\runtime.log",
+      "size": 50278,
+      "sha256": "70dc941a839f0a9a64210027337a161ea9dd428fe8a7f4c299e002d8aa186c56"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\runtime.json",
+      "size": 2031,
+      "sha256": "9e9601b6c9f056ba1a6908ea12a6cd751e6056a8f205683756d39d6b3562c616"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_texture_reload\\artifact_verification.json",
+      "size": 6988,
+      "sha256": "b6cd973ceaf2ba2051c650bf878e0ab8c6c0ec7f653beebc7266c3ae32424715"
+    }
+  ],
+  "checkpoint": "local/checkpoints/cc14-platform-texture-reload/final/manifest.json",
+  "retention": {
+    "linked_core_members_observed_in_map": 1061,
+    "selected_production_source_units": 1198,
+    "selected_file_count": 2934,
+    "basis": "All exact application objects/full libraries, linker-map-selected core source units and MSVC CL.read dependency closure; recipe, native/live bytes, owner/output artifacts, logs, annotation prior values and7 owned outputs.",
+    "excludes": "Not a full Windows, toolchain, game-asset or DLL installation copy. Original PE SHA and747 bytes retained; all installed assets/system import modules are not frozen."
+  }
+}
