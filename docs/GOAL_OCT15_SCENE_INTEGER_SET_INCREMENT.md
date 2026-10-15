@@ -55,8 +55,20 @@ Guarded live batches verify C:/Users/sqz269/bsp.gpr and program
 /battlestationspacific.exe, x86 image base00400000. Locked annotation records
 prior values, preserves existing names/comments, saves the project and refreshes
 owned exports. Full native assembly, typed metadata, all caller shapes and
-live/installed123B equality accompany the Source draft; Win32 build and existing
-checks are pending. No new routine tests are added. Every taken access requires
+live/installed123B equality accompany the packet. Final worker checks are recorded
+below. No new routine tests are added. Every taken access requires
 valid backing. Compilation/existing checks do not establish private-frame,
 mangling, flags/fault/SEH identity, native binary ABI, dedicated native differential,
 application adoption or game behavior.
+
+Final worker validation: `scripts/build.ps1` Release Win32 passed at Source
+revision `1e2ff85e3`; both enabled existing checks (`reconstructed_math`,
+`tool_tests`) passed in 7.76 seconds. Native differential is disabled
+in this worker tree, and no new entry was directly native-tested. The log
+is `local/goal_oct15_scene_integer_set_increment_build.log`; its hash is in the report.
+The inherited duplicate `spawn_request_id_matches` LNK4006 warning remains.
+The primary independently accepted the complete Source against full native
+assembly with no mismatch. Accepted Source/header worktree, Git blob and
+normalized-LF hashes are recorded in the report. JSON transfer rows,
+documentation claims and staged whitespace checks pass. No ABI or game
+validation is inferred from that acceptance or compilation.
