@@ -1,0 +1,61 @@
+{
+  "schema": "bsp.goal15b.registry_list_tidy.v1",
+  "packet": "goal15b_list_tidy",
+  "base_commit": "ac0f9ab29",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "status": "complete_reconstruction_focused_msvc_win32_compile_and_call_checks_passed",
+  "owned_addresses": ["0041d710", "0041e290"],
+  "outputs": ["include/bsp/native_registry_list_tidy.hpp", "src/native_registry_list_tidy.cpp", "docs/GOAL15B_REGISTRY_LIST_TIDY.md", "reports/goal15b_registry_list_tidy.json"],
+  "routines": [
+    {"address": "0041d710", "name": "STL_List_Tidy_0041d710", "body": "0041d710-0041d757", "bytes": 72, "coverage": "complete", "source": "src/native_registry_list_tidy.cpp", "entry": "tidy_native_registry_list_0041d710", "original_abi": "ECX actual list header; no stack args; plain RET; ESI preserved, EDI preserved on node-loop path", "source_abi": "MSVC Win32 fastcall one pointer; no binary/register equivalence claim"},
+    {"address": "0041e290", "name": "STL_List_Tidy_0041e290", "body": "0041e290-0041e294", "bytes": 5, "coverage": "complete", "source": "src/native_registry_list_tidy.cpp", "entry": "tidy_native_registry_list_0041e290", "original_abi": "JMP0041D710, same ECX input", "source_abi": "MSVC Win32 fastcall one pointer; emitted tail-call bytes not promised"}
+  ],
+  "host_steps": [
+    {"address": "0041d733", "native": "00bf65ac", "function": "0041d710", "contract": "body/service read: real CRT free; node.next captured first, header+4 reloaded after return; ADD ESP,4 at0041d738", "source": "singleton_lifetime_free"},
+    {"address": "0041d747", "native": "00bf65ac", "function": "0041d710", "contract": "body/service read: current sentinel free; header+4 nulled after return; ADD ESP,4 at0041d74c", "source": "singleton_lifetime_free"},
+    {"address": "0041e290", "native": "0041d710", "function": "0041e290", "kind": "tail_jump", "contract": "complete native thunk, no input adjustment"}
+  ],
+  "consumer_calls": [
+    {"address": "0041f103", "native": "0041d710", "function": "0041f0d0", "contract": "ECX registry+4 from LEA at0041f100"},
+    {"address": "00c5e27e", "native": "0041e290", "function": "00c5e278", "kind": "tail_jump", "contract": "outer object from [EBP-10h], ADD ECX,4 at00c5e27b"},
+    {"address": "00c5e66e", "native": "0041e290", "function": "00c5e668", "kind": "tail_jump", "contract": "outer object from [EBP-10h], ADD ECX,4 at00c5e66b"}
+  ],
+  "producer_calls": [
+    {"address": "00424763", "native": "0041bfd0", "function": "00424730", "contract": "sentinel producer; result stored header+4, count zeroed header+8"},
+    {"address": "004247b7", "native": "0041c1f0", "function": "00424730", "contract": "node producer next/previous/value, RET0Ch"}
+  ],
+  "evidence": [
+    {"span": "0041d710-0041d757", "kind": "complete exported pseudocode and assembly, live prototype", "conclusion": "complete nodes-and-sentinel cleanup; count not loop bound"},
+    {"span": "0041e290-0041e294", "kind": "complete live assembly and prototype", "conclusion": "exact JMP0041D710"},
+    {"span": "0041bfd0-0041bfe9", "kind": "producer pseudocode and complete live assembly", "conclusion": "0Ch sentinel, self-links at+0/+4; no payload initialization"},
+    {"span": "0041c1f0-0041c220", "kind": "producer pseudocode and complete live assembly", "conclusion": "0Ch node next/previous/value at+0/+4/+8; RET0Ch"},
+    {"span": "00424752-0042476b", "kind": "live constructor assembly", "conclusion": "interior list header registry+4; sentinel header+4, count header+8"},
+    {"span": "0041f100-0041f103", "kind": "complete caller assembly", "conclusion": "registry+4 passed to tidy"},
+    {"span": "00c5e278-00c5e282;00c5e668-00c5e672", "kind": "complete unwind entry assembly", "conclusion": "each adds4 to outer pointer then tail-jumps to thunk"}
+  ],
+  "semantics": {
+    "header": "actual 0Ch interior bytes; +0 proxy untouched, +4 sentinel, +8 count; no outer owner struct added",
+    "order": ["capture sentinel and old front", "self-link sentinel next", "reload sentinel and self-link previous", "compare captured front with current sentinel", "zero count", "if nonempty capture next before each free and compare next with reloaded current sentinel", "reload and free current sentinel", "null header+4 after free"],
+    "payload": "never read, destroyed or freed by this routine",
+    "preconditions": "valid writable header, nonnull sentinel, valid finite chain and matching CRT heap provenance; no null-sentinel recovery added",
+    "free_service": "singleton_lifetime_free calls std::free; original retained _free thunk00BF65AC jumps to00BF9DC8"
+  },
+  "corrections": [{
+    "address": "0041e290",
+    "was": {"name": "STL_List_Clear_0041E290", "evidence": "Hypothesis, not a recovered symbol. docs/CC13_BAND_0040_0044.md. same as 0041E200 for the 0041BFD0 list type; Unwind callers"},
+    "is": {"name": "STL_List_Tidy_0041e290", "status": "descriptive library-helper hypothesis"},
+    "evidence": "0041E290 JMP0041D710; complete target frees nodes and sentinel then nulls header+4; does not retain usable empty list"
+  }],
+  "validation": {
+    "focused_compile": "PASS: MSVC x86 cl /std:c++17 /EHsc /W4 /permissive- /c /Iinclude src/native_registry_list_tidy.cpp; zero warnings; local/goal15b_list_tidy/native_registry_list_tidy.obj",
+    "report_and_doc_calls": "PASS: 8 concrete report rows and 4 markdown call/jump claims, zero failures or warnings; free prose is also covered by the report's exact sites",
+    "full_registered_build": "primary integration responsibility",
+    "new_tests": 0,
+    "ghidra_mutations": 0,
+    "runtime_tested": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "integration": {"target": "bsp_core", "target_sources_add": "src/native_registry_list_tidy.cpp", "ghidra_annotation": "primary only", "lease": "hold until primary integration"}
+}
