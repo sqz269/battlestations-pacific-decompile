@@ -1,0 +1,32 @@
+{
+  "schema": "cc12_property_bag_reset_primary_review_v1",
+  "address": "008f5470",
+  "whole_native_body": {
+    "bytes": 117,
+    "instructions": 45
+  },
+  "primary_whole_Source_and_header_read": true,
+  "primary_whole_original_listing_read": true,
+  "verified_behavior": [
+    "clear actual destination+4 first",
+    "nonnull source always allocates real12B heap iterator including exactself empty path",
+    "real recordclone before existing iterator key getter then full insertion next and free",
+    "retain owner+110 and counter+10C seed; insertion may increment counter",
+    "no fabricated heads/callback/fallback or null/alias shortcut"
+  ],
+  "gates": {
+    "worker_strict_compile_passed": true,
+    "worker_normal_build_passed": true,
+    "independent_current_complete_COFF_review_passed": false,
+    "registered_Main_library_build_passed": false
+  },
+  "runtime_claim": false,
+  "Original_ABI_or_EH_game_claim": false,
+  "Source_commit": "f085b836e",
+  "worker_actual_terminals": {
+    "strict_compile": "45765a/exit0",
+    "normal_build": "d54218/exit0",
+    "existing_tests_passed": 2
+  },
+  "stage": "whole_Source_primary_review_passed_independent_complete_COFF_pending_registration_staged"
+}
