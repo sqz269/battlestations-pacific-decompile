@@ -1,0 +1,83 @@
+{
+  "schema": "cc12_whole_property_clone_primary_review_v1",
+  "stage": "whole_Source_integrated_static_reviews_passed_probe_and_registered_build_pending",
+  "packet": "FullRecursivePropertyCloneSource01",
+  "addresses": [
+    "008f41f0",
+    "008f4f60"
+  ],
+  "primary_review": {
+    "whole_Source_header_and_implementation_read": true,
+    "whole_original_bag_154bytes_49instructions_read": true,
+    "whole_original_record_854bytes_274instructions_read": true,
+    "fixed_mutually_recursive_context": true,
+    "actual_native_map_iterator_and_key_capture_before_record_clone": true,
+    "distinct_canonical_F89450_stable_zero_Source_role": true,
+    "allocate_38h_record_before_arm_payload_reads": true,
+    "all12_constructor_arms_present": true,
+    "type1_m32_x87_load_spill_with_integer_return": true,
+    "type4_type5_type8_type9to11_physical_load_order_preserved": true,
+    "type6_full_recursive_bag_producer_then_unchanged_constructor": true,
+    "source_ordinal_physical_reread_after_constructor": true,
+    "type6_populated_input_publication_pending_whole_chain_validation": true
+  },
+  "gates": {
+    "independent_ownership_review_complete": true,
+    "independent_emitted_FP_review_complete": true,
+    "worker_focused_fullchain_FP_probe_pass": false,
+    "worker_existing_normal_build_pass": true,
+    "registered_Main_build_pass": false,
+    "registered_Main_archive_object_review_complete": false
+  },
+  "limitations": [
+    "Successful nonthrowing finite unshared acyclic owning domain only; positive array constructor input domains.",
+    "Source interfaces are not full Original register/stack/FS/EH ABI replacements.",
+    "No allocation-failure, private CRT, class/application or gameplay equivalence claim.",
+    "Original writable F89450 is not asserted universally immutable.",
+    "Existing empty-child constructor fixture receives no additional Native ABI credit."
+  ],
+  "independent_emitted_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyCloneIndependentFPReview01\\independent_complete_clone_COFF.DATA.json",
+    "bytes": 111566,
+    "sha256": "db7bb43437b648295e1f5c74ca275e0f6e06313dd8f020790e6c3c0af9b212fe",
+    "actual_terminal": "859be0/exit0",
+    "primary_current12pins_and10complete_sections_verified": true,
+    "function_sections": 10,
+    "whole_section_bytes": 1117,
+    "instruction_bytes": 1068,
+    "instructions": 323,
+    "switch_table_bytes": 48,
+    "padding_bytes": 1,
+    "direct_calls": 29,
+    "relocations": 44,
+    "unknown_edges": 0
+  },
+  "independent_ownership_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\FullPopulatedCloneOwnershipIndependentReview01\\compact_ownership_review.DATA.json",
+    "bytes": 7353,
+    "sha256": "6ec6639ec7c3b28810bc9427d9ecc0df24444f328c69e9652ac47d9151faad82",
+    "primary_current6pins_verified": true,
+    "decision": "PASS_COMPLETE_SOURCE_OWNERSHIP_AND_ORDER; publication/FP/runtime followups explicitly pending"
+  },
+  "focused_probe_Source_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullRecursivePropertyCloneSource01\\recursive_clone_source_probe.cpp",
+    "bytes": 19994,
+    "sha256": "551c583c6817bd2dd219d59bddea75219972cbe64c2111898921d24101f5f37b",
+    "whole_Source_paged_by_primary": true,
+    "actual_raw_empty_children_attached_then_populated_by_real_insertion": true,
+    "all12_types_three_bags15records_one_empty_key_collision_and_owner_ordinal_checks": true,
+    "whole_source_and_output_spans_checked_disjoint_and_preserved": true,
+    "existing_canonical_lifetime_retirement_then_six_selected_FP_cases": true,
+    "fixture_FNINIT_FXSAVE_FXRSTOR_separate_from_production": true,
+    "FP_source_before_environment_then_production_root_allocation_conversion_immediate_state_capture": true,
+    "no_per_free_or_leak_or_Original_ABI_claim": true,
+    "execution_pending": true
+  },
+  "Source_commit": "6b009c86e",
+  "worker_normal_build": {
+    "actual_terminal": "a6e8be/exit0",
+    "existing_tests_passed": 2,
+    "clone_TU_registered": false,
+    "canonical_changes_built": true
+  }
+}
