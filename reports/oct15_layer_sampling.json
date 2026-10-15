@@ -1,0 +1,93 @@
+{
+  "packet": "oct15_layer_sampling",
+  "owner": "agent/oct15_avoid_tangent",
+  "date": "2026-10-15",
+  "status": "complete_source_kernels_and_admitted_adapter_build_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "Read-only verifying bsp.py queries; primary owns annotations/save/export",
+  "sources": ["src/avoid_zone_layer_sampling.cpp", "include/bsp/avoid_zone_layer_sampling.hpp"],
+  "docs": ["docs/OCT15_LAYER_SAMPLING.md"],
+  "routines": [
+    {
+      "address": "00417fa0",
+      "existing_name": "BSP_AvoidZoneLayer_WorldToCell",
+      "reconstruction": "layer_world_to_cell_kernel_00417fa0",
+      "body_start": "00417fa0",
+      "body_end_inclusive": "0041803e",
+      "original_abi": "ECX layer; stack out/x/z; EAX out; RET0Ch at0041801e/0041803c",
+      "source_abi": "fastcall ECX layer, EDX out, stack x/z; EAX out; RET8",
+      "coverage": "complete instruction schedule with incoming/outgoing Source ABI adaptation",
+      "unread_ranges": [],
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0041bae0",
+      "existing_name": "BSP_AvoidZoneLayer_CellHeight",
+      "reconstruction": "layer_cell_height_kernel_0041bae0",
+      "body_start": "0041bae0",
+      "body_end_inclusive": "0041bb48",
+      "original_abi": "ECX layer; stack x/z; ST0 float; RET8 at0041bb46",
+      "source_abi": "fastcall ECX mutable layer, EDX x, stack z; ST0 float; RET4",
+      "coverage": "complete instruction schedule through qualified current-CRT invalid-parameter entry",
+      "unread_ranges": [],
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {"function": "0041bae0", "address": "0041bb25", "native": "00bf6713", "contract": "Complete native body and existing Source wrapper read; invoke_native_invalid_parameter_00bf6713 uses actual current SDK API policy, qualified vs original CRT identity; may return/fail; then reload begin, retain cached index and load scale late"}
+  ],
+  "corrections": [
+    {"address": "00417fa0", "was": "Existing game-host helper substitutes double intermediates; original pseudocode obscures unordered clamp selection", "is": "Separate Source kernel keeps x87 add/divide, stores and comparison branches; equality/unordered retain coordinate", "evidence": "00417fa0-00417fca transform/store schedule; COMISS/JBE at00417fbe/00417fde and00418005/00418012; FCOMIP/JBE at00417fed/00417ff1 and00418029/0041802d; old record preserved"},
+    {"address": "0041bae0", "was": "Existing game-host helper uses widened index and substitutes zero for an invalid span", "is": "Separate Source kernel keeps DWORD wrap, unsigned span check, qualified actual invalid report and post-return read/reloads", "evidence": "0041bb0e IMUL,0041bb11 ADD;0041bb21 CMP/0041bb23 JC;0041bb25 CALL;0041bb2a begin reload,0041bb2d byte read,0041bb3a late scale; old record preserved"}
+  ],
+  "layout": {
+    "raw_declaration": "Existing Cc13TerrainGridLayerNative, checked against existing TerrainGridLayerOffsets",
+    "producers": "00423960 defaults/dimension;004239e0 scalar reads, wrapped n*n resize and byte fill;0041ef90 serialization; matching Source parser/stream record mapping reviewed",
+    "semantic_mapping": "Bitwise scalar copies and direct borrow of TerrainGridLayerRecord::grid.data(); no reinterpretation of std::vector layout or cell copy",
+    "unused_native_fields": "Private Source backing has no vtable/proxy/capacity/ownership identity; used only by sampling kernels"
+  },
+  "adapter": {
+    "type": "AvoidZoneLayerSamplingHost final : AvoidZoneLayerNormalHost",
+    "admission": "Valid C++ record, dimension>=2, exact unsigned64 dimension² grid size within DWORD span, nonnull data",
+    "identity": "Same live record and byte address, stable scalars/vector/storage/contents; different record rejected with Source invalid_argument",
+    "invalid_path": "Excluded only by separately admitted adapter; raw kernels retain native checks and returning-handler reload/read behavior",
+    "const_limit": "Const semantic admission does not model handler-driven repair or mutable raw-header identity",
+    "normal_binding": "Concrete adapter closes WorldToCell/CellHeight boundaries for admitted stable producer data; outer CRT obligations remain"
+  },
+  "arithmetic": {
+    "world": "Original x87 instruction/store schedule, retained double2 and JBE equality/unordered retention",
+    "dc_form": "00417fd6 DC E9: ST1=ST1-ST0; scan reports one dc:fsub site; cell-height scan reports zero DC register sites",
+    "height": "Signed clamps, wrapped DWORD index, unsigned byte-span subtraction/comparison, integer FILD, late scale FMUL, float store/reload",
+    "crt": "Current Source SDK invalid-parameter entry remains qualified vs Native encoded-global/handler/debugger/Watson and fault identity"
+  },
+  "validation": {
+    "body_callee_producer_and_callers_review": "passed",
+    "win32_build_and_existing_ctest": "passed: ./scripts/build.ps1, reconstructed_math/native_math_differential/tool_tests, 3/3 in 7.25 seconds; existing seeds only",
+    "build_log": "local/oct15_layer_sampling_build.log",
+    "verify_report_calls": "passed: one direct call row, zero failed",
+    "markdown_checker": "zero failures; one narrative caller-count claim unpaired by parser, supported by live xrefs and reviewed caller listings",
+    "paired_world_original_byte_probe": {
+      "owner": "primary",
+      "result": "passed 4/4 inputs, zero failures; both binary32 outputs and returned output-pointer identities match",
+      "cases": ["finite_arithmetic", "lower_and_upper_clamps", "unordered_payloads", "signed_zero"],
+      "original_body": "Full installed 159 bytes independently matched to saved Ghidra bytes; only double2.0 data-operand relocation",
+      "installed_disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "source": "This worker's actual compiled bsp_core.lib",
+      "execution_state": "Masked default x87/MXCSR, isolated executable page; /MANIFEST:EMBED",
+      "evidence_main_checkout": ["local/oct15_layer_sampling_probe/result.json", "local/oct15_layer_sampling_probe/original_input.json", "local/oct15_layer_sampling_probe/probe.cpp"],
+      "limits": "WorldToCell output bits and returned pointer only; CellHeight, FP status/traps/other control states, native ABI, adapter, normal and gameplay excluded"
+    },
+    "diff_check": "passed: git diff --cached --check"
+  },
+  "limitations": [
+    "New Source register/stack interfaces, not Native ABI/drop-in replacements or production-member bindings",
+    "Current Source invalid-parameter API policy is not original CRT identity; raw return/failure/backing obligations remain external",
+    "Valid-only const semantic adapter excludes malformed/repairable backing without weakening raw-kernel coverage",
+    "Stable actual borrowed bytes and scalar bits required; no asynchronous mutation, owner operations or copied-cell model",
+    "Outer normal still requires actual conversion/sqrt CRT state/handlers; finite core versus native diagnostics qualification remains",
+    "Existing game-host source/evidence records preserved separately; no game wiring or gameplay proof"
+  ]
+}
