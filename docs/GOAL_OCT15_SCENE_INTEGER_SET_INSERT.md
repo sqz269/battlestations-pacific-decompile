@@ -6,9 +6,12 @@ These are whole ordinary C++ bodies over actual tree, node, caller-parameter
 and private-cell storage. Existing concrete owning legacy exception services and
 the actual integer-node/rotation/decrement providers are composed directly. No
 host callback, stub, STL replacement, runtime-error shortcut, positive-key-only
-domain, rollback or success-only branch is introduced. Existing descriptive names
-are retained; `STL_xlen_throw_0046a150` actually performs full linking/rebalancing,
-with a capacity-throw branch.
+domain, rollback or success-only branch is introduced. Correct unique-insert and
+compiler unwind names are retained. The misleading provisional linker name
+`STL_xlen_throw_0046a150` was replaced with the behavior-derived hypothesis
+`STL_SceneIntegerSet_LinkAndRebalance_0046A150`; it is not a recovered native symbol.
+Its prior name, evidence and comments remain in the append-only evidence/history
+and locked prior-value receipts.
 
 | Entry | Inclusive body | Bytes / instructions | Native ABI / coverage |
 | --- | --- | --- | --- |
@@ -128,7 +131,61 @@ native FuncInfo/throw metadata and actual provider contracts reviewed. All 685
 live bytes/242 instructions match the installed PE, and17 typed native transfer
 rows pass verification; Markdown reports40 addresses with0failures/unchecked/warnings.
 The unique CMake line was appended after an immediate unleased check and removal
-of this worker's queue entry,without a whole-file lease. Locked annotation/save/
-export,provider Source integration,required strict Win32 build and existing CTests/
-object review are pending. No new tests are added; packet-specific differential/
-game validation and original ABI/RTTI identity are not claimed.
+of this worker's queue entry,without a whole-file lease.
+
+Actual provider drafts for node, rotations and decrement were merged without
+provider edits at `b13419d6d0f60bd58237cb1f842bb22d053a8daa`. Only the rotation/
+iterator merge's CMake conflict required mechanical `merge_resolve.py` registry
+union. Insertion Source/header remain unchanged from draft
+`c714e3eaf3566f70432afcdec940391f116416a6`. Root and the node worker independently
+reviewed both full bodies/cleanup and found no mismatch.
+
+The required worker `scripts/build.ps1` Release MSVC Win32 build passed with
+`/W4 /WX /fp:strict`; process-local `/MP4` only enabled parallel compilation.
+All three existing CTests passed in 8.52 seconds: reconstructed math0.22s,
+native math differential0.04s, tool tests8.20s. An unrelated existing `LNK4006`
+duplicate `spawn_request_id_matches` warning remains. Root also reported an
+independent combined default Win32/three-test pass8.02s. No new tests were added;
+the existing math differential does not cover these insertion entries.
+
+All three annotations preserve prior comments/evidence; the two correct existing
+names remain and the misleading linker label has the descriptive hypothesis
+above. Locked prior-value logs are `local/ghidra-annotations-20261015T211101Z.json`
+and the rename's `local/ghidra-annotations-20261015T211555Z.json`. Both batches
+saved the project and refreshed affected exports; final readback confirmed names,
+old comments and new evidence.
+
+Focused compiled-object review found the signed search key load once at unique
+offset `+2C`, with the loop backedge targeting `+31`; the final predecessor/current
+key loads are `+C3/+C6`, followed by signed JGE. Initial root.nil read `+1E`
+precedes flag store `+23`. Predecessor NODE/OWNER stores are `+5B/+61`.
+Inserted output reads owner/output/node before OWNER,NODE,flag1 stores; duplicate
+reads current output then current predecessor.owner before OWNER,captured NODE,
+flag0. Both inserted code paths and duplicate retain untouched padding.
+
+Compiled linker compares unsigned count against `3FFFFFFEh` at `+08`, branches
+JAE before parameter loads, captures key/head/parent at `+1A/+1D/+20`, publishes
+all five actual node cells at `+27/+2E/+31/+34/+37`, then allocates at `+39`.
+Current head/count loads at `+43/+46` precede increment/store; low left is read
+at `+61` only on the nonroot path. After real repair, current output is loaded
+at `+9D` and receives NODE then OWNER at `+9F/+A4`.
+
+The actual `TreeInsertAccess<16,17>` repair section contains all three direct
+rotation relocations, its final left rotation's repeated transferred-child load
+and nil11h check, and current-root color10h blackening. The compiler may outline
+the generic repair while retaining the native inlined rotation's actual stores;
+no provider dispatch through a host callback is introduced.
+
+The owning-throw helper's assign `+42`, state0 arm `+54`, actual carrier constructor
+`+5B`, and real current C++ throw `+69` are present. Its real unwind funclet
+transfers to the completed-message destructor, which invokes actual `004072D0`.
+Current throw metadata references the carrier's actual copy/destructor and one
+Source catch type, without claiming native three-type catch inheritance.
+
+The object is8631 bytes, SHA-256
+`7d719cae7cdb1bb0aa92ea621414d0d0f217cd362f1b3bb86947a5b16ac2ce1a`.
+Receipts are `local/goal_oct15_scene_integer_set_insert_build.log`,
+`local/goal_oct15_scene_integer_set_insert_object.txt` and
+`local/goal_oct15_scene_integer_set_insert_bytes.json`. Diff whitespace checks
+pass. Packet-specific native differential/game validation and original ABI/RTTI/
+private-frame/byte/COFF identity are not claimed.

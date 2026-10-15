@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet": "goal_oct15_scene_integer_set_insert",
   "worker": "agent/goal_oct15_copy",
-  "base_commit": "839b44143",
+  "base_commit": "839b44143beb4d621709c7603cf39710be018fb2",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "project_program_verified_before_analysis_and_export": true,
@@ -14,7 +14,7 @@
     "0046ac50",
     "00c61c10"
   ],
-  "status": "whole_actual_storage_source_dependency_build_pending",
+  "status": "whole_actual_storage_source_strict_win32_existing_ctest_and_compiler_checked",
   "routines": [
     {
       "address": "0046a150",
@@ -24,11 +24,13 @@
       "kind": "function",
       "coverage": "complete_at_actual_integer_node_rotations_and_concrete_owning_cpp_exception_boundaries",
       "implementation": "link_native_scene_integer_set_node_0046a150",
-      "retained_name": "STL_xlen_throw_0046a150",
+      "retained_name": "STL_SceneIntegerSet_LinkAndRebalance_0046A150",
       "original_abi": "ECX tree;stack output,leftDWORD,parent,keyPtr;RET10h/EAX CURRENT output;EDX input unused;capture keyPtr,head,parent before allocation",
       "live_xrefs": [
         "0046acae"
-      ]
+      ],
+      "previous_name": "STL_xlen_throw_0046a150",
+      "name_qualification": "behavior-derived descriptive hypothesis replacing misleading provisional throw label;not recovered native symbol;old evidence/comments/prior values preserved"
     },
     {
       "address": "0046ac50",
@@ -314,9 +316,15 @@
   ],
   "implementation_search": "no whole/unindexed0046A150/AC50 bodies;seg6 only host declarations/calls;actual generic repair/owning exception reused;node/rotation/decrement Source dependencies remain independently owned",
   "annotation": {
-    "preserve_names_comments": true,
-    "locked_apply_save": "pending",
-    "refreshed_exports": "pending"
+    "before_comments": "local/goal_oct15_scene_integer_set_insert_before_comments.json",
+    "before_documentation": "local/goal_oct15_scene_integer_set_insert_before_documentation.json",
+    "preserve_correct_names_and_all_prior_comments_evidence": true,
+    "linker_old_name": "STL_xlen_throw_0046a150",
+    "linker_new_name": "STL_SceneIntegerSet_LinkAndRebalance_0046A150",
+    "linker_name_qualification": "provisional descriptive whole-body hypothesis,not a recovered library symbol",
+    "locked_apply_save": "passed;local/ghidra-annotations-20261015T211101Z.json all3;local/ghidra-annotations-20261015T211555Z.json linker correction;prior values recorded and project saved each batch",
+    "refreshed_exports": "passed;all3 forced after initial annotation,linker forced again after rename",
+    "readback": "passed;local/goal_oct15_scene_integer_set_insert_final_comments.json;expected3names and prior comments/new evidence verified"
   },
   "verification": {
     "project_program_guard": "bsp.py Client.verify before every live batch;bsp,/battlestationspacific.exe,x86:LE:32:default,image00400000",
@@ -324,13 +332,93 @@
     "full_bytes_live_installed_match": "passed;685B/242instructions across all3 complete owned spans",
     "verify_report_calls": "passed;17typed transfers,0failed;Markdown40addresses,0failed/unchecked/warnings",
     "cmake_registration": "passed;own queue removed,immediate unleased check,unique append,no exclusive whole-file lease",
-    "provider_source_integration": "pending004681B0 node,00467740/790 rotations,004679F0 decrement actual drafts;no stubs",
-    "strict_win32_build_and_existing_ctest": "pending",
-    "compiled_object_review": "pending",
+    "provider_source_integration": "passed;rotation6328c0e30/iteratorfb49c2d46 and node finalca2f2e361 merged without provider edits;build merge b13419d6d0f60bd58237cb1f842bb22d053a8daa;only rotation/iterator CMake conflict mechanically unioned",
+    "strict_win32_build_and_existing_ctest": "passed worker scripts/build.ps1 at b13419d6d0f60bd58237cb1f842bb22d053a8daa,exit0,3/3existing CTests8.52s;root independently reports combined default8.02s",
+    "compiled_object_review": "passed;captured signed search/current final key,lowflag/full lateword,push-order actual nodecells,current head/count/left,all3direct rotations+inlined left/currentrootblack,publication schedules and real owning message cleanup/throw metadata",
     "diff_check": "passed",
     "new_tests": false,
     "packet_native_differential": "not run",
-    "game_validation": "not run"
+    "game_validation": "not run",
+    "independent_review": "root and string_allocate passed complete native linker/unique/C61C10 vs Source and generic repair;no mismatch/Source edit",
+    "worker_build": {
+      "command": "scripts/build.ps1",
+      "configuration": "Release MSVC Win32 /W4 /WX /fp:strict",
+      "parallel_only_addition": "CL=/MP4",
+      "source_revision": "c714e3eaf3566f70432afcdec940391f116416a6",
+      "build_revision": "b13419d6d0f60bd58237cb1f842bb22d053a8daa",
+      "source_unchanged_from_draft": true,
+      "log": "local/goal_oct15_scene_integer_set_insert_build.log",
+      "result": "exit0,3/3pass,0fail,total8.52s",
+      "ctests": {
+        "reconstructed_math": "pass0.22s",
+        "native_math_differential": "pass0.04s",
+        "tool_tests": "pass8.20s"
+      },
+      "existing_warning": "LNK4006 duplicate spawn_request_id_matches lua_binding_spawn.obj/lua_spawn_new.obj;no packet compiler warning",
+      "packet_native_differential": "not run;existing math differential unrelated to these entries"
+    },
+    "compiled_object": {
+      "path": "build/win32/bsp_core.dir/Release/native_scene_integer_set_insert.obj",
+      "receipt": "local/goal_oct15_scene_integer_set_insert_object.txt",
+      "tool": "MSVC dumpbin14.51.36244.0 /DISASM /RELOCATIONS /SYMBOLS",
+      "bytes": 8631,
+      "sha256": "7d719cae7cdb1bb0aa92ea621414d0d0f217cd362f1b3bb86947a5b16ac2ce1a",
+      "code_section_bytes": {
+        "unique": 297,
+        "linker": 177,
+        "generic_repair": 284
+      },
+      "linker_section_includes_terminal_int3": true,
+      "unique_offsets": {
+        "initial_nil": "1e",
+        "flag_store": "23",
+        "single_search_key": "2c",
+        "loop_backedge_target": "31",
+        "predecessor_node_store": "5b",
+        "predecessor_owner_store": "61",
+        "decrement": "b5",
+        "current_predecessor_reload": "bd",
+        "final_predecessor_key": "c3",
+        "current_final_key": "c6",
+        "signed_jge": "ca"
+      },
+      "inserted_publication": "owner/output/node reads9a/9c/9e then owner/node/flag storesa4/a6/a9;second pathf6/f8/fa then100/102/105",
+      "duplicate_publication": "currentoutput113,currentowner11a,owner/node/flag stores11c/11e/121",
+      "linker_offsets": {
+        "count_cmp": "08",
+        "unsigned_jae": "0f",
+        "key_pointer": "1a",
+        "head": "1d",
+        "parent": "20",
+        "node_color_store": "27",
+        "node_key_pointer_store": "2e",
+        "node_right_store": "31",
+        "node_parent_store": "34",
+        "node_left_store": "37",
+        "allocator_call": "39",
+        "current_head": "43",
+        "current_count": "46",
+        "count_store": "4a",
+        "late_lowleft": "61",
+        "repair_call": "92",
+        "current_output": "9d",
+        "node_publication": "9f",
+        "owner_publication": "a4"
+      },
+      "repair": "TreeInsertAccess<16,17>;direct provider rotation calls54/75/ac with REL32 operands55/76/ad;actual inlined mirror nil11 checkd2,repeated transferred child loadscb/d0,current root color10 blackening116",
+      "throw_helper_offsets": {
+        "counted_assign": "42",
+        "state0_arm": "54",
+        "owning_ctor": "5b",
+        "actual_current_cpp_throw": "69"
+      },
+      "cleanup": "real compiler unwind funclet tail-transfers CompletedMessage destructor;actual004072D0 call;current carrier copy/destructor/onecatchtype metadata",
+      "identity_claim": "actual cell/payload access and concrete current provider/owningCpp scope composition only;ordinary Source can outline repair/duplicate branch code;not native ABI/frames/flags/byte/COFF identity"
+    },
+    "source_file_sha256": {
+      "src/native_scene_integer_set_insert.cpp": "4873c0c6ca186c7ed7085fba4dc87fc01e15ffe03f1fb2f4b2b324eababa6e5f",
+      "include/bsp/native_scene_integer_set_insert.hpp": "cd6f4ac932108ca3beaa752e1f3ad365e5bdcc4dfa2102813f845ba61ed4339e"
+    }
   },
   "limits": [
     "ordinary explicit live-cell/frame Source is not original register/stack/privateframe/byte/COFF replacement",
