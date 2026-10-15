@@ -89,8 +89,16 @@ image base; configured project file `C:/Users/sqz269/bsp.gpr`. Locked Ghidra
 annotation preserves established names/comments, records prior values, saves
 the project and refreshes both exports.
 
+The registered source (`312322c24`, registration `f3fb169f4`) passed
+`scripts/build.ps1` Release Win32: the new translation unit compiled, all targets
+linked, and both enabled existing CTests passed (`reconstructed_math`,
+`tool_tests`; 7.87 seconds). The log is
+`local/goal_oct15_scene_map_rotations_build.log`. Native math differential is
+not enabled in this worker tree. All nine report CALL rows and staged
+whitespace checks passed. No new tests were added.
+
 Compilation and existing tests are recorded separately in the companion
-report. No new tests are added by default. Physical slots and static complete
+report. Physical slots and static complete
 coverage do not establish original mangling/binary ABI, native private-frame
 or instruction-fault identity, direct native rotation execution or game
 validation. Source requires valid backing for every taken DWORD/byte access;

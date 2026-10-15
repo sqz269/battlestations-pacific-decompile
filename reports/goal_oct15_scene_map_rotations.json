@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_scene_map_rotations",
-  "status": "complete_actual_raw_source_pending_win32_build",
+  "status": "complete_actual_raw_rotations_win32_build_and_two_enabled_existing_tests_passed",
   "source_ready": true,
   "source": "src/native_scene_record_map_rotations.cpp",
   "header": "include/bsp/native_scene_record_map_rotations.hpp",
@@ -114,15 +114,32 @@
   "verification": {
     "original_bytes": "Live originals retained; per-body lengths78+82=160 and SHA256 verified",
     "verify_report_calls": "9 call rows checked,0 failed",
-    "win32_build": "pending",
-    "existing_tests": "pending",
+    "win32_build": "scripts/build.ps1 Release Win32 passed exit0; registered new source compiled and all targets linked; local/goal_oct15_scene_map_rotations_build.log",
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 7.87,
+      "native_math_differential_enabled": false,
+      "dedicated_native_rotation_differential": false
+    },
     "diff_check": "passed before Source draft",
     "new_tests": 0,
     "direct_native_rotation_execution": false,
     "abi_compatible": false,
     "game_validated": false,
     "application_adoption": false,
-    "cmake_registration": "Shared holder released; checked unleased, left queue, appended exactly one unique source registration without exclusive registry lease"
+    "cmake_registration": "Shared holder released; checked unleased, left queue, appended exactly one unique source registration without exclusive registry lease",
+    "source_commit": "312322c24",
+    "registration_commit": "f3fb169f4",
+    "documentation_claim_check": "19 addresses cited,0 failed,0 unchecked,0 warnings;9 exact CALL edges checked in JSON",
+    "inherited_linker_warning": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-goal_oct15_erase\\build\\win32\\bsp_core.vcxproj]"
+    ]
   },
   "limits": [
     "Complete static Source over actual raw storage; no original mangling/binary/private-frame/SEH or instruction-fault identity established",
