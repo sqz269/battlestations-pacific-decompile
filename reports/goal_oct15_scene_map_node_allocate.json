@@ -14,7 +14,7 @@
     "0046a3b2",
     "00c61c30"
   ],
-  "status": "whole_actual_storage_source_annotated_registered_build_pending",
+  "status": "whole_actual_storage_source_strict_win32_existing_ctest_and_compiler_checked",
   "routines": [
     {
       "address": "0046a340",
@@ -226,12 +226,56 @@
     "project_program_guard": "bsp.py Client.verify before every live batch;bsp,/battlestationspacific.exe,x86:LE:32:default,image00400000",
     "live_full_boundaries_listing_bytes_caller_eh_and_concrete_provider_review": "passed",
     "full_normal_child_catch_placement_equivalence": "passed;non-address bytes equal,call targets decoded,EH scalar/structure match",
-    "verify_report_calls": "passed;6native rows,0 failed;markdown30 addresses,1native claim checked,0 failed,0 unchecked,0 warnings",
-    "strict_win32_build_and_existing_ctest": "pending",
+    "verify_report_calls": "passed;6native rows,0 failed;markdown30addresses,1native claim checked,0fail0unchecked0warnings",
+    "strict_win32_build_and_existing_ctest": "passed worker scripts/build.ps1 Release at Source draft6723b0946638e7c20fc17eaa188936327770180d;all3 existing CTests8.10s;primary combined3/3 also8.95s before publication303a0b292",
     "diff_check": "passed",
     "new_tests": false,
     "packet_native_differential": "not run",
-    "game_validation": "not run"
+    "game_validation": "not run",
+    "worker_build": {
+      "command": "scripts/build.ps1",
+      "configuration": "Release MSVC Win32 /W4 /WX /fp:strict",
+      "parallel_only_addition": "CL=/MP4",
+      "source_revision": "6723b0946638e7c20fc17eaa188936327770180d",
+      "log": "local/goal_oct15_scene_map_node_allocate_build.log",
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "result": "3/3 pass,0 fail,total8.10s",
+      "packet_native_differential": "not run; existing math differential is unrelated to this new entry"
+    },
+    "primary_build": {
+      "publication_revision": "303a0b29256bfe7df267e1648a949a94cd5934ec",
+      "log": "J:/PROG/battlestations-pacific-decompile-goal_oct15_integrator/local/goal_oct15_insert_combined_build.log",
+      "result": "3/3 existing CTests pass,0 fail,total8.95s",
+      "exact_source_header_and_provider_identity": true,
+      "sha256": {
+        "src/native_scene_record_map_node_allocate.cpp": "9361a634f2c433fd3df5b508210e581cfd7d73ae12f4c67e2d6406aff6c12b04",
+        "include/bsp/native_scene_record_map_node_allocate.hpp": "3ad13215deb9a31cc4be465699a3381f54e62db6f7158480987ff3a199fe340a",
+        "src/native_resource_registry_node_leaves.cpp": "258da80cb7b2d32ad6455f64e1497f6704aff99568baa35bc8343e047acb188b",
+        "include/bsp/native_resource_registry_node_leaves.hpp": "f7edfcc707ce3659be8860a0450b87936bd0866878967f7e6036d310f652a206",
+        "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      }
+    },
+    "compiled_object": {
+      "path": "build/win32/bsp_core.dir/Release/native_scene_record_map_node_allocate.obj",
+      "bytes": 1568,
+      "sha256": "c5c2cc019d5182b3315b5db41bd2ab3036891309385a4770913a16fdd86bba05",
+      "inspection": "dumpbin14.51.36244.0 /DISASM /SYMBOLS /RELOCATIONS",
+      "receipt": "local/goal_oct15_scene_map_node_allocate_object.txt",
+      "entry_code_bytes": 9,
+      "entry_code_hex": "558bec5de900000000",
+      "tail_jump_relative_offset": "04",
+      "rel32_relative_offset": "05",
+      "target": "allocate_native_resource_registry_node_00b1ad10 with the same three typed reference parameters",
+      "argument_cell_snapshot_or_read_before_provider": false,
+      "new_callback_or_guard": false,
+      "native_coff_or_frame_identity": false
+    },
+    "verify_seeds": "passed;all8 seed bodies match installed disk; Source factory native differential not run"
   },
   "limits": [
     "Whole factory and Source placement/catch composition at existing concrete current-CRT/raw-string/current C++ transport boundaries; no new callback or provider edit.",
