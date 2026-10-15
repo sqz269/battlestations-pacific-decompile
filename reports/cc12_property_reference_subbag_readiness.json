@@ -1,0 +1,315 @@
+{
+  "schema": "bsp.cc12.property_reference_subbag_readiness_primary.v1",
+  "Source_ready": true,
+  "Source_implemented": false,
+  "addresses": [
+    "008F3AC0",
+    "008F3B60"
+  ],
+  "primary_whole_Original_and_contract_read": true,
+  "Originals": [
+    {
+      "begin": "008F3AC0",
+      "end_exclusive": "008F3B56",
+      "bytes": 150,
+      "instructions": 47,
+      "sha256": "f7a7ff20da135588626d27c811df9b0480f15ab1af0b756e19922622e1a07909"
+    },
+    {
+      "begin": "008F3B60",
+      "end_exclusive": "008F3BCA",
+      "bytes": 106,
+      "instructions": 36,
+      "sha256": "80a0988b31919688b721d0d728275fb68843e438b1d0524a5b1ae8e0ef20e634"
+    }
+  ],
+  "reference": {
+    "Original_arguments_observed": "ECX=bag; entry-stack +4 key, +8 borrowed nullable target text, +C word_18, +10 word_08. RET10; normal EAX is unchanged whole-insertion bag result. Live cached signature remains void(void), so it is not used as ABI authority.",
+    "normal_schedule": [
+      "Register FS frame with handler00CA49EB; preserve EBX/ESI/EDI; allocate38h through00BF681B before record stores. Save returned pointer as construction cleanup local; set EH state0.",
+      "On nonnull, read full word_08 and word_18, store DWORD CE89D4 at+0, DWORD5 at+4, full word_08 at+8, full word_18 at+18. Load target into ECX; call admitted00438E40.",
+      "Store full duplicate EAX at+1C; store DWORD0 at+20,+24,+34 in that exact order; store BYTE1 at+2C. No other record bytes are initialized here.",
+      "On allocation-null, bypass every record store and duplicate call. Both branches set EH state-1 before calling whole008F33F0 with key and record (possibly0). Restore FS and nonvolatile registers, RET10. No post-insertion record cleanup."
+    ],
+    "record_store_order": [
+      [
+        "008f3afd",
+        0,
+        4,
+        "00CE89D4"
+      ],
+      [
+        "008f3b03",
+        4,
+        4,
+        "5"
+      ],
+      [
+        "008f3b0a",
+        8,
+        4,
+        "full word_08"
+      ],
+      [
+        "008f3b0d",
+        24,
+        4,
+        "full word_18"
+      ],
+      [
+        "008f3b19",
+        28,
+        4,
+        "00438E40 full EAX"
+      ],
+      [
+        "008f3b1c",
+        32,
+        4,
+        "0"
+      ],
+      [
+        "008f3b1f",
+        36,
+        4,
+        "0"
+      ],
+      [
+        "008f3b22",
+        52,
+        4,
+        "0"
+      ],
+      [
+        "008f3b25",
+        44,
+        1,
+        "1"
+      ]
+    ],
+    "record_written_bytes": 33,
+    "record_untouched_halfopen_hex": [
+      [
+        "0C",
+        "18"
+      ],
+      [
+        "28",
+        "2C"
+      ],
+      [
+        "2D",
+        "34"
+      ]
+    ],
+    "word_and_pointer_domain": "word_18 and word_08 are independent opaque full DWORDs, without narrowing, validation, enum restriction or dereference. The target is nullptr or stable valid borrowed NUL-terminated bytes; it need not be ASCII (only keys do). Duplicate result is a distinct canonical current-heap owned copy at+1C, or0 for null input. No reference resolution, refcount, World object, bag clone or external target ownership is inferred.",
+    "ownership": "Caller target remains borrowed. Fresh record owns only its duplicate+1C; successful insertion transfers the fresh record graph to the destination map. Accepted type5 release frees nonnull+1C once and clears it/+18; common tail resets4,C,28,8. It never dereferences/frees word_18 or word_08.",
+    "EH_evidence": {
+      "handler": "00CA49EB: MOV EAX,00DD76C8; JMP00BF6B43",
+      "FuncInfo": "00DD76C8 magic19930522, maxState1, unwindMap00DD76C0; every remaining field is retained in the raw bytes.",
+      "unwind_map": "00DD76C0: toStateFFFFFFFF, action00CA49E0",
+      "action": "00CA49E0 loads [EBP-10], pushes it, CALL00BF65AC current library _free thunk, POP ECX, RET.",
+      "state_window": "State0 is stored after root allocation at008F3AEF and reset toFFFFFFFF at008F3B35 before insertion. The real construction action releases the raw root; no record destructor or insertion rollback appears in that action.",
+      "limit": "Only normal successful-domain Source is proposed. Original FS/frame-handler/private-CRT state transport and duplicate-failure unwind are not supplied. Do not add insertion rollback or claim EH parity."
+    }
+  },
+  "subbag": {
+    "Original_arguments_observed": "ECX=bag; entry-stack+4 key,+8 actual child pointer. RET8; both normal exits preserve insertion EAX actual bag. No local FS/EH registration.",
+    "normal_schedule": [
+      "Save ESI=bag; allocate38h through00BF681B. On nonnull, load actual child pointer and store DWORD CE89D4 at+0,6 at+4,child at+C,0 at+18,+1C,+20,+24,+30.",
+      "Store full fresh record pointer to actual child+110 BEFORE record+34=0 and record+8=0. Push record, store BYTE1 to record+2C, then pass key and call008F33F0. Return bag, RET8.",
+      "Allocation-null bypasses child-argument load, every record/child store and any child dereference, then calls insertion(key,0) at the distinct second callsite. There is no guard for null child when allocation succeeds."
+    ],
+    "record_store_order": [
+      [
+        "008f3b77",
+        0,
+        4,
+        "00CE89D4"
+      ],
+      [
+        "008f3b7d",
+        4,
+        4,
+        "6"
+      ],
+      [
+        "008f3b84",
+        12,
+        4,
+        "actual child pointer"
+      ],
+      [
+        "008f3b87",
+        24,
+        4,
+        "0"
+      ],
+      [
+        "008f3b8a",
+        28,
+        4,
+        "0"
+      ],
+      [
+        "008f3b8d",
+        32,
+        4,
+        "0"
+      ],
+      [
+        "008f3b90",
+        36,
+        4,
+        "0"
+      ],
+      [
+        "008f3b93",
+        48,
+        4,
+        "0"
+      ],
+      [
+        "008f3b96",
+        "child+110",
+        4,
+        "actual fresh record pointer"
+      ],
+      [
+        "008f3b9c",
+        52,
+        4,
+        "0"
+      ],
+      [
+        "008f3b9f",
+        8,
+        4,
+        "0"
+      ],
+      [
+        "008f3ba3",
+        44,
+        1,
+        "1"
+      ]
+    ],
+    "record_written_bytes": 41,
+    "child_written_bytes": 4,
+    "record_untouched_halfopen_hex": [
+      [
+        "10",
+        "18"
+      ],
+      [
+        "28",
+        "2C"
+      ],
+      [
+        "2D",
+        "30"
+      ]
+    ],
+    "child_domain": "Nonnull distinct mutable actual owning114h raw61-produced child, obtained through the genuine canonical empty producer or accepted whole clone and satisfying the same recursive lifetime/map provenance. Child+110 must be0 before attachment. Any existing child graph is finite/unique/unshared/acyclic and disjoint from destination, replaced graph, fresh record, key/query/node/map/frame. These are admission preconditions, not Original guards.",
+    "ownership": "ADOPTS the supplied actual child into fresh record+C, with child+110 a non-owning backlink. It does not allocate, clone, copy, borrow-only, free or detach a child. The pointer is consumed as the exact child of this new owning record; successful insertion transfers that whole graph into the destination map. Accepted type6 release scalar-deletes this actual child with flags1, then clears+C; caller must not independently free/reuse it as an owner.",
+    "ordering_and_failure_limit": "The backlink is written before insertion, including before replacement releases the old mapped record. No same-child shortcut, old-owner repair, detach, cycle check or rollback exists. Insertion must succeed normally. A throw/fault after attachment is excluded, not patched with invented cleanup.",
+    "raw_constructor_reuse": "Do not substitute raw008EF780: its existing physical store order places byte+2C before final+8, whereas this leaf stores+8 before byte+2C. Whole leaf must preserve its own ordered physical writes."
+  },
+  "shared_domain": [
+    "MSVC Win32; explicit canonical CC8A30 pool startup must already have returned. Borrow the SAME concrete GameNativeStringProcess and GameNativePhysicalPoolProcess through NativeScenePropertyInsertionContext; create no callback, service substitute, owner, pool or startup.",
+    "Actual canonical current-CRT owning 38h record allocation, actual raw61-produced live114h destination bag and map+4, live14h E175B0 nodes/common E188B4 list, canonical pooled key headers/raw key context and E177E4/E17654 permanent fallback cells; keep actual owners, allocator membership, generation and gates live until all records/keys/nodes retire.",
+    "Keys are stable nonnull readable NUL-terminated closed ASCII under current C locale. Valid lengths/address ranges do not overflow. All mutable roots, maps, nodes, incoming/replaced owning graphs, key/query storage and call frames obey accepted disjointness. Borrowed input spans stay valid through their last reads.",
+    "Owning graphs are finite, unique, unshared and acyclic; serialize mutations with no concurrent pool trim, reentry, fault, overflow, allocation failure or provider throw. Retire through the SAME accepted whole recursive lifetime context before pool teardown.",
+    "CE89D4/D16504/D162C4 phase words are actual Original DATA only. Never call them as Source vtables or invent an arbitrary producer profile."
+  ],
+  "direct_providers": [
+    {
+      "Original": "00BF681B",
+      "Source": "singleton_lifetime_allocate({object,0x38,0x38})",
+      "state": "Current canonical real malloc/new-handler successful allocation service exists; no substitute callback or allocation injection.",
+      "pins": [
+        "include/bsp/singleton_lifetime.hpp",
+        "src/singleton_lifetime.cpp"
+      ]
+    },
+    {
+      "Original": "00438E40",
+      "Source": "duplicate_native_string_00438e40(actual_target)",
+      "state": "Existing whole admitted ECX/RET0 actual nullable duplicate, canonical allocate and genuine memcpy. The older plain-CDECL duplicate and stale readiness fragment are not substituted.",
+      "pins": [
+        "include/bsp/native_string_duplicate.hpp",
+        "src/native_string_duplicate.cpp"
+      ]
+    },
+    {
+      "Original": "008F33F0",
+      "Source": "insert_native_scene_property_bag_008f33f0(bag,key,record,context)",
+      "state": "Existing whole ordinary Source binds actual temporary8B pooled key, whole hit/miss insertion/replacement, key return, record owner/ordinal stamp, actual bag return. Incoming record must be nonnull in its admitted domain.",
+      "pins": [
+        "include/bsp/native_scene_property_insertion.hpp",
+        "src/native_scene_property_insertion.cpp"
+      ]
+    },
+    {
+      "Original": "00CA49EB -> 00BF6B43 / 00CA49E0 -> 00BF65AC",
+      "Source": "No Original EH transport proposed",
+      "state": "Observed construction cleanup and correct _free library role recorded; private frame-handler/exception ABI remains outside successful ordinary Source admission, and blocks an Original ABI/EH claim."
+    }
+  ],
+  "missing_direct_providers": [],
+  "outside": {
+    "ordinary_domain_missing_direct_providers": [],
+    "not_dependencies": [
+      "reference resolver/World lookup",
+      "008F0340 reference-copy helper",
+      "declared-key setter008F0420",
+      "scene parser008F5A00",
+      "broad model/facade APIs",
+      "arbitrary raw phase dispatch",
+      "enum/bool/string leaf Source work currently held elsewhere"
+    ],
+    "why": "Neither selected body calls those paths. No cached descriptive name is treated as provider completion. Direct provider code, exact signatures and whole current lifetime domain were inspected and frozen."
+  },
+  "ordinary_failure_limits": "Both Original allocation-null branches pass0 to whole insertion, which later dereferences the record; they are not successful OOM handling. Canonical allocation service retries/throws, and accepted insertion requires actual nonnull record. Keep the structural null branch in future Source, with no skip/default/recovery. Child-null under successful subbag allocation faults at child+110 and is excluded. Nullable reference target remains admitted through the existing duplicate helper. All provider throws/OOM/fault/overflow/reentry/concurrent trim remain outside this ordinary domain.",
+  "sealed_readiness": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\ScenePropertyReferenceSubBagReadiness01\\root_manifest.json",
+    "bytes": 23832,
+    "sha256": "0411db8a11f010d7ba8389e173c142942e6bc6eeb4f59db416f88a89f2385e58"
+  },
+  "primary_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_reference_subbag_readiness_primary_20261015\\verified_readiness_inputs.DATA.json",
+    "bytes": 33087,
+    "sha256": "e99f1a20aadbeb4f986d46afa7bb8ce546e015cbc5559614baa2dc10fcc72622"
+  },
+  "original_worker_proposal": {
+    "paths": [
+      "include/bsp/native_scene_property_reference_add.hpp",
+      "src/native_scene_property_reference_add.cpp",
+      "include/bsp/native_scene_property_subbag_add.hpp",
+      "src/native_scene_property_subbag_add.cpp"
+    ],
+    "reference_signature": "void* add_native_scene_property_reference_008f3ac0(void* bag,const char* key,const char* nullable_target,std::uint32_t word_18_bits,std::uint32_t word_08_bits,NativeScenePropertyInsertionContext& context)",
+    "subbag_signature": "void* add_native_scene_property_subbag_008f3b60(void* bag,const char* key,void* actual_owned_child,NativeScenePropertyInsertionContext& context)",
+    "implementation": "Each source includes its header and canonical singleton_lifetime service; reference additionally includes admitted native_string_duplicate. Use separate noinline volatile DWORD/BYTE physical stores in the existing accepted integer-leaf style, exact inline order, unchanged genuine insertion context and direct provider calls. No constructor/facade/callback/default substitution, memset, root zero-fill, type narrowing or exception rollback.",
+    "coordination": "Only the two named addresses and these four previously absent files would belong to a later Source packet. Claim fresh explicit leases and revalidate pins before any Source work. The present task neither registers nor claims that future packet. No shared CMake/ledger/registry edit is included in this worker proposal; primary owns integration metadata.",
+    "independence": "Disjoint address ranges and four new files from active008F39B0/008F3A20 enum Source and primary008F38A0/008F3940 gates. Depend only on inspected stable accepted insertion/duplicate/allocator/lifetime contracts, not partition wave hints; provider source pins equal observed main."
+  },
+  "integrator_proposal": {
+    "packet": "cc12_scene_property_reference_subbag_add_008f3ac0_008f3b60",
+    "addresses": [
+      "008f3ac0",
+      "008f3b60"
+    ],
+    "output_files": [
+      "include/bsp/native_scene_property_reference_subbag_add.hpp",
+      "src/native_scene_property_reference_subbag_add.cpp",
+      "docs/NATIVE_SCENE_PROPERTY_REFERENCE_SUBBAG_ADD_CC12.md",
+      "reports/native_scene_property_reference_subbag_add_cc12.json"
+    ],
+    "local": "local/WholeScenePropertyReferenceSubBagAddSource01",
+    "change_reason": "One shared HPP/CPP for both bounded related leaves plus documentary evidence/report, matching existing joint-leaf convention. Signatures/behavior unchanged from readiness proposal."
+  },
+  "Original_ABI_compatible": false,
+  "Original_EH_or_private_CRT_compatible": false,
+  "game_validated": false
+}

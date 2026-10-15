@@ -40268,8 +40268,8 @@
     },
     {
       "id": "cc12_scene_property_string_add_008f38a0",
-      "done": false,
-      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_build_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
       "source_ready": true,
       "function_addresses": [
         "008f38a0"
@@ -40289,12 +40289,14 @@
       "worker": "property_leaf_readiness_oct15",
       "code_revision": "cef178a851f3ef157988724ee4b3ec1700171df1",
       "primary_review": "reports/cc12_property_string_add_primary_review.json",
-      "Main_build_gate": "pending"
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_property_string_add_Main_validation.json"
     },
     {
       "id": "cc12_scene_property_bool_add",
-      "done": false,
-      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_build_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
       "source_ready": true,
       "function_addresses": [
         "008f3940"
@@ -40314,7 +40316,9 @@
       "worker": "property_bool_source_oct15",
       "code_revision": "d6fc29f4db5db0e422603e56575c0cb365adc8f0",
       "primary_review": "reports/cc12_property_bool_add_primary_review.json",
-      "Main_build_gate": "pending"
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_property_bool_add_Main_validation.json"
     },
     {
       "id": "cc12_scene_property_float_add",
@@ -40892,6 +40896,29 @@
       "contract": "Whole bounded ordinary raw Source,currentCRT allocation/free,late actual parameter reads and full native branches; opaque storage/payload meanings and fault/private-stack identity qualified.",
       "Original_ABI_compatible": false,
       "game_validated": false
+    },
+    {
+      "id": "cc12_scene_property_reference_subbag_add_008f3ac0_008f3b60",
+      "done": false,
+      "state": "whole_ordinary_Source_ready_no_implementation_yet",
+      "source_ready": true,
+      "function_addresses": [
+        "008f3ac0",
+        "008f3b60"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_property_reference_subbag_add.hpp",
+        "src/native_scene_property_reference_subbag_add.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_REFERENCE_SUBBAG_ADD_CC12.md",
+        "reports/native_scene_property_reference_subbag_add_cc12.json"
+      ],
+      "depends_on": [],
+      "readiness_report": "reports/cc12_property_reference_subbag_readiness.json",
+      "missing_provider_addresses": [],
+      "worker": "property_reference_readiness_oct15",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "contract": "Whole reference150B47/Subbag106B36. Reference nullable raw00438E40 duplicate owned+1C, fullopaque18/8 words,33written23preserved. Subbagadoptsactualuniquechild+C/backlinkchild+110 BEFOREinsertion,41rootbytes+4childbytes/15rootpreserved;8beforeBYTE2C/noRaw8EF780reuse. Samegenuinecanonicalbag/process/key/pool/generation/lifetime, validstableuniquedisjointsuccessnonthrowdomain; no recovery/clone/detach/rollback/OriginalABI/EH/privateCRT/startup/runtime/game/wholeparsercredit."
     }
   ],
   "snapshot_after_analysis": {
