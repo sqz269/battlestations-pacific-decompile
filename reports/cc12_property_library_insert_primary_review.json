@@ -1,7 +1,7 @@
 {
   "schema": "cc12.property_library_insert_primary_review.v1",
   "address": "008f29a0",
-  "status": "Whole ordinary Source, worker strict/normal and independent complete compiler review pass; Main registration queued",
+  "status": "Whole Source and worker build/compiler gates pass; Main TU now registered, required Main build pending",
   "whole_Original": {
     "start": "008f29a0",
     "exclusive_end": "008f2a4c",
@@ -63,5 +63,6 @@
     "bytes": 2600,
     "sha256": "33c77b859d1d31b27e55376f724b2d426390ec1cba39480efd9febcb3095e66f"
   },
-  "shared_registration": "CMake queued behind earlier cc12_drained_text_factory_integration_21; no jump or write performed"
+  "shared_registration": "Two independent completed TUs registered in one short CMake claim; prior queue wait preserved in history.",
+  "Main_registered": true
 }

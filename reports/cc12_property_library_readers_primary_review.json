@@ -4,7 +4,7 @@
     "008f2db0",
     "00469b60"
   ],
-  "status": "Complete ordinary Source, independent current full-object review, worker strict/normal PASS; Main registration queued",
+  "status": "Whole Source and worker build/compiler gates pass; Main TU now registered, required Main build pending",
   "primary_complete_Source_header_Original_and_all_emitted_instructions_read": true,
   "Source": [
     {
@@ -91,5 +91,6 @@
   },
   "worker_existing_checks_passed": 2,
   "worker_existing_checks_seconds": 7.28,
-  "Main_registration": "Queued shared CMake ownership; new TU not yet registered"
+  "Main_registration": "Registered exactly once in bsp_core; required Main build pending.",
+  "Main_registered": true
 }
