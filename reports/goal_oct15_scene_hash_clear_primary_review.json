@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_hash_clear_primary_review",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 6,
+  "private_source_cleanup_actions": 0,
+  "native_bytes": 419,
+  "native_instructions": 170,
+  "spans": [
+    {
+      "address": "00466bb0",
+      "native_bytes": 65,
+      "instructions": 22,
+      "scope": "complete ordinary raw Source",
+      "live_equals_installed": true,
+      "sha256": "b9167301cb1875e13c9fd0c9075479b79b62210969d8a67cd5f3108c2aeaff2c"
+    },
+    {
+      "address": "00466c00",
+      "native_bytes": 92,
+      "instructions": 33,
+      "scope": "complete ordinary raw Source",
+      "live_equals_installed": true,
+      "sha256": "3609759b0297a57d1d5234c1cad5899352502be03a0dbbcc6973a0768a7e91a5"
+    },
+    {
+      "address": "004687e0",
+      "native_bytes": 90,
+      "instructions": 37,
+      "scope": "complete ordinary raw Source",
+      "live_equals_installed": true,
+      "sha256": "ae7745c93623d34976607a93e79a0e3ff092026e44828dfe7572cabf6566e50a"
+    },
+    {
+      "address": "00468d70",
+      "native_bytes": 57,
+      "instructions": 26,
+      "scope": "complete ordinary raw Source",
+      "live_equals_installed": true,
+      "sha256": "bf48c145eb8a4c70c6ac315708eb5e8da7116c9c2f49259c6fa4e9ab363bc216"
+    },
+    {
+      "address": "00468af0",
+      "native_bytes": 57,
+      "instructions": 26,
+      "scope": "complete ordinary raw Source",
+      "live_equals_installed": true,
+      "sha256": "e51cce0ebcc4fb90d099d610dc1a7652c1d2dcf3c68dad9a4841c3a7798d0ea2"
+    },
+    {
+      "address": "00468c90",
+      "native_bytes": 58,
+      "instructions": 26,
+      "scope": "complete ordinary raw Source",
+      "live_equals_installed": true,
+      "sha256": "7687213a5907e0f50d7d5f3875402d0b93c318d034c75418725c3d444d470d3e"
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct15_scene_name_hash_iterator.json",
+    "reports/goal_oct15_dword_vector_clear_range.json",
+    "reports/goal_oct15_dword_vector_erase_wrappers.json"
+  ],
+  "typed_transfer_rows_checked": 19,
+  "typed_transfer_rows_failed": 0,
+  "independent_reviews": [
+    "Independent allocation worker: full55-op scene hash iterator and Source/header/docs preserve Begin index64 path and Next captured scan/current final table,index and node reloads",
+    "Primary: full63-op alias/clear pair plus canonical685A0 Source/header match; exact predicates,live cells,captured bounds,current outputs and actual child EAX retained",
+    "Primary: full52-op two erase wrappers Source/header/native listings match; returning diagnostics,receiver+8 wrapping,push-order stores and real685A0 raw child result retained"
+  ],
+  "source_hashes": {
+    "src/native_scene_name_hash_iterator.cpp": "69e1661e27018e38d57bf45e892c3fa11d021c166f9de0ee18aa9becc6746297",
+    "include/bsp/native_scene_name_hash_iterator.hpp": "d067020450fc886c6d994dff94913a067d60023aa15a5581caff6ab489ba20ee",
+    "src/native_scene_dword_vector_range_erase.cpp": "e928f3cd4a4eb06af1928a2e334ac7cff35b3e81d21a1f4971515b2552b5dce9",
+    "include/bsp/native_scene_dword_vector_range_erase.hpp": "4aab0a70fbf56b7d2ec4608cb6cbcf79213992f75e29f3d977a00860d512627e",
+    "src/native_scene_dword_erase_wrappers.cpp": "dbd9731759d8880ea3565d625e6f7482be84825a7cb6e3822a93d834ee5db22d",
+    "include/bsp/native_scene_dword_erase_wrappers.hpp": "88c349b5474542f91c1844df01a909bc07f8f5652949f25655dd279e5708f09e"
+  },
+  "combined_build": {
+    "revision": "55d382440cd0360de19adff1c5a86cd6e13c8f34",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_scene_hash_clear_combined_build.log",
+    "log_sha256": "d5159b3fba505b316999f1012f64c4a82fb17f2381bc58b4664680d50730f59e",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 7.77,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+    "scope": "existing regression checks; native math seeds do not execute these new bodies"
+  },
+  "project_source_counts": {
+    "native_scene_name_hash_iterator": 1,
+    "native_scene_dword_vector_range_erase": 1,
+    "native_scene_dword_erase_wrappers": 1
+  },
+  "unique_archive_objects": {
+    "native_scene_name_hash_iterator": [
+      "bsp_core.dir\\Release\\native_scene_name_hash_iterator.obj"
+    ],
+    "native_scene_dword_vector_range_erase": [
+      "bsp_core.dir\\Release\\native_scene_dword_vector_range_erase.obj"
+    ],
+    "native_scene_dword_erase_wrappers": [
+      "bsp_core.dir\\Release\\native_scene_dword_erase_wrappers.obj"
+    ]
+  },
+  "archive_sha256": "f0414d5368a7dca6c8b8558f2bdf5f38ca430b641b51d7b1c4a783025db6ba7c",
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "New explicit raw/live-frame/currentCRT Source APIs,not Original register/private-stack/argument-home/heap/FH3/fault ABI identity",
+    "Existing math differential seeds do not execute these new bodies; no application or game proof"
+  ]
+}
