@@ -51,7 +51,24 @@ Whole original ABI/listing, accepted actual provider and both caller setups were
 reviewed. All 30 owned live bytes match the installed PE and canonical body.
 The two actual incoming typed transfers are checked separately from Source reuse.
 Locked annotation preserves names/prior comments/evidence and records old values,
-save, refreshed export and readback in the report. Required normal Win32 build,
-existing checks and focused compiled alias/provider review are pending. No new
-tests are added; packet-specific native differential/game and original ABI remain
-unproved.
+save, refreshed export and readback in the report. Prior-value log:
+`local/ghidra-annotations-20261015T220105Z.json`. The unique CMake line was appended
+only after an immediate unleased check, without an exclusive registry lease.
+
+Required normal `scripts/build.ps1` at
+`45192995e51402d0da8b4da6cc309128146827f0` passed strict Win32 and all 3 existing
+CTests in 8.12s. Log: `local/goal_oct15_dword_fill_alias_build.log`. Source/header
+and accepted provider hashes are unchanged from that draft; an independent worker
+reviewed their complete implementation and both native listings without a mismatch.
+
+Actual compiler inspection shows a 9-byte alias entry with a tail transfer+4 to
+the concrete accepted provider, without argument reads in the alias. In the
+31-byte provider entry, first/last loads+3/+6 precede the empty branch+Bh, which
+skips the value-address load+Eh and all value reads. The nonempty loop reloads
+the current DWORD+11h before each store+13h, advances the DWORD cursor+15h, and
+branches from+1Ah to the fresh load. Captured last remains in EAX through return.
+Both object hashes/offsets are recorded in the report and ignored local receipts.
+This proves current compiler composition/access order, not a native outgoing
+transfer or original frame/instruction/fault/ABI identity. No new tests were added;
+packet-specific native differential/game checks remain unrun. Existing native
+math checks do not execute this new alias.

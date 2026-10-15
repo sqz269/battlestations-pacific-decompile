@@ -8,7 +8,7 @@
   "header": "include/bsp/native_scene_dword_fill_alias.hpp",
   "documentation": "docs/GOAL_OCT15_DWORD_FILL_ALIAS.md",
   "base_revision": "1c20583def997ea3a8dcdd2c151b39727f764a49",
-  "status": "whole_actual_raw_source_build_pending",
+  "status": "whole_actual_raw_source_strict_win32_existing_ctest_and_compiler_checked",
   "routine": {
     "address": "00468440",
     "body_end_inclusive": "0046845d",
@@ -64,7 +64,7 @@
   ],
   "implementation_search": "no indexed/unindexed whole00468440 or new API before work;complete accepted canonical actual Source/header and both full native listings read;correct library name retained",
   "source_composition": "ordinary alias delegates fill_native_dword_range_0043f9e0(void*first,constvoid*last,constvoid*value);native owned body has NO outgoing CALL. Body-identical exact30 bytes,raw memcpy4 storage/uint32 cursor admission unchanged,no provider edits.",
-  "storage_contract": "capturefirst/last;empty skips native thirdstackword and allvaluebacking reads;nonnullrange capturesvalueADDRESS once,FRESH rawDWORD load/store EACH iteration,cursor+4 modulo32 until equality,returncapturedlast. No alignment/order/count/null/overlap guard,snapshot,ownership,EH,cleanup,callback or stub. Valid reached raw4B backing/reachable equality canonical domain;progressive source/destination aliases retained;private Source/native argument/frame aliases and asyncmutation excluded.",
+  "storage_contract": "capturefirst/last;empty skips native thirdstackword and allvaluebacking reads;nonemptyrange capturesvalueADDRESS once,FRESH rawDWORD load/store EACH iteration,cursor+4 modulo32 until equality,returncapturedlast. No alignment/order/count/null/overlap guard,snapshot,ownership,EH,cleanup,callback or stub. Valid reached raw4B backing/reachable equality canonical domain;progressive source/destination aliases retained;private Source/native argument/frame aliases and asyncmutation excluded.",
   "caller_contract": {
     "context_receipt": "local/goal_oct15_dword_fill_alias_caller_context.json",
     "0046b122": "push valueaddrEDX,lastESI,firstEDI;ADDESP0Ch;no EAX consumer beforeRET10h",
@@ -85,8 +85,35 @@
     "live_installed_bytes_and_canonical_identity": "passed;whole30B/13instructions;owned live=installedPE=canonical live/PE",
     "typed_native_transfers": "passed;2 true incoming typed rows and2 Markdown claims;6 cited addresses;0 failed/unchecked/warnings;owned native body has no outgoing call",
     "cmake_registration": "passed;unique append after immediate unleased check;no exclusive file lease",
-    "strict_win32_build_and_existing_ctest": "pending",
-    "compiled_object_review": "pending",
+    "strict_win32_build_and_existing_ctest": {
+      "result": "passed",
+      "command": "./scripts/build.ps1",
+      "build_and_source_revision": "45192995e51402d0da8b4da6cc309128146827f0",
+      "configuration": "MSVC Release Win32;normal startup registry;process-local CL /MP4",
+      "log": "local/goal_oct15_dword_fill_alias_build.log",
+      "log_sha256": "401852e3dbdbac8529f41c2c156d1571ccb8f8ff134c0e5e73ff5e6f4a9a206e",
+      "ctest": "3/3 passed: reconstructed_math0.22s,native_math_differential0.04s,tool_tests7.81s;total8.12s",
+      "alias_and_provider_source_headers_unchanged_from_draft": true,
+      "qualification": "existing unrelated LNK4006 duplicate spawn_request_id_matches Lua objects;no packet compile warning;existing math differential checks do not exercise this alias"
+    },
+    "compiled_object_review": {
+      "result": "passed focused actual MSVC Release Win32 alias and provider objects",
+      "object": "build/win32/bsp_core.dir/Release/native_scene_dword_fill_alias.obj",
+      "bytes": 810,
+      "sha256": "b9c101c5d213a8fe794f2162e5da146ba571e192d20b960ff08fcbf13f82dedc",
+      "dumpbin_version": "14.51.36244.0",
+      "receipt": "local/goal_oct15_dword_fill_alias_object.txt",
+      "alias_entry_code_bytes": 9,
+      "alias_schedule": "tail JMP+4/one REL32+5 to accepted fill_native_dword_range_0043f9e0,without argument reads in alias;current Source composition only",
+      "provider_object": "build/win32/bsp_core.dir/Release/native_dword_fill_ranges.obj",
+      "provider_bytes": 1541,
+      "provider_sha256": "8392e2a6fd740c32d5239a12ba42719768bd9f4853e48b0804827e5f707eb71a",
+      "provider_receipt": "local/goal_oct15_dword_fill_alias_provider_object.txt",
+      "provider_entry_code_bytes": 31,
+      "provider_empty_schedule": "first/last loads+3/+6,compare+9,emptyJE+B to+1D skips thirdstackword/value-address load+E and every value read",
+      "provider_nonempty_schedule": "value address captured once+E;FRESH current DWORD+11 before EACH store+13;cursor+4 at+15;backbranch+1A to+11 until capturedlast equality;EAX retainslast",
+      "qualification": "current compiler raw access/result schedule;no native outgoing transfer,private argument/frame/register-spill/instruction/COFF/fault/SEH/ABI identity"
+    },
     "source_file_sha256": {
       "src/native_scene_dword_fill_alias.cpp": "2c7843c82c7fef4016b816225f075d4d2baccffbb2115d0530fcfa23d0751866",
       "include/bsp/native_scene_dword_fill_alias.hpp": "f9371b7d36c772157f381f72bf04877281f40e7ed23c9a4dddd8fd6c80cfe7f4"
@@ -98,7 +125,15 @@
     "new_tests": false,
     "packet_native_differential": "not run",
     "game_validation": "not run",
-    "diff_check": "passed"
+    "diff_check": "passed",
+    "independent_source_review": {
+      "result": "passed independent string_allocate review;complete aliasSource/header,actual canonical provider and both full native listings;live30B identity rechecked;no mismatch or edits",
+      "source_revision": "45192995e51402d0da8b4da6cc309128146827f0",
+      "alias_source_sha256": "2c7843c82c7fef4016b816225f075d4d2baccffbb2115d0530fcfa23d0751866",
+      "alias_header_sha256": "f9371b7d36c772157f381f72bf04877281f40e7ed23c9a4dddd8fd6c80cfe7f4",
+      "canonical_source_sha256": "613cb9e7d485fd7a52d25acf726a2c4dc9ad03cdb8009a6238de50439d09e412",
+      "qualification": "Source/header/provider hashes unchanged;documentation now includes final build/compiler and exact physical-site verification evidence"
+    }
   },
   "limits": [
     "New ordinary raw Source composition/calling-convention keyword;no original binary/register/stack/private-frame/fault/SEH/COFF/game identity.",
