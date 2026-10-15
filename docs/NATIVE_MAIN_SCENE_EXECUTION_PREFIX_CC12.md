@@ -686,11 +686,74 @@ artifact pins were frozen before mutations in
 `local/main_scene_post_gather_receipt_a6f018a9b/`; all 323 earlier pins remain
 verified. No persistent tests, host route or CMake activation were added.
 
+## SCNE target and camera continuation
+
+`continue_native_main_scene_scne_targets_00b161ad` composes B161AD..B161F4,
+72 bytes and 20 native instructions. It requires the reached SCNE label frame
+with state5 still armed. The native enclosing function retains ESI as its
+original service receiver, EDI as its command and EBP as zero; this fragment
+has no independent native function ABI. The new persistent frame and explicit
+domain context are source interfaces.
+
+The byte at the original service's current+22D selects current+48 when nonzero
+or current+44 otherwise. Full B4CB20 borrows the holder's primary surface+C.
+The first current+1CC read supplies full B1FAB0 with slot0 and that surface.
+After this call, the caller captures the current renderer publication and its
+profile, reloads current service+1CC, then reads the captured profile's current
+slot98. The supported D5F0A8 slot resolves to full B24E70. A fresh B1BF40 camera
+read then supplies full B71360. Both holder fields, both+1CC reads and the
+renderer/profile reads retain their original order; no owner or global service
+replacement is introduced.
+
+The target owner, camera preparation and viewport/clear contexts share the
+actual renderer publication, synchronization and CRT domain already used by
+the label's system context. Successful completion reaches B161F5 and preserves
+state5. A source exception marks the new frame failed and invokes the existing
+SCNE cleanup once: disarm to-1 before CBC47E's genuine B13510 reset, reloading
+the current global service. Earlier surface/owner/device/camera effects remain.
+A repeated continuation is rejected without consuming its successful label.
+Original child exceptions, private caller-frame/FH3 dispatch and foreign
+profiles remain outside the proven contract.
+
+The manifested Win32 fixture compares the exact original72B caller with the
+source in four cases: zero/nonzero(+80) selectors with enabled camera; disabled
+camera; and an already-bound target group. It executes the original4B holder
+and7B camera leaves and genuine Source B1FAB0/B24E70/B71360 descendants. Real
+D3D9 HAL surfaces32x24 and40x30, device target/viewport/sRGB readbacks, raw
+camera/renderer/service/viewport/group bytes and surface reference counts agree.
+The unchanged-group case preserves the previous device target and sRGB state
+as the native identity gate requires. No material draw or pixel comparison is
+claimed. The prior label boundary is seeded, rather than executing the whole
+earlier main-scene prefix in this fixture.
+
+A source-only reached profile rejection occurs after color0 installation and
+before target binding. It preserves the installed surface/reference increment,
+resets the newly published service rather than the label's captured service,
+and confirms a second cleanup makes no pool/header changes. This is source
+lifecycle evidence, not native childthrow or FH3 evidence.
+
+Strict Win32 /MD /W4 /WX /O2 /fp:strict compilation passes. The actual COFF
+function body is708B/197instructions with six genuine provider relocations;
+its selector, publication/profile capture, second+1CC read, slot98, camera and
+failure-cleanup ordering were checked in emitted machine code. The compiled
+camera getter equals the original7B. All330 inherited tagged x87 instructions
+still match installed bytes; this clause adds no floating arithmetic. The
+fresh real-core manifested probe, ordinary build and all three existing checks
+pass. No persistent tests, CMake activation or host route were added.
+
+Artifacts are in `local/main_scene_scne_target/`. All53 prior SCNE artifact
+pins were frozen before edits in `local/main_scene_scne_label_receipt_f0a5963ff/`;
+the405 older artifact pins remain verified. Root's separate committed-file
+snapshot supplies its additional six tracked-file pins.
+
 ## Next executed clause
 
-B161AD tests current service+22D and selects current service+48 or+44 before
-B161BE calls B4CB20. Target installation, frame binding, the next camera-frame
-call, remaining scene/post/cockpit/distortion/statistics passes and subsequent
-cleanup states still need their bounded compositions. B17240 preparation
-remains separate. D5E13C continues to be unadmitted pending the complete raw
-body and application graph.
+B161F5 tests the actual synchronization byte, then signed current batch counts
+through B51B20, requiring both to exceed50 for worker preparation. The next
+bounded composition must retain SCNE state5 across actual B0FFB0/job submission,
+wait and current batch preparation/draw operations. Existing concrete count,
+job-publication, lifecycle and batch-dispatch providers are available, but this
+caller clause is not yet composed. Remaining scene/post/cockpit/distortion/
+statistics passes and subsequent cleanup states still need their bounded
+compositions. B17240 preparation remains separate. D5E13C continues to be
+unadmitted pending the complete raw body and application graph.

@@ -1386,4 +1386,59 @@ void continue_native_main_scene_scne_label_00b1610a(
         throw;
     }
 }
+void continue_native_main_scene_scne_targets_00b161ad(void* service,void* command,
+    const NativeMainSceneScneTargetContext& c,NativeMainSceneScneLabelFrame& label,
+    NativeMainSceneScneTargetFrame& frame,NativeMainSceneExecutionPrefixState& state) {
+    if(!state.reached_scne_target_stage || state.reached_scne_batch_stage ||
+       !label.completed || label.failed || label.native_cleanup_state!=5 ||
+       label.cleanup_started || frame.started)
+        throw std::logic_error("SCNE targets require completed label and armed state5");
+    frame.started=true;
+    try {
+        frame.active_native_site=state.active_native_site=0x00b161ad;
+        auto& groups=c.targets.actual_group_owner;
+        auto& renderer_cell=groups.actual_surface_context.actual_renderer_00f8d394;
+        const auto& system=c.label.domains.system;
+        if(static_cast<const volatile void*>(c.camera.renderer_00)!=static_cast<const volatile void*>(&renderer_cell) ||
+           system.actual_renderer_00f8d394!=c.camera.renderer_00 ||
+           system.actual_synchronization!=&c.targets.actual_synchronization_0108d6dc ||
+           !c.camera.prepare_08 || !c.camera.viewport_clear_0c || !system.actual_axes ||
+           c.camera.prepare_08->synchronization_04!=system.actual_synchronization ||
+           c.camera.viewport_clear_0c->synchronization_00!=system.actual_synchronization ||
+           !c.camera.prepare_08->frustum_00 ||
+           c.camera.prepare_08->frustum_00->length_access.dispatch_bypass_0109dd78!=system.actual_axes->length_access.dispatch_bypass_0109dd78 ||
+           c.camera.prepare_08->frustum_00->length_access.except_00c27489!=system.actual_axes->length_access.except_00c27489)
+            throw std::logic_error("SCNE targets require the same actual renderer, synchronization and CRT domain");
+        const auto selected=*reinterpret_cast<const volatile std::uint8_t*>(
+            static_cast<const unsigned char*>(service)+0x22d);
+        frame.active_native_site=state.active_native_site=0x00b161be;
+        auto* const surface=native_render_holder_primary_00b4cb20(current_member(service,selected?0x48:0x44));
+        auto* targets=static_cast<NativeFrameTargetOwnerStorage*>(current_member(service,0x1cc));
+        frame.active_native_site=state.active_native_site=0x00b161cb;
+        set_native_frame_target_color_00b1fab0(*targets,0,surface,groups);
+        frame.color_installed=true;
+        // B161D0/D6 capture publication/profile; B161D8 reloads +1CC BEFORE
+        // B161DE reads the captured profile's current slot98.
+        void* const renderer=renderer_cell;
+        const std::uint32_t profile=word(renderer);
+        targets=static_cast<NativeFrameTargetOwnerStorage*>(current_member(service,0x1cc));
+        frame.active_native_site=state.active_native_site=0x00b161e5;
+        if(profile!=0x00d5f0a8 || !c.camera.renderer_profile_04 ||
+           c.camera.renderer_profile_04[0x98/4]!=0x00b24e70)
+            throw std::logic_error("SCNE targets require current D5F0A8:B24E70 binding");
+        bind_native_renderer_frame_targets_00b24e70(renderer,targets,c.targets);
+        frame.targets_bound=true;
+        frame.active_native_site=state.active_native_site=0x00b161e9;
+        void* const camera=get_native_scene_command_camera_00b1bf40(command);
+        frame.active_native_site=state.active_native_site=0x00b161f0;
+        execute_native_camera_frame_command_00b71360(camera,&c.camera);
+        frame.camera_executed=true;
+        frame.active_native_site=state.active_native_site=0x00b161f5;
+        frame.completed=true;state.reached_scne_batch_stage=true;
+    } catch(...) {
+        frame.failed=true;
+        unwind_native_main_scene_scne_label(c.label,label);
+        throw;
+    }
+}
 } // namespace bsp
