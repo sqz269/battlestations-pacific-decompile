@@ -1,0 +1,1624 @@
+{
+  "packet": "goal15h_entity_path_raw",
+  "status": "complete_raw_source_strict_compiled_exact_bytes_source_fixture_pass",
+  "source": "src/native_entity_path_access.cpp",
+  "header": "include/bsp/native_entity_path_access.hpp",
+  "documentation": "docs/GOAL15H_ENTITY_PATH_ACCESS.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "disk_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "verification": "target-verifying bsp.py full owned assemblies/live bytes/live containing bodies/all88 caller contexts; independently parsed installed PE blocks; no worker Ghidra writes"
+  },
+  "routines": [
+    {
+      "address": "007ac9d0",
+      "end": "007aca2c",
+      "native_bytes": 93,
+      "instructions": 43,
+      "coverage": "complete",
+      "native_name": "BSP_Entity_PathInterfaceForKind",
+      "source_api": "void* __fastcall get_native_entity_path_interface_007ac9d0(void* actual_entity,void* unused_edx)",
+      "original_abi": "ECX entity, no stacked arguments, plainRET/EAX pointer; no consumed incomingEDX",
+      "source_abi": "explicit unusedEDX adapter is not Original input; literal body retains actual CALL EDX raw vtable dispatch",
+      "contract": "null->null; capture receiver inESI; fresh current table/slot5C before each reached47/48/49/4A; restore ECX after prior predicates; onlyAL tested; firsttrue offsets1E4/170/310/1E4 moduloDWORD; allfalse0"
+    },
+    {
+      "address": "00923810",
+      "end": "00923830",
+      "native_bytes": 33,
+      "instructions": 13,
+      "coverage": "complete",
+      "native_name": "FUN_00923810",
+      "reviewed_name": "BSP_EntityAncestor",
+      "source_api": "void* __fastcall get_native_entity_ancestor_00923810(void* actual_entity,void* unused_edx,int32_t levels)",
+      "original_abi": "thiscall ECXentity plus1signed32 stacklevel,RET4/EAXpointer; EDXnotconsumed",
+      "source_abi": "unusedEDX adapter is not Original input; exactone Original stackedlevel retained",
+      "contract": "unconditional firstparent+3C load; DWORD decrement then null/signedpositive loop; ordinarynegative/zero stillfirstparent; INT_MIN wrapspositive; eachlaterparent current+3C; no receivernullguard/cycledetector/clamp"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "007ac9de",
+      "containing_function": "007ac9d0",
+      "kind": "47",
+      "instruction": "FF D2",
+      "target_expression": "CURRENT [[captured_receiver]+5C]",
+      "physical_arguments": "ECX original receiver,EDX actualtarget,stackkind47;calleeRET4;consumeAL only",
+      "true_offset": "1e4"
+    },
+    {
+      "address": "007ac9f5",
+      "containing_function": "007ac9d0",
+      "kind": "48",
+      "instruction": "FF D2",
+      "target_expression": "RELOADED CURRENT [[captured_receiver]+5C]",
+      "physical_arguments": "ECX restoredreceiver,EDX actualtarget,stackkind48;calleeRET4;consumeAL only",
+      "true_offset": "170"
+    },
+    {
+      "address": "007aca0c",
+      "containing_function": "007ac9d0",
+      "kind": "49",
+      "instruction": "FF D2",
+      "target_expression": "RELOADED CURRENT [[captured_receiver]+5C]",
+      "physical_arguments": "ECX restoredreceiver,EDX actualtarget,stackkind49;calleeRET4;consumeAL only",
+      "true_offset": "310"
+    },
+    {
+      "address": "007aca23",
+      "containing_function": "007ac9d0",
+      "kind": "4a",
+      "instruction": "FF D2",
+      "target_expression": "RELOADED CURRENT [[captured_receiver]+5C]",
+      "physical_arguments": "ECX restoredreceiver,EDX actualtarget,stackkind4A;calleeRET4;consumeAL only",
+      "true_offset": "1e4"
+    }
+  ],
+  "provider_boundary": {
+    "raw_dispatch": "actual current receiver/vtable+5C calls, not injected per-function callbacks, precomputed flags or a semantic offset facade",
+    "requirements": "nonnull entity has backed current vtable/slot and genuinely callable raw target with receiverECX,kindDWORDstack,calleeRET4/ALpredicate and ordinary callee-saved registers; EDX holds loadedtarget,not a Source context",
+    "unknown": "actual Native entity factory/vtable producer/class hierarchy/RTTI/exception deployment not recovered by these two bodies; no automatic production provider wiring",
+    "ancestor": "no function dependencies; every reached+3Cparent cell backed; nullreceiverunhandled;finite signedcounter without cycle detector",
+    "storage": "no duplicate public entity/vtable schema, private globals, replacement owner or successcallback"
+  },
+  "caller_census": {
+    "path_direct_calls": 19,
+    "ancestor_direct_calls": 69,
+    "total": 88,
+    "ancestor_levels": "68immediatePUSH1 plus1PUSH EDI with priorMOV EDI,1; all observed69 passlevel1; complete signed32callee retained",
+    "evidence": "each site has live instruction-context8 and independently queried containing function; complete compact census inspected in bounded pages",
+    "artifact": "local/goal15h_entity_path/caller_rows.json;all_caller_contexts.json;caller_contexts_compact.txt"
+  },
+  "caller_rows": [
+    {
+      "address": "0071d754",
+      "native": "007ac9d0",
+      "containing_function": "0071d6d0",
+      "containing_name": "BSP_WeaponDirector_CommandAcceptsTarget",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "0071d749: JZ 0x0071d75d",
+        "0071d74b: MOV ECX,EDI",
+        "0071d74d: CALL 0x00521ea0",
+        "0071d752: MOV ECX,EAX"
+      ],
+      "result_context": [
+        "0071d759: TEST EAX,EAX",
+        "0071d75b: JZ 0x0071d718"
+      ]
+    },
+    {
+      "address": "00951385",
+      "native": "007ac9d0",
+      "containing_function": "009512f0",
+      "containing_name": "BSP_SceneFile_ReadTrafficItem",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "00951373: MOV EAX,[0x00e188a8]",
+        "00951378: MOV ECX,dword ptr [EAX + 0x19cc]",
+        "0095137e: CALL 0x00925a90",
+        "00951383: MOV ECX,EAX"
+      ],
+      "result_context": [
+        "0095138a: JMP 0x0095138e",
+        "0095138c: XOR EAX,EAX"
+      ]
+    },
+    {
+      "address": "0041d201",
+      "native": "007ac9d0",
+      "containing_function": "0041d1e0",
+      "containing_name": "BSP_AvoidZoneGroup_AddSceneEntity",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "0041d1f8: PUSH EDI",
+        "0041d1f9: MOV EDI,dword ptr [ESP + 0x20]",
+        "0041d1fd: MOV ESI,ECX",
+        "0041d1ff: MOV ECX,EDI"
+      ],
+      "result_context": [
+        "0041d206: CMP dword ptr [EDI + 0x54],0x2",
+        "0041d20a: MOV EBX,EAX"
+      ]
+    },
+    {
+      "address": "006d54ec",
+      "native": "007ac9d0",
+      "containing_function": "006d5220",
+      "containing_name": "BSP_AirField_ReadHangarAndMarkerProperties",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "006d54e1: PUSH ECX",
+        "006d54e2: LEA ECX,[ESP + 0x58]",
+        "006d54e6: CALL EAX",
+        "006d54e8: MOV ECX,dword ptr [ESP + 0x2c]"
+      ],
+      "result_context": [
+        "006d54f1: MOV dword ptr [EDI + 0x4],EAX",
+        "006d54f4: SUB ESP,0x8"
+      ]
+    },
+    {
+      "address": "006d5524",
+      "native": "007ac9d0",
+      "containing_function": "006d5220",
+      "containing_name": "BSP_AirField_ReadHangarAndMarkerProperties",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "006d5519: PUSH ECX",
+        "006d551a: LEA ECX,[ESP + 0x58]",
+        "006d551e: CALL EAX",
+        "006d5520: MOV ECX,dword ptr [ESP + 0x18]"
+      ],
+      "result_context": [
+        "006d5529: LEA ECX,[ESP + 0x48]",
+        "006d552d: MOV dword ptr [EDI + 0x8],EAX"
+      ]
+    },
+    {
+      "address": "006d5823",
+      "native": "007ac9d0",
+      "containing_function": "006d5220",
+      "containing_name": "BSP_AirField_ReadHangarAndMarkerProperties",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "006d5814: MOV EDX,dword ptr [0x00f89aa8]",
+        "006d581a: SHL EAX,0x4",
+        "006d581d: MOV EAX,dword ptr [EAX + EDX*0x1 + 0xc]",
+        "006d5821: MOV ECX,EAX"
+      ],
+      "result_context": [
+        "006d5828: MOV dword ptr [EDI + EBX*0x1 + 0x4],EAX",
+        "006d582c: MOV EAX,dword ptr [ESP + 0x14]"
+      ]
+    },
+    {
+      "address": "006d5870",
+      "native": "007ac9d0",
+      "containing_function": "006d5220",
+      "containing_name": "BSP_AirField_ReadHangarAndMarkerProperties",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "006d5861: MOV ECX,dword ptr [0x00f89aa8]",
+        "006d5867: SHL EAX,0x4",
+        "006d586a: MOV EAX,dword ptr [EAX + ECX*0x1 + 0xc]",
+        "006d586e: MOV ECX,EAX"
+      ],
+      "result_context": [
+        "006d5875: MOV EDX,dword ptr [ESP + 0x14]",
+        "006d5879: MOV dword ptr [EDI + EBX*0x1 + 0x8],EAX"
+      ]
+    },
+    {
+      "address": "006d5d91",
+      "native": "007ac9d0",
+      "containing_function": "006d5220",
+      "containing_name": "BSP_AirField_ReadHangarAndMarkerProperties",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "006d5d86: MOV ECX,dword ptr [ESI + 0x30]",
+        "006d5d89: PUSH EAX",
+        "006d5d8a: CALL 0x00925a90",
+        "006d5d8f: MOV ECX,EAX"
+      ],
+      "result_context": [
+        "006d5d96: PUSH 0xcf8ee8",
+        "006d5d9b: MOV ECX,EBP"
+      ]
+    },
+    {
+      "address": "006d5db7",
+      "native": "007ac9d0",
+      "containing_function": "006d5220",
+      "containing_name": "BSP_AirField_ReadHangarAndMarkerProperties",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "006d5dac: MOV ECX,dword ptr [ESI + 0x30]",
+        "006d5daf: PUSH EAX",
+        "006d5db0: CALL 0x00925a90",
+        "006d5db5: MOV ECX,EAX"
+      ],
+      "result_context": [
+        "006d5dbc: MOV ECX,dword ptr [EDI]",
+        "006d5dbe: MOV dword ptr [EDI + 0x8],EAX"
+      ]
+    },
+    {
+      "address": "008093fc",
+      "native": "007ac9d0",
+      "containing_function": "00809380",
+      "containing_name": "BSP_RepairZoneArea_ResolvePath",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "008093ed: MOV EDX,dword ptr [0x00f89aa8]",
+        "008093f3: SHL EAX,0x4",
+        "008093f6: MOV EAX,dword ptr [EAX + EDX*0x1 + 0xc]",
+        "008093fa: MOV ECX,EAX"
+      ],
+      "result_context": [
+        "00809401: MOV dword ptr [ESI + 0x18],EAX",
+        "00809404: MOV ECX,dword ptr [ESI + 0x18]"
+      ]
+    },
+    {
+      "address": "0071f6cd",
+      "native": "007ac9d0",
+      "containing_function": "0071f600",
+      "containing_name": "BSP_WeaponDirector_BeginCommandBase",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "0071f6bd: MOV EDI,dword ptr [ESI + 0x1a4]",
+        "0071f6c3: ADD EDI,0x8",
+        "0071f6c6: CALL 0x00521ea0",
+        "0071f6cb: MOV ECX,EAX"
+      ],
+      "result_context": [
+        "0071f6d2: MOV EBX,dword ptr [ESI + 0x34]",
+        "0071f6d5: MOV EDX,EAX"
+      ]
+    },
+    {
+      "address": "007420f7",
+      "native": "007ac9d0",
+      "containing_function": "007420b0",
+      "containing_name": "BSP_LandConvoy_ResolvePathReference",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "007420ec: CALL 0x00925a90",
+        "007420f1: TEST EAX,EAX",
+        "007420f3: JZ 0x007420fe",
+        "007420f5: MOV ECX,EAX"
+      ],
+      "result_context": [
+        "007420fc: JMP 0x00742100",
+        "007420fe: XOR EAX,EAX"
+      ]
+    },
+    {
+      "address": "00743c11",
+      "native": "007ac9d0",
+      "containing_function": "00743b70",
+      "containing_name": "BSP_SessionMessage_LANDCONVOY_CREATE_CreateEntity",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "00743c07: MOV EAX,dword ptr [EAX + EDX*0x1 + 0xc]",
+        "00743c0b: CMP EAX,EBX",
+        "00743c0d: JZ 0x00743c18",
+        "00743c0f: MOV ECX,EAX"
+      ],
+      "result_context": [
+        "00743c16: JMP 0x00743c1a",
+        "00743c18: XOR EAX,EAX"
+      ]
+    },
+    {
+      "address": "00816fa7",
+      "native": "007ac9d0",
+      "containing_function": "00816e30",
+      "containing_name": "BSP_UnitInstance_ApplyEntityCommand",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "00816f96: JZ 0x00817330",
+        "00816f9c: LEA ECX,[ESP + 0x20]",
+        "00816fa0: CALL 0x00521ea0",
+        "00816fa5: MOV ECX,EAX"
+      ],
+      "result_context": [
+        "00816fac: TEST EAX,EAX",
+        "00816fae: JZ 0x00817330"
+      ]
+    },
+    {
+      "address": "0084a0a3",
+      "native": "007ac9d0",
+      "containing_function": "00849f70",
+      "containing_name": "BSP_Shipyard_LoadFromProperties",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "0084a095: MOV ECX,dword ptr [EDX + 0x19cc]",
+        "0084a09b: PUSH EAX",
+        "0084a09c: CALL 0x00925a90",
+        "0084a0a1: MOV ECX,EAX"
+      ],
+      "result_context": [
+        "0084a0a8: CMP EAX,EBX",
+        "0084a0aa: JZ 0x0084a0b3"
+      ]
+    },
+    {
+      "address": "00895b3c",
+      "native": "007ac9d0",
+      "containing_function": "008959f0",
+      "containing_name": "BSP_LuaBinding_LandConvoySetPath",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "00895b2c: MOV EDI,EAX",
+        "00895b2e: MOV byte ptr [ESP + 0x520],BL",
+        "00895b35: CALL 0x00b67700",
+        "00895b3a: MOV ECX,EDI"
+      ],
+      "result_context": [
+        "00895b41: PUSH EAX",
+        "00895b42: MOV ECX,ESI"
+      ]
+    },
+    {
+      "address": "0089a296",
+      "native": "007ac9d0",
+      "containing_function": "0089a190",
+      "containing_name": "BSP_LuaBinding_FillPathPoints",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "0089a285: MOV ECX,EAX",
+        "0089a287: MOV byte ptr [ESP + 0x544],0x3",
+        "0089a28f: CALL 0x00888aa0",
+        "0089a294: MOV ECX,EAX"
+      ],
+      "result_context": [
+        "0089a29b: LEA ECX,[ESP + 0x54]",
+        "0089a29f: MOV EBP,EAX"
+      ]
+    },
+    {
+      "address": "008b48f4",
+      "native": "007ac9d0",
+      "containing_function": "008b47e0",
+      "containing_name": "BSP_LuaBinding_MovCam_PathWalk",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "008b48e3: MOV ECX,EAX",
+        "008b48e5: MOV byte ptr [ESP + 0x558],0x3",
+        "008b48ed: CALL 0x00888aa0",
+        "008b48f2: MOV ECX,EAX"
+      ],
+      "result_context": [
+        "008b48f9: MOV EBX,EAX",
+        "008b48fb: LEA ECX,[ESP + 0x74]"
+      ]
+    },
+    {
+      "address": "007b1157",
+      "native": "007ac9d0",
+      "containing_function": "007b1120",
+      "containing_name": "BSP_AuthoredPathSource_Load",
+      "operation": "ECX raw entity; no stacked argument; plain RET/EAX path pointer",
+      "input_context": [
+        "007b114c: MOV EDX,dword ptr [ECX]",
+        "007b114e: MOV EAX,dword ptr [EDX + 0x10]",
+        "007b1151: CALL EAX",
+        "007b1153: MOV ECX,dword ptr [ESP + 0x4]"
+      ],
+      "result_context": [
+        "007b115c: MOV dword ptr [ESI + 0x8],EAX",
+        "007b115f: POP ESI"
+      ]
+    },
+    {
+      "address": "0084d0eb",
+      "native": "00923810",
+      "containing_function": "0084d050",
+      "containing_name": "BSP_SupportSite_CanSupplyClass",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "0084d0e1: JMP 0x0084d090",
+        "0084d0e3: MOV EBX,dword ptr [ESP + 0x10]",
+        "0084d0e7: PUSH 0x1",
+        "0084d0e9: MOV ECX,EBX"
+      ],
+      "result_context": [
+        "0084d0f0: TEST EAX,EAX",
+        "0084d0f2: JZ 0x0084d10e"
+      ]
+    },
+    {
+      "address": "0084d0f8",
+      "native": "00923810",
+      "containing_function": "0084d050",
+      "containing_name": "BSP_SupportSite_CanSupplyClass",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "0084d0f0: TEST EAX,EAX",
+        "0084d0f2: JZ 0x0084d10e",
+        "0084d0f4: PUSH 0x1",
+        "0084d0f6: MOV ECX,EBX"
+      ],
+      "result_context": [
+        "0084d0fd: MOV ECX,EAX",
+        "0084d0ff: CALL 0x00923be0"
+      ]
+    },
+    {
+      "address": "0084d59b",
+      "native": "00923810",
+      "containing_function": "0084d560",
+      "containing_name": "BSP_SupportSite_BuildSupplyClassList",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "0084d58f: MOV dword ptr [ESP + 0x1c],EDI",
+        "0084d593: PUSH 0x1",
+        "0084d595: MOV ECX,ESI",
+        "0084d597: MOV dword ptr [ESP + 0x38],EDI"
+      ],
+      "result_context": [
+        "0084d5a0: TEST EAX,EAX",
+        "0084d5a2: JZ 0x0084d5d5"
+      ]
+    },
+    {
+      "address": "0084d5a8",
+      "native": "00923810",
+      "containing_function": "0084d560",
+      "containing_name": "BSP_SupportSite_BuildSupplyClassList",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "0084d5a0: TEST EAX,EAX",
+        "0084d5a2: JZ 0x0084d5d5",
+        "0084d5a4: PUSH 0x1",
+        "0084d5a6: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "0084d5ad: CMP byte ptr [EAX + 0x5c],0x0",
+        "0084d5b1: JZ 0x0084d78c"
+      ]
+    },
+    {
+      "address": "0041d06d",
+      "native": "00923810",
+      "containing_function": "0041ccd0",
+      "containing_name": "BSP_AvoidZone_ConstructFromScenePath",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "0041d061: MOV ECX,ESI",
+        "0041d063: CALL 0x0041a200",
+        "0041d068: MOV ECX,dword ptr [EBX + 0x14]",
+        "0041d06b: PUSH 0x1"
+      ],
+      "result_context": [
+        "0041d072: TEST EAX,EAX",
+        "0041d074: JZ 0x0041d09c"
+      ]
+    },
+    {
+      "address": "0041d07b",
+      "native": "00923810",
+      "containing_function": "0041ccd0",
+      "containing_name": "BSP_AvoidZone_ConstructFromScenePath",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "0041d072: TEST EAX,EAX",
+        "0041d074: JZ 0x0041d09c",
+        "0041d076: MOV ECX,dword ptr [EBX + 0x14]",
+        "0041d079: PUSH 0x1"
+      ],
+      "result_context": [
+        "0041d080: MOV EDX,dword ptr [EAX]",
+        "0041d082: MOV ECX,EAX"
+      ]
+    },
+    {
+      "address": "0041d094",
+      "native": "00923810",
+      "containing_function": "0041ccd0",
+      "containing_name": "BSP_AvoidZone_ConstructFromScenePath",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "0041d08b: TEST AL,AL",
+        "0041d08d: JZ 0x0041d09c",
+        "0041d08f: MOV ECX,dword ptr [EBX + 0x14]",
+        "0041d092: PUSH 0x1"
+      ],
+      "result_context": [
+        "0041d099: MOV dword ptr [ESI + 0x10],EAX",
+        "0041d09c: MOV ECX,dword ptr [ESP + 0x6c]"
+      ]
+    },
+    {
+      "address": "0041d3a2",
+      "native": "00923810",
+      "containing_function": "0041d380",
+      "containing_name": "BSP_AvoidZone_NameAppliesToLayer",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "0041d39a: TEST EDI,EDI",
+        "0041d39c: JZ 0x0041d3b5",
+        "0041d39e: PUSH 0x1",
+        "0041d3a0: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "0041d3a7: CMP EAX,EDI",
+        "0041d3a9: JZ 0x0041d3b5"
+      ]
+    },
+    {
+      "address": "00526d91",
+      "native": "00923810",
+      "containing_function": "00526a40",
+      "containing_name": "BSP_HudUnitPickScreen_PickUnit",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "00526d88: JZ 0x00526daf",
+        "00526d8a: PUSH 0x1",
+        "00526d8c: MOV ECX,EBP",
+        "00526d8e: MOV dword ptr [EBX + 0x50],EBP"
+      ],
+      "result_context": [
+        "00526d96: MOV EBP,EAX",
+        "00526d98: MOV dword ptr [ESP + 0x1c],EBP"
+      ]
+    },
+    {
+      "address": "00641e55",
+      "native": "00923810",
+      "containing_function": "00641e30",
+      "containing_name": "BSP_InGameHudMarkers_AddUnitPartMarkers",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "00641e4e: PUSH EDI",
+        "00641e4f: MOV EBX,ECX",
+        "00641e51: PUSH 0x1",
+        "00641e53: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "00641e5a: MOV EDI,EAX",
+        "00641e5c: TEST EDI,EDI"
+      ]
+    },
+    {
+      "address": "006c0876",
+      "native": "00923810",
+      "containing_function": "006c0840",
+      "containing_name": "BSP_AirOps_FindNearestLandingSite",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006c086b: TEST AL,AL",
+        "006c086d: PUSH 0x1",
+        "006c086f: MOV ECX,EDI",
+        "006c0871: SETZ byte ptr [ESP + 0x13]"
+      ],
+      "result_context": [
+        "006c087b: TEST EAX,EAX",
+        "006c087d: JZ 0x006c0967"
+      ]
+    },
+    {
+      "address": "006c0887",
+      "native": "00923810",
+      "containing_function": "006c0840",
+      "containing_name": "BSP_AirOps_FindNearestLandingSite",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006c087b: TEST EAX,EAX",
+        "006c087d: JZ 0x006c0967",
+        "006c0883: PUSH 0x1",
+        "006c0885: MOV ECX,EDI"
+      ],
+      "result_context": [
+        "006c088c: MOV ESI,EAX",
+        "006c088e: MOV EAX,dword ptr [ESI]"
+      ]
+    },
+    {
+      "address": "006c08a7",
+      "native": "00923810",
+      "containing_function": "006c0840",
+      "containing_name": "BSP_AirOps_FindNearestLandingSite",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006c089d: CMP byte ptr [ESI + 0x5e],0x0",
+        "006c08a1: JNZ 0x006c08f5",
+        "006c08a3: PUSH 0x1",
+        "006c08a5: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006c08ac: TEST EAX,EAX",
+        "006c08ae: JZ 0x006c08bf"
+      ]
+    },
+    {
+      "address": "006c08b4",
+      "native": "00923810",
+      "containing_function": "006c0840",
+      "containing_name": "BSP_AirOps_FindNearestLandingSite",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006c08ac: TEST EAX,EAX",
+        "006c08ae: JZ 0x006c08bf",
+        "006c08b0: PUSH 0x1",
+        "006c08b2: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006c08b9: CMP byte ptr [EAX + 0x5e],0x0",
+        "006c08bd: JNZ 0x006c08f5"
+      ]
+    },
+    {
+      "address": "006c090e",
+      "native": "00923810",
+      "containing_function": "006c0840",
+      "containing_name": "BSP_AirOps_FindNearestLandingSite",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006c0904: CMP byte ptr [ESI + 0x5e],0x0",
+        "006c0908: JNZ 0x006c0967",
+        "006c090a: PUSH 0x1",
+        "006c090c: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006c0913: TEST EAX,EAX",
+        "006c0915: JZ 0x006c0926"
+      ]
+    },
+    {
+      "address": "006c091b",
+      "native": "00923810",
+      "containing_function": "006c0840",
+      "containing_name": "BSP_AirOps_FindNearestLandingSite",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006c0913: TEST EAX,EAX",
+        "006c0915: JZ 0x006c0926",
+        "006c0917: PUSH 0x1",
+        "006c0919: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006c0920: CMP byte ptr [EAX + 0x5e],0x0",
+        "006c0924: JNZ 0x006c0967"
+      ]
+    },
+    {
+      "address": "006c3b65",
+      "native": "00923810",
+      "containing_function": "006c3b10",
+      "containing_name": "BSP_AirOpsBlock_RunwayCorridorTest",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006c3b5b: ADD ESP,0x38",
+        "006c3b5e: RET 0x4",
+        "006c3b61: PUSH 0x1",
+        "006c3b63: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006c3b6a: TEST EAX,EAX",
+        "006c3b6c: JZ 0x006c3b9e"
+      ]
+    },
+    {
+      "address": "006c3b72",
+      "native": "00923810",
+      "containing_function": "006c3b10",
+      "containing_name": "BSP_AirOpsBlock_RunwayCorridorTest",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006c3b6a: TEST EAX,EAX",
+        "006c3b6c: JZ 0x006c3b9e",
+        "006c3b6e: PUSH 0x1",
+        "006c3b70: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006c3b77: MOV EDX,dword ptr [EAX]",
+        "006c3b79: MOV ECX,EAX"
+      ]
+    },
+    {
+      "address": "006c3b8a",
+      "native": "00923810",
+      "containing_function": "006c3b10",
+      "containing_name": "BSP_AirOpsBlock_RunwayCorridorTest",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006c3b82: TEST AL,AL",
+        "006c3b84: JNZ 0x006c3b57",
+        "006c3b86: PUSH 0x1",
+        "006c3b88: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006c3b8f: MOV EDX,dword ptr [EAX]",
+        "006c3b91: MOV ECX,EAX"
+      ]
+    },
+    {
+      "address": "00779c65",
+      "native": "00923810",
+      "containing_function": "00779c60",
+      "containing_name": "BSP_Unit_UpdateOwnerHudState",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "00779c60: PUSH ESI",
+        "00779c61: PUSH 0x1",
+        "00779c63: MOV ESI,ECX"
+      ],
+      "result_context": [
+        "00779c6a: TEST EAX,EAX",
+        "00779c6c: JZ 0x00779ce4"
+      ]
+    },
+    {
+      "address": "00779c72",
+      "native": "00923810",
+      "containing_function": "00779c60",
+      "containing_name": "BSP_Unit_UpdateOwnerHudState",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "00779c6a: TEST EAX,EAX",
+        "00779c6c: JZ 0x00779ce4",
+        "00779c6e: PUSH 0x1",
+        "00779c70: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "00779c77: MOV EDX,dword ptr [EAX]",
+        "00779c79: MOV ECX,EAX"
+      ]
+    },
+    {
+      "address": "00779c8a",
+      "native": "00923810",
+      "containing_function": "00779c60",
+      "containing_name": "BSP_Unit_UpdateOwnerHudState",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "00779c82: TEST AL,AL",
+        "00779c84: JZ 0x00779ce4",
+        "00779c86: PUSH 0x1",
+        "00779c88: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "00779c8f: CMP byte ptr [0x00f87152],0x0",
+        "00779c96: MOVSS XMM0,dword ptr [0x00d7a24c]"
+      ]
+    },
+    {
+      "address": "006ff2fe",
+      "native": "00923810",
+      "containing_function": "006ff2f0",
+      "containing_name": "BSP_DummyShot_BindOwnerCommand",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006ff2f2: MOV EDI,ECX",
+        "006ff2f4: LEA ESI,[EDI + 0xfffffcf0]",
+        "006ff2fa: PUSH 0x1",
+        "006ff2fc: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006ff303: TEST EAX,EAX",
+        "006ff305: JZ 0x006ff3d6"
+      ]
+    },
+    {
+      "address": "006ff30f",
+      "native": "00923810",
+      "containing_function": "006ff2f0",
+      "containing_name": "BSP_DummyShot_BindOwnerCommand",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006ff303: TEST EAX,EAX",
+        "006ff305: JZ 0x006ff3d6",
+        "006ff30b: PUSH 0x1",
+        "006ff30d: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006ff314: MOV ESI,EAX",
+        "006ff316: PUSH 0x1"
+      ]
+    },
+    {
+      "address": "006ff31a",
+      "native": "00923810",
+      "containing_function": "006ff2f0",
+      "containing_name": "BSP_DummyShot_BindOwnerCommand",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006ff30f: CALL 0x00923810",
+        "006ff314: MOV ESI,EAX",
+        "006ff316: PUSH 0x1",
+        "006ff318: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006ff31f: TEST EAX,EAX",
+        "006ff321: JZ 0x006ff34a"
+      ]
+    },
+    {
+      "address": "006ff336",
+      "native": "00923810",
+      "containing_function": "006ff2f0",
+      "containing_name": "BSP_DummyShot_BindOwnerCommand",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006ff32e: TEST AL,AL",
+        "006ff330: JNZ 0x006ff34a",
+        "006ff332: PUSH 0x1",
+        "006ff334: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006ff33b: MOV ESI,EAX",
+        "006ff33d: PUSH 0x1"
+      ]
+    },
+    {
+      "address": "006ff341",
+      "native": "00923810",
+      "containing_function": "006ff2f0",
+      "containing_name": "BSP_DummyShot_BindOwnerCommand",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006ff336: CALL 0x00923810",
+        "006ff33b: MOV ESI,EAX",
+        "006ff33d: PUSH 0x1",
+        "006ff33f: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006ff346: TEST EAX,EAX",
+        "006ff348: JNZ 0x006ff323"
+      ]
+    },
+    {
+      "address": "00986b4e",
+      "native": "00923810",
+      "containing_function": "00986b00",
+      "containing_name": "BSP_WarningManager_DispatchHpEventChannel",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "00986b42: MOV EBX,dword ptr [ESP + 0x74]",
+        "00986b46: PUSH 0x1",
+        "00986b48: MOV ECX,EBX",
+        "00986b4a: MOV dword ptr [ESP + 0x70],EBP"
+      ],
+      "result_context": [
+        "00986b53: TEST EAX,EAX",
+        "00986b55: JZ 0x00986b73"
+      ]
+    },
+    {
+      "address": "00986b5b",
+      "native": "00923810",
+      "containing_function": "00986b00",
+      "containing_name": "BSP_WarningManager_DispatchHpEventChannel",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "00986b53: TEST EAX,EAX",
+        "00986b55: JZ 0x00986b73",
+        "00986b57: PUSH 0x1",
+        "00986b59: MOV ECX,EBX"
+      ],
+      "result_context": [
+        "00986b60: MOV EDX,dword ptr [EAX]",
+        "00986b62: MOV ECX,EAX"
+      ]
+    },
+    {
+      "address": "00986872",
+      "native": "00923810",
+      "containing_function": "00986820",
+      "containing_name": "BSP_MissionEvents_ReportShipLanded",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "00986866: MOV EBP,dword ptr [ESP + 0x64]",
+        "0098686a: PUSH 0x1",
+        "0098686c: MOV ECX,EBP",
+        "0098686e: MOV dword ptr [ESP + 0x60],EBX"
+      ],
+      "result_context": [
+        "00986877: TEST EAX,EAX",
+        "00986879: JZ 0x00986897"
+      ]
+    },
+    {
+      "address": "0098687f",
+      "native": "00923810",
+      "containing_function": "00986820",
+      "containing_name": "BSP_MissionEvents_ReportShipLanded",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "00986877: TEST EAX,EAX",
+        "00986879: JZ 0x00986897",
+        "0098687b: PUSH 0x1",
+        "0098687d: MOV ECX,EBP"
+      ],
+      "result_context": [
+        "00986884: MOV EDX,dword ptr [EAX]",
+        "00986886: MOV ECX,EAX"
+      ]
+    },
+    {
+      "address": "007c725f",
+      "native": "00923810",
+      "containing_function": "007c71e0",
+      "containing_name": "BSP_Plane_TouchdownAttachToSite",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "007c7253: TEST EDI,EDI",
+        "007c7255: JZ 0x007c7429",
+        "007c725b: PUSH 0x1",
+        "007c725d: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "007c7264: CMP EAX,EDI",
+        "007c7266: JZ 0x007c7429"
+      ]
+    },
+    {
+      "address": "007c79ce",
+      "native": "00923810",
+      "containing_function": "007c78a0",
+      "containing_name": "BSP_Plane_SetFlightStateUnguarded",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "007c79c6: TEST AL,AL",
+        "007c79c8: JNZ 0x007c7a35",
+        "007c79ca: PUSH 0x1",
+        "007c79cc: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "007c79d3: TEST EAX,EAX",
+        "007c79d5: JZ 0x007c7a35"
+      ]
+    },
+    {
+      "address": "009578eb",
+      "native": "00923810",
+      "containing_function": "00957740",
+      "containing_name": "BSP_Aim_ResolveRayToWorldPoint",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "009578e3: TEST AL,AL",
+        "009578e5: JZ 0x009578f2",
+        "009578e7: PUSH 0x1",
+        "009578e9: MOV ECX,EDI"
+      ],
+      "result_context": [
+        "009578f0: MOV EDI,EAX",
+        "009578f2: MOV ECX,dword ptr [EBP + 0x3f8]"
+      ]
+    },
+    {
+      "address": "009864d2",
+      "native": "00923810",
+      "containing_function": "00986480",
+      "containing_name": "BSP_WarningManager_FireEntityKilled",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "009864c6: MOV EBP,dword ptr [ESP + 0x74]",
+        "009864ca: PUSH 0x1",
+        "009864cc: MOV ECX,EBP",
+        "009864ce: MOV dword ptr [ESP + 0x70],EBX"
+      ],
+      "result_context": [
+        "009864d7: TEST EAX,EAX",
+        "009864d9: JZ 0x00986505"
+      ]
+    },
+    {
+      "address": "009864df",
+      "native": "00923810",
+      "containing_function": "00986480",
+      "containing_name": "BSP_WarningManager_FireEntityKilled",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "009864d7: TEST EAX,EAX",
+        "009864d9: JZ 0x00986505",
+        "009864db: PUSH 0x1",
+        "009864dd: MOV ECX,EBP"
+      ],
+      "result_context": [
+        "009864e4: MOV EDX,dword ptr [EAX]",
+        "009864e6: MOV ECX,EAX"
+      ]
+    },
+    {
+      "address": "009fd2d4",
+      "native": "00923810",
+      "containing_function": "009fd0e0",
+      "containing_name": "BSP_PilotBot_OpportunisticRocketTick",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "009fd2cb: MOV ECX,dword ptr [ESI + 0x58]",
+        "009fd2ce: CMP ECX,EBX",
+        "009fd2d0: JZ 0x009fd2dd",
+        "009fd2d2: PUSH 0x1"
+      ],
+      "result_context": [
+        "009fd2d9: TEST EAX,EAX",
+        "009fd2db: JNZ 0x009fd2f5"
+      ]
+    },
+    {
+      "address": "009fd302",
+      "native": "00923810",
+      "containing_function": "009fd0e0",
+      "containing_name": "BSP_PilotBot_OpportunisticRocketTick",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "009fd2f5: MOV ECX,dword ptr [ESI + 0x58]",
+        "009fd2f8: CMP ECX,EBX",
+        "009fd2fa: JZ 0x009fd529",
+        "009fd300: PUSH 0x1"
+      ],
+      "result_context": [
+        "009fd307: TEST EAX,EAX",
+        "009fd309: JZ 0x009fd529"
+      ]
+    },
+    {
+      "address": "0060b74a",
+      "native": "00923810",
+      "containing_function": "0060abd0",
+      "containing_name": "BSP_HudPlaneEffectsScreen_Update",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "0060b73a: MOV ECX,dword ptr [ESI + 0xb8]",
+        "0060b740: PUSH 0x1",
+        "0060b742: FSUBR double ptr [ESP + 0x24]",
+        "0060b746: FSTP float ptr [ESP + 0x30]"
+      ],
+      "result_context": [
+        "0060b74f: TEST EAX,EAX",
+        "0060b751: JZ 0x0060b76d"
+      ]
+    },
+    {
+      "address": "006e5609",
+      "native": "00923810",
+      "containing_function": "006e4d50",
+      "containing_name": "BSP_MBombPlatform_Drop",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006e55fc: JMP 0x006e5605",
+        "006e55fe: MOV byte ptr [ESI + 0x4f8],0x0",
+        "006e5605: PUSH 0x1",
+        "006e5607: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006e560e: MOV EDX,dword ptr [EAX]",
+        "006e5610: MOV ECX,EAX"
+      ]
+    },
+    {
+      "address": "006e5621",
+      "native": "00923810",
+      "containing_function": "006e4d50",
+      "containing_name": "BSP_MBombPlatform_Drop",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006e5619: TEST AL,AL",
+        "006e561b: JZ 0x006e5638",
+        "006e561d: PUSH 0x1",
+        "006e561f: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006e5626: MOV ECX,dword ptr [EAX + 0x9d4]",
+        "006e562c: PUSH ECX"
+      ]
+    },
+    {
+      "address": "006e563c",
+      "native": "00923810",
+      "containing_function": "006e4d50",
+      "containing_name": "BSP_MBombPlatform_Drop",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006e562d: MOV ECX,dword ptr [0x00f8a0c4]",
+        "006e5633: CALL 0x00984ba0",
+        "006e5638: PUSH 0x1",
+        "006e563a: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006e5641: MOV EDX,dword ptr [EAX]",
+        "006e5643: MOV ECX,EAX"
+      ]
+    },
+    {
+      "address": "006e5654",
+      "native": "00923810",
+      "containing_function": "006e4d50",
+      "containing_name": "BSP_MBombPlatform_Drop",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006e564c: TEST AL,AL",
+        "006e564e: JZ 0x006e56c9",
+        "006e5650: PUSH 0x1",
+        "006e5652: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006e5659: FLD float ptr [EAX + 0xe8c]",
+        "006e565f: XORPS XMM0,XMM0"
+      ]
+    },
+    {
+      "address": "006fe835",
+      "native": "00923810",
+      "containing_function": "006fe820",
+      "containing_name": "BSP_DummyKamikazePlane_InitAll",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006fe82a: MOV ECX,EDI",
+        "006fe82c: CALL 0x006e0b40",
+        "006fe831: PUSH 0x1",
+        "006fe833: MOV ECX,EDI"
+      ],
+      "result_context": [
+        "006fe83a: TEST EAX,EAX",
+        "006fe83c: JZ 0x006fe8a3"
+      ]
+    },
+    {
+      "address": "006fe843",
+      "native": "00923810",
+      "containing_function": "006fe820",
+      "containing_name": "BSP_DummyKamikazePlane_InitAll",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006fe83c: JZ 0x006fe8a3",
+        "006fe83e: PUSH ESI",
+        "006fe83f: PUSH 0x1",
+        "006fe841: MOV ECX,EDI"
+      ],
+      "result_context": [
+        "006fe848: MOV ESI,EAX",
+        "006fe84a: PUSH 0x1"
+      ]
+    },
+    {
+      "address": "006fe84e",
+      "native": "00923810",
+      "containing_function": "006fe820",
+      "containing_name": "BSP_DummyKamikazePlane_InitAll",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006fe843: CALL 0x00923810",
+        "006fe848: MOV ESI,EAX",
+        "006fe84a: PUSH 0x1",
+        "006fe84c: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006fe853: TEST EAX,EAX",
+        "006fe855: JZ 0x006fe87e"
+      ]
+    },
+    {
+      "address": "006fe86a",
+      "native": "00923810",
+      "containing_function": "006fe820",
+      "containing_name": "BSP_DummyKamikazePlane_InitAll",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006fe862: TEST AL,AL",
+        "006fe864: JNZ 0x006fe87e",
+        "006fe866: PUSH 0x1",
+        "006fe868: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006fe86f: MOV ESI,EAX",
+        "006fe871: PUSH 0x1"
+      ]
+    },
+    {
+      "address": "006fe875",
+      "native": "00923810",
+      "containing_function": "006fe820",
+      "containing_name": "BSP_DummyKamikazePlane_InitAll",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006fe86a: CALL 0x00923810",
+        "006fe86f: MOV ESI,EAX",
+        "006fe871: PUSH 0x1",
+        "006fe873: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006fe87a: TEST EAX,EAX",
+        "006fe87c: JNZ 0x006fe857"
+      ]
+    },
+    {
+      "address": "006fec2b",
+      "native": "00923810",
+      "containing_function": "006fec00",
+      "containing_name": "BSP_DummyKamikazePlane_TickSpawnKamikaze",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006fec20: PUSH EDI",
+        "006fec21: LEA EDI,[ESI + 0xfffffc1c]",
+        "006fec27: PUSH 0x1",
+        "006fec29: MOV ECX,EDI"
+      ],
+      "result_context": [
+        "006fec30: TEST EAX,EAX",
+        "006fec32: JNZ 0x006fecac"
+      ]
+    },
+    {
+      "address": "006fece1",
+      "native": "00923810",
+      "containing_function": "006fec00",
+      "containing_name": "BSP_DummyKamikazePlane_TickSpawnKamikaze",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006fecd0: CMP dword ptr [EAX + 0x1fe4],0x2",
+        "006fecd7: JZ 0x006feeec",
+        "006fecdd: PUSH 0x1",
+        "006fecdf: MOV ECX,EDI"
+      ],
+      "result_context": [
+        "006fece6: TEST EAX,EAX",
+        "006fece8: JNZ 0x006feeec"
+      ]
+    },
+    {
+      "address": "006ff745",
+      "native": "00923810",
+      "containing_function": "006ff730",
+      "containing_name": "BSP_DummySubmarine_InitAll",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006ff73a: MOV ECX,EDI",
+        "006ff73c: CALL 0x006e0b40",
+        "006ff741: PUSH 0x1",
+        "006ff743: MOV ECX,EDI"
+      ],
+      "result_context": [
+        "006ff74a: TEST EAX,EAX",
+        "006ff74c: JZ 0x006ff7b3"
+      ]
+    },
+    {
+      "address": "006ff753",
+      "native": "00923810",
+      "containing_function": "006ff730",
+      "containing_name": "BSP_DummySubmarine_InitAll",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006ff74c: JZ 0x006ff7b3",
+        "006ff74e: PUSH ESI",
+        "006ff74f: PUSH 0x1",
+        "006ff751: MOV ECX,EDI"
+      ],
+      "result_context": [
+        "006ff758: MOV ESI,EAX",
+        "006ff75a: PUSH 0x1"
+      ]
+    },
+    {
+      "address": "006ff75e",
+      "native": "00923810",
+      "containing_function": "006ff730",
+      "containing_name": "BSP_DummySubmarine_InitAll",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006ff753: CALL 0x00923810",
+        "006ff758: MOV ESI,EAX",
+        "006ff75a: PUSH 0x1",
+        "006ff75c: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006ff763: TEST EAX,EAX",
+        "006ff765: JZ 0x006ff78e"
+      ]
+    },
+    {
+      "address": "006ff77a",
+      "native": "00923810",
+      "containing_function": "006ff730",
+      "containing_name": "BSP_DummySubmarine_InitAll",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006ff772: TEST AL,AL",
+        "006ff774: JNZ 0x006ff78e",
+        "006ff776: PUSH 0x1",
+        "006ff778: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006ff77f: MOV ESI,EAX",
+        "006ff781: PUSH 0x1"
+      ]
+    },
+    {
+      "address": "006ff785",
+      "native": "00923810",
+      "containing_function": "006ff730",
+      "containing_name": "BSP_DummySubmarine_InitAll",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006ff77a: CALL 0x00923810",
+        "006ff77f: MOV ESI,EAX",
+        "006ff781: PUSH 0x1",
+        "006ff783: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "006ff78a: TEST EAX,EAX",
+        "006ff78c: JNZ 0x006ff767"
+      ]
+    },
+    {
+      "address": "006ffa6b",
+      "native": "00923810",
+      "containing_function": "006ffa40",
+      "containing_name": "BSP_DummySubmarine_FixedStepTick",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006ffa60: PUSH EDI",
+        "006ffa61: LEA EBP,[ESI + 0xfffffc1c]",
+        "006ffa67: PUSH 0x1",
+        "006ffa69: MOV ECX,EBP"
+      ],
+      "result_context": [
+        "006ffa70: TEST EAX,EAX",
+        "006ffa72: JNZ 0x006ffae5"
+      ]
+    },
+    {
+      "address": "006ffaf2",
+      "native": "00923810",
+      "containing_function": "006ffa40",
+      "containing_name": "BSP_DummySubmarine_FixedStepTick",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006ffae5: CMP dword ptr [ESI + 0xd0],0x0",
+        "006ffaec: JNZ 0x006ffb62",
+        "006ffaee: PUSH 0x1",
+        "006ffaf0: MOV ECX,EBP"
+      ],
+      "result_context": [
+        "006ffaf7: MOV EDI,EAX",
+        "006ffaf9: MOV EAX,dword ptr [EDI]"
+      ]
+    },
+    {
+      "address": "006ffb14",
+      "native": "00923810",
+      "containing_function": "006ffa40",
+      "containing_name": "BSP_DummySubmarine_FixedStepTick",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006ffb08: JMP 0x006ffb10",
+        "006ffb0a: LEA EBX,[EBX]",
+        "006ffb10: PUSH 0x1",
+        "006ffb12: MOV ECX,EDI"
+      ],
+      "result_context": [
+        "006ffb19: TEST EAX,EAX",
+        "006ffb1b: JZ 0x006ffb37"
+      ]
+    },
+    {
+      "address": "006ffb21",
+      "native": "00923810",
+      "containing_function": "006ffa40",
+      "containing_name": "BSP_DummySubmarine_FixedStepTick",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006ffb19: TEST EAX,EAX",
+        "006ffb1b: JZ 0x006ffb37",
+        "006ffb1d: PUSH 0x1",
+        "006ffb1f: MOV ECX,EDI"
+      ],
+      "result_context": [
+        "006ffb26: MOV EDI,EAX",
+        "006ffb28: MOV EAX,dword ptr [EDI]"
+      ]
+    },
+    {
+      "address": "006ffb97",
+      "native": "00923810",
+      "containing_function": "006ffa40",
+      "containing_name": "BSP_DummySubmarine_FixedStepTick",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "006ffb86: CMP dword ptr [ESI + 0xb8],0x0",
+        "006ffb8d: JNZ 0x006ffdd1",
+        "006ffb93: PUSH 0x1",
+        "006ffb95: MOV ECX,EBP"
+      ],
+      "result_context": [
+        "006ffb9c: TEST EAX,EAX",
+        "006ffb9e: JNZ 0x006ffdd1"
+      ]
+    },
+    {
+      "address": "00700535",
+      "native": "00923810",
+      "containing_function": "00700520",
+      "containing_name": "BSP_DummyTarget_Activate",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "0070052a: MOV ECX,EDI",
+        "0070052c: CALL 0x006e0b40",
+        "00700531: PUSH 0x1",
+        "00700533: MOV ECX,EDI"
+      ],
+      "result_context": [
+        "0070053a: TEST EAX,EAX",
+        "0070053c: JZ 0x00700585"
+      ]
+    },
+    {
+      "address": "00700543",
+      "native": "00923810",
+      "containing_function": "00700520",
+      "containing_name": "BSP_DummyTarget_Activate",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "0070053c: JZ 0x00700585",
+        "0070053e: PUSH ESI",
+        "0070053f: PUSH 0x1",
+        "00700541: MOV ECX,EDI"
+      ],
+      "result_context": [
+        "00700548: MOV ESI,EAX",
+        "0070054a: PUSH 0x1"
+      ]
+    },
+    {
+      "address": "0070054e",
+      "native": "00923810",
+      "containing_function": "00700520",
+      "containing_name": "BSP_DummyTarget_Activate",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "00700543: CALL 0x00923810",
+        "00700548: MOV ESI,EAX",
+        "0070054a: PUSH 0x1",
+        "0070054c: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "00700553: TEST EAX,EAX",
+        "00700555: JZ 0x0070057e"
+      ]
+    },
+    {
+      "address": "0070056a",
+      "native": "00923810",
+      "containing_function": "00700520",
+      "containing_name": "BSP_DummyTarget_Activate",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "00700562: TEST AL,AL",
+        "00700564: JNZ 0x0070057e",
+        "00700566: PUSH 0x1",
+        "00700568: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "0070056f: MOV ESI,EAX",
+        "00700571: PUSH 0x1"
+      ]
+    },
+    {
+      "address": "00700575",
+      "native": "00923810",
+      "containing_function": "00700520",
+      "containing_name": "BSP_DummyTarget_Activate",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "0070056a: CALL 0x00923810",
+        "0070056f: MOV ESI,EAX",
+        "00700571: PUSH 0x1",
+        "00700573: MOV ECX,ESI"
+      ],
+      "result_context": [
+        "0070057a: TEST EAX,EAX",
+        "0070057c: JNZ 0x00700557"
+      ]
+    },
+    {
+      "address": "00701495",
+      "native": "00923810",
+      "containing_function": "00701460",
+      "containing_name": "BSP_DummyTarget_FixedStepTick",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "0070148a: PUSH EDI",
+        "0070148b: JBE 0x007014ae",
+        "0070148d: PUSH 0x1",
+        "0070148f: LEA ECX,[ESI + 0xfffffc1c]"
+      ],
+      "result_context": [
+        "0070149a: TEST EAX,EAX",
+        "0070149c: JNZ 0x007014ae"
+      ]
+    },
+    {
+      "address": "0070152b",
+      "native": "00923810",
+      "containing_function": "00701460",
+      "containing_name": "BSP_DummyTarget_FixedStepTick",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "0070151b: JZ 0x0070169c",
+        "00701521: LEA EBP,[ESI + 0xfffffc1c]",
+        "00701527: PUSH 0x1",
+        "00701529: MOV ECX,EBP"
+      ],
+      "result_context": [
+        "00701530: TEST EAX,EAX",
+        "00701532: JNZ 0x0070169c"
+      ]
+    },
+    {
+      "address": "007f295c",
+      "native": "00923810",
+      "containing_function": "007f2920",
+      "containing_name": "BSP_PlaneSquadron_PlaceMembersOnStations",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "007f294c: FSTP float ptr [ESP + 0x18]",
+        "007f2950: MOV ECX,dword ptr [EBX + 0x3d0]",
+        "007f2956: MOV EDI,0x1",
+        "007f295b: PUSH EDI"
+      ],
+      "result_context": [
+        "007f2961: TEST EAX,EAX",
+        "007f2963: JNZ 0x007f2998"
+      ]
+    },
+    {
+      "address": "0079157f",
+      "native": "00923810",
+      "containing_function": "00791570",
+      "containing_name": "BSP_KeyframeEventNoParent_Check",
+      "operation": "ECX raw entity; one stacked level1; callee RET4/EAX pointer",
+      "input_context": [
+        "00791576: MOV ECX,dword ptr [ECX + 0x24]",
+        "00791579: TEST ECX,ECX",
+        "0079157b: JZ 0x0079158c",
+        "0079157d: PUSH 0x1"
+      ],
+      "result_context": [
+        "00791584: NEG EAX",
+        "00791586: SBB EAX,EAX"
+      ]
+    }
+  ],
+  "corrections": [
+    {
+      "was": "00923810 old pseudocode void return",
+      "is": "EAX rawparent pointer return",
+      "evidence": "entire33B body leaves currentparent inEAX/RET4; many live callers test/store/dereferenceEAX; old semantic API already returnedvoid* and is retained"
+    },
+    {
+      "was": "old entity_command_arms.hpp 4A indirectsite007ACA21",
+      "is": "actualsite007ACA23",
+      "evidence": "007ACA21 is MOV ECX,ESI;007ACA23 is FF D2; old module retained, new evidence appended"
+    },
+    {
+      "was": "historical pathcomment recorded only one read caller",
+      "is": "complete current census19directcalls",
+      "evidence": "whole live xrefs queried/caller contexts/containing bodies retained; no old record deletion"
+    }
+  ],
+  "validation": {
+    "strict_compile": "PASS MSVCx86/std:c++17/EHsc/MD/W4/WX/permissive-/fp:strict/O2;local/goal15h_entity_path/compile.cmd",
+    "byte_check": "PASS local/goal15h_entity_path/verify_bytes.py [optional registeredobj]:93+33=126completeCOFF/live/diskbytes exact; zero masks/normalization/relocations,includingfour actualindirectcalls/ALtests/tableloads/receiverreloads/LEAs/ancestor signedloop/8BFF/RETs",
+    "flow": "43path+13ancestor listedinstructions/zero gaps; typed flow/no-returnflags unavailable,not inferred from gaps; no repair",
+    "source_fixture": "PASS one ignored combined localSource callable-vtable fixture: repeatedcurrenttable mutation,rawECX/EDX/kind,deliberateECXclobber,AL0/highEAX andnoncanonicalALtrue,all four offsets/allfalse/null;validparentchain0/1/2/3/-1/INT_MIN andnullparent;exit0",
+    "fixture_path": "local/goal15h_entity_path/entity_path_probe.cpp",
+    "fixture_command": "local/goal15h_entity_path/run_probe.cmd;strict/MD,/link/MANIFEST:EMBED;actualtwoentryobject and real localSource predicates",
+    "fixture_scope": "Source localtable is explicit teststorage, not productioncallback/provider substitute or Nativefactory/vtable evidence; modularnearaddressspacewrap staticonly; no invalid memory/Native exception/SEH/gameplay test",
+    "peer_review": "primary entireSource and bothfullNativeassemblypages reviewed,no discrepancy",
+    "call_checker": "PASS88 directcallerrows/0 failures;markdown14addresses/5 associationclaims/0 failures/0 unchecked/0 warnings; indirecttarget addresses remain dynamic and are recorded separately",
+    "registered_build": "primaryownsCMake registration/fullWin32build/existingtests/registeredCOFF/archivefixture/prototypeannotations/save/export/mainintegration;pendingworkerclosure",
+    "limits": "exactstaticbytes and boundedSourcefixture do not establishNativevirtualdropin/factory/RTTI/SEH/exception/CRT/runtime differential/gameplay/wholeprocess proof"
+  },
+  "history": "append evidence to existing BSP_Entity_PathInterfaceForKind/BSP_EntityAncestor reviewednames and distinct completeSource functionrecords; retain NativeoldFUN_00923810 and all historical semantic APIs/records; no sharedCMake/registry/Ghidra worker mutation"
+}
