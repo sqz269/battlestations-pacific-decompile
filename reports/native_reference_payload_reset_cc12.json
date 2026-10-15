@@ -1,0 +1,202 @@
+{
+  "schema": "bsp.cc12.whole_reference_payload_reset_source.v1",
+  "packet": "cc12_reference_payload_reset_008f0380",
+  "Source_implemented": true,
+  "Source_admitted": false,
+  "Source_admission_credit": 0,
+  "new_Original_credit_candidate": [
+    "008F0380"
+  ],
+  "new_0600_Source": false,
+  "new_0310_0340_03F0_0640_credit": 0,
+  "files": [
+    "include/bsp/native_reference_payload_reset.hpp",
+    "src/native_reference_payload_reset.cpp",
+    "docs/NATIVE_REFERENCE_PAYLOAD_RESET_CC12.md",
+    "reports/native_reference_payload_reset_cc12.json"
+  ],
+  "working_HEAD_at_precompile": "1f3bc258e116cadc3601c94af230bed5045f4bfb",
+  "own_session_uuid": "01a141c0-29a9-76c3-a341-c05f4800eeb8",
+  "current_Source_phase_start_chunk": "ff543f",
+  "Original": {
+    "begin": "008F0380",
+    "end_exclusive": "008F03A2",
+    "bytes": 34,
+    "instructions": 12,
+    "sha256": "cebff76019d054f62e5664408c7f5094a557b977e8db9b049c0347fe3e260437",
+    "evidence": "Sealed whole live/disk readiness and primaryMainreadiness, preserved without new Ghidra queries/mutations."
+  },
+  "descriptive_name_is_hypothesis": true,
+  "physical_interface": "void __fastcall reset_native_reference_payload_008f0380(void* actual_payload_ecx) noexcept; unusedEDX; no stackarguments; ESI preserved; plainRET.",
+  "schedule": [
+    "Capture oldDWORD+4 intoEAX; TEST; null skipsfreeandpointerstore.",
+    "Nonnull actualcanonicalfree(old); ADDESP4; onlyafterreturn storeDWORD+4zero.",
+    "Both store fullDWORDscalar+0zero, restoreESI/plainRET. Scalar not read; no rootfree/phase/tag/kind/virtualdispatch/otherrecordstore."
+  ],
+  "write_footprint": {
+    "null": "4 distinct bytes+0; +4 notstored.",
+    "nonnull": "8 distinct bytes, +4afterfree then+0."
+  },
+  "direct_provider": "singleton_lifetime_free(void*) noexcept -> std::free(currentheap); Original CALL00BF6989 JMP00BF65AC.",
+  "actual_current_payload_provenance": [
+    "accepted physical duplicate00438E40",
+    "replace_native_reference_payload_008f0310",
+    "copy_native_reference_payload_008f0340"
+  ],
+  "domain": "Genuine live raw8 reference payload; scalar+0 fullopaqueDWORD, ownedpointer+4 null or sole-owned actual same-current-heap duplicate from acceptedphysicalduplicate/0310/0340 provenance. Payload/ownedallocation/activeframe disjoint; live storage through finalstores; normal successful free; no alias,reentry,concurrentmutation,fault,invalidmemory,overflow.",
+  "not_interchangeable_with_array_header": "03F0 pointer+0/size+4 is reversed and is not substituted.",
+  "ABI_qualification": "Literal ECX input/unusedEDX/no stackargs/ESIsave/plainRET and30bytes statically retained. Void Source makes no EAX result promise. Ordinary currentfree residuals/normal nonvolatiles only; no full Original ABI/register/flags/FP/privateCRT/EH/failure-unwind claim.",
+  "residual_qualification": "Null EAX0/ECXpayload/EDXincoming and TEST0 flags exceptundefinedAF follow retained instructions; nonnull provider residuals and ADDESP4 arithmetic flags. No broader API EAX/flags/FP/privateCRT/EH promise.",
+  "strict_compile": {
+    "runs_in_current_packet": 1,
+    "exit_code": 0,
+    "tool_chunk": "086bfe",
+    "options": "/nologo /Bv /std:c++17 /MD /O2 /Ob2 /Oy- /W4 /WX /EHsc /Gy /GL- /fp:strict /c /sourceDependencies",
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeReferencePayloadResetSource01\\native_reference_payload_reset.obj",
+      "bytes": 1228,
+      "sha256": "34e3039b34038270373f5cb7b96a664d2a80c02fa9abf58b1a583209b6db13c1"
+    },
+    "prospective_Source_includes": 119,
+    "actual_declared_Source_includes": 81,
+    "unexpected_inputs": [],
+    "current_readiness_inputs": 34,
+    "tools": 64,
+    "both_MSVC_clui_before_compile": true,
+    "all_actual_inputs_have_own_precompile_hash_and_frozen_copy": true
+  },
+  "complete_COFF": {
+    "bytes": 1228,
+    "sections": 5,
+    "symbol_indices_including_auxiliary": 15,
+    "code_sections": 1,
+    "code_bytes": 34,
+    "instructions": 12,
+    "code_relocations": 1,
+    "noncode_relocations": 0,
+    "every_file_byte_header_primary_aux_symbol_and_string_table_reviewed": true,
+    "all30_nonCALL_operand_bytes_match_Original": true,
+    "only_CALL_operand_rebinding": {
+      "range": "[12,16)",
+      "provider": "singleton_lifetime_free"
+    },
+    "compiler_metadata": {
+      "drectve": "   /FAILIFMISMATCH:\"_MSC_VER=1900\" /FAILIFMISMATCH:\"_ITERATOR_DEBUG_LEVEL=0\" /FAILIFMISMATCH:\"RuntimeLibrary=MD_DynamicRelease\" /DEFAULTLIB:\"msvcprt\" /FAILIFMISMATCH:\"_CRT_STDIO_ISO_WIDE_SPECIFIERS=0\" /alternatename:__Avx2WmemEnabled=__Avx2WmemEnabledWeakValue /DEFAULTLIB:\"MSVCRT\" /DEFAULTLIB:\"OLDNAMES\" ",
+      "debugS": "224B CodeView object pathname/compiler identity, no relocations.",
+      "bss": "4B __Avx2WmemEnabledWeakValue zero-fill from include closure; unreferenced by reset.",
+      "chks64": "40B compiler checksum records, fully retained in binary audit, no relocations.",
+      "no_other_code_TLS_initializers_thunks_or_unwind_sections": true
+    }
+  },
+  "normal_existing_build": {
+    "runs_in_current_packet": 1,
+    "initial_chunk": "70fcd9",
+    "original_session": 13724,
+    "natural_terminal_chunk": "e9fdb5",
+    "exit_code": 0,
+    "new_TU_registered": false,
+    "existing_checks": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "checks_passed": "2/2",
+    "ctest_seconds": 7.3,
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeReferencePayloadResetSource01\\normal_build.log",
+      "bytes": 3965,
+      "sha256": "6b38e8742edf24bb9ee5e003ee9111e628900539b354c968dfa6fc5014010fc3"
+    }
+  },
+  "evidence_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeReferencePayloadResetSource01",
+  "sealed_readiness_root": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\ScenePropertyPayloadResetReadiness01\\family_receipt.DATA.json",
+    "bytes": 36885,
+    "sha256": "fb91cf6759ab0654fd2af0610760de266580d60ad7393a9b21006ea38e866259"
+  },
+  "all135_readiness_files_verified_and_copied": true,
+  "inherited_readiness_qualifications": {
+    "configuration_EOL": {
+      "working": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\config\\target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "Main": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\config\\target.json",
+        "bytes": 467,
+        "sha256": "83b26a388b77d3b817eafd6005f72a0d9b4137efc62ac8cbe17963ac18589533"
+      },
+      "LF_normalized_equal": true,
+      "JSON_equal": true
+    },
+    "index_and_caller": "Readiness index was stale and missed actualcallsite008F5348; live typed metadata assigned that site no containing function. No wider caller/clone closure or new listing repair is inferred.",
+    "global_analysis": "Readiness target live/disk bytes/bodies stable across modifications2078to2090, despite unrelated external analysis. No global quiescence/current snapshot claim."
+  },
+  "evidence": {
+    "precompile_inputs.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeReferencePayloadResetSource01\\precompile_inputs.json",
+      "bytes": 134308,
+      "sha256": "86c25e3f646b870b65bdd1f7d6600f166676ba93de2f28e6a6a43b9c0f45e3e7"
+    },
+    "compiler_declared_inputs.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeReferencePayloadResetSource01\\compiler_declared_inputs.json",
+      "bytes": 69709,
+      "sha256": "d70e39fc96225711cca1dc980cf43c667ff3563286f83e1acd731e42571bb7ea"
+    },
+    "frozen_readiness_copy.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeReferencePayloadResetSource01\\frozen_readiness_copy.json",
+      "bytes": 95254,
+      "sha256": "7201878a20b67f113fe95094cdd70b70ae680b3680f9537b87179a611cdfb1cd"
+    },
+    "complete_COFF.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeReferencePayloadResetSource01\\complete_COFF.json",
+      "bytes": 11462,
+      "sha256": "c19eb622498b26338c4d60788a9e8d8c48235ce5324d10cf491f94c576d127f1"
+    },
+    "complete_COFF_binary_audit.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeReferencePayloadResetSource01\\complete_COFF_binary_audit.json",
+      "bytes": 8498,
+      "sha256": "86464122e284ba11c3f8f936ffca06675b4c2cd4fcad0dbc1f803918d845801e"
+    },
+    "complete_COFF_dumpbin.txt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeReferencePayloadResetSource01\\complete_COFF_dumpbin.txt",
+      "bytes": 8136,
+      "sha256": "6281009bcf1abdeaa373708660a31c6635b2b2feddfdd0707e1cd7a7fba4a820"
+    },
+    "dumpbin_receipt.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeReferencePayloadResetSource01\\dumpbin_receipt.json",
+      "bytes": 11577,
+      "sha256": "5f8d46cbdeb54e1b038573678bfb910717568e58b333ed7c6f5a69dae1b7083a"
+    },
+    "complete_strict_review.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeReferencePayloadResetSource01\\complete_strict_review.json",
+      "bytes": 13624,
+      "sha256": "c6f38d67943f14e10795616bf5c0d0ad2c7156cd248cbb603eae9785eb99ae75"
+    },
+    "original_tool_receipts.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeReferencePayloadResetSource01\\original_tool_receipts.json",
+      "bytes": 2328,
+      "sha256": "51d5b7f1f120da9d1e86af7d11b2dab926d87583f57f862437713b7f5a80baa4"
+    },
+    "original_tool_provenance.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeReferencePayloadResetSource01\\original_tool_provenance.json",
+      "bytes": 11992,
+      "sha256": "3c8839dc31abca5dbcca323936a5ad965f5189d2f5596c52127cdf612cb130bb"
+    },
+    "final_input_audit.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeReferencePayloadResetSource01\\final_input_audit.json",
+      "bytes": 145064,
+      "sha256": "f60026eef08cc087931f72bc4b9221000a0899ee2779d7c3b73160979a891d0c"
+    }
+  },
+  "no_shared_CMake_registry_ledger_Ghidra_mutations": true,
+  "new_tests_or_probes": 0,
+  "compile_or_build_replay_restart": false,
+  "selected_entry_executed": false,
+  "Native_differential_executed": false,
+  "Original_ABI_compatible": false,
+  "Original_private_CRT_EH_compatible": false,
+  "runtime_startup_game_validated": false,
+  "full_caller_class_or_vtable_claim": false,
+  "scope_qualification": "Current0380 Source phase only; own genuine complete session prefix includes earlier independently authorized setter Source and readiness tasks. Only exact current packet compile/build tool objects are credited here."
+}

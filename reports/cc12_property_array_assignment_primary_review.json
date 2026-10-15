@@ -1,0 +1,72 @@
+{
+  "schema": "bsp.property_array_assignment_primary_review.v1",
+  "status": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
+  "Source_commit": "4464fe669c2bc229aaac7e134d61eb1a4931e927",
+  "Source": "src/native_scene_property_array_assignment.cpp",
+  "header": "include/bsp/native_scene_property_array_assignment.hpp",
+  "documentation": "docs/NATIVE_SCENE_PROPERTY_ARRAY_ASSIGNMENT_CC12.md",
+  "functions": [
+    "reassign_native_scene_property_raw_bytes_008f0460",
+    "reassign_native_scene_property_four_byte_groups_008f04c0",
+    "reassign_native_scene_property_four_byte_groups_008f0520",
+    "reassign_native_scene_property_twelve_byte_groups_008f0580"
+  ],
+  "primary_whole_Source_header_doc_Original_contract_read": true,
+  "primary_author_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_array_assignment_integration_20261015\\primary_author_inputs.DATA.json",
+    "bytes": 207118,
+    "sha256": "6f3682910f2a675332fa3f76778ecc022bb234fdaef49df6498b61b6ebc8c30a"
+  },
+  "primary_peer_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_array_assignment_integration_20261015\\primary_peer_inputs.DATA.json",
+    "bytes": 17587,
+    "sha256": "82b7eb515265df39e3f82b6acc0aaaca3d19d88aa0c20bd964bedac305c25049"
+  },
+  "primary_strict_byte_comparison": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_array_assignment_integration_20261015\\primary_strict_review.DATA.json",
+    "bytes": 5157,
+    "sha256": "6185eac1adf47af5adcc11cc0ec217e6b10e72562dd9ec5cb376393645acac5c"
+  },
+  "independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\ScenePropertyArrayAssignmentIndependentReview01\\independent_verdict.json",
+    "bytes": 2667,
+    "sha256": "dc0fef51637d584a1469b2bd6361f55044c4369ee982637998d8dab510d2a8fe"
+  },
+  "contract": [
+    "Four whole Original entries: 008F0460 [0460,04B6),86B/33 instructions; 008F04C0 [04C0,051A),90B/35; 008F0520 [0520,057A),90B/35; 008F0580 [0580,05DD),93B/36. New MSVC Win32 naked fastcall entries use ECX actual raw56 record, unused EDX, three stack DWORDs, EAX record and RET0C. All311 non-CALL operand bytes are literal; twelve CALL operands rebind48 bytes to current providers.",
+    "Only pointer+20 and full byte-size DWORD+24 change, eight distinct record bytes. Optional old pointer free returns before its clear. Typed counts compute size before free; raw0460 reads bytes after free. Every low flag BYTE comparison precedes size store and branch. Copy allocates exact positive bytes, loads input after allocation and stores pointer before genuine memcpy; no-copy stores the supplied full pointer. All256 low-byte flag patterns and ignored high24 bits are preserved.",
+    "Require complete actual accepted type8/9/10/11 raw producer provenance. Old child is null or uniquely owned matching-current-heap allocation; copied input is stable and disjoint. No-copy input is a genuine unique matching-current-heap allocation whose sole retirement responsibility transfers at the pointer store. A borrowed pointer or marker+2C does not establish ownership: accepted03F0/0640 frees every nonnull child irrespective of that marker.",
+    "Only positive nonwrapping allocatable ranges: stride4 count1..3FFFFFFFh; stride12 count1..15555555h. Genuine canonical free/allocator and real current memcpy, valid flat ES, DF clear, successful returning providers and same real bag/process/pool/generation contracts if composed. Exclude zero size, failure, exceptions, alias, reentry, concurrency, trim and teardown. No new tag/phase/owner/default/context/lookup/startup/rollback action.",
+    "All81 actual strict compiler inputs were freshly observed before compilation among151 candidates. All67 tools including both clui DLLs and28 current providers remained unchanged. One strict compile and one normal existing worker build passed; that worker TU was unregistered and native differential seeds absent. No hermetic environment, Original private CRT/EH, full class/calling ABI, caller/parser/startup/runtime/game claim. The58B current allocator adapter and compiler GS machinery receive no native reconstruction credit."
+  ],
+  "strict": {
+    "initial_chunk": "c27d01",
+    "exit_code": 0,
+    "object_bytes": 2702,
+    "object_sha256": "a3230b09f46bf3671db1407c51c0e56cf851f9f6a102d749899ab05756490c6d",
+    "code_sections": 5,
+    "code_bytes": 417,
+    "instructions": 159,
+    "code_relocations": 15,
+    "metadata_relocations": 0,
+    "native_bytes": 359,
+    "native_instructions": 139,
+    "literal_native_bytes": 311
+  },
+  "author_normal": {
+    "initial_chunk": "958948",
+    "session": 47952,
+    "terminal_chunk": "21400a",
+    "exit_code": 0,
+    "configured_tests": 2,
+    "new_TU_registered": false
+  },
+  "Main_registered": true,
+  "Main_build": "pass",
+  "Original_ABI_compatible": false,
+  "Original_EH_or_private_CRT_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false,
+  "Main_validation": "reports/cc12_property_array_assignment_Main_validation.json",
+  "actual_compiler_archive_gate": "pass"
+}
