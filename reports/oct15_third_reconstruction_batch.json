@@ -1,0 +1,213 @@
+{
+  "packet": "oct15_third_reconstruction_batch",
+  "status": "integrated_source_build_checked_annotated",
+  "base_main": "525b8a1f8",
+  "workers": [
+    {
+      "agent": "/root/avoid_tangent",
+      "packet": "oct15_layer_sampling",
+      "branch": "agent/oct15_avoid_tangent",
+      "addresses": [
+        "00417fa0",
+        "0041bae0"
+      ],
+      "report": "reports/oct15_layer_sampling.json",
+      "status": "integrated_reviewed_build_checked",
+      "source_commit": "5d71846c5"
+    },
+    {
+      "agent": "/root/avoid_distance",
+      "packet": "oct15_avoid_owner_and_intersection",
+      "branch": "agent/oct15_avoid_distance",
+      "addresses": [
+        "0041c490",
+        "0041a4e0"
+      ],
+      "report": "reports/oct15_avoid_owner_and_intersection.json",
+      "source_commit": "44f8b2302",
+      "status": "integrated_reviewed_build_checked"
+    },
+    {
+      "agent": "/root/lua_cache_tree",
+      "packet": "oct15_string_vector_operations",
+      "branch": "agent/oct15_movie_factory",
+      "addresses": [
+        "00b6c670",
+        "00506c80",
+        "00432360"
+      ],
+      "report": "reports/oct15_string_vector_operations.json",
+      "status": "integrated_reviewed_build_checked",
+      "source_commit": "2075a75d8"
+    }
+  ],
+  "validation": {
+    "world_to_cell_original_probe": {
+      "function": "00417fa0",
+      "saved_full_body_matches_disk": true,
+      "code_length": 159,
+      "relocation": "Only double2.0 absolute data operand; identical original constant bytes",
+      "source_library": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/build/win32/Release/bsp_core.lib",
+      "result": {
+        "scope": "paired full WorldToCell body; relocated double2.0 operand; output bits and returned pointer only; masked default x87/MXCSR",
+        "cases": [
+          {
+            "name": "finite_arithmetic",
+            "original": [
+              "41d7ffff",
+              "41cfffff"
+            ],
+            "source": [
+              "41d7ffff",
+              "41cfffff"
+            ],
+            "bits_match": true,
+            "return_identity": true
+          },
+          {
+            "name": "lower_and_upper_clamps",
+            "original": [
+              "00000000",
+              "41600000"
+            ],
+            "source": [
+              "00000000",
+              "41600000"
+            ],
+            "bits_match": true,
+            "return_identity": true
+          },
+          {
+            "name": "unordered_payloads",
+            "original": [
+              "7fc12345",
+              "ffc54321"
+            ],
+            "source": [
+              "7fc12345",
+              "ffc54321"
+            ],
+            "bits_match": true,
+            "return_identity": true
+          },
+          {
+            "name": "signed_zero",
+            "original": [
+              "80000000",
+              "80000000"
+            ],
+            "source": [
+              "80000000",
+              "80000000"
+            ],
+            "bits_match": true,
+            "return_identity": true
+          }
+        ],
+        "failures": 0
+      },
+      "driver": "J:/PROG/battlestations-pacific-decompile/local/oct15_layer_sampling_probe/probe.cpp",
+      "input": "J:/PROG/battlestations-pacific-decompile/local/oct15_layer_sampling_probe/original_input.json",
+      "manifest": "Built with /link /MANIFEST:EMBED",
+      "scope_limit": "Four WorldToCell inputs, output binary32 words and returned pointer identity under default masked x87/MXCSR only. Not FP status/traps, full ABI, normal/adapter, production wiring or gameplay proof.",
+      "source_commit": "4eb46bd3a"
+    },
+    "win32_release": {
+      "passed": true,
+      "source_commit": "4eb46bd3a",
+      "log": "local/oct15_third_batch_final_build.log",
+      "existing_suites": {
+        "reconstructed_math": "passed",
+        "native_math_differential": "passed_seed_routines_only",
+        "tool_tests": "passed"
+      },
+      "ctest_total_seconds": 7.21
+    },
+    "call_site_claims": {
+      "passed": 28,
+      "failed": 0,
+      "unchecked": 0,
+      "by_report": {
+        "oct15_layer_sampling": 1,
+        "oct15_avoid_owner_and_intersection": 4,
+        "oct15_string_vector_operations": 23
+      },
+      "qualification": "Includes assignment dependency-readiness claims; not 28 direct calls in six implemented bodies, and not all 21 assignment callers reviewed."
+    },
+    "cell_height_original_probe": {
+      "function": "0041bae0",
+      "source_commit": "4eb46bd3a",
+      "saved_full_body_matches_disk": true,
+      "code_length": 105,
+      "result": {
+        "dimension": 1073741824,
+        "x": 4,
+        "z": 4,
+        "span": 8,
+        "wrapped_index": 4,
+        "original": "40880000",
+        "source": "40880000",
+        "bits_match": true,
+        "invalid_sentinel_reached": false
+      },
+      "relocation": "Only unused invalid-parameter CALL target replaced by fail-fast sentinel; sentinel not reached. Full remaining body unchanged.",
+      "driver": "J:/PROG/battlestations-pacific-decompile/local/oct15_layer_sampling_probe/probe.cpp",
+      "input": "J:/PROG/battlestations-pacific-decompile/local/oct15_layer_sampling_probe/original_input.json",
+      "manifest": "Built with /link /MANIFEST:EMBED",
+      "scope_limit": "One raw-layout valid-span wrapped-row case. Raw dimension intentionally exceeds semantic adapter admission. No invalid-handler identity/return/repair, adapter, FP status/traps, full ABI or gameplay proof."
+    }
+  },
+  "primary_reviews": [
+    "Reviewed complete Source and native listings for owner destruction and register-ABI intersection; checked ownership/free/write order and output alias/representation behavior.",
+    "Reviewed WorldToCell and CellHeight native x87/comparison/wrapped-index kernels and qualified concrete producer adapter; executed focused original-byte comparisons against integrated library.",
+    "Reviewed actual-storage string equality/destruction dispatch and five-path assignment readiness; no Source body or completion ledger added for00506c80."
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "source_integration_commit": "71872abc3cb19c10f1abe988f08386622c4b2cd6",
+  "final_tested_main": "4eb46bd3a",
+  "implemented_functions": [
+    "00417fa0",
+    "0041bae0",
+    "0041a4e0",
+    "0041c490",
+    "00b6c670",
+    "00432360"
+  ],
+  "unclosed_assignment": {
+    "address": "00506c80",
+    "implemented": false,
+    "report": "reports/oct15_string_vector_operations.json",
+    "remaining": [
+      "0048F400/0048DA50 actual raw-pool assign",
+      "00498FF0/004954F0 clear/erase actual binding",
+      "00505AD0/0044D0C0 uninitialized copy and original EH cleanup",
+      "00432090/0042BF40 allocator and00431F70 length-error throw wrappers"
+    ],
+    "qualification": "Named or partial storage fragments do not establish complete native services. Original FH3/double-exception behavior remains qualified."
+  },
+  "ghidra": {
+    "saved": true,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "prior_annotations": "local/ghidra-annotations-20261015T172600Z.json",
+    "additional_cell_evidence": "local/ghidra-annotations-20261015T173218Z.json",
+    "force_snapshot_completed": true,
+    "force_refreshed_exports": [
+      "00417fa0",
+      "0041bae0",
+      "0041a4e0",
+      "0041c490",
+      "00b6c670",
+      "00432360",
+      "00506c80"
+    ],
+    "preserved_existing_comments": true
+  },
+  "limits": [
+    "Source interfaces are not drop-in original ABI replacements.",
+    "Seed native differential suite does not validate all new functions.",
+    "Original-byte probe is bounded evidence for WorldToCell and CellHeight only.",
+    "Original game installation was not modified."
+  ]
+}
