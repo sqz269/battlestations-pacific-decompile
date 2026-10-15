@@ -39636,6 +39636,452 @@
       "game_validated": false,
       "actual_compiler_archive_gate": "pass",
       "Main_validation": "reports/cc12_typed_array_vector_providers_Main_validation.json"
+    },
+    {
+      "id": "goal_oct15_native_string_allocate",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Main_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0041cb50"
+      ],
+      "output_files": [
+        "docs/GOAL_OCT15_NATIVE_STRING_ALLOCATE.md",
+        "include/bsp/native_string_allocate_storage.hpp",
+        "reports/goal_oct15_native_string_allocate.json",
+        "src/native_string_allocate_storage.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_native_string_allocate.json",
+      "primary_review": "reports/goal_oct15_primary_review.json",
+      "code_revision": "e5618384f",
+      "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_native_string_copy",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Main_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00444070",
+        "004440c0"
+      ],
+      "output_files": [
+        "docs/GOAL_OCT15_NATIVE_STRING_COPY.md",
+        "include/bsp/native_string_copy_construct.hpp",
+        "reports/goal_oct15_native_string_copy.json",
+        "src/native_string_copy_construct.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_native_string_copy.json",
+      "primary_review": "reports/goal_oct15_primary_review.json",
+      "code_revision": "e5618384f",
+      "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_native_string_erase",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Main_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0043ea00"
+      ],
+      "output_files": [
+        "docs/GOAL_OCT15_NATIVE_STRING_ERASE.md",
+        "include/bsp/native_string_vector_erase_unordered.hpp",
+        "reports/goal_oct15_native_string_erase.json",
+        "src/native_string_vector_erase_unordered.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_native_string_erase.json",
+      "primary_review": "reports/goal_oct15_primary_review.json",
+      "code_revision": "e5618384f",
+      "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_clear",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Main_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0046b460",
+        "0046b680"
+      ],
+      "output_files": [
+        "docs/GOAL_OCT15_SCENE_MAP_CLEAR.md",
+        "include/bsp/native_scene_record_map_clear.hpp",
+        "reports/goal_oct15_scene_map_clear.json",
+        "src/native_scene_record_map_clear.cpp"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_map_increment",
+        "goal_oct15_scene_map_subtree_destroy"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_clear.json",
+      "primary_review": "reports/goal_oct15_scene_map_cleanup_primary_review.json",
+      "code_revision": "e5618384f",
+      "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_head",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Main_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00468260",
+        "00468e70"
+      ],
+      "output_files": [
+        "docs/GOAL_OCT15_SCENE_MAP_HEAD.md",
+        "include/bsp/native_scene_record_map_head.hpp",
+        "reports/goal_oct15_scene_map_head.json",
+        "src/native_scene_record_map_head.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_head.json",
+      "primary_review": "reports/goal_oct15_scene_map_cleanup_primary_review.json",
+      "code_revision": "e5618384f",
+      "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_increment",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Main_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00467980",
+        "004681f0",
+        "004688d0"
+      ],
+      "output_files": [
+        "docs/GOAL_OCT15_SCENE_MAP_INCREMENT.md",
+        "include/bsp/native_scene_record_map_increment.hpp",
+        "reports/goal_oct15_scene_map_increment.json",
+        "src/native_scene_record_map_increment.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_increment.json",
+      "primary_review": "reports/goal_oct15_scene_map_cleanup_primary_review.json",
+      "code_revision": "e5618384f",
+      "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_insert",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Main_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0046ad70",
+        "0046b340",
+        "00c61cb0"
+      ],
+      "output_files": [
+        "docs/GOAL_OCT15_SCENE_MAP_INSERT.md",
+        "include/bsp/native_scene_record_map_insert.hpp",
+        "reports/goal_oct15_scene_map_insert.json",
+        "src/native_scene_record_map_insert.cpp"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_map_node_allocate",
+        "goal_oct15_scene_map_rotations",
+        "goal_oct15_scene_map_iterator"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_insert.json",
+      "primary_review": "reports/goal_oct15_scene_map_insertion_primary_review.json",
+      "code_revision": "e5618384f",
+      "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_iterator",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Main_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "004678f0",
+        "00468200",
+        "004688e0"
+      ],
+      "output_files": [
+        "docs/GOAL_OCT15_SCENE_MAP_ITERATOR.md",
+        "include/bsp/native_scene_record_map_iterator.hpp",
+        "reports/goal_oct15_scene_map_iterator.json",
+        "src/native_scene_record_map_iterator.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_iterator.json",
+      "primary_review": "reports/goal_oct15_scene_map_primary_review.json",
+      "code_revision": "e5618384f",
+      "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_lookup",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Main_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00468140",
+        "00468cd0"
+      ],
+      "output_files": [
+        "docs/GOAL_OCT15_SCENE_MAP_LOOKUP.md",
+        "include/bsp/native_scene_record_map_lookup.hpp",
+        "reports/goal_oct15_scene_map_lookup.json",
+        "src/native_scene_record_map_lookup.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_lookup.json",
+      "primary_review": "reports/goal_oct15_scene_map_primary_review.json",
+      "code_revision": "e5618384f",
+      "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_node_allocate",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Main_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "0046a340",
+        "0046a3b2",
+        "00c61c30"
+      ],
+      "output_files": [
+        "docs/GOAL_OCT15_SCENE_MAP_NODE_ALLOCATE.md",
+        "include/bsp/native_scene_record_map_node_allocate.hpp",
+        "reports/goal_oct15_scene_map_node_allocate.json",
+        "src/native_scene_record_map_node_allocate.cpp"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_map_node_leaves"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_node_allocate.json",
+      "primary_review": "reports/goal_oct15_scene_map_insertion_primary_review.json",
+      "code_revision": "e5618384f",
+      "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_node_leaves",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Main_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00469f50",
+        "00468b30"
+      ],
+      "output_files": [
+        "docs/GOAL_OCT15_SCENE_MAP_NODE_LEAVES.md",
+        "include/bsp/native_scene_record_map_node_leaves.hpp",
+        "reports/goal_oct15_scene_map_node_leaves.json",
+        "src/native_scene_record_map_node_leaves.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_node_leaves.json",
+      "primary_review": "reports/goal_oct15_scene_map_insertion_primary_review.json",
+      "code_revision": "e5618384f",
+      "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_pair",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Main_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00469980",
+        "00469a20",
+        "00469fc0",
+        "00c61be0",
+        "00c61be8"
+      ],
+      "output_files": [
+        "docs/GOAL_OCT15_SCENE_MAP_PAIR.md",
+        "include/bsp/native_scene_record_map_pair.hpp",
+        "reports/goal_oct15_scene_map_pair.json",
+        "src/native_scene_record_map_pair.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_pair.json",
+      "primary_review": "reports/goal_oct15_scene_map_primary_review.json",
+      "code_revision": "e5618384f",
+      "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_rotations",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Main_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00467620",
+        "00467670"
+      ],
+      "output_files": [
+        "docs/GOAL_OCT15_SCENE_MAP_ROTATIONS.md",
+        "include/bsp/native_scene_record_map_rotations.hpp",
+        "reports/goal_oct15_scene_map_rotations.json",
+        "src/native_scene_record_map_rotations.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_rotations.json",
+      "primary_review": "reports/goal_oct15_scene_map_insertion_primary_review.json",
+      "code_revision": "e5618384f",
+      "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_subtree_destroy",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Main_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0046ad10"
+      ],
+      "output_files": [
+        "docs/GOAL_OCT15_SCENE_MAP_SUBTREE_DESTROY.md",
+        "include/bsp/native_scene_record_map_subtree_destroy.hpp",
+        "reports/goal_oct15_scene_map_subtree_destroy.json",
+        "src/native_scene_record_map_subtree_destroy.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_subtree_destroy.json",
+      "primary_review": "reports/goal_oct15_scene_map_cleanup_primary_review.json",
+      "code_revision": "e5618384f",
+      "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_string_ordering",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Main_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00443cb0",
+        "0076eaa0"
+      ],
+      "output_files": [
+        "docs/GOAL_OCT15_STRING_ORDERING.md",
+        "include/bsp/native_string_ordering_wrappers.hpp",
+        "reports/goal_oct15_string_ordering.json",
+        "src/native_string_ordering_wrappers.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_string_ordering.json",
+      "primary_review": "reports/goal_oct15_primary_review.json",
+      "code_revision": "e5618384f",
+      "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_vfs_remove_content",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Main_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00bdd020"
+      ],
+      "output_files": [
+        "docs/GOAL_OCT15_VFS_REMOVE_CONTENT.md",
+        "include/bsp/native_vfs_remove_content.hpp",
+        "reports/goal_oct15_vfs_remove_content.json",
+        "src/native_vfs_remove_content.cpp"
+      ],
+      "depends_on": [
+        "goal_oct15_native_string_erase"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_vfs_remove_content.json",
+      "primary_review": "reports/goal_oct15_primary_review.json",
+      "code_revision": "e5618384f",
+      "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
