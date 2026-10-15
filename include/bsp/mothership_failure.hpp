@@ -32,7 +32,9 @@ namespace bsp {
 
 // False: the two names are counted as "other" on a carrier, and no failure
 // ever closes a carrier's launch gates, as before.
-inline constexpr bool kCarrierRunwayFailureBound = false;
+// ON by mechanism (OCEAN_WAVE_FIELD 36): ESMP03 Zuiho's SetFailure lands on
+// its deck (arm 10); ESMP03, USN04 and ESMP08 pairs are gameplay-identical.
+inline constexpr bool kCarrierRunwayFailureBound = true;
 
 // IsKindOf(09h), MMothership.
 inline constexpr int kMothershipKindOfClassId = 0x09;

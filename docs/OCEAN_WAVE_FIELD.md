@@ -1312,3 +1312,18 @@ sinking, Zuiho at 03_south_pacific:1246/1400): the carrier's later launches are 
 (006BF620 / 006CD810 paths). Any row in which a carrier takes a runway/hangar section hit moves too: a 20 s launch
 blackout per section failure. ESMP08 and USN04 stay gameplay-identical unless their logs show `component failure
 RunwayFailure|HangarFailure` lines on a carrier.
+
+**Pair (commit 9a51e05d8; exports `local\p11_off` / `local\p11_crf`; reference env, 0.05 s, no orders unless named;
+logs `local\p11off_<row>.log` / `local\p11on_<row>.log` with manifests).**
+
+| Row | Frames | Verdict | Note |
+|---|---|---|---|
+| ESMP03 | 60000 | 1, gameplay identical | `SetFailure "RunwayFailure" on "Zuiho" arm=0` -> `mothership 00758750 72h runway on deck=yes`, arm=10. Zuiho never launches in a no-order run (`base launch site Zuiho: sets=0`), so nothing moves. |
+| USN04 | 45000 | 1, gameplay identical | control |
+| ESMP08 `l61_e8_f` | 140000 | 0, identical | control; no runway/hangar section failure |
+| BSM09 | 60000 | not run | the host cannot start BSM09: `startup failed: unit observer creator projection is unavailable: unit=NEW_Cloud 01` (StationaryClass row with no Type). Not this packet's gap. |
+
+The section path is never reached in these rows: carriers do take component failures (ESMP08: Zuikaku 4, Zuiho 3,
+Chitose, Chiyoda in `cc9-lua52\local\l61rt_e8_j3.log`), but none on a `runway`/`hangar` section (27 such sections in
+this installation's vehicleclasses.lua). Whether hits ever resolve to kind 11 (runway) is open.
+**Flipped ON by mechanism.**
