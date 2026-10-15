@@ -72,6 +72,7 @@
 #include "bsp/submarine_model.hpp"
 #include "bsp/unit_kind_query.hpp"
 #include "bsp/air_operations.hpp"
+#include "bsp/mothership_failure.hpp"
 #include "bsp/unit_damage.hpp"
 #include "bsp/unit_hit_path.hpp"
 #include "bsp/unit_weapons.hpp"
@@ -1137,6 +1138,21 @@ constexpr bool kMeshlessGunPointWindowBound = true;   // ON: GUNNERY_OPEN_ITEMS 
 //    (the two range gates) and the 0.2 s think timer stay unmodelled as before.
 //    docs/GUNNERY_OPEN_ITEMS.md 161.
 constexpr bool kTorpedoBotReadyGateBound = true;   // ON: GUNNERY_OPEN_ITEMS 161.4
+//  * kTorpedoBotCanFireReloadBound: packet g47_torpedo_canfire (GUNNERY 260,
+//    docs/CC13_AUDIT_CC9_RECENT_2.md section 2 note (a)). 0090042F's
+//    vtable[1D0h](1) is the whole 0085A830 CanFire with the reload check:
+//    gun+490h, the window at the current angles, then 00729A80(1), which
+//    refuses while the barrel delay (+450h), the stagger (+478h), the unit's
+//    torpedo cooldown (+6FCh) or every barrel's reload timer is running. A
+//    refusal goes to 00900974, vtable[1E8h](0): the trigger drops every
+//    evaluating tick of a reload, and the next evaluation after it raises the
+//    latch afresh (0072D2C0 draws a new stagger). The ready gate above took the
+//    window only, so the request stayed high through a reload and the tube
+//    fired on the first step it was out. ON: image_ready also needs
+//    torpedo_tube_can_fire_1d0 (the same gate the fire pass builds, read before
+//    this step's 0072D130 countdown: the order of the bot and gun ticks inside
+//    one step is not read). OFF: the window only, and the refusals are counted.
+constexpr bool kTorpedoBotCanFireReloadBound = false;
 //  * kShipyardDeathReleaseBound: packet cc9_g34_shipyard_reidle. 008455A0, the
 //    shipyard's observer slot 08 on each unit it built (registered by AAh
 //    008437D0), runs when the unit dies (00926390): it clears the first hangar
@@ -2188,6 +2204,7 @@ struct GameGunneryHost::Impl {
     };
     std::map<std::size_t, TorpedoThink> torpedo_think_by_gun;
     unsigned long long torpedo_think_holds{0}, torpedo_think_evals{0};
+    unsigned long long torpedo_ready_reload_refusals{0};   // kTorpedoBotCanFireReloadBound
     unsigned long long torpedo_zone_tests{0}, torpedo_zone_holds{0};  // kTorpedoLaunchZoneBound
     double torpedo_attack_range_sum{0.0};
     unsigned long long torpedo_attack_range_samples{0};
@@ -3372,6 +3389,7 @@ struct GameGunneryHost::Impl {
     void roll_component_failure_0093bed0(std::size_t unit, int kind, int segment,
                                          float damage);
     void apply_failure_effect_00827b90(std::size_t unit, const std::string& name);
+    bool mothership_failure_message(std::size_t unit, const std::string& name, bool set);
     void damage_control_add_seconds(std::size_t unit, bool water, float seconds);
     void run_damage_control(float dt);
     const SecondAmmo* dp_air_ammo(std::size_t gun_index, int category,
@@ -4632,7 +4650,8 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "          local lo = string.lower(nm)\n"
         "          local e = 0\n"
         "          if lo == 'explosion' then e = 1 elseif lo == 'steeringjam' then e = 2\n"
-        "          elseif lo == 'enginejam' then e = 3 elseif lo == 'fire' then e = 4 end\n"
+        "          elseif lo == 'enginejam' then e = 3 elseif lo == 'fire' then e = 4\n"
+        "          elseif lo == 'runwayfailure' then e = 5 elseif lo == 'hangarfailure' then e = 6 end\n"
         "          f[q .. 'eff'] = e\n"
         "        end\n"
         "      end\n"
@@ -8321,10 +8340,14 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         if (torpedo_gun && gun.category == bsp::kUnitGunneryTorpedoCategory && !player_seat) {
             // Packet cc9_g34_torpedo_bot_ready: 008FFF20's own launch test,
             // 009003F8..0090042F. want_horz is bot+60h, the snapped heading.
-            const bool image_ready = have_target
+            bool image_ready = have_target
                 && bsp::gun_bot_torpedo_ready_008fff20(want_horz, gun.angles.horz,
                        may_fire_here)
                 && !inhibited;
+            // 0090042F vtable[1D0h](1): the reload half of CanFire.
+            const bool reload_ok = !image_ready || torpedo_tube_can_fire_1d0(g);
+            if (image_ready && !reload_ok) ++torpedo_ready_reload_refusals;
+            if constexpr (kTorpedoBotCanFireReloadBound) image_ready = image_ready && reload_ok;
             if (have_target) {
                 ++summary.torpedo_ready_targeted;
                 if (image_ready) ++summary.torpedo_ready_image;
@@ -12258,6 +12281,9 @@ public:
     }
     void unit_on_failure(std::uint32_t, const std::string& name, std::uint32_t) override {
         ++owner_.cf_started;
+        // Packet p11_carrier_runway_failure: the mothership's +21Ch 00758890
+        // takes the two air-ops names (messages 72h / 74h) before 00827B90.
+        if (owner_.mothership_failure_message(unit_, name, true)) return;
         owner_.apply_failure_effect_00827b90(unit_, name);
     }
     // 0093C520's expiry: vtable[19Ch] and the clear message (6Dh / 6Eh for
@@ -12265,6 +12291,9 @@ public:
     // unit_failure_active reads.
     void unit_named_state_dispatch(std::uint32_t, const std::string& name) override {
         ++owner_.cf_retired;
+        // Packet p11_carrier_runway_failure: the mothership's +19Ch 00758A50
+        // routes 73h / 75h for the two air-ops names before 00813660.
+        if (owner_.mothership_failure_message(unit_, name, false)) return;
         // Packet cc13_natives1: 00813660 routes 6Dh / 6Eh for the two jams and
         // 008137B0 clears +9E4h / +9E5h.
         GameGunneryHost::Impl::DamageControl& dc = owner_.damage_control[unit_];
@@ -12281,6 +12310,8 @@ public:
             case 2: return "SteeringJam";
             case 3: return "EngineJam";
             case 4: return "Fire";
+            case 5: return "RunwayFailure";
+            case 6: return "HangarFailure";
             default: return "Failure#" + std::to_string(row.name_id);
         }
     }
@@ -12367,6 +12398,31 @@ void GameGunneryHost::Impl::apply_failure_effect_00827b90(std::size_t unit,
         // Packet cc13_natives1: the byte itself (+9E4h / +9E5h).
         if (steering_jam) damage_control[unit].steering_jam_9e4 = true;
         else damage_control[unit].engine_jam_9e5 = true;
+    }
+}
+
+// Packet p11_carrier_runway_failure (bsp/mothership_failure.hpp). On an
+// IsKindOf(09h) unit, +21Ch 00758890 (set) and +19Ch 00758A50 (clear) take
+// "RunwayFailure" / "HangarFailure" and route 72h / 74h or 73h / 75h, which
+// 007583A0 / 007583F0 apply to block+1Ch / +1Dh. True when the arm was taken.
+bool GameGunneryHost::Impl::mothership_failure_message(std::size_t unit,
+    const std::string& name, bool set) {
+    if constexpr (bsp::kCarrierRunwayFailureBound) {
+        if (!units.unit_is_kind_of(unit, bsp::kMothershipKindOfClassId)) return false;
+        const bsp::MothershipFailureArm arm = bsp::mothership_failure_arm(name);
+        if (arm == bsp::MothershipFailureArm::none) return false;
+        bsp::AirOpsDeck* deck =
+            bsp::air_ops_decks().find_mutable_by_entity_id(static_cast<int>(unit) + 1);
+        bsp::mothership_apply_failure_message(deck, arm, set);
+        log.notef("gunnery: mothership %s %s on %s t=%.2f deck=%s "
+            "(packet p11_carrier_runway_failure)",
+            set ? "00758890 set" : "00758A50 clear", name.c_str(),
+            unit < unit_state.size() ? unit_state[unit].row.name.c_str() : "?",
+            static_cast<double>(clock_seconds), deck != nullptr ? "yes" : "none");
+        return true;
+    } else {
+        (void)unit; (void)name; (void)set;
+        return false;
     }
 }
 
@@ -15449,6 +15505,9 @@ void GameGunneryHost::report() {
             "(008FFF20 009000DD..00900101, packet g44_torpedo_think)",
             kTorpedoBotThinkTimerBound ? 1 : 0, host.torpedo_think_evals,
             host.torpedo_think_holds);
+        host.log.notef("summary mission gunnery torpedo ready reload refusals=%llu bound=%d "
+            "(0090042F vtable[1D0h](1) -> 0085A830 -> 00729A80(1), packet g47_torpedo_canfire)",
+            host.torpedo_ready_reload_refusals, kTorpedoBotCanFireReloadBound ? 1 : 0);
         host.log.notef("summary mission gunnery torpedo swim entity impacts=%llu (swimming rounds that "
             "struck an entity, 0084BC60)", host.torpedo_swim_entity_impacts);
         host.log.notef("summary mission gunnery bullet throw cone=%llu fan=%llu zero=%llu "
