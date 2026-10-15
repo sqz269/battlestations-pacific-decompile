@@ -41147,6 +41147,120 @@
       "contract": "Whole raw DWORD-vector paths and actual providers; explicit live argument reloads, native branch predicates and current CRT retained. C61C50 is a qualified completed-message guard mapping, not a binary entry. Original private stack, CRT, fault and game identity remain unproved.",
       "Original_ABI_compatible": false,
       "game_validated": false
+    },
+    {
+      "id": "goal_oct15_dword_vector_push_back",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "0046c450"
+      ],
+      "output_files": [
+        "src/native_scene_dword_vector_push_back.cpp",
+        "include/bsp/native_scene_dword_vector_push_back.hpp",
+        "docs/GOAL_OCT15_DWORD_VECTOR_PUSH_BACK.md",
+        "reports/goal_oct15_dword_vector_push_back.json"
+      ],
+      "depends_on": [
+        "goal_oct15_dword_vector_insert"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_dword_vector_push_back.json",
+      "primary_review": "reports/goal_oct15_vector_callers_primary_review.json",
+      "code_revision": "4f164cfc6bd72752edc55a0d0c41186b78ee8afb",
+      "integrated_main_revision": "9d3cc1c56a85a3151254af11b667742e47f612e8",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Complete raw/live-frame Source and actual providers; precise branch,alias,read/publication schedules retained. Four actual normal functions only: orphan C540 wrapper and incoming private cleanup frames are not reconstructed or repaired.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_dword_vector_erase_range",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "004685a0"
+      ],
+      "output_files": [
+        "src/native_scene_dword_erase_range.cpp",
+        "include/bsp/native_scene_dword_erase_range.hpp",
+        "docs/GOAL_OCT15_DWORD_VECTOR_ERASE_RANGE.md",
+        "reports/goal_oct15_dword_vector_erase_range.json"
+      ],
+      "depends_on": [
+        "goal_oct15_dword_move"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_dword_vector_erase_range.json",
+      "primary_review": "reports/goal_oct15_vector_callers_primary_review.json",
+      "code_revision": "4f164cfc6bd72752edc55a0d0c41186b78ee8afb",
+      "integrated_main_revision": "9d3cc1c56a85a3151254af11b667742e47f612e8",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Complete raw/live-frame Source and actual providers; precise branch,alias,read/publication schedules retained. Four actual normal functions only: orphan C540 wrapper and incoming private cleanup frames are not reconstructed or repaired.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_integer_set_lookup",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00468db0"
+      ],
+      "output_files": [
+        "src/native_scene_integer_set_lookup.cpp",
+        "include/bsp/native_scene_integer_set_lookup.hpp",
+        "docs/GOAL_OCT15_SCENE_INTEGER_SET_LOOKUP.md",
+        "reports/goal_oct15_scene_integer_set_lookup.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_integer_set_lookup.json",
+      "primary_review": "reports/goal_oct15_vector_callers_primary_review.json",
+      "code_revision": "4f164cfc6bd72752edc55a0d0c41186b78ee8afb",
+      "integrated_main_revision": "9d3cc1c56a85a3151254af11b667742e47f612e8",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Complete raw/live-frame Source and actual providers; precise branch,alias,read/publication schedules retained. Four actual normal functions only: orphan C540 wrapper and incoming private cleanup frames are not reconstructed or repaired.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_vector_storage_tidy_alias_00468d40",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00468d40"
+      ],
+      "output_files": [
+        "src/native_vector_storage_tidy_alias.cpp",
+        "include/bsp/native_vector_storage_tidy_alias.hpp",
+        "docs/GOAL_OCT15_VECTOR_STORAGE_TIDY_ALIAS_00468D40.md",
+        "reports/goal_oct15_vector_storage_tidy_alias_00468d40.json"
+      ],
+      "depends_on": [
+        "goal_oct15_vector_storage_tidy"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_vector_storage_tidy_alias_00468d40.json",
+      "primary_review": "reports/goal_oct15_vector_callers_primary_review.json",
+      "code_revision": "4f164cfc6bd72752edc55a0d0c41186b78ee8afb",
+      "integrated_main_revision": "9d3cc1c56a85a3151254af11b667742e47f612e8",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Complete raw/live-frame Source and actual providers; precise branch,alias,read/publication schedules retained. Four actual normal functions only: orphan C540 wrapper and incoming private cleanup frames are not reconstructed or repaired.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
