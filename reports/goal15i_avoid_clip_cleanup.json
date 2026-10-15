@@ -1,0 +1,60 @@
+{
+  "packet": "goal15i_avoid_clip_cleanup", "source_base": "7d755cbe8",
+  "status": "complete_three_raw_cleanup_children_strict_mdx86_normalized_coff_live_disk_real_provider_fixture_passed_pending_primary_registered_build",
+  "owned_addresses": ["004167c0", "00412ef0", "00412dc0"],
+  "owned_files": ["include/bsp/native_avoid_clip_cleanup.hpp", "src/native_avoid_clip_cleanup.cpp", "docs/GOAL15I_AVOID_CLIP_CLEANUP.md", "reports/goal15i_avoid_clip_cleanup.json"],
+  "functions": [
+    {"address": "004167c0", "name": "BSP_AvoidZone_ClearOwnedCornerRecords", "cpp_symbol": "bsp::clear_native_avoid_corner_records_004167c0", "source": "src/native_avoid_clip_cleanup.cpp", "header": "include/bsp/native_avoid_clip_cleanup.hpp", "end_exclusive": "004167f8", "bytes": 56, "coverage": "complete", "original_abi": "ECX actual first8B recordheader, no stackedargs, plainRET, ESI/EDI preserved; semanticEAXunclaimed", "source_abi": "nakedWin32 one-argumentfastcall; no SourceEDX/context"},
+    {"address": "00412ef0", "name": "TMPL_FreePointer_00412ef0", "cpp_symbol": "bsp::free_native_current_pointer_cell_00412ef0", "source": "src/native_avoid_clip_cleanup.cpp", "header": "include/bsp/native_avoid_clip_cleanup.hpp", "end_exclusive": "00412efe", "bytes": 14, "coverage": "complete", "original_abi": "ECX actualpointercell, no stackedargs, plainRET, nonnullpostfreePOPECX fromactualargumentword; semanticEAXunclaimed", "source_abi": "nakedWin32 one-argumentfastcall; no SourceEDX/context"},
+    {"address": "00412dc0", "name": "TMPL_FreeAndClear_00412dc0", "cpp_symbol": "bsp::free_and_clear_native_avoid_pointer_00412dc0", "source": "src/native_avoid_clip_cleanup.cpp", "header": "include/bsp/native_avoid_clip_cleanup.hpp", "end_exclusive": "00412dda", "bytes": 26, "coverage": "complete", "original_abi": "ECX actualowner, no stackedargs, plainRET, ESI preserved; semanticEAXunclaimed", "source_abi": "nakedWin32 one-argumentfastcall; no SourceEDX/context"}
+  ],
+  "host_steps": [
+    {"address": "004167d6", "native": "00bf65ac", "function": "004167c0", "contract": "unconditionalfree currentarray[index], includingnull; reloadcurrentcount BEFORE indexincrement/ADDESP4/unsignedcompare"},
+    {"address": "00412ef7", "native": "00bf6989", "function": "00412ef0", "contract": "capturecurrentcellonce, nonnullfree, POPECXactualpushedarg; noreset/reread"},
+    {"address": "00412dca", "native": "00bf6989", "function": "00412dc0", "contract": "capturedownerESI andpointer; nonnullfree/ADDESP4 thenzerocapturedowner[0]; null skipsstore, trailingwordspreserved"}
+  ],
+  "consumer_transfers": [
+    {"address": "0041a1e3", "native": "004167c0", "function": "0041a1e0", "contract": "ECXzone capturedESI"},
+    {"address": "0041a6f2", "native": "004167c0", "function": "0041a540", "contract": "ECXactualEDIzone atclipnormalrebuild, noargs; precedingPUSHEBP notchildarg"},
+    {"address": "0041ac37", "native": "004167c0", "function": "0041a540", "contract": "ECXactualEDIzone atearlyboundsrejection, noargs"},
+    {"address": "0041b473", "native": "004167c0", "function": "0041b470", "contract": "ECXzone capturedESI; scalarwrapper separate"},
+    {"address": "0041c49c", "native": "004167c0", "function": "0041c490", "contract": "ECXcapturednonnullzone fromactualownercell"},
+    {"address": "0041d17d", "native": "004167c0", "function": "0041d150", "contract": "ECXcapturedESIzone fromactualgroupslot"},
+    {"address": "0041d2d7", "native": "004167c0", "function": "0041d1e0", "contract": "ECXEBPzone fromactual24h allocation/constructor path"},
+    {"address": "00c5e156", "native": "00412ef0", "function": "00c5e150", "kind": "tail_jump", "contract": "LEAECX[EBP-A4h] actualscratchpointercell"},
+    {"address": "00c5e15e", "native": "00412ef0", "function": "00c5e15b", "kind": "tail_jump", "contract": "LEAECX[EBP-7Ch] actualscratchpointercell"},
+    {"address": "00c5e133", "native": "00412dc0", "function": "00c5e130", "kind": "tail_jump", "contract": "MOVECX[EBP-10h] actualsavedownerpointer"},
+    {"address": "00c5e193", "native": "00412dc0", "function": "00c5e190", "kind": "tail_jump", "contract": "MOVECX[EBP-68h] actualsavedownerpointer"}
+  ],
+  "semantics": {
+    "records": "currentarray eachiteration/currentcount immediatelyafterfree, unsignedindex/compare; preserveexact3Bpadding andPOPEDIbeforezero; onlycountwritten, array/entries/capacity/metadataretained",
+    "pointer_cell": "captureactualcurrentcellonceperinvocation; free ifnonnull, POPECX ratherthanADDESP; no pointernulling/cachedscopeowner",
+    "free_and_clear": "captureownerESI/pointeronce; free ifnonnull thenzeroonlycapturedowner[0]; null skipsstore; no owner/pointerreload afterfree",
+    "class_boundary": "actualrawstorage, existingzoneprefixschema only; no originalC++class/virtual/RTTI/destructorinstallation, no record-field destruction, no callback/stub/localunwindframe",
+    "backing": "valid reachedheader/array/stack/control/provider cells andmatchedheapownership required; no reset/repair/normalization/rollback"
+  },
+  "providers": {"source": "genuine existing cdecl singleton_lifetime_free ->currentstd::free, matched acceptedallocationdomain", "native_thunks": [{"entry": "00bf6989", "jump_target": "00bf65ac"}, {"entry": "00bf65ac", "jump_target": "00bf9dc8"}], "body": "actual returning CRTfree body read, nullandnormalrelease return", "limits": "Native staticheap/errno/SEH andcurrentSourceCRT/frame identities qualified"},
+  "historical_projection": {"name": "avoid_zone_clear_records_004167c0", "source": "src/avoid_zone_owner.cpp", "status": "reconstructed_build_tested_explicit_scene_allocation_crt_boundaries", "handling": "unchanged separate AvoidZoneAllocationAccess interface/record; newraw completechild record distinct"},
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe", "image_base": "00400000",
+    "native_bodies": "complete56/14/26B inclallRET/POP/zerobranches; no x87/customABI",
+    "references": "7normalclearcalls+4cleanupEHtails matchlive/physicalcensus; allactualreceiversetupsread; no parentarithmetic/EHmap reconstruction claimed",
+    "schemas": "existing AvoidZoneNativeStorage24h andShipAiPathLateralRecord24h; onlyactualpointer0/count4 consumedbyclear; cleanupowner/cellminimalrawbacking",
+    "census": "local/goal15i_avoid_clip_cleanup/census.txt",
+    "byte_script": "local/goal15i_avoid_clip_cleanup/compare_bytes.py [registered-COFF-object] [live-directory] [PE-path]",
+    "source_listing": "local/goal15i_avoid_clip_cleanup/native_avoid_clip_cleanup.asm",
+    "byte_result": "PASS96ownedCOFF/live/disk, only3cdeclfreeCALLoperandsmasked; exactSourcecdeclsymbol/REL32/E8/originalBF65AC-or-BF6989targetschecked;84fixedbytesidentical incl3Bpadding/allreturns"
+  },
+  "verification": {
+    "strict_compile": "PASS MD/Win32/C++17/EHsc/W4/WX/permissive-/O2/fp:strict/c/FAcs",
+    "coff": "PASS56+14+26B normalizedonly3actualfreeoperands, live==originaldisk",
+    "source_fixture": "PASS one genuineheap composition:2records+countednullslot/count3->0, retainedarray/entries/metadata andcount0repeat; currentcell changedfromAtoB thenEF0 freesB/noreset/Aretained; DC0 thenfreesA/zero0/preserves2trailingwords",
+    "fixture_observation": "genuine _heapwalk tracks actual allocations USED before/not USED after; retained array stays USED until DC0; bounded current Source evidence, no global no-leak/dynamic count mutation during free/Native unwind claim",
+    "fixture_source": "local/goal15i_avoid_clip_cleanup/cleanup_probe.cpp",
+    "fixture_script": "local/goal15i_avoid_clip_cleanup/run_probe.cmd [archive] [archive-only]; default ownmoduleoverlay overprimaryReleasearchive, manifestembedded",
+    "fixture_log": "local/goal15i_avoid_clip_cleanup/probe.log",
+    "report_calls": "PASS 14 exact report transfers and 16 markdown claims; 0 failures, 0 unchecked, 0 warnings", "diff_check": "PASS", "new_tracked_test_targets": 0,
+    "full_registered_build": "primary-owned", "native_runtime_differential": "not run", "gameplay": "not validated"
+  },
+  "integration": {"target": "bsp_core", "target_sources_add": "src/native_avoid_clip_cleanup.cpp", "ghidra_mutations": "none; primaryannotation/export/save ownsmetadata", "lease": "releaseaftercommit forprimarytransfer"}
+}
