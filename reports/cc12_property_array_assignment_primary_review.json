@@ -1,6 +1,6 @@
 {
   "schema": "bsp.property_array_assignment_primary_review.v1",
-  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_build_pending",
+  "status": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
   "Source_commit": "4464fe669c2bc229aaac7e134d61eb1a4931e927",
   "Source": "src/native_scene_property_array_assignment.cpp",
   "header": "include/bsp/native_scene_property_array_assignment.hpp",
@@ -62,9 +62,11 @@
     "new_TU_registered": false
   },
   "Main_registered": true,
-  "Main_build": "pending",
+  "Main_build": "pass",
   "Original_ABI_compatible": false,
   "Original_EH_or_private_CRT_compatible": false,
   "new_Source_runtime_executed": false,
-  "game_validated": false
+  "game_validated": false,
+  "Main_validation": "reports/cc12_property_array_assignment_Main_validation.json",
+  "actual_compiler_archive_gate": "pass"
 }

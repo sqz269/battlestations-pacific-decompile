@@ -1,0 +1,44 @@
+{
+  "schema": "bsp.reference_payload_reset_primary_review.v1",
+  "status": "whole_ordinary_Source_primary_peer_accepted_Main_registration_build_pending",
+  "Source_commit": "8af785915947b2bb429d1f9b61d19f85bfaf7ba7",
+  "Source": "src/native_reference_payload_reset.cpp",
+  "header": "include/bsp/native_reference_payload_reset.hpp",
+  "documentation": "docs/NATIVE_REFERENCE_PAYLOAD_RESET_CC12.md",
+  "functions": [
+    "reset_native_reference_payload_008f0380"
+  ],
+  "primary_whole_Source_header_doc_Original_contract_read": true,
+  "primary_author_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_reference_payload_reset_integration_20261015\\primary_author_inputs.DATA.json",
+    "bytes": 190070,
+    "sha256": "a75f72596ea3d5d810e6291f465f06a307140c4d005bf03322d0eb68615f9580"
+  },
+  "primary_peer_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_reference_payload_reset_integration_20261015\\primary_peer_inputs.DATA.json",
+    "bytes": 12259,
+    "sha256": "f8758e3b5451db51e3e6a88e55843dacb4d9fce14d40ed85f683cd19c823089a"
+  },
+  "primary_strict_comparison": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_reference_payload_reset_integration_20261015\\primary_strict_review.DATA.json",
+    "bytes": 8831,
+    "sha256": "0e9ec1cf62ecb4c250331c5899c392032111887b88b6e2ab3e550ba91f1bce13"
+  },
+  "independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\ReferencePayloadResetIndependentReview01\\independent_verdict.json",
+    "bytes": 10960,
+    "sha256": "68a4b70cbfe4adf089da408495a76f6f539ed31efedba6a0b11d417d88d72324"
+  },
+  "contract": [
+    "Whole008F0380 [008F0380,008F03A2),34 bytes/12 instructions. New naked void fastcall(void*) noexcept uses genuine ECX raw8 payload, opaque scalar+0 and owned pointer+4, no stack args, plain RET and ESI preservation. All30 non-CALL operand bytes are literal; only [12,16) binds actual canonical current singleton_lifetime_free.",
+    "Capture old+4; if nonnull free it, then clear DWORD+4 only after return. Always clear DWORD scalar+0. Null path never stores+4. No payload-root free, virtual dispatch, phase/tag/kind/owner changes or lookup/allocation/startup action. This is not the reversed pointer0/size4 array header03F0.",
+    "Actual accepted0310/0340/physical duplicate provenance; old pointer null or sole-owned matching-current-heap duplicate; live disjoint valid payload/allocation/frame and successful returning free. No alias, reentry, concurrent mutation, invalid memory, faults, overflow or failure rollback. EAX/flags/FP are not public semantic results. No class/vtable/caller/Original full ABI/privateCRT/EH/runtime/game credit; blocked0600 remains unimplemented.",
+    "Author81 actual Source/include inputs all own-precompile among119 candidates;34 readiness inputs and64 tools including both clui files stable. One strict086bfe exit0, object1228B/5sections/15symbolslots/34B12/1REL32/0noncode relocations. One normal70fcd9/session13724 to e9fdb5 exit0 passed2 existing checks7.30s; TU unregistered. Source phaseff543f is distinct from earlier authorized tasks in the same UUID. Config LF455B versus CRLF467B is literal-pinned and normalized/JSON equal; no hermetic environment claim or replay."
+  ],
+  "Main_registered": false,
+  "Main_build": "pending",
+  "Original_ABI_compatible": false,
+  "Original_EH_or_private_CRT_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false
+}
