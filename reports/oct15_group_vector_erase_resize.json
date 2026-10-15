@@ -164,7 +164,18 @@
       "review": "Full Source/native/support equivalence and EH maps reviewed; fresh32transfer rows and32Markdown claims passed; worker3/3 passed9.06s."
     }
   },
-  "build": "pending",
+  "build": {
+    "status": "passed",
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "source_commit": "4ed40b4e51b54b63c8705bc0e2042620bbdd02cc",
+    "source_compiled": true,
+    "suites_passed": 3,
+    "suites_total": 3,
+    "ctest_seconds": 8.46,
+    "log": "local/oct15_eleventh_final_build.log",
+    "native_math_scope": "Prior verified seeds only; no new-entry native differential execution."
+  },
   "independent_native_audit": {
     "receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct15_group_vector_erase_resize_native_audit.json",
     "receipt_sha256": "f0fb40aae63b5bac362bae8f49624cd1f2974d6ba79843249e84a7171307fa6f",
