@@ -257,7 +257,10 @@
         "action": "00ca4778"
       }
     ],
-    "normal": "capturedata;disarm;capturelength+1;getter;return;no retry if unarmed getterthrows",
+    "normal": {
+      "dot": "22F0 capturedata;22F6 disarm;nonnull capturelength+1;getter;return;no retry if unarmed getterthrows",
+      "no_dot": "2393 disarm;23A1 capturedata;nonnull capturelength+1;getter;return;no retry if unarmed getterthrows"
+    },
     "exceptional": "armed actual-header guard disarms then calls complete41DD20/context;host C++unwind boundary qualified",
     "new_private_action_function_credit": false
   },
@@ -271,6 +274,11 @@
       "was": "preserved old wording ECX=record+0Ch could suggest address",
       "is": "load DWORD[record+0Ch] as nestedbag POINTER",
       "evidence": "008F2324 MOV ECX,[ESI+0Ch]"
+    },
+    {
+      "was": "initial Source used capture-data-before-disarm for both normal cleanup branches",
+      "is": "dot captures data before disarm;no-dot disarms before data capture;separate methods now preserve both schedules",
+      "evidence": "primary full123-op review:22F0/22F6 versus2393/23A1"
     }
   ],
   "prior_annotations": [
@@ -316,6 +324,13 @@
   },
   "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
   "qualification": "375B whole controlflow over explicit bounded existing ASCII/currentlocale/stable/nonaliasbucket provider admission,plus16B qualified compiler-action guard mappings. General Source-ready/unrestricted parent/101caller admission unproved. No callbacks/stubs/modelbag/stdstring/guard/clamp/normalization/nonoverlap or new binary action/privateCRT/FH3/SEH/nativeABI/differential/game credit.",
-  "source_sha256": "ccb8fb196561a16bca96ff675a9f7ece6ee193905bc42c6724592f18c9976ba2",
-  "header_sha256": "e478b3f070f7420db0e6619a8b1329e2acfd8cd1339b60c1bd82ae8a065ec945"
+  "source_sha256": "5867c1029e850797b21956b163020ae37d7ca116f9c558683aa89bb2f2ab9b07",
+  "header_sha256": "e478b3f070f7420db0e6619a8b1329e2acfd8cd1339b60c1bd82ae8a065ec945",
+  "independent_review": {
+    "reviewer": "primary /root",
+    "initial_draft": "e01f54002",
+    "status": "full123-op and both2-op review found one distinct cleanup-order correction,now applied;targeted followup pending",
+    "source_sha256_after_correction": "5867c1029e850797b21956b163020ae37d7ca116f9c558683aa89bb2f2ab9b07",
+    "header_sha256": "e478b3f070f7420db0e6619a8b1329e2acfd8cd1339b60c1bd82ae8a065ec945"
+  }
 }

@@ -39,7 +39,7 @@ uses actual bag+4 and writes its full bucket into the original parameter word.
 
 On a dot hit, capture mapped node+8 BEFORE writing only the parameter's low
 byte to1. On a miss write only that byte to0, THEN capture the full resulting
-partial word. Normal cleanup captures current header data, disarms, and only
+partial word. Dot cleanup captures current header data, disarms, and only
 for nonnull data reads current length+1 and resolves the actual pool. Captured
 block/size survive getter activity; return uses the live shutdown gate. A
 throwing getter sees an unarmed guard and is not retried. After returning
@@ -49,7 +49,10 @@ reached child parameter before real recursion. No record+Ch address substitution
 
 No dot captures mapped node+8 on a hit. A miss still reads the current bucket
 DWORD before the native AL/NEG/SBB/AND mask returns0. The final whole result
-is captured before cleanup and returned unchanged afterward. This branch does
+is captured before cleanup and returned unchanged afterward. Unlike the dot
+branch, no-dot cleanup disarms at2393 BEFORE capturing header data at23A1.
+Both branches capture nonnull length+1 after disarming, then resolve the pool
+and return the captured block/size without an unarmed retry. This branch does
 not introduce a parameter-byte store or post-cleanup success recheck.
 
 Handler CA4780 resolves FuncInfo DD7360 (magic19930522, maxstate2, mapDD7350).

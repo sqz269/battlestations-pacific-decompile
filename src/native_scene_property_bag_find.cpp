@@ -38,11 +38,22 @@ public:
         }
     }
     void arm() noexcept { armed_ = true; }
-    void release_normally() {
-        // Native captures data BEFORE disarming, length AFTER; keep nonnull
-        // block/length captures across the potentially throwing pool getter.
+    void release_dot_normally() {
+        // 22F0 captures data before 22F6 disarms.
         const U block = read(address(header_), 4);
         armed_ = false;
+        release_captured(block);
+    }
+    void release_no_dot_normally() {
+        // 2393 disarms before 23A1 captures data.
+        armed_ = false;
+        const U block = read(address(header_), 4);
+        release_captured(block);
+    }
+private:
+    void release_captured(U block) {
+        // Both paths capture length after disarming and retain block/length
+        // across the potentially throwing getter, without a cleanup retry.
         if (block != 0) {
             const U bytes = read(address(header_)) + 1u;
             auto* const owner = native_string_pool_get_or_create_00419cc0(
@@ -52,7 +63,6 @@ public:
                 pool_.actual_small_returns_disabled_01090aa4);
         }
     }
-private:
     void* header_;
     NativeStringRawPoolContext& pool_;
     bool armed_ = false;
@@ -90,7 +100,7 @@ void* find_native_scene_property_bag_008f2260(void* actual_bag,
             write_byte(parameters, 0);
             record = read(parameters);
         }
-        completed.release_normally();
+        completed.release_dot_normally();
         if (read_byte(parameters) != 0 && read(record, 4) == 6) {
             const U nested_bag = read(record, 12);
             const U tail = dot + 1u;
@@ -117,7 +127,7 @@ void* find_native_scene_property_bag_008f2260(void* actual_bag,
         (void)read(parameters);
         result = 0;
     }
-    completed.release_normally();
+    completed.release_no_dot_normally();
     return pointer(result);
 }
 
