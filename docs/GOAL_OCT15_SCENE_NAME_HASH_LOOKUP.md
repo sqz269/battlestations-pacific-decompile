@@ -33,8 +33,9 @@ null-name fallback to the immediate address `00E18560`. Both return zero on
 exhaustion. No nominal payload class, ownership, lifetime or CString validity
 is required or recovered from these raw results.
 
-Stable Source metadata and explicit bindings remain separate from reached
-storage. All reached actual input/private/table/node/payload accesses must be
+Actual input4 and private iterator12 bind distinct native stack ranges;
+payload aliases with either region remain admitted, and Source metadata
+remains stable/disjoint. All reached actual input/private/table/node/payload accesses must be
 valid. Payload links may alias the actual input/private cells. No implicit
 native/helper/compiler-frame, saved-register, return/EH/spill or asynchronous
 aliases are supplied. There is no extra key range, null-payload, count, owner,
@@ -79,8 +80,36 @@ does not prove it is dead or infer an external ABI. Existing producer/layout
 documentation supports the class-id/name interpretation, while this Source
 requires only the exact DWORD comparisons and pointer fields above.
 
-Whole guarded live listings and all 158 bytes match the installed PE. Evidence,
-typed transfers, preserved locked annotation/save/export/readback and Source
-hashes are recorded in the report. Unique CMake registration, normal Win32
-build and focused compiler inspection are pending. No new tests are added;
-packet-specific native execution, original ABI and game validation are unproved.
+Whole guarded live listings and all 158 bytes match the installed PE. All
+eight actual direct/representative transfer rows and Markdown claims pass with
+no failures, unchecked claims or warnings. Fresh typed flow confirms ordinary
+fallthroughs and no overrides at all four direct child sites. Preserved locked
+annotation/save/export/readback is recorded in the report. Independent primary
+review of both full native bodies and complete Source/header passed; Source,
+header and canonical provider hashes match the reviewed draft, tested revision
+and actual build tree. Only documentation/backing clarification and metadata
+changed after that review.
+
+The primary uniquely registered this Source and ran normal `scripts/build.ps1`
+at `1c0025b07ae3c5627dc024d11e1db303efb9d32d`: MSVC Release Win32 and all three
+existing CTests passed in 7.99 seconds. This actual combined gate superseded a
+duplicate worker build by explicit instruction; no worker build was launched.
+The generated project and archive contain this Source once. Primary receipt:
+`reports/goal_oct15_scene_lookup_primary_review.json`; its full tree path,
+SHA256, log/hash and archive receipt are recorded in our report.
+
+The final 1,852-byte object has SHA256
+`0c19ae044069751fa1730037a09df331005fbd56af42955d907201a72a4cf78f`.
+Both public bodies initialize only table0 at object offset `+10`, transfer to
+real Begin at `+12`, reload/test the current node at `+17/+1A`, then read the
+actual key cell once at `+21` into EDI. Real Next at `+32` is followed by a
+current-node reload at `+37`, ignoring its EAX result. The payload entry keeps
+the captured pointer in EDX and returns it at `+48`. The class-name entry reads
+matched node+4 once at `+47`, then selects the raw name or formal fallback
+binding with CMOVNE at `+50`; it reads no fallback byte. Formal metadata loads
+and this selection shape are compiler evidence for the new interface, without
+claiming the Original immediate branch/private frame/fault/flags ABI.
+
+No new tests were added. Existing native math differential seeds exercise
+prior math bodies; packet-specific native execution, original ABI/private-stack
+identity and game validation remain unproved.

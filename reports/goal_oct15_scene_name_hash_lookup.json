@@ -8,7 +8,7 @@
   "source": "src/native_scene_name_hash_lookup.cpp",
   "header": "include/bsp/native_scene_name_hash_lookup.hpp",
   "documentation": "docs/GOAL_OCT15_SCENE_NAME_HASH_LOOKUP.md",
-  "status": "whole_actual_raw_source_registration_build_pending",
+  "status": "whole_actual_raw_source_primary_combined_win32_build_tested",
   "routines": [
     {
       "address": "00468660",
@@ -95,7 +95,7 @@
     }
   ],
   "argument_alias_schedule": "Only table0=database+34 modulo32 initialized;actual Begin then current node4;initial zero skips key read;otherwise actual parameter4 captured once across all Next;capture node+8 then read its DWORD;Next EAX ignored/current node4 reloaded. 67EE0 returns captured payload pointer;68660 reads matched node+4 once/null selects bound E18560 role;exhaustion returns0.",
-  "frame_domain": "Explicit input4/private12 and stable separate Source metadata/bindings;reached storage valid;payload aliases with actual input/private cells admitted. Native entryESP+4 versus privateESP-C layout documented,not equated to compiler/helper/private/return/registersave/EH/spill/async aliases. No snapshot guard,prezero,count/owner/nullpayload guard,nominal class,CString validity,ownership or lifetime inference.",
+  "frame_domain": "Input4/private iterator12 bind distinct native stack ranges;payload aliases with either region remain admitted;Source metadata stable/disjoint. Explicit input4/private12 and stable separate Source metadata/bindings;reached storage valid;payload aliases with actual input/private cells admitted. Native entryESP+4 versus privateESP-C layout documented,not equated to compiler/helper/private/return/registersave/EH/spill/async aliases. No snapshot guard,prezero,count/owner/nullpayload guard,nominal class,CString validity,ownership or lifetime inference.",
   "provider_composition": "Complete raw native_scene_name_hash_iterator Begin/Next;no callbacks/stubs or invented service. Stable borrowed existing GameNativeStringProcess E18560 role supplied by binding;core does not construct authority,own it,read its byte or introduce a native child edge.",
   "provider_file_sha256": {
     "src/native_scene_name_hash_iterator.cpp": "69e1661e27018e38d57bf45e892c3fa11d021c166f9de0ee18aa9becc6746297",
@@ -163,12 +163,65 @@
       "src/native_scene_name_hash_lookup.cpp": "818e5b812f84c71dc54447dd62e3739c78900faf1abf5684cb5b41d1e467dae3",
       "include/bsp/native_scene_name_hash_lookup.hpp": "b8283e180ee5693ff3c5707a84374253ff9c223c6f9778e655e2c726405213dd"
     },
-    "cmake_registration": "queued behind current holder;no exclusive registry lease",
-    "strict_win32_build_and_existing_ctest": "pending",
-    "compiled_object_review": "pending",
+    "cmake_registration": "passed primary unique append;one generated project Source and one archive object at tested1c0025b07;own queue removed,no worker exclusive registry lease",
+    "strict_win32_build_and_existing_ctest": "passed primary normal scripts/build.ps1 at1c0025b07;3 existing checks,0failed,7.99s;explicit primary instruction superseded duplicate worker build;no worker build launched",
+    "compiled_object_review": {
+      "tested_revision": "1c0025b07ae3c5627dc024d11e1db303efb9d32d",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\build\\win32\\bsp_core.dir\\Release\\native_scene_name_hash_lookup.obj",
+      "object_bytes": 1852,
+      "object_sha256": "0c19ae044069751fa1730037a09df331005fbd56af42955d907201a72a4cf78f",
+      "source_and_canonical_hashes_asserted_at_tested_revision_and_build_tree": true,
+      "disassembly": "local/goal_oct15_scene_name_hash_lookup_object_disasm.txt",
+      "relocations": "public COMDAT#4/#5 operands+13/+33 select accepted real Begin/Next;no native inter-wrapper edge invented",
+      "status": "passed focused actual emitted Release Win32 object review;ordinary interface,not Original byte/private-frame ABI",
+      "compiler": "MSVC dumpbin14.51.36244.0;Release Win32",
+      "both_entries": "ADD database34 modulo32+0A;only iterator.table store+10;real Begin+12;CURRENT node reload/test+17/+1A/emptybranch+1C;actual key cell read+21 into EDI ONCE;real Next+32 then CURRENT node reload+37;no private prezero/key reload/nullpayload/count guard",
+      "payload_result": "captured node+8 in EDX+23/+3E;pointed DWORD compare;hit+48 MOV EAX,EDX returns captured pointer;exhaustion+4E XOR EAX,EAX",
+      "class_name_result": "matched node+4 read ONCE+47;test+4A;formal fallback binding load+4C and CMOVNE+50 select raw name/fallback;no fallback byte read;exhaustion+57 XOR EAX,EAX",
+      "qualification": "formal metadata load/CMOV shape differs from native immediate fallback branch;metadata stable/disjoint and no byte/frame/fault/flags/stack identity claimed"
+    },
     "new_tests": false,
     "packet_native_differential": "not run",
-    "game_validation": "not run"
+    "game_validation": "not run",
+    "primary_independent_review": {
+      "status": "passed complete57-op native/Source/header review;no implementation mismatch or Source/header edits",
+      "source_hashes_asserted": {
+        "src/native_scene_name_hash_lookup.cpp": "818e5b812f84c71dc54447dd62e3739c78900faf1abf5684cb5b41d1e467dae3",
+        "include/bsp/native_scene_name_hash_lookup.hpp": "b8283e180ee5693ff3c5707a84374253ff9c223c6f9778e655e2c726405213dd"
+      },
+      "scope": "late key only after nonnull firstnode,capture once,real Begin/Next/current node reload,captured payload return,current name read/fallback,arbitrary DWORD comparison",
+      "clarification": "documentation-only sentence:input4/private iterator12 bind distinct native stack ranges;payload aliases with either remain admitted;metadata stable/disjoint;no new guards"
+    },
+    "direct_call_typed_flow": "passed;four real calls,overrideNONE,expected targets and normal fallthroughs;read-only modification2334;local/goal_oct15_scene_name_hash_lookup_direct_call_flow.json",
+    "combined_build_receipt": {
+      "revision": "1c0025b07ae3c5627dc024d11e1db303efb9d32d",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_scene_lookup_combined_build.log",
+      "log_sha256": "c8ed57b16756599313847bc4739d05f2e6234168e2a942347efae999a58f6cd5",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 7.99,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "primary_tree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "primary_report": "reports/goal_oct15_scene_lookup_primary_review.json",
+      "primary_report_sha256": "efc52a94f6011731879b2dcab8768733732949af42d59af37de7f0ad198313b9",
+      "project_source_count": 1,
+      "unique_archive_objects": [
+        "bsp_core.dir\\Release\\native_scene_name_hash_lookup.obj"
+      ],
+      "archive_sha256": "39650ecfe90333f7fdcee9d925a8f4a956436e9d62a5d55b3a01df20ab787bea",
+      "source_and_canonical_hashes_asserted_at_tested_revision_and_build_tree": true,
+      "new_body_execution": "existing native math seeds do not exercise these bodies;no packet-specific native execution claim"
+    },
+    "source_unchanged_since_reviewed_draft": "330fdef5e578773db2ba1191bf5717ac5a988033;only documentation/backing clarification and validation metadata changed"
   },
   "limits": [
     "New ordinary raw interfaces;no Original register/stack/mangling/binary ABI,implicit private frame,fault/SEH/exception identity.",
