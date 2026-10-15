@@ -2054,3 +2054,5 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_lua_de
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_hull_list_head.cpp)
 
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_avoid_group_factory.cpp)
+
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_avoid_manager_lifetime.cpp)
