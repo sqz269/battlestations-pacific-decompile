@@ -1,0 +1,81 @@
+{
+  "packet":"goal15d_manager_clear",
+  "source_base":"80d27d3e9",
+  "status":"complete_native_manager_clear_58_bytes_normalized_real_provider_source_composition_checked_pending_registered_build",
+  "owned_addresses":["0041f600"],
+  "owned_files":["include/bsp/native_avoid_manager_clear.hpp","src/native_avoid_manager_clear.cpp","docs/GOAL15D_AVOID_MANAGER_CLEAR.md","reports/goal15d_avoid_manager_clear.json"],
+  "functions":[{
+    "address":"0041f600",
+    "name":"BSP_AvoidZoneManager_ClearGroups",
+    "cpp_symbol":"bsp::clear_native_avoid_manager_0041f600",
+    "source":"src/native_avoid_manager_clear.cpp",
+    "header":"include/bsp/native_avoid_manager_clear.hpp",
+    "end_exclusive":"0041f63a",
+    "bytes":58,
+    "source_bytes":60,
+    "coverage":"complete",
+    "original_abi":"ECX manager, no stacked inputs, tail JMP0041e960 after restoring EBX/ESI/EDI",
+    "source_abi":"naked Win32 fastcall ECX existing manager, EDX borrowed actual publication-cell address; context PUSH/POP then tail JMP concrete cache entry",
+    "limits":"extra Source context and matched virtual/current CRT/provider identity qualified; no installed original-game binding, EH/SEH or gameplay claim"
+  }],
+  "host_steps":[
+    {"address":"0041f620","native":"actual_group.vtable[0]","containing_function":"0041f600","contract":"indirect CALL EDX; ECX current group, EDX actual target, stacked flags1; compatible matched Source deleting entry RET4; same manager slot cleared after return"},
+    {"address":"0041f635","native":"0041e960","containing_function":"0041f600","kind":"tail_jump","contract":"native tail, no manager adjustment; Source restores borrowed cell address EDX before genuine full cache tail"}
+  ],
+  "consumer_calls":[
+    {"address":"0041f9ad","native":"0041f600","containing_function":"0041f980","contract":"manager ECX; no stack arguments"},
+    {"address":"00424d22","native":"0041f600","containing_function":"00424d00","contract":"manager ECX retained from rebuild receiver; no stack arguments"},
+    {"address":"004da808","native":"0041f600","containing_function":"004da780","contract":"singleton result moved EAXtoECX; no stack arguments"}
+  ],
+  "semantics":{
+    "count":"zero+58h once before deletion; not the loop bound and not reset after providers",
+    "slots":"twenty DWORDs+08h through+54h; load each at its iteration; actual dynamic vtable0 deleting call then null same slot after normal return",
+    "aliasing":"provider changes to same slot are overwritten by native null store; changes to later slots are observed by subsequent loads",
+    "tail":"restored manager ECX and Source publication-cell EDX, tail JMP full0041e960 cache cleanup",
+    "no_extra_policy":"no abstract deleting callback, shadow owner, cached game publication, retries or rollback",
+    "required_backing":"valid reached manager/group/vtable/stack/control/provider cells; each group table must select compatible source entry"
+  },
+  "providers":{
+    "group":"parallel complete native_avoid_group_lifetime.hpp/.cpp provider; actual const kNativeAvoidGroupLifetimeSourceVtable slot0=scalar_delete_native_avoid_group_0041e940",
+    "cache":"existing concrete clear_native_avoid_cache_0041e960 using actual borrowed publication cell, public dynamics queue and real matched heap providers",
+    "allocator_free":"existing singleton_lifetime_allocate/free and group/cache providers; no fake success/deletion operation"
+  },
+  "evidence":{
+    "project":"C:/Users/sqz269/bsp.gpr",
+    "program":"/battlestationspacific.exe",
+    "image_base":"00400000",
+    "native_assembly":"complete58-byte0041f600 listing and live byte listing",
+    "producer":"00421500 complete manager constructor pseudocode;00417ca0 complete group producer pseudocode",
+    "deleting_contract":"complete0041e940 assembly read; direct destructor call, flagsbit0, conditional receiver free, RET4",
+    "schema":"existing Cc13AvoidZoneManagerNative78h and Cc13AvoidZoneNativeGroup14h; no new class",
+    "caller_census":"3 live xref sites matched fresh physical census; all3 ECX/stack setups read",
+    "source_listing":"local/output/native_avoid_manager_clear.asm",
+    "byte_comparison":"PASS60 Source bytes strip only initial52 PUSHEDX and5A POPEDX atSource36h, mask sole tail rel32; all58 remaining native bytes identical",
+    "byte_script":"local/output/compare_avoid_manager_clear_bytes.py [COFF-object] [native-byte-listing]"
+  },
+  "historical_partial":{
+    "name":"avoid_zone_table_clear_0041f600",
+    "source":"src/avoid_zone_geometry.cpp",
+    "status":"partial_projection_build_tested",
+    "handling":"unchanged and retained as separate semantic API/ledger record; not reclassified as complete"
+  },
+  "corrections":[
+    {"was":"historical source/comment count site0041F603","is":"actual count-zero store0041F605","evidence":"complete native assembly"},
+    {"was":"historical source/comment tail site0041F62F and unread/unprojected0041E960","is":"actual0041F635 JMP0041E960; this new raw entry composes complete existing cache provider","evidence":"complete assembly, live site containment and concrete cache source"}
+  ],
+  "verification":{
+    "focused_msvc_x86":"PASS:C++17 /EHsc /W4 /WX /permissive- /O2 /c /FAcs",
+    "owned_bytes":"PASS58 native bytes after only context PUSH/POP removal and tail operand masking",
+    "report_calls":"PASS:4 exact report rows and5 markdown call claims; one indirect vtable prose claim not paired;0 failures,0 warnings",
+    "diff_check":"PASS",
+    "combined_real_provider_fixture":"PASS:one ignored fixture with new manager/group overlay objects over existing primary Release archive; actual const Source vtable, populated zone/record array/record/null zone slot, slot19 group, body/hull caches, retained capacity/sentinel/proxies, flags0 group retention",
+    "fixture_source":"local/output/avoid_manager_clear_probe.cpp",
+    "fixture_script":"local/output/run_avoid_manager_clear_probe.cmd [archive-path] [archive-only]; embeds manifest; default overlay Source composition, final archive-only reproduction primary-owned",
+    "fixture_heap_observation":"PASS:genuine _heapwalk sees11 tracked group/zone/record/hull blocks USED before clear and not USED afterward; queue preallocated to prevent reuse. Body capacity/sentinel/queue remain USED; flags0 group remains USED and its array is no longer USED. Bounded Source evidence, not global no-leak claim",
+    "full_build_ctest":"primary after source registration",
+    "new_test_targets":0,
+    "native_runtime_differential":"not run",
+    "gameplay":"not validated"
+  },
+  "integration":{"target":"bsp_core","target_sources_add":"src/native_avoid_manager_clear.cpp","ghidra_mutations":"none; primary annotation/export owns saved evidence","lease":"release after commit for primary transfer"}
+}
