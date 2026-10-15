@@ -1,0 +1,444 @@
+{
+  "schema": "bsp.native_scene_token_text_cc12.v1",
+  "packet": "cc12_scene_token_text_source02",
+  "status": "complete_ordinary_source_strict_static_reviewed_repository_build_passed_unregistered",
+  "worktree_base": "e5e1b5af2",
+  "new_files": [
+    "include/bsp/native_scene_token_text.hpp",
+    "src/native_scene_token_text.cpp",
+    "docs/NATIVE_SCENE_TOKEN_TEXT_CC12.md",
+    "reports/native_scene_token_text_cc12.json"
+  ],
+  "analysis_identity": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "modification_number": "10",
+    "typed_flow_capture": "local/WholeSceneTokenTextSource02/Original.typed_flow.DATA.json",
+    "prototype_authority": "complete assembly and matching live/disk bytes; live undefined ...(void) prototypes are inaccurate"
+  },
+  "original_binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "original_complete_body_pins": [
+    {
+      "address": "008d9930",
+      "envelope_bytes": 71,
+      "envelope_end_exclusive": "008d9977",
+      "body_ranges": [
+        {
+          "start": {
+            "space": "ram",
+            "offset": "008d9930"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "008d9976"
+          },
+          "length": "71"
+        }
+      ],
+      "ghidra_body_address_count": 71,
+      "disk_offset": 5085488,
+      "section": ".text",
+      "sha256": "a736de888b2957f038b900b33fb8c640cf168023953a828f6cdebbf97dd4db7c",
+      "live_matches_disk": true,
+      "retained_bytes": "local/WholeSceneTokenTextSource02/Original.008d9930.bin"
+    },
+    {
+      "address": "008d9980",
+      "envelope_bytes": 105,
+      "envelope_end_exclusive": "008d99e9",
+      "body_ranges": [
+        {
+          "start": {
+            "space": "ram",
+            "offset": "008d9980"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "008d999c"
+          },
+          "length": "29"
+        },
+        {
+          "start": {
+            "space": "ram",
+            "offset": "008d99a0"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "008d99e8"
+          },
+          "length": "73"
+        }
+      ],
+      "ghidra_body_address_count": 102,
+      "disk_offset": 5085568,
+      "section": ".text",
+      "sha256": "0f1d747bb0f1f05c93a53fc7d336cde1e9e8cabb38f003e38cd5b93412a9d5f2",
+      "live_matches_disk": true,
+      "retained_bytes": "local/WholeSceneTokenTextSource02/Original.008d9980.bin"
+    },
+    {
+      "address": "00438e10",
+      "envelope_bytes": 34,
+      "envelope_end_exclusive": "00438e32",
+      "body_ranges": [
+        {
+          "start": {
+            "space": "ram",
+            "offset": "00438e10"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "00438e31"
+          },
+          "length": "34"
+        }
+      ],
+      "ghidra_body_address_count": 34,
+      "disk_offset": 232976,
+      "section": ".text",
+      "sha256": "94e8a5ab6688cce154e9a580bc5e0e08cfcc8be7af08e28c7d7be7ce29f4bea7",
+      "live_matches_disk": true,
+      "retained_bytes": "local/WholeSceneTokenTextSource02/Original.00438e10.bin"
+    }
+  ],
+  "functions": [
+    {
+      "address": "008D9930",
+      "hypothesis_name": "ExpectToken",
+      "original_abi": {
+        "receiver": "ECX raw tokenizer owner",
+        "argument": "expected const char* at entry ESP+4",
+        "return": "AL boolean only; upper EAX unspecified",
+        "cleanup": "RET4"
+      },
+      "source_entry": "expect_native_scene_token_008d9930(void*, const char*, NativeSceneTokenValueContext&)",
+      "schedule": [
+        "raw peek 008D8A70",
+        "null-safe case-insensitive comparison 00438E10",
+        "equal: forward NUL-inclusive copy +5 to +405 through accepted consume, clear +805, return true",
+        "unequal: raw whitespace recovery 008D8F70, return false; no re-peek/consume"
+      ],
+      "complete_ordinary_source": true
+    },
+    {
+      "address": "008D9980",
+      "hypothesis_name": "ReadToken",
+      "original_abi": {
+        "receiver": "ECX raw tokenizer owner",
+        "argument": "none",
+        "return": "EAX raw token pointer; owner+5 on success, tail-peek result on failure",
+        "cleanup": "RET0; failure frame restored before tail JMP008D8A70"
+      },
+      "source_entry": "read_native_scene_token_008d9980(void*, NativeSceneTokenValueContext&)",
+      "schedule": [
+        "raw peek 008D8A70",
+        "reject token EOF +80A != 0",
+        "scan complete +5 text through NUL before quoted-byte test, using 32-bit cursor arithmetic",
+        "accept nonempty or quoted-empty text; NUL-inclusive consume, clear +805, return owner+5",
+        "otherwise raw recovery 008D8F70 followed by raw peek and return"
+      ],
+      "complete_ordinary_source": true
+    }
+  ],
+  "listing_gap_resolution": {
+    "start": "008d999d",
+    "bytes": "8d4900",
+    "decode": "LEA ECX,[ECX]",
+    "incoming_from_normal_entry": false,
+    "reason": "008d999b EB03 jumps to 008d99a0; no reachable body branch targets the three bytes",
+    "listing_repair_needed": false
+  },
+  "direct_providers": [
+    {
+      "address": "008D8A70",
+      "source": "src/native_scene_tokenizer.cpp",
+      "contract": "raw cached tokenizer scan, token buffer owner+5; exact existing context"
+    },
+    {
+      "address": "008D8960",
+      "source": "src/native_scene_tokenizer.cpp",
+      "contract": "forward NUL-inclusive +5 to +405 copy, then only clear token cache +805"
+    },
+    {
+      "address": "008D8F70",
+      "source": "src/native_scene_token_values.cpp",
+      "contract": "actual scanner whitespace recovery/cursor/line effects; preserve token cache and copy +809 to +80A"
+    },
+    {
+      "address": "00438E10",
+      "source": "src/entity_identity.cpp",
+      "contract": "same pointers 0, null left -1, null right 1, otherwise linked current-CRT _stricmp"
+    }
+  ],
+  "source_input_pins": [
+    {
+      "path": "include/bsp/native_scene_token_text.hpp",
+      "bytes": 1175,
+      "sha256": "fa8e9734feed6315cfb3c86caa5e8441d443adbf5f0d0260174bf9bcb1d0d2b2",
+      "retained_copy": "local/WholeSceneTokenTextSource02/inputs/include/bsp/native_scene_token_text.hpp"
+    },
+    {
+      "path": "src/native_scene_token_text.cpp",
+      "bytes": 1923,
+      "sha256": "1c66e9968f45f34200217a8feea676e344f0f80151e1c63c4c466e2a2b091e8a",
+      "retained_copy": "local/WholeSceneTokenTextSource02/inputs/src/native_scene_token_text.cpp"
+    },
+    {
+      "path": "include/bsp/native_scene_tokenizer.hpp",
+      "bytes": 3563,
+      "sha256": "040fb2c3a09a532377bc0eadd5ce5f4fc13475603fd6e646c1b162d9d8477b9e",
+      "retained_copy": "local/WholeSceneTokenTextSource02/inputs/include/bsp/native_scene_tokenizer.hpp"
+    },
+    {
+      "path": "src/native_scene_tokenizer.cpp",
+      "bytes": 8452,
+      "sha256": "cacfe4c42a3c8a974ccd3e6d7c0d1a1ed21478745acca7e2af34f2cb7f52e6b8",
+      "retained_copy": "local/WholeSceneTokenTextSource02/inputs/src/native_scene_tokenizer.cpp"
+    },
+    {
+      "path": "include/bsp/native_scene_token_values.hpp",
+      "bytes": 2330,
+      "sha256": "7d16dbc9564a1c59f7a3d98597fcb3beb7b3a151fb4d72c1db067788c3cbbd5e",
+      "retained_copy": "local/WholeSceneTokenTextSource02/inputs/include/bsp/native_scene_token_values.hpp"
+    },
+    {
+      "path": "src/native_scene_token_values.cpp",
+      "bytes": 3183,
+      "sha256": "20df9e1c1c2f898c57230524e6084df4e83549e2f7a6dd91c84291d245d9c7a4",
+      "retained_copy": "local/WholeSceneTokenTextSource02/inputs/src/native_scene_token_values.cpp"
+    },
+    {
+      "path": "include/bsp/entity_identity.hpp",
+      "bytes": 12117,
+      "sha256": "c157a3f7098d39d9a8e6e3ad5a6269db5fe1425c80c9870dcf16cf4f98ed0b87",
+      "retained_copy": "local/WholeSceneTokenTextSource02/inputs/include/bsp/entity_identity.hpp"
+    },
+    {
+      "path": "src/entity_identity.cpp",
+      "bytes": 12455,
+      "sha256": "886aef959411a02bae273bb3dcb541eaded80a3fce27a8184e7882afe6bfd0a9",
+      "retained_copy": "local/WholeSceneTokenTextSource02/inputs/src/entity_identity.cpp"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "retained_copy": "local/WholeSceneTokenTextSource02/inputs/config/target.json"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "retained_copy": "local/WholeSceneTokenTextSource02/inputs/scripts/build.ps1"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 228331,
+      "sha256": "5ba63506210f8cfc0a18c720ca50cf702bf88412d79a418abaa9d797a0b596c7",
+      "retained_copy": "local/WholeSceneTokenTextSource02/inputs/cmake/startup.cmake"
+    }
+  ],
+  "complete_retained_inputs": "local/WholeSceneTokenTextSource02/input_pins.DATA.json",
+  "strict_compile_and_static_review": {
+    "schema": "bsp.scene_token_text_strict_review.v1",
+    "compile_exit": 0,
+    "compiler": "MSVC Win32 cl.exe 19.51.36244.0 (toolset product 14.51.36244.0)",
+    "compiler_executable_sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c",
+    "dumpbin_executable_sha256": "61954eaf4559430bbee7429b6dc63457fdf42e1f6a3949ac6eabdc6590738410",
+    "compiler_path_capture": "local/WholeSceneTokenTextSource02/strict.compiler_path.log",
+    "command_file": "local/WholeSceneTokenTextSource02/strict_compile.cmd",
+    "flags": [
+      "/std:c++17",
+      "/c",
+      "/O2",
+      "/Ob2",
+      "/Oy-",
+      "/W4",
+      "/WX",
+      "/EHsc",
+      "/Gy",
+      "/GL-",
+      "/fp:strict"
+    ],
+    "compiler_log": "local/WholeSceneTokenTextSource02/strict.compile.log",
+    "compiler_log_is_filename_only": true,
+    "shell_notice": "A where-cl append to the environment log emitted a file-sharing notice. Compilation/dump commands passed; compiler and dumpbin paths were separately recaptured without the append.",
+    "object": "local/WholeSceneTokenTextSource02/native_scene_token_text.obj",
+    "machine": "14C x86",
+    "section_count": 8,
+    "code_sections": [
+      {
+        "section": 4,
+        "symbol": "internal byte helper",
+        "bytes": 14,
+        "relocations": []
+      },
+      {
+        "section": 5,
+        "symbol": "expect_native_scene_token_008d9930",
+        "bytes": 66,
+        "relocations": [
+          {
+            "offset": "0f",
+            "type": "REL32",
+            "target": "peek_native_scene_token_008d8a70"
+          },
+          {
+            "offset": "18",
+            "type": "REL32",
+            "target": "compare_insensitive_00438e10"
+          },
+          {
+            "offset": "25",
+            "type": "REL32",
+            "target": "consume_native_scene_token_008d8960"
+          },
+          {
+            "offset": "35",
+            "type": "REL32",
+            "target": "recover_native_scene_whitespace_008d8f70"
+          }
+        ]
+      },
+      {
+        "section": 6,
+        "symbol": "read_native_scene_token_008d9980",
+        "bytes": 94,
+        "relocations": [
+          {
+            "offset": "10",
+            "type": "REL32",
+            "target": "peek_native_scene_token_008d8a70"
+          },
+          {
+            "offset": "38",
+            "type": "REL32",
+            "target": "consume_native_scene_token_008d8960"
+          },
+          {
+            "offset": "4a",
+            "type": "REL32",
+            "target": "recover_native_scene_whitespace_008d8f70"
+          },
+          {
+            "offset": "52",
+            "type": "REL32",
+            "target": "peek_native_scene_token_008d8a70"
+          }
+        ]
+      },
+      {
+        "section": 7,
+        "symbol": "internal text helper",
+        "bytes": 11,
+        "relocations": []
+      }
+    ],
+    "other_sections": [
+      ".drectve (compiler CRT defaults)",
+      ".debug$S",
+      ".bss (4-byte compiler weak AVX marker)",
+      ".chks64"
+    ],
+    "all_emitted_code_and_relocations_inspected": true,
+    "expect_order": "peek -> compare -> success consume/AL1 or failure recover/AL0",
+    "read_order": "peek -> +80A -> full NUL scan -> length/quoted check -> consume/owner+5 or recover->peek",
+    "extra_runtime_callback_or_guard": false,
+    "original_binary_abi_established": false
+  },
+  "strict_artifact_pins": [
+    {
+      "path": "local/WholeSceneTokenTextSource02/native_scene_token_text.obj",
+      "bytes": 2322,
+      "sha256": "e851da2bbc61705ce5e6e661b3f5d4fba03643990d98b97dbaafe6cc090fdef7"
+    },
+    {
+      "path": "local/WholeSceneTokenTextSource02/native_scene_token_text.cod",
+      "bytes": 9152,
+      "sha256": "916bb1aac16b9b121a10e4c4cdf93d6de66e14ce9e09690d881c59b42e1c91ee"
+    },
+    {
+      "path": "local/WholeSceneTokenTextSource02/strict.compile.log",
+      "bytes": 29,
+      "sha256": "f9900a43c0648819e7551dd0ee2509fc6305ba0ec21e11afbf3b386310efd9f1"
+    },
+    {
+      "path": "local/WholeSceneTokenTextSource02/strict.obj.all.txt",
+      "bytes": 14971,
+      "sha256": "a7f9f4533f1f77915fb54182b0377e8737f0b9795a4d9ebc9d0594030e249334"
+    },
+    {
+      "path": "local/WholeSceneTokenTextSource02/strict.obj.disasm.txt",
+      "bytes": 6067,
+      "sha256": "1736afb582055d59c18ea79bff4e286752b00153d42dfff01ad8d9b5899e1b92"
+    },
+    {
+      "path": "local/WholeSceneTokenTextSource02/strict_review.DATA.json",
+      "bytes": 2672,
+      "sha256": "bc0465146512a52f8b7a051736c3e717f5486d10e9f027aba29a91caeb877625"
+    },
+    {
+      "path": "local/WholeSceneTokenTextSource02/strict_compile.cmd",
+      "bytes": 962,
+      "sha256": "b56de1ad070c7afbc1efed5c24c9f1ad5746678345f0dad0020e8237139cca94"
+    }
+  ],
+  "repository_build": {
+    "schema": "bsp.scene_token_text_repository_build_receipt.v1",
+    "script": "./scripts/build.ps1",
+    "working_directory": "J:/PROG/battlestations-pacific-decompile-cc12_type1011_native_gate",
+    "configuration": "Release",
+    "platform": "Win32",
+    "original_exec_session": 60211,
+    "terminal_tool_chunk": "d138fa",
+    "terminal_stdout": "repository_build_exit=0",
+    "exit_code": 0,
+    "warnings": [
+      "LNK4006: spawn_request_id_matches is defined in both lua_binding_spawn.obj and lua_spawn_new.obj; second definition ignored. These are existing registered sources outside this packet."
+    ],
+    "natural_terminal": true,
+    "cancelled_or_replaced": false,
+    "log": "local/WholeSceneTokenTextSource02/repository.build.log",
+    "CTest": {
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_real_seconds": 7.69
+    },
+    "new_TU_registered": false,
+    "new_TU_compilation_evidence": "separate required strict MSVC Win32 object compile",
+    "log_bytes": 20576,
+    "log_sha256": "93fdb5308cb05d804adf5c63e6e783487e94693b8c7b56b975a24c631ba332c5"
+  },
+  "integration": {
+    "new_TU_registered": false,
+    "shared_files_changed": false,
+    "Ghidra_or_ledger_writes": false,
+    "application_wiring": false,
+    "missing_file_constructor_008D9CF0_required_for_borrower": false
+  },
+  "tests_or_target": {
+    "new_tests": false,
+    "new_probes": false,
+    "target_runtime_started": false,
+    "existing_CTest_only": "run by required ./scripts/build.ps1"
+  },
+  "limitations": [
+    "Complete ordinary wrapper Source/static evidence with new context-bearing C++ interfaces; not Original binary ABI replacements.",
+    "Actual already-live raw tokenizer storage, valid NUL text and Original 0x400 token-buffer capacity are caller obligations; text remains borrowed.",
+    "Current accepted comparison/strchr providers retain host CRT/locale boundary; Original private CRT equivalence is unproven.",
+    "No class-provenance, FS/EH, target-runtime or game-equivalence evidence was added.",
+    "Required repository build passes existing registered sources; only strict standalone compilation covers this unregistered new TU.",
+    "No Source default provider, callback stand-in, invented phase graph, failure guard or success-only recovery narrowing was introduced."
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "status": "whole_conditional_ordinary_Source_accepted_registered_Main_build_pending",
+  "primary_complete_Source_and_Original_listing_read": true,
+  "independently_reviewed": true,
+  "primary_peer_pins": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_token_integration_20261015\\primary_peer_input_pins.DATA.json",
+    "bytes": 50185,
+    "sha256": "78aae6eb6a07a8fe3270cf0d2fea26c931d36e3423f6c1048d6b812cb4037c7c"
+  },
+  "Main_registered": true,
+  "Main_build": "pending",
+  "new_Source_runtime_executed": false,
+  "Original_ABI_compatible": false,
+  "Original_EH_or_private_CRT_compatible": false,
+  "game_validated": false,
+  "schema": "bsp.enum_table_wrappers_primary_review.v1",
+  "addresses": [
+    "008f2b90",
+    "008f2c10"
+  ],
+  "Source_commit": "fd1e64daa96746fee638d2bf05032832a7fb086a",
+  "source": "src/native_enum_table_wrappers.cpp",
+  "peer_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\EnumTableWrappersIndependentReview01\\review.compact.DATA.json",
+    "bytes": 3594,
+    "sha256": "a3f51ec316aa35b2405b6871539ef495a84cf98a2428e92f5494acf58117b779"
+  },
+  "whole_Original": [
+    {
+      "address": "008f2b90",
+      "bytes": 123,
+      "instructions": 36,
+      "ABI": "ECX owner; CString and CEnum stack args; RET8; no defined ordinary return"
+    },
+    {
+      "address": "008f2c10",
+      "bytes": 133,
+      "instructions": 41,
+      "ABI": "ECX owner; CString stack arg; AL Boolean; RET4"
+    }
+  ],
+  "contract": [
+    "Genuine local NativeString constructed by accepted raw0041E870 and manually returned by raw0041DD20; no invented implicit cleanup.",
+    "Insert: whole008F17E0 at owner+4, discard lower count, then key cleanup; genuine null-or-disjoint19Ch CEnum domain retained.",
+    "Contains: whole0048D4E0 at owner+4; private bucket; capture found before key cleanup; never read mapped+8.",
+    "Borrowed distinct enum pool/cell authorities; membership does not start enum pools, but CString construction can invoke raw string-pool get-or-create."
+  ],
+  "strict": {
+    "chunk": "29b8ad",
+    "exit_code": 0,
+    "code_sections": 8,
+    "code_bytes": 247,
+    "instructions": 100,
+    "code_relocations": 8,
+    "metadata_relocations": 6
+  },
+  "author_normal": {
+    "initial_chunk": "58dc81",
+    "session": 96687,
+    "terminal_chunk": "28e5bd",
+    "exit_code": 0,
+    "configured_checks": 2,
+    "seconds": 10.93,
+    "qualification": "New TU not registered in author build; original history receipts independently verified without replay."
+  },
+  "integration_documentation_correction": "Qualified membership pool wording; no emitted behavior change. Frozen author family remains unchanged.",
+  "limits": "Ordinary conditional C++ APIs only; canonical startup/publication, Original ABI/EH/privateCRT/runtime and whole-loader credit external."
+}

@@ -1,0 +1,64 @@
+{
+  "status": "whole_conditional_ordinary_Source_accepted_registered_Main_build_pending",
+  "primary_complete_Source_and_Original_listing_read": true,
+  "independently_reviewed": true,
+  "primary_peer_pins": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_token_integration_20261015\\primary_peer_input_pins.DATA.json",
+    "bytes": 50185,
+    "sha256": "78aae6eb6a07a8fe3270cf0d2fea26c931d36e3423f6c1048d6b812cb4037c7c"
+  },
+  "Main_registered": true,
+  "Main_build": "pending",
+  "new_Source_runtime_executed": false,
+  "Original_ABI_compatible": false,
+  "Original_EH_or_private_CRT_compatible": false,
+  "game_validated": false,
+  "schema": "bsp.scene_token_text_primary_review.v1",
+  "addresses": [
+    "008d9930",
+    "008d9980"
+  ],
+  "Source_commit": "cbbca5ef8afd35896dae5b36c0c98db872dcb7d3",
+  "source": "src/native_scene_token_text.cpp",
+  "peer_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\SceneTokenTextIndependentReview01\\review.compact.DATA.json",
+    "bytes": 4085,
+    "sha256": "e6d1597f9dda2259a6ac804793f3c730726f114011abdf8f1c440311e7e2eb5c"
+  },
+  "whole_Original": [
+    {
+      "address": "008d9930",
+      "bytes": 71,
+      "ABI": "ECX owner; stack+4 expected; AL Boolean; RET4"
+    },
+    {
+      "address": "008d9980",
+      "envelope_bytes": 105,
+      "function_bytes": 102,
+      "ABI": "ECX owner; EAX owner+5; RET0",
+      "excluded_unreachable_alignment": "008D999D..008D999F, skipped by 008D999B EB03; no listing repair"
+    }
+  ],
+  "contract": [
+    "Real live838h tokenizer and accepted raw peek/consume/recovery; no file constructor or model adapter.",
+    "Expect: peek, null-safe case-insensitive compare, consume only on match; mismatch recovery may alter tokenizer state, so legacy leaves-token-in-place assertion is superseded.",
+    "Read: when not past-end, scan full NUL string before reading quoted flag; nonempty/quoted-empty consumes; otherwise recover and re-peek; return borrowed owner+5."
+  ],
+  "strict": {
+    "chunk": "6d2ae8",
+    "exit_code": 0,
+    "code_sections": 4,
+    "code_bytes": 185,
+    "code_relocations": 8,
+    "qualification": "Actual batch exit0 retained; shared-file warning preserved; no standalone compiler-only exit invented."
+  },
+  "author_normal": {
+    "initial_chunk": "3f8933",
+    "session": 60211,
+    "terminal_chunk": "d138fa",
+    "exit_code": 0,
+    "configured_checks": 2,
+    "qualification": "Token TU not registered in author normal build; terminal belongs nested write_stdin60211, not adjacent Get-Content exec label."
+  },
+  "limits": "New conditional C++ interface; no constructor, whole-loader, Original ABI/EH/runtime or game credit."
+}
