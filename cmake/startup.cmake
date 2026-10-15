@@ -318,6 +318,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_lifec
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_numeric_lookahead.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_property_array_block_release.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_property_bag_storage.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_property_integer_add.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_property_record_element_count.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_property_record_type0_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_property_record_type10_raw_array_storage.cpp)
