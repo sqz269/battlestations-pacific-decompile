@@ -1,0 +1,1136 @@
+{
+  "packet": "oct15_group_vector_insert_count",
+  "worker": "agent/oct15_avoid_distance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis_and_export": true,
+  "ghidra_read_only": true,
+  "owned_addresses": [
+    "006a7690",
+    "0069b360",
+    "0069f1a0",
+    "006a7805",
+    "006a788e",
+    "00c7f5c0",
+    "00c7ef20",
+    "006a78e8"
+  ],
+  "source": "src/native_group_vector_insert.cpp",
+  "header": "include/bsp/native_group_vector_insert.hpp",
+  "documentation": "docs/OCT15_GROUP_VECTOR_INSERT.md",
+  "routines": [
+    {
+      "entry": "006a7690",
+      "name": "STL_CheckedStringVectorGroups_InsertCount_006A7690",
+      "typed_no_return": false,
+      "ranges": [
+        {
+          "start": "006a7690",
+          "end_inclusive": "006a7804",
+          "bytes": 373,
+          "instructions": 142,
+          "all_current_listing_starts_equal_capstone": true
+        },
+        {
+          "start": "006a7827",
+          "end_inclusive": "006a788d",
+          "bytes": 103,
+          "instructions": 41,
+          "all_current_listing_starts_equal_capstone": true
+        },
+        {
+          "start": "006a78b1",
+          "end_inclusive": "006a7923",
+          "bytes": 115,
+          "instructions": 46,
+          "all_current_listing_starts_equal_capstone": true
+        }
+      ],
+      "bytes": 591,
+      "instructions": 229,
+      "implementation": "insert_native_group_vector_count_006a7690",
+      "retained_name": "STL_CheckedStringVectorGroups_InsertCount_006A7690",
+      "coverage": "complete_actual_group_InsertCount_all_three_paths_and_CPP_cleanup_scopes",
+      "kind": "function"
+    },
+    {
+      "entry": "006a7805",
+      "name": "Catch_All@006a7805",
+      "typed_no_return": false,
+      "ranges": [
+        {
+          "start": "006a7805",
+          "end_inclusive": "006a7826",
+          "bytes": 34,
+          "instructions": 12,
+          "all_current_listing_starts_equal_capstone": true
+        }
+      ],
+      "bytes": 34,
+      "instructions": 12,
+      "implementation": "insert_native_group_vector_count_006a7690_new_backing_catch_006a7805",
+      "retained_name": "Catch_All@006a7805",
+      "coverage": "complete_parent_bound_completed_phase_cleanup_raw_backing_free_and_rethrow",
+      "kind": "fragment",
+      "parent": "006a7690"
+    },
+    {
+      "entry": "006a788e",
+      "name": "Catch_All@006a788e",
+      "typed_no_return": false,
+      "ranges": [
+        {
+          "start": "006a788e",
+          "end_inclusive": "006a78b0",
+          "bytes": 35,
+          "instructions": 13,
+          "all_current_listing_starts_equal_capstone": true
+        }
+      ],
+      "bytes": 35,
+      "instructions": 13,
+      "implementation": "insert_native_group_vector_count_006a7690_short_tail_catch_006a788e",
+      "retained_name": "Catch_All@006a788e",
+      "coverage": "complete_parent_bound_CURRENT_end_cleanup_and_rethrow",
+      "kind": "fragment",
+      "parent": "006a7690"
+    },
+    {
+      "entry": "0069b360",
+      "name": "STL_allocator_allocate_0069b360",
+      "typed_no_return": false,
+      "ranges": [
+        {
+          "start": "0069b360",
+          "end_inclusive": "0069b3b0",
+          "bytes": 81,
+          "instructions": 25,
+          "all_current_listing_starts_equal_capstone": true
+        }
+      ],
+      "bytes": 81,
+      "instructions": 25,
+      "implementation": "allocate_native_group_vector_0069b360",
+      "retained_name": "STL_allocator_allocate_0069b360",
+      "coverage": "complete_actual16B_allocator_at_accepted_current_CRT_exception_boundary",
+      "kind": "function"
+    },
+    {
+      "entry": "0069f1a0",
+      "name": "STL_xlen_throw_0069f1a0",
+      "typed_no_return": false,
+      "ranges": [
+        {
+          "start": "0069f1a0",
+          "end_inclusive": "0069f208",
+          "bytes": 105,
+          "instructions": 23,
+          "all_current_listing_starts_equal_capstone": true
+        }
+      ],
+      "bytes": 105,
+      "instructions": 23,
+      "implementation": "throw_native_group_vector_length_error_0069f1a0",
+      "retained_name": "STL_xlen_throw_0069f1a0",
+      "coverage": "complete_actual_owning_length_throw_by_exact_matched_accepted_transport",
+      "kind": "function"
+    },
+    {
+      "entry": "00c7f5c0",
+      "name": "Unwind@00c7f5c0",
+      "typed_no_return": false,
+      "ranges": [
+        {
+          "start": "00c7f5c0",
+          "end_inclusive": "00c7f5c7",
+          "bytes": 8,
+          "instructions": 2,
+          "all_current_listing_starts_equal_capstone": true
+        }
+      ],
+      "bytes": 8,
+      "instructions": 2,
+      "implementation": "insert_native_group_vector_count_006a7690_prototype_unwind_00c7f5c0",
+      "retained_name": "Unwind@00c7f5c0",
+      "coverage": "complete_parent_bound_actual55B110_prototype_cleanup_Source_scope",
+      "kind": "fragment",
+      "parent": "006a7690"
+    },
+    {
+      "entry": "00c7ef20",
+      "name": "Unwind@00c7ef20",
+      "typed_no_return": false,
+      "ranges": [
+        {
+          "start": "00c7ef20",
+          "end_inclusive": "00c7ef27",
+          "bytes": 8,
+          "instructions": 2,
+          "all_current_listing_starts_equal_capstone": true
+        }
+      ],
+      "bytes": 8,
+      "instructions": 2,
+      "implementation": "throw_native_group_vector_length_error_0069f1a0_temporary_unwind_00c7ef20",
+      "retained_name": "Unwind@00c7ef20",
+      "coverage": "complete_parent_bound_actual_SBO_cleanup_by_exact_accepted_transport",
+      "kind": "fragment",
+      "parent": "0069f1a0"
+    },
+    {
+      "start": "006a78e8",
+      "end_inclusive": "006a7910",
+      "bytes": 41,
+      "instructions": 14,
+      "parent": "006a7690",
+      "separate_function": false,
+      "typed_owner_proof": "initial typed query006A78E8 has no function-at-query and containing ordinary006A7690 complete ranges; cleanup is inline before native epilogue.",
+      "address": "006a78e8",
+      "entry": "006a78e8",
+      "implementation": "insert_native_group_vector_count_006a7690_normal_prototype_cleanup_006a78e8",
+      "kind": "fragment",
+      "coverage": "complete_inline_parent_bound_cached_begin_normal_cleanup_with_unwind_disarmed"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "006a76bd",
+      "native": "0055b150",
+      "function": "006a7690",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct accepted construct_native_outer_string_vector_copy_0055b150 into actual16B private prototype; real16B inner headers/8B string ownership, count-before-clear/+0/actual allocator/catch contracts inherited. No guard or count0 shortcut."
+    },
+    {
+      "address": "006a76fc",
+      "native": "0069f1a0",
+      "function": "006a7690",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct new throw_native_group_vector_length_error_0069f1a0 -> accepted556C90 owning NativeSingletonVectorLengthError. Full105B/message18/vtable/throw/EH/action proof; actual SBO/logic-error copy/destruction, no generic std::length_error."
+    },
+    {
+      "address": "006a775d",
+      "native": "0069b360",
+      "function": "006a7690",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct new allocate_native_group_vector_0069b360 -> complete accepted553300 after full81B proof. ECX count/ignoredEDX0; zero-new0, unsigned division threshold, exact native bad_alloc words. Actual current CRT object-byte allocation/retry/new-handler/Source std::bad_alloc domain, not original heap/RTTI/fault identity."
+    },
+    {
+      "address": "006a7780",
+      "native": "006a6d20",
+      "function": "006a7690",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct accepted transfer_native_group_vector_to_empty_006a6d20 from0ba183131. Actual55B150 empty construction then ordered4/8/C swaps preserves original nested identities/capacities; own partial-prefix/temporary cleanup. Owner and duplicate metadata forwarded; private unused tag normalized0."
+    },
+    {
+      "address": "006a7790",
+      "native": "006a7500",
+      "function": "006a7690",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct accepted fill_native_outer_string_vector_dispatch_006a7500 from da4bdbc53. Fixed owned prototype ADDRESS, actual55B150 construction, null skip joins prefix, actual completed-prefix cleanup; computed end. Source RawCtx/context and CPP exception domain explicit."
+    },
+    {
+      "address": "006a77ac",
+      "native": "006a6d20",
+      "function": "006a7690",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct accepted transfer_native_group_vector_to_empty_006a6d20 from0ba183131. Actual55B150 empty construction then ordered4/8/C swaps preserves original nested identities/capacities; own partial-prefix/temporary cleanup. Owner and duplicate metadata forwarded; private unused tag normalized0."
+    },
+    {
+      "address": "006a77d9",
+      "native": "006a6ee0",
+      "function": "006a7690",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct actual destroy_native_string_vector_group_range_006a6ee0; captured endpoints, per16B actual55AFF0 schedule, CURRENT begin free and ordered clears, +0 untouched. No local catch/retry; dead receiver/progress metadata forwarded."
+    },
+    {
+      "address": "006a77e2",
+      "native": "00bf65ac",
+      "function": "006a7690",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Actual singleton_lifetime_free in established current-CRT domain. Old backing free reloads CURRENT receiver begin; new-backing catch and normal prototype free their captured allocation/begin. Cleanup failure stops later actions; no extra rollback."
+    },
+    {
+      "address": "006a784a",
+      "native": "006a70e0",
+      "function": "006a7690",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct accepted transfer_native_group_vector_dispatch_006a70e0; actual group transfers, original3word inputs, owner/destination metadata and child end preserved; explicit Source RawCtx."
+    },
+    {
+      "address": "006a7867",
+      "native": "006a7500",
+      "function": "006a7690",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct accepted fill_native_outer_string_vector_dispatch_006a7500 from da4bdbc53. Fixed owned prototype ADDRESS, actual55B150 construction, null skip joins prefix, actual completed-prefix cleanup; computed end. Source RawCtx/context and CPP exception domain explicit."
+    },
+    {
+      "address": "006a7884",
+      "native": "006a6ca0",
+      "function": "006a7690",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct accepted fill_native_outer_vector_range_006a6ca0 from pinned e33160ebce62e0812c2d22572d11f908612c7403. Actual full6A6680 owning assignment, fixed value address,16B forward order; no borrowed assignment, callback or snapshot. Accepted before parent build."
+    },
+    {
+      "address": "006a78c2",
+      "native": "006a70e0",
+      "function": "006a7690",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct accepted transfer_native_group_vector_dispatch_006a70e0; actual group transfers, original3word inputs, owner/destination metadata and child end preserved; explicit Source RawCtx."
+    },
+    {
+      "address": "006a78d0",
+      "native": "006a7110",
+      "function": "006a7690",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct accepted move_native_group_vector_backward_006a7110; exact backward4/8/C swap schedule, +0 untouched, actual nested identities/capacities preserved. Native child has6physicalwords/3consumed; dead ambient tag qualified by accepted Source."
+    },
+    {
+      "address": "006a78e0",
+      "native": "006a6ca0",
+      "function": "006a7690",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct accepted fill_native_outer_vector_range_006a6ca0 from pinned e33160ebce62e0812c2d22572d11f908612c7403. Actual full6A6680 owning assignment, fixed value address,16B forward order; no borrowed assignment, callback or snapshot. Accepted before parent build."
+    },
+    {
+      "address": "006a7903",
+      "native": "0055a3a0",
+      "function": "006a7690",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct destroy_native_outer_string_vector_range_0055a3a0 for normal private prototype: capturedbegin/currentend, actual inner432440 cleanup. Then cached prototype begin free, no field clear. Prototype pointer/dead original count-or-progress metadata retained."
+    },
+    {
+      "address": "006a7909",
+      "native": "00bf65ac",
+      "function": "006a7690",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Actual singleton_lifetime_free in established current-CRT domain. Old backing free reloads CURRENT receiver begin; new-backing catch and normal prototype free their captured allocation/begin. Cleanup failure stops later actions; no extra rollback."
+    },
+    {
+      "address": "006a7810",
+      "native": "006a7190",
+      "function": "006a7805",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct destroy_native_string_vector_group_range_dispatch_006a7190. Realloc catch captured newbegin/completed; short-tail catch position+originalcount*16 through CURRENT receiver end+originalcount*16. Owner word does not impose new owner policy."
+    },
+    {
+      "address": "006a7816",
+      "native": "00bf65ac",
+      "function": "006a7805",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Actual singleton_lifetime_free in established current-CRT domain. Old backing free reloads CURRENT receiver begin; new-backing catch and normal prototype free their captured allocation/begin. Cleanup failure stops later actions; no extra rollback."
+    },
+    {
+      "address": "006a7822",
+      "native": "00bf6885",
+      "function": "006a7805",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Catch scopes use actual Source throw; after their precise cleanup. Native allocator failure maps accepted current-CRT std::bad_alloc, owning length failure maps actual NativeSingletonVectorLengthError. Source CPP transport/domain explicit, not FH3/SEH/RTTI/fault identity."
+    },
+    {
+      "address": "006a78a3",
+      "native": "006a7190",
+      "function": "006a788e",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct destroy_native_string_vector_group_range_dispatch_006a7190. Realloc catch captured newbegin/completed; short-tail catch position+originalcount*16 through CURRENT receiver end+originalcount*16. Owner word does not impose new owner policy."
+    },
+    {
+      "address": "006a78ac",
+      "native": "00bf6885",
+      "function": "006a788e",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Catch scopes use actual Source throw; after their precise cleanup. Native allocator failure maps accepted current-CRT std::bad_alloc, owning length failure maps actual NativeSingletonVectorLengthError. Source CPP transport/domain explicit, not FH3/SEH/RTTI/fault identity."
+    },
+    {
+      "address": "00c7f5c3",
+      "native": "0055b110",
+      "function": "00c7f5c0",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Direct tidy_native_outer_string_vector_0055b110 for exceptional prototype unwind: capture range, free CURRENT begin, unconditional4/8/C zero, preserve0. Different from normal cached-begin cleanup. Parent EBP action represented by CPP catch, no native frame adapter.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c7f5cd",
+      "native": "00bf6b43",
+      "function": "00c7f5c8",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Native FH3 handler context only: verified own FuncInfo immediate and tailJMP. Source CPP scopes replace the native handler/private frame; no additional Source port or Ghidra ownership claim.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "0069b36d",
+      "native": "00bf681b",
+      "function": "0069b360",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Through complete accepted actual553300 -> singleton_lifetime_allocate object byte domain, count*16, including zero request. No arbitrary allocator callback or invented host-size limit; current CRT/new-handler/bad_alloc qualifications retained."
+    },
+    {
+      "address": "0069b395",
+      "native": "00bf6340",
+      "function": "0069b360",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Through complete matched allocator at accepted Source std::bad_alloc transport boundary. Original native null-message exception construction/D6923C/E03CC0 bits proved; original CRT/FH3/RTTI/payload identity is not fabricated or claimed."
+    },
+    {
+      "address": "0069b3ac",
+      "native": "00bf6885",
+      "function": "0069b360",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Catch scopes use actual Source throw; after their precise cleanup. Native allocator failure maps accepted current-CRT std::bad_alloc, owning length failure maps actual NativeSingletonVectorLengthError. Source CPP transport/domain explicit, not FH3/SEH/RTTI/fault identity."
+    },
+    {
+      "address": "0069f1d8",
+      "native": "00408720",
+      "function": "0069f1a0",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Through complete matched owning556C90 Source: actual counted SBO assignment from exact18-byte vector<T> too long message, cap15/len0/NUL no-init schedule; cleanup armed only after success."
+    },
+    {
+      "address": "0069f1ed",
+      "native": "00411700",
+      "function": "0069f1a0",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Through complete matched owning556C90 Source: actual28h legacy logic-error payload/copy construction, D69260 data word, real owned strings and temporary cleanup. No generic std::length_error."
+    },
+    {
+      "address": "0069f204",
+      "native": "00bf6885",
+      "function": "0069f1a0",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Catch scopes use actual Source throw; after their precise cleanup. Native allocator failure maps accepted current-CRT std::bad_alloc, owning length failure maps actual NativeSingletonVectorLengthError. Source CPP transport/domain explicit, not FH3/SEH/RTTI/fault identity."
+    },
+    {
+      "address": "00c7ef23",
+      "native": "004072d0",
+      "function": "00c7ef20",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Through complete matched owning throw transport: actual completed private SBO temporary destruction (parent EBP-50), owned pointer/capacity/free schedule; no independent native action API.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c7ef2d",
+      "native": "00bf6b43",
+      "function": "00c7ef28",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Native FH3 handler context only: verified own FuncInfo immediate and tailJMP. Source CPP scopes replace the native handler/private frame; no additional Source port or Ghidra ownership claim.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "006a7a03",
+      "native": "006a7690",
+      "function": "006a79a0",
+      "contract": "Complete current listing, typed ownership and installed/live E8/E9 target verified; exact Source binding below.",
+      "binding": "Caller context only, from unowned Resize6A79A0. Native EAX unused; Source void and added RawCtx/private-frame qualification. Resize kept out of this packet."
+    }
+  ],
+  "original_abis": {
+    "006a7690": "ECX receiver, EDX unused, stack(dead iterator owner,position,unsigned count,value ADDRESS),RET10h/void semantic result. Source same inputs plus stacked actualRawCtx,RET14h. Resize caller ignores EAX.",
+    "0069b360": "ECX unsignedcount,EDX unconsumed,no stackinputs,plainRET/EAXallocation; Source reservesignoredEDX.",
+    "0069f1a0": "No inputs or normal return; Source [[noreturn]] at accepted actual owning CPP transport.",
+    "scopes": "Parent EBP catches/actions and inline normal fragment have no invented independent native-frame Source ABI."
+  },
+  "layout_and_ownership": "Actual16B receiver owns actual16B outer headers owning actual16B inner headers with8B pooled-string records. Producer/callee-backed offsets+0opaque,+4begin,+8end,+Ccapacity; opaque0 never evaluated/written. Actual transfers preserve nested identities/capacities; prototype fills/assignments own real strings.",
+  "count_capacity_schedule": "Prototype always constructed, including count0; receiver begin read before state0 armed. Capacity and initial-size decisions reuse captured begin but reread CURRENT end at original points; unsigned0FFFFFFF-size<count. Growth logical half, overflow fallback0, then repeated size comparisons/reselection. DWORD wrap and explicitSAR4, no new validation.",
+  "reallocation_scope": "Allocation before state1. Progress fresh->prefixend->filledend, only advance after phase success; CURRENT suffix end captured before filled-end progress store. Failing child owns own phase cleanup. Parent catch destroys prior phases and frees fresh. Capture CURRENT oldbegin before disarming state1; then current oldsize/end, destruction, CURRENT begin free, capacity/end/begin publication. No new-backing cleanup if old cleanup fails after disarm.",
+  "short_tail_scope": "Transfer suffix first, then reload CURRENT end/recompute remaining; state3 around fill and CURRENT-end increment/reload. Catch destroys[position+originalcount*16,CURRENTend+originalcount*16), no receiver backing free. Disarm before actual gap assignment. No rollback.",
+  "long_tail_scope": "Transfer last count elements to oldend; immediately publish helper end; backward swaps then actual gap assignment. Prototype-only guard remains; no short-tail catch or rollback added.",
+  "prototype_scope": "Construct55B150 outside guard, then capture receiver begin before arm. Exceptional actual55B110 CURRENT-begin/free/clear semantics. Normal capturedbegin whileguarded, then disarm; destroy captured range/freecachedbegin without clear. Normalcleanup failure does not re-enter prototype unwind.",
+  "metadata_qualification": "Original private tag word has lowbyte cleared and opaque highbytes; target consumes none. Source passes0 rather than evaluates indeterminate C++ word. Meaningful public owner/destination and normal original-count-or-progress words forwarded. Exclude aliases to native/Source private frames.",
+  "dependency_acceptance": {
+    "transfer": "Accepted0ba18313124ba0e5c1a69b81197f12cd5376ffc4, present in published main303a0b292 before build.",
+    "assignment": "Accepted e33160ebce62e0812c2d22572d11f908612c7403; separately merged as ce52805f4 before build. No unresolved6A6CA0 callback/stand-in.",
+    "other_actuals": "55B150,55B110,55A3A0,6A6EE0/7190,6A6FA0/7500,553300/556C90 already accepted; actual69B360/69F1A0 separately owned/proved/reconstructed in this packet."
+  },
+  "cmake_registration": {
+    "lease": "oct15_group_vector_insert_cmake_registration",
+    "status": "Queued first behind root dependency integration, claimed when first/free; fast-forward303a0b292, merge accepted assignment ce52805f4 separately, append only new Source registration, release before build."
+  },
+  "original_byte_audit": {
+    "original_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "extraction": "Installed PE32 section-table RVA-to-raw. Full fresh bsp.py ghidra bytes exactly equal disk; no masks in live/disk checks. Fresh disasm paged70 lines; all current starts equal Capstone5.0.7 for every complete typed normal/catch/action range.",
+    "typed_capture": {
+      "path": "local/oct15_group_vector_insert_typed_flow.json",
+      "sha256": "73c173f815f5b5a299098994faae5572a7a0542482fdb2457e914b8092f935cb",
+      "validation": {
+        "accepted": true,
+        "state": "accepted",
+        "errors": []
+      },
+      "modification_number": "291"
+    },
+    "unit_summary": [
+      {
+        "entry": "006a7690",
+        "name": "STL_CheckedStringVectorGroups_InsertCount_006A7690",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "006a7690",
+            "end_inclusive": "006a7804",
+            "bytes": 373,
+            "instructions": 142,
+            "all_current_listing_starts_equal_capstone": true
+          },
+          {
+            "start": "006a7827",
+            "end_inclusive": "006a788d",
+            "bytes": 103,
+            "instructions": 41,
+            "all_current_listing_starts_equal_capstone": true
+          },
+          {
+            "start": "006a78b1",
+            "end_inclusive": "006a7923",
+            "bytes": 115,
+            "instructions": 46,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 591,
+        "instructions": 229
+      },
+      {
+        "entry": "006a7805",
+        "name": "Catch_All@006a7805",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "006a7805",
+            "end_inclusive": "006a7826",
+            "bytes": 34,
+            "instructions": 12,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 34,
+        "instructions": 12
+      },
+      {
+        "entry": "006a788e",
+        "name": "Catch_All@006a788e",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "006a788e",
+            "end_inclusive": "006a78b0",
+            "bytes": 35,
+            "instructions": 13,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 35,
+        "instructions": 13
+      },
+      {
+        "entry": "0069b360",
+        "name": "STL_allocator_allocate_0069b360",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "0069b360",
+            "end_inclusive": "0069b3b0",
+            "bytes": 81,
+            "instructions": 25,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 81,
+        "instructions": 25
+      },
+      {
+        "entry": "0069f1a0",
+        "name": "STL_xlen_throw_0069f1a0",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "0069f1a0",
+            "end_inclusive": "0069f208",
+            "bytes": 105,
+            "instructions": 23,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 105,
+        "instructions": 23
+      },
+      {
+        "entry": "00c7f5c0",
+        "name": "Unwind@00c7f5c0",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "00c7f5c0",
+            "end_inclusive": "00c7f5c7",
+            "bytes": 8,
+            "instructions": 2,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 8,
+        "instructions": 2
+      },
+      {
+        "entry": "00c7ef20",
+        "name": "Unwind@00c7ef20",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "00c7ef20",
+            "end_inclusive": "00c7ef27",
+            "bytes": 8,
+            "instructions": 2,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 8,
+        "instructions": 2
+      },
+      {
+        "entry": "00553300",
+        "name": "STL_allocator_allocate_00553300",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "00553300",
+            "end_inclusive": "00553350",
+            "bytes": 81,
+            "instructions": 25,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 81,
+        "instructions": 25
+      },
+      {
+        "entry": "00556c90",
+        "name": "STL_xlen_throw_00556c90",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "00556c90",
+            "end_inclusive": "00556cf8",
+            "bytes": 105,
+            "instructions": 23,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 105,
+        "instructions": 23
+      }
+    ],
+    "live_spans": [
+      {
+        "address": "006a7690",
+        "size": 660,
+        "role": "complete owned or accepted-comparison envelope",
+        "bytes": "558bec6aff68c8f5c70064a100000000506489250000000083ec1c8b45145356578bf18965f0508d4dd88975ece88e3aebff8b4e0433c03bc88945fc750433dbeb088b5e0c2bd9c1fb048b7d103bf80f84030200003bc874088b46082bc1c1f804baffffff0f2bd03bd77305e89f7affff85c9750433c0eb088b46082bc1c1f80403c73bd80f830c0100008bc3d1e8baffffff0f2bd03bd3730433dbeb0203d885c9750433c0eb088b46082bc1c1f80403c73bd8731385c9750433c0eb088b46082bc1c1f8048d1c3833d28bcbe8fe3bffff8b4e04c645e8008b55e8528945108b5510528b550c5650894514c645fc01e89bf5ffff8d4dd85157508bce894510e86bfdffff8b5608c645e8008b4de8518945108b4d10518b4d0c5650e86ff5ffff8b4e0485c9c745fc00000000750433c0eb088b46082bc1c1f80403f885c974198b45108b56085056e802f7ffff8b460450e8c5ed540083c4048b4514c1e30403d8c1e70403f8895e0c897e08894604e9e30000008b4d108b7514518b4dec56e87bf9ffff56e891ed540083c4046a006a00e85ef054008b46088b5d0c8bd02bd3c1fa043bd78945e873768bcfc1e104894d1403cb5150538bcee891f8ffff8b46088bd02bd38d4dd851c1fa042bfa57508bcec645fc03e894fcffff8b45140146088b76088d4dd8512bf05653c745fc00000000e817f4ffff83c40ceb5a8b4dec8b45108b5108c1e00403d0528b550c03c250e8e8f8ffff6a006a00e8d4ef5400c1e7048bcf508bf82bf950894d14578bcee819f8ffff8946088b45e8505753e83bf8ffff8b55148d4dd85103d35253e8bbf3ffff83c4188b75dc85f6c745fcffffffff741b8b45108b55e0508d4dd8518bcee8982aebff56e89eec540083c4048b4df45f5e64890d000000005b8be55dc21000",
+        "live_equals_disk": true
+      },
+      {
+        "address": "006a7805",
+        "size": 34,
+        "role": "complete owned or accepted-comparison envelope",
+        "bytes": "8b4d108b7514518b4dec56e87bf9ffff56e891ed540083c4046a006a00e85ef05400",
+        "live_equals_disk": true
+      },
+      {
+        "address": "006a788e",
+        "size": 35,
+        "role": "complete owned or accepted-comparison envelope",
+        "bytes": "8b4dec8b45108b5108c1e00403d0528b550c03c250e8e8f8ffff6a006a00e8d4ef5400",
+        "live_equals_disk": true
+      },
+      {
+        "address": "0069b360",
+        "size": 81,
+        "role": "complete owned or accepted-comparison envelope",
+        "bytes": "83ec1085c9771233c9c1e10451e8a9b4550083c40483c410c383c8ff33d2f7f183f81073e48d0424508d4c2408c744240400000000e8a6af550068c03ce0008d4c240851c744240c3c92d600e8d4b45500",
+        "live_equals_disk": true
+      },
+      {
+        "address": "0069f1a0",
+        "size": 105,
+        "role": "complete owned or accepted-comparison envelope",
+        "bytes": "6aff6828efc70064a100000000506489250000000083ec446a1268e037ce008d4c2408c74424200f000000c744241c00000000c644240c00e84395d6ff8d0424508d4c2420c744245000000000e80e25d7ff68983fd8008d4c242051c74424246092d600e87c765500",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00c7f5c0",
+        "size": 8,
+        "role": "complete owned or accepted-comparison envelope",
+        "bytes": "8d4dd8e948bb8dff",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00c7ef20",
+        "size": 8,
+        "role": "complete owned or accepted-comparison envelope",
+        "bytes": "8d4db0e9a88378ff",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00553300",
+        "size": 81,
+        "role": "complete owned or accepted-comparison envelope",
+        "bytes": "83ec1085c9771233c9c1e10451e809356a0083c40483c410c383c8ff33d2f7f183f81073e48d0424508d4c2408c744240400000000e806306a0068c03ce0008d4c240851c744240c3c92d600e834356a00",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00556c90",
+        "size": 105,
+        "role": "complete owned or accepted-comparison envelope",
+        "bytes": "6aff68b8d7c60064a100000000506489250000000083ec446a1268e037ce008d4c2408c74424200f000000c744241c00000000c644240c00e8531aebff8d0424508d4c2420c744245000000000e81eaaebff68983fd8008d4c242051c74424246092d600e88cfb6900",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00c7f5c8",
+        "size": 10,
+        "role": "insertion FH3 handler",
+        "bytes": "b8f0cada00e97175f7ff",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00dacad0",
+        "size": 148,
+        "role": "full insertion EH tables",
+        "bytes": "4000000000000000000000008e786a0040000000000000000000000005786a0022059319050000003ccbda000200000014cbda000000000000000000000000000100000001000000010000000200000001000000e0cada0003000000030000000400000001000000d0cada00ffffffffc0f5c7000000000000000000000000000000000000000000000000000000000000000000",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00c7ef28",
+        "size": 10,
+        "role": "new length FH3 handler",
+        "bytes": "b8e4bdda00e9117cf7ff",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00dabddc",
+        "size": 44,
+        "role": "new length full EH tables",
+        "bytes": "ffffffff20efc7002205931901000000dcbdda00000000000000000000000000000000000000000001000000",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00c6d7b0",
+        "size": 18,
+        "role": "accepted length cleanup action and handler",
+        "bytes": "8d4db0e9189b79ffb8847bd900e98193f8ff",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00d97b7c",
+        "size": 44,
+        "role": "accepted length full EH tables",
+        "bytes": "ffffffffb0d7c60022059319010000007c7bd900000000000000000000000000000000000000000001000000",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00ce37e0",
+        "size": 18,
+        "role": "exact shared counted vector length message",
+        "bytes": "766563746f723c543e20746f6f206c6f6e67",
+        "live_equals_disk": true
+      }
+    ],
+    "verified_direct_edges": [
+      {
+        "address": "006a76bd",
+        "target": "0055b150",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a76fc",
+        "target": "0069f1a0",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a775d",
+        "target": "0069b360",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a7780",
+        "target": "006a6d20",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a7790",
+        "target": "006a7500",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a77ac",
+        "target": "006a6d20",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a77d9",
+        "target": "006a6ee0",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a77e2",
+        "target": "00bf65ac",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a784a",
+        "target": "006a70e0",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a7867",
+        "target": "006a7500",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a7884",
+        "target": "006a6ca0",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a78c2",
+        "target": "006a70e0",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a78d0",
+        "target": "006a7110",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a78e0",
+        "target": "006a6ca0",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a7903",
+        "target": "0055a3a0",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a7909",
+        "target": "00bf65ac",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a7810",
+        "target": "006a7190",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a7816",
+        "target": "00bf65ac",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a7822",
+        "target": "00bf6885",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a78a3",
+        "target": "006a7190",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "006a78ac",
+        "target": "00bf6885",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "00c7f5c3",
+        "target": "0055b110",
+        "mnemonic": "JMP"
+      },
+      {
+        "address": "00c7f5cd",
+        "target": "00bf6b43",
+        "mnemonic": "JMP"
+      },
+      {
+        "address": "0069b36d",
+        "target": "00bf681b",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "0069b395",
+        "target": "00bf6340",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "0069b3ac",
+        "target": "00bf6885",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "0069f1d8",
+        "target": "00408720",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "0069f1ed",
+        "target": "00411700",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "0069f204",
+        "target": "00bf6885",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "00c7ef23",
+        "target": "004072d0",
+        "mnemonic": "JMP"
+      },
+      {
+        "address": "00c7ef2d",
+        "target": "00bf6b43",
+        "mnemonic": "JMP"
+      },
+      {
+        "address": "0055330d",
+        "target": "00bf681b",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "00553335",
+        "target": "00bf6340",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "0055334c",
+        "target": "00bf6885",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "00556cc8",
+        "target": "00408720",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "00556cdd",
+        "target": "00411700",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "00556cf4",
+        "target": "00bf6885",
+        "mnemonic": "CALL"
+      },
+      {
+        "address": "00c6d7b3",
+        "target": "004072d0",
+        "mnemonic": "JMP"
+      },
+      {
+        "address": "00c6d7bd",
+        "target": "00bf6b43",
+        "mnemonic": "JMP"
+      },
+      {
+        "address": "006a7a03",
+        "target": "006a7690",
+        "mnemonic": "CALL"
+      }
+    ],
+    "normal_cleanup_fragment": {
+      "start": "006a78e8",
+      "end_inclusive": "006a7910",
+      "bytes": 41,
+      "instructions": 14,
+      "parent": "006a7690",
+      "separate_function": false,
+      "typed_owner_proof": "initial typed query006A78E8 has no function-at-query and containing ordinary006A7690 complete ranges; cleanup is inline before native epilogue."
+    },
+    "support_equivalence": {
+      "allocator": {
+        "new": "0069b360",
+        "accepted": "00553300",
+        "bytes_each": 81,
+        "equal_after_only_verified_rel32": true,
+        "masks_half_open_offsets": [
+          [
+            14,
+            18
+          ],
+          [
+            54,
+            58
+          ],
+          [
+            77,
+            81
+          ]
+        ],
+        "meaning": "All DIV unsigned threshold/count*16/zero-new0/RET and bad_alloc D6923C/E03CC0 words unchanged; all three same actual targets independently verified."
+      },
+      "length_throw": {
+        "new": "0069f1a0",
+        "accepted": "00556c90",
+        "bytes_each": 105,
+        "equal_after_only_verified_address_fields": true,
+        "masks_half_open_offsets": [
+          [
+            3,
+            7
+          ],
+          [
+            57,
+            61
+          ],
+          [
+            78,
+            82
+          ],
+          [
+            101,
+            105
+          ]
+        ],
+        "meaning": "Only own handler imm32 and three same-target CALL rel32 fields. Exact message pointerCE37E0/count18, no-init SBO cap15/len0/NUL, actual408720/411700, state-arm order, vtableD69260 and throwmetadataD83F98 unchanged. Full own EH tables and cleanup actions separately validated."
+      },
+      "length_action": {
+        "new": "00c7ef20",
+        "accepted": "00c6d7b0",
+        "bytes_each": 8,
+        "mask_half_open_offsets": [
+          [
+            4,
+            8
+          ]
+        ],
+        "same_actual_target": "004072d0"
+      }
+    },
+    "EH": {
+      "insertion": {
+        "handler": "00c7f5c8",
+        "funcinfo": "00dacaf0",
+        "funcinfo_words": [
+          "19930522",
+          5,
+          "00dacb3c",
+          2,
+          "00dacb14",
+          0,
+          0,
+          0,
+          1
+        ],
+        "unwind": [
+          [
+            -1,
+            "00c7f5c0"
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "try_records": [
+          [
+            1,
+            1,
+            2,
+            1,
+            "00dacae0"
+          ],
+          [
+            3,
+            3,
+            4,
+            1,
+            "00dacad0"
+          ]
+        ],
+        "catch_records": [
+          [
+            "40",
+            0,
+            0,
+            "006a7805"
+          ],
+          [
+            "40",
+            0,
+            0,
+            "006a788e"
+          ]
+        ]
+      },
+      "length_throw": {
+        "handler": "00c7ef28",
+        "funcinfo": "00dabde4",
+        "unwind_map": "00dabddc",
+        "state0": [
+          -1,
+          "00c7ef20"
+        ],
+        "try_count": 0,
+        "flags": 1,
+        "action": "LEA ECX,[EBP-50]; JMP actual4072D0, armed only after counted assignment"
+      }
+    },
+    "returns": {
+      "main": "006A7921 RET10h; void semantic Source; Resize caller ignores EAX",
+      "allocator": "0069B378 RET/EAX allocation; count0 still actualnew0",
+      "length_throw": "No ordinary return; actual owning payload throw; Source [[noreturn]] at accepted C++ transport"
+    },
+    "scope": "Static complete live/disk/typed/listing/EH evidence; Source exact current CRT/owning C++ exception/actual RawCtx domain, not native physical ABI/FH3/SEH/RTTI/fault/private-frame/runtime/gameplay equivalence.",
+    "raw_capture_directory": "local/oct15_group_vector_insert_evidence",
+    "commands_path": "local/oct15_group_vector_insert_evidence/commands.json",
+    "commands_sha256": "eeb8452f87cd94562bc1ddab31b45a3f8d01ff6c880543959b40577d581671f4",
+    "instructions_path": "local/oct15_group_vector_insert_evidence/instructions.json",
+    "instructions_sha256": "e452253505f450646a777d0475c8a3f51838cabf50243d9d5f722ade8a1ce90b",
+    "script_path": "local/oct15_group_vector_insert_byte_audit.py",
+    "script_sha256": "04cb47989913c57e016b1f09743e3f46f524ccb1643dd1d6206c3fc301f99354",
+    "capture_revalidation": "All live bytes/listings were captured read-only in this analysis batch. Offline revalidation uses those unchanged captures; counted message assertion is exactly18 characters, with no NUL in the counted slice. No bytes, masks or Source were changed to obtain equality."
+  },
+  "compiled_source_evidence": {
+    "object": "build/win32/bsp_core.dir/Release/native_group_vector_insert.obj",
+    "object_sha256": "0452b570983c17d677d1dc10d971e260a8c234f29e83446e4050b065acd9b2d0",
+    "source_sha256": "a098ad30000e4a953281a85795b5f81c6e821265d117f1e590cf3bd78299770e",
+    "header_sha256": "aa22c8d77d6ae7b0d018f5db2bb9b08e94758f6e9ad9ca170954276dc877f540",
+    "dump_file": "local/oct15_group_vector_insert_coff.asm",
+    "dumper": "MSVC dumpbin14.51.36244.0 /DISASM",
+    "extraction": "Exact-build complete COFF with symbol/relocation-labelled child calls; no native-byte comparison or masks on Source.",
+    "prototype": "Ctor53 before receiver-begin66 and guard72/count-zeroAA..AC. Normal begin capture36A before state-1at373; actual normal range399 and cachedbeginfree39F; RET14at3C2.",
+    "reallocation": "Actual accepted allocator17A; phase transfer1A9, progress1B2, fill1BD, CURRENT-end1CF then progress1DF, suffix1E5, oldbegin1F2 before guard0at203. Real old cleanup/free231/247; ordered capacity/end/begin stores follow.",
+    "in_place": "Short transfer2D7 before CURRENTend2E4 and guard3at2F1; fill312; CURRENT end read31F/store336/reload341, guard0at350 before actual assignment35A. Long transfer3CE, endstore3E1, backward3E9, branch to same actual gap assignment.",
+    "catches": "Prototype actual55B110 at406 then rethrow40F. Newbacking actual7190 at439/free445/rethrow451. Short catch CURRENT-end word at45C, originalbyteoffsets, actual7190at485/rethrow48E. No new rollback/free.",
+    "support": "Public allocator tail-reuses accepted553300; compiler main may inline that wrapper. Length throw uses accepted556C90 owning transport. Whole native body/EH equivalence separately proved; Source private frames/CPP/currentCRT domain explicit."
+  },
+  "floating_point": "No x87/FP arithmetic in main/support/catches/actions; no NaN-specific expressions involved.",
+  "uncertainties": [
+    "Original C++ names/types remain hypotheses; physical inputs/returns and actual field schedule recovered.",
+    "Source added RawCtx/private frames/currentCRT/owning CPP exception domain do not establish native register/FH3/SEH/RTTI/fault/cleanup-failure/heap identities.",
+    "Admitted accessed storage/ownership/pool/endpoints required; no repair/validation/rollback. Old typed projection fixtures are not new group-insert native equivalence.",
+    "No new native execution, binary replacement, startup or gameplay validation."
+  ],
+  "checks": {
+    "build": "pass ./scripts/build.ps1 after accepted pinned assignment dependency and released CMake lease",
+    "build_exit_code": 0,
+    "build_log": "local/oct15_group_vector_insert_build.log",
+    "existing_suites": "3/3 passed: reconstructed_math,native_math_differential,tool_tests;9.06s",
+    "byte_body_EH_audit": "pass16 complete live/disk spans,354 starts/Capstone over9 typed units,40 direct edges,all EH maps,full masked supports proof",
+    "call_report": "pass: 32 CALL/tail-JMP rows checked, 0 failed",
+    "markdown_calls": "pass: 32 call/jump claims checked, 0 failed, 0 unchecked, 0 warnings",
+    "diff_check": "pass: git diff --check; staged check repeated before commit",
+    "new_tests": "none"
+  },
+  "status": "source_complete_build_tested_with_actual_accepted_children_CPP_exception_CRT_private_frame_ABI_qualifications"
+}
