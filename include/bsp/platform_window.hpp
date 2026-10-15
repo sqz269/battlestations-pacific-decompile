@@ -28,72 +28,155 @@
 
 namespace bsp {
 
-// Projection of the 0x184-byte object allocated at 0073d8d1 and constructed by
-// 00becda0. Only fields written by 00becda0 or 00becee0 appear; bytes whose
-// role is not recovered keep an offset-derived name.
-struct Win32PlatformFields : PlatformLoopState {
-    const void* vtable{};        // +000, native &PTR_LAB_00d68cc4
-    std::string name;            // +004 length / +008 data, native cNativeString
-    bool fullscreen{};           // +00c
-    bool widescreen{};           // +00d, active_aspect > widescreen_threshold
-    float active_aspect{};       // +010
-    bool exact_1280x720{};       // +014
-    std::int32_t color_depth{};  // +018, see configure_platform_window_00becee0
-    std::int32_t x{};            // +01c
-    std::int32_t y{};            // +020
-    std::int32_t present_width{};    // +024
-    std::int32_t present_height{};   // +028
-    bool settings_changed_2c{};      // +02c, mouse cooperative-mode refresh flag
-    std::int32_t requested_width{};  // +034
-    std::int32_t requested_height{}; // +038
-    float desktop_aspect{};      // +03c
-    bool byte_040{};             // +040, zeroed by 00becda0, role unrecovered
-    // Inherited loop cells are the same +42/+43/+181 state used by messages.
-    bool byte_044{};             // +044, zeroed by 00becda0, role unrecovered
-    void* application{};         // +048, the cSkeletonAppMidway object
-    std::uint32_t power_scheme{};// +04c, GetActivePwrScheme output
-    // +050..+0df original POWER_POLICY copy, +0e0..+16f modified copy.
-    bool byte_170{};             // +170, zeroed by 00becda0, role unrecovered
-    void* text_queue{};          // +178, sentinel from 00bec710
-    void* text_queue_tail{};     // +17c
-    bool close_requested{};      // +180, set by WM_CLOSE in 00bed3b0
-};
-
-// Only the two cells consumed by BEC230 and B20C50 have native offsets here.
-// Opaque bytes are padding, not recovered platform fields. Never pass this
-// storage to the full native platform constructor or message handler.
+// Plain native storage: no default member writes, constructors, destructor or
+// host vtable. BECDA0 constructs the actual allocation before it is consumed.
+// Standalone compatibility views value-initialize their own unregistered bytes.
 struct NativePlatformWindowFocusStorage {
-    std::byte opaque_00[0x30]{};
-    HWND window_30{};
-    std::byte opaque_34[0x0d]{};
-    bool active_41{};
-    std::byte opaque_42[2]{};
+    const void* profile_00;
+    std::uint32_t title_length_04;
+    char* title_data_08;
+    bool fullscreen_0c;
+    bool widescreen_0d;
+    std::byte untouched_0e[2];
+    float active_aspect_10;
+    bool exact_1280x720_14;
+    std::byte untouched_15[3];
+    std::int32_t color_depth_18;
+    std::int32_t x_1c;
+    std::int32_t y_20;
+    std::int32_t present_width_24;
+    std::int32_t present_height_28;
+    bool settings_changed_2c;
+    std::byte untouched_2d[3];
+    HWND window_30;
+    std::int32_t requested_width_34;
+    std::int32_t requested_height_38;
+    float desktop_aspect_3c;
+    bool byte_040;
+    bool active_41;
+    bool frames_enabled_42;
+    bool loop_finished_43;
+};
+struct NativePlatformObjectStorage {
+    NativePlatformWindowFocusStorage window;
+    bool clipboard_requested_44;
+    std::byte untouched_45[3];
+    void* application_48;
+    std::uint32_t power_scheme_4c;
+    std::byte power_policies_50[0x120];
+    bool text_enabled_170;
+    std::byte untouched_171[3];
+    std::uint32_t queue_unused_174;
+    void* queue_sentinel_178;
+    std::uint32_t queue_count_17c;
+    bool close_requested_180;
+    bool exit_requested_181;
+    std::byte untouched_182[2];
 };
 static_assert(sizeof(HWND) == 4);
+static_assert(sizeof(NativePlatformWindowFocusStorage) == 0x44);
+static_assert(offsetof(NativePlatformWindowFocusStorage, present_height_28) == 0x28);
 static_assert(offsetof(NativePlatformWindowFocusStorage, window_30) == 0x30);
 static_assert(offsetof(NativePlatformWindowFocusStorage, active_41) == 0x41);
-static_assert(sizeof(NativePlatformWindowFocusStorage) == 0x44);
+static_assert(offsetof(NativePlatformWindowFocusStorage, frames_enabled_42) == 0x42);
+static_assert(offsetof(NativePlatformObjectStorage, power_policies_50) == 0x50);
+static_assert(offsetof(NativePlatformObjectStorage, text_enabled_170) == 0x170);
+static_assert(offsetof(NativePlatformObjectStorage, queue_sentinel_178) == 0x178);
+static_assert(offsetof(NativePlatformObjectStorage, queue_count_17c) == 0x17c);
+static_assert(offsetof(NativePlatformObjectStorage, exit_requested_181) == 0x181);
+static_assert(sizeof(NativePlatformObjectStorage) == 0x184);
 
-struct Win32PlatformState : Win32PlatformFields {
-private:
-    NativePlatformWindowFocusStorage window_focus_{};
+struct NativeStringRawPoolContext;
+
+// Borrow the native title header. Only a standalone compatibility projection
+// owns a std::string; actual-owner writes use its same raw pool/manager cells.
+// Destruction never returns the native title: BE2B10 owns that operation.
+class PlatformWindowName final {
 public:
-    // Every projected producer and raw focus consumer uses these same cells.
-    // Explicit copy/move operations keep references bound to their own object.
-    HWND& window{window_focus_.window_30};
-    bool& byte_041{window_focus_.active_41};
-    Win32PlatformState() = default;
-    Win32PlatformState(const Win32PlatformState&);
-    Win32PlatformState(Win32PlatformState&&) noexcept;
-    Win32PlatformState& operator=(const Win32PlatformState&);
-    Win32PlatformState& operator=(Win32PlatformState&&) noexcept;
-    NativePlatformWindowFocusStorage& native_window_focus() noexcept { return window_focus_; }
-    const NativePlatformWindowFocusStorage& native_window_focus() const noexcept { return window_focus_; }
+    PlatformWindowName(NativePlatformWindowFocusStorage&, NativeStringRawPoolContext*) noexcept;
+    void assign(const char*);
+    void clear() { assign(""); }
+    const char* c_str() const noexcept;
+    std::size_t size() const noexcept;
+    bool empty() const noexcept { return size() == 0; }
+    operator std::string() const { return std::string(c_str(), size()); }
+    void copy_projection_from(const PlatformWindowName&);
+    void move_projection_from(PlatformWindowName&) noexcept;
+private:
+    void publish_projection_header() noexcept;
+    NativePlatformWindowFocusStorage& header_;
+    NativeStringRawPoolContext* strings_;
+    std::string compatibility_name_;
 };
 
-// Typed Win32 imports for the complete WM_CREATE and WM_SIZE arms of BED3B0.
-// Window-extra offset zero stores the projection passed to CreateWindowExA;
-// it is distinct from the active receiver forwarded by native thunk BEC3B0.
+class PlatformWindowStorageBinding {
+protected:
+    PlatformWindowStorageBinding() noexcept;
+    PlatformWindowStorageBinding(NativePlatformObjectStorage&, NativeStringRawPoolContext&) noexcept;
+    NativePlatformObjectStorage& storage() noexcept { return *storage_; }
+    const NativePlatformObjectStorage& storage() const noexcept { return *storage_; }
+    NativeStringRawPoolContext* native_strings() const noexcept { return strings_; }
+private:
+    // Unused/unregistered for actual-owner views; never another native owner.
+    NativePlatformObjectStorage projection_storage_;
+    NativePlatformObjectStorage* storage_;
+    NativeStringRawPoolContext* strings_{};
+};
+
+// The C++ view has a new Source ABI. Every exposed scalar is a reference to
+// its one backing cell; actual-owner views never initialize or copy raw bytes.
+// Their source metadata must outlive every callback but stop reading fields
+// before canonical native deletion frees the actual owner. Do not copy/move
+// an actual-owner view. Standalone projection copies retain independent cells.
+struct Win32PlatformFields : private PlatformWindowStorageBinding, PlatformLoopState {
+    Win32PlatformFields() noexcept;
+    Win32PlatformFields(NativePlatformObjectStorage&, NativeStringRawPoolContext&) noexcept;
+    Win32PlatformFields(const Win32PlatformFields&);
+    Win32PlatformFields(Win32PlatformFields&&) noexcept;
+    Win32PlatformFields& operator=(const Win32PlatformFields&);
+    Win32PlatformFields& operator=(Win32PlatformFields&&) noexcept;
+    NativePlatformObjectStorage* actual_native_object() noexcept {
+        return native_strings() ? &storage() : nullptr;
+    }
+    NativePlatformWindowFocusStorage& native_window_focus() noexcept { return storage().window; }
+    const NativePlatformWindowFocusStorage& native_window_focus() const noexcept { return storage().window; }
+    const void*& vtable{storage().window.profile_00};
+    PlatformWindowName name{storage().window, native_strings()};
+    bool& fullscreen{storage().window.fullscreen_0c};
+    bool& widescreen{storage().window.widescreen_0d};
+    float& active_aspect{storage().window.active_aspect_10};
+    bool& exact_1280x720{storage().window.exact_1280x720_14};
+    std::int32_t& color_depth{storage().window.color_depth_18};
+    std::int32_t& x{storage().window.x_1c};
+    std::int32_t& y{storage().window.y_20};
+    std::int32_t& present_width{storage().window.present_width_24};
+    std::int32_t& present_height{storage().window.present_height_28};
+    bool& settings_changed_2c{storage().window.settings_changed_2c};
+    HWND& window{storage().window.window_30};
+    std::int32_t& requested_width{storage().window.requested_width_34};
+    std::int32_t& requested_height{storage().window.requested_height_38};
+    float& desktop_aspect{storage().window.desktop_aspect_3c};
+    bool& byte_040{storage().window.byte_040};
+    bool& byte_041{storage().window.active_41};
+    bool& byte_044{storage().clipboard_requested_44};
+    void*& application{storage().application_48};
+    std::uint32_t& power_scheme{storage().power_scheme_4c};
+    bool& byte_170{storage().text_enabled_170};
+    void*& text_queue{storage().queue_sentinel_178};
+    std::uint32_t& text_queue_count{storage().queue_count_17c};
+    bool& close_requested{storage().close_requested_180};
+};
+
+struct Win32PlatformState : Win32PlatformFields {
+    Win32PlatformState() = default;
+    Win32PlatformState(NativePlatformObjectStorage& owner, NativeStringRawPoolContext& strings) noexcept
+        : Win32PlatformFields(owner, strings) {}
+    Win32PlatformState(const Win32PlatformState&) = default;
+    Win32PlatformState(Win32PlatformState&&) noexcept = default;
+    Win32PlatformState& operator=(const Win32PlatformState&) = default;
+    Win32PlatformState& operator=(Win32PlatformState&&) noexcept = default;
+};
+
 struct PlatformFocusMessageHost {
     virtual ~PlatformFocusMessageHost() = default;
     virtual Win32PlatformState& window_state(HWND window) = 0; // GetWindowLongA(window, 0)

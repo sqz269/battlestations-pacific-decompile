@@ -1,6 +1,10 @@
 #include "bsp/platform_window.hpp"
+#include "bsp/native_string.hpp"
 
 #include <cstddef>
+#include <cstring>
+#include <exception>
+#include <stdexcept>
 #include <utility>
 
 namespace bsp {
@@ -21,22 +25,70 @@ std::int32_t rect_extent(LONG high, LONG low) noexcept {
 
 } // namespace
 
-Win32PlatformState::Win32PlatformState(const Win32PlatformState& other)
-    : Win32PlatformFields(other), window_focus_(other.window_focus_) {}
-Win32PlatformState::Win32PlatformState(Win32PlatformState&& other) noexcept
-    : Win32PlatformFields(std::move(other)), window_focus_(other.window_focus_) {}
-Win32PlatformState& Win32PlatformState::operator=(const Win32PlatformState& other) {
-    if (this != &other) {
-        Win32PlatformFields::operator=(other);
-        window_focus_ = other.window_focus_;
+PlatformWindowName::PlatformWindowName(NativePlatformWindowFocusStorage& header,
+    NativeStringRawPoolContext* strings) noexcept : header_(header), strings_(strings) {}
+const char* PlatformWindowName::c_str() const noexcept {
+    return header_.title_data_08 ? header_.title_data_08 : "";
+}
+std::size_t PlatformWindowName::size() const noexcept { return header_.title_length_04; }
+void PlatformWindowName::publish_projection_header() noexcept {
+    header_.title_length_04 = static_cast<std::uint32_t>(compatibility_name_.size());
+    header_.title_data_08 = compatibility_name_.empty() ? nullptr : compatibility_name_.data();
+}
+void PlatformWindowName::assign(const char* value) {
+    if (strings_) {
+        // Source window request supplies a stable, distinct C string. The
+        // actual platform header, current pool and current length/data are
+        // used directly; this is not another native name owner.
+        const auto length = static_cast<std::uint32_t>(std::strlen(value));
+        resize_native_string_header_0041dd40(&header_.title_length_04, *strings_, length, true);
+        if (length) std::memcpy(header_.title_data_08, value, header_.title_length_04);
+    } else {
+        compatibility_name_.assign(value);
+        publish_projection_header();
     }
+}
+void PlatformWindowName::copy_projection_from(const PlatformWindowName& other) {
+    if (strings_ || other.strings_) throw std::logic_error("Actual platform views cannot copy native name ownership");
+    compatibility_name_.assign(other.c_str(), other.size());
+    publish_projection_header();
+}
+void PlatformWindowName::move_projection_from(PlatformWindowName& other) noexcept {
+    if (strings_ || other.strings_) std::terminate();
+    compatibility_name_ = std::move(other.compatibility_name_);
+    publish_projection_header();
+    other.publish_projection_header();
+}
+PlatformWindowStorageBinding::PlatformWindowStorageBinding() noexcept
+    : projection_storage_{}, storage_(&projection_storage_) {}
+PlatformWindowStorageBinding::PlatformWindowStorageBinding(NativePlatformObjectStorage& owner,
+    NativeStringRawPoolContext& strings) noexcept : storage_(&owner), strings_(&strings) {}
+Win32PlatformFields::Win32PlatformFields() noexcept
+    : PlatformWindowStorageBinding(), PlatformLoopState(storage().window.frames_enabled_42,
+        storage().exit_requested_181, storage().window.loop_finished_43, NativeCells{}) {}
+Win32PlatformFields::Win32PlatformFields(NativePlatformObjectStorage& owner,
+    NativeStringRawPoolContext& strings) noexcept
+    : PlatformWindowStorageBinding(owner, strings), PlatformLoopState(owner.window.frames_enabled_42,
+        owner.exit_requested_181, owner.window.loop_finished_43, NativeCells{}) {}
+Win32PlatformFields::Win32PlatformFields(const Win32PlatformFields& other) : Win32PlatformFields() {
+    *this = other;
+}
+Win32PlatformFields::Win32PlatformFields(Win32PlatformFields&& other) noexcept : Win32PlatformFields() {
+    *this = std::move(other);
+}
+Win32PlatformFields& Win32PlatformFields::operator=(const Win32PlatformFields& other) {
+    if (this == &other) return *this;
+    if (native_strings() || other.native_strings())
+        throw std::logic_error("Actual platform views cannot copy or retarget native ownership");
+    storage() = other.storage();
+    name.copy_projection_from(other.name);
     return *this;
 }
-Win32PlatformState& Win32PlatformState::operator=(Win32PlatformState&& other) noexcept {
-    if (this != &other) {
-        Win32PlatformFields::operator=(std::move(other));
-        window_focus_ = other.window_focus_;
-    }
+Win32PlatformFields& Win32PlatformFields::operator=(Win32PlatformFields&& other) noexcept {
+    if (this == &other) return *this;
+    if (native_strings() || other.native_strings()) std::terminate();
+    storage() = other.storage();
+    name.move_projection_from(other.name);
     return *this;
 }
 
@@ -100,7 +152,7 @@ void construct_win32_platform_00becda0(Win32PlatformState& state,
     state.power_scheme = 0;
     state.byte_170 = false;
     state.text_queue = text_queue_sentinel;
-    state.text_queue_tail = nullptr;
+    state.text_queue_count = 0;
     state.close_requested = false;
     state.exit_requested = false;
 }

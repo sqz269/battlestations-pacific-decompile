@@ -679,6 +679,9 @@ public:
     const ObjectHandleResolverSlots& object_handle_resolvers() const noexcept { return object_resolvers_; }
     NativeRendererParametersOwner* renderer_parameters() const noexcept { return renderer_parameters_; }
     GameNativeRendererApplication* native_renderer() const noexcept { return native_renderer_.get(); }
+    // Read-only loan of the SAME mutable Source cell used by construction,
+    // renderer loading and native Text configuration. Borrow only while ready.
+    void* const volatile& platform_publication_0109cf04() const;
     GameInputRuntime* input_runtime() const noexcept { return input_runtime_; }
     // Borrow the application's loaded-library/current-raw-clock provider.
     // Null before SoundServices exists; it owns no online manager or account.
@@ -688,6 +691,9 @@ public:
 private:
     void run_initialize_phases(const char* mode);
     void release_platform_window() noexcept;
+    void exit_if_native_platform_incomplete() noexcept;
+    void prepare_native_platform_drain() noexcept;
+    void close_native_platform_after_drain() noexcept;
     void ensure_frame_clock_0073d480(bool publication_was_null);
     const NativeFrameClockPublicationContext& require_frame_clock_context() const;
     void exit_if_frame_clock_failed() noexcept;
@@ -737,9 +743,11 @@ private:
     IGameExplorer* game_explorer_{};
 
     RandomThreads* random_threads_{};
-    Win32PlatformState platform_;
-    PlatformLoopState& loop_{platform_};
-    PlatformTextInput platform_text_;
+    struct NativePlatformServices;
+    std::unique_ptr<NativePlatformServices> native_platform_;
+    Win32PlatformState* platform_{}; // nonowning metadata view of its actual owner
+    PlatformLoopState* loop_{};
+    PlatformTextInput* platform_text_{};
     ObjectHandleResolverSlots object_resolvers_;
     ApplicationFrameState frame_state_;
     FrameMarkerColor frame_color_;
