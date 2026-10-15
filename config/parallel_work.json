@@ -40331,6 +40331,213 @@
       "game_validated": false,
       "actual_compiler_archive_gate": "pass",
       "Main_validation": "reports/cc12_property_float_add_Main_validation.json"
+    },
+    {
+      "id": "goal_oct15_scene_map_erase_range",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0046b570"
+      ],
+      "output_files": [
+        "src/native_scene_record_map_erase_range.cpp",
+        "include/bsp/native_scene_record_map_erase_range.hpp",
+        "docs/GOAL_OCT15_SCENE_MAP_ERASE_RANGE.md",
+        "reports/goal_oct15_scene_map_erase_range.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_map_clear",
+        "goal_oct15_scene_map_increment",
+        "goal_oct15_scene_map_erase"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_erase_range.json",
+      "primary_review": "reports/goal_oct15_scene_integer_set_primary_review.json",
+      "code_revision": "6a5906ff426b1ffa573abecc8e46720ab37164d4",
+      "integrated_main_revision": "1572af356",
+      "Main_build_gate": "passed; Original ABI, new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary Source and qualified temporary cleanup where specified; explicit raw/live backing and actual current-CRT providers.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_integer_set_node",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "004681b0"
+      ],
+      "output_files": [
+        "src/native_scene_integer_set_node.cpp",
+        "include/bsp/native_scene_integer_set_node.hpp",
+        "docs/GOAL_OCT15_SCENE_INTEGER_SET_NODE.md",
+        "reports/goal_oct15_scene_integer_set_node.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_integer_set_node.json",
+      "primary_review": "reports/goal_oct15_scene_integer_set_primary_review.json",
+      "code_revision": "6a5906ff426b1ffa573abecc8e46720ab37164d4",
+      "integrated_main_revision": "1572af356",
+      "Main_build_gate": "passed; Original ABI, new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary Source and qualified temporary cleanup where specified; explicit raw/live backing and actual current-CRT providers.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_integer_set_rotations",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00467740",
+        "00467790"
+      ],
+      "output_files": [
+        "src/native_scene_integer_set_rotations.cpp",
+        "include/bsp/native_scene_integer_set_rotations.hpp",
+        "docs/GOAL_OCT15_SCENE_INTEGER_SET_ROTATIONS.md",
+        "reports/goal_oct15_scene_integer_set_rotations.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_integer_set_rotations.json",
+      "primary_review": "reports/goal_oct15_scene_integer_set_primary_review.json",
+      "code_revision": "6a5906ff426b1ffa573abecc8e46720ab37164d4",
+      "integrated_main_revision": "1572af356",
+      "Main_build_gate": "passed; Original ABI, new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary Source and qualified temporary cleanup where specified; explicit raw/live backing and actual current-CRT providers.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_integer_set_iterator",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "004679f0",
+        "00468210",
+        "004688f0"
+      ],
+      "output_files": [
+        "src/native_scene_integer_set_iterator.cpp",
+        "include/bsp/native_scene_integer_set_iterator.hpp",
+        "docs/GOAL_OCT15_SCENE_INTEGER_SET_ITERATOR.md",
+        "reports/goal_oct15_scene_integer_set_iterator.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_integer_set_iterator.json",
+      "primary_review": "reports/goal_oct15_scene_integer_set_primary_review.json",
+      "code_revision": "6a5906ff426b1ffa573abecc8e46720ab37164d4",
+      "integrated_main_revision": "1572af356",
+      "Main_build_gate": "passed; Original ABI, new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary Source and qualified temporary cleanup where specified; explicit raw/live backing and actual current-CRT providers.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_integer_set_insert",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "0046a150",
+        "0046ac50",
+        "00c61c10"
+      ],
+      "output_files": [
+        "src/native_scene_integer_set_insert.cpp",
+        "include/bsp/native_scene_integer_set_insert.hpp",
+        "docs/GOAL_OCT15_SCENE_INTEGER_SET_INSERT.md",
+        "reports/goal_oct15_scene_integer_set_insert.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_integer_set_node",
+        "goal_oct15_scene_integer_set_rotations",
+        "goal_oct15_scene_integer_set_iterator"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_integer_set_insert.json",
+      "primary_review": "reports/goal_oct15_scene_integer_set_primary_review.json",
+      "code_revision": "6a5906ff426b1ffa573abecc8e46720ab37164d4",
+      "integrated_main_revision": "1572af356",
+      "Main_build_gate": "passed; Original ABI, new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary Source and qualified temporary cleanup where specified; explicit raw/live backing and actual current-CRT providers.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_integer_set_clear",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00468300",
+        "00468980"
+      ],
+      "output_files": [
+        "src/native_scene_integer_set_clear.cpp",
+        "include/bsp/native_scene_integer_set_clear.hpp",
+        "docs/GOAL_OCT15_SCENE_INTEGER_SET_CLEAR.md",
+        "reports/goal_oct15_scene_integer_set_clear.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_integer_set_clear.json",
+      "primary_review": "reports/goal_oct15_destroy_clear_primary_review.json",
+      "code_revision": "e30187ffb6237cac8df370cc1cb13deeadea39de",
+      "integrated_main_revision": "1572af356",
+      "Main_build_gate": "passed; Original ABI, new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary Source and qualified temporary cleanup where specified; explicit raw/live backing and actual current-CRT providers.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_destroy",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0046c500",
+        "0046ced0",
+        "0046ef70"
+      ],
+      "output_files": [
+        "src/native_scene_record_map_destroy.cpp",
+        "include/bsp/native_scene_record_map_destroy.hpp",
+        "docs/GOAL_OCT15_SCENE_MAP_DESTROY.md",
+        "reports/goal_oct15_scene_map_destroy.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_map_erase_range"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_destroy.json",
+      "primary_review": "reports/goal_oct15_destroy_clear_primary_review.json",
+      "code_revision": "e30187ffb6237cac8df370cc1cb13deeadea39de",
+      "integrated_main_revision": "1572af356",
+      "Main_build_gate": "passed; Original ABI, new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary Source and qualified temporary cleanup where specified; explicit raw/live backing and actual current-CRT providers.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
