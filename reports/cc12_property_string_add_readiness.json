@@ -1,0 +1,165 @@
+{
+  "schema": "bsp.property_string_add_readiness.primary.v1",
+  "source_ready": true,
+  "Source_implemented": false,
+  "ordinary_Source_admitted": false,
+  "state": "whole_ordinary_string_property_ready_no_Source_yet",
+  "whole_Original": {
+    "entry": "008F38A0",
+    "end_exclusive": "008F3931",
+    "bytes": 145,
+    "instructions": 46,
+    "ranges": 1,
+    "sha256": "02d029d7f631a17407aaf2423f23a1fbe964b7bcc01eba13b101ed8f3bab08d6",
+    "name": "BSP_ScenePropertyBag_SetString (descriptive hypothesis)",
+    "abi": "Ordinary __thiscall: ECX=actual live 114h bag, entry ESP+4=key, ESP+8=nullable value CString; RET8; EAX returns actual bag from insertion.",
+    "preservation": "EBX/ESI/EDI are saved and restored; EBP is not touched. No flags/ECX/EDX parity is claimed for the new C++ API.",
+    "direct_calls": [
+      {
+        "site": "008F38BD",
+        "target": "00BF681B",
+        "role": "cdecl operator_new(38h), caller removes one argument"
+      },
+      {
+        "site": "008F38F5",
+        "target": "00438E40",
+        "role": "ECX=nullable value, no stack arguments, EAX=owned duplicate or null"
+      },
+      {
+        "site": "008F3918",
+        "target": "008F33F0",
+        "role": "ECX=same bag, stack key then actual fresh record, RET8; returns same bag"
+      }
+    ],
+    "x87": false
+  },
+  "worker_readiness": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\ScenePropertyNextLeaf38A0Readiness01\\readiness.json",
+    "bytes": 15408,
+    "sha256": "ad76a999c4294672a62df17b1e9370035a4a8d96e6760d40be5a53ef525c0062"
+  },
+  "primary_verified_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_string_readiness_primary_20261015\\verified_readiness_inputs.DATA.json",
+    "bytes": 8263,
+    "sha256": "871ebccc800ee714ff76e0202cbe7f8d0fd843c16a5b8ddd3c8db37009c6abf5"
+  },
+  "primary_complete_Original_listing_and_contracts_read": true,
+  "ordered_ordinary_behavior": [
+    "Save/install FS:[0] EH frame with state -1 and handler CA49AB; retain bag in EBX.",
+    "Allocate exactly 38h uninitialized bytes through BF681B; save returned root before activating state 0.",
+    "Test returned root. Nonnull branch loads original nullable value to ECX.",
+    "Write DWORD +00=CE89D4, DWORD +04=2; then DWORD zero at +18,+1C,+20,+24,+30, in that order.",
+    "Call the genuine raw nullable 00438E40 duplicate; store its full EAX at +0C, then DWORD zero at +34, then BYTE +2C=1.",
+    "The explicit allocation-null branch sets record=null and still reaches the same insertion call; it is not a successful or null-safe recovery domain.",
+    "Deactivate construction state to -1 before calling whole 008F33F0 with original key and record.",
+    "Whole insertion owns a canonical temporary raw8 key, performs the actual hit/miss owning map publication at bag+4, then returns the temporary key through the same raw pool.",
+    "Insertion tests record+34 before owner+30 is stored; since this leaf sets +34=0, it increments bag+10C before storing the old ordinal to record+34. Initial zero remains both an ordinal and the unstamped sentinel.",
+    "Restore prior FS:[0], saved registers and stack; RET8 preserves insertion's EAX=bag."
+  ],
+  "fresh_record_storage": {
+    "bytes_written_before_insertion": 37,
+    "untouched_byte_ranges": [
+      "[08,0C)",
+      "[10,18)",
+      "[28,2C)",
+      "[2D,30)"
+    ],
+    "no_blanket_zero_or_extra_metadata": true,
+    "phase_is_identity_not_callable_source_vtable": "00CE89D4",
+    "null_value": "Raw duplicate returns null without allocation/copy; +0C=null, +34=0 and byte +2C=1 still occur, followed by genuine insertion.",
+    "empty_value": "A nonnull empty CString obtains a current-owned one-byte NUL duplicate; it is distinct from null.",
+    "raw_type2_comparison": "008EF1B0 has similar final fields but clears +34 BEFORE storing duplicate +0C. This leaf stores +0C BEFORE clearing +34. Do not substitute that constructor or infer this schedule from it."
+  },
+  "Original_EH": {
+    "handler": {
+      "range": "[00CA49AB,00CA49B5)",
+      "instructions": 2,
+      "action": "MOV EAX,DD7670; JMP BF6B43"
+    },
+    "func_info": {
+      "address": "00DD7670",
+      "magic": "19930522",
+      "max_state": 1,
+      "unwind_map": "00DD7668",
+      "try_blocks": 0,
+      "try_map": 0,
+      "ip_map_entries": 0,
+      "ip_map": 0,
+      "estype_list": 0,
+      "eh_flags": 1
+    },
+    "unwind_entry": {
+      "from_state": 0,
+      "to_state": -1,
+      "action": "00CA49A0"
+    },
+    "cleanup": {
+      "range": "[00CA49A0,00CA49AB)",
+      "bytes": 11,
+      "instructions": 5,
+      "action": "MOV EAX,[EBP-10h]; PUSH EAX; CALL BF65AC _free; POP ECX; RET"
+    },
+    "scope": "Original construction state 0 begins only after root allocation is returned/saved and ends before insertion. It frees the saved raw root during duplication/construction unwind, without calling a property destructor. This leaf supplies no such root cleanup for an insertion throw after state becomes -1.",
+    "new_api_limit": "No Original FS/SEH runtime, private CRT exception identity, throw/fault cleanup, rollback or failure parity is admitted; provider throws, allocation failure, invalid memory and reentry are excluded. Do not claim that a plain C++ wrapper preserves this EH machinery."
+  },
+  "providers": [
+    {
+      "original": "00BF681B",
+      "source": "singleton_lifetime_allocate({SingletonAllocationKind::object,0x38,0x38})",
+      "status": "Accepted canonical current malloc/new-handler service; raw fresh bytes, no arbitrary allocator callback; historical CRT identity remains external."
+    },
+    {
+      "original": "00438E40",
+      "source": "duplicate_native_string_00438e40(nullable_value)",
+      "status": "Accepted whole57B raw physical ECX/RET0 duplicate; current canonical allocator plus standard memcpy. The older plain-CDECL duplicate_00438e40 is not the selected boundary."
+    },
+    {
+      "original": "008F33F0",
+      "source": "insert_native_scene_property_bag_008f33f0(bag,key,record,same_context)",
+      "status": "Accepted whole155B/46 ordinary body; same actual114h bag/map, actual raw key process, owning hit/miss publication, key return, owner/ordinal schedule and genuine recursive lifetime dispatch."
+    },
+    {
+      "original": "004E6730 / 008F0DE0 / 008F0640",
+      "source": "existing NativeScenePropertyLifetimeContext services in native_scene_property_bag_storage.cpp",
+      "status": "Replacement/final retirement already releases type2 nonnull +0C via singleton_lifetime_free, clears it after returning free, then applies common record reset and optional root free. No new destructor or numeric vtable dispatch is required."
+    }
+  ],
+  "admitted_contract": [
+    "MSVC Win32 only; all word/pointer widths are 32 bits. This is a new context-bearing C++ interface, not a drop-in Original ECX/RET8/register/class transport.",
+    "Actual mutable 114h bag is produced by the accepted whole raw61 initializer 008F41A0; embedded map is the actual108h interior at +4. CE89D4/D16504 phase values alone are not ownership or provenance.",
+    "Construct NativeScenePropertyInsertionContext only after explicit physical CC8A30 startup; retain the SAME canonical game_native_string_process and game_native_physical_pool_process, actual E175B0 generation and common E188B4 list, distinct E177E4/E17654 fallback cells, raw key pool/manager/return gate and allocator+10 membership.",
+    "Key is a nonnull stable valid NUL-terminated closed ASCII CString in C locale; value is nullable or stable readable NUL-terminated bytes with representable length+1/no address wrap. Preserve borrowed inputs across their last provider observation; no embedded buffer-size fiction or host string normalization.",
+    "The current canonical heap produces a distinct genuine fresh unowned38h root and, for nonnull value, its distinct owning duplicate. Root/payload, bag/map/nodes, query/key and replaced ownership are disjoint; borrowed inputs do not alias owners retired by insertion in this conservative admitted profile.",
+    "Existing mapped records/child graphs must be genuine admitted raw producers with coherent same-current-CRT ownership, finite/unshared/acyclic graphs and unique live14h nodes in the same initialized E175B0/E188B4 domain.",
+    "Successful insertion transfers fresh root/payload ownership to the actual map. Do not free the duplicate/root after publication; later genuine recursive release does that. Complete records/payloads/keys/nodes before pool teardown; retain processes/cells/generation throughout.",
+    "Externally serialize shared list/map/key mutations. No concurrent trim/mutation, provider throw, allocation failure, overflow, invalid memory, ownership alias, reentry or insufficient recursion stack is admitted. Existing raw string lazy-getter/return-gate behavior remains unchanged."
+  ],
+  "dependency_audit": {
+    "missing_ordinary_provider_bodies": [],
+    "named_but_incomplete_notes": [
+      "00438E40 lookup also retains an older readiness fragment saying Source admission pending/source=None. Its distinct current function record qualifies duplicate_native_string_00438e40; the actual source and startup registration are present. Do not treat the stale fragment as a missing body or as new admission credit.",
+      "Typed-provider reports retain historical Root/Main-pending wording, while current function ledger entries for 008F3490 and 008F3590 state registered Main whole ordinary Source. Those nearby providers are reference patterns, not required calls of38A0.",
+      "No 38A0 Source packet or Source function is registered in this worker base. Proposed Source remains a future action; unrelated integer3710, float3770 and enum8F2F70 work is excluded.",
+      "Original BF6B43 C++ EH runtime/private CRT behavior is outside the ordinary-successful admission and is not supplied by the proposed C++ interface."
+    ],
+    "evidence": "Fresh whole leaf listing/bytes + accepted typed body metadata; immediate Original438E40/33F0/BF681B assembly inspected; current actual provider headers/implementations and startup registrations inspected; Root-shared Main provider content agrees with worker HEAD."
+  },
+  "proposed_disjoint_packet": {
+    "id": "cc12_scene_property_string_add_008f38a0",
+    "address_ownership": [
+      "008F38A0"
+    ],
+    "files": [
+      "include/bsp/native_scene_property_string_add.hpp",
+      "src/native_scene_property_string_add.cpp",
+      "docs/SCENE_PROPERTY_STRING_ADD_CC12.md",
+      "reports/native_scene_property_string_add_cc12.json"
+    ],
+    "interface": "void* add_native_scene_property_string_008f38a0(void* actual_bag, const char* actual_key, const char* nullable_value, NativeScenePropertyInsertionContext& context);",
+    "implementation": "Use canonical allocation, inline explicit physically ordered37B stores, genuine raw duplicate, then existing whole insertion with SAME context. Preserve null-allocation branch shape without promising success there. Do not call raw type2 constructor, blanket-zero storage, synthesize an STL map, add callback providers, or treat phase DATA as callable vtables.",
+    "ownership_check": "008F38A0 and all four proposed paths unleased when checked; proposed paths absent from worker and current Main tree. No lease on these future addresses/files was claimed by this read-only task. Recheck before Source work.",
+    "integration": "Root alone coordinates shared ledger shards, config/parallel_work.json and cmake/startup.cmake; no such edits belong to this four-file worker packet.",
+    "validation_guidance": "Future Source work requires independent evidence review and the required scripts/build.ps1 after C++ changes. Prefer existing checks and exact store/call inspection; no new tests are requested by this readiness packet."
+  },
+  "no_Original_ABI_or_private_CRT_or_EH_or_startup_or_runtime_or_game_credit": true
+}
