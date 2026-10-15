@@ -1,8 +1,8 @@
 # Native checked string-vector range assignment
 
 Packet `oct15_checked_string_vector_ranges` covers `006A29C0` and `006A2A00`.
-Both complete normal admitted-range effects call the accepted complete actual
-`assign_native_string_header_vector_00506c80` directly. There is no host vector,
+Both Source entries compose the accepted owning assignment service directly.
+There is no host vector,
 callback, borrowed uninitialized assignment, proxy bridge or replacement
 assignment implementation. Existing descriptive library-role names
 `STL_CopyStringVectors_006a29c0` and `STL_FillStringVectors_006a2a00` are retained;
@@ -17,7 +17,7 @@ they are hypotheses, not recovered symbols. Earlier claims of the same body as
 Live queries verified project `bsp`, configured at `C:/Users/sqz269/bsp.gpr`,
 program `/battlestationspacific.exe`, language and image base before analysis.
 Complete pseudocode was followed by both complete assembly listings. Each has
-one actual call to `00506C80`, no listing gaps, and an explicit plain RET; no
+one assignment site, no listing gaps, and an explicit plain RET; no
 no-return or flow repair was needed. The complete original `00506C80` listing
 and accepted Source/header were also read. The installed PE spans independently
 confirm the two call targets and final RET bytes. Ghidra and the game were not
@@ -106,3 +106,15 @@ added; those suites provide regression/seed coverage, not native differential
 coverage for these two wrappers. Exact direct/caller call checks and whitespace
 checks are recorded in the JSON report. No original binary ABI, native
 exception execution, startup or gameplay validation is claimed.
+
+Exact native CALL sites (instruction address followed by target):
+
+```text
+006A29E6 CALL 00506C80
+006A2A16 CALL 00506C80
+006A5C1B CALL 006A29C0
+006A66CD CALL 006A29C0
+006A6748 CALL 006A29C0
+006A5E44 CALL 006A2A00
+006A5EA0 CALL 006A2A00
+```

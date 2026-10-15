@@ -17,7 +17,7 @@ handler and exception metadata. Source is
 | Entry | Original interface and behavior |
 |---|---|
 | `0044CE20` | ECX destination, EDX unsigned count; stacked value-header, owner, unused value duplicate, unused tag. RET10h, no semantic return. Capture the initial destination and value-header address; construct count consecutive8h headers. |
-| `0044CE6D` | Catch funclet using the parent's EBP frame. Read captured begin and completed end; destroy that prefix ascending via `00431F40`, then call `__CxxThrowException(0,0)`. This is not an independently callable Source entry. |
+| `0044CE6D` | Catch funclet using the parent's EBP frame. Read captured begin and completed end; destroy that prefix ascending via `00431F40`, then rethrow with `__CxxThrowException(0,0)`. This is not an independently callable Source entry. |
 | `0044DB60` | ECX owner; stacked destination/count/value; RET0Ch. Preserve original destination/count, call the core, then return original destination+count*8 using DWORD arithmetic. |
 
 The core captures value-header address in EBX and unsigned remaining count
@@ -40,7 +40,7 @@ The dependency `construct_native_render_alias_string_0044bcb0` uses the
 existing `NativeStringRawPoolContext` overload, its actual `00419CC0`
 publication/gate/manager bindings, and its verified no-op placement-delete
 unwind leaf. The caller does not initialize or destroy the failed current
-slot. Prefix cleanup calls complete
+slot. Prefix cleanup uses the complete service
 `destroy_native_string_storage_argument_00431f40`; that service ignores
 owner ECX and delegates to the actual raw-pool header destructor. No fake
 allocator, backing buffer release, vector publication or rollback is added.
@@ -67,8 +67,8 @@ exception escapes immediately and later elements remain untouched. This is
 not proof of original FH3 catchability, SEH handling, nested/double-exception
 identity, binary unwind tables or native calling convention compatibility.
 
-Incoming calls were also inspected: append `00450589` supplies count1,
-while insert-count has dispatcher calls at `0044F555` and `0044F62C`.
+Incoming sites were also inspected: the append site supplies count1,
+while the two insert-count sites use the dispatcher. Exact targets appear below.
 These are call-interface evidence, not completion claims for their callers.
 All seven reported native CALL instructions are checked by
 `tools/verify_report_calls.py`.
@@ -80,3 +80,15 @@ Validation and limits are recorded in
 differential or exception-injection fixture is added. Existing native math
 seeds exercise their existing routines, not this packet. Source/build checks
 do not establish original ABI, original-game runtime or gameplay behavior.
+
+Exact native CALL sites (instruction address followed by target):
+
+```text
+0044CE5D CALL 0044BCB0
+0044CE83 CALL 00431F40
+0044CE93 CALL 00BF6885
+0044DB84 CALL 0044CE20
+00450589 CALL 0044CE20
+0044F555 CALL 0044DB60
+0044F62C CALL 0044DB60
+```

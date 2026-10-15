@@ -1,0 +1,55 @@
+{
+  "schema": "bsp.enum_canonical_providers_primary_review.v1",
+  "addresses": [
+    "00cc8a10",
+    "00cc8a50",
+    "00cd9280",
+    "00cd9290"
+  ],
+  "Source_commit": "abf4e0da0cafd54ccc9d40ff4f37388d1a036743",
+  "status": "whole_ordinary_Source_primary_and_peer_admitted_Main_build_pending",
+  "primary_complete_changed_Source_and_prior_Original_read": true,
+  "independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\EnumCanonicalProvidersIndependentReview01\\review.compact.DATA.json",
+    "bytes": 3061,
+    "sha256": "24c6330a8e0255cb1d09aabbd5314e2a3e8e8062d3cf0be47ed794cb788c0784"
+  },
+  "primary_peer_input_verification": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_enum_provider_integration_20261015\\primary_peer_input_pins.DATA.json",
+    "bytes": 25206,
+    "sha256": "440665b986a4a309565fab6b51d74059ff33ae8bc198ec0f3446dc69ffa6ab59"
+  },
+  "Original_whole_bytes": 64,
+  "Original_instructions": 16,
+  "Original_ABI": "CC8A10/CC8A50 load fixed owner ECX, call00411050, register callback with BF6FF5, return actual EAX status; CD9280/CD9290 load same owner ECX and tail00410A60.",
+  "contract": [
+    "Distinct real aligned38h enum tableE175E8 and symbolE17578 cells share retained E188B4 list; no property-owner substitution.",
+    "Raw Original wrappers have no once guard. Explicit Source process policy commits attempted state before bind, caches actual atexit result, retains nonzero initialized owner, and never retries thrown attempt.",
+    "Caller serializes common-list mutations and retires enum payloads, pooled keys and slots before callbacks; bindings/list/process live through teardown.",
+    "Physical process grows180h to260h with every old field/role offset preserved; table180h and symbol1F0h cells. String process remains40h with distinct stable initial-NUL E186ED at prior tail+3F, library+3E preserved."
+  ],
+  "strict": {
+    "initial_chunk": "c5dc6e",
+    "exit_code": 0,
+    "changed_TUs": 3,
+    "reviewed_after_code_sections": 107,
+    "reviewed_after_code_bytes": 9165,
+    "affected_sections": 19,
+    "affected_bytes": 2297,
+    "affected_instructions": 618
+  },
+  "author_registered_build": {
+    "initial_chunk": "997a9f",
+    "session": 82264,
+    "terminal_chunk": "aceced",
+    "exit_code": 0,
+    "configured_checks": 2,
+    "seconds": 6.51
+  },
+  "registration": "All three existing translation units already registered; no new CMake entry required.",
+  "new_Source_runtime_executed": false,
+  "Original_ABI_compatible": false,
+  "Original_EH_or_private_CRT_compatible": false,
+  "global_application_startup_publication": false,
+  "game_validated": false
+}

@@ -99,4 +99,47 @@ void* GameNativePhysicalPoolProcess::property_library_node_pool_storage_00e17540
     return property_library_pool_00e17540_;
 }
 
+int GameNativePhysicalPoolProcess::initialize_enum_table_pool_once_00cc8a10() {
+    std::lock_guard lock(enum_table_startup_mutex_);
+    if (enum_table_startup_state_ == StartupState::returned)
+        return enum_table_registration_status_;
+    if (enum_table_startup_state_ == StartupState::threw)
+        throw std::logic_error("enum table pool startup previously threw");
+
+    // Commit before binding or construction; never reconstruct a partial pool.
+    enum_table_startup_state_ = StartupState::threw;
+    bind_static_native_enum_table_pool_00e175e8(enum_table_pool_00e175e8_, list_);
+    enum_table_registration_status_ = initialize_static_native_enum_table_pool_00cc8a10();
+    enum_table_startup_state_ = StartupState::returned;
+    return enum_table_registration_status_;
+}
+
+int GameNativePhysicalPoolProcess::initialize_enum_symbol_pool_once_00cc8a50() {
+    std::lock_guard lock(enum_symbol_startup_mutex_);
+    if (enum_symbol_startup_state_ == StartupState::returned)
+        return enum_symbol_registration_status_;
+    if (enum_symbol_startup_state_ == StartupState::threw)
+        throw std::logic_error("enum symbol pool startup previously threw");
+
+    enum_symbol_startup_state_ = StartupState::threw;
+    bind_static_native_enum_symbol_pool_00e17578(enum_symbol_pool_00e17578_, list_);
+    enum_symbol_registration_status_ = initialize_static_native_enum_symbol_pool_00cc8a50();
+    enum_symbol_startup_state_ = StartupState::returned;
+    return enum_symbol_registration_status_;
+}
+
+void* GameNativePhysicalPoolProcess::enum_table_pool_storage_00e175e8() {
+    std::lock_guard lock(enum_table_startup_mutex_);
+    if (enum_table_startup_state_ != StartupState::returned)
+        throw std::logic_error("enum table pool requires completed explicit startup");
+    return enum_table_pool_00e175e8_;
+}
+
+void* GameNativePhysicalPoolProcess::enum_symbol_pool_storage_00e17578() {
+    std::lock_guard lock(enum_symbol_startup_mutex_);
+    if (enum_symbol_startup_state_ != StartupState::returned)
+        throw std::logic_error("enum symbol pool requires completed explicit startup");
+    return enum_symbol_pool_00e17578_;
+}
+
 } // namespace bsp::game

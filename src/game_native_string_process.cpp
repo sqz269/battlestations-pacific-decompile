@@ -36,6 +36,10 @@ const char* GameNativeStringProcess::library_empty_00e18560() const noexcept {
     return &library_empty_00e18560_;
 }
 
+const char* GameNativeStringProcess::enum_empty_00e186ed() const noexcept {
+    return &enum_empty_00e186ed_;
+}
+
 GameNativeStringProcess& game_native_string_process() {
     static auto* const process = new GameNativeStringProcess;
     return *process;

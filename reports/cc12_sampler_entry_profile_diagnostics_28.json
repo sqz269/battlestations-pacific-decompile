@@ -1,0 +1,312 @@
+{
+  "schema": "bsp.sampler-entry-profile-diagnostics28.v1",
+  "source_commit": "a893f091c4b1b3c61acb8d493e66399cde537e54",
+  "status": "real_cached_GUI_failure_current_loaded_modules_differ_from_legacy_profile",
+  "build": {
+    "canonical_exit": 0,
+    "existing_checks": 3,
+    "test_seconds": 7.1
+  },
+  "runtime_exit": 1,
+  "guard_Frame_actual_compiler_object_unchanged": true,
+  "whole96_bridge_unchanged": true,
+  "visible_admission_flags": {
+    "pass_registered": true,
+    "shader_registered": true,
+    "variants": 0,
+    "source_mode": 0,
+    "cache_same": true
+  },
+  "loaded_providers": {
+    "d3d9.dll": {
+      "loaded": {
+        "name": "d3d9.dll",
+        "base": 1775828992,
+        "machine": 332,
+        "timestamp": 1061247359,
+        "size": 1544192,
+        "path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll"
+      },
+      "disk_path": "C:\\Windows\\SysWOW64\\d3d9.dll",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_sampler_entry_profile_diagnostics_28\\providers\\d3d9.dll",
+      "sha256": "fd72e021c128a98a5d688eb9acc07e3eb1948ca6b630b9fa5f328898e78c7dbc",
+      "file_preferred_base": 268435456,
+      "export_rvas": {},
+      "matches": {
+        "d3d9_7eb90": {
+          "old_rva": 519056,
+          "length": 96,
+          "candidate_rvas": [
+            518832
+          ],
+          "only_search_masked_control_flow_immediates_and_recorded_relocations": true
+        },
+        "d3d9_489e4": {
+          "old_rva": 297444,
+          "length": 74,
+          "candidate_rvas": [
+            297428
+          ],
+          "only_search_masked_control_flow_immediates_and_recorded_relocations": true
+        },
+        "d3d9_48a34": {
+          "old_rva": 297524,
+          "length": 80,
+          "candidate_rvas": [
+            297508
+          ],
+          "only_search_masked_control_flow_immediates_and_recorded_relocations": true
+        },
+        "d3d9_81990": {
+          "old_rva": 530832,
+          "length": 20,
+          "candidate_rvas": [
+            530608
+          ],
+          "only_search_masked_control_flow_immediates_and_recorded_relocations": true
+        },
+        "d3d9_65bd0": {
+          "old_rva": 416720,
+          "length": 25,
+          "candidate_rvas": [
+            416496
+          ],
+          "only_search_masked_control_flow_immediates_and_recorded_relocations": true
+        },
+        "d3d9_817b0": {
+          "old_rva": 530352,
+          "length": 3,
+          "candidate_rvas": [
+            121860,
+            235288,
+            235708,
+            242351,
+            247606,
+            297848,
+            311964,
+            315143,
+            320527,
+            327268,
+            380330,
+            380343,
+            380361,
+            380379,
+            410495,
+            418068,
+            421453,
+            433026,
+            434799,
+            471778,
+            478329,
+            478344,
+            478359,
+            478374,
+            493225,
+            503942,
+            507267,
+            513414,
+            530128,
+            541640,
+            545331,
+            560661,
+            569856,
+            606015,
+            606238,
+            614580,
+            614618,
+            614689,
+            614726,
+            687696,
+            709163,
+            752552,
+            783234,
+            793251,
+            801231,
+            820487,
+            821265,
+            921036,
+            927269,
+            990200,
+            998985,
+            1031717,
+            1031729,
+            1050927,
+            1141926,
+            1152114,
+            1198660,
+            1218199,
+            1223499,
+            1223533,
+            1228816,
+            1255505,
+            1305773,
+            1305923,
+            1306096,
+            1306134,
+            1359979,
+            1359992,
+            1360008,
+            1360025,
+            1360042,
+            1360059,
+            1360076,
+            1360093,
+            1360110,
+            1371227,
+            1372961,
+            1380855,
+            1380863,
+            1380884,
+            1380905,
+            1380917,
+            1380934,
+            1380956,
+            1380964,
+            1380985,
+            1384805,
+            1384821,
+            1384837,
+            1384858,
+            1384871,
+            1384887,
+            1384909,
+            1384917,
+            1384938,
+            1389095,
+            1389110,
+            1389127,
+            1389148,
+            1389161,
+            1389177,
+            1389199,
+            1389207,
+            1389228,
+            1389919,
+            1391719,
+            1395034
+          ],
+          "only_search_masked_control_flow_immediates_and_recorded_relocations": true
+        },
+        "d3d9_122490": {
+          "old_rva": 1189008,
+          "length": 20,
+          "candidate_rvas": [
+            1147392,
+            1188208
+          ],
+          "only_search_masked_control_flow_immediates_and_recorded_relocations": true
+        }
+      }
+    },
+    "ntdll.dll": {
+      "loaded": {
+        "name": "ntdll.dll",
+        "base": 1996554240,
+        "machine": 332,
+        "timestamp": 3379307211,
+        "size": 1835008,
+        "path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll"
+      },
+      "disk_path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_sampler_entry_profile_diagnostics_28\\providers\\ntdll.dll",
+      "sha256": "23d7772221e7a763ccf3f3fe39592086eb3091603554c4981f0ab430fa2ca686",
+      "file_preferred_base": 1260912640,
+      "export_rvas": {
+        "RtlEnterCriticalSection": 337376,
+        "RtlLeaveCriticalSection": 333408
+      },
+      "matches": {
+        "ntdll_53460": {
+          "old_rva": 341088,
+          "length": 196,
+          "candidate_rvas": [
+            333408
+          ],
+          "only_search_masked_control_flow_immediates_and_recorded_relocations": true
+        },
+        "ntdll_42410": {
+          "old_rva": 271376,
+          "length": 118,
+          "candidate_rvas": [
+            263728
+          ],
+          "only_search_masked_control_flow_immediates_and_recorded_relocations": true
+        }
+      }
+    },
+    "kernel32.dll": {
+      "loaded": {
+        "name": "kernel32.dll",
+        "base": 1984233472,
+        "machine": 332,
+        "timestamp": 18950972,
+        "size": 983040,
+        "path": "C:\\WINDOWS\\System32\\KERNEL32.DLL"
+      },
+      "disk_path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_sampler_entry_profile_diagnostics_28\\providers\\kernel32.dll",
+      "sha256": "7f04765684de5ecb702afb5c4cfbfde12a4e61a125389ee23166aa66430e62f0",
+      "file_preferred_base": 268435456,
+      "export_rvas": {
+        "EnterCriticalSection": 640913,
+        "InterlockedDecrement": 204368,
+        "InterlockedIncrement": 204432,
+        "LeaveCriticalSection": 657705
+      },
+      "matches": {
+        "kernel32_31ab0": {
+          "old_rva": 203440,
+          "length": 20,
+          "candidate_rvas": [
+            204368
+          ],
+          "only_search_masked_control_flow_immediates_and_recorded_relocations": true
+        },
+        "kernel32_31af0": {
+          "old_rva": 203504,
+          "length": 20,
+          "candidate_rvas": [
+            204432
+          ],
+          "only_search_masked_control_flow_immediates_and_recorded_relocations": true
+        }
+      }
+    },
+    "kernelbase.dll": {
+      "loaded": {
+        "name": "kernelbase.dll",
+        "base": 1985282048,
+        "machine": 332,
+        "timestamp": 1158013260,
+        "size": 2985984,
+        "path": "C:\\WINDOWS\\System32\\KERNELBASE.dll"
+      },
+      "disk_path": "C:\\Windows\\SysWOW64\\kernelbase.dll",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_sampler_entry_profile_diagnostics_28\\providers\\kernelbase.dll",
+      "sha256": "5be784046dc9731d1c36e872a8022065ed4a733707b1e467b30a96588714b137",
+      "file_preferred_base": 268435456,
+      "export_rvas": {
+        "EnterCriticalSection": 2589728,
+        "InterlockedDecrement": 1520736,
+        "InterlockedIncrement": 1520704,
+        "LeaveCriticalSection": 2606892
+      },
+      "matches": {}
+    }
+  },
+  "unsupported_legacy_triplet": true,
+  "scope": "Module identity mismatch is sufficient rejection; visible flags do not independently prove every earlier private-object predicate. Later successful supported-profile execution is separate evidence.",
+  "evidence": {
+    "verified_payloads": 568,
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_sampler_provider_support_29\\evidence_family.zip",
+      "sha256": "6d94c947401392683bc993d6b67b6fc3225277a2bb78282b0e6855c344d0d555",
+      "bytes": 93815849
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_sampler_provider_support_29\\evidence_manifest.json",
+      "sha256": "2407b44573273ead360074cf4b70276bb382fb3706a92ee6b2ac6dacbd3eaee4",
+      "bytes": 267314
+    }
+  }
+}
