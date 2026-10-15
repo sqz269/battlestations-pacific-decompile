@@ -1,0 +1,93 @@
+{
+  "packet": "goal15g_pod8_wrappers",
+  "status": "complete_source_strict_compile_and_exact_fixed_bytes_pending_registered_build",
+  "functions": [
+    {
+      "address": "00421a50",
+      "name": "STL_Pod8Vector_InsertOneChecked_00421A50",
+      "cpp_symbol": "bsp::insert_one_native_pod8_vector_checked_00421a50",
+      "bytes": 137,
+      "end_exclusive": "00421ad9",
+      "original_abi": "ECX raw16 vector; four stacked words outputiterator,iteratorowner,position,value; RET10h/EAX actualoutput; no consumed EDX",
+      "coverage": "complete"
+    },
+    {
+      "address": "004223b0",
+      "name": "STL_Pod8Vector_Append_004223B0",
+      "cpp_symbol": "bsp::append_native_pod8_vector_004223b0",
+      "bytes": 131,
+      "end_exclusive": "00422433",
+      "original_abi": "ECX raw16 vector; one stacked value pointer; RET4; no semantic return established; no consumed EDX",
+      "coverage": "complete"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00421a76",
+      "native": "00bf6713",
+      "containing_function": "00421a50"
+    },
+    {
+      "address": "00421a83",
+      "native": "00bf6713",
+      "containing_function": "00421a50"
+    },
+    {
+      "address": "00421aa0",
+      "native": "00420f80",
+      "containing_function": "00421a50"
+    },
+    {
+      "address": "00421aad",
+      "native": "00bf6713",
+      "containing_function": "00421a50"
+    },
+    {
+      "address": "00421ac3",
+      "native": "00bf6713",
+      "containing_function": "00421a50"
+    },
+    {
+      "address": "004223f9",
+      "native": "0041c7e0",
+      "containing_function": "004223b0"
+    },
+    {
+      "address": "00422413",
+      "native": "00bf6713",
+      "containing_function": "004223b0"
+    },
+    {
+      "address": "00422426",
+      "native": "00421a50",
+      "containing_function": "004223b0"
+    }
+  ],
+  "source": "src/native_pod8_vector_append.cpp",
+  "header": "include/bsp/native_pod8_vector_append.hpp",
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "complete_native_bytes": 268,
+    "unchanged_fixed_bytes": 236,
+    "verified_call_operands": 8,
+    "coff_live_disk": "PASS; 8 I386_REL32 actual Source symbols and actual Native CALL targets checked; no other exclusions",
+    "peer_review": "pool_cleanup complete schedule review PASS, no discrepancy"
+  },
+  "contract": {
+    "checked": "early iteratorowner/first capture; empty/nullfirst bypass; raw SAR3 index; all4 returning invalid paths; actual incoming position slot overwritten; currentfirst publication; output+4 before output+0; full genuine F80 called",
+    "append": "initial first capture and unsigned size/capacity; spare uses actual C7E0 all4 stack words and partial local tag; publishes capturedlast+8; growth retains capturedposition across returning invalid policy, reloads physical value, calls complete checked entry with actual8B stack result",
+    "providers": "real current SDK invalid parameter provider; full POD8 insert/allocator/range children; no injected callback, stdvector, repair, fastpath-only replacement or fabricated success"
+  },
+  "verification": {
+    "strict_compile": "PASS MSVC Win32 /MD /O2 /W4 /WX /permissive- /fp:strict",
+    "registered_archive": "pending primary batch",
+    "new_tracked_tests": 0
+  },
+  "limits": [
+    "Original template/class names are descriptive hypotheses",
+    "Source dummy EDX is not an Original parameter",
+    "Current SDK CRT policy/frame/SEH and Original encoded handler/Watson identity not equated",
+    "Bounded Source fixtures are not Native differential, ABI-drop-in or game validation"
+  ]
+}

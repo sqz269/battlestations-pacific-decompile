@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_vector_callers_primary_review",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 4,
+  "private_source_cleanup_actions": 0,
+  "native_bytes": 342,
+  "native_instructions": 133,
+  "spans": [
+    {
+      "address": "0046c450",
+      "native_bytes": 105,
+      "instructions": 44,
+      "scope": "complete ordinary raw Source",
+      "live_equals_installed": true,
+      "sha256": "a6e95686eb58059bd676e463334043779a6adcabcadacedbcb25c88afa38c8fe"
+    },
+    {
+      "address": "004685a0",
+      "native_bytes": 90,
+      "instructions": 37,
+      "scope": "complete ordinary raw Source",
+      "live_equals_installed": true,
+      "sha256": "5c2e1d383527e0db87120546f760b26da011e7d1dd80494475c80ae50af1b245"
+    },
+    {
+      "address": "00468db0",
+      "native_bytes": 105,
+      "instructions": 39,
+      "scope": "complete ordinary raw Source",
+      "live_equals_installed": true,
+      "sha256": "d5a4629dcc5664e247ad2d32d8a6acc519f6900ffd7f9a875a1f62a571e3edd5"
+    },
+    {
+      "address": "00468d40",
+      "native_bytes": 42,
+      "instructions": 13,
+      "scope": "complete ordinary raw Source",
+      "live_equals_installed": true,
+      "sha256": "af271ccf0e1d81d72d7f5941fe9a204db2cde41487fe902bea0d2768a627150e"
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct15_dword_vector_push_back.json",
+    "reports/goal_oct15_dword_vector_erase_range.json",
+    "reports/goal_oct15_scene_integer_set_lookup.json",
+    "reports/goal_oct15_vector_storage_tidy_alias_00468d40.json"
+  ],
+  "typed_transfer_rows_checked": 16,
+  "typed_transfer_rows_failed": 0,
+  "independent_reviews": [
+    "Primary: full PushBack raw/live-frame contract and Source/header agree with44 native instructions; actual One/N providers and diagnostic returning paths retained",
+    "Primary: whole37-op checked erase plus full actual positive move provider preserve owner shortcircuit,current nodes,equal skip,zero/negative result publication and late output",
+    "Primary: full39-op integer-set Find preserves nil11,signed keys,conditional key reads,current head reload and captured ordered iterator outputs",
+    "Independent allocation worker: full13-op tidy alias and accepted canonical Source/raw16header match; real free CALL plus two native tail jumps verified"
+  ],
+  "source_hashes": {
+    "src/native_scene_dword_vector_push_back.cpp": "e52eddf87ab208c36b4d0efea6cdcedea784c31ae43acccae381931e88b3b1ec",
+    "include/bsp/native_scene_dword_vector_push_back.hpp": "f625398a8a8fdcf9db57aa37ed18090813ca530c2e03d2cc1083034e04f72a32",
+    "src/native_scene_dword_erase_range.cpp": "95fada1a5a0b8c7717764c7357372ef10d66c21396818685a4c55f83ff0c3e50",
+    "include/bsp/native_scene_dword_erase_range.hpp": "40b52fccce54daba3b420024dd3deadb30e8684c2e01aaae2c770178f1df0e82",
+    "src/native_scene_integer_set_lookup.cpp": "3ab59dec42fcfd52eff43ba5ee8b83253821037115fe26346f78f7bc3d8f6d3c",
+    "include/bsp/native_scene_integer_set_lookup.hpp": "f84bf902ab5ab031b049437fceec531c3608a5884ba77e8da5c182600efffe5d",
+    "src/native_vector_storage_tidy_alias.cpp": "40f85bcb9f23ccdc8a78c9bb635feedb43b73e47a9ba20a2fcfeab2a887afbac",
+    "include/bsp/native_vector_storage_tidy_alias.hpp": "11d145160262b76899c740dc6f50dd4335c0baebbc7afbadfb7401846422b887"
+  },
+  "combined_build": {
+    "revision": "4f164cfc6bd72752edc55a0d0c41186b78ee8afb",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_vector_callers_combined_build.log",
+    "log_sha256": "d1af069a04e97eae679a73f143bc039fbebde9eb8de4502ae2e6a988d90fb3cd",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 8.09,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+    "scope": "existing regression checks; native math seeds do not execute these new bodies"
+  },
+  "project_source_counts": {
+    "native_scene_dword_vector_push_back": 1,
+    "native_scene_dword_erase_range": 1,
+    "native_scene_integer_set_lookup": 1,
+    "native_vector_storage_tidy_alias": 1
+  },
+  "unique_archive_objects": {
+    "native_scene_dword_vector_push_back": [
+      "bsp_core.dir\\Release\\native_scene_dword_vector_push_back.obj"
+    ],
+    "native_scene_dword_erase_range": [
+      "bsp_core.dir\\Release\\native_scene_dword_erase_range.obj"
+    ],
+    "native_scene_integer_set_lookup": [
+      "bsp_core.dir\\Release\\native_scene_integer_set_lookup.obj"
+    ],
+    "native_vector_storage_tidy_alias": [
+      "bsp_core.dir\\Release\\native_vector_storage_tidy_alias.obj"
+    ]
+  },
+  "archive_sha256": "4637bc79b4b425cc222901949cafc016b8ae85d7f8a0d71bcd6ac931b6af8a39",
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "New explicit raw/live-frame/currentCRT Source APIs,not Original register/private-stack/argument-home/heap/FH3/fault ABI identity",
+    "Existing math differential seeds do not execute these new bodies; no application or game proof",
+    "Of16 checked transfer rows,15 have full native-function/listing checks. C548 is explicitly inside an undefined wrapper C540..C54F: its real callee450 was checked but enclosing-function/listing checks were not. No wrapper repair/Source/function-coverage claim."
+  ],
+  "typed_transfer_full_rows": 15,
+  "typed_transfer_callee_only_rows": 1
+}

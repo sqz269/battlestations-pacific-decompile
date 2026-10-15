@@ -1,0 +1,129 @@
+{
+  "batch": "GOAL15G",
+  "status": "complete_source_registered_build_and_source_fixtures_passed",
+  "addresses": [
+    "004010e0",
+    "0040d810",
+    "00413390",
+    "0041c680",
+    "0041dac0",
+    "004203a0",
+    "00420f80",
+    "00421a50",
+    "004223b0"
+  ],
+  "complete_native_functions": 9,
+  "native_covered_bytes": 1169,
+  "source_modules": [
+    "src/native_pod8_inplace_range.cpp",
+    "src/native_pod8_failure.cpp",
+    "src/native_pod8_vector_insert.cpp",
+    "src/native_pod8_vector_append.cpp"
+  ],
+  "source_commit": "bd5e72ca847f4199e085953861158733f71427f3",
+  "proof": {
+    "raw_source_bodies_bytes": 402,
+    "fixed_bytes_matching_live_and_disk": 362,
+    "separately_verified_call_or_tail_operands": 10,
+    "inplace": "98 exact bytes, no exclusions",
+    "derived_raw12": "36 bytes,28 fixed plus2 actual base provider relocations",
+    "checked_append": "268 bytes,236 fixed plus8 actual provider relocations",
+    "insertion": "complete577B Native semantic reconstruction,17B actual incoming argument-cell thunk,current C++ body/EH; no Native byte/frame equivalence asserted",
+    "current_source_eh": "4 states,2 catch regions,4 null unwind actions; current frame/handler metadata is separate from Native FH3"
+  },
+  "validation": {
+    "win32_build": "PASS scripts/build.ps1 after all4modules registered",
+    "existing_ctest": "PASS3/3",
+    "call_rows": "PASS39 rows (3 explicitly raw/uncreated; callee and raw opcode checked, live containing function unclaimed)",
+    "markdown_claims": "PASS4 explicit call claims; no unchecked/failures/warnings",
+    "fixtures": {
+      "goal15g_inplace_probe": {
+        "kind": "Source fixture linked against registered archive and real current services",
+        "manifest_embedded": true,
+        "exit_code": 0,
+        "stdout": "POD8 in-place Source: PASS (fill/backward fresh-word aliases; captured endpoints; empty range; real-backed DWORD wrap)\n",
+        "stderr": "",
+        "sha256": {
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_pool_cleanup\\local\\goal15g_pod8_inplace\\pod8_inplace_probe.cpp": "bcbfd78f05353a3cdb162839d24d37a19337851a1e94b054b2f84f244cdad953",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15g_inplace_probe.obj": "8731fcfac3bfe1384b3640c1fd7db8578ccd6fa629757d6e018e46e96d744589",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15g_inplace_probe.exe": "82d662c70f3bc16673b6ed2e92bc2c6fc30f79af464faa7e19c13f93dd09592f",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "a158de9efc50d0476efba835fa1dabeaf727cba551245bd182abfb4ebc4eee9a",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+        }
+      },
+      "goal15g_failure_probe": {
+        "kind": "Source fixture linked against registered archive and real current services",
+        "manifest_embedded": true,
+        "exit_code": 0,
+        "stdout": "PASS: POD8 zero/small allocation/free; overflow raw12/copy/what/destruction; length owning28/copy/destruction\n",
+        "stderr": "",
+        "sha256": {
+          "J:\\PROG\\battlestations-pacific-decompile-goal15f_pod8\\local\\goal15g_pod8\\pod8_failure_probe.cpp": "f452dafb86c3072e1aecac096f9f461fbb68c556105a7c1428c1ee2f8543e416",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15g_failure_probe.obj": "4260789370fe395bca76a32a28c70dc7d505f326149bae93348c1605bb7b0542",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15g_failure_probe.exe": "bf94246d3a0357193aaa671c2ed6199360fe4cc7ba1d1c4bd23e0ae1682597db",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "a158de9efc50d0476efba835fa1dabeaf727cba551245bd182abfb4ebc4eee9a",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+        }
+      },
+      "goal15g_insert_probe": {
+        "kind": "Source fixture linked against registered archive and real current services",
+        "manifest_embedded": true,
+        "exit_code": 0,
+        "stdout": "PASS Source POD8 insertion: actual stack-value alias/reused cells, growth/free/capacity, both inplace branches, zero-count retention, genuine preallocation failure and owning length exception\nScope: real current Source heap/CRT/C++ EH only; no forced inner-catch, Native FH3/SEH/differential/game or global leak proof\n",
+        "stderr": "",
+        "sha256": {
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_zone_leaf\\local\\goal15g_pod8_insert\\pod8_insert_probe.cpp": "fdf29c22c809e84e5adb7f3f8ff335c0003efe101ba90b16f22eeafc1a6553f3",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15g_insert_probe.obj": "76faaac7557877a928b1d2d928d016f3325bac04eab91b63d5e838ab5105da87",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15g_insert_probe.exe": "64aa519aadce949042420c9ae0d97d7bec35164af0f60d5337ab8e33280df3cf",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "a158de9efc50d0476efba835fa1dabeaf727cba551245bd182abfb4ebc4eee9a",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+        }
+      },
+      "goal15g_wrappers_probe": {
+        "kind": "Source fixture linked against registered archive and real current services",
+        "manifest_embedded": true,
+        "exit_code": 0,
+        "stdout": "PASS actual archive POD8 append growth/spare/alias and checked middle insertion through returning real SDK invalid policy\n",
+        "stderr": "",
+        "sha256": {
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15g_wrappers\\wrappers_probe.cpp": "e7f6d037add0f5ebcf5a680797e1dc96f9f881981168a6591e0f2459220d6057",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15g_wrappers_probe.obj": "784af572b723349a2b4146d6439f192c28cef05a8b3e6dd447a880758d3e38fd",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15g_wrappers_probe.exe": "464e18d680e0ecf96a786d3a5ecdf63c64a5909b52ab4b31a9695206e2541f4e",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "a158de9efc50d0476efba835fa1dabeaf727cba551245bd182abfb4ebc4eee9a",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+        }
+      }
+    }
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "prototypes": "9 physical Original consumed parameter layouts; no Source unused EDX/context parameters; pointer this avoids extra scalar stack argument",
+    "qualifiers": "parser accepted rawvoid*; Source const contracts retained in headers/evidence",
+    "noreturn": "004203a0 true, based on complete throw body; other functions unchanged",
+    "annotations": "old names/comments/prototypes saved under locked rollback records; correct Unwind@/library names retained; more precise descriptive POD8 names still hypotheses",
+    "save_and_exports": "saved; affected exports refreshed and force snapshot/index recorded"
+  },
+  "sha256": {
+    "src/native_pod8_inplace_range.cpp": "cf5d3bad3a6d75f31d0c43e8a3c8b423977de1d60b2172b7bedec849a2ee7730",
+    "src/native_pod8_failure.cpp": "588351829b73175c5967106c0491be87feecf775f5bfa968b2db480cebba42e0",
+    "src/native_pod8_vector_insert.cpp": "83b4cd9f521050aeb27ad2ed17883632f8f437ea1f5d69e84d3114f6ccb370ae",
+    "src/native_pod8_vector_append.cpp": "b062045c61d2e4de8d5bc3b7106d3582697e625fee81ecf66be4dd8f3b1adb2c",
+    "include/bsp/native_pod8_inplace_range.hpp": "087e6a8296e7d9fb62481117945ee564a22ced2545e37d73b94f4b512154480a",
+    "include/bsp/native_pod8_failure.hpp": "130e9c825361686175f9060286986320653906eb663228cbc1ff0d82382cc356",
+    "include/bsp/native_pod8_vector_insert.hpp": "7ed796c9358c7f97b8ce097765df220f01519b531e62b19b0ed302209c75b605",
+    "include/bsp/native_pod8_vector_append.hpp": "d13a4c238e7722b8ffa50213fa0768d21c8c800b4b7ab4a3ad37fea3d8488fe6",
+    "build/win32/Release/bsp_core.lib": "a158de9efc50d0476efba835fa1dabeaf727cba551245bd182abfb4ebc4eee9a"
+  },
+  "limits": [
+    "Source API/heap/SDK invalid policy/C++ exception services are current implementations, not Original private CRT identity",
+    "Real new-handler failure occurs before state0; inner cleanup catch operations have code/emitted-EH evidence, not injected Native differential proof",
+    "Original virtual/RTTI/catch/SEH ABI and gameplay equivalence unclaimed",
+    "Three raw/uncreated consumer routines were not fabricated as Ghidra functions",
+    "Native source reconstruction remains incomplete outside this bounded chain"
+  ]
+}
