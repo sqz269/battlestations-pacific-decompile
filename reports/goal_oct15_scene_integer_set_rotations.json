@@ -1,0 +1,157 @@
+{
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Every live bsp.py client verifies expected project/program/x86 language/image base before batch",
+    "annotation": "Applied under shared write lock; prior values recorded; existing library names/comments preserved; project saved and both exports refreshed"
+  },
+  "readiness": {
+    "indexed_reconstruction_before_packet": false,
+    "existing_source_search": "no owned rotation implementation under either address or related spelling",
+    "dependencies": "none; independent nil11h Source bodies with no calls"
+  },
+  "limits": [
+    "Complete static Source over actual raw storage; no original mangling/binary/private-frame/SEH or instruction-fault identity established",
+    "Valid backing for every taken DWORD/byte access required; no validation, cycle checks, normalization, color work, rollback or provider added",
+    "Native private argument/frame alias effects not exposed by Source value inputs",
+    "Existing tests and compilation do not provide direct original-byte rotation differential, application adoption or game proof"
+  ],
+  "packet": "goal_oct15_scene_integer_set_rotations",
+  "status": "complete_actual_raw_source_build_pending",
+  "source_ready": true,
+  "source": "src/native_scene_integer_set_rotations.cpp",
+  "header": "include/bsp/native_scene_integer_set_rotations.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_INTEGER_SET_ROTATIONS.md",
+  "routines": [
+    {
+      "address": "00467740",
+      "name": "rotate_left_native_scene_integer_set_00467740",
+      "native_name_preserved": "STL_Tree_Rotate_00467740",
+      "body": "00467740-0046778d",
+      "native_bytes": 78,
+      "original_bytes_hex": "8b5424048b4208568b308972088b30807e110075038956048b72048970048b49043b51045e750b8941048910894204c204008b4a043b11750a89018910894204c204008941088910894204c20400",
+      "coverage": "complete_actual_storage_Source_with_private_frame_binary_ABI_qualifications",
+      "original_abi": "ECX actual tree; incoming EDX unused; stack pivot pointer; all paths RET4; no semantic result. Native EAX retains promoted node but all known callers ignore it. Source fastcall explicit unused EDX retains physical slots without binary ABI claim.",
+      "interpretation": "Left rotation, descriptive hypothesis from actual links and producer/callers; established STL native name retained",
+      "schedule": "Capture pivot+8 promoted; read promoted+0, write pivot+8, REREAD promoted+0; test reread child+11 and only if zero write child+4=pivot. Read CURRENT pivot+4, publish promoted+4, THEN load CURRENT tree+4 head/root. Root publishes captured head+4=promoted; nonroot rereads CURRENT pivot+4 and tests its current left+0, publishing parent+0 if equal or parent+8 otherwise. Finally ordered promoted+0=pivot then pivot+4=promoted.",
+      "host_steps": [],
+      "original_bytes_sha256": "e634658a105a919a5162c439f56ba159bb4fa042eb5c46ad63b401db6f70924a"
+    },
+    {
+      "address": "00467790",
+      "name": "rotate_right_native_scene_integer_set_00467790",
+      "native_name_preserved": "STL_Tree_Rotate_00467790",
+      "body": "00467790-004677e1",
+      "native_bytes": 82,
+      "original_bytes_hex": "8b5424048b02568b700889328b7008807e110075038956048b72048970048b49043b51045e750c894104895008894204c204008b4a043b5108750c894108895008894204c204008901895008894204c20400",
+      "coverage": "complete_actual_storage_Source_with_private_frame_binary_ABI_qualifications",
+      "original_abi": "ECX actual tree; incoming EDX unused; stack pivot pointer; all paths RET4; no semantic result. Native EAX retains promoted node but all known callers ignore it. Source fastcall explicit unused EDX retains physical slots without binary ABI claim.",
+      "interpretation": "Right rotation, descriptive hypothesis from actual links and producer/callers; established STL native name retained",
+      "schedule": "Capture pivot+0 promoted; read promoted+8, write pivot+0, REREAD promoted+8; test reread child+11 and only if zero write child+4=pivot. Read CURRENT pivot+4, publish promoted+4, THEN load CURRENT tree+4 head/root. Root publishes captured head+4=promoted; nonroot rereads CURRENT pivot+4 and tests its current right+8, publishing parent+8 if equal or parent+0 otherwise. Finally ordered promoted+8=pivot then pivot+4=promoted.",
+      "host_steps": [],
+      "original_bytes_sha256": "8c3441a1a10a57b5346f8d5f970e9f9aa22ae03f5cd606a8e25049986447accd"
+    }
+  ],
+  "caller_evidence": [
+    {
+      "address": "0046a8e3",
+      "native": "00467740",
+      "function": "0046a740",
+      "contract": "PUSH ESI; ECX saved actual receiver (EBP); RET4; returned EAX ignored or overwritten; full setup/result/provenance inspected"
+    },
+    {
+      "address": "0046a92c",
+      "native": "00467740",
+      "function": "0046a740",
+      "contract": "PUSH ESI; ECX saved actual receiver (EBP); RET4; returned EAX ignored or overwritten; full setup/result/provenance inspected"
+    },
+    {
+      "address": "0046a987",
+      "native": "00467740",
+      "function": "0046a740",
+      "contract": "PUSH EAX; ECX saved actual receiver (EBP); RET4; returned EAX ignored or overwritten; full setup/result/provenance inspected"
+    },
+    {
+      "address": "0046a265",
+      "native": "00467740",
+      "function": "0046a150",
+      "contract": "PUSH ESI; ECX saved actual receiver (EDI); RET4; returned EAX ignored or overwritten; full setup/result/provenance inspected"
+    },
+    {
+      "address": "0046a912",
+      "native": "00467790",
+      "function": "0046a740",
+      "contract": "PUSH EAX; ECX saved actual receiver (EBP); RET4; returned EAX ignored or overwritten; full setup/result/provenance inspected"
+    },
+    {
+      "address": "0046a943",
+      "native": "00467790",
+      "function": "0046a740",
+      "contract": "PUSH ESI; ECX saved actual receiver (EBP); RET4; returned EAX ignored or overwritten; full setup/result/provenance inspected"
+    },
+    {
+      "address": "0046a99f",
+      "native": "00467790",
+      "function": "0046a740",
+      "contract": "PUSH ESI; ECX saved actual receiver (EBP); RET4; returned EAX ignored or overwritten; full setup/result/provenance inspected"
+    },
+    {
+      "address": "0046a283",
+      "native": "00467790",
+      "function": "0046a150",
+      "contract": "PUSH ECX current grandparent; ECX saved actual receiver (EDI); RET4; returned EAX ignored or overwritten; full setup/result/provenance inspected"
+    },
+    {
+      "address": "0046a2b1",
+      "native": "00467790",
+      "function": "0046a150",
+      "contract": "PUSH ESI; ECX saved actual receiver (EDI); RET4; returned EAX ignored or overwritten; full setup/result/provenance inspected"
+    }
+  ],
+  "layout_evidence": "004681B0 producer allocates14h and writes links0/4/8,key0Ch,color10h,nil11h. Full native rotation comparison to record-map counterpart differs only at byte offset17:19h->11h.",
+  "validation": {
+    "full_native_assembly": true,
+    "all_live_callers_reviewed": 9,
+    "original_installed_pe_bytes_match": true,
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "complete_executed_bytes": 160,
+    "verify_report_calls": "9 call rows checked,0 failed",
+    "win32_build": "pending",
+    "existing_tests": "pending",
+    "new_tests": 0,
+    "direct_native_rotation_execution": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "application_adoption": false,
+    "cmake_registration": "unleased owner/queue checked; unique append without whole-file lease"
+  },
+  "annotation_history": [
+    {
+      "address": "00467740",
+      "before": {
+        "address": "00467740",
+        "function_name": "STL_Tree_Rotate_00467740"
+      },
+      "after": {
+        "address": "00467740",
+        "name": "STL_Tree_Rotate_00467740",
+        "evidence": "Complete actual14h-node raw Source; nil11h; preserved correct library name, left/right body/producer/caller hypothesis. Capture pivot+8 promoted; read promoted+0, write pivot+8, REREAD promoted+0; test reread child+11 and only if zero write child+4=pivot. Read CURRENT pivot+4, publish promoted+4, THEN load CURRENT tree+4 head/root. Root publishes captured head+4=promoted; nonroot rereads CURRENT pivot+4 and tests its current left+0, publishing parent+0 if equal or parent+8 otherwise. Finally ordered promoted+0=pivot then pivot+4=promoted. Full78/82B assembly and9 live calls verified; no provider dependency. ECXtree,unusedEDX,stackpivot,RET4; build pending. docs/GOAL_OCT15_SCENE_INTEGER_SET_ROTATIONS.md"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00467790",
+      "before": {
+        "address": "00467790",
+        "function_name": "STL_Tree_Rotate_00467790"
+      },
+      "after": {
+        "address": "00467790",
+        "name": "STL_Tree_Rotate_00467790",
+        "evidence": "Complete actual14h-node raw Source; nil11h; preserved correct library name, left/right body/producer/caller hypothesis. Capture pivot+0 promoted; read promoted+8, write pivot+0, REREAD promoted+8; test reread child+11 and only if zero write child+4=pivot. Read CURRENT pivot+4, publish promoted+4, THEN load CURRENT tree+4 head/root. Root publishes captured head+4=promoted; nonroot rereads CURRENT pivot+4 and tests its current right+8, publishing parent+8 if equal or parent+0 otherwise. Finally ordered promoted+8=pivot then pivot+4=promoted. Full78/82B assembly and9 live calls verified; no provider dependency. ECXtree,unusedEDX,stackpivot,RET4; build pending. docs/GOAL_OCT15_SCENE_INTEGER_SET_ROTATIONS.md"
+      },
+      "status": "applied"
+    }
+  ]
+}
