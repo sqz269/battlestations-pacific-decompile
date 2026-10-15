@@ -134,3 +134,7 @@ message and untouched header words. `probe.cmd` rebuilds and runs it. This
 executes only current Source code, not the native routines. Primary owns full
 registration/build. No new tracked test framework/target, native differential
 test, game execution or native ABI proof is claimed.
+
+## Primary integration result
+
+Registered Win32 build and all three existing CTests passed. 10 actual registered-archive executions passed; real SDK exception/message and untouched header words. The primary reproduced the documented registered COFF comparisons where applicable, checked all report call rows, saved Ghidra annotations and refreshed exports. Actual archive/fixture hashes, exclusions, rollback artifacts and logs are in `reports/goal15c_reconstruction_batch.json`. Historical Native evidence and current Source checks remain separate; no production/native ABI or gameplay validation is claimed.

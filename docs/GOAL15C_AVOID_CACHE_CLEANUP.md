@@ -116,3 +116,7 @@ the captured data must remain live until its final release.
   publication backing must remain live. Only the two leased address records are
   changed; C37450 receives appended name evidence and a repair fragment, leaving
   its original complete-function proof/status untouched.
+
+## Primary integration result
+
+Registered Win32 build and all three existing CTests passed. registered-archive cleanup composition passed; 4 node/hull blocks freed, retained vector/sentinel/body/queue intact, all11 fixture blocks reclaimed. Hull publication regression: old registered archive failed0,4,5; corrected registered archive passed0,1,2 with genuine heap releases and valid alternate publication. The primary reproduced the documented registered COFF comparisons where applicable, checked all report call rows, saved Ghidra annotations and refreshed exports. Actual archive/fixture hashes, exclusions, rollback artifacts and logs are in `reports/goal15c_reconstruction_batch.json`. Historical Native evidence and current Source checks remain separate; no production/native ABI or gameplay validation is claimed.

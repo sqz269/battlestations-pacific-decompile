@@ -70,5 +70,16 @@
     "target_sources_add":"src/native_dyn_release_queue.cpp",
     "public_consumer":"parallel0041e960 cleanup packet; declaration sent promptly",
     "ghidra_mutations":"none; primary owns annotation/export refresh"
-  }
+  },
+  "primary_integration_validation": {
+  "registered_build": "PASS scripts/build.ps1; all3 existing CTests passed",
+  "build_log": "local/goal15c_final_registered_build.log",
+  "batch_report": "reports/goal15c_reconstruction_batch.json",
+  "native_abi_and_gameplay": "not established",
+  "source_fixture": "actual registered-archive growth/alias/wrap probe passed",
+  "registered_coff": "146 bytes match excluding exactly2 redirected CALL operands",
+  "report_rows": 3,
+  "markdown_claims": 1,
+  "saved_annotations_and_exports": "PASS; target verified, old annotations retained in local rollback JSON; project saved and targeted exports refreshed"
+}
 }

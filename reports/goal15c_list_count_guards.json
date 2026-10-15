@@ -45,5 +45,15 @@
   ],
   "corrections": [{"address": "00420140", "was": {"saved_name": "STL_xlen_throw_00420140", "inventory_tag": "stl_throw_site (high, rename)", "name_ledger_record": null}, "is": {"name": "STL_List_IncrementSizeChecked_00420140", "meaning": "conditional throw plus ordinary checked count increment", "saved_annotation": "primary only"}, "evidence": "0042016A JNC004201BD; ADD EAX,EDX/store[ECX+8]/RET4 at004201BD..004201D2"}],
   "validation": {"focused_compile": "PASS:MSVC x86 /std:c++17 /EHsc /W4 /WX /permissive- /O2 /FAcs /c /Iinclude src/native_list_count_guards.cpp; zero warnings", "emitted_listing": "PASS:both public entries use ECX header, stacked addition and RET4; one count load, unsigned SUB/CMP/JB, one normal sum/store; current SDK length_error constructor and C++ throw emitted; physical operand-read order differs and is qualified", "report_and_doc_calls": "PASS:11 report rows and5 markdown claims; zero failures,unchecked claims,warnings", "full_registered_build": "primary responsibility", "source_fixture": "PASS:10 executions,5 constant expected cases through both entries; normal/exact-limit/reject/above-limit/wrapped-sum, actual length_error/message and untouched header words; local/goal15c_list_count_guards/list_count_guard_probe.cpp; probe.cmd; linked with /MANIFEST:EMBED", "new_tracked_tests": 0, "ignored_source_fixture_cases": 10, "ghidra_mutations": 0, "native_runtime_tested": false, "abi_compatible": false, "native_instruction_equivalent": false, "game_validated": false},
-  "integration": {"target": "bsp_core", "target_sources_add": "src/native_list_count_guards.cpp", "saved_ghidra_changes": "primary owns name/comment/tag/export refresh", "lease": "hold until primary transfer"}
+  "integration": {"target": "bsp_core", "target_sources_add": "src/native_list_count_guards.cpp", "saved_ghidra_changes": "primary owns name/comment/tag/export refresh", "lease": "hold until primary transfer"},
+  "primary_integration_validation": {
+  "registered_build": "PASS scripts/build.ps1; all3 existing CTests passed",
+  "build_log": "local/goal15c_final_registered_build.log",
+  "batch_report": "reports/goal15c_reconstruction_batch.json",
+  "native_abi_and_gameplay": "not established",
+  "source_fixture": "10 actual registered-archive executions passed; real SDK exception/message and untouched header words",
+  "report_rows": 11,
+  "markdown_claims": 5,
+  "saved_annotations_and_exports": "PASS; target verified, old annotations retained in local rollback JSON; project saved and targeted exports refreshed"
+}
 }

@@ -145,3 +145,7 @@ packet consumes this public entry. Only the leased address's ledger records and
 four owned outputs are committed; no CMake/packet registry/Ghidra edits occur.
 Leases remain held for primary integration. There is no game/runtime or original
 binary ABI-equivalence claim.
+
+## Primary integration result
+
+Registered Win32 build and all three existing CTests passed. actual registered-archive growth/alias/wrap probe passed. The primary reproduced the documented registered COFF comparisons where applicable, checked all report call rows, saved Ghidra annotations and refreshed exports. Actual archive/fixture hashes, exclusions, rollback artifacts and logs are in `reports/goal15c_reconstruction_batch.json`. Historical Native evidence and current Source checks remain separate; no production/native ABI or gameplay validation is claimed.
