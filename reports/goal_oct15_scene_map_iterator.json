@@ -83,6 +83,18 @@
       "address": "0046b3ef",
       "native": "004678f0",
       "function": "0046b340"
+    },
+    {
+      "address": "00467913",
+      "native": "00bf6713",
+      "function": "004678f0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "0046796f",
+      "native": "00bf6713",
+      "function": "004678f0",
+      "kind": "tail_jump"
     }
   ],
   "schedule": {
@@ -106,7 +118,7 @@
     "typed_flow_properties_read": false
   },
   "validation": {
-    "report_calls": "4 CALL rows passed; 2 JMP tails separately verified against full listing and byte spans",
+    "report_calls": "6 native transfer rows:4 CALL and2 explicitly typed tail JMP edges",
     "build": "pending",
     "new_tests": 0,
     "Original_ABI_compatible": false,
