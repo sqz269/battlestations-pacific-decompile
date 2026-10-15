@@ -1,0 +1,196 @@
+{
+  "schema": "bsp.sampler-provider-support29.v1",
+  "status": "current_real_GUI_and_POST_cold_warm_acquisition_shared_drain_verified",
+  "provider_support_source": "22c2b894be6abaf01b8b624935ff8fb66b2f146a",
+  "observed_runtime_source": "29e1d0a6be57c52d69818afd3141a7d39e392c7a",
+  "observed_executable_sha256": "14b80a25c7624ed0f4de7a3fe353724bb7acfd74cd9154a2e80d3db59f8c4d2e",
+  "changes": [
+    "Failure-only module/header/export and existing admission metadata observations.",
+    "Additional exact current DLL triplet; complete full-byte/code/CFG/IAT/object/count/slot/return checks and legacy profile preserved.",
+    "Current nonforwarded Kernel32 decrement export has identical full20 instructions; existing Source1 nonzero/before-after requirements unchanged.",
+    "Existing sampler evidence hook reads the same live compiler child by exact builder/pass identity, samples only retained metadata, and still returns empty evidence."
+  ],
+  "static_provider_evidence": {
+    "bodies": 11,
+    "bytes": 672,
+    "instructions": 273,
+    "internal_edges_unchanged": 24,
+    "mapped_profiled_callee_edges": 3,
+    "positive_shader_vtable_pairs": 4,
+    "CFG_and_import_cells_verified": true,
+    "legacy_arrays_preserved": 11,
+    "runtime_masks": "Only recorded HIGHLOW relocations; offline search masks are not used by runtime checks.",
+    "scope": "Instruction/data/CFG correspondence for the existing bounded normal-return certificate. External callees not present in that certificate are listed, not promoted to whole-module proof. No runtime guard uses search masks."
+  },
+  "builds": [
+    {
+      "source": "a893f091c4b1b3c61acb8d493e66399cde537e54",
+      "checks": 3,
+      "test_seconds": 7.1
+    },
+    {
+      "source": "22c2b894be6abaf01b8b624935ff8fb66b2f146a",
+      "checks": 3,
+      "test_seconds": 7.3
+    },
+    {
+      "source": "29e1d0a6be57c52d69818afd3141a7d39e392c7a",
+      "checks": 3,
+      "test_seconds": 7.5
+    }
+  ],
+  "guarded_private_bridge": {
+    "bytes": 96,
+    "sha256": "d480337b401359dd588edf03898dd6e7feb5e995f0149afa3fc96ce78268e06c",
+    "unchanged_in_frozen_probe_current_object_and_linked_exe": true,
+    "padding_bytes": 0,
+    "relocations": 0,
+    "Frame_header_and_actual_compiler_CPP_unchanged": true
+  },
+  "actual_attempts": [
+    {
+      "family": "diagnostics28",
+      "source": "a893f091c",
+      "exit_code": 1,
+      "scope": "Genuine failure retained; before provider support"
+    },
+    {
+      "family": "support29",
+      "source": "22c2b894b",
+      "exit_code": 0,
+      "scope": "GUI acquisitions/caller credits/shared drain"
+    },
+    {
+      "family": "observed30",
+      "source": "29e1d0a6be57c52d69818afd3141a7d39e392c7a",
+      "exit_code": 0,
+      "scope": "GUI plus POST acquisition cold/warm, explicit qualified-entry metadata"
+    }
+  ],
+  "qualified_entry_observations": [
+    {
+      "resource": "GuiFont.mshd",
+      "observed": 1,
+      "frames": 1,
+      "profiles": 1,
+      "returns": 1,
+      "known_ready": 1,
+      "has_word": true,
+      "last_word": "03df4278",
+      "release_rva": "0007eab0",
+      "shader_before": 2,
+      "release_result": 1,
+      "device_before": 23,
+      "device_after": 23
+    },
+    {
+      "resource": "GuiFontBilinear.mshd",
+      "observed": 2,
+      "frames": 2,
+      "profiles": 2,
+      "returns": 2,
+      "known_ready": 2,
+      "has_word": true,
+      "last_word": "0ef92fe8",
+      "release_rva": "0007eab0",
+      "shader_before": 2,
+      "release_result": 1,
+      "device_before": 25,
+      "device_after": 25
+    },
+    {
+      "resource": "fakemotionblur.mshd",
+      "observed": 3,
+      "frames": 3,
+      "profiles": 3,
+      "returns": 3,
+      "known_ready": 3,
+      "has_word": true,
+      "last_word": "0ef92a70",
+      "release_rva": "0007eab0",
+      "shader_before": 2,
+      "release_result": 1,
+      "device_before": 27,
+      "device_after": 27
+    },
+    {
+      "resource": "fakemotionblur.mshd (warm)",
+      "observed": 3,
+      "frames": 3,
+      "profiles": 3,
+      "returns": 3,
+      "known_ready": 3,
+      "has_word": true,
+      "last_word": "0ef92a70",
+      "release_rva": "0007eab0",
+      "shader_before": 2,
+      "release_result": 1,
+      "device_before": 27,
+      "device_after": 27
+    }
+  ],
+  "observation_scope": "Known-ready metadata sampled after actual guarded release/postconditions but inside begin() before the compiler publishes into the fresh root/mode word. Hook returns empty evidence; successful subsequent consumers provide separate execution coverage.",
+  "fakemotion_warm": {
+    "graph": "03DB2B90",
+    "cold_frame": "076CFBE8",
+    "warm_frame": "076CFEB8",
+    "same_actual_name_header": "0EC88DF0",
+    "same_effect_identity": "0EF5D6B8",
+    "references_before_shader_cache_close": 2,
+    "references_after_shader_cache_close": 2,
+    "references_after_warm_acquire": 3,
+    "shader_cache_null": true,
+    "hit_site": "00b31436",
+    "warm_created_no_new_compiler_capture": true
+  },
+  "normal_closure": {
+    "warm_caller_credit": [
+      3,
+      2
+    ],
+    "cold_caller_credit": [
+      2,
+      1
+    ],
+    "font_caller_credits": [
+      2,
+      1
+    ],
+    "shared_native_drain": true,
+    "final_renderer_COM_counts": [
+      0,
+      0
+    ],
+    "loop_iterations_requested": 2,
+    "frames_presented": 1,
+    "presents_skipped": 1,
+    "host_methods_unimplemented": 43
+  },
+  "original_preserved_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra": {
+    "names_and_prior_comments_preserved": true,
+    "saved": true,
+    "affected_exports_refreshed": true
+  },
+  "evidence": {
+    "verified_payloads": 568,
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_sampler_provider_support_29\\evidence_family.zip",
+      "sha256": "6d94c947401392683bc993d6b67b6fc3225277a2bb78282b0e6855c344d0d555",
+      "bytes": 93815849
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_sampler_provider_support_29\\evidence_manifest.json",
+      "sha256": "2407b44573273ead360074cf4b70276bb382fb3706a92ee6b2ac6dacbd3eaee4",
+      "bytes": 267314
+    }
+  },
+  "new_test_cases": 0,
+  "not_established": [
+    "Historical Original-process DLL/IAT identity, whole register/private-frame/FH3/SEH or arbitrary concurrent mutation compatibility.",
+    "Live legacy-host execution after this extension; legacy literals/targets/checks remain preserved and reviewed.",
+    "Procedural Source1 B3B280 nonzero/zero-terminal parent execution; selected fakemotion descriptor remains SceneTexture Source0 with empty mode samplers.",
+    "POST draw/submission, Native Text glyph/section/draw activation, visible native world, complete frontend or gameplay validation.",
+    "Runtime coverage of later Source changes; evidence remains pinned to each named compiled family."
+  ]
+}
