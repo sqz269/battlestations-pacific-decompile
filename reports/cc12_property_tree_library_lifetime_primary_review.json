@@ -1,6 +1,6 @@
 {
   "schema": "cc12.property_tree_library_lifetime_primary_review.v1",
-  "status": "Whole Source and independent emitted-code review pass; registered Main compilation pending",
+  "status": "Whole ordinary Source, registered Main3checks, unique archive member and actual selected compiled-code identity PASS",
   "addresses": [
     "008f4c50",
     "008f56a0"
@@ -28,11 +28,44 @@
   "gates": {
     "primary_Source_pass": true,
     "independent_Source_COFF_pass": true,
-    "registered_Main_build_pass": false,
-    "actual_Main_object_pass": false
+    "registered_Main_build_pass": true,
+    "actual_Main_object_pass": true
   },
   "new_Source_runtime_executed": false,
   "Original_ABI_compatible": false,
   "game_validated": false,
-  "limits": "Ordinary Source interfaces and selected compiler evidence only; no Original register/RET/FS/EH/privateCRT/class/application/game equivalence."
+  "limits": "Ordinary Source interfaces and selected compiler evidence only; no Original register/RET/FS/EH/privateCRT/class/application/game equivalence.",
+  "registered_Main_build": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_tree_library_lifetime_Main_build01\\result.DATA.json",
+    "bytes": 3419,
+    "sha256": "8c592a7ac3246664707ce5f2a41c486e024c20781ad218d5c3bfe3415e40be84"
+  },
+  "actual_Main_independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyTreeLibraryLifetimeResumeReview01\\Main_selected_object_review.DATA.json",
+    "bytes": 15918,
+    "sha256": "fbe57380ea5b471ec2f8fd2b6cb73028a46ddd013267b70e4595772142790325"
+  },
+  "primary_complete_code_and_relocation_consumption": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_library_resume_20261015\\lifetime_Main_primary_identity.DATA.json",
+    "bytes": 6010,
+    "sha256": "fca9a3047e90ee399fed09bb438dbc3d31944c1a1a497f39b0cad5e24cdd2053"
+  },
+  "revalidated_prior_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyTreeLibraryLifetimeResumeReview01\\renewed_review.DATA.json",
+    "bytes": 7263,
+    "sha256": "3f1e5936a9ee00cb63cfc3b96da0c659686cff0cb13770f7863b5d6795fc310f"
+  },
+  "Ghidra_annotation_and_export": {
+    "annotations": "c8bd82/exit0",
+    "previous_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\ghidra-annotations-20261015T161243Z.json",
+      "bytes": 13886,
+      "sha256": "6a1be14274e780102529b5f327c3694d16ff71864d019367a060867e4e984bd3"
+    },
+    "project_saved": true,
+    "exports": "e5a5f7/exit0",
+    "snapshot_and_index": "a3d150/exit0; unchanged76769 functions, index rebuilt",
+    "Original_project": "C:/Users/sqz269/bsp.gpr",
+    "Original_program": "/battlestationspacific.exe"
+  }
 }

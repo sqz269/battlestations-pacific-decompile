@@ -39211,6 +39211,102 @@
         ],
         "descriptive_name_provisional": true
       }
+    },
+    {
+      "id": "cc12_property_library_node_pool_whole",
+      "done": true,
+      "state": "whole_ordinary_Source_Main_build_and_independent_selected_compiler_identity_pass",
+      "worker": "library_lookup_data_resume",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00cc8a70",
+        "00cd9270"
+      ],
+      "output_files": [
+        "include/bsp/native_enum_node_pool.hpp",
+        "src/native_enum_node_pool.cpp",
+        "include/bsp/game_native_physical_pool.hpp",
+        "src/game_native_physical_pool.cpp",
+        "reports/native_property_library_node_pool_cc12.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence": "reports/cc12_property_library_pool_primary_review.json",
+      "qualification": "Distinct E17540 owner/commonE188B4 list. Ordinary Source/static compiler validation only; no new provider runtime or OriginalABI/EH/privateCRT/game qualification."
+    },
+    {
+      "id": "cc12_property_library_lookup_whole",
+      "done": true,
+      "state": "whole_ordinary_Source_Main_build_logs_and_selected_compiler_identity_pass",
+      "worker": "library_lookup_data_resume",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "004689d0",
+        "00468ed0"
+      ],
+      "output_files": [
+        "include/bsp/native_property_library_lookup.hpp",
+        "src/native_property_library_lookup.cpp",
+        "include/bsp/game_native_string_process.hpp",
+        "src/game_native_string_process.cpp",
+        "reports/native_property_library_lookup_cc12.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence": "reports/cc12_property_library_lookup_primary_review.json",
+      "qualification": "Actual raw header readers and distinctE18560 fallback; original Main process exit unrecovered after pause, completed build and3existingchecks supported by frozen logs/artifacts. No new runtime or OriginalABI/EH/privateCRT/game qualification."
+    },
+    {
+      "id": "cc12_property_tree_library_lifetime_whole",
+      "done": true,
+      "state": "whole_ordinary_Source_Main3checks_and_independent_selected_compiler_identity_pass",
+      "worker": "library_lifetime_review_resume",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "008f4c50",
+        "008f56a0"
+      ],
+      "output_files": [
+        "include/bsp/native_property_tree_library_lifetime.hpp",
+        "src/native_property_tree_library_lifetime.cpp",
+        "docs/NATIVE_PROPERTY_TREE_LIBRARY_LIFETIME_CC12.md",
+        "reports/native_property_tree_library_lifetime_cc12.json"
+      ],
+      "depends_on": [
+        "cc12_property_library_node_pool_whole"
+      ],
+      "source_ready": true,
+      "evidence": "reports/cc12_property_tree_library_lifetime_primary_review.json",
+      "qualification": "All9code sections380B146reachable instructions and10relocations match independent strict review; unique actual archive member. No new runtime or OriginalABI/EH/game claim."
+    },
+    {
+      "id": "cc12_property_library_insert_or_replace",
+      "done": false,
+      "state": "in_progress_whole_Source_first_strict_compile_pass_worker_normal_build_and_independent_review_pending",
+      "worker": "library_insert_source",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "008f29a0"
+      ],
+      "output_files": [
+        "include/bsp/native_property_library_insert.hpp",
+        "src/native_property_library_insert.cpp",
+        "docs/NATIVE_PROPERTY_LIBRARY_INSERT_CC12.md",
+        "reports/native_property_library_insert_cc12.json"
+      ],
+      "depends_on": [
+        "cc12_property_library_node_pool_whole",
+        "cc12_property_library_lookup_whole",
+        "cc12_property_tree_library_lifetime_whole",
+        "cc11_property_tree_library_storage"
+      ],
+      "source_ready": true,
+      "contract": "Whole172B65 insertion/replacement from actual108h map and raw8h key, physical retirement/key copy/publication/count order, same canonical string process and E17540outer/E175B0inner pools. No arbitrary dispatch/graph/startup/loader scope. Root handles shared registration and metadata.",
+      "qualification": "New ordinary C++ interface. No new tests/probes/runtime or OriginalABI/EH/privateCRT/game claim."
     }
   ],
   "snapshot_after_analysis": {
