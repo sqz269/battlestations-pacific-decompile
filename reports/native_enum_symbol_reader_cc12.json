@@ -1,0 +1,535 @@
+{
+  "schema": "bsp.native_enum_symbol_reader_cc12.v1",
+  "packet": "cc12_enum_symbol_reader_source01",
+  "status": "complete_ordinary_Source_strict_static_reviewed_repository_build_passed_unregistered",
+  "base": "b859913d58115d86e8bdd0c2d613723e7cf51912",
+  "Source_ready": true,
+  "readiness_gate": {
+    "path": "local/WholeEnumSymbolReaderSource01/readiness.DATA.json",
+    "bytes": 3299,
+    "sha256": "adfd60d9ec33e6db6d134ccf3bf84acf4c00a018a7292ddfe60961b938e2cdef"
+  },
+  "new_files": [
+    "include/bsp/native_enum_symbol_reader.hpp",
+    "src/native_enum_symbol_reader.cpp",
+    "docs/NATIVE_ENUM_SYMBOL_READER_CC12.md",
+    "reports/native_enum_symbol_reader_cc12.json"
+  ],
+  "Source_entry": "bool read_native_enum_symbols_008f31a0(void*,void*,NativeEnumSymbolReaderContext&)",
+  "Original": {
+    "schema": "bsp.enum_symbol_reader_Original_pins.v1",
+    "identity": {
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "modification": "148",
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "193",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "008f31a0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "008f3260"
+            },
+            "length": "193"
+          }
+        ]
+      }
+    },
+    "image": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "ranges": [
+      {
+        "address": "008f31a0",
+        "bytes": 193,
+        "sha256": "6763202fd868a30f6ca442557d46af4b7d1fc6729812ce7acc25fe97fa84a474",
+        "live_matches_disk": true,
+        "disk_offset": 5190048,
+        "retained": "local/WholeEnumSymbolReaderSource01/Original.008f31a0.bin"
+      },
+      {
+        "address": "00ce4cd4",
+        "bytes": 2,
+        "sha256": "40f6916b78ce91e89f740a14cdc77ab0e69292daefb8e06abe4b67637ccc30c5",
+        "live_matches_disk": true,
+        "disk_offset": 9325780,
+        "retained": "local/WholeEnumSymbolReaderSource01/Original.00ce4cd4.bin"
+      },
+      {
+        "address": "00ce55bc",
+        "bytes": 2,
+        "sha256": "e7dac261e841e53eb65ac8c2a0e56544df49c46d71e8002d7764f92c66c4c868",
+        "live_matches_disk": true,
+        "disk_offset": 9328060,
+        "retained": "local/WholeEnumSymbolReaderSource01/Original.00ce55bc.bin"
+      },
+      {
+        "address": "00ce5698",
+        "bytes": 2,
+        "sha256": "f19928677b2f51ad669b77d49dafc34f42c5ae36c01d954e82be31ccbc6b659f",
+        "live_matches_disk": true,
+        "disk_offset": 9328280,
+        "retained": "local/WholeEnumSymbolReaderSource01/Original.00ce5698.bin"
+      }
+    ],
+    "scratch": {
+      "address": "00F89758",
+      "section": {
+        "name": ".data",
+        "rva": 10518528,
+        "virtual_size": 2719452,
+        "raw_size": 65536,
+        "raw_offset": 10518528,
+        "flags": 3221225536
+      },
+      "section_writable": true,
+      "buffer_extent_recovered": false,
+      "role": "actual borrowed process scratch storage; NUL-inclusive forward name copy before any consume/read/declaration",
+      "admission": "caller binds the genuine role with enough valid storage for the name; no buffer or capacity/default is invented"
+    },
+    "listing_repair_needed": false
+  },
+  "Original_ABI": {
+    "receiver": "ECX genuine outer19Ch CEnum",
+    "argument": "entry ESP+4 existing live838h tokenizer",
+    "return": "AL result from final008D9930(close); upper EAX unspecified",
+    "cleanup": "RET4",
+    "transport_detail": "four saved registers and no local reserve: success-byte slot ESP+14 before pushing pointer is low byte of incoming tokenizer stack argument; EBX retains the original tokenizer pointer. New C++ interface uses an actual local byte and does not reproduce stack overwrite."
+  },
+  "ordinary_loop": [
+    "peek, compare first at most2bytes against actual CE4CD4 }NUL; stop only on exact match",
+    "body re-peeks; copy actual token NUL-inclusive to genuine borrowed F89758 scratch; consume name",
+    "expect actual CE55BC =NUL; store its AL to actual byte output; always call read-int which overwrites that byte",
+    "always peek; compare whole token against actual CE5698 ;NUL through00438E10; consume iff equal",
+    "always declare scratch name with returned int, including zero after a failed conversion; do not branch on either success flag",
+    "peek and repeat exact at-most2byte closing check; finally expect close and return its AL"
+  ],
+  "direct_accepted_providers": [
+    [
+      "00438E10",
+      "compare_insensitive_00438e10",
+      "src/entity_identity.cpp"
+    ],
+    [
+      "008D8960",
+      "consume_native_scene_token_008d8960",
+      "src/native_scene_tokenizer.cpp"
+    ],
+    [
+      "008D8A70",
+      "peek_native_scene_token_008d8a70",
+      "src/native_scene_tokenizer.cpp"
+    ],
+    [
+      "008D9930",
+      "expect_native_scene_token_008d9930",
+      "src/native_scene_token_text.cpp"
+    ],
+    [
+      "008D9AD0",
+      "read_native_scene_int_008d9ad0",
+      "src/native_scene_token_values.cpp"
+    ],
+    [
+      "008F2E40",
+      "declare_native_enum_symbol_008f2e40",
+      "src/native_enum_symbol_declaration.cpp"
+    ]
+  ],
+  "provider_identity": {
+    "Original": "six distinct direct entries, no computed/indirect call in complete193B body",
+    "Source_indirect_boundary": "008D9AD0 uses NativeSceneTokenValueCalls::scan_decimal_00bf7533; bind its accepted default concrete body std::sscanf/current CRT, not an arbitrary replacement callback. Comparison uses accepted current CRT _stricmp; raw peek/recovery use current CRT strchr.",
+    "scratch": "borrow genuine writable F89758 process buffer; exact independent extent not recovered; caller supplies valid capacity, no buffer substitute",
+    "punctuators": {
+      "CE4CD4": "7d00",
+      "CE55BC": "3d00",
+      "CE5698": "3b00"
+    },
+    "contexts": "accepted NativeSceneTokenValueContext + NativeEnumSymbolDeclarationContext with same canonical raw strings; real E17578 symbol pool, distinct E186ED/E17654 roles"
+  },
+  "no_guards_added": "Original has no EOF, brace-depth, failure/early return or iteration cap; malformed unterminated input may not terminate.",
+  "named_incomplete_nonprerequisites": [
+    "008D9CF0 file-backed tokenizer constructor is separate; borrower takes an already-live tokenizer",
+    "Canonical startup/application binding of borrowed scratch/owners remains outside this new Source interface"
+  ],
+  "missing_direct_providers": [],
+  "listing_repair_needed": false,
+  "new_Source_inputs": [
+    {
+      "path": "include/bsp/native_enum_symbol_reader.hpp",
+      "bytes": 2117,
+      "sha256": "4d9c12d2def80b6df926208579b75d2a67d50b9f7880536c8e6db8b3ebecb83a",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/native_enum_symbol_reader.hpp"
+    },
+    {
+      "path": "src/native_enum_symbol_reader.cpp",
+      "bytes": 1968,
+      "sha256": "36b3095d169ed48441b14499576f1ed9858cb8af6dd74752b2eee09185f1ca4b",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/src/native_enum_symbol_reader.cpp"
+    }
+  ],
+  "direct_Source_provider_inputs": [
+    {
+      "path": "include/bsp/entity_identity.hpp",
+      "bytes": 12117,
+      "sha256": "c157a3f7098d39d9a8e6e3ad5a6269db5fe1425c80c9870dcf16cf4f98ed0b87",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/entity_identity.hpp"
+    },
+    {
+      "path": "src/entity_identity.cpp",
+      "bytes": 12455,
+      "sha256": "886aef959411a02bae273bb3dcb541eaded80a3fce27a8184e7882afe6bfd0a9",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/src/entity_identity.cpp"
+    },
+    {
+      "path": "include/bsp/native_scene_tokenizer.hpp",
+      "bytes": 3563,
+      "sha256": "040fb2c3a09a532377bc0eadd5ce5f4fc13475603fd6e646c1b162d9d8477b9e",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/native_scene_tokenizer.hpp"
+    },
+    {
+      "path": "src/native_scene_tokenizer.cpp",
+      "bytes": 8452,
+      "sha256": "cacfe4c42a3c8a974ccd3e6d7c0d1a1ed21478745acca7e2af34f2cb7f52e6b8",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/src/native_scene_tokenizer.cpp"
+    },
+    {
+      "path": "include/bsp/native_scene_token_text.hpp",
+      "bytes": 1175,
+      "sha256": "fa8e9734feed6315cfb3c86caa5e8441d443adbf5f0d0260174bf9bcb1d0d2b2",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/native_scene_token_text.hpp"
+    },
+    {
+      "path": "src/native_scene_token_text.cpp",
+      "bytes": 1923,
+      "sha256": "1c66e9968f45f34200217a8feea676e344f0f80151e1c63c4c466e2a2b091e8a",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/src/native_scene_token_text.cpp"
+    },
+    {
+      "path": "include/bsp/native_scene_token_values.hpp",
+      "bytes": 2330,
+      "sha256": "7d16dbc9564a1c59f7a3d98597fcb3beb7b3a151fb4d72c1db067788c3cbbd5e",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/native_scene_token_values.hpp"
+    },
+    {
+      "path": "src/native_scene_token_values.cpp",
+      "bytes": 3183,
+      "sha256": "20df9e1c1c2f898c57230524e6084df4e83549e2f7a6dd91c84291d245d9c7a4",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/src/native_scene_token_values.cpp"
+    },
+    {
+      "path": "include/bsp/native_enum_symbol_declaration.hpp",
+      "bytes": 1845,
+      "sha256": "29e6800ace0ecd8aeb6beafb78b628a1682625a100d8d2f1ea5e5235ae7f6d02",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/native_enum_symbol_declaration.hpp"
+    },
+    {
+      "path": "src/native_enum_symbol_declaration.cpp",
+      "bytes": 2643,
+      "sha256": "7fccce58b4f2fdff66fac03d44dce86329de6844de5795c2f386201f708775d9",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/src/native_enum_symbol_declaration.cpp"
+    }
+  ],
+  "complete_compiled_project_headers": [
+    {
+      "path": "include/bsp/entity_identity.hpp",
+      "bytes": 12117,
+      "sha256": "c157a3f7098d39d9a8e6e3ad5a6269db5fe1425c80c9870dcf16cf4f98ed0b87",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/entity_identity.hpp"
+    },
+    {
+      "path": "include/bsp/native_enum_symbol_declaration.hpp",
+      "bytes": 1845,
+      "sha256": "29e6800ace0ecd8aeb6beafb78b628a1682625a100d8d2f1ea5e5235ae7f6d02",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/native_enum_symbol_declaration.hpp"
+    },
+    {
+      "path": "include/bsp/native_enum_symbol_insertion.hpp",
+      "bytes": 2015,
+      "sha256": "903ee9ed73a97aa15057b3e7e2409e43a02a5c2795a11e8a4f5bf6c0e12994fa",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/native_enum_symbol_insertion.hpp"
+    },
+    {
+      "path": "include/bsp/native_enum_symbol_reader.hpp",
+      "bytes": 2117,
+      "sha256": "4d9c12d2def80b6df926208579b75d2a67d50b9f7880536c8e6db8b3ebecb83a",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/native_enum_symbol_reader.hpp"
+    },
+    {
+      "path": "include/bsp/native_memory_stream.hpp",
+      "bytes": 3230,
+      "sha256": "1cd41bf0ec1db15bce03acf9d8ecceae4d8b27fe689dea2a3393327ff7e81c88",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/native_memory_stream.hpp"
+    },
+    {
+      "path": "include/bsp/native_retained_memory_owners.hpp",
+      "bytes": 3829,
+      "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/native_retained_memory_owners.hpp"
+    },
+    {
+      "path": "include/bsp/native_scene_token_text.hpp",
+      "bytes": 1175,
+      "sha256": "fa8e9734feed6315cfb3c86caa5e8441d443adbf5f0d0260174bf9bcb1d0d2b2",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/native_scene_token_text.hpp"
+    },
+    {
+      "path": "include/bsp/native_scene_token_values.hpp",
+      "bytes": 2330,
+      "sha256": "7d16dbc9564a1c59f7a3d98597fcb3beb7b3a151fb4d72c1db067788c3cbbd5e",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/native_scene_token_values.hpp"
+    },
+    {
+      "path": "include/bsp/native_scene_tokenizer.hpp",
+      "bytes": 3563,
+      "sha256": "040fb2c3a09a532377bc0eadd5ce5f4fc13475603fd6e646c1b162d9d8477b9e",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/native_scene_tokenizer.hpp"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/native_string.hpp"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "bytes": 5571,
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+      "retained_copy": "local/WholeEnumSymbolReaderSource01/inputs/include/bsp/storage_pool.hpp"
+    }
+  ],
+  "full_input_pins": {
+    "path": "local/WholeEnumSymbolReaderSource01/input_pins.DATA.json",
+    "bytes": 9216,
+    "sha256": "192c5285a5cb7118d1ab58d2ec1db169c76a473af5a90cd918db7d665391736a"
+  },
+  "strict_review": {
+    "schema": "bsp.enum_symbol_reader_strict_static_review.v1",
+    "actual_success_chunk": "86b00d",
+    "actual_success_exit": 0,
+    "actual_receipt": "local/WholeEnumSymbolReaderSource01/strict.original_tool_receipt.DATA.json",
+    "flags": [
+      "/std:c++17",
+      "/c",
+      "/O2",
+      "/Ob2",
+      "/Oy-",
+      "/W4",
+      "/WX",
+      "/EHsc",
+      "/Gy",
+      "/GL-",
+      "/fp:strict"
+    ],
+    "compiler_log_filename_only": true,
+    "machine": "14C x86",
+    "section_count": 6,
+    "code": [
+      {
+        "section": 4,
+        "symbol": "closing_token",
+        "bytes": 31,
+        "relocations": []
+      },
+      {
+        "section": 5,
+        "symbol": "read_native_enum_symbols_008f31a0",
+        "bytes": 195,
+        "REL32": [
+          [
+            "13",
+            "peek_native_scene_token_008d8a70"
+          ],
+          [
+            "35",
+            "peek_native_scene_token_008d8a70"
+          ],
+          [
+            "50",
+            "consume_native_scene_token_008d8960"
+          ],
+          [
+            "5a",
+            "expect_native_scene_token_008d9930"
+          ],
+          [
+            "68",
+            "read_native_scene_int_008d9ad0"
+          ],
+          [
+            "73",
+            "peek_native_scene_token_008d8a70"
+          ],
+          [
+            "7c",
+            "compare_insensitive_00438e10"
+          ],
+          [
+            "89",
+            "consume_native_scene_token_008d8960"
+          ],
+          [
+            "9d",
+            "declare_native_enum_symbol_008f2e40"
+          ],
+          [
+            "a5",
+            "peek_native_scene_token_008d8a70"
+          ],
+          [
+            "b5",
+            "expect_native_scene_token_008d9930"
+          ]
+        ]
+      }
+    ],
+    "other_sections": [
+      ".drectve compiler CRT defaults",
+      ".debug$S",
+      ".bss4 compiler weak AVX marker",
+      ".chks64"
+    ],
+    "full_emitted_code_all_relocations_inspected": true,
+    "order": "entry peek -> at-most2byte close -> re-peek -> NUL-inclusive scratch copy -> consume -> expect '=' -> AL byte store -> always read-int -> peek -> compare ';' -> optional consume -> always declaration -> peek -> loop; final expect-close AL forwarded",
+    "Source_byte_placement": "Compiler places actual C++ byte at EBP+13h after retaining context in EDI; this dead-argument-slot reuse is not a reproduction of Original incoming-tokenizer-low-byte transport.",
+    "extra_EOF_failure_nesting_guard_or_indirect_dispatch": false,
+    "Original_ABI_EH_privateCRT_class_runtime_game_proof": false
+  },
+  "actual_original_strict": {
+    "tool": "exec_command",
+    "arguments": {
+      "cmd": "cmd /d /c local\\WholeEnumSymbolReaderSource01\\strict_compile.cmd; $strictExit=$LASTEXITCODE; Write-Output \"strict_exit=$strictExit\"; exit $strictExit",
+      "workdir": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate",
+      "max_output_tokens": 1000,
+      "yield_time_ms": 10000
+    },
+    "result": {
+      "chunk_id": "86b00d",
+      "wall_time_seconds": 3.6805949,
+      "exit_code": 0,
+      "original_token_count": 4,
+      "output": "strict_exit=0\r\n"
+    }
+  },
+  "actual_paired_receipts": {
+    "path": "local/WholeEnumSymbolReaderSource01/paired_receipts.DATA.json",
+    "bytes": 5379,
+    "sha256": "77cd036c7e0cc5eabcef2932dacd2170dee29371b97ff70056a438aea57aa42d"
+  },
+  "required_worker_build": {
+    "script": "./scripts/build.ps1",
+    "actual_original_launch": {
+      "tool": "exec_command",
+      "arguments": {
+        "cmd": "try { & ./scripts/build.ps1 *> local/WholeEnumSymbolReaderSource01/repository.build.log; $repositoryBuildExit=$LASTEXITCODE; Write-Output \"repository_build_exit=$repositoryBuildExit\"; exit $repositoryBuildExit } catch { $_ | Out-String | Add-Content local/WholeEnumSymbolReaderSource01/repository.build.log; Write-Output 'repository_build_exit=1'; exit 1 }",
+        "workdir": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate",
+        "max_output_tokens": 1000,
+        "yield_time_ms": 1000
+      },
+      "result": {
+        "chunk_id": "ec4370",
+        "wall_time_seconds": 10.0011183,
+        "session_id": 74528,
+        "original_token_count": 0,
+        "output": ""
+      }
+    },
+    "actual_original_natural_terminal": {
+      "tool": "write_stdin",
+      "arguments": {
+        "session_id": 74528,
+        "chars": "",
+        "max_output_tokens": 1000,
+        "yield_time_ms": 1000
+      },
+      "result": {
+        "chunk_id": "0d8b07",
+        "wall_time_seconds": 1.48e-05,
+        "exit_code": 0,
+        "original_token_count": 7,
+        "output": "repository_build_exit=0\r\n"
+      }
+    },
+    "same_session": 74528,
+    "natural_terminal": true,
+    "cancelled_or_replaced": false,
+    "log": {
+      "path": "local/WholeEnumSymbolReaderSource01/repository.build.log",
+      "bytes": 4949,
+      "sha256": "5c7b076705505e94c843c56c1d9e28e5ab52e44a10b1af3493cfdf826f939a1f"
+    },
+    "CTest": {
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "seconds": 7.16
+    },
+    "existing_source_warnings": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\build\\win32\\bsp_core.vcxproj]"
+    ],
+    "new_TU_registered": false
+  },
+  "strict_artifact_pins": [
+    {
+      "path": "local/WholeEnumSymbolReaderSource01/strict_compile.cmd",
+      "bytes": 1025,
+      "sha256": "ecc4abc0a95e215b15f52cdba4a3d1fb692a65fd0909b23e979b1349d32f1865"
+    },
+    {
+      "path": "local/WholeEnumSymbolReaderSource01/strict.compile.log",
+      "bytes": 31,
+      "sha256": "3c53a8b77f91681bc883093dbec39898095c889fc95b0f55fe20dfb9429abab8"
+    },
+    {
+      "path": "local/WholeEnumSymbolReaderSource01/strict.original_tool_receipt.DATA.json",
+      "bytes": 530,
+      "sha256": "f66940c51c23bd7570f94a437899e2a9ae053a3c8bdbebfa70a5b2411d8a79fb"
+    },
+    {
+      "path": "local/WholeEnumSymbolReaderSource01/strict.obj.all.txt",
+      "bytes": 14317,
+      "sha256": "6c7780af8b79a8ca5c4c5ae3b07ca4d806908f0757bea111fbcc14e94f56e678"
+    },
+    {
+      "path": "local/WholeEnumSymbolReaderSource01/strict.obj.disasm.txt",
+      "bytes": 6539,
+      "sha256": "f645d03789403c84cc39465e5da374dea94facf9c623b2ef065beecf87c4e5c0"
+    },
+    {
+      "path": "local/WholeEnumSymbolReaderSource01/native_enum_symbol_reader.obj",
+      "bytes": 2294,
+      "sha256": "3561b233936c7f4876c18ab5fe4fc2842daba2a24ad02a1da0fdf0e32b9bbf4d"
+    },
+    {
+      "path": "local/WholeEnumSymbolReaderSource01/native_enum_symbol_reader.cod",
+      "bytes": 9511,
+      "sha256": "c8af534b848ea3b77851e132113350e66f97c029b9c6f1495db5b9abab327210"
+    }
+  ],
+  "integration": {
+    "Ghidra_ledger_shared_CMake_app_writes": false,
+    "new_TU_registered": false,
+    "new_tests_probes_or_target_runtime": false,
+    "file_constructor_008D9CF0_invented_or_needed": false,
+    "generic_skip_model_default_or_callback_introduced": false
+  },
+  "limits": [
+    "Complete ordinary Source with new explicit-context C++ interface; strict standalone object covers this unregistered TU, required build covers registered baseline.",
+    "genuine19Ch current-CRT CEnum, existing live838h tokenizer, same accepted canonical raw strings, real E17578 symbol pool and distinct E186ED/E17654 roles; existing accepted contexts and immutable punctuator bindings",
+    "Inherited successful stable/disjoint/coherent nonoverflowing raw-owner/buffer domains, closed NUL-terminated ASCII text and stable current CRT C locale; actual shared scratch requires synchronization.",
+    "Original malformed/unterminated input may loop forever; no EOF/failure/nesting/iteration exit is introduced.",
+    "Original ABI/segment/DF/FS/EH/private historical CRT/locale/class/runtime/game equivalence and startup/application admission remain false."
+  ]
+}
