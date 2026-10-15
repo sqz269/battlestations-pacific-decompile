@@ -296,5 +296,11 @@
     "Volatile raw DWORD loads/stores and unsigned32 integer-address wrap target MSVC Win32/x86;portable pointer/alignment/fault/SEH semantics are not promised.",
     "No callbacks,allocation,validation,ownership object or modern STL copy substitute. No exception or cleanup behavior is invented for these leaves.",
     "Existing suites cover established math/native-seed/tool checks;no dedicated new-copy native differential,fixture,game startup or gameplay execution is claimed."
-  ]
+  ],
+  "integration_source_review": {
+    "reviewer": "primary",
+    "status": "passed_no_findings",
+    "accepted_pin": "43375e9af932e6f3748ba7df0204876484b0cfdf",
+    "scope": "Complete Source/header and both whole native listings reviewed. Destination capture evenempty, progressive nullskip/currentDWORD read-store, wrapped source/output increments, opaque metadata union and propagatedEAX match."
+  }
 }

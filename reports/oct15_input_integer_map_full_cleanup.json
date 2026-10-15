@@ -1405,7 +1405,31 @@
     "src/native_input_integer_map_full_cleanup.cpp": "b2b5edf15d1ae2efe8dbed53019388a51e5cb12158cdc65067b2e329c7ed0210",
     "include/bsp/native_input_integer_map_full_cleanup.hpp": "9ff19bc567f8a7665239cd1193f1dfe6fcde5dd4d7eb8975fb6f5e7c4de2abe3"
   },
-  "independent_source_review": "Pending frozen-pin primary review after current thirteenth batch; not claimed complete by worker",
+  "independent_source_review": {
+    "packet": "oct15_input_integer_map_full_cleanup",
+    "accepted_pin": "5a15a409427fba9a415883273382d2ebb35e5a81",
+    "reviewer": "primary",
+    "status": "passed_no_findings",
+    "files_sha256": {
+      "src/native_input_integer_map_full_cleanup.cpp": "b2b5edf15d1ae2efe8dbed53019388a51e5cb12158cdc65067b2e329c7ed0210",
+      "include/bsp/native_input_integer_map_full_cleanup.hpp": "9ff19bc567f8a7665239cd1193f1dfe6fcde5dd4d7eb8975fb6f5e7c4de2abe3"
+    },
+    "native_scope": {
+      "004cef40": "127B49instruction admitted fullprefix only",
+      "0055b230": "127B49instruction admitted fullprefix only",
+      "0055b490": "52B23instruction wholeordinary"
+    },
+    "checks": [
+      "Full Source/header reviewed against both complete fullprefix listings and wholeB490 listing.",
+      "Selection TEST/load/CMP captures and exact admitted stable fullpath preconditions preserved.",
+      "Actual4C1890/55AF60 direct subtrees, unconsumedEDX carries root bits; no callback/provider.",
+      "CURRENT head repeated reset/read and independently captured output owner/node stores preserve exact native order.",
+      "Whole B490 captures head thenhead.left, proves exactfullrange selection, reloads CURRENThead for free then clears4/8 and returnsDWORD0; opaque0 untouched.",
+      "Whole range erasers and diagnostic/partial paths remain incomplete, original qualifiedAV/guarded projections untouched.",
+      "Privateframe/ownership/currentCRT/nativeABI/fault/SEH/game limits explicit."
+    ],
+    "findings": []
+  },
   "limits": [
     "Valid finite uniquelyowned actual trees/head/sentinels and matching currentCRT; stable fullselection/writable privateoutput; no repairguards/callbacks.",
     "Only admitted fullprefixes, not diagnostics/partialroute or whole ordinary4CEF40/55B230. No InputSettings record promotion.",
@@ -1433,5 +1457,6 @@
     "native_entry_execution": false,
     "original_binary_abi_compatible": false,
     "game_validated": false
-  }
+  },
+  "independent_source_review_at_worker_commit": "Pending frozen-pin primary review after current thirteenth batch; not claimed complete by worker"
 }
