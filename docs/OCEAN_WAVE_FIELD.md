@@ -1200,3 +1200,81 @@ local player's party is BOMBER_AFTER_TASK's provisional reading; the host's stan
 (the 009A17F8 comment at :7749 uses the controlled unit's party, labelled). plan+26Ch is task+270h, the mode byte
 gate A tests against 2 (BOMBER_AFTER_TASK.md: `009998CD LEA EDI,[ESI+4]`); which states leave it non-zero decides
 the reach and must be listed by the packet owner.
+
+## 34. Carrier runway/hangar failure: the launch gate is the carrier's own block (cc9-physics10, 2026-10-14; read-only)
+
+Lead item (C), from CC13_SEG30 adoption note 1. Read from disk bytes (`bsp.py disasm-raw`, `scan-bytes`); no code
+changed. **Correction to CC13_SEG30 note 1:** on a carrier the air-ops block is not at `+72Ch`. The mothership
+constructor `00758550` builds it at `+1188h` (`00758578 LEA EDI,[ESI+1188h]`, then `00758589 CALL 006CAC00`, the
+block constructor that zeroes block `+1Ch` / `+1Dh` at `006CAC37` / `006CAC3A`). So the bytes `006BF620` reads for a
+carrier are `unit+11A4h` (runway) and `unit+11A5h` (hangar), and those **are** set:
+
+- **Set.** `007583A0 BSP_Mothership_SetFailureFromMessage` (MMothership override of slot `+220h`): message kind 72h
+  writes `unit+11A4h = 1` (`007583B7`), kind 74h writes `unit+11A5h = 1` (`007583D2`), else `008198A0`.
+- **Clear.** `007583F0 BSP_Mothership_ClearFailureFromMessage`: kind 73h clears `+11A4h` (`00758407`), 75h clears
+  `+11A5h` (`00758422`).
+- **Senders.** Three mothership vtable methods (vtable base `00D01630`):
+  - `+194h` = `00758750` (dword at `00D017C4`), the Lua `SetFailure` virtual (`0088F14C CALL [vtable+194h]`).
+    `"RunwayFailure"` (`_strcmp` against `00CF8E24`) builds message 72h (`0075B430`, class `00CF8B40`) and routes it
+    with `0077C2A0(msg, 7, 0)` (`007587D5`); `"HangarFailure"` (`00425850` against `00CF8E14`) builds 74h (class
+    `00CF8B68`). **The duration argument is not read on either arm**; any other name goes to the ship base
+    `008132C0` with it (`00758860`-`00758868`).
+  - `+19Ch` = `00758A50` (`00D017CC`): the same two names build 73h / 75h (`00758A91`, `00758B00`); other names go to
+    `00813660`.
+  - `+21Ch` = `00758890` (`00D0184C`): the same 72h / 74h arms; other names go to `00827B90` (the damage-section
+    failure effect).
+- **Readers of `+11A4h` / `+11A5h`** (`scan-bytes '?? ?? a4 11 00 00'` / `'?? ?? a5 11 00 00'`, the landing-ship hits
+  in `0074xxxx` are a float field of another class): the setters and clearers above, the constructor `00758370`,
+  the GetFailure-by-name getter `007589D0` (`007589F6` / `00758A19`), and, through the block, `006BF620`
+  (IsReadyToSendPlanes, block `+1Ch` / `+1Dh`).
+- So in the image `SetFailure(carrier, "RunwayFailure")` closes that carrier's launch gate until something calls
+  `+19Ch` with the same name. No script in this installation calls `ClearFailure`/`RepairFailure` with these names
+  (only "EngineJam": `02_MI.lua:1464`). **Not traced:** who calls `+19Ch` / `+21Ch` on the damage-section path
+  (`shipglobals.lua` runway/hangar sections, `FailureDuration` 20); the repair task `0093BED0` / `0093C520` is the
+  candidate.
+- The airfield is different (CC13_SEG30 note 2): its block is at `+72Ch` and its own handlers only clear.
+
+**Reach.** `bsm_09_battle_of_the_coral_sea.lua:1203` `SetFailure(Mission.Lexington, "RunwayFailure", 180)` (inside
+the scripted sinking, with `OverrideHP(0.01)`), so Lexington stops launching for good; `ijn/ESMP/03_south_pacific.lua:1246`
+`SetFailure(Mission.Zuiho, "RunwayFailure")`, so Zuiho stops launching for good. In the host both are counted as
+"other" by `run_set_failure_0088eff0` (game_hosts_lua.cpp:7517) because `script_set_failure_008132c0` knows only
+the four ship arms. Damage-section failures on carriers reach the host's `apply_failure_effect_00827b90`
+(game_hosts_gunnery.cpp:12344), which ignores the two names.
+
+**Packet (not started).** Proposed switch `kCarrierRunwayFailureBound`, OFF. In `run_set_failure_0088eff0`, for a
+unit with an air-ops deck (a carrier, not an airfield), map "RunwayFailure" / "HangarFailure" (exact-case strcmp
+for runway, `00425850` for hangar: check its case rule) to `deck.runway_failure` / `deck.hangar_failure` = true,
+ignoring the duration; the same in `apply_failure_effect_00827b90` for the section path once its clear is traced.
+Files: game_hosts_lua.cpp (lua lane), game_hosts_gunnery.cpp (lease queue), air_operations deck fields (already
+read by `air_ops_is_ready_to_send_planes_00895d20`). Predictions: BSM09 and ESMP03 move from the SetFailure line on
+(the carrier's later launch lines refused at the readiness gate; AI launches through 006CD810 stop too);
+ESMP08 and every row without a carrier runway hit stay identical until the section path is bound. Pair rows: BSM09,
+ESMP03, ESMP08 (control), USN04 (control).
+
+## 35. cc9-physics10 handoff (sea/physics lane + WINS KEEPER), 2026-10-14
+
+Tree J:\PROG\battlestations-pacific-decompile-cc9-physics1 (agent/cc9-physics1), everything committed; the lane-doc
+lease `p10_lane_docs` is released with this commit. Export `local\p10_m` = main 610dc9bfd (exe 349115AD7B28).
+Scripts in local\ (all `p10_`): `p10_e8gen.py` (ESMP08 launch re-preference), `p10_stock.py <log>` (per-carrier stock
+ledger: AddAirBaseStock, launched, returned, first no-stock refusal), `p10_sqalive.py <log>` (carrier squadrons with a
+live member at the end), `p10_latchfate.py <log>` (spent-ordnance latches without a B5 and the members' deaths),
+`p10_rtb.py`, `p10_kinds.py <log> <word>` (line shapes), `p10_prog.py`. Run launcher: physics9's `p9_runs.ps1`.
+
+Done (commits 3f09792a4, 7d613369d and this one):
+- Section 33: the settled-tail packet (0099EA84-0099EB81) for the plane lane; the reach is party-wide (correction).
+- ESMP08 handed to lua61 with r2's results (5018.40 s; 4500.43 s at 20,5; no end at 20,3).
+- Slot state 3 (lead item 1): no host gap. Held slots are live Zero squadrons (009F8160 excludes fighters, image);
+  Zuiho/Chiyoda are out of stock. The faithful release is the player's recall, `order <carrier> <slot> 2`
+  (untested). Torpedo squadrons that latch without a B5 are all shot down within 60 s; 009D4C10 reads nothing the
+  009D2720 disarmed arm writes (kTorpedoDoneDisarmedArmBound is ON).
+- IJN08: `ijn08_p10_i08_z` committed (plain 3006.81 s, 20,3 3947.73 s, 20,5 no end, 20,11 fail); w passes 20,5 and
+  20,7 but fails 20,3 and 20,11 on main 610dc9bfd. Neither is robust: the Marus fall to airfield 02/03 squadrons at
+  1000-1600 s. Untried: holding the Marus inside the battleship screen until 03 dies.
+- Item A (catapult spectate): no change possible until the catapult launch chain (008141E0 .. 00957450) is hosted.
+- Item B (recon listener sync): already ON on main (kForcedReconSyncNotifyBound, kReconListenerResetCycleBound).
+- Item C: read in section 34; the packet is written there, not started.
+
+Open, in order:
+1. Section 34's packet (`kCarrierRunwayFailureBound`), and the damage-section caller of vtable +19Ch/+21Ch.
+2. Recall-the-Zeros order lines for ESMP08 (lua61's lane) if lua61 has not tried them.
+3. IJN08 margin (above).
