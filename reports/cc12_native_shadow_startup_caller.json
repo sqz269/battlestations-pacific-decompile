@@ -1,0 +1,141 @@
+{
+  "schema": "bsp.cc12.native-shadow-startup-caller27.v1",
+  "date": "2026-10-15",
+  "status": "actual_startup_shadow_owner_and_shared_drain_verified_cached_sampler_parent_still_guarded",
+  "source_commit": "76befc721ea64de4c8fc95d1677716b7b5712918",
+  "original_evidence": {
+    "start": "0073dccb",
+    "end_exclusive": "0073dd09",
+    "length": 62,
+    "installed_original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "bytes_sha256": "09a4a229501dc87eb8bb3e2b7aa27e43cc5a92962c56ec5aef3c9f68a3561d11",
+    "hex": "8a159d89f800f6da6a2c1bd281e20008000081c2000800008bf2e8318b4b0083c404894424103bc7c784244401000016000000740956568bc8e827213500",
+    "live_saved_Ghidra_equals_original_disk": true
+  },
+  "original_abi": "Interior73D410 block; EDI=0, ESI captures2048/4096 before BF681B(2Ch), guarded ECX receiver and two equal stack dimensions for A8FE30; caller FH3 state16h. No whole-function ABI/FH3/SEH claim.",
+  "changes": [
+    "Startup host retains the existing canonical shadow application at the original post-window/device, pre-preload/input ordering point.",
+    "GUI/POST probe requires a borrowed completed startup shadow application and neither constructs nor closes a second shadow owner.",
+    "Normal metadata closes only after actual singleton/renderer drain; interrupted parent/consumer graphs retain settings, renderer, input and VFS through process exit."
+  ],
+  "validation": {
+    "initial_build_exit": 0,
+    "initial_existing_checks": 3,
+    "initial_test_seconds": 6.91,
+    "combined_build_exit": 0,
+    "combined_existing_checks": 3,
+    "combined_test_seconds": 6.78,
+    "new_test_cases": 0,
+    "frozen_application_objects": 139,
+    "frozen_artifacts_per_build": 161,
+    "executable_sha256": "66fac8061097c831a15b5936101b7d202583ff4c8efabd1958c4e9baf91c2b5b"
+  },
+  "runtime_attempts": [
+    {
+      "directory": "current_post_runtime",
+      "exit_code": 4,
+      "reason": "Private options absent: fullscreen defaults; device retry0x8876086c before shadow entry"
+    },
+    {
+      "directory": "current_post_runtime_windowed",
+      "exit_code": 1,
+      "reason": "Windowed device and shadow construction succeeded; exact same shadow borrowed; guarded unknown native B-16 residue at GuiFont cached sampler entry; POST not reached"
+    },
+    {
+      "directory": "current_default_runtime_windowed",
+      "exit_code": 0,
+      "reason": "Source76befc721 normal startup/shared drain passed with optional probes off"
+    },
+    {
+      "directory": "merged_default_runtime_windowed",
+      "exit_code": 0,
+      "reason": "Final combined Source19c2bad0e normal startup/shared drain passed with optional probes off"
+    }
+  ],
+  "normal_runtime": {
+    "source": "19c2bad0eeb0923bd15040a32bd45796395205eb",
+    "exit_code": 0,
+    "wrapper_pid": 48656,
+    "window_created": true,
+    "device_created": true,
+    "device_hresult": "0x00000000",
+    "back_buffer": [
+      800,
+      600
+    ],
+    "requested_loop_iterations": 2,
+    "frames_presented": 1,
+    "presents_skipped": 1,
+    "loop_finished": true,
+    "shadow_constructor_calls": 1,
+    "shadow_owner": "07906858",
+    "shadow_extent": 2048,
+    "shadow_before_input": true,
+    "canonical_publication_null_checked_after_drain": true,
+    "shadow_metadata_closed_after_shared_drain": true,
+    "final_renderer_COM_counts": {
+      "device": 0,
+      "api": 0
+    },
+    "host_methods_concrete": 123,
+    "host_methods_unimplemented": 43
+  },
+  "device_readiness": {
+    "unchanged_basic_probe_pid": 49608,
+    "exit_code": 0,
+    "CreateDevice_hresult": "0x00000000",
+    "Reset_hresult": "0x00000000",
+    "current_session": 1,
+    "console_session": 2,
+    "scope": "Foreground restored to current-session WindowsTerminal; device now available. Console mismatch alone is not sufficient to explain device unavailability."
+  },
+  "settings": {
+    "scope": "Fresh private settings copies only; same accepted frozen windowed options loaded through normal native settings path",
+    "initial_sha256": "ff5cf3959932cb634374b8a9bf5e6c0d04c50699cc6ba585e7fa7969f7b563d8"
+  },
+  "ghidra": {
+    "existing_function_name": "BSP_Application_Initialize",
+    "prior_comments_preserved": true,
+    "project_saved": true,
+    "affected_export_refreshed": true,
+    "index_rebuilt": true
+  },
+  "evidence": {
+    "verified_payloads": 393,
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_shadow_startup_caller_27\\evidence_family.zip",
+      "sha256": "5189c96ff4a96cd35040a1b2445b08ab9882d8e49a5a7788f7f4aa87e8e8425a",
+      "bytes": 60534882
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_shadow_startup_caller_27\\evidence_manifest.json",
+      "sha256": "aa7bfa2bb19c71c1213553b494dc574fe2a2bee9d2468ddb4e1965eb322dd7b0",
+      "bytes": 170069
+    }
+  },
+  "not_established": [
+    "Optional GuiFont/GuiFontBilinear cached acquisition or POST cold/warm completion: unknown B-16 guard remains unchanged.",
+    "Whole73D410 or Original register/private-stack/FH3/SEH equivalence; Source exception retention is explicitly narrower.",
+    "Native Text glyph buffers/sections/draw, world drawing, complete frontend or gameplay validation. Default runtime still reports43 unimplemented host methods.",
+    "Graphics/session history root cause or runtime validation of later Source changes."
+  ],
+  "runtime_validated_combined_source": "19c2bad0eeb0923bd15040a32bd45796395205eb",
+  "final_integration": {
+    "source_commit": "c05287f4c2347def7b34a423dc39b5673a2d6249",
+    "canonical_build_exit_code": 0,
+    "existing_checks": 3,
+    "test_seconds": 6.82,
+    "binding_Source_inputs_unchanged_from_runtime_build": true,
+    "runtime_proof_remains_at_source": "19c2bad0eeb0923bd15040a32bd45796395205eb",
+    "runtime_repeated": false,
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_shadow_startup_caller_27\\late_integration\\artifacts.zip",
+      "sha256": "17ac3197ec02c85324b727f9b7371516a7d65b23638312b2ab3479bef6a35b19",
+      "bytes": 23579738
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_shadow_startup_caller_27\\late_integration\\manifest.json",
+      "sha256": "b5904665300db748df140b96c8639ababa43a4145c3daea0a3f5976a11b41705"
+    }
+  }
+}

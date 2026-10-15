@@ -12,7 +12,7 @@ class GameNativeRendererApplication;
 class GameVfsHost;
 class GameSingletonHost;
 class GameNativeReadOnlyData;
-class GameNativeSettingsProcess;
+class GameNativeShadowTargetApplication;
 class GameInputRuntime;
 
 enum class GameNativeGuiEffectProbeStage {
@@ -95,8 +95,10 @@ class GameNativeGuiEffectProbe final {
 public:
     GameNativeGuiEffectProbe(GameHostLog&, GameNativeRendererApplication&,
         GameVfsHost&, GameSingletonHost&, GameNativeReadOnlyData&,
-        GameNativeSettingsProcess&, GameInputRuntime&,
+        GameNativeShadowTargetApplication&, GameInputRuntime&,
         NativePlatformLoadPublication actual_platform_0109cf04);
+    // Borrows the startup host's completed canonical shadow application through
+    // shared drain. This probe never allocates or closes another shadow owner.
     // Borrows the caller's existing cell, including renderer's ready partial
     // focus-domain publication. Its receiver supports reached +41 load-pump
     // reads only; this does not admit a whole-platform owner or original ABI.
