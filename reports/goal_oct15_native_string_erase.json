@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_native_string_erase",
-  "status": "complete_actual_raw_pool_source_pending_build_and_call_verification",
+  "status": "complete_actual_raw_pool_source_primary_combined_win32_build_and_existing_tests_passed",
   "source_ready": true,
   "source": "src/native_string_vector_erase_unordered.cpp",
   "header": "include/bsp/native_string_vector_erase_unordered.hpp",
@@ -71,8 +71,8 @@
   ],
   "corrections": [],
   "verification": {
-    "win32_build": "running scripts/build.ps1; local/goal_oct15_native_string_erase_build.log; no build pass claimed in source commit",
-    "existing_tests": "pending completion of running build script",
+    "win32_build": "Primary combined scripts/build.ps1 passed at ff5b6fb1a6350c36224f1f53e3bbcbf6c01deb5a containing exact Source draft 0d3b8598d. Combined log inspected. Own fresh C++ build completed, then script canceled at primary request during final existing tool_tests; no own full-script pass claimed.",
+    "existing_tests": "Primary combined: reconstructed_math, native_math_differential, tool_tests; 3/3 passed, 0 failed, 8.07 seconds. Own run: reconstructed_math passed; tool_tests interrupted before reported completion.",
     "verify_report_calls": "5 call rows checked, 0 failed",
     "diff_check": "passed",
     "new_tests": 0,
@@ -80,7 +80,29 @@
     "abi_compatible": false,
     "game_validated": false,
     "documentation_claim_check": "15 addresses, 0 failed, 1 unchecked caller sentence; exact caller edge is among 5 passing JSON rows",
-    "cmake_registration": "new target_sources entry occurs exactly once"
+    "cmake_registration": "new target_sources entry occurs exactly once",
+    "source_commit": "0d3b8598d",
+    "primary_combined": {
+      "revision": "ff5b6fb1a6350c36224f1f53e3bbcbf6c01deb5a",
+      "command": "scripts/build.ps1",
+      "parallel_only_change": "CL /MP4",
+      "log": "J:/PROG/battlestations-pacific-decompile-goal_oct15_integrator/local/goal_oct15_combined_build.log",
+      "log_inspected": true,
+      "tests_passed": 3,
+      "tests_failed": 0,
+      "test_seconds": 8.07,
+      "specific_erase_native_differential": false
+    },
+    "own_build": {
+      "log": "local/goal_oct15_native_string_erase_build.log",
+      "cpp_targets_completed": true,
+      "full_script_completed": false,
+      "canceled_at_primary_request": true,
+      "interruption": "Ctrl-C while tool_tests was running, after bsp_core.lib and bsp_game.exe linked and reconstructed_math passed",
+      "shell_exit": 1,
+      "own_full_test_pass_claimed": false,
+      "inherited_linker_warning": "LNK4006 duplicate spawn_request_id_matches in unchanged lua_binding_spawn.obj and lua_spawn_new.obj; second definition ignored"
+    }
   },
   "limits": [
     "Source receives additional concrete raw-pool context; no native binary/private-stack/SEH/FH3 or instruction-fault identity",
