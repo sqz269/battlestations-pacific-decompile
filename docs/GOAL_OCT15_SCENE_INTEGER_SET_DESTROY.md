@@ -56,8 +56,8 @@ are52B each, returning/non-thunk, with no gap or flow repair needed. Guarded
 batches verify C:/Users/sqz269/bsp.gpr and program /battlestationspacific.exe,
 x86 image base00400000. Owned annotation records prior values, preserves
 existing names/comments, takes the write lock, saves and refreshes exports.
-Build and existing checks are pending at the reviewable Source draft. No new
-routine tests are added. Reached raw backing and releases must remain valid;
+The registered complete composition passes its Win32 build and existing checks
+as recorded below. No new routine tests are added. Reached raw backing and releases must remain valid;
 compilation/static evidence do not establish direct native differential,
 original register/stack/heap/CRT/FH3/SEH binary ABI, application adoption or game
 behavior.
@@ -69,3 +69,15 @@ actual targets and exact typed body/call rows. Source/header hashes and the full
 equivalence receipt are in JSON. The CMake holder released the shared file;
 the owner was rechecked, only this queue entry was removed and one unique
 registration appended without an exclusive whole-file lease.
+
+Final worker validation: registered revision `bb1d4ace6` (Source `d347c5ba3`,
+actual concrete range final `806c8dc47`) passed `scripts/build.ps1` Release
+Win32, compiling both destructor and range Source and linking all targets.
+Both enabled existing checks, `reconstructed_math` and `tool_tests`, passed
+in8.68s. The native differential suite is not enabled in this worker tree,
+and none of these entries was directly native-tested. Log
+`local/goal_oct15_scene_integer_set_destroy_build.log` and its SHA-256 are
+recorded in JSON. The inherited duplicate `spawn_request_id_matches` LNK4006
+warning remains. All10typed transfer rows, documentation claims and staged
+whitespace checks pass. Source readiness now includes the actual full dependency;
+no native ABI, private-frame, application or game claim follows from the build.

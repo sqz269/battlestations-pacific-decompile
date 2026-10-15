@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_scene_integer_set_destroy",
-  "status": "complete_wrapper_source_concrete_range_imported_build_pending",
+  "status": "complete_actual_raw_wrappers_concrete_range_win32_build_and_two_enabled_existing_checks_passed",
   "source_ready": true,
   "source": "src/native_scene_integer_set_destroy.cpp",
   "header": "include/bsp/native_scene_integer_set_destroy.hpp",
@@ -18,10 +18,10 @@
     "source_search": "No owned-address or alternate-spelling whole Source in worker/integrator trees",
     "incoming_xrefs": "none forB530/C4C0;4typed EH tail-JMP users forCE90;all inspected",
     "actual_dependency_imported": true,
-    "concrete_range_source_revision": "cbb797126",
+    "concrete_range_source_revision": "806c8dc47",
     "dependency_import": "actual full B170 C++/header/frame imported by merge before own Source draft; published476925766 supplies accepted concrete child providers",
-    "dependency_validation": "real complete range final806c8dc47 imported; own full destructor composition build pending",
-    "concrete_range_final_available": "806c8dc47; independent primary acceptance/own Win32+2existing checks9.00s reported; import next after own Source draft",
+    "dependency_validation": "Complete actual final806c8dc47 imported; own registered destructor/range composition compiled/linked and both enabled existing checks passed8.68s",
+    "concrete_range_final_available": "806c8dc47 imported; independent primary acceptance and provider own Win32+2existing checks9.00s, followed by current composition pass",
     "concrete_range_final_imported": "806c8dc47; complete Source/header unchanged, independently primary accepted, range worker Win32+2existing checks9.00s; imported before registered composition build"
   },
   "routines": [
@@ -159,9 +159,10 @@
       "address": "0046b170",
       "source": "src/native_scene_integer_set_erase_range.cpp",
       "header": "include/bsp/native_scene_integer_set_erase_range.hpp",
-      "source_revision": "cbb797126",
+      "source_revision": "806c8dc47",
       "actual_source_imported": true,
-      "contract": "full/empty paths do not inspect child metadata/privateoutput;partial child metadata inspected only after increment returns;real12B childargs and separate savedNODE4 admitted under child contract"
+      "contract": "full/empty paths do not inspect child metadata/privateoutput;partial child metadata inspected only after increment returns;real12B childargs and separate savedNODE4 admitted under child contract",
+      "draft_source_revision": "cbb797126"
     },
     "release": {
       "address": "00bf65ac",
@@ -823,8 +824,19 @@
     "instructions": 69,
     "typed_function_and_all_transfer_rows_read": true,
     "report_calls": "10rows checked,0failed:6CALL+4explicit EHtailJMP",
-    "build": "pending",
-    "existing_tests": "pending",
+    "build": "PASS scripts/build.ps1 Release Win32 exit0; registered destructor and actual range Source compiled, all targets linked",
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 8.68,
+      "native_math_differential_enabled": false,
+      "new_entry_native_differential": false
+    },
     "new_tests": 0,
     "cmake_registration": "Rechecked unleased after holder release, unqueued only own registration and appended unique Source line without exclusive lease",
     "direct_native_new_entry_execution": false,
@@ -832,7 +844,12 @@
     "game_validated": false,
     "documentation_claim_check": "8addresses cited,0failed,0unchecked,0warnings",
     "source_commit": "d347c5ba3",
-    "diff_check": "passed before Source draft and registration/review commit"
+    "diff_check": "passed before Source draft, registration/review and final metadata commits",
+    "tested_revision": "bb1d4ace6",
+    "registration_commit": "bb1d4ace6",
+    "build_log": "local/goal_oct15_scene_integer_set_destroy_build.log",
+    "build_log_sha256": "6e48f9e62ed60d0c75ad269eac64ba82ba42ed846c17387450dfe04a08323af4",
+    "inherited_linker_warning": "LNK4006 spawn_request_id_matches duplicate in unchanged lua_binding_spawn.obj/lua_spawn_new.obj; second definition ignored"
   },
   "cmake_requested_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_scene_integer_set_destroy.cpp)",
   "limits": [
