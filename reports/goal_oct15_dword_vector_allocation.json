@@ -246,14 +246,36 @@
   "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
   "validation": {
     "source_ready": true,
-    "build": "pending required scripts/build.ps1",
-    "existing_ctests": "pending",
+    "build": {
+      "command": "scripts/build.ps1",
+      "result": "PASS",
+      "exit_code": 0,
+      "revision": "5c59019bf",
+      "platform": "MSVC Win32",
+      "log": "local/goal_oct15_dword_vector_allocation_build.log",
+      "log_sha256": "2ad5751ed6778e27ac98f1ba21373aae8b483c0bcfa33caea9128de7d2aab4b0",
+      "warnings": [
+        "existing unrelated LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj"
+      ]
+    },
+    "existing_ctests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "seconds": 6.99,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "optional_native_differential_enabled": false
+    },
     "report_call_verification": "PASS9 typed rows,including tail_jump;documentation9 claims,0failures/unchecked/warnings",
     "new_tests": 0,
     "native_differential_fixture": false,
     "abi_compatible": false,
     "game_validated": false,
-    "diff_check": "PASS"
+    "diff_check": "PASS",
+    "independent_primary_review": "pending primary full review; draft/source hashes recorded"
   },
   "qualification": "Complete ordinary allocator/length Source over concrete canonical currentCRT/owning exception providers;190B ordinary functions plus8B qualified compiler-action guard mapping. No callback/stub/narrowed range or new original static CRT,exception RTTI/ThrowInfo/FH3/privateframe/native ABI/differential/game proof.",
   "annotation": {

@@ -66,8 +66,12 @@ Guarded live batches verify C:/Users/sqz269/bsp.gpr and
 /battlestationspacific.exe, x86 language and image base. Full live/installed
 bytes, relocation masks/decoded targets, prior annotations and Source hashes
 are recorded in JSON. Mutations use the shared write lock, preserve old values
-and correct names/comments, save and refresh owned exports. Initial complete
-Source status awaits required normal Win32 build and existing checks. No new
-tests are added. Original static-CRT errno/encoded-handler/heap/exception RTTI,
+and correct names/comments, save and refresh owned exports. Required
+`scripts/build.ps1` passed at Source revision `5c59019bf`, targeting MSVC Win32.
+Both enabled existing checks passed in 6.99 seconds: math and tool tests. This
+worker configuration does not enable optional native differential fixtures.
+The existing unrelated LNK4006 duplicate `spawn_request_id_matches` warning
+remains. All nine typed transfers and nine documentation claims passed. No new
+tests were added. Original static-CRT errno/encoded-handler/heap/exception RTTI,
 ThrowInfo/FH3/SEH/private-frame/register/binary identity, direct candidate
 differential, application admission and game validation remain unproved.
