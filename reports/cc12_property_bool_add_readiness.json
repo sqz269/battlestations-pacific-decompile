@@ -1,0 +1,332 @@
+{
+  "schema": "bsp.property_bool_add_readiness.primary.v1",
+  "source_ready": true,
+  "Source_implemented": false,
+  "ordinary_Source_admitted": false,
+  "state": "whole_ordinary_byte_property_ready_no_Source_yet",
+  "Original": {
+    "address": "008F3940",
+    "end_exclusive": "008F39A1",
+    "bytes": 97,
+    "instructions": 34,
+    "reachable_instructions": 34,
+    "hex": "566a388bf1e8d12e300033c983c4043bc1743b8a54240cc700d489ce00c740040300000088500c89481889481c89482089482489483089483450c6402c018b44240c508bcee866faffff5ec2080033c0508b44240c508bcee853faffff5ec20800",
+    "sha256": "535246af130833e3209d6cba0b4cf25d379a0075406a05baba802ace52261b86",
+    "section": ".text",
+    "file_offset": 5192000,
+    "disk_live_export_boundaries_equal": true,
+    "direct_CALL_sites": [
+      {
+        "site": "008F3945",
+        "target": "0xbf681b"
+      },
+      {
+        "site": "008F3985",
+        "target": "0x8f33f0"
+      },
+      {
+        "site": "008F3998",
+        "target": "0x8f33f0"
+      }
+    ],
+    "unique_targets": [
+      "008F33F0",
+      "00BF681B"
+    ],
+    "indirect_calls": [],
+    "x87_SSE_instructions": [],
+    "decoded": [
+      {
+        "address": "008F3940",
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "008F3941",
+        "hex": "6a38",
+        "mnemonic": "push",
+        "operands": "0x38"
+      },
+      {
+        "address": "008F3943",
+        "hex": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx"
+      },
+      {
+        "address": "008F3945",
+        "hex": "e8d12e3000",
+        "mnemonic": "call",
+        "operands": "0xbf681b"
+      },
+      {
+        "address": "008F394A",
+        "hex": "33c9",
+        "mnemonic": "xor",
+        "operands": "ecx, ecx"
+      },
+      {
+        "address": "008F394C",
+        "hex": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      },
+      {
+        "address": "008F394F",
+        "hex": "3bc1",
+        "mnemonic": "cmp",
+        "operands": "eax, ecx"
+      },
+      {
+        "address": "008F3951",
+        "hex": "743b",
+        "mnemonic": "je",
+        "operands": "0x8f398e"
+      },
+      {
+        "address": "008F3953",
+        "hex": "8a54240c",
+        "mnemonic": "mov",
+        "operands": "dl, byte ptr [esp + 0xc]"
+      },
+      {
+        "address": "008F3957",
+        "hex": "c700d489ce00",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax], 0xce89d4"
+      },
+      {
+        "address": "008F395D",
+        "hex": "c7400403000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 4], 3"
+      },
+      {
+        "address": "008F3964",
+        "hex": "88500c",
+        "mnemonic": "mov",
+        "operands": "byte ptr [eax + 0xc], dl"
+      },
+      {
+        "address": "008F3967",
+        "hex": "894818",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0x18], ecx"
+      },
+      {
+        "address": "008F396A",
+        "hex": "89481c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0x1c], ecx"
+      },
+      {
+        "address": "008F396D",
+        "hex": "894820",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0x20], ecx"
+      },
+      {
+        "address": "008F3970",
+        "hex": "894824",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0x24], ecx"
+      },
+      {
+        "address": "008F3973",
+        "hex": "894830",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0x30], ecx"
+      },
+      {
+        "address": "008F3976",
+        "hex": "894834",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0x34], ecx"
+      },
+      {
+        "address": "008F3979",
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "008F397A",
+        "hex": "c6402c01",
+        "mnemonic": "mov",
+        "operands": "byte ptr [eax + 0x2c], 1"
+      },
+      {
+        "address": "008F397E",
+        "hex": "8b44240c",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 0xc]"
+      },
+      {
+        "address": "008F3982",
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "008F3983",
+        "hex": "8bce",
+        "mnemonic": "mov",
+        "operands": "ecx, esi"
+      },
+      {
+        "address": "008F3985",
+        "hex": "e866faffff",
+        "mnemonic": "call",
+        "operands": "0x8f33f0"
+      },
+      {
+        "address": "008F398A",
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "008F398B",
+        "hex": "c20800",
+        "mnemonic": "ret",
+        "operands": "8"
+      },
+      {
+        "address": "008F398E",
+        "hex": "33c0",
+        "mnemonic": "xor",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "008F3990",
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "008F3991",
+        "hex": "8b44240c",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 0xc]"
+      },
+      {
+        "address": "008F3995",
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "008F3996",
+        "hex": "8bce",
+        "mnemonic": "mov",
+        "operands": "ecx, esi"
+      },
+      {
+        "address": "008F3998",
+        "hex": "e853faffff",
+        "mnemonic": "call",
+        "operands": "0x8f33f0"
+      },
+      {
+        "address": "008F399D",
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "008F399E",
+        "hex": "c20800",
+        "mnemonic": "ret",
+        "operands": "8"
+      }
+    ]
+  },
+  "whole_contract": {
+    "Original_entry": "ECX actualbag; entry stack+4 keyCString and stack+8 fourbyte argument slot whose LOW8bits are read. High24bits ignored; RET8. Incoming EDX/ST0/XMM are not arguments.",
+    "Original_return": "Both insertion-call exits return EAX actualbag, restoreESI andRET8. Cached void/noarg metadata does not define this transport.",
+    "whole_schedule": [
+      "SaveESI=bag; call00BF681B for exact38h; clearECX and test returnedroot.",
+      "Onnonnull readDL fromBYTE[entryESP+8] AFTER allocation, then storeDWORDphase00CE89D4 atroot+0 andDWORDtag3 at+4.",
+      "Store EXACT one payloadBYTE atroot+C. Do not storeDWORDthere, clear+D..F, normalize nonzero, casttoC++bool or dereference payload.",
+      "Store zeroDWORD at+18,+1C,+20,+24,+30,+34 in that order.",
+      "Stage recordargument, store finalBYTE1 at+2C, load/stagekey and callwhole008F33F0 with samebag. Return actualbag.",
+      "Nullallocation branch explicitly stagesnull into sameinsertion; no guard/default/recovery. Ordinary admission requires successful nonthrowing providers."
+    ],
+    "writes34": [
+      "[00,08)",
+      "[0C,0D)",
+      "[18,28)",
+      "[2C,2D)",
+      "[30,38)"
+    ],
+    "preserves22": [
+      "[08,0C)",
+      "[0D,18)",
+      "[28,2C)",
+      "[2D,30)"
+    ],
+    "all256_payload_bitpatterns": true,
+    "Boolean_normalization": false,
+    "typed_bool_API_forbidden": true,
+    "no_FP_arithmetic_conversion_or_extra_value_policy": true,
+    "raw_helper": "No constructor helper is an Original directcallee or required Source dependency. Proposed new ordinary body directly preserves the observed physical widths/order; no extra raw-helper comparison/reconstruction is needed.",
+    "actual_owner": "Genuine raw61-produced live114hbag/map+4. Canonicalfresh38hroot receives full observedpartialtype3 stores; phasebits alone are never a Sourcevtable/class/provenance substitute.",
+    "context": "SAME retained canonical string/physicalprocesses and NativeScenePropertyInsertionContext, actualE175B0 nodes/E188B4 list/rawkeys/E177E4/E17654 fallbacks. Explicit startup beforecontext, no owner/registry/app autostart.",
+    "lifetime": "Type3 takes existing release8F0640 default/commonreset, not a payloadfree branch; payloadbyte owns no child. Successful actualpublication transfersonlynewroot to bag. Existing replacement/scalar/free/key/node lifetime remains in SAME heap/context.",
+    "domain": "Stable closedASCII/currentClocale keys, valid stable disjointmemory/frame/root/key/query/map/node/replacedgraph; finite unique unshared acyclic ownership; externallyserialize sharedlist mutation, keep cells/poolgenerations live and retire records/keys/nodes beforepoolteardown. Existing successfulprovider/noOOM/throw/fault/overflow/alias/reentry/concurrenttrim limits retained.",
+    "ABI_EH_limit": "Original3940 has no localFS/EH frame. Newcontextbearing C++ API supplies no OriginalECX/RET8/register/EFLAGS/FP/FS/EH/class/privateCRT/startup/runtime/game/wholeparser equivalence, cleanup or transaction."
+  },
+  "providers": [
+    {
+      "address": "00BF681B",
+      "Source": {
+        "file": "include/bsp/singleton_lifetime.hpp",
+        "start_line": 19,
+        "end_line": 19,
+        "text": "void* singleton_lifetime_allocate(const SingletonAllocationRequest&);"
+      },
+      "qualification": "Existing canonical currentmalloc/_callnewh retry/badalloc boundary, object/nativebytes=hostbytes=38h; no OriginalprivateCRT or failure/EH equivalence."
+    },
+    {
+      "address": "008F33F0",
+      "Source": {
+        "file": "include/bsp/native_scene_property_insertion.hpp",
+        "start_line": 72,
+        "end_line": 74,
+        "text": "void* insert_native_scene_property_bag_008f33f0(\n    void* actual_bag, const char* actual_key, void* actual_incoming_record,\n    NativeScenePropertyInsertionContext& context);"
+      },
+      "qualification": "Accepted whole actualbag insertion using same genuine key/map/record/lifetime/process domain; no host/model callback substitute."
+    }
+  ],
+  "proposed_disjoint_packet": {
+    "packet": "cc12_scene_property_bool_add",
+    "addresses": [
+      "008F3940"
+    ],
+    "proposed_new_files": [
+      "include/bsp/native_scene_property_bool_add.hpp",
+      "src/native_scene_property_bool_add.cpp",
+      "docs/NATIVE_SCENE_PROPERTY_BOOL_ADD_CC12.md",
+      "reports/native_scene_property_bool_add_cc12.json"
+    ],
+    "proposed_local": "local/WholeScenePropertyBoolAddSource01",
+    "proposed_API": "void* add_native_scene_property_byte_bits_008f3940(void* actual_bag,const char* actual_key,std::uint8_t actual_payload_byte,NativeScenePropertyInsertionContext& context)",
+    "Source_ready": true,
+    "implementation_authorized": false,
+    "ownership": "After separate Root authorization/fresh lease check, author claims only3940/fournewfiles/newlocal. Existing heap/insertion/lifetime/process/shared Source stays readonly. Root handles CMake/metadata/analysis/Main gates. No dependence on38A0,3770,2F70 or other pending wrappers."
+  },
+  "worker_readiness": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\ScenePropertyNextLeaf3940Readiness01\\compact_readiness.DATA.json",
+    "bytes": 3689,
+    "sha256": "0ef2510a0d2a40f5fe5feed33c65429b1a98c34d2e3a1b3044b40eaea996c54c"
+  },
+  "primary_verified_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_bool_readiness_primary_20261015\\verified_readiness_inputs.DATA.json",
+    "bytes": 8338,
+    "sha256": "ea69b185a432a07bd5819c160585e2f43d0669af295b410b1c3b097198aac3ed"
+  },
+  "primary_complete_Original_and_contracts_read": true,
+  "missing_provider_bodies": [],
+  "no_Original_ABI_or_EH_private_CRT_startup_runtime_game_credit": true
+}
