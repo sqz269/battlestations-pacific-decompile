@@ -1,0 +1,438 @@
+{
+  "schema": "bsp.cc12_scene_numeric_lookahead.Main_validation.v1",
+  "status": "whole_ordinary_Source_registered_Main3checks_and_actual_code_archive_identity_pass",
+  "Source_runtime_executed": false,
+  "required_Main_build": {
+    "command": "./scripts/build.ps1",
+    "initial_chunk": "3919ad",
+    "session": 77955,
+    "terminal_chunk": "3be64b",
+    "exit_code": 0,
+    "configured_CTests_passed": 3,
+    "seconds": 9.74,
+    "snapshot_commit": "a264e58db2ba82c270df88e0a132b533dd1e712f",
+    "after_commit": "a264e58db2ba82c270df88e0a132b533dd1e712f",
+    "owned_inputs_unchanged": 17,
+    "original_tools": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reader_numeric_Main_build01\\original_build_tools.DATA.json",
+      "bytes": 2643,
+      "sha256": "1113767a7933861aad637ee4812c1616bfece65443ac9c0402b0410fda643a30"
+    },
+    "build_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reader_numeric_Main_build01\\build.log",
+      "bytes": 3140,
+      "sha256": "d3a13f3d3b3a3c5093a1bbb0f0b4c5bb358d99d3a7033b2b010f17849b5c2c7e"
+    }
+  },
+  "frozen_artifacts": [
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_enum_symbol_reader.obj",
+        "bytes": 2263,
+        "sha256": "94b70dab1a6871dfc299116ce144155b8746552f6005cfe122ac34cad0bf3197"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reader_numeric_Main_build01\\frozen\\native_enum_symbol_reader.obj",
+        "bytes": 2263,
+        "sha256": "94b70dab1a6871dfc299116ce144155b8746552f6005cfe122ac34cad0bf3197"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_scene_numeric_lookahead.obj",
+        "bytes": 2734,
+        "sha256": "3c85b080a1755a8f976e49a171f9da7d6ed49898d7cda725ebf3013cb2cf72a7"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reader_numeric_Main_build01\\frozen\\native_scene_numeric_lookahead.obj",
+        "bytes": 2734,
+        "sha256": "3c85b080a1755a8f976e49a171f9da7d6ed49898d7cda725ebf3013cb2cf72a7"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 92626332,
+        "sha256": "c36460744b9b382269a92018077db2e284c77fb7faa19123c1a1c23180d96f3c"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reader_numeric_Main_build01\\frozen\\bsp_core.lib",
+        "bytes": 92626332,
+        "sha256": "c36460744b9b382269a92018077db2e284c77fb7faa19123c1a1c23180d96f3c"
+      }
+    }
+  ],
+  "primary_complete_code_and_archive_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_enum_symbol_reader_integration_20261015\\Main_primary_pair_identity.DATA.json",
+    "bytes": 894371,
+    "sha256": "7d39ea39d5b98dc024e540d7a571c1df7bb2cff1c43fd990758aef43fb2718aa"
+  },
+  "object_summary": {
+    "label": "numeric",
+    "strict_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneNumericLookaheadSource01\\native_scene_numeric_lookahead.obj",
+      "bytes": 2766,
+      "sha256": "18a68094663ce3c7b9e25508c73f1e6354c14ca6ad8e211eb92c0e663ed3a2e7"
+    },
+    "Main_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reader_numeric_Main_build01\\frozen\\native_scene_numeric_lookahead.obj",
+      "bytes": 2734,
+      "sha256": "3c85b080a1755a8f976e49a171f9da7d6ed49898d7cda725ebf3013cb2cf72a7"
+    },
+    "code_bytes": 170,
+    "instructions": 65,
+    "all_relocation_fields_types_targets_literal_equal": true,
+    "strict_all_relocations": [
+      {
+        "offset": 14,
+        "symbol_index": 25,
+        "symbol": "?peek_native_scene_token_008d8a70@bsp@@YAPADPAXAAUNativeSceneTokenizerContext@1@@Z",
+        "type": 20,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 23,
+        "symbol_index": 36,
+        "symbol": "??_C@_02NJPGOMH@?$CFf@",
+        "type": 6,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 29,
+        "symbol_index": 24,
+        "symbol": "_sscanf",
+        "type": 20,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 14,
+        "symbol_index": 25,
+        "symbol": "?peek_native_scene_token_008d8a70@bsp@@YAPADPAXAAUNativeSceneTokenizerContext@1@@Z",
+        "type": 20,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 23,
+        "symbol_index": 33,
+        "symbol": "??_C@_02DPKJAMEF@?$CFd@",
+        "type": 6,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 29,
+        "symbol_index": 24,
+        "symbol": "_sscanf",
+        "type": 20,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 1,
+        "symbol_index": 30,
+        "symbol": "?_OptionsStorage@?1??__local_stdio_scanf_options@@9@4_KA",
+        "type": 6,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 0,
+        "symbol_index": 21,
+        "symbol": "___local_stdio_scanf_options",
+        "type": 7,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 4,
+        "symbol_index": 21,
+        "symbol": "___local_stdio_scanf_options",
+        "type": 20,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 29,
+        "symbol_index": 22,
+        "symbol": "__imp____stdio_common_vsscanf",
+        "type": 6,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 4,
+        "symbol_index": 21,
+        "symbol": "___local_stdio_scanf_options",
+        "type": 20,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 29,
+        "symbol_index": 22,
+        "symbol": "__imp____stdio_common_vsscanf",
+        "type": 6,
+        "field_hex": "00000000"
+      }
+    ],
+    "Main_all_relocations": [
+      {
+        "offset": 14,
+        "symbol_index": 25,
+        "symbol": "?peek_native_scene_token_008d8a70@bsp@@YAPADPAXAAUNativeSceneTokenizerContext@1@@Z",
+        "type": 20,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 23,
+        "symbol_index": 36,
+        "symbol": "??_C@_02NJPGOMH@?$CFf@",
+        "type": 6,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 29,
+        "symbol_index": 24,
+        "symbol": "_sscanf",
+        "type": 20,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 14,
+        "symbol_index": 25,
+        "symbol": "?peek_native_scene_token_008d8a70@bsp@@YAPADPAXAAUNativeSceneTokenizerContext@1@@Z",
+        "type": 20,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 23,
+        "symbol_index": 33,
+        "symbol": "??_C@_02DPKJAMEF@?$CFd@",
+        "type": 6,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 29,
+        "symbol_index": 24,
+        "symbol": "_sscanf",
+        "type": 20,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 1,
+        "symbol_index": 30,
+        "symbol": "?_OptionsStorage@?1??__local_stdio_scanf_options@@9@4_KA",
+        "type": 6,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 0,
+        "symbol_index": 21,
+        "symbol": "___local_stdio_scanf_options",
+        "type": 7,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 4,
+        "symbol_index": 21,
+        "symbol": "___local_stdio_scanf_options",
+        "type": 20,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 29,
+        "symbol_index": 22,
+        "symbol": "__imp____stdio_common_vsscanf",
+        "type": 6,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 4,
+        "symbol_index": 21,
+        "symbol": "___local_stdio_scanf_options",
+        "type": 20,
+        "field_hex": "00000000"
+      },
+      {
+        "offset": 29,
+        "symbol_index": 22,
+        "symbol": "__imp____stdio_common_vsscanf",
+        "type": 6,
+        "field_hex": "00000000"
+      }
+    ],
+    "strict_directives": "   /FAILIFMISMATCH:\"_MSC_VER=1900\" /FAILIFMISMATCH:\"_ITERATOR_DEBUG_LEVEL=0\" /FAILIFMISMATCH:\"RuntimeLibrary=MD_DynamicRelease\" /DEFAULTLIB:\"msvcprt\" /FAILIFMISMATCH:\"_CRT_STDIO_ISO_WIDE_SPECIFIERS=0\" /alternatename:__Avx2WmemEnabled=__Avx2WmemEnabledWeakValue /FAILIFMISMATCH:\"annotate_string=0\" /FAILIFMISMATCH:\"annotate_vector=0\" /FAILIFMISMATCH:\"annotate_optional=0\" /DEFAULTLIB:\"MSVCRT\" /DEFAULTLIB:\"OLDNAMES\" ",
+    "Main_directives": "   /FAILIFMISMATCH:\"_MSC_VER=1900\" /FAILIFMISMATCH:\"_ITERATOR_DEBUG_LEVEL=0\" /FAILIFMISMATCH:\"RuntimeLibrary=MD_DynamicRelease\" /DEFAULTLIB:\"msvcprt\" /FAILIFMISMATCH:\"_CRT_STDIO_ISO_WIDE_SPECIFIERS=0\" /alternatename:__Avx2WmemEnabled=__Avx2WmemEnabledWeakValue /FAILIFMISMATCH:\"annotate_string=0\" /FAILIFMISMATCH:\"annotate_vector=0\" /FAILIFMISMATCH:\"annotate_optional=0\" /DEFAULTLIB:\"MSVCRT\" /DEFAULTLIB:\"OLDNAMES\" ",
+    "exact_directive_changes": [],
+    "private_definition_changes": [],
+    "selected_weak_definition_identical": true,
+    "no_selected_Avx2_target": true,
+    "runtime_data_sections_literal_equal": [
+      {
+        "number": 3,
+        "name": ".bss",
+        "virtual": 0,
+        "va": 0,
+        "raw_size": 4,
+        "raw_offset": 0,
+        "characteristics": 3224375424,
+        "hex": "",
+        "relocations": [],
+        "symbols": [
+          {
+            "index": 6,
+            "name": ".bss",
+            "value": 0,
+            "section": 3,
+            "type": 0,
+            "storage_class": 3,
+            "auxiliary_count": 1,
+            "auxiliary_hex": "040000000000000000000000000002000000"
+          },
+          {
+            "index": 8,
+            "name": "__Avx2WmemEnabledWeakValue",
+            "value": 0,
+            "section": 3,
+            "type": 0,
+            "storage_class": 2,
+            "auxiliary_count": 0,
+            "auxiliary_hex": ""
+          }
+        ]
+      },
+      {
+        "number": 10,
+        "name": ".bss",
+        "virtual": 0,
+        "va": 0,
+        "raw_size": 8,
+        "raw_offset": 0,
+        "characteristics": 3225424000,
+        "hex": "",
+        "relocations": [],
+        "symbols": [
+          {
+            "index": 28,
+            "name": ".bss",
+            "value": 0,
+            "section": 10,
+            "type": 0,
+            "storage_class": 3,
+            "auxiliary_count": 1,
+            "auxiliary_hex": "080000000000000000000000000002000000"
+          },
+          {
+            "index": 30,
+            "name": "?_OptionsStorage@?1??__local_stdio_scanf_options@@9@4_KA",
+            "value": 0,
+            "section": 10,
+            "type": 0,
+            "storage_class": 2,
+            "auxiliary_count": 0,
+            "auxiliary_hex": ""
+          }
+        ]
+      },
+      {
+        "number": 11,
+        "name": ".rdata",
+        "virtual": 0,
+        "va": 0,
+        "raw_size": 3,
+        "raw_offset": 1453,
+        "characteristics": 1076891712,
+        "hex": "256400",
+        "relocations": [],
+        "symbols": [
+          {
+            "index": 31,
+            "name": ".rdata",
+            "value": 0,
+            "section": 11,
+            "type": 0,
+            "storage_class": 3,
+            "auxiliary_count": 1,
+            "auxiliary_hex": "0300000000000000a82a173f000002000000"
+          },
+          {
+            "index": 33,
+            "name": "??_C@_02DPKJAMEF@?$CFd@",
+            "value": 0,
+            "section": 11,
+            "type": 0,
+            "storage_class": 2,
+            "auxiliary_count": 0,
+            "auxiliary_hex": ""
+          }
+        ]
+      },
+      {
+        "number": 12,
+        "name": ".rdata",
+        "virtual": 0,
+        "va": 0,
+        "raw_size": 3,
+        "raw_offset": 1456,
+        "characteristics": 1076891712,
+        "hex": "256600",
+        "relocations": [],
+        "symbols": [
+          {
+            "index": 34,
+            "name": ".rdata",
+            "value": 0,
+            "section": 12,
+            "type": 0,
+            "storage_class": 3,
+            "auxiliary_count": 1,
+            "auxiliary_hex": "03000000000000002a48210d000002000000"
+          },
+          {
+            "index": 36,
+            "name": "??_C@_02NJPGOMH@?$CFf@",
+            "value": 0,
+            "section": 12,
+            "type": 0,
+            "storage_class": 2,
+            "auxiliary_count": 0,
+            "auxiliary_hex": ""
+          }
+        ]
+      }
+    ],
+    "public_prefixes": [
+      "?next_native_scene_token_is_int_008d8f10@",
+      "?next_native_scene_token_is_float_008d8f40@"
+    ],
+    "unique_archive_member": {
+      "header_offset": 75813106,
+      "payload_offset": 75813166,
+      "raw_name": "/75562",
+      "bytes": 2734,
+      "header_hex": "2f373535363220202020202020202020313739323039323733332020202020202020202020202020313030363636202032373334202020202020600a",
+      "sha256": "3c85b080a1755a8f976e49a171f9da7d6ed49898d7cda725ebf3013cb2cf72a7"
+    },
+    "public_symbol_bindings": [
+      [
+        "?next_native_scene_token_is_int_008d8f10@bsp@@YA_NPAXAAUNativeSceneTokenizerContext@1@@Z",
+        75813106
+      ],
+      [
+        "?next_native_scene_token_is_float_008d8f40@bsp@@YA_NPAXAAUNativeSceneTokenizerContext@1@@Z",
+        75813106
+      ]
+    ]
+  },
+  "archive_summary": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reader_numeric_Main_build01\\frozen\\bsp_core.lib",
+    "bytes": 92626332,
+    "sha256": "c36460744b9b382269a92018077db2e284c77fb7faa19123c1a1c23180d96f3c",
+    "members": 2190,
+    "both_linker_indices_equal": true,
+    "symbols_per_index": 81762,
+    "index_pairs_sha256": "2105798cc3782e7cd7fdce4f9a6c9216546a04d2ef65a6ce88432350f420b012"
+  },
+  "runtime_library_qualification": "Strict/Main directives literal equal, all170 code bytes/11 code plus1 DIR32NB metadata relocation and all options/format/weak runtime data literal equal. No private definition difference.",
+  "limits": [
+    "Build and actual Core archive member admission only. Existing configured tests do not execute these new Source entries.",
+    "Conditional genuine-owner/context/buffer/storage and concrete current-CRT service contracts from primary/peer reviews remain required.",
+    "No whole-object, Original register/stack/class/FS/EH/privateCRT, application startup, whole-loader, runtime, original-game or gameplay equivalence."
+  ],
+  "Original_ABI_compatible": false,
+  "game_validated": false,
+  "whole_loader_equivalent": false
+}

@@ -39479,8 +39479,8 @@
     },
     {
       "id": "cc12_enum_symbol_reader",
-      "done": false,
-      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_build_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_registered_Main3checks_and_actual_code_archive_identity_pass",
       "worker": "scene_token_text_source",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "max",
@@ -39497,15 +39497,17 @@
       "source_ready": true,
       "code_revision": "70e0e57ed3329004d1574d8be5ee9c1e7b3973f6",
       "primary_review": "reports/cc12_enum_symbol_reader_primary_review.json",
-      "Main_build_gate": "pending",
+      "Main_build_gate": "pass",
       "contract": "Whole193B enum name=integer reader over genuine enum/live tokenizer/process scratch and punctuator bindings. Unconditional declaration; no EOF or error-loop exit. New local flag differs from Original incoming argument slot alias. Concrete current-CRT service boundary; no Original ABI/EH/privateCRT/startup/runtime/game/whole-loader credit.",
       "Original_ABI_compatible": false,
-      "game_validated": false
+      "game_validated": false,
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_enum_symbol_reader_Main_validation.json"
     },
     {
       "id": "cc12_scene_numeric_lookahead",
-      "done": false,
-      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_build_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_registered_Main3checks_and_actual_code_archive_identity_pass",
       "worker": "library_insert_source",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -39523,10 +39525,30 @@
       "source_ready": true,
       "code_revision": "4f585c389f33e40673c98b7f2599b5a55d8ad66e",
       "primary_review": "reports/cc12_numeric_lookahead_primary_review.json",
-      "Main_build_gate": "pending",
+      "Main_build_gate": "pass",
       "contract": "Whole35B/13 instructions each numeric lookahead wrapper, genuine tokenizer/context; owner-bit temporary initialization before Peek, fixed verified format copies and concrete current-CRT assignment_count==1. Prefix acceptance retained, no explicit consume. New bool API does not reproduce Original full-EAX transport; no8D9B40/parser/ABI/EH/privateCRT/runtime/game credit.",
       "Original_ABI_compatible": false,
-      "game_validated": false
+      "game_validated": false,
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_numeric_lookahead_Main_validation.json"
+    },
+    {
+      "id": "cc12_enum_lua_declaration",
+      "done": false,
+      "state": "readiness_only_waiting_concrete_raw_float_formatter",
+      "source_ready": false,
+      "function_addresses": [
+        "008f2f70"
+      ],
+      "output_files": [],
+      "depends_on": [],
+      "readiness_report": "reports/cc12_enum_lua_declaration_readiness.json",
+      "missing_provider_addresses": [
+        "0043bdf0"
+      ],
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "contract": "Genuine19Ch enum and owning8B input key, actual[E188A8]+1A0C LuaState, not a property bag or tokenizer. Actual-storage Lua display provider exists but its number arm lacks concrete canonical raw8B float formatter. Preserve F89450 writable PE zero-fill role; no implementation admission."
     }
   ],
   "snapshot_after_analysis": {

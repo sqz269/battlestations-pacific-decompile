@@ -1,0 +1,120 @@
+{
+  "date": "2026-10-15",
+  "state": "registered_source_build_and_existing_checks_passed",
+  "goal": "Continue evidence-based Battlestations Pacific reconstruction",
+  "evidence_root": "J:/PROG/battlestations-pacific-decompile-goal15_integrator",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "architecture": "MSVC Win32"
+  },
+  "packets": [
+    {
+      "id": "goal15_zone_cleanup",
+      "entry": "0041ded0",
+      "coverage": "complete_source_schedule_with_required_external_services",
+      "report": "reports/goal15_zone_group_clear.json",
+      "worker_commit": "11ed57ccdaa3038a2177ddbc28331c0c08f5b9aa",
+      "independent_review": "complete assembly, record schema and call-site review",
+      "call_checks": {
+        "direct_report_rows": 11,
+        "markdown_claims": 2,
+        "failures": 0
+      },
+      "peer_review": "no correctness blockers; callback and returning-handler schedule checked"
+    },
+    {
+      "id": "goal15_pool_cleanup",
+      "entry": "0041f820",
+      "coverage": "complete_source_composition_with_existing_raw_pool_services",
+      "report": "reports/goal15_pool_storage_cleanup.json",
+      "worker_commit": "ac77af1230d239306d089d6827b24e884ab640de",
+      "independent_review": "complete assembly and reused provider access schedule",
+      "call_checks": {
+        "direct_report_rows": 3,
+        "failures": 0
+      },
+      "peer_review": "no findings; raw-context reuse and retained-header behavior checked"
+    },
+    {
+      "id": "goal15_zone_leaf",
+      "entry": "00423640",
+      "coverage": "complete_bounded_source_orchestration_with_required_direct_bindings",
+      "report": "reports/goal15_zone_leaf.json",
+      "worker_commit": "4094c7e9c53e489e7cc957a5a04e409cd7c88dbd",
+      "independent_review": "complete assembly and emitted CVTTSS2SI/x87 arithmetic sequence",
+      "call_checks": {
+        "direct_report_rows": 21,
+        "failures": 0
+      },
+      "peer_review": "no correctness blockers in non-arithmetic orchestration"
+    }
+  ],
+  "baseline_build": {
+    "result": "pass",
+    "ctest_passed": 2,
+    "ctest_failed": 0,
+    "log": "local/goal15_baseline_build.log"
+  },
+  "registered_build": {
+    "result": "pass",
+    "command": "./scripts/build.ps1",
+    "log": "local/goal15_registered_build.log",
+    "compiled_revision": "b6308ae539ae8133ec0f40b707e8ad81d791f27f",
+    "post_build_merge": "metadata and validation reports only; no source/build changes",
+    "compiled_new_sources": [
+      "src/native_pool_storage_cleanup.cpp",
+      "src/native_zone_group_clear.cpp",
+      "src/native_zone_leaf_00423640.cpp"
+    ],
+    "target": "bsp_core",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "suites": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "differential_scope": "Existing seed routines; no differential execution of the three new entries.",
+    "existing_warning": "LNK4006 duplicate spawn_request_id_matches; outside owned sources."
+  },
+  "ghidra_annotation": {
+    "result": "applied_and_saved",
+    "prior_annotations": "local/ghidra-annotations-20261015T193523Z.json",
+    "standard_exports": "refreshed_for_all_three_entries",
+    "names": {
+      "0041ded0": "BSP_AvoidZoneRegistry_ClearLayers",
+      "0041f820": "BSP_PoolStorage_Cleanup_Provisional",
+      "00423640": "BSP_AvoidZoneManager_GenerateGridPaths_00423640"
+    }
+  },
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "new_tests_added": 0,
+  "limitations": [
+    "Source interfaces and explicit external service contracts do not establish native binary equivalence.",
+    "The owning class and producer of 0041f820 remain unknown.",
+    "00423640 requires external service bindings; no production adapter is installed.",
+    "No original-game or gameplay validation has been performed for these entries."
+  ],
+  "integration_helper_preflight": {
+    "result": "stopped_on_existing_duplicate_header_names",
+    "log": "local/goal15_integration.log",
+    "reported_names": 7,
+    "implicated_headers": 6,
+    "baseline_check": "git diff main -- six implicated headers was empty",
+    "new_reported_duplicates": 0,
+    "resolution": "Required full build/CTest run directly; manual normal git integration."
+  },
+  "next_candidates": [
+    {
+      "entry": "0041d710",
+      "note": "Existing STL list tidy name; preserve it. Recheck readiness and lease before dispatch."
+    },
+    {
+      "entry": "0041f950",
+      "note": "Related vector tidy candidate; readiness and ownership remain unverified."
+    }
+  ]
+}
