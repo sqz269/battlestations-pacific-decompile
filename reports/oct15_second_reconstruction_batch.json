@@ -1,0 +1,149 @@
+{
+  "packet": "oct15_second_reconstruction_batch",
+  "status": "integrated_build_checked_annotated",
+  "base_main": "456d623db",
+  "previous_batch": "cde81eac8",
+  "workers": [
+    {
+      "agent": "/root/avoid_tangent",
+      "branch": "agent/oct15_avoid_tangent",
+      "packet": "oct15_layer_normal",
+      "addresses": [
+        "0041bd10"
+      ],
+      "report": "reports/oct15_layer_normal.json",
+      "status": "integrated",
+      "commits": [
+        "eaeee146b",
+        "e2485b41e"
+      ],
+      "worker_build": {
+        "result": "passed",
+        "suites": [
+          "reconstructed_math",
+          "native_math_differential",
+          "tool_tests"
+        ],
+        "new_function_native_fixture": false
+      }
+    },
+    {
+      "agent": "/root/avoid_distance",
+      "branch": "agent/oct15_avoid_distance",
+      "packet": "oct15_avoid_copy_lifetime",
+      "addresses": [
+        "0041a030",
+        "0041a1e0"
+      ],
+      "report": "reports/oct15_avoid_copy_lifetime.json",
+      "status": "integrated",
+      "commits": [
+        "03e5892cb"
+      ],
+      "worker_build": {
+        "result": "passed",
+        "suites": [
+          "reconstructed_math",
+          "native_math_differential",
+          "tool_tests"
+        ],
+        "new_function_native_fixture": false
+      }
+    },
+    {
+      "agent": "/root/lua_cache_tree",
+      "branch": "agent/oct15_movie_factory",
+      "packet": "oct15_lua_cache_tree",
+      "addresses": [
+        "00b6c480",
+        "00b6c7b0",
+        "00b6c990"
+      ],
+      "report": "reports/oct15_lua_cache_tree.json",
+      "status": "integrated",
+      "commits": [
+        "441532a46"
+      ],
+      "worker_build": {
+        "result": "passed",
+        "suites": [
+          "reconstructed_math",
+          "native_math_differential",
+          "tool_tests"
+        ],
+        "new_function_native_fixture": false
+      }
+    }
+  ],
+  "primary_evidence": [
+    {
+      "function": "0041a030",
+      "scope": "Count before clone loop and growth branch",
+      "evidence": "Original installed executable disasm-raw0041a0dd length52 confirms count=N at0041a0e1; disasm-raw0041a145 length40 confirms growth2N+2 at0041a14f. Saved Ghidra listing agrees. This check covers the specified spans, not entire function."
+    }
+  ],
+  "validation": {
+    "worker_seed_headers": "Previously byte-verified8 seed header copied to each local tree before next configure; native_math_differential remains seed-only coverage.",
+    "final_combined_build": {
+      "commit": "6c607d24bf551c56b5cca5485df3341b5f3c1261",
+      "configuration": "MSVC Win32 Release",
+      "command": "./scripts/build.ps1",
+      "result": "passed",
+      "suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "test_count": 3,
+      "log": "local/oct15_second_batch_build.log"
+    },
+    "call_rows": {
+      "layer_normal": 8,
+      "copy_lifetime": 7,
+      "lua_range_vector_comparisons": 11,
+      "total": 26,
+      "failed": 0
+    },
+    "diff_check": "passed"
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "function_count": 6,
+  "reviews": [
+    {
+      "reviewer": "primary",
+      "scope": "0041BD10 full native listing, existing kernel signatures and complete source/header",
+      "findings": "No defect under declared sampling/CRT/stability/nonalias contracts; refined exact unordered clamp and existing double-vs-x87 qualification."
+    },
+    {
+      "reviewer": "primary",
+      "scope": "0041A030/0041A1E0 complete native listings, producer-backed layout, original disk spans and complete source/header",
+      "findings": "Native count-before-append and grow schedule confirmed; opaque prefix, per-float x87 copies, buffer-only cleanup and capacity-preserving destructor retained."
+    },
+    {
+      "reviewer": "primary",
+      "scope": "00B6C480/00B6C7B0/00B6C990 full native listings and complete source/header",
+      "findings": "Mismatch/output order, signed SAR/wrapping counts, captured pointers and continuing invalid-handler checks agree under the explicit CRT/private-stack qualifications."
+    }
+  ],
+  "integration": {
+    "branch": "main",
+    "validated_and_promoted_commit": "6c607d24bf551c56b5cca5485df3341b5f3c1261",
+    "publication_target": "origin/main",
+    "annotation": {
+      "addresses": 6,
+      "project_saved": true,
+      "previous_values_log": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/ghidra-annotations-20261015T170356Z.json",
+      "exports": "All six force-refreshed after annotations",
+      "snapshot": "forced refresh completed",
+      "main_index": "rebuilt after snapshot"
+    }
+  },
+  "limitations": [
+    "No function-specific native differential, original ABI/EH/CRT identity, application wiring or gameplay validation. Existing native_math_differential covers seed routines only.",
+    "The nonempty copy preserves an opaque counted prefix and does not establish ordinary safe owned-polygon identities; no replacement prefix, count repair or leak repair was introduced.",
+    "Layer normal remains a typed outer routine through required exact sampling/CRT boundaries; existing game-host double arithmetic and invalid-span zero policy are qualified, not accepted as instruction-identical bindings.",
+    "Lua helpers retain raw headers and comparison/validation flow; current CRT/locale/invalid-handler policy and private result-pair/dead stack-padding differences are explicit."
+  ],
+  "retained_worktrees": "Three clean cached worker trees and integration tree retained for related packets."
+}

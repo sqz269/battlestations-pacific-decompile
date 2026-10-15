@@ -1,0 +1,92 @@
+{
+  "packet": "oct15_avoid_copy_lifetime",
+  "worker": "agent/oct15_avoid_distance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/avoid_zone_copy_lifetime.cpp",
+  "header": "include/bsp/avoid_zone_copy_lifetime.hpp",
+  "documentation": "docs/OCT15_AVOID_COPY_LIFETIME.md",
+  "routines": [
+    {
+      "address": "0041a030",
+      "body_end_inclusive": "0041a1de",
+      "coverage": "complete",
+      "exception_coverage": "Allocator-exception cleanup covered; original FH3/SEH ABI and FP exception behavior unverified.",
+      "implementation": "avoid_zone_copy_construct_0041a030",
+      "proposed_name": "BSP_AvoidZone_CopyConstructWithOpaquePrefix",
+      "previous_live_name": "FUN_0041a030",
+      "original_abi": "ECX destination; stack source; EAX destination; RET4 at0041a1dc",
+      "opaque_prefix": "For nonempty representable successful N, output count=2*N, capacity=2*N+2; first N slots retain opaque allocation bytes with no established valid record identities; clone pointers occupy N..2*N-1.",
+      "ordinary_safe_owned_polygon_established": false,
+      "preconditions": "Fresh destination; stable readable source count/array/records across actual allocator callbacks; successful native accesses must fit real buffers. Downstream traversal/destruction must independently establish every counted slot's identity/ownership.",
+      "binding": "Existing actual AvoidZoneAllocationAccess; original storage/record types; no invented allocation or prefix service.",
+      "flow_gaps": []
+    },
+    {
+      "address": "0041a1e0",
+      "body_end_inclusive": "0041a1fe",
+      "coverage": "complete",
+      "implementation": "avoid_zone_destroy_owned_storage_0041a1e0",
+      "proposed_name": "BSP_AvoidZone_DestroyOwnedStorage",
+      "previous_live_name": "FUN_0041a1e0",
+      "original_abi": "ECX zone; no stack arguments; RET at0041a1fe",
+      "preconditions": "Every counted pointer slot readable and uniquely releasable through actual matching free service, or actual CRT-accepted null; pointer array matches free_array. Nonempty copy does not establish these conditions for opaque prefix.",
+      "preserves": "Capacity, layer, entity identity, four bounds; clears count through004167c0 and only pointer after buffer free.",
+      "flow_gaps": []
+    }
+  ],
+  "host_steps": [
+    {"address":"0041a0a4","native":"00bf55be","function":"0041a030","contract":"thunk_and_body_read","arguments":"saturated unsigned4*capacity; ADD ESP,4"},
+    {"address":"0041a0d5","native":"00bf6989","function":"0041a030","contract":"thunks_and_returning_body_read","arguments":"old pointer array; ADD ESP,4; initial fresh header makes old-pointer branch unreachable under stable callback precondition"},
+    {"address":"0041a0f8","native":"00bf681b","function":"0041a030","contract":"body_read","arguments":"24h record; ADD ESP,4; native null branch retained"},
+    {"address":"0041a16c","native":"00bf55be","function":"0041a030","contract":"thunk_and_body_read","arguments":"saturated unsigned4*grown_capacity; ADD ESP,4"},
+    {"address":"0041a199","native":"00bf6989","function":"0041a030","contract":"thunks_and_returning_body_read","arguments":"old pointer array after raw prefix-word copies; ADD ESP,4"},
+    {"address":"0041a1e3","native":"004167c0","function":"0041a1e0","contract":"body_read","binding":"avoid_zone_clear_records_004167c0"},
+    {"address":"0041a1ef","native":"00bf6989","function":"0041a1e0","contract":"thunks_and_returning_body_read","arguments":"nonnull pointer array; ADD ESP,4"}
+  ],
+  "producer_evidence": {
+    "producer": "0041ccd0",
+    "read_scope": "Relevant initial header/bounds and24h record producer branch, plus existing source/header layout; no claim of newly reconstructing whole producer.",
+    "layout": "Native header records/count/capacity at0/4/8; layer0c, entity10, bounds14..20; nine float words in24h record. Existing AvoidZoneNativeStorage/ShipAiPathLateralRecord assertions reused."
+  },
+  "exception_evidence": {
+    "handler_entry": "00c5e138",
+    "handler_listing": "MOV EAX,00d84218; JMP00bf6b43",
+    "func_info": "00d84218",
+    "func_info_header_bytes": "22059319010000001042d800",
+    "unwind_map": "00d84210",
+    "unwind_map_bytes": "ffffffff30e1c500",
+    "interpretation": "FH3 magic19930522, one state; state0 -> -1 via action00c5e130",
+    "action_listing": "MOV ECX,[EBP-10h]; JMP00412dc0",
+    "cleanup_body": "Complete00412dc0..00412dd9: nonnull buffer free and pointer=0 only; no clone/count/capacity cleanup.",
+    "modeled_boundary": "Allocator C++ throws caught; original exception object, FH3/SEH frame ABI and complete FP exception/status behavior unverified."
+  },
+  "observations": [
+    "Both own listings complete through RET; 156 and12 instructions, zero listing gaps. Actual returning free body and full00412dc0 continuation read; no flow repair made.",
+    "Raw installed.text disasm independently confirms count store0041a0e1 and growth/unsigned guard0041a145..0041a15a.",
+    "Pointer-prefix bytes are copied as representations without evaluating indeterminate pointer values; no replacement identities or zero-fill.",
+    "All9 record floats and4 bounds use FLD/FSTP, including signaling-NaN quieting; first bound precedes EH state0 activation0041a070.",
+    "Capacity stored before allocation; grow wraps unsigned and is accepted only when new>old; multiplication overflow saturates request toFFFFFFFF.",
+    "Exception cleanup frees/zeros pointer buffer only and retains native clone leaks and count/capacity values.",
+    "Destructor preserves capacity and trailing metadata; convenience release_owned_storage would change capacity and is not used.",
+    "Source entity word remains shared identity, not a deep-owned clone. No live callers found."
+  ],
+  "validation": {
+    "win32_build_and_existing_ctest": "pass: full ./scripts/build.ps1, reconstructed_math/native_math_differential/tool_tests3/3,7.20 test seconds",
+    "build_log": "local/oct15_avoid_copy_lifetime_build.log",
+    "native_math_scope": "Existing seed coverage only; not copy/destructor or opaque-prefix validation.",
+    "verify_report_calls": "pass: 7 direct call rows checked, 0 failed",
+    "git_diff_check": "pass",
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "risks": [
+    "Nonempty copy output has opaque counted prefix with no established valid record identities; ordinary traversal/destruction is unsafe without independently proven native preconditions.",
+    "Actual allocator/new-handler/free identities and readable stable storage are required; no default substitutes.",
+    "The normal-flow/allocator-exception source is complete; original FH3/SEH/register ABI and full FP status/exception equivalence remain unverified.",
+    "No deterministic prefix fixture, packet-native differential or gameplay proof."
+  ]
+}
