@@ -1,0 +1,167 @@
+{
+  "packet": "goal_oct15_scene_map_lookup",
+  "status": "complete_actual_raw_source_win32_build_and_two_enabled_existing_tests_passed",
+  "source_ready": true,
+  "source": "src/native_scene_record_map_lookup.cpp",
+  "header": "include/bsp/native_scene_record_map_lookup.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_MAP_LOOKUP.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Every live bsp.py client checks expected project/program/x86 language/image base before its batch",
+    "annotation": "Applied under ghidra_annotate write lock; native names and prior comments preserved; old values in local/ghidra-annotations-20261015T194751Z.json and annotation_history; project saved; both exports refreshed"
+  },
+  "readiness": {
+    "indexed_reconstruction_before_packet": false,
+    "existing_projection": "scene_record_map.cpp scans a vector/string projection and explicitly omits actual tree descent; it does not supply either owned body",
+    "dependencies": "Accepted concrete less_native_string_headers_00443d00 in native_vfs_date_leaf_providers and invoke_native_invalid_parameter_00bf6713; no unresolved call/host/comparator stand-in"
+  },
+  "routines": [
+    {
+      "address": "00468140",
+      "name": "lower_bound_native_scene_record_map_00468140",
+      "native_name": "STL_MapNativeStringPtr_LowerBound",
+      "body": "00468140-00468192",
+      "native_bytes": 83,
+      "original_bytes_hex": "8b410453568b7004807e19008bd8753e578b7c2410837e0c0075088b07f7d81bc0eb15833f0074198b47048b4e105051e84afe780083c40885c07d058b7608eb048bde8b36807e190074ca8bc35f5e5bc20400",
+      "coverage": "complete_with_inherited_current_CRT_and_Source_interface_qualifications",
+      "original_abi": "ECX actual map; incoming EDX unused; stack actual8h key-header pointer; RET4; EAX node. Source fastcall retains explicit unused EDX physical word.",
+      "schedule": "Capture map+4 head and head+4 root; test current node+19 before any key/header access. Compare node+C/query using exact accepted predicate implementing native inline rule. Less takes current right+8; otherwise remember node and take current left+0. Stop on any nonzero sentinel and return remembered node or captured initial head.",
+      "host_steps": [
+        {
+          "address": "00468170",
+          "native": "00bf7fbf",
+          "function": "00468140",
+          "host": "less_native_string_headers_00443d00 equivalent inline composition",
+          "contract": "Native calls CRT directly after node length, query length, query data and node data reads. Accepted concrete predicate supplies identical rule/read order through current CRT. Native does not call00443D00 here. Caller ADD ESP8."
+        }
+      ],
+      "original_bytes_sha256": "266debcc3c4de3fb61e16a40827b4c7da508471fcaac8f498273cf6459d64b4d"
+    },
+    {
+      "address": "00468cd0",
+      "name": "find_native_scene_record_map_00468cd0",
+      "native_name": "STL_MapNativeStringPtr_Find",
+      "body": "00468cd0-00468d35",
+      "native_bytes": 102,
+      "original_bytes_hex": "83ec10538b5c241c5657538bf1e85ef4ffff85f68bf8897c24107505e822da78003b7e048974240c741683c70c57538bcee8faaffdff84c075068d4c240ceb0f8b460489442418897424148d4c24148b118b4424208b49045f5e89108948045b83c410c20800",
+      "coverage": "complete_with_inherited_current_CRT_and_Source_interface_qualifications",
+      "original_abi": "ECX actual map; incoming EDX unused; stack hidden iterator output/key-header pointer; RET8; EAX output. Source fastcall retains explicit unused EDX physical word.",
+      "schedule": "Exact lower bound before null-owner report; returning report continues. Compare node with CURRENT map+4; if unequal compare query against node+C. Fallback reloads CURRENT map+4 after comparator. Capture owner/node, store output+0 owner then output+4 node, return output. External output/map/node/key alias order retained.",
+      "host_steps": [
+        {
+          "address": "00468cdd",
+          "native": "00468140",
+          "function": "00468cd0",
+          "host": "lower_bound_native_scene_record_map_00468140",
+          "contract": "Same-packet complete actual raw descent; native ECX map, sole stacked key, child RET4; source supplies unused EDX0."
+        },
+        {
+          "address": "00468cec",
+          "native": "00bf6713",
+          "function": "00468cd0",
+          "host": "invoke_native_invalid_parameter_00bf6713",
+          "contract": "Existing complete qualified current-SDK returning report boundary; no context or invented callback; no noreturn/noexcept; called after lower bound only when owner null."
+        },
+        {
+          "address": "00468d01",
+          "native": "00443d00",
+          "function": "00468cd0",
+          "host": "less_native_string_headers_00443d00",
+          "contract": "Accepted concrete actual8h-header predicate, query left/node key right; RET8/AL bool. Right-data-before-left-data reads and zero stored length rule retained; current CRT provider limits inherited."
+        }
+      ],
+      "original_bytes_sha256": "30fc0d0df885200737484a20229f3e03c710e55198856234a073ba33f23139e2"
+    }
+  ],
+  "caller_evidence": [
+    {
+      "address": "004691d4",
+      "native": "00468cd0",
+      "function": "004691b0",
+      "contract": "Full caller listing read: ECX SceneDatabase+18h; stack local iterator output/key header from right-to-left pushes. Returned pair used for owner/head checks and mapped read."
+    },
+    {
+      "address": "004694a8",
+      "native": "00468cd0",
+      "function": "00469480",
+      "contract": "Full caller listing read: ECX SceneDatabase+18h; stack local iterator output/key. EAX output pointer consumed for owner check and node versus previously captured head; child RET8."
+    },
+    {
+      "address": "0046d96f",
+      "native": "00468cd0",
+      "function": "0046d930",
+      "contract": "Exact bounded setup and result use read: ECX SceneDatabase+18h, local pair output, native temporary name key. Caller compares pair node to current head; child RET8."
+    },
+    {
+      "address": "0046dc55",
+      "native": "00468cd0",
+      "function": "0046dc10",
+      "contract": "Exact bounded setup and result use read: ECX SceneDatabase+18h, local pair output, native temporary name key. Caller compares pair node to current head; child RET8."
+    }
+  ],
+  "layout_authority": {
+    "reference": "docs/SCENE_RECORD_MAP.md read bounded",
+    "node_writer": "00469F50 full listing: links+0/+4/+8, key+C/+10, mapped+14, sentinel+19=0; allocator0046A340 requests1Ch",
+    "tree_writer": "0046AD70 initial insertion writes head+4/root and left/right links;0046B340 descent independently confirms same offsets",
+    "new_record_or_iterator_type": false,
+    "unused_fields": "No proxy, map size, mapped word or node color access"
+  },
+  "corrections": [],
+  "verification": {
+    "win32_build": "scripts/build.ps1 Release Win32 passed, exit0; source draft45909c893 compiled and all targets linked; local/goal_oct15_scene_map_lookup_build.log",
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 8.5,
+      "native_math_differential_enabled": false,
+      "dedicated_native_lookup_differential": false
+    },
+    "verify_report_calls": "8 call rows checked,0 failed",
+    "diff_check": "passed before draft",
+    "new_tests": 0,
+    "native_execution": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "application_adoption": false,
+    "cmake_registration": "Exactly one unique source line appended after released owner check and queue removal; no exclusive shared-registry lease",
+    "original_bytes": "Live byte lengths checked:83+102=185 bytes; SHA256 per routine recorded",
+    "source_commit": "45909c893",
+    "documentation_claim_check": "23 addresses,0 failed,2 unchecked sentences about concrete inlined-predicate sharing; all actual call edges among8 passing JSON rows"
+  },
+  "limits": [
+    "Physical input/output slots preserved; Source does not establish native mangling, binary/private-frame/SEH or instruction-fault identity",
+    "Existing concrete current-SDK CRT comparison locale/error-handler and invalid-parameter provider domains inherited",
+    "No native private argument-slot mutation or local iterator pair backing is exposed by Source value parameters",
+    "Valid taken map/node/key/output backing required; no added guards, validation, rollback or exception conversion",
+    "No dedicated native lookup differential, application adoption or game validation; existing host projections remain separate"
+  ],
+  "annotation_history": [
+    {
+      "address": "00468140",
+      "before": {
+        "address": "00468140",
+        "function_name": "STL_MapNativeStringPtr_LowerBound",
+        "comment": "[BSP reconstruction 00468140]\nHypothesis, not a recovered symbol. std::map lower_bound for the same instantiation: root = _Myhead->_Parent at 00468145, loop while node+19h (_Isnil) is zero, comp(node->key, k) inlined at 00468155..0046817A against __stricmp at 00468170, right child (+8h) when the node sorts first, otherwise remember the node and take the left child (+0h). RET 4. docs/SCENE_RECORD_MAP.md, packet cc2_scene_record_map."
+      },
+      "name_preserved": "STL_MapNativeStringPtr_LowerBound",
+      "status": "applied"
+    },
+    {
+      "address": "00468cd0",
+      "before": {
+        "address": "00468cd0",
+        "function_name": "STL_MapNativeStringPtr_Find",
+        "comment": "[BSP reconstruction 00468cd0]\nHypothesis, not a recovered symbol. MSVC std::map<NativeString, void*>::find over the hidden-entity record map at SceneDatabase+18h. 00468CDD calls the lower bound 00468140, 00468CF1 tests the result against _Myhead at map+4h, and 00468D01 runs the trailing comp(key, node->key) that turns a lower bound into a find. Returns the iterator {container, node} by value through a hidden first argument (00468D2A, 00468D2C), RET 8. Callers 004691B0, 00469480, 0046D930, 0046DC10. docs/SCENE_RECORD_MAP.md, packet cc2_scene_record_map."
+      },
+      "name_preserved": "STL_MapNativeStringPtr_Find",
+      "status": "applied"
+    }
+  ]
+}

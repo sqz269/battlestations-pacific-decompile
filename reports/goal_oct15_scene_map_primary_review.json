@@ -1,0 +1,154 @@
+{
+  "packet": "goal_oct15_scene_map_primary_review",
+  "status": "complete_source_review_combined_win32_and_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 10,
+  "private_source_cleanup_actions": 2,
+  "native_bytes": 848,
+  "call_and_tail_transfer_rows_checked": 30,
+  "call_and_tail_transfer_rows_failed": 0,
+  "spans": [
+    {
+      "address": "00443cb0",
+      "bytes": 77,
+      "sha256": "ac754a0cc35e6bab30dbc1d10764a1495f994bd0f5554ab4adca8be7c3fd91c7",
+      "live_equals_installed": true,
+      "scope": "complete ordinary Source function"
+    },
+    {
+      "address": "0076eaa0",
+      "bytes": 87,
+      "sha256": "fb7918f48ab4db3dbc5ac47b9d492710870e28c1235b7ac8e028e9a04f428efc",
+      "live_equals_installed": true,
+      "scope": "complete ordinary Source function"
+    },
+    {
+      "address": "00468140",
+      "bytes": 83,
+      "sha256": "266debcc3c4de3fb61e16a40827b4c7da508471fcaac8f498273cf6459d64b4d",
+      "live_equals_installed": true,
+      "scope": "complete ordinary Source function"
+    },
+    {
+      "address": "00468cd0",
+      "bytes": 102,
+      "sha256": "30fc0d0df885200737484a20229f3e03c710e55198856234a073ba33f23139e2",
+      "live_equals_installed": true,
+      "scope": "complete ordinary Source function"
+    },
+    {
+      "address": "004678f0",
+      "bytes": 137,
+      "sha256": "f7bfac79a92fe976d5a48d24a1f67c38c933c1a52477c23de1b7c409a279d7a6",
+      "live_equals_installed": true,
+      "scope": "complete ordinary Source function"
+    },
+    {
+      "address": "00468200",
+      "bytes": 12,
+      "sha256": "1ecf87e84c63e3b1a796438d629784a3aac9c2732f623365ccbe82b26f519ebf",
+      "live_equals_installed": true,
+      "scope": "complete ordinary Source function"
+    },
+    {
+      "address": "004688e0",
+      "bytes": 12,
+      "sha256": "4d96990dea5fa3a6da5359764d71da614900ab3d12d79b6eca451ae8546db415",
+      "live_equals_installed": true,
+      "scope": "complete ordinary Source function"
+    },
+    {
+      "address": "00469980",
+      "bytes": 72,
+      "sha256": "b963a26fddf7383eab964c9bc52787895ba8703468e3146289b84dce46fad677",
+      "live_equals_installed": true,
+      "scope": "complete ordinary Source function"
+    },
+    {
+      "address": "00469a20",
+      "bytes": 72,
+      "sha256": "ee6878a2d04e1c64972d0a6f68936d0801abb215374ff88c0c5da7cba6554f9c",
+      "live_equals_installed": true,
+      "scope": "complete ordinary Source function"
+    },
+    {
+      "address": "00469fc0",
+      "bytes": 161,
+      "sha256": "ddd704476545f087151659364a8665b5a31c135e3686fa36f3a0f68a1cb653d7",
+      "live_equals_installed": true,
+      "scope": "complete ordinary Source function"
+    },
+    {
+      "address": "00c61be0",
+      "bytes": 8,
+      "sha256": "efc5d06a16b1806abfe06250d677816ebaffbef4c39d65152cf755bbaeda2634",
+      "live_equals_installed": true,
+      "scope": "qualified Source cleanup action"
+    },
+    {
+      "address": "00c61be8",
+      "bytes": 25,
+      "sha256": "7b4d8f97b961ee9c6ae9033015cb03bed0a9db014dba07d818f74a631e2e8b8d",
+      "live_equals_installed": true,
+      "scope": "qualified Source cleanup action"
+    }
+  ],
+  "packets": [
+    {
+      "packet": "goal_oct15_string_ordering",
+      "revision": "5d86bba56e9475bf0d3736681a00c4eb65373d3d",
+      "source": "src/native_string_ordering_wrappers.cpp",
+      "report": "reports/goal_oct15_string_ordering.json",
+      "primary_review": "Full original listings and actual Source reviewed; length-zero prefix rule, forward/reverse comparisons and current unsigned high/low scalar reads match."
+    },
+    {
+      "packet": "goal_oct15_scene_map_lookup",
+      "revision": "3e1d47e49",
+      "source": "src/native_scene_record_map_lookup.cpp",
+      "report": "reports/goal_oct15_scene_map_lookup.json",
+      "primary_review": "Full listings and Source reviewed; actual head/root/sentinel descent, operand order, post-validation fallback reload and captured owner-then-node output stores match."
+    },
+    {
+      "packet": "goal_oct15_scene_map_pair",
+      "source_revision": "d9b73fb89cf563b0089f9cd170e36932f63939fd",
+      "source": "src/native_scene_record_map_pair.cpp",
+      "report": "reports/goal_oct15_scene_map_pair.json",
+      "primary_review": "Full normal and funclet listings plus canonical destructor compared to Source. Late integer suffix copies differ from prior x87 packet. Constructor captures data then length before zero; normal free uses captures while true C++ unwind reads current key/output cells with original state transitions."
+    },
+    {
+      "packet": "goal_oct15_scene_map_iterator",
+      "source": "src/native_scene_record_map_iterator.cpp",
+      "report": "reports/goal_oct15_scene_map_iterator.json",
+      "primary_review": "Full listings/callers read; volatile physical access ordering, post-handler reloads and intermediate publications preserved. Two tails classified explicitly for verifier."
+    }
+  ],
+  "build": {
+    "command": "scripts/build.ps1",
+    "source_revision": "026da884ef927effb85f118488357a83634eff48",
+    "compiler_extra": "/MP4 parallel-only",
+    "log": "local/goal_oct15_scene_map_combined_build.log",
+    "status": "pass",
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "tests_passed": 3,
+    "tests_seconds": 8.72,
+    "log_sha256": "7b1e95f39ab98b075bb879e6daf15e2219354f017335a86ac823ccd282bc5d11",
+    "archive_members": [
+      "bsp_core.dir\\Release\\native_scene_record_map_iterator.obj",
+      "bsp_core.dir\\Release\\native_scene_record_map_lookup.obj",
+      "bsp_core.dir\\Release\\native_scene_record_map_pair.obj",
+      "bsp_core.dir\\Release\\native_string_ordering_wrappers.obj"
+    ]
+  },
+  "limits": [
+    "Ordinary Source APIs over current concrete raw storage/string pool/SDK validation/current CRT domains.",
+    "No new callback or stub dependency, source owner overlay or external provider edit.",
+    "Private cleanup Source scopes preserve true C++ unwind sequencing, not original FH3/SEH/private-frame ABI.",
+    "Existing tests do not execute these new entries; no entry-specific native differential, Original ABI, application adoption or game qualification."
+  ]
+}
