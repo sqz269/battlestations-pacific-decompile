@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_map_constructor_aliases",
+  "source": "src/native_scene_record_map_construct_aliases.cpp",
+  "header": "include/bsp/native_scene_record_map_construct_aliases.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_MAP_CONSTRUCT_ALIASES.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00468900",
+      "end_exclusive": "00468929",
+      "coverage": "complete ordinary Source",
+      "cpp_symbol": "construct_native_scene_record_map_head_00468900",
+      "original_abi": "ECX tree,unused EDX,no stacked args,RET;raw final EAX last head capture; semantic return type unestablished",
+      "instruction_count": 14,
+      "native_bytes": 41,
+      "bytes": "56 8b f1 e8 58 f9 ff ff 89 46 04 c6 40 19 01 8b 46 04 89 40 04 8b 46 04 89 00 8b 46 04 89 40 08 c7 46 08 00 00 00 00 5e c3",
+      "sha256": "2416383436d6f04ba0925f013aee0376fe911028809ce6f054031ff71e8a7d5b",
+      "live_disk_equal": true,
+      "live_callers": 0
+    },
+    {
+      "address": "0046f130",
+      "end_exclusive": "0046f15b",
+      "coverage": "complete ordinary Source",
+      "cpp_symbol": "construct_native_scene_record_map_head_0046f130",
+      "original_abi": "ECX tree,unused EDX,no stacked args,RET;EAX original tree",
+      "instruction_count": 15,
+      "native_bytes": 43,
+      "bytes": "56 8b f1 e8 28 91 ff ff 89 46 04 c6 40 19 01 8b 46 04 89 40 04 8b 46 04 89 00 8b 46 04 89 40 08 c7 46 08 00 00 00 00 8b c6 5e c3",
+      "sha256": "9f7aa4f7d09088563302908d10e7fb1b5a8f94e38a0b7f4fce7bd142778c3728",
+      "live_disk_equal": true,
+      "live_callers": 0
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00468903",
+      "native": "00468260",
+      "function": "00468900"
+    },
+    {
+      "address": "0046f133",
+      "native": "00468260",
+      "function": "0046f130"
+    }
+  ],
+  "source_reuse": "F130 reuses complete Source00468E70 identical memory/result schedule, not a native call; native RET vs RET8/unread two words differs.900 retains raw EAX last-head capture without semantic return hypothesis.",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "Actual raw storage and real currentCRT allocator; no Original binary/register/stack/CRT ABI identity.",
+    "No new-body native differential,application or game proof."
+  ],
+  "verification": {
+    "combined_build": {
+      "revision": "d9fafd3726b2566e7131350dd2f2c82fa73afb3f",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_integer_erase_combined_build.log",
+      "log_sha256": "2d30d954ba0344ec27efc2fe6318fc582a97f135462bd4e81a7ba3094dd9d12f",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 7.93,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies"
+    },
+    "typed_rows_passed": 2,
+    "typed_rows_failed": 0,
+    "markdown_checked": 2,
+    "markdown_unchecked": 0,
+    "source_project_count": 1,
+    "archive_member": "bsp_core.dir\\Release\\native_scene_record_map_construct_aliases.obj",
+    "new_tests": 0
+  },
+  "independent_review": {
+    "reviewer": "/root/string_erase",
+    "scope": "complete listings and Source/header/doc with accepted allocator/construction provider",
+    "result": "passed; no mismatch",
+    "source_sha256": "02612b5f497cf2eb47363cc170e5956aeb858bfcdd28f9a9f88080fb372cfb26",
+    "header_sha256": "e4fefda01cd758f1ebcace32ad4400cd730a4a345f5bc48122f93c91d940fd6a"
+  },
+  "annotation": {
+    "prior_values_log": "local/ghidra-annotations-20261015T213449Z.json",
+    "program_saved": true,
+    "exports_refreshed": true,
+    "comment_readback": true,
+    "names_retained": true
+  }
+}
