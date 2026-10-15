@@ -1,0 +1,76 @@
+{
+  "packet": "goal15f_avoid_tidy",
+  "source_base": "5d1d0a1cc",
+  "status": "complete_three_raw_kernels_strict_mdx86_compile_normalized_coff_real_provider_source_fixture_passed_pending_primary_registered_build",
+  "owned_addresses": ["0041ddf0", "0041f230", "0041e3a0"],
+  "owned_files": ["include/bsp/native_avoid_container_tidy.hpp", "src/native_avoid_container_tidy.cpp", "docs/GOAL15F_AVOID_CONTAINER_TIDY.md", "reports/goal15f_avoid_container_tidy.json"],
+  "functions": [
+    {"address": "0041ddf0", "name": "STL_Vector_Tidy_0041ddf0", "cpp_symbol": "bsp::tidy_native_avoid_body_vector_0041ddf0", "source": "src/native_avoid_container_tidy.cpp", "header": "include/bsp/native_avoid_container_tidy.hpp", "end_exclusive": "0041de1a", "bytes": 42, "coverage": "complete", "original_abi": "ECX raw10h header, no stack arguments, ESI preserved, plainRET; incidental EAX unclaimed", "source_abi": "same physical shape, naked MSVCWin32 fastcall void(void*)"},
+    {"address": "0041f230", "name": "STL_List_Tidy_0041f230", "cpp_symbol": "bsp::tidy_native_avoid_hull_list_0041f230", "source": "src/native_avoid_container_tidy.cpp", "header": "include/bsp/native_avoid_container_tidy.hpp", "end_exclusive": "0041f24d", "bytes": 29, "coverage": "complete", "original_abi": "ECX raw0Ch header, no stack arguments, ESI preserved, plainRET; incidental EAX unclaimed", "source_abi": "same physical shape, naked MSVCWin32 fastcall void(void*)"},
+    {"address": "0041e3a0", "name": "STL_List_Tidy_0041e3a0", "cpp_symbol": "bsp::tidy_native_avoid_hull_list_0041e3a0", "source": "src/native_avoid_container_tidy.cpp", "header": "include/bsp/native_avoid_container_tidy.hpp", "end_exclusive": "0041e3bd", "bytes": 29, "coverage": "complete", "original_abi": "ECX raw0Ch header, no stack arguments, ESI preserved, plainRET; incidental EAX unclaimed", "source_abi": "same physical shape, naked MSVCWin32 fastcall void(void*)"}
+  ],
+  "host_steps": [
+    {"address": "0041ddfb", "native": "00bf65ac", "containing_function": "0041ddf0", "contract": "captured nonnull first+4 pushed, genuine returning cdeclfree, ADDESP4; zero4/8/C afterward"},
+    {"address": "0041f233", "native": "0041e200", "containing_function": "0041f230", "contract": "actual headerECX, complete hull-list clear, no stack arguments/plainRET"},
+    {"address": "0041f23c", "native": "00bf65ac", "containing_function": "0041f230", "contract": "CURRENT head loaded afterclear, unconditional cdeclfree, ADDESP4 then zerohead"},
+    {"address": "0041e3a3", "native": "0041e200", "containing_function": "0041e3a0", "contract": "actual headerECX, complete hull-list clear, no stack arguments/plainRET"},
+    {"address": "0041e3ac", "native": "00bf65ac", "containing_function": "0041e3a0", "contract": "CURRENT head loaded afterclear, unconditional cdeclfree, ADDESP4 then zerohead"}
+  ],
+  "consumer_transfers": [
+    {"address": "00c5e2fe", "native": "0041ddf0", "containing_function": "00c5e2f8", "kind": "tail_jump", "contract": "saved owner[EBP-10]+5Ch becomesECX"},
+    {"address": "00c5e4ee", "native": "0041ddf0", "containing_function": "00c5e4e8", "kind": "tail_jump", "contract": "saved owner[EBP-10]+5Ch becomesECX"},
+    {"address": "00c6816f", "native": "0041ddf0", "containing_function": "00c68166", "kind": "tail_jump", "contract": "saved owner[EBP-10]+364h becomesECX"},
+    {"address": "00c6817d", "native": "0041ddf0", "containing_function": "00c68174", "kind": "tail_jump", "contract": "saved owner[EBP-10]+374h becomesECX"},
+    {"address": "00c96efa", "native": "0041ddf0", "containing_function": "00c96ef1", "kind": "tail_jump", "contract": "saved owner[EBP-10]+364h becomesECX"},
+    {"address": "00c96f08", "native": "0041ddf0", "containing_function": "00c96eff", "kind": "tail_jump", "contract": "saved owner[EBP-10]+374h becomesECX"},
+    {"address": "00c5e309", "native": "0041f230", "containing_function": "00c5e303", "kind": "tail_jump", "contract": "saved owner[EBP-10]+6Ch becomesECX"},
+    {"address": "00c5e4f9", "native": "0041f230", "containing_function": "00c5e4f3", "kind": "tail_jump", "contract": "saved owner[EBP-10]+6Ch becomesECX"}
+  ],
+  "semantics": {
+    "vector": "capturefirst once, nonnullfree, thenzero4/8/C; untouchedproxy/outerheader; noelementdestruction",
+    "list": "completeclear then CURRENT headload/unconditionalfree/nullstore; no cachedpreclearhead; sizecleared by realclear",
+    "reloads": "head loaded after externalclear; none of these three helpers reloads a header word afterfree; finalzero stores overwrite intervening provider writes",
+    "result": "void Source interface; incidental nativeEAX unspecified",
+    "clear_exception": "ifclearthrows, followingheadfree/nulltail notexecuted; no invented localEHframe or rollback",
+    "raw_backing": "valid reached rawheader/node/heap/stack/control storage and matched providers required"
+  },
+  "providers": {
+    "free": "existing singleton_lifetime_free ->realcurrentstd::free; native00bf65ac JMP returning00bf9dc8 actualCRTbodyread",
+    "clear": "existing complete clear_native_avoid_hull_list_0041e200 in native_avoid_manager_lifetime.cpp; genuine current hull/free chain, no additionalSourcecontext",
+    "identity_limits": "current CRT heap/errno/exception/provider-frame identities qualified; no original Native SEH/hardwarefault/runtime claim"
+  },
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "owned_assembly": "complete42+29+29B with finalplainRET; liveprototype noarg guesses superseded only by documented assembly/caller inference; no Ghidra write",
+    "callers": "all8 live unwindshim bodies read; physical E8/E9/literalcensus matches6vector+2F230;0E3A0 references, no inventedcaller",
+    "manager_layout": "existing cc13_avoid1.hpp manager vectorheader+5C/listheader+6C and established constructor/destructor EH map actions match fullshim bodies; otherownerfull layouts unclaimed",
+    "byte_script": "local/output/compare_avoid_container_tidy_bytes.py [COFF-object] [native-listing-directory]",
+    "byte_listing": "local/output/avoid_container_tidy_<address>_bytes.txt",
+    "source_listing": "local/output/native_avoid_container_tidy.asm",
+    "byte_result": "PASS42+29+29B; only expected1/2/2CALL REL32 operands masked after E8/symbol checks, allotherbytes equal"
+  },
+  "verification": {
+    "strict_compile": "PASS MSVCWin32/MD/C++17/EHsc/W4/WX/permissive-/O2/c/FAcs",
+    "coff": "PASS all3 complete owned nativebyteextents and fixedprovider relocations",
+    "source_fixture": "PASS one ignored realheap case: vector release/zero/proxy/nullrepeat; eachlist realBF50sentinel+populatednode/hulldata/vertices/adjacency; finalproxy retained/headnull/count0; no sentinelpayloadread",
+    "heap_observation": "PASS genuine current _heapwalk tracks vectorblock and eachlist's5 allocations USED before thennotUSED after; bounded Sourceevidence, no globalnoleak/dynamicunwindclaim",
+    "fixture_source": "local/output/avoid_container_tidy_probe.cpp",
+    "fixture_script": "local/output/run_avoid_container_tidy_probe.cmd [archive-path] [archive-only]; default one-module overlay over primary Releasearchive; embeddedmanifest",
+    "fixture_log": "local/output/avoid_container_tidy_probe.log",
+    "report_calls": "PASS13 exact report transferrows and13 markdown transferclaims;0failures,0unchecked,0warnings",
+    "diff_check": "PASS",
+    "new_tracked_test_targets": 0,
+    "full_registered_build": "primary-owned",
+    "native_runtime_differential": "not run",
+    "gameplay": "not validated"
+  },
+  "integration": {
+    "target": "bsp_core",
+    "target_sources_add": "src/native_avoid_container_tidy.cpp",
+    "manager_guard_reuse": "separately primary-owned state2F230/state1DDF0 reuse; normal native inline cleanup schedule remains distinct, no new Nativecallgraph claim",
+    "ghidra_mutations": "none; primary owns annotations/export and savedname/prototype changes",
+    "lease": "release after commit for primarytransfer"
+  }
+}
