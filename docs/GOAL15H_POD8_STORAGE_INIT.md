@@ -4,13 +4,18 @@ Addresses: `00418700`, `00420AC0`, `00418710`.
 
 | Native range, inclusive | Bytes | Coverage | Current Native definition | Source entry |
 |---|---:|---|---|---|
-| `00418700..0041870D` | 14 | complete bounded raw body | uncreated Ghidra function | `allocate_native_pod8_storage_00418700` |
-| `00420AC0..00420B06` | 71 | complete bounded raw body | uncreated Ghidra function | `initialize_native_pod8_storage_00420ac0` |
+| `00418700..0041870D` | 14 | complete bounded raw body | primary-created reviewed14B function | `allocate_native_pod8_storage_00418700` |
+| `00420AC0..00420B06` | 71 | complete bounded raw body | primary-created reviewed71B function | `initialize_native_pod8_storage_00420ac0` |
 | `00418710..00418734` | 37 | complete | existing `STL_inst_00418710` | `difference_native_pod8_iterator_00418710` |
 
 The raw entries were recovered from the original executable's complete instruction
 sequences, returns and surrounding INT3 padding, then matched against live memory.
 They were not created, renamed or exported as new Ghidra functions by this worker.
+After reviewing the complete bodies and byte/callee evidence, the primary created
+both exact functions under the Ghidra write lock, saved physical prototypes and
+preserved the earlier absence metadata. Their three transfer rows now receive full
+live caller/callee validation. This establishes analysis boundaries, not Original
+runtime use; the zero-reference census remains an explicit reachability limit.
 Their descriptive storage-role names are provisional hypotheses, not recovered
 symbols or evidence of a current caller. The existing iterator library identity,
 category and prior records are preserved. No full vector/iterator class is invented.
@@ -70,8 +75,9 @@ The defined-function transfer is:
 ```
 
 The raw three CALL targets are proven directly by their original E8 rel32 bytes;
-the call checker explicitly labels their containment as uncreated rather than
-pretending Ghidra owns these ranges. Raw metadata includes their inclusive ends.
+the worker initially labeled containment as uncreated. After primary function
+creation, all four report rows are checked against live function ownership and
+the physical CALL instructions. Historical raw metadata retains inclusive ends.
 All live xrefs are empty, and a physical E8/E9 plus .text/.rdata/.data literal
 address census finds ZERO current references to each of the three entries. No
 consumer, indirect-call coverage or live entry use is inferred from that census.

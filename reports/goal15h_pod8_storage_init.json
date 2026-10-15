@@ -1,23 +1,87 @@
 {
   "packet": "goal15h_pod8_storage_init",
   "source_base": "fd5434e6e",
-  "status": "complete_three_raw_source_kernels_strict_mdx86_coff_live_disk_and_real_provider_fixture_passed_two_native_ranges_uncreated_pending_primary_build",
-  "owned_addresses": ["00418700", "00420ac0", "00418710"],
-  "owned_files": ["include/bsp/native_pod8_storage_init.hpp", "src/native_pod8_storage_init.cpp", "docs/GOAL15H_POD8_STORAGE_INIT.md", "reports/goal15h_pod8_storage_init.json"],
-  "functions": [
-    {"address": "00418700", "name": "STL_Pod8Storage_Allocate_00418700", "cpp_symbol": "bsp::allocate_native_pod8_storage_00418700", "source": "src/native_pod8_storage_init.cpp", "header": "include/bsp/native_pod8_storage_init.hpp", "end_exclusive": "0041870e", "bytes": 14, "coverage": "complete bounded raw body", "native_function_created": false, "original_abi": "no consumed receiver/registerinput, uint32 count stacked, RET4/EAX storage; actualcountcell loaded intoECX, EDXzero for13390", "source_abi": "naked MSVCWin32 void* __stdcall(uint32_t)"},
-    {"address": "00420ac0", "name": "STL_Pod8Storage_InitializeCapacity_00420AC0", "cpp_symbol": "bsp::initialize_native_pod8_storage_00420ac0", "source": "src/native_pod8_storage_init.cpp", "header": "include/bsp/native_pod8_storage_init.hpp", "end_exclusive": "00420b07", "bytes": 71, "coverage": "complete bounded raw body", "native_function_created": false, "original_abi": "ECXactual10h header, uint32 count stacked, RET4, ESI/EDI preserved, ALflag; upperEAX onnonzero retains endpointbits exceptlowbyte", "source_abi": "naked MSVCWin32 bool __fastcall(void*,void* ignoredEDX,uint32_t)"},
-    {"address": "00418710", "name": "STL_inst_00418710", "cpp_symbol": "bsp::difference_native_pod8_iterator_00418710", "source": "src/native_pod8_storage_init.cpp", "header": "include/bsp/native_pod8_storage_init.hpp", "end_exclusive": "00418735", "bytes": 37, "coverage": "complete", "native_function_created": true, "original_abi": "ECX actualleft8B iterator, actualright8B pointer stacked, RET4, ESI/EDI preserved, EAXsignedSAR3difference", "source_abi": "naked MSVCWin32 int32_t __fastcall(const void*,void* ignoredEDX,const void*)"}
+  "status": "complete_three_raw_source_kernels_strict_mdx86_coff_live_disk_and_real_provider_fixture_passed_primary_created_reviewed_functions_pending_primary_build",
+  "owned_addresses": [
+    "00418700",
+    "00420ac0",
+    "00418710"
   ],
-  "no_ghidra_function": [
-    {"address": "00418700", "end_inclusive": "0041870d", "bytes": 14, "coverage": "complete bounded raw body", "evidence": "disk/live14B, precedingINT3boundary and2followingINT3; no livecontainingfunction,0references"},
-    {"address": "00420ac0", "end_inclusive": "00420b06", "bytes": 71, "coverage": "complete bounded raw body", "evidence": "disk/live71B, precedingINT3boundary and9followingINT3; no livecontainingfunction,0references"}
+  "owned_files": [
+    "include/bsp/native_pod8_storage_init.hpp",
+    "src/native_pod8_storage_init.cpp",
+    "docs/GOAL15H_POD8_STORAGE_INIT.md",
+    "reports/goal15h_pod8_storage_init.json"
+  ],
+  "functions": [
+    {
+      "address": "00418700",
+      "name": "STL_Pod8Storage_Allocate_00418700",
+      "cpp_symbol": "bsp::allocate_native_pod8_storage_00418700",
+      "source": "src/native_pod8_storage_init.cpp",
+      "header": "include/bsp/native_pod8_storage_init.hpp",
+      "end_exclusive": "0041870e",
+      "bytes": 14,
+      "coverage": "complete bounded raw body",
+      "native_function_created": true,
+      "original_abi": "no consumed receiver/registerinput, uint32 count stacked, RET4/EAX storage; actualcountcell loaded intoECX, EDXzero for13390",
+      "source_abi": "naked MSVCWin32 void* __stdcall(uint32_t)"
+    },
+    {
+      "address": "00420ac0",
+      "name": "STL_Pod8Storage_InitializeCapacity_00420AC0",
+      "cpp_symbol": "bsp::initialize_native_pod8_storage_00420ac0",
+      "source": "src/native_pod8_storage_init.cpp",
+      "header": "include/bsp/native_pod8_storage_init.hpp",
+      "end_exclusive": "00420b07",
+      "bytes": 71,
+      "coverage": "complete bounded raw body",
+      "native_function_created": true,
+      "original_abi": "ECXactual10h header, uint32 count stacked, RET4, ESI/EDI preserved, ALflag; upperEAX onnonzero retains endpointbits exceptlowbyte",
+      "source_abi": "naked MSVCWin32 bool __fastcall(void*,void* ignoredEDX,uint32_t)"
+    },
+    {
+      "address": "00418710",
+      "name": "STL_inst_00418710",
+      "cpp_symbol": "bsp::difference_native_pod8_iterator_00418710",
+      "source": "src/native_pod8_storage_init.cpp",
+      "header": "include/bsp/native_pod8_storage_init.hpp",
+      "end_exclusive": "00418735",
+      "bytes": 37,
+      "coverage": "complete",
+      "native_function_created": true,
+      "original_abi": "ECX actualleft8B iterator, actualright8B pointer stacked, RET4, ESI/EDI preserved, EAXsignedSAR3difference",
+      "source_abi": "naked MSVCWin32 int32_t __fastcall(const void*,void* ignoredEDX,const void*)"
+    }
   ],
   "host_steps": [
-    {"address": "00418706", "native": "00413390", "function": "00418700", "kind": "no_ghidra_function", "contract": "rawE8rel32 target decoded; ECX currentstackcount, EDX0, childno stackedargs/plainRET, hostRET4"},
-    {"address": "00420ae6", "native": "004203a0", "function": "00420ac0", "kind": "no_ghidra_function", "contract": "rawE8rel32 target decoded; unsignedcount>1fffffff; zeroedheader alreadyvisible, real owning lengththrow"},
-    {"address": "00420aef", "native": "00413390", "function": "00420ac0", "kind": "no_ghidra_function", "contract": "rawE8rel32 target decoded; ECXcapturedcount EDX0, childplainRET; publishfirst/last/wrappedend thenAL1"},
-    {"address": "00418722", "native": "00bf6713", "function": "00418710", "contract": "actual returninginvalid policy; afterreturn reloadactualpositionwords via capturediteratoraddresses, no ownerrecheck"}
+    {
+      "address": "00418706",
+      "native": "00413390",
+      "function": "00418700",
+      "contract": "rawE8rel32 target decoded; ECX currentstackcount, EDX0, childno stackedargs/plainRET, hostRET4",
+      "worker_recovery_kind": "no_ghidra_function"
+    },
+    {
+      "address": "00420ae6",
+      "native": "004203a0",
+      "function": "00420ac0",
+      "contract": "rawE8rel32 target decoded; unsignedcount>1fffffff; zeroedheader alreadyvisible, real owning lengththrow",
+      "worker_recovery_kind": "no_ghidra_function"
+    },
+    {
+      "address": "00420aef",
+      "native": "00413390",
+      "function": "00420ac0",
+      "contract": "rawE8rel32 target decoded; ECXcapturedcount EDX0, childplainRET; publishfirst/last/wrappedend thenAL1",
+      "worker_recovery_kind": "no_ghidra_function"
+    },
+    {
+      "address": "00418722",
+      "native": "00bf6713",
+      "function": "00418710",
+      "contract": "actual returninginvalid policy; afterreturn reloadactualpositionwords via capturediteratoraddresses, no ownerrecheck"
+    }
   ],
   "semantics": {
     "adapter": "actual stackedcount MOVtoECX/XOREDX/call13390/RET4; no originalreceiver, count0 stillactualallocation0",
@@ -32,7 +96,9 @@
     "accepted invoke_native_invalid_parameter_00bf6713/native_invalid_parameter_noinfo_call.hpp:actual currentSDKpolicy, returninghandler permitted; no injected provider"
   ],
   "evidence": {
-    "project": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe", "image_base": "00400000",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
     "native_bounds": "raw disk14B/71B completeRET4+padding, full existing37B listing; livebytes agree with originalPE",
     "references": "all3live xrefs0 andphysicalE8/E9/literalcensus0; no currentcaller orindirectcoverage claim",
     "census": "local/goal15h_pod8_storage_init/census.txt",
@@ -47,10 +113,48 @@
     "fixture_source": "local/goal15h_pod8_storage_init/pod8_storage_probe.cpp",
     "fixture_script": "local/goal15h_pod8_storage_init/run_probe.cmd [archive] [archive-only]; default ownmoduleoverlay, registeredarchive-only optional; manifestembedded",
     "fixture_log": "local/goal15h_pod8_storage_init/probe.log",
-    "report_calls": "PASS4rows/0fail:3rawcallee-only containmentuncreated plus1full livecall; markdown1liveclaim/0fail/0unchecked with4expected warnings for2uncreated rawranges; independentdiskE8proof coversrawcalls",
-    "diff_check": "PASS", "new_tracked_test_targets": 0,
-    "full_registered_build": "primary-owned", "native_runtime_differential": "not run", "gameplay": "not validated"
+    "report_calls": "Primary recheck4 full live rows; earlier worker3raw/1live and4expected uncreated-range Markdown warnings retained as historical recovery evidence",
+    "diff_check": "PASS",
+    "new_tracked_test_targets": 0,
+    "full_registered_build": "primary-owned",
+    "native_runtime_differential": "not run",
+    "gameplay": "not validated"
   },
   "limits": "provisional rawroutine identity and0references; actualcurrentCRT/newhandler/Sourceowningcatch/SDKpolicy/C++frames differ fromNativeFH3/staticCRT/handler/Watson; no NativeSEH/hardwarefault/install/game claim",
-  "integration": {"target": "bsp_core", "target_sources_add": "src/native_pod8_storage_init.cpp", "ghidra_mutations": "none; primary owns rawfunction creation/review/annotation/export/save", "lease": "releaseaftercommit forprimarytransfer"}
+  "integration": {
+    "target": "bsp_core",
+    "target_sources_add": "src/native_pod8_storage_init.cpp",
+    "ghidra_mutations": "none; primary owns rawfunction creation/review/annotation/export/save",
+    "lease": "releaseaftercommit forprimarytransfer"
+  },
+  "worker_recovery_no_ghidra_function": [
+    {
+      "address": "00418700",
+      "end_inclusive": "0041870d",
+      "bytes": 14,
+      "coverage": "complete bounded raw body",
+      "evidence": "disk/live14B, precedingINT3boundary and2followingINT3; no livecontainingfunction,0references"
+    },
+    {
+      "address": "00420ac0",
+      "end_inclusive": "00420b06",
+      "bytes": 71,
+      "coverage": "complete bounded raw body",
+      "evidence": "disk/live71B, precedingINT3boundary and9followingINT3; no livecontainingfunction,0references"
+    }
+  ],
+  "primary_annotation": {
+    "created": [
+      "00418700",
+      "00420ac0"
+    ],
+    "reviewed_body_bytes": [
+      14,
+      71
+    ],
+    "prototypes": "stdcallcount;thiscallreceiver+count boolAL;thiscallleft+right signedEAX; no SourceEDX",
+    "saved_under_write_lock": true,
+    "rollback": "local/goal15h_annotations_00418700.json",
+    "reachability": "Original incoming CALL/JMP/literal census remains0; no runtime adoption claimed"
+  }
 }
