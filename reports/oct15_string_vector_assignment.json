@@ -1,0 +1,219 @@
+{
+  "packet": "oct15_string_vector_assignment",
+  "status": "actual_checked_storage_complete_source_build_tested_bounded_grow_composition_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_string_vector_assignment.cpp",
+  "header": "include/bsp/native_string_vector_assignment.hpp",
+  "documentation": "docs/OCT15_STRING_VECTOR_ASSIGNMENT.md",
+  "routine": {
+    "address": "00506c80",
+    "cpp_name": "assign_native_string_header_vector_00506c80",
+    "original_abi": "ECX destination; one stacked source pointer; RET4 EAX destination",
+    "native_end_inclusive": "00506dc1",
+    "instructions": 144,
+    "basic_blocks": 28,
+    "normal_calls": 9,
+    "local_eh": false,
+    "paths": [
+      "self",
+      "empty",
+      "shrink_reuse",
+      "grow_reuse",
+      "replace"
+    ]
+  },
+  "host_steps": [
+    {
+      "address": "00506ca5",
+      "native": "00498ff0",
+      "function": "00506c80"
+    },
+    {
+      "address": "00506ccd",
+      "native": "0048f400",
+      "function": "00506c80"
+    },
+    {
+      "address": "00506ce0",
+      "native": "00432050",
+      "function": "00506c80"
+    },
+    {
+      "address": "00506d44",
+      "native": "0048f400",
+      "function": "00506c80"
+    },
+    {
+      "address": "00506d57",
+      "native": "00505ad0",
+      "function": "00506c80"
+    },
+    {
+      "address": "00506d73",
+      "native": "00432360",
+      "function": "00506c80"
+    },
+    {
+      "address": "00506d7c",
+      "native": "00bf65ac",
+      "function": "00506c80"
+    },
+    {
+      "address": "00506d9a",
+      "native": "00432090",
+      "function": "00506c80"
+    },
+    {
+      "address": "00506db1",
+      "native": "00505ad0",
+      "function": "00506c80"
+    },
+    {
+      "address": "0057cffa",
+      "native": "00506c80",
+      "function": "0057cff0"
+    },
+    {
+      "address": "0057d06a",
+      "native": "00506c80",
+      "function": "0057d060"
+    }
+  ],
+  "dependencies": {
+    "0048F400": "accepted actual raw-pool range assignment",
+    "00432050": "accepted actual raw-pool range destruction",
+    "00432360": "accepted actual destruction dispatch",
+    "00505AD0": "accepted uninitialized copy/current Source CPP cleanup",
+    "00498FF0": "accepted actual checked-clear Source, integrated and build checked",
+    "00432090": "accepted actual byte-domain Buy/owning legacy length error, integrated and build checked",
+    "00BF65AC": "accepted singleton_lifetime_free currentCRT domain"
+  },
+  "validation": {
+    "build": "passed ./scripts/build.ps1 after all dependencies merged",
+    "log": "local/oct15_assignment_combined_build.log",
+    "existing_suites": {
+      "reconstructed_math": "passed",
+      "native_math_differential": "passed_existing_seed_routines_only",
+      "tool_tests": "passed"
+    },
+    "ctest_seconds": 7.47,
+    "call_rows": {
+      "json": 11,
+      "markdown": 11,
+      "failed": 0,
+      "unchecked": 0
+    },
+    "new_tracked_test_cases": 0,
+    "bounded_grow_composition": {
+      "input": {
+        "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "function": "00506c80",
+        "length": 322,
+        "saved_ghidra_full_body_matches_disk": true,
+        "code_hex": "56578b7c240c8bf13bf70f842b0100008b570485d25355740c8b6f088bdd2bdac1fb03750ee84623f9ff5d5b5f8bc65ec204008b460485c0750433c9eb088b4e082bc8c1f9033bd97750505552e82e87f8ff8b4c24208b560883c40c51568bc8e86bb3f2ff8b470485c075148b56045d33ff8d04fa5b8946085f8bc65ec204008b7f088b56042bf85dc1ff038d04fa5b8946085f8bc65ec2040085c0750433c9eb088b4e0c2bc8c1f9033bd9773a85c0750433c9eb088b4e082bc8c1f903508d1cca5352e8b786f8ff8b4e088b570883c40c5152538bcee874edffff5d5b8946085f8bc65ec2040085c074188b4e0851508bcee8e8b5f2ff8b560452e82bf86e0083c4048b4f0485c9750433c0eb088b47082bc1c1f803508bcee8f1b2f2ff84c074168b46048b4f088b57045051528bcee81aedffff8946085d5b5f8bc65ec20400",
+        "calls": [
+          {
+            "site": "00506ca5",
+            "target": "00498ff0",
+            "offset": 37,
+            "taken_in_probe": false
+          },
+          {
+            "site": "00506ccd",
+            "target": "0048f400",
+            "offset": 77,
+            "taken_in_probe": false
+          },
+          {
+            "site": "00506ce0",
+            "target": "00432050",
+            "offset": 96,
+            "taken_in_probe": false
+          },
+          {
+            "site": "00506d44",
+            "target": "0048f400",
+            "offset": 196,
+            "taken_in_probe": true
+          },
+          {
+            "site": "00506d57",
+            "target": "00505ad0",
+            "offset": 215,
+            "taken_in_probe": true
+          },
+          {
+            "site": "00506d73",
+            "target": "00432360",
+            "offset": 243,
+            "taken_in_probe": false
+          },
+          {
+            "site": "00506d7c",
+            "target": "00bf65ac",
+            "offset": 252,
+            "taken_in_probe": false
+          },
+          {
+            "site": "00506d9a",
+            "target": "00432090",
+            "offset": 282,
+            "taken_in_probe": false
+          },
+          {
+            "site": "00506db1",
+            "target": "00505ad0",
+            "offset": 305,
+            "taken_in_probe": false
+          }
+        ],
+        "scope": "One reuse/grow case. Full original parent body calls two fixed accepted Source child adapters, with shared real explicit raw-pool context. Other7calls relocated to fail-fast sentinel and must remain unexecuted. This is Original parent control-flow composition evidence, not independent original child/EH/ABI/gameplay proof."
+      },
+      "result": {
+        "case": "reuse_grow_empty_strings_in_actual_checked_storage",
+        "original_parent_source_children": true,
+        "original_invariants": true,
+        "source_invariants": true,
+        "payload_equal": true,
+        "return_identity": true,
+        "source_return_identity": true,
+        "range_bridge_calls": 1,
+        "construct_bridge_calls": 1,
+        "pool_unused": true,
+        "forbidden_sentinel_reached": false,
+        "passed": true
+      },
+      "driver": "J:\\PROG\\battlestations-pacific-decompile\\local\\oct15_string_vector_assignment_probe\\probe.cpp",
+      "driver_sha256": "7b6762c7d4e36ef63b820244fda26a4e0953b63b05ddca9be3a7e1b3434e3b9b",
+      "compiler": "MSVC Win32 /O2 /fp:strict /MANIFEST:EMBED",
+      "source_library": "build/win32/Release/bsp_core.lib",
+      "configuration": {
+        "source_size": 2,
+        "destination_size": 1,
+        "destination_capacity": 3,
+        "strings": "empty actual8h headers",
+        "destination_uninitialized_suffix": [
+          "bad12345",
+          "cafe9876"
+        ],
+        "untouched_spare": [
+          "12345678",
+          "87654321"
+        ],
+        "destination_opaque": "27182818",
+        "source_opaque": "31415926"
+      },
+      "scope": "One Original parent control-flow comparison with shared accepted Source child services. No independent original child implementation, other path, pool allocation/release, exception/FH3/SEH/private-frame, ABI or game proof."
+    }
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "Current Source CPP exception, CRT allocation/diagnostic and zero-byte-copy limits inherited from children.",
+    "No original FH3/SEH/private-frame or exception/fault identity proof.",
+    "No local rollback or exception conversion added.",
+    "Only2incoming loading-screen setups reviewed; capped40site xref query is not all-site caller evidence."
+  ]
+}

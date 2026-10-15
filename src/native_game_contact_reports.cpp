@@ -933,6 +933,12 @@ __declspec(naked) void backward_kernel(){
     }
 }
 } // namespace
+// Expose the accepted actual kernel with a typed cdecl entry. Tail jump retains
+// every stack word and the native EAX return without a second implementation.
+__declspec(naked) void* __cdecl move_native_vector12_00419330(
+    const void*, const void*, void*, const void*, const void*, std::uint32_t) noexcept {
+    __asm { jmp move_kernel }
+}
 void* NativeGameContactReportCalls::allocate_00bf681b(U,U n,const AvoidZoneDynHullMemory& m){return m.allocate(m.context,n);}
 void NativeGameContactReportCalls::free_00bf65ac(U,void* p,const AvoidZoneDynHullMemory& m){m.release(m.context,p);}
 void NativeGameContactReportCalls::invalid_parameter_00bf6713(U){_invalid_parameter_noinfo();}

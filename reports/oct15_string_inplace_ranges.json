@@ -1,0 +1,151 @@
+{
+  "packet": "oct15_string_inplace_range_services",
+  "status": "actual_pool_complete_Source_build_tested_bounded_backward_composition_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_string_inplace_ranges.cpp",
+  "header": "include/bsp/native_string_inplace_ranges.hpp",
+  "documentation": "docs/OCT15_STRING_INPLACE_RANGES.md",
+  "routines": [
+    {
+      "address": "0044bc50",
+      "name": "copy_native_string_header_range_backward_0044bc50",
+      "native_end_inclusive": "0044bca1",
+      "original_abi": "cdecl first,last,destination_end; known dispatches supply3 further unused words; RET EAX advanced destination",
+      "coverage": "complete_backward_assignment_effects"
+    },
+    {
+      "address": "0044c770",
+      "name": "fill_native_string_header_range_0044c770",
+      "native_end_inclusive": "0044c7b5",
+      "original_abi": "cdecl first,last,value_header; RET; no semantic result",
+      "coverage": "complete_forward_fill_assignment_effects"
+    },
+    {
+      "address": "0044d850",
+      "name": "copy_native_string_backward_dispatch_0044d850",
+      "native_end_inclusive": "0044d89b",
+      "original_abi": "cdecl first,last,destination_end; RET EAX independently cached/wrapped result",
+      "coverage": "complete_dispatch"
+    },
+    {
+      "address": "0044f170",
+      "name": "copy_native_string_uninitialized_dispatch_0044f170",
+      "native_end_inclusive": "0044f194",
+      "original_abi": "ECX owner; stack first,last,destination; RET0Ch EAX completed end",
+      "coverage": "complete_dispatch_via_exact_00505ad0_service"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0044bc74",
+      "native": "0041dd40",
+      "function": "0044bc50"
+    },
+    {
+      "address": "0044bc89",
+      "native": "00bf7680",
+      "function": "0044bc50"
+    },
+    {
+      "address": "0044c78e",
+      "native": "0041dd40",
+      "function": "0044c770"
+    },
+    {
+      "address": "0044c7a3",
+      "native": "00bf7680",
+      "function": "0044c770"
+    },
+    {
+      "address": "0044d87e",
+      "native": "0044bc50",
+      "function": "0044d850"
+    },
+    {
+      "address": "0044f18c",
+      "native": "0044d0c0",
+      "function": "0044f170"
+    }
+  ],
+  "bindings": [
+    "Each backward/fill element uses full actual0048DA50 Source for one captured8h source span; same ordered field reload/resize/overlap-copy contract.",
+    "0044D850 preserves physical six child words/independent SAR3 wrapped return; Source zeroes unused dead tags.",
+    "0044F170 uses exact accepted00505AD0 Source dispatch after full37B installed-body match excluding4relocation bytes."
+  ],
+  "validation": {
+    "win32_release": "passed ./scripts/build.ps1",
+    "log": "local/oct15_inplace_ranges_combined_build.log",
+    "existing_suites": {
+      "reconstructed_math": "passed",
+      "native_math_differential": "passed_existing_seed_routines_only",
+      "tool_tests": "passed"
+    },
+    "ctest_seconds": 7.91,
+    "calls": {
+      "json_passed": 6,
+      "markdown_passed": 6,
+      "failed": 0,
+      "unchecked": 0
+    },
+    "new_tracked_tests": 0,
+    "bounded_backward_composition": {
+      "input": {
+        "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "function": "0044bc50",
+        "length": 82,
+        "code_hex": "538b5c2408568b7424103bde743d578b7c241883ee0883ef083bfe74248b066a01508bcfe8c720fdff833e0074138b0f8b56048b4704515250e8f2b97a0083c40c3bf375ce8bc75f5e5bc38b4424145e5bc3",
+        "saved_ghidra_full_body_matches_disk": true,
+        "calls": [
+          {
+            "site": "0044bc74",
+            "offset": 36,
+            "target": "0041dd40"
+          },
+          {
+            "site": "0044bc89",
+            "offset": 57,
+            "target": "00bf7680"
+          }
+        ],
+        "dispatch_0044f170_equivalence": {
+          "accepted": "00505ad0",
+          "size_each": 37,
+          "nonrelocation_bytes_matching": 33,
+          "mask_offset": 29,
+          "mask_length": 4,
+          "resolved_callee": "0044d0c0",
+          "new_bytes": "518b542410c60424008b0424508b442414528b542414518b4c241450e82fdfffff59c20c00",
+          "accepted_bytes": "518b542410c60424008b0424508b442414528b542414518b4c241450e8cf75f4ff59c20c00"
+        },
+        "scope": "One right-overlapping backward assignment. Full Original82B loop with2fixed adapters to accepted Source raw resize/currentCRT memmove; Source loop uses same acceptedservices viaone-element raw assignment. Equal1byte lengths bypass pool activity. Not independent Originalchild/resize-allocation/ABI/EH/game proof."
+      },
+      "result": {
+        "case": "right_overlapping_two_header_backward_assignment",
+        "original_payload": "AAB",
+        "source_payload": "AAB",
+        "original_invariants": true,
+        "source_invariants": true,
+        "payload_match": true,
+        "return_offsets_correct": true,
+        "resize_bridge_calls": 2,
+        "copy_bridge_calls": 2,
+        "pool_unused": true,
+        "passed": true
+      },
+      "driver": "J:\\PROG\\battlestations-pacific-decompile\\local\\oct15_string_inplace_probe\\probe.cpp",
+      "driver_sha256": "29378d727711f47a27ce54208ab75bf664191eacd012bc6b02789b07817b270d",
+      "manifest": "/link /MANIFEST:EMBED",
+      "source_library": "build/win32/Release/bsp_core.lib",
+      "scope": "One right-overlap original-loop/Source-child comparison. Equal1byte lengths, no pool traffic. No independent Original child/resize-allocation/exception/fill/other-path/fullABI/game proof."
+    }
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "New explicit actual-context Source APIs, private stack/dead tags and ambient register/flag values differ from original physicalABI.",
+    "CurrentCPP/CRT/zero-copy limits inherited; no local cleanup/rollback or new callback/model.",
+    "General insertion remains a separate full Source/EH reconstruction. Current worker typed metadata resolved the stale saved-export tail concern; no live repair gap is established."
+  ]
+}

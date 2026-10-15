@@ -1,0 +1,137 @@
+{
+  "packet": "oct15_pod_range_wrappers",
+  "worker": "agent/oct15_avoid_distance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/native_pod_range_wrappers.cpp",
+  "header": "include/bsp/native_pod_range_wrappers.hpp",
+  "documentation": "docs/OCT15_POD_RANGE_WRAPPERS.md",
+  "routines": [
+    {
+      "address": "0041c4d0",
+      "body_end_inclusive": "0041c4fa",
+      "coverage": "complete_normal_admitted_ranges",
+      "implementation": "vector12_move_forward_dispatch_0041c4d0",
+      "retained_name": "STL_Vector12_MoveForwardDispatch_0041C4D0",
+      "original_abi": "cdecl three pointer words first,last,destination; plain RET; EAX accepted kernel result; internal ADD ESP,1Ch cleans six outgoing words plus local tag",
+      "binding": "Typed public one-JMP service move_native_vector12_00419330 to unchanged accepted actual move_kernel; no loop duplicate/substitute/callback.",
+      "preconditions": "Native +12/equality range must terminate with every actual source/destination access admitted; underlying kernel signed divide12 return and overlap/FP schedule unchanged.",
+      "flow_gaps": []
+    },
+    {
+      "address": "0041c580",
+      "body_end_inclusive": "0041c5a2",
+      "coverage": "complete_normal_admitted_ranges",
+      "implementation": "pod8_range_fill_0041c580",
+      "retained_name": "STL_Pod8Range_Fill_0041C580",
+      "original_abi": "cdecl three pointer words first,last,value; plain RET; EAX final cursor, last for admitted ranges; original C++ return type unrecovered",
+      "preconditions": "Native 32-bit +8/equality range must terminate with all actual reads/writes admitted; value may alias destination; empty range touches no pointed storage.",
+      "arithmetic": "Exact FLD/FSTP per word, first write before second source read, reread each iteration; EAX advance/CMP before first FSTP; no C++ pointer arithmetic or bit-copy substitution.",
+      "flow_gaps": []
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0041c4f2",
+      "native": "00419330",
+      "function": "0041c4d0",
+      "contract": "complete accepted actual body read",
+      "arguments": "first,last,destination,last,last,tag; low byte tag0, upper24 actual incoming ECX preimage ignored by kernel; ADD ESP,1Ch includes six args+local word",
+      "binding": "move_native_vector12_00419330 public tail entry to unchanged private move_kernel"
+    }
+  ],
+  "authorized_shared_exposure": {
+    "files": [
+      "src/native_game_contact_reports.cpp",
+      "include/bsp/native_game_contact_reports.hpp"
+    ],
+    "authorization": "Primary explicitly authorized minimal exposure; both files added to packet lease before edits.",
+    "change": "One typed six-word cdecl declaration and one naked tail-JMP public definition; existing accepted kernel body and callers unchanged."
+  },
+  "caller_evidence": {
+    "stale_snapshot_attribution": "Catch_All@00420ccf",
+    "live_fill_xref_sites": [
+      "00420d3f",
+      "00420d8e"
+    ],
+    "live_containing_function": "STL_inst_00420b60; body00420b60..00420da8 confirmed at both call sites",
+    "catch_scope": "00420ccf..00420ce3, observed free then rethrow; not the live fill-call containing function; no catch ownership/mutation."
+  },
+  "corrections": [
+    {
+      "was": "Pseudocode void signatures hide native EAX postconditions.",
+      "is": "C4D0 forwards kernel EAX; C580 leaves final EAX cursor. Both cdecl/plain RET; original C++ return type remains unrecovered.",
+      "evidence": "Complete listings and actual compiled COFF through RET."
+    },
+    {
+      "was": "Pseudocode represents POD8 fill as two raw DWORD assignments.",
+      "is": "Actual FLD/FSTP word copies can quiet signaling NaNs and alter x87 status; source is reread after first store and each iteration.",
+      "evidence": "Full35-byte installed.text and actual compiled COFF match exactly."
+    },
+    {
+      "was": "Zero tag described as an entire zero word.",
+      "is": "Only low tag byte zero; upper24 bits preserve incoming ECX. Accepted move kernel ignores metadata words4..6.",
+      "evidence": "C4D0 PUSH ECX, C4D9 MOV byte[ESP],0; complete accepted00419330 body reads only first,last,destination."
+    },
+    {
+      "was": "Initial index names Catch_All@00420ccf as fill caller.",
+      "is": "Live call sites420d3f/420d8e belong to STL_inst_00420b60; separate catch only frees/rethrows.",
+      "evidence": "Live xrefs and function-containment proto at both sites; complete catch listing00420ccf..00420ce3."
+    }
+  ],
+  "coff_evidence": {
+    "original_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "original_image_base": "00400000",
+    "original_extraction": "PE32 section-table mapping: VA minus optional-header image base, section RVA to raw-file offset; exact full function spans.",
+    "compiled_object": "build/win32/bsp_core.dir/Release/native_pod_range_wrappers.obj",
+    "compiled_extraction": "dumpbin /DISASM, parse every instruction byte under each named COFF function symbol; require exact function length.",
+    "dumper": "MSVC dumpbin 14.51.36244.0",
+    "dump_file": "local/oct15_pod_range_wrappers_coff.asm",
+    "mask_rule": "Only dispatcher offset0x23..0x26 (4 CALL displacement bytes); E8 opcode at0x22 and every other byte compared. Fill has no mask.",
+    "functions": [
+      {
+        "function": "pod8_range_fill_0041c580",
+        "native": "0041c580",
+        "size": 35,
+        "matching_nonrelocation_bytes": 35,
+        "masked_call_displacement": null,
+        "differences": [],
+        "native_bytes": "8b4424048b5424083bc274168b4c240cd90183c0083bc2d958f8d94104d958fc75eec3",
+        "compiled_bytes": "8b4424048b5424083bc274168b4c240cd90183c0083bc2d958f8d94104d958fc75eec3"
+      },
+      {
+        "function": "vector12_move_forward_dispatch_0041c4d0",
+        "native": "0041c4d0",
+        "size": 43,
+        "matching_nonrelocation_bytes": 39,
+        "masked_call_displacement": [
+          35,
+          4
+        ],
+        "differences": [],
+        "native_bytes": "518b4c240c8b54240cc60424008b0424508b442414518b4c2414528b542414505152e839ceffff83c41cc3",
+        "compiled_bytes": "518b4c240c8b54240cc60424008b0424508b442414518b4c2414528b542414505152e80000000083c41cc3"
+      }
+    ],
+    "public_tail_entry": {
+      "compiled_object": "build/win32/bsp_core.dir/Release/native_game_contact_reports.obj",
+      "symbol": "move_native_vector12_00419330",
+      "instruction": "E9 rel32 JMP to unchanged private move_kernel",
+      "dump_file": "local/oct15_pod_range_wrappers_contact_coff.asm",
+      "dump_lines": "1068-1069"
+    },
+    "scope": "Static actual-build COFF versus installed PE comparison, not native execution, FP-trap, complete ABI or gameplay validation."
+  },
+  "validation": {
+    "win32_build_and_existing_ctest": "pass: full ./scripts/build.ps1, all3 existing suites passed,7.06 test seconds",
+    "build_log": "local/oct15_pod_range_wrappers_build.log",
+    "post_build_source_edits": "Header comments only; no machine-code edits after verified build.",
+    "verify_report_calls": "pass: 1 direct call row checked,0 failed",
+    "git_diff_check": "pass",
+    "new_routine_tests": 0,
+    "packet_native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}

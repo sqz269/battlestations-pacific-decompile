@@ -38,6 +38,10 @@ public:
     // Distinct permanent initial-NUL role for Original library key E18560.
     // Borrow the SAME retained process; do not alias another fallback cell.
     const char* library_empty_00e18560() const noexcept;
+    // DISTINCT stable initial-NUL enum role E186ED. The retained process owns
+    // this byte; it does not construct/publish an enum table or symbol owner.
+    // Original writable DATA is not claimed universally immutable.
+    const char* enum_empty_00e186ed() const noexcept;
 private:
     friend GameNativeStringProcess& game_native_string_process();
     GameNativeStringProcess() noexcept = default;
@@ -59,6 +63,9 @@ private:
     // Append after every established field; Original writable .data is not
     // claimed universally immutable by this ordinary Source authority.
     const char library_empty_00e18560_{};
+    // Append after every established field, even when this uses tail padding.
+    // Never alias a property, query, clone or library fallback authority.
+    const char enum_empty_00e186ed_{};
 };
 
 // Intentionally retained through process termination. No C++ exit destructor
