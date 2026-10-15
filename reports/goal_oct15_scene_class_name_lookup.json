@@ -1,7 +1,7 @@
 {
   "packet": "goal_oct15_scene_class_name_lookup",
-  "status": "whole_raw_Source_independently_reviewed_default_build_pending",
-  "source_ready": false,
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "source_ready": true,
   "source": "src/native_scene_class_name_lookup.cpp",
   "header": "include/bsp/native_scene_class_name_lookup.hpp",
   "documentation": "docs/GOAL_OCT15_SCENE_CLASS_NAME_LOOKUP.md",
@@ -184,5 +184,35 @@
       "src/native_scene_class_name_lookup.cpp": "d43fdfb3f98fab644bf89df4ad405561bbe9699a65f3eca8d349504d4ef7ecfe",
       "include/bsp/native_scene_class_name_lookup.hpp": "ae8cd105437d431dfd3427053cb0ca3a7a94a1d999b6dc314fd23440a8724a5c"
     }
+  },
+  "validation": {
+    "combined_build": {
+      "revision": "1c0025b07ae3c5627dc024d11e1db303efb9d32d",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_scene_lookup_combined_build.log",
+      "log_sha256": "c8ed57b16756599313847bc4739d05f2e6234168e2a942347efae999a58f6cd5",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 7.99,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies"
+    },
+    "typed_rows_passed": 14,
+    "new_tests": 0
+  },
+  "ghidra_annotation": {
+    "saved": true,
+    "function_name_retained": "BSP_SceneDatabase_ClassNameToId",
+    "prior_values": "local\\ghidra-annotations-20261015T234400Z.json",
+    "prior_values_sha256": "060ff82c950472d53f78b50e602eedc56d364061a073d72f130f66b08ab0f502",
+    "export_refreshed": true,
+    "live_comment_readback": true
   }
 }

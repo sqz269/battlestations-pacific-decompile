@@ -38,5 +38,4 @@ at P+4. The corresponding backing regions are distinct; binding metadata is
 stable/disjoint from payload. Reached actual storage/aliases, C strings, pool
 lifetimes, fallback and current CRT policy must be valid. No class-map
 representation, count consistency, ASCII clamp, ownership or game proof is
-inferred. Whole live/installed bytes, independent review and default Win32
-build remain pending.
+inferred. All277 live/installed-identical bytes and independent whole94-op Source review passed. The normal MSVC Release Win32 build passed all three existing CTests in 7.99s; fourteen typed transfer rows passed. No new tests were added. Receipt: reports/goal_oct15_scene_lookup_primary_review.json.
