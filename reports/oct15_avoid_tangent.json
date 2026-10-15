@@ -1,6 +1,6 @@
 {
   "packet": "oct15_avoid_tangent",
-  "status": "complete_bounded_source_validation_pending",
+  "status": "complete_control_flow_win32_build_existing_checks_passed",
   "owner": "agent/oct15_avoid_tangent",
   "date": "2026-10-15",
   "project": "C:/Users/sqz269/bsp.gpr",
@@ -72,12 +72,15 @@
     "candidate_body_and_abi_review": "passed",
     "callee_before_contract": "passed; existing APIs reused",
     "live_incoming_xrefs": "none found for all three candidates",
-    "win32_build_and_existing_ctest": "pending; isolated worker build running, primary will also validate in staging before main promotion",
+    "win32_build_and_existing_ctest": "passed: ./scripts/build.ps1, reconstructed_math and tool_tests, 2/2 in 8.23 seconds; native differential fixtures not configured in isolated worktree",
+    "build_source_commit": "2f362246a",
+    "build_log": "local/oct15_avoid_tangent_build.log",
+    "link_warning": "LNK4006: spawn_request_id_matches duplicate in existing lua_binding_spawn.obj and lua_spawn_new.obj; candidate compiled and library linked successfully",
     "verify_report_calls": "passed: five direct call rows, zero failed; markdown checker also passed",
     "diff_check": "passed: git diff --cached --check"
   },
   "limitations": [
-    "Provisional semantic names; Ghidra annotations pending primary integration",
+    "Provisional semantic names; Ghidra mutations owned by primary and not performed by this worker",
     "Stable borrowed snapshots and nonaliasing point/output required; native loops reload membership after calls",
     "Existing boundary/tangent host and CRT contracts remain required",
     "No new tests, native-byte differential execution, ABI compatibility, game wiring or gameplay validation",
