@@ -314,11 +314,11 @@
   "primary_post_run_review": "pending; no ledger mutation in this worker packet",
   "current_two_node_ordinary_source_execution": {
     "schema": "bsp.cc12.recursive-lifetime-current-singleprocess.v1",
-    "status": "WORKER_PASS_CURRENT_TWO_NODE_ORDINARY_SOURCE_PENDING_PRIMARY_ADMISSION",
+    "status": "PRIMARY_ACCEPTED_ONE_CURRENT_ORDINARY_SOURCE_TWO_NODE_CASE",
     "source_baseline": "52f3736d6fd1e876156cc119e664583481cae3b3",
     "source_input_authority": "Exact clean Main physical source/header bytes copied before fresh whole-TU compilation; two CRLF/LF-only inputs explicitly refreshed without tracked Source edits.",
-    "new_runtime_admission_credit": 0,
-    "primary_review_pending": true,
+    "new_runtime_admission_credit": 1,
+    "primary_review_pending": false,
     "duplicate_Source_function_or_constructor_credit": false,
     "process": {
       "pid": 57936,
@@ -693,6 +693,13 @@
     },
     "artifact_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01",
     "artifact_manifest_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\recursive_lifetime_current01\\artifact_manifest.json",
-    "manifest_note": "Manifest covers every retained family file except itself, including final owned output snapshots; final manifest pin is handed to the primary outside the self-contained family."
+    "manifest_note": "Manifest covers every retained family file except itself, including final owned output snapshots; final manifest pin is handed to the primary outside the self-contained family.",
+    "primary_review": {
+      "report": "reports/cc12_recursive_lifetime_primary_review_16.json",
+      "target_relaunched": false,
+      "accepted_target_pid": 57936,
+      "worker_pending_qualification_retained_immutable": true,
+      "scope": "One successful ordinary current Source graph only; no Original ABI, failure/FH3 or gameplay credit."
+    }
   }
 }

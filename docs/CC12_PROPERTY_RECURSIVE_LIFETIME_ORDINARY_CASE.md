@@ -123,8 +123,9 @@ A separate current-provider case now passes in ignored
 `local/recursive_lifetime_current01`. The earlier 2026-10-09 worker execution
 record above remains historical, with its original primary-review field
 unchanged. It supplies no process, old-object, or old-header credit to this case.
-The new runtime admission is **pending primary review, credit 0**; existing
-Source-function and raw-constructor admissions are not repeated.
+The worker handoff recorded pending primary review, credit 0. The primary
+review below admits one current ordinary Source case; existing Source-function
+and raw-constructor admissions are not repeated.
 
 The input baseline is published Main
 `52f3736d6fd1e876156cc119e664583481cae3b3`. Exact physical Main preimages cover
@@ -227,3 +228,13 @@ Current qualification and independent evidence are linked by
 `reports/cc12_property_recursive_lifetime_ordinary_case.json` under
 `current_two_node_ordinary_source_execution`; the immutable family is sealed by
 its self-excluding `artifact_manifest.json`.
+
+Primary review: both independent offline readers passed again in a separate
+review copy using the same sole PID57936 observations; the target was not
+relaunched. All82 current Main physical Source/header pins match. Root has
+80 exact physical pins and two independently checked CRLF/LF-only
+differences, recorded explicitly. The506-file worker family remains
+immutable, including its pre-admission qualification. This accepts one
+ordinary Source graph case with209 mapped spans,157 entry-rooted bodies
+and43 actual IAT identities; it adds no Native/Original ABI, failure/FH3
+or gameplay claim. See `reports/cc12_recursive_lifetime_primary_review_16.json`.

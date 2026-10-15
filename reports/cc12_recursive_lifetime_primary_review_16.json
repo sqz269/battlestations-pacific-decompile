@@ -1,0 +1,116 @@
+{
+  "packet": "cc12_current_recursive_lifetime_primary_review16",
+  "reviewed_utc": "2026-10-15T01:54:19.978901+00:00",
+  "worker_commit": "6a6c4f8a4fa1e7c1674bb7e3a366510ab6f56395",
+  "source_revision": "52f3736d6fd1e876156cc119e664583481cae3b3",
+  "status": "PASS_ONE_ORDINARY_CURRENT_SOURCE_TWO_NODE_LIFETIME_CASE",
+  "target_pid": 57936,
+  "target_exit_code": 0,
+  "parent_target_relaunch": false,
+  "independent_readers": "Both rerun in a distinct review copy; exclusive outputs preserved.",
+  "frozen_family_files": 506,
+  "frozen_family_bytes": 138815791,
+  "fresh_provider_TUs": 24,
+  "fresh_fixture_TUs": 1,
+  "exact_current_Main_source_header_pins": 82,
+  "Root_source_pin_qualification": {
+    "current_Main_exact_physical_pins": 82,
+    "Root_exact_physical_pins": 80,
+    "Root_line_endings_only": [
+      {
+        "path": "src\\native_singleton_vector_insert_count.cpp",
+        "Main_sha256": "9cce5b3c6cb599b8fdfbc93ce5fc27688d84c8e88ba182a1664223e1feb8ca2b",
+        "Root_sha256": "12961e35b1189704bf7f1de55fbdeb6f406688cfadf9256f8729fd72a0a870ac",
+        "line_endings_only": true
+      },
+      {
+        "path": "include\\bsp\\native_singleton_vector_insert_count.hpp",
+        "Main_sha256": "dfa8873894fa65ee54759da73165833feecc9ecdf00abd705fb2c2ee6e1bd132",
+        "Root_sha256": "df4cc0dd530b7741fdc790b57f086d495730d905f043780e04513582056c8e12",
+        "line_endings_only": true
+      }
+    ],
+    "ordinary_case_uses_exact_fresh_Main_preimages": true
+  },
+  "mapped_complete_spans": 209,
+  "entry_rooted_bodies": 157,
+  "retained_uninvoked_siblings": 52,
+  "actual_IAT_provider_identities": 43,
+  "graph": "P -> R1(type6) -> C -> R2(type6) -> G(empty)",
+  "validated": "Actual canonical allocations, two miss insertions, whole six-body ordinary lifetime, retained P flags2, explicit P free and real empty-page trim.",
+  "evidence_limit": "Live terminal metadata and code/provider bookends; no per-function/free instrumentation or later CRT shutdown callback trace.",
+  "worker_pending_qualification_preserved": true,
+  "new_ordinary_Source_runtime_case_admission": 1,
+  "duplicate_function_or_constructor_credit": false,
+  "new_normal_Core_build_claim": false,
+  "original_ABI_validated": false,
+  "copied_Native_execution": false,
+  "failure_or_FH3_validated": false,
+  "gameplay_validated": false,
+  "excluded": [
+    "Original ECX/register/stack/FS/SEH/FH3 or class/vtable ABI",
+    "Allocation failure, exception, invalid input, alias/cycle/shared-ownership behavior",
+    "Whole populated cloning, assignment, map replacement/hit, or arbitrary property types",
+    "Original private CRT/deep allocator equivalence, process-wide CRT startup/static initialization",
+    "Later CRT shutdown callback trace/order, global leak-free cleanup or string singleton disposal",
+    "Game startup, visuals, gameplay and whole-game equivalence"
+  ],
+  "artifacts": [
+    {
+      "path": "local/cc12_type6_current_parent_review_01/independent_code.json",
+      "bytes": 4027048,
+      "sha256": "8caa1b80c98f7cf41d95f1ed5149be9aa19728bab4c2edb94a9d6a5f407abb24"
+    },
+    {
+      "path": "local/cc12_type6_current_parent_review_01/independent_recorded.json",
+      "bytes": 104635,
+      "sha256": "31aba8eec6dea6874efa4ebf24612f39361c985353e1a79d93837e2390db2ee8"
+    },
+    {
+      "path": "local/cc12_type6_current_parent_review_01/independent_code_reader.py.parent.log",
+      "bytes": 71,
+      "sha256": "25dd1949b210827cd6a18669382fc41e49d3fbd0255044be4feb3e8a4b400eb5"
+    },
+    {
+      "path": "local/cc12_type6_current_parent_review_01/independent_recorded_reader_v2.py.parent.log",
+      "bytes": 152,
+      "sha256": "bc4f71eef999de2916c8b3443dcde8e05dfdc02384d5b1ac5928ee0fcfbef194"
+    },
+    {
+      "path": "local/cc12_type6_current_parent_review_01/current_source_pin_check.json",
+      "bytes": 770,
+      "sha256": "7a579f79d21f098db853f2c4acc2ca6209277d65fd5b4bfd5a1486b815a2b006"
+    },
+    {
+      "path": "local/cc12_native_parent_receipts/type6_current_6a6/family/artifact_manifest.json",
+      "bytes": 147776,
+      "sha256": "20b0df5af745bd8f9f42a856e6eb51d89ce815210fed64b1e19e1b6aa4c5f226"
+    },
+    {
+      "path": "local/cc12_native_parent_receipts/type6_current_6a6/family/qualification.json",
+      "bytes": 20281,
+      "sha256": "7c53ab1acfd23d17cb545ccf1694a4520dc4821b47f28f6b3187d451ad7fc23c"
+    },
+    {
+      "path": "local/cc12_native_parent_receipts/type6_current_6a6/family/target.status.json",
+      "bytes": 307,
+      "sha256": "55a25cb3759dc08c1b3fd19449cce226ddfe56821c2040da88ad0ffb2d199388"
+    },
+    {
+      "path": "local/cc12_native_parent_receipts/type6_current_6a6/family/observations.bin",
+      "bytes": 52338,
+      "sha256": "927b26a7ceb3c79e7783c2bf32f8487498224e40471399b32bd7d2ff53f25e83"
+    },
+    {
+      "path": "local/cc12_native_parent_receipts/type6_current_6a6/family/loaded_before.bin",
+      "bytes": 27753,
+      "sha256": "a10ab09a32838cd8693ba3dbe5a179812843ed23449cadc5336d3b4eeccb2573"
+    },
+    {
+      "path": "local/cc12_native_parent_receipts/type6_current_6a6/family/loaded_after.bin",
+      "bytes": 27753,
+      "sha256": "a10ab09a32838cd8693ba3dbe5a179812843ed23449cadc5336d3b4eeccb2573"
+    }
+  ],
+  "overall_goal": "ACTIVE"
+}
