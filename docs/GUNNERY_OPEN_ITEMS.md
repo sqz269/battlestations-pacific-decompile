@@ -15240,3 +15240,24 @@ step's `0072D130` countdown (the order of the bot tick and the gun tick inside o
 torpedo guns. ON: AI torpedo launches after the first salvo move later by up to one think period plus the stagger
 (<= 0.32 s); the launch count may change by a few; no change on missions without AI torpedo tubes. Missions:
 USN15 (`usn15_g46_u15_tl`), JM06 (`jm06_s49_j6_s`), IJN08 (`ijn08_p9_i08_w`, already lost on main).
+
+### 260.1 Pairs and flip
+
+Exports of `d4e7a58f1`: OFF `local\g47_off` (exe `B02D3CB60D6C`), ON `local\g47_on` (exe `47A1F5820F8E`). Reference env,
+`--stop-after-end 40`; logs `local\g47_<off|on>_<u15|j6|i8>.log` with manifests.
+
+| Mission (plan) | OFF | ON | refusals OFF / ON |
+| --- | --- | --- | --- |
+| USN15 `g46_u15_tl` | EndMission 6331.16 s | **failed 1417.31 s** (Yamashiro survives) | 35567 / 19981 |
+| JM06 `s49_j6_s` | completed 2123.95 s | completed 2144.97 s | 7716 / 6758 |
+| IJN08 `p9_i08_w` | failed 789.93 s | failed 789.93 s (damage +1.7, nothing else moved) | 10053 / 10053-scale |
+
+**Mechanism** (`BSP_TORPEDO_TUBE_TRACE=1`, JM06 to 300 s, `local\g47_<off|on>_j6tr.log`): every salvo's first two
+tubes launch at the same instant; the later tubes of the salvo launch 0.05-0.15 s later under ON (158.71 -> 158.86,
+183.76 -> 183.81, 184.56 -> 184.66 s), and the order of the six tubes within a salvo changes, because each tube's
+latch now rises afresh after its reload and draws a new stagger. The gyro jitters move with the draws. This is the
+predicted mechanism (later by at most one think period plus the stagger), so the switch is **flipped ON**.
+
+**Lost:** USN15 `tl` was a reference-only knife-edge (258: its 1171 s Yamashiro kill is a deterministic friendly
+Fubuki-class07 torpedo, absent under jitter); ON removes that torpedo as jitter does (gyro launches 134 -> 78), and the
+mission fails at 1417.31 s as the jitter runs did. The USN15 re-plan is queue item 2.
