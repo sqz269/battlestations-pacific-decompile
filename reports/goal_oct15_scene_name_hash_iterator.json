@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_scene_name_hash_iterator",
-  "status": "whole_raw_Source_independent_review_and_default_build_pending",
+  "status": "whole_raw_Source_independently_reviewed_default_build_pending",
   "source_ready": false,
   "source": "src/native_scene_name_hash_iterator.cpp",
   "header": "include/bsp/native_scene_name_hash_iterator.hpp",
@@ -154,5 +154,13 @@
     "No nominal container,implicit native/Source frame alias,concurrency,private-register/flags/fault/mangling/binary ABI,new-entry differential,application or game claim"
   ],
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "independent_review": {
+    "reviewer": "string_allocate",
+    "result": "passed full157B55ops and complete Source/header/docs; exact alias and index64 paths retained",
+    "source_hashes": {
+      "src/native_scene_name_hash_iterator.cpp": "69e1661e27018e38d57bf45e892c3fa11d021c166f9de0ee18aa9becc6746297",
+      "include/bsp/native_scene_name_hash_iterator.hpp": "d067020450fc886c6d994dff94913a067d60023aa15a5581caff6ab489ba20ee"
+    }
+  }
 }
