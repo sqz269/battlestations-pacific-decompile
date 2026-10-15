@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_native_string_copy",
+  "worker": "agent/goal_oct15_copy",
+  "base_commit": "1a12fa36b8e03fa099cfce006e6c7eeea0c52707",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis_and_export": true,
+  "ghidra_read_only": false,
+  "owned_addresses": [
+    "00444070",
+    "004440c0"
+  ],
+  "source": "src/native_string_copy_construct.cpp",
+  "header": "include/bsp/native_string_copy_construct.hpp",
+  "documentation": "docs/GOAL_OCT15_NATIVE_STRING_COPY.md",
+  "status": "actual_storage_complete_source_annotated_exported_build_pending",
+  "routines": [
+    {
+      "address": "00444070",
+      "body_end_inclusive": "004440ba",
+      "body_bytes": 75,
+      "listed_instructions": 29,
+      "coverage": "complete",
+      "implementation": "copy_construct_native_string_with_scalar_00444070",
+      "retained_name": "BSP_NativeString_CopyConstruct_00444070",
+      "original_abi": "__thiscall: ECX actual destination12B; stack source8B header,scalar address; EAX actual destination; RET8 at004440B8",
+      "source_abi": "ordinary C++ explicit NativeStringRawPoolContext reference; not the original binary ABI",
+      "schedule": "Capture identity then zero destination+0/+4 before branch. Distinct captures source length, raw resize preserve1, current source length guard, current destination length/source data/destination data copy. Then late scalar pointer dereference FLD/FSTP to destination+8 on every normal path.",
+      "scalar_instructions": [
+        {
+          "address": "004440ab",
+          "bytes": "8b4c2410",
+          "operation": "load scalar address from stacked argument2"
+        },
+        {
+          "address": "004440af",
+          "bytes": "d901",
+          "operation": "FLD m32real [ECX]"
+        },
+        {
+          "address": "004440b2",
+          "bytes": "d95e08",
+          "operation": "FSTP m32real [ESI+8]"
+        }
+      ],
+      "live_xrefs": [],
+      "local_eh": false
+    },
+    {
+      "address": "004440c0",
+      "body_end_inclusive": "00444107",
+      "body_bytes": 72,
+      "listed_instructions": 28,
+      "coverage": "complete",
+      "implementation": "copy_construct_native_string_with_scalar_004440c0",
+      "retained_name": "BSP_NativeString_CopyConstruct_004440C0",
+      "original_abi": "__thiscall: ECX actual destination12B; stack source12B; EAX actual destination; RET4 at00444105",
+      "source_abi": "ordinary C++ explicit NativeStringRawPoolContext reference; not the original binary ABI",
+      "schedule": "Same actual-header prefix, then late source+8 FLD/FSTP to destination+8 on every normal path, including identity and empty.",
+      "scalar_instructions": [
+        {
+          "address": "004440fb",
+          "bytes": "d94708",
+          "operation": "FLD m32real [EDI+8]"
+        },
+        {
+          "address": "004440ff",
+          "bytes": "d95e08",
+          "operation": "FSTP m32real [ESI+8]"
+        }
+      ],
+      "live_xrefs": [],
+      "local_eh": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0044408e",
+      "native": "0041dd40",
+      "function": "00444070",
+      "contract": "callee body read; captured source length, preserve1, actual raw-pool resize",
+      "binding": "copy_construct_native_string_header_00426060 raw overload"
+    },
+    {
+      "address": "004440a3",
+      "native": "00bf7680",
+      "function": "00444070",
+      "contract": "callee body read; overlap-safe copy of CURRENT destination length, CURRENT source and destination data",
+      "binding": "accepted raw00426060 helper memmove; zero count omitted after field reads"
+    },
+    {
+      "address": "004440de",
+      "native": "0041dd40",
+      "function": "004440c0",
+      "contract": "callee body read; captured source length, preserve1, actual raw-pool resize",
+      "binding": "copy_construct_native_string_header_00426060 raw overload"
+    },
+    {
+      "address": "004440f3",
+      "native": "00bf7680",
+      "function": "004440c0",
+      "contract": "callee body read; overlap-safe copy of CURRENT destination length, CURRENT source and destination data",
+      "binding": "accepted raw00426060 helper memmove; zero count omitted after field reads"
+    }
+  ],
+  "layout": {
+    "actual_destination_minimum_bytes": 12,
+    "native_string_header_bytes": 8,
+    "length_offset": 0,
+    "data_offset": 4,
+    "x87_scalar_offset": 8,
+    "scalar_purpose": "unknown; m32real access established by constructor writes",
+    "owner_overlay": false,
+    "new_callback_or_stub": false
+  },
+  "corrections": [
+    {
+      "was": "00444070 name evidence described header zero/resize/memcpy and a 3-argument form",
+      "is": "retained name; complete trailing late scalar-address FLD/FSTP behavior documented and reconstructed",
+      "evidence": "004440AB scalar pointer load; D901 at004440AF; D95E08 at004440B2; RET8"
+    },
+    {
+      "was": "004440C0 name evidence described only header zero/resize/memcpy",
+      "is": "retained name; complete trailing source+8 FLD/FSTP behavior documented and reconstructed",
+      "evidence": "D94708 at004440FB; D95E08 at004440FF; RET4"
+    }
+  ],
+  "x87": {
+    "implementation": "explicit MSVC Win32 inline FLD dword ptr [input] / FSTP dword ptr [output]",
+    "load_timing": "after successful actual-header work; no scalar snapshot",
+    "control_word_changed": false,
+    "extra_fwait": false,
+    "integer_bit_copy": false,
+    "preserved_scope": "operation pair, caller x87 control/status/stack effects, sNaN quieting and unmasked exception boundary",
+    "native_fault_frame_or_resumption_identity": false
+  },
+  "exception_and_alias_contract": {
+    "initial_header_clear_on_identity": true,
+    "existing_output_release": false,
+    "local_cleanup_or_rollback": false,
+    "pool_getter_exception": "propagates before scalar load/store, retaining actual partial header state",
+    "scalar_alias": "load observes post-header bytes, including self/empty paths; valid-memory and ownership domains of accepted raw helper apply",
+    "dependency": "actual raw00426060 -> actual0041DD40 -> concrete00419CC0/BD1120/BD1510 composition; BF7680 overlap semantics",
+    "inherited_zero_count_policy": "omits zero-byte host copy after reading same current fields"
+  },
+  "annotation": {
+    "preserve_names_and_previous_comments": true,
+    "before_comments": "local/goal_oct15_copy_before_comments.json",
+    "before_documentation": "local/goal_oct15_copy_before_documentation.json",
+    "write_lock_and_save": "passed; tools/ghidra_annotate.py --apply; local/ghidra-annotations-20261015T192403Z.json records prior values and 2 applied changes; saved bsp project",
+    "refreshed_exports": "passed; bsp.py ghidra export00444070/004440c0 --force",
+    "readback": "local/goal_oct15_copy_after_comments.json; 2 unchanged names, prior comments preserved, scalar evidence appended"
+  },
+  "verification": {
+    "live_project_program_guard": "bsp.py uses Client.verify before each live query; project bsp, program /battlestationspacific.exe, x86:LE:32:default, image base00400000",
+    "live_proto_disassembly_bytes_and_xrefs": "passed; full bodies147 bytes/57 instructions; no live xrefs",
+    "compiled_x87_pair": "pending",
+    "strict_win32_build_and_existing_ctest": "pending",
+    "verify_report_calls": "passed; 4 native call-site rows checked,0 failed; markdown18 addresses,0 failed",
+    "diff_check": "pending",
+    "new_tests_added": false,
+    "native_differential": "not run",
+    "game_validation": "not run",
+    "verify_seeds": "passed; all8 seed bodies match installed disk bytes; this is not a native differential for the new functions"
+  },
+  "limits": [
+    "Complete Source bodies at accepted concrete raw-storage dependency and valid-memory/ownership domains; new C++ explicit-context ABI.",
+    "No native callers found; no stronger application-level scalar type or bsp_game reachability claimed.",
+    "No drop-in ABI, native SEH/private frame, binary replacement, native differential or gameplay claim."
+  ]
+}
