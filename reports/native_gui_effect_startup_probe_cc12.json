@@ -1,6 +1,6 @@
 {
   "packet": "cc12_gui_effect_probe_startup",
-  "source_revision": "8df36847324ada1f5770f3e45712bb4f2cb298bf",
+  "source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
   "worker_probe_revision": "22ce33474",
   "worker_unit_revision": "9847f44ac0474a2ae5ecf0e2dcbc3388c661688b",
   "activation": "BSP_NATIVE_GUI_EFFECT_PROBE=1 after genuine startup phase7; opt-in actual-resource probe only",
@@ -23,11 +23,11 @@
     "configuration": "MSVC Win32 Release",
     "tests_passed": 3,
     "tests_failed": 0,
-    "test_seconds": 11.93,
-    "log": "local/cc12_sampler_entry_combined_gui06_release_build_01.log",
+    "test_seconds": 12.49,
+    "log": "local/cc12_material_post_combined_release_build_01.log",
     "new_tests": 0,
     "temporary_cmake_include": false,
-    "actual_source_revision": "8df36847324ada1f5770f3e45712bb4f2cb298bf"
+    "actual_source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3"
   },
   "parent_review": {
     "latest_worker_artifacts_preserved_and_verified": 120,
@@ -41,58 +41,153 @@
     "actual_unit_receiver_constructed": false
   },
   "runtime": {
-    "attempt": "06",
-    "status": "PASS_BOUNDED_ACTUAL_GUI_EFFECT_STARTUP_AND_RETIREMENT",
-    "exec_session": "13746 terminal0",
-    "actual_source_revision": "8df36847324ada1f5770f3e45712bb4f2cb298bf",
-    "actual_executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\8df36847324ada1f5770f3e45712bb4f2cb298bf\\build\\win32\\cc12_followup_release\\bsp_game.exe",
-    "actual_executable_sha256": "996236bfa480b44f23d789f8c423a57dc7cfefd83e157c3036c3f891bf344487",
-    "launcher_checkout_head": "702d0b5c0fe5cf9f1a9745214118f5a51711a4ee",
-    "launcher_checkout_head_is_build_source": false,
-    "source_authority": "Frozen prelaunch build receipt, immutable snapshot and exact executable hash; manifest build_checkout/host heads are launch-time checkout discovery only.",
-    "slot": 5,
-    "affinity_core": 12,
-    "started_utc": "2026-10-15T01:07:27.7544563Z",
-    "finished_utc": "2026-10-15T01:07:30.0293699Z",
+    "attempt": "07",
+    "status": "PASS_BOUNDED_NATIVE_FONT_RESOURCES_AND_GUI_EFFECT_STARTUP",
+    "exec_session": "11371 terminal0",
+    "actual_source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
+    "actual_executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\d4edc832430c5e501a5f29c7115e8fc1d2d42da3\\build\\win32\\cc12_followup_release\\bsp_game.exe",
+    "actual_executable_sha256": "a1f40a029e9244125604138f0f31e7ca15bc8b577bddc577f4310e573122c833",
+    "launcher_checkout_head": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
+    "launcher_checkout_head_is_build_source": true,
+    "source_authority": "Verified frozen37-artifact build receipt plus immutable37-artifact launch snapshot and matching executable hash.",
+    "slot": 1,
+    "affinity_core": 4,
+    "started_utc": "2026-10-15T01:24:35.0369192Z",
+    "finished_utc": "2026-10-15T01:24:37.9936174Z",
     "exit_code": 0,
     "actual_process_started": true,
     "environment": {
-      "BSP_NATIVE_FONT_PROBE": "0",
+      "BSP_NATIVE_FONT_PROBE": "1",
       "BSP_NATIVE_GUI_EFFECT_PROBE": "1"
+    },
+    "native_font_resources": {
+      "fonts": [
+        {
+          "name": "ViperTitle",
+          "records": 116,
+          "glyphs": 116,
+          "height": 31,
+          "data": "127AF9E0",
+          "gfx": "1289353C",
+          "gfx_refs": 2,
+          "alpha": "12893590",
+          "alpha_refs": 6,
+          "fallback0091_verified": true
+        },
+        {
+          "name": "Arial16",
+          "records": 207,
+          "glyphs": 207,
+          "height": 23,
+          "data": "127AECC0",
+          "gfx": "128935E4",
+          "gfx_refs": 4,
+          "alpha": "12893590",
+          "alpha_refs": 6,
+          "fallback0091_verified": true
+        },
+        {
+          "name": "Viper19",
+          "records": 116,
+          "glyphs": 116,
+          "height": 26,
+          "data": "127AED38",
+          "gfx": "1289353C",
+          "gfx_refs": 2,
+          "alpha": "12893590",
+          "alpha_refs": 6,
+          "fallback0091_verified": true
+        },
+        {
+          "name": "Arial20",
+          "records": 207,
+          "glyphs": 207,
+          "height": 31,
+          "data": "127AF5A8",
+          "gfx": "128935E4",
+          "gfx_refs": 4,
+          "alpha": "12893590",
+          "alpha_refs": 6,
+          "fallback0091_verified": true
+        },
+        {
+          "name": "Arial15",
+          "records": 207,
+          "glyphs": 207,
+          "height": 21,
+          "data": "127AFAD0",
+          "gfx": "128935E4",
+          "gfx_refs": 4,
+          "alpha": "12893590",
+          "alpha_refs": 6,
+          "fallback0091_verified": true
+        },
+        {
+          "name": "Arial18",
+          "records": 207,
+          "glyphs": 207,
+          "height": 26,
+          "data": "127AF080",
+          "gfx": "128935E4",
+          "gfx_refs": 4,
+          "alpha": "12893590",
+          "alpha_refs": 6,
+          "fallback0091_verified": true
+        }
+      ],
+      "total_fonts": 6,
+      "total_glyphs": 1060,
+      "unique_images": 3,
+      "images": [
+        {
+          "identity": "1289353C",
+          "before": 2,
+          "slots": 2,
+          "retired": true
+        },
+        {
+          "identity": "12893590",
+          "before": 6,
+          "slots": 6,
+          "retired": true
+        },
+        {
+          "identity": "128935E4",
+          "before": 4,
+          "slots": 4,
+          "retired": true
+        }
+      ],
+      "canonical_owners_before": 0,
+      "canonical_owners_after_probe": 1,
+      "remaining_owner": "Lazy cache fallback; shared renderer drain follows.",
+      "retirement_verified": true,
+      "rendering_verified": false
     },
     "resources": [
       {
         "name": "GuiFont.mshd",
-        "actual_identity": "12A9C890",
-        "profile": "00d61a00",
+        "identity": "12B8EF88",
         "refs_on_return": 2,
-        "caller_retired_from": 2,
         "caller_retired_to": 1,
         "fallback": false
       },
       {
         "name": "GuiFontBilinear.mshd",
-        "actual_identity": "12A9DAF0",
-        "profile": "00d61a00",
+        "identity": "12BA8100",
         "refs_on_return": 2,
-        "caller_retired_from": 2,
         "caller_retired_to": 1,
         "fallback": false
       }
     ],
     "shader_cache": {
-      "identity": "09134628",
       "source_mode": 0,
       "load_variants": 0,
       "creation_returned": true,
-      "release_guard_passed": true,
-      "evidence": "Both caller retirements require Source stage ready after release_shader_cache and its publication-null guard.",
-      "record_count_and_lookup_cursor_not_logged": true
+      "release_guard_passed": true
     },
     "private_sampler_word_consumption_passed": true,
-    "unknown_word_guard_fired": false,
     "actual_captured_word_logged": false,
-    "pre_entry_unknown_scope_words_are_not_captured_residue": true,
     "second_acquisition_entered": true,
     "actual_effect_acquisition_observed": true,
     "caller_retirement_observed": true,
@@ -100,24 +195,32 @@
     "frames_requested": 120,
     "frames_presented": 119,
     "presents_skipped": 1,
-    "loop_finished": true,
+    "screenshot": {
+      "path": "local/cc12_actual_native_gui_font_startup_07.png",
+      "width": 1600,
+      "height": 900,
+      "frame": 90,
+      "sha256": "d0dac491cd3ebbc6fbb35d17e697b57da7493bebd6ceb94faa1ba396d18dd855",
+      "visually_inspected": true,
+      "observation": "Main-menu map/branding and login/press-Enter prompt are visible. This is the existing frontend bridge; not Native glyph-buffer, world-scene, Original visual parity or account proof."
+    },
     "final_device_release": 0,
     "final_api_release": 0,
-    "host_methods_concrete": 122,
+    "host_methods_concrete": 123,
     "host_methods_unimplemented": 43,
     "installed_original_unchanged_after_run": true,
     "installed_shader_cache_unchanged_after_run": true,
-    "installed_shader_cache_sha256": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
-    "log": "local/cc12_actual_native_gui_effect_startup_06.log",
-    "manifest": "local/cc12_actual_native_gui_effect_startup_06.log.manifest.json",
-    "launcher_result": "local/cc12_actual_native_gui_effect_startup_06_launcher.log",
+    "log": "local/cc12_actual_native_gui_effect_startup_07.log",
+    "manifest": "local/cc12_actual_native_gui_effect_startup_07.log.manifest.json",
+    "launcher_result": "local/cc12_actual_native_gui_effect_startup_07_launcher.log",
     "bounded_GUI_effect_startup_validated": true,
-    "startup_validated": false,
+    "bounded_native_font_resource_retirement_validated": true,
     "native_text_draw_validated": false,
+    "startup_validated": false,
     "faithful_game_startup_validated": false,
     "gameplay_validated": false,
-    "limits": "Font resource probe disabled; no Native text draw, full D5E13C scene, Original private ABI/FH3 or faithful gameplay validation. Neutral/unimplemented host paths remain.",
-    "runtime_receipt": "reports/cc12_native_gui_effect_startup_integration_12.json",
+    "limits": "Resource probes retire native fonts before the frame loop. Native Text buffers/active scene/private ABI/FH3 and gameplay remain unvalidated; XLive stub is explicit,43 host methods remain unimplemented.",
+    "runtime_receipt": "reports/cc12_native_gui_font_effect_startup_integration_14.json",
     "attempts": [
       {
         "attempt": 1,
@@ -428,6 +531,188 @@
         "gameplay_validated": false,
         "limits": "Font resource probe disabled; no Native text draw, full D5E13C scene, Original private ABI/FH3 or faithful gameplay validation. Neutral/unimplemented host paths remain.",
         "runtime_receipt": "reports/cc12_native_gui_effect_startup_integration_12.json"
+      },
+      {
+        "attempt": "07",
+        "status": "PASS_BOUNDED_NATIVE_FONT_RESOURCES_AND_GUI_EFFECT_STARTUP",
+        "exec_session": "11371 terminal0",
+        "actual_source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
+        "actual_executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\d4edc832430c5e501a5f29c7115e8fc1d2d42da3\\build\\win32\\cc12_followup_release\\bsp_game.exe",
+        "actual_executable_sha256": "a1f40a029e9244125604138f0f31e7ca15bc8b577bddc577f4310e573122c833",
+        "launcher_checkout_head": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
+        "launcher_checkout_head_is_build_source": true,
+        "source_authority": "Verified frozen37-artifact build receipt plus immutable37-artifact launch snapshot and matching executable hash.",
+        "slot": 1,
+        "affinity_core": 4,
+        "started_utc": "2026-10-15T01:24:35.0369192Z",
+        "finished_utc": "2026-10-15T01:24:37.9936174Z",
+        "exit_code": 0,
+        "actual_process_started": true,
+        "environment": {
+          "BSP_NATIVE_FONT_PROBE": "1",
+          "BSP_NATIVE_GUI_EFFECT_PROBE": "1"
+        },
+        "native_font_resources": {
+          "fonts": [
+            {
+              "name": "ViperTitle",
+              "records": 116,
+              "glyphs": 116,
+              "height": 31,
+              "data": "127AF9E0",
+              "gfx": "1289353C",
+              "gfx_refs": 2,
+              "alpha": "12893590",
+              "alpha_refs": 6,
+              "fallback0091_verified": true
+            },
+            {
+              "name": "Arial16",
+              "records": 207,
+              "glyphs": 207,
+              "height": 23,
+              "data": "127AECC0",
+              "gfx": "128935E4",
+              "gfx_refs": 4,
+              "alpha": "12893590",
+              "alpha_refs": 6,
+              "fallback0091_verified": true
+            },
+            {
+              "name": "Viper19",
+              "records": 116,
+              "glyphs": 116,
+              "height": 26,
+              "data": "127AED38",
+              "gfx": "1289353C",
+              "gfx_refs": 2,
+              "alpha": "12893590",
+              "alpha_refs": 6,
+              "fallback0091_verified": true
+            },
+            {
+              "name": "Arial20",
+              "records": 207,
+              "glyphs": 207,
+              "height": 31,
+              "data": "127AF5A8",
+              "gfx": "128935E4",
+              "gfx_refs": 4,
+              "alpha": "12893590",
+              "alpha_refs": 6,
+              "fallback0091_verified": true
+            },
+            {
+              "name": "Arial15",
+              "records": 207,
+              "glyphs": 207,
+              "height": 21,
+              "data": "127AFAD0",
+              "gfx": "128935E4",
+              "gfx_refs": 4,
+              "alpha": "12893590",
+              "alpha_refs": 6,
+              "fallback0091_verified": true
+            },
+            {
+              "name": "Arial18",
+              "records": 207,
+              "glyphs": 207,
+              "height": 26,
+              "data": "127AF080",
+              "gfx": "128935E4",
+              "gfx_refs": 4,
+              "alpha": "12893590",
+              "alpha_refs": 6,
+              "fallback0091_verified": true
+            }
+          ],
+          "total_fonts": 6,
+          "total_glyphs": 1060,
+          "unique_images": 3,
+          "images": [
+            {
+              "identity": "1289353C",
+              "before": 2,
+              "slots": 2,
+              "retired": true
+            },
+            {
+              "identity": "12893590",
+              "before": 6,
+              "slots": 6,
+              "retired": true
+            },
+            {
+              "identity": "128935E4",
+              "before": 4,
+              "slots": 4,
+              "retired": true
+            }
+          ],
+          "canonical_owners_before": 0,
+          "canonical_owners_after_probe": 1,
+          "remaining_owner": "Lazy cache fallback; shared renderer drain follows.",
+          "retirement_verified": true,
+          "rendering_verified": false
+        },
+        "resources": [
+          {
+            "name": "GuiFont.mshd",
+            "identity": "12B8EF88",
+            "refs_on_return": 2,
+            "caller_retired_to": 1,
+            "fallback": false
+          },
+          {
+            "name": "GuiFontBilinear.mshd",
+            "identity": "12BA8100",
+            "refs_on_return": 2,
+            "caller_retired_to": 1,
+            "fallback": false
+          }
+        ],
+        "shader_cache": {
+          "source_mode": 0,
+          "load_variants": 0,
+          "creation_returned": true,
+          "release_guard_passed": true
+        },
+        "private_sampler_word_consumption_passed": true,
+        "actual_captured_word_logged": false,
+        "second_acquisition_entered": true,
+        "actual_effect_acquisition_observed": true,
+        "caller_retirement_observed": true,
+        "original_shared_drain_observed": true,
+        "frames_requested": 120,
+        "frames_presented": 119,
+        "presents_skipped": 1,
+        "screenshot": {
+          "path": "local/cc12_actual_native_gui_font_startup_07.png",
+          "width": 1600,
+          "height": 900,
+          "frame": 90,
+          "sha256": "d0dac491cd3ebbc6fbb35d17e697b57da7493bebd6ceb94faa1ba396d18dd855",
+          "visually_inspected": true,
+          "observation": "Main-menu map/branding and login/press-Enter prompt are visible. This is the existing frontend bridge; not Native glyph-buffer, world-scene, Original visual parity or account proof."
+        },
+        "final_device_release": 0,
+        "final_api_release": 0,
+        "host_methods_concrete": 123,
+        "host_methods_unimplemented": 43,
+        "installed_original_unchanged_after_run": true,
+        "installed_shader_cache_unchanged_after_run": true,
+        "log": "local/cc12_actual_native_gui_effect_startup_07.log",
+        "manifest": "local/cc12_actual_native_gui_effect_startup_07.log.manifest.json",
+        "launcher_result": "local/cc12_actual_native_gui_effect_startup_07_launcher.log",
+        "bounded_GUI_effect_startup_validated": true,
+        "bounded_native_font_resource_retirement_validated": true,
+        "native_text_draw_validated": false,
+        "startup_validated": false,
+        "faithful_game_startup_validated": false,
+        "gameplay_validated": false,
+        "limits": "Resource probes retire native fonts before the frame loop. Native Text buffers/active scene/private ABI/FH3 and gameplay remain unvalidated; XLive stub is explicit,43 host methods remain unimplemented.",
+        "runtime_receipt": "reports/cc12_native_gui_font_effect_startup_integration_14.json"
       }
     ]
   },
@@ -503,7 +788,7 @@
   "original_abi_compatible": false,
   "gameplay_validated": false,
   "overall_goal": "active",
-  "latest_actual_executable_source_revision": "8df36847324ada1f5770f3e45712bb4f2cb298bf",
+  "latest_actual_executable_source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
   "latest_combined_build": {
     "source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
     "target": "MSVC Win32 Release",
@@ -522,83 +807,5 @@
     "log": "local/cc12_native_gui_effect_startup_build_01.log",
     "new_tests": 0,
     "temporary_cmake_include": false
-  },
-  "pending_actual_attempt": {
-    "attempt": "07",
-    "source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
-    "status": "QUEUED_AS_OBSERVED_NO_GAME_PROCESS_OR_RUN_MANIFEST",
-    "exec_session": 11371,
-    "environment": {
-      "BSP_NATIVE_FONT_PROBE": "1",
-      "BSP_NATIVE_GUI_EFFECT_PROBE": "1"
-    },
-    "screenshot": "local/cc12_actual_native_gui_font_startup_07.png",
-    "screenshot_requested_frame": 90,
-    "immutable_build_artifacts": 37,
-    "observation": {
-      "observed_utc": "2026-10-15T01:24:24.3864485Z",
-      "source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
-      "launcher_unified_exec_session": 11371,
-      "session_confirmed_running_by_tool_before_this_snapshot": true,
-      "actual_snapshot_game_pids": [],
-      "actual_run_manifest_exists": false,
-      "actual_run_log_exists": false,
-      "slots": [
-        {
-          "slot": 0,
-          "owner_pid": 13244,
-          "owner_alive": true,
-          "tagged_game_pids": [
-            58196
-          ],
-          "lock_record": "battlestations-pacific-decompile-cc9-physics1 2026-10-14T18:18:49 pid=13244 log=J:\\PROG\\battlestations-pacific-decompile-cc9-physics1\\local\\p11on_e8.log"
-        },
-        {
-          "slot": 1,
-          "owner_pid": 73492,
-          "owner_alive": true,
-          "tagged_game_pids": [
-            83772
-          ],
-          "lock_record": "battlestations-pacific-decompile-cc9-gunnery36 2026-10-14T18:20:43 pid=73492 log=J:\\PROG\\battlestations-pacific-decompile-cc9-gunnery36\\local\\g47_u15ya_j20_5.log"
-        },
-        {
-          "slot": 2,
-          "owner_pid": 93012,
-          "owner_alive": true,
-          "tagged_game_pids": [
-            30464
-          ],
-          "lock_record": "battlestations-pacific-decompile-cc9-physics1 2026-10-14T18:20:44 pid=93012 log=J:\\PROG\\battlestations-pacific-decompile-cc9-physics1\\local\\p11off_e3.log"
-        },
-        {
-          "slot": 3,
-          "owner_pid": 82224,
-          "owner_alive": true,
-          "tagged_game_pids": [
-            4748
-          ],
-          "lock_record": "battlestations-pacific-decompile-cc9-ships44 2026-10-14T18:19:41 pid=82224 log=J:\\PROG\\battlestations-pacific-decompile-cc9-ships44\\local\\s51_t_a5.log"
-        },
-        {
-          "slot": 4,
-          "owner_pid": 23328,
-          "owner_alive": true,
-          "tagged_game_pids": [
-            84064
-          ],
-          "lock_record": "battlestations-pacific-decompile-cc9-gunnery36 2026-10-14T18:23:43 pid=23328 log=J:\\PROG\\battlestations-pacific-decompile-cc9-gunnery36\\local\\g47_u15yb_j20_3.log"
-        },
-        {
-          "slot": 5,
-          "owner_pid": 95332,
-          "owner_alive": true,
-          "tagged_game_pids": [
-            14224
-          ],
-          "lock_record": "battlestations-pacific-decompile-cc9-ships44 2026-10-14T18:12:42 pid=95332 log=J:\\PROG\\battlestations-pacific-decompile-cc9-ships44\\local\\s51_t_a6.log"
-        }
-      ]
-    }
   }
 }
