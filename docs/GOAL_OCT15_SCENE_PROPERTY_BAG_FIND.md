@@ -12,16 +12,22 @@ does not establish unrestricted parent raw/locale/alias completeness or all
 101 indexed caller functions. Those upstream admission obligations stay open.
 The old std::string/vector `ScenePropertyBagModel` lookup remains separate.
 
-The existing whole raw map provider admits a live 108h map, finite correctly
-bucketed stable chains, matching closed NUL-free ASCII headers/buffers, null
-data only when empty, stable nonnull NUL fallback roles and current C locale.
-Its bucket output must be writable and nonaliasing with its borrowed lookup
-storage. The parent inherits these requirements, valid reached C strings,
-records, scratch extent, recursion/frame cells and current raw pool releases.
+The map provider was refreshed by `goal_oct15_property_lookup_raw_io` at
+`664eed05c`. Its property-only volatile accesses preserve actual output aliases,
+captured head index and current header/node reloads. Correct bucketing, matching
+strlen, NUL-free payload and nonaliasing bucket are no longer provider
+requirements. Valid reached raw words/samples, actual CRT comparison strings
+and distinct fallback-role bindings remain required, as does the existing
+sampled-byte ASCII/current-C-locale ctype qualification. Original changed-locale,
+negative-byte, errno/TLS/table parity remains unproved. The parent inherits
+these requirements plus valid reached C strings, records, scratch extent,
+recursion/frame cells and current raw pool releases.
 It adds no input normalization, capacity clamp, null/type recovery, callback,
-stub, lock, private string copy or blanket concurrency/reentry guard. Outside
-the provider's stable lookup interval, real shared-scratch/publication effects
-are retained when all reached contracts remain valid.
+stub, lock, private string copy or blanket concurrency/reentry guard. Real
+shared-scratch/publication effects are retained whenever all reached contracts
+remain valid. This provider refresh does not establish unrestricted parent or
+all-caller readiness; the original build's narrower provider pins/admission
+remain separately preserved in the report as historical evidence.
 
 Native ABI is ECX bag, one live stacked key DWORD at entry P+4, RET4/EAX
 record-or-zero. Capture key before strchr and retain the first-dot address.
