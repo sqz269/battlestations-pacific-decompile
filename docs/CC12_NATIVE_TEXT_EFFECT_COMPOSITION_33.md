@@ -1,5 +1,10 @@
 # Native Text effect composition 33
 
+The later [platform host adoption 34](CC12_NATIVE_PLATFORM_HOST_ADOPTION_34.md)
+provides the real platform-height publication required below. Native font/widget
+and Text host composition and execution remain open; this receipt preserves
+its earlier Source/build evidence and activation boundary.
+
 `GameNativeTextApplication` now has a constructor that takes the existing
 persistent `GameNativeGuiEffectApplication`. It binds that exact graph to the
 Text application's private `GuiTextBufferServices` before any Text allocation.

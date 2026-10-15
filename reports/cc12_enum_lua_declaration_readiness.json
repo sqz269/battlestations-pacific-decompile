@@ -1,246 +1,315 @@
 {
-  "schema": "bsp.enum_lua_declaration_readiness_record.v1",
-  "source_ready": false,
+  "schema": "bsp.enum_lua_declaration_readiness.v2",
+  "source_ready": true,
   "ordinary_Source_admitted": false,
-  "worker_readiness": {
-    "packet": "cc12_enum_typed_property_provider_readiness",
+  "Source_implemented": false,
+  "state": "whole_ordinary_current_CRT_ready_formatter_Main_gate_closed_no_Source_yet",
+  "previous_routing_evidence": {
+    "schema": "bsp.enum_lua_declaration_readiness_record.v1",
     "source_ready": false,
-    "current_Main": "a264e58db2ba82c270df88e0a132b533dd1e712f",
-    "verdict": "NOT_READY: complete target body, but directB68630 numeric display formatter lacks concrete raw binding",
-    "Original": {
-      "range_exclusive": [
-        "008F2F70",
-        "008F3199"
-      ],
-      "bytes": 553,
-      "instructions": 152,
-      "direct_calls": 24,
-      "direct_targets": 16,
-      "indirect_calls": 0,
-      "target_x87_instructions": 0,
-      "whole_body_disk_live_equal": true
+    "ordinary_Source_admitted": false,
+    "worker_readiness": {
+      "packet": "cc12_enum_typed_property_provider_readiness",
+      "source_ready": false,
+      "current_Main": "a264e58db2ba82c270df88e0a132b533dd1e712f",
+      "verdict": "NOT_READY: complete target body, but directB68630 numeric display formatter lacks concrete raw binding",
+      "Original": {
+        "range_exclusive": [
+          "008F2F70",
+          "008F3199"
+        ],
+        "bytes": 553,
+        "instructions": 152,
+        "direct_calls": 24,
+        "direct_targets": 16,
+        "indirect_calls": 0,
+        "target_x87_instructions": 0,
+        "whole_body_disk_live_equal": true
+      },
+      "corrected_entry_contract": "ECX genuine19Ch enum owner; stack owning8B NativeString byvalue(length,data); RET8; no defined semanticEAX. Not114h bag or838h tokenizer.",
+      "direct_provider_gap": {
+        "address": "00B68630",
+        "callsite": "008F30A4",
+        "actual_storage_Source_exists": true,
+        "missing": "Canonical concrete construct_from_float_0043bdf0 binding forNUMBER arm; currentcontext is arbitrary functionpointer+voidcontext"
+      },
+      "smallest_downstream_address": "0043BDF0",
+      "handoff": "Raw8B float formatter/canonical display binding with dedicated float32/ST0/library boundary review. Current std::string/snprintffloat substitution supplies no raw header contract. No privateCRT guesses.",
+      "available": "Ten actual-storageLua APIs, canonical raw string resize/getter/return, whole8F2E40 declaration, standardmemcpy. Allexisting provider qualifications retained; no ancestor reproof.",
+      "ownership": "Input owning8B key released once after allLua locals; per-item owning display string freed beforeNameLua object; same canonical domains, stable tracked14h Lua temporaries, borrowed actual4C8h state.",
+      "fallback": "F89450 livezero comes from writable.data PEloaderzero-fill, not diskraw/immutable; same concrete process role required.",
+      "Source_packet_authorized": false,
+      "Source_packet_ready": false,
+      "synchronization": "InitialFFrefusal preservednumeric Source; finalFF tocurrentMain succeeded. All16 frozenMain provider blobs unchanged.",
+      "no_Source_Ghidra_build_test_probe_runtime": true,
+      "full_report": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\full_readiness.DATA.json",
+        "bytes": 55181,
+        "sha256": "708fe72755d9cc09ea81c418e8aa4defb758bec2b55c2f0ce720b6dce8930f78"
+      },
+      "input_receipts": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\readiness_inputs.DATA.json",
+        "bytes": 47887,
+        "sha256": "6aa15aea7df7cef81f0a67e025e809fa90c7fe4b2cc44a06a43a0a33324d44ec"
+      },
+      "input_audit": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\final_input_audit.DATA.json",
+        "bytes": 11313,
+        "sha256": "503428edbe3f23e4d9569299b8376ac1ed0b69926c58f2b780dae298653fc7c5"
+      }
     },
-    "corrected_entry_contract": "ECX genuine19Ch enum owner; stack owning8B NativeString byvalue(length,data); RET8; no defined semanticEAX. Not114h bag or838h tokenizer.",
-    "direct_provider_gap": {
-      "address": "00B68630",
-      "callsite": "008F30A4",
-      "actual_storage_Source_exists": true,
-      "missing": "Canonical concrete construct_from_float_0043bdf0 binding forNUMBER arm; currentcontext is arbitrary functionpointer+voidcontext"
-    },
-    "smallest_downstream_address": "0043BDF0",
-    "handoff": "Raw8B float formatter/canonical display binding with dedicated float32/ST0/library boundary review. Current std::string/snprintffloat substitution supplies no raw header contract. No privateCRT guesses.",
-    "available": "Ten actual-storageLua APIs, canonical raw string resize/getter/return, whole8F2E40 declaration, standardmemcpy. Allexisting provider qualifications retained; no ancestor reproof.",
-    "ownership": "Input owning8B key released once after allLua locals; per-item owning display string freed beforeNameLua object; same canonical domains, stable tracked14h Lua temporaries, borrowed actual4C8h state.",
-    "fallback": "F89450 livezero comes from writable.data PEloaderzero-fill, not diskraw/immutable; same concrete process role required.",
-    "Source_packet_authorized": false,
-    "Source_packet_ready": false,
-    "synchronization": "InitialFFrefusal preservednumeric Source; finalFF tocurrentMain succeeded. All16 frozenMain provider blobs unchanged.",
-    "no_Source_Ghidra_build_test_probe_runtime": true,
-    "full_report": {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\full_readiness.DATA.json",
-      "bytes": 55181,
-      "sha256": "708fe72755d9cc09ea81c418e8aa4defb758bec2b55c2f0ce720b6dce8930f78"
-    },
-    "input_receipts": {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\readiness_inputs.DATA.json",
-      "bytes": 47887,
-      "sha256": "6aa15aea7df7cef81f0a67e025e809fa90c7fe4b2cc44a06a43a0a33324d44ec"
-    },
-    "input_audit": {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\final_input_audit.DATA.json",
-      "bytes": 11313,
-      "sha256": "503428edbe3f23e4d9569299b8376ac1ed0b69926c58f2b780dae298653fc7c5"
-    }
+    "primary_record_role": "Routing-only record after compact/full-family integrity verification; no independent whole Source or ABI admission.",
+    "verified_artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\compact_readiness.DATA.json",
+        "bytes": 2972,
+        "sha256": "4f0834582632c2a32dfe587049715d21cd9673e2ceff8aa47af1d4302ddbe397"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\full_readiness.DATA.json",
+        "bytes": 55181,
+        "sha256": "708fe72755d9cc09ea81c418e8aa4defb758bec2b55c2f0ce720b6dce8930f78"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\readiness_inputs.DATA.json",
+        "bytes": 47887,
+        "sha256": "6aa15aea7df7cef81f0a67e025e809fa90c7fe4b2cc44a06a43a0a33324d44ec"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\family_receipt.DATA.json",
+        "bytes": 11396,
+        "sha256": "59dd54764d96c26a8a1c3e76a3b795ab5cc31a605cc20fe71c355a366c1a2693"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\final_input_audit.DATA.json",
+        "bytes": 11313,
+        "sha256": "503428edbe3f23e4d9569299b8376ac1ed0b69926c58f2b780dae298653fc7c5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\collect_readiness_inputs.py",
+        "bytes": 6962,
+        "sha256": "3a165fe8903555f4849e36853500530ba9b9ff8fa3908e341038513d2518778e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\collection_stdout.DATA.txt",
+        "bytes": 416,
+        "sha256": "27c0163b59f8cfe25a97ccf94cd2962a44d62c1875cfef30712f70d137374b4e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\collection_stdout_complete.DATA.txt",
+        "bytes": 588,
+        "sha256": "b15b045171e496b9b73a462c9a222ad44e2aaf4d20771e572e5112104e51d82d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\collection_tool_receipts.DATA.json",
+        "bytes": 1024,
+        "sha256": "1bdd43b11879fdc2c4f0b0297fb40969d4f9821897b31ab8ace73c54eadadfd1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\compact_readiness.DATA.json",
+        "bytes": 2972,
+        "sha256": "4f0834582632c2a32dfe587049715d21cd9673e2ceff8aa47af1d4302ddbe397"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\config\\target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\cc13_seg87.hpp",
+        "bytes": 38234,
+        "sha256": "f6fcc3d37decb4e24874ac1f6c9c80ce1c65f5c8ffef90f8fad91a7915929264"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\game_native_string_process.hpp",
+        "bytes": 4306,
+        "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\native_enum_symbol_declaration.hpp",
+        "bytes": 1845,
+        "sha256": "29e6800ace0ecd8aeb6beafb78b628a1682625a100d8d2f1ea5e5235ae7f6d02"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\native_enum_symbol_insertion.hpp",
+        "bytes": 2015,
+        "sha256": "903ee9ed73a97aa15057b3e7e2409e43a02a5c2795a11e8a4f5bf6c0e12994fa"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\native_enum_symbol_reader.hpp",
+        "bytes": 2117,
+        "sha256": "4d9c12d2def80b6df926208579b75d2a67d50b9f7880536c8e6db8b3ebecb83a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\native_lua_objects.hpp",
+        "bytes": 10058,
+        "sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\native_string.hpp",
+        "bytes": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\native_string_pool_owner.hpp",
+        "bytes": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\native_string_pool_storage.hpp",
+        "bytes": 2805,
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\src\\cc13_seg87.cpp",
+        "bytes": 57885,
+        "sha256": "f2c6fa222c1062e66da7d645bc2b742668ffbab9b331a3b0567701e0f4dafaca"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\src\\multiplayer_session_cc13.cpp",
+        "bytes": 78589,
+        "sha256": "abd3940d828f89ccfe519ac53731a516cee5310ee5fe988d31128619f01d4ae1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\src\\native_enum_symbol_declaration.cpp",
+        "bytes": 2643,
+        "sha256": "7fccce58b4f2fdff66fac03d44dce86329de6844de5795c2f386201f708775d9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\src\\native_enum_symbol_reader.cpp",
+        "bytes": 1968,
+        "sha256": "36b3095d169ed48441b14499576f1ed9858cb8af6dd74752b2eee09185f1ca4b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\src\\native_lua_objects.cpp",
+        "bytes": 17434,
+        "sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\src\\native_string.cpp",
+        "bytes": 9121,
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\final_input_audit.DATA.json",
+        "bytes": 11313,
+        "sha256": "503428edbe3f23e4d9569299b8376ac1ed0b69926c58f2b780dae298653fc7c5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\full_readiness.DATA.json",
+        "bytes": 55181,
+        "sha256": "708fe72755d9cc09ea81c418e8aa4defb758bec2b55c2f0ce720b6dce8930f78"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\Original\\008f2f70\\assembly.txt",
+        "bytes": 4258,
+        "sha256": "ca564abdb26034651c2937c147801e6ea2d9b1d2cdd7c444a5af50c7eacafac6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\Original\\008f2f70\\decompiled.c",
+        "bytes": 2939,
+        "sha256": "f1ae91a1f6fc599fe3489ba88edb12f0ccc5e44fbecbb983554e62acc2772a05"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\Original\\008f2f70\\metadata.json",
+        "bytes": 283,
+        "sha256": "816529ecd1c4e1ecec0a3abe6d4ceb35b1c0b46fc5a7f1909e461a63e7bf08fe"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\Original\\00b68630\\assembly.txt",
+        "bytes": 3246,
+        "sha256": "1f9aa8cc5071576b473b41a6c839b7e0da39b8473579a13c419194d32e0d2149"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\Original\\00b68630\\decompiled.c",
+        "bytes": 1745,
+        "sha256": "6035f5ab207c141677e2df11e5b4852864bb796198ab90f91b887fe021b0fb7c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\Original\\00b68630\\metadata.json",
+        "bytes": 276,
+        "sha256": "2a1a2787709414363a7c9b70c259977ecbcd3a6abcecce1c1e6baa01592174c8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\original_call_inventory.DATA.json",
+        "bytes": 22037,
+        "sha256": "b30e2ae817f6288d8628b4bd503d0794f6f416937ac40d9b2bb623e2caf355dc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\readiness_inputs.DATA.json",
+        "bytes": 47887,
+        "sha256": "6aa15aea7df7cef81f0a67e025e809fa90c7fe4b2cc44a06a43a0a33324d44ec"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\seal_readiness.py",
+        "bytes": 16207,
+        "sha256": "8b7ed3cb7ad046dac3c5764d1e40ab7c9ca7d8dfa0359b82849797601d8cf026"
+      }
+    ],
+    "remaining_concrete_gap": "B68630 actual-storage numeric arm needs canonical genuine8B output formatter43BDF0; existing host std::string/snprintffloat projection is insufficient.",
+    "next_packet_class": "Dedicated float32/ST0/formatter and canonical binding evidence; gpt-6.1-sol/max. Whole8F2F70 implementation waits for this contract.",
+    "no_Source_Ghidra_build_test_probe_runtime_or_game_claim": true
   },
-  "primary_record_role": "Routing-only record after compact/full-family integrity verification; no independent whole Source or ABI admission.",
-  "verified_artifacts": [
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\compact_readiness.DATA.json",
-      "bytes": 2972,
-      "sha256": "4f0834582632c2a32dfe587049715d21cd9673e2ceff8aa47af1d4302ddbe397"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\full_readiness.DATA.json",
-      "bytes": 55181,
-      "sha256": "708fe72755d9cc09ea81c418e8aa4defb758bec2b55c2f0ce720b6dce8930f78"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\readiness_inputs.DATA.json",
-      "bytes": 47887,
-      "sha256": "6aa15aea7df7cef81f0a67e025e809fa90c7fe4b2cc44a06a43a0a33324d44ec"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\family_receipt.DATA.json",
-      "bytes": 11396,
-      "sha256": "59dd54764d96c26a8a1c3e76a3b795ab5cc31a605cc20fe71c355a366c1a2693"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\final_input_audit.DATA.json",
-      "bytes": 11313,
-      "sha256": "503428edbe3f23e4d9569299b8376ac1ed0b69926c58f2b780dae298653fc7c5"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\collect_readiness_inputs.py",
-      "bytes": 6962,
-      "sha256": "3a165fe8903555f4849e36853500530ba9b9ff8fa3908e341038513d2518778e"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\collection_stdout.DATA.txt",
-      "bytes": 416,
-      "sha256": "27c0163b59f8cfe25a97ccf94cd2962a44d62c1875cfef30712f70d137374b4e"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\collection_stdout_complete.DATA.txt",
-      "bytes": 588,
-      "sha256": "b15b045171e496b9b73a462c9a222ad44e2aaf4d20771e572e5112104e51d82d"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\collection_tool_receipts.DATA.json",
-      "bytes": 1024,
-      "sha256": "1bdd43b11879fdc2c4f0b0297fb40969d4f9821897b31ab8ace73c54eadadfd1"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\compact_readiness.DATA.json",
-      "bytes": 2972,
-      "sha256": "4f0834582632c2a32dfe587049715d21cd9673e2ceff8aa47af1d4302ddbe397"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\config\\target.json",
-      "bytes": 455,
-      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\cc13_seg87.hpp",
-      "bytes": 38234,
-      "sha256": "f6fcc3d37decb4e24874ac1f6c9c80ce1c65f5c8ffef90f8fad91a7915929264"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\game_native_string_process.hpp",
-      "bytes": 4306,
-      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\native_enum_symbol_declaration.hpp",
-      "bytes": 1845,
-      "sha256": "29e6800ace0ecd8aeb6beafb78b628a1682625a100d8d2f1ea5e5235ae7f6d02"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\native_enum_symbol_insertion.hpp",
-      "bytes": 2015,
-      "sha256": "903ee9ed73a97aa15057b3e7e2409e43a02a5c2795a11e8a4f5bf6c0e12994fa"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\native_enum_symbol_reader.hpp",
-      "bytes": 2117,
-      "sha256": "4d9c12d2def80b6df926208579b75d2a67d50b9f7880536c8e6db8b3ebecb83a"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\native_lua_objects.hpp",
-      "bytes": 10058,
-      "sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\native_string.hpp",
-      "bytes": 8771,
-      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\native_string_pool_owner.hpp",
-      "bytes": 5893,
-      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\include\\bsp\\native_string_pool_storage.hpp",
-      "bytes": 2805,
-      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\src\\cc13_seg87.cpp",
-      "bytes": 57885,
-      "sha256": "f2c6fa222c1062e66da7d645bc2b742668ffbab9b331a3b0567701e0f4dafaca"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\src\\multiplayer_session_cc13.cpp",
-      "bytes": 78589,
-      "sha256": "abd3940d828f89ccfe519ac53731a516cee5310ee5fe988d31128619f01d4ae1"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\src\\native_enum_symbol_declaration.cpp",
-      "bytes": 2643,
-      "sha256": "7fccce58b4f2fdff66fac03d44dce86329de6844de5795c2f386201f708775d9"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\src\\native_enum_symbol_reader.cpp",
-      "bytes": 1968,
-      "sha256": "36b3095d169ed48441b14499576f1ed9858cb8af6dd74752b2eee09185f1ca4b"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\src\\native_lua_objects.cpp",
-      "bytes": 17434,
-      "sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\current_Main\\src\\native_string.cpp",
-      "bytes": 9121,
-      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\final_input_audit.DATA.json",
-      "bytes": 11313,
-      "sha256": "503428edbe3f23e4d9569299b8376ac1ed0b69926c58f2b780dae298653fc7c5"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\full_readiness.DATA.json",
-      "bytes": 55181,
-      "sha256": "708fe72755d9cc09ea81c418e8aa4defb758bec2b55c2f0ce720b6dce8930f78"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\Original\\008f2f70\\assembly.txt",
-      "bytes": 4258,
-      "sha256": "ca564abdb26034651c2937c147801e6ea2d9b1d2cdd7c444a5af50c7eacafac6"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\Original\\008f2f70\\decompiled.c",
-      "bytes": 2939,
-      "sha256": "f1ae91a1f6fc599fe3489ba88edb12f0ccc5e44fbecbb983554e62acc2772a05"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\Original\\008f2f70\\metadata.json",
-      "bytes": 283,
-      "sha256": "816529ecd1c4e1ecec0a3abe6d4ceb35b1c0b46fc5a7f1909e461a63e7bf08fe"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\Original\\00b68630\\assembly.txt",
-      "bytes": 3246,
-      "sha256": "1f9aa8cc5071576b473b41a6c839b7e0da39b8473579a13c419194d32e0d2149"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\Original\\00b68630\\decompiled.c",
-      "bytes": 1745,
-      "sha256": "6035f5ab207c141677e2df11e5b4852864bb796198ab90f91b887fe021b0fb7c"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\Original\\00b68630\\metadata.json",
-      "bytes": 276,
-      "sha256": "2a1a2787709414363a7c9b70c259977ecbcd3a6abcecce1c1e6baa01592174c8"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\original_call_inventory.DATA.json",
-      "bytes": 22037,
-      "sha256": "b30e2ae817f6288d8628b4bd503d0794f6f416937ac40d9b2bb623e2caf355dc"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\readiness_inputs.DATA.json",
-      "bytes": 47887,
-      "sha256": "6aa15aea7df7cef81f0a67e025e809fa90c7fe4b2cc44a06a43a0a33324d44ec"
-    },
-    {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumTypedPropertyProviderReadiness01\\seal_readiness.py",
-      "bytes": 16207,
-      "sha256": "8b7ed3cb7ad046dac3c5764d1e40ab7c9ca7d8dfa0359b82849797601d8cf026"
-    }
+  "current_worker_readiness": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\EnumLuaDeclarationNextReadiness01\\compact_readiness.DATA.json",
+    "bytes": 4237,
+    "sha256": "3451507477df12db292f9e04f8d92fc3a37aeb25e289ade799a91f822d1272c8"
+  },
+  "current_full_readiness": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\EnumLuaDeclarationNextReadiness01\\full_readiness.DATA.json",
+    "bytes": 29027,
+    "sha256": "a39ca2e03ae853138535e0850f32a44a37f5ba3555ac9b52e8f01ed63b07a6c6"
+  },
+  "primary_verified_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_enum_lua_readiness_primary_20261015\\verified_readiness_inputs.DATA.json",
+    "bytes": 63471,
+    "sha256": "22b1983b6ec973729e7e59a3c65f9d0cbe250eee21ea1ce38fbd7b4955dafde4"
+  },
+  "primary_whole553B152_Original_instructions_and_schedule_contract_read": true,
+  "formatter_Source_commit": "67507fec1c3d76c698212db06b2818e98bf148c4",
+  "formatter_Main_gate": "pass",
+  "formatter_Main_validation": "reports/cc12_native_float_format_Main_validation.json",
+  "missing_immediate_provider_bodies": [],
+  "proposed_disjoint_packet": {
+    "address_to_claim_if_separately_authorized": "008F2F70 only; no currentaddresslease or Sourceauthorization",
+    "files": [
+      "include/bsp/native_enum_lua_declaration.hpp",
+      "src/native_enum_lua_declaration.cpp",
+      "include/bsp/game_native_enum_lua_declaration.hpp",
+      "src/game_native_enum_lua_declaration.cpp",
+      "docs/NATIVE_ENUM_LUA_DECLARATION_CC12.md",
+      "reports/native_enum_lua_declaration_cc12.json"
+    ],
+    "core_signature": "void declare_native_enum_symbols_from_lua_008f2f70(void* actual_raw_19c_enum, NativeString& consumed_key, NativeEnumLuaDeclarationContext&);",
+    "core_context_fields": [
+      "NativeEnumSymbolDeclarationContext& actual_enum_declaration;",
+      "game::GameNativeLuaDisplayStringBindings& actual_fixed_display;",
+      "void* volatile& actual_world_publication_00e188a8;",
+      "const volatile std::uint32_t& actual_crt_feature_word_0109eea4;",
+      "const char* actual_clone_empty_00f89450;",
+      "const void* actual_type_bytes_00d162d8;",
+      "const char* actual_name_key_00ce8ed0;"
+    ],
+    "core_domain": "actual_enum_declaration.actual_strings supplies allrawoperations; actual_fixed_display mustborrowSAMEGameNativeStringProcess and noalternateformatter. Context owns nothing; no replacement globals orfallbackcells.",
+    "concrete_holder": "game::GameNativeEnumLuaDeclarationBindings final, noncopyable/nonmovable. Constructor borrows GameNativeStringProcess&, GameNativePhysicalPoolProcess&, GameNativeSettingsProcess&, GameNativeReadOnlyData&, const GameNativeMutableCrtData&. Own only declarationcontext,fixedGameNativeLuaDisplayStringBindings andcorecontext in lifetime-safe order. Publicvoid declare(void* actual_raw_19c_enum,NativeString& consumed_key);",
+    "holder_wiring": [
+      "declaration{strings.raw_context(),physical.enum_symbol_pool_storage_00e17578(),strings.enum_empty_00e186ed(),strings.query_empty_00e17654()}; accessor requiresalreadyreturned explicitpoolstartup; constructordoesnotperformstartup.",
+      "display{strings}; sameprocess asdeclaration, no publicformatterselection.",
+      "worldpublication= settings.game_00e188a8() reference, NOT itscurrentpointervalue. BodyreadsvalueatOriginalreadpoint; allownerslive.",
+      "featureword=crt.feature_word() borrowedreference, not sampledstoredmode.",
+      "clonefallback=strings.clone_empty_00f89450(); distinct enum/queryfallbacksretained.",
+      "type=data.data_at(0x00D162D8,6);Name=data.data_at(0x00CE8ED0,5). RequiredexistingmappedROspansmustalreadybeprovided bycaller; no image load/defaultliteralprovider invented inoperation."
+    ],
+    "Source_write_exclusions": "All existingSource/CMake/metadata/ledger/Ghidra/applicationwiring remainRoot-owned; sixfilesproposedonly. No whole8F5A00 parserorstartupcredit."
+  },
+  "required_contract": [
+    "Genuine19Ch enum, consumed owning8B key, actual128B inline name area includingNUL, existingtypeheader+114; CURRENT fields after resize/declaration and normal cleanup order preserved.",
+    "Read actualE188A8 world publication only AFTER name/type writes; borrow same existing constructed world+1A0C LuaState for all14h Lua temporaries. No cachedworldpointer/substituteowner/startup.",
+    "All canonical sameprocess string/raw/clonefallback/query/enum and physicalsymbolpool roles retained; fixed GameNativeLuaDisplayStringBindings on sameprocess, explicit CURRENT-CRT sprintf service and52Bscratch-fit condition.",
+    "Numeric key composition calls linked lua_tonumber on actualowner then reads fullvolatile32b0109EEA4 nonzero into genuinebool and reuses accepted conversiontail. No boolobjectalias/guessedCPU/numericcast/default/typefilter. Stablefeatureword and noFP traps/reentry required; Originalfloatspill/readtiming/FPstatus transport unproved.",
+    "Whole ordinary successful coherent finite disjoint valid-memory/nonerror domain. Normal display/key/currentfield releases and Lua cleanup order required; no new complete resource rollback, privateCRT/OriginalABI/EH/longjmp/fault/startup/runtime/game/wholeparser credit."
   ],
-  "remaining_concrete_gap": "B68630 actual-storage numeric arm needs canonical genuine8B output formatter43BDF0; existing host std::string/snprintffloat projection is insufficient.",
-  "next_packet_class": "Dedicated float32/ST0/formatter and canonical binding evidence; gpt-6.1-sol/max. Whole8F2F70 implementation waits for this contract.",
-  "no_Source_Ghidra_build_test_probe_runtime_or_game_claim": true
+  "new_Source_runtime_executed": false,
+  "Original_ABI_compatible": false,
+  "game_validated": false
 }

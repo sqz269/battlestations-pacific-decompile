@@ -2,6 +2,7 @@
 #include <cstdint>
 
 namespace bsp {
+struct SingletonLifetimeCallbacks;
 // Native queue record: low character/virtual-key byte, then 0=character/1=key.
 struct TextInputEvent {
     std::uint8_t value;
@@ -9,11 +10,13 @@ struct TextInputEvent {
 };
 static_assert(sizeof(TextInputEvent) == 2);
 
-// Owns the platform+174h list dependency. Typed ownership, not native object ABI.
-// Native allocator and platform object ABI remain separate dependencies.
+// Standalone projections own their private list. A native binding borrows the
+// actual platform+174 header and canonical node domain: no second sentinel or
+// destructor retirement is created. The platform's BECA00 owns native cleanup.
 class TextInputQueue {
 public:
     TextInputQueue();
+    TextInputQueue(void* actual_native_header, const SingletonLifetimeCallbacks&) noexcept;
     ~TextInputQueue();
     TextInputQueue(const TextInputQueue&) = delete;
     TextInputQueue& operator=(const TextInputQueue&) = delete;
@@ -21,7 +24,8 @@ public:
     // Native platform method takes two byte-output pointers, RET 8. Host returns
     // false on empty instead of invoking the CRT invalid-parameter handler.
     bool pop_00bece90(TextInputEvent& event) noexcept;
-    std::uint32_t size() const noexcept { return count_; }
+    std::uint32_t size() const noexcept;
+    const void* native_header_identity() const noexcept { return native_header_; }
     const TextInputEvent* front() const noexcept;
 private:
     friend struct PlatformTextInput;
@@ -31,13 +35,25 @@ private:
     static Node* create_node_00bec7b0(Node* next, Node* previous, TextInputEvent event);
     void increase_count_00bed290(std::uint32_t increment);
     void destroy_00bec730() noexcept;
+    Node* current_sentinel() const noexcept;
     Node* sentinel_;
     std::uint32_t count_{};
+    void* native_header_{};
+    const SingletonLifetimeCallbacks* native_invalid_{};
 };
 
 struct PlatformTextInput {
-    bool enabled{}; // platform+170h
-    bool clipboard_requested{}; // platform+44h; consumption remains unported
+private:
+    bool owned_enabled_{};
+    bool owned_clipboard_{};
+public:
+    PlatformTextInput() noexcept(false)
+        : enabled(owned_enabled_), clipboard_requested(owned_clipboard_) {}
+    // Metadata only; may be prepared before BECDA0 produces its queue. Do not
+    // consume it before that constructor completes or after native owner drain.
+    PlatformTextInput(void* actual_native_platform, const SingletonLifetimeCallbacks&) noexcept;
+    bool& enabled; // SAME actual platform+170h for the native binding
+    bool& clipboard_requested; // SAME +44h; consumption remains unported
     TextInputQueue queue;
     // ECX platform, stack enabled byte, RET4. Always clears, including same-state calls.
     void enable_00a965a0(bool value) noexcept;

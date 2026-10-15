@@ -1,8 +1,10 @@
 #include "bsp/platform_loop.hpp"
+#include "bsp/platform_window.hpp"
 #include "bsp/win32_event.hpp"
 #include "bsp/text_input.hpp"
 #include <iostream>
 #include <stdexcept>
+#include <utility>
 
 namespace {
 // Probe-only owner checks delivery order; it is not a text-editor fallback.
@@ -44,6 +46,22 @@ private:
 }
 
 int main() {
+    // One compatibility regression: view references must retain independent
+    // backing cells across copies/moves. This is not an actual-owner fixture.
+    bsp::Win32PlatformState original;
+    original.present_height = 480;
+    original.frames_enabled = true;
+    original.name.assign("projection");
+    bsp::Win32PlatformState copied(original);
+    bsp::Win32PlatformState moved(std::move(copied));
+    moved.present_height = 600;
+    moved.frames_enabled = false;
+    const bool projection_ok = original.present_height == 480 && original.frames_enabled &&
+        &original.present_height != &moved.present_height && &copied.present_height != &moved.present_height &&
+        &original.window != &moved.window && &copied.window != &moved.window && moved.name.size() == 10 &&
+        original.actual_native_object() == nullptr && moved.actual_native_object() == nullptr;
+    std::cout << "Platform projection: independent_copy_move_cells=" << projection_ok << '\n';
+    if (!projection_ok) return 3;
     bsp::PlatformTextInput input_state;
     auto& text = input_state.queue;
     input_state.enqueue_message_00bed3b0_fragment(WM_CHAR, 'X');

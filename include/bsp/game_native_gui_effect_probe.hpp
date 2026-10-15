@@ -99,9 +99,10 @@ public:
         NativePlatformLoadPublication actual_platform_0109cf04);
     // Borrows the startup host's completed canonical shadow application through
     // shared drain. This probe never allocates or closes another shadow owner.
-    // Borrows the caller's existing cell, including renderer's ready partial
-    // focus-domain publication. Its receiver supports reached +41 load-pump
-    // reads only; this does not admit a whole-platform owner or original ABI.
+    // Borrows the caller's existing cell. Normal startup now supplies the same
+    // constructed actual184h platform cell as the renderer. Legacy callers
+    // may still supply a qualified partial focus receiver for reached+41 only;
+    // no cell identity alone admits a whole platform or Original binary ABI.
     ~GameNativeGuiEffectProbe() noexcept;
     GameNativeGuiEffectProbe(const GameNativeGuiEffectProbe&) = delete;
     GameNativeGuiEffectProbe& operator=(const GameNativeGuiEffectProbe&) = delete;

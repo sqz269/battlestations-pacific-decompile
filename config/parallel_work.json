@@ -39535,20 +39535,28 @@
     {
       "id": "cc12_enum_lua_declaration",
       "done": false,
-      "state": "readiness_only_waiting_concrete_raw_float_formatter",
-      "source_ready": false,
+      "state": "whole_ordinary_current_CRT_ready_formatter_Main_gate_closed_no_Source_yet",
+      "source_ready": true,
       "function_addresses": [
         "008f2f70"
       ],
-      "output_files": [],
-      "depends_on": [],
-      "readiness_report": "reports/cc12_enum_lua_declaration_readiness.json",
-      "missing_provider_addresses": [
-        "0043bdf0"
+      "output_files": [
+        "include/bsp/native_enum_lua_declaration.hpp",
+        "src/native_enum_lua_declaration.cpp",
+        "include/bsp/game_native_enum_lua_declaration.hpp",
+        "src/game_native_enum_lua_declaration.cpp",
+        "docs/NATIVE_ENUM_LUA_DECLARATION_CC12.md",
+        "reports/native_enum_lua_declaration_cc12.json"
       ],
+      "depends_on": [
+        "cc12_native_string_float_format"
+      ],
+      "readiness_report": "reports/cc12_enum_lua_declaration_readiness.json",
+      "missing_provider_addresses": [],
       "model": "gpt-6.1-sol",
       "reasoning_effort": "max",
-      "contract": "Genuine19Ch enum and owning8B input key, actual[E188A8]+1A0C LuaState, not a property bag or tokenizer. Actual-storage Lua display provider exists but its number arm lacks concrete canonical raw8B float formatter. Preserve F89450 writable PE zero-fill role; no implementation admission."
+      "contract": "Whole553B152Original instructions, genuine19Ch enum and consumed8B key. Name/type writes precede CURRENT E188A8 world read, SAME+1A0C Lua owner, canonical sameprocess string/physical/fallback domains. Fixed currentCRT formatter Main gate closed. Explicit full32bit featureword nonzero projection and accepted conversiontail under stable noFP-trap ordinarydomain; no boolalias/newCPU/default/privateCRT/ABI/EH/longjmp/startup/runtime/game/wholeparser claim. Source not yet implemented.",
+      "worker": "scene_token_text_review"
     },
     {
       "id": "cc12_scene_file_tokenizer",
@@ -40048,7 +40056,7 @@
       "depends_on": [],
       "source_ready": true,
       "evidence_report": "reports/goal_oct15_string_ordering.json",
-      "primary_review": "reports/goal_oct15_primary_review.json",
+      "primary_review": "reports/goal_oct15_scene_map_primary_review.json",
       "code_revision": "e5618384f",
       "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
       "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
@@ -40085,8 +40093,8 @@
     },
     {
       "id": "cc12_native_string_float_format",
-      "done": false,
-      "state": "whole_ordinary_current_CRT_Source_primary_peer_accepted_registered_Main_build_pending",
+      "done": true,
+      "state": "whole_ordinary_current_CRT_Source_registered_Main3checks_actual_code_selected_archive_identity_pass",
       "worker": "scene_token_text_review",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "max",
@@ -40105,8 +40113,149 @@
       "source_ready": true,
       "code_revision": "67507fec1c3d76c698212db06b2818e98bf148c4",
       "primary_review": "reports/cc12_native_float_format_primary_review.json",
-      "Main_build_gate": "pending",
+      "Main_build_gate": "pass",
       "contract": "Whole ordinary raw float constructor with explicit CURRENT-CRT sprintf %f and fixed same-process Lua display composition; two allocations and limited cleanup. No Original privateCRT/ABI/EH/locale/FP/startup/runtime/game/wholeparser credit.",
+      "Original_ABI_compatible": false,
+      "game_validated": false,
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_native_float_format_Main_validation.json"
+    },
+    {
+      "id": "goal_oct15_scene_integer_set_head",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Default_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "004682b0",
+        "00468ea0"
+      ],
+      "output_files": [
+        "src/native_scene_integer_set_head.cpp",
+        "include/bsp/native_scene_integer_set_head.hpp",
+        "docs/GOAL_OCT15_SCENE_INTEGER_SET_HEAD.md",
+        "reports/goal_oct15_scene_integer_set_head.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_integer_set_head.json",
+      "primary_review": "reports/goal_oct15_scene_map_erase_primary_review.json",
+      "code_revision": "a027c3e3868c15f24eb881b545deaeb90e5a7b4c",
+      "Main_build_gate": "passed; Original ABI, new-body native differential and runtime gates remain unproved",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at documented raw/current-provider boundaries; native envelopes distinguish unreachable alignment. No Original ABI/private frame/CRT/application/game credit.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_extrema",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Default_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00466a00",
+        "00466a20"
+      ],
+      "output_files": [
+        "src/native_scene_record_map_extrema.cpp",
+        "include/bsp/native_scene_record_map_extrema.hpp",
+        "docs/GOAL_OCT15_SCENE_MAP_EXTREMA.md",
+        "reports/goal_oct15_scene_map_extrema.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_extrema.json",
+      "primary_review": "reports/goal_oct15_scene_map_erase_primary_review.json",
+      "code_revision": "a027c3e3868c15f24eb881b545deaeb90e5a7b4c",
+      "Main_build_gate": "passed; Original ABI, new-body native differential and runtime gates remain unproved",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at documented raw/current-provider boundaries; native envelopes distinguish unreachable alignment. No Original ABI/private frame/CRT/application/game credit.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_erase",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Default_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "0046a470",
+        "00c61c70"
+      ],
+      "output_files": [
+        "src/native_scene_record_map_erase.cpp",
+        "include/bsp/native_scene_record_map_erase.hpp",
+        "docs/GOAL_OCT15_SCENE_MAP_ERASE.md",
+        "reports/goal_oct15_scene_map_erase.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_map_extrema",
+        "goal_oct15_scene_map_increment",
+        "goal_oct15_scene_map_rotations"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_erase.json",
+      "primary_review": "reports/goal_oct15_scene_map_erase_primary_review.json",
+      "code_revision": "a027c3e3868c15f24eb881b545deaeb90e5a7b4c",
+      "Main_build_gate": "passed; Original ABI, new-body native differential and runtime gates remain unproved",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at documented raw/current-provider boundaries; native envelopes distinguish unreachable alignment. No Original ABI/private frame/CRT/application/game credit.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_database_release_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Default_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0046bd10"
+      ],
+      "output_files": [
+        "src/native_scene_database_release_pending.cpp",
+        "include/bsp/native_scene_database_release_pending.hpp",
+        "docs/GOAL_OCT15_SCENE_DATABASE_RELEASE_PENDING.md",
+        "reports/goal_oct15_scene_database_release_pending.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_map_clear",
+        "goal_oct15_scene_map_increment"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_database_release_pending.json",
+      "primary_review": "reports/goal_oct15_scene_map_erase_primary_review.json",
+      "code_revision": "a027c3e3868c15f24eb881b545deaeb90e5a7b4c",
+      "Main_build_gate": "passed; Original ABI, new-body native differential and runtime gates remain unproved",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at documented raw/current-provider boundaries; native envelopes distinguish unreachable alignment. No Original ABI/private frame/CRT/application/game credit.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "cc12_scene_property_integer_add",
+      "done": false,
+      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_build_pending",
+      "worker": "library_insert_source",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "008f3710"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_property_integer_add.hpp",
+        "src/native_scene_property_integer_add.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_INTEGER_ADD_CC12.md",
+        "reports/native_scene_property_integer_add_cc12.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "code_revision": "e8e48e422bbc9829ef347ef37d7a2536076f9d82",
+      "primary_review": "reports/cc12_property_integer_add_primary_review.json",
+      "Main_build_gate": "pending",
+      "contract": "Whole93B/34Original instructions: ECX genuine114h bag,key/fullDWORDvalue stack,RET8,EAXbag. Canonical38h allocate; tag0+4 BEFORE phaseCE89D4+0, fullpayload+C, zero+18/+1C/+20/+24/+30/+34, finalBYTE1+2C;37written19untouched. No phase-first raw8EF140 reuse, coalescing/zero-fill/valueconversion/pointerownership/cleanup/default. Null still whole33F0 insertion. Same canonical actualbag/map/keys/process/pool/cell/lifetime contracts, successful stable disjoint finite unique no-reentry ordinarydomain. Later Source value-load/extra privatehelperCALL/register/flags transport differences remain explicit. No Original ABI/EH/privateCRT/startup/runtime/game/wholeparser credit.",
       "Original_ABI_compatible": false,
       "game_validated": false
     }
