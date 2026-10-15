@@ -20,8 +20,9 @@
     "actual_dependency_imported": true,
     "concrete_range_source_revision": "cbb797126",
     "dependency_import": "actual full B170 C++/header/frame imported by merge before own Source draft; published476925766 supplies accepted concrete child providers",
-    "dependency_validation": "range worker and current destructor composition builds pending; no stub/forward-only stand-in",
-    "concrete_range_final_available": "806c8dc47; independent primary acceptance/own Win32+2existing checks9.00s reported; import next after own Source draft"
+    "dependency_validation": "real complete range final806c8dc47 imported; own full destructor composition build pending",
+    "concrete_range_final_available": "806c8dc47; independent primary acceptance/own Win32+2existing checks9.00s reported; import next after own Source draft",
+    "concrete_range_final_imported": "806c8dc47; complete Source/header unchanged, independently primary accepted, range worker Win32+2existing checks9.00s; imported before registered composition build"
   },
   "routines": [
     {
@@ -825,11 +826,13 @@
     "build": "pending",
     "existing_tests": "pending",
     "new_tests": 0,
-    "cmake_registration": "Unique line queued; current owneragent/cc12_oct13_integrator:cc12_enum_lua_declaration_registry;no held-file edit",
+    "cmake_registration": "Rechecked unleased after holder release, unqueued only own registration and appended unique Source line without exclusive lease",
     "direct_native_new_entry_execution": false,
     "abi_compatible": false,
     "game_validated": false,
-    "documentation_claim_check": "8addresses cited,0failed,0unchecked,0warnings"
+    "documentation_claim_check": "8addresses cited,0failed,0unchecked,0warnings",
+    "source_commit": "d347c5ba3",
+    "diff_check": "passed before Source draft and registration/review commit"
   },
   "cmake_requested_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_scene_integer_set_destroy.cpp)",
   "limits": [
@@ -878,5 +881,92 @@
       },
       "status": "applied"
     }
-  ]
+  ],
+  "relocation_equivalence": {
+    "equal_complete_52B_bodies_with_only_8rel32_operand_bytes_masked": true,
+    "masked_ranges_zero_based": [
+      "23..26",
+      "32..35"
+    ],
+    "all_decoded_actual_targets_match": true,
+    "comparisons": [
+      {
+        "address": "0046b530",
+        "decoded_calls": [
+          {
+            "site": "0046b546",
+            "target": "0046b170",
+            "opcode": "E8",
+            "relative_operand_offset": 23
+          },
+          {
+            "site": "0046b54f",
+            "target": "00bf65ac",
+            "opcode": "E8",
+            "relative_operand_offset": 32
+          }
+        ],
+        "normalized_body_sha256": "5389ba8e6d7ef09bc989b2a6a69d43c54ca9359b8d1df9d608d04ab7114fc53b",
+        "typed_full_body_and_both_calls_verified": true
+      },
+      {
+        "address": "0046c4c0",
+        "decoded_calls": [
+          {
+            "site": "0046c4d6",
+            "target": "0046b170",
+            "opcode": "E8",
+            "relative_operand_offset": 23
+          },
+          {
+            "site": "0046c4df",
+            "target": "00bf65ac",
+            "opcode": "E8",
+            "relative_operand_offset": 32
+          }
+        ],
+        "normalized_body_sha256": "5389ba8e6d7ef09bc989b2a6a69d43c54ca9359b8d1df9d608d04ab7114fc53b",
+        "typed_full_body_and_both_calls_verified": true
+      },
+      {
+        "address": "0046ce90",
+        "decoded_calls": [
+          {
+            "site": "0046cea6",
+            "target": "0046b170",
+            "opcode": "E8",
+            "relative_operand_offset": 23
+          },
+          {
+            "site": "0046ceaf",
+            "target": "00bf65ac",
+            "opcode": "E8",
+            "relative_operand_offset": 32
+          }
+        ],
+        "normalized_body_sha256": "5389ba8e6d7ef09bc989b2a6a69d43c54ca9359b8d1df9d608d04ab7114fc53b",
+        "typed_full_body_and_both_calls_verified": true
+      }
+    ]
+  },
+  "independent_review": {
+    "reviewer": "primary /root",
+    "accepted_source_revision": "d347c5ba3",
+    "accepted": true,
+    "direct_review": "completeB530/CE90 listings and shared Source/header independently compared; no mismatch",
+    "c4c0_acceptance": "complete body equality after masking only two CALL rel32 operands; same decoded actual targets and exact typed body/call rows verified",
+    "schedule": "capture head/min before5pushstores;completeactualB170;reloadCURRENThead/free thenhead0/count0",
+    "source_hashes": {
+      "src/native_scene_integer_set_destroy.cpp": {
+        "worktree_bytes_sha256": "f471943fccb193af8f3bc871b31c621da99be3cc12a2809fb7657d28b6ee23a5",
+        "git_blob_bytes_sha256": "f471943fccb193af8f3bc871b31c621da99be3cc12a2809fb7657d28b6ee23a5",
+        "normalized_lf_sha256": "f471943fccb193af8f3bc871b31c621da99be3cc12a2809fb7657d28b6ee23a5"
+      },
+      "include/bsp/native_scene_integer_set_destroy.hpp": {
+        "worktree_bytes_sha256": "5c92035aaab42d310625a5011fda9bde473bdf299b82694463312baadfd9c0e5",
+        "git_blob_bytes_sha256": "5c92035aaab42d310625a5011fda9bde473bdf299b82694463312baadfd9c0e5",
+        "normalized_lf_sha256": "5c92035aaab42d310625a5011fda9bde473bdf299b82694463312baadfd9c0e5"
+      }
+    }
+  }
 }

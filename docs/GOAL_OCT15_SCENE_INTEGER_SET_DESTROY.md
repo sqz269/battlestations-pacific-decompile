@@ -37,9 +37,10 @@ by a full-clear shortcut.
 The imported concrete range Source is worker draft `cbb797126`, reviewed at its
 actual API and merged into this worktree before this wrapper draft. It uses the
 actual accepted nil11h14h-node increment, complete single erase and clear
-providers; no stub or invented callback is supplied. Its own validation is
-tracked separately. Final Source readiness/build validation waits for the
-combined concrete dependency checks. Current-CRT free is accepted
+providers; no stub or invented callback is supplied. Its final `806c8dc47` (same Source/header) is now also imported: the primary
+independently accepted it and its worker Win32 build plus both enabled existing
+checks passed9.00s. Full wrapper Source readiness follows the actual import;
+own registered composition validation is tracked separately below. Current-CRT free is accepted
 singleton_lifetime_free over std::free; native 00BF65AC is a JMP thunk. Native
 CRT/FH3/private-frame/fault identity remains a qualified boundary.
 
@@ -60,3 +61,11 @@ routine tests are added. Reached raw backing and releases must remain valid;
 compilation/static evidence do not establish direct native differential,
 original register/stack/heap/CRT/FH3/SEH binary ABI, application adoption or game
 behavior.
+
+Independent primary review accepted complete B530/CE90 listings and the shared
+Source/header at `d347c5ba3` with no mismatch. C4C0 is independently covered by
+complete52B equality after masking only the two CALL rel32 operands, both decoded
+actual targets and exact typed body/call rows. Source/header hashes and the full
+equivalence receipt are in JSON. The CMake holder released the shared file;
+the owner was rechecked, only this queue entry was removed and one unique
+registration appended without an exclusive whole-file lease.
