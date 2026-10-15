@@ -53,6 +53,9 @@ Live queries verify configured `C:/Users/sqz269/bsp.gpr` and
 `/battlestationspacific.exe`. Complete native spans are checked against the
 installed PE. Existing Ghidra names and empty comments are preserved before
 evidence is added under the write lock, followed by project save and exports.
-Strict MSVC Win32 build and existing CTests are pending in the initial draft.
+Strict MSVC Win32 `scripts/build.ps1` passed for Source revision
+`d8d9937df5f3e5a5e7c37d582550e1dfb024cc11`, including both configured existing
+CTests (`reconstructed_math` and `tool_tests`). Native math differential tests
+were not enabled in this worktree.
 No new routine tests, candidate-specific native differential, original private
 ABI/FH3/SEH compatibility, startup execution or gameplay validation are claimed.
