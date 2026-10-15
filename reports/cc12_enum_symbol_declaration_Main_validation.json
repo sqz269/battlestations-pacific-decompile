@@ -1,0 +1,46 @@
+{
+  "schema": "bsp.enum_symbol_declaration_Main_validation.v1",
+  "address": "008f2e40",
+  "Main_build": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_enum_declaration_Main_build01\\build_result.DATA.json",
+    "bytes": 1104,
+    "sha256": "edf7bcedb7e6912643718a917291579aaa4715ca4031f9e96e0e1845ac67d1f7"
+  },
+  "original_Main_build_tools": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_enum_declaration_Main_build01\\original_build_tools.DATA.json",
+    "bytes": 3141,
+    "sha256": "1ecaff5e7826defafed8e16c59cffba81e70fd342662ad678877f3b0c9a05268"
+  },
+  "all9_owned_inputs_unchanged": true,
+  "existing_checks_passed": 3,
+  "existing_checks_seconds": 8.73,
+  "actual_Main_primary_complete_code_archive_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_enum_symbol_declaration_integration_20261015\\Main_primary_identity.DATA.json",
+    "bytes": 507322,
+    "sha256": "6a4041de4af95d8117a18c0edb28f0df657bd166e163d1e12c37f2bfcad6fd75"
+  },
+  "code_sections": 5,
+  "code_bytes": 282,
+  "instructions": 109,
+  "runtime_REL32": 6,
+  "metadata_DIR32NB": 1,
+  "private_definition_pairs": 3,
+  "relocation_targets_literal_equal": true,
+  "unique_archive_payload": true,
+  "link_contract_qualification": "Strict /MT versus actual configured Main /MD. Three exact RuntimeLibrary/default-library differences retained; no full-object, link-directive, Original private-CRT or ABI equivalence.",
+  "ordinary_ordering_qualification": "Original second register CMP precedes store10C; emitted follows that store. Under the admitted stable/disjoint/no-fault domain, memory reads/calls and10C-to110 stores agree. No instruction/flags/ABI identity.",
+  "static_Source_gate_pass": true,
+  "new_Source_runtime_executed": false,
+  "Original_ABI_compatible": false,
+  "Original_EH_or_private_CRT_compatible": false,
+  "global_application_startup_publication": false,
+  "game_validated": false,
+  "Ghidra_evidence_update": {
+    "annotate_chunk": "0879b3",
+    "annotate_exit": 0,
+    "project_saved": true,
+    "prior_journal": "local/ghidra-annotations-20261015T190651Z.json",
+    "exports_chunk": "7d7161",
+    "exports_exit": 0
+  }
+}

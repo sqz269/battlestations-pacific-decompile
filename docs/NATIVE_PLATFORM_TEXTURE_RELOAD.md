@@ -1,5 +1,11 @@
 # Actual application 2D texture reload
 
+Independent Root runtime verification now passes for both the frozen f083 family
+and combined Source `cdaf687819b79632f2d78713a696cb0b36f2aaa1`.
+[Runtime receipt 32](CC12_TEXTURE_RELOAD_RUNTIME_32.md) pins the fresh executions,
+Original/Source byte and owner/output comparisons, and successful shared drain.
+Earlier Root device-creation failures remain historical evidence.
+
 `GameNativeRendererApplication::reload_activation_texture_2d` now dispatches a
 captured resource slot `+08` to the existing complete `B3FA90` Source body. The
 entry requires a ready application, the resource's companion in that same
