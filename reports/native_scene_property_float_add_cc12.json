@@ -1,0 +1,275 @@
+{
+  "schema": "bsp.cc12.scene-property-float-add.Source.v1",
+  "status": "whole_ordinary_Source_worker_strict_full_COFF_and_normal_build_passed_Root_independent_Main_admission_pending",
+  "address": "008F3770",
+  "Source_ready": true,
+  "Source_admission_credit": 0,
+  "Root_independent_Main_admission_pending": true,
+  "worker_base_commit": "f990be80e9e85da97a189ecfbfef0d44a5b1d1f8",
+  "owned_new_files": [
+    "include/bsp/native_scene_property_float_add.hpp",
+    "src/native_scene_property_float_add.cpp",
+    "docs/NATIVE_SCENE_PROPERTY_FLOAT_ADD_CC12.md",
+    "reports/native_scene_property_float_add_cc12.json"
+  ],
+  "Source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\src\\native_scene_property_float_add.cpp",
+    "bytes": 1583,
+    "sha256": "7ac170465ee9ca82ae33c2de8623bfa6da06150748ec9a463fb6c1fb40c73ce7"
+  },
+  "header": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\include\\bsp\\native_scene_property_float_add.hpp",
+    "bytes": 2544,
+    "sha256": "e1eac8d703c38f958040d4fb21aedc64b40c9c56322d317a5023fa7a50f66fcd"
+  },
+  "document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\docs\\NATIVE_SCENE_PROPERTY_FLOAT_ADD_CC12.md",
+    "bytes": 5258,
+    "sha256": "3ee017b3e2b35ce55cbcef167a696f57ecd6d068c84c17fd9ab8c5a090160772"
+  },
+  "Original": {
+    "begin": "008F3770",
+    "end_exclusive": "008F37D5",
+    "bytes": 101,
+    "instructions": 35,
+    "direct_CALL_sites": 3,
+    "unique_targets": [
+      "008F33F0",
+      "00BF681B"
+    ],
+    "indirect_calls": 0,
+    "x87_instructions": 0,
+    "transport": "ECXactualbag; stackkey/float32bits; RET8; EAXbag. MOVSS copies bits; no ST0/registerinput or arithmetic.",
+    "disk_live_export_typed_evidence": "Independent readiness verified exact project/program, live/disk/export/typed mod373; whole family frozen and Root pins rehashed.",
+    "EH": "No local FS/EH frame; no new cleanup/rollback/transaction."
+  },
+  "public_API": "void* add_native_scene_property_float_bits_008f3770(void* actual_bag,const char* actual_key,std::uint32_t actual_payload_bits,NativeScenePropertyInsertionContext& context)",
+  "full_body": {
+    "allocation": "canonical singleton_lifetime_allocate({object,38h,38h})",
+    "null_path": "Null stillwhole33F0; no guard/default/recovery. Successful providers required.",
+    "physical_writes": [
+      {
+        "call": "4E",
+        "offset": "00",
+        "width": 4,
+        "value": "00CE89D4"
+      },
+      {
+        "call": "59",
+        "offset": "0C",
+        "width": 4,
+        "value": "full32bit rawpayload"
+      },
+      {
+        "call": "63",
+        "offset": "04",
+        "width": 4,
+        "value": "1"
+      },
+      {
+        "call": "6D",
+        "offset": "18",
+        "width": 4,
+        "value": "0"
+      },
+      {
+        "call": "77",
+        "offset": "1C",
+        "width": 4,
+        "value": "0"
+      },
+      {
+        "call": "81",
+        "offset": "20",
+        "width": 4,
+        "value": "0"
+      },
+      {
+        "call": "8E",
+        "offset": "24",
+        "width": 4,
+        "value": "0"
+      },
+      {
+        "call": "98",
+        "offset": "30",
+        "width": 4,
+        "value": "0"
+      },
+      {
+        "call": "A2",
+        "offset": "34",
+        "width": 4,
+        "value": "0"
+      },
+      {
+        "call": "AC",
+        "offset": "2C",
+        "width": 1,
+        "value": "1"
+      }
+    ],
+    "written_bytes": 37,
+    "preserved_19bytes": [
+      "[08,0C)",
+      "[10,18)",
+      "[28,2C)",
+      "[2D,30)"
+    ],
+    "no_coalescing": true,
+    "no_raw8EF170_reuse": true,
+    "no_integer3710_dependency": true,
+    "all32bitpatterns": true,
+    "no_FP_evaluation_or_conversion": true,
+    "staging_limit": "New CPP by-value input is stable; compiler reads its raw bit slot for payload after the phase helper, whereas Original MOVSS reads stackbits before phase. No typedfloat/FP evaluation or integer3710 dependency is present; all32 patterns are copied. No Original stack/register transport, aliasedframe/fault/reentry or external-observer contract is claimed. Root memory-store order is exact.",
+    "publication": "Samegenuine whole33F0 context, actualbag return."
+  },
+  "ownership": "Onlyfresh currentCRT38hroot transfers on successful owning publication; tag1 hasno ownedchild. Fullopaque32bits neverdereferenced/narrowed/evaluated asfloat. Samegenuine114hbag/E175B0/E188B4/rawkeys/E177E4/E17654/livecanonicalprocesses andfinite unique unshared acyclic disjointgraphs; explicitstartup beforecontext, externallyserialize listmutations and retirebeforepoolteardown.",
+  "strict": {
+    "first_only": true,
+    "original_tool": "31281b/exit0",
+    "settings": "/std:c++17 /MD /O2 /Ob2 /Oy- /W4 /WX /EHsc /Gy /GL- /fp:strict",
+    "compiler": "MSVC Win32 19.51.36244",
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyFloatAddSource01\\native_scene_property_float_add.obj",
+      "bytes": 2151,
+      "sha256": "5b8d0c47d6aac853e41fdfd95a162010ad583ac0973ed1027ca2f297fee90e3b"
+    },
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyFloatAddSource01\\strict_compile.log",
+      "bytes": 1137,
+      "sha256": "eaa0b86caaf9bcc7b46b117694eb2c7627f6a6ca6638cecbf2cadbe3ad579436"
+    },
+    "warnings_or_errors": false
+  },
+  "complete_COFF": {
+    "sections": 7,
+    "symbol_indices_including_aux": 24,
+    "code_sections": 3,
+    "code_bytes": 245,
+    "instructions": 96,
+    "code_relocations": 14,
+    "metadata_relocations": 0,
+    "all_code_data_metadata_directives_symbols_auxiliaries_relocations_and2151_filebytes_reviewed": true,
+    "directives_literal": "   /FAILIFMISMATCH:\"_MSC_VER=1900\" /FAILIFMISMATCH:\"_ITERATOR_DEBUG_LEVEL=0\" /FAILIFMISMATCH:\"RuntimeLibrary=MD_DynamicRelease\" /DEFAULTLIB:\"msvcprt\" /FAILIFMISMATCH:\"_CRT_STDIO_ISO_WIDE_SPECIFIERS=0\" /alternatename:__Avx2WmemEnabled=__Avx2WmemEnabledWeakValue /DEFAULTLIB:\"MSVCRT\" /DEFAULTLIB:\"OLDNAMES\" ",
+    "all_undefined_bindings": [
+      {
+        "index": 15,
+        "name": "?insert_native_scene_property_bag_008f33f0@bsp@@YAPAXPAXPBD0AAVNativeScenePropertyInsertionContext@1@@Z",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_hex": ""
+      },
+      {
+        "index": 17,
+        "name": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_hex": ""
+      },
+      {
+        "index": 20,
+        "name": "@__security_check_cookie@4",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_hex": ""
+      },
+      {
+        "index": 21,
+        "name": "___security_cookie",
+        "value": 0,
+        "section": 0,
+        "type": 0,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_hex": ""
+      }
+    ],
+    "full_parse": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyFloatAddSource01\\complete_COFF.DATA.json",
+      "bytes": 42888,
+      "sha256": "d30643df725545eff54017b3222edffa6d12e0624da9b6ec34e7cfd8c882974f"
+    },
+    "binary_audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyFloatAddSource01\\complete_COFF_binary_audit.DATA.json",
+      "bytes": 9765,
+      "sha256": "626bf8f3817249be71f32c5d948d0a2be7bdf0f21c8428fd211c7b5845908a49"
+    },
+    "complete_Source_strict_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyFloatAddSource01\\complete_strict_review.DATA.json",
+      "bytes": 41238,
+      "sha256": "18ac409093884291ef917580c2b2549a84785cb081f51504095b0b1801f97deb"
+    }
+  },
+  "normal_repository_build": {
+    "original_launch": "a5af73/session94712",
+    "natural_terminal": "7a88ab/exit0",
+    "invocations": 1,
+    "existing_checks": 2,
+    "seconds": 7.91,
+    "new_TU_registered": false,
+    "strict_compile_separate": true,
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyFloatAddSource01\\normal_build.log",
+      "bytes": 8640,
+      "sha256": "b397f54ba18b504e95264fbecf573a8b43b0bfe81bdd2a71e50f0886868d9ba1"
+    },
+    "actual_warnings": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\build\\win32\\bsp_core.vcxproj]"
+    ]
+  },
+  "exact_inputs": {
+    "precompile": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyFloatAddSource01\\precompile_inputs.DATA.json",
+      "bytes": 15876,
+      "sha256": "80d69128e9e9f4c0492d8951b41057241bed9ffac2f9f821affbb8791836b9a6"
+    },
+    "compiler_declared": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyFloatAddSource01\\compiler_declared_inputs.DATA.json",
+      "bytes": 22715,
+      "sha256": "75a574530e6a2de6e77696e7423133b9f056168151450c29528876230a9a8a13"
+    },
+    "complete32file_readiness": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyFloatAddSource01\\frozen_readiness_copy.DATA.json",
+      "bytes": 21411,
+      "sha256": "7ad44271ebb45348bcc0cbe227b739cb2f36d93d0389c17f54796ebe459f3179"
+    }
+  },
+  "original_tool_objects": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyFloatAddSource01\\original_tool_receipts.DATA.json",
+    "bytes": 524,
+    "sha256": "84214d42a51897d3c4e28ea0603d16f1d200a4da1c9d72aae649af6aa8590d48"
+  },
+  "exact_raw_rollout_provenance": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyFloatAddSource01\\original_tool_provenance.DATA.json",
+    "bytes": 8668,
+    "sha256": "14bc645cf0d7098a390224c06625875275d14321b371caa725a590e1ed25c4b5"
+  },
+  "evidence_limits": [
+    "New contextbearing C++ API only; no OriginalECX/RET8/register/EFLAGS/XMM/FP/FS/EH/class/privateCRT transport or compatibility.",
+    "Ordinarysuccessful nonthrowing valid/disjoint/liveprovider domain, excluding OOM/throw/fault/overflow/alias/reentry/concurrentmutation.",
+    "No raw170 orderflip/rootzero-fill/FPconversion/fakevtable/payloadownership/callback/default/newcleanup/transaction/recovery.",
+    "No startup/global binding, wholeparser/loader, runtime/game or SourceABI admission fromstatic/build evidence."
+  ],
+  "performed": {
+    "strict_compiles": 1,
+    "normal_builds": 1,
+    "complete_static_Source_object_review": true,
+    "new_tests": 0,
+    "ad_hoc_probes": 0,
+    "runtime_replay": false,
+    "game": false,
+    "existing_Source_shared_CMake_config_ledger_Ghidra_edits": false,
+    "delegation": false
+  },
+  "final_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyFloatAddSource01\\family_receipt.DATA.json"
+}
