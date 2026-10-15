@@ -1,0 +1,266 @@
+{
+  "packet": "cc12_procedural_factory_application",
+  "status": "ordinary_Source_operation_implemented_new_TU_compile_passed_baseline_build_tests_passed_integration_required",
+  "branch": "agent/cc12_world_draw_frontier",
+  "base_commit": "705a46cbe8bb63180fefabdb8320d6a97b6037c2",
+  "files": [
+    {
+      "path": "include/bsp/game_native_procedural_factory_application.hpp",
+      "bytes": 3162,
+      "sha256": "1b1e6fc01922baec39c94cbc9f5d4953d39c39dc884bf7940ff760316a710474"
+    },
+    {
+      "path": "src/game_native_procedural_factory_application.cpp",
+      "bytes": 18995,
+      "sha256": "3789eaedda4e0e5c98f00d3d53b0e24b575d783e9309e0e7480e54db681aae45"
+    },
+    {
+      "path": "docs/NATIVE_PROCEDURAL_FACTORY_APPLICATION_CC12.md",
+      "bytes": 8363,
+      "sha256": "8a1f6720efe174651a72e7464fb2c22dc7e8133c528835160cf18f32034f6bed"
+    }
+  ],
+  "precursor_evidence": "reports/native_procedural_factory_setup_cc12.json",
+  "composition": {
+    "setup": [
+      "00bbcb40",
+      "00bbc900",
+      "00bbc5f0",
+      "00bbc740",
+      "00b1b730",
+      "00b1b3a0"
+    ],
+    "retirement": [
+      "00bbc5d0",
+      "00bbc520"
+    ],
+    "new_native_reconstruction": false,
+    "new_Ghidra_mutation": false,
+    "new_ledger_record": false
+  },
+  "publication": {
+    "role": "01090900",
+    "ownership": "caller_owned_borrowed_mutable_void_pointer_cell",
+    "private_cell": false,
+    "fixed_address_claim": false,
+    "ordinary_Source_only": true,
+    "requires_initial_null": true,
+    "native_dangling_value_preserved_after_retirement": true,
+    "same_cell_replay_rejected": true
+  },
+  "source_inputs": {
+    "required_initialized_values": true,
+    "default_ECX": false,
+    "default_untouched_DWORDs": false,
+    "copies_typed_iterators_result_padding_and_raw_SBO": true,
+    "frame_storage": "owned_disjoint_stable_typed_storage_before_native_effects",
+    "constructor_factory_frame": "one_stable_reused_frame_four_fresh_acquisition_trees",
+    "retirement_frame": "independent_owned_backing",
+    "Original_stack_aliases_or_preimages_claimed": false
+  },
+  "domain_checks": [
+    "same_process_AA0_AA8_AA4_and_VFS_owner_services",
+    "same_F8D41C_registry_deletion_binding_strings_and_invalid_parameters",
+    "table_publication_not_aliased_to_parent_cells",
+    "actual_RO_profile_pairs_and_complete_NUL_literals",
+    "genuine_new_table_four_factory_slots_and_borrowed_registry_nodes",
+    "live_parent_table_factory_node_identity_before_lookup_and_retirement",
+    "caller_asserted_all_factory_lookups_quiescent",
+    "unchanged_dangling_table_publication_plus_AA0_F8D41C_AA8_null_after_parent_drain"
+  ],
+  "failure_policy": {
+    "entered_failure": "poison_and_retain_complete_graph",
+    "retry": false,
+    "rollback": false,
+    "unregister": false,
+    "automatic_wrapper_native_cleanup": false,
+    "underlying_genuine_Source_cleanup_prefix_preserved": true,
+    "destructor": "terminate_unless_prepared_or_drained"
+  },
+  "domain_inputs_verification": {
+    "executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "status": "installed_PE_profiles_and_complete_literals_match_source_admission",
+    "native_execution": false,
+    "ghidra_query_in_this_packet": false,
+    "spans": [
+      {
+        "address": "00d5e594",
+        "bytes": 8,
+        "words": [
+          "00b1b660",
+          "00b1b3a0"
+        ],
+        "sha256": "2bc4d4f4fd5cbea062e85b9f12be1160adfbf1ff78da87f441cddbe1533e6b53"
+      },
+      {
+        "address": "00d5e59c",
+        "bytes": 8,
+        "words": [
+          "00b1b710",
+          "00b1b3a0"
+        ],
+        "sha256": "a4dede2d6e6938f397f1b5c4c0c28c906fe20fa348a0fb575fc3a2f504b42a3f"
+      },
+      {
+        "address": "00d64470",
+        "bytes": 8,
+        "words": [
+          "00bbc650",
+          "00bbc6f0"
+        ],
+        "sha256": "858b4a794e745f933967b3efc26c0825c1183be90d9f5224b24191f1f43c933e"
+      },
+      {
+        "address": "00d644ac",
+        "bytes": 8,
+        "words": [
+          "00bbc7a0",
+          "00bbc810"
+        ],
+        "sha256": "667131abd52b9a79518ec858a3216b550299afd892756544c5316360dd5f85d4"
+      },
+      {
+        "address": "00d644e8",
+        "bytes": 8,
+        "words": [
+          "00bbc890",
+          "00bbc6f0"
+        ],
+        "sha256": "5672c4840777d1960cd336aed8b5ef823b8c4de4c6bf9869ab020ffd2c281f2f"
+      },
+      {
+        "address": "00d644f0",
+        "bytes": 8,
+        "words": [
+          "00bbc8e0",
+          "00bbc810"
+        ],
+        "sha256": "67db2d13278c0b11ccb1e7819a48f680458a63cfbcb45e8ba8b5b40ff32ce88d"
+      },
+      {
+        "address": "00ce47bc",
+        "bytes": 20,
+        "text": "map/set<T> too long",
+        "includes_nul": true,
+        "sha256": "d9812c08dd702f493578cf64ef34c80bcb5acf24e29d246839c9ad664db812df"
+      },
+      {
+        "address": "00ce7dec",
+        "bytes": 22,
+        "text": "CausticsTextureSource",
+        "includes_nul": true,
+        "sha256": "765ac5e7b44f9e11e0d9044b91fbdb3896da50fee2b1b874b466bc281244ab8b"
+      },
+      {
+        "address": "00ce7dc8",
+        "bytes": 24,
+        "text": "ShoreWaveTextureSource0",
+        "includes_nul": true,
+        "sha256": "980b5aeaacae3cb3a52437cd53a73dd3339c8ded43fcdf5352a82331498963f6"
+      },
+      {
+        "address": "00ce7da4",
+        "bytes": 24,
+        "text": "ShoreWaveTextureSource1",
+        "includes_nul": true,
+        "sha256": "f38faf43f0bf28c47866f1a45b0639d17ba0577a9605acd1ed2490372b03348f"
+      },
+      {
+        "address": "00ce7d80",
+        "bytes": 24,
+        "text": "ShoreWaveTextureSource2",
+        "includes_nul": true,
+        "sha256": "c63ee07e6f2a414f99fec86be45775b3b1ca5ed9150b3178092b0729c6ce7d03"
+      },
+      {
+        "address": "00ce7d80",
+        "bytes": 130,
+        "purpose": "complete table name span including final Caustics NUL",
+        "sha256": "b99ab55da8c7dad71694e75db2852f6bee1e279a9319aa2aa3103ff46c858090"
+      }
+    ]
+  },
+  "validation": {
+    "new_translation_unit": {
+      "status": "passed",
+      "toolchain": "MSVC_Win32",
+      "flags": [
+        "/c",
+        "/std:c++17",
+        "/EHsc",
+        "/fp:strict",
+        "/O2",
+        "/Ob2",
+        "/MD",
+        "/W4",
+        "/WX",
+        "/DWIN32",
+        "/D_WINDOWS",
+        "/DNDEBUG"
+      ],
+      "linked": false,
+      "command": {
+        "path": "local/procedural_factory_application_20261015/compile.cmd",
+        "bytes": 448,
+        "sha256": "9f4d79bbcf1d6dc3f9387aee9c82146fd6252959a7acf0c0865b4b015b827a7e"
+      },
+      "log": {
+        "path": "local/procedural_factory_application_20261015/compile.log",
+        "bytes": 48,
+        "sha256": "d977a624f0d779ed0f9ad422cf127340dfdfc44a3369f4f7ab81a469e7b5f889"
+      },
+      "object": {
+        "path": "local/procedural_factory_application_20261015/game_native_procedural_factory_application.obj",
+        "bytes": 59908,
+        "sha256": "50459534432ca7c8baa161f8cc47fe40dc41b59ffaf0511b65a02455ea99196c"
+      }
+    },
+    "required_baseline_build": {
+      "command": "./scripts/build.ps1",
+      "status": "passed",
+      "tests_passed": 3,
+      "tests_failed": 0,
+      "new_translation_unit_registered": false,
+      "proves_new_wrapper_linkage": false,
+      "log": {
+        "path": "local/procedural_factory_application_20261015/baseline_build.log",
+        "bytes": 19576,
+        "sha256": "9cd45b04b4cb34a0ee03823c63d7e6dc14565317db88a1fabfeddda1fc16b06b"
+      }
+    },
+    "input_checker": {
+      "path": "local/procedural_factory_application_20261015/verify_inputs.py",
+      "bytes": 3012,
+      "sha256": "995ec73a9b2ac6d6b4d33cf1ea3197fc731d1f5866a5fa1dd0bed9d84f4553f1"
+    },
+    "input_receipt": {
+      "path": "local/procedural_factory_application_20261015/input_bytes.json",
+      "bytes": 2998,
+      "sha256": "c459e352623f0942be0154db2f52f757800c792a2a24313fdd9450b21c78e0af"
+    }
+  },
+  "execution": {
+    "wrapper": false,
+    "factory_setup": false,
+    "registry_lookup": false,
+    "Source1": false,
+    "CPU_fixture": false,
+    "GPU": false,
+    "Original_code": false,
+    "game": false
+  },
+  "integration_remaining": [
+    "integrator_owned_CMake_registration_and_canonical_build",
+    "parent_review_of_genuine_CPU_fixture_before_any_execution",
+    "separate_explicit_host_activation_order_and_full_runtime_consumer_validation"
+  ],
+  "excluded": [
+    "game_hosts_startup_edit",
+    "fake_motion_probe_change",
+    "window_or_focus_change",
+    "GPU_device_creation",
+    "new_tests",
+    "Original_ABI_or_SEH_claim"
+  ]
+}
