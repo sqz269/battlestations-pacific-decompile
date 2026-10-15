@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_scene_map_iterator",
-  "status": "complete_source_build_pending",
+  "status": "complete_actual_raw_source_combined_win32_and_three_existing_checks_passed",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
@@ -10,7 +10,7 @@
       "name": "decrement_native_scene_record_map_iterator_004678f0",
       "source": "src/native_scene_record_map_iterator.cpp",
       "header": "include/bsp/native_scene_record_map_iterator.hpp",
-      "status": "complete_actual_raw_source_build_pending",
+      "status": "complete_actual_raw_source_combined_win32_and_three_existing_checks_passed",
       "coverage": "complete_with_current_SDK_CRT_provider_qualification",
       "native_end_inclusive": "00467978",
       "native_bytes": 137,
@@ -29,7 +29,7 @@
       "name": "decrement_native_scene_record_map_iterator_00468200",
       "source": "src/native_scene_record_map_iterator.cpp",
       "header": "include/bsp/native_scene_record_map_iterator.hpp",
-      "status": "complete_actual_raw_source_build_pending",
+      "status": "complete_actual_raw_source_combined_win32_and_three_existing_checks_passed",
       "coverage": "complete_with_current_SDK_CRT_provider_qualification",
       "native_end_inclusive": "0046820b",
       "native_bytes": 12,
@@ -48,7 +48,7 @@
       "name": "decrement_native_scene_record_map_iterator_004688e0",
       "source": "src/native_scene_record_map_iterator.cpp",
       "header": "include/bsp/native_scene_record_map_iterator.hpp",
-      "status": "complete_actual_raw_source_build_pending",
+      "status": "complete_actual_raw_source_combined_win32_and_three_existing_checks_passed",
       "coverage": "complete_with_current_SDK_CRT_provider_qualification",
       "native_end_inclusive": "004688eb",
       "native_bytes": 12,
@@ -119,11 +119,20 @@
   },
   "validation": {
     "report_calls": "6 native transfer rows:4 CALL and2 explicitly typed tail JMP edges",
-    "build": "pending",
+    "build": "PASS scripts/build.ps1 combined Release Win32",
     "new_tests": 0,
     "Original_ABI_compatible": false,
     "new_entry_native_differential": false,
-    "game_validated": false
+    "game_validated": false,
+    "tested_revision": "026da884ef927effb85f118488357a83634eff48",
+    "build_log": "local/goal_oct15_scene_map_combined_build.log",
+    "build_log_sha256": "7b1e95f39ab98b075bb879e6daf15e2219354f017335a86ac823ccd282bc5d11",
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "existing_ctests_passed": 3
   },
   "tail_transfers": [
     {

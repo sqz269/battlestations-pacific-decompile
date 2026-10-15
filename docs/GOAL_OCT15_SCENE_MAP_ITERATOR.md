@@ -38,3 +38,9 @@ The two remaining call sites are `00468203` and `004688E3`.
 verification and build qualification. The existing seed/math/tool tests do
 not execute these three new entries. Native binary ABI, private CRT/FH3,
 specific original/source runtime differential and gameplay remain unproven.
+
+The combined Release Win32 `scripts/build.ps1` passed at
+`026da884ef927effb85f118488357a83634eff48`, with all three configured existing
+CTest entries passing. The four new translation units in this batch each
+occur once in the actual `bsp_core.lib`. The transfer verifier accepts all
+six typed edges here: four CALLs and two tail JMPs.
