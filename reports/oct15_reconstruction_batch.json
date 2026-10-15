@@ -1,0 +1,199 @@
+{
+  "packet": "oct15_reconstruction_batch",
+  "base_commit": "e5e1b5af2",
+  "status": "integrated_build_checked_annotated",
+  "goal": "Advance evidence-backed reconstruction with isolated, leased worker packets and reviewed integration into main",
+  "selection": {
+    "registered_ready_packets": 0,
+    "method": "Ad hoc bounded candidates checked against current lookup/source and explicit ownership",
+    "source_index_refreshed": true
+  },
+  "workers": [
+    {
+      "packet": "oct15_avoid_distance",
+      "branch": "agent/oct15_avoid_distance",
+      "addresses": [
+        "004171f0",
+        "004174a0",
+        "004f49f0"
+      ],
+      "report": "reports/oct15_avoid_distance.json",
+      "status": "integrated",
+      "source_commit": "2a0a10f42",
+      "validation_commit": "4e3faf769",
+      "worker_build": {
+        "result": "passed",
+        "suites": [
+          "reconstructed_math",
+          "tool_tests"
+        ],
+        "new_function_native_differential_fixture": false
+      }
+    },
+    {
+      "packet": "oct15_movie_factory",
+      "branch": "agent/oct15_movie_factory",
+      "addresses": [
+        "00737710",
+        "00737730"
+      ],
+      "report": "reports/oct15_movie_factory.json",
+      "status": "integrated",
+      "source_commit": "bf61a8788",
+      "validation_commit": "a098a352a",
+      "worker_build": {
+        "result": "passed",
+        "suites": [
+          "reconstructed_math",
+          "tool_tests"
+        ],
+        "new_function_native_differential_fixture": false
+      }
+    },
+    {
+      "packet": "oct15_avoid_tangent",
+      "branch": "agent/oct15_avoid_tangent",
+      "addresses": [
+        "0041b4b0",
+        "0041b580",
+        "0041b7e0"
+      ],
+      "report": "reports/oct15_avoid_tangent.json",
+      "status": "integrated",
+      "source_commit": "2f362246a",
+      "validation_commit": "e8322acc9",
+      "worker_build": {
+        "result": "passed",
+        "suites": [
+          "reconstructed_math",
+          "tool_tests"
+        ],
+        "new_function_native_differential_fixture": false
+      }
+    }
+  ],
+  "integrator_corrections": [
+    {
+      "commit": "de58d217b",
+      "report": "reports/oct15_distance_dependency_review.json",
+      "status": "integrated_and_annotated",
+      "summary": "Corrected 004f49f0 substitution and original ABI evidence without changing source behavior"
+    }
+  ],
+  "validation": {
+    "seed_byte_comparison": {
+      "ranges": 8,
+      "all_match_installed_executable": true,
+      "scope": "Only the eight checked byte ranges; not whole-image or gameplay proof"
+    },
+    "baseline_build": {
+      "result": "passed",
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "log": "local/oct15_baseline_build.log"
+    },
+    "combined_build": {
+      "commit": "263a690fc296050ef676102ab2c7a008adf0e444",
+      "result": "passed",
+      "configuration": "MSVC Win32 Release",
+      "suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "log": "local/oct15_combined_build.log"
+    },
+    "current_main_revalidation": {
+      "concurrent_main": "fcb38e12c135659832d314cc568e9262442630a1",
+      "combined_commit": "0db8158e2e9be5400b5786dfbf7e9c891d6f4633",
+      "result": "passed",
+      "log": "local/oct15_combined_current_main_build.log",
+      "suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "test_count": 3
+    },
+    "call_rows": {
+      "checked": 17,
+      "failed": 0
+    },
+    "final_build": {
+      "commit": "59c0bc3b6df371e8561927bc0485cb2c59ca38d9",
+      "result": "passed",
+      "configuration": "MSVC Win32 Release",
+      "suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "test_count": 3,
+      "log": "local/oct15_final_build.log"
+    }
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "preserved_existing_untracked_files": [
+    "reports/native_light_shadow_view_build.txt",
+    "src/argon_v2_seg40.cpp"
+  ],
+  "function_count": 8,
+  "reviews": [
+    {
+      "reviewer": "primary",
+      "scope": "all eight new bodies, source interfaces, 17 exact call-site claims and same-address substitution separation",
+      "findings": "none outstanding"
+    },
+    {
+      "reviewer": "movie_factory worker",
+      "scope": "0041b580 weighted loop source/header against complete native listing and multiply bytes",
+      "findings": "none under declared stable snapshot and nonaliasing projection contract"
+    },
+    {
+      "reviewer": "avoid_tangent worker",
+      "scope": "00737730 allocation/lifetime and returned shared-base pointer",
+      "findings": "none; +10h confirmed by constructor and native vbtable bytes"
+    }
+  ],
+  "evidence_limits": [
+    "New bodies are typed source reconstructions with explicit borrowed host/CRT contracts; they are not binary ABI replacements.",
+    "Existing native_math_differential tests cover verified seed routines, not these eight new functions.",
+    "No new function-specific native differential fixture, application activation, original-game runtime or gameplay validation.",
+    "Existing ship-AI double substitution remains separate and is not used by the new segment-pair wrapper."
+  ],
+  "integration": {
+    "promoted_source_commit": "0db8158e2e9be5400b5786dfbf7e9c891d6f4633",
+    "branch": "main",
+    "source_promotion": "fast-forward after exact combined build",
+    "annotation": {
+      "applied_addresses": 8,
+      "project_saved": true,
+      "previous_values_log": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/ghidra-annotations-20261015T164419Z.json",
+      "affected_exports": "all eight re-exported with --force after annotation",
+      "snapshot": "forced refresh completed",
+      "main_index": "rebuilt after refreshed snapshot"
+    },
+    "validated_code_and_metadata_commit": "59c0bc3b6df371e8561927bc0485cb2c59ca38d9",
+    "publication_target": "origin/main"
+  },
+  "ledger_conflict_resolution": "Preserved the corrected old substitution record and independently accepted the newly built segment_pair_distance record; compared base/ours/theirs per (address,kind,name), with no competing same-record edit.",
+  "retained_worktrees": "All three worker trees and the integration tree are retained for same-stream reuse and existing build caches.",
+  "followup_candidates": [
+    {
+      "addresses": [
+        "0041bd10"
+      ],
+      "scope": "Avoid-zone layer normal from four cell-height samples; native CRT truncation helper already available; not yet reconstructed"
+    },
+    {
+      "addresses": [
+        "0041a030",
+        "0041a1e0"
+      ],
+      "scope": "Owned avoid-zone copy and destruction candidates; count/capacity and EH semantics need listing review before implementation"
+    }
+  ]
+}
