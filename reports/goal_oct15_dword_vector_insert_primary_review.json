@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_dword_vector_insert_primary_review",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 9,
+  "private_source_cleanup_actions": 1,
+  "native_bytes": 984,
+  "native_instructions": 371,
+  "spans": [
+    {
+      "address": "0046afb0",
+      "native_bytes": 436,
+      "instructions": 181,
+      "scope": "complete ordinary Source",
+      "live_equals_installed": true,
+      "sha256": "48981d16d240fa455ea57aca4fd3e681691c36e330502085f3abcc942378412a"
+    },
+    {
+      "address": "0046b4a0",
+      "native_bytes": 137,
+      "instructions": 56,
+      "scope": "complete ordinary Source",
+      "live_equals_installed": true,
+      "sha256": "5b6cf4106b98fffd310edc3bf7f0b47bf481a510c9f2090936ece405ab8a60c3"
+    },
+    {
+      "address": "00466ce0",
+      "native_bytes": 85,
+      "instructions": 25,
+      "scope": "complete ordinary Source",
+      "live_equals_installed": true,
+      "sha256": "ffcad1bc0b134d49fb55f5a9f4a991dd8cca737b6e000f3ca544d179a107e0f2"
+    },
+    {
+      "address": "0046a400",
+      "native_bytes": 105,
+      "instructions": 23,
+      "scope": "complete ordinary Source",
+      "live_equals_installed": true,
+      "sha256": "51745bd10e4e8b2589f600af3e11462b953a61b7c9bfc45dc38d49c04c3f2b10"
+    },
+    {
+      "address": "00c61c50",
+      "native_bytes": 8,
+      "instructions": 2,
+      "scope": "qualified Source completed-message guard mapping",
+      "live_equals_installed": true,
+      "sha256": "d9b3b31fb5948da441727c970500c48b993730e23208adcd52f982d71fcf1e01"
+    },
+    {
+      "address": "00468f60",
+      "native_bytes": 48,
+      "instructions": 18,
+      "scope": "complete ordinary Source",
+      "live_equals_installed": true,
+      "sha256": "9fd691f0403e2194592a3060e90c49fa8184e53f1809e4df9deccf8512e94606"
+    },
+    {
+      "address": "00468460",
+      "native_bytes": 47,
+      "instructions": 19,
+      "scope": "complete ordinary Source",
+      "live_equals_installed": true,
+      "sha256": "dd1decd8fdf424cc80d7548fb92051a6026dd7fcb60bf8987be255831079832f"
+    },
+    {
+      "address": "00469950",
+      "native_bytes": 46,
+      "instructions": 21,
+      "scope": "complete ordinary Source",
+      "live_equals_installed": true,
+      "sha256": "e6d4b9ce8c62170127c124969eb0a3018f99c8e4d1308e5f259b14bdce15995e"
+    },
+    {
+      "address": "00468020",
+      "native_bytes": 42,
+      "instructions": 13,
+      "scope": "complete ordinary Source",
+      "live_equals_installed": true,
+      "sha256": "f7d5bc6050aa3064a914e105fd993000c5b7335808ca894b6d26fe800601118b"
+    },
+    {
+      "address": "00468440",
+      "native_bytes": 30,
+      "instructions": 13,
+      "scope": "complete ordinary Source",
+      "live_equals_installed": true,
+      "sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0"
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct15_dword_vector_insert.json",
+    "reports/goal_oct15_dword_vector_allocation.json",
+    "reports/goal_oct15_dword_move_nonzero.json",
+    "reports/goal_oct15_dword_vector_ranges.json",
+    "reports/goal_oct15_vector_storage_tidy_alias.json",
+    "reports/goal_oct15_dword_fill_alias.json"
+  ],
+  "typed_transfer_rows_checked": 39,
+  "typed_transfer_rows_failed": 0,
+  "independent_reviews": [
+    "Independent worker: whole237-op N/One insertion Source/header/doc matches full native listings including explicit argument mutations and returning diagnostics",
+    "Primary: complete allocation/length/unwind listings,new Source and complete canonical allocation/owning error/guard match",
+    "Primary: complete nonzero-move and backward/count-fill listings/Source preserve their distinct zero/signedpositive/nonzero-negative/highbit predicates",
+    "Independent worker and primary: whole tidy/fill aliases and actual canonical Source match; Source delegation is not a native call claim"
+  ],
+  "source_hashes": {
+    "src/native_scene_dword_vector_insert.cpp": "ffd200811897d4626ae5b13fc4f6cb74daaebef43c99702df99befd13157479a",
+    "include/bsp/native_scene_dword_vector_insert.hpp": "6cfce807c25821ae9d65d8b76b990c34793df31b0b9920caa320366d8462952d",
+    "src/native_scene_dword_vector_allocation.cpp": "b6435b655c5f7cf6391d2b4ff68a729112382607661bbd148dcd3837e8949c9a",
+    "include/bsp/native_scene_dword_vector_allocation.hpp": "4d1db8661952a7eec9a8944a5a07fce5df32071bee7b519d3e7f1b81695d454d",
+    "src/native_scene_dword_move_nonzero.cpp": "b7cb4a0d41a6c2c1715f13a1d45f69a02d6026308d5d3a3f582770fb058f323f",
+    "include/bsp/native_scene_dword_move_nonzero.hpp": "b6c522fddc880ddeb9b0ad78dfbf001e951fb678b1488666bba05833981f0419",
+    "src/native_scene_dword_vector_ranges.cpp": "1396e216684fde725c976a35d84102c7a74886698ca9192a8bd94ef00a793072",
+    "include/bsp/native_scene_dword_vector_ranges.hpp": "445c8c1c56b3f6172602411f46c9524d69099d3b54199b68aaf8adbda5f14442",
+    "src/native_vector_storage_tidy_alias.cpp": "f48d6a6b5b4fcb01439b6e8adfe713ebf9767e4d3e9c019d1e9874d5a0189f4a",
+    "include/bsp/native_vector_storage_tidy_alias.hpp": "58a8e618e7d4eee1f9d6e40f538d5b9c78efa43c9f356ceb50bca6a00377cc78",
+    "src/native_scene_dword_fill_alias.cpp": "2c7843c82c7fef4016b816225f075d4d2baccffbb2115d0530fcfa23d0751866",
+    "include/bsp/native_scene_dword_fill_alias.hpp": "f9371b7d36c772157f381f72bf04877281f40e7ed23c9a4dddd8fd6c80cfe7f4"
+  },
+  "combined_build": {
+    "revision": "99816417253c09cf5f4e9367d4d29dd053ff9394",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_dword_vector_combined_build.log",
+    "log_sha256": "9ef667ab02b4818fefaf7018a6ce00be71b18c49cf3e6d4446265dc566f31614",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 6.93,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+    "scope": "existing regression checks; native math seeds do not execute these new bodies"
+  },
+  "project_source_counts": {
+    "native_scene_dword_vector_insert": 1,
+    "native_scene_dword_vector_allocation": 1,
+    "native_scene_dword_move_nonzero": 1,
+    "native_scene_dword_vector_ranges": 1,
+    "native_vector_storage_tidy_alias": 1,
+    "native_scene_dword_fill_alias": 1
+  },
+  "unique_archive_objects": {
+    "native_scene_dword_vector_insert": [
+      "bsp_core.dir\\Release\\native_scene_dword_vector_insert.obj"
+    ],
+    "native_scene_dword_vector_allocation": [
+      "bsp_core.dir\\Release\\native_scene_dword_vector_allocation.obj"
+    ],
+    "native_scene_dword_move_nonzero": [
+      "bsp_core.dir\\Release\\native_scene_dword_move_nonzero.obj"
+    ],
+    "native_scene_dword_vector_ranges": [
+      "bsp_core.dir\\Release\\native_scene_dword_vector_ranges.obj"
+    ],
+    "native_vector_storage_tidy_alias": [
+      "bsp_core.dir\\Release\\native_vector_storage_tidy_alias.obj"
+    ],
+    "native_scene_dword_fill_alias": [
+      "bsp_core.dir\\Release\\native_scene_dword_fill_alias.obj"
+    ]
+  },
+  "archive_sha256": "a8669a8d0e4874f49ab04085257b5a5a0d0e88b1eb23dc95c06248a1f304d31a",
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "New explicit raw/live-frame/currentCRT Source APIs,not Original register/private-stack/argument-home/heap/FH3/fault ABI identity",
+    "The cleanup is a canonical Source guard mapping,not a new private-frame binary entry",
+    "Existing math differential seeds do not execute these new bodies; no application or game proof"
+  ],
+  "compiled_parent_review": {
+    "object": "build\\win32\\bsp_core.dir\\Release\\native_scene_dword_vector_insert.obj",
+    "bytes": 3874,
+    "sha256": "6e415b34f7001b44e932478d8dd7d397612134f7448fbac8a32c8265caf6d62d",
+    "dump": "local\\goal_oct15_dword_vector_insert_object.txt",
+    "dump_sha256": "2130f4bd3810b4740bdf97b9964ac0dad19ac1585d17de55d962f31189287ae9",
+    "result": "passed; actual memory/call/publication schedules inspected",
+    "N_offsets": {
+      "scalar_store": "14h before count test3Ah",
+      "inplace_byte_count_store": "17Ah",
+      "short_count_reload": "1CCh",
+      "long_count_reload": "210h",
+      "growth_publication": "14Dh begin,153h capacity,159h end",
+      "long_end_publish": "203h before copybackward20Bh"
+    },
+    "One_offsets": {
+      "value_then_position": "64h,67h before child metadata",
+      "child_stores": "74h value,7Ah count,81h position,84h owner",
+      "own_position_store": "A9h",
+      "output_stores": "C1h NODE,C4h OWNER"
+    },
+    "optimization_qualification": "MSVC uses SHR instead of SAR for old size/index when only the subsequent modulo32 multiplication by4 observes those bits; high2-bit differences cancel. Pure arithmetic may move across stores; original instruction/register/fault ABI is not claimed."
+  }
+}

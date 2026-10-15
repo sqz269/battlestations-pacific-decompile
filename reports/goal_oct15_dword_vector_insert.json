@@ -7,7 +7,7 @@
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
-  "status": "whole_raw_Source_independently_assembly_reviewed_real_providers_integrated_build_pending",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
   "source_ready": true,
   "routines": [
     {
@@ -189,5 +189,58 @@
       "function": "0046c450",
       "contract": "actual stack output/owner/position/value pointer;RET10h;caller ignores returned iterator8 address"
     }
-  ]
+  ],
+  "verification": {
+    "combined_build": {
+      "revision": "99816417253c09cf5f4e9367d4d29dd053ff9394",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_dword_vector_combined_build.log",
+      "log_sha256": "9ef667ab02b4818fefaf7018a6ce00be71b18c49cf3e6d4446265dc566f31614",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 6.93,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies"
+    },
+    "typed_rows_passed": 18,
+    "typed_rows_failed": 0,
+    "compiled_parent_review": {
+      "object": "build\\win32\\bsp_core.dir\\Release\\native_scene_dword_vector_insert.obj",
+      "bytes": 3874,
+      "sha256": "6e415b34f7001b44e932478d8dd7d397612134f7448fbac8a32c8265caf6d62d",
+      "dump": "local\\goal_oct15_dword_vector_insert_object.txt",
+      "dump_sha256": "2130f4bd3810b4740bdf97b9964ac0dad19ac1585d17de55d962f31189287ae9",
+      "result": "passed; actual memory/call/publication schedules inspected",
+      "N_offsets": {
+        "scalar_store": "14h before count test3Ah",
+        "inplace_byte_count_store": "17Ah",
+        "short_count_reload": "1CCh",
+        "long_count_reload": "210h",
+        "growth_publication": "14Dh begin,153h capacity,159h end",
+        "long_end_publish": "203h before copybackward20Bh"
+      },
+      "One_offsets": {
+        "value_then_position": "64h,67h before child metadata",
+        "child_stores": "74h value,7Ah count,81h position,84h owner",
+        "own_position_store": "A9h",
+        "output_stores": "C1h NODE,C4h OWNER"
+      },
+      "optimization_qualification": "MSVC uses SHR instead of SAR for old size/index when only the subsequent modulo32 multiplication by4 observes those bits; high2-bit differences cancel. Pure arithmetic may move across stores; original instruction/register/fault ABI is not claimed."
+    },
+    "new_tests": 0
+  },
+  "annotation": {
+    "prior_values_log": "local/ghidra-annotations-20261015T222349Z.json",
+    "names_retained": true,
+    "program_saved": true,
+    "exports_refreshed": true,
+    "final_prior_values_log": "local/ghidra-annotations-20261015T223651Z.json"
+  }
 }

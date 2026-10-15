@@ -2,7 +2,7 @@
 
 Complete ordinary Source for 0046AFB0 (436B/181 instructions) and 0046B4A0
 (137B/56 instructions). Independent full-listing review passed and every real
-provider is integrated. The default Win32 build gate remains pending.
+provider is integrated. The default Win32 build and all three existing checks passed.
 The descriptive vector/scene names are hypotheses, not recovered class symbols.
 The original STL names are retained. Vector storage is the observed 16B raw
 receiver: +4 begin, +8 end, +Ch capacity, with +0 untouched directly.
@@ -62,3 +62,5 @@ credit. Their actual Source implementations are now integrated.
 Current-CRT/owning C++ transport does not prove original heap/staticCRT/
 RTTI/FH3/register/private-stack/fault ABI, new-body native differential behavior,
 application adoption or game validation.
+
+Final combined default MSVC Release Win32 build passed3/3 existing CTests in6.93s; all39 typed rows and six unique Source/project/archive objects were checked. Detailed receipt: reports/goal_oct15_dword_vector_insert_primary_review.json.
