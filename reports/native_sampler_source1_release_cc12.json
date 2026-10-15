@@ -1,0 +1,482 @@
+{
+  "schema": "bsp.native-sampler-source1-release.cc12.v1",
+  "status": "bounded_static_nonzero_release_contract_and_current_win32_provider_verified_production_admission_pending",
+  "source_commit": "534081bc34d6559bfd92642aad1f7fe05c56ec2b",
+  "scope": {
+    "owner_function": "00B3B280",
+    "internal_sites": [
+      "00B3B2EF",
+      "00B3B328"
+    ],
+    "descriptor_source_field": "sampler+0x14 == 1",
+    "compiler_source_mode": 0,
+    "compiler_load_variants": 0,
+    "production_code_changed": false,
+    "saved_ghidra_changed": false
+  },
+  "documentation": "docs/NATIVE_SAMPLER_SOURCE1_RELEASE_CC12.md",
+  "proof": {
+    "steady_stack": "B = ESP in B3B280 loop after saved EBX/ESI/EDI",
+    "word": "W = B-16",
+    "established_before_release": "B3B2DF CALL B44CF0 after three pushed args establishes 00B3B2E4 at W; ordinary RET 0Ch preserves it.",
+    "release_registers": {
+      "EBP": "builder",
+      "EBX": "pass",
+      "ESI": "current sampler",
+      "EDI": "actual loader-returned owner",
+      "EDX": "owner+04 before CALL",
+      "ECX": "volatile, replaced by profiled atomic helper with owner+04"
+    },
+    "decrement_stack": {
+      "B-4": "owner+04 argument",
+      "B-8": "00B3B2F5 return PC",
+      "B-12": "helper saves builder EBP",
+      "B-16": "untouched by qualified atomic helper"
+    },
+    "nonzero_condition": "Original EAX/new count != 0. Proposed conservative source qualification observes actual same-member fetch_sub previous count > 1.",
+    "conditional_result": "W remains 00B3B2E4 only for exact profiled normally returned nonzero decrement, absent aliasing of the real owner+04 with W.",
+    "zero_branch": "B3B2FF calls same-owner vtable[0] with ECX=EDI; terminal stack effects unqualified, W remains unknown without own capture or later established write.",
+    "next_consumption": "Source1 increments builder+8C but appends no B5F100 row. A later Source0/Source3 may consume W at B3B328; B3B369 state call first replaces W with 00B3B36E."
+  },
+  "current_source_gap": [
+    "Canonical actual owner release discards its fetch_sub result; Source1 only records entry/return and identity.",
+    "Existing pre-invocation release arrays cannot safely be prefilled from the conditional constant.",
+    "A normally returned B44CF0 is not proof of an increment: null allocation and callback-dependent B44690 equality skip remain possible.",
+    "Exact actual owner/domain plus live count result and original provider match must accompany any future admission."
+  ],
+  "static_call_coverage": [
+    {
+      "site": "00B3B2BA",
+      "target": "004DE4B0",
+      "claim": "Call identity only; singleton live invocation not run"
+    },
+    {
+      "site": "00B3B2C5",
+      "target": "00B1B4D0",
+      "claim": "Full wrapper bytes matched; real owner load not run"
+    },
+    {
+      "site": "00B3B2DF",
+      "target": "00B44CF0",
+      "claim": "Full parent binding and B44690 constructor bytes matched; actual binding not run"
+    },
+    {
+      "site": "00B3B2EF",
+      "target": "CE2220 -> KERNEL32.dll!InterlockedDecrement",
+      "claim": "Original import identity, full provider bytes and separate actual Win32 export read; no release executed"
+    },
+    {
+      "site": "00B3B2FF",
+      "target": "[owner.vtable+0]",
+      "claim": "Reached only on actual zero result; exact owner terminal unresolved"
+    },
+    {
+      "site": "00B3B328",
+      "target": "00B5F100",
+      "claim": "Full consumer bytes matched, partial-byte/full-DWORD contract; no row executed"
+    },
+    {
+      "site": "00B3B369",
+      "target": "00B5ED60",
+      "claim": "Call placement establishes return PC; existing state-write contract reused, callee not newly validated"
+    }
+  ],
+  "validation": {
+    "schema": "bsp.sampler-source1-static-provider-check.v1",
+    "source_commit": "534081bc34d6559bfd92642aad1f7fe05c56ec2b",
+    "configured_saved_target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "original_binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "original_spans": [
+      {
+        "address": "00B3B280",
+        "length": 306,
+        "sha256": "cdf241047d8ec93b39fa9058ac6b15b71c386832dfb4170b2dc7c0fcce6e28d9",
+        "live_saved_ghidra_matches_installed_pe": true
+      },
+      {
+        "address": "00B1B4D0",
+        "length": 280,
+        "sha256": "842408999114f6f975691e501a6a8bedbd52c55796eb4d47c694e211ca335ea1",
+        "live_saved_ghidra_matches_installed_pe": true
+      },
+      {
+        "address": "00B44CF0",
+        "length": 106,
+        "sha256": "bb34f3378fa7b369d2d58c4f96a9ba82f6a43a983079ddfbc0debedafffa92b1",
+        "live_saved_ghidra_matches_installed_pe": true
+      },
+      {
+        "address": "00B44690",
+        "length": 188,
+        "sha256": "48f12c9dfdbd6950cdc5e2620055031aa62f7fcfb98a993c3979955bbe336a74",
+        "live_saved_ghidra_matches_installed_pe": true
+      },
+      {
+        "address": "00B5F100",
+        "length": 81,
+        "sha256": "43f1eca0b14a4a2a70304c466e895e6c9c63794db89fa31beadd817cd955bd70",
+        "live_saved_ghidra_matches_installed_pe": true
+      }
+    ],
+    "total_original_bytes": 961,
+    "release_import": {
+      "iat_va": "00CE2220",
+      "dll": "KERNEL32.dll",
+      "symbol": "InterlockedDecrement"
+    },
+    "provider": {
+      "disk_path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+      "disk_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+      "timestamp": 251998075,
+      "size_of_image": 983040,
+      "export_rva": "00031AB0",
+      "body_sha256": "3363f28e310bb339a680876c331ce1f910ac0070ee2e93a6889491db7f6d6e97",
+      "body_hex": "8bff558bec8b4d0883c8fff00fc101485dc20400",
+      "relocations_in_body": [],
+      "disassembly": [
+        {
+          "address": "00031AB0",
+          "bytes": "8bff",
+          "instruction": "mov edi, edi"
+        },
+        {
+          "address": "00031AB2",
+          "bytes": "55",
+          "instruction": "push ebp"
+        },
+        {
+          "address": "00031AB3",
+          "bytes": "8bec",
+          "instruction": "mov ebp, esp"
+        },
+        {
+          "address": "00031AB5",
+          "bytes": "8b4d08",
+          "instruction": "mov ecx, dword ptr [ebp + 8]"
+        },
+        {
+          "address": "00031AB8",
+          "bytes": "83c8ff",
+          "instruction": "or eax, 0xffffffff"
+        },
+        {
+          "address": "00031ABB",
+          "bytes": "f00fc101",
+          "instruction": "lock xadd dword ptr [ecx], eax"
+        },
+        {
+          "address": "00031ABF",
+          "bytes": "48",
+          "instruction": "dec eax"
+        },
+        {
+          "address": "00031AC0",
+          "bytes": "5d",
+          "instruction": "pop ebp"
+        },
+        {
+          "address": "00031AC1",
+          "bytes": "c20400",
+          "instruction": "ret 4"
+        }
+      ],
+      "actual_win32_export_observation": {
+        "schema": "bsp.sampler-source1.live-provider.v1",
+        "utc": "2026-10-15T01:50:13.1991779Z",
+        "process_id": 91908,
+        "pointer_size": 4,
+        "module_path": "C:\\WINDOWS\\System32\\KERNEL32.DLL",
+        "module_base": "761C0000",
+        "symbol": "InterlockedDecrement",
+        "entry": "761F1AB0",
+        "rva": "00031AB0",
+        "bytes": "8bff558bec8b4d0883c8fff00fc101485dc20400",
+        "executed_release": false,
+        "qualification": "Read-only actual Win32 export observation; no sampler owner or release invocation."
+      },
+      "matches_accepted_cached_entry_kernel32_profile": true
+    },
+    "source_pins": [
+      {
+        "path": "config/target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "size": 14518,
+        "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685"
+      },
+      {
+        "path": "src/native_material_descriptor_samplers.cpp",
+        "size": 7354,
+        "sha256": "659adc36c07f1e905dde518a79e2df5d3fcc956bdad16d55a0a344bb74b7e630"
+      },
+      {
+        "path": "include/bsp/native_material_descriptor_samplers.hpp",
+        "size": 5428,
+        "sha256": "7605d4e759b6d3e54614d80eb75a234d8e24b09af1d9767ccfbc15b7bedc58b1"
+      },
+      {
+        "path": "src/native_material_pass_copy.cpp",
+        "size": 12938,
+        "sha256": "33e8f824814318affc9c3bb211391a01a92467064559d5cc0f4be30d4235e6d5"
+      },
+      {
+        "path": "include/bsp/native_material_pass_copy.hpp",
+        "size": 5304,
+        "sha256": "14fdf93d00083fbdde9a6d4528a39d64bf6da0b928d522d43b43ded1a9197110"
+      },
+      {
+        "path": "src/native_shader_descriptor_samplers.cpp",
+        "size": 4927,
+        "sha256": "7dd8abef1228cb57962a632f4ef3ff111825b63a67f1698d7fb32c29a3393d13"
+      },
+      {
+        "path": "include/bsp/native_shader_descriptor_samplers.hpp",
+        "size": 3377,
+        "sha256": "1d187f8610b20d0b92ed5ed3c6940116ead5b768f7907cbd25b4db926b16d977"
+      },
+      {
+        "path": "src/native_render_context.cpp",
+        "size": 10586,
+        "sha256": "da4b48b339a72c3bfe9323510907b1220cb9c371e15122799441d3ef9691699b"
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "size": 9300,
+        "sha256": "0a717cd4e5f15432ba2f4ad41f59cb15da3e2fc95972a9df7b75d4541ec2d806"
+      },
+      {
+        "path": "src/game_native_gui_sampler_application.cpp",
+        "size": 10919,
+        "sha256": "d47b03291cecad3927dc742325c448121f663ab0b40f493c8e88116ef544ed1e"
+      },
+      {
+        "path": "include/bsp/game_native_gui_sampler_application.hpp",
+        "size": 3249,
+        "sha256": "2aa6bf3276f649e8fc02eb5d0c1f78902303f8c798208ea1e97c22b8672d2fd9"
+      },
+      {
+        "path": "src/native_sampler_entry_word_boundary.inc",
+        "size": 14008,
+        "sha256": "6b430b459c839ae8aff2ba7cb0e2e48d5facb96e727a9ab61adcf465a8d4e606"
+      }
+    ],
+    "preparation_attempts": [
+      {
+        "attempt": 1,
+        "result": "PowerShell process refused local capture_provider.ps1 because its default script execution policy disables scripts. No target game or provider release was invoked."
+      },
+      {
+        "attempt": 2,
+        "result": "Same read-only script with process-scoped -ExecutionPolicy Bypass succeeded. No persistent policy changed. No target game or provider release was invoked."
+      }
+    ],
+    "verification_scope": {
+      "native_byte_comparison": true,
+      "live_provider_code_read": true,
+      "original_release_invoked": false,
+      "actual_source1_owner_release_observed": false,
+      "source_original_differential": false,
+      "new_coff_or_linked_root_review": false,
+      "whole_caller_abi_fh3": false,
+      "startup_gameplay": false
+    }
+  },
+  "artifact_receipt": {
+    "archive": {
+      "path": "local/cc12_sampler_source1_release_evidence.zip",
+      "size": 45881,
+      "sha256": "cbce49f1462d8a130a79cc5b315a82aea1559d50ae1c3447b0e4ddcdd37e2867"
+    },
+    "files": [
+      {
+        "path": "local/cc12_sampler_source1_release/analyze.py",
+        "size": 6227,
+        "sha256": "f8e3327947dbfbb4eaf73d92b16620276d7a594730b5b115372035f94bf23ff5"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/capture_provider.ps1",
+        "size": 1851,
+        "sha256": "7eca16466e00a4d1642918bce44b009c7f7081784f33fb49e26d3d9f44077c0c"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/checks.json",
+        "size": 7450,
+        "sha256": "1460ecfa207d8e4929337b794f59c6e5ecf898b7aac45d0147d0d8ad38220f1b"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/ghidra_b1b4d0.txt",
+        "size": 1354,
+        "sha256": "bcb55461444f01f1c711df0987460f0d4d5ae9ff999e72b5645b53e89f980641"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/ghidra_b3b280.txt",
+        "size": 1484,
+        "sha256": "53a9cf1ec4c78287e0074161572a84a1f49e04b554c9121535109690de9961ae"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/ghidra_b3b280_partial304.txt",
+        "size": 1463,
+        "sha256": "c46eba405e6c30a379903f7e853b3fdd38c6feaeb60974b0070a495b64498a31"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/ghidra_b44690.txt",
+        "size": 908,
+        "sha256": "6af4c0187c35765d249f916e95d07d3f2cae65acc5eb5abf35ebcf56361161f7"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/ghidra_b44cf0.txt",
+        "size": 515,
+        "sha256": "400ba695f0d695bf3f6f01868035343fb0fa932ccbacce4958dfb87f23f517b2"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/ghidra_b5f100.txt",
+        "size": 402,
+        "sha256": "f1735c86b36f670a2e1b6bc3000ae96c6ea0ce396677dd6945171b567b8f719a"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/ghidra_status.txt",
+        "size": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/kernel32_decrement.bin",
+        "size": 20,
+        "sha256": "3363f28e310bb339a680876c331ce1f910ac0070ee2e93a6889491db7f6d6e97"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/live_provider.json",
+        "size": 547,
+        "sha256": "e9e9abdb3752948739d2b9dbdd6d76a55062e2722ab2107df2474d4eb8bb7263"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/original_b1b4d0.bin",
+        "size": 280,
+        "sha256": "842408999114f6f975691e501a6a8bedbd52c55796eb4d47c694e211ca335ea1"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/original_b3b280.bin",
+        "size": 306,
+        "sha256": "cdf241047d8ec93b39fa9058ac6b15b71c386832dfb4170b2dc7c0fcce6e28d9"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/original_b44690.bin",
+        "size": 188,
+        "sha256": "48f12c9dfdbd6950cdc5e2620055031aa62f7fcfb98a993c3979955bbe336a74"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/original_b44cf0.bin",
+        "size": 106,
+        "sha256": "bb34f3378fa7b369d2d58c4f96a9ba82f6a43a983079ddfbc0debedafffa92b1"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/original_b5f100.bin",
+        "size": 81,
+        "sha256": "43f1eca0b14a4a2a70304c466e895e6c9c63794db89fa31beadd817cd955bd70"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/provider_capture.log",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/sources/config/target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/sources/include/bsp/game_native_gui_sampler_application.hpp",
+        "size": 3249,
+        "sha256": "2aa6bf3276f649e8fc02eb5d0c1f78902303f8c798208ea1e97c22b8672d2fd9"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/sources/include/bsp/native_material_descriptor_samplers.hpp",
+        "size": 5428,
+        "sha256": "7605d4e759b6d3e54614d80eb75a234d8e24b09af1d9767ccfbc15b7bedc58b1"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/sources/include/bsp/native_material_pass_copy.hpp",
+        "size": 5304,
+        "sha256": "14fdf93d00083fbdde9a6d4528a39d64bf6da0b928d522d43b43ded1a9197110"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/sources/include/bsp/native_render_context.hpp",
+        "size": 9300,
+        "sha256": "0a717cd4e5f15432ba2f4ad41f59cb15da3e2fc95972a9df7b75d4541ec2d806"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/sources/include/bsp/native_shader_descriptor_samplers.hpp",
+        "size": 3377,
+        "sha256": "1d187f8610b20d0b92ed5ed3c6940116ead5b768f7907cbd25b4db926b16d977"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/sources/src/game_native_gui_sampler_application.cpp",
+        "size": 10919,
+        "sha256": "d47b03291cecad3927dc742325c448121f663ab0b40f493c8e88116ef544ed1e"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/sources/src/native_material_descriptor_samplers.cpp",
+        "size": 7354,
+        "sha256": "659adc36c07f1e905dde518a79e2df5d3fcc956bdad16d55a0a344bb74b7e630"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/sources/src/native_material_pass_copy.cpp",
+        "size": 12938,
+        "sha256": "33e8f824814318affc9c3bb211391a01a92467064559d5cc0f4be30d4235e6d5"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/sources/src/native_render_context.cpp",
+        "size": 10586,
+        "sha256": "da4b48b339a72c3bfe9323510907b1220cb9c371e15122799441d3ef9691699b"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/sources/src/native_sampler_entry_word_boundary.inc",
+        "size": 14008,
+        "sha256": "6b430b459c839ae8aff2ba7cb0e2e48d5facb96e727a9ab61adcf465a8d4e606"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/sources/src/native_shader_descriptor_samplers.cpp",
+        "size": 4927,
+        "sha256": "7dd8abef1228cb57962a632f4ef3ff111825b63a67f1698d7fb32c29a3393d13"
+      },
+      {
+        "path": "local/cc12_sampler_source1_release/sources/tools/ghidra_export.py",
+        "size": 14518,
+        "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685"
+      }
+    ]
+  },
+  "immutable_parent_families_preserved": {
+    "cached_entry_source": "a9c37789edd41998f96002cbf8e0690aad8bbceb",
+    "accepted_followup": "ff84727077db606b89f1d706f4eebb6a3333e971",
+    "d4_bridge_sha256": "d480337b401359dd588edf03898dd6e7feb5e995f0149afa3fc96ce78268e06c"
+  },
+  "next_packet": "Source1 actual decrement observation + exact nonzero provider qualification + focused real loader-owner/binding to later Source0 original/source proof; separately resolve zero terminal if reached.",
+  "not_claimed": [
+    "descriptor Source1 production admission",
+    "fakemotionblur.mshd path observation",
+    "new COFF/linked-root closure",
+    "native/source execution differential",
+    "whole caller ABI",
+    "FH3/SEH",
+    "game startup",
+    "gameplay"
+  ]
+}
