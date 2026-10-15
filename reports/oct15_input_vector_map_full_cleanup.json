@@ -1,0 +1,469 @@
+{
+  "packet": "oct15_input_vector_map_full_cleanup",
+  "status": "raw_source_build_checked_two_admitted_fragments_two_whole_entries",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_input_vector_map_full_cleanup.cpp",
+  "header": "include/bsp/native_input_vector_map_full_cleanup.hpp",
+  "documentation": "docs/OCT15_INPUT_VECTOR_MAP_FULL_CLEANUP.md",
+  "routines": [
+    {
+      "address": "00559110",
+      "cpp_name": "clear_native_input_word_vector_tree_full_prefix_00559110",
+      "kind": "fragment",
+      "coverage": "ONLY_admitted_full_path_prefix_not_ordinary_eraser",
+      "owned_end": "0055918e",
+      "original_abi": "NativeECXtree,EDXunconsumed;stackoutput,firstowner,firstnode,lastowner,lastnode;RET14h/EAXoutput. Source retains physical words and adds actualRawCtx."
+    },
+    {
+      "address": "005599c0",
+      "cpp_name": "clear_native_input_descriptor_vector_tree_full_prefix_005599c0",
+      "kind": "fragment",
+      "coverage": "ONLY_admitted_full_path_prefix_not_ordinary_eraser",
+      "owned_end": "00559a3e",
+      "original_abi": "NativeECXtree,EDXunconsumed;stackoutput,firstowner,firstnode,lastowner,lastnode;RET14h/EAXoutput. Source retains physical words and adds actualRawCtx."
+    },
+    {
+      "address": "0055a3f0",
+      "cpp_name": "destroy_native_input_word_vector_map_0055a3f0",
+      "kind": "function",
+      "coverage": "complete_whole_actual_owning_map_destructor",
+      "owned_end": "0055a423",
+      "original_abi": "NativeECXactual12Btree,EDXunconsumed;no stacked inputs;plainRET/definedEAX0. Source retains deadEDX and adds actualRawCtx."
+    },
+    {
+      "address": "0055aab0",
+      "cpp_name": "destroy_native_input_descriptor_vector_map_0055aab0",
+      "kind": "function",
+      "coverage": "complete_whole_actual_owning_map_destructor",
+      "owned_end": "0055aae3",
+      "original_abi": "NativeECXactual12Btree,EDXunconsumed;no stacked inputs;plainRET/definedEAX0. Source retains deadEDX and adds actualRawCtx."
+    }
+  ],
+  "readiness": {
+    "decision": "closed_for_bounded_source_only",
+    "capture": "local/oct15_input_vector_map_full_cleanup_readiness.json",
+    "accepted_dependencies": {
+      "00558310": "whole actual RawCtx word-vector pooled-key subtree",
+      "00558e60": "whole actual RawCtx descriptor-vector pooled-key subtree",
+      "00bf65ac": "actual singleton_lifetime_free/currentCRT"
+    },
+    "acceptance": "dfbcdaee3056280ed7eb44f501c618fc1a12795a accepted/published onMain073ac362c; actual named subtree Source rechecked",
+    "not_needed": "No noexcept NativeStringStorage bridge or provider. SDK diagnostic calls and partial iterator/erase calls are outside admitted Source paths, not fabricated dependencies."
+  },
+  "full_selection_preconditions": "Nonnull valid owned12Bheader/head;firstowner==lastowner==tree;firstnode==initialhead.left;lastnode==freshhead;stable exclusive storage through selection. Output writable actual8B iterator cell/private in whole consumers. Reached storage/ownership/currentpool/currentCRT admitted.",
+  "producer_proof": {
+    "0055a3f0": "0055A3F6 capturehead,0055A3F9 capturehead.left,private8Boutput/header twice/capturedhead.left/capturedhead\u219200559110;no callee before selection. Valid stable arguments select full branch before subtree/getter.",
+    "0055aab0": "0055AAB6 capturehead,0055AAB9 capturehead.left,same exact privateoutput/owner/first/last shape\u2192005599C0.",
+    "ownership": "Only these whole consumers and two prefix fragments are reconstructed. No future action, larger parent or other map is included."
+  },
+  "schedule": {
+    "selection": "Raw TESTfirstowner before initial head/left reads; compare firstowner/tree and firstnode/capturedleft; TESTlastowner then freshhead capture; compare lastowner/tree and lastnode/capturedhead; CURRENThead.parent root capture. Admitted outcomes are preconditions; no replacement badpath guard/abort/diagnostic/stub.",
+    "subtree": "Named actual RawCtx word/descriptor entry with rootbits forwarded as unconsumed nativeEDX and stacked root. Actual28h/nil25h, pooledkey+C, raw mapped backing18h/end1Ch/cap20h/opaque14h. Accepted backing-before-left and currentkey/getter schedule retained.",
+    "reset": "CURRENT head.parent=head;reload head BEFORE count0;capturedhead.left=head;reload head then head.right=head;reload currenthead.left result;output.owner=tree thenoutput.node=capturedresult. No direct tree+0 store.",
+    "whole": "Private8Boutput then CURRENT head free,zero+4 then+8,opaque+0 preserved,definedDWORD0 return. No null or repeatedcleanup guard.",
+    "failure": "Getter failure propagates through currentC++ with earlier subtree effects retained; no later reset/headfree/headerclear/return,no localEH/catch/retry/rollback."
+  },
+  "typed_metadata": {
+    "capture": "local\\oct15_input_vector_map_full_cleanup_typed_flow.json",
+    "sha256": "2f24618fcb0752c45f8f32f25e559d694d09eccddb29c0855e042ace94ab8113",
+    "modification_before_after": 456,
+    "complete": true,
+    "ordinary_erasers": "200B/two typed ranges each;new Source only first127B range",
+    "whole_destructors": "52B/one typed range each",
+    "all_non_thunk_and_returning": true
+  },
+  "disk_live_spans": [
+    {
+      "address": "00559110",
+      "owned_end": "0055918e",
+      "owned_bytes": 127,
+      "owned_instruction_starts": 49,
+      "bytes_equal": true,
+      "decode_complete": true,
+      "missing_live_starts": 0,
+      "extra_live_starts": 0,
+      "whole_envelope_bytes": 201,
+      "whole_defined_bytes": 200,
+      "whole_instruction_starts": 76,
+      "typed_body": {
+        "range_count": 2,
+        "returned_range_count": 2,
+        "address_count": "200",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00559110"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0055918e"
+            },
+            "length": "127"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00559190"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "005591d8"
+            },
+            "length": "73"
+          }
+        ]
+      },
+      "gaps_outside_typed_body": [
+        {
+          "address": "0055918f",
+          "byte": "90"
+        }
+      ],
+      "sha256": "91c49f1873bafa02b08e5b344591d718912dc6569da7375f7a1b40e382126c5d",
+      "excluded_partial_edges": [
+        {
+          "address": "00559135",
+          "target": "00559190",
+          "kind": "jne"
+        },
+        {
+          "address": "0055914f",
+          "target": "00559190",
+          "kind": "jne"
+        }
+      ],
+      "terminal": {
+        "address": "0055918c",
+        "mnemonic": "ret",
+        "operands": "0x14"
+      }
+    },
+    {
+      "address": "005599c0",
+      "owned_end": "00559a3e",
+      "owned_bytes": 127,
+      "owned_instruction_starts": 49,
+      "bytes_equal": true,
+      "decode_complete": true,
+      "missing_live_starts": 0,
+      "extra_live_starts": 0,
+      "whole_envelope_bytes": 201,
+      "whole_defined_bytes": 200,
+      "whole_instruction_starts": 76,
+      "typed_body": {
+        "range_count": 2,
+        "returned_range_count": 2,
+        "address_count": "200",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "005599c0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00559a3e"
+            },
+            "length": "127"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00559a40"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00559a88"
+            },
+            "length": "73"
+          }
+        ]
+      },
+      "gaps_outside_typed_body": [
+        {
+          "address": "00559a3f",
+          "byte": "90"
+        }
+      ],
+      "sha256": "56e22f4482b488e5d92ed5e707f304791beb4327e76d252cb5512ba643d1118c",
+      "excluded_partial_edges": [
+        {
+          "address": "005599e5",
+          "target": "00559a40",
+          "kind": "jne"
+        },
+        {
+          "address": "005599ff",
+          "target": "00559a40",
+          "kind": "jne"
+        }
+      ],
+      "terminal": {
+        "address": "00559a3c",
+        "mnemonic": "ret",
+        "operands": "0x14"
+      }
+    },
+    {
+      "address": "0055a3f0",
+      "owned_end": "0055a423",
+      "owned_bytes": 52,
+      "owned_instruction_starts": 23,
+      "bytes_equal": true,
+      "decode_complete": true,
+      "missing_live_starts": 0,
+      "extra_live_starts": 0,
+      "whole_envelope_bytes": 52,
+      "whole_defined_bytes": 52,
+      "whole_instruction_starts": 23,
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "52",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0055a3f0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0055a423"
+            },
+            "length": "52"
+          }
+        ]
+      },
+      "gaps_outside_typed_body": [],
+      "sha256": "1845435fdc5ba67ebf3164b8a52edeeb61496fce76d7cd6b9956f71402382b89",
+      "excluded_partial_edges": [],
+      "terminal": {
+        "address": "0055a423",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    },
+    {
+      "address": "0055aab0",
+      "owned_end": "0055aae3",
+      "owned_bytes": 52,
+      "owned_instruction_starts": 23,
+      "bytes_equal": true,
+      "decode_complete": true,
+      "missing_live_starts": 0,
+      "extra_live_starts": 0,
+      "whole_envelope_bytes": 52,
+      "whole_defined_bytes": 52,
+      "whole_instruction_starts": 23,
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "52",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0055aab0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0055aae3"
+            },
+            "length": "52"
+          }
+        ]
+      },
+      "gaps_outside_typed_body": [],
+      "sha256": "dd19ef35a3cf2316419a945b98c354d91d82235bd0d0fc5b67978d45b3f6aa54",
+      "excluded_partial_edges": [],
+      "terminal": {
+        "address": "0055aae3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    }
+  ],
+  "evidence_capture": "local/oct15_input_vector_map_full_cleanup_evidence.json; ignored script compares complete read-only tool captures and installed PE, no execution/newtests",
+  "original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "coverage_totals": {
+    "owned_bytes": 358,
+    "owned_starts": 144,
+    "inspected_envelope_bytes": 506,
+    "inspected_defined_bytes": 504,
+    "inspected_starts": 198,
+    "all_disk_live_bytes_equal": true,
+    "decode_complete": true,
+    "missing_extra_starts": 0,
+    "typed_gaps_outside_bodies": [
+      "0055918f:90",
+      "00559a3f:90"
+    ]
+  },
+  "complete_equivalence": [
+    {
+      "first": "00559110",
+      "second": "005599c0",
+      "normalized_role_targets": {
+        "00558310": "SUBTREE",
+        "00558e60": "SUBTREE",
+        "00559110": "PREFIX",
+        "005599c0": "PREFIX",
+        "00bf6713": "SDK",
+        "00bf65ac": "CRT"
+      },
+      "external_rel32_bytes": 12,
+      "other_equal_bytes": 115,
+      "all_normalized_instructions_equal": true
+    },
+    {
+      "first": "0055a3f0",
+      "second": "0055aab0",
+      "normalized_role_targets": {
+        "00558310": "SUBTREE",
+        "00558e60": "SUBTREE",
+        "00559110": "PREFIX",
+        "005599c0": "PREFIX",
+        "00bf6713": "SDK",
+        "00bf65ac": "CRT"
+      },
+      "external_rel32_bytes": 8,
+      "other_equal_bytes": 44,
+      "all_normalized_instructions_equal": true
+    }
+  ],
+  "local_eh": "No FS/EH registration/state/action/localcatch in inspected bodies. Two out-of-fragment conditional edges per prefix select excluded internalpartial code; no external tailJMP.",
+  "host_steps": [
+    {
+      "address": "0055912a",
+      "native": "00bf6713",
+      "function": "00559110",
+      "source_path": "unselected_diagnostic_outside_fragment_contract"
+    },
+    {
+      "address": "00559146",
+      "native": "00bf6713",
+      "function": "00559110",
+      "source_path": "unselected_diagnostic_outside_fragment_contract"
+    },
+    {
+      "address": "0055915a",
+      "native": "00558310",
+      "function": "00559110",
+      "source_path": "admitted_prefix_or_whole_destructor"
+    },
+    {
+      "address": "0055919a",
+      "native": "00bf6713",
+      "function": "00559110",
+      "source_path": "excluded_partial_ordinary_eraser_not_reconstructed"
+    },
+    {
+      "address": "005591a9",
+      "native": "00552d40",
+      "function": "00559110",
+      "source_path": "excluded_partial_ordinary_eraser_not_reconstructed"
+    },
+    {
+      "address": "005591b7",
+      "native": "00557ca0",
+      "function": "00559110",
+      "source_path": "excluded_partial_ordinary_eraser_not_reconstructed"
+    },
+    {
+      "address": "005599da",
+      "native": "00bf6713",
+      "function": "005599c0",
+      "source_path": "unselected_diagnostic_outside_fragment_contract"
+    },
+    {
+      "address": "005599f6",
+      "native": "00bf6713",
+      "function": "005599c0",
+      "source_path": "unselected_diagnostic_outside_fragment_contract"
+    },
+    {
+      "address": "00559a0a",
+      "native": "00558e60",
+      "function": "005599c0",
+      "source_path": "admitted_prefix_or_whole_destructor"
+    },
+    {
+      "address": "00559a4a",
+      "native": "00bf6713",
+      "function": "005599c0",
+      "source_path": "excluded_partial_ordinary_eraser_not_reconstructed"
+    },
+    {
+      "address": "00559a59",
+      "native": "00552db0",
+      "function": "005599c0",
+      "source_path": "excluded_partial_ordinary_eraser_not_reconstructed"
+    },
+    {
+      "address": "00559a67",
+      "native": "00558770",
+      "function": "005599c0",
+      "source_path": "excluded_partial_ordinary_eraser_not_reconstructed"
+    },
+    {
+      "address": "0055a406",
+      "native": "00559110",
+      "function": "0055a3f0",
+      "source_path": "admitted_prefix_or_whole_destructor"
+    },
+    {
+      "address": "0055a40f",
+      "native": "00bf65ac",
+      "function": "0055a3f0",
+      "source_path": "admitted_prefix_or_whole_destructor"
+    },
+    {
+      "address": "0055aac6",
+      "native": "005599c0",
+      "function": "0055aab0",
+      "source_path": "admitted_prefix_or_whole_destructor"
+    },
+    {
+      "address": "0055aacf",
+      "native": "00bf65ac",
+      "function": "0055aab0",
+      "source_path": "admitted_prefix_or_whole_destructor"
+    }
+  ],
+  "preservation": "Existing correct STL names and real AV/full+partial historical fixture/projection domains remain unchanged. Ordinary partial erasers are not promoted into actual RawCtx allcases APIs. No callback/allocator/hosttree/storage provider introduced.",
+  "registration": {
+    "main_baseline": "fdaa95a514a7fa1ed6c62c2967ba3d94f2a9f940",
+    "clean_merge_commit": "88d657a26b825220f7870cf20351739111c081c0",
+    "merge_conflict": "append-only cmake/startup.cmake, resolved after failure using tools/merge_resolve.py registry union",
+    "queue": "short FIFO oct15_input_vector_map_full_cleanup_registration;no jump;one bsp_coreSource appended;lease released before build"
+  },
+  "validation": {
+    "win32_release": "passed;new Source compiled",
+    "existing_tests": "3/3 passed",
+    "ctest_seconds": 7.81,
+    "new_tests": 0,
+    "ghidra_mutations": false,
+    "log": "local/oct15_input_vector_map_full_cleanup_build.log",
+    "report_transfers": "16/16 native CALL rows checked;0failed",
+    "documentation_transfers": "16/16 claims checked;0failed;0unchecked;0warnings",
+    "preexisting_link_warning": "LNK4006 duplicate spawn_request_id_matches; unrelated source unchanged"
+  },
+  "limits": [
+    "Explicit admitted full-path fragments, not complete ordinary range erasers; diagnostic/partial outcomes are outside Source contract.",
+    "Actual reached owned nodes/sentinels/output/currentpool/currentCRT required; extra context/by-value/privateframe/deadEDX normalization are new Source interfaces.",
+    "No original register/flag/stack/heap/CRT/FH3/SEH/fault/exception/binaryABI/runtime/gameplay identity established.",
+    "Existing suites compile/check current Source but do not newly differential-test these entries against game code."
+  ],
+  "integration_source_review": {
+    "reviewer": "primary",
+    "status": "passed_no_findings",
+    "accepted_pin": "bee75c0f8022f6409f623f237443187d92ac660e",
+    "scope": "Complete Source/header and both49instruction prefixes/two23instruction whole destructors reviewed against full native listings. Exact selected fullpath field comparisons/reloads, RawCtxsubtrees, getterfailurepropagation, CURRENT-head free/4then8clears/opaque0/EAX0 retained; partial helpers remain incomplete."
+  }
+}
