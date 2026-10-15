@@ -515,7 +515,10 @@ receiver's own local slot.
 **Create.** `00780AE0` builds DFh inline (`00766FC0(DFh, 0, entity, 0)`, vtable `00D03804`,
 `+C4h = 0`, `+10Ch = game+18C8h`) and sends it through `00779FC0`. `00780A70` (Ghidra function created by net3, `BSP_NetTableSyncCreate_Construct`; no xref found) is the same constructor as a `__thiscall(msg, entity) RET 4` routine. Both C++ builders run the
 base constructor through `net_cc13::build_entity_create_00766fc0` (corrected by cc13-seg1; the
-first version never called it), then set the vtable and overwrite `+C4h` and `+10Ch`. DFh uses the
+first version never called it), then set the vtable and overwrite `+C4h` and `+10Ch`. The `+10Ch`
+value is read from `game+18C8h` through `NetTableCreateHost::game_local_player_18c8` after the base
+constructor returns, as both image routines do (corrected by cc13-fix4; the caller used to pass it
+in, read before `00766FC0`). DFh uses the
 shared entity-create codec (write `00767D70` -> `00765000`, read `007683B0` -> `00767E30`) and its
 is-a answers DFh, 47h (MT_CREATE) and 46h, so `00780670` splices it onto `00F871A0` for `0077EC20`, which calls
 `msg->vtable[1Ch]()` (0077EC8E) when `msg+1Ch` names no entity yet. For DFh that is `007813B0`:

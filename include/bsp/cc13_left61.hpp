@@ -450,11 +450,14 @@ float sound_overlay_axis_step_0093f280(char round_up, float value, Left61Host& h
 // 0093F4B0 BSP_SoundOverlay_CompareByVfunc1C, __cdecl(context, object** a, object** b):
 // the qsort_s comparator on vtable +1Ch.
 int sound_overlay_compare_0093f4b0(void* context, void* const* a, void* const* b, Left61Host& host);
-// 0093FA70, __thiscall(ECX = 0Ch-element array {+4 data, +8 count, +0Ch capacity};
-// float out[2], x, y, z), RET 10h: the label placement. y moves by 12 until no existing
-// entry has the same (x, y); the entry is appended and (x, y) returned.
-void sound_overlay_place_label_0093fa70(Raw array, float* out, float x, float y, float z,
-                                        Left61Host& host);
+// 0093FA70, __thiscall(ECX = overlay, whose 0Ch-element array of {float x, float y,
+// sound*} sits at +4 {+4 data, +8 count, +0Ch capacity}; float* out, float x, float y,
+// void* sound), RET 10h, EAX = out: the label placement. y moves by 12 until no existing
+// entry has the same (x, y); {x, y, sound} is appended and (x, y) returned. The fourth
+// argument is the sound pointer 0093FF10 pushes (MOV EAX,[ESI]; PUSH EAX at 0094009A),
+// stored as a dword (MOV EDX,[ESP+24h]; MOV [EAX+8],EDX at 0093FBDE).
+float* sound_overlay_place_label_0093fa70(Raw overlay, float* out, float x, float y, void* sound,
+                                          Left61Host& host);
 // 0093FE90 BSP_SoundOverlay_ApplySampleSettings, __thiscall(ECX = overlay; 48h-byte options
 // by value), RET 48h. `options` is that by-value argument (this function destroys it).
 void sound_overlay_apply_sample_settings_0093fe90(Raw overlay, std::uint8_t* options, Left61Host& host);

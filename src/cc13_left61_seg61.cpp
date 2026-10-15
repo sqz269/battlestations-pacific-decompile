@@ -733,12 +733,14 @@ int sound_overlay_compare_0093f4b0(void* context, void* const* a, void* const* b
 
 // 0093FA70. The image scans four entries per step (an unrolled loop); the
 // result, "some entry equals (x, y)", is the same. y += 12 (00CE42D0, double).
-// Growth: capacity * 2, or 1 when that is below 2.
-void sound_overlay_place_label_0093fa70(Raw array, float* out, float x, float y, float z,
-                                        Left61Host& host) {
+// Growth: capacity * 2, or 1 when that is below 2, through 0093F590 with
+// ECX = overlay+4 (LEA ESI,[EDI+4]; MOV ECX,ESI at 0093FBA8/0093FBBC): the
+// array's own base {+0 data, +4 count, +8 capacity}.
+float* sound_overlay_place_label_0093fa70(Raw overlay, float* out, float x, float y, void* sound,
+                                          Left61Host& host) {
     for (;;) {
-        const std::int32_t count = array.at<std::int32_t>(8);
-        const float* entries = static_cast<const float*>(array.ptr(4));
+        const std::int32_t count = overlay.at<std::int32_t>(8);
+        const float* entries = static_cast<const float*>(overlay.ptr(4));
         bool free_slot = true;
         for (std::int32_t i = 0; i < count; ++i) {
             if (entries[i * 3] == x && entries[i * 3 + 1] == y) free_slot = false;
@@ -746,20 +748,22 @@ void sound_overlay_place_label_0093fa70(Raw array, float* out, float x, float y,
         if (free_slot) break;
         y = static_cast<float>(y + 12.0);
     }
-    if (array.at<std::int32_t>(8) == array.at<std::int32_t>(0x0c)) {
-        std::int32_t capacity = array.at<std::int32_t>(0x0c) * 2;
+    if (overlay.at<std::int32_t>(8) == overlay.at<std::int32_t>(0x0c)) {
+        std::int32_t capacity = overlay.at<std::int32_t>(0x0c) * 2;
         if (capacity < 2) capacity = 1;
-        host.array12_reserve_0093f590(array, capacity);
+        host.array12_reserve_0093f590(Raw{overlay.field(4)}, capacity);
     }
-    float* slot = static_cast<float*>(array.ptr(4)) + array.at<std::int32_t>(8) * 3;
+    std::uint8_t* slot = static_cast<std::uint8_t*>(overlay.ptr(4)) + overlay.at<std::int32_t>(8) * 0x0c;
     if (slot != nullptr) {
-        slot[0] = x;
-        slot[1] = y;
-        slot[2] = z;
+        Raw entry{slot};
+        entry.at<float>(0) = x;
+        entry.at<float>(4) = y;
+        entry.ptr(8) = sound;
     }
-    array.at<std::int32_t>(8) += 1;
+    overlay.at<std::int32_t>(8) += 1;
     out[0] = x;
     out[1] = y;
+    return out;
 }
 
 // 0093FE90. The options are copied into the outgoing argument area for
