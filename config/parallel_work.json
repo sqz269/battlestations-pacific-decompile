@@ -39352,7 +39352,7 @@
     {
       "id": "cc12_scene_token_text_wrappers",
       "done": false,
-      "state": "ABI_and_unreachable_alignment_resolved_whole_Source_authoring",
+      "state": "whole_Source_primary_and_peer_accepted_registered_Main_build_pending",
       "worker": "scene_token_text_source",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "max",
@@ -39368,12 +39368,14 @@
       ],
       "depends_on": [],
       "source_ready": true,
-      "contract": "Complete ordinary token wrappers over accepted raw peek/consume/recovery and NativeSceneTokenValueContext. Exact ECX/stack/AL or EAX returns established from Original; 999D..999F is unreachable LEA alignment, no listing repair needed. No file constructor, fabricated tokenizer, model host or new callbacks."
+      "contract": "Complete ordinary token wrappers over accepted raw peek/consume/recovery and NativeSceneTokenValueContext. Exact ECX/stack/AL or EAX returns established from Original; 999D..999F is unreachable LEA alignment, no listing repair needed. No file constructor, fabricated tokenizer, model host or new callbacks.",
+      "primary_review": "reports/cc12_scene_token_text_primary_review.json",
+      "code_revision": "cbbca5ef8afd35896dae5b36c0c98db872dcb7d3"
     },
     {
       "id": "cc12_enum_table_CString_wrappers",
       "done": false,
-      "state": "worker_whole_Source_strict_normal_pass_primary_review_pending",
+      "state": "whole_Source_primary_and_peer_accepted_registered_Main_build_pending",
       "worker": "library_lookup_data_resume",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -39395,7 +39397,8 @@
         "src/native_string.cpp:0041E870/0041DD20"
       ],
       "code_revision": "fd1e64daa96746fee638d2bf05032832a7fb086a",
-      "contract": "Whole ordinary CString wrappers over admitted conditional genuine currentCRT19Ch enum domain, real Source NativeString local, borrowed distinctE175E8/E17578 pools/E186ED authority. Canonical enum-global startup is separate and unclosed; no invented default cells, arbitrary callbacks or null-only narrowing."
+      "contract": "Whole ordinary CString wrappers over admitted conditional genuine currentCRT19Ch enum domain, real Source NativeString local, borrowed distinctE175E8/E17578 pools/E186ED authority. Canonical enum-global startup is separate and unclosed; no invented default cells, arbitrary callbacks or null-only narrowing.",
+      "primary_review": "reports/cc12_enum_table_wrappers_primary_review.json"
     }
   ],
   "snapshot_after_analysis": {
