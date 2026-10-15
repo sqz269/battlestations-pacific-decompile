@@ -26,3 +26,5 @@ No callbacks, placeholder allocations, ownership guesses, or extra reloads are
 introduced. Valid reached raw storage and current-CRT allocation remain required.
 Build and existing regression proof do not establish original binary/CRT/heap
 ABI, new-body native differential behavior, application adoption, or gameplay.
+
+Final combined default MSVC Release Win32 build passed all three existing CTests in 7.93 seconds. Complete independent listing review and both typed transfers passed; detailed receipt: reports/goal_oct15_integer_erase_primary_review.json.
