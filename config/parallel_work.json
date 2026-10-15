@@ -39578,6 +39578,33 @@
       "game_validated": false,
       "actual_compiler_archive_gate": "pass",
       "Main_validation": "reports/cc12_file_tokenizer_Main_validation.json"
+    },
+    {
+      "id": "cc12_scene_typed_property_providers",
+      "done": false,
+      "state": "whole_ordinary_Source_primary_peer_accepted_CMake_queued_Main_build_pending",
+      "worker": "library_insert_source",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "008f3370",
+        "008f3490",
+        "008f3510"
+      ],
+      "output_files": [
+        "docs/NATIVE_SCENE_TYPED_PROPERTY_PROVIDERS_CC12.md",
+        "include/bsp/native_scene_typed_property_providers.hpp",
+        "reports/native_scene_typed_property_providers_cc12.json",
+        "src/native_scene_typed_property_providers.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "code_revision": "029dc81d312b61cd2867d36225ea657c1cf25116",
+      "primary_review": "reports/cc12_typed_property_providers_primary_review.json",
+      "Main_build_gate": "pending",
+      "contract": "Whole304B/97 Original instructions in3 routines: tag2 free/physicalzero/rawduplicate versus known-found actualenum word; two owning array publications with full32bit flags and opposite raw constructor argument order. Copy0 retained input requires real sole-owned sameCRT transfer. No startup/exception/Original ABI/privateCRT/runtime/game/wholeparser credit.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
