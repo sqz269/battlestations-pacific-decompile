@@ -1,0 +1,247 @@
+{
+  "batch": "GOAL15H",
+  "status": "complete_source_registered_win32_build_existing_ctests_and_five_archive_only_fixtures_passed",
+  "source_revision": "b830988f0431f94a3d1b5826f76866a56343b94a",
+  "functions": 13,
+  "addresses": [
+    "00414010",
+    "00414070",
+    "00418700",
+    "00418710",
+    "00418ea0",
+    "00418f30",
+    "00418fb0",
+    "00420ac0",
+    "007ac9d0",
+    "007af800",
+    "007b10a0",
+    "007b10c0",
+    "00923810"
+  ],
+  "source_modules": [
+    "src/native_pod8_storage_init.cpp",
+    "src/native_pod8_raw_array.cpp",
+    "src/native_entity_path_access.cpp",
+    "src/native_scene_path_point.cpp",
+    "src/native_authored_path_points.cpp"
+  ],
+  "coverage": {
+    "complete_typed_native_body_bytes": 1051,
+    "additional_unreachable_padding_bytes": 3,
+    "complete_physical_spans": 1054,
+    "exact_fixed_bytes": 970,
+    "independently_verified_direct_call_operands": 20,
+    "independently_verified_absolute_constant_operands": 1,
+    "excluded_other_operands": 0,
+    "new_scene_vector_abi_adapter_bytes": 13,
+    "adapter_proof": "exact shape and actual full Source B62D10 tail target separately verified",
+    "raw_array": "all5 complete physical spans506B;503 admitted Native bytes plus3 unreachable LEA padding;466fixed+10 actual Source allocator/free bridge CALLs",
+    "storage": "all3 bodies122B;106fixed+4 actual concrete provider CALLs",
+    "entity": "both bodies126B all exact; no masks/relocations; actual raw indirect CALL EDX retained",
+    "scene_point": "complete211B;195fixed+3 actual CALL bindings+1 verified Native readonly1.0 constant binding",
+    "authored_points": "both25+64B spans;77fixed+3 actual point-kernel CALL bindings"
+  },
+  "validation": {
+    "build": "PASS scripts/build.ps1, all5modules in genuine checked-in bsp_core target",
+    "ctest": "PASS3/3 existing reconstructed_math/native_math_differential/tool_tests; these do not claim new-kernel Native differential coverage",
+    "fixtures": {
+      "goal15h_storage_probe": {
+        "kind": "Source fixture linked against registered archive and real current services",
+        "manifest_embedded": true,
+        "exit_code": 0,
+        "stdout": "POD8 storage Source composition: PASS (zero/nonzero AL, genuine allocation/free, actual length failure zeroed state, returning SDK invalid handler and fresh iterator positions)\n",
+        "stderr": "",
+        "sha256": {
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_pool_cleanup\\local\\goal15h_pod8_storage_init\\pod8_storage_probe.cpp": "46fb18183d5d306f94ed0ec115dacc6d1845f30e95a8ef6669f9eee19f49b6de",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15h_storage_probe.obj": "a1a39c5c407a18ad42c4e10b4cbea90db30ac80b68fbf36f3f9e366fc2da2b37",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15h_storage_probe.exe": "fbf89b55eb6b3f8c7756fc9b3a1fc98a09936eb5d0cc9cfc5eb49727cba16544",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "2a40024410f520b2336695aca035acc0cf5bd871c90b5bdfe61d95921ab439ad",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+        }
+      },
+      "goal15h_raw_array_probe": {
+        "kind": "Source fixture linked against registered archive and real current services",
+        "manifest_embedded": true,
+        "exit_code": 0,
+        "stdout": "PASS:5 raw-array entries; real growth/free; x87 quieting/alias reread; resize/reserve; byte wrap/null skip; pre-failure capacity publication\n",
+        "stderr": "",
+        "sha256": {
+          "J:\\PROG\\battlestations-pacific-decompile-goal15f_pod8\\local\\goal15h_pod8\\pod8_raw_array_probe.cpp": "1bf732b60c34637955977a9ec951a5f14166d1b8b0d7baa828a8f5967f84e44f",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15h_raw_array_probe.obj": "3cfa025ea9c8e105b9bdf860dd2b483f2213640084698d8b4098946d8b2a7326",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15h_raw_array_probe.exe": "0a6dbe174cd8a7a6d49f0bedf19933a5aaa78c4494641d89b5f3b6a8d9b5a42c",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "2a40024410f520b2336695aca035acc0cf5bd871c90b5bdfe61d95921ab439ad",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+        }
+      },
+      "goal15h_entity_probe": {
+        "kind": "Source fixture linked against registered archive and real current services",
+        "manifest_embedded": true,
+        "exit_code": 0,
+        "stdout": "PASS Source raw entity/path: local callable changing vtables, ECX/EDX/kind schedule, AL-only truth, all offset branches/null, ancestor EAX/signed-counter wrap/null-parent\nScope: local Source fixture only; no actual Native entity factory/vtable, injected production callback, Native differential/virtual deployment/EH/gameplay claim\n",
+        "stderr": "",
+        "sha256": {
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_zone_leaf\\local\\goal15h_entity_path\\entity_path_probe.cpp": "65bd08e96f51c593875cd4a65c4c64ced850ea7de5a72577ccc0a9ce3ccc20dc",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15h_entity_probe.obj": "5ef89202009cf16d0406c658009fe8f0fefa2c7d16cf53d65d18fdedbc23eb16",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15h_entity_probe.exe": "ac2670073e879cf72fdda83f17862fe270f74de58451491456231cfe1839a5fc",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "2a40024410f520b2336695aca035acc0cf5bd871c90b5bdfe61d95921ab439ad",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+        }
+      },
+      "goal15h_point_probe": {
+        "kind": "Source fixture linked against registered archive and real current services",
+        "manifest_embedded": true,
+        "exit_code": 0,
+        "stdout": "PASS actual Source scene point: dirty pose refresh, captured owner across returning real SDK repair, live slot reload, reciprocal spill and zero-w/input-output alias\n",
+        "stderr": "",
+        "sha256": {
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15h_point\\point_probe.cpp": "27cf29b49710644257f09e0f932282155bce4d6271aa24d2e6799f67f2bee650",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15h_point_probe.obj": "7a21c60ba231ad4be6a5c9575ae53a77565bab094502c677075d5734433e8d15",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15h_point_probe.exe": "ad633ca381ee81ddea73f14d1bce492db2c76ff7819fbdd6e14acf4fc3bd6656",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "2a40024410f520b2336695aca035acc0cf5bd871c90b5bdfe61d95921ab439ad",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+        }
+      },
+      "goal15h_authored_probe": {
+        "kind": "Source fixture linked against registered archive and real current services",
+        "manifest_embedded": true,
+        "exit_code": 0,
+        "stdout": "Authored path points Source composition: PASS (real indexed/last scene transforms, captured outputs, empty underflow retained across returning SDK repair with all reached slots backed)\n",
+        "stderr": "",
+        "sha256": {
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_pool_cleanup\\local\\goal15h_authored_path_points\\authored_points_probe.cpp": "b956a0258c91caf410bb2c11cf288d52d39596e063eaae44b60b8cff88436704",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15h_authored_probe.obj": "4fee0d89ad1bdb7af4a6b46cd90efc74197952ca57a9cc4fb8f603f4f11d03b0",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15h_authored_probe.exe": "dd6e934f924d62bd759cd2aaaffd1b54c817ddcdc7994bd3ec5e2d351fc49d4e",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "2a40024410f520b2336695aca035acc0cf5bd871c90b5bdfe61d95921ab439ad",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+        }
+      }
+    },
+    "strict_compile": "all5modules PASS MSVCWin32/MD/O2/W4/WX/fp:strict",
+    "coff": "all5 registered target objects PASS full permitted-byte/operand checks; original installed PE/live bytes agree",
+    "report_calls": "111 rows PASS,0failed; all now live caller/callee containment/physical transfer evidence",
+    "markdown_calls": "9 explicit claims PASS,0failed/unchecked/warnings",
+    "peer_review": "all Source bodies reviewed; independent complete point adapter/stack-cell/COFF review found no discrepancy",
+    "tracked_new_tests": 0
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "created_functions": [
+      {
+        "address": "00418700",
+        "bytes": 14
+      },
+      {
+        "address": "00420ac0",
+        "bytes": 71
+      }
+    ],
+    "creation_limit": "whole decoded bodies and RET/INT3 boundaries reviewed; prior missing-function metadata retained; zero Original incoming references does not establish runtime use",
+    "physical_prototypes": "all13 exact consumed ECX/stack shapes; EAX pointer/difference or ALbool recovered; no Source dummy EDX parameter in Original prototypes; pointer this avoids scalar-this insertion trap",
+    "evidence": "old function names/prototypes/comments captured before changes under global write lock; prior comments/records retained and saved",
+    "readback": "local/goal15h_final_physical_prototypes.txt",
+    "refreshed_export_count": 65,
+    "export_scope": "reviewed functions plus complete direct caller union; no invented catch/interior functions",
+    "exports": [
+      "00414010",
+      "00414070",
+      "00418700",
+      "00418710",
+      "00418ea0",
+      "00418f30",
+      "00418fb0",
+      "0041ccd0",
+      "0041d1e0",
+      "0041d380",
+      "00420ac0",
+      "0048c230",
+      "004a0410",
+      "004a0d20",
+      "004a50d0",
+      "00526a40",
+      "0060abd0",
+      "00641e30",
+      "006c0840",
+      "006c3b10",
+      "006cf420",
+      "006cf520",
+      "006cf730",
+      "006d5220",
+      "006e4d50",
+      "006fe820",
+      "006fec00",
+      "006ff2f0",
+      "006ff730",
+      "006ffa40",
+      "00700520",
+      "00701460",
+      "0071d6d0",
+      "0071f600",
+      "007420b0",
+      "00743b70",
+      "00779c60",
+      "00791570",
+      "007ac9d0",
+      "007af800",
+      "007b10a0",
+      "007b10c0",
+      "007b1120",
+      "007c71e0",
+      "007c78a0",
+      "007f2920",
+      "00809380",
+      "00816e30",
+      "00844a10",
+      "00844fc0",
+      "00845670",
+      "00846320",
+      "00849f70",
+      "0084d050",
+      "0084d560",
+      "008959f0",
+      "0089a190",
+      "008b47e0",
+      "00923810",
+      "009512f0",
+      "00957740",
+      "00986480",
+      "00986820",
+      "00986b00",
+      "009fd0e0"
+    ],
+    "snapshot_index": "forced snapshot after creation/annotations; current index rebuilt"
+  },
+  "corrections": [
+    "18F30 writes size on shrinking/noallocation too; historical ReserveIfLarger name retained with clarified contract",
+    "all five raw-array copies are x87 FLD/FSTP, not integer bit copies; old-source alias after free is not repaired",
+    "path 4A indirect CALL is7ACA23, not7ACA21 (MOV ECX,ESI)",
+    "ancestor returns EAX actual pointer; signed counter decrements moduloDWORD before JLE, including INT_MIN wrap",
+    "actual scene-point incoming index stack word is reused for rounded reciprocal; captured pose/matrix survives returning policy changes"
+  ],
+  "sha256": {
+    "src/native_pod8_storage_init.cpp": "9130df72c66af740df9e27c9b4b451b2039f0d6e5793a39b3391b979a2f4d21b",
+    "src/native_pod8_raw_array.cpp": "5e96757a8f4aa3c4b231c188f3c1a7ce564103fa86b8e2a6b5ac73cc777ea9c6",
+    "src/native_entity_path_access.cpp": "e5cf8d33c05be90a5f4a6fdd41599cfbdb40072caee29c81e43faa838a5f9063",
+    "src/native_scene_path_point.cpp": "f5b8bded97792ec38da89efd86b7139e1c81199b40dd8ddceaf649c379028fa1",
+    "src/native_authored_path_points.cpp": "8fc909e85e32491e81328401679333ef71c72cf983ef13250b2153c1de47e2a2",
+    "include/bsp/native_pod8_storage_init.hpp": "eb9970476dda741e17d3b193e3bf41a98bb11e05b9b464b65dfa145a9b639a12",
+    "include/bsp/native_pod8_raw_array.hpp": "06b693ad8e0ab9bf8ec3827c300a3f2957c173c7d88a8f87383b97ca26b075de",
+    "include/bsp/native_entity_path_access.hpp": "a808ee0db4507ba076963705ea7b772ce6dcc04c5a11c3ec2bfac9724d062bbe",
+    "include/bsp/native_scene_path_point.hpp": "e425d4864941bf43cf9ad92e167d8ce2a5df641a5dae74a36714c5260d4cdcd1",
+    "include/bsp/native_authored_path_points.hpp": "a402f2becff33c11e03cbe56c29e9f814b7dd8bb406fd761dad987a9f47f0268",
+    "build/win32/Release/bsp_core.lib": "2a40024410f520b2336695aca035acc0cf5bd871c90b5bdfe61d95921ab439ad"
+  },
+  "remaining": [
+    "Raw avoidance clip1A540/derive1A200 evidence work is separate future GOAL15I; old typed scene/CRT interfaces remain distinct",
+    "Clip readiness currently identifies raw clear167C0 as missing; clip has no derive1A200 edge or catch/rethrow region to invent",
+    "Derive readiness still needs genuine current x87 CRT/register-ABI children and adapters, not ordinary-double or callback substitutions",
+    "Native privateCRT/math state, original object factories/vtables/virtual deployment/RTTI/SEH/address ABI and gameplay equivalence unclaimed",
+    "Raw-array0-reference and two new routine0-reference censuses do not establish Original runtime adoption",
+    "Bounded Source fixtures do not prove all alias/fault/FP-environment cases or Native differential behavior"
+  ]
+}
