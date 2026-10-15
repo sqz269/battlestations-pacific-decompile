@@ -55,6 +55,9 @@ The complete live bodies match all 84 installed PE bytes / 29 instructions.
 The two typed native call rows are checked separately from Source composition.
 Correct library names and old comments/evidence are retained through the locked
 annotation tool, with prior-value log, save and refreshed exports recorded in the
-report. Unique CMake registration is queued while the shared file is leased.
+report. Unique CMake registration was appended after an immediate unleased check
+and removal of this worker's queue request, without an exclusive whole-file lease.
+The primary independently reviewed both complete native listings and the exact
+Source/header draft `01a59b48453ea5ad3731b0387757d5b909f86c0e`, without a mismatch.
 Strict Win32 build, existing checks and focused compiler inspection are pending.
 No new tests are added; packet-specific native differential/game checks are unrun.
