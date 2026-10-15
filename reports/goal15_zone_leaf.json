@@ -1,0 +1,198 @@
+{
+  "packet": "goal15_zone_leaf",
+  "status": "complete_bounded_orchestration_strict_msvc_win32_object_checked_required_bindings",
+  "source": "src/native_zone_leaf_00423640.cpp",
+  "header": "include/bsp/native_zone_leaf_00423640.hpp",
+  "source_api": "generate_native_zone_paths_00423640(manager&, requested_owner*, params&, mandatory_bindings&); new C++ API, not original ABI",
+  "routines": [
+    {
+      "address": "00423640",
+      "coverage": "complete bounded orchestration through mandatory native dependency bindings; no installed production binding",
+      "body": "00423640-0042395F",
+      "original_abi": "__thiscall-compatible: incoming ECX manager consumed by 004120D0 before rewrite; stack requested owner and params; RET 8 at 0042395D. Forwarded ECX is dead at contour/simplify entry. Not a recovered C++ member declaration."
+    }
+  ],
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "verification": "bsp.py ghidra export verifies configured project/program before export"
+  },
+  "dependency_contract": {
+    "required_bindings": "Every external direct call is required in NativeZoneLeafBindings; there are no default/success stubs and no installed adapter.",
+    "records": "Reuses Cc13AvoidZoneManagerNative, Cc13AvoidZoneNativeGroup, Cc13X87cContourOwnerNative, full 1Ch Cc13X87cContourPathNative, cc13_left55::ShoreMaskParams.",
+    "params": "Touched 24h-byte prefix only: existing ShoreMaskParams00..13, produced float14, separate path list proxy/head/size18/1C/20. Enclosing producer unknown.",
+    "globals": "Supplied actual readable00E188A8 pointer slot and actual mutable0109EEA4 mode word; mode is read at every conversion.",
+    "source_limits": "Native records and callback-visible spans must be valid when reached; binding/control storage remains live and separate. No local EH rollback is added. Callback/native CRT identity and dependency equivalence are not proven by this packet."
+  },
+  "arithmetic_review": {
+    "input_layer": "Hardware CVTTSS2SI [params+00h], including integer-indefinite and exception behavior; no C++ float-to-int cast.",
+    "ratio": "Direct raw00880250 call; FSTP f32 / FLD f32 / FST params14 / FST params04 / FDIVR saved original params04 / FADD f64(0.5) / shared hardware BF7420 / signed clamp1..16 / params08.",
+    "constant_00d7a280": "00 00 00 00 00 00 E0 3F = exactly f64 0.5, verified live.",
+    "conversion": "Reuses native_crt_truncate_st0_00bf7420: actual0109EEA4!=0 FSTP double/CVTTSD2SI; zero preserved BF7456 signed64 conversion low EAX. x87 intermediates are retained, not projected through MSVC double/long double.",
+    "label_00ce3954": "61 6C 6C 00 = all, verified live; format AvoidZoneG %s %d #%03d, five pushed words, ADD ESP14 at004237F8.",
+    "abi": "Saved incoming ECX feeds first group lookup. Contour overwrites ECX at00421D04 and simplify at0041EA4B before reading it; forwarding does not establish another receiver."
+  },
+  "host_steps": [
+    {
+      "address": "0042365E",
+      "native": "004120D0",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "00423671",
+      "native": "0041D150",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "004236F2",
+      "native": "00880250",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "0042370F",
+      "native": "00BF7420",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "00423774",
+      "native": "00BF55BE",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "00423785",
+      "native": "00BF55BE",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "004237A6",
+      "native": "00880420",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "004237BC",
+      "native": "00421CE0",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "004237EF",
+      "native": "00412F80",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "00423828",
+      "native": "00419CC0",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "0042382F",
+      "native": "00BD1510",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "0042383C",
+      "native": "00419CC0",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "00423849",
+      "native": "00BD1120",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "00423861",
+      "native": "00419CC0",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "00423868",
+      "native": "00BD1510",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "00423888",
+      "native": "00BF7680",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "0042389D",
+      "native": "0041EA30",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "004238B4",
+      "native": "0041C0B0",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "004238BF",
+      "native": "0041FDD0",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "004238E4",
+      "native": "00BF6989",
+      "containing_function": "00423640"
+    },
+    {
+      "address": "004238F4",
+      "native": "00BF6989",
+      "containing_function": "00423640"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "004236BB",
+      "contract": "candidate owner vslot +5Ch with 44h, AL predicate"
+    },
+    {
+      "address": "00423738",
+      "contract": "owner source +3D0h vslot +10h, EAX signed extent"
+    },
+    {
+      "address": "0042374B",
+      "contract": "owner source +3D0h vslot +14h, EAX signed extent"
+    },
+    {
+      "address": "00423939",
+      "contract": "next candidate owner vslot +5Ch with 44h, AL predicate"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "float return from 00421CE0 / float path pointer in pseudocode",
+      "is": "EAX native path pointer tested for null",
+      "evidence": "004237C1 MOV ESI,EAX; 004237C3 TEST ESI,ESI"
+    },
+    {
+      "was": "float params[2] in pseudocode",
+      "is": "signed int block at params+08h",
+      "evidence": "00423714-0042372A integer comparisons/clamp/store; ShoreMaskParams producer/consumer reconciliation"
+    },
+    {
+      "was": "incoming ECX identity pending because it is forwarded to stdcall-classified contour/simplify",
+      "is": "incoming avoid-zone manager consumed by first group lookup; later forwarded ECX is dead",
+      "evidence": "00423656 saves but does not alter ECX;0042365E calls004120D0, whose body reads manager+58h/+08h;00421D04 and0041EA4B overwrite forwarded ECX before any read"
+    }
+  ],
+  "validation": {
+    "call_checker": "PASS: 21 direct call rows checked, 0 failed by tools/verify_report_calls.py (2026-10-15)",
+    "object_compile": "PASS: MSVC Win32 cl /std:c++17 /EHsc /W4 /WX /fp:strict /O2 /c src/native_zone_leaf_00423640.cpp; local/goal15_zone_leaf_compile.cmd; object local/goal15_zone_leaf.obj",
+    "compiler_listing": "local/goal15_zone_leaf.asm inspected: original cell MOVSS copy before loop; CVTTSS2SI bytes F3 0F 2C 00; raw unit-length call then FSTP32/FLD32/two FSTs/FDIVR32/FADD64/shared converter/signed clamp.",
+    "build": "registered full Win32 build/CTest pending primary integration; no CMake change by worker",
+    "tests": "no new tests; no native differential fixture run",
+    "xrefs": "live query: no references found to00423640",
+    "runtime": "not run",
+    "native_abi": "not proven"
+  },
+  "notes": "Complete bounded body with explicit mandatory native dependencies. See docs/GOAL15_ZONE_LEAF.md for callee review extents, arithmetic/ABI evidence and limits. Only00423640 name/function ledger records added; no Ghidra mutation. Primary owns CMake registration, full build and integration. Lease retained through integration.",
+  "primary_integration_validation": {
+    "receipt": "reports/goal15_reconstruction_batch.json",
+    "registered_win32_build": "pass",
+    "existing_ctest_suites": "3 passed, 0 failed",
+    "ghidra_names_comments_and_exports": "applied, saved and refreshed",
+    "new_entry_native_differential_or_gameplay_validation": false
+  }
+}
