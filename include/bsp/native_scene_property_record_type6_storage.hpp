@@ -13,9 +13,13 @@ inline constexpr std::size_t native_scene_property_record_type6_storage_bytes = 
 
 // Whole [008EF780,008EF7BA): 58 bytes / 16 instructions. Names are hypotheses.
 // Supply an actual fresh writable 38h allocation from the canonical current
-// singleton_lifetime_allocate domain and the DISTINCT mutable 114h output of
-// clone_empty_native_scene_property_bag_008f41f0_fragment. Child owner+110 must
-// still be zero; both roots must be disjoint from each other and the call frame.
+// singleton_lifetime_allocate domain and a DISTINCT mutable raw61-produced
+// 114h child: the empty output of clone_empty_native_scene_property_bag_008f41f0_fragment,
+// or the actual empty/populated output of whole clone_native_scene_property_bag_008f41f0
+// under its same canonical ordinary contract. Child owner+110 must still be zero;
+// both roots must be disjoint from each other and the call frame. Populated-child
+// qualification is whole-chain Source evidence; earlier Native ABI qualification
+// remains limited to its actual empty-child fixtures.
 // This operation allocates/frees nothing. The caller retains responsibility for
 // both actual allocations and their later lifetime; no C++ class is fabricated.
 // ECX=record, incoming EDX unused, [entry ESP+4]=child. RET4; EAX=record,
