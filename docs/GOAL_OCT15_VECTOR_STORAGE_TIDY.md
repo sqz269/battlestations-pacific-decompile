@@ -41,8 +41,23 @@ Guarded live batches verify C:/Users/sqz269/bsp.gpr and program
 /battlestationspacific.exe, x86 image base00400000. Annotation takes the shared
 write lock, records prior values, preserves correct names/comments, saves the
 project and refreshes the owned export, with a subsequent live readback.
-The Source draft carries full assembly, typed flow and original byte evidence;
-the normal Win32 build and existing checks are pending. No new routine tests
+The packet carries full assembly, typed flow and original byte evidence;
+normal Win32 build and existing checks pass as recorded below. No new routine tests
 are added. Compilation/static evidence do not establish private-frame,
 register/flags/mangling/fault/CRT/FH3/SEH binary identity, direct native
 differential execution, application adoption or game behavior.
+
+Final worker validation: Source `fdcf899ae`, unchanged after importing main
+`17abbeab5` at tested merge `3d74e4c8d`, passed `scripts/build.ps1` Release
+Win32. The owned Source compiled, all targets linked and both enabled existing
+checks (`reconstructed_math`, `tool_tests`) passed in7.42s. Native differential
+is disabled in this worker tree and this entry was not directly native-tested.
+Log `local/goal_oct15_vector_storage_tidy_build.log` and its hash are in JSON.
+The inherited duplicate `spawn_request_id_matches` LNK4006 warning remains.
+Primary and allocator workers independently accepted the full listing and
+Source/header without changes; the allocator also reviewed the draft document.
+Accepted source hashes are recorded. The startup append conflict on main sync
+was resolved by the required registry-union helper, retaining one registration.
+The sole native CALL row, documentation claims, annotation readback and staged
+whitespace checks pass. These checks do not establish native binary ABI or game
+behavior.
