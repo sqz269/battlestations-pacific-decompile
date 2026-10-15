@@ -1,0 +1,687 @@
+{
+  "packet": "oct15_outer_vector_construct_services",
+  "worker": "agent/oct15_avoid_distance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis_and_export": true,
+  "ghidra_read_only": true,
+  "owned_addresses": [
+    "00557250",
+    "006a3350",
+    "006a4c00",
+    "006a33aa",
+    "00c7f290"
+  ],
+  "source": "src/native_outer_vector_construct_services.cpp",
+  "header": "include/bsp/native_outer_vector_construct_services.hpp",
+  "documentation": "docs/OCT15_OUTER_VECTOR_CONSTRUCT_SERVICES.md",
+  "routines": [
+    {
+      "address": "00557250",
+      "body_end_inclusive": "00557298",
+      "bytes": 73,
+      "listed_instructions": 29,
+      "retained_name": "TMPL_Vector_ConstructN_00557250",
+      "implementation": "initialize_native_outer_vector_storage_00557250",
+      "coverage": "complete_actual_header_clear_unsigned_count_allocation_ordered_publication_and_defined_DWORD_EAX",
+      "original_abi": "ECX actual16Bheader, EDXunconsumed, one stacked unsignedcount, RET4. Source fastcall reservesunusedEDX; same one stackword/RET4, exactdefinedDWORD result.",
+      "effects": "Count captured before zero+4/+8/+C stores; +0 untouched. Zero returnsEAX0 and skipsallocator. Unsigned>0FFFFFFF actualowning556C90. Otherwise actual553300(count,EDX0); publish+C(storage+(count<<4)),+4storage,+8storage in order; only then MOV AL1. No old backing free/element/proxy construction/selfguard.",
+      "return": "Nonzero EAX=(storagebits&FFFFFF00)|1, not integerbool1; solecallerTESTAL. Source exposesexactDWORD withoutinventedambientinput.",
+      "eh": "No local EH/catch; prior clear persists if owninglengththrow/allocation throws. Actualacceptedchildren own their cleanup."
+    },
+    {
+      "address": "006a3350",
+      "body_end_inclusive": "006a33e3",
+      "normal_ranges": [
+        [
+          "006a3350",
+          "006a33a9"
+        ],
+        [
+          "006a33cf",
+          "006a33e3"
+        ]
+      ],
+      "normal_bytes": 111,
+      "listed_normal_instructions": 42,
+      "combined_bytes_with_catch": 148,
+      "listed_instructions_with_catch": 57,
+      "retained_name": "STL_UninitCopy_StringVector16_006a3350",
+      "implementation": "copy_native_inner_vectors_uninitialized_006a3350",
+      "coverage": "complete_actual16B_uninitialized_copy_and_completed_prefix_CPP_catch_by_exact_accepted_Source_reuse",
+      "original_abi": "ECXfirst,EDXcapturedlast,stack(dest,owner,deadtag3,deadtag4),RET10h/EAXdestend. Source samewords+actualcontext,RET14h.",
+      "effects": "Actual557BC0 current source/currentnonnull dest; null skips ctor but joins prefix. Dest+=16,state0,completed publication,source+=16,equalitycapturedlast. Actual owning headers/+0/forwardoverlap/childselfalias effects inherited, no snapshot/assignment/outerfree.",
+      "binding": "Direct accepted copy_native_nested_string_vector_uninitialized_range_00559e00. Complete148B original core schedules equal after ONLY proven ownhandlerimm and3rel32 fields; entire EH maps and RET-only state1actions separately verified. New wrapper adds privateSourceframe qualification, not nativeEH identity."
+    },
+    {
+      "address": "006a4c00",
+      "body_end_inclusive": "006a4c24",
+      "bytes": 37,
+      "listed_instructions": 14,
+      "retained_name": "STL_TagDispatch_006a4c00",
+      "implementation": "copy_native_inner_vectors_dispatch_006a4c00",
+      "coverage": "complete_actual_three_stackword_dispatch_and_child_EAX_result",
+      "original_abi": "ECXowner,EDXunconsumed,THREEstackwords(first,last,dest),RET0Ch/EAXchildresult; Source reservesregs/addscontext,RET10h.",
+      "effects": "Core ECXfirst/EDXlast,stackdest,owner,destbits,owner&FFFFFF00; only lowtagbytezero,highownerbitsretained. Source returnschilddestend; callerpublishesEAX.",
+      "comparison": "Oldaccepted55A950 consumesFIVEphysicalstackwords/RET14h incltwoignoredownerwords. Fourstackloaddisplacements+RETimm+verifiedcoreE8 differ; newproper3wordSourceAPI ratherthanABI alias."
+    },
+    {
+      "address": "006a33aa",
+      "body_end_inclusive": "006a33ce",
+      "bytes": 37,
+      "listed_instructions": 15,
+      "retained_name": "Catch_All@006a33aa",
+      "parent": "006a3350",
+      "coverage": "complete_completed_prefix_cleanup_and_rethrow_parent_bound_Source_scope_by_exact_reuse",
+      "original_abi": "ParentEBP-boundcatch,not independentSourceAPI. InitialdestEBP-18/completedendEBP+8; ownerEBP+C only ifprefixnonempty,ignoredby559DC0.",
+      "effects": "Tidyeach completed16Bheader(no nullskip),step16/equality,rethrow(0,0). Failingcurrent excluded; no outerrange allocationfree. Accepted559E00 catchactual432440 reusesverified559DC0 capturedbegin/end,CURRENTbeginfree,orderedclears,+0preserved."
+    },
+    {
+      "address": "00c7f290",
+      "body_end_inclusive": "00c7f2a0",
+      "bytes": 17,
+      "listed_instructions": 7,
+      "retained_name": "Unwind@00c7f290",
+      "parent": "006a3350",
+      "coverage": "complete_verified_noop_placement_unwind_Source_elision_parent_bound",
+      "original_abi": "ParentEBPaction,words-1C/-20,twooutgoingstackwords,ADDESP8,RET; no independentSourceAPI.",
+      "effects": "Actual401130singleC3RET; nofree/destructor/headerwork. Complete17Baction equalsacceptedC6DAC0 afteronlyverifiedrel32. Sourceelidesprovennoop; no stub or inventeddeallocation."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00557276",
+      "native": "00556c90",
+      "function": "00557250",
+      "contract": "Completeactualacceptedowninglengththrow NativeSingletonVectorLengthError/28hlegacyactualSBO/logicerror payload; originalnativeandSource inspected in prioraccepted48990e614.",
+      "arguments": "Noinputs,nonreturn; takenunsignedcount>0FFFFFFF afterorderedclear.",
+      "binding": "Direct throw_native_nested_string_vector_length_error_00556c90; no genericstdlengtherror/newpayloadstub."
+    },
+    {
+      "address": "0055727f",
+      "native": "00553300",
+      "function": "00557250",
+      "contract": "Completeacceptedactual16B allocator/currentCRT ownershipdomain from48990e614; countmax0FFFFFFF,zeroallocation child capability retainedbutparentzero bypasses.",
+      "arguments": "ECXcapturedcount,EDX0; nativeEAXallocation/RET.",
+      "binding": "Direct allocate_native_nested_string_vector_00553300(count,nullptr). No callback/currentallocatorreplacement."
+    },
+    {
+      "address": "006a3397",
+      "native": "00557bc0",
+      "function": "006a3350",
+      "contract": "Fullaccepted559E00 equivalenceandchild557BC0 actualowning16Bheader/rawpoolcompleteSource.",
+      "arguments": "ECXcurrentnonnull dest,stackcurrent source address,RET4; Sourceactualcontextadded.",
+      "binding": "Through accepted559E00 completeSource, which directlyconstruct_native_string_header_vector_copy_00557bc0. Null skips; childactualownership/+0/currentrereads/privatecontextlimitsinherited."
+    },
+    {
+      "address": "006a33ba",
+      "native": "00559dc0",
+      "function": "006a33aa",
+      "contract": "Fullold/newcore/EH equivalence plus accepted559DC0->actual432440 entirecleanup schedule proof retained in prioracceptedwrapperandindependentaudit.",
+      "arguments": "Stackcurrent completedheader,ownerECX ignored.",
+      "binding": "Accepted559E00 prefixcatchactualtidy_native_string_header_vector_00432440; capturedrange,CURRENTfree,unconditionalclears,no nullskip; excludesfailingcurrent."
+    },
+    {
+      "address": "006a4c1c",
+      "native": "006a3350",
+      "function": "006a4c00",
+      "contract": "Complete37B14instruction native3worddispatcherandactualcore/listing/bytes.",
+      "arguments": "ECXfirst,EDXlast,stack(dest,owner,destbits,owner&FFFFFF00).",
+      "binding": "DirectnewSourcecore,compilerinlinesforwarder toaccepted559E00; preserveEAX."
+    }
+  ],
+  "eh_steps": [
+    {
+      "address": "006a33ca",
+      "native": "00bf6885",
+      "function": "006a33aa",
+      "contract": "Fullcatch twozeropushes/actualnonreturnrethrow E8; completeSourceacceptedcatchretained.",
+      "arguments": "(0,0)",
+      "binding": "AcceptedSource throw; afteractualprefixcleanup; SourceC++domain,FH3/SEH/RTTI/faultidentityqualified."
+    },
+    {
+      "address": "00c7f298",
+      "native": "00401130",
+      "function": "00c7f290",
+      "contract": "Full17B7instruction actionandactualsingleC3targetverifiedlive/disk.",
+      "arguments": "ParentEBP-1C/-20words; caller8Bcleanup.",
+      "binding": "Verifiedno-opactionelidedinacceptedSource; nofree/stub."
+    },
+    {
+      "address": "00c7f2a6",
+      "native": "00bf6b43",
+      "function": "00c7f2a1",
+      "kind": "tail_jump",
+      "contract": "Full10BnativeFH3handlerbytes,FuncInfoDAC4CC andcompleteEH mapsverified; tailJMP.",
+      "arguments": "MOV EAX,DAC4CC thenJMPactualCxxFrameHandler3.",
+      "binding": "NativeEHcontext evidenceonly,notadditionalSourceport/ownershipclaim. SourceCPPcatchatacceptedchildboundary replacesFH3privateframe/domain."
+    }
+  ],
+  "caller_steps": [
+    {
+      "address": "006a679e",
+      "native": "00557250",
+      "function": "006a6680",
+      "contract": "Actualpost-callflowread.",
+      "binding": "TESTAL,ALat67A3; onlylowbyteconsumed. SourcepreservesfullactuallydefinedEAXwithoutinventingsemanticambientinput."
+    },
+    {
+      "address": "006a67b5",
+      "native": "006a4c00",
+      "function": "006a6680",
+      "contract": "Actualpost-callflowread.",
+      "binding": "At67BA publishesEAXtodest+8; semanticdestinationendmustbepreserved."
+    }
+  ],
+  "eh_evidence": {
+    "handler": "00C7F2A1 MOV EAX,DAC4CC; JMPBF6B43",
+    "funcinfo_dac4cc": [
+      "19930522",
+      3,
+      "00dac4b4",
+      1,
+      "00dac4a0",
+      0,
+      0,
+      0,
+      1
+    ],
+    "unwind_dac4b4": [
+      [
+        -1,
+        0
+      ],
+      [
+        0,
+        "00c7f290"
+      ],
+      [
+        -1,
+        0
+      ]
+    ],
+    "try_dac4a0": [
+      0,
+      1,
+      2,
+      1,
+      "00dac490"
+    ],
+    "handler_dac490": [
+      "40",
+      0,
+      0,
+      "006a33aa"
+    ],
+    "accepted_equivalent": "D982B8/D982A0/D9828C/D9827C withactualC6DAC0/559E5A,notpointervaluesnormalizedawaywithoutverification.",
+    "source_scope": "Completeaccepted559E00 loop/prefixcatch/no-opelision reused. Failingcurrentchildownsitscleanup; Sourceextra/privateframesandC++exception/cleanupfailureidentityqualified. No nativeFH3port/stub."
+  },
+  "producer_layout_ownership": "Actual16Bcheckedheader(+0opaque,+4begin,+8end,+Ccapacity), owningbackingofactual16Binnercheckedheaders; eachinner owns8Bpooledstrings. Existingacceptedallocator/557BC0/432440 proofsupplyproducer-backedlayout,notjustconsumerguess. Initonlyallocatesrawbacking/clearsfields; itdoesnotconstructelements/proxy/freeoldbacking.",
+  "admitted_storage_aliases": "Everyaccessedheader/rangeandactualchildpool/CRT/ownershipcontractmusthold; capturedfirst/last,forwardoverlapeffectsretained; native/Sourceprivateframealiasesexcluded. Skippednulldestjoinsprefixandcatchhasnonullskip; safeactualprefixcleanupaccessesmustbevalid. No alignment/null/range/self/snapshot/rollbackrepair.",
+  "preserved_projection": "Existingfrontend_seg12_17_cc13 vector16_construct_n_00557250/Fe3InputHost remainsunchangedandseparate; priornamedreconstructionrecordretained. Newactualservicesareadditionalexplicitrecords.",
+  "dependency_acceptance": {
+    "actual553300_556c90": "Accepted48990e614,fullSource chainonpublishedmain beforeworkerbuild.",
+    "actual559e00_557bc0_432440": "Acceptedadc6d7666 andrealcopyconstructor/poolservices,alreadyintegrated; exactnativefullcore/EHcomparisoncurrentpacket.",
+    "worker_main_merge": "9f1e374fb",
+    "later_primary_promotion": "Primarypublishedc9b875c6e afterworkerbuildstarted; no newdependencyrequired fromthatpromotion."
+  },
+  "cmake_registration": {
+    "lease": "oct15_outer_vector_construct_cmake_merge",
+    "status": "queuedfirst/free,claimed; standardmerge_resolve unionandseparateprerequisitemergecommit9f1e374fb; appendedonlynewSource; releasedbeforebuild,rootninth_main_promotionnext."
+  },
+  "original_byte_audit": {
+    "original_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "extraction": "Installed PE32 section-table RVA-to-raw mapping. Complete fresh bsp.py ghidra bytes spans equal disk with no masks. Fresh current disasm starts equal Capstone5.0.7 for every complete typed body range; normal/catch scopes separate.",
+    "typed_capture": {
+      "path": "local/oct15_outer_vector_construct_typed_flow.json",
+      "sha256": "d1eef0c4439318ec393f07e2f4481a8c84a2818c8183dd0d2668514a198e20e8",
+      "validation": {
+        "accepted": true,
+        "state": "accepted",
+        "errors": []
+      },
+      "modification_number": "242"
+    },
+    "unit_summary": [
+      {
+        "entry": "00557250",
+        "name": "TMPL_Vector_ConstructN_00557250",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "00557250",
+            "end_inclusive": "00557298",
+            "bytes": 73,
+            "instructions": 29,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 73,
+        "instructions": 29
+      },
+      {
+        "entry": "006a3350",
+        "name": "STL_UninitCopy_StringVector16_006a3350",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "006a3350",
+            "end_inclusive": "006a33a9",
+            "bytes": 90,
+            "instructions": 33,
+            "all_current_listing_starts_equal_capstone": true
+          },
+          {
+            "start": "006a33cf",
+            "end_inclusive": "006a33e3",
+            "bytes": 21,
+            "instructions": 9,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 111,
+        "instructions": 42
+      },
+      {
+        "entry": "006a4c00",
+        "name": "STL_TagDispatch_006a4c00",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "006a4c00",
+            "end_inclusive": "006a4c24",
+            "bytes": 37,
+            "instructions": 14,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 37,
+        "instructions": 14
+      },
+      {
+        "entry": "006a33aa",
+        "name": "Catch_All@006a33aa",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "006a33aa",
+            "end_inclusive": "006a33ce",
+            "bytes": 37,
+            "instructions": 15,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 37,
+        "instructions": 15
+      },
+      {
+        "entry": "00c7f290",
+        "name": "Unwind@00c7f290",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "00c7f290",
+            "end_inclusive": "00c7f2a0",
+            "bytes": 17,
+            "instructions": 7,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 17,
+        "instructions": 7
+      },
+      {
+        "entry": "00559e00",
+        "name": "TMPL_NativeStringVector_UninitCopy_00559e00",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "00559e00",
+            "end_inclusive": "00559e59",
+            "bytes": 90,
+            "instructions": 33,
+            "all_current_listing_starts_equal_capstone": true
+          },
+          {
+            "start": "00559e7f",
+            "end_inclusive": "00559e93",
+            "bytes": 21,
+            "instructions": 9,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 111,
+        "instructions": 42
+      },
+      {
+        "entry": "00559e5a",
+        "name": "Catch_All@00559e5a",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "00559e5a",
+            "end_inclusive": "00559e7e",
+            "bytes": 37,
+            "instructions": 15,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 37,
+        "instructions": 15
+      },
+      {
+        "entry": "0055a950",
+        "name": "STL_TagDispatch_0055a950",
+        "typed_no_return": false,
+        "ranges": [
+          {
+            "start": "0055a950",
+            "end_inclusive": "0055a974",
+            "bytes": 37,
+            "instructions": 14,
+            "all_current_listing_starts_equal_capstone": true
+          }
+        ],
+        "bytes": 37,
+        "instructions": 14
+      }
+    ],
+    "live_spans": [
+      {
+        "address": "00557250",
+        "size": 73,
+        "role": "owned_function_or_accepted_comparison_full_envelope",
+        "bytes": "5633c0578b7c240c3bf88bf189460489460889460c75075f32c05ec2040081ffffffff0f7605e815faffff33d28bcfe87cc0ffffc1e70403f8897e0c8946048946085fb0015ec20400",
+        "live_equals_disk": true
+      },
+      {
+        "address": "006a3350",
+        "size": 148,
+        "role": "owned_function_or_accepted_comparison_full_envelope",
+        "bytes": "558bec6aff68a1f2c70064a100000000506489250000000083ec1453568b75085733db8965f08955ec8bf98975e8895dfc3b7dec74498975e48975e03bf3c645fc017408578bcee82448ebff83c610885dfc89750883c710ebd78b75e88b7d083bf774128b5d0c568bcbe8016aebff83c6103bf775f133db5353e8b63455008b4df45f8bc65e64890d000000005b8be55dc21000",
+        "live_equals_disk": true
+      },
+      {
+        "address": "006a4c00",
+        "size": 37,
+        "role": "owned_function_or_accepted_comparison_full_envelope",
+        "bytes": "518b542410c60424008b0424508b442414528b542414518b4c241450e82fe7ffff59c20c00",
+        "live_equals_disk": true
+      },
+      {
+        "address": "006a33aa",
+        "size": 37,
+        "role": "owned_function_or_accepted_comparison_full_envelope",
+        "bytes": "8b75e88b7d083bf774128b5d0c568bcbe8016aebff83c6103bf775f133db5353e8b6345500",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00c7f290",
+        "size": 17,
+        "role": "owned_function_or_accepted_comparison_full_envelope",
+        "bytes": "8b45e4508b4de051e8931e78ff83c408c3",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00559e00",
+        "size": 148,
+        "role": "owned_function_or_accepted_comparison_full_envelope",
+        "bytes": "558bec6aff68d1dac60064a100000000506489250000000083ec1453568b75085733db8965f08955ec8bf98975e8895dfc3b7dec74498975e48975e03bf3c645fc017408578bcee874ddffff83c610885dfc89750883c710ebd78b75e88b7d083bf774128b5d0c568bcbe851ffffff83c6103bf775f133db5353e806ca69008b4df45f8bc65e64890d000000005b8be55dc21000",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00559e5a",
+        "size": 37,
+        "role": "owned_function_or_accepted_comparison_full_envelope",
+        "bytes": "8b75e88b7d083bf774128b5d0c568bcbe851ffffff83c6103bf775f133db5353e806ca6900",
+        "live_equals_disk": true
+      },
+      {
+        "address": "0055a950",
+        "size": 37,
+        "role": "owned_function_or_accepted_comparison_full_envelope",
+        "bytes": "518b542418c60424008b0424508b44241c528b54241c518b4c241850e88ff4ffff59c21400",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00c7f2a1",
+        "size": 10,
+        "role": "new_FH3_handler",
+        "bytes": "b8ccc4da00e99878f7ff",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00dac490",
+        "size": 96,
+        "role": "new_complete_EH_tables",
+        "bytes": "400000000000000000000000aa336a000000000001000000020000000100000090c4da00ffffffff000000000000000090f2c700ffffffff000000002205931903000000b4c4da0001000000a0c4da0000000000000000000000000001000000",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00c6dac0",
+        "size": 17,
+        "role": "accepted_noop_placement_action",
+        "bytes": "8b45e4508b4de051e8633679ff83c408c3",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00c6dad1",
+        "size": 10,
+        "role": "accepted_FH3_handler",
+        "bytes": "b8b882d900e96890f8ff",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00d9827c",
+        "size": 96,
+        "role": "accepted_complete_EH_tables",
+        "bytes": "4000000000000000000000005a9e5500000000000100000002000000010000007c82d900ffffffff0000000000000000c0dac600ffffffff000000002205931903000000a082d900010000008c82d90000000000000000000000000001000000",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00401130",
+        "size": 1,
+        "role": "actual_noop_placement_target",
+        "bytes": "c3",
+        "live_equals_disk": true
+      }
+    ],
+    "verified_direct_edges": [
+      {
+        "site": "00557276",
+        "opcode": "e8",
+        "target": "00556c90"
+      },
+      {
+        "site": "0055727f",
+        "opcode": "e8",
+        "target": "00553300"
+      },
+      {
+        "site": "006a3397",
+        "opcode": "e8",
+        "target": "00557bc0"
+      },
+      {
+        "site": "006a33ba",
+        "opcode": "e8",
+        "target": "00559dc0"
+      },
+      {
+        "site": "006a33ca",
+        "opcode": "e8",
+        "target": "00bf6885"
+      },
+      {
+        "site": "006a4c1c",
+        "opcode": "e8",
+        "target": "006a3350"
+      },
+      {
+        "site": "00c7f298",
+        "opcode": "e8",
+        "target": "00401130"
+      },
+      {
+        "site": "00c7f2a6",
+        "opcode": "e9",
+        "target": "00bf6b43"
+      },
+      {
+        "site": "00559e47",
+        "opcode": "e8",
+        "target": "00557bc0"
+      },
+      {
+        "site": "00559e6a",
+        "opcode": "e8",
+        "target": "00559dc0"
+      },
+      {
+        "site": "00559e7a",
+        "opcode": "e8",
+        "target": "00bf6885"
+      },
+      {
+        "site": "0055a96c",
+        "opcode": "e8",
+        "target": "00559e00"
+      },
+      {
+        "site": "00c6dac8",
+        "opcode": "e8",
+        "target": "00401130"
+      },
+      {
+        "site": "00c6dad6",
+        "opcode": "e9",
+        "target": "00bf6b43"
+      },
+      {
+        "site": "006a679e",
+        "opcode": "e8",
+        "target": "00557250"
+      },
+      {
+        "site": "006a67b5",
+        "opcode": "e8",
+        "target": "006a4c00"
+      }
+    ],
+    "returns": [
+      {
+        "site": "0055726b",
+        "bytes": "c20400"
+      },
+      {
+        "site": "00557296",
+        "bytes": "c20400"
+      },
+      {
+        "site": "006a33e1",
+        "bytes": "c21000"
+      },
+      {
+        "site": "006a4c22",
+        "bytes": "c20c00"
+      }
+    ],
+    "core_equivalence": {
+      "new": "006a3350",
+      "accepted": "00559e00",
+      "complete_bytes_each": 148,
+      "equal_after_only_verified_address_fields": true,
+      "masks_half_open_offsets": [
+        [
+          6,
+          10
+        ],
+        [
+          72,
+          76
+        ],
+        [
+          107,
+          111
+        ],
+        [
+          123,
+          127
+        ]
+      ],
+      "provenance": "PUSH own FH3 handler imm32[6:10]; three CALL rel32 fields after independently verifying same557BC0,559DC0,BF6885 targets. All branch/order/stack/return bytes unchanged. Full raw try/unwind/handler maps separately validated; both state1 actions call actualRET-only401130."
+    },
+    "dispatch_comparison": {
+      "new": "006a4c00",
+      "accepted": "0055a950",
+      "complete_bytes_each": 37,
+      "different_physical_ABI": "new3stackwords/RETC,old5stackwords/RET14; exact four core stackwords same semantics",
+      "expected_nonrel32_differences": [
+        [
+          4,
+          16,
+          24
+        ],
+        [
+          16,
+          20,
+          28
+        ],
+        [
+          21,
+          20,
+          28
+        ],
+        [
+          26,
+          20,
+          24
+        ],
+        [
+          35,
+          12,
+          20
+        ]
+      ],
+      "rel32_mask_half_open": [
+        29,
+        33
+      ],
+      "rest_exact_equal": true,
+      "binding": "New3word Source dispatcher, not aliasing old5word API. Exact native owner,destinationbits,owner&FFFFFF00 metadata retained."
+    },
+    "scope": "Static live/disk/typed/listing/EH evidence and complete admitted Source schedule reuse; no native execution, binary ABI/FH3/SEH/RTTI/fault/currentCRT/private-frame or gameplay equivalence."
+  },
+  "compiled_source_evidence": {
+    "object": "build/win32/bsp_core.dir/Release/native_outer_vector_construct_services.obj",
+    "object_sha256": "45885b9452fa4bcc8cdc889e281f3a19cece9383f90eb6e63d0b88c98cfc130a",
+    "source_sha256": "d618c194c3db2262efa1a2f9de804aab88cfe11c24e5c8c88e9af2688ede5686",
+    "dump_file": "local/oct15_outer_vector_construct_coff.asm",
+    "dumper": "MSVCdumpbin14.51.36244.0 /DISASM",
+    "extraction": "CompleteexactbuildCOFFdisassemblywithsymbol/relocation-labelledcalls,noOriginalbytecomparison/maskingofSource.",
+    "init": "Countcapture07; rawzero+4/+8/+C stores1A/2A/3A beforetest3D; zeroXOREAX41/RET4at47; unsignedCMP/JA4A..50; actualallocatorCALL57; capacitystore74,beg82,end90; ANDESIFFFFFF01/OR1 at93/99 yields exacthigh24+AL1; RET4A3; owninglengththrowCALLA6.",
+    "copy": "Completeaccepted559E00 tailJMPat04, no inventedconstructor/cleanup/stub. Actualchild/prefixCPPcatchrunsinacceptedframe; nativeownFH3frameidentitynotpreserved.",
+    "dispatch": "Loadlast06,ownerANDFFFFFF00at0B,destbits/owner/sourceforward; compilerdirectacceptedcoreCALL1A; EAXunchangedthroughRET10at20.",
+    "qualification": "ExactSourceeffects/staticcompilationevidence,notnativephysicalABI/privateframe/FH3/SEH/fault/currentCRT executionequivalence."
+  },
+  "floating_point": "No x87/FPoperationsinthese3helpers/catch/action; noNaNarithmeticsemanticsinvolved.",
+  "uncertainties": [
+    "DescriptivenamesandoriginalC++typesremainhypotheses; machineEAX/ALmeaningandphysicalwordsareevidence-backed.",
+    "CurrentCRT/Sourcedeepowningexception/actualRawCtx/privateframeandC++cleanupdomainlimitsremainexplicit; no originalFH3/SEH/RTTI/exception/fault/binaryABIidentity.",
+    "No originalfixture/nativeexceptionexecution/startup/gameplayvalidation."
+  ],
+  "checks": {
+    "build": "pass ./scripts/build.ps1 aftergranted/releasedregistration andaccepteddependencies",
+    "build_log": "local/oct15_outer_vector_construct_build.log",
+    "build_exit_code": 0,
+    "existing_suites": "3/3pass reconstructed_math,native_math_differential,tool_tests;7.68s",
+    "native_byte_and_body_audit": "pass14completelive/diskspans,178currentlistingstartsequalCapstone5.0.7,8typedscopes,16directedges,fullEHmaps/RETbytes",
+    "call_report": "pass: 10 CALL/tail-JMP rows checked, 0 failed",
+    "markdown_calls": "pass: 10 call/jump claims checked, 0 failed, 0 unchecked, 0 warnings",
+    "diff_check": "pass: git diff --check; staged check repeated before commit",
+    "new_tests": "none; focusednative/COFFevidenceandexistingchecksused"
+  },
+  "status": "source_complete_build_tested_at_accepted_actual_children_with_explicit_Source_ABI_CPP_EH_CRT_qualification"
+}
