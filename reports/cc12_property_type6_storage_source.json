@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet": "cc12_property_type6_storage_source",
   "UTC": "2026-10-08T18:50:17.786575+00:00",
-  "status": "PRIMARY_ACCEPTED_STATIC_SOURCE_AND_RAW_CONSTRUCTOR_WITH_WORKER_ORDINARY_EMPTY_CLONE_EXECUTION_PASS_PENDING_PRIMARY_ADMISSION",
+  "status": "PRIMARY_ACCEPTED_STATIC_SOURCE_BOUNDED_RAW_CONSTRUCTOR_AND_ORDINARY_EMPTY_CHILD_CLONE",
   "baseline": "27f2c7ec27d4c654755c76b2ccd56b7f4563a195",
   "readiness_commit": "07a14df5cace343a34ecdf8b3985ab8e506b288f",
   "readiness_primary_main": "27f2c7ec27d4c654755c76b2ccd56b7f4563a195",
@@ -1134,7 +1134,9 @@
     "original_static_batch_no_new_test_or_selected_entry_execution": true,
     "original_static_batch_no_CMake_or_Ghidra_or_ledger_changes": true,
     "current_raw_constructor_entry_fixture_qualified": true,
-    "Root_current_raw_entry_register_stack_defined_flags_and_complete_memory_reader_PASS": true
+    "Root_current_raw_entry_register_stack_defined_flags_and_complete_memory_reader_PASS": true,
+    "current_ordinary_empty_child_clone_fixture_qualified": true,
+    "Root_ordinary_clone_complete_code_and_observation_readers_PASS": true
   },
   "document": {
     "path": "docs/CC12_PROPERTY_TYPE6_STORAGE_SOURCE.md",
@@ -1564,8 +1566,8 @@
     }
   },
   "current_ordinary_empty_child_clone_execution": {
-    "status": "worker_successful_ordinary_empty_child_clone_PASS_parent_runtime_admission_pending",
-    "new_runtime_admission_credit": 0,
+    "status": "accepted_bounded_ordinary_empty_child_clone_current_provider_domain",
+    "new_runtime_admission_credit": 1,
     "existing_static_Source_and_constructor_runtime_admission_preserved": true,
     "current_Source_unchanged": true,
     "qualification": {
@@ -1795,6 +1797,239 @@
     ],
     "complete_artifact_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_clone_current01\\artifact_manifest.json",
     "manifest_hash_recorded_in_worker_handoff_to_avoid_output_snapshot_cycle": true,
-    "whole_Original_clone_class_recursive_startup_game_credit": 0
+    "whole_Original_clone_class_recursive_startup_game_credit": 0,
+    "Root_independent_validation_pending": false,
+    "Root_current_ordinary_clone_acceptance": {
+      "utc": "2026-10-15T00:51:57.026086+00:00",
+      "status": "accepted_bounded_ordinary_empty_child_clone_current_provider_domain",
+      "worker_commit": "70e9b3381874eab3c32ff99c8bcac0bd163f638f",
+      "Root_independent_code_reader_rerun": "PASS",
+      "Root_independent_recorded_reader_rerun": "PASS",
+      "sealed_family_files": 97,
+      "sealed_nonmanifest_bytes": 96335004,
+      "selected_inputs_verified_and_bookended": 293,
+      "Root_current_direct_Source_header_pins": [
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "bytes": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        {
+          "path": "include/bsp/system_time_constants.hpp",
+          "bytes": 4800,
+          "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+        },
+        {
+          "path": "include/bsp/camera_transform.hpp",
+          "bytes": 7028,
+          "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+        },
+        {
+          "path": "include/bsp/camera_projection.hpp",
+          "bytes": 2413,
+          "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+        },
+        {
+          "path": "include/bsp/render_tail.hpp",
+          "bytes": 15566,
+          "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+        },
+        {
+          "path": "include/bsp/frame_clock.hpp",
+          "bytes": 2475,
+          "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+        },
+        {
+          "path": "include/bsp/game_entry.hpp",
+          "bytes": 5510,
+          "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+        },
+        {
+          "path": "src/native_scene_property_bag_storage.cpp",
+          "bytes": 12600,
+          "sha256": "5a0ee52ea81c2eed2cff928bd7d1b4eaa93e6b46e87fad54f114fc7825678e1f"
+        },
+        {
+          "path": "include/bsp/native_string.hpp",
+          "bytes": 8771,
+          "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+        },
+        {
+          "path": "include/bsp/storage_pool.hpp",
+          "bytes": 5571,
+          "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+        },
+        {
+          "path": "include/bsp/native_scene_property_array_block_release.hpp",
+          "bytes": 618,
+          "sha256": "33487664e85d48efc22745d5aa2a4340b1636e00f96ed3f70441003eba9d8642"
+        },
+        {
+          "path": "include/bsp/native_enum_node_pool.hpp",
+          "bytes": 3553,
+          "sha256": "8ea6578c783aa32a7327b2d7dedddb3a77d08b731be3ea5907ae2dbb97398a1e"
+        },
+        {
+          "path": "include/bsp/allocator_list.hpp",
+          "bytes": 2192,
+          "sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570"
+        },
+        {
+          "path": "include/bsp/game_native_string_process.hpp",
+          "bytes": 3108,
+          "sha256": "b8dde55aa8ef2dfe69a7ce14d6ba7752c6feae9c1716ef6962240b3eccadcace"
+        },
+        {
+          "path": "include/bsp/native_string_pool_storage.hpp",
+          "bytes": 2805,
+          "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+        },
+        {
+          "path": "include/bsp/native_string_pool_owner.hpp",
+          "bytes": 5893,
+          "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+        },
+        {
+          "path": "include/bsp/game_native_physical_pool.hpp",
+          "bytes": 3787,
+          "sha256": "96d7cda0fe9674648d77a97b0a5528f4fae5731774c33badc98a2ced4686246d"
+        },
+        {
+          "path": "include/bsp/native_physical_provider_pool.hpp",
+          "bytes": 2319,
+          "sha256": "117ea86d6010a74151de7a4916ebb8ace4ef1e813d3fd971dc621a6cf5d316da"
+        },
+        {
+          "path": "include/bsp/native_scene_property_recursive_lifetime.hpp",
+          "bytes": 4337,
+          "sha256": "1cffe704d444d8511d8a0e448f2c05b8e11e9c1b3040e5f8bdf3406630fae6e1"
+        },
+        {
+          "path": "include/bsp/native_scene_property_record_type6_storage.hpp",
+          "bytes": 2915,
+          "sha256": "b7cb92a00e9071a74407de89d41533820c94052fe89c90de0356220ab74e7fe8"
+        },
+        {
+          "path": "include/bsp/native_scene_property_bag_storage.hpp",
+          "bytes": 2199,
+          "sha256": "ce8f0562a7a39aca690f9b1cbbca924566bca257fcc82bf6ecc85f3a8d93e3a4"
+        }
+      ],
+      "process": {
+        "pid": 35932,
+        "returncode": 0,
+        "start_ns": 1792023961956441900,
+        "end_ns": 1792023962033773200,
+        "one_current_target_process": true,
+        "ordinary_Source_clone_calls": 2,
+        "Original_parent_arm_execution": false
+      },
+      "new_target_process_launched_by_Root": false,
+      "ordinary_Source_clone_calls": 2,
+      "source_root56_count": 2,
+      "source_child276_count": 2,
+      "result_root56_count": 2,
+      "result_child276_count": 2,
+      "seed276_count": 1,
+      "whole_bodies": 39,
+      "whole_bytes": 5112,
+      "instructions": 1454,
+      "retained_sections": 124,
+      "relocations": 742,
+      "weak_entries": 10,
+      "CFG_edges": 316,
+      "ordinary_clone": {
+        "source_va": 1392513424,
+        "normal_bytes": 146,
+        "normal_instructions": 48,
+        "whole_COFF_section_bytes": 172,
+        "normal_and_cold_section_members": [
+          {
+            "va": 1392513424,
+            "size": 146,
+            "names": [
+              "?clone_empty_child_native_scene_property_record_type6_008f50ed_fragment@bsp@@YAPAXPBX@Z"
+            ],
+            "offset": 0
+          },
+          {
+            "va": 1392513570,
+            "size": 26,
+            "names": [
+              "__catch$?clone_empty_child_native_scene_property_record_type6_008f50ed_fragment@bsp@@YAPAXPBX@Z$0"
+            ],
+            "offset": 146
+          }
+        ],
+        "direct_calls": [
+          {
+            "offset": 74,
+            "target": 1392514048,
+            "provider": "singleton_lifetime_allocate"
+          },
+          {
+            "offset": 94,
+            "target": 1392513600,
+            "provider": "clone_empty_native_scene_property_bag_008f41f0_fragment"
+          },
+          {
+            "offset": 107,
+            "target": 1392513744,
+            "provider": "construct_native_scene_property_record_type6_storage_008ef780"
+          }
+        ],
+        "ordinal_read_offset": 112,
+        "ordinal_write_offset": 115,
+        "no_Original_parent_frame_or_failure_claim": true
+      },
+      "provider_scope": {
+        "actual_current_entries": [
+          "malloc",
+          "free",
+          "memcpy",
+          "_callnewh"
+        ],
+        "entry_bytes": 32,
+        "disk_hash_file_identity_and_relocated_live_entry_bookends": true,
+        "Original_private_CRT_deep_allocator_or_failure_equivalence": false
+      },
+      "result_15_untouched_bytes": "Observed only; no allocation preimage or dynamic preservation claim.",
+      "historical_resolver_scope": "Exact prior sealed Core/Lua/zlib sibling-symbol resolution only; no archive body enters the qualified helper/caller closure. No new/current whole-Core build claim.",
+      "existing_static_Source_and_constructor_runtime_admission_preserved": true,
+      "additional_static_Source_credit": 0,
+      "additional_constructor_runtime_credit": 0,
+      "bounded_ordinary_clone_runtime_admission_credit": 1,
+      "not_admitted": [
+        "copied Original71 arm and whole8F4F60 record clone",
+        "Original parent registers/frame, Native FH3, null-allocation or exception behavior",
+        "populated-child or recursive clone/lifetime",
+        "phase dispatch, class/vtable binding, factory or owning-map lifecycle",
+        "specific preimage/value for the15 untouched new-record bytes",
+        "Original private CRT/deep allocator, whole-game ABI, startup equivalence and gameplay"
+      ],
+      "artifacts": [
+        {
+          "path": "local/cc12_type6_clone_parent_review_01/independent_code.json",
+          "bytes": 905283,
+          "sha256": "a0c7a2b6a8b765be84afd7027769c9d8ffdbb3ca9b25cb31481cc13881cec50f"
+        },
+        {
+          "path": "local/cc12_type6_clone_parent_review_01/independent_recorded.json",
+          "bytes": 12289,
+          "sha256": "6bc756a256cf9915adb4d9e0f24ddbeb038d31ffffe90873590537ef550cdff0"
+        },
+        {
+          "path": "local/cc12_type6_clone_parent_review_01/parent_rerun.log",
+          "bytes": 223,
+          "sha256": "cda3ec79541c4ddb664e1bfd8e81685ca032a99da72411c4633f7edec8342cbd"
+        }
+      ],
+      "frozen_receipt": "local/cc12_native_parent_receipts/type6_70/receipt.json"
+    }
   }
 }
