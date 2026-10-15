@@ -35,6 +35,9 @@ public:
     // Distinct stable-zero ordinary clone-key role for Original F89450.
     // This does not assert universal immutability of Original writable .data.
     const char* clone_empty_00f89450() const noexcept;
+    // Distinct permanent initial-NUL role for Original library key E18560.
+    // Borrow the SAME retained process; do not alias another fallback cell.
+    const char* library_empty_00e18560() const noexcept;
 private:
     friend GameNativeStringProcess& game_native_string_process();
     GameNativeStringProcess() noexcept = default;
@@ -53,6 +56,9 @@ private:
     bool particle_manager_domain_claimed_{};
     // Append after all established authorities; never alias either fallback.
     const char clone_empty_00f89450_{};
+    // Append after every established field; Original writable .data is not
+    // claimed universally immutable by this ordinary Source authority.
+    const char library_empty_00e18560_{};
 };
 
 // Intentionally retained through process termination. No C++ exit destructor

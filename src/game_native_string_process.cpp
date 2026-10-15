@@ -32,6 +32,10 @@ const char* GameNativeStringProcess::clone_empty_00f89450() const noexcept {
     return &clone_empty_00f89450_;
 }
 
+const char* GameNativeStringProcess::library_empty_00e18560() const noexcept {
+    return &library_empty_00e18560_;
+}
+
 GameNativeStringProcess& game_native_string_process() {
     static auto* const process = new GameNativeStringProcess;
     return *process;
