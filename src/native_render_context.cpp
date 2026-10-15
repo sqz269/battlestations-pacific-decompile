@@ -189,10 +189,28 @@ void dispatch_native_render_actual_owner_zero(
 }
 
 void release_native_render_actual_owner(NativeRenderActualOwners& owners, void* identity) {
+    NativeRenderActualOwnerReleaseObservation observation;
+    release_native_render_actual_owner_observed(owners, identity, observation);
+}
+
+void release_native_render_actual_owner_observed(NativeRenderActualOwners& owners, void* identity,
+    NativeRenderActualOwnerReleaseObservation& observation) {
+    if (observation.entered)
+        throw std::logic_error("actual owner release observation is one-shot");
+    observation.identity = identity;
+    observation.entered = true;
     auto* const actual = std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(
         static_cast<std::byte*>(identity) + 4));
-    if (actual->fetch_sub(1, std::memory_order_seq_cst) == 1)
+    observation.previous_count = actual->fetch_sub(1, std::memory_order_seq_cst);
+    observation.result_bits = static_cast<std::uint32_t>(observation.previous_count) - 1u;
+    observation.decremented = true;
+    if (observation.previous_count == 1) {
+        observation.zero_dispatch_entered = true;
         dispatch_native_render_actual_owner_zero(owners, identity);
+        // Only external retained metadata is touched after the terminal.
+        observation.zero_dispatch_returned = true;
+    }
+    observation.returned = true;
 }
 
 NativeRenderContextStorage* initialize_native_render_context_00b1edc0_fragment(void* raw) noexcept {

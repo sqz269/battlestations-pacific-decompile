@@ -11,6 +11,8 @@
 #include "bsp/native_vfs_name_resolution.hpp"
 #include "bsp/native_shader_binary_cache.hpp"
 #include <cstdio>
+#include <cstring>
+#include <limits>
 #include <stdexcept>
 
 namespace bsp::game {
@@ -38,6 +40,8 @@ const char* stage_name(Stage stage) noexcept {
     case Stage::closing: return "closing";
     case Stage::closed: return "closed";
     case Stage::failed: return "failed";
+    case Stage::fakemotion_preload: return "fakemotion-preload";
+    case Stage::fakemotion_warm_hit: return "fakemotion-warm-hit";
     }
     return "unknown";
 }
@@ -61,6 +65,37 @@ std::int32_t inspect_effect(void* identity, NativeRenderActualOwnerRegistry& own
     require(references > 0 && (profile == 0x00d5e534 || profile == 0x00d61a00),
         "GUI effect probe returned no live supported actual effect");
     return references;
+}
+void observe_cache(NativeShaderBinaryCacheContext& cache,
+    GameNativeGuiEffectProbeCacheObservation& observed) noexcept {
+    observed.owner = cache.actual_cache_0108d6ec;
+    observed.source_mode = cache.source_mode_0108d6f1;
+    observed.load_variants = cache.load_variants_0108d6f0;
+    if (observed.owner) {
+        const auto* actual = static_cast<const volatile NativeShaderBinaryCacheStorage*>(observed.owner);
+        observed.cursor = actual->cursor_00;
+        observed.count = actual->count_04;
+    }
+    observed.sampled = true;
+}
+bool name_is(const NativeString& name, const char* expected) noexcept {
+    const auto length = std::strlen(expected);
+    return name.length() == length && name.data() &&
+        std::memcmp(name.data(), expected, length) == 0;
+}
+void note_resource(GameHostLog& log, const GameNativeGuiEffectProbeResource& slot) {
+    log.notef("native GUI probe slot=%s header=%p name=%d/%d acquire=%d op=%zu frame=%p held=%p identity=%p release=%d/%d",
+        slot.requested_name, static_cast<const void*>(slot.input_name), slot.name_entered ? 1 : 0,
+        slot.name_live ? 1 : 0, slot.acquisition_entered ? 1 : 0, slot.operation_index,
+        slot.retained_operation, slot.caller_reference, slot.returned_identity,
+        slot.release_entered ? 1 : 0, slot.caller_released ? 1 : 0);
+    log.notef("native GUI probe cache resource=%s sampled=%d/%d owners=%p/%p cursors=%u/%u counts=%u/%u modes=%u/%u variants=%u/%u site=%08x published=%d cold=%d",
+        slot.requested_name, slot.cache_before.sampled ? 1 : 0, slot.cache_after.sampled ? 1 : 0,
+        slot.cache_before.owner, slot.cache_after.owner, slot.cache_before.cursor, slot.cache_after.cursor,
+        slot.cache_before.count, slot.cache_after.count, static_cast<unsigned>(slot.cache_before.source_mode),
+        static_cast<unsigned>(slot.cache_after.source_mode), static_cast<unsigned>(slot.cache_before.load_variants),
+        static_cast<unsigned>(slot.cache_after.load_variants), slot.cache_native_site,
+        slot.cache_published ? 1 : 0, slot.cold_loader_entered ? 1 : 0);
 }
 void note_program(GameHostLog& log, const NativeMaterialEffectProgramOperation& programs) {
     auto* child = programs.active_child();
@@ -114,6 +149,10 @@ void note_program(GameHostLog& log, const NativeMaterialEffectProgramOperation& 
                     log.notef("native GUI sampler step index=%u site=%08x owner=%p obligation=%d release=%d/%d",
                         step.sampler_index, step.native_site, step.captured_owner, step.owner_obligation ? 1 : 0,
                         step.release_entered ? 1 : 0, step.release_returned ? 1 : 0);
+                    if (step.sampler)
+                        log.notef("native GUI reached sampler actual=%p source=%d index=%d type=%d vertex=%u",
+                            step.sampler, step.sampler->texture_source_14, step.sampler->index_20,
+                            step.sampler->type_10, static_cast<unsigned>(step.sampler->vertex_sampler_0c));
                 }
             }
         }
@@ -176,7 +215,111 @@ struct GameNativeGuiEffectProbe::Impl {
           input(i), platform(p), raw(v.borrow_raw_services()) {
         observed.resources[0].requested_name = "GuiFont.mshd";
         observed.resources[1].requested_name = "GuiFontBilinear.mshd";
+        observed.fakemotion_preload.requested_name = "fakemotionblur.mshd";
+        observed.fakemotion_warm.requested_name = "fakemotionblur.mshd (warm)";
+        for (auto& slot : observed.resources) slot.input_name = &slot.native_name;
+        observed.fakemotion_preload.input_name = &observed.fakemotion_preload.native_name;
+        observed.fakemotion_warm.input_name = &observed.fakemotion_preload.native_name;
         // No native allocation, name construction, shadow/effect/sampler entry here.
+    }
+    void acquire(GameNativeGuiEffectProbeResource& slot, const NativeString& name) {
+        slot.input_name = &name;
+        slot.operation_index = effects->operation_count();
+        observe_cache(renderer.shader_cache_context(), slot.cache_before);
+        slot.acquisition_entered = true;
+        slot.caller_reference = effects->acquire_effect_00b318b0(slot.input_name);
+        slot.returned_identity = slot.caller_reference;
+        observe_cache(renderer.shader_cache_context(), slot.cache_after);
+        slot.references_on_return = inspect_effect(slot.caller_reference, renderer.actual_owners(), slot.profile);
+        const auto& operation = effects->operation(slot.operation_index);
+        slot.retained_operation = &operation;
+        require(operation.cache.caller_acquired,
+            "GUI effect probe received no exact native caller credit");
+        slot.cache_native_site = operation.cache.native_site;
+        slot.cache_published = operation.cache.cache_published;
+        slot.cold_loader_entered = operation.cache.loader.phase != NativeMaterialEffectLoadPhase::not_started;
+        slot.fallback_call_seen = operation.cache.loader.fallback != nullptr;
+        log.notef("native GUI effect probe resource=%s header=%p actual=%p profile=%08x refs=%d fallback_call=%d",
+            slot.requested_name, static_cast<const void*>(slot.input_name), slot.caller_reference,
+            slot.profile, slot.references_on_return, slot.fallback_call_seen ? 1 : 0);
+        note_resource(log, slot);
+    }
+    void inspect_fakemotion_descriptor(NativeShaderDescriptorStorage* descriptor,
+        GameNativeGuiEffectProbeSelectedSampler& result) {
+        result.descriptor = descriptor;
+        require(descriptor != nullptr, "fakemotion probe has no current selected descriptor");
+        result.count = descriptor->virtual_owners_c4.count_04;
+        for (std::size_t index = 0; index < 14; ++index)
+            if (descriptor->mode_names_48[index].length()) result.mode_mask |= 1u << index;
+        result.dummy_combiner = name_is(descriptor->mode_names_48[0], "dummy.shfx");
+        require(result.count == 1 && descriptor->virtual_owners_c4.data_00,
+            "fakemotion probe requires the selected single SceneTexture sampler");
+        auto* selected_sampler = *static_cast<NativeShaderSamplerStorage**>(descriptor->virtual_owners_c4.data_00);
+        result.sampler = selected_sampler;
+        require(selected_sampler != nullptr, "fakemotion probe selected a null sampler");
+        result.texture_source = selected_sampler->texture_source_14;
+        result.index = selected_sampler->index_20;
+        result.type = selected_sampler->type_10;
+        result.vertex_sampler = selected_sampler->vertex_sampler_0c;
+        result.scene_texture_name = name_is(selected_sampler->name_04, "SceneTexture");
+        result.inspected = true;
+        log.notef("native fakemotion selected descriptor=%p sampler=%p count=%d source=%d index=%d type=%d vertex=%u SceneTexture=%d mode_mask=%08x dummy=%d",
+            result.descriptor, result.sampler, result.count, result.texture_source, result.index, result.type,
+            static_cast<unsigned>(result.vertex_sampler), result.scene_texture_name ? 1 : 0,
+            result.mode_mask, result.dummy_combiner ? 1 : 0);
+        require(result.texture_source == 0 && result.index == 0 && result.type == 2 &&
+            result.vertex_sampler == 0 && result.scene_texture_name && result.mode_mask == 1 && result.dummy_combiner,
+            "fakemotion probe selected a descriptor outside the bounded SceneTexture Source0 contract");
+    }
+    static GameNativeGuiSamplerCallEvidence observe_fakemotion_sampler_call(void* context,
+        NativeMaterialProgramBuilderStorage& builder, NativeMaterialPassStorage& pass,
+        NativeShaderDescriptorStorage& root, NativeShaderDescriptorStorage& mode) {
+        auto& p = *static_cast<Impl*>(context);
+        auto& o = p.observed;
+        if (o.include_fakemotion && o.stage == Stage::fakemotion_preload) {
+            require(o.fakemotion_sampler_call_count < o.fakemotion_sampler_calls.size(),
+                "fakemotion probe exceeded its two retained variant sampler observations");
+            const auto index = o.fakemotion_sampler_call_count++;
+            auto& call = o.fakemotion_sampler_calls[index];
+            call.builder = &builder;
+            call.pass = &pass;
+            call.mode_descriptor = &mode;
+            call.following_root_site = 0x00b3c018;
+            call.following_mode_site = 0x00b3c024;
+            call.mode_sampler_count = mode.virtual_owners_c4.count_04;
+            p.log.notef("native fakemotion sampler observation=%zu callback=host-final-states before_root=%08x before_mode=%08x graph=%p builder=%p pass=%p root=%p mode=%p mode_samplers=%d evidence=empty",
+                index, call.following_root_site, call.following_mode_site, o.effect_application_identity,
+                call.builder, call.pass, static_cast<void*>(&root), call.mode_descriptor, call.mode_sampler_count);
+            p.inspect_fakemotion_descriptor(&root, call.root);
+            require(call.mode_sampler_count == 0,
+                "fakemotion probe selected a mode sampler outside the bounded empty-mode contract");
+        }
+        // Observation only. Never supply W, entry knowledge, release scratch,
+        // a provider or a default. final_states still publishes its qualified
+        // actual cached predecessor capture and enforces the existing guard.
+        return GameNativeGuiSamplerCallEvidence{};
+    }
+    void retire(GameNativeGuiEffectProbeResource& slot) {
+        require(slot.caller_reference && !slot.release_entered,
+            "GUI effect probe caller credit is absent or already being retired");
+        std::uint32_t profile{};
+        slot.references_before_release = inspect_effect(slot.caller_reference, renderer.actual_owners(), profile);
+        slot.release_entered = true;
+        release_native_cached_effect_00b32010(slot.caller_reference, renderer.actual_owners());
+        slot.caller_reference = nullptr;
+        slot.caller_released = true;
+        slot.companion_present_after_release = renderer.actual_owners().find(slot.returned_identity) != nullptr;
+        if (slot.companion_present_after_release)
+            slot.references_after_release = inspect_effect(slot.returned_identity, renderer.actual_owners(), profile);
+        if (slot.references_after_release)
+            require(*slot.references_after_release == slot.references_before_release - 1,
+                "GUI effect caller retirement did not remove exactly one actual credit");
+        else require(slot.references_before_release == 1,
+            "GUI effect companion disappeared before its actual count reached zero");
+        // Missing companion means retired identity; do not dereference freed raw storage.
+        log.notef("native GUI effect probe retired caller=%s identity=%p before=%d companion=%d after=%d",
+            slot.requested_name, slot.returned_identity, slot.references_before_release,
+            slot.companion_present_after_release ? 1 : 0, slot.references_after_release.value_or(-1));
     }
     void record_failure() noexcept {
         observed.failure = std::current_exception();
@@ -196,11 +339,13 @@ GameNativeGuiEffectProbe::~GameNativeGuiEffectProbe() noexcept {
         std::terminate();
 }
 
-const GameNativeGuiEffectProbeObservation& GameNativeGuiEffectProbe::run() {
+const GameNativeGuiEffectProbeObservation& GameNativeGuiEffectProbe::run(bool include_fakemotion) {
     auto& p = *impl_;
     auto& o = p.observed;
     require(o.stage == Stage::prepared, "GUI effect probe cannot replay production");
+    o.include_fakemotion = include_fakemotion;
     try {
+        p.log.notef("native GUI effect probe options include_fakemotion=%d", include_fakemotion ? 1 : 0);
         o.stage = Stage::shadow;
         p.shadow = std::make_unique<GameNativeShadowTargetApplication>(p.log, p.renderer, p.settings);
         p.shadow->construct();
@@ -218,6 +363,9 @@ const GameNativeGuiEffectProbeObservation& GameNativeGuiEffectProbe::run() {
         // it does not run the preload script/vector or change either mode byte.
         o.source_mode_on_create = p.renderer.shader_cache_context().source_mode_0108d6f1;
         o.load_variants_on_create = p.renderer.shader_cache_context().load_variants_0108d6f0;
+        if (include_fakemotion)
+            require(o.source_mode_on_create == 0 && o.load_variants_on_create == 0,
+                "fakemotion binary preload probe requires existing compiler source mode0 and variants0");
         o.cache_creation_entered = true;
         p.renderer.create_shader_cache();
         o.cache_creation_returned = true;
@@ -228,12 +376,18 @@ const GameNativeGuiEffectProbeObservation& GameNativeGuiEffectProbe::run() {
             o.cache_identity, static_cast<unsigned>(o.source_mode_on_create),
             static_cast<unsigned>(o.load_variants_on_create));
         o.stage = Stage::sampler_parent;
+        GameNativeGuiSamplerApplicationBindings sampler_bindings{p.input, p.platform};
+        if (include_fakemotion) {
+            sampler_bindings.evidence_context = &p;
+            sampler_bindings.evidence = &Impl::observe_fakemotion_sampler_call;
+        }
         p.sampler = std::make_unique<GameNativeGuiSamplerApplication>(p.log, p.renderer, p.vfs,
-            p.singletons, p.data, GameNativeGuiSamplerApplicationBindings{p.input, p.platform});
+            p.singletons, p.data, sampler_bindings);
         // EMPTY MSG output preimage and no invocation/root/release stack capture.
         o.stage = Stage::effect_parent;
         p.effects = std::make_unique<GameNativeGuiEffectApplication>(p.log, p.renderer, p.vfs,
             p.sampler->effect_bindings());
+        o.effect_application_identity = p.effects.get();
         require(&p.renderer.effect_registry_domain().actual_records.strings == &p.raw.strings,
             "GUI effect probe names require the same actual renderer/VFS string pool");
         o.stage = Stage::names;
@@ -244,18 +398,37 @@ const GameNativeGuiEffectProbeObservation& GameNativeGuiEffectProbe::run() {
         for (std::size_t index = 0; index < o.resources.size(); ++index) {
             auto& slot = o.resources[index];
             o.stage = index == 0 ? Stage::first_effect : Stage::second_effect;
-            slot.operation_index = p.effects->operation_count();
-            slot.acquisition_entered = true;
-            slot.caller_reference = p.effects->acquire_effect_00b318b0(&slot.native_name);
-            slot.returned_identity = slot.caller_reference;
-            slot.references_on_return = inspect_effect(slot.caller_reference, p.renderer.actual_owners(), slot.profile);
+            p.acquire(slot, slot.native_name);
+        }
+        if (include_fakemotion) {
+            o.stage = Stage::fakemotion_preload;
+            auto& slot = o.fakemotion_preload;
+            require(p.effects->operation_count() == o.resources.size(),
+                "fakemotion preload must follow exactly the two genuine font acquisitions");
+            slot.name_entered = slot.name_live = true;
+            slot.native_name.assign_0041e870(p.raw.strings, slot.requested_name);
+            p.acquire(slot, slot.native_name);
             const auto& operation = p.effects->operation(slot.operation_index);
-            require(operation.cache.caller_acquired,
-                "GUI effect probe received no exact native caller credit");
-            slot.fallback_call_seen = operation.cache.loader.fallback != nullptr;
-            p.log.notef("native GUI effect probe resource=%s header=%p actual=%p profile=%08x refs=%d fallback_call=%d",
-                slot.requested_name, static_cast<const void*>(&slot.native_name), slot.caller_reference,
-                slot.profile, slot.references_on_return, slot.fallback_call_seen ? 1 : 0);
+            require(operation.cache.cache_published && operation.cache.loaded == slot.caller_reference &&
+                operation.cache.loader.creator == slot.caller_reference && operation.cache.loader.registered &&
+                operation.cache.loader.returned && operation.cache.loader.phase == NativeMaterialEffectLoadPhase::complete &&
+                !slot.fallback_call_seen,
+                "fakemotion preload requires its genuine completed cold creator without fallback");
+            require(slot.cache_before.owner == o.cache_identity && slot.cache_after.owner == o.cache_identity &&
+                slot.cache_before.source_mode == 0 && slot.cache_after.source_mode == 0 &&
+                slot.cache_before.load_variants == o.load_variants_on_create &&
+                slot.cache_after.load_variants == o.load_variants_on_create &&
+                slot.cache_before.count == slot.cache_after.count &&
+                slot.cache_after.cursor > slot.cache_before.cursor && slot.cache_after.cursor <= slot.cache_after.count,
+                "fakemotion preload changed its canonical cache, mode or forward cursor domain");
+            require(slot.profile == 0x00d61a00 && o.fakemotion_sampler_call_count != 0,
+                "fakemotion preload requires an actual derived creator and observed compiler sampler calls");
+            auto* effect = static_cast<NativeMaterialEffectStorage*>(slot.caller_reference);
+            p.inspect_fakemotion_descriptor(static_cast<NativeShaderDescriptorStorage*>(effect->descriptor_c4),
+                o.fakemotion_sampler);
+            std::uint32_t profile{};
+            o.fakemotion_references_before_cache_release =
+                inspect_effect(slot.caller_reference, p.renderer.actual_owners(), profile);
         }
         o.stage = Stage::shader_cache_release;
         o.cache_release_entered = true;
@@ -264,6 +437,40 @@ const GameNativeGuiEffectProbeObservation& GameNativeGuiEffectProbe::run() {
         require(p.renderer.shader_cache_released() &&
             !p.renderer.shader_cache_context().actual_cache_0108d6ec,
             "GUI effect probe shader cache survived its native release bracket");
+        if (include_fakemotion) {
+            o.stage = Stage::fakemotion_warm_hit;
+            auto& cold = o.fakemotion_preload;
+            auto& warm = o.fakemotion_warm;
+            std::uint32_t profile{};
+            o.fakemotion_references_after_cache_release =
+                inspect_effect(cold.caller_reference, p.renderer.actual_owners(), profile);
+            require(o.fakemotion_references_after_cache_release == o.fakemotion_references_before_cache_release &&
+                o.fakemotion_references_after_cache_release < std::numeric_limits<std::int32_t>::max(),
+                "normal binary cache close changed the retained fakemotion caller credit");
+            require(p.effects.get() == o.effect_application_identity &&
+                p.effects->operation_count() == o.resources.size() + 1u &&
+                &p.effects->operation(cold.operation_index) == cold.retained_operation,
+                "fakemotion warm acquisition requires its same application and retained cold frame");
+            p.acquire(warm, cold.native_name); // SAME actual8h header; no second name acquisition.
+            const auto& operation = p.effects->operation(warm.operation_index);
+            require(warm.input_name == cold.input_name && operation.input_name == cold.input_name &&
+                warm.retained_operation != cold.retained_operation && warm.caller_reference == cold.caller_reference &&
+                operation.cache.native_site == 0x00b31436 && !operation.cache.cache_published &&
+                !operation.cache.key_resolution && operation.cache.loader.phase == NativeMaterialEffectLoadPhase::not_started &&
+                !warm.fallback_call_seen && warm.references_on_return == o.fakemotion_references_after_cache_release + 1,
+                "fakemotion warm acquisition did not return the same owner and one B31436 caller credit");
+            require(!warm.cache_before.owner && !warm.cache_after.owner &&
+                warm.cache_before.source_mode == 0 && warm.cache_after.source_mode == 0 &&
+                warm.cache_before.load_variants == o.load_variants_on_create &&
+                warm.cache_after.load_variants == o.load_variants_on_create && p.renderer.shader_cache_released(),
+                "fakemotion warm acquisition reopened or changed its closed canonical cache domain");
+            o.fakemotion_warm_verified = true;
+            p.log.notef("native fakemotion warm verified graph=%p cold_frame=%p warm_frame=%p header=%p actual=%p refs_before_close=%d after_close=%d after_warm=%d cache=%p site=%08x",
+                o.effect_application_identity, cold.retained_operation, warm.retained_operation,
+                static_cast<const void*>(warm.input_name), warm.caller_reference,
+                o.fakemotion_references_before_cache_release, o.fakemotion_references_after_cache_release,
+                warm.references_on_return, warm.cache_after.owner, warm.cache_native_site);
+        }
         o.stage = Stage::ready;
         return o;
     } catch (...) {
@@ -277,30 +484,20 @@ void GameNativeGuiEffectProbe::retire_caller_references() {
     require(o.stage == Stage::ready, "GUI effect probe retirement requires complete unreleased acquisitions");
     try {
         o.stage = Stage::retiring_references;
-        for (std::size_t index = o.resources.size(); index != 0; --index) {
-            auto& slot = o.resources[index - 1];
-            require(slot.caller_reference && !slot.release_entered,
-                "GUI effect probe caller credit is absent or already being retired");
-            std::uint32_t profile{};
-            slot.references_before_release = inspect_effect(slot.caller_reference, p.renderer.actual_owners(), profile);
-            slot.release_entered = true;
-            release_native_cached_effect_00b32010(slot.caller_reference, p.renderer.actual_owners());
-            slot.caller_reference = nullptr;
-            slot.caller_released = true;
-            slot.companion_present_after_release = p.renderer.actual_owners().find(slot.returned_identity) != nullptr;
-            if (slot.companion_present_after_release)
-                slot.references_after_release = inspect_effect(slot.returned_identity, p.renderer.actual_owners(), profile);
-            if (slot.references_after_release)
-                require(*slot.references_after_release == slot.references_before_release - 1,
-                    "GUI effect caller retirement did not remove exactly one actual credit");
-            else require(slot.references_before_release == 1,
-                "GUI effect companion disappeared before its actual count reached zero");
-            // Missing companion means retired identity; do not dereference freed raw storage.
-            p.log.notef("native GUI effect probe retired caller=%s identity=%p before=%d companion=%d after=%d",
-                slot.requested_name, slot.returned_identity, slot.references_before_release,
-                slot.companion_present_after_release ? 1 : 0, slot.references_after_release.value_or(-1));
+        if (o.include_fakemotion) {
+            require(o.fakemotion_warm_verified, "fakemotion credits require the completed warm-hit proof before teardown");
+            p.retire(o.fakemotion_warm);
+            p.retire(o.fakemotion_preload);
         }
+        for (std::size_t index = o.resources.size(); index != 0; --index)
+            p.retire(o.resources[index - 1]);
         o.stage = Stage::retiring_names;
+        if (o.include_fakemotion) {
+            require(o.fakemotion_preload.name_live && !o.fakemotion_warm.name_live,
+                "fakemotion warm slot must borrow the single live cold name");
+            destroy_native_string_header_0041dd20(&o.fakemotion_preload.native_name, p.raw.strings);
+            o.fakemotion_preload.name_live = false;
+        }
         for (std::size_t index = o.resources.size(); index != 0; --index) {
             auto& slot = o.resources[index - 1];
             require(slot.name_live, "GUI effect probe input name is already retired");
@@ -357,6 +554,23 @@ void GameNativeGuiEffectProbe::emit_failure_observations() const noexcept {
         p.log.notef("native GUI effect probe state=%s failed_stage=%s retention=%d",
             stage_name(p.observed.stage), stage_name(p.observed.failure_stage), requires_process_retention() ? 1 : 0);
         note_exception(p.log, p.observed.failure);
+        if (p.observed.include_fakemotion) {
+            const auto& sampler = p.observed.fakemotion_sampler;
+            p.log.notef("native fakemotion probe graph=%p warm_verified=%d refs_before_close=%d after_close=%d descriptor=%p sampler=%p inspected=%d count=%d source=%d index=%d mode_mask=%08x",
+                p.observed.effect_application_identity, p.observed.fakemotion_warm_verified ? 1 : 0,
+                p.observed.fakemotion_references_before_cache_release,
+                p.observed.fakemotion_references_after_cache_release, sampler.descriptor, sampler.sampler,
+                sampler.inspected ? 1 : 0, sampler.count, sampler.texture_source, sampler.index, sampler.mode_mask);
+            note_resource(p.log, p.observed.fakemotion_preload);
+            note_resource(p.log, p.observed.fakemotion_warm);
+            for (std::size_t index = 0; index < p.observed.fakemotion_sampler_call_count; ++index) {
+                const auto& call = p.observed.fakemotion_sampler_calls[index];
+                p.log.notef("native fakemotion retained sampler observation=%zu before_root=%08x before_mode=%08x builder=%p pass=%p root=%p sampler=%p inspected=%d root_samplers=%d source=%d mode=%p mode_samplers=%d evidence=empty",
+                    index, call.following_root_site, call.following_mode_site, call.builder, call.pass,
+                    call.root.descriptor, call.root.sampler, call.root.inspected ? 1 : 0, call.root.count, call.root.texture_source,
+                    call.mode_descriptor, call.mode_sampler_count);
+            }
+        }
         if (p.shadow) {
             const auto& shadow = p.shadow->observation();
             p.log.notef("native GUI shadow stage=%u failure_stage=%u allocated=%p returned=%p ctor=%d extent=%u/%u hires=%u",
@@ -369,11 +583,7 @@ void GameNativeGuiEffectProbe::emit_failure_observations() const noexcept {
                     operation->singleton_exception_state, operation->captured_section,
                     operation->section_entered ? 1 : 0, operation->publication_written ? 1 : 0);
         }
-        for (const auto& slot : p.observed.resources)
-            p.log.notef("native GUI probe slot=%s header=%p name=%d/%d acquire=%d op=%zu held=%p identity=%p release=%d/%d",
-                slot.requested_name, static_cast<const void*>(&slot.native_name), slot.name_entered ? 1 : 0,
-                slot.name_live ? 1 : 0, slot.acquisition_entered ? 1 : 0, slot.operation_index,
-                slot.caller_reference, slot.returned_identity, slot.release_entered ? 1 : 0, slot.caller_released ? 1 : 0);
+        for (const auto& slot : p.observed.resources) note_resource(p.log, slot);
         if (p.sampler)
             p.log.notef("native GUI sampler parent scopes=%zu procedural_creators=%zu retention=%d",
                 p.sampler->live_call_scopes(), p.sampler->live_procedural_creators(),
