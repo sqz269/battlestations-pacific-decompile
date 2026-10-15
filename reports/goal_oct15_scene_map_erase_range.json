@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_map_erase_range",
+  "source": "src/native_scene_record_map_erase_range.cpp",
+  "header": "include/bsp/native_scene_record_map_erase_range.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_MAP_ERASE_RANGE.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "0046b570",
+      "end_exclusive": "0046b639",
+      "coverage": "complete ordinary Source function",
+      "cpp_symbol": "erase_native_scene_record_map_range_0046b570",
+      "original_abi": "ECX map,stack output/first-owner/first-node/last-owner/last-node,RET14h,EAX CURRENT output; unused incomingEDX",
+      "body_ranges": [
+        {
+          "start": "0046b570",
+          "end_exclusive": "0046b5ef",
+          "bytes": 127
+        },
+        {
+          "start": "0046b5f0",
+          "end_exclusive": "0046b639",
+          "bytes": 73
+        }
+      ],
+      "native_envelope_bytes": 201,
+      "native_instruction_bytes": 200,
+      "instructions": 76,
+      "unreachable_alignment": {
+        "address": "0046b5ef",
+        "bytes": "90",
+        "size": 1
+      },
+      "bytes": "83 ec 08 53 55 56 57 8b 7c 24 20 85 ff 8b f1 8b 46 04 8b 28 74 04 3b fe 74 05 e8 84 b1 78 00 8b 5c 24 24 3b dd 75 59 8b 44 24 28 85 c0 8b 6e 04 74 04 3b c6 74 05 e8 68 b1 78 00 39 6c 24 2c 75 3f 8b 4e 04 8b 51 04 52 8b ce e8 51 f7 ff ff 8b 46 04 89 40 04 8b 46 04 c7 46 08 00 00 00 00 89 00 8b 46 04 89 40 08 8b 46 04 8b 08 8b 44 24 1c 5f 89 30 5e 5d 89 48 04 5b 83 c4 08 c2 14 00 90 85 ff 74 06 3b 7c 24 28 74 05 e8 14 b1 78 00 3b 5c 24 2c 74 21 8d 4c 24 20 e8 72 c3 ff ff 53 57 8d 54 24 18 52 8b ce e8 54 ee ff ff 8b 5c 24 24 8b 7c 24 20 eb ca 8b 44 24 1c 89 38 5f 5e 5d 89 58 04 5b 83 c4 08 c2 14 00",
+      "sha256": "2c3bbeb48aeb6c328af1c824de5f811ca75a62e5d1531b6ee93aac3a16c6ea39",
+      "live_disk_equal": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0046b58a",
+      "native": "00bf6713",
+      "function": "0046b570"
+    },
+    {
+      "address": "0046b5a6",
+      "native": "00bf6713",
+      "function": "0046b570"
+    },
+    {
+      "address": "0046b5fa",
+      "native": "00bf6713",
+      "function": "0046b570"
+    },
+    {
+      "address": "0046b5ba",
+      "native": "0046ad10",
+      "function": "0046b570"
+    },
+    {
+      "address": "0046b609",
+      "native": "00467980",
+      "function": "0046b570"
+    },
+    {
+      "address": "0046b617",
+      "native": "0046a470",
+      "function": "0046b570"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "0046c516",
+      "native": "0046b570",
+      "function": "0046c500"
+    },
+    {
+      "address": "0046cee6",
+      "native": "0046b570",
+      "function": "0046ced0"
+    },
+    {
+      "address": "0046ef86",
+      "native": "0046b570",
+      "function": "0046ef70"
+    },
+    {
+      "address": "0046f0ee",
+      "native": "0046b570",
+      "function": "0046efb0"
+    }
+  ],
+  "source_reuse": "Existing complete0046B460 Source performs identical native inlined AD10/reset operations; not a native call claim to0046B460. Actual467980 and46A470 providers, no callbacks or stubs.",
+  "private_backing": {
+    "native_entry": "P",
+    "outer_parameters": "P+4..P+17h,20B",
+    "private_child_output": "P-8,8B",
+    "child_parameters": "12 bytes at P-24h: out at-24h,owner at-20h,node at-1Ch; exclusive end P-18h",
+    "child_entry": "P-28h",
+    "child_saved_map": "P-7Ch",
+    "source": "stable disjoint metadata, explicit live backing; child metadata nullable/unbacked on full/empty paths; original physical frame aliases unproved"
+  },
+  "status": "complete_raw_Source_independent_review_and_build_pending",
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "Explicit frame/context Source interface, not Original binary/private-frame/register/CRT/heap ABI identity.",
+    "All returning current-CRT diagnostic and child failure paths compose; no valid-only admission or invented cleanup.",
+    "Current raw provider and reached backing domains remain required; physical private-stack/cross-provider aliases are not supplied.",
+    "Existing regression checks do not directly execute this range body against native; application adoption/game proof open."
+  ]
+}
