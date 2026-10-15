@@ -8,7 +8,7 @@
   "header": "include/bsp/native_raw_dword_list_node.hpp",
   "documentation": "docs/GOAL_OCT15_RAW_DWORD_LIST_NODE.md",
   "base_revision": "6400fb9dd1a6eb5b7d1f3213d70dc62b16f73e02",
-  "status": "whole_actual_storage_source_build_pending",
+  "status": "whole_actual_storage_source_strict_win32_existing_ctest_and_compiler_checked",
   "routine": {
     "address": "00467ba0",
     "body_end_inclusive": "00467bca",
@@ -53,8 +53,31 @@
     "live_installed_bytes": "passed;whole43B/15instructions including both RET4 tails",
     "typed_native_transfers": "passed;1 typed native row and1 Markdown claim;7 cited addresses;0 failed/unchecked/warnings",
     "cmake_registration": "passed;unique append after immediate unleased check;no exclusive file lease",
-    "strict_win32_build_and_existing_ctest": "pending",
-    "compiled_object_review": "pending",
+    "strict_win32_build_and_existing_ctest": {
+      "result": "passed",
+      "command": "./scripts/build.ps1",
+      "build_and_source_revision": "b95fe68d1b2ef79eb8a3cfdb343d030731f2b254",
+      "configuration": "MSVC Release Win32;normal startup registry;process-local CL /MP4",
+      "log": "local/goal_oct15_raw_dword_list_node_build.log",
+      "log_sha256": "f9afd721f2b744e9bb3fcf3eefa3e7e33674bbab7bbf40913c8acd1ed2f45d2b",
+      "ctest": "3/3 passed: reconstructed_math0.23s,native_math_differential0.04s,tool_tests7.46s;total7.78s",
+      "source_and_header_unchanged_from_draft": true,
+      "qualification": "no warnings/errors reported in this warm log;existing native math differential checks do not exercise this new entry"
+    },
+    "compiled_object_review": {
+      "result": "passed focused actual MSVC Release Win32 object",
+      "object": "build/win32/bsp_core.dir/Release/native_raw_dword_list_node.obj",
+      "bytes": 1750,
+      "sha256": "c78521e0ee4fec294e0f5ee17f71e68597bed647cf58c2f556ab7bad8be798c6",
+      "dumpbin_version": "14.51.36244.0",
+      "receipt": "local/goal_oct15_raw_dword_list_node_object.txt",
+      "entry_code_bytes": 114,
+      "allocation_schedule": "real singleton_lifetime_allocate CALL+29 before every actual parameter read;object request has native/host bytes0Ch",
+      "nonnull_schedule": "node0 zero+38,node4 zero+3E;only then current parameter DWORD read+45,node8 payload store+47;raw allocated EAX retained",
+      "null_schedule": "distinct current parameter read+5B,literal DS:[00000008] store+5D,EAX zero+62,RET+71;no null recovery/omission",
+      "relocations": "one allocator REL32+2A;two compiler security-cookie-check REL32+50/+6A and cookie DIR32+7;no invented child or cleanup",
+      "qualification": "compiler pure EAX clear follows low write whereas native clear precedes it;ordinary Source preserves access/result schedule only,no original fault-register/instruction/SEH/private-frame/argument-home/COFF identity"
+    },
     "source_file_sha256": {
       "src/native_raw_dword_list_node.cpp": "6f561076df3df8202db0a7ad80316a9ca002d2bbcb006fa437b068ae370ffc24",
       "include/bsp/native_raw_dword_list_node.hpp": "f193d51a6e3a5fa672d8ee6d4a88dbe02b093fc96cd90581f5a40bc0531039ec"
@@ -62,7 +85,17 @@
     "new_tests": false,
     "packet_native_differential": "not run",
     "game_validation": "not run",
-    "diff_check": "passed"
+    "diff_check": "passed",
+    "primary_readiness_review": "passed whole43B/15op ABI/allocation/late-cell/literal-nulltail scout contract before Source",
+    "primary_independent_source_review": "passed entire15-op native listing and complete Source/header at b95fe68d1b2ef79eb8a3cfdb343d030731f2b254;no mismatch;final recorded Source/header hashes verified unchanged",
+    "second_independent_source_review": {
+      "result": "passed by independent string_allocate worker;whole43B/15ops and complete Source/header/draft documentation;no mismatch or edits",
+      "revision": "b95fe68d1b2ef79eb8a3cfdb343d030731f2b254",
+      "source_sha256": "6f561076df3df8202db0a7ad80316a9ca002d2bbcb006fa437b068ae370ffc24",
+      "header_sha256": "f193d51a6e3a5fa672d8ee6d4a88dbe02b093fc96cd90581f5a40bc0531039ec",
+      "reviewed_draft_documentation_sha256": "4158efcbeaa5ee0021aff28d766382fa903c0aa2a5e2df18eef9b718d4379c11",
+      "qualification": "Source/header remain unchanged;final documentation adds completed compiler/build/review evidence"
+    }
   },
   "limits": [
     "Current concrete allocation nonnull-or-throw service with full literal native nulltail retained;no original CRT/exception/globalhandler identity.",

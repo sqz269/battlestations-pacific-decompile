@@ -39,7 +39,7 @@ argument homes, return addresses and EH records have no implicit aliases to that
 backing or allocation. No concurrency is supplied. All three DWORDs are raw words;
 there is no invented signed key, object pointer ownership or payload destructor.
 The body has no local EH frame, temporary, release, cleanup funclet, rollback or
-additional validation. Failed allocation performs no caller-argument read or
+additional validation. An allocator throw performs no caller-argument read or
 node store, while all concrete allocator behavior remains composed.
 
 ## Verification
@@ -48,6 +48,25 @@ Whole assembly, original ABI, caller absence and the actual allocator contract
 were checked. All 43 live bytes match the installed PE; the single typed native
 transfer is verified separately from Source composition. Correct library naming,
 prior comments/evidence and old values are preserved through locked annotation,
-save, export and readback recorded in the report. Required normal Win32 build,
-existing checks and focused emitted-code inspection are pending. No new tests
-are added; packet-specific native differential/game and original ABI remain unproved.
+save, export and readback recorded in the report. Unique CMake registration was
+appended only after an immediate unleased check, without an exclusive file lease.
+The prior-value annotation log is `local/ghidra-annotations-20261015T215200Z.json`.
+
+Required normal `scripts/build.ps1` at
+`b95fe68d1b2ef79eb8a3cfdb343d030731f2b254` passed strict Win32 and all 3 existing
+CTests in 7.78s. Log: `local/goal_oct15_raw_dword_list_node_build.log`.
+Source/header hashes are unchanged from that draft. The primary integrator and
+a second worker independently reviewed the entire native listing and exact
+Source/header, without a mismatch; their reviewed Source hashes are in the report.
+
+Focused emitted-code inspection confirms the real allocator transfer+29h precedes
+all actual parameter reads. On nonnull, node zero stores+38h/+3Eh precede the
+current parameter DWORD read+45h and node+8 publication+47h. The separate null
+tail reads the current DWORD+5Bh, emits a literal DS:[00000008h] write+5Dh,
+then clears EAX+62h and returns. The pure EAX clear moved after the write compared
+with native code; the Source exposes the required zero result if the write
+returns. Native fault-register/instruction/SEH/private-frame identity is unproved.
+The actual 114-byte entry and 1750-byte object hash/relocations are recorded in
+the report and `local/goal_oct15_raw_dword_list_node_object.txt`.
+No new tests were added; packet-specific native differential/game and original
+ABI remain unproved. Existing native math checks do not execute this new entry.
