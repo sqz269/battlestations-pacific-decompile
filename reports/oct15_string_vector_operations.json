@@ -1,0 +1,133 @@
+{
+  "packet": "oct15_string_vector_operations",
+  "status": "two_exact_wrappers_build_tested_assignment_source_blocked",
+  "source": "src/native_string_vector_operations.cpp",
+  "header": "include/bsp/native_string_vector_operations.hpp",
+  "documentation": "docs/OCT15_STRING_VECTOR_OPERATIONS.md",
+  "target": {"project": "bsp", "project_file": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe", "verification": "Every bsp.py ghidra client query verifies project/program/language/image base.", "ghidra_mutations": false},
+  "routines": [
+    {
+      "address": "00b6c670",
+      "existing_name": "STL_NativeStringRange_Equal_00b6c670",
+      "name": "equal_native_string_range_00b6c670",
+      "body": "00b6c670-00b6c6ac",
+      "coverage": "complete",
+      "source_ready": true,
+      "original_abi": "cdecl; three stacked pointers first,last,second-first; plain RET; AL Boolean only, upper EAX unspecified",
+      "host_steps": [
+        {"address": "00b6c697", "native": "00b6c480", "function": "00b6c670", "host": "mismatch_native_string_range_00b6c480", "contract": "Existing exact actual8h-string source. Six words output/first/last/second-first/unused-last/unused-dispatch, ADD ESP18h at00b6c69c. Source dead dispatch word initialized0; native local high bytes/private-stack aliases qualified."}
+      ],
+      "known_callers": [],
+      "ownership": "Borrowed headers/data; private two-DWORD result only; no allocation, validation or ownership transfer."
+    },
+    {
+      "address": "00432360",
+      "existing_name": "STL_NativeStringRange_DestroyDispatch_00432360",
+      "name": "destroy_native_string_range_dispatch_00432360",
+      "body": "00432360-00432375",
+      "coverage": "complete",
+      "source_ready": true,
+      "original_abi": "ECX unused owner; stacked first,last; RET8; no semantic result. Child gets ECX first, EDX last, unused stacked owner,last; child RET8.",
+      "host_steps": [
+        {"address": "0043236e", "native": "00432050", "function": "00432360", "host": "destroy_native_string_header_range_00432050", "contract": "Existing complete actual-header/raw-pool child; actual419cc0/bd1510, ascending8h strings, headers unchanged. Source adds explicit borrowed NativeStringRawPoolContext, not a generic callback model or original stack ABI."}
+      ],
+      "known_callers_read": ["0044f5c8", "0044f653", "00506c80"],
+      "ownership": "No backing free/header clear; borrowed actual pool domain; getter exceptions escape with no local cleanup or conversion."
+    },
+    {
+      "address": "00506c80",
+      "existing_name": "BSP_StringVector_Assign",
+      "name": null,
+      "coverage": "normal-body evidence complete; no source implementation",
+      "state": "analyzed_source_blocked_not_reconstructed",
+      "source_ready": false,
+      "body": "00506c80-00506dc1",
+      "original_abi": "ECX destination actual10h vector, one stacked source owner, EAX destination, RET4 on every return. Header+0 opaque; begin4/end8/capacityc; elements8h length/data.",
+      "local_eh": "No local EH registration/catch/rollback in complete normal body; child exceptions escape.",
+      "host_steps": [
+        {"address": "00506ca5", "native": "00498ff0", "function": "00506c80", "contract": "Empty source clear wrapper; exact source missing."},
+        {"address": "00506ccd", "native": "0048f400", "function": "00506c80", "contract": "Shrink/reuse assignment; cdecl three words, ADD ESPc at00506cd9; exact source missing."},
+        {"address": "00506ce0", "native": "00432050", "function": "00506c80", "contract": "Destroy copied-end..captured-current-destination-end; native two unused owner/source stack words, RET8; exact raw-pool source available."},
+        {"address": "00506d44", "native": "0048f400", "function": "00506c80", "contract": "In-capacity grow prefix assignment; cdecl three words, ADD ESPc at00506d4f; captured source split."},
+        {"address": "00506d57", "native": "00505ad0", "function": "00506c80", "contract": "Uninitialized suffix copy; ECX destination owner, stack captured split/current source end/current destination end; RETc; exact dispatch/core EH source missing."},
+        {"address": "00506d73", "native": "00432360", "function": "00506c80", "contract": "Destroy captured old range before replacement backing free; exact direct wrapper completed here."},
+        {"address": "00506d7c", "native": "00bf65ac", "function": "00506c80", "contract": "Free CURRENT destination begin after destruction; cdecl one word, ADD ESP4 at00506d81; existing qualified CRT Source service."},
+        {"address": "00506d9a", "native": "00432090", "function": "00506c80", "contract": "Buy from recomputed CURRENT source count; clears fields before allocation; RET4; exact source and allocator/length-error closure missing."},
+        {"address": "00506db1", "native": "00505ad0", "function": "00506c80", "contract": "Replacement range construction from current source endpoints into current destination begin; end published only after child succeeds."}
+      ]
+    }
+  ],
+  "assignment_branches": [
+    {"path": "self", "evidence": "00506c88 CMP ESI,EDI;00506c8a JZ00506dbb", "contract": "Equal owner addresses return destination before source reads."},
+    {"path": "empty_source", "evidence": "00506c90..00506cb0", "contract": "Null source begin or zero SAR3 span invokes00498ff0; capacity retained by native erase."},
+    {"path": "reuse_shrink", "evidence": "00506cb3..00506d17", "contract": "Unsigned source_count<=destination_size; assign captured range, destroy trailing range, reread source begin/end and destination begin before end publication."},
+    {"path": "reuse_grow", "evidence": "00506d1a..00506d65", "contract": "Unsigned source_count>size and<=capacity; split from initial source begin/current destination size; prefix assign then uninitialized suffix copy using current source end/current destination end; publish end after success."},
+    {"path": "replace", "evidence": "00506d68..00506dc1", "contract": "Destroy old captured range, free CURRENT begin, recompute source count, Buy clears/publishes allocation, construct from current endpoints, publish end after success. No caller rollback."}
+  ],
+  "dependency_map": [
+    {"address": "00432050", "state": "existing_complete_actual_header_raw_pool_source", "source": "src/native_render_service_vector_cleanup.cpp"},
+    {"address": "00432360", "state": "completed_this_packet", "source": "src/native_string_vector_operations.cpp"},
+    {"address": "0048f400", "state": "missing_exact_source", "consumes": ["0048da50"], "contract": "cdecl3 inputs; six physical child words (three consumed); recompute wrapping end from captured addresses rather than child EAX."},
+    {"address": "0048da50", "state": "existing_qualified_storage_fragment_not_complete_raw_pool_binding", "source": "src/native_checked_string_storage.cpp", "contract": "Native identical-header skip, resize-preserve, current source-length test, destination-length/source-data/destination-data reload; native overlap-copy and raw-pool schedule need complete adapter."},
+    {"address": "00498ff0", "state": "missing_exact_source", "consumes": ["004954f0", "00bf6713"], "contract": "Capture end, current begin checks twice with continuing reports, erase captured whole range. Incoming EDX is not a logical input despite pseudocode."},
+    {"address": "004954f0", "state": "existing_qualified_storage_fragment", "source": "src/native_checked_string_storage.cpp", "contract": "Existing NativeStringStorage API restricts structural mutation and does not establish an unrestricted raw-pool/original-stack binding."},
+    {"address": "00505ad0", "state": "missing_exact_source", "consumes": ["0044d0c0"], "contract": "ECX owner, stack first/end/destination, RETc; child ECX first,EDX end, four stack words destination/owner/duplicate-destination/dispatch, child RET10h."},
+    {"address": "0044d0c0", "state": "missing_exact_source_and_range_eh_composition", "consumes": ["0044bcb0", "00431f40", "00bf6885"], "contract": "Construct ascending8h strings; update completed end after each success; separate catch destroys completed prefix then rethrows."},
+    {"address": "0044bcb0", "state": "existing_complete_actual_header_raw_pool_source", "source": "src/native_render_resource_alias_nodes.cpp", "contract": "Actual copy constructor with verified no-op placement-delete unwind; its readiness does not supply range catch."},
+    {"address": "00431f40", "state": "existing_semantic_Seg2Host_source_raw_pool_wrapper_missing", "source": "src/profile_seg2_cc13.cpp", "contract": "RET4 stacked header; owner ECX unused; nonnull data releases current length+1 through actual pool. Complete raw header primitive also exists separately at0041dd20."},
+    {"address": "00432090", "state": "missing_exact_source", "consumes": ["0042bf40", "00431f70"], "contract": "Clear pointer fields, unsigned limit1fffffff, allocate count*8, publish; zero count returns AL0; otherwise AL1 after allocation."},
+    {"address": "0042bf40", "state": "missing_exact_allocator_wrapper", "consumes": ["00bf6340", "00bf681b", "00bf6885"], "contract": "Count in ECX, multiplication-overflow native bad_alloc construction/throw or actual operator_new; no caller rollback."},
+    {"address": "00431f70", "state": "missing_exact_length_error_throw_wrapper", "consumes": ["00408720", "00411700", "00bf6885"], "contract": "Build vector<T> too long, native legacy logic_error construction, length_error vtable and throw metadata00d83f98; exact allocator/throw subtree outside bounded agreement."},
+    {"address": "00408720", "state": "existing_actual_legacy_SBO_string_source_with_CRT_EH_limits", "source": "src/native_legacy_sbo_string.cpp"},
+    {"address": "00411700", "state": "existing_actual_legacy_exception_owner_source_with_CRT_EH_limits", "source": "src/native_legacy_exception_owner.cpp"},
+    {"address": "00bf65ac", "state": "existing_current_CRT_service", "source": "src/singleton_lifetime.cpp", "contract": "Keep correct _free library name; actual matching Source CRT domain required."}
+  ],
+  "additional_call_evidence": [
+    {"address": "0044f5d3", "native": "00432360", "function": "0044f5c8", "contract": "Catch_All caller setup read; captured completed range, then outer backing free/rethrow."},
+    {"address": "0044f66b", "native": "00432360", "function": "0044f653", "contract": "Catch_All caller setup read; computed constructed suffix, then outer rethrow."},
+    {"address": "0048f42e", "native": "0048da50", "function": "0048f400", "contract": "Six physical words, ADD ESP18h at0048f433; only three consumed."},
+    {"address": "00499000", "native": "00bf6713", "function": "00498ff0", "contract": "Returning report against captured end."},
+    {"address": "0049900d", "native": "00bf6713", "function": "00498ff0", "contract": "Returning second report with separately captured begin/current end."},
+    {"address": "0049901d", "native": "004954f0", "function": "00498ff0", "contract": "Five stack words, child RET14h; local output iterator."},
+    {"address": "00505aec", "native": "0044d0c0", "function": "00505ad0", "contract": "Custom register/two-consumed-plus-two-unused stack ABI established by complete listing."},
+    {"address": "004320b6", "native": "00431f70", "function": "00432090", "contract": "Unsigned count limit failure."},
+    {"address": "004320bf", "native": "0042bf40", "function": "00432090", "contract": "ECX count, EDX0, returned EAX allocation; producer field stores inspected."},
+    {"address": "0044d0fa", "native": "0044bcb0", "function": "0044d0c0", "contract": "ECX current destination,EDX current source; completed end advanced only on success."},
+    {"address": "0044d11a", "native": "00431f40", "function": "0044d10a", "contract": "Separate Catch_All body verified by live containing-function query; ascending completed-prefix cleanup."},
+    {"address": "0044d12a", "native": "00bf6885", "function": "0044d10a", "contract": "Separate Catch_All rethrow with two zero words; original CRT/FH3 identity not supplied by source."}
+  ],
+  "uninitialized_copy_eh": {
+    "handler": "00c60150",
+    "funcinfo": "00d87064",
+    "funcinfo_words": ["19930522", "00000002", "00d87040", "00000001", "00d87050", "00000000", "00000000", "00000000", "00000001"],
+    "unwind_map": "00d87040: two entries with toState=-1 and action0",
+    "try_map": "00d87050: tryLow0,tryHigh0,catchHigh1,nCatches1,handlerArray00d87030",
+    "catch_record": "00d87030: adjectives40h,type0,disp0,handler0044d10a",
+    "catch_body": "0044d10a-0044d12e",
+    "state": "State0 before loop; original destination captured EBP-14h; completed end in first stacked argument updated after successful construction; catch destroys only completed prefix then rethrows.",
+    "evidence": "Full normal/embedded listing, separate handler containment and live36/36/16-byte metadata queries.",
+    "source_limit": "Exact range catch and actual raw-pool cleanup wrapper remain absent; do not infer original FH3/double-exception behavior from generic C++ catch."
+  },
+  "assignment_caller_inventory": {
+    "count": 21,
+    "addresses": ["0050e3c0", "0051dce0", "0057cf20", "0057cff0", "0057d060", "0058bdf0", "005c5470", "005c5600", "005c7b80", "005db000", "005deca0", "005def80", "006a2200", "006a2240", "006a29c0", "006a2a00", "008ec650", "009795b0", "0097f570", "00b6d3c0", "00b6d400"],
+    "scope": "Inventory is not all-call-site argument review. Lua caller setups were read in preceding packet; assignment is not implemented here."
+  },
+  "corrections": [
+    {"was": "Decompiler0044d0c0/00505ad0 signatures hide physical/custom-register arguments and catch",
+     "is": "ECX first/EDX end plus four stacked words, RET10h; first two stack words consumed, final two unused; catch0044d10a has its own function boundary",
+     "evidence": "00505ad0 full listing,0044d141 RET10h,live handler FuncInfo/try-map/handler bytes and site-containing-function queries."},
+    {"was": "Named STL dispatch helpers might be treated as reconstructed dependencies",
+     "is": "Remaining four direct dispatch/Buy entries lack exact Source implementations; storage fragments and ready constructors are distinguished explicitly",
+     "evidence": "Owned/source lookup plus exact-address source search and full direct-helper listings."}
+  ],
+  "checks": {
+    "build": {"command": "./scripts/build.ps1", "configuration": "MSVC Win32 Release", "exit_code": 0, "log": "local/oct15_string_vector_operations_build.log", "existing_suites_passed": ["reconstructed_math", "native_math_differential", "tool_tests"], "native_math_differential_scope": "Existing seed references only; new functions are not covered by native differential tests."},
+    "report_calls": {"json_checked": 23, "documentation_checked": 23, "failed": 0, "documentation_unchecked": 0, "documentation_warnings": 0},
+    "diff_check": "git diff --check and final git diff --cached --check passed",
+    "index": "python tools/bsp.py index --if-stale completed after owned ledger additions",
+    "new_tests": "none; existing build/CTest checks only",
+    "existing_build_warning": "LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj; also present in preceding local/oct15_lua_cache_tree_build.log."
+  },
+  "limits": {"assignment_reconstructed": false, "assignment_source_ready": false, "native_differential_for_new_functions": false, "original_abi_eh_compatible": false, "runtime_cache_binding": false, "game_validated": false, "crt_pool_policy": "Existing actual Source pool context and mismatch current CRT locale policy apply; no native private-stack/fault/CRT identity claim."}
+}
