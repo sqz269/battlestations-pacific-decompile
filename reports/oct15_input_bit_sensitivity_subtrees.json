@@ -100,7 +100,16 @@
   "typed_capture": "local/oct15_input_bit_sensitivity_typed_flow.json",
   "typed_modification": "366",
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
-  "build": "pending",
+  "build": {
+    "status": "passed",
+    "configuration": "MSVC Win32 Release",
+    "source_commit": "68920b203",
+    "existing_tests": "3/3 passed",
+    "ctest_seconds": 7.72,
+    "log": "local/oct15_twelfth_subtrees_build.log",
+    "new_tests": 0,
+    "new_entries_natively_executed": false
+  },
   "schedule": {
     "00558420": "Initial nil29; right recurse; capture left; clear14; read backing1C and free if nonnull; clear1C/20/24; CURRENT pooled key at+C via full Raw41DD20; free node; read captured-left nil29; iterate left.",
     "00558ed0": "Initial nil29; right recurse; capture backing1C and compare; capture left; free captured backing if nonnull; clear1C/20/24; CURRENT pooled key at+C via full Raw41DD20; free node; read captured-left nil29; iterate left. No14/18 write."
