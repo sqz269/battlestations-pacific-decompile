@@ -817,14 +817,73 @@ in `local/main_scene_scne_batch/`; all55 preceding target artifacts and their
 six committed snapshots, plus458 historical artifacts and six older committed
 snapshots, were verified before changes and remain frozen.
 
+## Actual SCNE capture and retirement, B162FE..B1634D
+
+The next 80-byte clause is now composed through `continue_native_main_scene_scne_capture_00b162fe`.
+Its 20 instructions skip eight alignment bytes. Current byte+22D of the original
+service chooses current holder+48/+44. The complete 19-byte B4CAF0 child gates
+all native child fields with holder byte+14, then captures source+0C BEFORE
+destination+10. This corrects the old provisional name-ledger statement that
+the source was untraced and the destination occupied +0C.
+
+Complete 127-byte/45-instruction B3CDA0 uses actual destination+2C COM
+GetDevice+0C, a null initialized output cell, and the two separately current
+D619A0 dimension slots. They bind concrete four-byte B3CD10/B3CD20 leaves.
+After these calls, it reads current destination+2C BEFORE current source+2C,
+then invokes the captured device's current StretchRect+88 with a null source
+rectangle, destination `{0,0,width,height}` and filter2. It ignores both
+HRESULTs and releases that captured device through its separately current
+slot8. It neither retains surface wrappers nor invents local exceptional
+cleanup. Reached actual profiles and COM objects must be valid. A source
+domain rejection after GetDevice does not introduce RAII release absent from
+the original; it is outside the completed valid-profile path.
+
+The caller then performs eight separate current global-renderer/current
+profile+130 reads and concrete B24710 null bindings. The original logical-slot
+identity gates, actual old-owner decrements, optional synchronization, actual
+COM SetTexture and changed counter remain in that provider. State5 stays
+armed throughout capture and all eight calls. B1633E disarms before B16349
+normal B13510 reset using the current service publication. The persistent
+source label frame records cleanup start before that call, so a failing normal
+reset cannot be repeated by source unwind. Earlier source failures consume
+state5 once, preserving completed copy/sampler effects.
+
+The new raw helpers share this already registered translation unit; the older
+typed `render_fx_cc13.cpp` models remain distinct. No shared CMake or persistent
+tests changed. Strict Win32 COFF audit covers the 512-byte/142-instruction copy,
+70-byte/21-instruction holder and 737-byte/208-instruction caller. It checks
+actual dimension-provider relocations, both raw COM reload orders, gate and
+eight-iteration current-read placement, and disarm before the real reset.
+The holder call is inlined in the strict caller; its concrete copy remains a
+real provider relocation. All330 inherited address-tagged x87 instructions
+remain checked; the new bodies contain no x87 arithmetic.
+
+The fresh fixture executes exact original 80+19+127-byte bodies and original
+dimension leaves in fixture-owned fixed-base PE pages. The two caller exits
+bind genuine Source B24710/B13510 providers, not substitute callback models.
+Only the actual renderer-publication operand is relocated. Four original/Source
+pairs use a genuine HAL D3D9 device, quadrant-filled 32x24 sources, 16x12
+destinations, real textures and raw owner storage. All destination pixels,
+all eight device/logical samplers, owner counts, changed counters, balanced
+GetDevice/Release references and final reset match. Cases cover holder44/48,
+nonzero capture, zero capture with invalid skipped pointers, four unchanged
+samplers, and an invalid destination rectangle with a separately observed
+failing actual StretchRect HRESULT. The native wrapper observes state5 in
+every sampler bridge and -1 before reset. The source-only current-slot rejection
+occurs after real capture, preserves its pixels, resets a newly published
+service while retaining the original SCNE label, and consumes cleanup once.
+
+The normal build and all three existing checks pass. Artifacts are in
+`local/main_scene_scne_capture/`; all584 preceding artifact pins and18 committed
+snapshots were verified before changes and remain frozen. The fixture does
+not establish original native child exceptions, FH3/SEH/private caller ABI,
+arbitrary publication races, full earlier scene execution, active material
+draws or game rendering. These remain explicit new Source interfaces.
+
 ## Next executed clause
 
-B162FE again tests original service current+22D and selects current+48/+44
-before B1630F calls B4CAF0. Current ledgers contain typed `render_fx_cc13.cpp`
-models for B4CAF0 and its B3CDA0 surface-copy child, not the required actual-
-storage caller composition. After that call, eight current renderer+130
-operations precede normal state5 disarm at B1633E and B13510 reset at B16349.
-Those operations, POST ownership, remaining scene/cockpit/distortion/statistics
-passes and later cleanup states still need bounded compositions. B17240
-preparation remains separate. D5E13C stays unadmitted pending the complete raw
-body and application graph.
+The new boundary is B1634E with SCNE state -1, BEFORE POST string construction
+and the later service+680 store. POST ownership, remaining scene/material/
+cockpit/distortion/statistics passes, later cleanup states and independent
+B17240 preparation remain to compose. D5E13C stays unadmitted pending the
+complete raw body and application graph.

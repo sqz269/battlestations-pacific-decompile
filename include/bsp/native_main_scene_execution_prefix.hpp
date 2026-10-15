@@ -21,6 +21,7 @@ struct NativeRenderQueueExecutionContext;
 struct NativeRenderQueueExecutionFrame;
 struct NativePostEffectExecutionContext;
 struct NativePostEffectDrawFrame;
+struct NativeRendererTextureBindingContext;
 
 struct NativeMainSceneExecutionPrefixContext {
     void* const volatile& actual_renderer_00f8d394;
@@ -65,6 +66,7 @@ struct NativeMainSceneExecutionPrefixState {
     bool reached_scne_target_stage{};
     bool reached_scne_batch_stage{};
     bool reached_scne_capture_stage{};
+    bool reached_post_label_stage{};
 };
 
 // Complete raw leaves. Native ECX command / camera. B1BF40 uses RET and returns
@@ -428,4 +430,50 @@ struct NativeMainSceneScneBatchContext {
 void continue_native_main_scene_scne_batches_00b161f5(void* actual_command,
     NativeMainSceneScneBatchContext&, NativeMainSceneScneLabelFrame&,
     NativeMainSceneBatchFrame&, NativeMainSceneExecutionPrefixState&);
+
+struct NativeSurfaceCopyContext {
+    // Current original-token D619A0 profile, through slot20. Its dimension
+    // slots select the concrete raw B3CD10/B3CD20 leaves, never callbacks.
+    const volatile std::uint32_t* actual_surface_profile_00d619a0;
+};
+
+// Full B3CDA0, native ECX destination/stack source/RET4. GetDevice on current
+// destination+2C, then separately read its current width/height virtuals.
+// Reload destination+2C BEFORE source+2C; call the CAPTURED device's current
+// StretchRect+88 with null source RECT, destination {0,0,width,height}, filter2.
+// Ignore HRESULTs and release that captured device through its current slot8.
+// There is no local EH cleanup, wrapper retain/release or fallback device.
+void copy_native_surface_00b3cda0(void* actual_destination,
+    void* actual_source, const NativeSurfaceCopyContext&);
+
+// Full19B B4CAF0: byte+14 gates every child access; on nonzero capture source
+// +0C, THEN destination+10 and call the raw child above. No holder virtual.
+void capture_native_render_holder_00b4caf0(void* actual_holder,
+    const NativeSurfaceCopyContext&);
+
+struct NativeMainSceneScneCaptureContext {
+    const NativeMainSceneScneLabelContext& label;
+    NativeRendererTextureBindingContext& textures;
+    const volatile std::uint32_t* actual_renderer_profile_00d5f0a8;
+    const NativeSurfaceCopyContext& surface_copy;
+};
+struct NativeMainSceneScneCaptureFrame {
+    std::uint32_t active_native_site{};
+    std::uint32_t samplers_completed{};
+    bool started{};
+    bool capture_completed{};
+    bool label_reset_completed{};
+    bool completed{};
+    bool failed{};
+};
+
+// B162FE..B1634D. Original service byte+22D chooses current holder+48/+44;
+// raw capture precedes eight current global-renderer/current virtual130 null
+// texture binds. State5 stays armed through every bind, then becomes -1 BEFORE
+// normal B13510 reset on CURRENT global service. A failed normal reset never
+// retries cleanup. Earlier failure consumes state5 once, without rollback.
+// Stops at B1634E BEFORE POST label construction; not native FH3/game ABI.
+void continue_native_main_scene_scne_capture_00b162fe(void* actual_service,
+    const NativeMainSceneScneCaptureContext&, NativeMainSceneScneLabelFrame&,
+    NativeMainSceneScneCaptureFrame&, NativeMainSceneExecutionPrefixState&);
 } // namespace bsp
