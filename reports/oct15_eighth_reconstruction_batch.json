@@ -1,0 +1,170 @@
+{
+  "packet": "oct15_eighth_reconstruction_batch",
+  "status": "integrated_reviewed_build_checked_annotated",
+  "goal_status": "active",
+  "created_utc": "2026-10-15T19:23:38.507444+00:00",
+  "base_published_main": "6f83fab39706877d2bc773768eb4dcd179dc9d70",
+  "source_integration_commit": "b06a4165de20f2a43d7236f13ef6e69ca11d2284",
+  "source_entries": [
+    "00450180",
+    "00553300",
+    "00556c90",
+    "0055a3a0",
+    "0055aff0",
+    "0055b150",
+    "0049e050"
+  ],
+  "scope_fragments": [
+    "0055b216",
+    "00c63540"
+  ],
+  "fragments_are_not_independent_Source_APIs": true,
+  "packets": [
+    {
+      "report": "reports/oct15_native_string_vector_insert_one.json",
+      "commit": "a3905cd0bc6eea586cca7b0860b39aee0d867346",
+      "source_entries": [
+        "00450180"
+      ],
+      "scope_fragments": [],
+      "checked_CALL_rows": 6
+    },
+    {
+      "report": "reports/oct15_nested_string_vector_allocation.json",
+      "commit": "48990e6142209c94e5071cdea7b1144ceea3f2e6",
+      "source_entries": [
+        "00553300",
+        "00556c90"
+      ],
+      "scope_fragments": [],
+      "checked_CALL_rows": 8
+    },
+    {
+      "report": "reports/oct15_outer_string_vector_cleanup.json",
+      "commit": "5d80b054c738ab170a0f4d4d82beaeb4865530dc",
+      "source_entries": [
+        "0055a3a0",
+        "0055aff0"
+      ],
+      "scope_fragments": [],
+      "checked_CALL_rows": 9
+    },
+    {
+      "report": "reports/oct15_outer_string_vector_copy_construct.json",
+      "commit": "a276944a8134814df8bac77b67f592824464d03e",
+      "source_entries": [
+        "0055b150"
+      ],
+      "scope_fragments": [
+        "0055b216"
+      ],
+      "checked_CALL_rows": 8
+    },
+    {
+      "report": "reports/oct15_native_string_vector_resize.json",
+      "commit": "ea68c75f46140ff48b35b0d0d01a2fe20d883acc",
+      "source_entries": [
+        "0049e050"
+      ],
+      "scope_fragments": [
+        "00c63540"
+      ],
+      "checked_CALL_rows": 10
+    }
+  ],
+  "primary_review": [
+    "Complete Source/header and native instruction schedules reviewed for all seven normal entries and both cleanup scopes; no stubs or invented storage providers.",
+    "InsertOne preserves captured original begin, empty-branch omission of owner checks, child EDX=value bits, captured new begin across returning diagnostics, short-circuit fresh bounds and output+4 before output+0.",
+    "16-byte allocator retains zero-byte allocation, unsigned0FFFFFFF ceiling and existing real currentCRT malloc/new-handler/retry boundary. Full105-byte owning length throw matches accepted431F70 at89nonrelocation bytes, equal resolved calls and raw EH; no generic length_error substitute.",
+    "Outer cleanup range composes exact actual per-header432440 effects: captured string range, current begin free and unconditional clear4/8/C even on null begin. Outer tidy similarly uses captured16-byte header range, frees current outer begin and always clears4/8/C. All opaque+0 words preserved.",
+    "Primary outer copy constructor preserves source count before destination clears, absent self guard, ordered begin/end/capacity publication, exact current source validations/captures, state arm after first comparison, actual nested copy and current-destination catch cleanup. Full215-byte span disk/live matched;76instruction starts and8CALL rows verified.",
+    "Resize transfers the two incoming owned fill words into canonical private8-byte header storage without allocating/copying. Its scope begins after first receiver begin read, preserves growth/shrink captures and returning diagnostics, delegates actual InsertCount/erase, and consumes owned fill on normal/C++ exceptional paths without retrying normal destructor failure.",
+    "Historical frontend, NativeStringStorage and settings projections/fixtures remain unchanged and separately qualified. New actual APIs and ledger records do not silently promote those older interfaces.",
+    "CMake merges were serialized through short queue/registration leases and conflicts resolved with merge_resolve.py only after failed merges; appended metadata retained. Reserved MASM OFFSET helper argument was renamed before the primary first build."
+  ],
+  "validation": {
+    "exact_combined_win32_release": {
+      "source_commit": "b06a4165de20f2a43d7236f13ef6e69ca11d2284",
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "existing_suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "ctest_seconds": 9.38,
+      "log": "local/oct15_eighth_combined_build.log"
+    },
+    "prior_combined_builds": [
+      {
+        "scope": "InsertOne plus allocator",
+        "source_commit": "25658b0169885851161e18c0e62f3d59a48b2e61",
+        "passed": true,
+        "ctest_seconds": 7.51,
+        "log": "local/oct15_eighth_insert_one_allocator_build.log"
+      },
+      {
+        "scope": "Primary constructor plus accepted cleanup/dependencies",
+        "source_commit_after_owned_source_commit": "a276944a8",
+        "passed": true,
+        "ctest_seconds": 9.13,
+        "log": "local/oct15_outer_copy_combined_build.log"
+      }
+    ],
+    "CALL_evidence": {
+      "checked_rows": 41,
+      "unique_sites": 38,
+      "failed": 0,
+      "markdown_unchecked": 0,
+      "classification": "30current packet body rows,2accepted dependency rows,9incoming interface rows;3sites repeat between reports. Static claims, not41new functions or dynamic comparisons."
+    },
+    "new_tracked_tests": 0,
+    "new_function_native_execution": false,
+    "native_math_differential_scope": "Existing verified seed functions only; no new string/vector ABI or game execution coverage.",
+    "preexisting_link_warning": "Worker cleanup report records duplicate Lua spawn_request_id_matches LNK4006 also present in its earlier InsertOne log; unrelated Source left untouched."
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "old_names_comments_preserved_and_preimages_logged": true,
+    "annotation_logs": [
+      "local/ghidra-annotations-20261015T191014Z.json",
+      "local/ghidra-annotations-20261015T191428Z.json",
+      "local/ghidra-annotations-20261015T191626Z.json",
+      "local/ghidra-annotations-20261015T192111Z.json"
+    ],
+    "forced_snapshot_after_final_annotations": true,
+    "forced_refreshed_exports": 9
+  },
+  "concurrent_main": {
+    "preserved": "Other-harness enum declaration validation and texture reload runtime receipts retained. Source/include/CMake diff was explicitly empty before metadata-only merges, so no redundant rebuild was required for those merges.",
+    "source_graph_in_final_tested_commit": "All current main changes through9667dda1f included before final combined build.",
+    "unrelated_untracked_files_staged": false,
+    "coordination": "Registry message43 reports disjoint active string-vector work and batch ownership to the other main harness."
+  },
+  "limits": [
+    "Explicit Source contexts, scalar ownership transfer and private frames change physical native register/stack/return behavior; no drop-in binaryABI claim.",
+    "Current CRT and Source C++ catch/rethrow do not reproduce original FH3/SEH/RTTI, fault addresses, double-exception or cleanup-failure identity.",
+    "Actual pool publications, heap ownership, readable taken storage and admitted child contracts required; private frame aliases excluded.",
+    "No new-function native differential, returning-handler/failure injection, startup, live game or gameplay validation."
+  ],
+  "next_wave": {
+    "goal": "active",
+    "workers": [
+      {
+        "packet": "oct15_outer_string_vector_cleanup_wrappers",
+        "ready_commit": "9429c0b17e2c603bd1cfca2eeac6f923b7ff2911",
+        "review_status": "next review/integration"
+      },
+      {
+        "packet": "oct15_outer_string_vector_placement",
+        "status": "worker building after accepted constructor merge"
+      },
+      {
+        "packet": "oct15_native_string_vector_append",
+        "status": "worker active"
+      }
+    ]
+  }
+}
