@@ -40,8 +40,22 @@ recorded in JSON. Guarded batches verify C:/Users/sqz269/bsp.gpr and program
 
 Owned annotation records old values, preserves correct names/comments, takes
 the write lock, saves the project, refreshes the export and verifies live
-readback. The reviewable Source draft awaits its normal Win32 build and existing
-checks. No new routine tests are added. Source reuse/static/compile evidence do
+readback. The normal registered Win32 build and existing checks pass as recorded
+below. No new routine tests are added. Source reuse/static/compile evidence do
 not establish original private-frame/register/flags/mangling/heap/CRT/FH3/SEH/
 fault/binary ABI, direct native differential, application admission or game
 behavior.
+
+Final worker validation: Source `7ef16f0f0`, unchanged after importing current
+main `5d1d0a1cc` (including the real provider final `eab43f2bf`), passed normal
+`scripts/build.ps1` Release Win32 at tested merge `c6892b261`. The unique alias
+Source compiled and all targets linked. Both enabled existing checks
+(`reconstructed_math`, `tool_tests`) passed in7.84s. Native differential is
+disabled in this worker tree; this entry was not directly native-tested.
+Log `local/goal_oct15_vector_storage_tidy_alias_build.log` and its hash are
+recorded in JSON. The inherited duplicate `spawn_request_id_matches` LNK4006
+warning remains. The allocator worker independently accepted Source/header/
+document/report, rechecked full-body equality and actual targets, and verified
+unchanged real-provider Source hashes. Exact source hashes and that review
+are recorded. Native call/document claims, annotation readback and staged
+whitespace checks pass. No binary ABI or game behavior follows from these checks.

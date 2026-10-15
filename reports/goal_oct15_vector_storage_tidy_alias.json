@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_vector_storage_tidy_alias",
-  "status": "complete_actual_opaque_alias_real_provider_integrated_build_pending",
+  "status": "complete_actual_opaque_alias_real_provider_integrated_win32_build_and_two_enabled_existing_checks_passed",
   "source_ready": true,
   "source": "src/native_vector_storage_tidy_alias.cpp",
   "header": "include/bsp/native_vector_storage_tidy_alias.hpp",
@@ -20,7 +20,8 @@
     "existing_source_search": "No whole Source or owned-address alias;historical inventory/free-flow repair refs only",
     "named_incomplete_dependencies": [],
     "real_source_provider_already_integrated": true,
-    "source_provider_revision": "eab43f2bf"
+    "source_provider_revision": "eab43f2bf",
+    "real_provider_published_main_verified": "5d1d0a1cc contains eab43f2bf; merged before normalbuild atc6892b261"
   },
   "routines": [
     {
@@ -306,8 +307,19 @@
     "exact_typed_body_branch_and_call_read": true,
     "body_equality_and_actual_rel32_target_verified": true,
     "report_calls": "1exactnativefreecall checked,0failed",
-    "build": "pending",
-    "existing_tests": "pending",
+    "build": "PASS scripts/build.ps1 Release Win32 exit0; unique registered alias Source compiled,alltargets linked against actual provider",
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 7.84,
+      "native_math_differential_enabled": false,
+      "new_entry_native_differential": false
+    },
     "new_tests": 0,
     "cmake_registration": "Holder released;recheckedunleased,left only ownqueue,uniqueappendwithout exclusivelease",
     "direct_native_entry_execution": false,
@@ -316,16 +328,26 @@
     "application_adoption": false,
     "documentation_claim_check": "5addresses cited,1call checked,0failed,0unchecked,0warnings",
     "annotation_readback": "Live preserved STL_Vector_Tidy_00468020 and full reconstruction marker/evidence verified",
-    "diff_check": "passed before Source draft"
+    "diff_check": "passed before Source draft and finalmetadata commit",
+    "source_commit": "7ef16f0f0",
+    "tested_revision": "c6892b261",
+    "main_batch_imported": "5d1d0a1cc",
+    "build_log": "local/goal_oct15_vector_storage_tidy_alias_build.log",
+    "build_log_sha256": "dbc78fd52253e7ef32897c37d2bc86fe0c63833e0c5d7416044c2d2b679a63de",
+    "inherited_linker_warning": "LNK4006 spawn_request_id_matches duplicate in unchanged lua_binding_spawn.obj/lua_spawn_new.obj;second definition ignored"
   },
   "source_hashes": {
     "src/native_vector_storage_tidy_alias.cpp": {
       "bytes_sha256": "f48d6a6b5b4fcb01439b6e8adfe713ebf9767e4d3e9c019d1e9874d5a0189f4a",
-      "normalized_lf_sha256": "f48d6a6b5b4fcb01439b6e8adfe713ebf9767e4d3e9c019d1e9874d5a0189f4a"
+      "normalized_lf_sha256": "f48d6a6b5b4fcb01439b6e8adfe713ebf9767e4d3e9c019d1e9874d5a0189f4a",
+      "git_blob_bytes_sha256": "f48d6a6b5b4fcb01439b6e8adfe713ebf9767e4d3e9c019d1e9874d5a0189f4a",
+      "accepted_source_revision": "7ef16f0f0"
     },
     "include/bsp/native_vector_storage_tidy_alias.hpp": {
       "bytes_sha256": "58a8e618e7d4eee1f9d6e40f538d5b9c78efa43c9f356ceb50bca6a00377cc78",
-      "normalized_lf_sha256": "58a8e618e7d4eee1f9d6e40f538d5b9c78efa43c9f356ceb50bca6a00377cc78"
+      "normalized_lf_sha256": "58a8e618e7d4eee1f9d6e40f538d5b9c78efa43c9f356ceb50bca6a00377cc78",
+      "git_blob_bytes_sha256": "58a8e618e7d4eee1f9d6e40f538d5b9c78efa43c9f356ceb50bca6a00377cc78",
+      "accepted_source_revision": "7ef16f0f0"
     }
   },
   "cmake_source_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_vector_storage_tidy_alias.cpp)",
@@ -349,5 +371,13 @@
       },
       "status": "applied"
     }
-  ]
+  ],
+  "independent_review": {
+    "reviewer": "/root/string_allocate",
+    "accepted": true,
+    "source_revision": "7ef16f0f0",
+    "scope": "complete aliasSource/header/docs/report plus prior full8020/8840 listings;live42B equality and decoded targets rechecked",
+    "finding": "OnlyCALLrel32operand12..15 differs,bothactualBF65AC;canonicalproviderSource/headerhashesunchanged;no false native8020->8840edge;opaque16/void/bothreturningzero4,8,C semantics match",
+    "accepted_draft_doc_sha256": "0f449186191432581821cf964d3f736c9a56e797ec718c23603776de6633d823"
+  }
 }
