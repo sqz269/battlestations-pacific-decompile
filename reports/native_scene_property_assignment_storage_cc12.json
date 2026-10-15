@@ -1,0 +1,253 @@
+{
+  "schema": "bsp.native_scene_property_assignment_storage_cc12.v1",
+  "packet": "WholePropertyAssignmentStorageSource01",
+  "base_main": "d4edc8324",
+  "status": "two complete ordinary Source bodies; independent whole Source/COFF review, first strict whole-TU inspection and required worker normal build pass; integrator registration/publication pending",
+  "ordinary_whole_Source_functions": 2,
+  "Source_admission_credit": 0,
+  "functions": [
+    {
+      "address": "004357F0",
+      "end_exclusive": "0043580A",
+      "original_bytes": 26,
+      "original_instructions": 11,
+      "name": "free_and_clear_native_owned_pointer_004357f0",
+      "interface": "void(void* actual_pointer_slot)"
+    },
+    {
+      "address": "008F03B0",
+      "end_exclusive": "008F03EF",
+      "original_bytes": 63,
+      "original_instructions": 27,
+      "name": "copy_native_scene_property_array_block_008f03b0",
+      "interface": "void(void* actual_destination_block,const void* actual_source_block)"
+    }
+  ],
+  "names_are_hypotheses": true,
+  "Source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\native_scene_property_assignment_storage.cpp",
+    "bytes": 2343,
+    "sha256": "ab87feb80b9df7108625e8a0e4adcb0db35c630bf3024d1e9981e84b86cadc03"
+  },
+  "header": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\native_scene_property_assignment_storage.hpp",
+    "bytes": 2395,
+    "sha256": "867640962264853c461f224c23895222ab49f11bce66c2f561461e8400e6d5d4"
+  },
+  "documentation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\docs\\NATIVE_SCENE_PROPERTY_ASSIGNMENT_STORAGE_CC12.md",
+    "bytes": 2886,
+    "sha256": "89669acc012a3fb20d1bb4262402bea88fca0e407bb072aa0280dd3677460a73"
+  },
+  "readiness": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\PropertyArrayAssignmentReadiness01\\compact_readiness.DATA.json",
+    "bytes": 10782,
+    "sha256": "6bc895cc0973912542fb0967f4ef5c4bf9eb5beaa1ce8a1be166fb2ed861596b"
+  },
+  "readiness_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\PropertyArrayAssignmentReadiness01\\input_pins.DATA.json",
+    "bytes": 5535,
+    "sha256": "3a72ddf4a8bcb03fb4921b838d46bfd5f04a5e12117a500542b67449f165714e"
+  },
+  "actual_providers": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\src\\singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\include\\bsp\\singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    }
+  ],
+  "body_contracts": {
+    "free_clear": "Actual pointer read; null returns without provider/store; nonnull canonical free then physical zero store in still-live slot.",
+    "array": "Capture source pointer then byte count before destination old-pointer read; nonnull old free then zero; publish captured byte size before allocation(object,count,count); publish actual pointer before real memcpy.",
+    "ordering": "Private physical DWORD inline-assembly helpers retain exact ordinary memory operation order; no fabricated C++ record or callback model.",
+    "units": "Raw BYTE count, no stride conversion, tag check, ownership flag read or ownership flag write.",
+    "caller": "Only current saved caller is008F0700; that whole dispatcher is not implemented by this packet."
+  },
+  "ordinary_domain": {
+    "pointer_slot": "Live actual writable four-byte slot outside its freed old allocation and active frames; pointer null or sole-owned canonical allocation.",
+    "array_blocks": "Actual valid eight-byte source/destination headers; captured positive count, nonwrapping readable source span; old pointer null or sole-owned canonical allocation.",
+    "disjointness": "Source bytes, headers and frames disjoint from old freed allocation and new output; owning self/shared old-buffer alias excluded as UAF.",
+    "reuse": "New allocation may reuse old address; no pointer-inequality guarantee.",
+    "record_lifetime": "At actual record+20, existing ownership byte+2C must already be1; unchanged flag admits later same-domain owning retirement.",
+    "shared_requirements": "DF0, stable storage, successful providers, no reentry, concurrency, overflow, invalid access or alias.",
+    "exclusions": [
+      "zero-count CRT behavior",
+      "non-owning destination lifetime",
+      "Original register/stack/flags transport",
+      "historical private CRT",
+      "failed provider/OOM/SEH/EH cleanup",
+      "class/vtable/gameplay"
+    ]
+  },
+  "strict_TU_compile": {
+    "first_attempt": true,
+    "terminal_chunk": "fa4db2",
+    "terminal_exit_code": 0,
+    "toolchain": "MSVC19.51.36244.0 Win32",
+    "flags": "/std:c++17 /O2 /Ob2 /MD /EHsc /W4 /WX /fp:strict /DWIN32 /D_WINDOWS /DNDEBUG",
+    "invocation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyAssignmentStorageSource01\\compile_assignment_storage_TU.cmd",
+      "bytes": 942,
+      "sha256": "83e345849bc019362224766d5cdaab238de403dd672fbf0a79088966dc6baa8e"
+    },
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyAssignmentStorageSource01\\TU_compile.log",
+      "bytes": 1391,
+      "sha256": "0409ceda2bf7e3cecbe050510fd503ee02d3ff26c86f18d3e2fdf1a1d3a74939"
+    },
+    "source_dependencies": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyAssignmentStorageSource01\\source_dependencies.json",
+      "bytes": 9609,
+      "sha256": "b0b06699287d60ebd8b03a63464ce8993eaaa45af45e98f49dddba4d4c45ebaf"
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyAssignmentStorageSource01\\native_scene_property_assignment_storage.obj",
+      "bytes": 2901,
+      "sha256": "47e4a846d1954e185384e75e345ca0f0e1485ce28fb9fe91bb57e8ec244d1097"
+    }
+  },
+  "whole_COFF": {
+    "evidence": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyAssignmentStorageSource01\\complete_COFF.DATA.json",
+      "bytes": 29161,
+      "sha256": "b92ada4d71b39df79e7db1947ec80157c62b16dd33d5c941ad6d3a80e4345dcc"
+    },
+    "emitted_functions": 5,
+    "instruction_bytes": 312,
+    "instruction_count": 95,
+    "normal_CFG_unknown_edges": 0,
+    "FP_or_SSE_instructions": 0,
+    "primary_functions": [
+      {
+        "symbol": "?copy_native_scene_property_array_block_008f03b0@bsp@@YAXPAXPBX@Z",
+        "bytes": 220,
+        "instruction_count": 63,
+        "sha256": "c04874faa1ca703df5a4e8ea6ca730ef38ff02dcb8312bca85774f9299251b80",
+        "direct_calls": [
+          {
+            "offset": 97,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          },
+          {
+            "offset": 159,
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "offset": 195,
+            "symbol": "_memcpy"
+          },
+          {
+            "offset": 211,
+            "symbol": "@__security_check_cookie@4"
+          }
+        ]
+      },
+      {
+        "symbol": "?free_and_clear_native_owned_pointer_004357f0@bsp@@YAXPAX@Z",
+        "bytes": 51,
+        "instruction_count": 17,
+        "sha256": "8c6481aed508d746dd1e5c8ea5645fa9bef3e7dacc3b8143ce0d65bfd661e6ef",
+        "direct_calls": [
+          {
+            "offset": 24,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          }
+        ]
+      }
+    ],
+    "physical_offsets": {
+      "array_source_pointer_read": 41,
+      "array_source_byte_count_read": 57,
+      "array_old_pointer_read": 81,
+      "array_null_branch": 94,
+      "array_null_branch_target": 122,
+      "array_free_call": 97,
+      "array_clear_store": 119,
+      "array_size_store": 135,
+      "array_allocate_call": 159,
+      "array_new_pointer_store": 186,
+      "array_memcpy_call": 195,
+      "free_clear_pointer_read": 10,
+      "free_clear_null_branch": 21,
+      "free_clear_null_target": 49,
+      "free_clear_free_call": 24,
+      "free_clear_store": 46
+    },
+    "binding_scope": "Current actual provider names in COFF relocations; no new linked-library or runtime target evidence in this leaf packet."
+  },
+  "worker_required_normal_build": {
+    "command": "./scripts/build.ps1",
+    "started_chunk": "e0d869",
+    "session_id": 36090,
+    "natural_terminal_chunk": "eaf6f8",
+    "terminal_exit_code": 0,
+    "configured_tests_passed": 2,
+    "configured_tests_total": 2,
+    "tests": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\WholePropertyAssignmentStorageSource01\\normal_build.log",
+      "bytes": 4630,
+      "sha256": "1661f63b8ae04e333cc6070d6e44a062c27712f2ceca8477108273b0237581c1"
+    },
+    "new_TU_registered_in_this_build": false,
+    "registered_library_evidence": "integrator-owned after shared CMake registration",
+    "existing_warning": "LNK4006 spawn_request_id_matches duplicate from lua_binding_spawn.obj/lua_spawn_new.obj; unrelated to the new unregistered TU, build exited0"
+  },
+  "independent_review": {
+    "status": "PASS, no blocker",
+    "evidence": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyAssignmentStorageIndependentReview01\\independent_Source_COFF_review.DATA.json",
+        "bytes": 13700,
+        "sha256": "c91d84d730676f445c68281252888ad8f34524615f2f3ead19f0a83389d73cce"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyAssignmentStorageIndependentReview01\\original_read_review_tools.DATA.json",
+        "bytes": 5137,
+        "sha256": "d18cbba9d25db41eed15365390b44cb05c614e962910f906d3332feb07ebe6c9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyAssignmentStorageIndependentReview01\\family_receipt.DATA.json",
+        "bytes": 2237,
+        "sha256": "0a632bd704bd37d5ce3bf38c02ae173940186cc65dd4be5740ae4cfcb8fa338e"
+      }
+    ],
+    "scope": "Whole current Source, all312B/95 emitted instructions/normal CFG/relocations/raw dumpbin bytes, and original installed26B11+63B27 bodies.",
+    "eight_direct_inputs_stable": true,
+    "mutable_tracked_author_report_excluded_to_avoid_receipt_cycle": true,
+    "target_or_provider_execution": false
+  },
+  "new_tests": 0,
+  "new_Source_or_Native_probe_processes": 0,
+  "claims": {
+    "ordinary_Source_implemented": true,
+    "strict_whole_TU_build_tested": true,
+    "existing_checks_passed": true,
+    "new_TU_registered_library_verified": false,
+    "new_leaf_runtime_tested": false,
+    "Original_ABI_compatible": false,
+    "Original_EH_OOM_compatible": false,
+    "game_validated": false
+  },
+  "integrator_owned": [
+    "shared CMake registration",
+    "name/reconstruction ledgers",
+    "Ghidra rename/comment/save",
+    "registered-library current build receipt"
+  ],
+  "actual_history": [
+    "Main fast-forward and new exact two-address/five-file lease established before editing.",
+    "First strict TU compile and whole COFF inspection passed; original required normal build ran once to natural success.",
+    "No008F0700 implementation, no shared metadata/Ghidra mutation and no new tests or target execution.",
+    "One reviewer message transcribed copy instruction count as65; corrected immediately to actual63. The evidence artifact always held63 and total95.",
+    "Independent reader initially stopped on the author report pin after the explicitly added existing-warning field. Source/object/evidence inputs never changed; the reviewer consumed stable direct inputs and recorded the diagnostic correction. No target ran."
+  ]
+}
