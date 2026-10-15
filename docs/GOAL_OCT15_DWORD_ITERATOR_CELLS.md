@@ -29,4 +29,4 @@ valid, including continuation after diagnostics. Physical private-stack identity
 register/CRT ABI, new-body differential behavior, application adoption and game
 validation remain open. No new tests are added for this direct reconstruction.
 
-Final combined default MSVC Release Win32 build passed all three existing CTests in 8.27 seconds. Complete independent listing review and three typed transfers passed; detailed receipt: reports/goal_oct15_integer_range_primary_review.json.
+Final combined default MSVC Release Win32 build passed all three existing CTests in 7.47 seconds. Complete independent listing review and three typed transfers passed; detailed receipt: reports/goal_oct15_integer_range_primary_review.json.
