@@ -1,10 +1,12 @@
 #include "bsp/game_hosts_text.hpp"
 #include "bsp/game_native_text_application.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/game_native_gui_effect_application.hpp"
 #include "bsp/gui_material_binding.hpp"
 #include "bsp/gui_text_child_lifetime.hpp"
 #include "bsp/gui_text_native_layout.hpp"
 #include "bsp/native_game_grid.hpp"
+#include "bsp/native_platform_load_messages.hpp"
 
 #include "bsp/font_data.hpp"
 #include "bsp/font_geometry.hpp"
@@ -499,6 +501,10 @@ struct GameNativeTextApplication::Impl {
     bool active{}; // Host callback guard, never a native Text field.
     std::uint32_t failed_entry{};
     std::exception_ptr failed;
+    // Appended Source metadata. Compare only; effect metadata owns this token
+    // and clears buffers.native_effect_consumer before its destruction. The
+    // Text application must keep its services alive through that clearing.
+    GuiTextEffectConsumer* expected_effect_consumer{};
 
     Impl(GameHostLog& log_in, GameNativeRendererApplication& renderer_in,
         GameNativeTextApplicationBindings b)
@@ -557,6 +563,8 @@ struct GameNativeTextApplication::Impl {
             throw std::invalid_argument("Native Text application requires the same live renderer, GUI, material and string owners");
         require_gui_text_native_renderer_domain(grid.graphics,
             buffers.current_renderer_00f8d394, grid.strings, buffers.geometry.actual_owners());
+        if (expected_effect_consumer && buffers.native_effect_consumer != expected_effect_consumer)
+            throw std::logic_error("Native Text cannot enter after its composed effect binding closed or changed");
     }
 
     void require_entry() {
@@ -620,6 +628,18 @@ GameNativeTextStatus native_text_submit(GameNativeTextApplication::Impl& app,
 GameNativeTextApplication::GameNativeTextApplication(GameHostLog& log,
     GameNativeRendererApplication& renderer, GameNativeTextApplicationBindings bindings)
     : impl_(std::make_unique<Impl>(log, renderer, bindings)) {}
+GameNativeTextApplication::GameNativeTextApplication(GameHostLog& log,
+    GameNativeRendererApplication& renderer, GameNativeTextApplicationBindings bindings,
+    GameNativeGuiEffectApplication& effects)
+    : impl_(std::make_unique<Impl>(log, renderer, bindings)) {
+    if (NativePlatformLoadPublication(bindings.configuration_0109cf04).identity() !=
+        renderer.borrow_platform_publication_0109cf04().identity())
+        throw std::invalid_argument("Native Text effect composition requires the renderer's exact platform publication cell");
+    // bind validates every domain before publishing either borrowed pointer.
+    // Nothing after publication can throw and destroy these borrowed services.
+    effects.bind_text_effect_consumer(impl_->buffers);
+    impl_->expected_effect_consumer = impl_->buffers.native_effect_consumer;
+}
 GameNativeTextApplication::~GameNativeTextApplication() noexcept {
     // No destructor rollback, force-unlock or disposal of a failed native frame.
     // The factory and deletion transport independently enforce the same rule.
@@ -685,7 +705,8 @@ GuiTextRuntimeFactory& GameNativeTextApplication::factory() {
 }
 bool GameNativeTextApplication::requires_process_retention() const noexcept {
     return impl_->active || impl_->failed || impl_->text_factory.retained_allocation_count() != 0 ||
-        impl_->children.retained_storage_count() != 0;
+        impl_->children.retained_storage_count() != 0 ||
+        (impl_->expected_effect_consumer && impl_->buffers.native_effect_consumer);
 }
 std::uint32_t GameNativeTextApplication::failure_entry() const noexcept { return impl_->failed_entry; }
 const std::exception_ptr& GameNativeTextApplication::failure() const noexcept { return impl_->failed; }

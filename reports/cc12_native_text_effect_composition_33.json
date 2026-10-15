@@ -1,0 +1,132 @@
+{
+  "schema": 1,
+  "packet": "cc12_native_text_effect_composition_33",
+  "captured_utc": "2026-10-15T19:29:55.453210+00:00",
+  "status": "Source_Text_private_services_bound_to_persistent_effect_graph_and_borrow_lifetime_guarded_build_COFF_checked",
+  "source": {
+    "base_commit": "9667dda1f93cde2aa38109f48f145a7100f39389",
+    "owned_paths": [
+      "include/bsp/game_native_text_application.hpp",
+      "src/game_hosts_text.cpp"
+    ],
+    "files": [
+      {
+        "path": "include/bsp/game_native_text_application.hpp",
+        "sha256": "7285572d8435bf469f32f514f1f34c7042269ee17e0620ded73f21354a26d190",
+        "bytes": 6538
+      },
+      {
+        "path": "src/game_hosts_text.cpp",
+        "sha256": "d34f722936ff3df954fb9cac35071b10a62159c839caa1e7ddc9c3e386479141",
+        "bytes": 33028
+      },
+      {
+        "path": "include/bsp/game_native_gui_effect_application.hpp",
+        "sha256": "7a91be2e8c9a61f4656d1016785afefb8d89c0e4684921601e5caff138bcc45c",
+        "bytes": 9359
+      },
+      {
+        "path": "src/game_native_gui_effect_application.cpp",
+        "sha256": "3ee093e1cb46962d3f313aac96f7ebd6929d85f7c5c37599be5551af08346cdf",
+        "bytes": 39363
+      },
+      {
+        "path": "include/bsp/gui_text_buffers.hpp",
+        "sha256": "80c262bf3a456c6ac81849d8636f20a31cd6616bf974874d4d5494e89b12c2d0",
+        "bytes": 2900
+      },
+      {
+        "path": "include/bsp/native_platform_load_messages.hpp",
+        "sha256": "a1c249d76d2836bc96be0d770292e52f9bdbfd8f6e7f84666f3bed6f892983ad",
+        "bytes": 4063
+      }
+    ],
+    "patch": "local/cc12_native_text_effect_composition_33/source.patch",
+    "patch_sha256": "385fb2e3040a9e50570628b02293663f838b6cee6605ae69d792d6a3a5001512"
+  },
+  "behavior": {
+    "new_constructor": "GameNativeTextApplication(log,renderer,bindings,existing_effect_application)",
+    "before_binding": "Complete private metadata and existing domains,then compare exact configuration/renderer publication cell identities.",
+    "after_binding": "Capture existing consumer identity; no throwing work follows publication.",
+    "retention": "Also retain Text metadata while the effect graph borrows its private services; effect destructor checks/clears that exact slot.",
+    "closed_binding": "Existing facade domain checks reject cleared or changed composed consumer; no silent legacy fallback.",
+    "shutdown": [
+      "Retire all Texts and native fonts",
+      "Perform existing shared native drain",
+      "Close/destroy effect metadata while Text services remain alive",
+      "Destroy unborrowed Text metadata"
+    ],
+    "legacy_three_argument_constructor_preserved": true,
+    "original_caller_bodies_unchanged": true,
+    "cache_acquisition_or_cursor_changes": false,
+    "automatic_native_rollback_or_second_drain": false
+  },
+  "evidence": {
+    "local_root": "local/cc12_native_text_effect_composition_33",
+    "manifest": "local/cc12_native_text_effect_composition_33/evidence_manifest.json",
+    "manifest_sha256": "fe04d1f22f5656508f30d36e7312def93c457942e6b922572ef67f749f3aafe0",
+    "archive": "local/cc12_native_text_effect_composition_33/evidence_family.zip",
+    "archive_sha256": "e9f140bf5b5b918516d3f3d80db777cabac100140eb64f09ecc750b7e343d74e",
+    "archive_bytes": 3407014,
+    "payload_count": 45,
+    "all_payloads_verified": true
+  },
+  "validation": {
+    "canonical_command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_suites_passed": 3,
+    "test_seconds": 10.13,
+    "new_tests": 0,
+    "existing_suites_scope": "Math/native-math/tool suites do not exercise this new Text constructor or prove Native Text runtime.",
+    "COFF": {
+      "object": "build/win32/bsp_game.dir/Release/game_hosts_text.obj",
+      "sha256": "5213bee2c399bd6fbe697ef303b0e1e32dfc432cd03617cfed38ae1a445a3ab0",
+      "constructor_overloads_emitted": 2,
+      "publication_identity_comparison_before_bind": true,
+      "nonthrowing_success_tail_after_bind_observed": true,
+      "borrow_retention_and_closed_binding_checks_emitted": true,
+      "offsets_are_current_Source_Impl_only": {
+        "consumer_slot": "100",
+        "expected_consumer": "28c"
+      }
+    },
+    "Ghidra": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "names_and_prior_comments_preserved": [
+        {
+          "address": "00ab8530",
+          "name_unchanged": true,
+          "previous_comment_prefix_preserved": true,
+          "previous_characters": 3185,
+          "current_characters": 6245
+        },
+        {
+          "address": "00ab8ce0",
+          "name_unchanged": true,
+          "previous_comment_prefix_preserved": true,
+          "previous_characters": 4576,
+          "current_characters": 7580
+        }
+      ],
+      "saved": true,
+      "exports_refreshed": [
+        "00ab8530",
+        "00ab8ce0"
+      ]
+    }
+  },
+  "original_abi": "This is an added MSVC Win32 Source C++ constructor and private metadata. Existing AB8530/AB8CE0 Source contracts remain unchanged; original register/class/private-frame/FH3 equivalence is not established.",
+  "remaining": [
+    "Adopt the real184-byte platform owner/height producer in normal host startup;44-byte focus projection does not provide+28.",
+    "Compose persistent native font and widget/parent domains with this same effect/Text graph in the host.",
+    "Preserve recovered cold guidefault versus font-effect shader-cache order.",
+    "Execute real Text constructors,consumer calls,buffers,passes,draws and full retirement with native verification."
+  ],
+  "not_established": [
+    "Native execution of the new constructor or AB8530/AB8CE0 consumer",
+    "Native Text activation/drawing or visual parity",
+    "Original register/FH3/string/vector/private-frame ABI equivalence",
+    "Full startup fidelity or gameplay validation"
+  ]
+}
