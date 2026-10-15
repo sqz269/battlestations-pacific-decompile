@@ -1137,6 +1137,21 @@ constexpr bool kMeshlessGunPointWindowBound = true;   // ON: GUNNERY_OPEN_ITEMS 
 //    (the two range gates) and the 0.2 s think timer stay unmodelled as before.
 //    docs/GUNNERY_OPEN_ITEMS.md 161.
 constexpr bool kTorpedoBotReadyGateBound = true;   // ON: GUNNERY_OPEN_ITEMS 161.4
+//  * kTorpedoBotCanFireReloadBound: packet g47_torpedo_canfire (GUNNERY 260,
+//    docs/CC13_AUDIT_CC9_RECENT_2.md section 2 note (a)). 0090042F's
+//    vtable[1D0h](1) is the whole 0085A830 CanFire with the reload check:
+//    gun+490h, the window at the current angles, then 00729A80(1), which
+//    refuses while the barrel delay (+450h), the stagger (+478h), the unit's
+//    torpedo cooldown (+6FCh) or every barrel's reload timer is running. A
+//    refusal goes to 00900974, vtable[1E8h](0): the trigger drops every
+//    evaluating tick of a reload, and the next evaluation after it raises the
+//    latch afresh (0072D2C0 draws a new stagger). The ready gate above took the
+//    window only, so the request stayed high through a reload and the tube
+//    fired on the first step it was out. ON: image_ready also needs
+//    torpedo_tube_can_fire_1d0 (the same gate the fire pass builds, read before
+//    this step's 0072D130 countdown: the order of the bot and gun ticks inside
+//    one step is not read). OFF: the window only, and the refusals are counted.
+constexpr bool kTorpedoBotCanFireReloadBound = false;
 //  * kShipyardDeathReleaseBound: packet cc9_g34_shipyard_reidle. 008455A0, the
 //    shipyard's observer slot 08 on each unit it built (registered by AAh
 //    008437D0), runs when the unit dies (00926390): it clears the first hangar
@@ -2188,6 +2203,7 @@ struct GameGunneryHost::Impl {
     };
     std::map<std::size_t, TorpedoThink> torpedo_think_by_gun;
     unsigned long long torpedo_think_holds{0}, torpedo_think_evals{0};
+    unsigned long long torpedo_ready_reload_refusals{0};   // kTorpedoBotCanFireReloadBound
     unsigned long long torpedo_zone_tests{0}, torpedo_zone_holds{0};  // kTorpedoLaunchZoneBound
     double torpedo_attack_range_sum{0.0};
     unsigned long long torpedo_attack_range_samples{0};
@@ -8321,10 +8337,14 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         if (torpedo_gun && gun.category == bsp::kUnitGunneryTorpedoCategory && !player_seat) {
             // Packet cc9_g34_torpedo_bot_ready: 008FFF20's own launch test,
             // 009003F8..0090042F. want_horz is bot+60h, the snapped heading.
-            const bool image_ready = have_target
+            bool image_ready = have_target
                 && bsp::gun_bot_torpedo_ready_008fff20(want_horz, gun.angles.horz,
                        may_fire_here)
                 && !inhibited;
+            // 0090042F vtable[1D0h](1): the reload half of CanFire.
+            const bool reload_ok = !image_ready || torpedo_tube_can_fire_1d0(g);
+            if (image_ready && !reload_ok) ++torpedo_ready_reload_refusals;
+            if constexpr (kTorpedoBotCanFireReloadBound) image_ready = image_ready && reload_ok;
             if (have_target) {
                 ++summary.torpedo_ready_targeted;
                 if (image_ready) ++summary.torpedo_ready_image;
@@ -15449,6 +15469,9 @@ void GameGunneryHost::report() {
             "(008FFF20 009000DD..00900101, packet g44_torpedo_think)",
             kTorpedoBotThinkTimerBound ? 1 : 0, host.torpedo_think_evals,
             host.torpedo_think_holds);
+        host.log.notef("summary mission gunnery torpedo ready reload refusals=%llu bound=%d "
+            "(0090042F vtable[1D0h](1) -> 0085A830 -> 00729A80(1), packet g47_torpedo_canfire)",
+            host.torpedo_ready_reload_refusals, kTorpedoBotCanFireReloadBound ? 1 : 0);
         host.log.notef("summary mission gunnery torpedo swim entity impacts=%llu (swimming rounds that "
             "struck an entity, 0084BC60)", host.torpedo_swim_entity_impacts);
         host.log.notef("summary mission gunnery bullet throw cone=%llu fan=%llu zero=%llu "
