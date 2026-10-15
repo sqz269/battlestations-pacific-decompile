@@ -26,6 +26,14 @@
 #include "bsp/mission_lua_machine.hpp"
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_tree_data.hpp"
+#include "bsp/game_native_renderer_application.hpp"
+#include "bsp/gui_texture.hpp"
+#include "bsp/mission_picture_owner.hpp"
+#include "bsp/native_game_grid.hpp"
+#include "bsp/native_string.hpp"
+#include "bsp/native_string_pool_storage.hpp"
+#include "bsp/native_system_constant_gather.hpp"
+#include "bsp/native_texture_loading_cache.hpp"
 #include "bsp/ocean_spectrum.hpp"
 #include "bsp/resource_lookup.hpp"
 #include "bsp/scene_entity_factory.hpp"
@@ -35,8 +43,13 @@
 #include "bsp/vfs_mounts.hpp"
 
 #include <algorithm>
+#include <array>
+#include <atomic>
+#include <cstddef>
 #include <cstdio>
+#include <cstring>
 #include <map>
+#include <new>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -306,6 +319,132 @@ const char* game_mission_step_name(GameMissionStep step) noexcept {
 }
 
 // ---------------------------------------------------------------------------
+// Native services for 005C6A70's picture tail
+// ---------------------------------------------------------------------------
+
+namespace {
+
+// The image reaches every one of these through globals that exist before the
+// mission-tree screen registers: the GUI manager singleton DAT_00f8bc5c
+// (004c12b0, built during 0073bae0), the current renderer 00F8D394 (renderer
+// constructor at 0073DA88, device inside BECEE0 before 0073DC27) and the atlas
+// manager 00F8C26C. 005C75A9 calls 004c12b0 and 005C75C7 calls 00AA2660 with
+// that renderer behind its slot +64h, so this object only has to exist before
+// 005CAAF0 runs; game_hosts.cpp binds it once the device is created.
+struct NativeMissionPictureLoader {
+    GameHostLog& log;
+    GameNativeRendererApplication& renderer;
+    GameFrontendHost& frontend;
+    GuiTextureCallbacks callbacks;
+    MissionPictureTextureServices services;
+    // B31C20 needs persistent acquisition frames. A frame left running or
+    // failed by a throwing load is retained to process exit (its destructor
+    // would terminate), as the host retains other interrupted native graphs.
+    std::vector<std::unique_ptr<NativeTextureCacheAcquired>> frames;
+    std::size_t loads{};
+    std::size_t null_results{};
+    std::vector<std::string> first_names;
+
+    NativeMissionPictureLoader(GameHostLog& l, GameNativeRendererApplication& r,
+        GameFrontendHost& f)
+        : log(l), renderer(r), frontend(f),
+          services{callbacks, r.actual_owners(),
+              [this] { return frontend.gui_manager_004c12b0(); },
+              // 005C75B4 passes the frame float2 at [esp+48h] uninitialized.
+              // 00AA2660 reads it only on an atlas hit, and then only to
+              // decide whether to query width/height and write a size back
+              // into that same temporary, which 005C6A70 never reads again.
+              // No atlas hit is reachable here (find_atlas_item below), so
+              // the value is unobservable; zero is a host choice, not a
+              // recovered preimage.
+              [] { return std::array<float, 2>{0.0f, 0.0f}; }} {
+        // 00AA2660's atlas lookup, 00AEFB20 on the manager at 00F8C26C. The
+        // host never constructs that manager (00AF0060 is unimplemented in
+        // TitleInit::load_texture_atlas, game_hosts_menu.cpp), so the lookup
+        // always misses. In the binary it holds allbutingame.ats; none of
+        // this installation's twelve interface/textures/*.ats descriptors
+        // names a missions/ item, and every picture in missiontree.lua is a
+        // loose fe/missions/ texture, so the binary misses here too.
+        callbacks.find_atlas_item = [](std::string_view) -> const TextureAtlasItem* {
+            return nullptr;
+        };
+        // 00AA2660's miss arm: current renderer slot +64h with flags 0. The
+        // observed renderer profile D5F0A8 holds B319B0 there, as the font
+        // producer checks before the same call.
+        callbacks.load_texture = [this](std::string_view name, std::uint32_t flags) -> void* {
+            return load_texture(name, flags);
+        };
+        // Texture profile D61948 slots +3Ch/+40h are B3CE50/B3CE60 (image
+        // bytes at 00D61984/00D61988). Reached only on an atlas hit.
+        callbacks.width = [](void* texture) {
+            require_texture_2d(texture);
+            return get_raw_texture_width_00b3ce50(texture);
+        };
+        callbacks.height = [](void* texture) {
+            require_texture_2d(texture);
+            return get_raw_texture_height_00b3ce60(texture);
+        };
+        // 00AA2660's InterlockedIncrement(texture+4) on an atlas hit.
+        callbacks.retain = [](void* texture) {
+            auto* count = std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(
+                static_cast<std::byte*>(texture) + 4));
+            count->fetch_add(1, std::memory_order_seq_cst);
+        };
+        // Existing ready/native-acquisition gate the font producer uses.
+        (void)renderer.section_layout_services();
+        validate_mission_picture_services(services);
+    }
+    NativeMissionPictureLoader(const NativeMissionPictureLoader&) = delete;
+    NativeMissionPictureLoader& operator=(const NativeMissionPictureLoader&) = delete;
+    ~NativeMissionPictureLoader() {
+        for (auto& frame : frames) {
+            if (frame && frame->phase != NativeTextureCacheAcquired::Phase::not_started &&
+                frame->phase != NativeTextureCacheAcquired::Phase::complete)
+                static_cast<void>(frame.release());
+        }
+    }
+
+    static void require_texture_2d(void* texture) {
+        std::uint32_t profile{};
+        std::memcpy(&profile, texture, sizeof(profile));
+        if (profile != 0x00d61948)
+            throw std::logic_error("mission picture atlas texture is not the D61948 2D profile");
+    }
+
+    void* load_texture(std::string_view name, std::uint32_t flags) {
+        NativeTextureCacheContext& cache = renderer.texture_cache();
+        NativeGameGridContext& grid = renderer.game_grid_context();
+        void* receiver = renderer.publication_00f8d394();
+        std::uint32_t profile{};
+        if (receiver) std::memcpy(&profile, receiver, sizeof(profile));
+        const auto* table = grid.graphics.streams.vertices.actual_renderer_profile_00d5f0a8;
+        if (!receiver || profile != 0x00d5f0a8 || !table || table[0x64 / 4] != 0x00b319b0)
+            throw std::runtime_error("mission picture requires the observed current renderer64=B319B0 profile");
+        frames.push_back(std::make_unique<NativeTextureCacheAcquired>());
+        // 00AA2660 forwards 005C6A70's frame string; the host builds the same
+        // actual header from the record's picture name and destroys it after.
+        const std::string text(name);
+        NativeString native_name;
+        native_name.assign_0041e870(cache.strings, text.c_str());
+        void* result = nullptr;
+        try {
+            result = load_native_renderer_texture_00b319b0(receiver, &native_name, flags, cache,
+                frames.back().get());
+        } catch (...) {
+            destroy_native_string_header_0041dd20(&native_name, cache.strings);
+            throw;
+        }
+        destroy_native_string_header_0041dd20(&native_name, cache.strings);
+        ++loads;
+        if (result == nullptr) ++null_results;
+        if (first_names.size() < 3) first_names.push_back(text);
+        return result;
+    }
+};
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
 // GameMissionHost::Impl
 // ---------------------------------------------------------------------------
 
@@ -317,6 +456,9 @@ struct GameMissionHost::Impl {
     LocaleTables& locale;
     std::string requested_id;
 
+    // Declared before `tables` so every picture reference the records hold is
+    // released before these services and their acquisition frames go.
+    std::unique_ptr<NativeMissionPictureLoader> native_pictures;
     // 005CAAF0's tables, held for the run exactly as the mission-tree screen
     // holds them at +14h..+30h.
     MissionTreeTables tables;
@@ -1483,6 +1625,14 @@ void GameMissionHost::bind_mission_picture_services(const MissionPictureTextureS
     validate_mission_picture_services(services);
     impl_->picture_services = &services;
 }
+void GameMissionHost::bind_native_mission_pictures(GameNativeRendererApplication& renderer) {
+    if (impl_->native_pictures)
+        throw std::logic_error("Native mission picture services bind once");
+    auto loader = std::make_unique<NativeMissionPictureLoader>(impl_->log, renderer,
+        impl_->frontend);
+    bind_mission_picture_services(loader->services);
+    impl_->native_pictures = std::move(loader);
+}
 void GameMissionHost::load_mission_tree_005caaf0() {
     Impl& host = *impl_;
     host.tree_load_started = true;
@@ -1499,8 +1649,19 @@ void GameMissionHost::load_mission_tree_005caaf0() {
         host.log.unimplemented("MissionTreeScreen::load_tables", "005caaf0");
         return;
     }
-    if (host.picture_services) host.log.implemented("MissionTreeScreen::load_tables", "005caaf0");
-    else {
+    if (host.picture_services) {
+        host.log.implemented("MissionTreeScreen::load_tables", "005caaf0");
+        if (const NativeMissionPictureLoader* pictures = host.native_pictures.get()) {
+            std::string names;
+            for (const std::string& name : pictures->first_names) {
+                if (!names.empty()) names += ' ';
+                names += name;
+            }
+            host.log.notef("mission tree pictures: %zu renderer loads through 005c6a70, "
+                "%zu null results, first: %s", pictures->loads, pictures->null_results,
+                names.c_str());
+        }
+    } else {
         host.log.notef("mission-tree metadata loaded; native picture services are unbound");
         host.log.unimplemented("MissionTreeScreen::picture_resources", "005c6a70");
     }

@@ -2411,6 +2411,19 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         menu_->mission()->set_ai_drive(options_.ai_drive_unit, options_.ai_drive_throttle,
             options_.ai_drive_rudder);
     }
+    // 005CAAF0's picture tail (005C6A70, 005C75A9..005C763B) reaches the GUI
+    // manager, current renderer and atlas manager through globals the image
+    // has set up long before the mission-tree screen registers (renderer
+    // constructor 0073DA88, device in BECEE0, GUI startup 0073bae0). Bind
+    // them now, after device creation and before any menu frame. menu_ is
+    // deleted before the singleton drain, so every picture is released first.
+    if (menu_->mission() != nullptr && summary_.device_created) {
+        try {
+            menu_->mission()->bind_native_mission_pictures(*native_renderer_);
+        } catch (const std::exception& error) {
+            log_.notef("mission picture services did not bind: %s", error.what());
+        }
+    }
     // The first-time OnInitOnce input fragment precedes OnInitTitle. A917E0
     // requests one wildcard slot per class and clears its active/filter ranges;
     // it does not activate devices. The remaining Lua/UI OnInitOnce calls are
