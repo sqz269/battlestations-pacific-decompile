@@ -115,7 +115,21 @@
       "source_revision": "d9b73fb89cf563b0089f9cd170e36932f63939fd",
       "source": "src/native_scene_record_map_pair.cpp",
       "report": "reports/goal_oct15_scene_map_pair.json",
-      "primary_review": "Full normal and funclet listings plus canonical destructor compared to Source. Late integer suffix copies differ from prior x87 packet. Constructor captures data then length before zero; normal free uses captures while true C++ unwind reads current key/output cells with original state transitions."
+      "primary_review": "Full normal and funclet listings plus canonical destructor compared to Source. Late integer suffix copies differ from prior x87 packet. Constructor captures data then length before zero; normal free uses captures while true C++ unwind reads current key/output cells with original state transitions.",
+      "validation_revision": "673526249f5f8aee5fed16e05b7bf3c839ac7121",
+      "compiled_object": {
+        "path": "J:/PROG/battlestations-pacific-decompile-goal_oct15_integrator/build/win32/bsp_core.dir/Release/native_scene_record_map_pair.obj",
+        "sha256": "6b2a4efc806e469b44de7e07f606a152ffdd97ad59e4a6ceda7e5b90c340f631",
+        "bytes": 5784,
+        "inspection": "dumpbin14.51.36244.0 /DISASM /SYMBOLS /RELOCATIONS",
+        "receipt": "local/goal_oct15_scene_map_pair_object.txt",
+        "integer_suffix": "both public copy wrappers: raw header dependency+10,late source DWORD8B4E08+15,destination DWORD894F08+1B;36-byte cdecl wrappers; no x87/SSE scalar conversion in object",
+        "constructor_captures": "key.data+34,key.length+37 before output clear+3F/+45; data saved in private slot,lengthESI; captured normal source/return retained",
+        "completion_and_normal_return": "mapped DWORD store+91; state bytes+94 parameter0/output1 before raw getter+A2/sized return+AF",
+        "cpp_unwind": "constructor unwind action dispatches RAII destructor; parameter flag/current key call+37 before output flag; output flag clear+4D before current output call+51; EH metadata relocation __std_terminate",
+        "source_abi": "__cdecl copies stack(dest,source,context),ctor stack(dest,mappedDWORD,actual_parameter_cell,context),EAX destination,RET; separate from original thiscall/fastcall RET4/RET8 and native EH frames",
+        "native_private_frame_identity": false
+      }
     },
     {
       "packet": "goal_oct15_scene_map_iterator",
@@ -150,5 +164,21 @@
     "No new callback or stub dependency, source owner overlay or external provider edit.",
     "Private cleanup Source scopes preserve true C++ unwind sequencing, not original FH3/SEH/private-frame ABI.",
     "Existing tests do not execute these new entries; no entry-specific native differential, Original ABI, application adoption or game qualification."
-  ]
+  ],
+  "main_source_integration_revision": "8dd5480f95e3e54dd075e2528c45327741168f99",
+  "all_worker_validation_revisions_merged": true,
+  "post_build_changes": "Metadata only; Source/header/CMake diff from tested026da884 to final worker validation is empty.",
+  "concurrent_main_validation": {
+    "report": "reports/oct15_ninth_reconstruction_batch.json",
+    "tested_source_commit": "fd602321f46091bb352553194c615ae421f86a56",
+    "command": "./scripts/build.ps1",
+    "build": "pass",
+    "ctests_passed": 3,
+    "ctest_seconds": 7.41,
+    "log": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct15_ninth_final_combined_build.log",
+    "log_sha256": "679a570cb24532dd8fe54259ebcebfffbf0ed7525cb4e2cef6339332c6811314",
+    "production_build_test_and_tool_sources_identical": true,
+    "equality_command": "git diff fd602321f..HEAD -- src include cmake/startup.cmake CMakeLists.txt scripts tests tools",
+    "reason": "Other harness build explicitly includes all four scene-map/ordering translation units. Only metadata differs after final pair validation; no redundant rebuild needed."
+  }
 }
