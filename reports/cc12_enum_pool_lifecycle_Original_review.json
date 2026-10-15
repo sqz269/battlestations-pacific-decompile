@@ -1,0 +1,85 @@
+{
+  "schema": "cc12.enum_pool_lifecycle_Original_readiness.v1",
+  "Original_binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "bodies": [
+    {
+      "address": "00cc8a10",
+      "exclusive_end": "00cc8a26",
+      "owner": "00e175e8",
+      "callback": "00cd9290",
+      "bytes": 22,
+      "hex": "b9e875e100e8368674ff689092cd00e8d1e5f2ff59c3",
+      "sha256": "93600ebc5569bcb6a8319f842213b945e0436cd739806bdb55c5089661328623",
+      "instructions": 6,
+      "disk_equals_actual_live_hex": true
+    },
+    {
+      "address": "00cc8a50",
+      "exclusive_end": "00cc8a66",
+      "owner": "00e17578",
+      "callback": "00cd9280",
+      "bytes": 22,
+      "hex": "b97875e100e8f68574ff688092cd00e891e5f2ff59c3",
+      "sha256": "358af6d29f498df5472a4afed1442bff211e015cfbc1a0e723d2ac1f0d2f3d9f",
+      "instructions": 6,
+      "disk_equals_actual_live_hex": true
+    },
+    {
+      "address": "00cd9280",
+      "exclusive_end": "00cd928a",
+      "owner": "00e17578",
+      "callback": null,
+      "bytes": 10,
+      "hex": "b97875e100e9d67773ff",
+      "sha256": "c504cbd7f1b980f9be8b3c50462831f979441b7fbf72a8316a9a4e4565a61eac",
+      "instructions": 2,
+      "disk_equals_actual_live_hex": true
+    },
+    {
+      "address": "00cd9290",
+      "exclusive_end": "00cd929a",
+      "owner": "00e175e8",
+      "callback": null,
+      "bytes": 10,
+      "hex": "b9e875e100e9c67773ff",
+      "sha256": "9e959189d8a8555d66644be20dc518e293296440a4a27a1fd048797610de990b",
+      "instructions": 2,
+      "disk_equals_actual_live_hex": true
+    }
+  ],
+  "actual_read_tools": [
+    "c2dd53/exit0",
+    "909fa6/exit0",
+    "09ce33/exit0",
+    "bf7cf4/exit0"
+  ],
+  "contract": [
+    "CC8A10 constructs actual E175E8 with00411050 then registers CD9290 through actual BF6FF5 atexit; POP ECX/RET leaves registration status in EAX.",
+    "CC8A50 constructs distinct actual E17578 then registers CD9280; same six-instruction pattern, no once guard or rollback.",
+    "Callbacks set ECX to their same owner and tail-jump00410A60; generic38h owner/14h slot/E188B4 list contracts are accepted direct providers.",
+    "E17540/E175B0 property pools are distinct and cannot replace these enum table/symbol owners."
+  ],
+  "Source_status": "No new lifecycle Source binding or canonical E186ED authority supplied; next Source packet must keep actual distinct owners on same retained list and retire payloads before pool pages.",
+  "Original_ABI_compatible": false,
+  "new_Source_bodies": 0,
+  "game_validated": false,
+  "status": "Four complete Original lifecycle bodies verified, two missing callbacks defined, reviewed names applied, project saved and exports/snapshot refreshed",
+  "defined_callbacks_tool": "e5ab84/exit0",
+  "defined_callbacks_record": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\EnumPoolLifecycleOriginalReadiness01\\defined_callbacks.DATA.json",
+  "prior_Original_live_byte_tools": [
+    "c2dd53/exit0",
+    "909fa6/exit0",
+    "09ce33/exit0",
+    "bf7cf4/exit0"
+  ],
+  "annotation_tool": "2c7689/exit0",
+  "previous_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\ghidra-annotations-20261015T164009Z.json",
+    "bytes": 4067,
+    "sha256": "a6a333919f843847dbebd82bf420b23cfcebdf375009bf4e1291d3ea7323436a"
+  },
+  "exports_tool": "0b1ae9/exit0",
+  "snapshot_tool": "35313e/session86278 ->37e33c/exit0;76769->76771, internal76329; index and callgraph rebuilt"
+}
