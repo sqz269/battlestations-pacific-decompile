@@ -156,7 +156,7 @@
     "input": "actual incoming path word reloaded inside loop; ACTUAL layer argument word reused for computed signed pointcount after first append; positive-loop bounds compare signed",
     "growth": "only count==capacity and unsignedcandidate2cap+2>oldcap; publishcap BEFORE MUL4 with overflow=>FFFFFFFF byte request; current record-array/count reloads, lateoldfree thennewarraypub; no generic checked allocator",
     "filter": "diffX/diffZ floatspills, two extended squares/add thenfloatspill, ordered compare to exact CE3880=25; no ordinarydouble/SSE math substitution",
-    "world": "capture CURRENT value from fixed E188A8 pointercell only AFTER all path/allocation work; ordered fieldloads/scratchstores min711C,7120,7130 andmax7128,712C,7124; mustnot accept an earlier copied-bound snapshot",
+    "world": "Capture CURRENT value from fixed E188A8 pointercell only AFTER allpath/allocation work; actualinterleavedloads711C,7120,7128,712C,7124,7130 withinterveningscratchstores/pushes. Logicalmin711C/7120/7130,max7128/712C/7124; no earliercopied-bound snapshot",
     "post_clip": "reloadcurrentcount; ifnonzero deriveflag1 then three separate ancestor1 calls with actual parentkind44 dispatch between them; publish third result toowner+10",
     "eh": "FuncInfoD842D8 max1,mapD842D0[-1,C5E190],zero tryblocks; state0 beforepointwork persists throughclip/winding/association; actionMOVECX[EBP-68]/JMP412DC0, frees pointerarray andzeroes0 only; count/cap and pointed-record leak are not repaired"
   },
@@ -185,5 +185,6 @@
     "goal15i_group_add_bytes.txt": "6163a678ab015b5c27f6e5a056b2e20dde1af69c5115df02ad5402ff0f7688da",
     "goal15i_parent_flow.txt": "ffde5b60b1e5532ef69e2f196004ed1b21c0244b01bfec53cb4676df795272e4"
   },
-  "limits": "bsp flow checked279/103 listedinstructions andzero gaps; its typed flow/no-return query unavailable, so no stronger fallthrough/noreturn assertion; no Ghidra mutation or new raw parent Source claim in this readiness record"
+  "limits": "bsp flow checked279/103 listedinstructions andzero gaps; its typed flow/no-return query unavailable, so no stronger fallthrough/noreturn assertion; no Ghidra mutation or new raw parent Source claim in this readiness record",
+  "peer_review": "pool_cleanup found no rawbounds Source defect; corrected min/max logicalgroup wording to actualinterleavedworldloadorder"
 }
