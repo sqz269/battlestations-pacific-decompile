@@ -1,0 +1,407 @@
+{
+  "packet": "goal_oct15_scene_integer_set_extrema",
+  "status": "complete_functional_actual_raw_source_build_pending",
+  "source_ready": true,
+  "source": "src/native_scene_integer_set_extrema.cpp",
+  "header": "include/bsp/native_scene_integer_set_extrema.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_INTEGER_SET_EXTREMA.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Guarded CLI verifies expected project/program/x86/image base before every live batch",
+    "annotation": "Locked annotation applied; correct names/comments preserved; prior values recorded; project saved and both exports refreshed; no prototype repair",
+    "live_prototype_repair": false,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "readiness": {
+    "indexed_reconstruction_before_packet": false,
+    "existing_source_search": "No owned extrema implementation under either address or related spelling; historical inventory only",
+    "dependencies": "None; no callees/providers, separate nil11h bodies"
+  },
+  "routines": [
+    {
+      "address": "00466a40",
+      "name": "maximum_native_scene_integer_set_node_00466a40",
+      "native_name_preserved": "STL_Tree_Max_00466a40",
+      "coverage": "complete_functional_actual_raw_storage_Source; unreachable_alignment_excluded",
+      "original_abi": "ECX initial node; EDX scratch; no stack arguments; plainRET; EAX current-node result. Source fastcall one-pointer argument/result; no binary ABI claim.",
+      "envelope_end_exclusive": "00466a5c",
+      "envelope_bytes": 28,
+      "functional_executed_bytes": 25,
+      "semantic_instruction_bytes": 25,
+      "executable_ranges": [
+        {
+          "start": "00466a40",
+          "end_exclusive": "00466a4d",
+          "bytes": 13
+        },
+        {
+          "start": "00466a50",
+          "end_exclusive": "00466a5c",
+          "bytes": 12
+        }
+      ],
+      "unreachable_alignment": {
+        "start": "00466a4d",
+        "end_exclusive": "00466a50",
+        "bytes": 3,
+        "hex": "8d4900",
+        "evidence": "JMP00466a50 at00466a4b skips this gap; initial JNZ00466a5b also skips it. No functional execution reconstructed here."
+      },
+      "original_envelope_bytes_hex": "8bc18b5008807a11007510eb038d49008bc28b5008807a110074f5c3",
+      "schedule": "Current node=input; read node+8 child FIRST, then child+11 sentinel; while zero advance current=child, read current+8 next child and its sentinel. Return current node, not sentinel child. Initial-node sentinel never read.",
+      "host_steps": [],
+      "original_envelope_sha256": "4bda24aba07602f4f5032be6e32b6b63fc7af54039b1f65125657c3e382737be",
+      "live_dump_equals_installed_PE": true
+    },
+    {
+      "address": "00466a60",
+      "name": "minimum_native_scene_integer_set_node_00466a60",
+      "native_name_preserved": "STL_Tree_Min_00466a60",
+      "coverage": "complete_functional_actual_raw_storage_Source; reachable_neutral_alignment_has_no_Source_effect",
+      "original_abi": "ECX initial node; EDX scratch; no stack arguments; plainRET; EAX current-node result. Reachable LEAEBX,[EBX] preserves EBX. Source fastcall one-pointer argument/result; no binary ABI claim.",
+      "envelope_end_exclusive": "00466a7b",
+      "envelope_bytes": 27,
+      "functional_executed_bytes": 27,
+      "semantic_instruction_bytes": 21,
+      "executable_ranges": [
+        {
+          "start": "00466a60",
+          "end_exclusive": "00466a7b",
+          "bytes": 27
+        }
+      ],
+      "reachable_neutral_alignment": {
+        "start": "00466a6a",
+        "end_exclusive": "00466a70",
+        "bytes": 6,
+        "hex": "8d9b00000000",
+        "evidence": "LEAEBX,[EBX] reached only when initial child is non-sentinel; register/flags/memory identity, omitted from Source functional operations."
+      },
+      "original_envelope_bytes_hex": "8bc18b10807a110075108d9b000000008bc28b10807a110074f6c3",
+      "schedule": "Current node=input; read node+0 child FIRST, then child+11 sentinel; while zero advance current=child, read current+0 next child and its sentinel. Return current node, not sentinel child. Initial-node sentinel never read.",
+      "host_steps": [],
+      "original_envelope_sha256": "fa0c50ff8eac878c9c5bad8e9c71a1c6ce9dbeb2e69dd5142b7ed53bc5175abd",
+      "live_dump_equals_installed_PE": true
+    }
+  ],
+  "caller_evidence": [
+    {
+      "address": "0046a845",
+      "native": "00466a40",
+      "function": "0046a740",
+      "contract": "ECX=EDI, no stack args, plainRET; returned EAX stored captured head.right atA84A"
+    },
+    {
+      "address": "0046a823",
+      "native": "00466a60",
+      "function": "0046a740",
+      "contract": "ECX=EDI, no stack args, plainRET; returned EAX stored captured head.left atA828"
+    }
+  ],
+  "layout_evidence": "Actual004681B0 alloc14h producer links0/4/8,key0Ch,color10h,nil11h; accepted raw storage authority. Source only reads links/nil11h; no19h body call.",
+  "typed_metadata": {
+    "captures": [
+      {
+        "path": "local/goal_oct15_integer_next_typed_flow.json",
+        "sha256": "b29d83b882494203458102907d76469e8950c7298fa0323c6d7c24ab190a3e63",
+        "endpoint": "get_flow_metadata",
+        "utc": "2026-10-15T21:25:42.381881+00:00",
+        "read_only": true
+      },
+      {
+        "path": "local/goal_oct15_integer_next_transfers_typed.json",
+        "sha256": "628975deacda693fd05083d7c905030911cf9bd5707bae4bd4a8b8740754ab42",
+        "endpoint": "get_flow_metadata",
+        "utc": "2026-10-15T21:26:02.340775+00:00",
+        "read_only": true
+      }
+    ],
+    "functions": [
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00466a40"
+        },
+        "name": "STL_Tree_Max_00466a40",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 2,
+          "returned_range_count": 2,
+          "address_count": "25",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00466a40"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00466a4c"
+              },
+              "length": "13"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00466a50"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00466a5b"
+              },
+              "length": "12"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00466a60"
+        },
+        "name": "STL_Tree_Min_00466a60",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "27",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00466a60"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00466a7a"
+              },
+              "length": "27"
+            }
+          ]
+        }
+      }
+    ],
+    "rows": [
+      {
+        "address": "00466a4b",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00466a4b"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00466a50"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00466a50"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00466a4d",
+        "instruction_at": null,
+        "instruction_flow": null
+      },
+      {
+        "address": "0046a823",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "0046a823"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "0046a828"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "0046a828"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00466a60"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00466a60"
+            }
+          ]
+        }
+      },
+      {
+        "address": "0046a845",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "0046a845"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "0046a84a"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "0046a84a"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00466a40"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00466a40"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "validation": {
+    "original_live_envelopes_match_installed_PE": true,
+    "original_envelope_bytes": 55,
+    "functional_executed_bytes": 52,
+    "semantic_instruction_bytes": 46,
+    "unreachable_alignment_bytes_excluded": 3,
+    "live_typed_body_metadata_read": true,
+    "report_calls": "2call rows checked,0failed",
+    "build": "pending",
+    "existing_checks": "pending",
+    "cmake_registration": "Holder released; rechecked unleased, left queue and appended unique registration without exclusive lease",
+    "new_tests": 0,
+    "direct_native_extrema_execution": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "documentation_claim_check": "4addresses cited,0failed,0unchecked,0warnings"
+  },
+  "cmake_requested_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_scene_integer_set_extrema.cpp)",
+  "limits": [
+    "Complete functional coverage excludes3unreachable maximum padding bytes; minimum6neutral LEA bytes retained in executable count only",
+    "Valid taken raw backing required; no initial sentinel shortcut or added validation/callback/STL container",
+    "Native EAX result recovered from full assembly and actual consuming callers; no live prototype repair",
+    "Original private frame/mangling/fault/SEH/binary ABI, dedicated native differential, application/game proof unestablished"
+  ],
+  "annotation_history": [
+    {
+      "address": "00466a40",
+      "before": {
+        "address": "00466a40",
+        "function_name": "STL_Tree_Max_00466a40"
+      },
+      "after": {
+        "address": "00466a40",
+        "name": "STL_Tree_Max_00466a40",
+        "evidence": "Complete functional actual14h-node nil11h extrema Source in src/native_scene_integer_set_extrema.cpp; Current node=input; read node+8 child FIRST, then child+11 sentinel; while zero advance current=child, read current+8 next child and its sentinel. Return current node, not sentinel child. Initial-node sentinel never read. NativeECXnode/EDXscratch/plainRET/EAXresult consumed by erase; no void-pseudocode/liveABI repair. Whole25+27functional/55envelope bytes,3unreachable maxpadding excluded; typed ranges/no-return/skip flow verified;2livecallers and installedPE. Build/registration pending. docs/GOAL_OCT15_SCENE_INTEGER_SET_EXTREMA.md"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00466a60",
+      "before": {
+        "address": "00466a60",
+        "function_name": "STL_Tree_Min_00466a60"
+      },
+      "after": {
+        "address": "00466a60",
+        "name": "STL_Tree_Min_00466a60",
+        "evidence": "Complete functional actual14h-node nil11h extrema Source in src/native_scene_integer_set_extrema.cpp; Current node=input; read node+0 child FIRST, then child+11 sentinel; while zero advance current=child, read current+0 next child and its sentinel. Return current node, not sentinel child. Initial-node sentinel never read. NativeECXnode/EDXscratch/plainRET/EAXresult consumed by erase; no void-pseudocode/liveABI repair. Whole25+27functional/55envelope bytes,3unreachable maxpadding excluded; typed ranges/no-return/skip flow verified;2livecallers and installedPE. Build/registration pending. docs/GOAL_OCT15_SCENE_INTEGER_SET_EXTREMA.md"
+      },
+      "status": "applied"
+    }
+  ]
+}
