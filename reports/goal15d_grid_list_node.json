@@ -1,0 +1,28 @@
+{
+  "schema": "bsp.goal15d.grid_list_node.v1",
+  "packet": "goal15d_grid_node",
+  "base_commit": "80d27d3e9",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "status": "complete_naked_stdcall_kernel_51_bytes_one_call_normalized_and_real_provider_source_probe_checked_pending_primary_build",
+  "owned_addresses": ["0041c0b0"],
+  "outputs": ["include/bsp/native_grid_list_node.hpp", "src/native_grid_list_node.cpp", "docs/GOAL15D_GRID_LIST_NODE.md", "reports/goal15d_grid_list_node.json"],
+  "functions": [{"address": "0041c0b0", "name": "STL_List_BuyNode_0041c0b0", "body": "0041c0b0-0041c0e2", "bytes": 51, "coverage": "complete", "source": "src/native_grid_list_node.cpp", "entry": "buy_native_grid_list_node_0041c0b0", "original_abi": "stdcall three DWORD args next/previous/value-source address; EAX allocation pointer; RET0Ch; incoming ECX unused", "source_abi": "same ordinary stdcall input/result/cleanup shape, naked owned kernel; external CRT/frame/native binding identity qualified"}],
+  "host_steps": [{"address": "0041c0b2", "native": "00bf681b", "function": "0041c0b0", "contract": "body read in current worker stream: genuine cdecl allocation, size12 pushed at0041C0B0, ADD ESP4 at0041C0B7; Source concrete adapter invokes existing singleton_lifetime_allocate object12/12 with current CRT retry/new-handler/bad_alloc policy"}],
+  "consumer_calls": [{"address": "004238b4", "native": "0041c0b0", "function": "00423640", "contract": "next=sentinel, previous=sentinel.previous, value_source=payload-local address; actual current record+18h raw list header; returned EAX copied to EBP at004238BD before count/link steps"}],
+  "semantics": {
+    "node": "raw12-byte next/previous/value DWORD storage at0/4/8; no hull node or payload class/lifetime inferred",
+    "order": ["allocate12", "if base nonzero load CURRENT stack+4 and store next", "if wrapped base+4 nonzero load CURRENT stack+8 and store previous", "if wrapped base+8 nonzero load CURRENT stack+0Ch source pointer, dereference DWORD and store value", "return allocation in EAX, RET0Ch"],
+    "aliasing": "naked late input-cell loads preserve allocator-handler changes and aliases to prior stores/value source; no early argument/value snapshots",
+    "failure_policy": "existing genuine allocation provider; no extra null/overflow/shape/retry/rollback policy",
+    "boundaries": "Source CRT heap/handler/exception identity, provider frames/fault backing, original binary binding and gameplay unclaimed; current argument cells must be writable and reached spans valid"
+  },
+  "evidence": [
+    {"span": "0041c0b0-0041c0e2", "kind": "complete native assembly and live prototype", "conclusion": "51-byte exact schedule and3arg stdcall/EAX pointer result"},
+    {"span": "004238a2-004238ca", "kind": "live sole-call argument and result context", "conclusion": "pointer-sized DWORD payload slot, sentinel/previous roles, EAX node consumed; no hull-type inference"},
+    {"span": "00bf681b;src/singleton_lifetime.cpp", "kind": "callee/native Source provider read earlier in current worker stream", "conclusion": "actual malloc/new-handler retry/bad_alloc service, matching Source CRT free"}
+  ],
+  "corrections": [{"was": {"saved_prototype": "undefined STL_List_BuyNode_0041c0b0(void)", "exported_pseudocode_return": "void"}, "is": "three DWORD stack arguments, EAX allocated pointer, RET0Ch", "evidence": "complete asm allocation result staysEAX throughRET; caller004238BD MOV EBP,EAX; no Ghidra mutation by worker"}],
+  "validation": {"focused_compile": "PASS:MSVC x86 /std:c++17 /EHsc /W4 /WX /permissive- /O2 /Gy /FAcs /c /Iinclude; zero warnings; local/goal15d_grid_node/compile.cmd", "owned_kernel_bytes": "PASS:actual COFF function exactly51bytes; only CALL rel32 operand offset+3h masked and target verified as actual allocator adapter; all other bytes equal live Native; normalizedSHA25657c3a10fa9e65695622c202059d491accfd78f1421284ea00c0a775eeabed74c; local/goal15d_grid_node/compare_grid_node_bytes.py accepts optional object/native-file paths", "source_probe": "PASS:one minimal actual-provider allocation verifies three DWORD fields and EAX pointer result then real matching free; local/goal15d_grid_node/grid_node_probe.cpp and probe.cmd; /MANIFEST:EMBED; no forcedOOM or separate alias runtime case", "report_and_doc_calls": "PASS:2 exact report rows and2 markdown claims; zero failures, unchecked claims, warnings", "diff_check": "PASS", "full_registered_build": "primary responsibility", "new_repository_tests": 0, "ghidra_mutations": 0, "native_differential": false, "game_validated": false},
+  "integration": {"target": "bsp_core", "target_sources_add": "src/native_grid_list_node.cpp", "saved_ghidra_annotation": "primary only", "lease": "release on final transfer"}
+}
