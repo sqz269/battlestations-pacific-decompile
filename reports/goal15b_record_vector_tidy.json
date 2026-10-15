@@ -1,0 +1,76 @@
+{
+  "packet": "goal15b_vector_tidy",
+  "source_base": "ac0f9ab29",
+  "status": "complete_actual_byte_reconstruction_msvc_x86_object_and_call_checked_pending_primary_build",
+  "owned_addresses": ["0041f950"],
+  "owned_files": [
+    "include/bsp/native_record_vector_tidy.hpp",
+    "src/native_record_vector_tidy.cpp",
+    "docs/GOAL15B_RECORD_VECTOR_TIDY.md",
+    "reports/goal15b_record_vector_tidy.json"
+  ],
+  "functions": [{
+    "address": "0041f950",
+    "name": "STL_Vector_Tidy_0041f950",
+    "cpp_symbol": "bsp::tidy_native_record_vector_0041f950",
+    "source": "src/native_record_vector_tidy.cpp",
+    "header": "include/bsp/native_record_vector_tidy.hpp",
+    "end_exclusive": "0041f97a",
+    "bytes": 42,
+    "coverage": "complete",
+    "original_abi": "ECX adjusted receiver, no stack inputs, plain RET, ESI preserved",
+    "source_abi": "MSVC Win32 fastcall ECX actual receiver, plain return; new source entry, not installed native binary entry",
+    "uncertainty": "Complete parent+180h class and vector element type unknown; no native EH/SEH, original CRT heap, or runtime identity claim"
+  }],
+  "host_steps": [{
+    "address": "0041f95b",
+    "native": "00bf65ac",
+    "containing_function": "0041f950",
+    "contract": "read: conditional cdecl CRT free of captured receiver+60h pointer; ADD ESP,4 at0041f960",
+    "source": "singleton_lifetime_free, genuine std::free service"
+  }],
+  "consumer_jumps": [
+    {"address":"00c5e6e1","native":"0041f950","containing_function":"00c5e6d8","kind":"tail_jump","contract":"ECX=[EBP-10h]+180h"},
+    {"address":"00c92991","native":"0041f950","containing_function":"00c92988","kind":"tail_jump","contract":"ECX=[EBP-10h]+180h"}
+  ],
+  "semantics": {
+    "order": ["capture receiver+60h pointer", "conditionally CRT free captured pointer", "zero DWORD+60h", "zero DWORD+64h", "zero DWORD+68h"],
+    "not_performed": "No element destruction, count iteration, outer free or other field access",
+    "source_preconditions": "Actual receiver extent through+6Ch; free-compatible source CRT allocation; no substituted shadow owner"
+  },
+  "owner_evidence": {
+    "constructor": "00424a10 BSP_GameplayTuningSettings_Construct",
+    "destructor": "0083b120 settings destructor with same vtable",
+    "constructor_zero_sites": ["00424a3e parent+1E0h", "00424a44 parent+1E4h", "00424a4a parent+1E8h"],
+    "normal_destructor": "pseudocode conditionally frees DWORD78h then clears DWORD78h/79h/7Ah",
+    "unwind_metadata": ["00d84bdc ->00c5e6d8; function-info00d84bac ->handler00c5e75a ->constructor00424a10", "00dc43c8 ->00c92988; function-info00dc4398 ->handler00c92a02 ->destructor0083b120"],
+    "parent_offset": "Both native unwind helpers pass saved receiver+180h; touched fields then parent+1E0h/+1E4h/+1E8h",
+    "existing_schema": "GameplayTuningSettings gap_1DCh[0x10] contains these fields; preserved without competing record",
+    "unknown": "Complete embedded class and vector element type"
+  },
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "assembly": "exports/bsp/functions/0041f950/assembly.txt",
+    "physical_census": "tools/callsite_census.py0041f950: exactly2 rel32 JMPs, no literal-address occurrences in scanned sections",
+    "live_xrefs": "00c5e6e1 and00c92991",
+    "boundary_checks": "Live proto checked0041f95b,00c5e6e1,00c92991",
+    "callee_before_contract": "00bf65ac live body and singleton_lifetime_free read in related pool-cleanup packet this session"
+  },
+  "verification": {
+    "report_calls": "PASS:3 report rows and3 markdown call claims;0 failures,0 warnings",
+    "diff_check": "PASS",
+    "focused_msvc_x86_object_compile": "PASS:C++17 /c /W4 /WX /permissive- /O2;local/output/compile_record_vector_tidy.cmd;no linking",
+    "full_build_and_existing_ctest": "primary integrator after CMake registration",
+    "new_tests": 0,
+    "native_differential": "not run",
+    "runtime_gameplay": "not validated"
+  },
+  "integration": {
+    "target": "bsp_core",
+    "target_sources_add": "src/native_record_vector_tidy.cpp",
+    "retained_name": "STL_Vector_Tidy_0041f950",
+    "ghidra_mutations": "none; primary owns annotation and export refresh"
+  }
+}
