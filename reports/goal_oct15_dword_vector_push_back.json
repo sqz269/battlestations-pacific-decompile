@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_dword_vector_push_back",
+  "source": "src/native_scene_dword_vector_push_back.cpp",
+  "header": "include/bsp/native_scene_dword_vector_push_back.hpp",
+  "documentation": "docs/GOAL_OCT15_DWORD_VECTOR_PUSH_BACK.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "0046c450",
+      "end_exclusive": "0046c4b9",
+      "coverage": "complete",
+      "cpp_symbol": "push_back_native_scene_dword_vector_0046c450",
+      "original_abi": "ECX vector16,one LIVE stacked value-pointer at entry+4,RET4;no common semantic EAX result",
+      "instruction_bytes": 105,
+      "instruction_count": 44,
+      "bytes": "83 ec 08 56 8b f1 8b 56 04 85 d2 75 04 33 c9 eb 08 8b 4e 08 2b ca c1 f9 02 85 d2 74 24 8b 46 0c 2b c2 c1 f8 02 3b c8 73 18 8b 46 08 8b 4c 24 10 8b 11 89 10 83 c0 04 89 46 08 5e 83 c4 08 c2 04 00 57 8b 7e 08 3b d7 76 05 e8 75 a2 78 00 8b 44 24 14 50 57 56 8d 4c 24 14 51 8b ce e8 ef ef ff ff 5f 5e 83 c4 08 c2 04 00",
+      "sha256": "a6e95686eb58059bd676e463334043779a6adcabcadacedbcb25c88afa38c8fe",
+      "live_disk_equal": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0046c499",
+      "native": "00bf6713",
+      "function": "0046c450",
+      "contract": "captured begin/end fallback diagnostic may return;late parameter read afterward"
+    },
+    {
+      "address": "0046c4ac",
+      "native": "0046b4a0",
+      "function": "0046c450",
+      "contract": "child actual16B prepared value/position/owner/output push-store order,RET10h;ignored EAX"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "0046c64f",
+      "native": "0046c450",
+      "function": "0046c550",
+      "contract": "receiver+24h,address of current pointer slot,RET4"
+    },
+    {
+      "address": "0046cc01",
+      "native": "0046c450",
+      "function": "0046c550",
+      "contract": "receiver+24h,address of current pointer slot,RET4"
+    },
+    {
+      "address": "0046c548",
+      "native": "0046c450",
+      "kind": "no_ghidra_function",
+      "raw_start": "0046c540",
+      "raw_end_inclusive": "0046c54f",
+      "contract": "unowned raw wrapper:LEA address(entry+4),push,receiver+24h,RET4;no false containing function attribution"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0046c540",
+      "end_inclusive": "0046c54f",
+      "coverage": "caller evidence only;not owned/reconstructed/annotated/defined/repaired",
+      "bytes": "8d 44 24 04 50 83 c1 24 e8 03 ff ff ff c2 04 00",
+      "live_disk_equal": true,
+      "sha256": "1a7bdfeb77d27b1be268ef6bdc045e1e325042ed97546d5b488a588db4070176",
+      "native_call_site": "0046c548",
+      "function_credit": false
+    }
+  ],
+  "source_dependencies": [
+    {
+      "native": "0046b4a0",
+      "api": "insert_native_scene_dword_vector_one_0046b4a0",
+      "source": "src/native_scene_dword_vector_insert.cpp",
+      "header": "include/bsp/native_scene_dword_vector_insert.hpp",
+      "source_sha256": "ffd200811897d4626ae5b13fc4f6cb74daaebef43c99702df99befd13157479a",
+      "header_sha256": "6cfce807c25821ae9d65d8b76b990c34793df31b0b9920caa320366d8462952d",
+      "status": "actual complete One/N Source already published main18ccd65d4;full independent237-op review passed;unchanged Source hashes",
+      "modified": false
+    },
+    {
+      "native": "00bf6713",
+      "api": "invoke_native_invalid_parameter_00bf6713",
+      "source": "src/native_invalid_parameter_noinfo_call.cpp",
+      "status": "real returning current CRT provider",
+      "modified": false
+    }
+  ],
+  "native_frame_coordinates": {
+    "base": "P original0046C450 entry ESP;coordinates are evidence,not implicit Source physical aliases",
+    "parameter4": "P+4..P+7",
+    "private_output8": "P-8..P-1",
+    "One_child_entry": "Q=P-24h",
+    "One_actual_parameters16": "P-20h..P-11h",
+    "One_unread_private_word": "Q-4 not bound",
+    "nested_N_entry": "P-4Ch",
+    "nested_N_parameters16": "P-48h..P-39h",
+    "nested_N_scalar_value4": "P-3Ch..P-39h",
+    "Source_backing_rule": "parent actual_parameter4 always binding;child/private backing only reached fallback after diagnostic and late value capture;One controls nested reached N metadata"
+  },
+  "prior_annotations": [
+    {
+      "address": "0046c450",
+      "name": "STL_Vector_PushBack_0046c450",
+      "comment": ""
+    }
+  ],
+  "source_registration": "unique cmake/startup.cmake append after fresh unheld ownership/queue check;no exclusive lease",
+  "validation": {
+    "source_ready": true,
+    "build": "pending required scripts/build.ps1",
+    "existing_ctests": "pending",
+    "report_call_verification": "PASS:4 full typed rows plus1 explicit raw orphan caller with callee-only tool check;raw16B instructions and bytes independently inspected. Documentation4 claims,0failures/unchecked,1 expected warning for the explicitly unowned/no-Ghidra-function raw span.",
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "diff_check": "PASS"
+  },
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "qualification": "Whole ordinary raw Source over full real One/N and returning CRT providers;captured begin/end,late live parameter and explicit lazy child/private output backing preserve all admitted paths. OrphanC540 only unowned caller evidence,no function invention. No callback/stub/nominal element ownership,narrowing,new physical stack/CRT/fault/register/RTTI/FH3/nativeABI/differential/game claim.",
+  "source_sha256": "e52eddf87ab208c36b4d0efea6cdcedea784c31ae43acccae381931e88b3b1ec",
+  "header_sha256": "f625398a8a8fdcf9db57aa37ed18090813ca530c2e03d2cc1083034e04f72a32",
+  "annotation": {
+    "prior_values_logs": [
+      "local/ghidra-annotations-20261015T224630Z.json"
+    ],
+    "locked": true,
+    "saved": true,
+    "existing_library_name_retained": true,
+    "refreshed_export": "exports/bsp/functions/0046c450"
+  }
+}
