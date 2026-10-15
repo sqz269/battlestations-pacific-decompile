@@ -86,15 +86,17 @@
   ],
   "source_registration": "cmake/startup.cmake unique bsp_core append after foreign lease released; queued registration removed; no exclusive registry lease",
   "validation": {
-    "build": "pending",
-    "existing_ctests": "pending",
+    "build": "PASS scripts/build.ps1; strict MSVC Win32",
+    "existing_ctests": "PASS2/2 configured tests: reconstructed_math,tool_tests; native_math_differential not enabled in this worktree",
     "report_call_verification": "PASS3 native call rows checked,0 failures; documentation native argument setup and call table inspected",
     "new_tests": 0,
     "native_differential_fixture": false,
     "abi_compatible": false,
     "game_executed": false,
     "game_validated": false,
-    "diff_check": "PASS git diff --check"
+    "diff_check": "PASS git diff --check",
+    "tested_commit": "df1f39680cc95e21c569c5d149d7f6b96ac5fdfb",
+    "build_log": "local/goal-oct15-string-ordering-build.log"
   },
   "qualification": "Complete ordinary actual-storage Source over existing concrete accepted header comparator; no hook substitution; current CRT boundary and new C++ ABI; no stronger suffix field meaning, candidate-specific native differential or gameplay claim",
   "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",

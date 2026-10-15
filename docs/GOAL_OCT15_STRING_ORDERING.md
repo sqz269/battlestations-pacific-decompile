@@ -55,6 +55,9 @@ with the installed PE, and annotations preserve previous values under the
 Ghidra write lock before project save/export. The report records those values,
 call verification, and build status. CMake registration is a unique source append
 after the foreign lease was released; no exclusive registry lease was taken.
-The strict Win32 build and existing CTests are pending until recorded.
+The strict MSVC Win32 `scripts/build.ps1` run passed for Source revision
+`df1f39680cc95e21c569c5d149d7f6b96ac5fdfb`, with both configured existing CTests
+(`reconstructed_math` and `tool_tests`) passing. Original native math differential
+tests were not enabled in this worktree. The build log is recorded in the report.
 No new tests are added. The new C++ interfaces are not original ABI replacements;
 no candidate-specific original-byte differential or gameplay validation is claimed.
