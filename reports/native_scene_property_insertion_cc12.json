@@ -1,6 +1,6 @@
 {
   "schema": "native_scene_property_insertion_cc12_v1",
-  "primary_source_status": "whole_ordinary_Source_implemented_strict_TU_compiled_static_review_accepted_build_and_probe_pending",
+  "primary_source_status": "whole_ordinary_Source_implemented_strict_TU_and_worker_provider_build_passed_single_actual_Source_probe_passed_Root_integrated_build_separate",
   "scope": [
     "complete 008F28F0 hit and miss",
     "complete 008F33F0 key return, owner and ordinal publication"
@@ -208,42 +208,78 @@
     "sha256": "b822a1ad9a82178a815c7d3aefc9a58dc2b49db6687525ae5b948bc29d3873d0"
   },
   "normal_repository_build": {
-    "status": "pending",
+    "status": "passed",
     "command": "./scripts/build.ps1",
-    "original_live_session": 41015,
-    "log": "local/FullPropertyInsertionSource01/normal_build.log",
-    "configured_tests": [
+    "original_session": 41015,
+    "actual_terminal_tool_chunk": "5d3baf",
+    "exit_code": 0,
+    "configured_tests_passed": [
       "reconstructed_math",
       "tool_tests"
     ],
-    "scope": "Current worker provider library; new TU CMake registration remains Root integration. Preserve the original naturally running build, no restart."
+    "existing_warning": "LNK4006 duplicate spawn_request_id_matches definition; second definition ignored.",
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullPropertyInsertionSource01\\normal_build.log",
+      "bytes": 84431,
+      "sha256": "adece41f6b4c002ed0ec780b91e6f829e2b88aa7b6698f0fcaaf05bdbdc9a12c"
+    },
+    "archive_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullPropertyInsertionSource01\\normal_build_archive.DATA.json",
+      "bytes": 2768,
+      "sha256": "415a0c4c889fbe5f2b7f75c6b34af9f9851f8ab90bef0bd111c85284a282e994"
+    },
+    "scope": "Current worker provider library and repository targets. New insertion TU compiled separately; Root CMake registration and integrated library build remain separate."
   },
   "minimal_actual_Source_probe": {
-    "status": "authored_not_compiled_linked_or_executed",
+    "status": "passed_once",
     "source": {
-      "path": "local\\FullPropertyInsertionSource01\\insertion_source_probe.cpp",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullPropertyInsertionSource01\\insertion_source_probe.cpp",
       "bytes": 7752,
       "sha256": "f63f0a7b8cca4684919cbdfd584149bdd0be3bb028b12f717428da3ed701b843"
     },
+    "process": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullPropertyInsertionSource01\\actual_Source_probe_process.DATA.json",
+      "bytes": 12862,
+      "sha256": "157a9473accf099caf8396f53bac54a5c45df814da8409c595cc76e8a3a72a92"
+    },
+    "stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullPropertyInsertionSource01\\probe_stdout.json",
+      "bytes": 1091,
+      "sha256": "007e4a7c6da408257b63171cdd15a908c50a3142133b5ce3010e716928edd9a2"
+    },
+    "stderr": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullPropertyInsertionSource01\\probe_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual_pid": 63676,
+    "returncode": 0,
+    "actual_target_launches": 1,
+    "selected_inputs_stable": 14,
+    "all_ten_current_dependency_pins_reverified_after_process": true,
+    "record_payload_type": 0,
     "cases": [
-      "wrapper new-key miss",
-      "case-insensitive nonnull record replacement",
-      "direct map miss with null mapped value",
-      "wrapper hit on actual null-mapped node"
+      "miss",
+      "hit_nonnull_record",
+      "miss_null_mapping",
+      "hit_null_record"
     ],
     "ordinal_cases": [
-      "first zero -> ordinal0/counter1",
-      "retained nonzero41/counter1",
-      "next zero -> ordinal1/counter2"
+      "zero_first",
+      "nonzero_41",
+      "zero_next"
     ],
-    "cleanup": "Actual full map clear and actual bag scalar cleanup through SAME canonical lifetime context; completion is not an independent per-free event trace.",
-    "planned_link": "Exact strict new TU object plus this natural build current completed archive, embedded manifest; never another worker or stale archive."
+    "checks": "Actual canonical process/pool/key context identity, distinct permanent fallback cells, map count, owner and ordinal/counter values, copied Shared key, preserved key/chain/allocator page on replacement, null mapped hit, 64 cleared map heads and normal bag scalar cleanup.",
+    "allocation_and_cleanup_limit": "Actual current owning allocations and provider completion only. No independently recorded per-free events, outstanding-allocation/leak assertion or freed-memory inspection.",
+    "snapshot_limit": "Printed complete record/node snapshots and buckets are observations, not full-write/hash assertions. Intermediate zero/publication order comes from complete static emitted code inspection.",
+    "scope": "One positive current ordinary Source process using genuine raw61 bag and Type0 record producers. No nested graph replacement runtime coverage or Original Native execution."
   },
   "Root_integration": {
     "CMake_registration": "pending_Root",
     "main_library_membership": "pending_Root",
     "ledger_Ghidra_annotations": "Root_owned",
-    "integrated_build": "separate_pending_Root"
+    "integrated_build": "separate_pending_Root",
+    "Source_ledger_saved_analysis": "Root reported main11eba1c98 contains accepted Source, ledger and saved Ghidra annotations; worker did not perform these shared mutations."
   },
   "evidence_limits": [
     "New ordinary C++ interfaces; no Original ECX/RET8/register/FS/SEH transport or drop-in game/class ABI.",
@@ -254,5 +290,75 @@
     "Build/static evidence is distinct from process fixtures, linked identity, ABI compatibility and game validation."
   ],
   "Native_runtime_credit_added": 0,
-  "game_credit_added": 0
+  "game_credit_added": 0,
+  "probe_link": {
+    "first_attempt": {
+      "exit_code": 1120,
+      "unresolved_externals": 57,
+      "target_launched": false,
+      "compile_passed": true,
+      "log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullPropertyInsertionSource01\\probe_compile_link.log",
+        "bytes": 34988,
+        "sha256": "a5e71de12973b1bf8238f88e16ef3c4f7b48de00147bc4540af05c7a933554ab"
+      },
+      "reason": "Ad hoc command omitted actual bsp_game canonical string-process object, current Lua/zlib archives and Windows dependencies."
+    },
+    "correction": "Link only; unchanged reviewed probe object and exact new TU object plus same completed build canonical string-process object/current core/Lua/zlib archives and actual CMake Windows dependencies. No replacement providers or stubs.",
+    "correction_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullPropertyInsertionSource01\\link_dependency_correction.DATA.json",
+      "bytes": 6622,
+      "sha256": "cb4ef2be5756b5dcdf0591315aa915e2a44abca6ad38f583f35e1be03dc4e25f"
+    },
+    "successful_command": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullPropertyInsertionSource01\\link_probe02.cmd",
+      "bytes": 1186,
+      "sha256": "d393742217bf02a8a072e79e26ef49652f8e33dc45db90ddd8141d10248222b4"
+    },
+    "successful_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullPropertyInsertionSource01\\probe_link02.log",
+      "bytes": 14283362,
+      "sha256": "3688c28bae4c8537c5dd6ad86053fbe17850e4f5433696e04d469bc2f4a89078"
+    },
+    "successful_tool_chunk": "4b1562",
+    "exit_code": 0,
+    "executable": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullPropertyInsertionSource01\\insertion_source_probe.exe",
+      "bytes": 232448,
+      "sha256": "648fc09869c9d711d6a1390550d506998a68ebde634e66b78333da151baa64b2"
+    },
+    "map": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullPropertyInsertionSource01\\insertion_source_probe.map",
+      "bytes": 355796,
+      "sha256": "918aad8cc904bf3f83ed95d3c5d7d0373465a28955fda572bdd6732faa764389"
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullPropertyInsertionSource01\\insertion_source_probe.manifest",
+      "bytes": 406,
+      "sha256": "be8918559280a2e74748bf8f6238b568ed7cbf75183b2180a6a8a979a1ebf243"
+    },
+    "embedded_manifest_asInvoker": true,
+    "linked_new_TU_evidence": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\FullPropertyInsertionSource01\\linked_new_TU_evidence.DATA.json",
+      "bytes": 14935,
+      "sha256": "b105bfffc122a6b97d904e0d64030478fbd1a12e99c7f4d658672f956475bf3d"
+    },
+    "retained_primary_functions": 3,
+    "retained_bytes": 423,
+    "retained_instructions": 138,
+    "all_retained_bytes_match_after_exact_resolved_relocations": true,
+    "remaining_emitted_functions": 7,
+    "remaining_disposition": "All positively recorded as discarded by the actual linker.",
+    "static_inspector_correction": "First parser rejected unrelated duplicate .idata$6 map names before any target launch. Corrected to require uniqueness for every used function and relocation target; final complete comparison passes.",
+    "provider_limit": "Direct relocations resolve to actual current archive members and canonical process object, including current MSVCRT cookie boundaries. No separate dynamic provider-module/export observation or transitive full-code audit."
+  },
+  "independent_probe_Source_review": {
+    "status": "accepted_without_blocker_before_execution",
+    "report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\NativeScenePropertyProbeReview01\\probe_Source_coverage_review.DATA.json",
+      "bytes": 5774,
+      "sha256": "6370bc17ae66db6629d388cf09f00c787d0a6e5a27ff9408034a7617c4b24ffe"
+    },
+    "reviewer_executed_target": false
+  }
 }
