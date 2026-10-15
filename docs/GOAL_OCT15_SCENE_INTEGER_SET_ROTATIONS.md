@@ -52,3 +52,13 @@ private-frame aliasing, original mangling/binary ABI, instruction fault or SEH
 identity, direct native differential execution, application adoption or game
 behavior. Every taken raw access still requires valid backing; there is no
 added validation, normalization or rollback.
+
+Final worker validation: `scripts/build.ps1` Release Win32 passed at Source
+draft `6328c0e30`, and both enabled existing checks (`reconstructed_math`,
+`tool_tests`) passed in 7.45 seconds. The native differential suite is
+not enabled in this worker tree; no new entry was directly native-tested.
+The log is `local/goal_oct15_scene_integer_set_rotations_build.log`; its hash is in the report.
+The inherited duplicate `spawn_request_id_matches` LNK4006 warning remains.
+JSON transfer claims, documentation address claims and staged whitespace
+checks pass. Listing-gap queries do not expose typed flow/fallthrough
+or no-return properties, and no live flow/prototype repair is claimed.
