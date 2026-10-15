@@ -1,0 +1,555 @@
+{
+  "packet": "goal_oct15_dword_vector_clear_range",
+  "status": "complete_actual_opaque_vector_erase_alias_and_clear_source_build_pending",
+  "source_ready": true,
+  "source": "src/native_scene_dword_vector_range_erase.cpp",
+  "header": "include/bsp/native_scene_dword_vector_range_erase.hpp",
+  "documentation": "docs/GOAL_OCT15_DWORD_VECTOR_CLEAR_RANGE.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Guarded CLI verifies expected project/program/x86/imagebase before every livebatch",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "annotation": "Applied under shared write lock; prior values local/ghidra-annotations-20261015T230224Z.json; correct library names retained; prior comments preserved; project saved; both exports refreshed; live name/comment readback matches"
+  },
+  "readiness": {
+    "indexed_reconstruction_before_packet": false,
+    "existing_whole_owned_Source": false,
+    "source_search": "No address-matching reconstructed Source for either ownedaddress;librarytags/exports only",
+    "actual_providers_ready": true,
+    "canonical_erase_and_move_Source_present_on_main": true,
+    "indexedcanonical_status_note": "Staleindexabsenceisnotfailedprovider;actualfullSource/header/CMake/currentmain verified",
+    "named_incomplete_dependencies": [],
+    "unknown_representation": "No nominalelementtype/ownership needed;actualopaque16control and4byte span arithmetic only"
+  },
+  "routines": [
+    {
+      "address": "004687e0",
+      "name": "erase_native_scene_dword_vector_range_004687e0",
+      "native_name_preserved": "STL_inst_004687e0",
+      "body_end_inclusive": "00468839",
+      "native_bytes": 90,
+      "instructions": 37,
+      "coverage": "complete_actual_opaque_vector_storage_with_concrete_currentCRT_and_private_ABI_qualification",
+      "original_abi": "ECXcontrol/unusedEDX;5stackDWORDs output,firstowner,firstnode,lastowner,lastnode;RET14h/EAXcurrentoutput;Sourceordinarylive20Bframe",
+      "original_bytes_hex": "558b6c240c85ed56578bf974063b6c241c7405e81bdf78008b7424188b5424203bf274278b47082bc2c1f80285c08d0c8500000000538d1c317e0c51525156e883df780083c410895f085b8b4424105f8970045e89285dc21400",
+      "original_bytes_sha256": "ae7745c93623d34976607a93e79a0e3ff092026e44828dfe7572cabf6566e50a",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00468d70",
+      "name": "clear_native_scene_dword_vector_00468d70",
+      "native_name_preserved": "STL_inst_00468d70",
+      "body_end_inclusive": "00468da8",
+      "native_bytes": 57,
+      "instructions": 26,
+      "coverage": "complete_actual_opaque_vector_storage_with_concrete_currentCRT_and_private_ABI_qualification",
+      "original_abi": "ECXcontrol/unusedEDX;nonativestackinputs/plainRET;preservedchildEAXrawbits;Sourceextra20B/8Bbindingsarenativeprivateoutgoing/outputbacking,notnativeinputs",
+      "original_bytes_hex": "83ec0853568bf18b5e08395e04577605e88ed978008b7e043b7e087605e881d97800535657568d44241c508bcee83efaffff5f5e5b83c408c3",
+      "original_bytes_sha256": "bf48c145eb8a4c70c6ac315708eb5e8da7116c9c2f49259c6fa4e9ab363bc216",
+      "live_equals_installed_PE": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "004687f3",
+      "native": "00bf6713",
+      "function": "004687e0",
+      "kind": "call",
+      "contract": "Firstowner capturedpreCRT;zero skips currentlastowner read;otherwise compare,currentreportmayreturn"
+    },
+    {
+      "address": "0046881f",
+      "native": "00bf67a7",
+      "function": "004687e0",
+      "kind": "call",
+      "contract": "PUSHbytes,PUSHlast,PUSHbytes,PUSHfirst;ADDesp10h;signedpositiveSAR2only;statusignored;newendcapturedbeforeSDK"
+    },
+    {
+      "address": "00468d80",
+      "native": "00bf6713",
+      "function": "00468d70",
+      "kind": "call",
+      "contract": "UnsignedCURRENTbegin>oldcapturedend;returningreportthenreloadCURRENTbeginandend"
+    },
+    {
+      "address": "00468d8d",
+      "native": "00bf6713",
+      "function": "00468d70",
+      "kind": "call",
+      "contract": "Unsignedcapturedbegin>CURRENTend;returningreportretainsoldcapturedend/secondcapturedbegin"
+    },
+    {
+      "address": "00468d9d",
+      "native": "004687e0",
+      "function": "00468d70",
+      "kind": "call",
+      "contract": "5PUSHstoresend,control,begin,control,privateout8;RET14h;tailpreservesactualchildEAX;noinputstackcells"
+    }
+  ],
+  "incoming_xrefs": {
+    "erase": [
+      "00468d9d in00468d70"
+    ],
+    "clear": [],
+    "qualification": "Freshliveentryxrefs;noclearrefsisunknownproductionreachability,notdeadcodeproof"
+  },
+  "canonical_equality": {
+    "reference_address": "004685a0",
+    "reference_bytes": 90,
+    "reference_hex": "558b6c240c85ed56578bf974063b6c241c7405e85be178008b7424188b5424203bf274278b47082bc2c1f80285c08d0c8500000000538d1c317e0c51525156e8c3e1780083c410895f085b8b4424105f8970045e89285dc21400",
+    "comparison": "all90bytes equal except two rel32 CALL operands;both targets identical",
+    "differing_byte_offsets": [
+      20,
+      21,
+      64,
+      65
+    ],
+    "complete_call_operand_ranges_inclusive": [
+      [
+        20,
+        23
+      ],
+      [
+        64,
+        67
+      ]
+    ],
+    "native_targets": [
+      "00bf6713",
+      "00bf67a7"
+    ],
+    "reference_coverage_is_extra_owned_coverage": false,
+    "Source_reuse_is_native_call": false,
+    "reused_Source_hashes": {
+      "src/native_scene_dword_erase_range.cpp": "95fada1a5a0b8c7717764c7357372ef10d66c21396818685a4c55f83ff0c3e50",
+      "include/bsp/native_scene_dword_erase_range.hpp": "40b52fccce54daba3b420024dd3deadb30e8684c2e01aaae2c770178f1df0e82",
+      "src/native_scene_dword_move.cpp": "25534e8fd6f7db5d904832ca623ae9ade05f0c05a3f9848e1cb625b519a83386",
+      "include/bsp/native_scene_dword_move.hpp": "61294c3eb1ce7b42553587bbdfd206a3fbbf129dd15770a66e1da98a8ac9e9f2"
+    }
+  },
+  "corrections": [
+    {
+      "was": "687E0decompiledvoid/currentundefinedprototype",
+      "evidence": "882BloadsCURRENToutputtoEAX;8830node4then8834owner0;8837RET14h;nativeprototypeleftuntouched",
+      "is": "ObservedEAXcurrentoutputpointer/RET14h;Sourceordinaryexplicitlive20Bbacking"
+    },
+    {
+      "was": "Clear decompiler void/current undefined prototype",
+      "evidence": "8DA2/3/4POPEDI/ESI/EBX,8DA5ADDesp8,8DA8RET;noEAXwriteafterchild;noclearcallersknown",
+      "is": "RetainrawchildEAXthroughfullD70tailwithoutownership/lifetimemeaning"
+    }
+  ],
+  "typed_metadata": {
+    "endpoint": "get_flow_metadata",
+    "read_only": true,
+    "modification_number": "1706",
+    "capture_sha256": "dc058b1d16b6e15becb03a8c4a837a1cc6e5bf38d32f610866ed5d54386db399",
+    "functions": [
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "004687e0"
+        },
+        "name": "STL_inst_004687e0",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "90",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "004687e0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00468839"
+              },
+              "length": "90"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00468d70"
+        },
+        "name": "STL_inst_00468d70",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "57",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00468d70"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00468da8"
+              },
+              "length": "57"
+            }
+          ]
+        }
+      }
+    ],
+    "rows": [
+      {
+        "address": "004687f3",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "004687f3"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "function_containing": {
+          "space": "ram",
+          "offset": "004687e0"
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "004687f8"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "004687f8"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf6713"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf6713"
+            }
+          ]
+        }
+      },
+      {
+        "address": "0046881f",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "0046881f"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "function_containing": {
+          "space": "ram",
+          "offset": "004687e0"
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00468824"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00468824"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf67a7"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf67a7"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00468d80",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00468d80"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "function_containing": {
+          "space": "ram",
+          "offset": "00468d70"
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00468d85"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00468d85"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf6713"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf6713"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00468d8d",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00468d8d"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "function_containing": {
+          "space": "ram",
+          "offset": "00468d70"
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00468d92"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00468d92"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf6713"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf6713"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00468d9d",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00468d9d"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "function_containing": {
+          "space": "ram",
+          "offset": "00468d70"
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00468da2"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00468da2"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "004687e0"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "004687e0"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "validation": {
+    "original_live_owned_bytes_match_installed_PE": true,
+    "complete_owned_executable_bytes": 147,
+    "instructions": 63,
+    "whole_native_and_reference_listings_read": true,
+    "whole_realcanonical_Source_and_move_provider_read": true,
+    "full_originalCRT43opSDKboundary_read": true,
+    "all_native_CALLrows": 5,
+    "native_cleanup_tail_JMPs": 0,
+    "all_entry_xrefs_read": true,
+    "report_calls": "5 true nativeCALLrows checked,0failed; documentation13addresses/5checked/0failed/unchecked/warnings",
+    "build": "pending",
+    "existing_tests": "pending",
+    "new_tests": 0,
+    "cmake_registration": "Queued behind currentregistryholders;noheldfileedit",
+    "direct_native_new_entries_execution": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "application_adoption": false
+  },
+  "source_hashes": {
+    "src/native_scene_dword_vector_range_erase.cpp": {
+      "bytes_sha256": "e928f3cd4a4eb06af1928a2e334ac7cff35b3e81d21a1f4971515b2552b5dce9",
+      "normalized_lf_sha256": "e928f3cd4a4eb06af1928a2e334ac7cff35b3e81d21a1f4971515b2552b5dce9"
+    },
+    "include/bsp/native_scene_dword_vector_range_erase.hpp": {
+      "bytes_sha256": "4aab0a70fbf56b7d2ec4608cb6cbcf79213992f75e29f3d977a00860d512627e",
+      "normalized_lf_sha256": "4aab0a70fbf56b7d2ec4608cb6cbcf79213992f75e29f3d977a00860d512627e"
+    }
+  },
+  "cmake_requested_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_scene_dword_vector_range_erase.cpp)",
+  "limits": [
+    "Actualcontrol/parameters/output/payloadaliasesretainedthroughreturningdiagnostics;noowner==receiver,positive-onlycount,nativefieldtype,elementdestructor,callbackornewguard",
+    "Sourcealiases687E0toreal685A0onlyafterwhole90Bcomparison;notnative685A0or67D90edges",
+    "Clearactual20outgoingandprivate8backingdistinct;stable/disjointmetadata;zeroextraactualinputargumentcells",
+    "CurrentSDKrealservicesnotoriginalstaticCRT errno/encodedhandler/debugger/Watsonpolicy;validreachedproviderbackingrequired",
+    "Noimplicitnativeargument/privateframealias,asynchronousmutation,originalCOFF/binaryABI/application/gameproof"
+  ],
+  "annotation_prior_values": [
+    {
+      "address": "004687e0",
+      "before": {
+        "address": "004687e0",
+        "function_name": "STL_inst_004687e0"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00468d70",
+      "before": {
+        "address": "00468d70",
+        "function_name": "STL_inst_00468d70"
+      },
+      "status": "applied"
+    }
+  ]
+}
