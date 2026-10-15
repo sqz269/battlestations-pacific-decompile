@@ -354,7 +354,7 @@
     "build": "pending",
     "existing_tests": "pending",
     "new_tests": 0,
-    "cmake_registration": "Queued goal_oct15_scene_integer_set_lookup_registration behind cc12_reference_subbag_cmake; no heldfile edit",
+    "cmake_registration": "Unique deferred target_sources line appended during own queue turn under short lease; released immediately before build",
     "direct_native_new_entry_execution": false,
     "abi_compatible": false,
     "game_validated": false,
@@ -375,5 +375,19 @@
     "Implicit native argument-home/private local aliases and asynchronousmutation not exposed;supplied-storage aliases retained",
     "No runtime/native differential/originalCOFF binaryABI/application/game proof from staticSource/build evidence"
   ],
-  "cmake_requested_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_scene_integer_set_lookup.cpp)"
+  "cmake_requested_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_scene_integer_set_lookup.cpp)",
+  "independent_review": {
+    "reviewer": "primary /root",
+    "result": "Passed complete39-op listing and complete Source/header; no changes required",
+    "unchanged_source_sha256": {
+      "src/native_scene_integer_set_lookup.cpp": "3ab59dec42fcfd52eff43ba5ee8b83253821037115fe26346f78f7bc3d8f6d3c",
+      "include/bsp/native_scene_integer_set_lookup.hpp": "f84bf902ab5ab031b049437fceec531c3608a5884ba77e8da5c182600efffe5d"
+    },
+    "evidence": "Empty/no key read; cached descent key onlyafterrootnil;signednodekeys/nativeleft-right;capturedcandidate,currentheadreload;conditional currentkey-before-candidate read;both result words captured before outputOWNER0/NODE4;EAXoutput/RET8"
+  },
+  "annotation_prior_values": {
+    "address": "00468db0",
+    "function_name": "STL_inst_00468db0"
+  },
+  "annotation_status": "applied"
 }
