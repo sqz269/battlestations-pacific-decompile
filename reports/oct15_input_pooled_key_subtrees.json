@@ -1,0 +1,52 @@
+{
+  "packet": "oct15_input_pooled_key_subtrees",
+  "status": "complete_actual_subtree_source_current_cpp_eh_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_input_pooled_key_subtrees.cpp",
+  "header": "include/bsp/native_input_pooled_key_subtrees.hpp",
+  "documentation": "docs/OCT15_INPUT_POOLED_KEY_SUBTREES.md",
+  "routines": [
+    {"address": "00558310", "cpp_name": "destroy_native_input_word_vector_subtree_00558310", "original_abi": "ECX tree,EDX unconsumed; stackednode,RET4; no semanticresult; Source retains words and adds context", "coverage": "whole_actualN28_nil25_subtree_exact_payload_left_key_getter_node_free_schedule"},
+    {"address": "00558e60", "cpp_name": "destroy_native_input_descriptor_vector_subtree_00558e60", "original_abi": "ECX tree,EDX unconsumed; stackednode,RET4; no semanticresult; Source retains words and adds context", "coverage": "whole_actualN28_nil25_subtree_via_full_instruction_byte_target_and_layout_equivalence_with00558310"}
+  ],
+  "layout": {"node_bytes": 40, "links": [0, 4, 8], "key_header": 12, "mapped_opaque": 20, "mapped_begin": 24, "mapped_end": 28, "mapped_capacity": 32, "nil_byte": 37, "no_mapped_element_iteration": true, "no_head_count_reset_or_head_free": true},
+  "typed_metadata": {"capture": "local/oct15_input_pooled_key_subtrees_typed_flow.json", "complete": true, "both_single_range109bytes": true, "entry_kind": "instruction", "both_no_return": false, "both_is_thunk": false, "modification_before_after": 340},
+  "disk_live_complete_spans": [
+    {"address": "00558310", "end": "0055837c", "bytes": 109, "instruction_starts": 46, "bytes_equal": true, "decode_complete": true, "missing_live_starts": 0, "extra_live_starts": 0},
+    {"address": "00558e60", "end": "00558ecc", "bytes": 109, "instruction_starts": 46, "bytes_equal": true, "decode_complete": true, "missing_live_starts": 0, "extra_live_starts": 0}
+  ],
+  "complete_equivalence": {"normalized_instructions_equal": true, "external_rel32_byte_offsets": [41,42,43,44,75,76,77,78,82,83,84,85,88,89,90,91], "other_equal_bytes": 93, "self_call_operand_included_unmasked": true, "unexpected_byte_differences": 0, "call_offsets": [25,40,74,81,87], "call_roles_both": ["self", "00bf65ac", "00419cc0", "00bd1510", "00bf65ac"], "qualification": "Descriptor/word mapped payloads both only free raw backing; no element-type destructor access. Complete normalized instruction targets agree, including internalbranches/self; native frame/callstack identity not claimed."},
+  "evidence_capture": "local/oct15_input_pooled_key_subtrees_evidence.json; ignored script compares captured read-only tool output and installed PE bytes, not execution or newtests",
+  "local_eh": "None in either complete nativebody; no frame/state/action/catch exists to recreate; Source adds no catch/retry/rollback. No new actions claimed.",
+  "schedule": {
+    "entry": "Read node nil25 byte once; nonzero returns without tree/header access, no null-node guard; tree is forwarded only.",
+    "right_and_left": "Capture right8, recurse; afterreturn read mappedbegin18 FIRST, comparecapturedpointer, capture left0 SECOND before backingfree/clears; no oldAV generic-subtree reuse.",
+    "mapped": "Free captured mappedbegin ifnonnull, no reload; always zero18/1C/20 in order; opaque14 untouched; no mapped element iteration.",
+    "key": "Aftermappedstores read CURRENTkeydata10 once; conditional CURRENTlengthC+1 captured BEFORE actual419CC0 andBD1510. Accepted raw41DD20(node+C,ctx) has exact schedule, no keywrites/rereads and no noexcept storage bridge.",
+    "continuation": "Free captured currentnode only after keyreturn, then read capturedleft nil25 byte before updatingcurrent; repeatleft.",
+    "failure": "Right failure skips current work; getter failure after mappedfree/clear skips nodefree/left continuation. Earlier effects retained. CurrentSource C++ propagation only; no terminate adapter or native cleanup-personality claim."
+  },
+  "incoming_evidence": {"contexts": "local/oct15_input_pooled_key_subtrees_callers_context.json", "typed": "local/oct15_input_pooled_key_subtrees_callers_typed_flow.json", "modification_before_after": 350, "qualification": "Clear/full-range head.parent and parent-frame catch node/tree inputs checked; enclosing caller/EH/iterator completeness not promoted."},
+  "host_steps": [
+    {"address": "00558329", "native": "00558310", "function": "00558310", "contract": "recursive right subtree with forwardedtree"},
+    {"address": "00558338", "native": "00bf65ac", "function": "00558310", "contract": "captured mappedbacking free after leftcapture"},
+    {"address": "0055835a", "native": "00419cc0", "function": "00558310", "contract": "keydata/length captured beforegetter"},
+    {"address": "00558361", "native": "00bd1510", "function": "00558310", "contract": "captured keyblock/size return through currentpool/gate"},
+    {"address": "00558367", "native": "00bf65ac", "function": "00558310", "contract": "captured currentnode free afterkeyreturn"},
+    {"address": "00558e79", "native": "00558e60", "function": "00558e60", "contract": "same complete self-recursive role"},
+    {"address": "00558e88", "native": "00bf65ac", "function": "00558e60", "contract": "same captured mappedbacking free"},
+    {"address": "00558eaa", "native": "00419cc0", "function": "00558e60", "contract": "same currentkey capture/getter order"},
+    {"address": "00558eb1", "native": "00bd1510", "function": "00558e60", "contract": "same captured keyreturn"},
+    {"address": "00558eb7", "native": "00bf65ac", "function": "00558e60", "contract": "same currentnode free"},
+    {"address": "0055874c", "native": "00558310", "function": "00558740", "contract": "incoming clear passes head.parent; evidence only"},
+    {"address": "0055915a", "native": "00558310", "function": "00559110", "contract": "incoming full-range subtree site only"},
+    {"address": "005593e9", "native": "00558310", "function": "005593e2", "contract": "incoming native parent-frame catch site only"},
+    {"address": "0055940c", "native": "00558e60", "function": "00559400", "contract": "incoming clear passes head.parent; evidence only"},
+    {"address": "00559a0a", "native": "00558e60", "function": "005599c0", "contract": "incoming full-range subtree site only"},
+    {"address": "00559c79", "native": "00558e60", "function": "00559c72", "contract": "incoming native parent-frame catch site only"}
+  ],
+  "preservation": "Existing AV/full-range NativeStringStorage fixture domains and old frontend/table projections unchanged; new propagating RawCtx interfaces are separate. Whole record55B690 remains unclaimed/unready until other child gaps and parentEH are resolved. e331 packetfiles unchanged.",
+  "validation": {"win32_release": "passed", "existing_tests": "3/3 passed", "ctest_seconds": 8.01, "log": "local/oct15_input_pooled_key_subtrees_build.log", "report_transfers": "16 CALL rows checked,0failed", "documentation_transfers": "16 checked,0failed,0unchecked,0warnings", "preexisting_link_warning": "LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj; same preceding packet warning; unrelated Source unchanged", "new_tests": 0, "ghidra_mutations": false},
+  "limits": ["Added context/by-value inputs, normalized unconsumed recursiveEDX0 and descriptor helper composition do not bind original stack/register/private-frame or recursive callstack identity.", "Actual raw-pool/current CRT/Source C++ only; native heap/CRT/handler/FH3/SEH/fault/exception and cleanup-failure personality unproved.", "Valid reached nil/node/payload/key/ownership lifetimes required; no added callback/globalpool/provider/model/allocator/guard/retry/rollback.", "No new native differential, failure-injection or gameplay proof; older fixture evidence is not relabeled as proof of these new interfaces."]
+}
