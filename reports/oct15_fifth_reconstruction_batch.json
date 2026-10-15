@@ -1,0 +1,272 @@
+{
+  "packet": "oct15_fifth_reconstruction_batch",
+  "status": "integrated_reviewed_build_checked_annotated",
+  "base_main": "a0b6464c7b141f0f9957d3e7e4dd1b2a5b12bed2",
+  "source_integration_commit": "8a1b9ddd1ecd3960cfc1b51e9f2ee1b9f3ca0f20",
+  "goal_status": "active",
+  "source_entries": [
+    "004954f0",
+    "00498ff0",
+    "0041bd10",
+    "00432090",
+    "0042bf40",
+    "00431f70",
+    "00506c80"
+  ],
+  "primary_packet": {
+    "packet": "oct15_string_vector_assignment",
+    "commit": "8a1b9ddd1",
+    "report": "reports/oct15_string_vector_assignment.json",
+    "status": "full_ordinary_actual_storage_Source_composed_from_accepted_children"
+  },
+  "workers": [
+    {
+      "agent": "/root/lua_cache_tree",
+      "packet": "oct15_raw_string_vector_erase",
+      "commit": "a6ff2e70c",
+      "report": "reports/oct15_raw_string_vector_erase.json",
+      "functions": [
+        "004954f0",
+        "00498ff0"
+      ]
+    },
+    {
+      "agent": "/root/avoid_tangent",
+      "packet": "oct15_raw_layer_normal",
+      "commit": "66299d7db",
+      "report": "reports/oct15_raw_layer_normal.json",
+      "functions": [
+        "0041bd10"
+      ]
+    },
+    {
+      "agent": "/root/avoid_distance",
+      "packet": "oct15_string_vector_allocation",
+      "commit": "11a686a42",
+      "report": "reports/oct15_string_vector_allocation.json",
+      "functions": [
+        "00432090",
+        "0042bf40",
+        "00431f70"
+      ]
+    }
+  ],
+  "primary_reviews": [
+    "Reviewed complete erase/clear Source and native listings, returning invalid-handler continuations, captured/current end reloads, end/output aliases and store order.",
+    "Reviewed all118 raw-normal native instructions and full Source adaptation. No semantic layer snapshot or extra overlap restriction; first-gradient stores precede fourth sample, with two live spacing reads and saved-gradient normalization.",
+    "Reviewed actual16B vector Buy and allocator Source against full native listings, full EAX result/ordered publications/zero-count behavior; reviewed matched owning legacy18byte-message length transport and explicit currentCRT bad_alloc boundary.",
+    "Reconstructed all144 top-level assignment instructions: self/empty/shrink/grow/replace, signed SAR3 and unsigned decisions, current-field rereads, actual destruction/free/allocation/construction composition, no local cleanup."
+  ],
+  "validation": {
+    "combined_win32_release": {
+      "passed": true,
+      "source_commit": "8a1b9ddd1ecd3960cfc1b51e9f2ee1b9f3ca0f20",
+      "log": "local/oct15_assignment_combined_build.log",
+      "existing_suites": {
+        "reconstructed_math": "passed",
+        "native_math_differential": "passed_existing_seeds_only",
+        "tool_tests": "passed"
+      },
+      "ctest_seconds": 7.47
+    },
+    "prior_integration_builds": {
+      "erase": {
+        "log": "local/oct15_erase_integration_build.log",
+        "suites_passed": 3,
+        "ctest_seconds": 6.91
+      },
+      "raw_normal": {
+        "log": "local/oct15_raw_normal_integration_build.log",
+        "suites_passed": 3,
+        "ctest_seconds": 6.79
+      }
+    },
+    "call_site_claims": {
+      "passed": 67,
+      "failed": 0,
+      "unchecked": 0,
+      "by_report": {
+        "oct15_raw_string_vector_erase": 40,
+        "oct15_raw_layer_normal": 8,
+        "oct15_string_vector_allocation": 8,
+        "oct15_string_vector_assignment": 11
+      },
+      "scope": "31 local body calls plus36 incoming caller ABI-evidence rows; not67new Source callees or a dynamic proof. Final JSON and markdown checkers pass; ambiguous prose clarified before final checks."
+    },
+    "raw_normal_alias_composition": {
+      "source_commit": "8a1b9ddd1ecd3960cfc1b51e9f2ee1b9f3ca0f20",
+      "result": {
+        "case": "out_aliases_live_cell_size_scalar_and_slope_fields",
+        "original": [
+          "3ec8f7b8",
+          "bebe871e",
+          "bf575290"
+        ],
+        "source": [
+          "3ec8f7b8",
+          "bebe871e",
+          "bf575290"
+        ],
+        "whole_layer_bits_equal": true,
+        "return_identity": true,
+        "invalid_or_math_handler_reached": false,
+        "passed": true
+      },
+      "input": {
+        "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "function": "0041bd10",
+        "length": 370,
+        "code_hex": "83ec208b442428d940045355565783ec08d95c24048bf9d9008d442420d91c2450e86ac2fffff30f2c74241cf30f2c5c24185653e897fdffffd95c2438d9442418dc0510a2d700e8c4b67d008be856558bcfe879fdffffd95c2414d944241cdc0510a2d700e8a6b67d0050538bcf89442420e859fdffffd95c2410d9442438f30f10470c8b742434d9c0d86424148b4c24185155d91e8bcff30f114604d8642418d95e08e827fdffffd95c24388bced9442410d9442438d9c0deead9c9d95c2424d9470cd95c2428d86c2414d95c242cd906d8442424d95c2418d94604d8442428d95c241cd94608d844242cd95c2420d9442418d91ed944241cd95e04d9442420d95e08e827d6ffffd95c2438d9eed9442438dbf1ddd9760ad9e8def1d95c2438eb0b0f57c0ddd8f30f11442438d94424185fd94424348bc6d9c0decad9c9d95c2420d9442418d8c9d95c2424d84c241cd95c2428d9442420d91ed9442424d95e04d9442428d95e085e5d5b83c420c20800",
+        "saved_ghidra_full_body_matches_disk": true,
+        "calls": [
+          {
+            "site": "0041bd31",
+            "offset": 33,
+            "target": "00417fa0"
+          },
+          {
+            "site": "0041bd44",
+            "offset": 52,
+            "target": "0041bae0"
+          },
+          {
+            "site": "0041bd57",
+            "offset": 71,
+            "target": "00bf7420"
+          },
+          {
+            "site": "0041bd62",
+            "offset": 82,
+            "target": "0041bae0"
+          },
+          {
+            "site": "0041bd75",
+            "offset": 101,
+            "target": "00bf7420"
+          },
+          {
+            "site": "0041bd82",
+            "offset": 114,
+            "target": "0041bae0"
+          },
+          {
+            "site": "0041bdb4",
+            "offset": 164,
+            "target": "0041bae0"
+          },
+          {
+            "site": "0041be14",
+            "offset": 260,
+            "target": "00419440"
+          }
+        ],
+        "constant": "Original double1.0 bytes000000000000f03f at00d7a210; two absolute operands relocated.",
+        "scope": "One finite output/layer-field alias case. Full original normal/world/cell bodies; converter/vector-length calls use explicit naked tail bridges to accepted Source kernels with same fixture mode/CRT access for both runs. Not fully original dependency chain, diagnostics, ABI or gameplay proof.",
+        "constant_hex": "000000000000f03f",
+        "fixture": {
+          "dimension": 4,
+          "half_extent": 2.0,
+          "cell_size_bits": "3e99999a",
+          "file_scalar_bits": "3dcccccd",
+          "grid": [
+            0,
+            9,
+            21,
+            4,
+            7,
+            83,
+            13,
+            51,
+            204,
+            17,
+            99,
+            6,
+            12,
+            33,
+            44,
+            71
+          ],
+          "point_bits": [
+            "bff47ae1",
+            "bfd1eb85"
+          ],
+          "out": "same layer+0x0c; overlaps cell_size,file_scalar,slope_limit",
+          "converter_mode": 1,
+          "sqrt_diagnostic_bypass": 1,
+          "x87_control": "037f",
+          "mxcsr": "1f80"
+        },
+        "prior_attempt": {
+          "sqrt_diagnostic_bypass": 0,
+          "result": "Probe deliberately exited92 in supplied diagnostic sentinel; no Source counterpart comparison completed.",
+          "observed_handler": {
+            "operation": 5,
+            "type": 8,
+            "argument1": 384.8299865722656,
+            "result": 19.617084048661912,
+            "saved_control_word": "037f"
+          },
+          "interpretation": "Precision diagnostic expected from existing sqrt provider under masked037f; final single-case comparison selects its explicit supported bypass1 input. Diagnostics-enabled behavior remains unverified."
+        }
+      },
+      "driver": "J:\\PROG\\battlestations-pacific-decompile\\local\\oct15_layer_sampling_probe\\normal_probe.cpp",
+      "driver_sha256": "bcdb945a2fc486c55e7e91619cf0596f24afe68ebd8548cbe1c04fac6d1900e1",
+      "source_library": "build/win32/Release/bsp_core.lib",
+      "manifest": "/link /MANIFEST:EMBED",
+      "scope": "One finite out/layer-field alias case; full Original normal/world/cell bodies with shared accepted Source converter/length tail bridges. Mode1,sqrt-diagnostic-bypass1,maskedx87/MXCSR. Three output words and full40B layer equal, returned output identities match. No independent Original converter/sqrt, bypass0diagnostic, FPstatus/traps, fullABI or game proof. Earlier bypass0run deliberately terminated92 after precision diagnostic type8; not a passedcomparison."
+    },
+    "assignment_grow_composition": {
+      "packet_report": "reports/oct15_string_vector_assignment.json",
+      "passed": true,
+      "source_commit": "8a1b9ddd1ecd3960cfc1b51e9f2ee1b9f3ca0f20",
+      "scope": "One reuse/grow case: full Original parent and shared accepted Source range/uninitialized-copy child adapters; two empty strings,3slotdestination. Source payload/end/opaque/capacity/spare/source/return identities agree. Untaken7calls sentineled; no pool traffic or independent child/exception/other-path/ABI/game proof."
+    },
+    "length_throw_static_equivalence": {
+      "packet_report": "reports/oct15_string_vector_allocation.json",
+      "full_bodies_bytes": 105,
+      "matching_nonrelocation_bytes": 89,
+      "calls_resolved_equal": 3,
+      "metadata_cleanup_verified": true,
+      "scope": "Static body/FuncInfo/cleanup equivalence supporting reuse of existing owning Source exception transport. Original throw ABI/RTTI/staticCRT identity not proved."
+    },
+    "new_tracked_tests": 0
+  },
+  "assignment_00506c80": {
+    "ordinary_Source_implemented": true,
+    "readiness_blockers_closed": [
+      "actual range assignment",
+      "actual erase/clear",
+      "actual Buy/allocator/owning length throw",
+      "actual uninitialized copy and Source-domain prefix cleanup"
+    ],
+    "qualification": "Full ordinary Source composition at accepted currentCRT/CPP/zero-copy child boundaries; original ABI/CRT/FH3/SEH/fault identity and game behavior remain unproved."
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "annotation_logs": [
+      "local/ghidra-annotations-20261015T180325Z.json",
+      "local/ghidra-annotations-20261015T181512Z.json"
+    ],
+    "forced_snapshot_completed": true,
+    "forced_exports": [
+      "004954f0",
+      "00498ff0",
+      "0041bd10",
+      "00432090",
+      "0042bf40",
+      "00431f70",
+      "00506c80"
+    ],
+    "old_comments_preserved": true
+  },
+  "integration_notes": [
+    "CMake append conflicts mechanically resolved with tools/merge_resolve.py before successful builds. An initial erase configure attempt reached unresolved markers; no C++ build passed until clean merge.",
+    "Only header comments, documentation, ledger evidence and receipts changed after the successful combined Source build.",
+    "Older semantic/fragment implementations and identities preserved separately; no original game installation changes."
+  ],
+  "abi_compatible": false,
+  "game_validated": false
+}

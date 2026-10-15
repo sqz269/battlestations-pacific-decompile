@@ -44,8 +44,8 @@ admitted. No malformed pointer/heap storage is made safe by this API.
 Capacity end uses unsigned 32-bit address addition, including native wrap,
 rather than undefined out-of-array C++ pointer arithmetic. The success result
 is `(capacity_end & FFFFFF00h) | 1`, retaining the upper 24 native EAX bits.
-Callers testing AL receive the original success result. `004320BF` explicitly
-zeroes EDX before the allocator call; the Source call supplies null for that
+Callers testing AL receive the original success result. Before the allocator invocation, EDX is explicitly
+zeroed; Source supplies null for that
 ignored register word. The original count is not reloaded from the vector.
 
 Standalone allocator `0042BF40` uses unsigned `TEST/JA`, then for positive count
@@ -57,9 +57,8 @@ with equal native/host byte counts and the established object byte-domain:
 malloc, real current `_callnewh`, retry, then Source `std::bad_alloc`.
 The overflow path uses the same qualified Source `std::bad_alloc` boundary as
 accepted pointer allocator `00BCFEB0`, whose corresponding stride is 4 and
-limit is `3FFFFFFFh`. Native overflow instead constructs the base through
-`00BF6340` with a null message slot, writes native vtable `00D6923C`, and calls
-`00BF6885` with ThrowInfo `00E03CC0`. Those original payload/RTTI/handler and
+limit is `3FFFFFFFh`. Native overflow metadata: base constructor `00BF6340`, null message slot,
+vtable word `00D6923C`, throw service `00BF6885`, ThrowInfo `00E03CC0`. Those original payload/RTTI/handler and
 static-CRT identities are not claimed for the Source exception. No invented
 allocator callback or synthetic native throw metadata is introduced. Successful
 storage belongs to the same current-CRT domain as `singleton_lifetime_free`.
@@ -78,7 +77,7 @@ with identical ThrowInfo `00D83F98` through `00BF6885`. There is no generic
 Raw original disk evidence independently confirms the match. Both bodies are
 105 bytes; all89 nonrelocation bytes match. The only masked bytes are the
 handler immediate (offset03..06) and three CALL displacements (39..3C,
-4E..51,65..68). Each CALL independently resolves to the same target, respectively
+4E..51,65..68). The three independently resolved target addresses are
 `00408720`, `00411700`, `00BF6885`. New handler `00C5EC38` loads FuncInfo
 `00D8533C`; accepted handler `00CC5478` loads `00DFF4BC`. Both jump to
 `00BF6B43`. Each FuncInfo has magic `19930522`, maxstate1 and an unwind map
@@ -107,3 +106,16 @@ inspection, not byte identity with the original or original exception execution.
 Call-report verification and whitespace checks are recorded in the JSON report.
 No native fixture, original ABI compatibility, game startup or gameplay result
 is claimed.
+
+Exact checked native sites:
+
+```text
+004320B6 CALL 00431F70
+004320BF CALL 0042BF40
+0042BF51 CALL 00BF681B
+0042BF79 CALL 00BF6340
+0042BF90 CALL 00BF6885
+00431FA8 CALL 00408720
+00431FBD CALL 00411700
+00431FD4 CALL 00BF6885
+```

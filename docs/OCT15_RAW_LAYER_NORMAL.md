@@ -35,8 +35,8 @@ fault/return identity. A returning handler must leave the subsequent read
 accessible as the native instruction schedule requires; this kernel neither
 returns zero nor fabricates a repair provider.
 
-Neighbor conversions use `native_crt_truncate_st0_00bf7420` with ST0 still
-extended and the supplied actual mutable `0109EEA4` pointer in ECX on each call.
+Neighbor conversions retain extended ST0 and load the supplied actual mutable
+mode pointer into ECX at each conversion.
 The existing mode-dependent instruction paths are used directly. Vector length
 uses `camera_vector_length_00419440`, ECX output and EDX borrowed
 `CameraAxesCrtAccess`. Its original finite sqrt core is reconstructed; exceptional
