@@ -1,0 +1,96 @@
+{
+  "schema": "cc12.property_library_readers_primary_review.v1",
+  "addresses": [
+    "008f2db0",
+    "00469b60"
+  ],
+  "status": "Whole Source and worker build/compiler gates pass; Main TU now registered, required Main build pending",
+  "primary_complete_Source_header_Original_and_all_emitted_instructions_read": true,
+  "Source": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\include\\bsp\\native_property_library_readers.hpp",
+      "bytes": 2348,
+      "sha256": "4bf70457b293f1ef0af0e46d2d44b1dd420ca7cfa067d43d7c5cb315ef3518cc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\src\\native_property_library_readers.cpp",
+      "bytes": 1955,
+      "sha256": "d69a22f68151e24aacaf0b456774fddc139806bfc2a3169bebfa4e76c7a47d3b"
+    }
+  ],
+  "Original": {
+    "contains": {
+      "bytes": 133,
+      "instructions": 41,
+      "exclusive_end": "008f2e35",
+      "ABI": "ECX owner, stackCString, ALbool/RET4"
+    },
+    "word_reader": {
+      "bytes": 129,
+      "instructions": 38,
+      "exclusive_end": "00469be1",
+      "ABI": "ECX owner, stackCString, EAXword/RET4"
+    },
+    "whole_body_live_and_disk_pins": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyLibraryReadersSource01\\Original_body_pins.DATA.json",
+      "bytes": 14029,
+      "sha256": "ceb7830cf1571044f951bea9050f0d277aacfc7f47944bf0946b979e64924219"
+    }
+  },
+  "compiler_review": {
+    "strict_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyLibraryReadersSource01\\native_property_library_readers.obj",
+      "bytes": 3040,
+      "sha256": "9905eeab32e7e762067899bef2a6e862788fe600a5fb7841c8234f0e6fc3c292"
+    },
+    "independent_complete_COFF": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_library_readers_integration_20261015\\independent_complete_COFF.DATA.json",
+      "bytes": 51976,
+      "sha256": "544ebff5de08b61121cde382e61a907b712eb188a73235b4de035717ac163fc3"
+    },
+    "parser": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\PropertyLibraryLookupIndependentReview01\\review_selected_coff.py",
+      "bytes": 4510,
+      "sha256": "951cdc912918aa44d8d822958cc0057e2575f6c47e35dc9ba0df6fb85e96d64a"
+    },
+    "code_sections": 4,
+    "code_bytes": 262,
+    "instructions": 111,
+    "code_relocations": 14,
+    "metadata_relocations": 2,
+    "complete_sections_symbols_and_relocations_equal_author": true,
+    "strict_compile": "47e452/exit0; initial reserved MASM local-name error corrected, both attempts retained"
+  },
+  "reviewed_semantics": [
+    "Same retained concrete string process supplies actual raw key constructor/return and distinct library/query fallbacks; owner+4 actual map.",
+    "Contains: TESTnode/SETNE BL before key cleanup; no mapped read; returns bool after cleanup.",
+    "Value: physical node+8 read and capture before cleanup, return captured DWORD; null mapped word allowed; no invented null-node guard.",
+    "Actual aligned8h stack header; constructor itself initializes fields, manual normal cleanup only, no model NativeString facade or exceptional-unwind claim."
+  ],
+  "gates": {
+    "primary_Original_Source_pass": true,
+    "independent_current_COFF_pass": true,
+    "worker_normal_build_pass": true,
+    "registered_Main_build_pass": false,
+    "actual_Main_compiler_review_pass": false
+  },
+  "new_Source_runtime_executed": false,
+  "Original_ABI_compatible": false,
+  "game_validated": false,
+  "limits": "Ordinary Source and selected current compiler evidence only. Genuine stable raw owners/maps/keys and currentASCIIClocale/successfulproviders; no Originalclass/FS/EH/privateCRT/game transport.",
+  "Source_commit": "08985ef7816f221a1ddf69119ef8ae6ba8616009",
+  "worker_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\reports\\native_property_library_readers_cc12.json",
+    "bytes": 11924,
+    "sha256": "12fb1a725f543b07d1da65c1f671032e206e38634bcac23b76018b467eb9440f"
+  },
+  "worker_original_build": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyLibraryReadersSource01\\repository_build_result.DATA.json",
+    "bytes": 2228,
+    "sha256": "28f2ceed3032d83aa25c03fb78701a93c8563c90220f16c8b564a0bd66958b14"
+  },
+  "worker_existing_checks_passed": 2,
+  "worker_existing_checks_seconds": 7.28,
+  "Main_registration": "Registered exactly once in bsp_core; required Main build pending.",
+  "Main_registered": true
+}
