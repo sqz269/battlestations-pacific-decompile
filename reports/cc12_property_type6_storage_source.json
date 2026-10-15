@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet": "cc12_property_type6_storage_source",
   "UTC": "2026-10-08T18:50:17.786575+00:00",
-  "status": "PRIMARY_ACCEPTED_STATIC_SOURCE_AND_BOUNDED_RAW_CONSTRUCTOR_CURRENT_PROVIDER_ENTRY",
+  "status": "PRIMARY_ACCEPTED_STATIC_SOURCE_AND_RAW_CONSTRUCTOR_WITH_WORKER_ORDINARY_EMPTY_CLONE_EXECUTION_PASS_PENDING_PRIMARY_ADMISSION",
   "baseline": "27f2c7ec27d4c654755c76b2ccd56b7f4563a195",
   "readiness_commit": "07a14df5cace343a34ecdf8b3985ab8e506b288f",
   "readiness_primary_main": "27f2c7ec27d4c654755c76b2ccd56b7f4563a195",
@@ -1562,5 +1562,239 @@
         "kind": "function"
       }
     }
+  },
+  "current_ordinary_empty_child_clone_execution": {
+    "status": "worker_successful_ordinary_empty_child_clone_PASS_parent_runtime_admission_pending",
+    "new_runtime_admission_credit": 0,
+    "existing_static_Source_and_constructor_runtime_admission_preserved": true,
+    "current_Source_unchanged": true,
+    "qualification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_clone_current01\\qualification.json",
+      "bytes": 15730,
+      "sha256": "07e2d1a2825a420d217223f962e12f7b5a1d477fb8815b0da095856ad62414f8"
+    },
+    "process": {
+      "pid": 35932,
+      "returncode": 0,
+      "start_ns": 1792023961956441900,
+      "end_ns": 1792023962033773200,
+      "one_current_target_process": true,
+      "ordinary_Source_clone_calls": 2,
+      "Original_parent_arm_execution": false
+    },
+    "ordinary_interface": "clone_empty_child_native_scene_property_record_type6_008f50ed_fragment(const void*)",
+    "Original_corresponding_arm": {
+      "start": "008f50ed",
+      "end_exclusive": "008f5134",
+      "bytes": 71,
+      "scope": "Historical successful-empty arm relation only; no copied arm executed and no Original parent frame/register/preimage/FH3 proof claimed."
+    },
+    "ordinary_current_code": {
+      "source_va": 1392513424,
+      "normal_bytes": 146,
+      "normal_instructions": 48,
+      "whole_COFF_section_bytes": 172,
+      "normal_and_cold_section_members": [
+        {
+          "va": 1392513424,
+          "size": 146,
+          "names": [
+            "?clone_empty_child_native_scene_property_record_type6_008f50ed_fragment@bsp@@YAPAXPBX@Z"
+          ],
+          "offset": 0
+        },
+        {
+          "va": 1392513570,
+          "size": 26,
+          "names": [
+            "__catch$?clone_empty_child_native_scene_property_record_type6_008f50ed_fragment@bsp@@YAPAXPBX@Z$0"
+          ],
+          "offset": 146
+        }
+      ],
+      "direct_calls": [
+        {
+          "offset": 74,
+          "target": 1392514048,
+          "provider": "singleton_lifetime_allocate"
+        },
+        {
+          "offset": 94,
+          "target": 1392513600,
+          "provider": "clone_empty_native_scene_property_bag_008f41f0_fragment"
+        },
+        {
+          "offset": 107,
+          "target": 1392513744,
+          "provider": "construct_native_scene_property_record_type6_storage_008ef780"
+        }
+      ],
+      "ordinal_read_offset": 112,
+      "ordinal_write_offset": 115,
+      "scope": "Successful ordinary Source route; Source catch body and EH handler are retained and qualified as code, not executed or Original FH3-equivalent."
+    },
+    "observations": {
+      "calls": 2,
+      "ordinary_Source": 2,
+      "Native_or_copied_parent_arm": 0,
+      "source_records56": 2,
+      "source_children276": 2,
+      "result_records56": 2,
+      "result_children276": 2,
+      "seeds276": 1,
+      "source_poisons": [
+        "0xa6",
+        "0x59"
+      ],
+      "raw_source_ordinals": [
+        "0x01234567",
+        "0xfedcba98"
+      ],
+      "all_nine_live_allocations_disjoint_and_outside_actual_thread_stack": true,
+      "complete_source_record56_and_child276_before_after_unchanged": true,
+      "complete_seed276_unchanged": true,
+      "new_result_children_have_their_own_actual_record_backlinks": true,
+      "complete_result_records56_and_children276_observed": true,
+      "result_root_41_constructed_and_ordinal_copied_bytes_validated": true,
+      "result_root_15_untouched_bytes": "Observed without an initial-value expectation or allocation-preimage claim.",
+      "retirement": "Four actual child frees, four record frees and one seed free complete. Each result child before its result root, source child before source root, seed last. Completion counts, not per-free event instrumentation."
+    },
+    "sequence_evidence": "Complete current ordinary normal146B/48instruction body binds real allocation at4A, actual empty-bag producer at5E, raw58 constructor at6B, fresh source+34 load at70 and returned-root+34 store at73. Runtime records complete input/output state; no intermediate load/store trace.",
+    "code_gate": {
+      "direct_current_TUs": 3,
+      "whole_bodies": 39,
+      "whole_bytes": 5112,
+      "instructions": 1454,
+      "retained_sections": 124,
+      "all_relocations": 742,
+      "weak_entries": 10,
+      "edges": 316,
+      "support_helpers": 10,
+      "unknown_edges": 0,
+      "loaded_all_whole_body_bookends": true,
+      "normal_and_cold_partition": "Every distinct COFF function-symbol start also matches the exact map VA. The172B ordinary section is146B normal body plus26B catch/padding extent; all cold bytes and final padding remain covered. EH handler is separately covered as code.",
+      "sole_unexpanded_local_failure_frontier": "__report_gsfailure excluded failure path"
+    },
+    "historical_resolver": {
+      "role": "Historical sealed link resolvers for unexecuted sibling references. Never described as a new or current Core build. Actual qualified helper closure must come from newly compiled direct current TUs or explicitly pinned standard toolchain support.",
+      "new_Core_build": false,
+      "archive_body_in_actual_helper_closure": false,
+      "retained_exact_copies": [
+        {
+          "actual_link_input": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_current01\\fresh_core02\\Release\\bsp_core.lib",
+            "bytes": 91798820,
+            "sha256": "80138b81fd24d1cbe0fbda4dc416fa8b1b6eb3b6bd066fa0de6332e8bf85fe24"
+          },
+          "retained_copy": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_clone_current01\\historical_resolver_copies\\bsp_core.lib",
+            "bytes": 91798820,
+            "sha256": "80138b81fd24d1cbe0fbda4dc416fa8b1b6eb3b6bd066fa0de6332e8bf85fe24"
+          }
+        },
+        {
+          "actual_link_input": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_current01\\fresh_core02\\Release\\bsp_lua511.lib",
+            "bytes": 456216,
+            "sha256": "0fbd39aa0e4a87aba2619bacf9849bccd5288ac32e764a8323b34be72352704c"
+          },
+          "retained_copy": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_clone_current01\\historical_resolver_copies\\bsp_lua511.lib",
+            "bytes": 456216,
+            "sha256": "0fbd39aa0e4a87aba2619bacf9849bccd5288ac32e764a8323b34be72352704c"
+          }
+        },
+        {
+          "actual_link_input": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_current01\\fresh_core02\\Release\\bsp_zlib121.lib",
+            "bytes": 72246,
+            "sha256": "84a0aca059aefce67e55f6be487c8a72f804f1cdea697869b0efb524a391b526"
+          },
+          "retained_copy": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_clone_current01\\historical_resolver_copies\\bsp_zlib121.lib",
+            "bytes": 72246,
+            "sha256": "84a0aca059aefce67e55f6be487c8a72f804f1cdea697869b0efb524a391b526"
+          }
+        }
+      ],
+      "other_retained_archive_code_CRT_startup_static_initialization": "No execution or equivalence claim; provider state and Type6 helper closure are directly bookended."
+    },
+    "dependency_code": {
+      "Source_constructor58_and_raw61_whole_bytes_equal_live_Original": true,
+      "after_live_query_match": true,
+      "constructor_runtime_credit_not_repeated": true,
+      "Native_body_execution_this_packet": false
+    },
+    "provider_scope": {
+      "actual_current_entries": [
+        "malloc",
+        "free",
+        "memcpy",
+        "_callnewh"
+      ],
+      "entry_bytes": 32,
+      "disk_hash_file_identity_and_relocated_live_entry_bookends": true,
+      "Original_private_CRT_deep_allocator_or_failure_equivalence": false
+    },
+    "selected_inputs": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_clone_current01\\selected_inputs.json",
+      "bytes": 71175,
+      "sha256": "d879a252b5472396a7c007baedd05395aa9a21a427738b07d2e4e6a3d572c2e9"
+    },
+    "selected_input_count": 293,
+    "legacy_selected_input_field_note": "current_production_object in selected_inputs.json names the freshly compiled direct storage TU; it is not a normal registered current-Core build claim.",
+    "preserved_prior_families": [
+      {
+        "family": "type10_current01",
+        "manifest": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02\\prior_failed_family_manifest.json",
+          "bytes": 21998,
+          "sha256": "b73853fda0ed5982d519bde52a4fdcb208629764d672d7424b9bc45bf9d9e262"
+        },
+        "files": 85,
+        "exact_membership_and_all_hashes_unchanged": true
+      },
+      {
+        "family": "type10_current02",
+        "manifest": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02\\artifact_manifest.json",
+          "bytes": 17882,
+          "sha256": "2bdb7613d726eb627505e374b7c6d6f38fee18325f6cae4f12bc4b61caf44f5b"
+        },
+        "files": 69,
+        "exact_membership_and_all_hashes_unchanged": true
+      },
+      {
+        "family": "type11_current01",
+        "manifest": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type11_current01\\artifact_manifest.json",
+          "bytes": 17387,
+          "sha256": "8975e590468de7fe5a1b31b25d8fe6887f98f33736bb9f37909601a14f6cf28f"
+        },
+        "files": 67,
+        "exact_membership_and_all_hashes_unchanged": true
+      },
+      {
+        "family": "type6_current01",
+        "manifest": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_current01\\artifact_manifest.json",
+          "bytes": 2595714,
+          "sha256": "81319c9fbe42880d6621024b9a610effb489df23234df484d60b16de407bed38"
+        },
+        "files": 8828,
+        "exact_membership_and_all_hashes_unchanged": true
+      }
+    ],
+    "excluded": [
+      "copied Original71 arm and whole8F4F60 record clone",
+      "Original parent registers/frame, Native FH3, null-allocation or exception behavior",
+      "populated-child or recursive clone/lifetime",
+      "phase dispatch, class/vtable binding, factory or owning-map lifecycle",
+      "specific preimage/value for the15 untouched new-record bytes",
+      "Original private CRT/deep allocator, whole-game ABI, startup equivalence and gameplay"
+    ],
+    "complete_artifact_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_clone_current01\\artifact_manifest.json",
+    "manifest_hash_recorded_in_worker_handoff_to_avoid_output_snapshot_cycle": true,
+    "whole_Original_clone_class_recursive_startup_game_credit": 0
   }
 }
