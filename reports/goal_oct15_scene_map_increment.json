@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_map_increment",
+  "worker": "agent/goal_oct15_copy",
+  "base_commit": "ff24a27a76de483c84db4ed125298dace79e75a5",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis_and_export": true,
+  "source": "src/native_scene_record_map_increment.cpp",
+  "header": "include/bsp/native_scene_record_map_increment.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_MAP_INCREMENT.md",
+  "owned_addresses": ["00467980", "004681f0", "004688d0"],
+  "status": "whole_actual_storage_source_build_pending",
+  "routines": [
+    {
+      "address": "00467980",
+      "body_end_inclusive": "004679e2",
+      "body_bytes": 99,
+      "instructions": 38,
+      "coverage": "complete_at_existing_concrete_current_crt_policy_boundary",
+      "implementation": "increment_native_scene_record_map_iterator_00467980",
+      "retained_name": "STL_TreeIter_Inc_00467980",
+      "original_abi": "ECX actual8h iterator,EDX input unused,no stack arguments,RET,ESI preserved;ambient EAX has no unified semantic result",
+      "live_xrefs": ["004681f3", "004688d3", "0046a4ee", "0046b609", "0046b6f1", "0046bd6a"]
+    },
+    {
+      "address": "004681f0",
+      "body_end_inclusive": "004681fb",
+      "body_bytes": 12,
+      "instructions": 6,
+      "coverage": "complete",
+      "implementation": "increment_native_scene_record_map_iterator_004681f0",
+      "retained_name": "STL_IterWrap_004681f0",
+      "original_abi": "ECX iterator,no stack arguments,RET,EAX captured original iterator pointer,ESI preserved",
+      "live_xrefs": []
+    },
+    {
+      "address": "004688d0",
+      "body_end_inclusive": "004688db",
+      "body_bytes": 12,
+      "instructions": 6,
+      "coverage": "complete",
+      "implementation": "increment_native_scene_record_map_iterator_004688d0",
+      "retained_name": "STL_IterWrap_004688d0",
+      "original_abi": "ECX iterator,no stack arguments,RET,EAX captured original iterator pointer,ESI preserved",
+      "live_xrefs": []
+    }
+  ],
+  "coverage_totals": {"body_bytes": 123, "instructions": 50, "functions": 3},
+  "storage": {
+    "iterator": {"bytes": 8, "owner": 0, "node": 4},
+    "node": {"left": 0, "parent": 4, "right": 8, "nil_byte": 25},
+    "access": "volatile actual DWORD/BYTE loads and DWORD stores;32-bit unsigned address addition",
+    "schedule": "owner check then CURRENT node reload after returning report;nil-node report then immediate return;right-leftmost final publish;ascent CURRENT node reload,parent.right compare,intermediate publish BEFORE parent reload,unconditional final publish",
+    "admission": "all raw storage reached valid;no nonnull-owner/nonnil-node narrowing;no disjoint iterator/node storage assumption;no unsynchronized concurrent mutation"
+  },
+  "current_crt": {
+    "binding": "invoke_native_invalid_parameter_00bf6713 from existing native_invalid_parameter_noinfo_call.cpp",
+    "provider": "actual current SDK _invalid_parameter_noinfo,zero semantic arguments;no noexcept/noreturn",
+    "returning_owner_failure": "continue and reload actual iterator.node,do not recheck owner",
+    "returning_nil_failure": "return without later node publication or link read",
+    "exception": "current provider exceptions propagate;no cleanup/rollback or conversion",
+    "qualification": "original encoded-global/debugger/Watson/private CRT/SEH/return/fault-address identity not established"
+  },
+  "host_steps": [
+    {"address": "00467988", "native": "00bf6713", "function": "00467980", "transfer": "call", "contract": "owner zero;returnable actual current CRT report then CURRENT node reload"},
+    {"address": "00467997", "native": "00bf6713", "function": "00467980", "kind": "tail_jump", "transfer": "tail_jump", "contract": "captured current node nil;POP ESI/JMP;returning report returns immediately without node store"},
+    {"address": "004681f3", "native": "00467980", "function": "004681f0", "transfer": "call", "contract": "ECX captured actual iterator;no stack args;explicit EAX captured iterator after child returns"},
+    {"address": "004688d3", "native": "00467980", "function": "004688d0", "transfer": "call", "contract": "ECX captured actual iterator;no stack args;explicit EAX captured iterator after child returns"}
+  ],
+  "caller_steps": [
+    {"address": "0046a4ee", "native": "00467980", "function": "0046a470", "transfer": "call", "contract": "ECX LEA ESP+6C after local register saves;next instruction overwrites EAX;parent outside packet"},
+    {"address": "0046b609", "native": "00467980", "function": "0046b570", "transfer": "call", "contract": "ECX LEA ESP+20 actual iterator;ambient EAX discarded;parent outside packet"},
+    {"address": "0046b6f1", "native": "00467980", "function": "0046b680", "transfer": "call", "contract": "ECX LEA ESP+10 actual iterator;reload current node+4 then owner+0 after child;parent outside packet"},
+    {"address": "0046bd6a", "native": "00467980", "function": "0046bd10", "transfer": "call", "contract": "ECX LEA ESP+14 actual iterator;reload current node+4 then owner+0 after child;parent outside packet"}
+  ],
+  "implementation_search": "no whole implementation in include/src;seg6_cc13 only contains an injected host-call declaration/use;existing decrement and concrete CRT provider reviewed",
+  "annotation": {"preserve_names_comments": true, "locked_apply_save": "pending", "refreshed_exports": "pending"},
+  "verification": {
+    "project_program_guard": "bsp.py Client.verify before each live batch;bsp,/battlestationspacific.exe,x86:LE:32:default,image00400000",
+    "full_listing_boundaries_live_bytes_callers_and_concrete_provider": "passed",
+    "verify_report_calls": "passed;8 native transfer rows,0 failed;markdown26addresses,0 failed/unchecked/warnings",
+    "strict_win32_build_and_existing_ctest": "pending",
+    "compiled_object_review": "pending",
+    "diff_check": "passed",
+    "new_tests": false,
+    "packet_native_differential": "not run",
+    "game_validation": "not run"
+  },
+  "limits": [
+    "current CRT handler policy differs from original encoded handler/debugger/Watson path",
+    "ordinary Source preserves actual raw access schedule and ECX/RET shape;native frame/flags/register residue and byte/COFF identity not claimed",
+    "core ambient EAX deliberately has no Source semantic result;wrappers explicitly return captured iterator",
+    "raw storage/handler lifetime validity required on each path reached;no concurrency or invalid pointer recovery promised",
+    "no packet-specific native differential or game execution"
+  ]
+}
