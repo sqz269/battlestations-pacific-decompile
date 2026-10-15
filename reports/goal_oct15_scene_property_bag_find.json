@@ -1,0 +1,369 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_property_bag_find",
+  "status": "whole_control_flow_Source_bounded_existing_provider_admission_general_readiness_UNPROVED",
+  "source_ready": false,
+  "source": "src/native_scene_property_bag_find.cpp",
+  "header": "include/bsp/native_scene_property_bag_find.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_PROPERTY_BAG_FIND.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "008f2260",
+      "end_exclusive": "008f23d7",
+      "coverage": "whole control flow over stated bounded providers",
+      "kind": "whole_control_flow_bounded_existing_provider_admission",
+      "cpp_symbol": "find_native_scene_property_bag_008f2260",
+      "instruction_bytes": 375,
+      "instruction_count": 123,
+      "bytes": "6a ff 64 a1 00 00 00 00 68 80 47 ca 00 50 64 89 25 00 00 00 00 83 ec 08 53 55 56 57 8b 7c 24 28 6a 2e 57 8b e9 e8 66 64 30 00 8b d8 83 c4 08 85 db 0f 84 c5 00 00 00 8b f3 2b f7 56 57 68 58 96 f8 00 e8 d9 53 30 00 83 c4 0c 68 58 96 f8 00 8d 4c 24 14 c6 86 58 96 f8 00 00 e8 b1 c5 b2 ff 8d 44 24 28 50 8d 4c 24 14 51 8d 4d 04 c7 44 24 28 00 00 00 00 e8 d7 95 b4 ff 85 c0 74 0a 8b 70 08 c6 44 24 28 01 eb 09 c6 44 24 28 00 8b 74 24 28 8b 44 24 14 85 c0 c7 44 24 20 ff ff ff ff 74 17 8b 54 24 10 6a 01 83 c2 01 52 50 e8 b0 79 b2 ff 8b c8 e8 f9 f1 2d 00 80 7c 24 28 00 74 27 83 7e 04 06 75 21 8b 4e 0c 83 c3 01 53 e8 30 ff ff ff 5f 5e 5d 5b 8b 4c 24 08 64 89 0d 00 00 00 00 83 c4 14 c2 04 00 5f 5e 5d 33 c0 5b 8b 4c 24 08 64 89 0d 00 00 00 00 83 c4 14 c2 04 00 57 8d 4c 24 14 e8 0a c5 b2 ff 8d 44 24 28 50 8d 4c 24 14 51 8d 4d 04 c7 44 24 28 01 00 00 00 e8 30 95 b4 ff 85 c0 74 07 8b 48 08 b0 01 eb 06 8b 4c 24 28 32 c0 f6 d8 c7 44 24 20 ff ff ff ff 1b c0 23 c1 8b f0 8b 44 24 14 85 c0 74 17 8b 54 24 10 6a 01 83 c2 01 52 50 e8 07 79 b2 ff 8b c8 e8 50 f1 2d 00 8b 4c 24 18 5f 8b c6 5e 5d 5b 64 89 0d 00 00 00 00 83 c4 14 c2 04 00",
+      "sha256": "7b0295606bec49517eadd28efd0e1dbfa487b7437a0be1348bfd829c58de782a",
+      "live_disk_equal": true,
+      "new_private_binary_action_entry_credit": false,
+      "original_abi": "ECX bag;one LIVE stacked key/bucket/partialAL word;RET4/EAX result"
+    },
+    {
+      "address": "00ca4770",
+      "end_exclusive": "00ca4778",
+      "coverage": "complete action semantics;qualified guard mapping only",
+      "kind": "qualified_compiler_action_guard_mapping_only",
+      "cpp_symbol": "CompletedKey actual-header guard state0",
+      "instruction_bytes": 8,
+      "instruction_count": 2,
+      "bytes": "8d 4d ec e9 a8 95 77 ff",
+      "sha256": "3d1930b63ff6b64ce6ea7b8431e747659730d752b7e0c67b069e7628f0df4aaa",
+      "live_disk_equal": true,
+      "new_private_binary_action_entry_credit": false,
+      "original_abi": "compiler action LEA ECX,[EBP-14h];tail JMP41DD20"
+    },
+    {
+      "address": "00ca4778",
+      "end_exclusive": "00ca4780",
+      "coverage": "complete action semantics;qualified guard mapping only",
+      "kind": "qualified_compiler_action_guard_mapping_only",
+      "cpp_symbol": "CompletedKey actual-header guard state1",
+      "instruction_bytes": 8,
+      "instruction_count": 2,
+      "bytes": "8d 4d ec e9 a0 95 77 ff",
+      "sha256": "f19e96822ebb973784c133d2d4e43da47a92c334cf5153c7b63d62aec79988b1",
+      "live_disk_equal": true,
+      "new_private_binary_action_entry_credit": false,
+      "original_abi": "compiler action LEA ECX,[EBP-14h];tail JMP41DD20"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "008f2285",
+      "native": "00bf86f0",
+      "function": "008f2260",
+      "contract": "captured input/dot character;ADDESP8",
+      "kind": "call"
+    },
+    {
+      "address": "008f22a2",
+      "native": "00bf7680",
+      "function": "008f2260",
+      "contract": "actual shared scratch/input/head DWORDcount;ADDESP0Ch;overlap-capable",
+      "kind": "call"
+    },
+    {
+      "address": "008f22ba",
+      "native": "0041e870",
+      "function": "008f2260",
+      "contract": "actual8B header/shared scratch,RET4;unarmed caller",
+      "kind": "call"
+    },
+    {
+      "address": "008f22d4",
+      "native": "0043b8b0",
+      "function": "008f2260",
+      "contract": "actualbag+4/queryheader/actual parameter bucket;RET8;state0",
+      "kind": "call"
+    },
+    {
+      "address": "008f230b",
+      "native": "00419cc0",
+      "function": "008f2260",
+      "contract": "no consumedargs;captured block/size/unused1 remain stacked;state disarmed",
+      "kind": "call"
+    },
+    {
+      "address": "008f2312",
+      "native": "00bd1510",
+      "function": "008f2260",
+      "contract": "getter-returnedpool/capturedblock,size,unused1;RET0Ch",
+      "kind": "call"
+    },
+    {
+      "address": "008f232b",
+      "native": "008f2260",
+      "function": "008f2260",
+      "contract": "bag POINTER loaded from capturedrecord+C and originaldot+1 in reached child arg;RET4",
+      "kind": "call"
+    },
+    {
+      "address": "008f2361",
+      "native": "0041e870",
+      "function": "008f2260",
+      "contract": "actual8B header/captured originalinput;RET4;unarmed caller",
+      "kind": "call"
+    },
+    {
+      "address": "008f237b",
+      "native": "0043b8b0",
+      "function": "008f2260",
+      "contract": "actualbag+4/queryheader/actual parameter bucket;RET8;state1",
+      "kind": "call"
+    },
+    {
+      "address": "008f23b4",
+      "native": "00419cc0",
+      "function": "008f2260",
+      "contract": "no consumedargs;captured return args remain stacked;disarmed",
+      "kind": "call"
+    },
+    {
+      "address": "008f23bb",
+      "native": "00bd1510",
+      "function": "008f2260",
+      "contract": "getter-returnedpool/capturedblock,size,unused1;RET0Ch",
+      "kind": "call"
+    },
+    {
+      "address": "00ca4773",
+      "native": "0041dd20",
+      "function": "00ca4770",
+      "contract": "actual native[EBP-14h] header;state0;qualified host guard only",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00ca477b",
+      "native": "0041dd20",
+      "function": "00ca4778",
+      "contract": "actual native[EBP-14h] header;state1;qualified host guard only",
+      "kind": "tail_jump"
+    }
+  ],
+  "incoming_callers_indexed": 101,
+  "all_101_callers_proved": false,
+  "external_incoming_caller_union_exhaustively_reviewed": false,
+  "provider_source_hashes": {
+    "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+    "src/native_enum_dictionary_lookup.cpp": "da6e14d6a1802086a96c34ba31841d5095857c52e43e66c0328d1420c6b8b200",
+    "include/bsp/native_enum_dictionary_lookup.hpp": "643ecc08b9efc81172a5d328f25330f75d0d3ccfcbb030495d67a8dfe8113e87",
+    "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+    "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+  },
+  "source_dependencies": [
+    {
+      "address": "0041e870",
+      "api": "construct_native_string_header_0041e870",
+      "status": "complete actual8B raw-header constructor and concrete raw pool context;not semantic NativeString projection"
+    },
+    {
+      "address": "0043b8b0",
+      "api": "find_native_property_map_node_0043b8b0",
+      "status": "whole native body over bounded closed ASCII/stable/nonaliasing bucket domain only"
+    },
+    {
+      "address": "00419cc0",
+      "api": "native_string_pool_get_or_create_00419cc0 raw-manager overload",
+      "status": "complete actual publication/manager/current allocator registration provider"
+    },
+    {
+      "address": "00bd1510",
+      "api": "return_native_string_pool_00bd1510",
+      "status": "complete real capturedblock/size/live-gate current pool return provider"
+    },
+    {
+      "address": "0041dd20",
+      "api": "destroy_native_string_header_0041dd20 raw-pool overload",
+      "status": "complete actual header cleanup used by qualified armed guard"
+    },
+    {
+      "address": "00bf7680",
+      "api": "std::memmove",
+      "status": "concrete current overlap-capable CRT service;nativeBF7694/7698 choose BF7844 backward overlap path STD/REP/CLD;no new nonoverlap guard"
+    },
+    {
+      "address": "00bf86f0",
+      "api": "std::strchr",
+      "status": "concrete current CRT over admitted nonnull Cstring"
+    }
+  ],
+  "named_incomplete_dependencies": [],
+  "admission": {
+    "general_source_ready": false,
+    "whole_parent_control_flow_implemented": true,
+    "unrestricted_raw_parent_admission_proved": false,
+    "unrestricted_locale_alias_completeness_proved": false,
+    "existing_map_provider": [
+      "actual live108h map",
+      "finite correctly bucketed stable borrowed chains",
+      "closed matching NUL-free ASCII headers/buffers;null data only whenempty",
+      "stable nonnull NUL fallback roles E177E4/E17654",
+      "current CRT C locale",
+      "writable nonaliasing bucket output during lookup"
+    ],
+    "caller_requirements": [
+      "valid reached actual record/type6 nested bag pointer",
+      "sufficient actual shared scratch headcopy+terminator backing without inventedcapacity",
+      "valid actual per-call parameter4/keyheader8 and finite reached recursiveframe backing",
+      "real raw pool/context publication/lifetime/return validity"
+    ],
+    "no_extra_blanket_reentry_concurrency_ban": true,
+    "outside_stable_lookup_shared_scratch_provider_effects": "retained whenever reached existing contracts hold",
+    "upstream_obligation": "prove caller storage/key/locale/alias admission separately;all101 indexed callerfunctions not proved"
+  },
+  "native_frame_coordinates": {
+    "base": "P native008F2260 entryESP;coordinates evidence only,not implicit Source/private-frame ABI",
+    "actual_parameter4": "P+4..P+7;full bucket write then dot partialAL stores/current AL read",
+    "actual_key_header8": "P-14h..P-Dh",
+    "state_word": "P-4,represented only by qualified host guard",
+    "recursive_child_entry": "P-2Ch",
+    "recursive_child_parameter4": "P-28h..P-25h",
+    "recursive_child_key_header8": "P-40h..P-39h",
+    "recursive_metadata": "lazy after current flag/type6,nested bag POINTER load and captured tail computation"
+  },
+  "raw_global_bindings": {
+    "shared_head": "actual00F89658 role,no invented extent/capacity/lock/copy",
+    "property_node_empty": "actual00E177E4 stable NUL role",
+    "query_empty": "actual00E17654 distinct stable NUL role",
+    "pool_publication": "actual01090AA8",
+    "pool_small_returns_gate": "actual01090AA4 live",
+    "raw_manager_publication": "actual01090AA0 canonical"
+  },
+  "unwind": {
+    "handler": "00ca4780",
+    "funcinfo": "00dd7360",
+    "magic": "19930522",
+    "max_state": 2,
+    "map": "00dd7350",
+    "states": [
+      {
+        "state": 0,
+        "after": "dot constructor returns",
+        "to": -1,
+        "action": "00ca4770"
+      },
+      {
+        "state": 1,
+        "after": "no-dot constructor returns",
+        "to": -1,
+        "action": "00ca4778"
+      }
+    ],
+    "normal": {
+      "dot": "22F0 capturedata;22F6 disarm;nonnull capturelength+1;getter;return;no retry if unarmed getterthrows",
+      "no_dot": "2393 disarm;23A1 capturedata;nonnull capturelength+1;getter;return;no retry if unarmed getterthrows"
+    },
+    "exceptional": "armed actual-header guard disarms then calls complete41DD20/context;host C++unwind boundary qualified",
+    "new_private_action_function_credit": false
+  },
+  "corrections": [
+    {
+      "was": "preserved old comment cites strchr at008F228A",
+      "is": "actual CALL site008F2285",
+      "evidence": "whole123-op original listing"
+    },
+    {
+      "was": "preserved old wording ECX=record+0Ch could suggest address",
+      "is": "load DWORD[record+0Ch] as nestedbag POINTER",
+      "evidence": "008F2324 MOV ECX,[ESI+0Ch]"
+    },
+    {
+      "was": "initial Source used capture-data-before-disarm for both normal cleanup branches",
+      "is": "dot captures data before disarm;no-dot disarms before data capture;separate methods now preserve both schedules",
+      "evidence": "primary full123-op review:22F0/22F6 versus2393/23A1"
+    }
+  ],
+  "prior_annotations": [
+    {
+      "address": "008f2260",
+      "annotation": {
+        "address": "008f2260",
+        "function_name": "BSP_ScenePropertyBag_Find",
+        "comment": "[BSP reconstruction 008f2260]\nHypothesis, not a recovered symbol. Packet cc2_scene_property_bag, read-only analysis. __thiscall(ScenePropertyBag* /*ECX*/, const char* key), RET 4. Splits the key at the first '.' (_strchr at 008F228A); with no dot it builds a native string and calls the map find 0043B8B0 on this+4, returning *(node+8) (the 38h property record) or 0. With a dot it copies the head into the shared global buffer 00F89658 (so the routine is not reentrant), looks that up, and recurses on the tail at 008F232B with ECX = record+0Ch only when *(record+4) == 6, which is what makes type 6 the nested sub-bag. An absent property is reported as EAX = 0 with no out-of-band error and no default. See docs/SCENE_PROPERTY_BAG.md."
+      }
+    },
+    {
+      "address": "00ca4770",
+      "annotation": {
+        "address": "00ca4770",
+        "function_name": "Unwind@00ca4770"
+      }
+    },
+    {
+      "address": "00ca4778",
+      "annotation": {
+        "address": "00ca4778",
+        "function_name": "Unwind@00ca4778"
+      }
+    }
+  ],
+  "annotation": {
+    "status": "PASS locked annotate;prior names/comments preserved;project saved;all three exports refreshed",
+    "prior_values_log": "local/ghidra-annotations-20261015T234444Z.json",
+    "prior_values_log_sha256": "e95475a15ebb5f3728cc7c74696480e417f696cb2a3b8dcc9f6d03bd855273ea",
+    "addresses": [
+      "008f2260",
+      "00ca4770",
+      "00ca4778"
+    ],
+    "project_saved": true,
+    "exports_refreshed": true,
+    "ledger_window": "Queued turn claimed only after both shards unheld;bounded own record appended;short file lease released immediately to next CC12 waiter"
+  },
+  "source_registration": "unique cmake/startup.cmake append when unheld and own queue first;own queue immediately removed,no exclusive whole-file lease",
+  "validation": {
+    "source_ready": false,
+    "whole_control_flow_source_available": true,
+    "unrestricted_parent_admission_proved": false,
+    "build": {
+      "command": "scripts/build.ps1",
+      "result": "PASS",
+      "exit_code": 0,
+      "revision": "f0d3fc0d9",
+      "platform": "MSVC Win32",
+      "log": "local/goal_oct15_scene_property_bag_find_build.log",
+      "log_sha256": "f0ef0c8e67510e80c2fd0dc125771afc4cd28b3b014167f56b673efa8c916d3a",
+      "warnings": [
+        "existing unrelated LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj"
+      ]
+    },
+    "existing_ctests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "seconds": 6.94,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "optional_native_differential_enabled": false
+    },
+    "report_call_verification": "PASS13 typed rows and13 documentation claims;0failures/unchecked/warnings",
+    "new_tests": 0,
+    "abi_compatible": false,
+    "native_differential_fixture": false,
+    "game_validated": false,
+    "diff_check": "PASS"
+  },
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "qualification": "375B whole controlflow over explicit bounded existing ASCII/currentlocale/stable/nonaliasbucket provider admission,plus16B qualified compiler-action guard mappings. General Source-ready/unrestricted parent/101caller admission unproved. No callbacks/stubs/modelbag/stdstring/guard/clamp/normalization/nonoverlap or new binary action/privateCRT/FH3/SEH/nativeABI/differential/game credit.",
+  "source_sha256": "5867c1029e850797b21956b163020ae37d7ca116f9c558683aa89bb2f2ab9b07",
+  "header_sha256": "e478b3f070f7420db0e6619a8b1329e2acfd8cd1339b60c1bd82ae8a065ec945",
+  "independent_review": {
+    "reviewer": "primary /root",
+    "reviewed_revision": "ab49fb7b5",
+    "result": "PASS full123-op parent and both2-op actions against complete Source/header after targeted distinct dot/no-dot cleanup-order correction",
+    "source_sha256": "5867c1029e850797b21956b163020ae37d7ca116f9c558683aa89bb2f2ab9b07",
+    "header_sha256": "e478b3f070f7420db0e6619a8b1329e2acfd8cd1339b60c1bd82ae8a065ec945",
+    "unchanged_hashes_asserted": true,
+    "qualification": "whole controlflow only at explicit bounded map-provider/host C++ guard admission;unrestricted raw/locale/alias,all101callers,OriginalFH3/privateABI remain unproved"
+  }
+}
