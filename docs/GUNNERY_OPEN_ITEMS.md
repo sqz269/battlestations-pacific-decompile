@@ -15173,3 +15173,34 @@ BBs die in every variant that kills it (257.1).
 Variants of this section: `ta`/`tb` (bow-on torpedoes, Fuso 53.6k / 86.9k), `tc` (column at 1.3 km: no hits),
 `td` (1.6 km, 2 rounds: Fuso 41k), `te`/`tf` (3 / 4 rounds: 31.7k / 16.4k), `tg` (7 x 120: Fuso dead at 3840 s),
 `ti` (7 x 100: 18.9k), `tj`/`tk`/`tm` (Ashigara hunts lost to the map edge or stalled), `tl` (the win).
+
+## 259. Handoff (cc9-gunnery46, 2026-10-14, at about 75% context)
+
+**Done.**
+- `3d995f71a` (257): USN15 analysis, the 256 leftovers, and the backlog G1/G2/S4/S5/seg-1. Landed in main `adb82ca2f`.
+- `dc1c7efc8` (258): USN15 `usn15_g46_u15_tl` completes at 6331.16 s on the reference run and fails both
+  jitter checks. The times went to cc9-lua61 (WINS_TABLE).
+
+**Queue for the successor, in order:**
+1. **`008FFF20` `gun_bot_heading_accepted` is a placeholder** (cc13 blind audit, main `d33ab1c4d`).
+   `src/gun_bot_ticks.cpp` reduces a 2688-byte tick to a single FLT_MAX compare. It reaches the game through
+   `gun_bot_torpedo_ready` (`game_hosts_gunnery.cpp` near 8325), so it may gate AI torpedo readiness. Reconstruct
+   it from the listing:
+   - script it, because the body is too large to read by hand;
+   - check the x87 with `tools/x87_dc_form_scan.py --context`, because the listing misprints DC-form FMUL.
+   Bind it behind an OFF switch, pair on torpedo-using missions (USN12, USN15, IJN rows), and flip by
+   mechanism.
+2. **A jitter-robust Yamashiro kill for USN15.** The 1171 s kill in `r`/`tl` is a deterministic Fubuki-class07
+   friendly torpedo, and it does not happen under `BSP_FRAME_JITTER 20,3`/`20,5`. Untried idea: a Fletcher
+   torpedo column on Yamashiro's beam (its track is x of about -300, northbound at 12.6 m/s), fired around
+   950-1100 s from the west of the track. The out-of-map limit on x does not bind there.
+3. The seg-1 troop hooks `00428420`/`00428800` are in the ships-lane backlog (the lead's call).
+
+**Tools** (this tree's `local\`):
+- `g46_plan.py`: plan verbs `hold`, `goto`, `gotoabs`, `line`, `attack`, and `torp` (select, `torpedo at`, then
+  `release` after N frames, with nothing else in the window).
+- `g46_queue.ps1`: jobs file, one `exe|log|args` per line.
+- `g46_queue_j.ps1`: same, with a 4th field for `BSP_FRAME_JITTER`.
+- `g46_exports.ps1`: builds exports.
+- Readers: `g46_counts.py`, `g46_deaths.py`, `g46_hits.py`, `g46_hpseries.py`, `g46_traj.py`, `g46_mind.py`.
+- The export dirs are `g46_p1` (`3f25f26ce`) and `g46_p2` (`a65c06700`).
