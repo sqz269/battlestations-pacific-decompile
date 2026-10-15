@@ -40260,6 +40260,77 @@
       "game_validated": false,
       "actual_compiler_archive_gate": "pass",
       "Main_validation": "reports/cc12_property_integer_add_Main_validation.json"
+    },
+    {
+      "id": "cc12_scene_property_string_add_008f38a0",
+      "done": false,
+      "state": "whole_ordinary_string_property_ready_no_Source_yet",
+      "source_ready": true,
+      "function_addresses": [
+        "008f38a0"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_property_string_add.hpp",
+        "src/native_scene_property_string_add.cpp",
+        "docs/SCENE_PROPERTY_STRING_ADD_CC12.md",
+        "reports/native_scene_property_string_add_cc12.json"
+      ],
+      "depends_on": [],
+      "readiness_report": "reports/cc12_property_string_add_readiness.json",
+      "missing_provider_addresses": [],
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "contract": "Genuine 114h bag and nullable CString value. Canonical 38h root, phase/tag and ordered zeros, raw nullable 438E40 duplicate, store +C BEFORE zero +34, final byte +2C, then whole insertion. Preserve 37 written and 19 untouched bytes. Same canonical ownership and process contracts; null and empty differ. Original saved-root construction unwind is pinned but ABI/EH/failure/private-CRT/startup/runtime/game parity remains unproved. Source is not yet implemented.",
+      "worker": "property_leaf_readiness_oct15"
+    },
+    {
+      "id": "cc12_scene_property_bool_add",
+      "done": false,
+      "state": "whole_ordinary_byte_property_ready_no_Source_yet",
+      "source_ready": true,
+      "function_addresses": [
+        "008f3940"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_property_bool_add.hpp",
+        "src/native_scene_property_bool_add.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_BOOL_ADD_CC12.md",
+        "reports/native_scene_property_bool_add_cc12.json"
+      ],
+      "depends_on": [],
+      "readiness_report": "reports/cc12_property_bool_add_readiness.json",
+      "missing_provider_addresses": [],
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "contract": "Whole 97 bytes / 34 instructions. Preserve all low-byte patterns with uint8_t, ignoring upper24 bits; no Boolean normalization. Canonical38h root, phase/tag3, one byte at+C, ordered zero DWORDs, final byte+2C;34 written and22 untouched bytes. Same canonical bag/map/key/context ownership; no payload child, added cleanup, ABI/EH/private-CRT/startup/runtime/game or whole-parser credit. Source remains unimplemented.",
+      "worker": "scene_token_text_review"
+    },
+    {
+      "id": "cc12_scene_property_float_add",
+      "done": true,
+      "state": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
+      "worker": "library_insert_source",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "008f3770"
+      ],
+      "output_files": [
+        "docs/NATIVE_SCENE_PROPERTY_FLOAT_ADD_CC12.md",
+        "include/bsp/native_scene_property_float_add.hpp",
+        "reports/native_scene_property_float_add_cc12.json",
+        "src/native_scene_property_float_add.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "code_revision": "6758b44cf76e778dd732b4a2d283e7a7dfe8f817",
+      "primary_review": "reports/cc12_property_float_add_primary_review.json",
+      "Main_build_gate": "pass",
+      "contract": "Whole101B/35 Original instructions. ECX actual114h bag, stack key/float32 bits, RET8, EAX bag. MOVSS copies all32 bits without arithmetic or x87. New uint32 interface preserves every representation. Allocate canonical38h root, store phase+0 then fullpayload+C THEN tag1+4, ordered zeros+18/+1C/+20/+24/+30/+34, final BYTE1+2C.37 written/19 untouched bytes; no raw8EF170 substitution, float evaluation/filter, payload child, added recovery or transaction. Null allocation still reaches whole33F0. Same canonical bag/map/key/process/pool/cell/lifetime contracts and stable disjoint finite unique successful nonthrowing ordinary domain. Source physical helper calls and later payload load are explicit differences. No Original ABI/FP/EH/private-CRT/startup/runtime/game/whole-parser equivalence.",
+      "Original_ABI_compatible": false,
+      "game_validated": false,
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_property_float_add_Main_validation.json"
     }
   ],
   "snapshot_after_analysis": {

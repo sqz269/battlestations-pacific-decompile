@@ -1,0 +1,453 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_integer_set_insert",
+  "worker": "agent/goal_oct15_copy",
+  "base_commit": "839b44143beb4d621709c7603cf39710be018fb2",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis_and_export": true,
+  "source": "src/native_scene_integer_set_insert.cpp",
+  "header": "include/bsp/native_scene_integer_set_insert.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_INTEGER_SET_INSERT.md",
+  "owned_addresses": [
+    "0046a150",
+    "0046ac50",
+    "00c61c10"
+  ],
+  "status": "whole_actual_storage_source_strict_win32_existing_ctest_and_compiler_checked",
+  "routines": [
+    {
+      "address": "0046a150",
+      "body_end_inclusive": "0046a33b",
+      "body_bytes": 492,
+      "instructions": 167,
+      "kind": "function",
+      "coverage": "complete_at_actual_integer_node_rotations_and_concrete_owning_cpp_exception_boundaries",
+      "implementation": "link_native_scene_integer_set_node_0046a150",
+      "retained_name": "STL_SceneIntegerSet_LinkAndRebalance_0046A150",
+      "original_abi": "ECX tree;stack output,leftDWORD,parent,keyPtr;RET10h/EAX CURRENT output;EDX input unused;capture keyPtr,head,parent before allocation",
+      "live_xrefs": [
+        "0046acae"
+      ],
+      "previous_name": "STL_xlen_throw_0046a150",
+      "name_qualification": "behavior-derived descriptive hypothesis replacing misleading provisional throw label;not recovered native symbol;old evidence/comments/prior values preserved"
+    },
+    {
+      "address": "0046ac50",
+      "body_end_inclusive": "0046ad08",
+      "body_bytes": 185,
+      "instructions": 73,
+      "kind": "function",
+      "coverage": "complete_at_actual_linker_and_concrete_returnable_current_crt_decrement_boundary",
+      "implementation": "insert_native_scene_integer_set_key_0046ac50",
+      "retained_name": "STL_Tree_InsertUnique_0046ac50",
+      "original_abi": "ECX tree;stack output,keyPtr;RET8/EAX CURRENT output;key POINTER captured entry;search signed DWORD captured once onlywhenrootnonnil;final CURRENT key reread",
+      "live_xrefs": [
+        "0046f27c",
+        "0046f295",
+        "0046f2ae",
+        "0046f2c7",
+        "0046f2e1",
+        "0046f2fa",
+        "0046f30f"
+      ]
+    },
+    {
+      "address": "00c61c10",
+      "body_end_inclusive": "00c61c17",
+      "body_bytes": 8,
+      "instructions": 2,
+      "kind": "fragment",
+      "coverage": "complete_source_completed_message_unwind_not_native_frame_entry",
+      "implementation": "scene_integer_set_insert_00c61c10_completed_message_unwind",
+      "retained_name": "Unwind@00c61c10",
+      "original_abi": "LEA ECX,[nativeframe-50h];tail004072D0;state0->-1"
+    }
+  ],
+  "coverage_totals": {
+    "normal_bytes": 677,
+    "normal_instructions": 240,
+    "source_eh_fragment_bytes": 8,
+    "source_eh_fragment_instructions": 2,
+    "total_owned_bytes": 685,
+    "total_owned_instructions": 242
+  },
+  "source_api": {
+    "link": "void* link_native_scene_integer_set_node_0046a150(void*,void* actual_parameters16,void* actual_node_parameters20)",
+    "unique": "void* insert_native_scene_integer_set_key_0046ac50(void*,void* actual_parameters8,const NativeSceneIntegerSetInsertFrame&)",
+    "frame": "stable/disjoint metadata{descent_flag4,predecessor8,linker_parameters16,node_parameters20};only reached backing required;upper flag bytes initialized when full word read reached",
+    "link_parameters": {
+      "output": 0,
+      "left_word": 4,
+      "parent": 8,
+      "key_pointer": 12
+    },
+    "unique_parameters": {
+      "output": 0,
+      "key_pointer": 4
+    },
+    "node_parameters": {
+      "left": 0,
+      "parent": 4,
+      "right": 8,
+      "key_pointer": 12,
+      "color_word": 16
+    },
+    "native_abi_replacement": false
+  },
+  "storage": {
+    "tree_head": 4,
+    "tree_count": 8,
+    "node_bytes": 20,
+    "node": {
+      "left": 0,
+      "parent": 4,
+      "right": 8,
+      "key": 12,
+      "color_byte": 16,
+      "nil_byte": 17,
+      "untouched_padding": [
+        18,
+        19
+      ]
+    },
+    "signed_key": "volatile actual int32 loads;all32-bit keys admitted",
+    "count_limit_unsigned": 1073741822
+  },
+  "schedule": {
+    "link": "count guard before argument reads;capture keyPtr,head,parent;node cells color,key,head,parent,head in push order;actual allocation before current head/count;late CURRENT left low byte onlyreachednonroot;full actual repair/inlinedleft;current rootblack then CURRENT output and NODE->OWNER",
+    "unique_search": "capture key POINTER;root.nil before lowflag1;capture signed key once onlyif startingrootnonnil;candidate keys current each loop;NODE->OWNER predecessor stores;retained left decision",
+    "final_compare": "decrement actual predecessor8 whenreached;reload CURRENT predecessor.node;read predecessor.key BEFORE CURRENT key DWORD at captured pointer",
+    "link_prepare": "key,parent,leftDWORD,outiterator writes;literal1 begin case vs full CURRENT flagDWORD otherwise",
+    "inserted_publication": "returned iterator.owner,CURRENT outeroutput,returned iterator.node reads BEFORE OWNER,NODE,flag1 stores",
+    "duplicate_publication": "CURRENT outeroutput then CURRENT predecessor.owner reads;OWNER,captured predecessorNODE,flag0 stores;3padding untouched;no allocation",
+    "admission": "valid reached storage/release domain,stable/disjoint metadata;actual described cells/payload aliases allowed;no positive-only keys/nonnull-only handler domain/implicit private frames/concurrency"
+  },
+  "exception_evidence": {
+    "message": "map/set<T> too long",
+    "message_bytes": 19,
+    "message_native_address": "00ce47bc",
+    "temporary": "capacity15,length0,inlinebyte0;00408720 assign while state-1;arm state0 before00411700",
+    "carrier": "existing actual28h NativeHardwareLayoutTreeLengthError;construct00411700,D69260;copy00411940;destroy00411780",
+    "handler": "00c61c18",
+    "funcinfo": "00d892cc",
+    "magic": "19930522",
+    "max_state": 1,
+    "unwind_map": "00d892c4",
+    "unwind": [
+      {
+        "state": 0,
+        "next_state": -1,
+        "action": "00c61c10"
+      }
+    ],
+    "try_blocks": 0,
+    "eh_flags": 1,
+    "throw_info": "00d83f98",
+    "attributes": 0,
+    "destructor": "00411780",
+    "compatibility_callback": 0,
+    "catchable_array": "00d83fd4",
+    "catchables": [
+      {
+        "record": "00d83fe4",
+        "type_descriptor": "00e08000",
+        "type": ".?AVlength_error@std@@",
+        "size": 40,
+        "copy": "00411940",
+        "properties": 0,
+        "pmd": [
+          0,
+          -1,
+          0
+        ]
+      },
+      {
+        "record": "00d84000",
+        "type_descriptor": "00e08020",
+        "type": ".?AVlogic_error@std@@",
+        "size": 40,
+        "copy": "004118d0",
+        "properties": 0,
+        "pmd": [
+          0,
+          -1,
+          0
+        ]
+      },
+      {
+        "record": "00e03c7c",
+        "type_descriptor": "00e174f0",
+        "type": ".?AVexception@std@@",
+        "size": 12,
+        "copy": "00bf63a6",
+        "properties": 0,
+        "pmd": [
+          0,
+          -1,
+          0
+        ]
+      }
+    ],
+    "transport": "actual owning currentC++ guard/exception;native RTTI/basecatch/FH3/SEH/privateframe separately qualified"
+  },
+  "host_steps": [
+    {
+      "address": "0046a193",
+      "native": "00408720",
+      "function": "0046a150",
+      "kind": "call",
+      "binding": "actual counted19-byte legacy message assignment;parent unarmed"
+    },
+    {
+      "address": "0046a1a5",
+      "native": "00411700",
+      "function": "0046a150",
+      "kind": "call",
+      "binding": "actual owning carrier logic-error ctor after parent message state0"
+    },
+    {
+      "address": "0046a1bc",
+      "native": "00bf6885",
+      "function": "0046a150",
+      "kind": "call",
+      "binding": "actual owning currentCpp throw;D83F98 native metadata evidence"
+    },
+    {
+      "address": "0046a1d4",
+      "native": "004681b0",
+      "function": "0046a150",
+      "kind": "call",
+      "binding": "actual20-byte live allocator params;allocate14h before all input reads"
+    },
+    {
+      "address": "0046a265",
+      "native": "00467740",
+      "function": "0046a150",
+      "kind": "call",
+      "binding": "actual nil11h integer-set left rotation"
+    },
+    {
+      "address": "0046a283",
+      "native": "00467790",
+      "function": "0046a150",
+      "kind": "call",
+      "binding": "actual nil11h integer-set right rotation"
+    },
+    {
+      "address": "0046a2b1",
+      "native": "00467790",
+      "function": "0046a150",
+      "kind": "call",
+      "binding": "actual nil11h integer-set mirrored right rotation;finalleft is inlined"
+    },
+    {
+      "address": "0046acae",
+      "native": "0046a150",
+      "function": "0046ac50",
+      "kind": "call",
+      "binding": "whole live16-byte linker args and separate node20 backing;both insertion branches share site"
+    },
+    {
+      "address": "0046acd0",
+      "native": "004679f0",
+      "function": "0046ac50",
+      "kind": "call",
+      "binding": "actual predecessor8,complete returning currentCRT decrement then CURRENT node reload"
+    },
+    {
+      "address": "00c61c13",
+      "native": "004072d0",
+      "function": "00c61c10",
+      "kind": "tail_jump",
+      "binding": "completed19-byte message guard;no separate Source native-frame funclet entry"
+    }
+  ],
+  "caller_steps": [
+    {
+      "address": "0046f27c",
+      "native": "0046ac50",
+      "function": "0046f160",
+      "kind": "call",
+      "contract": "ECX integer-set tree,real result12/keyDWORD backing;stack output,keyPtr;RET8;key44h observed,no domain narrowing"
+    },
+    {
+      "address": "0046f295",
+      "native": "0046ac50",
+      "function": "0046f160",
+      "kind": "call",
+      "contract": "same concrete caller ABI;key5Eh observed"
+    },
+    {
+      "address": "0046f2ae",
+      "native": "0046ac50",
+      "function": "0046f160",
+      "kind": "call",
+      "contract": "same concrete caller ABI;key1Dh observed"
+    },
+    {
+      "address": "0046f2c7",
+      "native": "0046ac50",
+      "function": "0046f160",
+      "kind": "call",
+      "contract": "same concrete caller ABI;key47h observed"
+    },
+    {
+      "address": "0046f2e1",
+      "native": "0046ac50",
+      "function": "0046f160",
+      "kind": "call",
+      "contract": "same concrete caller ABI;key3Dh observed"
+    },
+    {
+      "address": "0046f2fa",
+      "native": "0046ac50",
+      "function": "0046f160",
+      "kind": "call",
+      "contract": "second integer-set tree;key47h observed"
+    },
+    {
+      "address": "0046f30f",
+      "native": "0046ac50",
+      "function": "0046f160",
+      "kind": "call",
+      "contract": "second integer-set tree;key3Dh observed"
+    }
+  ],
+  "implementation_search": "no whole/unindexed0046A150/AC50 bodies;seg6 only host declarations/calls;actual generic repair/owning exception reused;node/rotation/decrement Source dependencies remain independently owned",
+  "annotation": {
+    "before_comments": "local/goal_oct15_scene_integer_set_insert_before_comments.json",
+    "before_documentation": "local/goal_oct15_scene_integer_set_insert_before_documentation.json",
+    "preserve_correct_names_and_all_prior_comments_evidence": true,
+    "linker_old_name": "STL_xlen_throw_0046a150",
+    "linker_new_name": "STL_SceneIntegerSet_LinkAndRebalance_0046A150",
+    "linker_name_qualification": "provisional descriptive whole-body hypothesis,not a recovered library symbol",
+    "locked_apply_save": "passed;local/ghidra-annotations-20261015T211101Z.json all3;local/ghidra-annotations-20261015T211555Z.json linker correction;prior values recorded and project saved each batch",
+    "refreshed_exports": "passed;all3 forced after initial annotation,linker forced again after rename",
+    "readback": "passed;local/goal_oct15_scene_integer_set_insert_final_comments.json;expected3names and prior comments/new evidence verified"
+  },
+  "verification": {
+    "project_program_guard": "bsp.py Client.verify before every live batch;bsp,/battlestationspacific.exe,x86:LE:32:default,image00400000",
+    "whole_listing_boundaries_callers_funcinfo_throw_and_provider_contracts": "passed",
+    "full_bytes_live_installed_match": "passed;685B/242instructions across all3 complete owned spans",
+    "verify_report_calls": "passed;17typed transfers,0failed;Markdown40addresses,0failed/unchecked/warnings",
+    "cmake_registration": "passed;own queue removed,immediate unleased check,unique append,no exclusive whole-file lease",
+    "provider_source_integration": "passed;rotation6328c0e30/iteratorfb49c2d46 and node finalca2f2e361 merged without provider edits;build merge b13419d6d0f60bd58237cb1f842bb22d053a8daa;only rotation/iterator CMake conflict mechanically unioned",
+    "strict_win32_build_and_existing_ctest": "passed worker scripts/build.ps1 at b13419d6d0f60bd58237cb1f842bb22d053a8daa,exit0,3/3existing CTests8.52s;root independently reports combined default8.02s",
+    "compiled_object_review": "passed;captured signed search/current final key,lowflag/full lateword,push-order actual nodecells,current head/count/left,all3direct rotations+inlined left/currentrootblack,publication schedules and real owning message cleanup/throw metadata",
+    "diff_check": "passed",
+    "new_tests": false,
+    "packet_native_differential": "not run",
+    "game_validation": "not run",
+    "independent_review": "root and string_allocate passed complete native linker/unique/C61C10 vs Source and generic repair;no mismatch/Source edit",
+    "worker_build": {
+      "command": "scripts/build.ps1",
+      "configuration": "Release MSVC Win32 /W4 /WX /fp:strict",
+      "parallel_only_addition": "CL=/MP4",
+      "source_revision": "c714e3eaf3566f70432afcdec940391f116416a6",
+      "build_revision": "b13419d6d0f60bd58237cb1f842bb22d053a8daa",
+      "source_unchanged_from_draft": true,
+      "log": "local/goal_oct15_scene_integer_set_insert_build.log",
+      "result": "exit0,3/3pass,0fail,total8.52s",
+      "ctests": {
+        "reconstructed_math": "pass0.22s",
+        "native_math_differential": "pass0.04s",
+        "tool_tests": "pass8.20s"
+      },
+      "existing_warning": "LNK4006 duplicate spawn_request_id_matches lua_binding_spawn.obj/lua_spawn_new.obj;no packet compiler warning",
+      "packet_native_differential": "not run;existing math differential unrelated to these entries"
+    },
+    "compiled_object": {
+      "path": "build/win32/bsp_core.dir/Release/native_scene_integer_set_insert.obj",
+      "receipt": "local/goal_oct15_scene_integer_set_insert_object.txt",
+      "tool": "MSVC dumpbin14.51.36244.0 /DISASM /RELOCATIONS /SYMBOLS",
+      "bytes": 8631,
+      "sha256": "7d719cae7cdb1bb0aa92ea621414d0d0f217cd362f1b3bb86947a5b16ac2ce1a",
+      "code_section_bytes": {
+        "unique": 297,
+        "linker": 177,
+        "generic_repair": 284
+      },
+      "linker_section_includes_terminal_int3": true,
+      "unique_offsets": {
+        "initial_nil": "1e",
+        "flag_store": "23",
+        "single_search_key": "2c",
+        "loop_backedge_target": "31",
+        "predecessor_node_store": "5b",
+        "predecessor_owner_store": "61",
+        "decrement": "b5",
+        "current_predecessor_reload": "bd",
+        "final_predecessor_key": "c3",
+        "current_final_key": "c6",
+        "signed_jge": "ca"
+      },
+      "inserted_publication": "owner/output/node reads9a/9c/9e then owner/node/flag storesa4/a6/a9;second pathf6/f8/fa then100/102/105",
+      "duplicate_publication": "currentoutput113,currentowner11a,owner/node/flag stores11c/11e/121",
+      "linker_offsets": {
+        "count_cmp": "08",
+        "unsigned_jae": "0f",
+        "key_pointer": "1a",
+        "head": "1d",
+        "parent": "20",
+        "node_color_store": "27",
+        "node_key_pointer_store": "2e",
+        "node_right_store": "31",
+        "node_parent_store": "34",
+        "node_left_store": "37",
+        "allocator_call": "39",
+        "current_head": "43",
+        "current_count": "46",
+        "count_store": "4a",
+        "late_lowleft": "61",
+        "repair_call": "92",
+        "current_output": "9d",
+        "node_publication": "9f",
+        "owner_publication": "a4"
+      },
+      "repair": "TreeInsertAccess<16,17>;direct provider rotation calls54/75/ac with REL32 operands55/76/ad;actual inlined mirror nil11 checkd2,repeated transferred child loadscb/d0,current root color10 blackening116",
+      "throw_helper_offsets": {
+        "counted_assign": "42",
+        "state0_arm": "54",
+        "owning_ctor": "5b",
+        "actual_current_cpp_throw": "69"
+      },
+      "cleanup": "real compiler unwind funclet tail-transfers CompletedMessage destructor;actual004072D0 call;current carrier copy/destructor/onecatchtype metadata",
+      "identity_claim": "actual cell/payload access and concrete current provider/owningCpp scope composition only;ordinary Source can outline repair/duplicate branch code;not native ABI/frames/flags/byte/COFF identity"
+    },
+    "source_file_sha256": {
+      "src/native_scene_integer_set_insert.cpp": "4873c0c6ca186c7ed7085fba4dc87fc01e15ffe03f1fb2f4b2b324eababa6e5f",
+      "include/bsp/native_scene_integer_set_insert.hpp": "cd6f4ac932108ca3beaa752e1f3ad365e5bdcc4dfa2102813f845ba61ed4339e"
+    }
+  },
+  "limits": [
+    "ordinary explicit live-cell/frame Source is not original register/stack/privateframe/byte/COFF replacement",
+    "current CRT heap/handler and owningCpp transport concrete;native RTTI/basecatches/FH3/SEH/global identity unclaimed",
+    "only valid reached backing/release domains;upperflag bytes required onlyif fullword read reached;metadata stable/disjoint;no concurrency",
+    "packet-specific native differential and game validation not run"
+  ],
+  "byte_evidence": {
+    "receipt": "local/goal_oct15_scene_integer_set_insert_bytes.json",
+    "complete_live_spans_match_installed_pe": true,
+    "ranges": [
+      {
+        "address": "0046a150",
+        "length": 492,
+        "instructions": 167,
+        "sha256": "0ec5ec7849eabb8c32406d589281086e04fc86a00086469247c01d78845886a0"
+      },
+      {
+        "address": "0046ac50",
+        "length": 185,
+        "instructions": 73,
+        "sha256": "eb927e3a7693f4ddcddeecf4985eff839a771158b2c7df3bc835e8c97d22accb"
+      },
+      {
+        "address": "00c61c10",
+        "length": 8,
+        "instructions": 2,
+        "sha256": "904a8059361621d7332692a34ffb2a0e7070348a9bbf02d87bad22abe93b6e12"
+      }
+    ]
+  }
+}
