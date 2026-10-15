@@ -34,11 +34,11 @@ fault/SEH/register-spill identity remain outside the accepted interface.
 Delegation describes Source composition only. The owned native body has no
 outgoing transfer, EH frame, allocation, validation, cleanup or rollback.
 
-At `0046B122`, `0046AFB0` calls `00468440`.
+`0046B122 CALL 00468440` occurs in `0046AFB0`.
 It pushes value address EDX, last ESI and first EDI; afterward ADD ESP,0Ch clears
 that triple.
 
-At `0046B155`, `0046AFB0` calls `00468440`.
+`0046B155 CALL 00468440` occurs in `0046AFB0`.
 It pushes value address EAX, last ECX and first EDI; subsequent ADD ESP,18h clears
 the earlier pending backward-copy triple and the fill triple. Neither continuation
 consumes EAX before the containing RET10h. This does not establish a nominal
