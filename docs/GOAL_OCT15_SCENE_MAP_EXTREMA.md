@@ -72,6 +72,14 @@ and image base against configured `C:/Users/sqz269/bsp.gpr`. Evidence annotation
 uses the write lock, preserves comments and native names, records prior values,
 saves the project and refreshes both exports. No live prototype repair occurs.
 
+The registered source (`af4feef5e`, registration `a6bf90804`) passed
+`scripts/build.ps1` Release Win32: its translation unit compiled, all targets
+linked, and both enabled existing CTests passed (`reconstructed_math`,
+`tool_tests`; 7.85 seconds). The log is
+`local/goal_oct15_scene_map_extrema_build.log`. Native math differential is
+not enabled in this worker tree. Both exact report CALL rows and staged
+whitespace checks passed. No new tests were added.
+
 Compilation and existing checks do not establish direct original-byte
 execution. No new routine tests are added. Original binary ABI, private-frame
 and instruction-fault identity, application adoption and game behavior remain

@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_scene_map_extrema",
-  "status": "complete_actual_raw_source_pending_win32_build",
+  "status": "complete_functional_actual_raw_extrema_win32_build_and_two_enabled_existing_tests_passed",
   "source_ready": true,
   "source": "src/native_scene_record_map_extrema.cpp",
   "header": "include/bsp/native_scene_record_map_extrema.hpp",
@@ -125,8 +125,19 @@
   "verification": {
     "original_bytes": "Both live-dump envelopes match installed PE:55 bytes;52 executable bytes, 3 unreachable max alignment bytes excluded; per-envelope hashes recorded",
     "verify_report_calls": "2 call rows checked,0 failed",
-    "win32_build": "pending",
-    "existing_tests": "pending",
+    "win32_build": "scripts/build.ps1 Release Win32 passed exit0; registered new source compiled and all targets linked; local/goal_oct15_scene_map_extrema_build.log",
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 7.85,
+      "native_math_differential_enabled": false,
+      "dedicated_native_extrema_differential": false
+    },
     "diff_check": "passed before Source draft",
     "new_tests": 0,
     "direct_native_extrema_execution": false,
@@ -134,7 +145,12 @@
     "game_validated": false,
     "application_adoption": false,
     "cmake_registration": "Holder released; fresh unleased owner/queue check, left queue, appended exactly one unique source line without exclusive shared-registry lease",
-    "documentation_claim_check": "16 addresses,0 failed,1 unchecked caller sentence covered by exact JSON rows;1 expected warning for explicitly excluded unowned alignment gap"
+    "documentation_claim_check": "16 addresses,0 failed,1 unchecked caller sentence covered by exact JSON rows;1 expected warning for explicitly excluded unowned alignment gap",
+    "source_commit": "af4feef5e",
+    "registration_commit": "a6bf90804",
+    "inherited_linker_warning": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-goal_oct15_erase\\build\\win32\\bsp_core.vcxproj]"
+    ]
   },
   "limits": [
     "Complete functional bodies with 3 unreachable max alignment bytes excluded; min's6 reachable neutral bytes separately identified, no inflated functional count",
