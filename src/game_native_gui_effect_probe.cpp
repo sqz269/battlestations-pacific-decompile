@@ -364,8 +364,8 @@ const GameNativeGuiEffectProbeObservation& GameNativeGuiEffectProbe::run(bool in
         o.source_mode_on_create = p.renderer.shader_cache_context().source_mode_0108d6f1;
         o.load_variants_on_create = p.renderer.shader_cache_context().load_variants_0108d6f0;
         if (include_fakemotion)
-            require(o.source_mode_on_create == 0,
-                "fakemotion binary preload probe requires the existing compiler source mode0");
+            require(o.source_mode_on_create == 0 && o.load_variants_on_create == 0,
+                "fakemotion binary preload probe requires existing compiler source mode0 and variants0");
         o.cache_creation_entered = true;
         p.renderer.create_shader_cache();
         o.cache_creation_returned = true;

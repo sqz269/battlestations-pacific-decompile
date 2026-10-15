@@ -2,6 +2,8 @@
 
 `GameNativeGuiEffectProbe::run(bool include_fakemotion = false)` adds a bounded acquisition check using the existing effect application and canonical shader-cache bracket. The default remains the two genuine font acquisitions. This packet builds the probe and preserves its Source/object evidence; it does not claim a successful fakemotion runtime acquisition or POST draw.
 
+The application enables the extended probe only with `BSP_NATIVE_POST_CACHE_PROBE=1`. That switch includes the two font acquisitions before the cold/warm fakemotion pair. `BSP_NATIVE_GUI_EFFECT_PROBE=1` alone keeps its existing font-only behavior. Both switches are off by default. The extended probe requires the existing compiler `source_mode=0` and `load_variants=0` before cache creation; it does not change either byte.
+
 The Original bracket and ownership contract is in [NATIVE_POST_CACHE_ORDER_CC12.md](NATIVE_POST_CACHE_ORDER_CC12.md). In particular, `0073C1BE` closes the binary cache before the later `+664` producer, while preload effect credits survive in the application vector. The probe follows that close-before-warm-use relationship. It does not replace native Lua preload iteration, the production application vector, or its shutdown schedule.
 
 ## Scope and normal order
@@ -10,7 +12,7 @@ The two existing `resources` slots remain `GuiFont.mshd` and `GuiFontBilinear.ms
 
 | Step | Opt-in behavior and recorded evidence |
 | --- | --- |
-| Cache creation | Existing renderer operation only, one-shot, existing compiler source mode 0. Record actual cache identity and both mode bytes; do not write them. |
+| Cache creation | Existing renderer operation only, one-shot, existing compiler source mode 0 and load variants 0. Record actual cache identity and both mode bytes; do not write them. |
 | Existing fonts | Same two guarded acquisitions in the same order. Record operation, owner, cache publication and cursor before/after each call. |
 | Cold fakemotion | Operation index 2, real `fakemotionblur.mshd`, same `GameNativeGuiEffectApplication::acquire_effect_00b318b0`. Require a completed registered genuine cold creator, registry publication and exact caller credit, with no fallback call. |
 | Forward consumption | Require unchanged canonical cache/mode domains and record count, with a strictly increased cursor within the same owner. These endpoints are not a complete lookup trace. |

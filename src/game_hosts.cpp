@@ -2355,9 +2355,15 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
             language_font_path_008d4890(settings_host_->language_catalog(),
                 settings_view_.gameplay.language_index_04));
     }
+    char native_post_cache_probe_requested[2]{};
+    const bool include_native_post_cache =
+        GetEnvironmentVariableA("BSP_NATIVE_POST_CACHE_PROBE", native_post_cache_probe_requested,
+            sizeof(native_post_cache_probe_requested)) == 1 && native_post_cache_probe_requested[0] == '1';
     char native_gui_probe_requested[2]{};
-    if (GetEnvironmentVariableA("BSP_NATIVE_GUI_EFFECT_PROBE", native_gui_probe_requested,
-            sizeof(native_gui_probe_requested)) == 1 && native_gui_probe_requested[0] == '1') {
+    const bool include_native_gui_effects =
+        GetEnvironmentVariableA("BSP_NATIVE_GUI_EFFECT_PROBE", native_gui_probe_requested,
+            sizeof(native_gui_probe_requested)) == 1 && native_gui_probe_requested[0] == '1';
+    if (include_native_gui_effects || include_native_post_cache) {
         // Retain metadata before entering actual parents. Failure preserves the
         // entire application graph; a successful run retires only its caller
         // credits and names, then keeps parent bindings through the raw drain.
@@ -2365,7 +2371,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
             *vfs_, *singletons_, *native_data_, *settings_process_, *input_runtime_,
             native_renderer_->loading_platform_focus_publication());
         try {
-            (void)native_gui_probe_->run();
+            (void)native_gui_probe_->run(include_native_post_cache);
             native_gui_probe_->retire_caller_references();
         } catch (...) {
             exit_if_native_gui_probe_incomplete();
