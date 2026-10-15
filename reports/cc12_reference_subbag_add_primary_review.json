@@ -1,0 +1,65 @@
+{
+  "schema": "bsp.reference_subbag_add_primary_review.v1",
+  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_build_pending",
+  "Source_commit": "90b7c55dfd72b5b346c00a3c5d773df822a14b5c",
+  "Source": "src/native_scene_property_reference_subbag_add.cpp",
+  "header": "include/bsp/native_scene_property_reference_subbag_add.hpp",
+  "documentation": "docs/NATIVE_SCENE_PROPERTY_REFERENCE_SUBBAG_ADD_CC12.md",
+  "functions": [
+    "add_native_scene_property_reference_008f3ac0",
+    "add_native_scene_property_subbag_008f3b60"
+  ],
+  "primary_whole_Source_header_doc_Original_contract_read": true,
+  "primary_author_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_reference_subbag_add_integration_20261015\\primary_author_inputs.DATA.json",
+    "bytes": 175937,
+    "sha256": "9ab3874ec522ed100a3e1bfd0b9e1de85100029dc6a5c7144156737091d1c34b"
+  },
+  "primary_peer_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_reference_subbag_add_integration_20261015\\primary_peer_inputs.DATA.json",
+    "bytes": 153575,
+    "sha256": "8c3587b812bcd76be52863278aa848063d01035471ac8a72b3bcd329ee6527ef"
+  },
+  "independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\ScenePropertyReferenceSubBagIndependentReview01\\independent_verdict.json",
+    "bytes": 12070,
+    "sha256": "9e7eda336daf752720978e870566b0aed6a7734878552ea2a425035d013c8d40"
+  },
+  "contract": [
+    "Whole reference008F3AC0 [3AC0,3B56)150B47/RET10/EAXbag andsubbag008F3B60 [3B60,3BCA)106B36/RET8/EAXbag, ECXactual114hbag. New explicit context C++ interfaces, noOriginalABI.",
+    "Reference canonicalfreshuninitialized38hroot: DWORDphase0CE89D4/tag4=5/fullword08at8/fullword18at18, onlynow actual rawnullable00438E40duplicate, fullownedresult1C, zeroDWORD20/24/34, BYTE1at2C, whole33F0. Exactly33written23preserved[0C,18),[28,2C),[2D,34). Full32bitopaqueindependentwords, nullabletargetborrowedstablebytes/notnecessarilyASCII, distinctownedduplicate/roottransferonpublication.",
+    "Subbag canonicalfreshuninitialized38hroot: DWORDphase0/tag4=6/fullchildC,zero18/1C/20/24/30, fullrootpointertoactualchild+110 BEFORErootzero34/zero8/BYTE1at2C/whole33F0. Exactly41rootbytes+4childbytes,15rootpreserved[10,18),[28,2C),[2D,30). Realadoptionofactualgenuineuniqueowningraw61live114hchild/initialbacklink0, notclone/copy/detach/borrowonly. Callerrelinquishesownershipsuccess, child+110nonowning, type6retirementscalar-deletesflags1. No8EF780orderflip/oldownerrepair/cyclecheck/rollback.",
+    "SAMEcanonicalcurrentheap/string/physicalprocess/insertioncontext/actualraw61live114hbag+4map/explicitCC8A30startup/E175B0nodegeneration/commonE188B4/rawkeys/gate/E177E4/E17654cells. Finiteuniqueunsharedacyclicdisjointstablevalidgraphs/keys/currentClocale, successfulnonthrowserializedservices, noalias/reentry/concurrenttrim. Own84actualcompilerinputs allprecompilefrozen in117prospective,25providers+64tools includingclui ownbefore; allunchanged.",
+    "Nullalloc structurallyskipseveryrootstore/duplicate/backlinkbutstillnullinsertion; notsuccessdomain. Nonnullroot/nullchild faultsnotguarded. Sourcebyvalue/helper/register/load/flags timing differsOriginal. ReferenceOriginalstate0savedrootfreeCA49E0/handlerCA49EB/FuncInfoDD76C8/unwindDD76C0 disarmedbeforeinsertion; SourceprovidesnoFS/EH/privateCRT/fault/recovery/rollbackparity. NoOriginalABI/privateCRT/EH/startup/parser/resolution/World/runtime/gamecredit."
+  ],
+  "strict": {
+    "initial_chunk": "14478d",
+    "exit_code": 0,
+    "runtime_library": "MD",
+    "object_bytes": 3004,
+    "object_sha256": "ce259406b86e4f5726e302e9c0fc92045d0a7b95607e59d16c274df6f962abd1",
+    "sections": 9,
+    "symbol_slots": 31,
+    "code_sections": 5,
+    "code_bytes": 500,
+    "decoded_instructions": 191,
+    "code_relocations": 30,
+    "metadata_relocations": 0
+  },
+  "author_normal": {
+    "initial_chunk": "30056a",
+    "session": 27542,
+    "terminal_chunk": "fafec9",
+    "exit_code": 0,
+    "configured_tests": 2,
+    "seconds": 7.41,
+    "new_TU_registered": false
+  },
+  "Main_registered": true,
+  "Main_build": "pending",
+  "Original_ABI_compatible": false,
+  "Original_EH_or_private_CRT_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false,
+  "whole_parser_equivalent": false
+}
