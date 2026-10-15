@@ -1,0 +1,70 @@
+{
+  "packet": "oct15_layer_normal",
+  "owner": "agent/oct15_avoid_tangent",
+  "date": "2026-10-15",
+  "status": "complete_control_flow_win32_build_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "Read-only verifying bsp.py queries and saved exports; primary owns annotations",
+  "sources": ["src/avoid_zone_layer_normal.cpp", "include/bsp/avoid_zone_layer_normal.hpp"],
+  "docs": ["docs/OCT15_LAYER_NORMAL.md"],
+  "routines": [
+    {
+      "address": "0041bd10",
+      "name": "BSP_AvoidZoneLayer_GridNormal",
+      "previous_ghidra_name": "FUN_0041bd10",
+      "reconstruction": "avoid_zone_layer_normal_0041bd10",
+      "body_start": "0041bd10",
+      "body_end_inclusive": "0041be81",
+      "original_abi": "ECX layer; stack out_float3/point_float2; EAX out; RET8 at 0041be7f",
+      "coverage": "complete control flow through required sampling bindings and existing native CRT/math access",
+      "unread_ranges": [],
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {"function": "0041bd10", "address": "0041bd31", "native": "00417fa0", "contract": "Complete callee body/listing read; out/x/z, RET0Ch; float-stored transform and clamps; required sampling binding"},
+    {"function": "0041bd10", "address": "0041bd44", "native": "0041bae0", "contract": "Complete callee body/listing read; x0/z0, RET8; clamped indices, native 32-bit row index, byte*scale; exact invalid-span policy required"},
+    {"function": "0041bd10", "address": "0041bd57", "native": "00bf7420", "contract": "Complete direct callee listing and existing implementation read; consume ST0=(extended cell.x+1.0), actual mutable0109EEA4 selects conversion path; low EAX index"},
+    {"function": "0041bd10", "address": "0041bd62", "native": "0041bae0", "contract": "x1/z0, same complete cell-height contract"},
+    {"function": "0041bd10", "address": "0041bd75", "native": "00bf7420", "contract": "Consume ST0=(extended cell.z+1.0); actual runtime mode read again; existing native converter"},
+    {"function": "0041bd10", "address": "0041bd82", "native": "0041bae0", "contract": "x0/z1, same complete cell-height contract"},
+    {"function": "0041bd10", "address": "0041bdb4", "native": "0041bae0", "contract": "x1/z1, after first-gradient output stores; same complete cell-height contract"},
+    {"function": "0041bd10", "address": "0041be14", "native": "00419440", "contract": "Complete callee listing and existing implementation read; x87 vector-length schedule and reconstructed finite sqrt core; native exceptional diagnostics still require borrowed actual CRT access; ST0 float stored before reciprocal"}
+  ],
+  "corrections": [
+    {"address": "0041bd10", "was": "Decompiler represents converter outputs through pointer/int/float casts and omits ST0 inputs", "is": "Base indices are CVTTSS2SI; neighboring indices consume extended cell+double1.0 via BF7420; low EAX word supplies each index", "evidence": "0041bd36/0041bd3c base conversions; 0041bd4d-0041bd57 and 0041bd6b-0041bd75 FLD/FADD/CALL sequences; no intervening float store"},
+    {"address": "0041bd10", "was": "Decompiler's <=0 condition loses unordered normalization behavior", "is": "Nonpositive or unordered length uses +0 reciprocal and still multiplies all three components", "evidence": "0041be23 FCOMI; 0041be27 JBE; 0041be33-0041be38 zero arm; products/stores continue through 0041be76"}
+  ],
+  "arithmetic": {
+    "base_index": "Native CVTTSS2SI, including hardware invalid-range behavior; no C++ float-to-int cast",
+    "neighbor_index": "Existing native_crt_truncate_st0_00bf7420 consumes extended cell+double1.0; mode pointer is actual mutable0109EEA4",
+    "rounding": "Input copies, four returned heights, both gradient differences, sums, length, reciprocal and products retain native float stores",
+    "normalization": "JBE includes unordered; reciprocal +0 is multiplied even by nonfinite components",
+    "bytes": "0041be2b DE F1 reverse division; 0041be57 D8 C9 ST0 multiplication; 00d7a210 double1.0",
+    "dc_scan": "python tools/x87_dc_form_scan.py --range 0041bd10-0041be81 --context 12: 0 sites in 0 functions"
+  },
+  "layout": {
+    "declaration": "Existing TerrainGridLayerRecord::cell_size and TerrainGridLayerOffsets::kCellSize",
+    "producer": "00423960, FSTP float [ECX+0Ch] at00423993 after double24000/dimension",
+    "new_offsets_or_overlays": false
+  },
+  "validation": {
+    "candidate_and_callee_evidence": "passed",
+    "live_incoming_xrefs": "none found",
+    "win32_build_and_existing_ctest": "passed: ./scripts/build.ps1; reconstructed_math, native_math_differential and tool_tests, 3/3 in 7.22 seconds; native suite covers existing seeds, not this routine",
+    "build_log": "local/oct15_layer_normal_build.log",
+    "verify_report_calls": "passed: eight direct call rows, zero failed",
+    "markdown_checker": "zero failures; three narrative claims unpaired by parser, supported by native listing and callee source; all direct call sites checked by JSON report",
+    "diff_check": "passed: git diff --cached --check"
+  },
+  "limitations": [
+    "Provisional semantic name and new typed ABI; primary handles Ghidra mutation",
+    "Required world/cell sampling bindings, stable borrowed layer and actual CRT state/handlers; nonoverlapping typed buffers",
+    "Existing game-host CellHeight invalid-storage zero substitute is not accepted as exact native behavior",
+    "Existing00419440 finite nonnegative sqrt core is reconstructed; native exceptional diagnostics require actual CRT state/handler and are not independently validated here",
+    "No new tests, native-byte differential execution of this routine, game wiring or gameplay validation",
+    "No full exception/status equivalence claim across C++ sampling boundaries"
+  ]
+}
