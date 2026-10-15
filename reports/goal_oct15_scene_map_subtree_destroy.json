@@ -1,0 +1,130 @@
+{
+  "packet": "goal_oct15_scene_map_subtree_destroy",
+  "status": "complete_actual_raw_source_pending_win32_build",
+  "source_ready": true,
+  "source": "src/native_scene_record_map_subtree_destroy.cpp",
+  "header": "include/bsp/native_scene_record_map_subtree_destroy.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_MAP_SUBTREE_DESTROY.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Every live bsp.py client verifies expected project/program/x86 language/image base before batch",
+    "annotation": "Applied under ghidra_annotate write lock; correct library name/comment preserved, prior values in annotation_history/local log, project saved, owned export refreshed"
+  },
+  "readiness": {
+    "indexed_reconstruction_before_packet": false,
+    "existing_source": "seg6_cc13 host contract delegates leaf; no existing full actual-body Source",
+    "dependencies": "Existing concrete native_string_pool_get_or_create_00419cc0 raw-manager overload, return_native_string_pool_00bd1510 and actual current-CRT singleton_lifetime_free; no new callback/service/stub"
+  },
+  "routines": [
+    {
+      "address": "0046ad10",
+      "name": "destroy_native_scene_record_map_subtree_0046ad10",
+      "native_name_preserved": "STL_Tree_Erase_0046ad10",
+      "body": "0046ad10-0046ad61",
+      "native_bytes": 82,
+      "original_bytes_hex": "5356578b7c2410807f19008bd98bf7753b8b4608508bcbe8e4ffffff8b4f1085c98b3674168b470c6a0183c0015051e87ceffaff8bc8e8c567760057e85bb8780083c404807e19008bfe74c55f5e5bc20400",
+      "coverage": "complete_actual_raw_source_with_inherited_provider_and_new_interface_qualifications",
+      "original_abi": "ECX saved in EBX/forwarded only to self recursion, never dereferenced; stack root pointer; RET4; no semantic result. Source omits that unused receiver and adds NativeStringRawPoolContext, new C++ interface.",
+      "schedule": "Current sentinel first; recurse CURRENT right+8. After return capture CURRENT key data+10, THEN CURRENT left+0; nonnull captured data alone reads CURRENT length+C+1 DWORD wrap, genuine actual getter then return. Free current node using actual currentCRT service; test captured left sentinel and continue left. No freed-node/header reload, map reset, header zeroing, mapped-word or color operation.",
+      "exception_path": "No local cleanup/catch/rollback. Getter exception escapes after completed right-subtree destruction and before current-node free/left continuation.",
+      "host_steps": [
+        {
+          "address": "0046ad27",
+          "native": "0046ad10",
+          "function": "0046ad10",
+          "host": "destroy_native_scene_record_map_subtree_0046ad10",
+          "contract": "Recurse current right child read before call; original ECX forwarded but unused at every depth; RET4."
+        },
+        {
+          "address": "0046ad3f",
+          "native": "00419cc0",
+          "function": "0046ad10",
+          "host": "native_string_pool_get_or_create_00419cc0 raw-manager overload",
+          "contract": "No explicit native arguments; pending block/size/1 remain. Resolve on every captured nonnull key-data path including large/disabled returns; exact actual publication/manager refs."
+        },
+        {
+          "address": "0046ad46",
+          "native": "00bd1510",
+          "function": "0046ad10",
+          "host": "return_native_string_pool_00bd1510",
+          "contract": "Existing concrete raw-pool return of captured data and wrapped length+1, genuine current shutdown gate. Native third word1 ignored, RET0Ch. Zero returned size not excluded."
+        },
+        {
+          "address": "0046ad4c",
+          "native": "00bf65ac",
+          "function": "0046ad10",
+          "host": "singleton_lifetime_free",
+          "contract": "Accepted actual matching current-CRT free service: source std::free, native thunk JMPBF9DC8. Current node captured across prior calls, caller ADDesp4; captured-left continuation after return."
+        }
+      ],
+      "original_bytes_sha256": "da13a2562fba82a266f8bc56fd8b400f67ec3ecf84bcec0c10a66e57a299b6ac"
+    }
+  ],
+  "caller_evidence": [
+    {
+      "address": "0046b5ba",
+      "native": "0046ad10",
+      "function": "0046b570",
+      "contract": "MOV current tree+4 head, read head+4 root, PUSH root, ECX=ESI tree; child RET4; caller separately resets current head after return. Exact setup/after context checked."
+    },
+    {
+      "address": "0046bdda",
+      "native": "0046ad10",
+      "function": "0046bd10",
+      "contract": "Current EDI tree head/root, PUSH root, ECX=EDI; RET4; header reset belongs to caller after helper. No nominal mapped type inferred."
+    },
+    {
+      "address": "0046b709",
+      "native": "0046ad10",
+      "function": "0046b680",
+      "contract": "Current ESI tree head/root, PUSH root, ECX=ESI; RET4; caller owns subsequent header reset. No nominal mapped type inferred."
+    },
+    {
+      "address": "0046b46c",
+      "native": "0046ad10",
+      "function": "0046b460",
+      "contract": "Clear: ESI=entryECX tree; current head/root, PUSH root then ECX=ESI; RET4. Clear resets header/count separately."
+    }
+  ],
+  "layout_authority": {
+    "reference": "docs/SCENE_RECORD_MAP.md plus actual constructor/insertion listings read in preceding packets of this stream",
+    "node": "Existing actual1Ch links0/4/8, raw key+C/+10, mapped+14, color18/sentinel19",
+    "mapped_type": "Uncertain nominal type/ownership preserved; owned body does not read or free mapped+14",
+    "new_node_or_owner_overlay": false,
+    "alias_preservation": "Volatile raw reads; recurse before current data/left capture, data before left before conditional length, captured block/size across pool getter and captured left across pool/free; no stale pre-recursion snapshot or dead-node reload"
+  },
+  "corrections": [],
+  "verification": {
+    "original_bytes": "Live originals retained;82-byte length checked and SHA256 recorded",
+    "verify_report_calls": "8 call rows checked,0 failed",
+    "win32_build": "pending",
+    "existing_tests": "pending",
+    "diff_check": "passed before Source draft",
+    "new_tests": 0,
+    "direct_native_subtree_execution": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "application_adoption": false,
+    "cmake_registration": "Unleased owner/queue check; appended exactly one unique source registration without exclusive shared-registry lease",
+    "documentation_claim_check": "18 addresses,0 failed,1 unchecked caller sentence covered by exact JSON call rows"
+  },
+  "limits": [
+    "New Source interface omits unused original ECX receiver and adds explicit actual raw-pool context; no original binary/private-frame/SEH or fault-address identity",
+    "Full native DWORD size wrap including zero passed to actual pool; no added positive-only domain, null/bounds/cycle guard or mapped ownership conversion",
+    "Valid taken backing and actual provider-compatible raw pool/current-CRT allocations remain required",
+    "Existing compilation/regression checks do not provide dedicated original-byte subtree execution, application adoption or game proof"
+  ],
+  "annotation_history": [
+    {
+      "address": "0046ad10",
+      "before": {
+        "address": "0046ad10",
+        "function_name": "STL_Tree_Erase_0046ad10"
+      },
+      "name_preserved": "STL_Tree_Erase_0046ad10",
+      "status": "applied"
+    }
+  ]
+}
