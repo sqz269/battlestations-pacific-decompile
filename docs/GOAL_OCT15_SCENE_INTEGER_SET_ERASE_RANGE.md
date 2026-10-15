@@ -53,12 +53,23 @@ The scene-database destructor at `0046EFB0` supplies the embedded sets at +164h
 then +158h at `0046F002` and `0046F039`. Their caller/private cleanup bodies are
 evidence, not newly owned or reconstructed by this packet.
 
-The full clear provider is real accepted Source in the primary staging branch.
-The coordinated increment and single-erase dependencies are named, concrete
-drafts whose APIs/frames were read; their files must be merged before this
-packet is Source-ready or build-final. No stub, callback, nil19h/string body or
-success-only narrowing substitutes for those dependencies. Initial status is
-therefore complete algorithm draft with dependency merge/build pending.
+The full clear, increment and single-erase providers are concrete accepted
+Source merged from published main. No stub, callback, nil19h/string body or
+success-only narrowing substitutes for those dependencies. The primary
+independently reviewed the whole 76-instruction listing against draft
+`cbb797126`; Source/header hashes are recorded in the report.
+
+With N the native range entry ESP, outer parameters occupy N+4 through N+17h
+and private output occupies N-8 through N-1. Reached child entry is N-28h;
+its argument cells occupy N-24h through N-19h and its savedNODE DWORD is at
+N-7Ch through N-79h (child entry-54h). These coordinates document the native
+backing; they do not impose hidden physical overlap on the new Source frames.
+
+Required `scripts/build.ps1` passed at merged revision `1cb997fdf`, targeting
+MSVC Win32. Both enabled existing checks passed in 9.00 seconds: math and tool
+tests. This worker build does not enable optional native differential fixtures.
+The existing unrelated LNK4006 duplicate `spawn_request_id_matches` warning
+remains. Eleven typed transfer rows passed verification; no new tests were added.
 
 Live query batches verify configured `C:/Users/sqz269/bsp.gpr` and
 `/battlestationspacific.exe`. Complete original bytes, typed transfers and prior

@@ -100,21 +100,21 @@
       "routine": "00468980",
       "symbol": "clear_native_scene_integer_set_00468980",
       "source": "src/native_scene_integer_set_clear.cpp",
-      "status": "accepted primary staging Source; reuses complete subtree/reset schedule",
+      "status": "accepted complete Source merged from published main",
       "modified": false
     },
     {
       "routine": "00466ae0",
       "symbol": "increment_native_scene_integer_set_iterator_00466ae0",
       "source": "src/native_scene_integer_set_increment.cpp",
-      "status": "accepted concrete final6991d0647; dependency merge pending",
+      "status": "accepted concrete final6991d0647 Source merged from published main",
       "modified": false
     },
     {
       "routine": "0046a740",
       "symbol": "erase_native_scene_integer_set_iterator_0046a740",
       "source": "src/native_scene_integer_set_erase.cpp",
-      "status": "named concrete draftcd9d10a6; dependency merge pending",
+      "status": "accepted concrete draftcd9d10a6 Source merged from published main476925766; unchanged final532a94ead metadata accepted by primary",
       "modified": false
     }
   ],
@@ -125,25 +125,65 @@
       "comment": ""
     }
   ],
-  "source_registration": "unique cmake/startup.cmake append after fresh unleased check; own queue removed; real dependency merge required before build",
+  "source_registration": "unique cmake/startup.cmake append after unleased check and own queue removal; all concrete dependency files merged from published main",
   "validation": {
-    "source_ready": false,
-    "build": "pending real dependency merge",
-    "existing_ctests": "pending",
+    "source_ready": true,
+    "build": {
+      "command": "scripts/build.ps1",
+      "result": "PASS",
+      "exit_code": 0,
+      "revision": "1cb997fdf01d2e6437c618610a7e7bbabf11d6f3",
+      "platform": "MSVC Win32",
+      "log": "local/goal_oct15_scene_integer_set_erase_range_build.log",
+      "log_sha256": "cd108c60a5240b4d98da7c7169ea75080fba1a2e2113f81a0e469e7d4b42ddd6",
+      "warnings": [
+        "existing unrelated LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj"
+      ]
+    },
+    "existing_ctests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "seconds": 9.0,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "optional_native_differential_enabled": false
+    },
     "report_call_verification": "PASS: 11 typed rows; documentation 0 failures/unchecked/warnings",
     "new_tests": 0,
     "native_differential_fixture": false,
     "abi_compatible": false,
     "game_executed": false,
-    "game_validated": false
+    "game_validated": false,
+    "diff_check": "PASS"
   },
-  "qualification": "Complete ordinary actual14h range algorithm draft with named real increment/single-erase dependencies not yet merged; lazy explicit outer/child/private output/savedNODE backing, all returnable diagnostics; no stub/callback/narrowing/private CRT/FH3/native ABI/candidate differential/game claim",
+  "qualification": "Complete independently reviewed ordinary actual14h range Source with real clear/increment/single-erase providers merged; lazy explicit outer/child/private output/savedNODE backing and all returnable diagnostics. New Source interface; no stub/callback/narrowing/private CRT/FH3/native ABI/candidate differential/game claim",
   "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
   "annotation": {
     "tool": "tools/ghidra_annotate.py --apply --addresses 0046B170",
-    "prior_values_log": "local/ghidra-annotations-20261015T213812Z.json",
     "saved": true,
     "refreshed_export": "exports/bsp/functions/0046b170/decompiled.c",
-    "library_role_name_retained": true
+    "library_role_name_retained": true,
+    "prior_values_logs": [
+      "local/ghidra-annotations-20261015T213812Z.json",
+      "local/ghidra-annotations-20261015T214104Z.json"
+    ]
+  },
+  "independent_review": {
+    "reviewer": "primary /root",
+    "reviewed_draft": "cbb797126",
+    "result": "PASS whole 76-instruction listing against complete Source/header; all captures, returning diagnostics, lazy backing, exact clear composition and output publication verified",
+    "source_sha256": "b679c6f2758e1a33b892cb2187e2efe4d820ca2d8e46841ae398e2e9421b139b",
+    "header_sha256": "444f04e103ee3e7889054ee6b0df10713efca4de414222c682e31243c54a370a"
+  },
+  "native_frame_coordinates": {
+    "base": "N = original0046B170 entry ESP; coordinates are evidence, not an implicit Source physical-stack layout",
+    "outer_parameters20": "N+4..N+17h inclusive; output,+8 firstowner,+C firstnode,+10 lastowner,+14 lastnode",
+    "private_output8": "N-8..N-1 inclusive",
+    "child_entry": "N-28h after pushes node,owner,output and CALL",
+    "child_parameters12": "N-24h..N-19h inclusive (childentry+4/+8/+C output/owner/node)",
+    "child_saved_node4": "childentry-54h = N-7Ch..N-79h inclusive; backing requirement belongs only to reached child nonnil path"
   }
 }
