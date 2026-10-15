@@ -1,0 +1,92 @@
+{
+  "packet": "goal15b_grid_byte_vector_resize",
+  "status": "complete_source_kernels_strict_win32_object_and_owned_noncall_bytes_checked",
+  "source": "src/native_grid_byte_vector_resize.cpp",
+  "header": "include/bsp/native_grid_byte_vector_resize.hpp",
+  "documentation": "docs/GOAL15B_GRID_BYTE_VECTOR_RESIZE.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "All live queries use target-verifying bsp.py bridge; complete exported listings read; live prototype/body bounds and bytes verified."
+  },
+  "routines": [
+    {
+      "address": "004219a0",
+      "end": "00421a48",
+      "name": "native_grid_byte_vector_resize_004219a0",
+      "original_abi": "ECX vector; stack(uint32 size, fill DWORD low byte); RET8",
+      "source_abi": "__fastcall(vector, unused_EDX, size, uint8 fill), same remaining stack payload; new Source API",
+      "coverage": "complete owned instruction schedule through concrete primitive/CRT implementations"
+    },
+    {
+      "address": "00420dd0",
+      "end": "00420f72",
+      "name": "native_grid_byte_vector_insert_fill_00420dd0",
+      "original_abi": "ECX vector; stack(iterator owner, position, count, fill pointer); RET10h",
+      "source_abi": "__fastcall(vector, unused_EDX, iterator-by-value, count, fill pointer), new Source API",
+      "coverage": "complete; count-zero fill capture, length guard, allocation, both spare-capacity tail branches and alias/header schedule"
+    },
+    {
+      "address": "0041d7d0",
+      "end": "0041d81f",
+      "name": "native_grid_byte_vector_erase_checked_0041d7d0",
+      "original_abi": "ECX vector; stack(out iterator pointer, first owner/position, last owner/position); RET14h; EAX out",
+      "source_abi": "__fastcall(vector, unused_EDX, out, first iterator, last iterator), new Source API",
+      "coverage": "complete; returning invalid handler, signed tail-copy guard, current header reload and ordered result stores"
+    }
+  ],
+  "host_steps": [
+    {"address":"004219d5","native":"00bf6713","containing_function":"004219a0"},
+    {"address":"004219e6","native":"00420dd0","containing_function":"004219a0"},
+    {"address":"00421a08","native":"00bf6713","containing_function":"004219a0"},
+    {"address":"00421a15","native":"00bf6713","containing_function":"004219a0"},
+    {"address":"00421a2a","native":"00bf6713","containing_function":"004219a0"},
+    {"address":"00421a3a","native":"0041d7d0","containing_function":"004219a0"},
+    {"address":"00420e11","native":"004200d0","containing_function":"00420dd0"},
+    {"address":"00420e67","native":"00418540","containing_function":"00420dd0"},
+    {"address":"00420e84","native":"00bf67a7","containing_function":"00420dd0"},
+    {"address":"00420e99","native":"0041f450","containing_function":"00420dd0"},
+    {"address":"00420ead","native":"00bf67a7","containing_function":"00420dd0"},
+    {"address":"00420ecc","native":"00bf65ac","containing_function":"00420dd0"},
+    {"address":"00420f01","native":"0041e630","containing_function":"00420dd0"},
+    {"address":"00420f18","native":"0041f450","containing_function":"00420dd0"},
+    {"address":"00420f2c","native":"0041c630","containing_function":"00420dd0"},
+    {"address":"00420f46","native":"0041e630","containing_function":"00420dd0"},
+    {"address":"00420f55","native":"0041c650","containing_function":"00420dd0"},
+    {"address":"00420f64","native":"0041c630","containing_function":"00420dd0"},
+    {"address":"0041d7e3","native":"00bf6713","containing_function":"0041d7d0"},
+    {"address":"0041d805","native":"00bf67a7","containing_function":"0041d7d0"}
+  ],
+  "caller_steps": [
+    {"address":"0042399e","native":"004219a0","containing_function":"00423960","arguments":"layer+18h; DWORD n*n; zero fill; RET8 resize"},
+    {"address":"00423a6d","native":"004219a0","containing_function":"004239e0","arguments":"layer+18h; DWORD n*n; zero fill; RET8 resize"},
+    {"address":"00423b67","native":"004219a0","containing_function":"00423af0","arguments":"layer+18h;100; zero fill; RET8 resize"}
+  ],
+  "dependencies": {
+    "byte_primitives": "Concrete public native_byte_range_primitives.hpp/.cpp; independent packet goal15b_byte_range_primitives commit72cb207f9c30d5f39a758378dbcff238173acb32. Full callee listings read and call conventions aligned. No private duplicate primitive implementations remain.",
+    "allocator": "Consumed00418540 semantics call existing singleton_lifetime_allocate({object,n,n}); actual malloc/new-handler retry/bad_alloc, including n0. Matched singleton_lifetime_free uses current free. No overridable Source operator-new/free mismatch.",
+    "length_error": "Genuine current SDK std::length_error(vector<T> too long). Native004200D0 genuinely CxxThrows; current exception object/type/CRT identity remains qualified.",
+    "memmove": "Actual current SDK memmove_s, current errno/handler behavior; no success stub. Full native00BF67A7 inspected.",
+    "invalid_parameter": "Existing invoke_native_invalid_parameter_00bf6713 uses actual current SDK noinfo API; no noexcept/noreturn guarantee. All native continuations, cached words and reloads remain.",
+    "schema": "Reuses Cc13AvoidZoneRawVector and TerrainGridLayer producer offsets. Iterator descriptor is exactly owner/position. Header/data/fill/output and control-slot aliases use raw instructions; all reached backing remains required."
+  },
+  "corrections": [
+    {"was":"resize pseudocode omitted fill and used stack0x8 as badly typed pointer","is":"second stack DWORD low byte is forwarded by address to insert","evidence":"004219DA LEA EAX,[ESP+20h] before four pushes; all three callers push zero fill; RET8"},
+    {"was":"00418540 annotation n0 returns null","is":"n0 calls00BF681B with0; positive UINTMAX/n>=1 makes bad_alloc precheck unreachable","evidence":"00418547-00418566 full assembly; annotation-only correction owned by primary, no extra worker entry claim"}
+  ],
+  "validation": {
+    "strict_object": "PASS: MSVC Win32 /std:c++17 /EHsc /MD /W4 /WX /fp:strict /O2 /c; local/goal15b_grid_byte_vector_compile.cmd and .obj/.asm",
+    "static_owned_bytes": "PASS against live program bytes: resize169B/6 calls, insert419B/12 calls, erase80B/2 calls. Only20 CALL rel32 operands masked; every other byte and exact body extent equal. local/goal15b_compare_owned_bytes.py. Static comparison, not Native execution.",
+    "call_checker": "PASS:23 rows,0 failures;20 owned direct rows plus3 correct-containing-function caller rows (2026-10-15)",
+    "source_fixture": "Ignored local/goal15b_grid_byte_vector_probe.cpp/.obj prepared; strict /MD compile PASS. Real providers/public entries; reallocation, both in-place alias branches, erase result/header alias, shrink, valid zero-count alias, genuine Source length_error, and actual SDK returning invalid handler installed/restored with valid backing and cached null output owner. Link/run pending primary registered full build, with MANIFEST:EMBED and safe probe name.",
+    "full_build_ctest": "primary integration owns registration and scripts/build.ps1; pending worker commit",
+    "new_test_targets": "none; one compact ignored Source probe requested by primary",
+    "native_differential": "not run",
+    "runtime_gameplay": "not run",
+    "native_abi": "not proven; Source APIs/providers/frames explicitly qualified"
+  },
+  "notes": "Only three leased entry records added, correct existing STL library names retained. No CMake/packet registry/Ghidra mutation by worker. Primary owns integration and annotation batch; lease retained."
+}
