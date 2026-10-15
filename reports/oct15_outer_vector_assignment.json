@@ -1,0 +1,57 @@
+{
+  "packet": "oct15_outer_vector_assignment",
+  "status": "complete_actual_header_source_current_cpp_eh_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_outer_vector_assignment.cpp",
+  "header": "include/bsp/native_outer_vector_assignment.hpp",
+  "documentation": "docs/OCT15_OUTER_VECTOR_ASSIGNMENT.md",
+  "routines": [
+    {"address": "006a6680", "cpp_name": "assign_native_outer_vector_006a6680", "original_abi": "ECX destination, EDX unconsumed; stacked source; RET4/EAX destination; Source retains physical words and adds context", "coverage": "complete_actual16B_outer_owning_assignment_all_native_branches_and_reload_publication_order"},
+    {"address": "006a6c60", "cpp_name": "copy_native_outer_vector_range_006a6c60", "original_abi": "cdecl first,last,destination; RET/EAX precomputed destination+(SAR4(last-first)<<4); Source adds context", "coverage": "complete_forward_assignment_range_with_DWORD_result_and_overlap_effects"},
+    {"address": "006a6ca0", "cpp_name": "fill_native_outer_vector_range_006a6ca0", "original_abi": "cdecl first,last,value; RET; Source void excludes native empty ambientEAX/nonempty lastchild residue; Source adds context", "coverage": "complete_forward_fixed_value_ADDRESS_assignment_no_header_snapshot"}
+  ],
+  "typed_metadata": {"complete": true, "all_entry_kinds": "instruction", "all_no_return": false, "all_is_thunk": false, "each_single_body_range": true, "body_bytes": {"006a6680": 326, "006a6c60": 57, "006a6ca0": 38}, "modification_before_after": 272, "capture": "local/oct15_outer_vector_assignment_typed_flow.json"},
+  "disk_live_complete_spans": [
+    {"address": "006a6680", "end": "006a67c5", "bytes": 326, "instruction_starts": 146, "bytes_equal": true, "decode_complete": true, "missing_live_starts": 0, "extra_live_starts": 0},
+    {"address": "006a6c60", "end": "006a6c98", "bytes": 57, "instruction_starts": 27, "bytes_equal": true, "decode_complete": true, "missing_live_starts": 0, "extra_live_starts": 0},
+    {"address": "006a6ca0", "end": "006a6cc5", "bytes": 38, "instruction_starts": 18, "bytes_equal": true, "decode_complete": true, "missing_live_starts": 0, "extra_live_starts": 0}
+  ],
+  "disk_live_evidence": "local/oct15_outer_vector_assignment_evidence.json; ignored script compares captured read-only tool output and installed PE bytes, no executable probe/new test",
+  "local_eh": "none in all three complete entries; no parent catch/unwind/rollback scope added; actual child Source C++ cleanup contracts inherited",
+  "assignment": {
+    "self": "Return destination before any fieldread/childcall.",
+    "initial_source": "Capture begin, conditionalend and SAR4 count; zero uses actual6A6310 clear including returning diagnostic continuations.",
+    "shrink": "Unsigned sourcecount<=captured receiver size; actual6A29C0(initial source range,initialreceiverbegin); CURRENT receiverend then55A3A0(returnedcursor,currentend,receiver/source deadwords); CURRENT sourcebegin/conditionalend recount, CURRENT receiverbegin, publishend.",
+    "grow_in_capacity": "Captured receiverbegin determines capacity; repeat receiverend size read; boundary=initialsourcebegin+(repeatedsize<<4); assign capturedprefix, ignorechildresult; read CURRENT receiverend BEFORE sourceend;6A4C00(boundary,sourceend,receiverend); publishend afterreturn.",
+    "reallocate": "If capturedreceiverbegin nonzero,55AC60(capturedbegin,CURRENTend), then free CURRENTbegin. Recompute CURRENTsourcecount before557250; initializer clears fields beforecounttest, publishescap/begin/end. Test AL only, then read receiverbegin/sourceend/sourcebegin in order, construct6A4C00 and publishend.",
+    "opaque0": "not written by these operations",
+    "failure": "Earlier assignment/destruction/free/publication effects remain; later work/end publications skipped; no local cleanup/guard/rollback invented. Returning child diagnostics preserve later CURRENT reads."
+  },
+  "wrappers": {"range": "Return computed before firstchild via DWORD SAR4/SHL4; capturedsourceend/destinationdelta, forward16B equality loop, no snapshot/overlap repair.", "fill": "Capture value ADDRESS only on nonempty entry; each current assignment rereads actualheader, forward aliases/self effects preserved; empty no pointedstorage access.", "physical_stack_trap": "Incoming6A7630 PUSH EDI at7657 is caller nonvolatile spill; only three arguments are removed by7664 ADDESP0Ch;7678 POPEDI restores savedregister after suffixcleanup. No fourth range argument."},
+  "dependencies": {"construct_services_accepted_commit": "a4769141abac44aef03e1518ebbcd6d563fd17f9", "clear_accepted_commit": "9c6606552", "native_assignment_range": "copy_native_checked_string_vector_range_006a29c0", "cleanup": ["0055a3a0", "0055ac60"], "context": "accepted actual NativeStringRawPoolContext/current CRT/Source C++ services, no callbacks or host projections", "integration_before_build": "Fast-forwarded to published accepted baseline6249f7f7c080edeabcb936edcac30f2005e595a0 before build; no merge conflict or dependency Source substitution."},
+  "coordination_receipt": {"cmake_packet": "oct15_outer_vector_assignment_dependency_merge", "jump_authorization": "Parent integrator explicitly authorized one short --jump turn while CMake remained unleased behind an idle earlier queue entry; use published main baseline instead of separate dependency merges.", "recorded_jump_reason": "Parent integrator authorized this short accepted-baseline6249f7f7c dependency merge and own registration while CMake is unleased; preserve earlier queue entry and release before build.", "actions": "Claimed only CMake turn, fast-forwarded published baseline, appended own bsp_core registration, released immediately before build. No other agent queue entry or lease explicitly removed; no Ghidra writes."},
+  "host_steps": [
+    {"address": "006a66a5", "native": "006a6310", "function": "006a6680", "contract": "zero-source actualclear, returning diagnostic continuations inherited"},
+    {"address": "006a66cd", "native": "006a29c0", "function": "006a6680", "contract": "captured source range assignment into existingreceiver"},
+    {"address": "006a66e0", "native": "0055a3a0", "function": "006a6680", "contract": "suffix cleanup before CURRENTsource-size endpublication"},
+    {"address": "006a6748", "native": "006a29c0", "function": "006a6680", "contract": "captured prefix assignment before in-capacity suffix construction"},
+    {"address": "006a675b", "native": "006a4c00", "function": "006a6680", "contract": "captured boundary,CURRENTsourceend,CURRENTreceiverend construction"},
+    {"address": "006a6777", "native": "0055ac60", "function": "006a6680", "contract": "old captured receiverbegin/CURRENTend destruction before initializer"},
+    {"address": "006a6780", "native": "00bf65ac", "function": "006a6680", "contract": "CURRENT receiverbegin free before source recount/initializer"},
+    {"address": "006a679e", "native": "00557250", "function": "006a6680", "contract": "actual owningstorage initialization, fullDWORD result/AL-only test"},
+    {"address": "006a67b5", "native": "006a4c00", "function": "006a6680", "contract": "fresh receiverbegin/sourceend/sourcebegin capture order afterinitializer"},
+    {"address": "006a6c86", "native": "006a6680", "function": "006a6c60", "contract": "forward range assignment, delta/cursors fixed"},
+    {"address": "006a6cb6", "native": "006a6680", "function": "006a6ca0", "contract": "fixed value ADDRESS, currentheader read eachcall"},
+    {"address": "006a765b", "native": "006a6c60", "function": "006a7630", "contract": "incoming three-argument call; savedEDI distinguished fromargument"},
+    {"address": "006a7884", "native": "006a6ca0", "function": "006a7690", "contract": "incoming three-argument fill evidence only"},
+    {"address": "006a78e0", "native": "006a6ca0", "function": "006a7690", "contract": "incoming three-argument fill evidence only"}
+  ],
+  "validation": {"win32_release": "passed", "existing_tests": "3/3 passed", "ctest_seconds": 7.50, "log": "local/oct15_outer_vector_assignment_build.log", "report_transfers": "14 CALL rows checked,0failed", "documentation_transfers": "14 checked,0failed,0unchecked,0warnings", "preexisting_link_warning": "LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj; same preceding packet warning; unrelated Source unchanged", "new_tests": 0, "ghidra_mutations": false},
+  "limits": [
+    "Added context/by-value Source interfaces and normalized unconsumed childEDX0 are not original native stack/register/privateframe ABI.",
+    "Actual accepted raw-pool/current CRT/Source C++ domain only; native heap/CRT/handler/FH3/SEH/fault/exception/diagnostic-provider identity and gameplay are unproved.",
+    "Valid reached storage and child ownership/pool/CRT/returning-diagnostic contracts required; private argument/frame aliases excluded; no extra guard or rollback.",
+    "Historical settings projections/hostviews/fixtures remain separate; no incoming caller completeness promotion or new native differential/failure/gameplay tests."
+  ]
+}

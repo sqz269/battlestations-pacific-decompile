@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_map_head",
+  "source": "src/native_scene_record_map_head.cpp",
+  "header": "include/bsp/native_scene_record_map_head.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_MAP_HEAD.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "00468260",
+      "end_exclusive": "00468297",
+      "coverage": "complete",
+      "cpp_symbol": "allocate_native_scene_record_map_head_00468260",
+      "original_abi": "No native arguments; EAX actual1Ch raw head; RET",
+      "bytes": "6a 1c e8 b4 e5 78 00 83 c4 04 85 c0 74 06 c7 00 00 00 00 00 8d 48 04 85 c9 74 06 c7 01 00 00 00 00 8d 48 08 85 c9 74 06 c7 01 00 00 00 00 c6 40 18 01 c6 40 19 00 c3",
+      "live_disk_equal": true,
+      "live_callers": 4,
+      "sha256": "abd5df9296f354d1c0729d45f82dfbefb99179ee5945fba930b1c34773c6881a"
+    },
+    {
+      "address": "00468e70",
+      "end_exclusive": "00468e9d",
+      "coverage": "complete",
+      "cpp_symbol": "construct_native_scene_record_map_head_00468e70",
+      "original_abi": "ECX actual tree; two unread stacked words; RET8; EAX original tree; ESI preserved",
+      "bytes": "56 8b f1 e8 e8 f3 ff ff 89 46 04 c6 40 19 01 8b 46 04 89 40 04 8b 46 04 89 00 8b 46 04 89 40 08 c7 46 08 00 00 00 00 8b c6 5e c2 08 00",
+      "live_disk_equal": true,
+      "live_callers": 0,
+      "sha256": "94c659ba684bd4999bc5ca7e07c3f80bea640086b9b4421d02f85a3e636a2ab1"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00468262",
+      "native": "00bf681b",
+      "function": "00468260",
+      "contract": "genuine allocation size1Ch, no local cleanup or nullable-result substitution; caller ADD ESP,4 at00468267"
+    },
+    {
+      "address": "00468e73",
+      "native": "00468260",
+      "function": "00468e70",
+      "contract": "no native arguments; EAX raw head; caller publishes it and sets nil19=1"
+    }
+  ],
+  "other_caller_sites": [
+    {
+      "address": "00468903",
+      "native": "00468260",
+      "function": "00468900",
+      "contract": "EAX actual head, nil19=1, current self-link stores"
+    },
+    {
+      "address": "0046f133",
+      "native": "00468260",
+      "function": "0046f130",
+      "contract": "EAX actual head, nil19=1, current self-link stores"
+    },
+    {
+      "address": "0046f19c",
+      "native": "00468260",
+      "function": "0046f160",
+      "contract": "scene database embedded map+18; EAX actual head, nil19=1, current self-link stores"
+    }
+  ],
+  "source_dependency": {
+    "routine": "00bf681b",
+    "symbol": "singleton_lifetime_allocate",
+    "source": "src/singleton_lifetime.cpp",
+    "kind": "object",
+    "native_bytes": 28,
+    "host_bytes": 28,
+    "modified": false
+  },
+  "prior_annotations": [
+    {
+      "address": "00468260",
+      "name": "STL_Tree_BuyHeadNode_00468260",
+      "comment": ""
+    },
+    {
+      "address": "00468e70",
+      "name": "STL_Tree_Construct_00468e70",
+      "comment": ""
+    }
+  ],
+  "corrections": [
+    {
+      "was": "decompiler prints void allocation helper",
+      "is": "original helper leaves allocated pointer in EAX and callers consume it",
+      "evidence": "00468262 CALL00BF681B; no later EAX writes through00468296 RET; four caller publication stores"
+    }
+  ],
+  "write_footprint": {
+    "allocator": "conditional zero stores at captured address0/+4/+8; color18=1,nil19=0; untouched payloadC..17 and padding1A/1B",
+    "constructor": "tree+4 publication; captured head.nil19=1; three separately reloaded head self-links parent/left/right; tree+8 count0 last; tree+0 untouched"
+  },
+  "source_registration": "cmake/startup.cmake unique bsp_core append while registry unleased; no exclusive shared registry lease",
+  "validation": {
+    "build": "PASS scripts/build.ps1; strict MSVC Win32; new TU compiled",
+    "existing_ctests": "PASS2/2 configured tests: reconstructed_math,tool_tests; native_math_differential not enabled in this worktree",
+    "report_call_verification": "PASS5/5 direct native transfer rows; markdown0failures,0unchecked,0warnings",
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_executed": false,
+    "game_validated": false,
+    "diff_check": "PASS git diff --check",
+    "tested_commit": "4e7a7b6f8e44ece9a35066ef744a26cf804889ef",
+    "build_log": "local/goal-oct15-scene-map-head-build.log",
+    "build_warning": "LNK4006 duplicate spawn_request_id_matches in existing lua_binding_spawn.obj/lua_spawn_new.obj; outside packet scope"
+  },
+  "qualification": "Complete ordinary raw Source over real existing current-CRT malloc/new-handler allocation; full conditional stores and current head reloads retained; no new host callbacks, private CRT/FH3/SEH ABI, candidate-specific native differential or gameplay claim",
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "annotation": {
+    "applied": true,
+    "names_retained": true,
+    "prior_values_log": "local/ghidra-annotations-20261015T202738Z.json",
+    "program_saved": true,
+    "exports_refreshed": true
+  }
+}

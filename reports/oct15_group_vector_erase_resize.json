@@ -1,0 +1,376 @@
+{
+  "packet": "oct15_group_vector_erase_resize",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_group_vector_erase_resize.cpp",
+  "header": "include/bsp/native_group_vector_erase_resize.hpp",
+  "documentation": "docs/OCT15_GROUP_VECTOR_ERASE_RESIZE.md",
+  "routines": [
+    {
+      "address": "006a7630",
+      "implementation": "erase_native_group_vector_range_006a7630",
+      "old_name": "STL_inst_006a7630",
+      "kind": "function",
+      "body_last_inclusive": "006a7687",
+      "bytes": 88,
+      "sha256": "a8f426e80cd5938fc2ae67c0faa9131e3405bf8378cd7175c8e353680cf53c4a",
+      "instructions": 37,
+      "complete_typed_body": true,
+      "live_equals_installed_PE": true,
+      "all_export_starts_equal_disk_capstone": true,
+      "original_abi": "ECX actual group header, EDX unused; five stacked words(out,first owner,first position,last owner,last position), RET14h; EAX output iterator. Source reserves EDX/adds actual pool context."
+    },
+    {
+      "address": "006a79a0",
+      "implementation": "resize_native_group_vector_006a79a0",
+      "old_name": "STL_CheckedStringVectorGroups_Resize_006A79A0",
+      "kind": "function",
+      "body_last_inclusive": "006a7a9c",
+      "bytes": 253,
+      "sha256": "3bddea2bc1bcb4ebc1a4e31da57ca0873b40e65d392e722de6c86172036b4b83",
+      "instructions": 95,
+      "complete_typed_body": true,
+      "live_equals_installed_PE": true,
+      "all_export_starts_equal_disk_capstone": true,
+      "original_abi": "ECX actual group header, EDX unused; stacked requested count then OWNED by-value16B outer header; RET14h, no semantic result. Source five scalar words transfer ownership into one canonical private header; added actual pool context."
+    },
+    {
+      "address": "00c7f5e0",
+      "implementation": "unwind_native_group_resize_parameter_00c7f5e0",
+      "old_name": "Unwind@00c7f5e0",
+      "kind": "fragment",
+      "body_last_inclusive": "00c7f5e7",
+      "bytes": 8,
+      "sha256": "2c198056197bf75fcf40c3b8787c15a1c4fa7e92fdb51c5565bd712b9551a9a8",
+      "instructions": 2,
+      "complete_typed_body": true,
+      "live_equals_installed_PE": true,
+      "all_export_starts_equal_disk_capstone": true,
+      "original_abi": "Parent EBP-bound action: LEA ECX,[EBP+8]; JMP55B110. Source explicit canonical owned header/context, no native private-frame adapter."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "006a7643",
+      "native": "00bf6713",
+      "function": "006a7630",
+      "binding": "Direct accepted actual invalid-parameter noinfo wrapper/current SDK policy; returning diagnostics retain subsequent reads and captured endpoints."
+    },
+    {
+      "address": "006a765b",
+      "native": "006a6c60",
+      "function": "006a7630",
+      "binding": "Direct accepted actual forward owning outer-header assignment range; returns its independently precomputed destination endpoint."
+    },
+    {
+      "address": "006a7670",
+      "native": "006a6ee0",
+      "function": "006a7630",
+      "binding": "Direct accepted actual group range cleanup(new_end,CURRENT receiver end,receiver,output dead metadata), before end publication."
+    },
+    {
+      "address": "006a79f2",
+      "native": "00bf6713",
+      "function": "006a79a0",
+      "binding": "Direct accepted actual invalid-parameter noinfo wrapper/current SDK policy; returning diagnostics retain subsequent reads and captured endpoints."
+    },
+    {
+      "address": "006a7a03",
+      "native": "006a7690",
+      "function": "006a79a0",
+      "binding": "Direct complete actual general group insertion; separately owned and audited dependency, no placeholder."
+    },
+    {
+      "address": "006a7a20",
+      "native": "00bf6713",
+      "function": "006a79a0",
+      "binding": "Direct accepted actual invalid-parameter noinfo wrapper/current SDK policy; returning diagnostics retain subsequent reads and captured endpoints."
+    },
+    {
+      "address": "006a7a2d",
+      "native": "00bf6713",
+      "function": "006a79a0",
+      "binding": "Direct accepted actual invalid-parameter noinfo wrapper/current SDK policy; returning diagnostics retain subsequent reads and captured endpoints."
+    },
+    {
+      "address": "006a7a45",
+      "native": "00bf6713",
+      "function": "006a79a0",
+      "binding": "Direct accepted actual invalid-parameter noinfo wrapper/current SDK policy; returning diagnostics retain subsequent reads and captured endpoints."
+    },
+    {
+      "address": "006a7a55",
+      "native": "006a7630",
+      "function": "006a79a0",
+      "binding": "Direct full erase service in this packet with retained receiver/first/end captures and private output iterator."
+    },
+    {
+      "address": "006a7a7a",
+      "native": "0055a3a0",
+      "function": "006a79a0",
+      "binding": "Direct accepted owning inner-header range destruction of canonical fill captured begin/current end; metadata fill/count are unconsumed."
+    },
+    {
+      "address": "006a7a80",
+      "native": "00bf65ac",
+      "function": "006a79a0",
+      "binding": "Accepted current CRT singleton_lifetime_free; normal cleanup frees the cached fill begin."
+    },
+    {
+      "address": "00c7f5e3",
+      "native": "0055b110",
+      "function": "00c7f5e0",
+      "binding": "Direct accepted actual outer-header Tidy with CURRENT-begin free and ordered clears; Source owner catch only.",
+      "kind": "tail_jump"
+    }
+  ],
+  "typed_capture": "local/oct15_group_erase_resize_typed_flow.json",
+  "typed_modification": "295",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "eh": {
+    "handler": "00c7f5e8",
+    "handler_hex": "b86ccbda00e95175f7ff",
+    "funcinfo": "00dacb6c",
+    "map": "00dacb64",
+    "raw_map_funcinfo_words": [
+      4294967295,
+      13104608,
+      429065506,
+      1,
+      14338916,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "complete_map_funcinfo_bytes": 44,
+    "sha256": "9f82121c9ba1480b7426f63be0515ff502d57d154b05f1ca322a480ae97413fb",
+    "try_blocks": 0,
+    "state0_to_state_minus1_action": "00c7f5e0",
+    "source_owner_scope": "After first receiver-begin read, before later count/bounds/insert/erase work. Normal cleanup is outside the C++ owner catch."
+  },
+  "schedules": [
+    "Erase captures first owner before diagnostic, positions afterward. Equal positions skip receiver fields; otherwise forward actual assignment from last through captured receiver end, reload CURRENT end for destruction, publish captured returned end after cleanup, then ordered output owner/position stores.",
+    "Resize transfers the actual owned16B fill parameter as scalar bits. Growth captures repeated current size and end before a returning diagnostic. Shrink retains captured end and reloaded begin across later diagnostics, preserves unsigned short-circuit reads and private output preset.",
+    "Normal resize cleanup captures fill begin before disarming owner; uses CURRENT fill end, frees cached begin, no field clears. Unwind uses actual55B110 CURRENT fields/free/clears; no deep-copy argument or owner retry."
+  ],
+  "dependencies": {
+    "assignment": "Accepted e33160ebce62e0812c2d22572d11f908612c7403",
+    "general_insert": {
+      "accepted_commit": "370b530815e37e141f7e9d7d7aaa7ea5633cb76e",
+      "source": "src/native_group_vector_insert.cpp",
+      "review": "Full Source/native/support equivalence and EH maps reviewed; fresh32transfer rows and32Markdown claims passed; worker3/3 passed9.06s."
+    }
+  },
+  "build": {
+    "status": "passed",
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "source_commit": "4ed40b4e51b54b63c8705bc0e2042620bbdd02cc",
+    "source_compiled": true,
+    "suites_passed": 3,
+    "suites_total": 3,
+    "ctest_seconds": 8.46,
+    "log": "local/oct15_eleventh_final_build.log",
+    "native_math_scope": "Prior verified seeds only; no new-entry native differential execution."
+  },
+  "independent_native_audit": {
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct15_group_vector_erase_resize_native_audit.json",
+    "receipt_sha256": "f0fb40aae63b5bac362bae8f49624cd1f2974d6ba79843249e84a7171307fa6f",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "owned_body_bytes": 349,
+    "owned_body_instruction_starts": 134,
+    "owned_body_transfer_checks": 12,
+    "external_caller": "006a8e5a",
+    "external_caller_starts": 1,
+    "external_caller_transfer_checks": 1,
+    "total_starts_audited": 135,
+    "total_transfer_checks": 13,
+    "body_hashes_counts_and_live_disk_results_agree": true,
+    "verification": {
+      "static_instruction_verifier": "13 total rows passed:12 root-body/action transfers (11 CALLs+1 tail JMP) plus1 external Resize caller",
+      "current_live_listing_starts": 135,
+      "git_worktree": "clean",
+      "pinned_commit_preserved": "ca8c3970611aae1decc879d740622957ca0e9604",
+      "new_build_tests_native_execution": false,
+      "current_live_listing_starts_scope": "134 root body/action starts plus1 external Resize caller=135"
+    },
+    "eh": {
+      "start": "00dacb64",
+      "end_exclusive": "00dacb90",
+      "byte_count": 44,
+      "bytes_hex": "ffffffffe0f5c700220593190100000064cbda00000000000000000000000000000000000000000001000000",
+      "sha256": "9f82121c9ba1480b7426f63be0515ff502d57d154b05f1ca322a480ae97413fb",
+      "disk_live_full_byte_equality": true,
+      "funcinfo": "00dacb6c",
+      "magic": "19930522",
+      "max_state": 1,
+      "flags": 1,
+      "try_blocks": 0,
+      "unwind_map": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "action": "00c7f5e0"
+        }
+      ],
+      "handler_stub": {
+        "address": "00c7f5e8",
+        "bytes_hex": "b86ccbda00e95175f7ff",
+        "tail_target": "00bf6b43",
+        "read_only_metadata": true
+      }
+    },
+    "erase": {
+      "abi": "ECXreceiver,EDXunconsumed;stack output,first_owner,first_position,last_owner,last_position;RET14h,EAXoutput address",
+      "validation": "Capture first_owner BEFORE report. Require nonnull first_owner==last_owner only; no receiver equality/position/bounds checks. Null first owner skips last-owner comparison.",
+      "after_returning_owner_report": "Capture first/last positions AFTER report. EBPfirst_owner retained. Equal positions skip ALL receiver-field loads,assignment,destruction,end publication,but still output stores.",
+      "nonempty_steps": [
+        "Read current receiver end;6A6C60(last_position,captured current end,first_position)",
+        "After assignment returns,load output argument as dead cleanup metadata BEFORE ADD ESP,0Ch",
+        "Reload CURRENT receiver end after assignment;capture assignment EAX inEDI;6A6EE0(EAX,current end,receiver,output metadata)",
+        "Only after successful destruction,publish captured assignment endpoint at receiver+8",
+        "Reload private output argument after cleanup/publication;store captured first_owner at0 BEFORE captured first_position at4;return output pointer"
+      ],
+      "output_aliases": "All receiver publication precedes ordered output stores; output can alias raw fields where accesses admitted. Do not reread result after owner store or add guard.",
+      "local_eh_registration": false,
+      "exceptions": "No local EH/rollback. Assignment failure skips destruction/publication/output; cleanup failure skips publication/output; prior child changes remain."
+    },
+    "resize": {
+      "abi": "ECXreceiver,EDXunconsumed;five stack words requested then owned by-value16B outer header;RET14h,no semantic result",
+      "layout": "Canonical parameter words opaque0/begin4/end8/capacityC own backing of16B inner headers containing8B strings; opaque0 is not owned",
+      "transfer": "Source may transfer scalar bits to one canonical private owner without deep-copy argument/new ownership model; native body has no parameter copy constructor",
+      "owner_arm": "First receiver begin read occurs BEFORE state0 at6A79C5; initial end read follows arm",
+      "growth": "Initial count unsigned SAR4; ifbelowrequest reread count using same begin,capture end,report begin>end; retain count/end across returning report;6A7690 with borrowed parameter header pointer",
+      "shrink": "Ifnon-growth and initial begin nonnull,capture end/reread size. Ifrequested smaller: first report initial begin>saved end; reload begin after report,compare to CURRENT end; retain reloaded begin across second report; first=retained begin+requested*16; compare CURRENT end,only ifupperpasses read CURRENT begin lowerbound; retain first/saved last across third report;invoke6A7630 receiver asbothowners,private output",
+      "diagnostics": [
+        "006a79f2",
+        "006a7a20",
+        "006a7a2d",
+        "006a7a45"
+      ],
+      "scratch": "Second output word preset retained begin AFTER upper-end load; private output pointer returned by erase ignored; no semantic ResizeEAX",
+      "normal_cleanup": "6A7A5A captures parameter begin;6A7A60 state-1; ifnonnull read current parameter end,55A3A0 destroy,free CACHED begin,no clears; native dead stack metadata parameter address then original requested count",
+      "unwind_cleanup": "C7F5E0 LEA ECX,[EH EBP+8];tail55B110 =>captured range,current-begin free,ordered4/8/C clears;not4324A0",
+      "all_paths": "Consumed fill cleaned after growth,shrink,equal,zero,and admitted CPPexceptions;normal destruction outside owner scope is not retried;no receiver rollback"
+    },
+    "limits": [
+      "Native evidence only,no Source review/acceptance or new implementation",
+      "Current Source contexts/CRT/CPP bodies remain separately qualified; no binaryABI/FH3/SEH/handler-failure/fault/frame-alias/concurrency/gameplay proof",
+      "No native execution or new build/tests; unowned code audited read-only,leases not claimed"
+    ]
+  },
+  "independent_source_review": {
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct15_group_vector_erase_resize_source_review.json",
+    "receipt_sha256": "b9740bab5f69c0c6a9d5f99634d92e6a9476bafdebd3826f11dc9536ba7e43a6",
+    "review": {
+      "review": "oct15_group_vector_erase_resize_source_behavior",
+      "reviewer": "agent/oct15_string_fill",
+      "status": "passed_no_behavioral_discrepancy_found",
+      "reviewed_worktree": "J:/PROG/battlestations-pacific-decompile-oct15_integrator",
+      "files": [
+        {
+          "path": "include/bsp/native_group_vector_erase_resize.hpp",
+          "sha256": "A2B2462452D1532D66E9A5C17C8F76E161D1234B77D8ACE9F3DD99CEFFF8E2AD"
+        },
+        {
+          "path": "src/native_group_vector_erase_resize.cpp",
+          "sha256": "35C5342E5B0BAD93A7F26D5BAAB4B3D1609906E61836F82B02291815CAF6A95D"
+        }
+      ],
+      "hashes_stable_before_after_review": true,
+      "native_scope": [
+        "006a7630",
+        "006a79a0",
+        "00c7f5e0"
+      ],
+      "evidence": [
+        "Complete native006A7630 schedule read during prior assignment packet, including saved EDI spill, current-end reload and final iterator stores; compared against complete new Source.",
+        "Complete current006A79A0 pseudocode and95-instruction native listing inspected through bsp.py show, including normal cleanup tail throughRET14h.",
+        "00C7F5E0 complete LEA ECX,[EBP+8];JMP0055B110 inspected read-only through bsp.py ghidra.",
+        "Actual6A6C60 assignment/result service is accepted e33160ebce62e0812c2d22572d11f908612c7403; accepted6A6EE0,55A3A0 and55B110 composition schedules retained.",
+        "No duplicate typed/disk/live-byte or rawEH-span capture performed; independent Lua audit covers those artifacts."
+      ],
+      "checks": [
+        {
+          "area": "erase owner guard",
+          "result": "pass",
+          "finding": "Only first-owner null or first/last-owner inequality invokes diagnostic. Source adds no owner-versus-receiver check. Source short-circuits the second owner comparison if first owner is null."
+        },
+        {
+          "area": "erase endpoint and current end",
+          "result": "pass",
+          "finding": "Equal positions skip all receiver field accesses. Otherwise capture old end, call actual6C60(last_position,old_end,first_position), keep its independently precomputed returned endpoint, reload CURRENT receiver end, destroy suffix through6EE0, then publish returned endpoint."
+        },
+        {
+          "area": "erase output aliases",
+          "result": "pass",
+          "finding": "Output address, original owner and original first position remain captured. Receiver end is published before output owner at+0 and output position at+4. Aliases to receiver begin/end/capacity or the position/owner storage preserve that write order; no late reread replaces either output value. EAX returns the original output pointer."
+        },
+        {
+          "area": "erase physical metadata",
+          "result": "pass",
+          "finding": "6EE0 receives header/output address as dead words after current-end capture. Native saved EDI is not treated as a fourth6C60 argument. Source by-value/private-frame qualification covers native stack-slot identity rather than fabricating an adapter."
+        },
+        {
+          "area": "owned fill scalar transfer and arm",
+          "result": "pass",
+          "finding": "Four scalar words form one canonical owned16B outer header, including opaque0, with no extra constructor/deep copy/automatic destructor. Initial receiver begin is read before the Source try scope, matching state0 arm after the first native receiver-begin read; later size reads are inside the scope."
+        },
+        {
+          "area": "resize growth captures",
+          "result": "pass",
+          "finding": "Initial size uses captured begin; growth repeats conditional end-size read, then independently captures end. Initial begin and captured end drive the diagnostic; captured size/end survive returning diagnostics and feed requested-minus-captured-size and actual6A7690 position. No fresh count/end snapshot replaces them."
+        },
+        {
+          "area": "resize shrink diagnostics",
+          "result": "pass",
+          "finding": "Nonzero initial begin gates fresh captured-end/size read. Requested<count comparison precedes first bounds diagnostic. Current begin is captured after that diagnostic, compared to CURRENT end, and retained across the second returning diagnostic. First position uses that capture and wrapped requested*16."
+        },
+        {
+          "area": "resize short circuit and erase endpoints",
+          "result": "pass",
+          "finding": "CURRENT end is read for upper-bound comparison. Private output[1] is initialized with captured begin before the conditional diagnostic. If first exceeds end, Source || skips the lower-bound current-begin read exactly as native JA; otherwise it reads begin once. Captured first and earlier captured end survive the third returning diagnostic and feed actual erase."
+        },
+        {
+          "area": "normal fill cleanup",
+          "result": "pass",
+          "finding": "Fill begin is captured at the end of the ownership scope. Scope is disarmed before manual normal cleanup. Nonzero cached begin gates a fresh fill-end read and55A3A0 range; dead metadata is canonical fill/requested count. The same cached begin is freed after range return, without clearing fields or substituting a CURRENT-header tidy. A normal cleanup failure does not reenter the unwind scope."
+        },
+        {
+          "area": "exceptional fill cleanup",
+          "result": "pass",
+          "finding": "Exceptional body exits call the explicit canonical-header unwind wrapper, which composes full actual55B110 CURRENT-header cleanup, then rethrows. No rollback/self/null repair is added. This is current Source C++ cleanup; native EBP/FH3/SEH/fault/cleanup-failure identity remains qualified."
+        },
+        {
+          "area": "header and API claims",
+          "result": "pass",
+          "finding": "Native ECX/unused EDX, erase five-word/RET14h/EAX output, resize count+OWNED16B/RET14h/no semantic result, parent-bound unwind and added context/physical-frame limits are documented consistently with Source. Opaque fill0 is retained and not fabricated as an allocator policy."
+        }
+      ],
+      "blocking_findings": [],
+      "source_change_requests": [],
+      "deferred_dependency": {
+        "address": "006a7690",
+        "status": "API confirmed by parent; implementation still in avoid worker",
+        "qualification": "This review checks call position/owner/count/fill captures and ownership composition only. It does not accept or build the pending insert implementation."
+      },
+      "limits": [
+        "Read-only Source behavioral review, not compilation, execution, runtime, original-game, native ABI or differential proof.",
+        "Root Source was unregistered/unbuilt and its parent insert dependency incomplete at review time; no final integration/runtime claim.",
+        "Private native/Source argument/frame aliases excluded as declared. Current SDK may return from diagnostics; original handler/CRT/FH3/SEH/fault and cleanup-failure personalities are not established.",
+        "No independent duplicate byte-span/EH audit, no Source/metadata/CMake/Ghidra edits, no new tests, builds, commits or push. Only this ignored local receipt was written."
+      ]
+    },
+    "scope_note": "This audit intentionally deferred the then-unaccepted general insert dependency and build. Final dependency/build evidence is recorded separately."
+  },
+  "limits": [
+    "Added actual pool context/current CRT/C++ exception/private storage interfaces do not establish original register/stack/FH3/SEH/RTTI/fault/cleanup-failure identity.",
+    "Admitted taken actual storage, child ownership/pool/CRT and reachable endpoint contracts; native/Source private-frame aliases excluded.",
+    "Current SDK diagnostic policy differs from original handler selection and may return. No added owner-receiver check/null/self/range guard, rollback, snapshot or callback.",
+    "No new-entry native differential execution or live game/gameplay validation."
+  ]
+}
