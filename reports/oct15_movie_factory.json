@@ -1,0 +1,87 @@
+{
+  "packet": "oct15_movie_factory",
+  "status": "complete_bounded_source_validation_pending",
+  "source": "src/movie_factory_followup.cpp",
+  "header": "include/bsp/movie_factory_followup.hpp",
+  "documentation": "docs/OCT15_MOVIE_FACTORY.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Every bsp.py ghidra query/export verifies project, program, language and image base through Client.verify()."
+  },
+  "routines": [
+    {
+      "address": "00737710",
+      "name": "construct_movie_factory_00737710",
+      "body": "00737710-0073772d",
+      "coverage": "complete",
+      "original_abi": "ECX=owner; EAX=owner; plain RET; no stack args",
+      "host_steps": [
+        {
+          "address": "00737713",
+          "native": "007366b0",
+          "function": "00737710",
+          "host": "register_movie_factory_007366b0",
+          "contract": "read: same owner publication at 00f8aefc and lifetime registration under captured optional critical-section guard; required existing-helper host binding"
+        },
+        {
+          "address": "00737725",
+          "native": "00a4d356",
+          "function": "00737710",
+          "host": "set_bink_direct_sound_system_00a4d356",
+          "contract": "read import thunk: _BinkSetSoundSystem@8 through IAT00ce23d0; callback00a4d35c (_BinkOpenDirectSound@4 through IAT00ce23d4) and argument0; ignored result"
+        }
+      ]
+    },
+    {
+      "address": "00737730",
+      "name": "create_movie_decoder_00737730",
+      "body": "00737730-00737798",
+      "coverage": "complete",
+      "original_abi": "ECX unused; one ignored stacked DWORD; RET4; EAX shared base or null",
+      "host_steps": [
+        {
+          "address": "00737748",
+          "native": "00bf681b",
+          "function": "00737730",
+          "host": "singleton_lifetime_allocate",
+          "contract": "read existing allocator body/source: 38h allocation, cdecl one argument proved by ADD ESP,4 at0073774d; malloc/new-handler retry, bad_alloc exhaustion"
+        },
+        {
+          "address": "00737763",
+          "native": "00a4c660",
+          "function": "00737730",
+          "host": "construct_movie_decoder_00a4c660",
+          "contract": "read constructor body/source: ECX allocation and hidden flag1; EAX same allocation; established shared-base offset10h returned"
+        }
+      ]
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Decompiler suggests two operator_new parameters, including ECX",
+      "is": "One cdecl size argument; ECX push reserves a local; factory has an ignored RET4 stack slot",
+      "evidence": "00737745 PUSH ECX; 00737746 PUSH38h; 00737748 CALL00bf681b; 0073774d ADD ESP,4; RET4 at0073777c and00737796; allocator callee signature/body inspected"
+    },
+    {
+      "was": "Factory result could be mistaken for the allocation pointer",
+      "is": "Factory result is shared decoder state at allocation+10h for the complete-object path",
+      "evidence": "0073777f reads allocation vbtable; 00737781 reads signed+4; 00737784 adds allocation; existing00a4c660 writes00d24de8, existing NativeMovieDecoder state offset10h"
+    }
+  ],
+  "checks": {
+    "call_report": "pending",
+    "build": "pending",
+    "new_tests": "none; existing build/CTest checks only"
+  },
+  "evidence_boundaries": {
+    "exported": true,
+    "reconstructed": true,
+    "build_tested": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "uncertainty": "Required singleton helper and Bink imports remain host bindings; vtable words are evidence IDs; original SEH/EH, CRT identity, binary ABI, activation, playback and visuals are unvalidated. No application wiring. Native callback00a4d35c is an external uncreated import thunk confirmed by original bytes/import table."
+  }
+}
