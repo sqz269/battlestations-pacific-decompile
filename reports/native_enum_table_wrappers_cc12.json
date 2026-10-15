@@ -1,0 +1,213 @@
+{
+  "schema": "bsp.native_enum_table_CString_wrappers.Source.v1",
+  "packet": "cc12_enum_table_CString_wrappers",
+  "source_baseline": "fcb38e12c135659832d314cc568e9262442630a1",
+  "doc": "docs/NATIVE_ENUM_TABLE_WRAPPERS_CC12.md",
+  "owned_addresses": [
+    "008F2B90",
+    "008F2C10"
+  ],
+  "owned_files": [
+    "include/bsp/native_enum_table_wrappers.hpp",
+    "src/native_enum_table_wrappers.cpp",
+    "docs/NATIVE_ENUM_TABLE_WRAPPERS_CC12.md",
+    "reports/native_enum_table_wrappers_cc12.json"
+  ],
+  "status": "Complete conditional ordinary Source and strict entire-object review; original existing-graph build/checks passed. Root owns registration/integration/independent admission.",
+  "Original": [
+    {
+      "entry": "008f2b90",
+      "end_exclusive": "008f2c0b",
+      "bytes": 123,
+      "instructions": 36,
+      "sha256": "a6ff77983e2a2ac8e19572e4d5280f51f0a3ecf06846fbfdf934e72be8330788",
+      "live_equals_disk": true,
+      "Original_ret_stack_bytes": 8
+    },
+    {
+      "entry": "008f2c10",
+      "end_exclusive": "008f2c95",
+      "bytes": 133,
+      "instructions": 41,
+      "sha256": "25c69c47228f91393b799d6cf3e33c6214db8825d5525f9f008d18977d837ac7",
+      "live_equals_disk": true,
+      "Original_ret_stack_bytes": 4
+    }
+  ],
+  "Original_pins": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholeEnumTableWrappersSource01\\Original_body_pins.DATA.json",
+    "bytes": 13791,
+    "sha256": "d9baa33c8df65d124a7924408217ada2e2193d2da3cb7f3e115f57bdb8b7e311"
+  },
+  "ABI": {
+    "insertion": "ECX actual10Ch owner; stack CString and incoming CEnum; RET8; no defined retained ordinary return",
+    "membership": "ECX owner; stack CString; RET4; AL Boolean only",
+    "new_context_bearing_interfaces_not_drop_in": true,
+    "Original_FS_EH_unwind": false
+  },
+  "Source_contract": {
+    "real_object": "A genuine default-constructed Source NativeString local; sizeof8/align4/standard layout/nothrow default construction/trivial destructor statically checked. No raw-bytes cast/fabricated lifetime.",
+    "local_init": "Source default member zero stores precede raw constructor initialization in isolated nonalias local storage; not Original literal store/code identity.",
+    "constructor": "Complete0041E870 on the actual live object header with same concrete process raw_context()",
+    "insertion": "Call conditional whole008F17E0 on owner+4, with the incoming pointer and genuine actual enum pools; discard lower count; manual key return after call",
+    "membership": "Whole0048D4E0 on owner+4 with private nonalias bucket; capture node!=null before cleanup; missing returns false; mapped+8 unread",
+    "cleanup": "Accepted raw0041DD20 composition with same process context, resolve00419CC0 before actualBD1510/current gate; trivial destructor neither releases nor repairs fields",
+    "borrowed_context": "Same retained concrete GameNativeStringProcess supplies raw strings/queryE17654. Explicit genuine stable E186ED enum-empty authority plus actual initialized distinct E175E8 table/E17578 symbol pools on same allocator list/generation.",
+    "no_substitution": "No propertyE17540/E175B0, E18560,114h bags, new statics/default cells/profile/model/callback. No concrete enum-global startup/publication binding.",
+    "insertion_domain": "Both old and incoming mapped values may be null or disjoint genuine current-CRT19Ch CEnums from008F4DD0/D16508 with scalar008F59C0; retain full lower replacement/owning key-copy qualifications, not null-only.",
+    "ordinary_domain": "Coherent genuine10Ch owner/map+4, canonical live keys/nodes, closed ASCII/current C locale, same heap/pool generations, stable disjoint owning graphs/fresh copies; successful providers; no alias/reentry/trim/unrelated mutation/overflow/fault/unwind",
+    "membership_pools": "Membership accesses no table/symbol pool and starts nothing.",
+    "exception_boundary": "Manual normal cleanup only; no RAII/Original FS/FH3/exceptional-unwind equivalence"
+  },
+  "Source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\include\\bsp\\native_enum_table_wrappers.hpp",
+      "bytes": 3582,
+      "sha256": "b71ae170fadd72356688916e39279196c19510585d128485fc480795eb211ceb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\src\\native_enum_table_wrappers.cpp",
+      "bytes": 1961,
+      "sha256": "140476d8ffaddcf8ca48f49a223d90e4fe89c397ffbb2841353abfb9aa1e82a6"
+    }
+  ],
+  "strict_compile": {
+    "first_original_tool": "29b8ad/exit0",
+    "flags": "/std:c++17 /MD /O2 /Ob2 /Oy- /W4 /WX /EHsc /Gy /GL- /fp:strict",
+    "tools": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholeEnumTableWrappersSource01\\original_compile_tools.DATA.json",
+      "bytes": 1237,
+      "sha256": "f2bbda3355b70bdbe8af708c3a5431d0c30377176aa7665507fac15205dbc0a2"
+    },
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholeEnumTableWrappersSource01\\strict_TU_compile.log",
+      "bytes": 1132,
+      "sha256": "9f85cef4d6bc0ca5648cc8dd7c60725fbb86103fb2e3464341ae56f5de6e0495"
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholeEnumTableWrappersSource01\\native_enum_table_wrappers.obj",
+      "bytes": 3948,
+      "sha256": "af0680b635b1e92e2122ed252503ca625ca278a58d21a495dcd36ad5b69ad1c6"
+    }
+  },
+  "complete_COFF": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholeEnumTableWrappersSource01\\complete_COFF.DATA.json",
+    "bytes": 56513,
+    "sha256": "d0c325ad8e0a5281c515e53dc40829c0040160dc6c14bc97b08de0e9c85c1e0e"
+  },
+  "complete_COFF_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholeEnumTableWrappersSource01\\complete_COFF_review.DATA.json",
+    "bytes": 4845,
+    "sha256": "e6fb65518f8102be6657db3b0d6d2b7b0c400d6db9ebe3bb870bbe25dea7864e"
+  },
+  "emitted": {
+    "code_sections": 8,
+    "wrapper_entries": 2,
+    "NativeString_constructor": 1,
+    "accessors": 5,
+    "code_bytes": 247,
+    "instructions": 100,
+    "code_relocations": 8,
+    "metadata_relocations": 6,
+    "metadata_kind": "debug$F section-relative constructor/accessor records",
+    "all_emitted_code_and_relocations_inspected": true,
+    "membership_capture": "+4E TEST; +57 SETNE BL; +5B cleanup; +63 AL result",
+    "insertion_count_discard": "+4F lower call; +54 overwrite EAX with key address; +59 cleanup"
+  },
+  "accepted_provider_reuse": true,
+  "ancestry_reproof": false,
+  "accepted_readiness": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\PropertyLibraryLoaderNextReadiness01\\compact_readiness.DATA.json",
+    "bytes": 14232,
+    "sha256": "1225a0280b9da6f49e4b1ca94897bec1b27ac4a1af50d0a7b0e54ef61881d514"
+  },
+  "Source_strict_input_pins": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholeEnumTableWrappersSource01\\Source_strict_input_pins.DATA.json",
+    "bytes": 4477,
+    "sha256": "6f49750406286bf5e1becfa154fadf65b7b50cabff3ee11f5b9640e8014933d9"
+  },
+  "dependency_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholeEnumTableWrappersSource01\\dependencies\\native_enum_table_wrappers.cpp.json",
+    "bytes": 12995,
+    "sha256": "2084d67b1a0697f5660c6bbe0fa3107a8a605add23b060364fd85aa4a61f81e8"
+  },
+  "strict_project_include_pins": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholeEnumTableWrappersSource01\\strict_project_include_pins.DATA.json",
+    "bytes": 4029,
+    "sha256": "c1f6dd15ed093ff1e56880852bfb6c00c4851d7c759c2b819eb25796863a9906"
+  },
+  "frozen_Source": [
+    {
+      "current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\include\\bsp\\native_enum_table_wrappers.hpp",
+        "bytes": 3582,
+        "sha256": "b71ae170fadd72356688916e39279196c19510585d128485fc480795eb211ceb"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholeEnumTableWrappersSource01\\frozen_Source\\include\\bsp\\native_enum_table_wrappers.hpp",
+        "bytes": 3582,
+        "sha256": "b71ae170fadd72356688916e39279196c19510585d128485fc480795eb211ceb"
+      }
+    },
+    {
+      "current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\src\\native_enum_table_wrappers.cpp",
+        "bytes": 1961,
+        "sha256": "140476d8ffaddcf8ca48f49a223d90e4fe89c397ffbb2841353abfb9aa1e82a6"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholeEnumTableWrappersSource01\\frozen_Source\\src\\native_enum_table_wrappers.cpp",
+        "bytes": 1961,
+        "sha256": "140476d8ffaddcf8ca48f49a223d90e4fe89c397ffbb2841353abfb9aa1e82a6"
+      }
+    }
+  ],
+  "repository_build": {
+    "schema": "bsp.enum_table_wrappers_existing_repository_build.v1",
+    "source_HEAD": "fcb38e12c135659832d314cc568e9262442630a1",
+    "original_launch": "58dc81/session96687",
+    "actual_terminal": "28e5bd/exit0",
+    "original_handle": 96687,
+    "original_tools": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholeEnumTableWrappersSource01\\original_build_tools.DATA.json",
+      "bytes": 2051,
+      "sha256": "b1419b28c18fc32b8c2670579240a5fab3801a18eec9ec0ee817f25a1380aa8f"
+    },
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholeEnumTableWrappersSource01\\repository_build.log",
+      "bytes": 5819,
+      "sha256": "f03c80d48b0e8bac39dca5a99b11dad81cb98ad605fc723e0e8da14fc4a4aeee"
+    },
+    "existing_checks_passed": 2,
+    "ctest_seconds": 10.93,
+    "configured_CTest_graph": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\build\\win32\\CTestTestfile.cmake",
+      "bytes": 4509,
+      "sha256": "e01a5f554ddce83787bb9c8a4a66ae4e487a5fa22bb57b2498b170789fa84b3b"
+    },
+    "native_differential_absence": "local/seed_reference.hpp absent; CMake condition excludes native_math_differential. Two configured existing checks expected.",
+    "build_restarted": false,
+    "new_TU_registered": false,
+    "new_TU_built_by_existing_graph": false,
+    "unregistered_CMake_inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\CMakeLists.txt",
+        "bytes": 20832,
+        "sha256": "eb3c7f83231a2a8184041a981bcd912733b5f12801d0bba2345d1ad0e69c3d79"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\cmake\\startup.cmake",
+        "bytes": 228702,
+        "sha256": "39cf49ed9625638b31a0403394f167a5b9f364877a8d006b7cd8dde6e61da942"
+      }
+    ],
+    "new_tests_probes_runtime": false
+  },
+  "new_TU_CMake_registration": false,
+  "unowned_Source_shared_metadata_CMake_ledger_Ghidra_edits": false,
+  "new_tests_probes_runtime": false,
+  "Original_ABI_EH_private_CRT_global_class_game_credit": false,
+  "whole_loader_008F67B0_credit": false,
+  "Root_owns_independent_review_registration_integration_admission": true,
+  "limits": "Conditional ordinary Source over admitted actual enum APIs through new C++ interfaces. Genuine current-CRT19Ch old/incoming payload and pool/fallback preconditions remain external. Whole Original bytes and strict object evidence are not Original ABI/EH/privateCRT/global/runtime/game proof. Repository build excludes new TU; no tests/probes/runtime or whole-loader credit."
+}
