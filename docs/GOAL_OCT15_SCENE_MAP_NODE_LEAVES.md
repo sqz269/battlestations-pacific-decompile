@@ -61,6 +61,8 @@ Live queries verify configured `C:/Users/sqz269/bsp.gpr` and
 `/battlestationspacific.exe`. Full byte ranges, prior annotations and native
 call-site checks are in `reports/goal_oct15_scene_map_node_leaves.json`.
 Ghidra comments preserve prior values under the write lock, then the program
-is saved and affected exports refreshed. Strict Win32 build and existing checks
-are pending in the initial draft. No new tests, candidate-specific native
+is saved and affected exports refreshed. Strict MSVC Win32 `scripts/build.ps1`
+passed for Source revision `49df764028781c09e5a3c004cbc1782840a49c7c`, including
+both configured existing CTests (`reconstructed_math` and `tool_tests`). Native
+math differential tests were not enabled in this worktree. No new tests, candidate-specific native
 differential, original ABI compatibility or gameplay validation are claimed.

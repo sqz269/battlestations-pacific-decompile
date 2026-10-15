@@ -107,15 +107,18 @@
   ],
   "source_registration": "cmake/startup.cmake unique bsp_core append while registry unleased; no exclusive shared registry lease",
   "validation": {
-    "build": "pending",
-    "existing_ctests": "pending",
+    "build": "PASS scripts/build.ps1; strict MSVC Win32; new TU compiled",
+    "existing_ctests": "PASS2/2 configured tests: reconstructed_math,tool_tests; native_math_differential not enabled in this worktree",
     "report_call_verification": "PASS7/7 native call/tail rows; markdown0failures,0unchecked,0warnings",
     "new_tests": 0,
     "native_differential_fixture": false,
     "abi_compatible": false,
     "game_executed": false,
     "game_validated": false,
-    "diff_check": "PASS git diff --check"
+    "diff_check": "PASS git diff --check",
+    "tested_commit": "49df764028781c09e5a3c004cbc1782840a49c7c",
+    "build_log": "local/goal-oct15-scene-map-node-leaves-build.log",
+    "build_warning": "LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj and lua_spawn_new.obj; existing files outside packet scope"
   },
   "qualification": "Complete ordinary actual raw node/header Source reusing accepted concrete normal providers; current storage reads and write footprint preserved; no nominal key/mapped type, new host callback, FH3/SEH original ABI, candidate-specific native differential or game claim",
   "canonical_body_comparisons": [
