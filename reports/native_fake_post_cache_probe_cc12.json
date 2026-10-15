@@ -1,0 +1,523 @@
+{
+  "packet": "cc12_world_fake_preload_warm",
+  "status": "Win32_Source_build_checked_runtime_pending",
+  "base": "d9d9f23aa65676741279e44f774c514a9f6c87b6",
+  "owned_files": [
+    "src/game_native_gui_effect_probe.cpp",
+    "include/bsp/game_native_gui_effect_probe.hpp",
+    "docs/NATIVE_FAKE_POST_CACHE_PROBE_CC12.md",
+    "reports/native_fake_post_cache_probe_cc12.json"
+  ],
+  "API": "GameNativeGuiEffectProbe::run(bool include_fakemotion = false)",
+  "default": "Existing two genuine font slots, same order, no shape-observation hook.",
+  "root_integration": {
+    "host_file": "src/game_hosts.cpp",
+    "worker_modified": false,
+    "planned_opt_in": "BSP_NATIVE_POST_CACHE_PROBE=1 alongside BSP_NATIVE_GUI_EFFECT_PROBE=1",
+    "host_wiring_pending_Root": true,
+    "actual_GPU_launch_performed_by_worker": false,
+    "actual_GPU_result": null
+  },
+  "original_contract": "docs/NATIVE_POST_CACHE_ORDER_CC12.md / Original normal close at 0073C1BE precedes +664 construction; effect caller credits survive.",
+  "cold": {
+    "name": "fakemotionblur.mshd",
+    "operation_index": 2,
+    "same_existing_effect_application": true,
+    "same_one_shot_binary_cache": true,
+    "source_mode_requires_existing_zero": true,
+    "mode_bytes_written": false,
+    "guarded_API": "acquire_effect_00b318b0",
+    "requires": [
+      "registered completed cold creator equals loaded/result actual owner",
+      "actual registry publication and caller credit",
+      "no fallback",
+      "same canonical cache owner and mode bytes",
+      "strictly increasing cursor within unchanged record count",
+      "one or two genuine compiler sampler input observations"
+    ]
+  },
+  "sampler_observation": {
+    "opt_in_only": true,
+    "existing_hook": "GameNativeGuiSamplerApplicationBindings::evidence",
+    "host_callback": "NativeMaterialProgramCompilerActual final_states before sampler call scope creation",
+    "following_native_sites": [
+      "00B3C018",
+      "00B3C024"
+    ],
+    "identity_fields": [
+      "same effect application",
+      "builder",
+      "pass",
+      "root descriptor",
+      "root sampler",
+      "mode descriptor"
+    ],
+    "root_requires": "one SceneTexture, source0, type2, index0, pixel stage, only mode0 dummy.shfx",
+    "mode_requires": "actual mode sampler count0",
+    "retained_slots": 2,
+    "callback_returns": "Entirely empty GameNativeGuiSamplerCallEvidence",
+    "entry_word_provided": false,
+    "release_scratch_provided": false,
+    "provider_override": false,
+    "existing_cached_predecessor_guard_unchanged": true,
+    "uninspected_metadata_explicit": true
+  },
+  "cache_close": {
+    "existing_release_only": true,
+    "keeps_cold_credit": true,
+    "requires_current_publication_null": true,
+    "requires_same_actual_effect_count": true,
+    "reopen": false
+  },
+  "warm": {
+    "operation_index": 3,
+    "same_exact_cold_actual8h_header": true,
+    "separate_retained_operation": true,
+    "same_actual_effect_owner": true,
+    "requires_native_site": "00B31436",
+    "requires_count_delta": 1,
+    "key_resolution_absent": true,
+    "cold_loader_not_started": true,
+    "cache_registry_insertion": false,
+    "binary_cache_before_and_after_null": true
+  },
+  "teardown": {
+    "credit_order": [
+      "fake warm",
+      "fake cold",
+      "GuiFontBilinear",
+      "GuiFont"
+    ],
+    "existing_release": "00B32010 with canonical actual owners",
+    "requires_each_actual_count_delta": -1,
+    "fake_native_name_destructions": 1,
+    "shared_parent_graphs_retained_through_original_drain": true,
+    "failure": "Entered names, credits, frames and process graph retained; no rollback/replay/provider substitution."
+  },
+  "physical_source0_evidence": {
+    "files": [
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\src\\game_native_gui_sampler_application.cpp",
+        "path": "local/world_fake_post_cache_probe_20261015/inputs/src/game_native_gui_sampler_application.cpp",
+        "bytes": 10919,
+        "sha256": "d47b03291cecad3927dc742325c448121f663ab0b40f493c8e88116ef544ed1e"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\include\\bsp\\game_native_gui_sampler_application.hpp",
+        "path": "local/world_fake_post_cache_probe_20261015/inputs/include/bsp/game_native_gui_sampler_application.hpp",
+        "bytes": 3249,
+        "sha256": "2aa6bf3276f649e8fc02eb5d0c1f78902303f8c798208ea1e97c22b8672d2fd9"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\src\\native_material_program_compiler_actual.cpp",
+        "path": "local/world_fake_post_cache_probe_20261015/inputs/src/native_material_program_compiler_actual.cpp",
+        "bytes": 29346,
+        "sha256": "8fff69fa386cd63678174f0c8582a4223c291f7e47d2948d40daaecbf5393698"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\include\\bsp\\native_material_program_compiler_actual.hpp",
+        "path": "local/world_fake_post_cache_probe_20261015/inputs/include/bsp/native_material_program_compiler_actual.hpp",
+        "bytes": 8556,
+        "sha256": "790bf45a49e30dd9c658a3aaae0ee45f419d3fc052f04ffa59f1d48a4204b557"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\src\\native_material_effect_programs.cpp",
+        "path": "local/world_fake_post_cache_probe_20261015/inputs/src/native_material_effect_programs.cpp",
+        "bytes": 23940,
+        "sha256": "bb9b10dd32d0432a0eb42166df33918f4a8f6328ec7d8fc67219ec62ef4c635e"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\include\\bsp\\native_material_effect_programs.hpp",
+        "path": "local/world_fake_post_cache_probe_20261015/inputs/include/bsp/native_material_effect_programs.hpp",
+        "bytes": 8088,
+        "sha256": "e49b7af58a8d8e1e4156c535cb7de5b88e4f3c1331b42796ef46f9a4e93a5bc1"
+      },
+      {
+        "source": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\fakemotionblur.shfx",
+        "path": "local/world_fake_post_cache_probe_20261015/assets/postprocess/fakemotionblur.shfx",
+        "bytes": 2385,
+        "sha256": "2c4aa1651c2d6db9f0b5365d982389f8c14ea9a23a54304e05e6e895d7ef1971"
+      },
+      {
+        "source": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\dummy.shfx",
+        "path": "local/world_fake_post_cache_probe_20261015/assets/lights/dummy.shfx",
+        "bytes": 114,
+        "sha256": "3768df78e6a57ee28563ab40cfb9cf223569c12eb62e8576458365deb0866c5b"
+      },
+      {
+        "source": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\dx9_lua.inc",
+        "path": "local/world_fake_post_cache_probe_20261015/assets/dx9_lua.inc",
+        "bytes": 3117,
+        "sha256": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f"
+      }
+    ],
+    "native": {
+      "address": "00b57b77",
+      "bytes": 46,
+      "instructions": 16,
+      "live_Ghidra_matches_installed_PE": true,
+      "sha256": "f7c75592f9fe9e08b82eb5d88ccc798abd2fe4bb880db337997b663e360f903f"
+    },
+    "limit": "Physical descriptors and Original initialization only. Actual selected compiler inputs are observed by the opt-in host hook; no runtime acquisition is claimed."
+  },
+  "verification": {
+    "build": {
+      "started": "2026-10-15T02:34:50.174775+00:00",
+      "finished": "2026-10-15T02:36:45.919189+00:00",
+      "base": "d9d9f23aa65676741279e44f774c514a9f6c87b6",
+      "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1",
+      "exit_code": 0,
+      "source_sha256": {
+        "src/game_native_gui_effect_probe.cpp": "499e5c5dbbd0a0d3f1fbff4bfa11721b750eafb6c52a835fd2e5f0fe977e1435",
+        "include/bsp/game_native_gui_effect_probe.hpp": "25245987c19f1b999a606c47804c29d755f7957c2624525a54780ecff635ba50"
+      },
+      "objects": [
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\build\\win32\\bsp_game.dir\\Release\\game_native_gui_effect_probe.obj",
+          "preserved": "local/world_fake_post_cache_probe_20261015/objects/game_native_gui_effect_probe.obj",
+          "bytes": 123507,
+          "sha256": "06e897ba7ed7cabaed1c1fc07419f6b33fb239f1e78e74090dca0442b63fd124"
+        }
+      ],
+      "log_sha256": "dbb28e2d99c4440af16f356fc04f84373112e30ad550af8b0dec95d525f0dcd0"
+    },
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "all_passed": true,
+    "new_tests_added": false,
+    "prior_receipts": [
+      {
+        "path": "local/world_post_cache_contract_receipt_78ba57fd9/manifest.json",
+        "sha256": "01bfb898aec0e9f4dc542f1be467741b4c095e6595b0e1f9d7375f668c168d91",
+        "artifacts_verified": 118,
+        "committed_snapshots_verified": 2
+      },
+      {
+        "path": "local/main_scene_post_targets_receipt_6d84c7d68/manifest.json",
+        "sha256": "94ed2fd835063fd266f08c7fa92865588157b8ed0e543a077b8a6059513b48d7",
+        "artifacts_verified": 62,
+        "committed_snapshots_verified": 6
+      }
+    ],
+    "prior_artifacts_verified": 180,
+    "prior_committed_snapshots_verified": 8,
+    "shared_CMake_or_provider_implementation_changed": false,
+    "worker_executable_built_but_not_launched": true
+  },
+  "readiness": {
+    "code": "Ready for Root review and explicit host opt-in wiring.",
+    "runtime": "Pending Root-coordinated device-ready launch. No fake acquisition or warm-hit terminal result exists in this receipt.",
+    "Source1": "Conditional dependency if a different selected root/mode requires Source1; this bounded observation hook rejects that shape before its sampler calls.",
+    "must_observe": [
+      "genuine cold result",
+      "each actual Source0 root and empty mode",
+      "existing provider-qualified cached word guard passes",
+      "normal cache close with unchanged effect count",
+      "same-owner B31436 warm credit",
+      "two fake credit retirements and one name destruction",
+      "shared graph closure and process terminal result"
+    ]
+  },
+  "limits": [
+    "Source/build and physical-input evidence only.",
+    "No actual fake acquisition, Original preload Lua iteration or production retained application vector/shutdown proof.",
+    "No +664 construction, active material draw, POST draw, full scene, native FH3, ABI replacement or gameplay validation.",
+    "Cursor endpoints do not identify every lookup query.",
+    "Physical descriptor files do not establish VFS selection or overrides; actual-input hook observations are required."
+  ],
+  "artifacts": [
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/after/include/bsp/game_native_gui_effect_probe.hpp",
+      "bytes": 6451,
+      "sha256": "25245987c19f1b999a606c47804c29d755f7957c2624525a54780ecff635ba50"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/after/src/game_native_gui_effect_probe.cpp",
+      "bytes": 39958,
+      "sha256": "499e5c5dbbd0a0d3f1fbff4bfa11721b750eafb6c52a835fd2e5f0fe977e1435"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/assets/dx9_lua.inc",
+      "bytes": 3117,
+      "sha256": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/assets/lights/dummy.shfx",
+      "bytes": 114,
+      "sha256": "3768df78e6a57ee28563ab40cfb9cf223569c12eb62e8576458365deb0866c5b"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/assets/postprocess/fakemotionblur.shfx",
+      "bytes": 2385,
+      "sha256": "2c4aa1651c2d6db9f0b5365d982389f8c14ea9a23a54304e05e6e895d7ef1971"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/attempt01/after/include/bsp/game_native_gui_effect_probe.hpp",
+      "bytes": 5891,
+      "sha256": "dac3874d7387681ffc93bab11040965df63a302b4e460a98771f41c934c02e0a"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/attempt01/after/src/game_native_gui_effect_probe.cpp",
+      "bytes": 36888,
+      "sha256": "92b917f2a0fffcb2bf6b67baba7acf503ae3b0d1b50da912b1655d617fe4f95a"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/attempt01/build.json",
+      "bytes": 1017,
+      "sha256": "5f1be85105575bff4eb5d88d408b77795dbf31b0c00ecc0c2c49ccbd732e2d22"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/attempt01/build.log",
+      "bytes": 5119,
+      "sha256": "8ca5711939e6d178da6e98bc5597fc8b06335161e097289446f20e1de995257c"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/attempt01/objects/game_native_gui_effect_probe.obj",
+      "bytes": 106670,
+      "sha256": "d176f3d77c81210be18fc620210b862dfdbaa2c3ac5731597b8d1aa41eabdb60"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/attempt02/after/include/bsp/game_native_gui_effect_probe.hpp",
+      "bytes": 5891,
+      "sha256": "dac3874d7387681ffc93bab11040965df63a302b4e460a98771f41c934c02e0a"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/attempt02/after/src/game_native_gui_effect_probe.cpp",
+      "bytes": 36959,
+      "sha256": "059abf0ebb5e7a8ea29746871026101e93c6932048f4be6a055d2c95c54c723e"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/attempt02/build.json",
+      "bytes": 1017,
+      "sha256": "7e2592d4f399bf92b8dd5596383f65a0c9105c5e818607cd9e4285dc129b86ac"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/attempt02/build.log",
+      "bytes": 2736,
+      "sha256": "0a38ac6bb06eded798baf9ac4e610f4f5b4270e9ab4c177121febc8e5a1857a4"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/attempt02/objects/game_native_gui_effect_probe.obj",
+      "bytes": 119724,
+      "sha256": "b361634d5527fc71d021083e2ba51199d4c5fb56853744bbd4c6b1dfb09fcfa4"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/attempt03/after/include/bsp/game_native_gui_effect_probe.hpp",
+      "bytes": 6451,
+      "sha256": "25245987c19f1b999a606c47804c29d755f7957c2624525a54780ecff635ba50"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/attempt03/after/src/game_native_gui_effect_probe.cpp",
+      "bytes": 39882,
+      "sha256": "5144ecf322e0af40bd1c0b76c0a81d2ef356c233589cbda8d2cd66f12aebeb0b"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/attempt03/build.json",
+      "bytes": 1017,
+      "sha256": "2280680c736ef158233f1f61f88e57c27468f545fd6d69ad52a9c17caeb7d4f9"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/attempt03/build.log",
+      "bytes": 2776,
+      "sha256": "526cbb7466e788a1f01f666b0e7fa478b3ee913f10679a80706db76cafa55756"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/attempt03/objects/game_native_gui_effect_probe.obj",
+      "bytes": 123493,
+      "sha256": "c23df9734e35d33900b39363721a0755450b24c9355a6bd291531332cf990244"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/cmake/startup.cmake",
+      "bytes": 227824,
+      "sha256": "fd172f4f19225d9edaafa3b31908dc73f0ab5df250bc66d0d9e589219d2aced1"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/include/bsp/game_native_gui_effect_application.hpp",
+      "bytes": 4833,
+      "sha256": "8c70f812a075b46904dc3ff3a2bd9c4702eb4697ff4b3c16f105ae1a45ba36bd"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/include/bsp/game_native_gui_effect_probe.hpp",
+      "bytes": 4324,
+      "sha256": "64283c93a74848d4c10567d5764a8820870ee006e2fdd8efd1b5f80674ccaf58"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/include/bsp/native_material_effect_cache.hpp",
+      "bytes": 8016,
+      "sha256": "56d1930a80ad2ed90883c1f52f26f36ec51c50c6294a844dd64258949d103ff4"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/include/bsp/native_material_effect_loading.hpp",
+      "bytes": 7471,
+      "sha256": "58a70009ee0df21341679430f1b0d88deedaf0602aef81d40b6aaef13d0dbfb9"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/include/bsp/native_material_effect_owner.hpp",
+      "bytes": 8745,
+      "sha256": "197df420b08345803c36b5ef20cfaa725ccfa02c8ccc4a3fbfb76adada7bdedf"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/include/bsp/native_shader_compiler_lookups.hpp",
+      "bytes": 3966,
+      "sha256": "ff8bf5af6dab08f28a81a8c0e517463443c81ca65c906b42f928c6f4a2bf7559"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/include/bsp/native_shader_descriptor_owner.hpp",
+      "bytes": 4068,
+      "sha256": "4846aaf3f02e8967ae57c00135455b2ee3b6b913c82d790ba32dab80545b2d2e"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/include/bsp/native_shader_sampler_owner.hpp",
+      "bytes": 5020,
+      "sha256": "8a01ca946332bbcc7e4b7130f53cb2070c4cca082d33d75951d69fe152625a93"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/src/game_hosts.cpp",
+      "bytes": 131365,
+      "sha256": "b239835d659f52c1a0cf5748385fa815cdb79b555acd047950bf2ace9b1f18a1"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/src/game_native_gui_effect_application.cpp",
+      "bytes": 15134,
+      "sha256": "a6bf1114236353d69a99461e848cadeb40e9c46f3a80699d807b0621c42dad3d"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/src/game_native_gui_effect_probe.cpp",
+      "bytes": 24690,
+      "sha256": "847f00acd187e0d642f14e3b4dd053b3b265a4b53d4859dff2e37798d254dddf"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/src/game_native_renderer_shaders.inc",
+      "bytes": 1753,
+      "sha256": "40baaaf5db1768ed04ed27febff6ba3176348f44fed964026a04e1e17e51d0ce"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/src/native_material_effect_cache.cpp",
+      "bytes": 26228,
+      "sha256": "b5edc9b518ba2979d112ebdd03d97937307249e05a978272097020055e7072ae"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/src/native_material_effect_loading.cpp",
+      "bytes": 16603,
+      "sha256": "6726e4bbe90b91ea0dfd4aee4ef95d374f1bcc744099127dac08f52348b50ebc"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/src/native_shader_sampler_owner.cpp",
+      "bytes": 5503,
+      "sha256": "48ad13bb14a996c24be81bbcbd755cc21f06b494f8dcb1a0ccf9ca32b374b96f"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before/src/native_shader_sampler_reader.cpp",
+      "bytes": 6190,
+      "sha256": "ad93db3d23715481fbacea527003b1fdb309a652af5d530f97edfd627ddcbe64"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/before.json",
+      "bytes": 6807,
+      "sha256": "a42fff14dd0c556923ed85923b299efc64e2d20a64a30f77b5497a5ba89bd220"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/build.json",
+      "bytes": 1017,
+      "sha256": "13d872f7db1faab84a106539bd8393b6896d2236f1edb33c0c6f8ce80d9db8a0"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/build.log",
+      "bytes": 2736,
+      "sha256": "dbb28e2d99c4440af16f356fc04f84373112e30ad550af8b0dec95d525f0dcd0"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/build.py",
+      "bytes": 1670,
+      "sha256": "074f8fb20792df093c5d6e05e85134e9ac16d16b31fcfa970eab487cc3c72f1b"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/built/bsp_game.exe",
+      "bytes": 5605888,
+      "sha256": "a35c2007fefec413c952bed5153c66022168f420e51bfef2766e74ffcc880b15"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/built/build.ps1",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/built/CL.command.1.tlog",
+      "bytes": 171174,
+      "sha256": "f5767cae3365a75b86a346ba2f4f36bfbdb5b27d49ec3e0c571c1d42ab1c079d"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/built/LastTest.log",
+      "bytes": 2469,
+      "sha256": "1494c4341c2d1eaa31279921aeab4c49f19a381af93889e71bb2cc11f3d35c45"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/extra_inputs.json",
+      "bytes": 3641,
+      "sha256": "e9bf834e2cd6822d2e7defd61a12284a9d1629b43be530e317dd94d97eba39d9"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/extra_inputs.py",
+      "bytes": 3104,
+      "sha256": "c3f0c3b3afb5940666a7be9a375f0846170d0433fdc463c3ae0a98e11b99c218"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/inputs/include/bsp/game_native_gui_sampler_application.hpp",
+      "bytes": 3249,
+      "sha256": "2aa6bf3276f649e8fc02eb5d0c1f78902303f8c798208ea1e97c22b8672d2fd9"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/inputs/include/bsp/native_material_effect_programs.hpp",
+      "bytes": 8088,
+      "sha256": "e49b7af58a8d8e1e4156c535cb7de5b88e4f3c1331b42796ef46f9a4e93a5bc1"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/inputs/include/bsp/native_material_program_compiler_actual.hpp",
+      "bytes": 8556,
+      "sha256": "790bf45a49e30dd9c658a3aaae0ee45f419d3fc052f04ffa59f1d48a4204b557"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/inputs/src/game_native_gui_sampler_application.cpp",
+      "bytes": 10919,
+      "sha256": "d47b03291cecad3927dc742325c448121f663ab0b40f493c8e88116ef544ed1e"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/inputs/src/native_material_effect_programs.cpp",
+      "bytes": 23940,
+      "sha256": "bb9b10dd32d0432a0eb42166df33918f4a8f6328ec7d8fc67219ec62ef4c635e"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/inputs/src/native_material_program_compiler_actual.cpp",
+      "bytes": 29346,
+      "sha256": "8fff69fa386cd63678174f0c8582a4223c291f7e47d2948d40daaecbf5393698"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/make_report.py",
+      "bytes": 7335,
+      "sha256": "43845b8e694f99db8c04cefa4a4531c745055cc73fc4203b0aa5712b2ee6d270"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/native/sampler_initialization.bin",
+      "bytes": 46,
+      "sha256": "f7c75592f9fe9e08b82eb5d88ccc798abd2fe4bb880db337997b663e360f903f"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/native/sampler_initialization.txt",
+      "bytes": 560,
+      "sha256": "9a1bd63916f4d8c5edbbfaad5a2379af8692923e99a54bd26a7c610dd27d764b"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/objects/game_native_gui_effect_probe.obj",
+      "bytes": 123507,
+      "sha256": "06e897ba7ed7cabaed1c1fc07419f6b33fb239f1e78e74090dca0442b63fd124"
+    },
+    {
+      "path": "local/world_fake_post_cache_probe_20261015/prepare.py",
+      "bytes": 2286,
+      "sha256": "5b19a69dc16d76bdcf1045a0b618356b01b54a9ef8d3c8e59624e34192780eea"
+    }
+  ]
+}
