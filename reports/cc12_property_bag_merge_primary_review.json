@@ -1,0 +1,60 @@
+{
+  "schema": "cc12_property_bag_merge_primary_review_v1",
+  "address": "008f54f0",
+  "Source_commit": "8004c8630",
+  "whole_Original": {
+    "bytes": 383,
+    "instructions": 131,
+    "call_sites": 15
+  },
+  "primary_Source_header_Original_listing_probe_Source_read": true,
+  "primary_static17_and_actual_process20_input_pins_verified": true,
+  "independent_closed_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyBagMergeIndependentReview01\\compact_review.DATA.json",
+    "bytes": 6478,
+    "sha256": "eabe3c94792fa61ca937a296de7636e29011187abf2d4331f9fc9e757563e6cc"
+  },
+  "worker_strict_compile": "221a51/exit0",
+  "worker_normal_build": {
+    "terminal": "3faa81/exit0",
+    "existing_tests_passed": 2,
+    "new_TU_registered": false
+  },
+  "focused_Source_process": {
+    "terminal": "c535fd/exit0",
+    "pid": 99680,
+    "top_level_calls": 3,
+    "stdout_bytes": 598,
+    "stderr_bytes": 0,
+    "source_spans_preserved": 19,
+    "types": [
+      0,
+      6
+    ],
+    "keep_words": [
+      256,
+      257
+    ],
+    "empty_source_unchanged": true,
+    "cleanup_completed": true
+  },
+  "reviewed_semantics": [
+    "real12B iterator including empty source and actual8B pooled query lifecycle",
+    "mapped capture before query return, then hit decision",
+    "destination tag6 before low keep byte, same-context fixed recursion",
+    "other hit low-byte keep or full record assignment",
+    "miss full clone then physical iterator/node/source ordinal reread and clone ordinal store, second key getter then full insertion"
+  ],
+  "gates": {
+    "primary_Source_pass": true,
+    "independent_Source_static_and_focused_process_pass": true,
+    "registered_Main_build_pass": false,
+    "actual_Main_COFF_review_pass": false
+  },
+  "limits": [
+    "Ordinary Source API and stated disjoint live canonical graph domain only.",
+    "No Original Native execution, register/FS/EH/OOM/privateCRT/class/application/game qualification.",
+    "Focused Source runtime Type0/6 only; no all-tag runtime or FP matrix credit.",
+    "No independent per-free or leak measurement."
+  ]
+}
