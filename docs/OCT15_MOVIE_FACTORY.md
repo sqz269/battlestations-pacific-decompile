@@ -19,8 +19,10 @@ The bootstrap first invokes the existing singleton-registration helper on the
 same owner. That helper's inspected body installs base table `00cfea60`, obtains
 the lifetime manager and captures its section at +10h, enters and increments the
 section's tracked +18h recursion word when nonnull, publishes the owner to
-`00f8aefc`, registers it using a second manager lookup, then decrements and leaves
-the captured section. This packet requires that whole helper as a host binding;
+`00f8aefc`, obtains the manager again, reloads the current publication for
+registration, then decrements and leaves the captured section. Assembly confirms
+that reload after the second getter; a binding must not substitute a captured
+owner if the publication changed. This packet requires the whole helper as a host binding;
 it does not claim a replacement for its locking, publication or unwind behavior.
 
 After registration the bootstrap writes derived table ID `00cfea78` and calls
@@ -92,7 +94,14 @@ external callback without changing Ghidra. The primary owns any later naming or
 comments. No shared source/header or packet registry was changed by this packet.
 
 Build and mechanical call-check results are recorded in
-`reports/oct15_movie_factory.json`. No new test cases were added. The functions
+`reports/oct15_movie_factory.json`. The worker's full MSVC Win32 Release
+`./scripts/build.ps1` completed successfully: `reconstructed_math` and
+`tool_tests` passed, the two suites enabled in that checkout. Native differential
+tests were not enabled there. The primary integrator separately reports that
+combined revision `0db8158e2` passed the full build and all three suites,
+including `native_math_differential`, before promotion to main. All four JSON
+call-site rows pass the live mechanical check; the markdown checker has no
+failures and one unpaired prose claim. No new test cases were added. The functions
 are not wired into `bsp_game` by this packet, and no runtime/frame-timing claim
 is made. Evidence remains complete bounded Source reconstruction and whatever
 build/check results are explicitly recorded; original ABI, Bink execution,

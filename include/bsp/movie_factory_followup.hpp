@@ -15,8 +15,9 @@ struct MovieFactoryPrefix {
 struct MovieFactoryBootstrapHost {
     virtual ~MovieFactoryBootstrapHost() = default;
     // Required existing helper 007366B0: install base table 00CFEA60, publish
-    // this exact owner at 00F8AEFC and register it with the shared lifetime
-    // manager under its captured critical-section guard. No replacement body.
+    // this exact owner at 00F8AEFC, then look up the shared lifetime manager
+    // again and register the reloaded publication under the captured section
+    // guard. No replacement body.
     virtual void register_movie_factory_007366b0(MovieFactoryPrefix&) = 0;
     // Required Bink boundary: BinkSetSoundSystem(BinkOpenDirectSound, argument).
     // 00A4D356 jumps through IAT 00CE23D0. The callback at native 00A4D35C
