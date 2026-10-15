@@ -1,0 +1,85 @@
+{
+  "packet": "oct15_raw_string_range_assignment",
+  "status": "complete_actual_raw_pool_source_win32_build_tested_accepted_provider_limits",
+  "source_ready": true,
+  "source": "src/native_string_range_assignment.cpp",
+  "header": "include/bsp/native_string_range_assignment.hpp",
+  "documentation": "docs/OCT15_RAW_STRING_RANGE_ASSIGNMENT.md",
+  "target": {"project": "bsp", "project_file": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe", "verification": "Every bsp.py ghidra client query verifies project/program/language/image base.", "ghidra_mutations": false},
+  "routines": [
+    {
+      "address": "0048da50",
+      "existing_name": "STL_NativeStringRange_Assign_0048da50",
+      "name": "assign_native_string_header_range_0048da50",
+      "body": "0048da50-0048daa1",
+      "coverage": "complete with accepted raw-pool/current-CRT service qualifications",
+      "original_abi": "cdecl; six physical DWORDs first,last,destination,unused-caller-word,unused-dispatch-a,unused-dispatch-b; first three consumed; plain RET; EAX advanced destination. Source adds raw-pool context.",
+      "ownership": "Actual8h length0/data4 string headers and existing pool allocations; no owner overlay, storage model, temporary string, generic vector or arbitrary allocator/copy callback.",
+      "schedule": "Capture cursors; pointer-equality loop; identical header skip before all reads; capture source length for concrete raw resize preserve1; afterward guard CURRENT source length; if nonzero read CURRENT destination length, source data, destination data IN THAT ORDER, then nonzero overlap copy; advance8 with DWORD wrap.",
+      "host_steps": [
+        {"address": "0048da6e", "native": "0041dd40", "function": "0048da50", "host": "resize_native_string_header_0041dd40(raw_pool_context)", "contract": "Complete actual Source/native body read; concrete419cc0 publications/manager,bd1120 allocate,bd1510 return/current gate; preserve1, original header reload/publication schedule and inherited zero-copy/failure limits; native RET8 removes two args."},
+        {"address": "0048da83", "native": "00bf7680", "function": "0048da50", "host": "current CRT std::memmove for nonzero count", "contract": "Established _memcpy library name preserved. Accepted overlap branch/service verified; current destination length and current data pointers loaded before zero-count omission. Native three cdecl args, ADD ESPc at0048da88. No original CRT store/fault/vector-dispatch identity claim."}
+      ],
+      "known_callers_read": ["0048e780", "0048f400", "004954f0", "00589690"],
+      "local_eh": "No local native EH frame/catch/cleanup; pool/resize exceptions escape with prefix changes intact."
+    },
+    {
+      "address": "0048f400",
+      "existing_name": "STL_NativeStringRange_AssignDispatch_0048f400",
+      "name": "assign_native_string_range_dispatch_0048f400",
+      "body": "0048f400-0048f444",
+      "coverage": "complete with accepted provider/private-frame qualifications",
+      "original_abi": "cdecl three stacked pointers first,last,destination; EAX recomputed end; plain RET. Source adds raw-pool context.",
+      "schedule": "Capture inputs, pass six physical child words, then ignore child EAX and compute captured_destination+SAR32(captured_last-captured_first,3)*8 with DWORD wrap. Dead private dispatch words initialized0 in source.",
+      "host_steps": [
+        {"address": "0048f42e", "native": "0048da50", "function": "0048f400", "host": "assign_native_string_header_range_0048da50", "contract": "Complete same-packet raw-pool source; first,last,destination,duplicate destination,two dead tags; ADD ESP18h at0048f433. No generic storage substitution."}
+      ],
+      "known_callers_read": ["00506c80"],
+      "local_eh": "No local native EH frame/catch/cleanup; no new Source cleanup or exception conversion."
+    }
+  ],
+  "caller_evidence": [
+    {"address": "0048e7ae", "native": "0048da50", "function": "0048e780", "contract": "Full sibling dispatcher listing read; six words, word4=destination, two private tags; ADD ESP18h at0048e7b3."},
+    {"address": "00495535", "native": "0048da50", "function": "004954f0", "contract": "Full range-erase setup read; suffix/current end/erase first, unused word4=iterator output; ADD ESP18h at00495543."},
+    {"address": "005896bd", "native": "0048da50", "function": "00589690", "contract": "Full single-erase listing read; erase first+8/current end/erase first, unused word4=iterator output; ADD ESP18h at005896c9."},
+    {"address": "00506ccd", "native": "0048f400", "function": "00506c80", "contract": "Shrink/reuse path supplies captured source range/destination begin; cdecl three words, ADD ESPc at00506cd9."},
+    {"address": "00506d44", "native": "0048f400", "function": "00506c80", "contract": "In-capacity grow path supplies source prefix/captured split/destination begin; cdecl three words, ADD ESPc at00506d4f."}
+  ],
+  "dependency_readiness": {
+    "0041dd40": "Existing complete actual NativeStringRawPoolContext overload reused directly. Actual Source schedule and full native listing inspected; no NativeStringStorage callback API used.",
+    "00bf7680": "Accepted current-CRT overlap-copy service reused; native overlap prefix/backward listing and existing source contract inspected. Zero-byte service calls omitted with outer field reads retained.",
+    "00506c80": "This packet closes two range dependencies only. Actual vector assignment remains unimplemented pending its other owning/clear/Buy/EH dependencies; no source/reconstruction claim added here."
+  },
+  "preserved_fragment": {"address": "0048da50", "kind": "fragment", "name": "copy_native_string_range_storage", "source": "src/native_checked_string_storage.cpp", "status": "actual_storage_contract_integrated_settings_strict_win32_native_differential_passed", "action": "unchanged; new exact actual-pool function has separate name/file/record, not replacement"},
+  "source_provider_evidence": {
+    "source": "src/native_string.cpp",
+    "binding": "RawStringPoolAccess invokes actual native_string_pool_get_or_create_00419cc0 for each allocate/release, then allocate_native_string_pool_00bd1120/return_native_string_pool_00bd1510 with current small-return gate.",
+    "native_resize": "Full0041dd40..0041dde3 listing inspected; equal-length early exit, requested0 path, allocate before old release, current header reads and final pointer/length/NUL publication.",
+    "native_copy": "BF7694..BF769a selects backward-overlap BF7844; backward STD/REP MOVSD/CLD paths inspected; source provider contract docs/NATIVE_STRING_RAW_POOL_CONTEXT.md records accepted memmove/zero-copy limits.",
+    "taken_copy_read_order": ["current_source_length_guard", "current_destination_length", "current_source_data", "current_destination_data", "nonzero_memmove"],
+    "terminator": "Outer copy count excludes terminator; equal-length resize need not rewrite it."
+  },
+  "corrections": [
+    {"was": "Ghidra core prototype exposes only three parameters", "is": "Six physical caller words, first three consumed; source retains unused words and adds a distinct borrowed context", "evidence": "Full core listing plus all4 caller setups and ADD ESP18h at0048e7b3,0048f433,00495543,005896c9."},
+    {"was": "A storage fragment or initial source-length copy could appear sufficient", "is": "Exact current source-length recheck, destination-length/source-data/destination-data reload order and actual raw-pool binding", "evidence": "0048da67..0048da83 and actual Source resize overload/RawStringPoolAccess inspected."},
+    {"was": "Dispatcher could use child returned end", "is": "Independently recompute wrapped SAR3 result from captured inputs", "evidence": "0048f436 SUB ESI,EBX;0048f438 SAR ESI,3;0048f43b LEA EAX,[EDI+ESI*8]."}
+  ],
+  "checks": {
+    "build": {"command": "./scripts/build.ps1", "configuration": "MSVC Win32 Release", "exit_code": 0, "log": "local/oct15_raw_string_range_assignment_build.log", "existing_suites_passed": ["reconstructed_math", "native_math_differential", "tool_tests"], "native_math_differential_scope": "Existing seed references; new range functions are not covered by native differential tests."},
+    "report_calls": {"json_checked": 8, "documentation_checked": 8, "failed": 0, "documentation_unchecked": 0, "documentation_warnings": 0},
+    "diff_check": "git diff --check and final git diff --cached --check passed",
+    "index": "python tools/bsp.py index --if-stale completed after owned ledger additions; lookup retains old fragment plus separate new function",
+    "new_tests": "none; complete owned listing/caller/source-provider inspection and relevant existing checks",
+    "existing_build_warning": "Previously recorded LNK4006 duplicate spawn_request_id_matches persists; unrelated existing source, unchanged by packet."
+  },
+  "limits": {
+    "zero_copy": "Accepted existing omission of native zero-byte library copies. Outer count/data header reads still occur in native order before omission; inner resize provider keeps its established policy.",
+    "memory": "Valid taken actual header/data backing and real pool domain required; no emulation of invalid-pointer faults, arbitrary native private-frame aliases or wrapped invalid byte spans.",
+    "providers": "Current Source CRT/pool/manager policy is explicit; no original CRT dispatch/store granularity, native ABI/FH3/SEH identity, rollback or Source exception translation.",
+    "native_differential_for_new_functions": false,
+    "original_abi_compatible": false,
+    "vector_assignment_reconstructed": false,
+    "runtime_cache_binding": false,
+    "game_validated": false
+  }
+}
