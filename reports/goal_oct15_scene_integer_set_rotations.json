@@ -18,7 +18,7 @@
     "Existing tests and compilation do not provide direct original-byte rotation differential, application adoption or game proof"
   ],
   "packet": "goal_oct15_scene_integer_set_rotations",
-  "status": "complete_actual_raw_source_build_pending",
+  "status": "complete_actual_raw_source_win32_build_and_two_enabled_existing_checks_passed",
   "source_ready": true,
   "source": "src/native_scene_integer_set_rotations.cpp",
   "header": "include/bsp/native_scene_integer_set_rotations.hpp",
@@ -117,14 +117,46 @@
     "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
     "complete_executed_bytes": 160,
     "verify_report_calls": "9 call rows checked,0 failed",
-    "win32_build": "pending",
-    "existing_tests": "pending",
+    "win32_build": "PASS scripts/build.ps1 Release Win32 exit0",
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 7.45,
+      "native_math_differential_enabled": false,
+      "dedicated_new_entry_native_differential": false
+    },
     "new_tests": 0,
     "direct_native_rotation_execution": false,
     "abi_compatible": false,
     "game_validated": false,
     "application_adoption": false,
-    "cmake_registration": "unleased owner/queue checked; unique append without whole-file lease"
+    "cmake_registration": "unleased owner/queue checked; unique append without whole-file lease",
+    "source_commit": "6328c0e30",
+    "tested_revision": "6328c0e30",
+    "build": "PASS scripts/build.ps1 Release Win32 exit0; unique registered Source compiled and all targets linked",
+    "build_log": "local/goal_oct15_scene_integer_set_rotations_build.log",
+    "build_log_sha256": "31162cfc640d6778059d31facee4035eaa9fa3c47d6c7f629990619f044e35a6",
+    "diff_check": "passed before Source draft and final validation commit",
+    "inherited_linker_warning": "LNK4006 spawn_request_id_matches in unchanged lua_binding_spawn.obj/lua_spawn_new.obj; second definition ignored",
+    "documentation_claim_check": "7addresses cited,0failed,0unchecked,0warnings",
+    "also_included_in_following_build": "fb49c2d46 includes exact unchanged rotation Source; iterator build and2existing checks pass8.79s",
+    "listing": {
+      "instructions": [
+        30,
+        30
+      ],
+      "gaps": [
+        0,
+        0
+      ],
+      "typed_flow_properties_read": false
+    },
+    "typed_flow_limit": "CLI listing/gap evidence does not expose exact flow/fallthrough/no-return properties; no live ABI or flow repair performed or claimed"
   },
   "annotation_history": [
     {

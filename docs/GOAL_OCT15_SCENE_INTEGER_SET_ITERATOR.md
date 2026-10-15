@@ -56,3 +56,13 @@ and installed-PE byte evidence; Win32 build and existing checks are pending.
 No new routine test is added. Compilation and existing checks do not establish
 direct native differential execution, original binary ABI, application adoption
 or game behavior. Valid backing remains required for every taken access.
+
+Final worker validation: `scripts/build.ps1` Release Win32 passed at Source
+draft `fb49c2d46`, and both enabled existing checks (`reconstructed_math`,
+`tool_tests`) passed in 8.79 seconds. The native differential suite is
+not enabled in this worker tree; no new entry was directly native-tested.
+The log is `local/goal_oct15_scene_integer_set_iterator_build.log`; its hash is in the report.
+The inherited duplicate `spawn_request_id_matches` LNK4006 warning remains.
+JSON transfer claims, documentation address claims and staged whitespace
+checks pass. Listing-gap queries do not expose typed flow/fallthrough
+or no-return properties, and no live flow/prototype repair is claimed.

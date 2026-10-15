@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_scene_integer_set_iterator",
-  "status": "complete_actual_raw_source_build_pending",
+  "status": "complete_actual_raw_source_win32_build_and_two_enabled_existing_checks_passed",
   "source_ready": true,
   "source": "src/native_scene_integer_set_iterator.cpp",
   "header": "include/bsp/native_scene_integer_set_iterator.hpp",
@@ -24,7 +24,7 @@
       "native_name_preserved": "STL_TreeIter_Dec_004679f0",
       "source": "src/native_scene_integer_set_iterator.cpp",
       "header": "include/bsp/native_scene_integer_set_iterator.hpp",
-      "status": "complete_actual_raw_source_build_pending",
+      "status": "complete_actual_raw_source_win32_build_and_two_enabled_existing_checks_passed",
       "coverage": "complete_with_current_SDK_CRT_provider_qualification",
       "native_end_inclusive": "00467a78",
       "native_bytes": 137,
@@ -41,7 +41,7 @@
       "native_name_preserved": "STL_IterWrap_00468210",
       "source": "src/native_scene_integer_set_iterator.cpp",
       "header": "include/bsp/native_scene_integer_set_iterator.hpp",
-      "status": "complete_actual_raw_source_build_pending",
+      "status": "complete_actual_raw_source_win32_build_and_two_enabled_existing_checks_passed",
       "coverage": "complete_with_current_SDK_CRT_provider_qualification",
       "native_end_inclusive": "0046821b",
       "native_bytes": 12,
@@ -58,7 +58,7 @@
       "native_name_preserved": "STL_IterWrap_004688f0",
       "source": "src/native_scene_integer_set_iterator.cpp",
       "header": "include/bsp/native_scene_integer_set_iterator.hpp",
-      "status": "complete_actual_raw_source_build_pending",
+      "status": "complete_actual_raw_source_win32_build_and_two_enabled_existing_checks_passed",
       "coverage": "complete_with_current_SDK_CRT_provider_qualification",
       "native_end_inclusive": "004688fb",
       "native_bytes": 12,
@@ -139,15 +139,43 @@
       6
     ],
     "report_calls": "6 native transfer rows checked,0failed:4CALL and2typed tailJMP",
-    "build": "pending",
-    "existing_tests": "pending",
+    "build": "PASS scripts/build.ps1 Release Win32 exit0; unique registered Source compiled and all targets linked",
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 8.79,
+      "native_math_differential_enabled": false,
+      "dedicated_new_entry_native_differential": false
+    },
     "new_tests": 0,
     "Original_ABI_compatible": false,
     "new_entry_native_differential": false,
     "game_validated": false,
     "application_adoption": false,
     "documentation_claim_check": "9addresses cited,0failed,0unchecked,0warnings",
-    "cmake_registration": "Current owner/queue checked unleased; unique Source line appended without exclusive registry lease"
+    "cmake_registration": "Current owner/queue checked unleased; unique Source line appended without exclusive registry lease",
+    "source_commit": "fb49c2d46",
+    "tested_revision": "fb49c2d46",
+    "win32_build": "PASS scripts/build.ps1 Release Win32 exit0",
+    "build_log": "local/goal_oct15_scene_integer_set_iterator_build.log",
+    "build_log_sha256": "7e1f0a17113686d9e39ffaaa8abc3d97004aea9c6c36ca2936198ecfaaa2f9c0",
+    "diff_check": "passed before Source draft and final validation commit",
+    "inherited_linker_warning": "LNK4006 spawn_request_id_matches in unchanged lua_binding_spawn.obj/lua_spawn_new.obj; second definition ignored",
+    "listing": {
+      "instructions": [
+        48,
+        6,
+        6
+      ],
+      "gaps": 0,
+      "typed_flow_properties_read": false
+    },
+    "typed_flow_limit": "CLI listing/gap evidence does not expose exact flow/fallthrough/no-return properties; no live ABI or flow repair performed or claimed"
   },
   "limits": [
     "Complete raw Source including invalid-owner and invalid-tail paths, not a positive-only projection",
