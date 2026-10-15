@@ -1,0 +1,353 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_integer_set_erase",
+  "worker": "agent/goal_oct15_copy",
+  "base_commit": "2c611cd778d0309d52e6c6950ac429e21d90d52f",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis_and_export": true,
+  "source": "src/native_scene_integer_set_erase.cpp",
+  "header": "include/bsp/native_scene_integer_set_erase.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_INTEGER_SET_ERASE.md",
+  "owned_addresses": [
+    "0046a740",
+    "00c61c90"
+  ],
+  "status": "whole_actual_storage_source_strict_win32_existing_ctest_and_compiler_checked",
+  "routines": [
+    {
+      "address": "0046a740",
+      "body_end_inclusive": "0046a9e6",
+      "body_bytes": 679,
+      "instructions": 231,
+      "basic_blocks": 61,
+      "native_calls": 13,
+      "kind": "function",
+      "coverage": "complete_at_actual_integer_providers_current_crt_free_and_owning_cpp_exception_boundaries",
+      "implementation": "erase_native_scene_integer_set_iterator_0046a740",
+      "previous_name": "STL_xlen_throw_0046a740",
+      "retained_name": "STL_SceneIntegerSet_EraseIterator_0046A740",
+      "name_qualification": "behavior-derived descriptive hypothesis correcting misleading provisional throw label;not recovered native symbol;prior values/comments/evidence preserved",
+      "original_abi": "ECX captured tree;stack output,owner,node;RET0Ch/EAX current output;EDX input unused;saved NODE DWORD atentryESP-54h written onlyafterinitialnonnil",
+      "live_xrefs": [
+        "0046b217"
+      ]
+    },
+    {
+      "address": "00c61c90",
+      "body_end_inclusive": "00c61c97",
+      "body_bytes": 8,
+      "instructions": 2,
+      "kind": "fragment",
+      "coverage": "complete_source_completed_message_unwind_not_native_frame_entry",
+      "implementation": "scene_integer_set_erase_00c61c90_completed_message_unwind",
+      "retained_name": "Unwind@00c61c90",
+      "original_abi": "LEA ECX,[nativeframe-50h];tail004072D0;state0->-1"
+    }
+  ],
+  "coverage_totals": {
+    "normal_bytes": 679,
+    "normal_instructions": 231,
+    "source_eh_fragment_bytes": 8,
+    "source_eh_fragment_instructions": 2,
+    "total_owned_bytes": 687,
+    "total_owned_instructions": 233
+  },
+  "source_api": {
+    "signature": "void* erase_native_scene_integer_set_iterator_0046a740(void*,const NativeSceneIntegerSetEraseFrame&)",
+    "frame": "stable/disjoint metadata{actual_parameters12,actual_saved_node4}",
+    "parameters": {
+      "output": 0,
+      "owner": 4,
+      "node": 8
+    },
+    "native_saved_cell": "entryESP-54h, NODE not map;only initialized on reached nonnil path",
+    "admission": "only reached backing required;actual described cells/payload aliases allowed where every access/release valid;no private frames/argument homes/EH/return aliases implicit;no concurrency",
+    "native_abi_replacement": false
+  },
+  "storage": {
+    "tree": {
+      "head": 4,
+      "count": 8
+    },
+    "node_bytes": 20,
+    "node": {
+      "left": 0,
+      "parent": 4,
+      "right": 8,
+      "untouched_key": 12,
+      "color_byte": 16,
+      "nil_byte": 17,
+      "untouched_padding": [
+        18,
+        19
+      ]
+    },
+    "access": "volatile DWORD/BYTE actual storage,32-bit unsigned address arithmetic"
+  },
+  "schedule": {
+    "entry": "capture original/nil first;initialnil owning throw before saved-node backing access;nonnil publishes initialnode then actual parameter increment;captured tree fixed",
+    "splice": "original captured links/parents retained;two-child CURRENT parameter.node successor;complete successor==original and transplant branches;both colors captured before exchange",
+    "minimum": "CURRENT head.min read BEFORE CURRENT saved-node compare;captured head used for store",
+    "maximum": "CURRENT head then CURRENT saved-node read BEFORE head.max compare",
+    "repair": "CURRENT saved-node COLOR target;all mirrored branches,captured near-child reused across far reads,postrotation sibling reload,captured tree,current root capture before parent-parent load evenrootmatch,final black store",
+    "free": "fresh CURRENT saved-node read after repair;real currentCRT free without original/color target substitution;no pool/string/key cleanup",
+    "postfree": "current unsigned captured-tree count,nonzero decrement only;CURRENT owner then output pointer then node reads BEFORE owner/node stores"
+  },
+  "exception_evidence": {
+    "message": "invalid map/set<T> iterator",
+    "message_bytes": 27,
+    "message_native_address": "00ce44e0",
+    "temporary": "capacity15,length0,inlinebyte0;assign00408720 whileparentstate-1;arm state0 onlyafter success before00411700",
+    "carrier": "existing actual28h NativeHardwareLayoutInvalidIterator;construct00411700 thenD6926C;copy00441760;destroy004412B0",
+    "handler": "00c61c98",
+    "funcinfo": "00d893b0",
+    "magic": "19930522",
+    "max_state": 1,
+    "unwind_map": "00d893a8",
+    "unwind": [
+      {
+        "state": 0,
+        "next_state": -1,
+        "action": "00c61c90"
+      }
+    ],
+    "try_blocks": 0,
+    "eh_flags": 1,
+    "throw_info": "00d863a8",
+    "attributes": 0,
+    "destructor": "004412b0",
+    "compatibility_callback": 0,
+    "catchable_array": "00d863e4",
+    "catchables": [
+      {
+        "record": "00d863f4",
+        "type_descriptor": "00e0817c",
+        "type": ".?AVout_of_range@std@@",
+        "size": 40,
+        "copy": "00441760",
+        "properties": 0,
+        "pmd": [
+          0,
+          -1,
+          0
+        ]
+      },
+      {
+        "record": "00d84000",
+        "type_descriptor": "00e08020",
+        "type": ".?AVlogic_error@std@@",
+        "size": 40,
+        "copy": "004118d0",
+        "properties": 0,
+        "pmd": [
+          0,
+          -1,
+          0
+        ]
+      },
+      {
+        "record": "00e03c7c",
+        "type_descriptor": "00e174f0",
+        "type": ".?AVexception@std@@",
+        "size": 12,
+        "copy": "00bf63a6",
+        "properties": 0,
+        "pmd": [
+          0,
+          -1,
+          0
+        ]
+      }
+    ],
+    "transport": "actual owning current C++ carrier/guard;not native RTTI/base catches/FH3/SEH/private-frame entry"
+  },
+  "host_steps": [
+    {
+      "address": "0046a784",
+      "native": "00408720",
+      "function": "0046a740",
+      "kind": "call",
+      "binding": "actual27-byte counted legacy message assign,parentunarmed"
+    },
+    {
+      "address": "0046a796",
+      "native": "00411700",
+      "function": "0046a740",
+      "kind": "call",
+      "binding": "actual owning carrier logic-error ctor after state0"
+    },
+    {
+      "address": "0046a7ad",
+      "native": "00bf6885",
+      "function": "0046a740",
+      "kind": "call",
+      "binding": "current owning C++ throw;nativeD863A8 metadata evidence"
+    },
+    {
+      "address": "0046a7be",
+      "native": "00466ae0",
+      "function": "0046a740",
+      "kind": "call",
+      "binding": "actual parameter owner/node,complete returnable currentCRT increment"
+    },
+    {
+      "address": "0046a823",
+      "native": "00466a60",
+      "function": "0046a740",
+      "kind": "call",
+      "binding": "actual nil11h minimum;captured head finalpublication"
+    },
+    {
+      "address": "0046a845",
+      "native": "00466a40",
+      "function": "0046a740",
+      "kind": "call",
+      "binding": "actual nil11h maximum;captured head finalpublication"
+    },
+    {
+      "address": "0046a8e3",
+      "native": "00467740",
+      "function": "0046a740",
+      "kind": "call",
+      "binding": "actual left red-sibling rotation,captured tree/parent"
+    },
+    {
+      "address": "0046a912",
+      "native": "00467790",
+      "function": "0046a740",
+      "kind": "call",
+      "binding": "actual right near rotation,captured near-child reuse"
+    },
+    {
+      "address": "0046a92c",
+      "native": "00467740",
+      "function": "0046a740",
+      "kind": "call",
+      "binding": "actual left far rotation,captured tree/parent"
+    },
+    {
+      "address": "0046a943",
+      "native": "00467790",
+      "function": "0046a740",
+      "kind": "call",
+      "binding": "actual right red-sibling rotation,captured tree/parent"
+    },
+    {
+      "address": "0046a987",
+      "native": "00467740",
+      "function": "0046a740",
+      "kind": "call",
+      "binding": "actual left near rotation,captured near-child reuse"
+    },
+    {
+      "address": "0046a99f",
+      "native": "00467790",
+      "function": "0046a740",
+      "kind": "call",
+      "binding": "actual right far rotation,captured tree/parent"
+    },
+    {
+      "address": "0046a9ac",
+      "native": "00bf65ac",
+      "function": "0046a740",
+      "kind": "call",
+      "binding": "real singleton_lifetime_free CURRENT saved-node,not captured original/color target"
+    },
+    {
+      "address": "00c61c93",
+      "native": "004072d0",
+      "function": "00c61c90",
+      "kind": "tail_jump",
+      "binding": "completed message guard,not independent Source nativeframe funclet"
+    }
+  ],
+  "caller_steps": [
+    {
+      "address": "0046b217",
+      "native": "0046a740",
+      "function": "0046b170",
+      "kind": "call",
+      "contract": "parentpreincrements actualouteriterator,pushes OLD capturednode,OLDowner,actualprivateoutput;calleeRET0Ch;reloads currentouter nodeTHENowner;parent outsidepacket"
+    }
+  ],
+  "implementation_search": "no whole/unindexed0046A740/new API Source;complete scalar14h body independently reviewed,not offset-substituted map erase;existing actual owning carrier/free/rotations reused;new extrema/increment independently owned",
+  "annotation": {
+    "before_comments": "local/goal_oct15_scene_integer_set_erase_before_comments.json",
+    "before_documentation": "local/goal_oct15_scene_integer_set_erase_before_documentation.json",
+    "preserve_prior_values_comments_evidence_and_correct_unwind_name": true,
+    "locked_apply_save": "passed;local/ghidra-annotations-20261015T213102Z.json;both prior values recorded,comments/evidence retained,misleading throw label corrected,project saved",
+    "refreshed_exports": "passed;both owned addresses forced after annotation",
+    "readback": "passed;local/goal_oct15_scene_integer_set_erase_after_comments.json;expected names/prior comments/new evidence verified"
+  },
+  "verification": {
+    "project_program_guard": "bsp.py Client.verify before every live batch;bsp,/battlestationspacific.exe,x86:LE:32:default,image00400000",
+    "whole_listing_boundaries_callers_eh_and_actual_provider_contracts": "passed",
+    "primary_independent_source_review": "passed;primary reviewed all231 native instructions,complete Source and EH cleanup scope;no mismatch;final Source/header hashes verified identical to reviewed draft cd9d10a6d5a84545a9229368e81fbe7851381329",
+    "live_installed_full_bytes": "passed;687B/233instructions,whole normal+unwind spans",
+    "verify_report_calls": "passed;15typed native transfers,0failed;Markdown26addresses,0failed/unchecked/warnings",
+    "cmake_registration": "passed unique append after immediate unleased check,no exclusive wholefilelease",
+    "provider_source_integration": "passed;actual extrema a98afc15f and increment 1e2ff85e3 Source merged at c46e1bedbff10428b00f5c1b947ccbadc7736f03;no stubs or provider edits",
+    "strict_win32_build_and_existing_ctest": {
+      "result": "passed",
+      "command": "./scripts/build.ps1",
+      "build_revision": "c46e1bedbff10428b00f5c1b947ccbadc7736f03",
+      "source_revision": "cd9d10a6d5a84545a9229368e81fbe7851381329",
+      "log": "local/goal_oct15_scene_integer_set_erase_build.log",
+      "ctest": "3/3 passed: reconstructed_math 0.22s,native_math_differential 0.04s,tool_tests 8.04s;total8.36s",
+      "source_and_header_unchanged_from_reviewed_draft": true,
+      "qualification": "existing unrelated LNK4006 duplicate spawn_request_id_matches Lua objects;no packet compile warning;existing native math checks do not exercise this new erase entry"
+    },
+    "compiled_object_review": {
+      "result": "passed focused actual MSVC Win32 Release object inspection",
+      "object": "build/win32/bsp_core.dir/Release/native_scene_integer_set_erase.obj",
+      "object_bytes": 6543,
+      "sha256": "4f5c9649e3a8dbfcf335cde75aa85c1e0f34d4db31cea57356323102dfb74a83",
+      "dumpbin_version": "14.51.36244.0",
+      "receipt": "local/goal_oct15_scene_integer_set_erase_object.txt",
+      "entry_code_bytes": 694,
+      "entry_rel32_relocations": 11,
+      "initial_nil_schedule": "original node read+0E,nil byte+11,error branch+16 precede saved-cell store+26 and increment+28",
+      "minimum_current_cell_schedule": "head.min load+8F then current saved-node load+91;concrete minimum call+A4 and captured-head publication+AF",
+      "maximum_current_cell_schedule": "current saved-node load+B4 then head.max load+B9;concrete maximum call+D7 and captured-head publication+DF",
+      "color_and_near_child_schedule": "separate current saved-node color target load+14B;left near-child capture+1AA/recolor+1C6,right capture+21B/recolor+24F;retained pointer across intervening far-child tests",
+      "ascent_schedule": "captured current head/root+231/+236 then parent.parent load+239 and pure comparison+23C;native flags/instruction identity not claimed",
+      "release_count_publication_schedule": "current saved-node value+283 to real free+286;post-free current count+28B;current owner+29F/output+2A2/node+2A4 before stores+2A7/+2A9",
+      "owning_error_scope": "helper real counted assignment+42,guard state0 armed+54,actual owning carrier construction+5B,current C++ throw+69;generated unwind tails to real CompletedMessage destructor and actual004072D0 service",
+      "qualification": "current Source/compiler code and real C++ cleanup evidence only;no native register/stack/private-frame/RTTI/basecatch/FH3/SEH/COFF identity"
+    },
+    "diff_check": "passed",
+    "new_tests": false,
+    "packet_native_differential": "not run",
+    "game_validation": "not run",
+    "source_file_sha256": {
+      "src/native_scene_integer_set_erase.cpp": "220e5ea8c211b197442d2e4a30e69e897af07bcd1be7783e381a706a4888152b",
+      "include/bsp/native_scene_integer_set_erase.hpp": "21b5979311bd783e03d6b508dc1c8b2ffa91c8a1fbd6522833de43b26919fed9"
+    }
+  },
+  "limits": [
+    "explicit Source frame/currentCRT/owningCpp service boundaries;no original native ABI/RTTI/basecatch/FH3/SEH/privateframe identity",
+    "current saved-node may select different valid color/free targets;no forced original-equality guard or blanket freed-original guarantee",
+    "valid reached backing/release domain,stable/disjoint metadata,no concurrency;unreached saved-node storage not required",
+    "no pool/string/key destructor,node rollback or additional failure cleanup",
+    "packet-specific native differential/game validation not run"
+  ],
+  "byte_evidence": {
+    "receipt": "local/goal_oct15_scene_integer_set_erase_bytes.json",
+    "complete_live_spans_match_installed_pe": true,
+    "ranges": [
+      {
+        "address": "0046a740",
+        "length": 679,
+        "instructions": 231,
+        "sha256": "5b2bdb8a4e9f746ea7e9680aa8f4841bafa836f21a79ad34d9c5999bf3fa29ad"
+      },
+      {
+        "address": "00c61c90",
+        "length": 8,
+        "instructions": 2,
+        "sha256": "2e2098e4294a7478f89d9ec23a1080dfa67464e0b97eb13f87596de3e919f225"
+      }
+    ]
+  }
+}
