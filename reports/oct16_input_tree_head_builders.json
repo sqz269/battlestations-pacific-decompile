@@ -1,0 +1,553 @@
+{
+  "packet": "oct16_native_input_tree_head_builders",
+  "status": "whole_ordinary_CurrentCpp_reconstructed_default_Win32_build_and_actual_COFF_reviewed_pending_primary",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_Main": "9db37215372a19fc81da33accdcdd9d827634715",
+  "source": "src/native_input_tree_head_builders.cpp",
+  "header": "include/bsp/native_input_tree_head_builders.hpp",
+  "documentation": "docs/OCT16_INPUT_TREE_HEAD_BUILDERS.md",
+  "source_sha256": "1d548ee1f668fecf3302cf46e212fbde493a3ac40702d142970ead321d231b85",
+  "header_sha256": "a8cb7e76868e82febfc1215138b67d4f88db8e35eb17e44afda52786dc3ed6d9",
+  "routines": [
+    {
+      "address": "0069d1f0",
+      "library_name_preserved": "STL_inst_0069d1f0",
+      "Source": "buy_native_input_device_tree_head_0069d1f0",
+      "coverage": "complete ordinary body within accepted CurrentCpp allocation domain",
+      "Native_range": [
+        "0069d1f0",
+        "0069d22f"
+      ],
+      "Native_bytes": 64,
+      "Native_instruction_starts": 17,
+      "allocation_bytes": 156,
+      "color_offset": 152,
+      "nil_offset": 153,
+      "original_abi": "zero consumed inputs; incoming ECX/EDX unconsumed; no stack inputs; plain RET; EAX allocated base",
+      "Source_abi": "void* __cdecl function()",
+      "own_EH": false
+    },
+    {
+      "address": "0069d240",
+      "library_name_preserved": "STL_Tree_BuyHeadNode_0069d240",
+      "Source": "buy_native_input_preset_tree_head_0069d240",
+      "coverage": "complete ordinary body within accepted CurrentCpp allocation domain",
+      "Native_range": [
+        "0069d240",
+        "0069d276"
+      ],
+      "Native_bytes": 55,
+      "Native_instruction_starts": 17,
+      "allocation_bytes": 44,
+      "color_offset": 40,
+      "nil_offset": 41,
+      "original_abi": "zero consumed inputs; incoming ECX/EDX unconsumed; no stack inputs; plain RET; EAX allocated base",
+      "Source_abi": "void* __cdecl function()",
+      "own_EH": false
+    },
+    {
+      "address": "0069d290",
+      "library_name_preserved": "STL_Tree_BuyHeadNode_0069d290",
+      "Source": "buy_native_input_default_scalar_tree_head_0069d290",
+      "coverage": "complete ordinary body within accepted CurrentCpp allocation domain",
+      "Native_range": [
+        "0069d290",
+        "0069d2c6"
+      ],
+      "Native_bytes": 55,
+      "Native_instruction_starts": 17,
+      "allocation_bytes": 24,
+      "color_offset": 20,
+      "nil_offset": 21,
+      "original_abi": "zero consumed inputs; incoming ECX/EDX unconsumed; no stack inputs; plain RET; EAX allocated base",
+      "Source_abi": "void* __cdecl function()",
+      "own_EH": false
+    },
+    {
+      "address": "0069d320",
+      "library_name_preserved": "STL_Tree_BuyHeadNode_0069d320",
+      "Source": "buy_native_input_controller_tree_head_0069d320",
+      "coverage": "complete ordinary body within accepted CurrentCpp allocation domain",
+      "Native_range": [
+        "0069d320",
+        "0069d356"
+      ],
+      "Native_bytes": 55,
+      "Native_instruction_starts": 17,
+      "allocation_bytes": 36,
+      "color_offset": 32,
+      "nil_offset": 33,
+      "original_abi": "zero consumed inputs; incoming ECX/EDX unconsumed; no stack inputs; plain RET; EAX allocated base",
+      "Source_abi": "void* __cdecl function()",
+      "own_EH": false
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "0069d1f0",
+      "address": "0069d1f5",
+      "native": "00bf681b",
+      "kind": "call",
+      "contract": "operator_new; direct accepted singleton_lifetime_allocate({object,N,N})",
+      "scope": "owned ordinary"
+    },
+    {
+      "function": "0069d240",
+      "address": "0069d242",
+      "native": "00bf681b",
+      "kind": "call",
+      "contract": "operator_new; direct accepted singleton_lifetime_allocate({object,N,N})",
+      "scope": "owned ordinary"
+    },
+    {
+      "function": "0069d290",
+      "address": "0069d292",
+      "native": "00bf681b",
+      "kind": "call",
+      "contract": "operator_new; direct accepted singleton_lifetime_allocate({object,N,N})",
+      "scope": "owned ordinary"
+    },
+    {
+      "function": "0069d320",
+      "address": "0069d322",
+      "native": "00bf681b",
+      "kind": "call",
+      "contract": "operator_new; direct accepted singleton_lifetime_allocate({object,N,N})",
+      "scope": "owned ordinary"
+    }
+  ],
+  "contract": {
+    "semantic_inputs": 0,
+    "result": "captured allocation base",
+    "allocation": "accepted singleton_lifetime_allocate receives kind object, native_bytes N and host_bytes N; N=9c/2c/18/24",
+    "operation_order": [
+      "capture allocated base as DWORD",
+      "if base!=0 store DWORD at base=0",
+      "compute wrapping DWORD base+4; independently if nonzero store DWORD there=0",
+      "compute wrapping DWORD base+8; independently if nonzero store DWORD there=0",
+      "unconditionally store color byte=1",
+      "unconditionally store nil byte=0",
+      "return original captured base"
+    ],
+    "special_null": "no blanket null exit: base0 still derives addresses4 and8, and color/nil writes remain unconditional",
+    "payload": "no payload initialization, selflinks, treecount/header publication or nil1; those parent operations excluded",
+    "failure": "no local catch/guard/free/rollback or new destructor; accepted current allocation service failure propagates"
+  },
+  "Source_bindings": {
+    "allocator": {
+      "address": "00bf681b",
+      "established_library_identity": "operator_new",
+      "API": "singleton_lifetime_allocate(const SingletonAllocationRequest&)",
+      "source": "src/singleton_lifetime.cpp",
+      "header": "include/bsp/singleton_lifetime.hpp",
+      "CurrentCpp_implementation": "std::malloc(host_bytes), _callnewh(host_bytes) retry, std::bad_alloc when handler returns0",
+      "arguments": "SingletonAllocationKind::object and identical exact native_bytes/host_bytes",
+      "qualification": "current CRT heap/new-handler/exception service; Original heap/CRT/RTTI/FH3 identity unproved"
+    },
+    "private_family": "four literal private template instances; no public node overlay, generic model, callback, new context or stub"
+  },
+  "Native_evidence": {
+    "owned_defined_bytes": 229,
+    "owned_current_starts": 68,
+    "owned_CALLs": 4,
+    "complete_typed_bodies": 4,
+    "all_PE_live_bytes_equal": true,
+    "all_current_starts_equal": true,
+    "prior_readiness": {
+      "path": "local/oct16_input_settings_raw_constructor_readiness.json",
+      "sha256": "24f83ae50b1cbdec8b253414a8ca517e85c544294c18d5aade2ce98d884f56c0"
+    },
+    "parent_separate_scope": "prior constructor332B103 and its cleanup/handler proof are read-only; no constructor/actions/loader Source promotion",
+    "new_native_audit": "local/oct16_input_tree_head_builders_native_audit.json",
+    "new_native_audit_sha256": "105963f97906efb2fa17103701bbd62acb17f5696f8f3e3ee92a42cdf9833f40"
+  },
+  "provider_LF_fingerprints": {
+    "include/bsp/engine_services_cc13.hpp": {
+      "sha256_LF": "8f6d185ce0342d4f9d75b3f7a2e9d379d49699ec78380e88cbd9b3afc24ebd4a",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/global_config.hpp": {
+      "sha256_LF": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_conflict_vector_tidy.hpp": {
+      "sha256_LF": "5a5bd18021b66070fde3b9cb3bb5bad88b536cdb018695d4717bb2b455420fd9",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_controller_tree_destroy_instances.hpp": {
+      "sha256_LF": "92cba5dc9d813e6f4c8d176922d4a65d82a172ff7c825140096ce462538323ab",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_controller_tree_erase.hpp": {
+      "sha256_LF": "de4cf3f09015875738440254ec55dc91c0b52a30de85405bf4ddefe591fd95dc",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_controller_tree_range.hpp": {
+      "sha256_LF": "a74c31d815ee767b6c9d403b0d6db942a3929114a3f2a8f672f6b9f58d651a37",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_default_scalar_tree_destroy.hpp": {
+      "sha256_LF": "ed6233e72b7e699697f311e1ebcba75e5146b5c28bb33d5d9ef4bf617768edcf",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_default_scalar_tree_range.hpp": {
+      "sha256_LF": "3459c9c076f499a2a087770fdebeca84894cb466ef511b6d9d5f945370a3c7de",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_device_map_cleanup.hpp": {
+      "sha256_LF": "3710db8ca2a21501c2486ef53779226097ece3bbc999cd02b3924cccfcd292be",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_device_tree_range.hpp": {
+      "sha256_LF": "0c093e04570eb8d630c742c7932e74aeb6e6d8acf47b5ca86ac9715a742eb79a",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_preset_tree_destroy.hpp": {
+      "sha256_LF": "95e7688464050c7d1c3527852dcb6c8e65a3a6e6df1fdb93282ecbd0ce1ad65f",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_preset_tree_erase.hpp": {
+      "sha256_LF": "5d1224d3cdde8dd5e9b25d59282df460a43b67b159427ff7b4bc45d202970615",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_preset_tree_range.hpp": {
+      "sha256_LF": "d681826bf330af5f6d4b44e3afe0ac9a10bc0a1cb4107576a4667d8eda0ca504",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_settings_lifetime.hpp": {
+      "sha256_LF": "0d9429e4036b6e43a5cf08329cdf0fdc42e49acc1d5b11899a4fe183c9e9ec16",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_settings_startup.hpp": {
+      "sha256_LF": "c4b150b7b268106691e6ae51161aa9c3cf1320db38d798a445cce595d750afef",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_settings_tables.hpp": {
+      "sha256_LF": "0bb85f38b2d3241f1a926aa007ed941960119e2d926134fb96e868b6060cd5b7",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_settings_tree_cleanup.hpp": {
+      "sha256_LF": "db6fdb5d7c26f1bd416693464823e29c97bce248e987da5d033d626b4603c875",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_settings_vector_storage.hpp": {
+      "sha256_LF": "13d701666dd0fca926a5ae06c2bf2f426d9d1143c167d7dbdca3bf5614be9210",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_input_tree_destroy_instances.hpp": {
+      "sha256_LF": "82ba95115f1cba7bd3c1f7ac9506820a821a0f3dc516ea9eef8fd1ba7a1b89ed",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_lua_objects.hpp": {
+      "sha256_LF": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_render_service_vector_cleanup.hpp": {
+      "sha256_LF": "34035e6bef6840298913a0d50a25991a1567546dd576578dc5857d9e69174c80",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_string.hpp": {
+      "sha256_LF": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_string_vector_group_cleanup.hpp": {
+      "sha256_LF": "441160192885477773b2b642ea83a78e9d34f9fcadddea965e8f0c6c36229b01",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/native_string_vector_group_tidies.hpp": {
+      "sha256_LF": "36afa89eeaa1fe38013b6efe6d1870cccea69efe1f308f33d601279e45d22f0d",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/settings_seg29_cc13.hpp": {
+      "sha256_LF": "71eac28bfcc7cf1ffdecf63e96e342107450c69bf50a0fd7eabfbd19007a0946",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "include/bsp/singleton_lifetime.hpp": {
+      "sha256_LF": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/engine_services_cc13.cpp": {
+      "sha256_LF": "9a02ce304c1cec3466379a45972a434e658ea0e7c54d363cda51750cf55c8dde",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/global_config.cpp": {
+      "sha256_LF": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_input_conflict_vector_tidy.cpp": {
+      "sha256_LF": "8771f582d4094803a8f80d2c5c103bb791847fb3a9e924141940bad361f0e021",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_input_controller_tree_destroy_instances.cpp": {
+      "sha256_LF": "fc492a1190cdff014fc1237c4e608e58636a03ad30410460df77cb93ecaf2a2a",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_input_controller_tree_range.cpp": {
+      "sha256_LF": "724e9f34c6fb6fdd2178723b7715aa81a8cc756f8978a05ba36d4852bea46165",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_input_default_scalar_tree_destroy.cpp": {
+      "sha256_LF": "f814b1bb4e711a070e9fe43732ea92a91a14c5e48d5e19d4d987f72a8fd538af",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_input_default_scalar_tree_range.cpp": {
+      "sha256_LF": "3d2ac9c442f1250b1c1d2e97e9c6446a0b0b63d203f403db90bae1aa4a62991f",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_input_device_map_cleanup.cpp": {
+      "sha256_LF": "79740f3a912cefcdc7ba80c9507a9d8b5dca0cbdf34d38ee0184b776d35b7e3c",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_input_device_tree_range.cpp": {
+      "sha256_LF": "60d81ecb84cf21b128ab6e0a063ff9418d02c4fe8ad04457f006962f683492ac",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_input_preset_tree_destroy.cpp": {
+      "sha256_LF": "09a4c68b92f31e05c38ce81de76a76463596ec6143a483e1565c813a104bc406",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_input_preset_tree_range.cpp": {
+      "sha256_LF": "94d602d28239ee7f158191770a41ad076ce1e5eaf0842ac191079f323bd2d540",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_input_settings_lifetime.cpp": {
+      "sha256_LF": "e33175f2723e55b1469a6c5d9901777abc564c30c4ebfce714a14424dd9ee685",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_input_settings_startup.cpp": {
+      "sha256_LF": "3eaac7eb73b055b6e73736c30115cb9c6650d2f8d6894005b2f420ab98137f2c",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_input_settings_tables.cpp": {
+      "sha256_LF": "81774adaad7b63eb2e9b025c202d80d674e9776d4afe632207161e3f0f5f7ee3",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_input_settings_tree_cleanup.cpp": {
+      "sha256_LF": "d8be9c5d9613ee258a06fe42a6696269a13a60f53a8a4e1d75aa2e4292feab30",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_input_settings_vector_storage.cpp": {
+      "sha256_LF": "18076a91677d150d9e9fff82502718d355f3be58839c0c6003bc75035f38f9e5",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_input_tree_destroy_instances.cpp": {
+      "sha256_LF": "cf00cd5cc70acb42decb572166c8d25259236c92ef3bdb546dae437087f04043",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_lua_objects.cpp": {
+      "sha256_LF": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_render_service_vector_cleanup.cpp": {
+      "sha256_LF": "fd7c581522967ab66036064404d62838eba860ae93677314e4594c9628dd3d41",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_string.cpp": {
+      "sha256_LF": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_string_vector_group_cleanup.cpp": {
+      "sha256_LF": "fa96f5e3d3cb031eed4259d3785b8db89988876912abc3046f53eb9611016497",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/native_string_vector_group_tidies.cpp": {
+      "sha256_LF": "844b56e4c171bcefc0b37a4781ee8cb7cf14dabfb5d6e761f36c4c3873bd2ad4",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/settings_seg29_cc13.cpp": {
+      "sha256_LF": "7a882cf94ad8bc30120e0a953d7cb0af729d017593f31b1929205c266f43df24",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    },
+    "src/singleton_lifetime.cpp": {
+      "sha256_LF": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "same_as_published_Main9db_and_frozen_readiness": true
+    }
+  },
+  "actual_CMake_COFF": {
+    "object": "build/win32/bsp_core.dir/Release/native_input_tree_head_builders.obj",
+    "sha256": "2e6c8a18b21b43bf84d1c85af1e8afa6bc77a4a8ffd240712cb18dec03c5fb11",
+    "object_bytes": 3512,
+    "code_bytes": 868,
+    "instructions": 256,
+    "code_sections": 8,
+    "public_code_bytes": 434,
+    "public_instructions": 128,
+    "private_code_bytes": 434,
+    "private_instructions": 128,
+    "relocations": 24,
+    "relocation_identity_counts": {
+      "allocator_REL32": 8,
+      "GS_check_REL32": 8,
+      "GS_cookie_DIR32": 8
+    },
+    "padding_bytes": 0,
+    "embedded_code_data_bytes": 0,
+    "EH_metadata_bytes": 0,
+    "noncode": [
+      {
+        "section": 1,
+        "name": ".drectve",
+        "size": 305,
+        "stored_bytes": 305,
+        "uninitialized": false
+      },
+      {
+        "section": 2,
+        "name": ".debug$S",
+        "size": 212,
+        "stored_bytes": 212,
+        "uninitialized": false
+      },
+      {
+        "section": 3,
+        "name": ".bss",
+        "size": 4,
+        "stored_bytes": 0,
+        "uninitialized": true
+      },
+      {
+        "section": 12,
+        "name": ".chks64",
+        "size": 96,
+        "stored_bytes": 96,
+        "uninitialized": false
+      }
+    ],
+    "review_checks": [
+      {
+        "check": "actual default CMake Release I386 object parsed, not ad hoc /c",
+        "pass": true
+      },
+      {
+        "check": "all8 code sections868B256 instructions decoded completely",
+        "pass": true
+      },
+      {
+        "check": "all4 public zero-input cdecl symbol shapes and plain RET",
+        "pass": true
+      },
+      {
+        "check": "all4 private whole literal template instances fully emitted and reviewed",
+        "pass": true
+      },
+      {
+        "check": "all4 public/private entire byte and symbolic relocation pairs equal",
+        "pass": true
+      },
+      {
+        "check": "all8 request records kindobject3 and exact native/host literal N,N",
+        "pass": true
+      },
+      {
+        "check": "all8 bodies exact Native bytes after allocator through unconditional nil store",
+        "pass": true
+      },
+      {
+        "check": "all24 relocations resolved to real allocator plus compiler GS providers",
+        "pass": true
+      },
+      {
+        "check": "three separate conditional address stores and unconditional ordered color/nil preserved",
+        "pass": true
+      },
+      {
+        "check": "return base stays EAX, compiler cookie path uses current SDK contract",
+        "pass": true
+      },
+      {
+        "check": "no padding, embedded branch tables, or own EH metadata",
+        "pass": true
+      },
+      {
+        "check": "all noncode sections/directives/debug/checksum and uninitialized BSS distinguished",
+        "pass": true
+      }
+    ],
+    "full_review_method": "all four unique32-instruction literal bodies read, all four public clones entire-byte and symbolic-relocation equality checked; all256 instructions and24 relocations accounted",
+    "audit": "local/oct16_input_tree_head_builders_actual_COFF.json",
+    "audit_sha256": "ba5aa08f24b0bf82b5a473f02841cd19337428257de93080505151d8539da16d",
+    "decoded": "local/oct16_input_tree_head_builders_actual_COFF_decoded.txt",
+    "decoded_sha256": "9e27c7a49c1d5662d08184db8f38557f26609af3a29b0455ad30b7a96ab05ebd"
+  },
+  "verification": {
+    "default_build": {
+      "command": "./scripts/build.ps1",
+      "target": "MSVC Win32 Release default",
+      "exit_code": 0,
+      "existing_suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "passed": 3,
+      "failed": 0,
+      "total_test_seconds": 7.45,
+      "log": "local/oct16_input_tree_head_builders_build.log",
+      "log_sha256": "1eb5b5dc1fcec29828e9bba336c03404dbbfe533a27d7d7a84e770dba97958a9",
+      "limits": "existing suites do not execute these head builders; no new tests/probes/Native execution",
+      "warning": "preexisting duplicate spawn_request_id_matches LNK4006 from lua_binding_spawn/lua_spawn_new; no new head module warning"
+    },
+    "report_call_verifier": {
+      "checked": 4,
+      "failed": 0,
+      "exit_code": 0
+    },
+    "documentation_call_verifier": {
+      "claims": 4,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "exit_code": 0
+    },
+    "index": {
+      "if_stale_rebuilt": true,
+      "exit_code": 0
+    },
+    "diff_check": {
+      "exit_code": 0
+    }
+  },
+  "preservation": {
+    "frozen_readiness_unchanged": true,
+    "existing_50_Source_header_provider_files_unchanged": true,
+    "existing_startup_initialize_tree": "kept intact; remains inline admitted construction prefix and separate parent effects, not ordinary four-entry delegation",
+    "correct_STL_names": "retained; C++ labels are descriptive hypotheses",
+    "no_existing_function_record_replaced": true
+  },
+  "limits": [
+    "Source/Native static body recovery and current Win32 build/COFF proof only",
+    "not Original binary ABI/register/flag/private-frame/heap/CRT/new-handler/RTTI/FH3/SEH/rawfault or game validation",
+    "Source public fields use volatile accesses through wrapping DWORD addresses; valid admitted address/lifetime domain remains required",
+    "Source captured argument/private stack and compiler GS-cookie request frame are new; aliasing into those frames not Original-equivalent",
+    "zero-input cdecl interfaces intentionally omit unconsumed ECX/EDX; no new RawPool context or ownership model",
+    "Source compiler emits GS-cookie SDK accesses/calls absent in Native; full object accounted before linker COMDAT folding",
+    "no allocation-failure or malformed-address fixture and no Native execution",
+    "006AB6B0/constructor actions/006A7BE0 remain separate unpromoted Source work"
+  ],
+  "preserved_prior_ignored_evidence": {
+    "local/oct16_input_settings_raw_constructor_readiness.json": "24f83ae50b1cbdec8b253414a8ca517e85c544294c18d5aade2ce98d884f56c0",
+    "local/oct15_input_settings_whole_owner_closure_readiness.json": "b9f2ef35ff0a9854e5109f4e513ecabeee89a52277fcadf0c84e7c54733b4d28",
+    "local/oct15_controller_member_destroy_readiness.json": "e92da7db21fd77abf7d2a75d367defe30937fbfb251f3d163f45f8795fcb5ad4",
+    "local/oct15_input_settings_raw_owner_binding_plan.json": "00520619763bf4965d6db648e53704ad856f80e3c197b2234ffe7a6a52b65bed",
+    "local/oct15_input_settings_raw_owner_frozen_pin.json": "11e3b3246a5e3dfaea328936154dd363b1fa27d98187bfc51b48b6f53c39088a"
+  },
+  "owned_ledger_and_registration_diff": {
+    "cmake/startup.cmake": {
+      "appended_lines": 1,
+      "removed_lines": 0,
+      "scope": "ownedSource Core registration only; no append registry lease"
+    },
+    "config/names/00690000.jsonl": {
+      "added_records": 4,
+      "removed_records": 0,
+      "scope": "only4owned addresses; first reviewed name records preserve existing Native/STL tag names; reconstruction adds4whole entries"
+    },
+    "config/reconstruction/00690000.jsonl": {
+      "added_records": 4,
+      "removed_records": 0,
+      "scope": "only4owned addresses; first reviewed name records preserve existing Native/STL tag names; reconstruction adds4whole entries"
+    }
+  },
+  "documentation_sha256": "25b13d9c7cee5dbf9301a7828b0d7ceca378ddd842db9d6a63a8bb7d8a72fed9"
+}

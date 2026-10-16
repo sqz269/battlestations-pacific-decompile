@@ -1,0 +1,830 @@
+{
+  "packet": "cc12_native_gui_frame_box_retirement_readiness_123",
+  "status": "read_only_whole_raw_framebox_parent_and_scalar_ready_to_compose_with_required_existing_services_prepared_range_preconditions_production_authority_open",
+  "baseline": {
+    "own_head": "f0953198363a34181965ea12c0309b075a77a035",
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48",
+    "baseline_retained_no_merge": true,
+    "prior117_captured_by_parent": true,
+    "read_only119_worktree": "J:/PROG/battlestations-pacific-decompile-cc12_font_retirement_review36",
+    "119_status_at_start": "reviewed/sealed Source; not merged here; parent capture pending",
+    "scope": "whole AD2880 and actual D5D130+04 scalar; no production binding or producer implementation"
+  },
+  "document": {
+    "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RETIREMENT_READINESS_123.md",
+    "sha256": "6a020064bdac2f83aba738d71e2069a8bc3e3c95bd3083e05cc6987fd7466419"
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "every_live_batch_verified_through_bsp_client": true,
+    "wrapper_verify_evidence": [
+      "tools/bsp.py:710-729 client() invokes Client.verify before queries",
+      "tools/ghidra_export.py:101-110 checks actual project/program/language/imagebase",
+      "config/target.json supplies existing project file and Original"
+    ]
+  },
+  "original": {
+    "exe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "exe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "ranges": [
+      {
+        "address": "00ad2880",
+        "end_exclusive": "00ad28fd",
+        "length": 125,
+        "role": "whole FrameBox destructor",
+        "sha256": "e17795d2d1c9545e06b01b5f3f0193c6839441b9234d1c903239508a57c74bb1",
+        "live_equals_disk": true,
+        "artifact": "local/cc12_native_gui_frame_box_retirement_readiness_123_original_00ad2880.bin",
+        "instructions": 33,
+        "whole_function": true
+      },
+      {
+        "address": "00ad29b0",
+        "end_exclusive": "00ad29d0",
+        "length": 32,
+        "role": "whole FrameBox scalar deleting entry",
+        "sha256": "a0ad4a34f91b609499e16e1db4161e3337fe15d091e0512bc3cc8cd357fc3874",
+        "live_equals_disk": true,
+        "artifact": "local/cc12_native_gui_frame_box_retirement_readiness_123_original_00ad29b0.bin",
+        "instructions": 11,
+        "whole_function": true
+      },
+      {
+        "address": "00acf610",
+        "end_exclusive": "00acf678",
+        "length": 104,
+        "role": "whole immediate FrameBox pool return",
+        "sha256": "c3caa27c341f6019787a0da0f8e047bde7c9c97c9b01dea7249a7a46f4567519",
+        "live_equals_disk": true,
+        "artifact": "local/cc12_native_gui_frame_box_retirement_readiness_123_original_00acf610.bin",
+        "instructions": 33,
+        "whole_function": true
+      },
+      {
+        "address": "00d5d130",
+        "length": 8,
+        "role": "actual FrameBox current profile first two DWORD entries",
+        "end_exclusive": "00d5d138",
+        "sha256": "d21da4d45e22b3b74f5df501e830cb7b818e8189bdd0bd683de4f475ff7e37ec",
+        "live_equals_disk": true,
+        "artifact": "local/cc12_native_gui_frame_box_retirement_readiness_123_original_00d5d130.bin",
+        "whole_function": false
+      },
+      {
+        "address": "00cb9306",
+        "length": 10,
+        "role": "actual destructor FH3 handler thunk",
+        "end_exclusive": "00cb9310",
+        "sha256": "ae7b7ecf3dc3110cbbcad181c1fe52369f1961edf2b2dfbe248458088da0a7c8",
+        "live_equals_disk": true,
+        "artifact": "local/cc12_native_gui_frame_box_retirement_readiness_123_original_00cb9306.bin",
+        "whole_function": false
+      },
+      {
+        "address": "00df08bc",
+        "length": 36,
+        "role": "actual destructor FH3 FuncInfo",
+        "end_exclusive": "00df08e0",
+        "sha256": "3614fc33cd256cbae73cd25c9dc9a9df13c5d70e5f950ccdea58e4920bec35f4",
+        "live_equals_disk": true,
+        "artifact": "local/cc12_native_gui_frame_box_retirement_readiness_123_original_00df08bc.bin",
+        "whole_function": false
+      },
+      {
+        "address": "00df08ac",
+        "length": 16,
+        "role": "actual destructor two-entry unwind map",
+        "end_exclusive": "00df08bc",
+        "sha256": "7b0d0be9dc4600956c0ee50ef57fe06e9d90149783f41111f402a813ae5eab8a",
+        "live_equals_disk": true,
+        "artifact": "local/cc12_native_gui_frame_box_retirement_readiness_123_original_00df08ac.bin",
+        "whole_function": false
+      },
+      {
+        "address": "00cb92f0",
+        "length": 8,
+        "role": "state0 base cleanup action",
+        "end_exclusive": "00cb92f8",
+        "sha256": "8f69a907f8d848f689e40ffaacb57f9543d2c535b47f290da131725c26895212",
+        "live_equals_disk": true,
+        "artifact": "local/cc12_native_gui_frame_box_retirement_readiness_123_original_00cb92f0.bin",
+        "whole_function": false
+      },
+      {
+        "address": "00cb92f8",
+        "length": 14,
+        "role": "state1 vector cleanup action",
+        "end_exclusive": "00cb9306",
+        "sha256": "5043c10afe89a457e3edad4447202671c49cf5700a709e2338d4dbfae1e22634",
+        "live_equals_disk": true,
+        "artifact": "local/cc12_native_gui_frame_box_retirement_readiness_123_original_00cb92f8.bin",
+        "whole_function": false
+      }
+    ],
+    "range_count": 9,
+    "total_bytes": 353,
+    "whole_function_count": 3,
+    "whole_function_bytes": 261,
+    "direct_calls": [
+      {
+        "address": "00ad28c2",
+        "native": "00419cc0",
+        "function": "00ad2880"
+      },
+      {
+        "address": "00ad28c9",
+        "native": "00bd1510",
+        "function": "00ad2880"
+      },
+      {
+        "address": "00ad28d9",
+        "native": "00ad21b0",
+        "function": "00ad2880"
+      },
+      {
+        "address": "00ad28e8",
+        "native": "00aa9730",
+        "function": "00ad2880"
+      },
+      {
+        "address": "00ad29b3",
+        "native": "00ad2880",
+        "function": "00ad29b0"
+      },
+      {
+        "address": "00ad29c5",
+        "native": "00acf610",
+        "function": "00ad29b0"
+      }
+    ],
+    "indirect_boundaries": [
+      {
+        "site": "00acf619",
+        "function": "00acf610",
+        "instruction": "CALL dword ptr [0x00ce2218]"
+      },
+      {
+        "site": "00acf66c",
+        "function": "00acf610",
+        "instruction": "CALL dword ptr [0x00ce2210]"
+      }
+    ],
+    "pool_import_names": [
+      {
+        "iat": "00ce2210",
+        "dll": "KERNEL32.dll",
+        "name": "LeaveCriticalSection"
+      },
+      {
+        "iat": "00ce2218",
+        "dll": "KERNEL32.dll",
+        "name": "EnterCriticalSection"
+      }
+    ],
+    "actual_table_entries": [
+      "00bd30e0",
+      "00ad29b0"
+    ],
+    "eh": {
+      "handler": "00cb9306",
+      "func_info": "00df08bc",
+      "magic": "19930522",
+      "max_state": 2,
+      "unwind_map": "00df08ac",
+      "actions": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "action": "00cb92f0",
+          "saved_owner": "[EBP-10]",
+          "tail": "00aa9730"
+        },
+        {
+          "state": 1,
+          "to_state": 0,
+          "action": "00cb92f8",
+          "saved_owner": "[EBP-10]",
+          "offset": "f0",
+          "tail": "00ad2320"
+        }
+      ]
+    },
+    "scope": "Fresh verified BSP-wrapper whole body/listing, table and EH bytes matched unchanged installed Original; no execution, listing repair or Ghidra write."
+  },
+  "discovered_current_profile": {
+    "profile": "00d5d130",
+    "first8_bytes": "e030bd00b029ad00",
+    "slot00": "00bd30e0",
+    "slot04": "00ad29b0",
+    "scalar_discovered_from_actual_live_table_and_disk": true,
+    "not_guessed_or_inferred_from_typed_host": true
+  },
+  "functions": [
+    {
+      "entry": "00ad2880",
+      "role": "whole destructor",
+      "original_abi": "ECX actual FrameBox; no stacked args; RET; no semantic EAX result",
+      "old_name_preserved": "BSP_GuiFrameBox_Destroy_Provisional",
+      "existing_source": "src/gui_widgets_cc13.cpp:901",
+      "existing_limitation": "GuiWidgetMemberHost name/base callback services plus pure GuiFrameBoxHost::destroy_state_vector_00ad21b0; no concrete raw cleanup composition"
+    },
+    {
+      "entry": "00ad29b0",
+      "role": "whole scalar deleting entry",
+      "original_abi": "ECX actual FrameBox; stacked flags DWORD, current low-byte read AFTER destructor; EAX saved identity; RET4",
+      "old_name_preserved": "BSP_GuiFrameBox_Delete_Provisional",
+      "existing_source": "src/gui_widgets_cc13.cpp:gui_widget_scalar_deleting_destructor + kGuiWidgetDeletingDestructors",
+      "existing_limitation": "generic host.run_destructor; flags by value; no concrete raw AD2880 route"
+    },
+    {
+      "entry": "00acf610",
+      "role": "existing whole genuine FrameBox pool return",
+      "original_abi": "ECX actual38h pool; stacked actual slot; RET4",
+      "existing_source": "NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::free in src/native_material_pools.cpp",
+      "new_pool_algorithm_needed": false
+    }
+  ],
+  "normal_schedule": [
+    {
+      "site": "00ad289d",
+      "operation": "stamp DWORD D5D130 at owner+00"
+    },
+    {
+      "site": "00ad28a3",
+      "operation": "capture CURRENT name data+108 before state1"
+    },
+    {
+      "site": "00ad28ab",
+      "operation": "store state1 before branch; null data skips length/getter/return"
+    },
+    {
+      "site": "00ad28b5",
+      "operation": "nonnull only CURRENT length+104 then DWORD+1; pending return data/size/literal1 captured before getter"
+    },
+    {
+      "site": "00ad28c2",
+      "operation": "real419CC0 before realBD1510; no name data reload or header clear"
+    },
+    {
+      "site": "00ad28ce",
+      "operation": "form owner+F0 then consume state1->0 at AD28D4 before tidy"
+    },
+    {
+      "site": "00ad28d9",
+      "operation": "realAD21B0 normal tidy on actualF0 header, matching SAME prepared119 operation"
+    },
+    {
+      "site": "00ad28e0",
+      "operation": "consume state0->-1 before realAA9730 at AD28E8"
+    },
+    {
+      "site": "00ad29b8",
+      "operation": "AFTER successful destructor read CURRENT flags LOWBYTE, test bit0"
+    },
+    {
+      "site": "00ad29c5",
+      "operation": "bit0 calls realACF610 on actualF8C188 pool with saved owner"
+    },
+    {
+      "site": "00ad29ca",
+      "operation": "return saved identity even after slot return; no payload reread"
+    }
+  ],
+  "failure_schedule": {
+    "state1": "Native unwind first consumes1->0, CB92F8(savedowner+F0)->AD2320->AD21B0; then consumes0->-1, CB92F0(savedowner)->AA9730",
+    "state0": "base only; do not repeat normal tidy after failure",
+    "state_minus1": "no repeated outer base cleanup",
+    "name_retry_or_header_clear": false,
+    "future_source_boundary": "ordinary C++ catch/cleanup consumes actions before entry; cleanup escape terminates; no NativeFH3/SEH/private-stack-alias equivalence",
+    "eh_tail_instructions": [
+      {
+        "site": "00cb930b",
+        "instruction": "JMP 00bf6b43",
+        "role": "FH3 handler tail"
+      },
+      {
+        "site": "00cb92f3",
+        "instruction": "JMP 00aa9730",
+        "role": "state0 base action"
+      },
+      {
+        "site": "00cb9301",
+        "instruction": "JMP 00ad2320",
+        "role": "state1 vector action"
+      }
+    ]
+  },
+  "provider_matrix": [
+    {
+      "role": "name pool",
+      "status": "genuine raw functions exist",
+      "source": "NativeStringRawPoolContext + native_string_pool_get_or_create_00419cc0 + return_native_string_pool_00bd1510",
+      "required": "SAME publication01090AA8/gate01090AA4/actualmanager01090AA0, actual live buffers, no cached getter or semantic pool"
+    },
+    {
+      "role": "vector tidy and EH tail",
+      "status": "sealed119 genuine explicit Source engine exists; not merged here",
+      "source": "native_gui_frame_box_records.hpp/.cpp at 2f9394312ca953ce8541657fb754a73164219062",
+      "required": "SAME headerF0, owners, strings, persistent fresh operation + stable distinct fresh111 array; matching SDK free domain; no fallback"
+    },
+    {
+      "role": "record resource release",
+      "status": "whole111 exists in SAME119 Source files",
+      "source": "release_native_gui_frame_box_record_00ad0860",
+      "required": "ONLY established successfully constructed canonical registered2D D61948/BD30E0/B3F590 family, same registry/texturecontext/pool, valid actual+04 atomic; exclude failed103"
+    },
+    {
+      "role": "base/node/child/timed",
+      "status": "wholeAA9730 and AA8320 exist over required genuine services",
+      "source": "native_gui_widget_lifetime.hpp/.cpp + native_node_destruction.hpp/.cpp",
+      "required": "SAME actual node runtime + genuine current child20/class0C/child04/timed00 and rawA9BD50 transport, independent graph/provider lifetime; no typedcast or default terminal"
+    },
+    {
+      "role": "slot return",
+      "status": "wholeACF610 shared engine already exists",
+      "source": "NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::free",
+      "required": "SAME genuinely initialized pool/slab/trailer authority that allocated the actual slot; externally serialized lifetime, no private second owner"
+    },
+    {
+      "role": "constructor provenance",
+      "status": "wholeraw96 default available, whole103 record copy available; not complete populatedFrameBox producer",
+      "source": "construct_native_gui_frame_box_default_00ad2600 + genuineAA9390(type18)",
+      "required": "live DWORD-aligned actual payload00..11B and real base/container/name/vector lifetimes; no blanketzero or semanticprojection"
+    },
+    {
+      "role": "production authority",
+      "status": "not established; not required to pretend it exists for bounded supplied-domain reconstruction",
+      "source": "no new owner/binder/normal activation proposed",
+      "required": "actual constructed owner graph, current profiles and genuine children/timed/node/renderer/string/pool contexts + retention/preparation before callbacks"
+    }
+  ],
+  "preparation_and_lifetime": {
+    "required_before_parent_entry": "SAME persistent119 operation and stable distinct fresh111 metadata for expectedfirst/end, entire independently retained backing/creator/resource/name/node/provider graph",
+    "through_name_actions": "expectedfirst/end correspondence must survive every earlier reached name getter/return callback until the reached normal orEH tidy captures begin/end",
+    "general_callback_replaced_vector_supported": false,
+    "prepared_replacement_selection_scheme_provided": false,
+    "extra_early_raw_header_reads_or_late_allocation_proposed": false,
+    "after_tidy_capture": "existing119 cached range iteration/currentbegin free rules remain; independently hold old captured backing and any currentfree allocation; no extra cachedbegin free",
+    "retention_owner": "caller independent of container/widget links and parent unwinding scope; metadata owns no graph",
+    "automatic_failed_parent_scope_119_metadata_owner_allowed": false,
+    "reason": "119 entered/failed metadata destructor terminates; base cleanup can remove links while failed graph/frames still require independent retention",
+    "same_lifetime_reentry_or_replay_allowed": false,
+    "metadata_and_contexts": "stable live disjoint from raw payload/name/vector/free backing/provider scratch; flags survive destructor; external serialization",
+    "diagnostic_pointers_are_owning_or_healthy_retry_capabilities": false
+  },
+  "no_blank_zero": {
+    "raw96_available": true,
+    "base_type": 18,
+    "zeroed_vector_words": [
+      "f4",
+      "f8",
+      "fc"
+    ],
+    "zeroed_name_words": [
+      "104",
+      "108"
+    ],
+    "unwritten_preimages_preserved": [
+      "ee..f3 including allocatorproxyf0",
+      "101..103",
+      "base-unwritten bytes",
+      "pool-trailer11c outside payload"
+    ],
+    "failed103_record_may_be_retired_as_constructed_owner": false,
+    "complete_framebox_copy_factory_or_ad1910_rollback_claimed": false
+  },
+  "pool_contract": {
+    "actual_role": "00f8c188",
+    "header_bytes": 56,
+    "native_vtable": "00d5d0fc",
+    "payload_bytes": 284,
+    "slot_bytes": 288,
+    "slots_per_slab": 16,
+    "trailer_offset": 284,
+    "slab_bytes": 4644,
+    "free_indices_offset": 4608,
+    "free_count_offset": 4640,
+    "order": "Enter actualpool+0C lock -> recursion+24++ -> CURRENTslot+11C -> CURRENTpool+28/current slab -> signed(slot-slab)/120h -> append WORDindex at CURRENTfreecount -> WORDcount++ -> lower CURRENTfirstfree+34 if smaller -> recursion-- -> Leave",
+    "trailer_cached_before_destruction_or_lock": false,
+    "trim_can_move_table_and_rewrite_trailers": true,
+    "process": "existing GameNativeGuiWidgetPoolProcess<GuiFrameBoxPoolTraits>, explicit completed startup, same physical allocator-list domain; exit frees slabs without payload destructors",
+    "foreign_heap_private_new_owner_late_getter_or_post_teardown_use_allowed": false,
+    "source_calls_preserve_original_iat_or_private_abi": false
+  },
+  "next_packet": {
+    "kind": "whole missing raw destructor + scalar composition, subject to fresh assignment/lease",
+    "addresses": [
+      "00ad2880",
+      "00ad29b0"
+    ],
+    "files": [
+      "include/bsp/native_gui_frame_box_lifetime.hpp",
+      "src/native_gui_frame_box_lifetime.cpp"
+    ],
+    "context": "required references NativeGuiWidgetLifetimeContext&, NativeStringRawPoolContext&, NativeRenderActualOwners&, SAME persistent NativeGuiFrameBoxVectorTidyOperation&; no defaults or owner",
+    "destructor_api": "void destroy_native_gui_frame_box_00ad2880(void*, NativeGuiFrameBoxLifetimeContext&)",
+    "scalar_api": "void* scalar_delete_native_gui_frame_box_00ad29b0(void*, const volatile uint32_t&, NativeGuiFrameBoxLifetimeContext&, NativeGuiWidgetPool<GuiFrameBoxPoolTraits>&)",
+    "scope": "preflight metadata before Native effects; exact raw current capture/state/call order, no name clear, same existing119/111/base/pool services; borrowed flags LOWBYTE read after successful destruction, normal-only pool return",
+    "new_source_abi_not_original_entry_or_private_eh": true,
+    "new_pool_tidy_record_or_base_algorithm": false,
+    "new_producer_dispatcher_capability_only_binder_owner_global_or_activation": false,
+    "production_ready": false
+  },
+  "source_evidence": {
+    "source_count": 29,
+    "sources": [
+      {
+        "path": "include/bsp/gui_widgets_cc13.hpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\gui_widgets_cc13.hpp",
+        "origin": "own117",
+        "bytes": 92980,
+        "sha256": "2a889c7f79cdfa87e99283c4b0286eed4911845410425a38918cb39aeecb63b7",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/include/bsp/gui_widgets_cc13.hpp"
+      },
+      {
+        "path": "src/gui_widgets_cc13.cpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\gui_widgets_cc13.cpp",
+        "origin": "own117",
+        "bytes": 75116,
+        "sha256": "20312bdde0d2a577300c6431ea53a54aaaaf6c05c3c6670dc655c20864bb74da",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/src/gui_widgets_cc13.cpp"
+      },
+      {
+        "path": "include/bsp/native_gui_frame_box_factory.hpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_gui_frame_box_factory.hpp",
+        "origin": "own117",
+        "bytes": 1474,
+        "sha256": "5d396b347e986349ecf29dca0dfc7fb8c9a1d749bc774c1992dd8e6d18f014b1",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/include/bsp/native_gui_frame_box_factory.hpp"
+      },
+      {
+        "path": "src/native_gui_frame_box_factory.cpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_gui_frame_box_factory.cpp",
+        "origin": "own117",
+        "bytes": 1547,
+        "sha256": "51f869267de233f5a642b32462d9eb0bcde932cdaebb4ac39e968aaf7eb238a4",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/src/native_gui_frame_box_factory.cpp"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_lifetime.hpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_gui_widget_lifetime.hpp",
+        "origin": "own117",
+        "bytes": 4515,
+        "sha256": "f9fe331e898de066b05cde5aba9bae1bb5e0dfccdceedb9cb8c85a286be3d286",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/include/bsp/native_gui_widget_lifetime.hpp"
+      },
+      {
+        "path": "src/native_gui_widget_lifetime.cpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_gui_widget_lifetime.cpp",
+        "origin": "own117",
+        "bytes": 8780,
+        "sha256": "f5f10d603694dfbb354b92bc4627dfc0fd687724fc51d49de5c51f53c813c3b6",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/src/native_gui_widget_lifetime.cpp"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_base_storage.hpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_gui_widget_base_storage.hpp",
+        "origin": "own117",
+        "bytes": 1081,
+        "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/include/bsp/native_gui_widget_base_storage.hpp"
+      },
+      {
+        "path": "src/native_gui_widget_base_storage.cpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_gui_widget_base_storage.cpp",
+        "origin": "own117",
+        "bytes": 3008,
+        "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/src/native_gui_widget_base_storage.cpp"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_pools_cc13.hpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_gui_widget_pools_cc13.hpp",
+        "origin": "own117",
+        "bytes": 12674,
+        "sha256": "fd2be32f59443f79787b5006a628b9d0f78597b4d4dff62d09dbc65831c1fed3",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/include/bsp/native_gui_widget_pools_cc13.hpp"
+      },
+      {
+        "path": "src/native_gui_widget_pools_cc13.cpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_gui_widget_pools_cc13.cpp",
+        "origin": "own117",
+        "bytes": 3180,
+        "sha256": "e9fa3a2f4e8d0f644d601aa974bab567f8cd36e5c9ea958ae06aacaca4b5e925",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/src/native_gui_widget_pools_cc13.cpp"
+      },
+      {
+        "path": "include/bsp/native_material_pools.hpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_material_pools.hpp",
+        "origin": "own117",
+        "bytes": 10219,
+        "sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/include/bsp/native_material_pools.hpp"
+      },
+      {
+        "path": "src/native_material_pools.cpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_material_pools.cpp",
+        "origin": "own117",
+        "bytes": 24320,
+        "sha256": "52c0de304c861907c1799517e038e8383ca62829e12176eb1b48f406d163c95a",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/src/native_material_pools.cpp"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_string.hpp",
+        "origin": "own117",
+        "bytes": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/include/bsp/native_string.hpp"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_string.cpp",
+        "origin": "own117",
+        "bytes": 9121,
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/src/native_string.cpp"
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_string_pool_owner.hpp",
+        "origin": "own117",
+        "bytes": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/include/bsp/native_string_pool_owner.hpp"
+      },
+      {
+        "path": "src/native_string_pool_owner.cpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_string_pool_owner.cpp",
+        "origin": "own117",
+        "bytes": 8443,
+        "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/src/native_string_pool_owner.cpp"
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_string_pool_storage.hpp",
+        "origin": "own117",
+        "bytes": 2805,
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/include/bsp/native_string_pool_storage.hpp"
+      },
+      {
+        "path": "src/native_string_pool_storage.cpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_string_pool_storage.cpp",
+        "origin": "own117",
+        "bytes": 5103,
+        "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/src/native_string_pool_storage.cpp"
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_render_context.hpp",
+        "origin": "own117",
+        "bytes": 10071,
+        "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/include/bsp/native_render_context.hpp"
+      },
+      {
+        "path": "src/native_render_context.cpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_render_context.cpp",
+        "origin": "own117",
+        "bytes": 11471,
+        "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/src/native_render_context.cpp"
+      },
+      {
+        "path": "include/bsp/native_node_destruction.hpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_node_destruction.hpp",
+        "origin": "own117",
+        "bytes": 5997,
+        "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/include/bsp/native_node_destruction.hpp"
+      },
+      {
+        "path": "src/native_node_destruction.cpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_node_destruction.cpp",
+        "origin": "own117",
+        "bytes": 14506,
+        "sha256": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/src/native_node_destruction.cpp"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_child_links.hpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_gui_widget_child_links.hpp",
+        "origin": "own117",
+        "bytes": 4349,
+        "sha256": "88b5d1ef38f6a26acd595b867011cb8758d6f3d4fbf013ab52d37081c503ec62",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/include/bsp/native_gui_widget_child_links.hpp"
+      },
+      {
+        "path": "src/native_gui_widget_child_links.cpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_gui_widget_child_links.cpp",
+        "origin": "own117",
+        "bytes": 5646,
+        "sha256": "764ab5a60741c5d2649d9f289bb871474ddd1301a1f21e6b86c30667d3aa47c3",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/src/native_gui_widget_child_links.cpp"
+      },
+      {
+        "path": "include/bsp/game_native_physical_pool.hpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\game_native_physical_pool.hpp",
+        "origin": "own117",
+        "bytes": 6954,
+        "sha256": "eb9dd2f1b6cfdcb3950bf7912228f346e513526fd0f7c3d4a2e82dfbc86cef70",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/include/bsp/game_native_physical_pool.hpp"
+      },
+      {
+        "path": "src/game_native_physical_pool.cpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\game_native_physical_pool.cpp",
+        "origin": "own117",
+        "bytes": 6623,
+        "sha256": "2cacaa43521df1c3698e633ac5d919f2a34d21f7cb3630589cad07aa4b9f9c90",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/src/game_native_physical_pool.cpp"
+      },
+      {
+        "path": "include/bsp/game_native_string_process.hpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\game_native_string_process.hpp",
+        "origin": "own117",
+        "bytes": 4306,
+        "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/own117/include/bsp/game_native_string_process.hpp"
+      },
+      {
+        "path": "include/bsp/native_gui_frame_box_records.hpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_font_retirement_review36\\include\\bsp\\native_gui_frame_box_records.hpp",
+        "origin": "sealed119",
+        "bytes": 14082,
+        "sha256": "5c9792f00aa262fab4a0b49c73fa77a9e38f0d674c70a063c8d184a0625db4fc",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/sealed119/include/bsp/native_gui_frame_box_records.hpp"
+      },
+      {
+        "path": "src/native_gui_frame_box_records.cpp",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_font_retirement_review36\\src\\native_gui_frame_box_records.cpp",
+        "origin": "sealed119",
+        "bytes": 12961,
+        "sha256": "64750f2eb4cfb27dc728a1fc53faee968f5a9bf34914b504f9bff395e7fb00e2",
+        "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_source/sealed119/src/native_gui_frame_box_records.cpp"
+      }
+    ],
+    "sealed119_commit": "2f9394312ca953ce8541657fb754a73164219062",
+    "sealed119_not_merged_here": true
+  },
+  "input_evidence": [
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RAW_DEFAULT_96.md",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\docs\\CC12_NATIVE_GUI_FRAME_BOX_RAW_DEFAULT_96.md",
+      "origin": "own117",
+      "bytes": 5835,
+      "sha256": "6423bd0e77b8dcf26605e9addc30e1e44249d24b1fb06cee77634b40bd2e5b79",
+      "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_inputs/own117/docs/CC12_NATIVE_GUI_FRAME_BOX_RAW_DEFAULT_96.md"
+    },
+    {
+      "path": "reports/cc12_native_gui_frame_box_raw_default_96.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\reports\\cc12_native_gui_frame_box_raw_default_96.json",
+      "origin": "own117",
+      "bytes": 13573,
+      "sha256": "1b8f62fd8b73b01a0ceb2f93ed182fcc82878e786d0fc30ee72cd794dbc4c954",
+      "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_inputs/own117/reports/cc12_native_gui_frame_box_raw_default_96.json"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_COPY_103.md",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\docs\\CC12_NATIVE_GUI_FRAME_BOX_RECORD_COPY_103.md",
+      "origin": "own117",
+      "bytes": 7053,
+      "sha256": "436504fdc86e90820176b8a738f6e0b4d6051a0d2bcaee88469d32da8b57bbb4",
+      "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_inputs/own117/docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_COPY_103.md"
+    },
+    {
+      "path": "reports/cc12_native_gui_frame_box_record_copy_103.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\reports\\cc12_native_gui_frame_box_record_copy_103.json",
+      "origin": "own117",
+      "bytes": 13899,
+      "sha256": "e0c188913505ab56e2e344d79377069423d0ce2f600a48f2f5a65960236dfc55",
+      "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_inputs/own117/reports/cc12_native_gui_frame_box_record_copy_103.json"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_LAYER_RETIREMENT_READINESS_117.md",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\docs\\CC12_NATIVE_GUI_LAYER_RETIREMENT_READINESS_117.md",
+      "origin": "own117",
+      "bytes": 10225,
+      "sha256": "57b08ea9348724305bc6f5c65eb778bb752c678fde43eed6ec8a6e4b51be1cc3",
+      "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_inputs/own117/docs/CC12_NATIVE_GUI_LAYER_RETIREMENT_READINESS_117.md"
+    },
+    {
+      "path": "reports/cc12_native_gui_layer_retirement_readiness_117.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\reports\\cc12_native_gui_layer_retirement_readiness_117.json",
+      "origin": "own117",
+      "bytes": 24467,
+      "sha256": "b61ed7bce2074dba7f2601fa2e4ef08930bdfbac36238aedff318a48dd3e8602",
+      "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_inputs/own117/reports/cc12_native_gui_layer_retirement_readiness_117.json"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_RELEASE_111.md",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_font_retirement_review36\\docs\\CC12_NATIVE_GUI_FRAME_BOX_RECORD_RELEASE_111.md",
+      "origin": "sealed119",
+      "bytes": 7927,
+      "sha256": "69c4046dc894c6d0e40b4687b9d2e2e6d4ecaa76ac8fdf838fd2a5c8005810e7",
+      "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_inputs/sealed119/docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_RELEASE_111.md"
+    },
+    {
+      "path": "reports/cc12_native_gui_frame_box_record_release_111.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_font_retirement_review36\\reports\\cc12_native_gui_frame_box_record_release_111.json",
+      "origin": "sealed119",
+      "bytes": 26024,
+      "sha256": "444f6fb83476d7c1daf42ab72444b44cf4ca7703c33679604c594642ed419132",
+      "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_inputs/sealed119/reports/cc12_native_gui_frame_box_record_release_111.json"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_VECTOR_TIDY_READINESS_116.md",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_font_retirement_review36\\docs\\CC12_NATIVE_GUI_FRAME_BOX_VECTOR_TIDY_READINESS_116.md",
+      "origin": "sealed119",
+      "bytes": 8427,
+      "sha256": "1c4dbcb085b2f42ba430a9eebcd67210a80c604598a9f8ee3491c5e730d42781",
+      "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_inputs/sealed119/docs/CC12_NATIVE_GUI_FRAME_BOX_VECTOR_TIDY_READINESS_116.md"
+    },
+    {
+      "path": "reports/cc12_native_gui_frame_box_vector_tidy_readiness_116.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_font_retirement_review36\\reports\\cc12_native_gui_frame_box_vector_tidy_readiness_116.json",
+      "origin": "sealed119",
+      "bytes": 17478,
+      "sha256": "7bf47f39f99642daf20d7179184dae4211b72a6926e7327fa81041b2fb310557",
+      "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_inputs/sealed119/reports/cc12_native_gui_frame_box_vector_tidy_readiness_116.json"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_VECTOR_TIDY_119.md",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_font_retirement_review36\\docs\\CC12_NATIVE_GUI_FRAME_BOX_VECTOR_TIDY_119.md",
+      "origin": "sealed119",
+      "bytes": 8958,
+      "sha256": "1dc8343bd7f454d173bf46f10cd902436293999f4b1819b20722a892f5e534aa",
+      "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_inputs/sealed119/docs/CC12_NATIVE_GUI_FRAME_BOX_VECTOR_TIDY_119.md"
+    },
+    {
+      "path": "reports/cc12_native_gui_frame_box_vector_tidy_119.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_font_retirement_review36\\reports\\cc12_native_gui_frame_box_vector_tidy_119.json",
+      "origin": "sealed119",
+      "bytes": 30535,
+      "sha256": "112a87012b17a4db79f1c055829275c7f00a60d814d6bcbeb52f9bcfc59803d8",
+      "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_inputs/sealed119/reports/cc12_native_gui_frame_box_vector_tidy_119.json"
+    },
+    {
+      "path": "config/target.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\config\\target.json",
+      "origin": "tools",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_inputs/tools/config/target.json"
+    },
+    {
+      "path": "tools/bsp.py",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\tools\\bsp.py",
+      "origin": "tools",
+      "bytes": 84752,
+      "sha256": "133e2cf3f24f0402f6ed7d0e1dd5148c678c7ca10722633d1ec6cdc9b693a9ff",
+      "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_inputs/tools/tools/bsp.py"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\tools\\ghidra_export.py",
+      "origin": "tools",
+      "bytes": 14518,
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_inputs/tools/tools/ghidra_export.py"
+    },
+    {
+      "path": "tools/verify_report_calls.py",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\tools\\verify_report_calls.py",
+      "origin": "tools",
+      "bytes": 20467,
+      "sha256": "f3f412b6f8eaeb6c4b212e34cca6a2567c2ed4015d0a942268d752911f6913ef",
+      "copy": "local/cc12_native_gui_frame_box_retirement_readiness_123_inputs/tools/tools/verify_report_calls.py"
+    }
+  ],
+  "verification": {
+    "whole_listing_counts_match_protos": true,
+    "live_equals_disk_all9_ranges": true,
+    "original_unchanged": true,
+    "call_map": {
+      "status": "passed",
+      "checked_rows": 6,
+      "failed_rows": 0,
+      "exit_code": 0,
+      "log": "local/cc12_native_gui_frame_box_retirement_readiness_123_verify_calls.log",
+      "log_sha256": "976c4f7a681d1ed8b95f87956fade1e3c4d75fb382a84c2f4586b93495b2a01a"
+    },
+    "separate_indirect_pool_boundaries": 2,
+    "separate_byte_audited_eh_tails": 3,
+    "source_or_cmake_changes": false,
+    "ledger_changes": false,
+    "ghidra_writes": false,
+    "listing_repair": false,
+    "build_run": false,
+    "tests_run": false,
+    "probe_run": false,
+    "native_execution": false,
+    "normal_activation": false,
+    "scope": "whole Original static and current Source/provider readiness only; no runtime/ABI/FH3/SEH/CRT/gameplay/production proof"
+  }
+}
