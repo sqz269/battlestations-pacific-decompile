@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_mapper_primary_review",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 1,
+  "private_source_cleanup_actions": 0,
+  "native_bytes": 59,
+  "native_instructions": 23,
+  "spans": [
+    {
+      "address": "00bffb50",
+      "native_bytes": 59,
+      "instructions": 23,
+      "scope": "whole captured-DWORD mutable 45-pair first-match/range OS-error mapper;no calls",
+      "live_equals_installed": true,
+      "sha256": "f84cb93a4141603ec2a535fbcf0848c7dd4836fd0b8c1be28e35025d67b3dd3b"
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct15_crt_os_error_map.json"
+  ],
+  "typed_transfer_rows_checked": 4,
+  "typed_transfer_rows_failed": 0,
+  "independent_reviews": [
+    "Primary independently inspected complete59B23ops Native assembly and completeSource/header;captured input,45 progressive mutable first-word reads/current second-word match,wrapped unsigned fallback ranges and scalar result match;header-only reached-read admission clarification accepted"
+  ],
+  "source_hashes": {
+    "src/native_crt_os_error_map.cpp": "ffb5b4aacda596c9607122b73f0aa512d1a043b85e1e157b2012fe8a02ef000e",
+    "include/bsp/native_crt_os_error_map.hpp": "171c8174aa2c3b0f85042afbc29ffb234e2a05c1c0fc122fa42c7a1049e154fa"
+  },
+  "combined_build": {
+    "revision": "b594573593f5fcf2eddb02e2d777ab2eb2f27d62",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_mapper_combined_build.log",
+    "log_sha256": "e81c7f96a5eb036f1c9c5f8ce0a71e604e6ad45c4aeb4c11cbbdfcd2aed00f3b",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 8.76,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+    "scope": "existing regression checks; native math seeds do not execute these new bodies"
+  },
+  "project_source_counts": {
+    "native_crt_os_error_map": 1
+  },
+  "unique_archive_objects": {
+    "native_crt_os_error_map": [
+      "bsp_core.dir\\Release\\native_crt_os_error_map.obj"
+    ]
+  },
+  "archive_sha256": "bea1d3cf675b52f9502b1b4e67faa9c61f45b43f5b19a8006fcfe96c3549984d",
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "New explicit raw/live-frame/currentCRT Source APIs,not Original register/private-stack/argument-home/heap/FH3/fault ABI identity",
+    "The cleanup is a canonical Source guard mapping,not a new private-frame binary entry",
+    "Existing math differential seeds do not execute these new bodies; no application or game proof",
+    "No new cleanup actions;common cleanup limitation is transitive boilerplate only",
+    "No new callback, SDK OS-error mapping or errno/TLS substitute;Original free/malloc/heap ownership SCC remains unclosed",
+    "This later combined gate includes unchanged ChildAt and genuine Originalstrchr Source plus current Main production changes;earlier immutable pair receipt remains unchanged"
+  ],
+  "retained_emitted_objects": {
+    "native_crt_os_error_map": {
+      "path": "local\\goal_oct15_mapper_objects\\native_crt_os_error_map.obj",
+      "sha256": "fcaf892735453b5a50c1f4a1044fbcfba5e0572334bc5d332c5b2e15cf4f4291",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct15_mapper_objects\\native_crt_os_error_map.disasm.txt",
+      "symbols": "local\\goal_oct15_mapper_objects\\native_crt_os_error_map.symbols.txt"
+    }
+  }
+}
