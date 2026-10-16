@@ -1,0 +1,1224 @@
+{
+  "packet": "cc12_native_font_glyph_storage_readiness_161",
+  "kind": "READONLY no new Source or runtime credit",
+  "baseline": {
+    "HEAD": "82f43039d89355d40c75dda20d8c386c4f59df5b",
+    "published_base": "6ef581090021e4aac6b4df200e77a6561a1db675",
+    "accepted155_not_in_published_Main": "6c2ebb572a4723ab14fbd4dff78c3220e8e04a48",
+    "kind": "readonly glyph/load readiness; only two unique receipts/local evidence owned",
+    "refresh": "exact79-file lease after158 queue turn, clean merge exit0, temporary lease released"
+  },
+  "verdict": "whole raw load not closed; genuine no-call109B WORD lookup/alias ready for next bounded Source packet",
+  "Original": {
+    "Original": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "spans": [
+      {
+        "start": "00ad4c30",
+        "end_exclusive": "00ad5181",
+        "bytes": 1361,
+        "physical_starts": 469,
+        "sha256": "100ec30100b3ceb0ee99bee69e467cd86b55d282e7d62862bb1d84d0b99d363e",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "ret": "0x14",
+        "direct_call_sites": 38,
+        "indirect_call_sites": 16
+      },
+      {
+        "start": "00ad4370",
+        "end_exclusive": "00ad43dd",
+        "bytes": 109,
+        "physical_starts": 39,
+        "sha256": "3ef5fa2954b729e45b6a2cfbf1576e6669455d3168f9090ccb931a22ac2ae9f9",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "ret": "8",
+        "direct_call_sites": 0,
+        "indirect_call_sites": 0
+      },
+      {
+        "start": "00ad4540",
+        "end_exclusive": "00ad45ad",
+        "bytes": 109,
+        "physical_starts": 39,
+        "sha256": "3ef5fa2954b729e45b6a2cfbf1576e6669455d3168f9090ccb931a22ac2ae9f9",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "ret": "8",
+        "direct_call_sites": 0,
+        "indirect_call_sites": 0
+      },
+      {
+        "start": "00ad4480",
+        "end_exclusive": "00ad44fe",
+        "bytes": 126,
+        "physical_starts": 45,
+        "sha256": "fe786a41f924b7a9ef37af1db008c658c9d494a19f10a90d2adf400579efd1ce",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "ret": "4",
+        "direct_call_sites": 3,
+        "indirect_call_sites": 0
+      },
+      {
+        "start": "00ad4500",
+        "end_exclusive": "00ad453e",
+        "bytes": 62,
+        "physical_starts": 27,
+        "sha256": "021f7dca2899d4615a6e07db7d38711830db21e49a596f238ae6b06c8cb00cff",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "ret": "4",
+        "direct_call_sites": 2,
+        "indirect_call_sites": 0
+      },
+      {
+        "start": "00ad4aa0",
+        "end_exclusive": "00ad4b5d",
+        "bytes": 189,
+        "physical_starts": 73,
+        "sha256": "bb07c88f802a6c649f9150ea85aef553116e6163233cabb55c1fa5dd2362b6cb",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "ret": "8",
+        "direct_call_sites": 2,
+        "indirect_call_sites": 0
+      }
+    ],
+    "exact_109_byte_aliases": [
+      "00ad4370",
+      "00ad4540"
+    ],
+    "alias_bytes_equal": true,
+    "load_EH": {
+      "handler": "00cb93f8",
+      "FuncInfo": "00df09d4",
+      "fields": [
+        429065506,
+        7,
+        14617080,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "map": "00df09f8",
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cb93c0",
+          "bytes8": "8d4db0e9584976ff",
+          "frame_operand": "ecx, [ebp - 0x50]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cb93c8",
+          "bytes8": "8d4dc0e9504976ff",
+          "frame_operand": "ecx, [ebp - 0x40]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 2,
+          "previous": 1,
+          "action": "00cb93d0",
+          "bytes8": "8d4db8e9484976ff",
+          "frame_operand": "ecx, [ebp - 0x48]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 3,
+          "previous": 0,
+          "action": "00cb93d8",
+          "bytes8": "8d4dc0e9404976ff",
+          "frame_operand": "ecx, [ebp - 0x40]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 4,
+          "previous": 0,
+          "action": "00cb93e0",
+          "bytes8": "8d4db8e9384976ff",
+          "frame_operand": "ecx, [ebp - 0x48]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 5,
+          "previous": 0,
+          "action": "00cb93e8",
+          "bytes8": "8d4dc8e9304976ff",
+          "frame_operand": "ecx, [ebp - 0x38]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 6,
+          "previous": 5,
+          "action": "00cb93f0",
+          "bytes8": "8d4dc0e9284976ff",
+          "frame_operand": "ecx, [ebp - 0x40]",
+          "target": "0041dd20"
+        }
+      ]
+    },
+    "EH_spans": [
+      {
+        "start": "00cb93c0",
+        "bytes": 8,
+        "sha256": "7a61df46d26dcdffb5c8a9cae76ab8140a12bda3b8a1f72904a1715bef977513",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_glyph_storage_readiness_161\\eh_00cb93c0.bin"
+      },
+      {
+        "start": "00cb93c8",
+        "bytes": 8,
+        "sha256": "1c8461432ac7f863736a636ced1b4805db4eacea920458dea40eb96f8e4e85a4",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_glyph_storage_readiness_161\\eh_00cb93c8.bin"
+      },
+      {
+        "start": "00cb93d0",
+        "bytes": 8,
+        "sha256": "7ef3363787e624f8abaf4fb8e9493dd350130549ce05d053614be27b162ed1bd",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_glyph_storage_readiness_161\\eh_00cb93d0.bin"
+      },
+      {
+        "start": "00cb93d8",
+        "bytes": 8,
+        "sha256": "e6021c078e4f97f363278fa03f5647f88773b5a6e149a2366270d3ed967704f3",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_glyph_storage_readiness_161\\eh_00cb93d8.bin"
+      },
+      {
+        "start": "00cb93e0",
+        "bytes": 8,
+        "sha256": "52c0f28c88f6bf913e67d7218b79f0943c6eaeba95e263d3d0b5b4d783cbd551",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_glyph_storage_readiness_161\\eh_00cb93e0.bin"
+      },
+      {
+        "start": "00cb93e8",
+        "bytes": 8,
+        "sha256": "3e366ea8986505c3a87cfd39c20e228a44c8ffd29271b58a34655d92f41be6a5",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_glyph_storage_readiness_161\\eh_00cb93e8.bin"
+      },
+      {
+        "start": "00cb93f0",
+        "bytes": 8,
+        "sha256": "813521e495f3934a3bc801b820f8196d000cd1cd1b8ac0afefc187361273dc65",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_glyph_storage_readiness_161\\eh_00cb93f0.bin"
+      },
+      {
+        "start": "00cb93f8",
+        "bytes": 10,
+        "sha256": "a08f32f259e64235a43986e31b4d274a04b63e62359a64b97867ed0fb369b0fb",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_glyph_storage_readiness_161\\eh_00cb93f8.bin"
+      },
+      {
+        "start": "00df09d4",
+        "bytes": 36,
+        "sha256": "6f1f6da9d510b24d420c62118c7a14fd7dd05b49a5ecd3650b08d68d17f83c52",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_glyph_storage_readiness_161\\eh_00df09d4.bin"
+      },
+      {
+        "start": "00df09f8",
+        "bytes": 56,
+        "sha256": "1c49fc073d1f6f165b6bad8fdb4a060b4e99c0d36512f138b7281f729d028a98",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_glyph_storage_readiness_161\\eh_00df09f8.bin"
+      }
+    ],
+    "white_literal": {
+      "start": "00ce77a4",
+      "bytes": 10,
+      "sha256": "53aa3f7487d39522ef125316fe165fc20a9b3a1a906c2f182379509bb59a2008",
+      "value": "white.tga\\0",
+      "live_equals_disk": true
+    },
+    "static_only": true
+  },
+  "verified_target": [
+    {
+      "project_name": "bsp",
+      "current_folder": "/",
+      "folders": [],
+      "files": [
+        {
+          "name": "battlestationspacific.exe",
+          "path": "/battlestationspacific.exe",
+          "content_type": "Program",
+          "version": 5865,
+          "is_read_only": false,
+          "is_versioned": false
+        }
+      ]
+    },
+    {
+      "name": "battlestationspacific.exe",
+      "path": "/battlestationspacific.exe",
+      "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "executable_format": "Portable Executable (PE)",
+      "language": "x86:LE:32:default",
+      "compiler": "windows",
+      "address_size": 32,
+      "image_base": "00400000",
+      "min_address": "00400000",
+      "max_address": "ffdfffff",
+      "memory_size": 14876380,
+      "function_count": 76774,
+      "symbol_count": 160741,
+      "data_type_count": 795,
+      "creation_date": "Mon May 04 16:56:25 PDT 2026",
+      "memory_block_count": 6,
+      "address_spaces": [
+        {
+          "name": "ram",
+          "start": "00000000",
+          "end": "ffffffff",
+          "size": 4294967296,
+          "addressable_unit_size": 1,
+          "size_bytes": 4294967296,
+          "address_size_bits": 32,
+          "is_default": true
+        }
+      ],
+      "has_multiple_address_spaces": false
+    }
+  ],
+  "calls": [
+    {
+      "address": "00ad4c6d",
+      "native": "0041dd40",
+      "parent": "00ad4c30",
+      "source": "genuine raw name resize/preserve service; whole raw parent current operand/frame transport still pending"
+    },
+    {
+      "address": "00ad4c84",
+      "native": "00bf7680",
+      "parent": "00ad4c30",
+      "source": "genuine raw string/copy services exist with accepted Source zero-count/overlap policy; no new parent Source credit"
+    },
+    {
+      "address": "00ad4ca6",
+      "native": "004261a0",
+      "parent": "00ad4c30",
+      "source": "genuine raw name concat; whole raw parent current renderer/VFS capture and temporary-state transport still pending"
+    },
+    {
+      "address": "00ad4cbc",
+      "native": "004261a0",
+      "parent": "00ad4c30",
+      "source": "genuine raw name concat; whole raw parent current renderer/VFS capture and temporary-state transport still pending"
+    },
+    {
+      "address": "00ad4cee",
+      "native": "00419cc0",
+      "parent": "00ad4c30",
+      "source": "genuine current raw string-pool getter; actual SAME process authority required"
+    },
+    {
+      "address": "00ad4cf5",
+      "native": "00bd1510",
+      "parent": "00ad4c30",
+      "source": "genuine raw current pool-return service with SAME raw string process"
+    },
+    {
+      "address": "00ad4d12",
+      "native": "00419cc0",
+      "parent": "00ad4c30",
+      "source": "genuine current raw string-pool getter; actual SAME process authority required"
+    },
+    {
+      "address": "00ad4d19",
+      "native": "00bd1510",
+      "parent": "00ad4c30",
+      "source": "genuine raw current pool-return service with SAME raw string process"
+    },
+    {
+      "address": "00ad4d2c",
+      "native": "0041dd40",
+      "parent": "00ad4c30",
+      "source": "genuine raw name resize/preserve service; whole raw parent current operand/frame transport still pending"
+    },
+    {
+      "address": "00ad4d41",
+      "native": "00bf7680",
+      "parent": "00ad4c30",
+      "source": "genuine raw string/copy services exist with accepted Source zero-count/overlap policy; no new parent Source credit"
+    },
+    {
+      "address": "00ad4d57",
+      "native": "0041dd40",
+      "parent": "00ad4c30",
+      "source": "genuine raw name resize/preserve service; whole raw parent current operand/frame transport still pending"
+    },
+    {
+      "address": "00ad4d6c",
+      "native": "00bf7680",
+      "parent": "00ad4c30",
+      "source": "genuine raw string/copy services exist with accepted Source zero-count/overlap policy; no new parent Source credit"
+    },
+    {
+      "address": "00ad4d86",
+      "native": "0041dd40",
+      "parent": "00ad4c30",
+      "source": "genuine raw name resize/preserve service; whole raw parent current operand/frame transport still pending"
+    },
+    {
+      "address": "00ad4d9b",
+      "native": "00bf7680",
+      "parent": "00ad4c30",
+      "source": "genuine raw string/copy services exist with accepted Source zero-count/overlap policy; no new parent Source credit"
+    },
+    {
+      "address": "00ad4db5",
+      "native": "0041dd40",
+      "parent": "00ad4c30",
+      "source": "genuine raw name resize/preserve service; whole raw parent current operand/frame transport still pending"
+    },
+    {
+      "address": "00ad4dca",
+      "native": "00bf7680",
+      "parent": "00ad4c30",
+      "source": "genuine raw string/copy services exist with accepted Source zero-count/overlap policy; no new parent Source credit"
+    },
+    {
+      "address": "00ad4de4",
+      "native": "0041dd40",
+      "parent": "00ad4c30",
+      "source": "genuine raw name resize/preserve service; whole raw parent current operand/frame transport still pending"
+    },
+    {
+      "address": "00ad4df9",
+      "native": "00bf7680",
+      "parent": "00ad4c30",
+      "source": "genuine raw string/copy services exist with accepted Source zero-count/overlap policy; no new parent Source credit"
+    },
+    {
+      "address": "00ad4e15",
+      "native": "004261a0",
+      "parent": "00ad4c30",
+      "source": "genuine raw name concat; whole raw parent current renderer/VFS capture and temporary-state transport still pending"
+    },
+    {
+      "address": "00ad4e52",
+      "native": "0041e870",
+      "parent": "00ad4c30",
+      "source": "genuine raw narrow C-string constructor for established white.tga branch; no invented fallback"
+    },
+    {
+      "address": "00ad4e8c",
+      "native": "00419cc0",
+      "parent": "00ad4c30",
+      "source": "genuine current raw string-pool getter; actual SAME process authority required"
+    },
+    {
+      "address": "00ad4e93",
+      "native": "00bd1510",
+      "parent": "00ad4c30",
+      "source": "genuine raw current pool-return service with SAME raw string process"
+    },
+    {
+      "address": "00ad4eaa",
+      "native": "004261a0",
+      "parent": "00ad4c30",
+      "source": "genuine raw name concat; whole raw parent current renderer/VFS capture and temporary-state transport still pending"
+    },
+    {
+      "address": "00ad4ec1",
+      "native": "004261a0",
+      "parent": "00ad4c30",
+      "source": "genuine raw name concat; whole raw parent current renderer/VFS capture and temporary-state transport still pending"
+    },
+    {
+      "address": "00ad4ef0",
+      "native": "00419cc0",
+      "parent": "00ad4c30",
+      "source": "genuine current raw string-pool getter; actual SAME process authority required"
+    },
+    {
+      "address": "00ad4ef7",
+      "native": "00bd1510",
+      "parent": "00ad4c30",
+      "source": "genuine raw current pool-return service with SAME raw string process"
+    },
+    {
+      "address": "00ad4f14",
+      "native": "00419cc0",
+      "parent": "00ad4c30",
+      "source": "genuine current raw string-pool getter; actual SAME process authority required"
+    },
+    {
+      "address": "00ad4f1b",
+      "native": "00bd1510",
+      "parent": "00ad4c30",
+      "source": "genuine raw current pool-return service with SAME raw string process"
+    },
+    {
+      "address": "00ad4f6a",
+      "native": "00bf681b",
+      "parent": "00ad4c30",
+      "source": "accepted owning Source CRT allocator boundary exists; whole raw20h payload construction is not implemented here"
+    },
+    {
+      "address": "00ad5025",
+      "native": "00ad4540",
+      "parent": "00ad4c30",
+      "source": "whole no-call raw lookup candidate; typed FontData lookup does not supply its actual iterator input/storage ABI"
+    },
+    {
+      "address": "00ad5036",
+      "native": "00bf6713",
+      "parent": "00ad4c30",
+      "source": "accepted owning SDK invalid-parameter transport can return; no Original private CRT handler ABI claimed"
+    },
+    {
+      "address": "00ad505e",
+      "native": "00ad4aa0",
+      "parent": "00ad4c30",
+      "source": "named raw unique insertion parent; AD4040 and AD4600 remain incomplete lower raw dependencies"
+    },
+    {
+      "address": "00ad5066",
+      "native": "00bf65ac",
+      "parent": "00ad4c30",
+      "source": "accepted owning Source CRT free boundary exists; exact raw payload ownership/composition is not the std::map record interior"
+    },
+    {
+      "address": "00ad50dc",
+      "native": "00ad4540",
+      "parent": "00ad4c30",
+      "source": "whole no-call raw lookup candidate; typed FontData lookup does not supply its actual iterator input/storage ABI"
+    },
+    {
+      "address": "00ad50e9",
+      "native": "00bf6713",
+      "parent": "00ad4c30",
+      "source": "accepted owning SDK invalid-parameter transport can return; no Original private CRT handler ABI claimed"
+    },
+    {
+      "address": "00ad50f7",
+      "native": "00bf6713",
+      "parent": "00ad4c30",
+      "source": "accepted owning SDK invalid-parameter transport can return; no Original private CRT handler ABI claimed"
+    },
+    {
+      "address": "00ad5164",
+      "native": "00419cc0",
+      "parent": "00ad4c30",
+      "source": "genuine current raw string-pool getter; actual SAME process authority required"
+    },
+    {
+      "address": "00ad516b",
+      "native": "00bd1510",
+      "parent": "00ad4c30",
+      "source": "genuine raw current pool-return service with SAME raw string process"
+    },
+    {
+      "address": "00ad44b7",
+      "native": "00ad4370",
+      "parent": "00ad4480",
+      "source": "whole byte-identical raw lookup alias candidate; existing semantic FontData query remains unchanged"
+    },
+    {
+      "address": "00ad44cb",
+      "native": "00bf6713",
+      "parent": "00ad4480",
+      "source": "accepted owning SDK invalid-parameter transport can return; no Original private CRT handler ABI claimed"
+    },
+    {
+      "address": "00ad44e5",
+      "native": "00ad3e70",
+      "parent": "00ad4480",
+      "source": "named raw iterator dereference outside this packet; no typed FontData iterator cast"
+    },
+    {
+      "address": "00ad4517",
+      "native": "00ad4370",
+      "parent": "00ad4500",
+      "source": "whole byte-identical raw lookup alias candidate; existing semantic FontData query remains unchanged"
+    },
+    {
+      "address": "00ad4528",
+      "native": "00bf6713",
+      "parent": "00ad4500",
+      "source": "accepted owning SDK invalid-parameter transport can return; no Original private CRT handler ABI claimed"
+    },
+    {
+      "address": "00ad4b00",
+      "native": "00ad4600",
+      "parent": "00ad4aa0",
+      "source": "named insertion continuation (existing STL_xlen_throw name retained); exact lower Source ownership not established here"
+    },
+    {
+      "address": "00ad4b22",
+      "native": "00ad4040",
+      "parent": "00ad4aa0",
+      "source": "named raw iterator decrement dependency of insertion; not implemented or presumed whole here"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "site": "00ad4cd0",
+      "operand": "eax",
+      "parent": "00ad4c30"
+    },
+    {
+      "site": "00ad4e29",
+      "operand": "eax",
+      "parent": "00ad4c30"
+    },
+    {
+      "site": "00ad4e6e",
+      "operand": "edx",
+      "parent": "00ad4c30"
+    },
+    {
+      "site": "00ad4ed5",
+      "operand": "eax",
+      "parent": "00ad4c30"
+    },
+    {
+      "site": "00ad4f29",
+      "operand": "eax",
+      "parent": "00ad4c30"
+    },
+    {
+      "site": "00ad4f36",
+      "operand": "eax",
+      "parent": "00ad4c30"
+    },
+    {
+      "site": "00ad4f61",
+      "operand": "edx",
+      "parent": "00ad4c30"
+    },
+    {
+      "site": "00ad4f81",
+      "operand": "edx",
+      "parent": "00ad4c30"
+    },
+    {
+      "site": "00ad4f8e",
+      "operand": "edx",
+      "parent": "00ad4c30"
+    },
+    {
+      "site": "00ad4f9c",
+      "operand": "edx",
+      "parent": "00ad4c30"
+    },
+    {
+      "site": "00ad4faa",
+      "operand": "edx",
+      "parent": "00ad4c30"
+    },
+    {
+      "site": "00ad4fb8",
+      "operand": "edx",
+      "parent": "00ad4c30"
+    },
+    {
+      "site": "00ad4fc7",
+      "operand": "edx",
+      "parent": "00ad4c30"
+    },
+    {
+      "site": "00ad4fea",
+      "operand": "eax",
+      "parent": "00ad4c30"
+    },
+    {
+      "site": "00ad507d",
+      "operand": "dword ptr [0xce2220]",
+      "parent": "00ad4c30"
+    },
+    {
+      "site": "00ad508d",
+      "operand": "eax",
+      "parent": "00ad4c30"
+    }
+  ],
+  "raw_load_ABI": "ECX actual Font; stack root/DAT/GFX/alpha/language raw headers; RET14h; no semantic success bool",
+  "raw_storage": {
+    "Font_bytes": 172,
+    "tree_header": "actual Font BASE; opaque00/head04/count08",
+    "node_bytes": 24,
+    "node_offsets": {
+      "links": [
+        0,
+        4,
+        8
+      ],
+      "key_WORD": 12,
+      "payload_pointer_DWORD": 16,
+      "color_BYTE": 20,
+      "nil_BYTE": 21
+    },
+    "regular_payload_bytes": 32,
+    "regular_payload_offsets": {
+      "float_DWORDs": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "metric_WORDs": [
+        16,
+        18,
+        20
+      ],
+      "unwritten_bytes": [
+        22,
+        23
+      ],
+      "GFX_pointer": 24,
+      "alpha_pointer": 28
+    },
+    "embedded_records": [
+      76,
+      108,
+      140
+    ],
+    "owning_image_reference_slots": [
+      100,
+      104
+    ],
+    "borrowed_image_slots": [
+      "all regular glyphs+18/+1C",
+      "fallback Font+84/+88",
+      "CR Font+A4/+A8"
+    ],
+    "constructor_not_load_unwritten_Font_ranges": [
+      [
+        0,
+        3
+      ],
+      [
+        22,
+        23
+      ],
+      [
+        73,
+        75
+      ]
+    ],
+    "not_Font_reference_count": 4,
+    "FontGlyphData_current_Source_size_and_image_offsets_match": true,
+    "matching_size_grants_raw_allocation_or_tree_ownership": false
+  },
+  "current_operand_contract": [
+    "initial renderer captured before GFX concat, table64 current afterward; flags0",
+    "Font name assignments38(root),40(language),20(DAT),30(GFX),28(alpha), with real current raw header reads",
+    "nonempty alpha renderer captured before concat; empty alpha constructs actual white.tga literal then reads current renderer/table64",
+    "VFS captured before both DAT path concats; current table04 afterward/mode2",
+    "stream current table reloaded before each scalar38/40/44/3C call; optional actual pointer0",
+    "current Font18 scale reread for height and both scaled metrics; source decoder one by-value scale is not substituted",
+    "new20h payload for each record; first/preexisting match wins; duplicate new payload freed; no initial tree clear",
+    "current CE2220 stream04 decrement; zero only current table0; no postterminal stream read",
+    "space/LF all32B zero then signed currentheight/4 and image refs; fallback full32B REP MOVSD including padding; CR first24B zeros plus observed redundantWORD and borrowed image slots"
+  ],
+  "EH_and_failure": {
+    "Native_FuncInfo": "00df09d4",
+    "Native_FuncInfo_bytes": 36,
+    "map": "00df09f8",
+    "state_count": 7,
+    "all_effective_actions": "0041dd20 raw local-name tidy only; full action/frame schedule in Original.load_EH",
+    "automatic_image_stream_payload_outerFont_release": false,
+    "required_future_parent_transport": "caller-retained actual raw graph/provider authorities/partial failed operation; no automatic zero cleanup, pending-payload rollback, destructor on unwritten fields or Source ownership facade",
+    "Native_private_frame_FH3_SEH_fault_RTTI_catch_equivalence": false
+  },
+  "provider_matrix": [
+    {
+      "files": [
+        "include/bsp/native_font_storage.hpp",
+        "src/native_font_storage.cpp"
+      ],
+      "actual": "genuine146 tree head and accepted155 raw AC-byte ctor/full cleanup",
+      "remaining": "load records, raw20h payload/node insertion and full Font retirement not supplied by ctor"
+    },
+    {
+      "files": [
+        "include/bsp/native_string.hpp",
+        "src/native_string.cpp",
+        "include/bsp/native_pooled_string_substring.hpp",
+        "src/native_pooled_string_substring.cpp",
+        "include/bsp/game_native_string_process.hpp"
+      ],
+      "actual": "raw8B header resize/copy/concat/tidy and SAME retained current pool/manager process",
+      "remaining": "exact AD4C30 local/raw argument-slot/current capture and physical EH composition"
+    },
+    {
+      "files": [
+        "include/bsp/font_data.hpp",
+        "src/font_data.cpp",
+        "include/bsp/stream_scalars.hpp",
+        "src/stream_scalars.cpp"
+      ],
+      "actual": "complete-input DAT decode, SSE CVTSI2SS/MULSS/CVTTSS2SI, ST0-store scalar projection, duplicate/special rules",
+      "remaining": "captured scale, semantic MemoryStream/std::map, guarded final-output transport differ from current raw Font/stream/per-record writes"
+    },
+    {
+      "files": [
+        "include/bsp/native_font_resources.hpp",
+        "src/native_font_resources.cpp"
+      ],
+      "actual": "one unrelocated FontData allocation, actual raw image refs, exact descriptor association; actual FontGlyphData size20h/resource offsets18/1C",
+      "remaining": "separate descriptor/data/owner, std::map payload interiors not actual individually BF681B/BF65AC allocations or AC-byte raw Font"
+    },
+    {
+      "files": [
+        "include/bsp/game_native_font_application.hpp",
+        "src/game_native_font_application.cpp",
+        "src/game_hosts_fonts.cpp",
+        "include/bsp/native_texture_loading_cache.hpp",
+        "src/native_texture_loading_cache.cpp"
+      ],
+      "actual": "genuine normal initial same-renderer/VFS/string/resource producer and observed B319B0 renderer64; retained cache/load operations; stable registry",
+      "remaining": "successful whole-file Source projection, not raw AD4C30 per-field/frame/SEH or AD51D0 reload"
+    },
+    {
+      "files": [
+        "include/bsp/native_int_pointer_tree18_leaves.hpp",
+        "src/native_int_pointer_tree18_leaves.cpp",
+        "include/bsp/native_int_pointer_tree18_erase.hpp",
+        "src/native_int_pointer_tree18_erase.cpp"
+      ],
+      "actual": "actual links/nil/color and complete raw current-tree cleanup over same owning Source CRT",
+      "remaining": "WORD lookup and unique insertion operand/ownership bodies; no comparator supplied by erase or semantic map"
+    }
+  ],
+  "named_incomplete_dependencies": [
+    {
+      "entry": "00ad4aa0",
+      "whole_bytes": 189,
+      "whole_starts": 73,
+      "role": "unique insertion parent",
+      "reaches": [
+        "00ad4040",
+        "00ad4600"
+      ],
+      "Source_credit": false
+    },
+    {
+      "entry": "00ad4040",
+      "role": "iterator decrement reached by insertion",
+      "whole_audit_outside_scope": true
+    },
+    {
+      "entry": "00ad4600",
+      "existing_name": "STL_xlen_throw_00ad4600",
+      "role": "insertion continuation, not presumed throw-only",
+      "whole_audit_outside_scope": true
+    },
+    {
+      "entry": "00ad3e70",
+      "role": "selector raw iterator dereference; not a FontData map-iterator cast",
+      "whole_audit_outside_scope": true
+    }
+  ],
+  "one_next_plan": {
+    "entries": [
+      "00ad4540",
+      "00ad4370"
+    ],
+    "first_whole_body": "00ad4540",
+    "exact_alias_109B": true,
+    "shared_implementation_only": true,
+    "files": [
+      "include/bsp/native_font_storage.hpp",
+      "src/native_font_storage.cpp"
+    ],
+    "proposed_API": "void* find_native_font_glyph_iterator_00ad4540(void* actual_font, void* actual_output8, const volatile uint16_t& actual_key); same arguments for00ad4370 alias",
+    "original_ABI": "ECX actual tree, stack output/key pointer, EAX SAME output, RET8",
+    "new_Source_ABI": true,
+    "required_external_services": [],
+    "order": [
+      "capture head then root",
+      "read key only if root nonnil; retain value through traversal",
+      "current node WORD key/nil BYTE and links",
+      "reload current head after traversal",
+      "only candidate !=currenthead reload keyWORD for final unsigned compare",
+      "write SAMEFont owner DWORD before chosen node DWORD; return SAME output"
+    ],
+    "caller_contract": "genuine initialized raw Font/tree and graph, valid stable Source key reference/output storage, raw MSVCWin32 lifetime/alias domain; no private scratch-frame aliases",
+    "no_default_snapshot_count_or_allocator": true,
+    "typed_API_and146_155_prefixes_to_preserve": true,
+    "Source_already_implemented_here": false,
+    "limits": [
+      "Source reference valid-object domain excludes Native invalid/unread key pointer cases",
+      "no Native binary/register/fault/private-frame/concurrent mutation guarantee",
+      "no populated-tree producer, whole raw load/retirement, descriptor cast or activation closure"
+    ]
+  },
+  "validation": {
+    "Source_CMake_ledger_Ghidra_mutations_after_refresh": false,
+    "builds": 0,
+    "new_tests": 0,
+    "probes": 0,
+    "Native_or_Source_body_execution": false,
+    "static_whole_span_live_disk_saved_listing_start_checks": true,
+    "static_call_verifier": {
+      "rows_checked": 45,
+      "failed": 0,
+      "log": {
+        "path": "local\\cc12_native_font_glyph_storage_readiness_161\\report_call_verifier.log",
+        "bytes": 91,
+        "sha256": "6fc05eeaafafa35663b003390de2130e9986b7b21a751e73d0890c76fbac8e6e",
+        "role": "actual Original direct-call verifier"
+      }
+    },
+    "Source_inputs_count": 30,
+    "all_frozen_source_hashes_and_git_blobs_current": true,
+    "full_Root_document_review": "PASS through final line before seal"
+  },
+  "references": [
+    {
+      "path": "docs\\CC12_NATIVE_FONT_GLYPH_STORAGE_READINESS_161.md",
+      "bytes": 13875,
+      "sha256": "c23ec881b4d327cfe73633cc8ffca9de1cf9d1e527e8c395b2a5b9ac1227d5b8",
+      "role": "self-contained full bounded readonly result and concrete next Source proposal"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\baseline.json",
+      "bytes": 401,
+      "sha256": "e58be31c4b920f2b74b7483a929670a72c634ae1b44ba79c89d228525476dd82",
+      "role": "published6ef581 plus accepted-not-published155 distinction"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\native_audit.json",
+      "bytes": 18958,
+      "sha256": "f63d584ed56640d27478d410af1406704df5ac21109916f912794d68627f5ee0",
+      "role": "whole current Original spans, call operands, exact lookup alias, physical EH"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\source_inputs.json",
+      "bytes": 18686,
+      "sha256": "b0ad4ad7f48a875419d271ce62e842d80927e81a650d79aa265c83e73ded8a14",
+      "role": "current actual Source/Git pins and predecessor seals"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\load_EH.json",
+      "bytes": 1055,
+      "sha256": "84a72c0d0a06d1bdcee1cbe93cd63972bcb10c972fc2061bd9343a553bed295c",
+      "role": "full36B FuncInfo/seven-state actions before resolved target augmentation"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\include\\bsp\\native_font_storage.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_font_storage.hpp",
+      "sha256": "0d6f3312d31651e52692e98548554a82725201e8ffb2105d3c7e381d2c5d9446",
+      "bytes": 3106,
+      "git_blob": "4403ac9a6a0d235106dead9b4ef8e29f8e7ac839"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\src\\native_font_storage.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_font_storage.cpp",
+      "sha256": "703e55f5be564e69fd40be9b120355c118bd3e11af37fb6fdc50b5fdf7c409ac",
+      "bytes": 4764,
+      "git_blob": "5691747a4953ceb1695e892592f32682d4c17d96"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\include\\bsp\\native_font_resources.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_font_resources.hpp",
+      "sha256": "86b054ccf2ae873195e803e1d97d01c31247cf4e0e174c12bcfcaf8b150e7e48",
+      "bytes": 4298,
+      "git_blob": "5fd7d4e25176f5ef8910a417e5b6ee380ead66aa"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\src\\native_font_resources.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_font_resources.cpp",
+      "sha256": "8e61d9e701b0cc181749cdac04e45be5d4931da13bce2ceda28e90d3a5a9e26b",
+      "bytes": 6097,
+      "git_blob": "5cf3fc746c8fbf6ae0954ed996131ad4d26f8181"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\include\\bsp\\font_data.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\font_data.hpp",
+      "sha256": "f7a1f433fb7f0466873da79a6da0b45944df5965fbe756715682265afd257c49",
+      "bytes": 2515,
+      "git_blob": "1b04d267ef910dee68c99353c639cd6acdb8da99"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\src\\font_data.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\font_data.cpp",
+      "sha256": "24ba9b6e37f798072ed06fc796b0dec560b3b500b4697b3b6634c7892a8717c1",
+      "bytes": 4612,
+      "git_blob": "89ed303bfd14c788d0ec8f419dbb34241986c072"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\include\\bsp\\stream_scalars.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\stream_scalars.hpp",
+      "sha256": "c452b3d075afdb4bd996d66789d21edc8acd2fd8f43c0df115bb6b3140ce6610",
+      "bytes": 756,
+      "git_blob": "c0bcabb4173a905c7aadee4c963c17218ea40956"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\src\\stream_scalars.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\stream_scalars.cpp",
+      "sha256": "6a45363395b440800b08ba923e099ed4e701212a7b44315094cd187e7108d8a9",
+      "bytes": 729,
+      "git_blob": "e97f3f3c86ffff31172857712521bf974fcefb2f"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\include\\bsp\\font_resources.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\font_resources.hpp",
+      "sha256": "04b34cd9f5dfa8da1895ae2cf04805846e1c0a204802e3108abc37900b531bd9",
+      "bytes": 2837,
+      "git_blob": "8e43634e75033e153ca2a490642046c2ae048e34"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\src\\font_resources.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\font_resources.cpp",
+      "sha256": "778fa5b4ebbe98139bfc6501288518738dc7450cbe34d1837afa22b9866e3e08",
+      "bytes": 6040,
+      "git_blob": "92bef40ebbd8756400fca9663033ba36f41fa5c7"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\include\\bsp\\game_native_font_application.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\game_native_font_application.hpp",
+      "sha256": "f819d8a38b49a6ff8ec3873dea65992366396c8d635e54301542c71ce0aee469",
+      "bytes": 4863,
+      "git_blob": "bd6bb4ebbe30d873a654a66e70b69af6e165fd71"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\src\\game_native_font_application.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\game_native_font_application.cpp",
+      "sha256": "31d143c3dc1dc9495cd87fdba0ecb67ad3d2494c9b47415746a47771cce5e424",
+      "bytes": 12438,
+      "git_blob": "692b370f822f5f21496ae95c4ed417dc353809b8"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\src\\game_hosts_fonts.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\game_hosts_fonts.cpp",
+      "sha256": "90b1012cade7f668f9497124ee398d3bc363a6c2aa9f2fac1c79c8ac34d69064",
+      "bytes": 9211,
+      "git_blob": "17514530de1c33e593d0043b2e5701add0c27ebc"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\include\\bsp\\font_registry_startup.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\font_registry_startup.hpp",
+      "sha256": "a2e52ffbc9dad37e429357f5d920e5b9aa281e7ac2db0085021057581f79e640",
+      "bytes": 6197,
+      "git_blob": "310b7201c277e6a94ffdcfa5bd2a0f397d6f98f7"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\include\\bsp\\font_registry.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\font_registry.hpp",
+      "sha256": "d0e581e820898f0aaab66121c4e491009711ab0c6334ad42da43b74b6d47d56e",
+      "bytes": 1831,
+      "git_blob": "cde484078b1d8799b4b224ccc893151cd09a4867"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\include\\bsp\\native_pooled_string_substring.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_pooled_string_substring.hpp",
+      "sha256": "6243c6ba8acb0e1b7f0358a456d6e65ac1b9303cc79b1f1dfd5be01d05b985ff",
+      "bytes": 2047,
+      "git_blob": "5567cf0b90182b39790a5379be8d23c5b6d6b371"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\src\\native_pooled_string_substring.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_pooled_string_substring.cpp",
+      "sha256": "7a18633cf114b21290f0c4ddfb9ec96d817f6a246a97ebfa05e9be3fdce9b8e1",
+      "bytes": 7580,
+      "git_blob": "8b6f939f3b1988567ef67131e78dd6e238888dbb"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\include\\bsp\\native_string.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "bytes": 8771,
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\src\\native_string.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "bytes": 9121,
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\include\\bsp\\game_native_string_process.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\game_native_string_process.hpp",
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+      "bytes": 4306,
+      "git_blob": "30bbfe627b4ea7b4f453ec68422363c35479a3a8"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\src\\game_native_string_process.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\game_native_string_process.cpp",
+      "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+      "bytes": 1407,
+      "git_blob": "1c660fa6417f9fbc277b821d0ad7d83587fcbed5"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\include\\bsp\\native_int_pointer_tree18_leaves.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_int_pointer_tree18_leaves.hpp",
+      "sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+      "bytes": 2447,
+      "git_blob": "4ad334d57f4665e25a5719ec97ad65135b712d74"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\src\\native_int_pointer_tree18_leaves.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_int_pointer_tree18_leaves.cpp",
+      "sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+      "bytes": 6965,
+      "git_blob": "f4059b8973da839d78ee36a8ecb208b18f8a5378"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\include\\bsp\\native_int_pointer_tree18_erase.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_int_pointer_tree18_erase.hpp",
+      "sha256": "86571aedc38dc363aad43efffc8e7d23525181f505885ae72c8fd17a8e99df96",
+      "bytes": 2369,
+      "git_blob": "df3e2d216a12a16feb04d57db1002daf00833c9a"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\src\\native_int_pointer_tree18_erase.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_int_pointer_tree18_erase.cpp",
+      "sha256": "0473413cc5ba9b528942ebdf732016da19a65d6f9a15cfae4c679eeafea61bbb",
+      "bytes": 11867,
+      "git_blob": "643f3b48171c1538d3d1ade5f9f23e8b0e76b14b"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\include\\bsp\\native_texture_loading_cache.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_texture_loading_cache.hpp",
+      "sha256": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+      "bytes": 11040,
+      "git_blob": "8fe84a0c76d3f0829c7d78bf05009f3fa6c760cd"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\src\\native_texture_loading_cache.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_texture_loading_cache.cpp",
+      "sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "bytes": 42965,
+      "git_blob": "6c888799e2967e2118ac59ad61aa45deeebc059b"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\include\\bsp\\native_render_context.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_render_context.hpp",
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "bytes": 10071,
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\include\\bsp\\singleton_lifetime.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372,
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\src\\singleton_lifetime.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "bytes": 13257,
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\reused\\141\\artifact_manifest.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\local\\cc12_native_gui_raw_font_operand_readiness_141\\artifact_manifest.json",
+      "sha256": "64665f34912b49359fc49f36a4c82692e3b37ef097db7a27ec519d6aa7364c1a",
+      "bytes": 47907
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\reused\\141\\report.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\reports\\cc12_native_gui_raw_font_operand_readiness_141.json",
+      "sha256": "f9dc78c54cc208c022c1b818f348e24535e1af9e32ab1f1a2632a6bf53eb2653",
+      "bytes": 61610
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\reused\\141\\result.md",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\docs\\CC12_NATIVE_GUI_RAW_FONT_OPERAND_READINESS_141.md",
+      "sha256": "fc95ad9ac3f0226fabda86f69629f2b6155b84110393ebb7d5f72677b75cc95b",
+      "bytes": 13549
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\reused\\146\\artifact_manifest.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\local\\cc12_native_font_tree_head_storage_146\\artifact_manifest.json",
+      "sha256": "57cf00b6229c033fd55ded8b5491e582e4852891b406a0cb173a91f504c00aed",
+      "bytes": 25008
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\reused\\146\\report.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\reports\\cc12_native_font_tree_head_storage_146.json",
+      "sha256": "6e22f0796ede8d0ee845b19fa2cc5f80e80e4f6a9e6ae99a9c8ff8b7496e2a10",
+      "bytes": 26929
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\reused\\146\\result.md",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\docs\\CC12_NATIVE_FONT_TREE_HEAD_STORAGE_146.md",
+      "sha256": "bacce6d6f604e2c10bd7715fb3b92e97c8cc1d71181f68b41f4c427527bb5e7d",
+      "bytes": 7367
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\reused\\151\\artifact_manifest.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\local\\cc12_native_font_constructor_storage_readiness_151\\artifact_manifest.json",
+      "sha256": "928c983d52ac80434dd9a8932eea71989939097ef91488dc60d0c89a0d5e1132",
+      "bytes": 75591
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\reused\\151\\report.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\reports\\cc12_native_font_constructor_storage_readiness_151.json",
+      "sha256": "a449fc32e527e9d5d91363e6a6692dc2932fddab57de9cd32f4d1c01769ef34f",
+      "bytes": 63565
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\reused\\151\\result.md",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\docs\\CC12_NATIVE_FONT_CONSTRUCTOR_STORAGE_READINESS_151.md",
+      "sha256": "6e1cb8557dbba0d7994a396675dfc71c45fa6248c4fb213123c236aa03057238",
+      "bytes": 14161
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\reused\\155\\artifact_manifest.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\local\\cc12_native_font_constructor_storage_155\\artifact_manifest.json",
+      "sha256": "5507a195f2bdb37dc3691e88f306e6a4cad20732347a316630f3e400f613407e",
+      "bytes": 79242
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\reused\\155\\report.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\reports\\cc12_native_font_constructor_storage_155.json",
+      "sha256": "f1875fcf5842a37ce68b40bba476d655d7192820f92eadbc555baf2c1b8d3603",
+      "bytes": 75262
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\reused\\155\\result.md",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\docs\\CC12_NATIVE_FONT_CONSTRUCTOR_STORAGE_155.md",
+      "sha256": "0ce17f67fcc50668104966b07821f563f57fa002ad3c9014b284acf8bf88d519",
+      "bytes": 12239
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\CMakeLists.txt",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\CMakeLists.txt",
+      "sha256": "eb3c7f83231a2a8184041a981bcd912733b5f12801d0bba2345d1ad0e69c3d79",
+      "bytes": 20832
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\cmake\\startup.cmake",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\cmake\\startup.cmake",
+      "sha256": "b21bf7ee104b7d790191820d821d250ce036225b77fa2547b214878b44c39db7",
+      "bytes": 268746
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_storage_readiness_161\\inputs\\config\\target.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\config\\target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455
+    }
+  ],
+  "artifact_manifest": {
+    "path": "local\\cc12_native_font_glyph_storage_readiness_161\\artifact_manifest.json",
+    "bytes": 63205,
+    "sha256": "caaf2e33bcd52d3ee78559ffde1efcd82b7f2df5f3e82b3e9023d3d432e25bca",
+    "role": "immutable full payload and unchanged observation inventory"
+  }
+}
