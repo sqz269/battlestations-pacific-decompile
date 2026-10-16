@@ -9,6 +9,10 @@
 #include "bsp/game_native_lua_services.hpp"
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_font_probe.hpp"
+#include "bsp/game_native_gui_text_process.hpp"
+#include "bsp/game_native_gui_text_state.hpp"
+#include "bsp/game_native_type_storage.hpp"
+#include "bsp/native_vfs_owner_services.hpp"
 #include "bsp/game_native_gui_effect_probe.hpp"
 #include "bsp/game_native_shadow_target_application.hpp"
 #include "bsp/game_native_shader_process.hpp"
@@ -2599,6 +2603,37 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         log_.implemented("Phase 6 locale_lookup", "00a9ec70");
     }
 
+    // Original CE3470/CE3474 order is pool then type initialization. The pool
+    // already started in main's recovered CRT subset. This Source graph first
+    // has its canonical VFS counter/common-type domain here, before GUI users;
+    // it does not claim Original absolute CRT timing or numeric type-ID order.
+    auto& gui_text_process = game_native_gui_text_process();
+    try {
+        gui_text_process.initialize_types_once_00cd7210(
+            vfs_->native_owners().types(), vfs_->native_types().light_types());
+    } catch (...) {
+        if (gui_text_process.native_operation_interrupted()) {
+            try {
+                log_.note("interrupted GUI Text type startup; retaining sticky lineage/counter/VFS/renderer graph");
+                log_.close();
+            } catch (...) { std::fputs("bsp_game: GUI Text startup requires process retention\n", stderr); }
+            std::_Exit(1);
+        }
+        throw;
+    }
+    const auto& text_lineage = gui_text_process.text_lineage_00f8be28();
+    const auto& element_lineage = gui_text_process.element_lineage_00f8bc88();
+    log_.notef("native GUI Text lineage ready: text=%u element=%u root=%u "
+        "parent_match=%d counter=canonical_vfs source_bootstrap=late before_fonts=1",
+        text_lineage[0], text_lineage[1], text_lineage[2],
+        text_lineage[1] == element_lineage[0] && text_lineage[2] == element_lineage[1] ? 1 : 0);
+    auto& gui_text_state = game_native_gui_text_state();
+    log_.notef("native GUI Text shared scalar backing: aspect=%.9g vertical_scale=%.9g "
+        "white_mask=%08x blend=%.9g lineage=separate_live_owner",
+        static_cast<double>(gui_text_state.aspect_ratio_00e12fc0()),
+        static_cast<double>(gui_text_state.vertical_scale_00e12fd4()),
+        gui_text_state.default_color_mask_00f8be48(),
+        static_cast<double>(gui_text_state.blend_factor_00f8be54()));
     if (!device_->device()) throw std::runtime_error("Font startup requires the renderer device");
     // Borrow the SAME native renderer/VFS/cache domain. Font images and the
     // sole decoded DAT allocations now belong to the actual native producer.

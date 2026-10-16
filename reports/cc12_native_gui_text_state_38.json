@@ -1,0 +1,395 @@
+{
+  "packet": "cc12_native_gui_text_state_38",
+  "source_base": "9a727abac038bd190076942cd6c72913fcf5eefb",
+  "scope": "Canonical typed Source backing for recovered GUI/Text mutable cells and complete shared-white getter projection; no full native Text activation.",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "original_image": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "size": 12223752,
+    "image_base": 4194304,
+    "entrypoint": "00bfd2bd"
+  },
+  "data_section": {
+    "rva": "00a08000",
+    "raw_size": "00010000",
+    "virtual_size": "00297edc",
+    "writable": true
+  },
+  "preimages": [
+    {
+      "address": "00e12fc0",
+      "word": "3faaaaab",
+      "float_value": 1.3333333730697632,
+      "provenance": "initialized_data_word"
+    },
+    {
+      "address": "00e12fd4",
+      "word": "3f400000",
+      "float_value": 0.75,
+      "provenance": "initialized_data_word"
+    },
+    {
+      "address": "00e12fd8",
+      "word": "00000000",
+      "float_value": 0.0,
+      "provenance": "initialized_data_word"
+    },
+    {
+      "address": "00e12fdc",
+      "word": "00000000",
+      "float_value": 0.0,
+      "provenance": "initialized_data_word"
+    },
+    {
+      "address": "00e12fe0",
+      "word": "00000000",
+      "float_value": 0.0,
+      "provenance": "initialized_data_word"
+    },
+    {
+      "address": "00e12fe4",
+      "word": "3f400000",
+      "float_value": 0.75,
+      "provenance": "initialized_data_word"
+    },
+    {
+      "address": "00f8be38",
+      "word": "00000000",
+      "float_value": 0.0,
+      "provenance": "loader_zero_fill"
+    },
+    {
+      "address": "00f8be3c",
+      "word": "00000000",
+      "float_value": 0.0,
+      "provenance": "loader_zero_fill"
+    },
+    {
+      "address": "00f8be40",
+      "word": "00000000",
+      "float_value": 0.0,
+      "provenance": "loader_zero_fill"
+    },
+    {
+      "address": "00f8be44",
+      "word": "00000000",
+      "float_value": 0.0,
+      "provenance": "loader_zero_fill"
+    },
+    {
+      "address": "00f8be48",
+      "word": "00000000",
+      "float_value": 0.0,
+      "provenance": "loader_zero_fill"
+    },
+    {
+      "address": "00f8be54",
+      "word": "00000000",
+      "float_value": 0.0,
+      "provenance": "loader_zero_fill"
+    }
+  ],
+  "source": [
+    "include/bsp/game_native_gui_text_state.hpp",
+    "src/game_native_gui_text_state.cpp"
+  ],
+  "source_sha256": {
+    "include/bsp/game_native_gui_text_state.hpp": "d8990cc2df091c2f7c9ebae511617113e7b1a47601667aa037682bb76c99d040",
+    "src/game_native_gui_text_state.cpp": "724279b67813f9ce9baf24fba9373f0d0bdfb07ee97c074b5329990aec81204f"
+  },
+  "functions": [
+    {
+      "address": "00ab7060",
+      "name": "BSP_GuiText_GetSharedDefaultWhite",
+      "name_status": "provisional_descriptive_not_recovered",
+      "end_inclusive": "00ab70a0",
+      "bytes": 65,
+      "body_hex": "b801000000840548bef800752ef30f10054ca2d700090548bef800f30f110538bef800f30f11053cbef800f30f110540bef800f30f110544bef800b838bef800c3",
+      "body_sha256": "02f917d1afea24dd3e91ec91546b8d638a43ca2f7768a76058fdf329eb2a4c1c",
+      "coverage": "complete_65_byte_body_source_projection",
+      "source": "src/game_native_gui_text_state.cpp",
+      "original_abi": {
+        "inputs": "no register or stack inputs",
+        "return": "EAX same F8BE38 quartet address",
+        "cleanup": "plain RET; zero stack arguments",
+        "calling_convention_limit": "No callers found; no-argument cdecl versus stdcall cannot be distinguished.",
+        "host_boundary": "New typed C++ member with explicit borrowed one_00d7a24c input; no Original ABI/fixed-VA claim."
+      },
+      "calls": [],
+      "sites": {
+        "mask_test": "00ab7065",
+        "fast_branch": "00ab706b",
+        "one_load": "00ab706d",
+        "mask_or": "00ab7075",
+        "white_stores": [
+          "00ab707b",
+          "00ab7083",
+          "00ab708b",
+          "00ab7093"
+        ],
+        "return_address": "00ab709b",
+        "return": "00ab70a0"
+      },
+      "semantics": "Mask bit0 set skips input load and stores. Otherwise capture current D7A24C, OR mask1 preserving other bits, store same word to quartet in order; return same quartet.",
+      "one_preimage": {
+        "address": "00d7a24c",
+        "word": "3f800000",
+        "source": "independent PE + live Ghidra read"
+      },
+      "discovery": "Previously undefined island missed by Ghidra global xrefs, found by exact raw PE DWORD operand scan.",
+      "callers": [],
+      "definition_history": "local/cc12_native_gui_text_state_38/defined_functions.json",
+      "annotation_history": [
+        "local/ghidra-annotations-20261016T000542Z.json",
+        "local/ghidra-annotations-20261016T000807Z.json"
+      ],
+      "annotated_export": "exports/bsp/functions/00ab7060/decompiled.c"
+    }
+  ],
+  "producer_inventory": {
+    "loader": "Initialized .data words for E12FC0/E12FD4/shadow; .data virtual-tail zero fill for white/mask/blend.",
+    "scalar_startup_writers_found": [],
+    "white_mask_inline_read_store_pairs": [
+      [
+        "00abb9b0",
+        "00abb9c1"
+      ],
+      [
+        "00abba32",
+        "00abba43"
+      ],
+      [
+        "00abbaaf",
+        "00abbac0"
+      ],
+      [
+        "00abbb2c",
+        "00abbb3d"
+      ]
+    ],
+    "white_inline_owner": "00abb630",
+    "direct_xrefs_and_raw_operand_scan": "All recovered encoded absolute references to selected cells and neighboring anchors accounted for; no initialized data/table pointer to scanned anchors.",
+    "occurrence_count": 89,
+    "encoded_text_operand_addresses_by_target": {
+      "00e12fc0": [
+        "00aaa08a"
+      ],
+      "00e12fc4": [
+        "00aa723b"
+      ],
+      "00e12fcc": [
+        "00aacfa9"
+      ],
+      "00e12fd0": [
+        "00ab19c2",
+        "00ab1aba",
+        "00ab1b84",
+        "00ab1d42",
+        "00ab1e59"
+      ],
+      "00e12fd4": [
+        "00ab9377",
+        "00ab99ba",
+        "00aba80c"
+      ],
+      "00e12fd8": [
+        "00ab7306",
+        "00ab7fef",
+        "00ab96f1",
+        "00abbc76"
+      ],
+      "00e12fdc": [
+        "00ab7312",
+        "00ab96fd"
+      ],
+      "00e12fe0": [
+        "00ab731e",
+        "00ab9709"
+      ],
+      "00e12fe4": [
+        "00ab732a",
+        "00ab9715"
+      ],
+      "00f8be28": [
+        "00ab6a31",
+        "00ab6a51",
+        "00ab83d5",
+        "00cd725a"
+      ],
+      "00f8be2c": [
+        "00cd7240"
+      ],
+      "00f8be30": [
+        "00cd7246"
+      ],
+      "00f8be34": [
+        "00ab6a41",
+        "00ab6a61",
+        "00ab83e8",
+        "00cd7227"
+      ],
+      "00f8be38": [
+        "00ab707f",
+        "00ab709c",
+        "00abb9cc",
+        "00abb9fb",
+        "00abba4e",
+        "00abbacb",
+        "00abbb48"
+      ],
+      "00f8be3c": [
+        "00ab7087",
+        "00abb9d4",
+        "00abba56",
+        "00abbad3",
+        "00abbb50"
+      ],
+      "00f8be40": [
+        "00ab708f",
+        "00abb9dc",
+        "00abba5e",
+        "00abbadb",
+        "00abbb58"
+      ],
+      "00f8be44": [
+        "00ab7097",
+        "00abb9e4",
+        "00abba66",
+        "00abbae3",
+        "00abbb60"
+      ],
+      "00f8be48": [
+        "00ab7067",
+        "00ab7077",
+        "00abb9b2",
+        "00abb9c3",
+        "00abba34",
+        "00abba45",
+        "00abbab1",
+        "00abbac2",
+        "00abbb2e",
+        "00abbb3f"
+      ],
+      "00f8be4c": [
+        "00ab7ba2",
+        "00ab7cd8",
+        "00ab7d31",
+        "00abaf91",
+        "00abb11e"
+      ],
+      "00f8be50": [
+        "00ab8f98",
+        "00ab907e",
+        "00ab928f",
+        "00ab9c9d",
+        "00aba0b6",
+        "00aba157",
+        "00aba3d3",
+        "00aba3fd",
+        "00aba410"
+      ],
+      "00f8be54": [
+        "00abac38"
+      ],
+      "00f8be58": [
+        "00abcbd2",
+        "00abcbde",
+        "00abcc22",
+        "00abcc2e",
+        "00cd72a2",
+        "00cd72b0"
+      ],
+      "00f8be5c": [
+        "00abc562",
+        "00abc791",
+        "00abe021",
+        "00cd7281",
+        "00ce0aa1"
+      ]
+    },
+    "scope_limit": "Static producer/reference inventory, not an unrestricted computed-address store or running-process proof.",
+    "read_only_range_rejection": "All selected mutable addresses exceed GameNativeReadOnlyData end E07B23; no data_at lookup is used."
+  },
+  "canonical_source_contract": {
+    "owner": "game_native_gui_text_state() sole intentionally retained process owner; no public construction/copy/reset.",
+    "initialization": "Verified exact float words plus loader positive zero; no eager white initialization.",
+    "aliases": {
+      "aspect_ratio_00e12fc0": [
+        "GuiMaterialBindingServices.aspect_ratio_00e12fc0",
+        "native clip refresh"
+      ],
+      "vertical_scale_00e12fd4": [
+        "GameNativeTextApplicationBindings.vertical_scale_00e12fd4",
+        "single-line/wrapped services"
+      ],
+      "shadow_color_00e12fd8": [
+        "GuiTextConstructorConstants.shadow_color_00e12fd8",
+        "GuiTextPropertyConstants.shadow_color_00e12fd8"
+      ],
+      "default_color_00f8be38": [
+        "GuiTextPropertyConstants.default_color_00f8be38",
+        "white_color_00ab7060"
+      ],
+      "default_color_mask_00f8be48": [
+        "GuiTextPropertyConstants.default_color_mask_00f8be48",
+        "white_color_00ab7060"
+      ],
+      "blend_factor_00f8be54": [
+        "GameNativeTextApplicationBindings.blend_factor_00f8be54",
+        "material blend parameter"
+      ]
+    },
+    "lifetime": "Stable references outlive Texts, retained material parameter sources and CRT callbacks; all access serialized with GUI/render startup, frames and drain.",
+    "excluded": [
+      "F8BE28[3] lineage",
+      "F8BDF0 pool",
+      "CD7210",
+      "CD71F0",
+      "CE0A80",
+      "native Text activation",
+      "game_hosts.cpp",
+      "game_main.cpp"
+    ]
+  },
+  "integration": {
+    "cmake_edited": false,
+    "cmake_owner": "Root coordinates final shared registration after packets37+38 merge.",
+    "required_registration": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_game PRIVATE src/game_native_gui_text_state.cpp)",
+    "overlay": "local/cc12_native_gui_text_state_38/register_state.cmake"
+  },
+  "validation": {
+    "strict_overlay_build": {
+      "result": "pass_exit0",
+      "target": "bsp_game",
+      "compiled_source": "src/game_native_gui_text_state.cpp",
+      "options": "/W4 /WX, Release Win32",
+      "log": "local/cc12_native_gui_text_state_38/strict_overlay_build.log",
+      "generated_project_proof": "bsp_game.vcxproj source entry has Release|Win32 TreatWarningAsError=true and WarningLevel=Level4."
+    },
+    "normal_build_and_existing_tests": {
+      "command": "./scripts/build.ps1",
+      "result": "pass_exit0",
+      "tests": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "passed": 2,
+      "failed": 0,
+      "seconds": 8.83,
+      "log": "local/cc12_native_gui_text_state_38/normal_build_and_tests.log",
+      "registration_boundary": "Normal registry intentionally excludes new state38 until Root integration; strict overlay separately compiles/links the new source."
+    },
+    "report_call_audit": "pass; JSON: 0 call rows and Markdown: 0 call claims. Six Markdown global-accessor warnings expected because mutable cells are not Ghidra functions.",
+    "git_diff_check": "pass",
+    "new_tests": 0,
+    "game_launch": false,
+    "not_proven": [
+      "Original ABI compatibility",
+      "Original fixed-VA globals",
+      "native Text drawing",
+      "gameplay"
+    ]
+  }
+}

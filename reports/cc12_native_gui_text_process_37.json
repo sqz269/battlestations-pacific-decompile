@@ -1,0 +1,156 @@
+{
+  "packet": "cc12_native_gui_text_process_37",
+  "status": "source_process_owner_implemented_build_and_focused_source_probe_passed",
+  "source_base": "e3f88d58e7fde8c8143ddf1c23d65c5f925777af",
+  "files": [
+    "include/bsp/game_native_gui_text_process.hpp",
+    "src/game_native_gui_text_process.cpp"
+  ],
+  "report": "docs/CC12_NATIVE_GUI_TEXT_PROCESS_37.md",
+  "original": [
+    {
+      "address": "00cd71f0",
+      "end_exclusive": "00cd7206",
+      "bytes": 22,
+      "name": "BSP_GuiTextPool_InitializeGlobal",
+      "schedule": "F8BDF0 -> AB77C0 -> atexit(CE0A80); registration result preserved"
+    },
+    {
+      "address": "00ce0a80",
+      "end_exclusive": "00ce0a8a",
+      "bytes": 10,
+      "name": "BSP_GuiTextPool_DestroyGlobal",
+      "schedule": "F8BDF0 -> tail AB7420"
+    },
+    {
+      "address": "00cd7210",
+      "end_exclusive": "00cd725f",
+      "bytes": 79,
+      "name": "BSP_GuiText_InitializeStaticTypeDescriptor",
+      "schedule": "guard/name -> AA8200 parent -> current parent IDs -> current counter -> increment -> own ID",
+      "pseudocode_correction": "CD7255 increments counter BEFORE CD7258 publishes F8BE28"
+    }
+  ],
+  "existing_parent": {
+    "address": "00aa8200",
+    "already_reconstructed": true,
+    "implementation_reused": "gui_widgets_cc13::gui_type_initialize plus LightTypeBootstrap canonical root bootstrap",
+    "new_body_claimed": false,
+    "annotations_changed": false,
+    "counter_order": "AA8237 increment before AA823A own-ID store"
+  },
+  "crt_order": {
+    "00ce3470": "00cd71f0",
+    "00ce3474": "00cd7210",
+    "00ce34ec": "00cd7830",
+    "00ce34f8": "00cd78d0",
+    "main_subset_text_pool_before_particle_model_pool": true,
+    "whole_application_absolute_id_order_proved": false
+  },
+  "canonical_storage": {
+    "pool": "one process F8BDF0-role NativeGuiTextPoolStorage/companion",
+    "allocator_list": "game_native_physical_pool_process().allocator_list_domain_00e188b4()",
+    "element": "F8BC80 guard; F8BC88[2] IDs plus D5C124 name word",
+    "text": "F8BDEC guard; F8BE28[3] IDs plus D5C5DC name word",
+    "counter": "borrowed existing VFS TypeIdCounterLifetime",
+    "root": "borrowed existing VFS LightTypeBootstrapStorage; temporary bootstrap uses same counter",
+    "uninitialized_lineage_exposed": false,
+    "fixed_type_ids": false,
+    "new_widget_or_model_tree": false,
+    "new_string_pool_or_material_registry": false,
+    "mutable_gui_scalars_included": false
+  },
+  "api": [
+    "game_native_gui_text_process()",
+    "initialize_pool_once_00cd71f0() -> real cached std::atexit status",
+    "initialize_types_once_00cd7210(vfs.native_owners().types(), vfs.native_types().light_types())",
+    "pool_00f8bdf0()",
+    "text_lineage_00f8be28() -> const volatile uint32_t (&)[3]",
+    "element_lineage_00f8bc88() -> const volatile uint32_t (&)[2]",
+    "native_operation_interrupted() const noexcept -> metadata-only pool threw/retiring OR type threw"
+  ],
+  "failure_and_retirement": {
+    "pool_entered_failure_replay": false,
+    "atexit_nonzero_rolls_back_pool": false,
+    "type_entered_failure_replay": false,
+    "guard_name_partial_stores_sticky": true,
+    "retarget_after_success": false,
+    "callback_before_process_and_list_destructors": true,
+    "callback_destroys_text_payloads": false,
+    "all_payloads_pending_frames_and_queued_uses_must_retire_first": true,
+    "source_metadata_not_original_fields": true,
+    "expired_vfs_counter_root_pointers_dereferenced_by_retirement": false,
+    "metadata_interruption_predicate_for_parent_exit_guard": true
+  },
+  "validation": {
+    "strict_win32_focused_compile": "PASS /O2 /W4 /WX /EHsc /MD",
+    "compiled_initializer_store_order_review": "PASS focused assembly and actual production COFF guard/name/parent/counter/own-ID ordering",
+    "production_coff_offsets": {
+      "element_counter_store": "initialize_types +14D",
+      "element_own_id_store": "initialize_types +150",
+      "text_counter_store": "initialize_types +19A",
+      "text_own_id_store": "initialize_types +19D",
+      "interruption_predicate_calls_or_native_reads": 0
+    },
+    "source_owner_probe": "PASS shared-counter lineage, stable idempotent borrowing, actual raw pool slot allocation/return, late CRT-retirement observation",
+    "source_probe_initial_link_library": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_core.lib",
+    "source_probe_full_worker_library_rerun": "PASS using current worker Release bsp_core/bsp_lua511/bsp_zlib121; prepared/ready/retired predicate false",
+    "full_scripts_build_ps1": "PASS canonical tracked CMake registration, Release Win32, exit0",
+    "ctest": "PASS 2/2 existing enabled suites: reconstructed_math and tool_tests; native differential not enabled in this worker build",
+    "canonical_cmake_registered": true,
+    "canonical_registration_build_without_overlay": "PASS CMAKE_PROJECT_INCLUDE_BEFORE cache removed; new source compiled by tracked CMake entry",
+    "initial_cold_build_attempt": "Core completed; later parallel CMake regeneration/FetchContent failed after tracked startup.cmake changed during active build. Explicit canonical configure and unchanged-input rerun passed; no Source compile failure.",
+    "local_ignored_cmake_overlay": "local/cc12_native_gui_text_process_37/source_overlay.cmake",
+    "new_permanent_tests": 0,
+    "original_differential_run": false,
+    "original_abi_compatible": false,
+    "native_text_constructed": false,
+    "native_text_drawing_validated": false,
+    "gameplay_validated": false,
+    "json_parse": "passed",
+    "git_diff_check": "passed"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "whole_pseudocode_and_assembly_reviewed": [
+      "00cd71f0",
+      "00ce0a80",
+      "00cd7210",
+      "00aa8200"
+    ],
+    "old_annotation_history": "local/ghidra-annotations-20261016T000712Z.json",
+    "canonical_write_lock_used": true,
+    "project_saved": true,
+    "exports_refreshed": [
+      "00cd71f0",
+      "00ce0a80",
+      "00cd7210"
+    ],
+    "original_instruction_bytes_changed": false
+  },
+  "artifacts": {
+    "canonical_build_log": "local/cc12_native_gui_text_process_37/canonical_build.log",
+    "source_probe_log": "local/cc12_native_gui_text_process_37/owner37_probe.log",
+    "focused_compiled_assembly": "local/cc12_native_gui_text_process_37/game_native_gui_text_process.asm",
+    "canonical_process_disassembly": "local/cc12_native_gui_text_process_37/canonical_process.disasm.txt",
+    "game_executable_sha256": "5b60014ecf40d66b1a31262a06bd6c4c45894f1c4728b227423681969d16bceb",
+    "canonical_process_object_sha256": "d862d66f6736da4c29482790d7c9a27cd0781366f089f99ed0e6198ac66c107b",
+    "focused_process_object_sha256": "83bd2680aa26bf8ddc563553c5bd34ff374feebea780854e93c078cc85c19e89",
+    "focused_assembly_sha256": "ca2273dd14e86d177fc632d38a22777299be7ad9f265d09fe2ef058f7da14e8b",
+    "source_probe_executable_sha256": "f6e757731c9a8e26a0c4cea440a0bbc5d2458601693811ce81041c5129bcf820"
+  },
+  "parent_integration_required": [
+    "Merge worker tracked CMake bsp_game source registration with packet37",
+    "Explicit CD71F0 pool startup before CD7210 type startup and any Text allocation",
+    "Call types only with canonical VFS counter/root storage, before any lineage borrower",
+    "Preserve actual atexit result; no retry/rollback on registration failure",
+    "Retire all Text owners/failed frames/queued uses before CRT pool callback",
+    "Keep scalar-state38, raw model/group routing and native Text drawing separate"
+  ],
+  "source_inputs_sha256": {
+    "include/bsp/game_native_gui_text_process.hpp": "c0f0dd4bba7bab733eec89f43a8b7f47578f0601dd1c02ab365887d77b30322c",
+    "src/game_native_gui_text_process.cpp": "eab92c37b8b7487e12edf0e79b580621dc4c4f5e5cba2700952caef5b6d19b8b",
+    "cmake/startup.cmake": "dc01008b0a64c540c0be6950a82a7e1fdc5b6682c42785e2e0133a585ba6f670"
+  }
+}
