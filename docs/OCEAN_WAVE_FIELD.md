@@ -1369,3 +1369,45 @@ Gaps that make this bigger than one packet:
 
 Reach: jm02.lua:1490/2448 (Repulse and the recon check), jm03.lua:1626, jm05.lua:5493/5512 (the player's Pete);
 ShipUseCatapult appears 19 times in this installation's scripts.
+
+## 38. JM06 under jitter: the bisect and the re-plan `jm06_p12_j6_a4` (cc9-physics12, 2026-10-16; lead item 1)
+
+**Bisect.** WINS_TABLE's suspect range fd6d92617..9228d13fe for the `jm06_s49_j6_s` loss under `BSP_FRAME_JITTER 20,3`.
+Control exports (`tools/pair_export.py`, no flips) in `local\p11_bA`, `local\p11_bB`, `local\p12_bC`, and one flip export
+`local\p12_bCtt`. Reference env plus 20,3, 120000 frames, `--stop-after-end 40`, logs `local\p12b<X>_j6j3.log` with
+manifests:
+
+| Build | Result |
+| --- | --- |
+| 76536f249 (bA) | completed 2901.71 s (the fd6d92617 win, exact) |
+| ef0a50051 (bC) | no end: PlayerSub 01 sunk 1408.55 s by Fletcher-class 05 |
+| 8612ef146 (bB) | no end: PlayerSub 01 sunk 1148.80 s by Fletcher-class 05 |
+| ef0a50051 with only `kTorpedoBotThinkTimerBound = false` (bCtt) | completed 2901.71 s (exact) |
+
+So the loss is `kTorpedoBotThinkTimerBound` (0cc305ee0, GUNNERY 245, flipped ON by its pair). The first moved death is
+US Cargo Transport 02 at 171.96 -> 172.01 s, a one-frame shift of an AI boat's torpedo launch, and the run drifts from
+there. The flip is faithful, so the plan is re-planned, not the switch.
+
+**On current main (this tree at 25fbdcba0)** `s` completes the reference at 2144.97 s but has no end under 20,3, and
+the failure is now earlier than the brief's: `MissionPhase` stays 1. `luaJM6CheckObjectives` (jm06.lua 839-876, this
+installation 2024-07-13) needs every `Mission.CargoTargets` ship dead, and USTroopTransport 01 (a target; the reference
+sinks it at 388.08 s) is only crippled (hull segments 7..3 from 1705 s) and stops. PlayerSub 01 launches nothing
+between ~650 s and the Lexington phase, because the `torpedo ... at` lines need the target in reach.
+
+**Variants (all 20,3; logs `local\p12j6_<v>_j3.log`).** u2 (more `torpedo at` rotations over the survivors 13300-20800)
+and a2 (an `attack` rotation over five survivors): no end, Troop 01 survives. a1 (`attack` Troop 01 at 13010/16010/
+19010): the sub closes and hits it with the deck gun only; the 21000 moveto then takes it away; no end. a3 (`attack`
+Troop 01 every 1500 frames to 29010): no end. **a4** = a3 plus `torpedo at` Troop 01 every 600 frames 14100-29000: the
+sub closes under the attack and the torpedo lines then reach it (Troop 01 sunk 862.91 s under 20,3). A line at a sunk
+target is refused (0f70e9dee), so in the reference, where Troop 01 dies at 388 s, the extra attack lines do nothing.
+
+| a4 (`config/win_orders/jm06_p12_j6_a4.txt`) | Result | Guard |
+| --- | --- | --- |
+| reference | completed 2226.05 s | yes |
+| 20,3 | completed 2343.16 s | yes |
+| 20,5 | completed 2175.00 s | yes |
+| 20,7 | completed 2033.86 s | yes |
+| 20,11 | completed 3180.98 s | yes |
+
+Generators: `local\p12_j6attack.py` (attack rotations) then `local\p12_j6gen.py` (a copy of cc9-ships49's
+`s49_j6gen.py`, the torpedo rotation).

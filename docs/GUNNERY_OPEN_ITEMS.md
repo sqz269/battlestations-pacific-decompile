@@ -15261,3 +15261,149 @@ predicted mechanism (later by at most one think period plus the stagger), so the
 **Lost:** USN15 `tl` was a reference-only knife-edge (258: its 1171 s Yamashiro kill is a deterministic friendly
 Fubuki-class07 torpedo, absent under jitter); ON removes that torpedo as jitter does (gyro launches 134 -> 78), and the
 mission fails at 1417.31 s as the jitter runs did. The USN15 re-plan is queue item 2.
+
+## 261. Handoff record for cc9-gunnery47 (written by cc9-gunnery48, 2026-10-16)
+
+cc9-gunnery47 stopped without a handoff. Its state, reconstructed from this tree's `local\` and git:
+
+**Done.** `d4e7a58f1` (260, `kTorpedoBotCanFireReloadBound` OFF) and `eaf50b067` (260.1, flipped ON). Both are on
+origin/main. The flip loses USN15 `usn15_g46_u15_tl` (fails 1417.31 s).
+
+**USN15 Yamashiro variants `ya`..`yg`** (plans `local\g47_u15y?.plan`, order files `local\usn15_g47_u15_y?.txt`).
+They all ran on the **OFF** export `local\g47_off` (exe `B02D3CB60D6C`, i.e. before the 260.1 flip), with and without
+`BSP_FRAME_JITTER`. Summary from `local\g48_sum.py`:
+
+| Variant | Idea | Reference | 20,3 | 20,5 |
+| --- | --- | --- | --- | --- |
+| `ya` | `tl` + 8 Fletchers in a line x=-1900, z 4400.. (dz 250), `torp` 100 frames x3 from 1000 s | (log gone) | Yamashiro alive at 1499 s (frame cap), 5 BBs dead | failed 1422.36 s |
+| `yb` | as `ya`, one `attack Yamashiro` instead of `torp` | (log gone) | alive at the frame cap, 5 BBs dead | failed 1377.27 s |
+| `yc` | as `ya`, line x=-1300, z 4600.. | (log gone) | Yamashiro dies 1207 s (Minneapolis), 5 BBs dead | (log gone) |
+| `yd` | `tl`, BBs stand off at (-5000, 7000), no attack order | Yamashiro dies 1071 s (Fubuki-class07 friendly torpedo), 4 BBs dead | failed 1397.29 s | failed 1427.32 s |
+| `ye` | BBs attack Yamashiro from 800 s; CA on Fubuki08, CL on Fubuki07, 12 Fletchers on Fubuki06 from 750 s | failed 1397.29 s | failed 1397.29 s | Yamashiro dies 1388 s (Fletcher-class12), 5 BBs dead |
+| `yf` | `tl`, BBs stand off at (-4000, 6000) | (log gone) | failed 1427.32 s | (log gone) |
+| `yg` | `tl` BBs; CA on Fubuki08, CL on Fubuki07, 12 Fletchers on Fubuki06 from 750 s | failed 1417.31 s | failed 1442.33 s | failed 1437.33 s |
+
+None is robust. Observations for the successor:
+- The fail is `luaCheckObjs` (an enemy within 3000 m of JapanGoTo (0, 12000)). Yamashiro's track (x about -300 to -140,
+  northbound at 12.6 m/s, z 4077 at 1000 s and 6582 at 1200 s) reaches z of about 9000 at 1415 s.
+- In `ya` the beam strikers died before or while they launched, to Yamashiro's guns at 0.7-2.7 km and to the
+  Fubuki-class06/07 escorts. Their tubes snapped (`bearing=22`: the target was off the bow while they turned in).
+- `torpedo <ship> at <target>` aims at the target's CURRENT position (`player_fire_torpedo_group`,
+  `atan2(to - from)`), with no lead. The surface torpedo classes run 1852 m (class 61 at 23 m/s, class 62 at 13 m/s).
+  A beam shot at a 12.6 m/s target from 1.6 km therefore passes astern of it; only a parked target (Fuso in `tl`) or a
+  bow-on geometry is hit reliably.
+- Yamashiro has about 90k health; the BBs' fire takes it to 19-57k by 1200 s before they die.
+
+## 262. A `lead` aim for the harness torpedo order, and a USN15 bow-on ambush (cc9-gunnery48, 2026-10-16)
+
+**The aid** (`330782c2c`). `torpedo <ship> at <target> lead` aims the player's torpedo group at the TorpedoBot's own
+intercept point instead of the target's current position. The point is `008FBB00` with the unit's first tube's
+WaterTravelSpeed and the target's velocity, the solver the AI tubes use. LABELLED harness aid, like the bomb sight's
+`on <target>`: a player aims by eye, and this aims by the image's solver. Orders without `lead` are unchanged. The log
+line reads `player torpedo group fire: ... yaw=<deg> (lead)`. In `local\g48_plan.py`, a `torp` target `Yamashiro+lead`
+emits the suffix.
+
+**The ambush.** USN15 fails when an enemy comes within 3000 m of JapanGoTo (0, 12000). Yamashiro's track runs along
+x of about -300 and reaches z = 9000 at about 1415 s, so it must die before then. Bow-on geometry does not depend on
+the lead: a torpedo fired straight down Yamashiro's track meets it head on. So the nine non-Fuso-phase Fletchers (01, 07,
+08, 12, 14, 22, 26, 27, 28) form a line across the track and fire southwards from their starboard or port beam:
+- at 850 s they go to x 80..720 (dx 80) at z = 7000 (`aa`; z = 7600 in `ab`);
+- at 950 s they go to x -620..20, arriving westbound, so Yamashiro lies on their port beam;
+- from 1050 s there are three `torp` rounds of 100 frames each, at `Yamashiro+lead` (`ac`: plain `Yamashiro`);
+- at 1350 s they go to (-3000, 10000).
+
+The rest is `tl`.
+
+On current main, Fletcher 01, 07 and 08 die at 755-780 s, before the line forms, so six of the nine fire.
+
+32000-frame runs on export `local\g48_p1` (`330782c2c`), reference env:
+
+| Plan | Reference | 20,3 | 20,5 |
+| --- | --- | --- | --- |
+| `aa` (z 7000, lead) | Yamashiro dies 1321 s (Fletcher-class26) | 1171 s (Fletcher-class24) | 1126 s (Fletcher-class14) |
+| `ab` (z 7600, lead) | 1065 s (Fubuki-class07 friendly torpedo) | 1218 s (Fletcher-class12) | 1212 s (Minneapolis) |
+| `ac` (z 7000, no lead) | 1139 s (Fubuki-class07) | 1201 s (Minneapolis) | (see 262.1) |
+
+In every run, five of the six BBs die, as they did in `tl`.
+
+In `aa` the ambush lands eight torpedo hits on Yamashiro, at 1110 s and 1135 s (bullet class 62, about 1370 health each
+directly, with flooding after). Yamashiro dies in each of the eight runs. 262.1 has the full-length checks.
+
+## 263. GUNNERY 260 residuals: AngleErr per evaluation (bound OFF), the sub-depth held trigger, the `unit+634h` inhibit writer (cc9-gunnery48, 2026-10-16)
+
+**AngleErr per evaluation (`kTorpedoAngleErrPerEvaluationBound`, OFF).** The image draws the gyro jitter on the
+evaluating tick, not at the launch. The listing for `00900807..00900888`:
+
+1. `00900830` calls `00BD2F10(ECX=1, AngleErr row [00E1998C + bot+34h*14h] +0Ch/+10h)`.
+2. `0090083E` calls `00BD2FC0(ECX=1)`, and `& 1` gives the sign (`0090084A..0090084F`, -1 or +1).
+3. `00900872` adds sign * magnitude * pi / 180 to the run heading at `[ESP+24h]`.
+4. Only after that: the inhibit test, `0090087A..00900888` (`[gun+3F0h]+634h` bit 2 -> `00900970`).
+5. Then the launch-zone test (`0090088E`), and the shot order `007311B0` that carries the heading.
+
+So every evaluation that passes the ready gate and the friendly-crossing walk consumes the two stream-1 draws, including
+one that the inhibit or the zone then refuses. The launch takes the order the last evaluation issued. The host drew the
+pair once, at shot creation (`kTorpedoGyroHeadingBound`).
+
+The binding: ON draws the pair at the evaluation, between the crossing walk and the zone test, with the same keys
+(`torpedo_gyro`, (gun, 0|1)). It keeps the pair per gun in `TorpedoThink`, and the launch uses the kept pair. OFF draws at
+the launch and counts the evaluations that would draw (`summary mission gunnery torpedo angle-error evaluations=`).
+LABELLED: the AI path only. A player-seat tube takes its order heading from the message, and neither side draws for it.
+
+**Predictions (written before the pairs).**
+- OFF: `evaluations` >= `launches` on every mission with AI torpedo tubes, and both are 0 elsewhere.
+- ON: the same evaluation count. Each AI torpedo's gyro heading gets a different jitter, because each key now advances
+  once per evaluation, not once per launch. Under `BSP_GUNNERY_RNG_STREAMS=1`, only the `torpedo_gyro` keys move. AI
+  torpedo hits, and the deaths that follow from them, may move. Missions without AI torpedo tubes are identical.
+
+Pairs: JM06 `jm06_s49_j6_s`, USN15 (the 262 plan), USN12 `usn12_g45_u12_e7`.
+
+**Sub-depth held trigger (`009000FC..00900117`): left as a residual, not bound.** bot+64h is set for a submarine owner.
+When `008527E0` says the sub is too deep, the tick returns before the think timer and the trigger, so a latch raised
+earlier stays raised. The host refuses category 7 at target selection (`kSubmarineCategoryGateBound`), which drops the
+trigger instead. A held latch can only fire while `0085A830`'s window and reload allow it. The launch path would also
+need the swim depth `0072C970`, which is not modelled (GUNNERY 152). Reach: AI submarines that dive while a tube is
+latched. No pair is planned until a mission shows one (counter: none yet).
+
+**`unit+634h` bit-2 inhibit writer: no host route.** A byte scan finds the writers of `unit+634h`:
+
+| Pattern | Hits |
+| --- | --- |
+| `83 ?? 34 06 00 00` | only `00465290` (AND, `BSP_MovieAction_SetGunFireEnabled_Run`) and `00465350` (OR, `..._Disabled_Run`) |
+| `81 ?? 34 06 00 00` | `00465386` (the `All` OR) |
+| `89 ?? 34 06 00 00` | the unit constructor `0095CE0B`, and three ship-CLASS stores (`00831840`, `00963380`, `00963600`: a different object) |
+
+So bit 2 is set only by the scene action `aSetGunFireDisabled "Torpedo"`. The host runs no scene action lists:
+`src/engine_movie_actions.cpp` holds the descriptor table and the mask helpers, and no game host calls them. A search
+of this installation's 259 `.scn` files for the ASCII names found nothing. That negative is vacuous: no action name
+(`aTurnGun`, `aParticleEffect`, `aDont_Move`) occurs in them in ASCII either. The constant `inhibited = false` stays,
+LABELLED. Wiring the writer needs a scene-action executor, which is outside this lane.
+
+### 263.1 Pairs and flip
+
+The pair builds are exports of `3a6d58900`: OFF is `local\g48_aoff`, ON is `local\g48_aon`. Reference env with
+`--stop-after-end 40`. The logs are `local\g48_<aoff|aon>_<j6|u12|u15>.log`, each with its manifest.
+
+| Mission (plan) | OFF | ON | evaluations / launches OFF | ON |
+| --- | --- | --- | --- | --- |
+| JM06 `s49_j6_s` | completed 2144.97 s | **not completed by 6000 s** (MissionPhase 3) | 29 / 20 | 25 / 12 |
+| USN12 `g45_u12_e7` | completed 1685.52 s | completed 1680.51 s | 5 / 8 | 12 / 16 |
+| USN15 `g48_u15_ab`, 1600 s | Yamashiro dead | moved (deaths 37 -> 42) | 63 / 94 | 63 / 95 |
+
+`pair_diff` says MOVED on all three.
+
+The first prediction was wrong as written. `launches` counts every gyro launch: the player's group-4 launches in USN15
+(not evaluations), and each tube of a salvo. So it can exceed `evaluations`. Both counters are non-zero exactly on the
+missions with AI torpedo tubes.
+
+**Mechanism** (`BSP_TORPEDO_TUBE_TRACE=1`, JM06 to 300 s, `local\g48_<aoff|aon>_j6tr.log`). Every launch keeps its
+time; only gyro headings change:
+- PlayerSub 03's six tubes still launch at 156.10, 156.60, ... 158.86 s.
+- A tube's first launch keeps its gyro heading when only one evaluation passed before it: plat 54 is -27.2 deg in both,
+  plat 55 -11.5, PlayerSub 02's plat 52 14.9.
+- Tubes held behind the unit's 0.5 s torpedo cooldown pass more evaluations first, so they launch with a later pair:
+  plat 51 -18.7 -> -17.3, plat 50 -18.3 -> -6.4, plat 53 -33.6 -> -20.9.
+
+This is the predicted mechanism: the same launches, with jitter drawn per evaluation. So the switch is **flipped ON**.
+
+**Lost:** JM06 `jm06_s49_j6_s`. Its first sinking moves from 168.11 s to 171.96 s, and the run diverges from there. The
+JM06 re-plan goes to the wins keeper (cc9-lua62). USN12 `e7` still completes.

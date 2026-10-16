@@ -508,3 +508,13 @@ mechanism is in the cd761bb52 section above).
     3840 s, Ashigara 6326 s.
   - **Reference-only win**: 20,3 fails at 1422.31 s and 20,5 fails at 1437.33 s. Yamashiro survives under both,
     because its 1171 s kill is a deterministic Fubuki-07 friendly torpedo.
+- **eaf50b067 (kTorpedoBotCanFireReloadBound ON, GUNNERY 260.1)** (cc9-gunnery47's ON runs, recorded by cc9-lua62).
+  Exe 47A1F5820F8E, a tree build of agent/cc9-gunnery36 d4e7a58f1, reference env, `--stop-after-end 40`. Logs
+  `cc9-gunnery36\local\g47_on_<u15|j6|i8>.log` with manifests.
+  | Row | Result | Was |
+  |---|---|---|
+  | USN15 `g46_u15_tl` (144000) | **failed 1417.31 s** (Game Over) | EndMission 6331.16 s (reference-only win) |
+  | JM06 `s49_j6_s` | completed 2144.97 s, guard logged | completed 2123.95 s |
+  | IJN08 `p9_i08_w` | failed 789.93 s (Game Over, entity HQ) | failed 789.93 s (unchanged) |
+
+  The flip is faithful and stays ON; USN15 tl needs a re-plan (see the next re-time).
