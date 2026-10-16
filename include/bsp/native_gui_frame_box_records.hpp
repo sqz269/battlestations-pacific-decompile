@@ -225,3 +225,108 @@ void cleanup_native_gui_frame_box_vector_00ad2320(void* actual_header,
     NativeRenderActualOwners& actual_owners, NativeStringRawPoolContext& actual_strings,
     NativeGuiFrameBoxVectorTidyOperation& operation); // SAME operation, one attempt.
 } // namespace bsp
+
+
+namespace bsp {
+enum class NativeGuiFrameBoxRecordCopyPhase : std::uint8_t {
+    fresh, entered, returned, failed
+};
+
+// Explicit Source orchestration, not a Native object, owner or EH frame.
+// Required preparation supplies an exact aligned 2Ch source span, a disjoint
+// equally sized fresh destination span, and one live fresh111 operation per
+// record. Empty spans may use null source/destination; nonempty null backing
+// is rejected. The Native null-destination skip is outside this admitted domain.
+// Known regions are validated in the FIRST initializer before member stores;
+// this does not legalize invalid C++ placement or restore overwritten lifetimes.
+// Full allocation membership, live backing, all wider aliases and canonical
+// resource/pool services remain caller proof. No record payload is pre-read.
+//
+// Access is externally serialized. Callbacks must not mutate this operation
+// or the prepared111 array. They must retain the SAME source/destination and
+// complete independent graph/services BEFORE entry, outside failing/retired
+// storage. Metadata owns no graph. Never discover ownership from container
+// links after failure. Failure is sticky even after prefix rollback returns;
+// another operation does not authorize replay of the same interrupted graph.
+//
+// Destroying entered/failed metadata terminates, reading only its phase.
+// Fresh/returned destruction also reads metadata only. This fail-closed rule
+// is a new Source lifetime obligation, not Native cleanup/FH3 behavior; it does
+// not release, count-gate or repair any graph. Diagnostics may hold stale
+// identities and must not be used to inspect already retired payloads.
+class NativeGuiFrameBoxRecordCopyOperation final {
+public:
+    NativeGuiFrameBoxRecordCopyOperation(const void* first, const void* last,
+        void* destination, NativeGuiFrameBoxRecordReleaseOperation* fresh_records,
+        std::size_t record_count);
+    ~NativeGuiFrameBoxRecordCopyOperation() noexcept;
+    NativeGuiFrameBoxRecordCopyOperation(const NativeGuiFrameBoxRecordCopyOperation&) = delete;
+    NativeGuiFrameBoxRecordCopyOperation& operator=(const NativeGuiFrameBoxRecordCopyOperation&) = delete;
+    NativeGuiFrameBoxRecordCopyOperation(NativeGuiFrameBoxRecordCopyOperation&&) = delete;
+    NativeGuiFrameBoxRecordCopyOperation& operator=(NativeGuiFrameBoxRecordCopyOperation&&) = delete;
+
+    NativeGuiFrameBoxRecordCopyPhase phase() const noexcept { return phase_; }
+    const void* source_first() const noexcept { return first_; }
+    const void* source_last() const noexcept { return last_; }
+    void* destination_first() const noexcept { return destination_; }
+    std::size_t record_count() const noexcept { return record_count_; }
+    const NativeGuiFrameBoxRecordReleaseOperation* release_operations() const noexcept { return records_; }
+    const void* source_cursor() const noexcept { return source_cursor_; }
+    void* committed_end() const noexcept { return committed_end_; }
+    std::size_t committed_records() const noexcept { return committed_records_; }
+    const void* attempted_source() const noexcept { return attempted_source_; }
+    void* attempted_record() const noexcept { return attempted_record_; }
+    bool record_copy_entered() const noexcept { return record_copy_entered_; }
+    void* failed_record() const noexcept { return failed_record_; }
+    bool rollback_entered() const noexcept { return rollback_entered_; }
+    void* rollback_cursor() const noexcept { return rollback_cursor_; }
+    std::size_t rolled_back_records() const noexcept { return rolled_back_records_; }
+    const NativeGuiFrameBoxRecordReleaseOperation* last_release_operation() const noexcept { return last_release_operation_; }
+    bool rollback_release_entered() const noexcept { return rollback_release_entered_; }
+    bool rollback_completed() const noexcept { return rollback_completed_; }
+    const NativeRenderActualOwners* actual_owners_identity() const noexcept { return actual_owners_; }
+    const NativeStringRawPoolContext* actual_strings_identity() const noexcept { return actual_strings_; }
+private:
+    friend void* copy_native_gui_frame_box_uninitialized_range_00ad1910(
+        const void*, const void*, void*, NativeStringRawPoolContext&,
+        NativeRenderActualOwners&, NativeGuiFrameBoxRecordCopyOperation&);
+    const void* const first_;
+    const void* const last_;
+    void* const destination_;
+    NativeGuiFrameBoxRecordReleaseOperation* const records_;
+    const std::size_t record_count_;
+    NativeGuiFrameBoxRecordCopyPhase phase_{};
+    const void* source_cursor_{};
+    void* committed_end_{};
+    std::size_t committed_records_{};
+    const void* attempted_source_{};
+    void* attempted_record_{};
+    bool record_copy_entered_{};
+    void* failed_record_{};
+    bool rollback_entered_{};
+    void* rollback_cursor_{};
+    std::size_t rolled_back_records_{};
+    const NativeGuiFrameBoxRecordReleaseOperation* last_release_operation_{};
+    bool rollback_release_entered_{};
+    bool rollback_completed_{};
+    const NativeRenderActualOwners* actual_owners_{};
+    const NativeStringRawPoolContext* actual_strings_{};
+};
+
+// Whole AD1910 normal body and separately identified AD196A prefix catch.
+// Native ECX=first, EDX=cached last; four stack words=(destination,unused
+// owner/header,two opaque words), EAX=advanced destination, RET10h. Source
+// explicitly adds SAME raw-string/render services and persistent metadata;
+// this ordinary C++ API does not reproduce that register/stack/private EH ABI.
+// No eager payload snapshot: each genuine103 reads current source fields.
+// Commit only after103 returns. On failure attempt forward111 rollback only
+// over the completed prefix; the failed103 record NEVER reaches111. Advance
+// rollback only after111 returns. Cleanup escape stops the loop and replaces
+// the original exception under C++ rules; Native FH3/double-exception/SEH is
+// not claimed. All phase flags describe Source scheduling, not fault origin.
+// No allocation,119 tidy/free, parent end publication or automatic retirement.
+void* copy_native_gui_frame_box_uninitialized_range_00ad1910(
+    const void* first, const void* last, void* destination,
+    NativeStringRawPoolContext& strings, NativeRenderActualOwners& owners,
+    NativeGuiFrameBoxRecordCopyOperation& operation);
+} // namespace bsp

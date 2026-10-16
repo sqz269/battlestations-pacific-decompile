@@ -272,3 +272,134 @@ void cleanup_native_gui_frame_box_vector_00ad2320(void* header,
     tidy_native_gui_frame_box_vector_00ad21b0(header, owners, strings, operation);
 }
 } // namespace bsp
+
+
+namespace bsp {
+namespace {
+struct CopyKnownRegion {
+    std::uintptr_t first, last;
+};
+CopyKnownRegion copy_known_region(const volatile void* identity, std::size_t bytes) {
+    const auto first = reinterpret_cast<std::uintptr_t>(identity);
+    if ((bytes != 0 && first == 0) || bytes > (std::numeric_limits<std::uintptr_t>::max)() - first)
+        throw std::invalid_argument("raw record copy region is null or wraps");
+    return {first, first + bytes};
+}
+bool copy_overlap(CopyKnownRegion left, CopyKnownRegion right) noexcept {
+    return left.first != left.last && right.first != right.last &&
+        left.first < right.last && right.first < left.last;
+}
+struct CopyKnownRegions {
+    CopyKnownRegion source, destination, metadata, operation;
+};
+CopyKnownRegions copy_validate_preparation(const NativeGuiFrameBoxRecordCopyOperation& operation,
+    const void* first, const void* last, void* destination,
+    NativeGuiFrameBoxRecordReleaseOperation* records, std::size_t record_count) {
+    const auto begin = reinterpret_cast<std::uintptr_t>(first);
+    const auto end = reinterpret_cast<std::uintptr_t>(last);
+    if ((begin & 3u) != 0 || (end & 3u) != 0 ||
+        (reinterpret_cast<std::uintptr_t>(destination) & 3u) != 0 ||
+        end < begin || (begin == 0 && end != 0) ||
+        (end - begin) % 0x2cu != 0 || (end - begin) / 0x2cu != record_count ||
+        record_count > (std::numeric_limits<std::size_t>::max)() / sizeof(records[0]) ||
+        (reinterpret_cast<std::uintptr_t>(records) % alignof(NativeGuiFrameBoxRecordReleaseOperation)) != 0)
+        throw std::invalid_argument("raw record copy requires exact aligned prepared spans");
+    const CopyKnownRegions known{copy_known_region(first, end - begin),
+        copy_known_region(destination, end - begin),
+        copy_known_region(records, record_count * sizeof(records[0])),
+        copy_known_region(&operation, sizeof(operation))};
+    const CopyKnownRegion regions[]{known.source, known.destination, known.metadata, known.operation};
+    for (std::size_t i = 0; i != 4; ++i) {
+        for (std::size_t j = i + 1; j != 4; ++j) {
+            if (copy_overlap(regions[i], regions[j]))
+                throw std::invalid_argument("raw record copy known regions overlap");
+        }
+    }
+    for (std::size_t i = 0; i != record_count; ++i) {
+        if (records[i].phase() != NativeGuiFrameBoxRecordReleasePhase::fresh)
+            throw std::logic_error("raw record copy requires fresh per-record release operations");
+    }
+    return known;
+}
+void copy_validate_service_region(CopyKnownRegions known, const volatile void* identity,
+    std::size_t bytes) {
+    const auto service = copy_known_region(identity, bytes);
+    if (copy_overlap(service, known.source) || copy_overlap(service, known.destination) ||
+        copy_overlap(service, known.metadata) || copy_overlap(service, known.operation))
+        throw std::invalid_argument("raw record copy service metadata overlaps known regions");
+}
+} // namespace
+
+NativeGuiFrameBoxRecordCopyOperation::NativeGuiFrameBoxRecordCopyOperation(
+    const void* first, const void* last, void* destination,
+    NativeGuiFrameBoxRecordReleaseOperation* records, std::size_t record_count)
+    : first_((copy_validate_preparation(*this, first, last, destination, records, record_count), first)),
+      last_(last), destination_(destination), records_(records), record_count_(record_count),
+      source_cursor_(first), committed_end_(destination), rollback_cursor_(destination) {}
+
+NativeGuiFrameBoxRecordCopyOperation::~NativeGuiFrameBoxRecordCopyOperation() noexcept {
+    if (phase_ == NativeGuiFrameBoxRecordCopyPhase::entered ||
+        phase_ == NativeGuiFrameBoxRecordCopyPhase::failed)
+        std::terminate();
+}
+
+void* copy_native_gui_frame_box_uninitialized_range_00ad1910(
+    const void* first, const void* last, void* destination,
+    NativeStringRawPoolContext& strings, NativeRenderActualOwners& owners,
+    NativeGuiFrameBoxRecordCopyOperation& operation) {
+    if (operation.phase_ != NativeGuiFrameBoxRecordCopyPhase::fresh ||
+        first != operation.first_ || last != operation.last_ || destination != operation.destination_)
+        throw std::logic_error("raw record copy requires its fresh exact-range operation");
+    const auto known = copy_validate_preparation(operation, first, last, destination,
+        operation.records_, operation.record_count_);
+    copy_validate_service_region(known, &owners, sizeof(owners));
+    copy_validate_service_region(known, &strings, sizeof(strings));
+    copy_validate_service_region(known, &strings.actual_published_01090aa8, sizeof(void*));
+    copy_validate_service_region(known, &strings.actual_small_returns_disabled_01090aa4, sizeof(Word));
+    copy_validate_service_region(known, &strings.actual_manager_publication_01090aa0, sizeof(void*));
+    operation.actual_owners_ = &owners;
+    operation.actual_strings_ = &strings;
+    operation.phase_ = NativeGuiFrameBoxRecordCopyPhase::entered;
+    try {
+        auto source = reinterpret_cast<std::uintptr_t>(first);
+        const auto end = reinterpret_cast<std::uintptr_t>(last);
+        auto target = reinterpret_cast<std::uintptr_t>(destination);
+        while (source != end) {
+            operation.attempted_source_ = reinterpret_cast<const void*>(source);
+            operation.attempted_record_ = reinterpret_cast<void*>(target);
+            operation.record_copy_entered_ = true;
+            // Native's null skip is retained, but preparation excludes null
+            // destination for every nonempty valid-buffer operation.
+            if (target != 0)
+                copy_construct_native_gui_frame_box_record_00ad0c60(
+                    reinterpret_cast<void*>(target), reinterpret_cast<const void*>(source), strings);
+            operation.record_copy_entered_ = false;
+            target += 0x2cu;
+            operation.committed_end_ = reinterpret_cast<void*>(target);
+            ++operation.committed_records_;
+            source += 0x2cu;
+            operation.source_cursor_ = reinterpret_cast<const void*>(source);
+        }
+        operation.phase_ = NativeGuiFrameBoxRecordCopyPhase::returned;
+        return reinterpret_cast<void*>(target);
+    } catch (...) {
+        operation.phase_ = NativeGuiFrameBoxRecordCopyPhase::failed;
+        operation.failed_record_ = operation.attempted_record_;
+        operation.rollback_entered_ = true;
+        auto cursor = reinterpret_cast<std::uintptr_t>(destination);
+        const auto committed = reinterpret_cast<std::uintptr_t>(operation.committed_end_);
+        while (cursor != committed) {
+            operation.last_release_operation_ = operation.records_ + operation.rolled_back_records_;
+            operation.rollback_release_entered_ = true;
+            release_native_gui_frame_box_record_00ad0860(reinterpret_cast<void*>(cursor), owners,
+                strings, operation.records_[operation.rolled_back_records_]);
+            operation.rollback_release_entered_ = false;
+            cursor += 0x2cu;
+            operation.rollback_cursor_ = reinterpret_cast<void*>(cursor);
+            ++operation.rolled_back_records_;
+        }
+        operation.rollback_completed_ = true;
+        throw;
+    }
+}
+} // namespace bsp
