@@ -1,0 +1,67 @@
+{
+  "schema": "bsp_cc12_native_qsort_primary_review_v1",
+  "status": "two_whole_normal_helpers_and_one_partial_valid_input_entry_Source_primary_peer_accepted_registered_Main_gate_pending",
+  "Source_commit": "2b8cd919605628680a4b975757a8ac794607566f",
+  "Source": "src/native_qsort_kernel.cpp",
+  "header": "include/bsp/native_qsort_kernel.hpp",
+  "documentation": "docs/NATIVE_QSORT_KERNEL.md",
+  "Source_whole_helpers": 2,
+  "Source_partial_entries": 1,
+  "Source_whole_qsort_entry_claim": false,
+  "Original_library_names_retained": [
+    "_qsort",
+    "shortsort",
+    "swap"
+  ],
+  "primary_author": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_qsort_integration_20261016\\primary_author_inputs.DATA.json",
+    "bytes": 2384,
+    "sha256": "d623aa7b46d4ae8f6ac8439414cb0ad16f7a9d23447ed7944d1742a7464cdd43"
+  },
+  "primary_peer": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_qsort_integration_20261016\\primary_peer_inputs.DATA.json",
+    "bytes": 1127,
+    "sha256": "67e33508c6ae067ffea65c8e5b973c8bde392b395906e9ec2690785032f0f87c"
+  },
+  "Root_Source_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_qsort_integration_20261016\\primary_Source_review.DATA.json",
+    "bytes": 3158,
+    "sha256": "2fa5601b525626209b749af8b744baa5b64de841e09bc1040dc299357339339d"
+  },
+  "Root_whole_actual_COFF_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_qsort_integration_20261016\\primary_object_review.DATA.json",
+    "bytes": 2763,
+    "sha256": "e9dccf103d8393793b92ea92b3ac648bf5dfcaa00cc58e0c31dcc52fa21f8be7"
+  },
+  "independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_list_cstr_readiness_oct16\\local\\NativeQsortKernelIndependentReview01\\review.json",
+    "bytes": 7216,
+    "sha256": "93eab8e41473c57b828e981430eb5a8742c93382572ffde4f2009bceb08756c3"
+  },
+  "readiness": "reports/cc12_scene_string_list_private_sort_readiness.json",
+  "contract": "Implement only the exact ordinary valid-input kernel authorized by the readiness report: real compatible cdecl callback and actual writable byte elements; conservative count*width<=INT32_MAX with nonwrapping actual allocation; positive width, coherent strict weak ordering, no callback mutation/reentry/throw/fault/concurrency. Count0/1 have no element/callback work. Preserve all median/scan/live pivot/equality/shortsort/three byte-exchange schedules, signed distance comparison, equal-size branch, 30-entry LIFO arrays and smaller-child-first processing. Preserve correct library names. Use bounded offsets/wider signed differences to avoid C++ pointer UB without new runtime policies. No Source validation-failure plumbing or caller-composition promotion.",
+  "strict_actual_inputs": 10,
+  "candidates": 121,
+  "tools": 73,
+  "frozen_tool_sources": 48,
+  "Source_external_services": 0,
+  "postcompile_script_roles": 4,
+  "strict_compile_attempts": 1,
+  "unregistered_worker_baseline_attempts": 1,
+  "worker_baseline_tests": 2,
+  "genuine_author_tool_pairs": 28,
+  "genuine_author_actual_results": 52,
+  "Main_registered": true,
+  "Main_build": "pending",
+  "actual_compiler_archive_gate": "pending",
+  "limits": [
+    "Whole physical Original qsort230instructions were read, but successful guards are onlypreconditions and validationfailure blocks remainexcluded. Not3wholefunctions.",
+    "Genuine passed comparator/actualelements only; conservativeextent/ordering/lifetime/no-mutation/callback ordinarydomain. Three volatilebyteexchange schedules, livepivot, signedemptyrightdistance, fixed30pairedLIFO, exactcallbackorder.",
+    "Strict object2527B6sections/13primary+6aux19slots/226strings;1368B424rows with2unusedprivatehelperCOMDATs and2GSrelocations0metadata/EH. Fullcode/runtime/symbol/data reviewed; pureLEA/counter/compiler scheduling doesnotproveOriginalinstruction/fault/ABI equivalence.",
+    "No Originalerrno/TLS/invalidparameter/privateCRT/EH/Watson/stackregister/frame binarycompatibility, caller/scene/renderer/application composition, runtime/startup/gamecredit."
+  ],
+  "Original_ABI_compatible": false,
+  "Original_validation_EH_compatible": false,
+  "new_body_executed": false,
+  "game_validated": false
+}

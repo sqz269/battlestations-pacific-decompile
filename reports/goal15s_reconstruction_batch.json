@@ -1,0 +1,63 @@
+{
+  "batch": "GOAL15S",
+  "worker_commit": "e85d913c829fe1c13b850c052cec683415aa52a2",
+  "validated_source_commit": "796c9bda6",
+  "whole_source_functions": 1,
+  "referenced_native_bytes": 7,
+  "actual_source_bytes": 7,
+  "instructions": 2,
+  "proofs": [
+    {
+      "path": "local/goal15s_x87_author/strict_module.obj",
+      "sha256": "cc4385a0fec82d8193e5cbd8407ba5036c85eb6a4a34ba1b4e30818f8dd0793e",
+      "symbol": "@bsp_tagged_x87_b4_00b40040@4",
+      "symbol_offset": 0,
+      "all_executable_sections": 1,
+      "whole_source_bytes": 7,
+      "executable_relocations": 0,
+      "undefined_externals": [],
+      "entire_body_equals_native": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_tagged_x87_leaf_b4_01.obj",
+      "sha256": "52b5cf2960f97e6bcf5a663e303b830f0b326eb982c8a7af8cf81daf0d6ffb23",
+      "symbol": "@bsp_tagged_x87_b4_00b40040@4",
+      "symbol_offset": 0,
+      "all_executable_sections": 1,
+      "whole_source_bytes": 7,
+      "executable_relocations": 0,
+      "undefined_externals": [],
+      "entire_body_equals_native": true
+    }
+  ],
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "archive": "build\\win32\\Release\\bsp_core.lib",
+  "archive_sha256": "744a0362ccb8486b5ae11209bdb3f0f85e183b828c18d32cfbb10e85aca59b73",
+  "archive_member": "bsp_core.dir/Release/native_tagged_x87_leaf_b4_01.obj",
+  "entire_archive_member_equals_registered_object": true,
+  "source_sha256": {
+    "src/native_tagged_x87_leaf_b4_01.cpp": "e433ce3dd82435c7efdd126af41a3243498326d8bbc69b9345403f51d128e86e",
+    "include/bsp/native_tagged_x87_leaf_b4_01.hpp": "f19c257a93b304fcca60cbf1b4b434846ea995a627435f46d1bb7cfbaefb52c1"
+  },
+  "primary_build": {
+    "log": "local/goal15s_registered_build.log",
+    "sha256": "ec788fe9bee1eda84d41f074aa11a3066da422bb34faffaabb1a4c3ad47a257f",
+    "existing_checks_passed": 3,
+    "new_tests": 0
+  },
+  "independent_review": {
+    "path": "local/goal15s_x87_review/review.json",
+    "sha256": "30ec176703cf7fdab06b93d5b586572fca4bdc8f2d97eeeff47fc5b4cd541601",
+    "status": "READY_for_bounded_whole_Source_integration",
+    "blocking_findings": []
+  },
+  "ghidra": {
+    "program": "/battlestationspacific.exe",
+    "original_state": "local/goal15h_annotations_00b40040.json",
+    "history": "local/ghidra-annotations-20261016T035205Z.json",
+    "saved_signature": "00b40040 BSP_NativeTaggedB4_LoadFloat01F8_00b40040  float __fastcall BSP_NativeTaggedB4_LoadFloat01F8_00b40040(void * backing)  body 00b40040 - 00b40046",
+    "exports_refreshed": true,
+    "project_saved": true
+  },
+  "qualification": "Same complete FLD m32real [ECX+1F8h]; RET, not recovered Original class/prototype. Actual ECX input and ST0 result; Source float fastcall interface. Source placement changes absolute x87 FIP/fault addresses. No Native-address adoption, runtime or game claim."
+}
