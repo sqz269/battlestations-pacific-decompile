@@ -41439,6 +41439,165 @@
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
       "contract": "Two distinct whole entries: Begin008EEB10 [008EEB10,008EEB51)65B22; Next008EEB60 [008EEB60,008EEBBC)92B33. ECX actual writable12B iterator: table0/current4/index8; unused incoming EDX/no stack args/plainRET. Begin has no common EAX semantic return; Next returns full DWORD0/1 by rereading current. Table count/test+4, heads+8/index*4, node link+C. Preserve captured versus reloaded table/index/current values, every DWORD load/store and branch schedule. Begin count-zero clears current only and leaves index untouched; its original scan can read head64. Next initially-null path rereads current without table/index; link/success paths preserve index publication and final current reload; unsigned DWORD arithmetic and no head64 scan load. Actual caller-owned aligned iterator initialized only at table word; actual accepted raw61 bag+4/enum owner+4 map with genuine property E175B0 or symbol E17578 nodes, preserved allocator+10 and whole producer/context/process/list/pool/generation/ownership contracts. No fabricated sentinel from map+108 owner metadata; authentic coherent nonempty map stops at a real nonnull head. Disjoint valid iterator/map/nodes/private frames, finite stable unshared acyclic chains, no faults/alias/reentry/concurrency/trim/teardown. No direct providers/calls/dispatch/lifetime action or container/STL substitution. Other00466BB0/C00 byte-identical instances provide evidence only, no address credit. No Original full flags/register/privateCRT/EH/ABI, caller/key-list/parser/startup/runtime/game claim. String-list clear/append/growth and optional sort callback remain separate blockers."
+    },
+    {
+      "id": "goal_oct15_scene_class_name_lookup",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00469690"
+      ],
+      "output_files": [
+        "src/native_scene_class_name_lookup.cpp",
+        "include/bsp/native_scene_class_name_lookup.hpp",
+        "docs/GOAL_OCT15_SCENE_CLASS_NAME_LOOKUP.md",
+        "reports/goal_oct15_scene_class_name_lookup.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_name_hash_iterator"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_class_name_lookup.json",
+      "primary_review": "reports/goal_oct15_scene_lookup_primary_review.json",
+      "code_revision": "1c0025b07ae3c5627dc024d11e1db303efb9d32d",
+      "integrated_main_revision": "e4a8389ed17c09c70908a4c2a0efea9d59ae4e90",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Complete raw class-name/hash lookup Source at actual raw iterator/string/pool and currentSDK services. Distinct actual native frame role backings, captured and fresh reload schedules retained; no invented armed cleanup state. Original CRT/private-register/FH3/fault/mangling/binary ABI and game proof remain open.",
+      "Original_ABI_compatible": false,
+      "game_validated": false,
+      "latest_Main_build_review": "reports/goal_oct15_scene_lookup_main_refresh.json"
+    },
+    {
+      "id": "goal_oct15_scene_name_hash_lookup",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00468660",
+        "00467ee0"
+      ],
+      "output_files": [
+        "src/native_scene_name_hash_lookup.cpp",
+        "include/bsp/native_scene_name_hash_lookup.hpp",
+        "docs/GOAL_OCT15_SCENE_NAME_HASH_LOOKUP.md",
+        "reports/goal_oct15_scene_name_hash_lookup.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_name_hash_iterator"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_name_hash_lookup.json",
+      "primary_review": "reports/goal_oct15_scene_lookup_primary_review.json",
+      "code_revision": "1c0025b07ae3c5627dc024d11e1db303efb9d32d",
+      "integrated_main_revision": "e4a8389ed17c09c70908a4c2a0efea9d59ae4e90",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Complete raw class-name/hash lookup Source at actual raw iterator/string/pool and currentSDK services. Distinct actual native frame role backings, captured and fresh reload schedules retained; no invented armed cleanup state. Original CRT/private-register/FH3/fault/mangling/binary ABI and game proof remain open.",
+      "Original_ABI_compatible": false,
+      "game_validated": false,
+      "latest_Main_build_review": "reports/goal_oct15_scene_lookup_main_refresh.json"
+    },
+    {
+      "id": "goal_oct15_property_lookup_raw_io",
+      "done": true,
+      "state": "qualified_whole_control_flow_Source_default_Win32_and_Main_integration_verified_general_readiness_unproved",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "0043b760",
+        "0043b8b0"
+      ],
+      "output_files": [
+        "src/native_enum_dictionary_lookup.cpp",
+        "include/bsp/native_enum_dictionary_lookup.hpp",
+        "docs/GOAL_OCT15_PROPERTY_LOOKUP_RAW_IO.md",
+        "reports/goal_oct15_property_lookup_raw_io.json"
+      ],
+      "depends_on": [
+        "cc12_property_key_hash_source",
+        "cc12_property_key_lookup_source"
+      ],
+      "source_ready": false,
+      "general_source_ready": false,
+      "evidence_report": "reports/goal_oct15_property_lookup_raw_io.json",
+      "primary_review": "reports/goal_oct15_scene_lookup_promotion_review.json",
+      "code_revision": "1b43f15d71011cf545a6323c7b0951e86463d5fe",
+      "integrated_main_revision": "e4a8389ed17c09c70908a4c2a0efea9d59ae4e90",
+      "Main_build_gate": "passed; bounded provider admission is preserved",
+      "contract": "Property-only raw IO and captured hash/output-alias schedule closed at qualified currentSDK ASCII/C-locale admission; Original negative-byte/locale/TLS/errno parity remains unproved.",
+      "Original_ABI_compatible": false,
+      "game_validated": false,
+      "latest_Main_build_review": "reports/goal_oct15_scene_lookup_main_refresh.json"
+    },
+    {
+      "id": "goal_oct15_scene_property_bag_find",
+      "done": true,
+      "state": "qualified_whole_control_flow_Source_default_Win32_and_Main_integration_verified_general_readiness_unproved",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "008f2260",
+        "00ca4770",
+        "00ca4778"
+      ],
+      "output_files": [
+        "src/native_scene_property_bag_find.cpp",
+        "include/bsp/native_scene_property_bag_find.hpp",
+        "docs/GOAL_OCT15_SCENE_PROPERTY_BAG_FIND.md",
+        "reports/goal_oct15_scene_property_bag_find.json"
+      ],
+      "depends_on": [
+        "goal_oct15_property_lookup_raw_io"
+      ],
+      "source_ready": false,
+      "general_source_ready": false,
+      "evidence_report": "reports/goal_oct15_scene_property_bag_find.json",
+      "primary_review": "reports/goal_oct15_scene_lookup_promotion_review.json",
+      "code_revision": "1b43f15d71011cf545a6323c7b0951e86463d5fe",
+      "integrated_main_revision": "e4a8389ed17c09c70908a4c2a0efea9d59ae4e90",
+      "Main_build_gate": "passed; bounded provider admission is preserved",
+      "contract": "Whole375B parent control flow plus two qualified cleanup mappings; raw provider admission remains qualified. Original locale, all101 callers, private-frame/FH3/SEH/fault and unrestricted parent closure remain unproved.",
+      "Original_ABI_compatible": false,
+      "game_validated": false,
+      "latest_Main_build_review": "reports/goal_oct15_scene_lookup_main_refresh.json"
+    },
+    {
+      "id": "goal_oct15_scene_hidden_record_construct",
+      "done": true,
+      "state": "qualified_whole_control_flow_Source_default_Win32_and_Main_integration_verified_general_readiness_unproved",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "004693c0",
+        "00c61ad0"
+      ],
+      "output_files": [
+        "src/native_scene_hidden_entity_record_construct.cpp",
+        "include/bsp/native_scene_hidden_entity_record_construct.hpp",
+        "docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md",
+        "reports/goal_oct15_scene_hidden_record_construct.json"
+      ],
+      "depends_on": [
+        "cc12_raw_native_string_duplicate_00438e40"
+      ],
+      "source_ready": false,
+      "general_source_ready": false,
+      "evidence_report": "reports/goal_oct15_scene_hidden_record_construct.json",
+      "primary_review": "reports/goal_oct15_scene_lookup_promotion_review.json",
+      "code_revision": "1b43f15d71011cf545a6323c7b0951e86463d5fe",
+      "integrated_main_revision": "e4a8389ed17c09c70908a4c2a0efea9d59ae4e90",
+      "Main_build_gate": "passed; bounded provider admission is preserved",
+      "contract": "Whole178B parent control flow plus qualified current-saved-this cleanup; inherited normal canonical duplicate allocation/disjoint-copy admission remains bounded. Allocation failure/new-handler reentry, naked-frame unwind and Original privateCRT/FH3 remain unproved.",
+      "Original_ABI_compatible": false,
+      "game_validated": false,
+      "latest_Main_build_review": "reports/goal_oct15_scene_lookup_main_refresh.json"
     }
   ],
   "snapshot_after_analysis": {
