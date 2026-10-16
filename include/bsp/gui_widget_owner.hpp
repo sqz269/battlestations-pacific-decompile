@@ -282,6 +282,8 @@ private:
     void require_model_copy_reference(NativeModelReference&) const;
     NativeNodeBinding* create_model(const std::string&,
         NativeNodeBinding** publication_before_name_release = nullptr);
+    NativeNodeBinding* create_model(const std::string&, NativeStringStorage&,
+        NativeNodeBinding** publication_before_name_release);
     void create_tracked_auxiliary_model(NativeNodeBinding*&, NativeStringStorage&,
         GuiTextAuxiliaryModelAcquired&, bool cursor_prefix);
     void stamp_visibility(NativeNodeBinding&, float, bool);
