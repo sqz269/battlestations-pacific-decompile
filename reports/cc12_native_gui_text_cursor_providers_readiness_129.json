@@ -1,0 +1,920 @@
+{
+  "packet": "cc12_native_gui_text_cursor_providers_readiness129",
+  "kind": "read-only whole raw cursor provider readiness; exact next missing concrete binding",
+  "recorded_utc": "2026-10-16T08:30:19.583018+00:00",
+  "checked_baseline": "dff3163080f4d662f4f056b0e18c9143bc71ba96",
+  "analysis_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "fresh_batches_used_BSP_verified_wrappers": true,
+    "Original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "Original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "scope": {
+    "owned_addresses": [
+      "0x00AB8910"
+    ],
+    "owned_ranges": [
+      "0x00AB8910-0x00AB8C25"
+    ],
+    "owned_files": [
+      "docs/CC12_NATIVE_GUI_TEXT_CURSOR_PROVIDERS_READINESS_129.md",
+      "reports/cc12_native_gui_text_cursor_providers_readiness_129.json"
+    ],
+    "no_Source_CMake_ledger_Ghidra_mutation_build_test_probe": true
+  },
+  "verdict": {
+    "next_smallest_ready_Source_proposal": "Narrow real mapped-profile overload/projection for existing whole raw B6DB10/B6DBC0, borrowing initialized GameNativeReadOnlyData; no new Original body.",
+    "proposed_files_only": [
+      "include/bsp/native_node_raw_transform.hpp",
+      "src/native_node_raw_transform.cpp"
+    ],
+    "not_implemented_or_authorized_in129": true,
+    "whole_AB8910": "Native primitive bodies exist; concrete raw transform profile projection remains the first identified gap. Then require a genuine preheld same-domain graph and one-shot cursor frame/creators; not production activation.",
+    "still_downstream": [
+      "0x00ABB1D0",
+      "0x00ABA8D0",
+      "0x00ABB2C0"
+    ],
+    "bounded_absence_qualification": "Existing broad NativeTracelineRenderServices and collecting subclass are abstract. No concrete full production implementation identified by bounded include/src search. A genuine externally supplied full service can conditionally satisfy the old API."
+  },
+  "cursor_contract": {
+    "entry": "0x00AB8910",
+    "end_exclusive": "0x00AB8C25",
+    "bytes": 789,
+    "instruction_starts": 236,
+    "ABI": "ECX SAME actual raw Text, no stack args; EBX/EBP/EDI preserved, ESI saved/restored only cold; RET AB8C24 with unspecified EAX. No extra incoming register operand found.",
+    "guard": "Only mask0 initialized before current184 guard; nonnull184 returns without creation/repair.",
+    "frame": {
+      "cold_F": "entryESP-0x6C",
+      "mask": "F+10",
+      "raw_Model_or_mesh_slot": "F+14",
+      "same_name_header_length_data": [
+        "F+18",
+        "F+1C"
+      ],
+      "matrix64": "F+20..F+5F",
+      "native_state": "F+68"
+    },
+    "direct_calls": 23,
+    "indirect_calls": 13,
+    "all_call_instructions": 36,
+    "metadata_call_count26_is_not_coverage": true,
+    "whole_byte_source_proof": {
+      "path": "local/text_cursor129_byte_source_proof.json",
+      "sha256": "8e7e7dadfb84fa370f9bbe434f67fef228e93c22a11fd4b3f114d2ba73b41ea5"
+    }
+  },
+  "mapped_profile_frontier": {
+    "fresh_profiles": [
+      {
+        "family": "Node",
+        "actual_profile": "0x00D62C88",
+        "slice_start": "0x00D62CC0",
+        "bytes": 12,
+        "hex": "10 db b6 00 c0 db b6 00 e0 db b6 00",
+        "sha256": "6966b3603bb65ce229e473e541e5b0ba76159c9a1a0d6c7d47ee9c65ff5a91ec",
+        "current_slots": {
+          "0x38": "0x00B6DB10",
+          "0x3C": "0x00B6DBC0",
+          "0x40": "0x00B6DBE0"
+        },
+        "fresh_live_equals_Original": true,
+        "capture": {
+          "path": "local/text_cursor129_node_transform_slots_live_bytes.txt",
+          "sha256": "afc14cf1ed2a301c87ddffe6d636178cc839a2beeb77a76b6791605375fcb78d"
+        }
+      },
+      {
+        "family": "Model",
+        "actual_profile": "0x00D62DE8",
+        "slice_start": "0x00D62E20",
+        "bytes": 12,
+        "hex": "10 db b6 00 c0 db b6 00 e0 db b6 00",
+        "sha256": "6966b3603bb65ce229e473e541e5b0ba76159c9a1a0d6c7d47ee9c65ff5a91ec",
+        "current_slots": {
+          "0x38": "0x00B6DB10",
+          "0x3C": "0x00B6DBC0",
+          "0x40": "0x00B6DBE0"
+        },
+        "fresh_live_equals_Original": true,
+        "capture": {
+          "path": "local/text_cursor129_model_transform_slots_live_bytes.txt",
+          "sha256": "903ac62604bceceef660754ee6ae4e048c928d048d6377dd36da28746b9b9efd"
+        }
+      },
+      {
+        "family": "Group",
+        "actual_profile": "0x00D634F8",
+        "slice_start": "0x00D63530",
+        "bytes": 12,
+        "hex": "10 db b6 00 c0 db b6 00 b0 e6 b8 00",
+        "sha256": "527a4c077ac9ef574146d9a253e5089e510e7359f39db4eb99825dd00e835376",
+        "current_slots": {
+          "0x38": "0x00B6DB10",
+          "0x3C": "0x00B6DBC0",
+          "0x40": "0x00B8E6B0"
+        },
+        "fresh_live_equals_Original": true,
+        "capture": {
+          "path": "local/text_cursor129_group_transform_slots_live_bytes.txt",
+          "sha256": "0d84acbf024fec96162aa4cc31011cc14b8c0a181693c8771a7ee2e0d78fa688"
+        }
+      }
+    ],
+    "real_provenance": "Existing raw Node constructor D62C88, Model constructor D62DE8, Group constructor D634F8. Caller must prove valid actual storage/graph, not just tokens.",
+    "band": "D60000 64KB band also used by existing D61A00 renderer profile; borrow service that already owns it, do not lazily map.",
+    "proposed_API": "Add a narrowly named mapped-data overload/context for set_raw_local_matrix_00b6db10 and notify_raw_bounds_00b6dbc0; preserve original NativeTracelineRenderServices API and route both through genuine existing raw bodies.",
+    "admission": "Before Native-entry mutations verify actual immutable aliases for supported Node/Model/Group profile family through supplied existing GameNativeReadOnlyData::data_at; no arbitrary getter/table copy/default profile/stub broad subclass/new owner.",
+    "reached_dispatch": "At each reached nonnull captured/current+A0, load actual current raw+00 and only then same mapped current table+3C. Accept supported real profile alias/current B6DBC0 target only. No profile read on no-dispatch path.",
+    "B6DB10_order": "Real 4134F0 matrix copy to+B0; current5C&A gates capturedA0; current138 &= FFFFFFCF; 5C=0; nonnull capturedA0 current profile/table3C at B6DB41/B6DB43, call B6DB46; then current34 reload and real B6DA30.",
+    "B6DBC0_order": "Current138 &= FFFFFFC3; currentA0 reload; null return, else current+00/current+3C at B6DBD1/B6DBD3; tail B6DBD6 preserved as Source loop without invented cycle cutoff.",
+    "current_slot38": "Cursor reads current Model vptr/38 at AB8A4C/4E then calls AB8A56; same domain must validate B6DB10.",
+    "Group_slot40_is_distinct": "B8E6B0, not B6DBE0; proposed narrow3C projection makes no world40/parenting claim.",
+    "Source_failure": "Pure stable mapped lookup required. Reached unsupported metadata after raw mutations is Source provider boundary retaining graph/effects; not Native virtual-origin or fault timing proof."
+  },
+  "current_schedule": [
+    "B74EB0 canonical Model pool; captured rawslot and state0; name gui_cursor, mask1/state1 before B75030; publish SAME Model current184 before state-1/name return; no blanket local-header zero.",
+    "First name return: state-1 then DATA then conditional CURRENT length+1. Reload current184/138; current4C capture then current184 for whole B6E680.",
+    "MOVSS currentD7A24C once, then current184 capture; eleven matrix zero stores, separate currentD7A260 MOVSS; four one diagonal words/sentinel element14; current raw Model profile/38 dispatch.",
+    "FLDZ then current184 and FSTP parameter0; real B6DA70(0,recurse low byte0).",
+    "Mesh actual allocate/construct state3; FLD CURRENT D7A260 at AB8A8D THEN current184 capture; FST first scalar, state-1, FSTP second scalar, real B75170. No bitcopy or earlier sentinel reuse.",
+    "simplecolor.mvfm actual header; current renderer/profile38 then state4/real B317E0. Capture declaration; DATA -> state-1 -> conditional CURRENT length+1 -> getter/return.",
+    "Only after name return reload current renderer/profile5C, real B287C0(4,1,declaration), attach stream0 B73BB0. Release declaration before vertex with separate current CE2220 reads at AB8B22/38 and current table0 on zero.",
+    "Create section; store +08=5,+0C=0,+14=0,+10=4,+18=2. GuiCursor.mshd state5/real535320, DATA -> state-1 -> conditional CURRENT length+1 cleanup.",
+    "Real B18A40 receives SAME ENTRY Text and literal ownerflags1; B864C0 material publication. AB8BC5 captures CURRENT CE2220 ONCE reused for material AB8BCF, section AB8BF1, mesh AB8C03, each zero current vptr/0.",
+    "B865A0 layout precedes B73C60 append; no vertices/index/font/glyph body created here. No generic release that reloads cell or performs a second decrement."
+  ],
+  "calls": [
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8947",
+      "native": "0x00B74EB0",
+      "kind": "call",
+      "instruction": "call 0xb74eb0"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8963",
+      "native": "0x0041E870",
+      "kind": "call",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB897D",
+      "native": "0x00B75030",
+      "kind": "call",
+      "instruction": "call 0xb75030"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB89AB",
+      "native": "0x00419CC0",
+      "kind": "call",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB89B2",
+      "native": "0x00BD1510",
+      "kind": "call",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB89CE",
+      "native": "0x00B6E680",
+      "kind": "call",
+      "instruction": "call 0xb6e680"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8A65",
+      "native": "0x00B6DA70",
+      "kind": "call",
+      "instruction": "call 0xb6da70"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8A6F",
+      "native": "0x00B73B60",
+      "kind": "call",
+      "instruction": "call 0xb73b60"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8A86",
+      "native": "0x00B73D70",
+      "kind": "call",
+      "instruction": "call 0xb73d70"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8AAA",
+      "native": "0x00B75170",
+      "kind": "call",
+      "instruction": "call 0xb75170"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8AB8",
+      "native": "0x0041E870",
+      "kind": "call",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8AF4",
+      "native": "0x00419CC0",
+      "kind": "call",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8AFB",
+      "native": "0x00BD1510",
+      "kind": "call",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8B19",
+      "native": "0x00B73BB0",
+      "kind": "call",
+      "instruction": "call 0xb73bb0"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8B4A",
+      "native": "0x00533FA0",
+      "kind": "call",
+      "instruction": "call 0x533fa0"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8B78",
+      "native": "0x0041E870",
+      "kind": "call",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8B85",
+      "native": "0x00535320",
+      "kind": "call",
+      "instruction": "call 0x535320"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8BA7",
+      "native": "0x00419CC0",
+      "kind": "call",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8BAE",
+      "native": "0x00BD1510",
+      "kind": "call",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8BB8",
+      "native": "0x00B18A40",
+      "kind": "call",
+      "instruction": "call 0xb18a40"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8BC0",
+      "native": "0x00B864C0",
+      "kind": "call",
+      "instruction": "call 0xb864c0"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8BE0",
+      "native": "0x00B865A0",
+      "kind": "call",
+      "instruction": "call 0xb865a0"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8BE8",
+      "native": "0x00B73C60",
+      "kind": "call",
+      "instruction": "call 0xb73c60"
+    },
+    {
+      "address": "0x00AB9246",
+      "native": "0x00AB8910",
+      "kind": "call",
+      "role": "fresh same-receiver caller context; containing function verified live"
+    },
+    {
+      "address": "0x00AB95FD",
+      "native": "0x00AB8910",
+      "kind": "call",
+      "role": "fresh same-receiver caller context; containing function verified live"
+    },
+    {
+      "address": "0x00ABB5FA",
+      "native": "0x00AB8910",
+      "kind": "call",
+      "role": "fresh same-receiver caller context; containing function verified live"
+    },
+    {
+      "function": "0x00B6DB10",
+      "address": "0x00B6DB1E",
+      "native": "0x004134F0",
+      "kind": "call",
+      "instruction": "call 0x4134f0"
+    },
+    {
+      "function": "0x00B6DB10",
+      "address": "0x00B6DB50",
+      "native": "0x00B6DA30",
+      "kind": "call",
+      "instruction": "call 0xb6da30"
+    }
+  ],
+  "indirect_call_instructions": [
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8A56",
+      "instruction": "call edx"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8AD5",
+      "instruction": "call eax"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8B10",
+      "instruction": "call eax"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8B22",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8B32",
+      "instruction": "call eax"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8B38",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8B48",
+      "instruction": "call eax"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8BCF",
+      "instruction": "call edi"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8BDB",
+      "instruction": "call edx"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8BF1",
+      "instruction": "call edi"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8BFD",
+      "instruction": "call eax"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8C03",
+      "instruction": "call edi"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8C11",
+      "instruction": "call eax"
+    }
+  ],
+  "native_cleanup": {
+    "reused_cursor_prefix": {
+      "path": "reports/gui_text_cursor_model_prefix.json",
+      "sha256": "b17f765e351eeb5f5fd3b3cd9c67c99ae9145869cb6d09591a43ecec3f391f47"
+    },
+    "six_state_map": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "0x00CB7F90"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "action": "0x00CB7F98"
+      },
+      {
+        "state": 2,
+        "next": -1,
+        "action": "0x00CB7F98"
+      },
+      {
+        "state": 3,
+        "next": -1,
+        "action": "0x00CB7FB1"
+      },
+      {
+        "state": 4,
+        "next": -1,
+        "action": "0x00CB7FB9"
+      },
+      {
+        "state": 5,
+        "next": -1,
+        "action": "0x00CB7FC1"
+      }
+    ],
+    "actions": [
+      "0 captured raw Model -> B748C0",
+      "1 mask1 consumed then same41DD20 -> state0",
+      "2 same conditional name -> -1; no normal2 store",
+      "3 captured raw mesh -> B72F70",
+      "4 same41DD20 -> -1",
+      "5 same41DD20 -> -1"
+    ],
+    "consume_before_call": true,
+    "secondary_cleanup_escape_terminates": true,
+    "not_automatic_rollback": "Native ctor owns inner cleanup. Only unconstructed rawslot may return after prepared/dead metadata removal. Completed creators/publications remain independently held; creator-null is not Native-origin proof.",
+    "failure_graph": "Prehold SAME85/93/122/model/mesh/renderer/layout/node/string/profile domains, local backing and distinct prepared recursive frames before callback. Preserve all creators, captured slots/headers, publications, consumed releases even if outer Text lifetime ends. Never rediscover/retry/auto-clean failed graph."
+  },
+  "actual_provider_locations": {
+    "Model": "native_model_pool/native_model_owner + existing85 actual raw model graph; no typed Model cast",
+    "parent": "native_node_parenting_storage whole B6E680; null-only base helper insufficient",
+    "transform_visibility": "native_node_raw_transform + native_node_visibility_factor real bodies; only concrete transform profile projection gap",
+    "renderer_declaration": "native_vertex_declaration_loading raw constvoid* actual-header B317E0; same registry/canonical declaration registration; GuiTextNativeRendererServices real same-domain composition",
+    "renderer_vertex": "native_logical_vertex_owner raw B287C0 + canonical clone registration, same actual stream services",
+    "mesh_section": "GuiNativeGeometryOwners real factories, native_mesh_owner B75170/B73BB0/B73C60, native_mesh_section B864C0/B865A0",
+    "material_owner": "native_material_factory raw-header535320 already present; native_material_owner B18A40 raw Text same+04;106/122 no new factory/binder needed",
+    "layout": "GuiTextNativeLayoutServices concrete current stream24/current renderer40 -> real B2F710 layout/tree/pool, not abstract interface alone",
+    "zero_routes": {
+      "declaration_D61D1C": "BD30E0/B48CA0",
+      "vertex_D61D6C": "BD30E0/B4BF10",
+      "material_D5E520": "BD30E0/B194B0",
+      "section_D63194": "BD30E0/B86690",
+      "mesh_D62D60": "BD30E0/B74280"
+    },
+    "font_glyph_boundary": "Real initial Font producer/association and raw glyph-buffer services exist with their limits; not called by this cursor. Do not claim ABA8D0/ABB1D0 closure or reuse glyph release/index sequence."
+  },
+  "ownership_boundaries": [
+    "Real122 borrowed-actual+04 Text binding is available; held1 -> materialretain2 -> release1 is not a scalar-delete/ancestor/reentry barrier. Forced scalar/provider coordination remains explicit.",
+    "Raw current field replacements and pool/profile slots must be backed by genuine preheld providers/creators. Current indirect targets are numeric selectors, never fixed-executed Native addresses.",
+    "Canonical zero terminals are noexcept/terminating; preterminal registry/profile failures may escape after decrement with already-zero obligation. No second decrement, fake terminal or automatic companion cleanup.",
+    "No Source policy implies Native ABI/FH3/SEH/IAT/fault-origin/exception equivalence. Valid supplied graph is distinct from actual runtime producer/admission/production activation."
+  ],
+  "source_hashes": [
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "sha256": "3380643a25c0e27bc653440c8e79dd138bb68b495dac9f386d1e7e221ef467c0"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "sha256": "26bd27eda6ae864b13166ccd2fd1176f8a27b4006d7791d42d8346a703e91630"
+    },
+    {
+      "path": "include/bsp/native_traceline_render.hpp",
+      "sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4"
+    },
+    {
+      "path": "src/native_traceline_render.cpp",
+      "sha256": "b791db0734c33fe6c8c12b3caa40c81b76ebfb5915ecdd80b9ae590605160eb6"
+    },
+    {
+      "path": "include/bsp/native_instance_collection.hpp",
+      "sha256": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54"
+    },
+    {
+      "path": "src/native_instance_collection.cpp",
+      "sha256": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f"
+    },
+    {
+      "path": "include/bsp/native_node_raw_transform.hpp",
+      "sha256": "53f7d50855779206ce1faff86469948e4ff4fa9c0d376d68fbba1b4a48e3884d"
+    },
+    {
+      "path": "src/native_node_raw_transform.cpp",
+      "sha256": "31a50a5e6e6efd27bb2d32851cc6836b6aabb1a924eefa384363e561deb4e257"
+    },
+    {
+      "path": "include/bsp/native_node_visibility_factor.hpp",
+      "sha256": "a9dbeb5021d7d4fc847c6e80ea62dc9d795eacad98e482e74805b5e30059893b"
+    },
+    {
+      "path": "src/native_node_visibility_factor.cpp",
+      "sha256": "6457b37af40da9249a5c2eac739421039318aa9d766209b1a0c1dda853e46fdd"
+    },
+    {
+      "path": "include/bsp/native_node_parenting_storage.hpp",
+      "sha256": "099017858da7cd62e7b5260aaac8f53a2451b063469266a1e6119e7ce3cdc3b0"
+    },
+    {
+      "path": "src/native_node_parenting_storage.cpp",
+      "sha256": "035ccf45f17b12b553fcc3e451894b67c928de4ae583c7e511a1a99269c113d1"
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098"
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35"
+    },
+    {
+      "path": "include/bsp/native_model_pool.hpp",
+      "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144"
+    },
+    {
+      "path": "src/native_model_pool.cpp",
+      "sha256": "38a6363a3fa090b2c939f8a65e02433f4090671bd0d42b4b66dd35d4e1ddc020"
+    },
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a"
+    },
+    {
+      "path": "include/bsp/native_group_owner.hpp",
+      "sha256": "44116d4d08388eb0be2f7499f9b7cbdcd42918fd2ab586f869ab9a6c0e5130b1"
+    },
+    {
+      "path": "src/native_group_owner.cpp",
+      "sha256": "78995f383203e1f795cc9a9a44f8ab67ec9f942cf30e746e00a97118b0665e1c"
+    },
+    {
+      "path": "include/bsp/native_instance_geometry.hpp",
+      "sha256": "d636744a916ce5acad921606f43f76e9edbe8cb855d4580e936afca162b3cb03"
+    },
+    {
+      "path": "src/native_instance_geometry.cpp",
+      "sha256": "afbc9cad4d13e6ef3869384470eb7d259219c7063ffe17d6f8adf00ce50f439a"
+    },
+    {
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "sha256": "2263f0a5cf044e3040c7f3f024a8d9899df1e7f0277db512f4db7d59976510f7"
+    },
+    {
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "sha256": "9cb60be1d88a03d4136ca9fe34243c8b980199192300456819bf2a46778a6200"
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "sha256": "39d2a14672dc90e8605c47fb267d59510639dc445d4caf28a48d79d172d89562"
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "sha256": "38e7aafba69bfe959bd3f45111c9e85074d646eaacfa6c718e2b1530c30b55d7"
+    },
+    {
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "sha256": "38f58de520071568c6d394d7be20c482c2f962a5eb5462b49e5af9fb0eb21cf8"
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "sha256": "1d494c7f670bed4478837423f598d698f8e86ddb832e04b8ca9b1311e221eae7"
+    },
+    {
+      "path": "include/bsp/native_gui_text_retirement.hpp",
+      "sha256": "2744353d2ae4c9041b2980360cdf3e499aae28cb1446519dc4ca7064e6e3a300"
+    },
+    {
+      "path": "src/native_gui_text_retirement.cpp",
+      "sha256": "60993aaade168fe8ec23468d787a61093c51b200a49e1a193663b560a0384bd3"
+    },
+    {
+      "path": "include/bsp/gui_text_native_renderer.hpp",
+      "sha256": "9ee3aeaa194ebf677efd3e96817b057d7093bf08bed72702fd44f45edee4a572"
+    },
+    {
+      "path": "src/gui_text_native_renderer.cpp",
+      "sha256": "9f3753d2cc0232eea8dd990cc5c0e4a5f958145dbd8de35ba64860ab370c74e5"
+    },
+    {
+      "path": "include/bsp/native_vertex_declaration_loading.hpp",
+      "sha256": "9ef3f5c6bd9d535215cfb90630e7d90a7bee00d7988c66243226d8a423248227"
+    },
+    {
+      "path": "src/native_vertex_declaration_loading.cpp",
+      "sha256": "518cfecb27a27a43815377c02ce638878d3a8eb2ddeaead30377dc7cb460ef3d"
+    },
+    {
+      "path": "include/bsp/native_logical_vertex_owner.hpp",
+      "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+    },
+    {
+      "path": "src/native_logical_vertex_owner.cpp",
+      "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+    },
+    {
+      "path": "include/bsp/gui_native_geometry.hpp",
+      "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf"
+    },
+    {
+      "path": "src/gui_native_geometry.cpp",
+      "sha256": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf"
+    },
+    {
+      "path": "include/bsp/native_mesh_owner.hpp",
+      "sha256": "f0f4b0d87721717033e823aee5494a280481c6b4a02a7fd2bea51970b46d5636"
+    },
+    {
+      "path": "src/native_mesh_owner.cpp",
+      "sha256": "8725dee8119cf400bf58464d6dd2dcb6771502b6edd8f527f65ec3f3c7fe40fe"
+    },
+    {
+      "path": "include/bsp/native_mesh_section.hpp",
+      "sha256": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e"
+    },
+    {
+      "path": "src/native_mesh_section.cpp",
+      "sha256": "8f09c61b3ba5ef47c403de9769d24d9d9e6a79c1bb8668430e53fc33587ed876"
+    },
+    {
+      "path": "include/bsp/native_material_factory.hpp",
+      "sha256": "2cf4933dc2d616674b501ff1786c95c47f3251cf7dd4deda649ca95bba0a3563"
+    },
+    {
+      "path": "src/native_material_factory.cpp",
+      "sha256": "6ef1b9855e65cec8e69a1d51001733adef2073d8ed08650fff0115307ec71bcd"
+    },
+    {
+      "path": "include/bsp/native_material_owner.hpp",
+      "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+    },
+    {
+      "path": "src/native_material_owner.cpp",
+      "sha256": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc"
+    },
+    {
+      "path": "include/bsp/gui_text_native_layout.hpp",
+      "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b"
+    },
+    {
+      "path": "include/bsp/native_wide_string.hpp",
+      "sha256": "d9499a98a3379366390eac87f3b6bca7ebb452e8e19e96d3e7a354295c6e8bc0"
+    },
+    {
+      "path": "src/native_wide_string.cpp",
+      "sha256": "319fd69f6ba6700dbcc3dec688166ad3a1492137e844299e8067fd067c130fd7"
+    },
+    {
+      "path": "include/bsp/gui_text_buffers.hpp",
+      "sha256": "80c262bf3a456c6ac81849d8636f20a31cd6616bf974874d4d5494e89b12c2d0"
+    },
+    {
+      "path": "src/gui_text_buffers.cpp",
+      "sha256": "a729a73760e188888f45d6deb24f1bd0f7effba466f7c6394d53c2bedea38edd"
+    },
+    {
+      "path": "include/bsp/gui_text_resource_names.hpp",
+      "sha256": "517e8fe7c79b09c42d4f0af589e17f912e88c582e8cb322cef38260355ab2415"
+    },
+    {
+      "path": "src/gui_text_resource_names.cpp",
+      "sha256": "dca7270d9e38c6a6507c2c367221ff8f73e3caba67b4fe8fc1ea9a0f0fb7e57a"
+    },
+    {
+      "path": "include/bsp/game_native_font_application.hpp",
+      "sha256": "f819d8a38b49a6ff8ec3873dea65992366396c8d635e54301542c71ce0aee469"
+    },
+    {
+      "path": "src/game_native_font_application.cpp",
+      "sha256": "31d143c3dc1dc9495cd87fdba0ecb67ad3d2494c9b47415746a47771cce5e424"
+    }
+  ],
+  "reused_receipts": [
+    {
+      "path": "reports/cc12_native_gui_raw_text_constructor_readiness_84.json",
+      "sha256": "f98e8c08651af8044fe63d9baa7b004ce15873d1672ed83a3906a2c16017c73d"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_raw_sections_85.json",
+      "sha256": "670803ccbec611ee44b63c277b5ecb414e50a467370f329979aa78afa846afc7"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_raw_default_93.json",
+      "sha256": "d9c89f153f299af3ff73463311639839fdd781dcaff1e5050843175619759b84"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_copy_providers_readiness_100.json",
+      "sha256": "e2b8b09e470439b1200e76ce5b7e6eb3779d6e1a9d947461ffe1f8bbc1c5d774"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_material_owner_readiness_106.json",
+      "sha256": "6a730b47c4dd8aee1a4b6b3d1cd3a0d557a55f417089722a3702f1502629c2a2"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_retirement_readiness_109.json",
+      "sha256": "6ecf29e11134ce53aa8cf4358f88bcbe65cd4e44d0871a559acf50e926922d4e"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_glyph_children_113.json",
+      "sha256": "28da47d45876f5ea8326350ceb9eb684eecc1eebabb0a11d891b813ace610c80"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_retirement_118.json",
+      "sha256": "0c00dc6cf2c53dafb2307ed567358f40e80cc92e5d70bfcc1731bdded294cbb6"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_actual_zero_readiness_121.json",
+      "sha256": "39419d3d85cf505329bbf13c585df84eae59014857e01ea5ff12560be3b2cadb"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_actual_reference_122.json",
+      "sha256": "1928b3a0869348ec57f184017a3096f66e68d3e1ec15ea43e0c29b7eef5ca7d3"
+    },
+    {
+      "path": "reports/native_node_raw_transform_main_r40.json",
+      "sha256": "0bf63ed5e5e4e633f1d7fb775261276bf0c52e175905e0bfc71950eec20f9fb4"
+    },
+    {
+      "path": "reports/gui_text_cursor_model_prefix.json",
+      "sha256": "b17f765e351eeb5f5fd3b3cd9c67c99ae9145869cb6d09591a43ecec3f391f47"
+    }
+  ],
+  "frozen_reused_exports": [
+    {
+      "path": "local/text_cursor129_reused_exports/00ab8910_assembly.txt",
+      "sha256": "f112d1c118efef4c5c864de230b5c134bc61885ac3e1140316db1885562975a2"
+    },
+    {
+      "path": "local/text_cursor129_reused_exports/00ab8910_decompiled.c",
+      "sha256": "e7471f3613cb5cb20202e68ab6a3e2e12e9f35a36f9f8b1378c1597a393eb57d"
+    },
+    {
+      "path": "local/text_cursor129_reused_exports/00ab8910_metadata.json",
+      "sha256": "91763e6ce34f080637683c78ced2c5bb796df37b914e37610292747bf90ef3dd"
+    },
+    {
+      "path": "local/text_cursor129_reused_exports/00b6db10_assembly.txt",
+      "sha256": "368c27b67810cb8bb04ddf504f277e8652cbdbd9572380e30d43333d4320e345"
+    },
+    {
+      "path": "local/text_cursor129_reused_exports/00b6db10_decompiled.c",
+      "sha256": "3c446165e50517ed93ac10fff083e083fe04cd178f5a23d768121865032dc5b0"
+    },
+    {
+      "path": "local/text_cursor129_reused_exports/00b6dbc0_assembly.txt",
+      "sha256": "3b314e16a28910913cca6e37011c28e0614da93574af1536bc0e8e82d67a70a6"
+    },
+    {
+      "path": "local/text_cursor129_reused_exports/00b6dbc0_decompiled.c",
+      "sha256": "1c7d3e122b86a23013533e3b5aafe4ab9540e96e17decd11739209f40d336def"
+    }
+  ],
+  "fresh_evidence": [
+    {
+      "path": "local/text_cursor129_live_proto.txt",
+      "sha256": "302da0bb7254de4e28620b6ff704521e7c462299383461ccc3ea7520c9961309"
+    },
+    {
+      "path": "local/text_cursor129_callers_live_xrefs.txt",
+      "sha256": "c1f2fc623a5c7293c85cbfa103adf3a8549a998001a9dd56657805fc382150b9"
+    },
+    {
+      "path": "local/text_cursor129_caller_operands_live.json",
+      "sha256": "d05bdbb630824354b487cff898914a511ed5d7331eadef0e417c934b3b996cf8"
+    },
+    {
+      "path": "local/text_cursor129_caller_operands_live.log",
+      "sha256": "410c53930f0fe8ae14029c78eaee6782f42a988e6578d206063e45fe618c83e1"
+    },
+    {
+      "path": "local/text_cursor129_model_transform_slots_live_bytes.txt",
+      "sha256": "903ac62604bceceef660754ee6ae4e048c928d048d6377dd36da28746b9b9efd"
+    },
+    {
+      "path": "local/text_cursor129_node_transform_slots_live_bytes.txt",
+      "sha256": "afc14cf1ed2a301c87ddffe6d636178cc839a2beeb77a76b6791605375fcb78d"
+    },
+    {
+      "path": "local/text_cursor129_group_transform_slots_live_bytes.txt",
+      "sha256": "0d84acbf024fec96162aa4cc31011cc14b8c0a181693c8771a7ee2e0d78fa688"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/text_cursor129_byte_source_proof.json",
+      "sha256": "8e7e7dadfb84fa370f9bbe434f67fef228e93c22a11fd4b3f114d2ba73b41ea5"
+    },
+    {
+      "path": "local/text_cursor129_profile_provider_search.txt",
+      "sha256": "8844d55d1cbb74eb4eae7fb706425a077b1319a295e14dd1c4327bd8b800b623"
+    },
+    {
+      "path": "local/text100_cursor_live_bytes.txt",
+      "sha256": "e7a56cc58f096ee11f1470ef4c40cd6e48583e6b4d26acafda82a18b4be54808"
+    },
+    {
+      "path": "local/build_text_cursor129_report.py",
+      "sha256": "e62f39bbca5e727e4586945e7bdf2b4dff1d2fe6c1b2d6cc307c82e47311f6b6"
+    },
+    {
+      "path": "local/seal_text_cursor129_receipt.py",
+      "sha256": "a16fe94152bb599339281cc8b7f5b5f714f5ce9a5810611c46ac0465734c01a1"
+    },
+    {
+      "path": "local/text_cursor129_report_call_verification.txt",
+      "sha256": "b024ec035028e3d015f99d46a226f5f16fb129590e4f56e415dcedef627e7f4c"
+    },
+    {
+      "path": "local/text_cursor129_owned_scope_verification.txt",
+      "sha256": "69290637b221f7c350fb824817bb97639d300c0549d7347a147a7a287f5fe80c"
+    }
+  ],
+  "prior_artifact_preservation": [
+    {
+      "manifest": {
+        "path": "local/text_reference122_final_artifact_manifest.json",
+        "sha256": "c4a653f107a4d729086bdcde820b8d2723df1f0cbf99fe842252bb5fd7b01221"
+      },
+      "unchanged_direct_artifacts": 76,
+      "unchanged_packet_specific_nonbuild_artifacts": 75,
+      "already_captured_prior_shared_build_artifacts": [],
+      "no_new129_build_or_mutation": true
+    },
+    {
+      "manifest": {
+        "path": "local/text_zero121_final_artifact_manifest.json",
+        "sha256": "e61cdbe36a10218e1cec3aa57534201a3db30a1170835d3f8f2a4ddd7b361e09"
+      },
+      "unchanged_direct_artifacts": 65,
+      "unchanged_packet_specific_nonbuild_artifacts": 65,
+      "already_captured_prior_shared_build_artifacts": [],
+      "no_new129_build_or_mutation": true
+    },
+    {
+      "manifest": {
+        "path": "local/text_retirement118_final_artifact_manifest.json",
+        "sha256": "61c8f3494201376b89fb1c3c13842b4fe918686e6f1046e3f593c5a9f34e0889"
+      },
+      "unchanged_direct_artifacts": 101,
+      "unchanged_packet_specific_nonbuild_artifacts": 99,
+      "already_captured_prior_shared_build_artifacts": [
+        "build/win32/Testing/Temporary/LastTest.log"
+      ],
+      "no_new129_build_or_mutation": true
+    }
+  ],
+  "validation": {
+    "Original_byte_listing_table_EH_proof": "PASS",
+    "source_equals_checked_baseline": true,
+    "no_build_tests_probes_or_new_runtime_claim": true,
+    "no_new_Ghidra_body_export_annotation_or_ledger_status": true,
+    "live_direct_call_rows": {
+      "checked": 28,
+      "failed": 0,
+      "inventory": "23 cursor direct +3 actual caller sites +2 existing raw matrix calls",
+      "limit": "13 cursor indirect sites and EH actions require separate whole static proof; no execution/provider closure claim"
+    }
+  },
+  "uncertainties": [
+    "Whole cursor is not implemented here. Proposed mapped overload requires separate Source authorization/review.",
+    "Bounded provider absence search is not proof against an external genuine full service.",
+    "ABB1D0/ABA8D0 and whole ABB2C0 remain named missing downstream providers.",
+    "No production activation/recursive terminal authority follows from Source body closure."
+  ],
+  "final_artifact_manifest": "local/text_cursor129_final_artifact_manifest.json",
+  "sealed_utc": "2026-10-16T08:31:59.343687+00:00"
+}
