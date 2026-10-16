@@ -3,7 +3,7 @@
 Twelve previously unrepresented whole native leaf routines now have genuine C++
 bodies in `src/native_tagged_leaf_b4_01.cpp`, declared in the matching header.
 This packet examined the first 20 screening candidates in the independent
-`00B40000..00B4FFFF` band; it does not treat tags or absent ledger records as
+64 KB B4 address band; it does not treat tags or absent ledger records as
 proof that source was missing. Existing `src/`, `include/`, and `third_party/`
 coverage was searched by exact address, and the neighboring
 `src/render_fx_cc13.cpp` / `CC13_RENDER_1.md` table-model coverage was inspected.
