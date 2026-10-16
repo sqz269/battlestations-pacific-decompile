@@ -1,0 +1,153 @@
+{
+  "schema": "bsp.cc12.string_key_comparator.boundary_blocked.v1",
+  "status": "blocked_mechanism_with_guarded_function_rollback",
+  "Source_ready": false,
+  "Source_implemented": false,
+  "Source_credit": 0,
+  "Ghidra_repaired": false,
+  "metadata_repair_completed": false,
+  "packet": "cc12_string_key_comparator_function_boundary_0094f180",
+  "candidate": {
+    "entry": "0094F180",
+    "end_exclusive": "0094F1AB",
+    "bytes": 43,
+    "instructions": 14,
+    "name": "BSP_StringKeyList_CompareInsensitive",
+    "prototype": "int __cdecl(const void* left_slot, const void* right_slot)"
+  },
+  "blocker": {
+    "script_execution": "Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process.",
+    "function_documentation": "Before creation get_function_documentation rejected 0094F180: No function at address. Full symbol/comment preimage was therefore unavailable.",
+    "ignored_dry_run": "The direct bridge create_function HTTP endpoint ignored the supplied dry_run:true and created the function. No assumption that MCP client-side dry-run wrappers share this behavior is made."
+  },
+  "unexpected_mutation": {
+    "request_endpoint": "create_function",
+    "literal_request": {
+      "address": "0094F180",
+      "name": "BSP_StringKeyList_CompareInsensitive",
+      "disassemble_first": false,
+      "dry_run": true
+    },
+    "literal_response": {
+      "success": true,
+      "address": "0094f180",
+      "function_name": "BSP_StringKeyList_CompareInsensitive",
+      "entry_point": "0094f180",
+      "body_size": 43,
+      "message": "Function created successfully at 0094f180",
+      "warnings": [
+        "Function name 'BSP_StringKeyList_CompareInsensitive' \u2014 main part 'StringKeyList_CompareInsensitive' is not PascalCase. Expected: StringkeylistCompareinsensitive",
+        "Function name 'BSP_StringKeyList_CompareInsensitive' \u2014 main part 'StringKeyList_CompareInsensitive' contains underscores. Use PascalCase after the module prefix.",
+        "Function name 'BSP_StringKeyList_CompareInsensitive' does not start with a recognized verb. First word 'String' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+      ]
+    },
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringKeyComparatorBoundary01\\create_dry_run.json",
+      "bytes": 4690,
+      "sha256": "31648354a4f317f26a5e22661c10cd1c081e91c30e7a30128ddf52d38ce9c797"
+    },
+    "under_coordination_write_lock": true,
+    "disassembly_requested": false
+  },
+  "rollback": {
+    "request_endpoint": "delete_function",
+    "literal_request": {
+      "address": "0094F180"
+    },
+    "literal_response": {
+      "success": true,
+      "address": "0094f180",
+      "deleted_function": "BSP_StringKeyList_CompareInsensitive",
+      "body_size": 43,
+      "message": "Function 'BSP_StringKeyList_CompareInsensitive' deleted at 0094f180"
+    },
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringKeyComparatorBoundary01\\rollback_delete_function.json",
+      "bytes": 3421,
+      "sha256": "2c4aee1c9b74b8f79bd7d25c2053e8e69dce37669a41838ca875ba266ce46869"
+    },
+    "under_coordination_write_lock": true,
+    "guards": "Exact entry 0094F180, name BSP_StringKeyList_CompareInsensitive, one complete 43-byte range [0094F180,0094F1AA].",
+    "outcome": "Only newly created function metadata removed. All14 callback instructions are unowned again. Measured listing and flow metadata for all17 captured addresses match preflight, including CALL_RETURN at 0094F1A6; counts return 76775 to 76774.",
+    "verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringKeyComparatorBoundary01\\rollback_verification.DATA.json",
+      "bytes": 6221,
+      "sha256": "a05fbe939aa89e33101d47342238d87a41b9dd25e9cf385d5df1b92834bfd045"
+    }
+  },
+  "preservation": {
+    "established": [
+      "Exact43 preflight live bytes equal post-rollback live and current disk bytes.",
+      "All17 recorded typed listing/flow/function ownership states equal before and after; this includes all14 callback starts, padding start, next function and tail target.",
+      "Preflight and post-rollback prototype query outputs equal for callback and 00438E10.",
+      "Original 60-file readiness seal and primary proof input preserved."
+    ],
+    "not_established": [
+      "No complete pre-create symbol/comment snapshot exists.",
+      "Created-function documentation showed no comments and two interior labels LAB_0094F192/LAB_0094F1A4, but this intermediate observation cannot establish preservation of the unavailable pre-create complete symbol/comment state.",
+      "No pristine whole-database rollback or unchanged modification-number claim.",
+      "Fresh disk comparison was completed after rollback, not immediately before the intended dry-run unexpectedly wrote."
+    ]
+  },
+  "counts": {
+    "preflight": {
+      "before": 76774,
+      "after": 76774,
+      "modification_number": "2623"
+    },
+    "after_ignored_dry_run": {
+      "before": 76775,
+      "after": 76775,
+      "modification_number": "2631"
+    },
+    "before_rollback": {
+      "before": 76775,
+      "after": 76775,
+      "modification_number": "2633"
+    },
+    "after_rollback": {
+      "before": 76774,
+      "after": 76774,
+      "modification_number": "2640"
+    }
+  },
+  "prototype_set": false,
+  "evidence_comment_set": false,
+  "save_requested": false,
+  "export_refreshed": false,
+  "scripts_enabled": false,
+  "restart_performed": false,
+  "global_snapshot_index_ledgers_registry_changed": false,
+  "Source_CMake_build_tests_probes_target_execution": false,
+  "remaining_Source_blockers": [
+    "Actual list producer/ownership/canonical clear-adopt-grow binding.",
+    "Actual canonical 00F89B75 empty-data role/lifetime.",
+    "Original private CRT comparison/locale contract behind 00438E10 -> 00BF7FBF.",
+    "Private 00BFC350 qsort and physical callback integration."
+  ],
+  "next_step": "Primary integrator review of the blocked mechanism and exact receipts. No further API experiments, script enabling, restart or mutation authorized by this report.",
+  "evidence": {
+    "local_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringKeyComparatorBoundary01",
+    "prior_family": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringKeyComparatorReadiness01\\family_receipt.json",
+      "bytes": 26318,
+      "sha256": "5a8f8f1f5030f1232913b2595b1c4f3baedf486af20f3b26485b0da4e661a619"
+    },
+    "primary_proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_string_key_comparator_readiness_primary_20261015\\verified_inputs.DATA.json",
+      "bytes": 21273,
+      "sha256": "30dbea38662cef80c4c536b879abd26608d28d87e51b2b4f839ff33ccd83d485"
+    },
+    "own_uuid": "01a141f7-3190-7442-8b48-a8d9c546336d",
+    "own_prefix": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringKeyComparatorBoundary01\\own_boundary_phase_rollout_prefix.jsonl",
+      "bytes": 1076155,
+      "sha256": "bca76158d18a79102a8527956608d3ca65964261341f669c611705ec4c8b5540"
+    },
+    "raw_tool_receipts": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringKeyComparatorBoundary01\\own_raw_tool_receipts.json",
+      "bytes": 94819,
+      "sha256": "dbcc2a017eb76f395b447a982d077647fd8d25511392f5c8d749fb08423b2147"
+    }
+  }
+}

@@ -1,0 +1,634 @@
+{
+  "packet": "oct15_native_dword_vector_fill_objects",
+  "status": "complete_source_win32_build_checked",
+  "utc": "2026-10-15T23:46:49.517385+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "base_commit": "874ad987a6824268babc791a61fc6cfb089443bf",
+  "source": "src/native_dword_vector_fill_objects.cpp",
+  "header": "include/bsp/native_dword_vector_fill_objects.hpp",
+  "documentation": "docs/OCT15_NATIVE_DWORD_VECTOR_FILL_OBJECTS.md",
+  "routines": [
+    {
+      "address": "00698010",
+      "original_name": "STL_FillObjects_00698010",
+      "cpp_name": "fill_native_checked_dword_vector_objects_00698010",
+      "coverage": "complete",
+      "coverage_boundary": "Whole actual raw10h-header equality loop over accepted complete assignment; Current C++/CRT/private-frame/fault/binary ABI limits retained",
+      "original_abi": "cdecl three stacked words(first,last,source), plain RET; first/last captured evenempty, sourcepointer loaded only nonempty; no public semantic EAX established",
+      "source_abi": "void __cdecl(void* first,const void* last,const void* source); no hidden context or noexcept barrier",
+      "physical_arguments": [
+        "stack first raw header address",
+        "stack last sentinel address",
+        "stack source raw header address"
+      ],
+      "schedule": [
+        "Capture first and last; compare equality before source-pointer capture or child invocation",
+        "Nonempty path captures the source-pointer bits once; do not snapshot its pointed-to header",
+        "Invoke actual accepted697BD0 with currentdestination ECX and capturedsource stackpointer; incoming child EDX unconsumed",
+        "After normal child return advance current destination DWORDaddress10h and repeat until equality with capturedlast"
+      ],
+      "alias_arithmetic": "Actual CURRENT source-header contents are reread by assignment each iteration; header/backing aliases are not guarded or snapshotted. Destination address addition wraps as unsigned DWORD; no typed-array pointer/count conversion.",
+      "result": "New void Source excludes original incidental EAX: incoming onempty, last child result onnonempty. Both bounded actual producers discard EAX before shared overwrite; recovered original C++ return type remains unproved."
+    }
+  ],
+  "actual_dependency": {
+    "address": "00697bd0",
+    "binding": "assign_native_checked_dword_vector_00697bd0",
+    "status": "complete_primary_accepted_actual_source",
+    "pin": "8be630f4ccc1d6ac4af2256100de1b994d2a8014",
+    "call": "assign_native_checked_dword_vector_00697bd0(current_destination,0,captured_source)",
+    "dead_EDX": "Original child incoming EDX is unconsumed; zero Source slot does not promise ambient native register identity",
+    "contract": "Actual raw DWORD vector assignment preserves self/empty/shortening/capacity/growth reloads, progressive children, free-before-Buy and current C++/CRT exceptions; no callback/type/count/header adapter"
+  },
+  "host_steps": [
+    {
+      "address": "00698026",
+      "native": "00697bd0",
+      "function": "00698010",
+      "kind": "call",
+      "scope": "owned actual assignment",
+      "bytes_hex": "e8a5fbffff",
+      "disk_live_equal": true,
+      "current_start_owner_default_effective_target_verified": true,
+      "flow_override": "NONE"
+    },
+    {
+      "address": "006985ed",
+      "native": "00698010",
+      "function": "00698400",
+      "kind": "call",
+      "scope": "bounded actual producer",
+      "bytes_hex": "e81efaffff",
+      "disk_live_equal": true,
+      "current_start_owner_default_effective_target_verified": true,
+      "flow_override": "NONE"
+    },
+    {
+      "address": "00698649",
+      "native": "00698010",
+      "function": "00698400",
+      "kind": "call",
+      "scope": "bounded actual producer",
+      "bytes_hex": "e8c2f9ffff",
+      "disk_live_equal": true,
+      "current_start_owner_default_effective_target_verified": true,
+      "flow_override": "NONE"
+    }
+  ],
+  "native_blocks": {
+    "fill_objects": {
+      "address": "00698010",
+      "bytes": 38,
+      "instruction_count": 18,
+      "bytes_hex": "568b742408578b7c24103bf77415538b5c2418538bcee8a5fbffff83c6103bf775f15b5f5ec3",
+      "sha256": "fd91f8eadd92d884680dced275efd777db2d34eb7bb7e94ff82a7d958ba71753",
+      "disk_live_equal": true,
+      "instruction_starts": [
+        "00698010",
+        "00698011",
+        "00698015",
+        "00698016",
+        "0069801a",
+        "0069801c",
+        "0069801e",
+        "0069801f",
+        "00698023",
+        "00698024",
+        "00698026",
+        "0069802b",
+        "0069802e",
+        "00698030",
+        "00698032",
+        "00698033",
+        "00698034",
+        "00698035"
+      ],
+      "instructions": [
+        {
+          "address": "00698010",
+          "mnemonic": "push",
+          "operands": "esi",
+          "bytes_hex": "56"
+        },
+        {
+          "address": "00698011",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [esp + 8]",
+          "bytes_hex": "8b742408"
+        },
+        {
+          "address": "00698015",
+          "mnemonic": "push",
+          "operands": "edi",
+          "bytes_hex": "57"
+        },
+        {
+          "address": "00698016",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esp + 0x10]",
+          "bytes_hex": "8b7c2410"
+        },
+        {
+          "address": "0069801a",
+          "mnemonic": "cmp",
+          "operands": "esi, edi",
+          "bytes_hex": "3bf7"
+        },
+        {
+          "address": "0069801c",
+          "mnemonic": "je",
+          "operands": "0x698033",
+          "bytes_hex": "7415"
+        },
+        {
+          "address": "0069801e",
+          "mnemonic": "push",
+          "operands": "ebx",
+          "bytes_hex": "53"
+        },
+        {
+          "address": "0069801f",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esp + 0x18]",
+          "bytes_hex": "8b5c2418"
+        },
+        {
+          "address": "00698023",
+          "mnemonic": "push",
+          "operands": "ebx",
+          "bytes_hex": "53"
+        },
+        {
+          "address": "00698024",
+          "mnemonic": "mov",
+          "operands": "ecx, esi",
+          "bytes_hex": "8bce"
+        },
+        {
+          "address": "00698026",
+          "mnemonic": "call",
+          "operands": "0x697bd0",
+          "bytes_hex": "e8a5fbffff"
+        },
+        {
+          "address": "0069802b",
+          "mnemonic": "add",
+          "operands": "esi, 0x10",
+          "bytes_hex": "83c610"
+        },
+        {
+          "address": "0069802e",
+          "mnemonic": "cmp",
+          "operands": "esi, edi",
+          "bytes_hex": "3bf7"
+        },
+        {
+          "address": "00698030",
+          "mnemonic": "jne",
+          "operands": "0x698023",
+          "bytes_hex": "75f1"
+        },
+        {
+          "address": "00698032",
+          "mnemonic": "pop",
+          "operands": "ebx",
+          "bytes_hex": "5b"
+        },
+        {
+          "address": "00698033",
+          "mnemonic": "pop",
+          "operands": "edi",
+          "bytes_hex": "5f"
+        },
+        {
+          "address": "00698034",
+          "mnemonic": "pop",
+          "operands": "esi",
+          "bytes_hex": "5e"
+        },
+        {
+          "address": "00698035",
+          "mnemonic": "ret",
+          "operands": "",
+          "bytes_hex": "c3"
+        }
+      ],
+      "body_ranges": [
+        {
+          "start": {
+            "space": "ram",
+            "offset": "00698010"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "00698035"
+          },
+          "length": "38"
+        }
+      ]
+    },
+    "first_producer": {
+      "address": "006985de",
+      "bytes": 25,
+      "instruction_count": 9,
+      "bytes_hex": "8d4dd8512bf05653c745fc00000000e81efaffff83c40ceb5a",
+      "sha256": "eb667e43b98ce7e81d132c27eba1775778a6d57225f8a7a50758ee3d90e2becf",
+      "disk_live_equal": true,
+      "instruction_starts": [
+        "006985de",
+        "006985e1",
+        "006985e2",
+        "006985e4",
+        "006985e5",
+        "006985e6",
+        "006985ed",
+        "006985f2",
+        "006985f5"
+      ],
+      "instructions": [
+        {
+          "address": "006985de",
+          "mnemonic": "lea",
+          "operands": "ecx, [ebp - 0x28]",
+          "bytes_hex": "8d4dd8"
+        },
+        {
+          "address": "006985e1",
+          "mnemonic": "push",
+          "operands": "ecx",
+          "bytes_hex": "51"
+        },
+        {
+          "address": "006985e2",
+          "mnemonic": "sub",
+          "operands": "esi, eax",
+          "bytes_hex": "2bf0"
+        },
+        {
+          "address": "006985e4",
+          "mnemonic": "push",
+          "operands": "esi",
+          "bytes_hex": "56"
+        },
+        {
+          "address": "006985e5",
+          "mnemonic": "push",
+          "operands": "ebx",
+          "bytes_hex": "53"
+        },
+        {
+          "address": "006985e6",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 4], 0",
+          "bytes_hex": "c745fc00000000"
+        },
+        {
+          "address": "006985ed",
+          "mnemonic": "call",
+          "operands": "0x698010",
+          "bytes_hex": "e81efaffff"
+        },
+        {
+          "address": "006985f2",
+          "mnemonic": "add",
+          "operands": "esp, 0xc",
+          "bytes_hex": "83c40c"
+        },
+        {
+          "address": "006985f5",
+          "mnemonic": "jmp",
+          "operands": "0x698651",
+          "bytes_hex": "eb5a"
+        }
+      ]
+    },
+    "second_producer_and_shared_eax_overwrite": {
+      "address": "0069863e",
+      "bytes": 22,
+      "instruction_count": 9,
+      "bytes_hex": "8b55148d4dd85103d35253e8c2f9ffff83c4188b45dc",
+      "sha256": "fe33d99414539f01a5b185f74be90663e5c18b9bb99d267b1d4229a31faf4200",
+      "disk_live_equal": true,
+      "instruction_starts": [
+        "0069863e",
+        "00698641",
+        "00698644",
+        "00698645",
+        "00698647",
+        "00698648",
+        "00698649",
+        "0069864e",
+        "00698651"
+      ],
+      "instructions": [
+        {
+          "address": "0069863e",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ebp + 0x14]",
+          "bytes_hex": "8b5514"
+        },
+        {
+          "address": "00698641",
+          "mnemonic": "lea",
+          "operands": "ecx, [ebp - 0x28]",
+          "bytes_hex": "8d4dd8"
+        },
+        {
+          "address": "00698644",
+          "mnemonic": "push",
+          "operands": "ecx",
+          "bytes_hex": "51"
+        },
+        {
+          "address": "00698645",
+          "mnemonic": "add",
+          "operands": "edx, ebx",
+          "bytes_hex": "03d3"
+        },
+        {
+          "address": "00698647",
+          "mnemonic": "push",
+          "operands": "edx",
+          "bytes_hex": "52"
+        },
+        {
+          "address": "00698648",
+          "mnemonic": "push",
+          "operands": "ebx",
+          "bytes_hex": "53"
+        },
+        {
+          "address": "00698649",
+          "mnemonic": "call",
+          "operands": "0x698010",
+          "bytes_hex": "e8c2f9ffff"
+        },
+        {
+          "address": "0069864e",
+          "mnemonic": "add",
+          "operands": "esp, 0x18",
+          "bytes_hex": "83c418"
+        },
+        {
+          "address": "00698651",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0x24]",
+          "bytes_hex": "8b45dc"
+        }
+      ]
+    }
+  },
+  "typed_modifications": [
+    "2334",
+    "2334"
+  ],
+  "ownership_and_EH": "No owned temporary, allocation, local native FS/FH3 frame, catch/action or rollback. Child exceptions propagate in Current C++/CRT domain after any completed earlier assignments. Advance occurs only after normal child return. Producer parent EH state/private16B source storage is outside this wrapper Source.",
+  "producer_contracts": {
+    "006985ed": "Currentowner00698400; source=EBP-28h, last=ESI after SUB, first=EBX; three pushes then call; ADDESP0Ch then JMPshared698651 overwrites EAX before use",
+    "00698649": "Currentowner00698400; source=EBP-28h, last=stackedDWORD+EBX, first=EBX; three pushes then call; ADDESP18h includes12bytes outside immediate setup; common698651 overwrites EAX",
+    "scope": "Only two bounded spans25B/9starts and22B/9starts; no whole68400 or6987C0 Source claim",
+    "metadata_limit": "Snapshot callers retain old catch labels; fresh typed containing-function ownership00698400 is decisive. No Ghidra body/flow repair was performed."
+  },
+  "prior_provenance": "Existing qualified raw-storage Source, fixtures and ledger records remain unchanged. No complete actual-source record for this entry was returned by bounded lookup before this packet; no caller or old storage fragment is promoted.",
+  "source_sha256": {
+    "src/native_dword_vector_fill_objects.cpp": "b37a5053a3991d5ec8f3d877643f8ff497ada210b3daf96865d2b755d60ad6d3",
+    "include/bsp/native_dword_vector_fill_objects.hpp": "1f3dd024f3879453a59a5d9b7d26d82411eef3f0d03e205b4e5187048169c5e8",
+    "src/native_dword_vector_assign.cpp": "5efb943f47e364d8b288b491263baa3a1cabb6ea1a47051c32a1450f010ea7d5",
+    "include/bsp/native_dword_vector_assign.hpp": "b4a2575b500015239bb58f194813859ec7012150eac269111314b1fe05c2b938",
+    "cmake/startup.cmake": "f879107df687f0c467cdc353fe60e67100d74c00c5a27112d5014e5316d12786"
+  },
+  "verification": {
+    "owned_bytes": 38,
+    "owned_current_starts": 18,
+    "owned_CALLs": 1,
+    "producer_bytes": 47,
+    "producer_current_starts": 18,
+    "producer_CALLs": 2,
+    "total_bytes": 85,
+    "total_current_starts": 36,
+    "total_CALLs": 3,
+    "all_disk_live_equal": true,
+    "all_current_starts_and_owner_default_effective_targets_verified": true,
+    "owned_local_EH_frames": false,
+    "owned_external_tail_JMPs": 0,
+    "producer_internal_jump_to_shared_EAX_overwrite_verified": true,
+    "build": "passed",
+    "existing_suites": "3/3 passed",
+    "new_tests": 0,
+    "native_execution": false,
+    "original_binary_ABI_proven": false,
+    "gameplay_validated": false,
+    "test_seconds": 8.42,
+    "suites": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "report_call_rows_checked": 3,
+    "report_call_failures": 0,
+    "doc_call_claims_checked": 3,
+    "doc_call_failures": 0,
+    "doc_unchecked": 0,
+    "Source_COFF_checks_passed": 6,
+    "accepted_assignment_Source_hashes_verified_at_build": true,
+    "build_log_sha256": "4ab4a2f461359122025273ad6031d561fb246226a7ac8a5ba4f5339c63ac5038",
+    "diff_check": "passed",
+    "owned_edits_only": true,
+    "final_transfer_log_sha256": "dec817c737950e6906e8dab4f97f066c7aea152fb21495a965f65c2bafaf763d"
+  },
+  "primary_precommit_review": {
+    "result": "Primary8checks passed, no findings: complete Source/header, all38PE/live bytes,18current starts and actualassignment CALL independently verified; final immutable-pin acceptance separate",
+    "checks_passed": 8,
+    "receipt": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/oct15_fill_objects_eighteenth_primary_review.json",
+    "frozen_source_sha256": {
+      "src/native_dword_vector_fill_objects.cpp": "b37a5053a3991d5ec8f3d877643f8ff497ada210b3daf96865d2b755d60ad6d3",
+      "include/bsp/native_dword_vector_fill_objects.hpp": "1f3dd024f3879453a59a5d9b7d26d82411eef3f0d03e205b4e5187048169c5e8"
+    }
+  },
+  "library_name_preserved": true,
+  "previous_Source_and_fixtures_preserved": true,
+  "ghidra_mutations": false,
+  "limits": [
+    "Complete actual wrapper Source over the accepted actual assignment entry; no snapshot, callback, count bridge or fabricated allocator/header/iterator object.",
+    "Requires accessible reached raw headers and finite equality traversal; no null/endpoint/order/alignment/ownership guard added.",
+    "Sourcevoid excludes incidental EAX and does not claim original recovered return type or dead EDX/register residue.",
+    "Original argument/private-frame aliases, fault/SEH/FH3/RTTI/CRT/staticheap/binary ABI identity and gameplay remain unproved.",
+    "No original native execution or new tests; existing suites cover established math/seeds/tools, not new wrapper gameplay.",
+    "Current typed producer ownership is proven only at bounded sites; no whole parent insertion or historical6987C0 Source completion is claimed."
+  ],
+  "Source_COFF": {
+    "status": "passed",
+    "object": "build\\win32\\bsp_core.dir\\Release\\native_dword_vector_fill_objects.obj",
+    "object_sha256": "555ae840b44014a6234a1cf5ea6fe421f70029be0ebf2251628f3b7408acefd9",
+    "dump_sha256": "fa2fcdb8bd07d54144ce465b9c2fb0eab2333c312370f8f2f6544718e635975a",
+    "machine": "014c x86",
+    "symbol": "?fill_native_checked_dword_vector_objects_00698010@bsp@@YAXPAXPBX1@Z",
+    "bytes": 41,
+    "instruction_count": 22,
+    "bytes_hex": "558bec568b7508578b7d0c3bf77416538b5d105333d28bcee80000000083c6103bf775ef5b5f5e5dc3",
+    "code_sha256": "14b470839e699dfc1178c074b59c6d7ecb90702ad44ee3b0e57de9834f25f944",
+    "instructions": [
+      {
+        "offset": 0,
+        "mnemonic": "push",
+        "operands": "ebp",
+        "bytes_hex": "55"
+      },
+      {
+        "offset": 1,
+        "mnemonic": "mov",
+        "operands": "ebp, esp",
+        "bytes_hex": "8bec"
+      },
+      {
+        "offset": 3,
+        "mnemonic": "push",
+        "operands": "esi",
+        "bytes_hex": "56"
+      },
+      {
+        "offset": 4,
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [ebp + 8]",
+        "bytes_hex": "8b7508"
+      },
+      {
+        "offset": 7,
+        "mnemonic": "push",
+        "operands": "edi",
+        "bytes_hex": "57"
+      },
+      {
+        "offset": 8,
+        "mnemonic": "mov",
+        "operands": "edi, dword ptr [ebp + 0xc]",
+        "bytes_hex": "8b7d0c"
+      },
+      {
+        "offset": 11,
+        "mnemonic": "cmp",
+        "operands": "esi, edi",
+        "bytes_hex": "3bf7"
+      },
+      {
+        "offset": 13,
+        "mnemonic": "je",
+        "operands": "0x25",
+        "bytes_hex": "7416"
+      },
+      {
+        "offset": 15,
+        "mnemonic": "push",
+        "operands": "ebx",
+        "bytes_hex": "53"
+      },
+      {
+        "offset": 16,
+        "mnemonic": "mov",
+        "operands": "ebx, dword ptr [ebp + 0x10]",
+        "bytes_hex": "8b5d10"
+      },
+      {
+        "offset": 19,
+        "mnemonic": "push",
+        "operands": "ebx",
+        "bytes_hex": "53"
+      },
+      {
+        "offset": 20,
+        "mnemonic": "xor",
+        "operands": "edx, edx",
+        "bytes_hex": "33d2"
+      },
+      {
+        "offset": 22,
+        "mnemonic": "mov",
+        "operands": "ecx, esi",
+        "bytes_hex": "8bce"
+      },
+      {
+        "offset": 24,
+        "mnemonic": "call",
+        "operands": "0x1d",
+        "bytes_hex": "e800000000"
+      },
+      {
+        "offset": 29,
+        "mnemonic": "add",
+        "operands": "esi, 0x10",
+        "bytes_hex": "83c610"
+      },
+      {
+        "offset": 32,
+        "mnemonic": "cmp",
+        "operands": "esi, edi",
+        "bytes_hex": "3bf7"
+      },
+      {
+        "offset": 34,
+        "mnemonic": "jne",
+        "operands": "0x13",
+        "bytes_hex": "75ef"
+      },
+      {
+        "offset": 36,
+        "mnemonic": "pop",
+        "operands": "ebx",
+        "bytes_hex": "5b"
+      },
+      {
+        "offset": 37,
+        "mnemonic": "pop",
+        "operands": "edi",
+        "bytes_hex": "5f"
+      },
+      {
+        "offset": 38,
+        "mnemonic": "pop",
+        "operands": "esi",
+        "bytes_hex": "5e"
+      },
+      {
+        "offset": 39,
+        "mnemonic": "pop",
+        "operands": "ebp",
+        "bytes_hex": "5d"
+      },
+      {
+        "offset": 40,
+        "mnemonic": "ret",
+        "operands": "",
+        "bytes_hex": "c3"
+      }
+    ],
+    "calls": [
+      {
+        "offset": 24,
+        "target": "?assign_native_checked_dword_vector_00697bd0@bsp@@YIPAXPAXIPBX@Z"
+      }
+    ],
+    "relocation": {
+      "offset": 25,
+      "kind": "REL32",
+      "target": "?assign_native_checked_dword_vector_00697bd0@bsp@@YIPAXPAXIPBX@Z"
+    },
+    "checks": [
+      "Actual Sourcecdecl symbol has3stackpointer inputs/plainRET; first andlast stackloads precede equality check.",
+      "EmptyJE skips the source-pointer stackload, childcall and10h advance; no source header data is accessed by wrapper.",
+      "Sourcepointer loaded once only on nonempty path and retained inEBX across equality iterations; no pointee snapshot.",
+      "Single REL32 symbol targets accepted actual697BD0 Source; currentdestinationECX/capturedsource stackword and explicit deadEDX0 forwarded without callback/model.",
+      "After childnormalreturn ADDESI10h/CMPcapturedlast/JNE repeat preserve DWORD wrapping/equality, with no extra endpoint/null/count guard.",
+      "PlainRET and only1externalcall; no localEH/allocator/cleanup/barrier service; publicvoid excludes incidentalEAX, with private-frame/nativeABI limitations retained."
+    ],
+    "checks_passed": 6,
+    "scope": "Frozen new Source41B/22instruction layout/order only; not Original38B/privateframe/CRT/SEH/FH3/RTTI/binaryABI/gameplay identity."
+  },
+  "CMake_registration": {
+    "packet": "oct15_dword_fill_objects_registration",
+    "claim_succeeded_before_Main_merge_append": true,
+    "append_only_lines": 1,
+    "released_before_build": true,
+    "prerequisite_Main": "874ad987a6824268babc791a61fc6cfb089443bf, containing explicitly authorizedd7c167f49396f36e3297bba3d0277aa455801648"
+  }
+}
