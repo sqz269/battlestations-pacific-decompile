@@ -27,4 +27,25 @@ std::int32_t __cdecl invoke_native_crt_new_handler_00c055b1(
     const NativeCrtPointerDecodeContext& actual_decode_context,
     const volatile std::uint32_t& actual_encoded_new_handler_0109de44);
 
+// Additive raw-storage API for the SAME complete C055B1[34] body. The first
+// input identifies actual mutable four-byte size-argument backing, rather
+// than passing a copy of its value. Read the current encoded handler and call
+// the same existing qualified decoder BEFORE reading any backing byte. A null
+// decoded result returns0 without accessing that backing; otherwise perform
+// one unchecked x86 DWORD read (including unaligned storage), invoke the actual
+// decoded int32 __cdecl(uint32) handler and normalize its full result to0/1.
+//
+// The backing pointer and borrowed binding identities remain valid/stable and
+// disjoint from Source metadata. Their referenced native contents may change
+// through real providers. Only the nonnull-handler path requires four readable
+// backing bytes; no null/alignment/range guard or input normalization is added.
+// Inherited decode/module-gate services and actual callable-handler contracts
+// apply. No new handler/provider, owner, TLS state, cleanup or SDK policy.
+// This NEW Source ABI does not reproduce the Original parameter/decoder-slot
+// layout, registers/flags/fault PCs/SEH or canonical CRT entry/ownership/runtime.
+std::int32_t __cdecl call_native_crt_new_handler_00c055b1(
+    const void* actual_size_argument4,
+    const NativeCrtPointerDecodeContext& actual_decode_context,
+    const volatile std::uint32_t& actual_encoded_new_handler_0109de44);
+
 } // namespace bsp
