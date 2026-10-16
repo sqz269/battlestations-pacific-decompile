@@ -8,6 +8,7 @@
 #include "bsp/native_game_grid.hpp"
 #include "bsp/native_platform_load_messages.hpp"
 #include "bsp/native_font_resources.hpp"
+#include "bsp/game_native_gui_text_state.hpp"
 #include "bsp/native_renderer_binding_getters.hpp"
 
 #include "bsp/font_data.hpp"
@@ -38,11 +39,12 @@ namespace bsp::game {
 namespace {
 
 // The image value of the mutable global 00e12fd4, read from the loaded executable:
-// `00e12fd4  00 00 40 3f` is the float 0.75. Both 00ab98f0 and 00aba270's vertical
-// metrics multiply every y by it. Nothing in the reconstructed startup writes it, so a
-// cold process keeps the initialised value; a running game may not, which is why the run
-// reports the number it used rather than hiding it.
-constexpr float kVerticalScale00e12fd4 = 0.75f;
+// Borrow the same verified mutable E12FD4 backing as native Text services.
+// Each layout/quad call samples its current value; no sprite-only constant or
+// second GUI scale cell substitutes for the process owner.
+float vertical_scale_00e12fd4() {
+    return game_native_gui_text_state().vertical_scale_00e12fd4();
+}
 
 // The quad writer's vertex layout. It is the process's own interleaved buffer, not the
 // native declaration: 00ab98f0 only needs a stride and three offsets, and the sprite
@@ -182,7 +184,7 @@ struct GameTextHost::Impl {
 
     Impl(GameHostLog& log_in, GameFontHost& fonts_in, LocaleTables& locale_in)
         : log(log_in), fonts(fonts_in), locale(locale_in), runtime(log_in) {
-        summary.vertical_scale = kVerticalScale00e12fd4;
+        summary.vertical_scale = vertical_scale_00e12fd4();
     }
 };
 
@@ -276,7 +278,7 @@ public:
         parameters.normalized_width = widget_->size.width;
         parameters.normalized_height = widget_->size.height;
         parameters.width_scale = widget_->font_scale;
-        parameters.vertical_scale = kVerticalScale00e12fd4;
+        parameters.vertical_scale = vertical_scale_00e12fd4();
         parameters.distance_between_lines = widget_->distance_between_lines;
         parameters.horizontal_alignment = static_cast<std::uint32_t>(widget_->align);
         parameters.vertical_alignment =
@@ -452,7 +454,7 @@ bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& wid
         parameters.x = placement.x;
         parameters.y = placement.y;
         parameters.width_scale = text.font_scale;
-        parameters.vertical_scale = kVerticalScale00e12fd4;
+        parameters.vertical_scale = vertical_scale_00e12fd4();
         parameters.height = height;
         parameters.quad_index = 0;
         vertices.fill(0);
