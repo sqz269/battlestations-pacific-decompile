@@ -41652,6 +41652,152 @@
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
       "contract": "Only whole constructor0094EFB0 [0094EFB0,0094EFE1),49B18 and growth0094F010 [0094F010,0094F061),81B34. Actual caller-provided aligned writable raw12 header: slots pointer0, signed-count/DWORD4, capacity DWORD8; no class/vtable/new host or standalone container wrapper. Constructor storescapacity64 BEFORE genuine exact256-byte allocation, publishes slots then count0, leaves slots uninitialized and returns actualheader. Growth publishes wrapping capacity+64 BEFORE allocation; retain native unsignedMUL4/overflow saturation instructions, allocate exact size, capture CURRENT oldslots/count AFTER allocation, call genuine current memcpy withcount*4 even whenzero, reload oldslots aftercopy, conditionally canonical-free then clear0, finally publish capturednewslots; count untouched. Proposed independent naked fastcall entries: constructor void* actualECX returnheader/plainRET, growth actualECX/void/plainRET, no stack inputs; no semantic growthEAX claim. Bind BF55BE through genuine private CDECL size bridge to canonical singleton_lifetime_allocate with object/native_bytes==host_bytes; canonical singleton_lifetime_free and real current memcpy/#pragma function(memcpy); no new globals/callbacks/provider stubs. Ordinary successful nonthrowing serialized domain: genuine live constructor-produced raw12/uniquely owned matching-current-heap slot buffer and previous accepted growth, coherent0<=count<=oldcapacity, valid initialized reached opaque slot bytes, nonwrapping capacity+64 and4*newcapacity witholdcap<=3FFFFFBFh, positive allocatable sizes/resources, old/new/header/privateframe disjoint, valid flatES/DFclear, no alias/reentry/concurrency/fault/trim/teardown. Empty growth still calls memcpy with real nonnull old/new allocations; do not special-case it. Slots are opaque to storage helpers: no element ownership or retirement changes. Named pending actual append0094F270 population/clear0094F3E0/destructor0094F540 and actual008F3270 application create/pass/retire binding remain separate; no populated caller/class/list-owner/key-enumeration/Original privateCRT/EH/fullABI/startup/runtime/game admission. Source implementation only these2, not other3 or comparator/sort/empty-data roles."
+    },
+    {
+      "id": "goal_oct15_crt_ascii_stricmp",
+      "done": true,
+      "state": "whole_ordinary_raw_Source_normal_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00bf7eb7"
+      ],
+      "output_files": [
+        "src/native_crt_ascii_stricmp.cpp",
+        "include/bsp/native_crt_ascii_stricmp.hpp",
+        "docs/GOAL_OCT15_CRT_ASCII_STRICMP.md",
+        "reports/goal_oct15_crt_ascii_stricmp.json"
+      ],
+      "depends_on": [],
+      "unproved_dependencies": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_crt_ascii_stricmp.json",
+      "primary_review": "reports/goal_oct15_scene_lifetime_primary_review.json",
+      "Main_build_review": "reports/goal_oct15_scene_lifetime_main_gate.json",
+      "code_revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+      "Main_build_revision": "1837bd475d4a24e5755a92da62d9ac3767b0da48",
+      "integrated_main_revision": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+      "contract": "Complete intrinsic unsigned-BYTE comparison leaf;no SDK/locale/TLS/errno or parent-dispatch closure is implied.",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_hidden_record_lookup",
+      "done": true,
+      "state": "whole_ordinary_raw_Source_normal_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "004691b0",
+        "00469480"
+      ],
+      "output_files": [
+        "src/native_scene_hidden_record_lookup.cpp",
+        "include/bsp/native_scene_hidden_record_lookup.hpp",
+        "docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_LOOKUP.md",
+        "reports/goal_oct15_scene_hidden_record_lookup.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_map_lookup"
+      ],
+      "unproved_dependencies": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_hidden_record_lookup.json",
+      "primary_review": "reports/goal_oct15_scene_lifetime_primary_review.json",
+      "Main_build_review": "reports/goal_oct15_scene_lifetime_main_gate.json",
+      "code_revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+      "Main_build_revision": "1837bd475d4a24e5755a92da62d9ac3767b0da48",
+      "integrated_main_revision": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+      "contract": "Complete raw lookup/presence Source at actual constructor/map/pool/returning currentCRT providers;first input capture,current fields,returned iterator and rawDWORD/AL schedules retained.",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_hidden_record_copy_construct",
+      "done": true,
+      "state": "qualified_whole_control_flow_Source_general_readiness_unproved_normal_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00469240",
+        "00c61a90"
+      ],
+      "output_files": [
+        "src/native_scene_hidden_entity_record_copy_construct.cpp",
+        "include/bsp/native_scene_hidden_entity_record_copy_construct.hpp",
+        "docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_COPY_CONSTRUCT.md",
+        "reports/goal_oct15_scene_hidden_record_copy_construct.json"
+      ],
+      "depends_on": [
+        "cc12_raw_native_string_duplicate_00438e40"
+      ],
+      "unproved_dependencies": [
+        {
+          "address": "008f41f0",
+          "scope": "canonical finite/stable/unshared/acyclic owning clone graph and key/payload/count/locale/FP admission;Original allocation/failure/reentry/unwind remainunproved"
+        },
+        {
+          "address": "00438e40",
+          "scope": "successful canonical nonwrapping readable NUL/disjoint copy admission;Original allocation failure/newhandler/naked unwind remainunproved"
+        }
+      ],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_scene_hidden_record_copy_construct.json",
+      "primary_review": "reports/goal_oct15_scene_lifetime_primary_review.json",
+      "Main_build_review": "reports/goal_oct15_scene_lifetime_main_gate.json",
+      "code_revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+      "Main_build_revision": "1837bd475d4a24e5755a92da62d9ac3767b0da48",
+      "integrated_main_revision": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+      "contract": "Whole copy-constructor code and qualified cleanup;BOTH canonical clone-graph and successful duplicate-allocation admissions inherited. No unrestricted failure/alias/reentry/OriginalEH closure.",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_hidden_record_destroy",
+      "done": true,
+      "state": "qualified_whole_control_flow_Source_general_readiness_unproved_normal_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00469300",
+        "004693a0",
+        "00c61ab0"
+      ],
+      "output_files": [
+        "src/native_scene_hidden_entity_record_destroy.cpp",
+        "include/bsp/native_scene_hidden_entity_record_destroy.hpp",
+        "docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_DESTROY.md",
+        "reports/goal_oct15_scene_hidden_record_destroy.json"
+      ],
+      "depends_on": [],
+      "unproved_dependencies": [
+        {
+          "target": "actual current bag.vtable.slot0",
+          "scope": "all dynamic target bodies and constructedSource-vtable ABI compatibility remainunproved"
+        },
+        {
+          "address": "00bf9dc8",
+          "scope": "Original heap/TLS/handler/failure free transport remainsunproved;matching actual currentCRT service is used"
+        }
+      ],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_scene_hidden_record_destroy.json",
+      "primary_review": "reports/goal_oct15_scene_lifetime_primary_review.json",
+      "Main_build_review": "reports/goal_oct15_scene_lifetime_main_gate.json",
+      "code_revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+      "Main_build_revision": "1837bd475d4a24e5755a92da62d9ac3767b0da48",
+      "integrated_main_revision": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+      "contract": "Whole destructor/scalar-delete code and qualified cleanup;actual raw vtable slot dispatch,hostCRT frees,current fields,lateBYTE flags and captured freed-record bits retained;no all-dynamic-target/constructedSource-vtable or Originalheap/FH3/fault ABI proof.",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
