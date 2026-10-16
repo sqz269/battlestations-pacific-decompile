@@ -11,6 +11,7 @@
 // children and a scene node, none of which are reproduced.
 #include <cstddef>
 #include <cstdint>
+#include <exception>
 #include <functional>
 #include <memory>
 #include <string>
@@ -220,6 +221,10 @@ struct GuiLayoutPage {
     bool model_backed{false};  // the "<name>.mmod" branch was taken
     bool script_evaluated{false};
     std::uint8_t screen_flag{}; // 00AC66EE, low byte of00AA5840's second arg
+    // Opt-in retained loader only: actual table owners, including its empty
+    // property tables. Declared BEFORE root so they survive root/child cleanup.
+    // Legacy loading leaves this empty and keeps its existing behavior.
+    std::vector<std::shared_ptr<const GuiTable>> retained_property_tables{};
     std::unique_ptr<GuiLayoutWidget> root{};
 
     // The evaluated table, held so every widget's `source` stays valid. The
@@ -381,6 +386,10 @@ public:
     // vector stays sorted by Priority ascending and equal priorities keep
     // insertion order. Returns a borrowed pointer to the stored page.
     GuiLayoutPage* register_00aa52a0(std::unique_ptr<GuiLayoutPage> page);
+    // Opt-in ownership transfer: capacity allocation precedes the sole move.
+    // On allocation/preflight failure the caller still owns the SAME page.
+    // Equal priorities keep insertion order, as in register_00aa52a0.
+    GuiLayoutPage* register_retained_00aa52a0(std::unique_ptr<GuiLayoutPage>& page);
 
     const std::vector<std::unique_ptr<GuiLayoutPage>>& pages() const noexcept {
         return pages_;
@@ -405,6 +414,73 @@ private:
 // root's properties and build its children; register it.
 GuiLayoutPage* load_gui_page_00aa5840(
     GuiPageRegistry& registry, GuiLayoutHost& host, const std::string& name,
+    std::int32_t screen_flag, bool add_reference);
+
+// Source-only opt-in ownership transport; not another recovered native body,
+// page reference count, retirement path or Original ABI implementation.
+enum class GuiRetainedPageLoadPhase { prepared, entered, complete, failed };
+struct GuiRetainedPageLoadObservation {
+    GuiRetainedPageLoadPhase phase;
+    bool host_entered;
+    const void* page;
+    const void* root;
+    const void* pending_child;
+    const void* script_table;
+    std::size_t property_table_owners;
+};
+class GuiRetainedPageLoadFailureSink;
+class GuiRetainedPageLoadOperation final {
+public:
+    ~GuiRetainedPageLoadOperation() noexcept;
+    GuiRetainedPageLoadOperation(const GuiRetainedPageLoadOperation&) = delete;
+    GuiRetainedPageLoadOperation& operator=(const GuiRetainedPageLoadOperation&) = delete;
+    // Identities/phase only: no graph release, reset, replay or mutable view.
+    GuiRetainedPageLoadObservation observation() const noexcept;
+    bool requires_process_retention() const noexcept;
+    const std::exception_ptr& failure() const noexcept;
+private:
+    struct Impl;
+    std::unique_ptr<Impl> impl_;
+    GuiRetainedPageLoadOperation(GuiPageRegistry&, GuiLayoutHost&, const std::string&,
+        std::int32_t screen_flag, bool add_reference);
+    friend GuiLayoutPage* load_gui_page_retained_00aa5840(GuiPageRegistry&, GuiLayoutHost&,
+        GuiRetainedPageLoadFailureSink&, const std::string&, std::int32_t, bool);
+};
+
+// One stable failure owner per host domain. An entered failure is sticky: a
+// second load with this sink rejects before effects. There is no default sink.
+// It must keep EVERY supplied entered-failed operation and all callback/runtime
+// dependencies alive until process exit: already-entered nested loads can each
+// unwind into it even after the latch is set. Discarding an operation terminates
+// before its graph is destroyed. Pre-entry C++ allocation failures own no
+// native effects and do not set this process-retention latch.
+class GuiRetainedPageLoadFailureSink {
+public:
+    virtual ~GuiRetainedPageLoadFailureSink() = default;
+    GuiRetainedPageLoadFailureSink(const GuiRetainedPageLoadFailureSink&) = delete;
+    GuiRetainedPageLoadFailureSink& operator=(const GuiRetainedPageLoadFailureSink&) = delete;
+    bool requires_process_retention() const noexcept { return interrupted_; }
+    virtual void retain_failed_load(std::unique_ptr<GuiRetainedPageLoadOperation>) noexcept = 0;
+protected:
+    GuiRetainedPageLoadFailureSink() noexcept = default;
+private:
+    bool interrupted_{};
+    friend GuiLayoutPage* load_gui_page_retained_00aa5840(GuiPageRegistry&, GuiLayoutHost&,
+        GuiRetainedPageLoadFailureSink&, const std::string&, std::int32_t, bool);
+};
+
+// Own page/root and each pending child BEFORE host entry. Keep the whole script
+// and all callback table bodies alive with the successful page. On failure,
+// transfer the SAME operation to the required sink before rethrowing; do not
+// call the legacy no-argument cleanup hook or perform guessed native cleanup.
+// The sink/host/runtime must outlive the graph. Successful pages still require
+// the caller's real consumer-quiescence and retirement protocol; this only
+// closes load ownership and does not compose a concrete native GUI host.
+// Externally serialize calls and graph mutation, allowing serialized callback
+// nesting. Operation/name allocation precedes even the existing-page lookup;
+// its Source allocation/exception profile is not the Original native ABI.
+GuiLayoutPage* load_gui_page_retained_00aa5840(GuiPageRegistry&, GuiLayoutHost&,
+    GuiRetainedPageLoadFailureSink&, const std::string& name,
     std::int32_t screen_flag, bool add_reference);
 
 }  // namespace bsp
