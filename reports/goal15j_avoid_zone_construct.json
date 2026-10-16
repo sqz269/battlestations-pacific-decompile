@@ -1,0 +1,331 @@
+{
+  "packet": "goal15j_avoid_constructor",
+  "status": "complete_raw_source_strict_emitted_mapping_actual_provider_fixture_pass_pending_primary_registration",
+  "source": "src/native_avoid_zone_construct.cpp",
+  "header": "include/bsp/native_avoid_zone_construct.hpp",
+  "documentation": "docs/GOAL15J_AVOID_ZONE_CONSTRUCT.md",
+  "base_main": "4ddbdcb55",
+  "dependency_merge": "05dddcb2654103fea531d11d28f4013cbc9ef1bf",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "disk_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "verification": "target-verifying bsp.py complete asm/bytes/prototype/typed-flow/EH/data;994B live bytes equal installed PE;no worker Ghidra mutation"
+  },
+  "routines": [
+    {
+      "address": "0041ccd0",
+      "end": "0041d0b1",
+      "native_end_exclusive": "0041d0b2",
+      "native_bytes": 994,
+      "native_listed_instructions": 279,
+      "coverage": "complete_function",
+      "native_name": "BSP_AvoidZone_ConstructFromScenePath",
+      "name_status": "retained descriptive hypothesis,not recovered symbol",
+      "original_prototype": "void* __thiscall BSP_AvoidZone_ConstructFromScenePath(void* this,void* path,uint layer)",
+      "original_abi": "ECX actual24h zone pointer;actual stacked path/layer DWORDs;EAX receiver;RET8;Original does not consume Source world-cell EDX",
+      "source_api": "void* __fastcall construct_native_avoid_zone_0041ccd0(void*,void* const volatile* actual_world_pointer_cell,void* actual_path,uint32_t layer_word)",
+      "source_abi": "ECX actual zone;Source-only EDX actual borrowed world-cell ADDRESS;two actual public stack cells kept through current frame;RET8/EAXreceiver;no noexcept promise",
+      "prior_typed_source_preserved": "src/avoid_zone_owner.cpp"
+    }
+  ],
+  "raw_storage": {
+    "zone_bytes": 36,
+    "zone_fields": "array0/count4/capacity8/layerC/association10/bounds14..20",
+    "record_bytes": 36,
+    "record_initialization": "literal raw x/z and sixzero derivedwords/clearance-1;no implicit record constructor",
+    "empty_or_null_path": "pointlist null or signedcount0 skips pointwork and leaves old bounds;actual clip call remains,no safe-empty repair"
+  },
+  "argument_and_alias_contract": {
+    "public_thunk_bytes": 18,
+    "public_thunk_hex": "8d442404505251e80000000083c40cc20800",
+    "actual_argument_cell_lowerings": 8,
+    "layer": "incomingactualword first stored zone+C,then overwritten with signedpointcount atCE4A/CE5B and reread forloopcomparisons",
+    "path": "initialactualpath read then actualword reloadedCE71 everyiteration and CFE6 beforeassociation",
+    "private_storage": "Native algorithmcells rebased into persistent Source working set,NativeEBP virtualized;private stack/frame addresses differ",
+    "growth": "bothsites,count==capacity,unsigned2cap+2>oldcap;publish capacity before MUL4/SETO/NEG/OR saturation;CURRENT ownerarray/count copy and free/replacement order retained",
+    "pending_record": "physicalnull branch and completefill preserved;no added pendingrecordguard"
+  },
+  "floating_contract": {
+    "operations": 81,
+    "filter": "x87 deltas/squares/add,floatspills,FCOMI with double25 and JBE rejection;exact25 and unordered rejected",
+    "constant_bindings": [
+      {
+        "native_instruction": "0041cdc0",
+        "native_data": "00d7a260",
+        "symbol": "kConstructorNegativeOne",
+        "bytes": "000080bf",
+        "source_read_only": true
+      },
+      {
+        "native_instruction": "0041cedb",
+        "native_data": "00ce3880",
+        "symbol": "kConstructorSquaredDistance",
+        "bytes": "0000000000003940",
+        "source_read_only": true
+      },
+      {
+        "native_instruction": "0041cf34",
+        "native_data": "00d7a260",
+        "symbol": "kConstructorNegativeOne",
+        "bytes": "000080bf",
+        "source_read_only": true
+      }
+    ],
+    "environment": "no CW/MXCSR replacement or normalization;no ordinarydouble/SSE algebra rewrite;inherited genuine winding currentCI boundary"
+  },
+  "world_contract": {
+    "native_pointer_cell": "00e188a8",
+    "native_load_instruction": "0041cfee",
+    "source": "captured borrowed actualcell ADDRESS;CURRENT VALUE loaded only atCFEE after point/allocation work",
+    "field_load_order": [
+      "711c",
+      "7120",
+      "7128",
+      "712c",
+      "7124",
+      "7130"
+    ],
+    "minimum_xyz": [
+      "711c",
+      "7120",
+      "7130"
+    ],
+    "maximum_xyz": [
+      "7128",
+      "712c",
+      "7124"
+    ],
+    "interleaving": "field reads retain intervening Native scratchstores/LEAs/pushes;not grouped into speculative early snapshots",
+    "canonical_cell": "GameNativeSettingsProcess::Impl void* volatile game exists;API accepts actual cell qualification",
+    "unproved": "production constructor wiring and six raw world-bounds producers;no adoption claim"
+  },
+  "normal_call_rows": [
+    {
+      "address": "0041cd32",
+      "native": "007af800",
+      "caller": "0041ccd0",
+      "source_provider": "transform_native_scene_path_point_007af800",
+      "native_callee_stack_cleanup": 8
+    },
+    {
+      "address": "0041cd7d",
+      "native": "00bf681b",
+      "caller": "0041ccd0",
+      "source_provider": "allocate_construct_bytes",
+      "native_callee_stack_cleanup": 0
+    },
+    {
+      "address": "0041cdfa",
+      "native": "00bf55be",
+      "caller": "0041ccd0",
+      "source_provider": "allocate_construct_bytes",
+      "native_callee_stack_cleanup": 0
+    },
+    {
+      "address": "0041ce27",
+      "native": "00bf6989",
+      "caller": "0041ccd0",
+      "source_provider": "singleton_lifetime_free",
+      "native_callee_stack_cleanup": 0
+    },
+    {
+      "address": "0041ce7e",
+      "native": "007af800",
+      "caller": "0041ccd0",
+      "source_provider": "transform_native_scene_path_point_007af800",
+      "native_callee_stack_cleanup": 8
+    },
+    {
+      "address": "0041cef1",
+      "native": "00bf681b",
+      "caller": "0041ccd0",
+      "source_provider": "allocate_construct_bytes",
+      "native_callee_stack_cleanup": 0
+    },
+    {
+      "address": "0041cf6e",
+      "native": "00bf55be",
+      "caller": "0041ccd0",
+      "source_provider": "allocate_construct_bytes",
+      "native_callee_stack_cleanup": 0
+    },
+    {
+      "address": "0041cf9b",
+      "native": "00bf6989",
+      "caller": "0041ccd0",
+      "source_provider": "singleton_lifetime_free",
+      "native_callee_stack_cleanup": 0
+    },
+    {
+      "address": "0041cfb9",
+      "native": "00415010",
+      "caller": "0041ccd0",
+      "source_provider": "include_native_avoid_bounds_point_00415010",
+      "native_callee_stack_cleanup": 4
+    },
+    {
+      "address": "0041d053",
+      "native": "0041a540",
+      "caller": "0041ccd0",
+      "source_provider": "clip_native_avoid_zone_world_bounds_0041a540",
+      "native_callee_stack_cleanup": 8
+    },
+    {
+      "address": "0041d063",
+      "native": "0041a200",
+      "caller": "0041ccd0",
+      "source_provider": "derive_native_avoid_zone_0041a200",
+      "native_callee_stack_cleanup": 4
+    },
+    {
+      "address": "0041d06d",
+      "native": "00923810",
+      "caller": "0041ccd0",
+      "source_provider": "get_native_entity_ancestor_00923810",
+      "native_callee_stack_cleanup": 4
+    },
+    {
+      "address": "0041d07b",
+      "native": "00923810",
+      "caller": "0041ccd0",
+      "source_provider": "get_native_entity_ancestor_00923810",
+      "native_callee_stack_cleanup": 4
+    },
+    {
+      "address": "0041d094",
+      "native": "00923810",
+      "caller": "0041ccd0",
+      "source_provider": "get_native_entity_ancestor_00923810",
+      "native_callee_stack_cleanup": 4
+    }
+  ],
+  "indirect_transfer": {
+    "address": "0041d089",
+    "operand": "EAX",
+    "source": "literal FFD0",
+    "contract": "second distinct ancestor1 result actualvtable+5C,ECXthatresult,stackcode44/RET4,ALpredicate;thirddistinctancestorresult storedzone+10"
+  },
+  "native_eh": {
+    "handler": "00c5e198",
+    "func_info": "00d842d8",
+    "magic": "19930522",
+    "max_state": 1,
+    "try_blocks": 0,
+    "eh_flags": 1,
+    "unwind_map": "00d842d0",
+    "entries": [
+      {
+        "state": 0,
+        "next_state": -1,
+        "action": "00c5e190"
+      }
+    ],
+    "saved_receiver": "CURRENT [EBP-68] word,not cachedentry receiver",
+    "armed": "0041cd11 before pointwork through clip/winding/association",
+    "action_transfer": {
+      "address": "00c5e193",
+      "native": "00412dc0",
+      "caller": "00c5e190",
+      "kind": "tail_jump"
+    },
+    "scope": "array free/currentpointerzero0 only;count/capacity and records notrolledback;no pendingallocationguard or normalcleanup"
+  },
+  "source_eh": {
+    "one_current_guard": true,
+    "current_saved_receiver_verified": true,
+    "max_state": 2,
+    "guard_unwind_actions": 1,
+    "boundary": "actual current C++ EH,extra compilerstate/cookie/frame/private addresses and noexcept destructor termination policy;not Native FH3/SEH/throw/catch identity"
+  },
+  "dependencies": {
+    "raw_providers_complete": [
+      "007af800",
+      "00415010",
+      "0041a540",
+      "0041a200",
+      "00923810",
+      "00412dc0"
+    ],
+    "clip": {
+      "source_commit": "80309742e",
+      "primary_registration": "020cca8eb",
+      "primary_receipt": "bc9054aa7",
+      "primary_reported_checks": "3CTests+all535rows/emittedoperands+archive-only realheapfixture PASS",
+      "worker_probe": "complete clip803object linked with actualcore beforeprimaryregistration"
+    },
+    "heap": "actual singleton_lifetime_allocate/free;Native BF681B/BF55BE/BF6989 service boundary retained;realcurrent newhandler/failurepolicy",
+    "crt": "private Native CRT allocation/math dispatch/state/RTTI/failurepayload not reconstructed or promised;actual currentSDK/CI/C++EH services remain explicit"
+  },
+  "verification": {
+    "strict_compile": "PASS MSVC Win32 /std:c++17 /MD /O2 /W4 /WX /EHsc /fp:strict /permissive-",
+    "object_sha256": "cc9dbcfd9e2a495d24d946ca45746d08a2b992d34e164d5ca80e2e49df12e8a2",
+    "native_sha256": "94cc108ebadce9dac8705d98d9db697191d509834451713d29d9259d8423efc1",
+    "mapping": {
+      "native_bytes": 994,
+      "native_listed_instructions": 279,
+      "source_kernel_bytes": 1066,
+      "source_thunk_bytes": 18,
+      "instruction_kinds": {
+        "native_eh_or_frame_removed": 11,
+        "literal": 166,
+        "algorithm_cell_rebase": 43,
+        "actual_public_argument_cell": 8,
+        "current_source_phase": 1,
+        "branch": 24,
+        "genuine_provider": 14,
+        "source_literal_binding": 3,
+        "virtual_native_ebp": 6,
+        "actual_late_world_cell": 1,
+        "literal_virtual_call": 1,
+        "private_kernel_return": 1
+      },
+      "checked_branches": 24,
+      "checked_kernel_relocations": 17,
+      "all_checked_fp_operations": 81,
+      "source_frame_bytes": 167
+    },
+    "checker": "local/goal15j_avoid_constructor/verify_emitted_constructor.py [registeredobject]",
+    "checker_scope": "all994Nativebytes/279continuousrows vsPE;allSourcekernelrows/operands/24branches/14CALLs+3ROdata/81FP/publicthunk/currentguard+EH;not Native wholebody/frame equivalence",
+    "call_report_check": "PASS tools/verify_report_calls.py:15 directcall/tail-transfer rows checked,0failed",
+    "fixture": {
+      "status": "PASS",
+      "program": "local/goal15j_avoid_constructor/constructor_probe.cpp",
+      "command": "local/goal15j_avoid_constructor/probe_registered.cmd <registered-core.lib> [constructor-object] [clip-object]",
+      "worker_link": "constructor strictobject + completeclip803object + actualintegrator registeredcorearchive",
+      "executable_sha256": "685c4fc0b2dcc12b039124cef616c1d07fc221cc95e7c42ef080694e1beb92b3",
+      "actual_services": "real rawpoint/pose repair via currentSDK invalidparameter policy;actualclip/winding/currentheap+newhandler,not rawchildfakes",
+      "normal": "actualpathargslot changed toalternatevalidpath;actual layercell becomes6 whilezone.layer7;initiallyNULLworldcell published duringpointwork;strict25filters,count4/cap6/bounds0,0,6,6",
+      "failure": "realFFFFFFFF allocationfailure;actual std::bad_alloc caught,newhandler1,SDKhandler2;arrayzero0/count3FFFFFFF/cap80000000/layer7 retained",
+      "lifetime_limit": "fixture frees capturedfirstrecord;Nativeunguarded pendingsecondrecord intentionally retained untilprocessexit;no inventedrollback or leak-freeclaim",
+      "not_exercised": "nonnullthree-ancestor/actualvtable+5C association path has complete emittedcoverage only"
+    },
+    "standard_build": {
+      "command": "scripts/build.ps1",
+      "status": "PASS",
+      "ctests": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "count": 2,
+      "log": "local/goal15j_avoid_constructor/standard_build.log",
+      "new_module_registered": false,
+      "scope": "existingregisteredrepository build only;constructor strictobject/fixture separate"
+    },
+    "constructor_registered_archive_only": "pending primary registration/rebuild/probe;no workerclaim",
+    "native_differential_fixture": false,
+    "native_frame_identity": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "source_sha256": {
+    "include/bsp/native_avoid_zone_construct.hpp": "a292882ce06233889894f2e079800ce71bd48afa2eab2eea75d6103ce3559551",
+    "src/native_avoid_zone_construct.cpp": "7f6d24158812ed3eefc76e1af2102927961dea0c3c0689bbbb38bdebfce141fb"
+  },
+  "documentation_sha256": "bdbf816285ff425988c68cbdb0c53910b0a299920a9fe3b1195b2a4f886d1867",
+  "uncertainty": "raw object ownership/vtables/worldbacking mustbevalid;currentprivateframe/CRT/RTTI/EH identity differs;productionwiring and gameplay remainunproved",
+  "evidence": "GOAL15J complete raw 0041CCD0..0041D0B1 (994B/279 instructions),all branches and Native one-state cleanup. Original ABI: ECX actual24h zone pointer;actual stacked path/layer DWORDs;EAX receiver;RET8;Original does not consume Source world-cell EDX. Source borrows actual world-pointer-cell ADDRESS in EDX and loads its current value at Native late point;actual path/layer stack cells survive through wrapper,layer word reused and path reloaded. All raw point/array-growth/x87 strict25/late six-world-field/clip/winding/three-ancestor and actual vtable+5C code44 schedules retained. One Source guard reads current saved receiver then actual412DC0;no record rollback,pending guard or normal release. Strict Win32 MD/O2/W4/WX/EHsc/fp:strict complete emitted1066B kernel/18B public thunk,279row/81FP/24branch/14CALL+3ROdata proof and one actual-provider fixture PASS. Current heap/SDK/CRT/C++ EH/frame boundary;no Native FH3/SEH/privateCRT/RTTI/catch/frame or gameplay identity. Clip803 accepted and registered by primary020cca8eb;constructor registration/archive-only probe pending primary. Earlier typed Source/name/comments preserved. docs/GOAL15J_AVOID_ZONE_CONSTRUCT.md;reports/goal15j_avoid_zone_construct.json."
+}

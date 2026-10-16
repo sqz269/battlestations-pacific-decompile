@@ -1,0 +1,69 @@
+{
+  "packet": "cc12_native_gui_raw_group_route_43",
+  "status": "source_caller_composition_build_and_focused_raw_lifetime_probe_passed",
+  "base_main": "3df346c0ab1cf87f138bc91fa0bec0b4ecf220a3",
+  "original": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_batch": true,
+    "review": "Full existing 00B8F5E0 pseudocode then assembly through bsp.py show",
+    "entry": "00b8f5e0",
+    "end_exclusive": "00b8f64a",
+    "abi": "ECX actual group, stack actual name-header pointer, EAX same group, RET4 at00B8F647",
+    "evidence": [
+      "00B8F5E8 forwards the exact name header to00B6F5A0",
+      "00B8F5ED reads actual one00D7A24C before group tail stores",
+      "Actual group profile00D634F8; attached descriptor zero; flags|2; enabled175=1; scalar184=one; zero first three pose words then actual00CE4970",
+      "Existing low-level raw overload and ledger already own the complete Original function"
+    ],
+    "new_original_function_recovered": false,
+    "ghidra_mutations": false,
+    "ledger_mutations": false
+  },
+  "source": {
+    "owner_raw_overload": "src/native_group_owner.cpp:240",
+    "scene_raw_route": "src/gui_native_scene.cpp:94",
+    "constant_provider_binding": "include/bsp/native_group_owner.hpp:45",
+    "required_provider": "&renderer.node_constants(); same one/positive cells as existing group constants",
+    "required_nodes": "renderer.camera_environment().nodes, already using vfs.raw_strings()",
+    "same_domains": ["group pool", "VFS group type lineage", "renderer node/scene/attachment runtime", "VFS raw strings"],
+    "semantic_body_unchanged": true,
+    "new_pool_tree_render_registry_or_material_domain": false,
+    "actual_header_forwarded_unchanged": true,
+    "actual_refcount_slot_companion_preserved": true,
+    "native_text_activated": false
+  },
+  "failure_contract": {
+    "preflight": "Raw name-domain and exact one/positive cell admission before entered marker",
+    "persistent_frame": "Scene raw_pending_ owns actual temporary header before any getter/pool entry; same record moves into canonical groups_",
+    "retained_on_exception": "Pool/map/owner/name/group/reference construction or temporary release failure retains same slot/header/owner state",
+    "cleanup": "Temporary raw-name ownership consumed before throwing direct0041DD20; canonical reference not published until release returns",
+    "no_replay_rollback_or_live_slot_return": true,
+    "metadata_predicate": "GuiNativeScene::native_operation_interrupted() const noexcept",
+    "serialization": "External serialization required; no raw reads, locks or callbacks in predicate",
+    "host_requirement": "Preserve interrupted graph and _Exit before any manager or CRT drain; destructor terminates before member destruction",
+    "native_fh3_seh_or_enclosing_exception_frame_claimed": false
+  },
+  "validation": {
+    "canonical_build": "scripts/build.ps1; MSVC Win32 Release bsp_core/bsp_game passed",
+    "build_log": "local/cc12_native_gui_raw_group_route_43/build.log",
+    "existing_ctest": {"reconstructed_math": "passed", "tool_tests": "passed", "passed": 2, "failed": 0},
+    "diff_check": "passed",
+    "focused_probe_source": "local/cc12_native_gui_raw_group_route_43/group43_probe.cpp",
+    "focused_probe_log": "local/cc12_native_gui_raw_group_route_43/probe.log",
+    "probe_inputs": "local/cc12_native_gui_raw_group_route_43/probe-inputs.json",
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "focused_probe": "passed actual raw temporary-name return, same canonical node/creator count, retained page logical release, delayed native name retirement, final companion erasure and same physical group-slot reuse, clean shared list/raw pool retirement",
+    "normal_interruption_marker": false,
+    "probe_boundary": "Controlled base widget implementation with Screen layout tag; one explicitly prepublished isolated actual raw string pool; normal Source path only",
+    "permanent_tests_added": 0
+  },
+  "not_proved": [
+    "Complete Original caller exception frame or fault-time/native ABI equivalence",
+    "Thrown raw getter or metadata failure injection",
+    "Lazy raw-manager registration",
+    "Actual Screen camera/store construction",
+    "Normal-host adoption, native Text drawing, rendering or gameplay"
+  ],
+  "next_integration": "Root supplies existing renderer raw constants/group constants and canonical nodes/VFS domains, then queries Scene interruption before shared drain; primary widget-model routing remains separately owned"
+}

@@ -1,7 +1,7 @@
 {
   "packet": "cc12_native_gui_text_host_prerequisites_41",
   "source_commit": "07c72d19b50a1e576f3c6e4e2f6edf2941660063",
-  "status": "canonical_build_and_source_review_passed_pool_start_observed_later_runtime_waits_for_real_audio_endpoint",
+  "status": "canonical_build_source_review_and_real_startup_shutdown_passed_native_Text_drawing_and_gameplay_not_yet_validated",
   "component_commits": {
     "process37": "de08e5308",
     "state38": "86b767ab4",
@@ -89,6 +89,59 @@
         "get_length": 37
       },
       "note": "Launcher checkout identity is not control executable compiler provenance; the frozen exe hash above is authoritative"
+    },
+    {
+      "name": "runtime_02_audio_enabled",
+      "compiled_source": "07c72d19b50a1e576f3c6e4e2f6edf2941660063",
+      "launcher_checkout_head_is_not_compiler_provenance": true,
+      "exe_sha256": "878680eb21391aec041c112b83427f7ad5a773724023cf97605476a2101faa38",
+      "exit_code": 0,
+      "elapsed_seconds": 3.259468,
+      "log": "local\\cc12_native_gui_text_host_prerequisites_41\\runtime_02_audio_enabled\\runtime.log",
+      "log_sha256": "5769d90478dd57d671546af1ea9c5b76391772f0b6cbcbd3c62b0e07cfda0ef6",
+      "screenshot": "local\\cc12_native_gui_text_host_prerequisites_41\\runtime_02_audio_enabled\\frontend.png",
+      "screenshot_sha256": "0aa33558c5a6c74c4dbcb3425cc32193252f37afa27755eeff1f6e5e4b44abb3",
+      "screenshot_visually_inspected": true,
+      "text_pool_initialized": true,
+      "text_pool_atexit": 0,
+      "production_lineage_reached": true,
+      "lineage": {
+        "text": 19,
+        "element": 18,
+        "root": 0,
+        "parent_match": true,
+        "counter": "canonical VFS",
+        "absolute_original_CRT_timing_or_type_ids_proved": false
+      },
+      "mutable_state_observed": {
+        "aspect": "1.33333337",
+        "vertical_scale": 0.75,
+        "white_mask": 0,
+        "blend": 0
+      },
+      "window_created": true,
+      "device_created": true,
+      "resolution": [
+        800,
+        600
+      ],
+      "ticks": 2,
+      "presents": 1,
+      "presents_skipped": 1,
+      "native_fonts": 6,
+      "sprite_text_glyph_quads": 55,
+      "fonts_retired_before_shared_drain": true,
+      "renderer_worker_joined": true,
+      "final_COM": {
+        "device": 0,
+        "api": 0
+      },
+      "host_methods": {
+        "concrete": 124,
+        "unimplemented": 43
+      },
+      "native_Text_factory_or_drawing_activated": false,
+      "gameplay_validated": false
     }
   ],
   "endpoint": {
@@ -182,5 +235,22 @@
     ],
     "manifest": "local\\cc12_native_gui_text_host_prerequisites_41\\combined_03\\manifest.json",
     "manifest_sha256": "c7938b49ae0242548f86e3b9d412dfdf07619ca009ced39c23a951562d9cc7d6"
+  },
+  "audio_followup": {
+    "user_report": "Audio output is enabled now",
+    "read_only_endpoint_query": "local/cc12_native_gui_text_host_prerequisites_41/mmdevice_02.json",
+    "active_playback_endpoints": 8,
+    "all_default_roles_succeeded": true,
+    "earlier_failure_cleared": true,
+    "audio_mode_settings_or_services_modified_by_agent": false,
+    "evidence": {
+      "archive": "local\\cc12_native_gui_text_host_prerequisites_41\\audio_enabled_02.zip",
+      "archive_sha256": "9898fad2005eb7692247ee145678d3c81fe80b8ed60c27d9df307b8addd734e5",
+      "manifest": "local\\cc12_native_gui_text_host_prerequisites_41\\audio_enabled_02_manifest.json",
+      "manifest_sha256": "a0eae7fc4b191c018d44467a25ec5b640232a0676dd692dce3226b87c40af89f",
+      "payloads": 8,
+      "payload_hashes_verified": true,
+      "earlier_sealed_archive_unchanged": true
+    }
   }
 }
