@@ -157,9 +157,9 @@ struct GameFrontendHost::Impl {
     GameFontHost& fonts;
     IDirect3DDevice9& device;
     bool widescreen{};
-    // 0109EEA4, the CRT's double-to-int conversion selector. Queried rather than assumed:
-    // the same processor feature the CRT tests decides it.
-    bool sse2_conversion{IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE};
+    // SAME Source capability owned by GameStartupHost through shared drain.
+    // No second hardware query/value or Original0109EEA4 state is installed.
+    const bool& sse2_conversion;
 
     GuiPageRegistry registry;
     std::unique_ptr<VfsGuiPageScripts> page_scripts;
@@ -210,9 +210,10 @@ struct GameFrontendHost::Impl {
     std::size_t node_counter{0};
 
     Impl(GameHostLog& log_in, GameVfsHost& vfs_in, GameScriptHost& scripts_in,
-        GameFontHost& fonts_in, IDirect3DDevice9& device_in, bool widescreen_in)
+        GameFontHost& fonts_in, IDirect3DDevice9& device_in, bool widescreen_in,
+        const bool& sse2_conversion_in)
         : log(log_in), vfs(vfs_in), scripts(scripts_in), fonts(fonts_in), device(device_in),
-          widescreen(widescreen_in) {}
+          widescreen(widescreen_in), sse2_conversion(sse2_conversion_in) {}
 
     ~Impl() {
         for (IDirect3DTexture9* texture : owned_textures) {
@@ -639,8 +640,9 @@ GuiLayoutPage* GameFrontendHost::Impl::load_page(GuiLayoutHost& host, const std:
 }
 
 GameFrontendHost::GameFrontendHost(GameHostLog& log, GameVfsHost& vfs, GameScriptHost& scripts,
-    GameFontHost& fonts, IDirect3DDevice9& device, bool widescreen)
-    : impl_(std::make_unique<Impl>(log, vfs, scripts, fonts, device, widescreen)) {}
+    GameFontHost& fonts, IDirect3DDevice9& device, bool widescreen, const bool& gui_sse2_conversion)
+    : impl_(std::make_unique<Impl>(log, vfs, scripts, fonts, device, widescreen,
+          gui_sse2_conversion)) {}
 GameFrontendHost::~GameFrontendHost() = default;
 
 void GameFrontendHost::run_font_and_gui_startup_0073bae0(const std::string& language_font_path) {

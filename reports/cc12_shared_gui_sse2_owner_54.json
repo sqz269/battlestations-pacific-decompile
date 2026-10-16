@@ -1,0 +1,57 @@
+{
+  "packet": "cc12_shared_gui_sse2_owner_54",
+  "status": "source_owner_and_reference_propagation_canonical_win32_build_and_existing_checks_passed",
+  "analysis_base": "840c983eca0975d46d6fdb8d61f02ad49f65663d",
+  "merged_main": "fdf44765897e1d2082d2ea665c6552fe06ce40e3",
+  "source_scope": ["include/bsp/game_hosts.hpp", "src/game_hosts.cpp", "include/bsp/game_hosts_frontend.hpp", "src/game_hosts_frontend.cpp"],
+  "new_owner": {
+    "class": "GameStartupHost",
+    "storage": "First-declared private mutable std::optional<bool> gui_sse2_conversion_",
+    "accessor": "const bool& gui_sse2_conversion() const noexcept",
+    "query": "IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE",
+    "query_expression_unchanged": true,
+    "lazy": true,
+    "unused_query_count": 0,
+    "used_query_count": 1,
+    "repeated_false_value_is_cached": true,
+    "uninitialized_value_exposed": false,
+    "new_lock_atomic_or_process_global": false,
+    "serialization": "Same existing externally serialized GUI/startup lifetime"
+  },
+  "reference_chain": {
+    "sole_tracked_constructor_caller": "game_hosts.cpp2654 passes gui_sse2_conversion()",
+    "frontend_constructor": "Required constbool& argument; no default",
+    "impl_constructor": "Forwards same reference to constbool& sse2_conversion member",
+    "owned_frontend_bool_and_query_removed": true,
+    "readers_unchanged": ["sprite property conversion288", "GameGuiLayoutHost crt_sse2_conversion constref getter366", "page/property loading433"],
+    "independent_queried_value_copy_added": false,
+    "future_native_text": "Initialize existing crt_sse2_conversion reference field from startup.gui_sse2_conversion(), preserving SAME contained bool"
+  },
+  "lifetime": {
+    "owner_declared_before_all_borrowing_members": true,
+    "destructor": "frontend deletion -> native-font retirement -> shared raw singleton drain, capability alive throughout body",
+    "normal_shutdown": "frontend deletion and font retirement precede shared drain while startup object remains alive",
+    "member_destruction": "All later-declared borrower members destroyed before first-declared capability optional",
+    "future_borrower_requirement": "Retire native Text/factory/pending/retained users before GameStartupHost finishes destruction",
+    "existing_logical_release_order_changed": false
+  },
+  "boundaries": {
+    "original_0109eea4_selector_recovered_or_installed": false,
+    "bitwise_conversion_body_change": false,
+    "other_existing_input_or_decal_cpu_queries_changed": false,
+    "whole_process_query_count_or_allocation_fault_time_equivalence_claimed": false,
+    "new_locale_policy": false,
+    "native_text_activation": false,
+    "game_audio_settings_installation_changes": false,
+    "ghidra_or_ledger_changes": false,
+    "cmake_game_main_font_or_text_files_changed": false
+  },
+  "validation": {
+    "canonical_build": "scripts/build.ps1 exited0; MSVC Win32 Release bsp_game built",
+    "build_log": "local/cc12_shared_gui_sse2_owner_54/build.log",
+    "existing_ctest": {"passed": 2, "failed": 0, "names": ["reconstructed_math", "tool_tests"]},
+    "focused_source_review": "Whole changed getter/constructors, sole tracked constructor caller, current reader identities, normal and exceptional teardown order",
+    "new_tests_or_probes": 0,
+    "original_abi_or_gameplay_proof": false
+  }
+}

@@ -67,12 +67,48 @@ struct GuiTextContentCalls : GuiTextGlyphChildCalls {
     // null locale (current native CRT locale), two valid terminated strings.
     virtual int compare_current_locale_00c0392a(const char16_t*, const char16_t*) = 0;
 };
+
+// Explicit ordinary Source comparison policy; no locale/PTD/global owner.
+// Borrowed-cell mode keeps C03A39's live zero/changed dispatch and requires
+// GuiTextContentCalls' native-current service when changed. Implicit lvalue
+// construction preserves existing positional native aggregate initializers.
+// Source-current mode instead requires its own callback on every reached
+// nonempty comparison. It borrows no Original changed cell and never falls
+// back to the native-current service or an ASCII/current-locale snapshot.
+class GuiTextContentComparison final {
+public:
+    using SourceCurrentCompare = int (*)(void*, const char16_t*, const char16_t*);
+
+    GuiTextContentComparison(const volatile std::int32_t& actual_changed_cell) noexcept;
+    GuiTextContentComparison(std::int32_t&&) = delete;
+    GuiTextContentComparison(const std::int32_t&&) = delete;
+    // Reject a missing callback before any Text/application operation. Context
+    // and callback are borrowed and must remain live. No locale value or
+    // comparison result is cached here.
+    static GuiTextContentComparison source_current(SourceCurrentCompare, void* context);
+    bool uses_source_current() const noexcept { return source_current_ != nullptr; }
+
+    // Same empty-wrapper gates as ABA921..ABA937. Do not add a length-equality
+    // shortcut. Forward these strings' actual terminated pointers unchanged.
+    // Inputs share content's validated null-free domain and remain live for
+    // the call, as do all reached callback/cell/context referents.
+    // Call only at the content equality point, after section/uppercase calls.
+    // Source-current semantics belong to the explicitly supplied current host
+    // service, not Original CRT ABI or non-C Unicode/version equivalence.
+    bool equal_content(const std::u16string& stored, const std::u16string& copied,
+        GuiTextContentCalls& native_calls) const;
+
+private:
+    GuiTextContentComparison(SourceCurrentCompare, void*) noexcept;
+    const volatile std::int32_t* actual_changed_cell_;
+    SourceCurrentCompare source_current_;
+    void* source_context_;
+};
+
 struct GuiTextContentEnvironment {
     const LocaleTables& locale;
     LocaleTextRuntimeHost& locale_runtime;
-    // SAME live CRT mode flag read by00C03A39. Zero takes ASCII-only folding;
-    // nonzero takes the required current-locale comparator. No assumed default.
-    const std::int32_t& crt_locale_changed_0109de1c;
+    GuiTextContentComparison comparison;
     GuiTextBufferServices& buffers;
     GuiTextContentCalls& calls;
 };

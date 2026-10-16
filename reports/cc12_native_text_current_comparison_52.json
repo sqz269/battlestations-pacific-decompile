@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_native_text_current_comparison_52",
+  "created_utc": "2026-10-16T01:43:36.018723+00:00",
+  "status": "explicit_Source_current_equality_capability_build_and_focused_fixture_passed",
+  "worker": "agent/native_crt_wcsicmp_locale_48",
+  "baseline": "fdf44765897e1d2082d2ea665c6552fe06ce40e3",
+  "required_Main_a8c4dd832_ancestor": true,
+  "owned_files": [
+    "include/bsp/gui_text_content.hpp",
+    "src/gui_text_content.cpp",
+    "include/bsp/game_native_text_application.hpp",
+    "src/game_hosts_text.cpp",
+    "docs/CC12_NATIVE_TEXT_CURRENT_COMPARISON_52.md",
+    "reports/cc12_native_text_current_comparison_52.json"
+  ],
+  "owned_Native_addresses": [],
+  "credit": {
+    "new_reconstructed_Original_functions": 0,
+    "Original_ABI": false,
+    "actual_Original_CRT_provider": false,
+    "actual_UCRT_provider": false,
+    "normal_native_Text_activation": false,
+    "game_validated": false
+  },
+  "design": {
+    "type": "bsp::GuiTextContentComparison",
+    "native": "Implicit actual-cell lvalue constructor borrows a live const volatile int32 cell. At equality zero uses the existing unsigned UTF16 ASCII loop; nonzero delegates to existing GuiTextContentCalls native-current service.",
+    "Source_current": "Explicit source_current(function,context) factory preflights a nonnull callback; stores no cell; every reached nonempty equality delegates to that callback at the equality point.",
+    "state": "Private mutually exclusive actual_changed_cell_ or source_current_/source_context_; no default constructor, default service, cell snapshot, locale-name cache or process owner.",
+    "preflight": "Missing Source-current callback throws invalid_argument at view construction. Host requires legacy comparator only in borrowed-cell mode; Source-current host mode may leave it null.",
+    "unexpected_native_call": "Host explicitly throws logic_error if its unused unbound native callback is directly invoked; no alternate comparer or fallback is installed.",
+    "temporary_cells": "int32 rvalue construction deleted; only live actual lvalue cells are admitted by native construction.",
+    "Source_ABI": "Reference field became a comparison value and member names changed; existing positional native aggregate values convert implicitly. Named-member/precompiled consumers need migration/rebuild."
+  },
+  "propagation": {
+    "bindings": "GameNativeTextApplicationBindings::content_comparison",
+    "environment": "GuiTextContentEnvironment::comparison",
+    "host": "Copies the same comparison value into content; native-call preflight observes that mode.",
+    "runtime_refs": "GuiTextRuntimeContentServices already borrows content; no further propagation required.",
+    "no_font_host_or_CMake_edits": true
+  },
+  "exact_seam": {
+    "function": "prepare_gui_text_content_00aba8d0_fragment",
+    "call": "e.comparison.equal_content(text.text, copied, e.calls)",
+    "Original_evidence_identity": "ABA921..ABA94F",
+    "unchanged_prior_order": [
+      "ensure_gui_text_draw_sections_00ab8530(",
+      "std::u16string copied(input)",
+      "locale_uppercase_00a9eba0(",
+      "e.comparison.equal_content(text.text, copied, e.calls)"
+    ],
+    "Source_order_inspection_passed": true,
+    "empty_gates": "stored empty -> copied empty; copied empty with nonempty stored -> false; neither mode invokes comparer.",
+    "nonempty": "No wrapper-length-equality shortcut; delegate exact live stored.c_str()/copied.c_str() pointers.",
+    "no_application_entry_refresh_or_frozen_locale_name": true
+  },
+  "provider_contract_51": {
+    "commit": "6850c08c01005ddc2c75ac38d77f895c363ae3e2",
+    "Root_publication": "c3aa077a8",
+    "documentation": "docs/CC12_NATIVE_GUI_CRT_PROVIDER_CONTRACT_51.md",
+    "report": "reports/cc12_native_gui_crt_provider_contract_51.json",
+    "coordination": "Worker 51 confirmed Lua os.setlocale, bypass paths and earlier callbacks make entry-only refresh insufficient; explicit current Source equality is the honest closure option."
+  },
+  "focused_probe": {
+    "passed": true,
+    "source_current_calls": 4,
+    "native_calls": 1,
+    "real_uppercase_callbacks": 2,
+    "callback_changes_current_state": true,
+    "same_live_string_pointers": true,
+    "no_length_equality_shortcut": true,
+    "empty_gates_preserved": true,
+    "borrowed_cell_live_gate_preserved": true,
+    "missing_source_comparer_rejected": true,
+    "full_gui_invoked": false,
+    "actual_ucrt_provider_added_or_compared": false
+  },
+  "probe_contract": {
+    "library": "Rebuilt production build/win32/Release/bsp_core.lib",
+    "toolchain": "MSVC Win32 /O2 /MD /EHsc /W4 /WX; /link /MANIFEST:EMBED",
+    "machine": "I386",
+    "embedded_asInvoker_manifest": true,
+    "input": "Real locale_uppercase_00a9eba0 invokes fixture LocaleTextRuntimeHost callback, which selects controlled current state; the exact production equality helper observes it immediately and again after a later change.",
+    "checks": [
+      "fresh Source-current state",
+      "same live string pointers",
+      "unequal lengths still delegated",
+      "all empty gates",
+      "native zero ASCII/nonzero callback route unchanged",
+      "uppercase callback live native flag mutation",
+      "Source-current null callback rejected",
+      "implicit prior native aggregate conversion"
+    ],
+    "no_production_fallback_or_test_stub_added": true,
+    "full_GUI_invoked": false,
+    "actual_Source_CRT_locale_changed": false,
+    "actual_UCRT_adapter_or_provider_added_or_compared": false,
+    "exe_sha256": "c6097dabb352b92c1414de38179b77b1af08ef63e8c47a4577657832b59b058c",
+    "private_artifacts": "local/cc12_native_text_current_comparison_52/{probe.cpp,build_probe.cmd,build_probe.log,probe_results.json,current_compare_probe.exe,build_win32.log}"
+  },
+  "validation": {
+    "scripts_build_ps1_exit_code": 0,
+    "existing_ctest_passed": 3,
+    "existing_ctest_total": 3,
+    "existing_suites": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "build_log_sha256": "3030aad7086bdfa4e59ad860696222b2a68bef95a8cc66d2b3313c870e586e00",
+    "focused_same_helper_case_passed": true,
+    "new_test_framework_or_CMake_source": false,
+    "Ghidra_or_Native_ledger_mutation": false,
+    "installation_or_normal_host_activation": false
+  },
+  "limits": [
+    "Explicit callback supplies its current Source semantics and owns its synchronization and borrowed lifetime contract.",
+    "No actual UCRT adapter/provider was added or compared, and no locale setter is called.",
+    "Modern host substitution does not prove Original-entry, Original locale/PTD type, non-C Unicode/version, SEH or game equivalence.",
+    "Reconstructed parents 46/48/49 retain their actual Original CRT domain requirements.",
+    "Normal native Text composition remains unactivated; this is an ordinary Source API capability."
+  ],
+  "source_sha256": {
+    "include/bsp/gui_text_content.hpp": "8f2198eb3e3c761abac885b62b0c0576f1c44e7e40315a706fa53109544d5b81",
+    "src/gui_text_content.cpp": "bf41cef8a8d3f041abc1452499a4c9b7e20fc5deb23cd61baf34d7b5364eab9b",
+    "include/bsp/game_native_text_application.hpp": "751f51f0b099f43bef1c117fb52779992518ff172a1ca6073db2506a3cc48f1e",
+    "src/game_hosts_text.cpp": "d298a6c7164573445fe3e3501d972ca7791a1ca3c75429115bc7fd24bd569a8e"
+  }
+}

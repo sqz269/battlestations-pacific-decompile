@@ -2,6 +2,7 @@
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_native_font_application.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/gui_text_runtime_factory.hpp"
 #include "bsp/native_font_resources.hpp"
 #include "bsp/font_registry_startup.hpp"
 #include "bsp/fingerprint_payload.hpp"
@@ -12,6 +13,7 @@
 
 namespace bsp::game {
 struct GameFontHost::Impl {
+    enum class TextBinding { unexported, export_pending, bind_entered, bound };
     GameHostLog& log;
     GameVfsHost& vfs;
     GameScriptHost& scripts;
@@ -20,6 +22,8 @@ struct GameFontHost::Impl {
     bool native_retirement_attempted{};
     bool native_retired{};
     bool native_failed{};
+    TextBinding text_binding{TextBinding::unexported};
+    NativeFontResourceOwners* exported_fonts{};
     FingerprintPayload fingerprint;
     std::size_t opens{};
     bool initialized{};
@@ -113,10 +117,51 @@ void GameFontHost::preload_fingerprint_payload_00be9760() {
         host.fingerprint.decoded() ? 1 : 0);
 }
 
+NativeFontResourceOwners& GameFontHost::native_fonts() {
+    auto& host = *impl_;
+    if (!host.initialized || !host.native.ready() || host.native_failed ||
+        host.native_retirement_attempted || host.native_retired ||
+        host.text_binding != Impl::TextBinding::unexported)
+        throw std::logic_error("Native font host exports its complete resources only once before retirement");
+    // Before the producer's irreversible export, and before the caller can
+    // construct any factory. A constructor failure cannot lose this gap state.
+    host.text_binding = Impl::TextBinding::export_pending;
+    try {
+        host.exported_fonts = &host.native.native_fonts();
+        return *host.exported_fonts;
+    } catch (...) {
+        host.native_failed = true;
+        throw;
+    }
+}
+
+void GameFontHost::bind_text_factory(GuiTextRuntimeFactory& factory) {
+    auto& host = *impl_;
+    if (host.native_failed || host.native_retirement_attempted || host.native_retired ||
+        !host.initialized || !host.native.ready() ||
+        host.text_binding != Impl::TextBinding::export_pending)
+        throw std::logic_error("Native font host binds one factory only after its sole export");
+    // The first admitted attempt includes identity/emptiness preflight. Even
+    // its rejection cannot be retried or authorize cleanup of exported fonts.
+    host.text_binding = Impl::TextBinding::bind_entered;
+    try {
+        if (!host.exported_fonts || &factory.native_font_resources() != host.exported_fonts ||
+            factory.retained_allocation_count() != 0)
+            throw std::invalid_argument("Native font host requires the same empty Text factory resource domain");
+        host.native.bind_text_factory(factory);
+        host.text_binding = Impl::TextBinding::bound; // Only after exact-factory success.
+    } catch (...) {
+        host.native_failed = true;
+        throw;
+    }
+}
+
 void GameFontHost::retire_native_fonts() {
     auto& host = *impl_;
     if (host.native_retired) return;
-    if (host.native_failed || host.native_retirement_attempted)
+    if (host.native_failed || host.native_retirement_attempted ||
+        host.text_binding == Impl::TextBinding::export_pending ||
+        host.text_binding == Impl::TextBinding::bind_entered)
         throw std::logic_error("Native font host cannot replay an interrupted operation");
     host.native_retirement_attempted = true; // Before every callee preflight.
     try {
@@ -137,6 +182,8 @@ void GameFontHost::retire_native_fonts() {
 bool GameFontHost::native_operation_interrupted() const noexcept {
     const auto& host = *impl_;
     return host.native_failed ||
+        host.text_binding == Impl::TextBinding::export_pending ||
+        host.text_binding == Impl::TextBinding::bind_entered ||
         (host.native_retirement_attempted && !host.native_retired) ||
         (!host.native.ready() && host.native.requires_process_retention());
 }
