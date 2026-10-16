@@ -80,8 +80,45 @@ Normal locked annotation preserved the correct library identity and every
 prior comment. Prior values are logged in
 `local/ghidra-annotations-20261016T042613Z.json`;the project was saved,export
 forced fresh,and name/old-library-comment/new-evidence readback verified in
-`local/goal_oct15_crt_ascii_strnicmp_after_comments.json`. Root registration,
-the actual normal Win32 gate,
-and emitted-object inspection remain pending. No worker CMake queue, build,
-probe, test framework, or new test is introduced. Static/build evidence does
-not establish Original binary/private ABI, register/flags/fault or game proof.
+`local/goal_oct15_crt_ascii_strnicmp_after_comments.json`. Root registered the Source; the actual normal MSVC Release Win32 gate passed at
+`12523a9f6fdc6a7645f02234ae81b44e8bee173b`: all three existing CTests in
+13.42 seconds. Immutable root receipt SHA256:
+`c482ed444869ee019e1308fa09c5975c5073c5a0c407ae4b9ea31995fd322ab2`.
+Actual build-log SHA256:
+`f624ac2ae47e024262893892840ab393eaca945cd3d78d40304c5c221035ffd9`.
+Source/header pins were asserted unchanged in both worktrees. One project
+Source occurrence and one identical archive object are verified in the receipt.
+No worker CMake edit,duplicate build,probe or new test was used.
+
+The entire actual normal object and symbols were reviewed independently by
+worker and primary. Its public function is172 bytes/78 instructions;helpers compare_bytes,
+read_byte and read_word are23,10 and19 bytes,for224 total text bytes. The
+1368-byte object SHA256 is
+`3615f3481a3055797df6b4e00cc7857965015983998d51c77ec1c7121c4af073`.
+All text bytes were decoded;there are no emitted calls,relocations or undefined
+external symbols. Supporting full review with artifact/function hashes is
+`local/goal_oct15_crt_ascii_strnicmp_emitted_review.json`.
+
+Count DWORD load+18h precedes zero branch+25h and left/right pointer DWORD
+loads+2Ah/+3Bh. Current left/right BYTEs at+43h/+45h are both read before
+left-NUL testing;the repeated+8Ah/+8Ch reads preserve the same rule. Either
+NUL reaches raw comparison before increments/folds/decrement. Unsigned A-Z
+checks and CMOVA fold left before right. Only folded equality decrements the
+retained private counter at+84h. SBB/AND FFFFFFFEh/INC gives exact-1/+1,while
+the zero tail returns0. All three helper bodies were reviewed in full.
+
+Compiler differences include a new172-byte public frame instead of97 Original
+bytes,CMOVA folds,a normalized result idiom,and separate helper COMDATs. It
+reuses new C++`[EBP+8]` as raw-word-address then captured-count backing,with
+F8/FC/F4 temporaries. Those compiler-private cells are disjoint from admitted
+actual cells/payload;they add no Original argument-home alias or frame proof.
+The existing checks do not execute this leaf,and no Original entry/new body
+runtime execution or differential probe was performed. Whole actual-storage
+Source is ready;Original binary/private ABI,register/flags/fault/game and all
+parent completion claims remain separate.
+
+Final gate evidence was appended under the normal Ghidra write lock. Prior
+values are logged in`local/ghidra-annotations-20261016T043149Z.json`;the
+project was saved,export refreshed,and final readback in
+`local/goal_oct15_crt_ascii_strnicmp_final_comments.json` verifies the
+correct library name,every old comment,and final validation evidence.
