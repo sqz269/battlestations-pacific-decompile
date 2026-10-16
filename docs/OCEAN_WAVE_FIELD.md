@@ -1461,3 +1461,22 @@ queue dies (ESMP08 with the recall plans; any carrier row with deck crashes), it
 survivors that cycled final -> abort land on a later pass: more `state 5F8 -> 620`, more `stowed plane stock return`
 sends and `slot_returns`, fewer 5B8 survivors at the end, and launches that continue later into ESMP08. Rows with no
 queue deaths: no erasures, gameplay identical (USN04 45000 control).
+
+### 39.1 The pair and the verdict: ON
+
+Exports of 6cfd0ff18: OFF `local\p12_off6c` (this tree's build), ON `local\p12_qc` (exe 7ADB78F84D1D). Reference env,
+`--stop-after-end 40`, no jitter; logs `local\p12qc_<off|on>_<e8|u4>.log` with manifests; diffs `local\p12qc_diff_<row>.txt`.
+
+| Row | pair_diff | Note |
+| --- | --- | --- |
+| USN04 45000 (no plan) | 1, gameplay identical | no erasures (no landing queue deaths) |
+| ESMP08 60000 (`local\p11_e8_ra.txt`) | 3, moved | 17 erasures; first moved death Chitose_sqn14\|.-3 at 957.99 s (ON only) |
+
+ESMP08 mechanism. The erasures are the stowed planes (mode 4, path -1.0, once the elevator has taken them) and the
+planes that die in the queue (Zuiho_sqn15\|.-2 at 861.96 s path 34.8, Chitose_sqn14\|.-2 at 872.36 s path 33.7,
+Chiyoda_sqn13\|.-2/.-3 at 1390/1402 s). With its mate's record gone, Chitose_sqn14\|.-3 no longer aborts: its first
+pass after the erase (final at 939.14 s) reaches the deck and dies there at 957.99 s in the same deck crash as its mate
+(crash sweep victim Chitose; Chitose_sqn37 was raised at 949.09 s and in its takeoff run at 955.74 s). So the predicted
+"lands on a later pass" became "reaches the deck on the next pass": the cycle is gone, and the death is the separate
+deck-crash gap of section 39. At 3000 s OFF has one landing plane alive (in abort), ON none; air-ops releases 67 -> 72, squadrons created 74 -> 78, US ship deaths the same eleven (Mobile, Grayson, Dunlap and
+Santa Fe 2-37 s earlier). The mechanism is the image's, so the switch is **flipped ON**.
