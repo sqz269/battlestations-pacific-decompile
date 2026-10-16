@@ -183,8 +183,9 @@ NativeFontResourceOwners& GameNativeFontApplication::native_fonts() {
 void GameNativeFontApplication::bind_text_factory(GuiTextRuntimeFactory& factory) {
     auto& app = *impl_;
     require(ready() && app.fonts_exported && &factory.native_font_resources() == &app.fonts &&
+        factory.native_font_registry() == &app.registry &&
         (!app.text_factory || app.text_factory == &factory) && factory.retained_allocation_count() == 0,
-        "Native font borrowers require the same empty canonical Text factory before construction");
+        "Native font borrowers require the same registry, resources and empty canonical Text factory before construction");
     app.text_factory = &factory;
 }
 void GameNativeFontApplication::retire_fonts() {
