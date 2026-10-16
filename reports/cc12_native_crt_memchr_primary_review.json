@@ -1,6 +1,6 @@
 {
   "schema": "bsp.cc12.native_crt_memchr.primary.v1",
-  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+  "status": "whole_ordinary_Source_Main3checks_independent_actual_frame_variant_archive_pass",
   "Source_commit": "f33c39c8a17fd1719616529fcc6bb4083ce6a22b",
   "Source": "src/native_crt_memchr.cpp",
   "header": "include/bsp/native_crt_memchr.hpp",
@@ -28,8 +28,8 @@
   "before_candidates": 9249,
   "worker_baselines": 0,
   "Main_registered": true,
-  "Main_build": "pending",
-  "actual_compiler_archive_gate": "pending",
+  "Main_build": "pass_3_existing_CTests",
+  "actual_compiler_archive_gate": "pass",
   "contract": [
     "New MSVC Win32 ordinary typed interface over the genuine passed byte storage: void* __cdecl bsp::find_native_crt_byte_00bfa700(void*, int, unsigned int). Pointer/int/count widths are32bits, byte8bits, little endian. Keep correct Original library name _memchr.",
     "Count0 accepts any pointer including null and returns null before payload reads or target conversion. Positive count requires a determinate readable stable requested region in one genuine live allocation. Endpoint may be within or one past that allocation, admitting interior subranges and prefixes. Actual32bit extent and pointer advances do not wrap. No NUL, padding, typed uint allocation, or initially aligned base requirement.",
@@ -41,5 +41,8 @@
   ],
   "Original_ABI_compatible": false,
   "new_Source_body_executed": false,
-  "game_validated": false
+  "game_validated": false,
+  "Main_gate": "pass",
+  "Main_validation": "reports/cc12_native_crt_memchr_Main_validation.json",
+  "Source_credit": 1
 }

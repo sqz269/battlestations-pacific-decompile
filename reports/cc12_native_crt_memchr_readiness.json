@@ -1,12 +1,12 @@
 {
   "schema": "bsp.cc12.native_crt_memchr.readiness.v1",
-  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+  "status": "whole_ordinary_Source_Main3checks_independent_actual_frame_variant_archive_pass",
   "address": "00bfa700",
   "Original_library_name": "_memchr",
   "source_ready": true,
   "Source_authorized": true,
   "Source_implemented": true,
-  "Source_credit": 0,
+  "Source_credit": 1,
   "owned_ranges_inclusive": [
     [
       "00bfa700",
@@ -61,11 +61,14 @@
   ],
   "Root_static_math_review": "Let c1,c2,c3 be carries from the first three byte additions in x+0x7efefeff. Filter bits8/16/24 are1 xor their preceding carry, so any zero low lane sets a bit. A zero high lane also sets bit31. If all lanes are nonzero, all lower carries are1; top sum=(a3+0x7f)mod256 and bit31 passes only at a3=0x80. Thus no match is missed, and the one no-match high-lane false-positive class is rejected by the required reread and ordered comparisons. Static proof only; no enumerator or body execution.",
   "Root_bounds_review": "At any peel/tail BYTE read remaining>0. The unsigned subtract-four carry gate admits a word only when remaining>=4; after the word the residual controls another complete word or0..3tail. Genuine pointer increases stay in the requested region or its endpoint; exact count and alignment, no signed count limit added.",
-  "Main_gate": "pending_normal_Main_build_and_independent_actual_variant_archive_review",
+  "Main_gate": "pass",
   "Original_ABI_compatible": false,
   "new_Source_body_executed": false,
   "game_validated": false,
   "Source_commit": "f33c39c8a17fd1719616529fcc6bb4083ce6a22b",
   "primary_review": "reports/cc12_native_crt_memchr_primary_review.json",
-  "Main_registered": true
+  "Main_registered": true,
+  "Main_build": "pass_3_existing_CTests",
+  "actual_compiler_archive_gate": "pass",
+  "Main_validation": "reports/cc12_native_crt_memchr_Main_validation.json"
 }

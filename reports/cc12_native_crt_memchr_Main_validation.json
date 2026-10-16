@@ -1,0 +1,93 @@
+{
+  "schema": "bsp.cc12.native_crt_memchr.Main_validation.v1",
+  "status": "whole_ordinary_Source_Main3checks_independent_actual_frame_variant_archive_pass",
+  "Source_commit": "f33c39c8a17fd1719616529fcc6bb4083ce6a22b",
+  "Main_commit": "2f6759bacd1ed270aaa2aede45bbb94203dbb4ab",
+  "normal_Main_build": {
+    "command": "./scripts/build.ps1",
+    "actual_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_memchr_Main_build01\\actual_build_receipt.DATA.json",
+      "bytes": 700,
+      "sha256": "8a7523ab5079fb16692751e31c05ba843a7b415c3209916d55e4ca0fda04094a"
+    },
+    "actual_stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_memchr_Main_build01\\actual_stdout.bin",
+      "bytes": 3755,
+      "sha256": "bff9063df08e7cfb911342dcd81b2e9e58b559980095493c687de3ebf17960ba"
+    },
+    "exit_code": 0,
+    "existing_CTests_passed": 3,
+    "test_seconds": 8.93,
+    "recorded_inputs_unchanged": 5303,
+    "actual_selected_compiler_inputs": 2,
+    "before": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_memchr_Main_build01\\before.DATA.json",
+      "bytes": 1874451,
+      "sha256": "c3bad4b1b2a206e6c4d941f4071bb85763d867b5e2452471b4dcbf881ba14d23"
+    },
+    "after": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_memchr_Main_build01\\after.DATA.json",
+      "bytes": 8166,
+      "sha256": "0d810a20f554f004fec5d3f2707b5d513c96866ed4e0cde435018e4defb11cdf"
+    },
+    "elapsed_seconds_qualification": "Receipt elapsed includes immediate artifact capture; ended_utc is actual subprocess exit."
+  },
+  "Root_actual_Main_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_memchr_integration_20261016\\Main_primary_review.DATA.json",
+    "bytes": 2334,
+    "sha256": "7ceb423fb988b14cb005d308cfeedbe8bada92567fa25ca317a280d566457366"
+  },
+  "registration": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_memchr_integration_20261016\\registration_verification.DATA.json",
+    "bytes": 669,
+    "sha256": "a8a67b444160a9e533969177ffa6b79c670128014ecf1d17ac59266afaef4d1b"
+  },
+  "archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_memchr_integration_20261016\\Main_primary_archive.DATA.json",
+    "bytes": 884143,
+    "sha256": "09e0e855480a471a53de8fc12b5e34dd3874a31856141abf5cdf302f00851278"
+  },
+  "object": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_memchr_Main_build01\\frozen\\native_crt_memchr.obj",
+    "bytes": 1074,
+    "sha256": "898717cdc5672dd08d75cedaf7876f724c6d77811ca7a56b1d3d02c9728c18f0"
+  },
+  "whole_ordinary_function_credit": 1,
+  "Source_credit": 1,
+  "strict_compiles": 1,
+  "Main_selected_compiles": 1,
+  "worker_baselines": 0,
+  "new_tests": 0,
+  "new_probes": 0,
+  "existing_linker_warning": "Unrelated existing LNK4006 duplicate spawn_request_id_matches retained, not fixed.",
+  "qualifications": [
+    "Source1 working/checker report CRLF versus canonical Git LF only.",
+    "5303 recorded compiler family/selectedTU/tracked Main Source-build inputs unchanged; actual CL.read selected closure2 and CL.command reviewed. No hermetic OS/loader/environment or whole-all-target dependency closure claim.",
+    "Full strict104 and actual Main112 rows read independently; Main frame/code/metadata differ, no matching recompile or binary ABI claim.",
+    "Correct Original library name _memchr retained. New typed API is not drop-in Original ABI and does not prove Original caller binding, runtime or game behavior."
+  ],
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "game_validated": false,
+  "actual_annotation_tools": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_memchr_integration_20261016\\actual_annotation_tools.DATA.json",
+    "bytes": 545,
+    "sha256": "d8bed618a01796a5214c23ba4ddfdd7465af81b7f674f0c2f59b1782506e2cec"
+  },
+  "actual_export_tools": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_memchr_integration_20261016\\actual_export_tools.DATA.json",
+    "bytes": 471,
+    "sha256": "9896da6b62d5ff3648eb831edc56656dd6c8ed938fb945ae6a8c5015097dc463"
+  },
+  "final_required_Root_checker": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_memchr_integration_20261016\\final_required_Root_checker.DATA.json",
+    "bytes": 965,
+    "sha256": "be200f026859554b7e3d20c7b3225e9fd10319132c12debfdb2e896010a333e0"
+  },
+  "saved_prior_annotation_journal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\ghidra-annotations-20261016T052425Z.json",
+    "bytes": 982,
+    "sha256": "7f195cce39241d7c3b34c38fcb3b7027516458615fd2a5d9f5dfd664a85cac79"
+  },
+  "annotation_qualification": "Existing correct _memchr name preserved, evidence comments appended; prior values journaled, supported annotation tool took Ghidra write lock and saved existing verified project/program. Export refreshed."
+}
