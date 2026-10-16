@@ -1,0 +1,418 @@
+{
+  "packet": "cc12_native_gui_frame_box_raw_clip_identity_readiness_158",
+  "status": "read_only_actual_clip_receiver_and_canonical_frame_box_identity_seams_pinned",
+  "baseline": "6ef581090021e4aac6b4df200e77a6561a1db675",
+  "refresh": {
+    "exact_files": 45,
+    "merge_exit_code": 0,
+    "temporary_lease_released": true,
+    "earlier_28d_refresh_queued_behind_root156": true
+  },
+  "source_ready": false,
+  "existing_primitive_providers_ready_on_their_documented_domains": true,
+  "new_source_body_credit": false,
+  "source_ledger_ghidra_mutations": 0,
+  "builds_tests_probes": 0,
+  "production_activation": false,
+  "original": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_disk_selected_spans": 17,
+    "live_disk_selected_bytes": 939,
+    "whole_functions": [
+      {
+        "address": "00aa9f10",
+        "exclusive_end": "00aaa0e9",
+        "bytes": 473,
+        "starts": 146,
+        "abi": "ECX actual widget, stacked material, RET4 atAAA0D7; physical final JMP atAAA0E4"
+      },
+      {
+        "address": "00b18a40",
+        "exclusive_end": "00b18a9b",
+        "bytes": 91,
+        "starts": 33,
+        "abi": "ECX material, stacked incoming actual owner/exact low-byte retain flag, RET8"
+      },
+      {
+        "address": "00a9e110",
+        "exclusive_end": "00a9e114",
+        "bytes": 4,
+        "starts": 2,
+        "abi": "ECX actual widget, EAX current DWORD60, RET; existing Source leaf"
+      }
+    ],
+    "caller_slice": {
+      "address": "00ad10ef",
+      "exclusive_end": "00ad1101",
+      "bytes": 18,
+      "starts": 7,
+      "not_whole_ad0d80": true
+    }
+  },
+  "calls": [
+    {
+      "address": "00aa9f6e",
+      "native": "0041dd40",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aa9f89",
+      "native": "00bf7680",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aa9fa1",
+      "native": "00b18b20",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aa9fc0",
+      "native": "00419cc0",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aa9fc7",
+      "native": "00bd1510",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aa9fea",
+      "native": "0041e870",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa005",
+      "native": "00b18b00",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa021",
+      "native": "00419cc0",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa028",
+      "native": "00bd1510",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa036",
+      "native": "0041e870",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa053",
+      "native": "00b18ac0",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa06f",
+      "native": "00419cc0",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa076",
+      "native": "00bd1510",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa084",
+      "native": "0041e870",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa09d",
+      "native": "00b18b20",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa0b9",
+      "native": "00419cc0",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa0c0",
+      "native": "00bd1510",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00ad10f2",
+      "native": "00aa9f10",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad10fc",
+      "native": "00b18a40",
+      "function": "00ad0d80",
+      "kind": "call"
+    }
+  ],
+  "call_scope": {
+    "aa9f10_direct": 17,
+    "aa9f10_indirect_type_calls": 1,
+    "b18a40_indirect_instructions": 3,
+    "selected_ad0d80_direct": 2,
+    "arbitrary_dynamic_dispatch_not_closed": true
+  },
+  "actual_clip_schedule": {
+    "ancestor": "Current raw profile/current+5C, genuine target result16; only nonmatch reloads same receiver current+70.",
+    "existing_raw_type": "read_native_gui_widget_type_00a9e110; both D5D058 and D5D130+5C=A9E110; actual current DWORD60.",
+    "enabled": "Capture matching ancestor/one, write same widgetE8, register cClip, return name, reload currentE8; ordered zero skips active parameters, unordered active.",
+    "sources": [
+      "same widget+E8 one float",
+      "captured actual type16 ancestor+EC two floats",
+      "captured actual type16 ancestor+F4 four floats",
+      "same live aspect cell corresponding toE12FC0"
+    ],
+    "literals": {
+      "00d5c1c4": "cClip",
+      "00d5c1b8": "cClipCenter",
+      "00d5c1ac": "cClipBorder",
+      "00d19804": "cAspectRatio"
+    },
+    "no_retain_or_inactive_defaults": true,
+    "retained_ancestor_not_implied_by_frame_box_count": true,
+    "initialized_clip_cells_not_implied_by_raw_constructor_success": true
+  },
+  "clip_eh": {
+    "handler_entry": "00cb7510",
+    "handler_jump_instruction": "00cb7515",
+    "func_info": "00dedd74",
+    "unwind_map": "00dedd54",
+    "max_state": 4,
+    "states": [
+      {
+        "state": 0,
+        "predecessor": -1,
+        "action": "00cb74f0",
+        "header": "FH3 EBP-1C"
+      },
+      {
+        "state": 1,
+        "predecessor": -1,
+        "action": "00cb74f8",
+        "header": "FH3 EBP-1C"
+      },
+      {
+        "state": 2,
+        "predecessor": -1,
+        "action": "00cb7500",
+        "header": "FH3 EBP-1C"
+      },
+      {
+        "state": 3,
+        "predecessor": -1,
+        "action": "00cb7508",
+        "header": "FH3 EBP-14"
+      }
+    ],
+    "actions_tail_to": "0041dd20",
+    "arming": "After name construction, immediately before respective registration; normal return capturesDATA before consuming state then current len+1/getter/return.",
+    "no_parameter_or_owner_rollback_in_map": true,
+    "native_private_eh_source_equivalence": false
+  },
+  "provider_map": [
+    {
+      "api": "register_native_gui_clip_parameters_00aa9f10",
+      "files": [
+        "include/bsp/gui_native_clip_parameters.hpp",
+        "src/gui_native_clip_parameters.cpp"
+      ],
+      "provided": true,
+      "domain": "Retained canonical GuiWidgetOwner/runtime and actual material/parameter storage, not raw Box/parent70 view."
+    },
+    {
+      "api": "read_native_gui_widget_type_00a9e110",
+      "files": [
+        "include/bsp/native_window_focus_dispatch.hpp",
+        "src/native_window_focus_dispatch.cpp"
+      ],
+      "provided": true,
+      "domain": "Actual aligned current DWORD60; no new leaf required."
+    },
+    {
+      "api": "register_native_material_parameter_00b17e10 / bind_native_material_parameter_00b44d60",
+      "files": [
+        "include/bsp/native_material_parameters.hpp",
+        "src/native_material_parameters.cpp"
+      ],
+      "provided": true,
+      "domain": "Actual material, parameter pool/name/comparer/current effect domain; borrowed source lifetime remains external."
+    },
+    {
+      "api": "set_native_material_parameter_owner_00b18a40",
+      "files": [
+        "include/bsp/native_material_owner.hpp",
+        "src/native_material_owner.cpp"
+      ],
+      "provided": true,
+      "domain": "Old captured owner decrement/current terminal before clear/publication; exact byte then incoming increment, equal too."
+    },
+    {
+      "api": "NativeRenderActualOwnerRegistry / dispatch_native_render_actual_owner_zero",
+      "files": [
+        "include/bsp/native_render_context.hpp",
+        "src/native_render_context.cpp"
+      ],
+      "provided": true,
+      "domain": "One canonical companion must borrow same live+04, no replacement/owner/lifetime effect; zero dispatch performs no second decrement."
+    },
+    {
+      "api": "construct_native_gui_frame_box_default_00ad2600",
+      "files": [
+        "include/bsp/native_gui_frame_box_factory.hpp",
+        "src/native_gui_frame_box_factory.cpp"
+      ],
+      "provided": true,
+      "domain": "Real successful AA9390(type18)/actual prefix count1 and derived preimage contract; no companion admission or whole AA1A40 claim."
+    },
+    {
+      "api": "destroy_native_gui_frame_box_00ad2880 / scalar_delete_native_gui_frame_box_00ad29b0",
+      "files": [
+        "include/bsp/native_gui_frame_box_lifetime.hpp",
+        "src/native_gui_frame_box_lifetime.cpp"
+      ],
+      "provided": true,
+      "domain": "Prepared persistent125/119/fresh111 and complete same actual graph/providers, matching initializedF8C188 pool/trailer; no unfinished/failed copy."
+    },
+    {
+      "api": "canonical raw FrameBox reference/terminal binding",
+      "provided": false,
+      "domain": "Existing Group/Text companions target their own profiles; no FrameBox registration in inspected construction/lifetime paths."
+    }
+  ],
+  "lifetime_boundary": {
+    "native_caller_order": "Raw clip registration returns BEFORE B18A40 retains the SAME raw Box with flag1.",
+    "pre_bind_failure": "Material parameters may already borrow raw E8/ancestor fields without a Box credit; independent full graph retention precedes entry.",
+    "retained_box_is_not_ancestor_retention": true,
+    "terminal_profile": {
+      "current00": "00bd30e0",
+      "reloaded_current04": "00ad29b0",
+      "flags": 1
+    },
+    "same_pool": {
+      "global": "00f8c188",
+      "payload": "11c",
+      "stride": "120",
+      "hidden_trailer": "11c"
+    },
+    "retirement": "Use genuine125 with preprepared119/current-range obligations; explicit deletion has no count gate. Do not inspect storage after possible slot return.",
+    "failure": "Retain same partial graph and failed metadata outside unwind; no replay/reset/post-failure rediscovery; Source canonical zero terminal may terminate."
+  },
+  "smallest_followons_not_implemented": [
+    {
+      "files": [
+        "include/bsp/native_gui_widget_clip_storage.hpp",
+        "src/native_gui_widget_clip_storage.cpp"
+      ],
+      "api": "register_native_gui_widget_clip_storage_00aa9f10(void*, NativeMaterialStorage&, NativeGuiWidgetClipBindings&, NativeGuiWidgetClipOperation&)",
+      "domain": "Known actual A9E110 ancestor query, genuine initialized raw fields/current tables/literals/one/zero/aspect and same raw string/material providers; persistent exact name frames/actions, no snapshots/retain/rollback."
+    },
+    {
+      "files": [
+        "include/bsp/native_gui_frame_box_identity.hpp",
+        "src/native_gui_frame_box_identity.cpp"
+      ],
+      "api": "One noncopyable canonical raw FrameBox companion over actual+04/registry/prepared125/119/matching pool.",
+      "domain": "Successful complete stable raw object/graph before admission; current00/current04 real terminal; no preparation on zero, implicit replacement, constructor-completion inference, reset or arbitrary profile fallback."
+    }
+  ],
+  "verification": {
+    "calls": {
+      "report_rows_checked": 19,
+      "doc_claims_checked": 8,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 1,
+      "warning_expected": "Source aspect_ratio accessor names data cellE12FC0, not a Native function.",
+      "receipt": "local/cc12_native_gui_frame_box_raw_clip_identity_readiness_158/call_verification.txt"
+    },
+    "provider_inputs_frozen_equal_published_baseline": 50,
+    "native_live_disk": true,
+    "original_full_hash_unchanged": true,
+    "new_cpp_or_header": false,
+    "source_credit": false,
+    "abi_runtime_visual_or_gameplay_proof": false,
+    "full_primary_doc_review": "PASS"
+  },
+  "artifacts": [
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RAW_CLIP_IDENTITY_READINESS_158.md",
+      "bytes": 14335,
+      "sha256": "f353ee7d1bb24299dfc17e7752da3302a88f1c294f87cc9e6042f6eae1b5327a"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_raw_clip_identity_readiness_158/native_bytes.json",
+      "bytes": 7998,
+      "sha256": "45d8ac4b58d26c782fe1fdb2fd444850bcd5decbb9feba5cfa60bcddaaf61c54"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_raw_clip_identity_readiness_158/provider_inputs.json",
+      "bytes": 17027,
+      "sha256": "b2723c083c728e3edf660249444e6d0dce665eb31cd17b7b61704dd986ce0c56"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_raw_clip_identity_readiness_158/capture_summary.json",
+      "bytes": 324,
+      "sha256": "ed339555ee65404ea4588a30166299790df4e71b030e5d31d8d803e73f3410f1"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_raw_clip_identity_readiness_158/dependency_merge.log",
+      "bytes": 5259,
+      "sha256": "88f391712a02704d5bda497158f5256658c2987a61ba09907f0e2ee95ae34dd3"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_raw_clip_identity_readiness_158/whole_clip_registration_disk_listing.txt",
+      "bytes": 6931,
+      "sha256": "8448935e306ef4740fdb9ea2e1466b8f9ac84478308e776d44d04c49e058a9d7"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_raw_clip_identity_readiness_158/whole_parameter_owner_binding_disk_listing.txt",
+      "bytes": 1586,
+      "sha256": "5debedd7b5cd3f27436c89793ae822000f81d7c95d4b282f78d3d001c1bb2e23"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_raw_clip_identity_readiness_158/selected_frame_box_call_site_disk_listing.txt",
+      "bytes": 296,
+      "sha256": "b0141f1b5c223aed3ddf9d3ba944a1a9f5e3394f895ca37d4a4b1aa6a1885447"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_raw_clip_identity_readiness_158/verified_backend.txt",
+      "bytes": 39,
+      "sha256": "80c724ed8328690aaaa502d9ad6954b39390cfb6e51d488c4eeade41ef707ad0"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_raw_clip_identity_readiness_158/call_verification.txt",
+      "bytes": 677,
+      "sha256": "34685c580fc2076032fa8f4b2f17cdbf170e98af653c9d351e6f85177ac4969c"
+    }
+  ],
+  "private_manifest": {
+    "path": "local/cc12_native_gui_frame_box_raw_clip_identity_readiness_158/manifest.json",
+    "sha256": "c618a4e298ef99600b112389676f9ba0c029384a887423f4d851882356453c78",
+    "item_count": 115,
+    "total_bytes": 622748
+  },
+  "limits": "Read-only selected evidence. No whole raw AD0D80, arbitrary type/terminal dispatch, populated native clip host, private ABI/EH, new Source or runtime/retirement proof."
+}

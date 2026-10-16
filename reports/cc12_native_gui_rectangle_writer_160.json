@@ -1,0 +1,67 @@
+{
+  "packet": "cc12_native_gui_rectangle_writer_160",
+  "status": "whole_actual_storage_rectangle_writer_exact_550byte_strict_and_canonical_win32_existing_checks_pass_no_execution",
+  "compiled_commit": "f9cad132e99442ad413ce638d1e637efcaddf3d9",
+  "source_commit": "88648bb7a37467c1dea43d0cad2ffcacfb2c21aa",
+  "function": {
+    "address": "00acf260",
+    "name": "write_native_gui_rectangle_00acf260",
+    "source": "src/native_gui_rectangle_writer.cpp",
+    "header": "include/bsp/native_gui_rectangle_writer.hpp",
+    "status": "whole_actual_storage_rectangle_writer_exact_550byte_strict_and_canonical_win32_existing_checks_pass_no_execution",
+    "evidence": "CC12 Source160: whole550B/170starts, no calls/branches/relocations. Literal naked body exactly matches complete Original in strict and actual canonical Core. Actual current stream08/0C/10/28 and rectangle/index read order, wrapped32 addresses, per-vertex position then increment then saved-index UV, six expanded TL/TR/BR/TL/BR/BL vertices and mixed x87/SSE retained. Explicit stdcall stack4args/RET10, ECX unconsumed. Existing semantic Source/name/comment preserved, no duplicate Native-address credit. Caller retains genuine live mapping/backing and valid reached accesses including overlap feedback, excludes private stack alias. No guard/owner/allocation/cleanup/wholeACF9B0/AD0D80/caller-adoption/runtime claim.",
+    "original_abi": "Four stack arguments actual stream/index/position rectangle/UV rectangle; ECX unconsumed; RET10h. Explicit Win32 stdcall Source binding; observed EFLAGS/private register effects retained in exact object body.",
+    "native_bytes": 550,
+    "native_instruction_starts": 170,
+    "native_range": [
+      "00acf260",
+      "00acf486"
+    ],
+    "docs": [
+      "docs/CC12_NATIVE_GUI_RECTANGLE_WRITER_160.md"
+    ],
+    "reports": [
+      "reports/cc12_native_gui_rectangle_writer_160.json"
+    ]
+  },
+  "proof": {
+    "symbol": "?write_native_gui_rectangle_00acf260@bsp@@YGXPAXPCIPBX2@Z",
+    "bytes": 550,
+    "sha256": "f54a6e02a3aecaef7d3a3d6abdf1fca796953f0b77b88e4c964719a208536330",
+    "all_Original_bytes_identical": true,
+    "relocations": [],
+    "execution": false,
+    "canonical": {
+      "bytes": 550,
+      "sha256": "f54a6e02a3aecaef7d3a3d6abdf1fca796953f0b77b88e4c964719a208536330",
+      "all_Original_bytes_identical": true,
+      "relocations": [],
+      "execution": false
+    }
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_gui_rectangle_writer.hpp",
+      "sha256": "68d82b664dc042ef20e62b1759852208582dcf05d59b866575fefd06d7262af1",
+      "git_blob": "63c9c4329724e2ac51b194584ce8bc7e6d419b20",
+      "copy": "local/cc12_native_gui_rectangle_writer160/final_source/include/bsp/native_gui_rectangle_writer.hpp"
+    },
+    {
+      "path": "src/native_gui_rectangle_writer.cpp",
+      "sha256": "7fbe2af2b170d909edaa503e2e3050c773868304ed918b2f0081247408c6bc35",
+      "git_blob": "373d3519797c9046c5bd1c32d5e921d13a560059",
+      "copy": "local/cc12_native_gui_rectangle_writer160/final_source/src/native_gui_rectangle_writer.cpp"
+    }
+  ],
+  "strict_compile": "PASS; all550 Original bytes, zero relocations",
+  "canonical_build": {
+    "checks": "3/3",
+    "seconds": 7.09,
+    "raw_function_executed": false
+  },
+  "final_artifact_manifest": {
+    "path": "local/cc12_native_gui_rectangle_writer160/artifact_manifest.json",
+    "sha256": "0ae288571508b22224db1ebf720daa53251687f54ec1c98721a875c6fc5d8357"
+  },
+  "documentation": "docs/CC12_NATIVE_GUI_RECTANGLE_WRITER_160.md"
+}
