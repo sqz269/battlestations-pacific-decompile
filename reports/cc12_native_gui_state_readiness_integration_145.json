@@ -1,0 +1,133 @@
+{
+  "packet": "cc12_native_gui_state_readiness_integration_145",
+  "status": "reviewed_registered_combined_win32_build_existing_tests_static_link_pass",
+  "compiled_commit": "21fbf4e107130dff13f6cb0d53dff6baa5126f48",
+  "workers": {
+    "144": {
+      "commit": "486b6e21849cf03da1a3f86f048817d165b9ca71",
+      "source_paths": [
+        "include/bsp/native_gui_frame_box_factory.hpp",
+        "src/native_gui_frame_box_factory.cpp"
+      ],
+      "root_complete_Source_API_optimized_doc_review": "PASS",
+      "strict_win32_cpp17_compile": "PASS",
+      "existing_unit_registered_in_worker_baseline": true,
+      "canonical_new_body_matches_all8_Original_bytes": true,
+      "all2_old_canonical_functions_bytes_and_ordered_symbolic_relocations_identical": true,
+      "whole_old_Source_prefixes_preserved": 2,
+      "manifest_artifacts_captured": 28,
+      "manifest_sha256": "990d14fbdaf687376ff04aab779ec0b983200b46c72dff240884f3cac12c1b73"
+    }
+  },
+  "readiness": {
+    "141": {
+      "commit": "87b7f7cec3c3993ebd237db02eb1acfd41b5f7c9",
+      "root_complete_doc_review": "PASS",
+      "own_manifest_artifacts_captured": 167,
+      "manifest_sha256": "64665f34912b49359fc49f36a4c82692e3b37ef097db7a27ec519d6aa7364c1a",
+      "new_Source_body_credit": 0,
+      "Native_execution": false
+    },
+    "142": {
+      "commit": "9691b5c8cadb4f8b0d3b4764f8a48b0c5e0e70c1",
+      "root_complete_doc_review": "PASS",
+      "own_manifest_artifacts_captured": 89,
+      "manifest_sha256": "b3cf0f105754351f6b6eda7c0530d8efbb4ece66181eb14076804cc600241265",
+      "new_Source_body_credit": 0,
+      "Native_execution": false
+    },
+    "143": {
+      "commit": "64f485d65d863619b1899aa3b45e36b4c13cf4ff",
+      "root_complete_doc_review": "PASS",
+      "own_manifest_artifacts_captured": 125,
+      "manifest_sha256": "6b5a52183279c851e1b9b540d10d616bb9524b77fd1d3e3a1254421671f89935",
+      "new_Source_body_credit": 0,
+      "Native_execution": false
+    }
+  },
+  "source": [
+    {
+      "packet": "144",
+      "path": "include/bsp/native_gui_frame_box_factory.hpp",
+      "git_blob": "9c04777129693355f35455c42461504250f34967",
+      "sha256": "d17eb3a627bba879be9fa4e9310cf4c239d61ad3c05eb768379a6f718a51d2e3",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "144",
+      "path": "src/native_gui_frame_box_factory.cpp",
+      "git_blob": "b391fd233a76e4bb824576d18b9e468dcedd9247",
+      "sha256": "73148f75c8161acd98cab74f40e1d31a45dfb0f284141d198c8d51508c8506b7",
+      "unchanged_from_reviewed_worker": true
+    }
+  ],
+  "retained_lower_sources": [
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5"
+    },
+    {
+      "path": "src/native_gui_text_identity.cpp",
+      "git_blob": "131a978c9ca1e87ec3d94382fff07c5d0676144a"
+    }
+  ],
+  "root_reviewed_provider_deltas": [],
+  "root_build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "checks": "3/3",
+    "seconds": 7.62,
+    "warnings": [
+      "Existing Lua spawn_request_id_matches duplicate symbol LNK4006 in untouched lua_binding_spawn/lua_spawn_new objects; second definition ignored"
+    ]
+  },
+  "static_link": {
+    "compiled_commit": "21fbf4e107130dff13f6cb0d53dff6baa5126f48",
+    "build_and_minimal_main_exit_code": 0,
+    "raw_function_bodies_executed": false,
+    "explicit_worker_object_linked": false,
+    "kind": "One new raw function address from actual final Core; no reconstructed body called by main",
+    "PE32_asInvoker": true,
+    "exe_sha256": "e7d2184fc52273d8ef5d536285da796248b8a0b1478aac920bab66839f4dbeb8",
+    "libraries": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "a4eb4a584556762e0e5936be436da6969db61432cb10c773b80104fa0e8b7e23"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "sha256": "e6ebb089df7828a43ecdd6e705dddb4cea95b38ffe1fabbd47152fec8834db30"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "sha256": "838261efe3cdd86663e25ecbcd9e825ee51203e71491954864316d4d0dfb6062"
+      }
+    ],
+    "canonical_additional_objects": []
+  },
+  "root_source_and_header_inputs_copied": 99,
+  "archive": {
+    "path": "local/cc12_native_gui_state_readiness_integration_145/evidence_family.zip",
+    "sha256": "f0fa87656252d42f937eb071c75cb9d07e24890b3258a0cf338dcbc778139e89",
+    "payload_count": 754,
+    "manifest": "local/cc12_native_gui_state_readiness_integration_145/manifest.json",
+    "manifest_sha256": "b12a89d7cbf7ea57605841a8f26a34f70391a437a4cf2332d77d06c17429c30c",
+    "all_archived_payload_hashes_rechecked": true,
+    "nested_worker_manifests_included": true
+  },
+  "original_input_proof": {
+    "path": "local/cc12_native_gui_state_readiness_integration_145/root_original_input_proof.json",
+    "sha256": "3587d58a70a5fe46e2a9d0a6aadbc717d4b6bf1db2c0ad0ad4973d053313ee4d",
+    "checked_spans": 1,
+    "status": "PASS"
+  },
+  "limits": [
+    "One live actual WORD load only; caller supplies live aligned raw FrameBox and lifetime exclusion",
+    "Exact body/register effects belong to the inspected strict and canonical MSVC Win32 objects; no Original placement/caller adoption/runtime proof",
+    "The old no-Ghidra-function note is historical; current existing8B function verified, name/comment prefix preserved with history/save/export; no body creation or repair",
+    "141/142/143 are readonly readiness with zero new Source-body credit; real existing providers acknowledged and actual missing contracts named",
+    "Raw Font still needs genuine AC-byte allocation/tree/name/registry/load/retirement composition; descriptor/data/image identities are not that raw object",
+    "Raw FrameBox copy still needs current80 AD0D80 and whole ACF8F0; copied Text needs producer-coupled admission before ABB5FA plus whole raw rebuild",
+    "Existing checks and address-only link do not execute the new function or validate populated production GUI/gameplay"
+  ]
+}

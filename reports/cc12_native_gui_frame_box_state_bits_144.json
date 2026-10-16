@@ -1,0 +1,109 @@
+{
+  "packet": "cc12_native_gui_frame_box_state_bits_144",
+  "status": "whole_raw_word_accessor_exact_strict_and_canonical_win32_8byte_body_existing_checks_pass_no_execution",
+  "compiled_commit": "21fbf4e107130dff13f6cb0d53dff6baa5126f48",
+  "source_commit": "486b6e218",
+  "function": {
+    "address": "00ad26d0",
+    "name": "native_gui_frame_box_current_state_bits_00ad26d0",
+    "source": "src/native_gui_frame_box_factory.cpp",
+    "header": "include/bsp/native_gui_frame_box_factory.hpp",
+    "status": "whole_raw_word_accessor_exact_strict_and_canonical_win32_8byte_body_existing_checks_pass_no_execution",
+    "evidence": "CC12 Source144: actual raw FrameBox current WORD atEC; whole8B/two starts; strict and canonical Core emit all Original bytes, no relocations; ECX/AX/plainRET, upperEAX/EDX/flags unchanged in inspected objects. Two previous canonical functions and both entire old Source prefixes preserved. Existing Ghidra function verified; old no-function note retained as history, no body creation/repair. No caller adoption/Original placement/runtime claim.",
+    "original_abi": "ECX actual receiver, AX raw WORD bits, upperEAX/EDX/flags unchanged by these instructions, plainRET; explicit Win32 fastcall Source binding",
+    "native_bytes": 8,
+    "native_instruction_starts": 2,
+    "native_range": [
+      "00ad26d0",
+      "00ad26d8"
+    ],
+    "docs": [
+      "docs/CC12_NATIVE_GUI_FRAME_BOX_STATE_BITS_144.md"
+    ],
+    "reports": [
+      "reports/cc12_native_gui_frame_box_state_bits_144.json"
+    ]
+  },
+  "proof": {
+    "original_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "physical_range": [
+      "00ad26d0",
+      "00ad26d8"
+    ],
+    "bytes": 8,
+    "instruction_starts": 2,
+    "original_code_sha256": "a08d4ddbd194c42ef46a5e9a3e324733af6301ee28d812a8a8d4fe510d086bfe",
+    "strict_compiler_code_hex": "668b81ec000000c3",
+    "strict_compiler_symbol": "?native_gui_frame_box_current_state_bits_00ad26d0@bsp@@YIGPBX@Z",
+    "strict_compiler_body_matches_original_bytes": true,
+    "relocations": [],
+    "one_current_volatile_WORD_read_at_EC": true,
+    "ECX_argument_AX_result_upper_EAX_EDX_and_flags_untouched_in_this_object": true,
+    "old_functions_preserved": [
+      {
+        "symbol": "??_H@YGXPAXIIP6EPAX0@Z@Z",
+        "bytes": 38,
+        "sha256": "5d5ca69c6d6d3098b8363a8af646dbc82f870d51ce6628d3ed6d19261c4fc147",
+        "all_ordered_symbolic_relocations_identical": true
+      },
+      {
+        "symbol": "?construct_native_gui_frame_box_default_00ad2600@bsp@@YAPAXPAXAAUNativeGuiFrameBoxDefaultBindings@1@@Z",
+        "bytes": 139,
+        "sha256": "0225062a2dd4e4c2bfd1c7be85d9989abe3502192045c354717649035f99e5ab",
+        "all_ordered_symbolic_relocations_identical": true
+      }
+    ],
+    "source": [
+      {
+        "path": "include/bsp/native_gui_frame_box_factory.hpp",
+        "copy": "local/cc12_native_gui_frame_box_state_bits144/final_source/include/bsp/native_gui_frame_box_factory.hpp",
+        "sha256": "d17eb3a627bba879be9fa4e9310cf4c239d61ad3c05eb768379a6f718a51d2e3",
+        "old_entire_source_prefix_unchanged": true,
+        "git_blob": "9c04777129693355f35455c42461504250f34967"
+      },
+      {
+        "path": "src/native_gui_frame_box_factory.cpp",
+        "copy": "local/cc12_native_gui_frame_box_state_bits144/final_source/src/native_gui_frame_box_factory.cpp",
+        "sha256": "73148f75c8161acd98cab74f40e1d31a45dfb0f284141d198c8d51508c8506b7",
+        "old_entire_source_prefix_unchanged": true,
+        "git_blob": "b391fd233a76e4bb824576d18b9e468dcedd9247"
+      }
+    ],
+    "raw_function_execution": false,
+    "Ghidra_function_exists": true,
+    "Ghidra_function_creation_or_repair": false,
+    "limits": [
+      "Actual live DWORD-aligned raw FrameBox storage is a caller precondition; no semantic overlay, lifetime owner or count barrier",
+      "Historical ledger called this a no-function fragment; current verified Ghidra proto/export identifies an existing whole8B/two-start function. No function was created or repaired",
+      "Exact bytes and registers are a property of the inspected MSVC Win32 object, not Original address placement/caller adoption/drop-in/runtime proof"
+    ]
+  },
+  "strict_compile": "PASS; first output-path argument failure preserved separately",
+  "canonical_build": {
+    "checks": "3/3",
+    "seconds": 7.62,
+    "raw_function_executed": false
+  },
+  "final_artifact_manifest": {
+    "path": "local/cc12_native_gui_frame_box_state_bits144/artifact_manifest.json",
+    "sha256": "990d14fbdaf687376ff04aab779ec0b983200b46c72dff240884f3cac12c1b73"
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_gui_frame_box_factory.hpp",
+      "copy": "local/cc12_native_gui_frame_box_state_bits144/final_source/include/bsp/native_gui_frame_box_factory.hpp",
+      "sha256": "d17eb3a627bba879be9fa4e9310cf4c239d61ad3c05eb768379a6f718a51d2e3",
+      "old_entire_source_prefix_unchanged": true,
+      "git_blob": "9c04777129693355f35455c42461504250f34967"
+    },
+    {
+      "path": "src/native_gui_frame_box_factory.cpp",
+      "copy": "local/cc12_native_gui_frame_box_state_bits144/final_source/src/native_gui_frame_box_factory.cpp",
+      "sha256": "73148f75c8161acd98cab74f40e1d31a45dfb0f284141d198c8d51508c8506b7",
+      "old_entire_source_prefix_unchanged": true,
+      "git_blob": "b391fd233a76e4bb824576d18b9e468dcedd9247"
+    }
+  ],
+  "documentation": "docs/CC12_NATIVE_GUI_FRAME_BOX_STATE_BITS_144.md"
+}
