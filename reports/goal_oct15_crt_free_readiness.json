@@ -67,29 +67,34 @@
       "address": "00c11d68",
       "source": "src/native_crt_sbh_free.cpp",
       "extent": "788B/259ops",
-      "qualification": "Whole real canonical SBH state algorithm, actual bootstrap/mapped extents/external lock4 and complete memmove feature binding required."
+      "qualification": "Whole real canonical SBH state algorithm, actual bootstrap/mapped extents/external lock4 and complete memmove feature binding required.",
+      "source_sha256_at_scout": "e3eeffb7ff77f8a52bdb74931958f6923ef36bc05e70e6f25d8b6708d0ebaaed"
     },
     {
       "address": "00bf9e1e",
       "source": "src/native_crt_free_unlock_helper.cpp",
       "extent": "9B/4ops",
-      "qualification": "Fixed4 cleanup over real canonical unlock; actual acquired descriptor required."
+      "qualification": "Fixed4 cleanup over real canonical unlock; actual acquired descriptor required.",
+      "source_sha256_at_scout": "d61d134fc001427249f89fa6fa7842bff991e2afea83c2ad000a7483c4753b1b"
     },
     {
       "address": "00c11c18",
       "source": "src/native_crt_lock10_unlock_helper.cpp",
       "extent": "9B/4ops",
-      "qualification": "Fixed10 cleanup over real canonical unlock; actual acquired descriptor required."
+      "qualification": "Fixed10 cleanup over real canonical unlock; actual acquired descriptor required.",
+      "source_sha256_at_scout": "cab75f96d04559ee880d6465a723412a29ea1b82c4558d1967851b9b6bc13f2f"
     },
     {
       "address": "00c11b31",
       "source": "src/native_crt_canonical_unlock.cpp",
-      "qualification": "Actual initialized/acquired canonical CRT descriptor required; no bootstrap owner."
+      "qualification": "Actual initialized/acquired canonical CRT descriptor required; no bootstrap owner.",
+      "source_sha256_at_scout": "b2203a3e0def66f513f5bd0d8846a7ac21bb7e066015cf7f426d6e71165c6097"
     },
     {
       "address": "00c07c45",
       "source": "src/native_crt_seh4_primitives.cpp",
-      "qualification": "Complete custom compiler-frame primitive; exact valid native frame required; not ordinary C++ cleanup."
+      "qualification": "Complete custom compiler-frame primitive; exact valid native frame required; not ordinary C++ cleanup.",
+      "source_sha256_at_scout": "2557fbce9dfc10e1deb7a4158bb7e9f31fcd62b5c22a8e1f67e66c836bf4fb95"
     },
     {
       "addresses": [
@@ -98,7 +103,8 @@
         "00c1212c"
       ],
       "source": "src/native_crt_sbh_allocation.cpp",
-      "qualification": "Whole canonical SBH algorithms already exist; sibling independently verified. Actual heap/state/bootstrap/external lock4 required."
+      "qualification": "Whole canonical SBH algorithms already exist; sibling independently verified. Actual heap/state/bootstrap/external lock4 required.",
+      "source_sha256_at_scout": "579963791173dd808d51683336edf5d1471593314659613183942cebed27191a"
     },
     {
       "address": "00c11cf5",
@@ -216,5 +222,28 @@
     "Original_ABI": false,
     "faithful_Original_startup": false,
     "game_validated": false
-  }
+  },
+  "scout_base_revision": "828b38acf",
+  "read_only_receipts": [
+    {
+      "path": "local/goal_oct15_original_free_frontier_typed.json",
+      "sha256": "ad28e53ea153d964aa28b5211239c2030b655bff7b6697b426eae7bf9708b398"
+    },
+    {
+      "path": "local/goal_oct15_original_free_ready_leaf_typed.json",
+      "sha256": "d677e30ab545ff6ee1aee6fe30024185e8706b10526db8e43d34bf52dc03f9f0"
+    },
+    {
+      "path": "local/goal_oct15_free_initializer_exact_live_starts.json",
+      "sha256": "67c715a2e3eda6e6fde0d34f973c86b7ec2c31483244428c64efdf575ac1186f"
+    },
+    {
+      "path": "local/goal_oct15_free_initializer_typed_recheck.json",
+      "sha256": "5920eb596c877ae585cda28fc8d251cb86012db180849c45635796f4dbf39ed3"
+    },
+    {
+      "path": "local/goal_oct15_sbh_region_lookup_flow_audit.json",
+      "sha256": "0c7fa926e843705bbb39c01759016fb1709a2821f18e1b512b2d65cc3bda9a8b"
+    }
+  ]
 }

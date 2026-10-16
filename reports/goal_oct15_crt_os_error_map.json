@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_crt_os_error_map",
-  "status": "whole_ordinary_actual_table_Source_draft_review_and_primary_build_pending",
+  "status": "whole_ordinary_actual_table_Source_locked_annotated_exported_primary_review_build_pending",
   "code_complete": true,
   "source_ready": true,
   "readiness_gate": "All native control flow is represented over a borrowed binding to the actual 45 mutable pairs. No missing callees; standalone Source readiness does not close Original free or runtime ownership.",
@@ -119,19 +119,51 @@
   ],
   "validation": {
     "independent_review": "pending",
-    "annotation_save_export_readback": "pending under address lease/write lock",
+    "annotation_save_export_readback": "passed; prior comment preserved, write-locked rename/comment/save, live readback and forced affected export",
     "registration": "pending primary combined gate; no worker CMake change/queue",
     "build": "pending primary normal MSVC Win32 build; no worker build claimed",
     "existing_tests": "pending primary gate",
     "new_tests": 0,
     "new_entry_execution": false,
     "original_ABI": false,
-    "game_validated": false
+    "game_validated": false,
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/goal_oct15_crt_os_error_map.json",
+      "rows": 4,
+      "failed": 0
+    }
   },
   "limits": [
     "No SDK/errno/TLS substitute, host table, immutable snapshot or invented callback.",
     "Table binding requires actual reached readable DWORD cells; no memory-fault or concurrent mutation equivalence claim beyond explicit progressive Source reads.",
     "Ordinary C++ Source interface does not preserve Original machine-code register/frame/fault/SEH identity.",
     "No Original heap/lock/PTD/bootstrap/fullfree/startup/runtime/gameplay readiness credit."
-  ]
+  ],
+  "annotation_changes": [
+    {
+      "address": "00bffb50",
+      "before": {
+        "address": "00bffb50",
+        "function_name": "LIBCRT_unmatched_00bffb50",
+        "comment": "[BSP inventory 00bffb50] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      },
+      "after": {
+        "address": "00bffb50",
+        "name": "LIBCRT_MapOsErrorToErrno_00bffb50",
+        "evidence": "Hypothesis, not a recovered symbol. Whole59B23ops at00BFFB50..00BFFB8A, cdecl one captured DWORD, EAX DWORD result, plainRET. Scan actual45 mutable pairs at00E15880 in order; compare each currentfirstword and return currentsecondword on firstmatch. No match: unsigned(error-13h)<=11h returns13; else unsigned(error-BCh)<=0Eh returns8, remaining returns22. No calls/writes/errno/TLS/SDK substitution. ActualincomingCALLsites BF9E48/BFDE6E/BFDEFB/BFFBBE; savedgraph attribution stale. Complete ordinary actual-table Source in native_crt_os_error_map.cpp; added borrowedtable Sourcebinding has no OriginalABI/SEH/startup/fullfree/game credit. Source draft reviewed/build pending. reports/goal_oct15_crt_os_error_map.json."
+      },
+      "status": "applied"
+    }
+  ],
+  "annotation": {
+    "write_lock": "tools/ghidra_annotate.py coordination.ghidra_lock",
+    "address_lease": "goal_oct15_crt_os_error_map held by agent/goal_oct15_erase",
+    "project_saved": true,
+    "prior_log": "local/ghidra-annotations-20261016T020712Z.json",
+    "prior_log_sha256": "c56117d8d64a6e59dd2042474e3056e0f8e3b953851cf92fbe1fffea48dd1615",
+    "readback": "bsp ghidra comments confirmed new name, preserved full prior inventory comment and appended evidence.",
+    "export": "bsp ghidra export 00BFFB50 --force refreshed shared exports/bsp/functions/00bffb50",
+    "other_addresses_changed": false,
+    "flow_or_body_repair": false
+  }
 }

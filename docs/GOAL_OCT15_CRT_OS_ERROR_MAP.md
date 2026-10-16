@@ -31,9 +31,12 @@ Target guards identify `C:/Users/sqz269/bsp.gpr`,
 `/battlestationspacific.exe`, x86, image base `00400000`. The incoming typed
 capture was accepted at modification 3445. No analysis or repair was performed.
 
-The Source draft is complete and awaits independent review, locked annotation,
-registration, the primary's normal Win32 build and existing checks. No new
-tests are added. The added table binding and C++ signature have no drop-in
+The Source draft is complete. Write-locked annotation preserved the original
+inventory comment and prior name, appended the bounded evidence, saved the
+project, and refreshed the affected shared export. Live comment readback
+confirmed preservation. Independent review, registration, the primary's normal
+Win32 build and existing checks remain pending. No new tests are added.
+The added table binding and C++ signature have no drop-in
 Original ABI, original compiler-frame, fault/SEH or runtime execution credit.
 This mapper closes no Original heap, errno/PTD, lock/bootstrap or full `_free`
 dependency by itself; see `reports/goal_oct15_crt_free_readiness.json`.
