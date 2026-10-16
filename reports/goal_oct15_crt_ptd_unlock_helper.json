@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_crt_ptd_unlock_helper",
+  "status": "whole_ordinary_helper_reviewed_annotated_registered_build_pending",
+  "source_ready": false,
+  "whole_control_flow_source_available": true,
+  "source": "src/native_crt_ptd_unlock_helper.cpp",
+  "header": "include/bsp/native_crt_ptd_unlock_helper.hpp",
+  "documentation": "docs/GOAL_OCT15_CRT_PTD_UNLOCK_HELPER.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "00c051ae",
+      "end_exclusive": "00c051b7",
+      "instruction_bytes": 9,
+      "instruction_count": 4,
+      "coverage": "complete noarg cleanup helper",
+      "cpp_symbol": "unlock_native_crt_ptd_initialization_00c051ae",
+      "bytes": "6a 0c e8 7c c9 00 00 59 c3",
+      "sha256": "2fd64db3a43cdc5147db5de2bbb04b4cd8468fd7b2f4722dd30ea23aeb06f1d4",
+      "live_disk_equal": true,
+      "installed_pe_offset": 8409518,
+      "original_abi": "no incoming argument/register data;plainRET;no semantic EAX result;one cdeclcallee argument12 discarded with POP ECX"
+    }
+  ],
+  "source_sha256": "bed127cdf56c7e19b8ce0248e45779bfaf66fff9c83fb5d0deae4e08817cddbc",
+  "header_sha256": "a71f8150e2fa5240273797c2a08f5dc735565bab0fa5eea390c98ee424d0e8cd",
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "host_steps": [
+    {
+      "address": "00c051a3",
+      "native": "00c051ae",
+      "function": "00c050f8",
+      "kind": "call",
+      "contract": "no helper args;state=-2 before call;parent privateSEH transport unproved"
+    },
+    {
+      "address": "00c051b0",
+      "native": "00c11b31",
+      "function": "00c051ae",
+      "kind": "call",
+      "contract": "literal12;caller POP ECX cleans4;helper plainRET"
+    }
+  ],
+  "real_provider": {
+    "address": "00c11b31",
+    "symbol": "unlock_native_crt_canonical_00c11b31",
+    "source": "src/native_crt_canonical_unlock.cpp",
+    "header": "include/bsp/native_crt_canonical_unlock.hpp",
+    "source_sha256": "b2203a3e0def66f513f5bd0d8846a7ac21bb7e066015cf7f426d6e71165c6097",
+    "header_sha256": "161dce16976cc0c2bdc10495d5a3c733600cfc6e2d75dc07f1363e5710802cdf",
+    "full_original_bytes": "55 8b ec 8b 45 08 ff 34 c5 78 64 e1 00 ff 15 10 22 ce 00 5d c3",
+    "full_original_sha256": "79a3d82c9ad3f43182f2d65bf6c207f932615a621ab8b35db6fdcc467d324d56",
+    "full_original_size": 21,
+    "source_changed": false,
+    "provider_contract_read": true,
+    "operation": "raw fixed E16478+8*index descriptor word;actual KERNEL32 LeaveCriticalSection importCE2210",
+    "IAT_import_from_installed_PE": {
+      "dll": "KERNEL32.dll",
+      "name": "LeaveCriticalSection"
+    }
+  },
+  "admission": {
+    "actual_fixed_descriptor": "00e164d8",
+    "literal_lock_index": 12,
+    "required": "readable genuine canonical descriptor and actual initialized Win32 critical section currently owned by calling thread",
+    "no_new_lock_global_owner_callback_guard_or_recovery": true,
+    "no_synthetic_PTD": true,
+    "original_private_frame_register_fault_SEH_binary_entry_proved": false
+  },
+  "parent_boundary": {
+    "general_source_ready": false,
+    "Original_locale_TLS_errno_parity_proved": false,
+    "remaining_actual_dependencies": [
+      "C051B7 allocation/encodedgetset/PTD initialization",
+      "C0522E actual fatal transport",
+      "BF7E24 actual TLS/locale/multibyte ownership",
+      "C050F8 initialization/acquisition/privateSEH transport"
+    ],
+    "readiness_evidence": "reports/goal_oct15_crt_locale_provider_readiness.json"
+  },
+  "prior_annotations": [
+    {
+      "address": "00c051ae",
+      "annotation": {
+        "address": "00c051ae",
+        "function_name": "LIBCRT_unmatched_00c051ae",
+        "comment": "[BSP inventory 00c051ae] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      }
+    }
+  ],
+  "annotation": {
+    "status": "locked annotation applied; project saved; affected export refreshed",
+    "new_name": "BSP_CrtLock12_UnlockHelper",
+    "name_status": "descriptive hypothesis, not recovered library/compiler symbol",
+    "prior_value_log": "local/ghidra-annotations-20261016T004822Z.json",
+    "changes": [
+      {
+        "address": "00c051ae",
+        "before": {
+          "address": "00c051ae",
+          "function_name": "LIBCRT_unmatched_00c051ae",
+          "comment": "[BSP inventory 00c051ae] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+        },
+        "after": {
+          "address": "00c051ae",
+          "name": "BSP_CrtLock12_UnlockHelper",
+          "evidence": "Whole 9B/4ops [00C051AE,00C051B7): no-argument PUSH 0Ch/CALL canonical __unlock/POP ECX/RET helper; actual literal lock12 selects existing E164D8 initialized critical section owned by current thread. Complete ordinary Source src/native_crt_ptd_unlock_helper.cpp delegates unchanged canonical provider. Caller C050F8 role is provisional; descriptive hypothesis, not recovered library symbol. Preserve prior LIBCRT_unmatched_00c051ae and inventory comment. No PTD/FLS/locale/fatal/private-SEH or binary-entry readiness credit; report goal_oct15_crt_ptd_unlock_helper.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "export": "exports/bsp/functions/00c051ae/decompiled.c"
+  },
+  "source_registration": "unique deferred Source append in cmake/startup.cmake; first/unheld queue turn consumed and released before build; no exclusive file lease",
+  "validation": {
+    "independent_review": {
+      "reviewer": "primary integrator",
+      "result": "passed full 9B/4ops helper, complete Source/header and real 21B canonical provider",
+      "source_sha256": "bed127cdf56c7e19b8ce0248e45779bfaf66fff9c83fb5d0deae4e08817cddbc",
+      "header_sha256": "a71f8150e2fa5240273797c2a08f5dc735565bab0fa5eea390c98ee424d0e8cd",
+      "source_unchanged": true
+    },
+    "build": "pending actual registered normal Win32 or primary combined gate",
+    "report_call_verification": {
+      "typed_rows": 2,
+      "failed": 0,
+      "documentation_claims": 2,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "game_validated": false
+  },
+  "qualification": "Whole9B noarg helper via real unchanged complete canonical unlock12;valid actual initialized/owned CS domain. Ordinary Source only,no manufactured naked-ASM identity/privateABI or PTD/FLS/locale/fatal/SEH/game closure."
+}
