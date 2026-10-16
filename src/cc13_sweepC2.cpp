@@ -286,7 +286,7 @@ void ref_release(SweepC2Host& host, void* object) {
 // 006CFAF0 BSP_MotherShipSite_Construct. __thiscall(ECX = site, mothership), RET 4; SEH frame.
 // Base 006CF100, vtable 00CF8A58, the elevator platform at +44h (006FC2A0), the observer member
 // at +A0h (vtable 00CF89B4, +A4h/+A8h/+ACh/+B4h zero, +B0h byte 1), +B8h = mothership, +BCh = 0.
-// The effect at +BCh comes from 008687C0 (ECX = local out slot, EDX = mothership+4A4h) with the
+// The effect at +BCh comes from 008687C0 (ECX = local out slot, EDX = [mothership+4A4h]) with the
 // add-ref'd handle (mothership+538h)->+104h, a stack 4x4 identity whose translation row is
 // (mothership+538h)->+808h..+810h, and words 1, 0, 0. The child "Sound" (00CEA3FC, built in a
 // NativeString by resize(5, 1) and memcpy of length+1 bytes) is found or created on it
@@ -309,7 +309,7 @@ void* mothership_site_construct_006cfaf0(SweepC2Host& host, void* site, void* mo
     at<void*>(site, 0xB8) = mothership;
     at<void*>(site, 0xBC) = nullptr;
 
-    void* const parent = add(mothership, 0x4A4);
+    void* const parent = ptr(mothership, 0x4A4);   // 006CFB77 MOV EBP,[ECX+4A4h]; 006CFC40 MOV EDX,EBP
     float matrix[16] = {kUnitScale, 0.0f, 0.0f, 0.0f, 0.0f, kUnitScale, 0.0f, 0.0f,
                         0.0f, 0.0f, kUnitScale, 0.0f, 0.0f, 0.0f, 0.0f, kUnitScale};
     void* const body = ptr(ptr(site, 0xB8), 0x538);
