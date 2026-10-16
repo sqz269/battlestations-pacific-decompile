@@ -1,0 +1,279 @@
+{
+  "packet": "cc12_native_gui_page_dispatch_readiness_105",
+  "status": "read_only_known_page_routes_composable_first_live_type_binding_frontier",
+  "created_utc": "2026-10-16T05:51:04.509328+00:00",
+  "source_commit": "bd3f3bb2968eae9d4a04dd82a9944eb3a6d5c6d4",
+  "documentation": "docs/CC12_NATIVE_GUI_PAGE_DISPATCH_READINESS_105.md",
+  "lease_addresses": [
+    "00aa8320",
+    "00aa38f0",
+    "00d5be38",
+    "00aa38b0",
+    "00f8bf88"
+  ],
+  "scope": {
+    "source_cmake_ledger_ghidra_main_writes": false,
+    "build_test_probe_native_execution": false,
+    "fresh_AA8320_AA38F0_body_audits": false,
+    "tracked_outputs": [
+      "docs/CC12_NATIVE_GUI_PAGE_DISPATCH_READINESS_105.md",
+      "reports/cc12_native_gui_page_dispatch_readiness_105.json"
+    ]
+  },
+  "prior_evidence": [
+    "packet70 raw retirement frontier",
+    "packet73/76 wholeLayer/rawScene release",
+    "packet92/99 manager producer/teardown",
+    "packet104 production/provider/retention boundaries"
+  ],
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "evidence": {
+    "every_live_batch_via_verified_bsp_wrapper": true,
+    "fresh_ranges": [
+      {
+        "start": "00d5be38",
+        "bytes": 36,
+        "sha256": "1faed63750f666c7dd74ada3f1afa4e020e785c702a860caa4893365e00d5e9a",
+        "live_equals_installed_pe": true,
+        "log": "local/cc12_native_gui_page_dispatch_readiness_105_table.log"
+      },
+      {
+        "start": "00aa38b0",
+        "bytes": 40,
+        "sha256": "0a40e1d1e3b89248d0082369363f10f5c299108fabd79de001948e49f6771d05",
+        "live_equals_installed_pe": true,
+        "log": "local/cc12_native_gui_page_dispatch_readiness_105_kind_bytes.log"
+      }
+    ],
+    "bytes_checked": 76,
+    "audit": "local/cc12_native_gui_page_dispatch_readiness_105_audit.json",
+    "audit_sha256": "e85b29598330e954a71f5a543b9eec21123b07bcf63ef18312e69d0b33cf784a",
+    "source_sha256": {
+      "include/bsp/gui_widgets_cc13.hpp": "e0f2e49f4ab9df474ce1d83e42f9196701b4713ab5faaa5e9b8c5c68f25afbba",
+      "src/gui_widgets_cc13.cpp": "6655f5b173ce995cd861db830fa83574114ab7b4685d6c737d14c01e7dee1920",
+      "include/bsp/gui_layer.hpp": "70aa73b5f3bd607fc02d7c676e4dc6c83d48b4c41caad7ada53ca8898cac8b66",
+      "include/bsp/native_gui_widget_lifetime.hpp": "f9fe331e898de066b05cde5aba9bae1bb5e0dfccdceedb9cb8c85a286be3d286",
+      "src/native_gui_widget_lifetime.cpp": "f5f10d603694dfbb354b92bc4627dfc0fd687724fc51d49de5c51f53c813c3b6",
+      "include/bsp/native_gui_layer_lifetime.hpp": "dbf0d44346d847bd4c2daa86b73cdb6ec175e2553ad113ef8bbeffc444f631dd",
+      "src/native_gui_layer_lifetime.cpp": "d6d789179cd68cbd1bf66a6ebf2b1aeb4c2c29fc03155b3be335ebfdb22cf7d0",
+      "include/bsp/native_gui_page_registry.hpp": "7e0da010910435fa93d2a9609da0573f600222f212e4f3e18ff0a473b8153e53",
+      "src/native_gui_page_registry.cpp": "e63d9d755850991af4939ea3fe8b7cdb5f6c8979168eaeb3dbe3250e583d52fe",
+      "include/bsp/native_gui_media_focus_lifetime.hpp": "fed651ac9f3e7f0853c4754dd180dc68b1e6432afc9fe64a327caa59e8b81412",
+      "src/native_gui_media_focus_lifetime.cpp": "06744c0d69116b56681e74ed0f92d97a0b3d583455b66ea2d458a1a0cea0c749",
+      "include/bsp/native_gui_widget_child_links.hpp": "88b5d1ef38f6a26acd595b867011cb8758d6f3d4fbf013ab52d37081c503ec62",
+      "src/native_gui_widget_child_links.cpp": "764ab5a60741c5d2649d9f289bb871474ddd1301a1f21e6b86c30667d3aa47c3",
+      "include/bsp/native_node_destruction.hpp": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+      "include/bsp/gui_camera_store_owner.hpp": "6a6f2b7dc4fddff6e1c7b3d816f2b9703e7afb19652431c01f9188d50288c073",
+      "src/gui_camera_store_owner.cpp": "ab064dcccc09e492ebea516c78454d2003ed8cf641183e0201f98e96f3ee50a3",
+      "include/bsp/game_native_gui_text_process.hpp": "c0f0dd4bba7bab733eec89f43a8b7f47578f0601dd1c02ab365887d77b30322c",
+      "src/game_native_gui_text_process.cpp": "eab92c37b8b7487e12edf0e79b580621dc4c4f5e5cba2700952caef5b6d19b8b"
+    },
+    "bounded_source_queries": [
+      {
+        "argv": [
+          "rg",
+          "-n",
+          "-i",
+          "aa38b0|f8bf88|layer.*lineage|lineage.*layer",
+          "src",
+          "include/bsp",
+          "-g",
+          "*.cpp",
+          "-g",
+          "*.hpp"
+        ],
+        "exit_code": 0,
+        "lines": 6,
+        "log": "local/cc12_native_gui_page_dispatch_readiness_105_raw_layer_type.log"
+      },
+      {
+        "argv": [
+          "rg",
+          "-n",
+          "NativeGuiPageLifetimeHost|NativeGuiWidgetLifetimeBindings|NativeGuiLayerLifetimeBindings",
+          "src",
+          "include/bsp",
+          "-g",
+          "*.cpp",
+          "-g",
+          "*.hpp"
+        ],
+        "exit_code": 0,
+        "lines": 12,
+        "log": "local/cc12_native_gui_page_dispatch_readiness_105_provider_types.log"
+      },
+      {
+        "argv": [
+          "rg",
+          "-n",
+          "remove_native_gui_widget_list_value_00a9bd50",
+          "src",
+          "include/bsp",
+          "-g",
+          "*.cpp",
+          "-g",
+          "*.hpp"
+        ],
+        "exit_code": 0,
+        "lines": 3,
+        "log": "local/cc12_native_gui_page_dispatch_readiness_105_real_remove_all.log"
+      },
+      {
+        "argv": [
+          "rg",
+          "-n",
+          "GuiTypeDescriptor|element_lineage_00f8bc88|text_lineage_00f8be28|initialize_types_once_00cd7210",
+          "src",
+          "include/bsp",
+          "-g",
+          "game*.cpp",
+          "-g",
+          "game*.hpp"
+        ],
+        "exit_code": 0,
+        "lines": 17,
+        "log": "local/cc12_native_gui_page_dispatch_readiness_105_existing_type_authority.log"
+      }
+    ]
+  },
+  "known_profile": {
+    "profile": "00d5be38",
+    "actual_prefix_words": 9,
+    "slot04": {
+      "target": "00aa38f0",
+      "Source": "scalar_delete_native_gui_layer_00aa38f0",
+      "context": "SAME NativeGuiLayerLifetimeContext"
+    },
+    "slot0c": {
+      "target": "00aa38b0",
+      "Source": "existing generic typed search algorithm; missing raw/live input binding"
+    },
+    "slot20": {
+      "target": "00aa8320",
+      "Source": "release_native_gui_widget_scene_00aa8320",
+      "context": "SAME layerContext.widgets"
+    },
+    "top_adapter_composable": true,
+    "top_adapter_alone_production_ready": false
+  },
+  "top_adapter_contract": {
+    "class": "possible NativeGuiPageLifetimeHost knownLayer implementation, not implemented by105",
+    "borrowed_domain": "one actual NativeGuiLayerLifetimeContext; use its widgets member so20/04 cannot drift to different widget domains",
+    "each_call": "resolve supplied CURRENT receiver/profile/table/target independently; no cached receiver across20and04, no unsupported-profile fallback or arbitrary callableVA",
+    "flags": "Source04 receives full initializedDWORD byvalue; pass its live local byreference to existingAA38F0, preserving LOWBYTE read afterAC5480; no privateOriginalframe/ABI claim",
+    "storage": "actual initialized rawLayer and SAME actual layer pool/name/widget/node/scene services; never typed layout or incomplete prefix cast",
+    "lifetime": "metadata/contexts/cells/providers survive receiver retirement, shared drain and retained failures; packet104 late-getter boundaries remain unresolved"
+  },
+  "existing_whole_parents": [
+    {
+      "entry": "00aa8320",
+      "source": "src/native_gui_widget_lifetime.cpp",
+      "schedule": "current child20 loop; capture selfclass slot ADDRESS; actualAB6A30 descriptor read;load CURRENT class target; conditional glyph cleanup; main node release",
+      "first_binding": "current_table(child) if populated; current_table(selfD5BE38) even if no children",
+      "built_in_class_query": "00a9e070 only; knownLayer00aa38b0 reaches required call_class_query_0c"
+    },
+    {
+      "entry": "00aa38f0",
+      "source": "src/native_gui_layer_lifetime.cpp",
+      "schedule": "realAC5480;LOWBYTE flags read afterward; bit0 actualAC4C40 poolreturn; identityonly result",
+      "base_continuation": "AA9730 stampsD5C130 then re-entersAA8320 before child deletion/parent/node/timed/container cleanup"
+    }
+  ],
+  "first_lower_frontier": {
+    "metadata_service": "NativeGuiWidgetLifetimeBindings::current_table for actualD5BE38 and any reached child",
+    "first_known_self_function_service": "call_class_query_0c actualAA38B0 with SAME live threeLayerIDs",
+    "existing_algorithm": "gui_widgets_cc13.hpp gui_type_is_kind_of(const GuiTypeDescriptor<Depth>&,id)",
+    "typed_descriptor_shape": "nonvolatile ids[Depth] plus nameword, not an unrelated raw three-word view",
+    "missing": "explicit raw/live volatileID view/dispatch and actual initialized F8BF88 role authority",
+    "not_missing": "another search algorithm or anotherAA8320/AA38F0 reconstruction",
+    "no_layer_never_text_shortcut": true,
+    "zero_is_ordinary_comparison_value_not_sentinel": true
+  },
+  "existing_type_authority": {
+    "provider": "GameNativeGuiTextProcess",
+    "actual_inputs": "Element[2] lineage and Text[3] lineage/ownID after complete explicit type startup",
+    "counter": "SAME canonical VFS TypeIdCounterLifetime and root guard/descriptor view",
+    "no_new_root_counter_or_zero_descriptor": true,
+    "Layer3_role_owned_here": false
+  },
+  "open_layer_producer_seed": {
+    "entry": "00cd73f0",
+    "name": "CG_static_init_00cd73f0",
+    "write_site": "00cd7438",
+    "written_cell": "00f8bf88",
+    "source_reconstruction_row_found": false,
+    "body_audited_here": false,
+    "lookup_log": "local/cc12_native_gui_page_dispatch_readiness_105_layer_producer_lookup.log",
+    "xrefs_log": "local/cc12_native_gui_page_dispatch_readiness_105_layer_lineage_xrefs.log"
+  },
+  "class_query": {
+    "entry": "00aa38b0",
+    "bytes": 40,
+    "instructions": 12,
+    "direct_calls": 0,
+    "abi": "receiver not read; type DWORD stack+4; AL bool; RET4; no initializer/callee",
+    "lineage_start": "00f8bf88",
+    "lineage_end_exclusive": "00f8bf94"
+  },
+  "class_query_ABI_note": "actual12instruction listing controls ABI; undefined zero-parameter Ghidra prototype is not trusted; SourceBoolean API would not promise fullEAX or Native argument ABI",
+  "later_dependencies": [
+    {
+      "service": "child20/currentchild04/timed0",
+      "state": "required real derived providers; child deletion must self-detach without inventedprogress"
+    },
+    {
+      "service": "A9BD50 parent list removeall",
+      "state": "whole raw remove_native_gui_widget_list_value_00a9bd50 already exists; same rawlist/allocation domain needed"
+    },
+    {
+      "service": "main/glyph node release",
+      "state": "existing canonical actual-node lookup/B6DFA0; SAME genuine GeneratedModelNodeLifetime companions required"
+    },
+    {
+      "service": "owned manager/store path",
+      "state": "whole getter/AA4B30 exist; current actual manager/store/literal/SourceCRT binding missing from production"
+    },
+    {
+      "service": "rawscene decrement/zero",
+      "state": "whole rawB72250 exists; current decrement/table0 services stillrequired; typedNativeGuiSceneOwner overload is separate"
+    },
+    {
+      "service": "name/base/pool cleanup",
+      "state": "existing rawbodies; require SAME genuine initialized strings/widget/layer pool domain"
+    }
+  ],
+  "next_source_candidate": {
+    "kind": "explicit_live_input_profile_reusing_existing_algorithm_not_duplicate_reconstruction",
+    "reserved_packet": "Source108_only_after105_capture_and_fresh_task",
+    "files": [
+      "include/bsp/gui_widgets_cc13.hpp",
+      "src/gui_widgets_cc13.cpp"
+    ],
+    "compiled_specialization": "named rawLayer wrapper in existing registered CPP",
+    "contract": "borrow constvolatile uint32 ID array; knownLayer exactly3words nativeorder; one shared shortcircuit search implementation; unchanged currenttyped API signature/behavior; no copy/default/init/newowner/counter",
+    "current_table": "actualD5BE38/base metadata resolution is Sourceglue and remains necessary, not a missingOriginalcallee body",
+    "actual_lineage_authority_and_initialization_still_required": true,
+    "not_production_ready": true,
+    "fresh_task_and_lease_before_implementation": true
+  },
+  "validation": {
+    "live_equals_installed": "passed2ranges76bytes",
+    "source_hash_integrity": "passed18files",
+    "new_direct_call_rows": 0,
+    "call_verifier": "not applicable: classleaf has noCALL; tableentries are not callsite instructions; nozero-row success claim",
+    "build_test_probe_execution": "not run/read-only",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "limits": [
+    "KnownD5BE38 profile only; no arbitrary widget/page profile inventory or provider fabrication.",
+    "Wholeexisting parents remain over required real services, not complete populated retirement/production.",
+    "Actual canonical type lineage and real lower contexts are caller/provider boundaries, never defaultzero or detachedcopies.",
+    "Source/currentCRT contexts do not establish OriginalCRT/FH3/SEH/privateframe or binaryABI."
+  ]
+}
