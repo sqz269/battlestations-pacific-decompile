@@ -1,0 +1,101 @@
+{
+  "schema": "bsp.cc12.native_crt_wcschr.Main_validation.v1",
+  "status": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
+  "Source_commit": "9d738703d1fb3c7f3a81a1842bd609d0433868e1",
+  "Main_compiled_commit": "942d144a5e613174d332d44a6d8fe8d01126e63b",
+  "normal_Main_build": {
+    "command": "./scripts/build.ps1",
+    "actual_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_wcschr_Main_build01\\actual_build_receipt.DATA.json",
+      "bytes": 700,
+      "sha256": "37e0489f9bf1b06fb3a59cb06d902a7f2b980643191e4cd5a2c9d4b04d882e2f"
+    },
+    "actual_stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_wcschr_Main_build01\\actual_stdout.bin",
+      "bytes": 3606,
+      "sha256": "374ae8b95440f98ec707cbdcad89d9e2614bb77cf8b79b4b3b89c423afb5aecb"
+    },
+    "Root_genuine_tool_provenance": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcschr_integration_20261016\\Root_Main_build_provenance\\authentication.DATA.json",
+      "bytes": 6347,
+      "sha256": "68ec8fd4ac5dd400c2203c4f330349d183322b74c741934480488186a76ee5b1"
+    },
+    "initial_chunk": "6dd2dc",
+    "session": 6982,
+    "terminal_chunk": "6c78d5",
+    "exit_code": 0,
+    "existing_CTests_passed": 3,
+    "test_seconds": 8.73,
+    "recorded_inputs_unchanged": 5335,
+    "actual_selected_compiler_inputs": 2,
+    "before": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_wcschr_Main_build01\\before.DATA.json",
+      "bytes": 1886890,
+      "sha256": "1f14dc4f6775608a26c91281d57d07a943030ffe4e2b3dac5eea7d972b499ae7"
+    },
+    "after": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_wcschr_Main_build01\\after.DATA.json",
+      "bytes": 7614,
+      "sha256": "afb0c3f048f20fd231f42961be8f32c2b4bb787cf1ca2ad21449948d37c35c4b"
+    }
+  },
+  "Root_actual_Main_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcschr_integration_20261016\\Main_primary_review.DATA.json",
+    "bytes": 4356,
+    "sha256": "b2f0677a64d2023cb4616cb798941ac3c4dd475cd008229e77d0a393ef413dde"
+  },
+  "independent_Main_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcschr_integration_20261016\\Main_peer_review.DATA.json",
+    "bytes": 3335,
+    "sha256": "8dd2c22d7aa4ab14204861aa2c928619ca8356c630b4008205ae691e1e9da9a7"
+  },
+  "registration": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcschr_integration_20261016\\registration_verification.DATA.json",
+    "bytes": 602,
+    "sha256": "031cb83e9ad4565f5d7ef351494685c0e88fd4db67e4ae895a0bf77ad5aa212e"
+  },
+  "Root_required_Source_call_checker": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcschr_integration_20261016\\required_Root_Source_call_check.DATA.json",
+    "bytes": 462,
+    "sha256": "f68f27537d07f0ff96987d112d06f4b7bec3901b1f9fd9c8890c1286a584330c"
+  },
+  "archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcschr_integration_20261016\\Main_primary_archive.DATA.json",
+    "bytes": 889688,
+    "sha256": "960dc800ce6aea96f9899ede8aa63fd99cf03d1fb6c31d2d6b4670601983579a"
+  },
+  "object": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_wcschr_Main_build01\\frozen\\native_crt_wcschr.obj",
+    "bytes": 924,
+    "sha256": "f4d2ae98576c84013d759abd10b1c289e1a444094741d69c8192487f6f95a0bf"
+  },
+  "whole_ordinary_function_credit": 1,
+  "Source_credit": 1,
+  "strict_compiles": 1,
+  "Main_selected_compiles": 1,
+  "worker_baselines": 0,
+  "new_tests": 0,
+  "new_probes": 0,
+  "existing_linker_warning": "Unrelated existing LNK4006 duplicate spawn_request_id_matches retained.",
+  "qualifications": [
+    "Actual normal registered Main942d144a5 passed; later unrelated publications are not claimed rebuilt by this run.",
+    "5335 recorded compiler-family/selectedTU/tracked Main Source-build files unchanged at actual build exit; actual selected compiler closure2 and flags reviewed. No hermetic OS/loader or all-target closure claim.",
+    "Full actual Main36rows/924B metadata/frame and unique archive/public section binding independently reviewed. Main /Oy- EBP frame and private9c49ee36 name differ from strict015e8cb8 variant; finite literal pair only, no normalization.",
+    "Root required wcschr report/doc call-check was performed after Source registration publication and before final closure; zero call rows does not establish semantics.",
+    "No selected new Source body execution, Original physical ABI/caller/runtime/game proof. Default potentially throwing new typed API retained."
+  ],
+  "Original_ABI_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false,
+  "saved_Ghidra_annotations": {
+    "actual_tool_result": "6e5c0d",
+    "prior_journal": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\ghidra-annotations-20261016T063654Z.json",
+    "bytes": 1058,
+    "sha256": "4dcf9faed748e4bf8770f4211c26f950a21a876110ff0d0d7ced1356c57996f4",
+    "correct_existing_library_name_retained": "_wcschr",
+    "supported_lock_and_save": true
+  },
+  "refreshed_export_result": "642ff0",
+  "index_result": "35a0f3",
+  "final_call_checker": "b300e1:5files,0failures;doc13addresses0callclaims"
+}

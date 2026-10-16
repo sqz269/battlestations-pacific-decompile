@@ -42595,8 +42595,8 @@
     },
     {
       "id": "cc12_native_crt_wcschr_00bfd6c1",
-      "done": false,
-      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
       "source_ready": true,
       "function_addresses": [
         "00bfd6c1"
@@ -42622,11 +42622,13 @@
         "No SDKwcschr/memcpy/search, byte-only/dwordsubstitute, provider/global/TLS/fallback/runtimevalidation/callerbinding. Exclude faults, mutation/concurrency, indeterminatebytes, lifetimechanges andMMIO/volatileobservationprotocols. PreserveOriginal pointerhome/targethome/order as evidence only; no physicalABI/register/stack/flags/segment/EH/instruction/bus/fault/runtime/gamecredit.",
         "Worker owns exactlyfourSource/header/doc/reportfiles plus ownnewlocalevidence. Root owns registration, ledgers/names, supported Ghidraannotation/export andMain. Before every Sourcewrite hold entry, entire34Brange andallfourfiles. One actual strictMSVCWin32compile with genuinebeforepins/actualdependencyclosure and wholeartifactreview; no separate unregisteredworkerbaseline, newtests/probes/bodyexecution. Root Mainbuild/actualvariant/archive andindependentSourcegates remain."
       ],
-      "Main_gate": "pending_normal_Main_build_and_independent_actual_variant_archive_review",
+      "Main_gate": "pass",
       "code_revision": "9d738703d1fb3c7f3a81a1842bd609d0433868e1",
       "primary_review": "reports/cc12_native_crt_wcschr_primary_review.json",
-      "Main_build_gate": "pending",
-      "actual_compiler_archive_gate": "pending"
+      "Main_build_gate": "pass_3_existing_CTests",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_native_crt_wcschr_Main_validation.json",
+      "whole_ordinary_function_credit": 1
     },
     {
       "id": "cc12_native_crt_strcspn_00bf9a50",
