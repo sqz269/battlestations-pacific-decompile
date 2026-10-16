@@ -52,5 +52,4 @@ transport and game execution remain unproved. GENERAL SOURCE-READY IS FALSE.
 Seven direct call/jump claims are checked separately from the one unresolved
 indirect CALL EDX at469337; no resolved-callee claim is made for that slot.
 Whole live/installed bytes and typed flow are captured in the packet report.
-Independent full193B/67-op Source/header review passed. Actual registered Win32
-build and emitted call-edge inspection remain pending. No new tests are introduced.
+Independent full193B/67-op Source/header review passed. Registered MSVC Release Win32 build atefe9cc1079ab3aa1b854040ae00df88f7c5c53c4 passed all three existing CTests in 7.51s. The unique archived COFF object confirms actual ECX/stack1 dispatch and late BYTE/current-field schedules. Compiler child inlining and private guard/EH writes have no Original frame identity credit. Receipt: reports/goal_oct15_scene_lifetime_primary_review.json. The existing Ghidra CALL_RETURN override on action JMP C61AB6 is preserved; no listing/flow repair was made. No new tests are introduced.

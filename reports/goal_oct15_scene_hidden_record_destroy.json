@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_scene_hidden_record_destroy",
-  "status": "whole_raw_control_flow_independently_reviewed_qualified_cleanup_registered_build_pending",
+  "status": "whole_control_flow_Source_current_services_qualified_cleanup_default_Win32_all3_existing_checks_passed_general_readiness_unproved",
   "source_ready": false,
   "general_source_ready": false,
   "code_complete": true,
@@ -146,7 +146,41 @@
     "state0_action": "00c61ab0",
     "arm": "after bag capture469324,before dispatch469337",
     "normal_disarm": "469367 after header.data read469362,before header.length469371",
-    "source_transport": "qualified canonical C++ guard mapping,notOriginalFH3/SEH/privateframe"
+    "source_transport": "qualified canonical C++ guard mapping,notOriginalFH3/SEH/privateframe",
+    "existing_action_flow_override_preserved": {
+      "flow_override": "CALL_RETURN",
+      "default_flow": {
+        "name": "UNCONDITIONAL_JUMP",
+        "is_call": false,
+        "is_jump": true,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "CALL_TERMINATOR",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": true
+      },
+      "default_fallthrough": null,
+      "effective_fallthrough": null,
+      "fallthrough_overridden": false,
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "0041dd20"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "0041dd20"
+        }
+      ]
+    }
   },
   "source_hashes": {
     "src/native_scene_hidden_entity_record_destroy.cpp": "8e5cf22b41be55c26f5323cad7b07e23a8b0d8be3dc762830146235df0a94e25",
@@ -186,6 +220,53 @@
     "prior_values_sha256": "1d68581bbd01c033651826b57a29d8c5d5b3ebcb1f9ac25d9f4dce5cb3a85f64",
     "names_preserved": true,
     "exports_refreshed": true,
-    "live_comments_readback": true
+    "live_comments_readback": true,
+    "final_prior_values": {
+      "path": "local\\ghidra-annotations-20261016T003439Z.json",
+      "sha256": "3e97585e247dcf0d90ad0f9615f5c4a84f209330e539bcf4999e587faedb8f9c"
+    },
+    "final_comments_readback": true
+  },
+  "validation": {
+    "combined_build": {
+      "revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_scene_lifetime_combined_build.log",
+      "log_sha256": "59383785678101132f0573cbbccadc1c340650ed126592a2235aeebb46addefe",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 7.51,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies"
+    },
+    "direct_rows_passed": 7,
+    "computed_call_separately_typed": true,
+    "new_tests": 0,
+    "new_entry_executed": false
+  },
+  "compiled_object_review": {
+    "object": "build\\win32\\bsp_core.dir\\Release\\native_scene_hidden_entity_record_destroy.obj",
+    "object_bytes": 6337,
+    "object_sha256": "c0cd03272dbbf38569151ed41ebf78162c6b8aebe8871855769a4daf57ad1321",
+    "machine": "014c",
+    "public_definitions": {
+      "destroy_native_scene_hidden_entity_record_00469300": 1,
+      "delete_native_scene_hidden_entity_record_004693a0": 1,
+      "unwind_native_scene_hidden_entity_record_00c61ab0": 1
+    },
+    "identical_archive_members": 1,
+    "disassembly": "local\\goal_oct15_destroy_object_disasm.txt",
+    "disassembly_sha256": "25de598bd8848a861b3f92f3edfcf385c68440fc27de233a432d4267a25d099e",
+    "virtual_call": "real vtable load,ECXcaptured bag,PUSH1,CALL EAX+59,no caller ADDESP4;callee thiscall cleanup expected",
+    "raw_schedule": "two saved stores+37/+39,bag+48,data+90 beforedisarm+93,length+9B;free/zero/reload order retained",
+    "wrapper": "compiler inlines child;real pool return+BD precedes lateBYTE+C8/mask01+CA,conditionalfree+D0,capturedrecordbits+D8",
+    "qualification": "Source compiler private EH/guard/argument writes and child inlining differ from Original;no private-frame/fault/Originalentry/all-dynamic-target/constructed-vtable or execution credit"
   }
 }
