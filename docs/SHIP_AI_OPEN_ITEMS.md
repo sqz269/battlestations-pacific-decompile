@@ -18106,3 +18106,21 @@ keeps the stream position. Only the discarded value differs (u32 % count against
 the D1h handler. 008689C0 is BSP_PointEffect_Create, a particle effect. The host keeps the gameplay part of +740h, the
 burning flag that 00745BE0's timer and secondary-explosion arm read, and the effect object itself has no gameplay reader
 found. Nothing bound.
+
+## 258. ShipSystems sink spawners bound and flipped (cc9-ships52, 2026-10-16; lead item 4)
+
+`kShipSystemsSinkDrawsBound` (src/game_hosts_gunnery.cpp, `Draw::sink_effects` = 30). The binding is
+`GameGunneryHost::ship_systems_sink_draws_00933da0_00933bb0`, called from game_hosts_units.cpp's sink block after the
+kill-depth test. That block now also keeps unit+82Ch (`sink_under_82c`; 00826645..0082666B). The draws are those of
+section 256 item 4: the grid nx*ny while sinkTime < 30, and 1 (+2 on 1 in 5) while unit+82Ch < 40. LABELLED: a
+00BD2FC0 is one host draw, and `% n == 0` is `draw < 1/n`. The point effects are recorded. OFF 037f7863a (tree), ON
+`local\s52_sk` (pair_export).
+| row (default mode, BSP_GUNNERY_RNG_STREAMS=0) | ON draws | pair_diff | first moved |
+|---|---|---|---|
+| USN01 20000 fr (`s52_k0_u1` / `s52_k1_u1`) | 212051 | 3 | KatTBD 172-219 s; mission completes 345.04 -> 380.03 s |
+| USN02 20000 fr (`s52_k0_u2` / `s52_k1_u2`) | 55016 | 3 | Yamakaze 57.45 -> 57.50 s |
+| USNOS a7 30000 fr (`s52_k0_os` / `s52_k1_os`) | 259184 | 3 | from 32.7 s, after Gato (first wreck, 29.75 s) |
+| USN01 reference mode, STREAMS=1 (`s52_q0_u1` / `s52_q1_u1`) | 210469 | 1, gameplay identical | none |
+Every moved row moves after the first sinking, as a stream-1 consumer must, and the reference mode is inert. Flipped ON.
+LABELLED: a submarine's sink block reaches both spawners here. The image's submarine update also calls 00933BB0
+itself (008546FC); whether submarines run 00825F20's block too was not read.

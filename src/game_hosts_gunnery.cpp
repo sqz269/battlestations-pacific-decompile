@@ -152,7 +152,13 @@ constexpr bool kDamageSmokeDrawsBound = true;
 // point effect create 00868420 draws as well was not read. Inert under
 // BSP_GUNNERY_RNG_STREAMS=1 (own key, Draw::sink_effects). True: the draws are
 // taken on the shared stream. False: recorded only (before).
-constexpr bool kShipSystemsSinkDrawsBound = false;
+// ON by docs/SHIP_AI_OPEN_ITEMS.md 258: default-mode pairs USN01, USN02 and USNOS
+// move from the first sinking (Gato 29.75 s on USNOS), as a stream-1 consumer
+// must; reference runs (BSP_GUNNERY_RNG_STREAMS=1) are unaffected. LABELLED: a
+// submarine's sink block also reaches both here; the image's submarine update
+// calls 00933BB0 itself at 008546FC, and whether it also runs 00825F20's block
+// was not read.
+constexpr bool kShipSystemsSinkDrawsBound = true;
 // Packet cc9_cb_gunfire_gate (docs/GUNNERY_OPEN_ITEMS.md 125): a hit's AddDamage is
 // victim->vtable[1ACh] (008778C6, 00877A2E in 008777D0), and for a CommandBuilding
 // (vtable 00CFB028) that slot is 006F1F20, which damages only while +7D8h == 0.0
