@@ -1,13 +1,13 @@
 {
   "schema": "bsp.cc12.native_crt_memcmp.primary.v1",
-  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+  "status": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
   "Source_commit": "db612fba4193f7a76ea2dca23f27cb178afcd742",
   "Source": "src/native_crt_memcmp.cpp",
   "header": "include/bsp/native_crt_memcmp.hpp",
   "documentation": "docs/NATIVE_CRT_MEMCMP.md",
   "Original_name_retained": "_memcmp",
   "whole_ordinary_functions": 1,
-  "Source_credit": 0,
+  "Source_credit": 1,
   "primary_author": {
     "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_memcmp_integration_20261016\\primary_author_inputs.DATA.json",
     "bytes": 2685,
@@ -32,8 +32,8 @@
   "frozen_tools": 88,
   "worker_baselines": 0,
   "Main_registered": true,
-  "Main_build": "pending",
-  "actual_compiler_archive_gate": "pending",
+  "Main_build": "pass_3_existing_CTests",
+  "actual_compiler_archive_gate": "pass",
   "contract": [
     "New ordinary target-specific MSVC Win32 interface: std::int32_t __cdecl bsp::compare_native_regions_00c1ef55(const void*, const void*, std::uint32_t) noexcept. Keep correct Original library name _memcmp. uint32 count and exact signed32 result -1/0/+1 from the first differing unsigned byte; NUL has no terminator role.",
     "Count0 admits either or both null pointers and returns0 before payload access or endpoint arithmetic. Positive count requires both requested regions to be genuine live readable determinate stable bytes. Each requested endpoint is within OR one past the same enclosing allocation, permitting interior subranges and prefixes. Correct author C1 allocation-end wording; do not alter its sealed historical evidence. Actual32bit additions/advances must not wrap. No signed count cap, pointer subtraction, nonalias or initially aligned pointer requirement.",
@@ -48,5 +48,7 @@
   ],
   "Original_ABI_compatible": false,
   "new_Source_body_executed": false,
-  "game_validated": false
+  "game_validated": false,
+  "Main_gate": "pass",
+  "Main_validation": "reports/cc12_native_crt_memcmp_Main_validation.json"
 }
