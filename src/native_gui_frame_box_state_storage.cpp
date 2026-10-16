@@ -115,7 +115,7 @@ Views preflight(void* box, Frame& f, Context& c, Acquired& a) {
     }
     require(c.owners.find(box) == &c.box_reference &&
         c.box_reference.phase() == NativeGuiFrameBoxIdentityPhase::bound,
-        "Raw FrameBox state requires the SAME completed canonical163 identity without a count gate");
+        "Raw FrameBox state requires the SAME admitted canonical163 identity without a count gate");
     require(&c.geometry.actual_owners() == &c.owners &&
         &c.materials.retained_owners == &c.owners &&
         &c.effects.effects.owners.actual_owners() == &c.owners &&
