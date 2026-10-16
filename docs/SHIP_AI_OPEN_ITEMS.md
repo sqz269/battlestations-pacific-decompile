@@ -17980,3 +17980,74 @@ with manifests; plan census `local\s51_ordsum.py <orders> [unit-regex]`. Build: 
 - **Next:** a7 = a6 + NH `attack "Capture Post 02"` 47000-51500 and `"Capture Post 04"` 52000-61000 (every 500); a8 = a7
   without TT6's 37400 redirect (TT6 stays on HQ2). Both died at renderer init (hr 0x88760868, display asleep) at
   19:18-19:32 local and must be re-run. Then: the 251 CB2/HQ2 line, the Betty member hunts (k30), jitter.
+
+## 256. USNOS phase 1 never ends; capture slot pick and CB SetParty audited; BSM09 cause; seg-61 spawner scope (cc9-ships52, 2026-10-16; lead items 1-4)
+
+Build: this tree at 25fbdcba0 (origin/main f9d36bb0e merged). Runs: reference env, `local\s52_rows.ps1` (s51_rows plus
+`-ExtraEnv`), logs `local\s52_t_<v>.log` with manifests and `-Traj` csv; helpers `local\s52_ttpos.py <csv> <unit-re>
+[period] [refs]` (sampled positions and distances), `local\s52_wave.py <log>` (SpawnNew serial 1-6 members and deaths),
+`local\s52_merge.py` (frame-sorted order merge), `local\s52_grep.py` (grep).
+
+**Item 1, USNOS.** ships51's a7/a8 (section 255) ran to 200000 frames with no end and no SetParty. NH kills Capture
+Post 04 at 2863 s, TT3 parks alive 891 m from HQ1 from about 3500 s, and HQ1 is neutral from 1689.75 s. Capture Post 04
+was therefore not the blocker. **Phase 2 never starts on current main.** The capture loop (`us_osumi.lua` 1051-1118) sits
+under `MissionPhase == 2` and `luaObj_IsActive("primary", 2)`. A `BSP_LUA_CALLBACK_TRACE` run (`local\s52_d_a7.log`, 72000
+frames) shows `luaObj_Add` called once (primary 1 only), and no Loui/Portland3/Gear19-22 GenerateObject appears in any
+a-run (k28 has them). Phase 1 ends only when `Mission.PhOneAttackers` is empty after wave 2 (:995-1011). Wave 2's
+level bombers `plane #4.4|.-2/-3/-4` (SpawnNew serial 4, 320 s) enter `LevelBomb/goaway` at 426 s, after their release on
+TT4. They stay in it for the rest of the run and fly south off the map: (-1894, -32452) at 800 s, (-40815, -97736) at 2000
+s, `local\s52_t_a7_p44.txt`. On k28 (68fe87dba) the same wingmen also entered goaway at 430 s but stayed close, and
+Enterprise_sqn03 killed them at 797-815 s. The host's 009B88F0 transition (src/plane_level_bomb_task.cpp) leaves goaway
+only when `engaged` is false or when goaway_ready holds with ordnance left. A wingman with no ordnance whose +CDh latch
+stays set never leaves. The candidate commits since k28 are the level-bomb flips 8da8304e0 and d99550ee5 (a7's summary
+for #4.4|.-2: issues=24, passthrough_releases=23). Routed to the planes lane through the lead; not established here.
+Workarounds tried: a9/a10 (`local\s52_os_a9.txt`, `a10.txt`) launch three Enterprise F2G flights at the wingmen at
+frames 7000 and 8400. The launches applied, but no wingman died. a9 failed at 4690.54 s (Enterprise <- Shima7; NH <-
+Zao3 at 2108; TT3 <- Capture Post 04 at 3062), and a10 has no end. Both also took deck slots that the later 11340/11360
+launches needed. No win is possible on this plan until the wingmen leave goaway or die.
+
+**Item 2, capture host gaps: none found.**
+- *Completion slot pick 006F70E6..006F71F5.* A slot record `[[game+18CCh]+i*4]` is eligible when `+28h == side`, or
+  `+8h == 0`, or `+9h != 0 && +0Ah == 0`. The eligible slot with the strictly largest score+landed sum wins (first eligible
+  on ties; arrays at ESP+64h/+2Ch). `004BB160` sets `+8h`, `+9h` and `+0Ah` to 1 on every record (004BB21C..004BB224), and
+  only the local record's `+9h` is cleared, so in single player eligibility is `party == side`. 006F4D10 takes the new
+  party from the chosen record's `+28h` (006F4F71..006F4F7E). Every eligible record therefore gives the side's party, as
+  the host's first-match does. A scene with `MaxPlayerNum` < 8 (one installed file has 4) would make its tail records
+  eligible through `+8h == 0` (004C6AD0). That is not reached in any mission row. The USNOS logs have no
+  `flipped to party` line at all, so no completion fired there.
+- *SetParty on a CommandBuilding.* `008A8930` asks vt+5Ch(2). CB's vt+5Ch is `006F58E0`
+  (BSP_MCommandBuilding_IsKindOf, 1 for 2), so the image takes the session-message arm: 7Fh, vtable 00D032E8, routed by
+  0077C2A0 channel 7. CB HandleMessage `006F5460` handles only D3h..D6h and passes the rest to `00744BE0` (LandFort). That
+  passes 7Fh to `0095ABE0`, whose arm `0095ADA2` calls vt+2Ch = `00951F30` -> `00928F50`. That is the endpoint the host's
+  `entity_vcall_2c` calls directly (kSetPartyUnitBound), so the Lua Party mirror runs on both. The route's only drop is
+  game state < 0Ah (0077C2A3), and mission load runs at 0Ah/0Bh (004DFB70), so nothing is dropped in a mission. Delivery
+  being synchronous is taken from docs/SESSION_MESSAGE_DISPATCH.md, not re-read.
+
+**Item 3, BSM09 start failure: cause.** `bsm_09_battle_of_the_coral_sea.lua` 1102-1173 (`luaIntroMovie7`, about 45 s)
+calls `GenerateObject("NEW_Cloud 01".."72")`. These are Hidden scene rows of class 3Dh `Cloud`, held in the spawn pool.
+`run_generate_object_00944fd0` special-cases only LandConvoy 1Ah and sends every other class to
+`create_unit_from_scene_record_0046db4b`, which makes a unit; the unit's observer projection then throws (creator 0).
+Image: 0046DB4B calls descriptor[1] = `004E9E40` for Cloud (docs/ENTITY_IDENTITY.md part 3). It reads `CloudType`, creates
+through the cloud manager `[[00E188A8]+21D0h]` vtable[8], attaches and names the entity, and makes no unit. Cloud has no
+unit creator and no lua-identity row, so a non-hidden Cloud is already recorded at load as "creator 004e9e40 is not
+reconstructed" (game_hosts_scene_contents.cpp, find_scene_unit_creator null). Only BSM09 generates clouds (installation
+scan), and no script reads the result. The fix (same answer as the load path) is in game_hosts_lua.cpp, cc9-lua62's file,
+and waits on the lead's loan decision.
+
+**Item 4, seg-61 ShipSystems spawners: scope.** Section 254 had the 00933BB0 condition backwards. In 00825F20, `this` is
+unit+310h (00825F32 `LEA ESI,[EDI-310h]`). The block 008263B0..008266B2 runs only with the dead byte unit+5Dh set
+(`this-2B3h`), that is, for a sinking ship. unit+828h (`this+518h`, the host's `sink_time_828`) counts up while it sinks.
+unit+82Ch (`this+51Ch`) counts the time both hull ends have stayed below 0 and is zeroed otherwise (00826645..0082666B).
+- `00933DA0` (call 0082668B) runs every sinking tick while sinkTime < 30.0 (`[00CE7630]` double). It walks an nx x ny grid
+  with nx = ftol(class+A4h x 1.5 / 15 + 1) and ny = ftol(class+A0h x 1.5 / 15 + 1) (`[00CE3D78]` 1.5, `[00CF3F20]` 15.0,
+  00933DC2..00933E1C). Each cell draws one `00BD2FC0` on **stream 1** (00933EB0 `MOV ECX,1`). One cell in 3000 also
+  takes two `00BD2F10` stream-1 draws and spawns a point effect.
+- `00933BB0` (call 008266AA) runs every sinking tick while unit+82Ch < 40.0 (`[00CE685C]`; `COMISS 40.0, +51Ch / JBE
+  skip`), that is, from the start of sinking. It draws one `00BD2FC0` on stream 1 (00933BB7). One call in 5 takes two
+  `00BD2F10` stream-1 draws (00933BF6, 00933C12) and spawns an effect only when the sampled point is below 0.
+- So a 200 m hull (nx about 21, ny about 3) draws about 60 stream-1 values per sinking tick for 30 s. That is gameplay-
+  relevant in the default shared-generator mode, where stream 1 also feeds the gunnery draws (docs/RANDOM_STREAMS.md), and
+  inert under `BSP_GUNNERY_RNG_STREAMS=1`, where a keyed stream decouples it. Whether 00868420 BSP_PointEffect_CreateFromMatrix (00933D65)
+  draws as well is not read. A binding would follow the damage-smoke precedent (`damage_smoke_tick_008227e0` in the
+  gunnery host, called from game_hosts_units.cpp's sink block next to `sink_time_828`, with a new `Draw` key). That needs
+  the gunnery file and the shared units file, so it is not bound here.
