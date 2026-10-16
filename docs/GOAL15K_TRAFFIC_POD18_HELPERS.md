@@ -135,3 +135,13 @@ private stack addresses, production owner composition and gameplay are unproved.
 The full49E560 traffic parent, layout, resize/insert/erase/settings and mutable
 world/axis producers remain explicitly incomplete. These six leaves do not close
 that graph or adopt typed host callbacks as raw providers.
+
+Primary annotation note: five conventional physical prototypes were applied
+under the Ghidra write lock with old values retained. The `48D2F0` custom formal
+signature remains unresolved. Its established inputs are a raw32-bit ECX
+metadata preimage and three actual stack words at +4/+8/+C, EAX end and RET0Ch;
+there is no Original EDX input or recovered C++ class. The configured bridge
+disables script execution, and its storage tool only returns manual guidance.
+The displayed undefined cdecl signature is an analysis placeholder, not evidence
+of that ABI. Exact custom storage remains an annotation gate; Source body and
+physical caller evidence are unaffected.
