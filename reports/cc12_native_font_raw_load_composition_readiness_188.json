@@ -1,0 +1,1340 @@
+{
+  "packet": "native_font_raw_load_composition_readiness188",
+  "status": "READONLY_whole_parent_ready_for_bounded_supplied_graph_Source_NOT_implemented",
+  "baseline": {
+    "worker_HEAD": "349de4655498c42ade64844934de59e314e7a7c9",
+    "readonly": true,
+    "Main_merge_Source_import": false,
+    "Source_CMake_ledger_Ghidra_write": false,
+    "build_test_probe_body_execution": false,
+    "preserve_sealed185_and_earlier": true
+  },
+  "Original": {
+    "Original": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "spans": [
+      {
+        "start": "00ad4c30",
+        "end_exclusive": "00ad5181",
+        "bytes": 1361,
+        "physical_starts": 469,
+        "sha256": "100ec30100b3ceb0ee99bee69e467cd86b55d282e7d62862bb1d84d0b99d363e",
+        "live_analysis_equals_installed_disk": true,
+        "listing_all_starts_equal": true,
+        "direct_calls": 38,
+        "indirect_calls": 16
+      },
+      {
+        "start": "00be4320",
+        "end_exclusive": "00be433b",
+        "bytes": 27,
+        "physical_starts": 10,
+        "sha256": "45f118e1a34545f12c5066b0a15c37bc07a24eafa7b753f04db5e871fd9df8ec",
+        "live_analysis_equals_installed_disk": true,
+        "listing_all_starts_equal": true,
+        "direct_calls": 0,
+        "indirect_calls": 1
+      },
+      {
+        "start": "00be4340",
+        "end_exclusive": "00be435b",
+        "bytes": 27,
+        "physical_starts": 10,
+        "sha256": "45f118e1a34545f12c5066b0a15c37bc07a24eafa7b753f04db5e871fd9df8ec",
+        "live_analysis_equals_installed_disk": true,
+        "listing_all_starts_equal": true,
+        "direct_calls": 0,
+        "indirect_calls": 1
+      }
+    ],
+    "AD4C30_ABI": "ECX actualAC-byteFont;stack root,DAT,GFX,alpha,language actual8Bheader pointers;RET14h; no semantic bool",
+    "invented_Ghidra_prototype_not_used": "undefined(void) remains unchanged",
+    "load38_direct_calls11_code_targets16_indirect_sites": true,
+    "direct_code_targets": [
+      "00419cc0",
+      "0041dd40",
+      "0041e870",
+      "004261a0",
+      "00ad4540",
+      "00ad4aa0",
+      "00bd1510",
+      "00bf65ac",
+      "00bf6713",
+      "00bf681b",
+      "00bf7680"
+    ],
+    "imported_CE2220_decrement": "indirect IAT site; callee graph also lists external import, not a twelfth direct code target",
+    "whole_load_equals_frozen161_and_fresh_live_analysis_and_installed_disk": true,
+    "running_game_or_Source_body_execution": false
+  },
+  "reused_whole_body_not_reexported": true,
+  "call_rows": [
+    {
+      "address": "00ad4c6d",
+      "native": "0041dd40",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4c84",
+      "native": "00bf7680",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4ca6",
+      "native": "004261a0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4cbc",
+      "native": "004261a0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4cee",
+      "native": "00419cc0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4cf5",
+      "native": "00bd1510",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4d12",
+      "native": "00419cc0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4d19",
+      "native": "00bd1510",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4d2c",
+      "native": "0041dd40",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4d41",
+      "native": "00bf7680",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4d57",
+      "native": "0041dd40",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4d6c",
+      "native": "00bf7680",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4d86",
+      "native": "0041dd40",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4d9b",
+      "native": "00bf7680",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4db5",
+      "native": "0041dd40",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4dca",
+      "native": "00bf7680",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4de4",
+      "native": "0041dd40",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4df9",
+      "native": "00bf7680",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4e15",
+      "native": "004261a0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4e52",
+      "native": "0041e870",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4e8c",
+      "native": "00419cc0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4e93",
+      "native": "00bd1510",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4eaa",
+      "native": "004261a0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4ec1",
+      "native": "004261a0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4ef0",
+      "native": "00419cc0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4ef7",
+      "native": "00bd1510",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4f14",
+      "native": "00419cc0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4f1b",
+      "native": "00bd1510",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4f6a",
+      "native": "00bf681b",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad5025",
+      "native": "00ad4540",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad5036",
+      "native": "00bf6713",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad505e",
+      "native": "00ad4aa0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad5066",
+      "native": "00bf65ac",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad50dc",
+      "native": "00ad4540",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad50e9",
+      "native": "00bf6713",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad50f7",
+      "native": "00bf6713",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad5164",
+      "native": "00419cc0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad516b",
+      "native": "00bd1510",
+      "function": "00ad4c30"
+    }
+  ],
+  "call_row_scope": "ONLY38 direct whole AD4C30 sites reused182 then independently verified current;16indirect and7EHactions retain static182 evidence;0newSourcebodyexecution",
+  "indirect_call_sites": [
+    {
+      "site": "00ad4cd0",
+      "operand": "eax",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4e29",
+      "operand": "eax",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4e6e",
+      "operand": "edx",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4ed5",
+      "operand": "eax",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4f29",
+      "operand": "eax",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4f36",
+      "operand": "eax",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4f61",
+      "operand": "edx",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4f81",
+      "operand": "edx",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4f8e",
+      "operand": "edx",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4f9c",
+      "operand": "edx",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4faa",
+      "operand": "edx",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4fb8",
+      "operand": "edx",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4fc7",
+      "operand": "edx",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4fea",
+      "operand": "eax",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad507d",
+      "operand": "dword ptr [0xce2220]",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad508d",
+      "operand": "eax",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00be4331",
+      "operand": "eax",
+      "function": "00be4320"
+    },
+    {
+      "site": "00be4351",
+      "operand": "eax",
+      "function": "00be4340"
+    }
+  ],
+  "EH": {
+    "reused_161": true,
+    "complete158_bytes": [
+      {
+        "start": "00cb93c0",
+        "bytes": 8,
+        "sha256": "7a61df46d26dcdffb5c8a9cae76ab8140a12bda3b8a1f72904a1715bef977513",
+        "live_equals_disk": true,
+        "path": "local\\font_raw_load_composition188\\accepted182\\local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93c0.bin",
+        "current_installed_disk_equals_frozen161": true,
+        "original_182_worker_path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93c0.bin"
+      },
+      {
+        "start": "00cb93c8",
+        "bytes": 8,
+        "sha256": "1c8461432ac7f863736a636ced1b4805db4eacea920458dea40eb96f8e4e85a4",
+        "live_equals_disk": true,
+        "path": "local\\font_raw_load_composition188\\accepted182\\local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93c8.bin",
+        "current_installed_disk_equals_frozen161": true,
+        "original_182_worker_path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93c8.bin"
+      },
+      {
+        "start": "00cb93d0",
+        "bytes": 8,
+        "sha256": "7ef3363787e624f8abaf4fb8e9493dd350130549ce05d053614be27b162ed1bd",
+        "live_equals_disk": true,
+        "path": "local\\font_raw_load_composition188\\accepted182\\local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93d0.bin",
+        "current_installed_disk_equals_frozen161": true,
+        "original_182_worker_path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93d0.bin"
+      },
+      {
+        "start": "00cb93d8",
+        "bytes": 8,
+        "sha256": "e6021c078e4f97f363278fa03f5647f88773b5a6e149a2366270d3ed967704f3",
+        "live_equals_disk": true,
+        "path": "local\\font_raw_load_composition188\\accepted182\\local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93d8.bin",
+        "current_installed_disk_equals_frozen161": true,
+        "original_182_worker_path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93d8.bin"
+      },
+      {
+        "start": "00cb93e0",
+        "bytes": 8,
+        "sha256": "52c0f28c88f6bf913e67d7218b79f0943c6eaeba95e263d3d0b5b4d783cbd551",
+        "live_equals_disk": true,
+        "path": "local\\font_raw_load_composition188\\accepted182\\local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93e0.bin",
+        "current_installed_disk_equals_frozen161": true,
+        "original_182_worker_path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93e0.bin"
+      },
+      {
+        "start": "00cb93e8",
+        "bytes": 8,
+        "sha256": "3e366ea8986505c3a87cfd39c20e228a44c8ffd29271b58a34655d92f41be6a5",
+        "live_equals_disk": true,
+        "path": "local\\font_raw_load_composition188\\accepted182\\local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93e8.bin",
+        "current_installed_disk_equals_frozen161": true,
+        "original_182_worker_path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93e8.bin"
+      },
+      {
+        "start": "00cb93f0",
+        "bytes": 8,
+        "sha256": "813521e495f3934a3bc801b820f8196d000cd1cd1b8ac0afefc187361273dc65",
+        "live_equals_disk": true,
+        "path": "local\\font_raw_load_composition188\\accepted182\\local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93f0.bin",
+        "current_installed_disk_equals_frozen161": true,
+        "original_182_worker_path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93f0.bin"
+      },
+      {
+        "start": "00cb93f8",
+        "bytes": 10,
+        "sha256": "a08f32f259e64235a43986e31b4d274a04b63e62359a64b97867ed0fb369b0fb",
+        "live_equals_disk": true,
+        "path": "local\\font_raw_load_composition188\\accepted182\\local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93f8.bin",
+        "current_installed_disk_equals_frozen161": true,
+        "original_182_worker_path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93f8.bin"
+      },
+      {
+        "start": "00df09d4",
+        "bytes": 36,
+        "sha256": "6f1f6da9d510b24d420c62118c7a14fd7dd05b49a5ecd3650b08d68d17f83c52",
+        "live_equals_disk": true,
+        "path": "local\\font_raw_load_composition188\\accepted182\\local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00df09d4.bin",
+        "current_installed_disk_equals_frozen161": true,
+        "original_182_worker_path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00df09d4.bin"
+      },
+      {
+        "start": "00df09f8",
+        "bytes": 56,
+        "sha256": "1c49fc073d1f6f165b6bad8fdb4a060b4e99c0d36512f138b7281f729d028a98",
+        "live_equals_disk": true,
+        "path": "local\\font_raw_load_composition188\\accepted182\\local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00df09f8.bin",
+        "current_installed_disk_equals_frozen161": true,
+        "original_182_worker_path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00df09f8.bin"
+      }
+    ],
+    "full36_byte_FuncInfo_all56_map_bytes_seven8byte_actions_and10byte_handler": true,
+    "load_map": {
+      "handler": "00cb93f8",
+      "FuncInfo": "00df09d4",
+      "fields": [
+        429065506,
+        7,
+        14617080,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "map": "00df09f8",
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cb93c0",
+          "bytes8": "8d4db0e9584976ff",
+          "frame_operand": "ecx, [ebp - 0x50]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cb93c8",
+          "bytes8": "8d4dc0e9504976ff",
+          "frame_operand": "ecx, [ebp - 0x40]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 2,
+          "previous": 1,
+          "action": "00cb93d0",
+          "bytes8": "8d4db8e9484976ff",
+          "frame_operand": "ecx, [ebp - 0x48]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 3,
+          "previous": 0,
+          "action": "00cb93d8",
+          "bytes8": "8d4dc0e9404976ff",
+          "frame_operand": "ecx, [ebp - 0x40]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 4,
+          "previous": 0,
+          "action": "00cb93e0",
+          "bytes8": "8d4db8e9384976ff",
+          "frame_operand": "ecx, [ebp - 0x48]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 5,
+          "previous": 0,
+          "action": "00cb93e8",
+          "bytes8": "8d4dc8e9304976ff",
+          "frame_operand": "ecx, [ebp - 0x38]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 6,
+          "previous": 5,
+          "action": "00cb93f0",
+          "bytes8": "8d4dc0e9284976ff",
+          "frame_operand": "ecx, [ebp - 0x40]",
+          "target": "0041dd20"
+        }
+      ]
+    },
+    "only_cleanup": "actual41DD20 current local raw string headers",
+    "no_automatic_image_stream_pending_payload_inserted_glyph_or_Font_release": true,
+    "future_Source_policy": "consume each cleanup before calls; no tidy replay after normal-return failure; retain independent failed operation; nested escape policy explicit",
+    "Native_FH3_private_frame_SEH_catch_RTTI_machine_unwind_equivalence": false
+  },
+  "Source_implementation_or_address_credit_added": false,
+  "proposed_contract": {
+    "api_proposal": "void __cdecl load_native_font_storage_00ad4c30(void* actual_font,const NativeFontRawLoadArguments&,NativeFontRawLoadContext&,NativeFontRawLoadFrame&)",
+    "future_files": [
+      "include/bsp/native_font_raw_load_storage.hpp",
+      "src/native_font_raw_load_storage.cpp"
+    ],
+    "Source_implemented_in188": false,
+    "next_whole_Source_ready_with_supplied_domain": true,
+    "genuine_lower_body_missing_in_admitted_domain": false,
+    "first_unimplemented_contract": "whole AD4C30 plus independently prepared one-shot raw operation/frame/context and accepted186 Source import under future exact leases",
+    "frame": {
+      "phase": "private prepared/entered/returned/failed; noncopy/nonmove/nonresettable",
+      "raw_headers": "four distinct aligned8B roles-50/-48/-40/-38, untouched backing until reached actual constructors",
+      "image_children": "two distinct fresh persistent NativeTextureCacheAcquired frames before callbacks",
+      "pair": "existing genuine NativeIntPointerTree18Pair8 from fully defined caller preimage; ASM lowWORD write only; same original pointer forwarded185/176",
+      "result": "existing genuine Result12; no insertedflag read, padding preserved",
+      "lookup": "genuine Iterator8/actual WORD scratch, count/remainingDWORD, separate saved metadata",
+      "pending": "one pointer to a 0x20-byte glyph sufficient only via bounded publication proof; no late allocation or automatic failed graph cleanup"
+    },
+    "context": [
+      "same GameNativeStringProcess raw pool and semantic wrapper identities",
+      "actual GameNativeRendererApplication publication+cache/current ownership graph",
+      "same concrete GameNativeVfsRawServices and NativeVfsRuntimeBindings/routes",
+      "same NativeResourceStreamReadContext dispatcher/string context",
+      "held genuine GameNativeReadOnlyData constants/profiles and CE77A4 literal10B",
+      "live actual NativeTextureSurfaceReferenceIncrement constvolatile reference CE2220 captured only at AD507D"
+    ],
+    "regions": {
+      "actual_Font": "AC bytes with genuine155 completion; count08 is tree count and04 is head",
+      "node": "18h",
+      "glyph": "20h, padding16/17 unwritten; image18/1C aliases",
+      "inputs": "five actual8B headers/backing, public aliases permitted with exact schedule",
+      "independent": "full current/replacement Font/head/node/glyph/image/cache/stream/backing/registry/services/childframes retained outside failing scope",
+      "preflight": "known-region and identity checks only; no early raw selector/header/scale/count reads; no opaque graph certification"
+    },
+    "Native_ABI": "ECX actualAC-byteFont;stack root,DAT,GFX,alpha,language actual8Bheader pointers;RET14h; no semantic bool",
+    "Source_ABI_limits": [
+      "ordinary cdecl/void; no Native ECX/RET14h/EAX high/register/private stack identity",
+      "both Native and Source private stack/argument/scratch aliases excluded",
+      "no FH3/SEH/hardware fault/encoded handler/private CRT/FPU environment equivalence",
+      "no semantic FontData/NativeFontResources/descriptor cast; no owner/count/profile-based completion facade"
+    ],
+    "named_incomplete": [
+      "whole parent implementation/strict emitted/provider review",
+      "future exact accepted186 import and canonical integration",
+      "wider reentrant tree/key mutation orphan transport",
+      "whole raw Font success retirement",
+      "AD51D0 reload/registry producer admission/production activation"
+    ]
+  },
+  "bounded_pending_publication_proof": {
+    "proof_kind": "static supplied-domain composition; no body execution",
+    "assumptions": [
+      "genuine completed155 AC-byte Font and coherent unique-unsigned-WORD tree/head/count/nodes",
+      "externally serialized; no external/new-handler mutation of this Font tree or private pair/results",
+      "private key is the saved current stream WORD; real Pair8 full DWORD preimage defined with highWORD preserved",
+      "valid SDK raw storage, current profiles/lifetimes, nonnull-or-throw allocators and no hardware faults",
+      "all current and replacement graph/frames independently retained before callbacks; no retry"
+    ],
+    "Native_transport": {
+      "captured_head": "AD501B/AD5021",
+      "lookup": "AD5025->AD4540",
+      "owner_validation": "AD502C..AD5036 may return",
+      "compare_captured_end": "AD503B..AD5042",
+      "key_WORD": "AD5044/AD5055",
+      "payload_DWORD": "AD505A",
+      "unique_same_pair": "AD505E->AD4AA0",
+      "insert_result_ignored": "AD5063 unconditional jump AD506E",
+      "initial_duplicate_free": "AD5065..AD506B",
+      "next_record": "AD506E/AD5073"
+    },
+    "ordinary_success_inference": [
+      "164 miss means no equal WORD in SAME coherent tree",
+      "AD5044..AD505E has no intervening provider call before185",
+      "185 compares SAME immutable private WORD, and genuine predecessor/link receive SAME BASE/pair/selected parent",
+      "176/86EBE0 count-limit and18h allocation precede raw link mutation; actual rotations/raw publication introduce no ordinary throwing provider under the admitted graph",
+      "normal185 return on this miss domain therefore transfers pending 0x20-byte glyph into independently held tree without a result-flag read"
+    ],
+    "pending_protocol": {
+      "allocation": "record returned20h pointer before first current44 callback",
+      "throw_before_publication": "retain pending pointer/partially initialized bytes plus independent full graph; outer cleanup is strings only",
+      "normal_miss_return": "consume only private pending obligation, no extra raw read/retain/free",
+      "initial_lookup_duplicate": "consume before existing matched SDK noexcept free; no later glyph dereference",
+      "prior_inserted": "retained through SAME real tree, no late list allocation",
+      "ordinary_throw_after_partial_raw_link": "not manufactured; hardware/private-ABI faults and reentrant graph mutation outside this proof"
+    },
+    "wider_reentrant_domain": {
+      "status": "unclosed, separately named",
+      "requires": "preprepared independent orphan/partial-publication records and actual producer/lifetime proof without new Native reads or flag cleanup"
+    },
+    "Source_locations": {
+      "src/native_font_storage.cpp": {
+        "find_native_font_glyph_iterator_00ad4540": [
+          99,
+          137
+        ],
+        "const auto captured_key = actual_key": [
+          108
+        ],
+        "const auto final_key = actual_key": [
+          124
+        ]
+      },
+      "src/native_font_tree_insert.cpp": {
+        "read_font_word185": [
+          32,
+          50,
+          53,
+          72,
+          74
+        ],
+        "struct FontWordSearch185": [
+          43
+        ],
+        "insert_native_font_tree_unique_00ad4aa0": [
+          62
+        ],
+        "const auto candidate_key = read_font_word185": [
+          72
+        ],
+        "publication.iterator_00.owner": [
+          91
+        ]
+      },
+      "include/bsp/detail/native_tree_insert_storage.hpp": {
+        "Output* insert_unique_tree_pair": [
+          48
+        ],
+        "void* link_tree_node": [
+          188
+        ],
+        "if (Access::count(tree) >= count_limit)": [
+          191
+        ],
+        "auto* const node = allocate": [
+          195
+        ],
+        "rebalance_linked_tree_node<Access>": [
+          216
+        ]
+      },
+      "src/native_effect_handle_acquisition.cpp": {
+        "void* allocate_native_int_pointer_tree18_node_0086ab70": [
+          85
+        ],
+        "link_native_int_pointer_tree18_node_0086ebe0": [
+          103,
+          147
+        ]
+      },
+      "src/native_vfs_runtime_bindings.cpp": {
+        "NativeVfsRuntimeBindings::open_manager_entry": [
+          76
+        ],
+        "NativeVfsRuntimeBindings::source_zero_reference": [
+          204
+        ]
+      },
+      "src/font_data.cpp": {
+        "std::uint16_t scale_word": [
+          11
+        ]
+      },
+      "src/native_resource_value_reads.cpp": {
+        "read_native_stream_float_00be4360": [
+          51,
+          77
+        ]
+      }
+    },
+    "EH_states": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": "00cb93c0",
+        "bytes8": "8d4db0e9584976ff",
+        "frame_operand": "ecx, [ebp - 0x50]",
+        "target": "0041dd20"
+      },
+      {
+        "state": 1,
+        "previous": 0,
+        "action": "00cb93c8",
+        "bytes8": "8d4dc0e9504976ff",
+        "frame_operand": "ecx, [ebp - 0x40]",
+        "target": "0041dd20"
+      },
+      {
+        "state": 2,
+        "previous": 1,
+        "action": "00cb93d0",
+        "bytes8": "8d4db8e9484976ff",
+        "frame_operand": "ecx, [ebp - 0x48]",
+        "target": "0041dd20"
+      },
+      {
+        "state": 3,
+        "previous": 0,
+        "action": "00cb93d8",
+        "bytes8": "8d4dc0e9404976ff",
+        "frame_operand": "ecx, [ebp - 0x40]",
+        "target": "0041dd20"
+      },
+      {
+        "state": 4,
+        "previous": 0,
+        "action": "00cb93e0",
+        "bytes8": "8d4db8e9384976ff",
+        "frame_operand": "ecx, [ebp - 0x48]",
+        "target": "0041dd20"
+      },
+      {
+        "state": 5,
+        "previous": 0,
+        "action": "00cb93e8",
+        "bytes8": "8d4dc8e9304976ff",
+        "frame_operand": "ecx, [ebp - 0x38]",
+        "target": "0041dd20"
+      },
+      {
+        "state": 6,
+        "previous": 5,
+        "action": "00cb93f0",
+        "bytes8": "8d4dc0e9284976ff",
+        "frame_operand": "ecx, [ebp - 0x40]",
+        "target": "0041dd20"
+      }
+    ],
+    "normal_cleanup_order": "captureDATA -> consume previous-state -> nonnull CURRENTlength+1 -> real419CC0/BD1510; exceptional action consumes then directraw41DD20; nested Source cleanup escape terminates",
+    "no_extra_resource_cleanup": true
+  },
+  "current_fields_and_chronology": [
+    {
+      "region": "4C4B..4D19",
+      "order": "GFX inputcopy beforestate0;capture root/currentrenderer beforetwo concats;language capture;table64 lateonSAMEreceiver;flags0;returnedimage capture;consume pathstates beforecurrentpoolreturns"
+    },
+    {
+      "region": "4D1E..4E01",
+      "order": "five CURRENT raw name assignments38,40,20,30,28;identity beforeheader reads;genuineresize preserve1;currentlength/data in actual individual inline order"
+    },
+    {
+      "region": "4E01..4E98",
+      "order": "CURRENTalphalength;nonempty captures renderer beforeconcat/table64after;empty constructs actualCE77A4white.tga then captures renderer/table64;savealpha beforecleanup"
+    },
+    {
+      "region": "4E98..4F4E",
+      "order": "CURRENTVFScapture beforetwo DATconcats,currenttable04late/openmode2;poolreturns;currentstream38count and40height withactualnull;signAX/currentFont18SSE/lowWORDstore14"
+    },
+    {
+      "region": "4F58..5017",
+      "order": "current40key;SDK20h;fourcurrent44calls each immediateFSTP32;current3CrawWORD10;current3CrawWORD12store then unsignedCURRENTscaleconvert/overwrite;current40rawWORD14store,CURRENTscale,images18/1C beforefinalscaled14store"
+    },
+    {
+      "region": "501B..5073",
+      "order": "capturedend beforeactual164;owner validation thencapturedendcompare;misswritepairWORD/value andcallAD4AA0;ignoreinsertionflag;duplicateinitiallookup SDKfree;noinitialtreeclear"
+    },
+    {
+      "region": "5079..5180",
+      "order": "CURRENTCE2220(stream04);zeroonlyCURRENTprofile/table0;nostreamreadafterterminal;specialrecords;consume0beforelastGFXcopycurrentpoolreturn"
+    }
+  ],
+  "additional_missing_contract_facts": {
+    "alpha_normal_cleanup": "distinct states3/-40 and4/-48 share419CC0 atAD4E8C with separately capturedDATA/length",
+    "normal_string_captures": "DATAbeforeconsumedstate,nonnullCURRENTlengthafterstate,includingfinalAD513B->AD514F->AD515A",
+    "image_publication": "alpha68atAD50CB beforeGFX64atAD50D1;glyph18/1C aliases earlier",
+    "pair_highWORD": "defined genuinePair preimage,representationWORDstoreonly,noNativeprivatepreimageclaim",
+    "ignored185flag": true
+  },
+  "provider_status": {
+    "genuine185": "349de4655498c42ade64844934de59e314e7a7c9;Rootcapturedall155;selectedSource/contracts privatelyfrozen",
+    "genuine186": "fbdf4874e738390cf7d12239d15d62692f01ed93;acceptedsealedseparate;notimported/publishedby188",
+    "current_Source_inventory": {
+      "count": 54,
+      "same_182_audited_blobs": 52,
+      "changed_only_actual185": [
+        "include/bsp/native_font_tree_insert.hpp",
+        "src/native_font_tree_insert.cpp"
+      ]
+    },
+    "named_incomplete": [
+      "whole parent implementation/strict emitted/provider review",
+      "future exact accepted186 import and canonical integration",
+      "wider reentrant tree/key mutation orphan transport",
+      "whole raw Font success retirement",
+      "AD51D0 reload/registry producer admission/production activation"
+    ]
+  },
+  "validation": {
+    "readonly_no_Source_CMake_ledger_Ghidra_mutation_build_test_probe_execution": true,
+    "reused182_whole_bytes_listing_EH_accepted": true,
+    "current_installed_exe_body_EH_hashes_match": true,
+    "fresh_live_project_program_extent_verified": true,
+    "current_call_rows_verification": "PASS38rows0failed",
+    "Root_full_Doc_API_review": {
+      "packet": "native_font_raw_load_composition_readiness188",
+      "Root_full_Doc_API_review": "PASS",
+      "Root_final_report_review": "PASS",
+      "Root_Source_provider_and_bounded_domain_review": "PASS",
+      "reviewed_report_preimage": {
+        "path": "local\\font_raw_load_composition188\\history\\reviewed_report_before_final_acceptance.json",
+        "sha256": "c6e7b867e9603c615162af1d98a8f8178317bf087511f96fe50891983253aaa8",
+        "bytes": 53389
+      },
+      "Doc_sha256": "efb8e53f6d11245d1ef818156e6567990b3791c402e8bff644bfe842aeaac3b6",
+      "API_sha256": "56ae9f5bbf8746893836369e8765876d92371c90e37d8f5ebc83ec40c3349d16",
+      "publication_proof_sha256": "d9482c2726baeb434ad19c1bc76f7b8fd9fc68c731572283e7f6a5b4627d8d17",
+      "Root_independent_encountered_unique_path_hash_refs": 90,
+      "Original_authority": "priorRoot182/183 complete469Native+158EH proof unchanged; no new wholebody export/audit credited188",
+      "bounded_domain": "coherent serialized unique unsigned-WORD tree/private genuine Pair; singlepending pointer to a0x20-byte glyph publication correspondence without insertedflagread",
+      "approved_final_action": "acceptance-only update, once seal, exact2receiptcommit, lease release; no Source/build/probe",
+      "Source_implementation_authorized_in188": false,
+      "no_next_Source_until_new_assignment": true
+    },
+    "abi_compatible": false,
+    "game_validated": false,
+    "production_activation": false,
+    "final_seal": "PASS once-only; all direct and embeddedEH references checked; final owned report pins manifest"
+  },
+  "references": [
+    {
+      "path": "docs\\CC12_NATIVE_FONT_RAW_LOAD_COMPOSITION_READINESS_188.md",
+      "sha256": "efb8e53f6d11245d1ef818156e6567990b3791c402e8bff644bfe842aeaac3b6",
+      "bytes": 17032,
+      "role": "full proposed API/readiness Doc"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\accepted182_capture.json",
+      "sha256": "2a24e08b1654f5f3d2596394081e990032668345d01c0a31117e824169eb7d03",
+      "bytes": 66967,
+      "role": "all168+169 immutable182 references checked/copied"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\accepted186_capture.json",
+      "sha256": "fa0018c4549f4a4ca2a659ce499b9e246b8b81068c3ea1e3fc64c46b51915afa",
+      "bytes": 79693,
+      "role": "all195+140 accepted186 references checked/copied; not imported"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\accepted185_capture.json",
+      "sha256": "6c6ea6d14f76cb9164d97d4f4f8b24c9760b2de8903c60d2a7cebf56b4312e7c",
+      "bytes": 3055,
+      "role": "selected already-Root-captured185/180 contracts; no historic regeneration"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source_inventory.json",
+      "sha256": "4fc34c37b62386ef5231f979e65528a0a0fe84684def8566002089f3a48dda1c",
+      "bytes": 26142,
+      "role": "54 exact Source inputs;52unchanged182 blobs;2real185 files"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_installed_confirmation.json",
+      "sha256": "7bed68ec01f7cd60c992bf51c0efc62b98053158b675c9ea12cbaa19689ad9b6",
+      "bytes": 2409,
+      "role": "unchanged installed Original/body/158B EH"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_readonly_query_receipt.json",
+      "sha256": "ab16d55ede0e5f6c8fea69ab81996ce1336f2544fc889cef11eba2e66213d11e",
+      "bytes": 1221,
+      "role": "fresh verifying read-only BSP query commands"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\target_config_snapshot.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455,
+      "role": "current existing project/program target"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\bounded_pending_publication188.json",
+      "sha256": "d9482c2726baeb434ad19c1bc76f7b8fd9fc68c731572283e7f6a5b4627d8d17",
+      "bytes": 6083,
+      "role": "static singlepending publication argument and failure domain"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\proposed_API_and_frame188.json",
+      "sha256": "56ae9f5bbf8746893836369e8765876d92371c90e37d8f5ebc83ec40c3349d16",
+      "bytes": 3458,
+      "role": "precise proposed whole parent frame/services/API"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\reused_Native_contract_slices188.txt",
+      "sha256": "33938f15d5fcc7f9bdeabdbef2541f6f5a7c4754b8bc855b97e79fb15e7b4b48",
+      "bytes": 4875,
+      "role": "targeted retained slices only; no re-export"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\call_rows188.json",
+      "sha256": "8dd7d7f11a7eec1bab10733bb21d1df16e6e0b6f866a34234e5f8db367a7b495",
+      "bytes": 3577,
+      "role": "38 exact retained whole-parent direct call rows"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\scope_baseline188.json",
+      "sha256": "28b4b174c30b3514e31b686524b6e5b32f1bfd6da8effe1ce41cedd7d0ddb9d8",
+      "bytes": 260,
+      "role": "readonly scope and clean185 baseline"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\retained185_seal_check.json",
+      "sha256": "731957c1e5e371728f90716879034f17071009a574b9742a5769222e91c6c352",
+      "bytes": 156,
+      "role": "all155 sealed185 bytes retained unchanged"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\native_font_storage.hpp",
+      "sha256": "3d62ca18439d3b83b586f9aae1d14e84108280386d88d85532a4f3a8fc92eeb9",
+      "bytes": 4737,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\native_font_storage.cpp",
+      "sha256": "760c148ed5d3bbdb6ddb40781893251caf646dbab18755b3bb8af5c46a5279ce",
+      "bytes": 6829,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\native_font_tree_iterator.hpp",
+      "sha256": "320944a570770e36abe06031cdd7d49a5ce0c30f17508de8431af6aff14e6094",
+      "bytes": 1611,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\native_font_tree_iterator.cpp",
+      "sha256": "3146a01e523fdae67ab488e2d5f188c6983397b20219c18ccc4c6342084251eb",
+      "bytes": 533,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\native_effect_handle_acquisition.hpp",
+      "sha256": "9148f95d14fbfc14ad6ed0ea25a4b1047975accc606af5995dcfd718e1b127af",
+      "bytes": 3375,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\native_effect_handle_acquisition.cpp",
+      "sha256": "3b7794d963c4885bbb818bd15d5592c487157863183e0f3db692d089893cef4a",
+      "bytes": 5736,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\detail\\native_tree_insert_storage.hpp",
+      "sha256": "c5eb00461d535b3c737e63a4286814e35c5427c883474d37b3cb6f67a2f8a8b9",
+      "bytes": 9079,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\native_int_pointer_tree18_leaves.hpp",
+      "sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+      "bytes": 2447,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\native_int_pointer_tree18_leaves.cpp",
+      "sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+      "bytes": 6965,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "bytes": 8771,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "bytes": 9121,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\native_pooled_string_substring.hpp",
+      "sha256": "6243c6ba8acb0e1b7f0358a456d6e65ac1b9303cc79b1f1dfd5be01d05b985ff",
+      "bytes": 2047,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\native_pooled_string_substring.cpp",
+      "sha256": "7a18633cf114b21290f0c4ddfb9ec96d817f6a246a97ebfa05e9be3fdce9b8e1",
+      "bytes": 7580,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\native_physical_file_date.hpp",
+      "sha256": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f",
+      "bytes": 5969,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\native_physical_file_date.cpp",
+      "sha256": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0",
+      "bytes": 18709,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\game_native_string_process.hpp",
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+      "bytes": 4306,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\game_native_string_process.cpp",
+      "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+      "bytes": 1407,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "bytes": 13257,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\font_data.hpp",
+      "sha256": "f7a1f433fb7f0466873da79a6da0b45944df5965fbe756715682265afd257c49",
+      "bytes": 2515,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\font_data.cpp",
+      "sha256": "24ba9b6e37f798072ed06fc796b0dec560b3b500b4697b3b6634c7892a8717c1",
+      "bytes": 4612,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\stream_scalars.hpp",
+      "sha256": "c452b3d075afdb4bd996d66789d21edc8acd2fd8f43c0df115bb6b3140ce6610",
+      "bytes": 756,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\stream_scalars.cpp",
+      "sha256": "6a45363395b440800b08ba923e099ed4e701212a7b44315094cd187e7108d8a9",
+      "bytes": 729,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\native_font_resources.hpp",
+      "sha256": "86b054ccf2ae873195e803e1d97d01c31247cf4e0e174c12bcfcaf8b150e7e48",
+      "bytes": 4298,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\native_font_resources.cpp",
+      "sha256": "8e61d9e701b0cc181749cdac04e45be5d4931da13bce2ceda28e90d3a5a9e26b",
+      "bytes": 6097,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\game_native_font_application.hpp",
+      "sha256": "f819d8a38b49a6ff8ec3873dea65992366396c8d635e54301542c71ce0aee469",
+      "bytes": 4863,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\game_native_font_application.cpp",
+      "sha256": "31d143c3dc1dc9495cd87fdba0ecb67ad3d2494c9b47415746a47771cce5e424",
+      "bytes": 12438,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\game_hosts_fonts.cpp",
+      "sha256": "90b1012cade7f668f9497124ee398d3bc363a6c2aa9f2fac1c79c8ac34d69064",
+      "bytes": 9211,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\native_resource_stream_reads.hpp",
+      "sha256": "a9705ea1d2ef8596131352c3f7b1bc6d97d821b1668c39ab35305d245b78113d",
+      "bytes": 2462,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\native_resource_stream_reads.cpp",
+      "sha256": "8947eba748ca262ca9e03360b8ae52aca7b6658b2651f8857b51a54cd82df493",
+      "bytes": 5073,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\native_resource_value_reads.hpp",
+      "sha256": "356e62eeea88164cbb13368edc4d658f6dc1de668bbc4aff449c5ceaf46ef3b1",
+      "bytes": 2656,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\native_resource_value_reads.cpp",
+      "sha256": "fe7f023e59ef1a576f02b3fc84f0cb3cf8a8d0aba755b3534b80ad37ad6e9b9f",
+      "bytes": 4565,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\native_raw_scalar_reader.hpp",
+      "sha256": "1d3973cb5f9bd52152a435d9b4c3a77de6393708d32a383485d000ed7c4bd330",
+      "bytes": 2827,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\native_raw_scalar_reader.cpp",
+      "sha256": "8cca6aee313190f3bce7471658f4430076bf1e7df51d5a12375e4a001128cf4c",
+      "bytes": 6269,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\native_adopted_substream.hpp",
+      "sha256": "c64950d42cf17d3c4da39fa7f99931e3e74b4ad3d968d00b8c25f1ddb0c0a8dd",
+      "bytes": 5667,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\native_adopted_substream.cpp",
+      "sha256": "53d9dbf526516cedc063269deb23ce144add399bb54bb2aa7f693ced3d8767be",
+      "bytes": 10276,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\native_vfs_runtime_bindings.hpp",
+      "sha256": "05e6f26c575e02312cf15596c30c4a98b21c6040591b431c7c77c7ba11530fe7",
+      "bytes": 6024,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\native_vfs_runtime_bindings.cpp",
+      "sha256": "e69777aaf6eba33658f9cb2d38aa0dba4995df07165cbf215bcd8e54becfd7a9",
+      "bytes": 14818,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\game_native_vfs_runtime.hpp",
+      "sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad",
+      "bytes": 9565,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\game_native_vfs_runtime.cpp",
+      "sha256": "6ef792777a53881057f41d3638eca6a7931db3eb5304d7e68754a6e10f332d28",
+      "bytes": 35513,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\game_native_vfs_application.hpp",
+      "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f",
+      "bytes": 3022,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\game_native_vfs_application.cpp",
+      "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "bytes": 8470,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\native_texture_loading_cache.hpp",
+      "sha256": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+      "bytes": 11040,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\native_texture_loading_cache.cpp",
+      "sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "bytes": 42965,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\game_native_renderer_application.hpp",
+      "sha256": "3380643a25c0e27bc653440c8e79dd138bb68b495dac9f386d1e7e221ef467c0",
+      "bytes": 14808,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\game_native_renderer_application.cpp",
+      "sha256": "83cd9ea6b2d1ea0149a7d2c086164fb65b27673b71587955ca1b233182cfda48",
+      "bytes": 54779,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\game_native_renderer_textures.inc",
+      "sha256": "e178152527c7b2b39a63608346c6cc555a0306cb05c53af83f2cc654146e824e",
+      "bytes": 2949,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\font_registry_startup.hpp",
+      "sha256": "a2e52ffbc9dad37e429357f5d920e5b9aa281e7ac2db0085021057581f79e640",
+      "bytes": 6197,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\native_vfs_open_route.hpp",
+      "sha256": "a44d2136c797e355ae7c48683f8daddefa833608fd9afe8f78a012a91aabe67d",
+      "bytes": 3139,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\native_vfs_open_route.cpp",
+      "sha256": "d3da49916fb3ed4a2cf79fc1465b39fa81cd41ba6a701b395d83c7a984e41be0",
+      "bytes": 11944,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\game_native_readonly_data.hpp",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "bytes": 2713,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\game_native_readonly_data.cpp",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "bytes": 7167,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\include\\bsp\\native_font_tree_insert.hpp",
+      "sha256": "fc69a823183f2c8d208ff9597e249b3d0a0208f87396c828331c39b61149e00b",
+      "bytes": 4483,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\current_Source\\src\\native_font_tree_insert.cpp",
+      "sha256": "a9be07cfd1c44682ca561bb409d4c84b7cb4ef15e7991f2bf3df154c78905ef5",
+      "bytes": 4061,
+      "role": "exact current reached Source snapshot"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\additional_Source_inventory.json",
+      "sha256": "1f88a78df54e1dddc5936541a52bd6f967d4937cb2caf66f4f53081d8cf1ff4a",
+      "bytes": 370,
+      "role": "existing CE2220 callable type definition scope"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\additional_Source\\include\\bsp\\native_texture_surface_getter.hpp",
+      "sha256": "958bab84aaa61abb9cceeb290805bf51faec2010543f46ace4b28385fb182d87",
+      "bytes": 1851,
+      "role": "existing real function-cell type; no getter body invoked"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\accepted182\\local\\cc12_native_font_raw_load_readiness_182\\artifact_manifest.json",
+      "sha256": "80488c6200ba87ec3cafe4b71ebbc9e4496ceed8fa64442672a0fa25d8e0e547",
+      "bytes": 66786,
+      "role": "exact immutable reused Source/evidence authority; manifest roots/partial185 scope qualified by capture receipt"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\accepted182\\reports\\cc12_native_font_raw_load_readiness_182.json",
+      "sha256": "5d42e0436b695681f394c424912c48797ccc9d44ec638361b83cb7f829c5655a",
+      "bytes": 118377,
+      "role": "exact immutable reused Source/evidence authority; manifest roots/partial185 scope qualified by capture receipt"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\accepted186\\local\\cc12_native_resource_stream_word_reads_186\\artifact_manifest.json",
+      "sha256": "9dc5cbe58d12e22588c9d3cde8322c4d66eefad3579d0b79029e807f550519c9",
+      "bytes": 55717,
+      "role": "exact immutable reused Source/evidence authority; manifest roots/partial185 scope qualified by capture receipt"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\accepted186\\reports\\cc12_native_resource_stream_word_reads_186.json",
+      "sha256": "616f71f01f16065c0d68e79304e52e36d445ac91c44d6e729e37d3ded1bcb0d3",
+      "bytes": 110942,
+      "role": "exact immutable reused Source/evidence authority; manifest roots/partial185 scope qualified by capture receipt"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\accepted186\\local\\cc12_native_resource_stream_word_reads_186\\final\\include\\bsp\\native_resource_stream_reads.hpp",
+      "sha256": "d9f525067a24614f3d60fe9deae8a5ac11223657965d736286d0c90a0a2b4bfb",
+      "bytes": 3926,
+      "role": "exact immutable reused Source/evidence authority; manifest roots/partial185 scope qualified by capture receipt"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\accepted186\\local\\cc12_native_resource_stream_word_reads_186\\final\\src\\native_resource_stream_reads.cpp",
+      "sha256": "5e43a45f0d2ff685fa28a7aed5fb7e16cf4e053bf9d7218aa72f8d51b8b68708",
+      "bytes": 5959,
+      "role": "exact immutable reused Source/evidence authority; manifest roots/partial185 scope qualified by capture receipt"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\accepted185\\reports\\cc12_native_font_word_unique_insert_185.json",
+      "sha256": "9ff236e7e7e2e4ca29d0dd7b1ec55e11e958ed46e364a1fd31751a2876213fe1",
+      "bytes": 27000,
+      "role": "exact immutable reused Source/evidence authority; manifest roots/partial185 scope qualified by capture receipt"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\accepted185\\local\\font_word_unique_insert185\\final_artifact_manifest.json",
+      "sha256": "4a0f35c1c7b5404f0b7d4e74c34a3259ad62b13d4a575f792e5d4ea80cea10bb",
+      "bytes": 33968,
+      "role": "exact immutable reused Source/evidence authority; manifest roots/partial185 scope qualified by capture receipt"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\call_verification.log",
+      "sha256": "104a0bf2d230f41edaf9bed828a18ed7f4cf8e9ac6a557c65d8434f3cb1537e5",
+      "bytes": 98,
+      "role": "fresh38direct-row verifier log; not runtime/indirect closure"
+    },
+    {
+      "path": "local\\font_raw_load_composition188\\Root_review188.json",
+      "sha256": "3edd271614294d7b2627aaf3a1e5e652390780b34df02cedfcb950699e5fef7f",
+      "bytes": 1323,
+      "role": "Root full Doc/API/report review acceptance"
+    }
+  ],
+  "artifact_manifest": {
+    "path": "local\\font_raw_load_composition188\\final_artifact_manifest.json",
+    "sha256": "e55a9c9a9bdc3f7d3f723f0c0741d745ae432912f09cc1a0f28ccc625438a335",
+    "bytes": 124015,
+    "artifacts": 465,
+    "role": "immutable188 own evidence; report excluded to avoid hash cycle"
+  }
+}
