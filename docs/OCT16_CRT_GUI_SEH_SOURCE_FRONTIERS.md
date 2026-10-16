@@ -101,5 +101,24 @@ different runtime/cookie/frame policy would require explicit review; it cannot
 silently substitute for the missing reconstructed handler. No new owner,
 generic callback, Original-code bypass or default fatal policy is admitted.
 
+The separate destructor/terminate readiness slice covers 225 bytes: 165 code
+bytes/56 starts across `00C06AC8`, `00C07A75` and `00C0522E`, two 28-byte scope
+tables, and the four-byte read-only destructor slot. Thirty physical code bytes
+at twelve starts remain undefined in the current listing; all were decoded and
+reviewed without repair. The fixed-base PE strips relocations and has no base
+relocation directory, so no loader rewrite of the slot is inferred.
+
+The destructor's exception landing restores ESP then tail-jumps to terminate.
+Its filter tests the low byte of the second original argument. Terminate reads
+the actual PTD handler at `+78h`, uses an always-one filter and retains its
+physical epilog/return after `abort` if that call returns. The no-argument
+`__getptd` captures the `00C051B7` result; after `_amsg_exit(16)` returns on the
+null path, it returns the captured null, which terminate then dereferences.
+No new null guard, fatal policy or callback is admitted. The seven-byte member
+transfer and twenty-byte SEH epilog already have actual Source. The prolog,
+handler, `00C051B7`, `_amsg_exit` and `abort` still have missing Source bodies.
+The latter two remained typed-only in this packet; no complete physical audit
+or Source credit is claimed for them.
+
 These are static readiness findings. They establish neither compiled Source
 emission nor fixture, Original binary-ABI, live SEH/UI or game behavior.

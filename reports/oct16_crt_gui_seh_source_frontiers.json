@@ -55,6 +55,21 @@
       "current_typed_ownership_repaired": false,
       "static_cookie_preimage_is_runtime_truth": false
     },
+    "destructor_terminate_getptd": {
+      "entries": ["00c06ac8", "00c07a75", "00c0522e"],
+      "physical_bytes_starts": [[84, 27], [57, 18], [24, 11]],
+      "CODE_data_total": [165, 60, 225],
+      "current_defined_starts": 44,
+      "undefined_physical_starts_bytes": [12, 30],
+      "destructor_landing_is_tail_JMP": true,
+      "returning_abort_epilog_preserved": true,
+      "returning_amsg_exit_preserves_captured_null_PTD": true,
+      "fixed_slot_PE_has_base_relocations": false,
+      "Source_ready": false,
+      "Source_authorized": false,
+      "additional_missing_executable_bodies": ["00c051b7", "00bfba09", "00c04de2"],
+      "amsg_exit_and_abort_audited_as_whole_physical_bodies": false
+    },
     "remaining_integration": [
       "Actual missing handler/validator/destructor executable closure",
       "Source-relocated scopes, filters, funclets and fixed internal RO slot",
@@ -67,7 +82,8 @@
     {"path": "local/oct16_crt_GUI_primary_readiness.json", "sha256": "70aa63351c95dd79f95f46dccb9b7f45b400ae863437ef5d9137fce710b12be6", "checks": 8},
     {"path": "local/oct16_crt_GUI_primary_stack_review.json", "sha256": "2a6a6e81dde743b59d5fb1544044145d5b805c5ad87779fb1bd47c09513cc291", "checks": 8},
     {"path": "local/oct16_seh4_transport_primary_readiness.json", "sha256": "b456d1d2348614460bc78286bdbefd730f1fb98b73e47b945940de58da52e958", "checks": 8},
-    {"path": "local/oct16_nonwritable_image_primary_readiness.json", "sha256": "854a74815aaa976b00487eebaa55578345207117c8420140e7b7be8315dbdab9", "checks": 8}
+    {"path": "local/oct16_nonwritable_image_primary_readiness.json", "sha256": "854a74815aaa976b00487eebaa55578345207117c8420140e7b7be8315dbdab9", "checks": 8},
+    {"path": "local/oct16_internal_destructor_primary_readiness.json", "sha256": "9cd00606d8fc458551ca6bbbc2156917fde2b8762a4b9e2016eaeceb17da293f", "checks": 8}
   ],
   "worker_receipts": [
     {"worktree": "battlestations-pacific-decompile-oct16_calloc_frame_action", "path": "local/oct16_crt_messagebox_readiness.json", "sha256": "abf823926766de8f3a074569aeecf78026f983e5beeb364b6a7cabd819b673a4"},
@@ -76,7 +92,8 @@
     {"worktree": "battlestations-pacific-decompile-oct16_calloc_frame_action", "path": "local/oct16_crt_messagebox_flat_ABI_review.json", "sha256": "eb5400e4670c8d3ffcf2852a4a89d80893869aa24f456f7a57cf99eefc54334c"},
     {"worktree": "battlestations-pacific-decompile-oct16_calloc_frame_action", "path": "local/oct16_crt_seh4_transport_Source_eligibility.json", "sha256": "3f362ae0ab1128f356a75095afb2bbfe6d27f0f7c79f1d7d6efce7a9a5ed417b"},
     {"worktree": "battlestations-pacific-decompile-oct16_calloc_frame_action", "path": "local/oct16_crt_seh4_transport_Source_eligibility_addendum.json", "sha256": "2563579ebc1c5f613d60c249a245b6ffe15c5bc99626bc07228ec7ab0c976eb0"},
-    {"worktree": "battlestations-pacific-decompile-oct15_string_fill", "path": "local/oct16_crt_nonwritable_image_readiness.json", "sha256": "f59fd0481d780e919c8a2023d8b5d26e3619300581d2fc74240008bf328a818b"}
+    {"worktree": "battlestations-pacific-decompile-oct15_string_fill", "path": "local/oct16_crt_nonwritable_image_readiness.json", "sha256": "f59fd0481d780e919c8a2023d8b5d26e3619300581d2fc74240008bf328a818b"},
+    {"worktree": "battlestations-pacific-decompile-oct16_calloc_frame_action", "path": "local/oct16_crt_internal_destructor_readiness.json", "sha256": "dbd70d328709724a50d8dce415332ebfb1c64ea91258bbb67fb47aff44ccbb48"}
   ],
   "limits": "Readiness snapshots only. Original private frame/volatile/fault behavior, compiled Source emission, fixture coverage, Original binary ABI, live SEH/UI and game validation remain unproved. No Source credit is inferred."
 }
