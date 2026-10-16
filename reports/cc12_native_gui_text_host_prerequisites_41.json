@@ -1,0 +1,124 @@
+{
+  "packet": "cc12_native_gui_text_host_prerequisites_41",
+  "source_commit": "07c72d19b50a1e576f3c6e4e2f6edf2941660063",
+  "status": "canonical_build_and_source_review_passed_pool_start_observed_later_runtime_waits_for_real_audio_endpoint",
+  "component_commits": {
+    "process37": "de08e5308",
+    "state38": "86b767ab4",
+    "host": "ab0ddbce9",
+    "failure_containment": "3429ff668",
+    "compile_correction": "07c72d19b",
+    "review": "0d69fee7b"
+  },
+  "original_addresses": [
+    "00cd71f0",
+    "00ce0a80",
+    "00cd7210",
+    "00aa8200",
+    "00ab7060",
+    "00e12fd4"
+  ],
+  "source_files": [
+    "src/game_main.cpp",
+    "src/game_hosts.cpp",
+    "src/game_hosts_text.cpp",
+    "cmake/startup.cmake"
+  ],
+  "source_contract": {
+    "pool_before_particle": true,
+    "pool_table_slot": "00ce3470",
+    "particle_table_slot": "00ce34ec",
+    "shared_allocator_list": "00e188b4",
+    "canonical_vfs_counter_and_common_types": true,
+    "lineage_timing": "late Source bootstrap before fonts, not Original absolute CRT timing/IDs",
+    "shared_vertical_scale": true,
+    "early_white_initialization": false,
+    "entered_failure_policy": "sticky metadata; known/unknown interrupted pool _Exit2 and type _Exit1 before guessed cleanup",
+    "crt_dereferences_saved_vfs_identities": false,
+    "native_text_factory_or_draw_activated": false
+  },
+  "canonical_build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "tests": 3,
+    "test_seconds": 7.2,
+    "frozen_inputs": 53,
+    "log": "local/cc12_native_gui_text_host_prerequisites_41/build_02.log"
+  },
+  "independent_source_review": {
+    "doc": "docs/CC12_NATIVE_GUI_TEXT_PREREQUISITE_REVIEW_41.md",
+    "report": "reports/cc12_native_gui_text_prerequisite_review_41.json",
+    "commit": "0d69fee7b",
+    "verdict": "no remaining blocking source contract finding"
+  },
+  "runtime": [
+    {
+      "name": "runtime_01",
+      "compiled_source": "07c72d19b50a1e576f3c6e4e2f6edf2941660063",
+      "exit_code": 1,
+      "exe_sha256": "878680eb21391aec041c112b83427f7ad5a773724023cf97605476a2101faa38",
+      "log": "local\\cc12_native_gui_text_host_prerequisites_41\\runtime_01\\runtime.log",
+      "log_sha256": "724ed7c542a7cb33f4b049c88f16b2c4c10ff2bc8d8ccd6bf47983c7850994d4",
+      "text_pool_initialized": true,
+      "text_pool_atexit": 0,
+      "production_lineage_reached": false,
+      "window_created": false,
+      "device_created": false,
+      "fmod_results": {
+        "event_init": 61,
+        "create_sound": 78,
+        "get_length": 37
+      },
+      "note": "Launcher checkout identity is not control executable compiler provenance; the frozen exe hash above is authoritative"
+    },
+    {
+      "name": "control_9a",
+      "compiled_source": "9a727abac038bd190076942cd6c72913fcf5eefb",
+      "exit_code": 1,
+      "exe_sha256": "3c7b99be5ca63b19429b6d9a416817877aeea0b747265017785f1a4d8082fba5",
+      "log": "local\\cc12_native_gui_text_host_prerequisites_41\\control_9a\\runtime.log",
+      "log_sha256": "8c8bd11e4e0d70498e9b1d1049e48b84a5bd69d4570b4da9875baee73941ebc4",
+      "text_pool_initialized": false,
+      "text_pool_atexit": null,
+      "production_lineage_reached": false,
+      "window_created": false,
+      "device_created": false,
+      "fmod_results": {
+        "event_init": 61,
+        "create_sound": 78,
+        "get_length": 37
+      },
+      "note": "Launcher checkout identity is not control executable compiler provenance; the frozen exe hash above is authoritative"
+    }
+  ],
+  "endpoint": {
+    "probe": "local/cc12_audio_endpoint_recheck.ps1",
+    "probe_sha256": "9fb67969c707994faaeff22a214b8bf42ad85341c575da275e7727366ce3945c",
+    "result_sha256": "4dc6661d326d7854c7894d3d55efa2582546fd3c46d17bf3a1f16ede10312407",
+    "active_playback_devices": 0,
+    "default_endpoint_returned": false,
+    "all_default_results": "80070490",
+    "scope": "current read-only MMDevice query; running services/PnP records do not establish an endpoint"
+  },
+  "installed_original_exe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged": true
+  },
+  "archive": {
+    "path": "local\\cc12_native_gui_text_host_prerequisites_41\\evidence_family.zip",
+    "sha256": "dc8bfdf7ef574be9c05ec030dd4c3ebbe1c4df1a4cb7894bd5979eae6cd0cdec",
+    "bytes": 4776701,
+    "payload_files": 73,
+    "manifest_sha256": "64831c93467f07c716fdf5e449b61a0da8286322547bd58a3a50dd2e8a2f0d5d",
+    "all_payloads_hash_checked": true
+  },
+  "limits": [
+    "No successful full normal startup for Source07c72d19b: both new and previously successful control now fail FMOD before window",
+    "Production late lineage/scalar/font integration not reached; worker Source pool/lineage/CRT probe is separate evidence",
+    "No native Text buffer/material draw, Original absolute CRT/numeric-ID equivalence, binary API drop-in or gameplay proof",
+    "No audio endpoint/service/SDK output/config change or invented SoundEnabled bypass",
+    "Original installed assets and OS/SDK binaries remain external dependencies"
+  ],
+  "next": "Restore an actual default playback endpoint for current full startup; independent AB7060 whole-leaf native comparison continues"
+}
