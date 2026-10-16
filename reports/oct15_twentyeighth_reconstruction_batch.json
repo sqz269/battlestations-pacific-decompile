@@ -1,0 +1,366 @@
+{
+  "batch": "oct15_twentyeighth_reconstruction_batch",
+  "status": "Source_integrated_Main_primary_default_Win32_checked",
+  "component": {
+    "Source_pin": "d56a08ef10ee2eab7e75e7b6b82c40e13068be19",
+    "final_metadata_pin": "7d1316db57065ab71c596c9bd1b502d2ba0dcbb3",
+    "artifacts": {
+      "src/native_input_int_string_tree_erase.cpp": {
+        "integrator_sha256": "e92d08b28e44e8f089b1f1d276b3fccdb58436dae2e32587ad3a8ddeeb68d8fe",
+        "Main_sha256": "e92d08b28e44e8f089b1f1d276b3fccdb58436dae2e32587ad3a8ddeeb68d8fe",
+        "LF_frozen_blob_equal": true
+      },
+      "include/bsp/native_input_int_string_tree_erase.hpp": {
+        "integrator_sha256": "cea7c46fcc0b28ea2626a7bbc52a220c1ab10e8f8cad9631030eb4f5c82a50ee",
+        "Main_sha256": "cea7c46fcc0b28ea2626a7bbc52a220c1ab10e8f8cad9631030eb4f5c82a50ee",
+        "LF_frozen_blob_equal": true
+      },
+      "docs/OCT15_INPUT_INT_STRING_TREE_ERASE.md": {
+        "integrator_sha256": "627bcfca028e2b5b1ee3d9053e3cdaef932d795c541addcf4c7f62ccf33c2753",
+        "Main_sha256": "627bcfca028e2b5b1ee3d9053e3cdaef932d795c541addcf4c7f62ccf33c2753",
+        "LF_frozen_blob_equal": true
+      },
+      "reports/oct15_input_int_string_tree_erase.json": {
+        "integrator_sha256": "6c704cc197738ccde0214be0b6a449f2d54a8aee2a5c1056838393789d82bcd8",
+        "Main_sha256": "6c704cc197738ccde0214be0b6a449f2d54a8aee2a5c1056838393789d82bcd8",
+        "LF_frozen_blob_equal": true
+      }
+    }
+  },
+  "scope": {
+    "ordinary_entry": "006a07d0",
+    "ordinary_bytes": 716,
+    "ordinary_starts": 241,
+    "logical_completed_message_action": "00c7f050",
+    "logical_action_bytes": 8,
+    "logical_action_starts": 2,
+    "distinct_owned_bytes_within_batch": 724,
+    "distinct_owned_starts_within_batch": 243,
+    "read_only_handler": "00c7f058",
+    "global_unique_coverage_increment_claimed": false
+  },
+  "primary_review": {
+    "path": "local/oct15_int_string_erase_primary_review.json",
+    "sha256": "4038c29b8f7d24af0f6a0b60c72a68f10fb7b06403a12a9a8e71effe596bcf43",
+    "checks": 15,
+    "fresh_code_bytes": 1074,
+    "fresh_decoded_current_starts": 375,
+    "fresh_EH_type_literal_bytes": 104,
+    "metadata_review": {
+      "path": "local/oct15_int_string_erase_metadata_primary_review.json",
+      "sha256": "787a507df9475c40774f80d7ddfad5d0336eb3e552f8ac166c259404dd3dd161"
+    }
+  },
+  "actual_CMake_COFF": {
+    "physical_executable_bytes": 1026,
+    "physical_instruction_count": 384,
+    "relocations": 35,
+    "ordinary_Source_body_bytes": 762,
+    "ordinary_Source_body_starts": 280,
+    "comparison": {
+      "all_1026_executable_bytes_equal": true,
+      "all_code_relocation_offsets_types_and_targets_equal_after_only_private_TU_name_mapping": true,
+      "private_TU_name_mapping": {
+        "integrator": "?A0x0999ec13",
+        "worker": "?A0x21fc91a1"
+      },
+      "EH_RTTI_literal_section_raw_bytes_equal": true,
+      "integrator_sha256": "82f843d0c1b8c157b5cd51c803048346ccea4ea2c30dc9d380dedc561786e0ef",
+      "reviewed_worker_sha256": "1bd9f4e9d8c8b57dc3b35d9636eb5bdc71446d685256b57db39d450f470118f1",
+      "limits": "Metadata/private TU naming differ. No linked Native byte/frame/ABI identity inference."
+    },
+    "padding_trap_support": "Physical INT3/NOP/guard/throw/EH/type counts remain separate from Native ownership; no Native byte/frame equivalence."
+  },
+  "provider_comparison": {
+    "include/bsp/native_int_pointer_tree18_leaves.hpp": {
+      "reviewed_integrator_sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+      "Main_physical_sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+      "LF_equal": true
+    },
+    "src/native_int_pointer_tree18_leaves.cpp": {
+      "reviewed_integrator_sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+      "Main_physical_sha256": "b33918a5b12e9a7c1887b183d4bb459bad5620aa123a8ce765744bc451823a69",
+      "LF_equal": true
+    },
+    "include/bsp/native_int_pointer_tree18_erase.hpp": {
+      "reviewed_integrator_sha256": "86571aedc38dc363aad43efffc8e7d23525181f505885ae72c8fd17a8e99df96",
+      "Main_physical_sha256": "86571aedc38dc363aad43efffc8e7d23525181f505885ae72c8fd17a8e99df96",
+      "LF_equal": true
+    },
+    "src/native_int_pointer_tree18_erase.cpp": {
+      "reviewed_integrator_sha256": "0473413cc5ba9b528942ebdf732016da19a65d6f9a15cfae4c679eeafea61bbb",
+      "Main_physical_sha256": "aa7ea90787a0530c356b78a78911d5242415bd8eb5f91423fa1438bb9f54c453",
+      "LF_equal": true
+    },
+    "include/bsp/native_input_scalar_tree_iterator.hpp": {
+      "reviewed_integrator_sha256": "66f429acaceb01630e0d05fa578f1a26359757eb8f581d692a0efb8934259650",
+      "Main_physical_sha256": "66f429acaceb01630e0d05fa578f1a26359757eb8f581d692a0efb8934259650",
+      "LF_equal": true
+    },
+    "src/native_input_scalar_tree_iterator.cpp": {
+      "reviewed_integrator_sha256": "8a717044cd975de0f3b2021858b0f1bb8ea47c4c5050e03c08d0029604ee6246",
+      "Main_physical_sha256": "8a717044cd975de0f3b2021858b0f1bb8ea47c4c5050e03c08d0029604ee6246",
+      "LF_equal": true
+    },
+    "include/bsp/native_input_device_tree_erase.hpp": {
+      "reviewed_integrator_sha256": "a89dbab7ddc924686cc8bf7dfaaf6c5d0aee493e7cd749eaad3b6151895ac225",
+      "Main_physical_sha256": "a89dbab7ddc924686cc8bf7dfaaf6c5d0aee493e7cd749eaad3b6151895ac225",
+      "LF_equal": true
+    },
+    "src/native_input_device_tree_erase.cpp": {
+      "reviewed_integrator_sha256": "900d25fdef248aa59d2ac017f26bdc4079c30255316daa9a187cf4611349005b",
+      "Main_physical_sha256": "900d25fdef248aa59d2ac017f26bdc4079c30255316daa9a187cf4611349005b",
+      "LF_equal": true
+    },
+    "include/bsp/native_input_device_tree_rotations.hpp": {
+      "reviewed_integrator_sha256": "137be90cdd3e57aa24f270b294c4fd657fd024097813d79043cca3a5c17ce04b",
+      "Main_physical_sha256": "137be90cdd3e57aa24f270b294c4fd657fd024097813d79043cca3a5c17ce04b",
+      "LF_equal": true
+    },
+    "src/native_input_device_tree_rotations.cpp": {
+      "reviewed_integrator_sha256": "231cfb3ec0b2080b274acb12bbebacd5afed90ad12effee45f9f6a318adea415",
+      "Main_physical_sha256": "231cfb3ec0b2080b274acb12bbebacd5afed90ad12effee45f9f6a318adea415",
+      "LF_equal": true
+    },
+    "include/bsp/native_hardware_layout_tree.hpp": {
+      "reviewed_integrator_sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5",
+      "Main_physical_sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5",
+      "LF_equal": true
+    },
+    "src/native_hardware_layout_tree.cpp": {
+      "reviewed_integrator_sha256": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6",
+      "Main_physical_sha256": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6",
+      "LF_equal": true
+    },
+    "include/bsp/native_legacy_sbo_string.hpp": {
+      "reviewed_integrator_sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+      "Main_physical_sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+      "LF_equal": true
+    },
+    "src/native_legacy_sbo_string.cpp": {
+      "reviewed_integrator_sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+      "Main_physical_sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+      "LF_equal": true
+    },
+    "include/bsp/native_legacy_exception_owner.hpp": {
+      "reviewed_integrator_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "Main_physical_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "LF_equal": true
+    },
+    "src/native_legacy_exception_owner.cpp": {
+      "reviewed_integrator_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+      "Main_physical_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+      "LF_equal": true
+    },
+    "include/bsp/native_tree_out_of_range_exception.hpp": {
+      "reviewed_integrator_sha256": "a35ad6906acf09d0814c5142856fe4c0adf91b86f3a8373eb8d26fb3adf11fcf",
+      "Main_physical_sha256": "a35ad6906acf09d0814c5142856fe4c0adf91b86f3a8373eb8d26fb3adf11fcf",
+      "LF_equal": true
+    },
+    "src/native_tree_out_of_range_exception.cpp": {
+      "reviewed_integrator_sha256": "5d95dbe3af41c5338706f0c77928cefc9cc13ee5e8ec0cd606fc0cd85a846844",
+      "Main_physical_sha256": "5d95dbe3af41c5338706f0c77928cefc9cc13ee5e8ec0cd606fc0cd85a846844",
+      "LF_equal": true
+    },
+    "include/bsp/native_string.hpp": {
+      "reviewed_integrator_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "Main_physical_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "LF_equal": true
+    },
+    "src/native_string.cpp": {
+      "reviewed_integrator_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "Main_physical_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "LF_equal": true
+    },
+    "include/bsp/native_string_pool_owner.hpp": {
+      "reviewed_integrator_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "Main_physical_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "LF_equal": true
+    },
+    "src/native_string_pool_owner.cpp": {
+      "reviewed_integrator_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "Main_physical_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "LF_equal": true
+    },
+    "include/bsp/native_string_pool_storage.hpp": {
+      "reviewed_integrator_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "Main_physical_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "LF_equal": true
+    },
+    "src/native_string_pool_storage.cpp": {
+      "reviewed_integrator_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "Main_physical_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "LF_equal": true
+    },
+    "include/bsp/singleton_lifetime.hpp": {
+      "reviewed_integrator_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "Main_physical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "LF_equal": true
+    },
+    "src/singleton_lifetime.cpp": {
+      "reviewed_integrator_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "Main_physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "LF_equal": true
+    },
+    "include/bsp/native_invalid_parameter_noinfo_call.hpp": {
+      "reviewed_integrator_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "Main_physical_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "LF_equal": true
+    },
+    "src/native_invalid_parameter_noinfo_call.cpp": {
+      "reviewed_integrator_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "Main_physical_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "LF_equal": true
+    },
+    "include/bsp/native_input_settings_tree_cleanup.hpp": {
+      "reviewed_integrator_sha256": "db6fdb5d7c26f1bd416693464823e29c97bce248e987da5d033d626b4603c875",
+      "Main_physical_sha256": "db6fdb5d7c26f1bd416693464823e29c97bce248e987da5d033d626b4603c875",
+      "LF_equal": true
+    },
+    "src/native_input_settings_tree_cleanup.cpp": {
+      "reviewed_integrator_sha256": "d8be9c5d9613ee258a06fe42a6696269a13a60f53a8a4e1d75aa2e4292feab30",
+      "Main_physical_sha256": "d8be9c5d9613ee258a06fe42a6696269a13a60f53a8a4e1d75aa2e4292feab30",
+      "LF_equal": true
+    },
+    "include/bsp/native_input_int_string_subtree.hpp": {
+      "reviewed_integrator_sha256": "fe1845af88810721748455447d9b4de861d8a5cce74568f0ce52a323ffba9009",
+      "Main_physical_sha256": "fe1845af88810721748455447d9b4de861d8a5cce74568f0ce52a323ffba9009",
+      "LF_equal": true
+    },
+    "src/native_input_int_string_subtree.cpp": {
+      "reviewed_integrator_sha256": "3ca0f41126b1890e0519a7c99961f3feab3a0e6bcf1bcb708837ab9ef835aa64",
+      "Main_physical_sha256": "3ca0f41126b1890e0519a7c99961f3feab3a0e6bcf1bcb708837ab9ef835aa64",
+      "LF_equal": true
+    }
+  },
+  "host_steps": [
+    {
+      "address": "0069ae58",
+      "native": "00bf6713"
+    },
+    {
+      "address": "0069ae67",
+      "native": "00bf6713"
+    },
+    {
+      "address": "006a0818",
+      "native": "00408720"
+    },
+    {
+      "address": "006a082a",
+      "native": "00411700"
+    },
+    {
+      "address": "006a0841",
+      "native": "00bf6885"
+    },
+    {
+      "address": "006a084e",
+      "native": "0069ae50"
+    },
+    {
+      "address": "006a08b0",
+      "native": "0069aae0"
+    },
+    {
+      "address": "006a08d2",
+      "native": "0069aac0"
+    },
+    {
+      "address": "006a0972",
+      "native": "0069c300"
+    },
+    {
+      "address": "006a09a5",
+      "native": "0069a780"
+    },
+    {
+      "address": "006a09c1",
+      "native": "0069c300"
+    },
+    {
+      "address": "006a09d6",
+      "native": "0069a780"
+    },
+    {
+      "address": "006a0a1f",
+      "native": "0069c300"
+    },
+    {
+      "address": "006a0a39",
+      "native": "0069a780"
+    },
+    {
+      "address": "006a0a50",
+      "native": "00419cc0"
+    },
+    {
+      "address": "006a0a57",
+      "native": "00bd1510"
+    },
+    {
+      "address": "006a0a5d",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00c7f053",
+      "native": "004072d0"
+    },
+    {
+      "address": "00c7f05d",
+      "native": "00bf6b43"
+    },
+    {
+      "address": "0041dd30",
+      "native": "00419cc0"
+    },
+    {
+      "address": "0041dd37",
+      "native": "00bd1510"
+    }
+  ],
+  "validation": {
+    "tested_combined_Source": "878c7c6505eec5f6c380e63945f5e3f795065669",
+    "default_MSVC_Win32": true,
+    "build_log": "local/oct15_twentyeighth_final_union_build.log",
+    "build_log_sha256": "e843fd4e52faeb0bcca418fc6f0dfd8a6fb07cc9c75e264064a3dcb6642cd14f",
+    "existing_suites_passed": 3,
+    "ctest_seconds": 13.43,
+    "transfers": {
+      "report_rows": 21,
+      "Markdown_claims": 21,
+      "failed": 0,
+      "unchecked": 0,
+      "log": "local/oct15_twentyeighth_transfers.log",
+      "sha256": "d9becb1ee53c403246172e900802eef15e55cb3becdf857ffaa98c0f73f5ec3d"
+    },
+    "annotations": {
+      "path": "local/ghidra-annotations-20261016T042852Z.json",
+      "sha256": "675cdb3b8f2a5cc8bfe9c74ccc5b521854fdb33b4ec1353af704badb5ad96146",
+      "saved_with_preimages": 2
+    },
+    "refreshed_exports": 2,
+    "snapshot": "skipped unchanged76774functions",
+    "index": "rebuilt",
+    "new_tests": 0,
+    "Native_execution": false
+  },
+  "limits": [
+    "WholeSource erasure and logicalstorage cleanup, not original EBP action/privateframe/ABI substitution.",
+    "Topology/colors change before mapped-payload getter; getterfailure leaves originalnodefree/count/output pending. No normalkeyguard/rollback.",
+    "Unsignedcurrentcount decrementsifnonzero, includinghighbit; owner/output/node capturedbeforeownerthennodestores.",
+    "Completed-message guard arms onlyafter27bytecountedassign beforeowningerrorconstructor/throw; currentCpp/CRT/noexcept limits apply.",
+    "Generated Source uses compiler EBP, removedEBX and addedRawCtx/RET10 ratherthanNativeRET0C. Purecompare canmoveacrossparentread; Originalflags/faulttimingunproved.",
+    "Originalheap/CRT/FH3/SEH/RTTI/fault/register/privateargumentframe/binaryABI/applicationadoption/gameidentity remainunproved. Existing suitescoveroldermath/tools.",
+    "Old RawCtx/AV/typed/layout/subtree interfaces unchanged; no callback/model/count/providerbridge or globaluniquecoverageclaim."
+  ],
+  "coordination": {
+    "append_only_registry_leases": false,
+    "only_owned_paths_staged": true
+  },
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "verified after publication; no self reference"
+  }
+}

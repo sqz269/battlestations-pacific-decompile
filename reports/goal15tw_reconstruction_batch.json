@@ -1,0 +1,148 @@
+{
+  "batch": "GOAL15T/W",
+  "validated_source_commit": "262406140b8c519f45f95b9847fe5e9ef3fc2d3f",
+  "whole_reconstructed_original_functions": 4,
+  "whole_referenced_native_bytes": 202,
+  "own_entire_source_code_bytes_including_two_new_cell_accessors": 36,
+  "additional_new_source_interfaces_not_counted_as_original": 2,
+  "traffic": {
+    "author_pin": "653908afe26f6af57abe206fe18b2edfd245eb1b",
+    "validated_root_source": "262406140",
+    "whole_native_bytes": 190,
+    "own_source_code_bytes": 12,
+    "canonical_provider_objects": 7,
+    "canonical_provider_code_bytes": 8605,
+    "root_archive_sha256": "87555ec18bd6db830699c20781137d9a4b0f0cca9288ee735e39970085aa5f8a",
+    "source_inputs_equal_reviewed_author": true,
+    "review_sha256": "220981a104c28c8d0bcdc187ddf400b1696e79789946a8413dd6f0cc6e33be04",
+    "original_physical_prototypes": [
+      "0047e970 STL_allocator_allocate_0047e970  void * __fastcall STL_allocator_allocate_0047e970(uint count)  body 0047e970 - 0047e9c4",
+      "00490240 STL_xlen_throw_00490240  noreturn void __cdecl STL_xlen_throw_00490240(void)  body 00490240 - 004902a8",
+      "00b343f0 get_shader_system_register_limit_00b343f0  uint __cdecl get_shader_system_register_limit_00b343f0(void)  body 00b343f0 - 00b343f5",
+      "00b34490 get_shader_system_registry_00b34490  void * __cdecl get_shader_system_registry_00b34490(void)  body 00b34490 - 00b34495"
+    ],
+    "length_failure_saved_no_return": true,
+    "root_existing_checks": 3,
+    "fixture_scope": "Reviewed author actual archive transport fixture only; not replayed at Root. Root all complete provider code/relocations and exact unique archive members agree. No Original CRT/FH3/RTTI/SEH/frame/fault/private allocation transport or parent/game proof.",
+    "root_objects": [
+      {
+        "object": "native_traffic_vector_failure_children",
+        "sha256": "758f06cda289f4060907c115932069f501cadf5df4c7bc7e207e28330189b09e",
+        "entire_executable_bytes": 12,
+        "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+        "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+        "whole_actual_unique_archive_member_equal": true
+      },
+      {
+        "object": "native_singleton_vector_allocation",
+        "sha256": "e0209d81ff88207223ccd57ccdbec62f3d45f80d2d5c0437b80228b5ca471130",
+        "entire_executable_bytes": 612,
+        "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+        "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+        "whole_actual_unique_archive_member_equal": true
+      },
+      {
+        "object": "native_legacy_exception_owner",
+        "sha256": "a4737ea9295b79ce8a8108ff76fd86648327fb76fc68ac70677cf8f07c3a5419",
+        "entire_executable_bytes": 1098,
+        "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+        "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+        "whole_actual_unique_archive_member_equal": true
+      },
+      {
+        "object": "native_legacy_sbo_string",
+        "sha256": "a8bf47105821bc0feb8aabc9cdc86d08cfd3ca2d3124bb422f15adeb1edb552b",
+        "entire_executable_bytes": 2444,
+        "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+        "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+        "whole_actual_unique_archive_member_equal": true
+      },
+      {
+        "object": "singleton_lifetime",
+        "sha256": "73a3618a16cfb9955cc0e295c85378cfafe952d79bbb4a7e2a8851ca7bd79b0e",
+        "entire_executable_bytes": 4321,
+        "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+        "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+        "whole_actual_unique_archive_member_equal": true
+      },
+      {
+        "object": "native_allocator_base_default_constructor",
+        "sha256": "012bcb1125ad80b1a950e01638f95d1076041b88778d4cdbc319ea8f37a47d67",
+        "entire_executable_bytes": 17,
+        "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+        "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+        "whole_actual_unique_archive_member_equal": true
+      },
+      {
+        "object": "native_allocator_base_copy_constructor",
+        "sha256": "8c247343305c600505e3e99fba97f8a2c576e3a7cf2e56f7f54295cc64e683e7",
+        "entire_executable_bytes": 90,
+        "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+        "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+        "whole_actual_unique_archive_member_equal": true
+      },
+      {
+        "object": "native_allocator_base_cleanup",
+        "sha256": "fbe9b50c56531b10ffa4d8b58da1519cc0ff5556ba3f362dda8250d783f0c392",
+        "entire_executable_bytes": 23,
+        "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+        "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+        "whole_actual_unique_archive_member_equal": true
+      }
+    ],
+    "root_full_proof_sha256": "224541deb33cb901b03a1d5421f6512acdffa01dcbb1403c9761fc6d7335065f"
+  },
+  "shader": {
+    "report": "reports/goal15w_shader_register_limit.json",
+    "sha256": "fd8e1f9b9445b1e0163ab22230c017d380220c952d20719d311b8f0ce7e67a59",
+    "independent_review": {
+      "status": "READY",
+      "path": "local\\goal15w_shader_register_limit\\independent_review\\final_review.json",
+      "sha256": "c234c5beacde8e49a10ba4854b635924b18b7eb6335f10d504db9b9d37d2d776",
+      "blocking_findings": [],
+      "scope": "Independent Original PE, complete COFF/archive/fixture, actual linked production binding and all member layouts; no new execution."
+    },
+    "source_hashes": {
+      "src/native_shader_global_readers.cpp": "8e1f0c043606d97d0dd86a81ee2f624fef917e9ae5af5a6c321df6d160f663e1",
+      "include/bsp/native_shader_global_readers.hpp": "75a3449d3561b8a0ada918483f5d31fedcd4383cf1e13e569f19cabf3baaf237",
+      "include/bsp/game_native_shader_process.hpp": "af08e8675c0a3e6646ceb70d23f9522803c259f11561116dbf171404fc9b3cad",
+      "src/game_native_renderer_application.cpp": "26bd27eda6ae864b13166ccd2fd1176f8a27b4006d7791d42d8346a703e91630"
+    }
+  },
+  "build": {
+    "path": "local\\goal15w_shader_register_limit\\registered_build.log",
+    "sha256": "2218a1067885d1d4b45df78df954ce9430db423bfcc6c3d795c193fbebedef43",
+    "existing_checks": 3,
+    "new_registered_tests": 0
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "original_state": "local/goal15h_annotations_0047e970.json",
+    "history": "local/ghidra-annotations-20261016T050817Z.json",
+    "project_saved": true,
+    "exports_refreshed": true,
+    "typed_metadata": "local/goal15w_shader_register_limit/saved_typed_flow_final.json",
+    "snapshot": "local/goal15w_shader_register_limit/snapshot.log",
+    "index": "local/goal15w_shader_register_limit/index.log",
+    "length_failure_flag_history": "local/ghidra-annotations-20261016T050907Z.json",
+    "length_failure_no_return_saved": true,
+    "original_input_signatures_verified": 4
+  },
+  "call_verification": {
+    "path": "local\\goal15w_shader_register_limit\\call_checks.log",
+    "sha256": "3277707d0893295f0030bbbbc5e626a8aad3fba038ebb49088c8adab589c8453",
+    "json_native_call_rows_passed": 12,
+    "document_native_calls_passed": 6,
+    "document_static_source_composition_prose_outside_parser": 4,
+    "failures": 0,
+    "warnings": 0
+  },
+  "b3_original_screening_inventory": {
+    "source_functions": 77,
+    "native_bytes": 386,
+    "still_deferred_to_y": 2,
+    "scope": "Original 79-candidate inventory only, not entire address band."
+  },
+  "limits": "Qualified canonical current CRT/EH transport and Source static global storage bindings. No Native placement/private allocator/FH3/RTTI/SEH/frame/fault equivalence, production lifecycle execution, caller adoption, complete larger parents or game validation. Reviewed T fixture not rerun; W real archive early storage fixture executed. No measured throughput speedup."
+}

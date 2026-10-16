@@ -1,0 +1,127 @@
+{
+  "packet": "cc12_native_gui_page_reader_continuation_79",
+  "status": "partial_source_fragment_root_source_review_strict_win32_direct_compile_existing_build_checks_passed_no_runtime",
+  "document": "docs/CC12_NATIVE_GUI_PAGE_READER_CONTINUATION_79.md",
+  "dependencies": {
+    "71": "76eb01c2bdc9375ad92517a426ee3c363ca7b88a",
+    "72": "d12e5827c435f4b6f12c26d90b9f3bfd4f8fb83a",
+    "77_readiness": "8c09e86aed44c6c4c4f2ae14e5661e3fdfeb83ac",
+    "75_properties_readiness": "77c767156a2b13f5b9bc6ca8b1b98edf568e24b9"
+  },
+  "owned_sources": [
+    {
+      "path": "include/bsp/native_gui_page_reader_continuation.hpp",
+      "git_blob": "504f76d2fc89d7bf624ad663592293c80b126c19",
+      "sha256": "2ac87cb70e33d79de51d3fdfb124fc372b7a186317988e44e5f581cbe75889f0"
+    },
+    {
+      "path": "src/native_gui_page_reader_continuation.cpp",
+      "git_blob": "4b3354f30a59d8e00e20121450dfd56ab5024a25",
+      "sha256": "545edacf4b4616b7d079331d6dd8f6a11db53437e365589378af0571ee020b9a"
+    },
+    {
+      "path": "include/bsp/native_gui_page_construction.hpp",
+      "git_blob": "868fa5444ae25c491d8124346c4c32c675320cd0",
+      "sha256": "82522812905be68177eae2652d46bfef397133e6c340fe8d4260d7a053847e17"
+    },
+    {
+      "path": "include/bsp/native_gui_page_script_continuation.hpp",
+      "git_blob": "ff58c02eb7fb210a745122b5d2c26c44d0718b55",
+      "sha256": "8b72d5d21903eb532972322b2c6126a0d6a89dcae9dc052130e672d0dd882cbe"
+    },
+    {
+      "path": "include/bsp/native_lua_reader.hpp",
+      "git_blob": "61ff9514facecbca55e410c3bbf03751cc020d0e",
+      "sha256": "85e916e8388505df5d7ddb9f3fb2f53e432b592edaa7ee7b0ced937d7fee9c07"
+    }
+  ],
+  "original": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "parent": "[AC6600,AC6879),633B, ECX actual124h page; stack name-header pointer/node pointer/flag DWORD(low byte); EAX same page; RET0C atAC6876",
+    "fragment_only": "[AC67CC,AC6806),58B; not a separate Original callable function",
+    "input": "SAME72 prefix identity, AC67CC/EH2, SAME open4C8h owner",
+    "output": "AC6806/EH5 awaiting_properties_continuation; SAME reader/Lua live, unfinished page",
+    "sequence": [
+      "SAME14h=20decimal globals output B67980",
+      "existing4425C0 consumes SAME by-value object including ordinary C++failure",
+      "actualD5CB24 GuiScreen",
+      "CURRENT reader profile before CURRENT actualCE44FC table[1]",
+      "supported BD8E20 target only; no table/default/numeric-call fallback",
+      "EH5 before BD8E20(kind0,keybits), genuine BD5790/B65F50 initializes SAME fresh scratch once"
+    ],
+    "remaining": "[AC6806,AC6879),115B; CURRENTpage+18 AC4C50 rawwhole216B absent, AAA710 rawchildren tail507B/rawAA6560 absent, later CURRENTreader+08/node+4C reloads/EH6 vector cleanup seam/CE374C/EH1/Lua close"
+  },
+  "api": {
+    "entry": "continue_native_gui_page_reader_00ac67cc",
+    "frame": "NativeGuiPageReaderContinuation",
+    "context": "NativeGuiPageReaderContext",
+    "backing": "SAME uninitialized14h globals member consumed by ctor; aligned raw14h reader backing preserves proxy04; fresh14h lookup scratch preserves opaque/padding",
+    "identity": "metadata-only72 prefix_identity accessor; reject foreign prefix before entry",
+    "supported_dispatch": "required actualCE44FC live table >=2DWORDs; current profile then current+04; onlyCE44FC/BD8E20 supported; unsupported dispatch throws under sticky entered retention beforeEH5",
+    "borrow": "only normal AC6806/EH5 with SAME readerCE44FC and SAMEowner.state04 nonnull",
+    "header_changes": "append prefix phase preserving existing enum values;72 metadata accessor only; reader scratch comment-only correction, no reader body change",
+    "provider_limit": "actual literal/table authenticity and SAME Lua binding identity remain caller obligations; no new production backend/table owner/provider",
+    "abi_limit": "new C++ interfaces; native-private stack/scratch placement, whole-parent Original ABI/FH3/SEH excluded"
+  },
+  "lifetime": {
+    "guard": "persistent frame enters BEFORE72 owner borrow/Activation/effects; destructor checks sticky entered/failed FIRST before native byte/owner reads",
+    "failure": "retain whole graph; host _Exit before dependency/member/manager/CRT drain; no replay/retry/rollback/reader destructor/Lua close",
+    "consumed_callees": "existing ctor/helper may already consume or clean its own local state on failure; retained identity does not promise all contents stay natively live",
+    "pending": "destructor requires retained raw readerCE374C and SAMEowner.state04 null; byte inspection does not borrow a dead typed reader",
+    "future_tail": "independently guard whole graph before pending borrow; genuine reader retirement once/SAME Lua close/borrow quiescence;72 owner and all providers outlive79 borrow",
+    "contract_limit": "cell checks are caller lifetime obligations, not authenticated history; no force/abandon/markcomplete API; future failure guard cannot be replaced by these checks",
+    "serialization": "external GUI serialization including callback reentry",
+    "activation": "Source service binding restoration only, not Lua C frame/handler/native error restoration"
+  },
+  "annotation": {
+    "address": "00ac6600",
+    "fragment_range_only": "[AC67CC,AC6806)",
+    "canonical_tool": "tools/ghidra_annotate.py --apply --addresses 00ac6600",
+    "name": "BSP_GuiLayer_ConstructFromScript retained; evidence appended",
+    "history": "local/ghidra-annotations-20261016T034345Z.json",
+    "write_lock_saved_preserved_history": true,
+    "refreshed_export": "exports/bsp/functions/00ac6600",
+    "body_or_prototype_repair": false,
+    "ledger_files": [
+      "config/reconstruction/00ac0000.jsonl",
+      "config/names/00ac0000.jsonl"
+    ],
+    "whole_shard_leases": false
+  },
+  "validation": {
+    "primary_source_review": "Root PASS complete new hpp/cpp and3 narrow header changes against exact58B Original listing",
+    "direct_compile": "MSVC Win32 /std:c++17 /EHsc /MD /O2 /W4 /WX new reader TU +72TU; exit0",
+    "existing_build": "scripts/build.ps1 exit0;2/2 CTests PASS; existing LNK4006 warnings",
+    "new_tu_registered_here": false,
+    "registration": "Root owns CMake registration/combinedbuild in80",
+    "new_tests": 0,
+    "runtime": "none; no fabricated backend/script/provider; no Native differential, actual script/backend, Screen completion, normalhost activation/visual/gameplay or complete Original CRT/FH3/SEH claim"
+  },
+  "private_artifacts": [
+    {
+      "path": "local/cc12_native_gui_page_reader_continuation_79/compile.cmd",
+      "sha256": "25cbe75fd7e753b710c60b12d646b41dbc62570eb63a24959e1dced5f49e8c7e"
+    },
+    {
+      "path": "local/cc12_native_gui_page_reader_continuation_79/compile.log",
+      "sha256": "ae5ed28684e4b45e3eaf98c6cc9eda982fbf3d968ef144e2a5173a1dc7150071"
+    },
+    {
+      "path": "local/cc12_native_gui_page_reader_continuation_79/native_gui_page_reader_continuation.obj",
+      "sha256": "3b9107d7d0b96cbeb314e5ac6d53846b096e9e40f2d0e0f618417d39ec2d67f8"
+    },
+    {
+      "path": "local/cc12_native_gui_page_reader_continuation_79/native_gui_page_script_continuation.obj",
+      "sha256": "cbcd86921d8b6c5ce5235eb1515a9e85573fd6b22940e47e4d94a79d4717138a"
+    },
+    {
+      "path": "local/cc12_native_gui_page_reader_continuation_79/build.log",
+      "sha256": "1e39c171854c5e1c9ba2610f1074f45487bb454f1d90fcf786b1e9e236097de8"
+    },
+    {
+      "path": "local/ghidra-annotations-20261016T034345Z.json",
+      "sha256": "ae000fede0bcb22bd3592df16fb3214240b328ec09e4a822e882e0b7b9492108"
+    }
+  ]
+}

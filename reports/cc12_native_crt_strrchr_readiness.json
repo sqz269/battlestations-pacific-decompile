@@ -3,8 +3,11 @@
   "utc": "2026-10-16T03:42:09.702849+00:00",
   "source_ready": true,
   "Source_authorized": true,
-  "Source_implemented": false,
-  "Source_credit": 0,
+  "Source_implemented": true,
+  "Source_credit": {
+    "whole_ordinary_functions": 1,
+    "partial_entries": 0
+  },
   "coverage": "whole_ordinary_domain_new_Source_interface",
   "packet": "cc12_native_crt_strrchr_00bf87b0",
   "worker_family": {
@@ -52,5 +55,11 @@
     "No separate unregistered-worker baseline requested; required normal Mainbuild after registration with existing3checks and actualobject/archive/symbol inspection by Root.",
     "Exactly4Sourcefiles only; fresh address/filelease; correctlibraryname _strrchr retained; noOriginalcallers/ABI/EH/fault/runtime/gamepromotion."
   ],
-  "checker_coverage": "Call-free leaf; workerlivecheckeractually0rows0failed, which is notsemanticproof. Root independentlyread and decoded completeOriginalbody."
+  "checker_coverage": "Call-free leaf; workerlivecheckeractually0rows0failed, which is notsemanticproof. Root independentlyread and decoded completeOriginalbody.",
+  "status": "ordinary_Source_Main_gate_closed_Original_ABI_runtime_unproved",
+  "Main_gate": "pending",
+  "primary_review": "reports/cc12_native_crt_strrchr_primary_review.json",
+  "Main_build_gate": "pass",
+  "actual_compiler_archive_gate": "pass",
+  "Main_validation": "reports/cc12_native_crt_strrchr_Main_validation.json"
 }

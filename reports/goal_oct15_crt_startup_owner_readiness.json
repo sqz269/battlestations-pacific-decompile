@@ -1,0 +1,1661 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_crt_startup_owner_readiness",
+  "kind": "read_only_whole_physical_startup_and_immediate_cold_ownership_audit",
+  "source_ready": false,
+  "general_source_ready": false,
+  "original_startup_ready": false,
+  "original_heap_tls_lock_owner_ready": false,
+  "scope": {
+    "main": "Whole physical ___tmainCRTStartup [00BFD0DD,00BFD2BD), including both omitted exception filters/handlers and every physical returning continuation. Supporting whole immediate cold owners __mtinit, __init_pointers, __mtterm, actual entry, and SEH prolog. Other direct providers examined only at the expressly stated contract/pseudocode level; no transitive graph-completeness claim.",
+    "main_bytes": 480,
+    "main_instructions": 156,
+    "whole_supporting_bytes": 604,
+    "whole_supporting_instructions": 173,
+    "whole_total_bytes": 1084,
+    "whole_total_instructions": 329,
+    "scope_table_bytes": 40,
+    "source_address_claims": false,
+    "source_edits": false,
+    "ghidra_writes": false,
+    "analysis_repairs": false,
+    "tests_or_build": false,
+    "cmake_edits": false,
+    "report_only_file_lease": true
+  },
+  "baseline": {
+    "worktree": "J:/PROG/battlestations-pacific-decompile-goal_oct15_allocate",
+    "base_main": "281a34f29",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_modification_number": 4778,
+    "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verified_before_each_live_batch": "bsp.py ghidra checked configured project/program; typed captures retain exact project/program and matching before/after modification numbers.",
+    "index": "bsp.py index --if-stale rebuilt current index before provider lookup receipts."
+  },
+  "physical_spans": [
+    {
+      "start": "00bfd0dd",
+      "end_exclusive": "00bfd2bd",
+      "bytes": 480,
+      "instructions": 156,
+      "pe_file_offset": 8376541,
+      "sha256": "8f2ce7ae365d2c0620d2f8a1aceb7c5d867ec514090db37ffa7e89047d5b1fd7",
+      "live_equals_installed_pe": true,
+      "live_receipt": "local/goal_oct15_crt_startup_owner_bytes.txt",
+      "live_receipt_sha256": "9dac73bbecb904ef6fb72a23456b886402be68f2cdfdfe4aafbd4a9a2097f51c",
+      "instruction_starts": [
+        "00bfd0dd",
+        "00bfd0df",
+        "00bfd0e4",
+        "00bfd0e9",
+        "00bfd0ed",
+        "00bfd0f0",
+        "00bfd0f1",
+        "00bfd0f7",
+        "00bfd0fe",
+        "00bfd103",
+        "00bfd104",
+        "00bfd106",
+        "00bfd10c",
+        "00bfd10e",
+        "00bfd10f",
+        "00bfd115",
+        "00bfd117",
+        "00bfd119",
+        "00bfd11b",
+        "00bfd11d",
+        "00bfd122",
+        "00bfd123",
+        "00bfd128",
+        "00bfd12a",
+        "00bfd12b",
+        "00bfd131",
+        "00bfd132",
+        "00bfd134",
+        "00bfd136",
+        "00bfd138",
+        "00bfd13a",
+        "00bfd13b",
+        "00bfd141",
+        "00bfd146",
+        "00bfd149",
+        "00bfd14c",
+        "00bfd14f",
+        "00bfd152",
+        "00bfd155",
+        "00bfd158",
+        "00bfd15b",
+        "00bfd161",
+        "00bfd163",
+        "00bfd164",
+        "00bfd16a",
+        "00bfd16d",
+        "00bfd170",
+        "00bfd172",
+        "00bfd178",
+        "00bfd17b",
+        "00bfd17d",
+        "00bfd180",
+        "00bfd183",
+        "00bfd185",
+        "00bfd18b",
+        "00bfd190",
+        "00bfd196",
+        "00bfd19c",
+        "00bfd1a2",
+        "00bfd1a7",
+        "00bfd1aa",
+        "00bfd1ac",
+        "00bfd1ad",
+        "00bfd1ae",
+        "00bfd1b3",
+        "00bfd1b4",
+        "00bfd1b6",
+        "00bfd1b8",
+        "00bfd1ba",
+        "00bfd1bf",
+        "00bfd1c0",
+        "00bfd1c5",
+        "00bfd1c7",
+        "00bfd1c9",
+        "00bfd1cb",
+        "00bfd1d0",
+        "00bfd1d1",
+        "00bfd1d6",
+        "00bfd1d9",
+        "00bfd1de",
+        "00bfd1e0",
+        "00bfd1e2",
+        "00bfd1e4",
+        "00bfd1e9",
+        "00bfd1ea",
+        "00bfd1f0",
+        "00bfd1f5",
+        "00bfd1fa",
+        "00bfd1ff",
+        "00bfd204",
+        "00bfd206",
+        "00bfd208",
+        "00bfd20a",
+        "00bfd20f",
+        "00bfd210",
+        "00bfd215",
+        "00bfd217",
+        "00bfd219",
+        "00bfd21b",
+        "00bfd220",
+        "00bfd221",
+        "00bfd222",
+        "00bfd227",
+        "00bfd228",
+        "00bfd22a",
+        "00bfd22c",
+        "00bfd22d",
+        "00bfd232",
+        "00bfd233",
+        "00bfd238",
+        "00bfd23b",
+        "00bfd23d",
+        "00bfd241",
+        "00bfd243",
+        "00bfd245",
+        "00bfd246",
+        "00bfd247",
+        "00bfd248",
+        "00bfd24a",
+        "00bfd24f",
+        "00bfd254",
+        "00bfd257",
+        "00bfd25b",
+        "00bfd25d",
+        "00bfd25e",
+        "00bfd263",
+        "00bfd268",
+        "00bfd26a",
+        "00bfd26d",
+        "00bfd26f",
+        "00bfd271",
+        "00bfd274",
+        "00bfd275",
+        "00bfd276",
+        "00bfd27b",
+        "00bfd27c",
+        "00bfd27d",
+        "00bfd27e",
+        "00bfd281",
+        "00bfd284",
+        "00bfd287",
+        "00bfd28b",
+        "00bfd28d",
+        "00bfd28e",
+        "00bfd293",
+        "00bfd298",
+        "00bfd29f",
+        "00bfd2a2",
+        "00bfd2a4",
+        "00bfd2a6",
+        "00bfd2a7",
+        "00bfd2a8",
+        "00bfd2ab",
+        "00bfd2b2",
+        "00bfd2b7",
+        "00bfd2bc"
+      ]
+    },
+    {
+      "start": "00c053dc",
+      "end_exclusive": "00c05560",
+      "bytes": 388,
+      "instructions": 109,
+      "pe_file_offset": 8410076,
+      "sha256": "ea65c846b07e4839813a118c77401c03e6393be26912dbcbc179cf3536270244",
+      "live_equals_installed_pe": true,
+      "live_receipt": "local/goal_oct15_crt_startup_mtinit_bytes.txt",
+      "live_receipt_sha256": "ee92bf6a68763a6da2177c0480c1655c5404b325c6e45942d273b4042a9071df",
+      "instruction_starts": [
+        "00c053dc",
+        "00c053dd",
+        "00c053e2",
+        "00c053e8",
+        "00c053ea",
+        "00c053ec",
+        "00c053ee",
+        "00c053f3",
+        "00c053f5",
+        "00c053f6",
+        "00c053f7",
+        "00c053f8",
+        "00c053fe",
+        "00c05403",
+        "00c05404",
+        "00c05406",
+        "00c0540b",
+        "00c0540c",
+        "00c05411",
+        "00c05413",
+        "00c05418",
+        "00c05419",
+        "00c0541e",
+        "00c05420",
+        "00c05425",
+        "00c05426",
+        "00c0542b",
+        "00c0542d",
+        "00c05434",
+        "00c0543a",
+        "00c0543f",
+        "00c05441",
+        "00c05448",
+        "00c0544a",
+        "00c05451",
+        "00c05453",
+        "00c05455",
+        "00c05457",
+        "00c0545c",
+        "00c05461",
+        "00c05466",
+        "00c05470",
+        "00c05476",
+        "00c0547b",
+        "00c05481",
+        "00c05484",
+        "00c05489",
+        "00c0548f",
+        "00c05495",
+        "00c05496",
+        "00c05498",
+        "00c0549a",
+        "00c054a0",
+        "00c054a5",
+        "00c054ab",
+        "00c054b0",
+        "00c054b6",
+        "00c054bb",
+        "00c054c0",
+        "00c054c6",
+        "00c054cb",
+        "00c054d0",
+        "00c054d6",
+        "00c054db",
+        "00c054e0",
+        "00c054e3",
+        "00c054e8",
+        "00c054ed",
+        "00c054ef",
+        "00c054f1",
+        "00c054f6",
+        "00c054fc",
+        "00c05501",
+        "00c05502",
+        "00c05504",
+        "00c05507",
+        "00c0550c",
+        "00c0550e",
+        "00c05513",
+        "00c05515",
+        "00c0551a",
+        "00c0551c",
+        "00c0551e",
+        "00c0551f",
+        "00c05520",
+        "00c05522",
+        "00c05523",
+        "00c05529",
+        "00c0552f",
+        "00c05534",
+        "00c05535",
+        "00c05537",
+        "00c05539",
+        "00c0553b",
+        "00c0553d",
+        "00c0553e",
+        "00c05543",
+        "00c05544",
+        "00c05545",
+        "00c0554b",
+        "00c0554f",
+        "00c05551",
+        "00c05553",
+        "00c05554",
+        "00c05556",
+        "00c0555b",
+        "00c0555d",
+        "00c0555e",
+        "00c0555f"
+      ]
+    },
+    {
+      "start": "00bfbdfb",
+      "end_exclusive": "00bfbe47",
+      "bytes": 76,
+      "instructions": 25,
+      "pe_file_offset": 8371707,
+      "sha256": "aec0936af4af64b89f90ae8c76f31fbf985dff4822b39f334eb8c9083e388618",
+      "live_equals_installed_pe": true,
+      "live_receipt": "local/goal_oct15_crt_startup_pointers_bytes.txt",
+      "live_receipt_sha256": "09016c2783f59401fb1a7b74bf151466d985174a2678f39bcf8392ccc492337d",
+      "instruction_starts": [
+        "00bfbdfb",
+        "00bfbdfc",
+        "00bfbe01",
+        "00bfbe03",
+        "00bfbe04",
+        "00bfbe09",
+        "00bfbe0a",
+        "00bfbe0f",
+        "00bfbe10",
+        "00bfbe15",
+        "00bfbe16",
+        "00bfbe1b",
+        "00bfbe1c",
+        "00bfbe21",
+        "00bfbe22",
+        "00bfbe27",
+        "00bfbe28",
+        "00bfbe2d",
+        "00bfbe2e",
+        "00bfbe33",
+        "00bfbe38",
+        "00bfbe3d",
+        "00bfbe40",
+        "00bfbe45",
+        "00bfbe46"
+      ]
+    },
+    {
+      "start": "00c050bb",
+      "end_exclusive": "00c050f8",
+      "bytes": 61,
+      "instructions": 16,
+      "pe_file_offset": 8409275,
+      "sha256": "d31142b23ce06ea0484d16362f78a6e5690970dedc076ac57a241fd40a906e70",
+      "live_equals_installed_pe": true,
+      "live_receipt": "local/goal_oct15_crt_startup_mtterm_bytes.txt",
+      "live_receipt_sha256": "98f56e0940451033cabacb4a7c56c7c35b95e84b090630d40dd62738a5725ecc",
+      "instruction_starts": [
+        "00c050bb",
+        "00c050c0",
+        "00c050c3",
+        "00c050c5",
+        "00c050c6",
+        "00c050cc",
+        "00c050d1",
+        "00c050d2",
+        "00c050d4",
+        "00c050db",
+        "00c050e0",
+        "00c050e3",
+        "00c050e5",
+        "00c050e6",
+        "00c050ec",
+        "00c050f3"
+      ]
+    },
+    {
+      "start": "00bfd2bd",
+      "end_exclusive": "00bfd2c7",
+      "bytes": 10,
+      "instructions": 2,
+      "pe_file_offset": 8377021,
+      "sha256": "e83d9f5b5bb5a5688a2418d83e43541a76b46f6eabe05d26fcafe779423c2d7d",
+      "live_equals_installed_pe": true,
+      "live_receipt": "local/goal_oct15_crt_startup_entry_bytes.txt",
+      "live_receipt_sha256": "09fc95ec174ed4da1040cbd1f9562492412488e59364f8120da051e5033d1b72",
+      "instruction_starts": [
+        "00bfd2bd",
+        "00bfd2c2"
+      ]
+    },
+    {
+      "start": "00c07c00",
+      "end_exclusive": "00c07c45",
+      "bytes": 69,
+      "instructions": 21,
+      "pe_file_offset": 8420352,
+      "sha256": "bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd",
+      "live_equals_installed_pe": true,
+      "live_receipt": "local/goal_oct15_crt_startup_prolog_bytes.txt",
+      "live_receipt_sha256": "83c71f0912fab43343fb78099fb665efe99839cddc24118989be5d09cf6e7e6d",
+      "instruction_starts": [
+        "00c07c00",
+        "00c07c05",
+        "00c07c0c",
+        "00c07c10",
+        "00c07c14",
+        "00c07c18",
+        "00c07c1a",
+        "00c07c1b",
+        "00c07c1c",
+        "00c07c1d",
+        "00c07c22",
+        "00c07c25",
+        "00c07c27",
+        "00c07c28",
+        "00c07c2b",
+        "00c07c2e",
+        "00c07c31",
+        "00c07c38",
+        "00c07c3b",
+        "00c07c3e",
+        "00c07c44"
+      ]
+    }
+  ],
+  "typed_captures": [
+    {
+      "path": "local/goal_oct15_crt_startup_boundary_flow.json",
+      "sha256": "dd4e9ffcbf3ddbfb5a5d5126310f31c922fa777e1d542154413418e689a4fd0b",
+      "modification_number": "4778",
+      "responses": 2
+    },
+    {
+      "path": "local/goal_oct15_crt_startup_calls_flow.json",
+      "sha256": "4f561955c3c97abbf2fcbfa4bef2065bb7651e5e2a18c2f4a47a2a47dcff9a85",
+      "modification_number": "4778",
+      "responses": 40
+    },
+    {
+      "path": "local/goal_oct15_crt_startup_supplement_calls_flow.json",
+      "sha256": "bbecfd8fb7db9a9e2dc66d0082c1f936a0b57a523426669329252c6c9afb429e",
+      "modification_number": "4778",
+      "responses": 38
+    }
+  ],
+  "formal_body_boundary": {
+    "entry": "00bfd0dd",
+    "current_body_bytes": 420,
+    "current_body_ranges_inclusive": [
+      [
+        "00bfd0dd",
+        "00bfd269"
+      ],
+      [
+        "00bfd298",
+        "00bfd2a3"
+      ],
+      [
+        "00bfd2b2",
+        "00bfd2bc"
+      ]
+    ],
+    "current_listing_instructions": 133,
+    "physical_envelope_bytes": 480,
+    "omitted_physical_bytes": 60,
+    "omitted_physical_instructions": 23,
+    "omitted_ranges_exclusive": [
+      [
+        "00bfd26a",
+        "00bfd298"
+      ],
+      [
+        "00bfd2a4",
+        "00bfd2b2"
+      ]
+    ],
+    "all_four_filter_handler_entries_currently_undefined": [
+      "00bfd26a",
+      "00bfd27e",
+      "00bfd2a4",
+      "00bfd2a8"
+    ],
+    "qualification": "These bytes are live=PE and fully decoded, but have no current typed instruction or containing-function ownership. Physical-only rows below are deliberately not promoted to typed calls, new functions, or listing repairs."
+  },
+  "original_entry_abi": {
+    "entry": "00bfd2bd",
+    "body": "CALL C1815E; JMP BFD0DD, exactly10B/2ops. Cookie initialization is genuine current canonical Source; the tail jump supplies no new native arguments.",
+    "startup": "No native stack arguments read, cdecl/plain RET with EAX status on actual returning paths. It creates compiler SEH4 private frame via PUSH 60h/PUSH E03030/CALL C07C00, preserves original saved-register/frame schedule, and later calls C07C45 before RET. No Original binary drop-in/FS/private-frame/fault/register or game validation is credited.",
+    "local_cells": {
+      "ebp-70": "Actual STARTUPINFOA destination (no invented zero initialization/cb write by startup).",
+      "ebp-28": "Captured OS minor.",
+      "ebp-24": "Captured OS major.",
+      "ebp-20": "Captured platform initially; overwritten by actual check_managed_app return before any state1 use.",
+      "ebp-1c": "Actual WinMain result or captured exception code.",
+      "ebp-2c": "Captured exception code in state1 filter.",
+      "ebp-14": "Actual SEH exception-pointers cell read by state1 filter.",
+      "ebp-18": "Compiler saved ESP used by both handlers.",
+      "ebp-4": "State:0 only around GetStartupInfoA; -2 through OS/heap/TLS/RTC setup;1 from after RTC initialization through application return/exception; disarm-2 at final continuations."
+    }
+  },
+  "exception_scope": {
+    "address": "00e03030",
+    "bytes": 40,
+    "sha256": "c76b27b57923808739f7d89b646f24a20040b377c86d81dd4afe9ecf23c142f9",
+    "live_equals_pe": true,
+    "hex": "feffffff0000000080ffffff00000000feffffffa4d2bf00a8d2bf00feffffff6ad2bf007ed2bf00",
+    "header_dwords": [
+      "fffffffe",
+      "00000000",
+      "ffffff80",
+      "00000000"
+    ],
+    "state0": {
+      "enclosing_state": -2,
+      "filter": "00bfd2a4",
+      "handler": "00bfd2a8",
+      "schedule": "Filter returns literal1 without reading exception payload. Handler restores ESP from actual EBP-18, disarms state-2, then reaches EAX=FF/SEH epilog/RET. This protects only GetStartupInfoA."
+    },
+    "state1": {
+      "enclosing_state": -2,
+      "filter": "00bfd26a",
+      "handler": "00bfd27e",
+      "schedule": "Filter reads actual EBP-14 exception pointer, then *pointer then **pointer exception code; stores code EBP-2C; pushes pointers then code into actual C16EBE; cleans two words and RETs actual disposition. Handler restores actual ESP, reads saved code into EBP-1C; current saved managed-app flag0 calls BFBDCC(code), and if it returns falls through BFBDEC. Managed flag nonzero calls BFBDEC directly. Then disarm-2, read current EBP-1C result, epilog and RET.",
+      "filter_provider": "C16EBE full87-line pseudocode read only at contract level: actual PTD C051B7, current signal table/callback/exception-state mutations; no complete physical/native Source claim."
+    },
+    "no_invented_cleanup": "No CRT heap/PTD teardown is inserted into startup exception handlers. Proper compiler dispatcher/cookie/FS/filter state transport remains unclosed; existing epilog/filter primitive leaves are not the whole handler/prolog."
+  },
+  "startup_schedule": [
+    "State0; pass actual EBP-70 to GetStartupInfoA; if it returns disarm-2. Capture HeapAlloc size94h and flags0, capture GetProcessHeap IAT CE20E8 into EBX ONCE, invoke it then actual HeapAlloc CE20F8. NULL calls fast_error_exit(12h), then if it returns POP/JMP FF return; no heap-init/TLS continuation on this branch.",
+    "NonNULL buffer: write DWORD94h, actual GetVersionExA. Push captured buffer then flags0 BEFORE result test. Failure invokes captured GetProcessHeap, actual HeapFree CE20FC, then FF return. Success captures platform+10,major+4,minor+8 and build+C masked7FFF before captured GetProcessHeap/HeapFree. No later buffer field reread.",
+    "After actual HeapFree returns, compute build|8000 iff captured platform!=2 and combined version=(major<<8)+minor modulo32. Publish platform0109DD84,combined0109DD8C,major0109DD90,minor0109DD94,build0109DD88 IN THAT ORDER. No platform/locale/input normalization or modern OS substitute.",
+    "Call BFD09C and save actual result EBP-20. EBX=1, PUSH1 into actual C119BF: flag1 means HeapCreate flags0 in genuine owner. Heap-init result0 calls fast_error_exit(1Ch); if it returns, execution continues into __mtinit. __mtinit result0 calls fast_error_exit(10h); if it returns, execution continues into C16D02.",
+    "Call actual RTC initializer C16D02, then state=EBX1. Actual ioinit C0D36C negative calls BFBA09(1Bh), but returning call continues. Actual GetCommandLineA result publishes0109FEC4. Actual C18029 result publishes0109DDC8 even NULL. __setargv C17F70 negative calls BFBA09(8), returning continues. C17CF3 negative calls BFBA09(9), returning continues.",
+    "PUSH captured EBX1 to cinit BFBC47. Nonzero result itself is pushed to BFBA09; if it returns continue to C17C96. Command-line result remains EAX while show is selected: test BYTE [EBP-44] & BL1; bit0 clear\u219210, set\u2192zero-extended WORD [EBP-40]. Push show,cmdline,0,400000 then actual WinMain8F81F0.",
+    "Capture WinMain EAX into EBP-1C. Saved managed flag0 pushes result to BFBDBB; if it returns, execution falls directly into BFBddd (no assumed noreturn). Managed nonzero directly calls BFBddd. Both return through state-2/current saved result/SEH epilog. Separate state1 exception path retains BFBDCC and BFBDEC returning continuations.",
+    "On both returning exit branches, the pushed status word remains on the actual stack: BFD25E->BFD263 and BFD28E->BFD293 have no intervening POP/ADD cleanup. The later actual SEH epilog restores its private saved-frame schedule; do not invent caller cleanup at those continuations."
+  ],
+  "cold_mtinit_owner": {
+    "entry": "00c053dc",
+    "whole_bytes": 388,
+    "whole_instructions": 109,
+    "source_ready": false,
+    "schedule": [
+      "GetModuleHandleA(KERNEL32.DLL), capture HMODULE. NULL calls actual C050BB rollback then returns0. NonNULL captures GetProcAddress IAT CE20F4 in ESI and resolves/publishes FlsAlloc\u2192109DE34,FlsGetValue\u2192109DE38,FlsSetValue\u2192109DE3C,FlsFree\u2192109DE40 in order, interleaving later pushes before earlier global stores as physical listing records.",
+      "Capture actual TlsSetValue IAT CE20B4 in ESI. If any current first3 slots isNULL or captured last resultNULL, overwrite getter with current TlsGetValue IAT, alloc with actual C0504C adapter, setter with captured TlsSetValue and free with current TlsFree IAT, in that order. No SDK FLS/TLS substitute, invented providers or extra success requirement.",
+      "Actual TlsAlloc; publish returned index E15B00 evenFFFFFFFF. IndexFFFFFFFF returns0 WITHOUT mtterm. Otherwise push current raw getter109DE38 then captured index into captured TlsSetValue. Failure returns0 WITHOUT mtterm; do not silently free or reset cache index.",
+      "Only cache publication success calls BFBDFB (__init_pointers). Then push current alloc109DE34\u2192actual encoder; push CURRENT getter109DE38 BEFORE publishing encoded alloc; encode getter; push CURRENT setter BEFORE publishing encoded getter; encode setter; push CURRENT free BEFORE publishing encoded setter; encode free; clean4words then publish encoded free. Earlier encoded values do not replace future current reads.",
+      "Actual C11A93 initializes lock descriptors; zero\u2192C050BB. Push actual callback C05246 BEFORE current encoded alloc109DE34/decode. Clean only decoder pointerword then CALL decoded allocator EAX, with callback still actual queued word. Publish returned E15AFC evenFFFFFFFF; invalid\u2192C050BB.",
+      "Call real C0485A(1,214h), capture PTD in ESI, clean words; NULL\u2192C050BB. Push captured PTD then current E15AFC BEFORE current encoded setter109DE3C/decode. Pop decoder pointerword and CALL actual setter. Failure\u2192C050BB; no direct BF9DC8 PTD free or invented unpublished-pointer cleanup occurs in this owner.",
+      "Setter success publishes PTD before C050F8(PTD,0). After it returns invoke actual GetCurrentThreadId; write PTD+4=FFFFFFFF BEFORE PTD+0=capturedthreadid; return1. No startup init-once/thread-ID lock is present in these examined owners; PTD+0/+4 are actual thread record fields, not invented startup guards."
+    ],
+    "remaining_real_dependencies": [
+      "C050BB whole teardown",
+      "BFBDFB whole encoded-pointer owner",
+      "C04F67/C04FDE original entry composition over real TLS/PTD (existing Source adds context)",
+      "C11A93/C11ADC lock initialization/deletion with actual globals",
+      "C0485A/C1C50F and genuine heap/errno allocation SCC",
+      "C050F8 full initial PTD/locale owner",
+      "C05246 actual FLS callback cleanup; no indexed whole Source",
+      "real FLS/TLS stdcall functions and actual OS-owned indices"
+    ],
+    "bootstrap_order_implication": "Raw getter/index cache publication precedes the first real encoder call, and encoded pointer-slot initialization precedes lock bootstrap. Startup OS words are already published. This is the actual cold path that supplies decoder/lock prerequisites; selected preinitialized-parent assumptions cannot replace it. Failure paths still require the genuine jointly implemented CRT transports."
+  },
+  "encoded_pointer_owner": {
+    "entry": "00bfbdfb",
+    "whole_bytes": 76,
+    "whole_instructions": 25,
+    "source_ready": false,
+    "schedule": "Call actual C04FD5 encoded-null once; capture ESI; push that captured word separately before each of8 actual calls C05560,C17639,BF65B1,C05CFB,C1752B,C17037,C16E8B,C07AF8. Then push actual BFBDCC to encoder C04F67, clean nine words total, publish returned encoded exit E15580, restore ESI and RET. No global null literal replaces the encoder result.",
+    "actual_immediate_setter_contracts": [
+      {
+        "entry": "00c05560",
+        "whole_bytes": 10,
+        "behavior": "Read actual stackword then store109DE44 new-handler slot,RET."
+      },
+      {
+        "entry": "00c17639",
+        "whole_bytes": 10,
+        "behavior": "Complete existing canonical actual encoded critical-section initializer slot store; no runtime initialized lock is created."
+      },
+      {
+        "entry": "00bf65b1",
+        "whole_bytes": 10,
+        "behavior": "Read actual stackword then store109DD64 invalid-handler slot,RET."
+      },
+      {
+        "entry": "00c05cfb",
+        "whole_bytes": 10,
+        "behavior": "Read actual stackword then store109E16C,RET."
+      },
+      {
+        "entry": "00c1752b",
+        "whole_bytes": 10,
+        "behavior": "Read actual stackword then store109E450,RET."
+      },
+      {
+        "entry": "00c17037",
+        "whole_bytes": 25,
+        "behavior": "Read actual stackword once; store109E43C,109E440,109E444,109E448 in order,RET."
+      },
+      {
+        "entry": "00c16e8b",
+        "whole_bytes": 1,
+        "behavior": "RET, does not read queued word."
+      },
+      {
+        "entry": "00c07af8",
+        "whole_bytes": 17,
+        "behavior": "Ignores queued encoded-null word; pushes fixed actual C07A75, encodes through C04F67, cleans own word, stores109E170,RET."
+      }
+    ],
+    "qualification": "Setters inspected through complete actual short listings, not their misleading transitive saved callgraph unions. Only C17639 is currently complete canonical Source among these setter entries. These short primitives are not credited as the whole startup/encoded-pointer owner."
+  },
+  "rollback_owner": {
+    "entry": "00c050bb",
+    "whole_bytes": 61,
+    "whole_instructions": 16,
+    "source_ready": false,
+    "schedule": "Capture current E15AFC; if notFFFFFFFF push captured index before current encoded109DE40 decode, then CALL actual decoded free; regardless returned status publish E15AFC=FFFFFFFF. Capture CURRENT E15B00 only afterward; if notFFFFFFFF actual TlsFree(captured), then publish E15B00=FFFFFFFF regardlessBOOL. Finally tailJMP actual C11ADC lock deletion. No encoded provider-slot reset, heap destruction, direct PTD free or synthetic FLS callback invocation is added. If a real call throws/fails to return, later writes remain unreached."
+  },
+  "initializer_and_shutdown_boundaries": {
+    "cinit_bfbc47": "Complete pseudocode read, physical/native Source not claimed. Optional current D693D8 fpmath only after real C16DD0 nonwritable-image predicate; call C0680F, actual init-e table CE36E8..CE3708; nonzero returns without C++ table. Success _atexit(C16D26), then current nonNULL function entries CE2734..CE36E4, then optional current109FED8(0,2,0) only after actual nonwritable-image predicate. Selected reconstructed initializer entries do not implement whole cinit/table contents/atexit owner.",
+    "table_contract": "Each real initializer is actual callable code, not a new replaceable callback provider. Table count/hash in prior NATIVE_ENTRY_BOOTSTRAP audit is routing evidence only; no exhaustive transitive coverage credited here.",
+    "rtc_c16d02": "Full36B/17-op listing read: begin=end=D83E74 so actual initial unsigned comparison skips call loop; retain actual native body/constant boundary rather than rewriting library owner from decompiler empty return alone. No new Source.",
+    "exit_wrappers": "Actual BFBDBB pushes0,0,status into BFBcd9; BFBDCC pushes0,1,status; BFBddd pushes1,0,0; physical BFBDEC pushes1,1,0. Each actual wrapper cleans12 and RETs if owner returns. BFBDEC has no separate current function entry, so no invented native function row or repaired boundary.",
+    "shutdown_owner_bfbcd9": "Whole pseudocode only, not physical/native Source proof: actual lock8, shutdown flag109DDC4, sets109DDC0 and BYTE109DDBC from third word, decoded onexit table/reverse callbacks, initializer terminator ranges and real final cleanup; third word nonzero returns, otherwise set109DDC4/unlock8/real process-exit. No invented no-return property or startup guard.",
+    "argument_environment_io": "C18029 full pseudocode: actual GetEnvironmentStringsW/A selection, encoding conversion, genuine malloc/free; C17F70 full pseudocode: initmbctable, GetModuleFileNameA, parse/overflow/genuine malloc; C17CF3 full pseudocode: actual environment enumeration/calloc/strcpy_s/Watson/free. C17C96 full pseudocode: actual multibyte-aware command-tail scan. C0D36C only first42/136 pseudocode lines read (real startup-info and calloc handle-table initialization); remaining IO body explicitly unread this turn. These contract-level dependencies remain named-incomplete; none is treated as whole-ready based on a name or checked return.",
+    "application": "Current winmain_startup.hpp has StartupHost virtual contract for unreconstructed steps. It is an existing host projection, not a genuine complete original8F81F0 entry/whole-game Source. Startup audit does not depend on inventing callback implementations."
+  },
+  "current_source_evidence": {
+    "indexed_lookup_receipts": [
+      {
+        "entry": "00bf65b1",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00BF65B1.txt",
+        "receipt_sha256": "8bd781eae6ecf1aea465f5a4a47d87c00085b8a4d4d0f9c7ed4dfe568a71fb86"
+      },
+      {
+        "entry": "00bfbc47",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00BFBC47.txt",
+        "receipt_sha256": "183022336db5dcb56e42ad03875d977ae6a535fdc0e676984e794ec9e797cc36"
+      },
+      {
+        "entry": "00bfbdbb",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00BFBDBB.txt",
+        "receipt_sha256": "5a6b90811ed06e532752a7fe06749f81ae33089fdf4e17d059b575254c19f647"
+      },
+      {
+        "entry": "00bfbdcc",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00BFBDCC.txt",
+        "receipt_sha256": "eb676667bf6bf7b33f3948db2fe9ffbe6c725929bcfcb2daf76d8da796c65832"
+      },
+      {
+        "entry": "00bfbddd",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00BFBDDD.txt",
+        "receipt_sha256": "322b5e86473099825dcae0b04075f70adfe8f57fb18850351f759d0a9c48ce1b"
+      },
+      {
+        "entry": "00bfbdfb",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00BFBDFB.txt",
+        "receipt_sha256": "d2e1232039df9c78a9a7967a3c4ee881a9b4d156ac43465236bbb0f3aa14fc48"
+      },
+      {
+        "entry": "00bfd078",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00BFD078.txt",
+        "receipt_sha256": "3d12429cf6c679ca61a0133d6e696c1fc2fa330f55d09870d64c5e5e5c500f7d"
+      },
+      {
+        "entry": "00bfd09c",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00BFD09C.txt",
+        "receipt_sha256": "198e24fd7d959e05a9c03fc4b5d394eb2cdfb3357c046d810f78934ea6fdc4d0"
+      },
+      {
+        "entry": "00bfd0dd",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00BFD0DD.txt",
+        "receipt_sha256": "83a9027b45b1f84bada0cbf917fed4cd66290a34d849927cb1a1348916e3d50c"
+      },
+      {
+        "entry": "00c04fd5",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C04FD5.txt",
+        "receipt_sha256": "dfe008fb85ccb7c51732533c6919f8728640ece976f886c38f571d7ccc21b630"
+      },
+      {
+        "entry": "00c0504c",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C0504C.txt",
+        "receipt_sha256": "fcc26e2ead4cd5f69d99b922ffc00d5520f533fd9141915eb651be30ac641234"
+      },
+      {
+        "entry": "00c050bb",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C050BB.txt",
+        "receipt_sha256": "02de798235fe06494a6e5a2020a68a6c26b4949091d769f9e858bba3cf255e65"
+      },
+      {
+        "entry": "00c05246",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C05246.txt",
+        "receipt_sha256": "10377f9e2db11e18500944f65e6f9bb41d3adeca88ad318947173247632d4203"
+      },
+      {
+        "entry": "00c053dc",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C053DC.txt",
+        "receipt_sha256": "c0dbe7918d5c9791ad8bf3f6d1fae194ab10f8a9a63b75589cd0f6270c6c8e2f"
+      },
+      {
+        "entry": "00c05560",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C05560.txt",
+        "receipt_sha256": "1e6c5edd4bf2e6601d50286231e3c8455e9c5e34e67f47180018ab19d7bbbf29"
+      },
+      {
+        "entry": "00c05cfb",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C05CFB.txt",
+        "receipt_sha256": "15789e802467d05091bd55b2c499d0cf380b32f9462c75c2c9012df7a32d8a49"
+      },
+      {
+        "entry": "00c07af8",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C07AF8.txt",
+        "receipt_sha256": "b8181c462a530a30a7b380c6c2294248b5289c1874843a56dbb51df61d495274"
+      },
+      {
+        "entry": "00c07c00",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C07C00.txt",
+        "receipt_sha256": "1a43dd38bc23fb66182054e5d49821c170f5bbb01f326f8cc8832667c9cafe82"
+      },
+      {
+        "entry": "00c07c45",
+        "reconstruction_rows": [
+          "reconstruction: function __SEH_epilog4 status=complete_two_exact_naked_primitives_win32_build_two_ctests_pe_live_object_and_archive_checked source=src/native_crt_seh4_primitives.cpp"
+        ],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C07C45.txt",
+        "receipt_sha256": "40dbf8ef9f26074b09e30f6fcf7e267144d7d43224ab166eb7190bb27d56c94c"
+      },
+      {
+        "entry": "00c0d36c",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C0D36C.txt",
+        "receipt_sha256": "c0a1db4a0208d666efa4b116bf9845756d5cb1028e00cb5c93af26793ae6355a"
+      },
+      {
+        "entry": "00c119bf",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C119BF.txt",
+        "receipt_sha256": "f5f11410b387467b059507714444fc48030098d4ea3fb192b65feed3716a246b"
+      },
+      {
+        "entry": "00c11a93",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C11A93.txt",
+        "receipt_sha256": "163ebbab2614ce59c575fdffbaa1945ee03dd9d6ff9e6583bb9ea0a935dc4945"
+      },
+      {
+        "entry": "00c11adc",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C11ADC.txt",
+        "receipt_sha256": "ad3c4479bd72aa820ac79a43b8d3ff1e532a65e9070e3157d5f916ba88974acc"
+      },
+      {
+        "entry": "00c16d02",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C16D02.txt",
+        "receipt_sha256": "aedf6f623b70e3c11357bc6c8aa9dcb8f0fbab99f127fbcdee9a2576609ec8b7"
+      },
+      {
+        "entry": "00c16e8b",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C16E8B.txt",
+        "receipt_sha256": "5e6ecd360bc5de061b1c5bf26de513bab05cde0360ebca9adf9c4dba02e60cd5"
+      },
+      {
+        "entry": "00c16ebe",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C16EBE.txt",
+        "receipt_sha256": "c4774c6e002e1ff90e86e50ba5ce46a17ba69182c7d9fa6c21946a36a18172bc"
+      },
+      {
+        "entry": "00c17037",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C17037.txt",
+        "receipt_sha256": "6c08c38176c008e692d89a2a4b06dfce8525fb351fb397cf8936b922e96f9b62"
+      },
+      {
+        "entry": "00c1752b",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C1752B.txt",
+        "receipt_sha256": "622b11b18bb176cbece00ee501fddbbcb218bff7baedfb8f4409df4fcbd1c251"
+      },
+      {
+        "entry": "00c17639",
+        "reconstruction_rows": [
+          "reconstruction: function LIBCRT_unmatched_00c17639 status=complete_two_bounded_primitives_win32_build_two_ctests_pe_live_and_object_checked source=src/native_crt_critical_section_primitives.cpp"
+        ],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C17639.txt",
+        "receipt_sha256": "8407409dff1d862706e93eceb1f28f9674435fdc533a34971cb77df256136a28"
+      },
+      {
+        "entry": "00c17c96",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C17C96.txt",
+        "receipt_sha256": "9b9e6c70f7bb2da014e7439d286f432a68fbc1c680098fb0e976f81104ab1837"
+      },
+      {
+        "entry": "00c17cf3",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C17CF3.txt",
+        "receipt_sha256": "0fcbc7057ec51df43bcf1aa1755f8cbcd17e2325256c612b5b307863901fe82e"
+      },
+      {
+        "entry": "00c17f70",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C17F70.txt",
+        "receipt_sha256": "49ade97bfdf813ee64286f5da73268e60b6af4123b14608845a263a92de291c4"
+      },
+      {
+        "entry": "00c18029",
+        "reconstruction_rows": [],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C18029.txt",
+        "receipt_sha256": "b8dad161e14f286507c6b33283e7199575b3dc092d6679a50954c3bdb6136a22"
+      },
+      {
+        "entry": "00c1815e",
+        "reconstruction_rows": [
+          "reconstruction: function ___security_init_cookie status=complete_bounded_borrowed_actual_words_win32_build_two_ctests_pe_live_and_object_checked source=src/native_crt_cookie_initialization.cpp",
+          "reconstruction: function initialize_native_crt_canonical_security_cookie_00c1815e status=complete_original_no_argument_canonical_entry_static_body_abi_and_archive_verified source=src/native_crt_canonical_cookie_initialization.cpp"
+        ],
+        "receipt": "local/goal_oct15_crt_startup_lookup_00C1815E.txt",
+        "receipt_sha256": "25913eb517ff7372d2426b9b99b8f4aea25f4283a16aabaa3a522058efff0cbb"
+      }
+    ],
+    "inspected_source_hashes": {
+      "src/native_crt_canonical_cookie_initialization.cpp": "f10d09d31935cc999c39aea63a2313cf6d376f020e03f925b7aeacc83d3f3dee",
+      "include/bsp/native_crt_canonical_cookie_initialization.hpp": "df7aca083dc0d4ad22092b57d110a06db1288be386592d0035facf7696be0c8a",
+      "src/native_crt_tls_callback_adapter.cpp": "da02ab237a0a2475947b466c19b01ab432d81378ddc298ccf389a143ea0a39e2",
+      "include/bsp/native_crt_tls_callback_adapter.hpp": "4adf4c420f42ed3706f5d182c65f2a28c337f87aec5b2947571cbe60c96a537f",
+      "src/native_crt_pointer_decode.cpp": "7a689a80bea666aa0941662a1bbde17500c92d1f7fd671c364aa2b3e0bf365c7",
+      "include/bsp/native_crt_pointer_decode.hpp": "b1e901d739c07419b55441988bf42177b0e6ace3ef27ef1251ecb3b36fb48a7f",
+      "src/native_crt_libm_callback_registration.cpp": "cacc140a243569c0d0828a309cf84c079fa12e30b1fc5124e703c44ed1716c32",
+      "include/bsp/native_crt_libm_callback_registration.hpp": "96b1bf767f1b4de73a578f178de025f2c9199082e404ad3bf45e0ff695f58746",
+      "src/native_crt_critical_section_primitives.cpp": "404b1dc6f40dbd7762f10d5f97075c0545f66e7203653d15d36a9316839db8d6",
+      "src/native_crt_canonical_unlock.cpp": "b2203a3e0def66f513f5bd0d8846a7ac21bb7e066015cf7f426d6e71165c6097",
+      "src/native_crt_canonical_sbh_initialization.cpp": "44ce326810241009bd9acf1280d7345d45e0d54755f0312800c27e7961cf199b",
+      "src/native_crt_seh4_primitives.cpp": "2557fbce9dfc10e1deb7a4158bb7e9f31fcd62b5c22a8e1f67e66c836bf4fb95",
+      "include/bsp/winmain_startup.hpp": "44ed9f390e22fad4b15c4841f4bb07fb40dee4c1950736b7f32638ccd21006af",
+      "src/winmain_startup.cpp": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113"
+    },
+    "canonical_ready": [
+      "C1815E actual original noargument cookie entry is complete (not just borrowed-word projection).",
+      "C0504C actual stdcall TlsAlloc adapter is complete9B, ignoring callback without reading/invoking it; no TLS/FLS owner.",
+      "C17639 actual encoded initializer cache store is complete10B.",
+      "C07C45 exact custom-frame epilog and C0DCB6 filter primitive are complete; no whole C07C00 or C07C90 dispatcher.",
+      "Canonical unlock and SBH initialization/allocation/free algorithms are already genuine current Source under actual initialized-owner/lock/state contracts. No duplication."
+    ],
+    "qualified_not_original_parent_transport": [
+      "C04F67 encoder and C04FDE decoder complete algorithms use added stable context words; their APIs cannot be called as the Original one-word ABI or substituted with current SDK EncodePointer/DecodePointer.",
+      "OS getter/module-gate Source still has owning-errno/invalid-handler interface seams; prior real Original SCC audit retained.",
+      "singleton_lifetime_allocate/free and legacy errno service are current-service/host boundaries, not Original malloc/free/PTD startup.",
+      "Selected CRT initialization fragments/table entries and StartupHost are not whole startup/owner implementations."
+    ]
+  },
+  "cold_pe_bootstrap_words": [
+    {
+      "address": "0109e1bc",
+      "little_endian_hex": "00000000",
+      "u32": 0
+    },
+    {
+      "address": "0109ed7c",
+      "little_endian_hex": "00000000",
+      "u32": 0
+    },
+    {
+      "address": "00e15afc",
+      "little_endian_hex": "ffffffff",
+      "u32": 4294967295
+    },
+    {
+      "address": "00e15b00",
+      "little_endian_hex": "ffffffff",
+      "u32": 4294967295
+    },
+    {
+      "address": "0109de34",
+      "little_endian_hex": "00000000",
+      "u32": 0
+    },
+    {
+      "address": "0109de38",
+      "little_endian_hex": "00000000",
+      "u32": 0
+    },
+    {
+      "address": "0109de3c",
+      "little_endian_hex": "00000000",
+      "u32": 0
+    },
+    {
+      "address": "0109de40",
+      "little_endian_hex": "00000000",
+      "u32": 0
+    },
+    {
+      "address": "0109de44",
+      "little_endian_hex": "00000000",
+      "u32": 0
+    },
+    {
+      "address": "0109dd64",
+      "little_endian_hex": "00000000",
+      "u32": 0
+    },
+    {
+      "address": "00e164c8",
+      "little_endian_hex": "00000000",
+      "u32": 0
+    },
+    {
+      "address": "00e164cc",
+      "little_endian_hex": "01000000",
+      "u32": 1
+    },
+    {
+      "address": "00e164d8",
+      "little_endian_hex": "00000000",
+      "u32": 0
+    },
+    {
+      "address": "00e164dc",
+      "little_endian_hex": "01000000",
+      "u32": 1
+    },
+    {
+      "address": "00e15580",
+      "little_endian_hex": "ccbdbf00",
+      "u32": 12565964
+    },
+    {
+      "address": "0109dd84",
+      "little_endian_hex": "00000000",
+      "u32": 0
+    },
+    {
+      "address": "0109dd90",
+      "little_endian_hex": "00000000",
+      "u32": 0
+    }
+  ],
+  "bootstrap_qualification": "Installed PE initial words are NOT runtime state. E15AFC/E15B00 startFFFFFFFF; encoded providers/heap/OS words are zero, E15580 initially plainBFBDCC before encoded publication. Lock10E164C8 and lock12E164D8 initial {pointer0,flags1} mark static bootstrap descriptors, not initialized critical sections or owned locks. Actual cold owners above must perform publication/initialization; no synthetic initialized-state assumptions.",
+  "direct_and_tail_calls": [
+    {
+      "address": "00bfd0e4",
+      "native": "00c07c00",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xc07c00"
+    },
+    {
+      "address": "00bfd11d",
+      "native": "00bfd078",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xbfd078"
+    },
+    {
+      "address": "00bfd1a2",
+      "native": "00bfd09c",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xbfd09c"
+    },
+    {
+      "address": "00bfd1ae",
+      "native": "00c119bf",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xc119bf"
+    },
+    {
+      "address": "00bfd1ba",
+      "native": "00bfd078",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xbfd078"
+    },
+    {
+      "address": "00bfd1c0",
+      "native": "00c053dc",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xc053dc"
+    },
+    {
+      "address": "00bfd1cb",
+      "native": "00bfd078",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xbfd078"
+    },
+    {
+      "address": "00bfd1d1",
+      "native": "00c16d02",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xc16d02"
+    },
+    {
+      "address": "00bfd1d9",
+      "native": "00c0d36c",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xc0d36c"
+    },
+    {
+      "address": "00bfd1e4",
+      "native": "00bfba09",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xbfba09"
+    },
+    {
+      "address": "00bfd1f5",
+      "native": "00c18029",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xc18029"
+    },
+    {
+      "address": "00bfd1ff",
+      "native": "00c17f70",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xc17f70"
+    },
+    {
+      "address": "00bfd20a",
+      "native": "00bfba09",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xbfba09"
+    },
+    {
+      "address": "00bfd210",
+      "native": "00c17cf3",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xc17cf3"
+    },
+    {
+      "address": "00bfd21b",
+      "native": "00bfba09",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xbfba09"
+    },
+    {
+      "address": "00bfd222",
+      "native": "00bfbc47",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xbfbc47"
+    },
+    {
+      "address": "00bfd22d",
+      "native": "00bfba09",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xbfba09"
+    },
+    {
+      "address": "00bfd233",
+      "native": "00c17c96",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xc17c96"
+    },
+    {
+      "address": "00bfd24f",
+      "native": "008f81f0",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0x8f81f0"
+    },
+    {
+      "address": "00bfd25e",
+      "native": "00bfbdbb",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xbfbdbb"
+    },
+    {
+      "address": "00bfd263",
+      "native": "00bfbddd",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xbfbddd"
+    },
+    {
+      "address": "00bfd2b7",
+      "native": "00c07c45",
+      "function": "00bfd0dd",
+      "kind": "call",
+      "instruction": "call 0xc07c45"
+    },
+    {
+      "address": "00c053ee",
+      "native": "00c050bb",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc050bb"
+    },
+    {
+      "address": "00c054a0",
+      "native": "00bfbdfb",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xbfbdfb"
+    },
+    {
+      "address": "00c054ab",
+      "native": "00c04f67",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc04f67"
+    },
+    {
+      "address": "00c054bb",
+      "native": "00c04f67",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc04f67"
+    },
+    {
+      "address": "00c054cb",
+      "native": "00c04f67",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc04f67"
+    },
+    {
+      "address": "00c054db",
+      "native": "00c04f67",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc04f67"
+    },
+    {
+      "address": "00c054e8",
+      "native": "00c11a93",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc11a93"
+    },
+    {
+      "address": "00c054fc",
+      "native": "00c04fde",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc04fde"
+    },
+    {
+      "address": "00c05515",
+      "native": "00c0485a",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc0485a"
+    },
+    {
+      "address": "00c0552f",
+      "native": "00c04fde",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc04fde"
+    },
+    {
+      "address": "00c0553e",
+      "native": "00c050f8",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc050f8"
+    },
+    {
+      "address": "00c05556",
+      "native": "00c050bb",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc050bb"
+    },
+    {
+      "address": "00bfbdfc",
+      "native": "00c04fd5",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc04fd5"
+    },
+    {
+      "address": "00bfbe04",
+      "native": "00c05560",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc05560"
+    },
+    {
+      "address": "00bfbe0a",
+      "native": "00c17639",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc17639"
+    },
+    {
+      "address": "00bfbe10",
+      "native": "00bf65b1",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xbf65b1"
+    },
+    {
+      "address": "00bfbe16",
+      "native": "00c05cfb",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc05cfb"
+    },
+    {
+      "address": "00bfbe1c",
+      "native": "00c1752b",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc1752b"
+    },
+    {
+      "address": "00bfbe22",
+      "native": "00c17037",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc17037"
+    },
+    {
+      "address": "00bfbe28",
+      "native": "00c16e8b",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc16e8b"
+    },
+    {
+      "address": "00bfbe2e",
+      "native": "00c07af8",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc07af8"
+    },
+    {
+      "address": "00bfbe38",
+      "native": "00c04f67",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc04f67"
+    },
+    {
+      "address": "00c050cc",
+      "native": "00c04fde",
+      "function": "00c050bb",
+      "kind": "call",
+      "instruction": "call 0xc04fde"
+    },
+    {
+      "address": "00c050f3",
+      "native": "00c11adc",
+      "function": "00c050bb",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xc11adc"
+    },
+    {
+      "address": "00bfd2bd",
+      "native": "00c1815e",
+      "function": "00bfd2bd",
+      "kind": "call",
+      "instruction": "call 0xc1815e"
+    },
+    {
+      "address": "00bfd2c2",
+      "native": "00bfd0dd",
+      "function": "00bfd2bd",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xbfd0dd"
+    }
+  ],
+  "computed_transfers": [
+    {
+      "site": "00bfd0f1",
+      "instruction": "call dword ptr [0xce21c8]",
+      "slot": "00ce21c8",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetStartupInfoA"
+      },
+      "containing_function": "00bfd0dd",
+      "defined_instruction_length": 6,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately."
+    },
+    {
+      "site": "00bfd10c",
+      "instruction": "call ebx",
+      "containing_function": "00bfd0dd",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "slot": "00ce20e8",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcessHeap"
+      },
+      "register_capture_site": "00bfd106"
+    },
+    {
+      "site": "00bfd10f",
+      "instruction": "call dword ptr [0xce20f8]",
+      "slot": "00ce20f8",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "HeapAlloc"
+      },
+      "containing_function": "00bfd0dd",
+      "defined_instruction_length": 6,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately."
+    },
+    {
+      "site": "00bfd12b",
+      "instruction": "call dword ptr [0xce2298]",
+      "slot": "00ce2298",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetVersionExA"
+      },
+      "containing_function": "00bfd0dd",
+      "defined_instruction_length": 6,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately."
+    },
+    {
+      "site": "00bfd138",
+      "instruction": "call ebx",
+      "containing_function": "00bfd0dd",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "slot": "00ce20e8",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcessHeap"
+      },
+      "register_capture_site": "00bfd106"
+    },
+    {
+      "site": "00bfd13b",
+      "instruction": "call dword ptr [0xce20fc]",
+      "slot": "00ce20fc",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "HeapFree"
+      },
+      "containing_function": "00bfd0dd",
+      "defined_instruction_length": 6,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately."
+    },
+    {
+      "site": "00bfd161",
+      "instruction": "call ebx",
+      "containing_function": "00bfd0dd",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "slot": "00ce20e8",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcessHeap"
+      },
+      "register_capture_site": "00bfd106"
+    },
+    {
+      "site": "00bfd164",
+      "instruction": "call dword ptr [0xce20fc]",
+      "slot": "00ce20fc",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "HeapFree"
+      },
+      "containing_function": "00bfd0dd",
+      "defined_instruction_length": 6,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately."
+    },
+    {
+      "site": "00bfd1ea",
+      "instruction": "call dword ptr [0xce20ec]",
+      "slot": "00ce20ec",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetCommandLineA"
+      },
+      "containing_function": "00bfd0dd",
+      "defined_instruction_length": 6,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately."
+    },
+    {
+      "site": "00c053e2",
+      "instruction": "call dword ptr [0xce215c]",
+      "span": "mtinit",
+      "slot": "00ce215c",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetModuleHandleA"
+      },
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 6,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately."
+    },
+    {
+      "site": "00c05404",
+      "instruction": "call esi",
+      "span": "mtinit",
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "slot": "00ce20f4",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress"
+      },
+      "register_capture_site": "00c053f8"
+    },
+    {
+      "site": "00c05411",
+      "instruction": "call esi",
+      "span": "mtinit",
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "slot": "00ce20f4",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress"
+      },
+      "register_capture_site": "00c053f8"
+    },
+    {
+      "site": "00c0541e",
+      "instruction": "call esi",
+      "span": "mtinit",
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "slot": "00ce20f4",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress"
+      },
+      "register_capture_site": "00c053f8"
+    },
+    {
+      "site": "00c0542b",
+      "instruction": "call esi",
+      "span": "mtinit",
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "slot": "00ce20f4",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress"
+      },
+      "register_capture_site": "00c053f8"
+    },
+    {
+      "site": "00c0547b",
+      "instruction": "call dword ptr [0xce20b8]",
+      "span": "mtinit",
+      "slot": "00ce20b8",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "TlsAlloc"
+      },
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 6,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately."
+    },
+    {
+      "site": "00c05496",
+      "instruction": "call esi",
+      "span": "mtinit",
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "slot": "00ce20b4",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "TlsSetValue"
+      },
+      "register_capture_site": "00c05434"
+    },
+    {
+      "site": "00c05502",
+      "instruction": "call eax",
+      "span": "mtinit",
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "actual_selected_provider": "Decoded CURRENT 0109DE34, invoked stdcall with callback 00C05246 already pushed before decoder call; no extra Source context word in the Original."
+    },
+    {
+      "site": "00c05535",
+      "instruction": "call eax",
+      "span": "mtinit",
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "actual_selected_provider": "Decoded CURRENT 0109DE3C, invoked stdcall with captured PTD and current E15AFC queued before decode; no synthesized callback."
+    },
+    {
+      "site": "00c05545",
+      "instruction": "call dword ptr [0xce223c]",
+      "span": "mtinit",
+      "slot": "00ce223c",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetCurrentThreadId"
+      },
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 6,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately."
+    },
+    {
+      "site": "00c050d2",
+      "instruction": "call eax",
+      "span": "mtterm",
+      "containing_function": "00c050bb",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "actual_selected_provider": "Decoded CURRENT 0109DE40, invoked stdcall with earlier captured E15AFC queued before decode."
+    },
+    {
+      "site": "00c050e6",
+      "instruction": "call dword ptr [0xce20b0]",
+      "span": "mtterm",
+      "slot": "00ce20b0",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "TlsFree"
+      },
+      "containing_function": "00c050bb",
+      "defined_instruction_length": 6,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately."
+    }
+  ],
+  "physical_only_transfers": [
+    {
+      "site": "00bfd276",
+      "instruction": "call 0xc16ebe",
+      "target": "00c16ebe",
+      "evidence": "Complete installed PE disassembly and live-byte equality. Current typed response has no defined instruction or containing function; not a typed/native function-edge claim."
+    },
+    {
+      "site": "00bfd28e",
+      "instruction": "call 0xbfbdcc",
+      "target": "00bfbdcc",
+      "evidence": "Complete installed PE disassembly and live-byte equality. Current typed response has no defined instruction or containing function; not a typed/native function-edge claim."
+    },
+    {
+      "site": "00bfd293",
+      "instruction": "call 0xbfbdec",
+      "target": "00bfbdec",
+      "evidence": "Complete installed PE disassembly and live-byte equality. Current typed response has no defined instruction or containing function; not a typed/native function-edge claim."
+    }
+  ],
+  "transfer_counts": {
+    "whole_spans_total": 72,
+    "defined_direct_or_tail_rows": 48,
+    "defined_computed_rows": 21,
+    "physical_only_direct_rows": 3,
+    "main_whole": 34,
+    "main_direct": 25,
+    "main_computed": 9,
+    "main_physical_only_direct": 3
+  },
+  "prior_evidence_reused_without_graph_recrawl": [
+    {
+      "path": "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+      "sha256": "c7bb6bfbd6135848c60357c6a5dc7e478087854991afbfac238db7d3c27ecf67"
+    },
+    {
+      "path": "reports/goal_oct15_crt_malloc_readiness.json",
+      "sha256": "c2456faa9350a3aa42fee96319148e797f112ce20d1bcf9db324371c9374ace1"
+    },
+    {
+      "path": "reports/goal_oct15_crt_invalid_handler_readiness.json",
+      "sha256": "fdd0e6ca0b441d4619248ebd30a7be6dfdc4fe6034d03212e7f3eb3c7050ba8b"
+    }
+  ],
+  "genuine_remaining_closure": {
+    "ready_whole_startup_now": false,
+    "reason": "Whole physical startup is known, but current complete Source does not yet supply genuine cold heap, TLS/FLS/encoded pointer, lock ownership, Original allocation/errno/invalid-handler, private SEH4 dispatch, IO/argv/environment/cinit/shutdown or full original application transport. No selected heap, nonNULL-only, current SDK CRT, callback or prefix-only replacement closes it.",
+    "finite_scc_work_not_permanent_cycle_blocker": "Prior verified allocator/lock/initializer and errno/PTD/free/decoder/invalid-handler cycles are finite coordinated whole Original Source work. They may be implemented mutually once real state and ownership are bound; no stub or shortcut is needed or authorized.",
+    "smallest_meaningful_owner_packet_to_prepare": "Whole cold __mtinit C053DC + __init_pointers BFBDFB + __mtterm C050BB together, with real global provider/index storage and Original entry-compatible encoder/decoder composition, alongside the actual heap/lock/PTD/allocation SCC. It cannot yet be declared independent Source-ready. Existing C0504C/unlock/SBH primitives are genuine reuse edges, not the owner itself.",
+    "other_required_whole_owners": [
+      "C11964/C119BF heap selection/HeapCreate/rollback plus prior genuine SCC dependencies",
+      "C11A93/C11ADC/C11C21/C11B5E/C17653 actual descriptor acquisition/initialization/deletion and SEH failure paths",
+      "C05070/C051B7/C050F8/C05246 actual PTD getter/initialization/FLS callback cleanup with actual calloc/free/locale ownership",
+      "C07C00/C07C90/C16EBE and actual SEH4 scope/filter/handler/fault transport",
+      "C0D36C/C18029/C17F70/C17CF3/C17C96 and BFBC47 initializer/atexit owner with actual reached table entries",
+      "BFBcd9 and wrapper/process-exit returning paths; true application8F81F0 closure"
+    ],
+    "no_source_authorization_implied": true
+  },
+  "checks": {
+    "all_whole_physical_bytes_live_equal_pe": true,
+    "full_spans_decoded_without_gaps": true,
+    "original_project_program_verified": true,
+    "no_analysis_mutations": true,
+    "source_flags_all_false": true,
+    "verify_report_calls": {
+      "command": "python tools/verify_report_calls.py reports/goal_oct15_crt_startup_owner_readiness.json",
+      "checked": 48,
+      "failed": 0,
+      "qualification": "Only defined direct/tail numeric rows; 21 computed transfers separately pin actual current typed instruction/IAT or selected provider, and3 physical-only exception-handler calls are not promoted to typed native rows."
+    },
+    "diff_check": "git diff --check and git diff --cached --check passed",
+    "build_test": "not run: read-only audit, no C++ changes"
+  },
+  "notes": [
+    "One attempted typed batch of72 sites was refused by the CLI64-address cap before querying; existing main40-response capture plus separate38-response supplement cover all72 actual transfers without omissions. No Ghidra mutations occurred.",
+    "Source current availability was checked with rebuilt index, bounded lookups and targeted code/header reads; source hashes pin current canonical/qualified APIs. No blanket claim that every CRT function lacks Source.",
+    "Only the report file is leased and edited; no address, provider Source, ledger, annotation, packet registry or CMake writes."
+  ]
+}

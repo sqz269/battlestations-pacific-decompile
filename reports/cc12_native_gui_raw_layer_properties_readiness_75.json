@@ -1,0 +1,481 @@
+{
+  "schema_version": 1,
+  "packet": "native_gui_raw_layer_properties_readiness_75",
+  "recorded_at_utc": "2026-10-16T03:32:03.317526+00:00",
+  "status": "read_only_schedule_established_closed_whole_raw_composition_not_ready",
+  "new_original_body_credit": 0,
+  "source_edited": false,
+  "ghidra_mutated": false,
+  "build_or_runtime_test_performed": false,
+  "worker_anchor": "76eb01c2bdc9375ad92517a426ee3c363ca7b88a",
+  "root_source_inspected_head": "008099d7881c8d0e6b157d8c9ec2ac54ade02d71",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "verification": "BSP live calls verify project/program/language/base; pseudocode before assembly; no annotation/type/body repair",
+  "original_binary": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged": true
+  },
+  "original_ranges": [
+    {
+      "start": "00ac4c50",
+      "end_exclusive": "00ac4d28",
+      "bytes": 216,
+      "sha256": "1e71d0dbf37bd77bf8c1ee2b44f7d3bf476994c11fdd89457f6081d6a494fac6",
+      "live_equals_installed_original": true
+    },
+    {
+      "start": "00aaacd4",
+      "end_exclusive": "00aaaecf",
+      "bytes": 507,
+      "sha256": "df207b92ca378f3f219da077960123a5efba7ea73835bb135081fbc477d7f14c",
+      "live_equals_installed_original": true
+    },
+    {
+      "start": "00d5caf4",
+      "end_exclusive": "00d5cb00",
+      "bytes": 12,
+      "sha256": "edfa41624405d6b33791e94caf1c45f3b0a3ce42327c9ef452d70734df81a8ad",
+      "live_equals_installed_original": true
+    },
+    {
+      "start": "00d5cb00",
+      "end_exclusive": "00d5cb09",
+      "bytes": 9,
+      "sha256": "ca9d150dc57e4ae974202a86ea9f58d1056f4f0f39124ce892ebeb93e7c19ca7",
+      "live_equals_installed_original": true
+    },
+    {
+      "start": "00d5be50",
+      "end_exclusive": "00d5be54",
+      "bytes": 4,
+      "sha256": "1f9ee5752cfd00fc1e8100854f5de8849885005ea2d96ec59cf2008cfba2fb07",
+      "live_equals_installed_original": true
+    },
+    {
+      "start": "00d5beb0",
+      "end_exclusive": "00d5beb4",
+      "bytes": 4,
+      "sha256": "a84d7340edabc8fd6bae5a472ef6dd855e9b85de266b3f70720872435796d02f",
+      "live_equals_installed_original": true
+    },
+    {
+      "start": "00ce44fc",
+      "end_exclusive": "00ce4518",
+      "bytes": 28,
+      "sha256": "592967aaf0740f502006c4c354daefafa7158581c5bd49e0e1d7a34f06dd0f74",
+      "live_equals_installed_original": true
+    }
+  ],
+  "function": {
+    "address": "00ac4c50",
+    "name": "BSP_GuiLayer_ReadProperties",
+    "end_exclusive": "00ac4d28",
+    "bytes": 216,
+    "instructions": 66,
+    "native_abi": "ECX actual layer/page, one stacked visitor pointer, RET4, no specified result",
+    "provisional_extent_correction": "Earlier214B [AC4C50,AC4D26) cut RET4 atAC4D25; live body is throughAC4D27 inclusive",
+    "tail_bytes_at_ac4d20": "5f5e83c410c20400"
+  },
+  "triplets": [
+    {
+      "site": "00ac4c8b",
+      "key": [
+        0,
+        "actual00d5cb00 Priority C-string"
+      ],
+      "field": [
+        1,
+        "address of local DWORD with caller preimage"
+      ],
+      "fallback": [
+        1,
+        0
+      ],
+      "stack_bytes": 24
+    },
+    {
+      "site": "00ac4cdd",
+      "key": [
+        0,
+        "actual00d5caf4 RenderOrder C-string"
+      ],
+      "field": [
+        2,
+        "actualpage+11c"
+      ],
+      "fallback": [
+        2,
+        "positive-zero float bits"
+      ],
+      "stack_bytes": 24
+    }
+  ],
+  "ordered_effects": [
+    "Read current visitor profile+0C forPriority",
+    "After return read local DWORD once; storepageFC then118 from SAME captured DWORD",
+    "Read current visitor profile+0C again forRenderOrder; field points directly topage11C",
+    "After callback read currentpage profile+78; invoke that exact target",
+    "After78 capture currentpageEC scene BEFORE currentpage4C node; callB6D890",
+    "Only after root propagation zero actualXYZ words; callAA7DC0",
+    "Call wholeAAA710 atAC4D1B with SAME visitor; execute real layer epilogue"
+  ],
+  "profile_identities": {
+    "layer_profile": "00d5be38",
+    "layer_own_slot18": {
+      "cell": "00d5be50",
+      "target": "00ac4c50"
+    },
+    "layer_own_slot78": {
+      "cell": "00d5beb0",
+      "target": "00ac59a0"
+    },
+    "reader_profile": "00ce44fc",
+    "reader_own_targets": {
+      "04": "00bd8e20",
+      "08": "00bd7a20",
+      "0c": "00bd68d0",
+      "18": "00bd5f50"
+    },
+    "caution": "Own-profile cells are verified data, not permission to replace a callback-mutated current target"
+  },
+  "direct_calls": [
+    {
+      "address": "00ac4cf2",
+      "native": "00b6d890",
+      "function": "00ac4c50"
+    },
+    {
+      "address": "00ac4d13",
+      "native": "00aa7dc0",
+      "function": "00ac4c50"
+    },
+    {
+      "address": "00ac4d1b",
+      "native": "00aaa710",
+      "function": "00ac4c50"
+    }
+  ],
+  "missing_tail_direct_calls": [
+    {
+      "address": "00aaad4a",
+      "native": "0041dd40",
+      "function": "00aaa710"
+    },
+    {
+      "address": "00aaad61",
+      "native": "00bf7680",
+      "function": "00aaa710"
+    },
+    {
+      "address": "00aaad78",
+      "native": "00aa2490",
+      "function": "00aaa710"
+    },
+    {
+      "address": "00aaad89",
+      "native": "00aa6560",
+      "function": "00aaa710"
+    },
+    {
+      "address": "00aaad95",
+      "native": "00b74eb0",
+      "function": "00aaa710"
+    },
+    {
+      "address": "00aaadb1",
+      "native": "00b75030",
+      "function": "00aaa710"
+    },
+    {
+      "address": "00aaaddd",
+      "native": "00aa83a0",
+      "function": "00aaa710"
+    },
+    {
+      "address": "00aaadf8",
+      "native": "00a9b790",
+      "function": "00aaa710"
+    },
+    {
+      "address": "00aaae05",
+      "native": "00a9d480",
+      "function": "00aaa710"
+    },
+    {
+      "address": "00aaae24",
+      "native": "00b6e680",
+      "function": "00aaa710"
+    },
+    {
+      "address": "00aaae85",
+      "native": "00419cc0",
+      "function": "00aaa710"
+    },
+    {
+      "address": "00aaae8c",
+      "native": "00bd1510",
+      "function": "00aaa710"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "site": "00ac4c8b",
+      "receiver": "currentvisitor",
+      "slot": "0c"
+    },
+    {
+      "site": "00ac4cdd",
+      "receiver": "currentvisitor",
+      "slot": "0c"
+    },
+    {
+      "site": "00ac4ce6",
+      "receiver": "currentpage",
+      "slot": "78"
+    },
+    {
+      "site": "00aaad01",
+      "receiver": "currentreader",
+      "slot": "18"
+    },
+    {
+      "site": "00aaae31",
+      "receiver": "actualchild",
+      "slot": "74"
+    },
+    {
+      "site": "00aaae45",
+      "receiver": "currentreader",
+      "slot": "04"
+    },
+    {
+      "site": "00aaae50",
+      "receiver": "actualchild",
+      "slot": "18"
+    },
+    {
+      "site": "00aaae59",
+      "receiver": "currentreader",
+      "slot": "08"
+    },
+    {
+      "site": "00aaae63",
+      "receiver": "actualchild",
+      "slot": "78"
+    }
+  ],
+  "providers": [
+    {
+      "entry": "00bd68d0",
+      "api": "read_native_lua_field_or_default_00bd68d0; NativeGuiWidgetPropertyDispatch",
+      "availability": "Real normal raw reader body exists; exact-target dispatcher/provider and same actual Lua/string/resolver/SSE domain required; no default/no-op"
+    },
+    {
+      "entry": "00ac59a0",
+      "api": "acquire_native_gui_scene_storage_00ac59a0",
+      "availability": "Complete raw scene acquisition body and context/frame/acquired exist; requires genuine same owner/pool/import/manager domains; no normal-host composition credit"
+    },
+    {
+      "entry": "00b6d890",
+      "api": "propagate_native_node_root_storage_00b6d890",
+      "availability": "Complete actual node/outer24scene body; genuine NativeNodeSceneChildDispatch and reached persistent frames required"
+    },
+    {
+      "entry": "00aa7dc0",
+      "api": "set_native_gui_widget_local_position_00aa7dc0",
+      "availability": "Complete raw normal body; real transform scratch/bindings, bounds scratch and live actualD7A280 half cell required"
+    },
+    {
+      "entry": "00aaa710",
+      "api": "read_native_gui_widget_properties_through_transform_00aaa710",
+      "availability": "PARTIAL only [AAA710,AAACD4); no complete raw whole provider"
+    },
+    {
+      "entry": "00bd5f50",
+      "api": "native_lua_reader_enumerate_keys_00bd5f50",
+      "availability": "Real raw normal key producer exists, <=250supportedkeys, nonempty stable reader, actual query scratch/SSE/ref storage"
+    },
+    {
+      "entry": "00bd8e20/00bd7a20",
+      "api": "NativeLuaReaderStorage enter_key_00bd8e20 / existing raw leave adapter",
+      "availability": "Existing real reader transitions; retain actual owner/state/frame and valid vector domain"
+    },
+    {
+      "entry": "00a9b790/00a9d480/00aa83a0",
+      "api": "existing raw widget child-list helpers and detach_native_gui_widget_child_00aa83a0",
+      "availability": "Existing bounded real providers; do not infer behavior from a misleading legacy xlen label"
+    },
+    {
+      "entry": "00aa6560",
+      "api": "GuiWidgetOwnerRuntime::construct_child_00aa6560(GuiLayoutWidget&)",
+      "availability": "Only logical-owner fragment, seven admitted types; creates/binds model and addsretire_tree catch; NOT actual raw factory switch/provider"
+    },
+    {
+      "entry": "00aa2490",
+      "api": "native_gui_widget_type_for_key_00aa2490",
+      "availability": "Existing raw-header normal body uses hostUCRT_stricmp and compiled class-name literals; not Original BF7FBF live-cell/callee/literal-identity composition"
+    }
+  ],
+  "missing_tail": {
+    "entry": "00aaacd4",
+    "end_exclusive": "00aaaecf",
+    "bytes": 507,
+    "whole_aaa710_bytes": 1983,
+    "raw_source_covered_bytes": 1476,
+    "key_view": "NativeLuaReaderKeys at propertyscratch+4C; count+81C; view size7D4 within scratch820",
+    "initialization": "250tagDWORDs only=-1, payloads retain preimage, count0 before currentreader+18 call",
+    "loop": "Signed count reread after child continuation; no vector snapshot or eager host-owned replacement",
+    "retention": "Retain SAME key array/name header/returned partialwidget/model/list/reader/native owner and borrowed graph on entered failure; no guessed cleanup or nonlocal-Lua/FH3 claim"
+  },
+  "next_bounded_missing_contract": {
+    "entry": "00aa6560",
+    "original": "Raw fastcall ECX typeID,EDX object-or-null; actualwidget result; switch1..18 with specialListbox path; AAA710 passesEDX0",
+    "existing_fragment_admitted_types": [
+      "Group",
+      "Icon",
+      "FrameBox",
+      "ClipBox",
+      "Text",
+      "Section",
+      "Listbox"
+    ],
+    "inferred_child_types_without_that_fragment": [
+      "Line",
+      "Progbar",
+      "Scrollbar",
+      "Grid",
+      "Model",
+      "Movie",
+      "AnimIcon",
+      "Curve",
+      "Sound",
+      "Button"
+    ],
+    "blocking_difference": "Fragment already constructs scene model; using it as rawfactory would duplicate tail model construction and change failure ownership",
+    "proposal": "Separately establish rawdispatcher and genuine per-type providers/admission; never map missing types tobase/skip or insert callback stubs"
+  },
+  "whole_body_interface_proposal": {
+    "proposed_only": true,
+    "name": "read_native_gui_layer_properties_00ac4c50(actualpage,actualvisitor,scratch,bindings,operation)",
+    "scratch": "Same24byte(18h)pair staging, priorityDWORDpreimage,XYZwords; Source frame layout, not Native private stack coincidence",
+    "required_bindings": [
+      "actualD5CB00/D5CAF4 literal views",
+      "existing exact-current NativeGuiWidgetPropertyDispatch",
+      "required exact-current78 dispatch to real AC59A0 frames when that actualtarget is selected",
+      "genuine B6D890 child/root dispatch",
+      "existing AA7DC0 transform/bounds/livehalf domain",
+      "future actually complete AAA710 provider"
+    ],
+    "preflight": "Frame/provider availability only; do not freeze callback-written vtables/scenes/nodes early",
+    "entered_failure": "Unsupported target afterreader remains entered, retaining priorstores and SAME whole graph; enclosing owner guards cleanup",
+    "implementation_ready_using_only_current_real_providers": false,
+    "no_source_lease_or_edit": true
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_gui_widget_property_prefix.hpp",
+      "git_blob": "15b702055e14af964ba2aa019b52bc316b3bde5d",
+      "sha256": "d5e7d38924d3ac0442c2ec9470057bf7144b0b055ce3e199eee1280e85067f65",
+      "matches_inspected_root_worktree": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_property_interaction.hpp",
+      "git_blob": "3a68014884f703a1297e78bda23f777b85c517a3",
+      "sha256": "ac021804de09c3c24afc5bc2b77680f671a06cc866c46bf3d89c67aa4aaeb96e",
+      "matches_inspected_root_worktree": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_position.hpp",
+      "git_blob": "929216cd0afb675271dd0385b809a7612a39ca2f",
+      "sha256": "fd7397b1af7ba72bc335703507d4013e78298126ab8d8be5816794bcbcd40512",
+      "matches_inspected_root_worktree": true
+    },
+    {
+      "path": "src/native_gui_widget_position.cpp",
+      "git_blob": "d6b37f61f34ab15547ecaeaf47d99ca1f3147b05",
+      "sha256": "674336c5043078be5e3ed0398f83999da3f783435a5767f7ce2abcd14142e6b6",
+      "matches_inspected_root_worktree": true
+    },
+    {
+      "path": "include/bsp/native_node_root_propagation.hpp",
+      "git_blob": "e8c16028e1344d467fa95bba08c27cf0d230c0ed",
+      "sha256": "0fed8a0255b3068472bb0a72e2d41352ce1d10ee7ace03520254ae6d9dfde5d4",
+      "matches_inspected_root_worktree": true
+    },
+    {
+      "path": "include/bsp/native_gui_scene_acquisition_storage.hpp",
+      "git_blob": "67ad117f9f860eb2537041d0b7a91f7f2a7ad204",
+      "sha256": "28f056840f9941d5ba87f914e74d7f3ead5274ff4d34773acaadc0aefbf6568a",
+      "matches_inspected_root_worktree": true
+    },
+    {
+      "path": "include/bsp/native_lua_reader_fields.hpp",
+      "git_blob": "9799ace9225fcbd4232858550013b19142ed1cd3",
+      "sha256": "afe695362d32c8ad991d188d9ce6140336456cf1453925ab25f27aaa2d4a1212",
+      "matches_inspected_root_worktree": true
+    },
+    {
+      "path": "include/bsp/native_lua_reader_queries.hpp",
+      "git_blob": "2a2a8818ba8ace490fab0ad389cd3c393f62e33e",
+      "sha256": "56ad6af22a16685aeb5559942f615a8cb9425912479492a20c2542651d702c04",
+      "matches_inspected_root_worktree": true
+    },
+    {
+      "path": "src/native_lua_reader.cpp",
+      "git_blob": "6afa19cf20c03c8f509624b793d2c62edaa1da47",
+      "sha256": "9d83243b6422a5f5ac921b1577401a489f18181b2dd5825212ae38d397d892fc",
+      "matches_inspected_root_worktree": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_child_links.hpp",
+      "git_blob": "394cd09ff70edfe063a357cd51baa858e30a1ff3",
+      "sha256": "f26a342eb1d5964a610830024cf8e35e7c42cf0dd1704246513aed965e0c1f1e",
+      "matches_inspected_root_worktree": true
+    },
+    {
+      "path": "src/native_gui_widget_child_links.cpp",
+      "git_blob": "0380a3842e7f8f873fac0851ce7029024ffccadf",
+      "sha256": "cece55903975dcee6a4e58d562212b7e6362f0fa177db008c1c709d7342349b6",
+      "matches_inspected_root_worktree": true
+    },
+    {
+      "path": "src/gui_widget_owner.cpp",
+      "git_blob": "79a11550d42126d8009bc506d566faf559f514fe",
+      "sha256": "36a974b52b5f3036c66d4afec46839edf864dc9158bcc766a6576fc8e6335132",
+      "matches_inspected_root_worktree": true
+    },
+    {
+      "path": "src/gui_type_dispatch.cpp",
+      "git_blob": "61d3115b64e5e94aefab0cd107c28e00b27d8d9f",
+      "sha256": "a0cac573ee0fd632a5f2a66246d26ad4c822048f34e742e4992ab14229ae9a72",
+      "matches_inspected_root_worktree": true
+    }
+  ],
+  "scope_limits": [
+    "readiness/staticSourceandOriginalevidence only",
+    "no newSource,ledger,annotation,prototype,bodyrepair",
+    "no defaulttail/semanticwrappersubstitution",
+    "no actualgamehost/nativeTextactivation or fullretirement",
+    "no build/runtime/OriginalABIreplacement or NativeprivateEH proof"
+  ],
+  "report_call_verifier": {
+    "command": "python tools/verify_report_calls.py reports/cc12_native_gui_raw_layer_properties_readiness_75.json docs/CC12_NATIVE_GUI_RAW_LAYER_PROPERTIES_READINESS_75.md",
+    "expected_direct_rows": 15,
+    "exit_code": 0,
+    "checked": 15,
+    "failed": 0,
+    "documentation_warnings": 0
+  },
+  "documentation": {
+    "path": "docs/CC12_NATIVE_GUI_RAW_LAYER_PROPERTIES_READINESS_75.md",
+    "sha256": "e5ea68c1f50e93d6640e98683911fd457e8160d69fa70fa4422481ce15b2950f"
+  }
+}

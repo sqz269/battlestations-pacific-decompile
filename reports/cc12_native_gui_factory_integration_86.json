@@ -1,0 +1,89 @@
+{
+  "packet": "cc12_native_gui_factory_integration_86",
+  "status": "integrated_source_and_win32_build_checked_no_new_runtime",
+  "compiled_commit": "eed33ddd1c28ffef3988ac853d5e0fbfd49f8fe6",
+  "workers": {
+    "78": {
+      "commit": "73c37311ec50f1f2b09f447280a132ba9add9aa8",
+      "kind": "read_only_factory_readiness",
+      "verified_call_rows": 74,
+      "failed": 0,
+      "source_hashes_rechecked": 25
+    },
+    "81": {
+      "commit": "7101c56100c66b67f37308a77308be81257965bb",
+      "verified_call_rows": 18,
+      "failed": 0,
+      "artifact_hashes_captured": 21,
+      "focused_case": "One real owning-UCRT comparison, exact pointer identities/order/ID/header preservation; not a new Native differential"
+    },
+    "83": {
+      "commit": "1803d9f8ec661efb7adb96d951db2d927f5d5345",
+      "verified_call_rows": 9,
+      "failed": 0,
+      "artifact_hashes_captured": 29,
+      "focused_case": "Whole20-byte Original default adapter against new Source using SAME genuine raw base; only real sentinel pointer normalized"
+    }
+  },
+  "source": [
+    {
+      "path": "include/bsp/native_gui_widget_child_links.hpp",
+      "sha256": "88b5d1ef38f6a26acd595b867011cb8758d6f3d4fbf013ab52d37081c503ec62",
+      "git_blob": "30ae27025ec3df24203b4e9525e00fb2f9b82db0",
+      "unchanged_from_worker": true
+    },
+    {
+      "path": "src/native_gui_widget_child_links.cpp",
+      "sha256": "764ab5a60741c5d2649d9f289bb871474ddd1301a1f21e6b86c30667d3aa47c3",
+      "git_blob": "1c9f1ba8724812553cc8c34809771cf28a55e68c",
+      "unchanged_from_worker": true
+    },
+    {
+      "path": "include/bsp/native_gui_clip_box_factory.hpp",
+      "sha256": "6940c0f31ade03c32eda312438ef231cc4aa27b00c0830eb2de4f9a1636bc8fc",
+      "git_blob": "065d5f5ba3747f4b6a3ce707abbc1a4b25ae3187",
+      "unchanged_from_worker": true
+    },
+    {
+      "path": "src/native_gui_clip_box_factory.cpp",
+      "sha256": "cfc4ca8ae028035b8f1432172ded4e71d1c21e6d91b11e8754a073eaac1ffbf0",
+      "git_blob": "f4a5a8892999a9c416457c1805650a2288121d45",
+      "unchanged_from_worker": true
+    }
+  ],
+  "registration": "New ClipBox factory registered once in bsp_core; existing classifier unit already registered once",
+  "build": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctest_passed": 3,
+    "ctest_total": 3,
+    "ctest_seconds": 13.72,
+    "frozen_direct_source_and_transitive_header_inputs": 73,
+    "known_warning": "Existing LNK4006 spawn_request_id_matches duplicate in Lua objects"
+  },
+  "root_independent_review": {
+    "source_and_contracts": "PASS",
+    "whole_factory_assembly_and_default_copy_callee_cleanup": "PASS",
+    "probe_Original_array_vs_installed_PE": "PASS",
+    "original_installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "artifact_capture": {
+    "path": "local/cc12_native_gui_factory_integration_86/evidence_family.zip",
+    "payload_count": 147,
+    "sha256": "b4896ec7bc94c57a3264cf521dd8bc75e423f63c49c1d7651b200b05d3926536",
+    "manifest_sha256": "13e9cec6abbf1a10d0d7332bbae789b387e524353a6c0fca6fa0160f6e84f308",
+    "zip_integrity_and_every_payload_hash": "PASS"
+  },
+  "runtime": {
+    "new_normal_game_run": false,
+    "native_text_activation": false,
+    "gameplay_validation": false
+  },
+  "limits": [
+    "Legacy classifier body unchanged; explicit context does not supply Original literal/comparer/CRT ownership.",
+    "ClipBox normal default comparison isolates the tiny adapter and does not independently re-prove base construction.",
+    "No ClipBox copy/factory/failure runtime, complete graph retirement, FH3/SEH or binary replacement ABI proof.",
+    "Source helpers remain outside the normal native Text route; full raw factory dispatcher and Text constructors remain separate work."
+  ]
+}
