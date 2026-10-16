@@ -15377,3 +15377,33 @@ So bit 2 is set only by the scene action `aSetGunFireDisabled "Torpedo"`. The ho
 of this installation's 259 `.scn` files for the ASCII names found nothing. That negative is vacuous: no action name
 (`aTurnGun`, `aParticleEffect`, `aDont_Move`) occurs in them in ASCII either. The constant `inhibited = false` stays,
 LABELLED. Wiring the writer needs a scene-action executor, which is outside this lane.
+
+### 263.1 Pairs and flip
+
+The pair builds are exports of `3a6d58900`: OFF is `local\g48_aoff`, ON is `local\g48_aon`. Reference env with
+`--stop-after-end 40`. The logs are `local\g48_<aoff|aon>_<j6|u12|u15>.log`, each with its manifest.
+
+| Mission (plan) | OFF | ON | evaluations / launches OFF | ON |
+| --- | --- | --- | --- | --- |
+| JM06 `s49_j6_s` | completed 2144.97 s | **not completed by 6000 s** (MissionPhase 3) | 29 / 20 | 25 / 12 |
+| USN12 `g45_u12_e7` | completed 1685.52 s | completed 1680.51 s | 5 / 8 | 12 / 16 |
+| USN15 `g48_u15_ab`, 1600 s | Yamashiro dead | moved (deaths 37 -> 42) | 63 / 94 | 63 / 95 |
+
+`pair_diff` says MOVED on all three.
+
+The first prediction was wrong as written. `launches` counts every gyro launch: the player's group-4 launches in USN15
+(not evaluations), and each tube of a salvo. So it can exceed `evaluations`. Both counters are non-zero exactly on the
+missions with AI torpedo tubes.
+
+**Mechanism** (`BSP_TORPEDO_TUBE_TRACE=1`, JM06 to 300 s, `local\g48_<aoff|aon>_j6tr.log`). Every launch keeps its
+time; only gyro headings change:
+- PlayerSub 03's six tubes still launch at 156.10, 156.60, ... 158.86 s.
+- A tube's first launch keeps its gyro heading when only one evaluation passed before it: plat 54 is -27.2 deg in both,
+  plat 55 -11.5, PlayerSub 02's plat 52 14.9.
+- Tubes held behind the unit's 0.5 s torpedo cooldown pass more evaluations first, so they launch with a later pair:
+  plat 51 -18.7 -> -17.3, plat 50 -18.3 -> -6.4, plat 53 -33.6 -> -20.9.
+
+This is the predicted mechanism: the same launches, with jitter drawn per evaluation. So the switch is **flipped ON**.
+
+**Lost:** JM06 `jm06_s49_j6_s`. Its first sinking moves from 168.11 s to 171.96 s, and the run diverges from there. The
+JM06 re-plan goes to the wins keeper (cc9-lua62). USN12 `e7` still completes.

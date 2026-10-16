@@ -183,6 +183,10 @@ the push is `00B66480` at `00A383D9`, a float push distinct from the `00B664B0` 
 Each class argument is an integer or a name; `00B660A0` decides per argument. The string path
 copies the borrowed string, then walks the 97 `char*` entries at `00E0CD80` with a strcmp loop
 bounded by `0x61`, leaving the index or `-1`. Entry 0 is `00D0E694`, `"NULL"`.
+The C++ does the same through `ai_class_index_from_name` over the host's
+`ai_class_name_table_00e0cd80()` (cc13-fix5, 2026-10-16; before that a named class was left at
+`-1` without a lookup). The helper no longer tests the table or its entries for null, since the
+image does not.
 
 | Count | Slot 0 | Slot 1 | Slot 2 | Slots 3,4,5 | Weight slot |
 | --- | --- | --- | --- | --- | --- |

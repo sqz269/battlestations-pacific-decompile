@@ -12,6 +12,11 @@
 #include <vector>
 
 namespace bsp {
+namespace cc13_seg49_64_78 {
+struct WarningObject;
+struct WarningHost;
+}  // namespace cc13_seg49_64_78
+
 
 // Host projections, not original layouts or binary replacement interfaces.
 // Address, ABI, assembly evidence and uncertainty: docs/CC13_OPTIONS_AND_HARDWARE.md.
@@ -283,6 +288,8 @@ struct WarningSubjectHost {
     virtual WarningEntity plane_owner_9d4(WarningEntity) = 0;   // entity+9D4h
     virtual WarningEntity controlled_unit_e188d8() = 0;
     virtual std::int32_t field_3cc(WarningEntity) = 0;          // entity+3CCh
+    // 00425850 BSP_NativeString_EqualsCStringInsensitive (ECX = string)(text), RET 4.
+    virtual bool native_string_equals_ci_00425850(const std::string& string, const char* text) = 0;
 };
 
 // 00975340: __thiscall(ECX = warning, entity, bool exiting), RET 8; vtable
@@ -292,12 +299,22 @@ struct WarningSubjectHost {
 std::string warning_id_exit_zone_00975340(WarningSubjectHost&, WarningEntity entity,
     bool exiting);
 
-// 00975540: __thiscall(ECX = warning, entity, NativeString* order), RET 8;
-// vtable 00D1B380. Kind 6: "confirmship". Else kind 18h: "confirmplane" +
-// order, + "player" when the order is "land" or "retreat" (case-insensitive,
-// 00425850) and entity+3CCh == 1. Neither kind leaves the base's empty id.
-std::string warning_id_confirm_00975540(WarningSubjectHost&, WarningEntity entity,
-    std::string_view order);
+// 00975540 BSP_ConfirmWarning_Construct: __thiscall(ECX = warning, entity,
+// NativeString* order), RET 8, returns the warning. Listing 00975540-0097569B:
+// 00973BA0(ECX warning)(entity, 0); vtable 00D1B380 at +0h, then 00D1B368 at
+// +6Ch (no type store). The id at +4h: kind 6 (entity vtable+5Ch) ->
+// "confirmship" (0041DD40 resize to 0Bh, memcpy 00D1B44C); else kind 18h ->
+// "confirmplane" (0041E350, 00D1B43C), the order appended when non-empty
+// (0041DD40 + memcpy), then "player" (00D199D0: a temporary 0041E870,
+// 00425E10 append, released through 00419CC0/00BD1510) when the order equals
+// "land" (00CFB614) or "retreat" (00CFB5D4) under 00425850 and entity+3CCh
+// == 1. Neither kind leaves the base's id. The NativeString steps are folded
+// into std::string operations on WarningObject::id, as the other warning
+// constructors in engine_seg49_64_78_cc13.cpp do. Reached only through the
+// new_confirm_warning_00975540 hook (operator new + this constructor).
+cc13_seg49_64_78::WarningObject& construct_confirm_warning_00975540(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host, WarningSubjectHost& subject, WarningEntity entity,
+    const std::string& order);
 
 // Hit feedback on manager+174h..+180h, from the hit channel 00988510.
 struct WarningHitFeedbackState {
