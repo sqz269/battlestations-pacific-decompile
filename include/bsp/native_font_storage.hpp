@@ -55,3 +55,29 @@ void* construct_native_font_storage_00ad55c0(void* actual_font,
     const NativeFontConstructorArguments& arguments,
     game::GameNativeStringProcess& same_strings);
 } // namespace bsp
+
+namespace bsp {
+// Whole raw AD4540 lookup and byte-identical AD4370 entry. Original ECX is
+// the actual tree/Font BASE; stack output/key pointer, EAX=SAME output, RET8.
+// These are new ordinary Source __cdecl interfaces, sharing one scan body.
+//
+// Caller independently retains genuine initialized Font/head/node storage,
+// actual writable aligned output8 and a valid stable key WORD object until
+// each reached access completes, in the externally serialized MSVC Win32 raw
+// storage domain. A Source key reference must be valid even on the empty arm.
+// No FontDescriptor/FontData cast or alias into the Native or Source callee's
+// private stack, argument slots or scratch storage is admitted. Existing SDK/
+// retained graph and failure obligations are unchanged.
+//
+// Empty root reads no key value. Traverse with one conditional key capture;
+// reload CURRENT head afterward, then reload key only for a nonhead candidate.
+// All input reads precede output owner-DWORD then chosen-node-DWORD stores;
+// valid public overlap follows that order. Return SAME output8. No allocation,
+// validation/default, count/payload access, tree cleanup or new owner exists.
+// Native register/fault/private-frame/binary ABI and runtime proof are not
+// supplied; populated-tree production and whole Font loading remain separate.
+void* __cdecl find_native_font_glyph_iterator_00ad4540(void* actual_font,
+    void* actual_output8, const volatile std::uint16_t& actual_key);
+void* __cdecl find_native_font_glyph_iterator_00ad4370(void* actual_font,
+    void* actual_output8, const volatile std::uint16_t& actual_key);
+} // namespace bsp
