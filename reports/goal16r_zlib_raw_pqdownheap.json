@@ -1,0 +1,528 @@
+{
+  "goal": "GOAL16T implementation of accepted GOAL16R design",
+  "packet": "zlib_bc_raw_pqdownheap",
+  "status": "READY_WHOLE_REGISTERED_KERNEL_AND_REAL_FRAME_ADAPTER_CORE_VERIFIED",
+  "source": "src/native_zlib_raw_pqdownheap_bc.cpp",
+  "header": "include/bsp/native_zlib_raw_pqdownheap_bc.hpp",
+  "document": "docs/GOAL16R_ZLIB_RAW_PQDOWNHEAP.md",
+  "source_sha256": "5430b6607ec576b38bd7771f2d2a29cc3af2fa275728eead28da8c9c1fd8d3f5",
+  "header_sha256": "bd5485d639049088d6ab6f293f601810263c94789f0bdda64ae56e8a073e875a",
+  "complete_Source_functions": 2,
+  "complete_new_Native_addresses": 1,
+  "new_Native_bytes": 204,
+  "new_Native_instructions": 59,
+  "adapter_new_Native_credit": 0,
+  "entire_Source_executable_bytes": 221,
+  "entire_Source_instructions": 63,
+  "entries": [
+    {
+      "address": "00bcde90",
+      "name": "pqdownheap__prov",
+      "coverage": "complete",
+      "end_inclusive": "00bcdf5b",
+      "Native_bytes": 204,
+      "Native_instructions": 59,
+      "Native_sha256": "7953b12eaf2678a3aefd3a87eb5b178e74bea8e5cca2e1b1f375483755acb630",
+      "Source_private_kernel_bytes": 204,
+      "Source_private_kernel_instructions": 59,
+      "whole_kernel_identity": true,
+      "actual_input_registers": [
+        "EAX backing",
+        "EDI tree"
+      ],
+      "actual_stack_argument": "DWORD entryESP+4, signed-index bits, mutable actual cell",
+      "Original_no_return": false,
+      "cleanup": "three true RET4 exits; normal kernel ESP=entryESP+8",
+      "formal_Original_CXX_declaration": "unrecovered; do not invent fastcall/stdcall class/type recovery from chosen Source spellings"
+    }
+  ],
+  "chosen_Source_public_interface": "extern \"C\" __declspec(noreturn) void __cdecl bsp_native_zlib_pqdownheap_frame_00bcde90(void* backing, const void* tree, void* kernel_entry_stack) noexcept;",
+  "Source_only_noreturn_not_Original": true,
+  "real_adapter": {
+    "symbol": "_bsp_native_zlib_pqdownheap_frame_00bcde90",
+    "bytes": 17,
+    "instructions": 4,
+    "real_inputs": [
+      "backing",
+      "tree",
+      "actual kernel-entry stack address"
+    ],
+    "named_instructions": [
+      "MOV EAX,DWORD PTR [ESP+4]",
+      "MOV EDI,DWORD PTR [ESP+8]",
+      "MOV ESP,DWORD PTR [ESP+0Ch]",
+      "JMP genuine private Source pqdownheap_body"
+    ],
+    "physical_qualifications": [
+      "Three extra actual DWORD reads from public Source call frame before kernel entry. Each can fault in that order.",
+      "EAX/EDI/ESP assigned actual three inputs; ECX/EDX/EBX/EBP/ESI and flags unchanged by these four instructions.",
+      "No Source caller nonvolatile restoration or normal-return ABI is claimed; a separately established real continuation is required for future consumer adoption.",
+      "No copied index/scratch, shadow stack, fake provider/global/class, zero-initialized register, null/range guard or narrowed index/alias domain."
+    ],
+    "actual_binding": {
+      "adapter_section": 4,
+      "operand_offset": 13,
+      "relocation": {
+        "offset": 13,
+        "type": 20,
+        "symbol": "?pqdownheap_body@?A0xa91f0f31@@YGXH@Z",
+        "addend_hex": "00000000"
+      },
+      "resolved_defined_kernel_section": 3,
+      "resolved_kernel_offset": 0
+    },
+    "no_copied_index_or_scratch_or_synthetic_frame_or_continuation": true
+  },
+  "actual_frame": [
+    {
+      "offset": 4,
+      "name": "actual mutable index argument",
+      "reads": [
+        "00bcde99",
+        "00bcdf10",
+        "00bcdf2b",
+        "00bcdf3d"
+      ],
+      "writes": [
+        "00bcdf21",
+        "possible aliased heap stores"
+      ]
+    },
+    {
+      "offset": 0,
+      "name": "actual continuation word",
+      "reads": [
+        "selected RET4"
+      ],
+      "writes": [
+        "possible aliased heap stores"
+      ]
+    },
+    {
+      "offset": -4,
+      "name": "actual scratch",
+      "writes": [
+        "00bcde90 PUSH ECX",
+        "00bcdea9 cached EBP",
+        "possible aliased stores"
+      ],
+      "reads": [
+        "00bcdee6 two-child route only",
+        "final POP ECX"
+      ]
+    },
+    {
+      "offset": -8,
+      "name": "actual saved EBP",
+      "writes": [
+        "PUSH EBP",
+        "possible alias"
+      ],
+      "reads": [
+        "exit POP EBP"
+      ]
+    },
+    {
+      "offset": -12,
+      "name": "actual saved ESI",
+      "writes": [
+        "PUSH ESI",
+        "possible alias"
+      ],
+      "reads": [
+        "exit POP ESI"
+      ]
+    },
+    {
+      "offset": -16,
+      "name": "actual saved EBX only on loop path",
+      "writes": [
+        "PUSH EBX",
+        "possible alias"
+      ],
+      "reads": [
+        "loop-exit POP EBX"
+      ]
+    }
+  ],
+  "complete_order_contract": [
+    "PUSH ECX precedes first heap_len read, so its incoming bits can be observed through a backing/frame alias.",
+    "Initial heap capture and signed doubled-index CMP precede scratch overwrite; scratch write precedes signed JG.",
+    "Signed JGE at loop head reuses surviving CMP flags. Equality skips right-child path and does not reload scratch.",
+    "Right heap/frequency/depth read before left; unsigned WORD frequency and BYTE depth tie picks right when equal.",
+    "Cached root scratch reload occurs only on two-child route. Root frequency read before chosen-child frequency; root depth read before chosen-child depth.",
+    "Promotion reads actual index, writes heap, rereads heap_len, writes actual index slot, doubles selected child with DWORD wrap, signed compares and JLEs.",
+    "Fast-exit final heap write precedes every POP. Loop exits POP EBX/ESI before final heap write but POP EBP/ECX and RET afterward.",
+    "All three RET4 exits read the current real continuation; normal completion ESP=S+8 and ECX=current scratch word.",
+    "No assumed termination for malformed/wrapped indices or mutable aliases; no cap/guard/snapshot/transaction.",
+    "EAX backing and EDI tree untouched within kernel; EDX and final arithmetic flags remain path-specific; actual saved-cell values, not unconditional restored-register identities."
+  ],
+  "actual_CPU_state_notice": "Incoming ECX/EBP/ESI/EBX are not invented formal arguments, but their actual PUSH writes can affect aliased memory before later loads. Full initial CPU/memory state remains part of the physical equivalence envelope.",
+  "register_flag_results": "Kernel EAX/EDI retain inputs; normal ESP=S+8; ECX=actual current scratch; EDX path-specific; EBX/ESI/EBP POP actual cells. Last bound/frequency/depth CMP flags survive epilogue MOV/POP/RET. No x87/SIMD/string/environment reset.",
+  "malformed_domain": "Every32-bit pointer/index/heap_len pattern, every WORD frequency/BYTE depth, signed/wrapped arithmetic and actual frame/backing/tree/depth/control aliases retain literal instructions. No termination/valid-return guarantee for malformed states, and no clamp/cap/snapshot/repair.",
+  "physical_limits": [
+    "No exact Original declaration/class/layout/version/compiler flag recovery.",
+    "Public adapter is a new control-transfer interface, not an ordinary returning C++ or drop-in Native ABI. Extra reads, frame selection, code/fault/return placement and ordinary caller cleanup are explicit differences.",
+    "All malformed index and memory bits retain actual machine operations; ordinary completion and termination are not promised for invalid or cyclic states.",
+    "No portable C++ memory/exception/continuation equivalence claim. Original SEH/unwind, absolute self/code aliases, full physical ABI, caller build_tree adoption and gameplay remain unproved.",
+    "No x87/SIMD; FP environment/FIP remains inherited, not normalized."
+  ],
+  "additional_limits": [
+    "No selected body/adapter invocation, measured fault, fixture, ordinary-return ABI, real continuation consumer, parent build_tree adoption, runtime unwind or game validation.",
+    "Kernel204-byte identity is strong evidence for this artifact, not a universal Source admission gate. Whole module221B includes217 fixed bytes and one real relocated4-byte JMP operand.",
+    "The known Native caller sites remain Native and are not redirected by this packet."
+  ],
+  "Native_own_CALL_sites": [],
+  "strict": {
+    "sha256": "b13f1ee3d606933d4ace80f8221f5954a386967488ce3d619aeb0fc059fe9536",
+    "whole_object_bytes": 1059,
+    "sections": [
+      {
+        "index": 1,
+        "name": ".drectve",
+        "bytes": 47,
+        "flags": "00100a00"
+      },
+      {
+        "index": 2,
+        "name": ".debug$S",
+        "bytes": 184,
+        "flags": "42100040"
+      },
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "bytes": 204,
+        "flags": "60501020"
+      },
+      {
+        "index": 4,
+        "name": ".text$mn",
+        "bytes": 17,
+        "flags": "60501020"
+      },
+      {
+        "index": 5,
+        "name": ".chks64",
+        "bytes": 40,
+        "flags": "00000a00"
+      }
+    ],
+    "kernel_bytes": 204,
+    "kernel_instructions": 59,
+    "adapter_bytes": 17,
+    "adapter_instructions": 4,
+    "entire_executable_bytes": 221,
+    "entire_instructions": 63,
+    "function_symbols": [
+      {
+        "index": 10,
+        "name": "_bsp_native_zlib_pqdownheap_frame_00bcde90",
+        "value": 0,
+        "section": 4,
+        "type": 32,
+        "storage": 2,
+        "aux": 0
+      },
+      {
+        "index": 11,
+        "name": "?pqdownheap_body@?A0xa91f0f31@@YGXH@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 3,
+        "aux": 0
+      }
+    ],
+    "all_relocations": 1,
+    "undefined_or_extra_helpers": 0,
+    "private_JMP_binding": {
+      "adapter_section": 4,
+      "operand_offset": 13,
+      "relocation": {
+        "offset": 13,
+        "type": 20,
+        "symbol": "?pqdownheap_body@?A0xa91f0f31@@YGXH@Z",
+        "addend_hex": "00000000"
+      },
+      "resolved_defined_kernel_section": 3,
+      "resolved_kernel_offset": 0
+    }
+  },
+  "registered": {
+    "sha256": "8d08ba27f50e29f5f8780a91d5c9528f6381b8828ccbfc45b5d715bc73d89677",
+    "whole_object_bytes": 1087,
+    "sections": [
+      {
+        "index": 1,
+        "name": ".drectve",
+        "bytes": 47,
+        "flags": "00100a00"
+      },
+      {
+        "index": 2,
+        "name": ".debug$S",
+        "bytes": 212,
+        "flags": "42100040"
+      },
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "bytes": 204,
+        "flags": "60501020"
+      },
+      {
+        "index": 4,
+        "name": ".text$mn",
+        "bytes": 17,
+        "flags": "60501020"
+      },
+      {
+        "index": 5,
+        "name": ".chks64",
+        "bytes": 40,
+        "flags": "00000a00"
+      }
+    ],
+    "kernel_bytes": 204,
+    "kernel_instructions": 59,
+    "adapter_bytes": 17,
+    "adapter_instructions": 4,
+    "entire_executable_bytes": 221,
+    "entire_instructions": 63,
+    "function_symbols": [
+      {
+        "index": 10,
+        "name": "_bsp_native_zlib_pqdownheap_frame_00bcde90",
+        "value": 0,
+        "section": 4,
+        "type": 32,
+        "storage": 2,
+        "aux": 0
+      },
+      {
+        "index": 11,
+        "name": "?pqdownheap_body@?A0xa91f0f31@@YGXH@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 3,
+        "aux": 0
+      }
+    ],
+    "all_relocations": 1,
+    "undefined_or_extra_helpers": 0,
+    "private_JMP_binding": {
+      "adapter_section": 4,
+      "operand_offset": 13,
+      "relocation": {
+        "offset": 13,
+        "type": 20,
+        "symbol": "?pqdownheap_body@?A0xa91f0f31@@YGXH@Z",
+        "addend_hex": "00000000"
+      },
+      "resolved_defined_kernel_section": 3,
+      "resolved_kernel_offset": 0
+    }
+  },
+  "actual_registered_compile_commands": [
+    {
+      "source_marker": "^J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\SRC\\NATIVE_ZLIB_RAW_PQDOWNHEAP_BC.CPP",
+      "command": "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-goal15z_traffic_resize/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\SRC\\NATIVE_ZLIB_RAW_PQDOWNHEAP_BC.CPP"
+    }
+  ],
+  "actual_unique_whole_archive": {
+    "whole_archive_bytes": 93617096,
+    "sha256": "f5d8545c5a451e5ea75fb39a6dd08d657e096926860915c344cfd4d1b6829d6c",
+    "unique_whole_registered_member": {
+      "header_offset": 20054626,
+      "bytes": 1087,
+      "sha256": "8d08ba27f50e29f5f8780a91d5c9528f6381b8828ccbfc45b5d715bc73d89677",
+      "archive_name": "/0"
+    },
+    "all_archive_headers": 2402,
+    "both_full_dictionaries": [
+      {
+        "kind": "first_big_endian",
+        "offset": 8,
+        "bytes": 10043400,
+        "sha256": "4eaf724d4e3b33582a5386c494f1aa104043f415a37037f7718f22120d87413a",
+        "symbols": 82474,
+        "members": null,
+        "all_offsets_and_indexes_validated": true,
+        "public_unique_occurrences": 1,
+        "public_symbol_index": 0,
+        "real_whole_member_offset": 20054626,
+        "private_symbol_not_fictitious_export": true
+      },
+      {
+        "kind": "second_little_endian",
+        "offset": 10043468,
+        "bytes": 9888052,
+        "sha256": "e7f52158b94671e15f53c06fb902157047ad65cf717213a792a074b98ecb628d",
+        "symbols": 82474,
+        "members": 2399,
+        "all_offsets_and_indexes_validated": true,
+        "public_unique_occurrences": 1,
+        "public_symbol_index": 82451,
+        "real_whole_member_offset": 20054626,
+        "private_symbol_not_fictitious_export": true
+      }
+    ],
+    "all_preceding_object_files_unchanged": 2398,
+    "all_preceding_entire_archive_payloads_unchanged": 2398,
+    "only_new_whole_payload_count": 1
+  },
+  "module_all_code_and_data_and_metadata_accounted": true,
+  "all_relocations": 1,
+  "external_undefined_providers": 0,
+  "extra_helpers": 0,
+  "external_runtime_providers": [],
+  "writable_globals": 0,
+  "absolute_Native_JMP_or_CALL": false,
+  "stock_counterpart": {
+    "current_stock_bytes": 258,
+    "whole_physical_reuse": false,
+    "reason": "cdecl/EBP three-stack argument/cache/index/saved-cell schedules differ; only algorithm reference, not physical provider",
+    "Original_library_version_unproved": true
+  },
+  "fresh_native_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "base": "00400000",
+    "typed_modification": "6658",
+    "complete_live_PE_accepted_design_equal": true,
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "no_thunk": true,
+    "no_return": false
+  },
+  "path_absence_before_Source": [
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile-goal15z_traffic_resize",
+      "ref": "HEAD",
+      "pin": "d96a078562bcfc4b8fb5fe9e9ac1ed551d225b13",
+      "all_four_paths_absent": true
+    },
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator",
+      "ref": "HEAD",
+      "pin": "d0c3d08e359e84f63b76926924db4c7c5e1020b4",
+      "all_four_paths_absent": true
+    },
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile",
+      "ref": "HEAD",
+      "pin": "67cbe3623909f1d53decad0d929a617842107e07",
+      "all_four_paths_absent": true
+    },
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile",
+      "ref": "origin/main",
+      "pin": "67cbe3623909f1d53decad0d929a617842107e07",
+      "all_four_paths_absent": true
+    }
+  ],
+  "coverage_before_Source": "No src/include match; selected stock counterpart differs; Original lookup no reconstruction row. See local Source_coverage_before.txt and sealed R Source evidence.",
+  "correct_current_provisional_library_name_retained": "pqdownheap__prov",
+  "Ghidra_writes": false,
+  "Native_execution": false,
+  "game_validated": false,
+  "new_tests": 0,
+  "probes": 0,
+  "new_body_runtime_paths_executed": [],
+  "strict_compile": {
+    "start_utc": "2026-10-16T09:34:29.555299+00:00",
+    "end_utc": "2026-10-16T09:34:31.003232+00:00",
+    "elapsed_seconds": 1.4479368000029353,
+    "exit_code": 0,
+    "invocations": 1
+  },
+  "normal_build": {
+    "command": "./scripts/build.ps1",
+    "start_utc": "2026-10-16T09:35:37.313740+00:00",
+    "end_utc": "2026-10-16T09:35:56.232073+00:00",
+    "elapsed_seconds": 18.91833190000034,
+    "terminal_exit_code": 0,
+    "invocations": 1
+  },
+  "checks": {
+    "passed": 2,
+    "failed": 0,
+    "reconstructed_math_seconds": 0.21,
+    "tool_tests_seconds": 7.69,
+    "total_seconds": 7.94
+  },
+  "no_Source_or_compiler_rejections": true,
+  "Source_forms_attempted": 1,
+  "strict_invocations": 1,
+  "normal_build_invocations": 1,
+  "warnings": "Existing unrelated LNK4006 spawn duplicate warning retained; no selected Source compiler warning/rejection.",
+  "preservation": {
+    "immutable_N_L_R_refs": {
+      "N": {
+        "directory": "J:\\PROG\\battlestations-pacific-decompile-goal15z_traffic_resize\\local\\goal16n_peer_review",
+        "receipt_sha256": "45acce87d2adc4b77f4d5a0227a87948d0eaa6ef8a99759b798afef8246abf15",
+        "HANDOFF_sha256": "e3c25958f239fbdbcb0950b6f7061b085bfa3490e59a54695dceda02dda36119",
+        "artifact_count": 916,
+        "already_frozen_by_primary": true,
+        "not_recursively_copied_again": true
+      },
+      "L": {
+        "directory": "J:\\PROG\\battlestations-pacific-decompile-goal15z_traffic_resize\\local\\goal16l_tagged_float_bc",
+        "receipt_sha256": "8f30b7ef786f159c559efece702c810701761c4eedc00fc6821bc68ff2c0ac21",
+        "HANDOFF_sha256": "e5bd895634e02f61e7df6ff23e59e92195a3d53d6db3fd41ef51b5a06699351b",
+        "artifact_count": 3211,
+        "already_frozen_by_primary": true,
+        "not_recursively_copied_again": true
+      },
+      "R": {
+        "directory": "J:\\PROG\\battlestations-pacific-decompile-goal15z_traffic_resize\\local\\goal16r_pqdownheap_design",
+        "receipt_sha256": "2a0b54ee286c7dbfa50ae98a029a27df6c6cf7c65a0cea1ef817a273472e923c",
+        "HANDOFF_sha256": "c1f9df00bb251079b456104c0dab2f5c8442f02ea0204eadbd2bf59ce02bfa8d",
+        "artifact_count": 70,
+        "already_frozen_by_primary": true,
+        "not_recursively_copied_again": true
+      }
+    },
+    "no_transitive_N_L_review_copy": true,
+    "actual_current_objects_frozen_before_Source": 2398,
+    "current_Core_project_TLOGs_LastTest_frozen_before_Source": true,
+    "current_tlog_files": 11,
+    "all_preceding2398_objects_and_full_members_unchanged": true
+  },
+  "timing": {
+    "P_readiness_seconds_separate": 943.721305,
+    "P_end_utc": "2026-10-16T09:04:03.721305+00:00",
+    "P_to_R_administrative_gap_seconds": 722.278695,
+    "R_design_start_utc": "2026-10-16T09:16:06+00:00",
+    "R_design_seconds_separate": 782.503525,
+    "R_release_hash_seal_utc": "2026-10-16T09:29:08.503525+00:00",
+    "R_to_T_dispatch_gap_seconds": 122.496475,
+    "implementation_start_utc": "2026-10-16T09:31:11+00:00",
+    "report_utc": "2026-10-16T09:40:54.388747+00:00",
+    "strict_and_normal_build_included": true,
+    "final_commit_release_hash_seal_endpoint": "local/zlib_bc_raw_pqdownheap/final_handoff.json",
+    "independent_review_integration_runtime_costs": "unperformed/separate",
+    "speedup_claim": false
+  },
+  "proposed_Root_Original_metadata": {
+    "retain_name": "pqdownheap__prov",
+    "no_return": false,
+    "physical_inputs": "Custom EAX raw backing, EDI raw tree, actual DWORD[entryESP+4] signed/mutable index; no fake fastcall ECX/EDX interface",
+    "cleanup_bytes": 4,
+    "return_semantics": "EAX backing incidental physical output; ECX current scratch word; no invented semantic C++ return type",
+    "comment_evidence": "Complete204B/59 kernel + Source-only17B raw-frame transfer; chosen adapter noreturn never Original no-return. Actual frame and static register/flags/fault schedule qualified.",
+    "mutations": "Root only after independent review; preserve old values/comments/tags."
+  },
+  "evidence_artifact_sha256": {
+    "preservation.json": "f31c946a4c1734c89836d08e643cca4a8cb4b7686ca7928e4741b0cdfc5e3e30",
+    "native_capture.json": "ae596129e607e29709042e20289eacfc758979e94e2ad7c67294743c93471bca",
+    "strict_compile_clock.json": "d1de428e251783a17a03ce9a37e2240eb7cd4ea939d00867ea698d027f6e1fda",
+    "build_clock.json": "1082da016ec6f4fc7516df12f3873b1599d253cb7f782be7a0241c8c07faf6eb",
+    "build.txt": "1cf63034a96e61ef4df51153ffcbaabb6c7a9ec6a4809302216290808eb2c0eb",
+    "strict_whole_coff.json": "e9935e98f47f75294f53fa9dc29239e581fa3659877dfbff98ceef3008002f6c",
+    "registered_whole_coff.json": "90d20251711e989e49ea7266573f1750782bf1ed0904212b8266c46f57346c8b",
+    "actual_archive_proof.json": "a3dc3730685d0f7607f5918518275828ea7ca7b91b6533c9e8e49d142244bc66",
+    "emission.json": "0a0065cf50ff5057e6e9e3561921179329160c05b47f13ebfbc6fb550547ab3a"
+  }
+}

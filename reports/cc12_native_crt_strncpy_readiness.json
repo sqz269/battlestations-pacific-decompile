@@ -1,0 +1,64 @@
+{
+  "schema": "bsp.cc12.native_crt_strncpy.primary_readiness.v1",
+  "status": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
+  "worker_commit": "6c9f9c9635b28bc6daad88f173a2fe62ef523b76",
+  "Source_ready": true,
+  "source_ready": true,
+  "Source_authorized": true,
+  "source_authorized": true,
+  "Source_implemented": true,
+  "Source_credit": 1,
+  "whole_Original_bytes": 292,
+  "whole_Original_instructions": 109,
+  "Root_primary_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strncpy_readiness_primary_20261016\\primary_author_inputs.DATA.json",
+    "bytes": 4479,
+    "sha256": "92e18faaa47f8572ced4f3260703fd4f4010b6622dfecbdb76b87c16ac29386c"
+  },
+  "Root_independent_peer_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strncpy_readiness_primary_20261016\\primary_peer_inputs.DATA.json",
+    "bytes": 4929,
+    "sha256": "d563aac4df319ebff41604e2229296517243ef078e54c92c83d93afb491b3106"
+  },
+  "canonical_doc": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\docs\\NATIVE_CRT_STRNCPY_READINESS.md",
+    "bytes": 11148,
+    "sha256": "495269979ce8bb830df3bda198141983e39e554bffd62d8b094e3cf4b1183171"
+  },
+  "canonical_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\reports\\native_crt_strncpy_readiness.json",
+    "bytes": 16568,
+    "sha256": "b239a54d2c427384fa53397c086024fc6cbc260b189d8a70096334635d512d97"
+  },
+  "contract": [
+    "New default potentially throwing MSVCWin32 void* __cdecl bsp::copy_native_crt_padded_bytes_00bf9280(void* actual_destination,const void* actual_source,unsigned int count), byte8/pointer32/unsigned32/littleendian. Correct Original libraryname _strncpy retained. DescriptiveSource name is a hypothesis; new raw by-value interface has no Original home/register/stack/flags/segment/EH ABI promise.",
+    "Capture actual initial destination pointer for all normal returns. Unsigned count admits every32bitpattern subject only to genuine actual reached storage/nonwrap. Count0 accesses/advances no source or destination payload; null/unaddressedpayload pointer values permitted. Original reads count home then savesEDI and later destinationhome, never sourcehome; new by-value binding is not a physical home protocol replacement.",
+    "Positivecount uses actual source address low2bits for initial alignment. Reached BYTE peel: load exactunsignedBYTE, advance source1 FIRST, store capturedBYTE, advance destination1, decrement positive remaining count; count exhaustion returns BEFORE copiedNUL test. Nonzero remaining copiedNUL enters padding, else repeat onlywhile sourceunaligned. At alignment recompute positive completewordcount and residual from actualremaining; no signedcap/pointerdifference/fullunusedSourceNUL.",
+    "For every reached completefourbyte copy block Source is actually4aligned. Issue TWO UNCONDITIONAL exactDWORD reads at SAME actualsource address, matching BF9334/BF933D, even when candidatezero. Compute unsignedmod32 candidate=((first+0x7efefeffU)^~first)&0x81010100U between them; no payloadwrite intervenes. Only after secondread advance genuine source4 then test candidate. No merging/eliminating/widening/conditionalreread/SDK replacement of either load.",
+    "Candidatezero copies captured secondDWORD with ONE exactDWORD destinationstore, then destination4/positivewordcountdecrement. Candidatenonzero tests secondDWORD byteslowtohigh INREGISTERS. FirstNUL lanes0/1/2/3 give oneDWORDstore value0/second&0xff/second&0xffff/unchangedsecond respectively. Nozero (possiblehigh0x80 falsecandidate) copies unchangedsecond. Destination may be unaligned. Zero-containingblock advances destination4 and consumes its word before padding; no BYTE source rereads or split byte/word stores.",
+    "Initialaligned remaining1..3 and postword residual remaining&3: exactBYTEread, source1, exactcapturedBYTEstore,destination1, then testcapturedzero BEFORE residualdecrement. Copiedzero consumes exactlyonce and pads onlypositive remainder. Count exhaustion/finalcopiedzero neverreads extra Source.",
+    "After peelzero, pad with exact BYTE0 stores until destination4alignment OR exhaustion, eachdestination1 thenremainingdecrement. Pad positivecompletewords by exactDWORD0 stores withdestination4 andworddecrement; then residual1..3 exactBYTE0 stores withdestination1 anddecrement. After DWORDcopyzero, DWORDpadding mayretainunaligneddestination; aftertailzero onlyresidualBYTEpadding. Padding neverreads/advancesSource. Allpositivecalls write exactly count destinationbytes in Original stated widths/order, no memset/WORDfill/coalescing.",
+    "Actual destination count-byte region is genuine live writable rawstorage; its initial values needdeterminateonly ifactuallysource-read beforewritten. Only actual reachedSource BYTE/fullDWORD windows needgenuine live readable determinate bytes; a reachedDWORD mayinclude up to3 later in-count bytes beyond firstNUL, which mustreallyexist/be readable. No invented unusedterminatorextent/readablepadding. Rawinterior/unaligned/callerstack pointers and readonly distinctSource permitted; no fake aligned uint32/wchar/arrayobject lifetime/ownership assumptions.",
+    "Inputs mayoverlap/beidentical; laterSource reads observe own earlierwrites, no initialSourcesnapshot/restrict/nonoverlap/SDKcontract. ThetwoDWORDloads agree in suppliedstableordinarydomain because no payloadwriteintervenes; BOTH operations remain mandatory. Every actual cursor1/4advance is nonwrapping32 withinoronepast SAME genuine live allocation, includingterminaldead advances; noonepastaccess. Result is borrowed originaldestinationpointer, noownership/accessgrant.",
+    "Storage/lifetimes/mappings stable except ownwrites. Excludefaults/partialprogress/MMIO/asynchronous/externalconcurrentmutation andOriginal/new calleeprivateframe/argumenthomes/savedregisters/return/control/scratch/privatehelperbinding-block/selfmod aliases. Ordinarycallerstack buffers elsewhere remain admitted. Ordinaryflataddressspace assumed for newinterface; no exoticsegment/interrupt/fault/privateABI guarantee. Originalselectedbody has noDF/ES/string/SSE/x87/dispatch/global/provider dependency, but nophysicalABI/caller/runtime/game proof follows.",
+    "Concrete provisionalmechanism: separatelysequenced volatileunsignedBYTE loads/stores plus private addressed MSVCx86 inlineasm MOVDWORD load/store primitives on genuine rawaddresses. Load initializes fulluint32return; store fullybinds fulladdress andvalue andsupports unaligneddest. No typedunaligneduint32payloadlvalue, aggregate/array/table/global/TLS/unresolvedprovider/SDK/memcpy/memset/runtimeguard/GSbuffermechanism. Defaultcdecl/privateframe permitted onlyunderqualifiedordinaryboundary. No barrier/clobber/alias guarantee presumed from noinline/inlineasm/source sequencing; futureWHOLEactualemission mustprove bothloads andallpayloadorder/widths/privateinputresultABI.",
+    "Onlyfour canonical Source/header/doc/report outputs afterentry/full292B/fourfilelease in NEW isolated exactpublishedgate checkout. Fresh physicalcurrent Source/header/compiler/support/runtime/headercandidate/toolpins BEFOREfirstuse; onegenuine strictHostX86/x86 /std:c++17 /O2 /W4 /WX /permissive- /fp:strict /EHsc /MD compile andactualdependencyclosure Source+ownheader only; allcurrenthashmtime/Gitliteral/oldseals/currentworking/newbaselinepreservation qualified. No trial/matchingrecompile/workerbaseline/newtests/probes/emulation/selectedbodyexecution/SDKcomparison/Ghidrarepair/mutation/sharedmetadata/CMake/Main/push. Compilerfailure/mismatch stopsforRoot, no fabricatedsuccess.",
+    "Acceptance pending Root+independentwhole strictSource/object PUBLIC+ALLprivatehelpers/code/metadata/sections/strings/symbolaux/relocations/internalproviderbindings/frame/callee-save/stackcleanup/resultinitialization andeverypath/count/alignment/duplicateDWORD/masks/padding/overlap/cursor proof. SeparateregisterednormalMainWin32/Core/botharchiveindices/uniqueactualmember/allhelper/privateABI/peer gates remain. Sourceimplementedfalse/Sourcecredit0 untilactualacceptedcompiler/Mainclosure; noclaim of Originalbinary/caller/runtime/gamecompatibility."
+  ],
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "game_validated": false,
+  "Source_commit": "86baecf26ab1f9d8044ff5ff438d147584bc477b",
+  "primary_review": "reports/cc12_native_crt_strncpy_primary_review.json",
+  "canonical_report_erratum": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strncpy_integration_20261016\\canonical_report_erratum.DATA.json",
+    "bytes": 1191,
+    "sha256": "a2499a527b6acbfa4ee78c2444153341d27e9414bd32c793442ca7f1926cf4ae",
+    "mtime_ns": 1792153242309779200
+  },
+  "Main_registered": true,
+  "Main_gate": "pass",
+  "Main_build": "pass_3_existing_CTests",
+  "actual_compiler_archive_gate": "pass",
+  "Main_validation": "reports/cc12_native_crt_strncpy_Main_validation.json"
+}

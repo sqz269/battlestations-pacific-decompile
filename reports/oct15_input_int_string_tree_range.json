@@ -1,0 +1,3888 @@
+{
+  "packet": "oct15_input_int_string_tree_range",
+  "status": "complete_source_build_static_review_pending_primary",
+  "utc": "2026-10-16T04:39:54.280434+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source_authorization": "Root explicitly authorized whole006A1B70 after batch28publishedMainaaa3e4b03dbc0084d9ebad5d4a42ada2517bc491 and readinessfreeze.",
+  "accepted_published_Main": "ce76166caeee3f71479775408198aad9febbb33a",
+  "source": "src/native_input_int_string_tree_range.cpp",
+  "header": "include/bsp/native_input_int_string_tree_range.hpp",
+  "documentation": "docs/OCT15_INPUT_INT_STRING_TREE_RANGE.md",
+  "source_sha256": "f60e51ce99db26e353ebe09110c47df780a0a5ae1c18c7f6e12f12515146d09a",
+  "header_sha256": "0743c36a40f3f6805dfd9eaefb10bc00261a2247f59d972d8ba3979a68d61efc",
+  "documentation_sha256": "966948b8d8afb1f193e1cfed0bf25b8def4a8fd331ffa547d41fb99de1f51f14",
+  "owned_fingerprints": [
+    {
+      "path": "src/native_input_int_string_tree_range.cpp",
+      "bytes": 3801,
+      "sha256": "f60e51ce99db26e353ebe09110c47df780a0a5ae1c18c7f6e12f12515146d09a",
+      "LF_normalized_sha256": "f60e51ce99db26e353ebe09110c47df780a0a5ae1c18c7f6e12f12515146d09a"
+    },
+    {
+      "path": "include/bsp/native_input_int_string_tree_range.hpp",
+      "bytes": 1367,
+      "sha256": "0743c36a40f3f6805dfd9eaefb10bc00261a2247f59d972d8ba3979a68d61efc",
+      "LF_normalized_sha256": "0743c36a40f3f6805dfd9eaefb10bc00261a2247f59d972d8ba3979a68d61efc"
+    },
+    {
+      "path": "docs/OCT15_INPUT_INT_STRING_TREE_RANGE.md",
+      "bytes": 6843,
+      "sha256": "966948b8d8afb1f193e1cfed0bf25b8def4a8fd331ffa547d41fb99de1f51f14",
+      "LF_normalized_sha256": "966948b8d8afb1f193e1cfed0bf25b8def4a8fd331ffa547d41fb99de1f51f14"
+    }
+  ],
+  "functions": [
+    {
+      "address": "006a1b70",
+      "name": "erase_native_input_int_string_tree_range_006a1b70",
+      "source": "src/native_input_int_string_tree_range.cpp",
+      "header": "include/bsp/native_input_int_string_tree_range.hpp",
+      "status": "complete_ordinary_source_build_tested_current_cpp_boundary",
+      "evidence": "docs/OCT15_INPUT_INT_STRING_TREE_RANGE.md;reports/oct15_input_int_string_tree_range.json. Whole200definedB/76starts intwo ranges;201Benvelope hasoutsideundefinedNOP6A1BEF,unpromoted. FreshPE/live/readiness equal,80exactstarts+expectedoutsideNOP,6rel32targets. Actualpublishedsubtree6A0AA0/676iterator69AE50/d56-7deraser6A07D0/SDKBF6713; completefullandpartialrawSource,retaineddiagnosticcaptures,orderedheadA/root-headB/count/left-headC/right resets, OLDpairbeforeactualFIRSTadvance thenacceptedchildownadvance,node-before-ownerreload,no localEH/rollback. DefaultMSVCWin32existing3/3pass15.79s;fullactualCMake267B/115instructions/6relocations reviewed, public220B/90physicalstarts includes2BNOP,EBPcompilerframe,RET18hvsNativeRET14h. ExistingpopulatedAVtypedRawCtx domains preserved;OriginalABI/privateframes/heap/CRT/FH3SEHRTTI/fault/gameunproved.",
+      "original_abi": "ECXreceiver/unusedEDX,stack(output,firstowner,node,lastowner,node),EAXout,RET14h; Source addsactualRawCtxreference/RET18h",
+      "scope": "Whole200definedB/76starts intwo ranges withfull+partialrawschedule;6A1BEF1BNOPexcluded. Actual8Bfirst/lastbyvalueargumentcarrier,borrowedRawCtx;nogenericrange/Kind/model/callback/layout/contextbridge/prefixshortcut.",
+      "uncertainty": "Namesarehypotheses;CurrentCpp/CRT/SDK/noexcept boundaries retained;Sourceprivateoriginsseparate. NoOriginalregisterflags/privateframes/heap/FH3SEHRTTI/fault/dropinABI/runtime/gameproof;pair/owner/destructoroutsideSource."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "006a1b8a",
+      "native": "00bf6713",
+      "function": "006a1b70",
+      "kind": "call"
+    },
+    {
+      "address": "006a1ba6",
+      "native": "00bf6713",
+      "function": "006a1b70",
+      "kind": "call"
+    },
+    {
+      "address": "006a1bba",
+      "native": "006a0aa0",
+      "function": "006a1b70",
+      "kind": "call"
+    },
+    {
+      "address": "006a1bfa",
+      "native": "00bf6713",
+      "function": "006a1b70",
+      "kind": "call"
+    },
+    {
+      "address": "006a1c09",
+      "native": "0069ae50",
+      "function": "006a1b70",
+      "kind": "call"
+    },
+    {
+      "address": "006a1c17",
+      "native": "006a07d0",
+      "function": "006a1b70",
+      "kind": "call"
+    }
+  ],
+  "support_comparisons_readonly": [
+    {
+      "entry": "006a0aa0",
+      "comparison": "Actual published raw fixednil19 subtree with borrowedRawCtx;full82B/34starts,no41DD20 shortcut,current data-before-left capture,propagatinggetter.",
+      "new_Source_promotion": false
+    },
+    {
+      "entry": "0069ae50",
+      "comparison": "Actual published676 fixednil19 iterator on actualprivateFIRST8B argument;maydiagnose/return/throw, progressivecurrentnode.",
+      "new_Source_promotion": false
+    },
+    {
+      "entry": "006a07d0",
+      "comparison": "Published accepted d56/7d whole raw eraser;distinct OLD8B byvalue input,privateadvance,originalnodecache,propagatingRawCtxrelease aftertopologycolors.",
+      "new_Source_promotion": false
+    },
+    {
+      "entry": "00bf6713",
+      "comparison": "Accepted currentSDK returning invalid-parameter service; no fabricated callback or repair.",
+      "new_Source_promotion": false
+    }
+  ],
+  "whole_body": {
+    "defined_bytes": 200,
+    "instruction_starts": 76,
+    "ranges": [
+      {
+        "address": "006a1b70",
+        "end_inclusive": "006a1bee",
+        "bytes": 127,
+        "hex": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e8844b55008b5c24243bdd75598b44242885c08b6e0474043bc67405e8684b5500396c242c753f8b4e048b5104528bcee8e1eeffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c21400",
+        "sha256": "71e31e64067dddef1772e3cc7defe16b40b9997be5df1db05d8836c72086fbe2",
+        "instruction_starts": 49,
+        "live_equals_PE": true
+      },
+      {
+        "address": "006a1bf0",
+        "end_inclusive": "006a1c38",
+        "bytes": 73,
+        "hex": "85ff74063b7c24287405e8144b55003b5c242c74218d4c2420e84292ffff53578d542418528bcee8b4ebffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+        "sha256": "e583aadb2a5847d4fc7e636e7347329e9634512bd89d273a3cf58ff375c8162c",
+        "instruction_starts": 27,
+        "live_equals_PE": true
+      }
+    ],
+    "envelope": {
+      "start": "006a1b70",
+      "bytes": 201,
+      "hex": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e8844b55008b5c24243bdd75598b44242885c08b6e0474043bc67405e8684b5500396c242c753f8b4e048b5104528bcee8e1eeffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c214009085ff74063b7c24287405e8144b55003b5c242c74218d4c2420e84292ffff53578d542418528bcee8b4ebffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+      "sha256": "624798c145ab62f4bac0ab886582043194ee1da04b2a1e220212a3c18c23a002",
+      "live_equals_PE": true
+    },
+    "outside_NOP": {
+      "address": "006a1bef",
+      "hex": "90",
+      "defined_instruction": false,
+      "promoted": false
+    }
+  },
+  "original_abi": "ECXreceiver/EDXunused,stack(output,firstowner,firstnode,lastowner,lastnode),EAXout,RET14h at6A1BEC and6A1C36. Real first/last8B byvalue mutable privateargument slots; one ignored8B child outputlocal; noNativeEHprologue.",
+  "Source_abi": "NativeInputIntStringTreeIterator* __fastcall erase_native_input_int_string_tree_range_006a1b70(void*actualtree,uint32unusedEDX,NativeInputIntStringTreeIterator*out,NativeInputIntStringTreeIterator first,NativeInputIntStringTreeIterator last,NativeStringRawPoolContext&); addsactualborrowedRawCtx/RET18h,qualifiedOriginalbinaryABI.",
+  "raw_contracts": {
+    "initial": "Capture first.owner BEFORE current tree.head and its left/begin; both head/left reads precede returning initial owner diagnostic. Diagnose cached first.owner==0 or !=receiver. Only AFTER diagnostic capture CURRENT private first.node. Compare it with retained initial begin.",
+    "full_candidate": "Only if cached first.node==retained begin: capture CURRENT last.owner, THEN CURRENT tree.head, BEFORE last-owner diagnostic. Diagnose captured last.owner==0 or !=receiver. Read CURRENT last.node AFTER diagnostic and compare with RETAINED head. Diagnostic return does not refresh captured owner/head/first.node.",
+    "full_destroy": "Reload CURRENT tree.head then CURRENT root(head+4), invoke actual accepted6A0AA0(receiver,0,root,RawCtx). No nil/count shortcut and no head free. Getter failure preserves completed subtree effects and occurs BEFORE every range header reset/output.",
+    "full_reset": "After subtree success: capture currentheadA and storeheadA.parent=headA; capture currentheadB BEFORE tree.count=0; storeheadB.left=headB; capture currentheadC and storeheadC.right=headC. Do not coalesce head captures or reorder count/left stores.",
+    "full_output": "Capture CURRENT tree.head then CURRENT head.left result BEFORE capturing CURRENT output pointer. Store capturedreceiver owner then captured result node, return actualoutput. No first/last owner revalidation or head/node reset shortcut.",
+    "partial_diagnostic": "At each top: cached first.owner==0 diagnoses without reading last.owner; otherwise compare cachedfirstowner with CURRENT private last.owner and diagnose inequality. Diagnostic may return. Then compare cachedfirstnode with CURRENT last.node. Emptyrange comparison occurs AFTER reached diagnostics/full-candidate checks.",
+    "partial_child_order": "Create OLD pair from cached first.owner/node. Invoke69AE50 on actual mutable private FIRST argument. Then invoke accepted6A07D0(receiver,0,private8Boutput,OLDbyvalue,RawCtx), discard returned/private output. Eraser performs its OWN advance on its distinct old byvalue input; never optimize either advance away.",
+    "partial_reload": "Only after eraser success reload CURRENT private first.node BEFORE CURRENT private first.owner, then loop. Old cached owner/node remain operands through returning diagnostics/advance/child call. No repair/reload earlier.",
+    "partial_output": "At equality capture CURRENT output pointer; owner/node were already cached BEFORE firststore. Store cached owner then cached node; return captured output. Output alias effects do not trigger rereads.",
+    "failure": "Diagnostic/iterator/child exceptions propagate with prior effects intact. Partial current FIRST private argument has advanced before eraser pool failure; earlier iterations remain committed and current eraser topology/colors/pool progress remain, without current-nodefree/count/output commit. No range localEH/rollback/guard/catch/retry.",
+    "raw_access": "All reached public DWORD/BYTE loads/stores must remain rawvolatile and fixedoffset. Receiver pointer is retained throughout NativeESI. Existing actual8B iterator is a permitted physical byvalue argument carrier, not hostnode/container/model/provider."
+  },
+  "fresh_native_proof": {
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "envelope": {
+      "start": "006a1b70",
+      "bytes": 201,
+      "hex": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e8844b55008b5c24243bdd75598b44242885c08b6e0474043bc67405e8684b5500396c242c753f8b4e048b5104528bcee8e1eeffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c214009085ff74063b7c24287405e8144b55003b5c242c74218d4c2420e84292ffff53578d542418528bcee8b4ebffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+      "sha256": "624798c145ab62f4bac0ab886582043194ee1da04b2a1e220212a3c18c23a002",
+      "live_equals_PE": true
+    },
+    "defined_spans": [
+      {
+        "address": "006a1b70",
+        "end_inclusive": "006a1bee",
+        "bytes": 127,
+        "hex": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e8844b55008b5c24243bdd75598b44242885c08b6e0474043bc67405e8684b5500396c242c753f8b4e048b5104528bcee8e1eeffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c21400",
+        "sha256": "71e31e64067dddef1772e3cc7defe16b40b9997be5df1db05d8836c72086fbe2",
+        "instruction_starts": 49,
+        "live_equals_PE": true
+      },
+      {
+        "address": "006a1bf0",
+        "end_inclusive": "006a1c38",
+        "bytes": 73,
+        "hex": "85ff74063b7c24287405e8144b55003b5c242c74218d4c2420e84292ffff53578d542418528bcee8b4ebffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+        "sha256": "e583aadb2a5847d4fc7e636e7347329e9634512bd89d273a3cf58ff375c8162c",
+        "instruction_starts": 27,
+        "live_equals_PE": true
+      }
+    ],
+    "instructions": [
+      {
+        "address": "006a1b70",
+        "bytes": 3,
+        "hex": "83ec08",
+        "mnemonic": "sub",
+        "operands": "esp, 8"
+      },
+      {
+        "address": "006a1b73",
+        "bytes": 1,
+        "hex": "53",
+        "mnemonic": "push",
+        "operands": "ebx"
+      },
+      {
+        "address": "006a1b74",
+        "bytes": 1,
+        "hex": "55",
+        "mnemonic": "push",
+        "operands": "ebp"
+      },
+      {
+        "address": "006a1b75",
+        "bytes": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "006a1b76",
+        "bytes": 1,
+        "hex": "57",
+        "mnemonic": "push",
+        "operands": "edi"
+      },
+      {
+        "address": "006a1b77",
+        "bytes": 4,
+        "hex": "8b7c2420",
+        "mnemonic": "mov",
+        "operands": "edi, dword ptr [esp + 0x20]"
+      },
+      {
+        "address": "006a1b7b",
+        "bytes": 2,
+        "hex": "85ff",
+        "mnemonic": "test",
+        "operands": "edi, edi"
+      },
+      {
+        "address": "006a1b7d",
+        "bytes": 2,
+        "hex": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx"
+      },
+      {
+        "address": "006a1b7f",
+        "bytes": 3,
+        "hex": "8b4604",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esi + 4]"
+      },
+      {
+        "address": "006a1b82",
+        "bytes": 2,
+        "hex": "8b28",
+        "mnemonic": "mov",
+        "operands": "ebp, dword ptr [eax]"
+      },
+      {
+        "address": "006a1b84",
+        "bytes": 2,
+        "hex": "7404",
+        "mnemonic": "je",
+        "operands": "0x6a1b8a"
+      },
+      {
+        "address": "006a1b86",
+        "bytes": 2,
+        "hex": "3bfe",
+        "mnemonic": "cmp",
+        "operands": "edi, esi"
+      },
+      {
+        "address": "006a1b88",
+        "bytes": 2,
+        "hex": "7405",
+        "mnemonic": "je",
+        "operands": "0x6a1b8f"
+      },
+      {
+        "address": "006a1b8a",
+        "bytes": 5,
+        "hex": "e8844b5500",
+        "mnemonic": "call",
+        "operands": "0xbf6713"
+      },
+      {
+        "address": "006a1b8f",
+        "bytes": 4,
+        "hex": "8b5c2424",
+        "mnemonic": "mov",
+        "operands": "ebx, dword ptr [esp + 0x24]"
+      },
+      {
+        "address": "006a1b93",
+        "bytes": 2,
+        "hex": "3bdd",
+        "mnemonic": "cmp",
+        "operands": "ebx, ebp"
+      },
+      {
+        "address": "006a1b95",
+        "bytes": 2,
+        "hex": "7559",
+        "mnemonic": "jne",
+        "operands": "0x6a1bf0"
+      },
+      {
+        "address": "006a1b97",
+        "bytes": 4,
+        "hex": "8b442428",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 0x28]"
+      },
+      {
+        "address": "006a1b9b",
+        "bytes": 2,
+        "hex": "85c0",
+        "mnemonic": "test",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "006a1b9d",
+        "bytes": 3,
+        "hex": "8b6e04",
+        "mnemonic": "mov",
+        "operands": "ebp, dword ptr [esi + 4]"
+      },
+      {
+        "address": "006a1ba0",
+        "bytes": 2,
+        "hex": "7404",
+        "mnemonic": "je",
+        "operands": "0x6a1ba6"
+      },
+      {
+        "address": "006a1ba2",
+        "bytes": 2,
+        "hex": "3bc6",
+        "mnemonic": "cmp",
+        "operands": "eax, esi"
+      },
+      {
+        "address": "006a1ba4",
+        "bytes": 2,
+        "hex": "7405",
+        "mnemonic": "je",
+        "operands": "0x6a1bab"
+      },
+      {
+        "address": "006a1ba6",
+        "bytes": 5,
+        "hex": "e8684b5500",
+        "mnemonic": "call",
+        "operands": "0xbf6713"
+      },
+      {
+        "address": "006a1bab",
+        "bytes": 4,
+        "hex": "396c242c",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [esp + 0x2c], ebp"
+      },
+      {
+        "address": "006a1baf",
+        "bytes": 2,
+        "hex": "753f",
+        "mnemonic": "jne",
+        "operands": "0x6a1bf0"
+      },
+      {
+        "address": "006a1bb1",
+        "bytes": 3,
+        "hex": "8b4e04",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esi + 4]"
+      },
+      {
+        "address": "006a1bb4",
+        "bytes": 3,
+        "hex": "8b5104",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [ecx + 4]"
+      },
+      {
+        "address": "006a1bb7",
+        "bytes": 1,
+        "hex": "52",
+        "mnemonic": "push",
+        "operands": "edx"
+      },
+      {
+        "address": "006a1bb8",
+        "bytes": 2,
+        "hex": "8bce",
+        "mnemonic": "mov",
+        "operands": "ecx, esi"
+      },
+      {
+        "address": "006a1bba",
+        "bytes": 5,
+        "hex": "e8e1eeffff",
+        "mnemonic": "call",
+        "operands": "0x6a0aa0"
+      },
+      {
+        "address": "006a1bbf",
+        "bytes": 3,
+        "hex": "8b4604",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esi + 4]"
+      },
+      {
+        "address": "006a1bc2",
+        "bytes": 3,
+        "hex": "894004",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 4], eax"
+      },
+      {
+        "address": "006a1bc5",
+        "bytes": 3,
+        "hex": "8b4604",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esi + 4]"
+      },
+      {
+        "address": "006a1bc8",
+        "bytes": 7,
+        "hex": "c7460800000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 8], 0"
+      },
+      {
+        "address": "006a1bcf",
+        "bytes": 2,
+        "hex": "8900",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax], eax"
+      },
+      {
+        "address": "006a1bd1",
+        "bytes": 3,
+        "hex": "8b4604",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esi + 4]"
+      },
+      {
+        "address": "006a1bd4",
+        "bytes": 3,
+        "hex": "894008",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 8], eax"
+      },
+      {
+        "address": "006a1bd7",
+        "bytes": 3,
+        "hex": "8b4604",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esi + 4]"
+      },
+      {
+        "address": "006a1bda",
+        "bytes": 2,
+        "hex": "8b08",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [eax]"
+      },
+      {
+        "address": "006a1bdc",
+        "bytes": 4,
+        "hex": "8b44241c",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 0x1c]"
+      },
+      {
+        "address": "006a1be0",
+        "bytes": 1,
+        "hex": "5f",
+        "mnemonic": "pop",
+        "operands": "edi"
+      },
+      {
+        "address": "006a1be1",
+        "bytes": 2,
+        "hex": "8930",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax], esi"
+      },
+      {
+        "address": "006a1be3",
+        "bytes": 1,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "006a1be4",
+        "bytes": 1,
+        "hex": "5d",
+        "mnemonic": "pop",
+        "operands": "ebp"
+      },
+      {
+        "address": "006a1be5",
+        "bytes": 3,
+        "hex": "894804",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 4], ecx"
+      },
+      {
+        "address": "006a1be8",
+        "bytes": 1,
+        "hex": "5b",
+        "mnemonic": "pop",
+        "operands": "ebx"
+      },
+      {
+        "address": "006a1be9",
+        "bytes": 3,
+        "hex": "83c408",
+        "mnemonic": "add",
+        "operands": "esp, 8"
+      },
+      {
+        "address": "006a1bec",
+        "bytes": 3,
+        "hex": "c21400",
+        "mnemonic": "ret",
+        "operands": "0x14"
+      },
+      {
+        "address": "006a1bf0",
+        "bytes": 2,
+        "hex": "85ff",
+        "mnemonic": "test",
+        "operands": "edi, edi"
+      },
+      {
+        "address": "006a1bf2",
+        "bytes": 2,
+        "hex": "7406",
+        "mnemonic": "je",
+        "operands": "0x6a1bfa"
+      },
+      {
+        "address": "006a1bf4",
+        "bytes": 4,
+        "hex": "3b7c2428",
+        "mnemonic": "cmp",
+        "operands": "edi, dword ptr [esp + 0x28]"
+      },
+      {
+        "address": "006a1bf8",
+        "bytes": 2,
+        "hex": "7405",
+        "mnemonic": "je",
+        "operands": "0x6a1bff"
+      },
+      {
+        "address": "006a1bfa",
+        "bytes": 5,
+        "hex": "e8144b5500",
+        "mnemonic": "call",
+        "operands": "0xbf6713"
+      },
+      {
+        "address": "006a1bff",
+        "bytes": 4,
+        "hex": "3b5c242c",
+        "mnemonic": "cmp",
+        "operands": "ebx, dword ptr [esp + 0x2c]"
+      },
+      {
+        "address": "006a1c03",
+        "bytes": 2,
+        "hex": "7421",
+        "mnemonic": "je",
+        "operands": "0x6a1c26"
+      },
+      {
+        "address": "006a1c05",
+        "bytes": 4,
+        "hex": "8d4c2420",
+        "mnemonic": "lea",
+        "operands": "ecx, [esp + 0x20]"
+      },
+      {
+        "address": "006a1c09",
+        "bytes": 5,
+        "hex": "e84292ffff",
+        "mnemonic": "call",
+        "operands": "0x69ae50"
+      },
+      {
+        "address": "006a1c0e",
+        "bytes": 1,
+        "hex": "53",
+        "mnemonic": "push",
+        "operands": "ebx"
+      },
+      {
+        "address": "006a1c0f",
+        "bytes": 1,
+        "hex": "57",
+        "mnemonic": "push",
+        "operands": "edi"
+      },
+      {
+        "address": "006a1c10",
+        "bytes": 4,
+        "hex": "8d542418",
+        "mnemonic": "lea",
+        "operands": "edx, [esp + 0x18]"
+      },
+      {
+        "address": "006a1c14",
+        "bytes": 1,
+        "hex": "52",
+        "mnemonic": "push",
+        "operands": "edx"
+      },
+      {
+        "address": "006a1c15",
+        "bytes": 2,
+        "hex": "8bce",
+        "mnemonic": "mov",
+        "operands": "ecx, esi"
+      },
+      {
+        "address": "006a1c17",
+        "bytes": 5,
+        "hex": "e8b4ebffff",
+        "mnemonic": "call",
+        "operands": "0x6a07d0"
+      },
+      {
+        "address": "006a1c1c",
+        "bytes": 4,
+        "hex": "8b5c2424",
+        "mnemonic": "mov",
+        "operands": "ebx, dword ptr [esp + 0x24]"
+      },
+      {
+        "address": "006a1c20",
+        "bytes": 4,
+        "hex": "8b7c2420",
+        "mnemonic": "mov",
+        "operands": "edi, dword ptr [esp + 0x20]"
+      },
+      {
+        "address": "006a1c24",
+        "bytes": 2,
+        "hex": "ebca",
+        "mnemonic": "jmp",
+        "operands": "0x6a1bf0"
+      },
+      {
+        "address": "006a1c26",
+        "bytes": 4,
+        "hex": "8b44241c",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 0x1c]"
+      },
+      {
+        "address": "006a1c2a",
+        "bytes": 2,
+        "hex": "8938",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax], edi"
+      },
+      {
+        "address": "006a1c2c",
+        "bytes": 1,
+        "hex": "5f",
+        "mnemonic": "pop",
+        "operands": "edi"
+      },
+      {
+        "address": "006a1c2d",
+        "bytes": 1,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "006a1c2e",
+        "bytes": 1,
+        "hex": "5d",
+        "mnemonic": "pop",
+        "operands": "ebp"
+      },
+      {
+        "address": "006a1c2f",
+        "bytes": 3,
+        "hex": "895804",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 4], ebx"
+      },
+      {
+        "address": "006a1c32",
+        "bytes": 1,
+        "hex": "5b",
+        "mnemonic": "pop",
+        "operands": "ebx"
+      },
+      {
+        "address": "006a1c33",
+        "bytes": 3,
+        "hex": "83c408",
+        "mnemonic": "add",
+        "operands": "esp, 8"
+      },
+      {
+        "address": "006a1c36",
+        "bytes": 3,
+        "hex": "c21400",
+        "mnemonic": "ret",
+        "operands": "0x14"
+      }
+    ],
+    "current_starts": {
+      "006a1b70": {
+        "address": "006a1b70",
+        "instruction": "SUB ESP,0x8",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "SUB",
+        "patterns_detected": []
+      },
+      "006a1b73": {
+        "address": "006a1b73",
+        "instruction": "PUSH EBX",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "PUSH",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1b74": {
+        "address": "006a1b74",
+        "instruction": "PUSH EBP",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "PUSH",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1b75": {
+        "address": "006a1b75",
+        "instruction": "PUSH ESI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "PUSH",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1b76": {
+        "address": "006a1b76",
+        "instruction": "PUSH EDI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "PUSH",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1b77": {
+        "address": "006a1b77",
+        "instruction": "MOV EDI,dword ptr [ESP + 0x20]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1b7b": {
+        "address": "006a1b7b",
+        "instruction": "TEST EDI,EDI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "TEST",
+        "patterns_detected": [
+          "comparison"
+        ]
+      },
+      "006a1b7d": {
+        "address": "006a1b7d",
+        "instruction": "MOV ESI,ECX",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1b7f": {
+        "address": "006a1b7f",
+        "instruction": "MOV EAX,dword ptr [ESI + 0x4]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1b82": {
+        "address": "006a1b82",
+        "instruction": "MOV EBP,dword ptr [EAX]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1b84": {
+        "address": "006a1b84",
+        "instruction": "JZ 0x006a1b8a",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JZ",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "006a1b86": {
+        "address": "006a1b86",
+        "instruction": "CMP EDI,ESI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "CMP",
+        "patterns_detected": [
+          "comparison"
+        ]
+      },
+      "006a1b88": {
+        "address": "006a1b88",
+        "instruction": "JZ 0x006a1b8f",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JZ",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "006a1b8a": {
+        "address": "006a1b8a",
+        "instruction": "CALL 0x00bf6713",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "CALL",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "006a1b8f": {
+        "address": "006a1b8f",
+        "instruction": "MOV EBX,dword ptr [ESP + 0x24]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1b93": {
+        "address": "006a1b93",
+        "instruction": "CMP EBX,EBP",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "CMP",
+        "patterns_detected": [
+          "comparison"
+        ]
+      },
+      "006a1b95": {
+        "address": "006a1b95",
+        "instruction": "JNZ 0x006a1bf0",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JNZ",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "006a1b97": {
+        "address": "006a1b97",
+        "instruction": "MOV EAX,dword ptr [ESP + 0x28]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1b9b": {
+        "address": "006a1b9b",
+        "instruction": "TEST EAX,EAX",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "TEST",
+        "patterns_detected": [
+          "comparison"
+        ]
+      },
+      "006a1b9d": {
+        "address": "006a1b9d",
+        "instruction": "MOV EBP,dword ptr [ESI + 0x4]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1ba0": {
+        "address": "006a1ba0",
+        "instruction": "JZ 0x006a1ba6",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JZ",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "006a1ba2": {
+        "address": "006a1ba2",
+        "instruction": "CMP EAX,ESI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "CMP",
+        "patterns_detected": [
+          "comparison"
+        ]
+      },
+      "006a1ba4": {
+        "address": "006a1ba4",
+        "instruction": "JZ 0x006a1bab",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JZ",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "006a1ba6": {
+        "address": "006a1ba6",
+        "instruction": "CALL 0x00bf6713",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "CALL",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "006a1bab": {
+        "address": "006a1bab",
+        "instruction": "CMP dword ptr [ESP + 0x2c],EBP",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "CMP",
+        "patterns_detected": [
+          "comparison"
+        ]
+      },
+      "006a1baf": {
+        "address": "006a1baf",
+        "instruction": "JNZ 0x006a1bf0",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JNZ",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "006a1bb1": {
+        "address": "006a1bb1",
+        "instruction": "MOV ECX,dword ptr [ESI + 0x4]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1bb4": {
+        "address": "006a1bb4",
+        "instruction": "MOV EDX,dword ptr [ECX + 0x4]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1bb7": {
+        "address": "006a1bb7",
+        "instruction": "PUSH EDX",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "PUSH",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1bb8": {
+        "address": "006a1bb8",
+        "instruction": "MOV ECX,ESI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1bba": {
+        "address": "006a1bba",
+        "instruction": "CALL 0x006a0aa0",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "CALL",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "006a1bbf": {
+        "address": "006a1bbf",
+        "instruction": "MOV EAX,dword ptr [ESI + 0x4]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1bc2": {
+        "address": "006a1bc2",
+        "instruction": "MOV dword ptr [EAX + 0x4],EAX",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1bc5": {
+        "address": "006a1bc5",
+        "instruction": "MOV EAX,dword ptr [ESI + 0x4]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1bc8": {
+        "address": "006a1bc8",
+        "instruction": "MOV dword ptr [ESI + 0x8],0x0",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1bcf": {
+        "address": "006a1bcf",
+        "instruction": "MOV dword ptr [EAX],EAX",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1bd1": {
+        "address": "006a1bd1",
+        "instruction": "MOV EAX,dword ptr [ESI + 0x4]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1bd4": {
+        "address": "006a1bd4",
+        "instruction": "MOV dword ptr [EAX + 0x8],EAX",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1bd7": {
+        "address": "006a1bd7",
+        "instruction": "MOV EAX,dword ptr [ESI + 0x4]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1bda": {
+        "address": "006a1bda",
+        "instruction": "MOV ECX,dword ptr [EAX]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1bdc": {
+        "address": "006a1bdc",
+        "instruction": "MOV EAX,dword ptr [ESP + 0x1c]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1be0": {
+        "address": "006a1be0",
+        "instruction": "POP EDI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "POP",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1be1": {
+        "address": "006a1be1",
+        "instruction": "MOV dword ptr [EAX],ESI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1be3": {
+        "address": "006a1be3",
+        "instruction": "POP ESI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "POP",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1be4": {
+        "address": "006a1be4",
+        "instruction": "POP EBP",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "POP",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1be5": {
+        "address": "006a1be5",
+        "instruction": "MOV dword ptr [EAX + 0x4],ECX",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1be8": {
+        "address": "006a1be8",
+        "instruction": "POP EBX",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "POP",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1be9": {
+        "address": "006a1be9",
+        "instruction": "ADD ESP,0x8",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "ADD",
+        "patterns_detected": []
+      },
+      "006a1bec": {
+        "address": "006a1bec",
+        "instruction": "RET 0x14",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "RET",
+        "patterns_detected": []
+      },
+      "006a1bf0": {
+        "address": "006a1bf0",
+        "instruction": "TEST EDI,EDI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "TEST",
+        "patterns_detected": [
+          "comparison"
+        ]
+      },
+      "006a1bf2": {
+        "address": "006a1bf2",
+        "instruction": "JZ 0x006a1bfa",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JZ",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "006a1bf4": {
+        "address": "006a1bf4",
+        "instruction": "CMP EDI,dword ptr [ESP + 0x28]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "CMP",
+        "patterns_detected": [
+          "comparison"
+        ]
+      },
+      "006a1bf8": {
+        "address": "006a1bf8",
+        "instruction": "JZ 0x006a1bff",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JZ",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "006a1bfa": {
+        "address": "006a1bfa",
+        "instruction": "CALL 0x00bf6713",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "CALL",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "006a1bff": {
+        "address": "006a1bff",
+        "instruction": "CMP EBX,dword ptr [ESP + 0x2c]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "CMP",
+        "patterns_detected": [
+          "comparison"
+        ]
+      },
+      "006a1c03": {
+        "address": "006a1c03",
+        "instruction": "JZ 0x006a1c26",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JZ",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "006a1c05": {
+        "address": "006a1c05",
+        "instruction": "LEA ECX,[ESP + 0x20]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "LEA",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1c09": {
+        "address": "006a1c09",
+        "instruction": "CALL 0x0069ae50",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "CALL",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "006a1c0e": {
+        "address": "006a1c0e",
+        "instruction": "PUSH EBX",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "PUSH",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1c0f": {
+        "address": "006a1c0f",
+        "instruction": "PUSH EDI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "PUSH",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1c10": {
+        "address": "006a1c10",
+        "instruction": "LEA EDX,[ESP + 0x18]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "LEA",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1c14": {
+        "address": "006a1c14",
+        "instruction": "PUSH EDX",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "PUSH",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1c15": {
+        "address": "006a1c15",
+        "instruction": "MOV ECX,ESI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1c17": {
+        "address": "006a1c17",
+        "instruction": "CALL 0x006a07d0",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "CALL",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "006a1c1c": {
+        "address": "006a1c1c",
+        "instruction": "MOV EBX,dword ptr [ESP + 0x24]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1c20": {
+        "address": "006a1c20",
+        "instruction": "MOV EDI,dword ptr [ESP + 0x20]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1c24": {
+        "address": "006a1c24",
+        "instruction": "JMP 0x006a1bf0",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JMP",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "006a1c26": {
+        "address": "006a1c26",
+        "instruction": "MOV EAX,dword ptr [ESP + 0x1c]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1c2a": {
+        "address": "006a1c2a",
+        "instruction": "MOV dword ptr [EAX],EDI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1c2c": {
+        "address": "006a1c2c",
+        "instruction": "POP EDI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "POP",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1c2d": {
+        "address": "006a1c2d",
+        "instruction": "POP ESI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "POP",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1c2e": {
+        "address": "006a1c2e",
+        "instruction": "POP EBP",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "POP",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1c2f": {
+        "address": "006a1c2f",
+        "instruction": "MOV dword ptr [EAX + 0x4],EBX",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1c32": {
+        "address": "006a1c32",
+        "instruction": "POP EBX",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "POP",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1c33": {
+        "address": "006a1c33",
+        "instruction": "ADD ESP,0x8",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "ADD",
+        "patterns_detected": []
+      },
+      "006a1c36": {
+        "address": "006a1c36",
+        "instruction": "RET 0x14",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "RET",
+        "patterns_detected": []
+      },
+      "00bf6713": {
+        "address": "00bf6713",
+        "instruction": "XOR EAX,EAX",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "XOR",
+        "patterns_detected": []
+      },
+      "006a0aa0": {
+        "address": "006a0aa0",
+        "instruction": "PUSH EBX",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "PUSH",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "0069ae50": {
+        "address": "0069ae50",
+        "instruction": "PUSH ESI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "PUSH",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a07d0": {
+        "address": "006a07d0",
+        "instruction": "PUSH -0x1",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "PUSH",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1bef": {
+        "address": "006a1bef",
+        "error": "No instruction at address"
+      }
+    },
+    "typed_functions": {
+      "006a1b70": {
+        "schema": 1,
+        "complete": true,
+        "program": {
+          "path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": {
+            "space": "ram",
+            "offset": "00400000"
+          },
+          "default_address_space": "ram",
+          "project": {
+            "name": "bsp",
+            "location": "/C:/Users/sqz269/",
+            "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+          }
+        },
+        "query_address": {
+          "space": "ram",
+          "offset": "006a1b70"
+        },
+        "modification_number_before": "4780",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "006a1b70"
+            },
+            "length": 3,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "006a1b70"
+            },
+            "length": 3,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "006a1b70"
+            },
+            "length": 3,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "006a1b70"
+            },
+            "length": 3,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "006a1b73"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "006a1b73"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "function_at_query": {
+          "space": "ram",
+          "offset": "006a1b70"
+        },
+        "function_containing_query": {
+          "space": "ram",
+          "offset": "006a1b70"
+        },
+        "functions": [
+          {
+            "entry": {
+              "space": "ram",
+              "offset": "006a1b70"
+            },
+            "name": "STL_IntStringTree_EraseRange_N1C_006A1B70",
+            "no_return": false,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null,
+            "body": {
+              "range_count": 2,
+              "returned_range_count": 2,
+              "address_count": "200",
+              "complete": true,
+              "ranges": [
+                {
+                  "start": {
+                    "space": "ram",
+                    "offset": "006a1b70"
+                  },
+                  "end_inclusive": {
+                    "space": "ram",
+                    "offset": "006a1bee"
+                  },
+                  "length": "127"
+                },
+                {
+                  "start": {
+                    "space": "ram",
+                    "offset": "006a1bf0"
+                  },
+                  "end_inclusive": {
+                    "space": "ram",
+                    "offset": "006a1c38"
+                  },
+                  "length": "73"
+                }
+              ]
+            }
+          }
+        ],
+        "direct_call_targets": [],
+        "modification_number_after": "4780"
+      },
+      "006a07d0": {
+        "schema": 1,
+        "complete": true,
+        "program": {
+          "path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": {
+            "space": "ram",
+            "offset": "00400000"
+          },
+          "default_address_space": "ram",
+          "project": {
+            "name": "bsp",
+            "location": "/C:/Users/sqz269/",
+            "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+          }
+        },
+        "query_address": {
+          "space": "ram",
+          "offset": "006a07d0"
+        },
+        "modification_number_before": "4780",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "006a07d0"
+            },
+            "length": 2,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "006a07d0"
+            },
+            "length": 2,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "006a07d0"
+            },
+            "length": 2,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "006a07d0"
+            },
+            "length": 2,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "006a07d2"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "006a07d2"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "function_at_query": {
+          "space": "ram",
+          "offset": "006a07d0"
+        },
+        "function_containing_query": {
+          "space": "ram",
+          "offset": "006a07d0"
+        },
+        "functions": [
+          {
+            "entry": {
+              "space": "ram",
+              "offset": "006a07d0"
+            },
+            "name": "STL_Tree_EraseIter_IntKey_N1C_006a07d0",
+            "no_return": false,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null,
+            "body": {
+              "range_count": 1,
+              "returned_range_count": 1,
+              "address_count": "716",
+              "complete": true,
+              "ranges": [
+                {
+                  "start": {
+                    "space": "ram",
+                    "offset": "006a07d0"
+                  },
+                  "end_inclusive": {
+                    "space": "ram",
+                    "offset": "006a0a9b"
+                  },
+                  "length": "716"
+                }
+              ]
+            }
+          }
+        ],
+        "direct_call_targets": [],
+        "modification_number_after": "4780"
+      },
+      "006a0aa0": {
+        "schema": 1,
+        "complete": true,
+        "program": {
+          "path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": {
+            "space": "ram",
+            "offset": "00400000"
+          },
+          "default_address_space": "ram",
+          "project": {
+            "name": "bsp",
+            "location": "/C:/Users/sqz269/",
+            "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+          }
+        },
+        "query_address": {
+          "space": "ram",
+          "offset": "006a0aa0"
+        },
+        "modification_number_before": "4780",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "006a0aa0"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "006a0aa0"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "006a0aa0"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "006a0aa0"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "006a0aa1"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "006a0aa1"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "function_at_query": {
+          "space": "ram",
+          "offset": "006a0aa0"
+        },
+        "function_containing_query": {
+          "space": "ram",
+          "offset": "006a0aa0"
+        },
+        "functions": [
+          {
+            "entry": {
+              "space": "ram",
+              "offset": "006a0aa0"
+            },
+            "name": "STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0",
+            "no_return": false,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null,
+            "body": {
+              "range_count": 1,
+              "returned_range_count": 1,
+              "address_count": "82",
+              "complete": true,
+              "ranges": [
+                {
+                  "start": {
+                    "space": "ram",
+                    "offset": "006a0aa0"
+                  },
+                  "end_inclusive": {
+                    "space": "ram",
+                    "offset": "006a0af1"
+                  },
+                  "length": "82"
+                }
+              ]
+            }
+          }
+        ],
+        "direct_call_targets": [],
+        "modification_number_after": "4780"
+      },
+      "0069ae50": {
+        "schema": 1,
+        "complete": true,
+        "program": {
+          "path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": {
+            "space": "ram",
+            "offset": "00400000"
+          },
+          "default_address_space": "ram",
+          "project": {
+            "name": "bsp",
+            "location": "/C:/Users/sqz269/",
+            "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+          }
+        },
+        "query_address": {
+          "space": "ram",
+          "offset": "0069ae50"
+        },
+        "modification_number_before": "4780",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "0069ae50"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "0069ae50"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "0069ae50"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "0069ae50"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "0069ae51"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "0069ae51"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "function_at_query": {
+          "space": "ram",
+          "offset": "0069ae50"
+        },
+        "function_containing_query": {
+          "space": "ram",
+          "offset": "0069ae50"
+        },
+        "functions": [
+          {
+            "entry": {
+              "space": "ram",
+              "offset": "0069ae50"
+            },
+            "name": "STL_TreeIter_Inc_0069ae50",
+            "no_return": false,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null,
+            "body": {
+              "range_count": 1,
+              "returned_range_count": 1,
+              "address_count": "99",
+              "complete": true,
+              "ranges": [
+                {
+                  "start": {
+                    "space": "ram",
+                    "offset": "0069ae50"
+                  },
+                  "end_inclusive": {
+                    "space": "ram",
+                    "offset": "0069aeb2"
+                  },
+                  "length": "99"
+                }
+              ]
+            }
+          }
+        ],
+        "direct_call_targets": [],
+        "modification_number_after": "4780"
+      }
+    },
+    "outside_NOP": {
+      "address": "006a1bef",
+      "hex": "90",
+      "defined_instruction": false,
+      "promoted": false
+    },
+    "source_phase_typed": {
+      "schema": 1,
+      "endpoint": "get_flow_metadata",
+      "read_only": true,
+      "utc": "2026-10-16T04:35:50.924445+00:00",
+      "requested_addresses": [
+        "006a1b70"
+      ],
+      "max_ranges": 4096,
+      "verified_before": [
+        {
+          "project_name": "bsp",
+          "current_folder": "/",
+          "folders": [],
+          "files": [
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "content_type": "Program",
+              "version": 5786,
+              "is_read_only": false,
+              "is_versioned": false
+            }
+          ]
+        },
+        {
+          "name": "battlestationspacific.exe",
+          "path": "/battlestationspacific.exe",
+          "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+          "executable_format": "Portable Executable (PE)",
+          "language": "x86:LE:32:default",
+          "compiler": "windows",
+          "address_size": 32,
+          "image_base": "00400000",
+          "min_address": "00400000",
+          "max_address": "ffdfffff",
+          "memory_size": 14876380,
+          "function_count": 76774,
+          "symbol_count": 160610,
+          "data_type_count": 795,
+          "creation_date": "Mon May 04 16:56:25 PDT 2026",
+          "memory_block_count": 6,
+          "address_spaces": [
+            {
+              "name": "ram",
+              "start": "00000000",
+              "end": "ffffffff",
+              "size": 4294967296,
+              "addressable_unit_size": 1,
+              "size_bytes": 4294967296,
+              "address_size_bits": 32,
+              "is_default": true
+            }
+          ],
+          "has_multiple_address_spaces": false
+        }
+      ],
+      "verified_after": [
+        {
+          "project_name": "bsp",
+          "current_folder": "/",
+          "folders": [],
+          "files": [
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "content_type": "Program",
+              "version": 5786,
+              "is_read_only": false,
+              "is_versioned": false
+            }
+          ]
+        },
+        {
+          "name": "battlestationspacific.exe",
+          "path": "/battlestationspacific.exe",
+          "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+          "executable_format": "Portable Executable (PE)",
+          "language": "x86:LE:32:default",
+          "compiler": "windows",
+          "address_size": 32,
+          "image_base": "00400000",
+          "min_address": "00400000",
+          "max_address": "ffdfffff",
+          "memory_size": 14876380,
+          "function_count": 76774,
+          "symbol_count": 160610,
+          "data_type_count": 795,
+          "creation_date": "Mon May 04 16:56:25 PDT 2026",
+          "memory_block_count": 6,
+          "address_spaces": [
+            {
+              "name": "ram",
+              "start": "00000000",
+              "end": "ffffffff",
+              "size": 4294967296,
+              "addressable_unit_size": 1,
+              "size_bytes": 4294967296,
+              "address_size_bits": 32,
+              "is_default": true
+            }
+          ],
+          "has_multiple_address_spaces": false
+        }
+      ],
+      "responses": [
+        {
+          "address": "006a1b70",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=006a1b70&program=battlestationspacific.exe&max_ranges=4096",
+          "http_status": 200,
+          "transport_error": null,
+          "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"006a1b70\"},\"modification_number_before\":\"4795\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"006a1b70\"},\"length\":3,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"006a1b70\"},\"length\":3,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"006a1b70\"},\"length\":3,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"006a1b70\"},\"length\":3,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"006a1b73\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"006a1b73\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"006a1b70\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"006a1b70\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"006a1b70\"},\"name\":\"STL_IntStringTree_EraseRange_N1C_006A1B70\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":2,\"returned_range_count\":2,\"address_count\":\"200\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"006a1b70\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"006a1bee\"},\"length\":\"127\"},{\"start\":{\"space\":\"ram\",\"offset\":\"006a1bf0\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"006a1c38\"},\"length\":\"73\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"4795\"}",
+          "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDZhMWI3MCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjQ3OTUiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDZhMWI3MCJ9LCJsZW5ndGgiOjMsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2YTFiNzAifSwibGVuZ3RoIjozLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2YTFiNzAifSwibGVuZ3RoIjozLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDZhMWI3MCJ9LCJsZW5ndGgiOjMsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IkZBTExfVEhST1VHSCIsImlzX2NhbGwiOmZhbHNlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6ZmFsc2UsImlzX3Rlcm1pbmFsIjpmYWxzZX0sImVmZmVjdGl2ZV9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJkZWZhdWx0X2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2YTFiNzMifSwiZWZmZWN0aXZlX2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2YTFiNzMifSwiZmFsbHRocm91Z2hfb3ZlcnJpZGRlbiI6ZmFsc2UsImRlZmF1bHRfdGFyZ2V0cyI6W10sImVmZmVjdGl2ZV90YXJnZXRzIjpbXX0sImZ1bmN0aW9uX2F0X3F1ZXJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2YTFiNzAifSwiZnVuY3Rpb25fY29udGFpbmluZ19xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwNmExYjcwIn0sImZ1bmN0aW9ucyI6W3siZW50cnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDZhMWI3MCJ9LCJuYW1lIjoiU1RMX0ludFN0cmluZ1RyZWVfRXJhc2VSYW5nZV9OMUNfMDA2QTFCNzAiLCJub19yZXR1cm4iOmZhbHNlLCJpc190aHVuayI6ZmFsc2UsInRodW5rX3RhcmdldF9yZWN1cnNpdmUiOmZhbHNlLCJkaXJlY3RfdGh1bmtfdGFyZ2V0IjpudWxsLCJib2R5Ijp7InJhbmdlX2NvdW50IjoyLCJyZXR1cm5lZF9yYW5nZV9jb3VudCI6MiwiYWRkcmVzc19jb3VudCI6IjIwMCIsImNvbXBsZXRlIjp0cnVlLCJyYW5nZXMiOlt7InN0YXJ0Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2YTFiNzAifSwiZW5kX2luY2x1c2l2ZSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwNmExYmVlIn0sImxlbmd0aCI6IjEyNyJ9LHsic3RhcnQiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDZhMWJmMCJ9LCJlbmRfaW5jbHVzaXZlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2YTFjMzgifSwibGVuZ3RoIjoiNzMifV19fV0sImRpcmVjdF9jYWxsX3RhcmdldHMiOltdLCJtb2RpZmljYXRpb25fbnVtYmVyX2FmdGVyIjoiNDc5NSJ9",
+          "raw_sha256": "6b716570b13859450d447bfdfdf824e558bbc40f06d9a643424c12b502438143"
+        }
+      ],
+      "validation": {
+        "accepted": true,
+        "state": "accepted",
+        "errors": []
+      },
+      "modification_number": "4795"
+    },
+    "Source_phase_function": {
+      "entry": {
+        "space": "ram",
+        "offset": "006a1b70"
+      },
+      "name": "STL_IntStringTree_EraseRange_N1C_006A1B70",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 2,
+        "returned_range_count": 2,
+        "address_count": "200",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "006a1b70"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "006a1bee"
+            },
+            "length": "127"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "006a1bf0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "006a1c38"
+            },
+            "length": "73"
+          }
+        ]
+      }
+    },
+    "source_baseline": "ce76166caeee3f71479775408198aad9febbb33a",
+    "readiness_sha256": "660f14f7705bdc0991e4dbce96f175b5351421d066b9b44f9755b809e3517f2a",
+    "all36provider_fingerprints_and_parent_receipts_unchanged": true,
+    "transfer_proof": [
+      {
+        "address": "006a1b8a",
+        "function": "006a1b70",
+        "kind": "call",
+        "native_target": "00bf6713"
+      },
+      {
+        "address": "006a1ba6",
+        "function": "006a1b70",
+        "kind": "call",
+        "native_target": "00bf6713"
+      },
+      {
+        "address": "006a1bba",
+        "function": "006a1b70",
+        "kind": "call",
+        "native_target": "006a0aa0"
+      },
+      {
+        "address": "006a1bfa",
+        "function": "006a1b70",
+        "kind": "call",
+        "native_target": "00bf6713"
+      },
+      {
+        "address": "006a1c09",
+        "function": "006a1b70",
+        "kind": "call",
+        "native_target": "0069ae50"
+      },
+      {
+        "address": "006a1c17",
+        "function": "006a1b70",
+        "kind": "call",
+        "native_target": "006a07d0"
+      }
+    ]
+  },
+  "provider_fingerprints": [
+    {
+      "path": "include/bsp/native_hardware_layout_tree.hpp",
+      "LF_sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_input_device_tree_erase.hpp",
+      "LF_sha256": "a89dbab7ddc924686cc8bf7dfaaf6c5d0aee493e7cd749eaad3b6151895ac225",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_input_device_tree_rotations.hpp",
+      "LF_sha256": "137be90cdd3e57aa24f270b294c4fd657fd024097813d79043cca3a5c17ce04b",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_input_int_string_subtree.hpp",
+      "LF_sha256": "fe1845af88810721748455447d9b4de861d8a5cce74568f0ce52a323ffba9009",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_input_int_string_tree_erase.hpp",
+      "LF_sha256": "cea7c46fcc0b28ea2626a7bbc52a220c1ab10e8f8cad9631030eb4f5c82a50ee",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_input_int_string_tree_leaves.hpp",
+      "LF_sha256": "cc38b1ef93856547740db5fec81507da6a4d3985797a6f185bd3ed8d0083aa0e",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_input_scalar_tree_iterator.hpp",
+      "LF_sha256": "66f429acaceb01630e0d05fa578f1a26359757eb8f581d692a0efb8934259650",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_input_settings_tree_cleanup.hpp",
+      "LF_sha256": "db6fdb5d7c26f1bd416693464823e29c97bce248e987da5d033d626b4603c875",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_int_pointer_tree18_erase.hpp",
+      "LF_sha256": "86571aedc38dc363aad43efffc8e7d23525181f505885ae72c8fd17a8e99df96",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_int_pointer_tree18_leaves.hpp",
+      "LF_sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "LF_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "LF_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_legacy_sbo_string.hpp",
+      "LF_sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "LF_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "LF_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "LF_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_tree_out_of_range_exception.hpp",
+      "LF_sha256": "a35ad6906acf09d0814c5142856fe4c0adf91b86f3a8373eb8d26fb3adf11fcf",
+      "matches_published_Main": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "LF_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_hardware_layout_tree.cpp",
+      "LF_sha256": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_input_device_tree_erase.cpp",
+      "LF_sha256": "900d25fdef248aa59d2ac017f26bdc4079c30255316daa9a187cf4611349005b",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_input_device_tree_rotations.cpp",
+      "LF_sha256": "231cfb3ec0b2080b274acb12bbebacd5afed90ad12effee45f9f6a318adea415",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_input_int_string_subtree.cpp",
+      "LF_sha256": "3ca0f41126b1890e0519a7c99961f3feab3a0e6bcf1bcb708837ab9ef835aa64",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_input_int_string_tree_erase.cpp",
+      "LF_sha256": "e92d08b28e44e8f089b1f1d276b3fccdb58436dae2e32587ad3a8ddeeb68d8fe",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_input_int_string_tree_leaves.cpp",
+      "LF_sha256": "11c72b8fb99909f1b70725a7f2d92908cabb762152141c199378a7c7cd8fcfa9",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_input_scalar_tree_iterator.cpp",
+      "LF_sha256": "8a717044cd975de0f3b2021858b0f1bb8ea47c4c5050e03c08d0029604ee6246",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_input_settings_tree_cleanup.cpp",
+      "LF_sha256": "d8be9c5d9613ee258a06fe42a6696269a13a60f53a8a4e1d75aa2e4292feab30",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_int_pointer_tree18_erase.cpp",
+      "LF_sha256": "0473413cc5ba9b528942ebdf732016da19a65d6f9a15cfae4c679eeafea61bbb",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_int_pointer_tree18_leaves.cpp",
+      "LF_sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "LF_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "LF_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_legacy_sbo_string.cpp",
+      "LF_sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_string.cpp",
+      "LF_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "LF_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "LF_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/native_tree_out_of_range_exception.cpp",
+      "LF_sha256": "5d95dbe3af41c5338706f0c77928cefc9cc13ee5e8ec0cd606fc0cd85a846844",
+      "matches_published_Main": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "LF_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "matches_published_Main": true
+    }
+  ],
+  "preserved_parent_receipts": [
+    {
+      "path": "reports/oct15_input_int_string_tree_erase.json",
+      "sha256": "6c704cc197738ccde0214be0b6a449f2d54a8aee2a5c1056838393789d82bcd8"
+    },
+    {
+      "path": "local/oct15_int_string_erase_native_audit.json",
+      "sha256": "c5fa6852b5cbeaced06e190dcde98c6027236a4afed1684ced69786fecf84468"
+    },
+    {
+      "path": "local/oct15_input_int_string_tree_erase_cmake_coff_review.json",
+      "sha256": "1a13ef300abc8f50c36c3d8929c4e1f267cbe571584c004f7ad4632ff4902eb4"
+    },
+    {
+      "path": "local/oct15_input_int_string_tree_erase_build.txt",
+      "sha256": "4f2b10826bbcc09cd9a6a6e465bc4026a010814ce4e693ac65a8bc061882fbea"
+    },
+    {
+      "path": "local/oct15_input_int_string_partial_erase_readiness.json",
+      "sha256": "c2909630344ffd06fd27d912ff4c20312019c7b8c39e50ef9202dcc35971255d"
+    },
+    {
+      "path": "local/oct15_input_controller_payload_cleanup_readiness.json",
+      "sha256": "72fb2163345c0e27c93bf616f2fb982dff7694671844451588f420bd5a2766f8"
+    },
+    {
+      "path": "local/oct15_input_controller_pair_source_control_plan.json",
+      "sha256": "adca718fd8002220449addf763cbb4078b867fcd2dbefed31eb496f9f6da4ab5"
+    }
+  ],
+  "actual_CMake_COFF_review": {
+    "scope": "full actual CMake Release object",
+    "utc": "2026-10-16T04:36:19.701269+00:00",
+    "object": "build/win32/bsp_core.dir/Release/native_input_int_string_tree_range.obj",
+    "object_sha256": "c5687100a715ff682a59eab713e7e16c371ba0572b30627b4fafdc914dc2c17a",
+    "capture": "local/oct15_input_int_string_tree_range_cmake_coff.txt",
+    "capture_sha256": "05947d94258f00d70acfd0eda1c143f63290c1366bbc5bd0d36b9c35c68e7c83",
+    "sections": [
+      {
+        "number": 1,
+        "name": ".drectve",
+        "bytes": 47,
+        "hex": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+        "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab",
+        "flags": "00100a00",
+        "functions": [],
+        "relocations": []
+      },
+      {
+        "number": 2,
+        "name": ".debug$S",
+        "bytes": 212,
+        "hex": "04000000f1000000c700000089000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d6f637431355f737472696e675f66696c6c5c6275696c645c77696e33325c6273705f636f72652e6469725c52656c656173655c6e61746976655f696e7075745f696e745f737472696e675f747265655f72616e67652e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c65720000",
+        "sha256": "32d6f2334711652bd88b4ad3159f05e736b647be69dc84d895f06bbe8ccfb945",
+        "flags": "42100040",
+        "functions": [],
+        "relocations": []
+      },
+      {
+        "number": 3,
+        "name": ".text$mn",
+        "bytes": 8,
+        "hex": "558bec8b45085dc3",
+        "sha256": "d5a2b635b0bbb254914f2641e4508361a0c95686c0422dcebeb3abbcca7f1d2b",
+        "flags": "60501020",
+        "functions": [
+          {
+            "index": 23,
+            "name": "?address@?A0x3b72dff5@bsp@@YAIPBX@Z",
+            "value": 0,
+            "section": 3,
+            "type": 32,
+            "storage_class": 3,
+            "aux_count": 0
+          }
+        ],
+        "relocations": [],
+        "instructions": [
+          {
+            "offset": 0,
+            "size": 1,
+            "hex": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "size": 2,
+            "hex": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "size": 3,
+            "hex": "8b4508",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 6,
+            "size": 1,
+            "hex": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 7,
+            "size": 1,
+            "hex": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      },
+      {
+        "number": 4,
+        "name": ".text$mn",
+        "bytes": 220,
+        "hex": "558bec83ec0c53568b750c578bf98b47048b008945fc85f674043bf77408e8000000008b45fc8b5d103bd875638b45148b4f04894dfc85c074043bc77408e8000000008b4dfc8b45183bc175438b470433d2ff751c8bcf8b400450e8000000008b47048940048b4704c747080000000089008b47048940088b47048b088b450889385f5e8948045b8be55dc21800669085f674078b45143bf07405e8000000008b45183bd8742433d28d4d0ce800000000ff751c8d45f433d25356508bcfe8000000008b5d108b750cebc58b45085f89305e8958045b8be55dc21800",
+        "sha256": "053b7756e2493ec778cb0795c444e8e8cb5b9d59210fb1f410fe47e4c90e0406",
+        "flags": "60501020",
+        "functions": [
+          {
+            "index": 17,
+            "name": "?erase_native_input_int_string_tree_range_006a1b70@bsp@@YIPAUNativeInputIntStringTreeIterator@1@PAXIPAU21@U21@2AAUNativeStringRawPoolContext@1@@Z",
+            "value": 0,
+            "section": 4,
+            "type": 32,
+            "storage_class": 2,
+            "aux_count": 0
+          }
+        ],
+        "relocations": [
+          {
+            "offset": 31,
+            "type": 20,
+            "symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+            "symbol_index": 20
+          },
+          {
+            "offset": 63,
+            "type": 20,
+            "symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+            "symbol_index": 20
+          },
+          {
+            "offset": 92,
+            "type": 20,
+            "symbol": "?destroy_native_input_int_string_subtree_006a0aa0@bsp@@YIXPAXI0AAUNativeStringRawPoolContext@1@@Z",
+            "symbol_index": 18
+          },
+          {
+            "offset": 156,
+            "type": 20,
+            "symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+            "symbol_index": 20
+          },
+          {
+            "offset": 173,
+            "type": 20,
+            "symbol": "?increment_native_input_int_string_tree_iterator_0069ae50@bsp@@YIXPAXI@Z",
+            "symbol_index": 19
+          },
+          {
+            "offset": 191,
+            "type": 20,
+            "symbol": "?erase_native_input_int_string_tree_iterator_006a07d0@bsp@@YIPAUNativeInputIntStringTreeIterator@1@PAXIPAU21@U21@AAUNativeStringRawPoolContext@1@@Z",
+            "symbol_index": 16
+          }
+        ],
+        "instructions": [
+          {
+            "offset": 0,
+            "size": 1,
+            "hex": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "size": 2,
+            "hex": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "size": 3,
+            "hex": "83ec0c",
+            "mnemonic": "sub",
+            "operands": "esp, 0xc"
+          },
+          {
+            "offset": 6,
+            "size": 1,
+            "hex": "53",
+            "mnemonic": "push",
+            "operands": "ebx"
+          },
+          {
+            "offset": 7,
+            "size": 1,
+            "hex": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "offset": 8,
+            "size": 3,
+            "hex": "8b750c",
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [ebp + 0xc]"
+          },
+          {
+            "offset": 11,
+            "size": 1,
+            "hex": "57",
+            "mnemonic": "push",
+            "operands": "edi"
+          },
+          {
+            "offset": 12,
+            "size": 2,
+            "hex": "8bf9",
+            "mnemonic": "mov",
+            "operands": "edi, ecx"
+          },
+          {
+            "offset": 14,
+            "size": 3,
+            "hex": "8b4704",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi + 4]"
+          },
+          {
+            "offset": 17,
+            "size": 2,
+            "hex": "8b00",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax]"
+          },
+          {
+            "offset": 19,
+            "size": 3,
+            "hex": "8945fc",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 4], eax"
+          },
+          {
+            "offset": 22,
+            "size": 2,
+            "hex": "85f6",
+            "mnemonic": "test",
+            "operands": "esi, esi"
+          },
+          {
+            "offset": 24,
+            "size": 2,
+            "hex": "7404",
+            "mnemonic": "je",
+            "operands": "0x1e"
+          },
+          {
+            "offset": 26,
+            "size": 2,
+            "hex": "3bf7",
+            "mnemonic": "cmp",
+            "operands": "esi, edi"
+          },
+          {
+            "offset": 28,
+            "size": 2,
+            "hex": "7408",
+            "mnemonic": "je",
+            "operands": "0x26"
+          },
+          {
+            "offset": 30,
+            "size": 5,
+            "hex": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x23"
+          },
+          {
+            "offset": 35,
+            "size": 3,
+            "hex": "8b45fc",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp - 4]"
+          },
+          {
+            "offset": 38,
+            "size": 3,
+            "hex": "8b5d10",
+            "mnemonic": "mov",
+            "operands": "ebx, dword ptr [ebp + 0x10]"
+          },
+          {
+            "offset": 41,
+            "size": 2,
+            "hex": "3bd8",
+            "mnemonic": "cmp",
+            "operands": "ebx, eax"
+          },
+          {
+            "offset": 43,
+            "size": 2,
+            "hex": "7563",
+            "mnemonic": "jne",
+            "operands": "0x90"
+          },
+          {
+            "offset": 45,
+            "size": 3,
+            "hex": "8b4514",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 0x14]"
+          },
+          {
+            "offset": 48,
+            "size": 3,
+            "hex": "8b4f04",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [edi + 4]"
+          },
+          {
+            "offset": 51,
+            "size": 3,
+            "hex": "894dfc",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 4], ecx"
+          },
+          {
+            "offset": 54,
+            "size": 2,
+            "hex": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "offset": 56,
+            "size": 2,
+            "hex": "7404",
+            "mnemonic": "je",
+            "operands": "0x3e"
+          },
+          {
+            "offset": 58,
+            "size": 2,
+            "hex": "3bc7",
+            "mnemonic": "cmp",
+            "operands": "eax, edi"
+          },
+          {
+            "offset": 60,
+            "size": 2,
+            "hex": "7408",
+            "mnemonic": "je",
+            "operands": "0x46"
+          },
+          {
+            "offset": 62,
+            "size": 5,
+            "hex": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x43"
+          },
+          {
+            "offset": 67,
+            "size": 3,
+            "hex": "8b4dfc",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp - 4]"
+          },
+          {
+            "offset": 70,
+            "size": 3,
+            "hex": "8b4518",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 0x18]"
+          },
+          {
+            "offset": 73,
+            "size": 2,
+            "hex": "3bc1",
+            "mnemonic": "cmp",
+            "operands": "eax, ecx"
+          },
+          {
+            "offset": 75,
+            "size": 2,
+            "hex": "7543",
+            "mnemonic": "jne",
+            "operands": "0x90"
+          },
+          {
+            "offset": 77,
+            "size": 3,
+            "hex": "8b4704",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi + 4]"
+          },
+          {
+            "offset": 80,
+            "size": 2,
+            "hex": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "offset": 82,
+            "size": 3,
+            "hex": "ff751c",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 0x1c]"
+          },
+          {
+            "offset": 85,
+            "size": 2,
+            "hex": "8bcf",
+            "mnemonic": "mov",
+            "operands": "ecx, edi"
+          },
+          {
+            "offset": 87,
+            "size": 3,
+            "hex": "8b4004",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax + 4]"
+          },
+          {
+            "offset": 90,
+            "size": 1,
+            "hex": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "offset": 91,
+            "size": 5,
+            "hex": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x60"
+          },
+          {
+            "offset": 96,
+            "size": 3,
+            "hex": "8b4704",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi + 4]"
+          },
+          {
+            "offset": 99,
+            "size": 3,
+            "hex": "894004",
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 4], eax"
+          },
+          {
+            "offset": 102,
+            "size": 3,
+            "hex": "8b4704",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi + 4]"
+          },
+          {
+            "offset": 105,
+            "size": 7,
+            "hex": "c7470800000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [edi + 8], 0"
+          },
+          {
+            "offset": 112,
+            "size": 2,
+            "hex": "8900",
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax], eax"
+          },
+          {
+            "offset": 114,
+            "size": 3,
+            "hex": "8b4704",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi + 4]"
+          },
+          {
+            "offset": 117,
+            "size": 3,
+            "hex": "894008",
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 8], eax"
+          },
+          {
+            "offset": 120,
+            "size": 3,
+            "hex": "8b4704",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi + 4]"
+          },
+          {
+            "offset": 123,
+            "size": 2,
+            "hex": "8b08",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [eax]"
+          },
+          {
+            "offset": 125,
+            "size": 3,
+            "hex": "8b4508",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 128,
+            "size": 2,
+            "hex": "8938",
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax], edi"
+          },
+          {
+            "offset": 130,
+            "size": 1,
+            "hex": "5f",
+            "mnemonic": "pop",
+            "operands": "edi"
+          },
+          {
+            "offset": 131,
+            "size": 1,
+            "hex": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "offset": 132,
+            "size": 3,
+            "hex": "894804",
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 4], ecx"
+          },
+          {
+            "offset": 135,
+            "size": 1,
+            "hex": "5b",
+            "mnemonic": "pop",
+            "operands": "ebx"
+          },
+          {
+            "offset": 136,
+            "size": 2,
+            "hex": "8be5",
+            "mnemonic": "mov",
+            "operands": "esp, ebp"
+          },
+          {
+            "offset": 138,
+            "size": 1,
+            "hex": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 139,
+            "size": 3,
+            "hex": "c21800",
+            "mnemonic": "ret",
+            "operands": "0x18"
+          },
+          {
+            "offset": 142,
+            "size": 2,
+            "hex": "6690",
+            "mnemonic": "nop",
+            "operands": ""
+          },
+          {
+            "offset": 144,
+            "size": 2,
+            "hex": "85f6",
+            "mnemonic": "test",
+            "operands": "esi, esi"
+          },
+          {
+            "offset": 146,
+            "size": 2,
+            "hex": "7407",
+            "mnemonic": "je",
+            "operands": "0x9b"
+          },
+          {
+            "offset": 148,
+            "size": 3,
+            "hex": "8b4514",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 0x14]"
+          },
+          {
+            "offset": 151,
+            "size": 2,
+            "hex": "3bf0",
+            "mnemonic": "cmp",
+            "operands": "esi, eax"
+          },
+          {
+            "offset": 153,
+            "size": 2,
+            "hex": "7405",
+            "mnemonic": "je",
+            "operands": "0xa0"
+          },
+          {
+            "offset": 155,
+            "size": 5,
+            "hex": "e800000000",
+            "mnemonic": "call",
+            "operands": "0xa0"
+          },
+          {
+            "offset": 160,
+            "size": 3,
+            "hex": "8b4518",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 0x18]"
+          },
+          {
+            "offset": 163,
+            "size": 2,
+            "hex": "3bd8",
+            "mnemonic": "cmp",
+            "operands": "ebx, eax"
+          },
+          {
+            "offset": 165,
+            "size": 2,
+            "hex": "7424",
+            "mnemonic": "je",
+            "operands": "0xcb"
+          },
+          {
+            "offset": 167,
+            "size": 2,
+            "hex": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "offset": 169,
+            "size": 3,
+            "hex": "8d4d0c",
+            "mnemonic": "lea",
+            "operands": "ecx, [ebp + 0xc]"
+          },
+          {
+            "offset": 172,
+            "size": 5,
+            "hex": "e800000000",
+            "mnemonic": "call",
+            "operands": "0xb1"
+          },
+          {
+            "offset": 177,
+            "size": 3,
+            "hex": "ff751c",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 0x1c]"
+          },
+          {
+            "offset": 180,
+            "size": 3,
+            "hex": "8d45f4",
+            "mnemonic": "lea",
+            "operands": "eax, [ebp - 0xc]"
+          },
+          {
+            "offset": 183,
+            "size": 2,
+            "hex": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "offset": 185,
+            "size": 1,
+            "hex": "53",
+            "mnemonic": "push",
+            "operands": "ebx"
+          },
+          {
+            "offset": 186,
+            "size": 1,
+            "hex": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "offset": 187,
+            "size": 1,
+            "hex": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "offset": 188,
+            "size": 2,
+            "hex": "8bcf",
+            "mnemonic": "mov",
+            "operands": "ecx, edi"
+          },
+          {
+            "offset": 190,
+            "size": 5,
+            "hex": "e800000000",
+            "mnemonic": "call",
+            "operands": "0xc3"
+          },
+          {
+            "offset": 195,
+            "size": 3,
+            "hex": "8b5d10",
+            "mnemonic": "mov",
+            "operands": "ebx, dword ptr [ebp + 0x10]"
+          },
+          {
+            "offset": 198,
+            "size": 3,
+            "hex": "8b750c",
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [ebp + 0xc]"
+          },
+          {
+            "offset": 201,
+            "size": 2,
+            "hex": "ebc5",
+            "mnemonic": "jmp",
+            "operands": "0x90"
+          },
+          {
+            "offset": 203,
+            "size": 3,
+            "hex": "8b4508",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 206,
+            "size": 1,
+            "hex": "5f",
+            "mnemonic": "pop",
+            "operands": "edi"
+          },
+          {
+            "offset": 207,
+            "size": 2,
+            "hex": "8930",
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax], esi"
+          },
+          {
+            "offset": 209,
+            "size": 1,
+            "hex": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "offset": 210,
+            "size": 3,
+            "hex": "895804",
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 4], ebx"
+          },
+          {
+            "offset": 213,
+            "size": 1,
+            "hex": "5b",
+            "mnemonic": "pop",
+            "operands": "ebx"
+          },
+          {
+            "offset": 214,
+            "size": 2,
+            "hex": "8be5",
+            "mnemonic": "mov",
+            "operands": "esp, ebp"
+          },
+          {
+            "offset": 216,
+            "size": 1,
+            "hex": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 217,
+            "size": 3,
+            "hex": "c21800",
+            "mnemonic": "ret",
+            "operands": "0x18"
+          }
+        ]
+      },
+      {
+        "number": 5,
+        "name": ".text$mn",
+        "bytes": 8,
+        "hex": "558bec8b45085dc3",
+        "sha256": "d5a2b635b0bbb254914f2641e4508361a0c95686c0422dcebeb3abbcca7f1d2b",
+        "flags": "60501020",
+        "functions": [
+          {
+            "index": 24,
+            "name": "?pointer@?A0x3b72dff5@bsp@@YAPAXI@Z",
+            "value": 0,
+            "section": 5,
+            "type": 32,
+            "storage_class": 3,
+            "aux_count": 0
+          }
+        ],
+        "relocations": [],
+        "instructions": [
+          {
+            "offset": 0,
+            "size": 1,
+            "hex": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "size": 2,
+            "hex": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "size": 3,
+            "hex": "8b4508",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 6,
+            "size": 1,
+            "hex": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 7,
+            "size": 1,
+            "hex": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      },
+      {
+        "number": 6,
+        "name": ".text$mn",
+        "bytes": 17,
+        "hex": "558bec8b4d0c8b45088b55108914085dc3",
+        "sha256": "cdb70beb04767abdb190d475687cb3d73f5a60446387ee001a9169bd0ce2b7eb",
+        "flags": "60501020",
+        "functions": [
+          {
+            "index": 22,
+            "name": "?put@?A0x3b72dff5@bsp@@YAXPAXII@Z",
+            "value": 0,
+            "section": 6,
+            "type": 32,
+            "storage_class": 3,
+            "aux_count": 0
+          }
+        ],
+        "relocations": [],
+        "instructions": [
+          {
+            "offset": 0,
+            "size": 1,
+            "hex": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "size": 2,
+            "hex": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "size": 3,
+            "hex": "8b4d0c",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp + 0xc]"
+          },
+          {
+            "offset": 6,
+            "size": 3,
+            "hex": "8b4508",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 9,
+            "size": 3,
+            "hex": "8b5510",
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [ebp + 0x10]"
+          },
+          {
+            "offset": 12,
+            "size": 3,
+            "hex": "891408",
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + ecx], edx"
+          },
+          {
+            "offset": 15,
+            "size": 1,
+            "hex": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 16,
+            "size": 1,
+            "hex": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      },
+      {
+        "number": 7,
+        "name": ".text$mn",
+        "bytes": 14,
+        "hex": "558bec8b4d0c8b45088b04085dc3",
+        "sha256": "968c17a0375a47c786e584c230018ee9ddbb72bfbd8b42d8ffe49fefcecff650",
+        "flags": "60501020",
+        "functions": [
+          {
+            "index": 21,
+            "name": "?word@?A0x3b72dff5@bsp@@YAIPBXI@Z",
+            "value": 0,
+            "section": 7,
+            "type": 32,
+            "storage_class": 3,
+            "aux_count": 0
+          }
+        ],
+        "relocations": [],
+        "instructions": [
+          {
+            "offset": 0,
+            "size": 1,
+            "hex": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "size": 2,
+            "hex": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "size": 3,
+            "hex": "8b4d0c",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp + 0xc]"
+          },
+          {
+            "offset": 6,
+            "size": 3,
+            "hex": "8b4508",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 9,
+            "size": 3,
+            "hex": "8b0408",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax + ecx]"
+          },
+          {
+            "offset": 12,
+            "size": 1,
+            "hex": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 13,
+            "size": 1,
+            "hex": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      },
+      {
+        "number": 8,
+        "name": ".chks64",
+        "bytes": 64,
+        "hex": "76f6abfb5648dec732d6f2334711652bd5a2b635b0bbb254053b7756e2493ec7d5a2b635b0bbb254cdb70beb04767abd968c17a0375a47c70000000000000000",
+        "sha256": "90ee8077f8a7c23006bb5268af05d1299721752abf858b9746a45aded26f0bb9",
+        "flags": "00000a00",
+        "functions": [],
+        "relocations": []
+      }
+    ],
+    "symbols": [
+      {
+        "index": 0,
+        "name": "@comp.id",
+        "value": 17141140,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "aux_count": 0
+      },
+      {
+        "index": 1,
+        "name": "@feat.00",
+        "value": 2147549585,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "aux_count": 0
+      },
+      {
+        "index": 2,
+        "name": ".drectve",
+        "value": 0,
+        "section": 1,
+        "type": 0,
+        "storage_class": 3,
+        "aux_count": 1
+      },
+      {
+        "index": 4,
+        "name": ".debug$S",
+        "value": 0,
+        "section": 2,
+        "type": 0,
+        "storage_class": 3,
+        "aux_count": 1
+      },
+      {
+        "index": 6,
+        "name": ".text$mn",
+        "value": 0,
+        "section": 3,
+        "type": 0,
+        "storage_class": 3,
+        "aux_count": 1
+      },
+      {
+        "index": 8,
+        "name": ".text$mn",
+        "value": 0,
+        "section": 4,
+        "type": 0,
+        "storage_class": 3,
+        "aux_count": 1
+      },
+      {
+        "index": 10,
+        "name": ".text$mn",
+        "value": 0,
+        "section": 5,
+        "type": 0,
+        "storage_class": 3,
+        "aux_count": 1
+      },
+      {
+        "index": 12,
+        "name": ".text$mn",
+        "value": 0,
+        "section": 6,
+        "type": 0,
+        "storage_class": 3,
+        "aux_count": 1
+      },
+      {
+        "index": 14,
+        "name": ".text$mn",
+        "value": 0,
+        "section": 7,
+        "type": 0,
+        "storage_class": 3,
+        "aux_count": 1
+      },
+      {
+        "index": 16,
+        "name": "?erase_native_input_int_string_tree_iterator_006a07d0@bsp@@YIPAUNativeInputIntStringTreeIterator@1@PAXIPAU21@U21@AAUNativeStringRawPoolContext@1@@Z",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage_class": 2,
+        "aux_count": 0
+      },
+      {
+        "index": 17,
+        "name": "?erase_native_input_int_string_tree_range_006a1b70@bsp@@YIPAUNativeInputIntStringTreeIterator@1@PAXIPAU21@U21@2AAUNativeStringRawPoolContext@1@@Z",
+        "value": 0,
+        "section": 4,
+        "type": 32,
+        "storage_class": 2,
+        "aux_count": 0
+      },
+      {
+        "index": 18,
+        "name": "?destroy_native_input_int_string_subtree_006a0aa0@bsp@@YIXPAXI0AAUNativeStringRawPoolContext@1@@Z",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage_class": 2,
+        "aux_count": 0
+      },
+      {
+        "index": 19,
+        "name": "?increment_native_input_int_string_tree_iterator_0069ae50@bsp@@YIXPAXI@Z",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage_class": 2,
+        "aux_count": 0
+      },
+      {
+        "index": 20,
+        "name": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage_class": 2,
+        "aux_count": 0
+      },
+      {
+        "index": 21,
+        "name": "?word@?A0x3b72dff5@bsp@@YAIPBXI@Z",
+        "value": 0,
+        "section": 7,
+        "type": 32,
+        "storage_class": 3,
+        "aux_count": 0
+      },
+      {
+        "index": 22,
+        "name": "?put@?A0x3b72dff5@bsp@@YAXPAXII@Z",
+        "value": 0,
+        "section": 6,
+        "type": 32,
+        "storage_class": 3,
+        "aux_count": 0
+      },
+      {
+        "index": 23,
+        "name": "?address@?A0x3b72dff5@bsp@@YAIPBX@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage_class": 3,
+        "aux_count": 0
+      },
+      {
+        "index": 24,
+        "name": "?pointer@?A0x3b72dff5@bsp@@YAPAXI@Z",
+        "value": 0,
+        "section": 5,
+        "type": 32,
+        "storage_class": 3,
+        "aux_count": 0
+      },
+      {
+        "index": 25,
+        "name": ".chks64",
+        "value": 0,
+        "section": 8,
+        "type": 0,
+        "storage_class": 3,
+        "aux_count": 1
+      }
+    ],
+    "code_bytes": 267,
+    "instruction_count": 115,
+    "relocation_count": 6
+  },
+  "static_review_checks": [
+    {
+      "id": "S01",
+      "passed": true,
+      "finding": "All76Nativeinstructions read;fresh201envelopePE/live/readiness match;defined200B/2ranges,1outsideNOPunpromoted,6rel32targets/80exactstarts verified."
+    },
+    {
+      "id": "S02",
+      "passed": true,
+      "finding": "All36providerSource/header fingerprints equal publishedMain and frozenreadiness;alloldereraser Native/COFF/build/control receipts unchanged."
+    },
+    {
+      "id": "S03",
+      "passed": true,
+      "finding": "NativeECXreceiver/unusedEDX/5stackwords/RET14h;Sourceexisting8Bbyvaluefirst,last plusactualRawCtx/RET18h;noABIidentityclaim."
+    },
+    {
+      "id": "S04",
+      "passed": true,
+      "finding": "Compiledinitialfirstowner load+08 precedeshead+0E/left+11 and initialdiagnostic+1E;CURRENTfirstnode+26 followsreturningdiagnostic."
+    },
+    {
+      "id": "S05",
+      "passed": true,
+      "finding": "Compiledlastowner+2D precedesCURRENT head+30 andlastdiagnostic+3E;CURRENTlastnode+46 comparesretainedheadafterdiagnostic."
+    },
+    {
+      "id": "S06",
+      "passed": true,
+      "finding": "Actualpublishedsubtree receivescapturedcurrentroot andsameborrowedRawCtx;fullreset root+63,headB+66,count+69,left+70,headC+72,right+75 retained."
+    },
+    {
+      "id": "S07",
+      "passed": true,
+      "finding": "Fulloutput head.left+7B capturedbeforeoutputpointer+7D andownerstore+80/nodestore+84;noheadfree."
+    },
+    {
+      "id": "S08",
+      "passed": true,
+      "finding": "Partialcachedfirstowner testsbeforeCURRENTlastowner;cachednodecomparesCURRENTlastnodeafterdiagnostic,withoutcapture repair or earlyequalityshortcut."
+    },
+    {
+      "id": "S09",
+      "passed": true,
+      "finding": "SourceOLDpairformedbeforeactualFIRSTadvance;compiledESI/EBX cachedvaluesretainedthroughincrement+AC andpassedtoeraser+BE,withprivateignoredoutEBP-0C."
+    },
+    {
+      "id": "S10",
+      "passed": true,
+      "finding": "Compiledfirstnode+ C3 reloadbeforefirstowner+C6;partialexitcurrentoutput+CB precedesorderedowner+CF/node+D2stores."
+    },
+    {
+      "id": "S11",
+      "passed": true,
+      "finding": "All267codeB/115instructions/6relocations reviewed,including5codefunctions;public220B/90physicalinstructions includesone2BNOP,distinctfromoutsideNativeNOP."
+    },
+    {
+      "id": "S12",
+      "passed": true,
+      "finding": "EBPcompilerframe retained;all6Source relocations resolveSDK/subtree/iterator/eraser;no localEH/RTTI/unwind data,noinlineasm/no newguard."
+    },
+    {
+      "id": "S13",
+      "passed": true,
+      "finding": "RawCtxdiagnostic/iterator/childfailurespropagatewithsubtree or increment/childtopology/pool progress;nogenericbridge/noRollback/localcatch/noexceptadapter."
+    },
+    {
+      "id": "S14",
+      "passed": true,
+      "finding": "DefaultMSVCWin32Releasebuildexit0;existing3checks pass15.79s,no newtests/probes orpacketNative/gameexecution."
+    }
+  ],
+  "verification": {
+    "command": "./scripts/build.ps1",
+    "configuration": "Release",
+    "platform": "Win32",
+    "started_utc": "2026-10-16T04:35:00.8862849Z",
+    "ended_utc": "2026-10-16T04:35:40.4195015Z",
+    "exit_code": 0,
+    "ctest_total_seconds": 15.79,
+    "existing_checks": [
+      {
+        "name": "reconstructed_math",
+        "seconds": 0.38,
+        "passed": true
+      },
+      {
+        "name": "native_math_differential",
+        "seconds": 0.06,
+        "passed": true
+      },
+      {
+        "name": "tool_tests",
+        "seconds": 15.25,
+        "passed": true
+      }
+    ],
+    "new_tests": false,
+    "new_probes": false,
+    "packet_runtime_or_differential_execution": false
+  },
+  "ledger": {
+    "previous_name": {
+      "address": "006a1b70",
+      "name": "STL_IntStringTree_EraseRange_N1C_006A1B70",
+      "evidence": "Hypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+    },
+    "function": {
+      "address": "006a1b70",
+      "name": "erase_native_input_int_string_tree_range_006a1b70",
+      "source": "src/native_input_int_string_tree_range.cpp",
+      "header": "include/bsp/native_input_int_string_tree_range.hpp",
+      "status": "complete_ordinary_source_build_tested_current_cpp_boundary",
+      "evidence": "docs/OCT15_INPUT_INT_STRING_TREE_RANGE.md;reports/oct15_input_int_string_tree_range.json. Whole200definedB/76starts intwo ranges;201Benvelope hasoutsideundefinedNOP6A1BEF,unpromoted. FreshPE/live/readiness equal,80exactstarts+expectedoutsideNOP,6rel32targets. Actualpublishedsubtree6A0AA0/676iterator69AE50/d56-7deraser6A07D0/SDKBF6713; completefullandpartialrawSource,retaineddiagnosticcaptures,orderedheadA/root-headB/count/left-headC/right resets, OLDpairbeforeactualFIRSTadvance thenacceptedchildownadvance,node-before-ownerreload,no localEH/rollback. DefaultMSVCWin32existing3/3pass15.79s;fullactualCMake267B/115instructions/6relocations reviewed, public220B/90physicalstarts includes2BNOP,EBPcompilerframe,RET18hvsNativeRET14h. ExistingpopulatedAVtypedRawCtx domains preserved;OriginalABI/privateframes/heap/CRT/FH3SEHRTTI/fault/gameunproved.",
+      "original_abi": "ECXreceiver/unusedEDX,stack(output,firstowner,node,lastowner,node),EAXout,RET14h; Source addsactualRawCtxreference/RET18h",
+      "scope": "Whole200definedB/76starts intwo ranges withfull+partialrawschedule;6A1BEF1BNOPexcluded. Actual8Bfirst/lastbyvalueargumentcarrier,borrowedRawCtx;nogenericrange/Kind/model/callback/layout/contextbridge/prefixshortcut.",
+      "uncertainty": "Namesarehypotheses;CurrentCpp/CRT/SDK/noexcept boundaries retained;Sourceprivateoriginsseparate. NoOriginalregisterflags/privateframes/heap/FH3SEHRTTI/fault/dropinABI/runtime/gameproof;pair/owner/destructoroutsideSource."
+    }
+  },
+  "frozen_artifacts": [
+    {
+      "path": "local/oct15_input_int_string_tree_range_readiness.json",
+      "bytes": 66776,
+      "sha256": "660f14f7705bdc0991e4dbce96f175b5351421d066b9b44f9755b809e3517f2a",
+      "LF_normalized_sha256": "660f14f7705bdc0991e4dbce96f175b5351421d066b9b44f9755b809e3517f2a"
+    },
+    {
+      "path": "local/oct15_input_int_string_tree_range_typed.json",
+      "bytes": 26487,
+      "sha256": "dfe64f4d8430e1af4ca85e1daa8ea6c05051234dba09a482e4678159fac5a7a7",
+      "LF_normalized_sha256": "dfe64f4d8430e1af4ca85e1daa8ea6c05051234dba09a482e4678159fac5a7a7"
+    },
+    {
+      "path": "local/oct15_input_int_string_tree_range_current_starts.json",
+      "bytes": 12891,
+      "sha256": "9c48ece69a932cc62c0cdc7fa4cf4ed2ed7c497a3c01cbdd85bda636d7019af8",
+      "LF_normalized_sha256": "9c48ece69a932cc62c0cdc7fa4cf4ed2ed7c497a3c01cbdd85bda636d7019af8"
+    },
+    {
+      "path": "local/oct15_input_int_string_tree_range_source_typed.json",
+      "bytes": 9190,
+      "sha256": "98b00e964ee5124f8841b59860b90ab1631dec87d46ab1360a8cc4dce71d638f",
+      "LF_normalized_sha256": "98b00e964ee5124f8841b59860b90ab1631dec87d46ab1360a8cc4dce71d638f"
+    },
+    {
+      "path": "local/oct15_input_int_string_tree_range_source_current_starts.json",
+      "bytes": 12891,
+      "sha256": "9c48ece69a932cc62c0cdc7fa4cf4ed2ed7c497a3c01cbdd85bda636d7019af8",
+      "LF_normalized_sha256": "9c48ece69a932cc62c0cdc7fa4cf4ed2ed7c497a3c01cbdd85bda636d7019af8"
+    },
+    {
+      "path": "local/oct15_input_int_string_tree_range_source_native_audit.json",
+      "bytes": 58027,
+      "sha256": "9b0b39322d4291afcbdd30999140faaeb40682faa9f184e4b58679bb84be086d",
+      "LF_normalized_sha256": "9b0b39322d4291afcbdd30999140faaeb40682faa9f184e4b58679bb84be086d"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_input_int_string_tree_range.obj",
+      "bytes": 2138,
+      "sha256": "c5687100a715ff682a59eab713e7e16c371ba0572b30627b4fafdc914dc2c17a",
+      "LF_normalized_sha256": "c5687100a715ff682a59eab713e7e16c371ba0572b30627b4fafdc914dc2c17a"
+    },
+    {
+      "path": "local/oct15_input_int_string_tree_range_cmake_coff.txt",
+      "bytes": 21631,
+      "sha256": "05947d94258f00d70acfd0eda1c143f63290c1366bbc5bd0d36b9c35c68e7c83",
+      "LF_normalized_sha256": "56fd596b4e2269ca7ee7037656edd71886f73cedd2620e8c04eb2db0d60ee9b6"
+    },
+    {
+      "path": "local/oct15_input_int_string_tree_range_cmake_coff_review.json",
+      "bytes": 29345,
+      "sha256": "203da4841b1b5c59aee0418cd9933cf62ed9fcfd30587552da77247da9f22d1b",
+      "LF_normalized_sha256": "df957fc408ed77a834e6c56b4dd2d9062f18d6c0e65aad14d14f6d0b8410a4c8"
+    },
+    {
+      "path": "local/oct15_input_int_string_tree_range_cmake_coff_decoded.txt",
+      "bytes": 7084,
+      "sha256": "1db8ea92f6bb3e95e32417db305cebafef6d9ac3893caa591a91c40543dc003d",
+      "LF_normalized_sha256": "42e1e948ee02b42b7b1d3980f0c23b90c2f5e3b783b0ff818349145a135fa2b7"
+    },
+    {
+      "path": "local/oct15_input_int_string_tree_range_build.txt",
+      "bytes": 3756,
+      "sha256": "fa8a649a220323fd3ed43658b00c580d5147b8db3770b5ca108dbc28ed2c11bd",
+      "LF_normalized_sha256": "4d1136d90ffced5e44fd2ae9b360cbca53b37fab02f7498692db7daadf7913ba"
+    },
+    {
+      "path": "local/oct15_input_int_string_tree_range_build_result.json",
+      "bytes": 214,
+      "sha256": "62f727f7132a6c97585314bcad3fa26e86d632c93da0e7116f3326d1584a72e5",
+      "LF_normalized_sha256": "444fefd2ffd03a7509731abef853e2a4d5a13b2ffac7e00f66ff3280cd37f67c"
+    },
+    {
+      "path": "local/oct15_input_int_string_tree_range_ledger_records.json",
+      "bytes": 3255,
+      "sha256": "e0a29f3e67a89dd4626f98de13f62d714f648e176b538984cf414d32e0e32e2d",
+      "LF_normalized_sha256": "e0a29f3e67a89dd4626f98de13f62d714f648e176b538984cf414d32e0e32e2d"
+    }
+  ],
+  "registration": "One localbsp_core cmake/startup.cmake registration for src/native_input_int_string_tree_range.cpp;noappendregistrylease.",
+  "preservation": {
+    "prior_eraser_pins": [
+      "d56a08ef10ee2eab7e75e7b6b82c40e13068be19",
+      "7d1316db57065ab71c596c9bd1b502d2ba0dcbb3"
+    ],
+    "all_prior_receipts_unchanged": true,
+    "existing_AV_typed_RawCtx": "native_input_settings_tree_cleanup.cpp already has populated Kind::int_string subtree/clear ownership within broader AV/NativeStringStorage domain and complete public device/controller/default/preset ranges. Keep all unchanged; its valid-range/nonmutating callback/currentCpp contract is narrower than this actualRawCtx fixed-entry schedule. Do not force reuse through genericrange/Kind/direction/context/layout/callback bridge.",
+    "ghidra_mutation": false,
+    "push": false,
+    "lease": "retained pendingRootprimaryreview"
+  },
+  "limits": "WholeSource/defaultbuild/staticreview only;noOriginalruntime/ABI/gameclaim. AddedRawCtxRET18h vsNative14h, CurrentCpp/CRT/noexcept/FH3SEHRTTI/fault/privateframe and actualproviderheap limits remain.",
+  "out_of_scope": [
+    "006a2bb0pair",
+    "00c7f200action",
+    "006aa460owner",
+    "otherdestructorentries"
+  ]
+}

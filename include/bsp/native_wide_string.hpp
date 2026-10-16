@@ -42,4 +42,36 @@ void destroy_native_wide_string_header_00436430(void* actual_header,
 void destroy_native_wide_string_header_00436430(void* actual_header,
     NativeStringRawPoolContext& context);
 
+// Full 004C8DD0[72B/27ins], native ECX=dst, stack src, EAX=SAME dst, RET4.
+// Valid actual8B headers/backing and the SAME retained storage domain are
+// required; production borrows existing GameNativeStringProcess::strings().
+// Clear dst length then data even for exact self identity, abandoning any old
+// backing without release. Otherwise resize using captured src length and
+// preserve1, then reread current src length. Only nonzero captures current src
+// data THEN current dst data and streams WORDs through and including NUL.
+// No typed string cast, shared backing ownership, counted copy or validation.
+// No local cleanup/catch/rollback; inherited Source resize/storage failure and
+// noexcept limits remain, not Native FH3/private-ABI compatibility. Caller
+// retains valid headers, reached backing and storage through call/unwind.
+void* copy_construct_native_wide_string_header_004c8dd0(void* actual_header,
+    const void* actual_source, NativeStringStorage& storage);
+
+} // namespace bsp
+
+namespace bsp {
+
+// Full 004C5E20[57B/24 starts], native ECX=dst, stack src, EAX=SAME dst, RET4.
+// Actual DWORD-aligned 8B headers/backing and the SAME retained string storage
+// are required; production borrows GameNativeStringProcess::strings().
+// Exact self identity returns before ANY header read, without initialization.
+// Otherwise resize using captured source length/preserve1, then reread CURRENT
+// source length. Only nonzero reads CURRENT source data THEN destination data
+// and streams WORDs through and including NUL, with no count bound or memcpy.
+// No new callback/owner, local cleanup/rollback or retry. Inherit real resize's
+// wrapping arithmetic, allocation/alias and Source release-noexcept limits.
+// Existing typed API/algorithm stays separate. This is a new Source ABI, not
+// Native thiscall/FH3/private-CRT identity or raw Text rebuild/layout closure.
+void* assign_native_wide_string_header_004c5e20(void* actual_header,
+    const void* actual_source, NativeStringStorage& storage);
+
 } // namespace bsp

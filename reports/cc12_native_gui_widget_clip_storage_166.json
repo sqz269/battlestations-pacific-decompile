@@ -1,0 +1,355 @@
+{
+  "packet": "cc12_native_gui_widget_clip_storage_166",
+  "status": "whole_actual_storage_full_reviews_passed_strict_compiled_existing_checks_passed_unregistered_sealed",
+  "baseline": "406a70cacc6a2de693bf81c42d4b86acb49725fa",
+  "source": "src/native_gui_widget_clip_storage.cpp",
+  "header": "include/bsp/native_gui_widget_clip_storage.hpp",
+  "source_ready_on_explicit_supported_domain": true,
+  "new_original_type_body_or_abi_credit": false,
+  "original": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "address": "00aa9f10",
+    "exclusive_end": "00aaa0e9",
+    "bytes": 473,
+    "sha256": "4c909a4ebe35613f70e6b82c1199a036c15f88eb178363cdb6d9fc1862e50b71",
+    "live_equals_disk_equals_frozen158": true,
+    "original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "query_batches": 1,
+    "parser_correction": "Initial local parser expected colon, actual wrapper uses two spaces; corrected against existing saved output without rerunning query."
+  },
+  "original_abi": "ECX actual widget; stack actual material; RET4 atAAA0D7, final physical JMP atAAA0E4. Source adds explicit refs and persistent operation, not stack/placement identity.",
+  "native_instruction_starts": 146,
+  "calls": [
+    {
+      "address": "00aa9f6e",
+      "native": "0041dd40",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aa9f89",
+      "native": "00bf7680",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aa9fa1",
+      "native": "00b18b20",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aa9fc0",
+      "native": "00419cc0",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aa9fc7",
+      "native": "00bd1510",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aa9fea",
+      "native": "0041e870",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa005",
+      "native": "00b18b00",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa021",
+      "native": "00419cc0",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa028",
+      "native": "00bd1510",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa036",
+      "native": "0041e870",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa053",
+      "native": "00b18ac0",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa06f",
+      "native": "00419cc0",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa076",
+      "native": "00bd1510",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa084",
+      "native": "0041e870",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa09d",
+      "native": "00b18b20",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa0b9",
+      "native": "00419cc0",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00aaa0c0",
+      "native": "00bd1510",
+      "function": "00aa9f10",
+      "kind": "call"
+    },
+    {
+      "address": "00ad10f2",
+      "native": "00aa9f10",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad10fc",
+      "native": "00b18a40",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00cb74f3",
+      "native": "0041dd20",
+      "function": "00cb74f0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb74fb",
+      "native": "0041dd20",
+      "function": "00cb74f8",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb7503",
+      "native": "0041dd20",
+      "function": "00cb7500",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb750b",
+      "native": "0041dd20",
+      "function": "00cb7508",
+      "kind": "tail_jump"
+    }
+  ],
+  "call_scope": "17 wholeAA9F10 direct edges, two selected enclosingAD0D80 edges and four Native name-unwind tails; plus one genuine current+5C type-slot indirect schedule, not a direct-edge row.",
+  "actual_schedule": [
+    "Current00/current5C must bind genuineA9E110; current parent70 after non16, captured ancestor once, self permitted.",
+    "Matching ancestor reads actual oneD7A24C, no match positivezero, E8 DWORD bitstore before any name work.",
+    "First primary8B explicit clear, real41DD40(5,true), currentDATA/currentlength+1 BF7680-compatible Source memmove; no eager header snapshot.",
+    "RealB17E10 counts1/2/4/1,matrix0, actual E8/capturedEC/capturedF4/SAME live aspect, cClip then active center/border/aspect.",
+    "Normal DATA capture before action consumption, current length before getter/BD1510; returned header untouched.",
+    "After cClip name return, CURRENT E8 MOVSS/UCOMISS/LAHF/testAH44/SETP: orderedzero inactive, unordered active, no FP conversion.",
+    "Later genuine41E870 on SAME primary header for center/border, distinct aspect8B header; arm only after constructors return."
+  ],
+  "native_eh": {
+    "handler_entry": "00cb7510",
+    "jmp_instruction": "00cb7515",
+    "func_info": "00dedd74",
+    "max_state": 4,
+    "unwind_map": "00dedd54",
+    "predecessors": [
+      -1,
+      -1,
+      -1,
+      -1
+    ],
+    "actions": [
+      "00cb74f0",
+      "00cb74f8",
+      "00cb7500",
+      "00cb7508"
+    ],
+    "primary_header": "EBP-1C for firstthree actions",
+    "aspect_header": "EBP-14 for last",
+    "limits": "String-only cleanup, no material rollback/ancestor retain/E8 restore. No prearm caller action. Source catch/terminate and /EHsc are not FH3/SEH/handler/exception-origin equivalence."
+  },
+  "source_operation": {
+    "nondefault_noncopy_nonmove": true,
+    "raw_name_headers": 2,
+    "owns_graph_or_protective_credit": false,
+    "preparation": "First-initializer known-region validation before metadata stores, no widget/header payload read/name init; exactone/zero+literal view checks are added Source admission.",
+    "entry": "Fresh exact widget/material/bindings required; pure repeat/foreign rejection leaves healthy phase unchanged.",
+    "failure": "Stickyfailed, retain full partial graph outside scope; consume armed action before realraw41DD20, cleanup escape terminates. No prearm cleanup/retry/reset/rollback.",
+    "destruction": "Metadata-only fresh/returned. Entered/failed destruction fails closed as explicit Source orchestration, not Original behavior.",
+    "identity": "169 may retain aligned operation backing/lifetime flag before outer callbacks and placement-construct after materialselection, BEFORE166. Preparation failure has no166 native effects; genuine reached fields/full retained partial graph required, no inferred constructor completion/163 admission."
+  },
+  "provider_domain": {
+    "types": "Existingread_native_gui_widget_type_00a9e110; actualcurrent numeric table via SAMEGameNativeReadOnlyData, no semanticOwner cast/arbitrarycallback/newtypebody.",
+    "strings": "SAME raw419CC0 publication/gate/manager and concrete raw41DD40/41E870/41DD20/BD1510. Material name adapter must use SAME domain; raw getter may throw.",
+    "materials": "ConcreteB17E10 parameter pool/comparer/currenteffect/table/pass/constant owners on documented domain. No fake/default providers or added ownerbinding.",
+    "scalars": "Exact actualRO one/zero views; SAME live E12FC0 aspect cell. CurrentE8 can change through valid callbacks; active path requires genuinely live captured ancestorEC/F4.",
+    "retention": "Full reached actualwidget/ancestors/material/name/effect/provider/scratch/backing independently held BEFORE registration/B18A40.163 retains no ancestors and establishes no unfinished-constructor permission.125/119/111 obligations stay independent."
+  },
+  "verification": {
+    "strict": "MSVCWin32 C++17/MD/EHsc/O2/Gy/W4/WX/fp:strict/permissive- PASS",
+    "critical_groups": 11,
+    "critical_code_bytes": 2101,
+    "critical_instruction_starts": 650,
+    "critical_chunks": 20,
+    "all_emitted_functions": 16,
+    "header_comment_only_recompile_equality": true,
+    "strict_compiles": 3,
+    "existing_provider_changes": 0,
+    "repo_inputs": 59,
+    "external_header_hashes": 300,
+    "required_worker_builds": 1,
+    "existing_ctests": "3/3 in7.93s",
+    "new_tu_core_registered": false,
+    "new_tests_probes": 0,
+    "new_entry_execution": false,
+    "root_full_source_review": "PASS, final118-lineHPP/210-lineCPP and146Native starts with actual providers",
+    "root_full_optimized_review": "PASS, all11critical groups2101B/650starts/20chunks",
+    "root_full_doc_review": "PASS, complete29-line document; pending status clauses alone finalized",
+    "call_reference_verifier": {
+      "report_rows": 23,
+      "doc_claims": 13,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    }
+  },
+  "artifacts": [
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/current_original_verification.json",
+      "bytes": 554,
+      "sha256": "4fdc7faf6b8a868376b4fb2422d82b2398df39971dacdac4abda55f0a5564240"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/reused_evidence.json",
+      "bytes": 9260,
+      "sha256": "84068fd0247ac339e7e6ac35a14d6fd0369ff38ebd17c98fdaea0fa8c9e5c3e4"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/source_inputs.json",
+      "bytes": 86578,
+      "sha256": "22f29654bf206d3d734929d293d7e1a6e50a92a32581a948b0bcea865b2aa544"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/object_proof.json",
+      "bytes": 18453,
+      "sha256": "b1b04d6873ba2847d5fd6a73974b6b67c6ec76196b3fd9f0c11f8d52559448d0"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/clip.obj",
+      "bytes": 25253,
+      "sha256": "e8b561204398c723360d3d58c5d5c333076771212fc09fd96c3b1cceb81836a9"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/clip.asm",
+      "bytes": 125610,
+      "sha256": "a87c08f76ff5ba3da7e106f535283b1119035d5c01db76cf25da128c941e4881"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/clip_dumpbin.txt",
+      "bytes": 162283,
+      "sha256": "b32fc22d223c5147a8b50f080372a02296ca3533e776bd0c3ae8758cf32a14e2"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/diagnostics/index.json",
+      "bytes": 33014,
+      "sha256": "2df2ffb32b7986c6b8823e588a782cb78895ca8a5fad2baaa36ab3fbc7f35745"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/canonical_build.log",
+      "bytes": 2764,
+      "sha256": "988d700ebff96786bb094d9010b35aea9c34b363ed5157f4fc40175220f75c74"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/canonical_snapshot.json",
+      "bytes": 1235,
+      "sha256": "ba0ff25508a23a219e57d02ed7d123a15a7ee4648234d13425f87fcc4196b81f"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/header_comment_only_object_equality.json",
+      "bytes": 948,
+      "sha256": "4863819dabbec76480dea296bc3b063472843a8b36aaa8f8cefdd9f0b3fc5898"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/annotation_proof.json",
+      "bytes": 544,
+      "sha256": "95c31ab072b583b6c3c346a7f9bf61a0e4ffafe9a88786fdfbaa41cdbc13c845"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/exports_after/00aa9f10/decompiled.c",
+      "bytes": 8844,
+      "sha256": "c483292aca1553d5d5ad494431346d0e6ebddc7edf2b2237aa7a6a2971670060"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/exports_after/00aa9f10/assembly.txt",
+      "bytes": 4022,
+      "sha256": "d95bc81341e53282467aa2bd87e099afeaa9a39861335c74c6e9381ec244c9e3"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/exports_after/00aa9f10/metadata.json",
+      "bytes": 283,
+      "sha256": "31163c9f2ed19788645aacb875d51d1a4329d19edc46f66c68aa32455c33d2cd"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/call_verification.txt",
+      "bytes": 784,
+      "sha256": "0003cc00d59d666d1c06b31796808f8e5e88d77ecfb3c055b33108dcd201813b"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/root_full_review.json",
+      "bytes": 1502,
+      "sha256": "27eb7f51f2c532ce864d715c6d41158fe3d591780428ca780aa6f8cd14a5de6a"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/ledger_function.json",
+      "bytes": 2831,
+      "sha256": "ae4831f11b1e00c33e0a5772ca929c80309c5a891251bbd8c76e21280783dca1"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_clip_storage_166/ledger_diff.patch",
+      "bytes": 15335,
+      "sha256": "9ec4ebaaab1fb6f62454d6141015dbb100e45c4286c58cd788b17f91ff162bd9"
+    }
+  ],
+  "annotation": {
+    "address": "00aa9f10",
+    "name_preserved": true,
+    "prior_comment_preserved_normalized": true,
+    "history_origin": "J:\\PROG\\battlestations-pacific-decompile-cc12_font_retirement_review36\\local\\ghidra-annotations-20261016T124950Z.json",
+    "history_sha256": "d85c50f88c602135b5b5d11de817ad9825cf1fa588e98ae5d60c2a34071cdadd",
+    "both_old_semantic_rows_statuses_preserved": true,
+    "only_owned_address_annotated": true,
+    "tool": "ghidra_annotate.py --apply under coordination write lock, old-value history, save_program, forced export"
+  },
+  "private_manifest": {
+    "path": "local/cc12_native_gui_widget_clip_storage_166/manifest.json",
+    "bytes": 52768,
+    "sha256": "0c4445e85d0aa3de9e66f2edd46cbaee28ae4a8c2f72ee8e3565a68453af96f1",
+    "item_count": 207,
+    "total_bytes": 97949364
+  },
+  "limits": "Whole supported actual-storage Source schedule; no Native placement/privateABI/FH3/SEH/CRT/currentowner equivalence, new type body, material rollback, graphretirement, productionactivation or gameplay/runtime claim."
+}

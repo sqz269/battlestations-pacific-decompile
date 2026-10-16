@@ -1,0 +1,169 @@
+{
+  "packet": "cc12_native_gui_frame_box_copy_integration_131",
+  "status": "reviewed_registered_combined_win32_build_existing_tests_static_link_pass",
+  "compiled_commit": "e439186f2b4da49f32da181854c8d2e1df856558",
+  "workers": {
+    "128": {
+      "commit": "16cc2177ce2151f7f8dc3840936ccd20ece99bb0",
+      "source_paths": [
+        "include/bsp/native_gui_frame_box_records.hpp",
+        "src/native_gui_frame_box_records.cpp"
+      ],
+      "root_complete_source_api_original_optimized_review": "PASS",
+      "root_complete_doc_review": "PASS",
+      "strict_win32_cpp17_compile": "PASS",
+      "existing_unit_registered_in_worker_baseline": true,
+      "existing_checks": "3/3 in7.54s",
+      "all17_prior_optimized_bodies_and_symbolic_relocations_unchanged": true,
+      "old_source_prefixes": [
+        {
+          "path": "include/bsp/native_gui_frame_box_records.hpp",
+          "base_commit": "44760f136bb7469e98bfa23a61b911b533a5c252",
+          "base_blob": "d54db8c19480e7e6255540faea91f44b7e574590",
+          "base_bytes": 14082,
+          "whole_old_source_prefix_unchanged": true
+        },
+        {
+          "path": "src/native_gui_frame_box_records.cpp",
+          "base_commit": "44760f136bb7469e98bfa23a61b911b533a5c252",
+          "base_blob": "1502c28ec32dc2dad589aae1dee6cc11658fc80f",
+          "base_bytes": 12961,
+          "whole_old_source_prefix_unchanged": true
+        }
+      ],
+      "manifest_artifacts_captured": 71,
+      "manifest_sha256": "fe22eb21e05d5fd4891a01a219a359bf028832f2c76a36a73cd0501d806ac299"
+    }
+  },
+  "readiness": {
+    "130": {
+      "commit": "aa0212e49bca9c38a19e4e25835c34af0eb7a70d",
+      "root_complete_doc_review": "PASS",
+      "own_manifest_artifacts_captured": 80,
+      "manifest_sha256": "c959a27a84d9098653ed8cc5c286af35b5c2b2ab0af1a821e6ca848cb2737fc7",
+      "native_body_execution": false
+    }
+  },
+  "source": [
+    {
+      "packet": "128",
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "git_blob": "d4a00185dde78044c3387d291b2b490641cdb71f",
+      "sha256": "cf1c69eef2e2c25e5d377dcf6faec3921f94ce53c32b660d7c37926c9117842c",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "128",
+      "path": "src/native_gui_frame_box_records.cpp",
+      "git_blob": "642d53741ed0b01e7976e01003b1d9c65aecc038",
+      "sha256": "2c5f95a919411884df592c961257fced2a8541668b8ad038464e35b2fed62b4c",
+      "unchanged_from_reviewed_worker": true
+    }
+  ],
+  "retained_lower_sources": [
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e"
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "git_blob": "055cf00ff2019282886ee400230d1d0bf5a7a99a"
+    },
+    {
+      "path": "src/native_gui_text_retirement.cpp",
+      "git_blob": "839dc285c3d0f8e02af7e8fb30662809fe6eb9d0"
+    },
+    {
+      "path": "src/native_gui_text_glyph_children.cpp",
+      "git_blob": "025cdd3d7fde5bb7b8b9e215da4d604c6d3a5407"
+    },
+    {
+      "path": "src/native_gui_widget_pools_cc13.cpp",
+      "git_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "git_blob": "2d571930d3446b33b745fccdca3e32e8c31d46a1"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "git_blob": "bb26a9f52a9b694165a4b832db8a9dac735d1c52"
+    },
+    {
+      "path": "src/native_gui_frame_box_lifetime.cpp",
+      "git_blob": "02ea03259ba2669b0641b6347be9b30a9a2a8f3d"
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "git_blob": "534e5353d82da296b0a9a49be1226d458837326d"
+    },
+    {
+      "path": "src/native_gui_frame_box_vector_allocation.cpp",
+      "git_blob": "3958e8c7860862f8a433ad70643599ef26b66ae2"
+    }
+  ],
+  "root_build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "checks": "3/3",
+    "seconds": 7.61
+  },
+  "static_link": {
+    "compiled_commit": "e439186f2b4da49f32da181854c8d2e1df856558",
+    "build_and_minimal_main_exit_code": 0,
+    "raw_function_bodies_executed": false,
+    "explicit_worker_object_linked": false,
+    "kind": "One new helper address from actual final Core; no reconstructed body execution",
+    "PE32_asInvoker": true,
+    "exe_sha256": "d3a7af4b01b04f2a797255606c34ee00486702bddd97bd9b8fee24560e95da7f",
+    "libraries": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "9408c009bd50b9c05a5c8c5f09c3a1324bc174fe5570ea7c1b12c02e78f253a9"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "sha256": "e6ebb089df7828a43ecdd6e705dddb4cea95b38ffe1fabbd47152fec8834db30"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "sha256": "838261efe3cdd86663e25ecbcd9e825ee51203e71491954864316d4d0dfb6062"
+      }
+    ],
+    "canonical_additional_objects": []
+  },
+  "root_source_and_header_inputs_copied": 115,
+  "archive": {
+    "path": "local/cc12_native_gui_frame_box_copy_integration_131/evidence_family.zip",
+    "sha256": "3da95a3f7bad4283b83423241a5af4bb5f1b70a3c8000ae2a7db6b2c9ba6f5ac",
+    "payload_count": 337,
+    "manifest": "local/cc12_native_gui_frame_box_copy_integration_131/manifest.json",
+    "manifest_sha256": "5c7f3722eac44fcff6d6d1d56fc16d9657f1ba4d3716e0a9c81b96ea165cd0b5",
+    "all_archived_payload_hashes_rechecked": true,
+    "nested_worker_manifests_included": true
+  },
+  "original_input_proof": {
+    "path": "local/cc12_native_gui_frame_box_copy_integration_131/root_original_input_proof.json",
+    "sha256": "8ab701a75b997dae2e2da8af9920979801674f2ce0272a2952a452dfa5f7626b",
+    "checked_spans": 2,
+    "status": "PASS"
+  },
+  "limits": [
+    "Source valid-buffer domain excludes nonempty null destination despite retained Native null-skip branch",
+    "Persistent metadata and fresh111 array prepared and retained outside failing scope before callbacks",
+    "Metadata owns no source/destination/creator/resource/name/provider graph",
+    "Genuine103 is compiler-inlined; current fields, four x87 pairs and final increment precede commit",
+    "Failed103 is never passed to111; only the committed prefix rolls back forward",
+    "Ordinary111 escape stops rollback and may replace original C++ exception; canonical zero terminal can terminate",
+    "Sticky failed identity/partial records/all backing and failed111 frames remain retained without retry or free",
+    "Entered/failed metadata destructor termination is explicit Source policy, not Native cleanup",
+    "Known-region checks do not prove complete allocation membership/transitive graph/provenance",
+    "Software progress markers and reordered sibling stores are not Native instruction/FH3/register ABI identity",
+    "No allocation,119 tidy/free, parent end publication, automatic native ownership or AD2230 composition",
+    "No new tests/probes executing reconstructed bodies, Native EH/SEH/drop-in ABI, production or gameplay proof"
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "packet": "oct15_thirtysecond_reconstruction_batch",
+  "status": "primary_accepted_Source_integrated_default_Win32_checked",
+  "components": [
+    {
+      "label": "controller",
+      "pin": "27fda626a3c056ff46203c6ba12d49584f4ae903",
+      "report": "reports/oct15_native_input_controller_tree_erase.json",
+      "artifacts": {
+        "src/native_input_controller_tree_erase.cpp": "cbfa81c681aef5bb2f07ee56ce85118e25f2b44872e897204549a1e68d46ad8f",
+        "include/bsp/native_input_controller_tree_erase.hpp": "de4cf3f09015875738440254ec55dc91c0b52a30de85405bf4ddefe591fd95dc",
+        "docs/OCT15_NATIVE_INPUT_CONTROLLER_TREE_ERASE.md": "a7c75da35f43399c4289c3b98d92a5c15315b2320be975a1c5ea94354e5c5f1f",
+        "reports/oct15_native_input_controller_tree_erase.json": "c6223451f5f6ab0941abc6669990e36b55e78bc180a5435493f1be2b623972dc"
+      },
+      "ordinary_bytes": 691,
+      "ordinary_starts": 234,
+      "logical_bytes": 8,
+      "logical_starts": 2,
+      "primary_review": {
+        "path": "local/oct15_controller_erase_final_primary.json",
+        "sha256": "9b3e78812cf73e599727ce817fb466a463dd487c4411f7b2ce7a1b35e4d19404",
+        "checks": 15,
+        "providers": 42,
+        "findings": []
+      }
+    },
+    {
+      "label": "preset_range",
+      "pin": "7c6578fe637f8af50bd79bdc91600c24fd8064d4",
+      "report": "reports/oct15_input_preset_tree_range.json",
+      "artifacts": {
+        "src/native_input_preset_tree_range.cpp": "94d602d28239ee7f158191770a41ad076ce1e5eaf0842ac191079f323bd2d540",
+        "include/bsp/native_input_preset_tree_range.hpp": "d681826bf330af5f6d4b44e3afe0ac9a10bc0a1cb4107576a4667d8eda0ca504",
+        "docs/OCT15_INPUT_PRESET_TREE_RANGE.md": "9d57b6239983c0364cd96582331e3c9736249465e9e9920b981ef89c7f897e79",
+        "reports/oct15_input_preset_tree_range.json": "a5be35903f0d31f02035beb2b0a0f60dae8bddb4d633ad0e011ed9341131deaf"
+      },
+      "ordinary_bytes": 200,
+      "ordinary_starts": 76,
+      "logical_bytes": 0,
+      "logical_starts": 0,
+      "primary_review": {
+        "path": "local/oct15_preset_range_final_primary.json",
+        "sha256": "005fddf68d4cd03239b1fdf85099cfa7561f554924b44343aa73a0aecbdbea06",
+        "checks": 14,
+        "providers": 30,
+        "findings": []
+      }
+    }
+  ],
+  "scope": {
+    "complete_ordinary_entries": 2,
+    "complete_logical_actions": 1,
+    "ordinary_bytes": 891,
+    "ordinary_starts": 310,
+    "logical_bytes": 8,
+    "logical_starts": 2,
+    "distinct_owned_bytes_within_batch": 899,
+    "distinct_owned_starts_within_batch": 312,
+    "excluded_preset_outside_NOP_bytes": 1,
+    "readonly_controller_handler_bytes": 10,
+    "readonly_controller_EH_literal_bytes": [
+      44,
+      28
+    ],
+    "global_unique_coverage_increment_claimed": false
+  },
+  "review": {
+    "primary_checks": 29,
+    "actual_CMake_bytes": 1267,
+    "actual_CMake_instructions": 490,
+    "final_objects": {
+      "controller": {
+        "integrator_object_sha256": "bce810a0b725addc3ec59678c5484a5ec302998e6c5a4dea6bbde09e93978afc",
+        "reviewed_worker_object_sha256": "03b2cd2867d2482e4c48b4c7633d3fdd39aa4a00d6a0b2263a23db235ef20e20",
+        "all_code_bytes_equal": true,
+        "all_code_and_EH_RTTI_literal_rawbytes_and_symbolic_relocations_equal_after_explicit_mapping": true,
+        "mapping": {
+          "?A0x1f4c08ad": "?A0x3729751f"
+        },
+        "code_bytes": 1000,
+        "physical_instructions": 375
+      },
+      "preset_range": {
+        "integrator_object_sha256": "aea71770926cf4fcf3861e737ad015700b9c09472a97f16cec219958e04e1e93",
+        "reviewed_worker_object_sha256": "37f4b5a023de4c2f7665cd799e0eaf8dd58fc5d40534fb1e5e8944798d96e8c5",
+        "all_code_bytes_equal": true,
+        "all_code_and_EH_RTTI_literal_rawbytes_and_symbolic_relocations_equal_after_explicit_mapping": true,
+        "mapping": {},
+        "code_bytes": 267,
+        "physical_instructions": 115
+      }
+    },
+    "object_comparison_receipt": "local/oct15_batch32_final_object_comparison.json"
+  },
+  "validation": {
+    "tested_combined_Source": "bddbef6fc5acd9799571086219faff72c4ae8f20",
+    "default_MSVC_Win32": true,
+    "build_log": "local/oct15_thirtysecond_union_build.log",
+    "build_log_sha256": "d93ee441b0d841c5d606bd11cedf5f0e9699ad78b61c9e1f48ab94b1afa5cb51",
+    "existing_suites_passed": 3,
+    "ctest_seconds": 8.5,
+    "new_tests": 0,
+    "new_probes": 0,
+    "Native_packet_execution": false,
+    "report_rows": 22,
+    "Markdown_claims": 22,
+    "transfer_log": "local/oct15_thirtysecond_transfers.log",
+    "annotations": {
+      "path": "local/ghidra-annotations-20261016T055106Z.json",
+      "sha256": "b8a85d5b0c04a7eab990493a4fb52b69601c8f5378e648830169af8519803519",
+      "entries": 3,
+      "preimages_preserved": true
+    },
+    "earlier_controller_annotation": "local/ghidra-annotations-20261016T054814Z.json",
+    "refreshed_exports": 3,
+    "snapshot": "skipped unchanged76774functions",
+    "index": "rebuilt"
+  },
+  "coordination": {
+    "one_real_CMake_append_conflict_union_resolved": true,
+    "shared_registry_leases": false,
+    "only_owned_files_staged": true,
+    "worker_frozen_artifacts_unchanged": true,
+    "historical_worker_primary_pending_wording": "Retained in immutable reports; final primary acceptance is recorded here."
+  },
+  "limits": [
+    "Existing suites exercise older math/tool behavior, not these entries against Native state.",
+    "Controller eraser preserves its own cached near-child pointers across far reads, distinct original-node slot, pair(original+C) completion before originalfree/currentcount/output, and completed-message-only parent EH.",
+    "Preset range covers full and partial paths using actualpublished82B34 presetkeysubtree, explicit real8B iterators, capturedOLD-before-FIRSTadvance/distinctchildOLD advance, returningdiagnostic captures andcurrenthead resets/outputalias order.",
+    "SourceRET10controller andRET18range addRawCtx versusNativeRET0C/RET14. LogicalactionexplicitcompletedSBO replacesNativeframeaccess; noOriginalEBPreader.",
+    "CurrentCpp/currentCRT/providerownership/privateframes/registerflags/FH3SEHRTTI/fault/heap/dropinABI/runtime/game remainunproved.",
+    "Controller range/member/owners andpresetdestroyfamily are outside this batch. No globaluniqueNativecoverageincrement."
+  ],
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Independently verify after publication; no self-reference"
+  }
+}

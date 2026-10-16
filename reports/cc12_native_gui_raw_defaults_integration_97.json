@@ -1,0 +1,172 @@
+{
+  "packet": "cc12_native_gui_raw_defaults_integration_97",
+  "status": "reviewed_registered_combined_win32_build_existing_tests_static_link_pass",
+  "compiled_commit": "47c70ae6525c6918dd6a95362da2cc533b764de3",
+  "workers": {
+    "93": {
+      "commit": "7fabf8e8ca408cc50b780ffa79cc9f08f885aef3",
+      "source_paths": [
+        "include/bsp/native_gui_text_default_storage.hpp",
+        "src/native_gui_text_default_storage.cpp"
+      ],
+      "whole_entries": [
+        "00ab9650",
+        "005d6cf0"
+      ],
+      "root_source_and_optimized_review": "PASS",
+      "worker_manifest": "workers/93_manifest/local/text93_final_artifact_manifest.json",
+      "worker_manifest_sha256": "0a1d1cddcf816cfe77eb15f016c94432155fd1b20d76e194acc219a9e239a089",
+      "manifest_artifacts_verified_and_copied": 40,
+      "report_artifacts_verified_and_copied": 32,
+      "worker_standalone_compile": "PASS",
+      "worker_existing_tests": "2/2; new93 translation unit unregistered",
+      "raw_function_execution": false
+    },
+    "96": {
+      "commit": "ca71ce3c0b5448297fab2a6e27999ec3e6e9d033",
+      "source_paths": [
+        "include/bsp/native_gui_frame_box_factory.hpp",
+        "src/native_gui_frame_box_factory.cpp"
+      ],
+      "whole_entries": [
+        "00ad2600"
+      ],
+      "root_source_and_optimized_review": "PASS",
+      "worker_manifest": "workers/96_manifest/local/cc12_native_gui_frame_box_raw_default_96/manifest.json",
+      "worker_manifest_sha256": "40610505ff145bb5144767bc1a1f664b2e5ba77aec092ccbbecb357694cffd43",
+      "manifest_local_artifacts_verified_and_copied": 33,
+      "manifest_shared_exports_verified_and_copied_in_worker96": 2,
+      "report_artifacts_verified_and_copied": 12,
+      "worker_standalone_compile": "PASS; final header",
+      "worker_existing_tests": "3/3 in9.06s; new96 translation unit unregistered",
+      "normal_comparison": "One whole152-byte Original body compared with Source using same genuine Source base and borrowed scalar fixture cells; PASS",
+      "root_original_probe_body_comparison": "all152 bytes match unchanged installed executable"
+    }
+  },
+  "readiness": {
+    "92": {
+      "commit": "3348f504922cb4051bd58cf55b95a6f5803b4f27",
+      "manifest_artifacts_captured": 65,
+      "result": "existing raw manager getter/constructor already reconstructed; separate736250 teardown transport ready; production admission remains open"
+    },
+    "94": {
+      "commit": "d7768f970224390882f340c4f2fdc6f619ab961e",
+      "manifest_report_hashes_captured": 16,
+      "result": "whole default ready and closed by96; copy/factory still require raw vector and rebuild providers"
+    }
+  },
+  "source": [
+    {
+      "packet": "93",
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "git_blob": "7d21a95b56921332498d9cf33cd03e047f157c0e",
+      "sha256": "39d2a14672dc90e8605c47fb267d59510639dc445d4caf28a48d79d172d89562",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "93",
+      "path": "src/native_gui_text_default_storage.cpp",
+      "git_blob": "055cf00ff2019282886ee400230d1d0bf5a7a99a",
+      "sha256": "38e7aafba69bfe959bd3f45111c9e85074d646eaacfa6c718e2b1530c30b55d7",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "96",
+      "path": "include/bsp/native_gui_frame_box_factory.hpp",
+      "git_blob": "7c958748409edaaa24859a6378e05a4356253496",
+      "sha256": "5d396b347e986349ecf29dca0dfc7fb8c9a1d749bc774c1992dd8e6d18f014b1",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "96",
+      "path": "src/native_gui_frame_box_factory.cpp",
+      "git_blob": "f3bef7534f07f024a73bf9cd13345a70eb20d1d8",
+      "sha256": "51f869267de233f5a642b32462d9eb0bcde932cdaebb4ac39e968aaf7eb238a4",
+      "unchanged_from_reviewed_worker": true
+    }
+  ],
+  "root_build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_checks_passed": 3,
+    "existing_checks_total": 3,
+    "test_seconds": 9.5,
+    "log": "local\\cc12_native_gui_raw_defaults_integration_97\\build.log"
+  },
+  "static_link": {
+    "compiled_commit": "47c70ae6525c6918dd6a95362da2cc533b764de3",
+    "build_and_minimal_main_exit_code": 0,
+    "kind": "Force three entry addresses from actual combined bsp_core.lib",
+    "raw_function_bodies_executed": false,
+    "explicit_worker_object_linked": false,
+    "PE32_asInvoker": true,
+    "exe_sha256": "f6890512ba4b118f7e1fe5c448d00bf7200c15b3bfb267ac414e518907d2818b",
+    "libraries": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "92366325b3d43bbea9cc6afa3ae2ba9991381f5cce73bea5d3c8df7441248a64"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "sha256": "e6ebb089df7828a43ecdd6e705dddb4cea95b38ffe1fabbd47152fec8834db30"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "sha256": "838261efe3cdd86663e25ecbcd9e825ee51203e71491954864316d4d0dfb6062"
+      }
+    ]
+  },
+  "frame96_independent_original_byte_check": {
+    "address": "00ad2600",
+    "bytes": 152,
+    "whole_probe_body_matches_installed_original": true,
+    "body_sha256": "0273c092ec8965f527d401e2e3a551e27cd570226244dcbaeb4855d9867da63c",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "kind": "independent static comparison; not another execution"
+  },
+  "worker_call_checks": {
+    "93": {
+      "direct_rows": 11,
+      "failed": 0,
+      "independently_rechecked_by_root": true
+    },
+    "96": {
+      "direct_rows": 3,
+      "failed": 0,
+      "independently_rechecked_by_root": true,
+      "doc_claims": 1,
+      "doc_failed": 0
+    },
+    "92": {
+      "direct_rows": 19,
+      "failed": 0,
+      "independently_rechecked_by_root": true
+    },
+    "94": {
+      "direct_rows": 22,
+      "failed": 0
+    }
+  },
+  "root_source_and_header_inputs_copied": 89,
+  "archive": {
+    "path": "local\\cc12_native_gui_raw_defaults_integration_97\\evidence_family.zip",
+    "sha256": "1d196ca9619adc674b9b7dea8357fabdebd235a0663ddcf32e9f48caad980f46",
+    "payload_count": 370,
+    "manifest": "local\\cc12_native_gui_raw_defaults_integration_97\\manifest.json",
+    "manifest_sha256": "d527c47d01282aebb69a48b31cefdff59a68c6c7db5755d99ac38a01288dcb26",
+    "every_payload_hash_rechecked_from_archive_and_local": true,
+    "nested_worker_manifests_included": true,
+    "verification_note": "Initial verifier used Windows paths against POSIX ZIP member names. This separate completion normalized only lookup names, verified every payload, and did not change or recreate the archive."
+  },
+  "completion_script": {
+    "path": "local/cc12_raw_defaults_97_complete_seal.py",
+    "sha256": "b76efdadb4c6c65ba64d2d18149e490deb162a21681f3e6611ae722f31f46b80"
+  },
+  "limits": [
+    "No new production activation or game run",
+    "Link probe executes no raw function bodies",
+    "No Native FH3/SEH, drop-in ABI or populated GUI retirement proof",
+    "FrameBox normal comparison uses same genuine Source base, not Original base/CRT identity",
+    "Text copy/factory and FrameBox copy/factory remain separate provider work"
+  ]
+}

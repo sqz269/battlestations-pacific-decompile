@@ -1,0 +1,124 @@
+{
+  "packet": "oct16_fortysecond_reconstruction_batch",
+  "status": "primary_accepted_four_whole_tree_head_builders_integrated_default_Win32_checked",
+  "pin": "301c0cbdec260b0049a5fdcc139a5d3b14ac6da4",
+  "report": "reports/oct16_input_tree_head_builders.json",
+  "frozen_artifacts": {
+    "docs/OCT16_INPUT_TREE_HEAD_BUILDERS.md": "25b13d9c7cee5dbf9301a7828b0d7ceca378ddd842db9d6a63a8bb7d8a72fed9",
+    "include/bsp/native_input_tree_head_builders.hpp": "a8cb7e76868e82febfc1215138b67d4f88db8e35eb17e44afda52786dc3ed6d9",
+    "reports/oct16_input_tree_head_builders.json": "b0189edc9fdbd12be2f90f3d0cb0d1ebdfcaf011e9007d4b06888785103a3393",
+    "src/native_input_tree_head_builders.cpp": "1d548ee1f668fecf3302cf46e212fbde493a3ac40702d142970ead321d231b85"
+  },
+  "scope": {
+    "whole_ordinary_entries": 4,
+    "Native_defined_bytes": 229,
+    "Native_instructions": 68,
+    "profiles": [
+      {
+        "address": "0069d1f0",
+        "public_section": 10,
+        "Native_bytes": 64,
+        "Native_starts": 17,
+        "Source_bytes": 113,
+        "Source_starts": 32,
+        "postallocator_exact_bytes": 53,
+        "allocation_size": 156,
+        "color_offset": 152,
+        "nil_offset": 153
+      },
+      {
+        "address": "0069d240",
+        "public_section": 11,
+        "Native_bytes": 55,
+        "Native_starts": 17,
+        "Source_bytes": 107,
+        "Source_starts": 32,
+        "postallocator_exact_bytes": 47,
+        "allocation_size": 44,
+        "color_offset": 40,
+        "nil_offset": 41
+      },
+      {
+        "address": "0069d290",
+        "public_section": 9,
+        "Native_bytes": 55,
+        "Native_starts": 17,
+        "Source_bytes": 107,
+        "Source_starts": 32,
+        "postallocator_exact_bytes": 47,
+        "allocation_size": 24,
+        "color_offset": 20,
+        "nil_offset": 21
+      },
+      {
+        "address": "0069d320",
+        "public_section": 8,
+        "Native_bytes": 55,
+        "Native_starts": 17,
+        "Source_bytes": 107,
+        "Source_starts": 32,
+        "postallocator_exact_bytes": 47,
+        "allocation_size": 36,
+        "color_offset": 32,
+        "nil_offset": 33
+      }
+    ],
+    "original_constructor_and_loader_not_promoted": true
+  },
+  "primary": {
+    "receipt": "local/oct16_input_tree_head_builders_primary.json",
+    "sha256": "59cce97b2305aee76d067f21eeb5e4d5a0ca45c9f7f688a33a64d66f7156d06e",
+    "checks": 24,
+    "findings": [],
+    "published_provider_LF_fingerprints": 50,
+    "Native_receipt": "local/oct16_input_head_builders_primary_native.json",
+    "Native_receipt_sha256": "c4620e717ba767439b6cd5bde42ee04e2cefa5e95afdefdc357460e80b576f4b",
+    "postallocator_Native_bytes_exact_unmasked": 194
+  },
+  "compiled": {
+    "Root_object_sha256": "6b6045c4b13cbe12af33b91309265ef3bab54b0dd40e5161403d98d8cccf000a",
+    "worker_object_sha256": "2e6c8a18b21b43bf84d1c85af1e8afa6bc77a4a8ffd240712cb18dec03c5fb11",
+    "all8_CODE_sections_bytes_and_symbolic_relocations_equal_worker": true,
+    "CODE_bytes": 868,
+    "instructions": 256,
+    "public_bytes": 434,
+    "public_instructions": 128,
+    "unused_private_bytes": 434,
+    "unused_private_instructions": 128,
+    "all_relocations": 24,
+    "allocator_REL32": 8,
+    "GS_check_REL32": 8,
+    "security_cookie_DIR32": 8,
+    "local_EH_padding_embeddeddata": false,
+    "compiler_weak_BSS_bytes": 4
+  },
+  "verification": {
+    "combined_tested_commit": "2731952788530ccc3eb6d051a7a9ff28117a901c",
+    "default_build_exit": 0,
+    "existing_suites_passed": 3,
+    "seconds": 7.7,
+    "build_log_sha256": "d6f7f1374c87c9ab48636681b6d6c9d0714146420fdaf50eda109bc609d5baf4",
+    "JSON_transfer_rows": 4,
+    "Markdown_transfer_claims": 4,
+    "saved_annotations": 4,
+    "annotation_log": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\ghidra-annotations-20261016T081716Z.json",
+    "annotation_log_sha256": "4ae7347fa7712c1ec3abedad4a0d5fedfe36e72061332f2c5bbda31d971ea197",
+    "refreshed_exports": 4,
+    "exports_sha256": "f4c1e8b245bc91111ec592f5b93facdc0fd5cb3d5ebce67160bf744d62996271",
+    "four_new_names_and_four_whole_function_records_without_old_record_removal": true,
+    "all4_established_live_Ghidra_names_preserved": true,
+    "all3_current_head_and_pair_Core_units_registered_once": true
+  },
+  "integration": "Actual Core append conflict resolved with repository union tool; address-owned additions match frozen worker records. Existing parent/prefix/provider Source unchanged.",
+  "limits": [
+    "Accepted currentCRT singleton allocation boundary only; Originalheap/newhandler/exception/RTTI not proved",
+    "New request/GS cookie/privateframes/incidentalregisters/flags/rawfault/FH3SEH/runtime/game identity unproved",
+    "No new tests/probes/newbodyexecution; default3suites older math/tools",
+    "Whole6AB6B0 andactual6A7BE0loader remain separate; existinginlineprefix preserved"
+  ],
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Verified separately after publication"
+  }
+}

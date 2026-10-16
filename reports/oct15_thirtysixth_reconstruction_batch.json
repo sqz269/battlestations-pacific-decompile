@@ -1,0 +1,93 @@
+{
+  "packet": "oct15_thirtysixth_reconstruction_batch",
+  "status": "primary_accepted_Source_integrated_default_Win32_checked",
+  "component": {
+    "pin": "4f5fb0a41df31d2ce6d27b540095a28c99e87bc2",
+    "report": "reports/oct15_input_preset_iterator_equal.json",
+    "frozen_artifacts": {
+      "src/native_input_preset_iterator_equal.cpp": "1056e9b67c6a038e9182017a1e7894709575c7f06ac6808f0cbd31225a2fdf04",
+      "include/bsp/native_input_preset_iterator_equal.hpp": "c6a408b7f557daab0e8882b048089854b96e5332a269650d36c14e086d0e86dd",
+      "docs/OCT15_INPUT_PRESET_ITERATOR_EQUAL.md": "6edd5cbb0638c88cc63936f0ee5b50f4e8327b257a436bbec4ef0028a4e5c824",
+      "reports/oct15_input_preset_iterator_equal.json": "e163d1511f9db39ed939262cdd62e82b9196fb66af74ba674df88ead7594f809"
+    }
+  },
+  "scope": {
+    "ordinary_entries": 1,
+    "address": "00699ef0",
+    "defined_Native_bytes": 41,
+    "Native_instructions": 18,
+    "readonly_producer_worker_scope": [
+      43,
+      12
+    ],
+    "logical_actions_promoted": 0,
+    "global_unique_Native_coverage_increment_claimed": false
+  },
+  "review": {
+    "primary_checks": 14,
+    "primary_receipt": "local/oct15_preset_iterator_equal_primary.json",
+    "primary_receipt_sha256": "b4d46754e067d8fb948330de8c5b3fbec6982012bbcfcb638bdbff614547dd55",
+    "findings": [],
+    "provider_LF_files_equal_current_Main": 7,
+    "actual_CMake_code_bytes": 58,
+    "actual_CMake_instructions": 28,
+    "public": [
+      44,
+      21
+    ],
+    "unused_emitted_helper": [
+      14,
+      7
+    ],
+    "code_sections": 2,
+    "code_REL32": 1,
+    "noncode_relocations": 0,
+    "padding": 0,
+    "final_integrator_object_sha256": "9883359d6d93667bc47ff08a6423c9fdd9209233d21ccc4eb76cd3d1d11faef9",
+    "worker_object_sha256": "11c8c74ac9fdd86b6cca80d4b8e09c401cdf7918e2116f034cf68f93d17c5b61",
+    "all_code_and_actual_symbolic_relocations_equal": true
+  },
+  "validation": {
+    "tested_combined_Source": "3ead944ce4a38530c926bdbfdec000de097c5d73",
+    "default_MSVC_Win32": true,
+    "build_log": "local/oct15_batch36_final_build.txt",
+    "build_log_sha256": "6c7445b5c6d7b904611756be2f7976a5980eddf01fcbd1ae0cc8b4e2cc0168a9",
+    "existing_suites_passed": 3,
+    "ctest_seconds": 8.59,
+    "new_tests": 0,
+    "new_probes": 0,
+    "Native_packet_execution": false,
+    "JSON_transfer_rows": 3,
+    "Markdown_transfer_claims": 3,
+    "owned_call_rows": 1,
+    "readonly_producer_rows": 2,
+    "transfer_log": "local/oct15_batch36_transfers.txt",
+    "annotation": {
+      "path": "local/ghidra-annotations-20261016T065043Z.json",
+      "sha256": "610e04295177a34f49791d7741f39fc7b101e8293c3cd7ff74d71c3fd1960ec1",
+      "saved_entries": 1,
+      "preimages_preserved": true
+    },
+    "refreshed_exports": 1,
+    "snapshot": "skipped unchanged76774functions",
+    "index": "rebuilt"
+  },
+  "coordination": {
+    "registry_leases": false,
+    "only_owned_files_staged": true,
+    "worker_frozen_files_unchanged": true,
+    "existing_STL_inst_name_retained": true
+  },
+  "limits": [
+    "Existing suites exercise older math/tool behavior, not this new equality entry against Native game state.",
+    "Actual existing8Bpreset iterator carrier is reused, with volatileleftowner read/shortcircuitedrightowner, actualSDKdiagnostic mayreturn/throw, thenCURRENTleftnode beforeCURRENTrightnode. No revalidation/earlyreturn/guard/RawCtx/model/rollback is added.",
+    "NativeECXleft/unconsumedEDX/rightstackRET4 and ALbool agree with Source input shape; upperEAX and newSourceprivate argument/frame timing differ and are qualified.",
+    "Compilerpreloads rightargument beforeleftowner while Nativeleftowner precedesrightargumentread; publicstorage order remainsproved.",
+    "OriginalSDK/CRT/privateframes/registerflags/FH3SEH/RTTI/fault/heap/binaryABI/game remain unproved. No predecessor/hint/mapindex/owner promotion."
+  ],
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Verify separately after publication; no self-reference"
+  }
+}

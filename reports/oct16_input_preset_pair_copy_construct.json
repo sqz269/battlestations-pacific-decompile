@@ -1,0 +1,479 @@
+{
+  "schema": 1,
+  "packet": "oct16_native_input_preset_pair_copy_construct",
+  "status": "complete_ordinary_actual_RawCtx_feature_cell_Source_default_Win32_checked_frozen_pin_primary_review_pending",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_input_preset_pair_copy_construct.cpp",
+  "header": "include/bsp/native_input_preset_pair_copy_construct.hpp",
+  "documentation": "docs/OCT16_INPUT_PRESET_PAIR_COPY_CONSTRUCT.md",
+  "published_dependencies": {
+    "Main": "2995ccba1c0ede5bd92fc264baecab3deb2c85db",
+    "BF7680_Source_pin": "fe6f68c599408b2e782cc7151e50dc710fd633aa",
+    "ancestor_verified": true,
+    "provider_fingerprints": [
+      {
+        "path": "src/native_string.cpp",
+        "physical_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "LF_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "published_Main_LF_equal": true
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "physical_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "LF_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "published_Main_LF_equal": true
+      },
+      {
+        "path": "src/native_crt_memcpy.cpp",
+        "physical_sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+        "LF_sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+        "published_Main_LF_equal": true
+      },
+      {
+        "path": "include/bsp/native_crt_memcpy.hpp",
+        "physical_sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+        "LF_sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+        "published_Main_LF_equal": true
+      },
+      {
+        "path": "src/native_string_pool_owner.cpp",
+        "physical_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+        "LF_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+        "published_Main_LF_equal": true
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "physical_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "LF_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "published_Main_LF_equal": true
+      },
+      {
+        "path": "src/native_string_pool_storage.cpp",
+        "physical_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+        "LF_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+        "published_Main_LF_equal": true
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "physical_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+        "LF_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+        "published_Main_LF_equal": true
+      },
+      {
+        "path": "src/native_crt_vector_copy.cpp",
+        "physical_sha256": "70123af959c1015e81fc495c2db74162eabfe4e5ee252211baaba2d85241ad71",
+        "LF_sha256": "70123af959c1015e81fc495c2db74162eabfe4e5ee252211baaba2d85241ad71",
+        "published_Main_LF_equal": true
+      },
+      {
+        "path": "include/bsp/native_crt_vector_copy.hpp",
+        "physical_sha256": "fbbe9588430ad0dbdbca984fcfb19e36a9e83cf0a903a16c0226685f9ee0dc76",
+        "LF_sha256": "fbbe9588430ad0dbdbca984fcfb19e36a9e83cf0a903a16c0226685f9ee0dc76",
+        "published_Main_LF_equal": true
+      }
+    ]
+  },
+  "routines": [
+    {
+      "address": "0069e7a0",
+      "name": "copy_construct_native_input_preset_pair_0069e7a0",
+      "preserved_Original_name": "STL_StringPresetPair_CopyConstruct_0069E7A0",
+      "kind": "function",
+      "coverage": "complete whole0069E7A0..0069E802inclusive99definedB37starts,1completebodyrange; noflow/listingrepair",
+      "original_abi": "ECXdestination28Bpair,EDXunconsumed,1stacksourcepair,RET4,EAXoriginaldestination; incompleteundefined(void)prototype isnot evidence ofzeroargs.",
+      "Source_abi": "void*fastcall(dst,uint32deadEDX,src,actualRawCtx&,actualfeature0109EEA4ref);3stackwords/RET0C,EAXdst; newC++ABI/privateframe.",
+      "source_sha256": "3b31823105a4eb75fe402e40edd069f5db968815d966571061b71989e476538e",
+      "header_sha256": "7eb86f8175741f3f9938f51ffb4e97949ec604bfaf4af9c1280cfa1445d91a67"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0069e7be",
+      "native": "0041dd40",
+      "function": "0069e7a0",
+      "kind": "call"
+    },
+    {
+      "address": "0069e7d3",
+      "native": "00bf7680",
+      "function": "0069e7a0",
+      "kind": "call"
+    }
+  ],
+  "schedule": [
+    "CompareD/S BEFOREunconditionaldestinationLENGTH0=0thenDATA4=0,includingD==S. Abandonoldbacking;noassignment/selfrepair.",
+    "Unequal: readCURRENTsourceLENGTH0 AFTERresets; realRawCtxresizepreserve1. RereadCURRENTsourceLENGTH0 AFTERresize;0skipskeycopy.",
+    "Nonzero: captureCURRENTdestLENGTH0 thenCURRENTsourceDATA4 thenCURRENTdestDATA4; actualBF7680 copiesdestLENGTHbytes,notlen+1; ignorechildEAX.",
+    "Fiveinterleavedsource4Brepresentationread/destination4Bstorepairsat8,C,10,14,18; eachusesownstd::byte[4]+fixedmemcpy,nottypedmappedvalue/aggregate20Bsnapshot/FP.",
+    "ReturnoriginalD. Noheadernullguard,additionalcleanup/keyreset/catch/rollback/aliasnormalization."
+  ],
+  "layout_producer": {
+    "pair_bytes": 28,
+    "key_length_offset": 0,
+    "key_data_offset": 4,
+    "opaque_mapped_offsets": [
+      8,
+      12,
+      16,
+      20,
+      24
+    ],
+    "evidence": "WholeE7producer and priorfrozenwholeF5producer placepairatnode+C,links0/4/8,color28,nil29; priorfactory/bodyEHreceipt retained onlyasreadonlylayout/callorigin. NoNodeoverlay/factorySource."
+  },
+  "actual_Source_bindings": [
+    {
+      "callee": "resize_native_string_header_0041dd40(void*,NativeStringRawPoolContext&,uint32,bool)",
+      "source": "src/native_string.cpp",
+      "arguments": "dst,sameactualRawCtx,CURRENTsrcLen,preserve=true",
+      "domain": "Publishedactualrawpool/currentCRT/manager; existingresize usesacceptedstd::memmove preservation andomitsnativezero-bytecopy. No boundary broadened bythisparent."
+    },
+    {
+      "callee": "copy_native_crt_bytes_00bf7680(void*,constvoid*,uint32,constvolatileuint32&)",
+      "source": "src/native_crt_memcpy.cpp",
+      "arguments": "CURRENTdstData,CURRENTsrcData,CURRENTdstLen,sameborrowedactual109EEA4",
+      "domain": "Publishedwhole247instructionNativecopySource,ownscalarscheduleandactualC0vectorbinding,notstdmemmove/BF87/newcallback/defaultfeature."
+    }
+  ],
+  "borrowed_context": {
+    "RawCtx": "ExistingNativeStringRawPoolContext borrows actual01090AA8 poolpublication,01090AA4 small-returngate,01090AA0 managerpublication; ownsnone.",
+    "feature": "Borrowcanonicalconstvolatileuint32 actual0109EEA4; Sourceargumentref isnotnewglobal/provider. RawCtxcannotreplaceit. PEvirtualzero/Ghidra0not runtimeflagtruth; actualruntimefeatureCPU/OStruth/lifetime/mappingremaincaller obligations."
+  },
+  "admitted_domain": [
+    "Everyreachedheader/mapped/providerextentmustbevalidreadable/writable; no newguard. Unsigned32integeraddressaddition avoidsundefinedC++objectpointerarithmetic.",
+    "HeaderwordsarevolatileDWORDaccesses; mappedbytesareplainrepresentationcopies,notvolatiletypedvalues/concurrentMMIOoratomicprotocol.",
+    "Overlapretainsallmaterialcurrentheaderreadsandfiveprogressivemappedpairswithinprovidercontracts; noaliasnormalization. ExtentsexcludeactiveSource/privateargument/return/providerframesandfeature/contextstorage.",
+    "Sourceextraargumentloadtiming/privatepredicateargument-slotreuse/registers/flags/faultPCandfaultprogressarequalified. NoOriginalbinaryABI,FH3/SEH/RTTI/heap/runtime/gameequivalenceclaimed."
+  ],
+  "failure_and_x87": {
+    "EH": "NoNativeorSource localEH/catch/guard. Rawgetter/resizeC++failurepropagatesafterinitialresets/providerprogress,beforemappedstores. No savedallocationfree/paircleanup/repair. Latercallee failure preventslatermappedwork. OrdinarySourceisnotnoexcept.",
+    "x87_NaN": "NativeandactualcompiledmappedcopiesareintegerDWORDMOVs;std::byteperwordcopiesdo notevaluateopaqueint/pointer/floatvaluesorquietpotentialsignalingNaNs. No x87/SIMDmathinstructions innewTU; actualkeycopyproviderretainsitsownSSE2/flags/DFdomain.",
+    "self": "D==S stillzeroskey/abandonsbackingthenperwordmappedcopy; doesnotresize/copykey/accesscontextfields."
+  },
+  "preservation": {
+    "existing_library_identity": "STL_StringPresetPair_CopyConstruct_0069E7A0 retained; appendonlyevidence, noGhidramutation",
+    "old_AV_projection": [
+      {
+        "path": "src/native_input_settings_tree_insertion.cpp",
+        "physical_sha256": "ebd83749d995ca16a7affcfd9bf0637383ccb172cd71e37d2ab5c26036b72ba4",
+        "LF_sha256": "ebd83749d995ca16a7affcfd9bf0637383ccb172cd71e37d2ab5c26036b72ba4",
+        "published_Main_LF_equal": true
+      },
+      {
+        "path": "include/bsp/native_input_settings_tree_insertion.hpp",
+        "physical_sha256": "ec88bb50d0740576528362ae81c5afe73b1c9959752f4af1a29631ffe695ac70",
+        "LF_sha256": "ec88bb50d0740576528362ae81c5afe73b1c9959752f4af1a29631ffe695ac70",
+        "published_Main_LF_equal": true
+      }
+    ],
+    "prior_frozen_receipts": [
+      {
+        "path": "local/oct16_preset_insert_node_frontier_readiness.json",
+        "sha256": "0d742a4c7bbb1a5e904ca124e8364efb14b3a217bfa8184fd57ff64b273610ac",
+        "unchanged": true
+      },
+      {
+        "path": "local/oct16_preset_insert_node_frontier_native_deep.json",
+        "sha256": "637f4de7ef4acbcd4cd9fdf4b63df92f4131f52f89449d9c5d13f15dd0b2e6c5",
+        "unchanged": true
+      },
+      {
+        "path": "local/oct16_raw_owner_legacy_independent_peer.json",
+        "sha256": "53ef42dca266f6d41a36cd2a868b6f903755244b8c26843a0d484da9ed22fc25",
+        "unchanged": true
+      },
+      {
+        "path": "local/oct15_input_preset_map_index_readiness.json",
+        "sha256": "0da38f654119ce288fe18972872aa1a7ff3d4e024587a85b47e1ee33193869df",
+        "unchanged": true
+      }
+    ],
+    "no_optional_ctor_reuse": "0069E6E0isNOTactualcalleeandisnotSource dependency; no69E6E0/69F5F0/C7action/FBC0ownershiporSourcepromotion.",
+    "name_ledger_preimage": {
+      "address": "0069e7a0",
+      "name": "STL_StringPresetPair_CopyConstruct_0069E7A0",
+      "evidence": "Hypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+    }
+  },
+  "native_evidence": {
+    "audit": {
+      "path": "local/oct16_preset_pair_copy_construct_native_audit.json",
+      "sha256": "9fe8c66318ca7334bb242469dca14a497a10d6a6e472469c3053cc1b8562a5ed"
+    },
+    "coverage": {
+      "entry": "0069e7a0",
+      "last_byte": "0069e802",
+      "defined_bytes": 99,
+      "instructions": 37,
+      "range_count": 1,
+      "PE_equals_live": true,
+      "raw_hex": "568bf1578b7c240c3bf7c70600000000c746040000000074228b076a0150e87df5d7ff833f0074138b0e8b57048b4604515250e8a88e550083c40c8b4f088d4708894e088b500489560c8b4808894e108b500c8956148b40108946185f8bc65ec20400",
+      "sha256": "dc6032f85d068043749df3d54102826ff035493bd449b88c5f098b987229f92f"
+    },
+    "typed": {
+      "path": "local/oct16_preset_pair_copy_construct_typed.json",
+      "sha256": "547ffc20a74e6c49c7a0588061f495c67cbefe7f9ed95178001af28bc6a475cc",
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "99",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0069e7a0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0069e802"
+            },
+            "length": "99"
+          }
+        ]
+      }
+    },
+    "current_starts": {
+      "path": "local/oct16_preset_pair_copy_construct_current_starts.json",
+      "sha256": "ebccfee3ff21c4bd4ed10b9a2683b92895cfad2b4df4dfaa44459eead6d96abd",
+      "count": 37,
+      "all_mnemonics_and_actual_targets_match": true
+    },
+    "live": {
+      "path": "local/oct16_preset_pair_copy_construct_live.txt",
+      "sha256": "ae79fedf0ca926e704c31cac240cc337194330afdb38fff007ba83454f2f77bd"
+    },
+    "PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "actual_CMake_COFF_review": {
+    "object": {
+      "path": "build\\win32\\bsp_core.dir\\Release\\native_input_preset_pair_copy_construct.obj",
+      "sha256": "e8aef7d610e7b62ede7aca1ce04c08f50927bea610f1a771b48ae38f89a6cf33"
+    },
+    "full_capture": {
+      "path": "local/oct16_preset_pair_copy_construct_actual_COFF.json",
+      "sha256": "66a58ab8e0a3dd03337996bc719274f6bc94f74ab9c16d5a801ec1825acaf7b6"
+    },
+    "full_decoded": {
+      "path": "local/oct16_preset_pair_copy_construct_actual_COFF_decoded.txt",
+      "sha256": "22de60860123918f4156395b436c3582c070ace51041c1a0222127b8a6838fdc"
+    },
+    "code_bytes": 169,
+    "code_instructions": 70,
+    "code_sections": 4,
+    "public_bytes": 118,
+    "public_instructions": 46,
+    "unused_helpers": [
+      {
+        "bytes": 20,
+        "instructions": 9,
+        "name": "?copy_mapped_word@?A0xdd50682c@bsp@@YAXPAXPBXI@Z",
+        "sha256": "8ca2510aea6cf3cf1f33a8d86874fc41d33918ace6477e7d0020dbfe4fb3440d"
+      },
+      {
+        "bytes": 14,
+        "instructions": 7,
+        "name": "?word@?A0xdd50682c@bsp@@YAIPBXI@Z",
+        "sha256": "968c17a0375a47c786e584c230018ee9ddbb72bfbd8b42d8ffe49fefcecff650"
+      },
+      {
+        "bytes": 17,
+        "instructions": 8,
+        "name": "?word@?A0xdd50682c@bsp@@YAXPAXII@Z",
+        "sha256": "cdb70beb04767abdb190d475687cb3d73f5a60446387ee001a9169bd0ce2b7eb"
+      }
+    ],
+    "all_code_reviewed": true,
+    "padding_bytes": 0,
+    "actual_code_relocations": [
+      {
+        "offset": 45,
+        "type": 20,
+        "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
+        "addend": 0
+      },
+      {
+        "offset": 73,
+        "type": 20,
+        "symbol": "?copy_native_crt_bytes_00bf7680@bsp@@YAPAXPAXPBXIADI@Z",
+        "addend": 0
+      }
+    ],
+    "other_relocations": 0,
+    "local_EH": "none; no FH3/FS/state/unwind sections or calls",
+    "prefix": "CMP+0A precedes SETNE byte[EBP+B]+0C, length0store+10, data0store+16; private volatile discriminator keeps this order.",
+    "private_slot": "Compiler reuses highbyte of already captured Source source-argument slot [EBP+B]; source pointer retained EDI. Not a Native field/frame, excluded from admitted alias extents; extra write/flags/fault order qualified.",
+    "current_fields": "SourceLen+23 before resize; CURRENT SourceLen+31 after; CURRENT DestLen+3D,SourceData+3F,DestData+42 in order; additional feature-reference argument loaded at+3A without reading actualcell.",
+    "mapped_pairs": [
+      {
+        "read_offset": 80,
+        "write_offset": 83,
+        "field_offset": 8
+      },
+      {
+        "read_offset": 86,
+        "write_offset": 89,
+        "field_offset": 12
+      },
+      {
+        "read_offset": 92,
+        "write_offset": 95,
+        "field_offset": 16
+      },
+      {
+        "read_offset": 98,
+        "write_offset": 101,
+        "field_offset": 20
+      },
+      {
+        "read_offset": 104,
+        "write_offset": 107,
+        "field_offset": 24
+      }
+    ],
+    "return": "EAX=ESI originaldest +6E; RET0C +73. Native RET4 differs.",
+    "non_code": [
+      {
+        "number": 1,
+        "name": ".drectve",
+        "bytes": 415,
+        "sha256": "eaac67e3e61b0e9dd4d78c698584c8f9f55156596cfe04a31b3cdda55694b59f",
+        "relocations": []
+      },
+      {
+        "number": 2,
+        "name": ".debug$S",
+        "bytes": 220,
+        "sha256": "38236a2ec6833511f75c6acf04bebc5e408f4c54c3aa821aee07195c5c066d37",
+        "relocations": []
+      },
+      {
+        "number": 3,
+        "name": ".bss",
+        "bytes": 4,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "relocations": []
+      },
+      {
+        "number": 8,
+        "name": ".chks64",
+        "bytes": 64,
+        "sha256": "c506576589449cef74fbb93b74701754bf0f9a93f8a0d962cea2107031407da8",
+        "relocations": []
+      }
+    ],
+    "weak_BSS": "4 declaredB __Avx2WmemEnabledWeakValue,0rawfileB,no code/data relocs; .drectve has existing STL weak alternate-name. Not applicationstate/actual109EEA4 substitute."
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "platform": "MSVCWin32/Release/defaultconfiguration",
+      "exit_code": 0,
+      "log": {
+        "path": "local/oct16_preset_pair_copy_construct_build.log",
+        "sha256": "2b9ad6d54cf6dcbda1620cdaf3249cf32f671564bef660b72cc5d0bcd22d57b7"
+      },
+      "existing_suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "passed": 3,
+      "failed": 0,
+      "total_test_seconds": 7.37
+    },
+    "new_tests": 0,
+    "ad_hoc_probes": 0,
+    "Native_executions": 0,
+    "entry_specific_fixture_coverage": false,
+    "ABI_compatible": false,
+    "game_validated": false,
+    "json_call_verifier": {
+      "status": "passed",
+      "owned_claims": 2,
+      "failed": 0,
+      "log": "local/oct16_preset_pair_copy_construct_report_verify.log",
+      "sha256": "1439e851e54d22c9495029060158bdd3bfc5ab7f859e392ae80e22cf69cfb11a"
+    },
+    "markdown_call_verifier": {
+      "status": "passed",
+      "owned_claims": 2,
+      "failed": 0,
+      "log": "local/oct16_preset_pair_copy_construct_doc_verify.log",
+      "sha256": "bc0a6615a65a39c95f8e3ceed3dae9bd84e692c51f0c78a6e6cce30ca9d5aa89"
+    },
+    "diff_check": "passed_git_diff_--cached_--check_on_explicit_owned7files; repeatedafterfinalmetadata"
+  },
+  "checks": [
+    {
+      "check": "FreshpublishedBF7680ancestorandacceptedMainverified;onlyE7address/fourfilesclaimed.",
+      "passed": true
+    },
+    {
+      "check": "Freshproject/programtypedwhole99B37/onebody,installedPEequalslive,all37currentstartsandbothactualE8targetsverified.",
+      "passed": true
+    },
+    {
+      "check": "WholeNative37instructionsandcompleteSource/headerreviewed;oldcorrectidentity/incompleteprototypepreserved.",
+      "passed": true
+    },
+    {
+      "check": "D/Scompareprecedestwolength/datazerosinactualSourcecode;privatevolatilebool/argument-slotreusequalified.",
+      "passed": true
+    },
+    {
+      "check": "CurrentSourceLenAFTERzerosandAFTERresize,DestLenthenSrcDatathenDstDataanddestlen-countpreserved.",
+      "passed": true
+    },
+    {
+      "check": "FiveperwordrepresentationcopiesemitinterleavedDWORDMOVs,nofloating/typedopaqueevaluation/20Bsnapshot.",
+      "passed": true
+    },
+    {
+      "check": "TwoactualCOFFREL32symbolsselectcorrectRawCtxresizeandactualBF7680feature-ref;nooptionalE6/provider/adapter.",
+      "passed": true
+    },
+    {
+      "check": "Full169B70fourcode_sections/public118B46+helpers51B24reviewed;EAXdst/RET0C/noEH/no padding verified.",
+      "passed": true
+    },
+    {
+      "check": "AllCOFFdata/relocsretained;4BweakBSS0filebytes/no code/dataref notapplicationfeaturestate.",
+      "passed": true
+    },
+    {
+      "check": "All10actualproviderfilesLFmatchpublishedMain;oldAVprojectionandfourpriorreceiptsunchanged.",
+      "passed": true
+    },
+    {
+      "check": "DefaultfinalSourceMSVCWin32build3/3pass7.37s;no newtests/probes/Nativeexec/fixture/game/OriginalABIclaim.",
+      "passed": true
+    }
+  ],
+  "ledger_changes": {
+    "function": {
+      "log": "local\\oct16_preset_pair_copy_construct_ledger_function.log",
+      "sha256": "0dd4bcb57f472bb8e598dcdb93c1c3908168fec55cc6e27e35c0cc6300046b5f",
+      "address": "0069e7a0",
+      "existing_names_and_old_records_preserved": true
+    },
+    "name": {
+      "log": "local\\oct16_preset_pair_copy_construct_ledger_name.log",
+      "sha256": "c29fc9b48998e33c4a2c8308254148023bc8bf7a916149aef275dc657bb38865",
+      "address": "0069e7a0",
+      "existing_names_and_old_records_preserved": true
+    }
+  },
+  "Root_current_Source_Native_COFF_review": {
+    "status": "16current_Source_Native_COFFprimarychecksPASSED_no_findings; finalimmutablepinmetadatamatchingpending",
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_preset_pair_copy_construct_primary.json",
+    "sha256": "6556a9a4a9940811b4eb31b673abe19da82b8882d68f2a7ff3e914674cb9181d",
+    "passed": 16,
+    "source_sha256": "3b31823105a4eb75fe402e40edd069f5db968815d966571061b71989e476538e",
+    "header_sha256": "7eb86f8175741f3f9938f51ffb4e97949ec604bfaf4af9c1280cfa1445d91a67",
+    "object_sha256": "e8aef7d610e7b62ede7aca1ce04c08f50927bea610f1a771b48ae38f89a6cf33"
+  }
+}

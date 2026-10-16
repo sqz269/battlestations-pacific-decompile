@@ -1,0 +1,295 @@
+{
+  "batch": "GOAL15X/Y",
+  "validated_root_source": "5862fc8767f9eabb2ee33050c7a1280ab22d537e",
+  "whole_source_functions": 3,
+  "whole_native_bytes": 525,
+  "entire_own_source_code_bytes": 525,
+  "x_author_pin": "822facbc1f8f99b8bdb82613d2c4d7c6e4f10876",
+  "y_author_pin": "b568bb23a887554c6e18848dc14fa628c4049709",
+  "x_whole_native_bytes": 436,
+  "x_whole_instructions": 181,
+  "x_fixed_bytes_exact": 388,
+  "x_actual_Source_provider_bindings": [
+    {
+      "site": "00493169",
+      "native_target": "00490240",
+      "actual_Source_symbol": "?throw_native_traffic_vector_length_00490240@bsp@@YAXXZ",
+      "actual_registered_provider": "native_traffic_vector_failure_children"
+    },
+    {
+      "site": "004931cb",
+      "native_target": "0047e970",
+      "actual_Source_symbol": "?allocate_native_traffic_vector_0047e970@bsp@@YIPAXI@Z",
+      "actual_registered_provider": "native_traffic_vector_failure_children"
+    },
+    {
+      "site": "004931de",
+      "native_target": "0048d660",
+      "actual_Source_symbol": "?copy_native_traffic_dwords_0048d660@bsp@@YGPAXPBX0PAX@Z",
+      "actual_registered_provider": "native_traffic_dword_copy_fill"
+    },
+    {
+      "site": "004931ec",
+      "native_target": "0048e4a0",
+      "actual_Source_symbol": "?fill_n_native_traffic_dwords_0048e4a0@bsp@@YGPAXPAXIPBX@Z",
+      "actual_registered_provider": "native_traffic_dword_copy_fill"
+    },
+    {
+      "site": "004931fd",
+      "native_target": "0048d660",
+      "actual_Source_symbol": "?copy_native_traffic_dwords_0048d660@bsp@@YGPAXPBX0PAX@Z",
+      "actual_registered_provider": "native_traffic_dword_copy_fill"
+    },
+    {
+      "site": "0049321c",
+      "native_target": "00bf65ac",
+      "actual_Source_symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "actual_registered_provider": "singleton_lifetime"
+    },
+    {
+      "site": "00493260",
+      "native_target": "0048d660",
+      "actual_Source_symbol": "?copy_native_traffic_dwords_0048d660@bsp@@YGPAXPBX0PAX@Z",
+      "actual_registered_provider": "native_traffic_dword_copy_fill"
+    },
+    {
+      "site": "0049327a",
+      "native_target": "0048e4a0",
+      "actual_Source_symbol": "?fill_n_native_traffic_dwords_0048e4a0@bsp@@YGPAXPAXIPBX@Z",
+      "actual_registered_provider": "native_traffic_dword_copy_fill"
+    },
+    {
+      "site": "00493292",
+      "native_target": "00486800",
+      "actual_Source_symbol": "?fill_native_traffic_dwords_00486800@bsp@@YAPAXPAXPBX1@Z",
+      "actual_registered_provider": "native_traffic_dword_copy_fill"
+    },
+    {
+      "site": "004932a8",
+      "native_target": "0048d660",
+      "actual_Source_symbol": "?copy_native_traffic_dwords_0048d660@bsp@@YGPAXPBX0PAX@Z",
+      "actual_registered_provider": "native_traffic_dword_copy_fill"
+    },
+    {
+      "site": "004932b3",
+      "native_target": "00486820",
+      "actual_Source_symbol": "?copy_native_traffic_dwords_backward_00486820@bsp@@YAPAXPBX0PAX@Z",
+      "actual_registered_provider": "native_traffic_dword_copy_fill"
+    },
+    {
+      "site": "004932c5",
+      "native_target": "00486800",
+      "actual_Source_symbol": "?fill_native_traffic_dwords_00486800@bsp@@YAPAXPAXPBX1@Z",
+      "actual_registered_provider": "native_traffic_dword_copy_fill"
+    }
+  ],
+  "y_whole_native_bytes": 89,
+  "y_full_object_proofs": [
+    {
+      "object": "local\\goal15y_root\\author\\strict_module.obj",
+      "sha256": "0857e91ca2ec364452889f02df5f340eaa2f7f641bcea8ca813a6028353fcf2d",
+      "whole_functions": 2,
+      "executable_bytes": 89,
+      "entries": [
+        {
+          "address": "00b3ffa0",
+          "actual_symbol": "@bsp_tagged_abi_b3_00b3ffa0@4",
+          "whole_bytes": 4,
+          "whole_code_exact": true,
+          "relocations": 0
+        },
+        {
+          "address": "00b3d5e0",
+          "actual_symbol": "_bsp_tagged_abi_b3_00b3d5e0@16",
+          "whole_bytes": 85,
+          "whole_code_exact": true,
+          "relocations": 0
+        }
+      ]
+    },
+    {
+      "object": "build\\win32\\bsp_core.dir\\Release\\native_tagged_abi_leaf_b3_01.obj",
+      "sha256": "91636ddeee76a560a986a2c540cfa332f739794542f1498cbe710dc9139824e0",
+      "whole_functions": 2,
+      "executable_bytes": 89,
+      "entries": [
+        {
+          "address": "00b3ffa0",
+          "actual_symbol": "@bsp_tagged_abi_b3_00b3ffa0@4",
+          "whole_bytes": 4,
+          "whole_code_exact": true,
+          "relocations": 0
+        },
+        {
+          "address": "00b3d5e0",
+          "actual_symbol": "_bsp_tagged_abi_b3_00b3d5e0@16",
+          "whole_bytes": 85,
+          "whole_code_exact": true,
+          "relocations": 0
+        }
+      ]
+    }
+  ],
+  "y_whole_actual_unique_archive_member_equal": true,
+  "root_archive_sha256": "d3448a8947eecef200d6c10bc419e84d032d0bf5f3f7a5850f4af45c02817cbe",
+  "x_source_inputs_equal_reviewed_author": true,
+  "y_source_inputs_equal_reviewed_author": true,
+  "review_sha256": "72769ede73d87c9ea1356d9ec94c580de8e44feb52a1220c408f06c41668c505",
+  "review_y_sha256": "8948622daff51f164f2fbff6835ab5f05007721998e7dfd6d2c0606d67f2873f",
+  "original_physical_prototypes": [
+    "00493120 STL_Vector_InsertN_00493120  void * __thiscall STL_Vector_InsertN_00493120(void * this, uint physical_unread_word04, void * position, uint count, void * value_cell)  body 00493120 - 004932d3",
+    "00b3d5e0 BSP_NativeTaggedB3_SseStackTransfer16_00b3d5e0  void * __stdcall BSP_NativeTaggedB3_SseStackTransfer16_00b3d5e0(void * destination, uint physical_unread_word08, uint physical_unread_word0c, void * source)  body 00b3d5e0 - 00b3d634",
+    "00b3ffa0 BSP_NativeTaggedB3_LoadFloat0018_00b3ffa0  float __fastcall BSP_NativeTaggedB3_LoadFloat0018_00b3ffa0(void * backing)  body 00b3ffa0 - 00b3ffa3"
+  ],
+  "root_existing_checks": 3,
+  "new_registered_tests": 0,
+  "scope": "X entire parent fixed code plus genuine qualified provider bindings; Runtime only reviewed author long-tail actual stack-cell alias fixture. Y both whole bodies exact, reviewed author SSE alias fixture only. Root fixtures not rerun. No parent other paths/exception propagation through naked parent, x87 controls/fault/MXCSR/game/caller adoption/Original address proof.",
+  "x_root_objects": [
+    {
+      "object": "native_traffic_dword_insert",
+      "sha256": "50f8269a7697a075e3754a873d7b1eef3616bb41a006c67099eb9f3fcfb9baec",
+      "entire_executable_bytes": 436,
+      "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+      "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+      "whole_actual_unique_archive_member_equal": true
+    },
+    {
+      "object": "native_traffic_vector_failure_children",
+      "sha256": "758f06cda289f4060907c115932069f501cadf5df4c7bc7e207e28330189b09e",
+      "entire_executable_bytes": 12,
+      "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+      "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+      "whole_actual_unique_archive_member_equal": true
+    },
+    {
+      "object": "native_traffic_dword_copy_fill",
+      "sha256": "9d31fc35968591794f3493b6865e8491bca9bc578f4bb55e7e9d122c9a5072a2",
+      "entire_executable_bytes": 265,
+      "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+      "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+      "whole_actual_unique_archive_member_equal": true
+    },
+    {
+      "object": "native_singleton_vector_allocation",
+      "sha256": "e0209d81ff88207223ccd57ccdbec62f3d45f80d2d5c0437b80228b5ca471130",
+      "entire_executable_bytes": 612,
+      "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+      "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+      "whole_actual_unique_archive_member_equal": true
+    },
+    {
+      "object": "native_legacy_exception_owner",
+      "sha256": "a4737ea9295b79ce8a8108ff76fd86648327fb76fc68ac70677cf8f07c3a5419",
+      "entire_executable_bytes": 1098,
+      "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+      "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+      "whole_actual_unique_archive_member_equal": true
+    },
+    {
+      "object": "native_legacy_sbo_string",
+      "sha256": "a8bf47105821bc0feb8aabc9cdc86d08cfd3ca2d3124bb422f15adeb1edb552b",
+      "entire_executable_bytes": 2444,
+      "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+      "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+      "whole_actual_unique_archive_member_equal": true
+    },
+    {
+      "object": "singleton_lifetime",
+      "sha256": "73a3618a16cfb9955cc0e295c85378cfafe952d79bbb4a7e2a8851ca7bd79b0e",
+      "entire_executable_bytes": 4321,
+      "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+      "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+      "whole_actual_unique_archive_member_equal": true
+    },
+    {
+      "object": "native_allocator_base_default_constructor",
+      "sha256": "012bcb1125ad80b1a950e01638f95d1076041b88778d4cdbc319ea8f37a47d67",
+      "entire_executable_bytes": 17,
+      "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+      "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+      "whole_actual_unique_archive_member_equal": true
+    },
+    {
+      "object": "native_allocator_base_copy_constructor",
+      "sha256": "8c247343305c600505e3e99fba97f8a2c576e3a7cf2e56f7f54295cc64e683e7",
+      "entire_executable_bytes": 90,
+      "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+      "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+      "whole_actual_unique_archive_member_equal": true
+    },
+    {
+      "object": "native_allocator_base_cleanup",
+      "sha256": "fbe9b50c56531b10ffa4d8b58da1519cc0ff5556ba3f362dda8250d783f0c392",
+      "entire_executable_bytes": 23,
+      "all_executable_sections_and_actual_relocations_equal_reviewed_author": true,
+      "compiler_anonymous_namespace_and_lambda_ID_rebound_only": true,
+      "whole_actual_unique_archive_member_equal": true
+    }
+  ],
+  "root_full_proof": {
+    "path": "local\\goal15x_root\\root_proof.json",
+    "sha256": "cba6dcf941f62c1673a6c39af4edc90b9220cb168f78896b8aeceb7de52139a5"
+  },
+  "y_no_undefined_externals_in_actual_root_object": true,
+  "independent_reviews": {
+    "x": {
+      "status": "READY",
+      "path": "local/goal15x_root/review/review.json",
+      "sha256": "72769ede73d87c9ea1356d9ec94c580de8e44feb52a1220c408f06c41668c505"
+    },
+    "y": {
+      "status": "READY",
+      "path": "local/goal15y_root/review/review.json",
+      "sha256": "8948622daff51f164f2fbff6835ab5f05007721998e7dfd6d2c0606d67f2873f"
+    },
+    "blockers": []
+  },
+  "build": {
+    "path": "local\\goal15x_root\\registered_build.log",
+    "sha256": "932fb9db11f07da0e284cb0ed02be57ca77a1b60f40bf589c4b63f163bd462a7",
+    "existing_checks": 3,
+    "new_registered_tests": 0,
+    "validated_source_commit": "5862fc8767f9eabb2ee33050c7a1280ab22d537e"
+  },
+  "original_typed_bodies": {
+    "path": "local\\goal15x_root\\saved_typed_flow.json",
+    "sha256": "a76a6101f4cb8903d68f50dea0c2c78b9e4ae8f904bf5eef950acba5f18f68dd"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "Original_names_prototypes_comments": "local/goal15x_root/annotations_before_parser_correction.json",
+    "accepted_physical_prototypes_comments": "local/goal15h_annotations_00493120.json",
+    "history": "local/ghidra-annotations-20261016T051921Z.json",
+    "project_saved": true,
+    "exports_refreshed": 3,
+    "snapshot_log": "local/goal15x_root/snapshot.log",
+    "index_log": "local/goal15x_root/index.log",
+    "type_scope": "Physical raw pointer/DWORD/float hypotheses; no recovered class; X exactly automatic ECX and FOUR actual stack words, no EDX; Y opaque middle cleanup cells have no claimed semantics."
+  },
+  "b3_original_79_candidate_screening_inventory": {
+    "source_functions": 79,
+    "native_bytes": 475,
+    "exact_functions": 59,
+    "exact_native_bytes": 324,
+    "qualified_functions": 20,
+    "qualified_native_bytes": 151,
+    "remaining_in_this_inventory": 0,
+    "scope": "Selected screening inventory only; not all B3 addresses/callers/game."
+  },
+  "author_measured_seconds": {
+    "x_inclusive_setup_through_handoff": 1509.541195,
+    "y_first_clock_through_handoff": 1095.274783,
+    "y_dispatch_to_first_clock": "unmeasured",
+    "primary_integration": "unmeasured; includes parser/proof corrections",
+    "controlled_throughput_speedup_claimed": false
+  },
+  "call_verification": {
+    "path": "local/goal15x_root/call_checks.log",
+    "native_json_call_rows": 13,
+    "native_document_call_claims": 13,
+    "failures": 0,
+    "unchecked": 0,
+    "warnings": 0
+  }
+}

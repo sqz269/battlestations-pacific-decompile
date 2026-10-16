@@ -1,0 +1,783 @@
+{
+  "packet": "native_gui_frame_box_record_release_readiness_110",
+  "status": "read_only_canonical_registered_2d_zero_service_ready_record_release_composition_still_required",
+  "worker_head_before_packet": "93928db54ce14f683dbd23281c0bc44441e995ee",
+  "reviewed_root": "a17278d8358e1234a2dc10aecec9bf5a72e092f7",
+  "provider_source_hashes_equal_root": 18,
+  "original": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged": true
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "each_live_query_verified": true
+  },
+  "scope": {
+    "one_route": "AD2B30 resource handoff -> AA2660 atlas miss -> ordinary renderer/cache -> successful cold2D with callback0",
+    "conditional_profiles": [
+      "00d5f0a8",
+      "00d5f088",
+      "00d61948"
+    ],
+    "runtime_publications_observed": false,
+    "excluded": [
+      "atlas hits",
+      "other resource/current-profile families",
+      "cube/volume",
+      "full cache or renderer inventory",
+      "AD0D80/ACF8F0 rebuild",
+      "vector tidy",
+      "normal raw GUI activation"
+    ]
+  },
+  "calls": [
+    {
+      "address": "00ad2c10",
+      "native": "004c12b0",
+      "function": "00ad2b30",
+      "kind": "call",
+      "purpose": "existing manager getter; not expanded"
+    },
+    {
+      "address": "00ad2c2c",
+      "native": "00aa2660",
+      "function": "00ad2b30",
+      "kind": "call",
+      "purpose": "actual record-resource resolver handoff"
+    },
+    {
+      "address": "00b31a55",
+      "native": "00b30b40",
+      "function": "00b319b0",
+      "kind": "call",
+      "purpose": "same renderer cache handoff"
+    },
+    {
+      "address": "00b2c5e0",
+      "native": "00b3f2b0",
+      "function": "00b2c2d0",
+      "kind": "call",
+      "purpose": "real successful2D allocation"
+    },
+    {
+      "address": "00b2c60d",
+      "native": "00b3f930",
+      "function": "00b2c2d0",
+      "kind": "call",
+      "purpose": "actual2D constructor"
+    },
+    {
+      "address": "00b3f961",
+      "native": "00b34230",
+      "function": "00b3f930",
+      "kind": "call",
+      "purpose": "actual named-base constructor"
+    },
+    {
+      "address": "00b3f593",
+      "native": "00b3f2e0",
+      "function": "00b3f590",
+      "kind": "call",
+      "purpose": "actual nondeleting texture body"
+    },
+    {
+      "address": "00b3f5a5",
+      "native": "00b3d8d0",
+      "function": "00b3f590",
+      "kind": "call",
+      "purpose": "same actual2D pool return after body succeeds"
+    }
+  ],
+  "indirect_sites": [
+    {
+      "site": "00aa27da",
+      "receiver": "current actual F8D394 renderer",
+      "offset": "64",
+      "conditional_actual_profile": "00d5f0a8",
+      "table_cell": "00d5f10c",
+      "target": "00b319b0"
+    },
+    {
+      "site": "00b30dbd",
+      "receiver": "current actual registry",
+      "offset": "08",
+      "conditional_actual_profile": "00d5f088",
+      "table_cell": "00d5f090",
+      "target": "00b2c2d0"
+    }
+  ],
+  "numeric_terminal": {
+    "profile": "00d61948",
+    "slot00": "00bd30e0",
+    "slot04": "00b3f590",
+    "slot00_original_abi": "ECX actual owner; no stacked flags; RET; current profile -> slot04(flags1); no decrement",
+    "slot00_evidence": "established external Source contract; externally leased106, no new native body query/export/annotation",
+    "scalar_extent": "[00b3f590,00b3f5b0)",
+    "scalar_bytes": 32,
+    "scalar_instruction_starts": 11,
+    "scalar_order": [
+      "whole B3F2E0",
+      "test actual lowbyte flags bit0",
+      "same initialized0108DB38 slot return only on bit0 and success",
+      "return saved identity"
+    ],
+    "internal_scalar_flags_are_not_ad0860_call_arguments": true
+  },
+  "existing_source_zero_provider": {
+    "api": "dispatch_native_render_actual_owner_zero(NativeRenderActualOwners&, void*)",
+    "implementation": "src/native_render_context.cpp:181",
+    "same_actual_count_identity_checked": true,
+    "decrements_again": false,
+    "accesses_raw_payload_after_terminal": false,
+    "concrete_companion": "NativeTextureLoadOwners::Impl::Entry",
+    "companion_registration": "completed creator, same actual+04, exact canonical registry bind; no implicit retain",
+    "current_table_validation": [
+      "current raw profile D61948",
+      "actual table[0] BD30E0",
+      "actual table[1] B3F590"
+    ],
+    "current_terminal": "refresh current raw profile then delete_native_texture_2d_00b3f590(raw,1,same_context)",
+    "post_success_bookkeeping": "canonical unbind then erase Entry",
+    "wrong_helper": "release_native_render_actual_owner_observed decrements and must not follow the AD0860 decrement",
+    "canonical_host_accessor": "GameNativeRendererApplication::actual_owners()",
+    "canonical_binding": "game_native_renderer_textures.inc:25-43 existing renderer registry + existing texture owner context + actual profile view + same VFS strings",
+    "fake_provider_or_new_owner_required": false,
+    "lookup_or_alias_failures": "can throw before Entry terminal; already-zero obligation remains external",
+    "terminal_failures": "Entry noexcept; catches terminal exceptions and terminates; registration mismatch also terminates",
+    "throw_transparent_native_fh3_equivalence": false
+  },
+  "reused_ad0860_contract": {
+    "source": "prior98 frozen contract; no new body audit",
+    "native_bytes": 126,
+    "native_instruction_starts": 42,
+    "order": [
+      "capture resource before state0 arm",
+      "captured-nonnull only: actual+04 decrement once, zero-only current slot00 dispatch, record+0 clear after success",
+      "capture current name DATA before disarming action",
+      "current length+1 before genuine pool getter/return",
+      "no name-header zeroing"
+    ],
+    "resource_service_escape": "live record+4 -> genuine41DD20 after consuming state0; Source cleanup second failure must terminate, not retry",
+    "failure_retention": "exact caller graph/record/services and external operation metadata live before entry; no replay, stale raw pointers not healthy ownership"
+  },
+  "first_remaining_source_contract": {
+    "body": "whole AD0860 record release plus persistent external one-shot phase/observation",
+    "files": [
+      "include/bsp/native_gui_frame_box_records.hpp",
+      "src/native_gui_frame_box_records.cpp"
+    ],
+    "proposed_api": "release_native_gui_frame_box_record_00ad0860(void*, NativeRenderActualOwners&, NativeStringRawPoolContext&, NativeGuiFrameBoxRecordReleaseOperation&)",
+    "only_domain_established_here": "canonical registered2D creator route; not arbitrary companion or profile",
+    "required_services": "same canonical actual owners, same actual raw name pool/publication/manager cells; no defaults/no-op callbacks",
+    "retained_before_entry": true,
+    "reset_replay_automatic_cleanup_or_tidy": false,
+    "source_only_new_api_not_original_binary_abi": true,
+    "implementation_not_authorized_or_written_in110": true
+  },
+  "evidence": {
+    "byte_receipt": "local\\cc12_native_gui_frame_box_record_release_readiness_110\\native_bytes.json",
+    "live_query_receipt": "local\\cc12_native_gui_frame_box_record_release_readiness_110\\query_receipts.json",
+    "source_receipt": "local\\cc12_native_gui_frame_box_record_release_readiness_110\\source_evidence.json",
+    "live_disk_spans": 10,
+    "live_disk_total_bytes": 265,
+    "native_spans": [
+      {
+        "address": "00ad2c10",
+        "end_exclusive": "00ad2c35",
+        "length": 37,
+        "purpose": "record resource resolver handoff",
+        "sha256": "6759529d8c329779adf72fca990da481e2b386eee311fd4302d1c47c8bbb2200",
+        "hex": "e89be69effd9e88b74247051d91c248d4c2410518d54242c52568bc8e82ffafcff89442434",
+        "live_equals_installed": true,
+        "physical_instruction_starts": 13
+      },
+      {
+        "address": "00aa27cc",
+        "end_exclusive": "00aa27e1",
+        "length": 21,
+        "purpose": "atlas-miss current renderer slot64",
+        "sha256": "ce90c22bac8f7e9cd8ebb7bd1042818e0e51eaabe31de0efca348411e582dc58",
+        "hex": "8b0d94d3f8008b018b50646a0056ffd25f5ec21000",
+        "live_equals_installed": true,
+        "physical_instruction_starts": 9
+      },
+      {
+        "address": "00d5f10c",
+        "end_exclusive": "00d5f110",
+        "length": 4,
+        "purpose": "ordinary renderer slot64 cell",
+        "sha256": "3bf23a2a570b0465a222bfee39bed02f795cb8adb12d02bd11650ca61edf84e5",
+        "hex": "b019b300",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00b31a41",
+        "end_exclusive": "00b31a5a",
+        "length": 25,
+        "purpose": "renderer same-cache handoff",
+        "sha256": "bea55816d9aead0e4a56abf84e82dec5a301f20d86812c84b8bb411e64bf6a1b",
+        "hex": "8b4424306a016a00508d4c2418518d8d741a0000e8e6f0ffff",
+        "live_equals_installed": true,
+        "physical_instruction_starts": 8
+      },
+      {
+        "address": "00b30da9",
+        "end_exclusive": "00b30dbf",
+        "length": 22,
+        "purpose": "cold cache current registry slot08",
+        "sha256": "1b4880434d97c48ea55a6001f8506a1675e79ff5c215cf89065377baf3f442a6",
+        "hex": "8b8424800000008b178b5208508d4c2420518bcfffd2",
+        "live_equals_installed": true,
+        "physical_instruction_starts": 8
+      },
+      {
+        "address": "00d5f090",
+        "end_exclusive": "00d5f094",
+        "length": 4,
+        "purpose": "ordinary registry slot08 cell",
+        "sha256": "0a6a095960dfbb0836746b444cd93bfc16dda37aea84704f137756cba4a01934",
+        "hex": "d0c2b200",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00b2c5e0",
+        "end_exclusive": "00b2c612",
+        "length": 50,
+        "purpose": "successful 2D allocation/constructor handoff",
+        "sha256": "4e1578a6ef734c502241989733beaff8139ad53ba58dc93d51307f65d5bad416",
+        "hex": "e8cb2c01008944242485c0c644246c0274248b5424288b4c242c6a00528b54241c518b8c248000000052518bc8e81e330100",
+        "live_equals_installed": true,
+        "physical_instruction_starts": 16
+      },
+      {
+        "address": "00b3f930",
+        "end_exclusive": "00b3f96e",
+        "length": 62,
+        "purpose": "2D named-base and numeric-profile prefix",
+        "sha256": "4a17bf7e614218f700be7fe575c33c455fe33d6a79435e0463737d063e592b73",
+        "hex": "6aff686befcb0064a100000000506489250000000083ec308b442450538b5c24445556578b7c245450578bf1538974241ce8ca48ffff33edc7064819d600",
+        "live_equals_installed": true,
+        "physical_instruction_starts": 21
+      },
+      {
+        "address": "00d61948",
+        "end_exclusive": "00d61950",
+        "length": 8,
+        "purpose": "2D actual terminal table slots00/04",
+        "sha256": "3431d3730534188dda9ee513276a0445b8464b88e87aa76a3b7d5608bc045c5c",
+        "hex": "e030bd0090f5b300",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00b3f590",
+        "end_exclusive": "00b3f5b0",
+        "length": 32,
+        "purpose": "whole actual2D scalar deleting entry",
+        "sha256": "2e62a897b6bb3512a36acb99d45b672123c7501e32931239889c03f032db8465",
+        "hex": "568bf1e848fdfffff644240801740b56b938db0801e826e3ffff8bc65ec20400",
+        "live_equals_installed": true,
+        "physical_instruction_starts": 11
+      }
+    ],
+    "ad2b30_current_function": "[00ad2b30,00ad2d4f); older undefined comment is stale, no history repair or whole-body claim"
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "bytes": 10071,
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/include/bsp/native_render_context.hpp"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "bytes": 11471,
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/native_render_context.cpp"
+    },
+    {
+      "path": "include/bsp/native_texture_loading_cache.hpp",
+      "sha256": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+      "bytes": 11040,
+      "git_blob": "8fe84a0c76d3f0829c7d78bf05009f3fa6c760cd",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/include/bsp/native_texture_loading_cache.hpp"
+    },
+    {
+      "path": "src/native_texture_loading_cache.cpp",
+      "sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "bytes": 42965,
+      "git_blob": "6c888799e2967e2118ac59ad61aa45deeebc059b",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/native_texture_loading_cache.cpp"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "bytes": 3247,
+      "git_blob": "28ac6a6a771515dc54df56d630a91438b24fb2de",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/include/bsp/native_texture_2d_owner.hpp"
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+      "bytes": 11544,
+      "git_blob": "65f5ff828bcfed5f544912349feeeb9167349359",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/native_texture_2d_owner.cpp"
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+      "bytes": 1226,
+      "git_blob": "5ee0a9b036a0acd04fe5a89e3faa8cd22552f200",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/include/bsp/native_ref_counted.hpp"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+      "bytes": 822,
+      "git_blob": "bb26a9f52a9b694165a4b832db8a9dac735d1c52",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/native_ref_counted.cpp"
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "sha256": "3380643a25c0e27bc653440c8e79dd138bb68b495dac9f386d1e7e221ef467c0",
+      "bytes": 14808,
+      "git_blob": "f9257417f0ea9e30b5137b79a772bf8264c90283",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/include/bsp/game_native_renderer_application.hpp"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "sha256": "26bd27eda6ae864b13166ccd2fd1176f8a27b4006d7791d42d8346a703e91630",
+      "bytes": 54722,
+      "git_blob": "e140d45066695566eac7a59bdc7bd62799d3dc65",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/game_native_renderer_application.cpp"
+    },
+    {
+      "path": "src/game_native_renderer_textures.inc",
+      "sha256": "e178152527c7b2b39a63608346c6cc555a0306cb05c53af83f2cc654146e824e",
+      "bytes": 2949,
+      "git_blob": "b4683f86e7199d5788a73d4cdd5a5abaf22347e3",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/game_native_renderer_textures.inc"
+    },
+    {
+      "path": "include/bsp/gui_texture.hpp",
+      "sha256": "8e825c11e932fbd11176f2d368160cdb66742b8a25e2fb2235c37606cb5d945a",
+      "bytes": 1168,
+      "git_blob": "f17ec5d9aa508a8d4e3de19f8e7c7e0b21bfccff",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/include/bsp/gui_texture.hpp"
+    },
+    {
+      "path": "src/gui_texture.cpp",
+      "sha256": "9aa07ad4775f94ae00205a4462b8042a76a0f08afd7892f4f9462c6bae79198a",
+      "bytes": 3258,
+      "git_blob": "92a1018cbc8eea2f8bcaf2f890fc5261173a386f",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/gui_texture.cpp"
+    },
+    {
+      "path": "src/gui_framebox.cpp",
+      "sha256": "d84dfa37d274a40e3ba574e6886d72a1f2fb7d12328bccecd8d091f32f347306",
+      "bytes": 15332,
+      "git_blob": "c9b53453ac13f3a4b4181727d27b132bfee12a75",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/gui_framebox.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "sha256": "f7d7681547a5a644f6b65c895fa55f387904b18b50dcf054c5e1ec25b76af5d4",
+      "bytes": 1826,
+      "git_blob": "02575897789655a98197abf689d35830d30b27e5",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/include/bsp/native_gui_frame_box_records.hpp"
+    },
+    {
+      "path": "src/native_gui_frame_box_records.cpp",
+      "sha256": "ea28803cc5531fd4f449472c0b1f10474ed312f9098bd8864a4e170b3de672ce",
+      "bytes": 2795,
+      "git_blob": "2591722a4d19e9670ace79058f262b99d7e9d267",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/native_gui_frame_box_records.cpp"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "bytes": 8771,
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/include/bsp/native_string.hpp"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "bytes": 9121,
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "equals_reviewed_root": true,
+      "frozen": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/native_string.cpp"
+    }
+  ],
+  "prior_contracts": [
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_COPY_PROVIDERS_READINESS_98.md",
+      "sha256": "56ab226b40b72aab141b6a84ec9c5992446bcf339b32151c364e563bfb224269",
+      "contract_reused_not_reaudited": true
+    },
+    {
+      "path": "reports/cc12_native_gui_frame_box_copy_providers_readiness_98.json",
+      "sha256": "4348b74320557797d5c0a04457eeaf7b1966e3a18fa3dadd9aecdf9bfc8826fd",
+      "contract_reused_not_reaudited": true
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_COPY_103.md",
+      "sha256": "436504fdc86e90820176b8a738f6e0b4d6051a0d2bcaee88469d32da8b57bbb4",
+      "contract_reused_not_reaudited": true
+    }
+  ],
+  "validation": {
+    "no_source_cmake_ledger_or_saved_ghidra_mutations": true,
+    "no_build_test_or_probe": true,
+    "no_runtime_gameplay_native_crt_whole_release_or_retirement_proof": true,
+    "call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/cc12_native_gui_frame_box_record_release_readiness_110.json docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_RELEASE_READINESS_110.md",
+      "exit_code": 0,
+      "call_rows_checked": 8,
+      "documentation_call_claims_checked": 8,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "source_reference_doc_artifact_hashes_revalidated": 51,
+    "installed_original_hash_revalidated": true,
+    "source_files_still_equal_current_root_at_seal": 18
+  },
+  "artifact_manifest": {
+    "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/manifest.json",
+    "sha256": "7765c8f6ecda490604fa801b6083522849f43776e8f7540ccc286ee8c929d7a5",
+    "items": 51,
+    "source_inputs": 18,
+    "frozen_source_files": 18,
+    "total_bytes": 666543,
+    "sealed_no_replacement_before_root_capture": true
+  },
+  "evidence_hashes": [
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "bytes": 10071,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "bytes": 11471,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "include/bsp/native_texture_loading_cache.hpp",
+      "sha256": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+      "bytes": 11040,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/native_texture_loading_cache.cpp",
+      "sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "bytes": 42965,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "bytes": 3247,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+      "bytes": 11544,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+      "bytes": 1226,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+      "bytes": 822,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "sha256": "3380643a25c0e27bc653440c8e79dd138bb68b495dac9f386d1e7e221ef467c0",
+      "bytes": 14808,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "sha256": "26bd27eda6ae864b13166ccd2fd1176f8a27b4006d7791d42d8346a703e91630",
+      "bytes": 54722,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/game_native_renderer_textures.inc",
+      "sha256": "e178152527c7b2b39a63608346c6cc555a0306cb05c53af83f2cc654146e824e",
+      "bytes": 2949,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "include/bsp/gui_texture.hpp",
+      "sha256": "8e825c11e932fbd11176f2d368160cdb66742b8a25e2fb2235c37606cb5d945a",
+      "bytes": 1168,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/gui_texture.cpp",
+      "sha256": "9aa07ad4775f94ae00205a4462b8042a76a0f08afd7892f4f9462c6bae79198a",
+      "bytes": 3258,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/gui_framebox.cpp",
+      "sha256": "d84dfa37d274a40e3ba574e6886d72a1f2fb7d12328bccecd8d091f32f347306",
+      "bytes": 15332,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "sha256": "f7d7681547a5a644f6b65c895fa55f387904b18b50dcf054c5e1ec25b76af5d4",
+      "bytes": 1826,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/native_gui_frame_box_records.cpp",
+      "sha256": "ea28803cc5531fd4f449472c0b1f10474ed312f9098bd8864a4e170b3de672ce",
+      "bytes": 2795,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "bytes": 8771,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "bytes": 9121,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_COPY_PROVIDERS_READINESS_98.md",
+      "sha256": "56ab226b40b72aab141b6a84ec9c5992446bcf339b32151c364e563bfb224269",
+      "bytes": 11204,
+      "role": "prior_contract_not_reaudited"
+    },
+    {
+      "path": "reports/cc12_native_gui_frame_box_copy_providers_readiness_98.json",
+      "sha256": "4348b74320557797d5c0a04457eeaf7b1966e3a18fa3dadd9aecdf9bfc8826fd",
+      "bytes": 30506,
+      "role": "prior_contract_not_reaudited"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_COPY_103.md",
+      "sha256": "436504fdc86e90820176b8a738f6e0b4d6051a0d2bcaee88469d32da8b57bbb4",
+      "bytes": 7053,
+      "role": "prior_contract_not_reaudited"
+    },
+    {
+      "path": "tools/bsp.py",
+      "sha256": "133e2cf3f24f0402f6ed7d0e1dd5148c678c7ca10722633d1ec6cdc9b693a9ff",
+      "bytes": 84752,
+      "role": "project_verifying_query_wrapper"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "bytes": 14518,
+      "role": "project_verifying_query_wrapper"
+    },
+    {
+      "path": "config/target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455,
+      "role": "project_verifying_query_wrapper"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_RELEASE_READINESS_110.md",
+      "sha256": "b76937ebe80d1520fa29c7d02f7d1da0b9d4d10341d2f95df550f143c1b5af21",
+      "bytes": 9179,
+      "role": "readiness_document"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/audit_bytes.py",
+      "sha256": "33748ffec1b9f66fe7f0c62a0462a0323ec9dec1ca7c00367295dd7f47b40c12",
+      "bytes": 3848,
+      "role": "read_only_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/call_verifier.log",
+      "sha256": "161e4f935a62577a5f765e45b5eeec5cfa38739804efda2f924cd49d173daac1",
+      "bytes": 602,
+      "role": "read_only_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/capture_evidence.py",
+      "sha256": "73d21c69568701e04b3bc7a27956d3f265300dc4398737992d0fddea26eb3e3e",
+      "bytes": 3642,
+      "role": "read_only_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/native_bytes.json",
+      "sha256": "01c51c3780c58ba65b26ca3c2560d805740c789e0e9ba34777d57671b96aa687",
+      "bytes": 16893,
+      "role": "read_only_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/query_receipts.json",
+      "sha256": "ec9aa1b2a29e23e1608c095e205ded586650551c73da296e61b2a08e2d9ea55c",
+      "bytes": 3429,
+      "role": "read_only_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/seal_evidence.py",
+      "sha256": "47165f0971245420628e4053e8715444cb4907077daa4f8cd1448dc082633af8",
+      "bytes": 4007,
+      "role": "read_only_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/include/bsp/game_native_renderer_application.hpp",
+      "sha256": "3380643a25c0e27bc653440c8e79dd138bb68b495dac9f386d1e7e221ef467c0",
+      "bytes": 14808,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/include/bsp/gui_texture.hpp",
+      "sha256": "8e825c11e932fbd11176f2d368160cdb66742b8a25e2fb2235c37606cb5d945a",
+      "bytes": 1168,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/include/bsp/native_gui_frame_box_records.hpp",
+      "sha256": "f7d7681547a5a644f6b65c895fa55f387904b18b50dcf054c5e1ec25b76af5d4",
+      "bytes": 1826,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/include/bsp/native_ref_counted.hpp",
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+      "bytes": 1226,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/include/bsp/native_render_context.hpp",
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "bytes": 10071,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "bytes": 8771,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/include/bsp/native_texture_2d_owner.hpp",
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "bytes": 3247,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/include/bsp/native_texture_loading_cache.hpp",
+      "sha256": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+      "bytes": 11040,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/game_native_renderer_application.cpp",
+      "sha256": "26bd27eda6ae864b13166ccd2fd1176f8a27b4006d7791d42d8346a703e91630",
+      "bytes": 54722,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/game_native_renderer_textures.inc",
+      "sha256": "e178152527c7b2b39a63608346c6cc555a0306cb05c53af83f2cc654146e824e",
+      "bytes": 2949,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/gui_framebox.cpp",
+      "sha256": "d84dfa37d274a40e3ba574e6886d72a1f2fb7d12328bccecd8d091f32f347306",
+      "bytes": 15332,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/gui_texture.cpp",
+      "sha256": "9aa07ad4775f94ae00205a4462b8042a76a0f08afd7892f4f9462c6bae79198a",
+      "bytes": 3258,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/native_gui_frame_box_records.cpp",
+      "sha256": "ea28803cc5531fd4f449472c0b1f10474ed312f9098bd8864a4e170b3de672ce",
+      "bytes": 2795,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/native_ref_counted.cpp",
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+      "bytes": 822,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/native_render_context.cpp",
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "bytes": 11471,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "bytes": 9121,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/native_texture_2d_owner.cpp",
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+      "bytes": 11544,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source/src/native_texture_loading_cache.cpp",
+      "sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "bytes": 42965,
+      "role": "frozen_source"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/source_evidence.json",
+      "sha256": "41f0fe9d1cfa9ad4a482757400c9aecee53d0391684a92540955fd7c30a3f980",
+      "bytes": 46161,
+      "role": "read_only_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_readiness_110/write_receipt.py",
+      "sha256": "6be39255095edb5fa1ff71c38e369ff12aa0939cf69fdb22ecc1905ff2c9034c",
+      "bytes": 16022,
+      "role": "read_only_evidence"
+    }
+  ]
+}

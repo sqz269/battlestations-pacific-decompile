@@ -1,0 +1,50 @@
+{
+  "schema": "bsp.cc12.native_crt_strpbrk.primary.v1",
+  "status": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
+  "Source_commit": "912935be2873bddc8555c03f3812ce46428f46da",
+  "Source": "src/native_crt_strpbrk.cpp",
+  "header": "include/bsp/native_crt_strpbrk.hpp",
+  "documentation": "docs/NATIVE_CRT_STRPBRK.md",
+  "Original_name_retained": "_strpbrk",
+  "whole_ordinary_functions": 1,
+  "Source_credit": 1,
+  "primary_author": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strpbrk_integration_20261016\\primary_author_inputs.DATA.json",
+    "bytes": 2672,
+    "sha256": "f27b115f36100a95a42ff4b8aa1f7f73c9470573ec8c1f71deeb6ba0e2f4833f"
+  },
+  "primary_peer": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strpbrk_integration_20261016\\primary_peer_inputs.DATA.json",
+    "bytes": 3946,
+    "sha256": "9a3ca30bd8ad9f219cacef1358fa9ef28db3d9d5af73a7466c9a58c9a25152ef"
+  },
+  "Root_full_Source_object_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strpbrk_integration_20261016\\primary_Source_object_review.DATA.json",
+    "bytes": 4776,
+    "sha256": "21ad568caafda0ded4803df76b5629bf85dad2f62e3f809453173ff1b7dbf88e"
+  },
+  "strict_compiles": 1,
+  "precompiler_failures": 1,
+  "actual_compiler_inputs": 2,
+  "before_candidates": 8093,
+  "strict_compiler_host": "HostX86/x86, targetWin32",
+  "worker_baselines": 0,
+  "Main_registered": true,
+  "Main_build": "pass_3_existing_CTests",
+  "actual_compiler_archive_gate": "pass",
+  "contract": [
+    "New MSVC Win32 default potentially throwing API void* __cdecl bsp::find_native_crt_first_member_00bff1d0(void* actual_source,const void* actual_control). Keep correct Original library name _strpbrk. BYTE8, pointer/unsignedint32; unsigned byte values0..255, no Unicode/locale/codepage/case/signed-char interpretation.",
+    "Require genuine live stable determinate readable control bytes through finite first NUL, always read completely before any source payload even for empty source. Source needs only reached readable bytes through first NUL or first nonzero control member; early hit requires no unused later terminator or full string extent. No null guard/count-zero exception or runtime validation.",
+    "Admit raw unaligned/interior/prefix/read-only/identical/overlapping inputs and ordinary stable caller-owned stack byte regions. Each input has its own genuine allocation; actual reached advances do not wrap and stay within or one past it, including terminal nonzero source increment; never dereference one-past. No padding, typed wider input objects, signed cap or copied allocation.",
+    "Read every control BYTE once per visited position through NUL, set only nonzero control bits in a genuine private256bit bitmap; duplicate values retain all input reads and bit updates. Control NUL never sets bit0. Then read each reached source BYTE once. Explicit source NUL stop precedes membership and its own advance and returns null; nonzero advances actual cursor before membership. First member returns genuine saved current source pointer without payload reread; absent member continues. Empty control still scans source; overlap can read the same storage once in each separate phase.",
+    "Result is the actual borrowed first-member pointer or null, with no ownership/lifetime/access-permission transfer. Spell saved genuine current pointer and explicit cursor advance; no before-base transient pointer or pointer subtraction needed. Compiler scheduling of private cursor variables is not Original instruction/fault identity and must be explained in actual artifact review.",
+    "Approve separately sequenced volatile unsigned BYTE input reads plus eight separate genuine volatile unsigned32 scalar words explicitly initialized0. Use unsigned index byte>>5 and mask1U<<(byte&31), bounded binary branch selection of one actual private word. Avoid array/aggregate GS buffer, switch/table, helper function, compiler memset/provider. Each selected word and shift must be proven bounded by actual full object. No invented native scratch parameter or frame identity.",
+    "No SDK search/copy/strpbrk/memcpy, fallback, global/TLS/provider, validation, caller binding, or call to the new strcspn interface. No extra final read, after-stop read, early empty-input shortcut or input stores. Native frame/home/saved-register/private-bitmap alias protocols, faults, MMIO/volatile protocols, mutation/concurrency and lifetime changes excluded. No Original physicalABI/register/stack/flags/segment/EH/instruction/bus/fault/runtime/game credit.",
+    "Worker owns exactly4Source/header/doc/reportfiles and new local evidence. Root owns sharedregistration/ledgers/names/supportedGhidraannotation/export/Main. Before Sourcewrite claim entry, whole64Brange and4files. One sole strictMSVCWin32compile after genuinefresh beforepins/actualdependencyclosure, all code/sections/symbols/aux/strings/relocs/frame/provider review. Future normalMain/Oy- object/archive gate separate; no forcedmatchingcompile, workerbaseline, tests/probes/selectedbodyexecution/SDKcomparison."
+  ],
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "game_validated": false,
+  "Main_gate": "pass",
+  "Main_validation": "reports/cc12_native_crt_strpbrk_Main_validation.json"
+}

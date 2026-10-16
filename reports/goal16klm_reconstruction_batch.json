@@ -1,0 +1,487 @@
+{
+  "packet": "goal16klm_primary_integration",
+  "status": "independently_reviewed_reconstructed_build_tested_Ghidra_saved",
+  "generated_utc": "2026-10-16T09:03:55.525417+00:00",
+  "validated_Source_commit": "b1ccf7864b0d5c4016497176c09e918b8a8eb2ca",
+  "Main_input": "df00ed02b9d5337b13ace2ba85c19eeda2dafbe8",
+  "counts": {
+    "newly_authored_Source_functions": 9,
+    "newly_authored_Source_executable_bytes": 34,
+    "reused_existing_Source_bindings": 4,
+    "reused_Native_bytes": 186,
+    "total_complete_Native_entries": 13,
+    "total_complete_Native_bytes": 220,
+    "total_Native_instructions": 94,
+    "all13_whole_entry_byte_identities": true,
+    "complete_Source_modules_in_primary_proof": 9,
+    "complete_Source_module_executable_bytes": 1431,
+    "new_Source_modules": 2,
+    "new_Source_module_bytes": 34,
+    "existing_reused_Source_module_bytes": 273,
+    "existing_prior_HJ_support_module_bytes": 1124,
+    "new_reviewed_name_rows": 11,
+    "existing_L_name_evidence_only_updates": 2,
+    "new_whole_function_records": 13
+  },
+  "entries": [
+    {
+      "address": "00bc04b0",
+      "packet": "GOAL16K",
+      "coverage": "complete",
+      "Native_bytes": 3,
+      "instructions": 2,
+      "whole_entry_byte_identity": true,
+      "actual_Source_symbol": "_bsp_tagged_bcbd_16k_00bc04b0",
+      "new_Source": true
+    },
+    {
+      "address": "00bc3030",
+      "packet": "GOAL16K",
+      "coverage": "complete",
+      "Native_bytes": 4,
+      "instructions": 2,
+      "whole_entry_byte_identity": true,
+      "actual_Source_symbol": "@bsp_tagged_bcbd_16k_00bc3030@4",
+      "new_Source": true
+    },
+    {
+      "address": "00bc3080",
+      "packet": "GOAL16K",
+      "coverage": "complete",
+      "Native_bytes": 4,
+      "instructions": 2,
+      "whole_entry_byte_identity": true,
+      "actual_Source_symbol": "@bsp_tagged_bcbd_16k_00bc3080@4",
+      "new_Source": true
+    },
+    {
+      "address": "00bc3100",
+      "packet": "GOAL16K",
+      "coverage": "complete",
+      "Native_bytes": 4,
+      "instructions": 2,
+      "whole_entry_byte_identity": true,
+      "actual_Source_symbol": "@bsp_tagged_bcbd_16k_00bc3100@4",
+      "new_Source": true
+    },
+    {
+      "address": "00bc7a60",
+      "packet": "GOAL16K",
+      "coverage": "complete",
+      "Native_bytes": 4,
+      "instructions": 2,
+      "whole_entry_byte_identity": true,
+      "actual_Source_symbol": "@bsp_tagged_bcbd_16k_00bc7a60@4",
+      "new_Source": true
+    },
+    {
+      "address": "00bd1830",
+      "packet": "GOAL16K",
+      "coverage": "complete",
+      "Native_bytes": 3,
+      "instructions": 2,
+      "whole_entry_byte_identity": true,
+      "actual_Source_symbol": "_bsp_tagged_bcbd_16k_00bd1830",
+      "new_Source": true
+    },
+    {
+      "address": "00bc3010",
+      "packet": "GOAL16L",
+      "coverage": "complete",
+      "Native_bytes": 4,
+      "instructions": 2,
+      "whole_entry_byte_identity": true,
+      "actual_Source_symbol": "@bsp_tagged_float_bc_16l_00bc3010@4",
+      "new_Source": true
+    },
+    {
+      "address": "00bc7aa0",
+      "packet": "GOAL16L",
+      "coverage": "complete",
+      "Native_bytes": 4,
+      "instructions": 2,
+      "whole_entry_byte_identity": true,
+      "actual_Source_symbol": "@bsp_tagged_float_bc_16l_00bc7aa0@4",
+      "new_Source": true
+    },
+    {
+      "address": "00bc7ab0",
+      "packet": "GOAL16L",
+      "coverage": "complete",
+      "Native_bytes": 4,
+      "instructions": 2,
+      "whole_entry_byte_identity": true,
+      "actual_Source_symbol": "@bsp_tagged_float_bc_16l_00bc7ab0@4",
+      "new_Source": true
+    },
+    {
+      "address": "00bd3770",
+      "packet": "GOAL16M",
+      "coverage": "complete",
+      "Native_bytes": 44,
+      "instructions": 17,
+      "whole_entry_byte_identity": true,
+      "actual_Source_symbol": "?copy_native_pod8_range_00419960@bsp@@YIPAXPBX0PAXIII@Z",
+      "new_Source": false
+    },
+    {
+      "address": "00bd3a60",
+      "packet": "GOAL16M",
+      "coverage": "complete",
+      "Native_bytes": 44,
+      "instructions": 17,
+      "whole_entry_byte_identity": true,
+      "actual_Source_symbol": "?fill_n_native_pod8_range_0041c7e0@bsp@@YIXPAXIPBXIII@Z",
+      "new_Source": false
+    },
+    {
+      "address": "00bd3a30",
+      "packet": "GOAL16M",
+      "coverage": "complete",
+      "Native_bytes": 36,
+      "instructions": 15,
+      "whole_entry_byte_identity": true,
+      "actual_Source_symbol": "?fill_native_pod8_range_0041c680@bsp@@YAXPAXPBX1@Z",
+      "new_Source": false
+    },
+    {
+      "address": "00bd3bb0",
+      "packet": "GOAL16M",
+      "coverage": "complete",
+      "Native_bytes": 62,
+      "instructions": 27,
+      "whole_entry_byte_identity": true,
+      "actual_Source_symbol": "?copy_backward_native_pod8_range_0041dac0@bsp@@YAPAXPBX0PAX@Z",
+      "new_Source": false
+    }
+  ],
+  "author_pins": {
+    "GOAL16K": "e6ccd941cca52e3634d6eb9e3ec046407bf82da7",
+    "GOAL16L_preparation": "3825b0b29567da39813e21bffa1230f07b7117a2",
+    "GOAL16L_final": "d96a078562bcfc4b8fb5fe9e9ac1ed551d225b13",
+    "GOAL16M": "6102d7bb333ce2c33aa7fe4a2109c4ebadde252c"
+  },
+  "independent_reviews": [
+    {
+      "packet": "GOAL16K",
+      "path": "local/goal16k_root/review/review.json",
+      "sha256": "d46cf92c15abcbf80e8a919fdf5a7349e02aff7a95db9e185c8635e6da63f5ac",
+      "status": "READY",
+      "reviewer_execution": false
+    },
+    {
+      "packet": "GOAL16L",
+      "path": "local/goal16l_root/review/review.json",
+      "sha256": "b09c9979c06a4be0890fe331b46ac25cd67aeb2cab7ca140ff51117a31dd7a95",
+      "status": "READY",
+      "reviewer_execution": false
+    },
+    {
+      "packet": "GOAL16M",
+      "path": "local/goal16m_root/primary_review.json",
+      "sha256": "49cac44ba2f325be8f01001e92ccbb7e28e29027230275c12ebc7044e80757dd",
+      "status": "READY",
+      "reviewer_execution": false
+    }
+  ],
+  "primary_validation": {
+    "final_build": {
+      "start_utc": "2026-10-16T09:02:51.1850827Z",
+      "exit_code": 0,
+      "end_utc": "2026-10-16T09:03:16.6195642Z",
+      "log": "local/goal16k_root/final_build.log",
+      "source_pin": "b1ccf7864b0d5c4016497176c09e918b8a8eb2ca",
+      "wall_seconds": 25.4344815,
+      "Main_input": "df00ed02b9d5337b13ace2ba85c19eeda2dafbe8"
+    },
+    "existing_checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "earlier_combined_build": {
+      "start_utc": "2026-10-16T08:27:12.0938466Z",
+      "log": "local/goal16k_root/combined_build.log",
+      "Main_input": "7937c5647cf81d95b7a891ccdaf12752a436d7a2",
+      "wall_seconds": 21.9105525,
+      "end_utc": "2026-10-16T08:27:34.0043991Z",
+      "source_pin": "3c898612367dfb009fc476ee48d0179640a48399",
+      "exit_code": 0
+    },
+    "whole_instruction_module_and_real_archive_proof": {
+      "path": "local/goal16k_root/final_proof/proof.json",
+      "sha256": "6f14fce2853aa894eb625b43e9498bfa85b76ed2f4432b41557a5127ecd0e7d3"
+    },
+    "actual_archive": {
+      "sha256": "74334770adac042ecc1620d085e617b74db46fa5578988cb707032958d7faedf",
+      "parsed_actual_COFF_members": 2461,
+      "bindings": [
+        {
+          "module": "native_traffic_range_erase_16h",
+          "member_offset": 83765530,
+          "whole_member_bytes": 1919,
+          "member_sha256": "42d4ad593c98f1b6036defd907334957a938613d8dfa4e4f6aa08a894b26a79a",
+          "public_symbols": [
+            "?erase_native_traffic_pod18_range_0048e400@bsp@@YIPAXPAXI0I0IPBX@Z",
+            "?erase_native_traffic_dword_range_00489110@bsp@@YIPAXPAXI0I0IPBX@Z"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_traffic_pod18_helpers",
+          "member_offset": 36125476,
+          "whole_member_bytes": 1978,
+          "member_sha256": "c5c471f4a510bc6b6ccdc26acb597ad0885b4d093b316f041c46de27cb67f0dc",
+          "public_symbols": [
+            "?size_native_traffic_pod18_0047c4d0@bsp@@YIIPBX@Z",
+            "?copy_native_traffic_pod18_0047fc30@bsp@@YAPAXPBX0PAXIII@Z",
+            "?copy_uninitialized_native_traffic_pod18_004841a0@bsp@@YIPAXPBX0PAXIII@Z",
+            "?fill_n_uninitialized_native_traffic_pod18_00486be0@bsp@@YIXPAXIPBXIII@Z",
+            "?fill_n_native_traffic_pod18_dispatch_0048d2f0@bsp@@YIPAXIIPAXIPBX@Z",
+            "?copy_native_traffic_pod18_dispatch_00486850@bsp@@YAPAXPBX0PAX@Z"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_traffic_pointer_erase",
+          "member_offset": 83767510,
+          "whole_member_bytes": 1583,
+          "member_sha256": "7c52c0879fc85111d80b815d2858390c6c7373770d47acc179f3ef20dc4a803c",
+          "public_symbols": [
+            "?erase_native_traffic_pointer_range_00488ff0@bsp@@YIPAXPAX00I0IPBX@Z"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_invalid_parameter_noinfo_call",
+          "member_offset": 84134390,
+          "whole_member_bytes": 808,
+          "member_sha256": "2296a4e057ae6261aa09a83117676bf5c9ad79ff8ff26ea167988764d9224e7d",
+          "public_symbols": [
+            "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_tagged_sizes_bb_16j",
+          "member_offset": 36644262,
+          "whole_member_bytes": 1400,
+          "member_sha256": "fa99cc1165dffe64010cc56cb5afd626717eea36d42611463c8d278040a9f7d0",
+          "public_symbols": [
+            "@bsp_tagged_sizes_bb_16j_00bb40e0@4",
+            "@bsp_tagged_sizes_bb_16j_00bb41e0@4",
+            "@bsp_tagged_sizes_bb_16j_00bba220@4"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_tagged_leaf_bcbd_16k",
+          "member_offset": 36645722,
+          "whole_member_bytes": 2045,
+          "member_sha256": "a91946377dea4d89893aab4d02d288e8a68293291aa05fa3db08359438767889",
+          "public_symbols": [
+            "_bsp_tagged_bcbd_16k_00bc04b0",
+            "@bsp_tagged_bcbd_16k_00bc3030@4",
+            "@bsp_tagged_bcbd_16k_00bc3080@4",
+            "@bsp_tagged_bcbd_16k_00bc3100@4",
+            "@bsp_tagged_bcbd_16k_00bc7a60@4",
+            "_bsp_tagged_bcbd_16k_00bd1830"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_tagged_float_bc_16l",
+          "member_offset": 36694688,
+          "whole_member_bytes": 989,
+          "member_sha256": "72898570d00b6e22f439fe8d36d309d6a4af3dfa8a41412ad8665b8e98356333",
+          "public_symbols": [
+            "@bsp_tagged_float_bc_16l_00bc3010@4",
+            "@bsp_tagged_float_bc_16l_00bc7aa0@4",
+            "@bsp_tagged_float_bc_16l_00bc7ab0@4"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_pod8_range",
+          "member_offset": 40411288,
+          "whole_member_bytes": 1388,
+          "member_sha256": "9030b9081be87cf7fb4ac71d58ca3c0853e7fb0078cbfa32779d717984dc20e8",
+          "public_symbols": [
+            "?copy_native_pod8_range_00419960@bsp@@YIPAXPBX0PAXIII@Z",
+            "?fill_n_native_pod8_range_0041c7e0@bsp@@YIXPAXIPBXIII@Z",
+            "?fill_n_native_pod8_dispatch_0041e3c0@bsp@@YIPAXIIPAXIPBX@Z",
+            "?copy_native_pod8_dispatch_0041f4e0@bsp@@YIPAXIIPBX0PAX@Z"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_pod8_inplace_range",
+          "member_offset": 40424330,
+          "whole_member_bytes": 978,
+          "member_sha256": "3dcc61f05a7921d7839558396e58f70562d9f24fb8d1f26c1ee1f6f3643abf2e",
+          "public_symbols": [
+            "?fill_native_pod8_range_0041c680@bsp@@YAXPAXPBX1@Z",
+            "?copy_backward_native_pod8_range_0041dac0@bsp@@YAPAXPBX0PAX@Z"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        }
+      ]
+    },
+    "all28_current_public_bindings_unique": true,
+    "new_tests": 0,
+    "new_body_or_fixture_execution": false,
+    "repeated_build_reason": "Final build includes latest reserved Main publication input; no Source/fixture change. Source code is unchanged after the validated final commit; later batch documentation only."
+  },
+  "Ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "saved": true,
+    "write_lock": true,
+    "old_functions_and_comments": "local/goal15h_annotations_00bc04b0.json",
+    "history": "local/ghidra-annotations-20261016T083949Z.json",
+    "saved_typed_modification": "6616",
+    "functions": [
+      {
+        "address": "00bc04b0",
+        "name": "BSP_NativeTaggedBCBD_ReturnZero_00bc04b0",
+        "body_bytes": 3,
+        "no_return": false,
+        "provisional_physical_signature": "uint __cdecl BSP_NativeTaggedBCBD_ReturnZero_00bc04b0(void)"
+      },
+      {
+        "address": "00bc3030",
+        "name": "BSP_NativeTaggedBCBD_ReadDword14_00bc3030",
+        "body_bytes": 4,
+        "no_return": false,
+        "provisional_physical_signature": "uint __fastcall BSP_NativeTaggedBCBD_ReadDword14_00bc3030(void * storage)"
+      },
+      {
+        "address": "00bc3080",
+        "name": "BSP_NativeTaggedBCBD_ReadDword68_00bc3080",
+        "body_bytes": 4,
+        "no_return": false,
+        "provisional_physical_signature": "uint __fastcall BSP_NativeTaggedBCBD_ReadDword68_00bc3080(void * storage)"
+      },
+      {
+        "address": "00bc3100",
+        "name": "BSP_NativeTaggedBCBD_ReadDword20_00bc3100",
+        "body_bytes": 4,
+        "no_return": false,
+        "provisional_physical_signature": "uint __fastcall BSP_NativeTaggedBCBD_ReadDword20_00bc3100(void * storage)"
+      },
+      {
+        "address": "00bc7a60",
+        "name": "BSP_NativeTaggedBCBD_ReadDword08_00bc7a60",
+        "body_bytes": 4,
+        "no_return": false,
+        "provisional_physical_signature": "uint __fastcall BSP_NativeTaggedBCBD_ReadDword08_00bc7a60(void * storage)"
+      },
+      {
+        "address": "00bd1830",
+        "name": "BSP_NativeTaggedBCBD_ReturnByteOneRetainUpperEAX_00bd1830",
+        "body_bytes": 3,
+        "no_return": false,
+        "provisional_physical_signature": "byte __cdecl BSP_NativeTaggedBCBD_ReturnByteOneRetainUpperEAX_00bd1830(void)"
+      },
+      {
+        "address": "00bc3010",
+        "name": "BSP_Raw_LoadF32_2C_00bc3010",
+        "body_bytes": 4,
+        "no_return": false,
+        "provisional_physical_signature": "float __thiscall BSP_Raw_LoadF32_2C_00bc3010(void * this)"
+      },
+      {
+        "address": "00bc7aa0",
+        "name": "BSP_CloudPuff_GetSortKey",
+        "body_bytes": 4,
+        "no_return": false,
+        "provisional_physical_signature": "float __thiscall BSP_CloudPuff_GetSortKey(void * this)"
+      },
+      {
+        "address": "00bc7ab0",
+        "name": "BSP_CloudPuff_GetSize",
+        "body_bytes": 4,
+        "no_return": false,
+        "provisional_physical_signature": "float __thiscall BSP_CloudPuff_GetSize(void * this)"
+      },
+      {
+        "address": "00bd3770",
+        "name": "STL_Pod8Range_UninitializedCopy_00bd3770",
+        "body_bytes": 44,
+        "no_return": false,
+        "provisional_physical_signature": "void * __fastcall STL_Pod8Range_UninitializedCopy_00bd3770(void * first, void * last, void * destination, uint ignored0, uint ignored1, uint tag)"
+      },
+      {
+        "address": "00bd3a60",
+        "name": "STL_Pod8Range_UninitializedFillN_00bd3a60",
+        "body_bytes": 44,
+        "no_return": false,
+        "provisional_physical_signature": "void __fastcall STL_Pod8Range_UninitializedFillN_00bd3a60(void * destination, uint count, void * value, uint ignored0, uint ignored1, uint tag)"
+      },
+      {
+        "address": "00bd3a30",
+        "name": "STL_Pod8Range_Fill_00bd3a30",
+        "body_bytes": 36,
+        "no_return": false,
+        "provisional_physical_signature": "void __cdecl STL_Pod8Range_Fill_00bd3a30(void * first, void * last, void * value_source)"
+      },
+      {
+        "address": "00bd3bb0",
+        "name": "STL_Pod8Range_CopyBackward_00bd3bb0",
+        "body_bytes": 62,
+        "no_return": false,
+        "provisional_physical_signature": "void * __cdecl STL_Pod8Range_CopyBackward_00bd3bb0(void * first, void * last, void * destination_end)"
+      }
+    ],
+    "affected_exports_refreshed": true,
+    "snapshot_forced_and_index_refreshed": true,
+    "scope": "Minimal physical projections, not recovered Original formal declarations: six K raw interfaces, three L ECX/ST0/RET thiscall displays vs Sourcefastcall, M twofastcall6 RET10/twocdecl3 RET. L float versus double/Original class/convention unproved; old CloudPuff/library names retained. BC3010 gets provisional observed LoadF32+2C name, full author evidence retained."
+  },
+  "timing": {
+    "K_readiness_seconds": 737.300032,
+    "K_schedule_gap_seconds": 76.699968,
+    "K_implementation_corrections_build_metadata_handoff_seconds": 660.502019,
+    "K_author_total_seconds": 1474.502019,
+    "K_review_to_seal_seconds": 654.78859,
+    "K_review_to_administration_seconds_approx": 671,
+    "L_preparation_seconds": 1046.091542,
+    "L_warm_closure_seconds": 1542.591225,
+    "L_preparation_closure_overlap_seconds": 176.091542,
+    "L_end_to_end_pipeline_seconds": 2412.591225,
+    "L_review_to_seal_seconds": 1468.384929,
+    "L_review_through_administration_seconds_approx": 1536,
+    "M_author_inclusive_seconds": 755.631571,
+    "M_primary_acceptance": "Included in shared primary integration/whole-body/archive/ABI work; no separate speedup measurement.",
+    "scope": "Source/readiness/ABI proof, file preservation, compiler, corrections, build, review, metadata, scheduling, report and handoff overhead retained. Overlapping intervals are separate and not serially summed; no controlled speedup/game-validation rate inferred."
+  },
+  "corrections": [
+    "K pre-copy old report-key preservation-wrapper correction and Source ledger band-filter correction retained; no Source/compiler rejection.",
+    "L cold preparation strict-passed then transferred only5 files to a genuinely warm worktree. Prescribed resolver refused cherry-pick; retained all3CMake stages and exact warm-base+singleL-line resolution. One normal build, no secondstrict/probe.",
+    "L one newname row and two preserved reviewed-name evidence appends; plainadd-name guard refusals retained. Primary gives only generic TRIV BC3010 an observed behavior-name hypothesis; author evidence preserved.",
+    "M brief initially overgeneralized six-wordfastcall to all4; corrected BEFORE mutation: twofastcall6 andtwocdecl3, all integer/noFP. Root independently reviewed these four physical schedules.",
+    "M merge brought old L prebuild docs alongside final warm-build reports; primary retained exactfinal d96 docs/report and preserved preparation. Automatic clean CMake merge introduced second L registration; caught before build and dropped only duplicate, leaving exactlyone registration per newTU.",
+    "Primary receipt-schema, shared-export-path and prototype-capture wrapper assumptions corrected; no Source/compiler/body change. All failed local command output remains session evidence."
+  ],
+  "runtime": {
+    "K": "No selected-body execution; complete code/provider/ABI static evidence.",
+    "L": "No selected-body execution, including exceptional FP; literal FLD/RET and whole code equality establish operation, not runtime SEH/ABI/game proof.",
+    "M": "No selected-body execution; generic whole Source reuse plus full instruction/ABI/prefix evidence."
+  },
+  "remaining": [
+    "Original formal declarations/classes/templates/unused-formal counts and calling-convention spelling remain unproved; physical consumed inputs/output/cleanup are observed.",
+    "Exact entry bytes do not prove mapped EIP/return-code aliases/absolute fault addresses, L savedFIP, full ABI/SEH/unwind/caller adoption or game behavior.",
+    "New GOAL16N ECX zlib reset/type201B work is separate, with stockcdecl library versus Nativecallback ABI/version/layout limits.",
+    "J12 actual atomic/virtual lifecycle500B and further zlib helpers are being assessed for genuine new Source interfaces/adapters; unknown concrete owner does not itself establish generic-body impossibility.",
+    "The continuing reconstruction goal remains active."
+  ]
+}

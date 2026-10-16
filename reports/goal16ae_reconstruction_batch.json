@@ -1,0 +1,179 @@
+{
+  "packet": "GOAL16AE",
+  "status": "integrated_reviewed_build_and_static_artifact_verified",
+  "utc": "2026-10-16T11:53:50.176481+00:00",
+  "author_pin": "85d7c0875e843310ec1fc11234ebc24212d5e9a5",
+  "Source_build_pin": "514b19058ede674a44a1c124f6632cc6f81bb632",
+  "Main_input": "a6f8752fd52585181e50b16c8914b53d17f179d9",
+  "scope": {
+    "Native_functions": 1,
+    "Native_address": "00bcf140",
+    "Native_bytes": 118,
+    "Native_instructions": 44,
+    "Native_conditional_branches": 5,
+    "Source_functions": 2,
+    "Source_bytes": 140,
+    "Source_instructions": 53,
+    "private_kernel_bytes": 118,
+    "public_adapter_bytes": 22,
+    "adapter_Native_credit": 0
+  },
+  "interface": {
+    "public": "returning naked void cdecl(counts,signed_max_code,tree); PUSH EBX/EDI, three real argument reads, real private CALL, POP EDI/EBX/plain RET",
+    "private": "full custom EDX counts / EBX signed max / EDI tree; actual scratch SS:ESP; zero explicit stack inputs/plain RET",
+    "public_private_and_Original_returning_capable": true,
+    "borrowed_ESP": false,
+    "noreturn": false,
+    "real_private_CALL_REL32_operand": 15,
+    "relocations": 1,
+    "undefined_providers": 0,
+    "writable_globals": 0,
+    "all_raw_aliases_admitted": true
+  },
+  "validation": {
+    "normal_Win32_build": {
+      "source_pin": "514b19058ede674a44a1c124f6632cc6f81bb632",
+      "Main_input": "a6f8752fd52585181e50b16c8914b53d17f179d9",
+      "start_utc": "2026-10-16T11:50:30.749144+00:00",
+      "end_utc": "2026-10-16T11:50:50.183645+00:00",
+      "wall_seconds": 19.4581743000017,
+      "exit_code": 0,
+      "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16ae_root\\final_build.log"
+    },
+    "existing_checks": "3/3 PASS; reconstructed_math/native_math_differential/tool_tests; no new tests or probes",
+    "complete_module": {
+      "module": "native_zlib_raw_gen_codes_bc",
+      "reference_sha256": "e52029569854134f887106ec6c9e748d8f9e99bb4616acdec4463ce7b0e0c3d8",
+      "current_sha256": "d14d6af8ea0b2da72e488466f56db15268862c10df88ca53049ada910daad795",
+      "complete_executable_sections": [
+        {
+          "section": 3,
+          "size": 118,
+          "hex": "83ec20568d74240633c9b8010000002bd68d3442668b7434046603f16603f60fb7ce66894c440483c00183f80f7ee233f685db7c3c550fb754b70285d2742a0fb74454080fb7c883c001668944540833c08be983e5010bc583ea01d1e903c085d27feed1e8668904b783c6013bf37ec65d5e83c420c3",
+          "relocs": [],
+          "symbols": [
+            [
+              6,
+              ".text$mn",
+              0,
+              0,
+              3
+            ],
+            [
+              11,
+              "?gen_codes_body@?A0xa3cbe834@@YAXXZ",
+              0,
+              32,
+              3
+            ]
+          ]
+        },
+        {
+          "section": 4,
+          "size": 22,
+          "hex": "53578b54240c8b5c24108b7c2414e8000000005f5bc3",
+          "relocs": [
+            {
+              "offset": 15,
+              "type": 20,
+              "target": "?gen_codes_body@?A0xa3cbe834@@YAXXZ",
+              "target_index": 11
+            }
+          ],
+          "symbols": [
+            [
+              8,
+              ".text$mn",
+              0,
+              0,
+              3
+            ],
+            [
+              10,
+              "_bsp_native_zlib_gen_codes_00bcf140",
+              0,
+              32,
+              2
+            ]
+          ]
+        }
+      ]
+    },
+    "actual_archive_binding": {
+      "module": "native_zlib_raw_gen_codes_bc",
+      "member_offset": 35507234,
+      "whole_member_bytes": 993,
+      "member_sha256": "d14d6af8ea0b2da72e488466f56db15268862c10df88ca53049ada910daad795",
+      "public_symbols": [
+        "_bsp_native_zlib_gen_codes_00bcf140"
+      ],
+      "both_dictionaries_match": true,
+      "all_actual_COFF_public_providers_unique": true
+    },
+    "whole_Core_sha256": "7862ed10d6b743972d0164bba5f713859ca113eb89052702aecda6aab8d29e06",
+    "selected_whole_modules": 19,
+    "selected_executable_bytes": 6593,
+    "selected_unique_public_bindings_in_both_dictionaries": 41,
+    "all_18_prior_whole_objects_6453B_byte_unchanged": true,
+    "complete_COFF_bytes": 993,
+    "all_COFF_bytes_accounted": true,
+    "proof_sha256": "d5eeb64f81d3f18076775b7a38e19b476559ea7b3dbfb7804238ef38a3231c47",
+    "full_COFF_sha256": "d0a543d460ce071f36cde02abb43d7523d3815f10402a9a833314db2379a6d56",
+    "actual_registration_and_compile_sha256": "0a8bea66cd6098d1d8e7bba8761103719135b30d0d22f07e5f9cbab90ea67f8e"
+  },
+  "combined_Native": {
+    "functions": 23,
+    "bytes": 2227,
+    "instructions": 728,
+    "whole_exact_entries": 20,
+    "whole_exact_bytes": 1466,
+    "whole_exact_instructions": 518,
+    "existing_instruction_mapped_entries": 1,
+    "existing_instruction_mapped_bytes": 529,
+    "existing_prefix_mapped_entries": 2,
+    "existing_prefix_mapped_bytes": 232
+  },
+  "authenticated_evidence": {
+    "author_receipt_sha256": "adfbedd4d2607e7dd98f5277ec5a0e0631a2e477f3e494ec13d6a6b21fde42c1",
+    "peer_receipt_sha256": "d008ade3ab07a8b0658e843ae44d831bd86ef73b12b99b08cf751b9ea78ec1e5",
+    "peer_review_sha256": "c0470765654876d2634b67f283707f1a3eba8558d1847b738556c7a677ea1273",
+    "peer_final_seal_sha256": "472822b4bc9ed113e42ff874945c2f2394042b6dc70d298ee01da2e7bf6d72e1",
+    "peer_physical_artifacts": 87,
+    "peer_physical_bytes": 170990295,
+    "historical_AB_references_not_recopied_or_rehashed": 33
+  },
+  "Ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "names_prototypes_and_no_return_false_unchanged": true,
+    "old_approximate128B_comment_preserved": true,
+    "typed_modification": "6900",
+    "typed_sha256": "2de0e6eb79be64ae70daee4f8aad689a828606c83e09e60bd325178b9bc2ffaf",
+    "annotations_sha256": "27b8a098d8d3e390a630cd666a3cd6a3a6a6933ba187e94152c312be9fff0b97",
+    "affected_export_refreshed": true,
+    "snapshot_count": 76774,
+    "index_rebuilt": true
+  },
+  "timing": {
+    "AB_readiness_floor_seconds": 862.773035,
+    "AB_start_uncertainty_seconds_at_most": 1,
+    "postseal_review_admin_scheduling_seconds": 537.226965,
+    "AE_author_inclusive_seconds": 603.2478,
+    "AB_floor_to_AE_author_final_seconds": 2003.247801,
+    "independent_peer_inclusive_floor_seconds": 1340.571603,
+    "peer_start_uncertainty_seconds_at_most": 1,
+    "Root_normal_build_seconds": 19.4581743000017,
+    "author_peer_overlap_not_serial_summed": true,
+    "Root_preparation_freeze_merge_helper_corrections_annotations_queue_and_publication_separate": true,
+    "speedup_claim": false
+  },
+  "limits": [
+    "Static/build proof; existing checks do not execute this entry. No selected Native/Source execution, new tests or probes.",
+    "Source returning cdecl/void/const-void/noexcept is a chosen real interface, not recovered Original ABI/formal types.",
+    "Actual SS-default scratch/indexed loads, partial SI, two WORD adds, DWORD EAX increment followed by AX store, inline reversal, signed raw max traversal and actual saves/POPs are retained.",
+    "Raw lengths16/17 can alter inner CALL continuation;18..29 can alter actual adapter saves, outer return or transport words. Larger lengths/control aliases remain admitted without guard, restored old return or universal safe-return/nonvolatile promise.",
+    "Actual Source CALL adds real frame/continuation/current SS and code/return/fault placement differences. Full Original/Source ABI, SEH/unwind, fault/fetch/concurrency, ordinary-return consumer, build_tree adoption and game remain unproved.",
+    "Whole private body currently equals all118B Native. Entire longer Source module140B includes22B adapter with zero extra Native credit; full COFF metadata differences are not hidden as whole-object equality."
+  ]
+}

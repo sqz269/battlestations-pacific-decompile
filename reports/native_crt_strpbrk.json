@@ -1,0 +1,332 @@
+{
+  "schema": "bsp.whole-native-crt-Source.v1",
+  "status": "whole_ordinary_Source_single_strict_compile_actual_object_review_Root_independent_Main_pending",
+  "address": "00bff1d0",
+  "Original_library_name": "_strpbrk",
+  "coverage": "complete",
+  "owned_range_inclusive": [
+    "00bff1d0",
+    "00bff20f"
+  ],
+  "owned_bytes": 64,
+  "owned_instructions": 33,
+  "body_sha256": "a16dfe25ad12e05a7697f94c0a3001966cf8ff212eb4cfd4156cbfa82b56f9b5",
+  "Source_packet": "cc12_native_crt_strpbrk_00bff1d0",
+  "Source_authorized": true,
+  "Source_implemented": true,
+  "Source_credit": 0,
+  "API": "void* __cdecl bsp::find_native_crt_first_member_00bff1d0(void* actual_source, const void* actual_control)",
+  "default_potentially_throwing": true,
+  "target": "MSVC Win32 BYTE8, pointer/unsigned int32",
+  "routines": [
+    {
+      "address": "00bff1d0",
+      "coverage": "complete",
+      "Original_name": "_strpbrk",
+      "calls": []
+    }
+  ],
+  "calls": [],
+  "contract": [
+    "Read the complete finite control BYTE sequence through its first NUL before any source payload, including when source is empty. Set bits only for nonzero bytes; duplicates retain their own reads and writes.",
+    "Then read one volatile unsigned BYTE per reached source position. Explicit source NUL stops before membership/its own advance and returns null. Every nonzero source byte saves genuine current, advances actual cursor, then checks membership; first hit returns saved current without reread or pointer subtraction.",
+    "Empty control still scans source. Source needs only the reached finite prefix through first NUL or first nonzero control member; an early member needs no later terminator or full unused extent.",
+    "Reached inputs are genuine live stable determinate readable raw bytes, with nonwrapping32bit advances within/onepast their own actual allocations, including terminal nonzero source advance; never dereference onepast. No padding or wider input-object requirement.",
+    "Admit raw unaligned/interior/prefix/read-only/identical/overlapping inputs and ordinary stable caller-owned stack storage. The result is a genuine borrowed source pointer with no ownership, lifetime or access-permission transfer.",
+    "Exclude faults, mutation/concurrency, MMIO/volatile protocols, lifetime changes and native callee frame/home/saved-register/private-bitmap self-alias protocols. No fake native scratch identity or Source parameter.",
+    "No null guard, runtime validation, signed cap, Unicode/locale/codepage/case meaning, SDK search/copy/memcpy/strpbrk, provider, fallback, global/TLS, caller binding or call to new strcspn."
+  ],
+  "Original_evidence": {
+    "gate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\reports\\cc12_native_crt_strpbrk_readiness.json",
+      "bytes": 8449,
+      "sha256": "983c634925827649a4bbee1603a6f4772ee68272322c57253de36213da93c01c"
+    },
+    "author_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\NativeCrtStrpbrkReadiness01\\root_manifest.json",
+      "bytes": 10634,
+      "sha256": "44ff38541e2ec31711e371e6431f20a1b78f30242ff80f7c00f2a84da6ed5394"
+    },
+    "peer_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\NativeCrtStrpbrkIndependentReview01\\root_manifest.json",
+      "bytes": 6143,
+      "sha256": "b18b395a8bad62a3983866d4d991384bc1bdd5f0bcfe08fa370a65f36918ca00"
+    },
+    "prior_readiness_is_external_evidence_not_own_Source_transport_or_compiler_provenance": true,
+    "fresh_own_static_body": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\WholeNativeCrtStrpbrkSource01\\original_body.bin",
+      "bytes": 64,
+      "sha256": "a16dfe25ad12e05a7697f94c0a3001966cf8ff212eb4cfd4156cbfa82b56f9b5"
+    },
+    "fresh_live_query": false,
+    "native_bitmap": "XOR EAX plus8zeroPUSHes; AL-only loads preserve high24zero and BT/BTS indices0..255/DWORD offsets0..28 within32B scratch.",
+    "native_return": "Control home before source home; sourceNUL leaves whole EAXzero, nonzero source advances then BT, member LEA EAX,[ESI-1] returns reached address. Source instead spells saved genuine current.",
+    "semantic_hidden_register_DF_ES_x87_or_controlflow_repair_needed": false,
+    "correct_Original_name_retained": true
+  },
+  "Source_mechanism": {
+    "payload": "Separately sequenced volatile unsigned BYTE reads",
+    "bitmap": "8 separate genuine volatile unsigned-int scalar words, explicit zeros, bounded binary private pointer selection byte>>5 and unsignedmask1U<<(byte&31)",
+    "no_array_aggregate_GSbuffer_switch_table_helper_or_call_to_strcspn": true,
+    "source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\src\\native_crt_strpbrk.cpp",
+      "bytes": 2854,
+      "sha256": "1fcdbd835da46b77447bd31c22e3dafb68594da80628da1ef8d8aaf78b647d56"
+    },
+    "header": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\include\\bsp\\native_crt_strpbrk.hpp",
+      "bytes": 1081,
+      "sha256": "edee0e680d5383570c815059303bda4104c52de843621c2a9524455b6938275f"
+    }
+  },
+  "strict_compile": {
+    "actual_compilations": 1,
+    "exit_code": 0,
+    "argv": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\cl.exe",
+      "/nologo",
+      "/Bv",
+      "/c",
+      "/std:c++17",
+      "/O2",
+      "/W4",
+      "/WX",
+      "/permissive-",
+      "/EHsc",
+      "/MD",
+      "/showIncludes",
+      "/sourceDependencies",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\WholeNativeCrtStrpbrkSource01\\strict.dependencies.json",
+      "/FAs",
+      "/FaJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\WholeNativeCrtStrpbrkSource01\\strict.cod",
+      "/FoJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\WholeNativeCrtStrpbrkSource01\\strict.obj",
+      "/IJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\include",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\src\\native_crt_strpbrk.cpp"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16",
+    "start_utc": "2026-10-16T07:10:14.227719+00:00",
+    "end_utc": "2026-10-16T07:10:14.301332+00:00",
+    "compiler_version": "19.51.36244.0",
+    "compiler_host_target": "HostX86/x86",
+    "future_Main_Hostx64_separate": true,
+    "before_candidate_pins": 8093,
+    "compiler_before": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+      "bytes": 830824,
+      "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c",
+      "mtime_ns": 1779576134591637100,
+      "links": 1,
+      "readonly": false,
+      "observed_utc": "2026-10-16T07:10:03.601713+00:00"
+    },
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\WholeNativeCrtStrpbrkSource01\\strict.receipt.json",
+      "bytes": 20877,
+      "sha256": "911ebde332a55e872d3d363f6263545e3c5359d6b1de0ee73a3080412e4477b5"
+    },
+    "stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\WholeNativeCrtStrpbrkSource01\\strict.stdout.bin",
+      "bytes": 153,
+      "sha256": "86d36662b6fddbcc3a7a9be1b2f20a352532220edb5922fbe5c8488df2891a7e"
+    },
+    "stderr": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\WholeNativeCrtStrpbrkSource01\\strict.stderr.bin",
+      "bytes": 1100,
+      "sha256": "99293d4c30822e13210b8d92a36a6610f1f5cabddd9393a5016c04cc05a9b6b3"
+    },
+    "actual_dependencies": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\WholeNativeCrtStrpbrkSource01\\actual_dependency_closure.json",
+      "bytes": 2271,
+      "sha256": "3265a69f3885af8290431e06d13ad6a9c241183a1985b2e82a7cbb87dc88cfee"
+    },
+    "actual_closure_files": 2,
+    "showIncludes_sourceDependencies_agree": true,
+    "all_actual_closure_inputs_genuinely_before_pinned": true,
+    "no_compiler_failure_or_replay": true,
+    "no_trial_compile_or_wholeworkerbaseline": true,
+    "fresh_tool_stages": "provenance_stage_qualifications.json",
+    "no_Source4_compiler_proof_borrowed": true
+  },
+  "actual_object": {
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\WholeNativeCrtStrpbrkSource01\\strict.obj",
+      "bytes": 1131,
+      "sha256": "7a35b12e0535b70c9f9effeb868bc55b048fcb31d2db63ea0f26947bf5000504"
+    },
+    "code_bytes": 302,
+    "instructions": 99,
+    "public_binding": "?find_native_crt_first_member_00bff1d0@bsp@@YAPAXPAXPBX@Z",
+    "helpers": 0,
+    "calls": 0,
+    "undefined_symbols": 0,
+    "code_relocations": 0,
+    "total_relocations": 1,
+    "FPO": {
+      "offset_start": 0,
+      "procedure_bytes": 302,
+      "locals_dwords": 8,
+      "params_dwords": 2,
+      "prologue_bytes": 45,
+      "saved_registers": 3,
+      "has_SEH": false,
+      "uses_BP": false,
+      "frame_type": 0,
+      "attributes": 813
+    },
+    "whole_inventory": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\WholeNativeCrtStrpbrkSource01\\object_inventory.json",
+      "bytes": 39122,
+      "sha256": "a4135505dc0830c8be0263ae79b76ec100b16b0c45fd4284493cf872988db423"
+    },
+    "whole_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\WholeNativeCrtStrpbrkSource01\\object_review.json",
+      "bytes": 7297,
+      "sha256": "64ca985e1733882aacd823d06e6e293b678eb461e83d463e08a17af788f8bef6"
+    },
+    "external_payload_loads": [
+      {
+        "offset": 73,
+        "width": 1,
+        "phase": "first control",
+        "instruction": "MOVZX ECX,BYTE [EDI]"
+      },
+      {
+        "offset": 165,
+        "width": 1,
+        "phase": "later control",
+        "instruction": "MOVZX ECX,BYTE [EDI]"
+      },
+      {
+        "offset": 178,
+        "width": 1,
+        "phase": "first source",
+        "instruction": "MOVZX ECX,BYTE [ESI]"
+      },
+      {
+        "offset": 275,
+        "width": 1,
+        "phase": "later source after absent membership",
+        "instruction": "MOVZX ECX,BYTE [ESI]"
+      }
+    ],
+    "private_word_identity": [
+      {
+        "word": 0,
+        "final_ESP_offset": 12,
+        "control_LEA_offset": 108,
+        "source_LEA_offset": 218
+      },
+      {
+        "word": 1,
+        "final_ESP_offset": 16,
+        "control_LEA_offset": 114,
+        "source_LEA_offset": 224
+      },
+      {
+        "word": 2,
+        "final_ESP_offset": 20,
+        "control_LEA_offset": 120,
+        "source_LEA_offset": 230
+      },
+      {
+        "word": 3,
+        "final_ESP_offset": 24,
+        "control_LEA_offset": 124,
+        "source_LEA_offset": 234
+      },
+      {
+        "word": 4,
+        "final_ESP_offset": 28,
+        "control_LEA_offset": 135,
+        "source_LEA_offset": 245
+      },
+      {
+        "word": 5,
+        "final_ESP_offset": 32,
+        "control_LEA_offset": 142,
+        "source_LEA_offset": 252
+      },
+      {
+        "word": 6,
+        "final_ESP_offset": 36,
+        "control_LEA_offset": 148,
+        "source_LEA_offset": 258
+      },
+      {
+        "word": 7,
+        "final_ESP_offset": 40,
+        "control_LEA_offset": 152,
+        "source_LEA_offset": 262
+      }
+    ],
+    "pointer_return_proof": "EBX is the actual reached source pointer at initial+B0 and later+116. ESI is advanced only after a nonzero byte at+CD, possibly to one-past for a terminal hit. Match returns saved EBX via+127; no integer reconstruction, LEA-minus-one, pointer subtraction, reread or extra source advance on NUL.",
+    "pointer_scheduling_qualification": "On later iterations compiler copies current ESI to EBX after BYTE+113, before NUL test+118. This remains the same genuine reached pointer; Source spells saved pointer before reading. No Original physical pointer-register, home, instruction or fault identity is claimed.",
+    "all_code_sections_symbols_aux_strings_relocations_metadata_reviewed": true,
+    "no_cookie_globals_TLS_runtime_tables_or_providers": true,
+    "strict_FPO_future_Main_Oy_minus_separate": true
+  },
+  "validation": {
+    "report_and_doc_call_checker": "Required before commit; actual receipt/result retained in own family.",
+    "zero_call_rows_not_semantics": true,
+    "no_new_tests_probes_bodyexecution_SDKcomparison": true,
+    "strict_compile_and_static_object_only": true
+  },
+  "preservation": {
+    "new_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16",
+    "new_owner": "agent/cc12_crt_strpbrk_source_oct16",
+    "pinned_base": "70b20c1bbc488f552f708b2614fcf34ded741586",
+    "initial_clean_unmerged0": true,
+    "old_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16",
+    "old_head": "bd126bbb32804ed9f6a854939b068ab12b71ac89",
+    "old_sealed_families": 12,
+    "old_sealed_files": 458,
+    "old_working_files": 16,
+    "extra_peer_sealed_files": 15,
+    "total_preserved_sealed_files": 473,
+    "Root_authentication_files": 2,
+    "new_baseline_CRT_working_files": 270,
+    "all_bytes_hash_mtime_preserved": true,
+    "old_checkout_no_reset_merge_edit": true,
+    "old_existing_EOL_qualifications_preserved": true,
+    "new_checkout_existing_EOL_forms_preserved": true,
+    "no_exports_junction_symlink": true,
+    "queue_then_old_readiness_release_then_new_from_packet_claim": true,
+    "ownership_before_Source": "ownership_before_Source.json",
+    "no_moving_Main_merge": true
+  },
+  "actual_preparation_failures": [
+    {
+      "stage": "Initial evidence mkdir",
+      "actual_tool_receipt": "6fec68",
+      "kind": "WinError3 missing local parent",
+      "recovered": "Create parent after confirming already successful local-only lease; no original claim receipt synthesized",
+      "no_Source_or_compiler_at_failure": true
+    }
+  ],
+  "provenance_qualifications": {
+    "utc": "2026-10-16T07:14:13.277894+00:00",
+    "first_tool_source": "New capture/inspector source was created in own actual tool invocation0000e7; no old Source4 tool records or compiler provenance adopted.",
+    "initial_read_only_stage": "Capture external-preservation mode ran before its physical self-hash in environment_tools_before.json. This is not called a retrospective first-use before-pin.",
+    "environment": "Current physical hashes in environment_tools_before.json precede vcvars support-script execution.",
+    "compiler": "capture_tools_before_compiler_preparation.json and fresh inputs_before.json precede every candidate/Original/compiler/object mode; inspector first use occurs after both tool-pin stages.",
+    "later_tools": "Report tool pinned at its own current creation/use stage after actual compiler/object review; commit/seal tools have later distinct stages.",
+    "genuine_preparation_failure": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\WholeNativeCrtStrpbrkSource01\\actual_preparation_failure.json",
+      "bytes": 705,
+      "sha256": "cbed7cade4a5efa3aff50c54a5097fc4004c09dfb561dbddfa10914841c34ffa"
+    },
+    "bounded_display_overflow": "270-name baseline display at actual output4626e0 exceeded display budget; full baseline metadata remained in new_checkout_before.json. No proof is inferred from omitted names and no output was replayed."
+  },
+  "evidence_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\WholeNativeCrtStrpbrkSource01",
+  "provenance": "Only new Source5 actual own paired tools, full own Original-prefix authentication. Prior Source4/Root/peer records never adopted as own.",
+  "no_shared_CMake_registry_ledger_names_Ghidra_mutation_or_push": true,
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "fixture_tested": false,
+  "game_validated": false,
+  "remaining_gates": [
+    "Root independent Source/compiler review",
+    "actual normal Main host/frame variant and archive review",
+    "No ABI/caller/runtime/game proof from this work"
+  ]
+}

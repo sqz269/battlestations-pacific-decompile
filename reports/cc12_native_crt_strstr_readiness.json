@@ -1,0 +1,78 @@
+{
+  "schema": "bsp.cc12.native_crt_strstr.primary_readiness.v1",
+  "status": "whole_Original_provider_contract_and_concrete_Source_primary_independent_pass_Source_authorized_compiler_Main_pending",
+  "worker_commit": "92dd9abf1be35bf91cb09711cf1ddaf8ca76a1ca",
+  "Source_ready": true,
+  "Source_authorized": true,
+  "Source_credit": 0,
+  "whole_Original_static_evidence_accepted": true,
+  "Root_primary_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strstr_readiness_primary_20261016\\primary_inputs.DATA.json",
+    "bytes": 4512,
+    "sha256": "4e89ffaca6a8a7a5c1202fc50e3b595d70881c30977bbcc444a9731cc2e1233a"
+  },
+  "canonical_doc": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\docs\\NATIVE_CRT_STRSTR_READINESS.md",
+    "bytes": 6684,
+    "sha256": "c4eed872934eb211a0c6135661919ed572989025c38cb3c3569c17e3947dfb50"
+  },
+  "canonical_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\reports\\native_crt_strstr_readiness.json",
+    "bytes": 10165,
+    "sha256": "bf177c2f3edb4276d4073ced7850e03690b8c631562e42ef5e21a3ed8dd8749d"
+  },
+  "exact_interior_tail": {
+    "address": "00bf86f6",
+    "InstructionDB": "PUSH EBX inside existing _strchr00bf86f0",
+    "native_input": "FullEAXzeroextendb plusH=[S+4], notECX/EDX/secondhome; normalentryfirst6Bskipped, BF86F6 savedinteriorInstructionDB PUSH EBX, no newfunction.",
+    "whole_provider_contract": "reports/cc12_native_crt_strchr_interior_primary_review.json"
+  },
+  "blockers": [],
+  "qualification": "WholeOriginal/staticcontract and specificordinarySourceplan accepted only. No newSource/helper/emittedcode/OriginalphysicalABI/caller/runtime/gameproof. ExistingproviderSource/header/creditunchanged; nextnewSourcewholecompiler/Main gates remainmandatory.",
+  "source_ready": true,
+  "source_authorized": true,
+  "Source_implemented": false,
+  "provider_contract_accepted": true,
+  "provider_primary_review": "reports/cc12_native_crt_strchr_interior_primary_review.json",
+  "concrete_Source_proposal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strstr_provider_primary_20261016\\Source12_gate_proposal.DATA.json",
+    "bytes": 8752,
+    "sha256": "6a07af625bd6dba09051d680530de1a1d5cccad9e3e62a11a0a05d424806b64b"
+  },
+  "independent_concrete_proposal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strstr_provider_primary_20261016\\Source12_gate_independent.DATA.json",
+    "bytes": 8854,
+    "sha256": "08a4ce32b4d70f3ce41867c23962efc5fab34b9361699e23b7bcc60e62981d78"
+  },
+  "contract": [
+    "New default potentially throwing MSVCWin32 void* __cdecl bsp::find_native_crt_substring_00bf9440(const void* actual_haystack,const void* actual_needle). Win32 littleendian BYTE8/pointer32/unsigned32, borrowed exactsourceaddress/rawnull return, no owner/allocation/error service. Correct Original libraryname _strstr retained; descriptive C++ name a hypothesis. No OriginalphysicalABI/register/frame/home/flag/EH/tailreturn replacement claim.",
+    "Whole Original00BF9440..00BF94C5 134B66instructions, SHA0aa74e3eadfb78899c55fa44b65c6aa4fd0cc653ad09eff41df06903fb03faa9. Preserve cached needle[0] then ifnonzero needle[1]. Emptyneedle returns originalH includingnull before Sourcepayload oradvance/needle[1]. Fornonemptyone-byte needle retain full195B89provider behavior through ordinary existing Source bridge below; no SDK/byte-loop substitute or redirecttoOriginalnormalBF86F0.",
+    "Longerneedle scansource BYTEs forward, advancingactualscanby1beforecomparing cachedfirstbyte, match-beforeNUL. AfterfirstmatchreadnextSourceBYTEandadvance1beforecomparecachedsecondbyte. Secondmismatch retries SAMEjustreadBYTE asnew firstcandidate, no skippedbyte. Onsecondmatch historicalq=ESI-2 staysfixed; restartposition=q+1, not movingextensioncursor.",
+    "Extension resetsECX=N perattempt. Readneedle[ECX+2], testzero BEFORE anypairedSource; zero successreturnsq. Otherwise readSourceatESI, advanceESI+2 BEFOREcompare, including mismatch/nextneedleNUL; mismatchrestarts q+1. Ifequal readneedle[ECX+3], zero successbeforepartnerSource. Else readSourcepartnerESI-1 thenadvanceECX+2 BEFOREcompare; equalrepeat, mismatchrestartq+1. Maintainallcached/reloadedstate/earlysuccess/failure/noextraaccess, exact1/2cursor geometry and historicalcandidateidentity.",
+    "One-byte route: OriginalBF94AD..BF94B4 restoresESP/calleesaves, EAX=zeroextendb, H=[S+4], N=[S+8], theninteriorBF86F6. ProviderconsumesONLYfullEAXzeroextendb andHhome, notECX/EDX/secondhome/needleagain. This is a staticnativecontract, not proposedphysicaladapter. Newordinarybridge uses genuine private4aligned initialized two-uint32-word array/backing {exactHbits,zeroextendb}, lifetime throughcall and disjointreachedpayload/privatecontrols; passitsactual8Baddress to existing bsp::find_native_crt_character_00bf86f0(const void* actual_parameters8). Existing API readsBYTE+4 thenDWORD+0, so doNOTpassOriginalstrstrhomes/Npointer. ProviderSource/HPP remainbyteidentical and alreadyregistered; no duplicateproviderSource orcredit.",
+    "Retain actualHlowbits. Existingprovider BYTEpeelread then+1 compareb BEFOREzero, no roundeddownDWORD. Atalignment actualDWORDW read, modulo32 D=W^repeatedb,T=W+7efefeff,U=D+7efefeff, candidateC=(~D^U)&81010100, cursor+4 beforestop. Cnonzero causes genuineSECOND DWORDread sameaddress and capturedlane comparisonslowtohigh equalityBEFOREzero. C0 usesZ=(~W^T)&81010100; Z0loop, Z&01010100 null, else T&80000000 nonzero loop/zero null. No mask simplification/SDK/conditionalreread deletion/byte-load substitution/unusedextraNULread. Pureprivate arithmetic scheduling maydiffer onlyunderexplicitordinarylimits, noflag/instruction identity.",
+    "Genuine stablelive ordinaryflatDS/SS rawstorage. Admitrawunaligned/interior/read-only/highbit/source-needleoverlap/ordinarycallerstack and borrowedresults. EveryactuallyreachedBYTE/fullDWORD/reread mustexistandbedeterminatelyreadable; onebyteprovider DWORDmayinclude beyondmatch/NUL bytes, actualwindowonly notblanketpadding. Emptyneedle requiresonlyreachedneedleBYTE+newbyvaluebinding, Hpayloadunaddressedallowed. Finiteactualstop; noINTMAX/signedcap/nonoverlap/frozenSnapshot/completeunusedNULextent/inventedwritablepayload/object/ownership premise.",
+    "Everyactualcursor1/2/4 andeffectiveaddress step staysnonwrapping32 withinoronepast SAMEgenuineallocation; noonepastread. Includeproviderterminal+1/+4, extensionESI+2 evenonfailedcompare/nextneedleNUL andECX+2/partneroffsets. Unusedpartneraddressgeometry isnotinventedreadability. Originalmoduloarithmetic remainsdocumented; approvedordinarydomain is nonwrappingsubset. Sourcecanretainexplicitcursorincrements evenifemitterDCEsdeadprivatearithmetic, but mustnotwaiveOriginalgeometry.",
+    "Excludepayload/bindingaliases with Original/newcalleeprivateframe/argumenthomes/savedregisters/returns/control/spills/scratch/helperbacking/selfmodifyingcontrol; ordinarycallerstack elsewhereallowed. Excludefault/partialprogress/MMIO/concurrentmutation/async/lifetime/mapping/exoticsegments. NativeproviderhasnoDF/ESdependency andnoOriginalCLDfixisintroduced; newgeneratedSource calling-environment/DFassumptionsmustbeexplicitlyreviewed, no unsupportedcallerentryfacts. No OriginalphysicalABI/caller/runtime/gamevalidation claim.",
+    "Fourcanonicaloutputs ONLY: include/bsp/native_crt_strstr.hpp, src/native_crt_strstr.cpp, docs/NATIVE_CRT_STRSTR.md, reports/native_crt_strstr.json. Isolatedfreshcheckout exactpublishedRootSourcegate, full134Baddress/fourfilelease. FreshnamedphysicalSource/provider/header/compiler/support/headercandidate/runtime/toolbeforepins beforefirstuse; preserveallfrozenpriorfamilies/working/Git/mtimeandcurrentqualifiedstages. No workerMainbaseline/newtests/probes/emulation/selectedbodyexecution/SDKcomparison/liveGhidra/mutation/sharedCMake/registry/ledger/Main/push.",
+    "One genuine preplanned strictHostX86/x86 cl invocation over TWO TUs: newstrstrSource plus BYTEIDENTICAL existing src/native_crt_strchr.cpp as explicitcompanionprovider. /std:c++17 /O2 /W4 /WX /permissive- /fp:strict /EHsc /MD /c /Bv /showIncludes /sourceDependencies, distinctobject/dependencyoutputsidentifiedpertu, actualbeforeclosureverified foreach. This is one freshcaller/provider composition evidencebatch, no workerbaseline/matchingtrial/retry. Bothselectedbodyexecutionszero. Compilerfailure/mismatch stopsforRootdisposition, retainactualfailedtools/results, donotfabricatePASS orrecompiletomatch.",
+    "Review ENTIREboth strictobjects: newpublic/allprivatehelpers, existingcompanionproviderpublic/anyprivatehelpers, allcode/sections/symbolaux/strings/relocations/metadata/providers; exactoneallowedexternal ordinary providerbinding resolvedtoliteralcompaniondefinition. Provegenuine8B initializedbacking/layout/alignment/lifetime/noalias, fullpointer/soughtvalue/resultbinding, allpayloaddataflow, count-freeexitpaths, callee-save/privateABI/stackcleanup/DFenvironment, noSDK/newundefinedproviders. Future Root+independent separate actualregisteredMain Win32/3existingCTest/allactualobjectsincludingselectedexistingprovider/publicprivateABI/Corebothindices/uniqueactualproviderandcallerbindings. ExistingproviderMainobjectmayremainpriorcompile: snapshotactualexistingobjectbeforeMain andfreezeactualCoremember, reviewactualcompletebody/metadata/ABI and old-vs-currentSource identity honestly; neverclaimitfreshlycompiledifnot. Sourcecredit0 untilnewwholeMainclosure; providercredit0always."
+  ],
+  "closed_historical_blockers": [
+    "Register-prepared numeric tail destination BF86F6 is not a Ghidra function start; enclosing metadata BF86F0 _strchr does not authenticate an entry ABI or provider service. Do not redirect to BF86F0, rename, repair, decode provider or invent an SDK/context wrapper.",
+    "Astra must recover exact interior-entry register/stack/home/preservation/return/error/failure and access-extent/DF/segment contract before any whole Source gate. Caller/provider bodies remain unread here.",
+    "Whole ordinary raw-storage domain and return identity across all paths remain unapproved. Any later contract must preserve the real reached-byte trace, cached/reloaded state, precompare+2 cursor geometry and no post-stop payload. No artificial padding/full unused terminator, signed cap, nonoverlap or fake object/ownership precondition can replace that work."
+  ],
+  "source_packet": "cc12_native_crt_strstr_00bf9440",
+  "historical_exact_interior_tail": {
+    "site": "00bf94b4",
+    "target": "00bf86f6",
+    "kind": "unconditional_interior_tail",
+    "EAX": "zero_extend(nonzero needle BYTE0)",
+    "ECX": "supplied needle pointer",
+    "EDX": "entry_EDX high16 | zeroDH | BYTE0",
+    "ESP": "entryESP, original return and homes intact",
+    "flags": "XOR EAX,EAX CF0 OF0 SF0 ZF1 PF1 AFundefined",
+    "restored": "ESI EBX EDI; EBP unchanged; DF/segments unchanged"
+  }
+}

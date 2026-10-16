@@ -1,0 +1,233 @@
+{
+  "packet": "cc12_native_gui_manager_publication_teardown_99",
+  "status": "whole_raw_parent_required_current_scalar_service_strict_source_object_and_existing_checks_passed",
+  "created_utc": "2026-10-16T05:21:47.633538+00:00",
+  "base_commit": "3348f504922cb4051bd58cf55b95a6f5803b4f27",
+  "source": "src/native_gui_manager_publication.cpp",
+  "header": "include/bsp/native_gui_manager_publication.hpp",
+  "documentation": "docs/CC12_NATIVE_GUI_MANAGER_PUBLICATION_TEARDOWN_99.md",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "function": {
+    "entry": "00736250",
+    "end_exclusive": "007362f4",
+    "bytes": 164,
+    "instructions": 44,
+    "ghidra_name": "BSP_Singleton_Destroy_00f8bc5c",
+    "source_symbol": "destroy_native_gui_manager_publication_00736250",
+    "original_abi": "no consumed arguments; void; plainRET; nativeFH3 one captured-guard state",
+    "source_abi": "new const borrowed NativeGuiManagerPublicationCalls reference; cdecl C++ Source interface",
+    "coverage": "whole_parent_schedule_over_required_actual_services",
+    "no_production_caller_or_activation_added": true
+  },
+  "binding": {
+    "nondefault": true,
+    "null_scalar_pointer_rejected_before_raw_entry": true,
+    "owns_no_publication_manager_callback_registration_or_lifetime": true,
+    "same_owners_reference_passed_to_scalar": true,
+    "same_actual_manager_cell_may_initially_be_null": true,
+    "real_00415350_may_construct_manager": true,
+    "opaque_state_may_be_null_for_real_stateless_provider": true,
+    "current_scalar_contract": "read current receiver profile, resolve SAME live table, capture CURRENT table0, dispatch receiver/flags1; no cached receiver/profile/default/arbitrary callableVA",
+    "known_d5bfcc": "existingAA6540 may be used only with SAME NativeGuiMediaFocusLifetimeContext/owners/resources and real page20/04 services",
+    "metadata_contract": "view/cells/contexts/state/table/call metadata and captured lock survive every reached call/cleanup and receiver free; disjoint from retired storage/privateguard/Original scratch; externally serialized"
+  },
+  "schedule": [
+    "early currentF8BC5C null return before getter/lock",
+    "real415350 first manager; capture its current+10 section",
+    "guardprofileCE37FC then section store before actualEnter",
+    "nonnullsectionEnter;current+18 increment;then cleanupstate0arm",
+    "currentGUI recheck; real415350 SECOND getter BEFORE currentGUI unregisterargumentload",
+    "rawBCFCA0 with secondmanager/currentargument",
+    "fresh currentGUI receiver; required current-profile scalar0(flags1) ifnonnull",
+    "currentGUI clear AFTER scalarreturn, including scalar-side publication changes",
+    "decrement andLeave firstcapturedsection;normaldisarm afterLeave"
+  ],
+  "exception_schedule": {
+    "native_handler": "00c85ec8",
+    "funcinfo": "00db52c8",
+    "unwind_map": "00db52c0",
+    "from_state": 0,
+    "to_state": -1,
+    "action": "00c85ec0",
+    "native_action": "LEAECX,[EBP-14];JMP411EE0",
+    "source": "ordinary C++ RAII cleanup consumes armed byte before actual411EE0; catch-all escaping cleanup failure terminates",
+    "guard_not_armed_before_enter_and_depth_increment": true,
+    "normal_leave_still_guarded": true,
+    "failed_unreg_or_scalar_no_wrapper_clear_or_replay": true,
+    "no_restartable_failed_operation_or_rollback_claim": true,
+    "native_fh3_seh_nonlocal_escape_private_frame_equivalence": false
+  },
+  "evidence": {
+    "every_live_query_via_verified_bsp_wrapper": true,
+    "fresh_ranges": [
+      {
+        "start": "00736250",
+        "bytes": 164,
+        "sha256": "daba44e8e98ad5941e93384a91310875fc263123e7ee719f809d92bbcf1c79df",
+        "live_equals_installed_pe": true,
+        "log": "local/cc12_native_gui_manager_publication_teardown_99_live_00736250.log",
+        "instructions": 44
+      },
+      {
+        "start": "00c85ec0",
+        "bytes": 18,
+        "sha256": "adf860f533deb2f795f8bd4f758712d0eb6a46707fca4127fa445f2912bbf28d",
+        "live_equals_installed_pe": true,
+        "log": "local/cc12_native_gui_manager_publication_teardown_99_live_00c85ec0.log",
+        "instructions": 4
+      },
+      {
+        "start": "00db52c0",
+        "bytes": 44,
+        "sha256": "eb39989a7f7db15426ceeaec8674c29c2258e74a7fdf7cfa000e3e925b82b443",
+        "live_equals_installed_pe": true,
+        "log": "local/cc12_native_gui_manager_publication_teardown_99_live_00db52c0.log"
+      }
+    ],
+    "bytes_checked": 226,
+    "direct_calls": [
+      {
+        "address": "00736272",
+        "native": "00415350",
+        "function": "00736250"
+      },
+      {
+        "address": "007362a6",
+        "native": "00415350",
+        "function": "00736250"
+      },
+      {
+        "address": "007362b4",
+        "native": "00bcfca0",
+        "function": "00736250"
+      }
+    ],
+    "indirect_calls": [
+      {
+        "site": "0073628b",
+        "operand": "dword ptr [0xce2218]"
+      },
+      {
+        "site": "007362c9",
+        "operand": "eax"
+      },
+      {
+        "site": "007362de",
+        "operand": "dword ptr [0xce2210]"
+      }
+    ],
+    "audit": "local/cc12_native_gui_manager_publication_teardown_99_audit.json",
+    "audit_sha256": "f2bf74de0e2db0292fe2b8d3425122f9e3b8e5ca8a4fbe3aa14c7bfd58122229",
+    "source_sha256": {
+      "include/bsp/native_gui_manager_publication.hpp": "c9d14692213cdf03306a1729c232be637833efd9004694c4a7dafc702264f7c8",
+      "src/native_gui_manager_publication.cpp": "3d6e77152d36b435dccf1b4d3dcc3b241d09dc953164337ac9a144de0f067fbe",
+      "include/bsp/native_platform_focus_owners.hpp": "0738ee83b33d44ee79852f115e79515a85d653452d70fc920ab63e3675c51865",
+      "src/native_platform_focus_owners.cpp": "efff43cee498b710d53d4b2380e4ae89791dc578371d35b2be29327b0fedfe73",
+      "include/bsp/native_singleton_publication.hpp": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "src/native_singleton_publication.cpp": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "include/bsp/native_singleton_removal_reorder.hpp": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee",
+      "src/native_singleton_removal_reorder.cpp": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2",
+      "include/bsp/native_diagnostic_sink_lifetime.hpp": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "src/native_diagnostic_sink_lifetime.cpp": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4"
+    },
+    "compiled_object": "local/cc12_native_gui_manager_publication_teardown_99.obj",
+    "compiled_object_disassembly": "local/cc12_native_gui_manager_publication_teardown_99_object_disasm.txt",
+    "compiled_parent_offsets": {
+      "guard_profile": "49",
+      "guard_section": "50",
+      "enter": "58",
+      "depth_increment_store": "62",
+      "explicit_cleanup_arm": "68",
+      "second_getter": "80",
+      "current_unregister_argument": "85",
+      "unregister": "8F",
+      "fresh_scalar_receiver": "94",
+      "scalar_call": "A8",
+      "current_publication_clear": "AD",
+      "depth_decrement_store": "BC",
+      "leave": "BF",
+      "disarm": "C8"
+    },
+    "compiled_cleanup_offsets": {
+      "consume_armed": "31",
+      "actual_411ee0_call": "3C",
+      "catch_terminate": "56"
+    },
+    "compiler_fh3_boundary": "compiler state0 store72 follows nonthrowing volatile comparison; explicit cleanup object arm/order mapped, not Original FH3 instruction placement",
+    "source_and_object_review": "Root PASS on full header/CPP, whole44instruction Original and optimized Source object",
+    "original_execution": false,
+    "new_dynamic_cases": 0
+  },
+  "build": {
+    "strict_fresh_TU_compile": "PASS MSVCWin32 /std:c++17 /EHsc /MD /O2 /W4 /WX /Gy /Zc:inline /DNDEBUG;exit0",
+    "strict_command_file": "local/cc12_native_gui_manager_publication_teardown_99_object.cmd",
+    "canonical_command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1",
+    "canonical_exit": 0,
+    "canonical_log": "local/cc12_native_gui_manager_publication_teardown_99_build.log",
+    "existing_CTests": {
+      "reconstructed_math": "passed",
+      "native_math_differential": "passed",
+      "tool_tests": "passed",
+      "elapsed_seconds": 8.37
+    },
+    "new_TU_CMake_registered": false,
+    "new_TU_direct_compile_only": true,
+    "new_TU_exercised_by_existing_tests": false,
+    "new_tests_added": 0
+  },
+  "annotations": {
+    "only_address": "00736250",
+    "established_name_retained": true,
+    "prior_comment_retained": true,
+    "write_lock_taken_by_tool": true,
+    "tool": "tools/ghidra_annotate.py --apply --addresses 00736250",
+    "old_history": "local/ghidra-annotations-20261016T051851Z.json",
+    "old_history_sha256": "d7d9e9c2aedeb2e82ea6be299fadced1c68c3b12628409dcb7ed0b0ee82a3030",
+    "saved_existing_project": true,
+    "refreshed_exports": [
+      "00736250"
+    ],
+    "no_prototype_tag_flow_or_unrelated_changes": true,
+    "ledger_integrity": {
+      "config/names/00730000.jsonl": {
+        "sha256": "fc81f3515730534138ba7adc48343e733dace55777b146b054f5e6fe915d50c9",
+        "unowned_records_unchanged": true,
+        "old_owned_count": 1,
+        "new_owned_count": 1
+      },
+      "config/reconstruction/00730000.jsonl": {
+        "sha256": "5b613a1380b448f37d347d5d7bd16094a022a9963bc4aa0576958e24a508a3e3",
+        "unowned_records_unchanged": true,
+        "old_owned_count": 0,
+        "new_owned_count": 1
+      }
+    }
+  },
+  "verification": {
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/cc12_native_gui_manager_publication_teardown_99.json",
+      "expected_rows": 3,
+      "result": "passed",
+      "checked_rows": 3,
+      "failed_rows": 0,
+      "exit_code": 0,
+      "log": "local/cc12_native_gui_manager_publication_teardown_99_report_calls.log"
+    },
+    "whole_original_and_source_object_static_mapping": true,
+    "no_native_differential": true,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "limits": [
+    "Current scalar service is mandatory and not implemented by a fake/stub/default; whole parent is not complete GUI lifetime/provider subtree.",
+    "Same actual raw Source manager/publication/context and existing Source CRT/Win32 services; no Original CRT/TLS/heap identity claim.",
+    "Source C++ callback/exception/frame interface is not OriginalFH3/SEH/nonlocal/private-stack or binary ABI.",
+    "No dynamic execution of this new parent, no full populated manager/page retirement, no production provider install or activation.",
+    "Existing CMake checks exclude new TU; new TU has strict optimized direct compile/static object review."
+  ]
+}

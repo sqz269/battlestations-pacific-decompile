@@ -59,12 +59,35 @@ std::uint32_t gui_type_name_address(const GuiTypeDescriptor<Depth>& d) noexcept 
     return d.native_name_address;
 }
 
-template <std::size_t Depth>
-bool gui_type_is_kind_of(const GuiTypeDescriptor<Depth>& d, std::uint32_t id) noexcept {
-    for (std::uint32_t own : d.ids)
-        if (own == id) return true;
+namespace detail {
+template <class IdWord, std::size_t Depth>
+bool gui_type_ids_contain(const IdWord (&ids)[Depth], std::uint32_t id) noexcept {
+    for (std::size_t index = 0; index < Depth; ++index)
+        if (ids[index] == id) return true;
     return false;
 }
+} // namespace detail
+
+template <std::size_t Depth>
+bool gui_type_is_kind_of(const GuiTypeDescriptor<Depth>& d, std::uint32_t id) noexcept {
+    return detail::gui_type_ids_contain(d.ids, id);
+}
+
+// Required borrowed actual ID words, not a descriptor snapshot. Each current
+// word is read only after the preceding miss; zero is an ordinary match.
+// Caller supplies live initialized storage in its actual serialized type domain.
+// No initializer, name-word read, default chain, owner or counter is supplied.
+template <std::size_t Depth>
+bool gui_type_is_kind_of(const volatile std::uint32_t (&actual_ids)[Depth],
+    std::uint32_t id) noexcept {
+    return detail::gui_type_ids_contain(actual_ids, id);
+}
+
+// Whole AA38B0's search over exactly three actual F8BF88-role ID words.
+// The Layer producer/authority remains required; this new Source interface
+// does not reproduce Original unused receiver, AL-only result or RET4 ABI.
+bool native_gui_layer_is_kind_of_00aa38b0(
+    const volatile std::uint32_t (&actual_lineage_00f8bf88)[3], std::uint32_t id) noexcept;
 
 // The initializer, __fastcall(ECX = target descriptor). When the guard is clear:
 // set the guard, store the name word, run the parent initializer, copy the

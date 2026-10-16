@@ -1,0 +1,2477 @@
+{
+  "packet": "cc12_native_gui_text_cursor_storage137",
+  "kind": "whole actual raw Text cursor over genuine existing providers; new Source interface, not activation",
+  "recorded_utc": "2026-10-16T09:33:58.060977+00:00",
+  "checked_baseline": "05943b2c138031347ca5c6bd6319c78c724653a8",
+  "scope": {
+    "owned_files": [
+      "include/bsp/native_gui_text_cursor_storage.hpp",
+      "src/native_gui_text_cursor_storage.cpp",
+      "docs/CC12_NATIVE_GUI_TEXT_CURSOR_STORAGE_137.md",
+      "reports/cc12_native_gui_text_cursor_storage_137.json"
+    ],
+    "owned_addresses": [
+      "0x00AB8910"
+    ],
+    "owned_range": "0x00AB8910-0x00AB8C25",
+    "owned_ledger_records_only": "new unique raw function and appended existing-name evidence; old typed/prefix statuses retained",
+    "no_existing_Source_CMake_or_Main_change": true
+  },
+  "analysis_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "Original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "Original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "BSP_verified_batches": true
+  },
+  "whole_Original": {
+    "entry": "0x00AB8910",
+    "end_exclusive": "0x00AB8C25",
+    "bytes": 789,
+    "instruction_starts": 236,
+    "sha256": "3715e0e2d0c4977e16b73f196b40e980c3afb936b91f7b46f6f1dfc6cf64a6e5",
+    "whole_hex": "6a ff 68 c9 7f cb 00 64 a1 00 00 00 00 50 64 89 25 00 00 00 00 83 ec 50 53 55 33 db 57 8b f9 33 ed 89 5c 24 0c 39 af 84 01 00 00 0f 85 d2 02 00 00 56 b9 84 01 00 00 e8 64 c5 0b 00 8b f0 89 74 24 14 3b f5 89 6c 24 68 74 2a 68 88 c7 d5 00 8d 4c 24 1c e8 08 5f 96 ff 8d 44 24 18 bb 01 00 00 00 50 8b ce c6 44 24 6c 01 89 5c 24 14 e8 ae c6 0b 00 eb 02 33 c0 83 ce ff f6 c3 01 89 87 84 01 00 00 89 74 24 68 74 1f 8b 4c 24 1c 3b cd 74 17 8b 44 24 18 6a 01 83 c0 01 50 51 e8 10 13 96 ff 8b c8 e8 59 8b 11 00 8b 87 84 01 00 00 83 a0 38 01 00 00 fc 8b 4f 4c 51 8b 8f 84 01 00 00 e8 ad 5c 0b 00 0f 57 c0 f3 0f 10 0d 4c a2 d7 00 8b 8f 84 01 00 00 f3 0f 11 44 24 24 f3 0f 11 44 24 28 f3 0f 11 44 24 2c f3 0f 11 44 24 30 f3 0f 11 44 24 38 f3 0f 11 44 24 3c f3 0f 11 44 24 40 f3 0f 11 44 24 44 f3 0f 11 44 24 4c f3 0f 11 44 24 50 f3 0f 11 44 24 54 f3 0f 10 05 60 a2 d7 00 f3 0f 11 4c 24 20 f3 0f 11 4c 24 34 f3 0f 11 4c 24 48 f3 0f 11 44 24 58 f3 0f 11 4c 24 5c 8b 11 8b 52 38 8d 44 24 20 50 ff d2 d9 ee 55 51 8b 8f 84 01 00 00 d9 1c 24 e8 06 50 0b 00 b9 bc 00 00 00 e8 ec b0 0b 00 89 44 24 14 3b c5 c7 44 24 68 03 00 00 00 74 09 8b c8 e8 e5 b2 0b 00 8b e8 d9 05 60 a2 d7 00 8b 8f 84 01 00 00 83 ec 08 d9 54 24 04 89 74 24 70 d9 1c 24 55 6a 00 e8 c1 c6 0b 00 68 a4 ad cf 00 8d 4c 24 1c e8 b3 5d 96 ff 8b 0d 94 d3 f8 00 8b 01 8b 40 38 8d 54 24 18 52 c7 44 24 6c 04 00 00 00 ff d0 8b f0 8b 44 24 1c 85 c0 c7 44 24 68 ff ff ff ff 74 17 8b 4c 24 18 6a 01 83 c1 01 51 50 e8 c7 11 96 ff 8b c8 e8 10 8a 11 00 8b 0d 94 d3 f8 00 8b 11 8b 42 5c 56 6a 01 6a 04 ff d0 8b d8 53 6a 00 8b cd e8 92 b0 0b 00 8d 4e 04 51 ff 15 20 22 ce 00 85 c0 75 08 8b 16 8b 02 8b ce ff d0 8d 4b 04 51 ff 15 20 22 ce 00 85 c0 75 08 8b 13 8b 02 8b cb ff d0 e8 51 b4 a7 ff 8b f0 33 c0 bb 05 00 00 00 68 78 c7 d5 00 8d 4c 24 1c 89 5e 08 89 46 0c 89 46 14 c7 46 10 04 00 00 00 c7 46 18 02 00 00 00 e8 f3 5c 96 ff 8d 4c 24 18 89 5c 24 68 e8 96 c7 a7 ff 8b d8 8b 44 24 1c 85 c0 c7 44 24 68 ff ff ff ff 74 17 8b 4c 24 18 6a 01 83 c1 01 51 50 e8 14 11 96 ff 8b c8 e8 5d 89 11 00 6a 01 57 8b cb e8 83 fe 05 00 53 8b ce e8 fb d8 0c 00 8b 3d 20 22 ce 00 8d 53 04 52 ff d7 85 c0 75 08 8b 03 8b 10 8b cb ff d2 55 8b ce e8 bb d9 0c 00 56 8b cd e8 73 b0 0b 00 8d 46 04 50 ff d7 85 c0 75 08 8b 16 8b 02 8b ce ff d0 8d 4d 04 51 ff d7 85 c0 5e 75 09 8b 55 00 8b 02 8b cd ff d0 8b 4c 24 5c 5f 5d 5b 64 89 0d 00 00 00 00 83 c4 5c c3",
+    "matches_reused100_live_and_saved_listing": true,
+    "direct_calls": 23,
+    "indirect_calls": 13,
+    "all_call_instructions": 36
+  },
+  "Native_ABI": "ECX SAME actual Text/no stack arguments/RET AB8C24/EAX unspecified; EBX/EBP/EDI preserved, ESI saved cold only. Source four-argument interface not private ABI/FH3/SEH/IAT replacement.",
+  "frame_contract": {
+    "Original_cold_F": "entryESP-6C",
+    "mask": "F10",
+    "rawslot": "F14",
+    "same_header": [
+      "F18",
+      "F1C"
+    ],
+    "matrix64": "F20..F5F",
+    "state": "F68",
+    "Source": "persistent separate locals[4]/matrix[16]/visibility/two x87 spill fields/distinct recursive parenting frame; only mask0 initialized on entry",
+    "known_Text_region_bytes": 504,
+    "opaque_transitive_regions_provenance_and_lifetime": "explicit caller proof; public editable diagnostics not authority"
+  },
+  "actual_composition": {
+    "context": "borrows85/93 existing model/node/raw string/material/import domains, SAME real122 Text+04 registry binding, existing mapped data+132, real renderer and concrete layout services",
+    "admission": "preflight before entry effects; full1F8 slot incltrailer and known frames/context/backing disjoint; process raw_context/strings and canonical registry identities; SAME122bound identity without count read/gate/decrement/retain",
+    "Model": "same canonical pool01090054/rawB75030/nameheader; prepare/retire-failed/bind are existing HOST bookkeeping, not constructor replacement",
+    "transform": "reached CURRENT184 receiver+00/current38 must be real supported alias/B6DB10, then genuine132; no incoming cached receiver or world40 generalization",
+    "renderer": "CURRENT realF8D394 authority borrowed from85 and loaded twice at reached38/5C; raw8B name loaderB317E0 then captured5C actualB287C0, canonical admissions, no NativeString raw cast",
+    "mesh_section_material_layout": "real existing geometry factory/mesh setters/section factory/raw535320/B18A40/B864C0/concrete B865A0 and B73C60; no partial subclass/default callback/newowner",
+    "same_table_constant_literal_aliases": [
+      {
+        "address": "0x00D5C788",
+        "text": "gui_cursor",
+        "bytes": 11,
+        "hex": "67 75 69 5f 63 75 72 73 6f 72 00",
+        "sha256": "6308d8efd85c3630ba44eab634f9611cb4648dcc8cd7c0d325a2d3062ddece20"
+      },
+      {
+        "address": "0x00CFADA4",
+        "text": "simplecolor.mvfm",
+        "bytes": 17,
+        "hex": "73 69 6d 70 6c 65 63 6f 6c 6f 72 2e 6d 76 66 6d 00",
+        "sha256": "43f606f799997f0a0957f9ff95917f28927bce012c37aefd83168b569be4e341"
+      },
+      {
+        "address": "0x00D5C778",
+        "text": "GuiCursor.mshd",
+        "bytes": 15,
+        "hex": "47 75 69 43 75 72 73 6f 72 2e 6d 73 68 64 00",
+        "sha256": "07a602e65d13653cbb393d340aadca7637b3772fa6c547c68de93a6e287561c2"
+      }
+    ],
+    "retained_lifetime": "WHOLE independent creator/context/frame/canonical-profile/import/provider/slot graph before callbacks and through failure; same layout/transform private constructor domains remain caller proof"
+  },
+  "current_schedule": [
+    "Mask0 then current184 guard; nonnull returns. RealModelallocation/state0; gui_cursor; register-mask1, state1 BEFORE stackmask1; whole raw ctor; SAME184publication BEFORE state-1/name cleanup.",
+    "First normal name: state-1 before DATA; onlynonnull CURRENTlen+1 then419CC0/BD1510. No blanket preimage zero/headerclear/reread.",
+    "Current184 flags&~3; current4C capture then current184 parent receiver; genuine whole B6E680/prepared recursive frames.",
+    "MOVSS CURRENToneD7A24C -> current184 ->11zero stores ->later MOVSS CURRENTD7A260 ->diagonal/sentinel stores ->current vptr/current38 ->real132.",
+    "FLDZ ->current184 ->FSTP0 ->real B6DA70 recurse lowbyte0; actualmesh factory; FRESH FLD D7A260 ->current184 ->FST17C ->volatile state-1 ->FSTP178 ->B75170.",
+    "simplecolor.mvfm; reached currentrenderer/profile38; state4/rawB317E0/canonicaladmission; DATA ->volatile state-1 ->nonnull CURRENTlen+1 actual pool return.",
+    "Only AFTER name return, reload currentrenderer/profile5C/B287C0(4,1,decl), stream0 B73BB0; declarationrelease BEFORE vertex, each fresh currentCE2220; currenttable0 zero terminal no2nddec.",
+    "Section exact +08=5,+0C=0,+14=0,+10=4,+18=2; GuiCursor.mshd state5/raw535320; DATA->state-1->conditional CURRENTlen cleanup.",
+    "B18A40 SAMEentryText flag1; B864C0; capture CE2220ONCE private saved local atAB8BC5; materialrelease, B865A0 layout, B73C60append, sectionrelease, meshrelease SAMEsaved target."
+  ],
+  "calls": [
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8947",
+      "native": "0x00B74EB0",
+      "kind": "call",
+      "instruction": "call 0xb74eb0"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8963",
+      "native": "0x0041E870",
+      "kind": "call",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB897D",
+      "native": "0x00B75030",
+      "kind": "call",
+      "instruction": "call 0xb75030"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB89AB",
+      "native": "0x00419CC0",
+      "kind": "call",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB89B2",
+      "native": "0x00BD1510",
+      "kind": "call",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB89CE",
+      "native": "0x00B6E680",
+      "kind": "call",
+      "instruction": "call 0xb6e680"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8A65",
+      "native": "0x00B6DA70",
+      "kind": "call",
+      "instruction": "call 0xb6da70"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8A6F",
+      "native": "0x00B73B60",
+      "kind": "call",
+      "instruction": "call 0xb73b60"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8A86",
+      "native": "0x00B73D70",
+      "kind": "call",
+      "instruction": "call 0xb73d70"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8AAA",
+      "native": "0x00B75170",
+      "kind": "call",
+      "instruction": "call 0xb75170"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8AB8",
+      "native": "0x0041E870",
+      "kind": "call",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8AF4",
+      "native": "0x00419CC0",
+      "kind": "call",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8AFB",
+      "native": "0x00BD1510",
+      "kind": "call",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8B19",
+      "native": "0x00B73BB0",
+      "kind": "call",
+      "instruction": "call 0xb73bb0"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8B4A",
+      "native": "0x00533FA0",
+      "kind": "call",
+      "instruction": "call 0x533fa0"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8B78",
+      "native": "0x0041E870",
+      "kind": "call",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8B85",
+      "native": "0x00535320",
+      "kind": "call",
+      "instruction": "call 0x535320"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8BA7",
+      "native": "0x00419CC0",
+      "kind": "call",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8BAE",
+      "native": "0x00BD1510",
+      "kind": "call",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8BB8",
+      "native": "0x00B18A40",
+      "kind": "call",
+      "instruction": "call 0xb18a40"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8BC0",
+      "native": "0x00B864C0",
+      "kind": "call",
+      "instruction": "call 0xb864c0"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8BE0",
+      "native": "0x00B865A0",
+      "kind": "call",
+      "instruction": "call 0xb865a0"
+    },
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8BE8",
+      "native": "0x00B73C60",
+      "kind": "call",
+      "instruction": "call 0xb73c60"
+    }
+  ],
+  "indirect_call_instructions": [
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8A56",
+      "instruction": "call edx"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8AD5",
+      "instruction": "call eax"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8B10",
+      "instruction": "call eax"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8B22",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8B32",
+      "instruction": "call eax"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8B38",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8B48",
+      "instruction": "call eax"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8BCF",
+      "instruction": "call edi"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8BDB",
+      "instruction": "call edx"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8BF1",
+      "instruction": "call edi"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8BFD",
+      "instruction": "call eax"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8C03",
+      "instruction": "call edi"
+    },
+    {
+      "function": "0x00AB8910",
+      "site": "0x00AB8C11",
+      "instruction": "call eax"
+    }
+  ],
+  "six_state_cleanup": {
+    "whole_Original_EH": {
+      "handler_not_a_Ghidra_function": true,
+      "code_start": "0x00CB7F90",
+      "code_end_exclusive": "0x00CB7FD3",
+      "code_hex": "8b 4d a8 e9 28 c9 eb ff 8b 45 a4 83 e0 01 0f 84 0c 00 00 00 83 65 a4 fe 8d 4d ac e9 70 5d 76 ff c3 8b 4d a8 e9 b7 af eb ff 8d 4d ac e9 5f 5d 76 ff 8d 4d ac e9 57 5d 76 ff b8 bc ed de 00 e9 70 eb f3 ff",
+      "code_sha256": "2ada893f0db29b07c3d523544927a5eec7ffe10f66627fc57f0babf234637015",
+      "func_info_start": "0x00DEEDBC",
+      "func_info_hex": "22 05 93 19 06 00 00 00 e0 ed de 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00",
+      "map_start": "0x00DEEDE0",
+      "map_hex": "ff ff ff ff 90 7f cb 00 00 00 00 00 98 7f cb 00 ff ff ff ff 98 7f cb 00 ff ff ff ff b1 7f cb 00 ff ff ff ff b9 7f cb 00 ff ff ff ff c1 7f cb 00",
+      "info_and_map_sha256": "b2bf1336946d23c462e69b24a050b7080e78a1f4421dc56139bba302fcb6bfc2",
+      "entries": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "0x00CB7F90"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "0x00CB7F98"
+        },
+        {
+          "state": 2,
+          "next": -1,
+          "action": "0x00CB7F98"
+        },
+        {
+          "state": 3,
+          "next": -1,
+          "action": "0x00CB7FB1"
+        },
+        {
+          "state": 4,
+          "next": -1,
+          "action": "0x00CB7FB9"
+        },
+        {
+          "state": 5,
+          "next": -1,
+          "action": "0x00CB7FC1"
+        }
+      ],
+      "funclets": [
+        {
+          "entry": "0x00CB7F90",
+          "end_exclusive": "0x00CB7F98",
+          "bytes": 8,
+          "instructions": [
+            "0x00CB7F90 mov ecx, dword ptr [ebp - 0x58]",
+            "0x00CB7F93 jmp 0xb748c0"
+          ],
+          "tail_site": "0x00CB7F93",
+          "target": "0x00B748C0"
+        },
+        {
+          "entry": "0x00CB7F98",
+          "end_exclusive": "0x00CB7FB1",
+          "bytes": 25,
+          "instructions": [
+            "0x00CB7F98 mov eax, dword ptr [ebp - 0x5c]",
+            "0x00CB7F9B and eax, 1",
+            "0x00CB7F9E je 0xcb7fb0",
+            "0x00CB7FA4 and dword ptr [ebp - 0x5c], 0xfffffffe",
+            "0x00CB7FA8 lea ecx, [ebp - 0x54]",
+            "0x00CB7FAB jmp 0x41dd20",
+            "0x00CB7FB0 ret "
+          ],
+          "tail_site": "0x00CB7FAB",
+          "target": "0x0041DD20"
+        },
+        {
+          "entry": "0x00CB7FB1",
+          "end_exclusive": "0x00CB7FB9",
+          "bytes": 8,
+          "instructions": [
+            "0x00CB7FB1 mov ecx, dword ptr [ebp - 0x58]",
+            "0x00CB7FB4 jmp 0xb72f70"
+          ],
+          "tail_site": "0x00CB7FB4",
+          "target": "0x00B72F70"
+        },
+        {
+          "entry": "0x00CB7FB9",
+          "end_exclusive": "0x00CB7FC1",
+          "bytes": 8,
+          "instructions": [
+            "0x00CB7FB9 lea ecx, [ebp - 0x54]",
+            "0x00CB7FBC jmp 0x41dd20"
+          ],
+          "tail_site": "0x00CB7FBC",
+          "target": "0x0041DD20"
+        },
+        {
+          "entry": "0x00CB7FC1",
+          "end_exclusive": "0x00CB7FC9",
+          "bytes": 8,
+          "instructions": [
+            "0x00CB7FC1 lea ecx, [ebp - 0x54]",
+            "0x00CB7FC4 jmp 0x41dd20"
+          ],
+          "tail_site": "0x00CB7FC4",
+          "target": "0x0041DD20"
+        }
+      ],
+      "matches_reused_cursor_prefix_evidence": true,
+      "no_normal_state2_store": true
+    },
+    "actions": [
+      "0->-1 prepared/dead metadata then SAME raw Model slot return B748C0/B74750",
+      "1->0 mask1 consumed before SAME41DD20 thenrawslot0",
+      "2->-1 conditionalname/no normal2store",
+      "3->-1 rawmeshB72F70 delegated during genuine combined provider ctor, never repeat",
+      "4->-1 sameheader41DD20",
+      "5->-1 sameheader41DD20"
+    ],
+    "consume_before_call_and_nested_escape_terminating": true,
+    "delegation": "Combined geometry factory already returns unconstructed rawmesh once on ctor failure, clearsrawslot only after successfulreturn; caller records consumed action3 and never outer-double-returns. Outer state3 arms after normal factory return before x87disarm. Native-site/phase refine provider contract, not exception origin.",
+    "known_Host_failures": "prepare/bind, preallocation hostlist, postconstruction/admission retain creators/headers/slots and current state; no Native rollback invented",
+    "Source_boundaries": "provider_call is not Native origin; phase alone is not. Real lower constructors own inner cleanup. No Text success destructor, Shadow/shader rollback, Text factory pool return, retry or dead-field rediscovery.",
+    "logical_name_counter": "completed_name_returns increments on logical completed cleanup evenDATAnull; not Native pool-call count"
+  },
+  "ownership_and_zero": [
+    "Model creator publishesText184 directly; B75170 retainsmesh; B73BB0 retainsvertex; B73C60 retainssection; B864C0 retainsmaterial; B18A40 flag1 retains SAMEText+04. Diagnostics/aliases addnoownership.",
+    "Five consumed creator releases record identity/capturedfunction/result/zero progress independently before call; metadata only after terminal. No second decrement.",
+    "Canonical zero terminals noexcept/terminate; preterminal Source lookup/profile failures may escape after decrement with independently retained already-zero obligation.",
+    "Positive/count-held domains are not forced-scalar/ancestor/reentry/slotreuse barriers; caller retains full graph and native lifetime exclusion without protective retain."
+  ],
+  "optimized": {
+    "Root_full_Source_Original_and_optimized_review": "PASS",
+    "listing": {
+      "path": "local/native_gui_text_cursor_storage_137.asm",
+      "sha256": "d63e1788f6c83b16c5315ad2865600a7942ec6215e6649e1ce65072f17f53ca8"
+    },
+    "ranges": {
+      "main": [
+        1547,
+        3297
+      ],
+      "captured_name": [
+        4972,
+        5022
+      ],
+      "cleanup": [
+        5035,
+        5271
+      ],
+      "matrix": [
+        5309,
+        5446
+      ],
+      "visibility": [
+        5456,
+        5501
+      ],
+      "geometry": [
+        5516,
+        5601
+      ],
+      "four_releases": [
+        5614,
+        6009
+      ]
+    },
+    "actual_COFF": {
+      "object": {
+        "path": "local/native_gui_text_cursor_storage_137.obj",
+        "sha256": "53700514848e57eccc58cd15d5341db745b427b3f92839008e96764e34e359fc"
+      },
+      "converter": {
+        "path": "local/disasm_text_cursor137_coff.py",
+        "sha256": "cc2bb4bdf2bf8a14b38ba212d43a5d1d1e51b1c9ec757ce7261a3c70ca81dee2"
+      },
+      "format": "One actual decoded instruction per line, exact opcode bytes/relative branches and every relocation with complete symbol name;60instruction chunks. Not linked VA/Native disassembly.",
+      "functions": [
+        {
+          "label": "main",
+          "symbol": "?ensure_native_gui_text_cursor_storage_00ab8910@bsp@@YAXPAXAAUNativeGuiTextCursorStorageFrame@1@AAUNativeGuiTextCursorStorageContext@1@AAUNativeGuiTextCursorStorageAcquired@1@@Z",
+          "section": 72,
+          "bytes": 3109,
+          "embedded_function_symbols": [
+            {
+              "name": "?ensure_native_gui_text_cursor_storage_00ab8910@bsp@@YAXPAXAAUNativeGuiTextCursorStorageFrame@1@AAUNativeGuiTextCursorStorageContext@1@AAUNativeGuiTextCursorStorageAcquired@1@@Z",
+              "offset": 0
+            },
+            {
+              "name": "__catch$?ensure_native_gui_text_cursor_storage_00ab8910@bsp@@YAXPAXAAUNativeGuiTextCursorStorageFrame@1@AAUNativeGuiTextCursorStorageContext@1@AAUNativeGuiTextCursorStorageAcquired@1@@Z$2",
+              "offset": 2508
+            },
+            {
+              "name": "__catch$?ensure_native_gui_text_cursor_storage_00ab8910@bsp@@YAXPAXAAUNativeGuiTextCursorStorageFrame@1@AAUNativeGuiTextCursorStorageContext@1@AAUNativeGuiTextCursorStorageAcquired@1@@Z$4",
+              "offset": 2563
+            },
+            {
+              "name": "__catch$?ensure_native_gui_text_cursor_storage_00ab8910@bsp@@YAXPAXAAUNativeGuiTextCursorStorageFrame@1@AAUNativeGuiTextCursorStorageContext@1@AAUNativeGuiTextCursorStorageAcquired@1@@Z$0",
+              "offset": 2596
+            }
+          ],
+          "instructions": 810,
+          "code_sha256": "5ab6ee45ecdf53951a09bb88867f97f2ee14f39714765bedd25a912549132593",
+          "whole_code_hex": "55 8d 6c 24 9c 83 ec 64 6a ff 68 00 00 00 00 64 a1 00 00 00 00 50 81 ec a4 00 00 00 53 56 57 a1 00 00 00 00 33 c5 50 8d 45 f4 64 a3 00 00 00 00 89 65 f0 8b 75 78 8d 85 50 ff ff ff 8b 7d 74 8b 5d 70 56 57 53 ff 75 6c 50 e8 00 00 00 00 83 c4 14 8b 08 89 4d 3c 8b 48 04 89 4d 4c 8b 48 08 89 4d 5c 8b 48 0c 89 4d 44 8b 48 10 89 4d 50 8b 48 14 8b 40 18 89 45 48 c6 06 01 8b 03 89 4d 58 c7 00 00 00 00 00 8b 45 6c 8b 80 84 01 00 00 85 c0 74 19 66 c7 46 01 01 01 8b 4d f4 64 89 0d 00 00 00 00 59 5f 5e 5b 8d 65 64 5d c3 c7 46 14 47 89 ab 00 c7 46 20 01 00 00 00 8b 07 c7 45 fc 00 00 00 00 8b 00 8b 08 8b 09 e8 00 00 00 00 8b 0b 8b d0 89 55 54 89 51 04 c7 46 1c 00 00 00 00 85 d2 0f 84 b3 00 00 00 c7 46 20 02 00 00 00 8b 07 8b 00 ff 30 8b 48 20 52 ff 70 1c ff d1 8b d0 83 c4 0c 8b 45 54 89 56 24 39 02 0f 85 36 09 00 00 8b 07 8b 08 8b 42 08 3b 01 0f 85 27 09 00 00 83 ba 7c 01 00 00 00 0f 85 1a 09 00 00 ff 75 50 c7 46 14 63 89 ab 00 c7 46 20 01 00 00 00 8b 07 8b 0b 83 c1 08 ff 70 08 51 e8 00 00 00 00 c7 46 1c 01 00 00 00 83 c4 0c 8b 03 c6 45 fc 01 c7 00 01 00 00 00 c7 46 14 7d 89 ab 00 c7 46 20 01 00 00 00 8b 07 8b 0b 83 c1 08 ff 70 04 51 ff 76 24 e8 00 00 00 00 83 c4 0c c7 45 fc 00 00 00 00 8b d0 c6 46 04 01 c6 45 63 01 eb 04 c6 45 63 00 8b 45 6c 89 90 84 01 00 00 80 7e 04 00 c6 46 05 01 c7 46 1c ff ff ff ff 74 2c ff 76 24 c7 46 20 02 00 00 00 8b 07 8b 00 ff 70 1c 8b 48 28 ff d1 8b 4e 24 83 c4 08 89 46 28 39 48 14 0f 85 81 08 00 00 c6 46 06 01 80 7d 63 00 74 50 8b 03 8b 40 0c 89 45 40 c7 46 14 b2 89 ab 00 c7 46 20 01 00 00 00 85 c0 74 33 8b 03 8b 40 08 40 89 45 54 8b 07 8b 40 08 89 45 50 ff 70 08 ff 30 e8 00 00 00 00 8b 4d 50 83 c4 08 ff 71 04 ff 75 54 ff 75 40 50 e8 00 00 00 00 83 c4 10 ff 46 18 8b 55 6c c7 46 20 02 00 00 00 8b 8a 84 01 00 00 85 c9 0f 84 2a 08 00 00 8b 81 38 01 00 00 83 e0 fc 89 81 38 01 00 00 8b 4a 4c 8b 43 14 89 08 8d 86 40 01 00 00 8b 8a 84 01 00 00 50 c7 46 14 ce 89 ab 00 c7 46 20 01 00 00 00 8b 07 ff 70 14 ff 73 14 51 e8 00 00 00 00 83 c4 10 57 53 ff 75 6c e8 00 00 00 00 89 86 b8 00 00 00 83 c4 0c c7 46 20 02 00 00 00 8b 00 3b 45 3c 74 0e 3b 45 4c 74 09 3b 45 5c 0f 85 d3 07 00 00 8b 40 38 89 86 cc 00 00 00 3d 10 db b6 00 0f 85 da 07 00 00 8b 8e b8 00 00 00 c7 46 14 56 8a ab 00 c7 46 20 01 00 00 00 ff 73 04 8b 57 10 e8 00 00 00 00 53 ff 75 6c e8 00 00 00 00 83 c4 08 89 86 bc 00 00 00 c7 46 14 65 8a ab 00 33 d2 c7 46 20 01 00 00 00 f3 0f 10 43 08 6a 00 51 8b c8 f3 0f 11 04 24 e8 00 00 00 00 c7 46 14 6f 8a ab 00 c7 46 20 01 00 00 00 c6 46 0a 01 8b 07 c6 45 fc 03 8b 00 8b 48 04 8d 46 2c 50 e8 00 00 00 00 89 86 ac 00 00 00 8b 0b c7 45 fc 00 00 00 00 89 41 04 8d 46 1c 50 57 53 ff 75 6c c7 46 1c 03 00 00 00 e8 00 00 00 00 83 c4 10 89 45 5c 89 86 c0 00 00 00 c7 46 20 02 00 00 00 85 c0 0f 84 38 07 00 00 8b 4f 08 50 e8 00 00 00 00 6a 00 68 00 00 00 00 68 00 00 00 00 6a 00 50 e8 00 00 00 00 83 c4 14 85 c0 0f 84 24 08 00 00 8b 50 14 8b 45 5c 39 02 0f 85 16 08 00 00 8b 07 8b 08 8b 42 08 3b 01 0f 85 07 08 00 00 83 ba 7c 01 00 00 02 0f 85 fa 07 00 00 83 ec 08 c7 46 14 aa 8a ab 00 c7 46 20 01 00 00 00 f3 0f 10 43 10 f3 0f 10 4b 0c f3 0f 11 44 24 04 f3 0f 11 0c 24 ff b6 ac 00 00 00 6a 00 52 e8 00 00 00 00 83 c4 14 c6 46 0e 01 83 be ac 00 00 00 00 c7 46 20 02 00 00 00 0f 84 b2 06 00 00 ff 75 58 c7 46 14 b8 8a ab 00 c7 46 20 01 00 00 00 8b 07 8b 0b 83 c1 08 ff 70 08 51 e8 00 00 00 00 c7 46 20 02 00 00 00 83 c4 0c 8b 07 8b 40 10 8b 40 08 8b 00 8b 40 04 8b 00 89 86 c4 00 00 00 8b 00 3b 45 44 0f 85 82 06 00 00 8b 40 38 89 86 d0 00 00 00 3d e0 17 b3 00 0f 85 89 06 00 00 c7 46 1c 04 00 00 00 c7 46 14 d5 8a ab 00 c7 46 20 01 00 00 00 8b 47 14 8b 0b 83 c1 08 ff 30 51 ff b6 c4 00 00 00 e8 00 00 00 00 89 46 44 8d 56 44 c7 46 20 02 00 00 00 83 c4 0c 8b 07 8b 00 8b 48 04 8b 47 14 8b 00 ff 70 08 52 e8 00 00 00 00 8b 03 8b 40 0c 89 45 4c c7 46 1c ff ff ff ff c7 46 14 fb 8a ab 00 c7 46 20 01 00 00 00 85 c0 74 33 8b 03 8b 40 08 40 89 45 5c 8b 07 8b 40 08 89 45 58 ff 70 08 ff 30 e8 00 00 00 00 8b 4d 58 83 c4 08 ff 71 04 ff 75 5c ff 75 4c 50 e8 00 00 00 00 83 c4 10 ff 46 18 c7 46 20 02 00 00 00 8b 07 8b 40 10 8b 40 08 8b 00 8b 40 04 8b 00 89 86 c8 00 00 00 8b 08 3b 4d 44 0f 85 d6 05 00 00 8b 49 5c 8d 46 50 50 89 8e d4 00 00 00 c7 46 14 10 8b ab 00 c7 46 20 01 00 00 00 8b 47 14 ff 70 04 ff 76 44 6a 01 6a 04 51 ff b6 c8 00 00 00 e8 00 00 00 00 83 c4 1c c7 46 14 19 8b ab 00 c7 46 20 01 00 00 00 ff 76 50 6a 00 ff 77 08 ff b6 ac 00 00 00 e8 00 00 00 00 c6 46 0d 01 83 c4 10 c7 46 14 22 8b ab 00 c7 46 20 01 00 00 00 8b 07 57 8b 40 18 8b 08 8d 86 dc 00 00 00 50 51 8d 46 44 50 e8 00 00 00 00 c7 46 14 38 8b ab 00 83 c4 10 c7 46 20 01 00 00 00 8b 07 57 8b 40 18 8b 08 8d 86 f0 00 00 00 50 51 8d 46 50 50 e8 00 00 00 00 c7 46 14 4a 8b ab 00 83 c4 10 c7 46 20 01 00 00 00 8b 07 8b 00 8b 48 04 8d 46 78 50 e8 00 00 00 00 89 86 b0 00 00 00 c7 46 20 02 00 00 00 85 c0 0f 84 0b 05 00 00 c7 40 08 05 00 00 00 8b 86 b0 00 00 00 ff 75 48 c7 40 0c 00 00 00 00 8b 86 b0 00 00 00 c7 40 14 00 00 00 00 8b 86 b0 00 00 00 c7 40 10 04 00 00 00 8b 86 b0 00 00 00 c7 40 18 02 00 00 00 c7 46 14 78 8b ab 00 c7 46 20 01 00 00 00 8b 07 8b 0b 83 c1 08 ff 70 08 51 e8 00 00 00 00 c7 46 1c 05 00 00 00 83 c4 0c c7 46 14 85 8b ab 00 c7 46 20 01 00 00 00 8b 07 8b 0b 8d 9e 88 00 00 00 53 83 c1 08 8b 50 10 8b 00 52 ff 77 08 8b 40 0c ff 70 0c 51 e8 00 00 00 00 8b 5d 70 83 c4 14 89 86 b4 00 00 00 c7 46 20 02 00 00 00 85 c0 74 19 8b 07 8d 8e 88 00 00 00 8b 00 ff 70 18 ff 70 0c 51 8b 48 04 e8 00 00 00 00 8b 03 8b 40 0c 89 45 58 c7 46 1c ff ff ff ff c7 46 14 ae 8b ab 00 c7 46 20 01 00 00 00 85 c0 74 2e 8b 03 8b 58 08 8b 07 43 8b 40 08 89 45 48 ff 70 08 ff 30 e8 00 00 00 00 8b 4d 48 83 c4 08 ff 71 04 53 ff 75 58 50 e8 00 00 00 00 83 c4 10 ff 46 18 8b 86 b4 00 00 00 c7 46 20 02 00 00 00 85 c0 0f 84 f8 03 00 00 c7 46 14 b8 8b ab 00 c7 46 20 01 00 00 00 ff 77 08 6a 01 ff 75 6c 50 e8 00 00 00 00 83 c4 10 c6 46 0f 01 c7 46 14 c0 8b ab 00 c7 46 20 01 00 00 00 ff b6 b4 00 00 00 ff 77 08 ff b6 b0 00 00 00 e8 00 00 00 00 c6 46 10 01 83 c4 0c 8b 07 8b 40 18 8b 18 89 9e d8 00 00 00 c7 46 14 cf 8b ab 00 c7 46 20 01 00 00 00 8b 86 b4 00 00 00 89 45 6c 85 c0 0f 84 d1 03 00 00 85 db 0f 84 c9 03 00 00 80 be 10 01 00 00 00 0f 85 bc 03 00 00 c7 86 b4 00 00 00 00 00 00 00 89 86 04 01 00 00 83 c0 04 50 89 9e 08 01 00 00 c6 86 10 01 00 00 01 ff d3 89 86 0c 01 00 00 c6 86 11 01 00 00 01 85 c0 75 1c ff 75 6c c6 86 12 01 00 00 01 ff 77 08 e8 00 00 00 00 83 c4 08 c6 86 13 01 00 00 01 c6 86 14 01 00 00 01 c7 46 14 e0 8b ab 00 c7 46 20 01 00 00 00 ff 77 18 ff b6 ac 00 00 00 ff 77 08 ff b6 b0 00 00 00 e8 00 00 00 00 83 c4 10 c7 46 14 e8 8b ab 00 c7 46 20 01 00 00 00 ff b6 b0 00 00 00 ff b6 ac 00 00 00 e8 00 00 00 00 c6 46 11 01 83 c4 08 c7 46 14 f1 8b ab 00 c7 46 20 01 00 00 00 8b 86 b0 00 00 00 89 45 6c 85 c0 0f 84 dd 02 00 00 80 be 24 01 00 00 00 0f 85 d0 02 00 00 c7 86 b0 00 00 00 00 00 00 00 89 86 18 01 00 00 83 c0 04 50 89 9e 1c 01 00 00 c6 86 24 01 00 00 01 ff d3 89 86 20 01 00 00 c6 86 25 01 00 00 01 85 c0 75 1c ff 75 6c c6 86 26 01 00 00 01 ff 77 08 e8 00 00 00 00 83 c4 08 c6 86 27 01 00 00 01 c6 86 28 01 00 00 01 c7 46 14 03 8c ab 00 c7 46 20 01 00 00 00 8b 86 ac 00 00 00 89 45 6c 85 c0 0f 84 3f 02 00 00 80 be 38 01 00 00 00 0f 85 32 02 00 00 c7 86 ac 00 00 00 00 00 00 00 89 86 2c 01 00 00 83 c0 04 50 89 9e 30 01 00 00 c6 86 38 01 00 00 01 ff d3 89 86 34 01 00 00 c6 86 39 01 00 00 01 85 c0 75 1c ff 75 6c c6 86 3a 01 00 00 01 ff 77 08 e8 00 00 00 00 83 c4 08 c6 86 3b 01 00 00 01 c6 86 3c 01 00 00 01 c6 46 01 01 c7 46 20 00 00 00 00 8b 4d f4 64 89 0d 00 00 00 00 59 5f 5e 5b 8d 65 64 5d c3 8b 45 78 81 78 3c 61 c7 b4 00 0f 85 25 02 00 00 80 78 41 00 0f 85 1b 02 00 00 83 78 2c 00 66 c7 40 0b 01 01 c7 40 1c ff ff ff ff 0f 84 19 02 00 00 ff 15 00 00 00 00 8b 45 78 83 78 20 02 74 0f 50 ff 75 74 ff 75 70 e8 00 00 00 00 83 c4 0c 6a 00 6a 00 e8 00 00 00 00 8b 4d 78 8b 41 24 83 b8 7c 01 00 00 00 75 09 51 e8 00 00 00 00 83 c4 04 6a 00 6a 00 e8 00 00 00 00 68 00 00 00 00 8d 4d 30 e8 00 00 00 00 68 00 00 00 00 8d 45 30 50 e8 00 00 00 00 68 00 00 00 00 8d 4d 24 e8 00 00 00 00 68 00 00 00 00 8d 45 24 50 e8 00 00 00 00 68 00 00 00 00 8d 4d 18 e8 00 00 00 00 68 00 00 00 00 8d 45 18 50 e8 00 00 00 00 68 00 00 00 00 8d 4d 0c e8 00 00 00 00 68 00 00 00 00 8d 45 0c 50 e8 00 00 00 00 68 00 00 00 00 8d 4d 00 e8 00 00 00 00 68 00 00 00 00 8d 45 00 50 e8 00 00 00 00 68 00 00 00 00 8d 4d e4 e8 00 00 00 00 68 00 00 00 00 8d 45 e4 50 e8 00 00 00 00 68 00 00 00 00 8d 4d d8 e8 00 00 00 00 68 00 00 00 00 8d 45 d8 50 e8 00 00 00 00 68 00 00 00 00 8d 4d cc e8 00 00 00 00 68 00 00 00 00 8d 45 cc 50 e8 00 00 00 00 68 00 00 00 00 8d 4d c0 e8 00 00 00 00 68 00 00 00 00 8d 45 c0 50 e8 00 00 00 00 68 00 00 00 00 8d 4d b4 e8 00 00 00 00 68 00 00 00 00 8d 45 b4 50 e8 00 00 00 00 68 00 00 00 00 8d 4d a8 e8 00 00 00 00 68 00 00 00 00 8d 45 a8 50 e8 00 00 00 00 68 00 00 00 00 8d 4d 9c e8 00 00 00 00 68 00 00 00 00 8d 45 9c 50 e8 00 00 00 00 68 00 00 00 00 8d 4d 90 e8 00 00 00 00 68 00 00 00 00 8d 45 90 50 e8 00 00 00 00 68 00 00 00 00 8d 4d 84 e8 00 00 00 00 68 00 00 00 00 8d 45 84 50 e8 00 00 00 00 68 00 00 00 00 8d 8d 78 ff ff ff e8 00 00 00 00 68 00 00 00 00 8d 85 78 ff ff ff 50 e8 00 00 00 00 68 00 00 00 00 8d 8d 6c ff ff ff e8 00 00 00 00 68 00 00 00 00 8d 85 6c ff ff ff 50 e8 00 00 00 00 83 78 3c 00 74 06 80 78 41 00 74 09 50 e8 00 00 00 00 83 c4 04 6a 00 6a 00 e8 00 00 00 00 cc cc cc cc cc cc",
+          "relocations": [
+            {
+              "offset": 11,
+              "type": 6,
+              "target": "__ehhandler$?ensure_native_gui_text_cursor_storage_00ab8910@bsp@@YAXPAXAAUNativeGuiTextCursorStorageFrame@1@AAUNativeGuiTextCursorStorageContext@1@AAUNativeGuiTextCursorStorageAcquired@1@@Z"
+            },
+            {
+              "offset": 32,
+              "type": 6,
+              "target": "___security_cookie"
+            },
+            {
+              "offset": 74,
+              "type": 20,
+              "target": "?preflight@?A0x783273a5@bsp@@YA?AUViews@12@PAXAAUNativeGuiTextCursorStorageFrame@2@AAUNativeGuiTextCursorStorageContext@2@AAUNativeGuiTextCursorStorageAcquired@2@@Z"
+            },
+            {
+              "offset": 201,
+              "type": 20,
+              "target": "?allocate_raw_slot_00b74d00@NativeModelPool@bsp@@QAEPAXXZ"
+            },
+            {
+              "offset": 328,
+              "type": 20,
+              "target": "?construct_native_string_header_0041e870@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@PBD@Z"
+            },
+            {
+              "offset": 383,
+              "type": 20,
+              "target": "?construct_native_model_00b75030@bsp@@YAPAXAAVNativeModelOwner@1@PBXABUNativeNodeRawConstants@1@@Z"
+            },
+            {
+              "offset": 538,
+              "type": 20,
+              "target": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+            },
+            {
+              "offset": 559,
+              "type": 20,
+              "target": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+            },
+            {
+              "offset": 653,
+              "type": 20,
+              "target": "?set_native_raw_parent_00b6e680@bsp@@YAXPAXAAUNativeNodeParentingFrame@1@AAUNativeNodeParentingContext@1@AAUNativeNodeSetParentAcquired@1@@Z"
+            },
+            {
+              "offset": 666,
+              "type": 20,
+              "target": "?matrix_arguments@?A0x783273a5@bsp@@YAPAXPAXAAUNativeGuiTextCursorStorageFrame@2@AAUNativeGuiTextCursorStorageContext@2@@Z"
+            },
+            {
+              "offset": 754,
+              "type": 20,
+              "target": "?set_raw_local_matrix_00b6db10@bsp@@YIXPAXABVNativeNodeMappedRawTransformProfiles@1@PBX@Z"
+            },
+            {
+              "offset": 763,
+              "type": 20,
+              "target": "?visibility_arguments@?A0x783273a5@bsp@@YAPAXPAXAAUNativeGuiTextCursorStorageFrame@2@@Z"
+            },
+            {
+              "offset": 808,
+              "type": 20,
+              "target": "?set_native_node_visibility_factor_00b6da70@bsp@@YIXPAUNativeNodeStorage@1@PAXMI@Z"
+            },
+            {
+              "offset": 846,
+              "type": 20,
+              "target": "?create_native_mesh_00b73b60@GuiNativeGeometryOwners@bsp@@QAEPAUNativeMeshStorage@2@AAUGuiNativeMeshAcquired@2@@Z"
+            },
+            {
+              "offset": 885,
+              "type": 20,
+              "target": "?geometry_arguments@?A0x783273a5@bsp@@YAPAXPAXAAUNativeGuiTextCursorStorageFrame@2@AAUNativeGuiTextCursorStorageContext@2@ACH@Z"
+            },
+            {
+              "offset": 921,
+              "type": 20,
+              "target": "?resolve_actual@NativeRenderActualOwnerRegistry@bsp@@UAEAAVRenderCommandReference@2@PAX@Z"
+            },
+            {
+              "offset": 928,
+              "type": 6,
+              "target": "??_R0?AVNativeModelReference@bsp@@@8"
+            },
+            {
+              "offset": 933,
+              "type": 6,
+              "target": "??_R0?AVRenderCommandReference@bsp@@@8"
+            },
+            {
+              "offset": 941,
+              "type": 20,
+              "target": "___RTDynamicCast"
+            },
+            {
+              "offset": 1046,
+              "type": 20,
+              "target": "?set_native_model_geometry_00b75170@bsp@@YAXAAVNativeModelOwner@1@IPAXMM@Z"
+            },
+            {
+              "offset": 1106,
+              "type": 20,
+              "target": "?construct_native_string_header_0041e870@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@PBD@Z"
+            },
+            {
+              "offset": 1211,
+              "type": 20,
+              "target": "?load_native_renderer_vertex_declaration_00b317e0@bsp@@YAPAXPAXPBXAAUNativeVertexDeclarationCacheContext@1@@Z"
+            },
+            {
+              "offset": 1248,
+              "type": 20,
+              "target": "?register_native_declaration_reference@GuiNativeGeometryOwners@bsp@@QAEXAAUGuiNativeDeclarationAcquired@2@AAUNativeVertexDeclarationLoadingContext@2@@Z"
+            },
+            {
+              "offset": 1308,
+              "type": 20,
+              "target": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+            },
+            {
+              "offset": 1329,
+              "type": 20,
+              "target": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+            },
+            {
+              "offset": 1426,
+              "type": 20,
+              "target": "?create_native_vertex_from_captured_renderer_5c@bsp@@YAPAXPAXIII0AAUNativeStreamCloneServices@1@AAUNativeStreamCloneAcquired@1@@Z"
+            },
+            {
+              "offset": 1462,
+              "type": 20,
+              "target": "?set_native_mesh_vertex_stream_00b73bb0@bsp@@YAXAAUNativeMeshStorage@1@AAVNativeRenderActualOwners@1@HPAX@Z"
+            },
+            {
+              "offset": 1508,
+              "type": 20,
+              "target": "??$release@X@?A0x783273a5@bsp@@YAXAAPAXP6GJPCJ@ZAAUNativeGuiTextCursorStorageRelease@1@AAUNativeGuiTextCursorStorageContext@1@@Z"
+            },
+            {
+              "offset": 1550,
+              "type": 20,
+              "target": "??$release@X@?A0x783273a5@bsp@@YAXAAPAXP6GJPCJ@ZAAUNativeGuiTextCursorStorageRelease@1@AAUNativeGuiTextCursorStorageContext@1@@Z"
+            },
+            {
+              "offset": 1583,
+              "type": 20,
+              "target": "?create_native_section_00533fa0@GuiNativeGeometryOwners@bsp@@QAEPAUNativeMeshSectionStorage@2@AAUGuiNativeSectionAcquired@2@@Z"
+            },
+            {
+              "offset": 1696,
+              "type": 20,
+              "target": "?construct_native_string_header_0041e870@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@PBD@Z"
+            },
+            {
+              "offset": 1755,
+              "type": 20,
+              "target": "?create_native_material_from_effect_cache_00535320@bsp@@YAPAUNativeMaterialStorage@1@PBXAAVNativeMaterialSlotPool@1@AAVNativeRenderActualOwners@1@AAUNativeMaterialEffectCacheContext@1@AAUNativeMaterialFactoryAcquired@1@@Z"
+            },
+            {
+              "offset": 1803,
+              "type": 20,
+              "target": "?register_native_material_creator@GuiNativeGeometryOwners@bsp@@QAEXAAUNativeMaterialFactoryAcquired@2@AAUNativeMaterialDestructionAccess@2@PDI@Z"
+            },
+            {
+              "offset": 1860,
+              "type": 20,
+              "target": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+            },
+            {
+              "offset": 1879,
+              "type": 20,
+              "target": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+            },
+            {
+              "offset": 1934,
+              "type": 20,
+              "target": "?set_native_material_parameter_owner_00b18a40@bsp@@YAXAAUNativeMaterialStorage@1@PAXEAAVNativeRenderActualOwners@1@@Z"
+            },
+            {
+              "offset": 1975,
+              "type": 20,
+              "target": "?set_native_mesh_section_material_00b864c0@bsp@@YAXAAUNativeMeshSectionStorage@1@AAVNativeRenderActualOwners@1@PAX@Z"
+            },
+            {
+              "offset": 2117,
+              "type": 20,
+              "target": "?dispatch_native_render_actual_owner_zero@bsp@@YAXAAVNativeRenderActualOwners@1@PAX@Z"
+            },
+            {
+              "offset": 2171,
+              "type": 20,
+              "target": "?rebuild_native_mesh_section_vertex_layout_00b865a0@bsp@@YAXAAUNativeMeshSectionStorage@1@AAVNativeRenderActualOwners@1@PAXAAVNativeMeshSectionLayoutServices@1@@Z"
+            },
+            {
+              "offset": 2205,
+              "type": 20,
+              "target": "?append_native_mesh_draw_section_00b73c60@bsp@@YAXAAUNativeMeshStorage@1@PAX@Z"
+            },
+            {
+              "offset": 2326,
+              "type": 20,
+              "target": "?dispatch_native_render_actual_owner_zero@bsp@@YAXAAVNativeRenderActualOwners@1@PAX@Z"
+            },
+            {
+              "offset": 2457,
+              "type": 20,
+              "target": "?dispatch_native_render_actual_owner_zero@bsp@@YAXAAVNativeRenderActualOwners@1@PAX@Z"
+            },
+            {
+              "offset": 2559,
+              "type": 6,
+              "target": "__imp__terminate"
+            },
+            {
+              "offset": 2580,
+              "type": 20,
+              "target": "?cleanup@?A0x783273a5@bsp@@YAXAAUNativeGuiTextCursorStorageFrame@2@AAUNativeGuiTextCursorStorageContext@2@AAUNativeGuiTextCursorStorageAcquired@2@@Z"
+            },
+            {
+              "offset": 2592,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 2613,
+              "type": 20,
+              "target": "?metadata@?A0x783273a5@bsp@@YAXAAUNativeGuiTextCursorStorageAcquired@2@@Z"
+            },
+            {
+              "offset": 2625,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 2630,
+              "type": 6,
+              "target": "??_C@_0EE@OLCMKONC@Raw?5cursor?5Model?5metadata?5must?5p@"
+            },
+            {
+              "offset": 2638,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 2643,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 2652,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 2657,
+              "type": 6,
+              "target": "??_C@_0EC@JHADPLLN@Raw?5cursor?5canonical?5Model?5must?5@"
+            },
+            {
+              "offset": 2665,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 2670,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 2679,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 2684,
+              "type": 6,
+              "target": "??_C@_0EG@MNDOOHHM@Native?5null?5cursor?8s?5later?5acces@"
+            },
+            {
+              "offset": 2692,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 2697,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 2706,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 2711,
+              "type": 6,
+              "target": "??_C@_0EA@JDMOFIHJ@Current?5cursor?5Model38?5requires?5@"
+            },
+            {
+              "offset": 2719,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 2724,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 2733,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 2738,
+              "type": 6,
+              "target": "??_C@_0CN@MDPHPJEG@Current?5cursor?5Model38?5target?5is@"
+            },
+            {
+              "offset": 2746,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 2751,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 2760,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 2765,
+              "type": 6,
+              "target": "??_C@_0DA@MGBJDMMK@Raw?5Text?5cursor?5requires?5a?5nonnu@"
+            },
+            {
+              "offset": 2773,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 2778,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 2787,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 2792,
+              "type": 6,
+              "target": "??_C@_0EE@IBEJHIMN@Native?5null?5mesh?8s?5later?5access?5@"
+            },
+            {
+              "offset": 2800,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 2805,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 2814,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 2819,
+              "type": 6,
+              "target": "??_C@_0DO@EJBLMNNF@Current?5cursor?5renderer38?5requir@"
+            },
+            {
+              "offset": 2827,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 2832,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 2841,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 2846,
+              "type": 6,
+              "target": "??_C@_0DA@BLCNCDDM@Current?5cursor?5renderer38?5target@"
+            },
+            {
+              "offset": 2854,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 2859,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 2868,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 2873,
+              "type": 6,
+              "target": "??_C@_0DO@HBCLNMBC@Current?5cursor?5renderer5C?5requir@"
+            },
+            {
+              "offset": 2881,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 2886,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 2895,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 2900,
+              "type": 6,
+              "target": "??_C@_0EC@BAHHJGPI@Native?5null?5section?8s?5stores?5are@"
+            },
+            {
+              "offset": 2908,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 2913,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 2922,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 2927,
+              "type": 6,
+              "target": "??_C@_0EI@GMMGBMCA@Native?5null?5material?8s?5later?5acc@"
+            },
+            {
+              "offset": 2935,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 2940,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 2949,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 2954,
+              "type": 6,
+              "target": "??_C@_0DI@CHHKEMAP@Raw?5Text?5cursor?5release?5requires@"
+            },
+            {
+              "offset": 2962,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 2967,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 2976,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 2981,
+              "type": 6,
+              "target": "??_C@_0DI@CHHKEMAP@Raw?5Text?5cursor?5release?5requires@"
+            },
+            {
+              "offset": 2989,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 2994,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 3003,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 3008,
+              "type": 6,
+              "target": "??_C@_0DI@CHHKEMAP@Raw?5Text?5cursor?5release?5requires@"
+            },
+            {
+              "offset": 3019,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 3024,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 3036,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 3041,
+              "type": 6,
+              "target": "??_C@_0EF@JMKHBMAE@Raw?5Text?5cursor?5Model?5must?5be?5it@"
+            },
+            {
+              "offset": 3052,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 3057,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 3069,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 3087,
+              "type": 20,
+              "target": "?metadata@?A0x783273a5@bsp@@YAXAAUNativeGuiTextCursorStorageAcquired@2@@Z"
+            },
+            {
+              "offset": 3099,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            }
+          ],
+          "chunks": [
+            {
+              "path": "local/text_cursor137_coff/main_01.txt",
+              "sha256": "d048dac31f8d51365c55e1ed58dba709dad12195fbf6d6f37f2dc0500d47d5a8"
+            },
+            {
+              "path": "local/text_cursor137_coff/main_02.txt",
+              "sha256": "7f8c114868d9524ec4b8122f3a4e13d3c61f8b424b980386898c18d47952f74e"
+            },
+            {
+              "path": "local/text_cursor137_coff/main_03.txt",
+              "sha256": "62f594e0509eeef5df5165883acd89639e987b2add734691b8cf1823ef746b27"
+            },
+            {
+              "path": "local/text_cursor137_coff/main_04.txt",
+              "sha256": "c8d1cc7893d0232b3ae8f24186630b14421939c90ac7459fb9684411949566a4"
+            },
+            {
+              "path": "local/text_cursor137_coff/main_05.txt",
+              "sha256": "440cc70bf2c88165b8343da52a52d74f079f25faa9ff1fbbeceee1f5328c1722"
+            },
+            {
+              "path": "local/text_cursor137_coff/main_06.txt",
+              "sha256": "dd445831ae6f91f7211452ef90ce71be2c7701fef60b90a4bfeec87402026304"
+            },
+            {
+              "path": "local/text_cursor137_coff/main_07.txt",
+              "sha256": "5cc5875f809df7b9c870fe24db3f83d91a9f54d18a1ef2c2bed7e969d3e0da48"
+            },
+            {
+              "path": "local/text_cursor137_coff/main_08.txt",
+              "sha256": "007467a6852ad578bd5dbf5442b8ac713e6d24de7f63383b1a41abeb07ffc9f2"
+            },
+            {
+              "path": "local/text_cursor137_coff/main_09.txt",
+              "sha256": "e7a4955fbae9bb4a74b2fb5276224096fc945954b7ffb79971e2749bcfac3980"
+            },
+            {
+              "path": "local/text_cursor137_coff/main_10.txt",
+              "sha256": "64ee23f30ec55647b5de8b38112f710fc57094c163d3791a39a944e6a8de88d2"
+            },
+            {
+              "path": "local/text_cursor137_coff/main_11.txt",
+              "sha256": "6ae8bbeabbab5d6c6a5f40694cf98dbb457ef4b4ddb741ef5a4fead104d85468"
+            },
+            {
+              "path": "local/text_cursor137_coff/main_12.txt",
+              "sha256": "0cd268ca7303d31349004473b693b677b0734796613e3832bccd15a4eecfd85a"
+            },
+            {
+              "path": "local/text_cursor137_coff/main_13.txt",
+              "sha256": "c03c26e9a32da104074f68cf3ca99d697d7b4457a6a64809c9c06c5a81e43f18"
+            },
+            {
+              "path": "local/text_cursor137_coff/main_14.txt",
+              "sha256": "d2c2b750c159757682a0371228d5dbc3905880a4ceddf6dac5af49763fa40f02"
+            }
+          ],
+          "all_bytes_decoded_and_all_relocations_resolved_to_actual_COFF_symbols": true
+        },
+        {
+          "label": "cleanup",
+          "symbol": "?cleanup@?A0x783273a5@bsp@@YAXAAUNativeGuiTextCursorStorageFrame@2@AAUNativeGuiTextCursorStorageContext@2@AAUNativeGuiTextCursorStorageAcquired@2@@Z",
+          "section": 66,
+          "bytes": 327,
+          "embedded_function_symbols": [
+            {
+              "name": "?cleanup@?A0x783273a5@bsp@@YAXAAUNativeGuiTextCursorStorageFrame@2@AAUNativeGuiTextCursorStorageContext@2@AAUNativeGuiTextCursorStorageAcquired@2@@Z",
+              "offset": 0
+            },
+            {
+              "name": "__catch$?cleanup@?A0x783273a5@bsp@@YAXAAUNativeGuiTextCursorStorageFrame@2@AAUNativeGuiTextCursorStorageContext@2@AAUNativeGuiTextCursorStorageAcquired@2@@Z$0",
+              "offset": 216
+            }
+          ],
+          "instructions": 116,
+          "code_sha256": "3e66c652d31cb3f4d0446cf902d86660170174c1a9ba1a976c9952625aa387c6",
+          "whole_code_hex": "55 8b ec 6a ff 68 00 00 00 00 64 a1 00 00 00 00 50 83 ec 10 53 56 57 a1 00 00 00 00 33 c5 50 8d 45 f4 64 a3 00 00 00 00 89 65 f0 8b 75 10 8b 5d 0c 8b 7d 08 c7 45 fc 00 00 00 00 c6 46 03 01 90 8b 4e 1c 85 c9 0f 88 c9 00 00 00 8d 41 ff f7 d8 1b c0 89 46 1c 83 f9 01 0f 84 80 00 00 00 83 f9 02 74 7b 83 f9 04 0f 84 8d 00 00 00 83 f9 05 0f 84 84 00 00 00 85 c9 75 37 8b 56 24 85 d2 74 13 89 4e 24 8b 03 52 8b 00 ff 70 1c 8b 48 24 ff d1 83 c4 08 c6 46 08 01 8b 03 8b 00 8b 00 8b 08 8b 07 8b 40 04 50 e8 00 00 00 00 c6 46 09 01 eb 90 83 f9 03 75 23 80 7e 0b 00 75 6b 80 7e 41 00 75 65 c6 46 0c 01 8b 07 8b 40 04 50 e8 00 00 00 00 83 c4 04 e9 68 ff ff ff ff 15 00 00 00 00 8b 07 8b 00 a8 01 0f 84 56 ff ff ff 8b 07 8b 08 8b 07 83 e1 fe 89 08 c6 46 07 01 8b 03 8b 0f 83 c1 08 ff 70 08 51 e8 00 00 00 00 83 c4 08 ff 46 18 e9 2c ff ff ff 8b 4d f4 64 89 0d 00 00 00 00 59 5f 5e 5b 8b e5 5d c3 68 00 00 00 00 8d 4d e4 e8 00 00 00 00 68 00 00 00 00 8d 45 e4 50 e8 00 00 00 00 cc cc cc cc cc cc",
+          "relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "target": "__ehhandler$?cleanup@?A0x783273a5@bsp@@YAXAAUNativeGuiTextCursorStorageFrame@2@AAUNativeGuiTextCursorStorageContext@2@AAUNativeGuiTextCursorStorageAcquired@2@@Z"
+            },
+            {
+              "offset": 24,
+              "type": 6,
+              "target": "___security_cookie"
+            },
+            {
+              "offset": 166,
+              "type": 20,
+              "target": "?return_raw_slot_00b74750@NativeModelPool@bsp@@QAEXPAX@Z"
+            },
+            {
+              "offset": 204,
+              "type": 20,
+              "target": "?return_native_mesh_slot_00b72f70@bsp@@YAXPAX@Z"
+            },
+            {
+              "offset": 218,
+              "type": 6,
+              "target": "__imp__terminate"
+            },
+            {
+              "offset": 261,
+              "type": 20,
+              "target": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+            },
+            {
+              "offset": 295,
+              "type": 6,
+              "target": "??_C@_0EA@IPJPKPKO@Raw?5Text?5cursor?5cannot?5repeat?5a?5@"
+            },
+            {
+              "offset": 303,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 308,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 317,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            }
+          ],
+          "chunks": [
+            {
+              "path": "local/text_cursor137_coff/cleanup_01.txt",
+              "sha256": "151653dfcab7db61dc683c9453a1d12a613af863fec0217515b778bc98080318"
+            },
+            {
+              "path": "local/text_cursor137_coff/cleanup_02.txt",
+              "sha256": "8c1b3fddbcc3e7dedd619bfba300f377a13418c52fb759dc92b0fcdbbba782c4"
+            }
+          ],
+          "all_bytes_decoded_and_all_relocations_resolved_to_actual_COFF_symbols": true
+        }
+      ]
+    },
+    "limit": "Source-generated machine bytes, C++ EH/metadata/frame are distinct from Original privateABI/FH3/SEH; no byte/registerABI/dropin equivalence claim"
+  },
+  "validation": {
+    "strict_compile": "PASS MSVC Win32 C++17 /EHsc /MD /O2 /W4 /WX /fp:strict;0diagnostics",
+    "canonical_build": {
+      "script": "scripts/build.ps1",
+      "result": "PASS",
+      "existing_checks_passed": 2,
+      "failed": 0,
+      "new_TU_registered_built_linked_or_executed": false,
+      "qualification": "Rootownsregistration/combinedlink; baselinechecks are not137 executionproof"
+    },
+    "no_new_tests_probes_raw_execution_game_or_production_activation": true,
+    "live_direct_calls": {
+      "checked": 23,
+      "failed": 0,
+      "receipt": {
+        "path": "local/text_cursor137_report_call_verification.txt",
+        "sha256": "316a657f1e7624a6883535337a0746e93753cb26b8ba53123b5a2433add53218"
+      },
+      "limit": "Whole direct rows only; indirect/current-profile and EH evidence separate. Not execution/ABI proof."
+    },
+    "Root_final_doc_review": "PASS; full Source/Original/optimized authority already reviewed PASS. No further builds/tests/probes."
+  },
+  "frozen_actual_providers": [
+    {
+      "source": {
+        "path": "include/bsp/game_native_font_application.hpp",
+        "sha256": "f819d8a38b49a6ff8ec3873dea65992366396c8d635e54301542c71ce0aee469"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/game_native_font_application.hpp",
+        "sha256": "f819d8a38b49a6ff8ec3873dea65992366396c8d635e54301542c71ce0aee469"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/game_native_readonly_data.hpp",
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/game_native_readonly_data.hpp",
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/game_native_renderer_application.hpp",
+        "sha256": "3380643a25c0e27bc653440c8e79dd138bb68b495dac9f386d1e7e221ef467c0"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/game_native_renderer_application.hpp",
+        "sha256": "3380643a25c0e27bc653440c8e79dd138bb68b495dac9f386d1e7e221ef467c0"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/game_native_string_process.hpp",
+        "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/game_native_string_process.hpp",
+        "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/gui_native_geometry.hpp",
+        "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/gui_native_geometry.hpp",
+        "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/gui_text_buffers.hpp",
+        "sha256": "80c262bf3a456c6ac81849d8636f20a31cd6616bf974874d4d5494e89b12c2d0"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/gui_text_buffers.hpp",
+        "sha256": "80c262bf3a456c6ac81849d8636f20a31cd6616bf974874d4d5494e89b12c2d0"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/gui_text_native_layout.hpp",
+        "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/gui_text_native_layout.hpp",
+        "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/gui_text_native_renderer.hpp",
+        "sha256": "9ee3aeaa194ebf677efd3e96817b057d7093bf08bed72702fd44f45edee4a572"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/gui_text_native_renderer.hpp",
+        "sha256": "9ee3aeaa194ebf677efd3e96817b057d7093bf08bed72702fd44f45edee4a572"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/gui_text_resource_names.hpp",
+        "sha256": "517e8fe7c79b09c42d4f0af589e17f912e88c582e8cb322cef38260355ab2415"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/gui_text_resource_names.hpp",
+        "sha256": "517e8fe7c79b09c42d4f0af589e17f912e88c582e8cb322cef38260355ab2415"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_camera_matrix_copy.hpp",
+        "sha256": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_camera_matrix_copy.hpp",
+        "sha256": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_group_owner.hpp",
+        "sha256": "44116d4d08388eb0be2f7499f9b7cbdcd42918fd2ab586f869ab9a6c0e5130b1"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_group_owner.hpp",
+        "sha256": "44116d4d08388eb0be2f7499f9b7cbdcd42918fd2ab586f869ab9a6c0e5130b1"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_gui_text_default_storage.hpp",
+        "sha256": "39d2a14672dc90e8605c47fb267d59510639dc445d4caf28a48d79d172d89562"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_gui_text_default_storage.hpp",
+        "sha256": "39d2a14672dc90e8605c47fb267d59510639dc445d4caf28a48d79d172d89562"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_gui_text_reference.hpp",
+        "sha256": "38f58de520071568c6d394d7be20c482c2f962a5eb5462b49e5af9fb0eb21cf8"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_gui_text_reference.hpp",
+        "sha256": "38f58de520071568c6d394d7be20c482c2f962a5eb5462b49e5af9fb0eb21cf8"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_gui_text_retirement.hpp",
+        "sha256": "2744353d2ae4c9041b2980360cdf3e499aae28cb1446519dc4ca7064e6e3a300"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_gui_text_retirement.hpp",
+        "sha256": "2744353d2ae4c9041b2980360cdf3e499aae28cb1446519dc4ca7064e6e3a300"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_gui_text_storage_construct.hpp",
+        "sha256": "2263f0a5cf044e3040c7f3f024a8d9899df1e7f0277db512f4db7d59976510f7"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_gui_text_storage_construct.hpp",
+        "sha256": "2263f0a5cf044e3040c7f3f024a8d9899df1e7f0277db512f4db7d59976510f7"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_hardware_layout_construct.hpp",
+        "sha256": "63f4780ba2106fee5ac6ea2737ee546c48ddd82fa7c2fa89eb34dff6d03df798"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_hardware_layout_construct.hpp",
+        "sha256": "63f4780ba2106fee5ac6ea2737ee546c48ddd82fa7c2fa89eb34dff6d03df798"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_hardware_layout_factory.hpp",
+        "sha256": "9349fc0e2e88249243f1af07b063397d6b220b4a815ac26e19b0a185f00133d3"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_hardware_layout_factory.hpp",
+        "sha256": "9349fc0e2e88249243f1af07b063397d6b220b4a815ac26e19b0a185f00133d3"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_hardware_layout_fields.hpp",
+        "sha256": "11a8ce32277f04e322d95d12e5b047dfd783be33d47769136b7a339635534472"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_hardware_layout_fields.hpp",
+        "sha256": "11a8ce32277f04e322d95d12e5b047dfd783be33d47769136b7a339635534472"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_hardware_layout_owner.hpp",
+        "sha256": "57c6e2ad4a2b612969901001efc4c6b8bb8ec3702bcafe180ebc3926cdde5870"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_hardware_layout_owner.hpp",
+        "sha256": "57c6e2ad4a2b612969901001efc4c6b8bb8ec3702bcafe180ebc3926cdde5870"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_instance_collection.hpp",
+        "sha256": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_instance_collection.hpp",
+        "sha256": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_instance_geometry.hpp",
+        "sha256": "d636744a916ce5acad921606f43f76e9edbe8cb855d4580e936afca162b3cb03"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_instance_geometry.hpp",
+        "sha256": "d636744a916ce5acad921606f43f76e9edbe8cb855d4580e936afca162b3cb03"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_logical_buffer_mapping.hpp",
+        "sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_logical_buffer_mapping.hpp",
+        "sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_logical_vertex_owner.hpp",
+        "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_logical_vertex_owner.hpp",
+        "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_material_effect_cache.hpp",
+        "sha256": "56d1930a80ad2ed90883c1f52f26f36ec51c50c6294a844dd64258949d103ff4"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_material_effect_cache.hpp",
+        "sha256": "56d1930a80ad2ed90883c1f52f26f36ec51c50c6294a844dd64258949d103ff4"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_material_effect_loading.hpp",
+        "sha256": "58a70009ee0df21341679430f1b0d88deedaf0602aef81d40b6aaef13d0dbfb9"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_material_effect_loading.hpp",
+        "sha256": "58a70009ee0df21341679430f1b0d88deedaf0602aef81d40b6aaef13d0dbfb9"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_material_factory.hpp",
+        "sha256": "2cf4933dc2d616674b501ff1786c95c47f3251cf7dd4deda649ca95bba0a3563"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_material_factory.hpp",
+        "sha256": "2cf4933dc2d616674b501ff1786c95c47f3251cf7dd4deda649ca95bba0a3563"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_material_owner.hpp",
+        "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_material_owner.hpp",
+        "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_mesh_owner.hpp",
+        "sha256": "f0f4b0d87721717033e823aee5494a280481c6b4a02a7fd2bea51970b46d5636"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_mesh_owner.hpp",
+        "sha256": "f0f4b0d87721717033e823aee5494a280481c6b4a02a7fd2bea51970b46d5636"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_mesh_pool.hpp",
+        "sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_mesh_pool.hpp",
+        "sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_mesh_section.hpp",
+        "sha256": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_mesh_section.hpp",
+        "sha256": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_model_owner.hpp",
+        "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_model_owner.hpp",
+        "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_model_pool.hpp",
+        "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_model_pool.hpp",
+        "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_node_construction.hpp",
+        "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_node_construction.hpp",
+        "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_node_parenting_storage.hpp",
+        "sha256": "099017858da7cd62e7b5260aaac8f53a2451b063469266a1e6119e7ce3cdc3b0"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_node_parenting_storage.hpp",
+        "sha256": "099017858da7cd62e7b5260aaac8f53a2451b063469266a1e6119e7ce3cdc3b0"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_node_raw_transform.hpp",
+        "sha256": "99460e5aa96bac3ef0255146992d7e002e2ec5adf07ab71788221ad10c75d4de"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_node_raw_transform.hpp",
+        "sha256": "99460e5aa96bac3ef0255146992d7e002e2ec5adf07ab71788221ad10c75d4de"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_node_visibility_factor.hpp",
+        "sha256": "a9dbeb5021d7d4fc847c6e80ea62dc9d795eacad98e482e74805b5e30059893b"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_node_visibility_factor.hpp",
+        "sha256": "a9dbeb5021d7d4fc847c6e80ea62dc9d795eacad98e482e74805b5e30059893b"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_ref_counted.hpp",
+        "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_ref_counted.hpp",
+        "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_render_context.hpp",
+        "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_render_context.hpp",
+        "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_render_resource_record.hpp",
+        "sha256": "6e1d8e4817325dab095e27588f9a5aa79cb5e32130b3fe1bc52d9d3f44de4d92"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_render_resource_record.hpp",
+        "sha256": "6e1d8e4817325dab095e27588f9a5aa79cb5e32130b3fe1bc52d9d3f44de4d92"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_stream_clone.hpp",
+        "sha256": "a333d180afcf21084068a671d60c34ee8e1b18ea980a6c03b115a32ce2ff3e6a"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_stream_clone.hpp",
+        "sha256": "a333d180afcf21084068a671d60c34ee8e1b18ea980a6c03b115a32ce2ff3e6a"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_string.hpp",
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_string.hpp",
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_string_pool_owner.hpp",
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_string_pool_storage.hpp",
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_traceline_render.hpp",
+        "sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_traceline_render.hpp",
+        "sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_vertex_declaration_cache.hpp",
+        "sha256": "14123aa649c71cae8c4c35bad989533402ae66daeaa25bff86dcfd017b2768d1"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_vertex_declaration_cache.hpp",
+        "sha256": "14123aa649c71cae8c4c35bad989533402ae66daeaa25bff86dcfd017b2768d1"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_vertex_declaration_loading.hpp",
+        "sha256": "9ef3f5c6bd9d535215cfb90630e7d90a7bee00d7988c66243226d8a423248227"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_vertex_declaration_loading.hpp",
+        "sha256": "9ef3f5c6bd9d535215cfb90630e7d90a7bee00d7988c66243226d8a423248227"
+      }
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_wide_string.hpp",
+        "sha256": "d9499a98a3379366390eac87f3b6bca7ebb452e8e19e96d3e7a354295c6e8bc0"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/include/bsp/native_wide_string.hpp",
+        "sha256": "d9499a98a3379366390eac87f3b6bca7ebb452e8e19e96d3e7a354295c6e8bc0"
+      }
+    },
+    {
+      "source": {
+        "path": "src/game_native_font_application.cpp",
+        "sha256": "31d143c3dc1dc9495cd87fdba0ecb67ad3d2494c9b47415746a47771cce5e424"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/game_native_font_application.cpp",
+        "sha256": "31d143c3dc1dc9495cd87fdba0ecb67ad3d2494c9b47415746a47771cce5e424"
+      }
+    },
+    {
+      "source": {
+        "path": "src/game_native_readonly_data.cpp",
+        "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/game_native_readonly_data.cpp",
+        "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+      }
+    },
+    {
+      "source": {
+        "path": "src/game_native_renderer_application.cpp",
+        "sha256": "26bd27eda6ae864b13166ccd2fd1176f8a27b4006d7791d42d8346a703e91630"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/game_native_renderer_application.cpp",
+        "sha256": "26bd27eda6ae864b13166ccd2fd1176f8a27b4006d7791d42d8346a703e91630"
+      }
+    },
+    {
+      "source": {
+        "path": "src/game_native_string_process.cpp",
+        "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/game_native_string_process.cpp",
+        "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b"
+      }
+    },
+    {
+      "source": {
+        "path": "src/gui_native_geometry.cpp",
+        "sha256": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/gui_native_geometry.cpp",
+        "sha256": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf"
+      }
+    },
+    {
+      "source": {
+        "path": "src/gui_text_buffers.cpp",
+        "sha256": "a729a73760e188888f45d6deb24f1bd0f7effba466f7c6394d53c2bedea38edd"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/gui_text_buffers.cpp",
+        "sha256": "a729a73760e188888f45d6deb24f1bd0f7effba466f7c6394d53c2bedea38edd"
+      }
+    },
+    {
+      "source": {
+        "path": "src/gui_text_native_layout.cpp",
+        "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/gui_text_native_layout.cpp",
+        "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+      }
+    },
+    {
+      "source": {
+        "path": "src/gui_text_native_renderer.cpp",
+        "sha256": "9f3753d2cc0232eea8dd990cc5c0e4a5f958145dbd8de35ba64860ab370c74e5"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/gui_text_native_renderer.cpp",
+        "sha256": "9f3753d2cc0232eea8dd990cc5c0e4a5f958145dbd8de35ba64860ab370c74e5"
+      }
+    },
+    {
+      "source": {
+        "path": "src/gui_text_resource_names.cpp",
+        "sha256": "dca7270d9e38c6a6507c2c367221ff8f73e3caba67b4fe8fc1ea9a0f0fb7e57a"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/gui_text_resource_names.cpp",
+        "sha256": "dca7270d9e38c6a6507c2c367221ff8f73e3caba67b4fe8fc1ea9a0f0fb7e57a"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_camera_matrix_copy.cpp",
+        "sha256": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_camera_matrix_copy.cpp",
+        "sha256": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_group_owner.cpp",
+        "sha256": "78995f383203e1f795cc9a9a44f8ab67ec9f942cf30e746e00a97118b0665e1c"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_group_owner.cpp",
+        "sha256": "78995f383203e1f795cc9a9a44f8ab67ec9f942cf30e746e00a97118b0665e1c"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_gui_text_default_storage.cpp",
+        "sha256": "38e7aafba69bfe959bd3f45111c9e85074d646eaacfa6c718e2b1530c30b55d7"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_gui_text_default_storage.cpp",
+        "sha256": "38e7aafba69bfe959bd3f45111c9e85074d646eaacfa6c718e2b1530c30b55d7"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_gui_text_reference.cpp",
+        "sha256": "1d494c7f670bed4478837423f598d698f8e86ddb832e04b8ca9b1311e221eae7"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_gui_text_reference.cpp",
+        "sha256": "1d494c7f670bed4478837423f598d698f8e86ddb832e04b8ca9b1311e221eae7"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_gui_text_retirement.cpp",
+        "sha256": "60993aaade168fe8ec23468d787a61093c51b200a49e1a193663b560a0384bd3"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_gui_text_retirement.cpp",
+        "sha256": "60993aaade168fe8ec23468d787a61093c51b200a49e1a193663b560a0384bd3"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_gui_text_storage_construct.cpp",
+        "sha256": "9cb60be1d88a03d4136ca9fe34243c8b980199192300456819bf2a46778a6200"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_gui_text_storage_construct.cpp",
+        "sha256": "9cb60be1d88a03d4136ca9fe34243c8b980199192300456819bf2a46778a6200"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_hardware_layout_construct.cpp",
+        "sha256": "eb91a58f817ab65da5e70aba21502f5459ccc92693055b2ca28642a8c13646a9"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_hardware_layout_construct.cpp",
+        "sha256": "eb91a58f817ab65da5e70aba21502f5459ccc92693055b2ca28642a8c13646a9"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_hardware_layout_factory.cpp",
+        "sha256": "782408551d90456e8908c506ea8d53ad4f44ffe8f7840da255e0b35906d956fe"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_hardware_layout_factory.cpp",
+        "sha256": "782408551d90456e8908c506ea8d53ad4f44ffe8f7840da255e0b35906d956fe"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_hardware_layout_fields.cpp",
+        "sha256": "3c2542faa86ed60c2d0ec84f313cd7680ae079afddc77598eab9c99a7d02bdbc"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_hardware_layout_fields.cpp",
+        "sha256": "3c2542faa86ed60c2d0ec84f313cd7680ae079afddc77598eab9c99a7d02bdbc"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_hardware_layout_owner.cpp",
+        "sha256": "dc06e0a774ccd6efa5fa456cd24d124c509aa704c7c9fb85da0ef930419c9eda"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_hardware_layout_owner.cpp",
+        "sha256": "dc06e0a774ccd6efa5fa456cd24d124c509aa704c7c9fb85da0ef930419c9eda"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_instance_collection.cpp",
+        "sha256": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_instance_collection.cpp",
+        "sha256": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_instance_geometry.cpp",
+        "sha256": "afbc9cad4d13e6ef3869384470eb7d259219c7063ffe17d6f8adf00ce50f439a"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_instance_geometry.cpp",
+        "sha256": "afbc9cad4d13e6ef3869384470eb7d259219c7063ffe17d6f8adf00ce50f439a"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_logical_buffer_mapping.cpp",
+        "sha256": "6e9b61c4928f34705e12be655d0c8e6a72bca9210a9d9a2748e43054c55d3075"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_logical_buffer_mapping.cpp",
+        "sha256": "6e9b61c4928f34705e12be655d0c8e6a72bca9210a9d9a2748e43054c55d3075"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_logical_vertex_owner.cpp",
+        "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_logical_vertex_owner.cpp",
+        "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_material_effect_cache.cpp",
+        "sha256": "b5edc9b518ba2979d112ebdd03d97937307249e05a978272097020055e7072ae"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_material_effect_cache.cpp",
+        "sha256": "b5edc9b518ba2979d112ebdd03d97937307249e05a978272097020055e7072ae"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_material_effect_loading.cpp",
+        "sha256": "6726e4bbe90b91ea0dfd4aee4ef95d374f1bcc744099127dac08f52348b50ebc"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_material_effect_loading.cpp",
+        "sha256": "6726e4bbe90b91ea0dfd4aee4ef95d374f1bcc744099127dac08f52348b50ebc"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_material_factory.cpp",
+        "sha256": "6ef1b9855e65cec8e69a1d51001733adef2073d8ed08650fff0115307ec71bcd"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_material_factory.cpp",
+        "sha256": "6ef1b9855e65cec8e69a1d51001733adef2073d8ed08650fff0115307ec71bcd"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_material_owner.cpp",
+        "sha256": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_material_owner.cpp",
+        "sha256": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_mesh_owner.cpp",
+        "sha256": "8725dee8119cf400bf58464d6dd2dcb6771502b6edd8f527f65ec3f3c7fe40fe"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_mesh_owner.cpp",
+        "sha256": "8725dee8119cf400bf58464d6dd2dcb6771502b6edd8f527f65ec3f3c7fe40fe"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_mesh_pool.cpp",
+        "sha256": "4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_mesh_pool.cpp",
+        "sha256": "4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_mesh_section.cpp",
+        "sha256": "8f09c61b3ba5ef47c403de9769d24d9d9e6a79c1bb8668430e53fc33587ed876"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_mesh_section.cpp",
+        "sha256": "8f09c61b3ba5ef47c403de9769d24d9d9e6a79c1bb8668430e53fc33587ed876"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_model_owner.cpp",
+        "sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_model_owner.cpp",
+        "sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_model_pool.cpp",
+        "sha256": "38a6363a3fa090b2c939f8a65e02433f4090671bd0d42b4b66dd35d4e1ddc020"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_model_pool.cpp",
+        "sha256": "38a6363a3fa090b2c939f8a65e02433f4090671bd0d42b4b66dd35d4e1ddc020"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_node_construction.cpp",
+        "sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_node_construction.cpp",
+        "sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_node_parenting_storage.cpp",
+        "sha256": "035ccf45f17b12b553fcc3e451894b67c928de4ae583c7e511a1a99269c113d1"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_node_parenting_storage.cpp",
+        "sha256": "035ccf45f17b12b553fcc3e451894b67c928de4ae583c7e511a1a99269c113d1"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_node_raw_transform.cpp",
+        "sha256": "092fa6a47756bf5a8a3a18dfbbaecf468898b3c91bc5ee5235bba5a7f078e16c"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_node_raw_transform.cpp",
+        "sha256": "092fa6a47756bf5a8a3a18dfbbaecf468898b3c91bc5ee5235bba5a7f078e16c"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_node_visibility_factor.cpp",
+        "sha256": "6457b37af40da9249a5c2eac739421039318aa9d766209b1a0c1dda853e46fdd"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_node_visibility_factor.cpp",
+        "sha256": "6457b37af40da9249a5c2eac739421039318aa9d766209b1a0c1dda853e46fdd"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_ref_counted.cpp",
+        "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_ref_counted.cpp",
+        "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_render_context.cpp",
+        "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_render_context.cpp",
+        "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_render_resource_record.cpp",
+        "sha256": "7277c1c3d86ed61bbe75fc4790bf40bf4c7a86114403f03a582e11002c099cf5"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_render_resource_record.cpp",
+        "sha256": "7277c1c3d86ed61bbe75fc4790bf40bf4c7a86114403f03a582e11002c099cf5"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_stream_clone.cpp",
+        "sha256": "ca2fff6a311b90c35dc926d75142e8318f72d2c3198c4420afdc2dc4250f11ab"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_stream_clone.cpp",
+        "sha256": "ca2fff6a311b90c35dc926d75142e8318f72d2c3198c4420afdc2dc4250f11ab"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_string.cpp",
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_string.cpp",
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_string_pool_owner.cpp",
+        "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_string_pool_owner.cpp",
+        "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_string_pool_storage.cpp",
+        "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_string_pool_storage.cpp",
+        "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_traceline_render.cpp",
+        "sha256": "b791db0734c33fe6c8c12b3caa40c81b76ebfb5915ecdd80b9ae590605160eb6"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_traceline_render.cpp",
+        "sha256": "b791db0734c33fe6c8c12b3caa40c81b76ebfb5915ecdd80b9ae590605160eb6"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_vertex_declaration_cache.cpp",
+        "sha256": "809bf7d8f598d0bdc9768c52e659146c88a9c64ce16e48a0d926dbb24e0ff8c6"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_vertex_declaration_cache.cpp",
+        "sha256": "809bf7d8f598d0bdc9768c52e659146c88a9c64ce16e48a0d926dbb24e0ff8c6"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_vertex_declaration_loading.cpp",
+        "sha256": "518cfecb27a27a43815377c02ce638878d3a8eb2ddeaead30377dc7cb460ef3d"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_vertex_declaration_loading.cpp",
+        "sha256": "518cfecb27a27a43815377c02ce638878d3a8eb2ddeaead30377dc7cb460ef3d"
+      }
+    },
+    {
+      "source": {
+        "path": "src/native_wide_string.cpp",
+        "sha256": "319fd69f6ba6700dbcc3dec688166ad3a1492137e844299e8067fd067c130fd7"
+      },
+      "frozen": {
+        "path": "local/text_cursor137_inputs/src/native_wide_string.cpp",
+        "sha256": "319fd69f6ba6700dbcc3dec688166ad3a1492137e844299e8067fd067c130fd7"
+      }
+    }
+  ],
+  "frozen_reused_evidence": [
+    {
+      "path": "local/text_cursor137_inputs/text_cursor129_byte_source_proof.json",
+      "sha256": "8e7e7dadfb84fa370f9bbe434f67fef228e93c22a11fd4b3f114d2ba73b41ea5"
+    },
+    {
+      "path": "local/text_cursor137_inputs/text100_cursor_live_bytes.txt",
+      "sha256": "e7a56cc58f096ee11f1470ef4c40cd6e48583e6b4d26acafda82a18b4be54808"
+    },
+    {
+      "path": "local/text_cursor137_inputs/00ab8910_assembly.txt",
+      "sha256": "f112d1c118efef4c5c864de230b5c134bc61885ac3e1140316db1885562975a2"
+    },
+    {
+      "path": "local/text_cursor137_inputs/00ab8910_decompiled.c",
+      "sha256": "e7471f3613cb5cb20202e68ab6a3e2e12e9f35a36f9f8b1378c1597a393eb57d"
+    },
+    {
+      "path": "local/text_cursor137_inputs/00ab8910_metadata.json",
+      "sha256": "91763e6ce34f080637683c78ced2c5bb796df37b914e37610292747bf90ef3dd"
+    },
+    {
+      "path": "local/text_cursor137_inputs/gui_text_cursor_model_prefix.json",
+      "sha256": "b17f765e351eeb5f5fd3b3cd9c67c99ae9145869cb6d09591a43ecec3f391f47"
+    }
+  ],
+  "frozen_before_build": [
+    {
+      "path": "local/text_cursor137_inputs/before_bsp_core.vcxproj",
+      "sha256": "e7f4a5eafaf03469f68f0669564ebf39bb46570dce6715c456e8d6673bec42fb"
+    },
+    {
+      "path": "local/text_cursor137_inputs/before_bsp_core.lib",
+      "sha256": "4d3ba2c7dcf4c1dfcd764342ae59a22c4d3f1bcc87ba5465fa38ec3f17a7a291"
+    },
+    {
+      "path": "local/text_cursor137_inputs/before_bsp_game.exe",
+      "sha256": "65a70eed2fb067f63c2d440492040df676d59db849f74186e91527fe5d0c9d8e"
+    },
+    {
+      "path": "local/text_cursor137_inputs/before_LastTest.log",
+      "sha256": "ed7915c32e58c4e3095ea1a15fc60287e66182fb15efabb6ef3b0fb6cc30cd86"
+    }
+  ],
+  "frozen_final_Source_and_baseline_build": [
+    {
+      "path": "local/text_cursor137_final/native_gui_text_cursor_storage.hpp",
+      "sha256": "6390d87dc74496b95cbe593cd224b16371be2c286c2a9c9b402a6a6256d89d45"
+    },
+    {
+      "path": "local/text_cursor137_final/native_gui_text_cursor_storage.cpp",
+      "sha256": "414baa76914e2afb8321ccc8fccbce550639a1c72b1fc441bc0ec408f0f8becb"
+    },
+    {
+      "path": "local/text_cursor137_final/baseline_bsp_core.vcxproj",
+      "sha256": "e7f4a5eafaf03469f68f0669564ebf39bb46570dce6715c456e8d6673bec42fb"
+    },
+    {
+      "path": "local/text_cursor137_final/baseline_bsp_core.lib",
+      "sha256": "4d3ba2c7dcf4c1dfcd764342ae59a22c4d3f1bcc87ba5465fa38ec3f17a7a291"
+    },
+    {
+      "path": "local/text_cursor137_final/baseline_bsp_game.exe",
+      "sha256": "65a70eed2fb067f63c2d440492040df676d59db849f74186e91527fe5d0c9d8e"
+    },
+    {
+      "path": "local/text_cursor137_final/baseline_LastTest.log",
+      "sha256": "03f61c67a9037c640d777690a6ced17f4e338a38963b333d0d08ef99e18f5ad9"
+    }
+  ],
+  "prior_preservation": {
+    "all58_direct132_unchanged_before_and_after137_build": true,
+    "Root_captured129_132_before137": true,
+    "Source85_93_118_122_inputs_unchanged": true
+  },
+  "reused_receipts": [
+    {
+      "path": "reports/cc12_native_gui_text_cursor_providers_readiness_129.json",
+      "sha256": "738ff8003478a0e5c65fbc513baeaa67a29003ea891e4809d1907ef0be5c73ce"
+    },
+    {
+      "path": "reports/cc12_native_node_mapped_raw_transform_132.json",
+      "sha256": "56780f11cfc9c5433efc35cefefc08cc7f5d039d1f0eba082c0db77870e9d741"
+    },
+    {
+      "path": "local/node_mapped_transform132_final_artifact_manifest.json",
+      "sha256": "3d85adedf6cc363c099a6f988f9d4639300df5d8d24fcce67a806e79a868b985"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/freeze_text_cursor137_inputs.py",
+      "sha256": "a2e0fd6259ce80276feae382ea6137969b253ab6f40e8dfcc62eff37e9517552"
+    },
+    {
+      "path": "local/text_cursor137_inputs_manifest.json",
+      "sha256": "29bbddacef5b09551ec72bf434e82099ceb1b91bc90d01d290a8f85738fb91f0"
+    },
+    {
+      "path": "local/text_cursor137_whole_Original_EH_proof.json",
+      "sha256": "fa122f6974d5f6422c7d13bc1eaeaa5b4f0e1815a3e5f96f758119e38c9f0ee3"
+    },
+    {
+      "path": "local/text_cursor137_live_proto.txt",
+      "sha256": "dcfec043f7e51e1e20c0ddac80755e7c113bb9d2bdb4f08ef957bf43e1840ca9"
+    },
+    {
+      "path": "local/text_cursor137_model_material_literals_live_bytes.txt",
+      "sha256": "d09b0519d281425a51be8e0f3ab39810376155f42e878c0266a28665ee66b301"
+    },
+    {
+      "path": "local/text_cursor137_declaration_literal_live_bytes.txt",
+      "sha256": "6e2b04bb2878e8b283fdf4f0ac7b91a8c9fda13027496cb7c57b3a1cefe379c0"
+    },
+    {
+      "path": "local/text_cursor137_strict_compile.cmd",
+      "sha256": "42b8657174a113663f106b3cc18cd1c473d70af1a35a0f287b2ceaa246d0dc2e"
+    },
+    {
+      "path": "local/text_cursor137_strict_compile.log",
+      "sha256": "71daf504f848266b3b8435a965344edfe66f0abb696aa6792c8cfb9cf7251391"
+    },
+    {
+      "path": "local/native_gui_text_cursor_storage_137.asm",
+      "sha256": "d63e1788f6c83b16c5315ad2865600a7942ec6215e6649e1ce65072f17f53ca8"
+    },
+    {
+      "path": "local/native_gui_text_cursor_storage_137.obj",
+      "sha256": "53700514848e57eccc58cd15d5341db745b427b3f92839008e96764e34e359fc"
+    },
+    {
+      "path": "local/text_cursor137_existing_canonical_build.log",
+      "sha256": "a8b839becb92291410fea209d3672f7316ce6cf47e1b17bfbf372e28dc714a8c"
+    },
+    {
+      "path": "local/disasm_text_cursor137_coff.py",
+      "sha256": "cc2bb4bdf2bf8a14b38ba212d43a5d1d1e51b1c9ec757ce7261a3c70ca81dee2"
+    },
+    {
+      "path": "local/text_cursor137_coff_disassembly_manifest.json",
+      "sha256": "d3e6ccad8c6245ab915fa95e9720ccdc03871f70444d648a93cd96609c4c54de"
+    },
+    {
+      "path": "local/text_cursor137_root_review.txt",
+      "sha256": "75461357b82671fe775aec648347408b8dbabe33130df61794157ad559e2e1e9"
+    },
+    {
+      "path": "local/build_text_cursor137_report.py",
+      "sha256": "e608e93051279acb9c44c18307080b81a5394e6bb5469358bf390ccfb4e78e14"
+    },
+    {
+      "path": "local/text_cursor137_report_call_verification.txt",
+      "sha256": "316a657f1e7624a6883535337a0746e93753cb26b8ba53123b5a2433add53218"
+    },
+    {
+      "path": "local/add_text_cursor137_records.py",
+      "sha256": "d4de94c6ff7995183366df6c394aecbbef9894f7319ba8602ef088f6522c3063"
+    },
+    {
+      "path": "local/text_cursor137_prior_lookup.txt",
+      "sha256": "f5e15b9ec62ce039183eb2a3958cec47f9dfc187ab68de75651d1e1efc6ddd25"
+    },
+    {
+      "path": "local/text_cursor137_final_lookup.txt",
+      "sha256": "48354af48d5fefd947e6ff0dae1f09dc6228462a7aea3d1f730392f2d2b658d3"
+    },
+    {
+      "path": "local/text_cursor137_ledger_before_proof.json",
+      "sha256": "7432d59ee56582492f7c99b8814f716b84d11bed0fb9847cf7709cd4f6ba0ccd"
+    },
+    {
+      "path": "local/text_cursor137_ledger_add.log",
+      "sha256": "0c8aa23278949a257ff1bfceb87d23c0f9c5ca214bb86850d1e1b1efc00bfeed"
+    },
+    {
+      "path": "local/text_cursor137_owned_ledger_diff.patch",
+      "sha256": "734188d02fda7a59ff13337a5ce90eef2cc3986844e48ffa3f5dd1e1ad58c3ce"
+    },
+    {
+      "path": "local/text_cursor137_owned_ledger_records.json",
+      "sha256": "0c6a0b7ea08cd126fc8f4f32708a1deebea42e44f49e40c4095c9499f84412d6"
+    },
+    {
+      "path": "local/text_cursor137_prior_ghidra_comments.json",
+      "sha256": "2affcb2f3149187f44c16ffebcec6c5e6af7fc63618c392ed878e3ef15a19b23"
+    },
+    {
+      "path": "local/text_cursor137_prior_ghidra_comments_capped.log",
+      "sha256": "d85f9d58f9d2b42e2c4ea1f9a0cfd952d5add23b4b1fc1b87b99ae82a8a67ee8"
+    },
+    {
+      "path": "local/text_cursor137_final_ghidra_comments.json",
+      "sha256": "6ef5a63f35a3ffb3511969278aacfbffd90c2df8466888613c395db662068134"
+    },
+    {
+      "path": "local/text_cursor137_final_ghidra_comments_capped.log",
+      "sha256": "2bf87d881bb52615bfe714c0b90c9475528e9ca29a1e4ee1a504d88680b921c6"
+    },
+    {
+      "path": "local/text_cursor137_ghidra_annotation.log",
+      "sha256": "a27b4b78be95cc92521128438835605c7e8b6b84250ec2e7914438edb9495c2a"
+    },
+    {
+      "path": "local/text_cursor137_ghidra_annotation_history.json",
+      "sha256": "448782c1c17214b0e6bdf1a5d14210672f6ae382a4da5c1b98688003e1d87895"
+    },
+    {
+      "path": "local/text_cursor137_ghidra_export.log",
+      "sha256": "225bb45bc4e6545e205e03dc6e2619ebcdcadd02fa84d475d065a5c7de223f96"
+    },
+    {
+      "path": "local/text_cursor137_index.log",
+      "sha256": "304956e8aa2a4c2487bb9de48058861f88b4304308b28e9aea99b22f80737040"
+    },
+    {
+      "path": "local/text_cursor137_annotation_ledger_proof.json",
+      "sha256": "619dfb41168694135fa16783c34a7a2727e6bcd0bffd71d87eb549938cf693b3"
+    },
+    {
+      "path": "local/seal_text_cursor137_receipt.py",
+      "sha256": "1465acc7076ed6dccf14ec5c2087dbc50ddfd09159fc1e1b6efca1abdb45e815"
+    }
+  ],
+  "still_downstream": [
+    "AB8910 newTUregistration/combinedintegration",
+    "rawABA8D0",
+    "wholeABB1D0",
+    "wholeABB2C0",
+    "font/glyph/index work",
+    "actual runtime producer/admission/productionactivation"
+  ],
+  "final_artifact_manifest": "local/text_cursor137_final_artifact_manifest.json",
+  "annotations_and_ledger": {
+    "address": "00ab8910",
+    "locked_and_saved": true,
+    "preserved_old_comments_name_and_typed_statuses": true,
+    "no_body_repair_new_function_or_Ghidra_bytes_change": true,
+    "owned_record_diff": {
+      "path": "local/text_cursor137_owned_ledger_records.json",
+      "sha256": "0c6a0b7ea08cd126fc8f4f32708a1deebea42e44f49e40c4095c9499f84412d6"
+    },
+    "proof": {
+      "path": "local/text_cursor137_annotation_ledger_proof.json",
+      "sha256": "619dfb41168694135fa16783c34a7a2727e6bcd0bffd71d87eb549938cf693b3"
+    },
+    "refreshed_exports": [
+      {
+        "path": "local/text_cursor137_refreshed_exports/assembly.txt",
+        "sha256": "f112d1c118efef4c5c864de230b5c134bc61885ac3e1140316db1885562975a2"
+      },
+      {
+        "path": "local/text_cursor137_refreshed_exports/decompiled.c",
+        "sha256": "ea7b8962e858c4b07654229cc79c59a468b623e6d04c6edb1ea1829ae38963fc"
+      },
+      {
+        "path": "local/text_cursor137_refreshed_exports/metadata.json",
+        "sha256": "bc3f2ea03872103d6ff1e5f2edb766aca79424363f74dd251773fe35e69bb76f"
+      }
+    ]
+  },
+  "sealed_utc": "2026-10-16T09:42:52.549676+00:00",
+  "final_reviewed_Source_pins": [
+    {
+      "path": "include/bsp/native_gui_text_cursor_storage.hpp",
+      "sha256": "6390d87dc74496b95cbe593cd224b16371be2c286c2a9c9b402a6a6256d89d45"
+    },
+    {
+      "path": "src/native_gui_text_cursor_storage.cpp",
+      "sha256": "414baa76914e2afb8321ccc8fccbce550639a1c72b1fc441bc0ec408f0f8becb"
+    }
+  ]
+}

@@ -1,0 +1,180 @@
+{
+  "status": "PASS_Root_bounded_ArrayUnwind_readiness_Source_blocked",
+  "manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_eh_vector_copy_finish_oct16\\local\\NativeArrayUnwindReadiness01\\root_manifest.json",
+    "bytes": 139126,
+    "sha256": "23da6160864a9a51acabeab3cf24ba043f644716fd54be3bdb7c13b575df38c0"
+  },
+  "worker_commit": "eadc8ce2fe045440c7f347a1f11ec10ee482b34a",
+  "files": 373,
+  "own_pairs": 16,
+  "raw_records": 32,
+  "Original_prefix": {
+    "lines": 605,
+    "bytes": 1501928,
+    "sha256": "1e314f59086fdf05ff5593ff4e96d96df1a3c456f0d5965cdcdd309300306115"
+  },
+  "prior991sealed_and7working_bytes_hash_mtime_dirpins_verified": true,
+  "current272captured_inputs_verified": true,
+  "selected50codeB_14rows_and28scope_verified": true,
+  "Root_personal_read_chunks": {
+    "whole_doc": [
+      "07bdf1",
+      "aba99a",
+      "c51489",
+      "72da10tail"
+    ],
+    "all14compactASM": "72da10",
+    "scope_and_frame": [
+      "c51489",
+      "85a6a9"
+    ],
+    "metadata_dependencies": [
+      "1192e2 capped",
+      "85a6a9 compactcompletion"
+    ]
+  },
+  "source_ready": false,
+  "source_authorized": false,
+  "Source_credit": 0,
+  "Git_qualifications": [
+    {
+      "path": "docs/NATIVE_ARRAY_UNWIND_READINESS.md",
+      "working": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_eh_vector_copy_finish_oct16\\docs\\NATIVE_ARRAY_UNWIND_READINESS.md",
+        "bytes": 8493,
+        "sha256": "f4b302402cef63026b7f94059d9982fc5e7cc7be3b173e59b5ff8b28d7a0024f"
+      },
+      "Git_bytes": 8493,
+      "Git_sha256": "f4b302402cef63026b7f94059d9982fc5e7cc7be3b173e59b5ff8b28d7a0024f",
+      "literal_equal": true,
+      "CRLF_only_when_nonliteral": false
+    },
+    {
+      "path": "reports/native_array_unwind_readiness.json",
+      "working": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_eh_vector_copy_finish_oct16\\reports\\native_array_unwind_readiness.json",
+        "bytes": 24756,
+        "sha256": "972dc90b11dad7df7d995071fdf9482a74419388266e38d808233597dacb4a8b"
+      },
+      "Git_bytes": 24756,
+      "Git_sha256": "972dc90b11dad7df7d995071fdf9482a74419388266e38d808233597dacb4a8b",
+      "literal_equal": true,
+      "CRLF_only_when_nonliteral": false
+    }
+  ],
+  "physical_frame": {
+    "provenance": "Existing qualified SEH4 frame contract instantiated for observed local size14h; no provider-body reread",
+    "entry_esp": "E",
+    "parent_ebp": "F=E-4",
+    "saved_esp": "P=F-34h",
+    "saved_registers": {
+      "EBX": "F-28h",
+      "ESI": "F-2Ch",
+      "EDI": "F-30h"
+    },
+    "cookie": "F-34h",
+    "registration": "F-10h",
+    "encoded_scope": "F-8",
+    "try_level": "F-4",
+    "epilog_requirement": "ESP=P before helper; restores ESP=F+4",
+    "outer_ret_immediate": "10h",
+    "outer_callee_cleanup_bytes": 16
+  },
+  "ordered_body_contract": [
+    "Set try level0 with AND [F-4],0.",
+    "DEC the physical [F+10h] count modulo 2^32, then JS tests the resulting sign bit without testing overflow.",
+    "If post-decrement sign is clear, load destination into ECX, subtract current stride modulo 2^32, and store updated destination before the callback.",
+    "Indirect transfer through current [F+14h], with destination in ECX and no explicit pushed stack arguments; ignore returned value.",
+    "Loop back and reread mutable count/home/stride/callback state. Stable-value/nonaliasing/provider-preservation contracts are not established.",
+    "When post-decrement sign is set, set try level=-2, run qualified epilog, and RET10h."
+  ],
+  "count_cases": [
+    {
+      "initial_raw": "00000001..7FFFFFFF",
+      "destructor_transfers": "initial unsigned count",
+      "final_count": "FFFFFFFF"
+    },
+    {
+      "initial_raw": "00000000",
+      "destructor_transfers": "0",
+      "final_count": "FFFFFFFF"
+    },
+    {
+      "initial_raw": "80000000",
+      "destructor_transfers": "2147483648",
+      "first_post_decrement": "7FFFFFFF",
+      "final_count": "FFFFFFFF",
+      "qualification": "Signed INT_MIN wraps and enters loop; JS is not signed <=0 or an overflow check."
+    },
+    {
+      "initial_raw": "80000001..FFFFFFFF",
+      "destructor_transfers": "0",
+      "final_count": "initial raw count minus one modulo 2^32"
+    }
+  ],
+  "exception_boundary": {
+    "state_before_destructor": "Try level0, count already decremented, destination home already updated to attempted element.",
+    "scope_filter_candidate": "00BF7C33",
+    "scope_handler_candidate": "00BF7C5C",
+    "actual_dispatch_proven": false,
+    "filter_handler_body_reviewed": false,
+    "selected_body_has_direct_terminate_transfer": false,
+    "terminate_transition_proven": false,
+    "qualification": "A provider exception requires actual SEH/filter/handler/frame and terminate ownership. The two scope targets have no current Ghidra function or instruction; do not invent or repair their bodies."
+  },
+  "dependencies": [
+    {
+      "name": "__SEH_prolog4 / __SEH_epilog4",
+      "entries": [
+        "00C07C00",
+        "00C07C45"
+      ],
+      "boundary": "Existing qualified frame formulas only",
+      "next_contract": "Actual frame, FS registration, cookie and dispatcher composition"
+    },
+    {
+      "name": "scope filter/handler candidates",
+      "entries": [
+        "00BF7C33",
+        "00BF7C5C"
+      ],
+      "boundary": "Undefined length-one DataDB; no function/instruction, genuine proto errors",
+      "next_contract": "Root ownership/listing decision, then separately owned complete behavior and exceptional transitions"
+    },
+    {
+      "name": "destructor provider",
+      "entries": [],
+      "boundary": "Opaque ECX-only transfer shape",
+      "next_contract": "Real identity, stack/register/frame preservation, alias/mutation and exception behavior"
+    },
+    {
+      "name": "terminate",
+      "entries": [
+        "00C07A75"
+      ],
+      "boundary": "Entry metadata only; non-thunk, no_return=false, 44-byte split metadata body",
+      "next_contract": "Actual exceptional transition and termination/nonreturn behavior; false metadata flag is not proof of returning semantics"
+    },
+    {
+      "name": "callers",
+      "entries": [
+        "00BF7CB9",
+        "00BF7D1E",
+        "00BF9AE7"
+      ],
+      "boundary": "Indexed labels supplied by Root only; no caller bodies queried",
+      "next_contract": "Actual argument validity and provider/frame ownership"
+    }
+  ],
+  "qualification": "No targeted capture/listing/decode of excluded44B gap; fullinstalledPE was read forhash/mapping and necessarily containsgapbytes. Rootcanonicalwording will clarify this without changingfrozenauthorfamilies. Selectedbody hasno directterminate call. DEC/JS INTMINwrap, mutablephysicalcount and destinationstore BEFORE ECX-onlydestructor; no normal-onlywholeSource credit. Counter6616initialbatches/6618metadata eachinternallystable, no globalDBimmutability. Root c51489/1192e2 displayscapped;72da10 accidentally printed anestedpreservationlist, preservedtruncation and followedboundedkeyed schemaee46a1, not unreadhead semantics. No Source/compiler/bodyexecution/repair/providerbody/caller/runtime/game claim.",
+  "Root_reader_correction": "ec8091 KeyError assumed directworking pin; actual nestedactual/frozen reference schema inspectedee4fb4 and both checked. No author/doc/body/compiler change.",
+  "schema": "bsp.cc12.native_array_unwind.primary_readiness.v1",
+  "Root_authentication": "296450",
+  "Original_ABI_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false,
+  "full_PE_read_for_hash_and_mapping": true,
+  "targeted_gap_capture_listing_decode": false,
+  "Root_report_writer_correction": "048071 shell backtick escaping caused Python SyntaxError before writes; followingchecker found expectedmissingRootreport. Corrected by this separate file, no authorfamily/body/Source/compiler change."
+}

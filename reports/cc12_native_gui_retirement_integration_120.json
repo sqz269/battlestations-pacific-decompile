@@ -1,0 +1,155 @@
+{
+  "packet": "cc12_native_gui_retirement_integration_120",
+  "status": "reviewed_registered_combined_win32_build_existing_tests_static_link_pass",
+  "compiled_commit": "c253e3b03182ec0a6e7d7ffd361485244a8b499f",
+  "workers": {
+    "118": {
+      "commit": "3b85cae6eb88a4637683af9c4d54b2644aa72d77",
+      "source_paths": [
+        "include/bsp/native_gui_text_retirement.hpp",
+        "src/native_gui_text_retirement.cpp"
+      ],
+      "entries": [
+        "00ab8250",
+        "00ab8ee0"
+      ],
+      "root_source_original_optimized_review": "PASS",
+      "root_complete_doc_review": "PASS",
+      "strict_win32_compile": "PASS",
+      "worker_existing_checks": "2/2; new TU unregistered during worker baseline build",
+      "verified_direct_or_tail_rows": 24,
+      "failed_call_rows": 0,
+      "root_call_rows_independently_rechecked": true,
+      "manifest_artifacts_captured": 102,
+      "manifest_sha256": "61c8f3494201376b89fb1c3c13842b4fe918686e6f1046e3f593c5a9f34e0889"
+    },
+    "119": {
+      "commit": "2f9394312ca953ce8541657fb754a73164219062",
+      "source_paths": [
+        "include/bsp/native_gui_frame_box_records.hpp",
+        "src/native_gui_frame_box_records.cpp"
+      ],
+      "entries": [
+        "00ad21b0",
+        "00ad2320"
+      ],
+      "root_source_original_optimized_review": "PASS",
+      "root_complete_doc_review": "PASS",
+      "strict_win32_compile": "PASS",
+      "worker_existing_checks": "3/3 in7.47s; existing registered unit compiled",
+      "verified_direct_or_tail_rows": 3,
+      "failed_call_rows": 0,
+      "root_call_rows_independently_rechecked": true,
+      "manifest_artifacts_captured": 57,
+      "manifest_sha256": "c38d69b451086726dba2d532f8818d1e62e4d0b895b1794ab9d74f4ee5b394d4",
+      "target_language": "C++17; required stable array represented by explicit pointer/count",
+      "old_103_111_full_source_prefixes_and_optimized_bodies_preserved": true,
+      "initial_cpp20_span_canonical_failure": "resolved without CMake change; full failed build log was overwritten before requested preservation, only truthful incomplete captured excerpt retained",
+      "root_constructor_revision_review": "C++17 validation+29 before first metadata member store+39; unchanged571B engine/18B destructor/5B forwarder"
+    }
+  },
+  "readiness": {
+    "117": {
+      "commit": "f0953198363a34181965ea12c0309b075a77a035",
+      "root_complete_doc_review": "PASS",
+      "report_rows": 9,
+      "failed": 0,
+      "manifest_artifacts_captured": 87,
+      "manifest_sha256": "2dfe207a4076612f81e6740643c76ea3bf949051b105f272ca8e312107fd7ca0",
+      "native_body_execution": false,
+      "result": "Layer bodies/pool and genuine Scene reference exist; actual GUI manager/store/producer and populated graph composition remain open"
+    },
+    "121": {
+      "commit": "cf45d931368cd5cbdb32be2d1ba7cb80b977c9eb",
+      "root_complete_doc_review": "PASS",
+      "manifest_artifacts_captured": 146,
+      "manifest_sha256": "e61cdbe36a10218e1cec3aa57534201a3db30a1170835d3f8f2a4ddd7b361e09",
+      "native_body_execution": false,
+      "result": "Actual Text zero-reference/current scalar provider readiness is distinct from the two raw retirement bodies"
+    }
+  },
+  "source": [
+    {
+      "packet": "118",
+      "path": "include/bsp/native_gui_text_retirement.hpp",
+      "git_blob": "f7f4bc555417ffc82ef47114806c8f718e792b2e",
+      "sha256": "2744353d2ae4c9041b2980360cdf3e499aae28cb1446519dc4ca7064e6e3a300",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "118",
+      "path": "src/native_gui_text_retirement.cpp",
+      "git_blob": "839dc285c3d0f8e02af7e8fb30662809fe6eb9d0",
+      "sha256": "60993aaade168fe8ec23468d787a61093c51b200a49e1a193663b560a0384bd3",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "119",
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "git_blob": "d54db8c19480e7e6255540faea91f44b7e574590",
+      "sha256": "5c9792f00aa262fab4a0b49c73fa77a9e38f0d674c70a063c8d184a0625db4fc",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "119",
+      "path": "src/native_gui_frame_box_records.cpp",
+      "git_blob": "1502c28ec32dc2dad589aae1dee6cc11658fc80f",
+      "sha256": "64750f2eb4cfb27dc728a1fc53faee968f5a9bf34914b504f9bff395e7fb00e2",
+      "unchanged_from_reviewed_worker": true
+    }
+  ],
+  "root_build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "checks": "3/3",
+    "seconds": 7.94
+  },
+  "static_link": {
+    "compiled_commit": "c253e3b03182ec0a6e7d7ffd361485244a8b499f",
+    "build_and_minimal_main_exit_code": 0,
+    "raw_function_bodies_executed": false,
+    "explicit_worker_object_linked": false,
+    "kind": "Force entry addresses directly from actual final combined core archive",
+    "PE32_asInvoker": true,
+    "exe_sha256": "da2dea6c743108d684d8f928eba916c39ce178b37f8966f281643738d2782e1c",
+    "libraries": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "a00a387bd90327dc38fbf19948c1ef06fb2a45c10c2b6821cadd1a66280d609e"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "sha256": "e6ebb089df7828a43ecdd6e705dddb4cea95b38ffe1fabbd47152fec8834db30"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "sha256": "838261efe3cdd86663e25ecbcd9e825ee51203e71491954864316d4d0dfb6062"
+      }
+    ]
+  },
+  "root_source_and_header_inputs_copied": 90,
+  "archive": {
+    "path": "local/cc12_native_gui_retirement_integration_120/evidence_family.zip",
+    "sha256": "ad7331793a19d36dcd7d9466f6246258cba54d20a38c34637d646ac198d50515",
+    "payload_count": 856,
+    "manifest": "local/cc12_native_gui_retirement_integration_120/manifest.json",
+    "manifest_sha256": "12d65b057be3cf21ed5ff1fc67cfd6d22217dfc58ebae117b7b086dd96155a0a",
+    "all_archived_payload_hashes_rechecked": true,
+    "nested_worker_manifests_included": true
+  },
+  "limits": [
+    "Address-only final Core linkage; no reconstructed body execution or new behavioral test/game run",
+    "Worker118 new TU strict-compiled separately; Root performs actual combined Core registration",
+    "No private Native FH3/SEH/register ABI, Original IAT/CRT identity or drop-in replacement proof",
+    "Text shader zero supports the established same-count canonical effect families only",
+    "Canonical shader terminals are noexcept/terminating; preterminal Source errors have distinct outer-cleanup behavior",
+    "Public Text diagnostics own no graph and cannot enforce uneditable one-shot identity",
+    "Same independent creator/context/backing/profile graph and distinct recursive frames retained before callbacks/failure",
+    "General Text zero registration/current child bindings and populated recursive/timed retirement remain required",
+    "FrameBox metadata/preflight/mismatch/failclosed destruction are explicit Source orchestration",
+    "FrameBox free domain is matching Source SDK allocation only; failed103 records excluded",
+    "AD2320 remains an undefined Ghidra entry represented by a checked tail fragment; no listing repair",
+    "Actual Layer GUI publication/store/producer and concrete provider composition remain unprovided",
+    "No production activation, full populated GUI graph or gameplay proof"
+  ]
+}

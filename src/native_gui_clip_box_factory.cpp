@@ -1,5 +1,6 @@
 #include "bsp/native_gui_clip_box_factory.hpp"
 #include "bsp/native_gui_widget_base_storage.hpp"
+#include "bsp/native_gui_widget_lifetime.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
 #include <exception>
 
@@ -42,5 +43,18 @@ void* create_native_gui_clip_box_00aa1920(const void* source,
         catch (...) { std::terminate(); }
         throw;
     }
+}
+
+void* delete_native_gui_clip_box_00ace620(void* owner,
+    const volatile std::uint32_t& actual_flags_slot,
+    NativeGuiWidgetLifetimeContext& context) {
+    void* const saved_identity = owner;
+    *static_cast<volatile std::uint32_t*>(saved_identity) = 0x00d5d058u;
+    destroy_native_gui_widget_base_00aa9730(saved_identity, context);
+    const auto flags_low =
+        *reinterpret_cast<const volatile unsigned char*>(&actual_flags_slot);
+    if ((flags_low & 1u) != 0)
+        free_gui_widget_pool_slot<GuiClipBoxPoolTraits>(saved_identity);
+    return saved_identity;
 }
 } // namespace bsp

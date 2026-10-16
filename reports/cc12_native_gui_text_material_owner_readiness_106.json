@@ -1,0 +1,506 @@
+{
+  "packet": "cc12_native_gui_text_material_owner_readiness106",
+  "kind": "READ-ONLY bounded material-owner readiness",
+  "recorded_utc": "2026-10-16T05:52:45.203579+00:00",
+  "checked_baseline": "9ed055039644d5d493ce5b97c025068f28afa762",
+  "analysis_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_batch_access": "verifying bsp ghidra wrappers; no import/annotation/export mutation",
+    "installed_original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256_installed_original": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "Original_unchanged": true
+  },
+  "verdict": {
+    "smallest_real_binding_provider": "existing set_native_material_parameter_owner_00b18a40,91B33ins",
+    "accepts_SAME_actual_raw_Text_without_GuiWidgetOwner_cast": true,
+    "new_material_constructor_or_setter_needed": false,
+    "bounded_domain_ready": "genuinely caller-held Text creator/STORAGE plus material retain/release1\u21922\u21921, same real owners/services",
+    "general_raw_Text_lifetime_ready": false,
+    "first_concrete_missing_general_provider": "whole raw AB8250, reached by BD30E0\u2192CURRENT virtual4 AB8EE0(flags1); only prefix/typed records",
+    "AB8250_not_Source_ready_audited_here": true,
+    "no_duplicate_cursor_rebuild_or_material_body": true
+  },
+  "function_contracts": [
+    {
+      "entry": "0x00B18A40",
+      "end_exclusive": "0x00B18A9B",
+      "bytes": 91,
+      "instructions": 33,
+      "original_ABI": "ECX actual material; stack actual owner and exact low retain byte; RET8 atB18A98; preserves ESI and conditional EDI; no local EH",
+      "audit_scope": "new complete owner retain/store/release sequence audited",
+      "live_equals_Original": true,
+      "complete_saved_listing_starts_match_live_and_Original": true,
+      "sha256_live_and_Original_bytes": "1e1d714ac9ca72dc6edcc4d6bc58fce47c9e5be0a9882d8e4d136c30cd169cf0"
+    },
+    {
+      "entry": "0x00B18900",
+      "end_exclusive": "0x00B189E5",
+      "bytes": 229,
+      "instructions": 71,
+      "original_ABI": "existing Source/ledger contract: ECX fresh material, stack effect; EAX same material; RET4; new C++ ABI remains distinct",
+      "audit_scope": "existing true raw constructor reused; owner-null/flag0 acquisition traced, not a new broad constructor/ABI audit",
+      "live_equals_Original": true,
+      "complete_saved_listing_starts_match_live_and_Original": true,
+      "sha256_live_and_Original_bytes": "6768407d2713726def1fc414fc244ec076fa5369c1289686bed59a2821b722b0"
+    },
+    {
+      "entry": "0x00BD30E0",
+      "end_exclusive": "0x00BD30EE",
+      "bytes": 14,
+      "instructions": 7,
+      "original_ABI": "ECX actual identity, no args, RET atBD30ED; null skip, CURRENT virtual4(flags1), no decrement",
+      "audit_scope": "new bounded current scalar-dispatch contract",
+      "live_equals_Original": true,
+      "complete_saved_listing_starts_match_live_and_Original": true,
+      "sha256_live_and_Original_bytes": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+    },
+    {
+      "entry": "0x00AB8EE0",
+      "end_exclusive": "0x00AB8F00",
+      "bytes": 32,
+      "instructions": 11,
+      "original_ABI": "ECX same Text; stack flags; EAX same Text; RET4 atAB8EFD; preserves ESI; no refcount check/decrement",
+      "audit_scope": "new short scalar route only; raw AB8250 body not re-audited",
+      "live_equals_Original": true,
+      "complete_saved_listing_starts_match_live_and_Original": true,
+      "sha256_live_and_Original_bytes": "6c4abe4b629538eed67c9070b40b96532c19f2d78a8db49ecd0d9b309668cead"
+    }
+  ],
+  "material_owner_release_fragment": {
+    "function": "0x00B192F0",
+    "start": "0x00B19381",
+    "end_exclusive": "0x00B193AE",
+    "bytes": 45,
+    "instructions": 15,
+    "live_equals_Original": true,
+    "sha256_live_and_Original_bytes": "8c2b6e64e609f0590992ffab60bed8cb52d6c518c87593cd700036eea06c8929",
+    "assembly": [
+      "00b19381: cmp byte ptr [ebx + 0x10d], 0",
+      "00b19388: je 0xb193ae",
+      "00b1938a: mov esi, dword ptr [ebx + 0xc]",
+      "00b1938d: test esi, esi",
+      "00b1938f: je 0xb193ae",
+      "00b19391: lea eax, [esi + 4]",
+      "00b19394: push eax",
+      "00b19395: call dword ptr [0xce2220]",
+      "00b1939b: test eax, eax",
+      "00b1939d: jne 0xb193a7",
+      "00b1939f: mov edx, dword ptr [esi]",
+      "00b193a1: mov eax, dword ptr [edx]",
+      "00b193a3: mov ecx, esi",
+      "00b193a5: call eax",
+      "00b193a7: mov dword ptr [ebx + 0xc], 0"
+    ],
+    "whole_destructor_metadata_only": {
+      "start": "0x00B192F0",
+      "end_exclusive": "0x00B194A1",
+      "bytes": 433,
+      "instructions": 129
+    },
+    "scope": "owner fragment after effect/texture callbacks only; rest inherited from existing raw provider, not re-audited"
+  },
+  "actual_Text_table": {
+    "address": "0x00D5C6C8",
+    "bytes": 8,
+    "entries": [
+      "0x00BD30E0",
+      "0x00AB8EE0"
+    ],
+    "live_equals_Original": true,
+    "sha256": "acfa7e16772e7ebae5f254fc5e25167e9d3cacb267d2097727d6a9a05614bc40"
+  },
+  "calls": [
+    {
+      "function": "0x00AB8910",
+      "address": "0x00AB8BB8",
+      "native": "0x00B18A40",
+      "kind": "call",
+      "instruction": "call0x00b18a40; flag1, SAME Text EDI, actual material EBX, from live targeted context"
+    },
+    {
+      "function": "0x00B18900",
+      "address": "0x00B18962",
+      "native": "0x00B17840",
+      "kind": "call",
+      "instruction": "call 0xb17840"
+    },
+    {
+      "function": "0x00AB8EE0",
+      "address": "0x00AB8EE3",
+      "native": "0x00AB8250",
+      "kind": "call",
+      "instruction": "call 0xab8250"
+    },
+    {
+      "function": "0x00AB8EE0",
+      "address": "0x00AB8EF5",
+      "native": "0x00AB75A0",
+      "kind": "call",
+      "instruction": "call 0xab75a0"
+    }
+  ],
+  "indirect_instructions": [
+    {
+      "function": "0x00B18A40",
+      "site": "0x00B18A58",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "function": "0x00B18A40",
+      "site": "0x00B18A68",
+      "instruction": "call eax"
+    },
+    {
+      "function": "0x00B18A40",
+      "site": "0x00B18A91",
+      "instruction": "call dword ptr [0xce221c]"
+    },
+    {
+      "function": "0x00B18900",
+      "site": "0x00B189A1",
+      "instruction": "call dword ptr [0xce221c]"
+    },
+    {
+      "function": "0x00B18900",
+      "site": "0x00B189AF",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "function": "0x00B18900",
+      "site": "0x00B189BF",
+      "instruction": "call eax"
+    },
+    {
+      "function": "0x00BD30E0",
+      "site": "0x00BD30EB",
+      "instruction": "call edx"
+    },
+    {
+      "function": "0x00B192F0",
+      "site": "0x00B19395",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "function": "0x00B192F0",
+      "site": "0x00B193A5",
+      "instruction": "call eax"
+    }
+  ],
+  "setter_schedule": [
+    "current byte10D atB18A43; zero skips old pointer access",
+    "current old0C captured once atB18A4D; nonnull decrement actual+04 using CURRENT CE2220 atB18A58",
+    "zero only captures current old vtable0 atB18A62/64 and callsB18A68",
+    "old0C clearedB18A6A AFTER terminal returns",
+    "supplied low retain byte/owner loadedB18A72..78 then publish0C B18A7C and exact10D B18A7F",
+    "nonnull incoming+nonzero flag increments SAME actual incoming+04 via CURRENT CE221C atB18A91",
+    "equal owner still release/reacquire; incoming independently survives old release, no protective retain/no local rollback"
+  ],
+  "matching_release_schedule": [
+    "material effect/textures release first; CURRENT flag10D B19381 and CURRENT owner0C B1938A afterward",
+    "actual+04 decrement via CURRENT CE2220 B19395, zero-only CURRENT vtable0 B193A5",
+    "captured current owner slot cleared B193A7 only after return; zero flag leaves0C untouched",
+    "Source generic release observed path decrements raw atomic+04 FIRST; resolve_actual/borrowed-counter check only on previous_count1",
+    "Source actual setter increments raw+04 directly; no incoming companion/GuiWidgetOwner lookup",
+    "existing Source models import arithmetic as seq-cst atomic operations, not arbitrary mutated import cells/Native private ABI"
+  ],
+  "production_and_failure_retention": [
+    {
+      "provider": "GameNativeGuiEffectApplication::create_material_00535320 explicit operation",
+      "contract": "same actual initialized8B name/pool/effect cache/registry; stable operation published before native effects; sticky failure retains acquisitions/services/input identity but never dereferences/replays dead input"
+    },
+    {
+      "provider": "create_native_material_from_effect_cache_00535320",
+      "contract": "current renderer48 B318B0 effect/cache reference, explicit real material pool allocateB18780, ordinary raw B18900; no typed clone callback or default global choice",
+      "failure": "constructor failure returns ONLY raw unconstructed slot; effect/cache frame remains. Completed material stays recorded even if temporary effect release fails"
+    },
+    {
+      "provider": "initialize_native_material_00b18900 + NativeMaterialPool",
+      "contract": "same110B material/114B slot,64 per4584B slab, live+110 poolID, actual pool/allocator-list domain; material+04=1/profileD5E520,0C=null,10D=0, effect retained at7C. No Text retain or second Text reference-base construction"
+    },
+    {
+      "provider": "GuiNativeGeometryOwners::register_native_material_creator",
+      "contract": "same completed material+04 companion/registry, no extra creator retain/release; failed pre-companion metadata allocation erases only host record, failed later bind keeps raw/companion/record in SAME published operation"
+    },
+    {
+      "provider": "B18A40 followed by existing section material/layout/append path",
+      "contract": "one material-owned Text reference under exact10D; diagnostic pointers are aliases, not owners. Reuse100 cursor transfer order only; no new789B audit"
+    },
+    {
+      "provider": "old-owner terminal failure",
+      "contract": "decrement may already be consumed before Source registry/terminal failure; slot may remain uncleared and incoming not yet published/retained. Preserve raw material/incoming creator/services; no retry or rollback inference"
+    }
+  ],
+  "caller_held_domain": {
+    "required": "successful SAME raw Text/prefix with live constructed+04; actual storage and independent creator retained through every material hold/release; same real registry for any reached old-owner terminal; complete caller/factory graph retained before effects",
+    "counts": [
+      "caller creator1",
+      "B18A40 material retain1\u21922",
+      "later material owner release2\u21921, no Text zero dispatch"
+    ],
+    "not_a_barrier": "count/held creator does NOT prevent direct AB8EE0 scalar deletion or ancestor/page/ClipBox retirement; Text retain does not retain ancestors, actual lifetime actors must keep storage alive",
+    "no_new_Text_companion_or_owner": "no GuiWidgetOwner cast, fake default/delete callback, semantic lifetime invention, count reset, protective retain or new global/pool"
+  },
+  "general_terminal_frontier": {
+    "native_route": "current owner vtable0 BD30E0 -> CURRENT virtual4 AB8EE0(flags1) -> AB8250 atAB8EE3 -> optional Text pool AB75A0 atAB8EF5",
+    "raw_base_helper_exists": "invoke_native_ref_counted_delete_00bd30e0; requires real profile-specific scalar provider and does not decrement",
+    "existing_Text_binding": "NativeGuiTextIdentityReference requires GuiWidgetOwner&; SameTextDelete calls existing semantic child deletion; optional binder requires its same canonical prefix/count registration",
+    "missing_raw_body": {
+      "entry": "0x00AB8250",
+      "end_exclusive": "0x00AB83D0",
+      "bytes": 384,
+      "instructions": 113,
+      "scope": "current live proto and capped lookup only; no whole byte/body/dep audit in106",
+      "records": "only begin prefix + semantic derived fragments, no whole raw function record"
+    },
+    "recommendation": "reuse existing raw material constructor/factory/setter for explicit bounded caller-held domain; general raw Text success destruction/production admission requires separate bounded packet, no Source readiness claim for AB8250"
+  },
+  "source_hashes": [
+    {
+      "path": "include/bsp/native_material_owner.hpp",
+      "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+    },
+    {
+      "path": "src/native_material_owner.cpp",
+      "sha256": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43"
+    },
+    {
+      "path": "include/bsp/native_gui_text_identity.hpp",
+      "sha256": "6de31247104e9d98b5b369846bd8c743058c14aeae8ce0520ce15fd3926335a6"
+    },
+    {
+      "path": "src/native_gui_text_identity.cpp",
+      "sha256": "662d51258be8445f7adfce99e3796e9c2c10ade8d442e1c1cdb61ebd406b8928"
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9"
+    },
+    {
+      "path": "include/bsp/native_material_factory.hpp",
+      "sha256": "2cf4933dc2d616674b501ff1786c95c47f3251cf7dd4deda649ca95bba0a3563"
+    },
+    {
+      "path": "src/native_material_factory.cpp",
+      "sha256": "6ef1b9855e65cec8e69a1d51001733adef2073d8ed08650fff0115307ec71bcd"
+    },
+    {
+      "path": "include/bsp/native_material_pools.hpp",
+      "sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715"
+    },
+    {
+      "path": "src/native_material_pools.cpp",
+      "sha256": "52c0de304c861907c1799517e038e8383ca62829e12176eb1b48f406d163c95a"
+    },
+    {
+      "path": "include/bsp/gui_native_geometry.hpp",
+      "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf"
+    },
+    {
+      "path": "src/gui_native_geometry.cpp",
+      "sha256": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf"
+    },
+    {
+      "path": "include/bsp/game_native_gui_effect_application.hpp",
+      "sha256": "7a91be2e8c9a61f4656d1016785afefb8d89c0e4684921601e5caff138bcc45c"
+    },
+    {
+      "path": "src/game_native_gui_effect_application.cpp",
+      "sha256": "3ee093e1cb46962d3f313aac96f7ebd6929d85f7c5c37599be5551af08346cdf"
+    },
+    {
+      "path": "include/bsp/gui_text_runtime_factory.hpp",
+      "sha256": "14eed96de460d87cef6089e9c4582374b8aa3119e1a2e15f90ad2672b058b61e"
+    },
+    {
+      "path": "src/gui_text_runtime_factory.cpp",
+      "sha256": "421ae70122d77605639d007e5fd05f0dbaa8e32b4322e121938ce9a0350ab48e"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_base_storage.hpp",
+      "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab"
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d"
+    },
+    {
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "sha256": "2263f0a5cf044e3040c7f3f024a8d9899df1e7f0277db512f4db7d59976510f7"
+    },
+    {
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "sha256": "9cb60be1d88a03d4136ca9fe34243c8b980199192300456819bf2a46778a6200"
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "sha256": "39d2a14672dc90e8605c47fb267d59510639dc445d4caf28a48d79d172d89562"
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "sha256": "38e7aafba69bfe959bd3f45111c9e85074d646eaacfa6c718e2b1530c30b55d7"
+    },
+    {
+      "path": "include/bsp/native_wide_string.hpp",
+      "sha256": "d9499a98a3379366390eac87f3b6bca7ebb452e8e19e96d3e7a354295c6e8bc0"
+    },
+    {
+      "path": "src/native_wide_string.cpp",
+      "sha256": "319fd69f6ba6700dbcc3dec688166ad3a1492137e844299e8067fd067c130fd7"
+    }
+  ],
+  "reused_receipts": [
+    {
+      "path": "reports/cc12_native_gui_text_copy_providers_readiness_100.json",
+      "sha256": "e2b8b09e470439b1200e76ce5b7e6eb3779d6e1a9d947461ffe1f8bbc1c5d774"
+    },
+    {
+      "path": "reports/native_material_owner.json",
+      "sha256": "16a0f848c41a5a333b0db9080be70c5fa3aa43aa74b1c9fb51e361352f06d44d"
+    },
+    {
+      "path": "reports/native_material_parameter_owner.json",
+      "sha256": "8052aa6004e27a558db86481bfd1d151e8852f3f3d3106138d46983701d940ee"
+    },
+    {
+      "path": "reports/native_gui_text_identity.json",
+      "sha256": "25a04a9f24cdfff8e79b39c52ec96127ee319d0d9e99a7c0f9961a30913941e4"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_raw_default_93.json",
+      "sha256": "d9c89f153f299af3ff73463311639839fdd781dcaff1e5050843175619759b84"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_raw_sections_85.json",
+      "sha256": "670803ccbec611ee44b63c277b5ecb414e50a467370f329979aa78afa846afc7"
+    },
+    {
+      "path": "reports/cc12_native_wide_string_raw_copy_101.json",
+      "sha256": "0c35969e71a5efc5b60726831e58b862253a132734d20d6e2d48f5b8cef00b31"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/material_owner106_baseline_merge.log",
+      "sha256": "14faeb8cf6fc772b4e470000e6a652c4cc928adef8b019606876fa849db8b3e2"
+    },
+    {
+      "path": "local/material_owner106_cursor_call_context.json",
+      "sha256": "1ad63b140be4d582d85e85c458f464d77c6528716af75adb46dfb53f0ea0aa4c"
+    },
+    {
+      "path": "local/material_owner106_release_instruction_context.json",
+      "sha256": "6de746c30cc70d82d833a8c9049d5b4c81daca20cabe5b1043bbd4dfc0d11a0e"
+    },
+    {
+      "path": "local/material_owner106_live_proto.txt",
+      "sha256": "b1209ae34372fbb09e8fe2bb4b4695c5f724bbb1d5d80850bd8ab4596e7c829c"
+    },
+    {
+      "path": "local/material_owner106_text_destroy_proto.txt",
+      "sha256": "7e6c20888ce1e942c87d39a11bbaa1b170b244ffe6c0d9f1bd6808c7bb1be338"
+    },
+    {
+      "path": "local/material_owner106_text_destroy_lookup.txt",
+      "sha256": "b90f75fc44564d20be72a5d32b554514bd615482025dfed1007746a1bc527690"
+    },
+    {
+      "path": "local/material_owner106_setter_lookup.txt",
+      "sha256": "6c66b406559555ec5c753b8b931126d739ca712d7c0f3986d1ffbe664cfeeb1f"
+    },
+    {
+      "path": "local/material_owner106_constructor_lookup.txt",
+      "sha256": "f170bc34099cb678512d0489ec3c8d8b70055fd25a078944dafb2e2b74e8eb93"
+    },
+    {
+      "path": "local/material_owner106_setter_live_bytes.txt",
+      "sha256": "cda1c26bfcd28330fccbfd0e73fc2c22eeee8bff8fc86f0ba1120dfb9750c708"
+    },
+    {
+      "path": "local/material_owner106_constructor_live_bytes.txt",
+      "sha256": "bbdfe1597f1e15dfdd33d38bee5e8e24f6a9ee11ee9db4373ed1b8b9804f355f"
+    },
+    {
+      "path": "local/material_owner106_zero_helper_live_bytes.txt",
+      "sha256": "1d70d9d639234f376753c69e736b613bbef917a14ca52c5d82dc737141237953"
+    },
+    {
+      "path": "local/material_owner106_scalar_live_bytes.txt",
+      "sha256": "9f89870f9c9bb2fbcff9d4fb0490013ad1cbeacb4b975167415c233c19fa4913"
+    },
+    {
+      "path": "local/material_owner106_owner_release_live_bytes.txt",
+      "sha256": "3c7de5384c4401640415b12ec6a47756ed600d7c8980ea2ec0582eaf5552c5b5"
+    },
+    {
+      "path": "local/material_owner106_text_profile_live_bytes.txt",
+      "sha256": "0bc1e472b9fada018596175fcc483c6d826ae2084670b0506f814672c25dbbb7"
+    },
+    {
+      "path": "local/build_material_owner106_report.py",
+      "sha256": "bb29380f62998969c8129a7f5200f28239a4eb9a42aab1dfe08cfe2d75238c13"
+    },
+    {
+      "path": "local/material_owner106_report_call_verification.log",
+      "sha256": "e95030a90979a1217d347c3badaecb767596b9ec6debe06fda273a8270965632"
+    },
+    {
+      "path": "local/seal_material_owner106_receipt.py",
+      "sha256": "69a91041ad4a9997e571ca9de68914b371be29709226ac7166801dd995f25233"
+    }
+  ],
+  "existing_exports_read_only": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00b18a40/assembly.txt",
+      "sha256": "b383ff84388bccea260e8169aa387e97d601851aba62cf55ad10fcc666096d3a"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00bd30e0/assembly.txt",
+      "sha256": "53fc03d47ff635d7d7ab8e625692a0ac42fdca6060d3fcb5e5bc1599c3fe5563"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00ab8ee0/assembly.txt",
+      "sha256": "db11be8adbe2b0396c535c31981ab778aaef9e285b84e4b8d8c861340c004151"
+    }
+  ],
+  "validation": {
+    "report_call_rows_checked": 4,
+    "report_call_rows_failed": 0,
+    "complete_function_byte_ranges": 4,
+    "owner_release_fragment_ranges": 1,
+    "profile_data_ranges": 1,
+    "Source85_93_101_hashes_unchanged": true,
+    "Source_CMake_ledger_Ghidra_mutations": 0,
+    "builds_tests_probes": 0,
+    "raw_code_executed": false,
+    "Native_binary_ABI_proved": false,
+    "game_or_rendering_run": false,
+    "checked_call_rows_payload_sha256": "802af4088154ceddd34b27e96099955b4aec9cb3ce88fdbac2805c70a9a59b2c",
+    "root_scope_review": "Confirmed reuse existing actual factory/setter; close bounded caller-held1\u21922\u21921 receipt with count-first/current-field schedule, no scalar-delete/ancestor barrier, separate raw AB8250 frontier; no expanded body audit",
+    "material_parameter_query_rendering_not_audited": true
+  },
+  "owned_files": [
+    "docs/CC12_NATIVE_GUI_TEXT_MATERIAL_OWNER_READINESS_106.md",
+    "reports/cc12_native_gui_text_material_owner_readiness_106.json"
+  ],
+  "uncertainties": [
+    "descriptive names are hypotheses; Source counter/profile interfaces are not Native private ABI",
+    "held1\u21922\u21921 domain is a caller lifetime contract, not runtime proof or scalar-delete/ancestor barrier",
+    "whole raw AB8250 dependencies and general production retirement not audited here",
+    "no normal raw GUI activation, material subsystem rewrite, duplicate cursor/rebuild or new binding body"
+  ],
+  "sealed_utc": "2026-10-16T05:53:57.914256+00:00",
+  "final_artifact_manifest": "local/material_owner106_final_artifact_manifest.json"
+}

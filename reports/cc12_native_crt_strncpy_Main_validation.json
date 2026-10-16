@@ -1,0 +1,91 @@
+{
+  "schema": "bsp.cc12.native_crt_strncpy.Main_validation.v1",
+  "status": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
+  "Source_commit": "86baecf26ab1f9d8044ff5ff438d147584bc477b",
+  "Main_compiled_commit": "383719f2c132228c07cdcd0154482015742cc2e1",
+  "normal_Main_build": {
+    "command": "./scripts/build.ps1",
+    "actual_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_strncpy_Main_build01\\actual_build_receipt.DATA.json",
+      "bytes": 795,
+      "sha256": "a295ce95d5bac1544642d56926a3a4773c087177d6aedce3f7f4075e7a73324b"
+    },
+    "actual_stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_strncpy_Main_build01\\actual_stdout.bin",
+      "bytes": 3120,
+      "sha256": "2a62462da531ae3f1761463e58801bf0665e26e07b30714b9f637667daa97632"
+    },
+    "Root_genuine_tool_provenance": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strncpy_integration_20261016\\Root_Main_build_provenance\\authentication.DATA.json",
+      "bytes": 13472,
+      "sha256": "615c595cc6556adf623a9ed8a2ab63f8b210d5dba64d9ac9b8ade0291842e9c4"
+    },
+    "initial_chunk": "1a0d46",
+    "session": 72890,
+    "terminal_chunk": "e4c080",
+    "natural_intermediate_polls": 0,
+    "genuine_outer_pairs": 2,
+    "raw_records": 4,
+    "actual_inner_results": 6,
+    "exit_code": 0,
+    "existing_CTests_passed": 3,
+    "test_seconds": 7.5,
+    "recorded_inputs_hash_mtime_unchanged": 5527,
+    "actual_selected_compiler_inputs": 2,
+    "actual_frozen_tlogs": 4,
+    "before": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_strncpy_Main_build01\\before.DATA.json",
+      "bytes": 2590057,
+      "sha256": "e1a3418f34370f8ec93add086fe98e5ec4d140e388d5eb06d5203512f1fbf034"
+    },
+    "after": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_strncpy_Main_build01\\after.DATA.json",
+      "bytes": 6951,
+      "sha256": "e9ab9dc32c31c76ffc07974bf1f1de4e43e8ff2d9413e606ed7d173e3a6dbc4c"
+    }
+  },
+  "Root_actual_Main_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strncpy_integration_20261016\\Main_primary_review.DATA.json",
+    "bytes": 14121,
+    "sha256": "2c27a28f1f011a253732794cc944f0755f62c83cdb5e4c44385bc9d140c5d2bd"
+  },
+  "independent_Main_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strncpy_integration_20261016\\Main_peer_review.DATA.json",
+    "bytes": 956983,
+    "sha256": "33bf270837da0ae3ab8e4400273e2d4af91281390f09d753e67a84059c0211ec"
+  },
+  "registration": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strncpy_integration_20261016\\registration_verification.DATA.json",
+    "bytes": 531,
+    "sha256": "8a0db442259a171056f787dacd0149941dfe604400b00414bd0f26bba9eb57c4"
+  },
+  "archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strncpy_integration_20261016\\Main_primary_archive.DATA.json",
+    "bytes": 912215,
+    "sha256": "6088de2855d210fa319d63eccc7af3417fdc975cafab342cba465a937fc26096"
+  },
+  "object": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_strncpy_Main_build01\\frozen\\native_crt_strncpy.obj",
+    "bytes": 1478,
+    "sha256": "53b7e7fd49002e26b2e6009c987ba41274b50559b38ed3461f428542e5f7a1ec"
+  },
+  "whole_ordinary_function_credit": 1,
+  "Source_credit": 1,
+  "strict_compiles": 1,
+  "Main_selected_compiles": 1,
+  "worker_baselines": 0,
+  "new_tests": 0,
+  "new_probes": 0,
+  "Original_ABI_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false,
+  "qualifications": [
+    "One actual strict1839B/437codeB165rows public404+LOAD22/STORE11 and one realMain1478B/426codeB173rows public387+LOAD26/STORE13 separatelyentireRoot+independentreviewed. Main6sections11primary6aux17slots151strings6internalREL32/noFPO versusstrict9sections14primary9aux23slots151strings6REL32+3FPO. ActualprivateABI/frames/inputs/results/metadata/bodypaths reviewed, no matchingrecompile orSourcebodyexecution.",
+    "Bothunconditional SAMEactualSourceDWORDreads remain forq>0, candidatearithmeticbetween, Source+4 beforecandidateTEST, exactDWORDlane-mask andWORD-freeBYTEpeel/tail/zero-padding widths. MainLOAD MOVESP actuallypreservesECX requiredpublicADD+6E; strictLOAD POP ECX=capturedDWORD clobbersincomingECX. BothSTOREs preserveEAXpaddingcounter byactualbody, notgenericcdecl/noinline. ActualMain tailESIDEC+157 beforeDestINC+158/NULTEST+159 andpureqleft-beforeDest4 differprivateprotocol only; preserveall Originalterminal/intermediate sameallocation/nonwrapconditions.",
+    "Freshnamedphysical5527MainSource/compiler/supportbefore+currenthashmtimeunchanged; actual2Source+ownHPP closure/4frozenTlogs, Hostx64/x86 /std:c++17 /O2 /Ob2 /Oy- /W4 /WX /EHsc /MD /fp:strict andC13Microsoft19.51.36244.0. Namedpath/metadata notwholeOS/hermeticloader/loadedprocessidentity. ActualCore94264514B SHA5993b1994b543ca75b77d2f6fdd57a60ee1e7dec604daab7dc441365b6b9abbe all2492headers/both82998indices/uniqueactualobjectheader80108820/data80108880/literalpublicbinding.",
+    "Count0/emptyguards preservepayloadaccesslimits, everycountbitunsigned32, no signedcap/SDKcopy/snapshot/nonoverlap/object/unusedSourceNUL assumptions. Genuine reachedBYTE/DWORDread windows andexactcountDestbytes, read-only/interior/unaligned/overlap/self-inducedlaterreads/ordinarycallerstack allowed. Exclude Original/newprivateframes/homes/saves/return/spill/helperblocks, faults/MMIO/async/concurrentmutation/lifetime/mapping/exoticsegments. NewpotentiallythrowingrawstorageAPI, noOriginalphysicalABI/caller/runtime/gameproof.",
+    "Canonicalreportonehistorylabel corrected53bec0->actual53bec6; frozenauthor110/report/Doc/Source/HPP/object remainimmutable. Sealedcheckerhistory4docaddresses isqualifiedbyactualreceiptstdout2. Lateauthorpostcommitsealac4a4d wrongguard retained/newfinaltoolcorrected, no compilerretry. Rootactualreader/schema/shellpreparationfailures preserved asreaders, noSource/compiler/evidence replay.",
+    "ActualcompiledMain383719f2c includesallpublished1c820incomingwork. BroadIrefreshlease22e70b refusedworker164Fontfileownership; Rootskippedrefresh, touchedonlyownedchanges, Main3waymerge andofficialCMakeunion7e3bbf exactoldMainCMake+oneSource11registrationc71c5a, existingFontSrc/Hppexacthashmtimeunchanged. RootI staging remainsbehindunrelatedMain intentionally, notforeignfileownershipoverride.",
+    "Source12wholeprovider/concretegate metadata incompiled3837 isreadiness/authorizationonly, noimplementedstrstr oradditionalprovidercredit. Laterexactexternalmetadataa25e7473f handlerNOP/INT3 clarificationmerged847dfcf38; allfinalacceptance/ledger/comments metadata isnotclaimedrebuilt. ExistingunrelatedLNK4006duplicatewarnings retained. Exactly2genuineRootouterpairs4rawrecords contain6innerresults, only1a0d46/e4c080build andnoinventedintermediatepoll."
+  ]
+}

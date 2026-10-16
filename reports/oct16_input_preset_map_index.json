@@ -1,0 +1,686 @@
+{
+  "packet": "oct16_native_input_preset_map_index",
+  "utc": "2026-10-16T11:48:41.782913+00:00",
+  "status": "whole_ordinary_Source_and_logical_action_build_tested_pending_immutable_pin_and_Root_final_acceptance",
+  "domain": "existing_CRT_parent_provided_callee_domain_with_actual_RawCtx_feature_locale_and_CurrentCpp_guards",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "authorization": "Root Source51 whole006A1E70 +logicalC7F100 ONLY; no Ghidra/Main/push authorization before final acceptance.",
+  "published_gate": {
+    "Main": "28d884b161299605948b6d57486a206322a6a0cf",
+    "Root_readiness13": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_preset_map_primary_readiness.json",
+      "sha256": "f4b900108033904e6ac683a37a21b5d0fba319bdee20c1c3c6511e479fe6f13c"
+    },
+    "Root_published_readiness16": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_preset_map_primary_readiness_published.json",
+      "sha256": "70d7a2d78860a924f4ce3fe01ae2c4471d14b254d2f766ba1e797c10ba006a25"
+    },
+    "hint_Source": "3e560d164e49ffe92de2cac33f8287b7cd23c1f4",
+    "unique_Source": "1ab0ef5fcde5ef17ee3970c9322f4dbeaa1d8e35"
+  },
+  "source": "src/native_input_preset_map_index.cpp",
+  "header": "include/bsp/native_input_preset_map_index.hpp",
+  "documentation": "docs/OCT16_INPUT_PRESET_MAP_INDEX.md",
+  "source_sha256": "e463140df28a69c6420afbc3d09fbcfb324811f21eafe06f9562926ca15d4c5e",
+  "header_sha256": "86e52ed1eb94b2c7a75d04a6664a1e1baf5e74f2e585c692531e26cf6933d2f7",
+  "documentation_sha256": "780cb69553374097fcd4077fb28f3696acbfc6dd1a82849ef21252e141a215d0",
+  "functions": [
+    {
+      "address": "006a1e70",
+      "name": "index_native_input_preset_tree_006a1e70",
+      "library_name": "STL_Tree_MapIndex_StrKeyCI_N2C_006a1e70",
+      "source": "src/native_input_preset_map_index.cpp",
+      "header": "include/bsp/native_input_preset_map_index.hpp",
+      "status": "complete_ordinary_source_build_tested_actual_RawCtx_existing_CRT_parent_provided_callee_domain",
+      "domain": "existing_CRT_parent_provided_callee_domain_with_actual_RawCtx_feature_locale_and_CurrentCpp_guards",
+      "evidence": "Root Source51 explicitly authorized after published whole hint3e560d and unique1ab at28d884b161299605948b6d57486a206322a6a0cf. Whole219B75 direct actual nil29 lowerbound/SDK/supplied443D00/raw pair constructor/whole hint/inline raw getter-return/final diagnostics. Native ECX tree/one key stackword/RET4/EAX retained node+14; new fastcall six stackwords RET18 with explicit default fifth-word preimage&FFFFFF00, SAME RawCtx/actual109EEA4/actual109DE1C/existingCallees. Actual constructor returned pair passed to hint; actual returned OWNER then NODE replace retained values. Completed-key guard only after constructor; capture CURRENT temp DATA before disarm/end EH scope, then nonnull CURRENT length+1/actual getter/return; normal getter failure never retries69E090. Logical C7F100 borrows completed actual key/RawCtx and delegates published raw69E090, without EBP reader or extra offset. Fresh owned227B77 plus readonly handler10B2/44EH,17 physical flows/88 contexts/26 provider LF Main matches. Default Win32 existing3/3 PASS7.80s; full actual COFF469B170/17sections/24relocs read. Compiler state-1 atED before raw captures is EHsc optimization, not Original fault-scope proof; captured length precedes getter while pure+1 follows. Old four-argument AV/NativeStringStorage and old records preserved. docs/OCT16_INPUT_PRESET_MAP_INDEX.md; reports/oct16_input_preset_map_index.json. New Source RET18/preimage/borrowed-context API and compiler private arrays/frame differ from Original RET4/stack. Actual RawCtx pool/currentCRT/resize/BF7680 feature/DF/SSE2 and existing CRT-parent-provided-callee/comparator/SDK/CurrentCpp domains remain required. Original heap/locale/TLS/provider ownership, native FH3/SEH/RTTI, incidental registers/flags, raw fault scope, binary ABI and game/runtime identity are unproved. C++ secondary-cleanup failure may terminate during unwinding; no noexcept adapter/translation is added. Public raw aliases and transitive child/provider progress are inherited; no whole-call entry-preimage guarantee.",
+      "original_abi": "ECX actual tree/EDX unconsumed; one stacked key-header pointer, RET4/EAX retained node+14h.",
+      "source_abi": "fastcall ECX tree/EDX unused; key, explicit preimage, RawCtx&, actualfeature&, actuallocale&, existingCallees&:sixstackDWORDs, actualRET18h/EAXmapped pointer.",
+      "uncertainty": "New Source RET18/preimage/borrowed-context API and compiler private arrays/frame differ from Original RET4/stack. Actual RawCtx pool/currentCRT/resize/BF7680 feature/DF/SSE2 and existing CRT-parent-provided-callee/comparator/SDK/CurrentCpp domains remain required. Original heap/locale/TLS/provider ownership, native FH3/SEH/RTTI, incidental registers/flags, raw fault scope, binary ABI and game/runtime identity are unproved. C++ secondary-cleanup failure may terminate during unwinding; no noexcept adapter/translation is added. Public raw aliases and transitive child/provider progress are inherited; no whole-call entry-preimage guarantee.",
+      "body": {
+        "start": "006a1e70",
+        "end_inclusive": "006a1f4a",
+        "bytes": 219,
+        "starts": 75
+      },
+      "native_bytes": 219,
+      "native_starts": 75,
+      "abi_compatible": false
+    }
+  ],
+  "fragments": [
+    {
+      "address": "00c7f100",
+      "name": "cleanup_native_input_preset_map_completed_key_00c7f100",
+      "library_name": "Unwind@00c7f100",
+      "source": "src/native_input_preset_map_index.cpp",
+      "header": "include/bsp/native_input_preset_map_index.hpp",
+      "status": "complete_logical_completed_key_effect_actual_raw69E090_CurrentCpp_not_Original_frame_action_ABI",
+      "evidence": "Retain established Unwind@00c7f100. Whole Native8B2 LEA ECX,[runtimeEBP-28] and physical E9 tail69E090; Source owns only the logical completed-private-key effect, not Native action/frame ABI. Main handler C7F108 -> FuncInfoDAC198 -> sole DAC190(-1,C7F100), no localtry; handler10B2 and44EH remain readonly. Source helper takes actual completed key plus SAME RawCtx and calls real raw69E090; no EBP reader, fake frame, mapped cleanup, header clear, retry or normal-path replacement. Source guard noexcept(false), arm only after actual E6 success; CurrentCpp nested-unwind failure/OriginalFH3/SEH/RTTI/fault/ABI limits explicit. Current Ghidra CALL_RETURN tails remain untouched; actual encoded JMP proven. docs/OCT16_INPUT_PRESET_MAP_INDEX.md; reports/oct16_input_preset_map_index.json.",
+      "original_abi": "Runtime EBP-based LEA of completed key at-28h then tail69E090; no Source frame signature is recovered.",
+      "source_abi": "Logical fastcall ECX actual completed key/EDX RawCtx reference; actual Source plainRET, no EBP access.",
+      "uncertainty": "New Source RET18/preimage/borrowed-context API and compiler private arrays/frame differ from Original RET4/stack. Actual RawCtx pool/currentCRT/resize/BF7680 feature/DF/SSE2 and existing CRT-parent-provided-callee/comparator/SDK/CurrentCpp domains remain required. Original heap/locale/TLS/provider ownership, native FH3/SEH/RTTI, incidental registers/flags, raw fault scope, binary ABI and game/runtime identity are unproved. C++ secondary-cleanup failure may terminate during unwinding; no noexcept adapter/translation is added. Public raw aliases and transitive child/provider progress are inherited; no whole-call entry-preimage guarantee.",
+      "body": {
+        "start": "00c7f100",
+        "end_inclusive": "00c7f107",
+        "bytes": 8,
+        "starts": 2
+      },
+      "native_bytes": 8,
+      "native_starts": 2,
+      "abi_compatible": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "006a1e93",
+      "native": "0069cdb0",
+      "function": "006a1e70",
+      "kind": "call",
+      "scope": "owned_whole"
+    },
+    {
+      "address": "006a1ea0",
+      "native": "00bf6713",
+      "function": "006a1e70",
+      "kind": "call",
+      "scope": "owned_whole"
+    },
+    {
+      "address": "006a1eb1",
+      "native": "00443d00",
+      "function": "006a1e70",
+      "kind": "call",
+      "scope": "owned_whole"
+    },
+    {
+      "address": "006a1edc",
+      "native": "0069e6e0",
+      "function": "006a1e70",
+      "kind": "call",
+      "scope": "owned_whole"
+    },
+    {
+      "address": "006a1eef",
+      "native": "006a15e0",
+      "function": "006a1e70",
+      "kind": "call",
+      "scope": "owned_whole"
+    },
+    {
+      "address": "006a1f14",
+      "native": "00419cc0",
+      "function": "006a1e70",
+      "kind": "call",
+      "scope": "owned_whole"
+    },
+    {
+      "address": "006a1f1b",
+      "native": "00bd1510",
+      "function": "006a1e70",
+      "kind": "call",
+      "scope": "owned_whole"
+    },
+    {
+      "address": "006a1f24",
+      "native": "00bf6713",
+      "function": "006a1e70",
+      "kind": "call",
+      "scope": "owned_whole"
+    },
+    {
+      "address": "006a1f2e",
+      "native": "00bf6713",
+      "function": "006a1e70",
+      "kind": "call",
+      "scope": "owned_whole"
+    },
+    {
+      "address": "00c7f103",
+      "native": "0069e090",
+      "function": "00c7f100",
+      "kind": "tail_jump",
+      "scope": "owned_logical_completed_key_action"
+    },
+    {
+      "address": "00c7f10d",
+      "native": "00bf6b43",
+      "function": "00c7f108",
+      "kind": "tail_jump",
+      "scope": "readonly_handler_not_Source"
+    }
+  ],
+  "canonical_transfer_scope": {
+    "owned_whole_calls": 9,
+    "owned_logical_tail": 1,
+    "readonly_handler_tail": 1,
+    "no_duplicate_nested_transfer_claims": true,
+    "readonly_support_not_Source_promoted": true
+  },
+  "default_representation": {
+    "words": [
+      "FFFFFFFF",
+      "00000000",
+      "00000000",
+      "00000000",
+      "preimage&FFFFFF00"
+    ],
+    "required_explicit_input": "uint32 default_flag_word_preimage; upper24 copied bits, low8 forced0 only onmiss",
+    "storage": "private aligned20B DWORD scratch and default-no-init aligned28B DWORD pair; published real8B iterator carrier",
+    "no_uninitialized_DWORD_read_float_interpretation_or_silent_upper_zero": true,
+    "Source_private_store_schedule_not_Original_frame_identity": true
+  },
+  "phase_contracts": {
+    "lookup": "lowerbound before first owner diagnostic; CURRENT ownerhead compare after returning diagnostic; supplied comparator originalkey vs retainednode+C only ifnotend",
+    "constructor": "construct privatepair while unarmed; pass ACTUAL returnedpair to actual wholehint; samefeature/RawCtx",
+    "hint_and_guard": "real private8B output/byvalue owner,node; arm after constructor before hint; actualreturned OWNER thenNODE; capturetempDATA while logically armed",
+    "normal_release": "disarm/end C++ EH scope before nonnull CURRENT length+1/getter/return; usecapturedDATA, neverwhole69E090 recapture; no reset/retry",
+    "logical_unwind": "borrow actualcompletedtempkey+sameRawCtx -> publishedraw69E090; inheritsactualcurrentheader reads/Cppthrow; noEBP/fakeframe/extraoffset",
+    "final": "use retainedreturnedowner/currenthead and retainednode; returningdiagnostics do not repair; return retainednode+14",
+    "aliases": "all reached child/provider progress inherited; no whole-call entry-preimage promise"
+  },
+  "error_and_EH": {
+    "Native": {
+      "main_pushes": "00c7f108",
+      "handler_loads": "00dac198",
+      "unwind_map": "00dac190",
+      "unwind_pair": [
+        -1,
+        "00c7f100"
+      ],
+      "FuncInfo_words": [
+        "19930522",
+        1,
+        "00dac190",
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "try_scopes": 0
+    },
+    "Source": "completed-key guard destructor noexcept(false), no catch/translation/noexcept adapter; secondary exception during C++ unwinding can terminate; OriginalFH3/SEH/rawfault scope unproved",
+    "normal_getter_failure": "after disarm, propagates without retry or key cleanup",
+    "read_only_support": {
+      "handler": [
+        "00c7f108",
+        "00c7f111",
+        10,
+        2
+      ],
+      "raw_EH": [
+        "00dac190",
+        44
+      ]
+    },
+    "Ghidra_tails": "CALL_RETURN overrides preserved; current typed flow and exact E9 prove physical JMP. Failed empty flow-properties response retained; accepted17-site typed-flow is authoritative replacement."
+  },
+  "fresh_native_proof": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_source_native_audit.json",
+    "sha256": "c5c4a6b7795c76b8689149572170bb13932dc01ca03df81c59a9f8c989802373"
+  },
+  "provider_fingerprints": {
+    "src/native_input_string_tree_lower_bounds.cpp": {
+      "physical_sha256": "6ce5dbb10d94e21d430c0cb205dac028e27bae4c041df91cea1607ba9d8bfa30",
+      "LF_sha256": "6ce5dbb10d94e21d430c0cb205dac028e27bae4c041df91cea1607ba9d8bfa30",
+      "LF_equal_published_Main": true
+    },
+    "include/bsp/native_input_string_tree_lower_bounds.hpp": {
+      "physical_sha256": "291fa7bafc2f5239119fd99ac3f36b68879cd7c3175e93c0f0e1cdbf517dffbb",
+      "LF_sha256": "291fa7bafc2f5239119fd99ac3f36b68879cd7c3175e93c0f0e1cdbf517dffbb",
+      "LF_equal_published_Main": true
+    },
+    "src/native_input_preset_pair_construct.cpp": {
+      "physical_sha256": "95634636cc1c4ef3cceda7d3c0d80f37ed02f66278c70b404921a9e425a4ae8d",
+      "LF_sha256": "95634636cc1c4ef3cceda7d3c0d80f37ed02f66278c70b404921a9e425a4ae8d",
+      "LF_equal_published_Main": true
+    },
+    "include/bsp/native_input_preset_pair_construct.hpp": {
+      "physical_sha256": "7e861a03c50e64fa6e7327681f6c35c441031ede596cc359f6ed618fe27bc5e8",
+      "LF_sha256": "7e861a03c50e64fa6e7327681f6c35c441031ede596cc359f6ed618fe27bc5e8",
+      "LF_equal_published_Main": true
+    },
+    "src/native_string_header_less_actual.cpp": {
+      "physical_sha256": "c0c2e1c035ecf7092acb4bb83586b63d94cf65e6607631fc71d35cd8b80b014a",
+      "LF_sha256": "c0c2e1c035ecf7092acb4bb83586b63d94cf65e6607631fc71d35cd8b80b014a",
+      "LF_equal_published_Main": true
+    },
+    "include/bsp/native_string_header_less_actual.hpp": {
+      "physical_sha256": "0797bd4280fa8e57b79bf74271890de3254d3c0d950e5a7cef7bf041874192b2",
+      "LF_sha256": "0797bd4280fa8e57b79bf74271890de3254d3c0d950e5a7cef7bf041874192b2",
+      "LF_equal_published_Main": true
+    },
+    "src/native_input_preset_temp_key_release.cpp": {
+      "physical_sha256": "553724d244c2984cefad49063f939687295a2d4b4c7f8b56eaaab1d1664e0a99",
+      "LF_sha256": "553724d244c2984cefad49063f939687295a2d4b4c7f8b56eaaab1d1664e0a99",
+      "LF_equal_published_Main": true
+    },
+    "include/bsp/native_input_preset_temp_key_release.hpp": {
+      "physical_sha256": "d621cfec62095d28c6b6b65e945f05f2ab1f709e9f90290bf7ba26fc7270dbf0",
+      "LF_sha256": "d621cfec62095d28c6b6b65e945f05f2ab1f709e9f90290bf7ba26fc7270dbf0",
+      "LF_equal_published_Main": true
+    },
+    "src/native_string.cpp": {
+      "physical_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "LF_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "LF_equal_published_Main": true
+    },
+    "include/bsp/native_string.hpp": {
+      "physical_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "LF_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "LF_equal_published_Main": true
+    },
+    "src/native_string_pool_owner.cpp": {
+      "physical_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "LF_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "LF_equal_published_Main": true
+    },
+    "include/bsp/native_string_pool_owner.hpp": {
+      "physical_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "LF_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "LF_equal_published_Main": true
+    },
+    "src/native_string_pool_storage.cpp": {
+      "physical_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "LF_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "LF_equal_published_Main": true
+    },
+    "include/bsp/native_string_pool_storage.hpp": {
+      "physical_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "LF_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "LF_equal_published_Main": true
+    },
+    "src/native_invalid_parameter_noinfo_call.cpp": {
+      "physical_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "LF_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "LF_equal_published_Main": true
+    },
+    "include/bsp/native_invalid_parameter_noinfo_call.hpp": {
+      "physical_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "LF_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "LF_equal_published_Main": true
+    },
+    "src/native_crt_stricmp.cpp": {
+      "physical_sha256": "e706069c71de1de114a98ed21cc37832fc0a3f1c00bb52ef8992e2f7422d1c8d",
+      "LF_sha256": "e706069c71de1de114a98ed21cc37832fc0a3f1c00bb52ef8992e2f7422d1c8d",
+      "LF_equal_published_Main": true
+    },
+    "include/bsp/native_crt_stricmp.hpp": {
+      "physical_sha256": "f09ff088480b1db82a49dc5d185956062fd5118e3cb7b70e008c04726a59b92f",
+      "LF_sha256": "f09ff088480b1db82a49dc5d185956062fd5118e3cb7b70e008c04726a59b92f",
+      "LF_equal_published_Main": true
+    },
+    "src/native_crt_memcpy.cpp": {
+      "physical_sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+      "LF_sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+      "LF_equal_published_Main": true
+    },
+    "include/bsp/native_crt_memcpy.hpp": {
+      "physical_sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+      "LF_sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+      "LF_equal_published_Main": true
+    },
+    "src/native_input_settings_tree_insertion.cpp": {
+      "physical_sha256": "ebd83749d995ca16a7affcfd9bf0637383ccb172cd71e37d2ab5c26036b72ba4",
+      "LF_sha256": "ebd83749d995ca16a7affcfd9bf0637383ccb172cd71e37d2ab5c26036b72ba4",
+      "LF_equal_published_Main": true,
+      "purpose": "old four-argument NativeStringStorage/AV overload unchanged"
+    },
+    "include/bsp/native_input_settings_tree_insertion.hpp": {
+      "physical_sha256": "ec88bb50d0740576528362ae81c5afe73b1c9959752f4af1a29631ffe695ac70",
+      "LF_sha256": "ec88bb50d0740576528362ae81c5afe73b1c9959752f4af1a29631ffe695ac70",
+      "LF_equal_published_Main": true,
+      "purpose": "old four-argument NativeStringStorage/AV overload unchanged"
+    },
+    "src/native_input_preset_tree_hint_insert.cpp": {
+      "physical_sha256": "c2d1814511bbdf8f65d243765b145da3bad392d840f003ea77ea0268a588e8f1",
+      "LF_sha256": "c2d1814511bbdf8f65d243765b145da3bad392d840f003ea77ea0268a588e8f1",
+      "LF_equal_published_Main": true
+    },
+    "include/bsp/native_input_preset_tree_hint_insert.hpp": {
+      "physical_sha256": "abd4ac127c2fd1ce60e3d4607338f888214901828bd0304ebaf0cc5f7238da3e",
+      "LF_sha256": "abd4ac127c2fd1ce60e3d4607338f888214901828bd0304ebaf0cc5f7238da3e",
+      "LF_equal_published_Main": true
+    },
+    "src/native_input_preset_tree_unique_insert.cpp": {
+      "physical_sha256": "9c6c5a633fb9238da584cdf6da50f447ee2219bac0ace7671f6bcd8f652ec464",
+      "LF_sha256": "9c6c5a633fb9238da584cdf6da50f447ee2219bac0ace7671f6bcd8f652ec464",
+      "LF_equal_published_Main": true
+    },
+    "include/bsp/native_input_preset_tree_unique_insert.hpp": {
+      "physical_sha256": "6960ecdf93a56fd4540a9c791a2f3cb0c3344eb40fa0e390c4420d1a9f67efe2",
+      "LF_sha256": "6960ecdf93a56fd4540a9c791a2f3cb0c3344eb40fa0e390c4420d1a9f67efe2",
+      "LF_equal_published_Main": true
+    }
+  },
+  "actual_CMake_COFF_review": {
+    "artifact": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_cmake_coff_review.json",
+      "sha256": "55ae4e6ea7e35fd5d68bdaf1265aec1abf30398dbf7b9be451dc511240de82af"
+    },
+    "decoded": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_cmake_coff_decoded.txt",
+      "sha256": "7f513b7aa75556192138e98156efe437b5aaebcd7919cfded75257c6e1edb424"
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\build\\win32\\bsp_core.dir\\Release\\native_input_preset_map_index.obj",
+      "sha256": "0584f3791febcba5c0c987f8473c52974300bf2c549fea4baf0aff289dfdca68"
+    },
+    "all_sections": 17,
+    "CODE_sections": 8,
+    "CODE_bytes": 469,
+    "instructions": 170,
+    "public": [
+      351,
+      120
+    ],
+    "logical_cleanup": [
+      9,
+      4
+    ],
+    "destructor": [
+      19,
+      7
+    ],
+    "EH_text": [
+      52,
+      19
+    ],
+    "four_trivial_helpers": [
+      38,
+      20
+    ],
+    "INT3_padding": [
+      5,
+      5
+    ],
+    "handler_entry_NOPs": [
+      2,
+      2
+    ],
+    "excluding_all_seven": [
+      462,
+      163
+    ],
+    "relocations": {
+      "total": 24,
+      "CODE": 19,
+      "CODE_REL32": 16,
+      "CODE_DIR32": 3,
+      "debug_DIR32NB": 3,
+      "EH_DIR32": 2
+    },
+    "data": {
+      "directives": 415,
+      "debugS": 208,
+      "debugF": [
+        16,
+        16,
+        16
+      ],
+      "SAFESEH": 4,
+      "EH_xdata": 44,
+      "checksums": 136,
+      "BSS": 4
+    },
+    "BSS_symbol": "__Avx2WmemEnabledWeakValue; unreferenced MSVC header link-weak datum, no Source-defined provider/global/model",
+    "SAFESEH_symbol_index": 48,
+    "SAFESEH_handler_offset": 13,
+    "local_try_typeinfo_literal_tables": false,
+    "all_actual_CODE_helpers_EH_data_relocations_and_padding_reviewed": true,
+    "manual_complete_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_manual_COFF_review.json",
+      "sha256": "8a269c124ec78af2b51013f58d33535e526b2642d0ba40e111d990d9c6f9373a"
+    }
+  },
+  "compiled_qualifications": [
+    "Source state-1 atED precedes raw OWNER/NODE/DATA F4/F6/F9 despite Source guard semantics through captures; nonthrowing loads excluded byEHsc; noOriginalrawfaultscope proof.",
+    "Captured length load106 precedes getter10E; pure+1 LEA119 aftergetter preserves value but notflags/schedule.",
+    "Explicit fifthmask/fullDWORD private store scheduling differsNativeBYTE-only privatepreimage initialization.",
+    "Compiler EBP/cookies/Source EH/extra provider stackwords and emitted helpers differOriginalABI/privateframe/faultaddresses."
+  ],
+  "Root_preliminary_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_preset_map_primary.json",
+    "sha256": "3c0ad3144530bb5437d2b52151b9f4f2dc0e89c268a5b0e9609859f65226fddb",
+    "checks": 12,
+    "status": "Source/Native/all170COFF17sections accepted, no Source finding; final pin acceptance pending"
+  },
+  "verification": {
+    "default_Win32_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "existing_suites": 3,
+      "passed": 3,
+      "test_seconds": 7.8,
+      "log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_build.log",
+        "sha256": "0bbd43c468cc84f174a936884142c02582375ac36274820d30a70c3adddb9eb3"
+      },
+      "exit_artifact": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_build_exit.txt",
+        "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+      }
+    },
+    "new_tests_or_probes": false,
+    "owned_Native_execution": false,
+    "game_validation": false,
+    "canonical_calls": {
+      "command": "python tools/verify_report_calls.py reports/oct16_input_preset_map_index.json docs/OCT16_INPUT_PRESET_MAP_INDEX.md",
+      "exit_code": 0,
+      "JSON_rows": 11,
+      "owned_rows": 10,
+      "readonly_support_rows": 1,
+      "JSON_failed": 0,
+      "Markdown_claims": 11,
+      "Markdown_failed": 0,
+      "Markdown_unchecked": 0,
+      "Markdown_warnings": 0
+    },
+    "initial_transfer_kind_metadata_fix": {
+      "artifact": "local\\oct16_input_preset_map_index_call_verification_initial_kind_labels.txt",
+      "sha256": "f3642bc765be781fe07cc66650d7814cd094681ec83c7da20625639df9f0d700",
+      "finding": "Two JSON physical JMP rows require canonical tail_jump kind; Markdown11 passed. Source/Native proof unchanged."
+    }
+  },
+  "ledger": {
+    "names": [
+      {
+        "address": "006a1e70",
+        "name": "STL_Tree_MapIndex_StrKeyCI_N2C_006a1e70",
+        "evidence": "Root Source51 explicitly authorized after published whole hint3e560d and unique1ab at28d884b161299605948b6d57486a206322a6a0cf. Whole219B75 direct actual nil29 lowerbound/SDK/supplied443D00/raw pair constructor/whole hint/inline raw getter-return/final diagnostics. Native ECX tree/one key stackword/RET4/EAX retained node+14; new fastcall six stackwords RET18 with explicit default fifth-word preimage&FFFFFF00, SAME RawCtx/actual109EEA4/actual109DE1C/existingCallees. Actual constructor returned pair passed to hint; actual returned OWNER then NODE replace retained values. Completed-key guard only after constructor; capture CURRENT temp DATA before disarm/end EH scope, then nonnull CURRENT length+1/actual getter/return; normal getter failure never retries69E090. Logical C7F100 borrows completed actual key/RawCtx and delegates published raw69E090, without EBP reader or extra offset. Fresh owned227B77 plus readonly handler10B2/44EH,17 physical flows/88 contexts/26 provider LF Main matches. Default Win32 existing3/3 PASS7.80s; full actual COFF469B170/17sections/24relocs read. Compiler state-1 atED before raw captures is EHsc optimization, not Original fault-scope proof; captured length precedes getter while pure+1 follows. Old four-argument AV/NativeStringStorage and old records preserved. docs/OCT16_INPUT_PRESET_MAP_INDEX.md; reports/oct16_input_preset_map_index.json. New Source RET18/preimage/borrowed-context API and compiler private arrays/frame differ from Original RET4/stack. Actual RawCtx pool/currentCRT/resize/BF7680 feature/DF/SSE2 and existing CRT-parent-provided-callee/comparator/SDK/CurrentCpp domains remain required. Original heap/locale/TLS/provider ownership, native FH3/SEH/RTTI, incidental registers/flags, raw fault scope, binary ABI and game/runtime identity are unproved. C++ secondary-cleanup failure may terminate during unwinding; no noexcept adapter/translation is added. Public raw aliases and transitive child/provider progress are inherited; no whole-call entry-preimage guarantee."
+      },
+      {
+        "address": "00c7f100",
+        "name": "Unwind@00c7f100",
+        "evidence": "Retain established Unwind@00c7f100. Whole Native8B2 LEA ECX,[runtimeEBP-28] and physical E9 tail69E090; Source owns only the logical completed-private-key effect, not Native action/frame ABI. Main handler C7F108 -> FuncInfoDAC198 -> sole DAC190(-1,C7F100), no localtry; handler10B2 and44EH remain readonly. Source helper takes actual completed key plus SAME RawCtx and calls real raw69E090; no EBP reader, fake frame, mapped cleanup, header clear, retry or normal-path replacement. Source guard noexcept(false), arm only after actual E6 success; CurrentCpp nested-unwind failure/OriginalFH3/SEH/RTTI/fault/ABI limits explicit. Current Ghidra CALL_RETURN tails remain untouched; actual encoded JMP proven. docs/OCT16_INPUT_PRESET_MAP_INDEX.md; reports/oct16_input_preset_map_index.json."
+      }
+    ],
+    "functions": [
+      {
+        "address": "006a1e70",
+        "name": "index_native_input_preset_tree_006a1e70",
+        "library_name": "STL_Tree_MapIndex_StrKeyCI_N2C_006a1e70",
+        "source": "src/native_input_preset_map_index.cpp",
+        "header": "include/bsp/native_input_preset_map_index.hpp",
+        "status": "complete_ordinary_source_build_tested_actual_RawCtx_existing_CRT_parent_provided_callee_domain",
+        "domain": "existing_CRT_parent_provided_callee_domain_with_actual_RawCtx_feature_locale_and_CurrentCpp_guards",
+        "evidence": "Root Source51 explicitly authorized after published whole hint3e560d and unique1ab at28d884b161299605948b6d57486a206322a6a0cf. Whole219B75 direct actual nil29 lowerbound/SDK/supplied443D00/raw pair constructor/whole hint/inline raw getter-return/final diagnostics. Native ECX tree/one key stackword/RET4/EAX retained node+14; new fastcall six stackwords RET18 with explicit default fifth-word preimage&FFFFFF00, SAME RawCtx/actual109EEA4/actual109DE1C/existingCallees. Actual constructor returned pair passed to hint; actual returned OWNER then NODE replace retained values. Completed-key guard only after constructor; capture CURRENT temp DATA before disarm/end EH scope, then nonnull CURRENT length+1/actual getter/return; normal getter failure never retries69E090. Logical C7F100 borrows completed actual key/RawCtx and delegates published raw69E090, without EBP reader or extra offset. Fresh owned227B77 plus readonly handler10B2/44EH,17 physical flows/88 contexts/26 provider LF Main matches. Default Win32 existing3/3 PASS7.80s; full actual COFF469B170/17sections/24relocs read. Compiler state-1 atED before raw captures is EHsc optimization, not Original fault-scope proof; captured length precedes getter while pure+1 follows. Old four-argument AV/NativeStringStorage and old records preserved. docs/OCT16_INPUT_PRESET_MAP_INDEX.md; reports/oct16_input_preset_map_index.json. New Source RET18/preimage/borrowed-context API and compiler private arrays/frame differ from Original RET4/stack. Actual RawCtx pool/currentCRT/resize/BF7680 feature/DF/SSE2 and existing CRT-parent-provided-callee/comparator/SDK/CurrentCpp domains remain required. Original heap/locale/TLS/provider ownership, native FH3/SEH/RTTI, incidental registers/flags, raw fault scope, binary ABI and game/runtime identity are unproved. C++ secondary-cleanup failure may terminate during unwinding; no noexcept adapter/translation is added. Public raw aliases and transitive child/provider progress are inherited; no whole-call entry-preimage guarantee.",
+        "original_abi": "ECX actual tree/EDX unconsumed; one stacked key-header pointer, RET4/EAX retained node+14h.",
+        "source_abi": "fastcall ECX tree/EDX unused; key, explicit preimage, RawCtx&, actualfeature&, actuallocale&, existingCallees&:sixstackDWORDs, actualRET18h/EAXmapped pointer.",
+        "uncertainty": "New Source RET18/preimage/borrowed-context API and compiler private arrays/frame differ from Original RET4/stack. Actual RawCtx pool/currentCRT/resize/BF7680 feature/DF/SSE2 and existing CRT-parent-provided-callee/comparator/SDK/CurrentCpp domains remain required. Original heap/locale/TLS/provider ownership, native FH3/SEH/RTTI, incidental registers/flags, raw fault scope, binary ABI and game/runtime identity are unproved. C++ secondary-cleanup failure may terminate during unwinding; no noexcept adapter/translation is added. Public raw aliases and transitive child/provider progress are inherited; no whole-call entry-preimage guarantee.",
+        "body": {
+          "start": "006a1e70",
+          "end_inclusive": "006a1f4a",
+          "bytes": 219,
+          "starts": 75
+        },
+        "native_bytes": 219,
+        "native_starts": 75,
+        "abi_compatible": false
+      }
+    ],
+    "fragments": [
+      {
+        "address": "00c7f100",
+        "name": "cleanup_native_input_preset_map_completed_key_00c7f100",
+        "library_name": "Unwind@00c7f100",
+        "source": "src/native_input_preset_map_index.cpp",
+        "header": "include/bsp/native_input_preset_map_index.hpp",
+        "status": "complete_logical_completed_key_effect_actual_raw69E090_CurrentCpp_not_Original_frame_action_ABI",
+        "evidence": "Retain established Unwind@00c7f100. Whole Native8B2 LEA ECX,[runtimeEBP-28] and physical E9 tail69E090; Source owns only the logical completed-private-key effect, not Native action/frame ABI. Main handler C7F108 -> FuncInfoDAC198 -> sole DAC190(-1,C7F100), no localtry; handler10B2 and44EH remain readonly. Source helper takes actual completed key plus SAME RawCtx and calls real raw69E090; no EBP reader, fake frame, mapped cleanup, header clear, retry or normal-path replacement. Source guard noexcept(false), arm only after actual E6 success; CurrentCpp nested-unwind failure/OriginalFH3/SEH/RTTI/fault/ABI limits explicit. Current Ghidra CALL_RETURN tails remain untouched; actual encoded JMP proven. docs/OCT16_INPUT_PRESET_MAP_INDEX.md; reports/oct16_input_preset_map_index.json.",
+        "original_abi": "Runtime EBP-based LEA of completed key at-28h then tail69E090; no Source frame signature is recovered.",
+        "source_abi": "Logical fastcall ECX actual completed key/EDX RawCtx reference; actual Source plainRET, no EBP access.",
+        "uncertainty": "New Source RET18/preimage/borrowed-context API and compiler private arrays/frame differ from Original RET4/stack. Actual RawCtx pool/currentCRT/resize/BF7680 feature/DF/SSE2 and existing CRT-parent-provided-callee/comparator/SDK/CurrentCpp domains remain required. Original heap/locale/TLS/provider ownership, native FH3/SEH/RTTI, incidental registers/flags, raw fault scope, binary ABI and game/runtime identity are unproved. C++ secondary-cleanup failure may terminate during unwinding; no noexcept adapter/translation is added. Public raw aliases and transitive child/provider progress are inherited; no whole-call entry-preimage guarantee.",
+        "body": {
+          "start": "00c7f100",
+          "end_inclusive": "00c7f107",
+          "bytes": 8,
+          "starts": 2
+        },
+        "native_bytes": 8,
+        "native_starts": 2,
+        "abi_compatible": false
+      }
+    ],
+    "preserve_existing_records_and_name_prefix": true,
+    "append_commands": 4
+  },
+  "registration": {
+    "file": "cmake/startup.cmake",
+    "target": "bsp_core",
+    "new_source": "src/native_input_preset_map_index.cpp",
+    "exact_new_registration_count": 1
+  },
+  "frozen_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_source_typed.json",
+      "sha256": "cef20833c836cc30d11500c83963e0d13cf89820709837bb6e5ea75b83f2f2b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_source_native_audit.json",
+      "sha256": "c5c4a6b7795c76b8689149572170bb13932dc01ca03df81c59a9f8c989802373"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_source_current_starts.json",
+      "sha256": "aa62683eee73e3958abfe616612dead119fdc46084af9ca130ec50fd1cf57fdd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_source_flows.json",
+      "sha256": "bb6641901d52c40bb96c44f8c8faafab8ff28ee8bc650192bdc1eabd8890695e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_source_typed_flows.json",
+      "sha256": "b10bd5a3316fc20960cb45a0211555bf52288083da003cb4dbf44ee742c037de"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_cmake_coff_review.json",
+      "sha256": "55ae4e6ea7e35fd5d68bdaf1265aec1abf30398dbf7b9be451dc511240de82af"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_cmake_coff_decoded.txt",
+      "sha256": "7f513b7aa75556192138e98156efe437b5aaebcd7919cfded75257c6e1edb424"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_build.log",
+      "sha256": "0bbd43c468cc84f174a936884142c02582375ac36274820d30a70c3adddb9eb3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_build_exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_prebuild_preservation.json",
+      "sha256": "41959df612d25bc46e8f6a751596284d876edc7c2a6e8dfdbeb5738cfd86c0e6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_postbuild_preservation.json",
+      "sha256": "e0e7c13ec9abc94790ce3324ff69a1c2e8bc2d8a84992f9391cfe1e2cbab80f2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\collect_oct16_input_preset_map_index_native.py",
+      "sha256": "1ff0b57aae7c669ae1ae962fafeba83b74ff635e8e4a2dc99cd0e255001127c5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\review_oct16_input_preset_map_index_coff.py",
+      "sha256": "fdc105ad12ac503f290221d473677a6c11b42a6342c1137ef1512dc9b4ce2a42"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\write_oct16_input_preset_map_index_report.py",
+      "sha256": "d6b60ccac62f2ead64227f9cc8fc0f5bf8e6156d3cef5bcab906852d703ad69d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\build\\win32\\bsp_core.dir\\Release\\native_input_preset_map_index.obj",
+      "sha256": "0584f3791febcba5c0c987f8473c52974300bf2c549fea4baf0aff289dfdca68"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\object_archive\\sha256\\f963c33fab76c7a38fdb910054ce9f18910eda0a53c6cea7e140e3d75a9ebee7.obj",
+      "sha256": "f963c33fab76c7a38fdb910054ce9f18910eda0a53c6cea7e140e3d75a9ebee7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\object_archive\\sha256\\4338927a4bed11d965b2d0bf7f1dfcda49d2b60430a5ad7782301af506a18bf2.obj",
+      "sha256": "4338927a4bed11d965b2d0bf7f1dfcda49d2b60430a5ad7782301af506a18bf2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_call_verification.txt",
+      "sha256": "de490d6a93c5735e9ed0df122933b74a1df076cae513b8e80eb79a85c0f42a98"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_call_verification_initial_kind_labels.txt",
+      "sha256": "f3642bc765be781fe07cc66650d7814cd094681ec83c7da20625639df9f0d700"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_ledger_preimages.json",
+      "sha256": "4e4765599904561f0e79dc758a64303ce9582b6c182e5d228537e245e46d153d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_ledger_append_log.txt",
+      "sha256": "53ced1ebb2352130e39cc65439894336b0d0958958f228a91ed25cb27f8b732e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\record_oct16_input_preset_map_index.py",
+      "sha256": "698c25522d84d7331c1776f1b7d82cc1deb8facd97ccaa883881b51226b2e81c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_manual_COFF_review.json",
+      "sha256": "8a269c124ec78af2b51013f58d33535e526b2642d0ba40e111d990d9c6f9373a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_unique_object_CODE_comparison.json",
+      "sha256": "7a846f9710c529f5e9c7e401872adf562ada4c8d25b291aaeacea907171253ff"
+    }
+  ],
+  "preservation": {
+    "prebuild": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_prebuild_preservation.json",
+      "sha256": "41959df612d25bc46e8f6a751596284d876edc7c2a6e8dfdbeb5738cfd86c0e6"
+    },
+    "postbuild": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_postbuild_preservation.json",
+      "sha256": "e0e7c13ec9abc94790ce3324ff69a1c2e8bc2d8a84992f9391cfe1e2cbab80f2"
+    },
+    "all31_unique_preserved_with_explicit_mapping": true,
+    "old_receipts_rewritten": false,
+    "both_objects_archived": true,
+    "old_four_argument_API": "unchanged headers/source included in provider fingerprints",
+    "lazy940f_immutable_and_NOT_Source_ready": true,
+    "all_prior_Root_seals_immutable": true,
+    "all7_unique_CODE341B_and4symbolic_relocations_old_f963_alt4338_currenta62e_equal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_input_preset_map_index_unique_object_CODE_comparison.json",
+      "sha256": "7a846f9710c529f5e9c7e401872adf562ada4c8d25b291aaeacea907171253ff",
+      "whole_file_identity_claimed": false
+    }
+  },
+  "out_of_scope": [
+    "read-only C7F108/BF6B43/EH Source promotion",
+    "Originalframe/EBPreader",
+    "old AV/provider replacement",
+    "SourceCRT closure expansion",
+    "Ghidraannotation/save/export beforefinalapproval",
+    "Main/push",
+    "new tests/probes"
+  ],
+  "limits": "New Source RET18/preimage/borrowed-context API and compiler private arrays/frame differ from Original RET4/stack. Actual RawCtx pool/currentCRT/resize/BF7680 feature/DF/SSE2 and existing CRT-parent-provided-callee/comparator/SDK/CurrentCpp domains remain required. Original heap/locale/TLS/provider ownership, native FH3/SEH/RTTI, incidental registers/flags, raw fault scope, binary ABI and game/runtime identity are unproved. C++ secondary-cleanup failure may terminate during unwinding; no noexcept adapter/translation is added. Public raw aliases and transitive child/provider progress are inherited; no whole-call entry-preimage guarantee."
+}

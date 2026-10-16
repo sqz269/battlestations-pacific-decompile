@@ -1,0 +1,339 @@
+{
+  "packet": "cc12_native_gui_layer_type_producer_114",
+  "status": "explicit_source_same_domain_layer_role_build_tested_unactivated",
+  "baseline": "1a09ad876047b39f028b795a6066aa567bc649b4",
+  "original": {
+    "entry": "00cd73f0",
+    "end_exclusive": "00cd743f",
+    "bytes": 79,
+    "instructions": 16,
+    "direct_calls": 2,
+    "live_equals_disk": true,
+    "sha256": "834216a540048a72140a02574ae495b1bb4fd04b913064b25bb89f850862c343",
+    "exe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "exe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "prior_crt_slot_evidence": "packet112: 00CE349C -> 00CD73F0; no repeat query of other profiles"
+  },
+  "source_api": {
+    "initializer": "GameNativeGuiTextProcess::initialize_layer_type_once_00cd73f0(TypeIdCounterLifetime&, LightTypeBootstrapStorage)",
+    "lineage": "GameNativeGuiTextProcess::layer_lineage_00f8bf88() const -> const volatile uint32_t (&)[3]",
+    "owner": "Same existing noncopyable GameNativeGuiTextProcess; sole private Layer guard, 16B descriptor and completion State appended.",
+    "admission": "Completed pool AND Text startup; exact stored counter object/root descriptor/root guard identity checks before Layer native-cell effects; same-domain completed repeat only.",
+    "scope": "Explicit Source capability, no normal-host call or new registration.",
+    "exposure": "Return SAME Layer member only after complete return; no copied query array/default/fixed IDs or second counter/root."
+  },
+  "ordered_body": [
+    {
+      "source": "Entered Source metadata before guard read",
+      "object_offset": "73 then 9B",
+      "native_relation": "Source policy, not Native completion proof."
+    },
+    {
+      "source": "BYTE guard=1; DWORD name=D5CB0C",
+      "object_offset": "AC then B8",
+      "native_sites": [
+        "00cd73fe",
+        "00cd7405"
+      ]
+    },
+    {
+      "source": "Existing AA8200 adapter on SAME Element member",
+      "object_offset": "CB",
+      "native_sites": [
+        "00cd740f"
+      ]
+    },
+    {
+      "source": "BOTH current volatile Element IDs captured before either Layer parent store",
+      "object_offset": "D0 / D5 before DB / E1",
+      "native_sites": [
+        "00cd7414",
+        "00cd7419",
+        "00cd741f",
+        "00cd7424"
+      ]
+    },
+    {
+      "source": "SAME real counter getter then current owner+4 read",
+      "object_offset": "EB then F0",
+      "native_sites": [
+        "00cd742a",
+        "00cd742f"
+      ]
+    },
+    {
+      "source": "Unsigned modulo32 increment to SAME counter owner+4 before own-ID publication",
+      "object_offset": "F6 before F9",
+      "native_sites": [
+        "00cd7435",
+        "00cd7438"
+      ]
+    },
+    {
+      "source": "Returned Source completion metadata after final own-ID store",
+      "object_offset": "FF after F9",
+      "native_relation": "Source policy, not Native metadata."
+    }
+  ],
+  "failure_policy": {
+    "entered_failure": "Layer state remains entered/threw; no replay or lineage exposure; native_operation_interrupted includes it.",
+    "reentry": "Entered state rejects before another Native guard/name/counter effect.",
+    "unexplained_guard": "Unattempted nonzero private guard is outside loader-zero invariant; attempt stays sticky and throws without exposing lineage. Original itself skips on nonzero guard.",
+    "rollback": "None; guard/name, parent and reached Element/root/counter publication/registration effects remain sticky.",
+    "exceptions": "Ordinary Source C++ exceptions only; no Native FH3/SEH/nonlocal/hardware-fault claim."
+  },
+  "lifetime_contract": {
+    "required": "SAME genuine live retained VFS counter/root/host/services through callbacks, uses and shared shutdown; returned counter owner nonnull at +4; stable disjoint private cells and metadata.",
+    "serialization": "External serialization covers startup, reentry, lineage use and domain retirement.",
+    "retirement_limit": "Stored identity pointers and completed pool/Text metadata do not retain or re-admit a retired borrowed counter domain; no late initialization after retirement.",
+    "authority_limit": "Source backing objects, not an Original fixed-VA owner. No numeric type ID or absolute CRT timing equivalence."
+  },
+  "primary_calls": [
+    {
+      "address": "00cd740f",
+      "native": "00aa8200",
+      "function": "00cd73f0",
+      "role": "Original Element initializer after guard/name."
+    },
+    {
+      "address": "00cd742a",
+      "native": "006fac20",
+      "function": "00cd73f0",
+      "role": "Original SAME counter getter after both captured parent stores."
+    }
+  ],
+  "source_hashes": [
+    {
+      "path": "include/bsp/game_native_gui_text_process.hpp",
+      "bytes": 5524,
+      "sha256": "215be8dcc255664c7f50a75ea9287012d1b8090ba860f111d341983819419e47"
+    },
+    {
+      "path": "src/game_native_gui_text_process.cpp",
+      "bytes": 8246,
+      "sha256": "84fe56b3b40589a831dfbdf57d289d9f85dc91ef41bb5a239b81e43d462c8f2f"
+    }
+  ],
+  "unchanged_dependency_hashes": [
+    {
+      "path": "include/bsp/gui_widgets_cc13.hpp",
+      "bytes": 92980,
+      "sha256": "2a889c7f79cdfa87e99283c4b0286eed4911845410425a38918cb39aeecb63b7"
+    },
+    {
+      "path": "include/bsp/light_type_bootstrap.hpp",
+      "bytes": 3214,
+      "sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f"
+    },
+    {
+      "path": "src/light_type_bootstrap.cpp",
+      "bytes": 5880,
+      "sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_application.hpp",
+      "bytes": 3022,
+      "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f"
+    },
+    {
+      "path": "src/game_native_vfs_application.cpp",
+      "bytes": 8470,
+      "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+    },
+    {
+      "path": "include/bsp/native_vfs_owner_services.hpp",
+      "bytes": 3548,
+      "sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128"
+    },
+    {
+      "path": "src/native_vfs_owner_services.cpp",
+      "bytes": 1236,
+      "sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c"
+    },
+    {
+      "path": "include/bsp/game_native_type_storage.hpp",
+      "bytes": 7900,
+      "sha256": "fc659c2705ef9899c150106ce1bfb7291fc23046f689528f6ec379d48d4d7337"
+    },
+    {
+      "path": "src/game_native_type_storage.cpp",
+      "bytes": 5640,
+      "sha256": "87958d36dc6c7480e73992698c3c9dac86bc153f7033fc0e55a9833fd2ea5b4b"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 150204,
+      "sha256": "c33d647e332f75566313a855a24a2bcb50fc1c383fc74398f3cbe5429c2b762c"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 262188,
+      "sha256": "dcc4c0e9d9f1900cab9aba9bbea550f1de737e529d634099f471abf1f90da3ce"
+    }
+  ],
+  "ledger_hashes": [
+    {
+      "path": "config/names/00cd0000.jsonl",
+      "bytes": 106930,
+      "sha256": "632acb70124817a95b03e765e1907bec3ab9cb0ec8f9ac4d865be3d08978bb81"
+    },
+    {
+      "path": "config/reconstruction/00cd0000.jsonl",
+      "bytes": 147746,
+      "sha256": "fd7a6eae3aa2bc59a71d9c4258e68c3f78c867efbbc38f04fcc7d7a9dcf10a7a"
+    }
+  ],
+  "reviews": {
+    "root_source_api": "PASS",
+    "root_strict_optimized_initializer": "PASS",
+    "root_strict_optimized_getter_interrupted": "PASS"
+  },
+  "build": {
+    "strict": {
+      "exit_code": 0,
+      "compiler": "MSVC Win32",
+      "flags": "/std:c++17 /EHsc /MD /O2 /W4 /WX /Gy /Zc:inline /DNDEBUG /Iinclude /c",
+      "object": {
+        "path": "local/cc12_native_gui_layer_type_producer_114.obj",
+        "bytes": 26937,
+        "sha256": "bc1c4233c9bc7783f8db2df6ab5bef91a5b97839800eb7d520f6cc72a06ffe7b"
+      },
+      "assembler": "local/cc12_native_gui_layer_type_producer_114_object.asm",
+      "dumpbin": "local/cc12_native_gui_layer_type_producer_114_object_disasm.txt",
+      "slices": [
+        {
+          "method": "initialize_layer_type_once_00cd73f0",
+          "disasm_line_start": 536,
+          "disasm_line_end": 636,
+          "slice": "local/cc12_native_gui_layer_type_producer_114_optimized_slice.txt"
+        },
+        {
+          "method": "layer_lineage_00f8bf88",
+          "disasm_line_start": 856,
+          "disasm_line_end": 872,
+          "slice": "local/cc12_native_gui_layer_type_producer_114_lineage_slice.txt"
+        },
+        {
+          "method": "native_operation_interrupted",
+          "disasm_line_start": 874,
+          "disasm_line_end": 889,
+          "slice": "local/cc12_native_gui_layer_type_producer_114_interrupted_slice.txt"
+        }
+      ]
+    },
+    "canonical": {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1",
+      "exit_code": 0,
+      "log": "local/cc12_native_gui_layer_type_producer_114_build.log",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 8.17,
+      "checks": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "production_object": {
+        "canonical_object": "build/win32/bsp_game.dir/Release/game_native_gui_text_process.obj",
+        "canonical_object_sha256": "d7cc66e1bf0dd344fe6b59af7a0d0a0b595c373caad615af13e771e5ba6757a3",
+        "private_copy": "local/cc12_native_gui_layer_type_producer_114_canonical.obj",
+        "symbol_lines": [
+          "0CF 00000000 SECT3B notype ()    External     | ?initialize_layer_type_once_00cd73f0@GameNativeGuiTextProcess@game@bsp@@QAEXAAVTypeIdCounterLifetime@3@ULightTypeBootstrapStorage@3@@Z (public: void __thiscall bsp::game::GameNativeGuiTextProcess::initialize_layer_type_once_00cd73f0(class bsp::TypeIdCounterLifetime &,struct bsp::LightTypeBootstrapStorage))",
+          "0D3 00000000 SECT41 notype ()    External     | ?layer_lineage_00f8bf88@GameNativeGuiTextProcess@game@bsp@@QBEAAY02$$CDIXZ (public: unsigned int const volatile (& __thiscall bsp::game::GameNativeGuiTextProcess::layer_lineage_00f8bf88(void)const )[3])",
+          "0D4 00000000 SECT44 notype ()    External     | ?native_operation_interrupted@GameNativeGuiTextProcess@game@bsp@@QBE_NXZ (public: bool __thiscall bsp::game::GameNativeGuiTextProcess::native_operation_interrupted(void)const )"
+        ],
+        "registration": [
+          {
+            "path": "cmake/startup.cmake",
+            "line": 2133,
+            "text": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_game PRIVATE src/game_native_gui_text_process.cpp)"
+          },
+          {
+            "path": "build/win32/bsp_game.vcxproj",
+            "line": 458,
+            "text": "<ClCompile Include=\"J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\game_native_gui_text_process.cpp\" />"
+          }
+        ],
+        "limit": "Production object compiled by canonical build; no new initializer or getter invocation and no claim unused methods survive final executable dead-code removal."
+      }
+    },
+    "new_tests": 0,
+    "probe_added": false,
+    "new_initializer_or_getter_executed": false,
+    "native_body_executed": false,
+    "native_differential_added": false,
+    "source_abi_limit": "Strict new Source member RET24h (counter reference + reference aggregate), Original no arguments/plain RET; not a drop-in binary replacement."
+  },
+  "annotation": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_wrappers": true,
+    "only_address": "00cd73f0",
+    "old_name": "CG_static_init_00cd73f0",
+    "new_name": "BSP_GuiLayer_TypeIdStaticInit",
+    "name_is_hypothesis": true,
+    "transport": "locked tools/ghidra_annotate.py --apply; old history/prefix preserved; save; verified export refresh",
+    "history_original": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\local\\ghidra-annotations-20261016T063015Z.json",
+    "history_copy": {
+      "path": "local/cc12_native_gui_layer_type_producer_114_annotation_history.json",
+      "bytes": 1433,
+      "sha256": "53c4ad115863fa6e66ce4b4ef6d497f6355d7c7ce24bf4cc2ac65fae4172cb5a"
+    },
+    "exports": [
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00cd73f0\\assembly.txt",
+        "path": "local/cc12_native_gui_layer_type_producer_114_exports/assembly.txt",
+        "bytes": 555,
+        "sha256": "98ad5f979b473891c626e481ecb5519c8cd43058f6262040c2940e626c9b115a"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00cd73f0\\decompiled.c",
+        "path": "local/cc12_native_gui_layer_type_producer_114_exports/decompiled.c",
+        "bytes": 656,
+        "sha256": "ba854209bc5f8b4b3a7acbbeda02ca0bbf6c3ce5b56c262b6b97770cd10003d3"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00cd73f0\\metadata.json",
+        "path": "local/cc12_native_gui_layer_type_producer_114_exports/metadata.json",
+        "bytes": 270,
+        "sha256": "bb21b57931ecf4fc82f0b7ebc5c02131b7ef95e64e55130e4acbdbef6c11097a"
+      }
+    ],
+    "preservation": {
+      "names_unowned_rows_unchanged": true,
+      "names_old_owned_records_preserved": true,
+      "names_exactly_one_new_owned_record": true,
+      "reconstruction_unowned_rows_unchanged": true,
+      "reconstruction_old_owned_records_preserved": true,
+      "reconstruction_exactly_one_new_owned_record": true,
+      "prior_live_inventory_comment_preserved": true,
+      "new_evidence_in_live_comment": true,
+      "new_descriptive_name": true
+    }
+  },
+  "verification": {
+    "call_map": {
+      "checked_rows": 2,
+      "failed_rows": 0,
+      "exit_code": 0,
+      "scope": "Original whole-CD73F0 direct call sites only, not Source/native runtime equivalence."
+    },
+    "source_diff_check": true,
+    "no_main_or_cmake_edits": true,
+    "no_activation": true,
+    "no_post_seal_build": true
+  },
+  "document": {
+    "path": "docs/CC12_NATIVE_GUI_LAYER_TYPE_PRODUCER_114.md",
+    "bytes": 6628,
+    "sha256": "f2c7d5fd597a8322593ee8dc65ac59c98b9911dc952ae326d0b5842a652f42be"
+  },
+  "remaining": [
+    "Actual Original fixed-VA ownership",
+    "Original absolute CRT timing and numeric ID order",
+    "Upper Page composition",
+    "Production activation and game/runtime validation"
+  ],
+  "artifact_manifest": "local/cc12_native_gui_layer_type_producer_114_artifact_manifest.json"
+}

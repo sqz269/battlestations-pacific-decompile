@@ -1,0 +1,55 @@
+{
+  "schema": "bsp.cc12.native_crt_wcsncmp.primary.v1",
+  "status": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
+  "Source_commit": "c590710ae230135ead4f96979a915e00483cc4a4",
+  "Source": "src/native_crt_wcsncmp.cpp",
+  "header": "include/bsp/native_crt_wcsncmp.hpp",
+  "documentation": "docs/NATIVE_CRT_WCSNCMP.md",
+  "Original_name_retained": "_wcsncmp",
+  "whole_ordinary_functions": 1,
+  "Source_credit": 1,
+  "primary_author": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcsncmp_integration_20261016\\primary_author_inputs.DATA.json",
+    "bytes": 2540,
+    "sha256": "aeae2ff2ba43fce32a5425033d590cd8a4621951537da179fd83387cbc4447ee"
+  },
+  "primary_peer": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcsncmp_integration_20261016\\primary_peer_inputs.DATA.json",
+    "bytes": 2963,
+    "sha256": "d6f1c63f88547ca9835d872fff72450bfbd25eca6a22070b7aae00d44c5e8d65"
+  },
+  "peer_tool_chronology": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcsncmp_integration_20261016\\primary_peer_clarification.DATA.json",
+    "bytes": 1294,
+    "sha256": "d8d4af9b3b528001aa6da0a4285de3f1937dd67010d12e4ac47b1bd59d4b7d39"
+  },
+  "Root_full_Source_object_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcsncmp_integration_20261016\\primary_Source_object_review.DATA.json",
+    "bytes": 3119,
+    "sha256": "2cd41b4917126ce6c6d74882c61e53f4f95a8f2ef12499a0c1a837b11690a01b"
+  },
+  "strict_compiles": 1,
+  "precompiler_failures": 1,
+  "actual_compiler_inputs": 2,
+  "before_candidates": 9249,
+  "worker_baselines": 0,
+  "Main_registered": true,
+  "Main_build": "pass_3_existing_CTests",
+  "actual_compiler_archive_gate": "pass",
+  "contract": [
+    "New target-specific MSVC Win32 ordinary interface: int __cdecl bsp::compare_native_crt_wide_prefix_00bfdcb7(const void* actual_left, const void* actual_right, unsigned int count). Keep correct Original library name _wcsncmp. Pointers/int/count32bits, BYTE8bits, little-endian unsigned WORD16 code units. No Unicode scalar/surrogate/normalization/casefold/locale/collation semantics.",
+    "Count0 accepts any pointer values including null and returns0 before payload reads. Positive count requires genuine live determinate stable storage for ALL actually reached two-byte reads, including BOTH final WORD rereads. Do not require an entire count-sized extent when an earlier mismatch/LHS zero stops. Reached reads wholly inside the actual allocation; reached pointer advances/endpoints within or one past it and nonwrapping. No dereference of one-past, arbitrary signed count cap, padding, initial alignment, or typed wchar/uint16 ownership condition.",
+    "Stable identical and overlapping input regions are allowed. Original DEC at00BFDCCA writes its own by-value count argument home each visited iteration. A new typed API uses ordinary unsigned local count state; Original mutable argument-home/stack alias protocols and their writes/fault behavior are explicitly outside equivalence. Do not fabricate an argument block, native stack identity or Source parameter binding to that home.",
+    "After positive-count entry, decrement unsigned remaining BEFORE preliminary payload reads. If the new remaining is0, go directly to the final pair. Thus original count1 has exactly the final LHS WORD then RHS WORD reads, no preliminary pair.",
+    "When remaining is nonzero, read current LHS WORD. If zero, skip preliminary RHS and go to final pair. Otherwise read current RHS WORD for equality. On mismatch go to final pair. Only equal nonzero preliminary values advance each actual pointer by2 and repeat.",
+    "Every positive-count exit always freshly reads current LHS WORD then current RHS WORD, including after preliminary LHS zero or mismatch. Subtract zero-extended integer16 values in signed32: exact result [-65535,65535], not normalized sign or signed16 subtraction. Normal last-count position has final pair only; LHS-zero position has LHS/preliminary then LHS/RHS final; mismatch has LHS/RHS preliminary then LHS/RHS final.",
+    "Approve private addressed MOVZX WORD16 helper with MSVC Win32 inline assembly over genuine possibly unaligned raw byte storage, returning a fully initialized zero-extended32bit value. Spell reads as separate sequenced operations and preserve final rereads; actual strict/Main objects must verify widths, order, short circuit and unsigned decrement before loads. No invented typed WORD object or portable ISO alias/lifetime claim.",
+    "No SDK wcsncmp/memcpy/search, byte-only substitution, copied storage, validation/fallback/provider/global/TLS/caller binding. Exclude invalid reached reads, wrapping advances, mutable/indeterminate payload, lifetime changes, concurrency, MMIO/volatile observation and faults. Preserve Original RHS-before-LHS pointer-home-load fact in documentation, without claiming new compiler physical home/fault order or stack/register/flag/segment/EH/binary ABI/runtime/game identity.",
+    "Worker owns only four Source files and local evidence; Root owns registration/ledger/Ghidra/Main. One genuine strict compile with actual before input pins and complete actual code/data/symbol/relocation/metadata review. No separate unregistered whole-worker baseline requested, no tests/probes/body execution; Root registered Main build and actual Main object/archive gates remain pending."
+  ],
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "game_validated": false,
+  "Main_gate": "pass",
+  "Main_validation": "reports/cc12_native_crt_wcsncmp_Main_validation.json"
+}

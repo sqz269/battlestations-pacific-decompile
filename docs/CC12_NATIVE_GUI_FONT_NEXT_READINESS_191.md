@@ -1,0 +1,11 @@
+# Next raw Font and FrameBox contracts (191)
+
+Readonly188/189/190 are fully reviewed and captured. They add no Source implementation or Native body credit, and require no new build, test, probe or Ghidra mutation.
+
+Whole AD4C30 is the next Font-load Source packet over the genuine existing providers, including185 unsigned-WORD insertion and186 raw WORD reads. Its persistent frame must retain the actual header roles, separate image acquisitions, current scalar/x87/SSE chronology and seven string-only cleanup actions. Pair8 has a fully defined preserved upper-WORD preimage. A single pending0x20-byte glyph pointer is justified only on the documented coherent serialized unique-WORD tree/private-pair domain; it neither reads the ignored inserted flag nor invents cleanup. Wider reentry, orphan transport, complete Font retirement and production/reload admission remain separate.
+
+Whole AA1A40 can compose the actual F8C188 pool, complete default96 and copy184. It needs persistent successful-copy companion ownership and an exact post-constructor-unwind slot-return disposition. Native may return a slot while orphaned material Box credits remain; no count test, protective retain, extra destructor or later stale-Box access is justified. Root read all40 factory and31 default instructions and independently checked all7 fresh spans362B, including both8B actions, the16B map and36B FuncInfo. Hex slab units are explicit.
+
+AD40D0 is a complete99B/38-start alias of existing869A20. Root read the full Native schedule and genuine naked Source provider/SDK bridge, then independently compared all99 bytes: only the two complete rel32 operands differ, both resolving BF6713. A direct ordinary Source adapter can reuse that body. Font erase/range/complete retirement require their own body and EH proofs.
+
+All465 worker188 artifacts,69 worker189 artifacts and49 worker190 payloads plus24 observations were rehashed and captured. The immutable Root archive has640 payloads, SHA256 `d84c2eb59982f4d6067793782039d327be07c47b8505e236bbdb9de7fe4b35b8`; manifest `8dfe5dad636e52c10486c648b576c8af33f1b9e4962ef62d2c8adba13c0df0c0`. The reports preserve accepted pre-review hashes and final seal pins. Source187 remains separately sealed and build-tested at838861904; these readonly commits do not change that Source. Main publication remains in the existing coordinator order.

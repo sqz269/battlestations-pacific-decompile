@@ -1,0 +1,88 @@
+{
+  "schema": "bsp.cc12.native_crt_strpbrk.readiness.v1",
+  "status": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
+  "address": "00bff1d0",
+  "Original_library_name": "_strpbrk",
+  "source_ready": true,
+  "Source_authorized": true,
+  "Source_implemented": true,
+  "Source_credit": 1,
+  "owned_range_inclusive": [
+    "00bff1d0",
+    "00bff20f"
+  ],
+  "owned_bytes": 64,
+  "owned_instructions": 33,
+  "body_sha256": "a16dfe25ad12e05a7697f94c0a3001966cf8ff212eb4cfd4156cbfa82b56f9b5",
+  "calls": [],
+  "author_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\NativeCrtStrpbrkReadiness01\\root_manifest.json",
+    "bytes": 10634,
+    "sha256": "44ff38541e2ec31711e371e6431f20a1b78f30242ff80f7c00f2a84da6ed5394"
+  },
+  "peer_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\NativeCrtStrpbrkIndependentReview01\\root_manifest.json",
+    "bytes": 6143,
+    "sha256": "b18b395a8bad62a3983866d4d991384bc1bdd5f0bcfe08fa370a65f36918ca00"
+  },
+  "author_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\NativeCrtStrpbrkReadiness01\\readiness.json",
+    "bytes": 7955,
+    "sha256": "e73e2fca48da34d39983ac198485577b05f08a7bf8c0a13bd419c43ea6204862"
+  },
+  "independent_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\NativeCrtStrpbrkIndependentReview01\\readiness_recommendation.json",
+    "bytes": 4539,
+    "sha256": "3dafb2e82b14ad8157f57c875183e6c7f12b0e13dfce3bc0ec3fc398429eeb07"
+  },
+  "Root_author_authentication": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strpbrk_readiness_primary_20261016\\verified_author.DATA.json",
+    "bytes": 3631,
+    "sha256": "4f99667b7d71616c6cf9a89c280e1b5e513e0d7ef8925dfd21fb31d47598bc65"
+  },
+  "Root_peer_authentication": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strpbrk_readiness_primary_20261016\\primary_peer_inputs.DATA.json",
+    "bytes": 2525,
+    "sha256": "ca8d363aa77218bc2c4f73fcc38cd35658cdc8c2e81c1459e719f129228edb4f"
+  },
+  "Root_review_scope": "All33 Original instruction rows, complete bitmap/read-order/NUL/pointer/domain/ABI exclusions personally reviewed. Author38+peer15files,137currentpins and13+11genuinepairedtransportprovenance authenticated. Author/peer each independently verified existingbsp.gpr/program and live/listing/disk equality; Root uses retained complete listing and current hashes.",
+  "Source_packet": "cc12_native_crt_strpbrk_00bff1d0",
+  "exact_future_files": [
+    "include/bsp/native_crt_strpbrk.hpp",
+    "src/native_crt_strpbrk.cpp",
+    "docs/NATIVE_CRT_STRPBRK.md",
+    "reports/native_crt_strpbrk.json"
+  ],
+  "contract": [
+    "New MSVC Win32 default potentially throwing API void* __cdecl bsp::find_native_crt_first_member_00bff1d0(void* actual_source,const void* actual_control). Keep correct Original library name _strpbrk. BYTE8, pointer/unsignedint32; unsigned byte values0..255, no Unicode/locale/codepage/case/signed-char interpretation.",
+    "Require genuine live stable determinate readable control bytes through finite first NUL, always read completely before any source payload even for empty source. Source needs only reached readable bytes through first NUL or first nonzero control member; early hit requires no unused later terminator or full string extent. No null guard/count-zero exception or runtime validation.",
+    "Admit raw unaligned/interior/prefix/read-only/identical/overlapping inputs and ordinary stable caller-owned stack byte regions. Each input has its own genuine allocation; actual reached advances do not wrap and stay within or one past it, including terminal nonzero source increment; never dereference one-past. No padding, typed wider input objects, signed cap or copied allocation.",
+    "Read every control BYTE once per visited position through NUL, set only nonzero control bits in a genuine private256bit bitmap; duplicate values retain all input reads and bit updates. Control NUL never sets bit0. Then read each reached source BYTE once. Explicit source NUL stop precedes membership and its own advance and returns null; nonzero advances actual cursor before membership. First member returns genuine saved current source pointer without payload reread; absent member continues. Empty control still scans source; overlap can read the same storage once in each separate phase.",
+    "Result is the actual borrowed first-member pointer or null, with no ownership/lifetime/access-permission transfer. Spell saved genuine current pointer and explicit cursor advance; no before-base transient pointer or pointer subtraction needed. Compiler scheduling of private cursor variables is not Original instruction/fault identity and must be explained in actual artifact review.",
+    "Approve separately sequenced volatile unsigned BYTE input reads plus eight separate genuine volatile unsigned32 scalar words explicitly initialized0. Use unsigned index byte>>5 and mask1U<<(byte&31), bounded binary branch selection of one actual private word. Avoid array/aggregate GS buffer, switch/table, helper function, compiler memset/provider. Each selected word and shift must be proven bounded by actual full object. No invented native scratch parameter or frame identity.",
+    "No SDK search/copy/strpbrk/memcpy, fallback, global/TLS/provider, validation, caller binding, or call to the new strcspn interface. No extra final read, after-stop read, early empty-input shortcut or input stores. Native frame/home/saved-register/private-bitmap alias protocols, faults, MMIO/volatile protocols, mutation/concurrency and lifetime changes excluded. No Original physicalABI/register/stack/flags/segment/EH/instruction/bus/fault/runtime/game credit.",
+    "Worker owns exactly4Source/header/doc/reportfiles and new local evidence. Root owns sharedregistration/ledgers/names/supportedGhidraannotation/export/Main. Before Sourcewrite claim entry, whole64Brange and4files. One sole strictMSVCWin32compile after genuinefresh beforepins/actualdependencyclosure, all code/sections/symbols/aux/strings/relocs/frame/provider review. Future normalMain/Oy- object/archive gate separate; no forcedmatchingcompile, workerbaseline, tests/probes/selectedbodyexecution/SDKcomparison."
+  ],
+  "approved_private_target_mechanism": "Sequenced volatile unsignedBYTE inputs/eight explicitly-zero genuine private volatile unsigned32 scalars/bounded binary word selection, no native scratch identity.",
+  "qualifications": [
+    "All137 named inputs precede discovery; exact diskbody pin/whole-range lease precede substantive analysis. Later static and seal tools retain actual separate stages.",
+    "Raw storage/control-first/NUL-before-BT and genuine borrowed pointer; frame/home/scratch alias and fault protocols excluded, ordinary stable caller stack storage/input aliases admitted.",
+    "No global saved-analysis immutability; no Source/compiler/new tests/probes/selectedbodyexecution/ABI/caller/runtime/game claim.",
+    "Readinessonly, no compiler/tests/probes/SDKcomparison/bodyexecution/Ghidrawrites/sharedSource or metadata edits; no movingMainmerge.",
+    "Twoindexedcallerlabels only: str_find_aux00A62D10/__setlocale_nolock00C024E6; theirbodies/domains notread/promoted. CompleteOriginal calls0.",
+    "No OriginalphysicalABI/frame/home/flags/register/segment/EH/fault/runtime/gameidentity or application/caller/provider promotion.",
+    "Author137before-discovery pins, body/rangebeforeanalysis and distinctlaterstatic/sealtools verified. Frozen38files/327priorsealedfiles preserved; unrelatedlaterhead/Source4 workingstate separatelyqualified.",
+    "Own preliminary combineddisk/doc display30cf0f truncated; actualmarker retained. Complete ownlive33rows/pseudocode and omittedmiddle docparagraphs read separately; no synthetic receipt/replay.",
+    "Own currentcapture andlaterreview eachpinnedbefore actualuse, not historicalselfpins. No recognized localcallsite/native reportrows or doccallclaims; no livecallchecker replay required/undertaken."
+  ],
+  "Main_gate": "pass",
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "game_validated": false,
+  "Source_commit": "912935be2873bddc8555c03f3812ce46428f46da",
+  "primary_review": "reports/cc12_native_crt_strpbrk_primary_review.json",
+  "Main_registered": true,
+  "Main_build": "pass_3_existing_CTests",
+  "actual_compiler_archive_gate": "pass",
+  "Main_validation": "reports/cc12_native_crt_strpbrk_Main_validation.json"
+}

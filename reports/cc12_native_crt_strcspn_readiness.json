@@ -1,0 +1,97 @@
+{
+  "schema": "bsp.cc12.native_crt_strcspn.readiness.v1",
+  "status": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
+  "address": "00bf9a50",
+  "Original_library_name": "_strcspn",
+  "source_ready": true,
+  "Source_authorized": true,
+  "Source_implemented": true,
+  "Source_credit": 1,
+  "owned_range_inclusive": [
+    "00bf9a50",
+    "00bf9a95"
+  ],
+  "owned_bytes": 70,
+  "owned_instructions": 35,
+  "body_sha256": "c3a436646e0acf44b28d2087806b0dcfc4869473f1b1b8cd1e0c01d07e16cc3c",
+  "calls": [],
+  "author_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\NativeCrtStrcspnReadiness01\\root_manifest.json",
+    "bytes": 13449,
+    "sha256": "8d07ada4575fc9d4cedd1468bd5519a7af1a7a91369f36b11a3711260e7c1ce6"
+  },
+  "peer_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\NativeCrtStrcspnIndependentReview01\\root_manifest.json",
+    "bytes": 6005,
+    "sha256": "a542ab517cd62b04f0beae1b93c1d35bc11079cf556ddacae15d08e09fc2267a"
+  },
+  "author_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\NativeCrtStrcspnReadiness01\\readiness.json",
+    "bytes": 13304,
+    "sha256": "4598fb94d387f6b188279423836d32b9336cae82f494f08dfae05aba4b3842ba"
+  },
+  "independent_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\NativeCrtStrcspnIndependentReview01\\readiness_recommendation.json",
+    "bytes": 5015,
+    "sha256": "8a11b8e51d944ec10d634e0bff889f6db8c706a71e371492b3ee14ff4b189559"
+  },
+  "Root_author_authentication": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strcspn_readiness_primary_20261016\\verified_author.DATA.json",
+    "bytes": 3544,
+    "sha256": "6b22cfe3676c993e82c9a6392b78b5aca8ddcdbe99d8eac937333d0fb8afe09e"
+  },
+  "Root_peer_authentication": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strcspn_readiness_primary_20261016\\primary_peer_inputs.DATA.json",
+    "bytes": 2995,
+    "sha256": "99cce6e4b4accf5afe796679eb77cec7f1ae7c2069a0362eda6fcb5e8b5df5ec"
+  },
+  "Root_review_scope": "Whole35retainedOriginalrows and complete contract/readorder/bitmap/register/alias proof personally read; author38+peer15files and7+14genuinepairedtransportprovenance/117currentpins independently authenticated. Author and peer each verified existingbsp.gpr/program full live/disk bytes/listing. Root uses retainedlisting/currenthashes; no new body execution or Ghidra writes.",
+  "Source_packet": "cc12_native_crt_strcspn_00bf9a50",
+  "exact_future_files": [
+    "include/bsp/native_crt_strcspn.hpp",
+    "src/native_crt_strcspn.cpp",
+    "docs/NATIVE_CRT_STRCSPN.md",
+    "reports/native_crt_strcspn.json"
+  ],
+  "contract": [
+    "New MSVC Win32 default potentially throwing API: unsigned int __cdecl bsp::count_native_crt_prefix_excluding_00bf9a50(const void* actual_source,const void* actual_reject). Keep correct library name _strcspn. BYTE8, pointer/unsignedint32; no signed-char, Unicode/locale/codepage/case/collation interpretation.",
+    "MSVC Win32, BYTE8, pointer/unsigned int32. Read external data as unsigned BYTE values0..255; no signed-char, Unicode, locale, codepage, case or collation interpretation.",
+    "Require a finite genuine live stable determinate readable reject byte sequence through its first NUL. It is always completely read first, even for an empty source string. Require genuine live stable readable source bytes only through the first reached NUL or nonzero reject member. An earlier reject hit needs no unused later-NUL extent.",
+    "Each reached BYTE read lies in its actual allocation. Reject advances and source advances are nonwrapping and stay within or one past their corresponding allocation. Original advances source after every nonzero byte before membership, including a terminal hit; permit that one-past endpoint but never dereference it.",
+    "Admit unaligned byte addresses, interior regions and stable identical/overlapping/read-only source/reject aliases. No padding, typed WORD/DWORD input ownership or arbitrary signed-count cap. Inputs need not share an allocation with each other.",
+    "Use a genuine private zero-initialized256-bit bitmap. Read every reject BYTE exactly once in order through NUL; set bits only for nonzero reject bytes, including duplicate-bit writes without skipping external reads. Bit0 remains clear.",
+    "After reject NUL, read source BYTEs once in order. Test source NUL before membership; NUL returns current prefix count without advancing or reading bitmap. Nonzero advances the genuine source pointer by one before membership. First set bit returns the prefix count; an absent bit continues.",
+    "Return exact unsigned32 number of preceding nonzero nonmembers, excluding the terminal NUL/reject member. The finite nonwrapping ordinary prefix/count must fit unsigned32. No normalized sign, signed subtraction, pointer subtraction or arbitrary INT_MAX cap.",
+    "No payload writes, final rereads, scan after stop, source pre-read before reject completion, early empty-string/reject shortcut, copied input, SDK strcspn/memcpy/search, runtime validation, fallback, provider, global/TLS or caller binding.",
+    "Exclude faults, invalid/indeterminate reached bytes, mutation/concurrency, lifetime changes, MMIO/volatile protocols and native callee bitmap/frame/argument-home/saved-register self-alias protocols. Do not invent native scratch-block identity or a Source parameter for it. Ordinary caller-owned stack storage remains admissible when stable and disjoint from the callee frame; source/reject may still alias each other.",
+    "Approve separately sequenced volatile unsigned BYTE payload reads over genuine passed storage, plus genuine private8unsigned32 bitmap objects with bounded unsigned word index byte>>5 and mask1U<<(byte&31). Initialize all8words explicitly (volatile private words are permitted) to avoid an introduced SDK/memset/provider dependency. No portable physical-native-frame or scratch-identity claim. Strict/Main full artifact review must verify initialization, all bitmap accesses/index bounds, payload widths/read order/stops, exact unsignedcount, all frame/metadata/symbol/provider closure.",
+    "Worker owns exactly4Source/header/doc/reportfiles and new local evidence; Root owns registration/ledgers/names/supportedGhidraannotation/export/Main. Before any Sourcewrite claim entry, entire70Brange and all4files. One actual strictMSVCWin32compile with genuine freshbeforepins/actualdependencyclosure and whole strictobject review. No separate wholeworkerbaseline, newtests/probes/selectedbodyexecution/SDKcomparison. Root independentSource/compiler/normalMainactualvariant/archive gates remain."
+  ],
+  "approved_private_target_mechanism": "Sequenced volatile unsignedBYTE reads plus bounded genuine private8unsigned32bitmap; explicit zero initialization, no native scratch parameter.",
+  "qualifications": [
+    "Discovery boundary query preceded complete pins; corrected Gitpath preflight/failure and fresh fullrange pins before substantive analysis retained.",
+    "Supported external Root Ghidra save qualified; no global program/database immutability claim.",
+    "Private callee-frame/home/bitmap alias protocols excluded; stable caller-owned stack storage and input/input aliases remain admissible.",
+    "Readiness only; no Source/compiler/new tests/probes/body execution/ABI/caller/runtime/game proof.",
+    "Rejectfirst inclNUL even sourceempty; sourceNUL beforeBT; nonzero sourceadvance before membership inclterminalhit, endpoint may beonepast butnonwrapping andneverread.",
+    "Stable genuine determinate reachedBYTE allocations; aliases/read-only/callerstack admitted, no fullsourceNULextent afterearlymember.",
+    "Exact uint32 count with finite nonwrapping bound; no signed subtraction or INT_MAX cap.",
+    "Native privatebitmap/frame/home/savedregister alias protocols, faults, mutation/concurrency/MMIO/lifetime changes and physicalABI identity excluded.",
+    "21indexedcallers are external labels only; their bodies notread/promoted. Native calls0, no DF/ES/hiddenECX dependency; no specialist repair needed.",
+    "Readinessonly; Root Sourceauthorization/privatebitmapmechanism/compiler/fullstrictandMain/archive gates remain. No Source/compiler/tests/probes/bodyexecution/SDKcomparison or shared/Ghidrawrites.",
+    "Original/libraryname retained; new typeddefaultpotentiallythrowing interface is ordinary Source proposal only.",
+    "Actual initialauthorGitpathpreflightfailure+boundarydiscovery preserved beforecompleted117pins; no fictitious retrospective pin. Root externaldisjointsavewindow qualified, no globaldatabaseimmutability.",
+    "Own exploratory rg included nonexistenttools/ghidra_client.py and exited1 (0ba424); actualreceipt retained; existing supportedCLI fourbatches allpassed749ec4.",
+    "No own livecallchecker: local output has no recognized callsite/native rows or doccallclaims; zero-callcompletebody independentlyread."
+  ],
+  "Main_gate": "pass",
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "game_validated": false,
+  "Source_commit": "bd126bbb32804ed9f6a854939b068ab12b71ac89",
+  "primary_review": "reports/cc12_native_crt_strcspn_primary_review.json",
+  "Main_registered": true,
+  "Main_build": "pass_3_existing_CTests",
+  "actual_compiler_archive_gate": "pass",
+  "Main_validation": "reports/cc12_native_crt_strcspn_Main_validation.json"
+}

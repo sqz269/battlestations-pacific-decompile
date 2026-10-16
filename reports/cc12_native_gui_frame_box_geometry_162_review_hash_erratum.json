@@ -1,0 +1,55 @@
+{
+  "kind": "Source162_external_receipt_hash_erratum",
+  "recorded_utc": "2026-10-16T12:30:40.974230+00:00",
+  "source_commit": "71e03bda80978faed038757abae043e739f0fc6f",
+  "explicit_capture_override": {
+    "original_report": {
+      "path": "reports/cc12_native_gui_frame_box_geometry_162.json",
+      "sha256": "bab19667c94317c7ef773a409cf0d777a0501d917f66173761a2bf140fd5fb74"
+    },
+    "json_pointer": "/reviews/record/sha256",
+    "referenced_path": "local/frame_box_geometry162_Root_final_reviews.json",
+    "stale_reported_sha256": "e7c31c8bfc5d57073f8a7f8353e3bff12850901ccb8677872d0989f2defdeddd",
+    "correct_sealed_and_actual_sha256": "dcec8603ed512a7c64d80e4d3462ee18b938cfde59270d3199c63ce2cf2aea21",
+    "only_this_reference_is_qualified": true,
+    "original_report_and_all_131_manifest_paths_and_bytes_remain_unchanged": true
+  },
+  "cause": "The final doc_status=PASS metadata was added to the Root review record after its report reference had been captured. The pre-doc_status record is exactly reconstructed with the original Windows CRLF serialization and hashes to the stale reference. The final sealed manifest correctly pinned the final record.",
+  "rejected_report_preimage_copy": {
+    "path": "local/frame_box_geometry162_erratum/rejected_report_preimage.json",
+    "sha256": "bab19667c94317c7ef773a409cf0d777a0501d917f66173761a2bf140fd5fb74"
+  },
+  "original_report_unchanged": {
+    "path": "reports/cc12_native_gui_frame_box_geometry_162.json",
+    "sha256": "bab19667c94317c7ef773a409cf0d777a0501d917f66173761a2bf140fd5fb74"
+  },
+  "sealed_manifest_unchanged": {
+    "path": "local/frame_box_geometry162_final_artifact_manifest.json",
+    "sha256": "33cd504ec1ba572000b814778f474b476c70506cf1f308eb3bbbaf21dab1780c"
+  },
+  "sealed_review_record_unchanged": {
+    "path": "local/frame_box_geometry162_Root_final_reviews.json",
+    "sha256": "dcec8603ed512a7c64d80e4d3462ee18b938cfde59270d3199c63ce2cf2aea21"
+  },
+  "reconstructed_pre_doc_status_record": {
+    "path": "local/frame_box_geometry162_erratum/review_before_doc_status_reconstructed.json",
+    "sha256": "e7c31c8bfc5d57073f8a7f8353e3bff12850901ccb8677872d0989f2defdeddd"
+  },
+  "capture_policy": "Retain the original stale report unchanged. Apply exactly the explicit reference-hash override above, validated by the immutable original manifest and actual review bytes. Do not redirect any artifact path or rewrite a sealed report/manifest/review file.",
+  "audit": {
+    "path": "local/frame_box_geometry162_erratum/review_reference_correction_audit.json",
+    "sha256": "863f992db1ae0d6d2699850a33084e95474ca3675263f079036cc03a089c466c"
+  },
+  "correction_script": {
+    "path": "local/frame_box_geometry162_erratum/correct_review_reference.py",
+    "sha256": "d62d8088fedaef062f13ddaf58b3f39371c1f9dd71f5d38fc3dc5bf03f212831"
+  },
+  "checks": {
+    "original_manifest_131_match_before": true,
+    "other_91_report_refs_unchanged_and_matching": true,
+    "effective_report_92_match_with_one_explicit_capture_override": true,
+    "original_manifest_131_match_after_with_no_path_redirection": true,
+    "Source_doc_object_report_and_all_other_sealed_artifacts_unchanged": true
+  },
+  "scope": "Receipt metadata correction only. No Source, Ghidra, ledger, build, tests, probes or Native execution."
+}

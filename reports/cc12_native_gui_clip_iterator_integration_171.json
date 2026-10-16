@@ -1,0 +1,775 @@
+{
+  "packet": "cc12_native_gui_clip_iterator_integration_171",
+  "status": "reviewed_registered_combined_win32_build_existing_tests_static_link_pass",
+  "compiled_commit": "67299dec72dfa909cfdd5498b379d625f1e027bb",
+  "workers": {
+    "166": {
+      "commit": "ed0616852d05e23405a533a8a453d952f737018a",
+      "source_paths": [
+        "include/bsp/native_gui_widget_clip_storage.hpp",
+        "src/native_gui_widget_clip_storage.cpp"
+      ],
+      "manifest_sha256": "0c4445e85d0aa3de9e66f2edd46cbaee28ae4a8c2f72ee8e3565a68453af96f1",
+      "root_complete_Source_Native_provider_optimized_doc_review": "PASS; all473B/146Native starts,118HPP/210CPP,11strictcriticalgroups2101B650starts20chunks",
+      "strict_compile": "PASS",
+      "worker_existing_checks": "3/3 in7.93s; new TU unregistered",
+      "unique_additional_Native_address_credit": 0
+    },
+    "168": {
+      "commit": "aaec11bb1c8f046b71fe7bf23d020e49df1b6b27",
+      "source_paths": [
+        "include/bsp/native_font_tree_iterator.hpp",
+        "src/native_font_tree_iterator.cpp"
+      ],
+      "manifest_sha256": "1d686915201af0e7f95423668670b0b228eefdf9399104e2846fcbcaaef4c8f9",
+      "root_complete_Source_Native_provider_optimized_doc_review": "PASS; both137B/48start Native bodies and threeBF6713rel32operands; actualprovider/template/SDK handler, fullSource and37lineDoc",
+      "strict_compile": "PASS;whole5B E9realprovider",
+      "worker_existing_checks": "3/3 in7.51s; new TU unregistered",
+      "existing869990_credit_added": 0
+    }
+  },
+  "readiness": {},
+  "source": [
+    {
+      "packet": "166",
+      "path": "include/bsp/native_gui_widget_clip_storage.hpp",
+      "git_blob": "d40ffca8f426278925c0672c618bc7dbce7c347f",
+      "sha256": "dcc473b33367463f32c8291e6b5d7edea6371f0b7ad6282d9b2b12f6939c9d90",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "166",
+      "path": "src/native_gui_widget_clip_storage.cpp",
+      "git_blob": "833711d2a73b644685bce2594deae16b754206a2",
+      "sha256": "6247455de5233e27ba31b8b09d1a31384c145faf9989a921ba76b6f8c544ab36",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "168",
+      "path": "include/bsp/native_font_tree_iterator.hpp",
+      "git_blob": "8374521e9377e90a32354ffa8facb751747d7a95",
+      "sha256": "320944a570770e36abe06031cdd7d49a5ce0c30f17508de8431af6aff14e6094",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "168",
+      "path": "src/native_font_tree_iterator.cpp",
+      "git_blob": "beade65d3e80f635bea7039e4d6e624a664b77f1",
+      "sha256": "3146a01e523fdae67ab488e2d5f188c6983397b20219c18ccc4c6342084251eb",
+      "unchanged_from_reviewed_worker": true
+    }
+  ],
+  "retained_lower_sources": [
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570",
+      "git_blob": "e3cfca6ec4c44d5aa20ee8e6870a5c4f02cd784a",
+      "reviewed_sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570"
+    },
+    {
+      "path": "include/bsp/camera_projection.hpp",
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+      "git_blob": "d76b7d0ab89e90164c04d3a994c32469884acc0d",
+      "reviewed_sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+      "git_blob": "e385677df393aa7caed5144ac5a74de8cb3d5da7",
+      "reviewed_sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+    },
+    {
+      "path": "include/bsp/d3d9_buffers.hpp",
+      "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83",
+      "git_blob": "8c284d7b46fb1863655df168ba53a6821b1067d7",
+      "reviewed_sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83"
+    },
+    {
+      "path": "include/bsp/d3d9_startup.hpp",
+      "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843",
+      "git_blob": "140f87fd5dcf77961f9d9846285b7db220fb7e6a",
+      "reviewed_sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+    },
+    {
+      "path": "include/bsp/d3d9_states.hpp",
+      "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288",
+      "git_blob": "060a4c7348c7e4713a0605f3e44eda08c21dcfdf",
+      "reviewed_sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+    },
+    {
+      "path": "include/bsp/d3d9_vertex_layout.hpp",
+      "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef",
+      "git_blob": "8a967ea1fb2c2aa59398080da61dc19971601a79",
+      "reviewed_sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+    },
+    {
+      "path": "include/bsp/instance_grouping.hpp",
+      "sha256": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308",
+      "git_blob": "dfca845d8bdeddd73236768513a9a0d453c764f4",
+      "reviewed_sha256": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308"
+    },
+    {
+      "path": "include/bsp/instance_sort.hpp",
+      "sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3",
+      "git_blob": "1920229bfa637b81a8cae7db2327c456ad434fec",
+      "reviewed_sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3"
+    },
+    {
+      "path": "include/bsp/instance_upload.hpp",
+      "sha256": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb",
+      "git_blob": "417fa112f51e95fcbdd7f655680fee2337dc4f15",
+      "reviewed_sha256": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb"
+    },
+    {
+      "path": "include/bsp/material_lighting.hpp",
+      "sha256": "b56091a2688d0a7cf52401396efa68b9f02de215e9bd89e4bf20d93d83600da8",
+      "git_blob": "804fab1a7c4d6af1154b63b1a66304fc47946970",
+      "reviewed_sha256": "b56091a2688d0a7cf52401396efa68b9f02de215e9bd89e4bf20d93d83600da8"
+    },
+    {
+      "path": "include/bsp/material_sort_metadata.hpp",
+      "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212",
+      "git_blob": "da0287f3d29a0b39b45223105f55316ea34f66a4",
+      "reviewed_sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_lifetime.hpp",
+      "sha256": "a50b604d393333a5c66efd0e660c34a5021226b94ae28e4a0a30218c3db37277",
+      "git_blob": "c573ce56783ce8967a5e4fcf7ea615cac6a39703",
+      "reviewed_sha256": "a50b604d393333a5c66efd0e660c34a5021226b94ae28e4a0a30218c3db37277"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "sha256": "990c015f2b0fc9cffc29436a69c9a52d057fcdb21c93c5f849a31e72d01235e4",
+      "git_blob": "b7e3a21570936d4a7479c919174ed13a56b4e60a",
+      "reviewed_sha256": "990c015f2b0fc9cffc29436a69c9a52d057fcdb21c93c5f849a31e72d01235e4"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_pools_cc13.hpp",
+      "sha256": "fd2be32f59443f79787b5006a628b9d0f78597b4d4dff62d09dbc65831c1fed3",
+      "git_blob": "759fba46de564d4d09549b0f3950bf2bbfc4f718",
+      "reviewed_sha256": "fd2be32f59443f79787b5006a628b9d0f78597b4d4dff62d09dbc65831c1fed3"
+    },
+    {
+      "path": "include/bsp/native_material_owner.hpp",
+      "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+      "git_blob": "fee25270c9758390575b4b1500781fc1a7bccdf2",
+      "reviewed_sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+    },
+    {
+      "path": "include/bsp/native_material_pools.hpp",
+      "sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715",
+      "git_blob": "ab0dc45412b6892081f630d376d1fd9df035e527",
+      "reviewed_sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715"
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+      "git_blob": "5ee0a9b036a0acd04fe5a89e3faa8cd22552f200",
+      "reviewed_sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
+      "reviewed_sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "reviewed_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "include/bsp/random.hpp",
+      "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c",
+      "git_blob": "aeb553d9dd3da36a4aa4ba8e6810750a33d1ad6a",
+      "reviewed_sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "git_blob": "72b34c51801ffceaefff525a4eddbe152c3ee1e2",
+      "reviewed_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+      "git_blob": "4f0f5ca5a87b59f7d05349a36619a4459e874e8d",
+      "reviewed_sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+      "git_blob": "f34bb1c2e6468872f55c0986e497429029c96302",
+      "reviewed_sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "include/bsp/vertex_declaration.hpp",
+      "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0",
+      "git_blob": "b7f58558ed077581fb3bd4abe2210360788bf1a0",
+      "reviewed_sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0"
+    },
+    {
+      "path": "src/native_gui_frame_box_factory.cpp",
+      "sha256": "46124772e8af548dbd39ddf60800fa5dbb2a78efd18052c10bf85a0588a17532",
+      "git_blob": "c69ff3ef7d612a3d42840e5dab5d755301ea870d",
+      "reviewed_sha256": "46124772e8af548dbd39ddf60800fa5dbb2a78efd18052c10bf85a0588a17532"
+    },
+    {
+      "path": "src/native_gui_frame_box_lifetime.cpp",
+      "sha256": "a125c2ee90feea995e72dfce1910d6bb5b60d7dd0ff5856687a28b4c22ad8be8",
+      "git_blob": "02ea03259ba2669b0641b6347be9b30a9a2a8f3d",
+      "reviewed_sha256": "a125c2ee90feea995e72dfce1910d6bb5b60d7dd0ff5856687a28b4c22ad8be8"
+    },
+    {
+      "path": "src/native_gui_frame_box_records.cpp",
+      "sha256": "2c5f95a919411884df592c961257fced2a8541668b8ad038464e35b2fed62b4c",
+      "git_blob": "642d53741ed0b01e7976e01003b1d9c65aecc038",
+      "reviewed_sha256": "2c5f95a919411884df592c961257fced2a8541668b8ad038464e35b2fed62b4c"
+    },
+    {
+      "path": "src/native_gui_group_identity.cpp",
+      "sha256": "7c562ecc89b706df3ed39a05c444a921d737a67f5db3ca3cffb179859d4d744c",
+      "git_blob": "94763c5fb3279fb3841a968ebcabc287a3b9f1ca",
+      "reviewed_sha256": "7c562ecc89b706df3ed39a05c444a921d737a67f5db3ca3cffb179859d4d744c"
+    },
+    {
+      "path": "src/native_gui_text_identity.cpp",
+      "sha256": "662d51258be8445f7adfce99e3796e9c2c10ade8d442e1c1cdb61ebd406b8928",
+      "git_blob": "131a978c9ca1e87ec3d94382fff07c5d0676144a",
+      "reviewed_sha256": "662d51258be8445f7adfce99e3796e9c2c10ade8d442e1c1cdb61ebd406b8928"
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+      "git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5",
+      "reviewed_sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "sha256": "f5f10d603694dfbb354b92bc4627dfc0fd687724fc51d49de5c51f53c813c3b6",
+      "git_blob": "2d571930d3446b33b745fccdca3e32e8c31d46a1",
+      "reviewed_sha256": "f5f10d603694dfbb354b92bc4627dfc0fd687724fc51d49de5c51f53c813c3b6"
+    },
+    {
+      "path": "src/native_gui_widget_pools_cc13.cpp",
+      "sha256": "e9fa3a2f4e8d0f644d601aa974bab567f8cd36e5c9ea958ae06aacaca4b5e925",
+      "git_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3",
+      "reviewed_sha256": "e9fa3a2f4e8d0f644d601aa974bab567f8cd36e5c9ea958ae06aacaca4b5e925"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+      "git_blob": "bb26a9f52a9b694165a4b832db8a9dac735d1c52",
+      "reviewed_sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+      "reviewed_sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43"
+    },
+    {
+      "path": "src/render_command_queue.cpp",
+      "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+      "git_blob": "2dfed2bf3b6b07fd6e1560ccf98287171e07134e",
+      "reviewed_sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_factory.hpp",
+      "sha256": "51c9ecc3f14973a9f21cc1de52a05b9d34c0f522f7fbba3cbb77eb187e773853",
+      "git_blob": "854035e884f4d4417ad9889ac40ed92a7d77e5d0",
+      "reviewed_sha256": "51c9ecc3f14973a9f21cc1de52a05b9d34c0f522f7fbba3cbb77eb187e773853"
+    },
+    {
+      "path": "include/bsp/native_gui_texture_normalization.hpp",
+      "sha256": "33306028223a7d3f7b2a194facd8f55c1e0bfae08ab15d88fa5f3bff5fb26bb8",
+      "git_blob": "fce3aec2598ae1f3d323844acc236f5ca9df3745",
+      "reviewed_sha256": "33306028223a7d3f7b2a194facd8f55c1e0bfae08ab15d88fa5f3bff5fb26bb8"
+    },
+    {
+      "path": "src/native_gui_texture_normalization.cpp",
+      "sha256": "271d375501300757bc267cf9530c9126edb04f4292a1bfbf1641f213df38f2a1",
+      "git_blob": "aa8cab2ecc7b316851bb7fe7120c40e143a9f9c6",
+      "reviewed_sha256": "271d375501300757bc267cf9530c9126edb04f4292a1bfbf1641f213df38f2a1"
+    },
+    {
+      "path": "include/bsp/native_gui_rectangle_writer.hpp",
+      "sha256": "68d82b664dc042ef20e62b1759852208582dcf05d59b866575fefd06d7262af1",
+      "git_blob": "63c9c4329724e2ac51b194584ce8bc7e6d419b20",
+      "reviewed_sha256": "68d82b664dc042ef20e62b1759852208582dcf05d59b866575fefd06d7262af1"
+    },
+    {
+      "path": "src/native_gui_rectangle_writer.cpp",
+      "sha256": "7fbe2af2b170d909edaa503e2e3050c773868304ed918b2f0081247408c6bc35",
+      "git_blob": "373d3519797c9046c5bd1c32d5e921d13a560059",
+      "reviewed_sha256": "7fbe2af2b170d909edaa503e2e3050c773868304ed918b2f0081247408c6bc35"
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "git_blob": "4984c27fa603fe05a308d701c54dafba6110de7e",
+      "reviewed_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "git_blob": "bf2a25c5f28d9eb10d37f7099faf9adaabb0a97d",
+      "reviewed_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "reviewed_sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "reviewed_sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+    },
+    {
+      "path": "include/bsp/native_texture_saved_dimensions.hpp",
+      "sha256": "79cd7e835c608dda30d3ada5dc46b8c9e09b066e9a284f18a12276ff4d770890",
+      "git_blob": "39895a3684f10935598ef4fec7dc1e4184f76249",
+      "reviewed_sha256": "79cd7e835c608dda30d3ada5dc46b8c9e09b066e9a284f18a12276ff4d770890"
+    },
+    {
+      "path": "src/native_texture_saved_dimensions.cpp",
+      "sha256": "094040ca29e9d708254a8889c062bda42f15a7c6833b303c3dc37f6d72724483",
+      "git_blob": "81b8331d5740d2ec0606a3ec1e436b0795d7a850",
+      "reviewed_sha256": "094040ca29e9d708254a8889c062bda42f15a7c6833b303c3dc37f6d72724483"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "git_blob": "28ac6a6a771515dc54df56d630a91438b24fb2de",
+      "reviewed_sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc"
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+      "git_blob": "65f5ff828bcfed5f544912349feeeb9167349359",
+      "reviewed_sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada"
+    },
+    {
+      "path": "include/bsp/terrain_particles_cc13.hpp",
+      "sha256": "708064461209ff47f6ed9d42534515caf226956edad32057d0e095dc62b5a7fc",
+      "git_blob": "3bf996d12d53fa3905433c8d35c035400d6bd43e",
+      "reviewed_sha256": "708064461209ff47f6ed9d42534515caf226956edad32057d0e095dc62b5a7fc"
+    },
+    {
+      "path": "src/terrain_particles_cc13.cpp",
+      "sha256": "99cde5ae6399f47f1cadb7749b084f1b439d4be285953d9bd66ae8e61db9c574",
+      "git_blob": "c9cfbce834f6f8c0188f87dd09acd66a4f96ac7e",
+      "reviewed_sha256": "99cde5ae6399f47f1cadb7749b084f1b439d4be285953d9bd66ae8e61db9c574"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "reviewed_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "include/bsp/native_pooled_string_substring.hpp",
+      "sha256": "6243c6ba8acb0e1b7f0358a456d6e65ac1b9303cc79b1f1dfd5be01d05b985ff",
+      "git_blob": "5567cf0b90182b39790a5379be8d23c5b6d6b371",
+      "reviewed_sha256": "6243c6ba8acb0e1b7f0358a456d6e65ac1b9303cc79b1f1dfd5be01d05b985ff"
+    },
+    {
+      "path": "src/native_pooled_string_substring.cpp",
+      "sha256": "7a18633cf114b21290f0c4ddfb9ec96d817f6a246a97ebfa05e9be3fdce9b8e1",
+      "git_blob": "8b6f939f3b1988567ef67131e78dd6e238888dbb",
+      "reviewed_sha256": "7a18633cf114b21290f0c4ddfb9ec96d817f6a246a97ebfa05e9be3fdce9b8e1"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "git_blob": "d2d48f7cca8e08a76c98c10f2bdab9bca5cdb165",
+      "reviewed_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "git_blob": "0e5d59593c47a3cdabaf1020adddc735141d28d3",
+      "reviewed_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "git_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd",
+      "reviewed_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "git_blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+      "reviewed_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+      "git_blob": "30bbfe627b4ea7b4f453ec68422363c35479a3a8",
+      "reviewed_sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+      "git_blob": "1c660fa6417f9fbc277b821d0ad7d83587fcbed5",
+      "reviewed_sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b"
+    },
+    {
+      "path": "include/bsp/native_int_pointer_tree18_leaves.hpp",
+      "sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+      "git_blob": "4ad334d57f4665e25a5719ec97ad65135b712d74",
+      "reviewed_sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1"
+    },
+    {
+      "path": "src/native_int_pointer_tree18_leaves.cpp",
+      "sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+      "git_blob": "f4059b8973da839d78ee36a8ecb208b18f8a5378",
+      "reviewed_sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816"
+    },
+    {
+      "path": "include/bsp/native_int_pointer_tree18_erase.hpp",
+      "sha256": "86571aedc38dc363aad43efffc8e7d23525181f505885ae72c8fd17a8e99df96",
+      "git_blob": "df3e2d216a12a16feb04d57db1002daf00833c9a",
+      "reviewed_sha256": "86571aedc38dc363aad43efffc8e7d23525181f505885ae72c8fd17a8e99df96"
+    },
+    {
+      "path": "src/native_int_pointer_tree18_erase.cpp",
+      "sha256": "0473413cc5ba9b528942ebdf732016da19a65d6f9a15cfae4c679eeafea61bbb",
+      "git_blob": "643f3b48171c1538d3d1ade5f9f23e8b0e76b14b",
+      "reviewed_sha256": "0473413cc5ba9b528942ebdf732016da19a65d6f9a15cfae4c679eeafea61bbb"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_tree.hpp",
+      "sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5",
+      "git_blob": "fcf3a502d83351ce60b8a7348c6985fc8805f71e",
+      "reviewed_sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5"
+    },
+    {
+      "path": "src/native_hardware_layout_tree.cpp",
+      "sha256": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6",
+      "git_blob": "d9f714ecba374a12afbf61d2b33ee71baa15131b",
+      "reviewed_sha256": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "reviewed_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "reviewed_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "include/bsp/native_font_resources.hpp",
+      "sha256": "86b054ccf2ae873195e803e1d97d01c31247cf4e0e174c12bcfcaf8b150e7e48",
+      "git_blob": "5fd7d4e25176f5ef8910a417e5b6ee380ead66aa",
+      "reviewed_sha256": "86b054ccf2ae873195e803e1d97d01c31247cf4e0e174c12bcfcaf8b150e7e48"
+    },
+    {
+      "path": "src/native_font_resources.cpp",
+      "sha256": "8e61d9e701b0cc181749cdac04e45be5d4931da13bce2ceda28e90d3a5a9e26b",
+      "git_blob": "5cf3fc746c8fbf6ae0954ed996131ad4d26f8181",
+      "reviewed_sha256": "8e61d9e701b0cc181749cdac04e45be5d4931da13bce2ceda28e90d3a5a9e26b"
+    },
+    {
+      "path": "include/bsp/font_registry_startup.hpp",
+      "sha256": "a2e52ffbc9dad37e429357f5d920e5b9aa281e7ac2db0085021057581f79e640",
+      "git_blob": "310b7201c277e6a94ffdcfa5bd2a0f397d6f98f7",
+      "reviewed_sha256": "a2e52ffbc9dad37e429357f5d920e5b9aa281e7ac2db0085021057581f79e640"
+    },
+    {
+      "path": "src/font_registry_startup.cpp",
+      "sha256": "5d0c57bf9a7612f9b23df7f39534bbdaf5eda0625987ce0019d81b9bbd393423",
+      "git_blob": "dedc9fd12f96e07dc9c5f60f4a758f51205c5689",
+      "reviewed_sha256": "5d0c57bf9a7612f9b23df7f39534bbdaf5eda0625987ce0019d81b9bbd393423"
+    },
+    {
+      "path": "include/bsp/game_native_font_application.hpp",
+      "sha256": "f819d8a38b49a6ff8ec3873dea65992366396c8d635e54301542c71ce0aee469",
+      "git_blob": "bd6bb4ebbe30d873a654a66e70b69af6e165fd71",
+      "reviewed_sha256": "f819d8a38b49a6ff8ec3873dea65992366396c8d635e54301542c71ce0aee469"
+    },
+    {
+      "path": "src/game_native_font_application.cpp",
+      "sha256": "31d143c3dc1dc9495cd87fdba0ecb67ad3d2494c9b47415746a47771cce5e424",
+      "git_blob": "692b370f822f5f21496ae95c4ed417dc353809b8",
+      "reviewed_sha256": "31d143c3dc1dc9495cd87fdba0ecb67ad3d2494c9b47415746a47771cce5e424"
+    },
+    {
+      "path": "include/bsp/font_data.hpp",
+      "sha256": "f7a1f433fb7f0466873da79a6da0b45944df5965fbe756715682265afd257c49",
+      "git_blob": "1b04d267ef910dee68c99353c639cd6acdb8da99",
+      "reviewed_sha256": "f7a1f433fb7f0466873da79a6da0b45944df5965fbe756715682265afd257c49"
+    },
+    {
+      "path": "src/font_data.cpp",
+      "sha256": "24ba9b6e37f798072ed06fc796b0dec560b3b500b4697b3b6634c7892a8717c1",
+      "git_blob": "89ed303bfd14c788d0ec8f419dbb34241986c072",
+      "reviewed_sha256": "24ba9b6e37f798072ed06fc796b0dec560b3b500b4697b3b6634c7892a8717c1"
+    },
+    {
+      "path": "include/bsp/gui_framebox.hpp",
+      "sha256": "ec5c437d8a2bfb51abf5b7dab2b69da05b6fc50fe74ef6fd26c3808c85e755a5",
+      "git_blob": "6a739abea827bc2db8dddeb8ca74f286fee8bab4",
+      "reviewed_sha256": "ec5c437d8a2bfb51abf5b7dab2b69da05b6fc50fe74ef6fd26c3808c85e755a5"
+    },
+    {
+      "path": "src/gui_framebox.cpp",
+      "sha256": "d84dfa37d274a40e3ba574e6886d72a1f2fb7d12328bccecd8d091f32f347306",
+      "git_blob": "c9b53453ac13f3a4b4181727d27b132bfee12a75",
+      "reviewed_sha256": "d84dfa37d274a40e3ba574e6886d72a1f2fb7d12328bccecd8d091f32f347306"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_geometry.hpp",
+      "sha256": "a02a2c7c4cb4c538ebf41bde4dccea4fdec021c5f84501bdba40d84e83647013",
+      "git_blob": "c82c50f209fba993bb48be773ef80282930d0355",
+      "reviewed_sha256": "a02a2c7c4cb4c538ebf41bde4dccea4fdec021c5f84501bdba40d84e83647013"
+    },
+    {
+      "path": "src/native_gui_frame_box_geometry.cpp",
+      "sha256": "9068db6f19dc1ac550a3bf5bed6277f3c99de8c3419355820ad9b71f2c8094d4",
+      "git_blob": "d81cd1ade11d4750c1336964e26d1f248f1fa7d1",
+      "reviewed_sha256": "9068db6f19dc1ac550a3bf5bed6277f3c99de8c3419355820ad9b71f2c8094d4"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_identity.hpp",
+      "sha256": "2e114b5f76c8c824df0313e7db7ba788b68235a46382006c5e154ef598ee141a",
+      "git_blob": "bc390a699d07d99fe6f67134992de32f8be9fbe2",
+      "reviewed_sha256": "2e114b5f76c8c824df0313e7db7ba788b68235a46382006c5e154ef598ee141a"
+    },
+    {
+      "path": "src/native_gui_frame_box_identity.cpp",
+      "sha256": "68be74199b6debd2b8bc5819dc16eed3943512c056298012699c7772496893bf",
+      "git_blob": "5eb8c96d522d535f809c88de8468ecec0f8bfada",
+      "reviewed_sha256": "68be74199b6debd2b8bc5819dc16eed3943512c056298012699c7772496893bf"
+    },
+    {
+      "path": "include/bsp/native_font_storage.hpp",
+      "sha256": "3d62ca18439d3b83b586f9aae1d14e84108280386d88d85532a4f3a8fc92eeb9",
+      "git_blob": "6e9244c9cfcebe4f2d59e85235f1302ddf0b0111",
+      "reviewed_sha256": "3d62ca18439d3b83b586f9aae1d14e84108280386d88d85532a4f3a8fc92eeb9"
+    },
+    {
+      "path": "src/native_font_storage.cpp",
+      "sha256": "760c148ed5d3bbdb6ddb40781893251caf646dbab18755b3bb8af5c46a5279ce",
+      "git_blob": "8200f5eb7004be352897f2b4baefa74138586fea",
+      "reviewed_sha256": "760c148ed5d3bbdb6ddb40781893251caf646dbab18755b3bb8af5c46a5279ce"
+    },
+    {
+      "path": "include/bsp/frame_clock.hpp",
+      "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+      "git_blob": "c189a9bd5bd90a82bb8c7d21d3b7c015be1a267d",
+      "reviewed_sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+    },
+    {
+      "path": "include/bsp/game_entry.hpp",
+      "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+      "git_blob": "9ce24744180120f39fe32d94996dee642a48e657",
+      "reviewed_sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+    },
+    {
+      "path": "include/bsp/game_native_gui_text_state.hpp",
+      "sha256": "d8990cc2df091c2f7c9ebae511617113e7b1a47601667aa037682bb76c99d040",
+      "git_blob": "1d5a5d3ceebf618fa6beeda9d09c9d5b8b0e1806",
+      "reviewed_sha256": "d8990cc2df091c2f7c9ebae511617113e7b1a47601667aa037682bb76c99d040"
+    },
+    {
+      "path": "include/bsp/gui_native_clip_parameters.hpp",
+      "sha256": "9e1dac453bb71e8b39be9f62b343596f30106a7760e1f1f1683a0025809b9dc5",
+      "git_blob": "77b1fe4cd2506f60e82de5a9615b25b468bdc8ba",
+      "reviewed_sha256": "9e1dac453bb71e8b39be9f62b343596f30106a7760e1f1f1683a0025809b9dc5"
+    },
+    {
+      "path": "include/bsp/native_material_parameters.hpp",
+      "sha256": "f7f512b1d9be499f1d5d750460a2a51f15628ae5bb30dd9242b675a2dae9e2a3",
+      "git_blob": "cab24e5d281f3747cbaf91e1ba53ab7773772105",
+      "reviewed_sha256": "f7f512b1d9be499f1d5d750460a2a51f15628ae5bb30dd9242b675a2dae9e2a3"
+    },
+    {
+      "path": "include/bsp/native_window_focus_dispatch.hpp",
+      "sha256": "fc618b0becfa3e0e513378898191a7b828fd20646f198e43f386b5e9f88ca83a",
+      "git_blob": "7166ca4e30a522c690c42112c522091f98f751c5",
+      "reviewed_sha256": "fc618b0becfa3e0e513378898191a7b828fd20646f198e43f386b5e9f88ca83a"
+    },
+    {
+      "path": "include/bsp/render_tail.hpp",
+      "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+      "git_blob": "dc2ee2b95d3423f13ba79c0dc3ad6cf1568225d2",
+      "reviewed_sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+    },
+    {
+      "path": "include/bsp/system_time_constants.hpp",
+      "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+      "git_blob": "8b1f859cb9cf20f1eb0a7ee924b17a7818bbbb2c",
+      "reviewed_sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+    },
+    {
+      "path": "src/game_native_gui_text_state.cpp",
+      "sha256": "724279b67813f9ce9baf24fba9373f0d0bdfb07ee97c074b5329990aec81204f",
+      "git_blob": "256293ad3740e894ecade510d0a7e514768f0fd2",
+      "reviewed_sha256": "724279b67813f9ce9baf24fba9373f0d0bdfb07ee97c074b5329990aec81204f"
+    },
+    {
+      "path": "src/gui_material_binding.cpp",
+      "sha256": "de3312f993d3180fb7023c9869908a74134370c430bdb8844e20b1cadcac15e2",
+      "git_blob": "fe058317e88a81ba76160f4f7b66f23d3991c367",
+      "reviewed_sha256": "de3312f993d3180fb7023c9869908a74134370c430bdb8844e20b1cadcac15e2"
+    },
+    {
+      "path": "src/gui_native_clip_parameters.cpp",
+      "sha256": "7f7fecd6da9dfb5a07c8bc8bdcb9702dc94cfe989c4695e6092aadbf313af38a",
+      "git_blob": "c34860cc949f797f2273e4a223fe66d8ea20e4cd",
+      "reviewed_sha256": "7f7fecd6da9dfb5a07c8bc8bdcb9702dc94cfe989c4695e6092aadbf313af38a"
+    },
+    {
+      "path": "src/native_material_owner.cpp",
+      "sha256": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+      "git_blob": "98c7c3495ec76c5a15b13de8c9bc869f7a601958",
+      "reviewed_sha256": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc"
+    },
+    {
+      "path": "src/native_material_parameters.cpp",
+      "sha256": "b77dbb8ed134ae8d1f46f5eb331fc50b349ba6c80a2f21e38a95d6107bdf9f7b",
+      "git_blob": "c1e47f29391b7a4776e0dd1326f50aa33865a6f7",
+      "reviewed_sha256": "b77dbb8ed134ae8d1f46f5eb331fc50b349ba6c80a2f21e38a95d6107bdf9f7b"
+    },
+    {
+      "path": "src/native_window_focus_dispatch.cpp",
+      "sha256": "0518d9abdeccf5093f6f19f0e96cc87cf10e322a226cc53a855df2d4a474d2f6",
+      "git_blob": "2940b16fa6a66a020541903618badd8e20e38fd7",
+      "reviewed_sha256": "0518d9abdeccf5093f6f19f0e96cc87cf10e322a226cc53a855df2d4a474d2f6"
+    },
+    {
+      "path": "include/bsp/native_effect_handle_acquisition.hpp",
+      "sha256": "9148f95d14fbfc14ad6ed0ea25a4b1047975accc606af5995dcfd718e1b127af",
+      "git_blob": "2a82cebab71e9f1fa2cb79775c72a89c95a30636",
+      "reviewed_sha256": "9148f95d14fbfc14ad6ed0ea25a4b1047975accc606af5995dcfd718e1b127af"
+    },
+    {
+      "path": "src/native_effect_handle_acquisition.cpp",
+      "sha256": "3b7794d963c4885bbb818bd15d5592c487157863183e0f3db692d089893cef4a",
+      "git_blob": "e94bf83c1972606b981dee0db701ef43333b9506",
+      "reviewed_sha256": "3b7794d963c4885bbb818bd15d5592c487157863183e0f3db692d089893cef4a"
+    },
+    {
+      "path": "include/bsp/detail/native_tree_insert_storage.hpp",
+      "sha256": "c5eb00461d535b3c737e63a4286814e35c5427c883474d37b3cb6f67a2f8a8b9",
+      "git_blob": "626561295a534877f0b58f70880b7bfc6d7f7f80",
+      "reviewed_sha256": "c5eb00461d535b3c737e63a4286814e35c5427c883474d37b3cb6f67a2f8a8b9"
+    }
+  ],
+  "root_reviewed_provider_deltas": {
+    "clip": "local/cc12_native_gui_clip_iterator_integration_171/root_clip166_full_review.json",
+    "iterator": "local/cc12_native_gui_clip_iterator_integration_171/root_iterator168_full_review.json",
+    "canonical_review": "local/cc12_native_gui_clip_iterator_integration_171/canonical_review.json"
+  },
+  "root_canonical_review": {
+    "status": "PASS",
+    "compiled_commit": "67299dec72dfa909cfdd5498b379d625f1e027bb",
+    "whole_selected_functions": 14,
+    "code_bytes": 1796,
+    "instruction_starts": 600,
+    "equal_reviewed_strict_roots": 9,
+    "all9_changed_chunks_fully_read": true,
+    "all6_prior_provider_objects_code_and_ordered_relocations_unchanged": true,
+    "canonical_review_sha256": "f36e06048dc821666377f1cf26e719148a3e9742c4b74b93c753a1da57d4c953",
+    "actual_compared_objects": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_gui_widget_clip_storage.obj",
+        "sha256": "2a715d1442bf908234dff2c8c529bf9598d1917619a77dc443c3f5b9505e9f3c"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_font_tree_iterator.obj",
+        "sha256": "72c8e9353bb30bfee9d25118105dbc46c2e5fb8fcb68437d183d489e2b115678"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_effect_handle_acquisition.obj",
+        "sha256": "e522918793fe8a2368e4f3d38213b228f6f8ac58ec169843c9d440b04030f593"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_font_storage.obj",
+        "sha256": "d02b6c30888150cd833e1c8a22b2b76de95dc76d9d308393eb2e1cdc3f20e8c4"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_gui_frame_box_geometry.obj",
+        "sha256": "56d21c06a588c61897819eeb514def4227f90b68660f38f05b59c55ebe256ba9"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_gui_frame_box_identity.obj",
+        "sha256": "671bca2d1b7a519dd79f4cf6376cb288d2c2f0ecde58f9bab753d8ef41cca3a5"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_gui_rectangle_writer.obj",
+        "sha256": "7e060300ee8920e8ff2e6dde7817a2196fa433f8802c8d39421809aa2cb26572"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_gui_texture_normalization.obj",
+        "sha256": "37dd5da1213350943f348addd371c4333fd39838002e181941aa4252d68f06b4"
+      }
+    ]
+  },
+  "root_build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "checks": "3/3",
+    "seconds": 8.69,
+    "warnings": [
+      "Existing untouched Lua spawn_request_id_matches LNK4006 duplicate; second definition ignored"
+    ]
+  },
+  "static_link": {
+    "compiled_commit": "67299dec72dfa909cfdd5498b379d625f1e027bb",
+    "build_and_minimal_main_exit_code": 0,
+    "raw_function_bodies_executed": false,
+    "explicit_worker_object_linked": false,
+    "kind": "Actual final Core rawclip constructor/engine and Fontiterator genuine869990 provider; main takes addresses of entries and uncalled placement helper only",
+    "PE32_asInvoker": true,
+    "exe_sha256": "cc6f02d24e0ffbe50412b62a7745ff8ab6558414baf1c9944195fad1b0f29534",
+    "libraries": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "e31c92420bb62768af670dd11dee2169a493db2406c10d1bfea9bfd024215ab9"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "sha256": "e6ebb089df7828a43ecdd6e705dddb4cea95b38ffe1fabbd47152fec8834db30"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "sha256": "838261efe3cdd86663e25ecbcd9e825ee51203e71491954864316d4d0dfb6062"
+      }
+    ],
+    "canonical_additional_objects": []
+  },
+  "root_source_and_header_inputs_copied": 313,
+  "archive": {
+    "path": "local/cc12_native_gui_clip_iterator_integration_171/evidence_family.zip",
+    "sha256": "ebb06d508f0c4541ce9254f9e10dee0902dcbed6d1e98f84b2b2fbb0be894095",
+    "payload_count": 812,
+    "manifest": "local/cc12_native_gui_clip_iterator_integration_171/manifest.json",
+    "manifest_sha256": "89b88362fd199a72b78b7de9c047c73bb2e5c32cf834a994964447283e5ab398",
+    "all_archived_payload_hashes_rechecked": true,
+    "nested_worker_manifests_included": true
+  },
+  "original_input_proof": {
+    "path": "local/cc12_native_gui_clip_iterator_integration_171/root_original_input_proof.json",
+    "sha256": "37335107af8018e9f302750fc90b7b45bb93690c8a150dc6a323b30d4a41b5c4",
+    "checked_spans": 3,
+    "status": "PASS"
+  },
+  "limits": [
+    "166 ordinarySourceABI/preflight/metadata/scratch/stickyfailure/privateframe/SDKandrawcopy boundaries; genuine provider restrictions and full retained partial graph; no constructorcompletion or163/B18A40 admission, no duplicateAA unique-address credit",
+    "168 genuine shared869990 Source adapter; actual8B iterator/volatilelinks/nil15; handler mayreturn, no revalidation/default/rollback/extra869990credit; bothprivatecallee frame/SDK/fault/SEH/binaryABI limits",
+    "Existing3/3 and manifested actual-Core address-only link execute no reconstructed body and prove no productioncaller/placement/NativeCRT/FH3/SEH/privateABI or game drawing behavior",
+    "WholeFrameBoxstate169, rawFontinsertion170 readiness and fullFontload/retirement/productiongraph activation remain separate"
+  ]
+}

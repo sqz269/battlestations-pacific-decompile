@@ -1,0 +1,1808 @@
+{
+  "packet": "goal15t_traffic_vector_failure_children",
+  "main_base": "9936d0f1e120876c2de28eb9db6d1a37d84c475d",
+  "merge_base": "04f84394e77807ffcf8c2a517a1cb754d5ab0fd8",
+  "source": "src/native_traffic_vector_failure_children.cpp",
+  "header": "include/bsp/native_traffic_vector_failure_children.hpp",
+  "document": "docs/GOAL15T_TRAFFIC_VECTOR_FAILURE_CHILDREN.md",
+  "scope": "two whole logical Source entries over complete genuine accepted providers; no parent Source implementation",
+  "status": "reconstructed_build_tested_archive_fixture_tested_with_explicit_current_CRT_and_host_exception_transport_boundaries",
+  "native_owned_bytes": 190,
+  "native_owned_instructions": 48,
+  "functions": [
+    {
+      "entry_address": "0047e970",
+      "source_entry": "bsp::allocate_native_traffic_vector_0047e970",
+      "original_library_name": "STL_allocator_allocate_0047e970",
+      "source_composition_only": "bsp::native_singleton_pointer_allocate_00bcfeb0(count, nullptr)",
+      "actual_native_input": "unsigned count in ECX; no EDX input and no stack arguments",
+      "actual_native_result": "EAX allocated pointer on normal return; plain RET, stack purge zero",
+      "original_class_inferred": false,
+      "source_convention": "MSVC x86 fastcall with one uint32 argument in ECX",
+      "source_unused_edx_parameter": false,
+      "logical_behavior": [
+        "count zero still passes a zero-byte request to the genuine current allocation service",
+        "unsigned overflow admission is count <= 0x3fffffff; maximum admitted request is 0xfffffffc bytes",
+        "admitted request reaches genuine singleton_lifetime_allocate and its malloc/new-handler retry behavior",
+        "overflow throws actual current std::bad_alloc through the accepted canonical Source allocation contract"
+      ],
+      "native_failure_identity_unclaimed": "Native constructs its 12-byte object with BF6340 using a null message slot, publishes D6923C, and passes E03CC0 to BF6885. Current std::bad_alloc is an established Source transport policy, not that private Native object, RTTI or throw transport.",
+      "native_length": 85,
+      "native_instructions": 25,
+      "native_hex": "83ec1085c9771633c98d148d0000000052e8957e770083c40483c410c383c8ff33d2f7f183f80473e08d0424508d4c2408c744240400000000e89279770068c03ce0008d4c240851c744240c3c92d600e8c07e7700",
+      "native_sha256": "2a949e6d468e24eae19f07f45d388106a38f72b8f66c9900c40d115ac2c9e854",
+      "live_installed_equal": true,
+      "full_native_to_canonical_native_mapping": {
+        "canonical": "00bcfeb0",
+        "whole_native_bytes": 85,
+        "instructions": 25,
+        "fixed_bytes_equal": 73,
+        "actual_call_operands": [
+          {
+            "candidate_site": "0047e981",
+            "canonical_site": "00bcfec1",
+            "actual_native_callee": "00bf681b"
+          },
+          {
+            "candidate_site": "0047e9a9",
+            "canonical_site": "00bcfee9",
+            "actual_native_callee": "00bf6340"
+          },
+          {
+            "candidate_site": "0047e9c0",
+            "canonical_site": "00bcff00",
+            "actual_native_callee": "00bf6885"
+          }
+        ],
+        "eh_handler_word_only_relocated": null,
+        "complete_native_mapping": [
+          {
+            "candidate": {
+              "offset": 0,
+              "address": "0047e970",
+              "bytes": "83ec10",
+              "mnemonic": "sub",
+              "operands": "esp, 0x10"
+            },
+            "canonical": {
+              "offset": 0,
+              "address": "00bcfeb0",
+              "bytes": "83ec10",
+              "mnemonic": "sub",
+              "operands": "esp, 0x10"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 3,
+              "address": "0047e973",
+              "bytes": "85c9",
+              "mnemonic": "test",
+              "operands": "ecx, ecx"
+            },
+            "canonical": {
+              "offset": 3,
+              "address": "00bcfeb3",
+              "bytes": "85c9",
+              "mnemonic": "test",
+              "operands": "ecx, ecx"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 5,
+              "address": "0047e975",
+              "bytes": "7716",
+              "mnemonic": "ja",
+              "operands": "0x47e98d"
+            },
+            "canonical": {
+              "offset": 5,
+              "address": "00bcfeb5",
+              "bytes": "7716",
+              "mnemonic": "ja",
+              "operands": "0xbcfecd"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 7,
+              "address": "0047e977",
+              "bytes": "33c9",
+              "mnemonic": "xor",
+              "operands": "ecx, ecx"
+            },
+            "canonical": {
+              "offset": 7,
+              "address": "00bcfeb7",
+              "bytes": "33c9",
+              "mnemonic": "xor",
+              "operands": "ecx, ecx"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 9,
+              "address": "0047e979",
+              "bytes": "8d148d00000000",
+              "mnemonic": "lea",
+              "operands": "edx, [ecx*4]"
+            },
+            "canonical": {
+              "offset": 9,
+              "address": "00bcfeb9",
+              "bytes": "8d148d00000000",
+              "mnemonic": "lea",
+              "operands": "edx, [ecx*4]"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 16,
+              "address": "0047e980",
+              "bytes": "52",
+              "mnemonic": "push",
+              "operands": "edx"
+            },
+            "canonical": {
+              "offset": 16,
+              "address": "00bcfec0",
+              "bytes": "52",
+              "mnemonic": "push",
+              "operands": "edx"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 17,
+              "address": "0047e981",
+              "bytes": "e8957e7700",
+              "mnemonic": "call",
+              "operands": "0xbf681b"
+            },
+            "canonical": {
+              "offset": 17,
+              "address": "00bcfec1",
+              "bytes": "e855690200",
+              "mnemonic": "call",
+              "operands": "0xbf681b"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 22,
+              "address": "0047e986",
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            "canonical": {
+              "offset": 22,
+              "address": "00bcfec6",
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 25,
+              "address": "0047e989",
+              "bytes": "83c410",
+              "mnemonic": "add",
+              "operands": "esp, 0x10"
+            },
+            "canonical": {
+              "offset": 25,
+              "address": "00bcfec9",
+              "bytes": "83c410",
+              "mnemonic": "add",
+              "operands": "esp, 0x10"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 28,
+              "address": "0047e98c",
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            },
+            "canonical": {
+              "offset": 28,
+              "address": "00bcfecc",
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          },
+          {
+            "candidate": {
+              "offset": 29,
+              "address": "0047e98d",
+              "bytes": "83c8ff",
+              "mnemonic": "or",
+              "operands": "eax, 0xffffffff"
+            },
+            "canonical": {
+              "offset": 29,
+              "address": "00bcfecd",
+              "bytes": "83c8ff",
+              "mnemonic": "or",
+              "operands": "eax, 0xffffffff"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 32,
+              "address": "0047e990",
+              "bytes": "33d2",
+              "mnemonic": "xor",
+              "operands": "edx, edx"
+            },
+            "canonical": {
+              "offset": 32,
+              "address": "00bcfed0",
+              "bytes": "33d2",
+              "mnemonic": "xor",
+              "operands": "edx, edx"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 34,
+              "address": "0047e992",
+              "bytes": "f7f1",
+              "mnemonic": "div",
+              "operands": "ecx"
+            },
+            "canonical": {
+              "offset": 34,
+              "address": "00bcfed2",
+              "bytes": "f7f1",
+              "mnemonic": "div",
+              "operands": "ecx"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 36,
+              "address": "0047e994",
+              "bytes": "83f804",
+              "mnemonic": "cmp",
+              "operands": "eax, 4"
+            },
+            "canonical": {
+              "offset": 36,
+              "address": "00bcfed4",
+              "bytes": "83f804",
+              "mnemonic": "cmp",
+              "operands": "eax, 4"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 39,
+              "address": "0047e997",
+              "bytes": "73e0",
+              "mnemonic": "jae",
+              "operands": "0x47e979"
+            },
+            "canonical": {
+              "offset": 39,
+              "address": "00bcfed7",
+              "bytes": "73e0",
+              "mnemonic": "jae",
+              "operands": "0xbcfeb9"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 41,
+              "address": "0047e999",
+              "bytes": "8d0424",
+              "mnemonic": "lea",
+              "operands": "eax, [esp]"
+            },
+            "canonical": {
+              "offset": 41,
+              "address": "00bcfed9",
+              "bytes": "8d0424",
+              "mnemonic": "lea",
+              "operands": "eax, [esp]"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 44,
+              "address": "0047e99c",
+              "bytes": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            "canonical": {
+              "offset": 44,
+              "address": "00bcfedc",
+              "bytes": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 45,
+              "address": "0047e99d",
+              "bytes": "8d4c2408",
+              "mnemonic": "lea",
+              "operands": "ecx, [esp + 8]"
+            },
+            "canonical": {
+              "offset": 45,
+              "address": "00bcfedd",
+              "bytes": "8d4c2408",
+              "mnemonic": "lea",
+              "operands": "ecx, [esp + 8]"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 49,
+              "address": "0047e9a1",
+              "bytes": "c744240400000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esp + 4], 0"
+            },
+            "canonical": {
+              "offset": 49,
+              "address": "00bcfee1",
+              "bytes": "c744240400000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esp + 4], 0"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 57,
+              "address": "0047e9a9",
+              "bytes": "e892797700",
+              "mnemonic": "call",
+              "operands": "0xbf6340"
+            },
+            "canonical": {
+              "offset": 57,
+              "address": "00bcfee9",
+              "bytes": "e852640200",
+              "mnemonic": "call",
+              "operands": "0xbf6340"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 62,
+              "address": "0047e9ae",
+              "bytes": "68c03ce000",
+              "mnemonic": "push",
+              "operands": "0xe03cc0"
+            },
+            "canonical": {
+              "offset": 62,
+              "address": "00bcfeee",
+              "bytes": "68c03ce000",
+              "mnemonic": "push",
+              "operands": "0xe03cc0"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 67,
+              "address": "0047e9b3",
+              "bytes": "8d4c2408",
+              "mnemonic": "lea",
+              "operands": "ecx, [esp + 8]"
+            },
+            "canonical": {
+              "offset": 67,
+              "address": "00bcfef3",
+              "bytes": "8d4c2408",
+              "mnemonic": "lea",
+              "operands": "ecx, [esp + 8]"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 71,
+              "address": "0047e9b7",
+              "bytes": "51",
+              "mnemonic": "push",
+              "operands": "ecx"
+            },
+            "canonical": {
+              "offset": 71,
+              "address": "00bcfef7",
+              "bytes": "51",
+              "mnemonic": "push",
+              "operands": "ecx"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 72,
+              "address": "0047e9b8",
+              "bytes": "c744240c3c92d600",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esp + 0xc], 0xd6923c"
+            },
+            "canonical": {
+              "offset": 72,
+              "address": "00bcfef8",
+              "bytes": "c744240c3c92d600",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esp + 0xc], 0xd6923c"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 80,
+              "address": "0047e9c0",
+              "bytes": "e8c07e7700",
+              "mnemonic": "call",
+              "operands": "0xbf6885"
+            },
+            "canonical": {
+              "offset": 80,
+              "address": "00bcff00",
+              "bytes": "e880690200",
+              "mnemonic": "call",
+              "operands": "0xbf6885"
+            }
+          }
+        ],
+        "source_byte_identity_claimed": false
+      },
+      "native_to_emitted_source_byte_identity_claimed": false
+    },
+    {
+      "entry_address": "00490240",
+      "source_entry": "bsp::throw_native_traffic_vector_length_00490240",
+      "original_library_name": "STL_xlen_throw_00490240",
+      "source_composition_only": "bsp::native_singleton_length_error_00bd0590()",
+      "actual_native_input": "no register or stack input",
+      "actual_native_result": "no normal return",
+      "original_class_inferred": false,
+      "source_convention": "MSVC x86 cdecl noreturn",
+      "logical_behavior": [
+        "initialize actual 0x1c-byte temporary string to length zero, capacity 15, first inline byte NUL",
+        "assign the actual 18-byte vector<T> too long text through the genuine counted SBO assignment provider",
+        "arm temporary destruction only after assignment completed",
+        "construct the existing owning 0x28-byte NativeSingletonVectorLengthError payload using the real legacy owner providers",
+        "destroy the completed temporary during actual C++ exception propagation"
+      ],
+      "exception_type": "existing bsp::NativeSingletonVectorLengthError; not std::length_error",
+      "payload": "0x28-byte raw NativeLegacyExceptionStorage, including the D69260 data word and owned SBO message; this word is not installed as a host vtable",
+      "native_failure_identity_unclaimed": "Native BF6885 throw, D83F98 RTTI/ThrowInfo transport, BF6B43 FH3 handler and private CRT exception identity are not implemented by the new host C++ exception mechanism.",
+      "native_length": 105,
+      "native_instructions": 23,
+      "native_hex": "6aff68482ec60064a100000000506489250000000083ec446a1268e037ce008d4c2408c74424200f000000c744241c00000000c644240c00e8a384f7ff8d0424508d4c2420c744245000000000e86e14f8ff68983fd8008d4c242051c74424246092d600e8dc657600",
+      "native_sha256": "87859a6fb335700f2cb0848df95dd41169cd076da5ad48b16d3b1e953904e8d4",
+      "live_installed_equal": true,
+      "full_native_to_canonical_native_mapping": {
+        "canonical": "00bd0590",
+        "whole_native_bytes": 105,
+        "instructions": 23,
+        "fixed_bytes_equal": 89,
+        "actual_call_operands": [
+          {
+            "candidate_site": "00490278",
+            "canonical_site": "00bd05c8",
+            "actual_native_callee": "00408720"
+          },
+          {
+            "candidate_site": "0049028d",
+            "canonical_site": "00bd05dd",
+            "actual_native_callee": "00411700"
+          },
+          {
+            "candidate_site": "004902a4",
+            "canonical_site": "00bd05f4",
+            "actual_native_callee": "00bf6885"
+          }
+        ],
+        "eh_handler_word_only_relocated": 3,
+        "complete_native_mapping": [
+          {
+            "candidate": {
+              "offset": 0,
+              "address": "00490240",
+              "bytes": "6aff",
+              "mnemonic": "push",
+              "operands": "-1"
+            },
+            "canonical": {
+              "offset": 0,
+              "address": "00bd0590",
+              "bytes": "6aff",
+              "mnemonic": "push",
+              "operands": "-1"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 2,
+              "address": "00490242",
+              "bytes": "68482ec600",
+              "mnemonic": "push",
+              "operands": "0xc62e48"
+            },
+            "canonical": {
+              "offset": 2,
+              "address": "00bd0592",
+              "bytes": "687854cc00",
+              "mnemonic": "push",
+              "operands": "0xcc5478"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 7,
+              "address": "00490247",
+              "bytes": "64a100000000",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr fs:[0]"
+            },
+            "canonical": {
+              "offset": 7,
+              "address": "00bd0597",
+              "bytes": "64a100000000",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr fs:[0]"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 13,
+              "address": "0049024d",
+              "bytes": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            "canonical": {
+              "offset": 13,
+              "address": "00bd059d",
+              "bytes": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 14,
+              "address": "0049024e",
+              "bytes": "64892500000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr fs:[0], esp"
+            },
+            "canonical": {
+              "offset": 14,
+              "address": "00bd059e",
+              "bytes": "64892500000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr fs:[0], esp"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 21,
+              "address": "00490255",
+              "bytes": "83ec44",
+              "mnemonic": "sub",
+              "operands": "esp, 0x44"
+            },
+            "canonical": {
+              "offset": 21,
+              "address": "00bd05a5",
+              "bytes": "83ec44",
+              "mnemonic": "sub",
+              "operands": "esp, 0x44"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 24,
+              "address": "00490258",
+              "bytes": "6a12",
+              "mnemonic": "push",
+              "operands": "0x12"
+            },
+            "canonical": {
+              "offset": 24,
+              "address": "00bd05a8",
+              "bytes": "6a12",
+              "mnemonic": "push",
+              "operands": "0x12"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 26,
+              "address": "0049025a",
+              "bytes": "68e037ce00",
+              "mnemonic": "push",
+              "operands": "0xce37e0"
+            },
+            "canonical": {
+              "offset": 26,
+              "address": "00bd05aa",
+              "bytes": "68e037ce00",
+              "mnemonic": "push",
+              "operands": "0xce37e0"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 31,
+              "address": "0049025f",
+              "bytes": "8d4c2408",
+              "mnemonic": "lea",
+              "operands": "ecx, [esp + 8]"
+            },
+            "canonical": {
+              "offset": 31,
+              "address": "00bd05af",
+              "bytes": "8d4c2408",
+              "mnemonic": "lea",
+              "operands": "ecx, [esp + 8]"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 35,
+              "address": "00490263",
+              "bytes": "c74424200f000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esp + 0x20], 0xf"
+            },
+            "canonical": {
+              "offset": 35,
+              "address": "00bd05b3",
+              "bytes": "c74424200f000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esp + 0x20], 0xf"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 43,
+              "address": "0049026b",
+              "bytes": "c744241c00000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esp + 0x1c], 0"
+            },
+            "canonical": {
+              "offset": 43,
+              "address": "00bd05bb",
+              "bytes": "c744241c00000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esp + 0x1c], 0"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 51,
+              "address": "00490273",
+              "bytes": "c644240c00",
+              "mnemonic": "mov",
+              "operands": "byte ptr [esp + 0xc], 0"
+            },
+            "canonical": {
+              "offset": 51,
+              "address": "00bd05c3",
+              "bytes": "c644240c00",
+              "mnemonic": "mov",
+              "operands": "byte ptr [esp + 0xc], 0"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 56,
+              "address": "00490278",
+              "bytes": "e8a384f7ff",
+              "mnemonic": "call",
+              "operands": "0x408720"
+            },
+            "canonical": {
+              "offset": 56,
+              "address": "00bd05c8",
+              "bytes": "e8538183ff",
+              "mnemonic": "call",
+              "operands": "0x408720"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 61,
+              "address": "0049027d",
+              "bytes": "8d0424",
+              "mnemonic": "lea",
+              "operands": "eax, [esp]"
+            },
+            "canonical": {
+              "offset": 61,
+              "address": "00bd05cd",
+              "bytes": "8d0424",
+              "mnemonic": "lea",
+              "operands": "eax, [esp]"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 64,
+              "address": "00490280",
+              "bytes": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            "canonical": {
+              "offset": 64,
+              "address": "00bd05d0",
+              "bytes": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 65,
+              "address": "00490281",
+              "bytes": "8d4c2420",
+              "mnemonic": "lea",
+              "operands": "ecx, [esp + 0x20]"
+            },
+            "canonical": {
+              "offset": 65,
+              "address": "00bd05d1",
+              "bytes": "8d4c2420",
+              "mnemonic": "lea",
+              "operands": "ecx, [esp + 0x20]"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 69,
+              "address": "00490285",
+              "bytes": "c744245000000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esp + 0x50], 0"
+            },
+            "canonical": {
+              "offset": 69,
+              "address": "00bd05d5",
+              "bytes": "c744245000000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esp + 0x50], 0"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 77,
+              "address": "0049028d",
+              "bytes": "e86e14f8ff",
+              "mnemonic": "call",
+              "operands": "0x411700"
+            },
+            "canonical": {
+              "offset": 77,
+              "address": "00bd05dd",
+              "bytes": "e81e1184ff",
+              "mnemonic": "call",
+              "operands": "0x411700"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 82,
+              "address": "00490292",
+              "bytes": "68983fd800",
+              "mnemonic": "push",
+              "operands": "0xd83f98"
+            },
+            "canonical": {
+              "offset": 82,
+              "address": "00bd05e2",
+              "bytes": "68983fd800",
+              "mnemonic": "push",
+              "operands": "0xd83f98"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 87,
+              "address": "00490297",
+              "bytes": "8d4c2420",
+              "mnemonic": "lea",
+              "operands": "ecx, [esp + 0x20]"
+            },
+            "canonical": {
+              "offset": 87,
+              "address": "00bd05e7",
+              "bytes": "8d4c2420",
+              "mnemonic": "lea",
+              "operands": "ecx, [esp + 0x20]"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 91,
+              "address": "0049029b",
+              "bytes": "51",
+              "mnemonic": "push",
+              "operands": "ecx"
+            },
+            "canonical": {
+              "offset": 91,
+              "address": "00bd05eb",
+              "bytes": "51",
+              "mnemonic": "push",
+              "operands": "ecx"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 92,
+              "address": "0049029c",
+              "bytes": "c74424246092d600",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esp + 0x24], 0xd69260"
+            },
+            "canonical": {
+              "offset": 92,
+              "address": "00bd05ec",
+              "bytes": "c74424246092d600",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esp + 0x24], 0xd69260"
+            }
+          },
+          {
+            "candidate": {
+              "offset": 100,
+              "address": "004902a4",
+              "bytes": "e8dc657600",
+              "mnemonic": "call",
+              "operands": "0xbf6885"
+            },
+            "canonical": {
+              "offset": 100,
+              "address": "00bd05f4",
+              "bytes": "e88c620200",
+              "mnemonic": "call",
+              "operands": "0xbf6885"
+            }
+          }
+        ],
+        "source_byte_identity_claimed": false
+      },
+      "native_to_emitted_source_byte_identity_claimed": false
+    }
+  ],
+  "native_call_sites": [
+    {
+      "address": "0047e981",
+      "native": "00bf681b",
+      "owner": "0047e970",
+      "kind": "actual direct Native CALL"
+    },
+    {
+      "address": "0047e9a9",
+      "native": "00bf6340",
+      "owner": "0047e970",
+      "kind": "actual direct Native CALL"
+    },
+    {
+      "address": "0047e9c0",
+      "native": "00bf6885",
+      "owner": "0047e970",
+      "kind": "actual direct Native CALL"
+    },
+    {
+      "address": "00490278",
+      "native": "00408720",
+      "owner": "00490240",
+      "kind": "actual direct Native CALL"
+    },
+    {
+      "address": "0049028d",
+      "native": "00411700",
+      "owner": "00490240",
+      "kind": "actual direct Native CALL"
+    },
+    {
+      "address": "004902a4",
+      "native": "00bf6885",
+      "owner": "00490240",
+      "kind": "actual direct Native CALL"
+    },
+    {
+      "address": "004924ef",
+      "native": "0047e970",
+      "owner": "004924c0",
+      "kind": "actual incoming Native CALL"
+    },
+    {
+      "address": "004931cb",
+      "native": "0047e970",
+      "owner": "00493120",
+      "kind": "actual incoming Native CALL"
+    },
+    {
+      "address": "0049431c",
+      "native": "0047e970",
+      "owner": "004942e0",
+      "kind": "actual incoming Native CALL"
+    },
+    {
+      "address": "004924e6",
+      "native": "00490240",
+      "owner": "004924c0",
+      "kind": "actual incoming Native CALL"
+    },
+    {
+      "address": "00493169",
+      "native": "00490240",
+      "owner": "00493120",
+      "kind": "actual incoming Native CALL"
+    },
+    {
+      "address": "00494313",
+      "native": "00490240",
+      "owner": "004942e0",
+      "kind": "actual incoming Native CALL"
+    }
+  ],
+  "original_vs_source_abi": {
+    "allocation_count_ECX_plain_RET": "preserved and measured in the registered Source fixture",
+    "allocation_incoming_EDX": "not a Native input; Source entry has no dummy EDX argument",
+    "length_failure": "no input, no normal return; actual owning host exception thrown",
+    "full_register_flags_fault_frame_equivalence": false,
+    "native_exception_transport_compatibility": false,
+    "drop_in_binary_replacement": false
+  },
+  "native_equivalence_scope": {
+    "whole_candidate_vs_whole_canonical_native": true,
+    "all_48_instruction_and_operand_rows": "functions/*/full_native_to_canonical_native_mapping",
+    "fixed_bytes_equal": 162,
+    "resolved_true_operand_bytes": 28,
+    "true_operands": "six rel32 CALL operands plus one length-failure EH-handler immediate word",
+    "native_to_emitted_source_byte_identity": false
+  },
+  "native_eh_state_and_action": {
+    "candidate_funcinfo": "00d8aac0",
+    "candidate_unwindmap": "00d8aab8",
+    "candidate_action": "00c62e40",
+    "canonical_funcinfo": "00dff4bc",
+    "canonical_action": "00cc5470",
+    "candidate_words": [
+      4294967295,
+      12987968,
+      429065506,
+      1,
+      14199480,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "canonical_words": [
+      4294967295,
+      13390960,
+      429065506,
+      1,
+      14677172,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "state0_to_minus1_cleanup_actual_ebp_minus50_message": true,
+    "whole8B_action_semantics_equal_after_true_JMP_rel32_normalization": true,
+    "action_fixed_bytes_equal": 4,
+    "actual_action_JMP_target": "004072d0",
+    "actual_handler_JMP_target": "00bf6b43",
+    "qualified_cpp_guard_not_recovered_native_frame_abi": true
+  },
+  "eh_scope": {
+    "observed_cleanup": "state0 -> -1 destroys completed temporary at EBP-0x50 using actual 004072D0",
+    "guard_correspondence": "canonical real C++ CompletedMessage guard is armed after assignment and destroys the same completed message",
+    "compiler_action_not_source_function": true,
+    "action_comparison": "four fixed instruction bytes plus resolved true JMP rel32; all eight action bytes retained",
+    "handler": "whole ten-byte handler resolves FuncInfo D8AAC0 and actual BF6B43 destination",
+    "native_EBP_unwind_spill_alias_frame_or_FH3_identity_claimed": false,
+    "qualification_correction": "initial action comparison incorrectly treated the true JMP rel32 as fixed; corrected before acceptance and included in full wall time"
+  },
+  "provider_contracts": {
+    "allocation": "genuine existing canonical Source 00BCFEB0 -> singleton_lifetime_allocate -> actual malloc/_callnewh retry and std::bad_alloc policy",
+    "length_failure": "genuine existing canonical Source 00BD0590 -> actual counted SBO assignment/owning legacy exception construction/copy/destruction and CompletedMessage guard",
+    "legacy_owner": "actual 00411700/00411940/00411780 plus raw BF632F/BF63A6/BF6454 Source providers",
+    "sbo": "actual 00408720/00408120/004072D0 Source providers and their genuine current allocation/copy/free boundaries",
+    "source_composition_is_not_new_native_call_edges": true,
+    "unresolved_body_stubs_or_fake_callbacks": false
+  },
+  "providers": {
+    "native_singleton_vector_allocation": {
+      "registered_object": "build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_allocation.obj",
+      "sha256": "45553fa6773f0cc7c547696046e39ee4b3f71941d1d294aacead649c5fcc9d91",
+      "total_executable_bytes": 612,
+      "all_nonempty_executable_sections_accounted": true,
+      "all_code_data_symbols_and_relocations_evidence": "byte_audit.json/real_provider_entire_coff/native_singleton_vector_allocation"
+    },
+    "native_legacy_exception_owner": {
+      "registered_object": "build\\win32\\bsp_core.dir\\Release\\native_legacy_exception_owner.obj",
+      "sha256": "710cd1dd8c0a7fc475fc7f19a7eec2e846bb1bc920109fb651fc97114d54bf43",
+      "total_executable_bytes": 1098,
+      "all_nonempty_executable_sections_accounted": true,
+      "all_code_data_symbols_and_relocations_evidence": "byte_audit.json/real_provider_entire_coff/native_legacy_exception_owner"
+    },
+    "native_legacy_sbo_string": {
+      "registered_object": "build\\win32\\bsp_core.dir\\Release\\native_legacy_sbo_string.obj",
+      "sha256": "6e43588a1ef6affae5c64e0c46c60dd9ee71eb6add87ec77e70b83a7938eb1d3",
+      "total_executable_bytes": 2444,
+      "all_nonempty_executable_sections_accounted": true,
+      "all_code_data_symbols_and_relocations_evidence": "byte_audit.json/real_provider_entire_coff/native_legacy_sbo_string"
+    },
+    "singleton_lifetime": {
+      "registered_object": "build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj",
+      "sha256": "bfabe3a96fffa830365d4b8f44008c608ea511d6cd55504fdd911f2c08f6cfb4",
+      "total_executable_bytes": 4321,
+      "all_nonempty_executable_sections_accounted": true,
+      "all_code_data_symbols_and_relocations_evidence": "byte_audit.json/real_provider_entire_coff/singleton_lifetime"
+    },
+    "native_allocator_base_default_constructor": {
+      "registered_object": "build\\win32\\bsp_core.dir\\Release\\native_allocator_base_default_constructor.obj",
+      "sha256": "d5467b12600937e52c6b180d184ffbccbebadd8d655093b0c3c2cc4d3e935119",
+      "total_executable_bytes": 17,
+      "all_nonempty_executable_sections_accounted": true,
+      "all_code_data_symbols_and_relocations_evidence": "byte_audit.json/real_provider_entire_coff/native_allocator_base_default_constructor"
+    },
+    "native_allocator_base_copy_constructor": {
+      "registered_object": "build\\win32\\bsp_core.dir\\Release\\native_allocator_base_copy_constructor.obj",
+      "sha256": "46ae2417742795920423c9b349b0a2dd9b2f001e76af267477da398d33e803be",
+      "total_executable_bytes": 90,
+      "all_nonempty_executable_sections_accounted": true,
+      "all_code_data_symbols_and_relocations_evidence": "byte_audit.json/real_provider_entire_coff/native_allocator_base_copy_constructor"
+    },
+    "native_allocator_base_cleanup": {
+      "registered_object": "build\\win32\\bsp_core.dir\\Release\\native_allocator_base_cleanup.obj",
+      "sha256": "8ce0d800924db2eb52f0a871ebec579a175c319b4c4b061a662eb618b04fe770",
+      "total_executable_bytes": 23,
+      "all_nonempty_executable_sections_accounted": true,
+      "all_code_data_symbols_and_relocations_evidence": "byte_audit.json/real_provider_entire_coff/native_allocator_base_cleanup"
+    }
+  },
+  "provider_total_executable_bytes": 8605,
+  "entire_emitted_coff": {
+    "strict": {
+      "path": "local\\goal15t_traffic_vector_failure_children\\native_traffic_vector_failure_children.obj",
+      "sha256": "dd41a24751bdcb52a412fa30d53c7bf885b5e15b8da9d9a8e911b4e259234285",
+      "sections": [
+        {
+          "index": 1,
+          "name": ".drectve",
+          "length": 47,
+          "flags": "00100a00",
+          "executable": false,
+          "hex": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+          "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab",
+          "actual_symbols": [
+            {
+              "name": ".drectve",
+              "value": 0,
+              "section": 1,
+              "kind": 0,
+              "storage": 3
+            }
+          ],
+          "relocations": []
+        },
+        {
+          "index": 2,
+          "name": ".debug$S",
+          "length": 232,
+          "flags": "42100040",
+          "executable": false,
+          "hex": "04000000f1000000dc0000009e000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d676f616c31356a5f776f726c645f68656c706572735c6c6f63616c5c676f616c3135745f747261666669635f766563746f725f6661696c7572655f6368696c6472656e5c6e61746976655f747261666669635f766563746f725f6661696c7572655f6368696c6472656e2e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c657200",
+          "sha256": "9be3a621e6bfd415291512d4a1f0fea5c8c987a795057a4071ec392cee0ad10d",
+          "actual_symbols": [
+            {
+              "name": ".debug$S",
+              "value": 0,
+              "section": 2,
+              "kind": 0,
+              "storage": 3
+            }
+          ],
+          "relocations": []
+        },
+        {
+          "index": 3,
+          "name": ".text$mn",
+          "length": 7,
+          "flags": "60501020",
+          "executable": true,
+          "hex": "33d2e900000000",
+          "sha256": "625cec6e82ee1ffde722743e56e994ded3b796ee9dccd4aaf28672b7125aef1a",
+          "actual_symbols": [
+            {
+              "name": ".text$mn",
+              "value": 0,
+              "section": 3,
+              "kind": 0,
+              "storage": 3
+            },
+            {
+              "name": "?allocate_native_traffic_vector_0047e970@bsp@@YIPAXI@Z",
+              "value": 0,
+              "section": 3,
+              "kind": 32,
+              "storage": 2
+            }
+          ],
+          "relocations": [
+            {
+              "section_offset": 3,
+              "type": 20,
+              "target": "?native_singleton_pointer_allocate_00bcfeb0@bsp@@YIPAXIPAX@Z",
+              "addend_hex": "00000000"
+            }
+          ],
+          "instructions": [
+            {
+              "offset": 0,
+              "address": "00000000",
+              "bytes": "33d2",
+              "mnemonic": "xor",
+              "operands": "edx, edx"
+            },
+            {
+              "offset": 2,
+              "address": "00000002",
+              "bytes": "e900000000",
+              "mnemonic": "jmp",
+              "operands": "7"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "name": ".debug$F",
+          "length": 16,
+          "flags": "42101040",
+          "executable": false,
+          "hex": "00000000070000000000000000000000",
+          "sha256": "9959c4f31c29b83721f869d873dfdd560b1b9ba0ed48a5459647c49e2758f414",
+          "actual_symbols": [
+            {
+              "name": ".debug$F",
+              "value": 0,
+              "section": 4,
+              "kind": 0,
+              "storage": 3
+            }
+          ],
+          "relocations": [
+            {
+              "section_offset": 0,
+              "type": 7,
+              "target": "?allocate_native_traffic_vector_0047e970@bsp@@YIPAXI@Z",
+              "addend_hex": "00000000"
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "name": ".text$mn",
+          "length": 5,
+          "flags": "60501020",
+          "executable": true,
+          "hex": "e900000000",
+          "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+          "actual_symbols": [
+            {
+              "name": ".text$mn",
+              "value": 0,
+              "section": 5,
+              "kind": 0,
+              "storage": 3
+            },
+            {
+              "name": "?throw_native_traffic_vector_length_00490240@bsp@@YAXXZ",
+              "value": 0,
+              "section": 5,
+              "kind": 32,
+              "storage": 2
+            }
+          ],
+          "relocations": [
+            {
+              "section_offset": 1,
+              "type": 20,
+              "target": "?native_singleton_length_error_00bd0590@bsp@@YAXXZ",
+              "addend_hex": "00000000"
+            }
+          ],
+          "instructions": [
+            {
+              "offset": 0,
+              "address": "00000000",
+              "bytes": "e900000000",
+              "mnemonic": "jmp",
+              "operands": "5"
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "name": ".debug$F",
+          "length": 16,
+          "flags": "42101040",
+          "executable": false,
+          "hex": "00000000050000000000000000000000",
+          "sha256": "2031367a1357af6f1d85fbb9652128dd3ba2ebaf241173e032694f2e913e2811",
+          "actual_symbols": [
+            {
+              "name": ".debug$F",
+              "value": 0,
+              "section": 6,
+              "kind": 0,
+              "storage": 3
+            }
+          ],
+          "relocations": [
+            {
+              "section_offset": 0,
+              "type": 7,
+              "target": "?throw_native_traffic_vector_length_00490240@bsp@@YAXXZ",
+              "addend_hex": "00000000"
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "name": ".chks64",
+          "length": 56,
+          "flags": "00000a00",
+          "executable": false,
+          "hex": "76f6abfb5648dec79be3a621e6bfd415625cec6e82ee1ffd9959c4f31c29b837e8ebd827d1f36d7c2031367a1357af6f0000000000000000",
+          "sha256": "38304e418c2e8fb8e6cf351a0529bbc4fa0afd705acf9c60122895e64aa9e620",
+          "actual_symbols": [
+            {
+              "name": ".chks64",
+              "value": 0,
+              "section": 7,
+              "kind": 0,
+              "storage": 3
+            }
+          ],
+          "relocations": []
+        }
+      ],
+      "all_nonempty_executable_sections_accounted": true,
+      "total_executable_bytes": 12,
+      "functions": {
+        "?allocate_native_traffic_vector_0047e970@bsp@@YIPAXI@Z": {
+          "section": 3,
+          "symbol_value": 0,
+          "extent_end": 7,
+          "length": 7,
+          "hex": "33d2e900000000",
+          "sha256": "625cec6e82ee1ffde722743e56e994ded3b796ee9dccd4aaf28672b7125aef1a",
+          "instructions": [
+            {
+              "offset": 0,
+              "address": "00000000",
+              "bytes": "33d2",
+              "mnemonic": "xor",
+              "operands": "edx, edx"
+            },
+            {
+              "offset": 2,
+              "address": "00000002",
+              "bytes": "e900000000",
+              "mnemonic": "jmp",
+              "operands": "7"
+            }
+          ],
+          "relocations": [
+            {
+              "section_offset": 3,
+              "type": 20,
+              "target": "?native_singleton_pointer_allocate_00bcfeb0@bsp@@YIPAXIPAX@Z",
+              "addend_hex": "00000000",
+              "offset": 3
+            }
+          ]
+        },
+        "?throw_native_traffic_vector_length_00490240@bsp@@YAXXZ": {
+          "section": 5,
+          "symbol_value": 0,
+          "extent_end": 5,
+          "length": 5,
+          "hex": "e900000000",
+          "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+          "instructions": [
+            {
+              "offset": 0,
+              "address": "00000000",
+              "bytes": "e900000000",
+              "mnemonic": "jmp",
+              "operands": "5"
+            }
+          ],
+          "relocations": [
+            {
+              "section_offset": 1,
+              "type": 20,
+              "target": "?native_singleton_length_error_00bd0590@bsp@@YAXXZ",
+              "addend_hex": "00000000",
+              "offset": 1
+            }
+          ]
+        }
+      }
+    },
+    "registered": {
+      "path": "build\\win32\\bsp_core.dir\\Release\\native_traffic_vector_failure_children.obj",
+      "sha256": "732c8a4687ccaf2ca1149b4fd96cf8246cdf3f9880d0dff294f43ba1c0a8cc51",
+      "sections": [
+        {
+          "index": 1,
+          "name": ".drectve",
+          "length": 47,
+          "flags": "00100a00",
+          "executable": false,
+          "hex": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+          "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab",
+          "actual_symbols": [
+            {
+              "name": ".drectve",
+              "value": 0,
+              "section": 1,
+              "kind": 0,
+              "storage": 3
+            }
+          ],
+          "relocations": []
+        },
+        {
+          "index": 2,
+          "name": ".debug$S",
+          "length": 220,
+          "flags": "42100040",
+          "executable": false,
+          "hex": "04000000f1000000cf00000091000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d676f616c31356a5f776f726c645f68656c706572735c6275696c645c77696e33325c6273705f636f72652e6469725c52656c656173655c6e61746976655f747261666669635f766563746f725f6661696c7572655f6368696c6472656e2e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c65720000",
+          "sha256": "99be6ac18e26c1dc90bacde21fed66689328b2ef835ee1ef33e113c02a35df4c",
+          "actual_symbols": [
+            {
+              "name": ".debug$S",
+              "value": 0,
+              "section": 2,
+              "kind": 0,
+              "storage": 3
+            }
+          ],
+          "relocations": []
+        },
+        {
+          "index": 3,
+          "name": ".text$mn",
+          "length": 7,
+          "flags": "60501020",
+          "executable": true,
+          "hex": "33d2e900000000",
+          "sha256": "625cec6e82ee1ffde722743e56e994ded3b796ee9dccd4aaf28672b7125aef1a",
+          "actual_symbols": [
+            {
+              "name": ".text$mn",
+              "value": 0,
+              "section": 3,
+              "kind": 0,
+              "storage": 3
+            },
+            {
+              "name": "?allocate_native_traffic_vector_0047e970@bsp@@YIPAXI@Z",
+              "value": 0,
+              "section": 3,
+              "kind": 32,
+              "storage": 2
+            }
+          ],
+          "relocations": [
+            {
+              "section_offset": 3,
+              "type": 20,
+              "target": "?native_singleton_pointer_allocate_00bcfeb0@bsp@@YIPAXIPAX@Z",
+              "addend_hex": "00000000"
+            }
+          ],
+          "instructions": [
+            {
+              "offset": 0,
+              "address": "00000000",
+              "bytes": "33d2",
+              "mnemonic": "xor",
+              "operands": "edx, edx"
+            },
+            {
+              "offset": 2,
+              "address": "00000002",
+              "bytes": "e900000000",
+              "mnemonic": "jmp",
+              "operands": "7"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "name": ".debug$F",
+          "length": 16,
+          "flags": "42101040",
+          "executable": false,
+          "hex": "00000000070000000000000000000000",
+          "sha256": "9959c4f31c29b83721f869d873dfdd560b1b9ba0ed48a5459647c49e2758f414",
+          "actual_symbols": [
+            {
+              "name": ".debug$F",
+              "value": 0,
+              "section": 4,
+              "kind": 0,
+              "storage": 3
+            }
+          ],
+          "relocations": [
+            {
+              "section_offset": 0,
+              "type": 7,
+              "target": "?allocate_native_traffic_vector_0047e970@bsp@@YIPAXI@Z",
+              "addend_hex": "00000000"
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "name": ".text$mn",
+          "length": 5,
+          "flags": "60501020",
+          "executable": true,
+          "hex": "e900000000",
+          "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+          "actual_symbols": [
+            {
+              "name": ".text$mn",
+              "value": 0,
+              "section": 5,
+              "kind": 0,
+              "storage": 3
+            },
+            {
+              "name": "?throw_native_traffic_vector_length_00490240@bsp@@YAXXZ",
+              "value": 0,
+              "section": 5,
+              "kind": 32,
+              "storage": 2
+            }
+          ],
+          "relocations": [
+            {
+              "section_offset": 1,
+              "type": 20,
+              "target": "?native_singleton_length_error_00bd0590@bsp@@YAXXZ",
+              "addend_hex": "00000000"
+            }
+          ],
+          "instructions": [
+            {
+              "offset": 0,
+              "address": "00000000",
+              "bytes": "e900000000",
+              "mnemonic": "jmp",
+              "operands": "5"
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "name": ".debug$F",
+          "length": 16,
+          "flags": "42101040",
+          "executable": false,
+          "hex": "00000000050000000000000000000000",
+          "sha256": "2031367a1357af6f1d85fbb9652128dd3ba2ebaf241173e032694f2e913e2811",
+          "actual_symbols": [
+            {
+              "name": ".debug$F",
+              "value": 0,
+              "section": 6,
+              "kind": 0,
+              "storage": 3
+            }
+          ],
+          "relocations": [
+            {
+              "section_offset": 0,
+              "type": 7,
+              "target": "?throw_native_traffic_vector_length_00490240@bsp@@YAXXZ",
+              "addend_hex": "00000000"
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "name": ".chks64",
+          "length": 56,
+          "flags": "00000a00",
+          "executable": false,
+          "hex": "76f6abfb5648dec799be6ac18e26c1dc625cec6e82ee1ffd9959c4f31c29b837e8ebd827d1f36d7c2031367a1357af6f0000000000000000",
+          "sha256": "e1040685330670bc00cd0d9d2fe78282153944000b395acf5d6163a886530a71",
+          "actual_symbols": [
+            {
+              "name": ".chks64",
+              "value": 0,
+              "section": 7,
+              "kind": 0,
+              "storage": 3
+            }
+          ],
+          "relocations": []
+        }
+      ],
+      "all_nonempty_executable_sections_accounted": true,
+      "total_executable_bytes": 12,
+      "functions": {
+        "?allocate_native_traffic_vector_0047e970@bsp@@YIPAXI@Z": {
+          "section": 3,
+          "symbol_value": 0,
+          "extent_end": 7,
+          "length": 7,
+          "hex": "33d2e900000000",
+          "sha256": "625cec6e82ee1ffde722743e56e994ded3b796ee9dccd4aaf28672b7125aef1a",
+          "instructions": [
+            {
+              "offset": 0,
+              "address": "00000000",
+              "bytes": "33d2",
+              "mnemonic": "xor",
+              "operands": "edx, edx"
+            },
+            {
+              "offset": 2,
+              "address": "00000002",
+              "bytes": "e900000000",
+              "mnemonic": "jmp",
+              "operands": "7"
+            }
+          ],
+          "relocations": [
+            {
+              "section_offset": 3,
+              "type": 20,
+              "target": "?native_singleton_pointer_allocate_00bcfeb0@bsp@@YIPAXIPAX@Z",
+              "addend_hex": "00000000",
+              "offset": 3
+            }
+          ]
+        },
+        "?throw_native_traffic_vector_length_00490240@bsp@@YAXXZ": {
+          "section": 5,
+          "symbol_value": 0,
+          "extent_end": 5,
+          "length": 5,
+          "hex": "e900000000",
+          "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+          "instructions": [
+            {
+              "offset": 0,
+              "address": "00000000",
+              "bytes": "e900000000",
+              "mnemonic": "jmp",
+              "operands": "5"
+            }
+          ],
+          "relocations": [
+            {
+              "section_offset": 1,
+              "type": 20,
+              "target": "?native_singleton_length_error_00bd0590@bsp@@YAXXZ",
+              "addend_hex": "00000000",
+              "offset": 1
+            }
+          ]
+        }
+      }
+    }
+  },
+  "emission": {
+    "strict_entire_executable_bytes": 12,
+    "registered_entire_executable_bytes": 12,
+    "allocation": "whole 7-byte XOR EDX,EDX and tail JMP to actual canonical Source provider",
+    "length_failure": "whole 5-byte tail JMP to actual canonical Source provider",
+    "whole_symbol_extents_and_all_nonempty_CODE_sections": true,
+    "true_call_bindings": "two zero-addend IMAGE_REL_I386_REL32 tail-JMP relocations",
+    "NativeSize_prefix_comparison": false
+  },
+  "linked_registered_fixture": {
+    "exe_sha256": "25e97cf277b00533e98a4c4b9d697c7bfc82bfbcc3e2fdd6d5c653076861c7d5",
+    "map_sha256": "1021bc20609ca0869afe2683284f1f177c3ece05ec1071b50476e8943fec11c6",
+    "own_full_extents": [
+      {
+        "symbol": "?allocate_native_traffic_vector_0047e970@bsp@@YIPAXI@Z",
+        "address": "00401220",
+        "length": 7,
+        "sha256": "d0373263215ead8f2d75d42f46f6c65b58283dc7335d6de8b7b5f248ed0f9bd1",
+        "bindings": [
+          {
+            "offset": 3,
+            "kind": "JMP",
+            "target": "?native_singleton_pointer_allocate_00bcfeb0@bsp@@YIPAXIPAX@Z",
+            "resolved_address": "00401540",
+            "actual_origin": "0001:00000540       ?native_singleton_pointer_allocate_00bcfeb0@bsp@@YIPAXIPAX@Z 00401540 f   bsp_core:native_singleton_vector_allocation.obj"
+          }
+        ],
+        "actual_origin": "0001:00000220       ?allocate_native_traffic_vector_0047e970@bsp@@YIPAXI@Z 00401220 f   bsp_core:native_traffic_vector_failure_children.obj",
+        "all_nonrelocated_bytes_equal": true
+      },
+      {
+        "symbol": "?throw_native_traffic_vector_length_00490240@bsp@@YAXXZ",
+        "address": "00401230",
+        "length": 5,
+        "sha256": "339a3db5717c3887bd2452c4028dc6814211165a63a0599ed367a6074dc70904",
+        "bindings": [
+          {
+            "offset": 1,
+            "kind": "JMP",
+            "target": "?native_singleton_length_error_00bd0590@bsp@@YAXXZ",
+            "resolved_address": "004014d0",
+            "actual_origin": "0001:000004d0       ?native_singleton_length_error_00bd0590@bsp@@YAXXZ 004014d0 f   bsp_core:native_singleton_vector_allocation.obj"
+          }
+        ],
+        "actual_origin": "0001:00000230       ?throw_native_traffic_vector_length_00490240@bsp@@YAXXZ 00401230 f   bsp_core:native_traffic_vector_failure_children.obj",
+        "all_nonrelocated_bytes_equal": true
+      }
+    ]
+  },
+  "compiler": {
+    "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+    "compiler_file_version": "19.51.36244.0",
+    "vc_tools_version": "14.51.36231",
+    "windows_sdk_version": "10.0.26100.0\\",
+    "flags": "/std:c++20 /MD /O2 /Gy /W4 /WX /fp:strict /EHsc"
+  },
+  "registered_build": {
+    "command": "./scripts/build.ps1",
+    "invocations_after_final_source": 1,
+    "result": "PASS",
+    "available_ctests": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "ctest_count": 2,
+    "native_seed_reference_enabled": false,
+    "log": "local/goal15t_traffic_vector_failure_children/registered_build.log",
+    "existing_archive_warning": "unrelated LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj; strict owned compilation passes W4/WX"
+  },
+  "fixture": {
+    "result": "registered Source: ECX/RET0 + real zero allocation + bad_alloc + owning28h length transport PASS",
+    "source": "local/goal15t_traffic_vector_failure_children/traffic_vector_failure_probe.cpp",
+    "bindings": "only genuine registered bsp_core.lib for reconstructed Source providers; /MANIFEST:EMBED",
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-goal15j_world_helpers\\build\\win32\\Release\\bsp_core.lib",
+      "sha256": "AAB35B35013C791A410192D8FE84CADCC328FDF8624B7B6BB5439DD0216FB372",
+      "archive_only": true
+    },
+    "measured": [
+      "actual ECX count1 call with junk incoming EDX, EAX writable result, and zero stack purge",
+      "actual zero-byte allocation service invocation",
+      "actual overflow count0x40000000 throws and catches std::bad_alloc",
+      "actual length failure throws/catches owning NativeSingletonVectorLengthError and preserves 18-byte message with trailing NUL"
+    ],
+    "Native_EH_body_executed": false,
+    "huge_allocation_or_forced_allocator_handler": false,
+    "new_tracked_test_framework_or_tests": false
+  },
+  "source_hashes": {
+    "src/native_traffic_vector_failure_children.cpp": "fa88aa906b78a1d19bd5e331c600b323b7bf9c26f3f7734ad4a69a90825396e4",
+    "include/bsp/native_traffic_vector_failure_children.hpp": "79f46b9f65173b3b91fcce6ff03c6066dabde0eceb4b24b02a53819cd1c68dfe",
+    "src/native_singleton_vector_allocation.cpp": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e",
+    "include/bsp/native_singleton_vector_allocation.hpp": "2910d0e12e3ecce6820cc1a083a3bfba9c5478fbbea9cdf9dc4c2926bdb0296a",
+    "src/native_legacy_exception_owner.cpp": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+    "include/bsp/native_legacy_exception_owner.hpp": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+    "src/native_legacy_sbo_string.cpp": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+    "include/bsp/native_legacy_sbo_string.hpp": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/native_allocator_base_default_constructor.cpp": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+    "include/bsp/native_allocator_base_default_constructor.hpp": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+    "src/native_allocator_base_copy_constructor.cpp": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+    "include/bsp/native_allocator_base_copy_constructor.hpp": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+    "src/native_allocator_base_cleanup.cpp": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+    "include/bsp/native_allocator_base_cleanup.hpp": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd"
+  },
+  "registration": {
+    "append_only_lines": 1,
+    "all_prior_bytes_unchanged": true,
+    "appended_line": "cmake_language(DEFER CALL target_sources bsp_core PRIVATE \"${CMAKE_CURRENT_SOURCE_DIR}/src/native_traffic_vector_failure_children.cpp\")",
+    "comparison_base": "04f84394e77807ffcf8c2a517a1cb754d5ab0fd8"
+  },
+  "installed_original": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "fresh_live_installed_bytes_equal_for_all_captured_extents": true,
+    "raw_capture_manifest": "local/goal15t_traffic_vector_failure_children/native_capture.json"
+  },
+  "annotation_handoff": {
+    "worker_ghidra_mutation": false,
+    "old_names_prototypes_comments_captured": true,
+    "preserve_existing_correct_library_names_and_comments": true,
+    "primary_write_lock_annotation_save_refresh_pending": true
+  },
+  "remaining_gates": [
+    "00493120 whole 436-byte insertion remains open; these two children do not close it",
+    "00495AE0 whole resize behavior remains open",
+    "0049E560 traffic tail and its producers remain open",
+    "004C71C0 whole layout and 004D5BD0 parent remain open",
+    "authored mutable global producers and whole world adoption remain open"
+  ],
+  "limits": [
+    "Source completeness is over the declared existing current allocation and owning-exception contracts",
+    "Native private allocator/CRT/RTTI/FH3/throw identity is unclaimed",
+    "ordinary C++ Source exception transport is not Native exception-frame ABI or exact fault/unwind-spill alias proof",
+    "no universal register/flags preservation, drop-in binary compatibility, game startup, visual or gameplay validation"
+  ],
+  "prior_packet_preservation": {
+    "packet": "goal15t_traffic_vector_failure_children",
+    "start_utc": "2026-10-16T03:54:00+00:00",
+    "main_base": "9936d0f1e120876c2de28eb9db6d1a37d84c475d",
+    "merge_base": "04f84394e77807ffcf8c2a517a1cb754d5ab0fd8",
+    "prior_packet_pin": "f6fe9567f76b57eacddb076502437a60029d3260",
+    "all_prior_artifact_hashes_unchanged": 54,
+    "prior_registered_outputs": {
+      "bsp_core.lib": {
+        "path": "local\\goal15t_traffic_vector_failure_children\\prior_goal15r\\bsp_core.lib",
+        "bytes": 93541516,
+        "sha256": "7d2ca35de5e1e914def0e1d5f4e8f4988e2d2b873d57f6fa951ac44078fadba1"
+      },
+      "native_traffic_dword_copy_fill.obj": {
+        "path": "local\\goal15t_traffic_vector_failure_children\\prior_goal15r\\native_traffic_dword_copy_fill.obj",
+        "bytes": 1767,
+        "sha256": "8e495bf0c5b57cde494bd538b8899baaf890f40f90da4c74d3b62f6fb6835100"
+      },
+      "startup_at_f6fe9567f.cmake": {
+        "path": "local\\goal15t_traffic_vector_failure_children\\prior_goal15r\\startup_at_f6fe9567f.cmake",
+        "bytes": 256770,
+        "sha256": "d2419cd6fbb9e06284631dc21f1f6f39ba965feaf155e6f549b0bb6dcce8281f"
+      }
+    },
+    "note": "Prior R source/header/doc/report and54 ignored artifacts retained unchanged. Original registered archive/object and registration copied before any next build; shared current CMake legitimately merged."
+  },
+  "evidence_directory": "local/goal15t_traffic_vector_failure_children",
+  "complete_provider_coff_and_raw_evidence": {
+    "path": "local/goal15t_traffic_vector_failure_children/byte_audit.json",
+    "sha256": "ec163c5d63b54ec423443a4a7fdb6516d449571fbcf0235d0f7ceb5c6ddfdaa8"
+  },
+  "wall_time": {
+    "start_utc": "2026-10-16T03:54:00+00:00",
+    "complete_end_duration_record": "ignored receipt.json after pin and lease release",
+    "includes": "preservation, Main integration, Native/EH/caller qualification including corrected action assertion, Source, strict compile, registered build, fixture, complete COFF/link audit, docs/report/ledger/commit/release/handoff"
+  }
+}

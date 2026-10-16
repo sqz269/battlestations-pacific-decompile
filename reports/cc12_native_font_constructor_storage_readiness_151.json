@@ -1,0 +1,1464 @@
+{
+  "packet": "cc12_native_font_constructor_storage_readiness_151",
+  "kind": "bounded_read_only_whole_constructor_and_immediate_cleanup_readiness",
+  "baseline": {
+    "baseline": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+    "base_published_main": "9f81f799522c920d35123b7b0ecc3890f75f995b",
+    "accepted146_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48",
+    "refresh_policy": "retain exact instructed9f81 plus accepted captured146; no merge or build needed",
+    "Source_or_CMake_modified": false,
+    "Ghidra_or_ledger_modified": false,
+    "146_TU_registration_on_this_baseline": "Root integration pending; strict-compiled acceptedSource is present",
+    "current_main_at_pin": "8aaf1cbc62e209fc37913e06c7a2f1cff3b56fb8",
+    "origin_main_at_pin": "8aaf1cbc62e209fc37913e06c7a2f1cff3b56fb8"
+  },
+  "published150_delta": {
+    "commit": "8aaf1cbc62e209fc37913e06c7a2f1cff3b56fb8",
+    "all_audited_Code_providers_unchanged": true,
+    "only_input_delta": [
+      {
+        "path": "cmake/startup.cmake",
+        "pinned_blob": "fdfa8e01c3eb36bf80b8098c80d51b0b79805fdb",
+        "published150_blob": "3b1fc5efc117cdd64a46e6e6fccf662af9c18bef"
+      }
+    ],
+    "integration_evidence_provenance": "Root message reports146 registration/canonical build; not rerun in151",
+    "constructor_or_leaf_execution_credit": false
+  },
+  "verdict": {
+    "whole_raw_AD55C0_ready_for_next_Source_composition": true,
+    "genuine_lower_algorithms_already_present": true,
+    "missing_composition": "live caller argument view + exact constructor fields/name timing + ordinarySource state0 tree cleanup",
+    "no_new_tree_or_string_algorithm_needed": true,
+    "old_raw_offset_helper_acknowledged": true,
+    "whole_raw_Font_producer_or_ABA8D0_ready": false,
+    "Source_implementation_in151": false
+  },
+  "Original": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "constructor_and_immediate_EH": [
+    {
+      "label": "ctor_bytes",
+      "start": "00ad55c0",
+      "end_exclusive": "00ad5691",
+      "bytes": 209,
+      "sha256": "0efe2fd5d21694683d3f1535634ed7640d681cd8ac3a366dc1b574e6a4e50173",
+      "physical_starts": 71,
+      "live_equals_disk": true
+    },
+    {
+      "label": "handler_bytes",
+      "start": "00cb9478",
+      "end_exclusive": "00cb9482",
+      "bytes": 10,
+      "sha256": "57d54a4894c75965bb17e9ca00a445317922946f67aa3359345c11bac3bdfb3f",
+      "physical_starts": 2,
+      "live_equals_disk": true
+    },
+    {
+      "label": "funcinfo_bytes",
+      "start": "00df0a94",
+      "end_exclusive": "00df0ab8",
+      "bytes": 36,
+      "sha256": "57656403e0a1545b411d45c8103453ff3f8f75a30cb3715f83096e93cef8539e",
+      "physical_starts": 0,
+      "live_equals_disk": true
+    },
+    {
+      "label": "unwind_map_bytes",
+      "start": "00df0a8c",
+      "end_exclusive": "00df0a94",
+      "bytes": 8,
+      "sha256": "4bbe47a53dd9844c76bb0742d638d31d82aab31755f3388cfa26629670856164",
+      "physical_starts": 0,
+      "live_equals_disk": true
+    },
+    {
+      "label": "action_bytes",
+      "start": "00cb9470",
+      "end_exclusive": "00cb9478",
+      "bytes": 8,
+      "sha256": "66b864032b5bd1a7bee240df509e9ea4b88074f01599e4a0190a5bde99435550",
+      "physical_starts": 2,
+      "live_equals_disk": true
+    }
+  ],
+  "constructor_ABI": "ECX actualFont, fourstackwords name/scaleBits/alphaBits/uppercaseLowBYTE, SAME EAX,RET10h;new SourceABI proposed",
+  "constructor_effects": {
+    "all71_starts_inspected": true,
+    "self_compare_before_state0_before_header_zero": true,
+    "live_argument_order": [
+      "after tree linking load NAME pointer",
+      "after name copy load scale DWORD",
+      "capture uppercase lowBYTE",
+      "store Font+18",
+      "load alpha DWORD",
+      "zero Font+14 WORD",
+      "store Font+1C",
+      "zero tenDWORDs20..44",
+      "publish captured uppercaseBYTE+48"
+    ],
+    "no_floating_arithmetic": true,
+    "no_local_name_cleanup": true
+  },
+  "actual_Font_layout": [
+    {
+      "offset": "00..03",
+      "result": "unwritten opaque treeword;no vptr/refcount inferred"
+    },
+    {
+      "offset": "04",
+      "result": "actual18h head from146;headnil15=1;current head selflinks4,0,8"
+    },
+    {
+      "offset": "08",
+      "result": "tree count0,not Font reference count"
+    },
+    {
+      "offset": "0C/10",
+      "result": "clear actual8B name even on self;current copy schedule"
+    },
+    {
+      "offset": "14",
+      "result": "WORD0 after late alpha argument load"
+    },
+    {
+      "offset": "16/17",
+      "result": "unwritten"
+    },
+    {
+      "offset": "18/1C",
+      "result": "late scale/alpha DWORD bitpatterns,no floating arithmetic"
+    },
+    {
+      "offset": "20..47",
+      "result": "ten ordered DWORD0 writes"
+    },
+    {
+      "offset": "48",
+      "result": "earlier late-captured uppercaseBYTE"
+    },
+    {
+      "offset": "49..AB",
+      "result": "unwritten;glyph/image data not initialized"
+    }
+  ],
+  "immediate_EH": {
+    "handler": "00cb9478",
+    "FuncInfo": "00df0a94",
+    "words": [
+      429065506,
+      1,
+      14617228,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "map": "00df0a8c",
+    "state0_to": -1,
+    "action": "00cb9470",
+    "receiver": "current saved actual Font [EBP-10]",
+    "tail": "00ad5360",
+    "no_name_cleanup": true
+  },
+  "failure_contract": {
+    "state_minus1": "head allocation/linking before state0;no tree action on allocation escape",
+    "state0": "after pointer compare before name zeros;sole actionAD5360 on savedFont base",
+    "no_name_tidy_or_outer_Font_free": true,
+    "no_image_or_payload_cleanup": true,
+    "ordinary_Source_proposal": "consume0->-1 before genuine tree cleanup;rethrow original Source exception;terminate if cleanup escapes during unwind",
+    "no_Native_FH3_private_spill_alias_SEH_hardware_fault_or_RTTI_compatibility": true,
+    "failure_retention": "caller retains actualFont/source backings/argument cells/process/metadata;no automatic retry or exposed partial readiness"
+  },
+  "cleanup_aliases": {
+    "spans": [
+      {
+        "label": "bytes_00ad5360",
+        "start": "00ad5360",
+        "end_exclusive": "00ad5394",
+        "bytes": 52,
+        "sha256": "5a04a5fe46b3205abf1e7e64b95eb491b4ace57fbd9e71eef5c84d4c44364e40",
+        "physical_starts": 23,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_0086fde0",
+        "start": "0086fde0",
+        "end_exclusive": "0086fe14",
+        "bytes": 52,
+        "sha256": "b244a80e15613a03791b3cf9a59ab667e68a3cba5deb5f84a9a9a985a4fa1fa9",
+        "physical_starts": 23,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_00ad4b60",
+        "start": "00ad4b60",
+        "end_exclusive": "00ad4c29",
+        "bytes": 201,
+        "sha256": "9aab8eb69631c13f4cdf75448e8cd5377b966fabf6883cdf1c19ab0a215b3715",
+        "physical_starts": 77,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_0086ee50",
+        "start": "0086ee50",
+        "end_exclusive": "0086ef19",
+        "bytes": 201,
+        "sha256": "d54906fc02e0850e2b1742054193f262f4dd9d491830c722ee573220ec884bf5",
+        "physical_starts": 77,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_00ad41f0",
+        "start": "00ad41f0",
+        "end_exclusive": "00ad4225",
+        "bytes": 53,
+        "sha256": "112276e5081e67bb6aa8505aea3cd8752e9c99ea7f68f0cdda6cb96847568a82",
+        "physical_starts": 23,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_0086aa60",
+        "start": "0086aa60",
+        "end_exclusive": "0086aa95",
+        "bytes": 53,
+        "sha256": "da289bbd106b1b525a8805157a5948f2ca4aec2a24ed0986a20cbbb5dcd8229a",
+        "physical_starts": 23,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_00ad47f0",
+        "start": "00ad47f0",
+        "end_exclusive": "00ad4a97",
+        "bytes": 679,
+        "sha256": "3c1696109fa89385c4815d884bc0dac807391ca95ffba4b3b8e3c3865b1b689f",
+        "physical_starts": 231,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_0086e8a0",
+        "start": "0086e8a0",
+        "end_exclusive": "0086eb47",
+        "bytes": 679,
+        "sha256": "ed4d9a7c7ec077879ae85ef8e663f97d7e0eb8b81622fd0dd330f79f344bab2b",
+        "physical_starts": 231,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_00ad3d30",
+        "start": "00ad3d30",
+        "end_exclusive": "00ad3d4c",
+        "bytes": 28,
+        "sha256": "65854aed5d5c56d06e58463b6cfd1bb88a1a3af3a69793ccd0a34375ba757d82",
+        "physical_starts": 11,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_008697b0",
+        "start": "008697b0",
+        "end_exclusive": "008697cc",
+        "bytes": 28,
+        "sha256": "65854aed5d5c56d06e58463b6cfd1bb88a1a3af3a69793ccd0a34375ba757d82",
+        "physical_starts": 11,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_00ad3d50",
+        "start": "00ad3d50",
+        "end_exclusive": "00ad3d6b",
+        "bytes": 27,
+        "sha256": "0b30700a1d486d30484ee267091ffd2148ad236d0a1aec287f615c576bb818b8",
+        "physical_starts": 10,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_008697d0",
+        "start": "008697d0",
+        "end_exclusive": "008697eb",
+        "bytes": 27,
+        "sha256": "0b30700a1d486d30484ee267091ffd2148ad236d0a1aec287f615c576bb818b8",
+        "physical_starts": 10,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_00ad3fb0",
+        "start": "00ad3fb0",
+        "end_exclusive": "00ad4002",
+        "bytes": 82,
+        "sha256": "2f89359fd0d0c768ce8a145086e6eccc83741c05575d6849e3db233447831059",
+        "physical_starts": 30,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_00869810",
+        "start": "00869810",
+        "end_exclusive": "00869862",
+        "bytes": 82,
+        "sha256": "2f89359fd0d0c768ce8a145086e6eccc83741c05575d6849e3db233447831059",
+        "physical_starts": 30,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_00ad3f60",
+        "start": "00ad3f60",
+        "end_exclusive": "00ad3fae",
+        "bytes": 78,
+        "sha256": "bfe2e0ce417eeb6e69580063c88eafeae8dc1059708aa6a157813eaac4fe6cca",
+        "physical_starts": 30,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_0086a2f0",
+        "start": "0086a2f0",
+        "end_exclusive": "0086a33e",
+        "bytes": 78,
+        "sha256": "bfe2e0ce417eeb6e69580063c88eafeae8dc1059708aa6a157813eaac4fe6cca",
+        "physical_starts": 30,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_00ad40d0",
+        "start": "00ad40d0",
+        "end_exclusive": "00ad4133",
+        "bytes": 99,
+        "sha256": "160153080f5041e40944132088fdc59f410fdffd9dba92eddf9c10cc48dfd5be",
+        "physical_starts": 38,
+        "live_equals_disk": true
+      },
+      {
+        "label": "bytes_00869a20",
+        "start": "00869a20",
+        "end_exclusive": "00869a83",
+        "bytes": 99,
+        "sha256": "7f5ec53d7913d19dc67199a6b3d7662b403322a55da6e33ec4458591d6aeee51",
+        "physical_starts": 38,
+        "live_equals_disk": true
+      }
+    ],
+    "aliases": [
+      {
+        "left": "00ad5360",
+        "right": "0086fde0",
+        "bytes": 52,
+        "starts_including_physical_padding": 23,
+        "named_operand_relocations": [
+          {
+            "offset": 23,
+            "kind": "rel32_branch",
+            "left_site": "00ad5376",
+            "left_target": "00ad4b60",
+            "right_site": "0086fdf6",
+            "right_target": "0086ee50"
+          },
+          {
+            "offset": 32,
+            "kind": "rel32_branch",
+            "left_site": "00ad537f",
+            "left_target": "00bf65ac",
+            "right_site": "0086fdff",
+            "right_target": "00bf65ac"
+          }
+        ],
+        "all_other_byte_differences": []
+      },
+      {
+        "left": "00ad4b60",
+        "right": "0086ee50",
+        "bytes": 201,
+        "starts_including_physical_padding": 77,
+        "named_operand_relocations": [
+          {
+            "offset": 27,
+            "kind": "rel32_branch",
+            "left_site": "00ad4b7a",
+            "left_target": "00bf6713",
+            "right_site": "0086ee6a",
+            "right_target": "00bf6713"
+          },
+          {
+            "offset": 55,
+            "kind": "rel32_branch",
+            "left_site": "00ad4b96",
+            "left_target": "00bf6713",
+            "right_site": "0086ee86",
+            "right_target": "00bf6713"
+          },
+          {
+            "offset": 75,
+            "kind": "rel32_branch",
+            "left_site": "00ad4baa",
+            "left_target": "00ad41f0",
+            "right_site": "0086ee9a",
+            "right_target": "0086aa60"
+          },
+          {
+            "offset": 139,
+            "kind": "rel32_branch",
+            "left_site": "00ad4bea",
+            "left_target": "00bf6713",
+            "right_site": "0086eeda",
+            "right_target": "00bf6713"
+          },
+          {
+            "offset": 154,
+            "kind": "rel32_branch",
+            "left_site": "00ad4bf9",
+            "left_target": "00ad40d0",
+            "right_site": "0086eee9",
+            "right_target": "00869a20"
+          },
+          {
+            "offset": 168,
+            "kind": "rel32_branch",
+            "left_site": "00ad4c07",
+            "left_target": "00ad47f0",
+            "right_site": "0086eef7",
+            "right_target": "0086e8a0"
+          }
+        ],
+        "all_other_byte_differences": []
+      },
+      {
+        "left": "00ad41f0",
+        "right": "0086aa60",
+        "bytes": 53,
+        "starts_including_physical_padding": 23,
+        "named_operand_relocations": [
+          {
+            "offset": 32,
+            "kind": "rel32_branch",
+            "left_site": "00ad420f",
+            "left_target": "00bf65ac",
+            "right_site": "0086aa7f",
+            "right_target": "00bf65ac"
+          }
+        ],
+        "all_other_byte_differences": []
+      },
+      {
+        "left": "00ad47f0",
+        "right": "0086e8a0",
+        "bytes": 679,
+        "starts_including_physical_padding": 231,
+        "named_operand_relocations": [
+          {
+            "offset": 9,
+            "kind": "EH_handler_immediate",
+            "left_target": "0xcb93a8",
+            "right_target": "0xc95bb8"
+          },
+          {
+            "offset": 69,
+            "kind": "rel32_branch",
+            "left_site": "00ad4834",
+            "left_target": "00408720",
+            "right_site": "0086e8e4",
+            "right_target": "00408720"
+          },
+          {
+            "offset": 87,
+            "kind": "rel32_branch",
+            "left_site": "00ad4846",
+            "left_target": "00411700",
+            "right_site": "0086e8f6",
+            "right_target": "00411700"
+          },
+          {
+            "offset": 110,
+            "kind": "rel32_branch",
+            "left_site": "00ad485d",
+            "left_target": "00bf6885",
+            "right_site": "0086e90d",
+            "right_target": "00bf6885"
+          },
+          {
+            "offset": 127,
+            "kind": "rel32_branch",
+            "left_site": "00ad486e",
+            "left_target": "00ad40d0",
+            "right_site": "0086e91e",
+            "right_target": "00869a20"
+          },
+          {
+            "offset": 228,
+            "kind": "rel32_branch",
+            "left_site": "00ad48d3",
+            "left_target": "00ad3d50",
+            "right_site": "0086e983",
+            "right_target": "008697d0"
+          },
+          {
+            "offset": 262,
+            "kind": "rel32_branch",
+            "left_site": "00ad48f5",
+            "left_target": "00ad3d30",
+            "right_site": "0086e9a5",
+            "right_target": "008697b0"
+          },
+          {
+            "offset": 420,
+            "kind": "rel32_branch",
+            "left_site": "00ad4993",
+            "left_target": "00ad3f60",
+            "right_site": "0086ea43",
+            "right_target": "0086a2f0"
+          },
+          {
+            "offset": 467,
+            "kind": "rel32_branch",
+            "left_site": "00ad49c2",
+            "left_target": "00ad3fb0",
+            "right_site": "0086ea72",
+            "right_target": "00869810"
+          },
+          {
+            "offset": 493,
+            "kind": "rel32_branch",
+            "left_site": "00ad49dc",
+            "left_target": "00ad3f60",
+            "right_site": "0086ea8c",
+            "right_target": "0086a2f0"
+          },
+          {
+            "offset": 516,
+            "kind": "rel32_branch",
+            "left_site": "00ad49f3",
+            "left_target": "00ad3fb0",
+            "right_site": "0086eaa3",
+            "right_target": "00869810"
+          },
+          {
+            "offset": 584,
+            "kind": "rel32_branch",
+            "left_site": "00ad4a37",
+            "left_target": "00ad3f60",
+            "right_site": "0086eae7",
+            "right_target": "0086a2f0"
+          },
+          {
+            "offset": 608,
+            "kind": "rel32_branch",
+            "left_site": "00ad4a4f",
+            "left_target": "00ad3fb0",
+            "right_site": "0086eaff",
+            "right_target": "00869810"
+          },
+          {
+            "offset": 621,
+            "kind": "rel32_branch",
+            "left_site": "00ad4a5c",
+            "left_target": "00bf65ac",
+            "right_site": "0086eb0c",
+            "right_target": "00bf65ac"
+          }
+        ],
+        "all_other_byte_differences": []
+      },
+      {
+        "left": "00ad3d30",
+        "right": "008697b0",
+        "bytes": 28,
+        "starts_including_physical_padding": 11,
+        "named_operand_relocations": [],
+        "all_other_byte_differences": []
+      },
+      {
+        "left": "00ad3d50",
+        "right": "008697d0",
+        "bytes": 27,
+        "starts_including_physical_padding": 10,
+        "named_operand_relocations": [],
+        "all_other_byte_differences": []
+      },
+      {
+        "left": "00ad3fb0",
+        "right": "00869810",
+        "bytes": 82,
+        "starts_including_physical_padding": 30,
+        "named_operand_relocations": [],
+        "all_other_byte_differences": []
+      },
+      {
+        "left": "00ad3f60",
+        "right": "0086a2f0",
+        "bytes": 78,
+        "starts_including_physical_padding": 30,
+        "named_operand_relocations": [],
+        "all_other_byte_differences": []
+      },
+      {
+        "left": "00ad40d0",
+        "right": "00869a20",
+        "bytes": 99,
+        "starts_including_physical_padding": 38,
+        "named_operand_relocations": [
+          {
+            "offset": 9,
+            "kind": "rel32_branch",
+            "left_site": "00ad40d8",
+            "left_target": "00bf6713",
+            "right_site": "00869a28",
+            "right_target": "00bf6713"
+          },
+          {
+            "offset": 24,
+            "kind": "rel32_branch",
+            "left_site": "00ad40e7",
+            "left_target": "00bf6713",
+            "right_site": "00869a37",
+            "right_target": "00bf6713"
+          }
+        ],
+        "all_other_byte_differences": []
+      }
+    ],
+    "scope": "installed Original-to-Original exact byte/operand comparison, not a new body execution or generic algorithm reconstruction"
+  },
+  "cleanup_error_EH_and_name_spans": [
+    {
+      "label": "raw_name_bytes",
+      "start": "00426060",
+      "end_exclusive": "004260a2",
+      "bytes": 66,
+      "sha256": "53d4b41063ce1429d94987c7b752a4f343cca774b21593a10fee3b95e6aa8bb6",
+      "physical_starts": 26,
+      "live_equals_disk": true
+    },
+    {
+      "label": "bytes_00cb93a8",
+      "start": "00cb93a8",
+      "end_exclusive": "00cb93b2",
+      "bytes": 10,
+      "sha256": "e57e81cb836921f9976ef29a4319724959893f09b927a54bfbdf57e503ee5b30",
+      "physical_starts": 2,
+      "live_equals_disk": true
+    },
+    {
+      "label": "bytes_00c95bb8",
+      "start": "00c95bb8",
+      "end_exclusive": "00c95bc2",
+      "bytes": 10,
+      "sha256": "e60c9919befc3af3827c0728796696f6fad8581b8d9983a79329b6752d509038",
+      "physical_starts": 2,
+      "live_equals_disk": true
+    },
+    {
+      "label": "erase_info_ad",
+      "start": "00df09b0",
+      "end_exclusive": "00df09d4",
+      "bytes": 36,
+      "sha256": "48e2ee07ca2ed60cdd02d58445fb53a090de00d165e87a56b6de74d05bfcf981",
+      "physical_starts": 0,
+      "live_equals_disk": true
+    },
+    {
+      "label": "erase_info_86",
+      "start": "00dc7ae4",
+      "end_exclusive": "00dc7b08",
+      "bytes": 36,
+      "sha256": "16841cca9b9b27d34a0ae080a0cf187e070d2d87bfcbe1095906a85d4895c828",
+      "physical_starts": 0,
+      "live_equals_disk": true
+    },
+    {
+      "label": "erase_map_ad",
+      "start": "00df09a8",
+      "end_exclusive": "00df09b0",
+      "bytes": 8,
+      "sha256": "6914ebbd900fdb50fae20c00c97d61f5fc8d677221fd9d92965350ef6e67ff7a",
+      "physical_starts": 0,
+      "live_equals_disk": true
+    },
+    {
+      "label": "erase_map_86",
+      "start": "00dc7adc",
+      "end_exclusive": "00dc7ae4",
+      "bytes": 8,
+      "sha256": "558cd71b24d95fb158f1b428967f0669d283a463604dd3bad82ca7dbfcc2694f",
+      "physical_starts": 0,
+      "live_equals_disk": true
+    },
+    {
+      "label": "erase_action_ad",
+      "start": "00cb93a0",
+      "end_exclusive": "00cb93a8",
+      "bytes": 8,
+      "sha256": "3f266aa9f4fe59017bf56998e95d1f38c40b28a8b78c568a0b6155cea5c1956c",
+      "physical_starts": 2,
+      "live_equals_disk": true
+    },
+    {
+      "label": "erase_action_86",
+      "start": "00c95bb0",
+      "end_exclusive": "00c95bb8",
+      "bytes": 8,
+      "sha256": "a721056149d14917d6b17dee66dc4b0b8e0a0e8b891207d480849ce8559e6d6a",
+      "physical_starts": 2,
+      "live_equals_disk": true
+    }
+  ],
+  "cleanup_error_EH_equivalence": {
+    "full_FuncInfo36B_fields_match_except_resolved_map_pointer": true,
+    "map0_to": -1,
+    "actions": "both LEA ECX,[EBP-50] then JMP4072D0",
+    "body_literals_identical": "message addressCE44E0/count27,profileD6926C,ThrowInfoD863A8",
+    "owning_Source_RTTI_catch_privateheap_or_Native_FH3_compatibility_claim": false
+  },
+  "cleanup_live_schedule": [
+    "construct full CURRENT begin/end by-value iterators",
+    "complete existing range erase including checked partial route",
+    "reload CURRENT Font+04 after range",
+    "free CURRENT head through SAME owningSourceCRT",
+    "clear Font+04 then Font+08 only afterfree"
+  ],
+  "tree_context_boundary": {
+    "actual_header": "Font BASE with opaque0/head4/count8;NOT Font+04",
+    "actual_nodes": "18h links0/4/8,color14,nil15;U16key/payload not compared/released by these erasure bodies",
+    "Source_memory": "genuine same singleton_lifetime_allocate/free domain for head and reached nodes",
+    "invalid_parameter": "existing fixed owning SDK service;returning continuation preserved",
+    "invalid_iterator": "existing owning NativeHardwareLayoutInvalidIterator transport;not a hardware-tree cast or OriginalRTTI ABI",
+    "no_empty_tree_only_shortcut": true,
+    "no_name_payload_or_image_destruction_added": true
+  },
+  "name_provider": {
+    "actual_Source": "copy_construct_native_string_header_00426060 withNativeStringRawPoolContext&",
+    "Original_extent": "00426060-004260a2,66B/26starts",
+    "matched_sequence": [
+      "captured pointer comparison",
+      "clear destination even on self",
+      "distinct captures source length",
+      "real41DD40 preserve1",
+      "CURRENT source length guard",
+      "CURRENT destination count",
+      "CURRENT source data",
+      "CURRENT destination data",
+      "BF7680 countbytes"
+    ],
+    "lower_raw_pool": "real00419CC0/BD1120/BD1510;current disabled-small-return andsame actualmanager/publication",
+    "same_process": "GameNativeStringProcess::raw_context(),not a new pool/manager/privatecell",
+    "Source_limits": [
+      "new ABI",
+      "raw memmove overlap projection forBF7680",
+      "zero-count copy omitted",
+      "nullable allocation not repaired",
+      "raw getters maythrow;no noexcept release adapter imposed",
+      "no output cleanup on name construction escape"
+    ],
+    "tidy_existing_but_not_selected": "destroy_native_string_header_0041dd20 exists;AD55C0 EH map does not call it"
+  },
+  "existing_provider_matrix": [
+    {
+      "provider": "146 native_font_storage",
+      "genuine": "complete actual18h head allocation through same owningSourceCRT;captured and nowRoot150registered",
+      "limit": "not Font allocation/constructor/load owner"
+    },
+    {
+      "provider": "terrain_particles_cc13 AD55C0 raw-offset helper",
+      "genuine": "existing raw field/tree writes and legacy Source interface",
+      "limit": "Foliage host allocation and Terrain host capturedchars/length contract lose actual sourceheader/livecopy and ctorEH;concrete callbacks alone insufficient"
+    },
+    {
+      "provider": "registered NativeIntPointerTree18 raw services",
+      "genuine": "whole destroy/range/subtree/iterator/min/max/rotation/increment reuse;all nine Native pairs exact after named operands",
+      "limit": "owningSourceCRT/error/privatestack ABI boundary;not Nativeheap/FH3/catch compatibility"
+    },
+    {
+      "provider": "raw string providers and retained StringProcess",
+      "genuine": "actual8B constructor/resize/tidy and same live pool/gate/manager authority",
+      "limit": "use raw throwing context,not semanticstring/stdstring/defaultCRT/noexceptadapter"
+    },
+    {
+      "provider": "GameNativeFontApplication/FontRegistryStartup/NativeFontResources/NativeFontResourceOwners",
+      "genuine": "stable descriptors,sole decodedFontData and transferred actualimages with real association/lifetime",
+      "limit": "separate real Source graph,not physicalAC-byte Font;not replaced or relabeled missing"
+    }
+  ],
+  "one_next_packet": {
+    "reserved_name": "Source155 perRoot",
+    "files": [
+      "include/bsp/native_font_storage.hpp",
+      "src/native_font_storage.cpp"
+    ],
+    "new_algorithm_recovery_claim": false,
+    "preserve146_completeSource_prefix_and_legacy_terrain_helper": true,
+    "API": "void* construct_native_font_storage_00ad55c0(void* actual_font,const NativeFontConstructorArguments&,game::GameNativeStringProcess& same_strings)",
+    "required_view_fields": [
+      "const void* const volatile& name_header_argument",
+      "const volatile uint32_t& scale_bits_argument",
+      "const volatile uint32_t& alpha_bits_argument",
+      "const volatile uint32_t& uppercase_word_argument;read LOWBYTE only"
+    ],
+    "metadata": "required stable callerowned cells;no default,copy,snapshot,Nativeprivatestackcast or ownership token",
+    "live_read_order": [
+      "after tree linking load NAME pointer",
+      "after name copy load scale DWORD",
+      "capture uppercase lowBYTE",
+      "store Font+18",
+      "load alpha DWORD",
+      "zero Font+14 WORD",
+      "store Font+1C",
+      "zero tenDWORDs20..44",
+      "publish captured uppercaseBYTE+48"
+    ],
+    "real_callees": [
+      "146 allocate_native_font_tree_head_00ad42c0",
+      "existing raw00426060 name ctor",
+      "existing86FDE0 tree destroy onSAME Fontbase"
+    ],
+    "preconditions": [
+      "live alignedAC-byte rawFont,independent graph/backing retention",
+      "valid current sameCRT tree graphs through reachedcleanup",
+      "argument view/cells/process/privatecleanup metadata retained anddisjoint fromrawregions",
+      "candidate headers/backings remainlive throughcallbacks/failure",
+      "metadata-only preflight;no earlynameheader read/getter/cache",
+      "no name tidy,outerfree,blanketzero,partial-readiness publication orfailure retry"
+    ],
+    "Source_exception_boundary": "consume state beforecleanup;ordinary Source exceptions only;secondescape terminates;NativeFH3/SEH/privatealiases unproved",
+    "still_open": [
+      "actual rawFont producer/list identity",
+      "whole glyph/image load/reload/retirement",
+      "rawABB1D0/ABA8D0",
+      "normalactivation readiness"
+    ]
+  },
+  "calls": [
+    {
+      "address": "00ad55e0",
+      "native": "00ad42c0",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad561e",
+      "native": "0041dd40",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad5633",
+      "native": "00bf7680",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad5376",
+      "native": "00ad4b60",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad537f",
+      "native": "00bf65ac",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad4b7a",
+      "native": "00bf6713",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad4b96",
+      "native": "00bf6713",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad4baa",
+      "native": "00ad41f0",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad4bea",
+      "native": "00bf6713",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad4bf9",
+      "native": "00ad40d0",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad4c07",
+      "native": "00ad47f0",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad4207",
+      "native": "00ad41f0",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad420f",
+      "native": "00bf65ac",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad4834",
+      "native": "00408720",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad4846",
+      "native": "00411700",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad485d",
+      "native": "00bf6885",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad486e",
+      "native": "00ad40d0",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad48d3",
+      "native": "00ad3d50",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad48f5",
+      "native": "00ad3d30",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad4993",
+      "native": "00ad3f60",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad49c2",
+      "native": "00ad3fb0",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad49dc",
+      "native": "00ad3f60",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad49f3",
+      "native": "00ad3fb0",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad4a37",
+      "native": "00ad3f60",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad4a4f",
+      "native": "00ad3fb0",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad4a5c",
+      "native": "00bf65ac",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00ad40d8",
+      "native": "00bf6713",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "0042607e",
+      "native": "0041dd40",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    },
+    {
+      "address": "00426093",
+      "native": "00bf7680",
+      "source": "read-only whole constructor/immediate cleanup and exact accepted-provider alias proof; no new body execution"
+    }
+  ],
+  "source_hashes": [
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/include/bsp/native_font_storage.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_font_storage.hpp",
+      "sha256": "549766e720e6f4b40568abacc1692522bc03b8ab6faccfb610ed30f12c8a5398",
+      "bytes": 938,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "80af13f594b861c6110edbac3c31176108fd3809"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/src/native_font_storage.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_font_storage.cpp",
+      "sha256": "24f16c93d82a4ddd908d833a648544b60de57a3b7fae53a0af03eb23bd28035e",
+      "bytes": 1056,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "c99e83b4cfac4742425b8d3dfea9b5f6b8c90376"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/include/bsp/terrain_particles_cc13.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\terrain_particles_cc13.hpp",
+      "sha256": "708064461209ff47f6ed9d42534515caf226956edad32057d0e095dc62b5a7fc",
+      "bytes": 98656,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "3bf996d12d53fa3905433c8d35c035400d6bd43e"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/src/terrain_particles_cc13.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\terrain_particles_cc13.cpp",
+      "sha256": "99cde5ae6399f47f1cadb7749b084f1b439d4be285953d9bd66ae8e61db9c574",
+      "bytes": 131404,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "c9cfbce834f6f8c0188f87dd09acd66a4f96ac7e"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/include/bsp/native_string.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "bytes": 8771,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/src/native_string.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "bytes": 9121,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/include/bsp/native_pooled_string_substring.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_pooled_string_substring.hpp",
+      "sha256": "6243c6ba8acb0e1b7f0358a456d6e65ac1b9303cc79b1f1dfd5be01d05b985ff",
+      "bytes": 2047,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "5567cf0b90182b39790a5379be8d23c5b6d6b371"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/src/native_pooled_string_substring.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_pooled_string_substring.cpp",
+      "sha256": "7a18633cf114b21290f0c4ddfb9ec96d817f6a246a97ebfa05e9be3fdce9b8e1",
+      "bytes": 7580,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "8b6f939f3b1988567ef67131e78dd6e238888dbb"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/include/bsp/native_string_pool_storage.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_string_pool_storage.hpp",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "bytes": 2805,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "d2d48f7cca8e08a76c98c10f2bdab9bca5cdb165"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/src/native_string_pool_storage.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_string_pool_storage.cpp",
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "bytes": 5103,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "0e5d59593c47a3cdabaf1020adddc735141d28d3"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/include/bsp/native_string_pool_owner.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_string_pool_owner.hpp",
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "bytes": 5893,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/src/native_string_pool_owner.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_string_pool_owner.cpp",
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "bytes": 8443,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/include/bsp/game_native_string_process.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\game_native_string_process.hpp",
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+      "bytes": 4306,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "30bbfe627b4ea7b4f453ec68422363c35479a3a8"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/src/game_native_string_process.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\game_native_string_process.cpp",
+      "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+      "bytes": 1407,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "1c660fa6417f9fbc277b821d0ad7d83587fcbed5"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/include/bsp/native_int_pointer_tree18_leaves.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_int_pointer_tree18_leaves.hpp",
+      "sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+      "bytes": 2447,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "4ad334d57f4665e25a5719ec97ad65135b712d74"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/src/native_int_pointer_tree18_leaves.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_int_pointer_tree18_leaves.cpp",
+      "sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+      "bytes": 6965,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "f4059b8973da839d78ee36a8ecb208b18f8a5378"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/include/bsp/native_int_pointer_tree18_erase.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_int_pointer_tree18_erase.hpp",
+      "sha256": "86571aedc38dc363aad43efffc8e7d23525181f505885ae72c8fd17a8e99df96",
+      "bytes": 2369,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "df3e2d216a12a16feb04d57db1002daf00833c9a"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/src/native_int_pointer_tree18_erase.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_int_pointer_tree18_erase.cpp",
+      "sha256": "0473413cc5ba9b528942ebdf732016da19a65d6f9a15cfae4c679eeafea61bbb",
+      "bytes": 11867,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "643f3b48171c1538d3d1ade5f9f23e8b0e76b14b"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/include/bsp/native_hardware_layout_tree.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_hardware_layout_tree.hpp",
+      "sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5",
+      "bytes": 3491,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "fcf3a502d83351ce60b8a7348c6985fc8805f71e"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/src/native_hardware_layout_tree.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_hardware_layout_tree.cpp",
+      "sha256": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6",
+      "bytes": 13258,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "d9f714ecba374a12afbf61d2b33ee71baa15131b"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/include/bsp/singleton_lifetime.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/src/singleton_lifetime.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "bytes": 13257,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/include/bsp/native_font_resources.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_font_resources.hpp",
+      "sha256": "86b054ccf2ae873195e803e1d97d01c31247cf4e0e174c12bcfcaf8b150e7e48",
+      "bytes": 4298,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "5fd7d4e25176f5ef8910a417e5b6ee380ead66aa"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/src/native_font_resources.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_font_resources.cpp",
+      "sha256": "8e61d9e701b0cc181749cdac04e45be5d4931da13bce2ceda28e90d3a5a9e26b",
+      "bytes": 6097,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "5cf3fc746c8fbf6ae0954ed996131ad4d26f8181"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/include/bsp/font_registry_startup.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\font_registry_startup.hpp",
+      "sha256": "a2e52ffbc9dad37e429357f5d920e5b9aa281e7ac2db0085021057581f79e640",
+      "bytes": 6197,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "310b7201c277e6a94ffdcfa5bd2a0f397d6f98f7"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/src/font_registry_startup.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\font_registry_startup.cpp",
+      "sha256": "5d0c57bf9a7612f9b23df7f39534bbdaf5eda0625987ce0019d81b9bbd393423",
+      "bytes": 8810,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "dedc9fd12f96e07dc9c5f60f4a758f51205c5689"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/include/bsp/game_native_font_application.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\game_native_font_application.hpp",
+      "sha256": "f819d8a38b49a6ff8ec3873dea65992366396c8d635e54301542c71ce0aee469",
+      "bytes": 4863,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "bd6bb4ebbe30d873a654a66e70b69af6e165fd71"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/src/game_native_font_application.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\game_native_font_application.cpp",
+      "sha256": "31d143c3dc1dc9495cd87fdba0ecb67ad3d2494c9b47415746a47771cce5e424",
+      "bytes": 12438,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "692b370f822f5f21496ae95c4ed417dc353809b8"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/include/bsp/font_data.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\font_data.hpp",
+      "sha256": "f7a1f433fb7f0466873da79a6da0b45944df5965fbe756715682265afd257c49",
+      "bytes": 2515,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "1b04d267ef910dee68c99353c639cd6acdb8da99"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/src/font_data.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\font_data.cpp",
+      "sha256": "24ba9b6e37f798072ed06fc796b0dec560b3b500b4697b3b6634c7892a8717c1",
+      "bytes": 4612,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "89ed303bfd14c788d0ec8f419dbb34241986c072"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/CMakeLists.txt",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\CMakeLists.txt",
+      "sha256": "eb3c7f83231a2a8184041a981bcd912733b5f12801d0bba2345d1ad0e69c3d79",
+      "bytes": 20832,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "2718cee01c292f0f641606cd965c3d6a3ec638b3"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/cmake/startup.cmake",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\cmake\\startup.cmake",
+      "sha256": "3a59bedd30ed7c232fcbe0d18e100dd88b0d807173c3901e93b668ccf4728f06",
+      "bytes": 267428,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "fdfa8e01c3eb36bf80b8098c80d51b0b79805fdb"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/config/target.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\config\\target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/tools/bsp.py",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\tools\\bsp.py",
+      "sha256": "133e2cf3f24f0402f6ed7d0e1dd5148c678c7ca10722633d1ec6cdc9b693a9ff",
+      "bytes": 84752,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "87bf468735a7cb65b72b8daa4130ebf100f5d4cc"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/tools/ghidra_export.py",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\tools\\ghidra_export.py",
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "bytes": 14518,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/inputs/tools/verify_report_calls.py",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\tools\\verify_report_calls.py",
+      "sha256": "f3f412b6f8eaeb6c4b212e34cca6a2567c2ed4015d0a942268d752911f6913ef",
+      "bytes": 20467,
+      "git_commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "git_blob": "72ff1e896ef495dc4eebc157f686486d55172713"
+    }
+  ],
+  "saved_and_reused_inputs": [
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/00ad55c0/assembly.txt",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad55c0\\assembly.txt",
+      "sha256": "e20a9f7e5af60805a4de278e933d79c3371e7d6f5967d863e556b2f1f35de43d",
+      "bytes": 2304
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/00ad55c0/decompiled.c",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad55c0\\decompiled.c",
+      "sha256": "759a01e452af1c5f6ed34cc6523fb72e1334df8eade256d854ab60f75f67d864",
+      "bytes": 1961
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/00ad5360/assembly.txt",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad5360\\assembly.txt",
+      "sha256": "c6e84dcb56dbbbd1c86fcd4d17b66490b93bdebf230bdf4d29537eef4854fa18",
+      "bytes": 597
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/00ad5360/decompiled.c",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad5360\\decompiled.c",
+      "sha256": "f0b22edce8cbc0578ab4d07d1f11318fdef2d1d91f15d70726b696cac0975287",
+      "bytes": 338
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/00ad4b60/assembly.txt",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad4b60\\assembly.txt",
+      "sha256": "c7fdcf2f54dd6081217f399e66b21141be222870e0f5fc8701ba60074ec85981",
+      "bytes": 2238
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/00ad4b60/decompiled.c",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad4b60\\decompiled.c",
+      "sha256": "1aa6852fa3eee7d46a5010c5922ba3c3bf047291f70a6f37d9697842279d4d1e",
+      "bytes": 1216
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/00ad41f0/assembly.txt",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad41f0\\assembly.txt",
+      "sha256": "47cd2e7db502bfd27d8bf7ba761c2e9713cbf924ee06d3918e316998b2d35d7f",
+      "bytes": 596
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/00ad41f0/decompiled.c",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad41f0\\decompiled.c",
+      "sha256": "920f4b6b0662b00745224ad302ca311141cd51eabf8934ea60125057bf9a49a4",
+      "bytes": 320
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/00ad47f0/assembly.txt",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad47f0\\assembly.txt",
+      "sha256": "aa1053f2f2f85e1e9fdf958493fc83624e44571b46b8987c2a54c6de7a4c9f7e",
+      "bytes": 7538
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/00ad47f0/decompiled.c",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad47f0\\decompiled.c",
+      "sha256": "5890d88dc25a28a06a537ba8d4f7c58bc126c2d06d2d3f68461e95a206537c7c",
+      "bytes": 5207
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/00426060/assembly.txt",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00426060\\assembly.txt",
+      "sha256": "ad24a0fad99b8734dc8b41d0a14a0e300bbc252191300adf817397439889158e",
+      "bytes": 697
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/00426060/decompiled.c",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00426060\\decompiled.c",
+      "sha256": "5faabc2210294e088f4e9d80965a930685f67f8ad232eb2be02f8040c777c25e",
+      "bytes": 2816
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/0041dd40/assembly.txt",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0041dd40\\assembly.txt",
+      "sha256": "90c859d1773da202692e2d8b3b96ce4313dcb686deadea3f69bf937463d27216",
+      "bytes": 1700
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/0041dd40/decompiled.c",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0041dd40\\decompiled.c",
+      "sha256": "5b8033b86e85bc73e510638c83524fc2fa567585fd7e0791f1503454707a47e8",
+      "bytes": 5663
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/0086fde0/assembly.txt",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0086fde0\\assembly.txt",
+      "sha256": "5281475f649e7bc5eac2c5c4ed70fddba073b639b38fa8442d393162bd98da27",
+      "bytes": 597
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/0086fde0/decompiled.c",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0086fde0\\decompiled.c",
+      "sha256": "f5f8ed7291f78414ca6cf6e2aaf76a1468aca929666dc58f7b26167d1efd4449",
+      "bytes": 1272
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/0086ee50/assembly.txt",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0086ee50\\assembly.txt",
+      "sha256": "abbdf42d0ec88a7c6d77231091790afd097f943009c301dccc0e6dbe06114673",
+      "bytes": 2238
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/0086ee50/decompiled.c",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0086ee50\\decompiled.c",
+      "sha256": "3ebe874b041b5d7db88f1657de76d7b7be359c4357f2576948c45b635876bc98",
+      "bytes": 2978
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/0086e8a0/assembly.txt",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0086e8a0\\assembly.txt",
+      "sha256": "21a92b4b5722e19f970af475e516e3e37c282ce85b3aa8e659000cca5c749d99",
+      "bytes": 7538
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/saved_exports/0086e8a0/decompiled.c",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0086e8a0\\decompiled.c",
+      "sha256": "da9e3563ff2486fdc9b6ac251f460327617e1704d6bb0bba38b1c3cff1bc1f7d",
+      "bytes": 7428
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/reused/cc12_native_font_tree_head_storage_146_manifest.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\local\\cc12_native_font_tree_head_storage_146\\artifact_manifest.json",
+      "sha256": "57cf00b6229c033fd55ded8b5491e582e4852891b406a0cb173a91f504c00aed",
+      "bytes": 25008
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/reused/cc12_native_gui_raw_font_operand_readiness_141_manifest.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\local\\cc12_native_gui_raw_font_operand_readiness_141\\artifact_manifest.json",
+      "sha256": "64665f34912b49359fc49f36a4c82692e3b37ef097db7a27ec519d6aa7364c1a",
+      "bytes": 47907
+    }
+  ],
+  "validation": {
+    "fresh_live_equals_disk": true,
+    "whole_constructor_static_assertions": true,
+    "nine_aliases_all_nonnamed_bytes_equal": true,
+    "full_constructor_FuncInfo_and_actions_checked": true,
+    "no_build_test_probe_bodyexecution": true,
+    "no_Source_CMake_ledger_Ghidra_mutation": true,
+    "direct_call_verifier": {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/verify_report_calls.txt",
+      "bytes": 97,
+      "sha256": "14d541fb7e9b2eccee27e4b0f2c7b706c8336ec315043c4066e0864608424317",
+      "role": "existing static report verifier",
+      "rows": 29,
+      "failed": 0,
+      "exit_code": 0
+    },
+    "integrity": {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/integrity.json",
+      "bytes": 14623,
+      "sha256": "6a2e35c441270cad327296d0a927e46370c6adba93a5140661a8972eb7507c7c",
+      "role": "complete static preservation"
+    },
+    "primary_review": "Root full doc/all71 constructor/all26 name starts/all9 aliases/physicalEH and Source providers PASS; no Source execution credit"
+  },
+  "evidence_hashes": [
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/initial_audit.json",
+      "bytes": 2029,
+      "sha256": "81f8645062a67a1adedca43a6e5a599541b732960c3d0178cca170b772415e45",
+      "role": "full ctor/immediateEH"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/alias_audit.json",
+      "bytes": 12976,
+      "sha256": "c1c7bbb808ae8daed9a8e8c0275b81d5350b2619bdbe43206552beb47d49b1fc",
+      "role": "all named byte/operand aliases"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/evidence.json",
+      "bytes": 9393,
+      "sha256": "6af6217f1c425bec5339318f621b25e43758fc7384a9d1fb095a123854bedf23",
+      "role": "current reads/name/EH/static assertions"
+    },
+    {
+      "path": "local/cc12_native_font_constructor_storage_readiness_151/source_inputs.json",
+      "bytes": 26560,
+      "sha256": "6c847dcec8f09298ff544b678a43bbda640ff1e1dae2b525ed7bb880bbb5a71f",
+      "role": "actual Source/Git pins"
+    }
+  ],
+  "documentation": {
+    "path": "docs/CC12_NATIVE_FONT_CONSTRUCTOR_STORAGE_READINESS_151.md",
+    "bytes": 14161,
+    "sha256": "6e1cb8557dbba0d7994a396675dfc71c45fa6248c4fb213123c236aa03057238",
+    "role": "final151 doc"
+  },
+  "artifact_manifest": {
+    "path": "local/cc12_native_font_constructor_storage_readiness_151/artifact_manifest.json",
+    "bytes": 75591,
+    "sha256": "928c983d52ac80434dd9a8932eea71989939097ef91488dc60d0c89a0d5e1132",
+    "role": "complete private immutable151 evidence",
+    "state": "sealed"
+  }
+}

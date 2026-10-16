@@ -1,0 +1,582 @@
+{
+  "packet": "cc12_native_gui_text_raw_sections_85",
+  "recorded_utc": "2026-10-16T04:31:52.386269+00:00",
+  "reviewed_baseline": "eed33ddd1",
+  "checked_merge": "724abaeee3a4f40a123420f26b47a3dba571ada9",
+  "analysis_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_batches": "bsp.py ghidra wrappers verify project and program before bridge calls",
+    "installed_original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "original_modified": false
+  },
+  "original": {
+    "entry": "0x00AB8530",
+    "name_hypothesis": "sections",
+    "end_inclusive": "0x00AB87CB",
+    "end_exclusive": "0x00AB87CC",
+    "bytes": 668,
+    "instructions": 208,
+    "live_bytes_match_supported_installed_original": true,
+    "sha256_live_and_original_bytes": "2b9e0a3a8d4ae569e45dbae8ae7cd9e14b34959712536edb97ec8b3ae6036dd2",
+    "complete_listing_addresses_match_capstone_original": true,
+    "no_listing_or_decode_gaps": true,
+    "abi": {
+      "input": "ECX same actual Text receiver; no stack arguments",
+      "output": "No defined useful return value",
+      "return": "RET; preserves EBX/EBP/ESI/EDI",
+      "exception_handler": "0x00CB7F59",
+      "notes": "Fresh default+188=0 forces Shadow construction. Late current+4C=0 jumps to epilogue only after Shadow/mesh/section/material work and creator releases. It skips parent/root calls, not Shadow creation."
+    }
+  },
+  "new_source_interface": "ensure_native_gui_text_sections_storage_00ab8530(void* actual_text, NativeGuiTextSectionStorageFrame&, NativeGuiTextSectionStorageContext&, NativeGuiTextSectionStorageAcquired&)",
+  "status": "complete_raw_normal_actual_model_composition_strict_win32_MD_compiled_CMake_registration_pending",
+  "calls": [
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB8565",
+      "native": "0x00B74EB0",
+      "kind": "call",
+      "instruction": "call 0xb74eb0"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB8581",
+      "native": "0x0041E870",
+      "kind": "call",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB859B",
+      "native": "0x00B75030",
+      "kind": "call",
+      "instruction": "call 0xb75030"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB85C9",
+      "native": "0x00419CC0",
+      "kind": "call",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB85D0",
+      "native": "0x00BD1510",
+      "kind": "call",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB85E7",
+      "native": "0x00B73B60",
+      "kind": "call",
+      "instruction": "call 0xb73b60"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB85FE",
+      "native": "0x00B73D70",
+      "kind": "call",
+      "instruction": "call 0xb73d70"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB8626",
+      "native": "0x00B75170",
+      "kind": "call",
+      "instruction": "call 0xb75170"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB862B",
+      "native": "0x00533FA0",
+      "kind": "call",
+      "instruction": "call 0x533fa0"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB8635",
+      "native": "0x00B73C60",
+      "kind": "call",
+      "instruction": "call 0xb73c60"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB8643",
+      "native": "0x0041E870",
+      "kind": "call",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB8654",
+      "native": "0x00535320",
+      "kind": "call",
+      "instruction": "call 0x535320"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB8676",
+      "native": "0x00419CC0",
+      "kind": "call",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB867D",
+      "native": "0x00BD1510",
+      "kind": "call",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB8685",
+      "native": "0x00B864C0",
+      "kind": "call",
+      "instruction": "call 0xb864c0"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB86D6",
+      "native": "0x00B74650",
+      "kind": "call",
+      "instruction": "call 0xb74650"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB86E8",
+      "native": "0x00B74640",
+      "kind": "call",
+      "instruction": "call 0xb74640"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB86F1",
+      "native": "0x00B72B40",
+      "kind": "call",
+      "instruction": "call 0xb72b40"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB86FE",
+      "native": "0x00533FA0",
+      "kind": "call",
+      "instruction": "call 0x533fa0"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB8708",
+      "native": "0x00B73C60",
+      "kind": "call",
+      "instruction": "call 0xb73c60"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB8716",
+      "native": "0x0041E870",
+      "kind": "call",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB8727",
+      "native": "0x00535320",
+      "kind": "call",
+      "instruction": "call 0x535320"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB8749",
+      "native": "0x00419CC0",
+      "kind": "call",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB8750",
+      "native": "0x00BD1510",
+      "kind": "call",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB8758",
+      "native": "0x00B864C0",
+      "kind": "call",
+      "instruction": "call 0xb864c0"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB879E",
+      "native": "0x00B6E680",
+      "kind": "call",
+      "instruction": "call 0xb6e680"
+    },
+    {
+      "function": "0x00AB8530",
+      "address": "0x00AB87B4",
+      "native": "0x00B6D890",
+      "kind": "call",
+      "instruction": "call 0xb6d890"
+    },
+    {
+      "function": "0x00CB7F20",
+      "address": "0x00CB7F23",
+      "native": "0x00B748C0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "0x00CB7F28",
+      "address": "0x00CB7F3B",
+      "native": "0x0041DD20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "0x00CB7F41",
+      "address": "0x00CB7F44",
+      "native": "0x00B72F70",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "0x00CB7F49",
+      "address": "0x00CB7F4C",
+      "native": "0x0041DD20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "0x00CB7F51",
+      "address": "0x00CB7F54",
+      "native": "0x0041DD20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "0x00CB7F59",
+      "address": "0x00CB7F5E",
+      "native": "0x00BF6B43",
+      "kind": "tail_jump"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "function": "0x00AB8530",
+      "site": "0x00AB868E",
+      "instruction": "call dword ptr [0xce2220]",
+      "status": "Actual IAT/refcount/current-virtual dispatch; not a direct callee proof."
+    },
+    {
+      "function": "0x00AB8530",
+      "site": "0x00AB869E",
+      "instruction": "call eax",
+      "status": "Actual IAT/refcount/current-virtual dispatch; not a direct callee proof."
+    },
+    {
+      "function": "0x00AB8530",
+      "site": "0x00AB86AA",
+      "instruction": "call edi",
+      "status": "Actual IAT/refcount/current-virtual dispatch; not a direct callee proof."
+    },
+    {
+      "function": "0x00AB8530",
+      "site": "0x00AB86B7",
+      "instruction": "call eax",
+      "status": "Actual IAT/refcount/current-virtual dispatch; not a direct callee proof."
+    },
+    {
+      "function": "0x00AB8530",
+      "site": "0x00AB86BD",
+      "instruction": "call edi",
+      "status": "Actual IAT/refcount/current-virtual dispatch; not a direct callee proof."
+    },
+    {
+      "function": "0x00AB8530",
+      "site": "0x00AB86C9",
+      "instruction": "call eax",
+      "status": "Actual IAT/refcount/current-virtual dispatch; not a direct callee proof."
+    },
+    {
+      "function": "0x00AB8530",
+      "site": "0x00AB8767",
+      "instruction": "call ebp",
+      "status": "Actual IAT/refcount/current-virtual dispatch; not a direct callee proof."
+    },
+    {
+      "function": "0x00AB8530",
+      "site": "0x00AB8773",
+      "instruction": "call eax",
+      "status": "Actual IAT/refcount/current-virtual dispatch; not a direct callee proof."
+    },
+    {
+      "function": "0x00AB8530",
+      "site": "0x00AB8779",
+      "instruction": "call ebp",
+      "status": "Actual IAT/refcount/current-virtual dispatch; not a direct callee proof."
+    },
+    {
+      "function": "0x00AB8530",
+      "site": "0x00AB8785",
+      "instruction": "call eax",
+      "status": "Actual IAT/refcount/current-virtual dispatch; not a direct callee proof."
+    }
+  ],
+  "native_eh_map": {
+    "constructor": "sections",
+    "funcinfo": "0x00DEED34",
+    "unwind_map": "0x00DEED58",
+    "magic": "0x19930522",
+    "max_state": 6,
+    "try_blocks": 0,
+    "eh_flags": 1,
+    "live_bytes_match_original": true,
+    "map": [
+      {
+        "state": 0,
+        "next_state": -1,
+        "action": "0x00CB7F20"
+      },
+      {
+        "state": 1,
+        "next_state": 0,
+        "action": "0x00CB7F28"
+      },
+      {
+        "state": 2,
+        "next_state": -1,
+        "action": "0x00CB7F28"
+      },
+      {
+        "state": 3,
+        "next_state": -1,
+        "action": "0x00CB7F41"
+      },
+      {
+        "state": 4,
+        "next_state": -1,
+        "action": "0x00CB7F49"
+      },
+      {
+        "state": 5,
+        "next_state": -1,
+        "action": "0x00CB7F51"
+      }
+    ]
+  },
+  "eh_helper_extents": [
+    {
+      "constructor": "sections",
+      "entry": "0x00CB7F20",
+      "end_exclusive": "0x00CB7F28",
+      "bytes": 8,
+      "sha256_live_and_original_bytes": "f9887fb9fde46572558f520a1ab8c550b8818904cb78d0199a2074b9f74483b0",
+      "assembly": [
+        "00cb7f20: mov ecx, dword ptr [ebp - 0x18]",
+        "00cb7f23: jmp 0xb748c0"
+      ]
+    },
+    {
+      "constructor": "sections",
+      "entry": "0x00CB7F28",
+      "end_exclusive": "0x00CB7F41",
+      "bytes": 25,
+      "sha256_live_and_original_bytes": "de61e2b95eac940788e5a00c969fce713ff65a95a63c9ecf041b2ae39d0c9c45",
+      "assembly": [
+        "00cb7f28: mov eax, dword ptr [ebp - 0x1c]",
+        "00cb7f2b: and eax, 1",
+        "00cb7f2e: je 0xcb7f40",
+        "00cb7f34: and dword ptr [ebp - 0x1c], 0xfffffffe",
+        "00cb7f38: lea ecx, [ebp - 0x14]",
+        "00cb7f3b: jmp 0x41dd20",
+        "00cb7f40: ret "
+      ]
+    },
+    {
+      "constructor": "sections",
+      "entry": "0x00CB7F41",
+      "end_exclusive": "0x00CB7F49",
+      "bytes": 8,
+      "sha256_live_and_original_bytes": "ae662de8b1800b51288efb395667f3e22e9487b54e2f13dfc1b1acf71d90f1f6",
+      "assembly": [
+        "00cb7f41: mov ecx, dword ptr [ebp - 0x18]",
+        "00cb7f44: jmp 0xb72f70"
+      ]
+    },
+    {
+      "constructor": "sections",
+      "entry": "0x00CB7F49",
+      "end_exclusive": "0x00CB7F51",
+      "bytes": 8,
+      "sha256_live_and_original_bytes": "a7e6793a4205b9c6f5a4f1a4c4beed22b2f100a6bd36b29739416f0c4b3c0ce2",
+      "assembly": [
+        "00cb7f49: lea ecx, [ebp - 0x14]",
+        "00cb7f4c: jmp 0x41dd20"
+      ]
+    },
+    {
+      "constructor": "sections",
+      "entry": "0x00CB7F51",
+      "end_exclusive": "0x00CB7F59",
+      "bytes": 8,
+      "sha256_live_and_original_bytes": "4e6672bcd720bf6bd45fdc55268bc49f55af23fa9050405710b4aef3b33022a3",
+      "assembly": [
+        "00cb7f51: lea ecx, [ebp - 0x14]",
+        "00cb7f54: jmp 0x41dd20"
+      ]
+    },
+    {
+      "constructor": "sections",
+      "entry": "0x00CB7F59",
+      "end_exclusive": "0x00CB7F63",
+      "bytes": 10,
+      "sha256_live_and_original_bytes": "4ffa57418e2fca26908140d17823323213b8b085d76cc041c8eef485cf50ad11",
+      "assembly": [
+        "00cb7f59: mov eax, 0xdeed34",
+        "00cb7f5e: jmp 0xbf6b43"
+      ]
+    }
+  ],
+  "live_refresh": {
+    "body_bytes_path": "local/text85_body_bytes.txt",
+    "body_disasm_path": "local/text85_body_disasm.txt",
+    "eh_bytes_path": "local/text85_eh_bytes.txt",
+    "bytes": 668,
+    "instructions": 208,
+    "matches_preserved_original_and_packet84_bytes": true,
+    "same_complete_instruction_starts": true,
+    "body_sha256": "2b9e0a3a8d4ae569e45dbae8ae7cd9e14b34959712536edb97ec8b3ae6036dd2",
+    "eh_info_and_map_sha256": "0f018a269c614af1d2603728d34dea61d6ea88a3889f3ed3f4f4aff39b9930d2"
+  },
+  "branch_coverage_in_source": [
+    {
+      "native_range": "AB8553..AB86CB",
+      "behavior": "Current188 absent: genuine Model/mesh/section/material creation and exact creator transfer/release. Current188 present skips creation."
+    },
+    {
+      "native_range": "AB86CB..AB8787",
+      "behavior": "Reload late current4C; null returns. Nonnull actual Model: current geometry predicate, reload4C/getgeometry0, actual mesh count; empty count creates section/material."
+    },
+    {
+      "native_range": "AB8787..AB87B9",
+      "behavior": "Current15C selects current4C or null parent; capture current188; genuine whole raw B6E680. Reread current15C, then current188 and B6D890(null) when zero."
+    }
+  ],
+  "specific_order_proof": {
+    "x87": "Explicit MSVC assembly preserves FLD D7A260 -> current raw188 receiver capture -> FST scalar17C -> native state-1 -> FSTP scalar178; same captured receiver used by actual B75170.",
+    "material_name_normal": "Capture current headerDATA at AB865B/872E, store native state-1 at AB8661/8734, then onlynonnull read currentLEN+1; actual419CC0/BD1510 uses capturedDATA with no reread.",
+    "shadow_name_normal": "After publication/state-1, ordinary41DD20 capturesDATA thenLEN; native mask is not cleared on normal return.",
+    "decrement_import": "First Shadow section captures volatileCE2220 at AB868E; after release completes captureonce at AB86A0, reused for materialAB86AA and meshAB86BD. Main capturesonce AB875D for sectionAB8767 and materialAB8779.",
+    "zero_dispatch": "Each captured function operates on actual+04; existing pure canonical lookup validates SAME count and current-profile virtual0 terminal. No second decrement, hidden import reread, retain or raw access after terminal.",
+    "late_fields": "Late main4C and post-callback15C/188/4C are reread from actual raw receiver, never a typed Text/layout."
+  },
+  "preflight": {
+    "string_identity": "Borrow existing GameNativeStringProcess&; match raw_context() to c.strings, strings() to actual.strings, cache.strings and material parameter names. Never call global process getter.",
+    "contexts": "Shared canonical actual owners; raw Node names; same bound constants; actual rendererD5F0A8/+48B318B0; cache backref; same decrement-cell identity.",
+    "separate_storage": "Text/frame/acquired/local4DWORD backing/parentframe pairwise disjoint, checked against borrowed contexts/process/import/unchanged/renderer cells; transitive provider objects/current tables and recursive frames obey explicit nonalias/lifetime contracts.",
+    "local_preimage": "One existing fourDWORD backing with8Bheader alias. Initialize mask only; preserve allocation/header preimages until corresponding native stores. No NativeString placement or memset."
+  },
+  "failure": {
+    "one_shot": true,
+    "completed_creators_retained": true,
+    "no_destructor_rollback": true,
+    "cleanup_throw_terminates": true,
+    "native_cleanup": "States0rawModel;1maskclear/name->0;2maskclear/name;3rawMesh;4/5 ordinaryname. Cleanup consumed before call; use current raw allocation/header.",
+    "known_host_failures": "Prepared/registered Model metadata, mesh native_site0 or completed-constructor admission, completed section admission, post-native material admission retain prior effects.",
+    "unobservable_provider_origin": "Section list metadata allocation precedes native allocation but exposes no native-start marker. No creator does not establish exception origin. provider_call is a Source boundary marker; future outer constructors must not infer Original/native origin from it. Caller state-1 at this call has no name/raw unwind effect.",
+    "transitive_limits": "Callee-private Source metadata and exception identity retain existing provider boundaries. Caller retains whole frame/context/acquired graph, raw slots and outstanding creator diagnostics."
+  },
+  "owned_files": [
+    {
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "sha256": "2263f0a5cf044e3040c7f3f024a8d9899df1e7f0277db512f4db7d59976510f7"
+    },
+    {
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "sha256": "9cb60be1d88a03d4136ca9fe34243c8b980199192300456819bf2a46778a6200"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_TEXT_RAW_SECTIONS_85.md",
+      "sha256": "ba2b3d390309c59ef612fbefcd76c5c90c430153448c54f8c487725b458124de"
+    }
+  ],
+  "compile": {
+    "passed": true,
+    "target": "MSVCx86",
+    "configuration": "optimized strict standalone object",
+    "command": "cl /nologo /c /std:c++17 /EHsc /MD /O2 /W4 /WX /fp:strict /FAs /Falocal/native_gui_text_storage_construct_85.asm /Iinclude src/native_gui_text_storage_construct.cpp /Folocal/native_gui_text_storage_construct_85.obj",
+    "artifacts": [
+      {
+        "path": "local/native_gui_text_storage_construct_85.obj",
+        "sha256": "4a26ad54d14c5161b68c0e575dd21be684cc3c4f1f4579ab7f6029d677de5419"
+      },
+      {
+        "path": "local/native_gui_text_storage_construct_85.asm",
+        "sha256": "58ab9f49f4ff70b0c5c75f15d389a8da4eb7d05f980917dd6c13ec7c89b16422"
+      }
+    ],
+    "optimized_assembly_inspected": [
+      "x87 receiver-capture sequence",
+      "materialDATA-before-state-before-LEN",
+      "single cached decrement per pair"
+    ]
+  },
+  "existing_build": {
+    "command": "./scripts/build.ps1",
+    "log": "local/text85_existing_build.log",
+    "status": "passed",
+    "new_TU_registered": false,
+    "generated_CMake_projects_checked_new_TU_absent": true,
+    "meaning": "Existing registered tree/build/check coverage only; new85TU has direct strict compile and Source/assembly review, not linked CMake coverage until Root registers it.",
+    "exit_code": 0,
+    "tests_passed": 2,
+    "tests_failed": 0,
+    "configured_checks": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "native_differential_fixture_configured": false,
+    "log_sha256": "fa2bae31487f0231c56df8786fad87125116e3065ecbb26f2781b8017d33539c"
+  },
+  "publication": {
+    "ghidra_address_only": "00ab8530",
+    "name_preserved": "BSP_TextContext_EnsureDrawSections",
+    "write_lock": "tools/ghidra_annotate.py --apply --addresses 00ab8530",
+    "saved_program": true,
+    "export_refreshed": true,
+    "prior_plate_log": "local/ghidra-annotations-20261016T042945Z.json",
+    "prior_comment_sha256": "c237b08386bd0e6f73da1c68b336f20fa7b04f9ba2e6ba8a4325b3cc78f94676",
+    "prior_lookup": "local/text85_prior_lookup.txt",
+    "new_function_ledger_name": "ensure_native_gui_text_sections_storage_00ab8530",
+    "ledger_policy": "Unique function row appended; old typed function/fragment rows and prior name evidence preserved.",
+    "CMake_edited": false,
+    "Main_edited": false
+  },
+  "receipt_validation": [
+    {
+      "report": "cc12_native_gui_raw_factory_readiness_78.json",
+      "call_rows": 74,
+      "failed": 0
+    },
+    {
+      "report": "cc12_native_gui_clip_box_factory_83.json",
+      "call_rows": 9,
+      "failed": 0
+    }
+  ],
+  "validation": {
+    "new_test_cases": 0,
+    "primary_integrator_final_source_review": "PASS at cpp9cb60be1d88a03d4136ca9fe34243c8b980199192300456819bf2a46778a6200 and header2263f0a5cf044e3040c7f3f024a8d9899df1e7f0277db512f4db7d59976510f7; primary independently inspected optimized x87 and material-data-before-state assembly.",
+    "report_call_rows_checked": 33,
+    "report_call_rows_failed": 0,
+    "native_code_fixture_run": false,
+    "native_ABI_proved": false,
+    "game_or_rendering_run": false,
+    "primary_reported_force_reference_linkage": "PASS using this same sealed object4a26ad54d14c5161b68c0e575dd21be684cc3c4f1f4579ab7f6029d677de5419 against real providers; primary will preserve full Root91 receipt. No raw function execution or worker repeat."
+  },
+  "remaining": [
+    "Root register85TU and run linked build/checks",
+    "Raw defaultAB9650, copyABB2C0 and factoryAA1380 remain separate",
+    "Native FH3/SEH/private-frame/binary ABI and null-allocation access violations excluded",
+    "No normal frontend activation or gameplay claim"
+  ]
+}

@@ -1,0 +1,9 @@
+# GOAL16N reconstruction batch
+
+Two complete raw zlib entries, `inflateReset` at 00BC9650 and `set_data_type` at 00BCEE90, cover **201 bytes / 65 instructions**. Both entire current strict and registered Win32 bodies match Native. Their new ECX-only Source interfaces preserve the observed ordered accesses, actual stack cells, flags and register effects without inventing a private zlib structure or adopting callers.
+
+Validated Source: `2b9b840c2133fc384b5ab76cdae3d82425410cd1`. The final normal MSVC Win32 build passes all three existing checks. The primary preservation proof covers fifteen complete Native entries (421 bytes), ten whole compiled modules (1632 executable bytes), thirty unique public bindings and both actual archive dictionaries. Only the two N functions receive new reconstruction credit in this batch. [The report](../reports/goal16n_reconstruction_batch.json) records pins, hashes, full counts, review, timing and limits.
+
+Independent review accepted both whole bodies and the real unique Core provider, including reset's cached pointer and store order and type's seven initial WORD reads, conditional stack interactions and byte store before final POP. It found one documentation overstatement about measured faults; the primary corrected it to static fault-capable instruction evidence. No faults or selected bodies were dynamically executed, and Source/header/compiled code required no correction.
+
+Both correct library names remain. Two provisional physical prototypes and evidence comments were saved under the Ghidra write lock, preserving old values/comments; affected exports, snapshot and index were refreshed. Original formal declarations/layout/version/default compiler convention, absolute code and fault addresses, full ABI/SEH, caller adoption and game behavior remain unproved. The reconstruction goal remains active.

@@ -1,0 +1,659 @@
+{
+  "packet": "cc12_native_gui_frame_box_geometry162",
+  "kind": "whole actual raw FrameBox nine-quad geometry over supplied genuine graph",
+  "recorded_utc": "2026-10-16T12:19:33.210340+00:00",
+  "checked_baseline": "f51ffe7eb4a2d3ea2f88fd5a38d567987a09c0ed",
+  "owned_files": [
+    "include/bsp/native_gui_frame_box_geometry.hpp",
+    "src/native_gui_frame_box_geometry.cpp",
+    "docs/CC12_NATIVE_GUI_FRAME_BOX_GEOMETRY_162.md",
+    "reports/cc12_native_gui_frame_box_geometry_162.json"
+  ],
+  "owned_address": "00acf9b0",
+  "owned_range": "[00acf9b0,00acff69)",
+  "only_owned_AC_name_and_raw_reconstruction_evidence": true,
+  "no_existing_Source_CMake_changes": true,
+  "original": {
+    "Original_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "Original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "entry": "00acf9b0",
+    "end_exclusive": "00acff69",
+    "whole_body_bytes": 1465,
+    "instruction_starts": 351,
+    "fresh_live_disk_equal_and_reused154_equal": true,
+    "body_sha256": "2c32795a906c3b644b9f51a02e7a1fc6a652e60bc728b8763d6ba9d6638e0fcc",
+    "binary": {
+      "path": "local/frame_box_geometry162/Original_00acf9b0.bin",
+      "sha256": "2c32795a906c3b644b9f51a02e7a1fc6a652e60bc728b8763d6ba9d6638e0fcc"
+    },
+    "instructions": {
+      "path": "local/frame_box_geometry162/Original_00acf9b0_instructions.json",
+      "sha256": "1bda215356fc186b1c8260a02363780537c22959588731178c448f25bdc833a7"
+    },
+    "live_body": {
+      "path": "local/frame_box_geometry162_live_bytes.txt",
+      "sha256": "f05f13ce7e9e56412bbe82b8b1c438aed152bf6825ddf30e2e639a654adf7975"
+    },
+    "fresh_proto": {
+      "path": "local/frame_box_geometry162_live_proto.txt",
+      "sha256": "4a51efbd278a251f28d895f28195c9fde5b22ab67129fa44c2e61ba3848c0175"
+    },
+    "profile": {
+      "entry": "00d5d130",
+      "bytes": 156,
+      "slot7c": "00acf9b0",
+      "slot98": "00ad2750",
+      "evidence": {
+        "path": "local/frame_box_geometry162_FrameBox_profile_live_bytes.txt",
+        "sha256": "532e33ddc888920937521b1be0dedbca4aaf1e7690404ca5519813299b6d0c50"
+      }
+    },
+    "mutable_scalar": {
+      "entry": "00e1301c",
+      "installed_initial_bytes": "00 00 40 3f",
+      "installed_initial_float": 0.75,
+      "evidence": {
+        "path": "local/frame_box_geometry162_mutable_scale_initial_bytes.txt",
+        "sha256": "16c16f44078999da81c282a1c4645fdbb49f25e507337a565a1c388f32f0bbc2"
+      },
+      "not_a_runtime_snapshot_or_default": true
+    },
+    "indirect_call": {
+      "site": "00acf9c9",
+      "contract": "captured current unsigned WORD/current raw00+98; genuine D5D130/AD2750 admitted; real149 invoked with same low signedWORD bits"
+    },
+    "direct_call_count": 11,
+    "no_execution": true
+  },
+  "calls": [
+    {
+      "address": "00acfa30",
+      "native": "00bf6713",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfa45",
+      "native": "00aceb70",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfbb9",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfc42",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfcc2",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfd3b",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfdaa",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfe19",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfe83",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfef7",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acff5c",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    }
+  ],
+  "Native_ABI": "ECX actualBox; stack actualstream,size; RET8 atACFF66; ESI/EDI preserved;124B private scratch; no defined semanticreturn/localEH",
+  "Source_API": {
+    "entry": "write_native_gui_frame_box_geometry_00acf9b0(box,stream,size,context,frame)",
+    "context": "32B nonowning SAME held readonly data/real157 profiles/live currentE1301C cell; genuine D5D130,D61948,CE3978,CEC380,CEF1B8 aliases, no lazy mapping/default/copy",
+    "frame": "248B independent noncopyable one-shot:56B diagnostics,56B nested157 frame,132B fake-F scratch plus volatile capturedindex4. User-provided empty constructor prevents value-init raw zeroing.",
+    "known_protected_regions": "complete frame248/context32/data76/157profiles20 mutually disjoint and separated from raw/public inputs+held aliases",
+    "known_public_regions": "Box120h includingtrailer, observedstream2Ch header,size8,liveE1301C4 andactualReadonlyaliases; public overlap/feedback admitted where real provenance permits",
+    "private_scratch": "fakeF+08..83 exact124NativeB;00..07 unused; normalized outputfakeF+38/+3C; no blanketzero; nested157 backing distinct",
+    "opaque_contract": "Prehold full independent actual graph/creators/services/backing/recursiveframes and valid currenttable/record/map accesses; protect private Source/caller/callee regions from all transitive aliases. Metadata/aliases are not owners/provenance/lifetime barriers."
+  },
+  "schedule": [
+    "CURRENT unsignedWORD EC thenraw00/+98, admitincomingD5D130/AD2750 thenreal149, no secondselector",
+    "Native returnedUV+1C/+20,freshsignedWORDEC,+24/+28/x87spans andF4capture-before-FSTP exactly",
+    "Capturedbegin null skipscurrentF8; wrappingdifference/signed/44 thenunsignedcompare;realBF6713mayreturn andcurrentF4reload+savedindexwrap textureload continuewithoutrecheck",
+    "Real157 qualified2D/currentselectors/saved+34/+38 into independent privateoutput",
+    "Singleasmblock preserves302Native mathinstructions/nine160calls under fullpushdepth-rebase, plusone liveE1301Cpointertransport; Native late size/stream andallpublicfeedback preserved",
+    "PrivateXMM3..7 persist onlyacrossverified160; all12Nativecall boundarieshave x87depth0; DOUBLE/FLOAT spills/storeorder intact",
+    "NineTL/TR/BL/BR/top/left/right/bottom/center; genuine160expanded6vertices/currentheaderloads/index-before-UV; noarraysnapshot/indexarray/color/lock/ownerwork"
+  ],
+  "translation": {
+    "whole351_map": {
+      "path": "local/frame_box_geometry162/Original_stack_x87_translation_map.json",
+      "sha256": "159006eba31971acacae669f03a93b9aed047d91c0fcf9ecf88ccedc9d7d0e38"
+    },
+    "generated_math": {
+      "path": "local/frame_box_geometry162/math_body.generated.inc",
+      "sha256": "4036305721485b5a191ad253bf305fd06dc3216bc1cea430d70f4865d19a2d19"
+    },
+    "worker_actual_COFF_correspondence": {
+      "path": "local/frame_box_geometry162/translated_math_COFF_correspondence.json",
+      "sha256": "db9f006002401dc5727c6b010c68c263a179faa376cbaae51c40029508e4b852"
+    },
+    "Original_math_instructions": 302,
+    "translated_math_instructions": 303,
+    "emitted_math_function_instructions": 315,
+    "emitted_math_function_bytes": 1062,
+    "setup_instructions": 7,
+    "epilogue_instructions": 5,
+    "genuine160_REL32": 9,
+    "Root_independent_proof": "PASS; Root165 independently read installedOriginal, tracked everypush/RET16, checked all302mathops/X87/SSE/9relocs/7setup/5epilogue/onepointertransport withoutworkertranslationmap; independent artifact retained byRoot, not worker-hash-claimed"
+  },
+  "strict_compile": {
+    "status": "PASS",
+    "flags": "MSVC Win32 C++17 /EHsc /MD /O2 /W4 /WX /fp:strict",
+    "command": {
+      "path": "local/frame_box_geometry162_strict_compile.cmd",
+      "sha256": "dbb266a960aa5cc65290fa568f451cdb97c387cdc9910a94127a6fd02092feab"
+    },
+    "log": {
+      "path": "local/frame_box_geometry162_strict_compile.log",
+      "sha256": "d071b527088d8cae957c840967052ba70f62b27949b9b74094075b4188d3d781"
+    },
+    "object": {
+      "path": "local/native_gui_frame_box_geometry_162.obj",
+      "sha256": "aedcec02fc4166fdaa5896b48ff29c47b73f5f658e7ea800c20a364e38cdfaf0"
+    },
+    "assembly": {
+      "path": "local/native_gui_frame_box_geometry_162.asm",
+      "sha256": "0c2acffb92f2437b2ab9fccdc360237d642839b7fcee05d22a6a54d3808d6f8c"
+    },
+    "complete_COFF": {
+      "path": "local/frame_box_geometry162_coff_complete.json",
+      "sha256": "e885e887ff1dfc9baa46476a39a2284658e92a3f622521135442a09026db220d"
+    },
+    "compact_index": {
+      "path": "local/frame_box_geometry162/optimized_compact/index.json",
+      "sha256": "994ad29c6a5224df3e4ceb0f0a5789001481a5e7f075a5dfa5ce341a9a00fff0"
+    },
+    "strict_before_published_refresh": "Used actual immutable160 header gitblob; current159header definition identical, Source/strict bytes unchanged.",
+    "linked_or_executed": false
+  },
+  "optimized_ranges": {
+    "context": "364-483",
+    "public_forward": "494-499",
+    "check_separation": "1582-1706",
+    "UV_fresh_index_F4_capture": "1717-1836",
+    "whole_math_nine_calls": "1847-3086",
+    "preflight": "3100-3215",
+    "whole_run_catch_handler": "3233-3584"
+  },
+  "canonical_build": {
+    "status": "PASS",
+    "log": {
+      "path": "local/frame_box_geometry162_existing_canonical_build.log",
+      "sha256": "ee614df40948e505b80eaa53ebe818ac3c78689c00032324d578b4704a58ab8f"
+    },
+    "exit": 0,
+    "checks": "2/2: reconstructed_math0.20s,tool_tests6.66s,total6.88s",
+    "new_TU_registered": false,
+    "qualification": "Existing159 baseline/current-provider stability; no162canonicallink/bodyexecution; primary owns registration. Published159 separately registered/checked157and160.",
+    "warning": "Unrelated existing LNK4006 duplicate spawn_request_id_matches"
+  },
+  "failure": "Native hasno localEH/resourceacquisition/cleanup. AddedSourcepreflight/phase/catch/stickyCppfailures retainindependentgraph/frame; noreset/retry/cleanup/rollback/retire/poolreturn/stalerediscovery. NoCpprecoveryforhardware/FPU/SEHfaults or arbitrary NativeprivateCRT/FH3/ABI/faulttiming claim; math160pathnoexceptdoesnotinventcleanup.",
+  "reviews": {
+    "Root_full_Native351_HPP_CPP491": "PASS",
+    "Root_all8_optimized_sections": "PASS",
+    "Root_independent_302_to315_math": "PASS",
+    "Root_complete35_line_final_doc": "PASS",
+    "record": {
+      "path": "local/frame_box_geometry162_Root_final_reviews.json",
+      "sha256": "e7c31c8bfc5d57073f8a7f8353e3bff12850901ccb8677872d0989f2defdeddd"
+    }
+  },
+  "verification": {
+    "live_direct_calls": {
+      "checked": 11,
+      "failed": 0,
+      "scope": "all11 direct rows of whole ACF9B0; current98 indirect route separatelybyte/profile/genuine149proved",
+      "log": {
+        "path": "local/frame_box_geometry162_report_call_verification.txt",
+        "sha256": "d38bc3834311b9b7734c46a12fd514f29843889b9c3b23a3c19da2c96d15ff6a"
+      }
+    },
+    "prior341_pins_unchanged": true,
+    "no_new_tests_probes_execution": true,
+    "all341_prior_pins_unchanged_at_seal": true
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_gui_frame_box_factory.hpp",
+      "sha256": "51c9ecc3f14973a9f21cc1de52a05b9d34c0f522f7fbba3cbb77eb187e773853",
+      "git_blob": "854035e884f4d4417ad9889ac40ed92a7d77e5d0",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/include/bsp/native_gui_frame_box_factory.hpp",
+        "sha256": "51c9ecc3f14973a9f21cc1de52a05b9d34c0f522f7fbba3cbb77eb187e773853"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "src/native_gui_frame_box_factory.cpp",
+      "sha256": "46124772e8af548dbd39ddf60800fa5dbb2a78efd18052c10bf85a0588a17532",
+      "git_blob": "c69ff3ef7d612a3d42840e5dab5d755301ea870d",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/src/native_gui_frame_box_factory.cpp",
+        "sha256": "46124772e8af548dbd39ddf60800fa5dbb2a78efd18052c10bf85a0588a17532"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_lifetime.hpp",
+      "sha256": "a50b604d393333a5c66efd0e660c34a5021226b94ae28e4a0a30218c3db37277",
+      "git_blob": "c573ce56783ce8967a5e4fcf7ea615cac6a39703",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/include/bsp/native_gui_frame_box_lifetime.hpp",
+        "sha256": "a50b604d393333a5c66efd0e660c34a5021226b94ae28e4a0a30218c3db37277"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "src/native_gui_frame_box_lifetime.cpp",
+      "sha256": "a125c2ee90feea995e72dfce1910d6bb5b60d7dd0ff5856687a28b4c22ad8be8",
+      "git_blob": "02ea03259ba2669b0641b6347be9b30a9a2a8f3d",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/src/native_gui_frame_box_lifetime.cpp",
+        "sha256": "a125c2ee90feea995e72dfce1910d6bb5b60d7dd0ff5856687a28b4c22ad8be8"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "include/bsp/native_gui_texture_normalization.hpp",
+      "sha256": "33306028223a7d3f7b2a194facd8f55c1e0bfae08ab15d88fa5f3bff5fb26bb8",
+      "git_blob": "fce3aec2598ae1f3d323844acc236f5ca9df3745",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/include/bsp/native_gui_texture_normalization.hpp",
+        "sha256": "33306028223a7d3f7b2a194facd8f55c1e0bfae08ab15d88fa5f3bff5fb26bb8"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "src/native_gui_texture_normalization.cpp",
+      "sha256": "271d375501300757bc267cf9530c9126edb04f4292a1bfbf1641f213df38f2a1",
+      "git_blob": "aa8cab2ecc7b316851bb7fe7120c40e143a9f9c6",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/src/native_gui_texture_normalization.cpp",
+        "sha256": "271d375501300757bc267cf9530c9126edb04f4292a1bfbf1641f213df38f2a1"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "include/bsp/native_gui_rectangle_writer.hpp",
+      "sha256": "68d82b664dc042ef20e62b1759852208582dcf05d59b866575fefd06d7262af1",
+      "git_blob": "63c9c4329724e2ac51b194584ce8bc7e6d419b20",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/include/bsp/native_gui_rectangle_writer.hpp",
+        "sha256": "68d82b664dc042ef20e62b1759852208582dcf05d59b866575fefd06d7262af1"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "src/native_gui_rectangle_writer.cpp",
+      "sha256": "da998d7aafdd0068dea15e65d16b954181113cd2ef6b85fd454c98c9c6a9ee4b",
+      "git_blob": "373d3519797c9046c5bd1c32d5e921d13a560059",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/src/native_gui_rectangle_writer.cpp",
+        "sha256": "da998d7aafdd0068dea15e65d16b954181113cd2ef6b85fd454c98c9c6a9ee4b"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "git_blob": "4984c27fa603fe05a308d701c54dafba6110de7e",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/include/bsp/native_invalid_parameter_noinfo_call.hpp",
+        "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "git_blob": "bf2a25c5f28d9eb10d37f7099faf9adaabb0a97d",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/src/native_invalid_parameter_noinfo_call.cpp",
+        "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/include/bsp/game_native_readonly_data.hpp",
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/src/game_native_readonly_data.cpp",
+        "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "include/bsp/native_texture_saved_dimensions.hpp",
+      "sha256": "79cd7e835c608dda30d3ada5dc46b8c9e09b066e9a284f18a12276ff4d770890",
+      "git_blob": "39895a3684f10935598ef4fec7dc1e4184f76249",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/include/bsp/native_texture_saved_dimensions.hpp",
+        "sha256": "79cd7e835c608dda30d3ada5dc46b8c9e09b066e9a284f18a12276ff4d770890"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "src/native_texture_saved_dimensions.cpp",
+      "sha256": "094040ca29e9d708254a8889c062bda42f15a7c6833b303c3dc37f6d72724483",
+      "git_blob": "81b8331d5740d2ec0606a3ec1e436b0795d7a850",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/src/native_texture_saved_dimensions.cpp",
+        "sha256": "094040ca29e9d708254a8889c062bda42f15a7c6833b303c3dc37f6d72724483"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "git_blob": "28ac6a6a771515dc54df56d630a91438b24fb2de",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/include/bsp/native_texture_2d_owner.hpp",
+        "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+      "git_blob": "65f5ff828bcfed5f544912349feeeb9167349359",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/src/native_texture_2d_owner.cpp",
+        "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_CONSTRUCTED_STORAGE_147.md",
+      "sha256": "4fb09aac8b3dd93a8aa417cdce02cef78df9b3a344d5fa364b8b9a6079411de4",
+      "git_blob": "874a86bb286de19034a4bb82e7cfc08a1e8420a7",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/docs/CC12_NATIVE_GUI_FRAME_BOX_CONSTRUCTED_STORAGE_147.md",
+        "sha256": "4fb09aac8b3dd93a8aa417cdce02cef78df9b3a344d5fa364b8b9a6079411de4"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "reports/cc12_native_gui_frame_box_constructed_storage_147.json",
+      "sha256": "030e8a32b4e9c7f71fe041b70bb878651f3761437bc49372aa707509952978c8",
+      "git_blob": "c5b5131dc721f4fff8ca248dffa9bf07522072a8",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/reports/cc12_native_gui_frame_box_constructed_storage_147.json",
+        "sha256": "030e8a32b4e9c7f71fe041b70bb878651f3761437bc49372aa707509952978c8"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_STATE_AT_149.md",
+      "sha256": "bea3fd518f25b0e7e1d55c75927de0c0452233b7883100cb1eb0949bdec65002",
+      "git_blob": "0c406363dd2719512e9f8040b292a8ba75491528",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/docs/CC12_NATIVE_GUI_FRAME_BOX_STATE_AT_149.md",
+        "sha256": "bea3fd518f25b0e7e1d55c75927de0c0452233b7883100cb1eb0949bdec65002"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "reports/cc12_native_gui_frame_box_state_at_149.json",
+      "sha256": "14605eeb740cd4a20e59e566928d1fa543742a929ac23dbc202ab91e4ed86b9a",
+      "git_blob": "4482efe4fa83d381a84727d3d5d4cd7ab92b839c",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/reports/cc12_native_gui_frame_box_state_at_149.json",
+        "sha256": "14605eeb740cd4a20e59e566928d1fa543742a929ac23dbc202ab91e4ed86b9a"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RAW_GEOMETRY_READINESS_154.md",
+      "sha256": "9434cc2759ee1b47581514c6fffed905026644d50f670341bd3d39cb2c674573",
+      "git_blob": "6163b4eb59882f5a2ee06aa6b8cc42760e7c2cb1",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/docs/CC12_NATIVE_GUI_FRAME_BOX_RAW_GEOMETRY_READINESS_154.md",
+        "sha256": "9434cc2759ee1b47581514c6fffed905026644d50f670341bd3d39cb2c674573"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "reports/cc12_native_gui_frame_box_raw_geometry_readiness_154.json",
+      "sha256": "16645d5e5bae169e962c7befd45c5719f4085e076bc131c434ee09fafda515ae",
+      "git_blob": "2c59bbbdfd3388705e1fa69e6df2db76124b827a",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/reports/cc12_native_gui_frame_box_raw_geometry_readiness_154.json",
+        "sha256": "16645d5e5bae169e962c7befd45c5719f4085e076bc131c434ee09fafda515ae"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_TEXTURE_NORMALIZATION_157.md",
+      "sha256": "ce376233717532dfc95e56916876f755d03fbc6e4f4e89317839b2679aadca44",
+      "git_blob": "a3fd6f30957f0abd56727a63f3d575b2b8b7008c",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/docs/CC12_NATIVE_GUI_TEXTURE_NORMALIZATION_157.md",
+        "sha256": "ce376233717532dfc95e56916876f755d03fbc6e4f4e89317839b2679aadca44"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "reports/cc12_native_gui_texture_normalization_157.json",
+      "sha256": "e0672c96e333573950511b8171c9bdff43e6a92acc678245357930f9430e2571",
+      "git_blob": "1e3eff2798ea290c835ca8041bdad5569e58e1e4",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/reports/cc12_native_gui_texture_normalization_157.json",
+        "sha256": "e0672c96e333573950511b8171c9bdff43e6a92acc678245357930f9430e2571"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "docs/CC12_NATIVE_FONT_TEXTURE_INTEGRATION_159.md",
+      "sha256": "e69e5b8508b310515095cb9ff7ed1aad039ae1c407c103947ceb25e728d04e4f",
+      "git_blob": "69c5d061aa9ab5a66b3ad0e255a8b4bfc2cd3487",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/docs/CC12_NATIVE_FONT_TEXTURE_INTEGRATION_159.md",
+        "sha256": "e69e5b8508b310515095cb9ff7ed1aad039ae1c407c103947ceb25e728d04e4f"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    },
+    {
+      "path": "reports/cc12_native_font_texture_integration_159.json",
+      "sha256": "3464bed14576ee82bd7396a893a782eb871584c2ce1b9280601fb29e208382b4",
+      "git_blob": "0dfe0105500f6daa96aedef452e1cd7b5619769f",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/frozen_inputs/reports/cc12_native_font_texture_integration_159.json",
+        "sha256": "3464bed14576ee82bd7396a893a782eb871584c2ce1b9280601fb29e208382b4"
+      },
+      "scope": "genuine existing dependency/published evidence; receipt-internal historical paths retain their original worker root; no duplicate Source credit"
+    }
+  ],
+  "frozen160_git_inputs": {
+    "path": "local/frame_box_geometry162/source160_inputs.json",
+    "sha256": "24ff79cf21caf235edd2f3c8861ac8a239acb652475e0cfcaa587790089f0ea8"
+  },
+  "own_Source": [
+    {
+      "path": "include/bsp/native_gui_frame_box_geometry.hpp",
+      "sha256": "a02a2c7c4cb4c538ebf41bde4dccea4fdec021c5f84501bdba40d84e83647013"
+    },
+    {
+      "path": "src/native_gui_frame_box_geometry.cpp",
+      "sha256": "430483e264737af69a50d4477cfa8a9a50794e354738df2998c3a25043aeca60"
+    }
+  ],
+  "documentation": {
+    "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_GEOMETRY_162.md",
+    "sha256": "ba8d5a8cd82302305af460a5010045d8bb7f8225e2f59925fbcf9d2d73bb321e"
+  },
+  "final_artifact_manifest": "local/frame_box_geometry162_final_artifact_manifest.json",
+  "limits": [
+    "Supported supplied actualcanonicalFrameBox/qualified2D/mappedstream graph only, not productionhost/admission/activation.",
+    "SourceArgument/privateframeplacement and mappedbacking exclusion differfromNativePhysicalStack; no byte/OriginalABI equality claimed.",
+    "Publicaliasfeedback preserved; opaque completegraph/backing/placement/lifetime/currentcell provenance required beyondknownregions.",
+    "Genuine149/157/160/rawconstructor/SDK/data services acknowledged, no extraNativecredit or callback/semantic/Ownerfacade.",
+    "Onlywhole1465B ACF9B0closed;AD0D80/owner/clip/Font/copy/rebuild paths stayseparate."
+  ],
+  "annotation": {
+    "owned_address": "00acf9b0",
+    "existing_name_comment_preserved": true,
+    "only_owned_locked_annotate_save_export": true,
+    "history": {
+      "path": "local/frame_box_geometry162_ghidra_annotation_history.json",
+      "sha256": "09a49dd956408f3ba0b773d5a04879fc841837ccb8509d8879ca0da2b2ccfa42"
+    },
+    "log": {
+      "path": "local/frame_box_geometry162_ghidra_annotation.log",
+      "sha256": "4c37c68a6501e80c62be516e1e8e184fefe049c0857b0d1024fcc0fcb76206e9"
+    },
+    "export_log": {
+      "path": "local/frame_box_geometry162_ghidra_export.log",
+      "sha256": "3713d2f04512cd7def6fd7dc4c6432cfd418d4eac0234545db11cec47938818b"
+    },
+    "before": {
+      "path": "local/frame_box_geometry162_comments_before.txt",
+      "sha256": "4dfbaf2ac8f304034c88c496aa1afdaae26d8ca410ea0d7ec5ba548348547e44"
+    },
+    "after": {
+      "path": "local/frame_box_geometry162_comments_after.txt",
+      "sha256": "5d04e46e0ea728da8f2d085c9a61d25b19cd7aa1300729d8d6d8d528aa803d9b"
+    }
+  },
+  "ledger": {
+    "only_owned_name_evidence_and_new_raw_row": true,
+    "old_semantic_status_and_all_nonowned_lines_preserved": true,
+    "proof": {
+      "path": "local/frame_box_geometry162_ledger_preservation_proof.json",
+      "sha256": "6cfece40567194181744f216a030df559857bbc2de6d0f6c5abd92f4ea1c33b2"
+    },
+    "log": {
+      "path": "local/frame_box_geometry162_ledger_add.log",
+      "sha256": "9d2ceeacb01da2c674c947e9037adcf42df88cec5aaf6b23a5f0456ed6d3f58c"
+    }
+  },
+  "final_frozen_inputs": [
+    {
+      "original_path": "include/bsp/native_gui_frame_box_geometry.hpp",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/final_inputs/include/bsp/native_gui_frame_box_geometry.hpp",
+        "sha256": "a02a2c7c4cb4c538ebf41bde4dccea4fdec021c5f84501bdba40d84e83647013"
+      }
+    },
+    {
+      "original_path": "src/native_gui_frame_box_geometry.cpp",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/final_inputs/src/native_gui_frame_box_geometry.cpp",
+        "sha256": "430483e264737af69a50d4477cfa8a9a50794e354738df2998c3a25043aeca60"
+      }
+    },
+    {
+      "original_path": "cmake/startup.cmake",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/final_inputs/cmake/startup.cmake",
+        "sha256": "6eb08dcd661fa623286761581ae5b278fc91da512626163db61016d3333078f5"
+      }
+    },
+    {
+      "original_path": "scripts/build.ps1",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/final_inputs/scripts/build.ps1",
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      }
+    },
+    {
+      "original_path": "tools/bsp.py",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/final_inputs/tools/bsp.py",
+        "sha256": "133e2cf3f24f0402f6ed7d0e1dd5148c678c7ca10722633d1ec6cdc9b693a9ff"
+      }
+    },
+    {
+      "original_path": "tools/workspace.py",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/final_inputs/tools/workspace.py",
+        "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+      }
+    },
+    {
+      "original_path": "tools/ledger.py",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/final_inputs/tools/ledger.py",
+        "sha256": "de883bb8bcb4d364b2abbddd88f2a22936f3cda29c3233304172674fa5c06ba9"
+      }
+    },
+    {
+      "original_path": "tools/coordination.py",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/final_inputs/tools/coordination.py",
+        "sha256": "14f416730a18e9d40a9775f2de7c05e9c951c54ebb7f3cbdbc039fb42a74e7f4"
+      }
+    },
+    {
+      "original_path": "tools/ghidra_export.py",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/final_inputs/tools/ghidra_export.py",
+        "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685"
+      }
+    },
+    {
+      "original_path": "tools/ghidra_annotate.py",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/final_inputs/tools/ghidra_annotate.py",
+        "sha256": "aa170c357bb5e4ff20f170d77230570cdf8a1b2ee53e9b322581e1770b296bf6"
+      }
+    },
+    {
+      "original_path": "tools/verify_report_calls.py",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry162/final_inputs/tools/verify_report_calls.py",
+        "sha256": "f3f412b6f8eaeb6c4b212e34cca6a2567c2ed4015d0a942268d752911f6913ef"
+      }
+    }
+  ]
+}

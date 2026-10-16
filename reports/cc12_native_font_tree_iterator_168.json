@@ -1,0 +1,876 @@
+{
+  "packet": "cc12_native_font_tree_iterator_168",
+  "baseline": "4d270ca222c55d9a0c7cced532d380f9a3b71e81",
+  "published_origin_main_at_start": "1c82033a07d8e9f99746cecea29a190fde5a16ed",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48",
+  "status": "whole_AD4040_byte_proven_alias_of_established869990_strict_compile_existing_build_checks",
+  "Source_files": [
+    "include/bsp/native_font_tree_iterator.hpp",
+    "src/native_font_tree_iterator.cpp"
+  ],
+  "receipt_files": [
+    "docs\\CC12_NATIVE_FONT_TREE_ITERATOR_168.md",
+    "reports\\cc12_native_font_tree_iterator_168.json"
+  ],
+  "scope": "AD4040 only; distinct ordinary Source wrapper and owned name/reconstruction row; no new869990 credit or native_font_storage/CMake edit",
+  "Original": {
+    "Original": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "spans": [
+      {
+        "start": "00ad4040",
+        "end_exclusive": "00ad40c9",
+        "bytes": 137,
+        "physical_starts": 48,
+        "sha256": "255d1a43987065d004fefd434a0a03f7b1ba8328a85fb2faee9f39e3c58cea95",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "actual_direct_calls": 1,
+        "external_tail_jumps": 2,
+        "local_EH": false,
+        "external_operands": [
+          {
+            "site": "00ad4048",
+            "offset": 8,
+            "opcode": "call",
+            "target": "00bf6713",
+            "operand_offset": 9,
+            "width": 4
+          },
+          {
+            "site": "00ad4063",
+            "offset": 35,
+            "opcode": "jmp",
+            "target": "00bf6713",
+            "operand_offset": 36,
+            "width": 4
+          },
+          {
+            "site": "00ad40bf",
+            "offset": 127,
+            "opcode": "jmp",
+            "target": "00bf6713",
+            "operand_offset": 128,
+            "width": 4
+          }
+        ]
+      },
+      {
+        "start": "00869990",
+        "end_exclusive": "00869a19",
+        "bytes": 137,
+        "physical_starts": 48,
+        "sha256": "43e49dd8e7fa699689c3c027cba14a065d33e6a7acecd6e8f5b3fa1eec8204f8",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "actual_direct_calls": 1,
+        "external_tail_jumps": 2,
+        "local_EH": false,
+        "external_operands": [
+          {
+            "site": "00869998",
+            "offset": 8,
+            "opcode": "call",
+            "target": "00bf6713",
+            "operand_offset": 9,
+            "width": 4
+          },
+          {
+            "site": "008699b3",
+            "offset": 35,
+            "opcode": "jmp",
+            "target": "00bf6713",
+            "operand_offset": 36,
+            "width": 4
+          },
+          {
+            "site": "00869a0f",
+            "offset": 127,
+            "opcode": "jmp",
+            "target": "00bf6713",
+            "operand_offset": 128,
+            "width": 4
+          }
+        ]
+      }
+    ],
+    "whole_alias": "AD4040 reuses already-established869990; no new source credit for869990",
+    "resolved_operand_rows": 3,
+    "masked_only_three_rel32_operands": true,
+    "all_other_bytes_identical": true,
+    "paired_EH": "both complete bodies have no local EH/FuncInfo/action; no paired temporary cleanup exists",
+    "tail_transfers": [
+      {
+        "site": "00ad4063",
+        "offset": 35,
+        "opcode": "jmp",
+        "target": "00bf6713",
+        "operand_offset": 36,
+        "width": 4
+      },
+      {
+        "site": "00ad40bf",
+        "offset": 127,
+        "opcode": "jmp",
+        "target": "00bf6713",
+        "operand_offset": 128,
+        "width": 4
+      }
+    ]
+  },
+  "call_rows": [
+    {
+      "address": "00ad4048",
+      "native": "00bf6713",
+      "function": "00ad4040",
+      "source": "existing genuine869990 owningSDK invalid-parameter transport; one actualCALL"
+    },
+    {
+      "address": "00ad4063",
+      "native": "00bf6713",
+      "function": "00ad4040",
+      "kind": "tail_jump",
+      "source": "existing genuine869990 terminal invalid-parameter transport; no later node rewrite"
+    },
+    {
+      "address": "00ad40bf",
+      "native": "00bf6713",
+      "function": "00ad4040",
+      "kind": "tail_jump",
+      "source": "existing genuine869990 terminal invalid-parameter transport; no later node rewrite"
+    }
+  ],
+  "after": {
+    "live_after_equals_before_and_disk": true,
+    "whole_bytes": 137,
+    "refreshed_starts": 48,
+    "library_name_preserved": true,
+    "old_comment_preserved": true,
+    "owned_annotation_only": true,
+    "all_unowned_ledger_lines_unchanged": true,
+    "reused_provider_Source_files_unchanged_and_published_blob_equal": true,
+    "whole_CMake_file_differs_but_reused_provider_registration_identical": true
+  },
+  "Source_object": {
+    "strict": {
+      "symbol": "?decrement_native_font_tree_iterator_00ad4040@bsp@@YAXAAUNativeIntPointerTree18Iterator@1@@Z",
+      "section": 3,
+      "section_name": ".text$mn",
+      "bytes": 5,
+      "hex": "e900000000",
+      "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+      "relocations": [
+        {
+          "offset": 1,
+          "type": 20,
+          "symbol": "?decrement_native_int_pointer_tree18_00869990@bsp@@YAXAAUNativeIntPointerTree18Iterator@1@@Z"
+        }
+      ]
+    },
+    "strict_physical_starts": 1,
+    "complete_text_sections": 1,
+    "compiled_canonical_reused_provider": {
+      "symbol": "?decrement_native_int_pointer_tree18_00869990@bsp@@YAXAAUNativeIntPointerTree18Iterator@1@@Z",
+      "section": 26,
+      "section_name": ".text$mn",
+      "bytes": 132,
+      "hex": "558bec568b7508833e007506ff15000000008b460480781500740f8b40088946048078150075555e5dc38b0880791500751f8b41088078150075100f1f4400008bc88b40088078150074f5894e045e5dc38b4804807915007519660f1f4400008b46043b01750c894e048b49048079150074ed8b46048078150074cf5e5dff2500000000",
+      "sha256": "e5f9e01b1bb4e8f96b65350f41fba15fce23967d820f7512e8da13f23bc94b13",
+      "relocations": [
+        {
+          "offset": 14,
+          "type": 6,
+          "symbol": "__imp___invalid_parameter_noinfo"
+        },
+        {
+          "offset": 128,
+          "type": 6,
+          "symbol": "__imp___invalid_parameter_noinfo"
+        }
+      ]
+    },
+    "canonical_provider_object": {
+      "path": "local\\cc12_native_font_tree_iterator_168\\canonical\\native_effect_handle_acquisition.obj",
+      "sha256": "9d6b3274ab8479645b3108b19276f594155f2f408ca3e7bdeb928637f260fb63",
+      "bytes": 14286
+    },
+    "new_TU_registered_in_worker_Core": false,
+    "new_TU_actual_strict_compile": true,
+    "build_exit": 0,
+    "checks": "3/3 existing checks passed, 7.51s; no new test/probe or body execution",
+    "no_other_Source_modified": true
+  },
+  "Source_contract": {
+    "iterator": "required SAME live NativeIntPointerTree18Iterator object8B; owner0/node4",
+    "reused": "decrement_native_int_pointer_tree18_00869990 with TreeInsertAccess<14h,15h> shared template",
+    "node_operands": "physical volatile links0/4/8,nilBYTE15; no key/payload/color/count/ref access",
+    "error": "fixed real owningSDK _invalid_parameter_noinfo, may return; no fake/default/injected service",
+    "ownership": "none created/retained; caller independently retains valid actual graph and handler metadata through failure; external serialization",
+    "private_alias": "BOTH Native and Source callees private stack/argument/scratch excluded",
+    "abi": "new ordinary Source cdecl/reference, not Native ECX/plainRET/tail machine ABI",
+    "exceptions": "no local Native or addedSourceEH/cleanup/replay; actual owningSDK transport only"
+  },
+  "build": {
+    "command": "scripts/build.ps1",
+    "exit": 0,
+    "existing_checks": "3/3 passed,7.51s",
+    "new_TU_registered_in_worker": false,
+    "direct_new_TU_strict_compile": true,
+    "strict_flags": "MSVC19.51 Win32 C++17 /MD /EHsc /O2 /Gy /W4 /WX /fp:strict /permissive-",
+    "actual_reused_Core_provider": "132B,2 DIR32 relocations to __imp___invalid_parameter_noinfo; frozen wholeobject",
+    "no_new_tests_or_probes": true,
+    "no_body_execution_claim": true
+  },
+  "annotation": {
+    "only_owned_address": true,
+    "all_unowned_ledger_lines_unchanged": true,
+    "old_library_name_preserved": true,
+    "old_comment_preserved_by_tool": true,
+    "locked_saved": true,
+    "history": {
+      "path": "local\\cc12_native_font_tree_iterator_168\\ghidra-annotations-20261016T123616Z.json",
+      "sha256": "3b0e1a0b0df778539b27523f6d0ac3b6e771dcefe4828a71443b7d087ff6e5fd"
+    }
+  },
+  "provider_sources": [
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\inputs\\include\\bsp\\native_effect_handle_acquisition.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_effect_handle_acquisition.hpp",
+      "sha256": "9148f95d14fbfc14ad6ed0ea25a4b1047975accc606af5995dcfd718e1b127af",
+      "bytes": 3375,
+      "Git_blob": "2a82cebab71e9f1fa2cb79775c72a89c95a30636",
+      "published_snapshot_blob": "2a82cebab71e9f1fa2cb79775c72a89c95a30636",
+      "published_blob_equal": true
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\inputs\\src\\native_effect_handle_acquisition.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_effect_handle_acquisition.cpp",
+      "sha256": "3b7794d963c4885bbb818bd15d5592c487157863183e0f3db692d089893cef4a",
+      "bytes": 5736,
+      "Git_blob": "e94bf83c1972606b981dee0db701ef43333b9506",
+      "published_snapshot_blob": "e94bf83c1972606b981dee0db701ef43333b9506",
+      "published_blob_equal": true
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\inputs\\include\\bsp\\detail\\native_tree_insert_storage.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\detail\\native_tree_insert_storage.hpp",
+      "sha256": "c5eb00461d535b3c737e63a4286814e35c5427c883474d37b3cb6f67a2f8a8b9",
+      "bytes": 9079,
+      "Git_blob": "626561295a534877f0b58f70880b7bfc6d7f7f80",
+      "published_snapshot_blob": "626561295a534877f0b58f70880b7bfc6d7f7f80",
+      "published_blob_equal": true
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\inputs\\include\\bsp\\native_int_pointer_tree18_leaves.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_int_pointer_tree18_leaves.hpp",
+      "sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+      "bytes": 2447,
+      "Git_blob": "4ad334d57f4665e25a5719ec97ad65135b712d74",
+      "published_snapshot_blob": "4ad334d57f4665e25a5719ec97ad65135b712d74",
+      "published_blob_equal": true
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\inputs\\src\\native_int_pointer_tree18_leaves.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_int_pointer_tree18_leaves.cpp",
+      "sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+      "bytes": 6965,
+      "Git_blob": "f4059b8973da839d78ee36a8ecb208b18f8a5378",
+      "published_snapshot_blob": "f4059b8973da839d78ee36a8ecb208b18f8a5378",
+      "published_blob_equal": true
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\inputs\\cmake\\startup.cmake",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\cmake\\startup.cmake",
+      "sha256": "6eb08dcd661fa623286761581ae5b278fc91da512626163db61016d3333078f5",
+      "bytes": 269348,
+      "Git_blob": "fcbdb7917e4792232613e23253c42da1d5888f8f",
+      "published_snapshot_blob": "73880f58a38624851169b9029ac7172f42235799",
+      "published_blob_equal": false
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\inputs\\config\\target.json",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\config\\target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455,
+      "Git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "published_snapshot_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "published_blob_equal": true
+    }
+  ],
+  "root_review": "Root full Source/genuine provider+template/Native alias/optimized wrapper/final doc reviewed PASS before one-time seal",
+  "limits": [
+    "No duplicate869990 recovery/credit",
+    "No native_font_storage edits",
+    "No Native heap/CRT handler/TLS/FH3/SEH/fault/register/private-frame ABI or game validation",
+    "No full Font insertion/load/ownership closure",
+    "NewTU unregistered until Root integration; existing checks do not execute it"
+  ],
+  "evidence": [
+    {
+      "path": "include\\bsp\\native_font_tree_iterator.hpp",
+      "sha256": "320944a570770e36abe06031cdd7d49a5ce0c30f17508de8431af6aff14e6094",
+      "bytes": 1611,
+      "role": "owned Source or reviewed receipt"
+    },
+    {
+      "path": "src\\native_font_tree_iterator.cpp",
+      "sha256": "3146a01e523fdae67ab488e2d5f188c6983397b20219c18ccc4c6342084251eb",
+      "bytes": 533,
+      "role": "owned Source or reviewed receipt"
+    },
+    {
+      "path": "docs\\CC12_NATIVE_FONT_TREE_ITERATOR_168.md",
+      "sha256": "8347b449b2910a496a6f4799e411bf876451cc51969f578d2f4e98f781ef85f7",
+      "bytes": 8040,
+      "role": "owned Source or reviewed receipt"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\after_audit.json",
+      "sha256": "d4bad6c8edc8c0ba5cde0dab2a9f0153d8da4d7f7ef8ce61275369e310708897",
+      "bytes": 407,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\after_bytes.console.txt",
+      "sha256": "cf08b88ef6b948118d762bf7ebd9f54ccb1261d30146bacca6f32d110a595dad",
+      "bytes": 665,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\after_bytes.txt",
+      "sha256": "cf08b88ef6b948118d762bf7ebd9f54ccb1261d30146bacca6f32d110a595dad",
+      "bytes": 665,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\after_bytes_target.json",
+      "sha256": "f7417fecddf151959c0d09328da2c05545c065e473470ad0b42e3c414e9f93ff",
+      "bytes": 1337,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\after_comments.console.txt",
+      "sha256": "59769c5a62eb88302fde6119000e45e9cf9000c7ed1f5a850c9816c225018eaa",
+      "bytes": 90,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\after_comments.json",
+      "sha256": "4ebe69f29f9b5dfd5a44fb20af9af88bffcd03946532e69a2c9e09d706d90710",
+      "bytes": 1522,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\after_comments.txt",
+      "sha256": "59769c5a62eb88302fde6119000e45e9cf9000c7ed1f5a850c9816c225018eaa",
+      "bytes": 90,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\after_comments_target.json",
+      "sha256": "f7417fecddf151959c0d09328da2c05545c065e473470ad0b42e3c414e9f93ff",
+      "bytes": 1337,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\after_export.console.txt",
+      "sha256": "4b34bf76b7927c9f038e62929c163684b3f437c72309655f4a51e0e3571eb616",
+      "bytes": 125,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\after_export.txt",
+      "sha256": "4b34bf76b7927c9f038e62929c163684b3f437c72309655f4a51e0e3571eb616",
+      "bytes": 125,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\after_export_target.json",
+      "sha256": "f7417fecddf151959c0d09328da2c05545c065e473470ad0b42e3c414e9f93ff",
+      "bytes": 1337,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\annotate_168.py",
+      "sha256": "873f6767970290f76f856f1f3f2785a92c27959621d15e3d1e7a0b280fa954ce",
+      "bytes": 4643,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\annotation.log",
+      "sha256": "38f4c9e0de3d39ae536bbd85422b87e2b28e052b8fb201e1c918dd3f5fc63c5f",
+      "bytes": 202,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\annotation_audit.json",
+      "sha256": "a05fa1cd3135a7ea01b44ccca2bbad51e13550da9ab62035b7dc4834a74e2349",
+      "bytes": 393,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\annotation_target.json",
+      "sha256": "c1334765d183476af32cf0c22615cfb6e053fdaaf4ed3c4f739013812d201436",
+      "bytes": 1337,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\audit_native_168.py",
+      "sha256": "eb26b2c23673d53d08fb834bb426f71c5d70e9f45c4ba16a84e53646cacb5065",
+      "bytes": 3219,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\audit_source_168.py",
+      "sha256": "bbc4d6ff125269ed30ebd905ea82b67b306105f2ee3f2b608e6aa8f0e9813928",
+      "bytes": 4308,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\before_bytes_00869990.console.txt",
+      "sha256": "52a0f0f67a05700398e18a42d3aa404fd13e665e590d416f11cc07382bf682fe",
+      "bytes": 665,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\before_bytes_00869990.txt",
+      "sha256": "52a0f0f67a05700398e18a42d3aa404fd13e665e590d416f11cc07382bf682fe",
+      "bytes": 665,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\before_bytes_00869990_target.json",
+      "sha256": "9307f4e1b0e9b24d149eb8ccbfbef919c9a6e103d9d50c734b452ba18c1a749b",
+      "bytes": 1337,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\before_bytes_00ad4040.console.txt",
+      "sha256": "cf08b88ef6b948118d762bf7ebd9f54ccb1261d30146bacca6f32d110a595dad",
+      "bytes": 665,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\before_bytes_00ad4040.txt",
+      "sha256": "cf08b88ef6b948118d762bf7ebd9f54ccb1261d30146bacca6f32d110a595dad",
+      "bytes": 665,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\before_bytes_00ad4040_target.json",
+      "sha256": "9307f4e1b0e9b24d149eb8ccbfbef919c9a6e103d9d50c734b452ba18c1a749b",
+      "bytes": 1337,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\before_comments.console.txt",
+      "sha256": "20644753c9b17820f15ff45902bee65376d4ac16106588b4469cdea3ae4290bb",
+      "bytes": 91,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\before_comments.json",
+      "sha256": "16f50ba8e61e866ede077b1f80fecc65b39ce6c4d0d469e562e7371687d0455f",
+      "bytes": 145,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\before_comments.txt",
+      "sha256": "20644753c9b17820f15ff45902bee65376d4ac16106588b4469cdea3ae4290bb",
+      "bytes": 91,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\before_comments_target.json",
+      "sha256": "9307f4e1b0e9b24d149eb8ccbfbef919c9a6e103d9d50c734b452ba18c1a749b",
+      "bytes": 1337,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\before_inputs.json",
+      "sha256": "e16b000af4e3128f478cdb04d61efbf8e96628eaedf88f13b53e211fa675722f",
+      "bytes": 3229,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\before_proto.console.txt",
+      "sha256": "0b096c97b026efa7f5fe977844f96e6e30737b1af9ae606a6e7dd4649928e251",
+      "bytes": 3899,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\before_proto.txt",
+      "sha256": "0b096c97b026efa7f5fe977844f96e6e30737b1af9ae606a6e7dd4649928e251",
+      "bytes": 3899,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\before_proto_target.json",
+      "sha256": "9307f4e1b0e9b24d149eb8ccbfbef919c9a6e103d9d50c734b452ba18c1a749b",
+      "bytes": 1337,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\build.log",
+      "sha256": "0ff442fab63570e96921802f73a69f7f274b5809a89bf332bfb5631d2c2ee5ed",
+      "bytes": 2779,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\build_exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "bytes": 3,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\call_verification.txt",
+      "sha256": "96c93d0f3cc7880f3039ae2652d765918c46a6aa1abec5d73b30c26eb1d5c1d3",
+      "bytes": 80,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\call_verification_exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "bytes": 3,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\canonical\\bsp_core.vcxproj",
+      "sha256": "c188ecd9eb5a7c6553f4585b17cf0db2f9fb6199da64cea441a060fc0eca7b43",
+      "bytes": 387430,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\canonical\\CMakeCache.txt",
+      "sha256": "cd14c548bf6e29f01c92f7f7accd3df51ee7a020957c8d17c49c74b87bb2ba75",
+      "bytes": 19677,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\canonical\\native_effect_handle_acquisition.obj",
+      "sha256": "9d6b3274ab8479645b3108b19276f594155f2f408ca3e7bdeb928637f260fb63",
+      "bytes": 14286,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\canonical\\provider_dumpbin.txt",
+      "sha256": "53a408d0f186af289ff9072605b41e7475219e6a1229e47cbc4cc01f63c3abdc",
+      "bytes": 110360,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\canonical\\Testing\\Temporary\\LastTest.log",
+      "sha256": "e990f3525684fa45f12b7c911e88e40e394fe9fba8b1aa9fa76f492f3b636793",
+      "bytes": 2478,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\collect_168.py",
+      "sha256": "800fe41c7ad306d22e680abb2491ec52d9262081c5693aa2888e22a14dfa6373",
+      "bytes": 3146,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\dump_provider.cmd",
+      "sha256": "0eff3aa73892e9d29d86cfc9af60893febac595063ad1012df61ebac2a9ef4db",
+      "bytes": 365,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\final\\config\\names\\00ad0000.jsonl",
+      "sha256": "0e5e3b716a082be88bf35396a185be8b3afa2e591003503735cd450ef5202fef",
+      "bytes": 103058,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\final\\config\\reconstruction\\00ad0000.jsonl",
+      "sha256": "6b17182d508a4ec4bf5a936a287cb13118ee45f0686f62f983fec595af21215c",
+      "bytes": 154296,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\final\\docs\\CC12_NATIVE_FONT_TREE_ITERATOR_168.md",
+      "sha256": "8347b449b2910a496a6f4799e411bf876451cc51969f578d2f4e98f781ef85f7",
+      "bytes": 8040,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\final\\include\\bsp\\native_font_tree_iterator.hpp",
+      "sha256": "320944a570770e36abe06031cdd7d49a5ce0c30f17508de8431af6aff14e6094",
+      "bytes": 1611,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\final\\src\\native_font_tree_iterator.cpp",
+      "sha256": "3146a01e523fdae67ab488e2d5f188c6983397b20219c18ccc4c6342084251eb",
+      "bytes": 533,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\finalize_168.py",
+      "sha256": "63472bbe339a4a9340a93ad026867a3d5b256b87d403706af5700392df3480fc",
+      "bytes": 7466,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\ghidra-annotations-20261016T123616Z.json",
+      "sha256": "3b0e1a0b0df778539b27523f6d0ac3b6e771dcefe4828a71443b7d087ff6e5fd",
+      "bytes": 1606,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\index.log",
+      "sha256": "858a48e7c7731b2ea2aab137890b9a4f1f4793ed5a9422f3ec26acca0d113301",
+      "bytes": 143,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\inputs\\cmake\\startup.cmake",
+      "sha256": "6eb08dcd661fa623286761581ae5b278fc91da512626163db61016d3333078f5",
+      "bytes": 269348,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\inputs\\config\\target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\inputs\\include\\bsp\\detail\\native_tree_insert_storage.hpp",
+      "sha256": "c5eb00461d535b3c737e63a4286814e35c5427c883474d37b3cb6f67a2f8a8b9",
+      "bytes": 9079,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\inputs\\include\\bsp\\native_effect_handle_acquisition.hpp",
+      "sha256": "9148f95d14fbfc14ad6ed0ea25a4b1047975accc606af5995dcfd718e1b127af",
+      "bytes": 3375,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\inputs\\include\\bsp\\native_int_pointer_tree18_leaves.hpp",
+      "sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+      "bytes": 2447,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\inputs\\src\\native_effect_handle_acquisition.cpp",
+      "sha256": "3b7794d963c4885bbb818bd15d5592c487157863183e0f3db692d089893cef4a",
+      "bytes": 5736,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\inputs\\src\\native_int_pointer_tree18_leaves.cpp",
+      "sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+      "bytes": 6965,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\ledger_function.log",
+      "sha256": "68c60a57a3bec5292bfc6670ef59e48b54fef7fb402e993f9244fe832c0fd538",
+      "bytes": 64,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\ledger_name.log",
+      "sha256": "ccaba1046c43d464879290648d0f2a2bc9749097982d621c2e54de96a39d65bf",
+      "bytes": 39,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\names_after.jsonl",
+      "sha256": "0e5e3b716a082be88bf35396a185be8b3afa2e591003503735cd450ef5202fef",
+      "bytes": 103058,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\names_before.jsonl",
+      "sha256": "799f911c929aa1cbdaaea0ddaf958e2c0dba9508dbc0a6dd02dffca745cfe96d",
+      "bytes": 101656,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\native_audit.json",
+      "sha256": "6bad6d69aba0b9e86d691c0084271432aa73391cfb9357daa03104d4002b8030",
+      "bytes": 3117,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\original_00869990.bin",
+      "sha256": "43e49dd8e7fa699689c3c027cba14a065d33e6a7acecd6e8f5b3fa1eec8204f8",
+      "bytes": 137,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\original_00ad4040.bin",
+      "sha256": "255d1a43987065d004fefd434a0a03f7b1ba8328a85fb2faee9f39e3c58cea95",
+      "bytes": 137,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\physical_00869990.txt",
+      "sha256": "574f4299e109974808d8d457d3667a6da1e5d9507f18fbaa10c6d8633094a2f7",
+      "bytes": 1925,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\physical_00ad4040.txt",
+      "sha256": "db97baa8acab2f0e2f295896aa0e171caa493e5875ccf7afb2df73dbd65f4996",
+      "bytes": 1925,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\published_cmake_delta.txt",
+      "sha256": "69447b15c2754c027f02b1e6c00193a8b079cb2762975505c00ad1e442b8a005",
+      "bytes": 1805,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\reconstruction_after.jsonl",
+      "sha256": "6b17182d508a4ec4bf5a936a287cb13118ee45f0686f62f983fec595af21215c",
+      "bytes": 154296,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\reconstruction_before.jsonl",
+      "sha256": "1731aaa48a24383f12bc3c61f4fa51f7e50f8f6a31a09dc70b06514c0f34f34d",
+      "bytes": 152089,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\reconstruction_row.json",
+      "sha256": "43f280fd4a41996440feffd798723138746a53afed843269deec60c26aa59d11",
+      "bytes": 2236,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\registration_comparison.json",
+      "sha256": "196400935ec7909534faeecd411c44bdb796ed4c318609679033c876b0c5b92c",
+      "bytes": 360,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\seal_168.py",
+      "sha256": "91a861c7a9858a7d46126b4248bcacb0f570c28495505e604aea238d72ebc012",
+      "bytes": 5234,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\shared_after\\00ad4040\\assembly.txt",
+      "sha256": "9f34eebe610071c9fd3d6b84280836037d6e438d303e28c7510d7fb19deea2b0",
+      "bytes": 1504,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\shared_after\\00ad4040\\decompiled.c",
+      "sha256": "87b9c3b2c0618bbde49ac1e7a7ed2d8815439dc9bcb098a3f4687370214f75e6",
+      "bytes": 2569,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\shared_after\\00ad4040\\metadata.json",
+      "sha256": "6fb9565f5cc346f4d5e93c5f037ccbefa0c60b5db20e17c7e7b652dcafa8d6ff",
+      "bytes": 272,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\shared_before\\00869990\\assembly.txt",
+      "sha256": "57cd912a4772a399cf9ad0ad7405d7b572a6b975cfa33606c88a08ff0fde7851",
+      "bytes": 1504,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\shared_before\\00869990\\decompiled.c",
+      "sha256": "18f1be03b81aa5e6b470d18cb5390946d560b11965f5fa40796aed99eb676462",
+      "bytes": 2660,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\shared_before\\00869990\\metadata.json",
+      "sha256": "4bfa97ec65cb7cbdef06c4997eb7ebb5b7c1f53a396dd3a8f0eb9dad15db111d",
+      "bytes": 292,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\shared_before\\00ad4040\\assembly.txt",
+      "sha256": "9f34eebe610071c9fd3d6b84280836037d6e438d303e28c7510d7fb19deea2b0",
+      "bytes": 1504,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\shared_before\\00ad4040\\decompiled.c",
+      "sha256": "09786e7de50b78fa794a443de37291fc3b1927293d5ad3746586daf42c79da66",
+      "bytes": 1161,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\shared_before\\00ad4040\\metadata.json",
+      "sha256": "905fcdcfd5e36f25197131db6feeb0bd6a4a38bc435b785fbe138f2c33e51d36",
+      "bytes": 272,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\source\\include\\bsp\\native_font_tree_iterator.hpp",
+      "sha256": "320944a570770e36abe06031cdd7d49a5ce0c30f17508de8431af6aff14e6094",
+      "bytes": 1611,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\source\\src\\native_font_tree_iterator.cpp",
+      "sha256": "3146a01e523fdae67ab488e2d5f188c6983397b20219c18ccc4c6342084251eb",
+      "bytes": 533,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\source_audit.json",
+      "sha256": "fbc8c8be3215dd2b2b7d44b4bb44b7c876a9f86f26066880e6afdcd74ac9b91d",
+      "bytes": 1920,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\strict.asm",
+      "sha256": "a5732ee0bcabe3aa9aa9ba2791599d5c18c10d3c2d85edabb54884383b14bc33",
+      "bytes": 1503,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\strict.cmd",
+      "sha256": "d9fd39f03695d2fc813811da30581405424bdeccf50cbce4cf247f340df58f09",
+      "bytes": 591,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\strict.log",
+      "sha256": "4c167a1fb1c5de02379aabf2b874f5210bbd02ff8c14f1e3fbb2b92a38d2ce19",
+      "bytes": 31,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\strict.obj",
+      "sha256": "b42d0b38f53f8b86b9977a24ba590facd5dfba3c65151b1e1f6217ac83fead85",
+      "bytes": 994,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\strict_dumpbin.txt",
+      "sha256": "bdd93c3e2494fef5f9c36fe2ddb9cddcc9eafe6d5f890e2d4feb0d1bf86fba75",
+      "bytes": 3056,
+      "role": "sealed168 Native/source/provider/object/check/annotation evidence"
+    }
+  ],
+  "sealed_manifest": {
+    "path": "local\\cc12_native_font_tree_iterator_168\\artifact_manifest.json",
+    "sha256": "1d686915201af0e7f95423668670b0b228eefdf9399104e2846fcbcaaef4c8f9",
+    "bytes": 28316,
+    "role": "immutable exact168 evidence manifest; report excluded to avoid cycle"
+  },
+  "call_verification": {
+    "exit": 0,
+    "unique_rows": 3,
+    "failed": 0,
+    "coverage": "one CALL/two tail_jump; full paired Native alias/operand audit separately required"
+  }
+}
