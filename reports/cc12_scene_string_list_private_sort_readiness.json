@@ -1,0 +1,222 @@
+{
+  "schema": "bsp_cc12_native_qsort_valid_input_readiness_v1",
+  "utc": "2026-10-16T03:11:10.286538+00:00",
+  "source_ready": true,
+  "Source_authorized": true,
+  "Source_implemented": false,
+  "Source_credit": 0,
+  "coverage": "partial_valid_input_entry_projection",
+  "decision": "Authorize only the ordinary valid-input byte-sort kernel; keep Original validation failure behavior and scene composition excluded.",
+  "packet": "cc12_native_qsort_valid_input_kernel_00bfc350",
+  "primary_readiness": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_string_list_private_sort_readiness_primary_20261016\\verified_receipts.DATA.json",
+    "bytes": 7619,
+    "sha256": "ae5d2542385ff8afa37661f6194889b40d1c259ffae3d2009258ec628c07bf25"
+  },
+  "primary_scope_and_bytes": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_string_list_private_sort_readiness_primary_20261016\\verified_scope.DATA.json",
+    "bytes": 1865,
+    "sha256": "aca89f0ba3bbad3a13e20ffaa6725f812d5d3bb7db11c5f3c7eb1fc2571a8403"
+  },
+  "readiness_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_list_cstr_readiness_oct16\\local\\SceneStringListPrivateSortReadiness01\\family_receipt.json",
+    "bytes": 4961,
+    "sha256": "0fbb0d9c7faf877a767375c2296a5f61e6f682ef98545bd7ffcc01efcc58a20a"
+  },
+  "independent_scope_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringListPrivateSortScopeReview01\\family_receipt.json",
+    "bytes": 5113,
+    "sha256": "aed3ef779d37a23753b72df849f047223c87f582dfb2f02edeed23edaaed13bc"
+  },
+  "independent_scope_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringListPrivateSortScopeReview01\\scope_review.json",
+    "bytes": 18304,
+    "sha256": "883fc93f22c2a5fe71b7237c4a66833a7574e3139817b0824be24e304799f3d1"
+  },
+  "primary_review": {
+    "all_five_body_owned_instructions_read": 325,
+    "owned_bytes": 905,
+    "independent_Capstone_owned_instruction_starts_sizes_and_span_hashes": true,
+    "all36_retained_stdout_receipts_and29_input_pins_verified": true,
+    "readiness_provenance_complete_pairs": 33,
+    "readiness_sealing_invocation_pending_at_cutoff": 1,
+    "scope_provenance_complete_pairs": 14,
+    "no_global_saved_database_stability_claim": true
+  },
+  "original_coverage": [
+    {
+      "role": "qsort",
+      "bytes": 679,
+      "owned_bytes": 676,
+      "instructions": 230,
+      "span_sha256": "582e80a10e78415251bbfe6cb341e065f6684a9fa56ca1da71f5c170b4d0b1e1"
+    },
+    {
+      "role": "swap",
+      "bytes": 40,
+      "owned_bytes": 40,
+      "instructions": 20,
+      "span_sha256": "2f1f78e984f1be7db2581795ec2ab010cb2ab534e7ce4a094d4c9f5185bb1f27"
+    },
+    {
+      "role": "shortsort",
+      "bytes": 135,
+      "owned_bytes": 132,
+      "instructions": 55,
+      "span_sha256": "642a4cacff7a5467d4b376a08fb19786667036d68fcd984a9c3ae6a81dc11389"
+    },
+    {
+      "role": "errno",
+      "bytes": 19,
+      "owned_bytes": 19,
+      "instructions": 7,
+      "span_sha256": "84aca6584c13d6f07ced37568fc45be0c65f51583ba9a70f7cc98d62b2d94a5c"
+    },
+    {
+      "role": "scene_caller",
+      "bytes": 38,
+      "owned_bytes": 38,
+      "instructions": 13,
+      "span_sha256": "f7b6430022493611dab98355ee46daaa7702e5684e7bf1e0d8e65604eab5e050"
+    }
+  ],
+  "future_files": [
+    "include/bsp/native_qsort_kernel.hpp",
+    "src/native_qsort_kernel.cpp",
+    "docs/NATIVE_QSORT_KERNEL.md",
+    "reports/native_qsort_kernel.json"
+  ],
+  "public_interface": "using NativeQsortCompare = std::int32_t (__cdecl *)(const void*, const void*); void sort_valid_native_bytes_00bfc350(void* actual_base, std::uint32_t count, std::uint32_t width, NativeQsortCompare compare);",
+  "required_labels": {
+    "entry": "partial_valid_input_entry_projection",
+    "helpers": "whole normal caller-established geometry; new typed Source interfaces, Original register ABI unproved",
+    "public_noexcept": false,
+    "retain_Ghidra_library_names": [
+      "_qsort",
+      "swap",
+      "shortsort"
+    ]
+  },
+  "explicit_exclusions": [
+    "No validation-failure/errno/invalid-parameter/TLS/Watson implementation or invented provider. Width/base/callback guards are preconditions of this Source API.",
+    "No promotion of scene0094F1B0, either scene comparator, F89B75 empty-data role, narrow provider binding,008F3270 producer/retirement, or other qsort callers.",
+    "No std::qsort/std::sort substitution, fake callback, copied pivot, recursion, dynamic worklist, extra runtime guards, depth fallback, callback mutation/reentry/throws, fault/volatile/MMIO/overlap support.",
+    "No Original private CRT/EH/full ABI, optimized instruction/fault ordering, startup, runtime or game validation credit."
+  ],
+  "future_gates": [
+    "Author four files only, preserve old immutable evidence families, fresh address/file lease before work.",
+    "Whole Source and saved Original listing review; one fresh strict compile with all actual inputs and executing tools frozen/pinned before invocation; full current COFF/code/relocation/EH/symbol evidence and independent review.",
+    "No new tests/probes/body execution/build replay. One existing unregistered-worker baseline and required normal Main registration/build with existing checks, genuine receipts and stable inputs.",
+    "Main actual object/archive/public-symbol inspection, correct existing-library-name evidence annotation under write lock, save/refresh exports/index, precise partial ledger label and integration."
+  ],
+  "verification_tool_corrections": [
+    "Primary verifier initially assumed every older manifest entry used path/relative_path; the accepted29-file family uses relative. Corrected schema handling before any output.",
+    "Primary listing parser initially omitted the colon after each listing address; corrected, then corrected a Python walrus temporary shadowing the manifest variable. These were evidence-only verifier failures, not Source/compiler/build/test attempts."
+  ],
+  "Source_execution": false,
+  "Original_execution": false,
+  "mandatory_valid_domain": {
+    "all_counts": [
+      "MSVC Win32, genuine compatible cdecl comparator pointer returning signed int32, positive DWORD width, and base nonnull whenever count is nonzero. These are admission preconditions; do not insert a new validation/failure policy or assert callback.",
+      "Comparator normal returns, stable coherent strict weak ordering over the current logical element values, no element/list mutation beyond the kernel's exchanges, no callback reentry, no throws, faults, concurrency, resource teardown, or ordering/locale/lifetime changes.",
+      "The exact passed function pointer receives actual element addresses in the allocation, not copied keys, temporary storage, pointer values loaded from elements, wrappers or synthetic comparison data. Any required alignment/type/lifetime constraints belong to the real comparator and must hold at every reached element address."
+    ],
+    "count_less_than_two": "Original validation checks precede the unsigned count<2 return. Count0 may use null base only with positive width and genuine nonnull comparator; count1 requires nonnull genuine base. Neither path reads/writes an element, calls the comparator, computes count-1/extent, or reaches sort helpers. The proposed Source early return is only after these preconditions are satisfied; invalid width/callback does not become admitted just because count is0/1.",
+    "count_at_least_two": [
+      "Actual contiguous writable byte storage or genuinely byte-relocatable/trivially-copyable element storage in one live allocation, with disjoint width-byte elements and valid callback-compatible object representations; no volatile/MMIO/overlap protocol. The allocation covers count*width bytes.",
+      "Conservative explicit bound: mathematically computed count*width <= INT32_MAX, in addition to positive width and nonzero count. This is narrower than all nonwrapping native DWORD inputs and is not a recovered native guard.",
+      "Actual base address plus count*width is representable without 32-bit wrap; retain a valid one-past endpoint. All element starts and reached byte addresses stay in that allocation. The native code has no overflow/extent checks.",
+      "All pointer comparisons therefore agree with monotone unsigned offsets. The signed byte distances used for partition selection lie in [-width,(count-1)*width] and are representable; in particular high-low_scan is -width when low_scan is one-past-high."
+    ]
+  },
+  "validation_boundary": {
+    "Original_order": "Reject null base/nonzero count first; then zero width; only when width is nonzero inspect comparator nullness. Only then test unsigned count<2.",
+    "excluded_failure_blocks": [
+      {
+        "begin": "00BFC36E",
+        "end_exclusive": "00BFC394",
+        "bytes": 38,
+        "instructions": 13
+      },
+      {
+        "begin": "00BFC3AA",
+        "end_exclusive": "00BFC3D1",
+        "bytes": 39,
+        "instructions": 14
+      }
+    ],
+    "excluded_behavior": "Both failure blocks obtain Original errno through BFFB8B, push five zero DWORDs, write22 through the returned pointer, reach BF66EF and clean20 bytes on normal return. Original C051B7 thread data, fallback E159E8 ownership, encoded-handler selection, return/failure/unwind/fault semantics are outside the proposed kernel.",
+    "predicates_and_entry_mechanics": "The Source contract records the validity predicates as preconditions. It does not claim literal native entry-stack framing, validation instruction identity, or complete native ABI coverage. The retained normal sorting core starts at BFC3D1.",
+    "existing_current_providers": "The real LegacyCrtMathRuntime errno_location_00bffb8b field and game_hosts application_math_runtime &_errno binding exist. The registered invoke_native_invalid_parameter_00bf6713 uses the selected SDK _invalid_parameter_noinfo policy. Fresh current-file observations are in input_review.json.",
+    "optional_Root_scope_choice": "A separately labelled current-validation-policy wrapper could use the exact retained real runtime and existing invalid-parameter entry, preserving validation order/write22-before-handler/normal return without a new stand-in. That is not required for this kernel recommendation and does not establish Original BF66EF/TLS/fallback equivalence. No such extension is authorized here."
+  },
+  "exact_normal_schedule": [
+    {
+      "sites": "BFC3D1..BFC440",
+      "contract": "After valid count>=2, high=base+(count-1)*width. For each inclusive subrange, derive unsigned ((high-low)/width)+1. At most8 elements take shortsort; larger ranges enter median partition. No sorted-input early exit."
+    },
+    {
+      "sites": "BFC440..BFC495",
+      "contract": "mid=low+floor(subrange_count/2)*width. Always compare(low,mid), compare(low,high), compare(mid,high), in that exact order; swap each pair only for signed result>0. The pivot is the live mid address, not a copied value. Actual callback call sites are44B/466/481; actual median swap calls45F/47A/495."
+    },
+    {
+      "sites": "BFC4A0..BFC4D8",
+      "contract": "Low scan advances before each comparison. First loop handles addresses below pivot; reaching pivot skips its self-comparison and enters the second incrementing loop. Second loop checks high before comparing. Continue on signed compare(scan,pivot)<=0; stop on>0 or one-past-high. Retain both distinct callback sites4AC/4CA."
+    },
+    {
+      "sites": "BFC4D8..BFC4EE",
+      "contract": "High scan decrements before comparison. Stop at or below pivot without callback; above pivot, continue only on signed compare(scan,pivot)>0. Callback site4E0; no sign normalization."
+    },
+    {
+      "sites": "BFC4EE..BFC530",
+      "contract": "If unsigned low_scan<=high_scan, exchange their bytes unless addresses equal. When high_scan equals the live pivot, rebind pivot to low_scan, including the equal-address no-exchange case. Repeat from retained scan positions; never restart at original endpoints."
+    },
+    {
+      "sites": "BFC535..BFC57A",
+      "contract": "After scans cross, add width to high_scan once. Upper equality loop predecrements and compares only above pivot, continuing exactly on result==0. Skip the pivot, then lower equality loop predecrements and compares only strictly above original low, continuing on==0. Stop at low without comparing it. Retain distinct callback sites548/56C and live pivot pointer."
+    },
+    {
+      "sites": "BFC57E..BFC5E7",
+      "contract": "Compare signed byte distances (high_scan-original_low) versus (original_high-low_scan). If left is strictly smaller, push valid right and process valid left immediately; otherwise push valid left and process valid right. Equal distances push left and process right. A remaining partition is valid only when low<high (at least2 elements)."
+    },
+    {
+      "sites": "BFC416..BFC43E",
+      "contract": "When an immediate partition is absent or shortsort completes, decrement the signed stack count. Negative finishes; otherwise pop matching low/high endpoints from the two30-entry arrays at native frame offsets20/98 and resume at the subrange-size decision. LIFO order is mandatory; no recursion or heap worklist."
+    },
+    {
+      "sites": "BFC2C0..BFC346",
+      "contract": "Shortsort returns if unsigned high<=low. Otherwise repeatedly initialize max=low, scan low+width through current high in ascending addresses, compare(scan,max) and replace max only for signed result>0. Exchange max with high if distinct, then high-=width. Its only callback site is2F2. For k valid elements, k*(k-1)/2 callbacks occur on normal returns."
+    }
+  ],
+  "byte_exchange_orders": {
+    "median_swap_BFC290": "EAX=first, ECX=second, EDX=width. Same address or zero width returns without byte access. Increasing byte index: read second, read first, write first, write second. Save/restore EBX/ESI is native evidence, not a proposed private C++ ABI.",
+    "partition_inline_BFC500": "Increasing byte index: save low byte, read high byte, write low, write high. Do not claim this is a direct call to BFC290.",
+    "shortsort_inline_BFC320": "Increasing byte index: read high byte, read max byte, write max, write high. Same-address/zero-width guard exists; direct standalone width0 with low<high remains outside the caller-established shortsort domain.",
+    "implementation_hazard": "Do not unify the three exchanges into a generic swap that silently changes the stated per-byte source schedule. Ordinary optimized code may reschedule pure address arithmetic; physical fault/volatile/overlap/instruction-order equivalence remains excluded and final object review is a future gate."
+  },
+  "arithmetic_and_control_hazards": {
+    "signedness": "Count threshold/cutoff, pointer relations, division and index endpoints use unsigned interpretation. Comparator signs use signed int32. BFC58A/58C compares signed byte-distance differences; stack exhaustion uses signed decrement/JS. Replacing every comparison with either signed pointer math or unsigned sizes is incorrect.",
+    "safe_Source_representation": "Prefer bounded unsigned element indices/byte offsets for scan and stack state, forming actual_base+offset only for proven reached element/callback addresses. Preserve a one-past low-scan sentinel without dereferencing it. Compute partition distances in a wider signed type then use the proved int32 domain, avoiding unsigned underflow and C++ signed overflow/pointer-difference UB. Integer arithmetic is an implementation choice, not a new native guard.",
+    "sentinel_bound": "With coherent median/pivot invariants, low_scan is at least low+width and at most high+width; high_scan after equality trimming remains at least low and at most high-width. Thus neither scheduled child reproduces its full parent, and no before-base dereference is needed. Do not mechanically manufacture an out-of-allocation pointer merely to reproduce a register subtraction.",
+    "stack_storage": "The native frame reserves0x100 bytes and uses two adjacent30-entry endpoint arrays: offsets20..94 and98..10C after saved registers. Preserve matched endpoint pairs and LIFO order; entries are written before a matching pop.",
+    "stack_bound_proof": "Crossed scans and subsequent downward equality trim produce disjoint children with total element count<=parent count, each strictly smaller. Signed distance selection agrees with child-size selection in the admitted range, so every continued descent after a push processes at most floor(parent/2). Pushes only occur for active ranges of size>=9. A chain of k simultaneous pushes therefore requires initial count>=9*2^(k-1). With count<=2^31-1, k<=28 because9*2^28 exceeds2^31-1. Immediate absent/singleton children pop without further descent. The fixed30 slots therefore suffice with at least2 spare entries. This is a static proof under the stated domain, not an executed stress test.",
+    "progress_dependency": "The bound and sort meaning require the coherent stable comparator/domain. Do not add emergency depth checks, alternate sorting algorithms, insertion-sort substitution, recursion or heap growth to repair out-of-domain behavior."
+  },
+  "equal_key_behavior": {
+    "unstable": true,
+    "two_elements": "A normal genuine comparator result0 leaves max at low, so shortsort swaps the two distinct identities.",
+    "all_equal_short_range": "Symbolic branch reasoning gives a left rotation by one element for any all-equal valid shortsort range of size>=2.",
+    "all_equal_large_range": "For size>8, median makes no exchanges, low/equality scans consume the range, and no byte exchange occurs. This differs materially from the short-range tie permutation.",
+    "evidence_limit": "These are static consequences of the saved branches, not synthetic comparator fixtures, callbacks invented for Source, execution tests or game observations. Preserve tie behavior and never add a stable tie-breaker."
+  },
+  "scene_and_external_nonpromotion": {
+    "F1B0": "Actual caller chooses literalF180 for low flag byte0 and literalF130 otherwise; reads raw12 count+4 then slots+0; supplies width4 and removes16 call bytes, then RET4. Generic kernel readiness does not supply those callbacks or their application binding.",
+    "remaining": [
+      "F180/F130 enclosing-function/prototype boundaries and F180 metadata repair remain outside this task.",
+      "F89B75 actual retained role/address/lifetime and narrow locale0109DE1C/BF7EEC/provider composition remain independent.",
+      "Callback-reached list slots need actual live nonnull raw8 headers and readable NUL-terminated nonnull data; admitted ownership null sentinels are not automatically valid for reached scene comparisons.",
+      "Actual008F3270 create/pass/sort/retire ownership and application lifetime remain unproved.",
+      "Existing scene std::qsort use is a known abstraction boundary; it is not edited or credited by this proposal. Other qsort callers remain graph context only."
+    ]
+  }
+}
