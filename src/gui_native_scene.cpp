@@ -18,6 +18,13 @@ const volatile std::uint32_t* current_group_table(NativeGroupOwner& owner) {
 struct GuiNativeScene::GroupRecord {
     std::unique_ptr<NativeGroupOwner> owner;
     std::unique_ptr<NativeGroupReference> reference;
+    // Source invocation state, not another native string or ownership credit.
+    // This SAME temporary header persists before any throwing raw getter.
+    void* raw_slot{};
+    NativeString raw_name;
+    bool raw_name_constructing{};
+    bool raw_name_live{};
+    bool raw_name_cleanup_entered{};
 };
 
 GuiNativeScene::GuiNativeScene(NativeGroupEnvironment& environment)
@@ -30,7 +37,8 @@ GuiNativeScene::GuiNativeScene(NativeGroupEnvironment& environment)
 GuiNativeScene::~GuiNativeScene() {
     // Page owners perform actual logical release. Queued references can keep
     // these companions alive afterward; all must drain before this binding dies.
-    if (!groups_.empty() || process_notification_binding != this) std::terminate();
+    if (raw_operation_interrupted_ || raw_pending_ || !groups_.empty() ||
+        process_notification_binding != this) std::terminate();
     process_notification_binding = nullptr;
 }
 NativeNodeBinding& GuiNativeScene::resolve_node(CameraTransform& node) {
@@ -81,6 +89,50 @@ void GuiNativeScene::notify_group(void* identity) {
     notify_native_group_bounds_00b6dbc0(group);
 }
 NativeGroupReference& GuiNativeScene::create_group(const std::string& name) {
+    if (raw_operation_interrupted_ || raw_pending_)
+        throw std::logic_error("GUI raw page-root operation cannot reenter or replay an interrupted call");
+    if (environment_.nodes.uses_raw_name_pool()) {
+        const auto* constants = environment_.raw_node_constants;
+        if (!constants ||
+            &constants->one_00d7a24c != &environment_.constants.one_00d7a24c ||
+            &constants->positive_bound_00ce4970 != &environment_.constants.bound_00ce4970)
+            throw std::logic_error("raw GUI root requires its canonical node/group constant cells");
+        auto& strings = environment_.nodes.require_raw_name_pool(); // Pure domain admission.
+        raw_pending_ = std::make_unique<GroupRecord>(); // Before all native effects/getters.
+        raw_operation_interrupted_ = true;
+        raw_pending_->raw_slot = environment_.pool_010902f4.allocate_raw_slot_00b8f310();
+        void* const slot = raw_pending_->raw_slot;
+        if (!slot) throw std::runtime_error("GUI raw page root allocation returned null");
+        if (groups_.count(slot))
+            throw std::logic_error("group pool returned an occupied raw GUI root slot");
+        // Reserve the canonical map before moving the stable frame. A failed
+        // insertion keeps slot/header state in raw_pending_, not a stack local.
+        auto inserted = groups_.emplace(slot, nullptr);
+        if (!inserted.second)
+            throw std::logic_error("raw GUI root already has a canonical group record");
+        inserted.first->second = std::move(raw_pending_);
+        auto& current = *inserted.first->second;
+        current.owner = std::make_unique<NativeGroupOwner>(slot, NativeGroupPool::slot_bytes, environment_);
+        current.raw_name_constructing = true;
+        current.raw_name.assign_0041e870(strings, name.c_str());
+        current.raw_name_constructing = false;
+        current.raw_name_live = true;
+        construct_native_group_00b8f5e0(*current.owner, &current.raw_name, *constants);
+        // Consume cleanup state BEFORE the throwing raw release. Never retry
+        // its captured header if the getter fails. No canonical GroupReference
+        // is published yet, so this callback cannot retire current via our map.
+        current.raw_name_live = false;
+        current.raw_name_cleanup_entered = true;
+        destroy_native_string_header_0041dd20(&current.raw_name, strings);
+        current.raw_name_cleanup_entered = false;
+        current.reference = std::make_unique<NativeGroupReference>(*current.owner,
+            NativeGroupCompanionDisposal{this, retire_group});
+        auto* const reference = current.reference.get();
+        raw_operation_interrupted_ = false; // No throwing/provider work after this publication.
+        return *reference;
+        // Any entered exception retains the same pending/map frame and actual
+        // slot/owner. No rollback, name retry or partial/live slot return here.
+    }
     auto& name_pool = environment_.nodes.require_semantic_name_pool();
     auto record = std::make_unique<GroupRecord>();
     void* slot = environment_.pool_010902f4.allocate_raw_slot_00b8f310();
