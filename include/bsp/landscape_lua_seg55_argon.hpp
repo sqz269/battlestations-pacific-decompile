@@ -454,18 +454,45 @@ struct GeneratedModelMeshElement {
 };
 
 struct GeneratedModelNode {
-    bool matches_current_type{true};   // vslot +0Ch(00B74310())
+    // vslot +0Ch(00B74310()), still a field for 00881600 only; 00882420 makes the call
+    // through LandscapeHost::node_is_type_vslot0c.
+    bool matches_current_type{true};
     std::vector<std::vector<GeneratedModelMeshElement>> geometries{};
     std::vector<LandscapeConvexHull*> convex_hulls{}; // +50h..+54h
     std::vector<GeneratedModelNode*> children{};      // +34h child list walking +3Ch
 };
 
-struct TerrainGridCellDesc {
-    bool present{false};
-    int shape_kind{0};                 // +0Ch (0 or 2)
-    std::uint32_t data_ptr{0};         // +34h (kind 0) or +40h (kind 2)
-    std::uint32_t extra_2c{0};         // +2Ch (kind 2)
-    std::uint32_t extra_30{0};         // +30h (kind 2)
+// A height-field tile's block (the byte layer 00ADEA70 returns from tile+1Ch), only the
+// fields 00882AC0's grid loop reads (00883571..0088366A).
+struct TerrainTileBlock {
+    std::int32_t kind_0c{0};           // +0Ch: 0 or 2 select a shape source; others give none
+    float f_2c{0.0f};                  // +2Ch (read for kind 2)
+    float f_30{0.0f};                  // +30h (read for kind 2)
+    void* data_34{nullptr};            // +34h (kind 0)
+    void* data_40{nullptr};            // +40h (kind 2)
+};
+
+// The 64h-byte stack shape descriptor at [ESP+48h] that 00882AC0 fills for one grid tile
+// (00883571..008837CE). Every dword is stored inline; the field names are hypotheses.
+// Final values after the overwrites: +08h = 8 (0 first), +10h = 5, the 3x4 pose identity
+// (1.0f = 00D7A24C), +44h/+48h = 21h (0 first), +4Ch/+50h = 9.375f (00D0E658; 10.0f from
+// 00CE38B8 first), so 33 samples at 9.375 cover the 300-unit tile.
+struct TerrainTileShapeDesc {
+    float f_00{0.0f};                  // [ESP+48h]
+    float f_04{0.0f};                  // [ESP+4Ch]
+    std::int32_t i_08{8};              // [ESP+50h]
+    std::int32_t i_0c{0};              // [ESP+54h]
+    std::int32_t type_10{5};           // [ESP+58h]
+    float local_pose_14[12]{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+                            0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f}; // [ESP+5Ch..88h]
+    std::int32_t rows_44{0x21};        // [ESP+8Ch]
+    std::int32_t columns_48{0x21};     // [ESP+90h]
+    float row_spacing_4c{9.375f};      // [ESP+94h]
+    float column_spacing_50{9.375f};   // [ESP+98h]
+    float block_2c_54{0.0f};           // [ESP+9Ch]: block +2Ch, written for kind 2 only
+    float block_30_58{0.0f};           // [ESP+0A0h]: block +30h, written for kind 2 only
+    void* data_5c{nullptr};            // [ESP+0A4h]: block +34h / +40h, else 0
+    std::int32_t kind2_60{0};          // [ESP+0A8h]: 1 for kind 2, else 0
 };
 
 struct LandscapeState {
@@ -610,19 +637,35 @@ struct LandscapeHost {
     // 004216B0 pointer-vector push_back __thiscall(ECX = vector, void* const* element), RET 4
     // (008834B4, vector at landscape+364h).
     virtual void pointer_vector_push_back_004216b0(std::vector<void*>& vector, void* element) = 0;
+    // 00ADAC30 / 00ADAC40, __thiscall(hf): [hf+38h] / [hf+3Ch], the tile counts (00883513,
+    // 00883520).
     virtual int get_grid_cells_x_00adac30(TerrainHeightFieldInterface* hf) = 0;
     virtual int get_grid_cells_z_00adac40(TerrainHeightFieldInterface* hf) = 0;
-    virtual TerrainGridCellDesc get_grid_cell_00adea70(
-        TerrainHeightFieldInterface* hf,
-        int gx,
-        int gz) = 0;
-    virtual void* create_grid_cell_physics_body_00c31aa0(
-        LandscapeState& self,
-        int gx,
-        int gz,
-        float world_x,
-        float world_z,
-        const TerrainGridCellDesc& cell) = 0;
+    // Inline reads of the grid loop, once per cell (00883552..0088355F): [hf+38h] (tiles
+    // across) and [[hf+40h] + index*4] (the tile pointer, null for an empty cell).
+    virtual int height_field_tiles_across_38(TerrainHeightFieldInterface* hf) = 0;
+    virtual void* height_field_tile_40(TerrainHeightFieldInterface* hf, int index) = 0;
+    // [hf+80h], [hf+84h] (0088387A, 00883884): the grid origin x and z.
+    virtual float height_field_origin_x_80(TerrainHeightFieldInterface* hf) = 0;
+    virtual float height_field_origin_z_84(TerrainHeightFieldInterface* hf) = 0;
+    // 00ADEA70 __thiscall(ECX = tile) -> [tile+1Ch], the tile's block (0088356C, and again
+    // at 0088362F for kind 2).
+    virtual TerrainTileBlock* tile_block_00adea70(void* tile) = 0;
+    // [[00E188A8]+18h]->00C5D580(const NxActorDesc*) __thiscall, RET 4 (00883921), on the
+    // actor descriptor at [ESP+168h] for one grid tile: its shape array ([ESP+1E0h] begin,
+    // [+1E4h] count, [+1E8h] = 2 capacity) is operator new(8) (008837EA) holding the single
+    // pointer to `shape` ([ESP+48h]); the pose is 00C336C0(ECX = &desc+14h = [ESP+17Ch],
+    // `pose`) at 0088390C; [ESP+1C4h] |= 1; userData [ESP+1DCh] = 0 (unlike the hull path,
+    // which stores the landscape). The other stores are inline default construction (byte
+    // [+168h] = 0, four 1.0f at [+16Ch..+178h], [+1D0h]/[+1D4h] = 1000.0f from 00CE3804, the
+    // rest 0) and are the host's. The shape array is freed (00BF6989) after the push_back
+    // (0088399D). Returns the actor.
+    virtual void* create_grid_tile_actor_00c5d580(const TerrainTileShapeDesc& shape,
+        const Mat4x4& pose) = 0;
+    // 00882420's type test (0088244D..00882457): 00B74310 BSP_GeneratedModel_GetCurrentType
+    // ([01090034]) is read first, then node->vtable[0Ch](type) __thiscall, RET 4 -> AL.
+    virtual std::int32_t generated_model_current_type_00b74310() = 0;
+    virtual bool node_is_type_vslot0c(GeneratedModelNode* node, std::int32_t type) = 0;
     // 00ADAC90 BSP_TerrainRenderObject_LoadFoliageDefault __thiscall(ECX = hf,
     // const NativeString* file_path), RET 4 (00883A94; the body does not read the argument).
     virtual void load_foliage_default_00adac90(TerrainHeightFieldInterface* hf,

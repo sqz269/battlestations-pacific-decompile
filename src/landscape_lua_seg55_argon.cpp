@@ -754,10 +754,13 @@ void landscape_bind_terrain_material_params_00881600(
 // (= EDI = node, saved at 00882446); CALL 00B6DA70, i.e. thiscall(node, 0.0f, false).
 // Recurses on children (+34h list, +3Ch sibling, 008825F1..00882602). The binary has no
 // null check on `node` (00882444 MOV ESI,[EDI]); `host` is not an original argument.
+// The type test (cc13-fix8): the vtable slot address is taken first (00882444..0088244A),
+// then 00B74310 is called and its result pushed for [vtable+0Ch](type) with ECX = node.
 void landscape_apply_ocean_wave_damp_00882420(
     GeneratedModelNode* node,
     LandscapeHost& host) {
-    if (node->matches_current_type) {
+    const std::int32_t current_type = host.generated_model_current_type_00b74310();
+    if (host.node_is_type_vslot0c(node, current_type)) {             // 0088245B JE
         for (auto& geom : node->geometries) {
             for (auto& elem : geom) {
                 std::string name = elem.effect_name;
@@ -820,9 +823,10 @@ void landscape_destruct_008828e0(
 // gets [+3D0h]->vslot40(); the world extents are read here, not passed in (00882AC0 has
 // one stack argument, RET 4). Simplifications: the stack strings are std::string; the
 // NxActorDesc for a hull is built by the host from the values listed at
-// create_hull_actor_00c5d580; the grid-cell loop (00883507..008839E2) is still the earlier
-// host model (cell lookup and descriptor in get_grid_cell_00adea70 /
-// create_grid_cell_physics_body_00c31aa0).
+// create_hull_actor_00c5d580. The grid-cell loop (00883507..008839E2, cc13-fix8) reads the
+// tile from [hf+40h], calls 00ADEA70 on the tile, fills the inline shape descriptor
+// (TerrainTileShapeDesc) and creates the actor through 00C5D580 (the host builds the
+// NxActorDesc default stores and runs 00C336C0, as for the hulls); no 00C31AA0 call exists.
 void landscape_load_terrain_00882ac0(
     LandscapeState& self,
     const std::string& file_path,
@@ -916,24 +920,65 @@ void landscape_load_terrain_00882ac0(
             void* actor = host.create_hull_actor_00c5d580(self, hull, pose);
             host.pointer_vector_push_back_004216b0(self.vec_368, actor);  // 008834B4
         }
-        const int cells_x = host.get_grid_cells_x_00adac30(self.height_field_3d0);
-        const int cells_z = host.get_grid_cells_z_00adac40(self.height_field_3d0);
+        // 00883507..008839E2 (cc13-fix8): EBP = [+3D0h] for the whole loop. The outer
+        // counter [ESP+2Ch] runs to 00ADAC30 ([hf+38h]) with [ESP+30h] += 12Ch; the inner
+        // [ESP+18h] runs to 00ADAC40 ([hf+3Ch]) with [ESP+3Ch] reset to 0 per column and
+        // += 12Ch. The tile is [hf+40h][[hf+38h] * gz + gx]; a null tile skips the cell.
+        TerrainHeightFieldInterface* const hf = self.height_field_3d0;
+        const int cells_x = host.get_grid_cells_x_00adac30(hf);
+        const int cells_z = host.get_grid_cells_z_00adac40(hf);
+        // [ESP+9Ch] / [ESP+0A0h] are stored for kind 2 only, so other kinds pass whatever
+        // the slots last held (an earlier kind-2 tile, else stack left by the hull loop,
+        // whose actor descriptor also starts at [ESP+48h]); the start value is unknown.
+        TerrainTileShapeDesc shape{};
         for (int gx = 0, step_x = 0; gx < cells_x; ++gx, step_x += 300) {
             for (int gz = 0, step_z = 0; gz < cells_z; ++gz, step_z += 300) {
-                TerrainGridCellDesc cell =
-                    host.get_grid_cell_00adea70(self.height_field_3d0, gx, gz);
-                if (cell.present) {
-                    void* body = host.create_grid_cell_physics_body_00c31aa0(
-                        self,
-                        gx,
-                        gz,
-                        static_cast<float>(step_x),
-                        static_cast<float>(step_z),
-                        cell);
-                    // 0088392A..00883984: inline push_back into the +374h vector (00420830
-                    // when full).
-                    self.vec_378.push_back(body);
+                const int index = host.height_field_tiles_across_38(hf) * gz + gx;
+                void* const tile = host.height_field_tile_40(hf, index);
+                if (tile == nullptr) {
+                    continue;                                         // 00883564 JE
                 }
+                const TerrainTileBlock* block = host.tile_block_00adea70(tile);
+                shape.f_00 = 0.0f;
+                shape.f_04 = 0.0f;
+                shape.i_08 = 8;
+                shape.i_0c = 0;
+                shape.type_10 = 5;
+                const float identity[12] = {1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+                                            0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f};
+                for (int i = 0; i < 12; ++i) {
+                    shape.local_pose_14[i] = identity[i];
+                }
+                shape.rows_44 = 0x21;
+                shape.columns_48 = 0x21;
+                shape.row_spacing_4c = 9.375f;                        // 00D0E658
+                shape.column_spacing_50 = 9.375f;
+                shape.kind2_60 = 0;
+                void* data = nullptr;                                 // 00883622 XOR ECX
+                if (block->kind_0c == 0) {
+                    data = host.tile_block_00adea70(tile)->data_34;   // 00883660..00883667
+                } else if (block->kind_0c == 2) {
+                    const TerrainTileBlock* again = host.tile_block_00adea70(tile); // 0088362F
+                    data = again->data_40;
+                    shape.kind2_60 = 1;
+                    shape.block_2c_54 = again->f_2c;
+                    shape.block_30_58 = again->f_30;
+                }
+                shape.data_5c = data;                                 // 0088372B
+
+                // 0088384F..00883905: x = float([hf+80h] + float(step_x)), y = 0.0f + 0.0f,
+                // z = float(float(step_z) + [hf+84h]), added to a copy of +74h (not +CCh).
+                const float x = host.height_field_origin_x_80(hf) + static_cast<float>(step_x);
+                const float z = static_cast<float>(step_z) + host.height_field_origin_z_84(hf);
+                const float y = 0.0f + 0.0f;                          // FLDZ; FADD ST0,ST0
+                Mat4x4 pose = self.entity_matrix_74;                  // REP MOVSD 10h dwords
+                pose.m[12] += x;
+                pose.m[13] += y;
+                pose.m[14] += z;
+                void* actor = host.create_grid_tile_actor_00c5d580(shape, pose);
+                // 0088392A..00883984: inline push_back into the +374h vector (00420830
+                // when full).
+                self.vec_378.push_back(actor);
             }
         }
     }
