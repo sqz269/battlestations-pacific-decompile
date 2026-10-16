@@ -1,0 +1,58 @@
+{
+  "packet": "cc12_native_gui_raw_model_route_45",
+  "source_commit": "d623a5c283e60ffda037e19e9f8fd6194427ae63",
+  "status": "canonical_win32_build_passed_actual_names_route_not_host_activated",
+  "changed_files": [
+    "src/gui_widget_owner.cpp",
+    "include/bsp/gui_widget_owner.hpp"
+  ],
+  "contract": {
+    "selection": "models.actual_names when bound, otherwise existing semantic pool adapter",
+    "same_storage_for": [
+      "temporary NativeString assignment",
+      "NativeModelOwner construction",
+      "temporary release",
+      "model node retirement"
+    ],
+    "production_provider": "renderer.game_grid_context().strings, same ActualNativeStringPoolStorage borrowed from VFS services",
+    "borrowed_storage_lifetime": "stable through model retirement",
+    "source_body_invariance": true
+  },
+  "validation": {
+    "canonical_script": "./scripts/build.ps1",
+    "build_exit_code": 0,
+    "ctest_passed": 3,
+    "ctest_total": 3,
+    "ctest_seconds": 9.08,
+    "new_tests": 0,
+    "native_or_gui_runtime_probe": false
+  },
+  "limits": [
+    "The returning-getter NativeStringStorage adapter domain only; release is noexcept",
+    "No recovery of throwing raw getter, native FH3/SEH or Original binary ABI",
+    "Existing host cleanup and failure handling unchanged",
+    "No native GUI environment composition or Text activation",
+    "Startup and gameplay remain unvalidated; current audio endpoint limitation is separate"
+  ],
+  "original_abi_references": {
+    "00b75030": "ECX model slot; stack name pointer; EAX same slot; RET4",
+    "0041e870": "ECX string header; stack C string; EAX same header; RET4",
+    "0041dd20": "ECX string header; RET"
+  },
+  "ghidra_mutations": 0,
+  "evidence": {
+    "directory": "local\\cc12_native_gui_raw_model_route_45",
+    "archive": "local\\cc12_native_gui_raw_model_route_45\\evidence_family.zip",
+    "archive_sha256": "3049e204abe95b1d8278cf74cd54addc634ba0ad27b549e7b3a80b7afbc6b0cc",
+    "payloads": 10,
+    "manifest_sha256": "64db2f691818580608236e8a95ea7e59f767f9ae7ebb698b381f93d831235dad",
+    "payload_hashes_verified": true
+  },
+  "independent_source_review": {
+    "reviewer": "native_font_teardown_review_36",
+    "source_commit": "d623a5c283e60ffda037e19e9f8fd6194427ae63",
+    "verdict": "pass",
+    "scope": "Exact storage-selection diff and unchanged construction/publication/cleanup body reviewed; no independent build/runtime",
+    "receipt": "reports/cc12_native_gui_composition_contract_44.json"
+  }
+}
