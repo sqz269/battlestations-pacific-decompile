@@ -1,0 +1,343 @@
+{
+  "schema": "bsp.native-scene-string-list-storage.source.v1",
+  "generated_utc": "2026-10-16T00:34:30.048491+00:00",
+  "packet": "cc12_scene_string_list_storage_0094efb0_0094f010",
+  "baseline_Main": "7f91e1c43",
+  "Source_implemented": true,
+  "Source_functions_proposed": 2,
+  "Source_admission_credit": 0,
+  "Root_Primary_Main_registration_and_admission_separate": true,
+  "new_TU_registered": false,
+  "functions": [
+    {
+      "address": "0094EFB0",
+      "end_exclusive": "0094EFE1",
+      "bytes": 49,
+      "instructions": 18,
+      "sha256": "2093f278bfaeb9b354b019e7a98265c02ee1916c0de87cb14154286b404e2601",
+      "binary_bytes": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\Original\\0094EFB0.bin",
+        "bytes": 49,
+        "sha256": "2093f278bfaeb9b354b019e7a98265c02ee1916c0de87cb14154286b404e2601"
+      },
+      "direct_calls": [
+        {
+          "site": "0094EFCC",
+          "target": "0xbf55be",
+          "offset": 28,
+          "operand_interval": [
+            29,
+            33
+          ]
+        }
+      ],
+      "whole_live_disk_bytes_and_instruction_starts_equal": true,
+      "x87": false,
+      "Source_name": "construct_native_scene_string_list_storage_0094efb0",
+      "Original_name": "FUN_0094efb0",
+      "name_status": "descriptive Source hypothesis, no Ghidra rename",
+      "Original_ABI": "ECX actual raw12; no stack arguments; EAX same header; plainRET",
+      "Source_interface": "independent naked MSVC Win32 __fastcall entry",
+      "emitted_gate": {
+        "address": "0094EFB0",
+        "section": 5,
+        "whole_bytes": 49,
+        "instructions": 18,
+        "literal_bytes": 45,
+        "exact_non_CALL_operands_equal": true,
+        "mask_intervals": [
+          [
+            29,
+            33
+          ]
+        ],
+        "canonical_CALL_bindings": [
+          "?allocate_native_scene_string_list_bytes@?A0x39828569@bsp@@YAPAXI@Z"
+        ],
+        "all_original_branches_reads_writes_and_plain_returns_retained": true,
+        "no_native_entry_GS_or_prologue_insertion": true
+      }
+    },
+    {
+      "address": "0094F010",
+      "end_exclusive": "0094F061",
+      "bytes": 81,
+      "instructions": 34,
+      "sha256": "f17ade025eca8f43fb2fbc62eda6318e629caa73471d0f7cbe9cb61aaf1ee59e",
+      "binary_bytes": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\Original\\0094F010.bin",
+        "bytes": 81,
+        "sha256": "f17ade025eca8f43fb2fbc62eda6318e629caa73471d0f7cbe9cb61aaf1ee59e"
+      },
+      "direct_calls": [
+        {
+          "site": "0094F02C",
+          "target": "0xbf55be",
+          "offset": 28,
+          "operand_interval": [
+            29,
+            33
+          ]
+        },
+        {
+          "site": "0094F03F",
+          "target": "0xbf7680",
+          "offset": 47,
+          "operand_interval": [
+            48,
+            52
+          ]
+        },
+        {
+          "site": "0094F04E",
+          "target": "0xbf6989",
+          "offset": 62,
+          "operand_interval": [
+            63,
+            67
+          ]
+        }
+      ],
+      "whole_live_disk_bytes_and_instruction_starts_equal": true,
+      "x87": false,
+      "Source_name": "grow_native_scene_string_list_storage_0094f010",
+      "Original_name": "FUN_0094f010",
+      "name_status": "descriptive Source hypothesis, no Ghidra rename",
+      "Original_ABI": "ECX actual raw12; no stack arguments; plainRET; no semantic EAX result",
+      "Source_interface": "independent naked MSVC Win32 __fastcall entry",
+      "emitted_gate": {
+        "address": "0094F010",
+        "section": 6,
+        "whole_bytes": 81,
+        "instructions": 34,
+        "literal_bytes": 69,
+        "exact_non_CALL_operands_equal": true,
+        "mask_intervals": [
+          [
+            29,
+            33
+          ],
+          [
+            48,
+            52
+          ],
+          [
+            63,
+            67
+          ]
+        ],
+        "canonical_CALL_bindings": [
+          "?allocate_native_scene_string_list_bytes@?A0x39828569@bsp@@YAPAXI@Z",
+          "_memcpy",
+          "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        ],
+        "all_original_branches_reads_writes_and_plain_returns_retained": true,
+        "no_native_entry_GS_or_prologue_insertion": true
+      }
+    }
+  ],
+  "raw_storage": {
+    "header": "Actual caller-provided aligned writable raw12: slots pointer+0, count DWORD+4, capacity DWORD+8. No vtable, class, synthetic host, container, allocator field or wrapper-owned header.",
+    "slots": "Raw four-byte opaque cells in a uniquely owned matching-current-heap allocation. Constructor leaves cells uninitialized; storage helpers do not inspect or retire pointed elements.",
+    "constructor_order": "capacity64 BEFORE exact256-byte allocation through genuine private CDECL bridge; publish returned slots+0, then count0; EAX actualheader/plainRET.",
+    "growth_order": "Publish capacity+64 BEFORE allocation; retain unsigned MUL4/SETO/NEG/OR saturation. Capture CURRENTslots and count AFTER allocation; count*4 current memcpy evenzero; reload CURRENTslots AFTER copy; conditionalfree->clear0, then publish capturednewslots. Count untouched."
+  },
+  "domain": {
+    "admitted": "Ordinary successful positive allocatable nonwrapping size/resource domain, serialized, no faults/throws/reentry/concurrency/alias/trim/teardown.",
+    "producer": "Genuine live constructor-produced raw12 and unique slot allocation, or earlier accepted growth in the same matching current heap. This storage boundary does not establish an application-owned list.",
+    "bounds": "Coherent0<=count<=oldcapacity; oldcapacity<=3FFFFFBFh; newcapacity=oldcapacity+64 and4*newcapacity nonwrapping. All reached copied bytes initialized and readable/writable; header/old/new/privateframe disjoint. Valid flatES, DFclear.",
+    "empty": "Constructor gives real nonnull old storage; growth allocates real nonnull new storage and still calls memcpy when count0.",
+    "population": "A positive count is a raw-boundary precondition on valid opaque initialized bytes, not evidence of an accepted append/population caller. No fresh container is labeled application-owned.",
+    "excluded": "Retained native overflow instructions do not admit overflow/failure or original exception/fault/private-CRT identity. No EH handler/funclet, complete binary ABI, populated caller, class/application/startup/runtime/game claim."
+  },
+  "bindings": {
+    "allocator": "Private noinline CDECL allocate_native_scene_string_list_bytes(size_t) directly calls singleton_lifetime_allocate({object,native_bytes=n,host_bytes=n}); no provider callback/stub. Current malloc/new-handler/retry/throw domain; successful nonthrowing admitted path only.",
+    "free": "Direct singleton_lifetime_free current CRT free for matching old allocation.",
+    "copy": "Actual current CDECL memcpy, kept as a call by #pragma function(memcpy); no count conversion, element-copy helper, synthetic callback, zero special case or template credit transfer.",
+    "canonical_Source": [
+      "include/bsp/singleton_lifetime.hpp",
+      "src/singleton_lifetime.cpp"
+    ],
+    "qualification": "Current CRT/GS/Windows/compiler bindings are explicit Source choices, not Original private CRT/EH/fault/full-ABI equivalence."
+  },
+  "compiler": {
+    "strict_attempts": 2,
+    "successful_strict_compiles": 1,
+    "failed_attempt": {
+      "stage": "strict_compile",
+      "command": [
+        "cmd.exe",
+        "/d",
+        "/c",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\compile_storage.cmd"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15",
+      "started_utc": "2026-10-16T00:30:11.243125+00:00",
+      "finished_utc": "2026-10-16T00:30:12.787694+00:00",
+      "returncode": 2,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\strict_compile.stdout.txt",
+        "bytes": 415,
+        "sha256": "6d89ae8fa8e0ab774723680b50ba0fb8f1e2092a7a4b3dff1346b56cfbba446b"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\strict_compile.stderr.txt",
+        "bytes": 1100,
+        "sha256": "99293d4c30822e13210b8d92a36a6610f1f5cabddd9393a5016c04cc05a9b6b3"
+      },
+      "new_TU_registered": false
+    },
+    "failed_reason": "MSVC C2488 on __declspec(naked) in HPP declarations; no object emitted. Corrected by removing only declaration attributes; definitions stay naked.",
+    "correction_before_compile": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\precompile_corrected_inputs.json",
+      "bytes": 113759,
+      "sha256": "a4c950fc5639d76a9cad13fba233663d5251616a2b120d8a6062ef67add48356"
+    },
+    "first_before_compile": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\precompile_inputs.json",
+      "bytes": 111874,
+      "sha256": "1f280bded6c665827d2f11df89c1bb77aee91bfec497623287934ab9da24ab26"
+    },
+    "successful_attempt": {
+      "stage": "strict_compile_corrected",
+      "command": [
+        "cmd.exe",
+        "/d",
+        "/c",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\compile_storage_corrected.cmd"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15",
+      "started_utc": "2026-10-16T00:31:00.894233+00:00",
+      "finished_utc": "2026-10-16T00:31:02.236667+00:00",
+      "returncode": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\strict_compile_corrected.stdout.txt",
+        "bytes": 38,
+        "sha256": "d239b3384f6e4e8fb9e37fd59dc1d03e31c5252d6b90d55f822e7063e70dc0ee"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\strict_compile_corrected.stderr.txt",
+        "bytes": 1100,
+        "sha256": "99293d4c30822e13210b8d92a36a6610f1f5cabddd9393a5016c04cc05a9b6b3"
+      },
+      "first_failed_attempt_retained": true,
+      "new_TU_registered": false
+    },
+    "actual_declared_inputs": 81,
+    "all81_actual_inputs_fresh_pre_pinned": true,
+    "complete_actual_closure": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\compiler_declared_inputs.json",
+      "bytes": 105055,
+      "sha256": "82fd5fa8176fa7614e87f5e883cad3d992a88781e852a286da638f4a5f14e5e0"
+    },
+    "tools_and_UI": "Fresh current literal tool pins including Hostx86/x86 cl/c1/c1xx/c2/link/mspdb and1033/clui.dll; /Bv records exact invoked versions; postcompile unchanged. Candidate paths came from older array inventory, never its preflight/results.",
+    "limits": "No hermetic loader/OS/environment or normal-build closure claim."
+  },
+  "complete_COFF": {
+    "report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\complete_COFF.json",
+      "bytes": 43361,
+      "sha256": "3b8e3f12300539f89be11cc28336b0fefafb21827eaecaa8463215b6f086c35b"
+    },
+    "listing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\complete_COFF_listing.txt",
+      "bytes": 3643,
+      "sha256": "16a82439bfb4658dd740c0b1bfef494a9398e8918e8e3152e6068e1c5847f1ec"
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\native_scene_string_list_storage.obj",
+      "bytes": 1994,
+      "sha256": "2874d194991710fecfef843d00eb5a03462cc4a15caa9cce77de13e17856ca18"
+    },
+    "sections": 7,
+    "code_sections": 3,
+    "code_bytes": 188,
+    "instructions": 72,
+    "code_relocations": 7,
+    "metadata_relocations": 0,
+    "unaccounted_file_bytes": 0,
+    "native_body_bytes": 130,
+    "native_instructions": 52,
+    "native_non_CALL_operand_bytes_equal": 114,
+    "only_native_CALL_operand_bytes_masked": 16,
+    "adapter": {
+      "bytes": 58,
+      "instructions": 20,
+      "Native_credit": 0,
+      "GS": "Own __security_cookie load/XOR/store and __security_check_cookie call, fully decoded; no GS/prologue inserted into native entries.",
+      "request": "Object kind3 at[EBP-10], native and host bytes from the same size argument at[EBP-C]/[EBP-8]."
+    },
+    "compiler_metadata": "All headers, raw sections, uninitialized .bss extent, relocations, primary/aux symbols, CodeView C13 records, directives, checksum words and complete string table accounted. Current CRT headers emit unused4-byte COMDAT weak __Avx2WmemEnabledWeakValue; no relocation reaches it and no static initializer exists.",
+    "no_object_execution": true
+  },
+  "normal_repository_build": {
+    "required_runs": 1,
+    "result": {
+      "stage": "normal_build",
+      "command": [
+        "powershell.exe",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15",
+      "started_utc": "2026-10-16T00:31:27.396018+00:00",
+      "finished_utc": "2026-10-16T00:32:51.785926+00:00",
+      "returncode": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\normal_build.stdout.txt",
+        "bytes": 5888,
+        "sha256": "488d541baa8c2612a8f0d384d7776989c528439b9031f9ace2d9f20093224ac8"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\normal_build.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "new_TU_registered": false
+    },
+    "existing_CTests_passed": 2,
+    "new_TU_excluded": true,
+    "new_body_execution": false,
+    "qualification": "Repository build and existing checks only. Strict object provides the new TU compile/emission evidence; it was not linked/executed by normal build."
+  },
+  "named_incomplete": [
+    "0094F270 actual positive-population append",
+    "0094F3E0 element cleanup",
+    "0094F540 retirement",
+    "008F3270 actual application create/pass/retire binding"
+  ],
+  "evidence": {
+    "whole_Original": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\whole_Original.json",
+      "bytes": 2612,
+      "sha256": "63b3f04fb4b14dbe1a9ae001533f4a9247d5a8627cdac4ae48db88ed48ed20e0"
+    },
+    "fresh_typed_target_metadata": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\source_typed.json",
+      "bytes": 14548,
+      "sha256": "44ff07be93a91c841342a5b6f9981e407660a00f4a910559ca971ac692141e97"
+    },
+    "current_Source": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\include\\bsp\\native_scene_string_list_storage.hpp",
+        "bytes": 2156,
+        "sha256": "c169e35a2bd8381a620086ddff93ced34871971dea50be6829ef7d301d82c6a2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\src\\native_scene_string_list_storage.cpp",
+        "bytes": 2104,
+        "sha256": "3873728564d2841cb9f533c55c590649abcddbc1c38f9e18e1f06f70538f57b4"
+      }
+    ]
+  },
+  "controls": {
+    "no_CMake_registry_ledger_Ghidra_mutation": true,
+    "no_newtests_probes_replay_or_newbodyexecution": true,
+    "no_other_list_comparator_sort_or_emptyrole_Source": true,
+    "no_delegation": true
+  },
+  "uncertainty": "Descriptive Source names are hypotheses. Preserved native instruction bytes and physical entry schedule under the stated domain do not constitute complete ABI/privateCRT/EH/fault identity or class/caller/game validation."
+}
