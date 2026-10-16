@@ -1,13 +1,13 @@
 {
   "schema": "bsp.cc12.native_crt_strspn.primary.v1",
-  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+  "status": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
   "Source_commit": "f75a55096ddb8f83238a7c13cd4fdd06c996904e",
   "Source": "src/native_crt_strspn.cpp",
   "header": "include/bsp/native_crt_strspn.hpp",
   "documentation": "docs/NATIVE_CRT_STRSPN.md",
   "Original_name_retained": "_strspn",
   "whole_ordinary_functions": 1,
-  "Source_credit": 0,
+  "Source_credit": 1,
   "primary_author": {
     "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strspn_integration_20261016\\primary_author_inputs.DATA.json",
     "bytes": 2741,
@@ -30,8 +30,8 @@
   "strict_compiler_host": "HostX86/x86, targetWin32",
   "worker_baselines": 0,
   "Main_registered": true,
-  "Main_build": "pending",
-  "actual_compiler_archive_gate": "pending",
+  "Main_build": "pass_3_existing_CTests",
+  "actual_compiler_archive_gate": "pass",
   "contract": [
     "New default potentially throwing MSVCWin32 API unsigned int __cdecl bsp::count_native_crt_prefix_in_set_00bf9840(const void* actual_source,const void* actual_control). Keep correct Original libraryname _strspn; BYTE8/pointer+unsignedint32.",
     "Target MSVC Win32, unsigned BYTE8, pointer/unsigned int32; default potentially throwing new API. No Unicode, locale, case, codepage or signed-char interpretation.",
@@ -46,5 +46,7 @@
   ],
   "Original_ABI_compatible": false,
   "new_Source_body_executed": false,
-  "game_validated": false
+  "game_validated": false,
+  "Main_gate": "pass",
+  "Main_validation": "reports/cc12_native_crt_strspn_Main_validation.json"
 }
