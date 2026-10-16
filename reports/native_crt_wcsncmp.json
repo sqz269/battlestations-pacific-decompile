@@ -1,0 +1,511 @@
+{
+  "schema": "bsp.native_crt_wcsncmp.source.v1",
+  "packet": "cc12_native_crt_wcsncmp_00bfdcb7",
+  "status": "whole_ordinary_Source_strict_compiled_actual_COFF_reviewed_pending_Root_peer_compiler_Main_gates",
+  "address": "00bfdcb7",
+  "Original_library_name": "_wcsncmp",
+  "owned_ranges_inclusive": [
+    [
+      "00bfdcb7",
+      "00bfdceb"
+    ]
+  ],
+  "Original_bytes": 53,
+  "Original_instructions": 26,
+  "body_sha256": "971cfb19ceeeeeff5d9b47a8eb83c1821a559f274979cfd27913f41932e226a2",
+  "Source_credit": 0,
+  "Source_authorized": true,
+  "Source_implemented": true,
+  "Source_credit_gate": "Zero until Root completes acceptance/compiler/Main gates; this worker requests whole ordinary Source review only.",
+  "authoritative_Source_gate": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\reports\\cc12_native_crt_wcsncmp_readiness.json",
+    "bytes": 6436,
+    "sha256": "335f90982454ea0dfda02828f623f2414c02b8753385c8c325f8440a9e43ad74",
+    "mtime_ns": 1792126682909986200,
+    "observed_utc": "2026-10-16T05:03:54.094867+00:00",
+    "regular": true,
+    "links": 1
+  },
+  "Main_gate_commit": "b6bc1ec40",
+  "merged_Main": "02b89a4acfac4138c2e375a4d06668ce16e3cc50",
+  "worker_merge_commit": "cf8931c94d928a842be93b8628c9910b85efaa58",
+  "new_API": "int __cdecl bsp::compare_native_crt_wide_prefix_00bfdcb7(const void*, const void*, unsigned int)",
+  "default_potentially_throwing_signature": true,
+  "source_files": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\include\\bsp\\native_crt_wcsncmp.hpp",
+      "bytes": 1604,
+      "sha256": "3091506f9ea696715c0a9ff3a69032c29e3fc8515fbefd120fb971548f37b1a7",
+      "mtime_ns": 1792126729312723900,
+      "observed_utc": "2026-10-16T05:03:54.095078+00:00",
+      "regular": true,
+      "links": 1
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\src\\native_crt_wcsncmp.cpp",
+      "bytes": 1648,
+      "sha256": "5f773c71236ab4f34d1d0875d80ee13437f1c599b917d07ed4e24f6dd8169a2d",
+      "mtime_ns": 1792126729313728700,
+      "observed_utc": "2026-10-16T05:03:54.095235+00:00",
+      "regular": true,
+      "links": 1
+    }
+  ],
+  "Original_calls": 0,
+  "all_Original_instructions_reviewed": true,
+  "contract": [
+    "MSVC Win32, 8-bit byte, 32-bit pointer/int/unsigned count, little-endian unsigned WORD16 code units. No Unicode scalar/surrogate/normalization/case/locale/collation semantics.",
+    "Count zero accepts any/null pointers and returns zero without payload reads. Positive count requires only actually reached determinate stable readable WORD accesses wholly inside genuine live allocations, including both final rereads. No unused full-count extent is required at early stop.",
+    "Reached raw-pointer advances by two are nonwrapping and remain within or one past the same actual allocation; never dereference one-past. Unaligned byte-region addresses, stable identical and overlapping read-only aliases are allowed. No typed wchar/uint16 ownership, padding, initial alignment or arbitrary signed count cap.",
+    "After positive entry decrement unsigned local remaining before preliminary reads. A zero residual jumps directly to the final pair, so count one has no preliminary reads.",
+    "For nonzero residual read preliminary LHS WORD. LHS zero skips preliminary RHS. Otherwise read preliminary RHS WORD for equality. Mismatch reaches the final pair. Only equal nonzero values advance both actual pointers by two and repeat.",
+    "Every positive exit freshly reads final LHS WORD then final RHS WORD, even after preliminary zero or mismatch. Return widened unsigned16 LHS minus widened unsigned16 RHS in signed32, exact range [-65535,65535], without normalized sign or signed16 arithmetic.",
+    "Original writes its by-value count home with DEC DWORD PTR [EBP+0x10]. New ordinary unsigned local count is allowed, excluding Original mutable argument-home/stack alias protocols and their writes/fault behavior. No fake argument-block identity or Source parameter binding is introduced.",
+    "No SDK wcsncmp/memcpy/search, byte-only substitute, copy, provider, fallback, validation, global/TLS or Original caller binding. Faults, invalid reached reads, wrapping advances, mutation, indeterminate bytes, concurrency, MMIO/volatile protocols and lifetime changes are outside the ordinary domain."
+  ],
+  "Original_path_evidence": [
+    {
+      "sites": "00BFDCB7..00BFDCC3",
+      "behavior": "EBP frame and count-zero return without payload reads."
+    },
+    {
+      "sites": "00BFDCC4;00BFDCC7",
+      "behavior": "RHS pointer home loaded before LHS pointer home; preserve as Original fact, not new compiler physical home/fault ordering claim."
+    },
+    {
+      "sites": "00BFDCCA..00BFDCCD",
+      "behavior": "Mutable by-value count-home decrement before preliminary gate; zero goes to final pair."
+    },
+    {
+      "sites": "00BFDCCF..00BFDCD5",
+      "behavior": "Unsigned preliminary LHS WORD; zero skips preliminary RHS."
+    },
+    {
+      "sites": "00BFDCD7..00BFDCDA",
+      "behavior": "Preliminary RHS WORD equality comparison; mismatch reaches final pair."
+    },
+    {
+      "sites": "00BFDCDC..00BFDCE0",
+      "behavior": "Only equal nonzero pair advances both pointers two bytes and repeats."
+    },
+    {
+      "sites": "00BFDCE2..00BFDCEB",
+      "behavior": "Fresh zero-extended LHS WORD, then RHS WORD, exact 32-bit difference."
+    }
+  ],
+  "stopping_position_read_schedules": [
+    {
+      "trigger": "decrement reaches zero, including count one",
+      "reads": [
+        "final LHS WORD",
+        "final RHS WORD"
+      ]
+    },
+    {
+      "trigger": "preliminary LHS zero",
+      "reads": [
+        "preliminary LHS WORD",
+        "final LHS WORD",
+        "final RHS WORD"
+      ]
+    },
+    {
+      "trigger": "preliminary mismatch",
+      "reads": [
+        "preliminary LHS WORD",
+        "preliminary RHS WORD",
+        "final LHS WORD",
+        "final RHS WORD"
+      ]
+    },
+    {
+      "trigger": "preliminary equal nonzero pair",
+      "reads": [
+        "preliminary LHS WORD",
+        "preliminary RHS WORD"
+      ],
+      "then": "Advance both genuine pointers two bytes and repeat."
+    }
+  ],
+  "target_load_mechanism": {
+    "private_helper": "read_unsigned_word(const unsigned char*)",
+    "operation": "MSVC Win32 inline-assembly addressed MOVZX eax,word ptr [eax], followed by compiler-managed fully initialized unsigned32 temporary.",
+    "possibly_unaligned_raw_storage": true,
+    "no_typed_WORD_object_lifetime_or_alias_requirement": true,
+    "separate_sequenced_Source_loads": true,
+    "portable_ISO_claim": false,
+    "actual_strict_width_order_short_circuit_and_rereads_reviewed": true,
+    "Main_actual_variant_still_requires_review": true
+  },
+  "strict_compile": {
+    "invocations": 1,
+    "exit_code": 0,
+    "compiler_failures": 0,
+    "compile_replay": false,
+    "compiler_version": "19.51.36244.0",
+    "argv": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "/nologo",
+      "/Bv",
+      "/std:c++17",
+      "/O2",
+      "/W4",
+      "/WX",
+      "/permissive-",
+      "/EHsc",
+      "/MD",
+      "/c",
+      "/showIncludes",
+      "/sourceDependencies",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcsncmpSource01\\strict.dependencies.json",
+      "/FAcs",
+      "/FaJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcsncmpSource01\\strict.cod",
+      "/FoJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcsncmpSource01\\strict.obj",
+      "/IJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\include",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\src\\native_crt_wcsncmp.cpp"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16",
+    "started_utc": "2026-10-16T05:00:55.649787+00:00",
+    "finished_utc": "2026-10-16T05:00:55.726388+00:00",
+    "actual_receipt": "strict.receipt.json",
+    "stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcsncmpSource01\\strict.stdout.bin",
+      "bytes": 152,
+      "sha256": "cbeb755cf5e3c53132f8c51b7dd94161bb44611d993543e8c18556a3ee27163f",
+      "mtime_ns": 1792126855725558000,
+      "observed_utc": "2026-10-16T05:00:55.732426+00:00",
+      "regular": true,
+      "links": 1
+    },
+    "stderr": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcsncmpSource01\\strict.stderr.bin",
+      "bytes": 1100,
+      "sha256": "093f4120c607ff18ca2c386c3777d4a21ba19014118e189b4c2cfe2d361a4b1f",
+      "mtime_ns": 1792126855725558000,
+      "observed_utc": "2026-10-16T05:00:55.733834+00:00",
+      "regular": true,
+      "links": 1
+    },
+    "stderr_interpretation": "/Bv version/compiler-pass inventory; no warning or error diagnostic.",
+    "environment": "compiler_environment.json",
+    "input_before_manifest": "inputs_before.json",
+    "candidate_inputs_prehashed": 9249,
+    "before_hashes_finished_utc": "2026-10-16T05:00:42.390843+00:00",
+    "actual_showIncludes_and_sourceDependencies_preserved": true,
+    "actual_dependencies": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\src\\native_crt_wcsncmp.cpp",
+        "bytes": 1648,
+        "sha256": "5f773c71236ab4f34d1d0875d80ee13437f1c599b917d07ed4e24f6dd8169a2d",
+        "mtime_ns": 1792126729313728700,
+        "observed_utc": "2026-10-16T05:00:56.798954+00:00",
+        "regular": true,
+        "links": 1
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\include\\bsp\\native_crt_wcsncmp.hpp",
+        "bytes": 1604,
+        "sha256": "3091506f9ea696715c0a9ff3a69032c29e3fc8515fbefd120fb971548f37b1a7",
+        "mtime_ns": 1792126729312723900,
+        "observed_utc": "2026-10-16T05:00:56.799313+00:00",
+        "regular": true,
+        "links": 1
+      }
+    ],
+    "all_actual_dependency_closure_prehashed_unchanged": true,
+    "preparation_failures": [
+      {
+        "stage": "initial prior-Source1 guard before inputs_before write or compiler invocation",
+        "cause": "Direct Git blob equality rejected unchanged CRLF working bytes of the prior JSON report; prior commit already recorded this normalization.",
+        "fix": "Admit only recorded Git newline normalization and independently require exact prior sealed working bytes/hash/mtime. Source1 files and family remain unchanged.",
+        "genuine_failure_retained": "Source2-phase original raw tool call/result; no compiler failure or replay.",
+        "environment_receipt": "One already successful genuine environment capture was reused; not overwritten or replayed."
+      }
+    ],
+    "no_separate_unregistered_worker_baseline_requested": true,
+    "Root_registered_Main_build_and_actual_object_gate_separate": true
+  },
+  "actual_COFF": {
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcsncmpSource01\\strict.obj",
+      "bytes": 1242,
+      "sha256": "c2ed927a2f2b86bde07c3e295b51b964526a271a588709ae215e3677cd238979",
+      "mtime_ns": 1792126855716938100,
+      "observed_utc": "2026-10-16T05:01:13.106045+00:00",
+      "regular": true,
+      "links": 1
+    },
+    "machine": "014c",
+    "inventory": "object_inventory.json",
+    "complete_code_listing": "strict.disasm.txt",
+    "dumpbin_receipt": "dumpbin.receipt.json",
+    "all_raw_dump": "dumpbin.stdout.bin",
+    "sections": [
+      {
+        "number": 1,
+        "name": ".drectve",
+        "bytes": 47,
+        "characteristics": "00100a00",
+        "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab",
+        "relocations": []
+      },
+      {
+        "number": 2,
+        "name": ".debug$S",
+        "bytes": 200,
+        "characteristics": "42100040",
+        "sha256": "2b5147c7bb92eac63a53ef42f9a139b2e7b63e9b6b345af7adc1f57f7d8e6ed2",
+        "relocations": []
+      },
+      {
+        "number": 3,
+        "name": ".text$mn",
+        "bytes": 139,
+        "characteristics": "60501020",
+        "sha256": "ed91ddc2905624a9520bdebc820d985b04096b515cdc3136416c840fd8a901ba",
+        "relocations": []
+      },
+      {
+        "number": 4,
+        "name": ".debug$F",
+        "bytes": 16,
+        "characteristics": "42101040",
+        "sha256": "d38797461fa2ac67bde75acba1d3a5167ae3dbee4e2f8aea60b7635ecb9c124e",
+        "relocations": [
+          {
+            "offset": 0,
+            "symbol_index": 14,
+            "symbol": "?compare_native_crt_wide_prefix_00bfdcb7@bsp@@YAHPBX0I@Z",
+            "type": 7
+          }
+        ]
+      },
+      {
+        "number": 5,
+        "name": ".text$mn",
+        "bytes": 16,
+        "characteristics": "60501020",
+        "sha256": "2ba4336b2865d21c1a521635a0335a809e4a59bc88f5c01a02d6ceb575e7fd43",
+        "relocations": []
+      },
+      {
+        "number": 6,
+        "name": ".debug$F",
+        "bytes": 16,
+        "characteristics": "42101040",
+        "sha256": "d5722ce80deccbfb59355d8345c5352bd2caa30ce22558fa6dff7dc515bc3256",
+        "relocations": [
+          {
+            "offset": 0,
+            "symbol_index": 15,
+            "symbol": "?read_unsigned_word@?A0x037c06ec@bsp@@YAIPBE@Z",
+            "type": 7
+          }
+        ]
+      },
+      {
+        "number": 7,
+        "name": ".chks64",
+        "bytes": 56,
+        "characteristics": "00000a00",
+        "sha256": "ec2ead68070c0eccadfaf8c01c5df4fef262bb858c6bcecbb19f1bf7471e7bec",
+        "relocations": []
+      }
+    ],
+    "public_body": {
+      "section": 3,
+      "bytes": 139,
+      "instructions": 46,
+      "code_relocations": 0
+    },
+    "unreferenced_private_helper": {
+      "section": 5,
+      "bytes": 16,
+      "instructions": 7,
+      "code_relocations": 0,
+      "sole_payload_load": "section5+0x05 MOVZX eax,WORD PTR [eax]",
+      "all_public_helper_uses_inlined": true,
+      "no_callers_or_code_relocations_in_this_object": true
+    },
+    "all_code_bytes": 155,
+    "all_code_instructions": 53,
+    "payload_loads_public": [
+      {
+        "offset": "section3+0x34",
+        "width_bytes": 2,
+        "instruction": "MOVZX eax,WORD PTR [eax]",
+        "path": "Preliminary LHS, after positive residual decrement gate."
+      },
+      {
+        "offset": "section3+0x47",
+        "width_bytes": 2,
+        "instruction": "MOVZX eax,WORD PTR [eax]",
+        "path": "Preliminary RHS only after nonzero preliminary LHS."
+      },
+      {
+        "offset": "section3+0x6c",
+        "width_bytes": 2,
+        "instruction": "MOVZX eax,WORD PTR [eax]",
+        "path": "Fresh final LHS on every positive exit."
+      },
+      {
+        "offset": "section3+0x77",
+        "width_bytes": 2,
+        "instruction": "MOVZX eax,WORD PTR [eax]",
+        "path": "Fresh final RHS after final LHS."
+      }
+    ],
+    "control_flow_review": [
+      "Count load +0x04/test +0x08 gates pointer-home loads +0x13/+0x17 and all payload. Zero returns EAX=0 at +0x0c..+0x12.",
+      "First decrement ADD EDI,-1 at +0x23/JE +0x26 to +0x68 precedes preliminary loads; count one reaches final pair directly without pushing ESI.",
+      "Loop preliminary LHS +0x34 followed by test +0x3f/zero branch +0x41 to +0x67 skips preliminary RHS +0x47.",
+      "Full zero-extended comparison +0x4e/mismatch +0x52 reaches +0x67, restoring ESI then the fresh final pair.",
+      "Only preliminary equal nonzero path advances ECX/EDX by two at +0x54/+0x57, saves genuine pointers, decrements EDI at +0x62, and branches +0x65 to another preliminary pair only on nonzero residual.",
+      "Every positive exit loads final LHS +0x6c then RHS +0x77. MOVZX initializes all 32 bits; final signed32 SUB +0x82 is exact for [-65535,65535]. No sign normalization or signed16 intermediate.",
+      "Encoded multi-byte NOP +0x29 has a syntactic memory operand but performs no payload load. All remaining memory operations are argument-home/stack reads and writes.",
+      "All public and unused-helper instructions inspected: no call, indirect jump, global reference, payload store, search/DF/ES operation, SSE/CPUID or code relocation."
+    ],
+    "defined_external_symbols": [
+      "?compare_native_crt_wide_prefix_00bfdcb7@bsp@@YAHPBX0I@Z"
+    ],
+    "undefined_external_symbols": [],
+    "public_binding": "Sole external is the new default-potentially-throwing C++ cdecl API; no replacement/call of Original _wcsncmp.",
+    "metadata_review": [
+      ".drectve 47 B: /MD DEFAULTLIB MSVCRT and OLDNAMES; no SDK search binding or undefined symbol.",
+      ".debug$S 200 B: CodeView C13 object-name path, compiler/version record and alignment padding.",
+      "Two 16 B discardable .debug$F FPO records, each with one DIR32NB relocation to its function. No code relocations.",
+      ".chks64 56 B compiler section checksums. No runtime data section.",
+      "All 18 symbol/auxiliary records and 108 string-table bytes retained. One public external, one static helper and static section/compiler-feature symbols.",
+      "All section, relocation and symbol/auxiliary raw bytes inventoried. All 22 ASCII runs and zero UTF16LE runs recorded, including directives, object path, compiler name, symbols and one incidental checksum run."
+    ],
+    "strict_frame": "Public FPO record: 12 local bytes, one prologue saved register EDI, four-byte prologue, 12 argument bytes, no EBP/SEH, plain ret. Code additionally saves/restores ESI only for preliminary loop. Helper FPO: four local bytes, no saved register, one-byte prologue, four argument bytes. Stack spills and argument-home reuse are compiler output.",
+    "Original_home_boundary": "Original RHS home is read before LHS and DEC writes Original count home. Strict pointer-home loads are LHS then RHS and it reuses homes differently. These physical home/stack/fault protocols are expressly excluded, not silently modeled as raw-memory alias equivalence.",
+    "Main_frame_qualification": "Root Main /Oy- needs separate genuine actual artifact/frame/load schedule review; no forced matching recompile."
+  },
+  "evidence_family": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcsncmpSource01",
+    "root_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcsncmpSource01\\root_manifest.json",
+    "kind": "new_self_only_Source2_phase_no_predecessor_receipt_chain",
+    "own_uuid": "01a142fd-fe6c-7220-ba6e-5c4436017779",
+    "own_agent_path": "/root/crt_memchr_source_oct16",
+    "raw_authentication": "raw_tool_authentication.json",
+    "prior_external_families_unchanged": [
+      {
+        "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtMemchrSource01\\root_manifest.json",
+        "files": 57,
+        "sha256": "ec9c93f7b0a6aec6c5d66708926a809e0fb607eb8d4b6e0bad81e7bd7107a5da"
+      },
+      {
+        "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strrchr_readiness_oct16\\local\\NativeCrtWcsncmpReadiness01\\root_manifest.json",
+        "files": 23,
+        "sha256": "d88a3a53f33f26c72c07ea7f4c3859b8e8135ad8a5516196ff31c669362c958c"
+      },
+      {
+        "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\NativeCrtWcsncmpIndependentReview01\\root_manifest.json",
+        "files": 8,
+        "sha256": "dd695bb748732eb9c1926307fae8c34c4e6258a5cd68d69018e85c5241ff1a8c"
+      }
+    ],
+    "prior_Source1_original_commit": "f33c39c8a17fd1719616529fcc6bb4083ce6a22b",
+    "prior_Source1_four_tracked_files_unchanged": [
+      {
+        "tracked_path": "include/bsp/native_crt_memchr.hpp",
+        "original_commit_blob": "c63ec4a3e8f4ca2da0c1f71d9f079684efafe306",
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\include\\bsp\\native_crt_memchr.hpp",
+          "bytes": 1551,
+          "sha256": "ba62013f4f48d5b1b776b387585f9214f70a0b9df6fad02b2c050a5789379b5a",
+          "mtime_ns": 1792125422661563600,
+          "observed_utc": "2026-10-16T05:00:37.774475+00:00",
+          "regular": true,
+          "links": 1
+        },
+        "unchanged_from_Source1_actual_working_bytes_and_mtime": true,
+        "git_newline_normalization_qualified": false
+      },
+      {
+        "tracked_path": "src/native_crt_memchr.cpp",
+        "original_commit_blob": "4d7cf5d0714ada3f9d7adefe6f52f2f37a5a65af",
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\src\\native_crt_memchr.cpp",
+          "bytes": 2433,
+          "sha256": "b5447169ceac5b7e09d5c4de383dae28215ff08bf170a02dec960417ea89875f",
+          "mtime_ns": 1792125422662063200,
+          "observed_utc": "2026-10-16T05:00:37.831493+00:00",
+          "regular": true,
+          "links": 1
+        },
+        "unchanged_from_Source1_actual_working_bytes_and_mtime": true,
+        "git_newline_normalization_qualified": false
+      },
+      {
+        "tracked_path": "docs/NATIVE_CRT_MEMCHR.md",
+        "original_commit_blob": "fe53e18ae604e6249864ed3ba64db91fdbf96202",
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\docs\\NATIVE_CRT_MEMCHR.md",
+          "bytes": 8755,
+          "sha256": "8e0e69a485b98227183cd1f7bc3c5d78c94a177f0b18f9e45c8e2a20fe073c98",
+          "mtime_ns": 1792125869805656500,
+          "observed_utc": "2026-10-16T05:00:37.885716+00:00",
+          "regular": true,
+          "links": 1
+        },
+        "unchanged_from_Source1_actual_working_bytes_and_mtime": true,
+        "git_newline_normalization_qualified": false
+      },
+      {
+        "tracked_path": "reports/native_crt_memchr.json",
+        "original_commit_blob": "4c8fd0238a5f1338a603b49f84283eaf07744c26",
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\reports\\native_crt_memchr.json",
+          "bytes": 19198,
+          "sha256": "1b007890f09b9527f5666137480d149e42396ec100c81634404bd4e570607494",
+          "mtime_ns": 1792125875684827400,
+          "observed_utc": "2026-10-16T05:00:37.940164+00:00",
+          "regular": true,
+          "links": 1
+        },
+        "unchanged_from_Source1_actual_working_bytes_and_mtime": true,
+        "git_newline_normalization_qualified": true
+      }
+    ],
+    "all_old_tool_records_and_compilations_external_not_current_provenance": true,
+    "whole_body_range_lease": {
+      "actual_receipt": "whole_range_lease.receipt.json",
+      "started_utc": "2026-10-16T05:01:12.973202+00:00",
+      "finished_utc": "2026-10-16T05:01:13.293612+00:00",
+      "exit_code": 0,
+      "qualification": "Whole-range extension was requested after successful strict compile. Existing entry-address/four-file/local leases were already active before Source writes. No Source or compile change."
+    }
+  },
+  "validation": {
+    "report_call_checker": {
+      "command": [
+        "python",
+        "-B",
+        "tools/verify_report_calls.py",
+        "reports/native_crt_wcsncmp.json",
+        "docs/NATIVE_CRT_WCSNCMP.md"
+      ],
+      "actual_receipt": "report_call_checker.receipt.json",
+      "scope": "Call claim consistency only; zero rows is not semantics."
+    },
+    "new_tests": 0,
+    "probes": 0,
+    "SDK_comparison": false,
+    "new_Source_body_executed": false,
+    "fixture_tested": false,
+    "Original_ABI_compatible": false,
+    "Native_executed": false,
+    "game_validated": false,
+    "shared_registration_ledger_Ghidra_mutations": false,
+    "push_performed": false,
+    "pending_Root_gates": [
+      "Independent Source/object review",
+      "Root acceptance/compiler gate",
+      "Registration/annotations",
+      "Registered Main build",
+      "Actual Main object review/archive"
+    ]
+  }
+}

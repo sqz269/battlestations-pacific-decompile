@@ -42389,17 +42389,11 @@
     },
     {
       "id": "cc12_native_crt_memchr_00bfa700",
-      "done": false,
-      "state": "whole_ordinary_readiness_primary_peer_accepted_Source_authorized_not_implemented",
+      "done": true,
+      "state": "whole_ordinary_Source_Main3checks_independent_actual_frame_variant_archive_pass",
       "source_ready": true,
       "function_addresses": [
         "00bfa700"
-      ],
-      "files": [
-        "include/bsp/native_crt_memchr.hpp",
-        "src/native_crt_memchr.cpp",
-        "docs/NATIVE_CRT_MEMCHR.md",
-        "reports/native_crt_memchr.json"
       ],
       "depends_on": [],
       "prerequisite_packets": [],
@@ -42413,7 +42407,22 @@
         "Use bounded unsigned count/offset/pointer state; no integer underflow-based out-of-region accesses, before-base pointers, pointer subtraction, new runtime validation, SDK memchr/memcpy/search substitute, fallback, provider, global or caller binding. Read-only payload aliases are admitted; returned pointer borrows original owner lifetime. Mutation, concurrency, faults, invalid positive-count storage and volatile/MMIO observation protocols are outside this ordinary domain.",
         "No Source compiler flag/segment/stack/register-home parameters or physical Original ABI/EH/fault/runtime equivalence. No new tests/probes/body execution. Worker owns only the four Source files; Root owns registration, ledger, annotation and Main integration."
       ],
-      "Main_gate": "pending_future_Source_author_peer_registration_build_actual_object_archive"
+      "Main_gate": "pass",
+      "output_files": [
+        "include/bsp/native_crt_memchr.hpp",
+        "src/native_crt_memchr.cpp",
+        "docs/NATIVE_CRT_MEMCHR.md",
+        "reports/native_crt_memchr.json"
+      ],
+      "code_ranges": [
+        "00bfa700-00bfa7ac"
+      ],
+      "code_revision": "f33c39c8a17fd1719616529fcc6bb4083ce6a22b",
+      "primary_review": "reports/cc12_native_crt_memchr_primary_review.json",
+      "Main_build_gate": "pass_3_existing_CTests",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_native_crt_memchr_Main_validation.json",
+      "whole_ordinary_function_credit": 1
     },
     {
       "id": "goal_oct15_crt_sbh_region_lookup",
@@ -42497,16 +42506,10 @@
     {
       "id": "cc12_native_crt_memcmp_00c1ef55",
       "done": false,
-      "state": "whole_ordinary_readiness_primary_independent_accepted_corrected_Source_authorized_not_implemented",
+      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
       "source_ready": true,
       "function_addresses": [
         "00c1ef55"
-      ],
-      "files": [
-        "include/bsp/native_crt_memcmp.hpp",
-        "src/native_crt_memcmp.cpp",
-        "docs/NATIVE_CRT_MEMCMP.md",
-        "reports/native_crt_memcmp.json"
       ],
       "depends_on": [],
       "prerequisite_packets": [],
@@ -42533,21 +42536,29 @@
         "sha256": "2512453ba5caa8930dacc29720403f71d384cc790e50537cb7e43b1f23636c57",
         "two_gap_bytes_not_owned": true
       },
-      "Main_gate": "pending_Source_author_peer_registration_build_actual_object_archive"
+      "Main_gate": "pending_normal_Main_build_and_independent_actual_variant_archive_review",
+      "output_files": [
+        "include/bsp/native_crt_memcmp.hpp",
+        "src/native_crt_memcmp.cpp",
+        "docs/NATIVE_CRT_MEMCMP.md",
+        "reports/native_crt_memcmp.json"
+      ],
+      "code_ranges": [
+        "00c1ef55-00c20552",
+        "00c20555-00c205d4"
+      ],
+      "code_revision": "db612fba4193f7a76ea2dca23f27cb178afcd742",
+      "primary_review": "reports/cc12_native_crt_memcmp_primary_review.json",
+      "Main_build_gate": "pending",
+      "actual_compiler_archive_gate": "pending"
     },
     {
       "id": "cc12_native_crt_wcsncmp_00bfdcb7",
       "done": false,
-      "state": "whole_ordinary_readiness_primary_peer_accepted_Source_authorized_not_implemented",
+      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
       "source_ready": true,
       "function_addresses": [
         "00bfdcb7"
-      ],
-      "files": [
-        "include/bsp/native_crt_wcsncmp.hpp",
-        "src/native_crt_wcsncmp.cpp",
-        "docs/NATIVE_CRT_WCSNCMP.md",
-        "reports/native_crt_wcsncmp.json"
       ],
       "depends_on": [],
       "prerequisite_packets": [],
@@ -42563,7 +42574,51 @@
         "No SDK wcsncmp/memcpy/search, byte-only substitution, copied storage, validation/fallback/provider/global/TLS/caller binding. Exclude invalid reached reads, wrapping advances, mutable/indeterminate payload, lifetime changes, concurrency, MMIO/volatile observation and faults. Preserve Original RHS-before-LHS pointer-home-load fact in documentation, without claiming new compiler physical home/fault order or stack/register/flag/segment/EH/binary ABI/runtime/game identity.",
         "Worker owns only four Source files and local evidence; Root owns registration/ledger/Ghidra/Main. One genuine strict compile with actual before input pins and complete actual code/data/symbol/relocation/metadata review. No separate unregistered whole-worker baseline requested, no tests/probes/body execution; Root registered Main build and actual Main object/archive gates remain pending."
       ],
-      "Main_gate": "pending_Source_author_peer_registration_build_actual_object_archive"
+      "Main_gate": "pending_normal_Main_build_and_independent_actual_variant_archive_review",
+      "output_files": [
+        "include/bsp/native_crt_wcsncmp.hpp",
+        "src/native_crt_wcsncmp.cpp",
+        "docs/NATIVE_CRT_WCSNCMP.md",
+        "reports/native_crt_wcsncmp.json"
+      ],
+      "code_ranges": [
+        "00bfdcb7-00bfdceb"
+      ],
+      "code_revision": "c590710ae230135ead4f96979a915e00483cc4a4",
+      "primary_review": "reports/cc12_native_crt_wcsncmp_primary_review.json",
+      "Main_build_gate": "pending",
+      "actual_compiler_archive_gate": "pending"
+    },
+    {
+      "id": "cc12_native_crt_wcschr_00bfd6c1",
+      "done": false,
+      "state": "whole_ordinary_Original_readiness_primary_peer_pass_Source_authorized_compiler_Main_pending",
+      "source_ready": true,
+      "function_addresses": [
+        "00bfd6c1"
+      ],
+      "code_ranges": [
+        "00bfd6c1-00bfd6e2"
+      ],
+      "output_files": [
+        "include/bsp/native_crt_wcschr.hpp",
+        "src/native_crt_wcschr.cpp",
+        "docs/NATIVE_CRT_WCSCHR.md",
+        "reports/native_crt_wcschr.json"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [],
+      "readiness": "reports/cc12_native_crt_wcschr_readiness.json",
+      "contract": [
+        "New MSVC Win32 default potentially throwing API: void* __cdecl bsp::find_native_crt_wide_character_00bfd6c1(void* actual_string,int character). Keep correct Original library name _wcschr. BYTE8, pointer/int32, little-endian unsignedWORD16; target is low16 bits modulo65536. No Unicode scalar/surrogate/normalization/case/locale/collation semantics.",
+        "Require a finite first reached unit equal to targetlow16 or NUL. Every reached2byte read, including terminalNUL reread, lies wholly inside genuine live stable determinate readable byte storage in the same actual allocation. Earlier nonzero match needs no extent or laterNUL promise. Null/invalid input outside ordinary domain; no new validation guard.",
+        "Admit possiblyunaligned raw byte storage, prefixes/interior regions and stable readonly aliases. Actual reached advances by2 are nonwrapping and within or onepast same allocation; neverdereferenceonepast. No typed wchar/uint16 ownership, alignment, padding, signed-count cap or copied allocation.",
+        "Read exactly one WORD per visitedunit. Test NUL before nonzero target equality. Nonzero match returns its actual borrowed pointer without reread. Only unequal nonzero units advance2 andcontinue. NUL ALWAYS causes one fresh same-address WORD reread, includingtarget0, then comparethatvalue to low16target: pointer ifequal, nullotherwise. No afterNUL read or unconditional finalreread onnonzeromatch.",
+        "Approve private addressed MOVZX WORD16 helper with MSVC Win32 inlineassembly over genuine rawbyte storage, fullyinitializing zeroextended32bit output. Spell terminalNUL reread as separate sequencedoperation. No typedwideobject lifetime/alias assumption or portableISOclaim. Actual entire strict/Main objects mustverify accesswidth, readorder, NULonlyreread, branches/bounds, symbol/metadata/call/provider closure.",
+        "No SDKwcschr/memcpy/search, byte-only/dwordsubstitute, provider/global/TLS/fallback/runtimevalidation/callerbinding. Exclude faults, mutation/concurrency, indeterminatebytes, lifetimechanges andMMIO/volatileobservationprotocols. PreserveOriginal pointerhome/targethome/order as evidence only; no physicalABI/register/stack/flags/segment/EH/instruction/bus/fault/runtime/gamecredit.",
+        "Worker owns exactlyfourSource/header/doc/reportfiles plus ownnewlocalevidence. Root owns registration, ledgers/names, supported Ghidraannotation/export andMain. Before every Sourcewrite hold entry, entire34Brange andallfourfiles. One actual strictMSVCWin32compile with genuinebeforepins/actualdependencyclosure and wholeartifactreview; no separate unregisteredworkerbaseline, newtests/probes/bodyexecution. Root Mainbuild/actualvariant/archive andindependentSourcegates remain."
+      ],
+      "Main_gate": "pending_Source_independent_strict_and_registered_Main_actual_variant_archive_review"
     }
   ],
   "snapshot_after_analysis": {
