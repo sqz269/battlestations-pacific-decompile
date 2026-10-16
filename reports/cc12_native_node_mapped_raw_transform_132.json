@@ -1,0 +1,471 @@
+{
+  "packet": "cc12_native_node_mapped_raw_transform132",
+  "kind": "Concrete borrowed mapped-profile projection for existing whole raw transform bodies",
+  "recorded_utc": "2026-10-16T08:52:42.247189+00:00",
+  "checked_baseline": "f01edb0bac0d89746162a635b9a3082f9fc14c07",
+  "scope": {
+    "owned_files": [
+      "include/bsp/native_node_raw_transform.hpp",
+      "src/native_node_raw_transform.cpp",
+      "docs/CC12_NATIVE_NODE_MAPPED_RAW_TRANSFORM_132.md",
+      "reports/cc12_native_node_mapped_raw_transform_132.json"
+    ],
+    "owned_addresses": [
+      "0x00B6DB10",
+      "0x00B6DBC0"
+    ],
+    "owned_ranges": [
+      "0x00B6DB10-0x00B6DB59",
+      "0x00B6DBC0-0x00B6DBD9"
+    ],
+    "no_Main_merge_CMake_shared_Source_ledger_or_Ghidra_mutation": true,
+    "no_new_Original_body_name_or_ledger_status": "Existing BSP_Transform_SetLocalMatrix and BSP_Transform_InvalidateBoundsAndNotifyGroup remain correct; no newly recovered body or renamed symbol."
+  },
+  "analysis_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "fresh_verified_BSP_wrappers": true,
+    "Original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "Original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "verdict": "Packet129 narrow concrete profile gap closed for genuine supplied supported graph. No cursor/rebuild/copy body or automatic runtime producer/activation added.",
+  "Native_bodies": [
+    {
+      "entry": "0x00B6DB10",
+      "end_exclusive": "0x00B6DB59",
+      "bytes": 73,
+      "instruction_starts": 22,
+      "hex": "8b 44 24 04 56 8b f1 50 8d 8e b0 00 00 00 e8 cd 59 8a ff f6 46 5c 0a 74 2c 8b 8e a0 00 00 00 83 a6 38 01 00 00 cf 85 c9 c7 46 5c 00 00 00 00 74 07 8b 11 8b 42 3c ff d0 83 7e 34 00 74 07 8b ce e8 db fe ff ff 5e c2 04 00",
+      "sha256": "4bf57ceafa88c53f385239ba006d90f7d65ca239ef51f4c3c9a8ea114d07d276",
+      "matches_reused_r40_Original_body": true
+    },
+    {
+      "entry": "0x00B6DBC0",
+      "end_exclusive": "0x00B6DBD9",
+      "bytes": 25,
+      "instruction_starts": 8,
+      "hex": "83 a1 38 01 00 00 c3 8b 89 a0 00 00 00 85 c9 74 07 8b 01 8b 50 3c ff e2 c3",
+      "sha256": "ff03f5e2a5c5c4450e8385ba9b6c671844c50e3c6de7f712550e6988134727f7",
+      "matches_reused_r40_Original_body": true
+    }
+  ],
+  "Native_ABI": {
+    "B6DB10": "ECX actual node, stack source pointer, ESI preserved, RET4. Source adds EDX service/context parameter.",
+    "B6DBC0": "ECX actual node, RET or current A0/current3C tail; Source interface is not Native ABI/FH3/SEH/IAT replacement."
+  },
+  "primitive_API": {
+    "context": "NativeNodeMappedRawTransformProfiles final, explicit const game::GameNativeReadOnlyData& constructor; borrowed three real table aliases, noncopyable, owns no graph/service/mapping.",
+    "new_reference_overloads": [
+      "notify_raw_bounds_00b6dbc0(void*,const NativeNodeMappedRawTransformProfiles&)",
+      "set_raw_local_matrix_00b6db10(void*,const NativeNodeMappedRawTransformProfiles&,const void*)"
+    ],
+    "old_pointer_overloads_preserved": true,
+    "source_compatibility": "Reference form cannot bind nullptr; existing typed/pointer/nullptr calls keep old overload. Untyped address-of must select an overload type. Existing registered debug callers compiled unchanged.",
+    "constructor_order": "Three real data_at(D62C88,40h), data_at(D62DE8,40h), data_at(D634F8,40h); exact aliases checked before three borrowed pointer stores; no receiver/profile/table-payload read.",
+    "data_at_definition": "src/game_native_readonly_data.cpp in already registered bsp_core: range and held-band checks only, returns Original VA; no lazy map at reached site.",
+    "reached_projection": "Only nonnull captured/current A0 dispatch: volatile current raw+00; equality to one of actual preheld aliases; volatile current alias+3C==B6DBC0. No caller callback/getter/table-copy/stub subclass/new owner.",
+    "shared_implementation": "notify_raw_bounds_body and set_raw_local_matrix_body templates compose both genuine domains; existing descendant and native camera matrix-copy unchanged."
+  },
+  "actual_profile_family": [
+    {
+      "family": "Node",
+      "actual_profile": "0x00D62C88",
+      "slice_start": "0x00D62CC0",
+      "bytes": 12,
+      "hex": "10 db b6 00 c0 db b6 00 e0 db b6 00",
+      "sha256": "6966b3603bb65ce229e473e541e5b0ba76159c9a1a0d6c7d47ee9c65ff5a91ec",
+      "current_slots": {
+        "0x38": "0x00B6DB10",
+        "0x3C": "0x00B6DBC0",
+        "0x40": "0x00B6DBE0"
+      },
+      "fresh_live_equals_Original": true,
+      "capture": {
+        "path": "local/text_cursor129_node_transform_slots_live_bytes.txt",
+        "sha256": "afc14cf1ed2a301c87ddffe6d636178cc839a2beeb77a76b6791605375fcb78d"
+      }
+    },
+    {
+      "family": "Model",
+      "actual_profile": "0x00D62DE8",
+      "slice_start": "0x00D62E20",
+      "bytes": 12,
+      "hex": "10 db b6 00 c0 db b6 00 e0 db b6 00",
+      "sha256": "6966b3603bb65ce229e473e541e5b0ba76159c9a1a0d6c7d47ee9c65ff5a91ec",
+      "current_slots": {
+        "0x38": "0x00B6DB10",
+        "0x3C": "0x00B6DBC0",
+        "0x40": "0x00B6DBE0"
+      },
+      "fresh_live_equals_Original": true,
+      "capture": {
+        "path": "local/text_cursor129_model_transform_slots_live_bytes.txt",
+        "sha256": "903ac62604bceceef660754ee6ae4e048c928d048d6377dd36da28746b9b9efd"
+      }
+    },
+    {
+      "family": "Group",
+      "actual_profile": "0x00D634F8",
+      "slice_start": "0x00D63530",
+      "bytes": 12,
+      "hex": "10 db b6 00 c0 db b6 00 b0 e6 b8 00",
+      "sha256": "527a4c077ac9ef574146d9a253e5089e510e7359f39db4eb99825dd00e835376",
+      "current_slots": {
+        "0x38": "0x00B6DB10",
+        "0x3C": "0x00B6DBC0",
+        "0x40": "0x00B8E6B0"
+      },
+      "fresh_live_equals_Original": true,
+      "capture": {
+        "path": "local/text_cursor129_group_transform_slots_live_bytes.txt",
+        "sha256": "0d84acbf024fec96162aa4cc31011cc14b8c0a181693c8771a7ee2e0d78fa688"
+      }
+    }
+  ],
+  "current_order": [
+    "Setter: actual 4134F0 matrix copy to+B0; current BYTE5C&A; currentA0 capture; current138 &= FFFFFFCF; 5C=0; reached captured attachment current profile/current3C; real notify; only after return current34 reload/real B6DA30.",
+    "Notifier: current138 &= FFFFFFC3; currentA0 reload; null return; otherwise current raw+00/admitted alias/current3C then loop. No host recursion/cycle cutoff.",
+    "No incoming receiver+00/38 read inside setter. Future cursor must perform its own reached38 dispatch. Group40=B8E6B0 is outside this narrow3C projection.",
+    "No profile read introduced on no-attachment dispatch path. Context aliases are pure metadata, not receiver snapshots."
+  ],
+  "lifetime_failure_boundary": [
+    "Caller retains genuine initialized data service, full immutable borrowed context, all actual storage/source backing/transitive graph and independent creators/diagnostics through entry and failure; context does not retain or own any of them.",
+    "Context storage must remain valid and disjoint from mutable actual/source storage. Supported numeric vptr is not actual prefix/provenance/lifetime admission proof.",
+    "Reached unsupported metadata/target errors preserve consumed matrix/flag effects and all independent graph obligations; no rollback/retry/rediscovery/automatic cleanup.",
+    "Pure mapped Source checks/exceptions are provider boundaries, not proof of Native exception/fault/ABI equivalence. No new retain/count/scalar/ancestor barrier or production authority.",
+    "Whole AB8910, ABB1D0/ABA8D0 and ABB2C0 remain downstream; genuine actual graph/runtime producer and recursive providers still required."
+  ],
+  "calls": [
+    {
+      "function": "0x00B6DB10",
+      "address": "0x00B6DB1E",
+      "native": "0x004134F0",
+      "kind": "call",
+      "instruction": "call 0x4134f0"
+    },
+    {
+      "function": "0x00B6DB10",
+      "address": "0x00B6DB50",
+      "native": "0x00B6DA30",
+      "kind": "call",
+      "instruction": "call 0xb6da30"
+    }
+  ],
+  "indirect_dispatch": [
+    {
+      "function": "0x00B6DB10",
+      "site": "0x00B6DB41",
+      "operation": "current captured attachment vptr read; slot3C atB6DB43, CALL atB6DB46"
+    },
+    {
+      "function": "0x00B6DBC0",
+      "site": "0x00B6DBD1",
+      "operation": "current enclosing vptr read; current3C atB6DBD3, JMP atB6DBD6"
+    }
+  ],
+  "optimized": {
+    "Root_Source_API_review": "PASS",
+    "Root_complete_requested_optimized_review": "PASS",
+    "listing": {
+      "path": "local/node_mapped_transform132_strict.asm",
+      "sha256": "6439a160dbaec80ea7e170aee99caf16fcde8adf892bb87e934e01ed7c8ce6f3"
+    },
+    "ranges": {
+      "constructor": [
+        310,
+        402
+      ],
+      "old_pointer_notify": [
+        488,
+        599
+      ],
+      "old_pointer_setter": [
+        609,
+        806
+      ],
+      "mapped_notify": [
+        814,
+        915
+      ],
+      "mapped_setter": [
+        926,
+        1133
+      ],
+      "private_current_profile": [
+        2248,
+        2287
+      ],
+      "mapped_require": [
+        2418,
+        2474
+      ]
+    },
+    "exact_old_new_comparison": {
+      "path": "local/node_mapped_transform132_old_new_coff_comparison.json",
+      "sha256": "ebf00b18895d136b92f2f0211dd33174ed487e3734f1a92700ad916c1f135c81"
+    },
+    "unchanged_old_functions": "descendant60B and pointer notifier147B machine bytes+ordered relocations identical",
+    "changed_old_setter": "285B/83 instructions each, all14 relocations identical; bytes differ from EBX/EDI actual/profile role swap, first7 pure save/argument-capture and epilogue register-pop order; remaining instructions exact after role swap per independent Root decode.",
+    "limits": "No claim of setter byte/register-ABI equality or Native FH3/SEH/fault behavior."
+  },
+  "validation": {
+    "strict_compile": {
+      "result": "PASS",
+      "flags": "MSVC Win32 C++17 /EHsc /MD /O2 /W4 /WX /fp:strict",
+      "owned_TU_warning_error_count": 0
+    },
+    "canonical_build": {
+      "result": "PASS",
+      "script": "scripts/build.ps1",
+      "already_registered_TU_recompiled": true,
+      "both_existing_raw_debug_pointer_callers_recompiled": true,
+      "checks_passed": 2,
+      "checks_failed": 0,
+      "warning": "LNK4006 duplicate existing spawn_request_id_matches in untouched lua_binding_spawn.obj/lua_spawn_new.obj; strict owned TU warning-free."
+    },
+    "no_new_tests_probes_raw_execution_or_production_activation": true,
+    "live_Original_direct_call_rows": {
+      "checked": 2,
+      "failed": 0,
+      "limit": "Existing B6DB10 whole two direct calls only; current3C dispatch is separate static proof, not Native execution."
+    },
+    "Root_final_document_review": "PASS"
+  },
+  "source_hashes": [
+    {
+      "path": "include/bsp/native_node_raw_transform.hpp",
+      "sha256": "99460e5aa96bac3ef0255146992d7e002e2ec5adf07ab71788221ad10c75d4de"
+    },
+    {
+      "path": "src/native_node_raw_transform.cpp",
+      "sha256": "092fa6a47756bf5a8a3a18dfbbaecf468898b3c91bc5ee5235bba5a7f078e16c"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+    },
+    {
+      "path": "include/bsp/native_traceline_render.hpp",
+      "sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4"
+    },
+    {
+      "path": "src/native_traceline_render.cpp",
+      "sha256": "b791db0734c33fe6c8c12b3caa40c81b76ebfb5915ecdd80b9ae590605160eb6"
+    },
+    {
+      "path": "include/bsp/native_camera_matrix_copy.hpp",
+      "sha256": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a"
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a"
+    },
+    {
+      "path": "src/native_group_owner.cpp",
+      "sha256": "78995f383203e1f795cc9a9a44f8ab67ec9f942cf30e746e00a97118b0665e1c"
+    },
+    {
+      "path": "src/native_renderer_debug_records24.cpp",
+      "sha256": "112c7333f0ad7760ed1d44d5299b26e32cc38ed8af611dd751bfee053a1a4524"
+    },
+    {
+      "path": "src/native_renderer_debug_records40.cpp",
+      "sha256": "3fd36b64937419162bc07742ffc5141f32f528335cf29e13aefafdbf14bc3eb1"
+    }
+  ],
+  "frozen_final_Source_and_canonical_artifacts": [
+    {
+      "path": "local/node_mapped_transform132_final/native_node_raw_transform.hpp",
+      "sha256": "99460e5aa96bac3ef0255146992d7e002e2ec5adf07ab71788221ad10c75d4de"
+    },
+    {
+      "path": "local/node_mapped_transform132_final/native_node_raw_transform.cpp",
+      "sha256": "092fa6a47756bf5a8a3a18dfbbaecf468898b3c91bc5ee5235bba5a7f078e16c"
+    },
+    {
+      "path": "local/node_mapped_transform132_final/canonical_native_node_raw_transform.obj",
+      "sha256": "82290cf12baeceb9ce971b5ad2335863d752ca315aa87c9287e7cbda5529be1d"
+    },
+    {
+      "path": "local/node_mapped_transform132_final/canonical_bsp_core.lib",
+      "sha256": "4d3ba2c7dcf4c1dfcd764342ae59a22c4d3f1bcc87ba5465fa38ec3f17a7a291"
+    },
+    {
+      "path": "local/node_mapped_transform132_final/canonical_bsp_game.exe",
+      "sha256": "65a70eed2fb067f63c2d440492040df676d59db849f74186e91527fe5d0c9d8e"
+    },
+    {
+      "path": "local/node_mapped_transform132_final/canonical_LastTest.log",
+      "sha256": "ed7915c32e58c4e3095ea1a15fc60287e66182fb15efabb6ef3b0fb6cc30cd86"
+    },
+    {
+      "path": "local/node_mapped_transform132_final/canonical_bsp_core.vcxproj",
+      "sha256": "e7f4a5eafaf03469f68f0669564ebf39bb46570dce6715c456e8d6673bec42fb"
+    },
+    {
+      "path": "local/node_mapped_transform132_final/00b6db10_assembly.txt",
+      "sha256": "368c27b67810cb8bb04ddf504f277e8652cbdbd9572380e30d43333d4320e345"
+    },
+    {
+      "path": "local/node_mapped_transform132_final/00b6db10_decompiled.c",
+      "sha256": "3c446165e50517ed93ac10fff083e083fe04cd178f5a23d768121865032dc5b0"
+    },
+    {
+      "path": "local/node_mapped_transform132_final/00b6dbc0_assembly.txt",
+      "sha256": "3b314e16a28910913cca6e37011c28e0614da93574af1536bc0e8e82d67a70a6"
+    },
+    {
+      "path": "local/node_mapped_transform132_final/00b6dbc0_decompiled.c",
+      "sha256": "1c7d3e122b86a23013533e3b5aafe4ab9540e96e17decd11739209f40d336def"
+    }
+  ],
+  "frozen_old_Source_and_build_artifacts": [
+    {
+      "path": "local/node_mapped_transform132_before/native_node_raw_transform.hpp",
+      "sha256": "53f7d50855779206ce1faff86469948e4ff4fa9c0d376d68fbba1b4a48e3884d"
+    },
+    {
+      "path": "local/node_mapped_transform132_before/native_node_raw_transform.cpp",
+      "sha256": "31a50a5e6e6efd27bb2d32851cc6836b6aabb1a924eefa384363e561deb4e257"
+    },
+    {
+      "path": "local/node_mapped_transform132_before/canonical_native_node_raw_transform.obj",
+      "sha256": "9259c542aa358f22938a07227dc6bc46be89d36de65fc26e1425e19ae4683e9b"
+    },
+    {
+      "path": "local/node_mapped_transform132_before/bsp_core.vcxproj",
+      "sha256": "e7f4a5eafaf03469f68f0669564ebf39bb46570dce6715c456e8d6673bec42fb"
+    },
+    {
+      "path": "local/node_mapped_transform132_before/bsp_game.exe",
+      "sha256": "0f7cc850c72228b2a56400f0649b7aab01faa7fcfad1c4d48c2ec24337d11095"
+    },
+    {
+      "path": "local/node_mapped_transform132_before/LastTest.log",
+      "sha256": "db34f3b102e93c7293b2acafac0bed6d6eb95f78692b8e1127d55cd71c7200c0"
+    }
+  ],
+  "reused_receipts": [
+    {
+      "path": "reports/cc12_native_gui_text_cursor_providers_readiness_129.json",
+      "sha256": "738ff8003478a0e5c65fbc513baeaa67a29003ea891e4809d1907ef0be5c73ce"
+    },
+    {
+      "path": "local/text_cursor129_final_artifact_manifest.json",
+      "sha256": "98cbd3d33011827a247a91e75a252c41ebe6069ed0a5ca456ed2df4e1d967115"
+    },
+    {
+      "path": "local/text_cursor129_byte_source_proof.json",
+      "sha256": "8e7e7dadfb84fa370f9bbe434f67fef228e93c22a11fd4b3f114d2ba73b41ea5"
+    },
+    {
+      "path": "reports/native_node_raw_transform_main_r40.json",
+      "sha256": "0bf63ed5e5e4e633f1d7fb775261276bf0c52e175905e0bfc71950eec20f9fb4"
+    }
+  ],
+  "prior_preservation": {
+    "Root_captured_all129_report96_and_manifest98_before132": true,
+    "all98_verified_before_authorized_edit": true,
+    "current96_direct129_artifacts_unchanged": true,
+    "only_two_owned_Source_changes_from129_and_both_old_versions_frozen": true,
+    "three_shared_build_artifacts_frozen_before_required_build": true,
+    "Source122_121_118_unique_sealed_files_not_modified": true
+  },
+  "local_artifacts": [
+    {
+      "path": "local/freeze_node_mapped_transform132_baseline.py",
+      "sha256": "0e6a275625b16e3fe8d64da835fa9db43fde114bbee2e2f5830a1d131a6985f3"
+    },
+    {
+      "path": "local/node_mapped_transform132_before_manifest.json",
+      "sha256": "51defd704cb17ffd80af57b415561aafac04939230c5c6981115accc5f13b789"
+    },
+    {
+      "path": "local/node_mapped_transform132_old_strict.cmd",
+      "sha256": "c206ca37ae56ea5a3b63981cb774976a1b7327362f0e55b49f6c07632d471c99"
+    },
+    {
+      "path": "local/node_mapped_transform132_old_strict.log",
+      "sha256": "8342c13b2da1757d831b588bee9a762f13de3c00b0dfe47bd288341e93373ccb"
+    },
+    {
+      "path": "local/node_mapped_transform132_old_strict.asm",
+      "sha256": "aeed2b92f2c333d29b6ef5ae0606e290f1efd41f3a5283858e92ee0a14b45d01"
+    },
+    {
+      "path": "local/node_mapped_transform132_old_strict.obj",
+      "sha256": "0f98343b66d05fb18870646c5d848de08f897dd0ec2d5ed37fa36298bf159ef6"
+    },
+    {
+      "path": "local/node_mapped_transform132_strict.cmd",
+      "sha256": "902fe9fd445140ed653ecd9446a074aed84aaaf503e961e7e81c78cb217fa289"
+    },
+    {
+      "path": "local/node_mapped_transform132_strict.log",
+      "sha256": "8342c13b2da1757d831b588bee9a762f13de3c00b0dfe47bd288341e93373ccb"
+    },
+    {
+      "path": "local/node_mapped_transform132_strict.asm",
+      "sha256": "6439a160dbaec80ea7e170aee99caf16fcde8adf892bb87e934e01ed7c8ce6f3"
+    },
+    {
+      "path": "local/node_mapped_transform132_strict.obj",
+      "sha256": "e0a34036d232d33e227aabb056e161198f165193f15af9db8b187bcad6be7256"
+    },
+    {
+      "path": "local/compare_node_mapped_transform132_coff.py",
+      "sha256": "cd0620f0b22b450b70952ab8d0b1722be77e0ef371f6f9846e47a1164b9a2709"
+    },
+    {
+      "path": "local/node_mapped_transform132_old_new_coff_comparison.json",
+      "sha256": "ebf00b18895d136b92f2f0211dd33174ed487e3734f1a92700ad916c1f135c81"
+    },
+    {
+      "path": "local/node_mapped_transform132_canonical_build.log",
+      "sha256": "eadd961c2f16ed3570b2cb4e06e6f2c5c3433c56452f1a71a94de41765bc6ca1"
+    },
+    {
+      "path": "local/node_mapped_transform132_native_proto.txt",
+      "sha256": "cde47a9dbca6e6105df61e5526bd10c755627d4a42870103ee6dfe08c5425b90"
+    },
+    {
+      "path": "local/node_mapped_transform132_Original_proof.json",
+      "sha256": "d8961fee73c424b0849cc3e718328f75c7a5717dd14fe81db1e8a8f830a2d50b"
+    },
+    {
+      "path": "local/node_mapped_transform132_root_review.txt",
+      "sha256": "a5f69f1a142d81a414aa2598e80ab88147e32a1f1e30134febe593500c950b28"
+    },
+    {
+      "path": "local/build_node_mapped_transform132_report.py",
+      "sha256": "e942cbf00f277b8274758bf1526204459b59f420925952dee1791a81cc511419"
+    },
+    {
+      "path": "local/seal_node_mapped_transform132_receipt.py",
+      "sha256": "5ea98e1bce49f1f448768cadc06c30b57b8f9fb374f2bd2fa75f6911a1b0ef08"
+    },
+    {
+      "path": "local/node_mapped_transform132_report_call_verification.txt",
+      "sha256": "9e7e39dd56acc81eb21c5a5087e7d373f048ea21b3c78439bf02abe7b7a334b0"
+    },
+    {
+      "path": "local/node_mapped_transform132_owned_scope_verification.txt",
+      "sha256": "866aa76882898f11dcc2b545da2a08265405948450893c5b567068be62e7c47c"
+    }
+  ],
+  "final_artifact_manifest": "local/node_mapped_transform132_final_artifact_manifest.json",
+  "uncertainties": [
+    "Valid supplied storage/graph is caller proof, distinct from actual runtime producer/admission.",
+    "Full cursor/rebuild/copy and recursive provider closure not implied.",
+    "Source compilation and static optimized proof do not establish Native execution/ABI/exception equivalence."
+  ],
+  "sealed_utc": "2026-10-16T08:53:59.618458+00:00"
+}
