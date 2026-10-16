@@ -1,0 +1,211 @@
+{
+  "packet": "cc12_native_gui_reference_frame_box_integration_127",
+  "status": "reviewed_registered_combined_win32_build_existing_tests_static_link_pass",
+  "compiled_commit": "a33923165ce578038266835f21fe4434d7f230d1",
+  "workers": {
+    "122": {
+      "commit": "dff3163080f4d662f4f056b0e18c9143bc71ba96",
+      "source_paths": [
+        "include/bsp/native_gui_text_reference.hpp",
+        "src/native_gui_text_reference.cpp"
+      ],
+      "root_complete_source_api_original_optimized_review": "PASS",
+      "root_complete_doc_review": "PASS",
+      "strict_win32_cpp17_compile": "PASS",
+      "new_unit_unregistered_in_worker_baseline": true,
+      "manifest_artifacts_captured": 76,
+      "manifest_sha256": "c4a653f107a4d729086bdcde820b8d2723df1f0cbf99fe842252bb5fd7b01221"
+    },
+    "124": {
+      "commit": "d7a132c3771488a353ede4af8b8fc9405d11bb36",
+      "source_paths": [
+        "include/bsp/native_gui_frame_box_vector_allocation.hpp",
+        "src/native_gui_frame_box_vector_allocation.cpp"
+      ],
+      "root_complete_source_api_original_optimized_review": "PASS",
+      "root_complete_doc_review": "PASS",
+      "strict_win32_cpp17_compile": "PASS",
+      "new_unit_unregistered_in_worker_baseline": true,
+      "manifest_artifacts_captured": 45,
+      "manifest_sha256": "86113f2a9fec0fc8cdfda9933be00bbd35d5291650f9a2a0042a1c21981c2865"
+    },
+    "125": {
+      "commit": "af63c366cdf5ed49fdb35356ae85a2ea6f478e15",
+      "source_paths": [
+        "include/bsp/native_gui_frame_box_lifetime.hpp",
+        "src/native_gui_frame_box_lifetime.cpp"
+      ],
+      "root_complete_source_api_original_optimized_review": "PASS",
+      "root_complete_doc_review": "PASS",
+      "strict_win32_cpp17_compile": "PASS",
+      "new_unit_unregistered_in_worker_baseline": true,
+      "manifest_artifacts_captured": 149,
+      "manifest_sha256": "15f89372bff78180ea5f5aad04c301886fad50db33f6828229bc53ce17ab1835"
+    }
+  },
+  "readiness": {
+    "123": {
+      "commit": "3f4f1dd6137ae9e4935e1be1e93d6e5a5f6c143d",
+      "root_complete_doc_review": "PASS",
+      "own_manifest_artifacts_captured": 123,
+      "manifest_sha256": "9be89a18ac4b6d7a015438da58ec1b8c06f1325331232b37524b8fd937c1f6ef",
+      "native_body_execution": false,
+      "capture_note": "Authoritative123_complete uses retained mixed-baseline input copies; initial partial capture preserved"
+    },
+    "126": {
+      "commit": "f7c371fad70b6190791f765c603e7d973e087590",
+      "root_complete_doc_review": "PASS",
+      "own_manifest_artifacts_captured": 50,
+      "manifest_sha256": "7c5d95453107737d54d0e6d71c063e270b4f4ce38f994c48236bd59c2411f9a5",
+      "native_body_execution": false,
+      "capture_note": "All50 own-manifest items verified/copied; historical98/119 manifests retained as history, not expanded into current source paths; initial partial capture preserved"
+    }
+  },
+  "source": [
+    {
+      "packet": "122",
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "git_blob": "1dafde7cd10809d808b9c047ab6b0bd37d906528",
+      "sha256": "38f58de520071568c6d394d7be20c482c2f962a5eb5462b49e5af9fb0eb21cf8",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "122",
+      "path": "src/native_gui_text_reference.cpp",
+      "git_blob": "534e5353d82da296b0a9a49be1226d458837326d",
+      "sha256": "1d494c7f670bed4478837423f598d698f8e86ddb832e04b8ca9b1311e221eae7",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "124",
+      "path": "include/bsp/native_gui_frame_box_vector_allocation.hpp",
+      "git_blob": "1254949650a4020c43d4178a381af46747f85e14",
+      "sha256": "ffdd568922de5c01069d7589b1d94cea7959ba1ac196c9d05b6e82a512437de0",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "124",
+      "path": "src/native_gui_frame_box_vector_allocation.cpp",
+      "git_blob": "3958e8c7860862f8a433ad70643599ef26b66ae2",
+      "sha256": "56f9f5ec53c8c767b37e89390000028111474fba50916cc3387136f3da244167",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "125",
+      "path": "include/bsp/native_gui_frame_box_lifetime.hpp",
+      "git_blob": "c573ce56783ce8967a5e4fcf7ea615cac6a39703",
+      "sha256": "a50b604d393333a5c66efd0e660c34a5021226b94ae28e4a0a30218c3db37277",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "125",
+      "path": "src/native_gui_frame_box_lifetime.cpp",
+      "git_blob": "02ea03259ba2669b0641b6347be9b30a9a2a8f3d",
+      "sha256": "a125c2ee90feea995e72dfce1910d6bb5b60d7dd0ff5856687a28b4c22ad8be8",
+      "unchanged_from_reviewed_worker": true
+    }
+  ],
+  "retained_lower_sources": [
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e"
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "git_blob": "055cf00ff2019282886ee400230d1d0bf5a7a99a"
+    },
+    {
+      "path": "src/native_gui_text_retirement.cpp",
+      "git_blob": "839dc285c3d0f8e02af7e8fb30662809fe6eb9d0"
+    },
+    {
+      "path": "src/native_gui_text_glyph_children.cpp",
+      "git_blob": "025cdd3d7fde5bb7b8b9e215da4d604c6d3a5407"
+    },
+    {
+      "path": "src/native_gui_widget_pools_cc13.cpp",
+      "git_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3"
+    },
+    {
+      "path": "src/native_gui_frame_box_records.cpp",
+      "git_blob": "1502c28ec32dc2dad589aae1dee6cc11658fc80f"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "git_blob": "2d571930d3446b33b745fccdca3e32e8c31d46a1"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "git_blob": "bb26a9f52a9b694165a4b832db8a9dac735d1c52"
+    }
+  ],
+  "root_build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "checks": "3/3",
+    "seconds": 8.15
+  },
+  "static_link": {
+    "compiled_commit": "a33923165ce578038266835f21fe4434d7f230d1",
+    "build_and_minimal_main_exit_code": 0,
+    "raw_function_bodies_executed": false,
+    "explicit_worker_object_linked": false,
+    "kind": "Six public function/member addresses from actual final Core; no reconstructed body execution",
+    "PE32_asInvoker": true,
+    "exe_sha256": "9998fe04b2b30f824fcdc0a3b10b7378e378e533c5454262dede145dfd3e8100",
+    "libraries": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "99190f94bc2d0541774f965566f818779240067cc3bd4cda44588827da518a90"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "sha256": "e6ebb089df7828a43ecdd6e705dddb4cea95b38ffe1fabbd47152fec8834db30"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "sha256": "838261efe3cdd86663e25ecbcd9e825ee51203e71491954864316d4d0dfb6062"
+      }
+    ],
+    "canonical_additional_objects": []
+  },
+  "root_source_and_header_inputs_copied": 115,
+  "archive": {
+    "path": "local/cc12_native_gui_reference_frame_box_integration_127/evidence_family.zip",
+    "sha256": "22964943ec1d9d29a4c7a643084bfcd6aecf8c871a8fde9ca8d09a38b3d00596",
+    "payload_count": 890,
+    "manifest": "local/cc12_native_gui_reference_frame_box_integration_127/manifest.json",
+    "manifest_sha256": "d0002fdfc8684a7159b386db911ec73f802c0b09efc5374d4c8f863088857876",
+    "all_archived_payload_hashes_rechecked": true,
+    "nested_worker_manifests_included": true
+  },
+  "original_input_proof": {
+    "path": "local/cc12_native_gui_reference_frame_box_integration_127/root_original_input_proof.json",
+    "sha256": "c7c71f5778241ad867c6c71e144c2ea3ec7d8ca65f5ce9393eff91d82011d123",
+    "checked_spans": 6,
+    "status": "PASS"
+  },
+  "limits": [
+    "Strict worker compilation and baseline existing checks are separate from Root actual registration and combined build",
+    "Address-only link probe; no new behavioral tests, Native body execution or gameplay run",
+    "Text companion borrows actual +04, adds no retain/count/owner and requires genuine completed93/118 graph",
+    "Actual immutable numeric profile mapping is an existing initialized read-only-data service; numeric code addresses select reconstructed operations",
+    "Direct Text scalar has no count gate; a held count cannot block forced scalar/ancestor deletion",
+    "Direct Text failure retains binding/companion/creators/frames/graph; no replay or automatic raw cleanup",
+    "Zero terminal uses existing noexcept/terminate policy; not Native exception-equivalence proof",
+    "Text flags1 is written at reached zero callsite; scalar late BYTE access is preserved",
+    "Serialized exclusion must prevent slot reuse until post-scalar metadata retirement finishes",
+    "Known region and editable diagnostic checks do not prove complete transitive ownership/provenance/disjointness",
+    "FrameBox119 expected span and fresh111 metadata must survive earlier name callbacks; frames remain outside failing parent scope",
+    "FrameBox parent consumes each ordinary cleanup before entry; no normal tidy replay on failure",
+    "Source compiler EH/null-compare placements differ from Original FH3 scheduling and do not prove SEH/private ABI",
+    "ACEF10 uses established current SDK malloc/new-handler/bad_alloc boundary, not Original heap/handler/exception identity",
+    "Only matching Source SDK allocations can reach119 free; failed103 records remain excluded",
+    "AD2230 whole copy remains unready; no automatic free after failed103/prefix rollback",
+    "No production GUI activation, general recursive/current-target provider composition or game validation"
+  ]
+}

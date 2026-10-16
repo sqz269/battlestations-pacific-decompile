@@ -1,0 +1,2214 @@
+{
+  "goal": "GOAL16J",
+  "status": "reconstructed_registered_win32_whole_body_coff_verified_pending_primary_review",
+  "source": "src/native_tagged_sizes_bb_16j.cpp",
+  "header": "include/bsp/native_tagged_sizes_bb_16j.hpp",
+  "source_sha256": "b02006a8f59d5924694d96e7d0a686a015e9bfca7264c8488e23f39897b678c0",
+  "header_sha256": "4b06ca8f535ffc5681c9bacf7af1e4121ce6127de88ebd6c74742b49c6b430c0",
+  "whole_source_functions": 3,
+  "whole_source_executable_bytes": 93,
+  "exact_native_whole_functions": 3,
+  "exact_native_whole_instructions": 39,
+  "entries": [
+    {
+      "address": "00bb40e0",
+      "native_name": "STL_Vector_Size_00bb40e0",
+      "native_body_end_inclusive": "00bb40fe",
+      "native_body_bytes": "8b410485c07501c38b49082bc8b8398ee338f7e9c1fa038bc2c1e81f03c2c3",
+      "native_body_size": 31,
+      "native_instruction_count": 13,
+      "native_instructions": [
+        {
+          "address": "00bb40e0",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 4]",
+          "size": 3
+        },
+        {
+          "address": "00bb40e3",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "size": 2
+        },
+        {
+          "address": "00bb40e5",
+          "mnemonic": "jne",
+          "operands": "0xbb40e8",
+          "size": 2
+        },
+        {
+          "address": "00bb40e7",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        },
+        {
+          "address": "00bb40e8",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ecx + 8]",
+          "size": 3
+        },
+        {
+          "address": "00bb40eb",
+          "mnemonic": "sub",
+          "operands": "ecx, eax",
+          "size": 2
+        },
+        {
+          "address": "00bb40ed",
+          "mnemonic": "mov",
+          "operands": "eax, 0x38e38e39",
+          "size": 5
+        },
+        {
+          "address": "00bb40f2",
+          "mnemonic": "imul",
+          "operands": "ecx",
+          "size": 2
+        },
+        {
+          "address": "00bb40f4",
+          "mnemonic": "sar",
+          "operands": "edx, 3",
+          "size": 3
+        },
+        {
+          "address": "00bb40f7",
+          "mnemonic": "mov",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bb40f9",
+          "mnemonic": "shr",
+          "operands": "eax, 0x1f",
+          "size": 3
+        },
+        {
+          "address": "00bb40fc",
+          "mnemonic": "add",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bb40fe",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00bb41e0",
+      "native_name": "STL_Vector_Size_00bb41e0",
+      "native_body_end_inclusive": "00bb41fe",
+      "native_body_bytes": "8b410485c07501c38b49082bc8b867666666f7e9c1fa038bc2c1e81f03c2c3",
+      "native_body_size": 31,
+      "native_instruction_count": 13,
+      "native_instructions": [
+        {
+          "address": "00bb41e0",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 4]",
+          "size": 3
+        },
+        {
+          "address": "00bb41e3",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "size": 2
+        },
+        {
+          "address": "00bb41e5",
+          "mnemonic": "jne",
+          "operands": "0xbb41e8",
+          "size": 2
+        },
+        {
+          "address": "00bb41e7",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        },
+        {
+          "address": "00bb41e8",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ecx + 8]",
+          "size": 3
+        },
+        {
+          "address": "00bb41eb",
+          "mnemonic": "sub",
+          "operands": "ecx, eax",
+          "size": 2
+        },
+        {
+          "address": "00bb41ed",
+          "mnemonic": "mov",
+          "operands": "eax, 0x66666667",
+          "size": 5
+        },
+        {
+          "address": "00bb41f2",
+          "mnemonic": "imul",
+          "operands": "ecx",
+          "size": 2
+        },
+        {
+          "address": "00bb41f4",
+          "mnemonic": "sar",
+          "operands": "edx, 3",
+          "size": 3
+        },
+        {
+          "address": "00bb41f7",
+          "mnemonic": "mov",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bb41f9",
+          "mnemonic": "shr",
+          "operands": "eax, 0x1f",
+          "size": 3
+        },
+        {
+          "address": "00bb41fc",
+          "mnemonic": "add",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bb41fe",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00bba220",
+      "native_name": "STL_Vector_Size_00bba220",
+      "native_body_end_inclusive": "00bba23e",
+      "native_body_bytes": "8b410485c07501c38b49082bc8b8abaaaa2af7e9c1fa028bc2c1e81f03c2c3",
+      "native_body_size": 31,
+      "native_instruction_count": 13,
+      "native_instructions": [
+        {
+          "address": "00bba220",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 4]",
+          "size": 3
+        },
+        {
+          "address": "00bba223",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "size": 2
+        },
+        {
+          "address": "00bba225",
+          "mnemonic": "jne",
+          "operands": "0xbba228",
+          "size": 2
+        },
+        {
+          "address": "00bba227",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        },
+        {
+          "address": "00bba228",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ecx + 8]",
+          "size": 3
+        },
+        {
+          "address": "00bba22b",
+          "mnemonic": "sub",
+          "operands": "ecx, eax",
+          "size": 2
+        },
+        {
+          "address": "00bba22d",
+          "mnemonic": "mov",
+          "operands": "eax, 0x2aaaaaab",
+          "size": 5
+        },
+        {
+          "address": "00bba232",
+          "mnemonic": "imul",
+          "operands": "ecx",
+          "size": 2
+        },
+        {
+          "address": "00bba234",
+          "mnemonic": "sar",
+          "operands": "edx, 2",
+          "size": 3
+        },
+        {
+          "address": "00bba237",
+          "mnemonic": "mov",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bba239",
+          "mnemonic": "shr",
+          "operands": "eax, 0x1f",
+          "size": 3
+        },
+        {
+          "address": "00bba23c",
+          "mnemonic": "add",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bba23e",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    }
+  ],
+  "original_abi_by_address": {
+    "00bb40e0": "ECX is sole raw backing input; EAX signed quotient; no actual stack args; RET uses current return word and advances ESP by 4. No prologue/stack spills. Null first: ECX backing and incoming EDX retained. Nonnull: ECX=wrapped delta; EDX=arithmetic-shifted signed product high half; EAX quotient. EBX/ESI/EDI/EBP retained.",
+    "00bb41e0": "ECX is sole raw backing input; EAX signed quotient; no actual stack args; RET uses current return word and advances ESP by 4. No prologue/stack spills. Null first: ECX backing and incoming EDX retained. Nonnull: ECX=wrapped delta; EDX=arithmetic-shifted signed product high half; EAX quotient. EBX/ESI/EDI/EBP retained.",
+    "00bba220": "ECX is sole raw backing input; EAX signed quotient; no actual stack args; RET uses current return word and advances ESP by 4. No prologue/stack spills. Null first: ECX backing and incoming EDX retained. Nonnull: ECX=wrapped delta; EDX=arithmetic-shifted signed product high half; EAX quotient. EBX/ESI/EDI/EBP retained."
+  },
+  "contracts_by_address": {
+    "00bb40e0": {
+      "address": "00bb40e0",
+      "native_name": "STL_Vector_Size_00bb40e0",
+      "native_body_end_inclusive": "00bb40fe",
+      "native_body_bytes": "8b410485c07501c38b49082bc8b8398ee338f7e9c1fa038bc2c1e81f03c2c3",
+      "native_body_size": 31,
+      "native_instruction_count": 13,
+      "native_instructions": [
+        {
+          "address": "00bb40e0",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 4]",
+          "size": 3
+        },
+        {
+          "address": "00bb40e3",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "size": 2
+        },
+        {
+          "address": "00bb40e5",
+          "mnemonic": "jne",
+          "operands": "0xbb40e8",
+          "size": 2
+        },
+        {
+          "address": "00bb40e7",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        },
+        {
+          "address": "00bb40e8",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ecx + 8]",
+          "size": 3
+        },
+        {
+          "address": "00bb40eb",
+          "mnemonic": "sub",
+          "operands": "ecx, eax",
+          "size": 2
+        },
+        {
+          "address": "00bb40ed",
+          "mnemonic": "mov",
+          "operands": "eax, 0x38e38e39",
+          "size": 5
+        },
+        {
+          "address": "00bb40f2",
+          "mnemonic": "imul",
+          "operands": "ecx",
+          "size": 2
+        },
+        {
+          "address": "00bb40f4",
+          "mnemonic": "sar",
+          "operands": "edx, 3",
+          "size": 3
+        },
+        {
+          "address": "00bb40f7",
+          "mnemonic": "mov",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bb40f9",
+          "mnemonic": "shr",
+          "operands": "eax, 0x1f",
+          "size": 3
+        },
+        {
+          "address": "00bb40fc",
+          "mnemonic": "add",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bb40fe",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true,
+      "readiness": "ready_for_Root_contract_review_only",
+      "proposed_interface": "std::int32_t __fastcall count_raw_signed_span_00bb40e0(const void* raw_vector_backing);",
+      "operation": "Load first DWORD at backing+4. If zero, return 0 without accessing +8. Otherwise load last DWORD at backing+8; subtract captured first modulo 2^32, interpret the 32 bits as int32, divide by 36 with truncation toward zero.",
+      "physical_abi": "ECX is sole raw backing input; EAX signed quotient; no actual stack args; RET uses current return word and advances ESP by 4. No prologue/stack spills. Null first: ECX backing and incoming EDX retained. Nonnull: ECX=wrapped delta; EDX=arithmetic-shifted signed product high half; EAX quotient. EBX/ESI/EDI/EBP retained.",
+      "flags": "Zero-first exit preserves TEST-zero status (CF=OF=0, ZF=PF=1, SF=0, AF undefined). Nonzero-first exit preserves final ADD sign-correction flags; intermediate IMUL/shift effects are visible only on fault/interrupt prefixes. A C++ semantic interface alone does not promise these status/volatile-register effects; literal or measured full code may qualify them.",
+      "storage_and_faults": "Only ordered current DWORD loads at ECX+4, then ECX+8 when captured first !=0. x86 effective addresses wrap modulo2^32; unaligned backing, negative/wrapped spans and INT32_MIN are physical inputs. No invented element object/valid range/typed vector, bounds check, pointer-difference UB, nullable backing guard, end read on first==0, capacity read or stores. C++ defined-storage and Original fault semantics must be explicitly qualified; suitable C++17 raw-bit implementation may be measured, never narrowed silently.",
+      "fp": "No FP/SIMD instruction; x87/SSE state and x87 FIP unchanged.",
+      "dependencies": [],
+      "source_coverage": "No complete selected standalone Source address/name found in worker, Root, Main or origin; related semantic caller-local counts are listed separately, not promoted to whole entry or double-counted.",
+      "quotient_evidence": "Native signed IMUL magic / SAR / sign correction agrees with full-domain signed divide; implementation review must preserve unsigned subtraction and bit-preserving signed interpretation, including negative and INT32_MIN, and must count complete emitted helpers/extents if any."
+    },
+    "00bb41e0": {
+      "address": "00bb41e0",
+      "native_name": "STL_Vector_Size_00bb41e0",
+      "native_body_end_inclusive": "00bb41fe",
+      "native_body_bytes": "8b410485c07501c38b49082bc8b867666666f7e9c1fa038bc2c1e81f03c2c3",
+      "native_body_size": 31,
+      "native_instruction_count": 13,
+      "native_instructions": [
+        {
+          "address": "00bb41e0",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 4]",
+          "size": 3
+        },
+        {
+          "address": "00bb41e3",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "size": 2
+        },
+        {
+          "address": "00bb41e5",
+          "mnemonic": "jne",
+          "operands": "0xbb41e8",
+          "size": 2
+        },
+        {
+          "address": "00bb41e7",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        },
+        {
+          "address": "00bb41e8",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ecx + 8]",
+          "size": 3
+        },
+        {
+          "address": "00bb41eb",
+          "mnemonic": "sub",
+          "operands": "ecx, eax",
+          "size": 2
+        },
+        {
+          "address": "00bb41ed",
+          "mnemonic": "mov",
+          "operands": "eax, 0x66666667",
+          "size": 5
+        },
+        {
+          "address": "00bb41f2",
+          "mnemonic": "imul",
+          "operands": "ecx",
+          "size": 2
+        },
+        {
+          "address": "00bb41f4",
+          "mnemonic": "sar",
+          "operands": "edx, 3",
+          "size": 3
+        },
+        {
+          "address": "00bb41f7",
+          "mnemonic": "mov",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bb41f9",
+          "mnemonic": "shr",
+          "operands": "eax, 0x1f",
+          "size": 3
+        },
+        {
+          "address": "00bb41fc",
+          "mnemonic": "add",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bb41fe",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true,
+      "readiness": "ready_for_Root_contract_review_only",
+      "proposed_interface": "std::int32_t __fastcall count_raw_signed_span_00bb41e0(const void* raw_vector_backing);",
+      "operation": "Load first DWORD at backing+4. If zero, return 0 without accessing +8. Otherwise load last DWORD at backing+8; subtract captured first modulo 2^32, interpret the 32 bits as int32, divide by 20 with truncation toward zero.",
+      "physical_abi": "ECX is sole raw backing input; EAX signed quotient; no actual stack args; RET uses current return word and advances ESP by 4. No prologue/stack spills. Null first: ECX backing and incoming EDX retained. Nonnull: ECX=wrapped delta; EDX=arithmetic-shifted signed product high half; EAX quotient. EBX/ESI/EDI/EBP retained.",
+      "flags": "Zero-first exit preserves TEST-zero status (CF=OF=0, ZF=PF=1, SF=0, AF undefined). Nonzero-first exit preserves final ADD sign-correction flags; intermediate IMUL/shift effects are visible only on fault/interrupt prefixes. A C++ semantic interface alone does not promise these status/volatile-register effects; literal or measured full code may qualify them.",
+      "storage_and_faults": "Only ordered current DWORD loads at ECX+4, then ECX+8 when captured first !=0. x86 effective addresses wrap modulo2^32; unaligned backing, negative/wrapped spans and INT32_MIN are physical inputs. No invented element object/valid range/typed vector, bounds check, pointer-difference UB, nullable backing guard, end read on first==0, capacity read or stores. C++ defined-storage and Original fault semantics must be explicitly qualified; suitable C++17 raw-bit implementation may be measured, never narrowed silently.",
+      "fp": "No FP/SIMD instruction; x87/SSE state and x87 FIP unchanged.",
+      "dependencies": [],
+      "source_coverage": "No complete selected standalone Source address/name found in worker, Root, Main or origin; related semantic caller-local counts are listed separately, not promoted to whole entry or double-counted.",
+      "quotient_evidence": "Native signed IMUL magic / SAR / sign correction agrees with full-domain signed divide; implementation review must preserve unsigned subtraction and bit-preserving signed interpretation, including negative and INT32_MIN, and must count complete emitted helpers/extents if any."
+    },
+    "00bba220": {
+      "address": "00bba220",
+      "native_name": "STL_Vector_Size_00bba220",
+      "native_body_end_inclusive": "00bba23e",
+      "native_body_bytes": "8b410485c07501c38b49082bc8b8abaaaa2af7e9c1fa028bc2c1e81f03c2c3",
+      "native_body_size": 31,
+      "native_instruction_count": 13,
+      "native_instructions": [
+        {
+          "address": "00bba220",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 4]",
+          "size": 3
+        },
+        {
+          "address": "00bba223",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "size": 2
+        },
+        {
+          "address": "00bba225",
+          "mnemonic": "jne",
+          "operands": "0xbba228",
+          "size": 2
+        },
+        {
+          "address": "00bba227",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        },
+        {
+          "address": "00bba228",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ecx + 8]",
+          "size": 3
+        },
+        {
+          "address": "00bba22b",
+          "mnemonic": "sub",
+          "operands": "ecx, eax",
+          "size": 2
+        },
+        {
+          "address": "00bba22d",
+          "mnemonic": "mov",
+          "operands": "eax, 0x2aaaaaab",
+          "size": 5
+        },
+        {
+          "address": "00bba232",
+          "mnemonic": "imul",
+          "operands": "ecx",
+          "size": 2
+        },
+        {
+          "address": "00bba234",
+          "mnemonic": "sar",
+          "operands": "edx, 2",
+          "size": 3
+        },
+        {
+          "address": "00bba237",
+          "mnemonic": "mov",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bba239",
+          "mnemonic": "shr",
+          "operands": "eax, 0x1f",
+          "size": 3
+        },
+        {
+          "address": "00bba23c",
+          "mnemonic": "add",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bba23e",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true,
+      "readiness": "ready_for_Root_contract_review_only",
+      "proposed_interface": "std::int32_t __fastcall count_raw_signed_span_00bba220(const void* raw_vector_backing);",
+      "operation": "Load first DWORD at backing+4. If zero, return 0 without accessing +8. Otherwise load last DWORD at backing+8; subtract captured first modulo 2^32, interpret the 32 bits as int32, divide by 24 with truncation toward zero.",
+      "physical_abi": "ECX is sole raw backing input; EAX signed quotient; no actual stack args; RET uses current return word and advances ESP by 4. No prologue/stack spills. Null first: ECX backing and incoming EDX retained. Nonnull: ECX=wrapped delta; EDX=arithmetic-shifted signed product high half; EAX quotient. EBX/ESI/EDI/EBP retained.",
+      "flags": "Zero-first exit preserves TEST-zero status (CF=OF=0, ZF=PF=1, SF=0, AF undefined). Nonzero-first exit preserves final ADD sign-correction flags; intermediate IMUL/shift effects are visible only on fault/interrupt prefixes. A C++ semantic interface alone does not promise these status/volatile-register effects; literal or measured full code may qualify them.",
+      "storage_and_faults": "Only ordered current DWORD loads at ECX+4, then ECX+8 when captured first !=0. x86 effective addresses wrap modulo2^32; unaligned backing, negative/wrapped spans and INT32_MIN are physical inputs. No invented element object/valid range/typed vector, bounds check, pointer-difference UB, nullable backing guard, end read on first==0, capacity read or stores. C++ defined-storage and Original fault semantics must be explicitly qualified; suitable C++17 raw-bit implementation may be measured, never narrowed silently.",
+      "fp": "No FP/SIMD instruction; x87/SSE state and x87 FIP unchanged.",
+      "dependencies": [],
+      "source_coverage": "No complete selected standalone Source address/name found in worker, Root, Main or origin; related semantic caller-local counts are listed separately, not promoted to whole entry or double-counted.",
+      "quotient_evidence": "Native signed IMUL magic / SAR / sign correction agrees with full-domain signed divide; implementation review must preserve unsigned subtraction and bit-preserving signed interpretation, including negative and INT32_MIN, and must count complete emitted helpers/extents if any."
+    }
+  },
+  "arithmetic_proof": {
+    "constants": [
+      {
+        "address": "00bb40e0",
+        "divisor": 36,
+        "magic": "0x38e38e39",
+        "sar": 3,
+        "A": 34359738368,
+        "error_e": 4,
+        "e_times_2pow31": 8589934592,
+        "strictly_less_than_A": true
+      },
+      {
+        "address": "00bb41e0",
+        "divisor": 20,
+        "magic": "0x66666667",
+        "sar": 3,
+        "A": 34359738368,
+        "error_e": 12,
+        "e_times_2pow31": 25769803776,
+        "strictly_less_than_A": true
+      },
+      {
+        "address": "00bba220",
+        "divisor": 24,
+        "magic": "0x2aaaaaab",
+        "sar": 2,
+        "A": 17179869184,
+        "error_e": 8,
+        "e_times_2pow31": 17179869184,
+        "strictly_less_than_A": false
+      }
+    ],
+    "full_domain_reasoning": "Let A=2^(32+k), e=m*d-A>0, and x be the signed bit interpretation of wrapped(end-first). Native q0=floor(m*x/A), then q=q0+(q0<0). For 0<=x<=2^31-1, e*x<A, so writing x=d*n+r gives n<=m*x/A<n+1, hence q=n. For -2^31<=x<0, write y=-x=d*n+r. With e*y<A the strictly positive error <1/d gives n<m*y/A<n+1, hence q0=-n-1 and sign correction returns -n (including r=0). For d24 the sole equality e*y=A is y=2^31; r=8, not d-1, so the same bound still gives ceil=n+1. Direct integer form at this endpoint q0=floor(-0x2aaaaaab/8)=-89478486 and q=-89478485, matching trunc(-2147483648/24). No divide-by-zero or MIN/-1 case exists. C++17 uint32 subtraction plus memcpy int32 bit transfer followed by /positive constant implements exactly this quotient without pointer subtraction, signed subtraction overflow, out-of-range unsigned-to-signed cast or guessed valid-range narrowing.",
+    "whole_code_evidence": "All complete measured C++17 strict and actual registered sections equal the corresponding whole Native bodies, including load schedule, branch, volatile outputs, flags, fault prefixes and plain RET; no helper section was omitted."
+  },
+  "strict": {
+    "path": "local\\goal16j_tagged_sizes_bb\\strict.obj",
+    "sha256": "f7c1b074ee371627190f8114f6192317747dff9090a2e7c3826bf19e51013717",
+    "machine": "IMAGE_FILE_MACHINE_I386",
+    "complete_sections": [
+      {
+        "index": 1,
+        "name": ".drectve",
+        "size": 47,
+        "raw_offset": 380,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1051136,
+        "bytes": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+        "relocation_entries": []
+      },
+      {
+        "index": 2,
+        "name": ".debug$S",
+        "size": 180,
+        "raw_offset": 427,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1108344896,
+        "bytes": "04000000f1000000a80000006a000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d676f616c3136625f7461676765645f62355c6c6f63616c5c676f616c31366a5f7461676765645f73697a65735f62625c7374726963742e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c657200",
+        "relocation_entries": []
+      },
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "size": 31,
+        "raw_offset": 607,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b410485c07501c38b49082bc8b8398ee338f7e9c1fa038bc2c1e81f03c2c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 4,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 638,
+        "relocation_offset": 654,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "000000001f0000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 18,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_sizes_bb_16j_00bb40e0@4"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "name": ".text$mn",
+        "size": 31,
+        "raw_offset": 664,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b410485c07501c38b49082bc8b867666666f7e9c1fa038bc2c1e81f03c2c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 6,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 695,
+        "relocation_offset": 711,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "000000001f0000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 19,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_sizes_bb_16j_00bb41e0@4"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "name": ".text$mn",
+        "size": 31,
+        "raw_offset": 721,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b410485c07501c38b49082bc8b8abaaaa2af7e9c1fa028bc2c1e81f03c2c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 8,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 752,
+        "relocation_offset": 768,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "000000001f0000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 20,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_sizes_bb_16j_00bba220@4"
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "name": ".chks64",
+        "size": 72,
+        "raw_offset": 778,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 2560,
+        "bytes": "76f6abfb5648dec73ab147c99ca6cea5db2a40da374c90922359fa145f2662494d892f44097cbafb2359fa145f266249a7527ac09e8bd0412359fa145f2662490000000000000000",
+        "relocation_entries": []
+      }
+    ],
+    "complete_symbols": [
+      {
+        "index": 0,
+        "name": "@comp.id",
+        "offset": 17141140,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 1,
+        "name": "@feat.00",
+        "offset": 2147549585,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 2,
+        "name": ".drectve",
+        "offset": 0,
+        "section": 1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "2f0000000000000000000000000000000000"
+      },
+      {
+        "index": 4,
+        "name": ".debug$S",
+        "offset": 0,
+        "section": 2,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "b40000000000000000000000000000000000"
+      },
+      {
+        "index": 6,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 3,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1f00000000000000456c0879000001000000"
+      },
+      {
+        "index": 8,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 4,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000030005000000"
+      },
+      {
+        "index": 10,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 5,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1f000000000000004b4704f5000001000000"
+      },
+      {
+        "index": 12,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 6,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000050005000000"
+      },
+      {
+        "index": 14,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 7,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1f000000000000007d19c9ef000001000000"
+      },
+      {
+        "index": 16,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 8,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000070005000000"
+      },
+      {
+        "index": 18,
+        "name": "@bsp_tagged_sizes_bb_16j_00bb40e0@4",
+        "offset": 0,
+        "section": 3,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 19,
+        "name": "@bsp_tagged_sizes_bb_16j_00bb41e0@4",
+        "offset": 0,
+        "section": 5,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 20,
+        "name": "@bsp_tagged_sizes_bb_16j_00bba220@4",
+        "offset": 0,
+        "section": 7,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 21,
+        "name": ".chks64",
+        "offset": 0,
+        "section": 9,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "480000000000000000000000000000000000"
+      }
+    ],
+    "symbol_table_offset": 850,
+    "symbol_table_entries_including_auxiliary": 23,
+    "symbol_table_sha256": "f2cb72ff2e3d5394d2dff084627b8e49bebaa9f864fb3c66de981f9121fd0f45",
+    "string_table_bytes": "70000000406273705f7461676765645f73697a65735f62625f31366a5f3030626234306530403400406273705f7461676765645f73697a65735f62625f31366a5f3030626234316530403400406273705f7461676765645f73697a65735f62625f31366a5f3030626261323230403400",
+    "functions": [
+      {
+        "address": "00bb40e0",
+        "symbol": {
+          "index": 18,
+          "name": "@bsp_tagged_sizes_bb_16j_00bb40e0@4",
+          "offset": 0,
+          "section": 3,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 3,
+        "whole_section_size": 31,
+        "whole_section_bytes": "8b410485c07501c38b49082bc8b8398ee338f7e9c1fa038bc2c1e81f03c2c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 4]",
+            "size": 3
+          },
+          {
+            "offset": 3,
+            "mnemonic": "test",
+            "operands": "eax, eax",
+            "size": 2
+          },
+          {
+            "offset": 5,
+            "mnemonic": "jne",
+            "operands": "8",
+            "size": 2
+          },
+          {
+            "offset": 7,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          },
+          {
+            "offset": 8,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ecx + 8]",
+            "size": 3
+          },
+          {
+            "offset": 11,
+            "mnemonic": "sub",
+            "operands": "ecx, eax",
+            "size": 2
+          },
+          {
+            "offset": 13,
+            "mnemonic": "mov",
+            "operands": "eax, 0x38e38e39",
+            "size": 5
+          },
+          {
+            "offset": 18,
+            "mnemonic": "imul",
+            "operands": "ecx",
+            "size": 2
+          },
+          {
+            "offset": 20,
+            "mnemonic": "sar",
+            "operands": "edx, 3",
+            "size": 3
+          },
+          {
+            "offset": 23,
+            "mnemonic": "mov",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 25,
+            "mnemonic": "shr",
+            "operands": "eax, 0x1f",
+            "size": 3
+          },
+          {
+            "offset": 28,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 30,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00bb41e0",
+        "symbol": {
+          "index": 19,
+          "name": "@bsp_tagged_sizes_bb_16j_00bb41e0@4",
+          "offset": 0,
+          "section": 5,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 5,
+        "whole_section_size": 31,
+        "whole_section_bytes": "8b410485c07501c38b49082bc8b867666666f7e9c1fa038bc2c1e81f03c2c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 4]",
+            "size": 3
+          },
+          {
+            "offset": 3,
+            "mnemonic": "test",
+            "operands": "eax, eax",
+            "size": 2
+          },
+          {
+            "offset": 5,
+            "mnemonic": "jne",
+            "operands": "8",
+            "size": 2
+          },
+          {
+            "offset": 7,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          },
+          {
+            "offset": 8,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ecx + 8]",
+            "size": 3
+          },
+          {
+            "offset": 11,
+            "mnemonic": "sub",
+            "operands": "ecx, eax",
+            "size": 2
+          },
+          {
+            "offset": 13,
+            "mnemonic": "mov",
+            "operands": "eax, 0x66666667",
+            "size": 5
+          },
+          {
+            "offset": 18,
+            "mnemonic": "imul",
+            "operands": "ecx",
+            "size": 2
+          },
+          {
+            "offset": 20,
+            "mnemonic": "sar",
+            "operands": "edx, 3",
+            "size": 3
+          },
+          {
+            "offset": 23,
+            "mnemonic": "mov",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 25,
+            "mnemonic": "shr",
+            "operands": "eax, 0x1f",
+            "size": 3
+          },
+          {
+            "offset": 28,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 30,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00bba220",
+        "symbol": {
+          "index": 20,
+          "name": "@bsp_tagged_sizes_bb_16j_00bba220@4",
+          "offset": 0,
+          "section": 7,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 7,
+        "whole_section_size": 31,
+        "whole_section_bytes": "8b410485c07501c38b49082bc8b8abaaaa2af7e9c1fa028bc2c1e81f03c2c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 4]",
+            "size": 3
+          },
+          {
+            "offset": 3,
+            "mnemonic": "test",
+            "operands": "eax, eax",
+            "size": 2
+          },
+          {
+            "offset": 5,
+            "mnemonic": "jne",
+            "operands": "8",
+            "size": 2
+          },
+          {
+            "offset": 7,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          },
+          {
+            "offset": 8,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ecx + 8]",
+            "size": 3
+          },
+          {
+            "offset": 11,
+            "mnemonic": "sub",
+            "operands": "ecx, eax",
+            "size": 2
+          },
+          {
+            "offset": 13,
+            "mnemonic": "mov",
+            "operands": "eax, 0x2aaaaaab",
+            "size": 5
+          },
+          {
+            "offset": 18,
+            "mnemonic": "imul",
+            "operands": "ecx",
+            "size": 2
+          },
+          {
+            "offset": 20,
+            "mnemonic": "sar",
+            "operands": "edx, 2",
+            "size": 3
+          },
+          {
+            "offset": 23,
+            "mnemonic": "mov",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 25,
+            "mnemonic": "shr",
+            "operands": "eax, 0x1f",
+            "size": 3
+          },
+          {
+            "offset": 28,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 30,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      }
+    ],
+    "whole_executable_bytes": 93,
+    "nonempty_executable_sections": 3,
+    "executable_relocations": 0,
+    "total_relocations": 3,
+    "undefined_external_symbols": []
+  },
+  "registered": {
+    "path": "build\\win32\\bsp_core.dir\\Release\\native_tagged_sizes_bb_16j.obj",
+    "sha256": "8a8596caf7f5293385e3e7a8ae393b57b3e570a24e8df77526a9cd7512162f27",
+    "machine": "IMAGE_FILE_MACHINE_I386",
+    "complete_sections": [
+      {
+        "index": 1,
+        "name": ".drectve",
+        "size": 47,
+        "raw_offset": 380,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1051136,
+        "bytes": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+        "relocation_entries": []
+      },
+      {
+        "index": 2,
+        "name": ".debug$S",
+        "size": 204,
+        "raw_offset": 427,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1108344896,
+        "bytes": "04000000f1000000bf00000081000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d676f616c3136625f7461676765645f62355c6275696c645c77696e33325c6273705f636f72652e6469725c52656c656173655c6e61746976655f7461676765645f73697a65735f62625f31366a2e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c65720000",
+        "relocation_entries": []
+      },
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "size": 31,
+        "raw_offset": 631,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b410485c07501c38b49082bc8b8398ee338f7e9c1fa038bc2c1e81f03c2c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 4,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 662,
+        "relocation_offset": 678,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "000000001f0000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 18,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_sizes_bb_16j_00bb40e0@4"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "name": ".text$mn",
+        "size": 31,
+        "raw_offset": 688,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b410485c07501c38b49082bc8b867666666f7e9c1fa038bc2c1e81f03c2c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 6,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 719,
+        "relocation_offset": 735,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "000000001f0000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 19,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_sizes_bb_16j_00bb41e0@4"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "name": ".text$mn",
+        "size": 31,
+        "raw_offset": 745,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b410485c07501c38b49082bc8b8abaaaa2af7e9c1fa028bc2c1e81f03c2c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 8,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 776,
+        "relocation_offset": 792,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "000000001f0000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 20,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_sizes_bb_16j_00bba220@4"
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "name": ".chks64",
+        "size": 72,
+        "raw_offset": 802,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 2560,
+        "bytes": "76f6abfb5648dec7a48251a49022a9afdb2a40da374c90922359fa145f2662494d892f44097cbafb2359fa145f266249a7527ac09e8bd0412359fa145f2662490000000000000000",
+        "relocation_entries": []
+      }
+    ],
+    "complete_symbols": [
+      {
+        "index": 0,
+        "name": "@comp.id",
+        "offset": 17141140,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 1,
+        "name": "@feat.00",
+        "offset": 2147549585,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 2,
+        "name": ".drectve",
+        "offset": 0,
+        "section": 1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "2f0000000000000000000000000000000000"
+      },
+      {
+        "index": 4,
+        "name": ".debug$S",
+        "offset": 0,
+        "section": 2,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "cc0000000000000000000000000000000000"
+      },
+      {
+        "index": 6,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 3,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1f00000000000000456c0879000001000000"
+      },
+      {
+        "index": 8,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 4,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000030005000000"
+      },
+      {
+        "index": 10,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 5,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1f000000000000004b4704f5000001000000"
+      },
+      {
+        "index": 12,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 6,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000050005000000"
+      },
+      {
+        "index": 14,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 7,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1f000000000000007d19c9ef000001000000"
+      },
+      {
+        "index": 16,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 8,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000070005000000"
+      },
+      {
+        "index": 18,
+        "name": "@bsp_tagged_sizes_bb_16j_00bb40e0@4",
+        "offset": 0,
+        "section": 3,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 19,
+        "name": "@bsp_tagged_sizes_bb_16j_00bb41e0@4",
+        "offset": 0,
+        "section": 5,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 20,
+        "name": "@bsp_tagged_sizes_bb_16j_00bba220@4",
+        "offset": 0,
+        "section": 7,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 21,
+        "name": ".chks64",
+        "offset": 0,
+        "section": 9,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "480000000000000000000000000000000000"
+      }
+    ],
+    "symbol_table_offset": 874,
+    "symbol_table_entries_including_auxiliary": 23,
+    "symbol_table_sha256": "b97da7e65b3842ba9be2e7f5d623320a2519ef3e7d3b877ac2f3fbb44c978893",
+    "string_table_bytes": "70000000406273705f7461676765645f73697a65735f62625f31366a5f3030626234306530403400406273705f7461676765645f73697a65735f62625f31366a5f3030626234316530403400406273705f7461676765645f73697a65735f62625f31366a5f3030626261323230403400",
+    "functions": [
+      {
+        "address": "00bb40e0",
+        "symbol": {
+          "index": 18,
+          "name": "@bsp_tagged_sizes_bb_16j_00bb40e0@4",
+          "offset": 0,
+          "section": 3,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 3,
+        "whole_section_size": 31,
+        "whole_section_bytes": "8b410485c07501c38b49082bc8b8398ee338f7e9c1fa038bc2c1e81f03c2c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 4]",
+            "size": 3
+          },
+          {
+            "offset": 3,
+            "mnemonic": "test",
+            "operands": "eax, eax",
+            "size": 2
+          },
+          {
+            "offset": 5,
+            "mnemonic": "jne",
+            "operands": "8",
+            "size": 2
+          },
+          {
+            "offset": 7,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          },
+          {
+            "offset": 8,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ecx + 8]",
+            "size": 3
+          },
+          {
+            "offset": 11,
+            "mnemonic": "sub",
+            "operands": "ecx, eax",
+            "size": 2
+          },
+          {
+            "offset": 13,
+            "mnemonic": "mov",
+            "operands": "eax, 0x38e38e39",
+            "size": 5
+          },
+          {
+            "offset": 18,
+            "mnemonic": "imul",
+            "operands": "ecx",
+            "size": 2
+          },
+          {
+            "offset": 20,
+            "mnemonic": "sar",
+            "operands": "edx, 3",
+            "size": 3
+          },
+          {
+            "offset": 23,
+            "mnemonic": "mov",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 25,
+            "mnemonic": "shr",
+            "operands": "eax, 0x1f",
+            "size": 3
+          },
+          {
+            "offset": 28,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 30,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00bb41e0",
+        "symbol": {
+          "index": 19,
+          "name": "@bsp_tagged_sizes_bb_16j_00bb41e0@4",
+          "offset": 0,
+          "section": 5,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 5,
+        "whole_section_size": 31,
+        "whole_section_bytes": "8b410485c07501c38b49082bc8b867666666f7e9c1fa038bc2c1e81f03c2c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 4]",
+            "size": 3
+          },
+          {
+            "offset": 3,
+            "mnemonic": "test",
+            "operands": "eax, eax",
+            "size": 2
+          },
+          {
+            "offset": 5,
+            "mnemonic": "jne",
+            "operands": "8",
+            "size": 2
+          },
+          {
+            "offset": 7,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          },
+          {
+            "offset": 8,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ecx + 8]",
+            "size": 3
+          },
+          {
+            "offset": 11,
+            "mnemonic": "sub",
+            "operands": "ecx, eax",
+            "size": 2
+          },
+          {
+            "offset": 13,
+            "mnemonic": "mov",
+            "operands": "eax, 0x66666667",
+            "size": 5
+          },
+          {
+            "offset": 18,
+            "mnemonic": "imul",
+            "operands": "ecx",
+            "size": 2
+          },
+          {
+            "offset": 20,
+            "mnemonic": "sar",
+            "operands": "edx, 3",
+            "size": 3
+          },
+          {
+            "offset": 23,
+            "mnemonic": "mov",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 25,
+            "mnemonic": "shr",
+            "operands": "eax, 0x1f",
+            "size": 3
+          },
+          {
+            "offset": 28,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 30,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00bba220",
+        "symbol": {
+          "index": 20,
+          "name": "@bsp_tagged_sizes_bb_16j_00bba220@4",
+          "offset": 0,
+          "section": 7,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 7,
+        "whole_section_size": 31,
+        "whole_section_bytes": "8b410485c07501c38b49082bc8b8abaaaa2af7e9c1fa028bc2c1e81f03c2c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 4]",
+            "size": 3
+          },
+          {
+            "offset": 3,
+            "mnemonic": "test",
+            "operands": "eax, eax",
+            "size": 2
+          },
+          {
+            "offset": 5,
+            "mnemonic": "jne",
+            "operands": "8",
+            "size": 2
+          },
+          {
+            "offset": 7,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          },
+          {
+            "offset": 8,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ecx + 8]",
+            "size": 3
+          },
+          {
+            "offset": 11,
+            "mnemonic": "sub",
+            "operands": "ecx, eax",
+            "size": 2
+          },
+          {
+            "offset": 13,
+            "mnemonic": "mov",
+            "operands": "eax, 0x2aaaaaab",
+            "size": 5
+          },
+          {
+            "offset": 18,
+            "mnemonic": "imul",
+            "operands": "ecx",
+            "size": 2
+          },
+          {
+            "offset": 20,
+            "mnemonic": "sar",
+            "operands": "edx, 2",
+            "size": 3
+          },
+          {
+            "offset": 23,
+            "mnemonic": "mov",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 25,
+            "mnemonic": "shr",
+            "operands": "eax, 0x1f",
+            "size": 3
+          },
+          {
+            "offset": 28,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 30,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      }
+    ],
+    "whole_executable_bytes": 93,
+    "nonempty_executable_sections": 3,
+    "executable_relocations": 0,
+    "total_relocations": 3,
+    "undefined_external_symbols": []
+  },
+  "actual_registered_target": {
+    "project_path": "build\\win32\\bsp_core.vcxproj",
+    "project_sha256": "dbf12cde62dec38d2eba6d238b8aa111098f0d39bd6d17652d2fa4ece843e484",
+    "LanguageStandard_values": [
+      "stdcpp17",
+      "stdcpp17",
+      "stdcpp17",
+      "stdcpp17"
+    ],
+    "configuration": "Release|Win32",
+    "object_matches_unique_real_archive_member": true
+  },
+  "archive": {
+    "path": "build\\win32\\Release\\bsp_core.lib",
+    "sha256": "401ed37197d248d94cfba5d78e57e87c7ce346720be6f6172573372995a73b7f",
+    "member_name": "bsp_core.dir\\Release\\native_tagged_sizes_bb_16j.obj",
+    "member_header_offset": 20070668,
+    "member_size": 1400,
+    "member_sha256": "8a8596caf7f5293385e3e7a8ae393b57b3e570a24e8df77526a9cd7512162f27",
+    "unique_matches": 1
+  },
+  "all_executable_extents_accounted": true,
+  "all_code_symbol_offsets_zero": true,
+  "code_relocations": 0,
+  "metadata_relocations": {
+    "strict": 3,
+    "registered": 3,
+    "qualification": "Each relocation is type7 at offset0 in debug$F and targets the owning defined function symbol; no executable relocation or undefined provider."
+  },
+  "native_capture_target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "native_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "live_typed_body_ranges_complete": true,
+  "live_flow_overrides_NONE": true,
+  "discovery": {
+    "screened_functions": 15,
+    "screened_native_bytes": 593,
+    "ready_functions": 3,
+    "ready_native_bytes": 93,
+    "ready_native_instructions": 39,
+    "deferred_functions": 12,
+    "deferred_native_bytes": 500,
+    "excluded_Root_I_addresses": [
+      "00b94b20",
+      "00b96e50",
+      "00b9a1c0",
+      "00b9a3d0",
+      "00b9a4b0",
+      "00b9a500",
+      "00ba7170",
+      "00ba7180",
+      "00ba7190",
+      "00bb8ff0",
+      "00bbb620",
+      "00bbb630",
+      "00bbce40",
+      "00bbce50",
+      "00bbce70",
+      "00b916f0",
+      "00b91710",
+      "00b91720",
+      "00b922e0",
+      "00b922f0",
+      "00b9a330",
+      "00bbe290"
+    ],
+    "deferred": [
+      {
+        "address": "00bb0b60",
+        "native_name": "TMPL_RefPtr_Reset_00bb0b60",
+        "native_body_size": 43,
+        "indexed_callees": 0,
+        "actual_calls": [
+          "CALL dword ptr [00ce2220] = installed PE KERNEL32.dll!InterlockedDecrement",
+          "CALL EAX = current pointee vtable slot0; ECX=pointee, no explicit stack args"
+        ],
+        "qualification": "SDK InterlockedDecrement is a genuine available implementation domain, not a private CRT gap. Dynamic slot0 lifecycle/storage ownership is not established by the selected tag or zero indexed callees. No actual target set or production concrete provider for these selected entries was qualified in this bounded pass. This deferral does not assert Source implementation impossible or that all similar hosts lack providers."
+      },
+      {
+        "address": "00bb0bd0",
+        "native_name": "TMPL_RefPtr_Release_00bb0bd0",
+        "native_body_size": 41,
+        "indexed_callees": 0,
+        "actual_calls": [
+          "CALL dword ptr [00ce2220] = installed PE KERNEL32.dll!InterlockedDecrement",
+          "CALL EAX = current pointee vtable slot0; ECX=pointee, no explicit stack args"
+        ],
+        "qualification": "SDK InterlockedDecrement is a genuine available implementation domain, not a private CRT gap. Dynamic slot0 lifecycle/storage ownership is not established by the selected tag or zero indexed callees. No actual target set or production concrete provider for these selected entries was qualified in this bounded pass. This deferral does not assert Source implementation impossible or that all similar hosts lack providers."
+      },
+      {
+        "address": "00bb0c00",
+        "native_name": "TMPL_RefPtr_Release_00bb0c00",
+        "native_body_size": 41,
+        "indexed_callees": 0,
+        "actual_calls": [
+          "CALL dword ptr [00ce2220] = installed PE KERNEL32.dll!InterlockedDecrement",
+          "CALL EAX = current pointee vtable slot0; ECX=pointee, no explicit stack args"
+        ],
+        "qualification": "SDK InterlockedDecrement is a genuine available implementation domain, not a private CRT gap. Dynamic slot0 lifecycle/storage ownership is not established by the selected tag or zero indexed callees. No actual target set or production concrete provider for these selected entries was qualified in this bounded pass. This deferral does not assert Source implementation impossible or that all similar hosts lack providers."
+      },
+      {
+        "address": "00bb0c30",
+        "native_name": "TMPL_RefPtr_Release_00bb0c30",
+        "native_body_size": 41,
+        "indexed_callees": 0,
+        "actual_calls": [
+          "CALL dword ptr [00ce2220] = installed PE KERNEL32.dll!InterlockedDecrement",
+          "CALL EAX = current pointee vtable slot0; ECX=pointee, no explicit stack args"
+        ],
+        "qualification": "SDK InterlockedDecrement is a genuine available implementation domain, not a private CRT gap. Dynamic slot0 lifecycle/storage ownership is not established by the selected tag or zero indexed callees. No actual target set or production concrete provider for these selected entries was qualified in this bounded pass. This deferral does not assert Source implementation impossible or that all similar hosts lack providers."
+      },
+      {
+        "address": "00bb0c60",
+        "native_name": "TMPL_RefPtr_Release_00bb0c60",
+        "native_body_size": 41,
+        "indexed_callees": 0,
+        "actual_calls": [
+          "CALL dword ptr [00ce2220] = installed PE KERNEL32.dll!InterlockedDecrement",
+          "CALL EAX = current pointee vtable slot0; ECX=pointee, no explicit stack args"
+        ],
+        "qualification": "SDK InterlockedDecrement is a genuine available implementation domain, not a private CRT gap. Dynamic slot0 lifecycle/storage ownership is not established by the selected tag or zero indexed callees. No actual target set or production concrete provider for these selected entries was qualified in this bounded pass. This deferral does not assert Source implementation impossible or that all similar hosts lack providers."
+      },
+      {
+        "address": "00bb8ed0",
+        "native_name": "TMPL_RefPtr_Release_00bb8ed0",
+        "native_body_size": 41,
+        "indexed_callees": 0,
+        "actual_calls": [
+          "CALL dword ptr [00ce2220] = installed PE KERNEL32.dll!InterlockedDecrement",
+          "CALL EAX = current pointee vtable slot0; ECX=pointee, no explicit stack args"
+        ],
+        "qualification": "SDK InterlockedDecrement is a genuine available implementation domain, not a private CRT gap. Dynamic slot0 lifecycle/storage ownership is not established by the selected tag or zero indexed callees. No actual target set or production concrete provider for these selected entries was qualified in this bounded pass. This deferral does not assert Source implementation impossible or that all similar hosts lack providers."
+      },
+      {
+        "address": "00bb8f00",
+        "native_name": "TMPL_RefPtr_Release_00bb8f00",
+        "native_body_size": 41,
+        "indexed_callees": 0,
+        "actual_calls": [
+          "CALL dword ptr [00ce2220] = installed PE KERNEL32.dll!InterlockedDecrement",
+          "CALL EAX = current pointee vtable slot0; ECX=pointee, no explicit stack args"
+        ],
+        "qualification": "SDK InterlockedDecrement is a genuine available implementation domain, not a private CRT gap. Dynamic slot0 lifecycle/storage ownership is not established by the selected tag or zero indexed callees. No actual target set or production concrete provider for these selected entries was qualified in this bounded pass. This deferral does not assert Source implementation impossible or that all similar hosts lack providers."
+      },
+      {
+        "address": "00bbd690",
+        "native_name": "TMPL_RefPtr_Reset_00bbd690",
+        "native_body_size": 43,
+        "indexed_callees": 0,
+        "actual_calls": [
+          "CALL dword ptr [00ce2220] = installed PE KERNEL32.dll!InterlockedDecrement",
+          "CALL EAX = current pointee vtable slot0; ECX=pointee, no explicit stack args"
+        ],
+        "qualification": "SDK InterlockedDecrement is a genuine available implementation domain, not a private CRT gap. Dynamic slot0 lifecycle/storage ownership is not established by the selected tag or zero indexed callees. No actual target set or production concrete provider for these selected entries was qualified in this bounded pass. This deferral does not assert Source implementation impossible or that all similar hosts lack providers."
+      },
+      {
+        "address": "00bbdec0",
+        "native_name": "TMPL_RefPtr_Reset_00bbdec0",
+        "native_body_size": 43,
+        "indexed_callees": 0,
+        "actual_calls": [
+          "CALL dword ptr [00ce2220] = installed PE KERNEL32.dll!InterlockedDecrement",
+          "CALL EAX = current pointee vtable slot0; ECX=pointee, no explicit stack args"
+        ],
+        "qualification": "SDK InterlockedDecrement is a genuine available implementation domain, not a private CRT gap. Dynamic slot0 lifecycle/storage ownership is not established by the selected tag or zero indexed callees. No actual target set or production concrete provider for these selected entries was qualified in this bounded pass. This deferral does not assert Source implementation impossible or that all similar hosts lack providers."
+      },
+      {
+        "address": "00bbdef0",
+        "native_name": "TMPL_RefPtr_Reset_00bbdef0",
+        "native_body_size": 43,
+        "indexed_callees": 0,
+        "actual_calls": [
+          "CALL dword ptr [00ce2220] = installed PE KERNEL32.dll!InterlockedDecrement",
+          "CALL EAX = current pointee vtable slot0; ECX=pointee, no explicit stack args"
+        ],
+        "qualification": "SDK InterlockedDecrement is a genuine available implementation domain, not a private CRT gap. Dynamic slot0 lifecycle/storage ownership is not established by the selected tag or zero indexed callees. No actual target set or production concrete provider for these selected entries was qualified in this bounded pass. This deferral does not assert Source implementation impossible or that all similar hosts lack providers."
+      },
+      {
+        "address": "00bbf560",
+        "native_name": "TMPL_RefPtr_Release_00bbf560",
+        "native_body_size": 41,
+        "indexed_callees": 0,
+        "actual_calls": [
+          "CALL dword ptr [00ce2220] = installed PE KERNEL32.dll!InterlockedDecrement",
+          "CALL EAX = current pointee vtable slot0; ECX=pointee, no explicit stack args"
+        ],
+        "qualification": "SDK InterlockedDecrement is a genuine available implementation domain, not a private CRT gap. Dynamic slot0 lifecycle/storage ownership is not established by the selected tag or zero indexed callees. No actual target set or production concrete provider for these selected entries was qualified in this bounded pass. This deferral does not assert Source implementation impossible or that all similar hosts lack providers."
+      },
+      {
+        "address": "00bbf640",
+        "native_name": "TMPL_RefPtr_Release_00bbf640",
+        "native_body_size": 41,
+        "indexed_callees": 0,
+        "actual_calls": [
+          "CALL dword ptr [00ce2220] = installed PE KERNEL32.dll!InterlockedDecrement",
+          "CALL EAX = current pointee vtable slot0; ECX=pointee, no explicit stack args"
+        ],
+        "qualification": "SDK InterlockedDecrement is a genuine available implementation domain, not a private CRT gap. Dynamic slot0 lifecycle/storage ownership is not established by the selected tag or zero indexed callees. No actual target set or production concrete provider for these selected entries was qualified in this bounded pass. This deferral does not assert Source implementation impossible or that all similar hosts lack providers."
+      }
+    ],
+    "query": "Indexed functions with tag, no recon kind, non-TRIV name/tag and no indexed callees, excluding 15 Root I selected +7 deferred globals; capped LIMIT45 name query returned only15. This is not a whole984-function pass.",
+    "body_inspection_limit": 20,
+    "coverage": {
+      "iat": [
+        {
+          "dll": "KERNEL32.dll",
+          "name": "InterlockedDecrement",
+          "iat": "00ce2220"
+        }
+      ],
+      "proposed_paths": [
+        "src/native_tagged_sizes_bb_16j.cpp",
+        "include/bsp/native_tagged_sizes_bb_16j.hpp",
+        "docs/GOAL16J_TAGGED_SIZES_BB.md",
+        "reports/goal16j_tagged_sizes_bb.json"
+      ],
+      "checks": [
+        {
+          "location": "J:\\PROG\\battlestations-pacific-decompile-goal16b_tagged_b5",
+          "ref": "HEAD",
+          "commit": "7cdda43fd6a47a393962c0da3e12813f686f2994",
+          "all_four_paths_absent": {
+            "src/native_tagged_sizes_bb_16j.cpp": true,
+            "include/bsp/native_tagged_sizes_bb_16j.hpp": true,
+            "docs/GOAL16J_TAGGED_SIZES_BB.md": true,
+            "reports/goal16j_tagged_sizes_bb.json": true
+          },
+          "source_address_hits": [
+            "HEAD:include/bsp/weather_render.hpp:3:// Weather and sky effects of partition segment 94 (00BBDEC0-00BC94D0): the 3D"
+          ]
+        },
+        {
+          "location": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator",
+          "ref": "HEAD",
+          "commit": "746fa988ab1f61a3e360784bb6fffc1a8bb02636",
+          "all_four_paths_absent": {
+            "src/native_tagged_sizes_bb_16j.cpp": true,
+            "include/bsp/native_tagged_sizes_bb_16j.hpp": true,
+            "docs/GOAL16J_TAGGED_SIZES_BB.md": true,
+            "reports/goal16j_tagged_sizes_bb.json": true
+          },
+          "source_address_hits": [
+            "HEAD:include/bsp/weather_render.hpp:3:// Weather and sky effects of partition segment 94 (00BBDEC0-00BC94D0): the 3D"
+          ]
+        },
+        {
+          "location": "J:\\PROG\\battlestations-pacific-decompile",
+          "ref": "HEAD",
+          "commit": "f3b345cf279bdcaf295b512edc7b4979b4908b1b",
+          "all_four_paths_absent": {
+            "src/native_tagged_sizes_bb_16j.cpp": true,
+            "include/bsp/native_tagged_sizes_bb_16j.hpp": true,
+            "docs/GOAL16J_TAGGED_SIZES_BB.md": true,
+            "reports/goal16j_tagged_sizes_bb.json": true
+          },
+          "source_address_hits": [
+            "HEAD:include/bsp/weather_render.hpp:3:// Weather and sky effects of partition segment 94 (00BBDEC0-00BC94D0): the 3D"
+          ]
+        },
+        {
+          "location": "J:\\PROG\\battlestations-pacific-decompile",
+          "ref": "origin/main",
+          "commit": "f3b345cf279bdcaf295b512edc7b4979b4908b1b",
+          "all_four_paths_absent": {
+            "src/native_tagged_sizes_bb_16j.cpp": true,
+            "include/bsp/native_tagged_sizes_bb_16j.hpp": true,
+            "docs/GOAL16J_TAGGED_SIZES_BB.md": true,
+            "reports/goal16j_tagged_sizes_bb.json": true
+          },
+          "source_address_hits": [
+            "origin/main:include/bsp/weather_render.hpp:3:// Weather and sky effects of partition segment 94 (00BBDEC0-00BC94D0): the 3D"
+          ]
+        }
+      ],
+      "semantic_related_source": [
+        {
+          "path": "src/native_mpak_lookup_storage.cpp:13-21",
+          "coverage": "Larger BB4140 bounds-checked lookup inlines signed /36 count; no complete independent BB40E0 entry."
+        },
+        {
+          "path": "src/native_mpak_container_storage.cpp:16-19,71ff",
+          "coverage": "Generic unsigned-stride count for larger append operations; not whole signed BB40E0/BB41E0 entries for every uint32 span."
+        },
+        {
+          "path": "src/native_vfs_lookup_leaves.cpp:41-45",
+          "coverage": "Local msar_row_count uses provider+1c/+20, signed /24 inline within other full operations; no independent BBA220 vector+4/+8 entry."
+        }
+      ]
+    },
+    "report_sha256": "98aba47905bc393cef0193932321cdd3d7218fc847b3f11ef9cd47cbbf855ccb",
+    "no_other_bodies_inspected": true
+  },
+  "path_absence_reverified_before_creation": [
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile-goal16b_tagged_b5",
+      "ref": "HEAD",
+      "commit": "7cdda43fd6a47a393962c0da3e12813f686f2994",
+      "all_four_absent": true
+    },
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator",
+      "ref": "HEAD",
+      "commit": "abcbfe6214585c99201ac55c2b3faa40aa4fd65e",
+      "all_four_absent": true
+    },
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile",
+      "ref": "HEAD",
+      "commit": "f3b345cf279bdcaf295b512edc7b4979b4908b1b",
+      "all_four_absent": true
+    },
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile",
+      "ref": "origin/main",
+      "commit": "f3b345cf279bdcaf295b512edc7b4979b4908b1b",
+      "all_four_absent": true
+    }
+  ],
+  "existing_STL_names_retained_in_name_ledger": true,
+  "name_record_correction": "Initial owned descriptive Source-hypothesis name rows were restored before commit to the correct existing STL_Vector_Size names at Root direction using owned-record --replace after normal reviewed-name guard refused plain add-name; measured signed-wrap/stride evidence appended, no Ghidra mutation.",
+  "source_forms": "Three readable ordinary C++17 definitions; no naked instructions needed; no rejected Source/compiler form. One COFF-report wrapper path correction used existing successfully compiled object without compiler rerun.",
+  "verification_wrapper_repair": {
+    "compile_succeeded_first_attempt": true,
+    "initial_coff_wrapper_error": "Passed relative object path to generic parser whose report requires path.relative_to(absolute_root); repaired by Path.resolve without compiler rerun.",
+    "source_changes_required": false
+  },
+  "build": {
+    "started_utc": "2026-10-16T07:23:18.354575+00:00",
+    "completed_utc": "2026-10-16T07:23:36.074032+00:00",
+    "build_seconds": 17.719771199990646,
+    "exit_code": 0
+  },
+  "checks": {
+    "build_exit_code": 0,
+    "ctest_passed": 2,
+    "ctest_failed": 0,
+    "ctest_total_seconds": 7.01,
+    "names": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "new_tests": 0
+  },
+  "prior_provider_preservation": [
+    {
+      "packet": "16B",
+      "report": "reports/goal16b_tagged_leaf_b5_01.json",
+      "report_sha256": "38fbf9809c46003634c86c68db2bf3964fe69e1fb2ffe6ebb6ac4d9d65246ba6",
+      "source_header_pins_unchanged": true,
+      "unique_real_archive_members": 1,
+      "member_name": "bsp_core.dir\\Release\\native_tagged_leaf_b5_01.obj",
+      "member_header_offset": 35434246,
+      "member_size": 2236,
+      "member_sha256": "fe83ae50a82743c3a3914da44bff03f87d9f64c3085d4201e16d7574f689a54f",
+      "matches_prior_registered_actual_object": true,
+      "whole_source_functions": 7,
+      "whole_source_executable_bytes": 21
+    },
+    {
+      "packet": "16E",
+      "report": "reports/goal16e_tagged_leaf_b6_16e.json",
+      "report_sha256": "199b590225c514c44cee4e90cb33e40a604cd47b936e488fc6d722247940919a",
+      "source_header_pins_unchanged": true,
+      "unique_real_archive_members": 1,
+      "member_name": "bsp_core.dir\\Release\\native_tagged_leaf_b6_16e.obj",
+      "member_header_offset": 20074106,
+      "member_size": 1576,
+      "member_sha256": "7c6198ab8ddc07ba945b7cd507e3070e822431e369881f01a76fd97fa1668252",
+      "matches_prior_registered_actual_object": true,
+      "whole_source_functions": 4,
+      "whole_source_executable_bytes": 45
+    },
+    {
+      "packet": "16G",
+      "report": "reports/goal16g_tagged_leaf_b78.json",
+      "report_sha256": "3d1d9804c3224af48895f2d0f8787b0c09deabde39318aca3d5e7ca23e503d20",
+      "source_header_pins_unchanged": true,
+      "unique_real_archive_members": 1,
+      "member_name": "bsp_core.dir\\Release\\native_tagged_leaf_b78_16g.obj",
+      "member_header_offset": 20072128,
+      "member_size": 1917,
+      "member_sha256": "a8a6d5b6625fbe021d5a1a414ed9b97cdb0eb1969e18dfedcc31552c1cd9f48a",
+      "matches_prior_registered_actual_object": true,
+      "whole_source_functions": 7,
+      "whole_source_executable_bytes": 93
+    }
+  ],
+  "frozen_16G_provenance_sha256": "d22bc7bd59a2447b4cce03c84568e4a498f3688f61352f1a32121607eddb4110",
+  "root_peer_G_freeze_manifest": "c855df20919271afc53791be55faab586319d2798caa360b266787e579df4846",
+  "uncertainties": [
+    "Names/formal raw pointer and signed return types are new observed-operation interfaces, not recovered original C++ type spellings or class/field identities.",
+    "C++ source-level defined behavior requires accessible backing bytes; the measured emitted MSVC32 bodies retain Original instruction-level invalid/unaligned/wrapped input, alias, flags/register and fault-prefix behavior. Exact code bytes do not assert identical mapped fault/return EIP placement, caller adoption, Native execution, installed replacement or game validation.",
+    "Private parent/callee closure is not implied: all three selected entries are genuinely call-free, while the twelve actual-call deferrals remain individually unqualified."
+  ],
+  "new_tests": 0,
+  "ghidra_mutations": false,
+  "native_execution": false,
+  "game_validated": false,
+  "wall_clock": {
+    "first_readiness_clock_utc": "2026-10-16T07:14:36+00:00",
+    "discovery_endpoint_utc": "2026-10-16T07:20:39+00:00",
+    "discovery_inclusive_seconds": 363,
+    "implementation_start_utc": "2026-10-16T07:20:39+00:00",
+    "report_checkpoint_utc": "2026-10-16T07:28:13.084633+00:00",
+    "implementation_seconds_through_report": 454.084633,
+    "full_inclusive_seconds_through_report": 817.084633,
+    "includes": "All readiness classification/rejected candidates and coordination/lease/setup, prior evidence preservation, fresh Native capture, readable C++ construction, strict compile, COFF wrapper path repair, normal warm configure/build/CTest, actual whole COFF/archive/provider review, arithmetic proof, docs/report/ledger/index, commit/release and handoff preparation. Final local receipt supplies later full author endpoint; no reset at compilation or implementation.",
+    "final_handoff_artifact": "local/goal16j_tagged_sizes_bb/final_handoff.json",
+    "speedup_claim": false
+  },
+  "evidence_artifact_sha256": {
+    "local\\goal16j_tagged_sizes_bb\\build.txt": "607858a33c4999cafcd4d36446529310c4c9e13761d1061301acd44e85e4505b",
+    "local\\goal16j_tagged_sizes_bb\\build_timing.json": "f31f81ccea27d749ab614587f66d29be386013fc3e4b3b78fe0eda8d284b0812",
+    "local\\goal16j_tagged_sizes_bb\\capture.py": "d3498aa6b7097d60f901753f50b136d8e671c48d776acb161834353c27dbcaea",
+    "local\\goal16j_tagged_sizes_bb\\coff_proof.py": "a357e97807baa6c86a9f0c4477191eed8ea2823414f18577d4d02672ff8efa09",
+    "local\\goal16j_tagged_sizes_bb\\compile_timing.json": "e03f2c11cfc6cb1973163efc571fd4868a7a176e5b9529d23adfec5f9945639e",
+    "local\\goal16j_tagged_sizes_bb\\discovery_receipt.json": "b9af3d441a5de46a7c3b1bd327ae81ee114d52fe09da7bfd479fcab430067bca",
+    "local\\goal16j_tagged_sizes_bb\\ledger_log.txt": "86dcd333089858c6544772dd8c5d4e3468977049349eaa1dbbe3ad82ac09b717",
+    "local\\goal16j_tagged_sizes_bb\\ledger_records.py": "b25c23ef28d542dacddb9a70354bb73ec1783ec52dc7b0b54b0170823bbcc462",
+    "local\\goal16j_tagged_sizes_bb\\name_identity_correction.txt": "1d6cf856bd99bdec94a786fbb5b98e201540e3514de1c6db412af9e4a26eb22d",
+    "local\\goal16j_tagged_sizes_bb\\native_00bb40e0.txt": "0a15c8b6a0798a82bfd6c865096dbde40190496d8c61576f92b1dd1935d6db61",
+    "local\\goal16j_tagged_sizes_bb\\native_00bb41e0.txt": "4a264c009c08a6a5ca124d78bba1346ff6d5eefff8626bbfbe02b0fd2dcee45a",
+    "local\\goal16j_tagged_sizes_bb\\native_00bba220.txt": "2c20587c3074744794323ecbddf47fb893f7c1a9fa59d00be1f9c37e40af7aab",
+    "local\\goal16j_tagged_sizes_bb\\native_capture.json": "e98a85dfa375d8d04092c496152f2d298380ec2a905fbca0f09441ec6f706fc1",
+    "local\\goal16j_tagged_sizes_bb\\path_checks.json": "c65a2e1a4a5e752607408fbfcafde5ed196c6b1bb1c05ce59f0e64a49dc05240",
+    "local\\goal16j_tagged_sizes_bb\\run_build.py": "60dd4550218f62b229cc0a3148f66353506850c248df6357436705dddf481192",
+    "local\\goal16j_tagged_sizes_bb\\strict.obj": "f7c1b074ee371627190f8114f6192317747dff9090a2e7c3826bf19e51013717",
+    "local\\goal16j_tagged_sizes_bb\\strict_compile.cmd": "f2eeb7893eeef5cba21c6a1ffabf38b75c67594eb2a0327263666c57468c0ed6",
+    "local\\goal16j_tagged_sizes_bb\\strict_compile.txt": "8c474fcab852bac40cf0c4cb3c7b579dc8efd076237a967d252a6ebcb8d1efb2",
+    "local\\goal16j_tagged_sizes_bb\\strict_proof.json": "a80138540f093ab4e2d4edb0fc2dc690f1cc29699de2d2bf903d61d2e0f20ad5",
+    "local\\goal16j_tagged_sizes_bb\\typed_flow.json": "a6d151d97a207851272e28d4b1eb1203e3567c4b038118140d9aded8aa265dfa",
+    "local\\goal16j_tagged_sizes_bb\\typed_flow_cli.txt": "f1477b02ff61b01ce16f24d3fa41defb5edac2ddde66104f288f8bfe2bd570b8",
+    "local\\goal16j_tagged_sizes_bb\\validate.py": "4cc29b13436577292d343b75ae8a53e146e4e00587c40d5e139338bf36d63035",
+    "local\\goal16j_tagged_sizes_bb\\verification_wrapper_repair.json": "04d71c181b4ee9cc468ac377b5d6f3afeb1b69e85663b5bf6282fc5379f27b53"
+  }
+}
