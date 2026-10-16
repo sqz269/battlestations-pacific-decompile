@@ -1,0 +1,178 @@
+{
+  "batch": "oct15_twentysixth_reconstruction_batch",
+  "status": "Source_integrated_Main_primary_clear_peer_default_Win32_checked",
+  "components": [
+    {
+      "pin": "08caa70e60cc1901db300ffc9c9cbbee9f03a33a",
+      "report": "reports/oct15_native_input_default_scalar_tree_clear.json",
+      "artifacts": {
+        "src/native_input_default_scalar_tree_clear.cpp": {
+          "integrator_sha256": "29f1ba308ba368e7cb606c6189048e51a69e7b47f66ea1e9b18cb801596286b6",
+          "Main_sha256": "29f1ba308ba368e7cb606c6189048e51a69e7b47f66ea1e9b18cb801596286b6",
+          "LF_frozen_blob_equal": true
+        },
+        "include/bsp/native_input_default_scalar_tree_clear.hpp": {
+          "integrator_sha256": "2caa11af8c6be3e7535c9004a268cd1d192ce2a39c70ec425c968c4be3b23259",
+          "Main_sha256": "2caa11af8c6be3e7535c9004a268cd1d192ce2a39c70ec425c968c4be3b23259",
+          "LF_frozen_blob_equal": true
+        },
+        "docs/OCT15_NATIVE_INPUT_DEFAULT_SCALAR_TREE_CLEAR.md": {
+          "integrator_sha256": "e64ead31f358475b8243b83d49712f0f2ed642e2eac25c4dc1c473253cb2da19",
+          "Main_sha256": "ee82a3d434b8f42ea0515e800b3824d8e95faeae3d0b56652545f7cd9d762ccd",
+          "LF_frozen_blob_equal": true
+        },
+        "reports/oct15_native_input_default_scalar_tree_clear.json": {
+          "integrator_sha256": "25ac484b366b97016a734230dce6b55a452febb5c83ef998ca7d320f59a74747",
+          "Main_sha256": "35c7bec8e21e976bec2e7e12b47fa4b0661e0e703089cd7ef20573abbdee7bfa",
+          "LF_frozen_blob_equal": true
+        }
+      },
+      "owned_bytes": 43,
+      "owned_starts": 16
+    },
+    {
+      "pin": "676bce181ecc723b2bb9965a963a5f9f747b443f",
+      "report": "reports/oct15_input_int_string_tree_leaves.json",
+      "artifacts": {
+        "src/native_input_int_string_tree_leaves.cpp": {
+          "integrator_sha256": "11c72b8fb99909f1b70725a7f2d92908cabb762152141c199378a7c7cd8fcfa9",
+          "Main_sha256": "11c72b8fb99909f1b70725a7f2d92908cabb762152141c199378a7c7cd8fcfa9",
+          "LF_frozen_blob_equal": true
+        },
+        "include/bsp/native_input_int_string_tree_leaves.hpp": {
+          "integrator_sha256": "cc38b1ef93856547740db5fec81507da6a4d3985797a6f185bd3ed8d0083aa0e",
+          "Main_sha256": "cc38b1ef93856547740db5fec81507da6a4d3985797a6f185bd3ed8d0083aa0e",
+          "LF_frozen_blob_equal": true
+        },
+        "docs/OCT15_INPUT_INT_STRING_TREE_LEAVES.md": {
+          "integrator_sha256": "e38cbee503595dbb43696b8a1647d9c68bd421b44cbc8d87db9d1c81517450a8",
+          "Main_sha256": "e38cbee503595dbb43696b8a1647d9c68bd421b44cbc8d87db9d1c81517450a8",
+          "LF_frozen_blob_equal": true
+        },
+        "reports/oct15_input_int_string_tree_leaves.json": {
+          "integrator_sha256": "f21a528dabd2449f19ffa9a8099ef756375e553e44d4e4d973b67a1cca304d81",
+          "Main_sha256": "f21a528dabd2449f19ffa9a8099ef756375e553e44d4e4d973b67a1cca304d81",
+          "LF_frozen_blob_equal": true
+        }
+      },
+      "owned_bytes": 311,
+      "owned_starts": 118
+    }
+  ],
+  "scope": {
+    "complete_ordinary_entries": 6,
+    "addresses": [
+      "0069dc70",
+      "0069ae50",
+      "0069a780",
+      "0069c300",
+      "0069aac0",
+      "0069aae0"
+    ],
+    "distinct_owned_bytes_within_batch": 354,
+    "distinct_owned_starts_within_batch": 134,
+    "excluded_maximum_undefined_gap_bytes": 3,
+    "global_coverage_increment_claimed": false
+  },
+  "review": {
+    "primary_checks": 24,
+    "clear_independent_peer": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_avoid_distance\\local\\oct15_native_input_default_scalar_tree_clear_peer_review.json",
+      "sha256": "dcf5e05ab9dc0e268b82d9fc7df9572685d04c090fafb28ad37b47e5305fff79",
+      "checks": 12,
+      "findings": [],
+      "scope": "entire Source/header, fresh43B16Native, actual66B29Cmakeobject and provider closure; no new build/execution inferred"
+    },
+    "leaf_primary_receipt": {
+      "path": "local/oct15_int_string_tree_leaves_primary_review.json",
+      "sha256": "6628d0b2151cdb7ad40a8a426b9997a737c4d0527188cf8e10d1d1915e08d71f"
+    },
+    "actual_CMake_bytes": 460,
+    "actual_CMake_starts": 197,
+    "actual_CMake_object_sha256": {
+      "native_input_default_scalar_tree_clear": "60e2b8a9bd976e6f8327e7b011a89784e928efccd77d47cb0bd0837b0c92c0d1",
+      "native_input_int_string_tree_leaves": "172805f795cd2186be8d7616b84866a65d1847e804bd8499c88cfaa9ddca6bb2"
+    },
+    "actual_CMake_object_comparison": {
+      "native_input_default_scalar_tree_clear": {
+        "reviewed_object_sha256": "60e2b8a9bd976e6f8327e7b011a89784e928efccd77d47cb0bd0837b0c92c0d1",
+        "final_object_sha256": "60e2b8a9bd976e6f8327e7b011a89784e928efccd77d47cb0bd0837b0c92c0d1",
+        "all_code_bytes_and_symbolic_relocations_equal": true
+      },
+      "native_input_int_string_tree_leaves": {
+        "reviewed_object_sha256": "172805f795cd2186be8d7616b84866a65d1847e804bd8499c88cfaa9ddca6bb2",
+        "final_object_sha256": "1ec85b2cec064d5a3a04c982e2c58c14aa199ddfeb6076c1af6d2710ae96d5a2",
+        "all_code_bytes_and_symbolic_relocations_equal": true
+      }
+    },
+    "object_note": "Leaf object metadata differs across worktree builds; all executable sections and symbolic relocations are exactly equal. Clear full object is unchanged."
+  },
+  "transfers": [
+    {
+      "address": "0069dc7c",
+      "native": "0069d3f0"
+    },
+    {
+      "address": "0055566c",
+      "native": "00554f10"
+    },
+    {
+      "address": "0069ae58",
+      "native": "00bf6713"
+    },
+    {
+      "address": "0069ae67",
+      "native": "00bf6713"
+    },
+    {
+      "address": "00bf671a",
+      "native": "00bf66ef"
+    }
+  ],
+  "provider_fingerprints_equal_Main": {
+    "include/bsp/native_input_default_scalar_subtree.hpp": "48ff24253ae649e8274f3cc22029c4c2e0ae73a594e67dd165bb94a559a84d84",
+    "src/native_input_default_scalar_subtree.cpp": "f610bd48c247a4d193ed345f274bd6ffeb1098d4f6ebb00ea4c1f0296f35791f",
+    "include/bsp/native_input_int_subtrees.hpp": "e4b32740b888f83614a100871c9a87a412da554decfb691c85362b3c9c4f11bf",
+    "src/native_input_int_subtrees.cpp": "a42030f5284b6b3dc3f62352d64f08a8bdceb87cc9d445f7ad468d95cd29fc9c",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/native_invalid_parameter_noinfo_call.hpp": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+    "src/native_invalid_parameter_noinfo_call.cpp": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b"
+  },
+  "validation": {
+    "tested_combined_Source": "98fe46a95a88fbdd961693d328def73498b4fa00",
+    "build_log": "local/oct15_twentysixth_publication_union_build.log",
+    "build_log_sha256": "63c99b74e0d2ee1b6fa82361e92ae57aca2c4865fe60272bd23a305cf6091ae8",
+    "default_MSVC_Win32": true,
+    "existing_suites_passed": 3,
+    "ctest_seconds": 13.57,
+    "new_tests": 0,
+    "Native_execution": false,
+    "annotations": {
+      "receipt": "local/ghidra-annotations-20261016T040216Z.json",
+      "sha256": "58191a26475981964208c41304de264ae6b38779ad9dfe66d64e1a4e79e5b46f",
+      "saved_with_preimages": 6
+    },
+    "refreshed_exports": 6,
+    "snapshot": "skipped: unchanged76774 functions",
+    "index": "rebuilt"
+  },
+  "limits": [
+    "Existing suites cover older math/tool behavior, not these new routines.",
+    "Raw current Source/CRT interfaces do not establish original heap, fault, private frame, register, binary ABI or game identity.",
+    "Clear has the same43B16 public size as Native but a different final head register and POP/store order; no byte or fault-scope identity is claimed.",
+    "Maximum has25 defined Native bytes in two ranges; the intervening three undefined bytes are excluded.",
+    "No global unique coverage increment over earlier models or projections is inferred."
+  ],
+  "coordination": {
+    "append_only_CMake_leases": false,
+    "real_registry_conflicts_union_resolved": true,
+    "frozen_Source_physical_Main_equal": true,
+    "metadata_LF_frozen_equal": true
+  },
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "verified after publication; no self reference"
+  }
+}
