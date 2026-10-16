@@ -1399,5 +1399,47 @@
     "current_proof_sha256": "10fefcfcb824805c7c80fcf8659f887a8f95cbb3394c68df47d54009efa676dd",
     "all23_whole_objects_byte_identical_to_AS_snapshot": true,
     "later_Main_refresh_is_Root_verified_not_independently_re_reviewed_by_AS": true
-  }
+  },
+  "coordination_report_call_gate": {
+    "receipt_sha256": "ee79e7e9457ebd01c1ca26fb0ff99fac0b34edae16721576cf9804d2bada54b0",
+    "all5_changed_JSON_and5_documents_checked": true,
+    "eligible_JSON_call_rows_checked": 1,
+    "failed": 0,
+    "unchecked_markdown_claims": 2,
+    "remaining_coverage": "Zero eligible rows and unchecked prose are not behavior proof; AS full Native/Source/COFF review covers physical contracts separately.",
+    "client_project_program_verified": true
+  },
+  "routines": [
+    {
+      "address": "00bcde20",
+      "Original_name": "init_block",
+      "coverage": "complete",
+      "Native_bytes": 110,
+      "Native_instructions": 29,
+      "new_Native_credit": 110,
+      "Source_bytes": 111,
+      "Source_instructions": 30
+    },
+    {
+      "address": "00bcb1f0",
+      "Original_name": "putShortMSB",
+      "coverage": "complete",
+      "Native_bytes": 39,
+      "Native_instructions": 16,
+      "new_Native_credit": 39,
+      "Source_bytes": 43,
+      "Source_instructions": 18
+    },
+    {
+      "address": "00bcf040",
+      "Original_name": "copy_block",
+      "coverage": "complete previously accepted body; additional returning Source interface",
+      "Native_bytes": 132,
+      "Native_instructions": 49,
+      "new_Native_credit": 0,
+      "new_Source_bytes": 24,
+      "new_Source_instructions": 8,
+      "old_private134_NR21_preserved": true
+    }
+  ]
 }
