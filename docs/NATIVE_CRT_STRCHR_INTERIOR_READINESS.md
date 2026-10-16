@@ -2,9 +2,10 @@
 
 This readiness-only packet closes the native provider boundary at `00BF86F6`
 for the incoming state already established by the whole `_strstr` review.
-Recommend a separate whole `_strstr` Source gate under the ordinary domain
-below. Root has not yet accepted this recommendation: recorded `Source_ready`
-remains false, `Source_authorized=false`, and new Source credit is zero.
+Root and independent review accept the whole provider contract and the concrete
+ordinary `_strstr` Source plan below. The separate authorization is recorded in
+`reports/cc12_native_crt_strstr_readiness.json`; compiler and Main acceptance
+remain pending, and new Source credit is zero.
 The existing `_strchr` reconstruction and its credit are unchanged.
 
 ## Exact boundary and evidence

@@ -1,9 +1,9 @@
 {
   "schema": "bsp.native_crt_strchr_interior_readiness.v1",
   "packet": "cc12_native_crt_strchr_interior_readiness_oct16",
-  "status": "interior_native_boundary_closed_conditional_whole_strstr_readiness_recommendation_for_Root",
+  "status": "whole_provider_readiness_accepted_separate_strstr_Source_gate_authorized",
   "readiness_only": true,
-  "Source_ready": false,
+  "Source_ready": true,
   "Source_ready_recommendation": true,
   "Source_ready_scope": "Positive recommendation for a separate whole 00BF9440 strstr Source gate under the explicit stable ordinary reached-storage and cursor domain. Root acceptance is not recorded by this packet; prior published strstr readiness remains unchanged.",
   "Source_authorized": false,
@@ -34,13 +34,32 @@
   "coverage": {
     "whole_existing_saved_body_reviewed": true,
     "ranges": [
-      {"start": "00bf86e0", "end_inclusive": "00bf86e4", "bytes": 5, "instructions": 3, "sha256": "129f1135daa1b60c707996d1ed0561b8f4731388ee1f4732c0a27db4c5e3a907"},
-      {"start": "00bf86f0", "end_inclusive": "00bf87ad", "bytes": 190, "instructions": 86, "sha256": "1196a276dcfdd74f72de4e4d6889e8a22e5bc4b24104501e0b13ccc51d4a5f3f"}
+      {
+        "start": "00bf86e0",
+        "end_inclusive": "00bf86e4",
+        "bytes": 5,
+        "instructions": 3,
+        "sha256": "129f1135daa1b60c707996d1ed0561b8f4731388ee1f4732c0a27db4c5e3a907"
+      },
+      {
+        "start": "00bf86f0",
+        "end_inclusive": "00bf87ad",
+        "bytes": 190,
+        "instructions": 86,
+        "sha256": "1196a276dcfdd74f72de4e4d6889e8a22e5bc4b24104501e0b13ccc51d4a5f3f"
+      }
     ],
     "listed_bytes": 195,
     "listed_instructions": 89,
     "selected_concatenated_sha256": "22f27502570ab4aa937590c5aebf8c378db90379f04e561945d1db27bff36e8e",
-    "excluded_gap": {"start": "00bf86e5", "end_inclusive": "00bf86ef", "bytes": 11, "targeted_capture": false, "decoded": false, "instruction_credit": 0},
+    "excluded_gap": {
+      "start": "00bf86e5",
+      "end_inclusive": "00bf86ef",
+      "bytes": 11,
+      "targeted_capture": false,
+      "decoded": false,
+      "instruction_credit": 0
+    },
     "full_PE_read_qualification": "The complete installed file was read for hashing, PE headers, section bounds and disk mapping. Only the two selected saved body ranges were sliced as target code and decoded.",
     "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
     "all_disk_live_saved_text_typed_starts_lengths_owners_match": true,
@@ -74,9 +93,21 @@
     ],
     "normal_entry_difference": "The skipped normal-entry six bytes zero EAX then load AL from SS:[S+8]. A redirect to BF86F0 with strstr homes would search the low address byte of N, not needle[0].",
     "payload_sites": [
-      {"address": "00bf8708", "width": "BYTE", "operation": "unaligned prefix read at EDX into CL"},
-      {"address": "00bf8728", "width": "DWORD", "operation": "first aligned read at EDX into ECX"},
-      {"address": "00bf876a", "width": "DWORD", "operation": "actual candidate reread at EDX-4 into EAX"}
+      {
+        "address": "00bf8708",
+        "width": "BYTE",
+        "operation": "unaligned prefix read at EDX into CL"
+      },
+      {
+        "address": "00bf8728",
+        "width": "DWORD",
+        "operation": "first aligned read at EDX into ECX"
+      },
+      {
+        "address": "00bf876a",
+        "width": "DWORD",
+        "operation": "actual candidate reread at EDX-4 into EAX"
+      }
     ],
     "payload_writes": 0,
     "alignment_path": "Read BYTE, advance EDX by one, compare captured CL against BL before NUL. Match returns EDX-1 through pre-entry tail; nonmatching NUL returns zero; reaching alignment enters word loop.",
@@ -137,7 +168,11 @@
   ],
   "verification": {
     "static_only": true,
-    "accepted_capture_modification_numbers": {"metadata01": "6878", "owned_body02": "6881", "all_flows04": "6884"},
+    "accepted_capture_modification_numbers": {
+      "metadata01": "6878",
+      "owned_body02": "6881",
+      "all_flows04": "6884"
+    },
     "counter_qualification": "Each accepted typed batch is internally stable. Different counters across batches do not establish global or cross-batch database immutability.",
     "preserved_failures": [
       "Preparation v1 incorrectly mapped one prior local task script into the new worktree; failed with FileNotFoundError. Script, pin and partial outputs retained.",
@@ -175,5 +210,8 @@
     "root_manifest": "local/NativeCrtStrchrInteriorReadiness01/root_manifest.json",
     "own_authentication": "local/NativeCrtStrchrInteriorReadiness01/own_authentication.json",
     "provenance_qualification": "Complete paired own new-task execution records and full Original prefix are authenticated in the sealed family. Prior author and prior independent review records remain EXTERNAL. The in-flight seal and later independent verification remain separate receipts; no recursive self-authentication is claimed."
-  }
+  },
+  "Root_primary_review": "reports/cc12_native_crt_strchr_interior_primary_review.json",
+  "separate_strstr_Source_gate": "reports/cc12_native_crt_strstr_readiness.json",
+  "additional_existing_strchr_credit": 0
 }
