@@ -32,8 +32,9 @@ public:
     NativeLuaReaderStorage(const NativeLuaReaderStorage&) = delete;
     NativeLuaReaderStorage& operator=(const NativeLuaReaderStorage&) = delete;
 
-    // scratch must be caller-owned and initialized as an unbound raw object.
-    // Its opaque DWORD and padding are retained through the BD5790 lookup.
+    // scratch is caller-owned fresh raw storage or an unbound raw object,
+    // never a live tracked owner. BD5790 first initializes it via B65F50;
+    // its opaque DWORD and padding retain their existing bytes.
     void enter_key_00bd8e20(NativeLuaObjectStorage& scratch,
         std::uint32_t key_kind, std::uint32_t key_bits);
     void push_copy_00442220(const NativeLuaObjectStorage& source);
