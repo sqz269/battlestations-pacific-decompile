@@ -1,0 +1,506 @@
+{
+  "packet": "goal_oct15_crt_sbh_region_lookup",
+  "status": "whole_physical43B_ordinary_actual_storage_Source_reviewed_compiled_indexed_full_emitted_checked_boundary_repair_NOT_PERFORMED",
+  "code_complete": true,
+  "source_ready": true,
+  "readiness_gate": "Whole ordinary actual-storage Source independently accepted and actual primary registered normal Win32 gate passed. SourceReady true for this43B algorithm only. Formal boundary repair remains NOT PERFORMED, separate from Source/build evidence; no Original heap/free/startup/runtime/ABI/game closure.",
+  "source": "src/native_crt_sbh_region_lookup.cpp",
+  "header": "include/bsp/native_crt_sbh_region_lookup.hpp",
+  "documentation": "docs/GOAL_OCT15_CRT_SBH_REGION_LOOKUP.md",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "source_hashes": {
+    "src/native_crt_sbh_region_lookup.cpp": "2e4c0957b3288a1fc57b3c3726d5e73918eee9b0ebb330d3036d60566cca198e",
+    "include/bsp/native_crt_sbh_region_lookup.hpp": "69923f4101ee323fa8d2276f684b4fbbf8269c904e2d051860c1f06d030506bc"
+  },
+  "routines": [
+    {
+      "address": "00c11d3d",
+      "name": "find_native_crt_sbh_region_00c11d3d",
+      "coverage": "whole_physical43B14ops; one algorithm, no independent child at61",
+      "bytes": 43,
+      "instructions": 14,
+      "end_inclusive": "00c11d67",
+      "original_hex": "8b0d64ed0901a168ed09016bc91403c8eb128b5424042b500c81fa00001000720983c0143bc172ea33c0c3",
+      "original_sha256": "efe92ed21d91a645a4868b949361c61fea2c0a4c75201b12f07e6537cd6252fd",
+      "live_PE_equal": true,
+      "original_abi": "cdecl1live pointerDWORD atentryESP+4, EAXdescriptor/null,plainRET; newSourcestate/rawparameter4 bindings are not OriginalABI.",
+      "own_native_calls": 0,
+      "source_ready": true,
+      "formal_body_qualification": "Current formal entry3D remains18B and false thunk to61, whose formal body remains25B. Whole43B refers only to verified physical algorithm coverage, not a repaired formal body."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bf9df1",
+      "native": "00c11d3d",
+      "function": "00bf9dc8",
+      "kind": "call",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "00bfdd47",
+      "native": "00c11d3d",
+      "function": "00bfdcec",
+      "kind": "call",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "00bfdd97",
+      "native": "00c11d3d",
+      "function": "00bfdcec",
+      "kind": "call",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "00c07baa",
+      "native": "00c11d3d",
+      "function": "00c07b5c",
+      "kind": "call",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    }
+  ],
+  "complete_current_instruction_preimage": [
+    {
+      "address": "00c11d3d",
+      "bytes": 6,
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "instruction": "MOV ECX,dword ptr [0x0109ed64]",
+      "containing": "00c11d3d",
+      "flow_override": "NONE",
+      "default_flow": "FALL_THROUGH",
+      "effective_flow": "FALL_THROUGH",
+      "fallthrough_overridden": false
+    },
+    {
+      "address": "00c11d43",
+      "bytes": 5,
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "instruction": "MOV EAX,[0x0109ed68]",
+      "containing": "00c11d3d",
+      "flow_override": "NONE",
+      "default_flow": "FALL_THROUGH",
+      "effective_flow": "FALL_THROUGH",
+      "fallthrough_overridden": false
+    },
+    {
+      "address": "00c11d48",
+      "bytes": 3,
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "instruction": "IMUL ECX,ECX,0x14",
+      "containing": "00c11d3d",
+      "flow_override": "NONE",
+      "default_flow": "FALL_THROUGH",
+      "effective_flow": "FALL_THROUGH",
+      "fallthrough_overridden": false
+    },
+    {
+      "address": "00c11d4b",
+      "bytes": 2,
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "instruction": "ADD ECX,EAX",
+      "containing": "00c11d3d",
+      "flow_override": "NONE",
+      "default_flow": "FALL_THROUGH",
+      "effective_flow": "FALL_THROUGH",
+      "fallthrough_overridden": false
+    },
+    {
+      "address": "00c11d4d",
+      "bytes": 2,
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "instruction": "JMP 0x00c11d61",
+      "containing": "00c11d3d",
+      "flow_override": "CALL_RETURN",
+      "default_flow": "UNCONDITIONAL_JUMP",
+      "effective_flow": "CALL_TERMINATOR",
+      "fallthrough_overridden": false
+    },
+    {
+      "address": "00c11d4f",
+      "bytes": 4,
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "instruction": "MOV EDX,dword ptr [ESP + 0x4]",
+      "containing": "00c11d61",
+      "flow_override": "NONE",
+      "default_flow": "FALL_THROUGH",
+      "effective_flow": "FALL_THROUGH",
+      "fallthrough_overridden": false
+    },
+    {
+      "address": "00c11d53",
+      "bytes": 3,
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "instruction": "SUB EDX,dword ptr [EAX + 0xc]",
+      "containing": "00c11d61",
+      "flow_override": "NONE",
+      "default_flow": "FALL_THROUGH",
+      "effective_flow": "FALL_THROUGH",
+      "fallthrough_overridden": false
+    },
+    {
+      "address": "00c11d56",
+      "bytes": 6,
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "instruction": "CMP EDX,0x100000",
+      "containing": "00c11d61",
+      "flow_override": "NONE",
+      "default_flow": "FALL_THROUGH",
+      "effective_flow": "FALL_THROUGH",
+      "fallthrough_overridden": false
+    },
+    {
+      "address": "00c11d5c",
+      "bytes": 2,
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "instruction": "JC 0x00c11d67",
+      "containing": "00c11d61",
+      "flow_override": "NONE",
+      "default_flow": "CONDITIONAL_JUMP",
+      "effective_flow": "CONDITIONAL_JUMP",
+      "fallthrough_overridden": false
+    },
+    {
+      "address": "00c11d5e",
+      "bytes": 3,
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "instruction": "ADD EAX,0x14",
+      "containing": "00c11d61",
+      "flow_override": "NONE",
+      "default_flow": "FALL_THROUGH",
+      "effective_flow": "FALL_THROUGH",
+      "fallthrough_overridden": false
+    },
+    {
+      "address": "00c11d61",
+      "bytes": 2,
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "instruction": "CMP EAX,ECX",
+      "containing": "00c11d61",
+      "flow_override": "NONE",
+      "default_flow": "FALL_THROUGH",
+      "effective_flow": "FALL_THROUGH",
+      "fallthrough_overridden": false
+    },
+    {
+      "address": "00c11d63",
+      "bytes": 2,
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "instruction": "JC 0x00c11d4f",
+      "containing": "00c11d61",
+      "flow_override": "NONE",
+      "default_flow": "CONDITIONAL_JUMP",
+      "effective_flow": "CONDITIONAL_JUMP",
+      "fallthrough_overridden": false
+    },
+    {
+      "address": "00c11d65",
+      "bytes": 2,
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "instruction": "XOR EAX,EAX",
+      "containing": "00c11d61",
+      "flow_override": "NONE",
+      "default_flow": "FALL_THROUGH",
+      "effective_flow": "FALL_THROUGH",
+      "fallthrough_overridden": false
+    },
+    {
+      "address": "00c11d67",
+      "bytes": 1,
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "instruction": "RET",
+      "containing": "00c11d61",
+      "flow_override": "NONE",
+      "default_flow": "TERMINATOR",
+      "effective_flow": "TERMINATOR",
+      "fallthrough_overridden": false
+    }
+  ],
+  "preimage": {
+    "typed_modification": "3629",
+    "guarded_receipt": "local/goal_oct15_sbh_region_repair_proposal_typed.json",
+    "guarded_receipt_sha256": "32a61da19313f22b086f0d5486215e5775bb842f7453098de20e4edb4be13ad8",
+    "function3d": {
+      "name": "LIBCRT_unmatched_00c11d61",
+      "entry": "00c11d3d",
+      "body": [
+        "00c11d3d",
+        "00c11d4e"
+      ],
+      "bytes": 18,
+      "instructions": 5,
+      "thunk": true,
+      "thunk_target": "00c11d61",
+      "no_return": false,
+      "signature": "undefined LIBCRT_unmatched_00c11d61(void)",
+      "plate_comment": null
+    },
+    "function61": {
+      "name": "LIBCRT_unmatched_00c11d61",
+      "entry": "00c11d61",
+      "body": [
+        "00c11d4f",
+        "00c11d67"
+      ],
+      "bytes": 25,
+      "instructions": 9,
+      "thunk": false,
+      "no_return": false,
+      "signature": "undefined LIBCRT_unmatched_00c11d61(void)",
+      "plate_comment": "[BSP inventory 00c11d61] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    "jump4d": {
+      "bytes": "eb12",
+      "flow_override": "CALL_RETURN",
+      "default_flow": "UNCONDITIONAL_JUMP",
+      "effective_flow": "CALL_TERMINATOR",
+      "fallthrough_overridden": false,
+      "default_fallthrough": null,
+      "effective_fallthrough": null,
+      "target": "00c11d61"
+    },
+    "external_calls_to3d": [
+      "00bf9df1",
+      "00bfdd47",
+      "00bfdd97",
+      "00c07baa"
+    ],
+    "only_current_reference_to61": {
+      "from": "00c11d4d",
+      "current_type": "UNCONDITIONAL_CALL",
+      "physical": "JMP"
+    },
+    "interior_function_history": "Current61 is an invalid standard-ABI split: body startsbeforeitsentry at4F, entry61 consumes captured EAXcurrent/ECXend; physicalwholeentry3D has no call at4D. Do not infer new register-ABI child or count25B twice."
+  },
+  "repair_authorization": {
+    "by": "primary integrator after mapper final227aa6f36",
+    "addresses": [
+      "00c11d3d",
+      "00c11d61"
+    ],
+    "allowed": "Unsetfalse thunk, correctonly4DoverrideNONE, merge43Bbodyat3D, removebogus61function but preserveoriginalname as interiorlabel/exactcomment/history; descriptiverenameentryhypothesis, preserveinventory/othermetadata, save/readback/export. No bytes/listing/prototype change."
+  },
+  "repair_plan": {
+    "fixed_script": "local/BspSbhRegionRepair.java",
+    "fixed_script_sha256": "28685ff7463bf185bbb60f0d6a6089e12c8f0b75fc0e6df01e2bee50bc92f959",
+    "lock": "coordination.ghidra_lock plus owned3D/61 leases; guardedClient and insideJava project/path/language/base verification",
+    "atomicity": "One Program transaction; exact preconditions before changes; failures rollback, no save on failure.",
+    "capture_before": "All43byte-address comments/symbols/references, all14InstructionDB starts and flow flags, both formalbodies/names/signatures/variables/flags, exact43bytes.",
+    "steps": [
+      "Unthunk3D and descriptively renameonlythatentry.",
+      "Removeonly61function, preserveoriginalname/source/namespace as interiorLABEL, keep61inventorycomment exactly.",
+      "Setonly4D FlowOverride.NONE; set3Dbody exactly3D..67.",
+      "Appendpreservedinventory+roleevidence at3D, withoutalteringothercomments or priornonfunctionsymbols.",
+      "Verifyall14unchangedInstructionDB lengths/bytes, allownedby3D, correctJMP/ref,4trueentrycalls/noexternalinteriorcalls, signatureunchanged,61label/commenthistorypreserved.",
+      "Commitonlyallinvariants; guarded saveaftertransaction thenfreshtyped/bytes/xref/commentreadback/affectedexport."
+    ],
+    "excluded": "No generic clear-flow/disassembly/recreation fallback; ghidra_flow_repair --apply is disabled, ghidra_define_function is not the required atomic-preservingroute.",
+    "guarded_driver": "local/goal_oct15_sbh_region_repair_driver.py",
+    "guarded_driver_sha256": "cb417f03a60c40f2e3249aaf34d1d0192a2510b6be10dee00bc675692d79ca55",
+    "execution_status": "NOT PERFORMED. Fixed transaction/driver retained as proposals only; no script policy change, restart, generic recreation, disassembly or Ghidra mutation was attempted.",
+    "future_application": "No automatic apply. Any future repair requires a permitted bounded capability, fresh exact preimages, coordinated ownership/write lock and primary-directed execution.",
+    "fixed_script_preimage_qualification": "Retained proposal uses historical pre-plate empty3Dcomment. Current3Dplate evidence is preserved separately; existing proposal/driver must NOT run unchanged or automatically. Any future permitted repair requires fresh complete comment/metadata preimages and primary-directed review."
+  },
+  "repair_transport": {
+    "status": "CAPABILITY_UNAVAILABLE; metadata repair NOT PERFORMED, independent of ordinary actual-storage Source readiness",
+    "read_only_probe": "local/goal_oct15_sbh_region_repair_script_transport_probe.json",
+    "read_only_probe_sha256": "10c46e25655f2add5a95558ca1468757172bb168a44bc09a3f1f344c793d5ff0",
+    "http_status": 200,
+    "error": "Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process.",
+    "other_route_attempted": false
+  },
+  "actual_storage_schedule": [
+    "Readcanonicalcount109ED64 BEFOREcanonicalbase109ED68.",
+    "CaptureDWORDwrappedend=base+count*14h.",
+    "Whileunsignedcurrent<capturedend: readactualparameter4 freshly, thenrawDWORDcurrentdescriptor+C.",
+    "SubtractmodDWORD; unsigneddistance<100000h returnsdescriptor.",
+    "OtherwiseexactDWORD20strideandunsignedendcomparison; noinitialpositive-count/null/sentinel/alignmentguard.",
+    "Emptyintervalreadsneitherparameterbackingnordescriptor; addedbinding/bookkeepingstable/disjoint fromreachedrawstorage."
+  ],
+  "providers": {
+    "actual_canonical_state": "include/bsp/native_crt_sbh_state.hpp",
+    "state_sha256": "f1885df320b24d5f34da03b5fa527fcdb9b2d5190ccb6889ec2c324d17b30d58",
+    "other_native_callees": [],
+    "raw_word_read": "MSVCWin32 inlineDWORD storage operation, same form as accepted SBHfree; not a newprovider/callback/SDKcall."
+  },
+  "API_qualification": "Rawparameter4 backing pointerrefinesearlierproposedtypedreference: permits absentempty-path backing and x86unalignedload; no newly inventedguard or shadowNativeframe.",
+  "validation": {
+    "independent_physical_typed_review": "Primary accepted all43B14ops andmod3629complete InstructionDB capture beforeexplicitrepairauthorization.",
+    "Source_review": {
+      "reviewer": "primary integrator",
+      "result": "PASSED",
+      "scope": "Whole43B14ops actual assembly and entire CPP/header; canonical count-before-base captures, wrapped unsigned end, current raw argument4 BEFORE current descriptor+C, unsigned1MiB comparison, exact20stride and empty read absence.",
+      "accepted_source_hashes": {
+        "src/native_crt_sbh_region_lookup.cpp": "2e4c0957b3288a1fc57b3c3726d5e73918eee9b0ebb330d3036d60566cca198e",
+        "include/bsp/native_crt_sbh_region_lookup.hpp": "69923f4101ee323fa8d2276f684b4fbbf8269c904e2d051860c1f06d030506bc"
+      }
+    },
+    "repair": "NOT PERFORMED. Fresh post-plate typedmod4765 confirms formal18B+25B, botholdnames/false3Dthunk/4D CALL_RETURN unchanged. Source gate independent.",
+    "registration": {
+      "performed_by": "primary integrator",
+      "project_source_count": 1,
+      "unique_archive_object": [
+        "bsp_core.dir\\Release\\native_crt_sbh_region_lookup.obj"
+      ],
+      "worker_CMake_change_or_queue": false
+    },
+    "build": {
+      "performed_by": "primary integrator, not worker",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "revision": "c606835ba8653eda14e67c47fbd2cdbb375f8ab6",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_region_combined_build.log",
+      "log_sha256": "d8fae58c7c107b1d72d35d65e01bfbdbee2cbe552f7b660b357c2f8788338ce5",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 13.98,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "immutable_receipt": "reports/goal_oct15_region_primary_review.json",
+      "immutable_receipt_sha256": "b018b949e7faf1da6c225fbe2dfd4ce17b0afb6a9bb5bd38e292b482f2f13c7f"
+    },
+    "new_tests": 0,
+    "new_entry_execution": false,
+    "Original_ABI": false,
+    "general_Originalfree_Source_ready": false,
+    "game_validated": false,
+    "report_calls": {
+      "rows": 4,
+      "failed": 0,
+      "command": "python tools/verify_report_calls.py reports/goal_oct15_crt_sbh_region_lookup.json"
+    },
+    "existing_checks": {
+      "passed": 3,
+      "failed": 0,
+      "seconds": 13.98,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "scope": "Existing regression checks; native math differential seeds do not execute this new body."
+    },
+    "worker_build": false
+  },
+  "retained_read_only_receipts": [
+    {
+      "path": "local/goal_oct15_sbh_region_repair_proposal_typed.json",
+      "sha256": "32a61da19313f22b086f0d5486215e5775bb842f7453098de20e4edb4be13ad8"
+    },
+    {
+      "path": "local/goal_oct15_sbh_region_repair_proposal_instructions.json",
+      "sha256": "0719ac30762ed31caba91f17ec2d4286f084280d046d6947c915d2121b6e9297"
+    },
+    {
+      "path": "local/goal_oct15_sbh_region_lookup_incoming_typed.json",
+      "sha256": "e0a0595bc03a1ca339c83498eff4865d2c6b45fb1554d3236e1544c43a76ab27"
+    },
+    {
+      "path": "local/goal_oct15_sbh_region_lookup_incoming_context.json",
+      "sha256": "069e90128f503f7ae1f9b51cccf0f2bb10c509e7edf17788b134cdf3fb4f2b65"
+    }
+  ],
+  "limits": [
+    "Actualcanonicalstate and validreachedstorage required; no heap/lock/bootstrap/errno/PTD/SEH owner supplied.",
+    "No duplicateSourcecreditfor retired61formalfunction; positivewholeSourceonly3D aftergates.",
+    "Originalfree SCC/readiness remainsfalse; no SDK/heapcallback substitution or selectedfastpath."
+  ],
+  "normal_source_functions": 1,
+  "private_source_cleanup_actions": 0,
+  "workflow_gate_correction": "Earlier coupling of Source readiness to Ghidra repair was an assistant workflow condition, not a missing functional Native provider. It is removed; repair remains explicitly pending/false.",
+  "prohibited_repairs": [
+    "Enable broad script policy",
+    "Restart Ghidra for this repair",
+    "Generic delete/recreate/disassemble workaround",
+    "Prototype/bodies/flow writes through a non-atomic substitute"
+  ],
+  "annotation": {
+    "status": "PASSED plate-only evidence append at3D; no function renamed",
+    "write_lock": "coordination.ghidra_lock",
+    "purpose_built_endpoint": "set_plate_comment only; no general rename annotation tool",
+    "prior_and_readback": {
+      "before": {
+        "00c11d3d": {
+          "address": "00c11d3d",
+          "function_name": "LIBCRT_unmatched_00c11d61"
+        },
+        "00c11d61": {
+          "address": "00c11d61",
+          "function_name": "LIBCRT_unmatched_00c11d61",
+          "comment": "[BSP inventory 00c11d61] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+        }
+      },
+      "after": {
+        "00c11d3d": {
+          "address": "00c11d3d",
+          "function_name": "LIBCRT_unmatched_00c11d61",
+          "comment": "[BSP whole-physical Source evidence 00c11d3d]\nHypothesis, not a recovered symbol. Whole physical00C11D3D..00C11D67 is43B14ops; this is NOT the current formal18B body. Current false thunk to00C11D61/formal25B and4D CALL_RETURN override remain UNCHANGED; physical4D is JMP, not a native childCALL. Whole ordinary actual-storage Source find_native_crt_sbh_region_00c11d3d independently assembly-reviewed: canonicalcount0109ED64 BEFOREbase0109ED68, captured DWORD-wrapped end=base+count*14h, unsigneddescriptor<end, fresh actualparameter4 DWORD BEFOREcurrentdescriptor+C each reached iteration, unsignedwrapped difference<100000h, exact20B stride, emptyintervalnoargumentread. Added canonical-state/rawargument bindings are stable/disjoint from reachedrawstorage, not OriginalABI/frame/heap/bootstrap/SEH/game proof. Boundaryrepair NOTPERFORMED: disabledscriptcapability, no policyenable/restart/delete-recreate/disassembly. No function renamed, no prototype/body/flow/byte changed. reports/goal_oct15_crt_sbh_region_lookup.json; generalOriginalfreeSourceReady remainsfalse."
+        },
+        "00c11d61": {
+          "address": "00c11d61",
+          "function_name": "LIBCRT_unmatched_00c11d61",
+          "comment": "[BSP inventory 00c11d61] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+        }
+      }
+    },
+    "project_saved": true,
+    "retained_record": "local/goal_oct15_sbh_region_plate_only_annotation.json",
+    "retained_record_sha256": "c484edd342b17b4a8d37ef49e4af196ab62a91be5f3d2086063a4b638fc9e7ab",
+    "rename_performed": false,
+    "body_flow_prototype_byte_writes": false,
+    "refreshed_export": "exports/bsp/functions/00c11d3d; still formal18B false-thunk export, not whole43B formalbody proof",
+    "post_formal_typed": "local/goal_oct15_sbh_region_post_plate_formal_typed.json",
+    "post_formal_typed_sha256": "63d6a52d96666514ef5ce57bd8183273352c54df34fa20241543c165e0013462",
+    "post_formal_modification": "4765"
+  },
+  "emitted_review": {
+    "result": "PASSED full actual normal-build publicfunction and statichelper, independently inspected by worker and primary",
+    "retained_object": {
+      "path": "local\\goal_oct15_region_objects\\native_crt_sbh_region_lookup.obj",
+      "sha256": "dfbaf3666b376e5ab2cd198f398c103a6849c9cb61a666785a1a3935b98b5ced",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct15_region_objects\\native_crt_sbh_region_lookup.disasm.txt",
+      "symbols": "local\\goal_oct15_region_objects\\native_crt_sbh_region_lookup.symbols.txt"
+    },
+    "object_sha256": "dfbaf3666b376e5ab2cd198f398c103a6849c9cb61a666785a1a3935b98b5ced",
+    "disassembly_sha256": "0641ae1a6cf8340051a0d8c91ec196fb795a04277723147c3a1a36b126034f57",
+    "symbols_sha256": "b5b36cf2395b24767b6d6115e88c3e4f63b61131d5254a2cd652b6f07d80550e",
+    "public_function": "86B/36ops .text$mn0..55 inclusive; one positive external definition, zero calls/code relocations",
+    "uncalled_static_helper": "19B/10ops separateCOMDAT; rawloadSourceoperation, not an additional mapped Nativeprovider. Objecttotal105textB/46ops.",
+    "archive": {
+      "sha256_at_gate": "707566046eb120f88db93b2c96f144f34069c1634703ce7ca928e827ed633a1f",
+      "unique_identical_archive_bodies": 1,
+      "scope": "Immutable primary receipt, no forced executable reference/new execution."
+    },
+    "schedule": [
+      "09 selectsactualcountref;0C readsactualcount BEFORE0Eselectsbaseref/14actualbasewordread. PurecountLEA11 betweenactualglobalreads changes no payload-read schedule.",
+      "16 capturesDWORDwrappedend base+count*20;19CMP/1BJAE skipsloop onunsigneddescriptor>=end, includingemptyinterval withoutparameterbackingread.",
+      "20reloadsSourceparameter-backing pointer;23readsCURRENTactualparameterDWORD every reachediteration BEFORE31readsCURRENTdescriptor+C DWORD.",
+      "39subtractsmodDWORD;3C/41unsigned1MiBcomparison returnsrawdescriptor at50;43incrementsDWORDcursor20,46/48unsignedcomparison repeats;4A returnsnull.",
+      "Bothactualrawreads areinlineMOV operations; no SDK, callback, canonical-owner/provider call, invented guard or descriptor write."
+    ],
+    "private_frame_qualification": "Compiler reuses Sourceprivateargumenthome[EBP+8] at2B/2E as descriptor-wordaddress temporary, andFC/F8 private locals forrawvalues. These are Source bookkeeping, not Native actualparameter4 or originalframe aliases. Addedbindings/bookkeeping must stay stable/disjoint from reachedrawstorage. No Originalhome/privateframe/fault/ABI credit.",
+    "boundary_repair_credit": false,
+    "runtime_execution_credit": false
+  }
+}
