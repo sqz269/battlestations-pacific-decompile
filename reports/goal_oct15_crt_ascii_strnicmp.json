@@ -6,9 +6,9 @@
   "source": "src/native_crt_ascii_strnicmp.cpp",
   "header": "include/bsp/native_crt_ascii_strnicmp.hpp",
   "documentation": "docs/GOAL_OCT15_CRT_ASCII_STRNICMP.md",
-  "status": "whole_original_ascii_leaf_source_reviewed_build_pending",
+  "status": "whole_original_ascii_leaf_source_reviewed_registered_build_passed",
   "source_ready": true,
-  "source_ready_scope": "Whole genuine Original algorithm through new actual-argument-storage Source;primary full behavior/Source review passed,requested raw DWORD load uses explicit x86 instruction. Normal registered gate/emitted review remain pending.",
+  "source_ready_scope": "Whole genuine Original byte algorithm through new actual-argument-storage Source;independent Source/assembly/emitted review and actual normal registered Win32 build passed. Original ABI/fault/game and parent closure unclaimed;entry runtime unexecuted.",
   "base_revision": "281a34f29db74917672453a7e38ecd8ae1277b11",
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
   "routines": [
@@ -99,7 +99,17 @@
     "project_saved": true,
     "forced_export_refreshed": true,
     "after_comments": "local/goal_oct15_crt_ascii_strnicmp_after_comments.json",
-    "old_library_name_comment_and_new_evidence_verified": true
+    "old_library_name_comment_and_new_evidence_verified": true,
+    "final_validation": {
+      "result": "passed",
+      "log": "local/ghidra-annotations-20261016T043149Z.json",
+      "normal_write_lock_acquired": true,
+      "prior_values_logged": true,
+      "project_saved": true,
+      "forced_export_refreshed": true,
+      "readback": "local/goal_oct15_crt_ascii_strnicmp_final_comments.json",
+      "correct_library_name_and_all_prior_comments_preserved": true
+    }
   },
   "verification": {
     "expected_project_program_verified": true,
@@ -178,16 +188,140 @@
         "src/native_crt_ascii_strnicmp.cpp": "51d082becad3bd4f7c843aecb449057e358cb243450b7a6823e434fea64204d5",
         "include/bsp/native_crt_ascii_strnicmp.hpp": "465f73bbf2f473151fa58c2462a3a8dc9c90eab155963c71f94c8f03a4f7ba58"
       },
-      "normal_registered_compilation_and_emitted_gate": "pending"
+      "normal_registered_compilation_and_emitted_gate": "passed actual root registered12523a9f6 build and whole emitted-object inspection;reviewed Source/header unchanged"
     },
     "native_behavior_primary_review": "passed all97B/48ops and2incoming;Source review separately pending",
     "optional_flow_properties": {
       "path": "local/goal_oct15_crt_ascii_strnicmp_tail_properties.json",
       "result": "actual scripts-disabled error retained;typed-flow independently returned needed flow properties;no bypass or mutation"
     },
-    "cmake_registration": "root only;no worker queue/append",
-    "normal_win32_build": "pending actual root registered gate;no worker build",
-    "emitted_object_review": "pending actual root object",
+    "cmake_registration": "Root registered actual Source exactly once;one identical archive object independently verified in immutable primary receipt. No worker CMake edits/queue/build.",
+    "normal_win32_build": {
+      "revision": "12523a9f6fdc6a7645f02234ae81b44e8bee173b",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_ascii_combined_build.log",
+      "log_sha256": "f624ac2ae47e024262893892840ab393eaca945cd3d78d40304c5c221035ffd9",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 13.42,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "executed_in_worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "worker_duplicate_build": false,
+      "immutable_primary_receipt": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\reports\\goal_oct15_ascii_primary_review.json",
+      "immutable_primary_receipt_sha256": "c482ed444869ee019e1308fa09c5975c5073c5a0c407ae4b9ea31995fd322ab2",
+      "source_header_pins_reasserted": {
+        "src/native_crt_ascii_strnicmp.cpp": "51d082becad3bd4f7c843aecb449057e358cb243450b7a6823e434fea64204d5",
+        "include/bsp/native_crt_ascii_strnicmp.hpp": "465f73bbf2f473151fa58c2462a3a8dc9c90eab155963c71f94c8f03a4f7ba58"
+      },
+      "project_source_count": 1,
+      "identical_archive_object_count": 1,
+      "archive_sha256": "92206cb3959588684f265c25ee06fa37746da61be5007d883f594959780bc207"
+    },
+    "emitted_object_review": {
+      "schema_version": 1,
+      "tested_revision": "12523a9f6fdc6a7645f02234ae81b44e8bee173b",
+      "immutable_primary_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\reports\\goal_oct15_ascii_primary_review.json",
+        "sha256": "c482ed444869ee019e1308fa09c5975c5073c5a0c407ae4b9ea31995fd322ab2"
+      },
+      "source_header_pins_reasserted": {
+        "src/native_crt_ascii_strnicmp.cpp": "51d082becad3bd4f7c843aecb449057e358cb243450b7a6823e434fea64204d5",
+        "include/bsp/native_crt_ascii_strnicmp.hpp": "465f73bbf2f473151fa58c2462a3a8dc9c90eab155963c71f94c8f03a4f7ba58"
+      },
+      "machine": "014c",
+      "text_bytes": 224,
+      "function_sections": [
+        {
+          "name": "?compare_native_crt_ascii_prefix_00c15700@bsp@@YAHPBX@Z",
+          "section": 4,
+          "bytes": 172,
+          "instructions": 78,
+          "calls": 0,
+          "relocations": 0,
+          "code_sha256": "15e23a95ea7626644fb8a4a968f604480f7ca8c392c0d533c80dd3c146a311b1",
+          "decoded_all_bytes": true
+        },
+        {
+          "name": "?read_word@?A0x48c485b4@bsp@@YAII@Z",
+          "section": 6,
+          "bytes": 19,
+          "instructions": 10,
+          "calls": 0,
+          "relocations": 0,
+          "code_sha256": "ebb1379c4c99656ff4f2ea0b7b26654019551284302a201fafd511c6c0eddfb5",
+          "decoded_all_bytes": true
+        },
+        {
+          "name": "?read_byte@?A0x48c485b4@bsp@@YAEI@Z",
+          "section": 5,
+          "bytes": 10,
+          "instructions": 6,
+          "calls": 0,
+          "relocations": 0,
+          "code_sha256": "7984555e4f9a50d52ebb8dbaaa18404ae246029e4931e05ef8e6584358adf199",
+          "decoded_all_bytes": true
+        },
+        {
+          "name": "?compare_bytes@?A0x48c485b4@bsp@@YAHEE@Z",
+          "section": 3,
+          "bytes": 23,
+          "instructions": 13,
+          "calls": 0,
+          "relocations": 0,
+          "code_sha256": "ebb4f7478ac8215566e8620530b7add5b6740139e7815796abe29450789beefe",
+          "decoded_all_bytes": true
+        }
+      ],
+      "undefined_external_symbols": [],
+      "artifacts": {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct15_ascii_objects\\native_crt_ascii_strnicmp.obj",
+          "bytes": 1368,
+          "sha256": "3615f3481a3055797df6b4e00cc7857965015983998d51c77ec1c7121c4af073"
+        },
+        "disassembly": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct15_ascii_objects\\native_crt_ascii_strnicmp.disasm.txt",
+          "bytes": 6679,
+          "sha256": "a5c3bce094acbd100ec9f4b8e5e0c067f5bf18bc4a8a63858ee34fae08c2f73c"
+        },
+        "symbols": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct15_ascii_objects\\native_crt_ascii_strnicmp.symbols.txt",
+          "bytes": 2303,
+          "sha256": "aeb1bcc36dec08d0ee98a1ef66fbccee216c4c97255d585f17c81b5a446d71d7"
+        }
+      },
+      "whole_public_and_all_helpers_reviewed": true,
+      "findings": [
+        "Whole public body and all three compare_bytes/read_byte/read_word helper COMDATs reviewed;all224 text bytes decoded,zero calls/relocations/undefined externals.",
+        "Count raw DWORD load0018 precedes zero branch0025;zero returns0 without either pointer-word read. Left pointer DWORD load002A precedes right pointer DWORD003B;neither actual pointer/count word is reread in loop.",
+        "First current payload BYTE loads0043(left) and0045(right) BOTH precede left-NUL0047/0049;repeated008A/008C loads likewise precede008E/0090. Left-NUL never skips right read.",
+        "Either NUL reaches0092 raw unsigned byte comparison,skipping pointer increments,folding and count decrement;both zero return0.",
+        "Only both nonzero reach0054/0055 pointer increments. Unsigned41h/5Ah checks and CMOVA preserve exact A-Z folding,left0056..0068 before right006A..007E. High-bit bytes remain unchanged.",
+        "0080 compares folded bytes;only equality reaches0084 private retained-count DWORD decrement and0088 zero check. No signed-count narrowing or actual parameter reload.",
+        "Mismatch009F SBB EAX,EAX;00A2 AND EAX,FFFFFFFEh;00A6 INC EAX gives exactly-1 for unsignedless,+1 otherwise.0098 produces exact0;all tails plainRET/raw EAX.",
+        "All helpers reviewed:23B compare_bytes uses unsigned carry and exact normalized result;10B read_byte performs one BYTE load;19B read_word contains the requested raw x86 DWORD load/private temporary. Main inlines them without native or external transfer edges."
+      ],
+      "differences": [
+        "New cdecl(actual_parameters12 pointer) interface/plainRET differs from Original cdecl(left,right,count),although both return exact signed EAX and use caller cleanup.",
+        "Public172 emitted bytes differ from97 Original bytes;all224 emitted text bytes include three Source helper COMDATs. No native byte/COFF/entry identity.",
+        "Compiler reuses new C++ [EBP+8] argument-home word as raw-word address then retained count,and uses F8/FC/F4 private temporaries.0084 decrements this Source-private captured count,not actual_parameters12+8.",
+        "New compiler frame/bookkeeping must remain disjoint from reached actual cells/payload;no Original private-home/saved-register/flags/fault alias equivalence follows.",
+        "CMOVA folding,normalized SBB/AND/INC result,and duplicated first/repeated loop gates differ from Original branch/register layout while preserving admitted raw access/results.",
+        "No Original entry or new body runtime execution was performed;existing regression checks do not execute this leaf. No native differential/probe/game or parent closure claim."
+      ],
+      "independent_primary_whole_emitted_review": "passed all four complete emitted functions;same width/order/count/result and private-frame findings",
+      "result": "passed",
+      "supporting_local_review": "local/goal_oct15_crt_ascii_strnicmp_emitted_review.json",
+      "supporting_local_review_sha256": "317a5e6a52f9810ae0398c9b9a258132fbcad612feeeb9e46b0c25c5f3c35550"
+    },
     "new_tests": false,
     "native_differential": "not requested or run",
     "game_validation": "not run",
