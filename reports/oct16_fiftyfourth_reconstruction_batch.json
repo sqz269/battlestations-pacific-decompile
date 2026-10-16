@@ -1,0 +1,92 @@
+{
+  "batch": 54,
+  "status": "integrator_reviewed_reconstructed_build_tested_pending_Main_publication",
+  "Source_pin": "424a87e2a82103d137094c71146030766c277e0b",
+  "tested_integrator_commit": "8868dfd2d8641eedc7096d3bca390c18164d8eb7",
+  "primary_final": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_scalar_iter_equal_primary_frozen.json",
+    "sha256": "35b708ba0ebfbd12490caed243d222ccba130560031ad06efac4b0ba878c3ce7"
+  },
+  "primary_checks": 24,
+  "worker_frozen": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree_iterator_equal_frozen_pin.json",
+    "sha256": "b4923c82138aee97e23e3c59c4c27f02e5d9ee0a6a1bd81afa25be06fd4a2773"
+  },
+  "separate_worker_precommit": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree_iterator_equal_precommit_source_review.json",
+    "sha256": "40a487bfa064f75991a2d6ea90a7e129832c4af1b9c3deaf07f6f7ce26ce5e87"
+  },
+  "annotation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree_iterator_equal_annotation_receipt.json",
+    "sha256": "dcb6999f95acc63e43543c1f02670c2f7e635132da28eaba514063e81bc04e70"
+  },
+  "annotation_scope": "One address only; original stored prototype and existing function identity retained; comments preserved, project saved, exactly one whole export refreshed.",
+  "refreshed_exports": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00553070\\metadata.json",
+      "sha256": "f6e346b2d96715b82bbbe7c7e5ae078b3d7212d1f132199ecc2471251086c401"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00553070\\assembly.txt",
+      "sha256": "ee38a94c6371689f39147cfef1f96f7078767c1d0947bc6c236506e5ca3c6dd1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00553070\\decompiled.c",
+      "sha256": "61866a228c194b2e2538d7cde467467ad23d17169659b8ea56412d3b2ea15f33"
+    }
+  ],
+  "frozen_quartet": {
+    "include/bsp/native_input_scalar_tree_iterator_equal.hpp": "5e7499498be583ead190c78aea5e90f23d3b67ddb995d8198e5fef89ef632f2e",
+    "src/native_input_scalar_tree_iterator_equal.cpp": "b151c313a844bfd6caf3cc3bf5d7431cfdf5334f518cc8278400d9c8982b2563",
+    "docs/OCT16_INPUT_SCALAR_TREE_ITERATOR_EQUAL.md": "7d4c77e03029bda76cf5f46ce00ed59f4009f630c1b47a623d4216091f77e13d",
+    "reports/oct16_input_scalar_tree_iterator_equal.json": "fe064715feb1eede09deac2c188e0ef6536811b2aefbab860bd477fbfff1aa74"
+  },
+  "Native": [
+    41,
+    18
+  ],
+  "actual_integrator_COFF": {
+    "current_path_at_build": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\build\\win32\\bsp_core.dir\\Release\\native_input_scalar_tree_iterator_equal.obj",
+    "sha256": "8463b07cd5f1cd1324635fbd7cc965a36e9f3639e06639f1a591cd9c5c5c9377",
+    "immutable_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\object_archive\\sha256\\8463b07cd5f1cd1324635fbd7cc965a36e9f3639e06639f1a591cd9c5c5c9377.obj",
+      "sha256": "8463b07cd5f1cd1324635fbd7cc965a36e9f3639e06639f1a591cd9c5c5c9377"
+    },
+    "CODE": [
+      41,
+      18
+    ],
+    "raw_CODE": "568bf18b0685c0578b7c240c74043b077405e8000000008b460433c93b47045f0f94c18ac15ec20400",
+    "relocations": [
+      {
+        "offset": 19,
+        "type": 20,
+        "symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+      }
+    ],
+    "CODE_and_relocations_equal_accepted_worker": true,
+    "whole_object_metadata_qualified_separately": true
+  },
+  "normal_Win32": {
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_batch53_54_build.txt",
+      "sha256": "b82cabd851db5c7bb4512ce29684ba55574f1db8fee8630bc738e5a4e9cf2419"
+    },
+    "existing_tests": "3/3 passed",
+    "new_bodies_executed_by_tests": false
+  },
+  "transfer_verification": {
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_batch54_transfers.txt",
+      "sha256": "b15dbe4172565ef62b3f189f9d763b5c2688de888888504653f984af1cf8f9fb"
+    },
+    "direct_JSON_calls": 1,
+    "direct_MD_calls": 1,
+    "indirect_manual_proof": false
+  },
+  "limitations": [
+    "Current SDK BF6713 policy is the qualified published provider; Original BF66EF encoded-handler/CRT/Watson ownership is not established. Actual eight-byte iterator storage, caller stack, DF and provider nonvolatile/failure domain remain required. Private PCs, faults, FH3/SEH and complete Original ABI remain unproved.",
+    "Static Source, object and build checks do not establish runtime or game validation. No new test, probe or Native execution was added."
+  ],
+  "historical_proof": "Immutable Root seals, worker frozen/precommit receipts, pre-build archives and mapping receipts remain historical evidence. Later object paths may advance; immutable copies identify prior accepted content."
+}
