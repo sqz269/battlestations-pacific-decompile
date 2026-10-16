@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_command_queue",
+  "status": "whole_Source_independent_review_and_registered_build_pending",
+  "source_ready": false,
+  "whole_control_flow_code_available": true,
+  "source": "src/native_scene_command_queue.cpp",
+  "header": "include/bsp/native_scene_command_queue.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_COMMAND_QUEUE.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00469610",
+      "native_bytes": 115,
+      "instructions": 34,
+      "name": "queue_native_scene_command_00469610",
+      "native_name_retained": "BSP_SceneDatabase_QueueEntityCommand",
+      "original_abi": "ECXdatabase,stackowner/command/target,RET0Ch;semanticvoid",
+      "bytes": "6aff681b1bc60064a100000000506489250000000051566a148bf1e8ebd1780083c4048944240485c0c74424100000000074188b4c24208b54241c518b4c241c52518bc8e877faffffeb0233c0508d8e4c010000c7442414ffffffffe8dfecffff8b4c24085e64890d0000000083c410c20c00",
+      "sha256": "1cd097b551514e0a76b846aa09d2159161b6ea688cc792e97cb450fac6cebe37",
+      "live_equals_installed_PE": true,
+      "coverage": "whole ordinary explicit-storage Source"
+    },
+    {
+      "address": "00c61b10",
+      "native_bytes": 11,
+      "instructions": 5,
+      "name": "unwind_native_scene_command_queue_00c61b10",
+      "native_name_retained": "Unwind@00c61b10",
+      "original_abi": "CURRENT[EBP-10h] to cdeclfree;plainRET;qualifiedSourcecellmapping",
+      "bytes": "8b45f050e8934af9ff59c3",
+      "sha256": "345bac9300cbe461cf049b09fa600c41b1131d679cc1d6c57a885833ee89ad21",
+      "live_equals_installed_PE": true,
+      "coverage": "qualified whole cleanup action mapping"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0046962b",
+      "native": "00bf681b",
+      "function": "00469610",
+      "kind": "call"
+    },
+    {
+      "address": "00469654",
+      "native": "004690d0",
+      "function": "00469610",
+      "kind": "call"
+    },
+    {
+      "address": "0046966c",
+      "native": "00468350",
+      "function": "00469610",
+      "kind": "call"
+    },
+    {
+      "address": "00c61b14",
+      "native": "00bf65ac",
+      "function": "00c61b10",
+      "kind": "call"
+    }
+  ],
+  "source_hashes": {
+    "src/native_scene_command_queue.cpp": "981083b2241fa05cd9bd81e504bf27e3581abc368acc1d3cc584a51eeaad338e",
+    "include/bsp/native_scene_command_queue.hpp": "f75a4441cc243bff76e9706f261fb817df6403d3fac6a833f45e0bf8e3c5e1a0"
+  },
+  "provider_hashes": {
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+  },
+  "typed_metadata": {
+    "path": "local/goal_oct15_scene_command_queue_typed_flow.json",
+    "sha256": "4cfb949daa4e505cba519463f3a38b31a4a77fde9e11a29c72d3616e14203a51",
+    "read_only": true
+  },
+  "eh_evidence": {
+    "handler": "00c61b1b",
+    "funcinfo": "00d89180",
+    "funcinfo_hex": "22059319010000007891d8000000000000000000000000000000000000000000",
+    "unwind_map": "00d89178",
+    "unwind_map_hex": "ffffffff101bc600",
+    "state0_action": "00c61b10",
+    "source_transport": "ordinary C++ guard/currentCRT free;OriginalFH3/SEH/privateframe unproved"
+  },
+  "dependencies": [
+    "goal_oct15_scene_command_record_construct",
+    "goal_oct15_scene_command_list_push_back"
+  ],
+  "actual_cells": {
+    "parameters12": "P+4",
+    "saved_allocation4": "P-10h",
+    "constructor_parameters12": "P-20h",
+    "constructor_saved_record4": "P-34h",
+    "list_parameter4": "P-18h;intentional reuse of constructor target"
+  },
+  "qualification": [
+    "Concrete currentCRT allocator/free and real raw constructor/list insertion;no callback/stub/projection",
+    "Whole normal Source at stable metadata and valid reached actual-storage/currentservice provider contracts",
+    "Initial PUSH ECX cellwrite before allocation;late argument captures/outgoing write order and savedallocarm/disarm preserved",
+    "No rollback after list insertion throws",
+    "Qualified cleanup reloads CURRENT savedallocation;Original heap/handler/FH3/SEH/privateABI/fault/game unproved"
+  ],
+  "new_tests": 0,
+  "abi_compatible": false,
+  "new_entry_executed": false,
+  "game_validated": false,
+  "annotation": {
+    "status": "names and full old comments retained; locked evidence append applied; project saved; both exports refreshed and live readback confirmed",
+    "prior_values": "local/ghidra-annotations-20261016T010310Z.json"
+  },
+  "validation": {
+    "typed_transfer_rows": 4,
+    "failed": 0,
+    "build": "pending actual normal combined registered build",
+    "new_tests": 0
+  }
+}
