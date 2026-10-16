@@ -1,0 +1,379 @@
+{
+  "packet": "goal16aez_primary_integration",
+  "generated_utc": "2026-10-16T06:30:45.778780+00:00",
+  "status": "reviewed_reconstructed_build_tested_annotated",
+  "validated_Source_commit": "551c94f483e8bd0ce7f3ff670e43930543513cbb",
+  "prior_Main_input": "942d144a5e613174d332d44a6d8fe8d01126e63b",
+  "counts": {
+    "complete_functions": 21,
+    "complete_Native_bytes": 378,
+    "Native_instructions": 154,
+    "complete_Source_bytes": 364,
+    "Source_instructions": 153,
+    "exact_whole_bodies": 17,
+    "exact_whole_Native_bytes": 118,
+    "qualified_complete_interfaces": 4,
+    "qualified_Native_bytes": 260
+  },
+  "entries": [
+    {
+      "address": "00b401a0",
+      "packet": "GOAL16A",
+      "coverage": "complete",
+      "native_bytes": 11,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "ECX backed storage; no incoming EDX/stack-cell consumed",
+      "physical_Source_inputs": "ECX backed storage",
+      "result": "EAX=0",
+      "limits": "Code placement, recovered class/declaration and caller/game adoption not established."
+    },
+    {
+      "address": "00b401b0",
+      "packet": "GOAL16A",
+      "coverage": "complete",
+      "native_bytes": 11,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "ECX backed storage; no incoming EDX/stack-cell consumed",
+      "physical_Source_inputs": "ECX backed storage",
+      "result": "EAX=0",
+      "limits": "Code placement, recovered class/declaration and caller/game adoption not established."
+    },
+    {
+      "address": "00b403f0",
+      "packet": "GOAL16A",
+      "coverage": "complete",
+      "native_bytes": 15,
+      "qualification": "complete_new_Source_interface",
+      "physical_Original_inputs": "ECX destination; source loaded once from entry ESP+4; RET4",
+      "physical_Source_inputs": "ECX destination; EDX source; RET",
+      "result": "EAX destination on ordinary completion",
+      "limits": "New interface. Removed stack-cell read/RET4, argument-cell aliases and stack-fault/register context not reproduced."
+    },
+    {
+      "address": "00b40750",
+      "packet": "GOAL16A",
+      "coverage": "complete",
+      "native_bytes": 42,
+      "qualification": "complete_new_Source_interface",
+      "physical_Original_inputs": "ECX source backing; destination loaded once from entry ESP+4; incoming EDX unconsumed; RET4",
+      "physical_Source_inputs": "ECX source backing; EDX destination; RET",
+      "result": "EAX destination on ordinary completion",
+      "limits": "New interface. Removed argument-cell read/RET4 and stack faults/argument-cell aliases; EDX fault context differs. Code placement, first FP offset 2 versus 4, saved FIP and instruction addresses differ. No FP environment reset or runtime claim."
+    },
+    {
+      "address": "00b40780",
+      "packet": "GOAL16A",
+      "coverage": "complete",
+      "native_bytes": 24,
+      "qualification": "complete_new_Source_interface",
+      "physical_Original_inputs": "ECX source backing; destination loaded once from entry ESP+4; incoming EDX unconsumed; RET4",
+      "physical_Source_inputs": "ECX source backing; EDX destination; RET",
+      "result": "EAX destination on ordinary completion",
+      "limits": "New interface. Removed argument-cell read/RET4 and stack faults/argument-cell aliases; EDX fault context differs. Code placement, first FP offset 2 versus 4, saved FIP and instruction addresses differ. No FP environment reset or runtime claim."
+    },
+    {
+      "address": "00b40f10",
+      "packet": "GOAL16A",
+      "coverage": "complete",
+      "native_bytes": 5,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "ECX backed storage; no incoming EDX/stack-cell consumed",
+      "physical_Source_inputs": "ECX backed storage",
+      "result": "No established semantic return; EAX unchanged",
+      "limits": "Code placement, recovered class/declaration and caller/game adoption not established."
+    },
+    {
+      "address": "00b44bf0",
+      "packet": "GOAL16A",
+      "coverage": "complete",
+      "native_bytes": 3,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "One physical cleanup word at entry ESP+4, not read; no consumed incoming receiver",
+      "physical_Source_inputs": "One explicit unread physical cleanup word",
+      "result": "No established return; GPRs unchanged",
+      "limits": "Code placement, recovered class/declaration and caller/game adoption not established."
+    },
+    {
+      "address": "00b47660",
+      "packet": "GOAL16A",
+      "coverage": "complete",
+      "native_bytes": 4,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "ECX backed storage; no incoming EDX/stack-cell consumed",
+      "physical_Source_inputs": "ECX backed storage",
+      "result": "Raw dword in EAX",
+      "limits": "Code placement, recovered class/declaration and caller/game adoption not established."
+    },
+    {
+      "address": "00b47670",
+      "packet": "GOAL16A",
+      "coverage": "complete",
+      "native_bytes": 11,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "ECX backed storage; no incoming EDX/stack-cell consumed",
+      "physical_Source_inputs": "ECX backed storage",
+      "result": "EAX=0",
+      "limits": "Code placement, recovered class/declaration and caller/game adoption not established."
+    },
+    {
+      "address": "00b47830",
+      "packet": "GOAL16A",
+      "coverage": "complete",
+      "native_bytes": 4,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "ECX backed storage; no incoming EDX/stack-cell consumed",
+      "physical_Source_inputs": "ECX backed storage",
+      "result": "Raw dword in EAX",
+      "limits": "Code placement, recovered class/declaration and caller/game adoption not established."
+    },
+    {
+      "address": "00b47840",
+      "packet": "GOAL16A",
+      "coverage": "complete",
+      "native_bytes": 3,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "ECX backed storage; no incoming EDX/stack-cell consumed",
+      "physical_Source_inputs": "ECX backed storage",
+      "result": "Raw dword in EAX",
+      "limits": "Code placement, recovered class/declaration and caller/game adoption not established."
+    },
+    {
+      "address": "00b47870",
+      "packet": "GOAL16A",
+      "coverage": "complete",
+      "native_bytes": 4,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "ECX backed storage; no incoming EDX/stack-cell consumed",
+      "physical_Source_inputs": "ECX backed storage",
+      "result": "Raw dword in EAX",
+      "limits": "Code placement, recovered class/declaration and caller/game adoption not established."
+    },
+    {
+      "address": "00b47880",
+      "packet": "GOAL16A",
+      "coverage": "complete",
+      "native_bytes": 3,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "ECX backed storage; no incoming EDX/stack-cell consumed",
+      "physical_Source_inputs": "ECX backed storage",
+      "result": "Raw dword in EAX",
+      "limits": "Code placement, recovered class/declaration and caller/game adoption not established."
+    },
+    {
+      "address": "00b478f0",
+      "packet": "GOAL16A",
+      "coverage": "complete",
+      "native_bytes": 4,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "ECX backed storage; no incoming EDX/stack-cell consumed",
+      "physical_Source_inputs": "ECX backed storage",
+      "result": "Raw dword in EAX",
+      "limits": "Code placement, recovered class/declaration and caller/game adoption not established."
+    },
+    {
+      "address": "00b47ec0",
+      "packet": "GOAL16A",
+      "coverage": "complete",
+      "native_bytes": 5,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "ECX backed storage; no incoming EDX/stack-cell consumed",
+      "physical_Source_inputs": "ECX backed storage",
+      "result": "No established semantic return; EAX unchanged",
+      "limits": "Code placement, recovered class/declaration and caller/game adoption not established."
+    },
+    {
+      "address": "00b48040",
+      "packet": "GOAL16A",
+      "coverage": "complete",
+      "native_bytes": 5,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "ECX backed storage; no incoming EDX/stack-cell consumed",
+      "physical_Source_inputs": "ECX backed storage",
+      "result": "No established semantic return; EAX unchanged",
+      "limits": "Code placement, recovered class/declaration and caller/game adoption not established."
+    },
+    {
+      "address": "00b663f0",
+      "packet": "GOAL16E",
+      "coverage": "complete",
+      "native_bytes": 4,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "ECX only; no EDX/stack inputs consumed; EAX result; plain RET",
+      "limits": "Formal Original types/class/callers and game adoption unproved. Correct existing STL_Vector_Size_00b6bdd0 library name retained."
+    },
+    {
+      "address": "00b6bdd0",
+      "packet": "GOAL16E",
+      "coverage": "complete",
+      "native_bytes": 30,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "ECX only; no EDX/stack inputs consumed; EAX result; plain RET",
+      "limits": "Formal Original types/class/callers and game adoption unproved. Correct existing STL_Vector_Size_00b6bdd0 library name retained."
+    },
+    {
+      "address": "00b6d980",
+      "packet": "GOAL16E",
+      "coverage": "complete",
+      "native_bytes": 4,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "ECX only; no EDX/stack inputs consumed; EAX result; plain RET",
+      "limits": "Formal Original types/class/callers and game adoption unproved. Correct existing STL_Vector_Size_00b6bdd0 library name retained."
+    },
+    {
+      "address": "00b6fc60",
+      "packet": "GOAL16E",
+      "coverage": "complete",
+      "native_bytes": 7,
+      "qualification": "exact_whole_body",
+      "physical_Original_inputs": "ECX only; no EDX/stack inputs consumed; EAX result; plain RET",
+      "limits": "Formal Original types/class/callers and game adoption unproved. Correct existing STL_Vector_Size_00b6bdd0 library name retained."
+    },
+    {
+      "address": "00495ae0",
+      "packet": "GOAL15Z",
+      "coverage": "complete",
+      "native_bytes": 179,
+      "qualification": "complete_current_provider_composition",
+      "physical_Original_inputs": "ECX raw header plus two actual stackDWORDs requested_count/value, RET8; incoming EDX unconsumed",
+      "physical_Source_inputs": "fastcall ECX raw header, Source-only unused EDX, same two actual stackDWORDs",
+      "result": "Physical EAX only; no semantic return or lifetime inferred",
+      "limits": "Six genuine current Source/SDK bindings; private Native CRT/EH/fault/full binary ABI and parent/game closure unproved."
+    }
+  ],
+  "author_pins": {
+    "GOAL16A": "b1da2e2b51d5a2f4ebdc73bcb3dd0750ad8de50b",
+    "GOAL16E": "b6c81768933b2028429c74521383fc68ebff074e",
+    "GOAL15Z": "e4605665f60c2c9622887d9360d1aee106de19d7"
+  },
+  "independent_reviews": [
+    {
+      "path": "local/goal16a_root/review/artifact_review.json",
+      "sha256": "6163d9490d2b4df6cb03bf7536f20535878e68806debbe5c549a5329679ae1c6",
+      "status": "READY",
+      "build_or_target_code_executed_by_reviewer": false
+    },
+    {
+      "path": "local/goal16e_root/review/artifact_review.json",
+      "sha256": "1a87777af0436141b1dfd5104a855d31c74c6c4ea4e5377c0c3468597b9df925",
+      "status": "READY",
+      "build_or_target_code_executed_by_reviewer": false
+    },
+    {
+      "path": "local/goal15z_root/review/review.json",
+      "sha256": "1c966941627eb2b8c6b356dfa0e41aa7c9771b2d1b6699407cff05ad83679a33",
+      "status": "READY",
+      "build_or_target_code_executed_by_reviewer": false
+    }
+  ],
+  "primary_validation": {
+    "first_build": {
+      "started_utc": "2026-10-16T06:18:08.6209777Z",
+      "ended_utc": "2026-10-16T06:18:33.0110397Z",
+      "elapsed_seconds": 24.3871085,
+      "exit_code": 0,
+      "source_pin": "2f7b0fdfebe435eae8969e31cbfc71b02439f6e8"
+    },
+    "final_build": {
+      "started_utc": "2026-10-16T06:27:53.2282032Z",
+      "ended_utc": "2026-10-16T06:28:12.4304207Z",
+      "elapsed_seconds": 19.1990607,
+      "exit_code": 0,
+      "source_pin": "551c94f483e8bd0ce7f3ff670e43930543513cbb"
+    },
+    "final_checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "final_check_seconds": 7.99,
+    "final_proof": {
+      "path": "local/goal16a_root/final_proof/proof.json",
+      "sha256": "8504fd8596833d14521b581ad009f99c9ef4e285bafcf71d278d675482c58b37"
+    },
+    "initial_complete_proof": {
+      "path": "local/goal16a_root/combined_proof/proof.json",
+      "sha256": "f9b40632f7251862b2b6c6d14c4d911ab92399403723ca3eb0cb176f31d83623"
+    },
+    "complete_actual_registered_objects": 15,
+    "current_archive_sha256": "f0bf2053154d7d4069df75dc64dd0bbea10a3db9577ec6ddd029be7814f56b84",
+    "final_objects_unchanged_from_live_reviewed_combination": true,
+    "all_Source_local_symbol_identities_bijective": true,
+    "both_actual_archive_linker_directories_checked": true,
+    "old_GOAL15O_and_GOAL16B_blobs_preserved": true,
+    "old_and_new_CMake_registrations_once": true,
+    "source_new_tests": 0,
+    "primary_new_Native_or_fixture_execution": false
+  },
+  "annotations": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "write_lock": true,
+    "saved": true,
+    "old_states_and_comments": "local/goal15h_annotations_00b401a0.json",
+    "annotation_history": "local/ghidra-annotations-20261016T062202Z.json",
+    "final_typed_capture": "local/goal16a_root/saved_typed_flow.json",
+    "typed_modification_number": 5754,
+    "complete_entries": 21,
+    "complete_body_bytes": 378,
+    "no_return_false_all": true,
+    "saved_prototypes": "local/goal16a_root/saved_prototypes.txt",
+    "Original_thiscall_auto_ECX_not_duplicated": true,
+    "Source_unused_EDX_not_asserted_as_Original": true,
+    "correct_library_names_preserved": [
+      "STL_Vector_Resize_00495ae0",
+      "STL_Vector_Size_00b6bdd0"
+    ],
+    "descriptive_names_and_formal_types_provisional": true,
+    "affected_exports_refreshed": true,
+    "forced_snapshot_and_index_completed": true
+  },
+  "worker_elapsed_seconds": {
+    "GOAL16A_inclusive": 2197.991803,
+    "GOAL16E_inclusive": 1089.655,
+    "GOAL15Z_inclusive_floor": 2509.135,
+    "GOAL16A_final_warm_build": 18.983,
+    "GOAL16E_final_warm_build": 18.8802227,
+    "GOAL15Z_fresh_full_build": 1068.6708147,
+    "interpretation": "Overlapping worker intervals are not summed as batch wall time. Classification/review/setup/rejected attempts/repair/build/commit/release costs retained; no controlled speedup inferred."
+  },
+  "retained_corrections": [
+    "A initially used an already-published filename; superseded collision artifacts retained, all old15O blobs/providers/registration restored before author commit. Final new module is uniquely named _b4_16a.",
+    "A supplemental final strict compiler is C++20, as the author report correctly states. Actual registered target and both primary builds are C++17; complete emitted code is identical. An earlier summary calling A strict17 was incorrect.",
+    "E rejected C++20 bit_cast form emits52B including7B helper and fails actual C++17 build. Entire failed/intermediate evidence retained; final strict17 and registered17 whole45B bodies are exact.",
+    "Primary proof harness corrected a frozen provider-object subdirectory and unsupported bytes --count argument to --length before acceptance; no Source or target code changed.",
+    "Primary retained correct existing STL_Vector_Size library name, appending evidence and retaining old value rather than replacing it with a new Source description."
+  ],
+  "runtime_evidence": {
+    "GOAL16A": "No execution; full static object and literal x87 analysis only.",
+    "GOAL16E": "No execution; complete body identities and all-int32 signed divide proof only.",
+    "GOAL15Z": "Author one-case Source/capturedNative179 fixture with six genuine selected Source call bindings: first returning shrink diagnostic and negative-suffix erase only. Actual count/value/header mutation, preserved output preimage/captured count+end, EAX and RET8 checked. Independent reviewers did not execute it."
+  },
+  "unproved": [
+    "A original stack argument read/RET4, argument-cell alias/stack-fault/register context and x87 code placement/savedFIP for three new interfaces.",
+    "Z growth/noop/other diagnostics/positive copies/allocation/free/overflow and C++ exception propagation through naked resize/insert are unexecuted. Earlier standalone child fixtures do not close these paths.",
+    "Native private CRT/handler/Watson/FH3/RTTI/ThrowInfo/SEH, full faults/flags/unwind/binary ABI, caller/parent closure and actual game adoption.",
+    "Whole body identity alone does not prove live Native execution or Original-game validation."
+  ],
+  "discovery_policy": "Use indexed tagged-but-unreconstructed address bands for candidate discovery; search all existing Source and verify named-but-incomplete dependencies, precise address/file ownership and genuine services. Track complete functions plus Native bytes and all overhead; keep higher-value dependency closure in parallel. No stub providers or fabricated class/global contracts.",
+  "metadata_only_followup": {
+    "source_parent": "551c94f483e8bd0ce7f3ff670e43930543513cbb",
+    "merged_commit": "6d1afd26a8abee3a99830a6018267c48d81cc735",
+    "current_Main_input": "c471d52ad",
+    "changed_paths": [
+      "config/parallel_work.json",
+      "reports/cc12_native_crt_strcspn_readiness.json"
+    ],
+    "Source_header_CMake_build_scripts_changed": false,
+    "reason_no_rebuild": "Only packet readiness and a report changed after complete final Source build; exact Source snapshot retained."
+  },
+  "batch_claim_validator": {
+    "report_call_rows": 0,
+    "doc_call_claims": 0,
+    "failures": 0,
+    "warnings": 0,
+    "unchecked": 0,
+    "log": "local/goal16a_root/batch_claim_checks.log",
+    "scope": "Batch summary has no address-call rows; full author call reports and independent physical proofs carry call evidence."
+  }
+}
