@@ -1,0 +1,597 @@
+{
+  "batch": "oct15_twentieth_reconstruction_batch",
+  "status": "source_integrated_main_reviewed_win32_build_static_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "scope": {
+    "complete_ordinary_entries": [
+      "004d29d0",
+      "004cdce0",
+      "006981c0",
+      "00698380"
+    ],
+    "ordinary_entries": 4,
+    "distinct_owned_bytes": 219,
+    "distinct_owned_starts": 81,
+    "new_lexical_catches_or_EH_actions": 0,
+    "reference_and_producer_code_excluded": true
+  },
+  "components": [
+    {
+      "packet": "oct15_word_vector_tidy",
+      "pin": "2745d9c4c67363e7d0c4749cf371bc34303eda28",
+      "owned_bytes": 88,
+      "owned_starts": 26,
+      "report": "reports/oct15_word_vector_tidy.json",
+      "report_sha256": "9a8103346e7b24da77ef51b698334b56f450efe31b98861746ee1bc2ef00e440",
+      "documentation": "docs/OCT15_WORD_VECTOR_TIDY.md",
+      "source": "src/native_word_vector_tidy.cpp",
+      "header": "include/bsp/native_word_vector_tidy.hpp",
+      "primary_review": {
+        "path": "local/oct15_tidy_twentieth_primary_review.json",
+        "sha256": "3c6f6e32fc7dd98c05d77ae2ea87489d6867f3f3dfa205b79c55c41e8ad8c04a",
+        "evidence": {
+          "packet": "oct15_word_vector_tidy",
+          "pin": "2745d9c4c67363e7d0c4749cf371bc34303eda28",
+          "review_type": "primary immutable review",
+          "checks": [
+            "Full Source/header and both complete13-instruction native bodies reviewed; each wrapper directly delegates accepted actual tidy.",
+            "D29D0 uses only stacked header and RET4; unused owner/EDX slots explicit, no owner type or semantic EAX invented.",
+            "CDCE0 receiver header/plainRET shape retained; direct provider void call preserves admitted raw effects.",
+            "Captured begin is conditionally freed once; unconditional clears4/8/C ordered, opaque0 untouched; no element cleanup, guard or callback.",
+            "Full CDCE0 body differs from each accepted reference only in same-target free-call rel32 operand.",
+            "Full D29D0 instruction comparison differs only in header extraction, same-target call operand and RET4 versus RET.",
+            "Fresh172 PE/live bytes,52 current starts and all4 actual free-call targets independently checked; owned88B/26 starts excludes references.",
+            "Six accepted Source/header fingerprints match Root; ambient EAX/currentCRT/privateframe/FH3/fault/original ABI/game limits retained."
+          ],
+          "findings": [],
+          "owned_bytes": 88,
+          "owned_starts": 26,
+          "inspected_bytes": 172,
+          "inspected_starts": 52,
+          "fresh_units": [
+            {
+              "address": "004d29d0",
+              "bytes": 46,
+              "starts": 13,
+              "live_equals_PE": true,
+              "sha256": "f77de825202168a7f5bc40bb25b1c34d4d018d3f7e782a9643e66410c2b5ef91"
+            },
+            {
+              "address": "004cdce0",
+              "bytes": 42,
+              "starts": 13,
+              "live_equals_PE": true,
+              "sha256": "4c712812fee2357638a956b8b5d2ef3b9644fe204d2a953e79fad40c544608a0"
+            },
+            {
+              "address": "004cb130",
+              "bytes": 42,
+              "starts": 13,
+              "live_equals_PE": true,
+              "sha256": "6f4f6a0455b95af5595d49d120b34d6e57eda30a54a05fe855ca5cb9db244b55"
+            },
+            {
+              "address": "00468840",
+              "bytes": 42,
+              "starts": 13,
+              "live_equals_PE": true,
+              "sha256": "4b509f3738d7d5a94205765eb2f06c8d7ed0060fb85bbe486307c86ab8db7af2"
+            }
+          ],
+          "fresh_current_capture": "local/oct15_tidy_twentieth_current_starts.json",
+          "dependency_files_checked": [
+            "include/bsp/native_dword_vector_copy_primitives.hpp",
+            "src/native_dword_vector_copy_primitives.cpp",
+            "include/bsp/native_vector_storage_tidy.hpp",
+            "src/native_vector_storage_tidy.cpp",
+            "include/bsp/singleton_lifetime.hpp",
+            "src/singleton_lifetime.cpp"
+          ],
+          "frozen_blobs": {
+            "src/native_word_vector_tidy.cpp": {
+              "worktree_sha256": "5da425f344175e2fb4e143450d76c9184b6dfa83be36dc0c5b49b9c1d32dd998",
+              "git_blob": "96311b8faf7d8736bdc47efab8771cfeecb2bf24"
+            },
+            "include/bsp/native_word_vector_tidy.hpp": {
+              "worktree_sha256": "76f071a110765cec357421060880e85e1213311f16d886a087439f6c26161079",
+              "git_blob": "dc7719c8db0a5a746f7c917621552fe883495f2f"
+            },
+            "docs/OCT15_WORD_VECTOR_TIDY.md": {
+              "worktree_sha256": "4f7be754600ff1e94b6370881757ee02bf56f5a98f5ec313b4c03634aa8dbdf0",
+              "git_blob": "af4f2424ca0a48221c70ca41e96b79d497a80213"
+            },
+            "reports/oct15_word_vector_tidy.json": {
+              "worktree_sha256": "cf2b68e1cd2213dd01b3a181baab953f585cd2da32692daa79b6f481aaadf10d",
+              "git_blob": "f4cc6d895bf8e7f1049c931ad645fb0a3964473a"
+            }
+          },
+          "limits": "No original ABI/FH3/SEH/CRT/fault/privateframe/game proof or new native execution."
+        }
+      },
+      "raw_transfer_claims": 4
+    },
+    {
+      "packet": "oct15_native_dword_vector_swap_backward",
+      "pin": "05f135a6e3e53142a39b716e19c82cbfe032cc5c",
+      "owned_bytes": 131,
+      "owned_starts": 55,
+      "report": "reports/oct15_native_dword_vector_swap_backward.json",
+      "report_sha256": "eecabb22a44d58f88d487a658ecd9f2a65ebedd723b8e92fe70173c703f6063f",
+      "documentation": "docs/OCT15_NATIVE_DWORD_VECTOR_SWAP_BACKWARD.md",
+      "source": "src/native_dword_vector_swap_backward.cpp",
+      "header": "include/bsp/native_dword_vector_swap_backward.hpp",
+      "primary_review": {
+        "path": "local/oct15_swap_twentieth_primary_review.json",
+        "sha256": "ce9d39f40c278f31b4ec2539a33dff99e3cce9197ea667c059d72c43b873b290",
+        "evidence": {
+          "packet": "oct15_native_dword_vector_swap_backward",
+          "pin": "05f135a6e3e53142a39b716e19c82cbfe032cc5c",
+          "review_type": "primary immutable review",
+          "checks": [
+            "Full Source/header and both complete Native listings reviewed; actual self-contained core plus sole-child dispatcher.",
+            "Core cdecl six physical words exposes three consumed inputs and three dead slots; no stack-owner or type identity invented.",
+            "Last/output/first capture order retained even empty; empty returns captured output without raw data accesses.",
+            "Both begin words load before wrapped cursor decrements and equality comparison; destination-begin store precedes source-begin store.",
+            "End and capacity words load/store as separate staged pairs, preserving public alias effects without a header snapshot.",
+            "Core preserves DWORD wrapping/equality termination and advanced output result; opaque0 has no direct field access.",
+            "Dispatcher forwards captured inputs and duplicate output bits to actual core; Native tag high bits are dead and Source private canonical0 is explicitly qualified.",
+            "Dispatcher ignores core return and independently computes output minus SAR4/SHL4 wrapped distance, without typed pointer arithmetic or count bridge.",
+            "No allocation, assignment, validation, callback, provider, rollback, localEH or added noexcept contract.",
+            "Fresh164 PE/live bytes and69 current starts independently verified; owned131B/55 excludes bounded33B/14-start real producer.",
+            "All3 actual CALL targets verified, current producer owner and result discard explicit; Source private-frame/ambient-register/fault/ABI/game limits retained."
+          ],
+          "findings": [],
+          "owned_bytes": 131,
+          "owned_starts": 55,
+          "inspected_bytes": 164,
+          "inspected_starts": 69,
+          "fresh_units": [
+            {
+              "address": "006981c0",
+              "bytes": 67,
+              "starts": 26,
+              "live_equals_PE": true,
+              "sha256": "87a06f13fec1bdc3b82e15860853b37921eba20d64e52ef747d67d7e224cf9ec",
+              "coverage": "complete_current_typed_body"
+            },
+            {
+              "address": "00698380",
+              "bytes": 64,
+              "starts": 29,
+              "live_equals_PE": true,
+              "sha256": "67561a0d3c36d2048edd6e7e60a28c3fe011c8a24923a1d656bec5f3632dc587",
+              "coverage": "complete_current_typed_body"
+            },
+            {
+              "address": "00698633",
+              "bytes": 33,
+              "starts": 14,
+              "live_equals_PE": true,
+              "sha256": "3839ac68a40f5895349bcceadb872eb0b975012336695306d24d2f2bf2710f44",
+              "coverage": "bounded_unowned_producer_only"
+            }
+          ],
+          "fresh_current_capture": "local/oct15_swap_twentieth_current_starts.json",
+          "native_listing": [
+            {
+              "address": "006981c0",
+              "instruction": "mov ecx, dword ptr [esp + 8]"
+            },
+            {
+              "address": "006981c4",
+              "instruction": "mov eax, dword ptr [esp + 0xc]"
+            },
+            {
+              "address": "006981c8",
+              "instruction": "push esi"
+            },
+            {
+              "address": "006981c9",
+              "instruction": "mov esi, dword ptr [esp + 8]"
+            },
+            {
+              "address": "006981cd",
+              "instruction": "cmp esi, ecx"
+            },
+            {
+              "address": "006981cf",
+              "instruction": "je 0x698201"
+            },
+            {
+              "address": "006981d1",
+              "instruction": "push edi"
+            },
+            {
+              "address": "006981d2",
+              "instruction": "mov edi, dword ptr [ecx - 0xc]"
+            },
+            {
+              "address": "006981d5",
+              "instruction": "mov edx, dword ptr [eax - 0xc]"
+            },
+            {
+              "address": "006981d8",
+              "instruction": "sub ecx, 0x10"
+            },
+            {
+              "address": "006981db",
+              "instruction": "sub eax, 0x10"
+            },
+            {
+              "address": "006981de",
+              "instruction": "cmp ecx, esi"
+            },
+            {
+              "address": "006981e0",
+              "instruction": "mov dword ptr [eax + 4], edi"
+            },
+            {
+              "address": "006981e3",
+              "instruction": "mov dword ptr [ecx + 4], edx"
+            },
+            {
+              "address": "006981e6",
+              "instruction": "mov edi, dword ptr [ecx + 8]"
+            },
+            {
+              "address": "006981e9",
+              "instruction": "mov edx, dword ptr [eax + 8]"
+            },
+            {
+              "address": "006981ec",
+              "instruction": "mov dword ptr [eax + 8], edi"
+            },
+            {
+              "address": "006981ef",
+              "instruction": "mov dword ptr [ecx + 8], edx"
+            },
+            {
+              "address": "006981f2",
+              "instruction": "mov edi, dword ptr [ecx + 0xc]"
+            },
+            {
+              "address": "006981f5",
+              "instruction": "mov edx, dword ptr [eax + 0xc]"
+            },
+            {
+              "address": "006981f8",
+              "instruction": "mov dword ptr [eax + 0xc], edi"
+            },
+            {
+              "address": "006981fb",
+              "instruction": "mov dword ptr [ecx + 0xc], edx"
+            },
+            {
+              "address": "006981fe",
+              "instruction": "jne 0x6981d2"
+            },
+            {
+              "address": "00698200",
+              "instruction": "pop edi"
+            },
+            {
+              "address": "00698201",
+              "instruction": "pop esi"
+            },
+            {
+              "address": "00698202",
+              "instruction": "ret "
+            },
+            {
+              "address": "00698380",
+              "instruction": "push ecx"
+            },
+            {
+              "address": "00698381",
+              "instruction": "mov ecx, dword ptr [esp + 0x10]"
+            },
+            {
+              "address": "00698385",
+              "instruction": "mov edx, dword ptr [esp + 0x10]"
+            },
+            {
+              "address": "00698389",
+              "instruction": "push ebx"
+            },
+            {
+              "address": "0069838a",
+              "instruction": "mov ebx, dword ptr [esp + 0xc]"
+            },
+            {
+              "address": "0069838e",
+              "instruction": "push esi"
+            },
+            {
+              "address": "0069838f",
+              "instruction": "mov esi, dword ptr [esp + 0x14]"
+            },
+            {
+              "address": "00698393",
+              "instruction": "push edi"
+            },
+            {
+              "address": "00698394",
+              "instruction": "mov edi, dword ptr [esp + 0x1c]"
+            },
+            {
+              "address": "00698398",
+              "instruction": "mov byte ptr [esp + 0xc], 0"
+            },
+            {
+              "address": "0069839d",
+              "instruction": "mov eax, dword ptr [esp + 0xc]"
+            },
+            {
+              "address": "006983a1",
+              "instruction": "push eax"
+            },
+            {
+              "address": "006983a2",
+              "instruction": "push ecx"
+            },
+            {
+              "address": "006983a3",
+              "instruction": "push edx"
+            },
+            {
+              "address": "006983a4",
+              "instruction": "push edi"
+            },
+            {
+              "address": "006983a5",
+              "instruction": "push esi"
+            },
+            {
+              "address": "006983a6",
+              "instruction": "push ebx"
+            },
+            {
+              "address": "006983a7",
+              "instruction": "call 0x6981c0"
+            },
+            {
+              "address": "006983ac",
+              "instruction": "sub esi, ebx"
+            },
+            {
+              "address": "006983ae",
+              "instruction": "add esp, 0x18"
+            },
+            {
+              "address": "006983b1",
+              "instruction": "sar esi, 4"
+            },
+            {
+              "address": "006983b4",
+              "instruction": "shl esi, 4"
+            },
+            {
+              "address": "006983b7",
+              "instruction": "mov eax, edi"
+            },
+            {
+              "address": "006983b9",
+              "instruction": "pop edi"
+            },
+            {
+              "address": "006983ba",
+              "instruction": "sub eax, esi"
+            },
+            {
+              "address": "006983bc",
+              "instruction": "pop esi"
+            },
+            {
+              "address": "006983bd",
+              "instruction": "pop ebx"
+            },
+            {
+              "address": "006983be",
+              "instruction": "pop ecx"
+            },
+            {
+              "address": "006983bf",
+              "instruction": "ret "
+            },
+            {
+              "address": "00698633",
+              "instruction": "mov eax, dword ptr [ebp - 0x18]"
+            },
+            {
+              "address": "00698636",
+              "instruction": "push eax"
+            },
+            {
+              "address": "00698637",
+              "instruction": "push edi"
+            },
+            {
+              "address": "00698638",
+              "instruction": "push ebx"
+            },
+            {
+              "address": "00698639",
+              "instruction": "call 0x698380"
+            },
+            {
+              "address": "0069863e",
+              "instruction": "mov edx, dword ptr [ebp + 0x14]"
+            },
+            {
+              "address": "00698641",
+              "instruction": "lea ecx, [ebp - 0x28]"
+            },
+            {
+              "address": "00698644",
+              "instruction": "push ecx"
+            },
+            {
+              "address": "00698645",
+              "instruction": "add edx, ebx"
+            },
+            {
+              "address": "00698647",
+              "instruction": "push edx"
+            },
+            {
+              "address": "00698648",
+              "instruction": "push ebx"
+            },
+            {
+              "address": "00698649",
+              "instruction": "call 0x698010"
+            },
+            {
+              "address": "0069864e",
+              "instruction": "add esp, 0x18"
+            },
+            {
+              "address": "00698651",
+              "instruction": "mov eax, dword ptr [ebp - 0x24]"
+            }
+          ],
+          "frozen_blobs": {
+            "src/native_dword_vector_swap_backward.cpp": {
+              "worktree_sha256": "8959b70f4bf56076c89f7935edac9a1b454cc8398e1f6dfc9a5ce72b0d63a811",
+              "git_blob": "39b19cf63c97c8e6db13f182de80f3ca389f5bd7"
+            },
+            "include/bsp/native_dword_vector_swap_backward.hpp": {
+              "worktree_sha256": "b194933dd1d672e4c1231581619c86f90f82c1be596e3787cda668e60849a720",
+              "git_blob": "ab1886a7271d229c11373bdc7aeb43a9c9b8a670"
+            },
+            "docs/OCT15_NATIVE_DWORD_VECTOR_SWAP_BACKWARD.md": {
+              "worktree_sha256": "33d95a2d784a801e7e1fa7870367b6923cf8d2171ae178d2f0db6dae45795dc8",
+              "git_blob": "143b594a5cc09fb52b8437a7bd95caaa15aa3002"
+            },
+            "reports/oct15_native_dword_vector_swap_backward.json": {
+              "worktree_sha256": "eecabb22a44d58f88d487a658ecd9f2a65ebedd723b8e92fe70173c703f6063f",
+              "git_blob": "91c86ebb756f9e8a1b5fbf04a3c295e7887365f9"
+            }
+          },
+          "limits": "No original binaryABI/FH3/SEH/fault/privateframe/game proof or new native execution; Source canonical private dead tag explicitly qualified."
+        }
+      },
+      "raw_transfer_claims": 3
+    }
+  ],
+  "source_files_sha256": {
+    "src/native_word_vector_tidy.cpp": "5da425f344175e2fb4e143450d76c9184b6dfa83be36dc0c5b49b9c1d32dd998",
+    "include/bsp/native_word_vector_tidy.hpp": "76f071a110765cec357421060880e85e1213311f16d886a087439f6c26161079",
+    "src/native_dword_vector_swap_backward.cpp": "8959b70f4bf56076c89f7935edac9a1b454cc8398e1f6dfc9a5ce72b0d63a811",
+    "include/bsp/native_dword_vector_swap_backward.hpp": "b194933dd1d672e4c1231581619c86f90f82c1be596e3787cda668e60849a720"
+  },
+  "host_steps": [
+    {
+      "address": "0046884b",
+      "native": "00bf65ac",
+      "function": "00468840",
+      "kind": "call"
+    },
+    {
+      "address": "004cb13b",
+      "native": "00bf65ac",
+      "function": "004cb130",
+      "kind": "call"
+    },
+    {
+      "address": "004cdceb",
+      "native": "00bf65ac",
+      "function": "004cdce0",
+      "kind": "call"
+    },
+    {
+      "address": "004d29dd",
+      "native": "00bf65ac",
+      "function": "004d29d0",
+      "kind": "call"
+    },
+    {
+      "function": "00698380",
+      "address": "006983a7",
+      "native": "006981c0"
+    },
+    {
+      "function": "00698400",
+      "address": "00698639",
+      "native": "00698380"
+    },
+    {
+      "function": "00698400",
+      "address": "00698649",
+      "native": "00698010"
+    }
+  ],
+  "primary_review_checks": 19,
+  "native_transfer_verification": {
+    "component_report_rows": 7,
+    "component_markdown_claims": 7,
+    "distinct_sites": 7,
+    "failed": 0,
+    "unchecked": 0,
+    "warnings": 0,
+    "log": "local/oct15_twentieth_final_transfers.log"
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "platform": "MSVC Win32 Release",
+    "tested_source_pin": "3073adf56f3c3a35a95211102610c5288bae7248",
+    "existing_suites": "3/3 passed",
+    "ctest_seconds": 9.32,
+    "log": "local/oct15_twentieth_union_build.log",
+    "log_sha256": "bd6afd4f2625b4086f8c1ab149438d2cad96cac86a2f28cd1a0cb44e40ac0dc8",
+    "new_tests": 0,
+    "new_entry_native_execution": false,
+    "original_binary_ABI_proven": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "function_annotation_count": 4,
+    "saved_project": true,
+    "old_comments_names_preimages_retained": true,
+    "annotation_receipts": [
+      {
+        "path": "local/ghidra-annotations-20261016T003735Z.json",
+        "sha256": "ab00d623ac267b83913e0cb9c7356064e34cbbe5d29b28ea799590c15c11b36c",
+        "entries": 2
+      },
+      {
+        "path": "local/ghidra-annotations-20261016T005002Z.json",
+        "sha256": "fb78dd0e227196446c6098d81168ab8e8a9a422f66d2ee731467e1e97a8a3924",
+        "entries": 2
+      }
+    ],
+    "forced_snapshot": {
+      "path": "local/oct15_twentieth_snapshot.log",
+      "sha256": "ebf520e5541d77b66b8d36f57f629dc550c5d1bb8e90c951c9e2594dc8ed8896",
+      "internal": 76332,
+      "total": 76774
+    },
+    "affected_exports": {
+      "path": "local/oct15_twentieth_exports.log",
+      "sha256": "430e935525fbd795df5ed25a554fdf373d063a711de9142e4a24db1f31df4773",
+      "count": 4
+    }
+  },
+  "behavior": [
+    "Two distinct Tidy entries delegate the accepted actual cleanup after full byte/instruction comparisons. Stack-header RET4 and receiver plainRET shapes remain separate; conditional captured-begin free precedes ordered4/8/C clears.",
+    "Backward core preserves last/output/first capture order, predecrement begin-word loads and staged begin/end/capacity swaps across public aliases. It exposes all six physical words with only three consumed.",
+    "Dispatcher passes captured inputs and duplicate output bits, then independently computes output minus wrapped SAR4/SHL4 distance. Native unconsumed tag high bits are explicitly replaced by Source private canonical zero; no owner/frame identity is invented."
+  ],
+  "limits": [
+    "These explicit Source interfaces use admitted raw-storage and currentCRT/currentCpp services. Source private storage, ambient EAX/ECX, original ABI/CRT/FH3/SEH/RTTI/fault/game identity remain unproved.",
+    "Compiled Source bytes, supporting Native references/producers and owned Native bytes are counted separately. Existing math differential tests cover older seeds, not new entry Native execution.",
+    "Existing qualified AV/typed/callback/memmove_s interfaces are preserved. Whole device range erasure, placement wrappers and EH range cores remain separate continuing packets."
+  ],
+  "main_integration": {
+    "source_pin": "3073adf56f3c3a35a95211102610c5288bae7248",
+    "all_four_source_header_fingerprints_equal_tested_tree": true,
+    "receipt_merge": "metadata only after Source validation"
+  },
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "method": "single push after receipt merge; independently verify remote main",
+    "exact_tip": "reported in final response and remote ref; not self-referenced"
+  }
+}
