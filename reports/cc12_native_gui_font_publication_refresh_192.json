@@ -1,0 +1,299 @@
+{
+  "packet": "cc12_native_gui_font_publication_refresh192",
+  "status": "latest_Main_refresh_build_static_Core_preservation_link_PASS_ready_for_publication",
+  "compiled_commit": "35387013af079f63632ef48f51cc4fbc23af163f",
+  "Main_before": "5ff85bbf4e60166660566208a8335490dade08c4",
+  "Source187_compiled_commit": "838861904698b11d3c6a03a232a766047e8cad75",
+  "Main_refresh": {
+    "before_HEAD": "24562dbd149221b0097ba9ba82b8979f7d490615",
+    "Main_before": "5ff85bbf4e60166660566208a8335490dade08c4",
+    "merged_HEAD": "35387013af079f63632ef48f51cc4fbc23af163f",
+    "Main_changed_paths": [
+      "cmake/startup.cmake",
+      "config/names/00550000.jsonl",
+      "config/names/00690000.jsonl",
+      "config/names/00bc0000.jsonl",
+      "config/names/00bf0000.jsonl",
+      "config/parallel_work.json",
+      "config/reconstruction/00550000.jsonl",
+      "config/reconstruction/00690000.jsonl",
+      "config/reconstruction/00bc0000.jsonl",
+      "config/reconstruction/00bf0000.jsonl",
+      "docs/GOAL16AC_ZLIB_RAW_COPY_BLOCK.md",
+      "docs/GOAL16AO_ZLIB_COPY_RETURNING_PROTOCOL.md",
+      "docs/GOAL16AR_RECONSTRUCTION_BATCH.md",
+      "docs/NATIVE_CRT_FREXP_FINITE_PROVIDER_READINESS.md",
+      "docs/NATIVE_CRT_STRSTR.md",
+      "docs/NATIVE_ZLIB_RAW_INIT_BLOCK_BC.md",
+      "docs/NATIVE_ZLIB_RAW_PUT_SHORT_MSB_BC.md",
+      "docs/OCT16_CRT_GUI_SEH_SOURCE_FRONTIERS.md",
+      "docs/OCT16_FIFTYFIFTH_RECONSTRUCTION_BATCH.md",
+      "docs/OCT16_FIFTYSIXTH_RECONSTRUCTION_BATCH.md",
+      "docs/OCT16_INPUT_SCALAR_TREE18_LEAVES.md",
+      "docs/OCT16_NATIVE_CRT_V6_UNLOCK_HELPER.md",
+      "include/bsp/native_crt_strstr.hpp",
+      "include/bsp/native_crt_v6_unlock_helper.hpp",
+      "include/bsp/native_input_scalar_tree18_leaves.hpp",
+      "include/bsp/native_zlib_raw_copy_block_bc.hpp",
+      "include/bsp/native_zlib_raw_init_block_bc.hpp",
+      "include/bsp/native_zlib_raw_put_short_msb_bc.hpp",
+      "reports/goal16ac_zlib_raw_copy_block.json",
+      "reports/goal16ao_zlib_copy_returning_protocol.json",
+      "reports/goal16ar_reconstruction_batch.json",
+      "reports/native_crt_frexp_finite_provider_readiness.json",
+      "reports/native_crt_strstr.json",
+      "reports/native_zlib_raw_init_block_bc.json",
+      "reports/native_zlib_raw_put_short_msb_bc.json",
+      "reports/oct16_crt_gui_seh_source_frontiers.json",
+      "reports/oct16_fiftyfifth_reconstruction_batch.json",
+      "reports/oct16_fiftysixth_reconstruction_batch.json",
+      "reports/oct16_input_scalar_tree18_leaves.json",
+      "reports/oct16_native_crt_v6_unlock_helper.json",
+      "src/native_crt_strstr.cpp",
+      "src/native_crt_v6_unlock_helper.cpp",
+      "src/native_input_scalar_tree18_leaves.cpp",
+      "src/native_zlib_raw_copy_block_bc.cpp",
+      "src/native_zlib_raw_init_block_bc.cpp",
+      "src/native_zlib_raw_put_short_msb_bc.cpp"
+    ],
+    "temporary_nonregistry_leases": [
+      "docs/GOAL16AC_ZLIB_RAW_COPY_BLOCK.md",
+      "docs/GOAL16AO_ZLIB_COPY_RETURNING_PROTOCOL.md",
+      "docs/GOAL16AR_RECONSTRUCTION_BATCH.md",
+      "docs/NATIVE_CRT_FREXP_FINITE_PROVIDER_READINESS.md",
+      "docs/NATIVE_CRT_STRSTR.md",
+      "docs/NATIVE_ZLIB_RAW_INIT_BLOCK_BC.md",
+      "docs/NATIVE_ZLIB_RAW_PUT_SHORT_MSB_BC.md",
+      "docs/OCT16_CRT_GUI_SEH_SOURCE_FRONTIERS.md",
+      "docs/OCT16_FIFTYFIFTH_RECONSTRUCTION_BATCH.md",
+      "docs/OCT16_FIFTYSIXTH_RECONSTRUCTION_BATCH.md",
+      "docs/OCT16_INPUT_SCALAR_TREE18_LEAVES.md",
+      "docs/OCT16_NATIVE_CRT_V6_UNLOCK_HELPER.md",
+      "include/bsp/native_crt_strstr.hpp",
+      "include/bsp/native_crt_v6_unlock_helper.hpp",
+      "include/bsp/native_input_scalar_tree18_leaves.hpp",
+      "include/bsp/native_zlib_raw_copy_block_bc.hpp",
+      "include/bsp/native_zlib_raw_init_block_bc.hpp",
+      "include/bsp/native_zlib_raw_put_short_msb_bc.hpp",
+      "reports/goal16ac_zlib_raw_copy_block.json",
+      "reports/goal16ao_zlib_copy_returning_protocol.json",
+      "reports/goal16ar_reconstruction_batch.json",
+      "reports/native_crt_frexp_finite_provider_readiness.json",
+      "reports/native_crt_strstr.json",
+      "reports/native_zlib_raw_init_block_bc.json",
+      "reports/native_zlib_raw_put_short_msb_bc.json",
+      "reports/oct16_crt_gui_seh_source_frontiers.json",
+      "reports/oct16_fiftyfifth_reconstruction_batch.json",
+      "reports/oct16_fiftysixth_reconstruction_batch.json",
+      "reports/oct16_input_scalar_tree18_leaves.json",
+      "reports/oct16_native_crt_v6_unlock_helper.json",
+      "src/native_crt_strstr.cpp",
+      "src/native_crt_v6_unlock_helper.cpp",
+      "src/native_input_scalar_tree18_leaves.cpp",
+      "src/native_zlib_raw_copy_block_bc.cpp",
+      "src/native_zlib_raw_init_block_bc.cpp",
+      "src/native_zlib_raw_put_short_msb_bc.cpp"
+    ],
+    "no_shared_registry_shard_CMake_lease": true,
+    "sealed187_Source_header_differences": [],
+    "old187_191_seals_unchanged": true,
+    "followup_current_Main_build_required": true
+  },
+  "new_Source_or_Native_body_credit": 0,
+  "whole_Source_body_credit_from187": 4,
+  "existing_checks": {
+    "command": "./scripts/build.ps1",
+    "passed": "3/3",
+    "seconds": 7.54
+  },
+  "all19_reviewed_Core_objects_code_and_ordered_relocations_preserved": [
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_font_storage.obj",
+      "symbol_roots": 8,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "d02b6c30888150cd833e1c8a22b2b76de95dc76d9d308393eb2e1cdc3f20e8c4",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_font_tree_iterator.obj",
+      "symbol_roots": 1,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "72c8e9353bb30bfee9d25118105dbc46c2e5fb8fcb68437d183d489e2b115678",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_font_tree_insert.obj",
+      "symbol_roots": 17,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "86cfdd67b22fc03b82f87bbf6f7dc4a8d80fe1381e02a9f8a45a72ffe6867ad5",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_frame_box_geometry.obj",
+      "symbol_roots": 31,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "56d21c06a588c61897819eeb514def4227f90b68660f38f05b59c55ebe256ba9",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_frame_box_identity.obj",
+      "symbol_roots": 65,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "98b72afdc854d18325fea874ebd0c4a135903faacd7e70049d57cb040f058b44",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_frame_box_state_storage.obj",
+      "symbol_roots": 56,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "77cdcbe9cf1be8526771a20ce1b59e612b00b0f5717320ff1e031f19c0029e62",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_widget_clip_storage.obj",
+      "symbol_roots": 37,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "2a715d1442bf908234dff2c8c529bf9598d1917619a77dc443c3f5b9505e9f3c",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_rectangle_writer.obj",
+      "symbol_roots": 1,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "7e060300ee8920e8ff2e6dde7817a2196fa433f8802c8d39421809aa2cb26572",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_texture_normalization.obj",
+      "symbol_roots": 30,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "37dd5da1213350943f348addd371c4333fd39838002e181941aa4252d68f06b4",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_effect_handle_acquisition.obj",
+      "symbol_roots": 37,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "e522918793fe8a2368e4f3d38213b228f6f8ac58ec169843c9d440b04030f593",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_resource_stream_reads.obj",
+      "symbol_roots": 27,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "b402430fee10892c47169538f3ecfab1a37f852abee8efa062d27debaa7d5e63",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_frame_box_lifetime.obj",
+      "symbol_roots": 39,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "104091020b24ce430ed2757efea339617e04a7794a438874b5d46e9d5ef87106",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_widget_copy_storage.obj",
+      "symbol_roots": 25,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "3dd0c7b8bc7cf53ccc9d85e2e25bebea5d6991bef0d6248de051ee0fb049234c",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_frame_box_vector_copy.obj",
+      "symbol_roots": 49,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "dcf42c09199448f6ed1f22fe653299a55bd15508c76f0545f335c81e546347ec",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_frame_box_records.obj",
+      "symbol_roots": 44,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "8447c63623ef591cdfe6f6a4f9a4648f403015f6ab9224ee6ccfc67f2da8bb07",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_frame_box_constructed_storage.obj",
+      "symbol_roots": 47,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "2e08f67173fdee9d1f27b76858aa86e5e1a5c62adf434b31dc816f211dce8649",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_resource_value_reads.obj",
+      "symbol_roots": 24,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "b015cfeefd106d02a3cd6e8ef6c964163078e8aeba284753c8a2e5866f6bfbd9",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/stream_scalars.obj",
+      "symbol_roots": 4,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "8945f6957547678a2e6b628395f0760bfabe0c57e32e5f3218403bfe938ecb15",
+      "actual_Core_member_equals_current_object": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_frame_box_copy_storage.obj",
+      "symbol_roots": 71,
+      "all_code_and_ordered_normalized_relocations_equal_sealed187": true,
+      "current_obj_sha256": "c56250f7ffcbedd0ca34a0b3dcd075beeca0858967e95802fbb37de0bfa40edf",
+      "actual_Core_member_equals_current_object": true
+    }
+  ],
+  "current_Core_sha256": "e7914b2301496752edf78e39925863ad8ce246aa3f6b4afabe14a872a0569e27",
+  "static_address_only_link_probe": {
+    "exit": 0,
+    "PE32_asInvoker": true,
+    "sha256": "3554a8ece6e0d6eaa24b307124500cf5a6bb7d9b3c61711d3ea1308781d531bc",
+    "four_target_bodies_invoked": false
+  },
+  "Root_live_call_verification": {
+    "integrator_live_report_and_Doc_verifier": "12reports+12Docs;0failed",
+    "unchecked_Doc_lines": [
+      {
+        "packet": 180,
+        "reason": "Unpaired sentence states two direct calls; independent full189B73start disassembly proves exact two direct targets",
+        "resolved": true
+      },
+      {
+        "packet": 185,
+        "reason": "Same unpaired whole-body call-count sentence; exact two call rows pass live mechanical verifier and disk proof",
+        "resolved": true
+      },
+      {
+        "packet": 182,
+        "reason": "Provider matrix row names genuine Source B319B0 API, not an Original direct call-site pair; full Source/provider role was reviewed in182/183 and188. Native renderer call remains explicit indirect capture/dispatch, not a false direct CALL",
+        "resolved": true
+      }
+    ],
+    "independent189B_calls": [
+      {
+        "address": "00ad4b00",
+        "native": "0xad4600"
+      },
+      {
+        "address": "00ad4b22",
+        "native": "0xad4040"
+      }
+    ],
+    "Native_execution": false,
+    "old_seals_modified": false
+  },
+  "prior187_191_seals_unchanged": true,
+  "foreign_Main2_hash_size_mtime_unchanged": true,
+  "archive": {
+    "path": "local/cc12_native_gui_font_postseal_192/evidence_family.zip",
+    "sha256": "afbee3cc5bbde8c0d0bdc9612a44cdfafa5b5c83fc105c7633631bf57345a7f5",
+    "manifest": "local/cc12_native_gui_font_postseal_192/manifest.json",
+    "manifest_sha256": "a75e7907d4a2b41ab2e6ab14045ca4371c2aae2cf1f9efbc5d802cefd6de6ec0",
+    "payloads": 59,
+    "all_archived_hashes_rechecked": true
+  },
+  "limits": [
+    "No new implementation in192; Source187 supplies four whole entries, readonly183/191 supply contracts only",
+    "Existing checks and address-only linking do not execute the four new target bodies or prove Native private ABI/runtime/gameplay",
+    "Prior Source/header closure694 inputs remains byte-identical after Main refresh; no new emitted-code review needed because all19 old actual objects preserve all code/ordered symbolic relocations",
+    "Existing unrelated Lua LNK4006 duplicate is qualified; no new tests/runtime probes added"
+  ]
+}
