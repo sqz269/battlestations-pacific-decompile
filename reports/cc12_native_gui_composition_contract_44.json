@@ -1,0 +1,148 @@
+{
+  "packet": "native_gui_composition_contract_44",
+  "kind": "read_only_canonical_provider_and_constructor_contract_map",
+  "reviewed_main": "3df346c0ab1cf87f138bc91fa0bec0b4ecf220a3",
+  "requested_prerequisite_baseline": "7bbd1e404",
+  "later_Main_context_checked": "150f4210c37eb45c6a843415958b49d6e671cce2",
+  "status": "providers_mapped_composition_and_evidence_gaps_explicit",
+  "source_mutations": false,
+  "Ghidra_queries_or_mutations": false,
+  "build_test_or_game_runs_by_reviewer": false,
+  "normal_native_Text_drawing_ready": false,
+  "proven_existing_canonical_providers": {
+    "nodes": "renderer.camera_environment().nodes; SAME DestructionGraph scenes/attachments/raw-name runtime",
+    "node_constants": "renderer.node_constants() CE4970/D7A24C/CE4ADC actual cells",
+    "actual_names": "renderer.game_grid_context().strings; same VFS ActualNativeStringPoolStorage publication/gate/manager",
+    "model_pool": "game_native_resource_pool_process().model_pool_01090054()",
+    "group_pool": "game_native_resource_pool_process().group_pool_010902f4()",
+    "type_counter": "vfs.native_owners().types()",
+    "type_cells": "vfs.native_types().light_types()/model_types()/group_types()",
+    "geometry": "renderer.game_grid_context().graphics and its streams/geometry/actual owners",
+    "actual_render_owners": "renderer.actual_owners()",
+    "layouts_and_half_import": "renderer.section_layout_services()/vertex_half_import()",
+    "material_pool": "game_native_material_process().material_pool_00f8d3ac()",
+    "parameter_pool": "game_native_material_process().parameter_pool_00f8d3e4()",
+    "Text_pool_and_lineage": "game_native_gui_text_process() after host41 startup",
+    "mutable_GUI_Text_cells": "game_native_gui_text_state() sole backing",
+    "readonly_numeric_data": "retained GameNativeReadOnlyData::data_at verified spans"
+  },
+  "NativeModelEnvironment_fields": {
+    "pool_01090054": "canonical model pool",
+    "nodes": "renderer camera nodes",
+    "types": "persistent ModelTypeBootstrap over same VFS counter/common/model cells",
+    "retained_owners": "renderer actual owners",
+    "constants": ["CE4ADC DWORD", "CE4970 DWORD", "D7A208 DWORD", "D7A260 DWORD"],
+    "vtable_00d62de8": "mapped actual profile at least23 DWORDs",
+    "vtable_00d62c88": "mapped actual profile at least22 DWORDs",
+    "actual_names": "same grid.strings for typed actual-adapter route; stable through destruction"
+  },
+  "NativeGroupEnvironment_fields": {
+    "pool_010902f4": "canonical group pool",
+    "nodes": "same renderer raw-name nodes",
+    "types": "persistent NativeGroupTypes over same VFS counter/common/group cells",
+    "constants": ["D7A24C DWORD", "CE4970 DWORD"],
+    "vtable_00d634f8": "mapped actual profile at least22 DWORDs",
+    "vtable_00d62c88": "mapped actual profile at least22 DWORDs",
+    "raw_route_dependency": "worker43 owns raw constructor/scene routing and retention; use SAME node_constants/raw string context"
+  },
+  "GuiWidgetOwnerEnvironment_fields": {
+    "models": "persistent canonical NativeModelEnvironment",
+    "native": "one GuiNativeScene over canonical NativeGroupEnvironment",
+    "make_type": "real type-dispatch closure; Text slot published before any Text admission",
+    "clip": "same widget/material/parameter/aspect clip-refresh services configured after composition"
+  },
+  "required_new_composition": [
+    "Persistent same-cell ModelTypeBootstrap/NativeGroupTypes and model/group/widget environments",
+    "One GuiNativeScene notification binding and GuiWidgetOwnerRuntime",
+    "Stable canonical material destruction/parameter/style/clip aggregates",
+    "Normal font-owner accessor/export plus SAME-factory bind and exact registry publication",
+    "Real SingletonLifetimeManager interface adapter to canonical raw manager domain",
+    "Stable comparison/locale/SSE2 services and aliases",
+    "Persistent normal sampler/effect parent ownership and cold Text acquisition order",
+    "GameNativeTextApplication and same Text factory, plus normal type/loader activation",
+    "Actual Screen/store/scene/directional native services and page-root preparation"
+  ],
+  "specific_unprovided_or_unresolved_contracts": [
+    {
+      "contract": "font publication and lifetime",
+      "status": "required_new_composition",
+      "reason": "Current GameFontHost exposes registry/retirement only; nullable getter can allocate a second registry; existing direct lifetime implementation is semantic."
+    },
+    {
+      "contract": "clip ancestor addresses and widget/layout retention",
+      "status": "required_new_ownership_composition",
+      "reason": "General material callbacks require stable real type16 fields and a genuine shared token; unique page ownership/no-op shared_ptr is insufficient."
+    },
+    {
+      "contract": "CRT locale-changed/current comparisons",
+      "status": "unprovided_production_binding_and_contract_evidence",
+      "reason": "Need live0109DE1C semantics/current locale wide and BF7FBF name comparison; no fabricated zero or ASCII fallback. Main150f4210c supplies BF7EB7 ASCII child only, explicitly excluding parent locale/TLS/errno dispatch."
+    },
+    {
+      "contract": "shared SSE2 alias",
+      "status": "required_accessor_or_owner_composition",
+      "reason": "Existing frontend's stable queried bool is private; consumers must share one deliberate Source decision."
+    },
+    {
+      "contract": "configuration header",
+      "status": "canonical_cell_exists_receiver_admission_required",
+      "reason": "Bind exact renderer platform publication identity and actual receiver supporting signed+28 height; legacy focus-only projection is insufficient."
+    },
+    {
+      "contract": "raw group route",
+      "status": "worker43_owned_not_certified_here",
+      "reason": "Main baseline still rejects semantic names; do not duplicate or assume pending route's failure behavior."
+    }
+  ],
+  "constant_and_header_contracts": {
+    "Text_constructor_floats": ["D5C5C0", "CE3E18", "D7A24C", "CE3800"],
+    "Text_property_extra_float": "CEE07C",
+    "Text_bounds_doubles": ["D7A280", "CEC380", "CEF1B8", "D5C5C8"],
+    "glyph_position_doubles": ["D7A358", "D5C7A8", "D7A220", "D06880", "CEC380"],
+    "state38_cells": ["E12FC0", "E12FD4", "E12FD8[4]", "F8BE38[4]", "F8BE48", "F8BE54"],
+    "live_lineage": "process37 F8BE28[3]",
+    "material_profile": "renderer.borrow_gui_material_destruction_profile_00d5e520()",
+    "parameter_effect_profile": "D61A00 including slot+10",
+    "mesh_profile": "D62D60 including current slot+10/B742A0",
+    "glyph_shader_literal": "verified terminated CEFD78 string",
+    "raw_names": "actual initialized8-byte headers retained with caller operation; consumed headers diagnostic-only",
+    "publication_cells": "stable exact registry/platform cells; pointer-value equality alone insufficient",
+    "index_stack_preimage": "existing Source-selected bits0 are not Original residue; AB8400 flags1 does not consume them; no other flags claim"
+  },
+  "preflight_and_retention": {
+    "pure_preentry_domain_rejection_does_not_prove_native_failure": true,
+    "entered_names_pool_constructors_registration_publication_mapping_frames_retained": true,
+    "failed_Text_application_nonreplayable": true,
+    "idle_effect_consumer_binding_keeps_Text_services_retained": true,
+    "font_export_to_factory_bind_is_retention_boundary": true,
+    "font_export_gap": "native_fonts sets fonts_exported; constructor/preflight failure before SAME real empty factory bind prevents ordinary font retirement; retain complete graph, never reset/fake-bind",
+    "retirement_order": [
+      "retire Texts and pending child/copy/mapping work and completed raw storage with all providers live",
+      "retire fonts while SAME bound factory survives",
+      "settle GUI models/groups/material and queued references before raw drain",
+      "retain effect/sampler/providers through genuine shared drain",
+      "close/destroy effect metadata while Text services still exist, then destroy Text metadata",
+      "all Text slots gone before process37 CRT pool callback"
+    ]
+  },
+  "packet45_source_review": {
+    "commit": "d623a5c283e60ffda037e19e9f8fd6194427ae63",
+    "status": "pass_for_typed_actual_name_adapter_domain",
+    "cpp_blob": "79a11550d42126d8009bc506d566faf559f514fe",
+    "header_blob": "b051343705b24c9014e82bc2efdd105577d70e62",
+    "allocation_map_reference_publication_unwind_body_unchanged": true,
+    "same_storage_for_temporary_constructor_and_destruction": true,
+    "semantic_rejection_still_before_allocation": true,
+    "returning_getter_and_noexcept_release_limit_explicit": true,
+    "direct_raw_throwing_getter_frame_or_ABI_claim": false,
+    "build_or_runtime_independently_executed_by_reviewer": false
+  },
+  "not_established": [
+    "Complete native GUI application composition or normal native Text drawing",
+    "Worker43 raw group route Source/runtime acceptance",
+    "Cold Text/effect acquisition runtime ordering",
+    "Real normal Screen/scene/store/light services and complete menu content",
+    "Live locale/marker behavior or complete Source/Original CRT matching",
+    "Original ABI/FH3/SEH equivalence, gameplay, or concurrency validation"
+  ]
+}

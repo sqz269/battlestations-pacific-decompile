@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_lifetime_primary_review",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 6,
+  "private_source_cleanup_actions": 2,
+  "native_bytes": 690,
+  "native_instructions": 249,
+  "spans": [
+    {
+      "address": "00bf7eb7",
+      "native_bytes": 53,
+      "instructions": 24,
+      "scope": "complete intrinsic all-BYTE comparison leaf",
+      "live_equals_installed": true,
+      "sha256": "7e5823046cef634a0ef6fed149abc1c7db3f092b8af301b9397e15696e25c086"
+    },
+    {
+      "address": "004691b0",
+      "native_bytes": 142,
+      "instructions": 54,
+      "scope": "complete raw hidden-record mapped-word lookup at current providers",
+      "live_equals_installed": true,
+      "sha256": "32b17b7016c3e9857dbd7c69aec940efaafb491480c62a39f71396abe3886313"
+    },
+    {
+      "address": "00469480",
+      "native_bytes": 110,
+      "instructions": 43,
+      "scope": "complete raw hidden-record AL presence lookup at current providers",
+      "live_equals_installed": true,
+      "sha256": "825ae00212fa398ed72c4232ca19e6e8258221545dc75cbc782a1209655468b5"
+    },
+    {
+      "address": "00469240",
+      "native_bytes": 181,
+      "instructions": 58,
+      "scope": "whole raw copy constructor at bounded clone/duplicate admission;generalSourceReadyfalse",
+      "live_equals_installed": true,
+      "sha256": "4cdd3541d4a7a26ccdfbf92930eb909d29755bde90d47239017ca37407741c54"
+    },
+    {
+      "address": "00c61a90",
+      "native_bytes": 11,
+      "instructions": 3,
+      "scope": "qualified current saved-this cleanup mapping;no private binary entry credit",
+      "live_equals_installed": true,
+      "sha256": "070581789e7582b0a469262f08ef76f758276d601c759324deb85d5f43b58051"
+    },
+    {
+      "address": "00469300",
+      "native_bytes": 152,
+      "instructions": 53,
+      "scope": "whole raw destructor at valid callable-slot/hostCRT admission;generalSourceReadyfalse",
+      "live_equals_installed": true,
+      "sha256": "79d1e7eedc77c35749606f877a10d3cae8f9d418136bd9d9c4a50e301d9f77d6"
+    },
+    {
+      "address": "004693a0",
+      "native_bytes": 30,
+      "instructions": 11,
+      "scope": "whole late-BYTE scalar deletion at qualified destructor/hostCRT admission",
+      "live_equals_installed": true,
+      "sha256": "2a9626e366ffa181cef2b20d776619b3ecfb75a6d9e58e8f71b9d1e666d77bd2"
+    },
+    {
+      "address": "00c61ab0",
+      "native_bytes": 11,
+      "instructions": 3,
+      "scope": "qualified current saved-this cleanup mapping;no private binary entry credit",
+      "live_equals_installed": true,
+      "sha256": "c8d86d0a65fc6435545b16cc08da15a120009ce88890ba22b84677d66bf064bc"
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct15_crt_ascii_stricmp.json",
+    "reports/goal_oct15_scene_hidden_record_lookup.json",
+    "reports/goal_oct15_scene_hidden_record_copy_construct.json",
+    "reports/goal_oct15_scene_hidden_record_destroy.json"
+  ],
+  "typed_transfer_rows_checked": 32,
+  "typed_transfer_rows_failed": 0,
+  "independent_reviews": [
+    "Primary independently reviewed full24-op intrinsic CRT leaf and Source/header;all BYTE values retained withoutSDK folding",
+    "Primary independently reviewed full97-op lookup pair and Source/header;first input capture,distinct native roles,current release/head/returning diagnostics and rawDWORD/AL results retained",
+    "Primary independently reviewed full58-op copy constructor and3-op action,Source/header and genuine provider contracts;fresh reads and class-store-before-party-read retained",
+    "Allocation worker independently reviewed full67-op destructor/delete/action Source/header and actual providers;captured bag/state,raw slot dispatch,current fields,data-before-disarm,lateBYTEflag and raw freed record bits retained"
+  ],
+  "source_hashes": {
+    "src/native_crt_ascii_stricmp.cpp": "3fe3b237b778e9500e30c11dbbb43f295c24915a2836bd097ceec04760125368",
+    "include/bsp/native_crt_ascii_stricmp.hpp": "b62a16f1efbfc03d33e61eb33250885af5ccca224303f8f8cd959883dc97a3e9",
+    "src/native_scene_hidden_record_lookup.cpp": "23842b3f9a225c1028682912ce61dfdf468e3df405cae187ae5d29d9b835913d",
+    "include/bsp/native_scene_hidden_record_lookup.hpp": "78ed3b8e9053f0de152cf2a4835852fd43b64beffdcb3e35b1709ae770c802b2",
+    "src/native_scene_hidden_entity_record_copy_construct.cpp": "e9d3928e4e9025a1e79fa57de2e44ea8b6f6a69b3991adef0106c03eaea70606",
+    "include/bsp/native_scene_hidden_entity_record_copy_construct.hpp": "deb9852cc0703dc4cea5ee95bbdfe1eb0b2ddbde8442a4d2d9f1269b0c81eb4f",
+    "src/native_scene_hidden_entity_record_destroy.cpp": "8e5cf22b41be55c26f5323cad7b07e23a8b0d8be3dc762830146235df0a94e25",
+    "include/bsp/native_scene_hidden_entity_record_destroy.hpp": "00b0bf1ac65afcbee0b806a0028625ba67ab4f991f7e2c58c0980a99acd4e4ce"
+  },
+  "combined_build": {
+    "revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_scene_lifetime_combined_build.log",
+    "log_sha256": "59383785678101132f0573cbbccadc1c340650ed126592a2235aeebb46addefe",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 7.51,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+    "scope": "existing regression checks; native math seeds do not execute these new bodies"
+  },
+  "project_source_counts": {
+    "native_crt_ascii_stricmp": 1,
+    "native_scene_hidden_record_lookup": 1,
+    "native_scene_hidden_entity_record_copy_construct": 1,
+    "native_scene_hidden_entity_record_destroy": 1
+  },
+  "unique_archive_objects": {
+    "native_crt_ascii_stricmp": [
+      "bsp_core.dir\\Release\\native_crt_ascii_stricmp.obj"
+    ],
+    "native_scene_hidden_record_lookup": [
+      "bsp_core.dir\\Release\\native_scene_hidden_record_lookup.obj"
+    ],
+    "native_scene_hidden_entity_record_copy_construct": [
+      "bsp_core.dir\\Release\\native_scene_hidden_entity_record_copy_construct.obj"
+    ],
+    "native_scene_hidden_entity_record_destroy": [
+      "bsp_core.dir\\Release\\native_scene_hidden_entity_record_destroy.obj"
+    ]
+  },
+  "archive_sha256": "c91abbda1603ce489ca97de152d9858f4f03ab1d91546d52328d4c78ad1ddcb1",
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "New explicit raw/live-frame/currentCRT Source APIs,not Original register/private-stack/argument-home/heap/FH3/fault ABI identity",
+    "The cleanup is a canonical Source guard mapping,not a new private-frame binary entry",
+    "Existing math differential seeds do not execute these new bodies; no application or game proof",
+    "Copy constructor inherits BOTH canonical owning clone graph and successful duplicate allocation admissions;Original failure/reentry/unwind closure unproved",
+    "Destruction has an actual raw callable-slot edge but no all-dynamic-target or constructedSource-vtable dispatch proof;matchinghostCRT/Originalheap/handler/failuretransport remainqualified"
+  ],
+  "scope": "Combined actual normal Win32 build after reviewed Source integration; does not broaden clone/duplicate/callable-slot/hostCRT or cleanup transport admissions",
+  "general_copy_constructor_source_ready": false,
+  "general_destruction_source_ready": false,
+  "destruction_indirect_transfer": {
+    "site": "00469337",
+    "function": "00469300",
+    "instruction": "CALL EDX",
+    "target": "actual current bag vtable slot0;no resolved target credit",
+    "abi": "__thiscall,ECXcapturedbag,stacked1,ignoredresult",
+    "typed_flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "COMPUTED_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": true,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "COMPUTED_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": true,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00469339"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00469339"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": []
+    }
+  },
+  "destruction_independent_review": {
+    "reviewer": "string_allocate",
+    "result": "passed whole193B/67ops and complete Source/header;actual providers read;compiled virtualcall ABI inspection pending",
+    "source_hashes": {
+      "src/native_scene_hidden_entity_record_destroy.cpp": "8e5cf22b41be55c26f5323cad7b07e23a8b0d8be3dc762830146235df0a94e25",
+      "include/bsp/native_scene_hidden_entity_record_destroy.hpp": "00b0bf1ac65afcbee0b806a0028625ba67ab4f991f7e2c58c0980a99acd4e4ce"
+    }
+  },
+  "unresolved_indirect_calls": 1,
+  "indirect_callee_resolution_claimed": false
+}

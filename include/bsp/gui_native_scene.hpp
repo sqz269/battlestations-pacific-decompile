@@ -29,11 +29,19 @@ public:
     void clear_page_root_registration_00b6d890(GuiWidgetOwner&);
     std::size_t retained_group_count() const noexcept { return groups_.size(); }
     NativeNodeParentingRuntime& parenting() noexcept { return parenting_; }
+    // Metadata only, externally serialized. True during an entered raw root
+    // operation and after any failure. The host must preserve the whole graph
+    // and exit before manager/CRT drain; this is not a recovery/retry signal.
+    bool native_operation_interrupted() const noexcept { return raw_operation_interrupted_; }
 private:
     struct GroupRecord;
     NativeGroupEnvironment& environment_;
     NativeNodeParentingRuntime parenting_;
     std::unordered_map<void*, std::unique_ptr<GroupRecord>> groups_;
+    // Persistent before allocation/getter entry, including map/owner metadata
+    // failure before the record transfers into groups_. No second native owner.
+    std::unique_ptr<GroupRecord> raw_pending_;
+    bool raw_operation_interrupted_{};
     NativeGroupReference& create_group(const std::string&);
     static void retire_group(void*, NativeGroupReference&) noexcept;
     static void set_attachment(NativeNodeParentingRuntime&, CameraTransform&, void*);

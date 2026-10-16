@@ -1,0 +1,256 @@
+{
+  "packet": "cc12_native_gui_text_host_prerequisites_41",
+  "source_commit": "07c72d19b50a1e576f3c6e4e2f6edf2941660063",
+  "status": "canonical_build_source_review_and_real_startup_shutdown_passed_native_Text_drawing_and_gameplay_not_yet_validated",
+  "component_commits": {
+    "process37": "de08e5308",
+    "state38": "86b767ab4",
+    "host": "ab0ddbce9",
+    "failure_containment": "3429ff668",
+    "compile_correction": "07c72d19b",
+    "review": "0d69fee7b"
+  },
+  "original_addresses": [
+    "00cd71f0",
+    "00ce0a80",
+    "00cd7210",
+    "00aa8200",
+    "00ab7060",
+    "00e12fd4"
+  ],
+  "source_files": [
+    "src/game_main.cpp",
+    "src/game_hosts.cpp",
+    "src/game_hosts_text.cpp",
+    "cmake/startup.cmake"
+  ],
+  "source_contract": {
+    "pool_before_particle": true,
+    "pool_table_slot": "00ce3470",
+    "particle_table_slot": "00ce34ec",
+    "shared_allocator_list": "00e188b4",
+    "canonical_vfs_counter_and_common_types": true,
+    "lineage_timing": "late Source bootstrap before fonts, not Original absolute CRT timing/IDs",
+    "shared_vertical_scale": true,
+    "early_white_initialization": false,
+    "entered_failure_policy": "sticky metadata; known/unknown interrupted pool _Exit2 and type _Exit1 before guessed cleanup",
+    "crt_dereferences_saved_vfs_identities": false,
+    "native_text_factory_or_draw_activated": false
+  },
+  "canonical_build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "tests": 3,
+    "test_seconds": 7.2,
+    "frozen_inputs": 53,
+    "log": "local/cc12_native_gui_text_host_prerequisites_41/build_02.log"
+  },
+  "independent_source_review": {
+    "doc": "docs/CC12_NATIVE_GUI_TEXT_PREREQUISITE_REVIEW_41.md",
+    "report": "reports/cc12_native_gui_text_prerequisite_review_41.json",
+    "commit": "0d69fee7b",
+    "verdict": "no remaining blocking source contract finding"
+  },
+  "runtime": [
+    {
+      "name": "runtime_01",
+      "compiled_source": "07c72d19b50a1e576f3c6e4e2f6edf2941660063",
+      "exit_code": 1,
+      "exe_sha256": "878680eb21391aec041c112b83427f7ad5a773724023cf97605476a2101faa38",
+      "log": "local\\cc12_native_gui_text_host_prerequisites_41\\runtime_01\\runtime.log",
+      "log_sha256": "724ed7c542a7cb33f4b049c88f16b2c4c10ff2bc8d8ccd6bf47983c7850994d4",
+      "text_pool_initialized": true,
+      "text_pool_atexit": 0,
+      "production_lineage_reached": false,
+      "window_created": false,
+      "device_created": false,
+      "fmod_results": {
+        "event_init": 61,
+        "create_sound": 78,
+        "get_length": 37
+      },
+      "note": "Launcher checkout identity is not control executable compiler provenance; the frozen exe hash above is authoritative"
+    },
+    {
+      "name": "control_9a",
+      "compiled_source": "9a727abac038bd190076942cd6c72913fcf5eefb",
+      "exit_code": 1,
+      "exe_sha256": "3c7b99be5ca63b19429b6d9a416817877aeea0b747265017785f1a4d8082fba5",
+      "log": "local\\cc12_native_gui_text_host_prerequisites_41\\control_9a\\runtime.log",
+      "log_sha256": "8c8bd11e4e0d70498e9b1d1049e48b84a5bd69d4570b4da9875baee73941ebc4",
+      "text_pool_initialized": false,
+      "text_pool_atexit": null,
+      "production_lineage_reached": false,
+      "window_created": false,
+      "device_created": false,
+      "fmod_results": {
+        "event_init": 61,
+        "create_sound": 78,
+        "get_length": 37
+      },
+      "note": "Launcher checkout identity is not control executable compiler provenance; the frozen exe hash above is authoritative"
+    },
+    {
+      "name": "runtime_02_audio_enabled",
+      "compiled_source": "07c72d19b50a1e576f3c6e4e2f6edf2941660063",
+      "launcher_checkout_head_is_not_compiler_provenance": true,
+      "exe_sha256": "878680eb21391aec041c112b83427f7ad5a773724023cf97605476a2101faa38",
+      "exit_code": 0,
+      "elapsed_seconds": 3.259468,
+      "log": "local\\cc12_native_gui_text_host_prerequisites_41\\runtime_02_audio_enabled\\runtime.log",
+      "log_sha256": "5769d90478dd57d671546af1ea9c5b76391772f0b6cbcbd3c62b0e07cfda0ef6",
+      "screenshot": "local\\cc12_native_gui_text_host_prerequisites_41\\runtime_02_audio_enabled\\frontend.png",
+      "screenshot_sha256": "0aa33558c5a6c74c4dbcb3425cc32193252f37afa27755eeff1f6e5e4b44abb3",
+      "screenshot_visually_inspected": true,
+      "text_pool_initialized": true,
+      "text_pool_atexit": 0,
+      "production_lineage_reached": true,
+      "lineage": {
+        "text": 19,
+        "element": 18,
+        "root": 0,
+        "parent_match": true,
+        "counter": "canonical VFS",
+        "absolute_original_CRT_timing_or_type_ids_proved": false
+      },
+      "mutable_state_observed": {
+        "aspect": "1.33333337",
+        "vertical_scale": 0.75,
+        "white_mask": 0,
+        "blend": 0
+      },
+      "window_created": true,
+      "device_created": true,
+      "resolution": [
+        800,
+        600
+      ],
+      "ticks": 2,
+      "presents": 1,
+      "presents_skipped": 1,
+      "native_fonts": 6,
+      "sprite_text_glyph_quads": 55,
+      "fonts_retired_before_shared_drain": true,
+      "renderer_worker_joined": true,
+      "final_COM": {
+        "device": 0,
+        "api": 0
+      },
+      "host_methods": {
+        "concrete": 124,
+        "unimplemented": 43
+      },
+      "native_Text_factory_or_drawing_activated": false,
+      "gameplay_validated": false
+    }
+  ],
+  "endpoint": {
+    "probe": "local/cc12_audio_endpoint_recheck.ps1",
+    "probe_sha256": "9fb67969c707994faaeff22a214b8bf42ad85341c575da275e7727366ce3945c",
+    "result_sha256": "4dc6661d326d7854c7894d3d55efa2582546fd3c46d17bf3a1f16ede10312407",
+    "active_playback_devices": 0,
+    "default_endpoint_returned": false,
+    "all_default_results": "80070490",
+    "scope": "current read-only MMDevice query; running services/PnP records do not establish an endpoint"
+  },
+  "installed_original_exe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged": true
+  },
+  "archive": {
+    "path": "local\\cc12_native_gui_text_host_prerequisites_41\\evidence_family.zip",
+    "sha256": "dc8bfdf7ef574be9c05ec030dd4c3ebbe1c4df1a4cb7894bd5979eae6cd0cdec",
+    "bytes": 4776701,
+    "payload_files": 73,
+    "manifest_sha256": "64831c93467f07c716fdf5e449b61a0da8286322547bd58a3a50dd2e8a2f0d5d",
+    "all_payloads_hash_checked": true
+  },
+  "limits": [
+    "No successful full normal startup for Source07c72d19b: both new and previously successful control now fail FMOD before window",
+    "Production late lineage/scalar/font integration not reached; worker Source pool/lineage/CRT probe is separate evidence",
+    "No native Text buffer/material draw, Original absolute CRT/numeric-ID equivalence, binary API drop-in or gameplay proof",
+    "No audio endpoint/service/SDK output/config change or invented SoundEnabled bypass",
+    "Original installed assets and OS/SDK binaries remain external dependencies"
+  ],
+  "next": "Restore an actual default playback endpoint for current full startup; independent AB7060 whole-leaf native comparison continues",
+  "combined_main_build": {
+    "source_commit": "42964a728ad274be590426e96b72abc148e8bc3f",
+    "build_exit_code": 0,
+    "tests_passed": 3,
+    "tests_total": 3,
+    "ctest_seconds": 8.58,
+    "scope": "Combined canonical MSVC Win32 build against merged Main; no new runtime claim",
+    "frozen_payloads": [
+      {
+        "path": "src/game_main.cpp",
+        "sha256": "37ca208b818f4c34cc284651d2018799f645ff08eba85b4f3ebaf853d3edcc5d",
+        "bytes": 77157
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "sha256": "7cbcc88599dc7904b43194eca4c5521d45dd0fee4e08474c390ec49dc2ab30e8",
+        "bytes": 152879
+      },
+      {
+        "path": "src/game_hosts_text.cpp",
+        "sha256": "d2eb8e069dbe3fdb92e963d73db7bf6b2e8e1a7e59c8e660087e779af9fced64",
+        "bytes": 36841
+      },
+      {
+        "path": "include/bsp/game_native_gui_text_process.hpp",
+        "sha256": "c0f0dd4bba7bab733eec89f43a8b7f47578f0601dd1c02ab365887d77b30322c",
+        "bytes": 4145
+      },
+      {
+        "path": "src/game_native_gui_text_process.cpp",
+        "sha256": "eab92c37b8b7487e12edf0e79b580621dc4c4f5e5cba2700952caef5b6d19b8b",
+        "bytes": 5875
+      },
+      {
+        "path": "include/bsp/game_native_gui_text_state.hpp",
+        "sha256": "d8990cc2df091c2f7c9ebae511617113e7b1a47601667aa037682bb76c99d040",
+        "bytes": 2490
+      },
+      {
+        "path": "src/game_native_gui_text_state.cpp",
+        "sha256": "724279b67813f9ce9baf24fba9373f0d0bdfb07ee97c074b5329990aec81204f",
+        "bytes": 1473
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "sha256": "ffacab6bc5aeaff8e451e36eaf03130787278105e0be0ddf47e167665fb203f9",
+        "bytes": 251239
+      },
+      {
+        "path": "local/cc12_native_gui_text_host_prerequisites_41/build_03_combined.log",
+        "sha256": "30b26b2ebac13db248381901bdfa49edb19d5f060ace698748b39640befb03b5",
+        "bytes": 3762
+      },
+      {
+        "path": "build/win32/cc12_followup_release/bsp_game.exe",
+        "sha256": "ee60f3bc941f08e3f2f43d2adc4ec26842ef75b69deea423cffc68941c81ccdc",
+        "bytes": 5634560
+      }
+    ],
+    "manifest": "local\\cc12_native_gui_text_host_prerequisites_41\\combined_03\\manifest.json",
+    "manifest_sha256": "c7938b49ae0242548f86e3b9d412dfdf07619ca009ced39c23a951562d9cc7d6"
+  },
+  "audio_followup": {
+    "user_report": "Audio output is enabled now",
+    "read_only_endpoint_query": "local/cc12_native_gui_text_host_prerequisites_41/mmdevice_02.json",
+    "active_playback_endpoints": 8,
+    "all_default_roles_succeeded": true,
+    "earlier_failure_cleared": true,
+    "audio_mode_settings_or_services_modified_by_agent": false,
+    "evidence": {
+      "archive": "local\\cc12_native_gui_text_host_prerequisites_41\\audio_enabled_02.zip",
+      "archive_sha256": "9898fad2005eb7692247ee145678d3c81fe80b8ed60c27d9df307b8addd734e5",
+      "manifest": "local\\cc12_native_gui_text_host_prerequisites_41\\audio_enabled_02_manifest.json",
+      "manifest_sha256": "a0eae7fc4b191c018d44467a25ec5b640232a0676dd692dce3226b87c40af89f",
+      "payloads": 8,
+      "payload_hashes_verified": true,
+      "earlier_sealed_archive_unchanged": true
+    }
+  }
+}

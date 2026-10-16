@@ -1,0 +1,259 @@
+{
+  "packet": "oct15_native_dword_vector_swap_backward",
+  "status": "complete_source_build_tested_qualified",
+  "utc": "2026-10-16T00:31:28.974258+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "base_commit": "19e564ef442e12f4e3e51a324688a47a552a10f2",
+  "source": "src/native_dword_vector_swap_backward.cpp",
+  "header": "include/bsp/native_dword_vector_swap_backward.hpp",
+  "documentation": "docs/OCT15_NATIVE_DWORD_VECTOR_SWAP_BACKWARD.md",
+  "routines": [
+    {
+      "address": "006981c0",
+      "original_name": "STL_SwapBackward_WordVector16_006981c0",
+      "cpp_name": "swap_native_dword_vector_headers_backward_006981c0",
+      "coverage": "complete",
+      "coverage_boundary": "Whole actual normal body; CurrentCpp/private-frame/fault/nativeABI limits retained",
+      "original_abi": "cdecl six physical producer words; only first/last/output consumed; plainRET/EAX advanced output; last/output captured before first/equality evenempty",
+      "source_abi": "void* __cdecl(void* first,void* last,void* output,uint32_t unused_output_bits,uint32_t unused_output_bits_again,uint32_t unused_tag)",
+      "physical_arguments": [
+        "first consumed",
+        "last consumed",
+        "output consumed",
+        "duplicate output bits unconsumed",
+        "duplicate output bits unconsumed",
+        "masked incomingECX private tag unconsumed"
+      ],
+      "schedule": [
+        "Capture last/output/first before initial equality",
+        "Load source[last-0Ch], then output[out-0Ch], before decrementing both10h; record continuing equality",
+        "Store output+4 then source+4",
+        "Load source+8 then output+8; store output+8 then source+8",
+        "Load source+C then output+C; store output+C then source+C; repeat on earlier inequality"
+      ],
+      "result": "Actual advanced output, including original output onempty"
+    },
+    {
+      "address": "00698380",
+      "original_name": "FUN_00698380",
+      "cpp_name": "swap_native_dword_vector_headers_backward_dispatch_00698380",
+      "coverage": "complete",
+      "coverage_boundary": "Whole dispatcher over actual core; dead ambient tag highbits qualified",
+      "original_abi": "cdecl three stacked first,last,output; plainRET; ECX only supplies deadtag bits; incomingEDX overwritten",
+      "source_abi": "void* __cdecl(void* first,void* last,void* output)",
+      "physical_arguments": [
+        "first",
+        "last",
+        "output"
+      ],
+      "schedule": [
+        "Capture inputs and forward six physical words including duplicate outputbits and canonical private zero tag",
+        "Discard core EAX",
+        "Independently return output-((SAR4(wrapped last-first))<<4), DWORD wrap"
+      ],
+      "result": "Independent captured arithmetic, never core EAX"
+    }
+  ],
+  "actual_dependencies": [
+    {
+      "address": "006981c0",
+      "binding": "Direct actual newcore; no allocator,release,destructor,assignment,context,callback or generic provider"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00698380",
+      "address": "006983a7",
+      "native": "006981c0",
+      "evidence": "Whole owned dispatcher; six physical words/ADD ESP18h"
+    },
+    {
+      "function": "00698400",
+      "address": "00698639",
+      "native": "00698380",
+      "evidence": "Bounded unowned producer,current containing body00698400,setup/result discard only"
+    },
+    {
+      "function": "00698400",
+      "address": "00698649",
+      "native": "00698010",
+      "evidence": "Bounded unowned producer,current containing body00698400,setup/result discard only"
+    }
+  ],
+  "native_blocks": [
+    {
+      "function": "006981c0",
+      "address": "006981c0",
+      "bytes": 67,
+      "sha256": "87a06f13fec1bdc3b82e15860853b37921eba20d64e52ef747d67d7e224cf9ec",
+      "instruction_count": 26,
+      "coverage": "complete_current_typed_body"
+    },
+    {
+      "function": "00698380",
+      "address": "00698380",
+      "bytes": 64,
+      "sha256": "67561a0d3c36d2048edd6e7e60a28c3fe011c8a24923a1d656bec5f3632dc587",
+      "instruction_count": 29,
+      "coverage": "complete_current_typed_body"
+    },
+    {
+      "function": "00698400",
+      "address": "00698633",
+      "bytes": 33,
+      "sha256": "3839ac68a40f5895349bcceadb872eb0b975012336695306d24d2f2bf2710f44",
+      "instruction_count": 14,
+      "coverage": "bounded_unowned_producer_only"
+    }
+  ],
+  "typed_modifications": [
+    "2724"
+  ],
+  "evidence_accounting": {
+    "owned_bytes": 131,
+    "owned_current_starts": 55,
+    "bounded_producer_bytes": 33,
+    "bounded_producer_current_starts": 14,
+    "all_bytes": 164,
+    "all_current_starts": 69,
+    "owned_calls": 1,
+    "bounded_producer_calls": 2
+  },
+  "source_sha256": {
+    "src/native_dword_vector_swap_backward.cpp": "8959b70f4bf56076c89f7935edac9a1b454cc8398e1f6dfc9a5ce72b0d63a811",
+    "include/bsp/native_dword_vector_swap_backward.hpp": "b194933dd1d672e4c1231581619c86f90f82c1be596e3787cda668e60849a720"
+  },
+  "corrections": [
+    {
+      "was": "Snapshot oldCatch6985F7 owner and extra98380 graph targets6982B0/BF6713",
+      "is": "Current caller698400; whole98380 has onlyCALL6981C0",
+      "evidence": "CompletePE/live/current typed bodies/targets"
+    },
+    {
+      "was": "Potential aggregate/deep-copy backward operation",
+      "is": "Three ordered DWORD ownership-word swaps; no direct+0 access or helper",
+      "evidence": "Complete67native bytes/26starts"
+    }
+  ],
+  "ownership_and_EH": "No localEH or allocation/destruction/assignment child. Raw ownership-word swaps; no rollback or extra guard. Native faults/SEH/private-frame identity unproved.",
+  "producer_contracts": "Core producer pushes6words/removes18h. Dispatcher producer698639 pushes first,last,saved output and discards EAX before next fill/sharedoverwrite.33B/14starts of unowned caller only.",
+  "prior_provenance": "Existing native_input_configuration_modifiers actual narrow storage/append, Hook APIs, old reports and fixtures preserved. No promotion of698040/6980E0/698400/6987C0 or placement.",
+  "library_name_preserved": "STL_SwapBackward_WordVector16_006981c0 retained. Dispatcher originallyFUN_00698380; Source/ledger descriptive names are hypotheses.",
+  "verification": {
+    "fresh_pe_live": true,
+    "current_starts": true,
+    "native_report_calls": {
+      "checked": 3,
+      "failed": 0
+    },
+    "markdown_calls": {
+      "checked": 3,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "Win32_build": "scripts/build.ps1 exit0",
+    "existing_suites": {
+      "passed": 3,
+      "failed": 0,
+      "total_seconds": 8.9,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "scope": "Existing suites; not a new direct swap differential or game/ABI proof"
+    },
+    "focused_Source_COFF": {
+      "passed": 10,
+      "failed": 0
+    },
+    "new_tests": 0,
+    "native_execution": false,
+    "game_execution": false,
+    "build_log": "local/oct15_dword_swap_backward_build.log",
+    "build_log_sha256": "5fa9f5ed71fca89faea1659f50a37d738f030da4cc44bdf8804117906e538f3e",
+    "existing_warning": "Main's duplicate spawn_request_id_matches LNK4006; no new swap warning"
+  },
+  "ghidra_mutations": false,
+  "limits": [
+    "New MSVC Win32 C++ interfaces/private frames; no drop-in binary claim.",
+    "No ambient registers,flags,private-stack,FH3/SEH/CRT/heap/mangling/nativeABI/gameplay equivalence.",
+    "DWORD wrap and actual x86SAR4; no typed pointer difference/count bridge.",
+    "Reached accesses valid and equality finite are input conditions,not new guards. No snapshot/selfguard/callback/rollback/noexcept bridge.",
+    "Source zero tag differs from native incomingECX high24bits; complete core never directly reads inputslots4..6. Aliases into original native argument/local stack are outside this new Source interface; no broader ambient/private-frame equivalence is asserted.",
+    "Noinline core keeps auditable six-word Source call; no original instruction/register identity."
+  ],
+  "CMake_registration": {
+    "lease": "oct15_dword_swap_backward_registration",
+    "claim_succeeded_before_mutation": true,
+    "accepted_Main_sync": "19e564ef442e12f4e3e51a324688a47a552a10f2",
+    "merge": "fast-forward",
+    "registration": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_dword_vector_swap_backward.cpp)",
+    "only_own_line_appended": true,
+    "released_before_build": true
+  },
+  "primary_precommit_review": {
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct15_swap_twentieth_primary_review.json",
+    "receipt_sha256": "08626e40481d40ecde282d7949a3201c3aac55b8f96ec7e26d13e344d953ada1",
+    "checks_passed": 11,
+    "findings": 0,
+    "scope": "CompleteCPP/header +26/29Native instructions +33Bproducer; independent164PE/liveB69starts3CALLtargets; precommit review only, final acceptance awaits immutable pin",
+    "source_sha256": {
+      "src/native_dword_vector_swap_backward.cpp": "8959b70f4bf56076c89f7935edac9a1b454cc8398e1f6dfc9a5ce72b0d63a811",
+      "include/bsp/native_dword_vector_swap_backward.hpp": "b194933dd1d672e4c1231581619c86f90f82c1be596e3787cda668e60849a720"
+    }
+  },
+  "Source_COFF": {
+    "status": "passed",
+    "object": "build\\win32\\bsp_core.dir\\Release\\native_dword_vector_swap_backward.obj",
+    "object_sha256": "703594e1a462b53405f0fdcddedc5042b3b030fded1860be4e6c341dea60c284",
+    "dump_sha256": "d37ec3803b33332edf82bbb492af7ed04b05f80f4beb5e571581d704f60ec998",
+    "machine": "014c x86",
+    "checks": [
+      "I386 object and public cdecl symbols encode six core inputs/three dispatcher inputs, both plainRET.",
+      "Core emitted capture last/output/first before empty equality; empty branch skips all public data accesses.",
+      "Core reads exactly three positive EBP argument slots; physical arguments4..6 are unconsumed.",
+      "Core emits no CALL and twelve public DWORD operations in three load/load/store/store pairs; full field-address/value trace manually inspected.",
+      "Begin loads precede both10h decrements; equality and saved condition precede stores; staged end/capacity accesses follow begin stores.",
+      "Core continues by equality at decremented cursor and returns actual output word including empty; no endpoint/null guard or extra validation.",
+      "Dispatcher REL32 binds actual six-word core and physically pushes first,last,output,duplicate output,duplicate output,zero; ADDESP18h.",
+      "Core EAX is ignored before an independent overwritten-EAX calculation; captured last-first uses wrapped SUB.",
+      "ActualSAR4 thenSHL4 and output-minus-rounded-distance remain emitted, with plainRET.",
+      "No FS/EH/allocator/cleanup/provider call; new Source frames/register allocation differ and original binaryABI/fault/game identity remains unproved."
+    ],
+    "checks_passed": 10,
+    "relocation": {
+      "offset": "00000015",
+      "kind": "REL32",
+      "target": "?swap_native_dword_vector_headers_backward_006981c0@bsp@@YAPAXPAX00III@Z"
+    },
+    "scope": "Focused compiledSourceABI/order only; no nativeexecution,differential,original privateframe/CRT/SEH/FH3/binaryABI/game equivalence.",
+    "public_bodies": {
+      "core": {
+        "symbol": "?swap_native_dword_vector_headers_backward_006981c0@bsp@@YAPAXPAX00III@Z",
+        "bytes": 313,
+        "instruction_count": 110,
+        "sha256": "e6d60d16ff7d12070e4089fe7aee0e0d50228317cf2b6d32c47c5870e61ce6ea",
+        "calls": []
+      },
+      "dispatcher": {
+        "symbol": "?swap_native_dword_vector_headers_backward_dispatch_00698380@bsp@@YAPAXPAX00@Z",
+        "bytes": 57,
+        "instruction_count": 27,
+        "sha256": "7da689abd83f55f186241d394ab808606c9d73bc50a1eae962abd6344e691c54",
+        "calls": [
+          {
+            "offset": 20,
+            "target": "?swap_native_dword_vector_headers_backward_006981c0@bsp@@YAPAXPAX00III@Z"
+          }
+        ]
+      }
+    }
+  },
+  "ignored_native_evidence": {
+    "path": "local/oct15_native_dword_vector_swap_backward_evidence.json",
+    "sha256": "1abc32f6786ed33ac35f1f20921fd98410a54d0721a544cf89fec0d058282bde"
+  }
+}

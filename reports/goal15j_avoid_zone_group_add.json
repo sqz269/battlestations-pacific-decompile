@@ -1,0 +1,363 @@
+{
+  "packet": "goal15j_avoid_group_add",
+  "status": "complete_raw_caller_source_strict_emitted_preintegration_fixture_pass_pending_primary_acceptance_and_registered_archive",
+  "source": "src/native_avoid_zone_group_add.cpp",
+  "header": "include/bsp/native_avoid_zone_group_add.hpp",
+  "documentation": "docs/GOAL15J_AVOID_ZONE_GROUP_ADD.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "target-verifying bsp.py fullasm/livebytes/metadata/actions/xrefs/caller;all installedPE bytes compared;no Ghidra mutation"
+  },
+  "routines": [
+    {
+      "address": "0041d1e0",
+      "end": "0041d310",
+      "native_bytes": 305,
+      "instructions": 103,
+      "coverage": "complete",
+      "source_status": "complete caller/strictcompile/emittedcheck/actual direct-provider fixture;primary acceptance/ctor integration/registered archive remain gates;no production readiness claim",
+      "native_name": "BSP_AvoidZoneGroup_AddSceneEntity",
+      "original_abi": "void thiscall;ECXraw14hgroup,one stacked actualentityword,RET4;no semanticEAX;OriginalEDX notconsumed",
+      "source_api": "void __fastcall add_native_avoid_zone_group_entity_0041d1e0(void* group,void* const volatile* actual_world_pointer_cell,void* entity)",
+      "source_abi": "SourceEDX captures borrowed ADDRESS of real worldpointercell for genuinector;publicthunk borrows actualentityargumentcell;no NativeEDXcontext claim",
+      "contract": "pathgetter beforeentitykindtest;24h allocation beforelate layerload;actualincomingentitycellreused/currentcleanupoperand;onlyctorphaseguard;countread beforedisarm;full nonemptyarraygrowth/append andemptyclear/free/null/zonefree"
+    }
+  ],
+  "normal_calls": [
+    {
+      "address": "0041d201",
+      "native": "007ac9d0",
+      "containing_function": "0041d1e0"
+    },
+    {
+      "address": "0041d214",
+      "native": "00bf681b",
+      "containing_function": "0041d1e0"
+    },
+    {
+      "address": "0041d233",
+      "native": "0041ccd0",
+      "containing_function": "0041d1e0"
+    },
+    {
+      "address": "0041d278",
+      "native": "00bf55be",
+      "containing_function": "0041d1e0"
+    },
+    {
+      "address": "0041d2a8",
+      "native": "00bf6989",
+      "containing_function": "0041d1e0"
+    },
+    {
+      "address": "0041d2d7",
+      "native": "004167c0",
+      "containing_function": "0041d1e0"
+    },
+    {
+      "address": "0041d2e4",
+      "native": "00bf6989",
+      "containing_function": "0041d1e0"
+    },
+    {
+      "address": "0041d2f4",
+      "native": "00bf65ac",
+      "containing_function": "0041d1e0"
+    }
+  ],
+  "caller": {
+    "address": "00424dc5",
+    "native": "0041d1e0",
+    "containing_function": "00424d00",
+    "operation": "entityEDI from scene node+8 pushed before groupfactory layerword;factoryRET4 leaves entityword;ECX returnedgroup,groupRET4"
+  },
+  "eh_calls": [
+    {
+      "address": "00c5e1b4",
+      "native": "00bf65ac",
+      "containing_function": "00c5e1b0",
+      "operation": "unconditionalfree CURRENT reused actual incomingentitycell,not cached allocation;no reset"
+    }
+  ],
+  "native_eh": {
+    "handler": "00c5e1bb",
+    "func_info": "00d84304",
+    "max_state": 1,
+    "state_values": [
+      -1,
+      0
+    ],
+    "map": "00d842fc",
+    "action": "00c5e1b0",
+    "free_site": "00c5e1b4",
+    "native_free": "00bf65ac",
+    "operation": "CURRENT reused actual entityword [NativeEBP+4],unconditionalfree;nozeroing",
+    "n_try_blocks": 0,
+    "n_ip_entries": 0,
+    "es_type": 0,
+    "eh_flags": 1,
+    "phase_arm": "0041d222 afterallocationwordreplacement andTEST EAX,before nullbranch/ctor",
+    "phase_disarm": "0041d243 afterreturnedzone countload0041d23e/TEST0041d241,before append/emptycleanup",
+    "scope": "exact statevalues-1/0,onecleanupaction;no guard for allocationfailure beforearm or arraygrowth afterdisarm"
+  },
+  "schedule": {
+    "selection": "captureactualentityinEDI;call rawpathgetter first;CMP CURRENT entity+54==2 beforecapturingEAXpathinEBX/JNZ;no nullentity/path repair",
+    "allocation": "malloc/newhandler service24h,then write allocatedpointer to ACTUAL incoming entityword;phase0 before nulltestbranch;late group+10layerload only afternonnullallocation;pushlayer then capturedpath,ECXallocation,SourceEDXactualworldcelladdress",
+    "null": "retain XOREBP0 then unconditional returnedcount deref+4 whilearmed;positivecurrentallocator normallythrows instead ofnull;no new nullsuccess",
+    "nonempty": "count!=0 unsigned TEST/JBE;groupcount==capacity only;candidate2cap+2 wraps,must>oldcap unsigned;capacity before MUL4 saturation toFFFFFFFF/allocation;currentarray/currentcount eachcopyiteration;CURRENToldarray free then publish;CURRENTcount/array reload,store constructedzone,ADDcurrentcount1",
+    "empty": "real167C0 first;load current zonearray once,ifnonnullfree then zero capturedzone[0];alwaysfree constructedzone;no capacity/count repair or destructor callback",
+    "exceptions": "no rollback beyondctorphase;ctor-own cleanup runs before parent CURRENT actualentitywordfree;groupgrowth failure preserves prepublishedcapacity and constructedzone ownership leak;all privateCRT/SEH/frame/doubleexception identity qualified"
+  },
+  "source_frame": {
+    "working_set": "12B in enclosing current C++ frame:borrowedworldcelladdress0,actualentitycellpointer4,volatilephase8",
+    "kernel": "saves Sourceworkingpointer in extra EDX stackword,keeps all Native GP registeroperations;NativeEH12B removed;contextslot ESP+(originaldepth-12),including+18 at ctor after2pushes",
+    "guard": "one current C++ guard conditional phase==0,loads CURRENT actualentityword once then genuinefree unconditionally;no copied allocation;normaldisarm exclusively at Nativepoint",
+    "boundary": "no Native FS record/handler/EBPclone;actualentitycell remains public incomingword and lives in caller frame;extra Source frames/current EH differ"
+  },
+  "dependencies": [
+    {
+      "native": "007ac9d0",
+      "api": "get_native_entity_path_interface_007ac9d0(void*,void*)",
+      "header": "bsp/native_entity_path_access.hpp",
+      "status": "complete_accepted_raw_source_cf961a900e53aa7a39103444a3850409e92debe1",
+      "contract": "actual current raw vtable+5C calls/AL predicate;no semantic facade"
+    },
+    {
+      "native": "0041ccd0",
+      "api": "void* __fastcall construct_native_avoid_zone_0041ccd0(void*,void* const volatile*,void*,uint32_t)",
+      "header": "bsp/native_avoid_zone_construct.hpp",
+      "was": "NAMED_INCOMPLETE mandatory dependency;fixture/readiness initially withheld",
+      "status": "complete genuine Source committed2f6ebe1d78d0ca7c46a749889d43db0d6e1f16ae;strict/fullmapping/actualproviderfixture passed;primary acceptance/registration pending",
+      "contract": "Original ECXzone,path/layerstack,RET8/EAXzone;SourceEDXborrowedactualworldcelladdress;actualpath/layercells/currentworldlate read;no local prototype/stub/bridge"
+    },
+    {
+      "native": "004167c0",
+      "api": "clear_native_avoid_corner_records_004167c0(void*)",
+      "header": "bsp/native_avoid_clip_cleanup.hpp",
+      "status": "complete_accepted_588c8d82844d73bd3f02efc4a8e26fa01486f2cf",
+      "contract": "CURRENTarray/count reload per actualrecordfree;zero countonly"
+    },
+    {
+      "service": "singleton_lifetime_allocate({SingletonAllocationKind::object,n,n})",
+      "native_mapping": "BF681B and BF55BE->BF681B",
+      "status": "complete_existing_concrete_currentmalloc_newhandler_retry_bad_alloc",
+      "contract": "rawwrapped/saturatedbytecount;no POD8guard/arraycookie/stdoperatornewoverride"
+    },
+    {
+      "service": "singleton_lifetime_free",
+      "native_mapping": "BF6989->BF65AC->BF9DC8;also direct BF65AC",
+      "status": "complete_existing_concrete_currentmatchedfree_noexcept",
+      "contract": "genuine matched currentheap;NativeprivateCRT/exception identity distinct"
+    }
+  ],
+  "validation": {
+    "native": {
+      "status": "PASS",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "native_body": "0041d1e0..0041d310",
+      "native_bytes": 305,
+      "native_instructions": 103,
+      "gaps": 0,
+      "sha256": "82066e049b5d3f0d99dc9730ea6e1c8b9e816d473849d04b4b30a23cf3e2d864",
+      "live_installed_pe_body_metadata_action_handler_match": true,
+      "branches": 10,
+      "eh": {
+        "handler": "00c5e1bb",
+        "func_info": "00d84304",
+        "max_state": 1,
+        "state_values": [
+          -1,
+          0
+        ],
+        "map": "00d842fc",
+        "action": "00c5e1b0",
+        "free_site": "00c5e1b4",
+        "native_free": "00bf65ac",
+        "operation": "CURRENT reused actual entityword [NativeEBP+4],unconditionalfree;nozeroing",
+        "n_try_blocks": 0,
+        "n_ip_entries": 0,
+        "es_type": 0,
+        "eh_flags": 1
+      }
+    },
+    "strict_compile": "PASS own caller MSVCx86/std:c++17/EHsc/MD/W4/WX/permissive-/fp:strict/O2 against genuine stable constructor header;callee acceptance still pending",
+    "emitted": {
+      "status": "PASS",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-goal15_zone_leaf\\local\\goal15j_avoid_group_add\\native_avoid_zone_group_add.obj",
+      "object_sha256": "279cfd384dd699eeafbddc771655e5904919a387114a3c73f1bcbd40234b02ed",
+      "native_bytes": 305,
+      "native_rows": 103,
+      "source_kernel_bytes": 279,
+      "source_thunk_bytes": 18,
+      "kinds": {
+        "native_eh_frame_removed": 11,
+        "literal": 68,
+        "actual_entity_cell_load": 1,
+        "genuine_provider": 7,
+        "branch": 10,
+        "actual_entity_cell_replace": 1,
+        "current_source_phase": 2,
+        "genuine_constructor_with_borrowed_cell_address": 1,
+        "private_kernel_return": 2
+      },
+      "checked_branches": 10,
+      "verified_kernel_call_relocations": 8,
+      "source_frame_bytes": 122,
+      "source_eh_max_state": 1,
+      "source_actual_guard_unwind_actions": 1,
+      "mapping": {
+        "0041d1e0": 1,
+        "0041d1e6": 1,
+        "0041d1e8": 1,
+        "0041d1ed": 1,
+        "0041d1ee": 1,
+        "0041d1f5": 1,
+        "0041d1f6": 2,
+        "0041d1f7": 3,
+        "0041d1f8": 4,
+        "0041d1f9": 5,
+        "0041d1fd": 14,
+        "0041d1ff": 16,
+        "0041d201": 18,
+        "0041d206": 23,
+        "0041d20a": 27,
+        "0041d20c": 29,
+        "0041d212": 35,
+        "0041d214": 37,
+        "0041d219": 42,
+        "0041d21c": 45,
+        "0041d220": 56,
+        "0041d222": 58,
+        "0041d22a": 71,
+        "0041d22c": 73,
+        "0041d22f": 76,
+        "0041d230": 77,
+        "0041d231": 78,
+        "0041d233": 80,
+        "0041d238": 91,
+        "0041d23a": 93,
+        "0041d23c": 95,
+        "0041d23e": 97,
+        "0041d241": 100,
+        "0041d243": 102,
+        "0041d24b": 115,
+        "0041d251": 117,
+        "0041d254": 120,
+        "0041d257": 123,
+        "0041d259": 125,
+        "0041d25b": 127,
+        "0041d25f": 131,
+        "0041d262": 134,
+        "0041d264": 136,
+        "0041d266": 138,
+        "0041d269": 141,
+        "0041d26e": 146,
+        "0041d270": 148,
+        "0041d273": 151,
+        "0041d275": 153,
+        "0041d277": 155,
+        "0041d278": 156,
+        "0041d27d": 161,
+        "0041d280": 164,
+        "0041d284": 168,
+        "0041d286": 170,
+        "0041d288": 172,
+        "0041d28b": 175,
+        "0041d28d": 177,
+        "0041d28f": 179,
+        "0041d291": 181,
+        "0041d294": 184,
+        "0041d297": 187,
+        "0041d29a": 190,
+        "0041d29d": 193,
+        "0041d2a0": 196,
+        "0041d2a2": 198,
+        "0041d2a4": 200,
+        "0041d2a7": 203,
+        "0041d2a8": 204,
+        "0041d2ad": 209,
+        "0041d2b0": 212,
+        "0041d2b3": 215,
+        "0041d2b6": 218,
+        "0041d2b9": 221,
+        "0041d2bc": 224,
+        "0041d2c0": 228,
+        "0041d2c4": 228,
+        "0041d2cb": 228,
+        "0041d2cc": 229,
+        "0041d2cd": 230,
+        "0041d2ce": 231,
+        "0041d2cf": 232,
+        "0041d2d2": 232,
+        "0041d2d5": 234,
+        "0041d2d7": 236,
+        "0041d2dc": 241,
+        "0041d2df": 244,
+        "0041d2e1": 246,
+        "0041d2e3": 248,
+        "0041d2e4": 249,
+        "0041d2e9": 254,
+        "0041d2ec": 257,
+        "0041d2f3": 264,
+        "0041d2f4": 265,
+        "0041d2f9": 270,
+        "0041d2fc": 273,
+        "0041d300": 273,
+        "0041d301": 274,
+        "0041d302": 275,
+        "0041d303": 276,
+        "0041d30a": 276,
+        "0041d30b": 277,
+        "0041d30e": 277
+      },
+      "proof_limit": "complete emitted mapping only;constructor Source gate acceptance/actual fixture tracked separately;not Native FH3/frame/SEH/fullbyte/production identity"
+    },
+    "report_calls": "PASS10rows:8ownednormal+1EHaction+1caller,0failed",
+    "fixture": "PASS one combined Source pre-integration fixture using actual group/ctor/clip objects and registered core;primary authorized after complete ctor existed;registered archive not yet proved",
+    "registered_build": "primary responsibility after fullgate/packetclosure",
+    "no_new_test_target": true,
+    "source_sha256": "e9134d100906569f0039f031234e224841518707bfd62e2e1d3608762cfd4abc",
+    "header_sha256": "b689a7f94562849985ad0fc04442b14e95d9243c27c952e43056cbb37cda5f11",
+    "fixture_sha256": "80c9530177f34de7486b792229b9f2abe37b61dbddfe5ac3ebb6272cc6cf59b2",
+    "markdown_claims": "PASS2EHactionclaims,0failed,0unchecked,0warnings"
+  },
+  "history": {
+    "native_name_was": "BSP_AvoidZoneGroup_AddSceneEntity",
+    "native_name_is": "BSP_AvoidZoneGroup_AddSceneEntity",
+    "preserve": "older partial avoid_zone_rebuild_from_scene_00424d00 projection/typed API and all earlier correct names/evidence remain;new additive caller record accurately retains pending primary/registration gates"
+  },
+  "registration": {
+    "source_to_register_after_gate": "src/native_avoid_zone_group_add.cpp",
+    "worker_shared_writes": false
+  },
+  "limits": [
+    "Constructor was named-incomplete;now complete committed genuine Source/tested. Primary acceptance/constructor integration/registered archive remain open;no substitute provider/bridge/callback.",
+    "CurrentSourceframes/context/EH/CRT differ;noNativeFH3/SEH/privateCRT/fullbodybyte/dropin/gameplayclaim.",
+    "ActualNativeentityfactory/class/vtable/worldpublicationproductionbinding not established by this caller;raw input accesses/aliases require backing."
+  ],
+  "source_fixture": {
+    "status": "PASS_preintegration_actual_group_ctor_clip_objects_plus_registered_core",
+    "source": "local/goal15j_avoid_group_add/group_add_probe.cpp",
+    "script": "local/goal15j_avoid_group_add/run_group_add_probe.cmd",
+    "log": "local/goal15j_avoid_group_add/probe.log",
+    "provider_inputs": "actual constructor object from2f6ebe1d78d0ca7c46a749889d43db0d6e1f16ae,actual clip object from80309742ed6e03ac961655ef05a58df98b96b6e1,actual new group object and current registered core;no replaced direct child",
+    "witness": "caller-owned local callable Source vtable+5C and real finite fixture-kind check;not Native predicate/type/factory semantics or production provider. High EAX nonzero with AL0/1;getter query0x47,ctor parent query0x44,actual ECX receiver;true parent witness republishes actual poseparentcell so third real ancestor reload stores secondparent",
+    "cases": [
+      "kind rejected only AFTER actual raw getter witness;no allocation,actualincomingentityword retained",
+      "three nonempty constructions:actualentityword replaced with constructedzone;groupcapacity0->2/spare/2->6;priorzone pointers retained;actual ctor/clip/winding;layer7,count4;AL44true/false and currentparent republication",
+      "valid outside-world path constructs emptyzone;actual record/array/body cleanup;groupcount/cap/array retained;bounded actualzoneblock notUSED observation",
+      "actual dirtypose/aliasedpath causes2realSDK repairs;zero-point continuation avoidspendingrecordallocation;actualFFFFFFF8 scratch malloc/newhandler bad_alloc whilectorphase0. Handler republishes ACTUAL groupincomingentityword to a valid alternateheapallocation. Current parent action freesalternate;ctor array-onlyaction zeroes originalpointeronly;originalzone remainsUSED,count/cap3FFFFFFF retained,firstrecord/body explicitlyreclaimed",
+      "actualFFFFFFFF groupgrowth allocation/newhandler bad_alloc afterphase-1:capacity80000000 prepublished,count3FFFFFFF/array retained,constructedzone remainsUSED/count4 and explicitlyreclaimed;groupmetadata restored forreal scalar cleanup",
+      "actual Source groupvtable scalar flags1 tearsdown3retainedzones,array/group;bounded groupblock notUSED observation"
+    ],
+    "policy": "real SDK threadlocal invalid-parameter and CRTnew handlers installed/restored by fixtureRAII;no fake allocator/getter/constructor/unresolved symbol or forcedSEH",
+    "qualification": "Source currentheap/SDK/C++ unwind/ABI witness only;not Native FH3/frame/SEH/privateCRT/predicate/entityfactory/gameplay/no-global-leak proof;actual registered archive closure still primary",
+    "archive_rerun": "run_group_add_probe.cmd archive drops all overlayobjects;primary owns rerun"
+  },
+  "base_commit": "13cb6d8252f26ffbc64109468bd8fc4baafa70ac"
+}

@@ -1,0 +1,208 @@
+{
+  "schema": "bsp.scene_string_list_storage_Main_validation.v1",
+  "status": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
+  "required_Main_build": {
+    "command": "./scripts/build.ps1",
+    "initial_chunk": "d7fa10",
+    "session": 35060,
+    "terminal_chunk": "18e399",
+    "exit_code": 0,
+    "configured_CTests_passed": 3,
+    "seconds": 9.59,
+    "before_commit": "682f3300d5151f3a2d5e194c81e6944bef36cb12",
+    "after_commit": "334756a5d1e17d5951c072f652dbabe9c5f21960",
+    "stable_inputs": 158,
+    "actual_known_compiler_inputs": 81,
+    "external_tool_pins": 64,
+    "additional_historical_author_tool_script_pins": 9,
+    "current_Main_provider_files": 4,
+    "qualification": "All81 known strict compiler dependencies rebound to Main.73 original tool entries include64 external tools and9 sealed historical author strict/audit scripts; those9 are retained at their real author paths and were not executed by this Main build. Additional current Main build configuration captured. No hermetic/full environment closure claim."
+  },
+  "before": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_scene_string_list_storage_Main_build01\\before.DATA.json",
+    "bytes": 37982,
+    "sha256": "a57a8ffe4000f3f66e57e8ca579afed2418af31634b8e33fa869b133c071c4d9"
+  },
+  "after": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_scene_string_list_storage_Main_build01\\after.DATA.json",
+    "bytes": 39120,
+    "sha256": "04a153507cae7c8c71fa1501ed76a6d82560dee76726dcef071d66a12dbc6557"
+  },
+  "original_build_tools": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_scene_string_list_storage_Main_build01\\original_build_tools.DATA.json",
+    "bytes": 1385,
+    "sha256": "6dad3e849e06234f85a84866010f23bc921e03db89a926a858d5c4f95c1c0c6a"
+  },
+  "complete_Main_inventory": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_string_list_storage_integration_20261016\\Main_inventory.DATA.json",
+    "bytes": 22050,
+    "sha256": "c12c9dd7ff856a804102be53f3cfae2a06fd8cabff2c9a55a74ae909aa6d5ccc"
+  },
+  "complete_Main_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_string_list_storage_integration_20261016\\Main_primary_archive.DATA.json",
+    "bytes": 859806,
+    "sha256": "3a1c946744a60a77a56a8fec45b15c8152ef1f84133c9a47a27ac44caf7e3bf6"
+  },
+  "all_symbols": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_string_list_storage_integration_20261016\\Main_symbol_review.DATA.json",
+    "bytes": 3666,
+    "sha256": "c0a7fbdf340eea18f2338142bade4c923dc25f7734bf20cd79a42d64694ef19f"
+  },
+  "registration": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_string_list_storage_integration_20261016\\registration_verification.DATA.json",
+    "bytes": 393,
+    "sha256": "377e079b685ad1c6b01a41904ae453e11d5885b904570b7b780fb82ea177f2e6"
+  },
+  "artifacts": [
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_scene_string_list_storage.obj",
+        "bytes": 1950,
+        "sha256": "c40bc7dece9cf54e2e7e5b43e413f6bbef91cf94ef70de63919b72747829f915"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_scene_string_list_storage_Main_build01\\frozen\\native_scene_string_list_storage.obj",
+        "bytes": 1950,
+        "sha256": "c40bc7dece9cf54e2e7e5b43e413f6bbef91cf94ef70de63919b72747829f915"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 93209158,
+        "sha256": "d3d2ba6a11ad36be67be6714cd89b57fffe1ea1b232754bbc74ad19a4ea1f089"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_scene_string_list_storage_Main_build01\\frozen\\bsp_core.lib",
+        "bytes": 93209158,
+        "sha256": "d3d2ba6a11ad36be67be6714cd89b57fffe1ea1b232754bbc74ad19a4ea1f089"
+      }
+    }
+  ],
+  "code": {
+    "code_sections": 3,
+    "code_bytes": 188,
+    "instructions": 72,
+    "native_body_bytes": 130,
+    "native_instructions": 52,
+    "literal_non_CALL_operand_bytes": 114,
+    "masked_CALL_operand_bytes": 16,
+    "private_current_CDECL_adapter_bytes": 58,
+    "private_adapter_instructions": 20,
+    "adapter_Original_credit": 0,
+    "code_relocations": 7,
+    "metadata_relocations": 0,
+    "unused_weak_CRT_BSS_bytes": 4,
+    "primary_symbols": 18,
+    "auxiliary_records": 7,
+    "exact_private_definition_target_pairs": {
+      "?allocate_native_scene_string_list_bytes@?A0x39828569@bsp@@YAPAXI@Z": "?allocate_native_scene_string_list_bytes@?A0xb85ccb11@bsp@@YAPAXI@Z"
+    },
+    "whole_object_debug_checksum_identity": false
+  },
+  "archive": {
+    "members": 2348,
+    "symbols_per_index": 82142,
+    "both_indices_equal": true,
+    "unique_object": {
+      "header_offset": 19983300,
+      "payload_offset": 19983360,
+      "raw_name": "/0",
+      "bytes": 1950,
+      "header_hex": "2f302020202020202020202020202020313739323131323138342020202020202020202020202020313030363636202031393530202020202020600a",
+      "sha256": "c40bc7dece9cf54e2e7e5b43e413f6bbef91cf94ef70de63919b72747829f915"
+    },
+    "all_public_bindings": [
+      {
+        "symbol": "__Avx2WmemEnabledWeakValue",
+        "binding": [
+          "__Avx2WmemEnabledWeakValue",
+          19983300
+        ],
+        "section_hex": "",
+        "raw_size": 4,
+        "relocations": [],
+        "provider_sha256": "c40bc7dece9cf54e2e7e5b43e413f6bbef91cf94ef70de63919b72747829f915"
+      },
+      {
+        "symbol": "?construct_native_scene_string_list_storage_0094efb0@bsp@@YIPAXPAX@Z",
+        "binding": [
+          "?construct_native_scene_string_list_storage_0094efb0@bsp@@YIPAXPAX@Z",
+          19983300
+        ],
+        "section_hex": "568bf133c9b840000000894608ba04000000f7e20f90c1f7d90bc851e800000000890683c404c74604000000008bc65ec3",
+        "raw_size": 49,
+        "relocations": [
+          {
+            "offset": 29,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?allocate_native_scene_string_list_bytes@?A0xb85ccb11@bsp@@YAPAXI@Z"
+          }
+        ],
+        "provider_sha256": "c40bc7dece9cf54e2e7e5b43e413f6bbef91cf94ef70de63919b72747829f915"
+      },
+      {
+        "symbol": "?grow_native_scene_string_list_storage_0094f010@bsp@@YIXPAX@Z",
+        "binding": [
+          "?grow_native_scene_string_list_storage_0094f010@bsp@@YIXPAX@Z",
+          19983300
+        ],
+        "section_hex": "568bf1834608408b460833c9ba04000000f7e20f90c157f7d90bc851e8000000008b0e8bf88b460403c003c0505157e8000000008b0683c41085c0740f50e80000000083c404c70600000000893e5f5ec3",
+        "raw_size": 81,
+        "relocations": [
+          {
+            "offset": 29,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?allocate_native_scene_string_list_bytes@?A0xb85ccb11@bsp@@YAPAXI@Z"
+          },
+          {
+            "offset": 48,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "_memcpy"
+          },
+          {
+            "offset": 63,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          }
+        ],
+        "provider_sha256": "c40bc7dece9cf54e2e7e5b43e413f6bbef91cf94ef70de63919b72747829f915"
+      }
+    ]
+  },
+  "contract": [
+    "Only whole constructor0094EFB0 [0094EFB0,0094EFE1),49B18 and growth0094F010 [0094F010,0094F061),81B34. Actual caller-provided aligned writable raw12 header: slots pointer0, signed-count/DWORD4, capacity DWORD8; no class/vtable/new host or standalone container wrapper. Constructor storescapacity64 BEFORE genuine exact256-byte allocation, publishes slots then count0, leaves slots uninitialized and returns actualheader. Growth publishes wrapping capacity+64 BEFORE allocation; retain native unsignedMUL4/overflow saturation instructions, allocate exact size, capture CURRENT oldslots/count AFTER allocation, call genuine current memcpy withcount*4 even whenzero, reload oldslots aftercopy, conditionally canonical-free then clear0, finally publish capturednewslots; count untouched. Proposed independent naked fastcall entries: constructor void* actualECX returnheader/plainRET, growth actualECX/void/plainRET, no stack inputs; no semantic growthEAX claim. Bind BF55BE through genuine private CDECL size bridge to canonical singleton_lifetime_allocate with object/native_bytes==host_bytes; canonical singleton_lifetime_free and real current memcpy/#pragma function(memcpy); no new globals/callbacks/provider stubs. Ordinary successful nonthrowing serialized domain: genuine live constructor-produced raw12/uniquely owned matching-current-heap slot buffer and previous accepted growth, coherent0<=count<=oldcapacity, valid initialized reached opaque slot bytes, nonwrapping capacity+64 and4*newcapacity witholdcap<=3FFFFFBFh, positive allocatable sizes/resources, old/new/header/privateframe disjoint, valid flatES/DFclear, no alias/reentry/concurrency/fault/trim/teardown. Empty growth still calls memcpy with real nonnull old/new allocations; do not special-case it. Slots are opaque to storage helpers: no element ownership or retirement changes. Named pending actual append0094F270 population/clear0094F3E0/destructor0094F540 and actual008F3270 application create/pass/retire binding remain separate; no populated caller/class/list-owner/key-enumeration/Original privateCRT/EH/fullABI/startup/runtime/game admission. Source implementation only these2, not other3 or comparator/sort/empty-data roles.",
+    "Fresh corrected150-candidate/73-tool preflight closed all81 actual compiler inputs. Two actual strict attempts: initial C2488 naked-declaration failure with no object, then corrected fresh preflight and successful strict compile. Both literal invocations/results and rejected inputs retained. One normal unregistered build passed2 existing checks; neither selected body was executed.",
+    "Complete1994B strict COFF:7sections/18primary+7aux25slots,3code188B72instructions/7code relocs/0metadata relocs. Two native entries130B52 retain114literal bytes with only16CALLoperand bytes rebound. Genuine private58B20 CDECL size bridge constructs object-kind3/equalnativehost bytes and has current GS cookie/check; unused4B CRT weak BSS has no incoming relocation; no initializer. Full CodeView223B payload/OBJNAME[617,780)/COMPILE3[780,840)/zero pad[840,841), directives/stringtable/checksums/ranges independently accounted.",
+    "All448 author files/fourGit blobs/genuine597-line ownprefix/12exact embedded transport objects and independent18-file peer family verified by Root. Four current Main provider pins match literally. Historical worker startup.cmake drift is explicitly separate from the required registered current Main build.",
+    "Source is accepted for registration under the explicit ordinary successful raw-storage contract. Main build, actual selected Core archive identity and final reconstruction/name ledgers remain pending; no Original fullABI/privateCRT/EH/caller/listownership/application/startup/runtime/game credit."
+  ],
+  "limits": [
+    "Worker strict history retains2actual attempts/1success; sole historical unregistered build passed2existing checks.",
+    "Current Main configured checks do not execute selected new bodies.",
+    "Only the explicit finite private adapter-name pair may differ; all code/runtime-data/other runtime names/relocation fields/types/directives and current symbol records verified. CodeView section-length aux/debug/checksum/object identity excluded.",
+    "No Original fullABI/privateCRT/EH/fault/caller/listownership/application/startup/runtime/game admission."
+  ],
+  "Original_ABI_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false,
+  "Ghidra_annotations": {
+    "journal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\ghidra-annotations-20261016T010048Z.json",
+      "bytes": 8988,
+      "sha256": "94bfb638cc61afca344a3ba37d7ece31e6f977e62757efae0063e0ca27695e83"
+    },
+    "all2_applied": true,
+    "project_saved": true,
+    "old_names_comments_preserved_in_journal": true,
+    "exports_refreshed": [
+      "0094efb0",
+      "0094f010"
+    ],
+    "Source_names_descriptive_hypotheses": true
+  }
+}
