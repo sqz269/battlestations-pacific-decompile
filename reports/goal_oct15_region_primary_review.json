@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_region_primary_review",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 1,
+  "private_source_cleanup_actions": 0,
+  "native_bytes": 43,
+  "native_instructions": 14,
+  "spans": [
+    {
+      "address": "00c11d3d",
+      "native_bytes": 43,
+      "instructions": 14,
+      "scope": "whole physical routine,not current false18Bthunk/25Binterior formal split",
+      "live_equals_installed": true,
+      "sha256": "efe92ed21d91a645a4868b949361c61fea2c0a4c75201b12f07e6537cd6252fd"
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct15_crt_sbh_region_lookup.json"
+  ],
+  "typed_transfer_rows_checked": 4,
+  "typed_transfer_rows_failed": 0,
+  "independent_reviews": [
+    "Primary independently reviewed full43B14ops/fresh typedInstructionDB all14starts/rawsha/currentformal/xrefs/default-vs-effectiveflow and completeCPP/header;canonicalcount-beforebase,capturedwrapend,unsignedcursor,eachliveparameter4beforecurrentdescriptor+C,1MiBwrappedcompare,20stride,empty-pathnoargumentread matched"
+  ],
+  "source_hashes": {
+    "src/native_crt_sbh_region_lookup.cpp": "2e4c0957b3288a1fc57b3c3726d5e73918eee9b0ebb330d3036d60566cca198e",
+    "include/bsp/native_crt_sbh_region_lookup.hpp": "69923f4101ee323fa8d2276f684b4fbbf8269c904e2d051860c1f06d030506bc"
+  },
+  "combined_build": {
+    "revision": "c606835ba8653eda14e67c47fbd2cdbb375f8ab6",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_region_combined_build.log",
+    "log_sha256": "d8fae58c7c107b1d72d35d65e01bfbdbee2cbe552f7b660b357c2f8788338ce5",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 13.98,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+    "scope": "existing regression checks; native math seeds do not execute these new bodies"
+  },
+  "project_source_counts": {
+    "native_crt_sbh_region_lookup": 1
+  },
+  "unique_archive_objects": {
+    "native_crt_sbh_region_lookup": [
+      "bsp_core.dir\\Release\\native_crt_sbh_region_lookup.obj"
+    ]
+  },
+  "archive_sha256": "707566046eb120f88db93b2c96f144f34069c1634703ce7ca928e827ed633a1f",
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "New explicit raw/live-frame/currentCRT Source APIs,not Original register/private-stack/argument-home/heap/FH3/fault ABI identity",
+    "The cleanup is a canonical Source guard mapping,not a new private-frame binary entry",
+    "Existing math differential seeds do not execute these new bodies; no application or game proof",
+    "No new cleanup actions;common cleanup limitation is transitive boilerplate only",
+    "No runtime execution,Originalheap/free/malloc/lock/SEH/startup closure or boundary-repair credit",
+    "Current Ghidra body/export remains split;physical Native and typed listing evidence cover all43B14ops independently"
+  ],
+  "retained_emitted_objects": {
+    "native_crt_sbh_region_lookup": {
+      "path": "local\\goal_oct15_region_objects\\native_crt_sbh_region_lookup.obj",
+      "sha256": "dfbaf3666b376e5ab2cd198f398c103a6849c9cb61a666785a1a3935b98b5ced",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct15_region_objects\\native_crt_sbh_region_lookup.disasm.txt",
+      "symbols": "local\\goal_oct15_region_objects\\native_crt_sbh_region_lookup.symbols.txt"
+    }
+  },
+  "Ghidra_boundary_repair": {
+    "performed": false,
+    "entry": "00c11d3d",
+    "current_formal_entry_bytes": 18,
+    "current_false_interior_function": "00c11d61",
+    "current_interior_formal_bytes": 25,
+    "whole_physical_bytes": 43,
+    "current_false_flow_override": "00c11d4d CALL_RETURN",
+    "reason": "bridge script execution disabled;no broadcapability change/delete-recreate/redecode workaround",
+    "source_admission": "independent wholephysical algorithm Source,not claimed repairedGhidraformalbody"
+  }
+}
