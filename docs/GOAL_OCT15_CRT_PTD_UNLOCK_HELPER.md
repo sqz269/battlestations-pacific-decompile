@@ -48,5 +48,10 @@ typed transfers are in the report. Primary independent review passed the complet
 helper and unchanged real provider. Locked annotation preserved the old name
 and comment, saved the project and refreshed the export. The CMake Source
 append was made on the first unheld queue turn and the queue was released
-before build. The registered Win32 build remains pending. No new tests or
-runtime/game proof.
+before build. Normal `scripts/build.ps1` at `327b2ecfb` passed MSVC Win32
+Release and both enabled existing checks (math and tool tests; 10.07 seconds).
+Native differential tests were not enabled in this worker build. No tests
+were added. The full emitted helper has 9 bytes and one REL32 relocation to
+the unchanged canonical unlock; its body equals the native body after that
+call displacement is normalized. Its public archive symbol occurs once.
+These checks do not establish binary-entry/private-ABI or runtime/game proof.

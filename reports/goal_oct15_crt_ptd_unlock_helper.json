@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "packet": "goal_oct15_crt_ptd_unlock_helper",
-  "status": "whole_ordinary_helper_reviewed_annotated_registered_build_pending",
-  "source_ready": false,
+  "status": "complete_ordinary_source_reviewed_annotated_build_verified",
+  "source_ready": true,
   "whole_control_flow_source_available": true,
   "source": "src/native_crt_ptd_unlock_helper.cpp",
   "header": "include/bsp/native_crt_ptd_unlock_helper.hpp",
@@ -122,7 +122,22 @@
       "header_sha256": "a71f8150e2fa5240273797c2a08f5dc735565bab0fa5eea390c98ee424d0e8cd",
       "source_unchanged": true
     },
-    "build": "pending actual registered normal Win32 or primary combined gate",
+    "build": {
+      "command": "scripts/build.ps1",
+      "revision": "327b2ecfb6f58caa5d05a9f435efa01398128efc",
+      "exit_code": 0,
+      "target": "MSVC Win32 Release",
+      "log": "local/goal_oct15_crt_ptd_unlock_helper_build.log",
+      "log_sha256": "e9d4f4b8ca7630c40c16636bb7a5acc26501c48f1caa7eac31408b1073e92093",
+      "existing_checks": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "passed": 2,
+      "failed": 0,
+      "test_seconds": 10.07,
+      "native_differential_enabled": false
+    },
     "report_call_verification": {
       "typed_rows": 2,
       "failed": 0,
@@ -132,7 +147,23 @@
     },
     "new_tests": 0,
     "native_differential_fixture": false,
-    "game_validated": false
+    "game_validated": false,
+    "emitted_object": {
+      "path": "local/goal_oct15_crt_ptd_unlock_helper_retained.obj",
+      "sha256": "7cc0492ea2c95a97431e73f186c5909526276554316d7acaab416a78a3207585",
+      "disassembly": "local/goal_oct15_crt_ptd_unlock_helper_object.txt",
+      "disassembly_sha256": "7a55bf56481bf3b046c269d4072a18e061894e94ac9b009688303e3220cb536b",
+      "whole_text_size": 9,
+      "bytes": "6a 0c e8 00 00 00 00 59 c3",
+      "relocation": {
+        "offset": 3,
+        "type": "IMAGE_REL_I386_REL32",
+        "symbol": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z"
+      },
+      "whole_native_body_equal_after_call_rel32_normalization": true,
+      "public_symbol_occurrences_in_bsp_core_lib": 1,
+      "binary_entry_private_ABI_or_game_proved": false
+    }
   },
   "qualification": "Whole9B noarg helper via real unchanged complete canonical unlock12;valid actual initialized/owned CS domain. Ordinary Source only,no manufactured naked-ASM identity/privateABI or PTD/FLS/locale/fatal/SEH/game closure."
 }
