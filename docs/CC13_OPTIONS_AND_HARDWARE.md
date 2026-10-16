@@ -292,22 +292,26 @@ When every check passes, it reports `operator_new(84h)` + `00974150(entity, id)`
 The C++ here is the shared, unbound rule set, so cc9 can choose to call it instead of
 maintaining a copy.
 
-**Warning constructors as message-id rules.**
-- `newunit` (`009756A0`).
-- `powerup` (`009757B0`), or `powerup` + name (`009758E0`); either takes `multi` when
-  game+1FE4h != 0.
-- `score` (`00975A10`).
-- `exitzone` (`00975340`). Unless it is exiting, it appends `enter`. When the entity, or a
-  kind-0Fh plane's `+9D4h` owner, is the controlled unit, it also appends `player`, and `ship`
-  for kind 6.
-- `00975540` is no longer an id rule but the whole constructor,
+**Warning constructors.** Each is the whole constructor, not an id rule (cc13-fix6, 2026-10-16,
+replacing the `warning_id_*` projections). None has a caller in src yet.
+- `construct_new_unit_warning_009756a0`, `construct_powerup_warning_009757b0`,
+  `construct_named_powerup_warning_009758e0` and `construct_score_warning_00975a10` run the plain
+  base `00973A90` (`construct_warning_base_00973a90`), store the class vtable at +0h (`00D1B460`,
+  `00D1B4B0`, `00D1B4B0`, `00D1B4D4`; no +6Ch observer, no type store) and set the id at +4h:
+  `newunit`; `powerup`; `powerup` + name (`0043C130`); `score`. Both powerup forms then append
+  `multi` when `[[00E188A8]+1FE4h] != 0`, passed in as `network_session`.
+- `construct_exit_zone_warning_00975340` runs the entity-warning base `00973BA0` and stores
+  vtables `00D1B344` (+0h) and `00D1B32C` (+6Ch). The id is `exitzone`; unless it is exiting, it
+  appends `enter`. When the entity is non-null and it, or a kind-0Fh plane's `+9D4h` owner, is
+  the controlled unit, it also appends `player`, and `ship` for kind 6.
+- `00975540` is likewise the whole constructor,
   `construct_confirm_warning_00975540` (cc13-fix5, 2026-10-16). It runs the entity-warning base
   `00973BA0` (`construct_entity_warning_base_00973ba0` in engine_seg49_64_78_cc13.cpp) and stores
   vtables `00D1B380` (+0h) and `00D1B368` (+6Ch). It then sets the id at +4h: `confirmship` for
   kind 6; for kind 18h, `confirmplane` + order (when non-empty), and `player` when the order
   matches `land` or `retreat` under `00425850` (a `WarningSubjectHost` hook) and entity
   `+3CCh == 1`. The NativeString resize/memcpy/append/release steps become std::string operations
-  on `WarningObject::id`. The other constructors listed above are still id rules only.
+  on `WarningObject::id`, as in the constructors above.
 
 **Hit feedback** (`0096EF60`, `0096E8F0`), called from the `hit` channel:
 - `+174h = clock + 0.25`.

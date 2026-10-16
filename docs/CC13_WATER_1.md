@@ -150,9 +150,18 @@ keep them behind an OFF switch with a comment recording that the image shares st
    - Also fixed by cc13-fix5: 00BB4B40 is now `pak_archive_registry_slots_push_back_00bb4b40`. It
      is the whole push_back: reserve through `reserve_native_pak_registry_slots_00bb46f0` when full
      (capacity*2, 1 when that is <= 1), the element store (skipped only for a null slot address,
-     as in the image) and size += 1. It was previously only the capacity calculation. The coast
-     vector `*_push_capacity` helpers next to it (00BAF350, 00BAF3E0, 00BAFC00) have the same
-     shape and were not audited here.
+     as in the image) and size += 1. It was previously only the capacity calculation.
+   - Fixed by cc13-fix6 (2026-10-16): the coast vector helpers had the same shape. They now work
+     on a `CoastNativeVector<T>` {data +0h, size +4h, capacity +8h}. The push_backs
+     `coast_segment_vector_push_back_00baf350`, `coast_ptr_vector_push_back_00baf3e0` and
+     `coast_point_vector_push_back_00bafc00` call their own reserve when full (capacity*2, 20h
+     unless above it). Then each stores the element (skipped only for a null slot address) and
+     does size += 1. The reserves `coast_ptr_vector_reserve_00baeeb0`,
+     `coast_segment_vector_reserve_00baefb0` and `coast_point_vector_reserve_00baf450` had been
+     capacity-only too. Each now floors the request at 20h. When the request exceeds the
+     capacity, it allocates through `CoastHost::operator_new_00bf55be`, copies the live elements
+     dword by dword, frees the old block through `CoastHost::free_00bf6989`, and stores data and
+     capacity. None has a caller in src.
 6. **Possible wrong names (not renamed).**
    - 00BBC690 `BSP_WaterTextureSource_GetDescriptor` is a runtime type-token test on 0109E9D4.
    - 00BC6430 `BSP_RefCountedRecord_Construct` is the cloud puff constructor (vtable 00D64940).
