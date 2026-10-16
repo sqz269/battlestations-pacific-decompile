@@ -1,0 +1,533 @@
+{
+  "packet": "oct15_native_input_controller_tree_leaves",
+  "status": "complete_ordinary_source_build_tested_current_sdk_boundary",
+  "utc": "2026-10-16T05:16:39.313127+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "accepted_Main_baseline": "cfbd635d73fa7ba1228c77c5967e2a705ab0fb68",
+  "required_published_Main": "545e4cb781520ad5a8e4cbb782ce441222bb45dd",
+  "nil19_Source_reference_pin": "676bce181ecc723b2bb9965a963a5f9f747b443f",
+  "source": "src/native_input_controller_tree_leaves.cpp",
+  "header": "include/bsp/native_input_controller_tree_leaves.hpp",
+  "documentation": "docs/OCT15_INPUT_CONTROLLER_TREE_LEAVES.md",
+  "source_sha256": {
+    "src/native_input_controller_tree_leaves.cpp": "4a4456b91a47206d1d26867b20bea80aadf8f74825bf523fbc6c1310e75d8ecf",
+    "include/bsp/native_input_controller_tree_leaves.hpp": "98e29e1b6577563e25d6b7472c0444e13f90e1e2e37fa2990460163e1abb38ac",
+    "docs/OCT15_INPUT_CONTROLLER_TREE_LEAVES.md": "61da3805d9ba78a5dd3ca98d6a56226c6bf31754fcd8770d30b23f3045e53cda"
+  },
+  "routines": [
+    {
+      "address": "0069aa80",
+      "source_name": "minimum_native_input_controller_node_0069aa80",
+      "library_identity_preserved": "STL_Tree_Min_0069aa80",
+      "role": "minimum",
+      "coverage": "complete ordinary defined body; undefined maximum gap excluded",
+      "defined_bytes": 27,
+      "current_starts": 10,
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "27",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0069aa80"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0069aa9a"
+            },
+            "length": "27"
+          }
+        ]
+      },
+      "Native_ABI": {
+        "ECX": "actual subtree",
+        "EDX": "incoming unconsumed",
+        "physical_stack_words": [],
+        "return": "plainRET/EAX selected actual node",
+        "local_EH": "None; sole diagnostic may return or throw, no own cleanup/catch/noexcept bridge."
+      },
+      "Source_ABI": "void* __fastcall(void* actual_subtree)"
+    },
+    {
+      "address": "0069a6a0",
+      "source_name": "rotate_native_input_controller_tree_right_0069a6a0",
+      "library_identity_preserved": "STL_Tree_Rotate_0069a6a0",
+      "role": "right_rotation",
+      "coverage": "complete ordinary defined body; undefined maximum gap excluded",
+      "defined_bytes": 82,
+      "current_starts": 30,
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "82",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0069a6a0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0069a6f1"
+            },
+            "length": "82"
+          }
+        ]
+      },
+      "Native_ABI": {
+        "ECX": "actual tree",
+        "EDX": "incoming unconsumed",
+        "physical_stack_words": [
+          {
+            "entry_offset": "ESP+04",
+            "meaning": "actual node pointer"
+          }
+        ],
+        "return": "RET4 all3 exits; incidentalEAX excluded by Sourcevoid",
+        "local_EH": "None; sole diagnostic may return or throw, no own cleanup/catch/noexcept bridge."
+      },
+      "Source_ABI": "void __fastcall(void* actual_tree,uint32_t unused_edx,void* actual_node)"
+    },
+    {
+      "address": "0069aa60",
+      "source_name": "maximum_native_input_controller_node_0069aa60",
+      "library_identity_preserved": "STL_Tree_Max_0069aa60",
+      "role": "maximum",
+      "coverage": "complete ordinary defined body; undefined maximum gap excluded",
+      "defined_bytes": 25,
+      "current_starts": 10,
+      "typed_body": {
+        "range_count": 2,
+        "returned_range_count": 2,
+        "address_count": "25",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0069aa60"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0069aa6c"
+            },
+            "length": "13"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0069aa70"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0069aa7b"
+            },
+            "length": "12"
+          }
+        ]
+      },
+      "Native_ABI": {
+        "ECX": "actual subtree",
+        "EDX": "incoming unconsumed",
+        "physical_stack_words": [],
+        "return": "plainRET/EAX selected actual node",
+        "local_EH": "None; sole diagnostic may return or throw, no own cleanup/catch/noexcept bridge."
+      },
+      "Source_ABI": "void* __fastcall(void* actual_subtree)"
+    },
+    {
+      "address": "0069ad50",
+      "source_name": "increment_native_input_controller_tree_iterator_0069ad50",
+      "library_identity_preserved": "STL_TreeIter_Inc_0069ad50",
+      "role": "successor",
+      "coverage": "complete ordinary defined body; undefined maximum gap excluded",
+      "defined_bytes": 99,
+      "current_starts": 38,
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "99",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0069ad50"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0069adb2"
+            },
+            "length": "99"
+          }
+        ]
+      },
+      "Native_ABI": {
+        "ECX": "actual iterator owner/node8B",
+        "EDX": "incoming unconsumed",
+        "physical_stack_words": [],
+        "return": "plainRET or nil diagnostic tail; incidentalEAX excluded by Sourcevoid",
+        "local_EH": "None; sole diagnostic may return or throw, no own cleanup/catch/noexcept bridge."
+      },
+      "Source_ABI": "void __fastcall(void* actual_iterator,uint32_t unused_edx)"
+    },
+    {
+      "address": "0069c280",
+      "source_name": "rotate_native_input_controller_tree_left_0069c280",
+      "library_identity_preserved": "STL_Tree_Lrotate_Unk_N24_0069c280",
+      "role": "left_rotation",
+      "coverage": "complete ordinary defined body; undefined maximum gap excluded",
+      "defined_bytes": 78,
+      "current_starts": 30,
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "78",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0069c280"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0069c2cd"
+            },
+            "length": "78"
+          }
+        ]
+      },
+      "Native_ABI": {
+        "ECX": "actual tree",
+        "EDX": "incoming unconsumed",
+        "physical_stack_words": [
+          {
+            "entry_offset": "ESP+04",
+            "meaning": "actual node pointer"
+          }
+        ],
+        "return": "RET4 all3 exits; incidentalEAX excluded by Sourcevoid",
+        "local_EH": "None; sole diagnostic may return or throw, no own cleanup/catch/noexcept bridge."
+      },
+      "Source_ABI": "void __fastcall(void* actual_tree,uint32_t unused_edx,void* actual_node)"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "0069ad50",
+      "address": "0069ad58",
+      "native": "00bf6713",
+      "kind": "call",
+      "scope": "owned successor",
+      "evidence": "Fresh full PE/live envelope/current instruction start and resolved actual BF6713 call or tail jump; no duplicate per-iteration walker rows."
+    },
+    {
+      "function": "0069ad50",
+      "address": "0069ad67",
+      "native": "00bf6713",
+      "kind": "tail_jump",
+      "scope": "owned successor",
+      "evidence": "Fresh full PE/live envelope/current instruction start and resolved actual BF6713 call or tail jump; no duplicate per-iteration walker rows."
+    },
+    {
+      "function": "0069ae50",
+      "address": "0069ae58",
+      "native": "00bf6713",
+      "kind": "call",
+      "scope": "read-only published nil19 successor reference",
+      "evidence": "Fresh full PE/live envelope/current instruction start and resolved actual BF6713 call or tail jump; no duplicate per-iteration walker rows."
+    },
+    {
+      "function": "0069ae50",
+      "address": "0069ae67",
+      "native": "00bf6713",
+      "kind": "tail_jump",
+      "scope": "read-only published nil19 successor reference",
+      "evidence": "Fresh full PE/live envelope/current instruction start and resolved actual BF6713 call or tail jump; no duplicate per-iteration walker rows."
+    }
+  ],
+  "contracts": {
+    "ABI": "Native ECX tree/subtree/actual8B owner-node iterator. Incoming EDX unconsumed. Rotations one stacked node/RET4; extrema/successor no stacked inputs/plain RET or diagnostic tail. Extrema selected-node EAX is semantic; Source void successor/rotations excludes incidental EAX.",
+    "successor": "Owner diagnostic may return; reload CURRENT iterator.node afterward. Nil node reports and exits. Right subtree follows current left/nil21. Parent climb reloads CURRENT iterator.node before parent.right comparison; on match store parent into iterator.node before parent.parent read, then nil test; final store preserves captured parent.",
+    "rotations": "Initial pivot capture, node-child store, reread CURRENT pivot child, conditional nil21/current child.parent store. Publish pivot.parent from CURRENT node.parent before one CURRENT head/root comparison. Nonroot reload node.parent; right tests parent.right first, left tests parent.left first. Final pivot-child then node-parent stores remain ordered across public aliases.",
+    "extrema": "Repeated CURRENT left or right child/nil21, no initial-node nil/null guard, actual selected-node return.",
+    "Source_shape": "Literal21h raw volatile DWORD/BYTE operations, not wrong-layout delegation or parameterized nil adaptation. No color/payload/context/allocator/count/callback/guard/EH/rollback/new noexcept bridge.",
+    "sole_actual_provider": "Accepted invoke_native_invalid_parameter_00bf6713. Native successor0069AD58 CALL and0069AD67 tail JMP; reference0069AE58 CALL/0069AE67 tail JMP separately scoped."
+  },
+  "fixed_literal_derivation": {
+    "reference": "Actual full ordinary bodies in accepted676 native_input_int_string_tree_leaves.cpp",
+    "changes": "Own include/function names and address suffixes, sole literal nil19-to21; no other C++ operation changed. Native whole envelopes independently prove only nil displacement/same BF6713 rel32 changes.",
+    "wrong_layout_delegate": false,
+    "nil_parameter_or_callback": false
+  },
+  "whole_envelope_normalization": [
+    {
+      "controller": "0069aa80",
+      "reference": "0069aae0",
+      "whole_envelope_bytes": 27,
+      "equal_after_only_proved_changes": true,
+      "changes": [
+        {
+          "instruction": "0069aa84",
+          "offset": 6,
+          "kind": "proved nil BYTE21-to19"
+        },
+        {
+          "instruction": "0069aa94",
+          "offset": 22,
+          "kind": "proved nil BYTE21-to19"
+        }
+      ],
+      "normalized_sha256": "b9b972cb8e9c9c854d087b568d5dc0f6cfa90558c3ce70ab4726e69ddef04613"
+    },
+    {
+      "controller": "0069a6a0",
+      "reference": "0069a780",
+      "whole_envelope_bytes": 82,
+      "equal_after_only_proved_changes": true,
+      "changes": [
+        {
+          "instruction": "0069a6af",
+          "offset": 17,
+          "kind": "proved nil BYTE21-to19"
+        }
+      ],
+      "normalized_sha256": "e42b0897d23d00413aefba0f2366246f1aae06cad9b22bfcdbe23fa0d8ffe502"
+    },
+    {
+      "controller": "0069aa60",
+      "reference": "0069aac0",
+      "whole_envelope_bytes": 28,
+      "equal_after_only_proved_changes": true,
+      "changes": [
+        {
+          "instruction": "0069aa65",
+          "offset": 7,
+          "kind": "proved nil BYTE21-to19"
+        },
+        {
+          "instruction": "0069aa75",
+          "offset": 23,
+          "kind": "proved nil BYTE21-to19"
+        }
+      ],
+      "normalized_sha256": "6f640fcf9f202b2fd9542a1da5578933f953aefd242bd1af3a0d59f1f5c5c5c8"
+    },
+    {
+      "controller": "0069ad50",
+      "reference": "0069ae50",
+      "whole_envelope_bytes": 99,
+      "equal_after_only_proved_changes": true,
+      "changes": [
+        {
+          "instruction": "0069ad58",
+          "entry": "0069ad50",
+          "offset": 9,
+          "kind": "proved same BF6713 rel32"
+        },
+        {
+          "instruction": "0069ad60",
+          "offset": 18,
+          "kind": "proved nil BYTE21-to19"
+        },
+        {
+          "instruction": "0069ad67",
+          "entry": "0069ad50",
+          "offset": 24,
+          "kind": "proved same BF6713 rel32"
+        },
+        {
+          "instruction": "0069ad6f",
+          "offset": 33,
+          "kind": "proved nil BYTE21-to19"
+        },
+        {
+          "instruction": "0069ad77",
+          "offset": 41,
+          "kind": "proved nil BYTE21-to19"
+        },
+        {
+          "instruction": "0069ad84",
+          "offset": 54,
+          "kind": "proved nil BYTE21-to19"
+        },
+        {
+          "instruction": "0069ad92",
+          "offset": 68,
+          "kind": "proved nil BYTE21-to19"
+        },
+        {
+          "instruction": "0069ada8",
+          "offset": 90,
+          "kind": "proved nil BYTE21-to19"
+        },
+        {
+          "instruction": "0069ae58",
+          "entry": "0069ae50",
+          "offset": 9,
+          "kind": "proved same BF6713 rel32"
+        },
+        {
+          "instruction": "0069ae67",
+          "entry": "0069ae50",
+          "offset": 24,
+          "kind": "proved same BF6713 rel32"
+        }
+      ],
+      "normalized_sha256": "7e3375fd74a5a4c4e905883bfed1d6fd09ac875f6c8d0770983212d901c25f4c"
+    },
+    {
+      "controller": "0069c280",
+      "reference": "0069c300",
+      "whole_envelope_bytes": 78,
+      "equal_after_only_proved_changes": true,
+      "changes": [
+        {
+          "instruction": "0069c28f",
+          "offset": 17,
+          "kind": "proved nil BYTE21-to19"
+        }
+      ],
+      "normalized_sha256": "0439f0befe0245fd4352ce96b0a1925cf906071c3d97d0d6b31232037d4a02b4"
+    }
+  ],
+  "accepted_provider_and_preserved_Source_sha256": {
+    "src/native_input_int_string_tree_leaves.cpp": "11c72b8fb99909f1b70725a7f2d92908cabb762152141c199378a7c7cd8fcfa9",
+    "include/bsp/native_input_int_string_tree_leaves.hpp": "cc38b1ef93856547740db5fec81507da6a4d3985797a6f185bd3ed8d0083aa0e",
+    "src/native_invalid_parameter_noinfo_call.cpp": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+    "include/bsp/native_invalid_parameter_noinfo_call.hpp": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+    "src/native_input_preset_tree_leaves.cpp": "05db82735e65006410f798622cd856aa9fe163b3676afc151fcf9c86b2e12283",
+    "include/bsp/native_input_preset_tree_leaves.hpp": "88785beefdae77cc9ee3efdb9b95a02988cfc08f352acc1525ec0d01bfcfddac",
+    "src/native_input_settings_tree_cleanup.cpp": "d8be9c5d9613ee258a06fe42a6696269a13a60f53a8a4e1d75aa2e4292feab30",
+    "include/bsp/native_input_settings_tree_cleanup.hpp": "db6fdb5d7c26f1bd416693464823e29c97bce248e987da5d033d626b4603c875"
+  },
+  "prior_provenance": {
+    "was": "Established library names/tags and typed/AV populated interfaces; no whole fixednil21 ordinary Source bodies for these five addresses.",
+    "is": "Separate fixed-literal nil21 complete ordinary Source with preserved old library names/comments, including Unk_N24.",
+    "evidence": [
+      "Full five Native listings",
+      "Fresh PE/live/current-start proof",
+      "676 Source and normalized complete Native envelope comparison"
+    ],
+    "preserved_domains": "Published nil19/29/15/99 and all preexisting Source/fixtures remain untouched; only new controller Source plus address-owned metadata and one registration line change."
+  },
+  "excluded_parent": {
+    "address": "006a6010",
+    "status": "No controller owner/pair Source or ledger claim. Separate frozen readiness captures parent gap historically; pair status advances independently under int_string_erase/Root ownership.",
+    "readiness_path": "local\\oct15_input_controller_tree_readiness.json",
+    "readiness_sha256": "5e10cdaf89a0a9d16894694ea00463effe0d8972807fb6021849f0c8f130ce32",
+    "color_payload_context_consumed_by_leaves": false
+  },
+  "limits": {
+    "admitted_current_domain": "All reached raw DWORD/BYTE storage valid, walks finite; volatile public captured/current alias schedule retained. No asynchronous mutation model, initial-node guard, count/header bridge, allocator or owning action.",
+    "CurrentSDK": "Actual qualified BF6713 Source calls current SDK policy, may return or throw, without Original encoded-handler/debugger/Watson/RTTI/FH3/fault identity.",
+    "Source_ABI": "New private arguments/frames/register/flags and C++ symbols; Sourcevoid excludes incidentalNativeEAX. Physical shape is not drop-in binary ABI.",
+    "binary_ABI_compatible": false,
+    "game_validated": false,
+    "no_native_execution": true
+  },
+  "CMake_registration": {
+    "file": "cmake/startup.cmake",
+    "line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_input_controller_tree_leaves.cpp)",
+    "policy": "Local append-only bsp_core registration, no shared registry lease or queue."
+  },
+  "verification": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "target": "MSVC Win32",
+      "log": "local/oct15_input_controller_tree_leaves_build.log",
+      "log_sha256": "9ba71ee5296e7e72857313df5d591e47c96eb1c08d6e4fb686cd9588e10d59cd",
+      "existing_suites": [
+        {
+          "name": "reconstructed_math",
+          "result": "pass",
+          "seconds": 0.23
+        },
+        {
+          "name": "native_math_differential",
+          "result": "pass",
+          "seconds": 0.03
+        },
+        {
+          "name": "tool_tests",
+          "result": "pass",
+          "seconds": 7.86
+        }
+      ],
+      "total_test_seconds": 8.18,
+      "new_tests": 0,
+      "test_scope": "Existing suites do not execute these new leaves; no Native execution, standalone probe or game/ABI validation.",
+      "warnings": [
+        "Existing unrelated spawn_request_id_matches duplicate LNK4006 retained; affected Source unchanged."
+      ]
+    },
+    "native_scope": {
+      "owned_defined_bytes": 311,
+      "owned_current_starts": 118,
+      "read_only_reference_bytes": 311,
+      "read_only_reference_starts": 118,
+      "raw_maximum_gap_bytes_separate": 6,
+      "all_exact_current_starts": 236,
+      "owned_transfers": 2,
+      "read_only_reference_transfers": 2
+    },
+    "COFF_checks": {
+      "passed": 16,
+      "total": 16,
+      "all_code_bytes": 394,
+      "all_instruction_starts": 168,
+      "public_bytes": 332,
+      "public_starts": 136,
+      "helper_bytes": 62,
+      "helper_starts": 32,
+      "code_REL32": 2,
+      "debugF_metadata_relocations": 3,
+      "terminal_INT3_padding": 0,
+      "alignment_NOPs_counted": true,
+      "complete_actual_CMake_read": true
+    },
+    "native_transfer_check": {
+      "status": "pass",
+      "rows_checked": 4,
+      "owned_rows": 2,
+      "read_only_reference_rows": 2,
+      "failed": 0,
+      "log": "local/oct15_input_controller_tree_leaves_report_calls.txt",
+      "log_sha256": "e0c4b2709a7455a8a525321dbff63e1a97a216475aac6c94e36035274d18d058"
+    },
+    "Markdown_transfer_check": {
+      "status": "pass",
+      "claims_checked": 4,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "log": "local/oct15_input_controller_tree_leaves_markdown_calls.txt",
+      "log_sha256": "f96f2f2bdf3eb11eef094bb5f737d9cdcb855703851bc4c341b32e555cacd4b8"
+    },
+    "git_diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "scope": "All seven packet-owned paths; address-only ledger additions preserve prior names/evidence and reconstruction records. No unrelated registration or Source changes."
+    },
+    "new_tests_or_probes": 0,
+    "transfer_schema_note": "Tail rows explicitly declare kind:tail_jump as required by verifier; native/Source bytes unchanged. Four canonical rows remain:2owned+2reference."
+  },
+  "ignored_native_evidence": "local\\oct15_input_controller_tree_leaves_evidence.json",
+  "ignored_native_evidence_sha256": "529d9ef1c6ab8e511bcc11652781f997ce1ff9493f1e2f9eeb2df197bf4d4fa2",
+  "Source_COFF": {
+    "receipt": "local\\oct15_input_controller_tree_leaves_coff.json",
+    "receipt_sha256": "1cfd0888c87f45694a2b6338023e3239cb65d509440a5c6ec9b95448dadcb245",
+    "object_path": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\build\\win32\\bsp_core.dir\\Release\\native_input_controller_tree_leaves.obj",
+    "object_sha256": "a8cd884558dc5d747e7735d4b3de94ad01f5f288f1b431d21efcf9a843d6761d",
+    "object_file_bytes": 2920,
+    "all_ten_code_sections_match_actual_nil19_reference_after_13_nil_edits": true,
+    "status": "complete_all_actual_code_bytes_instructions_relocations_and_padding_reviewed"
+  }
+}
