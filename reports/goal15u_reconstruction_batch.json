@@ -1,0 +1,306 @@
+{
+  "batch": "GOAL15U",
+  "source_commit": "e0bccf31fe66807ed25e9f014c77bfc4c12300d8",
+  "validated_source_integration": "939952a16",
+  "whole_source_functions": 12,
+  "referenced_native_bytes": 62,
+  "entire_source_code_bytes": 56,
+  "exact_functions": 8,
+  "exact_native_bytes": 35,
+  "qualified_functions": 4,
+  "qualified_native_bytes": 27,
+  "qualified_source_bytes": 21,
+  "proofs": [
+    {
+      "object": "local/goal15u_b3_author/leaf.obj",
+      "sha256": "7097e15cb7fff44da4d1d1b9d3edc34065bc5732134ee05e489e0823835f6ecb",
+      "all_executable_sections": 12,
+      "entire_executable_code_bytes": 56,
+      "undefined_externals": [],
+      "entries": [
+        {
+          "entry": "00b32910",
+          "symbol": "?native_tagged_b3_zero_pop04_00b32910@bsp@@YGII@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 5,
+          "whole_source_bytes": 5,
+          "exact_entire_body": true,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b33a90",
+          "symbol": "?native_tagged_b3_write_dword_08_00b33a90@bsp@@YIIPAXI@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 10,
+          "whole_source_bytes": 6,
+          "exact_entire_body": false,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b33e60",
+          "symbol": "?native_tagged_b3_read_dword_18_00b33e60@bsp@@YIIPBX@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 4,
+          "whole_source_bytes": 4,
+          "exact_entire_body": true,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b33e70",
+          "symbol": "?native_tagged_b3_read_dword_1c_00b33e70@bsp@@YIIPBX@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 4,
+          "whole_source_bytes": 4,
+          "exact_entire_body": true,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b33e80",
+          "symbol": "?native_tagged_b3_zero_byte_00b33e80@bsp@@YAEXZ",
+          "symbol_offset": 0,
+          "whole_native_bytes": 3,
+          "whole_source_bytes": 3,
+          "exact_entire_body": true,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b33f30",
+          "symbol": "?native_tagged_b3_noop_00b33f30@bsp@@YAXXZ",
+          "symbol_offset": 0,
+          "whole_native_bytes": 1,
+          "whole_source_bytes": 3,
+          "exact_entire_body": false,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b33f40",
+          "symbol": "?native_tagged_b3_noop_00b33f40@bsp@@YAXXZ",
+          "symbol_offset": 0,
+          "whole_native_bytes": 1,
+          "whole_source_bytes": 3,
+          "exact_entire_body": false,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b34070",
+          "symbol": "?native_tagged_b3_noop_pop08_00b34070@bsp@@YGXII@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 3,
+          "whole_source_bytes": 3,
+          "exact_entire_body": true,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b34080",
+          "symbol": "?native_tagged_b3_zero_pop08_00b34080@bsp@@YGIII@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 5,
+          "whole_source_bytes": 5,
+          "exact_entire_body": true,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b34550",
+          "symbol": "?native_tagged_b3_read_dword_04_00b34550@bsp@@YIIPBX@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 4,
+          "whole_source_bytes": 4,
+          "exact_entire_body": true,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b34560",
+          "symbol": "?native_tagged_b3_read_child_dword_04_00b34560@bsp@@YIIPBX@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 7,
+          "whole_source_bytes": 7,
+          "exact_entire_body": true,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b347c0",
+          "symbol": "?native_tagged_b3_child_scaled_address_00b347c0@bsp@@YIIPBXI@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 15,
+          "whole_source_bytes": 9,
+          "exact_entire_body": false,
+          "executable_relocations": 0
+        }
+      ]
+    },
+    {
+      "object": "build/win32/bsp_core.dir/Release/native_tagged_leaf_b3_05.obj",
+      "sha256": "ee4e28000262c03170d058a132c0ff64a8947e85e0c975bf2c55a822ab014057",
+      "all_executable_sections": 12,
+      "entire_executable_code_bytes": 56,
+      "undefined_externals": [],
+      "entries": [
+        {
+          "entry": "00b32910",
+          "symbol": "?native_tagged_b3_zero_pop04_00b32910@bsp@@YGII@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 5,
+          "whole_source_bytes": 5,
+          "exact_entire_body": true,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b33a90",
+          "symbol": "?native_tagged_b3_write_dword_08_00b33a90@bsp@@YIIPAXI@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 10,
+          "whole_source_bytes": 6,
+          "exact_entire_body": false,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b33e60",
+          "symbol": "?native_tagged_b3_read_dword_18_00b33e60@bsp@@YIIPBX@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 4,
+          "whole_source_bytes": 4,
+          "exact_entire_body": true,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b33e70",
+          "symbol": "?native_tagged_b3_read_dword_1c_00b33e70@bsp@@YIIPBX@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 4,
+          "whole_source_bytes": 4,
+          "exact_entire_body": true,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b33e80",
+          "symbol": "?native_tagged_b3_zero_byte_00b33e80@bsp@@YAEXZ",
+          "symbol_offset": 0,
+          "whole_native_bytes": 3,
+          "whole_source_bytes": 3,
+          "exact_entire_body": true,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b33f30",
+          "symbol": "?native_tagged_b3_noop_00b33f30@bsp@@YAXXZ",
+          "symbol_offset": 0,
+          "whole_native_bytes": 1,
+          "whole_source_bytes": 3,
+          "exact_entire_body": false,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b33f40",
+          "symbol": "?native_tagged_b3_noop_00b33f40@bsp@@YAXXZ",
+          "symbol_offset": 0,
+          "whole_native_bytes": 1,
+          "whole_source_bytes": 3,
+          "exact_entire_body": false,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b34070",
+          "symbol": "?native_tagged_b3_noop_pop08_00b34070@bsp@@YGXII@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 3,
+          "whole_source_bytes": 3,
+          "exact_entire_body": true,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b34080",
+          "symbol": "?native_tagged_b3_zero_pop08_00b34080@bsp@@YGIII@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 5,
+          "whole_source_bytes": 5,
+          "exact_entire_body": true,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b34550",
+          "symbol": "?native_tagged_b3_read_dword_04_00b34550@bsp@@YIIPBX@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 4,
+          "whole_source_bytes": 4,
+          "exact_entire_body": true,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b34560",
+          "symbol": "?native_tagged_b3_read_child_dword_04_00b34560@bsp@@YIIPBX@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 7,
+          "whole_source_bytes": 7,
+          "exact_entire_body": true,
+          "executable_relocations": 0
+        },
+        {
+          "entry": "00b347c0",
+          "symbol": "?native_tagged_b3_child_scaled_address_00b347c0@bsp@@YIIPBXI@Z",
+          "symbol_offset": 0,
+          "whole_native_bytes": 15,
+          "whole_source_bytes": 9,
+          "exact_entire_body": false,
+          "executable_relocations": 0
+        }
+      ]
+    }
+  ],
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "archive": "build\\win32\\Release\\bsp_core.lib",
+  "archive_sha256": "e114700927b6f4d14f0ee72158bb9ea6f9952879ea0030536e8f17d87a3c451c",
+  "actual_archive_member": "bsp_core.dir/Release/native_tagged_leaf_b3_05.obj",
+  "entire_archive_member_equals_registered_object": true,
+  "source_sha256": {
+    "src/native_tagged_leaf_b3_05.cpp": "861ebb63f5863d9779f2b8972f60b1dee5b4254ccb2b218f1ae3927254c80fbd",
+    "include/bsp/native_tagged_leaf_b3_05.hpp": "d2c25eeef8e8412d1fcfc82257dcf5f5605cd98a0eaf086ba91c8df61d856120"
+  },
+  "primary_build": {
+    "log": "local/goal15u_registered_build.log",
+    "sha256": "ea30968ce94fb241977b6055e76d9c653636e5b5b76922169d8e052e64cda332",
+    "existing_checks_passed": 3,
+    "new_tests": 0
+  },
+  "independent_review": {
+    "path": "local/goal15u_b3_review/review_summary.json",
+    "sha256": "ff6c2743f7c71c9fdddf7b87f4bdf2b346dbd590db05b0f2c689e3551cf9248c",
+    "status": "READY",
+    "blocking_findings": []
+  },
+  "ghidra": {
+    "program": "/battlestationspacific.exe",
+    "old_name_prototypes_comments": "local/goal15h_annotations_00b32910.json",
+    "history": "local/ghidra-annotations-20261016T041423Z.json",
+    "saved_prototypes": [
+      "00b32910 BSP_NativeTaggedB3_ZeroPop04_00b32910  uint __stdcall BSP_NativeTaggedB3_ZeroPop04_00b32910(uint opaque_cleanup_word)  body 00b32910 - 00b32914",
+      "00b33a90 BSP_NativeTaggedB3_WriteDword08_00b33a90  uint __thiscall BSP_NativeTaggedB3_WriteDword08_00b33a90(void * this, uint value)  body 00b33a90 - 00b33a99",
+      "00b33e60 BSP_NativeTaggedB3_ReadDword18_00b33e60  uint __fastcall BSP_NativeTaggedB3_ReadDword18_00b33e60(void * backing)  body 00b33e60 - 00b33e63",
+      "00b33e70 BSP_NativeTaggedB3_ReadDword1C_00b33e70  uint __fastcall BSP_NativeTaggedB3_ReadDword1C_00b33e70(void * backing)  body 00b33e70 - 00b33e73",
+      "00b33e80 BSP_NativeTaggedB3_ZeroByte_00b33e80  uchar __cdecl BSP_NativeTaggedB3_ZeroByte_00b33e80(void)  body 00b33e80 - 00b33e82",
+      "00b33f30 BSP_NativeTaggedB3_Noop_00b33f30  void __cdecl BSP_NativeTaggedB3_Noop_00b33f30(void)  body 00b33f30 - 00b33f30",
+      "00b33f40 BSP_NativeTaggedB3_Noop_00b33f40  void __cdecl BSP_NativeTaggedB3_Noop_00b33f40(void)  body 00b33f40 - 00b33f40",
+      "00b34070 BSP_NativeTaggedB3_NoopPop08_00b34070  void __stdcall BSP_NativeTaggedB3_NoopPop08_00b34070(uint opaque_cleanup_word0, uint opaque_cleanup_word1)  body 00b34070 - 00b34072",
+      "00b34080 BSP_NativeTaggedB3_ZeroPop08_00b34080  uint __stdcall BSP_NativeTaggedB3_ZeroPop08_00b34080(uint opaque_cleanup_word0, uint opaque_cleanup_word1)  body 00b34080 - 00b34084",
+      "00b34550 BSP_NativeTaggedB3_ReadDword04_00b34550  uint __fastcall BSP_NativeTaggedB3_ReadDword04_00b34550(void * backing)  body 00b34550 - 00b34553",
+      "00b34560 BSP_NativeTaggedB3_ReadChildDword04_00b34560  uint __fastcall BSP_NativeTaggedB3_ReadChildDword04_00b34560(void * owner)  body 00b34560 - 00b34566",
+      "00b347c0 BSP_NativeTaggedB3_ChildScaledAddress_00b347c0  uint __thiscall BSP_NativeTaggedB3_ChildScaledAddress_00b347c0(void * this, uint index)  body 00b347c0 - 00b347ce"
+    ],
+    "exports_refreshed": true,
+    "project_saved": true
+  },
+  "full_worker_seconds": 1205.492882,
+  "registered_worker_build_seconds": 474.54817,
+  "inventory": {
+    "initial_candidates": 79,
+    "actual_bodies_inspected": 79,
+    "complete_source_entries": 53,
+    "native_body_bytes": 251,
+    "exact_entries": 46,
+    "exact_native_bytes": 194,
+    "semantic_qualified_entries": 7,
+    "semantic_qualified_native_bytes": 57,
+    "deferred_bodies": 26,
+    "uninspected": 0
+  },
+  "qualification": "Eight exact whole bodies; setter/scaled functions use meaningful new ECX/EDX Source APIs unlike Original ECX+stack/RET4, with explicit read/cleanup/register/fault gaps. Two complete empty Source bodies use RET0 encoding vs one-byte Native RET, requiring their full executable code backing. Source parameter slots for RET4/8 describe cleanup only, not actual reads or recovered language declarations. Existing texture_format virtual remains unbound/incomplete. No caller adoption, drop-in ABI, runtime or gameplay claim."
+}

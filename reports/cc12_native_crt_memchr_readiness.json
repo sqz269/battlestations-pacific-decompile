@@ -1,0 +1,68 @@
+{
+  "schema": "bsp.cc12.native_crt_memchr.readiness.v1",
+  "status": "whole_ordinary_readiness_primary_peer_accepted_Source_authorized_not_implemented",
+  "address": "00bfa700",
+  "Original_library_name": "_memchr",
+  "source_ready": true,
+  "Source_authorized": true,
+  "Source_implemented": false,
+  "Source_credit": 0,
+  "owned_ranges_inclusive": [
+    [
+      "00bfa700",
+      "00bfa7ac"
+    ]
+  ],
+  "owned_bytes": 173,
+  "owned_instructions": 76,
+  "body_sha256": "4e96ec5152dff3c4648f00572c6ed10d221e170be7101db0a0a0d6fe9e7b503f",
+  "calls": 0,
+  "whole_body_primary_read": true,
+  "author_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strrchr_readiness_oct16\\local\\NativeCrtMemchrReadiness01\\root_manifest.json",
+    "bytes": 8298,
+    "sha256": "ac5185f9b22f868b88aa46832eba86adb253ab90cb12aa8223bbd5761687fea9"
+  },
+  "peer_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\NativeCrtMemchrIndependentReview01\\root_manifest.json",
+    "bytes": 4377,
+    "sha256": "8f9746d592b0fdb623608b2131b53ac9a42b59ed22ba5fb8509e20d4b5c4d7e6"
+  },
+  "Root_authentication": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_memchr_readiness_primary_20261016\\verified_families.DATA.json",
+    "bytes": 2534,
+    "sha256": "d2c1c8f6c947fc4717c1d6b2a25def8536fb7e1a00db2d383e67edbd395e2f67"
+  },
+  "author_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strrchr_readiness_oct16\\local\\NativeCrtMemchrReadiness01\\readiness.json",
+    "bytes": 10585,
+    "sha256": "8adfb23560d03d914ee5ed398f377c01519a1c371be67eb56e90f1220b6ce698"
+  },
+  "independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\NativeCrtMemchrIndependentReview01\\independent_readiness_review.json",
+    "bytes": 22056,
+    "sha256": "01284793c934987b92bd10f44e169f5649f7b8cb04ed8eeb5747712761ef6a89"
+  },
+  "Source_packet": "cc12_native_crt_memchr_00bfa700",
+  "exact_future_files": [
+    "include/bsp/native_crt_memchr.hpp",
+    "src/native_crt_memchr.cpp",
+    "docs/NATIVE_CRT_MEMCHR.md",
+    "reports/native_crt_memchr.json"
+  ],
+  "contract": [
+    "New MSVC Win32 ordinary typed interface over the genuine passed byte storage: void* __cdecl bsp::find_native_crt_byte_00bfa700(void*, int, unsigned int). Pointer/int/count widths are32bits, byte8bits, little endian. Keep correct Original library name _memchr.",
+    "Count0 accepts any pointer including null and returns null before payload reads or target conversion. Positive count requires a determinate readable stable requested region in one genuine live allocation. Endpoint may be within or one past that allocation, admitting interior subranges and prefixes. Actual32bit extent and pointer advances do not wrap. No NUL, padding, typed uint allocation, or initially aligned base requirement.",
+    "Every int selects its low8bits. Peel one BYTE at a time until actual address4alignment, returning first actual match or null on exhaustion. Read only complete in-range aligned DWORDs; no count overread. A DWORD may include later bytes after a first match within that DWORD.",
+    "Retain unsigned32 candidate ((x+0x7efefeff)^~x)&0x81010100, x=word^repeated_target. Zero candidate continues without reread. Nonzero candidate causes one actual same-DWORD reread and register-byte comparisons in ascending address order; reject false positives. Finish with0..3 ordered BYTE tail reads. Return actual borrowed first-match pointer or null; no extra final reread.",
+    "Approve target-specific private addressed MOV32 load helper using MSVC Win32 inline assembly over genuine byte storage, and volatile unsigned BYTE loads. This avoids inventing typed uint32 object lifetime/aliasing preconditions. The mechanism remains subject to actual strict/Main object verification of load widths, order and conditional reread. No ISO-portability or Original instruction/fault ABI claim.",
+    "Use bounded unsigned count/offset/pointer state; no integer underflow-based out-of-region accesses, before-base pointers, pointer subtraction, new runtime validation, SDK memchr/memcpy/search substitute, fallback, provider, global or caller binding. Read-only payload aliases are admitted; returned pointer borrows original owner lifetime. Mutation, concurrency, faults, invalid positive-count storage and volatile/MMIO observation protocols are outside this ordinary domain.",
+    "No Source compiler flag/segment/stack/register-home parameters or physical Original ABI/EH/fault/runtime equivalence. No new tests/probes/body execution. Worker owns only the four Source files; Root owns registration, ledger, annotation and Main integration."
+  ],
+  "Root_static_math_review": "Let c1,c2,c3 be carries from the first three byte additions in x+0x7efefeff. Filter bits8/16/24 are1 xor their preceding carry, so any zero low lane sets a bit. A zero high lane also sets bit31. If all lanes are nonzero, all lower carries are1; top sum=(a3+0x7f)mod256 and bit31 passes only at a3=0x80. Thus no match is missed, and the one no-match high-lane false-positive class is rejected by the required reread and ordered comparisons. Static proof only; no enumerator or body execution.",
+  "Root_bounds_review": "At any peel/tail BYTE read remaining>0. The unsigned subtract-four carry gate admits a word only when remaining>=4; after the word the residual controls another complete word or0..3tail. Genuine pointer increases stay in the requested region or its endpoint; exact count and alignment, no signed count limit added.",
+  "Main_gate": "pending_future_Source_author_peer_registration_build_actual_object_archive",
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "game_validated": false
+}
