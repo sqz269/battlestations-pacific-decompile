@@ -1,0 +1,248 @@
+{
+  "packet": "cc12_native_gui_frame_box_identity_163",
+  "status": "source_canonical_companion_strict_win32_optimized_evidence_existing_build_checked_unregistered",
+  "baseline": "c6efa31639221eefb00a7e6b1ed2e16c2df0e5f4",
+  "published_dependency": "6ef581090021e4aac6b4df200e77a6561a1db675",
+  "source_ready": true,
+  "source_scope": "New Source count/registry/current-terminal companion over already reconstructed raw125; not a new Original body.",
+  "new_original_body_placement_or_binary_abi_credit": false,
+  "new_tu_core_registered": false,
+  "production_activation": false,
+  "existing_source_ledger_ghidra_or_cmake_mutations": 0,
+  "original": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "evidence": "Captured158 table/byte evidence and accepted125/119/111/96 Source contracts, copied as history; no fresh Native audit/body credit.",
+    "terminal_table": {
+      "profile": "00d5d130",
+      "slot00": "00bd30e0",
+      "slot04": "00ad29b0"
+    },
+    "native_abi": "Existing BD30E0: ECX owner, no flags stack argument, current+04(flags1). Existing AD29B0: ECX actual Box/flags DWORD, EAX saved identity/RET4. New companion uses ordinary host C++ APIs."
+  },
+  "api": {
+    "context": "NativeGuiFrameBoxIdentityContext",
+    "companion": "NativeGuiFrameBoxReference final : RenderCommandReference",
+    "header": "include/bsp/native_gui_frame_box_identity.hpp",
+    "implementation": "src/native_gui_frame_box_identity.cpp",
+    "context_fields": [
+      "SAME NativeRenderActualOwnerRegistry& registry",
+      "NativeGuiFrameBoxLifetimeContext& lifetime with lifetime.owners == registry",
+      "genuine already-initialized matching NativeGuiWidgetPool<GuiFrameBoxPoolTraits>&",
+      "borrowed actual immutable D5D130 first2 DWORD table cells"
+    ],
+    "entry_points": [
+      "constructor(actual_frame_box, context)",
+      "release_zero_references() noexcept",
+      "delete_scalar_00ad29b0(const volatile uint32_t& flags)",
+      "phase()/retired() metadata diagnostics"
+    ],
+    "copy_and_move": "deleted",
+    "b18a40_convenience_wrapper_added": false
+  },
+  "admission": {
+    "required_independent_caller_proofs": [
+      "Successfully COMPLETED genuine live aligned actual120h canonicalF8C188 pool slot and actual+04 atomic; profile/count are not proof.",
+      "SAME initialized matching process pool/slab authority and hidden11C trailer; no pool creation or validation by facade.",
+      "Full graph/backing/creator/name/provider/native node/resource lifetime independently retained before callbacks, outside failing scopes.",
+      "Fresh persistent125/119 exact constructed2Ch span, distinct fresh111 array, private metadata/backing/scratch disjointness and same resource domains.",
+      "Externally serialized, address-stable metadata/context/registry; no callback mutation/destruction or same-lifetime reuse/replay."
+    ],
+    "runtime_preflight": [
+      "Before base/member stores, eight aligned/nonwrapping pairwise-disjoint known slot/metadata/context/lifetime/registry/pool-wrapper/vector/table regions.",
+      "Exact lifetime.owners registry identity; fresh119 and exact header=raw+F0; no raw vector/name/trailer snapshot.",
+      "Current profile/slot00 BD30E0; freshly reread profile/slot04 AD29B0; positive live actual04.",
+      "Registry.bind uses SAME borrowed atomic04 and rejects existing/prepared keys; may allocate/throw with no Native stores/retains."
+    ],
+    "owned_graphs_or_second_live_counts": 0,
+    "borrowed_base_constructor": "optional owned atomic disengaged; reference_count aliases actual04; failed-construction base dtor does not read it."
+  },
+  "phases": {
+    "bound": "Registered; metadata destruction terminates.",
+    "destroying": "Admitted scalar attempt before real125; no reentry/metadata destruction.",
+    "retired": "Real scalar returned then metadata-only exact unbind; identity may be freed.",
+    "retired_after_failure": "Real scalar or Source preflight escaped, then metadata-only unbind/rethrow. Caller-held failed graph and active125/119/111 MUST outlive this metadata as required by their contracts.",
+    "reset_retry_abandon_or_automatic_cleanup_api": false,
+    "source_scheduling_not_native_exception_origin": true
+  },
+  "zero_schedule": [
+    "Metadata phase first; only bound reads borrowed count and requires already observed zero. No decrement.",
+    "Validate CURRENT slot00 BD30E0; invoke genuine Source BD30E0, which rereads CURRENT raw profile.",
+    "Concrete adapter validates exact identity/flags1/reloaded current04 AD29B0; local stable Source flags1 cell.",
+    "Use same companion explicit scalar entry and genuine125 context/pool. No lazy preparation or unknown target fallback.",
+    "No Native payload/count read after scalar return/failure; Source noexcept terminal terminates on ordinary escape."
+  ],
+  "explicit_schedule": [
+    "Pure metadata phase rejection before effects; otherwise destroying before genuine125 call, with no count gate/decrement.",
+    "Genuine125 reads flags LOWBYTE after destructor success and performs same matching-pool return on bit0.",
+    "Success records retired and exact-unbinds; failure records retired_after_failure, exact-unbinds and rethrows.",
+    "After scalar returns/fails, reads only companion/context/registry metadata; never raw count/payload/trailer/vector.",
+    "Even Source-preflight rejection consumes the admitted companion attempt; no recovery/replay with a new companion."
+  ],
+  "failure_limits": [
+    "Unbind is not cleanup/rollback, graph recovery, count repair, orphan-credit restoration or permission to destroy active125/119/111 frames.",
+    "Native retired storage remains retired; stale identity diagnostics do not confer liveness.",
+    "Lookup may fail after decrement and before callback; bound phase does not certify origin. Retain obligations; no repeated release or explicit-deletion recovery.",
+    "Zero callback and registry.unbind have existing Source noexcept limits; ordinary cleanup/validation/mutex failure may terminate, not Native FH3/SEH equivalence.",
+    "111 zero-resource family remains canonical completed registered2D; unknown widget/timed/profile/remove-all services remain genuine required bindings.",
+    "125 prior-name-callback/119 expected-range and current Source-SDK free domains remain unchanged, excluding failed103/already-rolled-back records.",
+    "Raw clipping, independently retained ancestors, wholeAD0D80 and populated production graph holder remain separate composition work."
+  ],
+  "calls": [],
+  "call_scope": "No new Original instruction call-site claims; new C++ composition is verified by Source and actual COFF symbolic relocations.",
+  "optimized": {
+    "strict_flags": "MSVC Win32 /MD /EHsc /std:c++17 /O2 /Gy /W4 /WX /fp:strict /permissive-",
+    "strict_compile_attempts": 1,
+    "input_obj_sha256": "5615dedf21032344133426610600d14cd8c49eae484c4cfe13781230de8c4687",
+    "bsp_associated_emitted_groups": 29,
+    "critical_root_groups": 10,
+    "relocation_annotated_chunks": 17,
+    "max_instructions_per_chunk": 50,
+    "critical_bytes": {
+      "constructor": 121,
+      "metadata_destructor": 24,
+      "zero_callback": 186,
+      "explicit_delete": 182,
+      "retire": 24,
+      "binding_count": 998,
+      "terminal_adapter": 134
+    },
+    "ctor_before_metadata_store": {
+      "binding_validation_call": "34",
+      "first_store": "39",
+      "registry_bind_call": "5e"
+    },
+    "scalar_schedule": {
+      "destroying_store": "39",
+      "real125_call": "50",
+      "returned_store": "5b",
+      "normal_unbind_call": "67",
+      "catch_retire_failed_call": "87"
+    },
+    "diagnostics": "local/cc12_native_gui_frame_box_identity_163/diagnostics/index.json",
+    "full_asm_dumpbin_remain_authority": true,
+    "static_artifact_checks": {
+      "input_obj_sha256": "5615dedf21032344133426610600d14cd8c49eae484c4cfe13781230de8c4687",
+      "associated_function_groups": 29,
+      "critical_root_groups": 10,
+      "relocation_annotated_chunks": 17,
+      "max_chunk_instructions": 50,
+      "reviewed_opcode_relocation_anchors": "PASS",
+      "borrowed_base_dtor_has_no_atomic_read": true,
+      "no_atomic_decrement_increment_in_new_function_groups": true,
+      "diagnostic_index_and_all_chunks_rehashed": true,
+      "scope": "Static artifact consistency, not behavioral execution, Native body equivalence or product tests."
+    },
+    "primary_review": "PASS, complete10 roots/1782B/529starts/17chunks",
+    "compiler_generated_host_metadata_deleters_not_native_ad29b0": true,
+    "critical_root_bytes": 1782,
+    "critical_root_instruction_starts": 529
+  },
+  "verification": {
+    "primary_full_source_review": "PASS",
+    "primary_full_doc_review": "PASS",
+    "required_worker_builds": 1,
+    "existing_ctests_passed": 3,
+    "existing_ctests_seconds": 7.41,
+    "new_tu_registered_linked_or_executed": false,
+    "new_tests_or_probes": 0,
+    "repository_inputs": 46,
+    "unchanged_baseline_inputs": 44,
+    "external_header_hashes": 273,
+    "new_source_paths": 2,
+    "new_original_body_abi_or_runtime_proof": false,
+    "call_reference_verifier": {
+      "new_original_call_rows": 0,
+      "doc_call_claims": 0,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "scope": "New Source composition only; actual COFF symbolic relocation review supplies the new call proof."
+    },
+    "infrastructure_native_body_credit": 0
+  },
+  "artifacts": [
+    {
+      "path": "include/bsp/native_gui_frame_box_identity.hpp",
+      "bytes": 5405,
+      "sha256": "2e114b5f76c8c824df0313e7db7ba788b68235a46382006c5e154ef598ee141a"
+    },
+    {
+      "path": "src/native_gui_frame_box_identity.cpp",
+      "bytes": 6305,
+      "sha256": "68be74199b6debd2b8bc5819dc16eed3943512c056298012699c7772496893bf"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_IDENTITY_163.md",
+      "bytes": 11544,
+      "sha256": "cdfceb72ad6691f0a81bf51081fecea9bfaff62f3a9064bf6bfad13f72a80acc"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_identity_163/identity.obj",
+      "bytes": 34878,
+      "sha256": "5615dedf21032344133426610600d14cd8c49eae484c4cfe13781230de8c4687"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_identity_163/identity.asm",
+      "bytes": 129466,
+      "sha256": "73f3b891bb213aed016bc1af866b4d84dcc483042ae7aec7be15767f6c774b13"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_identity_163/identity_dumpbin.txt",
+      "bytes": 192958,
+      "sha256": "35ea73129ab78dfece01de346e1413bf840df5b7f2315ec9fb2df497173909c5"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_identity_163/object_proof.json",
+      "bytes": 24262,
+      "sha256": "e872ad6d533b75543ecd4c3b5fa5b69d02535177bc8ed3b731c3208be821d4f0"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_identity_163/object_checks.json",
+      "bytes": 552,
+      "sha256": "7cf2619e3d7f5e722e1b938b3b947a1ad744f412dc4e6c990f8b5932846661ef"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_identity_163/diagnostics/index.json",
+      "bytes": 31315,
+      "sha256": "88146f980a1cbec623ce86924341e387d98b6b933b8544a5ca0aca412e358e8d"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_identity_163/source_inputs.json",
+      "bytes": 75743,
+      "sha256": "5ca01cb39ea2b61189f40c1dc65cb2deba61fc0795aa7a2152ad75cae38aea31"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_identity_163/capture_summary.json",
+      "bytes": 580,
+      "sha256": "c30c6d62b632e9de88730e101d0b0d7825e4642191802d394ad965fde50ddfd4"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_identity_163/strict_compile.log",
+      "bytes": 34,
+      "sha256": "368d21f4ce6ea2413b8b954b9b2401d973391b2848448ab6b1f416b3d1d3bfcf"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_identity_163/canonical_build.log",
+      "bytes": 3570,
+      "sha256": "759e8d0979ddd0d6a9c3b9472a1d9feaeafc7a1feb3b781fdacfec81c34c4d1e"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_identity_163/canonical_snapshot.json",
+      "bytes": 1230,
+      "sha256": "c6423897c5ed4de6d7b98cc4bd4a34048ebfd738b99b160075e1ae17f3129438"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_identity_163/call_verification.txt",
+      "bytes": 207,
+      "sha256": "fd43cb46ae20caa273c4dee80dea58ce1085d49e06ac4e7d8e3fb4ad4c3363d1"
+    }
+  ],
+  "private_manifest": {
+    "path": "local/cc12_native_gui_frame_box_identity_163/manifest.json",
+    "sha256": "7f4cd4c7f0b1a2328f02d6f5890fcd4bf7a5cf50b9144eca97e1d2d02d839438",
+    "item_count": 158,
+    "total_bytes": 97082941
+  },
+  "limits": "Bounded caller-proved actual FrameBox Source identity/terminal composition. No new Original function, private/native ABI/EH, production host/clip/drawing/retirement execution or gameplay proof."
+}
