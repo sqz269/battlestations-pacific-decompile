@@ -38,6 +38,7 @@
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
 #include "bsp/lua_binding_mission_2.hpp"
+#include "bsp/scene_unit_creators.hpp"
 #include "bsp/lua_spawn_new.hpp"
 #include "bsp/mission_lobby_settings.hpp"
 #include "bsp/mission_lua_bindings.hpp"
@@ -3012,6 +3013,21 @@ namespace {
 // which is what "keep the authored orientation" means.
 constexpr double kSceneGenerateObjectYawSentinelCeiling = 6.283185307179586;
 
+// Packet s52_bsm09_cloud (docs/SHIP_AI_OPEN_ITEMS.md 256/257). A held-back row
+// whose class has no unit creator in this process and no `thisTable` identity
+// row (find_scene_class_lua_identity) gets the answer the load path gives the
+// same class (game_hosts_scene_contents.cpp: "creator ... is not
+// reconstructed"): nothing is made. The case met is BSM09's luaIntroMovie7
+// (bsm_09:1102-1173), GenerateObject on 72 `Cloud` (3Dh) rows. 0046DB4B calls
+// descriptor[1] = 004E9E40 for them, which reads CloudType and builds a cloud
+// through the manager [[00E188A8]+21D0h] vtable[8] (docs/ENTITY_IDENTITY.md
+// part 3): presentation, NOT reconstructed here, and no unit. No script reads
+// the result. True: the row is marked spawned and the call returns nothing.
+// False: the row goes to create_unit_from_scene_record_0046db4b, which makes a
+// unit with no creator and throws at its observer tables (the run dies).
+constexpr bool kGenerateObjectRecordOnlyCreatorBound = false;
+unsigned long long g_generate_object_record_only = 0;
+
 // CORRECTED by packet cc8_spawn_new_route. 00888760 BSP_LuaObject_ReadVector3
 // does NOT index the table 1..3. Its whole body is one walk: 008887A9 opens the
 // iteration with 00B67080, 0088882F steps it with 00B67190, and between them it
@@ -3201,6 +3217,21 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
         // members from Type1..TypeN. Before, the record went to create_units as a
         // unit and threw (no creator for the observer tables), killing the run.
         return generate_land_convoy_00743450(state, *entry, record, placed);
+    }
+    if (kGenerateObjectRecordOnlyCreatorBound
+        && bsp::find_scene_unit_creator(record.class_id) == nullptr
+        && bsp::find_scene_class_lua_identity(record.class_id) == nullptr) {
+        entry->spawned = true;
+        ++g_generate_object_record_only;
+        if (g_generate_object_record_only <= 4) {
+            log_.notef("  GenerateObject 00944fd0: \"%s\" (%s, class %02Xh) has no unit "
+                "creator and no thisTable row; recorded as at load, nothing made "
+                "(004E9E40 for Cloud, presentation; packet s52_bsm09_cloud, %llu so far)",
+                name.c_str(), record.class_name.c_str(), record.class_id,
+                g_generate_object_record_only);
+        }
+        log_.implemented("MissionLuaNative::GenerateObject", "00944fd0");
+        return 0;
     }
     const std::size_t units_before = script_orders_->units().count();
     const std::uint32_t entity_id
