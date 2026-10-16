@@ -1,0 +1,65 @@
+{
+  "packet": "cc12_native_gui_crt_provider_contract_51",
+  "status": "read_only_production_contract_and_exact_refresh_gap_established",
+  "analysis_head": "3b82d3013ee18063e647589fae4d7680114a4cf6",
+  "merged_main": "638f686c80ea7ed4248b9187e3ecfdafc138010f",
+  "49_commit_preserved": "10e71bbf9850aac7f3ba08f1ed796ef99e39cb62",
+  "conclusion": "Explicit current-Source-UCRT composition is honest and feasible without a complete vendor CRT; current application-entry-only refresh is insufficient for the gate reference",
+  "canonical_data_owner": {
+    "source": "src/game_native_mutable_crt_data.cpp:29,81,145",
+    "committed_pages": ["00e15000", "00e16000", "0109e000"],
+    "00e159e8": "Writable initial PE bytes; not proof of current owning-thread errno getter decision",
+    "00e161d0": "Initial/default locale bytes; not live PTD/category/refcount/lock domain or modern UCRT locale object",
+    "0109de1c": "Page0109D000 is not committed/admitted/accessored by this owner;64KB reservation is not live cell admission",
+    "0109eea4": "Mutable DWORD accessor and zero preimage, not frontend queried bool or proof of Original CPU initializer",
+    "supplies_current_ptd_tls_or_locale_services": false
+  },
+  "source_host_evidence": {
+    "existing_substitution": "native_settings_choices.cpp:35 compare_language_00bf7fbf calls ::_stricmp; many game_* callers already use UCRT comparisons",
+    "uppercase": "game_hosts_text.cpp:169 uses std::towupper",
+    "built_imports": ["api-ms-win-crt-string-l1-1-0.dll:_stricmp", "api-ms-win-crt-string-l1-1-0.dll:_wcsicmp", "api-ms-win-crt-locale-l1-1-0.dll:setlocale"],
+    "whole_src_include_locale_setter_search": "Only scene_file.cpp203/250 LC_NUMERIC,nullptr queries; no setter/configuration call found there",
+    "real_additional_writer_capability": "Linked Lua5.1.1 loslib.c193/200/219 exposes os.setlocale(all/ctype/etc); lua_exec_guard.hpp48 replaces execute only",
+    "reached_script_locale_mutation_demonstrated": false,
+    "absence_of_writers_or_permanent_c_locale_claimed": false
+  },
+  "installed_crt_api_evidence": {
+    "sdk": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt",
+    "source": "C:/Program Files (x86)/Windows Kits/10/Source/10.0.26100.0/ucrt",
+    "query": "setlocale or _wsetlocale(LC_CTYPE,nullptr), immediately copy/compare result; LC_NUMERIC does not establish case comparison state",
+    "c_locale_wide_behavior": "wcsicmp.cpp50/85 and ctype.h149 establish unsigned16-bit ASCII A..Z-only helper",
+    "current_locale_snapshot": "_get_current_locale allocates retained UCRT snapshot; requires same-UCRT _free_locale; no Original layout cast",
+    "runtime_dll_byte_parity_claimed": false,
+    "original_differences": ["Modern validation precedes LocaleUpdate; Original48 update precedes null validation", "Modern mapping call optimization differs", "Non-C NLS/private locale layout, PTD, errno and invalid handler domains differ or remain unproved"]
+  },
+  "exact_refresh_seam": {
+    "current_fields": "game_native_text_application.hpp32:plain constint32 gate ref,2arg wide callback,name comparator,constbool SSE2 ref",
+    "actual_read": "gui_text_content.cpp29..35 equal_content",
+    "callbacks_before_read": "prepare_content calls ensure_sections191 and uppercase provider201 before equal_content205",
+    "application_admission": "GameNativeTextEntry game_hosts_text.cpp661 has no CRT refresh; guards make_type,submit_source/utf16,resume",
+    "bypasses": ["GuiWidgetOwnerRuntime properties_bound/loaded78 invoke concrete Text directly", "Bare app.factory() access", "Concrete submit/ellipsis/rebuild/resume and factory copy continuations"],
+    "entry_only_or_startup_or_frame_refresh_sufficient": false,
+    "minimal_closure": "Query/refresh at the actual content gate OR explicit Source-current comparator mode that delegates every nonempty comparison without a fabricated Original flag"
+  },
+  "supported_source_plan": {
+    "callbacks": "Stateless valid-buffer adapters to owning UCRT::_wcsicmp and ::_stricmp, Win32 wchar_t/char16_t width assertions; same Source uppercase domain",
+    "query_option": "Fresh LC_CTYPE decision at actual equal_content branch; clearly labeled Source C/nonC selector, not Original0109DE1C or UCRT changed-data identity; query failure is an error",
+    "current_comparator_mode_option": "Explicit Source mode always uses provided current UCRT wide callback; keep Original borrowed-flag mode separate; no forced1 fake flag",
+    "non_c_locales_allowed_under_source_contract": true,
+    "no_new_crt_global_owner_pool_or_default_locale_needed": true,
+    "source_metadata_lifetime": "One stable selector cell if retained, through all Text/factory/continuation uses; refresh each resumed call; keep existing retention/nonreplay contracts",
+    "pinned_locale_optional": "Separate stronger contract using owning UCRT snapshot and _l calls; current context-free callbacks cannot carry it; not imposed here",
+    "sse2": "Expose same frontend Impl queried bool162/getter365, or deliberately move it to common owner and retarget both; keep IsProcessorFeaturePresent provenance and one stable ref; native Text uses retire before owner"
+  },
+  "original_route": {
+    "46_49": "Require genuine live0109DE1C and owning errno/invalid/locale callbacks",
+    "48": "Additionally actual BF7E24 PTD/locale update and BFD39F mapping/cleanup",
+    "complete_current_original_provider_exists": false,
+    "modern_locale_or_ptd_cast_allowed_as_original_provider": false,
+    "full_original_recovery_required_for_source_host_substitution": false
+  },
+  "coordination": "Read-only findings exchanged with46/48 and Root; Root owns implementation choice",
+  "validation": "Documentation-only JSON parse and git diff whitespace checks; source/import/API inspection, no new build or execution proof",
+  "mutations": {"source": false, "ghidra": false, "ledger": false, "locale_or_settings": false, "game_audio_installation": false},
+  "not_claimed": ["Original current CRT/PTD/TLS/domain ownership", "Runtime DLL byte parity", "Locale stability proved for arbitrary callbacks or threads", "Native GUI runtime/native Text drawing or gameplay"]
+}
