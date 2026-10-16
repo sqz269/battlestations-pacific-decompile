@@ -1,0 +1,237 @@
+{
+  "packet": "GOAL16L",
+  "status": "STRICT_PREPARED_NORMAL_BUILD_PENDING",
+  "base_pin": "ed1e3b330943315ac4c793d61dd90b4c883c9f9d",
+  "addresses": [
+    "00bc3010",
+    "00bc7aa0",
+    "00bc7ab0"
+  ],
+  "native": {
+    "functions": 3,
+    "bytes": 12,
+    "instructions": 6,
+    "complete_typed_live_installed_PE_strict_equal": true,
+    "entries": [
+      {
+        "address": "00bc3010",
+        "field_offset": 44,
+        "native_hex": "d9412cc3",
+        "native_bytes": 4,
+        "native_instructions": [
+          {
+            "address": "00bc3010",
+            "hex": "d9412c",
+            "mnemonic": "fld",
+            "operands": "dword ptr [ecx + 0x2c]"
+          },
+          {
+            "address": "00bc3013",
+            "hex": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "live_text": "00bc3010  d9 41 2c c3  .A,.\n",
+        "full_listing": "00bc3010: FLD float ptr [ECX + 0x2c] \n00bc3013: RET \n",
+        "xrefs": "From 00bbe9a8 in BSP_CloudInstance_Update [UNCONDITIONAL_CALL]\nFrom 00bbeb24 in BSP_CloudInstance_Update [UNCONDITIONAL_CALL]\nFrom 00bc58b9 in BSP_CloudRenderModel_Construct [UNCONDITIONAL_CALL]\n",
+        "typed_body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "4",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00bc3010"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00bc3013"
+              },
+              "length": "4"
+            }
+          ]
+        },
+        "Original_name": "TRIV_body_00bc3010",
+        "live_PE_strict_complete_equal": true
+      },
+      {
+        "address": "00bc7aa0",
+        "field_offset": 52,
+        "native_hex": "d94134c3",
+        "native_bytes": 4,
+        "native_instructions": [
+          {
+            "address": "00bc7aa0",
+            "hex": "d94134",
+            "mnemonic": "fld",
+            "operands": "dword ptr [ecx + 0x34]"
+          },
+          {
+            "address": "00bc7aa3",
+            "hex": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "live_text": "00bc7aa0  d9 41 34 c3  .A4.\n",
+        "full_listing": "00bc7aa0: FLD float ptr [ECX + 0x34] \n00bc7aa3: RET \n",
+        "xrefs": "From 00bc2ff0 in BSP_CloudPuff_CompareSortKeyDescending [UNCONDITIONAL_CALL]\nFrom 00bc2ffb in BSP_CloudPuff_CompareSortKeyDescending [UNCONDITIONAL_CALL]\n",
+        "typed_body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "4",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00bc7aa0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00bc7aa3"
+              },
+              "length": "4"
+            }
+          ]
+        },
+        "Original_name": "BSP_CloudPuff_GetSortKey",
+        "live_PE_strict_complete_equal": true
+      },
+      {
+        "address": "00bc7ab0",
+        "field_offset": 28,
+        "native_hex": "d9411cc3",
+        "native_bytes": 4,
+        "native_instructions": [
+          {
+            "address": "00bc7ab0",
+            "hex": "d9411c",
+            "mnemonic": "fld",
+            "operands": "dword ptr [ecx + 0x1c]"
+          },
+          {
+            "address": "00bc7ab3",
+            "hex": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "live_text": "00bc7ab0  d9 41 1c c3  .A..\n",
+        "full_listing": "00bc7ab0: FLD float ptr [ECX + 0x1c] \n00bc7ab3: RET \n",
+        "xrefs": "From 00bc3bbc in BSP_CloudClass_ComputeLighting [UNCONDITIONAL_CALL]\nFrom 00bc37b9 in BSP_CloudClass_PuffTransmittance [UNCONDITIONAL_CALL]\nFrom 00bc38b7 in BSP_CloudClass_PuffTransmittance [UNCONDITIONAL_CALL]\nFrom 00bc3f42 in BSP_CloudClass_AddPuff [UNCONDITIONAL_CALL]\n",
+        "typed_body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "4",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00bc7ab0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00bc7ab3"
+              },
+              "length": "4"
+            }
+          ]
+        },
+        "Original_name": "BSP_CloudPuff_GetSize",
+        "live_PE_strict_complete_equal": true
+      }
+    ],
+    "installed_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "source": {
+    "path": "src/native_tagged_float_bc_16l.cpp",
+    "sha256": "efbf8dc759ff1c26f588b1e79b319f66d93ece646a13e5fb8deaa001dd8046b4",
+    "header": "include/bsp/native_tagged_float_bc_16l.hpp",
+    "header_sha256": "2637bd9ed406d2bd5182f5f44800691e15cbd8282ee795feb4f92226eb5399c1",
+    "interface": "new descriptive extern C float __fastcall(const void*) projection; backing in ECX; value in x87 ST(0); Original formal spelling/class/float-versus-double unproved"
+  },
+  "strict": {
+    "standard": "c++17",
+    "flags": "/nologo /std:c++17 /MD /O2 /W4 /WX /fp:strict /Gy /c /Iinclude /FAs",
+    "sha256": "b8e46da80db1f8158097082d7241678b06691553df783571ff01b4ce4d6ced22",
+    "object_bytes": 965,
+    "executable_bytes": 12,
+    "instructions": 6,
+    "executable_sections": 3,
+    "all_section_relocations": 0,
+    "undefined_externals": [],
+    "extra_helpers": 0,
+    "compile": {
+      "started_utc": "2026-10-16T07:53:15.482046+00:00",
+      "completed_utc": "2026-10-16T07:53:17.173352+00:00",
+      "seconds": 1.6912837999989279,
+      "exit_code": 0,
+      "command": "J:\\PROG\\battlestations-pacific-decompile-goal16a_b4_review\\local\\goal16l_tagged_float_bc\\strict_compile.cmd",
+      "source_sha256": "efbf8dc759ff1c26f588b1e79b319f66d93ece646a13e5fb8deaa001dd8046b4",
+      "object_sha256": "b8e46da80db1f8158097082d7241678b06691553df783571ff01b4ce4d6ced22"
+    },
+    "proof": "local/goal16l_tagged_float_bc/strict_proof.json"
+  },
+  "physical": {
+    "read": "one four-byte m32real read at wrapping ECX+2Ch/34h/1Ch; no extra read before FLD",
+    "sequence": "FLD then plain RET, no argument-word read; normal completion consumes return slot and ESP increases four",
+    "ordinary_registers_flags": "GPRs and EFLAGS unchanged except normal EIP/ESP completion",
+    "x87": "literal original FLD m32real in inherited control/status/tags/TOP/stack; no software bit normalization, FSTP, reset or guard; SNaN, denormal, pending/masked/unmasked exception and stack-fault behavior remains the instruction behavior, not an assumed normal-value domain",
+    "fault_prefix": "FLD first preserves machine access/FP exception schedule; inaccessible C++ memory and exceptional outcomes are not runtime-proved",
+    "placement_limit": "absolute fault EIP and saved FIP follow relocated Source placement, so full saved FP-environment byte identity and drop-in ABI are not claimed"
+  },
+  "coverage": {
+    "preflight": "local/goal16l_tagged_float_bc/preflight.json",
+    "coverage": "existing caller inline approximation/abstract virtual interface are not complete standalone physical getter bodies; preserve unchanged",
+    "existing_names_preserved": [
+      "TRIV_body_00bc3010",
+      "BSP_CloudPuff_GetSortKey",
+      "BSP_CloudPuff_GetSize"
+    ],
+    "Ghidra_changes": false,
+    "ledger_changes": false
+  },
+  "registration": {
+    "CMake_append_only": {
+      "path": "cmake/startup.cmake",
+      "only_append": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_tagged_float_bc_16l.cpp)\n",
+      "before_sha256": "02ea2ddf93b1fdaaaf3bb030d63faa65a3bb3546a9b2e9d8574997b0bd2c643f",
+      "after_sha256": "52b53931ab054c56f23f8f650958b17d51c090b84e2518c53f93f87d335f3959"
+    },
+    "normal_build": false,
+    "cache_preexisting": false,
+    "actual_registered_object": null,
+    "actual_Core_archive": null,
+    "unique_provider_both_link_directories": null
+  },
+  "transfer_remaining": [
+    "cherry-pick prep into leased warm worktree; preserve prep inputs",
+    "normal scripts/build.ps1 and existing checks; retain terminal result",
+    "independent complete actual registered object and Core archive member/both linker dictionaries proof",
+    "then append exact three ledger records and preserve correct names; primary alone may annotate Ghidra under lock",
+    "independent peer review by a reviewer other than this author"
+  ],
+  "evidence_dir": "local/goal16l_tagged_float_bc",
+  "new_tests_or_probes": false,
+  "Native_or_game_execution": false,
+  "timing": {
+    "author_first_utc": "2026-10-16T07:43:27+00:00",
+    "strict_seconds": 1.6912837999989279,
+    "prep_report_utc": "2026-10-16T07:59:58.632961+00:00",
+    "inclusive_final_prep_clock": "recorded in post-commit frozen receipt; includes all qualification, strict compile, edits, corrections and packaging; build/review transfer remains pending",
+    "speedup_claim": false
+  },
+  "references": [
+    "https://learn.microsoft.com/en-us/cpp/cpp/fastcall?view=msvc-160",
+    "https://cdrdv2-public.intel.com/868137/325462-089-sdm-vol-1-2abcd-3abcd-4.pdf"
+  ]
+}
