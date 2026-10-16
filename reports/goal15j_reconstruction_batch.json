@@ -1,0 +1,312 @@
+{
+  "batch": "GOAL15J",
+  "status": "complete_source_registered_build_and_archive_fixture_verified",
+  "validated_source_commit": "020cca8eb121809ecbb251e4081d8e883978253d",
+  "worker_commit": "80309742ed6e03ac961655ef05a58df98b96b6e1",
+  "entry": {
+    "address": "0041a540",
+    "physical_end_exclusive": "0041ac54",
+    "name": "clip_native_avoid_zone_world_bounds_0041a540",
+    "source": "src/native_avoid_zone_clip.cpp",
+    "header": "include/bsp/native_avoid_zone_clip.hpp",
+    "complete_raw_source_entries": 1,
+    "registered_modules": 1,
+    "original_abi": "ECX actual zone;two stacked min/maxXYZ pointer cells;RET8;void;no consumed EDX",
+    "source_abi": "fastcall with Source-only unused EDX;actual incoming two stack argument cells borrowed"
+  },
+  "native_bytes": {
+    "live_bytes": 1812,
+    "live_worker_capture_installed_pe_equal": true,
+    "sha256": "e21410176fadd83e479a60e0e716c5a520c33b255a1bf517698e087bef38c741",
+    "full_capture": "local\\output\\ghidra-bytes-0041a540-length-1812-171050.txt"
+  },
+  "physical_coverage": {
+    "physical_bytes": 1812,
+    "admitted_body_bytes": 1797,
+    "unreachable_padding_bytes": 15,
+    "native_listed_rows": 535,
+    "all_four_planes": true,
+    "all_three_inline_scratch_growth_sites": true,
+    "record_and_pointer_array_rebuild": true,
+    "native_cleanup_actions": 2
+  },
+  "emitted_mapping": {
+    "status": "PASS",
+    "object": "build\\win32\\bsp_core.dir\\Release\\native_avoid_zone_clip.obj",
+    "object_sha256": "a9f654a2e87db4d7659641d67afab76c1e988cc2b08159848d6fd894274cf0b1",
+    "native_bytes": 1812,
+    "native_listed_instructions": 535,
+    "source_kernel_bytes": 2096,
+    "source_thunk_bytes": 17,
+    "instruction_kinds": {
+      "native_eh_or_frame_removed": 14,
+      "actual_public_argument_cell": 2,
+      "literal": 293,
+      "algorithm_cell_rebase": 120,
+      "branch": 54,
+      "source_literal_binding": 5,
+      "current_source_phase": 2,
+      "genuine_provider": 16,
+      "virtual_native_ebp": 27,
+      "private_kernel_return": 2
+    },
+    "checked_branches": 54,
+    "checked_kernel_relocations": 21,
+    "all_checked_fp_operations": 210,
+    "literal_or_rebased_fp_operations": 209,
+    "virtual_ebp_fp_operations": 1,
+    "source_frame_bytes": 229,
+    "source_eh_max_state": 4,
+    "source_guard_unwind_actions": 2,
+    "proof": "complete emitted Source mapping; not whole Native body/frame/FH3 equivalence"
+  },
+  "operand_audit": {
+    "receipt": "local/goal15j_clip_registered_operands.json",
+    "receipt_sha256": "9a90f6ad62d3173ac2adf635ab564d19f4a8ea72a3350dd9298e157ef3283526",
+    "call_operands": 16,
+    "readonly_data_operands": 5,
+    "all21_addends_zero": true,
+    "source_readonly_payloads_match_installed_native": true
+  },
+  "validation": {
+    "build": "PASS scripts/build.ps1;MSVC Win32 Release",
+    "existing_tests": {
+      "reconstructed_math": "PASS",
+      "native_math_differential": "PASS",
+      "tool_tests": "PASS"
+    },
+    "call_evidence": {
+      "report_rows": 17,
+      "markdown_eh_jump_claims": 2,
+      "failures": 0,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "new_tracked_tests": 0,
+    "archive_only_fixture": {
+      "kind": "Source fixture linked against registered archive and real current services",
+      "manifest_embedded": true,
+      "exit_code": 0,
+      "stdout": "PASS Source clip real-heap rejection/all-four-plane record-alias/growth/empty/preallocation-failure probe; handler_calls=1\n",
+      "stderr": "",
+      "sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_zone_leaf\\local\\goal15i_avoid_clip\\clip_probe.cpp": "407430b05de795faff9f3badc7e960cf6b29a9224c8cb905e9f4a872f47d30ae",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15j_clip_probe.obj": "55a4143403abcee6d0ac8c50353076164068588d3af765f08fe0a7694838e453",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15j_clip_probe.exe": "1eb3d162ebb75cfcfa9806a6863b4f57b6760d8092a6fa0d3ca710cec119b41c",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "c2033abedc83cb5e6feb29a5e62f619c37b3293c39c35df767428960f0f20444",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+      }
+    },
+    "fixture_scope": [
+      "bounds rejection and actual record free",
+      "allfour planes with actual bounds pointers aliasing a record freed midcall",
+      "scratch and pointerarray3to8 growth;four rebuilt corners/defaultwords",
+      "collapsed empty output retains pointerarray",
+      "real FFFFFFFF8 malloc/newhandler-return0 bad_alloc through phase0;original owner/record retained"
+    ],
+    "fixture_unproven": [
+      "phase1 or midrebuild allocationfailure",
+      "double exceptions",
+      "Native differential execution"
+    ]
+  },
+  "reviews": {
+    "arithmetic_and_argument_thunk": "pod8_max independently checked all535 Native rows,54branches,122cell/phase rebases,27virtualEBP lowerings,210FProws,16call+5data bindings and17B thunk;no discrepancy",
+    "persistent_cells_and_unwind": "pool_cleanup checked both persistentcells,phasearming/currentcell reloads/reversecleanup/dismissal,Native rows/padding andrelocations;no discrepancy",
+    "primary": "Reviewed Source interfaces/wrapper, complete generation/mapping logic, both review findings, fixture scope;fresh live/PE1812byte comparison and supplemental actualCOFF relocation/readonly audit"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "prototype_corrected": "void thiscall(void*this,void*minimum_xyz,void*maximum_xyz)",
+    "source_edx_not_added": true,
+    "old_values_and_comments": "local/goal15h_annotations_0041a540.json",
+    "saved": true,
+    "affected_exports": [
+      "0041a540",
+      "0041ccd0",
+      "0049f260",
+      "004c71c0"
+    ],
+    "snapshot_and_index": "PASS refreshed after annotation/export",
+    "additional_projection_repair": {
+      "address": "0049f260",
+      "name": "BSP_Traffic_RefreshCurrentLayersIfSet",
+      "original": "voidfastcall(void*outer)",
+      "old_values": "local/goal15h_annotations_0049f260.json",
+      "saved": true
+    }
+  },
+  "world_binding_readiness": {
+    "worker_handoff_sha256": "59bab4432822cbcc11c453e60edff43b8f5fc58c71d1dd280ac7e751e9e20f5d",
+    "worker_receipt_sha256": "df9fecbe6e7bd499495d6264c45fd830193d2b8eaea63e517a997fc87296853a",
+    "audited_source_head": "e5ada8985983d1bdb6c41ed3e4e78c5d93d984c3",
+    "primary_current_source_files_match": true,
+    "checked_files": [
+      {
+        "path": "src/game_native_settings_process.cpp",
+        "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+        "lines": [
+          37,
+          38,
+          63,
+          91
+        ]
+      },
+      {
+        "path": "include/bsp/game_native_settings_process.hpp",
+        "sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6",
+        "lines": [
+          27
+        ]
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "sha256": "e426182b36b84aabfa601781eb30bf2b5f2932e918df5e6140621c7df53e3d8f",
+        "lines": [
+          1699
+        ]
+      },
+      {
+        "path": "include/bsp/native_game_construction.hpp",
+        "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+        "lines": [
+          20,
+          78
+        ]
+      },
+      {
+        "path": "src/native_game_construction.cpp",
+        "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+        "lines": [
+          202
+        ]
+      },
+      {
+        "path": "src/game_native_game_runtime.cpp",
+        "sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+        "lines": [
+          24,
+          26,
+          49,
+          55
+        ]
+      },
+      {
+        "path": "src/native_game_lifetime.cpp",
+        "sha256": "4535650c8dcd06db58f4fed96260c0b1c1eac410255fb14603bedfecdce59c90",
+        "lines": [
+          71
+        ]
+      },
+      {
+        "path": "src/game_native_game_application_frame.cpp",
+        "sha256": "b4b420da696055f815a5afcea3bed5fc9979818f45fa2230699de554bacacb09",
+        "lines": [
+          59,
+          67
+        ]
+      },
+      {
+        "path": "src/game_native_enum_lua_declaration.cpp",
+        "sha256": "7bf410f7a824910801d540e5b6c05f2e20f1ef17dbca79e337e955a8f3bec6ef",
+        "lines": [
+          16
+        ]
+      },
+      {
+        "path": "include/bsp/world_map_bounds.hpp",
+        "sha256": "58ac59ccb95cc326afc2c9c8f172fb87aa1bf4660b98ea1b134528a19dd10aa1",
+        "lines": [
+          10,
+          38,
+          43
+        ]
+      },
+      {
+        "path": "src/world_map_bounds.cpp",
+        "sha256": "77276b21ab5244fd933d87d4c8c6b3980fbff75fe541972cf3ff37887df70c9c",
+        "lines": [
+          128
+        ]
+      },
+      {
+        "path": "src/game_avoid_zone_runtime.cpp",
+        "sha256": "db86e99fb03f9f5fbd1901717c9652475325b70cd345e36532ea287830a7ef85",
+        "lines": [
+          85,
+          148
+        ]
+      },
+      {
+        "path": "src/game_hosts_mission_frame.cpp",
+        "sha256": "88d2774a813c1ee0097cb25308de1da53b9150ed0b5281aede8d8174e3a181a2",
+        "lines": [
+          1975,
+          1988
+        ]
+      }
+    ],
+    "finding": "Canonical stable process game cell exists and raw game construction/lifetime share an explicitly borrowed cell. Production composition with canonical cell and genuine selected-map six-bound stores remain incomplete; typed value projections do not close that gate.",
+    "scope": "Read-only producer readiness; no new raw parent Source or production/game adoption claim"
+  },
+  "dependent_packets": {
+    "0041ccd0": "Wholeconstructor Source in progress;notcounted here",
+    "0041d1e0": "Wholegroupadd Source in progress;constructor remains explicit incomplete dependency",
+    "production_wiring": "Canonical stable game-pointercell exists;composition and genuine raw sixfield mapbounds producer remain unproven"
+  },
+  "artifacts": {
+    "sha256": {
+      "src/native_avoid_zone_clip.cpp": "5c931329d2564d0ae1a95fbabbede99f147c42c77a45a8085d3a3fd6c9c16142",
+      "include/bsp/native_avoid_zone_clip.hpp": "738c4e0aafb05e57c2e97d139dd4f68403277a547a9d05271ad15c03a1afe813",
+      "build/win32/bsp_core.dir/Release/native_avoid_zone_clip.obj": "a9f654a2e87db4d7659641d67afab76c1e988cc2b08159848d6fd894274cf0b1",
+      "build/win32/Release/bsp_core.lib": "c2033abedc83cb5e6feb29a5e62f619c37b3293c39c35df767428960f0f20444",
+      "local/goal15j_clip_registered_mapping.json": "a3fc4d6bb1d877bfb75a2d19111d1b25214d6352c2d2720a48ecc13782ee0d08",
+      "local/goal15j_registered_build.log": "eeeead866bc9e82c5fe48ee6914161b06ab77a2d2040585c3cc2e50902f6939b",
+      "src/cc13_left8_seg8.cpp": "b219ac30238bc2ec0d4ef76f3cda915ba9192c6e7ada2507eefa1f30f2ae0b54",
+      "build/win32/bsp_core.dir/Release/cc13_left8_seg8.obj": "0eb65d4079c41e52dbbdce98dd5dc741fbafccdd302e2d7e818618c4e9a51f6e"
+    },
+    "registered_mapping_log": "local/goal15j_clip_mapping.log",
+    "archive_fixture_receipt": "local/goal15j_clip_probe_result.json"
+  },
+  "limits": [
+    "Complete emitted algorithm mapping is not whole Native function byte equality:2096Bprivatekernel+17Bthunk replace original1812B frame/body",
+    "14Native frame/EH rows removed;Source persistentlocal addresses/virtualEBP/extra wrapperframes differ",
+    "Two current C++ guard actions,SourceEH maxState4 versusNative2;no NativeFH3/SEH/frame/exception/privateCRT identity claim",
+    "Possible unguarded unpublished allocation leaks and partialstate intentionally retained;no global noleak claim",
+    "No binaryreplacement ABI,deployment,factorywiring,production worldadoption or gameplay validation"
+  ],
+  "typed_host_receiver_repairs": {
+    "count": 1,
+    "address": "0049f260",
+    "source": "src/cc13_left8_seg8.cpp",
+    "receipt": "reports/goal15j_traffic_layer_receiver_repair.json",
+    "raw_source_entry_added": false,
+    "status": "corrected_current_inner_capture_and_forwarding;registeredbuild3CTestPASS",
+    "tail_jump_report_rows": 1
+  },
+  "whole_world_writer_readiness": {
+    "native_parent": "004d5bd0",
+    "parent_physical_bytes": 1666,
+    "parent_listed_rows": 284,
+    "layout": "004c71c0",
+    "layout_physical_bytes": 756,
+    "layout_listed_rows": 230,
+    "handoff_sha256": "6076e5ab454889de2ffcad35d0e287b102ce4bee4204bd7ad081de55b49461a3",
+    "receipt_sha256": "0f92e0a97ac6cbc0336471047e63fcf07e588faba14cb644d24964e57d5c0ae3",
+    "ready_helper_packet": [
+      "004c2310",
+      "004cf450",
+      "004b6c40"
+    ],
+    "named_incomplete_dependencies": [
+      "fullrawlayout004c71c0",
+      "concretetraffic0049e560",
+      "actualauthoredmutableglobalproducer",
+      "productioncomposition"
+    ],
+    "new_parent_source": false
+  }
+}

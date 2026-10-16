@@ -1,6 +1,6 @@
 {
   "packet": "goal15j_traffic_receiver_repair",
-  "status": "typed_host_receiver_corrected_pending_registered_build",
+  "status": "typed_host_receiver_corrected_registered_build_verified",
   "address": "0049f260",
   "source": "src/cc13_left8_seg8.cpp",
   "header_unchanged": "include/bsp/cc13_left8_seg8.hpp",
@@ -14,7 +14,9 @@
     {
       "address": "0049f267",
       "native": "0049e560",
-      "transfer": "JMP"
+      "transfer": "JMP",
+      "kind": "tail_jump",
+      "function": "0049f260"
     }
   ],
   "before": "tested innercell but forwarded outerobject",
@@ -23,10 +25,12 @@
   "existing_host_boundary_retained": true,
   "new_tests": 0,
   "ghidra_old_values": "local/goal15h_annotations_0049f260.json",
-  "verification": "whole Native13B/fiveinstructions read plus live/disk equality and focused changedSource inspection;registered build pending",
+  "verification": "PASS complete13B live/PE and wholefiveinstruction inspection;registered MSVCWin32 build plus3 existingCTests",
   "limits": [
     "Existing injected Left8Host interface,not genuine raw49E560 implementation",
     "Not whole4D5BD0 map/boundsproducer or production worldwiring",
     "No NativeABI/game/runtimeclaim"
-  ]
+  ],
+  "source_sha256": "b219ac30238bc2ec0d4ef76f3cda915ba9192c6e7ada2507eefa1f30f2ae0b54",
+  "registered_object_sha256": "0eb65d4079c41e52dbbdce98dd5dc741fbafccdd302e2d7e818618c4e9a51f6e"
 }
