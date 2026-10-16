@@ -1,0 +1,135 @@
+{
+  "packet": "cc12_native_gui_frame_box_state_at_149",
+  "status": "whole_actual_storage_getter_source_strict_and_canonical_win32_build_existing_checks_pass_no_execution",
+  "compiled_commit": "b249f4f400aa7d8e0e40633a4c641aee58784b4f",
+  "source_commit": "c4eb47ef367a1eefb408bed36723c6e4626d7b24",
+  "function": {
+    "address": "00ad2750",
+    "name": "native_gui_frame_box_state_record_00ad2750",
+    "source": "src/native_gui_frame_box_factory.cpp",
+    "header": "include/bsp/native_gui_frame_box_factory.hpp",
+    "status": "whole_actual_storage_getter_source_strict_and_canonical_win32_build_existing_checks_pass_no_execution",
+    "evidence": "CC12 Source149: whole69B/24starts raw FrameBox getter. Capture F4 first; null skips F8; signed wrapped32 difference /44 and unsigned comparison of saved sign-extended WORD index. Genuine BF6713 Source gateway once on invalid range; after return reload CURRENT F4, wrapping index44 address, no recheck/record read. C++cdecl value boundary differs from ECX/stackWORD/RET4. Source stack capture and pure multiply scheduling differ explicitly; no exact instruction/fault/flags/privateCRT/dropin/runtime claim. All3 previous canonical functions and both complete old Source prefixes preserved. Existing Ghidra function verified; stale no-function history preserved, no creation/repair.",
+    "original_abi": "ECX actual FrameBox, signed WORD stack index, EAX raw record address, RET4; Source two-argument C++cdecl API",
+    "native_bytes": 69,
+    "native_instruction_starts": 24,
+    "native_range": [
+      "00ad2750",
+      "00ad2795"
+    ],
+    "docs": [
+      "docs/CC12_NATIVE_GUI_FRAME_BOX_STATE_AT_149.md"
+    ],
+    "reports": [
+      "reports/cc12_native_gui_frame_box_state_at_149.json"
+    ]
+  },
+  "proof": {
+    "physical_range": [
+      "00ad2750",
+      "00ad2795"
+    ],
+    "native_bytes": 69,
+    "native_instruction_starts": 24,
+    "original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "original_code_sha256": "24fc876c8c489b94572d2730e9a8584f3c1833f17833dc6415f03ededfafc7a2",
+    "direct_call": {
+      "instruction": "00ad2780",
+      "target": "00bf6713"
+    },
+    "strict_symbol": "?native_gui_frame_box_state_record_00ad2750@bsp@@YAPAXPBXF@Z",
+    "strict_bytes": 69,
+    "strict_code_sha256": "2ff1560a11ecaa08e838d0f6e329cf9bf03e599d28f1e10325a0a3ab599b4069",
+    "strict_ordered_symbolic_relocations": [
+      [
+        51,
+        "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+        20
+      ]
+    ],
+    "canonical_body": {
+      "bytes": 71,
+      "sha256": "80d064189f62a00b8820830c9c3c1305387558494c6cbcd359fbe5e26cb4da64",
+      "relocations": [
+        [
+          52,
+          "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+          20
+        ]
+      ]
+    },
+    "all_previous_canonical_functions_preserved": [
+      {
+        "symbol": "??_H@YGXPAXIIP6EPAX0@Z@Z",
+        "bytes": 38,
+        "sha256": "5d5ca69c6d6d3098b8363a8af646dbc82f870d51ce6628d3ed6d19261c4fc147",
+        "all_ordered_symbolic_relocations_identical": true
+      },
+      {
+        "symbol": "?construct_native_gui_frame_box_default_00ad2600@bsp@@YAPAXPAXAAUNativeGuiFrameBoxDefaultBindings@1@@Z",
+        "bytes": 139,
+        "sha256": "0225062a2dd4e4c2bfd1c7be85d9989abe3502192045c354717649035f99e5ab",
+        "all_ordered_symbolic_relocations_identical": true
+      },
+      {
+        "symbol": "?native_gui_frame_box_current_state_bits_00ad26d0@bsp@@YIGPBX@Z",
+        "bytes": 8,
+        "sha256": "a08d4ddbd194c42ef46a5e9a3e324733af6301ee28d812a8a8d4fe510d086bfe",
+        "all_ordered_symbolic_relocations_identical": true
+      }
+    ],
+    "source": [
+      {
+        "path": "include/bsp/native_gui_frame_box_factory.hpp",
+        "copy": "local/cc12_native_gui_frame_box_state_at149/final_source/include/bsp/native_gui_frame_box_factory.hpp",
+        "sha256": "51c9ecc3f14973a9f21cc1de52a05b9d34c0f522f7fbba3cbb77eb187e773853",
+        "git_blob": "854035e884f4d4417ad9889ac40ed92a7d77e5d0",
+        "old_entire_source_prefix_unchanged": true
+      },
+      {
+        "path": "src/native_gui_frame_box_factory.cpp",
+        "copy": "local/cc12_native_gui_frame_box_state_at149/final_source/src/native_gui_frame_box_factory.cpp",
+        "sha256": "46124772e8af548dbd39ddf60800fa5dbb2a78efd18052c10bf85a0588a17532",
+        "git_blob": "c69ff3ef7d612a3d42840e5dab5d755301ea870d",
+        "old_entire_source_prefix_unchanged": true
+      }
+    ],
+    "raw_function_executed": false,
+    "whole_original_function_exists": true,
+    "function_creation_or_listing_repair": false,
+    "limits": [
+      "New two-argument C++ cdecl value interface, not Native ECX/stack signed WORD/RET4 ABI",
+      "Strict optimized stack-index capture precedes first raw F4 load; Native loads F4 before stack index",
+      "Strict current F4 reload follows handler but precedes pure integer multiply; Native multiply precedes final F4 memory ADD. No exact instruction/fault/flag equivalence claimed",
+      "Actual live aligned receiver/header and retained storage through a returning Source SDK CRT handler are caller preconditions",
+      "No record dereference, typed overlay, new owner, range recheck, private CRT parity, Original placement/caller adoption or game/runtime proof"
+    ]
+  },
+  "strict_compile": "PASS",
+  "canonical_build": {
+    "checks": "3/3",
+    "seconds": 8.02,
+    "raw_function_executed": false
+  },
+  "final_artifact_manifest": {
+    "path": "local/cc12_native_gui_frame_box_state_at149/artifact_manifest.json",
+    "sha256": "fbd3baba5f9b8d79dc878bc120707d738687404b8a5cfcf693e587af2fb681aa"
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_gui_frame_box_factory.hpp",
+      "copy": "local/cc12_native_gui_frame_box_state_at149/final_source/include/bsp/native_gui_frame_box_factory.hpp",
+      "sha256": "51c9ecc3f14973a9f21cc1de52a05b9d34c0f522f7fbba3cbb77eb187e773853",
+      "git_blob": "854035e884f4d4417ad9889ac40ed92a7d77e5d0",
+      "old_entire_source_prefix_unchanged": true
+    },
+    {
+      "path": "src/native_gui_frame_box_factory.cpp",
+      "copy": "local/cc12_native_gui_frame_box_state_at149/final_source/src/native_gui_frame_box_factory.cpp",
+      "sha256": "46124772e8af548dbd39ddf60800fa5dbb2a78efd18052c10bf85a0588a17532",
+      "git_blob": "c69ff3ef7d612a3d42840e5dab5d755301ea870d",
+      "old_entire_source_prefix_unchanged": true
+    }
+  ],
+  "documentation": "docs/CC12_NATIVE_GUI_FRAME_BOX_STATE_AT_149.md"
+}
