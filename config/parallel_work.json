@@ -42382,6 +42382,85 @@
       "Original_ABI_compatible": false,
       "new_entry_executed": false,
       "game_validated": false
+    },
+    {
+      "id": "goal_oct15_crt_sbh_region_lookup",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_independently_reviewed_registered_Win32_three_checks_and_full_emitted_reviewed_Main_publication_batch",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00c11d3d"
+      ],
+      "output_files": [
+        "src/native_crt_sbh_region_lookup.cpp",
+        "include/bsp/native_crt_sbh_region_lookup.hpp",
+        "docs/GOAL_OCT15_CRT_SBH_REGION_LOOKUP.md",
+        "reports/goal_oct15_crt_sbh_region_lookup.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "primary_review": "reports/goal_oct15_region_primary_review.json",
+      "code_revision": "c606835ba8653eda14e67c47fbd2cdbb375f8ab6",
+      "main_source_revision": "c606835ba8653eda14e67c47fbd2cdbb375f8ab6",
+      "contract": "Whole43B14ops actual count/base/capturedwrappedend/liveargument/currentdescriptor lookup;currentGhidra18Bthunk+25Bfalseinterior split remains unrepaired",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false,
+      "integrated_main_revision": "7081f82404af7e5e744cdaaf7bff6c6c727f17c5",
+      "Ghidra_boundary_repaired": false,
+      "physical_native_bytes": 43,
+      "physical_native_instructions": 14,
+      "current_formal_bytes": [
+        18,
+        25
+      ],
+      "false_interior_entry": "00c11d61",
+      "boundary_limit": "bridge script execution disabled;plateonlysaved/preservednames/comments;no body/flow/listing/policychange"
+    },
+    {
+      "id": "goal_oct15_crt_ascii_strnicmp",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_independently_reviewed_registered_Win32_three_checks_and_full_emitted_reviewed_Main_publication_batch",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00c15700"
+      ],
+      "output_files": [
+        "src/native_crt_ascii_strnicmp.cpp",
+        "include/bsp/native_crt_ascii_strnicmp.hpp",
+        "docs/GOAL_OCT15_CRT_ASCII_STRNICMP.md",
+        "reports/goal_oct15_crt_ascii_strnicmp.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "primary_review": "reports/goal_oct15_ascii_primary_review.json",
+      "code_revision": "12523a9f6fdc6a7645f02234ae81b44e8bee173b",
+      "main_source_revision": "12523a9f6fdc6a7645f02234ae81b44e8bee173b",
+      "contract": "Whole97B48ops OriginalASCIIcomparison;countfirst/zero-beforepointers/currentleftthenrightBYTEevenleftNUL/unsignedAZfold/exactsign;noSDK/locale/parentreplacement",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_crt_startup_owner_readiness",
+      "done": true,
+      "state": "bounded_read_only_whole_physical_startup_and_support_owner_audit_no_Source_credit",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [],
+      "output_files": [
+        "reports/goal_oct15_crt_startup_owner_readiness.json"
+      ],
+      "depends_on": [],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_crt_startup_owner_readiness.json",
+      "contract": "Whole480B156ops startup plus604B173ops supportingowners+40Bscope;48definedtruecallrows/21computed/3physical-onlyunownedcallskeptseparate;Originalheap/TLS/FLS/encodedpointer/lock/PTD/SEH/IO/application owners remain finite jointwork",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
