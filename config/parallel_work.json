@@ -42386,6 +42386,34 @@
       "Original_ABI_compatible": false,
       "new_entry_executed": false,
       "game_validated": false
+    },
+    {
+      "id": "cc12_native_crt_memchr_00bfa700",
+      "done": false,
+      "state": "whole_ordinary_readiness_primary_peer_accepted_Source_authorized_not_implemented",
+      "source_ready": true,
+      "function_addresses": [
+        "00bfa700"
+      ],
+      "files": [
+        "include/bsp/native_crt_memchr.hpp",
+        "src/native_crt_memchr.cpp",
+        "docs/NATIVE_CRT_MEMCHR.md",
+        "reports/native_crt_memchr.json"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [],
+      "readiness": "reports/cc12_native_crt_memchr_readiness.json",
+      "contract": [
+        "New MSVC Win32 ordinary typed interface over the genuine passed byte storage: void* __cdecl bsp::find_native_crt_byte_00bfa700(void*, int, unsigned int). Pointer/int/count widths are32bits, byte8bits, little endian. Keep correct Original library name _memchr.",
+        "Count0 accepts any pointer including null and returns null before payload reads or target conversion. Positive count requires a determinate readable stable requested region in one genuine live allocation. Endpoint may be within or one past that allocation, admitting interior subranges and prefixes. Actual32bit extent and pointer advances do not wrap. No NUL, padding, typed uint allocation, or initially aligned base requirement.",
+        "Every int selects its low8bits. Peel one BYTE at a time until actual address4alignment, returning first actual match or null on exhaustion. Read only complete in-range aligned DWORDs; no count overread. A DWORD may include later bytes after a first match within that DWORD.",
+        "Retain unsigned32 candidate ((x+0x7efefeff)^~x)&0x81010100, x=word^repeated_target. Zero candidate continues without reread. Nonzero candidate causes one actual same-DWORD reread and register-byte comparisons in ascending address order; reject false positives. Finish with0..3 ordered BYTE tail reads. Return actual borrowed first-match pointer or null; no extra final reread.",
+        "Approve target-specific private addressed MOV32 load helper using MSVC Win32 inline assembly over genuine byte storage, and volatile unsigned BYTE loads. This avoids inventing typed uint32 object lifetime/aliasing preconditions. The mechanism remains subject to actual strict/Main object verification of load widths, order and conditional reread. No ISO-portability or Original instruction/fault ABI claim.",
+        "Use bounded unsigned count/offset/pointer state; no integer underflow-based out-of-region accesses, before-base pointers, pointer subtraction, new runtime validation, SDK memchr/memcpy/search substitute, fallback, provider, global or caller binding. Read-only payload aliases are admitted; returned pointer borrows original owner lifetime. Mutation, concurrency, faults, invalid positive-count storage and volatile/MMIO observation protocols are outside this ordinary domain.",
+        "No Source compiler flag/segment/stack/register-home parameters or physical Original ABI/EH/fault/runtime equivalence. No new tests/probes/body execution. Worker owns only the four Source files; Root owns registration, ledger, annotation and Main integration."
+      ],
+      "Main_gate": "pending_future_Source_author_peer_registration_build_actual_object_archive"
     }
   ],
   "snapshot_after_analysis": {
