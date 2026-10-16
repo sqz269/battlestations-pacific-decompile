@@ -1,0 +1,112 @@
+{
+  "packet": "oct16_fortythird_reconstruction_batch",
+  "status": "primary_accepted_whole_node_factory_and_two_logical_fragments_default_Win32_checked",
+  "pin": "d63563fa7ff928a75a08e4418773664c37406b62",
+  "report": "reports/oct16_input_preset_node_factory.json",
+  "frozen_artifacts": {
+    "docs/OCT16_INPUT_PRESET_NODE_FACTORY.md": "5fe604be42e9b8c4665f9b07ecbe41b9dc8e0c317f8549b20878bc33d449afab",
+    "include/bsp/native_input_preset_node_factory.hpp": "467b44ccd5cdd64c3a64f694b25bf711fe451600ea4fd08b0e9c40e79dda196e",
+    "reports/oct16_input_preset_node_factory.json": "4819c953532516941a37601475b487be4a56215a5a6b8872f4d86c64fae78786",
+    "src/native_input_preset_node_factory.cpp": "7a8359b1116d5c854211020816c7bac5c42764a8d8caa16f102ebc1c325774f9"
+  },
+  "scope": {
+    "whole_ordinary_entries": 1,
+    "logical_fragments": 2,
+    "Native_owned_bytes": 164,
+    "Native_owned_instructions": 58,
+    "readonly_support_bytes": 134,
+    "readonly_support_instructions": 51,
+    "Native_EH_data_bytes": 96,
+    "support_not_Source_promoted": true
+  },
+  "primary": {
+    "receipt": "local/oct16_preset_node_factory_primary_frozen.json",
+    "sha256": "ff675d30e07cf4effb87dc7ade5175eb72057646432d8599d7c6722415ff65a6",
+    "checks": 26,
+    "findings": [],
+    "published_provider_LF_fingerprints": 14,
+    "immutable_preliminary_receipt": "local/oct16_preset_node_factory_primary.json",
+    "immutable_preliminary_sha256": "d259f56af4eab268a90841fadad6e88db2fdb76dd8b7ec28ff69bbb871d9f4a8"
+  },
+  "compiled": {
+    "Root_object_sha256": "200beda27d7c78b50f67049e862fa7b0e5c01317e5975b50ee8638b26771135b",
+    "worker_object_sha256": "45e58f3a30a35ecb18e05b20e2016e92e028d12a960fcb21ee2cfd06dfae2e9c",
+    "all5_CODE_and_EH_bytes_and_symbolic_relocations_equal_worker": true,
+    "CODE_marked_bytes": 291,
+    "linear_entries": 107,
+    "tailINT3_bytes_entries": 6,
+    "executable_bytes": 285,
+    "executable_entries": 101,
+    "entry_NOP_bytes_entries": 2,
+    "public_bytes": 181,
+    "public_instructions": 61,
+    "catch_bytes": 20,
+    "catch_instructions": 6,
+    "handler_bytes": 39,
+    "handler_instructions": 12,
+    "unused_helper_bytes": 45,
+    "unused_helper_instructions": 22,
+    "total_relocations": 15,
+    "code_relocations": 11,
+    "EH_relocations": 4,
+    "CppEH_bytes": 88,
+    "SAFESEH": "CurrentCpp handler resolved by actual symbol index, separate from Original FH3 identity",
+    "weak_BSS_bytes": 4,
+    "weak_BSS_file_bytes": 0
+  },
+  "verification": {
+    "combined_tested_commit": "fceb2238c3c0a44687a0809b6bf9a5271f4d3e32",
+    "default_build_exit": 0,
+    "existing_suites_passed": 3,
+    "seconds": 8.1,
+    "build_log_sha256": "77885fd320a4bc99861938e696ed4c0afd92e39b9cfc06bd9388141b3ce1cb3d",
+    "JSON_transfer_rows": 9,
+    "Markdown_transfer_claims": 9,
+    "saved_annotations": 3,
+    "annotation_receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_avoid_distance\\local\\oct16_node_factory_annotation_export_receipt.json",
+    "annotation_receipt_sha256": "e06c2cb1f674a27626ddb3e52f751adf9f195c1a1837f98c6ea475e5dc9a59f9",
+    "preimages": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_avoid_distance\\local\\ghidra-annotations-20261016T082950Z.json",
+      "sha256": "a84e353d84788e5a879b8ff6531f116b1ea91d0371f159380079d1db8749f1da"
+    },
+    "refreshed_exports": 3,
+    "export_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_avoid_distance\\local\\oct16_node_factory_exports.txt",
+      "sha256": "65a91ade66ffb21cfef165a1a0b16654bc0ffe21ecfcc3667c28cf1b94285961"
+    },
+    "owned_registry_diffs_exact": true,
+    "one_Core_registration": true
+  },
+  "prior_receipt_provenance": {
+    "mapping_receipt": "local/oct16_primary_receipt_provenance.json",
+    "mapping_sha256": "52499fcff770910fcdf12900a9a2796888bec3ed2b806998cc9bec41b0052e94",
+    "packet": "oct16_primary_receipt_provenance",
+    "status": "exact_historical_receipt_recovered_by_deterministic_reexecution_and_known_frozen_digest",
+    "reason": "The mutable preliminary receipt path was extended in place to21 final checks; the frozen E7 Source report captured the prior16check digest. No old frozen Source/report file is changed.",
+    "Source_report": "reports/oct16_input_preset_pair_copy_construct.json",
+    "Source_report_sha256": "23af98f0258dbd79cfdd2e3a331dcaf69692b18fa0c42776d8ac40102cf15105",
+    "captured_preliminary_path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_preset_pair_copy_construct_primary.json",
+    "captured_preliminary_sha256": "6556a9a4a9940811b4eb31b673abe19da82b8882d68f2a7ff3e914674cb9181d",
+    "retained_preliminary_path": "local/oct16_preset_pair_copy_construct_preliminary_16_retained.json",
+    "retained_preliminary_sha256": "6556a9a4a9940811b4eb31b673abe19da82b8882d68f2a7ff3e914674cb9181d",
+    "retained_preliminary_checks": 16,
+    "existing_final_path": "local/oct16_preset_pair_copy_construct_primary.json",
+    "existing_final_sha256_unchanged": "14349dce3ea7b4c4cf01a91c88761051d1998ac6c140b7c3c248f0e136354e5d",
+    "existing_final_checks": 21,
+    "recovery_method": "Execute the original bounded Native/COFF audit without its file writer or printer, verify its entire serialized bytes against the frozen6556 digest, then save a separate immutable copy. Existing final21check file remains unchanged.",
+    "new_factory_receipt_policy": "Keep cited21check preliminaryd259 file immutable and write26check final factory seal to a distinct _primary_frozen.json file."
+  },
+  "integration": "Actual Core append conflict resolved with repository union tool. Three address-owned ledger changes match the frozen worker diff. All14 existing provider fingerprints remain unchanged.",
+  "limits": [
+    "NativeRET14 vsSourceRET1C/extraborrowedRawCtx+canonicalfeature; publicOriginalABIunproved",
+    "NativeEH96Bmax3 andplacementmap differ fromCurrentCppEH88Bmax2; OriginalFH3SEH/RTTI/privateframes/flags/faultsnotclaimed",
+    "CurrentCRT allocation/free/newhandler/bad_alloc/catch/rethrow domain only, no heap or originalexceptionidentityproof",
+    "Existing3suites do not execute newnodefactory, no newtests/probes/gamevalidation"
+  ],
+  "runtime_boundary": "Readonly BF6885 has a physical RET8 following imported RaiseException. CurrentCpp bare rethrow models its admitted owning C++ transport; Original CRT/SDK/FH3/SEH/RTTI/no-return identity is not established.",
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Verified separately after publication"
+  }
+}

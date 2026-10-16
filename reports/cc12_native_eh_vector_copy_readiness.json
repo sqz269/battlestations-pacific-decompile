@@ -1,0 +1,167 @@
+{
+  "status": "PASS_Root_bounded_readiness_Source_blocked",
+  "manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_eh_vector_copy_finish_oct16\\local\\NativeEhVectorCopyReadinessFinish01\\root_manifest.json",
+    "bytes": 122005,
+    "sha256": "617d84eef4621b17629bacd814b2e9f7d5df65003054cf1d95617c538c0e4b9b"
+  },
+  "worker_commit": "d8aed8dedc66d4742db728e47fc31d74259f59c4",
+  "files": 314,
+  "own_pairs": 31,
+  "own_records": 62,
+  "own_uuid": "01a143c3-f2d7-7870-99a3-37a037e156a6",
+  "Original_prefix": {
+    "lines": 362,
+    "bytes": 942439,
+    "sha256": "5dee6bdae4ef2599f6c473712e99f5c04a9fed3057fcf593623b0b7c333c0dfc"
+  },
+  "Root_personal_read_chunks": {
+    "iterator": "e3a6c4 complete81B23rows",
+    "helper": "ea2f9e complete24B8rows; afb7c0 full typedflow",
+    "scope": "d158bc and ea2f9e exact28B7DWORDs",
+    "whole_doc": [
+      "5bad46",
+      "127427",
+      "ea2f9e"
+    ],
+    "report_semantics": [
+      "52f33e",
+      "98fd56"
+    ]
+  },
+  "installed_PE_and_selected_bytes_verified": true,
+  "source_ready": false,
+  "source_authorized": false,
+  "Source_credit": 0,
+  "Root_qualification": "External31pairs new Astra completion evidence; older22pairs live evidence remains external old-worker. Per-batch6343/6345 counters only, no crossbatchDBimmutability. Root first waiter accidentally W7 owner d51777 correctedf228a6 then properRoot52d39a; no source/analysis changed.",
+  "contract": {
+    "implemented": false,
+    "source_authorized": false,
+    "requirements": [
+      "Retain all six physical parameter homes in observed order",
+      "Preserve mutable-frame semantics and raw DWORD stride arithmetic",
+      "Preserve outer callee cleanup of 24 bytes",
+      "Supply qualified actual constructor/destructor, SEH and ArrayUnwind providers",
+      "Retain all exceptional paths before granting whole-entry credit"
+    ],
+    "qualification": "Interface constraints only. A normal-only callback projection cannot establish whole Source readiness."
+  },
+  "dependencies": [
+    {
+      "name": "__SEH_prolog4 / __SEH_epilog4",
+      "entries": [
+        "00C07C00",
+        "00C07C45"
+      ],
+      "status": "qualified existing frame formulas, composition incomplete",
+      "next_contract": "Actual frame, FS chain, cookie and handler owner"
+    },
+    {
+      "name": "EH4 scope/handler/local-unwind owner",
+      "entries": [
+        "00E02DD0"
+      ],
+      "status": "opaque scope window only",
+      "next_contract": "Actual dispatch and cookie validation, parent EBP/ESP restoration and exception ownership"
+    },
+    {
+      "name": "constructor provider",
+      "entries": [],
+      "status": "call shape only",
+      "next_contract": "Real entry identity, ECX/stack inputs, callee cleanup, register/frame preservation, alias/mutation and exception behavior"
+    },
+    {
+      "name": "__ArrayUnwind",
+      "entries": [
+        "00BF7C10"
+      ],
+      "body_ranges": [
+        [
+          "00BF7C10",
+          "00BF7C32"
+        ],
+        [
+          "00BF7C5F",
+          "00BF7C6D"
+        ]
+      ],
+      "body_range_lengths": [
+        35,
+        15
+      ],
+      "body_bytes": 50,
+      "convex_span_bytes_not_body": 94,
+      "status": "metadata only; body unreviewed",
+      "next_contract": "Complete split-body behavior, reverse/other destruction order, stack cleanup, destructor call ABI and exception/termination policy"
+    },
+    {
+      "name": "destructor provider",
+      "entries": [],
+      "status": "opaque forwarded address",
+      "next_contract": "Real identity and register/stack/exception contract through ArrayUnwind"
+    },
+    {
+      "name": "callers",
+      "entries": [
+        "005C81F0",
+        "005FE010",
+        "007042B0",
+        "008E79D0"
+      ],
+      "status": "indexed labels only; bodies unreviewed",
+      "next_contract": "Actual argument/provider/frame ownership"
+    }
+  ],
+  "failure_boundary": {
+    "iterator_state_before_failed_callback_returns": "Flag remains zero and iterator has not incremented completed or advanced homes for that attempt; actual provider mutation remains possible.",
+    "cleanup_entry_condition": "Actual dispatcher must supply the valid parent EBP/frame and restore ESP; unproven.",
+    "cleanup_arguments_in_callee_order": [
+      "current destination [F+8]",
+      "stride [F+10h]",
+      "completed [F-1Ch]",
+      "destructor [F+1Ch]"
+    ],
+    "unwind_call_stack_cleanup_required_bytes": 16,
+    "cleanup_returns_with_plain_ret": true,
+    "unresolved": [
+      "actual dispatch",
+      "parent frame and cookie ownership",
+      "provider preservation",
+      "destruction order",
+      "destructor physical ABI",
+      "exception during unwind and termination policy"
+    ]
+  },
+  "Git_qualifications": [
+    {
+      "path": "docs/NATIVE_EH_VECTOR_COPY_READINESS.md",
+      "working": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_eh_vector_copy_finish_oct16\\docs\\NATIVE_EH_VECTOR_COPY_READINESS.md",
+        "bytes": 8125,
+        "sha256": "1e48c03da2d15deb89551e810418a8f3f450e66929b4046bac2a07a92048aa4d"
+      },
+      "Git_bytes": 8125,
+      "Git_sha256": "1e48c03da2d15deb89551e810418a8f3f450e66929b4046bac2a07a92048aa4d",
+      "literal_equal": true,
+      "CRLF_only_when_nonliteral": false
+    },
+    {
+      "path": "reports/native_eh_vector_copy_readiness.json",
+      "working": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_eh_vector_copy_finish_oct16\\reports\\native_eh_vector_copy_readiness.json",
+        "bytes": 12349,
+        "sha256": "ecfc879f8d27661ae58445db0046ccba2b3fc0cdee7eef0ea5c1d82acdffd621"
+      },
+      "Git_bytes": 11993,
+      "Git_sha256": "1c25c4923649ea115c5753392470ae75c00e2863bb7fec46953cb40b94f83ea2",
+      "literal_equal": false,
+      "CRLF_only_when_nonliteral": true
+    }
+  ],
+  "Root_reader_assertion": "8a5792 literal Git assertion failed only on readiness JSON CRLF/LF; independently qualified88d5c9 and corrected static verifier. No compiled Source/artifact change or build replay.",
+  "schema": "bsp.cc12.native_eh_vector_copy.primary_readiness.v1",
+  "Root_authentication": "05c294",
+  "Original_ABI_compatible": false,
+  "game_validated": false,
+  "new_Source_runtime_executed": false
+}

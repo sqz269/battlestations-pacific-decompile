@@ -1,0 +1,356 @@
+{
+  "schema": "bsp.native-eh-vector-copy.readiness.v1",
+  "function": "00BF9A96",
+  "library_name": "`eh_vector_copy_constructor_iterator'",
+  "status": "bounded_static_readiness_complete_source_blocked",
+  "source_ready": false,
+  "source_authorized": false,
+  "source_credit": 0,
+  "credits": {
+    "source": 0,
+    "build": 0,
+    "fixture": 0,
+    "physical_abi": 0,
+    "caller": 0,
+    "native_runtime": 0,
+    "original_game": 0,
+    "gameplay": 0
+  },
+  "worktree_head_at_start": "7c087ecd4076950b2eda86fea6a206c1c6459ce1",
+  "scope": {
+    "iterator": {
+      "entry": "00BF9A96",
+      "ranges": [
+        [
+          "00BF9A96",
+          "00BF9AE6"
+        ]
+      ],
+      "bytes": 81,
+      "instructions": 23
+    },
+    "cleanup": {
+      "entry": "00BF9AE7",
+      "name": "LIBCRT_unmatched_00bf9ae7",
+      "ranges": [
+        [
+          "00BF9AE7",
+          "00BF9AFE"
+        ]
+      ],
+      "bytes": 24,
+      "instructions": 8
+    },
+    "scope_window": {
+      "start": "00E02DD0",
+      "end_inclusive": "00E02DEB",
+      "bytes": 28,
+      "dwords": [
+        "fffffffe",
+        "00000000",
+        "ffffffd0",
+        "00000000",
+        "fffffffe",
+        "00000000",
+        "00bf9ae7"
+      ],
+      "qualification": "Opaque bounded data window; DataDB undefined length one and genuine no-instruction result preserved. Complete typed table and dispatch not proven."
+    }
+  },
+  "original_binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "mtime_ns": 1720895268000000000
+  },
+  "static_verification": {
+    "decoder_version": "5.0.7",
+    "code_mapping": {
+      "va": "00bf9a96",
+      "rva": "007f9a96",
+      "raw_offset": 8362646,
+      "section": ".text",
+      "bytes": 105
+    },
+    "scope_mapping": {
+      "va": "00e02dd0",
+      "rva": "00a02dd0",
+      "raw_offset": 10497488,
+      "section": ".rdata",
+      "bytes": 28
+    },
+    "code_sha256": "8f0f5d6cc9c162a8532474d8851f5748055af09f357e41eb351fa2ec7bff443d",
+    "scope_sha256": "cd4873e1d6b917473eac2edbdba67b344c7a8582c193eb74f0accadd52a27036",
+    "all_bytes_listing_lengths_mnemonics_and_typed_flows_equal": true,
+    "qualification": "Static PE byte comparison and independent Capstone x86-32 decode only; no target execution, physical ABI/provider or dispatcher proof."
+  },
+  "direct_calls": [
+    {
+      "address": "00BF9A9D",
+      "native": "00C07C00",
+      "function": "00BF9A96",
+      "role": "SEH4 prolog; imported qualified frame contract, actual ownership remains open"
+    },
+    {
+      "address": "00BF9ADA",
+      "native": "00BF9AE7",
+      "function": "00BF9A96",
+      "role": "normal completion cleanup call with completion flag set"
+    },
+    {
+      "address": "00BF9ADF",
+      "native": "00C07C45",
+      "function": "00BF9A96",
+      "role": "SEH4 epilog requiring balanced frame ESP"
+    },
+    {
+      "address": "00BF9AF9",
+      "native": "00BF7C10",
+      "function": "00BF9AE7",
+      "role": "ArrayUnwind only when completion flag is zero; provider body unreviewed"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00BF9ABB",
+      "native": "indirect:[EBP+18h]",
+      "function": "00BF9A96",
+      "actual_sequence": [
+        "PUSH DWORD [F+0Ch]",
+        "MOV ECX,DWORD [F+8]",
+        "CALL DWORD [F+18h]"
+      ],
+      "expected_provider_stack_cleanup_bytes": 4,
+      "caller_stack_adjustment": false,
+      "return_value_used": false,
+      "actual_provider_reviewed": false
+    }
+  ],
+  "physical_frame": {
+    "provenance": "Instantiation of external qualified NATIVE_CRT_SEH4_FRAME_BR contract only; no new provider-body proof",
+    "entry_esp": "E",
+    "parent_ebp": "F=E-4",
+    "local_size": "10h",
+    "saved_esp": "P=F-30h",
+    "saved_registers": {
+      "EBX": "F-24h",
+      "ESI": "F-28h",
+      "EDI": "F-2Ch"
+    },
+    "cookie": "F-30h",
+    "registration": "F-10h",
+    "encoded_scope": "F-8",
+    "try_level": "F-4",
+    "completed": "F-1Ch",
+    "completion_flag": "F-20h",
+    "epilog_requirement": "ESP=P before CALL; returns at ESP=F+4",
+    "outer_ret_immediate": "18h",
+    "outer_stack_cleanup_bytes": 24
+  },
+  "parameter_home_hypotheses": [
+    {
+      "home": "F+8",
+      "meaning": "destination"
+    },
+    {
+      "home": "F+0Ch",
+      "meaning": "source"
+    },
+    {
+      "home": "F+10h",
+      "meaning": "raw DWORD stride"
+    },
+    {
+      "home": "F+14h",
+      "meaning": "signed count"
+    },
+    {
+      "home": "F+18h",
+      "meaning": "constructor entry"
+    },
+    {
+      "home": "F+1Ch",
+      "meaning": "destructor entry"
+    }
+  ],
+  "ordered_behavior": [
+    "Initialize completion flag, try level and completed count to zero after prolog.",
+    "Signed comparison completed >= count branches to normal completion; nonpositive initial count skips callbacks under a valid frame contract.",
+    "Push source home, set ECX from destination home, call the entry reread from F+18h. No caller ADD ESP follows.",
+    "Only after normal callback return, reread stride, add it modulo 2^32 to both physical pointer homes, and increment completed. This includes the last successful iteration.",
+    "Homes, count and callback are reread. No stable-value, positive-stride, nonaliasing, provider-frame-preservation or memory-validity assumption is established.",
+    "Set completion flag=1 and try level=-2, call cleanup which skips unwind, then qualified epilog and outer RET 18h."
+  ],
+  "failure_boundary": {
+    "iterator_state_before_failed_callback_returns": "Flag remains zero and iterator has not incremented completed or advanced homes for that attempt; actual provider mutation remains possible.",
+    "cleanup_entry_condition": "Actual dispatcher must supply the valid parent EBP/frame and restore ESP; unproven.",
+    "cleanup_arguments_in_callee_order": [
+      "current destination [F+8]",
+      "stride [F+10h]",
+      "completed [F-1Ch]",
+      "destructor [F+1Ch]"
+    ],
+    "unwind_call_stack_cleanup_required_bytes": 16,
+    "cleanup_returns_with_plain_ret": true,
+    "unresolved": [
+      "actual dispatch",
+      "parent frame and cookie ownership",
+      "provider preservation",
+      "destruction order",
+      "destructor physical ABI",
+      "exception during unwind and termination policy"
+    ]
+  },
+  "dependencies": [
+    {
+      "name": "__SEH_prolog4 / __SEH_epilog4",
+      "entries": [
+        "00C07C00",
+        "00C07C45"
+      ],
+      "status": "qualified existing frame formulas, composition incomplete",
+      "next_contract": "Actual frame, FS chain, cookie and handler owner"
+    },
+    {
+      "name": "EH4 scope/handler/local-unwind owner",
+      "entries": [
+        "00E02DD0"
+      ],
+      "status": "opaque scope window only",
+      "next_contract": "Actual dispatch and cookie validation, parent EBP/ESP restoration and exception ownership"
+    },
+    {
+      "name": "constructor provider",
+      "entries": [],
+      "status": "call shape only",
+      "next_contract": "Real entry identity, ECX/stack inputs, callee cleanup, register/frame preservation, alias/mutation and exception behavior"
+    },
+    {
+      "name": "__ArrayUnwind",
+      "entries": [
+        "00BF7C10"
+      ],
+      "body_ranges": [
+        [
+          "00BF7C10",
+          "00BF7C32"
+        ],
+        [
+          "00BF7C5F",
+          "00BF7C6D"
+        ]
+      ],
+      "body_range_lengths": [
+        35,
+        15
+      ],
+      "body_bytes": 50,
+      "convex_span_bytes_not_body": 94,
+      "status": "metadata only; body unreviewed",
+      "next_contract": "Complete split-body behavior, reverse/other destruction order, stack cleanup, destructor call ABI and exception/termination policy"
+    },
+    {
+      "name": "destructor provider",
+      "entries": [],
+      "status": "opaque forwarded address",
+      "next_contract": "Real identity and register/stack/exception contract through ArrayUnwind"
+    },
+    {
+      "name": "callers",
+      "entries": [
+        "005C81F0",
+        "005FE010",
+        "007042B0",
+        "008E79D0"
+      ],
+      "status": "indexed labels only; bodies unreviewed",
+      "next_contract": "Actual argument/provider/frame ownership"
+    }
+  ],
+  "prospective_interface": {
+    "implemented": false,
+    "source_authorized": false,
+    "requirements": [
+      "Retain all six physical parameter homes in observed order",
+      "Preserve mutable-frame semantics and raw DWORD stride arithmetic",
+      "Preserve outer callee cleanup of 24 bytes",
+      "Supply qualified actual constructor/destructor, SEH and ArrayUnwind providers",
+      "Retain all exceptional paths before granting whole-entry credit"
+    ],
+    "qualification": "Interface constraints only. A normal-only callback projection cannot establish whole Source readiness."
+  },
+  "inherited_evidence": {
+    "worker_uuid": "01a142f1-e60a-7802-b542-86516327b708",
+    "old_family_files": 338,
+    "prior_family_files": 339,
+    "authenticated_external_pairs": 22,
+    "authenticated_external_records": 44,
+    "old_prefix": {
+      "lines": 1289,
+      "bytes": 3987485,
+      "sha256": "a588012bdabe7742d523e727425cd3896a46a9305a524b6f3a630f090878cadd"
+    },
+    "batches": [
+      {
+        "stem": "metadata01",
+        "rows": 4,
+        "external_success": true,
+        "modification_number": "6343"
+      },
+      {
+        "stem": "owned_body02",
+        "rows": 2,
+        "external_success": true,
+        "modification_number": "6343"
+      },
+      {
+        "stem": "flow_scope03",
+        "rows": 31,
+        "external_success": true,
+        "modification_number": "6343"
+      },
+      {
+        "stem": "dependency_metadata04",
+        "rows": 4,
+        "external_success": true,
+        "modification_number": "6345"
+      }
+    ],
+    "qualification": "External old-worker live captures. Per-batch stable counters 6343/6345 do not imply cross-batch or global database immutability."
+  },
+  "evidence": {
+    "finish_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_eh_vector_copy_finish_oct16\\local\\NativeEhVectorCopyReadinessFinish01",
+    "external_verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_eh_vector_copy_finish_oct16\\local\\NativeEhVectorCopyReadinessFinish01\\external_handoff_verification.json",
+      "bytes": 1468,
+      "sha256": "a72458bcade1023bd8a7cb6a7d0daa829a082dd8bf78ee66c7038727d170fc38"
+    },
+    "disk_comparison": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_eh_vector_copy_finish_oct16\\local\\NativeEhVectorCopyReadinessFinish01\\disk_flow_comparison.json",
+      "bytes": 15469,
+      "sha256": "a235fcd0e15950f21bebe2c098d0640038825d056e457e877f18567498a15e55"
+    },
+    "checker_receipt": "local/NativeEhVectorCopyReadinessFinish01/checker02_receipt.json",
+    "own_authentication": "local/NativeEhVectorCopyReadinessFinish01/own_authentication.json",
+    "final_manifest": "local/NativeEhVectorCopyReadinessFinish01/root_manifest.json"
+  },
+  "retained_failures": [
+    "Initial schema inspection assumed a list was an object; actual tool failure retained.",
+    "Audit v1 incorrectly assumed all four old batches had modification 6343; v2 pins explicit 6343/6345 per batch.",
+    "Audit v2 used literal mnemonic equality for JNZ/JNE; v3 normalizes this exact x86 synonym while retaining all byte/flow checks."
+  ],
+  "prohibited_work_performed": false,
+  "no_execution_or_mutation": {
+    "source_implementation": false,
+    "compiler": false,
+    "build": false,
+    "test": false,
+    "probe": false,
+    "target_code_execution": false,
+    "ghidra_mutation": false,
+    "provider_body_expansion": false,
+    "caller_body_expansion": false,
+    "shared_registry_ledger_cmake_main_edit": false
+  },
+  "next_decision": "Keep source_ready=false and authorization=false. Assign separately owned provider/frame contracts before any whole-entry Source proposal."
+}
