@@ -1,0 +1,116 @@
+{
+  "schema": "bsp.property_hash_iterator_primary_review.v1",
+  "status": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
+  "Source_commit": "5999e8b230a50fd416a7c692a7165c3197b1451d",
+  "Source": "src/native_scene_property_hash_iterator.cpp",
+  "header": "include/bsp/native_scene_property_hash_iterator.hpp",
+  "documentation": "docs/NATIVE_SCENE_PROPERTY_HASH_ITERATOR_CC12.md",
+  "functions": [
+    "begin_native_scene_property_hash_008eeb10",
+    "next_native_scene_property_hash_008eeb60"
+  ],
+  "primary_whole_Source_header_doc_Original_contract_read": true,
+  "primary_author_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_hash_iterator_integration_20261016\\primary_author_inputs.DATA.json",
+    "bytes": 140850,
+    "sha256": "1d58eda003be25442003f2a282fe813bd766ba14272736c8b4f8ec709e441990"
+  },
+  "primary_peer_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_hash_iterator_integration_20261016\\primary_peer_inputs.DATA.json",
+    "bytes": 12107,
+    "sha256": "06465ca43b8095bdddbc929dc53a00e6818cbcf2f5cc64166edcf6627fc45d4f"
+  },
+  "independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\ScenePropertyHashIteratorIndependentReview01\\review_verdict.json",
+    "bytes": 41601,
+    "sha256": "06808e8d3b2a014502807b078645df02345d58b956a9c76b05b0a2836c80b1d7"
+  },
+  "historical_audit_defect_correction": {
+    "status": "INDEPENDENT_CORRECTION_OF_HISTORICAL_AUTHOR_AUDIT",
+    "author_seal_unchanged": true,
+    "author_file": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyHashIteratorSource01\\complete_COFF_audit.json",
+    "author_file_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyHashIteratorSource01\\complete_COFF_audit.json",
+      "bytes": 18952,
+      "sha256": "074c00f0e69afd47d491fcbe6bfffc1a9102b59e00e5b01d41a7a71254616ec9"
+    },
+    "actual_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\WholeScenePropertyHashIteratorSource01\\native_scene_property_hash_iterator.obj",
+      "bytes": 1073,
+      "sha256": "c472779b4c066008d9f64130e8ec35b972382d6f3e17167bd9f1ff8c22f04ac2"
+    },
+    "section": {
+      "name": ".debug$S",
+      "raw_range_halfopen": [
+        267,
+        507
+      ],
+      "bytes": 240
+    },
+    "corrected": {
+      "signature": 4,
+      "signature_raw_range_halfopen": [
+        267,
+        271
+      ],
+      "subsection_kind": 241,
+      "subsection_header_raw_range_halfopen": [
+        271,
+        279
+      ],
+      "subsection_length": 226,
+      "subsection_payload_raw_range_halfopen": [
+        279,
+        505
+      ],
+      "records": [
+        {
+          "kind": "S_OBJNAME",
+          "type": 4353,
+          "bytes": 166,
+          "raw_range_halfopen": [
+            279,
+            445
+          ]
+        },
+        {
+          "kind": "S_COMPILE3",
+          "type": 4412,
+          "bytes": 60,
+          "raw_range_halfopen": [
+            445,
+            505
+          ]
+        }
+      ],
+      "zero_alignment_padding": "0000",
+      "padding_raw_range_halfopen": [
+        505,
+        507
+      ]
+    },
+    "historical_defect": {
+      "subsection_length_reported": 40,
+      "padding_reported_as_nonzero_record_bytes": true,
+      "cause": "audit.py reuses length for the final40B .chks64 section before serializing CodeView length/padding fields"
+    },
+    "impact": "Serialized audit evidence metadata only. Independently parsed actual records, sections, complete object accounting and exact157B55-instruction code remain valid; the historical receipt is not treated as literal truth for those two fields."
+  },
+  "contract": [
+    "Whole distinct Begin008EEB10 [008EEB10,008EEB51)65B22 and Next008EEB60 [008EEB60,008EEBBC)92B33; new independent MSVC Win32 naked fastcall entries retain all157 literal Original bytes/55 instructions including4B8D642400. No calls, relocations, helper code or runtime-data providers. Other00466BB0/C00 instances provide evidence only, not address credit.",
+    "ECX genuine aligned writable raw12 iterator table0/current4/index8; no stack arguments/plainRET. Begin has no common EAX semantic result, captures table and count-zero clearscurrent only without index store. Its bound-before-increment scan can readhead64 and reloads selected head before publishingcurrent. Next reads current/link, preserves increment/store/scan captured-table versus final-current-table reloads, never scanshead64, and rereads current for full DWORD0/1. No added guard or sentinel policy.",
+    "Caller initializes table word only. Actual accepted raw61 bag+4 or enum owner+4 maps and real E175B0 property versus E17578 symbol14h nodes/linkC/allocator10, canonical process/E188B4/pool/generation/key/node-owner lifetime contracts. Stable coherent finite unshared acyclic graph and valid disjoint aligned iterator/map/nodes/private frames; no fault/alias/reentry/mutation/concurrency/trim/teardown. Authentic coherent nonempty map stops at a real head; map+108 is owner metadata, not a fabricated bucket.",
+    "Fresh own10 actual compiler dependencies closed before strict invocation among5124 candidates and100 tools;31 producer pins stable in author baseline. Sole strict14858a,1073B object/5sections/14symbolslots/9primary+5aux; sole normal22bd4e/session77969 to2ea9fd/0 passed2 configured existing checks, TU unregistered. No new tests/probes/replay/new-body execution or hermetic environment claim.",
+    "Historical author CodeView audit serialized subsection length40 and record bytes as padding due a reused variable. Author seal stays intact; independent raw parse and Root confirmation establish length226, OBJNAME[279,445), COMPILE3[445,505), zero padding0000[505,507). Actual Source/object bytes are unaffected. Independent correction is canonical for those metadata fields.",
+    "Current Main producer rebinding:26 literal matches,3 exact LF/CRLF-only JSON metadata qualifications,2 reviewed enum-dictionary lookup Source/header drifts from commits25ae14594/eb6f4dcd5. Ordered volatile/alias overload/wrapping progression retain the earlier stable/disjoint producer subset and raw map/node layouts; neither file is a compiler dependency/direct provider of this no-call pair. No broader drift-equivalence or all31 literal claim.",
+    "No Original full register/flags/private-frame/CRT/EH/binary ABI, class/caller/key-list/string-list/sort closure, startup/parser/runtime/game credit. Ordinary bounded static/build Source only."
+  ],
+  "Main_registered": true,
+  "Main_build": "pass",
+  "Original_ABI_compatible": false,
+  "Original_private_CRT_EH_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false,
+  "Main_validation": "reports/cc12_property_hash_iterator_Main_validation.json",
+  "actual_compiler_archive_gate": "pass"
+}

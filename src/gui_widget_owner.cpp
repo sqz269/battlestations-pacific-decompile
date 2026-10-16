@@ -400,8 +400,17 @@ GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_base(GuiLayoutWidget& layout) {
 }
 NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name,
     NativeNodeBinding** publication) {
+    // Construction and retirement already select actual_names when bound.
+    // The temporary must use that SAME storage, rather than demanding a
+    // semantic pool from a runtime whose names belong to the raw VFS domain.
+    if (environment_.models.actual_names)
+        return create_model(name, *environment_.models.actual_names, publication);
+    PooledStringStorage strings(environment_.models.nodes.require_semantic_name_pool());
+    return create_model(name, strings, publication);
+}
+NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name,
+    NativeStringStorage& strings, NativeNodeBinding** publication) {
     auto& environment = environment_.models;
-    auto& name_pool = environment.nodes.require_semantic_name_pool();
     auto record = std::make_unique<ModelRecord>();
     void* slot = environment.pool_01090054.allocate_raw_slot_00b74d00();
     if (!slot) {
@@ -412,7 +421,6 @@ NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name,
     // of that slot. Do not erase its live record or return it in the unwind.
     if (models_.count(slot))
         throw std::logic_error("canonical model pool returned an occupied slot");
-    PooledStringStorage strings(name_pool);
     NativeString native_name;
     try {
         //Reserve the map node before constructing a native live object.

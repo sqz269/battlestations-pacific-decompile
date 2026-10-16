@@ -41419,8 +41419,8 @@
     },
     {
       "id": "cc12_scene_property_hash_iterator_008eeb10_008eeb60",
-      "done": false,
-      "state": "whole_ordinary_Source_ready_no_implementation_yet",
+      "done": true,
+      "state": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
       "source_ready": true,
       "function_addresses": [
         "008eeb10",
@@ -41438,7 +41438,13 @@
       "worker": "array_assignment_peer_oct15",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
-      "contract": "Two distinct whole entries: Begin008EEB10 [008EEB10,008EEB51)65B22; Next008EEB60 [008EEB60,008EEBBC)92B33. ECX actual writable12B iterator: table0/current4/index8; unused incoming EDX/no stack args/plainRET. Begin has no common EAX semantic return; Next returns full DWORD0/1 by rereading current. Table count/test+4, heads+8/index*4, node link+C. Preserve captured versus reloaded table/index/current values, every DWORD load/store and branch schedule. Begin count-zero clears current only and leaves index untouched; its original scan can read head64. Next initially-null path rereads current without table/index; link/success paths preserve index publication and final current reload; unsigned DWORD arithmetic and no head64 scan load. Actual caller-owned aligned iterator initialized only at table word; actual accepted raw61 bag+4/enum owner+4 map with genuine property E175B0 or symbol E17578 nodes, preserved allocator+10 and whole producer/context/process/list/pool/generation/ownership contracts. No fabricated sentinel from map+108 owner metadata; authentic coherent nonempty map stops at a real nonnull head. Disjoint valid iterator/map/nodes/private frames, finite stable unshared acyclic chains, no faults/alias/reentry/concurrency/trim/teardown. No direct providers/calls/dispatch/lifetime action or container/STL substitution. Other00466BB0/C00 byte-identical instances provide evidence only, no address credit. No Original full flags/register/privateCRT/EH/ABI, caller/key-list/parser/startup/runtime/game claim. String-list clear/append/growth and optional sort callback remain separate blockers."
+      "contract": "Whole distinct Begin008EEB10 [008EEB10,008EEB51)65B22 and Next008EEB60 [008EEB60,008EEBBC)92B33; new independent MSVC Win32 naked fastcall entries retain all157 literal Original bytes/55 instructions including4B8D642400. No calls, relocations, helper code or runtime-data providers. Other00466BB0/C00 instances provide evidence only, not address credit. ECX genuine aligned writable raw12 iterator table0/current4/index8; no stack arguments/plainRET. Begin has no common EAX semantic result, captures table and count-zero clearscurrent only without index store. Its bound-before-increment scan can readhead64 and reloads selected head before publishingcurrent. Next reads current/link, preserves increment/store/scan captured-table versus final-current-table reloads, never scanshead64, and rereads current for full DWORD0/1. No added guard or sentinel policy. Caller initializes table word only. Actual accepted raw61 bag+4 or enum owner+4 maps and real E175B0 property versus E17578 symbol14h nodes/linkC/allocator10, canonical process/E188B4/pool/generation/key/node-owner lifetime contracts. Stable coherent finite unshared acyclic graph and valid disjoint aligned iterator/map/nodes/private frames; no fault/alias/reentry/mutation/concurrency/trim/teardown. Authentic coherent nonempty map stops at a real head; map+108 is owner metadata, not a fabricated bucket. Fresh own10 actual compiler dependencies closed before strict invocation among5124 candidates and100 tools;31 producer pins stable in author baseline. Sole strict14858a,1073B object/5sections/14symbolslots/9primary+5aux; sole normal22bd4e/session77969 to2ea9fd/0 passed2 configured existing checks, TU unregistered. No new tests/probes/replay/new-body execution or hermetic environment claim. Historical author CodeView audit serialized subsection length40 and record bytes as padding due a reused variable. Author seal stays intact; independent raw parse and Root confirmation establish length226, OBJNAME[279,445), COMPILE3[445,505), zero padding0000[505,507). Actual Source/object bytes are unaffected. Independent correction is canonical for those metadata fields. Current Main producer rebinding:26 literal matches,3 exact LF/CRLF-only JSON metadata qualifications,2 reviewed enum-dictionary lookup Source/header drifts from commits25ae14594/eb6f4dcd5. Ordered volatile/alias overload/wrapping progression retain the earlier stable/disjoint producer subset and raw map/node layouts; neither file is a compiler dependency/direct provider of this no-call pair. No broader drift-equivalence or all31 literal claim. No Original full register/flags/private-frame/CRT/EH/binary ABI, class/caller/key-list/string-list/sort closure, startup/parser/runtime/game credit. Ordinary bounded static/build Source only.",
+      "code_revision": "5999e8b230a50fd416a7c692a7165c3197b1451d",
+      "primary_review": "reports/cc12_property_hash_iterator_primary_review.json",
+      "Main_build_gate": "pass",
+      "historical_CodeView_audit_correction": "Explicit independent correction; actual Source/object unchanged.",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_property_hash_iterator_Main_validation.json"
     },
     {
       "id": "goal_oct15_scene_class_name_lookup",
@@ -41598,6 +41604,200 @@
       "Original_ABI_compatible": false,
       "game_validated": false,
       "latest_Main_build_review": "reports/goal_oct15_scene_lookup_main_refresh.json"
+    },
+    {
+      "id": "cc12_string_key_comparator_function_boundary_0094f180",
+      "done": false,
+      "state": "blocked_metadata_mechanism_after_guarded_function_rollback",
+      "source_ready": false,
+      "function_addresses": [
+        "0094f180"
+      ],
+      "output_files": [
+        "docs/CC12_STRING_KEY_COMPARATOR_BOUNDARY_0094F180.md",
+        "reports/cc12_string_key_comparator_boundary_0094f180.json"
+      ],
+      "readiness_report": "reports/cc12_string_key_comparator_readiness.json",
+      "Source_credit": 0,
+      "metadata_repair_completed": false,
+      "worker": "string_key_comparator_readiness_oct15",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "contract": "Function boundary remains absent. Supported inline scripts disabled; unowned-address documentation unavailable; direct create_function endpoint ignored dry_run:true. Guarded new43B function deletion restored count and all17 measured listing/flow/ownership states, but complete old symbols/comments were unavailable and pristine full rollback is not claimed. Preserve current bytes/instructions/CALL_RETURN; no more API experiments/restarts/script enablement or Source credit. List/empty-data/current-versus-privateCRT/qsort provider contracts remain separate blockers."
+    },
+    {
+      "id": "cc12_scene_string_list_storage_0094efb0_0094f010",
+      "done": false,
+      "state": "whole_ordinary_raw_storage_Source_ready_no_implementation_yet",
+      "source_ready": true,
+      "function_addresses": [
+        "0094efb0",
+        "0094f010"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_string_list_storage.hpp",
+        "src/native_scene_string_list_storage.cpp",
+        "reports/native_scene_string_list_storage.json",
+        "docs/NATIVE_SCENE_STRING_LIST_STORAGE.md"
+      ],
+      "depends_on": [],
+      "readiness_report": "reports/cc12_string_key_list_readiness.json",
+      "missing_provider_addresses": [],
+      "named_incomplete_dependencies": [
+        "0094F270 populated-list admission",
+        "0094F3E0/0094F540 retirement",
+        "008F3270 application owner binding"
+      ],
+      "worker": "string_key_list_readiness_oct15",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "contract": "Only whole constructor0094EFB0 [0094EFB0,0094EFE1),49B18 and growth0094F010 [0094F010,0094F061),81B34. Actual caller-provided aligned writable raw12 header: slots pointer0, signed-count/DWORD4, capacity DWORD8; no class/vtable/new host or standalone container wrapper. Constructor storescapacity64 BEFORE genuine exact256-byte allocation, publishes slots then count0, leaves slots uninitialized and returns actualheader. Growth publishes wrapping capacity+64 BEFORE allocation; retain native unsignedMUL4/overflow saturation instructions, allocate exact size, capture CURRENT oldslots/count AFTER allocation, call genuine current memcpy withcount*4 even whenzero, reload oldslots aftercopy, conditionally canonical-free then clear0, finally publish capturednewslots; count untouched. Proposed independent naked fastcall entries: constructor void* actualECX returnheader/plainRET, growth actualECX/void/plainRET, no stack inputs; no semantic growthEAX claim. Bind BF55BE through genuine private CDECL size bridge to canonical singleton_lifetime_allocate with object/native_bytes==host_bytes; canonical singleton_lifetime_free and real current memcpy/#pragma function(memcpy); no new globals/callbacks/provider stubs. Ordinary successful nonthrowing serialized domain: genuine live constructor-produced raw12/uniquely owned matching-current-heap slot buffer and previous accepted growth, coherent0<=count<=oldcapacity, valid initialized reached opaque slot bytes, nonwrapping capacity+64 and4*newcapacity witholdcap<=3FFFFFBFh, positive allocatable sizes/resources, old/new/header/privateframe disjoint, valid flatES/DFclear, no alias/reentry/concurrency/fault/trim/teardown. Empty growth still calls memcpy with real nonnull old/new allocations; do not special-case it. Slots are opaque to storage helpers: no element ownership or retirement changes. Named pending actual append0094F270 population/clear0094F3E0/destructor0094F540 and actual008F3270 application create/pass/retire binding remain separate; no populated caller/class/list-owner/key-enumeration/Original privateCRT/EH/fullABI/startup/runtime/game admission. Source implementation only these2, not other3 or comparator/sort/empty-data roles."
+    },
+    {
+      "id": "goal_oct15_crt_ascii_stricmp",
+      "done": true,
+      "state": "whole_ordinary_raw_Source_normal_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00bf7eb7"
+      ],
+      "output_files": [
+        "src/native_crt_ascii_stricmp.cpp",
+        "include/bsp/native_crt_ascii_stricmp.hpp",
+        "docs/GOAL_OCT15_CRT_ASCII_STRICMP.md",
+        "reports/goal_oct15_crt_ascii_stricmp.json"
+      ],
+      "depends_on": [],
+      "unproved_dependencies": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_crt_ascii_stricmp.json",
+      "primary_review": "reports/goal_oct15_scene_lifetime_primary_review.json",
+      "Main_build_review": "reports/goal_oct15_scene_lifetime_main_gate.json",
+      "code_revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+      "Main_build_revision": "1837bd475d4a24e5755a92da62d9ac3767b0da48",
+      "integrated_main_revision": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+      "contract": "Complete intrinsic unsigned-BYTE comparison leaf;no SDK/locale/TLS/errno or parent-dispatch closure is implied.",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_hidden_record_lookup",
+      "done": true,
+      "state": "whole_ordinary_raw_Source_normal_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "004691b0",
+        "00469480"
+      ],
+      "output_files": [
+        "src/native_scene_hidden_record_lookup.cpp",
+        "include/bsp/native_scene_hidden_record_lookup.hpp",
+        "docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_LOOKUP.md",
+        "reports/goal_oct15_scene_hidden_record_lookup.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_map_lookup"
+      ],
+      "unproved_dependencies": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_hidden_record_lookup.json",
+      "primary_review": "reports/goal_oct15_scene_lifetime_primary_review.json",
+      "Main_build_review": "reports/goal_oct15_scene_lifetime_main_gate.json",
+      "code_revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+      "Main_build_revision": "1837bd475d4a24e5755a92da62d9ac3767b0da48",
+      "integrated_main_revision": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+      "contract": "Complete raw lookup/presence Source at actual constructor/map/pool/returning currentCRT providers;first input capture,current fields,returned iterator and rawDWORD/AL schedules retained.",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_hidden_record_copy_construct",
+      "done": true,
+      "state": "qualified_whole_control_flow_Source_general_readiness_unproved_normal_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00469240",
+        "00c61a90"
+      ],
+      "output_files": [
+        "src/native_scene_hidden_entity_record_copy_construct.cpp",
+        "include/bsp/native_scene_hidden_entity_record_copy_construct.hpp",
+        "docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_COPY_CONSTRUCT.md",
+        "reports/goal_oct15_scene_hidden_record_copy_construct.json"
+      ],
+      "depends_on": [
+        "cc12_raw_native_string_duplicate_00438e40"
+      ],
+      "unproved_dependencies": [
+        {
+          "address": "008f41f0",
+          "scope": "canonical finite/stable/unshared/acyclic owning clone graph and key/payload/count/locale/FP admission;Original allocation/failure/reentry/unwind remainunproved"
+        },
+        {
+          "address": "00438e40",
+          "scope": "successful canonical nonwrapping readable NUL/disjoint copy admission;Original allocation failure/newhandler/naked unwind remainunproved"
+        }
+      ],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_scene_hidden_record_copy_construct.json",
+      "primary_review": "reports/goal_oct15_scene_lifetime_primary_review.json",
+      "Main_build_review": "reports/goal_oct15_scene_lifetime_main_gate.json",
+      "code_revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+      "Main_build_revision": "1837bd475d4a24e5755a92da62d9ac3767b0da48",
+      "integrated_main_revision": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+      "contract": "Whole copy-constructor code and qualified cleanup;BOTH canonical clone-graph and successful duplicate-allocation admissions inherited. No unrestricted failure/alias/reentry/OriginalEH closure.",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_hidden_record_destroy",
+      "done": true,
+      "state": "qualified_whole_control_flow_Source_general_readiness_unproved_normal_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00469300",
+        "004693a0",
+        "00c61ab0"
+      ],
+      "output_files": [
+        "src/native_scene_hidden_entity_record_destroy.cpp",
+        "include/bsp/native_scene_hidden_entity_record_destroy.hpp",
+        "docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_DESTROY.md",
+        "reports/goal_oct15_scene_hidden_record_destroy.json"
+      ],
+      "depends_on": [],
+      "unproved_dependencies": [
+        {
+          "target": "actual current bag.vtable.slot0",
+          "scope": "all dynamic target bodies and constructedSource-vtable ABI compatibility remainunproved"
+        },
+        {
+          "address": "00bf9dc8",
+          "scope": "Original heap/TLS/handler/failure free transport remainsunproved;matching actual currentCRT service is used"
+        }
+      ],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_scene_hidden_record_destroy.json",
+      "primary_review": "reports/goal_oct15_scene_lifetime_primary_review.json",
+      "Main_build_review": "reports/goal_oct15_scene_lifetime_main_gate.json",
+      "code_revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+      "Main_build_revision": "1837bd475d4a24e5755a92da62d9ac3767b0da48",
+      "integrated_main_revision": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+      "contract": "Whole destructor/scalar-delete code and qualified cleanup;actual raw vtable slot dispatch,hostCRT frees,current fields,lateBYTE flags and captured freed-record bits retained;no all-dynamic-target/constructedSource-vtable or Originalheap/FH3/fault ABI proof.",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {

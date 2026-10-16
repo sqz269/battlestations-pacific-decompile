@@ -1,0 +1,1372 @@
+{
+  "packet": "oct15_word_vector_tidy",
+  "worker": "agent/oct15_avoid_distance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis": true,
+  "Ghidra_mutation": false,
+  "source": "src/native_word_vector_tidy.cpp",
+  "header": "include/bsp/native_word_vector_tidy.hpp",
+  "documentation": "docs/OCT15_WORD_VECTOR_TIDY.md",
+  "owned_addresses": [
+    "004d29d0",
+    "004cdce0"
+  ],
+  "routines": [
+    {
+      "address": "004d29d0",
+      "kind": "whole_ordinary_function",
+      "native_name_preserved": "STL_Vector_Tidy_004d29d0",
+      "name_is_recovered_library_identity": true,
+      "new_source_description_is_hypothesis": true,
+      "implementation": "tidy_native_word_vector_range_element_004d29d0",
+      "source_api": "void __fastcall (void* unused_owner, std::uint32_t unused_edx, void* stack_header)",
+      "native_abi": "IncomingECX owner and EDX unread;sole consumed stack header at entryESP+4;ESI saved/restored;RET4;no semantic result. NativeC++ declaration/mangling cannot be inferred from dead registers.",
+      "physical_arguments": "Two explicit ignored Source register slots and one actual stacked header;not a reconstructed owner model.",
+      "ranges": [
+        {
+          "start": {
+            "space": "ram",
+            "offset": "004d29d0"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "004d29fd"
+          },
+          "length": "46"
+        }
+      ],
+      "body_bytes": 46,
+      "instructions": 13,
+      "coverage": "Complete actual ordinary entry/all normal paths on admitted raw-header/currentCRT domain. No caller parent/action ownership.",
+      "native_EAX": "Capturedbegin0 leaves EAX0;nonnull retains unspecified void_free residue;Sourcevoid does not promise ambientEAX/flags.",
+      "status": "complete_ordinary_source_win32_build_checked_current_cpp_crt_domain"
+    },
+    {
+      "address": "004cdce0",
+      "kind": "whole_ordinary_function",
+      "native_name_preserved": "STL_Vector_Tidy_004cdce0",
+      "name_is_recovered_library_identity": true,
+      "new_source_description_is_hypothesis": true,
+      "implementation": "tidy_native_word_vector_storage_004cdce0",
+      "source_api": "void __fastcall (void* actual_header)",
+      "native_abi": "ECXactualheader,EDXunused,no stackargs,ESI saved/restored,plainRET;no semantic result.",
+      "physical_arguments": "One actual Sourcefastcall header receiver;no extra context/provider or stackwords.",
+      "ranges": [
+        {
+          "start": {
+            "space": "ram",
+            "offset": "004cdce0"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "004cdd09"
+          },
+          "length": "42"
+        }
+      ],
+      "body_bytes": 42,
+      "instructions": 13,
+      "coverage": "Complete actual ordinary entry/all normal paths on admitted raw-header/currentCRT domain. No caller parent/action ownership.",
+      "native_EAX": "Capturedbegin0 leaves EAX0;nonnull retains unspecified void_free residue;Sourcevoid does not promise ambientEAX/flags.",
+      "status": "complete_ordinary_source_win32_build_checked_current_cpp_crt_domain"
+    }
+  ],
+  "source_sha256": {
+    "src/native_word_vector_tidy.cpp": "5da425f344175e2fb4e143450d76c9184b6dfa83be36dc0c5b49b9c1d32dd998",
+    "include/bsp/native_word_vector_tidy.hpp": "76f071a110765cec357421060880e85e1213311f16d886a087439f6c26161079"
+  },
+  "calls": [
+    {
+      "address": "004d29dd",
+      "native": "00bf65ac",
+      "function": "004d29d0",
+      "kind": "call"
+    },
+    {
+      "address": "004cdceb",
+      "native": "00bf65ac",
+      "function": "004cdce0",
+      "kind": "call"
+    },
+    {
+      "address": "004cb13b",
+      "native": "00bf65ac",
+      "function": "004cb130",
+      "kind": "call"
+    },
+    {
+      "address": "0046884b",
+      "native": "00bf65ac",
+      "function": "00468840",
+      "kind": "call"
+    }
+  ],
+  "fresh_native_coverage": {
+    "owned_bytes": 88,
+    "owned_instruction_starts": 26,
+    "read_only_reference_bytes": 84,
+    "read_only_reference_instruction_starts": 26,
+    "fresh_total_bytes": 172,
+    "fresh_total_instruction_starts": 52,
+    "read_only_references": [
+      "004cb130",
+      "00468840"
+    ],
+    "provenance": "Full typed body/project/program,live bytes,installedPE,Capstone5.0.7,current listing starts and every actual E8rel32. Nativecodebytes equal previously accepted read-only readiness;comparisons independently reasserted here."
+  },
+  "native_proof": {
+    "utc": "2026-10-16T00:26:41.024674+00:00",
+    "read_only_Ghidra": true,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "typed_capture": {
+      "schema": 1,
+      "endpoint": "get_flow_metadata",
+      "read_only": true,
+      "utc": "2026-10-16T00:25:19.074373+00:00",
+      "requested_addresses": [
+        "004d29d0",
+        "004cdce0",
+        "004cb130",
+        "00468840"
+      ],
+      "max_ranges": 4096,
+      "verified_before": [
+        {
+          "project_name": "bsp",
+          "current_folder": "/",
+          "folders": [],
+          "files": [
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "content_type": "Program",
+              "version": 5717,
+              "is_read_only": false,
+              "is_versioned": false
+            }
+          ]
+        },
+        {
+          "name": "battlestationspacific.exe",
+          "path": "/battlestationspacific.exe",
+          "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+          "executable_format": "Portable Executable (PE)",
+          "language": "x86:LE:32:default",
+          "compiler": "windows",
+          "address_size": 32,
+          "image_base": "00400000",
+          "min_address": "00400000",
+          "max_address": "ffdfffff",
+          "memory_size": 14876380,
+          "function_count": 76774,
+          "symbol_count": 160484,
+          "data_type_count": 795,
+          "creation_date": "Mon May 04 16:56:25 PDT 2026",
+          "memory_block_count": 6,
+          "address_spaces": [
+            {
+              "name": "ram",
+              "start": "00000000",
+              "end": "ffffffff",
+              "size": 4294967296,
+              "addressable_unit_size": 1,
+              "size_bytes": 4294967296,
+              "address_size_bits": 32,
+              "is_default": true
+            }
+          ],
+          "has_multiple_address_spaces": false
+        }
+      ],
+      "verified_after": [
+        {
+          "project_name": "bsp",
+          "current_folder": "/",
+          "folders": [],
+          "files": [
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "content_type": "Program",
+              "version": 5717,
+              "is_read_only": false,
+              "is_versioned": false
+            }
+          ]
+        },
+        {
+          "name": "battlestationspacific.exe",
+          "path": "/battlestationspacific.exe",
+          "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+          "executable_format": "Portable Executable (PE)",
+          "language": "x86:LE:32:default",
+          "compiler": "windows",
+          "address_size": 32,
+          "image_base": "00400000",
+          "min_address": "00400000",
+          "max_address": "ffdfffff",
+          "memory_size": 14876380,
+          "function_count": 76774,
+          "symbol_count": 160484,
+          "data_type_count": 795,
+          "creation_date": "Mon May 04 16:56:25 PDT 2026",
+          "memory_block_count": 6,
+          "address_spaces": [
+            {
+              "name": "ram",
+              "start": "00000000",
+              "end": "ffffffff",
+              "size": 4294967296,
+              "addressable_unit_size": 1,
+              "size_bytes": 4294967296,
+              "address_size_bits": 32,
+              "is_default": true
+            }
+          ],
+          "has_multiple_address_spaces": false
+        }
+      ],
+      "responses": [
+        {
+          "address": "004d29d0",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=004d29d0&program=battlestationspacific.exe&max_ranges=4096",
+          "http_status": 200,
+          "transport_error": null,
+          "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"004d29d0\"},\"modification_number_before\":\"2719\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"004d29d0\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"004d29d0\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"004d29d0\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"004d29d0\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"004d29d1\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"004d29d1\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"004d29d0\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"004d29d0\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"004d29d0\"},\"name\":\"STL_Vector_Tidy_004d29d0\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"46\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"004d29d0\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"004d29fd\"},\"length\":\"46\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"2719\"}",
+          "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDRkMjlkMCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjI3MTkiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDRkMjlkMCJ9LCJsZW5ndGgiOjEsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0ZDI5ZDAifSwibGVuZ3RoIjoxLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0ZDI5ZDAifSwibGVuZ3RoIjoxLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDRkMjlkMCJ9LCJsZW5ndGgiOjEsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IkZBTExfVEhST1VHSCIsImlzX2NhbGwiOmZhbHNlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6ZmFsc2UsImlzX3Rlcm1pbmFsIjpmYWxzZX0sImVmZmVjdGl2ZV9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJkZWZhdWx0X2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0ZDI5ZDEifSwiZWZmZWN0aXZlX2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0ZDI5ZDEifSwiZmFsbHRocm91Z2hfb3ZlcnJpZGRlbiI6ZmFsc2UsImRlZmF1bHRfdGFyZ2V0cyI6W10sImVmZmVjdGl2ZV90YXJnZXRzIjpbXX0sImZ1bmN0aW9uX2F0X3F1ZXJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0ZDI5ZDAifSwiZnVuY3Rpb25fY29udGFpbmluZ19xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwNGQyOWQwIn0sImZ1bmN0aW9ucyI6W3siZW50cnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDRkMjlkMCJ9LCJuYW1lIjoiU1RMX1ZlY3Rvcl9UaWR5XzAwNGQyOWQwIiwibm9fcmV0dXJuIjpmYWxzZSwiaXNfdGh1bmsiOmZhbHNlLCJ0aHVua190YXJnZXRfcmVjdXJzaXZlIjpmYWxzZSwiZGlyZWN0X3RodW5rX3RhcmdldCI6bnVsbCwiYm9keSI6eyJyYW5nZV9jb3VudCI6MSwicmV0dXJuZWRfcmFuZ2VfY291bnQiOjEsImFkZHJlc3NfY291bnQiOiI0NiIsImNvbXBsZXRlIjp0cnVlLCJyYW5nZXMiOlt7InN0YXJ0Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0ZDI5ZDAifSwiZW5kX2luY2x1c2l2ZSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwNGQyOWZkIn0sImxlbmd0aCI6IjQ2In1dfX1dLCJkaXJlY3RfY2FsbF90YXJnZXRzIjpbXSwibW9kaWZpY2F0aW9uX251bWJlcl9hZnRlciI6IjI3MTkifQ==",
+          "raw_sha256": "490c56b5217f87fb960477fbec3c886b31a420732eb48e8713394a2071dfcd8e"
+        },
+        {
+          "address": "004cdce0",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=004cdce0&program=battlestationspacific.exe&max_ranges=4096",
+          "http_status": 200,
+          "transport_error": null,
+          "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"004cdce0\"},\"modification_number_before\":\"2719\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"004cdce0\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"004cdce0\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"004cdce0\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"004cdce0\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"004cdce1\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"004cdce1\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"004cdce0\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"004cdce0\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"004cdce0\"},\"name\":\"STL_Vector_Tidy_004cdce0\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"42\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"004cdce0\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"004cdd09\"},\"length\":\"42\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"2719\"}",
+          "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDRjZGNlMCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjI3MTkiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDRjZGNlMCJ9LCJsZW5ndGgiOjEsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Y2RjZTAifSwibGVuZ3RoIjoxLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Y2RjZTAifSwibGVuZ3RoIjoxLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDRjZGNlMCJ9LCJsZW5ndGgiOjEsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IkZBTExfVEhST1VHSCIsImlzX2NhbGwiOmZhbHNlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6ZmFsc2UsImlzX3Rlcm1pbmFsIjpmYWxzZX0sImVmZmVjdGl2ZV9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJkZWZhdWx0X2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Y2RjZTEifSwiZWZmZWN0aXZlX2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Y2RjZTEifSwiZmFsbHRocm91Z2hfb3ZlcnJpZGRlbiI6ZmFsc2UsImRlZmF1bHRfdGFyZ2V0cyI6W10sImVmZmVjdGl2ZV90YXJnZXRzIjpbXX0sImZ1bmN0aW9uX2F0X3F1ZXJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Y2RjZTAifSwiZnVuY3Rpb25fY29udGFpbmluZ19xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwNGNkY2UwIn0sImZ1bmN0aW9ucyI6W3siZW50cnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDRjZGNlMCJ9LCJuYW1lIjoiU1RMX1ZlY3Rvcl9UaWR5XzAwNGNkY2UwIiwibm9fcmV0dXJuIjpmYWxzZSwiaXNfdGh1bmsiOmZhbHNlLCJ0aHVua190YXJnZXRfcmVjdXJzaXZlIjpmYWxzZSwiZGlyZWN0X3RodW5rX3RhcmdldCI6bnVsbCwiYm9keSI6eyJyYW5nZV9jb3VudCI6MSwicmV0dXJuZWRfcmFuZ2VfY291bnQiOjEsImFkZHJlc3NfY291bnQiOiI0MiIsImNvbXBsZXRlIjp0cnVlLCJyYW5nZXMiOlt7InN0YXJ0Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Y2RjZTAifSwiZW5kX2luY2x1c2l2ZSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwNGNkZDA5In0sImxlbmd0aCI6IjQyIn1dfX1dLCJkaXJlY3RfY2FsbF90YXJnZXRzIjpbXSwibW9kaWZpY2F0aW9uX251bWJlcl9hZnRlciI6IjI3MTkifQ==",
+          "raw_sha256": "553eec6d8dbba13a19dbdb63d9c7098e0aa30f31dad6af958f07b3105502d4be"
+        },
+        {
+          "address": "004cb130",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=004cb130&program=battlestationspacific.exe&max_ranges=4096",
+          "http_status": 200,
+          "transport_error": null,
+          "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"004cb130\"},\"modification_number_before\":\"2719\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"004cb130\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"004cb130\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"004cb130\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"004cb130\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"004cb131\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"004cb131\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"004cb130\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"004cb130\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"004cb130\"},\"name\":\"STL_Vector_Tidy_004cb130\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"42\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"004cb130\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"004cb159\"},\"length\":\"42\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"2719\"}",
+          "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDRjYjEzMCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjI3MTkiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDRjYjEzMCJ9LCJsZW5ndGgiOjEsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Y2IxMzAifSwibGVuZ3RoIjoxLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Y2IxMzAifSwibGVuZ3RoIjoxLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDRjYjEzMCJ9LCJsZW5ndGgiOjEsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IkZBTExfVEhST1VHSCIsImlzX2NhbGwiOmZhbHNlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6ZmFsc2UsImlzX3Rlcm1pbmFsIjpmYWxzZX0sImVmZmVjdGl2ZV9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJkZWZhdWx0X2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Y2IxMzEifSwiZWZmZWN0aXZlX2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Y2IxMzEifSwiZmFsbHRocm91Z2hfb3ZlcnJpZGRlbiI6ZmFsc2UsImRlZmF1bHRfdGFyZ2V0cyI6W10sImVmZmVjdGl2ZV90YXJnZXRzIjpbXX0sImZ1bmN0aW9uX2F0X3F1ZXJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Y2IxMzAifSwiZnVuY3Rpb25fY29udGFpbmluZ19xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwNGNiMTMwIn0sImZ1bmN0aW9ucyI6W3siZW50cnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDRjYjEzMCJ9LCJuYW1lIjoiU1RMX1ZlY3Rvcl9UaWR5XzAwNGNiMTMwIiwibm9fcmV0dXJuIjpmYWxzZSwiaXNfdGh1bmsiOmZhbHNlLCJ0aHVua190YXJnZXRfcmVjdXJzaXZlIjpmYWxzZSwiZGlyZWN0X3RodW5rX3RhcmdldCI6bnVsbCwiYm9keSI6eyJyYW5nZV9jb3VudCI6MSwicmV0dXJuZWRfcmFuZ2VfY291bnQiOjEsImFkZHJlc3NfY291bnQiOiI0MiIsImNvbXBsZXRlIjp0cnVlLCJyYW5nZXMiOlt7InN0YXJ0Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Y2IxMzAifSwiZW5kX2luY2x1c2l2ZSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwNGNiMTU5In0sImxlbmd0aCI6IjQyIn1dfX1dLCJkaXJlY3RfY2FsbF90YXJnZXRzIjpbXSwibW9kaWZpY2F0aW9uX251bWJlcl9hZnRlciI6IjI3MTkifQ==",
+          "raw_sha256": "ec03b3bda0ad77e9e509bb88cc8b4c32760c8449d3acd649cf6625b5a4d41cc9"
+        },
+        {
+          "address": "00468840",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=00468840&program=battlestationspacific.exe&max_ranges=4096",
+          "http_status": 200,
+          "transport_error": null,
+          "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00468840\"},\"modification_number_before\":\"2719\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00468840\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00468840\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00468840\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00468840\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00468841\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00468841\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"00468840\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00468840\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00468840\"},\"name\":\"STL_Vector_Tidy_00468840\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"42\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00468840\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00468869\"},\"length\":\"42\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"2719\"}",
+          "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDQ2ODg0MCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjI3MTkiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDQ2ODg0MCJ9LCJsZW5ndGgiOjEsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Njg4NDAifSwibGVuZ3RoIjoxLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Njg4NDAifSwibGVuZ3RoIjoxLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDQ2ODg0MCJ9LCJsZW5ndGgiOjEsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IkZBTExfVEhST1VHSCIsImlzX2NhbGwiOmZhbHNlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6ZmFsc2UsImlzX3Rlcm1pbmFsIjpmYWxzZX0sImVmZmVjdGl2ZV9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJkZWZhdWx0X2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Njg4NDEifSwiZWZmZWN0aXZlX2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Njg4NDEifSwiZmFsbHRocm91Z2hfb3ZlcnJpZGRlbiI6ZmFsc2UsImRlZmF1bHRfdGFyZ2V0cyI6W10sImVmZmVjdGl2ZV90YXJnZXRzIjpbXX0sImZ1bmN0aW9uX2F0X3F1ZXJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Njg4NDAifSwiZnVuY3Rpb25fY29udGFpbmluZ19xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwNDY4ODQwIn0sImZ1bmN0aW9ucyI6W3siZW50cnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDQ2ODg0MCJ9LCJuYW1lIjoiU1RMX1ZlY3Rvcl9UaWR5XzAwNDY4ODQwIiwibm9fcmV0dXJuIjpmYWxzZSwiaXNfdGh1bmsiOmZhbHNlLCJ0aHVua190YXJnZXRfcmVjdXJzaXZlIjpmYWxzZSwiZGlyZWN0X3RodW5rX3RhcmdldCI6bnVsbCwiYm9keSI6eyJyYW5nZV9jb3VudCI6MSwicmV0dXJuZWRfcmFuZ2VfY291bnQiOjEsImFkZHJlc3NfY291bnQiOiI0MiIsImNvbXBsZXRlIjp0cnVlLCJyYW5nZXMiOlt7InN0YXJ0Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0Njg4NDAifSwiZW5kX2luY2x1c2l2ZSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwNDY4ODY5In0sImxlbmd0aCI6IjQyIn1dfX1dLCJkaXJlY3RfY2FsbF90YXJnZXRzIjpbXSwibW9kaWZpY2F0aW9uX251bWJlcl9hZnRlciI6IjI3MTkifQ==",
+          "raw_sha256": "1fceeea6bf87ee0483d88cfdc0e11cdd5bc53a99d78ef6a0c127ce5bd0534629"
+        }
+      ],
+      "validation": {
+        "accepted": true,
+        "state": "accepted",
+        "errors": []
+      },
+      "modification_number": "2719"
+    },
+    "typed_capture_sha256": "63a6718a69e2c862ba2c7d521b4aa33a0a11788dc22c0364bf1ee4c1788c09a1",
+    "original_image": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "readiness": "local/oct15_word_vector_tidy_readiness.json",
+    "readiness_sha256": "ac546d4ee4aac6f2bbfc1d5ba98f3f4f71bae5b72bffa8bbad33687cb5a33711",
+    "units": [
+      {
+        "address": "004d29d0",
+        "native_name": "STL_Vector_Tidy_004d29d0",
+        "role": "owned_ordinary",
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "46",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "004d29d0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "004d29fd"
+              },
+              "length": "46"
+            }
+          ]
+        },
+        "body_bytes": 46,
+        "instruction_starts": 13,
+        "raw_bytes": "568b7424088b460485c0740950e8ca3b720083c404c7460400000000c7460800000000c7460c000000005ec20400",
+        "sha256": "f77de825202168a7f5bc40bb25b1c34d4d018d3f7e782a9643e66410c2b5ef91",
+        "instructions": [
+          {
+            "address": "004d29d0",
+            "offset": 0,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": "004d29d1",
+            "offset": 1,
+            "bytes": "8b742408",
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [esp + 8]"
+          },
+          {
+            "address": "004d29d5",
+            "offset": 5,
+            "bytes": "8b4604",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004d29d8",
+            "offset": 8,
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "address": "004d29da",
+            "offset": 10,
+            "bytes": "7409",
+            "mnemonic": "je",
+            "operands": "0x4d29e5"
+          },
+          {
+            "address": "004d29dc",
+            "offset": 12,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "004d29dd",
+            "offset": 13,
+            "bytes": "e8ca3b7200",
+            "mnemonic": "call",
+            "operands": "0xbf65ac"
+          },
+          {
+            "address": "004d29e2",
+            "offset": 18,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "address": "004d29e5",
+            "offset": 21,
+            "bytes": "c7460400000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 4], 0"
+          },
+          {
+            "address": "004d29ec",
+            "offset": 28,
+            "bytes": "c7460800000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 8], 0"
+          },
+          {
+            "address": "004d29f3",
+            "offset": 35,
+            "bytes": "c7460c00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0xc], 0"
+          },
+          {
+            "address": "004d29fa",
+            "offset": 42,
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "address": "004d29fb",
+            "offset": 43,
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ],
+        "transfers": [
+          {
+            "address": "004d29dd",
+            "function": "004d29d0",
+            "kind": "call",
+            "target": "00bf65ac"
+          }
+        ],
+        "commands": [
+          {
+            "command": [
+              "python",
+              "tools/bsp.py",
+              "ghidra",
+              "bytes",
+              "004d29d0",
+              "--length",
+              "46"
+            ],
+            "stdout": "004d29d0  56 8b 74 24 08 8b 46 04 85 c0 74 09 50 e8 ca 3b  V.t$..F...t.P..;\r\n004d29e0  72 00 83 c4 04 c7 46 04 00 00 00 00 c7 46 08 00  r.....F......F..\r\n004d29f0  00 00 00 c7 46 0c 00 00 00 00 5e c2 04 00  ....F.....^...\r\n",
+            "sha256": "92b5058ca6f8fc9a7eec2c3b6bbd90f5b47ae5d6b0b1159db5cdbf051e73d817"
+          },
+          {
+            "command": [
+              "python",
+              "tools/bsp.py",
+              "ghidra",
+              "disasm",
+              "004d29d0",
+              "--lines",
+              "40"
+            ],
+            "stdout": "004d29d0: PUSH ESI \r\n004d29d1: MOV ESI,dword ptr [ESP + 0x8] \r\n004d29d5: MOV EAX,dword ptr [ESI + 0x4] \r\n004d29d8: TEST EAX,EAX \r\n004d29da: JZ 0x004d29e5 \r\n004d29dc: PUSH EAX \r\n004d29dd: CALL 0x00bf65ac \r\n004d29e2: ADD ESP,0x4 \r\n004d29e5: MOV dword ptr [ESI + 0x4],0x0 \r\n004d29ec: MOV dword ptr [ESI + 0x8],0x0 \r\n004d29f3: MOV dword ptr [ESI + 0xc],0x0 \r\n004d29fa: POP ESI \r\n004d29fb: RET 0x4 \r\n",
+            "sha256": "889860614a00dfca0418b8d9408207a639817777f1f4da7a441da8685bcce887"
+          }
+        ],
+        "PE_live_equal": true,
+        "full_current_starts_equal_Capstone": true,
+        "matches_accepted_readiness": true
+      },
+      {
+        "address": "004cdce0",
+        "native_name": "STL_Vector_Tidy_004cdce0",
+        "role": "owned_ordinary",
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "42",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "004cdce0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "004cdd09"
+              },
+              "length": "42"
+            }
+          ]
+        },
+        "body_bytes": 42,
+        "instruction_starts": 13,
+        "raw_bytes": "568bf18b460485c0740950e8bc88720083c404c7460400000000c7460800000000c7460c000000005ec3",
+        "sha256": "4c712812fee2357638a956b8b5d2ef3b9644fe204d2a953e79fad40c544608a0",
+        "instructions": [
+          {
+            "address": "004cdce0",
+            "offset": 0,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": "004cdce1",
+            "offset": 1,
+            "bytes": "8bf1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "address": "004cdce3",
+            "offset": 3,
+            "bytes": "8b4604",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004cdce6",
+            "offset": 6,
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "address": "004cdce8",
+            "offset": 8,
+            "bytes": "7409",
+            "mnemonic": "je",
+            "operands": "0x4cdcf3"
+          },
+          {
+            "address": "004cdcea",
+            "offset": 10,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "004cdceb",
+            "offset": 11,
+            "bytes": "e8bc887200",
+            "mnemonic": "call",
+            "operands": "0xbf65ac"
+          },
+          {
+            "address": "004cdcf0",
+            "offset": 16,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "address": "004cdcf3",
+            "offset": 19,
+            "bytes": "c7460400000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 4], 0"
+          },
+          {
+            "address": "004cdcfa",
+            "offset": 26,
+            "bytes": "c7460800000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 8], 0"
+          },
+          {
+            "address": "004cdd01",
+            "offset": 33,
+            "bytes": "c7460c00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0xc], 0"
+          },
+          {
+            "address": "004cdd08",
+            "offset": 40,
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "address": "004cdd09",
+            "offset": 41,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "transfers": [
+          {
+            "address": "004cdceb",
+            "function": "004cdce0",
+            "kind": "call",
+            "target": "00bf65ac"
+          }
+        ],
+        "commands": [
+          {
+            "command": [
+              "python",
+              "tools/bsp.py",
+              "ghidra",
+              "bytes",
+              "004cdce0",
+              "--length",
+              "42"
+            ],
+            "stdout": "004cdce0  56 8b f1 8b 46 04 85 c0 74 09 50 e8 bc 88 72 00  V...F...t.P...r.\r\n004cdcf0  83 c4 04 c7 46 04 00 00 00 00 c7 46 08 00 00 00  ....F......F....\r\n004cdd00  00 c7 46 0c 00 00 00 00 5e c3  ..F.....^.\r\n",
+            "sha256": "7773cf9fcf4529c9d2765a7f88c1eb28ec43115e33dabfd3a0dc9c85e5af8968"
+          },
+          {
+            "command": [
+              "python",
+              "tools/bsp.py",
+              "ghidra",
+              "disasm",
+              "004cdce0",
+              "--lines",
+              "40"
+            ],
+            "stdout": "004cdce0: PUSH ESI \r\n004cdce1: MOV ESI,ECX \r\n004cdce3: MOV EAX,dword ptr [ESI + 0x4] \r\n004cdce6: TEST EAX,EAX \r\n004cdce8: JZ 0x004cdcf3 \r\n004cdcea: PUSH EAX \r\n004cdceb: CALL 0x00bf65ac \r\n004cdcf0: ADD ESP,0x4 \r\n004cdcf3: MOV dword ptr [ESI + 0x4],0x0 \r\n004cdcfa: MOV dword ptr [ESI + 0x8],0x0 \r\n004cdd01: MOV dword ptr [ESI + 0xc],0x0 \r\n004cdd08: POP ESI \r\n004cdd09: RET \r\n",
+            "sha256": "eb05d664ede872babe00ec78693b1bf5d604d944fe181878897f301af3fd6a26"
+          }
+        ],
+        "PE_live_equal": true,
+        "full_current_starts_equal_Capstone": true,
+        "matches_accepted_readiness": true
+      },
+      {
+        "address": "004cb130",
+        "native_name": "STL_Vector_Tidy_004cb130",
+        "role": "read_only_accepted_reference",
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "42",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "004cb130"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "004cb159"
+              },
+              "length": "42"
+            }
+          ]
+        },
+        "body_bytes": 42,
+        "instruction_starts": 13,
+        "raw_bytes": "568bf18b460485c0740950e86cb4720083c404c7460400000000c7460800000000c7460c000000005ec3",
+        "sha256": "6f4f6a0455b95af5595d49d120b34d6e57eda30a54a05fe855ca5cb9db244b55",
+        "instructions": [
+          {
+            "address": "004cb130",
+            "offset": 0,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": "004cb131",
+            "offset": 1,
+            "bytes": "8bf1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "address": "004cb133",
+            "offset": 3,
+            "bytes": "8b4604",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004cb136",
+            "offset": 6,
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "address": "004cb138",
+            "offset": 8,
+            "bytes": "7409",
+            "mnemonic": "je",
+            "operands": "0x4cb143"
+          },
+          {
+            "address": "004cb13a",
+            "offset": 10,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "004cb13b",
+            "offset": 11,
+            "bytes": "e86cb47200",
+            "mnemonic": "call",
+            "operands": "0xbf65ac"
+          },
+          {
+            "address": "004cb140",
+            "offset": 16,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "address": "004cb143",
+            "offset": 19,
+            "bytes": "c7460400000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 4], 0"
+          },
+          {
+            "address": "004cb14a",
+            "offset": 26,
+            "bytes": "c7460800000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 8], 0"
+          },
+          {
+            "address": "004cb151",
+            "offset": 33,
+            "bytes": "c7460c00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0xc], 0"
+          },
+          {
+            "address": "004cb158",
+            "offset": 40,
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "address": "004cb159",
+            "offset": 41,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "transfers": [
+          {
+            "address": "004cb13b",
+            "function": "004cb130",
+            "kind": "call",
+            "target": "00bf65ac"
+          }
+        ],
+        "commands": [
+          {
+            "command": [
+              "python",
+              "tools/bsp.py",
+              "ghidra",
+              "bytes",
+              "004cb130",
+              "--length",
+              "42"
+            ],
+            "stdout": "004cb130  56 8b f1 8b 46 04 85 c0 74 09 50 e8 6c b4 72 00  V...F...t.P.l.r.\r\n004cb140  83 c4 04 c7 46 04 00 00 00 00 c7 46 08 00 00 00  ....F......F....\r\n004cb150  00 c7 46 0c 00 00 00 00 5e c3  ..F.....^.\r\n",
+            "sha256": "8c4a36db902984c8e72ce51377efde1d929a2a4182fff95f8f878fe9a9d36f6b"
+          },
+          {
+            "command": [
+              "python",
+              "tools/bsp.py",
+              "ghidra",
+              "disasm",
+              "004cb130",
+              "--lines",
+              "40"
+            ],
+            "stdout": "004cb130: PUSH ESI \r\n004cb131: MOV ESI,ECX \r\n004cb133: MOV EAX,dword ptr [ESI + 0x4] \r\n004cb136: TEST EAX,EAX \r\n004cb138: JZ 0x004cb143 \r\n004cb13a: PUSH EAX \r\n004cb13b: CALL 0x00bf65ac \r\n004cb140: ADD ESP,0x4 \r\n004cb143: MOV dword ptr [ESI + 0x4],0x0 \r\n004cb14a: MOV dword ptr [ESI + 0x8],0x0 \r\n004cb151: MOV dword ptr [ESI + 0xc],0x0 \r\n004cb158: POP ESI \r\n004cb159: RET \r\n",
+            "sha256": "1d59d1d283a3e1187431cb88d2fcc5dbef08b98fc3f25a372031c123aba9dacf"
+          }
+        ],
+        "PE_live_equal": true,
+        "full_current_starts_equal_Capstone": true,
+        "matches_accepted_readiness": true
+      },
+      {
+        "address": "00468840",
+        "native_name": "STL_Vector_Tidy_00468840",
+        "role": "read_only_accepted_reference",
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "42",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00468840"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00468869"
+              },
+              "length": "42"
+            }
+          ]
+        },
+        "body_bytes": 42,
+        "instruction_starts": 13,
+        "raw_bytes": "568bf18b460485c0740950e85cdd780083c404c7460400000000c7460800000000c7460c000000005ec3",
+        "sha256": "4b509f3738d7d5a94205765eb2f06c8d7ed0060fb85bbe486307c86ab8db7af2",
+        "instructions": [
+          {
+            "address": "00468840",
+            "offset": 0,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": "00468841",
+            "offset": 1,
+            "bytes": "8bf1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "address": "00468843",
+            "offset": 3,
+            "bytes": "8b4604",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "00468846",
+            "offset": 6,
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "address": "00468848",
+            "offset": 8,
+            "bytes": "7409",
+            "mnemonic": "je",
+            "operands": "0x468853"
+          },
+          {
+            "address": "0046884a",
+            "offset": 10,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "0046884b",
+            "offset": 11,
+            "bytes": "e85cdd7800",
+            "mnemonic": "call",
+            "operands": "0xbf65ac"
+          },
+          {
+            "address": "00468850",
+            "offset": 16,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "address": "00468853",
+            "offset": 19,
+            "bytes": "c7460400000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 4], 0"
+          },
+          {
+            "address": "0046885a",
+            "offset": 26,
+            "bytes": "c7460800000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 8], 0"
+          },
+          {
+            "address": "00468861",
+            "offset": 33,
+            "bytes": "c7460c00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0xc], 0"
+          },
+          {
+            "address": "00468868",
+            "offset": 40,
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "address": "00468869",
+            "offset": 41,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "transfers": [
+          {
+            "address": "0046884b",
+            "function": "00468840",
+            "kind": "call",
+            "target": "00bf65ac"
+          }
+        ],
+        "commands": [
+          {
+            "command": [
+              "python",
+              "tools/bsp.py",
+              "ghidra",
+              "bytes",
+              "00468840",
+              "--length",
+              "42"
+            ],
+            "stdout": "00468840  56 8b f1 8b 46 04 85 c0 74 09 50 e8 5c dd 78 00  V...F...t.P.\\.x.\r\n00468850  83 c4 04 c7 46 04 00 00 00 00 c7 46 08 00 00 00  ....F......F....\r\n00468860  00 c7 46 0c 00 00 00 00 5e c3  ..F.....^.\r\n",
+            "sha256": "7a4f49790d0127fda77dfe63c1fc8eb64b611bf540a609517e10ed8a76492fd6"
+          },
+          {
+            "command": [
+              "python",
+              "tools/bsp.py",
+              "ghidra",
+              "disasm",
+              "00468840",
+              "--lines",
+              "40"
+            ],
+            "stdout": "00468840: PUSH ESI \r\n00468841: MOV ESI,ECX \r\n00468843: MOV EAX,dword ptr [ESI + 0x4] \r\n00468846: TEST EAX,EAX \r\n00468848: JZ 0x00468853 \r\n0046884a: PUSH EAX \r\n0046884b: CALL 0x00bf65ac \r\n00468850: ADD ESP,0x4 \r\n00468853: MOV dword ptr [ESI + 0x4],0x0 \r\n0046885a: MOV dword ptr [ESI + 0x8],0x0 \r\n00468861: MOV dword ptr [ESI + 0xc],0x0 \r\n00468868: POP ESI \r\n00468869: RET \r\n",
+            "sha256": "6d1726a86ac8bd40aa105c1a99d8e6d83ec0394da0db65c5bb8b7fb022fba072"
+          }
+        ],
+        "PE_live_equal": true,
+        "full_current_starts_equal_Capstone": true,
+        "matches_accepted_readiness": true
+      }
+    ],
+    "owned_bytes": 88,
+    "owned_starts": 26,
+    "read_only_reference_bytes": 84,
+    "read_only_reference_starts": 26,
+    "fresh_total_bytes": 172,
+    "fresh_total_starts": 52,
+    "all_transfers": [
+      {
+        "address": "004d29dd",
+        "function": "004d29d0",
+        "kind": "call",
+        "target": "00bf65ac"
+      },
+      {
+        "address": "004cdceb",
+        "function": "004cdce0",
+        "kind": "call",
+        "target": "00bf65ac"
+      },
+      {
+        "address": "004cb13b",
+        "function": "004cb130",
+        "kind": "call",
+        "target": "00bf65ac"
+      },
+      {
+        "address": "0046884b",
+        "function": "00468840",
+        "kind": "call",
+        "target": "00bf65ac"
+      }
+    ],
+    "comparisons": [
+      {
+        "candidate": "004cdce0",
+        "reference": "004cb130",
+        "method": "Full42B comparison;only independently resolved E8rel32 operand offsets0C..0F permitted to differ;both targets actual00BF65AC",
+        "actual_differing_offsets": [
+          12,
+          13
+        ],
+        "allowed_offsets": [
+          12,
+          13,
+          14,
+          15
+        ],
+        "masked_full_bytes_equal": true,
+        "all_other_bytes_equal": true
+      },
+      {
+        "candidate": "004cdce0",
+        "reference": "00468840",
+        "method": "Full42B comparison;only independently resolved E8rel32 operand offsets0C..0F permitted to differ;both targets actual00BF65AC",
+        "actual_differing_offsets": [
+          12,
+          13,
+          14
+        ],
+        "allowed_offsets": [
+          12,
+          13,
+          14,
+          15
+        ],
+        "masked_full_bytes_equal": true,
+        "all_other_bytes_equal": true
+      },
+      {
+        "candidate": "004cb130",
+        "reference": "00468840",
+        "method": "Full42B comparison;only independently resolved E8rel32 operand offsets0C..0F permitted to differ;both targets actual00BF65AC",
+        "actual_differing_offsets": [
+          12,
+          13,
+          14
+        ],
+        "allowed_offsets": [
+          12,
+          13,
+          14,
+          15
+        ],
+        "masked_full_bytes_equal": true,
+        "all_other_bytes_equal": true
+      },
+      {
+        "candidate": "004d29d0",
+        "reference": "004cb130",
+        "method": "Full13-instruction comparison in order;not same physical body. Only header-load instruction, independently resolved free-rel32 operand, and RET4 versus RET differ. Every other instruction byte is identical.",
+        "different_instruction_indexes_zero_based": [
+          1,
+          6,
+          12
+        ],
+        "header_load": "D29D0 MOVESI,[ESP+8] after PUSHESI consumes originalstack+4;reference MOVESI,ECX",
+        "return": "D29D0 RET4;reference plainRET",
+        "same_actual_free_target": "00bf65ac",
+        "all_other_instruction_bytes_equal": true
+      },
+      {
+        "candidate": "004d29d0",
+        "reference": "00468840",
+        "method": "Full13-instruction comparison in order;not same physical body. Only header-load instruction, independently resolved free-rel32 operand, and RET4 versus RET differ. Every other instruction byte is identical.",
+        "different_instruction_indexes_zero_based": [
+          1,
+          6,
+          12
+        ],
+        "header_load": "D29D0 MOVESI,[ESP+8] after PUSHESI consumes originalstack+4;reference MOVESI,ECX",
+        "return": "D29D0 RET4;reference plainRET",
+        "same_actual_free_target": "00bf65ac",
+        "all_other_instruction_bytes_equal": true
+      }
+    ],
+    "native_EH": "No local EH registration/frame/handler/action/try/catch in either complete13-instruction ordinary leaf. Caller scopes are not owned or promoted."
+  },
+  "native_proof_capture": "local/oct15_word_vector_tidy_native_audit.json",
+  "native_proof_sha256": "3e3897f050d772a3ba0dcd4cde2320cf2469865e3bbca1861b61c9384fdbe53d",
+  "native_audit_script": {
+    "path": "local/oct15_word_vector_tidy_native_audit.py",
+    "sha256": "51d5f533b772e3324a59dd417a9f54f01531d676a8667eed8bf21c122bf6b1a7"
+  },
+  "ordered_contract": [
+    "Capture actualheader once: entryESP+4 forD29D0,ECX forCDCE0. Incomingowner/EDX are not consumed.",
+    "Read DWORD[header+4] once;test its captured representation;nonnull pushes that SAME pointer toactual00BF65AC_free. No current+4 reread forfreeargument.",
+    "After returningfree ornullpath,store0 atheader+4,then+8,then+C. Null skips onlyfree,not resets. Capturedheader stays reset target.",
+    "No direct+0 access,element/key traversal,owneraccess,nullheaderguard,diagnostic,rollback,allocation or extra count/type/provider model.",
+    "Header valid/writable through reset;nonnullbacking admitted toCurrentCRTfree. Nativefault/privateframe/asynchronous/invalidstorage behavior not repaired or claimed."
+  ],
+  "actual_source_binding": {
+    "delegation": "Each wholeordinary Source directly invokes accepted tidy_native_dword_vector_004cb130(actual_header),which delegates accepted tidy_native_vector_storage_00468840.",
+    "actual_native_only_child": "00BF65AC_free in both owned bodies and both referencebodies.",
+    "free_service": "Accepted singleton_lifetime_free(void*) noexcept -> currentstd::free. OriginalgameCRT/heapidentity remains qualified.",
+    "accepted_provider_pin": "4f14efd48f1fe4e0c7c01c1830c02c94d3eec522",
+    "provider_files": {
+      "include/bsp/native_dword_vector_copy_primitives.hpp": {
+        "sha256": "05de7aca0352c991ffb3492dee2f6d80931b881db82517a447af88a508394da0",
+        "matches_accepted_main": "14f9e8b64dacaeca684159d4a7b28956cdb34316"
+      },
+      "src/native_dword_vector_copy_primitives.cpp": {
+        "sha256": "bd87e6c832595d2da9e71678b8f27c52c032c3a9578e113104155edcfbe7d993",
+        "matches_accepted_main": "14f9e8b64dacaeca684159d4a7b28956cdb34316"
+      },
+      "include/bsp/native_vector_storage_tidy.hpp": {
+        "sha256": "75c437ed87f0c201617b0c2dc1d2a8643061910c4d0ec431523533fc68d42a06",
+        "matches_accepted_main": "14f9e8b64dacaeca684159d4a7b28956cdb34316"
+      },
+      "src/native_vector_storage_tidy.cpp": {
+        "sha256": "07b2acf3d95a6135d6dc6918c9739ebf09f9d7f6d195e3da02c4438fff091383",
+        "matches_accepted_main": "14f9e8b64dacaeca684159d4a7b28956cdb34316"
+      },
+      "include/bsp/singleton_lifetime.hpp": {
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "matches_accepted_main": "14f9e8b64dacaeca684159d4a7b28956cdb34316"
+      },
+      "src/singleton_lifetime.cpp": {
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "matches_accepted_main": "14f9e8b64dacaeca684159d4a7b28956cdb34316"
+      }
+    },
+    "comparison_masks_and_changes": [
+      {
+        "candidate": "004cdce0",
+        "reference": "004cb130",
+        "method": "Full42B comparison;only independently resolved E8rel32 operand offsets0C..0F permitted to differ;both targets actual00BF65AC",
+        "actual_differing_offsets": [
+          12,
+          13
+        ],
+        "allowed_offsets": [
+          12,
+          13,
+          14,
+          15
+        ],
+        "masked_full_bytes_equal": true,
+        "all_other_bytes_equal": true
+      },
+      {
+        "candidate": "004cdce0",
+        "reference": "00468840",
+        "method": "Full42B comparison;only independently resolved E8rel32 operand offsets0C..0F permitted to differ;both targets actual00BF65AC",
+        "actual_differing_offsets": [
+          12,
+          13,
+          14
+        ],
+        "allowed_offsets": [
+          12,
+          13,
+          14,
+          15
+        ],
+        "masked_full_bytes_equal": true,
+        "all_other_bytes_equal": true
+      },
+      {
+        "candidate": "004cb130",
+        "reference": "00468840",
+        "method": "Full42B comparison;only independently resolved E8rel32 operand offsets0C..0F permitted to differ;both targets actual00BF65AC",
+        "actual_differing_offsets": [
+          12,
+          13,
+          14
+        ],
+        "allowed_offsets": [
+          12,
+          13,
+          14,
+          15
+        ],
+        "masked_full_bytes_equal": true,
+        "all_other_bytes_equal": true
+      },
+      {
+        "candidate": "004d29d0",
+        "reference": "004cb130",
+        "method": "Full13-instruction comparison in order;not same physical body. Only header-load instruction, independently resolved free-rel32 operand, and RET4 versus RET differ. Every other instruction byte is identical.",
+        "different_instruction_indexes_zero_based": [
+          1,
+          6,
+          12
+        ],
+        "header_load": "D29D0 MOVESI,[ESP+8] after PUSHESI consumes originalstack+4;reference MOVESI,ECX",
+        "return": "D29D0 RET4;reference plainRET",
+        "same_actual_free_target": "00bf65ac",
+        "all_other_instruction_bytes_equal": true
+      },
+      {
+        "candidate": "004d29d0",
+        "reference": "00468840",
+        "method": "Full13-instruction comparison in order;not same physical body. Only header-load instruction, independently resolved free-rel32 operand, and RET4 versus RET differ. Every other instruction byte is identical.",
+        "different_instruction_indexes_zero_based": [
+          1,
+          6,
+          12
+        ],
+        "header_load": "D29D0 MOVESI,[ESP+8] after PUSHESI consumes originalstack+4;reference MOVESI,ECX",
+        "return": "D29D0 RET4;reference plainRET",
+        "same_actual_free_target": "00bf65ac",
+        "all_other_instruction_bytes_equal": true
+      }
+    ],
+    "no_unresolved_stubs_callbacks_providers_or_type_count_bridges": true
+  },
+  "EH_and_return_boundary": {
+    "local_native_EH": "No local registration/frame/handler/action/try/catch in full13-instruction leaves. No listing/flow repair needed.",
+    "caller_EH": "D29D0 consumers69809B/69816E pass stackheader and deadECXowner,discard EAX while advancing/rethrowing. CDCE0 is a caller-owned privateunwind target. No parent/action Source is promoted.",
+    "Source": "Void effects and new physical interfaces only;incidental NativeEAX/flags are not modelled. Existing acceptedservice/currentCRT behavior inherited.",
+    "unresolved_original_ABI": "Originaldeclaredconvention/mangling/privateframe/argumentaliases,CRT/heapidentity,FH3/RTTI,fault/SEH,ambientregister/flags,binarydropin/game behavior remain unproved."
+  },
+  "preservation": {
+    "correct_native_library_names": [
+      "STL_Vector_Tidy_004d29d0",
+      "STL_Vector_Tidy_004cdce0"
+    ],
+    "prior_source_apis": "All prior qualified interfaces/declarations/body/contracts untouched. No constructor/placement/rangeparent/action changes.",
+    "accepted_constructor_pin_unchanged": "4cedeba6edda02b365a6752c5bfbdf52a68b12b8",
+    "accepted_readiness_sha256": "ac546d4ee4aac6f2bbfc1d5ba98f3f4f71bae5b72bffa8bbad33687cb5a33711"
+  },
+  "validation": {
+    "build": "./scripts/build.ps1 MSVC Win32 succeeded",
+    "COFF": {
+      "method": "Direct COFFi386 section/symbol/relocation parse and Capstone5.0.7 x86-32;complete dumpbin captures. ExternalREL32symbol plusrawaddend0 verified independently of zero unlinked operand.",
+      "object": "build/win32/bsp_core.dir/Release/native_word_vector_tidy.obj",
+      "object_sha256": "727506193b1b051b9b33451a50177f8a9bb342c77d288eb501c0921a955d7512",
+      "archive": "local/oct15_word_vector_tidy_evidence/native_word_vector_tidy.obj",
+      "machine": "IMAGE_FILE_MACHINE_I386",
+      "functions": [
+        {
+          "name": "tidy_native_word_vector_range_element_004d29d0",
+          "symbol": {
+            "name": "?tidy_native_word_vector_range_element_004d29d0@bsp@@YIXPAXI0@Z",
+            "value": 0,
+            "section": 3,
+            "type": 32,
+            "storage": 2
+          },
+          "section": ".text$mn",
+          "bytes": "558bec8b4d08e8000000005dc20400",
+          "code_bytes": 15,
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "bytes": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "bytes": "8b4d08",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "bytes": "e800000000",
+              "mnemonic": "call",
+              "operands": "0xb"
+            },
+            {
+              "offset": 11,
+              "bytes": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 12,
+              "bytes": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            }
+          ],
+          "relocations": [
+            {
+              "offset": 7,
+              "kind": 20,
+              "symbol": "?tidy_native_dword_vector_004cb130@bsp@@YIXPAX@Z",
+              "target_section": 0,
+              "target_value": 0,
+              "raw_addend": 0
+            }
+          ],
+          "focused_checks": "Balanced EBP frame;MOVECX,[EBP+8] is the sole input read;directactualCB130 CALL;POPEBP;RET4. IncomingownerECX is overwritten before use andEDX unconsumed."
+        },
+        {
+          "name": "tidy_native_word_vector_storage_004cdce0",
+          "symbol": {
+            "name": "?tidy_native_word_vector_storage_004cdce0@bsp@@YIXPAX@Z",
+            "value": 0,
+            "section": 4,
+            "type": 32,
+            "storage": 2
+          },
+          "section": ".text$mn",
+          "bytes": "e900000000",
+          "code_bytes": 5,
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": "e900000000",
+              "mnemonic": "jmp",
+              "operands": "5"
+            }
+          ],
+          "relocations": [
+            {
+              "offset": 1,
+              "kind": 20,
+              "symbol": "?tidy_native_dword_vector_004cb130@bsp@@YIXPAX@Z",
+              "target_section": 0,
+              "target_value": 0,
+              "raw_addend": 0
+            }
+          ],
+          "focused_checks": "Single directtailJMPactualCB130;ECXheader andentryESP propagated unchanged;no newstackword/context/guard/cleanup;plainRET supplied by acceptedcallee. Sourcevoid ambientEAX limitation inherited."
+        }
+      ],
+      "code_bytes": 20,
+      "instruction_starts": 7,
+      "no_local_CPP_EH_metadata": true,
+      "no_free_callbacks_providers_guards_or_extra_child_symbols": true,
+      "source_sha256": {
+        "src/native_word_vector_tidy.cpp": "5da425f344175e2fb4e143450d76c9184b6dfa83be36dc0c5b49b9c1d32dd998",
+        "include/bsp/native_word_vector_tidy.hpp": "76f071a110765cec357421060880e85e1213311f16d886a087439f6c26161079"
+      },
+      "dumpbin": {
+        "local/oct15_word_vector_tidy_coff.asm": "bcdb717631867157a4201d597036b3cf2ef1c601dfc01574d3e2d8fa3aa4f8b5",
+        "local/oct15_word_vector_tidy_coff.relocations.txt": "95027165f1694130be6ab639160c0728b0fe79a10e0688958f824b95b95799f5",
+        "local/oct15_word_vector_tidy_coff.symbols.txt": "a88fef2ffcc1c1a6549a03e765d7b18802a2e96cffb3ec9cfb7bf19639333e1b"
+      },
+      "limits": "Current compiler physicalwrapper emission and acceptedservice binding only;not originalmangling/CRT/privateframe/ambientEAX/fault/FH3/binaryABI/game proof. Newcode length is not nativecoverage."
+    },
+    "primary_review": "pending frozen-pin review",
+    "new_tests": 0,
+    "native_fixture_or_game_execution": "not performed/claimed",
+    "precommit_primary_review": {
+      "receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct15_tidy_twentieth_primary_review.json",
+      "sha256": "9ba5f044f1fe83d7229469a78f2a3bc0b913943df0f60816d4dcda28679e84b0",
+      "checks": [
+        "Full Source/header and both complete13-instruction native bodies reviewed; each wrapper directly delegates accepted actual tidy.",
+        "D29D0 uses only stacked header and RET4; unused owner/EDX slots explicit, no owner type or semantic EAX invented.",
+        "CDCE0 receiver header/plainRET shape retained; direct provider void call preserves admitted raw effects.",
+        "Captured begin is conditionally freed once; unconditional clears4/8/C ordered, opaque0 untouched; no element cleanup, guard or callback.",
+        "Full CDCE0 body differs from each accepted reference only in same-target free-call rel32 operand.",
+        "Full D29D0 instruction comparison differs only in header extraction, same-target call operand and RET4 versus RET.",
+        "Fresh172 PE/live bytes,52 current starts and all4 actual free-call targets independently checked; owned88B/26 starts excludes references.",
+        "Six accepted Source/header fingerprints match Root; ambient EAX/currentCRT/privateframe/FH3/fault/original ABI/game limits retained."
+      ],
+      "reviewed_source_sha256": {
+        "src/native_word_vector_tidy.cpp": "5da425f344175e2fb4e143450d76c9184b6dfa83be36dc0c5b49b9c1d32dd998",
+        "include/bsp/native_word_vector_tidy.hpp": "76f071a110765cec357421060880e85e1213311f16d886a087439f6c26161079"
+      },
+      "status": "Passed preliminary Source/native review at captured receipt hash;documentation/report validation updated afterward and final frozen-pin review separate."
+    },
+    "build_log": "local/oct15_word_vector_tidy_build.log",
+    "build_log_sha256": "f9a39fa7071466450ed4553d1c9af2c36a7f47ad30516676a3e3ea145832bb63",
+    "existing_tests": {
+      "passed": 3,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "seconds": "7.80"
+    },
+    "existing_unrelated_warnings": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-oct15_avoid_distance\\build\\win32\\bsp_core.vcxproj]"
+    ],
+    "COFF_path": "local/oct15_word_vector_tidy_coff.json",
+    "COFF_sha256": "5576aa55335797818c68bc6690916b45bcc0cd81058613826806d6d0d5bbe731",
+    "registration": {
+      "packet": "oct15_word_vector_tidy_cmake",
+      "scope": "Short FIFO acceptedMain merge/one-line startup append;release before build",
+      "prerequisite_merge": "516112ebad5cc1182e6bcadc0e56385a624da5b8",
+      "accepted_main_at_merge": "14f9e8b64dacaeca684159d4a7b28956cdb34316",
+      "startup_before_sha256": "37b7bd0e9794151e1a1e7b65dbfa286998d0247bc5393b520d36e168d68f317f",
+      "startup_after_sha256": "f88fdb55463d94f21f84abddc592dde880994e8647f5a13d28dd5e6b4d5fced1",
+      "registration_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_word_vector_tidy.cpp)",
+      "source_sha256": {
+        "include/bsp/native_word_vector_tidy.hpp": "76f071a110765cec357421060880e85e1213311f16d886a087439f6c26161079",
+        "src/native_word_vector_tidy.cpp": "5da425f344175e2fb4e143450d76c9184b6dfa83be36dc0c5b49b9c1d32dd998"
+      }
+    },
+    "documentation_sha256": "4f7be754600ff1e94b6370881757ee02bf56f5a98f5ec313b4c03634aa8dbdf0",
+    "coverage": "Existing suite/seed coverage only;no new Tidy/native/game equivalence.",
+    "transfer_verifier": {
+      "rows": 4,
+      "Markdown_claims": 4,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "capture": "local/oct15_word_vector_tidy_callcheck.txt",
+      "sha256": "e004b294141ef68678302580cd9fcd083755dc03dcf41acdacdd4a8613586203"
+    }
+  },
+  "limits": [
+    "CurrentMSVCWin32/CPP/CRT raw effect interfaces,not originalmachine/runtime proof.",
+    "No elementtype or ordinarysafe parentobject is inferred from16B cleanupaccesses.",
+    "No native/game/fixtureequivalence executed;existing suitecoverage is not new Tidyfunction coverage."
+  ]
+}

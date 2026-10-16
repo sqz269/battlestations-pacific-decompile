@@ -1,0 +1,33 @@
+{
+  "packet": "goal_oct15_scene_lifetime_main_gate",
+  "status": "normal_Win32_integrated_GUI_clip_and_reviewed_lifetime_batch_all3_existing_checks_passed",
+  "primary_review": "reports\\goal_oct15_scene_lifetime_primary_review.json",
+  "primary_review_sha256": "223140ec88a529dcf71fe427623983e747e1821eb4e40053ac16aa1131dc8c9e",
+  "source_hashes": {
+    "src/native_crt_ascii_stricmp.cpp": "3fe3b237b778e9500e30c11dbbb43f295c24915a2836bd097ceec04760125368",
+    "include/bsp/native_crt_ascii_stricmp.hpp": "b62a16f1efbfc03d33e61eb33250885af5ccca224303f8f8cd959883dc97a3e9",
+    "src/native_scene_hidden_record_lookup.cpp": "23842b3f9a225c1028682912ce61dfdf468e3df405cae187ae5d29d9b835913d",
+    "include/bsp/native_scene_hidden_record_lookup.hpp": "78ed3b8e9053f0de152cf2a4835852fd43b64beffdcb3e35b1709ae770c802b2",
+    "src/native_scene_hidden_entity_record_copy_construct.cpp": "e9d3928e4e9025a1e79fa57de2e44ea8b6f6a69b3991adef0106c03eaea70606",
+    "include/bsp/native_scene_hidden_entity_record_copy_construct.hpp": "deb9852cc0703dc4cea5ee95bbdfe1eb0b2ddbde8442a4d2d9f1269b0c81eb4f",
+    "src/native_scene_hidden_entity_record_destroy.cpp": "8e5cf22b41be55c26f5323cad7b07e23a8b0d8be3dc762830146235df0a94e25",
+    "include/bsp/native_scene_hidden_entity_record_destroy.hpp": "00b0bf1ac65afcbee0b806a0028625ba67ab4f991f7e2c58c0980a99acd4e4ce"
+  },
+  "combined_build": {
+    "revision": "1837bd475d4a24e5755a92da62d9ac3767b0da48",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_scene_lifetime_main_build.log",
+    "log_sha256": "35df1fea4cefb37ef90435af9eef6f795b13779e03f87a63d2eb446b74eb4e3e",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 8.81
+  },
+  "archive_sha256": "5a90c2573fe0d1d9f08d3cdae664a004a2cfbf8a9c077321fb670f06dec934ec",
+  "production_delta_after_tested_revision": [],
+  "qualified_admissions_unchanged": true,
+  "new_entry_executed": false,
+  "abi_compatible": false,
+  "game_validated": false
+}

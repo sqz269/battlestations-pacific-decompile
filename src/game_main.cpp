@@ -38,6 +38,7 @@
 #include <vector>
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_native_gui_text_process.hpp"
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_native_data_bootstrap.hpp"
@@ -1080,7 +1081,17 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     if (options.qualify_vfs_failure_owner)
         return qualify_vfs_failure_owner(log, *native_data, original_image);
 
+    bsp::game::GameNativeGuiTextProcess* text_pool_process = nullptr;
     try {
+        // CE3470/CD71F0 precedes the existing CE34EC/CD7830 subset entry.
+        // Common allocator-list/process storage survives its real CE0A80 atexit
+        // callback. Type initialization waits for this Source graph's VFS domain.
+        auto& gui_text_process = bsp::game::game_native_gui_text_process();
+        text_pool_process = &gui_text_process;
+        const int text_pool_atexit = gui_text_process.initialize_pool_once_00cd71f0();
+        log.notef("native GUI Text pool CRT CD71F0: atexit=%d storage_bytes=%zu "
+            "before_particle_pool=1 type_bootstrap=pending_canonical_vfs",
+            text_pool_atexit, sizeof(bsp::NativeGuiTextPoolStorage));
         auto& particle_pools = bsp::game::game_native_particle_pool_process();
         const int model_atexit = particle_pools.initialize_model_once_00cd7830();
         const int parameter_atexit = particle_pools.initialize_parameters_once_00cd78b0();
@@ -1166,10 +1177,27 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.notef("native Dyn convex pool CRT CC89C0: atexit=%d storage=process_actual38h",
             convex_atexit);
     } catch (const std::exception& failure) {
+        if (text_pool_process && text_pool_process->native_operation_interrupted()) {
+            try {
+                log.notef("native pool startup failed: %s", failure.what());
+                log.note("interrupted GUI Text pool startup; retaining raw pool/list state without CRT cleanup");
+                log.close();
+            } catch (...) { std::fputs("bsp_game: GUI Text pool requires process retention\n", stderr); }
+            std::_Exit(2);
+        }
         std::fprintf(stderr, "bsp_game: native pool startup failed: %s\n", failure.what());
         log.notef("native pool startup failed: %s", failure.what());
         log.close();
         return 1;
+    } catch (...) {
+        if (text_pool_process && text_pool_process->native_operation_interrupted()) {
+            try {
+                log.note("unknown interrupted GUI Text pool startup; retaining raw pool/list state without CRT cleanup");
+                log.close();
+            } catch (...) { std::fputs("bsp_game: GUI Text pool requires process retention\n", stderr); }
+            std::_Exit(2);
+        }
+        std::terminate(); // Preserve WinMain's existing nothrow unknown-failure boundary.
     }
 
     // docs/X87_CONTROL_WORD.md establishes statically that the CRT startup sets
