@@ -1,9 +1,9 @@
 {
   "packet": "goal_oct15_crt_sbh_region_lookup",
-  "status": "whole_physical_Source_draft_metadata_repair_authorized_blocked_on_disabled_script_transport",
+  "status": "whole_physical43B_ordinary_actual_storage_Source_independently_reviewed_plate_only_annotated_primary_build_pending_boundary_repair_NOT_PERFORMED",
   "code_complete": true,
-  "source_ready": false,
-  "readiness_gate": "Whole physical algorithm complete; safe bounded repair/metadata invariants still pending. No compiler, ABI, execution or general Originalfree credit.",
+  "source_ready": true,
+  "readiness_gate": "Whole ordinary C++ Source complete at the actual canonical-state/live-parameter storage contract, with no missing native callees. Independent primary Source review/registered normal build pending. Ghidra analysis-boundary repair remains NOT PERFORMED and is not a functional Native dependency.",
   "source": "src/native_crt_sbh_region_lookup.cpp",
   "header": "include/bsp/native_crt_sbh_region_lookup.hpp",
   "documentation": "docs/GOAL_OCT15_CRT_SBH_REGION_LOOKUP.md",
@@ -30,7 +30,8 @@
       "live_PE_equal": true,
       "original_abi": "cdecl1live pointerDWORD atentryESP+4, EAXdescriptor/null,plainRET; newSourcestate/rawparameter4 bindings are not OriginalABI.",
       "own_native_calls": 0,
-      "source_ready": false
+      "source_ready": true,
+      "formal_body_qualification": "Current formal entry3D remains18B and false thunk to61, whose formal body remains25B. Whole43B refers only to verified physical algorithm coverage, not a repaired formal body."
     }
   ],
   "host_steps": [
@@ -308,10 +309,11 @@
     "excluded": "No generic clear-flow/disassembly/recreation fallback; ghidra_flow_repair --apply is disabled, ghidra_define_function is not the required atomic-preservingroute.",
     "guarded_driver": "local/goal_oct15_sbh_region_repair_driver.py",
     "guarded_driver_sha256": "cb417f03a60c40f2e3249aaf34d1d0192a2510b6be10dee00bc675692d79ca55",
-    "execution_status": "Neither fixed Java nor driver has executed; no compiled-script or mutation credit. Driver requires successful preflight with identical script hash before apply, holds coordination write lock and saves only verified committed success."
+    "execution_status": "NOT PERFORMED. Fixed transaction/driver retained as proposals only; no script policy change, restart, generic recreation, disassembly or Ghidra mutation was attempted.",
+    "future_application": "No automatic apply. Any future repair requires a permitted bounded capability, fresh exact preimages, coordinated ownership/write lock and primary-directed execution."
   },
   "repair_transport": {
-    "status": "BLOCKED,no mutation attempted",
+    "status": "CAPABILITY_UNAVAILABLE; metadata repair NOT PERFORMED, independent of ordinary actual-storage Source readiness",
     "read_only_probe": "local/goal_oct15_sbh_region_repair_script_transport_probe.json",
     "read_only_probe_sha256": "10c46e25655f2add5a95558ca1468757172bb168a44bc09a3f1f344c793d5ff0",
     "http_status": 200,
@@ -335,15 +337,28 @@
   "API_qualification": "Rawparameter4 backing pointerrefinesearlierproposedtypedreference: permits absentempty-path backing and x86unalignedload; no newly inventedguard or shadowNativeframe.",
   "validation": {
     "independent_physical_typed_review": "Primary accepted all43B14ops andmod3629complete InstructionDB capture beforeexplicitrepairauthorization.",
-    "Source_review": "pending",
-    "repair": "notrun;transportdisabled",
-    "registration": "pendingprimary after Source+repair acceptance",
-    "build": "pendinglateractualprimarynormalregisteredgate;noworkerbuildauthorized",
+    "Source_review": {
+      "reviewer": "primary integrator",
+      "result": "PASSED",
+      "scope": "Whole43B14ops actual assembly and entire CPP/header; canonical count-before-base captures, wrapped unsigned end, current raw argument4 BEFORE current descriptor+C, unsigned1MiB comparison, exact20stride and empty read absence.",
+      "accepted_source_hashes": {
+        "src/native_crt_sbh_region_lookup.cpp": "2e4c0957b3288a1fc57b3c3726d5e73918eee9b0ebb330d3036d60566cca198e",
+        "include/bsp/native_crt_sbh_region_lookup.hpp": "69923f4101ee323fa8d2276f684b4fbbf8269c904e2d051860c1f06d030506bc"
+      }
+    },
+    "repair": "NOT PERFORMED. Fresh post-plate typedmod4765 confirms formal18B+25B, botholdnames/false3Dthunk/4D CALL_RETURN unchanged. Source gate independent.",
+    "registration": "Pending primary after independent wholephysical Source review; does not depend on boundary repair.",
+    "build": "Pending later actual primary registered normal Win32 gate; no worker build authorized and prior mapper gate excluded.",
     "new_tests": 0,
     "new_entry_execution": false,
     "Original_ABI": false,
     "general_Originalfree_Source_ready": false,
-    "game_validated": false
+    "game_validated": false,
+    "report_calls": {
+      "rows": 4,
+      "failed": 0,
+      "command": "python tools/verify_report_calls.py reports/goal_oct15_crt_sbh_region_lookup.json"
+    }
   },
   "retained_read_only_receipts": [
     {
@@ -367,5 +382,53 @@
     "Actualcanonicalstate and validreachedstorage required; no heap/lock/bootstrap/errno/PTD/SEH owner supplied.",
     "No duplicateSourcecreditfor retired61formalfunction; positivewholeSourceonly3D aftergates.",
     "Originalfree SCC/readiness remainsfalse; no SDK/heapcallback substitution or selectedfastpath."
-  ]
+  ],
+  "normal_source_functions": 1,
+  "private_source_cleanup_actions": 0,
+  "workflow_gate_correction": "Earlier coupling of Source readiness to Ghidra repair was an assistant workflow condition, not a missing functional Native provider. It is removed; repair remains explicitly pending/false.",
+  "prohibited_repairs": [
+    "Enable broad script policy",
+    "Restart Ghidra for this repair",
+    "Generic delete/recreate/disassemble workaround",
+    "Prototype/bodies/flow writes through a non-atomic substitute"
+  ],
+  "annotation": {
+    "status": "PASSED plate-only evidence append at3D; no function renamed",
+    "write_lock": "coordination.ghidra_lock",
+    "purpose_built_endpoint": "set_plate_comment only; no general rename annotation tool",
+    "prior_and_readback": {
+      "before": {
+        "00c11d3d": {
+          "address": "00c11d3d",
+          "function_name": "LIBCRT_unmatched_00c11d61"
+        },
+        "00c11d61": {
+          "address": "00c11d61",
+          "function_name": "LIBCRT_unmatched_00c11d61",
+          "comment": "[BSP inventory 00c11d61] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+        }
+      },
+      "after": {
+        "00c11d3d": {
+          "address": "00c11d3d",
+          "function_name": "LIBCRT_unmatched_00c11d61",
+          "comment": "[BSP whole-physical Source evidence 00c11d3d]\nHypothesis, not a recovered symbol. Whole physical00C11D3D..00C11D67 is43B14ops; this is NOT the current formal18B body. Current false thunk to00C11D61/formal25B and4D CALL_RETURN override remain UNCHANGED; physical4D is JMP, not a native childCALL. Whole ordinary actual-storage Source find_native_crt_sbh_region_00c11d3d independently assembly-reviewed: canonicalcount0109ED64 BEFOREbase0109ED68, captured DWORD-wrapped end=base+count*14h, unsigneddescriptor<end, fresh actualparameter4 DWORD BEFOREcurrentdescriptor+C each reached iteration, unsignedwrapped difference<100000h, exact20B stride, emptyintervalnoargumentread. Added canonical-state/rawargument bindings are stable/disjoint from reachedrawstorage, not OriginalABI/frame/heap/bootstrap/SEH/game proof. Boundaryrepair NOTPERFORMED: disabledscriptcapability, no policyenable/restart/delete-recreate/disassembly. No function renamed, no prototype/body/flow/byte changed. reports/goal_oct15_crt_sbh_region_lookup.json; generalOriginalfreeSourceReady remainsfalse."
+        },
+        "00c11d61": {
+          "address": "00c11d61",
+          "function_name": "LIBCRT_unmatched_00c11d61",
+          "comment": "[BSP inventory 00c11d61] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+        }
+      }
+    },
+    "project_saved": true,
+    "retained_record": "local/goal_oct15_sbh_region_plate_only_annotation.json",
+    "retained_record_sha256": "c484edd342b17b4a8d37ef49e4af196ab62a91be5f3d2086063a4b638fc9e7ab",
+    "rename_performed": false,
+    "body_flow_prototype_byte_writes": false,
+    "refreshed_export": "exports/bsp/functions/00c11d3d; still formal18B false-thunk export, not whole43B formalbody proof",
+    "post_formal_typed": "local/goal_oct15_sbh_region_post_plate_formal_typed.json",
+    "post_formal_typed_sha256": "63d6a52d96666514ef5ce57bd8183273352c54df34fa20241543c165e0013462",
+    "post_formal_modification": "4765"
+  }
 }
