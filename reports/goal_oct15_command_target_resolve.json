@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "packet": "goal_oct15_command_target_resolve",
-  "status": "whole_ordinary_Source_independently_reviewed_registered_build_pending",
-  "source_ready": false,
+  "status": "whole_ordinary_actual_storage_Source_independently_reviewed_registered_Win32_three_checks_and_emitted_schedule_verified",
+  "source_ready": true,
   "whole_control_flow_source_available": true,
   "source": "src/native_command_target_resolve.cpp",
   "header": "include/bsp/native_command_target_resolve.hpp",
@@ -89,6 +89,52 @@
   },
   "annotation": {
     "status": "existing hypothesis name and full old comment retained;locked append saved and export refreshed",
-    "prior_values": "local/ghidra-annotations-20261016T013022Z.json"
+    "prior_values": "local/ghidra-annotations-20261016T013022Z.json",
+    "final_values_log": "local/ghidra-annotations-20261016T013809Z.json",
+    "final_readback": "local/goal_oct15_command_target_resolve_final_comments.json"
+  },
+  "validation": {
+    "primary_review": "reports/goal_oct15_resolve_clear_primary_review.json",
+    "primary_review_sha256": "d65ca213544bd9fd18b03302da3971ec14d2f59afbc57d1e371bae08541ecb36",
+    "build": {
+      "revision": "280da46334585045bf516ad2d54b90e2d53f35d0",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_resolve_clear_combined_build.log",
+      "log_sha256": "8db2c524c2da91461a8d7335f47b4dd85bb7b35fe86236d469dbf97c58b315a4",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 9.89,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies"
+    },
+    "typed_call_rows": 3,
+    "typed_failed": 0,
+    "documentation_claims": 3,
+    "documentation_failed": 0,
+    "documentation_unchecked": 0,
+    "new_tests": 0,
+    "new_entry_executed": false,
+    "game_validated": false
+  },
+  "emitted_object": {
+    "path": "local\\goal_oct15_resolve_clear_objects\\native_command_target_resolve.obj",
+    "sha256": "f1a827418794df37ecf1bdc61108796b0401df9110248c97fe44e4a58671e3f3",
+    "unique_identical_archive_bodies": 1,
+    "machine": "14c",
+    "disassembly": "local\\goal_oct15_resolve_clear_objects\\native_command_target_resolve.disasm.txt",
+    "symbols": "local\\goal_oct15_resolve_clear_objects\\native_command_target_resolve.symbols.txt",
+    "public_definitions": 1,
+    "ordinary_body_bytes": 110,
+    "ordinary_body_instructions": 50,
+    "ordinary_body_calls": 0,
+    "schedule_review": "passed whole emitted function:kindBYTE+6 beforecachetest+F/freshreturn+16;WORDid+1C then currentsplit+26/signbias;lowbase+3C beforelowtable+46/slot+48/cachestore+4C/capturedreturn;highbase+55 beforehightable+5F/slot+61/cachestore+65/freshcachereturn+68;unsigneddoublingplusaddressscale8 preserves modulo16stride",
+    "Original_binary_private_ABI_or_fault_identity": false
   }
 }

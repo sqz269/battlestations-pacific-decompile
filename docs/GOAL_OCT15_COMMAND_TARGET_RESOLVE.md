@@ -30,9 +30,9 @@ call, callback, synthetic table or singleton getter is substituted.
 
 The still-incomplete entity issue-command parent has these actual transfers:
 
-- 0077D6BD CALL00521EA0.
-- 0077D6ED CALL00521EA0.
-- 0077D782 CALL00521EA0.
+- 0077D6BD CALL 00521EA0.
+- 0077D6ED CALL 00521EA0.
+- 0077D782 CALL 00521EA0.
 
 That parent also needs genuine raw message construction,
 routing, group forwarding and actual callable vtable targets; this leaf does
@@ -40,3 +40,10 @@ not close it. The separate parent inlined handle resolution is not replaced.
 No original private register/argument/fault/binary ABI or game proof is claimed.
 Report reports/goal_oct15_command_target_resolve.json records evidence and
 the independently reviewed build state. No new tests are added for this leaf.
+
+The normal registered MSVC Release Win32 build at
+`280da46334585045bf516ad2d54b90e2d53f35d0` passed all three enabled existing
+checks in 9.89 seconds. The exact retained object appears once in the archive;
+its complete emitted function has the original raw read/write/branch-return
+schedule, with the new Source calling interface. These checks do not execute
+the new routine or establish Original private ABI, fault or game equivalence.
