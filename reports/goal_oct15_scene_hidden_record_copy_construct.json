@@ -1,0 +1,309 @@
+{
+  "packet": "goal_oct15_scene_hidden_record_copy_construct",
+  "status": "whole_native_code_with_qualified_cleanup_and_both_published_provider_admissions_build_pending",
+  "source_ready": false,
+  "general_source_ready": false,
+  "code_complete": true,
+  "bounded_current_code_usable": true,
+  "source": "src/native_scene_hidden_entity_record_copy_construct.cpp",
+  "header": "include/bsp/native_scene_hidden_entity_record_copy_construct.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_COPY_CONSTRUCT.md",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "installed_binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "annotation": "AppliedunderwriteLock;priorvaluesretained;projectsaved;bothexportsrefreshed;nativenames/qualifiedevidencereadback"
+  },
+  "readiness": {
+    "actual_raw_gap": "OnlylegacySeg6Hostprojectionexisted;newactualrawSourceisdistinct",
+    "missing_provider_stubs": false,
+    "general_source_ready": false,
+    "admission": "Intersectionofbothpublishedcloneandduplicateprovidercontractswhereeachisreached;notnewfailure/graph/parentclosure"
+  },
+  "routines": [
+    {
+      "address": "00469240",
+      "name": "copy_construct_native_scene_hidden_entity_record_00469240",
+      "native_name_preserved": "BSP_SceneHiddenEntityRecord_CopyConstruct",
+      "coverage": "whole_native_normal_control_flow_code_under_both_published_provider_admissions_general_Source_ready_false",
+      "original_abi": "ECXrecord/oneLIVEsource-pointerstackword/RET4/EAXcapturedrecord;newSourceexplicitinput4+savedthis4+rawpool+clonecontexts",
+      "code_complete": true,
+      "source_ready": false,
+      "bytes": 181,
+      "instructions": 58,
+      "end_inclusive": "004692f4",
+      "original_hex": "6aff689b1ac60064a10000000050648925000000005153568bf18d5e54c7064056ce00578974240cc70300000000c74304000000008b7c24208b4f04c744241800000000e867af48008946048b4f08e8acfbfcff8946088b4f0ce8a1fbfcff8d4f1489460c8b4710518d4e14894610e83ca2faff83c7543bdf74248b176a01528bcbe8794afbff833f0074138b038b4f048b5304505152e8a4e3780083c40c8b4c24105f8bc65e5b64890d0000000083c410c20400",
+      "original_sha256": "4cdd3541d4a7a26ccdfbf92930eb909d29755bde90d47239017ca37407741c54"
+    },
+    {
+      "address": "00c61a90",
+      "name": "unwind_native_scene_hidden_entity_record_copy_00c61a90",
+      "native_name_preserved": "Unwind@00c61a90",
+      "coverage": "qualified_whole_cleanup_action_mapping_not_OriginalFH3_transport_or_general_Source_ready",
+      "original_abi": "NativeEBPframe/CURRENT[EBP-10]+54/tailJMP41DD20;newSourceexplicitcurrent_savedthis4/rawpoolcontext",
+      "code_complete": true,
+      "source_ready": false,
+      "bytes": 11,
+      "instructions": 3,
+      "end_inclusive": "00c61a9a",
+      "original_hex": "8b4df083c154e985c27bff",
+      "original_sha256": "070581789e7582b0a469262f08ef76f758276d601c759324deb85d5f43b58051"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00469284",
+      "native": "008f41f0",
+      "kind": "call",
+      "function": "00469240",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "0046928f",
+      "native": "00438e40",
+      "kind": "call",
+      "function": "00469240",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "0046929a",
+      "native": "00438e40",
+      "kind": "call",
+      "function": "00469240",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "004692af",
+      "native": "004134f0",
+      "kind": "call",
+      "function": "00469240",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "004692c2",
+      "native": "0041dd40",
+      "kind": "call",
+      "function": "00469240",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "004692d7",
+      "native": "00bf7680",
+      "kind": "call",
+      "function": "00469240",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "00c61a96",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "function": "00c61a90",
+      "flow_override": "CALL_RETURN",
+      "default_flow": "UNCONDITIONAL_JUMP",
+      "effective_flow": "CALL_TERMINATOR"
+    }
+  ],
+  "typed_metadata": {
+    "path": "local/goal_oct15_hidden_record_copy_typed.json",
+    "responses": 9,
+    "project_program_guarded": true,
+    "analysis_or_flow_repair": false
+  },
+  "raw_frame": {
+    "native_argument": "oneLIVEsource-pointerword;captureonlyAFTERsavedthis/vtable/header0stores",
+    "actual_parameters4": "Explicitstableborrowednativeinputbacking;readonceat69275",
+    "actual_saved_this4": "ExplicitborrowedcellwrittenatnativePUSHECX69255andstore69264;qualifiedcleanupreadsCURRENTcell",
+    "binding_metadata": "Stable/disjointfromallreachedrawcells,payloadsandprovideraccesses",
+    "excluded_aliases": "Noimplicitcompiler/privateFH3/outgoingargumenthomealiases"
+  },
+  "live_schedule": [
+    "savedthis=record;record0=borrowedCE5640;savedthis=record;header54=0;header58=0",
+    "captureCURRENTinputsourceONCE;readCURRENTsourcebag;arm;actualclone;publishdestbag",
+    "readCURRENTsourcename;actualduplicate;publishdest8;readCURRENTsourceclass;actualduplicate",
+    "computeSOURCE14;publishdestclassC;THENreadCURRENTsourceparty10;publishdestparty;actualmatrixcopy",
+    "afterMatrixSOURCE54;selfskip;readCURRENTsourcelen;resizepreserve1;rereadCURRENTsourcelen",
+    "ifnonzero:CURRENTdestlen,sourceData,destDatainthatorder;SDKoverlapcopyDESTlenincludingreachedzero",
+    "normaldisableSourceguard;returncapturedrecord;cleanupsoleCURRENTsavedthis+54;nootherfree"
+  ],
+  "vtable_representation": "LiteralborrowedactualCE5640rawimagewordonly;noSourcevtable/virtualdispatch/nominalownerorABIcredit",
+  "EH": {
+    "handler": "00c61a9b",
+    "FuncInfo": "00d890c8",
+    "FuncInfo_hex": "2205931901000000c090d80000000000000000000000000000000000",
+    "unwind_map": "00d890c0",
+    "unwind_map_hex": "ffffffff901ac600",
+    "action": "state0->minus1via00c61a90;CURRENTsavedthis4+54->actual41dd20;soleheadercleanup",
+    "normal": "NativeunlinksFSwithoutstate-minus-onewrite;ordinarySourceguarddisarmisnotanextraactualstore",
+    "limits": "Qualifiedactiononly;OriginalFH3/SEH/privateframe/state/secondarycleanupthrowequivalenceunproved"
+  },
+  "native_incoming": {
+    "callers": 0,
+    "xrefs": 0,
+    "live_queries": "Bothlivecallersandxrefsreturnednone;noinventedincomingcoverage",
+    "limits": "Noapplicationadoptionorindirectcallersemanticsinferred"
+  },
+  "actual_matrix_provider": {
+    "address": "004134f0",
+    "complete_bytes": 103,
+    "instructions": 35,
+    "end_inclusive": "00413556",
+    "end_exclusive": "00413557",
+    "current_COFF_no_relocations_full_native_PE_and_live_equal": true,
+    "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+    "schedule": "16sequentialFLD/FSTP,no finiteguard/snapshot/CWreset;ambientFPoperationsretained;physicalFIP/fault/SEH unbound"
+  },
+  "actual_clone_provider": {
+    "address": "008f41f0",
+    "source": "src/native_scene_property_clone.cpp",
+    "header": "include\\bsp\\native_scene_property_clone.hpp",
+    "actual_API": "clone_native_scene_property_bag_008f41f0(source_bag,NativeScenePropertyCloneContext&)",
+    "body_read": "Complete154B49opnativebodyandordinarySourceread;realcanonicalowningallocation/iterator/recursiveclone/insert",
+    "inherited_contract": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholePropertyCloneFPContract01\\whole_clone_ready_contract.DATA.json",
+      "bytes": 53210,
+      "sha256": "ee7e032b1671758589a8bc2ebdca06de8274a0cc1964d6a08987bc4dd072c377"
+    },
+    "canonical_context": {
+      "same_actual_processes_for_clone_insertion_and_retirement": true,
+      "startup": "explicit CC8A30 has returned",
+      "clone_empty_role": "distinct permanent private const-zero byte appended after existing members in GameNativeStringProcess; getter clone_empty_00f89450",
+      "original_writable_zero_universally_immutable": false
+    },
+    "type1_domain": {
+      "inputs": "all binary32 bit patterns",
+      "x87_stack": "empty at each conversion",
+      "exception_masks": "all six already one",
+      "precision_control": [
+        24,
+        53,
+        64
+      ],
+      "rounding_control": "any valid mode",
+      "pending_unmasked_exception": false,
+      "exact_helper_hex": "d9410c51d91c2458c3",
+      "production_state_reset": false,
+      "excluded_oracles": [
+        "undefined condition bits",
+        "popped register payload",
+        "FIP/FDP/FOP address identity",
+        "Original parent register/stack/FS identity"
+      ]
+    },
+    "limits": [
+      "successful same canonical current allocation/provider domain only",
+      "finite unshared acyclic stable owning graphs; no mutation, trim, reentry, overflow, invalid memory or alias",
+      "closed NUL-free ASCII keys in current C locale, including empty",
+      "Type8 positive byte count; Type9/10 positive count <=3FFFFFFFh; Type11 positive count <=15555555h",
+      "new ordinary C++ interfaces; no Original parent register/stack/FS/SEH/EH/OOM, historical CRT, class/vtable, World or gameplay claim"
+    ],
+    "original_failure_unwind_equivalence": false
+  },
+  "duplicate_provider_admission": "Published438e40nullorreadablecontiguousNUL/nonwrappinglen+1/address/normalsuccess/disjointcurrentallocationonly;failure/newhandler/reentry/privateunwindunproved",
+  "sdk_copy": {
+    "actual_native_service": "00bf7680",
+    "new_Source_binding": "Source-onlyx86nakedE9torealSDKmemmove;overlap/reachedzero-call;noOriginalhelperframecredit",
+    "installed_zero_path_prior_report": "reports\\goal_oct15_scene_hidden_record_construct.json",
+    "prior_report_sha256": "45bb46086ef9b2029787fa1a9ea2a20f646805485449c5e8daf02ed501db2592",
+    "prior_review": {
+      "Source_only_adapter": "copy_current_crt_bytes nakedcdeclJMP realSDKmemmove;noNativecredit",
+      "installed_file": "C:\\Windows\\SysWOW64\\VCRUNTIME140.dll",
+      "installed_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+      "machine": "014c",
+      "export_rva": "000161a0",
+      "forwarder": null,
+      "zero_path": "Count0cannotenterbackwardoverlapbranch;161C0CMP0,20/JB1669B;1669BANDcount,1F/JE166D0;166D0loadsreturneddst/pops/RET;nodatareads",
+      "installed_zero_path_checked": true,
+      "qualification": "ExistingprimaryexeimportsVCRUNTIME140.dll/noapp-localDLL;staticinstalledprovidercheck,notnewloadedprocess/originalCRTidentity"
+    },
+    "new_emitted_edge": "pendingpostbuildverification"
+  },
+  "provider_Source_hashes": {
+    "src/native_camera_matrix_copy.cpp": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d",
+    "include/bsp/native_camera_matrix_copy.hpp": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a",
+    "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+    "src/native_string_duplicate.cpp": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0",
+    "include/bsp/native_string_duplicate.hpp": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+    "src/native_scene_property_clone.cpp": "e3f5d4d54e50e1c59b436b6d5050b057633614c3b9b9c5168e6da5587178ae65",
+    "include/bsp/native_scene_property_clone.hpp": "bd33cc26468d30007c27fcfb3aa36914d3e0455a61afa744f86c9720ae2ee6f1"
+  },
+  "source_hashes": {
+    "src/native_scene_hidden_entity_record_copy_construct.cpp": {
+      "bytes_sha256": "e9d3928e4e9025a1e79fa57de2e44ea8b6f6a69b3991adef0106c03eaea70606",
+      "normalized_lf_sha256": "e9d3928e4e9025a1e79fa57de2e44ea8b6f6a69b3991adef0106c03eaea70606"
+    },
+    "include/bsp/native_scene_hidden_entity_record_copy_construct.hpp": {
+      "bytes_sha256": "deb9852cc0703dc4cea5ee95bbdfe1eb0b2ddbde8442a4d2d9f1269b0c81eb4f",
+      "normalized_lf_sha256": "deb9852cc0703dc4cea5ee95bbdfe1eb0b2ddbde8442a4d2d9f1269b0c81eb4f"
+    }
+  },
+  "validation": {
+    "complete_owned_native_bytes": 192,
+    "complete_owned_instructions": 61,
+    "live_equals_installed_PE": true,
+    "native_calls": 6,
+    "qualified_action_tail_JMPs": 1,
+    "incoming_calls": 0,
+    "typed_rows": 7,
+    "complete_native_body_and_actual_callees_read": true,
+    "build": "pendingprimarycompleteSourcereview",
+    "registration": "notqueuedpendingprimaryreview",
+    "new_tests": 0,
+    "direct_new_entry_execution": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "application_adoption": false,
+    "report_calls": "7typednativeCALL/JMProwschecked,0failed",
+    "documentation_calls": "15addresses/7claims/0failed/unchecked/warnings"
+  },
+  "limits": [
+    "GeneralSource-readyFALSEevenafterbuild;inheritBOTHcloneandduplicateadmissions",
+    "WholeCODEdoesnotproveOriginalfailure/newhandler/reentry/privateFH3/SEH/secondarycleanupthrowpaths",
+    "NoHostprojection/stub/callback/newgraphowner/validation/snapshot/finiteFPguard/extraheader-bag-name-recordfree",
+    "Existingactualx87provideronly;noNativeentrydifferential/ABI/application/gameclaim"
+  ],
+  "annotation_prior_values": [
+    {
+      "address": "00469240",
+      "before": {
+        "address": "00469240",
+        "function_name": "BSP_SceneHiddenEntityRecord_CopyConstruct",
+        "comment": "[BSP reconstruction 00469240]\ncc13-mopup1: vtable 00CE5640 (BSP_SceneHiddenEntityRecord), copies the property bag, matrix and strings (0045 doc: scene record copy constructor)"
+      },
+      "after": {
+        "address": "00469240",
+        "name": "BSP_SceneHiddenEntityRecord_CopyConstruct",
+        "evidence": "cc13-mopup1: vtable 00CE5640 (BSP_SceneHiddenEntityRecord), copies the property bag, matrix and strings (0045 doc: scene record copy constructor) | Whole181B/58op CODE under BOTHpublishedactualclone8F41F0 and duplicate438E40 admissions;generalSourceReadyFALSE. LIVEinput4capturedaftersavedthis/vtable/headerzero;freshbag/name/class;classpublicationBEFOREpartyread;actualmatrixthenheaderresize/reread/DESTlencopy. BorrowedCE5640rawtag;real103Bx87/rawpool/clone/duplicate/currentSDKservices;192BlivePE61ops/7typedtransfers/noincomingrefs. Inheritedcanonicalstablefinitegraph/ASCII/payload/FP/success/nonwrapping/disjointlimits;failure/newhandler/reentry/privateunwind/ABI/gameunproved. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_COPY_CONSTRUCT.md"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00c61a90",
+      "before": {
+        "address": "00c61a90",
+        "function_name": "Unwind@00c61a90"
+      },
+      "after": {
+        "address": "00c61a90",
+        "name": "Unwind@00c61a90",
+        "evidence": "Whole11B/3op CODE under BOTHpublishedactualclone8F41F0 and duplicate438E40 admissions;generalSourceReadyFALSE. QualifiedCURRENTsavedthis4+54solepooledheadercleanup;notOriginalFH3;no bag/rawname/recordfree. BorrowedCE5640rawtag;real103Bx87/rawpool/clone/duplicate/currentSDKservices;192BlivePE61ops/7typedtransfers/noincomingrefs. Inheritedcanonicalstablefinitegraph/ASCII/payload/FP/success/nonwrapping/disjointlimits;failure/newhandler/reentry/privateunwind/ABI/gameunproved. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_COPY_CONSTRUCT.md"
+      },
+      "status": "applied"
+    }
+  ]
+}
