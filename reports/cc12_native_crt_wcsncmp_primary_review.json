@@ -1,13 +1,13 @@
 {
   "schema": "bsp.cc12.native_crt_wcsncmp.primary.v1",
-  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+  "status": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
   "Source_commit": "c590710ae230135ead4f96979a915e00483cc4a4",
   "Source": "src/native_crt_wcsncmp.cpp",
   "header": "include/bsp/native_crt_wcsncmp.hpp",
   "documentation": "docs/NATIVE_CRT_WCSNCMP.md",
   "Original_name_retained": "_wcsncmp",
   "whole_ordinary_functions": 1,
-  "Source_credit": 0,
+  "Source_credit": 1,
   "primary_author": {
     "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcsncmp_integration_20261016\\primary_author_inputs.DATA.json",
     "bytes": 2540,
@@ -34,8 +34,8 @@
   "before_candidates": 9249,
   "worker_baselines": 0,
   "Main_registered": true,
-  "Main_build": "pending",
-  "actual_compiler_archive_gate": "pending",
+  "Main_build": "pass_3_existing_CTests",
+  "actual_compiler_archive_gate": "pass",
   "contract": [
     "New target-specific MSVC Win32 ordinary interface: int __cdecl bsp::compare_native_crt_wide_prefix_00bfdcb7(const void* actual_left, const void* actual_right, unsigned int count). Keep correct Original library name _wcsncmp. Pointers/int/count32bits, BYTE8bits, little-endian unsigned WORD16 code units. No Unicode scalar/surrogate/normalization/casefold/locale/collation semantics.",
     "Count0 accepts any pointer values including null and returns0 before payload reads. Positive count requires genuine live determinate stable storage for ALL actually reached two-byte reads, including BOTH final WORD rereads. Do not require an entire count-sized extent when an earlier mismatch/LHS zero stops. Reached reads wholly inside the actual allocation; reached pointer advances/endpoints within or one past it and nonwrapping. No dereference of one-past, arbitrary signed count cap, padding, initial alignment, or typed wchar/uint16 ownership condition.",
@@ -49,5 +49,7 @@
   ],
   "Original_ABI_compatible": false,
   "new_Source_body_executed": false,
-  "game_validated": false
+  "game_validated": false,
+  "Main_gate": "pass",
+  "Main_validation": "reports/cc12_native_crt_wcsncmp_Main_validation.json"
 }

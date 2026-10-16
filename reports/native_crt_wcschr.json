@@ -1,0 +1,540 @@
+{
+  "schema": "bsp.native_crt_wcschr.Source3.v1",
+  "packet": "cc12_native_crt_wcschr_00bfd6c1",
+  "status": "whole_ordinary_Source_strict_compiled_entire_actual_COFF_reviewed_pending_Root_independent_compiler_Main",
+  "address": "00bfd6c1",
+  "Original_library_name": "_wcschr",
+  "owned_range_inclusive": [
+    "00bfd6c1",
+    "00bfd6e2"
+  ],
+  "Original_bytes": 34,
+  "Original_instructions": 14,
+  "body_sha256": "e4b72b2afb31591ec009972ea1f43046210cdb6eee393458328393a9c29f915e",
+  "Source_authorized": true,
+  "Source_implemented": true,
+  "Source_credit": 0,
+  "Source_credit_gate": "Root independent/compiler/Main gates remain; worker compile/object review does not award credit.",
+  "authoritative_Source_gate": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\reports\\cc12_native_crt_wcschr_readiness.json",
+    "bytes": 5614,
+    "sha256": "df5a1097e63d5319df486d1849d7c5acfbada3d5a718660737df51c65617badc",
+    "mtime_ns": 1792129408453518100,
+    "observed_utc": "2026-10-16T05:49:43.254690+00:00",
+    "regular": true,
+    "links": 1
+  },
+  "pinned_Main_fast_forward": "2289532a8555ac0f2e8915069bb4fc34800095fe",
+  "new_API": "void* __cdecl bsp::find_native_crt_wide_character_00bfd6c1(void*, int)",
+  "default_potentially_throwing_signature": true,
+  "source_files": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\include\\bsp\\native_crt_wcschr.hpp",
+      "bytes": 1595,
+      "sha256": "efeff9199f8520d384e3d5d8db7dd219f59154cfe4c23a4d6a258879a83939dd",
+      "mtime_ns": 1792129473021381400,
+      "observed_utc": "2026-10-16T05:49:43.254887+00:00",
+      "regular": true,
+      "links": 1
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\src\\native_crt_wcschr.cpp",
+      "bytes": 1342,
+      "sha256": "c61bfb0f958f439b5ad71f3484d6ccedbf284f18427c4001100dc5dbc4d0644f",
+      "mtime_ns": 1792129473021985500,
+      "observed_utc": "2026-10-16T05:49:43.255044+00:00",
+      "regular": true,
+      "links": 1
+    }
+  ],
+  "ordinary_contract": [
+    "MSVC Win32, BYTE8, pointer/int32, little-endian unsigned WORD16 code units. Every int selects low16 bits modulo65536. No Unicode scalar/surrogate/normalization/case/locale/collation semantics.",
+    "Require a finite first reached unit equal to targetlow16 or NUL. Every reached two-byte read, including terminal-NUL reread, is wholly within genuine live stable determinate readable storage in the same allocation. Earlier nonzero match needs no unused extent or later-NUL promise.",
+    "Admit unaligned raw byte storage, prefixes/interior regions and stable read-only aliases. Reached advances by two are nonwrapping and within or one past the same allocation; never read one-past. No typed wchar/WORD ownership, initial alignment, padding, signed cap or copied allocation.",
+    "One WORD per visited unit, NUL test first. Nonzero match returns actual borrowed pointer with NO reread. Only unequal nonzero units advance two. NUL ALWAYS causes one separate fresh same-WORD reread including target0, then pointer if reread equals target, null otherwise. No after-NUL or unconditional nonzero-match final read.",
+    "Result borrows the genuine allocation lifetime. No payload writes, ownership transfer, SDK wcschr/memcpy/search, byte/dword replacement, provider/global/TLS, fallback, runtime validation, new null guard or Original caller binding.",
+    "Exclude null/invalid reached storage, faults, mutation/concurrency, indeterminate bytes, lifetime changes and MMIO/volatile observation protocols. No physical Original ABI/register/home/stack/flags/segment/EH/instruction/bus/fault/runtime/game identity."
+  ],
+  "Original_path_evidence": [
+    {
+      "sites": "00BFD6C1;00BFD6C5",
+      "behavior": "Pointer DWORD [ESP+4] first, then target WORD [ESP+8]. Upper EDX irrelevant; low16 target only."
+    },
+    {
+      "sites": "00BFD6CA;00BFD6D3..00BFD6D9",
+      "behavior": "Read unsigned WORD at each reached current address, then test NUL."
+    },
+    {
+      "sites": "00BFD6CC..00BFD6CF",
+      "behavior": "Compare stored nonzero CX with DX; match returns without extra payload read."
+    },
+    {
+      "sites": "00BFD6D1..00BFD6D2",
+      "behavior": "Only unequal nonzero path advances actual address two bytes."
+    },
+    {
+      "sites": "00BFD6DB..00BFD6DE",
+      "behavior": "Mandatory same-WORD reread after NUL, including target0, before pointer selection."
+    },
+    {
+      "sites": "00BFD6E0..00BFD6E2",
+      "behavior": "Clear EAX for terminal mismatch and use common plain RET."
+    }
+  ],
+  "Original_calls": 0,
+  "all14_Original_rows_read_in_author_primary_peer_readiness": true,
+  "fresh_disk_observation": "original_observation.json",
+  "target_mechanism": {
+    "approved_private_helper": "read_unsigned_word(const unsigned char*)",
+    "operation": "MSVC Win32 addressed MOVZX EAX,WORD PTR [EAX] over genuine possibly unaligned raw bytes, then compiler-managed fully initialized unsigned32 result.",
+    "no_typed_WORD_object_lifetime_alias_or_alignment_requirement": true,
+    "terminal_NUL_read_is_separate_Source_operation": true,
+    "portable_ISO_claim": false,
+    "actual_whole_strict_object_reviewed": true,
+    "actual_Main_variant_still_requires_review": true
+  },
+  "strict_compile": {
+    "invocations": 1,
+    "exit_code": 0,
+    "compiler_version": "19.51.36244.0",
+    "argv": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "/nologo",
+      "/Bv",
+      "/std:c++17",
+      "/O2",
+      "/W4",
+      "/WX",
+      "/permissive-",
+      "/EHsc",
+      "/MD",
+      "/c",
+      "/showIncludes",
+      "/sourceDependencies",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcschrSource01\\strict.dependencies.json",
+      "/FAcs",
+      "/FaJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcschrSource01\\strict.cod",
+      "/FoJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcschrSource01\\strict.obj",
+      "/IJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\include",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\src\\native_crt_wcschr.cpp"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16",
+    "started_utc": "2026-10-16T05:46:47.552762+00:00",
+    "finished_utc": "2026-10-16T05:46:47.623789+00:00",
+    "receipt": "strict.receipt.json",
+    "stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcschrSource01\\strict.stdout.bin",
+      "bytes": 150,
+      "sha256": "0940212776c9e561ef4a8522ea4b309269f15e92b2242acbfbc01175f6c1a843",
+      "mtime_ns": 1792129607623352300,
+      "observed_utc": "2026-10-16T05:46:47.629002+00:00",
+      "regular": true,
+      "links": 1
+    },
+    "stderr": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcschrSource01\\strict.stderr.bin",
+      "bytes": 1100,
+      "sha256": "093f4120c607ff18ca2c386c3777d4a21ba19014118e189b4c2cfe2d361a4b1f",
+      "mtime_ns": 1792129607623352300,
+      "observed_utc": "2026-10-16T05:46:47.633372+00:00",
+      "regular": true,
+      "links": 1
+    },
+    "stderr_interpretation": "/Bv compiler-pass/version metadata only; no warning/error diagnostic.",
+    "environment": "compiler_environment.json",
+    "fresh_before_inputs": "inputs_before.json",
+    "fresh_candidate_files": 9265,
+    "fresh_before_hashes_finished_utc": "2026-10-16T05:46:13.598234+00:00",
+    "actual_showIncludes_and_sourceDependencies_preserved": true,
+    "actual_dependencies": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\src\\native_crt_wcschr.cpp",
+        "bytes": 1342,
+        "sha256": "c61bfb0f958f439b5ad71f3484d6ccedbf284f18427c4001100dc5dbc4d0644f",
+        "mtime_ns": 1792129473021985500,
+        "observed_utc": "2026-10-16T05:46:48.517047+00:00",
+        "regular": true,
+        "links": 1
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\include\\bsp\\native_crt_wcschr.hpp",
+        "bytes": 1595,
+        "sha256": "efeff9199f8520d384e3d5d8db7dd219f59154cfe4c23a4d6a258879a83939dd",
+        "mtime_ns": 1792129473021381400,
+        "observed_utc": "2026-10-16T05:46:48.517327+00:00",
+        "regular": true,
+        "links": 1
+      }
+    ],
+    "all_actual_closure_fresh_before_hashed_unchanged": true,
+    "preparation_failures": [],
+    "compiler_failures": 0,
+    "compiler_replay": false,
+    "no_separate_unregistered_worker_baseline_requested": true
+  },
+  "actual_COFF": {
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcschrSource01\\strict.obj",
+      "bytes": 1164,
+      "sha256": "466053a3d1bfb1cff7ac12cbe70aacdff72166c117571ff5666b8064e3d365ab",
+      "mtime_ns": 1792129607616333700,
+      "observed_utc": "2026-10-16T05:47:08.923296+00:00",
+      "regular": true,
+      "links": 1
+    },
+    "machine": "014c",
+    "inventory": "object_inventory.json",
+    "whole_code_listing": "strict.disasm.txt",
+    "dumpbin_receipt": "dumpbin.receipt.json",
+    "whole_raw_dump": "dumpbin.stdout.bin",
+    "sections": [
+      {
+        "number": 1,
+        "name": ".drectve",
+        "bytes": 47,
+        "characteristics": "00100a00",
+        "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab",
+        "relocations": []
+      },
+      {
+        "number": 2,
+        "name": ".debug$S",
+        "bytes": 196,
+        "characteristics": "42100040",
+        "sha256": "96a90ce75465435dac4d9a43246e8980028f20ee90bf8fc20afa205507e6f0e1",
+        "relocations": []
+      },
+      {
+        "number": 3,
+        "name": ".text$mn",
+        "bytes": 64,
+        "characteristics": "60501020",
+        "sha256": "eefa3cee1fa9bda8b5cbf15dcca5eb73e3bddf0986a62c69475c1d647a9ea057",
+        "relocations": []
+      },
+      {
+        "number": 4,
+        "name": ".debug$F",
+        "bytes": 16,
+        "characteristics": "42101040",
+        "sha256": "a2b5a5260519171041df59ec8a3296d0b872067eeff7bb90e3afc87d8a2fce99",
+        "relocations": [
+          {
+            "offset": 0,
+            "symbol_index": 14,
+            "symbol": "?find_native_crt_wide_character_00bfd6c1@bsp@@YAPAXPAXH@Z",
+            "type": 7
+          }
+        ]
+      },
+      {
+        "number": 5,
+        "name": ".text$mn",
+        "bytes": 16,
+        "characteristics": "60501020",
+        "sha256": "2ba4336b2865d21c1a521635a0335a809e4a59bc88f5c01a02d6ceb575e7fd43",
+        "relocations": []
+      },
+      {
+        "number": 6,
+        "name": ".debug$F",
+        "bytes": 16,
+        "characteristics": "42101040",
+        "sha256": "d5722ce80deccbfb59355d8345c5352bd2caa30ce22558fa6dff7dc515bc3256",
+        "relocations": [
+          {
+            "offset": 0,
+            "symbol_index": 15,
+            "symbol": "?read_unsigned_word@?A0x015e8cb8@bsp@@YAIPBE@Z",
+            "type": 7
+          }
+        ]
+      },
+      {
+        "number": 7,
+        "name": ".chks64",
+        "bytes": 56,
+        "characteristics": "00000a00",
+        "sha256": "51ea7ff9f70aa20a9ac29d87550e8bf37d595b678a18d50341e2d4f81944947a",
+        "relocations": []
+      }
+    ],
+    "public_body": {
+      "section": 3,
+      "bytes": 64,
+      "instructions": 22,
+      "code_relocations": 0
+    },
+    "unreferenced_static_helper": {
+      "section": 5,
+      "bytes": 16,
+      "instructions": 7,
+      "code_relocations": 0,
+      "sole_payload_load": "section5+0x05 MOVZX EAX,WORD PTR [EAX]",
+      "both_public_uses_inlined": true,
+      "no_calls_or_code_relocation_to_helper_in_this_object": true
+    },
+    "all_code_bytes": 80,
+    "all_code_instructions": 29,
+    "all_public_payload_loads": [
+      {
+        "offset": "section3+0x11",
+        "width_bytes": 2,
+        "instruction": "MOVZX EAX,WORD PTR [EAX]",
+        "path": "One per visited code unit."
+      },
+      {
+        "offset": "section3+0x2d",
+        "width_bytes": 2,
+        "instruction": "MOVZX EAX,WORD PTR [EAX]",
+        "path": "Exactly one same-current-pointer reread only after preliminary WORD zero, including target0."
+      }
+    ],
+    "control_flow_review": [
+      "Input pointer DWORD loaded +0x00; target low16 MOVZX EDX,WORD PTR [ESP+8] at +0x04 fully initializes target before argument-home reuse.",
+      "Current pointer saved +0x09/reloaded +0x0d for WORD +0x11; fully zero-extended value spilled/reloaded from stack, not another payload access.",
+      "TEST EAX,EAX at +0x1c and JE +0x1e to +0x29 occur before nonzero target equality. WORD input is in range0..65535, so full-register zero test is exact.",
+      "Nonzero CMP EAX,EDX +0x20/JE +0x22 goes to actual-pointer return +0x3d without terminal read.",
+      "Only unequal nonzero path ADD ECX,2 +0x24/JMP +0x27 to +0x09 advances and loops. No signed bound or added validation gate.",
+      "NUL path reloads unchanged pointer +0x29 then fresh same-WORD +0x2d. Stack-value comparison +0x34/JE +0x38 selects actual ECX pointer +0x3d or XOR EAX,EAX +0x3a; target0 does not bypass reread.",
+      "All other memory operations are argument-home/private-stack reads and writes. No payload store, call, indirect jump, code relocation, provider/global/TLS, search/DF/ES, SSE/CPUID or extra after-NUL/final read exists in either entire code section."
+    ],
+    "defined_external_symbols": [
+      "?find_native_crt_wide_character_00bfd6c1@bsp@@YAPAXPAXH@Z"
+    ],
+    "undefined_external_symbols": [],
+    "public_binding": "Sole external is the new default-potentially-throwing C++ cdecl API; Original _wcschr is neither replaced nor called.",
+    "metadata_review": [
+      ".drectve47B: /MD DEFAULTLIB MSVCRT/OLDNAMES; no undefined search symbol or provider binding.",
+      ".debug$S196B: CodeView C13 object path and compiler/version records.",
+      "Two discardable .debug$F records16B each; their DIR32NB function-address entries are the only two relocations.",
+      ".chks6456B: compiler checksums. No runtime data section.",
+      "All18 symbol/auxiliary records and109 string-table bytes preserved: sole external public, one static helper, static section/compiler-feature symbols.",
+      "Every raw section/relocation/symbol/auxiliary byte is inventoried; all23 ASCII runs and zero UTF16LE runs recorded, including two incidental printable checksum runs."
+    ],
+    "strict_frame": "Public FPO: zero locals/saved regs/prologue,8 argument bytes, no EBP/SEH/stack adjustment, plain RET. Compiler reuses both by-value homes for pointer/value spills. Helper FPO:4 local bytes,no saved regs,1-byte prologue,4 argument bytes.",
+    "Original_physical_frame_qualification": "Original also has no frame allocation, but uses homes/registers differently and does not perform these argument-home spills. Physical stack/home alias/fault identity is explicitly excluded.",
+    "future_Main_Oy_qualification": "Root must review genuine Main /Oy- actual body/frame/load schedule; no forced matching strict recompile."
+  },
+  "preservation_and_provenance": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcschrSource01",
+    "root_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcschrSource01\\root_manifest.json",
+    "kind": "new_self_only_Source3_phase_no_predecessor_compiler_receipt_chain",
+    "own_uuid": "01a142fd-fe6c-7220-ba6e-5c4436017779",
+    "own_agent_path": "/root/crt_memchr_source_oct16",
+    "raw_authentication": "raw_tool_authentication.json",
+    "distinct_tool_pin_stages": [
+      "Stage0 preserve_before_merge.json: actual earlier files/seals before pinned fast-forward.",
+      "Stage1 preserve_after_merge.json: same earlier bytes/hash/mtime after pinned Main fast-forward.",
+      "Stage2 inputs_before.json: fresh Source3 Source/header/compiler/candidate/tool pins BEFORE sole strict compile.",
+      "Later inspection/commit/seal tools are pinned at their actual creation/use; no earlier-time claim or borrowed compiler history."
+    ],
+    "report_generator_actual_after_compile_use_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcschrSource01\\write_report.py",
+      "bytes": 11807,
+      "sha256": "7fc436ba775a1816c1eb2bd24bc80da1b18ccd6a4a202227232834b5f9ecabc4",
+      "mtime_ns": 1792129780772208100,
+      "observed_utc": "2026-10-16T05:49:43.255304+00:00",
+      "regular": true,
+      "links": 1
+    },
+    "before_merge": "preserve_before_merge.json",
+    "after_merge": "preserve_after_merge.json",
+    "eight_prior_actual_working_files_bytes_hashes_mtimes_unchanged": [
+      {
+        "tracked_path": "include/bsp/native_crt_memchr.hpp",
+        "actual": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\include\\bsp\\native_crt_memchr.hpp",
+          "bytes": 1551,
+          "sha256": "ba62013f4f48d5b1b776b387585f9214f70a0b9df6fad02b2c050a5789379b5a",
+          "mtime_ns": 1792125422661563600,
+          "observed_utc": "2026-10-16T05:46:13.223963+00:00",
+          "links": 1
+        },
+        "git_blob": "c63ec4a3e8f4ca2da0c1f71d9f079684efafe306",
+        "Git_blob_equals_actual": true,
+        "only_permitted_difference": "Configured Git LF/CRLF normalization, recorded per file; no rewrite is performed."
+      },
+      {
+        "tracked_path": "src/native_crt_memchr.cpp",
+        "actual": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\src\\native_crt_memchr.cpp",
+          "bytes": 2433,
+          "sha256": "b5447169ceac5b7e09d5c4de383dae28215ff08bf170a02dec960417ea89875f",
+          "mtime_ns": 1792125422662063200,
+          "observed_utc": "2026-10-16T05:46:13.276512+00:00",
+          "links": 1
+        },
+        "git_blob": "4d7cf5d0714ada3f9d7adefe6f52f2f37a5a65af",
+        "Git_blob_equals_actual": true,
+        "only_permitted_difference": "Configured Git LF/CRLF normalization, recorded per file; no rewrite is performed."
+      },
+      {
+        "tracked_path": "docs/NATIVE_CRT_MEMCHR.md",
+        "actual": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\docs\\NATIVE_CRT_MEMCHR.md",
+          "bytes": 8755,
+          "sha256": "8e0e69a485b98227183cd1f7bc3c5d78c94a177f0b18f9e45c8e2a20fe073c98",
+          "mtime_ns": 1792125869805656500,
+          "observed_utc": "2026-10-16T05:46:13.333752+00:00",
+          "links": 1
+        },
+        "git_blob": "fe53e18ae604e6249864ed3ba64db91fdbf96202",
+        "Git_blob_equals_actual": true,
+        "only_permitted_difference": "Configured Git LF/CRLF normalization, recorded per file; no rewrite is performed."
+      },
+      {
+        "tracked_path": "reports/native_crt_memchr.json",
+        "actual": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\reports\\native_crt_memchr.json",
+          "bytes": 19198,
+          "sha256": "1b007890f09b9527f5666137480d149e42396ec100c81634404bd4e570607494",
+          "mtime_ns": 1792125875684827400,
+          "observed_utc": "2026-10-16T05:46:13.391309+00:00",
+          "links": 1
+        },
+        "git_blob": "4c8fd0238a5f1338a603b49f84283eaf07744c26",
+        "Git_blob_equals_actual": false,
+        "only_permitted_difference": "Configured Git LF/CRLF normalization, recorded per file; no rewrite is performed."
+      },
+      {
+        "tracked_path": "include/bsp/native_crt_wcsncmp.hpp",
+        "actual": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\include\\bsp\\native_crt_wcsncmp.hpp",
+          "bytes": 1604,
+          "sha256": "3091506f9ea696715c0a9ff3a69032c29e3fc8515fbefd120fb971548f37b1a7",
+          "mtime_ns": 1792126729312723900,
+          "observed_utc": "2026-10-16T05:46:13.443389+00:00",
+          "links": 1
+        },
+        "git_blob": "31961ec9a615b9cca41113e4fa5cdb20036b4d89",
+        "Git_blob_equals_actual": true,
+        "only_permitted_difference": "Configured Git LF/CRLF normalization, recorded per file; no rewrite is performed."
+      },
+      {
+        "tracked_path": "src/native_crt_wcsncmp.cpp",
+        "actual": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\src\\native_crt_wcsncmp.cpp",
+          "bytes": 1648,
+          "sha256": "5f773c71236ab4f34d1d0875d80ee13437f1c599b917d07ed4e24f6dd8169a2d",
+          "mtime_ns": 1792126729313728700,
+          "observed_utc": "2026-10-16T05:46:13.496807+00:00",
+          "links": 1
+        },
+        "git_blob": "8af16bf05ec224a69cd17504b26b684403ed6877",
+        "Git_blob_equals_actual": true,
+        "only_permitted_difference": "Configured Git LF/CRLF normalization, recorded per file; no rewrite is performed."
+      },
+      {
+        "tracked_path": "docs/NATIVE_CRT_WCSNCMP.md",
+        "actual": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\docs\\NATIVE_CRT_WCSNCMP.md",
+          "bytes": 9283,
+          "sha256": "314c28b534db3c0a88b4aead67dd5e4cb1fd316fc9433108e01e242858a79e50",
+          "mtime_ns": 1792127031660715000,
+          "observed_utc": "2026-10-16T05:46:13.548020+00:00",
+          "links": 1
+        },
+        "git_blob": "482b43b12ea318f1185e5dce977f79f33d9ccff1",
+        "Git_blob_equals_actual": true,
+        "only_permitted_difference": "Configured Git LF/CRLF normalization, recorded per file; no rewrite is performed."
+      },
+      {
+        "tracked_path": "reports/native_crt_wcsncmp.json",
+        "actual": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\reports\\native_crt_wcsncmp.json",
+          "bytes": 24674,
+          "sha256": "af44b4cccc597af6622e22b2c2b5886a8b7c576291a7ee49e3cf03dc17ed1886",
+          "mtime_ns": 1792127034095237500,
+          "observed_utc": "2026-10-16T05:46:13.598212+00:00",
+          "links": 1
+        },
+        "git_blob": "dc803f6873b59b075666ca5315e6e6e4de54abda",
+        "Git_blob_equals_actual": false,
+        "only_permitted_difference": "Configured Git LF/CRLF normalization, recorded per file; no rewrite is performed."
+      }
+    ],
+    "existing_Git_EOL_differences": [
+      "reports/native_crt_memchr.json",
+      "reports/native_crt_wcsncmp.json"
+    ],
+    "no_prior_file_EOL_rewrite_performed": true,
+    "prior_external_families": [
+      {
+        "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtMemchrSource01\\root_manifest.json",
+        "files": 57,
+        "sha256": "ec9c93f7b0a6aec6c5d66708926a809e0fb607eb8d4b6e0bad81e7bd7107a5da"
+      },
+      {
+        "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtWcsncmpSource01\\root_manifest.json",
+        "files": 57,
+        "sha256": "b163cfcd3d7ad88112a7eaf1c8ef2a2c234d0f0ca36736b13b10fc7fe03931c9"
+      },
+      {
+        "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\NativeCrtWcschrReadiness01\\root_manifest.json",
+        "files": 40,
+        "sha256": "ccc6e6a7796efad90d2d7afd751a52b6893cf2071b8e5b2b06749f0c277fc59d"
+      },
+      {
+        "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strrchr_readiness_oct16\\local\\NativeCrtMemchrReadiness01\\root_manifest.json",
+        "files": 24,
+        "sha256": "ac5185f9b22f868b88aa46832eba86adb253ab90cb12aa8223bbd5761687fea9"
+      },
+      {
+        "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\NativeCrtMemchrIndependentReview01\\root_manifest.json",
+        "files": 8,
+        "sha256": "8f9746d592b0fdb623608b2131b53ac9a42b59ed22ba5fb8509e20d4b5c4d7e6"
+      },
+      {
+        "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strrchr_readiness_oct16\\local\\NativeCrtWcsncmpReadiness01\\root_manifest.json",
+        "files": 23,
+        "sha256": "d88a3a53f33f26c72c07ea7f4c3859b8e8135ad8a5516196ff31c669362c958c"
+      },
+      {
+        "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\NativeCrtWcsncmpIndependentReview01\\root_manifest.json",
+        "files": 8,
+        "sha256": "dd695bb748732eb9c1926307fae8c34c4e6258a5cd68d69018e85c5241ff1a8c"
+      },
+      {
+        "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\NativeCrtWcschrIndependentReview01\\root_manifest.json",
+        "files": 13,
+        "sha256": "9f6909a5440755c80906eb4a752b8181101834837a7272fa37a3b5dc01372298"
+      }
+    ],
+    "prior_integrity_checks_not_adopted_compilation_provenance": true,
+    "entry_full_range_four_output_files_and_local_before_first_Source_write": "lease_before_Source.json",
+    "current_packet_and_lease_verified_before_compile": "packet_and_lease_before_compile.json",
+    "shared_files_qualification": "Only the authorized pinned Main fast-forward checked out shared Main contents; this Source3 commit authors no CMake/registry/ledger/Ghidra change."
+  },
+  "validation": {
+    "report_call_checker": {
+      "command": [
+        "python",
+        "-B",
+        "tools/verify_report_calls.py",
+        "reports/native_crt_wcschr.json",
+        "docs/NATIVE_CRT_WCSCHR.md"
+      ],
+      "actual_receipt": "report_call_checker.receipt.json",
+      "scope": "Call claims only; zero rows is not semantic proof."
+    },
+    "new_tests": 0,
+    "probes": 0,
+    "Original_or_new_body_executed": false,
+    "SDK_comparison": false,
+    "Source3_shared_registration_ledger_Ghidra_mutation": false,
+    "caller_promotion_or_binding": false,
+    "Original_ABI_compatible": false,
+    "fixture_tested": false,
+    "Native_executed": false,
+    "game_validated": false,
+    "push_performed": false,
+    "pending_Root_gates": [
+      "Independent Source/object review",
+      "Root compiler acceptance",
+      "Registration/annotations",
+      "Registered Main build",
+      "Actual Main variant/archive review"
+    ]
+  }
+}
