@@ -1,0 +1,176 @@
+{
+  "packet": "cc12_native_gui_copy_leaf_integration_102",
+  "status": "reviewed_registered_combined_win32_build_existing_tests_static_link_pass",
+  "compiled_commit": "f65b33e67be9f432139fb77c1e8917771ce7a3b2",
+  "workers": {
+    "99": {
+      "commit": "567cdd8d864591eadec2c8f72b989d1b561c3e57",
+      "source_paths": [
+        "include/bsp/native_gui_manager_publication.hpp",
+        "src/native_gui_manager_publication.cpp"
+      ],
+      "whole_entry": "00736250",
+      "root_source_original_optimized_review": "PASS",
+      "strict_win32_compile": "PASS; new TU unregistered during worker canonical build",
+      "worker_existing_checks": "3/3 in8.37s",
+      "verified_direct_call_rows": 3,
+      "failed_call_rows": 0,
+      "root_call_rows_independently_rechecked": true,
+      "report_artifacts_captured": 10,
+      "manifest_artifacts_captured": 41,
+      "manifest_sha256": "b42c890270213ac3f05b96ecb73361a254aa068836fb0e6ce2ae68655f2135ad"
+    },
+    "101": {
+      "commit": "6955037d9efc18a990350246f553b6f0a1b163ca",
+      "source_paths": [
+        "include/bsp/native_wide_string.hpp",
+        "src/native_wide_string.cpp"
+      ],
+      "whole_entry": "004c8dd0",
+      "root_source_original_optimized_review": "PASS",
+      "strict_win32_compile": "PASS",
+      "worker_existing_checks": "2/2; existing registered TU compiled",
+      "verified_direct_call_rows": 1,
+      "failed_call_rows": 0,
+      "root_call_rows_independently_rechecked": true,
+      "report_artifacts_captured": 37,
+      "manifest_artifacts_captured": 41,
+      "manifest_sha256": "a24f6b68333f16b8b35085648afe288f1024e6f414016e87a26d61a43745ff1e",
+      "source_instruction_difference": "invariant pointer CMP after clears; local cursor advances before addressed WORD store; memory sequence preserved"
+    },
+    "103": {
+      "commit": "93928db54ce14f683dbd23281c0bc44441e995ee",
+      "source_paths": [
+        "include/bsp/native_gui_frame_box_records.hpp",
+        "src/native_gui_frame_box_records.cpp"
+      ],
+      "whole_entry": "00ad0c60",
+      "root_source_original_optimized_review": "PASS",
+      "strict_win32_compile": "PASS; new TU unregistered during worker canonical build",
+      "worker_existing_checks": "3/3 in9.46s",
+      "verified_direct_call_rows": 2,
+      "failed_call_rows": 0,
+      "doc_call_claims": 2,
+      "doc_failed": 0,
+      "root_call_rows_and_doc_independently_rechecked": true,
+      "report_artifacts_captured": 31,
+      "manifest_artifacts_captured": 30,
+      "manifest_sha256": "240d96846f58eebd02eca7b4e074a57ce26e57ae249ccfb480c0a4f34315908f",
+      "source_boundaries": "existing overlap/zero-count copy; CMP placement; intrinsic atomic increment versus Original IAT; explicit x87 pairs"
+    }
+  },
+  "readiness": {
+    "98": {
+      "commit": "6bbd8f6ab1c9b15f755533e7cffec34c49b61184",
+      "verified_direct_rows": 27,
+      "failed": 0,
+      "root_rechecked": true,
+      "manifest_artifacts_captured": 40
+    },
+    "100": {
+      "commit": "6572cfee35baf16bfbb14a42aaad0a809fb4a0ec",
+      "verified_direct_rows": 58,
+      "failed": 0,
+      "root_rechecked": true,
+      "manifest_artifacts_captured": 51
+    },
+    "104": {
+      "commit": "bd3f3bb2968eae9d4a04dd82a9944eb3a6d5c6d4",
+      "source_files_verified": 23,
+      "manifest_artifacts_copied": 45,
+      "manifest_external_artifacts_verified": 1,
+      "no_native_body_audit_or_execution": true,
+      "result": "required-provider binding capability proposed; concrete page/current dispatch and retained lifetime remain production blockers"
+    }
+  },
+  "source": [
+    {
+      "packet": "99",
+      "path": "include/bsp/native_gui_manager_publication.hpp",
+      "git_blob": "b60ad95dc151447bf8419359c445b0481079a27b",
+      "sha256": "c9d14692213cdf03306a1729c232be637833efd9004694c4a7dafc702264f7c8",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "99",
+      "path": "src/native_gui_manager_publication.cpp",
+      "git_blob": "dbf7b9143dc92c5cebd1ce63caa9b2737482d9d8",
+      "sha256": "3d6e77152d36b435dccf1b4d3dcc3b241d09dc953164337ac9a144de0f067fbe",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "101",
+      "path": "include/bsp/native_wide_string.hpp",
+      "git_blob": "112fd010ebb24daeebcc5b4717c94e1c53666d7f",
+      "sha256": "d9499a98a3379366390eac87f3b6bca7ebb452e8e19e96d3e7a354295c6e8bc0",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "101",
+      "path": "src/native_wide_string.cpp",
+      "git_blob": "f89645d6ee53c285a116772c0ce2a7d3c7a9f774",
+      "sha256": "319fd69f6ba6700dbcc3dec688166ad3a1492137e844299e8067fd067c130fd7",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "103",
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "git_blob": "02575897789655a98197abf689d35830d30b27e5",
+      "sha256": "f7d7681547a5a644f6b65c895fa55f387904b18b50dcf054c5e1ec25b76af5d4",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "103",
+      "path": "src/native_gui_frame_box_records.cpp",
+      "git_blob": "2591722a4d19e9670ace79058f262b99d7e9d267",
+      "sha256": "ea28803cc5531fd4f449472c0b1f10474ed312f9098bd8864a4e170b3de672ce",
+      "unchanged_from_reviewed_worker": true
+    }
+  ],
+  "root_build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "checks": "3/3",
+    "seconds": 8.06
+  },
+  "static_link": {
+    "compiled_commit": "f65b33e67be9f432139fb77c1e8917771ce7a3b2",
+    "build_and_minimal_main_exit_code": 0,
+    "raw_function_bodies_executed": false,
+    "explicit_worker_object_linked": false,
+    "kind": "Force entry addresses directly from actual final combined core archive",
+    "PE32_asInvoker": true,
+    "exe_sha256": "4a8d0ba8efdb8df8425d0b54d64870f660b934ef734b724a287dcef583d0943c",
+    "libraries": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "06bb646169cba0902b545804feedcbf3efd7776a3e050c1b21dd188bfed8b3eb"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "sha256": "e6ebb089df7828a43ecdd6e705dddb4cea95b38ffe1fabbd47152fec8834db30"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "sha256": "838261efe3cdd86663e25ecbcd9e825ee51203e71491954864316d4d0dfb6062"
+      }
+    ]
+  },
+  "root_source_and_header_inputs_copied": 24,
+  "archive": {
+    "path": "local/cc12_native_gui_copy_leaf_integration_102/evidence_family.zip",
+    "sha256": "ec0be5321f6fec9c1224d55305a0d5cc00e6ff1e8e286b5b0b044a7007024893",
+    "payload_count": 523,
+    "manifest": "local/cc12_native_gui_copy_leaf_integration_102/manifest.json",
+    "manifest_sha256": "b2b10393803f96a17c9a33a7960edb2a63ae7c913d4f356aeff764de201d7471",
+    "all_archived_payload_hashes_rechecked": true,
+    "nested_worker_manifests_included": true
+  },
+  "limits": [
+    "Link probe executes no raw bodies; no new behavioral tests/probes",
+    "No new normal-game run or production GUI activation",
+    "No Native FH3/SEH, Original IAT/CRT identity or drop-in ABI proof",
+    "No full populated retirement or Text/FrameBox copy/factory proof",
+    "Actual providers, raw cells, valid backing and full failure/drain retention remain required caller contracts"
+  ]
+}

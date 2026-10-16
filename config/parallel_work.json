@@ -42588,6 +42588,37 @@
       "primary_review": "reports/cc12_native_crt_wcsncmp_primary_review.json",
       "Main_build_gate": "pending",
       "actual_compiler_archive_gate": "pending"
+    },
+    {
+      "id": "cc12_native_crt_wcschr_00bfd6c1",
+      "done": false,
+      "state": "whole_ordinary_Original_readiness_primary_peer_pass_Source_authorized_compiler_Main_pending",
+      "source_ready": true,
+      "function_addresses": [
+        "00bfd6c1"
+      ],
+      "code_ranges": [
+        "00bfd6c1-00bfd6e2"
+      ],
+      "output_files": [
+        "include/bsp/native_crt_wcschr.hpp",
+        "src/native_crt_wcschr.cpp",
+        "docs/NATIVE_CRT_WCSCHR.md",
+        "reports/native_crt_wcschr.json"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [],
+      "readiness": "reports/cc12_native_crt_wcschr_readiness.json",
+      "contract": [
+        "New MSVC Win32 default potentially throwing API: void* __cdecl bsp::find_native_crt_wide_character_00bfd6c1(void* actual_string,int character). Keep correct Original library name _wcschr. BYTE8, pointer/int32, little-endian unsignedWORD16; target is low16 bits modulo65536. No Unicode scalar/surrogate/normalization/case/locale/collation semantics.",
+        "Require a finite first reached unit equal to targetlow16 or NUL. Every reached2byte read, including terminalNUL reread, lies wholly inside genuine live stable determinate readable byte storage in the same actual allocation. Earlier nonzero match needs no extent or laterNUL promise. Null/invalid input outside ordinary domain; no new validation guard.",
+        "Admit possiblyunaligned raw byte storage, prefixes/interior regions and stable readonly aliases. Actual reached advances by2 are nonwrapping and within or onepast same allocation; neverdereferenceonepast. No typed wchar/uint16 ownership, alignment, padding, signed-count cap or copied allocation.",
+        "Read exactly one WORD per visitedunit. Test NUL before nonzero target equality. Nonzero match returns its actual borrowed pointer without reread. Only unequal nonzero units advance2 andcontinue. NUL ALWAYS causes one fresh same-address WORD reread, includingtarget0, then comparethatvalue to low16target: pointer ifequal, nullotherwise. No afterNUL read or unconditional finalreread onnonzeromatch.",
+        "Approve private addressed MOVZX WORD16 helper with MSVC Win32 inlineassembly over genuine rawbyte storage, fullyinitializing zeroextended32bit output. Spell terminalNUL reread as separate sequencedoperation. No typedwideobject lifetime/alias assumption or portableISOclaim. Actual entire strict/Main objects mustverify accesswidth, readorder, NULonlyreread, branches/bounds, symbol/metadata/call/provider closure.",
+        "No SDKwcschr/memcpy/search, byte-only/dwordsubstitute, provider/global/TLS/fallback/runtimevalidation/callerbinding. Exclude faults, mutation/concurrency, indeterminatebytes, lifetimechanges andMMIO/volatileobservationprotocols. PreserveOriginal pointerhome/targethome/order as evidence only; no physicalABI/register/stack/flags/segment/EH/instruction/bus/fault/runtime/gamecredit.",
+        "Worker owns exactlyfourSource/header/doc/reportfiles plus ownnewlocalevidence. Root owns registration, ledgers/names, supported Ghidraannotation/export andMain. Before every Sourcewrite hold entry, entire34Brange andallfourfiles. One actual strictMSVCWin32compile with genuinebeforepins/actualdependencyclosure and wholeartifactreview; no separate unregisteredworkerbaseline, newtests/probes/bodyexecution. Root Mainbuild/actualvariant/archive andindependentSourcegates remain."
+      ],
+      "Main_gate": "pending_Source_independent_strict_and_registered_Main_actual_variant_archive_review"
     }
   ],
   "snapshot_after_analysis": {
