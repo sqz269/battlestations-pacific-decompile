@@ -1,9 +1,9 @@
 {
   "packet": "goal16w_primary_integration",
   "status": "independently_reviewed_complete_kernel_and_explicit_borrowed_frame_transfer_build_tested_Ghidra_saved",
-  "generated_utc": "2026-10-16T10:29:15.656358+00:00",
-  "validated_Source_commit": "10230d42815cd29ecdf4d0158ddbd1ce97ab5103",
-  "Main_input": "44b1c0a6dbf24a09b2331e5e2945e30ab7545e9c",
+  "generated_utc": "2026-10-16T10:35:19.085505+00:00",
+  "validated_Source_commit": "c46d072747ba720915dede888f254b238988ba0a",
+  "Main_input": "9f81f799522c920d35123b7b0ecc3890f75f995b",
   "counts": {
     "new_complete_Native_addresses": 1,
     "new_complete_Native_bytes": 228,
@@ -47,17 +47,26 @@
     "through_release_seconds": 1182
   },
   "current_whole_proof": {
-    "path": "local\\goal16w_root\\final_proof\\proof.json",
-    "sha256": "e2eb7d45cb71896429dcd669a30ca7d7cb76f7d6cc13f96b5d9aa728cc8666b3",
+    "path": "local\\goal16w_root\\publication_proof\\proof.json",
+    "sha256": "c95e2fdb941618830f1c5821147d4eff92acf0b96976d85a8b3b7f1150935d95",
     "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
-    "Core_sha256": "e1e32762b1deed1d1fb39750dc541a181e6cbb41c9e70f1bd5012b078b830696",
-    "parsed_actual_COFF_members": 2471,
+    "Core_sha256": "09f67ae1c844c93dc453de35f8560e3be76919a1375c8fb29f1bca2034169e95",
+    "parsed_actual_COFF_members": 2472,
     "all_fourteen_prior_whole_objects_byte_identical": true,
     "all_fifteen_whole_modules_and_all_sections_symbols_aux_data_strings_relocations_checked": true,
     "thirty_six_selected_publics_unique_in_actual_members_and_both_dictionaries": true,
     "adapter_REL32_resolves_real_defined_private_Source_kernel": true
   },
   "build": {
+    "source_pin": "c46d072747ba720915dede888f254b238988ba0a",
+    "Main_input": "9f81f799522c920d35123b7b0ecc3890f75f995b",
+    "start_utc": "2026-10-16T10:34:42.845530+00:00",
+    "end_utc": "2026-10-16T10:35:01.396715+00:00",
+    "wall_seconds": 18.573592100001406,
+    "exit_code": 0,
+    "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16w_root\\publication_build.log"
+  },
+  "initial_build": {
     "source_pin": "10230d42815cd29ecdf4d0158ddbd1ce97ab5103",
     "Main_input": "44b1c0a6dbf24a09b2331e5e2945e30ab7545e9c",
     "start_utc": "2026-10-16T10:25:53.101684+00:00",
@@ -66,8 +75,9 @@
     "exit_code": 0,
     "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16w_root\\final_build.log"
   },
-  "final_checks": "3/3 PASS; exact output and durations retained in final_build.log",
-  "actual_compile_commands": "local\\goal16w_root\\final_compile_commands\\selected.json",
+  "initial_whole_proof_sha256": "e2eb7d45cb71896429dcd669a30ca7d7cb76f7d6cc13f96b5d9aa728cc8666b3",
+  "final_checks": "3/3 PASS; exact output and durations retained in the recorded build log",
+  "actual_compile_commands": "local\\goal16w_root\\publication_compile_commands\\selected.json",
   "Ghidra": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
@@ -230,8 +240,8 @@
       "Root_actions": "Independent review, then preserve previous Ghidra values and annotate scan_tree physical custom inputs/RET4 without changing Original no_return=false; integrate exact seven owned files. No author Main window or push."
     },
     "primary_integration_start_utc": "2026-10-16T10:17:20+00:00",
-    "primary_report_seal_utc": "2026-10-16T10:29:15.656358+00:00",
-    "primary_seconds_through_report": 715.656358,
+    "primary_report_seal_utc": "2026-10-16T10:35:19.085505+00:00",
+    "primary_seconds_through_report": 1079.085505,
     "publication_commit_push_and_release": "Closed separately in ignored final publication receipt.",
     "overlapping_author_review_intervals_not_summed_serially": true,
     "measured_speedup_claim": false
