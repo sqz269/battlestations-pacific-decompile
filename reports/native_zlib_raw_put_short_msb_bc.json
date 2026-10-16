@@ -1,0 +1,149 @@
+{
+  "packet": "GOAL16AQ",
+  "status": "normal_registered_build_and_static_artifact_passed_independent_review_pending",
+  "utc": "2026-10-16T13:18:05.608869+00:00",
+  "Native": {
+    "address": "00bcb1f0",
+    "end": "00bcb216",
+    "bytes": 39,
+    "instructions": 16,
+    "sha256": "3c2ee1e134465e50aa378d7e5f8b8b7ac1e8977060266d11f8b1ff01f3097b93",
+    "complete_live_PE_equal": true,
+    "whole_typed_single_range": true,
+    "Original_name": "putShortMSB",
+    "Original_no_return": false,
+    "Original_inputs": "EAX backing; ECX raw32 value; zero explicit stack words/plain RET",
+    "old_inventory48B_retained_as_historical_comment": true
+  },
+  "Source": {
+    "public": "@bsp_native_zlib_put_short_msb_00bcb1f0@8",
+    "bytes": 43,
+    "instructions": 18,
+    "functions": 1,
+    "returning_fastcall_two_real_inputs": true,
+    "same_function_prefix_hex": "8bc18bca",
+    "entire_39B_Native_equal_at_offset4": true,
+    "prefix_Native_credit": 0,
+    "private_or_adapter_or_borrowed_frame": false,
+    "undefined_symbols": 0,
+    "relocations": 0,
+    "writable_globals": 0,
+    "strict_object_sha256": "321cbb859d5c3992ce19161e40809b76b4e73fb2728a12aee54848b44ed30cb9",
+    "strict_object_bytes": 718,
+    "all_COFF_bytes_accounted": true
+  },
+  "stock_algorithm_ownership": {
+    "whole_actual_object_bytes": 12113,
+    "whole_object_sha256": "815b9f821c80f6f75ab3575bdc3a61d45f68b70f4f18b7dbeb0f234d5037b326",
+    "real_file_local_symbol": "_putShortMSB",
+    "storage": 3,
+    "whole_function_bytes": 44,
+    "whole_function_instructions": 20,
+    "whole_function_hex": "558bec538b5d0c8bd3568b7508c1ea088b4e148b4608881401ff46148b4e148b4608881c01ff46145e5b5dc3",
+    "actual_archive_member": 45602,
+    "both_complete_dictionary_entries": 70,
+    "private_symbol_absent_both_directories": true,
+    "entire_stock_body_not_equal_Native": true,
+    "duplicate_Native_Source_credit": 0
+  },
+  "strict_compile": {
+    "command": "cmd.exe /d /c local/goal16aq_root/strict_compile.cmd",
+    "start_utc": "2026-10-16T13:04:44.938523+00:00",
+    "end_utc": "2026-10-16T13:04:46.266755+00:00",
+    "seconds": 1.3282314999960363,
+    "exit_code": 0,
+    "attempt": 1
+  },
+  "normal_build": {
+    "source_pin": "1d02928f3af62c659c369a2738bc9e71f9989dc1",
+    "Main_input": "0f57e25ee18f9d6babff8fd2612ca2d9e7a4cd40",
+    "start_utc": "2026-10-16T13:13:01.797566+00:00",
+    "end_utc": "2026-10-16T13:13:20.656644+00:00",
+    "wall_seconds": 18.88032579999708,
+    "exit_code": 0,
+    "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16aq_root\\author_build.log",
+    "observed_Main_at_build": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+    "provenance_correction": "Generic wrapper recorded observed Main HEAD, not incorporated base. Exact Source1d ancestry includes0f57, not observed3126; original result/log preserved. No Source/build changed."
+  },
+  "independent_review": {
+    "status": "pending",
+    "Source_credit_until_acceptance_and_publication": 0
+  },
+  "Source_corrections": 0,
+  "compiler_rejections": 0,
+  "helper_corrections": [
+    "Initial local AST parser call lacked Path binding; corrected before evidence capture.",
+    "CMake own new line normalized to existing DEFER DIRECTORY registry style before any configure; extra own blank removed; all prior lines preserved.",
+    "Generic copied build wrapper initially rejected the new author label before build; label updated, one actual normal build only.",
+    "Recorded observed Main3126 separately from actual incorporated Main0f57; original result/log preserved, Source/build unchanged.",
+    "A local patch context mismatch and PowerShell quoting rejection while adapting compile capture were corrected; no Source/compiler execution affected.",
+    "Imported whole-object model initially lacked re binding; corrected before artifact proof succeeded."
+  ],
+  "physical_contract": [
+    "Entry actualSourceECX=B/EDX=V; prefix supplies Native EAX=B/ECX=fullV. Original consumes no incoming EDX or ESI/EDI value except its actual saves.",
+    "PUSH ESI actualS-4, read buffer[B+8] toESI, PUSH EDI actualS-8, readpending[B+14] toEDI; ordered saves may alias later backing reads.",
+    "Copy fullV toEDX and logicalSHR8; writeDL at cachedESI+EDI. Reloadcurrentbuffer toEDI BEFORE MOVESI1 and ADD currentpending1; aliases of high output and saved/backing cells remain real.",
+    "ReloadpendingEDX AFTER firstADD; lowBYTECL goes toEDX+cachedEDI; ADD currentpending1 again. Actual pending may change through either output write and is never a protected C++ counter.",
+    "POP actualEDI thenESI and actualRET[S]; arbitrary output/control aliases may alter restores/continuation. On intact normal exit EAX=B/ECX=V, EDX=pending loaded after firstADD beforelowoutput; finalflags are actualsecondmemoryADD, not a normalized success result.",
+    "All raw32valuebits/wrappingaddresses/partialBYTE reads/actualSS saves are admitted. No disjointness/validbuffer/count guard/protectedreturn or universal termination/nonvolatile promise."
+  ],
+  "limits": "Static whole-body evidence only; genuine Source fastcall differs from Original EAX/ECX ABI. Raw counts/value/backing/output/saved/control aliases and wraps admitted without guard or universal safe return. Added MOV prefix has current code/register/fault differences; actual SS/data-segment/return-bit/fetch/SEH/concurrency/fullABI/parent/game remain unproved.",
+  "evidence_sha256": "e19feb36939a2d46546d40903d9a2647ebcabdbd932e67b9960add72e2f5bb9a",
+  "body_execution": false,
+  "new_tests_or_probes": false,
+  "Ghidra_mutations": false,
+  "Root_metadata_before_normal_build_honestly_pending": false,
+  "speedup_claim": false,
+  "actual_registered_proof": {
+    "path": "local\\goal16aq_root\\author_actual\\proof.json",
+    "sha256": "49616a2305e86dc8527a5776cc467f824f0282648f00ff1ba268514cd99fc7b5",
+    "actual_object_bytes": 758,
+    "actual_object_sha256": "4176be6e9274ba7755e13496942ab606ca18681899004d7d7623ece2b1946065",
+    "full_COFF_sha256": "a9abd74cf746635597de8c3d3654183674f4db3af2069b4ee5a72e6d1d12ddb9",
+    "Core_sha256": "260797522dd02082ce8529293503a1132b595cdc62422ffba38494aaa40959ff",
+    "both_complete_dictionary_entries": 83034,
+    "actual_COFF_members": 2494,
+    "all21prior_wholeobjects7245B_unchanged": true,
+    "selected22wholemodules7288B44publics": true,
+    "Source_keyed_compile_proof_sha256": "c569d398b68d55420a0e7d4a1e84bf45f6ddaa821e873b6efb8d08fa2e35bde6"
+  },
+  "normal_build_existing_checks": "3/3 PASS; reconstructed_math/native_math_differential/tool_tests; CTest7.27s; no selected body execution",
+  "Root_GOAL16AR_acceptance": {
+    "batch": "GOAL16AR",
+    "Source_build_pin": "445551c1a05eb62b4a86b69340c6bdf1ce1c501a",
+    "incorporated_Main": "5d2d049ef1bd5a18de44a6caa01d182257302925",
+    "independent_peer": {
+      "status": "READY",
+      "independent_AS_Source_pin": "6c4ab335886e52b51e0f248a414377802d447c13",
+      "AS_receipt_sha256": "2d63bc66bdf4965107a267f2a0ebb7575ee8cd6134d991fde47912e6830fc627",
+      "AS_manifest_sha256": "29c24603ff675ef92d6c9b5d9ea9658a57064ef6a3a183cf4a41effc3668f522",
+      "all48_complete_records_verified": true,
+      "all23_whole_objects_equal_independent_snapshot": true,
+      "clock": {
+        "first_observed_worker_utc": "2026-10-16T13:22:04.450634+00:00",
+        "endpoint_utc": "2026-10-16T14:09:02.775754+00:00",
+        "inclusive_observed_worker_seconds": 2818.32512,
+        "exact_dispatch_or_brief_start_authenticated": false,
+        "earlier_dispatch_brief_cost_unmeasured_not_zero": true,
+        "includes_all_later_reads_reasoning_waits_freeze_rejected_assumptions_corrections_admin_seal": true,
+        "Root_author_AK_peer_intervals_overlap_and_are_not_serially_summed": true,
+        "speedup_claim": false,
+        "release_admin_seconds": 17.014244,
+        "through_release_observed_seconds": 2835.339364
+      },
+      "Root_receipt_sha256": "28341384d6306ca23b24f554934da0227201942cc2b3552ce667482b96e05cca"
+    },
+    "whole_Core_sha256": "e6b949bb4eeeee3afdb16833b15e75176771d793f13fc63489c95410889c3218",
+    "whole_proof_sha256": "10fefcfcb824805c7c80fcf8659f887a8f95cbb3394c68df47d54009efa676dd",
+    "all23_whole_objects_equal_peer_snapshot": true
+  },
+  "Root_GOAL16AR_scope": {
+    "new_Native_functions": 2,
+    "new_Native_bytes": 149,
+    "new_Source_functions": 3,
+    "new_Source_bytes": 178,
+    "AO_additional_Native_credit": 0,
+    "Original_prototypes_unchanged": true,
+    "full_ABI_fault_SEH_parent_runtime_game_proof": false
+  }
+}

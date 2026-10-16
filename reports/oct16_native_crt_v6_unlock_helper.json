@@ -1,0 +1,242 @@
+{
+  "schema": 1,
+  "packet": "oct16_native_crt_v6_unlock_helper",
+  "utc": "2026-10-16T13:27:08.823118+00:00",
+  "status": "whole_ordinary_Source_default_Win32_build_tested_actual_canonical_lock_contract_runtime_unproved",
+  "scope": {
+    "whole_entry": "00bf9e9c",
+    "range": "00bf9e9c..00bf9ea4 inclusive",
+    "Native_bytes": 9,
+    "Native_starts": 4,
+    "owned_entries": 1,
+    "owned_fragments": 0,
+    "owned_calls": 1
+  },
+  "coverage": {
+    "kind": "whole_ordinary_function",
+    "entry": "00bf9e9c",
+    "defined_bytes": 9,
+    "instruction_starts": 4,
+    "all_normal_code": true,
+    "local_EH": "none in the nine-byte entry",
+    "excluded": "WholeV6 heap/SEH4/compilerframe/SBH/heap/bootstrap/runtime/game closure; no parent/action/handler Source promoted."
+  },
+  "Source": {
+    "function": "bsp::unlock_native_crt_v6_heap_00bf9e9c",
+    "source": "src/native_crt_v6_unlock_helper.cpp",
+    "header": "include/bsp/native_crt_v6_unlock_helper.hpp",
+    "source_sha256": "1337778dbae0acd8cfa7b616f73d74b0395bc49f192021230ad7bf5044d89db4",
+    "header_sha256": "fb4e74bb270427de6678d32a090f39fcc5b247d133a192c9f435c8777eda6420",
+    "interface": "__declspec(naked) void __cdecl() on MSVCWin32 only",
+    "provisional_name": "BSP_CRT_V6HeapUnlockLock4, not a recovered symbol",
+    "old_live_name": "LIBCRT_unmatched_00bf9e9c",
+    "name_and_prototype_policy": "Record old full name/comments/prototype preimages; new name in ledger only. No Ghidra change or C++void type application in Source packet."
+  },
+  "ABI": {
+    "Original_stored_prototype": "undefined LIBCRT_unmatched_00bf9e9c(void)",
+    "Native_and_Source_physical": "No incoming arguments/plainRET. SeparatePUSH4/CALLactualcanonicalC11B31/POPECX/RET. No own prologue or EBP read. Source explicitcdecl; Original untyped convention not repaired.",
+    "normal_register_effects": "POP establishesECX4; EAX/EDX/arithmetic flags are the actual child normal-return state. Nonvolatiles retain the child/Win32 contract; no meaningful C++ return value.",
+    "placement_limits": "Genuine child REL32/new code placement changes faultPC and private return frame; normal-shape/code proof is not wholeV6/SEH4/compilerframe or game ABI proof."
+  },
+  "ordered_effects": [
+    "PUSH constant4 as sole actual canonical unlock argument.",
+    "Separate CALL unlock_native_crt_canonical_00c11b31, directly; never alias Source52C1C60B.",
+    "POP ECX consumes argument and establishesECX4 without arithmetic flag/EAX/EDX changes.",
+    "PlainRET with no added frame/context/callback/global/default/owner/initialization/acquisition/guard/EBPreader."
+  ],
+  "native_host_steps": [
+    {
+      "function": "00bf9e9c",
+      "address": "00bf9e9e",
+      "native": "00c11b31",
+      "kind": "call",
+      "host": "bsp::unlock_native_crt_canonical_00c11b31",
+      "bytes": "e88e7c0100"
+    }
+  ],
+  "provider_contract": {
+    "actual_only": "Published canonical unlock Source reads actual fixedDWORD descriptor and calls actual LeaveCriticalSection. Same existing domain, not a new provider/adapter or Source52 helper alias.",
+    "caller_obligation": "Actual readable DWORD descriptorE16498=E16478+8*4, valid initialized Win32 critical section acquired bycurrentthread through call. Pageadmission notinitialization/acquisition; helper addsnone.",
+    "page_admission": "Actual readable page admission is not critical-section initialization or acquisition.",
+    "No_Source52_alias": true
+  },
+  "providers": [
+    {
+      "path": "include/bsp/native_crt_canonical_unlock.hpp",
+      "physical_sha256": "161dce16976cc0c2bdc10495d5a3c733600cfc6e2d75dc07f1363e5710802cdf",
+      "LF_sha256": "161dce16976cc0c2bdc10495d5a3c733600cfc6e2d75dc07f1363e5710802cdf",
+      "published_Main_basis_LF_equal": true
+    },
+    {
+      "path": "src/native_crt_canonical_unlock.cpp",
+      "physical_sha256": "b2203a3e0def66f513f5bd0d8846a7ac21bb7e066015cf7f426d6e71165c6097",
+      "LF_sha256": "b2203a3e0def66f513f5bd0d8846a7ac21bb7e066015cf7f426d6e71165c6097",
+      "published_Main_basis_LF_equal": true
+    }
+  ],
+  "Source52_reference_only": [
+    {
+      "path": "src/native_crt_calloc_unlock4_helper.cpp",
+      "sha256": "d2f05a6a8885eb253b9ada4ce81b679baa352d181a837b4557c311ff44f6f7b2",
+      "LF_sha256": "d2f05a6a8885eb253b9ada4ce81b679baa352d181a837b4557c311ff44f6f7b2",
+      "role": "published Source52 reference only; V6 helper directly calls canonical provider and must not alias this helper"
+    },
+    {
+      "path": "include/bsp/native_crt_calloc_unlock4_helper.hpp",
+      "sha256": "4d0f7ec2b1c68af55fb27c060d9ebce0efad5065db30982db4ee00eae06db3ed",
+      "LF_sha256": "4d0f7ec2b1c68af55fb27c060d9ebce0efad5065db30982db4ee00eae06db3ed",
+      "role": "published Source52 reference only; V6 helper directly calls canonical provider and must not alias this helper"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Cached lookup lists five callees: BF9E56/BFBA53/C059A8/C05B68/C11B31.",
+      "is": "Exact current whole9B body has one encodedBF9E9E CALLC11B31 thenPOPECX/plainRET. Other cached edges are not owned-body calls.",
+      "evidence": "Fresh typed whole body/flow, PE/live9B, currentfourstarts and full listing; no flow/listing repair."
+    }
+  ],
+  "evidence": {
+    "Root_independent8_readiness": {
+      "path": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/oct16_v6_unlock_primary_readiness.json",
+      "sha256": "0d2523ec33d4ff4eb4a6c3f8a541b9ad5a432150a24edea2b3edf371f33d4619"
+    },
+    "Lua_frozen_V6_readiness": {
+      "path": "J:/PROG/battlestations-pacific-decompile-oct15_movie_factory/local/oct16_crt_v6_heap_readiness.json",
+      "sha256": "a17f8ee0bc14cac50723f3b9f709bf1d7722c55a1f1b3fc5a7082a7d6efea5d6"
+    },
+    "fresh_native": {
+      "path": "local/oct16_v6_unlock_native_audit.json",
+      "sha256": "65680d091fbbf51a44fd1782baa7939384719d61c005c4dce07053d236c552da"
+    },
+    "preimages": {
+      "path": "local/oct16_v6_unlock_before_documentation.json",
+      "sha256": "e955d4315a518e83bd5a04ab925d3ea4b042999f409472e7f3ef5ffdd4880aa9"
+    },
+    "ledger_preimages": {
+      "path": "local/oct16_v6_unlock_ledger_preimages.json",
+      "sha256": "401f802c2ab39119d50c9375556738a24bcfcc18c5f986a7948428662d3814e4"
+    },
+    "actual_CMake_COFF": {
+      "path": "local/oct16_v6_unlock_actual_COFF_review.json",
+      "sha256": "d5ba5714f2b322e1d4f5017aac52a7c5494b9fd46125970873ac7ef688697ef8"
+    },
+    "actual_object": {
+      "path": "build\\win32\\bsp_core.dir\\Release\\native_crt_v6_unlock_helper.obj",
+      "sha256": "3eb2c5a202bf79a511fc51af97579ef954118e3b4a0388df165bcaf9542bd904"
+    },
+    "full_actual_code_accounting": {
+      "bytes": 9,
+      "instructions": 4,
+      "sections": 1,
+      "helpers": 0,
+      "REL32": 1,
+      "offset": 3,
+      "encoded_addend": 0,
+      "mask_only": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "native_comparison": "All nine bytes equal after masking only four proven actualchild placement operand bytes; actual provider symbol, not unresolved placeholder target, verified."
+    },
+    "noncode": ".drectve47B/debug$S208B/chks6432B, zero relocations; no BSS/weakdata/GS/EH/xdata/SafeSEH/compilerframe/helpers/padding."
+  },
+  "published_Main_basis": "1c82033a07d8e9f99746cecea29a190fde5a16ed",
+  "coordination": {
+    "actual_CMake_mutation_gate": "oct16_v6_unlock_registration: queuedplace1/free, actualfileleaseclaimed, oneCorelineappended, released BEFORE24objectarchive and normalbuild. FreshSource55 brief explicitly requested actualgates; packet-specific over older COORDINATION93 append-only guidance.",
+    "ledger_mutation_gate": "oct16_v6_unlock_ledgers queuedfirst/free, actual2fileclaim ->one name/one whole record ONLYBF9E9C ->released immediately; no build whileheld.",
+    "no_unreviewed_Main_sync": true,
+    "receipt": {
+      "path": "local/oct16_v6_unlock_mutation_gates.json",
+      "sha256": "916f27ca23ebd7a0fa33b3930e01587c3ca324bffeee743a73bbff293a20f522"
+    }
+  },
+  "preservation": {
+    "before_build": {
+      "path": "local/oct16_v6_unlock_before_build_preservation.json",
+      "sha256": "e6bcce1e11da5c9f4043bc6bf86d3d1e50bd425dc1521f543c1abd88feed7123"
+    },
+    "current_cited_objects_archived_before_build": 24,
+    "historical_Source52_and_Source50": "Frozen quartets/pins/sevenoldGitblobs/artifacts/Rootchecks/publication receipts retained exactly. SharedcurrentCMake/ledgers may advance; old receipts never rewritten.",
+    "actual_object_archives": "ExactSource52_26bd andSource50_23ec retained; older22 andSource52_23 archived copies exact.",
+    "int41959_resolution": "Exact mapped f963/4338 immutable originals preserved; later currentforeignbuildpaths may advance, not historical failures.",
+    "no_historical_receipt_rewrite": true
+  },
+  "validation": {
+    "default_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "configuration": "normal MSVCWin32Release/default CMake at published1c820 basis",
+      "suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "passed": 3,
+      "failed": 0,
+      "CTest_seconds": 8.11,
+      "log": {
+        "path": "local/oct16_v6_unlock_build.log",
+        "sha256": "4a506c60e3955ca2b192eef6a05d60ef960afae29b0ae255dfbde60c1ba5226e"
+      },
+      "warning": "Existing duplicate spawn_request_id_matches LNK4006 only, unrelated to helper."
+    },
+    "actual_COFF_checks": 7,
+    "report_call_verifier": {
+      "state": "PASS",
+      "rows": 1,
+      "failed": 0,
+      "log": "local/oct16_v6_unlock_final_call_verifier.txt",
+      "sha256": "b749500877cc79c1f22e03cf3c989f950e33835a023bae5d07397a2ee195ad9f"
+    },
+    "markdown_claim_verifier": {
+      "state": "PASS",
+      "claims": 1,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "git_diff_check": {
+      "state": "PASS",
+      "log": "local/oct16_v6_unlock_diff_check.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "new_tests_probes_alternate_clean_builds": 0,
+    "helper_Native_execution": false,
+    "runtime_or_game_validation": false
+  },
+  "primary_review": {
+    "state": "Source_plus_actual_COFF_preliminary16PASS_no_findings_frozen_pin_final_review_pending",
+    "Source_only_preliminary": {
+      "path": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/oct16_v6_unlock_primary_source_review.json",
+      "sha256": "fc15a91abc78b04d334a37e15a26c83f2e4c40c71828ab1a23478333c7b62520",
+      "checks": 8,
+      "scope": "FullCPP/header direct9Bnormal schedule, noalias and actualcanonicaldomain/limits; no final actualCOFF/frozenpin acceptance inferred.",
+      "immutable": true,
+      "findings": []
+    },
+    "Root_independent_readiness8": "Separate0d2523ec PE/native/provider readiness remains immutable.",
+    "final_seal": "Distinct future Root frozen-pin acceptance and Ghidra authorization remain pending; preliminary8 and16 receipts both retained.",
+    "Source_plus_actual_COFF_preliminary": {
+      "path": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/oct16_v6_unlock_primary.json",
+      "sha256": "320775a26cff5de55fcdc28cf6c793daeed7bf9d77ba2a1b17c1fcaf81b78e2f",
+      "checks": 16,
+      "scope": "Full Source/header, all9B4 actual CODE and sole actual canonical REL32 offset3/zero addend; all803 object bytes and12 symbol slots/four sections reviewed.",
+      "immutable": true,
+      "findings": []
+    },
+    "actual_object_file_regions": {
+      "path": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/oct16_v6_unlock_file_regions.json",
+      "sha256": "30937a5dc01143948855ccf330eecf4f841f0823ca8171d09e98049732d0334e",
+      "scope": "Every803 object bytes covered exactly once; no unclaimed bytes; all symbols and noncode classified."
+    }
+  },
+  "limits": [
+    "Caller must supply actualE16498 descriptor and valid initialized current-thread-owned Win32criticalsection through call; no admission/init/acquisition/context/owner added.",
+    "Source nakedMSVCWin32 only. Child EAX/EDX/flags/nonvolatiles inherited on normalreturn. Newplacement/faultPC/privateframes and Original untypedABI remain qualified.",
+    "WholeV6/SEH4/compilerframe/SBH/heap/bootstrap/runtime/game closure remains unproved; no allocator/parent/action/handler coverage inferred from helper Source or stale graph.",
+    "No alias through Source52C1C60B; concrete canonicalSource2providerLFs matched publishedbasis. No new callback/global/default/guard/overlay.",
+    "Existing3suites do not exercise this helper or initialize its criticalsection. No newtests/probes/Nativehelperexecution; static/build/COFF evidence only."
+  ]
+}

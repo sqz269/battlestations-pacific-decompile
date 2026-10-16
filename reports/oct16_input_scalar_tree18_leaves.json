@@ -1,0 +1,434 @@
+{
+  "schema": "bsp_qualified_actual_Source_packet_v1",
+  "packet": "oct16_native_input_scalar_tree18_leaves",
+  "created_utc": "2026-10-16T13:45:16.116734+00:00",
+  "status": "complete_ordinary_Source_current_SDK_noinfo_policy_build_tested_pending_Root_frozen_review",
+  "worker_basis": "424a87e2a82103d137094c71146030766c277e0b",
+  "exact_published_Main_containing_basis": "dcea22c446e3537a757f6bbfa3c9cf854f8e6772",
+  "published_ancestor_basis_explicitly_authorized_no_foreign_shard_sync": true,
+  "Source54_publication": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree_iterator_equal_publication_sync.json",
+    "sha256": "696ff3b340a3ec175431e58430246b917dba33942bda5d46e07951b27a626156"
+  },
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "Source_files": {
+    "include/bsp/native_input_scalar_tree18_leaves.hpp": "8630aa77d49182bb2f824973e7bcb5251b02b9f6eb6f352acd52c88225dc1664",
+    "src/native_input_scalar_tree18_leaves.cpp": "3469e12ea413019bcebf4667c71d0602ddb58ff46d4f105d9b8401ca6934c6b2"
+  },
+  "scope": {
+    "owned_whole_functions": [
+      "0069b190",
+      "005530d0",
+      "00553120"
+    ],
+    "Native_defined_bytes": 297,
+    "Native_instructions": 108,
+    "typed_ranges": 3,
+    "encoded_edges": 19,
+    "external_transfers": 3,
+    "newly_opened_support_or_EH_or_data_bytes": 0,
+    "parent_unique_hint_map_insertion_factory_Source55_promoted": false
+  },
+  "functions": [
+    {
+      "address": "0069b190",
+      "name": "decrement_native_input_scalar_tree_iterator_0069b190",
+      "library_name": "STL_Tree_Dec_IntKey_N18A_0069b190",
+      "source": "src/native_input_scalar_tree18_leaves.cpp",
+      "header": "include/bsp/native_input_scalar_tree18_leaves.hpp",
+      "status": "complete_ordinary_source_native_schedule_current_SDK_policy_qualified",
+      "domain": "actual_raw_tree18_storage_current_SDK_noinfo_policy",
+      "original_abi": "ECX actual8B iterator, incomingEDX unconsumed, no stacked arguments/plainRET; semanticvoid/incidentalEAX, ESI restored before two physical E9 SDK tails. Source nakedfastcall retains emitted register/stack schedule.",
+      "uncertainty": "Caller stack/DF, actual storage lifetime/accessibility and transitive SDK progress/alias effects inherited. No validation, repair, revalidation, cleanup, exception translation or rollback. Current SDK may return/throw/terminate; Original encoded-handler policy/FH3/SEH/private-frame/faultPC/binary-placement/runtime/game equivalence unproved. Raw field accesses are literal emitted instructions; no host node/owner overlays.",
+      "native_defined_bytes": 137,
+      "native_instruction_count": 48,
+      "capture_and_publication_contract": [
+        "Owner diagnostic before CURRENTnode load.",
+        "Nil CURRENT right captured then iterator.node published before rightnil test.",
+        "ESI restored before either external E9; no later owned action if returning.",
+        "Maximum loop carries captured right; climb CURRENTiterator.node before parent.left, publishes parent before nextparent read/niltest; final CURRENTnode niltest before parent publication.",
+        "Two genuine7B LEA ESP instructions retained; CALL_RETURN overrides preserved."
+      ]
+    },
+    {
+      "address": "005530d0",
+      "name": "rotate_left_native_input_scalar_tree_005530d0",
+      "library_name": "STL_Tree_Rotate_005530d0",
+      "source": "src/native_input_scalar_tree18_leaves.cpp",
+      "header": "include/bsp/native_input_scalar_tree18_leaves.hpp",
+      "status": "complete_ordinary_source_native_schedule_current_SDK_policy_qualified",
+      "domain": "actual_raw_tree18_storage_no_callees",
+      "original_abi": "ECX tree, incomingEDX unconsumed then stackedpivot, one stackedDWORD/threeRET4 exits; semanticvoid, retainedpromoted EAX incidental, ESI preserved. Source nakedfastcall retains emitted register/stack schedule.",
+      "uncertainty": "Caller stack/DF, actual storage lifetime/accessibility and transitive SDK progress/alias effects inherited. No validation, repair, revalidation, cleanup, exception translation or rollback. Current SDK may return/throw/terminate; Original encoded-handler policy/FH3/SEH/private-frame/faultPC/binary-placement/runtime/game equivalence unproved. Raw field accesses are literal emitted instructions; no host node/owner overlays.",
+      "native_defined_bytes": 78,
+      "native_instruction_count": 30,
+      "capture_and_publication_contract": [
+        "Pivot/promoted capture before ESIsave.",
+        "Pivotnear store before promotednear REREAD/nil15 test.",
+        "CURRENTpivot.parent after childparentstore; promotedparentstore before CURRENTtree.head/rootread.",
+        "Nonroot CURRENTpivot.parent REREAD after promotedparentstore/rootcomparison; parentlink then promotedfar then pivotparent stores.",
+        "No count/extrema/color/payload/owner writes or callees."
+      ]
+    },
+    {
+      "address": "00553120",
+      "name": "rotate_right_native_input_scalar_tree_00553120",
+      "library_name": "STL_Tree_Rotate_00553120",
+      "source": "src/native_input_scalar_tree18_leaves.cpp",
+      "header": "include/bsp/native_input_scalar_tree18_leaves.hpp",
+      "status": "complete_ordinary_source_native_schedule_current_SDK_policy_qualified",
+      "domain": "actual_raw_tree18_storage_no_callees",
+      "original_abi": "ECX tree, incomingEDX unconsumed then stackedpivot, one stackedDWORD/threeRET4 exits; semanticvoid, retainedpromoted EAX incidental, ESI preserved. Source nakedfastcall retains emitted register/stack schedule.",
+      "uncertainty": "Caller stack/DF, actual storage lifetime/accessibility and transitive SDK progress/alias effects inherited. No validation, repair, revalidation, cleanup, exception translation or rollback. Current SDK may return/throw/terminate; Original encoded-handler policy/FH3/SEH/private-frame/faultPC/binary-placement/runtime/game equivalence unproved. Raw field accesses are literal emitted instructions; no host node/owner overlays.",
+      "native_defined_bytes": 82,
+      "native_instruction_count": 30,
+      "capture_and_publication_contract": [
+        "Pivot/promoted capture before ESIsave.",
+        "Pivotnear store before promotednear REREAD/nil15 test.",
+        "CURRENTpivot.parent after childparentstore; promotedparentstore before CURRENTtree.head/rootread.",
+        "Nonroot CURRENTpivot.parent REREAD after promotedparentstore/rootcomparison; parentlink then promotedfar then pivotparent stores.",
+        "No count/extrema/color/payload/owner writes or callees."
+      ]
+    }
+  ],
+  "storage_contract": {
+    "iterator_bytes": 8,
+    "iterator_owner": 0,
+    "iterator_node": 4,
+    "tree_head": 4,
+    "node_bytes": 24,
+    "left": 0,
+    "parent": 4,
+    "right": 8,
+    "key": 12,
+    "mapped": 16,
+    "color_BYTE": 20,
+    "nil_BYTE": 21,
+    "carrier_node_overlay_new_context_or_provider": false
+  },
+  "host_steps": [
+    {
+      "address": "0069b198",
+      "native": "00bf6713",
+      "function": "0069b190",
+      "kind": "call",
+      "scope": "owned_whole_predecessor137B48",
+      "source_provider": "bsp::invoke_native_invalid_parameter_00bf6713",
+      "returning_continuation": "Only after diagnostic returns load CURRENTiterator.node."
+    },
+    {
+      "address": "0069b1b3",
+      "native": "00bf6713",
+      "function": "0069b190",
+      "kind": "tail_jump",
+      "scope": "owned_whole_predecessor137B48",
+      "source_provider": "bsp::invoke_native_invalid_parameter_00bf6713",
+      "returning_continuation": "ESI restored; no later owned action/store."
+    },
+    {
+      "address": "0069b20f",
+      "native": "00bf6713",
+      "function": "0069b190",
+      "kind": "tail_jump",
+      "scope": "owned_whole_predecessor137B48",
+      "source_provider": "bsp::invoke_native_invalid_parameter_00bf6713",
+      "returning_continuation": "ESI restored; no later owned action/store."
+    }
+  ],
+  "read_only_support_comparison": {
+    "actual_admitted_Source_provider_files": [
+      "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "src/native_invalid_parameter_noinfo_call.cpp"
+    ],
+    "other6_fingerprints": "Existing scalariterator/pointertree18 Source family and historical frontend allocator frontier evidence only, never callback closure/delegation/new Native coverage.",
+    "new_Native_support_bodies_opened": false,
+    "rotations_have_no_callees": true
+  },
+  "provider_fingerprints_equal_exact_published_Main": [
+    {
+      "path": "include/bsp/native_input_scalar_tree_iterator.hpp",
+      "physical_sha256": "66f429acaceb01630e0d05fa578f1a26359757eb8f581d692a0efb8934259650",
+      "LF_sha256": "66f429acaceb01630e0d05fa578f1a26359757eb8f581d692a0efb8934259650",
+      "exact_published_Main": true
+    },
+    {
+      "path": "src/native_input_scalar_tree_iterator.cpp",
+      "physical_sha256": "8a717044cd975de0f3b2021858b0f1bb8ea47c4c5050e03c08d0029604ee6246",
+      "LF_sha256": "8a717044cd975de0f3b2021858b0f1bb8ea47c4c5050e03c08d0029604ee6246",
+      "exact_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_int_pointer_tree18_leaves.hpp",
+      "physical_sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+      "LF_sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+      "exact_published_Main": true
+    },
+    {
+      "path": "src/native_int_pointer_tree18_leaves.cpp",
+      "physical_sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+      "LF_sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+      "exact_published_Main": true
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "physical_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "LF_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "exact_published_Main": true
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "physical_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "LF_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "exact_published_Main": true
+    },
+    {
+      "path": "include/bsp/frontend_seg12_17_cc13.hpp",
+      "physical_sha256": "330d7de34285d4219bde73897f1a1c701a1a54b1d8807ee1ecb559a4bf581d75",
+      "LF_sha256": "330d7de34285d4219bde73897f1a1c701a1a54b1d8807ee1ecb559a4bf581d75",
+      "exact_published_Main": true
+    },
+    {
+      "path": "src/frontend_seg12_17_cc13.cpp",
+      "physical_sha256": "a501a9c6c1dccc42cf8f5ec7386f7fde3dd1fbd4b40c7450884897ccc5ebf418",
+      "LF_sha256": "a501a9c6c1dccc42cf8f5ec7386f7fde3dd1fbd4b40c7450884897ccc5ebf418",
+      "exact_published_Main": true
+    }
+  ],
+  "Native_fresh_proof": {
+    "audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_source_Native_audit.json",
+      "sha256": "c0b0a79378d0ec8b34c1529a4d63e5aadfc3251aa5daffc33992bb0f9b1b59ee"
+    },
+    "all297_PE_live_bytes_and108_current_starts_equal_frozen_readiness": true,
+    "all19_default_encoded_targets_verified": true,
+    "CALL_RETURN_overrides_unchanged": [
+      "0069b1b3",
+      "0069b20f"
+    ],
+    "Original_stored_prototypes": "0069b190 STL_Tree_Dec_IntKey_N18A_0069b190  undefined STL_Tree_Dec_IntKey_N18A_0069b190(void)  body 0069b190 - 0069b218\n005530d0 STL_Tree_Rotate_005530d0  undefined STL_Tree_Rotate_005530d0(void)  body 005530d0 - 0055311d\n00553120 STL_Tree_Rotate_00553120  undefined STL_Tree_Rotate_00553120(void)  body 00553120 - 00553171\n",
+    "Native_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "two7B_LEA_are_actual_instructions_not_padding": true
+  },
+  "actual_CMake_COFF": {
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\build\\win32\\bsp_core.dir\\Release\\native_input_scalar_tree18_leaves.obj",
+      "sha256": "0b87b0fb5867a28fa896617b652b9e7171083df426b35af87f1df8f7ca0093b6",
+      "bytes": 1471
+    },
+    "immutable_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\object_archive\\sha256\\0b87b0fb5867a28fa896617b652b9e7171083df426b35af87f1df8f7ca0093b6.obj",
+      "sha256": "0b87b0fb5867a28fa896617b652b9e7171083df426b35af87f1df8f7ca0093b6"
+    },
+    "CODE_bytes": 297,
+    "CODE_instructions": 108,
+    "public_sections": [
+      {
+        "entry": "0069b190",
+        "bytes": 137,
+        "instructions": 48,
+        "relocations": [
+          {
+            "offset": 9,
+            "type": 20,
+            "symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+            "symbol_index": 15
+          },
+          {
+            "offset": 36,
+            "type": 20,
+            "symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+            "symbol_index": 15
+          },
+          {
+            "offset": 128,
+            "type": 20,
+            "symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+            "symbol_index": 15
+          }
+        ]
+      },
+      {
+        "entry": "005530d0",
+        "bytes": 78,
+        "instructions": 30,
+        "relocations": []
+      },
+      {
+        "entry": "00553120",
+        "bytes": 82,
+        "instructions": 30,
+        "relocations": []
+      }
+    ],
+    "all285_nonplacement_CODE_bytes_identical_Native": true,
+    "masked_only3_SDK_rel32_operands_12bytes": true,
+    "all_internal_branch_displacements_instruction_boundaries_identical": true,
+    "total_relocations": 3,
+    "data_debug_relocations": 0,
+    "all108_instructions_and6_sections_manually_read": true,
+    "all1471_filebytes_covered_once": true,
+    "noncode_sections": {
+      "directives": 47,
+      "CodeView": 212,
+      "checksums": 48
+    },
+    "additional_helpers_EH_SAFESEH_sections_BSS_tables_literals_CODE_padding": false,
+    "Original_register_flags_and_return_schedule_retained_as_emitted_static_caller_evidence": true,
+    "review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_manual_COFF_review.json",
+      "sha256": "d5acab8e1b1ea6536d0fe948b2f5d6f1db7800b8493bbbe266b1c15686a84801"
+    }
+  },
+  "verification": {
+    "normal_command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_suites_passed": 3,
+    "existing_suites_total": 3,
+    "CTest_seconds": 8.72,
+    "new_tests_or_probes": 0,
+    "owned_Native_entries_executed": false,
+    "existing_unrelated_warning": "LNK4006 spawn_request_id_matches duplicate in existing Lua objects",
+    "registration_lease_released_before_build": true,
+    "transfer_verifier": {
+      "JSON_rows": 3,
+      "Markdown_claims": 3,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_call_verification.txt",
+        "sha256": "c084e7a51b1fa1fd71b836db93e200979111861d227848a6ab5856aaf79568f3"
+      }
+    }
+  },
+  "preservation": {
+    "prebuild": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_prebuild_preservation.json",
+      "sha256": "0ed1e4fde93d3f17513d2f8224d4d0c3c293edc1e5c3e3fbd83d62a9810ca8d0"
+    },
+    "postbuild": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_postbuild_preservation.json",
+      "sha256": "a7b54c6a78941ff0b4d2cf01ecc05fa0a756fac4bd34e22a0c984a18feb31f66"
+    },
+    "all459_old_JSON_and123_current_object_paths_archives_exact": true,
+    "current_path_advances": 0,
+    "Source51_9blobs_24artifacts_Root12_20_annotation3dfa_publication8e72_old136_unique31_archives_mappings_preserved": true,
+    "Source54_424a_b492_40a_dcb6_Root24_21artifacts_56archives_370JSON_preserved": true,
+    "no_old_receipt_rewritten": true
+  },
+  "Root_readiness8_historical_Source8_and_qualified_Source8": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_tree18_primary_readiness.json",
+      "sha256": "c79361b25eb52ad865e52f7e81b73f061389d73789ba6a3eef97d23daf659261"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_tree18_primary_source_review.json",
+      "sha256": "906000f1c23d4fa2af0ff5348d3b0995af757b35cc60896de43f4bbea5cc0f9f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_tree18_primary_source_review_qualified.json",
+      "sha256": "269b0dad91380c93cd73e5d3c0c77527d5d32e6490ca440c3b1bb24694c6250f"
+    }
+  ],
+  "Root_qualified_Source8_receipt_is_authoritative_line_count170": "269b0dad91380c93cd73e5d3c0c77527d5d32e6490ca440c3b1bb24694c6250f",
+  "initial_Source8_prose197line_typo_kept_historical_unchanged": true,
+  "frozen_artifacts_at_report_creation": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_source_typed.json",
+      "sha256": "eb95fce903929ab6ae42350189c7a5ed093e34c4f34cac695e1a185686f3f4a6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_source_Native_audit.json",
+      "sha256": "c0b0a79378d0ec8b34c1529a4d63e5aadfc3251aa5daffc33992bb0f9b1b59ee"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_source_starts.json",
+      "sha256": "6c51bdb452264644e52670c6b04dc82ef7a5d1bc04a5ed178e1037aa565126e7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_source_flows.json",
+      "sha256": "92e78a474f48978f3d1f40efc6094ae3f5aa73140b3b67b8036c034fbe576cbd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_build.log",
+      "sha256": "b834bbea4b0316521ff1f38ad560a3f6e0ee52c4f6bf78cab94b4b1539fd6aac"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_build_exit.txt",
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_cmake_coff_review.json",
+      "sha256": "33dd8a934f1e2de8e12f2ffc393cd3ce8b4503e07c2dca49cf4e7b0ec60abf1f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_cmake_coff_decoded.txt",
+      "sha256": "d26d88b0e3eaeb757950e0b64c625075f09ba9259a01e1fcb5770b49d012b297"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_manual_COFF_review.json",
+      "sha256": "d5acab8e1b1ea6536d0fe948b2f5d6f1db7800b8493bbbe266b1c15686a84801"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_registration_preimages.json",
+      "sha256": "3ebfd40c30e17d9fccf3e79b00bbbc2a927c6c88729dae35fe670abca51ef6e0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_registration.json",
+      "sha256": "38581f6d7ab785934da495b370465c353d83b3cc84d38154ae16065664b8e1f5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_prebuild_preservation.json",
+      "sha256": "0ed1e4fde93d3f17513d2f8224d4d0c3c293edc1e5c3e3fbd83d62a9810ca8d0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_postbuild_preservation.json",
+      "sha256": "a7b54c6a78941ff0b4d2cf01ecc05fa0a756fac4bd34e22a0c984a18feb31f66"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\audit_oct16_scalar_tree18_leaves_native.py",
+      "sha256": "0748680199fe804f20de7b80d87bc41eeca5c8d9d6b646d78ac5885417cc154c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\review_oct16_scalar_tree18_leaves_coff.py",
+      "sha256": "b8c4c7c7e4c012bf7d8e23fbda63974a94ab0b66a8cf8f06d9f6bb7acd80d18a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\seal_oct16_scalar_tree18_leaves_coff.py",
+      "sha256": "458dd78e6de7c656c1e98759f58529c84e45adee103bf48d27a4780e97169133"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\preserve_oct16_scalar_tree18_leaves.py",
+      "sha256": "185592f6f53b59088d9cbd44ec238a33ab8647e0b6db56587dae912679025ef4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\build\\win32\\bsp_core.dir\\Release\\native_input_scalar_tree18_leaves.obj",
+      "sha256": "0b87b0fb5867a28fa896617b652b9e7171083df426b35af87f1df8f7ca0093b6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\object_archive\\sha256\\0b87b0fb5867a28fa896617b652b9e7171083df426b35af87f1df8f7ca0093b6.obj",
+      "sha256": "0b87b0fb5867a28fa896617b652b9e7171083df426b35af87f1df8f7ca0093b6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_scalar_tree18_leaves_call_verification.txt",
+      "sha256": "c084e7a51b1fa1fd71b836db93e200979111861d227848a6ab5856aaf79568f3"
+    }
+  ],
+  "Ghidra_names_prototypes_comments_metadata_unchanged": true,
+  "Ghidra_mutation_save_export_Main_push": false,
+  "Source_lease_retained_pending_Root_final_review_and_publication": true,
+  "limits": "Static Native/Source/CMake-object evidence and existing-suite build only. Actual storage/caller stack/DF and transitive provider progress/alias effects inherited. Current SDK noinfo policy is not Original BF66EF encoded-handler CRT closure. No Original faultPC/private-frame/FH3/SEH/heap ownership/runtime ABI/game proof.",
+  "documentation": "docs/OCT16_INPUT_SCALAR_TREE18_LEAVES.md",
+  "Root_independent_Source_and_actual_COFF16_preliminary": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_tree18_primary.json",
+      "sha256": "f828f70e0ab08d9c851a5ae5ba03712a129ce943b3de071b0a4de75623a5fa40"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_tree18_file_regions.json",
+      "sha256": "30ae80d56f62ab422e36e3392a047c5a907adae91c8538c63dda367a115cd217"
+    }
+  ],
+  "Root_final_pin_review_pending": true
+}

@@ -1,0 +1,1739 @@
+{
+  "goal": "GOAL16AR",
+  "status": "independently_reviewed_registered_build_tested",
+  "utc": "2026-10-16T14:10:24.356870+00:00",
+  "Source_build_pin": "617fe3befb64823e2ffe25bbaf68d7951ead179d",
+  "incorporated_Main": "27955cbec38b934ce295a8892b6a897631a63fd1",
+  "validation": {
+    "normal_build": {
+      "source_pin": "617fe3befb64823e2ffe25bbaf68d7951ead179d",
+      "Main_input": "27955cbec38b934ce295a8892b6a897631a63fd1",
+      "observed_Main_at_build": "27955cbec38b934ce295a8892b6a897631a63fd1",
+      "start_utc": "2026-10-16T15:26:50.516035+00:00",
+      "end_utc": "2026-10-16T15:27:10.083358+00:00",
+      "wall_seconds": 19.58962430000247,
+      "exit_code": 0,
+      "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16ar_root\\final_publication_build.log"
+    },
+    "existing_checks": "3/3 PASS,7.43s",
+    "whole_Core": {
+      "sha256": "d9e2db8cd4c5cbbb438e9c4a5c8dc887f4539db0c5f19a4c12461ca327c4d8eb",
+      "bytes": 94448238,
+      "actual_COFF_members_parsed": 2504,
+      "first_dictionary_entries": 83079,
+      "second_dictionary_entries": 83079,
+      "both_whole_multisets_equal": true,
+      "all_indexes_member_offsets_valid": true,
+      "bindings": [
+        {
+          "module": "native_traffic_range_erase_16h",
+          "member_offset": 84091274,
+          "whole_member_bytes": 1919,
+          "whole_member_sha256": "42d4ad593c98f1b6036defd907334957a938613d8dfa4e4f6aa08a894b26a79a",
+          "public_symbols": [
+            "?erase_native_traffic_pod18_range_0048e400@bsp@@YIPAXPAXI0I0IPBX@Z",
+            "?erase_native_traffic_dword_range_00489110@bsp@@YIPAXPAXI0I0IPBX@Z"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_traffic_pod18_helpers",
+          "member_offset": 36170710,
+          "whole_member_bytes": 1978,
+          "whole_member_sha256": "c5c471f4a510bc6b6ccdc26acb597ad0885b4d093b316f041c46de27cb67f0dc",
+          "public_symbols": [
+            "?size_native_traffic_pod18_0047c4d0@bsp@@YIIPBX@Z",
+            "?copy_native_traffic_pod18_0047fc30@bsp@@YAPAXPBX0PAXIII@Z",
+            "?copy_uninitialized_native_traffic_pod18_004841a0@bsp@@YIPAXPBX0PAXIII@Z",
+            "?fill_n_uninitialized_native_traffic_pod18_00486be0@bsp@@YIXPAXIPBXIII@Z",
+            "?fill_n_native_traffic_pod18_dispatch_0048d2f0@bsp@@YIPAXIIPAXIPBX@Z",
+            "?copy_native_traffic_pod18_dispatch_00486850@bsp@@YAPAXPBX0PAX@Z"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_traffic_pointer_erase",
+          "member_offset": 84093254,
+          "whole_member_bytes": 1583,
+          "whole_member_sha256": "7c52c0879fc85111d80b815d2858390c6c7373770d47acc179f3ef20dc4a803c",
+          "public_symbols": [
+            "?erase_native_traffic_pointer_range_00488ff0@bsp@@YIPAXPAX00I0IPBX@Z"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_invalid_parameter_noinfo_call",
+          "member_offset": 84460134,
+          "whole_member_bytes": 808,
+          "whole_member_sha256": "2296a4e057ae6261aa09a83117676bf5c9ad79ff8ff26ea167988764d9224e7d",
+          "public_symbols": [
+            "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_tagged_sizes_bb_16j",
+          "member_offset": 36689496,
+          "whole_member_bytes": 1400,
+          "whole_member_sha256": "fa99cc1165dffe64010cc56cb5afd626717eea36d42611463c8d278040a9f7d0",
+          "public_symbols": [
+            "@bsp_tagged_sizes_bb_16j_00bb40e0@4",
+            "@bsp_tagged_sizes_bb_16j_00bb41e0@4",
+            "@bsp_tagged_sizes_bb_16j_00bba220@4"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_tagged_leaf_bcbd_16k",
+          "member_offset": 36690956,
+          "whole_member_bytes": 2045,
+          "whole_member_sha256": "a91946377dea4d89893aab4d02d288e8a68293291aa05fa3db08359438767889",
+          "public_symbols": [
+            "_bsp_tagged_bcbd_16k_00bc04b0",
+            "@bsp_tagged_bcbd_16k_00bc3030@4",
+            "@bsp_tagged_bcbd_16k_00bc3080@4",
+            "@bsp_tagged_bcbd_16k_00bc3100@4",
+            "@bsp_tagged_bcbd_16k_00bc7a60@4",
+            "_bsp_tagged_bcbd_16k_00bd1830"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_tagged_float_bc_16l",
+          "member_offset": 36739922,
+          "whole_member_bytes": 989,
+          "whole_member_sha256": "72898570d00b6e22f439fe8d36d309d6a4af3dfa8a41412ad8665b8e98356333",
+          "public_symbols": [
+            "@bsp_tagged_float_bc_16l_00bc3010@4",
+            "@bsp_tagged_float_bc_16l_00bc7aa0@4",
+            "@bsp_tagged_float_bc_16l_00bc7ab0@4"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_pod8_range",
+          "member_offset": 40457698,
+          "whole_member_bytes": 1388,
+          "whole_member_sha256": "9030b9081be87cf7fb4ac71d58ca3c0853e7fb0078cbfa32779d717984dc20e8",
+          "public_symbols": [
+            "?copy_native_pod8_range_00419960@bsp@@YIPAXPBX0PAXIII@Z",
+            "?fill_n_native_pod8_range_0041c7e0@bsp@@YIXPAXIPBXIII@Z",
+            "?fill_n_native_pod8_dispatch_0041e3c0@bsp@@YIPAXIIPAXIPBX@Z",
+            "?copy_native_pod8_dispatch_0041f4e0@bsp@@YIPAXIIPBX0PAX@Z"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_pod8_inplace_range",
+          "member_offset": 40470740,
+          "whole_member_bytes": 978,
+          "whole_member_sha256": "3dcc61f05a7921d7839558396e58f70562d9f24fb8d1f26c1ee1f6f3643abf2e",
+          "public_symbols": [
+            "?fill_native_pod8_range_0041c680@bsp@@YAXPAXPBX1@Z",
+            "?copy_backward_native_pod8_range_0041dac0@bsp@@YAPAXPBX0PAX@Z"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_zlib_raw_reset_type_bc",
+          "member_offset": 35520550,
+          "whole_member_bytes": 1047,
+          "whole_member_sha256": "232aef4bd1d04a39f80fc97a0fa3ad81c5f140cf936cdf10f0405ead8eb11de4",
+          "public_symbols": [
+            "@bsp_native_zlib_raw_reset_00bc9650@4",
+            "@bsp_native_zlib_raw_type_00bcee90@4"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_zlib_raw_adler32_bc",
+          "member_offset": 35530636,
+          "whole_member_bytes": 1003,
+          "whole_member_sha256": "79c4899d938fbd793c353cf2e12df4cc027dc8b1c07fc8479e2e3544eea3e394",
+          "public_symbols": [
+            "@bsp_native_zlib_raw_adler32_00bcd720@12"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_resource_reader_references",
+          "member_offset": 38365424,
+          "whole_member_bytes": 2805,
+          "whole_member_sha256": "5116f2a5bfc256cdf1a1fb8c43cdce440f8958009c7149b057cebb5b1879bf1a",
+          "public_symbols": [
+            "?release_native_structured_node_handle_00be9ed0@bsp@@YAXPAXAAVNativeAdoptedSubstreamDispatch@1@@Z",
+            "?release_native_resource_slot_00483850@bsp@@YAPAXPAXAAVNativeAdoptedSubstreamDispatch@1@@Z"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_adopted_substream",
+          "member_offset": 48267684,
+          "whole_member_bytes": 14699,
+          "whole_member_sha256": "0afed1dae40466466d649e8b11b490bf94bf2b1b771c09b5e5534ed09d4aea52",
+          "public_symbols": [
+            "?callable_native_adopted_substream_dispatch@bsp@@YAAAVNativeAdoptedSubstreamDispatch@1@XZ"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_zlib_raw_pqdownheap_bc",
+          "member_offset": 35522476,
+          "whole_member_bytes": 1083,
+          "whole_member_sha256": "4e30c25c807fa3081d7a2e241d8da9c4069386887e5d38b2ad6e7ef8750792da",
+          "public_symbols": [
+            "_bsp_native_zlib_pqdownheap_frame_00bcde90"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_zlib_raw_scan_tree_bc",
+          "member_offset": 35519382,
+          "whole_member_bytes": 1107,
+          "whole_member_sha256": "df949e8dfe99f7db7ea2895cb8e82045675cb88fd589e9eb5c245ca59c805571",
+          "public_symbols": [
+            "_bsp_native_zlib_scan_tree_frame_00bce180"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_zlib_raw_gen_bitlen_bc",
+          "member_offset": 35526712,
+          "whole_member_bytes": 1404,
+          "whole_member_sha256": "91e76343e3f71d8dfbdb42e09682fd904229451a7b61a6c28ac360b86752f179",
+          "public_symbols": [
+            "_bsp_native_zlib_gen_bitlen_frame_00bcdf60"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_zlib_raw_longest_match_fast_bc",
+          "member_offset": 35523620,
+          "whole_member_bytes": 1097,
+          "whole_member_sha256": "16e77bff831993b253a6ee2f4bb3549dda60b64b87597582158f026de485bcce",
+          "public_symbols": [
+            "_bsp_native_zlib_longest_match_fast_frame_00bcbb40"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_zlib_raw_bitbuffer_bc",
+          "member_offset": 35529494,
+          "whole_member_bytes": 1082,
+          "whole_member_sha256": "61a96bed0d85f8037d693f02521636faf8a8ca58356a18ad6a00ba72655f7378",
+          "public_symbols": [
+            "@bsp_native_zlib_bi_flush_00bcef40@4",
+            "@bsp_native_zlib_bi_windup_00bcefc0@4"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_zlib_raw_gen_codes_bc",
+          "member_offset": 35525658,
+          "whole_member_bytes": 993,
+          "whole_member_sha256": "d14d6af8ea0b2da72e488466f56db15268862c10df88ca53049ada910daad795",
+          "public_symbols": [
+            "_bsp_native_zlib_gen_codes_00bcf140"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_zlib_raw_tr_align_bc",
+          "member_offset": 35518038,
+          "whole_member_bytes": 1284,
+          "whole_member_sha256": "617337dcf66fc2669a2bf7aea7d6b39bb7fcc288294e31af644e84ecabc7e461",
+          "public_symbols": [
+            "@bsp_native_zlib_tr_align_00bcf530@4"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_zlib_raw_copy_block_bc",
+          "member_offset": 35528176,
+          "whole_member_bytes": 1258,
+          "whole_member_sha256": "f10eabb170ecbe84eb1d5db6c7727aed05576cdc6a45d0e1aba951322ffc77e1",
+          "public_symbols": [
+            "_bsp_native_zlib_copy_block_frame_00bcf040",
+            "@bsp_native_zlib_copy_block_00bcf040@16"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_zlib_raw_init_block_bc",
+          "member_offset": 35524778,
+          "whole_member_bytes": 819,
+          "whole_member_sha256": "79443825d3eedb03b65e8e1ba2708cad754927c9dd2674c79dd4941dc1f1cbcc",
+          "public_symbols": [
+            "@bsp_native_zlib_init_block_00bcde20@4"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        },
+        {
+          "module": "native_zlib_raw_put_short_msb_bc",
+          "member_offset": 35521658,
+          "whole_member_bytes": 758,
+          "whole_member_sha256": "4176be6e9274ba7755e13496942ab606ca18681899004d7d7623ece2b1946065",
+          "public_symbols": [
+            "@bsp_native_zlib_put_short_msb_00bcb1f0@8"
+          ],
+          "both_complete_dictionaries_unique_actual_provider": true
+        }
+      ]
+    },
+    "proof_sha256": "6015d6277eaf1d47747fe9e115405eda807394349ec6f84496adabb7fc535ca5",
+    "compiler_audit_sha256": "e68d5c752cd87e4a2b73061b174f1bc8a2e0b99c96f5480bff2059c38603a15a",
+    "all23_whole_objects_equal_AS_snapshot": true
+  },
+  "independent_peer": {
+    "status": "READY",
+    "independent_AS_Source_pin": "6c4ab335886e52b51e0f248a414377802d447c13",
+    "AS_receipt_sha256": "2d63bc66bdf4965107a267f2a0ebb7575ee8cd6134d991fde47912e6830fc627",
+    "AS_manifest_sha256": "29c24603ff675ef92d6c9b5d9ea9658a57064ef6a3a183cf4a41effc3668f522",
+    "all48_complete_records_verified": true,
+    "all23_whole_objects_equal_independent_snapshot": true,
+    "clock": {
+      "first_observed_worker_utc": "2026-10-16T13:22:04.450634+00:00",
+      "endpoint_utc": "2026-10-16T14:09:02.775754+00:00",
+      "inclusive_observed_worker_seconds": 2818.32512,
+      "exact_dispatch_or_brief_start_authenticated": false,
+      "earlier_dispatch_brief_cost_unmeasured_not_zero": true,
+      "includes_all_later_reads_reasoning_waits_freeze_rejected_assumptions_corrections_admin_seal": true,
+      "Root_author_AK_peer_intervals_overlap_and_are_not_serially_summed": true,
+      "speedup_claim": false,
+      "release_admin_seconds": 17.014244,
+      "through_release_observed_seconds": 2835.339364
+    },
+    "Root_receipt_sha256": "28341384d6306ca23b24f554934da0227201942cc2b3552ce667482b96e05cca"
+  },
+  "totals": {
+    "selected_modules": 23,
+    "selected_Source_bytes": 7423,
+    "selected_publics": 46,
+    "tracked_Native_functions": 27,
+    "tracked_Native_bytes": 2999,
+    "tracked_Native_instructions": 952,
+    "new_Native_functions": 2,
+    "new_Native_bytes": 149,
+    "new_Native_instructions": 45,
+    "new_Source_functions": 3,
+    "new_Source_bytes": 178,
+    "new_Source_instructions": 56,
+    "AO_Native_credit": 0,
+    "AT_DATA_credit": 0,
+    "AH_parent_credit": 0,
+    "tr_init_parent_credit": 0
+  },
+  "author_receipts": {
+    "AN": {
+      "status": "PASS",
+      "utc": "2026-10-16T13:34:58.238641+00:00",
+      "pin": "1c323c5ba8875c519dfa5c89a6c8afd882208ec2",
+      "seals": {
+        "HANDOFF.md": "235f6f2a90574e1e26fd727b7e07dae8e75240c4b5706dedf7cd2d96dd86d7cd",
+        "final_handoff.json": "a42b5e1606812324df51188ff7421e7ac57037d376cb601c225f046af4e0f701",
+        "sealed_manifest.json": "38839e7bb8e7ddcff3fbe8d59b2b306a5a15c39f8124598ec62701434bfb0016",
+        "receipt.json": "06009ea631f4ccc6a49de1c56a40080dd5244a6377202e2e316327f3cbe3c4d7"
+      },
+      "current102declared_physical_records268659461B_verified_once": true,
+      "copied": [
+        {
+          "path": "actual_compile_provenance.json",
+          "bytes": 37815,
+          "sha256": "fab80b5148c0aabaab8810b7eaaac3233ce364cc79f3c4e5e24b652bff55a055"
+        },
+        {
+          "path": "actual_registered_command.txt",
+          "bytes": 920,
+          "sha256": "fc6898d86a6b5b2d341ae51af4d0abb9e8b44827a76e182e9ac14881f5e2a7c8"
+        },
+        {
+          "path": "admin_seal_correction.json",
+          "bytes": 487,
+          "sha256": "70c4a07773ab06692c2409a2916c4f5e88e0e905463f0182725c27e47367e68a"
+        },
+        {
+          "path": "analyze_object.py",
+          "bytes": 4533,
+          "sha256": "bcd7c7e9c986a01fe97f1e04a131636208a38457025f884b7c77c3032b944712"
+        },
+        {
+          "path": "ancestry_accounting.py",
+          "bytes": 3476,
+          "sha256": "aadb2fe6139aee15c4336a4295aa5261bd59a34600d064910b22cbf6897f8687"
+        },
+        {
+          "path": "archive_proof.json",
+          "bytes": 1101093,
+          "sha256": "e77536ef44eb3abd36de826376650623f4dde23996a6825d5af4c353c4fd7ffe"
+        },
+        {
+          "path": "archive_proof.py",
+          "bytes": 4827,
+          "sha256": "48325c62383de7bb1af45336417fca2348f727e11b933d29f6e548c9e41c3abf"
+        },
+        {
+          "path": "archive_proof_output.txt",
+          "bytes": 1366,
+          "sha256": "6da876f04f97f118688fbdacc5e26cb8ff723b654682d7fca3707a0759ce4f5c"
+        },
+        {
+          "path": "archive_reader.py",
+          "bytes": 1818,
+          "sha256": "7390247d4dab5a210b7c487c79c18389f3aa973a5a45cab6f50e9f58a187e041"
+        },
+        {
+          "path": "build.txt",
+          "bytes": 9077,
+          "sha256": "4f16acb2f20ee6ad8efe82ebe7d4b62404dc657d5394696c274969b27b2d6783"
+        },
+        {
+          "path": "build_timing.json",
+          "bytes": 307,
+          "sha256": "1ef64ea13896e491d86ec256a65aa61e371f794d237841f9927a13bf50546437"
+        },
+        {
+          "path": "caller_flush_entry.txt",
+          "bytes": 1079,
+          "sha256": "2e7d27e9d7c921472d11594436c1f4c4dc512b5b810314697886be1eb42d3aa5"
+        },
+        {
+          "path": "caller_flush_init_setup.txt",
+          "bytes": 888,
+          "sha256": "512b45141f229246d30e4150d9a78ef2c978d5b3848c9e4a0a72906c28cf2647"
+        },
+        {
+          "path": "caller_tr_init_full_listing.json",
+          "bytes": 3784,
+          "sha256": "576fa46b923a4acb4e816d99a6d55eabca2304156721786142befaf1eeb32298"
+        },
+        {
+          "path": "capture.py",
+          "bytes": 3943,
+          "sha256": "52d3403913ab8edd169b8d20e569814c6717c8addd3308820171e01123ed4354"
+        },
+        {
+          "path": "close.py",
+          "bytes": 11270,
+          "sha256": "a430bfa0e768751e0c97530393a76e56f98512df0f5189c45294869031fc0fa6"
+        },
+        {
+          "path": "CMake_before.txt",
+          "bytes": 270208,
+          "sha256": "f3cec969359b3e605169ec95d100e3380a6c265a4d44d22c0e2c4d697d8c1002"
+        },
+        {
+          "path": "coff_reader.py",
+          "bytes": 2603,
+          "sha256": "26e091f71b7975d3c3753d2edac8f139f5af32f8c85854df283dd45357a6d210"
+        },
+        {
+          "path": "commit.txt",
+          "bytes": 400,
+          "sha256": "28ec2c9055f5a28cfb183ae6805f5e9bd48e7de9575b1e598e04bee89280d53e"
+        },
+        {
+          "path": "commit_message.txt",
+          "bytes": 1013,
+          "sha256": "ef18873c24948950dfd24a6cc7a20d169cc58c9e3702cf8389c95979006bfb33"
+        },
+        {
+          "path": "compile_strict.py",
+          "bytes": 1033,
+          "sha256": "e2f6dc6941f0354fc16838eed8e09b3cddfe6f40e2e55e1250aec5e27c92691e"
+        },
+        {
+          "path": "fast_forward.txt",
+          "bytes": 96978,
+          "sha256": "fac24a4d2e1fd614235e19f9f004ad794bf21c9be4bc0a61c7804b84fcf09972"
+        },
+        {
+          "path": "final_actual/build/win32/bsp_core.dir/Release/bsp_core.tlog/bsp_core.lastbuildstate",
+          "bytes": 323,
+          "sha256": "a53dbfd124b2d6b5d3a684b8f97c88cfe10e1243e5b17c400ec03cd7842ea74d"
+        },
+        {
+          "path": "final_actual/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.command.1.tlog",
+          "bytes": 4553190,
+          "sha256": "693c3cc0a47e07ca16e6b39a7abc31f4349d7a879e01ade8e526be04386c42f7"
+        },
+        {
+          "path": "final_actual/build/win32/bsp_core.dir/Release/bsp_core.tlog/Cl.items.tlog",
+          "bytes": 560722,
+          "sha256": "5e5fa312bec5d2285b6a41f4095cee87377624d19863085c72216ad35a1cbfae"
+        },
+        {
+          "path": "final_actual/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "bytes": 67327576,
+          "sha256": "52132e9c2f1fad056ea5e6788f9fae73bceeb9083e76c3315cd925a2477b59e7"
+        },
+        {
+          "path": "final_actual/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.write.1.tlog",
+          "bytes": 1370738,
+          "sha256": "45f2881024794c65b903aa569f8837a10cc04ad54ac4ea847629ac0eb4c14ebb"
+        },
+        {
+          "path": "final_actual/build/win32/bsp_core.dir/Release/bsp_core.tlog/CustomBuild.command.1.tlog",
+          "bytes": 647,
+          "sha256": "c99d386dcb1d0eb892b4bebf979569f212d8afd4db5d2c54211659d611e4403a"
+        },
+        {
+          "path": "final_actual/build/win32/bsp_core.dir/Release/bsp_core.tlog/CustomBuild.read.1.tlog",
+          "bytes": 7333,
+          "sha256": "2634cf2fff9e747330dae834d73bbcbe0e136697dd9c88302e5094071b5e7cd6"
+        },
+        {
+          "path": "final_actual/build/win32/bsp_core.dir/Release/bsp_core.tlog/CustomBuild.write.1.tlog",
+          "bytes": 182,
+          "sha256": "9ab959c510d065f61557ca3d8180eb95fbcf06c641a284669f1a35b8c95a8240"
+        },
+        {
+          "path": "final_actual/build/win32/bsp_core.dir/Release/bsp_core.tlog/Lib-link.read.1.tlog",
+          "bytes": 1266490,
+          "sha256": "06af6e0fb247f2090cf8f2f0cf006b0a4cb04d97a0a6ed3669fb3413d937fd77"
+        },
+        {
+          "path": "final_actual/build/win32/bsp_core.dir/Release/bsp_core.tlog/Lib-link.write.1.tlog",
+          "bytes": 630754,
+          "sha256": "a97da843accaad083f1284bfa624f996c844a27a5807400978a4c499ac9cf827"
+        },
+        {
+          "path": "final_actual/build/win32/bsp_core.dir/Release/bsp_core.tlog/Lib.command.1.tlog",
+          "bytes": 892278,
+          "sha256": "e683f2b239bac73655af7640e59460493fc9940bc6baa687929e29303b9df9f8"
+        },
+        {
+          "path": "final_actual/build/win32/bsp_core.dir/Release/native_zlib_raw_init_block_bc.obj",
+          "bytes": 823,
+          "sha256": "bc1875ac75e67f7443ee4271392a91b6e1869067b18be358b87a6926f9bf58a9"
+        },
+        {
+          "path": "final_actual/build/win32/bsp_core.vcxproj",
+          "bytes": 370274,
+          "sha256": "b164813cbca7b67712e12210271a2e699873946005b837fe8ff190ddbb6a2a88"
+        },
+        {
+          "path": "final_actual/build/win32/Release/bsp_core.lib",
+          "bytes": 94379292,
+          "sha256": "ee59d8ffc3685596227eba909276fbc4cb3c9e3a7f727100a26a3b629beda309"
+        },
+        {
+          "path": "final_actual_manifest.json",
+          "bytes": 4794,
+          "sha256": "1ef29b7c90c9f2c02c4876b0669aca1a2f510b6e16b762306567a0904be29d11"
+        },
+        {
+          "path": "final_index_result.txt",
+          "bytes": 16,
+          "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+        },
+        {
+          "path": "final_verify_report_calls.txt",
+          "bytes": 75,
+          "sha256": "de0b10b3394739ab200da20b2ba8d923ddac9edf67778ff5ef1547f3bc9f4d77"
+        },
+        {
+          "path": "freeze_actual.py",
+          "bytes": 1492,
+          "sha256": "87b3650665d2306b116a644df12a0a2a9ccf788cca61124831d3067cc87a62db"
+        },
+        {
+          "path": "fresh_live_bytes.txt",
+          "bytes": 531,
+          "sha256": "a445dbb6b4383087091190de9d911a6745744ed8c15aabeb1b213faa478ce6bd"
+        },
+        {
+          "path": "fresh_typed.json",
+          "bytes": 8835,
+          "sha256": "492f755d8c396a9eae95fb75c9d995e540436e6672bae4a3b5f18146a8d06ab7"
+        },
+        {
+          "path": "fresh_xrefs.txt",
+          "bytes": 103,
+          "sha256": "218288c1a3beb8c87e53d42c5bb1c22a783afcb3f919987eece3ef1d1d97165a"
+        },
+        {
+          "path": "function_record.json",
+          "bytes": 2838,
+          "sha256": "19ffa151764c6981eceda9e54398e697374a61328716f0d9159deea4f2511579"
+        },
+        {
+          "path": "helper_corrections.json",
+          "bytes": 924,
+          "sha256": "4d514c05f01905b7df4f960e70591499b4ffec6d882c1da9bc07a7bec7948ecc"
+        },
+        {
+          "path": "index_result.txt",
+          "bytes": 143,
+          "sha256": "b15c955d2f6cec3a4ee7e55160fcca180b212bab0f579165dca0a72ca9324857"
+        },
+        {
+          "path": "instruction_reader.py",
+          "bytes": 5383,
+          "sha256": "94fb63dda888b3dbb4780176eda3af08595e7a065e404cb8e0ff7198bd355928"
+        },
+        {
+          "path": "lease_release.txt",
+          "bytes": 62,
+          "sha256": "b4f6f7ab922883d1db2c7bf1b84388f28335b6b415dfb4dadb79c519d195b0bc"
+        },
+        {
+          "path": "legitimate_Main_ancestry_Source_header_registration_changes.txt",
+          "bytes": 9911,
+          "sha256": "03cad1816115626f7023acd38ac9a2bda887d9f9222b945dbd9eadebe3baa1c1"
+        },
+        {
+          "path": "Main_ancestry_provider_accounting.json",
+          "bytes": 44520,
+          "sha256": "73853503acbbf0d04c2fdad0577c374e0deb8e5f9928a5d584af2e386d685fcb"
+        },
+        {
+          "path": "make_report.py",
+          "bytes": 9152,
+          "sha256": "368466558220e863d09b5cba02e63cea53008525a266c26ad8b7531b05d68a97"
+        },
+        {
+          "path": "metadata.py",
+          "bytes": 3516,
+          "sha256": "19583b8dd093424869e0463e48d94a348720a69e7f74f4b3c79fe81d41d979ce"
+        },
+        {
+          "path": "metadata_full_proof.json",
+          "bytes": 5000,
+          "sha256": "6607998ca8e0fe25907644f328f31df2692a03d2c926131f6eab70703a742b76"
+        },
+        {
+          "path": "metadata_operations.json",
+          "bytes": 4720,
+          "sha256": "1762f5bd8093a3e602115814ba317b8af48b3535475286620332558acad93e5e"
+        },
+        {
+          "path": "metadata_proof.py",
+          "bytes": 3401,
+          "sha256": "7173d0c6d0a41314a99de5ad00be82902f8d31111568f68bd3ad07fb5de94e00"
+        },
+        {
+          "path": "native_capture.json",
+          "bytes": 3503,
+          "sha256": "119984f27c09f10697d1b14c6535b2a6225173ba26301be7b9f06c372107f184"
+        },
+        {
+          "path": "native_capture_output.txt",
+          "bytes": 2057,
+          "sha256": "fc3c0fd6d1db7e1320af57afa4cd44e264df4903319d5e905b6727d5163a1e63"
+        },
+        {
+          "path": "Native_init_block.bin",
+          "bytes": 110,
+          "sha256": "0127be1a7177a87ad3db339f678e31b45ce308be1c93f9d911bdb309d319bec7"
+        },
+        {
+          "path": "Native_init_block_full_listing.json",
+          "bytes": 7114,
+          "sha256": "353ca10fd64a4efa863df79a6e30d1c938b1f8889781be0b25087d979cfdaf96"
+        },
+        {
+          "path": "Original_comments.txt",
+          "bytes": 243,
+          "sha256": "216158f1f7a8baaf1555074b1a62e1ed0506dfe53837e962187dd5dd11e35f7b"
+        },
+        {
+          "path": "Original_proto.txt",
+          "bytes": 598,
+          "sha256": "8b52abb87321f4d04ab6ccbb7f43557aaf149ff6f5e80104917ba3d069259c16"
+        },
+        {
+          "path": "owned_diff_validation.json",
+          "bytes": 5288,
+          "sha256": "994f43fb42cac47565a4280159a6beaf910d588270232a8e0aa4b6c21bd9e5cc"
+        },
+        {
+          "path": "pins.json",
+          "bytes": 2521,
+          "sha256": "ee5b34b4905cf9446c764628aaa44c008fafc163f45e911c96624c67cc64ff91"
+        },
+        {
+          "path": "prepare.py",
+          "bytes": 4042,
+          "sha256": "74c61b85d8b4d3b4cc10a173aafbdb5accaa01303ae0f28bcea30c4dc087484b"
+        },
+        {
+          "path": "preservation.json",
+          "bytes": 408381,
+          "sha256": "e5686ac83b82f631b025252225dff4b7e7329f35ebd838fa4d22127359303475"
+        },
+        {
+          "path": "provenance.py",
+          "bytes": 3703,
+          "sha256": "8e5193e32ecbcec488e621deef88348b4119e404feabc8641422a93f6e1a2956"
+        },
+        {
+          "path": "registered_full_COFF_and_mapping.json",
+          "bytes": 37213,
+          "sha256": "f509801a06ccd1b3773bbf75a8c3b74ef70d3511b874cb26b2443be1844b6bdb"
+        },
+        {
+          "path": "run_build.py",
+          "bytes": 817,
+          "sha256": "2cf2ca2df104acdbef18bd24c710e7f2b1fa819535982a61e746dc58fa4b4637"
+        },
+        {
+          "path": "start_and_cache.json",
+          "bytes": 1341,
+          "sha256": "ef285b9538c95b8818a07b45694b9bb27f9b411920eaed371473a6c1a33ef255"
+        },
+        {
+          "path": "strict.obj",
+          "bytes": 791,
+          "sha256": "74c400399d8f894225de273f221bcb3fe30298e3be0fc68f30afcfc6e93a5a60"
+        },
+        {
+          "path": "strict_compile.cmd",
+          "bytes": 315,
+          "sha256": "7fe6ee557051cee1c5a4aa2ff9a870220dfe1527bb019a6cd51ca0171cd0b30f"
+        },
+        {
+          "path": "strict_compile.txt",
+          "bytes": 35,
+          "sha256": "bfa8da87a11a1c760eddfa7637f52566bb180057f861af721d2c1847421b8e0a"
+        },
+        {
+          "path": "strict_full_COFF_and_mapping.json",
+          "bytes": 37149,
+          "sha256": "9108765af3e91f7a1b427ab5ed93d62020646f80af077f5882653a454fb09091"
+        },
+        {
+          "path": "strict_timing.json",
+          "bytes": 168,
+          "sha256": "5c064db64229af9e3c129c0f159ed897f441baedd87973f09e2200cde6a400de"
+        },
+        {
+          "path": "verify_document_calls.txt",
+          "bytes": 116,
+          "sha256": "df6a1adeeaec8c2cfc46dbb8c80c8e76a1a014b3d08c19bf837c8caa8e26e970"
+        },
+        {
+          "path": "verify_report_calls.txt",
+          "bytes": 75,
+          "sha256": "de0b10b3394739ab200da20b2ba8d923ddac9edf67778ff5ef1547f3bc9f4d77"
+        }
+      ],
+      "reference_only": [
+        {
+          "path": "__pycache__/archive_reader.cpython-313.pyc",
+          "bytes": 5143,
+          "sha256": "6cb82f14579e874a2121e6fff6cc0848636795cc7bb27fd6ad86ff0f8849afa9"
+        },
+        {
+          "path": "__pycache__/coff_reader.cpython-313.pyc",
+          "bytes": 5535,
+          "sha256": "8fd3f364d14f1be0193aae43cc0f4d3dd1e89538185aa790ae34e7c58349f4b3"
+        },
+        {
+          "path": "__pycache__/instruction_reader.cpython-313.pyc",
+          "bytes": 10698,
+          "sha256": "a718cfd15cd68c494dcbbf172327e98f4a572dcea3b443ba7126374180c9c65f"
+        },
+        {
+          "path": "administrative_first_seal/final_handoff.json",
+          "bytes": 4989,
+          "sha256": "96108510972bc6bd4f8dc6b5e8b94b8ba208073e1ee41aabfe648993dc8ee7e9"
+        },
+        {
+          "path": "administrative_first_seal/receipt.json",
+          "bytes": 572,
+          "sha256": "1fead5a079e5129c1f66fb8cbe6cb4f311886f9472ec462711a051fb369feecb"
+        },
+        {
+          "path": "administrative_first_seal/sealed_manifest.json",
+          "bytes": 17076,
+          "sha256": "ac246f514491711a188705887562980d097d60022ea319ee8e1f455424e7c436"
+        },
+        {
+          "path": "AM_administrative_seals/HANDOFF.md",
+          "bytes": 4587,
+          "sha256": "2e8a2f4b326c6ea4364a3bd2673387f8551b3ae2d57cbc127204110d474e8e68"
+        },
+        {
+          "path": "AM_administrative_seals/manifest.json",
+          "bytes": 6483,
+          "sha256": "7b0ef05b2cc8e8ec0a5a6e53adfb5232eb8b6f416c9cee1551d3faf8a31ed9df"
+        },
+        {
+          "path": "AM_administrative_seals/readiness_report.json",
+          "bytes": 14483,
+          "sha256": "1d6f903bcbb23b48b662fd74a9a97ecd661184cdbe7f632bb04b7f108e19e474"
+        },
+        {
+          "path": "AM_administrative_seals/receipt.json",
+          "bytes": 1524,
+          "sha256": "4c664e1163a33a9564e06d0c9acfd611233871b2ef29ca62a6f5e7a9664ef5e9"
+        },
+        {
+          "path": "before_main_current/bsp_core.lib",
+          "bytes": 93606768,
+          "sha256": "23c151ce1466fafc9bf6c8b546615d8043de8c0c64c4db7e73b6d6c8e0fff982"
+        },
+        {
+          "path": "before_main_current/bsp_core.vcxproj",
+          "bytes": 357259,
+          "sha256": "664377920171e706a61887b28a4521ec9d3e527dabdff89a798928492ae81c72"
+        },
+        {
+          "path": "commit_blobs/cmake/startup.cmake",
+          "bytes": 270337,
+          "sha256": "a1270c6679c9082b6838eabb4584a6628c50a7be3cf1d998aa962db78d534ca0"
+        },
+        {
+          "path": "commit_blobs/config/names/00bc0000.jsonl",
+          "bytes": 69212,
+          "sha256": "8476487c38fb626912c5f74d0eeed2edf459a2a4eb92a129005d3d5e56c69994"
+        },
+        {
+          "path": "commit_blobs/config/reconstruction/00bc0000.jsonl",
+          "bytes": 128622,
+          "sha256": "6691a216282ccab41a6708c5e6b90e7fee7b50aec260a01211eeb1413d4f71a7"
+        },
+        {
+          "path": "commit_blobs/docs/NATIVE_ZLIB_RAW_INIT_BLOCK_BC.md",
+          "bytes": 6850,
+          "sha256": "70bd7fabde8108d8889a74508c828dcef8d87826529101a02b84d19fa5d2303f"
+        },
+        {
+          "path": "commit_blobs/include/bsp/native_zlib_raw_init_block_bc.hpp",
+          "bytes": 697,
+          "sha256": "b8fcec009bbb3534fdd345deffc7f268c44ad0d82f794374c765d3d8d1ab9f7e"
+        },
+        {
+          "path": "commit_blobs/reports/native_zlib_raw_init_block_bc.json",
+          "bytes": 63627,
+          "sha256": "7f3745e9f004f0273ac1ba805f8e1db380e498d3257ddc54a322ae2c20e16d7b"
+        },
+        {
+          "path": "commit_blobs/src/native_zlib_raw_init_block_bc.cpp",
+          "bytes": 1417,
+          "sha256": "83490bd0ed0bf1369ea89340dee7d3d8a5ef48598788edd2d8fec3b6b602b990"
+        },
+        {
+          "path": "working_pin_inputs/cmake/startup.cmake",
+          "bytes": 270337,
+          "sha256": "a1270c6679c9082b6838eabb4584a6628c50a7be3cf1d998aa962db78d534ca0"
+        },
+        {
+          "path": "working_pin_inputs/config/names/00bc0000.jsonl",
+          "bytes": 69212,
+          "sha256": "8476487c38fb626912c5f74d0eeed2edf459a2a4eb92a129005d3d5e56c69994"
+        },
+        {
+          "path": "working_pin_inputs/config/reconstruction/00bc0000.jsonl",
+          "bytes": 128622,
+          "sha256": "6691a216282ccab41a6708c5e6b90e7fee7b50aec260a01211eeb1413d4f71a7"
+        },
+        {
+          "path": "working_pin_inputs/docs/NATIVE_ZLIB_RAW_INIT_BLOCK_BC.md",
+          "bytes": 6850,
+          "sha256": "70bd7fabde8108d8889a74508c828dcef8d87826529101a02b84d19fa5d2303f"
+        },
+        {
+          "path": "working_pin_inputs/include/bsp/native_zlib_raw_init_block_bc.hpp",
+          "bytes": 697,
+          "sha256": "b8fcec009bbb3534fdd345deffc7f268c44ad0d82f794374c765d3d8d1ab9f7e"
+        },
+        {
+          "path": "working_pin_inputs/reports/native_zlib_raw_init_block_bc.json",
+          "bytes": 65911,
+          "sha256": "2bdb0cd606638bf4188f9a694651c688793da19457bbbf5321dab8276ee1f0f7"
+        },
+        {
+          "path": "working_pin_inputs/src/native_zlib_raw_init_block_bc.cpp",
+          "bytes": 1417,
+          "sha256": "83490bd0ed0bf1369ea89340dee7d3d8a5ef48598788edd2d8fec3b6b602b990"
+        }
+      ],
+      "immutable_Git7": [
+        {
+          "path": "cmake/startup.cmake",
+          "bytes": 270337,
+          "sha256": "a1270c6679c9082b6838eabb4584a6628c50a7be3cf1d998aa962db78d534ca0"
+        },
+        {
+          "path": "config/names/00bc0000.jsonl",
+          "bytes": 69212,
+          "sha256": "8476487c38fb626912c5f74d0eeed2edf459a2a4eb92a129005d3d5e56c69994"
+        },
+        {
+          "path": "config/reconstruction/00bc0000.jsonl",
+          "bytes": 128622,
+          "sha256": "6691a216282ccab41a6708c5e6b90e7fee7b50aec260a01211eeb1413d4f71a7"
+        },
+        {
+          "path": "docs/NATIVE_ZLIB_RAW_INIT_BLOCK_BC.md",
+          "bytes": 6850,
+          "sha256": "70bd7fabde8108d8889a74508c828dcef8d87826529101a02b84d19fa5d2303f"
+        },
+        {
+          "path": "include/bsp/native_zlib_raw_init_block_bc.hpp",
+          "bytes": 697,
+          "sha256": "b8fcec009bbb3534fdd345deffc7f268c44ad0d82f794374c765d3d8d1ab9f7e"
+        },
+        {
+          "path": "reports/native_zlib_raw_init_block_bc.json",
+          "bytes": 63627,
+          "sha256": "7f3745e9f004f0273ac1ba805f8e1db380e498d3257ddc54a322ae2c20e16d7b"
+        },
+        {
+          "path": "src/native_zlib_raw_init_block_bc.cpp",
+          "bytes": 1417,
+          "sha256": "83490bd0ed0bf1369ea89340dee7d3d8a5ef48598788edd2d8fec3b6b602b990"
+        }
+      ],
+      "old_preMain_baseline_not_recopied_or_recursively_hashed": true,
+      "cache_SAFE": true
+    },
+    "AO": {
+      "status": "PASS",
+      "utc": "2026-10-16T13:23:32.075958+00:00",
+      "pin": "42608e7d1b3f288e53ae783b6131d7befdcf2596",
+      "seals": {
+        "HANDOFF.md": "3b3d0a9b6612d86d3c13df0e9b4148b8bad3a9fb7698064ec394c770d01dde6c",
+        "final_handoff.json": "fa7fc2b9c8eee437baa7e427064f37465ec4e0c0c7a0cab18263676994eb828d",
+        "sealed_manifest.json": "59cab50feaf384ad25050e737bc73e79dc4f700a07b817ffa10bcfda701d3378",
+        "receipt.json": "3eb6da7d8a77d2baa1bd87169347aeefae5cb80cff46ac7ec79ab8a9672d73ee"
+      },
+      "current119physical_records175433298B_verified": true,
+      "copied": [
+        {
+          "path": "actual_AD_command.txt",
+          "bytes": 925,
+          "sha256": "1eba786f4ace8f5311d0ba6764cf130e38dc053d2028b211850e796cfb55d9a7"
+        },
+        {
+          "path": "actual_AD_provider_all_coff.json",
+          "bytes": 25986,
+          "sha256": "7fee69024dd9461d6ce9dd32393e64b4e42aded48bcb3050d9dcfeea17e282e3"
+        },
+        {
+          "path": "actual_AG_command.txt",
+          "bytes": 927,
+          "sha256": "32820665864d778752151ad39e41f84d505de2cc1733ae963d0eded966e4acdd"
+        },
+        {
+          "path": "actual_registered/build/win32/bsp_core.dir/Release/bsp_core.tlog/bsp_core.lastbuildstate",
+          "bytes": 324,
+          "sha256": "4ca84ec52c153070d19cacb16695f801a6228c62a4fec1ea062d8e118d8187ae"
+        },
+        {
+          "path": "actual_registered/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.command.1.tlog",
+          "bytes": 4586252,
+          "sha256": "6a9e4e9c57cf2883ea00ab9cd42b835d74bbab634834b46698b32260672742bd"
+        },
+        {
+          "path": "actual_registered/build/win32/bsp_core.dir/Release/bsp_core.tlog/Cl.items.tlog",
+          "bytes": 565476,
+          "sha256": "7e0f9219cf9ccb31d785cc408783e86f074f225c15ba11a6ee1877ca387e6851"
+        },
+        {
+          "path": "actual_registered/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "bytes": 67435620,
+          "sha256": "f93fe0bcd6ac726705703491c66d7675db61acae3e026a748add1003c8fc3162"
+        },
+        {
+          "path": "actual_registered/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.write.1.tlog",
+          "bytes": 1150322,
+          "sha256": "35c5dd556bbfe58c1dae028951fb7ab43171fb1a71bfbf119b3e826477e62b3b"
+        },
+        {
+          "path": "actual_registered/build/win32/bsp_core.dir/Release/bsp_core.tlog/CustomBuild.command.1.tlog",
+          "bytes": 651,
+          "sha256": "f41d9a95ef330fd83e1cbdf77cb915ee8f18688b06908e1429697482e951e874"
+        },
+        {
+          "path": "actual_registered/build/win32/bsp_core.dir/Release/bsp_core.tlog/CustomBuild.read.1.tlog",
+          "bytes": 7343,
+          "sha256": "53f62dff14387a9b28d2a4125debc2a57fc3f2e8c54e1b3f605604903adcf505"
+        },
+        {
+          "path": "actual_registered/build/win32/bsp_core.dir/Release/bsp_core.tlog/CustomBuild.write.1.tlog",
+          "bytes": 184,
+          "sha256": "c302f0185c55307c8100b0750e6fdd9b735e09e3b86a0a145497a22491a8049d"
+        },
+        {
+          "path": "actual_registered/build/win32/bsp_core.dir/Release/bsp_core.tlog/Lib-link.read.1.tlog",
+          "bytes": 1275940,
+          "sha256": "da3be379160a0e8b73c38797158e5e3894b35f5e7b0a0c89aab7110e2ef5fcc4"
+        },
+        {
+          "path": "actual_registered/build/win32/bsp_core.dir/Release/bsp_core.tlog/Lib-link.write.1.tlog",
+          "bytes": 635482,
+          "sha256": "ebaa515774935574970fed898cbea9a096aeca45002c288cd51bb28c6eb2cfc6"
+        },
+        {
+          "path": "actual_registered/build/win32/bsp_core.dir/Release/bsp_core.tlog/Lib.command.1.tlog",
+          "bytes": 896894,
+          "sha256": "11c564195d80c80da87059c94ea0199ee45b1d20b3c8b309b885939311a1b65d"
+        },
+        {
+          "path": "actual_registered/build/win32/bsp_core.dir/Release/native_zlib_raw_bitbuffer_bc.obj",
+          "bytes": 1086,
+          "sha256": "48568bf544f28f2dda61884f9d56fcd732a8c1a5cc79eabefe8751b3e1d43804"
+        },
+        {
+          "path": "actual_registered/build/win32/bsp_core.dir/Release/native_zlib_raw_copy_block_bc.obj",
+          "bytes": 1262,
+          "sha256": "cbdf886e96bc91a898df2a64ddafe9a12213e7376dbd31c35cb776b5ac123530"
+        },
+        {
+          "path": "actual_registered/build/win32/bsp_core.vcxproj",
+          "bytes": 372749,
+          "sha256": "0441be3adc7d8b1c562df99c4f38ff2b1ef5072d55b4bcf0f049ede183771cb8"
+        },
+        {
+          "path": "actual_registered/build/win32/Release/bsp_core.lib",
+          "bytes": 94380984,
+          "sha256": "f54087b4dd69ab705da99bac5474792972a7202a16ee4dbe39b7c9146b1670d4"
+        },
+        {
+          "path": "actual_registered/build/win32/Testing/Temporary/LastTest.log",
+          "bytes": 1624,
+          "sha256": "e174be638782c658faff15dc7c1cae74ecc19da6942475c4ed796487569cb09e"
+        },
+        {
+          "path": "actual_registered/scripts/build.ps1",
+          "bytes": 1820,
+          "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+        },
+        {
+          "path": "actual_registered_manifest.json",
+          "bytes": 14666,
+          "sha256": "2424abf1a6080b9a02a78036189752ce815dafcffa8a1f8d0ed67ea758f16f4d"
+        },
+        {
+          "path": "adapter_schedule.json",
+          "bytes": 2854,
+          "sha256": "1590a0ebf27a0cf56ca59468efe13b9e749aa672f747b78a3a4b7bd756ea3a33"
+        },
+        {
+          "path": "archive_attempt1_error.txt",
+          "bytes": 401,
+          "sha256": "c238fc2a7a6017761b4cc8828f940bca5cb014e81509de819857dd7879ce4973"
+        },
+        {
+          "path": "archive_proof.py",
+          "bytes": 5382,
+          "sha256": "06744d82c204dccb76005885279af71a04c1d0b35d9abbea87889de7a01a7565"
+        },
+        {
+          "path": "archive_provider_proof.json",
+          "bytes": 15984,
+          "sha256": "97f1c00d0258a0bda3f047d31f39517519c3abf47622e34fc7ed02cfb943db7b"
+        },
+        {
+          "path": "bi_windup_comments.txt",
+          "bytes": 1442,
+          "sha256": "98150452f6fc54cc861610ac81cb58a555d5073db353aedab5c3df5c278a33c2"
+        },
+        {
+          "path": "bi_windup_live_listing.txt",
+          "bytes": 1200,
+          "sha256": "b6512efdaeb3bf361d7fb310a106ec07a8f97d0bc9f68b8b377be39370534231"
+        },
+        {
+          "path": "bi_windup_Native.bin",
+          "bytes": 115,
+          "sha256": "51b22d47dc8209af19ffa5819b8e965824c22e5b7ac1ddc9f858c8d1e380730c"
+        },
+        {
+          "path": "bi_windup_Native_bytes.txt",
+          "bytes": 564,
+          "sha256": "3d0c1b77a3810a3bba13bcebc01b019b76a24f6595a30c4cb1282d9f396aee6f"
+        },
+        {
+          "path": "bi_windup_Native_instructions.txt",
+          "bytes": 1794,
+          "sha256": "c39f7a3ba4818695bb672119daa98d98a333a523b2c6bc64c28010b32b19912a"
+        },
+        {
+          "path": "bi_windup_Native_rows.json",
+          "bytes": 5040,
+          "sha256": "e6930b3228ee5176030e91c96c4e7e6eca92ef3c469bbe2e2769d0da048c3ac2"
+        },
+        {
+          "path": "bi_windup_proto.txt",
+          "bytes": 73,
+          "sha256": "ce06078700c417d8ad22cfd568df8550ebc93d3c6dfd768fb6b5e7f91f964707"
+        },
+        {
+          "path": "bi_windup_xrefs.txt",
+          "bytes": 105,
+          "sha256": "ee7210198fa37b92b2d98974a3551bad72343c151bf77c669a2891f49f07ff81"
+        },
+        {
+          "path": "binary_reader.py",
+          "bytes": 5038,
+          "sha256": "63886dc32c3370fb8bf799b028c2697b9f270a8fec8db338ddacd727aff1021b"
+        },
+        {
+          "path": "build.txt",
+          "bytes": 7298,
+          "sha256": "a1b7608b617f26455a1856be33666ced61cc5f15219bed0faf1d5f8e18b57a02"
+        },
+        {
+          "path": "build_clock.json",
+          "bytes": 280,
+          "sha256": "7a4bc155a0b8bcf3cd2355a1127d6e54cc5d5e8f4cc3e11bfd58e6a6129c109f"
+        },
+        {
+          "path": "capture_native.py",
+          "bytes": 3544,
+          "sha256": "6390f12018b10aa9f3be8422b9d660ac3f7dab1a60c9fc5e50fb57db8f15ef25"
+        },
+        {
+          "path": "coff_detail.py",
+          "bytes": 6456,
+          "sha256": "52a6803d1a9422eb8a475d2ae7fb28fa0675f59ac13b564d30cae0490dc0060e"
+        },
+        {
+          "path": "commit_message.txt",
+          "bytes": 631,
+          "sha256": "e1f1078a6aaf0c6794f0ce13f07bbc95353cb07ee0adaeb71e7825e4940dc6cc"
+        },
+        {
+          "path": "commit_record.json",
+          "bytes": 2611,
+          "sha256": "548d6290112f540caf39c9e7d89b551d7c04fde58b1f884c44fc8901a1649bc8"
+        },
+        {
+          "path": "commit_result.txt",
+          "bytes": 280,
+          "sha256": "bec4ca808ad7592b6d06a585e7ff87ac03d086b09d0294910dfc12a81bb10d00"
+        },
+        {
+          "path": "compile_strict.py",
+          "bytes": 812,
+          "sha256": "d10797da4186d8050d2aec1bda0e8a70046c2f7337030dc93ddb1431a054edaf"
+        },
+        {
+          "path": "copy_block_comments.txt",
+          "bytes": 1275,
+          "sha256": "865a39ef0053e759777923603b220d45ff8f36b2f332fb39190002b892398452"
+        },
+        {
+          "path": "copy_block_live_listing.txt",
+          "bytes": 1614,
+          "sha256": "c4e05f731bbac904b371516ea61ee1207a54c2ebeaf90d6b941d80aa0e16f370"
+        },
+        {
+          "path": "copy_block_Native.bin",
+          "bytes": 132,
+          "sha256": "2c57e8e4c0d3e7841a2e2744fae31b3514687559ea73485bc551840c062b439d"
+        },
+        {
+          "path": "copy_block_Native_bytes.txt",
+          "bytes": 645,
+          "sha256": "6cddf0208be5fadf03b7ce8480a6e939e9f734224f2aa83072a691c4a63b509e"
+        },
+        {
+          "path": "copy_block_Native_instructions.txt",
+          "bytes": 2437,
+          "sha256": "6242c84fe62933ba6668254607834a55971d3c0e2efdec2bd26adb4e89759d8c"
+        },
+        {
+          "path": "copy_block_Native_rows.json",
+          "bytes": 6925,
+          "sha256": "25dccec4a961fb1754d9d463bbbaadb898cee6e5cb5c7ce43af84cd38a13eb5b"
+        },
+        {
+          "path": "copy_block_proto.txt",
+          "bytes": 75,
+          "sha256": "f374c4504facb0dcfadcf6b73e763cd904959a03261f0cb550589f2b20ea1f15"
+        },
+        {
+          "path": "copy_block_xrefs.txt",
+          "bytes": 112,
+          "sha256": "5d7dceac76aa9e56dfa3c2713b8a26adbd450f1b0fcc9f0d9c148efc234e6a5d"
+        },
+        {
+          "path": "current_Core_whole_member_manifest.json",
+          "bytes": 981045,
+          "sha256": "b017e60a66599100c2fccc74a46cfe24b270f22ea0c087737d65ea515d5c4ea3"
+        },
+        {
+          "path": "freeze_registered.py",
+          "bytes": 4120,
+          "sha256": "c20adae4c82a47ca3feb77fe5ea84bbb156414b85c2e52b03b3e10673077be8e"
+        },
+        {
+          "path": "lease_release.txt",
+          "bytes": 67,
+          "sha256": "dd11253e1917890d96d7cf7ca0ac85bdfd4e9835e75614255da381934b983996"
+        },
+        {
+          "path": "Native_capture.json",
+          "bytes": 1705,
+          "sha256": "47e196bb088175fcb4128e0d174732be482702da1b7fe7fa3deb8f8db94be7d8"
+        },
+        {
+          "path": "object_proof.py",
+          "bytes": 3251,
+          "sha256": "dbe11ce74ed0af04fe88a1c81fe980bd4c6de1c9f39e0ff595da87ebb5f261a5"
+        },
+        {
+          "path": "pre_stage_status.txt",
+          "bytes": 284,
+          "sha256": "aa52446698a74655efad047228addfd1655c0d54d129bfbc8a61c86015b7f7b9"
+        },
+        {
+          "path": "preparation.json",
+          "bytes": 10225,
+          "sha256": "0c615d4a051e742cf795e9e38323127c60b2f4d0ac92789e4e20cb7946c218f2"
+        },
+        {
+          "path": "prepare.py",
+          "bytes": 2941,
+          "sha256": "035a953bf1afe545127a316639e8808cf6b4348eff8ef994632386884d82e282"
+        },
+        {
+          "path": "refresh_diff_name_status.txt",
+          "bytes": 26400,
+          "sha256": "1382f937621f4ccff8c6ffce20b5f6a73ad74ab5652770caefc3b8f68ae2e75e"
+        },
+        {
+          "path": "refresh_diff_stat.txt",
+          "bytes": 34098,
+          "sha256": "472844f8e5b455fdbfe4102fc76efff77105df107267c3eb97470bcbe84c4d8d"
+        },
+        {
+          "path": "registered_all_coff.json",
+          "bytes": 28038,
+          "sha256": "082425a7d1388d6973adb5bae16b31b44ece80a9bf925013641f0001c8e50a00"
+        },
+        {
+          "path": "registered_object_proof.json",
+          "bytes": 13689,
+          "sha256": "88b88f724bb3f1fa130d1c400d05c6957a61d78a38182d28d7c48e7d9fc0b00e"
+        },
+        {
+          "path": "registered_sections.json",
+          "bytes": 18735,
+          "sha256": "7a8ad24709e905fabb953535766042568d85737ba6ae10b1454ed8a3ffa266b0"
+        },
+        {
+          "path": "report_clock.json",
+          "bytes": 1368,
+          "sha256": "06bc0c5ab22888d9643770d8baa4eefe82528f5405020283a44c7f127bcc4dbe"
+        },
+        {
+          "path": "run_build.py",
+          "bytes": 953,
+          "sha256": "dcbd9ac9d0520361f67c714cfa9069f3f915bd57b9a69dbce837fffef101d0b9"
+        },
+        {
+          "path": "seal_ao.py",
+          "bytes": 10809,
+          "sha256": "bfc1380a9ddfe8670303ba5cd7d06385925ffab1b5c3869e45965445572eb639"
+        },
+        {
+          "path": "stage_commit.py",
+          "bytes": 4115,
+          "sha256": "667ae13ac6085bf8d29b2934be57d46752c6b056af6799438a789834c225b3aa"
+        },
+        {
+          "path": "staged_diff.txt",
+          "bytes": 104449,
+          "sha256": "318be07a2a43e83fc16756e7efe4ca460e142534ce17c206876de1e7498223fd"
+        },
+        {
+          "path": "staged_name_status.txt",
+          "bytes": 272,
+          "sha256": "b0c0bb4fb865eecc1c5f42ab10a0d3d5fd3f715b85c958b99a7facb92720e728"
+        },
+        {
+          "path": "strict.obj",
+          "bytes": 1238,
+          "sha256": "9a1d87b53bb3e3158ea9442826397d9c732ed5bc4519855c29c0b329e1710b23"
+        },
+        {
+          "path": "strict_all_coff.json",
+          "bytes": 27862,
+          "sha256": "dd799ee989fb7d5ca14d64c41a9e658fbb6c574bf66ac6e30fdd8f1d45eb9a5e"
+        },
+        {
+          "path": "strict_clock.json",
+          "bytes": 256,
+          "sha256": "9fc4a1417ebb5ecb2b5f69a703f1f4aa83b22e3c33946fc69f10369fc8d192eb"
+        },
+        {
+          "path": "strict_compile.cmd",
+          "bytes": 286,
+          "sha256": "61bd4be94f5c71e1c52a18ec1841afbcf2692109aec0052e2763abd13eabd2cb"
+        },
+        {
+          "path": "strict_compile.txt",
+          "bytes": 35,
+          "sha256": "f8c072d8caecd1f87952d2bdc3f4c61cc0552799e49b9797496321accff38e57"
+        },
+        {
+          "path": "strict_object_proof.json",
+          "bytes": 13610,
+          "sha256": "ea2152953a2c08624a51e5089aa3739d703fbf6c656275ffda03c87b14549fb3"
+        },
+        {
+          "path": "strict_sections.json",
+          "bytes": 18687,
+          "sha256": "da8aeb87606462d2c044a71021563e3843f5163575861ccc0c6a04e6b8829d70"
+        },
+        {
+          "path": "typed_after_capture.json",
+          "bytes": 14543,
+          "sha256": "a79db83a0c55cfc58930ede1eaf47282eba31ee17ee834bb75988f56353981d2"
+        },
+        {
+          "path": "typed_before_capture.json",
+          "bytes": 14543,
+          "sha256": "a1948ead8f78f53d187c3ff85914e43f92894477995fc6fd804b2b5d01f8c3d2"
+        },
+        {
+          "path": "write_reports.py",
+          "bytes": 11249,
+          "sha256": "c7e821f2ef7c90126346d249f7c91700e3e943987ed86c73b179c0e7bcfdcc50"
+        },
+        {
+          "path": "sealed_manifest.json",
+          "bytes": 20615,
+          "sha256": "59cab50feaf384ad25050e737bc73e79dc4f700a07b817ffa10bcfda701d3378"
+        },
+        {
+          "path": "final_handoff.json",
+          "bytes": 9282,
+          "sha256": "fa7fc2b9c8eee437baa7e427064f37465ec4e0c0c7a0cab18263676994eb828d"
+        },
+        {
+          "path": "HANDOFF.md",
+          "bytes": 3380,
+          "sha256": "3b3d0a9b6612d86d3c13df0e9b4148b8bad3a9fb7698064ec394c770d01dde6c"
+        }
+      ],
+      "immutable_Git6": [
+        {
+          "path": "src/native_zlib_raw_copy_block_bc.cpp",
+          "bytes": 3963,
+          "sha256": "950b820b60952bb64a170c7f81b2fe2322249a6e89ec6deb96bbe39383f4d3cb"
+        },
+        {
+          "path": "include/bsp/native_zlib_raw_copy_block_bc.hpp",
+          "bytes": 2207,
+          "sha256": "ee5ef153277d87489016b3d5e7bc352b23c0614486876234cb45318d9def5128"
+        },
+        {
+          "path": "docs/GOAL16AC_ZLIB_RAW_COPY_BLOCK.md",
+          "bytes": 13005,
+          "sha256": "1b17cc0d6b25e3eda6aa7c5d01422e478b3b3256a562f5a6a41a20e47672e15d"
+        },
+        {
+          "path": "reports/goal16ac_zlib_raw_copy_block.json",
+          "bytes": 724755,
+          "sha256": "27c9b5560b63f04934b0e533223670858467696dcdcce7a85a605cb6d180b72a"
+        },
+        {
+          "path": "docs/GOAL16AO_ZLIB_COPY_RETURNING_PROTOCOL.md",
+          "bytes": 7615,
+          "sha256": "d4f2ff27f794ac82d3472b810bd1f73084f691bc2c7ed88bd2fc3cb3c1d3ff30"
+        },
+        {
+          "path": "reports/goal16ao_zlib_copy_returning_protocol.json",
+          "bytes": 84022,
+          "sha256": "210f12391d81f3d6800bd48221b85539021822e77df92cf516382bf38d7fc54a"
+        }
+      ],
+      "older_referenced_history_not_recopied_or_recursively_hashed": true,
+      "cache_SAFE": true
+    },
+    "AQ_receipt_sha256": "195e9a458eaaaa8b5049b99fe9e868189ed9aff86795eb0cfd202a18a5708600"
+  },
+  "scope_qualifications": [
+    "New Source interfaces and descriptive names are qualified hypotheses, not recovered Original public C++ types/ABI.",
+    "Original names/prototypes/no_return=false preserved; old copy NR is Source-only.",
+    "Raw/malformed inputs and actual save/control aliases admitted; Source placement, added prefix/frame/fault/current SS/return bits and external provider policies remain qualified.",
+    "No selected function execution, new tests/probes, full ABI/fault/SEH/parent/runtime/game proof.",
+    "AT DATA and AH/_tr_init parents receive no credit in this batch."
+  ],
+  "costs": {
+    "AQ_author_normal_seconds": 18.8803258,
+    "AN_author_normal_seconds": 101.1351239,
+    "AO_author_normal_seconds": 93.356344,
+    "Root_combined_normal_seconds": 19.66512,
+    "Root_Main_refresh_normal_seconds": 19.934438299998874,
+    "AN_author_inclusive_seconds": 1949.173984,
+    "AO_author_inclusive_seconds": 1328.136775,
+    "independent_peer_cost": {
+      "first_observed_worker_utc": "2026-10-16T13:22:04.450634+00:00",
+      "endpoint_utc": "2026-10-16T14:09:02.775754+00:00",
+      "inclusive_observed_worker_seconds": 2818.32512,
+      "exact_dispatch_or_brief_start_authenticated": false,
+      "earlier_dispatch_brief_cost_unmeasured_not_zero": true,
+      "includes_all_later_reads_reasoning_waits_freeze_rejected_assumptions_corrections_admin_seal": true,
+      "Root_author_AK_peer_intervals_overlap_and_are_not_serially_summed": true,
+      "speedup_claim": false,
+      "release_admin_seconds": 17.014244,
+      "through_release_observed_seconds": 2835.339364
+    },
+    "overlapping_costs_not_summed": true,
+    "earlier_AK_AM_AP_and_dispatch_gaps_separate": true,
+    "no_measured_speedup_claim": true,
+    "Root_final_Main_refresh_normal_seconds": 19.58962430000247,
+    "all_actual_normal_runs_retained_not_summed_as_throughput": true
+  },
+  "Ghidra": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "evidence_comments_saved": true,
+    "Original_full_function_records_names_prototypes_return_classification_unchanged": true,
+    "old_comments_preserved": true,
+    "Source_types_not_applied": true,
+    "annotation_receipt_sha256": "0b1abab5d7bc740d1a8fae3c88a0466badac7f2d93dacbc66ee6ca6b9bf9cd19",
+    "typed_after_sha256": "000c6c003a94bc089bba7e5f39a6bddbdab05dffd177fbb0156d736107ff24d7",
+    "three_affected_exports_refreshed": true,
+    "function_count_76774_unchanged_snapshot_skipped": true,
+    "index_rebuilt": true
+  },
+  "Root_current_Core_refresh": {
+    "Source_pin": "617fe3befb64823e2ffe25bbaf68d7951ead179d",
+    "incorporated_Main": "27955cbec38b934ce295a8892b6a897631a63fd1",
+    "current_proof_sha256": "6015d6277eaf1d47747fe9e115405eda807394349ec6f84496adabb7fc535ca5",
+    "all23_whole_objects_byte_identical_to_AS_snapshot": true,
+    "later_Main_refresh_is_Root_verified_not_independently_re_reviewed_by_AS": true
+  },
+  "coordination_report_call_gate": {
+    "receipt_sha256": "ee79e7e9457ebd01c1ca26fb0ff99fac0b34edae16721576cf9804d2bada54b0",
+    "all5_changed_JSON_and5_documents_checked": true,
+    "eligible_JSON_call_rows_checked": 1,
+    "failed": 0,
+    "unchecked_markdown_claims": 2,
+    "remaining_coverage": "Zero eligible rows and unchecked prose are not behavior proof; AS full Native/Source/COFF review covers physical contracts separately.",
+    "client_project_program_verified": true
+  },
+  "routines": [
+    {
+      "address": "00bcde20",
+      "Original_name": "init_block",
+      "coverage": "complete",
+      "Native_bytes": 110,
+      "Native_instructions": 29,
+      "new_Native_credit": 110,
+      "Source_bytes": 111,
+      "Source_instructions": 30
+    },
+    {
+      "address": "00bcb1f0",
+      "Original_name": "putShortMSB",
+      "coverage": "complete",
+      "Native_bytes": 39,
+      "Native_instructions": 16,
+      "new_Native_credit": 39,
+      "Source_bytes": 43,
+      "Source_instructions": 18
+    },
+    {
+      "address": "00bcf040",
+      "Original_name": "copy_block",
+      "coverage": "complete previously accepted body; additional returning Source interface",
+      "Native_bytes": 132,
+      "Native_instructions": 49,
+      "new_Native_credit": 0,
+      "new_Source_bytes": 24,
+      "new_Source_instructions": 8,
+      "old_private134_NR21_preserved": true
+    }
+  ],
+  "earlier_Root_publication_validation": {
+    "Source_pin": "445551c1a05eb62b4a86b69340c6bdf1ce1c501a",
+    "incorporated_Main": "5d2d049ef1bd5a18de44a6caa01d182257302925",
+    "validation": {
+      "normal_build": {
+        "source_pin": "445551c1a05eb62b4a86b69340c6bdf1ce1c501a",
+        "Main_input": "5d2d049ef1bd5a18de44a6caa01d182257302925",
+        "observed_Main_at_build": "5d2d049ef1bd5a18de44a6caa01d182257302925",
+        "start_utc": "2026-10-16T14:02:48.896344+00:00",
+        "end_utc": "2026-10-16T14:03:08.808171+00:00",
+        "wall_seconds": 19.934438299998874,
+        "exit_code": 0,
+        "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16ar_root\\publication_build.log"
+      },
+      "existing_checks": "3/3 PASS,7.77s",
+      "whole_Core": {
+        "sha256": "e6b949bb4eeeee3afdb16833b15e75176771d793f13fc63489c95410889c3218",
+        "bytes": 94444004,
+        "actual_COFF_members_parsed": 2501,
+        "first_dictionary_entries": 83074,
+        "second_dictionary_entries": 83074,
+        "both_whole_multisets_equal": true,
+        "all_indexes_member_offsets_valid": true,
+        "bindings": [
+          {
+            "module": "native_traffic_range_erase_16h",
+            "member_offset": 84087040,
+            "whole_member_bytes": 1919,
+            "whole_member_sha256": "42d4ad593c98f1b6036defd907334957a938613d8dfa4e4f6aa08a894b26a79a",
+            "public_symbols": [
+              "?erase_native_traffic_pod18_range_0048e400@bsp@@YIPAXPAXI0I0IPBX@Z",
+              "?erase_native_traffic_dword_range_00489110@bsp@@YIPAXPAXI0I0IPBX@Z"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_traffic_pod18_helpers",
+            "member_offset": 36169920,
+            "whole_member_bytes": 1978,
+            "whole_member_sha256": "c5c471f4a510bc6b6ccdc26acb597ad0885b4d093b316f041c46de27cb67f0dc",
+            "public_symbols": [
+              "?size_native_traffic_pod18_0047c4d0@bsp@@YIIPBX@Z",
+              "?copy_native_traffic_pod18_0047fc30@bsp@@YAPAXPBX0PAXIII@Z",
+              "?copy_uninitialized_native_traffic_pod18_004841a0@bsp@@YIPAXPBX0PAXIII@Z",
+              "?fill_n_uninitialized_native_traffic_pod18_00486be0@bsp@@YIXPAXIPBXIII@Z",
+              "?fill_n_native_traffic_pod18_dispatch_0048d2f0@bsp@@YIPAXIIPAXIPBX@Z",
+              "?copy_native_traffic_pod18_dispatch_00486850@bsp@@YAPAXPBX0PAX@Z"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_traffic_pointer_erase",
+            "member_offset": 84089020,
+            "whole_member_bytes": 1583,
+            "whole_member_sha256": "7c52c0879fc85111d80b815d2858390c6c7373770d47acc179f3ef20dc4a803c",
+            "public_symbols": [
+              "?erase_native_traffic_pointer_range_00488ff0@bsp@@YIPAXPAX00I0IPBX@Z"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_invalid_parameter_noinfo_call",
+            "member_offset": 84455900,
+            "whole_member_bytes": 808,
+            "whole_member_sha256": "2296a4e057ae6261aa09a83117676bf5c9ad79ff8ff26ea167988764d9224e7d",
+            "public_symbols": [
+              "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_tagged_sizes_bb_16j",
+            "member_offset": 36688706,
+            "whole_member_bytes": 1400,
+            "whole_member_sha256": "fa99cc1165dffe64010cc56cb5afd626717eea36d42611463c8d278040a9f7d0",
+            "public_symbols": [
+              "@bsp_tagged_sizes_bb_16j_00bb40e0@4",
+              "@bsp_tagged_sizes_bb_16j_00bb41e0@4",
+              "@bsp_tagged_sizes_bb_16j_00bba220@4"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_tagged_leaf_bcbd_16k",
+            "member_offset": 36690166,
+            "whole_member_bytes": 2045,
+            "whole_member_sha256": "a91946377dea4d89893aab4d02d288e8a68293291aa05fa3db08359438767889",
+            "public_symbols": [
+              "_bsp_tagged_bcbd_16k_00bc04b0",
+              "@bsp_tagged_bcbd_16k_00bc3030@4",
+              "@bsp_tagged_bcbd_16k_00bc3080@4",
+              "@bsp_tagged_bcbd_16k_00bc3100@4",
+              "@bsp_tagged_bcbd_16k_00bc7a60@4",
+              "_bsp_tagged_bcbd_16k_00bd1830"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_tagged_float_bc_16l",
+            "member_offset": 36739132,
+            "whole_member_bytes": 989,
+            "whole_member_sha256": "72898570d00b6e22f439fe8d36d309d6a4af3dfa8a41412ad8665b8e98356333",
+            "public_symbols": [
+              "@bsp_tagged_float_bc_16l_00bc3010@4",
+              "@bsp_tagged_float_bc_16l_00bc7aa0@4",
+              "@bsp_tagged_float_bc_16l_00bc7ab0@4"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_pod8_range",
+            "member_offset": 40456908,
+            "whole_member_bytes": 1388,
+            "whole_member_sha256": "9030b9081be87cf7fb4ac71d58ca3c0853e7fb0078cbfa32779d717984dc20e8",
+            "public_symbols": [
+              "?copy_native_pod8_range_00419960@bsp@@YIPAXPBX0PAXIII@Z",
+              "?fill_n_native_pod8_range_0041c7e0@bsp@@YIXPAXIPBXIII@Z",
+              "?fill_n_native_pod8_dispatch_0041e3c0@bsp@@YIPAXIIPAXIPBX@Z",
+              "?copy_native_pod8_dispatch_0041f4e0@bsp@@YIPAXIIPBX0PAX@Z"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_pod8_inplace_range",
+            "member_offset": 40469950,
+            "whole_member_bytes": 978,
+            "whole_member_sha256": "3dcc61f05a7921d7839558396e58f70562d9f24fb8d1f26c1ee1f6f3643abf2e",
+            "public_symbols": [
+              "?fill_native_pod8_range_0041c680@bsp@@YAXPAXPBX1@Z",
+              "?copy_backward_native_pod8_range_0041dac0@bsp@@YAPAXPBX0PAX@Z"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_reset_type_bc",
+            "member_offset": 35519760,
+            "whole_member_bytes": 1047,
+            "whole_member_sha256": "232aef4bd1d04a39f80fc97a0fa3ad81c5f140cf936cdf10f0405ead8eb11de4",
+            "public_symbols": [
+              "@bsp_native_zlib_raw_reset_00bc9650@4",
+              "@bsp_native_zlib_raw_type_00bcee90@4"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_adler32_bc",
+            "member_offset": 35529846,
+            "whole_member_bytes": 1003,
+            "whole_member_sha256": "79c4899d938fbd793c353cf2e12df4cc027dc8b1c07fc8479e2e3544eea3e394",
+            "public_symbols": [
+              "@bsp_native_zlib_raw_adler32_00bcd720@12"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_resource_reader_references",
+            "member_offset": 38364634,
+            "whole_member_bytes": 2805,
+            "whole_member_sha256": "5116f2a5bfc256cdf1a1fb8c43cdce440f8958009c7149b057cebb5b1879bf1a",
+            "public_symbols": [
+              "?release_native_structured_node_handle_00be9ed0@bsp@@YAXPAXAAVNativeAdoptedSubstreamDispatch@1@@Z",
+              "?release_native_resource_slot_00483850@bsp@@YAPAXPAXAAVNativeAdoptedSubstreamDispatch@1@@Z"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_adopted_substream",
+            "member_offset": 48263450,
+            "whole_member_bytes": 14699,
+            "whole_member_sha256": "0afed1dae40466466d649e8b11b490bf94bf2b1b771c09b5e5534ed09d4aea52",
+            "public_symbols": [
+              "?callable_native_adopted_substream_dispatch@bsp@@YAAAVNativeAdoptedSubstreamDispatch@1@XZ"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_pqdownheap_bc",
+            "member_offset": 35521686,
+            "whole_member_bytes": 1083,
+            "whole_member_sha256": "4e30c25c807fa3081d7a2e241d8da9c4069386887e5d38b2ad6e7ef8750792da",
+            "public_symbols": [
+              "_bsp_native_zlib_pqdownheap_frame_00bcde90"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_scan_tree_bc",
+            "member_offset": 35518592,
+            "whole_member_bytes": 1107,
+            "whole_member_sha256": "df949e8dfe99f7db7ea2895cb8e82045675cb88fd589e9eb5c245ca59c805571",
+            "public_symbols": [
+              "_bsp_native_zlib_scan_tree_frame_00bce180"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_gen_bitlen_bc",
+            "member_offset": 35525922,
+            "whole_member_bytes": 1404,
+            "whole_member_sha256": "91e76343e3f71d8dfbdb42e09682fd904229451a7b61a6c28ac360b86752f179",
+            "public_symbols": [
+              "_bsp_native_zlib_gen_bitlen_frame_00bcdf60"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_longest_match_fast_bc",
+            "member_offset": 35522830,
+            "whole_member_bytes": 1097,
+            "whole_member_sha256": "16e77bff831993b253a6ee2f4bb3549dda60b64b87597582158f026de485bcce",
+            "public_symbols": [
+              "_bsp_native_zlib_longest_match_fast_frame_00bcbb40"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_bitbuffer_bc",
+            "member_offset": 35528704,
+            "whole_member_bytes": 1082,
+            "whole_member_sha256": "61a96bed0d85f8037d693f02521636faf8a8ca58356a18ad6a00ba72655f7378",
+            "public_symbols": [
+              "@bsp_native_zlib_bi_flush_00bcef40@4",
+              "@bsp_native_zlib_bi_windup_00bcefc0@4"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_gen_codes_bc",
+            "member_offset": 35524868,
+            "whole_member_bytes": 993,
+            "whole_member_sha256": "d14d6af8ea0b2da72e488466f56db15268862c10df88ca53049ada910daad795",
+            "public_symbols": [
+              "_bsp_native_zlib_gen_codes_00bcf140"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_tr_align_bc",
+            "member_offset": 35517248,
+            "whole_member_bytes": 1284,
+            "whole_member_sha256": "617337dcf66fc2669a2bf7aea7d6b39bb7fcc288294e31af644e84ecabc7e461",
+            "public_symbols": [
+              "@bsp_native_zlib_tr_align_00bcf530@4"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_copy_block_bc",
+            "member_offset": 35527386,
+            "whole_member_bytes": 1258,
+            "whole_member_sha256": "f10eabb170ecbe84eb1d5db6c7727aed05576cdc6a45d0e1aba951322ffc77e1",
+            "public_symbols": [
+              "_bsp_native_zlib_copy_block_frame_00bcf040",
+              "@bsp_native_zlib_copy_block_00bcf040@16"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_init_block_bc",
+            "member_offset": 35523988,
+            "whole_member_bytes": 819,
+            "whole_member_sha256": "79443825d3eedb03b65e8e1ba2708cad754927c9dd2674c79dd4941dc1f1cbcc",
+            "public_symbols": [
+              "@bsp_native_zlib_init_block_00bcde20@4"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_put_short_msb_bc",
+            "member_offset": 35520868,
+            "whole_member_bytes": 758,
+            "whole_member_sha256": "4176be6e9274ba7755e13496942ab606ca18681899004d7d7623ece2b1946065",
+            "public_symbols": [
+              "@bsp_native_zlib_put_short_msb_00bcb1f0@8"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          }
+        ]
+      },
+      "proof_sha256": "10fefcfcb824805c7c80fcf8659f887a8f95cbb3394c68df47d54009efa676dd",
+      "compiler_audit_sha256": "4130f7c3516f1c20b106d0c7fe31627a7aa5199f557f426641dfdd0d6ccf0f5c",
+      "all23_whole_objects_equal_AS_snapshot": true
+    },
+    "Root_current_Core_refresh": {
+      "Source_pin": "445551c1a05eb62b4a86b69340c6bdf1ce1c501a",
+      "incorporated_Main": "5d2d049ef1bd5a18de44a6caa01d182257302925",
+      "current_proof_sha256": "10fefcfcb824805c7c80fcf8659f887a8f95cbb3394c68df47d54009efa676dd",
+      "all23_whole_objects_byte_identical_to_AS_snapshot": true,
+      "later_Main_refresh_is_Root_verified_not_independently_re_reviewed_by_AS": true
+    },
+    "immutable_paths": "local/goal16ar_root/publication_build_result.json,publication_proof,publication_compile remain unchanged"
+  }
+}
