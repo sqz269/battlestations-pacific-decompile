@@ -1,0 +1,278 @@
+{
+  "batch": 52,
+  "status": "integrator_reviewed_reconstructed_build_tested_pending_Main_publication",
+  "Source_pin": "0a7d86d973c7636364767a38e9d6454ba660e942",
+  "tested_integrator_commit": "2f3ac4a2b2eb2b83ef8cd429cf724cc532b72c97",
+  "primary_final": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_calloc_unlock4_primary_frozen.json",
+    "sha256": "bf6f4da8303cc41cc7546ac233a3f618c57419114c24727cd83f08f1bf3a1d4b",
+    "checks": 15
+  },
+  "worker_frozen": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_avoid_distance\\local\\oct16_calloc_unlock4_frozen_pin.json",
+    "sha256": "82424da4b12d2f134e3422b7ae5a96681a5e959a0a6630015f9401dd2561b634"
+  },
+  "annotation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_avoid_distance\\local\\oct16_calloc_unlock4_annotation_receipt.json",
+    "sha256": "4ccdfefae9d66b17c6f65edd47200a53c80d296177788980555d2aae06bf18df",
+    "receipt": {
+      "schema": 1,
+      "packet": "oct16_native_crt_calloc_unlock4_helper",
+      "status": "authorized_single_address_locked_annotation_saved_single_export_refreshed",
+      "utc": "2026-10-16T11:53:30.122896+00:00",
+      "frozen_Source_pin": "0a7d86d973c7636364767a38e9d6454ba660e942",
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "Root_acceptance": {
+        "final15": {
+          "path": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/oct16_calloc_unlock4_primary_frozen.json",
+          "sha256": "bf6f4da8303cc41cc7546ac233a3f618c57419114c24727cd83f08f1bf3a1d4b"
+        },
+        "preliminary8": {
+          "path": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/oct16_calloc_unlock4_primary.json",
+          "sha256": "142172c1478fccd77ece7ea755bd8b3a97a1f3a7349d55394fb41b10afc2e8a9"
+        },
+        "both_immutable_exact": true
+      },
+      "verified_pre_post_typed": [
+        {
+          "path": "local/oct16_calloc_unlock4_before_annotation_typed.json",
+          "sha256": "6f02b35e2bad09afc1bc8610446812fd4afbe752adac6dff5942409d36cbb111"
+        },
+        {
+          "path": "local/oct16_calloc_unlock4_after_annotation_typed.json",
+          "sha256": "82550982c92012def250c8764c54481f204453b7b67ec83aa061455eb51df7ff"
+        }
+      ],
+      "annotation": {
+        "command": "python tools/ghidra_annotate.py --apply --addresses 00c1c60b",
+        "write_lock": "Tool coordination.ghidra_lock; Client.verify before writes; only one authorized entry applied, then save_program.",
+        "addresses": [
+          "00c1c60b"
+        ],
+        "project_saved": true,
+        "tool_log": {
+          "path": "local/oct16_calloc_unlock4_annotations.txt",
+          "sha256": "1cf1358d163ae673bc4fbaff908acb7f75226c056135065f4a0a4b7bcfd1f68a"
+        },
+        "full_name_comment_preimages": {
+          "path": "J:/PROG/battlestations-pacific-decompile-oct15_avoid_distance/local/ghidra-annotations-20261016T115104Z.json",
+          "sha256": "dd60addbed78294fd76fd72672a683d7382820770c763481a15fa715534d9020"
+        },
+        "full_before_documentation": {
+          "path": "local/oct16_calloc_unlock4_before_annotation_documentation.json",
+          "sha256": "4a40b54472fa58ae8e0c10d2dd023dc9f889e3f8c43567a51d4e5bb0431d27d3"
+        },
+        "full_after_documentation": {
+          "path": "local/oct16_calloc_unlock4_after_annotation_documentation.json",
+          "sha256": "5ffa14842a8b82f5f7f03865b191e823afe3d5754a8ac554b6dab35e663f5ba3"
+        },
+        "name_before": "LIBCRT_unmatched_00c1c60b",
+        "name_after": "BSP_CRT_CallocUnlockLock4",
+        "name_status": "Authorized provisional behavior name, not recovered symbol; oldLIBCRT identity retained in evidence and preimages.",
+        "old_plate_comment_sha256": "f8f909dced2aceb0ea3d4938c287e6881a021f99399e42838abc7b73ce8f655c",
+        "new_plate_comment_sha256": "91a70eb5851a9d6379e48c6a10b104a6343129b221d6a3e5b4c1800a002d89a3",
+        "old_full_comment_verbatim_prefix_retained": true,
+        "all_other_documentation_fields_except_name_hash_plate_unchanged": true,
+        "prototype": {
+          "before": "undefined LIBCRT_unmatched_00c1c60b(void)",
+          "after": "undefined BSP_CRT_CallocUnlockLock4(void)",
+          "before_capture": {
+            "path": "local/oct16_calloc_unlock4_before_annotation_proto.txt",
+            "sha256": "d3c8563db70b86c2e6ac3b1fb77e8853077c6545788311dfc18334371c3e2883"
+          },
+          "after_capture": {
+            "path": "local/oct16_calloc_unlock4_after_annotation_proto.txt",
+            "sha256": "3afc7b4603184e2be823ca6e04622de737e6a840fd6738d4d8a6c2de714775d9"
+          },
+          "exact_full_prototype_output_normalized_only_function_name": true,
+          "stored_return_type_remains_undefined": true,
+          "Source_void_signature_NOT_applied": true,
+          "parameter_type_storage_calling_convention_and_ABI_unchanged": true,
+          "no_prototype_mutation_endpoint_called": true
+        }
+      },
+      "forced_export": {
+        "command": "python tools/bsp.py ghidra export 00c1c60b --force",
+        "count": 1,
+        "log": {
+          "path": "local/oct16_calloc_unlock4_exports.txt",
+          "sha256": "849721d4844349678adb75e4164dd5ccf71c2a4a09a9e824134c083974091361"
+        },
+        "bytes": 9,
+        "starts": 4,
+        "all_export_starts_equal_frozen_Native": [
+          "00c1c60b",
+          "00c1c60d",
+          "00c1c612",
+          "00c1c613"
+        ],
+        "files": [
+          {
+            "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00c1c60b/decompiled.c",
+            "sha256": "db9894e659af54bd1c9ef0e323c30ad28a1dcd30431e4752e230d175ee0bf3f8"
+          },
+          {
+            "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00c1c60b/assembly.txt",
+            "sha256": "0d9eb457ff1537117f2efe1e955022181d5522a469273ce2879427d534881496"
+          },
+          {
+            "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00c1c60b/metadata.json",
+            "sha256": "c0e8a4af966b9aee14256cb860e6de2de6fe27ece02a9dbebdf99ee5dd0959e3"
+          }
+        ]
+      },
+      "post_annotation_native": {
+        "audit": {
+          "path": "local/oct16_calloc_unlock4_post_annotation_native_audit.json",
+          "sha256": "27a08345494f4ef10a1097f67882d8560a9e2445f041d476150c721a61a641c6"
+        },
+        "PE_equals_live_equals_frozen_9B": true,
+        "all4current_starts_match": true,
+        "single_actual_CALL": "00c1c60d ->00c11b31",
+        "exact_normal_schedule": "PUSH4/CALLC11B31/POPECX/plainRET",
+        "no_extent_flow_or_byte_change": true
+      },
+      "preservation": {
+        "Source_frozen": {
+          "path": "local/oct16_calloc_unlock4_frozen_pin.json",
+          "sha256": "82424da4b12d2f134e3422b7ae5a96681a5e959a0a6630015f9401dd2561b634"
+        },
+        "precommit": {
+          "path": "local/oct16_calloc_unlock4_precommit.json",
+          "sha256": "aa15538c2a6e6cf7c661d1c629a2ec386395721f5738a361b8b40b252d2fd58b"
+        },
+        "all7Source_files_and12precommit_artifacts_exact": true,
+        "Root_prelim_and_final_seals_exact": true,
+        "Source_report_doc_ledger_CMake_changes": 0,
+        "new_build_tests_Main_changes_push": false,
+        "clean_worktree_at_exact_Source_pin": true,
+        "other_Ghidra_addresses_mutated_or_exported": [],
+        "C606_prefix_private_action_calloc_scope": "Untouched/open; no extent/flow/prototype/action repair or emulation."
+      },
+      "lease": {
+        "packet": "oct16_native_crt_calloc_unlock4_helper",
+        "retained_until_publication": true
+      },
+      "limits": "Saved evidence/name closeout only. No ordinary helper Native execution, allocator/privateaction/SEH4/FH3/runtime/game closure or Source promotion of other addresses."
+    }
+  },
+  "Native": [
+    9,
+    4
+  ],
+  "actual_integrator_COFF": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\build\\win32\\bsp_core.dir\\Release\\native_crt_calloc_unlock4_helper.obj",
+    "sha256": "3b76ccd19f720625faa5108e2976b18000e0019c61cb5dc3c2f5aded2f9678de",
+    "CODE": [
+      9,
+      4
+    ],
+    "sections": [
+      {
+        "index": 1,
+        "name": ".drectve",
+        "bytes": 47,
+        "flags": 1051136,
+        "raw_hex": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+        "symbols": [],
+        "relocations": []
+      },
+      {
+        "index": 2,
+        "name": ".debug$S",
+        "bytes": 208,
+        "flags": 1108344896,
+        "raw_hex": "04000000f1000000c400000086000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d6f637431355f696e7465677261746f725c6275696c645c77696e33325c6273705f636f72652e6469725c52656c656173655c6e61746976655f6372745f63616c6c6f635f756e6c6f636b345f68656c7065722e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c657200",
+        "symbols": [],
+        "relocations": []
+      },
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "bytes": 9,
+        "flags": 1615859744,
+        "raw_hex": "6a04e80000000059c3",
+        "symbols": [
+          {
+            "name": "?unlock_native_crt_calloc_lock4_00c1c60b@bsp@@YAXXZ",
+            "value": 0,
+            "section": 3,
+            "type": 32,
+            "storage": 2
+          }
+        ],
+        "relocations": [
+          {
+            "offset": 3,
+            "type": 20,
+            "symbol": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z"
+          }
+        ],
+        "instructions": [
+          {
+            "offset": 0,
+            "bytes": "6a04",
+            "mnemonic": "push",
+            "operands": "4"
+          },
+          {
+            "offset": 2,
+            "bytes": "e800000000",
+            "mnemonic": "call",
+            "operands": "7"
+          },
+          {
+            "offset": 7,
+            "bytes": "59",
+            "mnemonic": "pop",
+            "operands": "ecx"
+          },
+          {
+            "offset": 8,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "name": ".chks64",
+        "bytes": 32,
+        "flags": 2560,
+        "raw_hex": "76f6abfb5648dec720c30a1780d7a48496f2733d930a328b0000000000000000",
+        "symbols": [],
+        "relocations": []
+      }
+    ],
+    "sole_REL32": {
+      "offset": 3,
+      "type": 20,
+      "symbol": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z"
+    },
+    "CODE_and_symbolic_relocations_equal_worker": true,
+    "whole_object_identity_claimed": false,
+    "immutable_object_copy": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\object_archive\\sha256\\3b76ccd19f720625faa5108e2976b18000e0019c61cb5dc3c2f5aded2f9678de.obj",
+      "sha256": "3b76ccd19f720625faa5108e2976b18000e0019c61cb5dc3c2f5aded2f9678de"
+    }
+  },
+  "verification": {
+    "log": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_batch51_52_final_build.txt",
+    "sha256": "a53e8a3c194b8d793ca4b306bace18b3539364d79207f603a7cdad6895ecd224",
+    "passed": 3,
+    "seconds": 7.31,
+    "existing_suites_execute_new_body": false,
+    "transfer_log": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_batch52_final_transfers.txt",
+    "transfer_sha256": "20ec5320a8db30add5d41259ad84e93d4295b1b4174d594820fe1812f797c08b",
+    "JSON_rows": 1,
+    "Markdown_claims": 1
+  },
+  "provider_LF_fingerprints": {
+    "src/native_crt_canonical_unlock.cpp": "b2203a3e0def66f513f5bd0d8846a7ac21bb7e066015cf7f426d6e71165c6097",
+    "include/bsp/native_crt_canonical_unlock.hpp": "161dce16976cc0c2bdc10495d5a3c733600cfc6e2d75dc07f1363e5710802cdf"
+  },
+  "limits": "Static Source/body ABI and relocation evidence only; newplacement/private return frame/faultPC/Original critical-section ownership/bootstrap/SEH/runtime/game remain unproved. Existing suites do not execute new body. NoSource/repair/wholeABIclaimforC1C606five-byteprefix orfull14-byteprivateaction; calloc remainsopen.",
+  "excluded": "C1C606 five-byte private prefix/full14B frame action, calloc/FH3/SEH4/CRT ownership/runtime/game remain open."
+}
