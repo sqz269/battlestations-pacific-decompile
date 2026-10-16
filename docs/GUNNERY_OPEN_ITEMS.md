@@ -15261,3 +15261,35 @@ predicted mechanism (later by at most one think period plus the stagger), so the
 **Lost:** USN15 `tl` was a reference-only knife-edge (258: its 1171 s Yamashiro kill is a deterministic friendly
 Fubuki-class07 torpedo, absent under jitter); ON removes that torpedo as jitter does (gyro launches 134 -> 78), and the
 mission fails at 1417.31 s as the jitter runs did. The USN15 re-plan is queue item 2.
+
+## 261. Handoff record for cc9-gunnery47 (written by cc9-gunnery48, 2026-10-16)
+
+cc9-gunnery47 stopped without a handoff. Its state, reconstructed from this tree's `local\` and git:
+
+**Done.** `d4e7a58f1` (260, `kTorpedoBotCanFireReloadBound` OFF) and `eaf50b067` (260.1, flipped ON). Both are on
+origin/main. The flip loses USN15 `usn15_g46_u15_tl` (fails 1417.31 s).
+
+**USN15 Yamashiro variants `ya`..`yg`** (plans `local\g47_u15y?.plan`, order files `local\usn15_g47_u15_y?.txt`).
+They all ran on the **OFF** export `local\g47_off` (exe `B02D3CB60D6C`, i.e. before the 260.1 flip), with and without
+`BSP_FRAME_JITTER`. Summary from `local\g48_sum.py`:
+
+| Variant | Idea | Reference | 20,3 | 20,5 |
+| --- | --- | --- | --- | --- |
+| `ya` | `tl` + 8 Fletchers in a line x=-1900, z 4400.. (dz 250), `torp` 100 frames x3 from 1000 s | (log gone) | Yamashiro alive at 1499 s (frame cap), 5 BBs dead | failed 1422.36 s |
+| `yb` | as `ya`, one `attack Yamashiro` instead of `torp` | (log gone) | alive at the frame cap, 5 BBs dead | failed 1377.27 s |
+| `yc` | as `ya`, line x=-1300, z 4600.. | (log gone) | Yamashiro dies 1207 s (Minneapolis), 5 BBs dead | (log gone) |
+| `yd` | `tl`, BBs stand off at (-5000, 7000), no attack order | Yamashiro dies 1071 s (Fubuki-class07 friendly torpedo), 4 BBs dead | failed 1397.29 s | failed 1427.32 s |
+| `ye` | BBs attack Yamashiro from 800 s; CA on Fubuki08, CL on Fubuki07, 12 Fletchers on Fubuki06 from 750 s | failed 1397.29 s | failed 1397.29 s | Yamashiro dies 1388 s (Fletcher-class12), 5 BBs dead |
+| `yf` | `tl`, BBs stand off at (-4000, 6000) | (log gone) | failed 1427.32 s | (log gone) |
+| `yg` | `tl` BBs; CA on Fubuki08, CL on Fubuki07, 12 Fletchers on Fubuki06 from 750 s | failed 1417.31 s | failed 1442.33 s | failed 1437.33 s |
+
+None is robust. Observations for the successor:
+- The fail is `luaCheckObjs` (an enemy within 3000 m of JapanGoTo (0, 12000)). Yamashiro's track (x about -300 to -140,
+  northbound at 12.6 m/s, z 4077 at 1000 s and 6582 at 1200 s) reaches z of about 9000 at 1415 s.
+- In `ya` the beam strikers died before or while they launched, to Yamashiro's guns at 0.7-2.7 km and to the
+  Fubuki-class06/07 escorts. Their tubes snapped (`bearing=22`: the target was off the bow while they turned in).
+- `torpedo <ship> at <target>` aims at the target's CURRENT position (`player_fire_torpedo_group`,
+  `atan2(to - from)`), with no lead. The surface torpedo classes run 1852 m (class 61 at 23 m/s, class 62 at 13 m/s).
+  A beam shot at a 12.6 m/s target from 1.6 km therefore passes astern of it; only a parked target (Fuso in `tl`) or a
+  bow-on geometry is hit reliably.
+- Yamashiro has about 90k health; the BBs' fire takes it to 19-57k by 1200 s before they die.
