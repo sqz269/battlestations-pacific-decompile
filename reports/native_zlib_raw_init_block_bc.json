@@ -1,0 +1,2284 @@
+{
+  "goal": "GOAL16AN",
+  "packet": "goal16an_init_block",
+  "status": "complete_Source_build_static_ready_for_independent_review",
+  "base_commit": "0f57e25ee18f9d6babff8fd2612ca2d9e7a4cd40",
+  "source": "src/native_zlib_raw_init_block_bc.cpp",
+  "header": "include/bsp/native_zlib_raw_init_block_bc.hpp",
+  "documentation": "docs/NATIVE_ZLIB_RAW_INIT_BLOCK_BC.md",
+  "source_sha256": "83490bd0ed0bf1369ea89340dee7d3d8a5ef48598788edd2d8fec3b6b602b990",
+  "header_sha256": "b8fcec009bbb3534fdd345deffc7f268c44ad0d82f794374c765d3d8d1ab9f7e",
+  "documentation_sha256": "70bd7fabde8108d8889a74508c828dcef8d87826529101a02b84d19fa5d2303f",
+  "entries": [
+    {
+      "address": "00bcde20",
+      "name": "init_block",
+      "coverage": "complete",
+      "Native_size": 110,
+      "Native_instructions": 29,
+      "Original_consumed_input": "EDX raw backing; ECX not an input",
+      "Original_stack_words": 0,
+      "Original_purge": 0,
+      "Original_no_return": false,
+      "Source_interface": "extern C void __fastcall bsp_native_zlib_init_block_00bcde20(void* backing) noexcept",
+      "Source_function_count": 1,
+      "Source_bytes": 111,
+      "Source_instructions": 30,
+      "Source_input": "ECX backing",
+      "Source_prefix": "8BD1 MOV EDX,ECX",
+      "Source_prefix_Native_credit": 0,
+      "external_CALLs_or_globals_or_private_exports": 0
+    }
+  ],
+  "Native_whole_functions": 1,
+  "Native_whole_bytes": 110,
+  "Native_whole_instructions": 29,
+  "whole_Source_functions": 1,
+  "whole_Source_executable_bytes": 111,
+  "whole_Source_instructions": 30,
+  "all29_Native_operations_mapped": true,
+  "all3_loop_branch_conditions_and_targets_mapped": [
+    {
+      "Native_address": "00bcde39",
+      "Native_index": 8,
+      "Source_index": 9,
+      "Source_offset": 27,
+      "Native_target_index": 5,
+      "Source_target_index": 6,
+      "Source_target_offset": 18
+    },
+    {
+      "Native_address": "00bcde4f",
+      "Native_index": 14,
+      "Source_index": 15,
+      "Source_offset": 49,
+      "Native_target_index": 11,
+      "Source_target_index": 12,
+      "Source_target_offset": 40
+    },
+    {
+      "Native_address": "00bcde69",
+      "Native_index": 21,
+      "Source_index": 22,
+      "Source_offset": 74,
+      "Native_target_index": 18,
+      "Source_target_index": 19,
+      "Source_target_offset": 65
+    }
+  ],
+  "complete_instruction_mapping": [
+    {
+      "Native_index": 0,
+      "Native_address": "00bcde20",
+      "Native_bytes": "56",
+      "Native_text": "push esi",
+      "Source_index": 1,
+      "Source_offset": 2,
+      "Source_bytes": "56",
+      "Source_text": "push esi",
+      "whole_effective_operation": {
+        "instruction_id": 609,
+        "mnemonic": "push",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 1,
+            "kind": "register",
+            "name": "esi"
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [
+          "esi",
+          "esp"
+        ],
+        "written_registers": [
+          "esp"
+        ]
+      }
+    },
+    {
+      "Native_index": 1,
+      "Native_address": "00bcde21",
+      "Native_bytes": "8d828c000000",
+      "Native_text": "lea eax, [edx + 0x8c]",
+      "Source_index": 2,
+      "Source_offset": 3,
+      "Source_bytes": "8d828c000000",
+      "Source_text": "lea eax, [edx + 0x8c]",
+      "whole_effective_operation": {
+        "instruction_id": 332,
+        "mnemonic": "lea",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 2,
+            "kind": "register",
+            "name": "eax"
+          },
+          {
+            "width": 4,
+            "access": 1,
+            "kind": "address_only",
+            "terms": [
+              [
+                "edx",
+                1
+              ]
+            ],
+            "displacement": 140,
+            "segment": null
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [
+          "edx"
+        ],
+        "written_registers": [
+          "eax"
+        ]
+      }
+    },
+    {
+      "Native_index": 2,
+      "Native_address": "00bcde27",
+      "Native_bytes": "b91e010000",
+      "Native_text": "mov ecx, 0x11e",
+      "Source_index": 3,
+      "Source_offset": 9,
+      "Source_bytes": "b91e010000",
+      "Source_text": "mov ecx, 0x11e",
+      "whole_effective_operation": {
+        "instruction_id": 460,
+        "mnemonic": "mov",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 2,
+            "kind": "register",
+            "name": "ecx"
+          },
+          {
+            "width": 4,
+            "access": 0,
+            "kind": "immediate",
+            "value": 286
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [],
+        "written_registers": [
+          "ecx"
+        ]
+      }
+    },
+    {
+      "Native_index": 3,
+      "Native_address": "00bcde2c",
+      "Native_bytes": "33f6",
+      "Native_text": "xor esi, esi",
+      "Source_index": 4,
+      "Source_offset": 14,
+      "Source_bytes": "33f6",
+      "Source_text": "xor esi, esi",
+      "whole_effective_operation": {
+        "instruction_id": 1503,
+        "mnemonic": "xor",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 3,
+            "kind": "register",
+            "name": "esi"
+          },
+          {
+            "width": 4,
+            "access": 1,
+            "kind": "register",
+            "name": "esi"
+          }
+        ],
+        "eflags_effect_mask": 17592192335900,
+        "read_registers": [
+          "esi"
+        ],
+        "written_registers": [
+          "eflags",
+          "esi"
+        ]
+      }
+    },
+    {
+      "Native_index": 4,
+      "Native_address": "00bcde2e",
+      "Native_bytes": "8bff",
+      "Native_text": "mov edi, edi",
+      "Source_index": 5,
+      "Source_offset": 16,
+      "Source_bytes": "8bff",
+      "Source_text": "mov edi, edi",
+      "whole_effective_operation": {
+        "instruction_id": 460,
+        "mnemonic": "mov",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 2,
+            "kind": "register",
+            "name": "edi"
+          },
+          {
+            "width": 4,
+            "access": 1,
+            "kind": "register",
+            "name": "edi"
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [
+          "edi"
+        ],
+        "written_registers": [
+          "edi"
+        ]
+      }
+    },
+    {
+      "Native_index": 5,
+      "Native_address": "00bcde30",
+      "Native_bytes": "668930",
+      "Native_text": "mov word ptr [eax], si",
+      "Source_index": 6,
+      "Source_offset": 18,
+      "Source_bytes": "668930",
+      "Source_text": "mov word ptr [eax], si",
+      "whole_effective_operation": {
+        "instruction_id": 460,
+        "mnemonic": "mov",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          102,
+          0
+        ],
+        "operands": [
+          {
+            "width": 2,
+            "access": 2,
+            "kind": "memory",
+            "terms": [
+              [
+                "eax",
+                1
+              ]
+            ],
+            "displacement": 0,
+            "segment": "ds"
+          },
+          {
+            "width": 2,
+            "access": 1,
+            "kind": "register",
+            "name": "si"
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [
+          "eax",
+          "si"
+        ],
+        "written_registers": []
+      }
+    },
+    {
+      "Native_index": 6,
+      "Native_address": "00bcde33",
+      "Native_bytes": "83c004",
+      "Native_text": "add eax, 4",
+      "Source_index": 7,
+      "Source_offset": 21,
+      "Source_bytes": "83c004",
+      "Source_text": "add eax, 4",
+      "whole_effective_operation": {
+        "instruction_id": 8,
+        "mnemonic": "add",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 3,
+            "kind": "register",
+            "name": "eax"
+          },
+          {
+            "width": 4,
+            "access": 0,
+            "kind": "immediate",
+            "value": 4
+          }
+        ],
+        "eflags_effect_mask": 63,
+        "read_registers": [
+          "eax"
+        ],
+        "written_registers": [
+          "eax",
+          "eflags"
+        ]
+      }
+    },
+    {
+      "Native_index": 7,
+      "Native_address": "00bcde36",
+      "Native_bytes": "83e901",
+      "Native_text": "sub ecx, 1",
+      "Source_index": 8,
+      "Source_offset": 24,
+      "Source_bytes": "83e901",
+      "Source_text": "sub ecx, 1",
+      "whole_effective_operation": {
+        "instruction_id": 715,
+        "mnemonic": "sub",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 3,
+            "kind": "register",
+            "name": "ecx"
+          },
+          {
+            "width": 4,
+            "access": 0,
+            "kind": "immediate",
+            "value": 1
+          }
+        ],
+        "eflags_effect_mask": 63,
+        "read_registers": [
+          "ecx"
+        ],
+        "written_registers": [
+          "ecx",
+          "eflags"
+        ]
+      }
+    },
+    {
+      "Native_index": 8,
+      "Native_address": "00bcde39",
+      "Native_bytes": "75f5",
+      "Native_text": "jne 0xbcde30",
+      "Source_index": 9,
+      "Source_offset": 27,
+      "Source_bytes": "75f5",
+      "Source_text": "jne 0x12",
+      "whole_effective_operation": {
+        "instruction_id": 265,
+        "mnemonic": "jne",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 0,
+            "kind": "branch",
+            "instruction_index": 5
+          }
+        ],
+        "eflags_effect_mask": 34359738368,
+        "read_registers": [
+          "eflags"
+        ],
+        "written_registers": []
+      }
+    },
+    {
+      "Native_index": 9,
+      "Native_address": "00bcde3b",
+      "Native_bytes": "8d8280090000",
+      "Native_text": "lea eax, [edx + 0x980]",
+      "Source_index": 10,
+      "Source_offset": 29,
+      "Source_bytes": "8d8280090000",
+      "Source_text": "lea eax, [edx + 0x980]",
+      "whole_effective_operation": {
+        "instruction_id": 332,
+        "mnemonic": "lea",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 2,
+            "kind": "register",
+            "name": "eax"
+          },
+          {
+            "width": 4,
+            "access": 1,
+            "kind": "address_only",
+            "terms": [
+              [
+                "edx",
+                1
+              ]
+            ],
+            "displacement": 2432,
+            "segment": null
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [
+          "edx"
+        ],
+        "written_registers": [
+          "eax"
+        ]
+      }
+    },
+    {
+      "Native_index": 10,
+      "Native_address": "00bcde41",
+      "Native_bytes": "b91e000000",
+      "Native_text": "mov ecx, 0x1e",
+      "Source_index": 11,
+      "Source_offset": 35,
+      "Source_bytes": "b91e000000",
+      "Source_text": "mov ecx, 0x1e",
+      "whole_effective_operation": {
+        "instruction_id": 460,
+        "mnemonic": "mov",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 2,
+            "kind": "register",
+            "name": "ecx"
+          },
+          {
+            "width": 4,
+            "access": 0,
+            "kind": "immediate",
+            "value": 30
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [],
+        "written_registers": [
+          "ecx"
+        ]
+      }
+    },
+    {
+      "Native_index": 11,
+      "Native_address": "00bcde46",
+      "Native_bytes": "668930",
+      "Native_text": "mov word ptr [eax], si",
+      "Source_index": 12,
+      "Source_offset": 40,
+      "Source_bytes": "668930",
+      "Source_text": "mov word ptr [eax], si",
+      "whole_effective_operation": {
+        "instruction_id": 460,
+        "mnemonic": "mov",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          102,
+          0
+        ],
+        "operands": [
+          {
+            "width": 2,
+            "access": 2,
+            "kind": "memory",
+            "terms": [
+              [
+                "eax",
+                1
+              ]
+            ],
+            "displacement": 0,
+            "segment": "ds"
+          },
+          {
+            "width": 2,
+            "access": 1,
+            "kind": "register",
+            "name": "si"
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [
+          "eax",
+          "si"
+        ],
+        "written_registers": []
+      }
+    },
+    {
+      "Native_index": 12,
+      "Native_address": "00bcde49",
+      "Native_bytes": "83c004",
+      "Native_text": "add eax, 4",
+      "Source_index": 13,
+      "Source_offset": 43,
+      "Source_bytes": "83c004",
+      "Source_text": "add eax, 4",
+      "whole_effective_operation": {
+        "instruction_id": 8,
+        "mnemonic": "add",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 3,
+            "kind": "register",
+            "name": "eax"
+          },
+          {
+            "width": 4,
+            "access": 0,
+            "kind": "immediate",
+            "value": 4
+          }
+        ],
+        "eflags_effect_mask": 63,
+        "read_registers": [
+          "eax"
+        ],
+        "written_registers": [
+          "eax",
+          "eflags"
+        ]
+      }
+    },
+    {
+      "Native_index": 13,
+      "Native_address": "00bcde4c",
+      "Native_bytes": "83e901",
+      "Native_text": "sub ecx, 1",
+      "Source_index": 14,
+      "Source_offset": 46,
+      "Source_bytes": "83e901",
+      "Source_text": "sub ecx, 1",
+      "whole_effective_operation": {
+        "instruction_id": 715,
+        "mnemonic": "sub",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 3,
+            "kind": "register",
+            "name": "ecx"
+          },
+          {
+            "width": 4,
+            "access": 0,
+            "kind": "immediate",
+            "value": 1
+          }
+        ],
+        "eflags_effect_mask": 63,
+        "read_registers": [
+          "ecx"
+        ],
+        "written_registers": [
+          "ecx",
+          "eflags"
+        ]
+      }
+    },
+    {
+      "Native_index": 14,
+      "Native_address": "00bcde4f",
+      "Native_bytes": "75f5",
+      "Native_text": "jne 0xbcde46",
+      "Source_index": 15,
+      "Source_offset": 49,
+      "Source_bytes": "75f5",
+      "Source_text": "jne 0x28",
+      "whole_effective_operation": {
+        "instruction_id": 265,
+        "mnemonic": "jne",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 0,
+            "kind": "branch",
+            "instruction_index": 11
+          }
+        ],
+        "eflags_effect_mask": 34359738368,
+        "read_registers": [
+          "eflags"
+        ],
+        "written_registers": []
+      }
+    },
+    {
+      "Native_index": 15,
+      "Native_address": "00bcde51",
+      "Native_bytes": "8d82740a0000",
+      "Native_text": "lea eax, [edx + 0xa74]",
+      "Source_index": 16,
+      "Source_offset": 51,
+      "Source_bytes": "8d82740a0000",
+      "Source_text": "lea eax, [edx + 0xa74]",
+      "whole_effective_operation": {
+        "instruction_id": 332,
+        "mnemonic": "lea",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 2,
+            "kind": "register",
+            "name": "eax"
+          },
+          {
+            "width": 4,
+            "access": 1,
+            "kind": "address_only",
+            "terms": [
+              [
+                "edx",
+                1
+              ]
+            ],
+            "displacement": 2676,
+            "segment": null
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [
+          "edx"
+        ],
+        "written_registers": [
+          "eax"
+        ]
+      }
+    },
+    {
+      "Native_index": 16,
+      "Native_address": "00bcde57",
+      "Native_bytes": "b913000000",
+      "Native_text": "mov ecx, 0x13",
+      "Source_index": 17,
+      "Source_offset": 57,
+      "Source_bytes": "b913000000",
+      "Source_text": "mov ecx, 0x13",
+      "whole_effective_operation": {
+        "instruction_id": 460,
+        "mnemonic": "mov",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 2,
+            "kind": "register",
+            "name": "ecx"
+          },
+          {
+            "width": 4,
+            "access": 0,
+            "kind": "immediate",
+            "value": 19
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [],
+        "written_registers": [
+          "ecx"
+        ]
+      }
+    },
+    {
+      "Native_index": 17,
+      "Native_address": "00bcde5c",
+      "Native_bytes": "8d642400",
+      "Native_text": "lea esp, [esp]",
+      "Source_index": 18,
+      "Source_offset": 62,
+      "Source_bytes": "8d2424",
+      "Source_text": "lea esp, [esp]",
+      "whole_effective_operation": {
+        "instruction_id": 332,
+        "mnemonic": "lea",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 2,
+            "kind": "register",
+            "name": "esp"
+          },
+          {
+            "width": 4,
+            "access": 1,
+            "kind": "address_only",
+            "terms": [
+              [
+                "esp",
+                1
+              ]
+            ],
+            "displacement": 0,
+            "segment": null
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [
+          "esp"
+        ],
+        "written_registers": [
+          "esp"
+        ]
+      }
+    },
+    {
+      "Native_index": 18,
+      "Native_address": "00bcde60",
+      "Native_bytes": "668930",
+      "Native_text": "mov word ptr [eax], si",
+      "Source_index": 19,
+      "Source_offset": 65,
+      "Source_bytes": "668930",
+      "Source_text": "mov word ptr [eax], si",
+      "whole_effective_operation": {
+        "instruction_id": 460,
+        "mnemonic": "mov",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          102,
+          0
+        ],
+        "operands": [
+          {
+            "width": 2,
+            "access": 2,
+            "kind": "memory",
+            "terms": [
+              [
+                "eax",
+                1
+              ]
+            ],
+            "displacement": 0,
+            "segment": "ds"
+          },
+          {
+            "width": 2,
+            "access": 1,
+            "kind": "register",
+            "name": "si"
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [
+          "eax",
+          "si"
+        ],
+        "written_registers": []
+      }
+    },
+    {
+      "Native_index": 19,
+      "Native_address": "00bcde63",
+      "Native_bytes": "83c004",
+      "Native_text": "add eax, 4",
+      "Source_index": 20,
+      "Source_offset": 68,
+      "Source_bytes": "83c004",
+      "Source_text": "add eax, 4",
+      "whole_effective_operation": {
+        "instruction_id": 8,
+        "mnemonic": "add",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 3,
+            "kind": "register",
+            "name": "eax"
+          },
+          {
+            "width": 4,
+            "access": 0,
+            "kind": "immediate",
+            "value": 4
+          }
+        ],
+        "eflags_effect_mask": 63,
+        "read_registers": [
+          "eax"
+        ],
+        "written_registers": [
+          "eax",
+          "eflags"
+        ]
+      }
+    },
+    {
+      "Native_index": 20,
+      "Native_address": "00bcde66",
+      "Native_bytes": "83e901",
+      "Native_text": "sub ecx, 1",
+      "Source_index": 21,
+      "Source_offset": 71,
+      "Source_bytes": "83e901",
+      "Source_text": "sub ecx, 1",
+      "whole_effective_operation": {
+        "instruction_id": 715,
+        "mnemonic": "sub",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 3,
+            "kind": "register",
+            "name": "ecx"
+          },
+          {
+            "width": 4,
+            "access": 0,
+            "kind": "immediate",
+            "value": 1
+          }
+        ],
+        "eflags_effect_mask": 63,
+        "read_registers": [
+          "ecx"
+        ],
+        "written_registers": [
+          "ecx",
+          "eflags"
+        ]
+      }
+    },
+    {
+      "Native_index": 21,
+      "Native_address": "00bcde69",
+      "Native_bytes": "75f5",
+      "Native_text": "jne 0xbcde60",
+      "Source_index": 22,
+      "Source_offset": 74,
+      "Source_bytes": "75f5",
+      "Source_text": "jne 0x41",
+      "whole_effective_operation": {
+        "instruction_id": 265,
+        "mnemonic": "jne",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 0,
+            "kind": "branch",
+            "instruction_index": 18
+          }
+        ],
+        "eflags_effect_mask": 34359738368,
+        "read_registers": [
+          "eflags"
+        ],
+        "written_registers": []
+      }
+    },
+    {
+      "Native_index": 22,
+      "Native_address": "00bcde6b",
+      "Native_bytes": "89b2a4160000",
+      "Native_text": "mov dword ptr [edx + 0x16a4], esi",
+      "Source_index": 23,
+      "Source_offset": 76,
+      "Source_bytes": "89b2a4160000",
+      "Source_text": "mov dword ptr [edx + 0x16a4], esi",
+      "whole_effective_operation": {
+        "instruction_id": 460,
+        "mnemonic": "mov",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 2,
+            "kind": "memory",
+            "terms": [
+              [
+                "edx",
+                1
+              ]
+            ],
+            "displacement": 5796,
+            "segment": "ds"
+          },
+          {
+            "width": 4,
+            "access": 1,
+            "kind": "register",
+            "name": "esi"
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [
+          "edx",
+          "esi"
+        ],
+        "written_registers": []
+      }
+    },
+    {
+      "Native_index": 23,
+      "Native_address": "00bcde71",
+      "Native_bytes": "89b2a0160000",
+      "Native_text": "mov dword ptr [edx + 0x16a0], esi",
+      "Source_index": 24,
+      "Source_offset": 82,
+      "Source_bytes": "89b2a0160000",
+      "Source_text": "mov dword ptr [edx + 0x16a0], esi",
+      "whole_effective_operation": {
+        "instruction_id": 460,
+        "mnemonic": "mov",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 2,
+            "kind": "memory",
+            "terms": [
+              [
+                "edx",
+                1
+              ]
+            ],
+            "displacement": 5792,
+            "segment": "ds"
+          },
+          {
+            "width": 4,
+            "access": 1,
+            "kind": "register",
+            "name": "esi"
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [
+          "edx",
+          "esi"
+        ],
+        "written_registers": []
+      }
+    },
+    {
+      "Native_index": 24,
+      "Native_address": "00bcde77",
+      "Native_bytes": "89b2a8160000",
+      "Native_text": "mov dword ptr [edx + 0x16a8], esi",
+      "Source_index": 25,
+      "Source_offset": 88,
+      "Source_bytes": "89b2a8160000",
+      "Source_text": "mov dword ptr [edx + 0x16a8], esi",
+      "whole_effective_operation": {
+        "instruction_id": 460,
+        "mnemonic": "mov",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 2,
+            "kind": "memory",
+            "terms": [
+              [
+                "edx",
+                1
+              ]
+            ],
+            "displacement": 5800,
+            "segment": "ds"
+          },
+          {
+            "width": 4,
+            "access": 1,
+            "kind": "register",
+            "name": "esi"
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [
+          "edx",
+          "esi"
+        ],
+        "written_registers": []
+      }
+    },
+    {
+      "Native_index": 25,
+      "Native_address": "00bcde7d",
+      "Native_bytes": "89b298160000",
+      "Native_text": "mov dword ptr [edx + 0x1698], esi",
+      "Source_index": 26,
+      "Source_offset": 94,
+      "Source_bytes": "89b298160000",
+      "Source_text": "mov dword ptr [edx + 0x1698], esi",
+      "whole_effective_operation": {
+        "instruction_id": 460,
+        "mnemonic": "mov",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 2,
+            "kind": "memory",
+            "terms": [
+              [
+                "edx",
+                1
+              ]
+            ],
+            "displacement": 5784,
+            "segment": "ds"
+          },
+          {
+            "width": 4,
+            "access": 1,
+            "kind": "register",
+            "name": "esi"
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [
+          "edx",
+          "esi"
+        ],
+        "written_registers": []
+      }
+    },
+    {
+      "Native_index": 26,
+      "Native_address": "00bcde83",
+      "Native_bytes": "66c7828c0400000100",
+      "Native_text": "mov word ptr [edx + 0x48c], 1",
+      "Source_index": 27,
+      "Source_offset": 100,
+      "Source_bytes": "66c7828c0400000100",
+      "Source_text": "mov word ptr [edx + 0x48c], 1",
+      "whole_effective_operation": {
+        "instruction_id": 460,
+        "mnemonic": "mov",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          102,
+          0
+        ],
+        "operands": [
+          {
+            "width": 2,
+            "access": 2,
+            "kind": "memory",
+            "terms": [
+              [
+                "edx",
+                1
+              ]
+            ],
+            "displacement": 1164,
+            "segment": "ds"
+          },
+          {
+            "width": 2,
+            "access": 0,
+            "kind": "immediate",
+            "value": 1
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [
+          "edx"
+        ],
+        "written_registers": []
+      }
+    },
+    {
+      "Native_index": 27,
+      "Native_address": "00bcde8c",
+      "Native_bytes": "5e",
+      "Native_text": "pop esi",
+      "Source_index": 28,
+      "Source_offset": 109,
+      "Source_bytes": "5e",
+      "Source_text": "pop esi",
+      "whole_effective_operation": {
+        "instruction_id": 585,
+        "mnemonic": "pop",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [
+          {
+            "width": 4,
+            "access": 2,
+            "kind": "register",
+            "name": "esi"
+          }
+        ],
+        "eflags_effect_mask": 0,
+        "read_registers": [
+          "esp"
+        ],
+        "written_registers": [
+          "esi",
+          "esp"
+        ]
+      }
+    },
+    {
+      "Native_index": 28,
+      "Native_address": "00bcde8d",
+      "Native_bytes": "c3",
+      "Native_text": "ret ",
+      "Source_index": 29,
+      "Source_offset": 110,
+      "Source_bytes": "c3",
+      "Source_text": "ret ",
+      "whole_effective_operation": {
+        "instruction_id": 633,
+        "mnemonic": "ret",
+        "address_size": 4,
+        "prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "operands": [],
+        "eflags_effect_mask": 0,
+        "read_registers": [
+          "esp"
+        ],
+        "written_registers": [
+          "esp"
+        ]
+      }
+    }
+  ],
+  "Source_prefix": {
+    "offset": 0,
+    "bytes": "8bd1",
+    "mnemonic": "mov",
+    "operands": "edx, ecx",
+    "memory_stack_flags_effects": false,
+    "Native_credit": 0
+  },
+  "entire_encoding_differences": [
+    {
+      "Native_index": 17,
+      "Native_address": "00bcde5c",
+      "Native_bytes": "8d642400",
+      "Native_text": "lea esp, [esp]",
+      "Source_index": 18,
+      "Source_offset": 62,
+      "Source_bytes": "8d2424",
+      "Source_text": "lea esp, [esp]"
+    }
+  ],
+  "no_universal_byteidentity_gate": true,
+  "no_NativeSize_prefix_or_omitted_suffix": true,
+  "no_emit_helpers_private_kernel_unused_formal_frame_snapshot_guard_or_fake_provider": true,
+  "Original_name_prototype_comments_no_return_preserved": true,
+  "native_capture": {
+    "status": "PASS",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "typed_modification": 6926,
+    "whole_function": {
+      "entry": {
+        "space": "ram",
+        "offset": "00bcde20"
+      },
+      "name": "init_block",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "110",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bcde20"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bcde8d"
+            },
+            "length": "110"
+          }
+        ]
+      }
+    },
+    "Native_bytes": 110,
+    "Native_instructions": 29,
+    "Native_sha256": "0127be1a7177a87ad3db339f678e31b45ce308be1c93f9d911bdb309d319bec7",
+    "fresh_live_Ghidra_and_installed_PE_equal": true,
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "Original_proto_preserved_artifact": "Original_proto.txt",
+    "Original_comments_preserved_artifact": "Original_comments.txt",
+    "actual_consumed_input": "EDX raw backing; ECX overwritten before use, not an input",
+    "explicit_stack_inputs": 0,
+    "stack_purge": 0,
+    "callers": [
+      {
+        "function": "00bcf0d0",
+        "name": "_tr_init",
+        "site": "00bcf12d",
+        "physical_kind": "E9 tail JMP",
+        "actual_setup": "MOV EDX,ECX atBCF12B; ECX raw backing remains unchanged",
+        "evidence": "caller_tr_init_full_listing.json",
+        "no_new_argument_word_or_call_frame": true
+      },
+      {
+        "function": "00bcf720",
+        "name": "_tr_flush_block",
+        "site": "00bcf8ef",
+        "physical_kind": "E8 CALL",
+        "actual_setup": "Entry MOV ESI,ECX captures backing; MOV EDX,ESI atBCF8ED immediately before CALL",
+        "evidence": [
+          "caller_flush_entry.txt",
+          "caller_flush_init_setup.txt"
+        ],
+        "explicit_stack_arguments": 0,
+        "leaf_plain_RET_cleanup": 0
+      }
+    ],
+    "xref_annotation_limit": "BSP/Ghidra xrefs label both UNCONDITIONAL_CALL; actual98B caller bytes prove BCF12D is JMP, not an extra CALL frame.",
+    "Native_CALLs_or_global_dependencies": 0,
+    "caller_or_parent_adoption_claim": false,
+    "selected_execution": false,
+    "actual_PE_flush_input_and_CALL_setup": [
+      {
+        "address": "00bcf720",
+        "bytes": "51",
+        "mnemonic": "push",
+        "operands": "ecx"
+      },
+      {
+        "address": "00bcf721",
+        "bytes": "53",
+        "mnemonic": "push",
+        "operands": "ebx"
+      },
+      {
+        "address": "00bcf722",
+        "bytes": "55",
+        "mnemonic": "push",
+        "operands": "ebp"
+      },
+      {
+        "address": "00bcf723",
+        "bytes": "8b6c2410",
+        "mnemonic": "mov",
+        "operands": "ebp, dword ptr [esp + 0x10]"
+      },
+      {
+        "address": "00bcf727",
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "00bcf728",
+        "bytes": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx"
+      },
+      {
+        "address": "00bcf8ed",
+        "bytes": "8bd6",
+        "mnemonic": "mov",
+        "operands": "edx, esi"
+      },
+      {
+        "address": "00bcf8ef",
+        "bytes": "e82ce5ffff",
+        "mnemonic": "call",
+        "operands": "0xbcde20"
+      }
+    ]
+  },
+  "raw_effects": {
+    "static_ordinary_loop_counts": [
+      286,
+      30,
+      19
+    ],
+    "WORD_zero_writes_on_unfaulted_traversal": 335,
+    "WORD_zero_ranges_stride4": [
+      "backing+8C..500",
+      "backing+980..9F4",
+      "backing+A74..ABC"
+    ],
+    "ordered_DWORD_zero_stores": [
+      "16A4",
+      "16A0",
+      "16A8",
+      "1698"
+    ],
+    "last_WORD_store": "backing+48C=1",
+    "actual_frame": "PUSH incomingESI to actualS-4; POP currentS-4; plainRET actualS continuation. No new Source stack cells.",
+    "ordinary_physical_outputs": "EDXbacking; EAXwrap(backing+AC0); ECX0; ESIactualsavedword; EBX/EBPuntouched; EDIselfmove unchanged",
+    "final_flags": "Last third-loop SUB1-1; later MOV/POP/RET do not change them. Other CPU/DF/FP state inherited.",
+    "logical_Cpp_EAX_return_or_universal_nonvolatile_safe_return_claim": false,
+    "all_raw_backing_wrap_partial_unaligned_save_control_aliases_admitted": true
+  },
+  "strict": {
+    "sha256": "74c400399d8f894225de273f221bcb3fe30298e3be0fc68f30afcfc6e93a5a60",
+    "size": 791,
+    "machine": 332,
+    "timestamp": 1792155825,
+    "symbol_table_offset": 550,
+    "symbols_including_auxiliary": 11,
+    "symbol_table_raw_sha256": "04d58588dfcc2d636895a809cca9d8a159daa7910b77f7e063c758a705fb04c8",
+    "strings_size": 43,
+    "strings_raw_sha256": "ffb304af3380c209f8f4f847cc89156d968598a1703e1f715b5eb84e90386e1c",
+    "sections": [
+      {
+        "index": 1,
+        "name": ".drectve",
+        "size": 47,
+        "raw_offset": 180,
+        "characteristics": 1051136,
+        "raw_hex": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+        "raw_sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab",
+        "relocation_offset": 0,
+        "relocations": [],
+        "line_count": 0,
+        "section_definition_symbols": [
+          2
+        ]
+      },
+      {
+        "index": 2,
+        "name": ".debug$S",
+        "size": 180,
+        "raw_offset": 227,
+        "characteristics": 1108344896,
+        "raw_hex": "04000000f1000000a80000006a000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d676f616c31356a5f776f726c645f68656c706572735c6c6f63616c5c676f616c3136616e5f696e69745f626c6f636b5c7374726963742e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c657200",
+        "raw_sha256": "12b3d95bd69392133a40feddb15af91a9947371691433161d42e935721ea7625",
+        "relocation_offset": 0,
+        "relocations": [],
+        "line_count": 0,
+        "section_definition_symbols": [
+          4
+        ]
+      },
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "size": 111,
+        "raw_offset": 407,
+        "characteristics": 1615859744,
+        "raw_hex": "8bd1568d828c000000b91e01000033f68bff66893083c00483e90175f58d8280090000b91e00000066893083c00483e90175f58d82740a0000b9130000008d242466893083c00483e90175f589b2a416000089b2a016000089b2a816000089b29816000066c7828c04000001005ec3",
+        "raw_sha256": "1d74d77bb6061d011b63098c73757f5cb8e12e2bc7c8334cb7a28efd00530ae1",
+        "relocation_offset": 0,
+        "relocations": [],
+        "line_count": 0,
+        "section_definition_symbols": [
+          6
+        ]
+      },
+      {
+        "index": 4,
+        "name": ".chks64",
+        "size": 32,
+        "raw_offset": 518,
+        "characteristics": 2560,
+        "raw_hex": "76f6abfb5648dec712b3d95bd69392131d74d77bb6061d010000000000000000",
+        "raw_sha256": "b47eea5020aeeddb64a14462b9e087fab96d1e4af212c55d085714cc7787c61e",
+        "relocation_offset": 0,
+        "relocations": [],
+        "line_count": 0,
+        "section_definition_symbols": [
+          9
+        ]
+      }
+    ],
+    "symbols": [
+      {
+        "index": 0,
+        "name": "@comp.id",
+        "value": 17141140,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "raw_hex": "40636f6d702e6964948d0501ffff00000300",
+        "auxiliary_hex": ""
+      },
+      {
+        "index": 1,
+        "name": "@feat.00",
+        "value": 2147549585,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "raw_hex": "40666561742e303091010180ffff00000300",
+        "auxiliary_hex": ""
+      },
+      {
+        "index": 2,
+        "name": ".drectve",
+        "value": 0,
+        "section": 1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "raw_hex": "2e6472656374766500000000010000000301",
+        "auxiliary_hex": "2f0000000000000000000000000000000000"
+      },
+      {
+        "index": 4,
+        "name": ".debug$S",
+        "value": 0,
+        "section": 2,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "raw_hex": "2e6465627567245300000000020000000301",
+        "auxiliary_hex": "b40000000000000000000000000000000000"
+      },
+      {
+        "index": 6,
+        "name": ".text$mn",
+        "value": 0,
+        "section": 3,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "raw_hex": "2e74657874246d6e00000000030000000301",
+        "auxiliary_hex": "6f00000000000000e9274ade000001000000"
+      },
+      {
+        "index": 8,
+        "name": "@bsp_native_zlib_init_block_00bcde20@4",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "raw_hex": "000000000400000000000000030020000200",
+        "auxiliary_hex": ""
+      },
+      {
+        "index": 9,
+        "name": ".chks64",
+        "value": 0,
+        "section": 4,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "raw_hex": "2e63686b7336340000000000040000000301",
+        "auxiliary_hex": "200000000000000000000000000000000000"
+      }
+    ],
+    "undefined_external_symbols": []
+  },
+  "registered": {
+    "sha256": "bc1875ac75e67f7443ee4271392a91b6e1869067b18be358b87a6926f9bf58a9",
+    "size": 823,
+    "machine": 332,
+    "timestamp": 1792155959,
+    "symbol_table_offset": 582,
+    "symbols_including_auxiliary": 11,
+    "symbol_table_raw_sha256": "0cc8724e7cdfd864f6579f27a5e4891c5412066a4a9433714effb5473dea8233",
+    "strings_size": 43,
+    "strings_raw_sha256": "ffb304af3380c209f8f4f847cc89156d968598a1703e1f715b5eb84e90386e1c",
+    "sections": [
+      {
+        "index": 1,
+        "name": ".drectve",
+        "size": 47,
+        "raw_offset": 180,
+        "characteristics": 1051136,
+        "raw_hex": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+        "raw_sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab",
+        "relocation_offset": 0,
+        "relocations": [],
+        "line_count": 0,
+        "section_definition_symbols": [
+          2
+        ]
+      },
+      {
+        "index": 2,
+        "name": ".debug$S",
+        "size": 212,
+        "raw_offset": 227,
+        "characteristics": 1108344896,
+        "raw_hex": "04000000f1000000c600000088000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d676f616c31356a5f776f726c645f68656c706572735c6275696c645c77696e33325c6273705f636f72652e6469725c52656c656173655c6e61746976655f7a6c69625f7261775f696e69745f626c6f636b5f62632e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c6572000000",
+        "raw_sha256": "25787517e99dc3c3bae4c112ad781cdedcb40a2f58e9c2d700f4cd25e097ba99",
+        "relocation_offset": 0,
+        "relocations": [],
+        "line_count": 0,
+        "section_definition_symbols": [
+          4
+        ]
+      },
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "size": 111,
+        "raw_offset": 439,
+        "characteristics": 1615859744,
+        "raw_hex": "8bd1568d828c000000b91e01000033f68bff66893083c00483e90175f58d8280090000b91e00000066893083c00483e90175f58d82740a0000b9130000008d242466893083c00483e90175f589b2a416000089b2a016000089b2a816000089b29816000066c7828c04000001005ec3",
+        "raw_sha256": "1d74d77bb6061d011b63098c73757f5cb8e12e2bc7c8334cb7a28efd00530ae1",
+        "relocation_offset": 0,
+        "relocations": [],
+        "line_count": 0,
+        "section_definition_symbols": [
+          6
+        ]
+      },
+      {
+        "index": 4,
+        "name": ".chks64",
+        "size": 32,
+        "raw_offset": 550,
+        "characteristics": 2560,
+        "raw_hex": "76f6abfb5648dec725787517e99dc3c31d74d77bb6061d010000000000000000",
+        "raw_sha256": "caf105f21077a6524da9d8faa405ec1454e17397e533af4e2fa12c631766ef56",
+        "relocation_offset": 0,
+        "relocations": [],
+        "line_count": 0,
+        "section_definition_symbols": [
+          9
+        ]
+      }
+    ],
+    "symbols": [
+      {
+        "index": 0,
+        "name": "@comp.id",
+        "value": 17141140,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "raw_hex": "40636f6d702e6964948d0501ffff00000300",
+        "auxiliary_hex": ""
+      },
+      {
+        "index": 1,
+        "name": "@feat.00",
+        "value": 2147549585,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "raw_hex": "40666561742e303091010180ffff00000300",
+        "auxiliary_hex": ""
+      },
+      {
+        "index": 2,
+        "name": ".drectve",
+        "value": 0,
+        "section": 1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "raw_hex": "2e6472656374766500000000010000000301",
+        "auxiliary_hex": "2f0000000000000000000000000000000000"
+      },
+      {
+        "index": 4,
+        "name": ".debug$S",
+        "value": 0,
+        "section": 2,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "raw_hex": "2e6465627567245300000000020000000301",
+        "auxiliary_hex": "d40000000000000000000000000000000000"
+      },
+      {
+        "index": 6,
+        "name": ".text$mn",
+        "value": 0,
+        "section": 3,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "raw_hex": "2e74657874246d6e00000000030000000301",
+        "auxiliary_hex": "6f00000000000000e9274ade000001000000"
+      },
+      {
+        "index": 8,
+        "name": "@bsp_native_zlib_init_block_00bcde20@4",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "raw_hex": "000000000400000000000000030020000200",
+        "auxiliary_hex": ""
+      },
+      {
+        "index": 9,
+        "name": ".chks64",
+        "value": 0,
+        "section": 4,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "raw_hex": "2e63686b7336340000000000040000000301",
+        "auxiliary_hex": "200000000000000000000000000000000000"
+      }
+    ],
+    "undefined_external_symbols": []
+  },
+  "all_file_bytes_accounted": {
+    "strict": {
+      "spans": [
+        {
+          "start": 0,
+          "end": 180,
+          "role": "COFF/section headers"
+        },
+        {
+          "start": 180,
+          "end": 227,
+          "role": "section1:.drectve"
+        },
+        {
+          "start": 227,
+          "end": 407,
+          "role": "section2:.debug$S"
+        },
+        {
+          "start": 407,
+          "end": 518,
+          "role": "section3:.text$mn"
+        },
+        {
+          "start": 518,
+          "end": 550,
+          "role": "section4:.chks64"
+        },
+        {
+          "start": 550,
+          "end": 748,
+          "role": "all symbols+aux"
+        },
+        {
+          "start": 748,
+          "end": 791,
+          "role": "complete string table"
+        }
+      ],
+      "zero_padding": [],
+      "file_bytes": 791
+    },
+    "registered": {
+      "spans": [
+        {
+          "start": 0,
+          "end": 180,
+          "role": "COFF/section headers"
+        },
+        {
+          "start": 180,
+          "end": 227,
+          "role": "section1:.drectve"
+        },
+        {
+          "start": 227,
+          "end": 439,
+          "role": "section2:.debug$S"
+        },
+        {
+          "start": 439,
+          "end": 550,
+          "role": "section3:.text$mn"
+        },
+        {
+          "start": 550,
+          "end": 582,
+          "role": "section4:.chks64"
+        },
+        {
+          "start": 582,
+          "end": 780,
+          "role": "all symbols+aux"
+        },
+        {
+          "start": 780,
+          "end": 823,
+          "role": "complete string table"
+        }
+      ],
+      "zero_padding": [],
+      "file_bytes": 823
+    }
+  },
+  "all_metadata_proof": {
+    "status": "PASS",
+    "all_metadata": {
+      "strict": {
+        "all_section_definition_auxiliaries": [
+          {
+            "section": ".drectve",
+            "length": 47,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 0,
+            "association": 0,
+            "COMDAT_selection": 0,
+            "remaining_byte": 0
+          },
+          {
+            "section": ".debug$S",
+            "length": 180,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 0,
+            "association": 0,
+            "COMDAT_selection": 0,
+            "remaining_byte": 0
+          },
+          {
+            "section": ".text$mn",
+            "length": 111,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 3729401833,
+            "association": 0,
+            "COMDAT_selection": 1,
+            "remaining_byte": 0
+          },
+          {
+            "section": ".chks64",
+            "length": 32,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 0,
+            "association": 0,
+            "COMDAT_selection": 0,
+            "remaining_byte": 0
+          }
+        ],
+        "all_debug_subsections": [
+          {
+            "kind": "DEBUG_S_SYMBOLS",
+            "length": 168,
+            "records": [
+              {
+                "kind": "S_OBJNAME",
+                "signature": 0,
+                "actual_object_path": "J:\\PROG\\battlestations-pacific-decompile-goal15j_world_helpers\\local\\goal16an_init_block\\strict.obj"
+              },
+              {
+                "kind": "S_COMPILE3",
+                "flags": 8705,
+                "language": "C++",
+                "machine": "Intel80386",
+                "front_end_version": [
+                  19,
+                  51,
+                  36244,
+                  0
+                ],
+                "back_end_version": [
+                  19,
+                  51,
+                  36244,
+                  0
+                ],
+                "compiler": "Microsoft (R) Optimizing Compiler"
+              }
+            ],
+            "zero_alignment_padding": 0
+          }
+        ],
+        "all_directives": "   /DEFAULTLIB:\"MSVCRT\" /DEFAULTLIB:\"OLDNAMES\" ",
+        "checksum_metadata_entire_hex": "76f6abfb5648dec712b3d95bd69392131d74d77bb6061d010000000000000000",
+        "checksum_metadata_not_executable_or_a_provider": true,
+        "all_coff_file_raw_symbols_auxiliaries_strings_and_padding_already_in_whole_object_inventory": true
+      },
+      "registered": {
+        "all_section_definition_auxiliaries": [
+          {
+            "section": ".drectve",
+            "length": 47,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 0,
+            "association": 0,
+            "COMDAT_selection": 0,
+            "remaining_byte": 0
+          },
+          {
+            "section": ".debug$S",
+            "length": 212,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 0,
+            "association": 0,
+            "COMDAT_selection": 0,
+            "remaining_byte": 0
+          },
+          {
+            "section": ".text$mn",
+            "length": 111,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 3729401833,
+            "association": 0,
+            "COMDAT_selection": 1,
+            "remaining_byte": 0
+          },
+          {
+            "section": ".chks64",
+            "length": 32,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 0,
+            "association": 0,
+            "COMDAT_selection": 0,
+            "remaining_byte": 0
+          }
+        ],
+        "all_debug_subsections": [
+          {
+            "kind": "DEBUG_S_SYMBOLS",
+            "length": 198,
+            "records": [
+              {
+                "kind": "S_OBJNAME",
+                "signature": 0,
+                "actual_object_path": "J:\\PROG\\battlestations-pacific-decompile-goal15j_world_helpers\\build\\win32\\bsp_core.dir\\Release\\native_zlib_raw_init_block_bc.obj"
+              },
+              {
+                "kind": "S_COMPILE3",
+                "flags": 8705,
+                "language": "C++",
+                "machine": "Intel80386",
+                "front_end_version": [
+                  19,
+                  51,
+                  36244,
+                  0
+                ],
+                "back_end_version": [
+                  19,
+                  51,
+                  36244,
+                  0
+                ],
+                "compiler": "Microsoft (R) Optimizing Compiler"
+              }
+            ],
+            "zero_alignment_padding": 2
+          }
+        ],
+        "all_directives": "   /DEFAULTLIB:\"MSVCRT\" /DEFAULTLIB:\"OLDNAMES\" ",
+        "checksum_metadata_entire_hex": "76f6abfb5648dec725787517e99dc3c31d74d77bb6061d010000000000000000",
+        "checksum_metadata_not_executable_or_a_provider": true,
+        "all_coff_file_raw_symbols_auxiliaries_strings_and_padding_already_in_whole_object_inventory": true
+      }
+    }
+  },
+  "strict_registered_whole_CODE_equal": true,
+  "one_actual_public_symbol_offset0": {
+    "index": 8,
+    "name": "@bsp_native_zlib_init_block_00bcde20@4",
+    "value": 0,
+    "section": 3,
+    "type": 32,
+    "storage_class": 2,
+    "auxiliary_count": 0,
+    "raw_hex": "000000000400000000000000030020000200",
+    "auxiliary_hex": ""
+  },
+  "code_relocations_each": 0,
+  "total_relocations_each": 0,
+  "undefined_external_symbols_each": 0,
+  "unaccounted_executable_or_data_sections": false,
+  "strict_compile": {
+    "started_utc": "2026-10-16T13:03:44.083729+00:00",
+    "completed_utc": "2026-10-16T13:03:45.567607+00:00",
+    "seconds": 1.4838757999968948,
+    "exit_code": 0
+  },
+  "actual_registered_target": {
+    "unique_Source_item": [
+      "J:\\PROG\\battlestations-pacific-decompile-goal15j_world_helpers\\src\\native_zlib_raw_init_block_bc.cpp"
+    ],
+    "LanguageStandard_values": [
+      "stdcpp17",
+      "stdcpp17",
+      "stdcpp17",
+      "stdcpp17"
+    ],
+    "project_sha256": "b164813cbca7b67712e12210271a2e699873946005b837fe8ff190ddbb6a2a88",
+    "actual_keyed_command": {
+      "key_line_zero_based": 4986,
+      "key": "^J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15J_WORLD_HELPERS\\SRC\\NATIVE_ZLIB_RAW_INIT_BLOCK_BC.CPP",
+      "following_lines": [
+        "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15J_WORLD_HELPERS\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15J_WORLD_HELPERS\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15J_WORLD_HELPERS\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15J_WORLD_HELPERS\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-goal15j_world_helpers/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15J_WORLD_HELPERS\\SRC\\NATIVE_ZLIB_RAW_INIT_BLOCK_BC.CPP"
+      ]
+    },
+    "actual_header_read_dependencies": {
+      "key_line_zero_based": 372683,
+      "key": "^J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15J_WORLD_HELPERS\\SRC\\NATIVE_ZLIB_RAW_INIT_BLOCK_BC.CPP",
+      "following_lines": [
+        "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15J_WORLD_HELPERS\\INCLUDE\\BSP\\NATIVE_ZLIB_RAW_INIT_BLOCK_BC.HPP"
+      ]
+    },
+    "actual_Source_object_items": [
+      "J:\\PROG\\battlestations-pacific-decompile-goal15j_world_helpers\\src\\native_zlib_raw_init_block_bc.cpp;J:\\PROG\\battlestations-pacific-decompile-goal15j_world_helpers\\build\\win32\\bsp_core.dir\\Release\\native_zlib_raw_init_block_bc.obj"
+    ],
+    "actual_grouped_write_record_artifact": "local/goal16an_init_block/actual_compile_provenance.json",
+    "write_group_contains_exact_Source_and_actual_object": true
+  },
+  "archive": {
+    "bytes": 94379292,
+    "sha256": "ee59d8ffc3685596227eba909276fbc4cb3c9e3a7f727100a26a3b629beda309",
+    "whole_real_COFF_members": 2494,
+    "both_complete_dictionaries": [
+      {
+        "kind": "first_big_endian",
+        "header_offset": 8,
+        "size": 10086623,
+        "sha256": "0edb1be464379481b5f499b452962ca814697d394a0becd38aca2ee0873a54f7",
+        "symbols": 83034,
+        "all_member_offsets_and_indices_valid": true
+      },
+      {
+        "kind": "second_little_endian",
+        "header_offset": 10086692,
+        "size": 9930535,
+        "sha256": "5a9228eb9308e8c4f3073de59dabc47b318fa5d331dd5adffafdd0d2fca4702f",
+        "symbols": 83034,
+        "all_member_offsets_and_indices_valid": true
+      }
+    ],
+    "unique_actual_whole_member_bindings": [
+      {
+        "symbol": "@bsp_native_zlib_init_block_00bcde20@4",
+        "actual_whole_member": 20145576,
+        "bytes": 823,
+        "sha256": "bc1875ac75e67f7443ee4271392a91b6e1869067b18be358b87a6926f9bf58a9"
+      },
+      {
+        "symbol": "@bsp_native_zlib_init_block_00bcde20@4",
+        "actual_whole_member": 20145576,
+        "bytes": 823,
+        "sha256": "bc1875ac75e67f7443ee4271392a91b6e1869067b18be358b87a6926f9bf58a9"
+      }
+    ],
+    "every_indexed_binding_resolves_real_defined_current_COFF_symbol": true,
+    "all_current_member_full_parse_and_accounting_artifact": "local/goal16an_init_block/archive_proof.json",
+    "structural_archive_proof_not_closure_of_unselected_Hosts_or_functions": true
+  },
+  "prior_provider_preservation": {
+    "before_warm_Core_bytes": 93606768,
+    "before_warm_Core_sha256": "23c151ce1466fafc9bf6c8b546615d8043de8c0c64c4db7e73b6d6c8e0fff982",
+    "before_whole_members": 2394,
+    "old_whole_payloads_unchanged": 2355,
+    "old_changed": 39,
+    "old_changed_CODE": 8,
+    "old_changed_CODE_each_corresponds_changed_Main_CPP": true,
+    "old_metadata_recompiled_CODE_equal_CPP_unchanged": 31,
+    "new_members_AN": 1,
+    "new_members_Main": 99,
+    "new_Main_CPP_additions": 98,
+    "existing_Main_CPP_newly_registered": 1,
+    "removed": 0,
+    "legitimate_Main_ancestry_paths": 221,
+    "all_old_object_unchanged_claim": false,
+    "all_non_AN_members_extra_Native_credit": 0,
+    "full_attribution": "local/goal16an_init_block/Main_ancestry_provider_accounting.json",
+    "per_recompile_cause_not_uniquely_isolated": true,
+    "old_seals_preserved_without_recursive_history_copy_rehash": true
+  },
+  "build": {
+    "started_utc": "2026-10-16T13:05:13.581429+00:00",
+    "completed_utc": "2026-10-16T13:06:54.716554+00:00",
+    "seconds": 101.13512390000687,
+    "exit_code": 0,
+    "command": [
+      "powershell",
+      "-NoProfile",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-File",
+      "scripts/build.ps1"
+    ]
+  },
+  "existing_tests_passed": 2,
+  "CTest_seconds": 8.25,
+  "existing_warning": "Unrelated LNK4006 spawn_request_id_matches duplicate remains.",
+  "Source_compile_rejections": 0,
+  "Source_or_header_corrections_after_compile": 0,
+  "new_tests": 0,
+  "new_probes": 0,
+  "selected_execution": false,
+  "helper_corrections": {
+    "static_helper_corrections": [
+      {
+        "helper": "capture.py",
+        "was": "Compared typed modification_number string to integer6926",
+        "is": "Explicit integer conversion; fresh typed/live/PE capture passes",
+        "evidence": "First assertion failed before capture report creation; no Source/build change."
+      },
+      {
+        "helper": "provenance.py",
+        "was": "Expected CL.write key to end with this single Source CPP",
+        "is": "Match exact Source component in genuine grouped key; authenticated group contains real Source/object output",
+        "evidence": "Actual warm Main refresh compiles batches; primary logs/project/items plus exact object bind Source."
+      }
+    ],
+    "Source_cpp_compile_rejections": 0,
+    "Source_header_or_body_corrections_after_compile": 0,
+    "normal_build_attempts": 1,
+    "selected_execution_new_tests_or_probes": false,
+    "all_costs_inclusive": true
+  },
+  "Ghidra_writes": false,
+  "Main_writes": false,
+  "parent_gates": {
+    "_tr_init": "00BCF0D0 complete98B remains OPEN: known3mutable descriptors60B/5rooted tables1584B need genuine persistent public Source binding/ownership; tailcaller is not adopted by this leaf.",
+    "_tr_tally": "No Native entry identified in bounded AM audit. Real stock Source algorithm is not a guessed Native address or credit.",
+    "_tr_flush_block": "00BCF720 named caller remains unadopted; actual current ESI input setup is evidence only."
+  },
+  "existing_algorithm_Source": "Real private stock init_block118B31ins (AM complete trees.obj/archive proof) has cdecl EBP frame/register/loop/fault schedule/WORD1 placement differences; no direct raw physical reuse or duplicate Native credit.",
+  "limits": [
+    "New Source ECX input/register fetch prefix differs from Original EDX ABI; original formal types/class/return unrecovered.",
+    "Actual raw backing/wrap/save/control aliases remain admitted without clamps, snapshots or forced success.",
+    "Incidental ECX preimages, code/fetch/return/current-frame placement and full fault/control/SEH/unwind identity are unproved.",
+    "No universal safe-return/nonvolatile/Original ABI/CPU/concurrency/caller/game promise or selected runtime validation."
+  ],
+  "Original_full_ABI_compatible": false,
+  "universal_Source_safe_return_proved": false,
+  "caller_adopted": false,
+  "game_validated": false,
+  "wall_clock": {
+    "first_capture_utc": "2026-10-16T12:58:45.335628+00:00",
+    "report_checkpoint_utc": "2026-10-16T13:25:01.725171+00:00",
+    "inclusive_through_report_seconds": 1576.389543,
+    "normal_build_seconds_included": 101.13512390000687,
+    "readiness_AM_separate": true,
+    "includes": "All own brief/lease/cache preservation/fastforward/ancestry/setup, freshNative/callers/proto/comments, Source/strict firstcompile, normalbuild/wait/checks, own static-helper corrections, wholeCOFF/metadata/allcurrent archive/bothdirs/ancestry/provenance, docs/report/ledger/index and later commit/release/final seal (final ignored handoff records finalinclusive close).",
+    "final_handoff": "local/goal16an_init_block/final_handoff.json",
+    "speedup_claim": false
+  },
+  "proof_artifact_hashes": {
+    "preservation.json": {
+      "bytes": 408381,
+      "sha256": "e5686ac83b82f631b025252225dff4b7e7329f35ebd838fa4d22127359303475"
+    },
+    "native_capture.json": {
+      "bytes": 3503,
+      "sha256": "119984f27c09f10697d1b14c6535b2a6225173ba26301be7b9f06c372107f184"
+    },
+    "strict_full_COFF_and_mapping.json": {
+      "bytes": 37149,
+      "sha256": "9108765af3e91f7a1b427ab5ed93d62020646f80af077f5882653a454fb09091"
+    },
+    "registered_full_COFF_and_mapping.json": {
+      "bytes": 37213,
+      "sha256": "f509801a06ccd1b3773bbf75a8c3b74ef70d3511b874cb26b2443be1844b6bdb"
+    },
+    "archive_proof.json": {
+      "bytes": 1101093,
+      "sha256": "e77536ef44eb3abd36de826376650623f4dde23996a6825d5af4c353c4fd7ffe"
+    },
+    "metadata_full_proof.json": {
+      "bytes": 5000,
+      "sha256": "6607998ca8e0fe25907644f328f31df2692a03d2c926131f6eab70703a742b76"
+    },
+    "actual_compile_provenance.json": {
+      "bytes": 37815,
+      "sha256": "fab80b5148c0aabaab8810b7eaaac3233ce364cc79f3c4e5e24b652bff55a055"
+    },
+    "actual_registered_command.txt": {
+      "bytes": 920,
+      "sha256": "fc6898d86a6b5b2d341ae51af4d0abb9e8b44827a76e182e9ac14881f5e2a7c8"
+    },
+    "Main_ancestry_provider_accounting.json": {
+      "bytes": 44520,
+      "sha256": "73853503acbbf0d04c2fdad0577c374e0deb8e5f9928a5d584af2e386d685fcb"
+    },
+    "helper_corrections.json": {
+      "bytes": 924,
+      "sha256": "4d514c05f01905b7df4f960e70591499b4ffec6d882c1da9bc07a7bec7948ecc"
+    },
+    "final_actual_manifest.json": {
+      "bytes": 4794,
+      "sha256": "1ef29b7c90c9f2c02c4876b0669aca1a2f510b6e16b762306567a0904be29d11"
+    },
+    "metadata_operations.json": {
+      "bytes": 4720,
+      "sha256": "1762f5bd8093a3e602115814ba317b8af48b3535475286620332558acad93e5e"
+    }
+  }
+}
