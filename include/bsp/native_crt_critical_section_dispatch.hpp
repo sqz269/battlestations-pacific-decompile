@@ -20,6 +20,9 @@ namespace bsp {
 // result's handler path performs an actual read/AND-zero/write even if its old
 // bytes have not been initialized. The two exposed backings may alias reached
 // payload at the existing provider contracts; their values are never snapshots.
+// actual_private12 must be DWORD-aligned: its platform output is passed to the
+// existing getter as uint32_t*. This typed-store admission is inherited even
+// though the local raw-access helpers can access unaligned argument DWORDs.
 //
 // Added reference/context/binding metadata must stay stable and disjoint from
 // the raw cells, reached payload and compiler bookkeeping. The actual cache
@@ -36,6 +39,9 @@ namespace bsp {
 // native payload cells. This ordinary interface supplies no Original SEH4,
 // private-frame/home alias, fault/code address, register/flag or binary ABI
 // identity. The genuine Source fallback has its relocated callable address.
+// The inspected MSVC object adds FWAIT immediately after the selected call.
+// Admission excludes a pending enabled x87 exception that this added wait
+// could surface there; Original x87 pending-exception/fault identity is unproved.
 std::int32_t initialize_native_crt_critical_section_dispatch_00c17653(
     const void* actual_parameters8,
     void* actual_private12,

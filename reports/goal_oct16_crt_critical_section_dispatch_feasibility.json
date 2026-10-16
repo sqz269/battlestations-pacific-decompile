@@ -259,7 +259,9 @@
     "actual_private12": "Contiguous raw native order above, mutable alias-capable reached storage; only zero platform+8 before decoder. Result+4 and code+0 are not eagerly zeroed or cached.",
     "metadata": "Added context/reference identities and compiler bookkeeping/SEH state must be stable/disjoint from actual parameter/private cells and reached payload. Actual native cells may alias reached payload/global words at the admitted provider contracts; do not freeze their contents or impose new whole-region guards.",
     "native_ABI": "Original cdecl2words/plainRET/EAXBOOLbits with nativeSEH4 frame. Proposed API is ordinary new C++ with additional bindings; no Original register/stack/privateframe/fault/codepointer identity.",
-    "entry_approval": "Approved by primary before Source/address claim; Source packet now owns entry and four files."
+    "entry_approval": "Approved by primary before Source/address claim; Source packet now owns entry and four files.",
+    "alignment": "actual_private12 must be DWORD-aligned; platform+8 is passed as uint32_t* to the existing ordinary typed-store OS-platform getter. No arbitrary unaligned platform-output admission; raw argument helpers retain their raw DWORD behavior.",
+    "x87_emitted_admission": "The actual MSVC public body contains additional FWAIT at+F8 immediately after selectedcall, insideprotectedregion. Qualified ordinary admission excludes a pending enabled x87 exception this wait could surface there, including one left by selectedinitializer; Originalx87pending/fault identity unproved."
   },
   "whole_Source_schedule": [
     "Raw zero platform(private+8) before actual encodedcache read/decode, even cache hit. Keep selected decoded raw pointer captured separately.",
@@ -332,8 +334,8 @@
     "Source fallback code pointer is relocated genuine Source entry; cache encoding and subsequent raw target reuse must be consistent with that admitted environment. It does not claim numerical OriginalC17643 pointer identity or Originalmodule/codeplacement.",
     "MSVC compiler SEH registration, ExceptionPointers, savedESP/state and compilerprivate storage differ from OriginalC07C00/C07C90/E037B8 frame. Exposedprivate12 represents only three actual mutablepayloadcells, not fake writes into original SEH state or private frame.",
     "No C++destructible automatic objects in the __try function; MSVC C2712 and actual emitted filter/call/volatile read schedules require later normalregisteredbuild review. No compile test is authorized at this feasibility stage.",
-    "Raw x86 loads/stores/RMW should support reachedunalignedDWORD storage without C++uninitialized-read/overflow narrowing. Preserve live raw aliases including initialplatformzero/finalresultread. Only added metadata/privatecompilerbacking disjoint.",
-    "Real C0000017 behavior is supplied by actual Windows SEH; actual sourcecode/faultaddresses, asyncdelivery details, OriginalSEH4/privateunwind/stackhomes/registerflags/ABI/game identity remain unproved."
+    "Real C0000017 behavior is supplied by actual Windows SEH; actual sourcecode/faultaddresses, asyncdelivery details, OriginalSEH4/privateunwind/stackhomes/registerflags/ABI/game identity remain unproved.",
+    "actual_private12 must be DWORD-aligned; platform+8 is passed as uint32_t* to the existing ordinary typed-store OS-platform getter. No arbitrary unaligned platform-output admission; raw argument helpers retain their raw DWORD behavior. Handler RMW may read uninitialized raw bytes; only added metadata/privatecompilerbacking disjoint."
   ],
   "provider_file_pins_current_equals_Main": {
     "src/native_crt_pointer_decode.cpp": "7a689a80bea666aa0941662a1bbde17500c92d1f7fd671c364aa2b3e0bf365c7",
@@ -380,5 +382,10 @@
     "new_tests": 0,
     "no_CMake_or_registry_changes": true
   },
-  "next_action": "Source draft under goal_oct16_crt_critical_section_dispatch; no annotations/registration/build/tests before primary fullSource review."
+  "next_action": "Source draft under goal_oct16_crt_critical_section_dispatch; no annotations/registration/build/tests before primary fullSource review.",
+  "subsequent_Source_packet": {
+    "report": "reports\\goal_oct16_crt_critical_section_dispatch.json",
+    "primary_whole_Source_review": "passed; control/order/private12/RMW/try region accepted; alignment clarification required and now added withoutCPPchange.",
+    "normal_gate": "Primary registeredMSVCWin32/all3existingchecks8.90s passed; full7CODE/SEHreview passed with FWAITqualification. Historical feasibilityvalidation fields remain scoped to that read-only stage."
+  }
 }
