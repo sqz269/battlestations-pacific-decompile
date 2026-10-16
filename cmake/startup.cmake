@@ -235,6 +235,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_devic
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_enumeration.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_keyboard_iterators.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_keyboard_storage.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_preset_node_factory.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_preset_pair_copy_construct.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_scale_maps.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_settings_lifetime.cpp)
