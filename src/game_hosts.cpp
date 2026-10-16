@@ -1671,6 +1671,13 @@ void GameStartupHost::close_native_platform_after_drain() noexcept {
     }
 }
 
+const bool& GameStartupHost::gui_sse2_conversion() const noexcept {
+    if (!gui_sse2_conversion_.has_value())
+        gui_sse2_conversion_.emplace(
+            IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE);
+    return *gui_sse2_conversion_;
+}
+
 GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
     const GameExecutableOptions& options, GameNativeReadOnlyData* native_data)
     : log_(log), instance_(instance), options_(options), native_data_(native_data) {
@@ -2645,7 +2652,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // `_Highlight`, are real GUI pages, so this is also the first phase that evaluates
     // page scripts. Evidence: docs/APP_INIT_FONTS_GUI.md.
     frontend_ = new GameFrontendHost(log_, *vfs_, *scripts_, *fonts_, *device_->device(),
-        platform_->widescreen);
+        platform_->widescreen, gui_sse2_conversion());
     frontend_->run_font_and_gui_startup_0073bae0(language_font_path_008d4890(
         settings_host_->language_catalog(), settings_view_.gameplay.language_index_04));
     // 0073E14B follows the retail-stubbed After InitGui checkpoint. Borrow the
