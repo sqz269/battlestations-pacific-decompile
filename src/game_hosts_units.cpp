@@ -5908,6 +5908,11 @@ struct GameUnitsHost::Impl {
     // the AI host used, and nothing is logged.
     static constexpr bool kSquadronOrdnanceReaderBound = true;  // ON: census held, gameplay identical (docs/SQUADRON_ORDNANCE_STATE.md 4)
     static constexpr bool kLandingSiteSpacingBound = true;  // ON: pair gameplay identical (docs/SQUADRON_LAND_TASK.md 5i)
+    // Packet cc9_p12_queue_compact (docs/OCEAN_WAVE_FIELD.md section 39): 006C77E0,
+    // 006CDC70's compaction of the landing records at block+A8h. False: a record
+    // stays until its squadron head is released (006C7540), so a dead plane's
+    // record keeps its last mode and path and holds the survivors' spacing at 0.
+    static constexpr bool kAirOpsQueueCompactBound = false;
     // Packet cc9_landing_follower_spacing (docs/SQUADRON_LAND_TASK.md section 5r):
     // the landed byte plane+904h in the sequencer. 006C7960's first arm (mode 4,
     // +4h = -1.0 (00D7A260), +8h = 1.0, before the airborne test), 006C3B10's
@@ -15941,6 +15946,35 @@ void GameUnitsHost::run_landing_queue_006cd240(float dt) {
                 if (h.carrier_elevator_ready(d) == nullptr) continue;
                 h.carrier_elevator_site_tick_006d0600(d, dt);
                 h.carrier_elevator_platform_tick_006fc480(d, dt);
+            }
+        }
+        if constexpr (Impl::kAirOpsQueueCompactBound) {
+            // 006C77E0 (006C77E0-006C7951, __fastcall(block), RET), 006CDC70's third
+            // sub-update: under the block's lock, erase every 14h record at +A8h whose
+            // plane is null or fails 0043F080's test ([+5Ch] set, [+5Dh], [+60h] and
+            // [+5Eh] clear; 006C788D-006C78B6), shifting the tail down. LABELLED: it
+            // runs here, before the queue tick, where 006CDC70 runs it before the site
+            // virtual, 006C64B0 and 006C6540 (none of which reads +A8h); +5Dh is the
+            // host's death predicate (plane_death_c3a / removed / gunnery dead), as for
+            // the leg manager above.
+            for (Impl::LandingDeck& d : h.landing_decks) {
+                for (std::size_t i = 0; i < d.assignments.size();) {
+                    const std::size_t pi = d.assignments[i].plane;
+                    const GameUnitSlot* s = pi < h.slots.size() ? h.slots[pi].get() : nullptr;
+                    const bool gone = s == nullptr || !unit_alive_and_visible(pi) ||
+                        s->plane_death_c3a || s->plane_death_removed ||
+                        (h.gunnery != nullptr && h.gunnery->unit_dead(pi));
+                    if (!gone) {
+                        ++i;
+                        continue;
+                    }
+                    h.log.notef("  landing sequencer: record of %s erased (mode %d path=%.1f) at "
+                        "%.2f s (006C77E0, packet cc9_p12_queue_compact)",
+                        s != nullptr ? s->row.name.c_str() : "?", d.assignments[i].mode_10,
+                        static_cast<double>(d.assignments[i].path_4),
+                        static_cast<double>(h.summary.simulated_seconds));
+                    d.assignments.erase(d.assignments.begin() + static_cast<std::ptrdiff_t>(i));
+                }
             }
         }
         for (Impl::LandingDeck& d : h.landing_decks) {
