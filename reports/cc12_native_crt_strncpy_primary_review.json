@@ -1,13 +1,13 @@
 {
   "schema": "bsp.cc12.native_crt_strncpy.primary.v1",
-  "status": "whole_Source_independently_reviewed_registered_Main_gates_pending",
+  "status": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
   "Source_commit": "86baecf26ab1f9d8044ff5ff438d147584bc477b",
   "Source": "src/native_crt_strncpy.cpp",
   "declaration": "include/bsp/native_crt_strncpy.hpp",
   "documentation": "docs/NATIVE_CRT_STRNCPY.md",
   "Original_name_retained": "_strncpy",
   "whole_ordinary_functions": 1,
-  "Source_credit": 0,
+  "Source_credit": 1,
   "Root_whole_Source_object_review": {
     "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strncpy_integration_20261016\\Root_strict_review.DATA.json",
     "bytes": 15581,
@@ -42,8 +42,11 @@
   "worker_baselines": 0,
   "strict_compiler_host": "HostX86/x86,targetWin32",
   "Main_registered": true,
-  "Main_gate": "pending_actual_normal_Main_all_public_private_helpers_ABI_Core_bothindices_uniqueobject_and_independent_peer",
+  "Main_gate": "pass",
   "Original_ABI_compatible": false,
   "new_Source_body_executed": false,
-  "game_validated": false
+  "game_validated": false,
+  "Main_build": "pass_3_existing_CTests",
+  "actual_compiler_archive_gate": "pass",
+  "Main_validation": "reports/cc12_native_crt_strncpy_Main_validation.json"
 }
