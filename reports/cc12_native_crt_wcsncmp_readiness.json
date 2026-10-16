@@ -1,12 +1,12 @@
 {
   "schema": "bsp.cc12.native_crt_wcsncmp.readiness.v1",
-  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+  "status": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
   "address": "00bfdcb7",
   "Original_library_name": "_wcsncmp",
   "source_ready": true,
   "Source_authorized": true,
   "Source_implemented": true,
-  "Source_credit": 0,
+  "Source_credit": 1,
   "owned_ranges_inclusive": [
     [
       "00bfdcb7",
@@ -63,11 +63,14 @@
     "No SDK wcsncmp/memcpy/search, byte-only substitution, copied storage, validation/fallback/provider/global/TLS/caller binding. Exclude invalid reached reads, wrapping advances, mutable/indeterminate payload, lifetime changes, concurrency, MMIO/volatile observation and faults. Preserve Original RHS-before-LHS pointer-home-load fact in documentation, without claiming new compiler physical home/fault order or stack/register/flag/segment/EH/binary ABI/runtime/game identity.",
     "Worker owns only four Source files and local evidence; Root owns registration/ledger/Ghidra/Main. One genuine strict compile with actual before input pins and complete actual code/data/symbol/relocation/metadata review. No separate unregistered whole-worker baseline requested, no tests/probes/body execution; Root registered Main build and actual Main object/archive gates remain pending."
   ],
-  "Main_gate": "pending_normal_Main_build_and_independent_actual_variant_archive_review",
+  "Main_gate": "pass",
   "Original_ABI_compatible": false,
   "new_Source_body_executed": false,
   "game_validated": false,
   "Source_commit": "c590710ae230135ead4f96979a915e00483cc4a4",
   "primary_review": "reports/cc12_native_crt_wcsncmp_primary_review.json",
-  "Main_registered": true
+  "Main_registered": true,
+  "Main_build": "pass_3_existing_CTests",
+  "actual_compiler_archive_gate": "pass",
+  "Main_validation": "reports/cc12_native_crt_wcsncmp_Main_validation.json"
 }

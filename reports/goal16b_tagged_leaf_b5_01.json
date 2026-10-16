@@ -1,0 +1,1784 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "native_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "entries": [
+    {
+      "address": "00b540a0",
+      "native_name": "TRIV_body_00b540a0",
+      "native_body_end_inclusive": "00b540a0",
+      "native_body_bytes": "c3",
+      "native_body_size": 1,
+      "native_instruction_count": 1,
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00b542b0",
+      "native_name": "TRIV_body_00b542b0",
+      "native_body_end_inclusive": "00b542b0",
+      "native_body_bytes": "c3",
+      "native_body_size": 1,
+      "native_instruction_count": 1,
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00b544e0",
+      "native_name": "TRIV_body_00b544e0",
+      "native_body_end_inclusive": "00b544e0",
+      "native_body_bytes": "c3",
+      "native_body_size": 1,
+      "native_instruction_count": 1,
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00b546e0",
+      "native_name": "TRIV_body_00b546e0",
+      "native_body_end_inclusive": "00b546e0",
+      "native_body_bytes": "c3",
+      "native_body_size": 1,
+      "native_instruction_count": 1,
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00b548b0",
+      "native_name": "TRIV_body_00b548b0",
+      "native_body_end_inclusive": "00b548b0",
+      "native_body_bytes": "c3",
+      "native_body_size": 1,
+      "native_instruction_count": 1,
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00b5fd50",
+      "native_name": "TRIV_body_00b5fd50",
+      "native_body_end_inclusive": "00b5fd50",
+      "native_body_bytes": "c3",
+      "native_body_size": 1,
+      "native_instruction_count": 1,
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00b5fd60",
+      "native_name": "TRIV_body_00b5fd60",
+      "native_body_end_inclusive": "00b5fd60",
+      "native_body_bytes": "c3",
+      "native_body_size": 1,
+      "native_instruction_count": 1,
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    }
+  ],
+  "packet": "goal16b_tagged_leaf_b5_01",
+  "base_commit": "85938d17be311ea7970055bdd3ea0ab5702fa94b",
+  "source_sha256": "0e1abcd65d04c2d7dd6f61f012ada10fea4c7cf132be918fec97811514cd85a7",
+  "header_sha256": "63e078ca333ff03e9103fa1d960356eea6b24bb8e2c9b1b906e598f20a19068e",
+  "strict_flags": "/nologo /std:c++20 /MD /O2 /W4 /WX /fp:strict /Gy /c /Iinclude",
+  "strict": {
+    "path": "local\\goal16b_tagged_b5\\strict.obj",
+    "sha256": "b2e21e49400b8d169ea8adf511c1e0f3a281c5207db66757a9a747f4f8e9b042",
+    "machine": "IMAGE_FILE_MACHINE_I386",
+    "complete_sections": [
+      {
+        "index": 1,
+        "name": ".drectve",
+        "size": 47,
+        "raw_offset": 700,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1051136,
+        "bytes": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+        "relocation_entries": []
+      },
+      {
+        "index": 2,
+        "name": ".debug$S",
+        "size": 176,
+        "raw_offset": 747,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1108344896,
+        "bytes": "04000000f1000000a200000064000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d676f616c3136625f7461676765645f62355c6c6f63616c5c676f616c3136625f7461676765645f62355c7374726963742e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c6572000000",
+        "relocation_entries": []
+      },
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 923,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "c20000",
+        "relocation_entries": []
+      },
+      {
+        "index": 4,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 926,
+        "relocation_offset": 942,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 34,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_b5_00b540a0"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 952,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "c20000",
+        "relocation_entries": []
+      },
+      {
+        "index": 6,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 955,
+        "relocation_offset": 971,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 35,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_b5_00b542b0"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 981,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "c20000",
+        "relocation_entries": []
+      },
+      {
+        "index": 8,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 984,
+        "relocation_offset": 1000,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 36,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_b5_00b544e0"
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 1010,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "c20000",
+        "relocation_entries": []
+      },
+      {
+        "index": 10,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 1013,
+        "relocation_offset": 1029,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 37,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_b5_00b546e0"
+          }
+        ]
+      },
+      {
+        "index": 11,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 1039,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "c20000",
+        "relocation_entries": []
+      },
+      {
+        "index": 12,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 1042,
+        "relocation_offset": 1058,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 38,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_b5_00b548b0"
+          }
+        ]
+      },
+      {
+        "index": 13,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 1068,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "c20000",
+        "relocation_entries": []
+      },
+      {
+        "index": 14,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 1071,
+        "relocation_offset": 1087,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 39,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_b5_00b5fd50"
+          }
+        ]
+      },
+      {
+        "index": 15,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 1097,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "c20000",
+        "relocation_entries": []
+      },
+      {
+        "index": 16,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 1100,
+        "relocation_offset": 1116,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 40,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_b5_00b5fd60"
+          }
+        ]
+      },
+      {
+        "index": 17,
+        "name": ".chks64",
+        "size": 136,
+        "raw_offset": 1126,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 2560,
+        "bytes": "76f6abfb5648dec7ebeedeb0ca6b0d03b6cbececf1b07e745405ffa3a17ecbc6b6cbececf1b07e745405ffa3a17ecbc6b6cbececf1b07e745405ffa3a17ecbc6b6cbececf1b07e745405ffa3a17ecbc6b6cbececf1b07e745405ffa3a17ecbc6b6cbececf1b07e745405ffa3a17ecbc6b6cbececf1b07e745405ffa3a17ecbc60000000000000000",
+        "relocation_entries": []
+      }
+    ],
+    "complete_symbols": [
+      {
+        "index": 0,
+        "name": "@comp.id",
+        "offset": 17141140,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 1,
+        "name": "@feat.00",
+        "offset": 2147549585,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 2,
+        "name": ".drectve",
+        "offset": 0,
+        "section": 1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "2f0000000000000000000000000000000000"
+      },
+      {
+        "index": 4,
+        "name": ".debug$S",
+        "offset": 0,
+        "section": 2,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "b00000000000000000000000000000000000"
+      },
+      {
+        "index": 6,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 3,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000002e422b92000001000000"
+      },
+      {
+        "index": 8,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 4,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000030005000000"
+      },
+      {
+        "index": 10,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 5,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000002e422b92000001000000"
+      },
+      {
+        "index": 12,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 6,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000050005000000"
+      },
+      {
+        "index": 14,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 7,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000002e422b92000001000000"
+      },
+      {
+        "index": 16,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 8,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000070005000000"
+      },
+      {
+        "index": 18,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 9,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000002e422b92000001000000"
+      },
+      {
+        "index": 20,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 10,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000090005000000"
+      },
+      {
+        "index": 22,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 11,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000002e422b92000001000000"
+      },
+      {
+        "index": 24,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 12,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1000000001000000000000000b0005000000"
+      },
+      {
+        "index": 26,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 13,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000002e422b92000001000000"
+      },
+      {
+        "index": 28,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 14,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1000000001000000000000000d0005000000"
+      },
+      {
+        "index": 30,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 15,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000002e422b92000001000000"
+      },
+      {
+        "index": 32,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 16,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1000000001000000000000000f0005000000"
+      },
+      {
+        "index": 34,
+        "name": "_bsp_tagged_b5_00b540a0",
+        "offset": 0,
+        "section": 3,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 35,
+        "name": "_bsp_tagged_b5_00b542b0",
+        "offset": 0,
+        "section": 5,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 36,
+        "name": "_bsp_tagged_b5_00b544e0",
+        "offset": 0,
+        "section": 7,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 37,
+        "name": "_bsp_tagged_b5_00b546e0",
+        "offset": 0,
+        "section": 9,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 38,
+        "name": "_bsp_tagged_b5_00b548b0",
+        "offset": 0,
+        "section": 11,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 39,
+        "name": "_bsp_tagged_b5_00b5fd50",
+        "offset": 0,
+        "section": 13,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 40,
+        "name": "_bsp_tagged_b5_00b5fd60",
+        "offset": 0,
+        "section": 15,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 41,
+        "name": ".chks64",
+        "offset": 0,
+        "section": 17,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "880000000000000000000000000000000000"
+      }
+    ],
+    "symbol_table_offset": 1262,
+    "symbol_table_entries_including_auxiliary": 43,
+    "symbol_table_sha256": "a96064ff2e6e98d88a51ed8d9b69554d1b0ae628e46ef00bb7baae3284cc10bd",
+    "string_table_bytes": "ac0000005f6273705f7461676765645f62355f3030623534306130005f6273705f7461676765645f62355f3030623534326230005f6273705f7461676765645f62355f3030623534346530005f6273705f7461676765645f62355f3030623534366530005f6273705f7461676765645f62355f3030623534386230005f6273705f7461676765645f62355f3030623566643530005f6273705f7461676765645f62355f303062356664363000",
+    "entries": [
+      {
+        "address": "00b540a0",
+        "symbol": {
+          "index": 34,
+          "name": "_bsp_tagged_b5_00b540a0",
+          "offset": 0,
+          "section": 3,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section": {
+          "index": 3,
+          "name": ".text$mn",
+          "size": 3,
+          "raw_offset": 923,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "c20000",
+          "relocation_entries": []
+        },
+        "whole_body_matches_native": false,
+        "whole_body_semantic_match": "RET imm16(0) and RET both pop the near return address and perform zero argument cleanup; no changed register/flags/x87/data effects. Code-fetch fault equivalence is not asserted.",
+        "instructions": [
+          {
+            "address": 0,
+            "mnemonic": "ret",
+            "operands": "0",
+            "size": 3
+          }
+        ]
+      },
+      {
+        "address": "00b542b0",
+        "symbol": {
+          "index": 35,
+          "name": "_bsp_tagged_b5_00b542b0",
+          "offset": 0,
+          "section": 5,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section": {
+          "index": 5,
+          "name": ".text$mn",
+          "size": 3,
+          "raw_offset": 952,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "c20000",
+          "relocation_entries": []
+        },
+        "whole_body_matches_native": false,
+        "whole_body_semantic_match": "RET imm16(0) and RET both pop the near return address and perform zero argument cleanup; no changed register/flags/x87/data effects. Code-fetch fault equivalence is not asserted.",
+        "instructions": [
+          {
+            "address": 0,
+            "mnemonic": "ret",
+            "operands": "0",
+            "size": 3
+          }
+        ]
+      },
+      {
+        "address": "00b544e0",
+        "symbol": {
+          "index": 36,
+          "name": "_bsp_tagged_b5_00b544e0",
+          "offset": 0,
+          "section": 7,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section": {
+          "index": 7,
+          "name": ".text$mn",
+          "size": 3,
+          "raw_offset": 981,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "c20000",
+          "relocation_entries": []
+        },
+        "whole_body_matches_native": false,
+        "whole_body_semantic_match": "RET imm16(0) and RET both pop the near return address and perform zero argument cleanup; no changed register/flags/x87/data effects. Code-fetch fault equivalence is not asserted.",
+        "instructions": [
+          {
+            "address": 0,
+            "mnemonic": "ret",
+            "operands": "0",
+            "size": 3
+          }
+        ]
+      },
+      {
+        "address": "00b546e0",
+        "symbol": {
+          "index": 37,
+          "name": "_bsp_tagged_b5_00b546e0",
+          "offset": 0,
+          "section": 9,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section": {
+          "index": 9,
+          "name": ".text$mn",
+          "size": 3,
+          "raw_offset": 1010,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "c20000",
+          "relocation_entries": []
+        },
+        "whole_body_matches_native": false,
+        "whole_body_semantic_match": "RET imm16(0) and RET both pop the near return address and perform zero argument cleanup; no changed register/flags/x87/data effects. Code-fetch fault equivalence is not asserted.",
+        "instructions": [
+          {
+            "address": 0,
+            "mnemonic": "ret",
+            "operands": "0",
+            "size": 3
+          }
+        ]
+      },
+      {
+        "address": "00b548b0",
+        "symbol": {
+          "index": 38,
+          "name": "_bsp_tagged_b5_00b548b0",
+          "offset": 0,
+          "section": 11,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section": {
+          "index": 11,
+          "name": ".text$mn",
+          "size": 3,
+          "raw_offset": 1039,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "c20000",
+          "relocation_entries": []
+        },
+        "whole_body_matches_native": false,
+        "whole_body_semantic_match": "RET imm16(0) and RET both pop the near return address and perform zero argument cleanup; no changed register/flags/x87/data effects. Code-fetch fault equivalence is not asserted.",
+        "instructions": [
+          {
+            "address": 0,
+            "mnemonic": "ret",
+            "operands": "0",
+            "size": 3
+          }
+        ]
+      },
+      {
+        "address": "00b5fd50",
+        "symbol": {
+          "index": 39,
+          "name": "_bsp_tagged_b5_00b5fd50",
+          "offset": 0,
+          "section": 13,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section": {
+          "index": 13,
+          "name": ".text$mn",
+          "size": 3,
+          "raw_offset": 1068,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "c20000",
+          "relocation_entries": []
+        },
+        "whole_body_matches_native": false,
+        "whole_body_semantic_match": "RET imm16(0) and RET both pop the near return address and perform zero argument cleanup; no changed register/flags/x87/data effects. Code-fetch fault equivalence is not asserted.",
+        "instructions": [
+          {
+            "address": 0,
+            "mnemonic": "ret",
+            "operands": "0",
+            "size": 3
+          }
+        ]
+      },
+      {
+        "address": "00b5fd60",
+        "symbol": {
+          "index": 40,
+          "name": "_bsp_tagged_b5_00b5fd60",
+          "offset": 0,
+          "section": 15,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section": {
+          "index": 15,
+          "name": ".text$mn",
+          "size": 3,
+          "raw_offset": 1097,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "c20000",
+          "relocation_entries": []
+        },
+        "whole_body_matches_native": false,
+        "whole_body_semantic_match": "RET imm16(0) and RET both pop the near return address and perform zero argument cleanup; no changed register/flags/x87/data effects. Code-fetch fault equivalence is not asserted.",
+        "instructions": [
+          {
+            "address": 0,
+            "mnemonic": "ret",
+            "operands": "0",
+            "size": 3
+          }
+        ]
+      }
+    ],
+    "whole_executable_bytes": 21,
+    "nonempty_executable_sections": 7,
+    "executable_relocations": 0,
+    "total_relocations": 7,
+    "metadata_relocations_to_own_functions": 7
+  },
+  "registered": {
+    "path": "build\\win32\\bsp_core.dir\\Release\\native_tagged_leaf_b5_01.obj",
+    "sha256": "fe83ae50a82743c3a3914da44bff03f87d9f64c3085d4201e16d7574f689a54f",
+    "machine": "IMAGE_FILE_MACHINE_I386",
+    "complete_sections": [
+      {
+        "index": 1,
+        "name": ".drectve",
+        "size": 47,
+        "raw_offset": 700,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1051136,
+        "bytes": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+        "relocation_entries": []
+      },
+      {
+        "index": 2,
+        "name": ".debug$S",
+        "size": 204,
+        "raw_offset": 747,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1108344896,
+        "bytes": "04000000f1000000bd0000007f000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d676f616c3136625f7461676765645f62355c6275696c645c77696e33325c6273705f636f72652e6469725c52656c656173655c6e61746976655f7461676765645f6c6561665f62355f30312e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c657200000000",
+        "relocation_entries": []
+      },
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 951,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "c20000",
+        "relocation_entries": []
+      },
+      {
+        "index": 4,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 954,
+        "relocation_offset": 970,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 34,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_b5_00b540a0"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 980,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "c20000",
+        "relocation_entries": []
+      },
+      {
+        "index": 6,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 983,
+        "relocation_offset": 999,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 35,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_b5_00b542b0"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 1009,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "c20000",
+        "relocation_entries": []
+      },
+      {
+        "index": 8,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 1012,
+        "relocation_offset": 1028,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 36,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_b5_00b544e0"
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 1038,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "c20000",
+        "relocation_entries": []
+      },
+      {
+        "index": 10,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 1041,
+        "relocation_offset": 1057,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 37,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_b5_00b546e0"
+          }
+        ]
+      },
+      {
+        "index": 11,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 1067,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "c20000",
+        "relocation_entries": []
+      },
+      {
+        "index": 12,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 1070,
+        "relocation_offset": 1086,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 38,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_b5_00b548b0"
+          }
+        ]
+      },
+      {
+        "index": 13,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 1096,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "c20000",
+        "relocation_entries": []
+      },
+      {
+        "index": 14,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 1099,
+        "relocation_offset": 1115,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 39,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_b5_00b5fd50"
+          }
+        ]
+      },
+      {
+        "index": 15,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 1125,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "c20000",
+        "relocation_entries": []
+      },
+      {
+        "index": 16,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 1128,
+        "relocation_offset": 1144,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 40,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_b5_00b5fd60"
+          }
+        ]
+      },
+      {
+        "index": 17,
+        "name": ".chks64",
+        "size": 136,
+        "raw_offset": 1154,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 2560,
+        "bytes": "76f6abfb5648dec74c84e30126b4ec9ab6cbececf1b07e745405ffa3a17ecbc6b6cbececf1b07e745405ffa3a17ecbc6b6cbececf1b07e745405ffa3a17ecbc6b6cbececf1b07e745405ffa3a17ecbc6b6cbececf1b07e745405ffa3a17ecbc6b6cbececf1b07e745405ffa3a17ecbc6b6cbececf1b07e745405ffa3a17ecbc60000000000000000",
+        "relocation_entries": []
+      }
+    ],
+    "complete_symbols": [
+      {
+        "index": 0,
+        "name": "@comp.id",
+        "offset": 17141140,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 1,
+        "name": "@feat.00",
+        "offset": 2147549585,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 2,
+        "name": ".drectve",
+        "offset": 0,
+        "section": 1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "2f0000000000000000000000000000000000"
+      },
+      {
+        "index": 4,
+        "name": ".debug$S",
+        "offset": 0,
+        "section": 2,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "cc0000000000000000000000000000000000"
+      },
+      {
+        "index": 6,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 3,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000002e422b92000001000000"
+      },
+      {
+        "index": 8,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 4,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000030005000000"
+      },
+      {
+        "index": 10,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 5,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000002e422b92000001000000"
+      },
+      {
+        "index": 12,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 6,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000050005000000"
+      },
+      {
+        "index": 14,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 7,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000002e422b92000001000000"
+      },
+      {
+        "index": 16,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 8,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000070005000000"
+      },
+      {
+        "index": 18,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 9,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000002e422b92000001000000"
+      },
+      {
+        "index": 20,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 10,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000090005000000"
+      },
+      {
+        "index": 22,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 11,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000002e422b92000001000000"
+      },
+      {
+        "index": 24,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 12,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1000000001000000000000000b0005000000"
+      },
+      {
+        "index": 26,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 13,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000002e422b92000001000000"
+      },
+      {
+        "index": 28,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 14,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1000000001000000000000000d0005000000"
+      },
+      {
+        "index": 30,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 15,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000002e422b92000001000000"
+      },
+      {
+        "index": 32,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 16,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1000000001000000000000000f0005000000"
+      },
+      {
+        "index": 34,
+        "name": "_bsp_tagged_b5_00b540a0",
+        "offset": 0,
+        "section": 3,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 35,
+        "name": "_bsp_tagged_b5_00b542b0",
+        "offset": 0,
+        "section": 5,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 36,
+        "name": "_bsp_tagged_b5_00b544e0",
+        "offset": 0,
+        "section": 7,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 37,
+        "name": "_bsp_tagged_b5_00b546e0",
+        "offset": 0,
+        "section": 9,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 38,
+        "name": "_bsp_tagged_b5_00b548b0",
+        "offset": 0,
+        "section": 11,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 39,
+        "name": "_bsp_tagged_b5_00b5fd50",
+        "offset": 0,
+        "section": 13,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 40,
+        "name": "_bsp_tagged_b5_00b5fd60",
+        "offset": 0,
+        "section": 15,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 41,
+        "name": ".chks64",
+        "offset": 0,
+        "section": 17,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "880000000000000000000000000000000000"
+      }
+    ],
+    "symbol_table_offset": 1290,
+    "symbol_table_entries_including_auxiliary": 43,
+    "symbol_table_sha256": "116b4e96ca5a758d2691cfbcb4a79db53a820494ee51ac0463b2b027903fec90",
+    "string_table_bytes": "ac0000005f6273705f7461676765645f62355f3030623534306130005f6273705f7461676765645f62355f3030623534326230005f6273705f7461676765645f62355f3030623534346530005f6273705f7461676765645f62355f3030623534366530005f6273705f7461676765645f62355f3030623534386230005f6273705f7461676765645f62355f3030623566643530005f6273705f7461676765645f62355f303062356664363000",
+    "entries": [
+      {
+        "address": "00b540a0",
+        "symbol": {
+          "index": 34,
+          "name": "_bsp_tagged_b5_00b540a0",
+          "offset": 0,
+          "section": 3,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section": {
+          "index": 3,
+          "name": ".text$mn",
+          "size": 3,
+          "raw_offset": 951,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "c20000",
+          "relocation_entries": []
+        },
+        "whole_body_matches_native": false,
+        "whole_body_semantic_match": "RET imm16(0) and RET both pop the near return address and perform zero argument cleanup; no changed register/flags/x87/data effects. Code-fetch fault equivalence is not asserted.",
+        "instructions": [
+          {
+            "address": 0,
+            "mnemonic": "ret",
+            "operands": "0",
+            "size": 3
+          }
+        ]
+      },
+      {
+        "address": "00b542b0",
+        "symbol": {
+          "index": 35,
+          "name": "_bsp_tagged_b5_00b542b0",
+          "offset": 0,
+          "section": 5,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section": {
+          "index": 5,
+          "name": ".text$mn",
+          "size": 3,
+          "raw_offset": 980,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "c20000",
+          "relocation_entries": []
+        },
+        "whole_body_matches_native": false,
+        "whole_body_semantic_match": "RET imm16(0) and RET both pop the near return address and perform zero argument cleanup; no changed register/flags/x87/data effects. Code-fetch fault equivalence is not asserted.",
+        "instructions": [
+          {
+            "address": 0,
+            "mnemonic": "ret",
+            "operands": "0",
+            "size": 3
+          }
+        ]
+      },
+      {
+        "address": "00b544e0",
+        "symbol": {
+          "index": 36,
+          "name": "_bsp_tagged_b5_00b544e0",
+          "offset": 0,
+          "section": 7,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section": {
+          "index": 7,
+          "name": ".text$mn",
+          "size": 3,
+          "raw_offset": 1009,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "c20000",
+          "relocation_entries": []
+        },
+        "whole_body_matches_native": false,
+        "whole_body_semantic_match": "RET imm16(0) and RET both pop the near return address and perform zero argument cleanup; no changed register/flags/x87/data effects. Code-fetch fault equivalence is not asserted.",
+        "instructions": [
+          {
+            "address": 0,
+            "mnemonic": "ret",
+            "operands": "0",
+            "size": 3
+          }
+        ]
+      },
+      {
+        "address": "00b546e0",
+        "symbol": {
+          "index": 37,
+          "name": "_bsp_tagged_b5_00b546e0",
+          "offset": 0,
+          "section": 9,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section": {
+          "index": 9,
+          "name": ".text$mn",
+          "size": 3,
+          "raw_offset": 1038,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "c20000",
+          "relocation_entries": []
+        },
+        "whole_body_matches_native": false,
+        "whole_body_semantic_match": "RET imm16(0) and RET both pop the near return address and perform zero argument cleanup; no changed register/flags/x87/data effects. Code-fetch fault equivalence is not asserted.",
+        "instructions": [
+          {
+            "address": 0,
+            "mnemonic": "ret",
+            "operands": "0",
+            "size": 3
+          }
+        ]
+      },
+      {
+        "address": "00b548b0",
+        "symbol": {
+          "index": 38,
+          "name": "_bsp_tagged_b5_00b548b0",
+          "offset": 0,
+          "section": 11,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section": {
+          "index": 11,
+          "name": ".text$mn",
+          "size": 3,
+          "raw_offset": 1067,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "c20000",
+          "relocation_entries": []
+        },
+        "whole_body_matches_native": false,
+        "whole_body_semantic_match": "RET imm16(0) and RET both pop the near return address and perform zero argument cleanup; no changed register/flags/x87/data effects. Code-fetch fault equivalence is not asserted.",
+        "instructions": [
+          {
+            "address": 0,
+            "mnemonic": "ret",
+            "operands": "0",
+            "size": 3
+          }
+        ]
+      },
+      {
+        "address": "00b5fd50",
+        "symbol": {
+          "index": 39,
+          "name": "_bsp_tagged_b5_00b5fd50",
+          "offset": 0,
+          "section": 13,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section": {
+          "index": 13,
+          "name": ".text$mn",
+          "size": 3,
+          "raw_offset": 1096,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "c20000",
+          "relocation_entries": []
+        },
+        "whole_body_matches_native": false,
+        "whole_body_semantic_match": "RET imm16(0) and RET both pop the near return address and perform zero argument cleanup; no changed register/flags/x87/data effects. Code-fetch fault equivalence is not asserted.",
+        "instructions": [
+          {
+            "address": 0,
+            "mnemonic": "ret",
+            "operands": "0",
+            "size": 3
+          }
+        ]
+      },
+      {
+        "address": "00b5fd60",
+        "symbol": {
+          "index": 40,
+          "name": "_bsp_tagged_b5_00b5fd60",
+          "offset": 0,
+          "section": 15,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section": {
+          "index": 15,
+          "name": ".text$mn",
+          "size": 3,
+          "raw_offset": 1125,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "c20000",
+          "relocation_entries": []
+        },
+        "whole_body_matches_native": false,
+        "whole_body_semantic_match": "RET imm16(0) and RET both pop the near return address and perform zero argument cleanup; no changed register/flags/x87/data effects. Code-fetch fault equivalence is not asserted.",
+        "instructions": [
+          {
+            "address": 0,
+            "mnemonic": "ret",
+            "operands": "0",
+            "size": 3
+          }
+        ]
+      }
+    ],
+    "whole_executable_bytes": 21,
+    "nonempty_executable_sections": 7,
+    "executable_relocations": 0,
+    "total_relocations": 7,
+    "metadata_relocations_to_own_functions": 7
+  },
+  "archive": {
+    "path": "build\\win32\\Release\\bsp_core.lib",
+    "sha256": "44d76c29836d0c384f76184afd1bb75dc490df43e97683183aff62b5521584db",
+    "member_name": "bsp_core.dir\\Release\\native_tagged_leaf_b5_01.obj",
+    "member_header_offset": 35428028,
+    "member_size": 2236,
+    "member_sha256": "fe83ae50a82743c3a3914da44bff03f87d9f64c3085d4201e16d7574f689a54f",
+    "unique_member_matches": 1,
+    "matches_registered_object": true
+  },
+  "strict_compile": {
+    "strict_compile_seconds": 1.8875167000078363,
+    "exit_code": 0
+  },
+  "build": {
+    "build_seconds": 1036.1200392,
+    "exit_code": 0,
+    "completed_utc": "2026-10-16T05:41:23.2908389Z",
+    "measured_interval_seconds": 1036.1200392,
+    "interval_start_utc_derived_from_stopwatch": "2026-10-16T05:24:07.170799+00:00",
+    "ctest": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_test_seconds": 8.2
+    },
+    "warnings": [
+      "LNK4006 duplicate spawn_request_id_matches in existing lua_binding_spawn.obj / lua_spawn_new.obj; outside owned module"
+    ]
+  },
+  "whole_source_functions": 7,
+  "whole_source_executable_bytes": 21,
+  "whole_source_instructions": 7,
+  "exact_native_whole_functions": 0,
+  "exact_native_whole_bytes": 0,
+  "exact_native_whole_instructions": 0,
+  "semantic_source_only_functions": 7,
+  "all_referenced_native_body_bytes": 7,
+  "new_tests": 0,
+  "native_execution": false,
+  "game_validated": false,
+  "ghidra_mutations": false,
+  "scope": {
+    "band": "00b50000..00b5ffff",
+    "indexed_functions": 229,
+    "indexed_tag_only_candidates": 20,
+    "selected": [
+      "00b540a0",
+      "00b542b0",
+      "00b544e0",
+      "00b546e0",
+      "00b548b0",
+      "00b5fd50",
+      "00b5fd60"
+    ],
+    "selected_prior_source_address_hits": [],
+    "generic_body_coverage_review": "src/render_fx_cc13.cpp routine table has no selected-address row. The initializer and query lifetime modules have no selected-address body. Generic no-op ability does not register any of these entry identities. New leaf bodies require no external production providers, globals, classes or class layout.",
+    "tag_only_candidates": [
+      "00b51dd0 CG_scalar_deleting_dtor_00b51dd0             seg=86   tag:cg_scalar_deleting_dtor",
+      "00b540a0 TRIV_body_00b540a0                           seg=86   tag:trivial_body",
+      "00b542b0 TRIV_body_00b542b0                           seg=86   tag:trivial_body",
+      "00b544e0 TRIV_body_00b544e0                           seg=86   tag:trivial_body",
+      "00b546e0 TRIV_body_00b546e0                           seg=86   tag:trivial_body",
+      "00b548b0 TRIV_body_00b548b0                           seg=86   tag:trivial_body",
+      "00b56ac0 CG_scalar_deleting_dtor_00b56ac0             seg=86   tag:cg_scalar_deleting_dtor",
+      "00b56b40 CG_scalar_deleting_dtor_00b56b40             seg=86   tag:cg_scalar_deleting_dtor",
+      "00b56d40 CG_scalar_deleting_dtor_00b56d40             seg=86   tag:cg_scalar_deleting_dtor",
+      "00b56d60 CG_scalar_deleting_dtor_00b56d60             seg=86   tag:cg_scalar_deleting_dtor",
+      "00b56da0 CG_scalar_deleting_dtor_00b56da0             seg=86   tag:cg_scalar_deleting_dtor",
+      "00b57380 CG_scalar_deleting_dtor_00b57380             seg=86   tag:cg_scalar_deleting_dtor",
+      "00b58580 CG_scalar_deleting_dtor_00b58580             seg=86   tag:cg_scalar_deleting_dtor",
+      "00b5b5f0 CG_scalar_deleting_dtor_00b5b5f0             seg=86   tag:cg_scalar_deleting_dtor",
+      "00b5b800 CG_scalar_deleting_dtor_00b5b800             seg=86   tag:cg_scalar_deleting_dtor",
+      "00b5e730 CG_scalar_deleting_dtor_00b5e730             seg=86   tag:cg_scalar_deleting_dtor",
+      "00b5e7f0 CG_scalar_deleting_dtor_00b5e7f0             seg=86   tag:cg_scalar_deleting_dtor",
+      "00b5fd50 TRIV_body_00b5fd50                           seg=86   tag:trivial_body",
+      "00b5fd60 TRIV_body_00b5fd60                           seg=86   tag:trivial_body",
+      "00b5fd70 CG_scalar_deleting_dtor_00b5fd70             seg=86   tag:cg_scalar_deleting_dtor"
+    ],
+    "deferred": [
+      {
+        "address": "00b51dd0",
+        "disposition": "Tag-only scalar-deleting destructor, outside selected no-op packet. Tag alone does not establish whole production Source coverage or callee/lifetime closure; no unread scalar-delete behavior or completeness asserted. No stub/provider introduced."
+      },
+      {
+        "address": "00b56ac0",
+        "disposition": "Tag-only scalar-deleting destructor, outside selected no-op packet. Tag alone does not establish whole production Source coverage or callee/lifetime closure; no unread scalar-delete behavior or completeness asserted. No stub/provider introduced."
+      },
+      {
+        "address": "00b56b40",
+        "disposition": "Tag-only scalar-deleting destructor, outside selected no-op packet. Tag alone does not establish whole production Source coverage or callee/lifetime closure; no unread scalar-delete behavior or completeness asserted. No stub/provider introduced."
+      },
+      {
+        "address": "00b56d40",
+        "disposition": "Tag-only scalar-deleting destructor, outside selected no-op packet. Tag alone does not establish whole production Source coverage or callee/lifetime closure; no unread scalar-delete behavior or completeness asserted. No stub/provider introduced."
+      },
+      {
+        "address": "00b56d60",
+        "disposition": "Tag-only scalar-deleting destructor, outside selected no-op packet. Tag alone does not establish whole production Source coverage or callee/lifetime closure; no unread scalar-delete behavior or completeness asserted. No stub/provider introduced."
+      },
+      {
+        "address": "00b56da0",
+        "disposition": "Tag-only scalar-deleting destructor, outside selected no-op packet. Tag alone does not establish whole production Source coverage or callee/lifetime closure; no unread scalar-delete behavior or completeness asserted. No stub/provider introduced."
+      },
+      {
+        "address": "00b57380",
+        "disposition": "Tag-only scalar-deleting destructor, outside selected no-op packet. Tag alone does not establish whole production Source coverage or callee/lifetime closure; no unread scalar-delete behavior or completeness asserted. No stub/provider introduced."
+      },
+      {
+        "address": "00b58580",
+        "disposition": "Tag-only scalar-deleting destructor, outside selected no-op packet. Tag alone does not establish whole production Source coverage or callee/lifetime closure; no unread scalar-delete behavior or completeness asserted. No stub/provider introduced."
+      },
+      {
+        "address": "00b5b5f0",
+        "disposition": "Tag-only scalar-deleting destructor, outside selected no-op packet. Tag alone does not establish whole production Source coverage or callee/lifetime closure; no unread scalar-delete behavior or completeness asserted. No stub/provider introduced."
+      },
+      {
+        "address": "00b5b800",
+        "disposition": "Tag-only scalar-deleting destructor, outside selected no-op packet. Tag alone does not establish whole production Source coverage or callee/lifetime closure; no unread scalar-delete behavior or completeness asserted. No stub/provider introduced."
+      },
+      {
+        "address": "00b5e730",
+        "disposition": "Tag-only scalar-deleting destructor, outside selected no-op packet. Tag alone does not establish whole production Source coverage or callee/lifetime closure; no unread scalar-delete behavior or completeness asserted. No stub/provider introduced."
+      },
+      {
+        "address": "00b5e7f0",
+        "disposition": "Tag-only scalar-deleting destructor, outside selected no-op packet. Tag alone does not establish whole production Source coverage or callee/lifetime closure; no unread scalar-delete behavior or completeness asserted. No stub/provider introduced."
+      },
+      {
+        "address": "00b5fd70",
+        "disposition": "Tag-only scalar-deleting destructor, outside selected no-op packet. Tag alone does not establish whole production Source coverage or callee/lifetime closure; no unread scalar-delete behavior or completeness asserted. No stub/provider introduced."
+      }
+    ]
+  },
+  "classification_corrections": [
+    "Initial expected one-byte Source assumption rejected by strict COFF: actual complete sections are three-byte C20000 RET0. No compile failure or Source form change; reclassified all seven as semantic Source.",
+    "Initial capture script rejected doubled-backslash marker spelling before native read; normalized project marker path and reran.",
+    "Initial all-sections-zero-relocations assumption rejected: .debug$F has seven type7 metadata relocations to own function symbols; all executable relocations are zero. A strict-only inspection call also needed an absolute path for report-relative-path formatting. No compiler or source-form failure."
+  ],
+  "original_abi": "Native C3 RET consumes only the return address at [ESP]; ESP+=4; preserves incoming general registers, EFLAGS and x87 state. Emitted C20000 RET0 has identical stack, register, flags and data effects. No input argument or defined result is observed. Original formal types, class, convention and callers remain unrecovered; the Source interface is extern C void __cdecl(void) noexcept. No invalid return-address/stack or code-fetch fault equivalence and no call-site ABI adoption claimed.",
+  "uncertainties": [
+    "Native formal return/parameter types and calling convention cannot be distinguished by a sole RET.",
+    "No callers in the snapshot is not proof of unused status.",
+    "Whole Source bytes differ from Native; no byte identity, native execution or game integration claimed."
+  ],
+  "wall_clock": {
+    "start_utc": "2026-10-16T05:17:50+00:00",
+    "report_checkpoint_utc": "2026-10-16T05:41:34.100195+00:00",
+    "seconds_through_report_checkpoint": 1424.100195,
+    "complete_final_handoff_artifact": "local/goal16b_tagged_b5/final_handoff.json",
+    "includes": "first clock before brief, memory/worktree/index setup, all Source coverage and rejected classifications, live evidence, strict compilation, full fresh registered build/CTest interval, docs/report, ledger/index, commit, lease release and handoff. Final artifact records the later complete endpoint; report checkpoint is not the final total.",
+    "speedup_claim": false
+  },
+  "evidence_artifact_sha256": {
+    "local/goal16b_tagged_b5/typed_flow.json": "2228c39f26179942c9295f01795b7d0a528aec71add30dbfa4f83b4dccdbc287",
+    "local/goal16b_tagged_b5/native_capture.json": "6825230f328934549a316c8861ee2199deab1545d9cb83b297188e5bd43f6976",
+    "local/goal16b_tagged_b5/scope.json": "96c0164315a97fd8d8d29786c67493edcfb801640e3273ebbc83e48ec2543649",
+    "local/goal16b_tagged_b5/strict_compile.txt": "0b722997467fde511bc664f90f6e6ecc76bf6269d58295b6ca6f587101368587",
+    "local/goal16b_tagged_b5/compile_timing.json": "4bc9a124f3431cc989fa82e00a74e342bf690b091f9966cb88ee7cccfc032602",
+    "local/goal16b_tagged_b5/build.txt": "e088a7fbc6db9a1c48dd12dd2da736391be76726d680c64038acd646f3e6331e",
+    "local/goal16b_tagged_b5/build_timing.json": "c786a808d28cd8307c25bd77f8261165782238f6e3b29d025b107010ee5901a6",
+    "local/goal16b_tagged_b5/capture.py": "adf6aaa9c1c19baa2adcc4f98e82ad1c262e20a696648b8de20a006fa148b021",
+    "local/goal16b_tagged_b5/validate.py": "1e2a3ae43b8fb97391c8439627decf8124b26158a44debb5d537524311e0f833",
+    "local/goal16b_tagged_b5/scope.py": "7549ffeae908878df274f8c356a9c4b5d1969e8f0538d2b47ef84a6f002008c5",
+    "local/goal16b_tagged_b5/ledger_records.py": "04b81a876199d4c0769ec4e1bda9beb93d10f65697747553289b58d83776fbb0",
+    "local/goal16b_tagged_b5/native_00b540a0.txt": "0bdf76b0261947adf900a1d32568a0fe78e0a35e351f7f74af98521da71e0a9d",
+    "local/goal16b_tagged_b5/native_00b542b0.txt": "7cc18dcac33891a785b1f0ee0953cd51b829dca37c80543ba59f26a1a1241c70",
+    "local/goal16b_tagged_b5/native_00b544e0.txt": "ee06c86ce2e3d2c510075591906f68d1aee42ed30a2b3a50fe916430b17bd447",
+    "local/goal16b_tagged_b5/native_00b546e0.txt": "dbe805aa45438fdb4134ebbfbc4deb250480c21696e936cb57451471b64e17ec",
+    "local/goal16b_tagged_b5/native_00b548b0.txt": "2018cd1cb51cf91e7bf39a611c191357f11ebe15226e9ce2bafd0936603cddb1",
+    "local/goal16b_tagged_b5/native_00b5fd50.txt": "00e18a6c11d03a7e558b4e7e3c5dccdb3f7da315838b5aa8073397ab64c9a7fa",
+    "local/goal16b_tagged_b5/native_00b5fd60.txt": "51c49c7760b0ff905800561df9c526acb9d17d162e9aa9f1ff1b1897a4053118"
+  },
+  "report_call_verification": {
+    "json_rows_checked": 0,
+    "json_failed": 0,
+    "markdown_claims_checked": 0,
+    "markdown_failed": 0,
+    "markdown_unchecked": 1,
+    "unchecked_description": "Two sampled scalar-delete native closures are supported by lookup callee records, not individual call-site rows; no call-site proof claimed."
+  }
+}
