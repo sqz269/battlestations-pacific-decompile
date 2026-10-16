@@ -1,0 +1,292 @@
+{
+  "schema": 1,
+  "packet": "oct15_native_input_preset_iterator_equal",
+  "status": "complete_ordinary_Source_default_Win32_checked_current_SDK_diagnostic_boundary_primary_frozen_pin_review_pending",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_input_preset_iterator_equal.cpp",
+  "header": "include/bsp/native_input_preset_iterator_equal.hpp",
+  "documentation": "docs/OCT15_INPUT_PRESET_ITERATOR_EQUAL.md",
+  "routines": [
+    {
+      "address": "00699ef0",
+      "name": "equal_native_input_preset_tree_iterators_00699ef0",
+      "original_library_identity": "STL_inst_00699ef0",
+      "kind": "function",
+      "coverage": "complete whole00699EF0..00699F18 inclusive,41definedB18starts,onebodyrange;no flow/listing repair",
+      "original_abi": "ECXactualleft8Biterator,EDXunconsumed,one stackedactualrightiterator,RET4;ALequality,EAXupper24bitsleftnodeincidental",
+      "Source_abi": "boolfastcall(constNativeInputPresetTreeIterator*left,uint32deadEDX,constNativeInputPresetTreeIterator*right),RET4; newCPPprivateargument/frame timing; no OriginalABI validation"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00699f02",
+      "native": "00bf6713",
+      "function": "00699ef0",
+      "scope": "OWNEDwhole"
+    }
+  ],
+  "readonly_producer_steps": [
+    {
+      "address": "006a1750",
+      "native": "0069c0f0",
+      "function": "006a15e0",
+      "scope": "READONLYproducerwindow_containing006A15E0"
+    },
+    {
+      "address": "006a175e",
+      "native": "00699ef0",
+      "function": "006a15e0",
+      "scope": "READONLYproducerwindow_containing006A15E0"
+    }
+  ],
+  "storage": "Reuse publishedactual triviallycopyable NativeInputPresetTreeIterator8B(owner0,node4), notNodeoverlay/hosttree. Unsigned32bit addressaddition and volatileDWORDreads; validreachedalignedcarriers required.",
+  "schedule": [
+    "Captureleft.owner; ifzero, skipright.owner and invokeactualdiagnostic. Otherwise comparecachedleftowner withCURRENTrightowner and diagnosemismatch.",
+    "Diagnosticmayreturn/throw. Onlyafterreturn readCURRENTleft.node BEFORECURRENTright.node; comparebits and returnALbool. No revalidation,newguard,earlyreturn,context,pool,catch,rollback or repair."
+  ],
+  "exception_and_provider_boundary": "Direct published invoke_native_invalid_parameter_00bf6713() usesactualcurrentSDKzeroarg _invalid_parameter_noinfo API, promisesneither noexcept nor noreturn. A thrownC++diagnostic preventsnodework. NativeBF66EF encodedglobal/handler/Watson/OriginalCRT semantics stayoutside acceptedboundary; no fabricatedprovider/context/adapter.",
+  "producer": "Readonly006A1740..006A176A43B12: actual8Bowner/nodeprivateiterators,stackrightpointer/ECXleft;006A175Ecallthen006A1763TESTAL. OnlyALconsumed; no highEAXsemanticparameter.",
+  "Native_evidence": {
+    "path": "local/oct15_preset_iterator_equal_native_deep.json",
+    "sha256": "1cfb7a5092fe1da36cc59cf04155b58ab18e5a604703185a0d6bb36a76207651",
+    "typed": {
+      "path": "local\\oct15_preset_iterator_equal_Source_typed.json",
+      "sha256": "964b7b5b081543ee99f52a6a5cb85ecdb7f58a765ee00c89395602dfdd1656a5",
+      "modification": "5772",
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "41",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00699ef0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00699f18"
+            },
+            "length": "41"
+          }
+        ]
+      }
+    },
+    "PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "counts": {
+      "owned_bytes": 41,
+      "owned_starts": 18,
+      "readonly_producer_bytes": 43,
+      "readonly_producer_starts": 12,
+      "fresh_total_bytes": 84,
+      "fresh_total_starts": 30,
+      "owned_calls": 1,
+      "readonly_producer_calls": 2
+    },
+    "all_PE_live_equal": true,
+    "all_current_starts_and_rel32targets_match": true,
+    "EH": "Whole41B hasno localFS/state/catch/cleanup; no invented OriginalEH/frame/ABI claims."
+  },
+  "actual_CMake_COFF": {
+    "object": "build\\win32\\bsp_core.dir\\Release\\native_input_preset_iterator_equal.obj",
+    "sha256": "11c8c74ac9fdd86b6cca80d4b8e09c401cdf7918e2116f034cf68f93d17c5b61",
+    "complete_code_bytes": 58,
+    "complete_code_instructions": 28,
+    "functions": 2,
+    "public": [
+      44,
+      21
+    ],
+    "unused_helper": [
+      14,
+      7
+    ],
+    "code_padding": 0,
+    "all_relocations": [
+      {
+        "offset": 23,
+        "type": 20,
+        "symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+      }
+    ],
+    "checks": [
+      {
+        "check": "Entire actualCMakeobject parsed:58B28/2codefunctions/public44B21+unused14B7 helper; everybyte decoded, no padding or hidden code.",
+        "passed": true
+      },
+      {
+        "check": "Actual public decorated boolfastcall(left,uint32,right) symbol/RET4; helpers are internalSource readers, not extra Native scopes.",
+        "passed": true
+      },
+      {
+        "check": "Sole actual REL32 public+17h invokes published zeroargument BF6713 Source entry, no fake callback/model/CRT callee.",
+        "passed": true
+      },
+      {
+        "check": "Leftowner read+A before conditionalrightword+10; zero branch+E targetsdiagnostic+16 and skipsrightowner.",
+        "passed": true
+      },
+      {
+        "check": "Mismatchdiagnostic+16 returns to+1B; no ownerrevalidation/earlyreturn/catch.",
+        "passed": true
+      },
+      {
+        "check": "CURRENTleftnode+1B before CURRENTrightnode+1E; compare+21,SETEAL+24,RET4+29.",
+        "passed": true
+      },
+      {
+        "check": "Compiler rightARGUMENT preload+4 precedesleftowner+A, Nativeleftowner first; privateargument/framealias difference qualified.",
+        "passed": true
+      },
+      {
+        "check": "Sourcebool permits incidentalupperEAXfromrightnode versus Nativeleftnode; no fullEAX/binaryABI identity asserted.",
+        "passed": true
+      },
+      {
+        "check": "Emittedunused rawreadhelper14B7 decodes Win32 effectiveaddress read, no relocations/callee/context.",
+        "passed": true
+      },
+      {
+        "check": "No localEH/state/cleanup metadata, FS access, unwind/catch references or additionalprovider; currentCPP propagation.",
+        "passed": true
+      }
+    ],
+    "findings": []
+  },
+  "actual_CMake_COFF_deep": {
+    "path": "local/oct15_preset_iterator_equal_COFF_deep.json",
+    "sha256": "d27a6feb8e30150700b01de3655d34cb61615999bd215d15e2b71bd3c368b70a"
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVCWin32Release/default",
+      "exit_code": 0,
+      "base_published_Main": "c896d234c4cbac4b40b4e2d83acf3248ea4c8c34",
+      "log": "local\\oct15_preset_iterator_equal_build.log",
+      "log_sha256": "58a25892fa447ded0a95764035a5d436595b3a18a6e24ed61b9571c4ce7ed97f",
+      "existing_suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "passed": 3,
+      "failed": 0,
+      "ctest_seconds": 7.58,
+      "coverage": "Existingmath/tool/seeddifferential checks; notnewiterator fixture/game evidence.",
+      "new_tests": 0,
+      "new_probes": 0,
+      "Native_execution": false
+    },
+    "preliminary_primary": {
+      "checks": 12,
+      "findings": 0,
+      "notice": "Root independentlyreadfullSource/header,41PE/liveB18/producer plusentire58B28COFF/actualrelocation. Frozenpinreviewpending."
+    },
+    "transfer_verifier": {
+      "command": "python tools/verify_report_calls.py reports/oct15_input_preset_iterator_equal.json docs/OCT15_INPUT_PRESET_ITERATOR_EQUAL.md",
+      "JSON_rows": 3,
+      "Markdown_claims": 3,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "log": "local\\oct15_preset_iterator_equal_transfer_check.txt",
+      "log_sha256": "42b059de0dfbdfb8c124b2b184d3c6745c4f0d02148e636d8b317fdac2805c4d"
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    "index": "python tools/bsp.py index --if-stale completed after ownedledger append"
+  },
+  "source_fingerprints": {
+    "src/native_input_preset_iterator_equal.cpp": "1056e9b67c6a038e9182017a1e7894709575c7f06ac6808f0cbd31225a2fdf04",
+    "include/bsp/native_input_preset_iterator_equal.hpp": "c6a408b7f557daab0e8882b048089854b96e5332a269650d36c14e086d0e86dd",
+    "docs/OCT15_INPUT_PRESET_ITERATOR_EQUAL.md": "6edd5cbb0638c88cc63936f0ee5b50f4e8327b257a436bbec4ef0028a4e5c824"
+  },
+  "provider_fingerprints": [
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "physical_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "LF_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "equals_fetched_published_Main_LF": true
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "physical_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "LF_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "equals_fetched_published_Main_LF": true
+    },
+    {
+      "path": "include/bsp/native_input_preset_tree_erase.hpp",
+      "physical_sha256": "5d1224d3cdde8dd5e9b25d59282df460a43b67b159427ff7b4bc45d202970615",
+      "LF_sha256": "5d1224d3cdde8dd5e9b25d59282df460a43b67b159427ff7b4bc45d202970615",
+      "equals_fetched_published_Main_LF": true
+    },
+    {
+      "path": "src/native_input_preset_tree_leaves.cpp",
+      "physical_sha256": "05db82735e65006410f798622cd856aa9fe163b3676afc151fcf9c86b2e12283",
+      "LF_sha256": "05db82735e65006410f798622cd856aa9fe163b3676afc151fcf9c86b2e12283",
+      "equals_fetched_published_Main_LF": true
+    },
+    {
+      "path": "include/bsp/native_input_preset_tree_leaves.hpp",
+      "physical_sha256": "88785beefdae77cc9ee3efdb9b95a02988cfc08f352acc1525ec0d01bfcfddac",
+      "LF_sha256": "88785beefdae77cc9ee3efdb9b95a02988cfc08f352acc1525ec0d01bfcfddac",
+      "equals_fetched_published_Main_LF": true
+    },
+    {
+      "path": "src/native_input_settings_tree_insertion.cpp",
+      "physical_sha256": "ebd83749d995ca16a7affcfd9bf0637383ccb172cd71e37d2ab5c26036b72ba4",
+      "LF_sha256": "ebd83749d995ca16a7affcfd9bf0637383ccb172cd71e37d2ab5c26036b72ba4",
+      "equals_fetched_published_Main_LF": true,
+      "role": "preservedoldAVSource"
+    },
+    {
+      "path": "include/bsp/native_input_settings_tree_insertion.hpp",
+      "physical_sha256": "ec88bb50d0740576528362ae81c5afe73b1c9959752f4af1a29631ffe695ac70",
+      "LF_sha256": "ec88bb50d0740576528362ae81c5afe73b1c9959752f4af1a29631ffe695ac70",
+      "equals_fetched_published_Main_LF": true,
+      "role": "preservedoldAVSource"
+    }
+  ],
+  "prior_immutable_readiness": [
+    {
+      "path": "local/oct15_input_preset_map_index_readiness.json",
+      "sha256": "0da38f654119ce288fe18972872aa1a7ff3d4e024587a85b47e1ee33193869df",
+      "immutable_readonly_receipt": true
+    },
+    {
+      "path": "local/oct15_device_map_full_range_peer.json",
+      "sha256": "0f870ddffb4d7197bf27a52eac80295b287365d68a168c6894653e5bcc20bcc2",
+      "immutable_readonly_receipt": true
+    }
+  ],
+  "limits": [
+    "MSVCWin32 rawvalidreachedaligned carrierstorage required through returningdiagnostic. No newnull/owner/nodeguard.",
+    "Native readsleft.owner before loadingrightstackargument; Sourcecompilerpreloadsrightargument. Privateincomingstack mutation/aliases notmatched. Volatilereachedwordordering preserved.",
+    "SourceALbool only; NativeupperEAXleftnodebits versus SourcecompilerupperEAXrightnodebits incidental. Flags/registerresidue/bytes notidentityproof.",
+    "CurrentSDKdiagnostic/CurrentCPP transport, originalCRTselection/heap/FH3/SEH/RTTI/fault/stackexhaustion/OriginalbinaryABI/gameequivalence unproved.",
+    "OldAV/STLinterfaces,69AEC0predecessor,int_stringreadiness,map-index/hint/nodechain/owners unaffected; no parentpromotion."
+  ],
+  "coordination": {
+    "address_lease": "oct15_native_input_preset_iterator_equal",
+    "owned_addresses": [
+      "00699ef0"
+    ],
+    "only_four_newfiles": [
+      "src/native_input_preset_iterator_equal.cpp",
+      "include/bsp/native_input_preset_iterator_equal.hpp",
+      "docs/OCT15_INPUT_PRESET_ITERATOR_EQUAL.md",
+      "reports/oct15_input_preset_iterator_equal.json"
+    ],
+    "local_CMake": "Exactlyone bsp_core Sourceappend; no registry/filelease needed perauthorizedlocalappendpolicy.",
+    "Ghidra_mutations": false,
+    "push": false
+  }
+}
