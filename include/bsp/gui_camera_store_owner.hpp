@@ -82,6 +82,54 @@ void attach_native_gui_scene_node_00b6d890(
 NativeCameraReference* allocate_native_gui_camera(
     NativeCameraEnvironment&, const NativeString&);
 
+// One immovable caller-retained Source frame, established before this camera's
+// first name/admission/pool/native effect. It owns no native pool/name/record.
+// The actual header and its unconsumed cleanup, plus viewport Storage, remain
+// in the caller's enclosing persistent frame through retirement/quiescent forget.
+// External serialization includes reentry. On entered failure retain the graph
+// and fail-stop before any manager/CRT/member drain; do not replay or clean it.
+class GuiCameraRawAllocation final {
+public:
+    GuiCameraRawAllocation() noexcept = default;
+    ~GuiCameraRawAllocation();
+    GuiCameraRawAllocation(const GuiCameraRawAllocation&) = delete;
+    GuiCameraRawAllocation& operator=(const GuiCameraRawAllocation&) = delete;
+    enum class Stage { ready, pool_entered, slot_acquired, owner_prepared,
+        constructor_entered, constructor_returned, published };
+    Stage stage() const noexcept { return stage_; }
+    // Metadata only: never reads the actual slot, calls providers or locks.
+    bool native_operation_interrupted() const noexcept {
+        return stage_ != Stage::ready && stage_ != Stage::published;
+    }
+    const NativeViewportRegistry::Storage* viewport_record_identity() const noexcept {
+        return viewport_record_;
+    }
+private:
+    friend NativeCameraReference* allocate_native_gui_camera(NativeCameraEnvironment&,
+        GuiCameraRawAllocation&, const void*, const NativeNodeRawConstants&,
+        NativeViewportRegistry::Admission&&);
+    Stage stage_{Stage::ready};
+    const void* actual_name_header_{};
+    const NativeViewportRegistry::Storage* viewport_record_{};
+    NativeViewportRegistry::Admission viewport_admission_;
+    void* actual_slot_{};
+    NativeCameraOwner* owner_{};
+    NativeCameraReference* reference_{};
+};
+
+// Raw caller bridge over the EXISTING camera kernel/reference. Preflight leaves
+// a rejected caller admission intact. Requires its SAME installed resolver and
+// node/viewport one-cell identity; then retains the token before pool entry.
+// Every entered exception retains slot, completed owner metadata and actual
+// viewport record identity. The guard runs before Admission's member destructor.
+// Success transfers only the constructor's self reference; no extra retain.
+// Header/constants must survive construction; environment/pool/name domain and
+// record survive final callbacks, with explicit caller quiescence before forget.
+// New typed Source interface, not an Original factory or native FH3 ABI.
+NativeCameraReference* allocate_native_gui_camera(NativeCameraEnvironment&,
+    GuiCameraRawAllocation&, const void* actual_name_header, const NativeNodeRawConstants&,
+    NativeViewportRegistry::Admission&&);
+
 // Store pointers borrow concrete native owner identities, never companions or
 // another refcount. The caller retains its canonical owner bindings while any
 // store/layer/queue can use them. There is only the supplied ordered map.
