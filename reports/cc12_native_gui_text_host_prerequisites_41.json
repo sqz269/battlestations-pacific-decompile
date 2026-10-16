@@ -120,5 +120,67 @@
     "No audio endpoint/service/SDK output/config change or invented SoundEnabled bypass",
     "Original installed assets and OS/SDK binaries remain external dependencies"
   ],
-  "next": "Restore an actual default playback endpoint for current full startup; independent AB7060 whole-leaf native comparison continues"
+  "next": "Restore an actual default playback endpoint for current full startup; independent AB7060 whole-leaf native comparison continues",
+  "combined_main_build": {
+    "source_commit": "42964a728ad274be590426e96b72abc148e8bc3f",
+    "build_exit_code": 0,
+    "tests_passed": 3,
+    "tests_total": 3,
+    "ctest_seconds": 8.58,
+    "scope": "Combined canonical MSVC Win32 build against merged Main; no new runtime claim",
+    "frozen_payloads": [
+      {
+        "path": "src/game_main.cpp",
+        "sha256": "37ca208b818f4c34cc284651d2018799f645ff08eba85b4f3ebaf853d3edcc5d",
+        "bytes": 77157
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "sha256": "7cbcc88599dc7904b43194eca4c5521d45dd0fee4e08474c390ec49dc2ab30e8",
+        "bytes": 152879
+      },
+      {
+        "path": "src/game_hosts_text.cpp",
+        "sha256": "d2eb8e069dbe3fdb92e963d73db7bf6b2e8e1a7e59c8e660087e779af9fced64",
+        "bytes": 36841
+      },
+      {
+        "path": "include/bsp/game_native_gui_text_process.hpp",
+        "sha256": "c0f0dd4bba7bab733eec89f43a8b7f47578f0601dd1c02ab365887d77b30322c",
+        "bytes": 4145
+      },
+      {
+        "path": "src/game_native_gui_text_process.cpp",
+        "sha256": "eab92c37b8b7487e12edf0e79b580621dc4c4f5e5cba2700952caef5b6d19b8b",
+        "bytes": 5875
+      },
+      {
+        "path": "include/bsp/game_native_gui_text_state.hpp",
+        "sha256": "d8990cc2df091c2f7c9ebae511617113e7b1a47601667aa037682bb76c99d040",
+        "bytes": 2490
+      },
+      {
+        "path": "src/game_native_gui_text_state.cpp",
+        "sha256": "724279b67813f9ce9baf24fba9373f0d0bdfb07ee97c074b5329990aec81204f",
+        "bytes": 1473
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "sha256": "ffacab6bc5aeaff8e451e36eaf03130787278105e0be0ddf47e167665fb203f9",
+        "bytes": 251239
+      },
+      {
+        "path": "local/cc12_native_gui_text_host_prerequisites_41/build_03_combined.log",
+        "sha256": "30b26b2ebac13db248381901bdfa49edb19d5f060ace698748b39640befb03b5",
+        "bytes": 3762
+      },
+      {
+        "path": "build/win32/cc12_followup_release/bsp_game.exe",
+        "sha256": "ee60f3bc941f08e3f2f43d2adc4ec26842ef75b69deea423cffc68941c81ccdc",
+        "bytes": 5634560
+      }
+    ],
+    "manifest": "local\\cc12_native_gui_text_host_prerequisites_41\\combined_03\\manifest.json",
+    "manifest_sha256": "c7938b49ae0242548f86e3b9d412dfdf07619ca009ced39c23a951562d9cc7d6"
+  }
 }
