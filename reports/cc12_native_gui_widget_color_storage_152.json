@@ -1,0 +1,302 @@
+{
+  "packet": "cc12_native_gui_widget_color_storage_152",
+  "status": "whole_actual_storage_source_strict_optimized_reviewed_existing_build_checked_unregistered",
+  "baseline": "8aaf1cbc62e209fc37913e06c7a2f1cff3b56fb8",
+  "dependency_merge_exit_code": 0,
+  "source_ready": true,
+  "new_tu_core_registered": false,
+  "production_activation": false,
+  "original": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "address": "00aa6870",
+    "exclusive_end": "00aa68ea",
+    "bytes": 122,
+    "instruction_starts": 44,
+    "abi": "ECX actual widget; stack original RGBA pointer; RET4 atAA68E7; no local EH"
+  },
+  "source": {
+    "api": "void set_native_gui_widget_color_storage_00aa6870(void*, const void*) noexcept",
+    "implementation": "src/native_gui_widget_color_storage.cpp",
+    "header": "include/bsp/native_gui_widget_color_storage.hpp",
+    "abi": "Ordinary C++ pointer/pointer void noexcept, compiler calling/stack rules; not Native binary/private ABI.",
+    "model_tail_view": "Requires genuine existing live NativeModelTailStorage subobject at actualModel+174.",
+    "noexcept_basis": "Each reached concrete existing getter is noexcept and has no callback service; no throwing provider installed."
+  },
+  "calls": [
+    {
+      "address": "00aa6892",
+      "native": "00b74650",
+      "function": "00aa6870",
+      "kind": "call"
+    },
+    {
+      "address": "00aa68a0",
+      "native": "00b74640",
+      "function": "00aa6870",
+      "kind": "call"
+    },
+    {
+      "address": "00aa68a7",
+      "native": "00b72b40",
+      "function": "00aa6870",
+      "kind": "call"
+    },
+    {
+      "address": "00aa68b7",
+      "native": "00b74640",
+      "function": "00aa6870",
+      "kind": "call"
+    },
+    {
+      "address": "00aa68be",
+      "native": "00b732c0",
+      "function": "00aa6870",
+      "kind": "call"
+    },
+    {
+      "address": "00aa68ca",
+      "native": "00b179f0",
+      "function": "00aa6870",
+      "kind": "call"
+    }
+  ],
+  "source_provider_functions": [
+    {
+      "name": "gui_model_geometry_00b74640",
+      "source": "src/gui_widget_owner.cpp",
+      "calls": 2,
+      "noexcept": true
+    },
+    {
+      "name": "gui_mesh_element_count_00b72b40",
+      "source": "src/gui_material_binding.cpp",
+      "calls": 1,
+      "noexcept": true
+    },
+    {
+      "name": "gui_geometry_element_00b732c0",
+      "source": "src/gui_widget_owner.cpp",
+      "calls": 1,
+      "noexcept": true
+    },
+    {
+      "name": "native_material_diffuse_00b179f0",
+      "source": "src/gui_material_binding.cpp",
+      "calls": 1,
+      "noexcept": true
+    }
+  ],
+  "private_raw_query": {
+    "address": "00b74650",
+    "exclusive_end": "00b7465c",
+    "native_bytes": 12,
+    "native_instruction_starts": 4,
+    "behavior": "Volatile actualModel+180 DWORD !=0; established Native and existing Source evidence.",
+    "reason": "Older public helper takes NativeModelOwner&, unsuitable for raw Model4C.",
+    "reviewed_by_root": true,
+    "new_b7_ledger_name_annotation_or_body_credit": false,
+    "native_entry_abi": false
+  },
+  "scheduling": {
+    "initial_quartet": "Read/storeX50, read/storeY54, readZ/captureCurrent4C/storeZ58, read/storeW5C.",
+    "geometry_gate": "Captured Model180 false returns after widget writes; current4C geometry and mesh58 zero gate.",
+    "second_model": "Reload current4C again, real geometry/element0/currentmaterial20/diffuse38 getters.",
+    "diffuse": "Reread SAME ORIGINAL source pointer in four ordered DWORD read/store pairs, not widget color or saved values.",
+    "effects": "Only widget50..5F and reached material diffuse quartet writes; no ownership, metadata facade, FP, retain/release, dirty flag, recursion, catch or rollback."
+  },
+  "domain": {
+    "alignment": "DWORD-aligned live actual storage and readable RGBA quartet.",
+    "actual_widget": "Genuinely constructed through+5F with nonnull actual Model4C, not a Group capacity.",
+    "raw_reached": "Genuine existing ModelTailStorage lifetime/layout; valid actual mesh/header/array/element/material.",
+    "alias": "Actual objects/provider storage disjoint; original RGBA may overlap their live fields, including widget color/diffuse.",
+    "lifetime": "Whole independent graph/backing live through return; no input in mutable callee scratch; externally serialized.",
+    "unsupported": "Malformed/unaligned pointers, unsupported object lifetimes/layouts, hardware faults/SEH and private Native exception behavior."
+  },
+  "optimized": {
+    "public_bytes": 138,
+    "public_listing": "color.asm:436..584",
+    "helper_listing": "color.asm:592..646",
+    "functions": [
+      {
+        "role": "color_entry",
+        "symbol": "?set_native_gui_widget_color_storage_00aa6870@bsp@@YAXPAXPBX@Z",
+        "bytes": 138,
+        "instruction_starts": 50,
+        "sha256": "71a0e284e839c2d88988365f77db7fcb179610bc267053528a7bad092871185b",
+        "relocations": [
+          {
+            "offset": 58,
+            "symbol": "?gui_model_geometry_00b74640@bsp@@YAPAXABUNativeModelTailStorage@1@I@Z",
+            "type": 20
+          },
+          {
+            "offset": 64,
+            "symbol": "?gui_mesh_element_count_00b72b40@bsp@@YAIPBX@Z",
+            "type": 20
+          },
+          {
+            "offset": 87,
+            "symbol": "?gui_model_geometry_00b74640@bsp@@YAPAXABUNativeModelTailStorage@1@I@Z",
+            "type": 20
+          },
+          {
+            "offset": 95,
+            "symbol": "?gui_geometry_element_00b732c0@bsp@@YAPAXPBXH@Z",
+            "type": 20
+          },
+          {
+            "offset": 106,
+            "symbol": "?native_material_diffuse_00b179f0@bsp@@YAPAMAAUNativeMaterialStorage@1@I@Z",
+            "type": 20
+          }
+        ]
+      },
+      {
+        "role": "private_current_pointer",
+        "symbol": "?current_pointer@?A0x919a00e7@bsp@@YAPAXPBXI@Z",
+        "bytes": 12,
+        "instruction_starts": 4,
+        "sha256": "141fe36521c0146c800983701f3780f1e87872eba06924b50770fb794107644c",
+        "relocations": []
+      },
+      {
+        "role": "private_has_geometry",
+        "symbol": "?has_geometry_00b74650@?A0x919a00e7@bsp@@YA_NPBX@Z",
+        "bytes": 16,
+        "instruction_starts": 5,
+        "sha256": "34f62ec78daeb8e6ecec750fd11024debe3c285edcffe002ad010ab0095a46c1",
+        "relocations": []
+      },
+      {
+        "role": "private_model_tail",
+        "symbol": "?model_tail@?A0x919a00e7@bsp@@YAABUNativeModelTailStorage@2@PBX@Z",
+        "bytes": 10,
+        "instruction_starts": 3,
+        "sha256": "eb1ee6825b8681767d38b4ccbe1d617f44a96e84c86b66d7bf0d81bb9b396353",
+        "relocations": []
+      }
+    ],
+    "getter_relocations": 5,
+    "source_model_captures": [
+      24,
+      46,
+      75
+    ],
+    "source_diffuse_reads": [
+      110,
+      117,
+      123,
+      129
+    ],
+    "no_fp_or_vector_instructions": true,
+    "root_full_source_and_optimized_review": "PASS",
+    "native_instruction_or_abi_equality": false
+  },
+  "verification": {
+    "strict": "MSVC Win32 C++17 /MD /EHsc /O2 /Gy /W4 /WX /fp:strict /permissive- PASS",
+    "strict_compilations": 1,
+    "required_worker_builds": 1,
+    "existing_ctests_passed": 3,
+    "existing_ctests_seconds": 8.75,
+    "new_tu_registered_in_worker_build": false,
+    "new_entry_linked_or_executed": false,
+    "new_tests": 0,
+    "new_probes": 0,
+    "repo_inputs": 59,
+    "external_header_hashes": 275,
+    "native_bytes_live_disk": true,
+    "calls": {
+      "report_rows_checked": 6,
+      "doc_claims_checked": 6,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "receipt": "local/cc12_native_gui_widget_color_storage_152/call_verification.txt"
+    },
+    "private_abi": false,
+    "game_or_visual_validation": false
+  },
+  "annotation": {
+    "address": "00aa6870",
+    "name_preserved": true,
+    "prior_comment_preserved_normalized": true,
+    "history_origin": "J:\\PROG\\battlestations-pacific-decompile-cc12_font_retirement_review36\\local\\ghidra-annotations-20261016T111622Z.json",
+    "history_sha256": "a9addb2fdacefdd389458969066c6a4a34bf4e4ef9a0f71e6cf6b1a0df6f58dc",
+    "old_semantic_row_status_preserved": true,
+    "only_owned_address_annotated": true,
+    "tool": "ghidra_annotate.py --apply with coordination write lock, old-value history, save_program, forced export"
+  },
+  "prior_semantic": {
+    "name": "set_gui_color_00aa6870",
+    "status": "reconstructed_build_and_actual_chain_original_byte_fixture_tested",
+    "source": "src/gui_material_binding.cpp",
+    "preserved": true
+  },
+  "artifacts": [
+    {
+      "path": "docs/CC12_NATIVE_GUI_WIDGET_COLOR_STORAGE_152.md",
+      "bytes": 7553,
+      "sha256": "4ffbb5b21ae9b89fc8d3e0b8b6d26845349a0af6a080dfcdbdbb3f9925312341"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_color_storage.hpp",
+      "bytes": 1825,
+      "sha256": "c44b97890659d2bb6103367d03a8866d9bf4b394cf4ff46b5827fb96b6ae1ff7"
+    },
+    {
+      "path": "src/native_gui_widget_color_storage.cpp",
+      "bytes": 2507,
+      "sha256": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_color_storage_152/native_bytes.json",
+      "bytes": 1070,
+      "sha256": "ad1627b17d09b680bd2854773e812db03e1d9c4d096f0c5e947297a60b1d4f98"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_color_storage_152/object_proof.json",
+      "bytes": 2314,
+      "sha256": "e7dad128964399b2d65ba7b5fe65e969eb9e2d050057c9e8293266694d8f8070"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_color_storage_152/source_inputs.json",
+      "bytes": 78812,
+      "sha256": "395c9f319e3519c77f83e5a624cdc86bf8c7845aa6d1dd2d54aebb014f6db520"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_color_storage_152/strict_compile.log",
+      "bytes": 37,
+      "sha256": "720837802889048993faf837d87965ced13131c2e294d9d38fa793db4a01090b"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_color_storage_152/canonical_build.log",
+      "bytes": 4310,
+      "sha256": "e56a3363926baa8360c82cc203e4d2445f8ff25eb79332418df5aec3d4399cd6"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_color_storage_152/canonical_snapshot.json",
+      "bytes": 1211,
+      "sha256": "75689a25c1cfd171ce3efc69c3eb5858e86b4ec4989dd0da6760cfaef3d0c1ce"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_color_storage_152/annotation_proof.json",
+      "bytes": 535,
+      "sha256": "509b6bee9eac0200e416418e3c5e4587e0b2fb3c300c4ba48e55f50d59ab9456"
+    },
+    {
+      "path": "local/cc12_native_gui_widget_color_storage_152/ledger_diff.patch",
+      "bytes": 16105,
+      "sha256": "330ba05f947288785ecf21507914c79cb02de889d5c5a7becbeffaee3dcd1bc9"
+    }
+  ],
+  "private_manifest": {
+    "path": "local/cc12_native_gui_widget_color_storage_152/manifest.json",
+    "sha256": "47be57638c4decad846e86044db399f79a89223f115fa5e7d054d6938c44682d",
+    "item_count": 129,
+    "total_bytes": 97446619
+  },
+  "limits": "Whole valid-storage Source normal body; no call-site/host activation, Native register/stack/private exception, hardware fault or runtime equivalence."
+}
