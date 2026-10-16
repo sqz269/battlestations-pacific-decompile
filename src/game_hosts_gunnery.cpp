@@ -14039,12 +14039,38 @@ bool GameGunneryHost::player_fire_torpedo_group(std::size_t unit, const std::str
     if (row == nullptr || unit >= host.unit_state.size()) return refuse("no such unit");
     if (host.unit_state[unit].dead) return refuse("the unit is dead");
     float yaw = yaw_radians;
+    bool lead_used = false;
     if (!target.empty()) {
-        const std::size_t t = host.unit_by_name(target);
+        // GUNNERY 262: `at <target> lead` stands for the player aiming ahead of
+        // a moving target. LABELLED harness aid, like the bomb sight's `on`: the
+        // aim point is the TorpedoBot's own intercept 008FBB00 (the unit's first
+        // tube's WaterTravelSpeed, the target's velocity), not a person's eye.
+        std::string name = target;
+        const bool lead = name.size() > 5 && name.compare(name.size() - 5, 5, " lead") == 0;
+        if (lead) name.resize(name.size() - 5);
+        const std::size_t t = host.unit_by_name(name);
         if (t >= host.unit_state.size()) return refuse("no unit of that name");
         float r[3], u[3], f[3], from[3], to[3];
         host.unit_pose(unit, r, u, f, from);
         host.unit_pose(t, r, u, f, to);
+        if (lead) {
+            float speed = 0.0f;
+            for (const GameGunRow& gun : host.guns) {
+                if (gun.unit_index != unit || gun.category != bsp::kUnitGunneryTorpedoCategory) continue;
+                speed = gun.water_travel_speed > 0.0f ? gun.water_travel_speed : gun.muzzle_speed;
+                break;
+            }
+            float vel[3];
+            host.unit_velocity(t, vel);
+            std::array<float, 3> aim{};
+            if (speed > 0.0f
+                && bsp::torpedo_intercept_point_008fbb00({from[0], from[1], from[2]},
+                    {to[0], to[1], to[2]}, speed, {vel[0], vel[1], vel[2]}, aim)) {
+                to[0] = aim[0];
+                to[2] = aim[2];
+                lead_used = true;
+            }
+        }
         yaw = std::atan2(to[0] - from[0], to[2] - from[2]);
     }
     std::size_t taken = 0;
@@ -14063,9 +14089,9 @@ bool GameGunneryHost::player_fire_torpedo_group(std::size_t unit, const std::str
     last = held;
     host.apply_gun_aim_message(unit, m);
     reason = m.pressed_35 ? "pressed" : (held ? "held" : "released");
-    host.log.notef("player torpedo group fire: unit=%s yaw=%.1f deg tubes=%zu %s (79h group 4 -> "
+    host.log.notef("player torpedo group fire: unit=%s yaw=%.1f deg%s tubes=%zu %s (79h group 4 -> "
         "00959C20 0095A1CC, packet cc9_player_torpedo_group)", row->name.c_str(),
-        static_cast<double>(yaw) * 57.2957795, taken, reason.c_str());
+        static_cast<double>(yaw) * 57.2957795, lead_used ? " (lead)" : "", taken, reason.c_str());
     return true;
 }
 
