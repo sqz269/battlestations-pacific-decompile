@@ -95,17 +95,21 @@ void enter_prompt_screen_00531380(FrontEndPromptScreen& screen,
     FrontEndPromptWidgets& widgets, FrontEndPromptEnterHost& host) {
     if (screen.background_visible) host.widget_flag(widgets.background_18, 0x34, true);
     auto& storage = host.strings();
-    auto find = [&](const char* name, void*& destination) {
+    // Each search reloads its parent from the screen just before 00AA7E00:
+    // 005313ED/00531459 MOV ECX,[ESI+14h]; 005314C2 MOV ECX,[ESI+38h] (the
+    // group); 0053152F/0053159C/00531609/00531676 MOV ECX,[ESI+24h], the
+    // Options_Listbox just stored at 005314D8.
+    auto find = [&](void* parent, const char* name, void*& destination) {
         TemporaryString key(storage, name);
-        destination = host.find_child_00aa7e00(widgets.root_14, key.value, true);
+        destination = host.find_child_00aa7e00(parent, key.value, true);
     };
-    find("Gamertag_Text", widgets.title_1c);
-    find("Message_Text", widgets.message_20);
-    find("Options_Listbox", widgets.navigation_24);
-    find("Yes_Text", widgets.yes_28);
-    find("No_Text", widgets.no_2c);
-    find("Accept_Text", widgets.accept_30);
-    find("Checkpoint_Text", widgets.restart_34);
+    find(widgets.root_14, "Gamertag_Text", widgets.title_1c);
+    find(widgets.root_14, "Message_Text", widgets.message_20);
+    find(widgets.group_38, "Options_Listbox", widgets.navigation_24);
+    find(widgets.navigation_24, "Yes_Text", widgets.yes_28);
+    find(widgets.navigation_24, "No_Text", widgets.no_2c);
+    find(widgets.navigation_24, "Accept_Text", widgets.accept_30);
+    find(widgets.navigation_24, "Checkpoint_Text", widgets.restart_34);
     {
         TemporaryString key(storage, "background_Icon");
         void* icon = host.find_child_00aa7e00(widgets.root_14, key.value, true);
