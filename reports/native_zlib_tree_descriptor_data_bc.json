@@ -1,0 +1,414 @@
+{
+  "goal": "GOAL16AT",
+  "status": "StrictProducerReady_ActualRegisteredProviderPending",
+  "scope": {
+    "complete_DATA_ranges": 8,
+    "Native_DATA_bytes": 1644,
+    "descriptor_bytes": 60,
+    "rooted_table_bytes": 1584,
+    "Native_functions": 0,
+    "Native_instructions": 0,
+    "Source_functions": 0,
+    "Source_DATA_definitions": 8,
+    "accepted_DATA_credit": 0,
+    "accepted_function_credit": 0
+  },
+  "base_published_Main": "dcea22c446e3537a757f6bbfa3c9cf854f8e6772",
+  "files": [
+    {
+      "path": "src/native_zlib_tree_descriptor_data_bc.cpp",
+      "bytes": 5524,
+      "sha256": "d4b61795f172684b07a2d2adc7139f432d8e079c1f5128865d0d1c3d24fa5238"
+    },
+    {
+      "path": "include/bsp/native_zlib_tree_descriptor_data_bc.hpp",
+      "bytes": 2478,
+      "sha256": "4646499fd4ea7663ef7033bfed6b452f40312f584aef10b6b81474c8f85420b4"
+    },
+    {
+      "path": "docs/NATIVE_ZLIB_TREE_DESCRIPTOR_DATA_BC.md",
+      "bytes": 6752,
+      "sha256": "cf4793697b0ad4b1f3b8d0288f171dff6752cd13dc0f4b0ad47a5f077c696189"
+    }
+  ],
+  "producer_output": "local/zlib_tree_descriptor_data_bc",
+  "normal_registration_and_build": {
+    "authorized_split": "Strict producer in cold own worktree; Root registers and normal-builds in genuine warm integration before acceptance.",
+    "CMake_modified": false,
+    "normal_build_run_here": false,
+    "CMakeCache_present_here": {
+      "build\\CMakeCache.txt": false,
+      "build\\win32\\CMakeCache.txt": false
+    },
+    "actual_registered_object": "PENDING",
+    "actual_Core_member": "PENDING",
+    "both_archive_dictionaries": "PENDING",
+    "existing_checks": "PENDING_ROOT_BUILD",
+    "Source_address_or_DATA_credit": 0
+  },
+  "strict": {
+    "command": [
+      "cmd",
+      "/d",
+      "/c",
+      "local\\zlib_tree_descriptor_data_bc\\strict_compile.cmd"
+    ],
+    "start_utc": "2026-10-16T13:36:14.939524+00:00",
+    "end_utc": "2026-10-16T13:36:16.371579+00:00",
+    "elapsed_seconds": 1.4320416999980807,
+    "returncode": 0,
+    "log": "strict_compile.log",
+    "source_sha256": "d4b61795f172684b07a2d2adc7139f432d8e079c1f5128865d0d1c3d24fa5238",
+    "header_sha256": "4646499fd4ea7663ef7033bfed6b452f40312f584aef10b6b81474c8f85420b4",
+    "normal_build": "NOT_RUN; explicitly deferred to Root genuine warm integration",
+    "command_file": "local/zlib_tree_descriptor_data_bc/strict_compile.cmd",
+    "object": {
+      "path": "local/zlib_tree_descriptor_data_bc/strict_native_zlib_tree_descriptor_data_bc.obj",
+      "bytes": 2911,
+      "sha256": "4df40a309d2b9c6fe5b9b439fe001d80b0883fa19d5162666499a8958f0f6c2f"
+    },
+    "full_COFF": {
+      "path": "local/zlib_tree_descriptor_data_bc/strict_full_coff.json",
+      "bytes": 13731,
+      "sha256": "9089198772c9657fb18810422b89fc001caef6f783f360dc54411de4f62f3203"
+    },
+    "byte_regions": {
+      "path": "local/zlib_tree_descriptor_data_bc/strict_byte_regions.json",
+      "bytes": 1003,
+      "sha256": "0e632d5a7f64fd1f31298cbc4a475dd9e106b9bfe259b2725f5e0838fc4b8a69"
+    },
+    "DATA_proof": {
+      "path": "local/zlib_tree_descriptor_data_bc/strict_DATA_proof.json",
+      "bytes": 9472,
+      "sha256": "68586b5eabf86d603bc56144c5c11ef28d32da8ac2fcf86bcc8fe16db14a12c2"
+    }
+  },
+  "DATA_contract": {
+    "type_hypothesis": "Descriptive new Source types grounded in complete bytes and frozen stock field layout; no Original public type/version claim.",
+    "descriptor": {
+      "size": 20,
+      "alignment": 4,
+      "offsets": [
+        0,
+        4,
+        8,
+        12,
+        16
+      ],
+      "fields": [
+        "pointer to const code/length words",
+        "pointer to const int32 extra bits",
+        "int32 extra_base",
+        "int32 elements",
+        "int32 max_length"
+      ],
+      "all_three_objects_and_pointer_fields_mutable": true
+    },
+    "code_words": {
+      "size": 4,
+      "alignment": 2,
+      "offsets": [
+        0,
+        2
+      ],
+      "fields": [
+        "uint16 code",
+        "uint16 length"
+      ]
+    },
+    "static_asserts": "pointer size, standard layout, every field offset, both struct sizes/alignments",
+    "tables": [
+      {
+        "symbol": "_bsp_native_zlib_extra_lbits_00d677c0",
+        "Native_start": "00D677C0",
+        "Native_end": "00D67833",
+        "size": 116,
+        "COFF_section": ".rdata",
+        "COFF_value": 0,
+        "Native_and_Source_bytes_equal": true,
+        "sha256": "f8d7861760c88cc514f66095af0aed47ecba063adb65f47125ed07bcc2cf9842"
+      },
+      {
+        "symbol": "_bsp_native_zlib_extra_dbits_00d67848",
+        "Native_start": "00D67848",
+        "Native_end": "00D678BF",
+        "size": 120,
+        "COFF_section": ".rdata",
+        "COFF_value": 120,
+        "Native_and_Source_bytes_equal": true,
+        "sha256": "b23d510f520cb4ba8afa847f8a40e757c40cb6a55b237efa1ac6d3984911b114"
+      },
+      {
+        "symbol": "_bsp_native_zlib_extra_blbits_00d678c0",
+        "Native_start": "00D678C0",
+        "Native_end": "00D6790B",
+        "size": 76,
+        "COFF_section": ".rdata",
+        "COFF_value": 240,
+        "Native_and_Source_bytes_equal": true,
+        "sha256": "8fc498a953a183e1fe81a183ae59047435bb9b33d657c625fab03d38be19f92e"
+      },
+      {
+        "symbol": "_bsp_native_zlib_static_ltree_00d67910",
+        "Native_start": "00D67910",
+        "Native_end": "00D67D8F",
+        "size": 1152,
+        "COFF_section": ".rdata",
+        "COFF_value": 320,
+        "Native_and_Source_bytes_equal": true,
+        "sha256": "36b8fda0bfb1d93a07326ee7cac8eb99ff1af237d234ffa3210f64d3eb774c38"
+      },
+      {
+        "symbol": "_bsp_native_zlib_static_dtree_00d67d90",
+        "Native_start": "00D67D90",
+        "Native_end": "00D67E07",
+        "size": 120,
+        "COFF_section": ".rdata",
+        "COFF_value": 1472,
+        "Native_and_Source_bytes_equal": true,
+        "sha256": "9476220840d3ce82203b4a722e278773b1da458a22f49fcb9fc45b851df7d503"
+      }
+    ],
+    "descriptors": [
+      {
+        "symbol": "_bsp_native_zlib_static_l_desc_00e1470c",
+        "size": 20,
+        "COFF_value": 0,
+        "Native_start": "00E1470C",
+        "COFF_section": ".data",
+        "strong_mutable_object": true
+      },
+      {
+        "symbol": "_bsp_native_zlib_static_d_desc_00e14720",
+        "size": 20,
+        "COFF_value": 20,
+        "Native_start": "00E14720",
+        "COFF_section": ".data",
+        "strong_mutable_object": true
+      },
+      {
+        "symbol": "_bsp_native_zlib_static_bl_desc_00e14734",
+        "size": 20,
+        "COFF_value": 40,
+        "Native_start": "00E14734",
+        "COFF_section": ".data",
+        "strong_mutable_object": true
+      }
+    ],
+    "real_DIR32_fixups": [
+      {
+        "section": 4,
+        "offset": 0,
+        "symbol_index": 11,
+        "symbol": "_bsp_native_zlib_static_ltree_00d67910",
+        "type": 6,
+        "executable": false,
+        "kind": "IMAGE_REL_I386_DIR32",
+        "addend": 0,
+        "defined_whole_array_target": true,
+        "Native_pointer_evidence_only": "00D67910"
+      },
+      {
+        "section": 4,
+        "offset": 4,
+        "symbol_index": 8,
+        "symbol": "_bsp_native_zlib_extra_lbits_00d677c0",
+        "type": 6,
+        "executable": false,
+        "kind": "IMAGE_REL_I386_DIR32",
+        "addend": 0,
+        "defined_whole_array_target": true,
+        "Native_pointer_evidence_only": "00D677C0"
+      },
+      {
+        "section": 4,
+        "offset": 20,
+        "symbol_index": 12,
+        "symbol": "_bsp_native_zlib_static_dtree_00d67d90",
+        "type": 6,
+        "executable": false,
+        "kind": "IMAGE_REL_I386_DIR32",
+        "addend": 0,
+        "defined_whole_array_target": true,
+        "Native_pointer_evidence_only": "00D67D90"
+      },
+      {
+        "section": 4,
+        "offset": 24,
+        "symbol_index": 9,
+        "symbol": "_bsp_native_zlib_extra_dbits_00d67848",
+        "type": 6,
+        "executable": false,
+        "kind": "IMAGE_REL_I386_DIR32",
+        "addend": 0,
+        "defined_whole_array_target": true,
+        "Native_pointer_evidence_only": "00D67848"
+      },
+      {
+        "section": 4,
+        "offset": 44,
+        "symbol_index": 10,
+        "symbol": "_bsp_native_zlib_extra_blbits_00d678c0",
+        "type": 6,
+        "executable": false,
+        "kind": "IMAGE_REL_I386_DIR32",
+        "addend": 0,
+        "defined_whole_array_target": true,
+        "Native_pointer_evidence_only": "00D678C0"
+      }
+    ],
+    "null_cell_offset": 40,
+    "integer_tails": [
+      [
+        257,
+        286,
+        15
+      ],
+      [
+        0,
+        30,
+        15
+      ],
+      [
+        0,
+        19,
+        7
+      ]
+    ],
+    "descriptor_equivalence": "All60bytes equal after only5 genuine symbolic pointer fixups in a comparison copy; no Native image-pointer initializer.",
+    "stock_coverage": "Accepted AP proof: eight stock storage3/file-local objects cannot supply public externs; own eight actual storage2 strong definitions are required.",
+    "Native_initial_PE": {
+      "descriptor_section": ".data",
+      "descriptor_flags": "0xC0000040",
+      "table_section": ".rdata",
+      "table_flags": "0x40000040",
+      "live_memory_protection_measured": false
+    }
+  },
+  "whole_strict_COFF": {
+    "file_bytes": 2911,
+    "complete_file_accounted": true,
+    "all_sections": [
+      ".drectve",
+      ".debug$S",
+      ".rdata",
+      ".data",
+      ".chks64"
+    ],
+    "all_symbols_aux_strings_padding_recorded": true,
+    "strong_external_DATA_definitions": 8,
+    "relocations": 5,
+    "executable_bytes": 0,
+    "function_symbols": 0,
+    "undefined_externals": [],
+    "weak_externals": [],
+    "COMDATs": [],
+    "CRT_initializers": [],
+    "helpers": [],
+    "actual_descriptor_placement": {
+      "section": ".data",
+      "size": 60,
+      "offsets": [
+        0,
+        20,
+        40
+      ],
+      "padding_between_objects": 0,
+      "ordered_as_Native": true,
+      "Cxx_or_future_link_placement_guarantee": false
+    },
+    "actual_RO_table_offsets": [
+      0,
+      120,
+      240,
+      320,
+      1472
+    ],
+    "actual_rdata_section_bytes": 1592,
+    "complete_owned_table_bytes": 1584,
+    "separate_rdata_zero_padding": [
+      {
+        "offset": 116,
+        "bytes": 4,
+        "hex": "00000000",
+        "Native_DATA_credit": 0
+      },
+      {
+        "offset": 316,
+        "bytes": 4,
+        "hex": "00000000",
+        "Native_DATA_credit": 0
+      }
+    ],
+    "section_alignments": {
+      ".data": 4,
+      ".rdata": 8
+    },
+    "metadata_detail": "strict_DATA_proof.json and strict_full_coff.json; no checksum-algorithm/runtime claim"
+  },
+  "qualifications": [
+    "Separate strong C++ globals do not guarantee future adjacency. Strict object preserves0/20/40; registered/link placement must be remeasured.",
+    "Source pointer bits/addresses/neighbors differ from Original image. No Original storage identity, universal physical alias/out-of-range fault contract or full ABI.",
+    "Descriptor objects/pointer fields remain mutable. Rooted tables const is grounded in Native initial PE permissions and frozen stock declarations, not incidental constification.",
+    "Invalid pointer representations, arbitrary raw descriptor aliases, malformed accesses, later page-protection changes and game behavior remain qualified; no guards or repairs are added.",
+    "No Parent _tr_init/AN adoption, Original type/version/prototype, runtime execution, performance or speedup claim."
+  ],
+  "evidence": {
+    "goal": "GOAL16AT",
+    "started_utc": "2026-10-16T13:31:00Z",
+    "base_pin": "dcea22c446e3537a757f6bbfa3c9cf854f8e6772",
+    "AP_original": "J:\\PROG\\battlestations-pacific-decompile-goal16a_b4_review\\local\\goal16ap_zlib_descriptor_owner_design",
+    "AP_Root_accepted_copy": "J:/PROG/battlestations-pacific-decompile-goal15_integrator/local/goal16at_root/AP_design",
+    "Root_AP_receipt_sha256": "898cfc7c93c1ed4cd7adb22e67def355b3cefe4c41bfc559e2591524a2ba69c9",
+    "AP_top_hashes": {
+      "DESIGN.md": "4de5a650525c8eb12c8ed8cee899b27bddfa8f901f793a9e534805a5b07f9721",
+      "readiness_report.json": "7559eb8d85a86f724bea0f8f3b47f0ea72147ff1626c98b77a43bea363fc046a",
+      "handoff.json": "1f70a78df40afb0f93c2960e112138fa7bc502cbcc4ec5a53440c58d65f5c49f",
+      "sealed_manifest.json": "b06827ff7c34bc9e9f23145f45acce5a6bbc22445c3888ef935df0029e414e69",
+      "receipt.json": "22858763c4a0d1d74824f8503b8063d2e4cbc1ad64fd4f9bae955da8da3cec81"
+    },
+    "selected_count": 17,
+    "no_transitive_Core_or_history_capture": true,
+    "normal_registered_provider": "PENDING_ROOT_WARM_INTEGRATION",
+    "no_Source_credit": true,
+    "selected_AP_reference_count": 17,
+    "all_old_AP_and_review_outputs_immutable": true,
+    "no_transitive_history_or_Core_capture": true
+  },
+  "corrections": {
+    "Source_compile_attempts": 1,
+    "Source_compile_rejections": 0,
+    "Source_corrections_after_compile": 0,
+    "local_proof_parser_attempt_1": {
+      "returncode": 1,
+      "failed_assertion": "obj['machine'] == 0x14c and not obj['bigobj']",
+      "reason": "Reused parser's top-level machine is formatted text, while its header.machine is the integer 332.",
+      "correction": "Use obj['header']['machine'] == 0x14c. No input/object/Source change."
+    }
+  },
+  "producer_boundaries": {
+    "only_four_Git_files": true,
+    "Source_header_CMake_ledger_Ghidra_parent_elsewhere_unchanged": true,
+    "no_build_cache_mutation": true,
+    "new_tests": 0,
+    "tests_run_here": 0,
+    "probes": 0,
+    "Native_or_selected_body_execution": 0
+  },
+  "Root_remaining_gates": [
+    "Register exact Source in real target; run required scripts/build.ps1 and existing checks in warm Root checkout.",
+    "Independently authenticate actual project/C++17 command and compiled exact Source/header, then whole registered COFF and real8strong DATA definitions/5DIR32 fixups/permissions/placement.",
+    "Prove actual unique Core member/eight providers and both complete archive dictionaries, plus prior-provider preservation before any DATA credit/publication.",
+    "Handle DATA ledger/annotations under separate authorized ownership; never create a function record or count data as Native instructions.",
+    "Leave AN and98B/15instruction _tr_init parent separate."
+  ],
+  "clock": {
+    "first_observed_utc": "2026-10-16T13:31:00Z",
+    "report_precommit_snapshot_utc": "2026-10-16T13:41:50.111164+00:00",
+    "observed_elapsed_through_report_seconds": 650.111164,
+    "includes": "brief/fetch/absence/lease/AP selection/Source generation/strict environment+compile/full proof/local parser correction/docs/report/admin; final seal/release remainder in local receipt",
+    "inclusive_final_clock": "local/zlib_tree_descriptor_data_bc/receipt.json plus final release notice",
+    "pre_first_observed_dispatch_gap": "unmeasured",
+    "no_serial_summation_or_speedup_claim": true
+  }
+}
