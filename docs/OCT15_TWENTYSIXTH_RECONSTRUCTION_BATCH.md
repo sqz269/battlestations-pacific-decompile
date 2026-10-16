@@ -14,8 +14,8 @@ Primary review passed24 checks; independent clear review passed12. The complete
 actual CMake objects cover460 bytes/197 instructions. Clear retains its full
 object hash; leaf executable sections and symbolic relocations are exactly equal
 to the reviewed worker object, with different object metadata. Combined Source
-2ec10a9cbdac4016006763ffd0fb584f83705642 built MSVC Win32; all three
-existing suites passed in15.29s. These suites exercise older math/tools.
+578b65d70530cf06e7b319579001e157d7d89232 built MSVC Win32; all three
+existing suites passed in13.01s. These suites exercise older math/tools.
 Five report transfer rows and four Markdown claims were separately checked.
 
 Six annotations were saved with preimages and six exports refreshed. Snapshot
