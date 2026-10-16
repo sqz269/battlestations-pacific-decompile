@@ -55,3 +55,11 @@ were added. The full emitted helper has 9 bytes and one REL32 relocation to
 the unchanged canonical unlock; its body equals the native body after that
 call displacement is normalized. Its public archive symbol occurs once.
 These checks do not establish binary-entry/private-ABI or runtime/game proof.
+
+The primary combined normal Win32 build at `efa7febae` also passed all three
+existing regression checks in 9.55 seconds. Its retained object independently
+preserves the entire 9-byte helper after the sole CALL displacement is
+normalized, and its exact archive body occurs once. The immutable primary
+receipt/log and full retained-object hashes are pinned in the report. Native
+math fixtures do not execute this helper; parent and private ABI limits above
+remain unchanged.
