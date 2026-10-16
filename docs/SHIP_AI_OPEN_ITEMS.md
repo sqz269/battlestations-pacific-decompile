@@ -18051,3 +18051,58 @@ unit+82Ch (`this+51Ch`) counts the time both hull ends have stayed below 0 and i
   draws as well is not read. A binding would follow the damage-smoke precedent (`damage_smoke_tick_008227e0` in the
   gunnery host, called from game_hosts_units.cpp's sink block next to `sink_time_828`, with a new `Draw` key). That needs
   the gunnery file and the shared units file, so it is not bound here.
+
+## 257. BSM09 GenerateObject clouds bound and flipped; CommandBuilding step repair bound (cc9-ships52, 2026-10-16; lead items 3, 2b)
+
+**kGenerateObjectRecordOnlyCreatorBound (src/game_hosts_lua.cpp), ON.** A held-back row whose class has no unit
+creator and no `thisTable` identity row gets the load path's answer at GenerateObject: it is marked spawned, nothing
+is made, and the call returns no result. 004E9E40 (BSP_SceneCloud_Instantiate) is modelled in src/entity_identity.cpp
+but is not called: the host has no cloud manager `[[00E188A8]+21D0h]`. The ledger evidence was appended. Runs: OFF
+c749c72c5 (tree), ON `local\s52_on` (pair_export flip). USN01 20000 frames (`local\s52_c0_u1` / `s52_c1_u1`):
+pair_diff 1, gameplay identical (only the known ship-ai-free counter moves). BSM09 36000 frames ON (`local\s52_c1_b9`):
+past luaIntroMovie7 (72 clouds recorded), Lexington `SetFailure("RunwayFailure")` at frame 897 (bsm_09:1203, arm 10,
+the kCarrierRunwayFailureBound row), then `Mission.EndMission` at 917.90 s with no orders. The exec guard refused
+sus_prog.exe. OFF dies at about 45 s (startup failed), so BSM09 cannot be paired as a gameplay diff.
+
+**kCommandBuildingStepRepairBound (src/game_hosts_ship_ai.cpp), committed OFF at 4deaef142.** Image:
+- 006F7360 006F7432..006F755C runs every fixed step while unit+378h is set. 0087BD19 writes 1, and a CommandBuilding
+  reaches it through 006F2783 -> 007482B0 -> 007482D5 -> 00955420 -> 0087BCC0. The arm calls 006F47F0(this, this, dt,
+  class+180h) and then, per linked garrison record (+14h), 006F47F0(this, unit, dt, rate). rate is class+188h for
+  IsKindOf 45h, class+18Ch for 46h, otherwise class+184h; a 1Bh fort also ORs its vt+204h(45h/46h) answers, which is
+  LABELLED as not modelled.
+- 006F47F0: f = Repair[building+770h] (004C1D10 globals +2Ch + level*4; this installation's
+  commandbuildingglobals.lua 100/110/120/130 divided by 100) * dt / rate. When f > 0 and health < max, health =
+  min(max, f*max + health) through 00877B90. The device loop (unit+48h, IsKindOf(4), f2 = Repair*dt/GunRepairTime,
+  vt+19Ch "destroyed") has no host data and stays recorded.
+- Class rates are read per 006F4360: RepairTime and InferiorRepairTime as integers (default 200),
+  InferiorRepairTimeSingle in single player, AirField/ShipYardRepairTime. This installation's vehicleclasses.lua
+  (locally modified 2026-05-09) gives RepairTime 2400, InferiorRepairTime(Single) 1200 and Air/ShipYard 360.
+- The flip's 006F47F0(1.0, 1.0) now takes f = Repair[level], which gives the same full heal at every installed level.
+- The gunnery host's `repair_unit_to_fraction` dead-unit early return (lead's note b) cannot be reached by a
+  CommandBuilding (kill_unit returns at 006F3270 first). It could only skip a dead garrison unit's hull heal. Not
+  changed (gunnery file).
+**Predictions.** Each building heals max/2400 per second (HQ at level 3, 16800 hp: 7 hp/s). Garrison forts heal
+max/1200 per second and airfield/shipyard masters max/360. USNOS: HQ1's neutralize (1689.75 s OFF) moves later or does
+not happen, depending on NH's damage rate; garrison guns recover between hits, so capture-post kill times move.
+JM08: the HQ health line and the CheckHQ failure time move.
+**Measured; flipped ON.** Pairs: OFF = tree at 4deaef142 (`local\s52_r0_*`), ON = `local\s52_rp` (pair_export
+4deaef142 with the switch flipped, `local\s52_r1_*`). Reference env.
+| row | OFF | ON | pair_diff |
+|---|---|---|---|
+| USNOS a7 72000 fr | HQ1 neutral 1797.30 s | HQ1 neutral 1841.55 s; steps=216000 | 3 |
+| JM08 l51_j8_b3 40000 fr | Headquarter 01 neutral 1418.00, failed 1418.31 s | neutral 1143.45, failed 1144.04 s; garrison heals 8.27 M (349 members, InferiorRange 100000) | 3 |
+USNOS moves as predicted: NH's fire is spread over a healing HQ1. The first other death to move is Cargo4 at 1735 -> 1748 s.
+JM08's HQ starts above its level-0 12000 (health rises toward the level-raised max, 15889 at 900 s). But its first damage
+comes about 200 s earlier and from more hitters (`local\s52_hqhp.py`: 203 hits by 1100 s ON against 160 by 1400 s
+OFF), so it falls sooner. The first moved deaths are garrison houses healing under the Nevada/San Francisco
+bombardment from 207 s (`local\s52_deathdiff.py`), and the HQ assault time follows from those. The heal mechanism matches
+006F7360/006F47F0, so the switch is flipped. JM08 keeper plans must be re-checked against it.
+
+**Item 5, LandFort StartFire 00746320: no stream gap, effect presentation only.** 00BD2F10 -> 00BD2E60 and 00BD2FC0 ->
+00BA2C20 each consume exactly one 00BA2C20 step of the selected stream (00BD2E91 / 00BD2FC7). The host's stream-0 stand-in
+(GameGunneryHost::death_mode_draw_00bd2f10) advances its generator once per call, so the effect-pick draw at 007463C1
+keeps the stream position. Only the discarded value differs (u32 % count against a float). The +744h smoke release at
+00746338..00746384 has no producer for a capture building here: +744h is written only by 007465E0 (the death arm) and
+the D1h handler. 008689C0 is BSP_PointEffect_Create, a particle effect. The host keeps the gameplay part of +740h, the
+burning flag that 00745BE0's timer and secondary-explosion arm read, and the effect object itself has no gameplay reader
+found. Nothing bound.
