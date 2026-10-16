@@ -1,5 +1,6 @@
 #include "bsp/native_input_device_map_cleanup.hpp"
 #include "bsp/native_input_device_subtree.hpp"
+#include "bsp/native_input_device_tree_range.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 namespace bsp {
@@ -82,7 +83,7 @@ std::uint32_t __fastcall destroy_native_input_device_map_006a7ba0(
         mov first, edx
     }
     std::uint32_t private_output[2];
-    clear_native_input_device_tree_full_prefix_006a7aa0(
+    erase_native_raw_input_device_tree_range_006a7aa0(
         tree, 0, private_output, tree, first, tree, head, strings);
     void* current_head;
     __asm {
