@@ -21,7 +21,7 @@ instructions, bytes, relocations, operand mappings and hashes.
 ## Node allocation and actual argument cells
 
 The complete 19-instruction body is preserved in inline assembly. Its only
-external call is rebound from Native `00BF681B` to a genuine current service
+external edge is `004C2312 CALL 00BF681B`, rebound to a genuine current service
 bridge calling `singleton_lifetime_allocate` with kind `object`, native size
 0Ch and current host size 0Ch. That service uses actual current `malloc`,
 `_callnewh` retry and `std::bad_alloc`; a successfully returned node is released
@@ -53,9 +53,10 @@ The rejecting path performs no header store before construction/throw.
 
 All 37 Native instructions were inspected, including their error and FH3
 path. Original `004CF47C..004CF4C8` initializes a temporary legacy SBO string,
-assigns the 16-byte message through `00408720`, arms its cleanup state, calls
-`00411700`, installs length-error vtable `00D69260`, then calls `00BF6885`
-with ThrowInfo `00D83F98`. Its FH3 handler at `00C65BC8` loads `00D8E5BC`
+assigns the 16-byte message at `004CF49C CALL 00408720` and arms its cleanup
+state. `004CF4B1 CALL 00411700` constructs the error object, followed by the
+length-error vtable store (`00D69260`). `004CF4C8 CALL 00BF6885` throws with
+ThrowInfo `00D83F98`. Its FH3 handler at `00C65BC8` loads `00D8E5BC`
 and jumps to `00BF6B43`; that FuncInfo has one state and unwind map
 `00D8E5B4 = {-1,00C65BC0}`. The cleanup funclet takes `[EBP-50h]` and
 tails to `004072D0`. These are evidence, not invented Source globals.
