@@ -8,7 +8,7 @@
   "source": "src/native_scene_hidden_record_lookup.cpp",
   "header": "include/bsp/native_scene_hidden_record_lookup.hpp",
   "documentation": "docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_LOOKUP.md",
-  "status": "whole_actual_raw_source_independently_reviewed_registered_build_pending",
+  "status": "whole_actual_raw_source_independently_reviewed_worker_win32_build_tested",
   "routines": [
     {
       "address": "004691b0",
@@ -183,8 +183,21 @@
       "include/bsp/native_scene_hidden_record_lookup.hpp": "78ed3b8e9053f0de152cf2a4835852fd43b64beffdcb3e35b1709ae770c802b2"
     },
     "cmake_registration": "passed unique append at first queue turn after immediate unleased check;own queue removed before build;no exclusive registry lease",
-    "strict_win32_build_and_existing_ctest": "pending actual worker normal scripts/build.ps1 after registration and queue release",
-    "compiled_object_review": "pending",
+    "strict_win32_build_and_existing_ctest": "passed actual own normal scripts/build.ps1 atb0dec05c5;MSVC Release Win32,3enabled existing CTests,0failed,8.05s;no new tests",
+    "compiled_object_review": {
+      "tested_revision": "b0dec05c5a3165c565c882bb5c5c6380934bc4bd",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_copy\\build\\win32\\bsp_core.dir\\Release\\native_scene_hidden_record_lookup.obj",
+      "object_bytes": 3244,
+      "object_sha256": "1ce0f0c079d5ed47a0b32e8ea5d4815a4108aeb2cec12bd2868e88ad702f27ec",
+      "source_and_canonical_hashes_asserted_at_tested_revision_and_build_tree": true,
+      "disassembly": "local/goal_oct15_scene_hidden_record_lookup_object_disasm.txt",
+      "relocations": "public COMDAT#5 selects real ctor,Find,getter,return and3CRT reports;#6 selects ctor,Find,CRT,getter,return;#9 helper is ordinary Source composition,not an extra native edge",
+      "status": "passed focused actual emitted MSVC Release Win32 object review;ordinary interface,not Original byte/private-frame ABI",
+      "compiler": "MSVC dumpbin14.51.36244.0;Release Win32",
+      "mapped_result": "input+0E before ctor+19;Find+33;currentdata+38/nullgate+40;currentlength+45 captured before getter+4C/return+5F. AFTERrelease currentowner+67/currenthead+69 evenowner0;firstreport+77;CURRENT node only+7F;secondreport+91;currentownerhead+96;thirdreport+9D;CURRENT mappedDWORD+14 into EAX only+A2;end XOR EAX+88.",
+      "membership": "input+0F before ctor+1A;head+27 BEFORE Find+36;actualchild EAX capturedESI+3B;owner+3D/report+47;CURRENT outputnode+4C/compare+4F then currentkeydata+52/SETNE BL+55;length onlynonnull+62;getter+69/return+7A;captured AL restored from BL+84. No mappedword load/fullEAXboolean claim.",
+      "cached_length_qualification": "compiler defers pure length+1 LEA until after getter(+54 mapped,+74 membership),using length captured before getter;no header reread and no byte/register/flags/exception-frame identity claim"
+    },
     "new_tests": false,
     "packet_native_differential": "not run",
     "game_validation": "not run",
@@ -197,7 +210,56 @@
         "include/bsp/native_scene_hidden_record_lookup.hpp": "78ed3b8e9053f0de152cf2a4835852fd43b64beffdcb3e35b1709ae770c802b2"
       },
       "scope": "first input capture,distinct frame,B0 release-owner-head-returning report-current node-ownerhead-mappedword;480 preFindhead/actualchild EAX/currentnodecompare beforedata/captured AL across cleanup"
-    }
+    },
+    "build_receipt": {
+      "revision": "b0dec05c5a3165c565c882bb5c5c6380934bc4bd",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "environment": "process-local CL /MP4 for parallel compilation only",
+      "exit_code": 0,
+      "log": "local/goal_oct15_scene_hidden_record_lookup_build.log",
+      "log_sha256": "618ee6476bc9e7869b76a526db8ac8fff580100940cee33a6e2e79ff10635c61",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 8.05,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_copy\\cmake\\startup.cmake",
+      "source_and_all_ten_canonical_provider_hashes_match_tested_revision": true,
+      "project_source_count": 1,
+      "unique_archive_objects": [
+        "bsp_core.dir\\Release\\native_scene_hidden_record_lookup.obj"
+      ],
+      "archive_sha256": "0e78ba44b33bbf40b55c474c5fd1699fa6021890c7e2e01481a5d2198bf92beb",
+      "warning": "unrelated retained LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj;both Source files unchanged since before packet;no packet compile warning",
+      "scope": "existing regression checks;native math seeds do not execute these new bodies"
+    },
+    "additional_primary_combined_build": {
+      "revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_scene_lifetime_combined_build.log",
+      "log_sha256": "59383785678101132f0573cbbccadc1c340650ed126592a2235aeebb46addefe",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 7.51,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "primary_tree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "report": "reports/goal_oct15_scene_lifetime_primary_review.json",
+      "report_sha256": "223140ec88a529dcf71fe427623983e747e1821eb4e40053ac16aa1131dc8c9e",
+      "reviewed_source_header_and_all_ten_provider_hashes_unchanged": true
+    },
+    "source_unchanged_since_reviewed_draft": "9230b9ccebde99ec38203ccd29df3498146eab42;no Source/header edits after full primary review"
   },
   "limits": [
     "New ordinary raw interfaces,not Original register/stack/mangling/binary replacements;AL only for membership,raw DWORD for mapped result.",

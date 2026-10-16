@@ -95,6 +95,31 @@ Source/header passed; the recorded Source/header and canonical provider hashes
 were asserted unchanged before recording that review. The unique CMake line
 was appended at our first queue turn after an immediate unleased check. Our
 queue request was removed before building; no exclusive registry lease was
-taken. The actual normal Win32 build and focused object review remain pending. No new tests are
+taken. The actual normal `scripts/build.ps1` passed at
+`b0dec05c5a3165c565c882bb5c5c6380934bc4bd`: MSVC Release Win32, all three
+enabled existing CTests, zero failures, 8.05 seconds. Process-local `/MP4`
+only changes compilation parallelism. The project and archive contain this
+Source once. The build retains an unrelated LNK4006 duplicate-symbol warning
+for `spawn_request_id_matches` in two Lua source files unchanged since before
+this packet; no packet compilation warning occurred. Source/header and all ten
+canonical provider hashes match the reviewed draft, actual tree and tested
+revision. An additional primary combined normal build at `efe9cc107` passed
+all three checks in 7.51 seconds; its exact receipt/hash is in our report.
+
+The final 3,244-byte object has SHA256
+`1ce0f0c079d5ed47a0b32e8ea5d4815a4108aeb2cec12bd2868e88ad702f27ec`.
+The mapped-word body reads input at `+0E`, resolves real Find at `+33`, and
+reads current data/conditional length before the getter/return. Only after
+release does it read current owner/head at `+67/+69`, run the first report at
+`+77`, and read current node at `+7F`. The remaining reports are at `+91/+9D`,
+with current owner.head at `+96` and final raw mapped DWORD into EAX at `+A2`.
+The membership body captures head at `+27` before Find at `+36`, keeps the
+actual child result, reports at `+47`, reads/compares current output.node at
+`+4C/+4F`, reads data at `+52` and captures BL at `+55` before release. Final
+`MOV AL,BL` at `+84` restores that byte. It never loads mapped+14h.
+Both length fields are captured before their getters; the compiler defers pure
+length+1 arithmetic until afterward using the captured value. These observations
+establish the critical ordinary storage schedule without claiming native byte,
+register/flags/private-frame/fault identity. No new tests were
 added; packet-specific native execution, original ABI and game validation are
 unproved.
