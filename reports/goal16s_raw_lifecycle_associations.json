@@ -1,0 +1,836 @@
+{
+  "schema": 1,
+  "packet": "goal16s_raw_lifecycle_associations",
+  "status": "qualified_existing_Source_association_new_Cpp_interface_NOT_physical_ABI_byteidentity_or_runtime_dropin_proof",
+  "qualification": "Qualified existing Source association with new C++ interface; NOT physical ABI/byteidentity/runtime drop-in proof.",
+  "base_pin": "67cbe3623909f1d53decad0d929a617842107e07",
+  "worktree": "agent/goal15y_sse_stack_alias_review",
+  "inclusive_start_floor_utc": "2026-10-16T09:25:30+00:00",
+  "first_explicit_clock_utc": "2026-10-16T09:25:50+00:00",
+  "clock_note": "Conservative inclusive floor includes20seconds setup/commentary/brief before first explicit clock. All subsequent work and repair/wait overhead counted.",
+  "scope": {
+    "new_qualified_Native_address_associations": 12,
+    "whole_Native_bytes": 500,
+    "whole_Native_instructions": 232,
+    "whole_Native_conditional_branches": 24,
+    "whole_Native_calls": 24,
+    "whole_Native_plain_RET": 12,
+    "new_Cpp_functions": 0,
+    "new_Cpp_bytes": 0,
+    "existing_whole_Source_functions_reused": 2,
+    "existing_genuine_callable_adapter_reused": 1,
+    "canonical_already_credited_Native_bytes": 84,
+    "new_CMake_lines": 0,
+    "new_tests": 0
+  },
+  "identity_groups": [
+    {
+      "addresses": [
+        "00bb0b60",
+        "00bbd690",
+        "00bbdec0",
+        "00bbdef0"
+      ],
+      "each_whole_Native_bytes": 43,
+      "each_instructions": 20,
+      "complete_bytes": "568bf1578b3e85ff741c8d470450ff152022ce0085c075088b178b028bcfffd0c706000000005f8bc65ec3",
+      "whole_body_sha256": "fb310d52f9c0a2a9f3c5982ed0bd0daf56fa8917c5ad5623a29d5d6476247726",
+      "canonical_already_whole_Native_address": "00483850",
+      "existing_Source_API": "bsp::release_native_resource_slot_00483850",
+      "new_Native_association_bytes": 172,
+      "new_Source_functions": 0
+    },
+    {
+      "addresses": [
+        "00bb0bd0",
+        "00bb0c00",
+        "00bb0c30",
+        "00bb0c60",
+        "00bb8ed0",
+        "00bb8f00",
+        "00bbf560",
+        "00bbf640"
+      ],
+      "each_whole_Native_bytes": 41,
+      "each_instructions": 19,
+      "complete_bytes": "56578bf98b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c707000000005f5ec3",
+      "whole_body_sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+      "canonical_already_whole_Native_address": "00be9ed0",
+      "existing_Source_API": "bsp::release_native_structured_node_handle_00be9ed0",
+      "new_Native_association_bytes": 328,
+      "new_Source_functions": 0
+    }
+  ],
+  "associations": [
+    {
+      "address": "00bb0b60",
+      "name": "release_native_resource_slot_00483850",
+      "source": "src/native_resource_reader_references.cpp",
+      "status": "qualified_existing_Source_association_new_Cpp_interface_NOT_physical_ABI_byteidentity_or_runtime_dropin_proof",
+      "packet": "goal16s_raw_lifecycle_associations",
+      "qualification": "Qualified existing Source association with new C++ interface; NOT physical ABI/byteidentity/runtime drop-in proof.",
+      "source_function": "bsp::release_native_resource_slot_00483850",
+      "reuses_existing_Source_function_at": "00483850",
+      "new_Cpp_functions": 0,
+      "new_Cpp_bytes": 0,
+      "complete_Native_body": {
+        "bytes": 43,
+        "instructions": 20,
+        "sha256": "fb310d52f9c0a2a9f3c5982ed0bd0daf56fa8917c5ad5623a29d5d6476247726",
+        "whole_hex": "568bf1578b3e85ff741c8d470450ff152022ce0085c075088b178b028bcfffd0c706000000005f8bc65ec3",
+        "whole_extent_single_range": true,
+        "live_equals_installed_PE": true,
+        "canonical_Native_whole_byte_identity": true,
+        "Source_byte_identity_claimed": false
+      },
+      "original_name_preserved": "TMPL_RefPtr_Reset_00bb0b60",
+      "Original_consumed_ABI": "ECX=actual4-byte owner cell; no incomingEDX/explicit stack word read; plainRET, zero argument purge. Concreteclass and formal callback/entry types unrecovered.",
+      "Original_physical_result": "EAX=captured cell on normal return; flags not normalized.",
+      "whole_body_semantics": "Capture cell/pointee once; null skipsSDK/table/callback/clear. Nonnull actual pointee+4 goes to genuine current atomic-decrement service; exact zero alone reads current pointee.table/currenttable.slot0 and calls target before unconditional captured-cell clear. Negative/nonzero still clears. Callback replacingcell does not preventclear or cause replacementrelease. No guard/RAII/fault repair added.",
+      "Source_interface": "Existing actual-storage C++ API adds NativeAdoptedSubstreamDispatch& context; genuine default callable_native_adopted_substream_dispatch invokes actual caller-supplied target. New C++ envelope, not Original ECX entry.",
+      "callback_physical_qualification": "Native target entry ECX=pointee/EDX=currenttable/EAX=target, no raw callback stackargs, normal cleanup0. Current genuine Source adapter forwards ECX/EDX via CALL[EBP+8], introduces EBP frame and RET0Ch for THREE adapter method args. It does not promise Native EAX/flags/ESI/EDI/frame preimages or hidden-input compatibility.",
+      "SDK_import_boundary": "Installed NativeIAT00ce2220=KERNEL32!InterlockedDecrement. Existing Source uses actual installed SDK _InterlockedDecrement intrinsic/current policy; real x86 import _InterlockedDecrement@4 verified. No Original service-body/volatile-register/fault identity claim.",
+      "uncertainty": "Concrete target/class/producer, hidden callback inputs, arbitrary compiler-stack/cell/counter/table aliases and concurrent pointermutation, Original volatileflags/register/frame/fault/throw/SEH/unwind/FH3/RTTI, parent/game adoption remain unproved. No narrower Original defined-behavior contract is inferred.",
+      "evidence": "Accepted whole-body Oaudit: all12 fresh live/installed bytes and typed whole extents; two exact Native identities; current two ENTIRE provider objects45CODEsections3068execB/all data/symbols/aux/relocs/imports enumerated, both real Core dictionaries uniquely bind3 public APIs. Upstreamseals and fullcontract retained in GOAL16S doc/report.",
+      "report": "reports/goal16s_raw_lifecycle_associations.json",
+      "documentation": "docs/GOAL16S_RAW_LIFECYCLE_ASSOCIATIONS.md",
+      "validation": "metadata-only; no new C++/build/test/probe/Native/game/Ghidra execution. Existing actual COFF/archive evidence reused, historical fixtures are not new runtime proof."
+    },
+    {
+      "address": "00bb0bd0",
+      "name": "release_native_structured_node_handle_00be9ed0",
+      "source": "src/native_resource_reader_references.cpp",
+      "status": "qualified_existing_Source_association_new_Cpp_interface_NOT_physical_ABI_byteidentity_or_runtime_dropin_proof",
+      "packet": "goal16s_raw_lifecycle_associations",
+      "qualification": "Qualified existing Source association with new C++ interface; NOT physical ABI/byteidentity/runtime drop-in proof.",
+      "source_function": "bsp::release_native_structured_node_handle_00be9ed0",
+      "reuses_existing_Source_function_at": "00be9ed0",
+      "new_Cpp_functions": 0,
+      "new_Cpp_bytes": 0,
+      "complete_Native_body": {
+        "bytes": 41,
+        "instructions": 19,
+        "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+        "whole_hex": "56578bf98b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c707000000005f5ec3",
+        "whole_extent_single_range": true,
+        "live_equals_installed_PE": true,
+        "canonical_Native_whole_byte_identity": true,
+        "Source_byte_identity_claimed": false
+      },
+      "original_name_preserved": "TMPL_RefPtr_Release_00bb0bd0",
+      "Original_consumed_ABI": "ECX=actual4-byte owner cell; no incomingEDX/explicit stack word read; plainRET, zero argument purge. Concreteclass and formal callback/entry types unrecovered.",
+      "Original_physical_result": "Path-dependent EAX: incoming on null, SDK count on nonzero, callback EAX on zero. Source void interface does not expose it; flags not normalized.",
+      "whole_body_semantics": "Capture cell/pointee once; null skipsSDK/table/callback/clear. Nonnull actual pointee+4 goes to genuine current atomic-decrement service; exact zero alone reads current pointee.table/currenttable.slot0 and calls target before unconditional captured-cell clear. Negative/nonzero still clears. Callback replacingcell does not preventclear or cause replacementrelease. No guard/RAII/fault repair added.",
+      "Source_interface": "Existing actual-storage C++ API adds NativeAdoptedSubstreamDispatch& context; genuine default callable_native_adopted_substream_dispatch invokes actual caller-supplied target. New C++ envelope, not Original ECX entry.",
+      "callback_physical_qualification": "Native target entry ECX=pointee/EDX=currenttable/EAX=target, no raw callback stackargs, normal cleanup0. Current genuine Source adapter forwards ECX/EDX via CALL[EBP+8], introduces EBP frame and RET0Ch for THREE adapter method args. It does not promise Native EAX/flags/ESI/EDI/frame preimages or hidden-input compatibility.",
+      "SDK_import_boundary": "Installed NativeIAT00ce2220=KERNEL32!InterlockedDecrement. Existing Source uses actual installed SDK _InterlockedDecrement intrinsic/current policy; real x86 import _InterlockedDecrement@4 verified. No Original service-body/volatile-register/fault identity claim.",
+      "uncertainty": "Concrete target/class/producer, hidden callback inputs, arbitrary compiler-stack/cell/counter/table aliases and concurrent pointermutation, Original volatileflags/register/frame/fault/throw/SEH/unwind/FH3/RTTI, parent/game adoption remain unproved. No narrower Original defined-behavior contract is inferred.",
+      "evidence": "Accepted whole-body Oaudit: all12 fresh live/installed bytes and typed whole extents; two exact Native identities; current two ENTIRE provider objects45CODEsections3068execB/all data/symbols/aux/relocs/imports enumerated, both real Core dictionaries uniquely bind3 public APIs. Upstreamseals and fullcontract retained in GOAL16S doc/report.",
+      "report": "reports/goal16s_raw_lifecycle_associations.json",
+      "documentation": "docs/GOAL16S_RAW_LIFECYCLE_ASSOCIATIONS.md",
+      "validation": "metadata-only; no new C++/build/test/probe/Native/game/Ghidra execution. Existing actual COFF/archive evidence reused, historical fixtures are not new runtime proof."
+    },
+    {
+      "address": "00bb0c00",
+      "name": "release_native_structured_node_handle_00be9ed0",
+      "source": "src/native_resource_reader_references.cpp",
+      "status": "qualified_existing_Source_association_new_Cpp_interface_NOT_physical_ABI_byteidentity_or_runtime_dropin_proof",
+      "packet": "goal16s_raw_lifecycle_associations",
+      "qualification": "Qualified existing Source association with new C++ interface; NOT physical ABI/byteidentity/runtime drop-in proof.",
+      "source_function": "bsp::release_native_structured_node_handle_00be9ed0",
+      "reuses_existing_Source_function_at": "00be9ed0",
+      "new_Cpp_functions": 0,
+      "new_Cpp_bytes": 0,
+      "complete_Native_body": {
+        "bytes": 41,
+        "instructions": 19,
+        "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+        "whole_hex": "56578bf98b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c707000000005f5ec3",
+        "whole_extent_single_range": true,
+        "live_equals_installed_PE": true,
+        "canonical_Native_whole_byte_identity": true,
+        "Source_byte_identity_claimed": false
+      },
+      "original_name_preserved": "TMPL_RefPtr_Release_00bb0c00",
+      "Original_consumed_ABI": "ECX=actual4-byte owner cell; no incomingEDX/explicit stack word read; plainRET, zero argument purge. Concreteclass and formal callback/entry types unrecovered.",
+      "Original_physical_result": "Path-dependent EAX: incoming on null, SDK count on nonzero, callback EAX on zero. Source void interface does not expose it; flags not normalized.",
+      "whole_body_semantics": "Capture cell/pointee once; null skipsSDK/table/callback/clear. Nonnull actual pointee+4 goes to genuine current atomic-decrement service; exact zero alone reads current pointee.table/currenttable.slot0 and calls target before unconditional captured-cell clear. Negative/nonzero still clears. Callback replacingcell does not preventclear or cause replacementrelease. No guard/RAII/fault repair added.",
+      "Source_interface": "Existing actual-storage C++ API adds NativeAdoptedSubstreamDispatch& context; genuine default callable_native_adopted_substream_dispatch invokes actual caller-supplied target. New C++ envelope, not Original ECX entry.",
+      "callback_physical_qualification": "Native target entry ECX=pointee/EDX=currenttable/EAX=target, no raw callback stackargs, normal cleanup0. Current genuine Source adapter forwards ECX/EDX via CALL[EBP+8], introduces EBP frame and RET0Ch for THREE adapter method args. It does not promise Native EAX/flags/ESI/EDI/frame preimages or hidden-input compatibility.",
+      "SDK_import_boundary": "Installed NativeIAT00ce2220=KERNEL32!InterlockedDecrement. Existing Source uses actual installed SDK _InterlockedDecrement intrinsic/current policy; real x86 import _InterlockedDecrement@4 verified. No Original service-body/volatile-register/fault identity claim.",
+      "uncertainty": "Concrete target/class/producer, hidden callback inputs, arbitrary compiler-stack/cell/counter/table aliases and concurrent pointermutation, Original volatileflags/register/frame/fault/throw/SEH/unwind/FH3/RTTI, parent/game adoption remain unproved. No narrower Original defined-behavior contract is inferred.",
+      "evidence": "Accepted whole-body Oaudit: all12 fresh live/installed bytes and typed whole extents; two exact Native identities; current two ENTIRE provider objects45CODEsections3068execB/all data/symbols/aux/relocs/imports enumerated, both real Core dictionaries uniquely bind3 public APIs. Upstreamseals and fullcontract retained in GOAL16S doc/report.",
+      "report": "reports/goal16s_raw_lifecycle_associations.json",
+      "documentation": "docs/GOAL16S_RAW_LIFECYCLE_ASSOCIATIONS.md",
+      "validation": "metadata-only; no new C++/build/test/probe/Native/game/Ghidra execution. Existing actual COFF/archive evidence reused, historical fixtures are not new runtime proof."
+    },
+    {
+      "address": "00bb0c30",
+      "name": "release_native_structured_node_handle_00be9ed0",
+      "source": "src/native_resource_reader_references.cpp",
+      "status": "qualified_existing_Source_association_new_Cpp_interface_NOT_physical_ABI_byteidentity_or_runtime_dropin_proof",
+      "packet": "goal16s_raw_lifecycle_associations",
+      "qualification": "Qualified existing Source association with new C++ interface; NOT physical ABI/byteidentity/runtime drop-in proof.",
+      "source_function": "bsp::release_native_structured_node_handle_00be9ed0",
+      "reuses_existing_Source_function_at": "00be9ed0",
+      "new_Cpp_functions": 0,
+      "new_Cpp_bytes": 0,
+      "complete_Native_body": {
+        "bytes": 41,
+        "instructions": 19,
+        "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+        "whole_hex": "56578bf98b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c707000000005f5ec3",
+        "whole_extent_single_range": true,
+        "live_equals_installed_PE": true,
+        "canonical_Native_whole_byte_identity": true,
+        "Source_byte_identity_claimed": false
+      },
+      "original_name_preserved": "TMPL_RefPtr_Release_00bb0c30",
+      "Original_consumed_ABI": "ECX=actual4-byte owner cell; no incomingEDX/explicit stack word read; plainRET, zero argument purge. Concreteclass and formal callback/entry types unrecovered.",
+      "Original_physical_result": "Path-dependent EAX: incoming on null, SDK count on nonzero, callback EAX on zero. Source void interface does not expose it; flags not normalized.",
+      "whole_body_semantics": "Capture cell/pointee once; null skipsSDK/table/callback/clear. Nonnull actual pointee+4 goes to genuine current atomic-decrement service; exact zero alone reads current pointee.table/currenttable.slot0 and calls target before unconditional captured-cell clear. Negative/nonzero still clears. Callback replacingcell does not preventclear or cause replacementrelease. No guard/RAII/fault repair added.",
+      "Source_interface": "Existing actual-storage C++ API adds NativeAdoptedSubstreamDispatch& context; genuine default callable_native_adopted_substream_dispatch invokes actual caller-supplied target. New C++ envelope, not Original ECX entry.",
+      "callback_physical_qualification": "Native target entry ECX=pointee/EDX=currenttable/EAX=target, no raw callback stackargs, normal cleanup0. Current genuine Source adapter forwards ECX/EDX via CALL[EBP+8], introduces EBP frame and RET0Ch for THREE adapter method args. It does not promise Native EAX/flags/ESI/EDI/frame preimages or hidden-input compatibility.",
+      "SDK_import_boundary": "Installed NativeIAT00ce2220=KERNEL32!InterlockedDecrement. Existing Source uses actual installed SDK _InterlockedDecrement intrinsic/current policy; real x86 import _InterlockedDecrement@4 verified. No Original service-body/volatile-register/fault identity claim.",
+      "uncertainty": "Concrete target/class/producer, hidden callback inputs, arbitrary compiler-stack/cell/counter/table aliases and concurrent pointermutation, Original volatileflags/register/frame/fault/throw/SEH/unwind/FH3/RTTI, parent/game adoption remain unproved. No narrower Original defined-behavior contract is inferred.",
+      "evidence": "Accepted whole-body Oaudit: all12 fresh live/installed bytes and typed whole extents; two exact Native identities; current two ENTIRE provider objects45CODEsections3068execB/all data/symbols/aux/relocs/imports enumerated, both real Core dictionaries uniquely bind3 public APIs. Upstreamseals and fullcontract retained in GOAL16S doc/report.",
+      "report": "reports/goal16s_raw_lifecycle_associations.json",
+      "documentation": "docs/GOAL16S_RAW_LIFECYCLE_ASSOCIATIONS.md",
+      "validation": "metadata-only; no new C++/build/test/probe/Native/game/Ghidra execution. Existing actual COFF/archive evidence reused, historical fixtures are not new runtime proof."
+    },
+    {
+      "address": "00bb0c60",
+      "name": "release_native_structured_node_handle_00be9ed0",
+      "source": "src/native_resource_reader_references.cpp",
+      "status": "qualified_existing_Source_association_new_Cpp_interface_NOT_physical_ABI_byteidentity_or_runtime_dropin_proof",
+      "packet": "goal16s_raw_lifecycle_associations",
+      "qualification": "Qualified existing Source association with new C++ interface; NOT physical ABI/byteidentity/runtime drop-in proof.",
+      "source_function": "bsp::release_native_structured_node_handle_00be9ed0",
+      "reuses_existing_Source_function_at": "00be9ed0",
+      "new_Cpp_functions": 0,
+      "new_Cpp_bytes": 0,
+      "complete_Native_body": {
+        "bytes": 41,
+        "instructions": 19,
+        "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+        "whole_hex": "56578bf98b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c707000000005f5ec3",
+        "whole_extent_single_range": true,
+        "live_equals_installed_PE": true,
+        "canonical_Native_whole_byte_identity": true,
+        "Source_byte_identity_claimed": false
+      },
+      "original_name_preserved": "TMPL_RefPtr_Release_00bb0c60",
+      "Original_consumed_ABI": "ECX=actual4-byte owner cell; no incomingEDX/explicit stack word read; plainRET, zero argument purge. Concreteclass and formal callback/entry types unrecovered.",
+      "Original_physical_result": "Path-dependent EAX: incoming on null, SDK count on nonzero, callback EAX on zero. Source void interface does not expose it; flags not normalized.",
+      "whole_body_semantics": "Capture cell/pointee once; null skipsSDK/table/callback/clear. Nonnull actual pointee+4 goes to genuine current atomic-decrement service; exact zero alone reads current pointee.table/currenttable.slot0 and calls target before unconditional captured-cell clear. Negative/nonzero still clears. Callback replacingcell does not preventclear or cause replacementrelease. No guard/RAII/fault repair added.",
+      "Source_interface": "Existing actual-storage C++ API adds NativeAdoptedSubstreamDispatch& context; genuine default callable_native_adopted_substream_dispatch invokes actual caller-supplied target. New C++ envelope, not Original ECX entry.",
+      "callback_physical_qualification": "Native target entry ECX=pointee/EDX=currenttable/EAX=target, no raw callback stackargs, normal cleanup0. Current genuine Source adapter forwards ECX/EDX via CALL[EBP+8], introduces EBP frame and RET0Ch for THREE adapter method args. It does not promise Native EAX/flags/ESI/EDI/frame preimages or hidden-input compatibility.",
+      "SDK_import_boundary": "Installed NativeIAT00ce2220=KERNEL32!InterlockedDecrement. Existing Source uses actual installed SDK _InterlockedDecrement intrinsic/current policy; real x86 import _InterlockedDecrement@4 verified. No Original service-body/volatile-register/fault identity claim.",
+      "uncertainty": "Concrete target/class/producer, hidden callback inputs, arbitrary compiler-stack/cell/counter/table aliases and concurrent pointermutation, Original volatileflags/register/frame/fault/throw/SEH/unwind/FH3/RTTI, parent/game adoption remain unproved. No narrower Original defined-behavior contract is inferred.",
+      "evidence": "Accepted whole-body Oaudit: all12 fresh live/installed bytes and typed whole extents; two exact Native identities; current two ENTIRE provider objects45CODEsections3068execB/all data/symbols/aux/relocs/imports enumerated, both real Core dictionaries uniquely bind3 public APIs. Upstreamseals and fullcontract retained in GOAL16S doc/report.",
+      "report": "reports/goal16s_raw_lifecycle_associations.json",
+      "documentation": "docs/GOAL16S_RAW_LIFECYCLE_ASSOCIATIONS.md",
+      "validation": "metadata-only; no new C++/build/test/probe/Native/game/Ghidra execution. Existing actual COFF/archive evidence reused, historical fixtures are not new runtime proof."
+    },
+    {
+      "address": "00bb8ed0",
+      "name": "release_native_structured_node_handle_00be9ed0",
+      "source": "src/native_resource_reader_references.cpp",
+      "status": "qualified_existing_Source_association_new_Cpp_interface_NOT_physical_ABI_byteidentity_or_runtime_dropin_proof",
+      "packet": "goal16s_raw_lifecycle_associations",
+      "qualification": "Qualified existing Source association with new C++ interface; NOT physical ABI/byteidentity/runtime drop-in proof.",
+      "source_function": "bsp::release_native_structured_node_handle_00be9ed0",
+      "reuses_existing_Source_function_at": "00be9ed0",
+      "new_Cpp_functions": 0,
+      "new_Cpp_bytes": 0,
+      "complete_Native_body": {
+        "bytes": 41,
+        "instructions": 19,
+        "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+        "whole_hex": "56578bf98b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c707000000005f5ec3",
+        "whole_extent_single_range": true,
+        "live_equals_installed_PE": true,
+        "canonical_Native_whole_byte_identity": true,
+        "Source_byte_identity_claimed": false
+      },
+      "original_name_preserved": "TMPL_RefPtr_Release_00bb8ed0",
+      "Original_consumed_ABI": "ECX=actual4-byte owner cell; no incomingEDX/explicit stack word read; plainRET, zero argument purge. Concreteclass and formal callback/entry types unrecovered.",
+      "Original_physical_result": "Path-dependent EAX: incoming on null, SDK count on nonzero, callback EAX on zero. Source void interface does not expose it; flags not normalized.",
+      "whole_body_semantics": "Capture cell/pointee once; null skipsSDK/table/callback/clear. Nonnull actual pointee+4 goes to genuine current atomic-decrement service; exact zero alone reads current pointee.table/currenttable.slot0 and calls target before unconditional captured-cell clear. Negative/nonzero still clears. Callback replacingcell does not preventclear or cause replacementrelease. No guard/RAII/fault repair added.",
+      "Source_interface": "Existing actual-storage C++ API adds NativeAdoptedSubstreamDispatch& context; genuine default callable_native_adopted_substream_dispatch invokes actual caller-supplied target. New C++ envelope, not Original ECX entry.",
+      "callback_physical_qualification": "Native target entry ECX=pointee/EDX=currenttable/EAX=target, no raw callback stackargs, normal cleanup0. Current genuine Source adapter forwards ECX/EDX via CALL[EBP+8], introduces EBP frame and RET0Ch for THREE adapter method args. It does not promise Native EAX/flags/ESI/EDI/frame preimages or hidden-input compatibility.",
+      "SDK_import_boundary": "Installed NativeIAT00ce2220=KERNEL32!InterlockedDecrement. Existing Source uses actual installed SDK _InterlockedDecrement intrinsic/current policy; real x86 import _InterlockedDecrement@4 verified. No Original service-body/volatile-register/fault identity claim.",
+      "uncertainty": "Concrete target/class/producer, hidden callback inputs, arbitrary compiler-stack/cell/counter/table aliases and concurrent pointermutation, Original volatileflags/register/frame/fault/throw/SEH/unwind/FH3/RTTI, parent/game adoption remain unproved. No narrower Original defined-behavior contract is inferred.",
+      "evidence": "Accepted whole-body Oaudit: all12 fresh live/installed bytes and typed whole extents; two exact Native identities; current two ENTIRE provider objects45CODEsections3068execB/all data/symbols/aux/relocs/imports enumerated, both real Core dictionaries uniquely bind3 public APIs. Upstreamseals and fullcontract retained in GOAL16S doc/report.",
+      "report": "reports/goal16s_raw_lifecycle_associations.json",
+      "documentation": "docs/GOAL16S_RAW_LIFECYCLE_ASSOCIATIONS.md",
+      "validation": "metadata-only; no new C++/build/test/probe/Native/game/Ghidra execution. Existing actual COFF/archive evidence reused, historical fixtures are not new runtime proof."
+    },
+    {
+      "address": "00bb8f00",
+      "name": "release_native_structured_node_handle_00be9ed0",
+      "source": "src/native_resource_reader_references.cpp",
+      "status": "qualified_existing_Source_association_new_Cpp_interface_NOT_physical_ABI_byteidentity_or_runtime_dropin_proof",
+      "packet": "goal16s_raw_lifecycle_associations",
+      "qualification": "Qualified existing Source association with new C++ interface; NOT physical ABI/byteidentity/runtime drop-in proof.",
+      "source_function": "bsp::release_native_structured_node_handle_00be9ed0",
+      "reuses_existing_Source_function_at": "00be9ed0",
+      "new_Cpp_functions": 0,
+      "new_Cpp_bytes": 0,
+      "complete_Native_body": {
+        "bytes": 41,
+        "instructions": 19,
+        "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+        "whole_hex": "56578bf98b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c707000000005f5ec3",
+        "whole_extent_single_range": true,
+        "live_equals_installed_PE": true,
+        "canonical_Native_whole_byte_identity": true,
+        "Source_byte_identity_claimed": false
+      },
+      "original_name_preserved": "TMPL_RefPtr_Release_00bb8f00",
+      "Original_consumed_ABI": "ECX=actual4-byte owner cell; no incomingEDX/explicit stack word read; plainRET, zero argument purge. Concreteclass and formal callback/entry types unrecovered.",
+      "Original_physical_result": "Path-dependent EAX: incoming on null, SDK count on nonzero, callback EAX on zero. Source void interface does not expose it; flags not normalized.",
+      "whole_body_semantics": "Capture cell/pointee once; null skipsSDK/table/callback/clear. Nonnull actual pointee+4 goes to genuine current atomic-decrement service; exact zero alone reads current pointee.table/currenttable.slot0 and calls target before unconditional captured-cell clear. Negative/nonzero still clears. Callback replacingcell does not preventclear or cause replacementrelease. No guard/RAII/fault repair added.",
+      "Source_interface": "Existing actual-storage C++ API adds NativeAdoptedSubstreamDispatch& context; genuine default callable_native_adopted_substream_dispatch invokes actual caller-supplied target. New C++ envelope, not Original ECX entry.",
+      "callback_physical_qualification": "Native target entry ECX=pointee/EDX=currenttable/EAX=target, no raw callback stackargs, normal cleanup0. Current genuine Source adapter forwards ECX/EDX via CALL[EBP+8], introduces EBP frame and RET0Ch for THREE adapter method args. It does not promise Native EAX/flags/ESI/EDI/frame preimages or hidden-input compatibility.",
+      "SDK_import_boundary": "Installed NativeIAT00ce2220=KERNEL32!InterlockedDecrement. Existing Source uses actual installed SDK _InterlockedDecrement intrinsic/current policy; real x86 import _InterlockedDecrement@4 verified. No Original service-body/volatile-register/fault identity claim.",
+      "uncertainty": "Concrete target/class/producer, hidden callback inputs, arbitrary compiler-stack/cell/counter/table aliases and concurrent pointermutation, Original volatileflags/register/frame/fault/throw/SEH/unwind/FH3/RTTI, parent/game adoption remain unproved. No narrower Original defined-behavior contract is inferred.",
+      "evidence": "Accepted whole-body Oaudit: all12 fresh live/installed bytes and typed whole extents; two exact Native identities; current two ENTIRE provider objects45CODEsections3068execB/all data/symbols/aux/relocs/imports enumerated, both real Core dictionaries uniquely bind3 public APIs. Upstreamseals and fullcontract retained in GOAL16S doc/report.",
+      "report": "reports/goal16s_raw_lifecycle_associations.json",
+      "documentation": "docs/GOAL16S_RAW_LIFECYCLE_ASSOCIATIONS.md",
+      "validation": "metadata-only; no new C++/build/test/probe/Native/game/Ghidra execution. Existing actual COFF/archive evidence reused, historical fixtures are not new runtime proof."
+    },
+    {
+      "address": "00bbd690",
+      "name": "release_native_resource_slot_00483850",
+      "source": "src/native_resource_reader_references.cpp",
+      "status": "qualified_existing_Source_association_new_Cpp_interface_NOT_physical_ABI_byteidentity_or_runtime_dropin_proof",
+      "packet": "goal16s_raw_lifecycle_associations",
+      "qualification": "Qualified existing Source association with new C++ interface; NOT physical ABI/byteidentity/runtime drop-in proof.",
+      "source_function": "bsp::release_native_resource_slot_00483850",
+      "reuses_existing_Source_function_at": "00483850",
+      "new_Cpp_functions": 0,
+      "new_Cpp_bytes": 0,
+      "complete_Native_body": {
+        "bytes": 43,
+        "instructions": 20,
+        "sha256": "fb310d52f9c0a2a9f3c5982ed0bd0daf56fa8917c5ad5623a29d5d6476247726",
+        "whole_hex": "568bf1578b3e85ff741c8d470450ff152022ce0085c075088b178b028bcfffd0c706000000005f8bc65ec3",
+        "whole_extent_single_range": true,
+        "live_equals_installed_PE": true,
+        "canonical_Native_whole_byte_identity": true,
+        "Source_byte_identity_claimed": false
+      },
+      "original_name_preserved": "TMPL_RefPtr_Reset_00bbd690",
+      "Original_consumed_ABI": "ECX=actual4-byte owner cell; no incomingEDX/explicit stack word read; plainRET, zero argument purge. Concreteclass and formal callback/entry types unrecovered.",
+      "Original_physical_result": "EAX=captured cell on normal return; flags not normalized.",
+      "whole_body_semantics": "Capture cell/pointee once; null skipsSDK/table/callback/clear. Nonnull actual pointee+4 goes to genuine current atomic-decrement service; exact zero alone reads current pointee.table/currenttable.slot0 and calls target before unconditional captured-cell clear. Negative/nonzero still clears. Callback replacingcell does not preventclear or cause replacementrelease. No guard/RAII/fault repair added.",
+      "Source_interface": "Existing actual-storage C++ API adds NativeAdoptedSubstreamDispatch& context; genuine default callable_native_adopted_substream_dispatch invokes actual caller-supplied target. New C++ envelope, not Original ECX entry.",
+      "callback_physical_qualification": "Native target entry ECX=pointee/EDX=currenttable/EAX=target, no raw callback stackargs, normal cleanup0. Current genuine Source adapter forwards ECX/EDX via CALL[EBP+8], introduces EBP frame and RET0Ch for THREE adapter method args. It does not promise Native EAX/flags/ESI/EDI/frame preimages or hidden-input compatibility.",
+      "SDK_import_boundary": "Installed NativeIAT00ce2220=KERNEL32!InterlockedDecrement. Existing Source uses actual installed SDK _InterlockedDecrement intrinsic/current policy; real x86 import _InterlockedDecrement@4 verified. No Original service-body/volatile-register/fault identity claim.",
+      "uncertainty": "Concrete target/class/producer, hidden callback inputs, arbitrary compiler-stack/cell/counter/table aliases and concurrent pointermutation, Original volatileflags/register/frame/fault/throw/SEH/unwind/FH3/RTTI, parent/game adoption remain unproved. No narrower Original defined-behavior contract is inferred.",
+      "evidence": "Accepted whole-body Oaudit: all12 fresh live/installed bytes and typed whole extents; two exact Native identities; current two ENTIRE provider objects45CODEsections3068execB/all data/symbols/aux/relocs/imports enumerated, both real Core dictionaries uniquely bind3 public APIs. Upstreamseals and fullcontract retained in GOAL16S doc/report.",
+      "report": "reports/goal16s_raw_lifecycle_associations.json",
+      "documentation": "docs/GOAL16S_RAW_LIFECYCLE_ASSOCIATIONS.md",
+      "validation": "metadata-only; no new C++/build/test/probe/Native/game/Ghidra execution. Existing actual COFF/archive evidence reused, historical fixtures are not new runtime proof."
+    },
+    {
+      "address": "00bbdec0",
+      "name": "release_native_resource_slot_00483850",
+      "source": "src/native_resource_reader_references.cpp",
+      "status": "qualified_existing_Source_association_new_Cpp_interface_NOT_physical_ABI_byteidentity_or_runtime_dropin_proof",
+      "packet": "goal16s_raw_lifecycle_associations",
+      "qualification": "Qualified existing Source association with new C++ interface; NOT physical ABI/byteidentity/runtime drop-in proof.",
+      "source_function": "bsp::release_native_resource_slot_00483850",
+      "reuses_existing_Source_function_at": "00483850",
+      "new_Cpp_functions": 0,
+      "new_Cpp_bytes": 0,
+      "complete_Native_body": {
+        "bytes": 43,
+        "instructions": 20,
+        "sha256": "fb310d52f9c0a2a9f3c5982ed0bd0daf56fa8917c5ad5623a29d5d6476247726",
+        "whole_hex": "568bf1578b3e85ff741c8d470450ff152022ce0085c075088b178b028bcfffd0c706000000005f8bc65ec3",
+        "whole_extent_single_range": true,
+        "live_equals_installed_PE": true,
+        "canonical_Native_whole_byte_identity": true,
+        "Source_byte_identity_claimed": false
+      },
+      "original_name_preserved": "TMPL_RefPtr_Reset_00bbdec0",
+      "Original_consumed_ABI": "ECX=actual4-byte owner cell; no incomingEDX/explicit stack word read; plainRET, zero argument purge. Concreteclass and formal callback/entry types unrecovered.",
+      "Original_physical_result": "EAX=captured cell on normal return; flags not normalized.",
+      "whole_body_semantics": "Capture cell/pointee once; null skipsSDK/table/callback/clear. Nonnull actual pointee+4 goes to genuine current atomic-decrement service; exact zero alone reads current pointee.table/currenttable.slot0 and calls target before unconditional captured-cell clear. Negative/nonzero still clears. Callback replacingcell does not preventclear or cause replacementrelease. No guard/RAII/fault repair added.",
+      "Source_interface": "Existing actual-storage C++ API adds NativeAdoptedSubstreamDispatch& context; genuine default callable_native_adopted_substream_dispatch invokes actual caller-supplied target. New C++ envelope, not Original ECX entry.",
+      "callback_physical_qualification": "Native target entry ECX=pointee/EDX=currenttable/EAX=target, no raw callback stackargs, normal cleanup0. Current genuine Source adapter forwards ECX/EDX via CALL[EBP+8], introduces EBP frame and RET0Ch for THREE adapter method args. It does not promise Native EAX/flags/ESI/EDI/frame preimages or hidden-input compatibility.",
+      "SDK_import_boundary": "Installed NativeIAT00ce2220=KERNEL32!InterlockedDecrement. Existing Source uses actual installed SDK _InterlockedDecrement intrinsic/current policy; real x86 import _InterlockedDecrement@4 verified. No Original service-body/volatile-register/fault identity claim.",
+      "uncertainty": "Concrete target/class/producer, hidden callback inputs, arbitrary compiler-stack/cell/counter/table aliases and concurrent pointermutation, Original volatileflags/register/frame/fault/throw/SEH/unwind/FH3/RTTI, parent/game adoption remain unproved. No narrower Original defined-behavior contract is inferred.",
+      "evidence": "Accepted whole-body Oaudit: all12 fresh live/installed bytes and typed whole extents; two exact Native identities; current two ENTIRE provider objects45CODEsections3068execB/all data/symbols/aux/relocs/imports enumerated, both real Core dictionaries uniquely bind3 public APIs. Upstreamseals and fullcontract retained in GOAL16S doc/report.",
+      "report": "reports/goal16s_raw_lifecycle_associations.json",
+      "documentation": "docs/GOAL16S_RAW_LIFECYCLE_ASSOCIATIONS.md",
+      "validation": "metadata-only; no new C++/build/test/probe/Native/game/Ghidra execution. Existing actual COFF/archive evidence reused, historical fixtures are not new runtime proof."
+    },
+    {
+      "address": "00bbdef0",
+      "name": "release_native_resource_slot_00483850",
+      "source": "src/native_resource_reader_references.cpp",
+      "status": "qualified_existing_Source_association_new_Cpp_interface_NOT_physical_ABI_byteidentity_or_runtime_dropin_proof",
+      "packet": "goal16s_raw_lifecycle_associations",
+      "qualification": "Qualified existing Source association with new C++ interface; NOT physical ABI/byteidentity/runtime drop-in proof.",
+      "source_function": "bsp::release_native_resource_slot_00483850",
+      "reuses_existing_Source_function_at": "00483850",
+      "new_Cpp_functions": 0,
+      "new_Cpp_bytes": 0,
+      "complete_Native_body": {
+        "bytes": 43,
+        "instructions": 20,
+        "sha256": "fb310d52f9c0a2a9f3c5982ed0bd0daf56fa8917c5ad5623a29d5d6476247726",
+        "whole_hex": "568bf1578b3e85ff741c8d470450ff152022ce0085c075088b178b028bcfffd0c706000000005f8bc65ec3",
+        "whole_extent_single_range": true,
+        "live_equals_installed_PE": true,
+        "canonical_Native_whole_byte_identity": true,
+        "Source_byte_identity_claimed": false
+      },
+      "original_name_preserved": "TMPL_RefPtr_Reset_00bbdef0",
+      "Original_consumed_ABI": "ECX=actual4-byte owner cell; no incomingEDX/explicit stack word read; plainRET, zero argument purge. Concreteclass and formal callback/entry types unrecovered.",
+      "Original_physical_result": "EAX=captured cell on normal return; flags not normalized.",
+      "whole_body_semantics": "Capture cell/pointee once; null skipsSDK/table/callback/clear. Nonnull actual pointee+4 goes to genuine current atomic-decrement service; exact zero alone reads current pointee.table/currenttable.slot0 and calls target before unconditional captured-cell clear. Negative/nonzero still clears. Callback replacingcell does not preventclear or cause replacementrelease. No guard/RAII/fault repair added.",
+      "Source_interface": "Existing actual-storage C++ API adds NativeAdoptedSubstreamDispatch& context; genuine default callable_native_adopted_substream_dispatch invokes actual caller-supplied target. New C++ envelope, not Original ECX entry.",
+      "callback_physical_qualification": "Native target entry ECX=pointee/EDX=currenttable/EAX=target, no raw callback stackargs, normal cleanup0. Current genuine Source adapter forwards ECX/EDX via CALL[EBP+8], introduces EBP frame and RET0Ch for THREE adapter method args. It does not promise Native EAX/flags/ESI/EDI/frame preimages or hidden-input compatibility.",
+      "SDK_import_boundary": "Installed NativeIAT00ce2220=KERNEL32!InterlockedDecrement. Existing Source uses actual installed SDK _InterlockedDecrement intrinsic/current policy; real x86 import _InterlockedDecrement@4 verified. No Original service-body/volatile-register/fault identity claim.",
+      "uncertainty": "Concrete target/class/producer, hidden callback inputs, arbitrary compiler-stack/cell/counter/table aliases and concurrent pointermutation, Original volatileflags/register/frame/fault/throw/SEH/unwind/FH3/RTTI, parent/game adoption remain unproved. No narrower Original defined-behavior contract is inferred.",
+      "evidence": "Accepted whole-body Oaudit: all12 fresh live/installed bytes and typed whole extents; two exact Native identities; current two ENTIRE provider objects45CODEsections3068execB/all data/symbols/aux/relocs/imports enumerated, both real Core dictionaries uniquely bind3 public APIs. Upstreamseals and fullcontract retained in GOAL16S doc/report.",
+      "report": "reports/goal16s_raw_lifecycle_associations.json",
+      "documentation": "docs/GOAL16S_RAW_LIFECYCLE_ASSOCIATIONS.md",
+      "validation": "metadata-only; no new C++/build/test/probe/Native/game/Ghidra execution. Existing actual COFF/archive evidence reused, historical fixtures are not new runtime proof."
+    },
+    {
+      "address": "00bbf560",
+      "name": "release_native_structured_node_handle_00be9ed0",
+      "source": "src/native_resource_reader_references.cpp",
+      "status": "qualified_existing_Source_association_new_Cpp_interface_NOT_physical_ABI_byteidentity_or_runtime_dropin_proof",
+      "packet": "goal16s_raw_lifecycle_associations",
+      "qualification": "Qualified existing Source association with new C++ interface; NOT physical ABI/byteidentity/runtime drop-in proof.",
+      "source_function": "bsp::release_native_structured_node_handle_00be9ed0",
+      "reuses_existing_Source_function_at": "00be9ed0",
+      "new_Cpp_functions": 0,
+      "new_Cpp_bytes": 0,
+      "complete_Native_body": {
+        "bytes": 41,
+        "instructions": 19,
+        "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+        "whole_hex": "56578bf98b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c707000000005f5ec3",
+        "whole_extent_single_range": true,
+        "live_equals_installed_PE": true,
+        "canonical_Native_whole_byte_identity": true,
+        "Source_byte_identity_claimed": false
+      },
+      "original_name_preserved": "TMPL_RefPtr_Release_00bbf560",
+      "Original_consumed_ABI": "ECX=actual4-byte owner cell; no incomingEDX/explicit stack word read; plainRET, zero argument purge. Concreteclass and formal callback/entry types unrecovered.",
+      "Original_physical_result": "Path-dependent EAX: incoming on null, SDK count on nonzero, callback EAX on zero. Source void interface does not expose it; flags not normalized.",
+      "whole_body_semantics": "Capture cell/pointee once; null skipsSDK/table/callback/clear. Nonnull actual pointee+4 goes to genuine current atomic-decrement service; exact zero alone reads current pointee.table/currenttable.slot0 and calls target before unconditional captured-cell clear. Negative/nonzero still clears. Callback replacingcell does not preventclear or cause replacementrelease. No guard/RAII/fault repair added.",
+      "Source_interface": "Existing actual-storage C++ API adds NativeAdoptedSubstreamDispatch& context; genuine default callable_native_adopted_substream_dispatch invokes actual caller-supplied target. New C++ envelope, not Original ECX entry.",
+      "callback_physical_qualification": "Native target entry ECX=pointee/EDX=currenttable/EAX=target, no raw callback stackargs, normal cleanup0. Current genuine Source adapter forwards ECX/EDX via CALL[EBP+8], introduces EBP frame and RET0Ch for THREE adapter method args. It does not promise Native EAX/flags/ESI/EDI/frame preimages or hidden-input compatibility.",
+      "SDK_import_boundary": "Installed NativeIAT00ce2220=KERNEL32!InterlockedDecrement. Existing Source uses actual installed SDK _InterlockedDecrement intrinsic/current policy; real x86 import _InterlockedDecrement@4 verified. No Original service-body/volatile-register/fault identity claim.",
+      "uncertainty": "Concrete target/class/producer, hidden callback inputs, arbitrary compiler-stack/cell/counter/table aliases and concurrent pointermutation, Original volatileflags/register/frame/fault/throw/SEH/unwind/FH3/RTTI, parent/game adoption remain unproved. No narrower Original defined-behavior contract is inferred.",
+      "evidence": "Accepted whole-body Oaudit: all12 fresh live/installed bytes and typed whole extents; two exact Native identities; current two ENTIRE provider objects45CODEsections3068execB/all data/symbols/aux/relocs/imports enumerated, both real Core dictionaries uniquely bind3 public APIs. Upstreamseals and fullcontract retained in GOAL16S doc/report.",
+      "report": "reports/goal16s_raw_lifecycle_associations.json",
+      "documentation": "docs/GOAL16S_RAW_LIFECYCLE_ASSOCIATIONS.md",
+      "validation": "metadata-only; no new C++/build/test/probe/Native/game/Ghidra execution. Existing actual COFF/archive evidence reused, historical fixtures are not new runtime proof."
+    },
+    {
+      "address": "00bbf640",
+      "name": "release_native_structured_node_handle_00be9ed0",
+      "source": "src/native_resource_reader_references.cpp",
+      "status": "qualified_existing_Source_association_new_Cpp_interface_NOT_physical_ABI_byteidentity_or_runtime_dropin_proof",
+      "packet": "goal16s_raw_lifecycle_associations",
+      "qualification": "Qualified existing Source association with new C++ interface; NOT physical ABI/byteidentity/runtime drop-in proof.",
+      "source_function": "bsp::release_native_structured_node_handle_00be9ed0",
+      "reuses_existing_Source_function_at": "00be9ed0",
+      "new_Cpp_functions": 0,
+      "new_Cpp_bytes": 0,
+      "complete_Native_body": {
+        "bytes": 41,
+        "instructions": 19,
+        "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+        "whole_hex": "56578bf98b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c707000000005f5ec3",
+        "whole_extent_single_range": true,
+        "live_equals_installed_PE": true,
+        "canonical_Native_whole_byte_identity": true,
+        "Source_byte_identity_claimed": false
+      },
+      "original_name_preserved": "TMPL_RefPtr_Release_00bbf640",
+      "Original_consumed_ABI": "ECX=actual4-byte owner cell; no incomingEDX/explicit stack word read; plainRET, zero argument purge. Concreteclass and formal callback/entry types unrecovered.",
+      "Original_physical_result": "Path-dependent EAX: incoming on null, SDK count on nonzero, callback EAX on zero. Source void interface does not expose it; flags not normalized.",
+      "whole_body_semantics": "Capture cell/pointee once; null skipsSDK/table/callback/clear. Nonnull actual pointee+4 goes to genuine current atomic-decrement service; exact zero alone reads current pointee.table/currenttable.slot0 and calls target before unconditional captured-cell clear. Negative/nonzero still clears. Callback replacingcell does not preventclear or cause replacementrelease. No guard/RAII/fault repair added.",
+      "Source_interface": "Existing actual-storage C++ API adds NativeAdoptedSubstreamDispatch& context; genuine default callable_native_adopted_substream_dispatch invokes actual caller-supplied target. New C++ envelope, not Original ECX entry.",
+      "callback_physical_qualification": "Native target entry ECX=pointee/EDX=currenttable/EAX=target, no raw callback stackargs, normal cleanup0. Current genuine Source adapter forwards ECX/EDX via CALL[EBP+8], introduces EBP frame and RET0Ch for THREE adapter method args. It does not promise Native EAX/flags/ESI/EDI/frame preimages or hidden-input compatibility.",
+      "SDK_import_boundary": "Installed NativeIAT00ce2220=KERNEL32!InterlockedDecrement. Existing Source uses actual installed SDK _InterlockedDecrement intrinsic/current policy; real x86 import _InterlockedDecrement@4 verified. No Original service-body/volatile-register/fault identity claim.",
+      "uncertainty": "Concrete target/class/producer, hidden callback inputs, arbitrary compiler-stack/cell/counter/table aliases and concurrent pointermutation, Original volatileflags/register/frame/fault/throw/SEH/unwind/FH3/RTTI, parent/game adoption remain unproved. No narrower Original defined-behavior contract is inferred.",
+      "evidence": "Accepted whole-body Oaudit: all12 fresh live/installed bytes and typed whole extents; two exact Native identities; current two ENTIRE provider objects45CODEsections3068execB/all data/symbols/aux/relocs/imports enumerated, both real Core dictionaries uniquely bind3 public APIs. Upstreamseals and fullcontract retained in GOAL16S doc/report.",
+      "report": "reports/goal16s_raw_lifecycle_associations.json",
+      "documentation": "docs/GOAL16S_RAW_LIFECYCLE_ASSOCIATIONS.md",
+      "validation": "metadata-only; no new C++/build/test/probe/Native/game/Ghidra execution. Existing actual COFF/archive evidence reused, historical fixtures are not new runtime proof."
+    }
+  ],
+  "whole_physical_contract": {
+    "entry": "ECX is actual 4-byte owner cell. No incoming EDX or explicit stack word is consumed. Plain RET; no callee argument purge. Original semantic class and formal signature remain unrecovered.",
+    "captures": "Both push ESI and EDI. Reset ESI=cell/EDI=captured pointee; Release EDI=cell/ESI=captured pointee. Pointee is captured by one initial cell load.",
+    "null": "Null pointee skips decrement, table reads, callback and clear. Reset EAX=captured cell; Release preserves incoming EAX. TEST flags are exposed; no null owner-cell guard.",
+    "decrement": "For nonnull pointee compute wrapped pointee+4, push its address, call actual IAT CE2220 KERNEL32.dll!InterlockedDecrement (stdcall RET4). EAX is updated LONG. Only exact zero selects callback; negative or other nonzero still clears cell.",
+    "zero_count_dynamic_reads": "After decrement returns zero read current [captured pointee] into EDX, then current [EDX] into EAX, set ECX=pointee, CALL EAX. No fabricated table, hidden deletion flag or explicit callback stack argument.",
+    "callback_entry": "ECX=pointee; EDX=captured table; EAX=actual slot0 target. ESI/EDI carry the form-specific captures; inherited EBX/EBP and saved ESI/EDI must obey the observed callee-saved convention. TEST-zero flags precede callback, not a recovered argument list.",
+    "callback_stack": "Let S be outer entry ESP. After two saves parent ESP=S-8. SDK enters S-16 with counter address at S-12 and returns to S-8. Raw callback enters S-12 with return word replacing retired SDK argument, then saved entry EDI at +4, saved entry ESI at +8, outer return at +C. Required normal callback net stack cleanup is zero. This does not prove a hidden-input-free callback ABI.",
+    "late_clear": "After normally returning callback or nonzero decrement, write zero to captured owner cell. Even if callback changes that cell to replacement, it is cleared, without reloading/releasing replacement. No blanket alias repair or added guard.",
+    "return": "Pop EDI and ESI, RET to S+4. Reset sets EAX=captured cell; Release exposes path-dependent EAX: incoming on null, SDK count on nonzero, callback result on zero. MOV/POP/RET do not normalize flags; callback flags remain after zero path.",
+    "fault_unwind": "No EBP frame, FS EH registration, RAII, cleanup/cookie or guarded recovery appears in these bodies. A fault or nonreturn before clear prevents clear. Original faults, SEH/EH, callbacks that throw, instruction placement and compiler frame aliases are not closed by the Source interface."
+  },
+  "Source_interfaces": [
+    "bsp::release_native_resource_slot_00483850(void* actual_slot, NativeAdoptedSubstreamDispatch&) -> void*",
+    "bsp::release_native_structured_node_handle_00be9ed0(void* actual_handle, NativeAdoptedSubstreamDispatch&) -> void",
+    "bsp::callable_native_adopted_substream_dispatch() noexcept -> NativeAdoptedSubstreamDispatch&"
+  ],
+  "Source_normal_completion_contract": "Under the existing valid-borrowed-storage and genuine Source callback projection, capture actual owner/pointee, current SDK decrement at pointee+4, current table/slot0 read only after exact-zero result, callback-before-unconditional captured-cell-clear, no replacement release, and Reset captured-cell result are meaningful already-implemented Source behavior.",
+  "Source_semantics_qualification": "Existing meaningful actual-storage Source interfaces are reused with their complete documented behavior and input-supplied callback contract. This is not a restriction or repaired definition of Original Native behavior. Exact physical/EH/fault/alias equivalence is separately unproved.",
+  "Source_files_unchanged_from_upstream_current_Root": [
+    {
+      "path": "src/native_resource_reader_references.cpp",
+      "size": 2504,
+      "sha256": "9255ab57bdccb91ab0b071f5c23e68d601352cf108677ceed520647a09c73e5d",
+      "Git_sha256": "9255ab57bdccb91ab0b071f5c23e68d601352cf108677ceed520647a09c73e5d"
+    },
+    {
+      "path": "include/bsp/native_resource_reader_references.hpp",
+      "size": 2195,
+      "sha256": "f1d87cf080877afc8a4e8c690147c22a21fbfeac0786897d913e3604403d3fc3",
+      "Git_sha256": "f1d87cf080877afc8a4e8c690147c22a21fbfeac0786897d913e3604403d3fc3"
+    },
+    {
+      "path": "docs/NATIVE_RESOURCE_READER_REFERENCES_BN.md",
+      "size": 7281,
+      "sha256": "79888403be5a688d405dfbb74ce23013bee52376263639c358cafba2eb45f6df",
+      "Git_sha256": "79888403be5a688d405dfbb74ce23013bee52376263639c358cafba2eb45f6df"
+    },
+    {
+      "path": "reports/native_resource_reader_references_bn.json",
+      "size": 19461,
+      "sha256": "b06aeaeb8bf4cde38fce3884a55ad2b6c5351201fcfbbbe9dca57c5c7f2429d4",
+      "Git_sha256": "b06aeaeb8bf4cde38fce3884a55ad2b6c5351201fcfbbbe9dca57c5c7f2429d4"
+    },
+    {
+      "path": "src/native_adopted_substream.cpp",
+      "size": 10276,
+      "sha256": "53d9dbf526516cedc063269deb23ce144add399bb54bb2aa7f693ced3d8767be",
+      "Git_sha256": "53d9dbf526516cedc063269deb23ce144add399bb54bb2aa7f693ced3d8767be"
+    },
+    {
+      "path": "include/bsp/native_adopted_substream.hpp",
+      "size": 5667,
+      "sha256": "c64950d42cf17d3c4da39fa7f99931e3e74b4ad3d968d00b8c25f1ddb0c0a8dd",
+      "Git_sha256": "c64950d42cf17d3c4da39fa7f99931e3e74b4ad3d968d00b8c25f1ddb0c0a8dd"
+    }
+  ],
+  "actual_current_provider_snapshot": {
+    "snapshot_pin": "8d43296bb2f8153468c865b3b87b94fa5a9c2df6",
+    "Core_sha256": "5b23c4583d1aa3cf69e9f4ebf275b3f1dccfed5399c5e637f85d1baf7cce7a67",
+    "Core_bytes": 94123824,
+    "Core_path": "J:\\PROG\\battlestations-pacific-decompile-goal15y_sse_stack_alias_review\\local\\goal16o_raw_lifecycle_readiness\\providers\\build\\win32\\Release\\bsp_core.lib",
+    "objects": [
+      {
+        "module": "native_resource_reader_references",
+        "sha256": "5116f2a5bfc256cdf1a1fb8c43cdce440f8958009c7149b057cebb5b1879bf1a",
+        "bytes": 2805,
+        "whole_member_offset": 38319300,
+        "CODE_bytes": 569,
+        "CODE_sections": 10
+      },
+      {
+        "module": "native_adopted_substream",
+        "sha256": "0afed1dae40466466d649e8b11b490bf94bf2b1b771c09b5e5534ed09d4aea52",
+        "bytes": 14699,
+        "whole_member_offset": 47947404,
+        "CODE_bytes": 2499,
+        "CODE_sections": 35
+      }
+    ],
+    "both_linker_directories": [
+      {
+        "kind": "first_big_endian",
+        "header_offset": 8,
+        "size": 10074871,
+        "sha256": "15eee0ebb05dfc30577baecff3c102c251572a7cd21d2f7c8a0efd750d6de183",
+        "symbols": 82877,
+        "all_member_offsets_and_indices_valid": true
+      },
+      {
+        "kind": "second_little_endian",
+        "header_offset": 10074940,
+        "size": 9918969,
+        "sha256": "520854340f9bdb014bd30601b8dbe1c297e2c984b7afaa944331e2fb9b67aa50",
+        "symbols": 82877,
+        "all_member_offsets_and_indices_valid": true
+      }
+    ],
+    "three_public_bindings": [
+      {
+        "symbol": "?release_native_structured_node_handle_00be9ed0@bsp@@YAXPAXAAVNativeAdoptedSubstreamDispatch@1@@Z",
+        "whole_member": "bsp_core.dir\\Release\\native_resource_reader_references.obj",
+        "member_header_offset": 38319300,
+        "symbol_section": 9,
+        "symbol_value": 0,
+        "entire_section_size": 91,
+        "entire_section_sha256": "005e707f6f414bb7709870c326eee31de1cb243cb1e72044faeedee2c8df4c5f",
+        "both_directories_unique": true,
+        "Native_size_prefix_used": false
+      },
+      {
+        "symbol": "?release_native_resource_slot_00483850@bsp@@YAPAXPAXAAVNativeAdoptedSubstreamDispatch@1@@Z",
+        "whole_member": "bsp_core.dir\\Release\\native_resource_reader_references.obj",
+        "member_header_offset": 38319300,
+        "symbol_section": 8,
+        "symbol_value": 0,
+        "entire_section_size": 94,
+        "entire_section_sha256": "a01afc428ff4a65ab7f75631eb4969f449195f68e697b2450b9f6f7602105035",
+        "both_directories_unique": true,
+        "Native_size_prefix_used": false
+      },
+      {
+        "symbol": "?callable_native_adopted_substream_dispatch@bsp@@YAAAVNativeAdoptedSubstreamDispatch@1@XZ",
+        "whole_member": "bsp_core.dir\\Release\\native_adopted_substream.obj",
+        "member_header_offset": 47947404,
+        "symbol_section": 29,
+        "symbol_value": 0,
+        "entire_section_size": 81,
+        "entire_section_sha256": "340aca9077b98875a52bba51c910368bc4e97b73cad7b42360b7f1bb60fe3fe0",
+        "both_directories_unique": true,
+        "Native_size_prefix_used": false
+      }
+    ],
+    "provider_proof_path": "J:\\PROG\\battlestations-pacific-decompile-goal15y_sse_stack_alias_review\\local\\goal16o_raw_lifecycle_readiness\\provider_proof.json",
+    "provider_proof_sha256": "1a89269ea2a0f795bb2d3886813bcebe5683bbded64c1c78463350bbdc228dc2",
+    "current_worker_Source_Git_inputs_match_snapshot": true
+  },
+  "actual_compiled_callback_adapter": {
+    "symbol": {
+      "index": 20,
+      "name": "?source_zero_reference@CallableDispatch@?A0x723ac36a@bsp@@UAEXIPAXI@Z",
+      "value": 0,
+      "section": 7,
+      "type": 32,
+      "storage_class": 3,
+      "auxiliary_count": 0,
+      "raw_hex": "000000000301000000000000070020000300",
+      "auxiliary_hex": ""
+    },
+    "entire_section": {
+      "index": 7,
+      "name": ".text$mn",
+      "size": 16,
+      "raw_offset": 2975,
+      "characteristics": 1615859744,
+      "raw_hex": "558bec8b55108b4d0cff55085dc20c00",
+      "raw_sha256": "dcc00ae87c1187d01e7ffa201167004885686b4832475fcd907c790f65fb76a4",
+      "relocation_offset": 0,
+      "relocations": [],
+      "line_count": 0,
+      "section_definition_symbols": [
+        18
+      ]
+    },
+    "instructions": [
+      {
+        "offset": 0,
+        "bytes": "55",
+        "mnemonic": "push",
+        "operands": "ebp"
+      },
+      {
+        "offset": 1,
+        "bytes": "8bec",
+        "mnemonic": "mov",
+        "operands": "ebp, esp"
+      },
+      {
+        "offset": 3,
+        "bytes": "8b5510",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [ebp + 0x10]"
+      },
+      {
+        "offset": 6,
+        "bytes": "8b4d0c",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [ebp + 0xc]"
+      },
+      {
+        "offset": 9,
+        "bytes": "ff5508",
+        "mnemonic": "call",
+        "operands": "dword ptr [ebp + 8]"
+      },
+      {
+        "offset": 12,
+        "bytes": "5d",
+        "mnemonic": "pop",
+        "operands": "ebp"
+      },
+      {
+        "offset": 13,
+        "bytes": "c20c00",
+        "mnemonic": "ret",
+        "operands": "0xc"
+      }
+    ],
+    "actual_target_is_caller_input": true,
+    "physical_projection": [
+      "ECX=actual pointee",
+      "EDX=captured vtable word",
+      "CALL actual target with no raw callback stack words"
+    ],
+    "adapter_method_cleanup_bytes": 12,
+    "raw_callback_required_normal_cleanup_bytes": 0,
+    "distinct_from_Original_callback_frame": true,
+    "EAX_target_preimage_not_promised": true
+  },
+  "SDK_contract": {
+    "actual_Native_IAT": "00ce2220 = KERNEL32.dll!InterlockedDecrement",
+    "current_Source": "Installed Windows SDK 10.0.26100.0 x86 winnt.h maps InterlockedDecrement to _InterlockedDecrement intrinsic. Real x86 kernel32.Lib import _InterlockedDecrement@4 independently parsed. No new bridge or fake SDK service.",
+    "documented_requirements": "Atomic decrement of aligned 32-bit LONG, resulting value return and full memory barrier; not whole object ownership synchronization.",
+    "primary_documentation": "https://learn.microsoft.com/en-us/windows/win32/api/winnt/nf-winnt-interlockeddecrement"
+  },
+  "limits": [
+    "Existing public APIs are new C++ interfaces with dispatch context and cdecl/frame envelopes; neither is a drop-in Original ECX entry.",
+    "Reset returns captured cell. Release is void: it does not expose Original incoming/SDK/callback EAX or return flags.",
+    "Actual 16-byte Source CallableDispatch method forwards ECX=pointee/EDX=table via CALL [EBP+8], with its own EBP frame. It does not promise Original EAX=target, ESI/EDI preimages, flags or raw callback frame. Adapter method RET0Ch cleans its three method arguments; raw callback cleanup remains zero.",
+    "Unknown game callback identities, hidden register/frame inputs, class, producers, numeric game profiles and concrete production ownership remain open. Genuine new Source callbacks satisfying the documented physical projection are permissible; this does not resolve old game callbacks by naming.",
+    "Current SDK intrinsic implements current atomic decrement policy on a valid aligned 32-bit LONG. Original IAT service identity is verified, but its old implementation bytes, volatile registers, flags and fault timing are not claimed identical.",
+    "Arbitrary compiler stack/cell/counter/table aliases, concurrent pointer mutation, terminal callback ownership, Original throw/unwind/SEH/FH3/RTTI and parent/game adoption are unproved.",
+    "No test, build, supplied verifier, probe, Native executable body or game was executed in this audit; no Source, ledger, Ghidra or shared registry mutation was made."
+  ],
+  "current_provider_provenance": "Current registered Source snapshot at upstream Root8d43296bb2f8153468c865b3b87b94fa5a9c2df6; whole actual object members/tlog/SDK metadata/all CODE/data/aux/relocs/undefined inputs frozen in O. All6 Source/Git inputs identical on Sbase67cbe362. No Source or binary was rebuilt for S.",
+  "upstream_O_immutable": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-goal15y_sse_stack_alias_review\\local\\goal16o_raw_lifecycle_readiness",
+    "handoff_sha256": "6626287b958e687c3cfe6c44e265a7db8842ba10be71f9958f99abfa547a6624",
+    "report_sha256": "8f175b679b75b6048eabec16b0f50a4a00798b31ebecc04322323839d490555e",
+    "receipt_sha256": "5105b12d5f4bac66afe3be3af6d5e9ba74e85c00be6bd323eee30ad68528a1b4",
+    "91_files_not_recopied": true,
+    "all5374_prior_inputs_not_rehashed_or_recopied": true
+  },
+  "whole_Native_evidence_paths": {
+    "capture": "J:\\PROG\\battlestations-pacific-decompile-goal15y_sse_stack_alias_review\\local\\goal16o_raw_lifecycle_readiness\\capture.json",
+    "typed_before": "J:\\PROG\\battlestations-pacific-decompile-goal15y_sse_stack_alias_review\\local\\goal16o_raw_lifecycle_readiness\\typed_initial.json",
+    "typed_after": "J:\\PROG\\battlestations-pacific-decompile-goal15y_sse_stack_alias_review\\local\\goal16o_raw_lifecycle_readiness\\typed_after.json",
+    "installed_PE": "J:\\PROG\\battlestations-pacific-decompile-goal15y_sse_stack_alias_review\\local\\goal16o_raw_lifecycle_readiness\\installed.exe",
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "all12_live_and_binary_files": "same O directory live_<address>.txt and native_<address>.bin",
+    "three_representative_full_listing_reads": [
+      "00bb0b60",
+      "00bb0bd0",
+      "00bbd690"
+    ]
+  },
+  "metadata_policy": "Correct existing TMPL_RefPtr tagged/Ghidra names retained exactly. No reviewed-name rows existed at all12; add evidence rows using those exact names. No tag/name/Ghidra rename, replacement row or canonicalfunction recredit. Add12 function association records through allowedCLI; no whole shard lease or direct shard editing.",
+  "owned_tracked_paths": [
+    "docs/GOAL16S_RAW_LIFECYCLE_ASSOCIATIONS.md",
+    "reports/goal16s_raw_lifecycle_associations.json",
+    "config/names/00bb0000.jsonl",
+    "config/reconstruction/00bb0000.jsonl"
+  ],
+  "not_changed": [
+    "C++ source",
+    "headers",
+    "CMake",
+    "tests",
+    "Ghidra",
+    "Main",
+    "canonical Source function credits",
+    "old O/Y/Z/F/H/K/L review/readiness trees"
+  ],
+  "validation": {
+    "status": "PASS",
+    "metadata_checks": {
+      "status": "PASS",
+      "checked_utc": "2026-10-16T09:33:12.105418+00:00",
+      "12same_name_additions": true,
+      "12qualified_function_additions": true,
+      "zero_removed_or_replaced_rows": true,
+      "canonical_records_untouched": true,
+      "four_exact_owned_tracked_paths": [
+        "config/names/00bb0000.jsonl",
+        "config/reconstruction/00bb0000.jsonl",
+        "docs/GOAL16S_RAW_LIFECYCLE_ASSOCIATIONS.md",
+        "reports/goal16s_raw_lifecycle_associations.json"
+      ],
+      "all12_capped_indexed_lookups": [
+        {
+          "address": "00bb0b60",
+          "exact_name_preserved": true,
+          "one_qualified_existing_Source_association_indexed": true
+        },
+        {
+          "address": "00bb0bd0",
+          "exact_name_preserved": true,
+          "one_qualified_existing_Source_association_indexed": true
+        },
+        {
+          "address": "00bb0c00",
+          "exact_name_preserved": true,
+          "one_qualified_existing_Source_association_indexed": true
+        },
+        {
+          "address": "00bb0c30",
+          "exact_name_preserved": true,
+          "one_qualified_existing_Source_association_indexed": true
+        },
+        {
+          "address": "00bb0c60",
+          "exact_name_preserved": true,
+          "one_qualified_existing_Source_association_indexed": true
+        },
+        {
+          "address": "00bb8ed0",
+          "exact_name_preserved": true,
+          "one_qualified_existing_Source_association_indexed": true
+        },
+        {
+          "address": "00bb8f00",
+          "exact_name_preserved": true,
+          "one_qualified_existing_Source_association_indexed": true
+        },
+        {
+          "address": "00bbd690",
+          "exact_name_preserved": true,
+          "one_qualified_existing_Source_association_indexed": true
+        },
+        {
+          "address": "00bbdec0",
+          "exact_name_preserved": true,
+          "one_qualified_existing_Source_association_indexed": true
+        },
+        {
+          "address": "00bbdef0",
+          "exact_name_preserved": true,
+          "one_qualified_existing_Source_association_indexed": true
+        },
+        {
+          "address": "00bbf560",
+          "exact_name_preserved": true,
+          "one_qualified_existing_Source_association_indexed": true
+        },
+        {
+          "address": "00bbf640",
+          "exact_name_preserved": true,
+          "one_qualified_existing_Source_association_indexed": true
+        }
+      ],
+      "all6_existing_Source_Git_inputs_unchanged": true,
+      "Othree_seals_unchanged": true,
+      "no_transitive_oldfolder_copy_or_repeat_hash": true,
+      "no_Cpp_build_test_probe_Native_or_Ghidra_execution": true,
+      "staged_diff_check": "PASS",
+      "setup_corrections": "initial index lookup waited for completion and reviewed-name absence handled before mutation; no C++ compile/rejection occurred"
+    },
+    "build_and_runtime": "No build/tests/probes executed or required for metadata-only changes. No new C++ functions or executable bytes."
+  },
+  "metadata_sealed_utc": "2026-10-16T09:33:12.105418+00:00",
+  "inclusive_to_metadata_seal_seconds": 462.105418,
+  "timing_scope": "Inclusive conservative floor through metadata checks includes setup, own-index build/wait retry, name-capture correction, docs/report/ledger CLI/index/validation. Commit/release/handoff elapsed will be sealed separately in ignored finalreceipt; no overlap with prior Oreadiness is added."
+}
