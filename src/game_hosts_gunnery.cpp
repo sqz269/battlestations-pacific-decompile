@@ -137,6 +137,22 @@ constexpr bool kAirfieldTargetSubEntitiesBound = true;
 // ON by GUNNERY 127.4: all 22 rows gameplay identical under the measurement
 // streams; USN02 respawns 1084 times, JM08 long 310.
 constexpr bool kDamageSmokeDrawsBound = true;
+// Packet s52_sink_draws (docs/SHIP_AI_OPEN_ITEMS.md 256/258): the two ShipSystems
+// effect spawners 00825F20 calls on a SINKING ship (dead byte unit+5Dh), ECX =
+// [unit+1018h]. Both draw on stream 1 (MOV ECX,1):
+//  - 00933DA0 (0082668B, while sinkTime unit+828h < 30.0 [00CE7630]): an nx x ny
+//    grid, nx = ftol(class+A4h * 1.5 / 15 + 1), ny = ftol(class+A0h * 1.5 / 15 + 1)
+//    ([00CE3D78] 1.5, [00CF3F20] 15.0); per cell one 00BD2FC0 (00933EB5), and on
+//    u32 % 3000 == 0 two 00BD2F10 (the effect point) and a point effect;
+//  - 00933BB0 (008266AA, while unit+82Ch < 40.0 [00CE685C], the time both hull
+//    ends stayed below 0): one 00BD2FC0 (00933BBC), and on u32 % 5 == 0 two
+//    00BD2F10 (00933C02, 00933C22); the effect is spawned only below the water.
+// The effects are presentation (recorded). LABELLED: the host's generator yields
+// floats, so a 00BD2FC0 is one draw and `% n == 0` is `draw < 1/n`; whether the
+// point effect create 00868420 draws as well was not read. Inert under
+// BSP_GUNNERY_RNG_STREAMS=1 (own key, Draw::sink_effects). True: the draws are
+// taken on the shared stream. False: recorded only (before).
+constexpr bool kShipSystemsSinkDrawsBound = false;
 // Packet cc9_cb_gunfire_gate (docs/GUNNERY_OPEN_ITEMS.md 125): a hit's AddDamage is
 // victim->vtable[1ACh] (008778C6, 00877A2E in 008777D0), and for a CommandBuilding
 // (vtable 00CFB028) that slot is 006F1F20, which damages only while +7D8h == 0.0
@@ -2136,6 +2152,7 @@ struct GameGunneryHost::Impl {
         plane_crash_blast = 27, // 0084BAD0's blast for a plane's crash shot (007C0910), key (plane, 0)
         torpedo_scan_phase = 28, // 00856132, -U(0, 1) into record+518h, stream 1, key (shot serial, 0)
         ship_breakup = 29,    // 00827B4D, the breakup roll against WreckChance, stream 1, key (unit, 0)
+        sink_effects = 30,    // 00933DA0 / 00933BB0, the ShipSystems sink spawners, stream 1, key (unit, 0|1)
         auto_target_phase = 30, // 009F6A8F, -U(0, 1) into the auto-target think countdown, stream 1, key (unit, 0)
     };
     unsigned long long next_projectile_serial{0};
@@ -2836,6 +2853,12 @@ struct GameGunneryHost::Impl {
     unsigned long long smoke_clock_resets{0};
     unsigned long long smoke_slots_grown{0};
     unsigned long long smoke_respawns{0};
+    // Packet s52_sink_draws: calls of 00933DA0 / 00933BB0, the stream-1 draws
+    // taken, and the effects (recorded).
+    unsigned long long sink_grid_calls{0};
+    unsigned long long sink_spray_calls{0};
+    unsigned long long sink_draws{0};
+    unsigned long long sink_effects{0};
     unsigned long long smoke_expired_held{0};
     std::size_t smoke_units{0};
     float smoke_first_respawn{-1.0f};
@@ -14526,6 +14549,50 @@ bool GameGunneryHost::damage_smoke_tick_008227e0(std::size_t unit_index, float d
     return true;
 }
 
+void GameGunneryHost::ship_systems_sink_draws_00933da0_00933bb0(std::size_t unit_index,
+    bool grid_00933da0, bool spray_00933bb0) {
+    Impl& host = *impl_;
+    if (unit_index >= host.unit_state.size()) return;
+    const Impl::UnitState& us = host.unit_state[unit_index];
+    if (grid_00933da0) {
+        ++host.sink_grid_calls;
+        // 00933DC2..00933E1C: class+A4h is the host's width, class+A0h its length
+        // (as in damage_smoke_tick_008227e0); _ftol truncates.
+        const int nx = static_cast<int>(static_cast<double>(us.hull_width) * 1.5 / 15.0 + 1.0);
+        const int ny = static_cast<int>(static_cast<double>(us.hull_length) * 1.5 / 15.0 + 1.0);
+        if (kShipSystemsSinkDrawsBound && nx > 0 && ny > 0) {
+            for (int i = 0; i < nx * ny; ++i) {
+                ++host.sink_draws;
+                const float u = host.draw(Impl::Draw::sink_effects, unit_index, 0, 0.0f, 1.0f);
+                if (!(u < 1.0f / 3000.0f)) continue;                 // 00933EC3
+                host.draw(Impl::Draw::sink_effects, unit_index, 0, 0.0f, 1.0f);
+                host.draw(Impl::Draw::sink_effects, unit_index, 0, 0.0f, 1.0f);
+                host.sink_draws += 2;
+                ++host.sink_effects;
+                host.record("ShipSystems::sink_grid_effect", 0x00933da0u);
+            }
+        } else {
+            host.record("ShipSystems::sink_grid_draws", 0x00933da0u);
+        }
+    }
+    if (spray_00933bb0) {
+        ++host.sink_spray_calls;
+        if (kShipSystemsSinkDrawsBound) {
+            ++host.sink_draws;
+            const float u = host.draw(Impl::Draw::sink_effects, unit_index, 1, 0.0f, 1.0f);
+            if (u < 0.2f) {                                          // 00933BCA
+                host.draw(Impl::Draw::sink_effects, unit_index, 1, 0.0f, 1.0f);
+                host.draw(Impl::Draw::sink_effects, unit_index, 1, 0.0f, 1.0f);
+                host.sink_draws += 2;
+                ++host.sink_effects;
+                host.record("ShipSystems::sink_spray_effect", 0x00933bb0u);
+            }
+        } else {
+            host.record("ShipSystems::sink_spray_draws", 0x00933bb0u);
+        }
+    }
+}
+
 int GameGunneryHost::plane_spin_side_800(std::size_t unit_index) const {
     if (!kPlaneSpinSideBound || unit_index >= impl_->plane_spin_side_800.size()) return -1;
     return impl_->plane_spin_side_800[unit_index];
@@ -15744,6 +15811,10 @@ void GameGunneryHost::report() {
                 host.smoke_clock_resets, host.smoke_respawns, host.smoke_expired_held,
                 host.smoke_first_unit.empty() ? "none" : host.smoke_first_unit.c_str(),
                 static_cast<double>(host.smoke_first_respawn));
+            host.log.notef("summary mission ship systems sink draws bound=%d grid_calls=%llu "
+                "spray_calls=%llu draws=%llu effects=%llu (00933DA0 / 00933BB0, stream 1, "
+                "packet s52_sink_draws)", kShipSystemsSinkDrawsBound ? 1 : 0,
+                host.sink_grid_calls, host.sink_spray_calls, host.sink_draws, host.sink_effects);
         }
         {
             const Impl::ShipDeathCounts& d = host.ship_death;
