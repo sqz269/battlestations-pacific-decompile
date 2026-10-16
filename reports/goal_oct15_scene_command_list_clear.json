@@ -1,0 +1,299 @@
+{
+  "packet": "goal_oct15_scene_command_list_clear",
+  "status": "whole_ordinary_actual_storage_Source_primary_reviewed_registered_Win32_three_checks_emitted_schedule_passed",
+  "code_complete": true,
+  "source_ready": true,
+  "readiness_gate": "satisfied_for_whole_ordinary_actual_storage_Source;Original_heap_FH3_private_ABI_game_unproved",
+  "source": "src/native_scene_command_list_clear.cpp",
+  "header": "include/bsp/native_scene_command_list_clear.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_COMMAND_LIST_CLEAR.md",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "language": "x86:LE:32:default",
+    "installed_binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "annotation": "FinalwriteLockednativecorrectname/priorcommentspreserved;allpriorvaluesrecorded;projectsaved;exportrefreshed;name/finalqualifiedevidencereadback"
+  },
+  "routines": [
+    {
+      "address": "0046a9f0",
+      "name": "clear_native_scene_command_list_0046a9f0",
+      "native_name_preserved": "BSP_SceneDatabase_ClearPendingReferences",
+      "coverage": "whole110B43opordinaryactualheader_node_record_storage_control_flow",
+      "original_abi": "NativeECXactual12byteheader/unusedEDX/plainRET/semanticvoid;newSourceexplicitdestructor_savedthis4/rawpoolcontext",
+      "bytes": 110,
+      "instructions": 43,
+      "end_inclusive": "0046aa5d",
+      "original_hex": "578bf9833f00746453568d9b000000008b77048b5e0885db74178bcbe8ffe5ffff53e895bb780083c404c74608000000008b0685c074088b4e04894804eb068b5604895704837e040074098b46048b0e8908eb058b168957088307ff56e85abb780083c404833f0075a65e5b5fc3",
+      "original_sha256": "febbdb28b3f2c712db2dd4f9d4e415756bc64afc8d756cd4082eeab0da8da884",
+      "source_ready": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0046aa0c",
+      "native": "00469010",
+      "kind": "call",
+      "function": "0046a9f0",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "0046aa12",
+      "native": "00bf65ac",
+      "kind": "call",
+      "function": "0046a9f0",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "0046aa4d",
+      "native": "00bf65ac",
+      "kind": "call",
+      "function": "0046a9f0",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "0046df33",
+      "native": "0046a9f0",
+      "kind": "call",
+      "function": "0046df00",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "0046ac34",
+      "native": "0046a9f0",
+      "kind": "tail_jump",
+      "function": "0046aab0",
+      "flow_override": "CALL_RETURN",
+      "default_flow": "UNCONDITIONAL_JUMP",
+      "effective_flow": "CALL_TERMINATOR"
+    }
+  ],
+  "typed_metadata": {
+    "path": "local\\goal_oct15_scene_command_list_clear_typed.json",
+    "responses": 6,
+    "guarded": true,
+    "repair_or_analysis": false
+  },
+  "input": {
+    "actual_header12": "Rawcount0/head4/tail8;zero-countskipshead/tail/childbacking",
+    "node12": "Rawprev0/next4/record8;producer468350completebodyread",
+    "saved_this4": "Explicitreusedchilddestructorbacking;onlyaccessedwhenrecordnonnull",
+    "binding_metadata": "Stable/disjointcontextandaddressbindings;actualrawcellsretaintheiraliases",
+    "excluded_aliases": "Noimplicitcompiler/privateFH3/outgoingargumenthomes"
+  },
+  "exact_schedule": [
+    "CURRENTcount!=0;freshCURRENThead;capturenode;captureCURRENTrecordONCE",
+    "ifnonnull:actualdestroycapturedrecord/currentfreecapturedrecord/zerocapturednode8;nullskipsallthree",
+    "CURRENTprev;branchCURRENTnext->prev.nextORheader.head",
+    "reloadCURRENTnextfortest;ifnonnullreloadCURRENTnextAGAIN,thenCURRENTprev->next.prev;elseCURRENTprev->header.tail",
+    "readCURRENTcount/subtract1wrap/writecount;currentfreeCAPTUREDnode;reloadCURRENTcountthenCURRENThead",
+    "Nohead/count/nextsnapshot,popfront,positivecountguard,finalheaderrepair,parentEHcleanuporrollback"
+  ],
+  "providers": {
+    "record_destroy": {
+      "address": "00469010",
+      "actual_API": "destroy_native_scene_command_record_00469010(record,explicit_saved_this4,strings)",
+      "source": "src/native_scene_command_record_destroy.cpp",
+      "header": "include/bsp/native_scene_command_record_destroy.hpp",
+      "source_ready": true,
+      "report": "reports\\goal_oct15_scene_command_record_destroy.json",
+      "report_sha256": "63f9967517b2ef4d9d2cfc43b3216a7669506717e1e93bfbe027a6c928f87a58",
+      "qualification": "Wholeordinaryactualstorage;qualifiedstandalonecleanup/currentCpp/CRT;Originalheap/FH3/privateABI/gameunproved"
+    },
+    "free": {
+      "address": "00bf65ac",
+      "actual_API": "singleton_lifetime_free",
+      "source": "src/singleton_lifetime.cpp",
+      "binding": "Existingconcretestd::free/currentCRT;noOriginalheapidentity"
+    },
+    "dynamic_dispatch": false,
+    "missing_callbacks_or_stubs": false
+  },
+  "provider_Source_hashes": {
+    "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+    "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+    "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/native_scene_command_record_destroy.cpp": "b0bee8b49e3c529aef5ce711bf09d458b175b6eceed61c70d77b639ffec0e8af",
+    "include/bsp/native_scene_command_record_destroy.hpp": "16273d338e13cebb5987d45f004b8f91962a1205e566f414f1507750170cbe5c"
+  },
+  "source_hashes": {
+    "src/native_scene_command_list_clear.cpp": {
+      "bytes_sha256": "97770e53d5e1cd9e577a88327022ecc6fc986ae64c5013855c60ab8d3dc31205",
+      "normalized_lf_sha256": "97770e53d5e1cd9e577a88327022ecc6fc986ae64c5013855c60ab8d3dc31205"
+    },
+    "include/bsp/native_scene_command_list_clear.hpp": {
+      "bytes_sha256": "c5fced97aa4b04f40d676fbb4a65f7b2e1a8392534a5d5f57df87829aff03377",
+      "normalized_lf_sha256": "c5fced97aa4b04f40d676fbb4a65f7b2e1a8392534a5d5f57df87829aff03377"
+    }
+  },
+  "incoming": {
+    "sites": [
+      "0046df33",
+      "0046ac34"
+    ],
+    "all_actual_setups_read": true,
+    "context": "local/goal_oct15_command_list_clear_incoming_context.json",
+    "actual_target_input": "Bothactualheaderatthen-currentdatabasepointer+14C;populatedresolvepathrestoresentrypointer,emptypathretainsentryECX",
+    "preserved_override": "AC34nativeE9JMP/defaultUNCONDITIONAL_JUMP/effectiveCALL_TERMINATOR/CALL_RETURN;nofakeCALL/protorepair"
+  },
+  "validation": {
+    "complete_owned_native_bytes": 110,
+    "complete_owned_instructions": 43,
+    "live_equals_installed_PE": true,
+    "owned_calls": 3,
+    "additional_incoming_CALLs": 1,
+    "additional_incoming_tail_JMPs": 1,
+    "typed_rows": 5,
+    "all_body_callees_producer_incoming_setups_read": true,
+    "build": {
+      "revision": "280da46334585045bf516ad2d54b90e2d53f35d0",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_resolve_clear_combined_build.log",
+      "log_sha256": "8db2c524c2da91461a8d7335f47b4dd85bb7b35fe86236d469dbf97c58b315a4",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 9.89,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "actual_tree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "worker_build_run": false,
+      "worker_build_superseded_by_explicit_primary_combined_build": true,
+      "receipt": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\reports\\goal_oct15_resolve_clear_primary_review.json",
+      "receipt_sha256": "d65ca213544bd9fd18b03302da3971ec14d2f59afbc57d1e371bae08541ecb36"
+    },
+    "registration": {
+      "source_inclusion_count": 1,
+      "registered_by": "primary_integrator",
+      "build_revision": "280da46334585045bf516ad2d54b90e2d53f35d0",
+      "unique_object": [
+        "bsp_core.dir\\Release\\native_scene_command_list_clear.obj"
+      ]
+    },
+    "new_tests": 0,
+    "worker_build_run": false,
+    "direct_new_entry_execution": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "application_adoption": false,
+    "report_calls": "5typedtrueCALL/JMProwschecked,0failed;docs8addresses5claims0failed/unchecked/warnings",
+    "independent_primary_review": {
+      "reviewed_commit": "f480f28a8",
+      "result": "passed_no_Source_change",
+      "scope": "Whole110B43ops asm+completeSource/header;capturedrecord/node8zero,currentprev/branch-specificnext,freshnexttest/nexttarget/prev,countdecrement/capturednodefree/currentcount-headinclaliases",
+      "accepted_normalized_lf_sha256": {
+        "src/native_scene_command_list_clear.cpp": "97770e53d5e1cd9e577a88327022ecc6fc986ae64c5013855c60ab8d3dc31205",
+        "include/bsp/native_scene_command_list_clear.hpp": "c5fced97aa4b04f40d676fbb4a65f7b2e1a8392534a5d5f57df87829aff03377"
+      },
+      "hashes_asserted_unchanged": true
+    },
+    "accepted_Source_provider_hashes_unchanged": true,
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\build\\win32\\Release\\bsp_core.lib",
+      "sha256": "e3e4cf0447f80825d16e62e1bbce1a15999cf2f32edf26a0e3bf1c716ef3efbf",
+      "exact_matching_object_members": 1
+    },
+    "emitted_object": {
+      "machine": "014c",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct15_resolve_clear_objects\\native_scene_command_list_clear.obj",
+      "object_sha256": "6e25c49b5fe87ac260b66c36a4bffed918c6fe23021f0841e7a61dd8de5894f7",
+      "symbol": "?clear_native_scene_command_list_0046a9f0@bsp@@YAXPAX0AAUNativeStringRawPoolContext@1@@Z",
+      "bytes": 117,
+      "instructions": 52,
+      "calls": [
+        {
+          "offset": 33,
+          "mnemonic": "call",
+          "target": "?destroy_native_scene_command_record_00469010@bsp@@YAXPAX0AAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 39,
+          "mnemonic": "call",
+          "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        },
+        {
+          "offset": 98,
+          "mnemonic": "call",
+          "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        }
+      ],
+      "listing": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_erase\\local\\goal_oct15_command_list_clear_COFF.txt"
+    },
+    "accepted_built_Source_and_all10_provider_hashes_unchanged": true,
+    "emitted_raw_schedule_review": "Fullfunctioninspected;capturednode_record/lateconditionalnode8zero/branchprev-nextreloads/nexttestandtargetfreshreads/countRMW/freecapturednode/freshcount_head",
+    "emitted_schedule_details": {
+      "Source_bytes": 117,
+      "Source_instructions": 52,
+      "capture": "count7/head10/nodeESI/recordEBX13",
+      "record": "child21/free27/conditionalcapturednode8zero2F",
+      "links": "CURRENTprev36,next38,selectedprev.next3Forhead44;freshnexttest47/4A,nexttarget4E,prev51/store53ORprev57/tail59",
+      "count": "CURRENTcount5C/dec5E/write60;capturednodefree62;freshCURRENTcount67/test6C;freshhead10",
+      "compiler_qualification": "Branch-commonnextload38isbeforepureprevtest3B;actualprev-next-selectedwriteorder/readcountunchanged. Privateoutgoingnodepush5Fisbeforecountwrite60;noimplicitoutgoing-home/Originalinstruction-register-flagidentitycredit"
+    },
+    "final_locked_annotation_save_export_readback": true
+  },
+  "limits": [
+    "WholeordinarycurrentrawstorageSourceonly;childCppcleanup/currentCRTqualified;noOriginalheap/FH3/SEH/privateABI/gameproof",
+    "Existingactualheader/node/record/pool/currentheapaccesscontractsapply;onlyreachedchildbackingrequired",
+    "NoHost/callback/stub/semanticcontainer/newowner/guard/rollback/finalrepair/parentcleanupintroduced",
+    "Existingregressionchecksnotnewnativeentryexecution/applicationadoption"
+  ],
+  "annotation_prior_values": [
+    {
+      "address": "0046a9f0",
+      "before": {
+        "address": "0046a9f0",
+        "function_name": "BSP_SceneDatabase_ClearPendingReferences",
+        "comment": "[BSP reconstruction 0046a9f0]\nHypothesis, not a recovered symbol. __thiscall(void), RET 0, on the {count, head, tail} list at scene database +14Ch. Empties the list: each node with a non-null [node+8] runs 00469010 then frees that block, otherwise it is unlinked; then the node itself is freed and the count decremented. Ghidra shows a single-node pop because the fall-through after the _free call at 00bf65ac is dropped by a no-return annotation; the listing gaps 0046aa17..0046aa21 and 0046aa52..0046aa5c decode to \"add esp,4 / mov [esi+8],0\" and \"add esp,4 / cmp [edi],0 / jne 0x46aa00\", the loop back edge. Called at entry of every 0046df00 pass and as the tail call of 0046aab0. Packet scene_file_reader, read-only analysis; see docs/SCENE_FILE_READER.md.\n\n[BSP reconstruction 0046a9f0] update\nHypothesis, not a recovered symbol. __thiscall(void), RET 0, on the {count, head, tail} list at scene database +14Ch. Empties the list: each node with a non-null [node+8] runs 00469010 then frees that block, otherwise it is unlinked; then the node itself is freed and the count decremented. Ghidra shows a single-node pop because the fall-through after the _free call at 00bf65ac is dropped by a no-return annotation; the listing gaps 0046aa17..0046aa21 and 0046aa52..0046aa5c decode to \"add esp,4 / mov [esi+8],0\" and \"add esp,4 / cmp [edi],0 / jne 0x46aa00\", the loop back edge. Called at entry of every 0046df00 pass and as the tail call of 0046aab0. Packet scene_file_reader, read-only analysis; see docs/SCENE_FILE_READER.md. | Packet cc2_scene_deferred_refs: +14Ch and +150h are one list, not two. +14Ch is the {count, head, tail} header this function takes as its this, +150h is that header's head pointer, and 0046aab0 walks the head and then tail-jumps here on this+14Ch, so the list it clears is the one it just drained. 00469610 confirms the header address: LEA ECX,[ESI+0x14c] at 0046965e with ESI the scene database. Node layout {prev +0h, next +4h, record +8h}; the record is destroyed by 00469010 and freed, then the node is freed and the count decremented, whatever the record's resolution outcome was. docs/SCENE_DEFERRED_REFS.md."
+      },
+      "after": {
+        "address": "0046a9f0",
+        "name": "BSP_SceneDatabase_ClearPendingReferences",
+        "evidence": "Hypothesis, not a recovered symbol. __thiscall(void), RET 0, on the {count, head, tail} list at scene database +14Ch. Empties the list: each node with a non-null [node+8] runs 00469010 then frees that block, otherwise it is unlinked; then the node itself is freed and the count decremented. Ghidra shows a single-node pop because the fall-through after the _free call at 00bf65ac is dropped by a no-return annotation; the listing gaps 0046aa17..0046aa21 and 0046aa52..0046aa5c decode to \"add esp,4 / mov [esi+8],0\" and \"add esp,4 / cmp [edi],0 / jne 0x46aa00\", the loop back edge. Called at entry of every 0046df00 pass and as the tail call of 0046aab0. Packet scene_file_reader, read-only analysis; see docs/SCENE_FILE_READER.md. | Packet cc2_scene_deferred_refs: +14Ch and +150h are one list, not two. +14Ch is the {count, head, tail} header this function takes as its this, +150h is that header's head pointer, and 0046aab0 walks the head and then tail-jumps here on this+14Ch, so the list it clears is the one it just drained. 00469610 confirms the header address: LEA ECX,[ESI+0x14c] at 0046965e with ESI the scene database. Node layout {prev +0h, next +4h, record +8h}; the record is destroyed by 00469010 and freed, then the node is freed and the count decremented, whatever the record's resolution outcome was. docs/SCENE_DEFERRED_REFS.md. | Whole110B43opactualrawlistclear:CURRENTcount/head,capturednode/record;actual469010/currentCRTfree/record8zero;CURRENTprev/nextwrites,reloadnextfortestandAGAINfortarget/freshprev;CURRENTcount-1wrap/freecapturednode/reloadcount/head. NoHost/callback/popfront/guard/snapshot/rollback/headerrepair. Explicitchildsavedthis4;realintegratedproviders. LivePEequal/5typedtransfersincludingAC34actualE9JMPpreservedCALL_RETURN;Originalheap/FH3/privateABI/gameunproved. docs/GOAL_OCT15_SCENE_COMMAND_LIST_CLEAR.md"
+      },
+      "status": "applied"
+    }
+  ],
+  "normal_source_functions": 1,
+  "annotation_final_prior_values": {
+    "path": "local\\ghidra-annotations-20261016T013531Z.json",
+    "sha256": "f3247b59fce6e9d367a74bb1987c15cddd55ae4fb1242c1b1acd33ffcc93ffea",
+    "prior_values": [
+      {
+        "address": "0046a9f0",
+        "before": {
+          "address": "0046a9f0",
+          "function_name": "BSP_SceneDatabase_ClearPendingReferences",
+          "comment": "[BSP reconstruction 0046a9f0]\nHypothesis, not a recovered symbol. __thiscall(void), RET 0, on the {count, head, tail} list at scene database +14Ch. Empties the list: each node with a non-null [node+8] runs 00469010 then frees that block, otherwise it is unlinked; then the node itself is freed and the count decremented. Ghidra shows a single-node pop because the fall-through after the _free call at 00bf65ac is dropped by a no-return annotation; the listing gaps 0046aa17..0046aa21 and 0046aa52..0046aa5c decode to \"add esp,4 / mov [esi+8],0\" and \"add esp,4 / cmp [edi],0 / jne 0x46aa00\", the loop back edge. Called at entry of every 0046df00 pass and as the tail call of 0046aab0. Packet scene_file_reader, read-only analysis; see docs/SCENE_FILE_READER.md.\n\n[BSP reconstruction 0046a9f0] update\nHypothesis, not a recovered symbol. __thiscall(void), RET 0, on the {count, head, tail} list at scene database +14Ch. Empties the list: each node with a non-null [node+8] runs 00469010 then frees that block, otherwise it is unlinked; then the node itself is freed and the count decremented. Ghidra shows a single-node pop because the fall-through after the _free call at 00bf65ac is dropped by a no-return annotation; the listing gaps 0046aa17..0046aa21 and 0046aa52..0046aa5c decode to \"add esp,4 / mov [esi+8],0\" and \"add esp,4 / cmp [edi],0 / jne 0x46aa00\", the loop back edge. Called at entry of every 0046df00 pass and as the tail call of 0046aab0. Packet scene_file_reader, read-only analysis; see docs/SCENE_FILE_READER.md. | Packet cc2_scene_deferred_refs: +14Ch and +150h are one list, not two. +14Ch is the {count, head, tail} header this function takes as its this, +150h is that header's head pointer, and 0046aab0 walks the head and then tail-jumps here on this+14Ch, so the list it clears is the one it just drained. 00469610 confirms the header address: LEA ECX,[ESI+0x14c] at 0046965e with ESI the scene database. Node layout {prev +0h, next +4h, record +8h}; the record is destroyed by 00469010 and freed, then the node is freed and the count decremented, whatever the record's resolution outcome was. docs/SCENE_DEFERRED_REFS.md.\n\n[BSP reconstruction 0046a9f0] update\nHypothesis, not a recovered symbol. __thiscall(void), RET 0, on the {count, head, tail} list at scene database +14Ch. Empties the list: each node with a non-null [node+8] runs 00469010 then frees that block, otherwise it is unlinked; then the node itself is freed and the count decremented. Ghidra shows a single-node pop because the fall-through after the _free call at 00bf65ac is dropped by a no-return annotation; the listing gaps 0046aa17..0046aa21 and 0046aa52..0046aa5c decode to \"add esp,4 / mov [esi+8],0\" and \"add esp,4 / cmp [edi],0 / jne 0x46aa00\", the loop back edge. Called at entry of every 0046df00 pass and as the tail call of 0046aab0. Packet scene_file_reader, read-only analysis; see docs/SCENE_FILE_READER.md. | Packet cc2_scene_deferred_refs: +14Ch and +150h are one list, not two. +14Ch is the {count, head, tail} header this function takes as its this, +150h is that header's head pointer, and 0046aab0 walks the head and then tail-jumps here on this+14Ch, so the list it clears is the one it just drained. 00469610 confirms the header address: LEA ECX,[ESI+0x14c] at 0046965e with ESI the scene database. Node layout {prev +0h, next +4h, record +8h}; the record is destroyed by 00469010 and freed, then the node is freed and the count decremented, whatever the record's resolution outcome was. docs/SCENE_DEFERRED_REFS.md. | Whole110B43opactualrawlistclear:CURRENTcount/head,capturednode/record;actual469010/currentCRTfree/record8zero;CURRENTprev/nextwrites,reloadnextfortestandAGAINfortarget/freshprev;CURRENTcount-1wrap/freecapturednode/reloadcount/head. NoHost/callback/popfront/guard/snapshot/rollback/headerrepair. Explicitchildsavedthis4;realintegratedproviders. LivePEequal/5typedtransfersincludingAC34actualE9JMPpreservedCALL_RETURN;Originalheap/FH3/privateABI/gameunproved. docs/GOAL_OCT15_SCENE_COMMAND_LIST_CLEAR.md"
+        },
+        "after": {
+          "address": "0046a9f0",
+          "name": "BSP_SceneDatabase_ClearPendingReferences",
+          "evidence": "Hypothesis, not a recovered symbol. __thiscall(void), RET 0, on the {count, head, tail} list at scene database +14Ch. Empties the list: each node with a non-null [node+8] runs 00469010 then frees that block, otherwise it is unlinked; then the node itself is freed and the count decremented. Ghidra shows a single-node pop because the fall-through after the _free call at 00bf65ac is dropped by a no-return annotation; the listing gaps 0046aa17..0046aa21 and 0046aa52..0046aa5c decode to \"add esp,4 / mov [esi+8],0\" and \"add esp,4 / cmp [edi],0 / jne 0x46aa00\", the loop back edge. Called at entry of every 0046df00 pass and as the tail call of 0046aab0. Packet scene_file_reader, read-only analysis; see docs/SCENE_FILE_READER.md. | Packet cc2_scene_deferred_refs: +14Ch and +150h are one list, not two. +14Ch is the {count, head, tail} header this function takes as its this, +150h is that header's head pointer, and 0046aab0 walks the head and then tail-jumps here on this+14Ch, so the list it clears is the one it just drained. 00469610 confirms the header address: LEA ECX,[ESI+0x14c] at 0046965e with ESI the scene database. Node layout {prev +0h, next +4h, record +8h}; the record is destroyed by 00469010 and freed, then the node is freed and the count decremented, whatever the record's resolution outcome was. docs/SCENE_DEFERRED_REFS.md. | Whole110B43opactualrawlistclear:CURRENTcount/head,capturednode/record;actual469010/currentCRTfree/record8zero;CURRENTprev/nextwrites,reloadnextfortestandAGAINfortarget/freshprev;CURRENTcount-1wrap/freecapturednode/reloadcount/head. NoHost/callback/popfront/guard/snapshot/rollback/headerrepair. Explicitchildsavedthis4;realintegratedproviders. LivePEequal/5typedtransfersincludingAC34actualE9JMPpreservedCALL_RETURN;Originalheap/FH3/privateABI/gameunproved. docs/GOAL_OCT15_SCENE_COMMAND_LIST_CLEAR.md | Independentwhole110B43ops/native/Source/headerreviewf480f28a8passed;accepted/builtSourceand10providerhashesunchanged. Primaryscripts/build.ps1MSVCReleaseWin32at280da46334585045bf516ad2d54b90e2d53f35d0passed3existingchecks9.89s;uniqueregistered/archiveobject;wholeemittedrawscheduleinspected. Actualcapturednode/record,conditionalfree-record8zero,CURRENTprev-nextreloads/orderedstores,count-1/freeCAPTUREDnode/CURRENTcount-head;noHost/callback/guard/popfront/rollback. 110BlivePE43ops/5trueCALL-JMProws;AC34nativeE9/CALL_RETURNpreserved;childCppcleanup/currentCRTqualified,Originalheap/FH3/SEH/privateABI/gameunproved. docs/GOAL_OCT15_SCENE_COMMAND_LIST_CLEAR.md"
+        },
+        "status": "applied"
+      }
+    ]
+  }
+}

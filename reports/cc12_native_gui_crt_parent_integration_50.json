@@ -1,0 +1,116 @@
+{
+  "packet": "cc12_native_gui_crt_parent_integration_50",
+  "compiled_source": "a856042b09dd9a389a0b2bfbed1616125f067915",
+  "status": "three_whole_parents_source_reviewed_registered_build_passed_actual_CRT_provider_and_native_GUI_adoption_pending",
+  "parents": [
+    {
+      "packet": 46,
+      "commit": "794d8cbb48a6f35455bcfa513c19c1931c8586ef",
+      "stem": "native_crt_stricmp",
+      "doc": "CC12_NATIVE_CRT_STRICMP_PARENT_46",
+      "report": "cc12_native_crt_stricmp_parent_46",
+      "address": "00bf7fbf",
+      "library": "__stricmp",
+      "bytes": 80,
+      "instructions": 32,
+      "controlled_service_cases": 4,
+      "registered_entries": 1,
+      "source_files": [
+        {
+          "path": "include/bsp/native_crt_stricmp.hpp",
+          "git_blob": "5744ec041f3292e4f03f54084ee774f1bd902bb6",
+          "sha256": "f09ff088480b1db82a49dc5d185956062fd5118e3cb7b70e008c04726a59b92f"
+        },
+        {
+          "path": "src/native_crt_stricmp.cpp",
+          "git_blob": "bcf4db4d62e597a98919db01f4517179606414af",
+          "sha256": "e706069c71de1de114a98ed21cc37832fc0a3f1c00bb52ef8992e2f7422d1c8d"
+        }
+      ]
+    },
+    {
+      "packet": 48,
+      "commit": "eda6c52d4df39d3cdfd7bdec4aa1a25c85aba0e9",
+      "stem": "native_crt_wcsicmp_locale",
+      "doc": "CC12_NATIVE_CRT_WCSICMP_LOCALE_48",
+      "report": "cc12_native_crt_wcsicmp_locale_48",
+      "address": "00c0392a",
+      "library": "__wcsicmp_l",
+      "bytes": 271,
+      "instructions": 105,
+      "controlled_service_cases": 9,
+      "registered_entries": 1,
+      "source_files": [
+        {
+          "path": "include/bsp/native_crt_wcsicmp_locale.hpp",
+          "git_blob": "8b1825b3c199105d43b52cbc08f0ccc54f68de7d",
+          "sha256": "382c2956db776846651036dab8f9484fa536fe5bb864a0e378c47dedb371d88f"
+        },
+        {
+          "path": "src/native_crt_wcsicmp_locale.cpp",
+          "git_blob": "6bfd72ab77f119f184bbad1716b19f4ffbd5f57e",
+          "sha256": "f2b009b8175b9f1db0356b385b0b9ff1ef0c55282c5ce6f97cf076d303f46d62"
+        }
+      ]
+    },
+    {
+      "packet": 49,
+      "commit": "10e71bbf9850aac7f3ba08f1ed796ef99e39cb62",
+      "stem": "native_crt_wcsicmp",
+      "doc": "CC12_NATIVE_CRT_WCSICMP_PARENT_49",
+      "report": "cc12_native_crt_wcsicmp_parent_49",
+      "address": "00c03a39",
+      "library": "__wcsicmp",
+      "bytes": 145,
+      "instructions": 56,
+      "controlled_service_cases": 6,
+      "registered_entries": 1,
+      "source_files": [
+        {
+          "path": "include/bsp/native_crt_wcsicmp.hpp",
+          "git_blob": "e41ddf1e860bed1a136fdae0cad23a075fff2751",
+          "sha256": "937ca41fa72263ec61ca8e80a7726c67672dca23f25b26799e8aa19f58025f72"
+        },
+        {
+          "path": "src/native_crt_wcsicmp.cpp",
+          "git_blob": "4753f17a6ee28855305b3f636d633475d106e7aa",
+          "sha256": "ded240153f3a8d3c82c696a4422daed351f8c65b58e369541b42f47be253280f"
+        }
+      ]
+    }
+  ],
+  "primary_review": {
+    "verdict": "pass",
+    "worker_blobs_unchanged": true,
+    "scope": "Whole parent control/error/width/callback/normal-cleanup semantics over explicitly borrowed required services; Source layout/alias domain retained"
+  },
+  "canonical_build": {
+    "script": "./scripts/build.ps1",
+    "exit_code": 0,
+    "new_sources_compiled_in_bsp_core": true,
+    "tests_passed": 3,
+    "tests_total": 3,
+    "ctest_seconds": 10.05
+  },
+  "controlled_service_native_cases": 19,
+  "game_run_for_this_batch": false,
+  "production_CRT_or_GUI_binding_created": false,
+  "not_proved": [
+    "Actual CRT current locale/PTD/TLS/errno/invalid-handler owner domain",
+    "Entire Original callee subtrees",
+    "Native fault/SEH/throwing callback/private stack alias equivalence",
+    "Original entry binary ABI",
+    "Native Text drawing or gameplay"
+  ],
+  "last_separate_normal_startup_evidence": "reports/cc12_native_gui_raw_group_integration_43.json",
+  "original_installed_exe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "original_hash_verified_unchanged": true,
+  "evidence": {
+    "directory": "local\\cc12_native_gui_crt_parent_integration_50",
+    "archive": "local\\cc12_native_gui_crt_parent_integration_50\\evidence_family.zip",
+    "archive_sha256": "cb0088ea5d67092d3257c8b0dc3db7b6fa94bf1c8a1b05756e339f75bb1b4b6d",
+    "manifest_sha256": "8bde1f436c726b7dc8b34a38dc5b78b967bc350f906f01aeeeb3460604d9f3a8",
+    "payloads": 19,
+    "payload_hashes_verified": true
+  }
+}

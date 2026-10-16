@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_resolve_clear_primary_review",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 2,
+  "private_source_cleanup_actions": 0,
+  "native_bytes": 188,
+  "native_instructions": 66,
+  "spans": [
+    {
+      "address": "00521ea0",
+      "native_bytes": 78,
+      "instructions": 23,
+      "scope": "whole actual kind/cache/WORDid/current5globalcells raw resolver;no children",
+      "live_equals_installed": true,
+      "sha256": "a04bc6c38320dad595e7756b5fdc58ab935cfa0638b560c88d716fff6e8c24a9"
+    },
+    {
+      "address": "0046a9f0",
+      "native_bytes": 110,
+      "instructions": 43,
+      "scope": "whole actual count/head/tail/node/record clear via genuine integrated destructor/currentCRTfree",
+      "live_equals_installed": true,
+      "sha256": "febbdb28b3f2c712db2dd4f9d4e415756bc64afc8d756cd4082eeab0da8da884"
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct15_command_target_resolve.json",
+    "reports/goal_oct15_scene_command_list_clear.json"
+  ],
+  "typed_transfer_rows_checked": 8,
+  "typed_transfer_rows_failed": 0,
+  "independent_reviews": [
+    "Allocation worker independently reviewed whole78B23ops plus completeSource/header/doc;zeroBYTE/cachetest/freshcache,signedsplit/modulowrap/currentselectedbase-table and lowcaptured/highfreshreturn matched",
+    "Primary independently reviewed whole110B43ops plus completeSource/header;conditionalcapturedrecordfree/then capturednode8zero,currentprev/nextbranchwrites,freshnexttest+nexttarget/prev,currentcountdecrement/freecapturednode/reloadedcount-head matched"
+  ],
+  "source_hashes": {
+    "src/native_command_target_resolve.cpp": "392afbc85cc68c09aab2dc7440ecd35378ae20979edeb459d12f3290cab07db3",
+    "include/bsp/native_command_target_resolve.hpp": "2f8df78edd6959286b050e45ac6522ec765afecb3a01631408f63b1dfe306363",
+    "src/native_scene_command_list_clear.cpp": "97770e53d5e1cd9e577a88327022ecc6fc986ae64c5013855c60ab8d3dc31205",
+    "include/bsp/native_scene_command_list_clear.hpp": "c5fced97aa4b04f40d676fbb4a65f7b2e1a8392534a5d5f57df87829aff03377"
+  },
+  "combined_build": {
+    "revision": "280da46334585045bf516ad2d54b90e2d53f35d0",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_resolve_clear_combined_build.log",
+    "log_sha256": "8db2c524c2da91461a8d7335f47b4dd85bb7b35fe86236d469dbf97c58b315a4",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 9.89,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+    "scope": "existing regression checks; native math seeds do not execute these new bodies"
+  },
+  "project_source_counts": {
+    "native_command_target_resolve": 1,
+    "native_scene_command_list_clear": 1
+  },
+  "unique_archive_objects": {
+    "native_command_target_resolve": [
+      "bsp_core.dir\\Release\\native_command_target_resolve.obj"
+    ],
+    "native_scene_command_list_clear": [
+      "bsp_core.dir\\Release\\native_scene_command_list_clear.obj"
+    ]
+  },
+  "archive_sha256": "e3e4cf0447f80825d16e62e1bbce1a15999cf2f32edf26a0e3bf1c716ef3efbf",
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "New explicit raw/live-frame/currentCRT Source APIs,not Original register/private-stack/argument-home/heap/FH3/fault ABI identity",
+    "The cleanup is a canonical Source guard mapping,not a new private-frame binary entry",
+    "Existing math differential seeds do not execute these new bodies; no application or game proof",
+    "Resolver has no dependencies/calls and retains allBYTE/WORD/DWORD raw widths;actualinitialized selected table storage remains caller-owned",
+    "List clear inherits concrete raw command destructor and current matchingCRT free contracts;qualified child cleanup supplies no OriginalFH3/SEH/heap identity",
+    "Existing implicit compiler cleanup statement in common receipt is not a new cleanup action:these two entries add zero such actions;transitive child cleanup remains separately qualified"
+  ],
+  "retained_emitted_objects": {
+    "native_command_target_resolve": {
+      "path": "local\\goal_oct15_resolve_clear_objects\\native_command_target_resolve.obj",
+      "sha256": "f1a827418794df37ecf1bdc61108796b0401df9110248c97fe44e4a58671e3f3",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct15_resolve_clear_objects\\native_command_target_resolve.disasm.txt",
+      "symbols": "local\\goal_oct15_resolve_clear_objects\\native_command_target_resolve.symbols.txt"
+    },
+    "native_scene_command_list_clear": {
+      "path": "local\\goal_oct15_resolve_clear_objects\\native_scene_command_list_clear.obj",
+      "sha256": "6e25c49b5fe87ac260b66c36a4bffed918c6fe23021f0841e7a61dd8de5894f7",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct15_resolve_clear_objects\\native_scene_command_list_clear.disasm.txt",
+      "symbols": "local\\goal_oct15_resolve_clear_objects\\native_scene_command_list_clear.symbols.txt"
+    }
+  },
+  "scope": "Whole ordinary actual-storage Source at concrete providers;no general entityissue/drain/lookup completion or new OriginalCRT/privateABI/game claim"
+}

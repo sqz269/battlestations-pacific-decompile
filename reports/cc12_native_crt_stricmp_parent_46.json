@@ -1,0 +1,257 @@
+{
+  "packet": "cc12_native_crt_stricmp_parent_46",
+  "baseline_commit": "b8aa1de49f4b2c77c880347df52f88628574ba0f",
+  "scope": "whole Original parent over explicit borrowed cell and required callee services; no production CRT provider",
+  "original": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "address": "00BF7FBF",
+    "name": "__stricmp",
+    "extent_start": "00BF7FBF",
+    "extent_end_exclusive": "00BF800F",
+    "bytes": 80,
+    "instructions": 32,
+    "basic_blocks": 7,
+    "control_flow_edges": 8,
+    "callee_count": 4,
+    "abi": "Win32 x86 cdecl int(char*,char*); stack left/right, EAX result, preserves ESI; valid zero-flag arm tail-jumps existing ASCII leaf",
+    "install": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "size": 12223752,
+      "body_file_offset": "0x7f7fbf",
+      "body_sha256": "59368fa18343310b9ad2c79521361749d54ef8c2a78fd837a44be5ce67efaf6a",
+      "body_hex": "558bec5633f639351cde09017530397508751fe8b47b00005656565656c70016000000e808e7ffff83c414b8ffffff7feb1b39750c74dc5e5de9bafeffff56ff750cff7508e8e3feffff83c40c5e5dc3"
+    }
+  },
+  "source": {
+    "header": "include/bsp/native_crt_stricmp.hpp",
+    "implementation": "src/native_crt_stricmp.cpp",
+    "symbol": "bsp::compare_native_crt_strings_00bf7fbf",
+    "required_services": [
+      "borrowed live volatile int32 cell 0109DE1C",
+      "00BFFB8B returned writable external errno DWORD cell",
+      "00BF66EF invalid-parameter call with five DWORD arguments",
+      "00BF7EEC locale comparator with unchanged left/right and null third locale"
+    ],
+    "existing_dependency": "bsp::compare_native_crt_ascii_strings_00bf7eb7",
+    "new_global_or_owner": false,
+    "default_service_implementations": false,
+    "cmake_registration": "Root-owned after integration; deliberately unchanged here",
+    "git_blobs": {
+      "include/bsp/native_crt_stricmp.hpp": "5744ec041f3292e4f03f54084ee774f1bd902bb6",
+      "src/native_crt_stricmp.cpp": "bcf4db4d62e597a98919db01f4517179606414af"
+    }
+  },
+  "control_contract": {
+    "flag_read_before_input_checks": true,
+    "zero_flag_valid_inputs": "existing unsigned-BYTE ASCII leaf",
+    "zero_flag_null_input": "errno getter once, store 0x16 (22 decimal), five-zero handler once, INT_MAX only if handler returns",
+    "nonzero_flag": "locale delegate once, even for null inputs, null third locale; no parent errno/invalid-handler activity",
+    "callee_exceptions": "not caught, replayed or substituted",
+    "private_frame_aliasing": "excluded from supplied external-cell domain; Original pushes five zeros before errno store"
+  },
+  "differential": {
+    "status": "passed",
+    "compile_exit_code": 0,
+    "run_exit_code": 0,
+    "toolchain": "MSVC Win32 /std:c++17 /O2 /MD /EHsc /W4 /WX /link /MANIFEST:EMBED /INCREMENTAL:NO",
+    "probe_source": "local/cc12_native_crt_stricmp_parent_46_probe.cpp",
+    "executable": "local/cc12_crt_stricmp_probe.exe",
+    "log": "local/cc12_crt_stricmp_probe.log",
+    "whole_original_wrapper_bytes": 80,
+    "all_unpatched_bytes_audited": true,
+    "internal_short_branches_audited": 4,
+    "same_service_trace_for_source_and_original": true,
+    "fixups": [
+      {
+        "site": "00BF7FC7",
+        "kind": "absolute DWORD operand",
+        "original": "0109DE1C",
+        "replacement": "probe volatile cell"
+      },
+      {
+        "site": "00BF7FD2",
+        "kind": "CALL rel32",
+        "original": "00BFFB8B",
+        "replacement": "same errno service"
+      },
+      {
+        "site": "00BF7FE2",
+        "kind": "CALL rel32",
+        "original": "00BF66EF",
+        "replacement": "same five-DWORD handler service"
+      },
+      {
+        "site": "00BF7FF8",
+        "kind": "JMP rel32",
+        "original": "00BF7EB7",
+        "replacement": "existing Source ASCII leaf"
+      },
+      {
+        "site": "00BF8004",
+        "kind": "CALL rel32",
+        "original": "00BF7EEC",
+        "replacement": "same three-argument locale service"
+      }
+    ],
+    "cases": [
+      {
+        "name": "zero_valid_ascii",
+        "result": -30,
+        "errno": -99,
+        "getter": 0,
+        "invalid": 0,
+        "locale": 0
+      },
+      {
+        "name": "zero_null_left",
+        "result": 2147483647,
+        "errno": 22,
+        "getter": 1,
+        "invalid": 1,
+        "locale": 0,
+        "event_order": [
+          "get_errno",
+          "handler_saw_errno_22_and_five_zeros"
+        ]
+      },
+      {
+        "name": "zero_null_right",
+        "result": 2147483647,
+        "errno": 22,
+        "getter": 1,
+        "invalid": 1,
+        "locale": 0,
+        "event_order": [
+          "get_errno",
+          "handler_saw_errno_22_and_five_zeros"
+        ]
+      },
+      {
+        "name": "nonzero_locale_null_input",
+        "result": -1234567,
+        "errno": -99,
+        "getter": 0,
+        "invalid": 0,
+        "locale": 1,
+        "locale_arguments": "unchanged null left, inaccessible nonnull right, null locale"
+      }
+    ],
+    "compile_command": "VsDevCmd.bat -arch=x86 -host_arch=x64; cl /nologo /std:c++17 /O2 /MD /EHsc /W4 /WX /I include /Folocal/cc12_crt_stricmp_probe.obj /Felocal/cc12_crt_stricmp_probe.exe local/cc12_native_crt_stricmp_parent_46_probe.cpp /link /MANIFEST:EMBED /INCREMENTAL:NO",
+    "run_command": "local/cc12_crt_stricmp_probe.exe \"I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe\"",
+    "embedded_manifest": {
+      "resource_path": [
+        24,
+        1,
+        1033
+      ],
+      "size": 381,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+      "requested_execution_level": "asInvoker"
+    }
+  },
+  "validation": {
+    "seed_bytes": "8/8 verified before build",
+    "repository_build": {
+      "status": "passed",
+      "exit_code": 0,
+      "command": "./scripts/build.ps1",
+      "configuration": "Release Win32",
+      "baseline_commit": "b8aa1de49f4b2c77c880347df52f88628574ba0f",
+      "log": "local/cc12_native_crt_stricmp_parent_46_build.log",
+      "tests_passed": 3,
+      "tests_failed": 0,
+      "tests": [
+        {
+          "name": "reconstructed_math",
+          "seconds": 0.26
+        },
+        {
+          "name": "native_math_differential",
+          "seconds": 0.05
+        },
+        {
+          "name": "tool_tests",
+          "seconds": 10.14
+        }
+      ],
+      "ctest_total_seconds": 10.54,
+      "new_source_registered_in_cmake": false,
+      "boundary": "baseline repository build; new Source header/body directly compiled and exercised in focused probe; Root owns CMake registration after integration"
+    },
+    "annotation": {
+      "status": "saved_and_refreshed",
+      "history_file": "local/ghidra-annotations-20261016T010821Z.json",
+      "history_sha256": "6b596dbf50726db9f96ec80ca3679beb5705aa725b208459ace7702784440429",
+      "write_lock": "tools/ghidra_annotate.py --apply --addresses 00BF7FBF uses coordination.ghidra_lock",
+      "preserved_library_name": "__stricmp",
+      "preserved_plate_comment": "Library Function - Single Match / __stricmp / Visual Studio 2005 Release",
+      "post_annotation_checks": [
+        "same name, two-argument cdecl signature, inclusive extent00BF7FBF..00BF800E and32 instructions",
+        "all80 bytes unchanged",
+        "evidence comment appended; original library plate prefix preserved",
+        "exports/bsp/functions/00bf7fbf refreshed"
+      ],
+      "neighbor_functions_mutated": false
+    },
+    "original_install_unchanged": true,
+    "original_install_recheck_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ledger_index_refreshed": true,
+    "staged_whitespace": "git diff --cached --check passed before final receipt update; repeated before commit"
+  },
+  "hashes": {
+    "include/bsp/native_crt_stricmp.hpp": {
+      "sha256": "f09ff088480b1db82a49dc5d185956062fd5118e3cb7b70e008c04726a59b92f",
+      "size": 2299
+    },
+    "src/native_crt_stricmp.cpp": {
+      "sha256": "e706069c71de1de114a98ed21cc37832fc0a3f1c00bb52ef8992e2f7422d1c8d",
+      "size": 912
+    },
+    "local/cc12_native_crt_stricmp_parent_46_probe.cpp": {
+      "sha256": "34952dab1cbfdffe463a4b83c2e9baf182b731869bc736a6bd9804cdab3fc182",
+      "size": 10466
+    },
+    "local/cc12_crt_stricmp_probe.exe": {
+      "sha256": "a582d558eb85c184e435674ce2b877975746688f013bf0c1cff615f47ddb1473",
+      "size": 27648
+    },
+    "local/cc12_crt_stricmp_probe.log": {
+      "sha256": "a1a9fa3eddeb3f36a1504e6fc1c4afe20f407ed828c16621aed2c49919e52c8b",
+      "size": 783
+    },
+    "include/bsp/native_crt_ascii_stricmp.hpp": {
+      "sha256": "b62a16f1efbfc03d33e61eb33250885af5ccca224303f8f8cd959883dc97a3e9",
+      "size": 894
+    },
+    "src/native_crt_ascii_stricmp.cpp": {
+      "sha256": "3fe3b237b778e9500e30c11dbbb43f295c24915a2836bd097ceec04760125368",
+      "size": 1257
+    },
+    "local/cc12_native_crt_stricmp_parent_46_build.log": {
+      "sha256": "c19352d43aa810a2f91d2dfccbdc4de0fd0d86835f3b33a9220ae23f1c3b868e",
+      "size": 93702
+    }
+  },
+  "ledger_record": {
+    "address": "00BF7FBF",
+    "name": "__stricmp",
+    "source": "src/native_crt_stricmp.cpp",
+    "status": "whole_parent_source_provided_callee_domain_MSVC_Win32_differential4",
+    "cpp_symbol": "bsp::compare_native_crt_strings_00bf7fbf",
+    "original_abi": "Win32 x86 int __cdecl(char*,char*); EAX result, ESI preserved, valid zero-flag arm tail-jumps BF7EB7",
+    "evidence": "docs/CC12_NATIVE_CRT_STRICMP_PARENT_46.md; reports/cc12_native_crt_stricmp_parent_46.json; whole80B/32ins Original wrapper, five audited external replacements, four branch cases with shared supplied services; errno22 before five-zero handler; changed mode forwards null inputs and null locale",
+    "uncertainty": "new C++ supplied-domain API, not drop-in Original ABI; actual 0109DE1C/errno/TLS/invalid-handler/__stricmp_l production provider unresolved; no GUI activation"
+  },
+  "not_claimed": [
+    "actual locale/TLS/errno or invalid-handler production owner",
+    "Original ASCII leaf executed by this parent probe",
+    "exception/fault/private-stack-alias equivalence",
+    "drop-in Original ABI or SEH compatibility",
+    "production GUI comparer activation",
+    "full native Text drawing, visual parity, or gameplay completion"
+  ],
+  "prior_host_substitution_record": "preserved separately; not replaced",
+  "captured_utc": "2026-10-16T01:20:27.594708+00:00"
+}

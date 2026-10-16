@@ -1,0 +1,89 @@
+{
+  "packet": "cc12_native_crt_wcsicmp_parent_49",
+  "status": "whole_parent_source_strict_win32_compile_and_controlled_native_differential_passed",
+  "base_main": "298d0f451deb05fc4f8cf59c58b1577f83cc5630",
+  "original": {
+    "entry": "00c03a39",
+    "preserved_library_name": "__wcsicmp",
+    "end_exclusive": "00c03aca",
+    "byte_count": 145,
+    "instruction_count": 56,
+    "abi": "cdecl(two stacked wchar pointers), EAX signedint, plainRET at00C03AC9, preserves ESI/EDI",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_batches": true,
+    "analysis": "Full bsp.py show pseudocode, then complete assembly and live bytes; read-only existing BFFB8B and BF66EF evidence",
+    "gate": "Actual DWORD0109DE1C sampled before pointer checks; nonzero delegates exact left,right,NULLlocale to C0392A",
+    "zero_gate_validation": "Left then right; BFFB8B errnoaddress ->literal0x16(22decimal) store ->BF66EF fivezeroDWORDslots ->INT_MAX if handler returns",
+    "valid_loop": "Ordered unsignedWORD left/right reads, A..Z-only folding, +2both Win32 cursors, leftNUL before equality, zeroextendedWORD difference",
+    "callee_targets": ["00bffb8b", "00bf66ef", "00c0392a"],
+    "body_sha256": "32666e0611c1f21b5d9ed707f5c2f01d92fa1a395d204d2cae4def038b2aaa61",
+    "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_matches_installed_pe": true
+  },
+  "source": {
+    "header": "include/bsp/native_crt_wcsicmp.hpp",
+    "implementation": "src/native_crt_wcsicmp.cpp",
+    "function": "compare_native_crt_wide_strings_00c03a39",
+    "source_ready": true,
+    "whole_control_flow_source_available": true,
+    "borrowed_gate": "const volatile int32_t& actual_locale_changed_0109de1c",
+    "required_services": ["owning CRT errno address BFFB8B", "five raw DWORD invalid-parameter slots BF66EF", "three-argument C0392A locale comparison"],
+    "locale_view": "Forward declaration of SAME packet48 NativeCrtWcsicmpLocaleView; only nullptr forwarded",
+    "no_default_crt_locale_tls_errno_or_global_provider": true,
+    "header_sha256": "937ca41fa72263ec61ca8e80a7726c67672dca23f25b26799e8aa19f58025f72",
+    "implementation_sha256": "ded240153f3a8d3c82c696a4422daed351f8c65b58e369541b42f47be253280f"
+  },
+  "differential": {
+    "status": "passed",
+    "source": "local/cc12_native_crt_wcsicmp_parent_49/parent49_probe.cpp",
+    "log": "local/cc12_native_crt_wcsicmp_parent_49/probe.log",
+    "full_audit": "local/cc12_native_crt_wcsicmp_parent_49/parent49-audit.json",
+    "whole_relocated_original_bytes": 145,
+    "all_instructions_audited": 56,
+    "relocations": [
+      {"offset": 5, "bytes": 4, "kind": "absolute cell", "original_target": "0109de1c"},
+      {"offset": 21, "bytes": 4, "kind": "relative call", "original_target": "00bffb8b"},
+      {"offset": 37, "bytes": 4, "kind": "relative call", "original_target": "00bf66ef"},
+      {"offset": 135, "bytes": 4, "kind": "relative call", "original_target": "00c0392a"}
+    ],
+    "all_other_bytes_and_internal_branches_preserved": true,
+    "cases": [
+      {"name": "zero-fold-loop-equal", "result": 0},
+      {"name": "zero-left-NUL-right-high", "result": -65535},
+      {"name": "zero-left-high-right-NUL", "result": 65535},
+      {"name": "zero-null-left", "result": 2147483647},
+      {"name": "zero-null-right", "result": 2147483647},
+      {"name": "nonzero-null-inputs-delegate", "result": -123456789}
+    ],
+    "controlled_service_checks": "Exact pointer/NULLlocale identity, errno22 before fivezero handler, later handler errno write and changedcell mutation preserved, unchanged delegate result/effects",
+    "compile": "MSVC Win32 /MD /O2 /W4 /WX; /MANIFEST:EMBED",
+    "real_crt_service_bodies_validated": false
+  },
+  "validation": {
+    "new_translation_unit_strict_compile": "passed",
+    "merged_baseline_canonical_build": "scripts/build.ps1 exited0",
+    "build_log": "local/cc12_native_crt_wcsicmp_parent_49/build.log",
+    "existing_enabled_ctest": {"passed": 2, "failed": 0, "names": ["reconstructed_math", "tool_tests"]},
+    "cmake_registration": "Root-owned upcoming combined46/48/49 batch; baseline CMake does not yet register49 source",
+    "permanent_tests_added": 0,
+    "primary_early_source_review": "Root reported no blocking finding; final committed blobs await integration review"
+  },
+  "annotation": {
+    "method": "Canonical ghidra_annotate.py --apply --addresses00c03a39 with write lock and program verification",
+    "name_preserved": true,
+    "library_plate_comment_preserved": true,
+    "prior_values_history": "local/ghidra-annotations-20261016T010952Z.json",
+    "saved_program": true,
+    "export_refreshed": true,
+    "unrelated_body_repairs_or_tags": false,
+    "owned_ledger_shards": ["config/names/00c00000.jsonl", "config/reconstruction/00c00000.jsonl"]
+  },
+  "remaining_prerequisites": [
+    "Application's genuine live0109DE1C cell and owning CRT errno/handler/locale providers",
+    "Root CMake registration and combined build",
+    "Explicit adapter if used by existing two-argument GUI Source comparison projection"
+  ],
+  "not_claimed": ["Original cdecl/register/entry/privateargumenthome/fault/SEH ABI equivalence", "Complete CRT domain", "Native GUI integration", "Native Text drawing", "Rendering or gameplay"],
+  "runtime_game_audio_or_installation_changes": false
+}
