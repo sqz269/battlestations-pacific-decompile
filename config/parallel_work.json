@@ -42834,8 +42834,8 @@
     {
       "id": "cc12_native_crt_strstr_readiness_oct16",
       "done": true,
-      "state": "whole_Original_static_readiness_interior_tail_contract_blocked",
-      "source_ready": false,
+      "state": "whole_Original_and_interior_provider_concrete_Source_contract_closed",
+      "source_ready": true,
       "source_authorized": false,
       "Source_credit": 0,
       "function_addresses": [
@@ -42855,12 +42855,14 @@
         "Whole134B/66-instruction static readiness complete only; Source blocked by register-prepared JMP00BF94B4 to interior00BF86F6.",
         "Exact captured outgoing state is not provider behavior; no callable cdecl/SDK substitution or projection.",
         "Later separately scoped/leased interior-entry contract recovery required; no current provider/caller body expansion."
-      ]
+      ],
+      "provider_primary_review": "reports/cc12_native_crt_strchr_interior_primary_review.json",
+      "next_Source_packet": "cc12_native_crt_strstr_00bf9440"
     },
     {
       "id": "cc12_native_crt_strncpy_00bf9280",
-      "done": false,
-      "state": "whole_ordinary_Original_primary_independent_pass_Source_authorized_compiler_Main_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
       "source_ready": true,
       "function_addresses": [
         "00bf9280"
@@ -42892,7 +42894,92 @@
         "Onlyfour canonical Source/header/doc/report outputs afterentry/full292B/fourfilelease in NEW isolated exactpublishedgate checkout. Fresh physicalcurrent Source/header/compiler/support/runtime/headercandidate/toolpins BEFOREfirstuse; onegenuine strictHostX86/x86 /std:c++17 /O2 /W4 /WX /permissive- /fp:strict /EHsc /MD compile andactualdependencyclosure Source+ownheader only; allcurrenthashmtime/Gitliteral/oldseals/currentworking/newbaselinepreservation qualified. No trial/matchingrecompile/workerbaseline/newtests/probes/emulation/selectedbodyexecution/SDKcomparison/Ghidrarepair/mutation/sharedmetadata/CMake/Main/push. Compilerfailure/mismatch stopsforRoot, no fabricatedsuccess.",
         "Acceptance pending Root+independentwhole strictSource/object PUBLIC+ALLprivatehelpers/code/metadata/sections/strings/symbolaux/relocations/internalproviderbindings/frame/callee-save/stackcleanup/resultinitialization andeverypath/count/alignment/duplicateDWORD/masks/padding/overlap/cursor proof. SeparateregisterednormalMainWin32/Core/botharchiveindices/uniqueactualmember/allhelper/privateABI/peer gates remain. Sourceimplementedfalse/Sourcecredit0 untilactualacceptedcompiler/Mainclosure; noclaim of Originalbinary/caller/runtime/gamecompatibility."
       ],
-      "Main_gate": "pending_Source_independent_strict_and_registered_Main_allhelper_frame_closure_Core_archive_peer"
+      "Main_gate": "pass",
+      "code_revision": "86baecf26ab1f9d8044ff5ff438d147584bc477b",
+      "primary_review": "reports/cc12_native_crt_strncpy_primary_review.json",
+      "Main_build_gate": "pass_3_existing_CTests",
+      "actual_compiler_archive_gate": "pass",
+      "whole_ordinary_function_credit": 1,
+      "Main_validation": "reports/cc12_native_crt_strncpy_Main_validation.json"
+    },
+    {
+      "id": "cc12_native_crt_strchr_interior_readiness_oct16",
+      "done": true,
+      "state": "whole_interior_provider_readiness_primary_independent_pass",
+      "source_ready": true,
+      "source_authorized": false,
+      "Source_credit": 0,
+      "function_addresses": [
+        "00bf86f0"
+      ],
+      "interior_addresses": [
+        "00bf86f6"
+      ],
+      "code_ranges": [
+        "00bf86e0-00bf86e4",
+        "00bf86f0-00bf87ad"
+      ],
+      "output_files": [
+        "docs/NATIVE_CRT_STRCHR_INTERIOR_READINESS.md",
+        "reports/native_crt_strchr_interior_readiness.json",
+        "reports/cc12_native_crt_strchr_interior_primary_review.json"
+      ],
+      "depends_on": [],
+      "readiness": "reports/cc12_native_crt_strchr_interior_primary_review.json",
+      "contract": [
+        "Whole195B89providercontract closed; BF86F6interiornotnewfunction, original11Bgapunselected/undecoded, existingstrchrSourcecreditunchanged."
+      ]
+    },
+    {
+      "id": "cc12_native_crt_strstr_00bf9440",
+      "done": false,
+      "state": "whole_Original_provider_contract_and_concrete_Source_primary_independent_pass_Source_authorized_compiler_Main_pending",
+      "source_ready": true,
+      "source_authorized": true,
+      "Source_credit": 0,
+      "function_addresses": [
+        "00bf9440"
+      ],
+      "code_ranges": [
+        "00bf9440-00bf94c5",
+        "00bf86e0-00bf86e4",
+        "00bf86f0-00bf87ad"
+      ],
+      "read_only_existing_provider_dependency": {
+        "entry": "00bf86f0",
+        "interior": "00bf86f6",
+        "Source": "src/native_crt_strchr.cpp",
+        "header": "include/bsp/native_crt_strchr.hpp",
+        "allowed_changes": false,
+        "additional_Source_credit": 0,
+        "scope": "Companion strict compile and whole emitted review only; Source/HPP byteidentical and no liveGhidra or originalbyte mutation."
+      },
+      "output_files": [
+        "include/bsp/native_crt_strstr.hpp",
+        "src/native_crt_strstr.cpp",
+        "docs/NATIVE_CRT_STRSTR.md",
+        "reports/native_crt_strstr.json"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [
+        "cc12_native_crt_strstr_readiness_oct16",
+        "cc12_native_crt_strchr_interior_readiness_oct16"
+      ],
+      "readiness": "reports/cc12_native_crt_strstr_readiness.json",
+      "contract": [
+        "New default potentially throwing MSVCWin32 void* __cdecl bsp::find_native_crt_substring_00bf9440(const void* actual_haystack,const void* actual_needle). Win32 littleendian BYTE8/pointer32/unsigned32, borrowed exactsourceaddress/rawnull return, no owner/allocation/error service. Correct Original libraryname _strstr retained; descriptive C++ name a hypothesis. No OriginalphysicalABI/register/frame/home/flag/EH/tailreturn replacement claim.",
+        "Whole Original00BF9440..00BF94C5 134B66instructions, SHA0aa74e3eadfb78899c55fa44b65c6aa4fd0cc653ad09eff41df06903fb03faa9. Preserve cached needle[0] then ifnonzero needle[1]. Emptyneedle returns originalH includingnull before Sourcepayload oradvance/needle[1]. Fornonemptyone-byte needle retain full195B89provider behavior through ordinary existing Source bridge below; no SDK/byte-loop substitute or redirecttoOriginalnormalBF86F0.",
+        "Longerneedle scansource BYTEs forward, advancingactualscanby1beforecomparing cachedfirstbyte, match-beforeNUL. AfterfirstmatchreadnextSourceBYTEandadvance1beforecomparecachedsecondbyte. Secondmismatch retries SAMEjustreadBYTE asnew firstcandidate, no skippedbyte. Onsecondmatch historicalq=ESI-2 staysfixed; restartposition=q+1, not movingextensioncursor.",
+        "Extension resetsECX=N perattempt. Readneedle[ECX+2], testzero BEFORE anypairedSource; zero successreturnsq. Otherwise readSourceatESI, advanceESI+2 BEFOREcompare, including mismatch/nextneedleNUL; mismatchrestarts q+1. Ifequal readneedle[ECX+3], zero successbeforepartnerSource. Else readSourcepartnerESI-1 thenadvanceECX+2 BEFOREcompare; equalrepeat, mismatchrestartq+1. Maintainallcached/reloadedstate/earlysuccess/failure/noextraaccess, exact1/2cursor geometry and historicalcandidateidentity.",
+        "One-byte route: OriginalBF94AD..BF94B4 restoresESP/calleesaves, EAX=zeroextendb, H=[S+4], N=[S+8], theninteriorBF86F6. ProviderconsumesONLYfullEAXzeroextendb andHhome, notECX/EDX/secondhome/needleagain. This is a staticnativecontract, not proposedphysicaladapter. Newordinarybridge uses genuine private4aligned initialized two-uint32-word array/backing {exactHbits,zeroextendb}, lifetime throughcall and disjointreachedpayload/privatecontrols; passitsactual8Baddress to existing bsp::find_native_crt_character_00bf86f0(const void* actual_parameters8). Existing API readsBYTE+4 thenDWORD+0, so doNOTpassOriginalstrstrhomes/Npointer. ProviderSource/HPP remainbyteidentical and alreadyregistered; no duplicateproviderSource orcredit.",
+        "Retain actualHlowbits. Existingprovider BYTEpeelread then+1 compareb BEFOREzero, no roundeddownDWORD. Atalignment actualDWORDW read, modulo32 D=W^repeatedb,T=W+7efefeff,U=D+7efefeff, candidateC=(~D^U)&81010100, cursor+4 beforestop. Cnonzero causes genuineSECOND DWORDread sameaddress and capturedlane comparisonslowtohigh equalityBEFOREzero. C0 usesZ=(~W^T)&81010100; Z0loop, Z&01010100 null, else T&80000000 nonzero loop/zero null. No mask simplification/SDK/conditionalreread deletion/byte-load substitution/unusedextraNULread. Pureprivate arithmetic scheduling maydiffer onlyunderexplicitordinarylimits, noflag/instruction identity.",
+        "Genuine stablelive ordinaryflatDS/SS rawstorage. Admitrawunaligned/interior/read-only/highbit/source-needleoverlap/ordinarycallerstack and borrowedresults. EveryactuallyreachedBYTE/fullDWORD/reread mustexistandbedeterminatelyreadable; onebyteprovider DWORDmayinclude beyondmatch/NUL bytes, actualwindowonly notblanketpadding. Emptyneedle requiresonlyreachedneedleBYTE+newbyvaluebinding, Hpayloadunaddressedallowed. Finiteactualstop; noINTMAX/signedcap/nonoverlap/frozenSnapshot/completeunusedNULextent/inventedwritablepayload/object/ownership premise.",
+        "Everyactualcursor1/2/4 andeffectiveaddress step staysnonwrapping32 withinoronepast SAMEgenuineallocation; noonepastread. Includeproviderterminal+1/+4, extensionESI+2 evenonfailedcompare/nextneedleNUL andECX+2/partneroffsets. Unusedpartneraddressgeometry isnotinventedreadability. Originalmoduloarithmetic remainsdocumented; approvedordinarydomain is nonwrappingsubset. Sourcecanretainexplicitcursorincrements evenifemitterDCEsdeadprivatearithmetic, but mustnotwaiveOriginalgeometry.",
+        "Excludepayload/bindingaliases with Original/newcalleeprivateframe/argumenthomes/savedregisters/returns/control/spills/scratch/helperbacking/selfmodifyingcontrol; ordinarycallerstack elsewhereallowed. Excludefault/partialprogress/MMIO/concurrentmutation/async/lifetime/mapping/exoticsegments. NativeproviderhasnoDF/ESdependency andnoOriginalCLDfixisintroduced; newgeneratedSource calling-environment/DFassumptionsmustbeexplicitlyreviewed, no unsupportedcallerentryfacts. No OriginalphysicalABI/caller/runtime/gamevalidation claim.",
+        "Fourcanonicaloutputs ONLY: include/bsp/native_crt_strstr.hpp, src/native_crt_strstr.cpp, docs/NATIVE_CRT_STRSTR.md, reports/native_crt_strstr.json. Isolatedfreshcheckout exactpublishedRootSourcegate, full134Baddress/fourfilelease. FreshnamedphysicalSource/provider/header/compiler/support/headercandidate/runtime/toolbeforepins beforefirstuse; preserveallfrozenpriorfamilies/working/Git/mtimeandcurrentqualifiedstages. No workerMainbaseline/newtests/probes/emulation/selectedbodyexecution/SDKcomparison/liveGhidra/mutation/sharedCMake/registry/ledger/Main/push.",
+        "One genuine preplanned strictHostX86/x86 cl invocation over TWO TUs: newstrstrSource plus BYTEIDENTICAL existing src/native_crt_strchr.cpp as explicitcompanionprovider. /std:c++17 /O2 /W4 /WX /permissive- /fp:strict /EHsc /MD /c /Bv /showIncludes /sourceDependencies, distinctobject/dependencyoutputsidentifiedpertu, actualbeforeclosureverified foreach. This is one freshcaller/provider composition evidencebatch, no workerbaseline/matchingtrial/retry. Bothselectedbodyexecutionszero. Compilerfailure/mismatch stopsforRootdisposition, retainactualfailedtools/results, donotfabricatePASS orrecompiletomatch.",
+        "Review ENTIREboth strictobjects: newpublic/allprivatehelpers, existingcompanionproviderpublic/anyprivatehelpers, allcode/sections/symbolaux/strings/relocations/metadata/providers; exactoneallowedexternal ordinary providerbinding resolvedtoliteralcompaniondefinition. Provegenuine8B initializedbacking/layout/alignment/lifetime/noalias, fullpointer/soughtvalue/resultbinding, allpayloaddataflow, count-freeexitpaths, callee-save/privateABI/stackcleanup/DFenvironment, noSDK/newundefinedproviders. Future Root+independent separate actualregisteredMain Win32/3existingCTest/allactualobjectsincludingselectedexistingprovider/publicprivateABI/Corebothindices/uniqueactualproviderandcallerbindings. ExistingproviderMainobjectmayremainpriorcompile: snapshotactualexistingobjectbeforeMain andfreezeactualCoremember, reviewactualcompletebody/metadata/ABI and old-vs-currentSource identity honestly; neverclaimitfreshlycompiledifnot. Sourcecredit0 untilnewwholeMainclosure; providercredit0always."
+      ]
     }
   ],
   "snapshot_after_analysis": {
