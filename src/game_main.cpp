@@ -1197,7 +1197,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             } catch (...) { std::fputs("bsp_game: GUI Text pool requires process retention\n", stderr); }
             std::_Exit(2);
         }
-        throw;
+        std::terminate(); // Preserve WinMain's existing nothrow unknown-failure boundary.
     }
 
     // docs/X87_CONTROL_WORD.md establishes statically that the CRT startup sets

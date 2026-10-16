@@ -11,6 +11,8 @@
 #include "bsp/game_native_font_probe.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
 #include "bsp/game_native_gui_text_state.hpp"
+#include "bsp/game_native_type_storage.hpp"
+#include "bsp/native_vfs_owner_services.hpp"
 #include "bsp/game_native_gui_effect_probe.hpp"
 #include "bsp/game_native_shadow_target_application.hpp"
 #include "bsp/game_native_shader_process.hpp"
