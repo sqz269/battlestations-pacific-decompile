@@ -28,5 +28,8 @@ Original CRT/privateframes/FH3/SEH/RTTI/fault/register/binaryABI and gameplay
 identity remain unproved. Fresh PE/live82bytes, all34current starts, four
 transfers and seven current provider fingerprints are recorded in the report.
 Independent source review and optimized Win32 object review passed: the Source
-core is220B/68instructions with ten focused emitted-code checks. Full CMake
-registration/build and Main integration remain pending. No new tests are added.
+core is220B/68instructions with ten focused emitted-code checks. Default permanent CMake registration and Win32 build passed all three existing
+suites in9.15s atf270b315936873370b6af1e9b65da33b3bc49a7e.
+Actual CMake cores were separately reviewed (preset202B/71instructions, clear
+67B/20); their frame encodings differ from the earlier probes. Main publication
+provenance is recorded separately in the twenty-second batch receipt. No new tests are added.

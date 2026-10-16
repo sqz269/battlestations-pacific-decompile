@@ -1,6 +1,6 @@
 {
   "packet": "oct15_native_input_preset_tree_clear",
-  "status": "whole_native_source_authored_fresh_bytes_and_current_starts_checked_pending_combined_win32_review",
+  "status": "whole_raw_source_reconstructed_default_Win32_existing_suites_and_static_checked",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "source": "src/native_input_preset_tree_clear.cpp",
@@ -30,7 +30,7 @@
     "src/native_input_preset_key_subtree.cpp": "17002b55e183dce38b6a27fc6b4327d501d9f4af062a205af11fc08366f490fb",
     "include/bsp/native_input_preset_key_subtree.hpp": "6a926dc0396f0766937129923c55bb65cf4adb259fa8eb6551da618ba11bc861"
   },
-  "same_batch_dependency_status": "Root preset-key subtree authored, peer and optimizedobject checked; not yet Mainintegrated or CMakebuildchecked. This entry cannot close until that dependency is accepted.",
+  "same_batch_dependency_status": "ActualpresetkeySource compiled and tested in SAME defaultWin32 sourcepin, no bridge/stub; Mainpublication provenance follows in twentysecondbatchreceipt.",
   "native_current_starts": {
     "path": "local/oct15_preset_tree_clear_current_starts.json",
     "starts": 16,
@@ -127,6 +127,34 @@
       "status": "passed_no_findings",
       "scope": "FullSource/header and all16Nativeinstructions; independentPE43B/hash/currentstarts, samebatchproviderfingerprints and soletransfer checked. Exactthree postchildheadreloads/alias schedule reviewed.",
       "build_or_runtime": false
+    },
+    "default_Win32_build": {
+      "command": "./scripts/build.ps1",
+      "tested_source_pin": "f270b315936873370b6af1e9b65da33b3bc49a7e",
+      "local_overlay_removed": true,
+      "log": "local/oct15_twentysecond_initial_union_build.log",
+      "log_sha256": "ff77032d20abea5cf8dcea8dc3cb2c5fabb704c82329ee5b4499c957d5934080",
+      "existing_suites": "3/3 passed",
+      "seconds": 9.15,
+      "new_tests": 0,
+      "new_entry_Native_execution": false,
+      "original_ABI_proven": false,
+      "game_validated": false
+    },
+    "actual_CMake_objects": {
+      "path": "local/oct15_preset_actual_cmake_object_comparison.json",
+      "sha256": "63482aba8cd18f31c28e7de410092b0f11646248741d0c6f624a2d39a675823e",
+      "scope": "CompleteactualCMake cores separately inspected; preset202B/71instructions andclear67B/20. Probeencodingsdiffer, no byteidentityclaim. Defaultbuild uses sameSource and settings; finalcombinedbatchbuild recordedseparately."
+    },
+    "earlier_local_overlay_build": {
+      "tested_source_pin": "d8a290189",
+      "overlay": "local/oct15_preset_pending_sources.cmake",
+      "overlay_sha256": "74b8ee6e243c81d0118aa1528ae6ba1b1ec51d0ca2ed814837170e8a82338161",
+      "log": "local/oct15_preset_overlay_build.log",
+      "log_sha256": "839e2afcf0c4a21ef5fdf75704777b567ee22d84fed8b1ac481be1610e97ac3b",
+      "existing_suites": "3/3 passed",
+      "seconds": 9.92,
+      "permanent_registration_not_inferred": true
     }
   },
   "primary_checks": [
