@@ -6,7 +6,8 @@ API while preserving existing CurrentSDK interfaces and the `_memmove_s` name.
 
 Zero count returns before validation, feature or service access. Null destination
 then null source takes precedence over unsigned destination capacity. Reached
-actual errno receives 16 or 22 before the five-zero invalid call; the captured
+actual errno receives 0x16 (22) for null pointers or 0x22 (34) for capacity before
+the five-zero invalid call; the captured
 error is returned only when the handler returns normally. Success calls the
 published BF87E0 with the same actual feature reference and returns zero.
 There is no destination clearing, catch, cleanup, retry or rollback.
