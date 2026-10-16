@@ -1,9 +1,9 @@
 {
   "packet": "goal16xz_primary_integration",
   "status": "independently_reviewed_complete_bodies_build_tested_Ghidra_saved",
-  "generated_utc": "2026-10-16T11:03:45.980409+00:00",
-  "validated_Source_commit": "4e73d68218cbee377649034440811bdb5ddfc735",
-  "Main_input": "cd8a0a37725316495dcc8d17f1e64937cfa6fafd",
+  "generated_utc": "2026-10-16T11:06:09.942184+00:00",
+  "validated_Source_commit": "8242d69e7050cb64400d3a453a1005fd08d6d8a0",
+  "Main_input": "8aaf1cbc62e209fc37913e06c7a2f1cff3b56fb8",
   "counts": {
     "new_complete_Native_addresses": 2,
     "new_complete_Native_bytes": 727,
@@ -126,17 +126,17 @@
     }
   ],
   "current_whole_proof": {
-    "path": "local\\goal16xz_root\\final_proof\\proof.json",
-    "sha256": "b1ecf392a349e650d001d600e8e70f1093d50dddde682d35e8e03a3310c8fae9",
-    "Core_sha256": "afbb05a497b4f031134ca3f82e814349a4b74d6cc257f88900b5a610cff0bc12",
+    "path": "local\\goal16xz_root\\publication_proof\\proof.json",
+    "sha256": "71db6516896d252aaab4209b7004be85a676e67334d42e42e9962ec50a63ed88",
+    "Core_sha256": "2c2cab7ac575fe5eb411cc8fd3e98ac10c9e65f9fbe54b709b3d5a19de6c044d",
     "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
-    "actual_COFF_members_parsed": 2475,
+    "actual_COFF_members_parsed": 2477,
     "all_fifteen_prior_whole_Source_objects_byte_identical": true,
     "both_complete_archive_dictionaries_and_all_thirty_eight_selected_real_providers_checked": true,
     "private_kernels_real_defined_bindings_not_invented_archive_exports": true
   },
   "current_full_COFF": {
-    "path": "local\\goal16xz_root\\final_full_coff.json",
+    "path": "local\\goal16xz_root\\publication_full_coff.json",
     "sha256": "6e99de44d59ffdb67be6dc79e70afbdd07427938f4c1dd5a471e2ba56bdc3653",
     "whole_object_bytes": [
       1404,
@@ -148,7 +148,7 @@
     "author_vs_primary_object_identity_not_claimed": "Current gen_bitlen object is1404B versus author1408B; source-path/debug metadata and anonymous-namespace identity differ. Whole code and relocation models agree after namespace-name normalization; every current metadata/aux/string/padding byte is separately accounted. Current longest_match_fast object is1097B."
   },
   "gen_bitlen_mapping": {
-    "path": "local\\goal16xz_root\\final_proof\\gen_bitlen_instruction_map.json",
+    "path": "local\\goal16xz_root\\publication_proof\\gen_bitlen_instruction_map.json",
     "sha256": "52a67d8bca83bada4a15e61c348cb8cfecfb442940c4bdce07b762dc34f23f69",
     "Native_owned_ranges": [
       "00bcdf60..00bce0a9",
@@ -176,18 +176,18 @@
     "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16xz_root\\final_build.log"
   },
   "current_build": {
-    "source_pin": "4e73d68218cbee377649034440811bdb5ddfc735",
-    "Main_input": "cd8a0a37725316495dcc8d17f1e64937cfa6fafd",
-    "start_utc": "2026-10-16T10:54:43.846112+00:00",
-    "end_utc": "2026-10-16T10:55:02.007868+00:00",
-    "wall_seconds": 18.184052900003735,
+    "source_pin": "8242d69e7050cb64400d3a453a1005fd08d6d8a0",
+    "Main_input": "8aaf1cbc62e209fc37913e06c7a2f1cff3b56fb8",
+    "start_utc": "2026-10-16T11:04:47.338618+00:00",
+    "end_utc": "2026-10-16T11:05:09.126790+00:00",
+    "wall_seconds": 21.815100300009362,
     "exit_code": 0,
-    "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16xz_root\\final_build.log"
+    "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16xz_root\\publication_build.log"
   },
   "existing_checks": "3/3 PASS in the recorded normal build log",
   "actual_compile_commands": {
-    "path": "local\\goal16xz_root\\final_compile_commands\\selected.json",
-    "sha256": "00a7a45e2558819126314471b215bedfa46a4230b53b86c71f366d764750e616"
+    "path": "local\\goal16xz_root\\publication_compile_commands\\selected.json",
+    "sha256": "1a461a219c05184ff126561f12a2e9e01f0a8fd25552e008637de4eb94a3398e"
   },
   "Ghidra": {
     "project": "C:/Users/sqz269/bsp.gpr",
@@ -220,8 +220,8 @@
     "X_primary_start_utc": "2026-10-16T10:34:27+00:00",
     "Z_primary_start_utc": "2026-10-16T10:45:13+00:00",
     "combined_batch_start_utc": "2026-10-16T10:52:30+00:00",
-    "report_seal_utc": "2026-10-16T11:03:45.980409+00:00",
-    "combined_seconds_through_report": 675.980409,
+    "report_seal_utc": "2026-10-16T11:06:09.942184+00:00",
+    "combined_seconds_through_report": 819.942184,
     "overlap_not_summed_serially": true,
     "publication_commit_push_release_receipt": "Closed separately in local/goal16xz_root/publication_receipt.json",
     "measured_speedup_claim": false
