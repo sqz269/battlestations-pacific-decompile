@@ -1,0 +1,145 @@
+{
+  "packet": "oct15_device_map_full_range_binding",
+  "status": "three_complete_map_destroy_entries_bound_to_published_whole_actual_range_default_Win32_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_input_device_map_cleanup.cpp",
+  "header": "include/bsp/native_input_device_map_cleanup.hpp",
+  "documentation": "docs/OCT15_DEVICE_MAP_FULL_RANGE_BINDING.md",
+  "prior_published_Main": "be9d456136a32ae538e1e38e84404cc2882ed07f",
+  "historical_report": "reports/oct15_input_device_map_cleanup.json",
+  "routines": [
+    {
+      "address": "006a7ba0",
+      "name": "destroy_native_input_device_map_006a7ba0",
+      "kind": "function",
+      "defined_bytes": 52,
+      "instructions": 23,
+      "original_abi": "ECXtree,unconsumedEDX,no stacked input,plainRET,EAX0"
+    },
+    {
+      "address": "006aa3e0",
+      "name": "destroy_native_input_device_map_006aa3e0",
+      "kind": "function",
+      "defined_bytes": 52,
+      "instructions": 23,
+      "original_abi": "ECXtree,unconsumedEDX,no stacked input,plainRET,EAX0"
+    },
+    {
+      "address": "006aa420",
+      "name": "destroy_native_input_device_map_006aa420",
+      "kind": "function",
+      "defined_bytes": 52,
+      "instructions": 23,
+      "original_abi": "ECXtree,unconsumedEDX,no stacked input,plainRET,EAX0"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "006a7bb6",
+      "native": "006a7aa0"
+    },
+    {
+      "address": "006a7bbf",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "006aa3f6",
+      "native": "006a7aa0"
+    },
+    {
+      "address": "006aa3ff",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "006aa436",
+      "native": "006a7aa0"
+    },
+    {
+      "address": "006aa43f",
+      "native": "00bf65ac"
+    }
+  ],
+  "source_change": "Source diff is exactly one added actual-range include and one callee replacement in the existing base body; two Source sibling aliases retain the already reviewed whole52B identity reuse. The separately named admitted127B prefix and43B clear bodies are byte-for-byte Source unchanged.",
+  "primary_evidence": {
+    "path": "local/oct15_device_map_full_range_primary.json",
+    "sha256": "f9220add1daecbc8f6c2ab83c43947ec2257610edfa9821ccf10149449345190",
+    "fresh_PE_live_bytes": 156,
+    "current_owned_instruction_starts": 69,
+    "actual_targets": 6,
+    "all_other_44_Native_bytes_per_entry_equal": true,
+    "compiled_code_bytes": 306,
+    "compiled_instructions": 119,
+    "code_sections": 5,
+    "total_relocations": 6,
+    "whole_TU_scope_includes_unchanged_clear_and_admitted_prefix": true,
+    "changed_map_code_bytes": 112,
+    "changed_map_code_instructions": 46,
+    "map_implementation": [
+      90,
+      36
+    ],
+    "sibling_Source_tail_wrappers": [
+      [
+        11,
+        5
+      ],
+      [
+        11,
+        5
+      ]
+    ],
+    "all_code_raw_bytes_equal_previous_published_object": true,
+    "only_changed_symbolic_relocation": [
+      {
+        "section": 6,
+        "offset": 46,
+        "old": "?clear_native_input_device_tree_full_prefix_006a7aa0@bsp@@YIPAXPAXI00000AAUNativeStringRawPoolContext@1@@Z",
+        "new": "?erase_native_raw_input_device_tree_range_006a7aa0@bsp@@YIPAXPAXI00000AAUNativeStringRawPoolContext@1@@Z"
+      }
+    ],
+    "actual_object_sha256": "4b4933215155dbee41746d8ec077ffcbe170e132cc8d96179143ad4bac5f4b09"
+  },
+  "provider_fingerprints": {
+    "src/native_input_device_tree_range.cpp": {
+      "LF_sha256": "60d81ecb84cf21b128ab6e0a063ff9418d02c4fe8ad04457f006962f683492ac",
+      "current_Main_equal": true
+    },
+    "include/bsp/native_input_device_tree_range.hpp": {
+      "LF_sha256": "0c093e04570eb8d630c742c7932e74aeb6e6d8acf47b5ca86ac9715a742eb79a",
+      "current_Main_equal": true
+    },
+    "src/native_input_device_subtree.cpp": {
+      "LF_sha256": "09d75e5d63fb4a21d1e9a3fd383bfe1fc0a2409458be389dc60b1f8e8a5f253e",
+      "current_Main_equal": true
+    },
+    "include/bsp/native_input_device_subtree.hpp": {
+      "LF_sha256": "e1982777351558bee4b8326110e92c8ef3815f8851989ded0e0ca1a5f9fc7d09",
+      "current_Main_equal": true
+    }
+  },
+  "source_fingerprints": {
+    "src/native_input_device_map_cleanup.cpp": "79740f3a912cefcdc7ba80c9507a9d8b5dca0cbdf34d38ee0184b776d35b7e3c",
+    "include/bsp/native_input_device_map_cleanup.hpp": "3710db8ca2a21501c2486ef53779226097ece3bbc999cd02b3924cccfcd292be"
+  },
+  "validation": {
+    "build_log": "local/oct15_device_map_full_range_build.txt",
+    "build_log_sha256": "758d324fcf00e4eed5c68a60d6ea4dde8b75d2e59069a6d403c9d6d8d5e6ef6d",
+    "default_MSVC_Win32": true,
+    "existing_suites_passed": 3,
+    "ctest_seconds": 8.22,
+    "new_tests": 0,
+    "new_probes": 0,
+    "Native_packet_execution": false,
+    "tests_cover_new_entries": false,
+    "independent_peer": "pending final receipt"
+  },
+  "limits": [
+    "Not new Native coverage: these three whole52B entries were already reconstructed in the admitted full-selection domain. This extends their actual provided-callee closure.",
+    "NativeECX tree/unusedEDX/no stack/plainRET/EAX0; borrowedRawCtx adds SourceRET4. Two Source siblings tail-JMP the shared Source base rather than directly calling the Native range/free; frame/ABI identity is not claimed.",
+    "Initial head/left endpoints, same owners and private8B output are captured before the WHOLE actual range. Only success reaches CURRENT head free, head4zero BEFORE count8zero and EAX0; opaque0 unchanged.",
+    "Source/Native zero before stores is retained, but register/flags residue, private frames, OriginalCRT/FH3SEH/RTTI, faults, heap/RawCtx identity and game behavior remain unproved.",
+    "The old admitted prefix retains its stable full-selection contract and historical report. Old generic AV APIs and owner bindings are not promoted. No new guard, callback, shortcut, rollback, cleanup or local EH.",
+    "The actual whole range retains its published reached-storage/diagnostic/current-C++/CRT requirements; no broad concurrency proof is claimed."
+  ]
+}

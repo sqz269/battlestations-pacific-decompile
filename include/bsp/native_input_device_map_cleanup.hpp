@@ -30,8 +30,11 @@ void* __fastcall clear_native_input_device_tree_full_prefix_006a7aa0(
 
 // Three whole52B/23-instruction map destructors. Native ECX actual12B tree,
 // unusedEDX, no stacked inputs, plainRET and defined EAX0. Capture head and
-// head.left; pass owner twice/private8B output to the admitted full prefix;
+// head.left; pass owner twice/private8B output to the WHOLE actual200B range;
 // free CURRENT head, clear+4 then+8, return0. Opaque+0 is untouched.
+// This binding includes returning-diagnostic/partial continuation through the
+// published actual range; the old admitted prefix above retains its narrower
+// contract. Added RawCtx makes SourceRET4 versus native plainRET.
 std::uint32_t __fastcall destroy_native_input_device_map_006a7ba0(
     void* tree, std::uint32_t unused_edx, NativeStringRawPoolContext& strings);
 std::uint32_t __fastcall destroy_native_input_device_map_006aa3e0(
