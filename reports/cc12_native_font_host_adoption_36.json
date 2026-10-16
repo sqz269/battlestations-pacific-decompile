@@ -236,5 +236,66 @@
     "No interrupted-load/retire runtime injection, destructive reload, reset/recreation or raw font owner ABI proof",
     "Original installation and OS/D3DX provider binaries are external dependencies, not included in archive"
   ],
-  "next": "CD71F0/CE0A80 Text pool and CD7210 live lineage with AA8200 prerequisite; canonical mutable GUI cells and primary raw model/group routing remain"
+  "next": "CD71F0/CE0A80 Text pool and CD7210 live lineage with AA8200 prerequisite; canonical mutable GUI cells and primary raw model/group routing remain",
+  "combined_main_verification": {
+    "source_commit": "9a727abac038bd190076942cd6c72913fcf5eefb",
+    "build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "tests_passed": 3,
+      "test_seconds": 7.46,
+      "log": "local/cc12_native_font_host_adoption_36/build_03_combined.log"
+    },
+    "original_font_source_inputs_unchanged": [
+      "include/bsp/game_hosts.hpp",
+      "src/game_hosts.cpp",
+      "include/bsp/game_hosts_fonts.hpp",
+      "src/game_hosts_fonts.cpp",
+      "include/bsp/game_hosts_text.hpp",
+      "src/game_hosts_text.cpp",
+      "src/game_hosts_frontend.cpp",
+      "include/bsp/game_native_font_application.hpp",
+      "src/game_native_font_application.cpp",
+      "include/bsp/native_font_resources.hpp",
+      "src/native_font_resources.cpp",
+      "include/bsp/font_registry_startup.hpp",
+      "src/font_registry_startup.cpp",
+      "include/bsp/font_data.hpp",
+      "src/font_data.cpp",
+      "include/bsp/native_renderer_binding_getters.hpp",
+      "src/native_renderer_binding_getters.cpp"
+    ],
+    "frozen_inputs": 41,
+    "runtime_exit_code": 0,
+    "runtime_log": "local\\cc12_native_font_combined_39\\runtime_01\\runtime.log",
+    "runtime_log_sha256": "c33c903a1edf0e966a3f90168382728bde01c0e6cb09acff64c33b91e3d497ae",
+    "executable_sha256": "3c7b99be5ca63b19429b6d9a416817877aeea0b747265017785f1a4d8082fba5",
+    "native_fonts": 6,
+    "sprite_runs": 2,
+    "sprite_glyph_quads": 55,
+    "observed_font": "Viper19",
+    "font_retirement_before_native_drain": true,
+    "final_device_api_counts": [
+      0,
+      0
+    ],
+    "qualified_sampler_observations": 3,
+    "warm_post_observations": 3,
+    "unimplemented_methods": 43,
+    "limitations": "Same bounded sprite/normal native font scope; no new native Text/ABI/gameplay proof",
+    "archive": {
+      "path": "local\\cc12_native_font_combined_39\\evidence_family.zip",
+      "sha256": "9e48cf10c7e4dc8054ae8453d4f21afe39aacb1fdaa44b02967d883c71be8b02",
+      "bytes": 5274782,
+      "payload_files": 51,
+      "manifest_sha256": "25b815ad9a1523d79ba60eedf9fdd17cad06f37663d09e1d91e37bd60b758fcc",
+      "all_payloads_hash_checked": true
+    }
+  },
+  "independent_runtime_review": {
+    "commit": "70f01dd93",
+    "doc": "docs/CC12_NATIVE_FONT_RUNTIME_REVIEW_36.md",
+    "report": "reports/cc12_native_font_runtime_review_36.json",
+    "scope": "Original two runs and 32 frozen inputs; no blocking integrity issue"
+  }
 }
