@@ -275,12 +275,26 @@ bool report_submarine_depth_damage_00977370(WarningReportHost&, WarningEntity);
 bool report_submarine_periscope_broken_00977500(WarningReportHost&, WarningEntity);
 bool report_torpedo_00977690(WarningReportHost&, WarningEntity);
 
-// Message ids that Warning subclass constructors write into Warning+4h.
-// `network_session` is game+1FE4h != 0.
-std::string warning_id_newunit_009756a0();                                    // vtable 00D1B460
-std::string warning_id_powerup_009757b0(bool network_session);                // vtable 00D1B4B0
-std::string warning_id_named_powerup_009758e0(std::string_view name, bool network_session);
-std::string warning_id_score_00975a10();                                      // vtable 00D1B4D4
+// The 6Ch-byte message warnings: 00973A90 (ECX = warning), the class vtable at +0h (no +6Ch
+// observer, no type store), then the id at +4h (0041DD40 resize + memcpy, or an assign).
+// Each returns the warning. `network_session` is [[00E188A8]+1FE4h] != 0, read after the id
+// is written; "multi" (00CE39CC) is appended through 0041E870 + 0041DD40 + memcpy and the
+// temporary released through 00419CC0/00BD1510. The NativeString steps are folded into
+// std::string operations on WarningObject::id. No caller in src yet.
+// 009756A0: __fastcall(ECX = warning), RET; vtable 00D1B460, "newunit".
+cc13_seg49_64_78::WarningObject& construct_new_unit_warning_009756a0(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host);
+// 009757B0: __fastcall(ECX = warning), RET; vtable 00D1B4B0, "powerup" [+ "multi"].
+cc13_seg49_64_78::WarningObject& construct_powerup_warning_009757b0(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host, bool network_session);
+// 009758E0: __thiscall(ECX = warning, NativeString* name), RET 4; vtable 00D1B4B0;
+// "powerup" + name (0043C130 BSP_NativeString_ConstructPrefixedHeader into a temporary,
+// assigned to +4h, temporary released) [+ "multi"].
+cc13_seg49_64_78::WarningObject& construct_named_powerup_warning_009758e0(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host, const std::string& name, bool network_session);
+// 00975A10: __fastcall(ECX = warning), RET; vtable 00D1B4D4, "score".
+cc13_seg49_64_78::WarningObject& construct_score_warning_00975a10(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host);
 
 struct WarningSubjectHost {
     virtual ~WarningSubjectHost() = default;
@@ -292,12 +306,15 @@ struct WarningSubjectHost {
     virtual bool native_string_equals_ci_00425850(const std::string& string, const char* text) = 0;
 };
 
-// 00975340: __thiscall(ECX = warning, entity, bool exiting), RET 8; vtable
-// 00D1B344, secondary 00D1B32C. "exitzone"; unless exiting, + "enter", and
-// when the entity (a kind-0Fh plane's +9D4h owner) is the controlled unit,
-// + "player" and, for a kind-6 entity, + "ship".
-std::string warning_id_exit_zone_00975340(WarningSubjectHost&, WarningEntity entity,
-    bool exiting);
+// 00975340 BSP_ExitZoneWarning_Construct: __thiscall(ECX = warning, entity,
+// bool exiting), RET 8, returns the warning. 00973BA0(ECX warning)(entity, 0);
+// vtable 00D1B344 at +0h, then 00D1B32C at +6Ch (no type store). Id at +4h
+// "exitzone" (0041DD40 resize 8, memcpy 00D19074); unless exiting, + "enter"
+// (00D1B1B0), and when the entity is non-null and it (a kind-0Fh plane's +9D4h
+// owner) is the controlled unit [00E188D8], + "player" (00D199D0) and, for a
+// kind-6 entity, + "ship" (00D186D4, 00425E10). Same folding as 00975540.
+cc13_seg49_64_78::WarningObject& construct_exit_zone_warning_00975340(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host, WarningSubjectHost& subject, WarningEntity entity, bool exiting);
 
 // 00975540 BSP_ConfirmWarning_Construct: __thiscall(ECX = warning, entity,
 // NativeString* order), RET 8, returns the warning. Listing 00975540-0097569B:

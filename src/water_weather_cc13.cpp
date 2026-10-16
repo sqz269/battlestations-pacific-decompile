@@ -1013,38 +1013,78 @@ CoastPoint coast_segment_construct_00baed40(CoastHost& host, const W1B_Vec3& a,
     return pt;
 }
 
-std::int32_t coast_ptr_vector_reserve_capacity_00baeeb0(std::int32_t capacity,
-                                                        std::int32_t request) {
+namespace {
+// The shared body of 00BAEEB0/00BAEFB0/00BAF450: floor the request at 20h (JGE), and only when
+// it exceeds the capacity (JLE skips) allocate request*sizeof(T), copy the live elements dword
+// by dword (each copy skipped when the destination address is null, as the image tests), free
+// the old block (also when null) and store the new data and capacity. The size is unchanged.
+template <class T>
+void coast_vector_reserve(CoastHost& host, CoastNativeVector<T>& v, std::int32_t request) {
     if (request < 0x20) request = 0x20;
-    return capacity < request ? request : capacity;
+    if (v.capacity >= request) return;
+    auto* const block = static_cast<T*>(
+        host.operator_new_00bf55be(static_cast<std::uint32_t>(request) * sizeof(T)));
+    T* dst = block;
+    for (std::int32_t i = 0; i < v.size; ++i, ++dst) {
+        if (dst != nullptr) std::memcpy(dst, v.data + i, sizeof(T));
+    }
+    host.free_00bf6989(v.data);
+    v.data = block;
+    v.capacity = request;
 }
-std::int32_t coast_segment_vector_reserve_capacity_00baefb0(std::int32_t capacity,
-                                                            std::int32_t request) {
-    if (request < 0x20) request = 0x20;
-    return capacity < request ? request : capacity;
+
+// The doubled request of the push helpers: capacity*2, raised to 20h unless above it (JG).
+std::int32_t coast_vector_grow_request(std::int32_t capacity) {
+    const std::int32_t doubled = capacity + capacity;
+    return doubled > 0x20 ? doubled : 0x20;
 }
-std::int32_t coast_point_vector_reserve_capacity_00baf450(std::int32_t capacity,
-                                                          std::int32_t request) {
-    if (request < 0x20) request = 0x20;
-    return capacity < request ? request : capacity;
+} // namespace
+
+void coast_ptr_vector_reserve_00baeeb0(CoastHost& host, CoastNativeVector<std::uint32_t>& v,
+                                       std::int32_t request) {
+    coast_vector_reserve(host, v, request);  // 00BAEED0 new(request*4), 00BAEEFC free
 }
-std::int32_t coast_segment_vector_push_capacity_00baf350(std::int32_t size, std::int32_t capacity) {
-    if (size != capacity) return capacity;
-    std::int32_t c = capacity * 2;
-    if (c < 0x21) c = 0x20;
-    return coast_segment_vector_reserve_capacity_00baefb0(capacity, c);
+void coast_segment_vector_reserve_00baefb0(CoastHost& host, CoastNativeVector<CoastSegment>& v,
+                                           std::int32_t request) {
+    coast_vector_reserve(host, v, request);  // 00BAEFD6 new(request*1Ch), 00BAF035 free
 }
-std::int32_t coast_ptr_vector_push_capacity_00baf3e0(std::int32_t size, std::int32_t capacity) {
-    if (size != capacity) return capacity;
-    std::int32_t c = capacity * 2;
-    if (c < 0x21) c = 0x20;
-    return coast_ptr_vector_reserve_capacity_00baeeb0(capacity, c);
+void coast_point_vector_reserve_00baf450(CoastHost& host, CoastNativeVector<CoastPoint>& v,
+                                         std::int32_t request) {
+    coast_vector_reserve(host, v, request);  // 00BAF476 new(request*2Ch), 00BAF4F1 free
 }
-std::int32_t coast_point_vector_push_capacity_00bafc00(std::int32_t size, std::int32_t capacity) {
-    if (size != capacity) return capacity;
-    std::int32_t c = capacity * 2;
-    if (c < 0x21) c = 0x20;
-    return coast_point_vector_reserve_capacity_00baf450(capacity, c);
+void coast_segment_vector_push_back_00baf350(CoastHost& host, CoastNativeVector<CoastSegment>& v,
+                                             const CoastSegment& value) {
+    if (v.size == v.capacity)                                                  // 00BAF36E
+        coast_segment_vector_reserve_00baefb0(host, v, coast_vector_grow_request(v.capacity)); // 00BAF385
+    CoastSegment* const slot = v.data + v.size;                                // 00BAF38A..00BAF398
+    if (slot != nullptr) {                                                     // 00BAF39F
+        slot->a = value.a;                // 00BAF3BB 00453ED0(slot, value, 0Ch, 2, 00414220)
+        slot->b = value.b;
+        slot->flags_18 = value.flags_18;  // 00BAF3C0
+    }
+    v.size += 1;                                                               // 00BAF3C7
+}
+void coast_ptr_vector_push_back_00baf3e0(CoastHost& host, CoastNativeVector<std::uint32_t>& v,
+                                         const std::uint32_t& value) {
+    if (v.size == v.capacity)                                                  // 00BAF3E6
+        coast_ptr_vector_reserve_00baeeb0(host, v, coast_vector_grow_request(v.capacity));    // 00BAF3F8
+    std::uint32_t* const slot = v.data + v.size;                               // 00BAF3FD..00BAF402
+    if (slot != nullptr) *slot = value;                                        // 00BAF405..00BAF40F
+    v.size += 1;                                                               // 00BAF411
+}
+void coast_point_vector_push_back_00bafc00(CoastHost& host, CoastNativeVector<CoastPoint>& v,
+                                           const CoastPoint& value) {
+    if (v.size == v.capacity)                                                  // 00BAFC1E
+        coast_point_vector_reserve_00baf450(host, v, coast_vector_grow_request(v.capacity));  // 00BAFC35
+    CoastPoint* const slot = v.data + v.size;                                  // 00BAFC3A..00BAFC40
+    if (slot != nullptr) {                                                     // 00BAFC4E
+        slot->a = value.a;                // 00BAFC60 00453ED0(slot, value, 0Ch, 2, 00414220)
+        slot->b = value.b;
+        slot->normal = value.normal;      // 00BAFC65..00BAFC74 FLD/FSTP
+        slot->u0_24 = value.u0_24;        // 00BAFC77 dword moves
+        slot->u1_28 = value.u1_28;
+    }
+    v.size += 1;                                                               // 00BAFC84
 }
 void coast_ptr_vector_resize_00baf070(std::vector<std::uint32_t>& v, std::int32_t size) {
     v.resize(static_cast<std::size_t>(size < 0 ? 0 : size), 0u);  // new slots zeroed

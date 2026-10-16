@@ -589,6 +589,8 @@ struct CoastHost {
     virtual ~CoastHost() = default;
     virtual double vector_length_00419440(float x, float y, float z) = 0;
     virtual double crt_round_00bf85b0(double x) = 0;
+    virtual void* operator_new_00bf55be(std::uint32_t bytes) = 0;  // CRT operator new
+    virtual void free_00bf6989(void* block) = 0;                   // CRT _free
 };
 struct CoastSegment {  // 1Ch
     W1B_Vec3 a{};
@@ -618,16 +620,36 @@ bool coastline_edge_crossing_00baeb20(const CoastlineState& s, const W1B_Vec3& p
                                       const W1B_Vec3& q, W1B_Vec3& out);
 CoastPoint coast_segment_construct_00baed40(CoastHost& host, const W1B_Vec3& a,
                                             const W1B_Vec3& b);
-// Container growth rules (min 32 elements, push doubles with floor 32).
-std::int32_t coast_ptr_vector_reserve_capacity_00baeeb0(std::int32_t capacity,
-                                                        std::int32_t request);
-std::int32_t coast_segment_vector_reserve_capacity_00baefb0(std::int32_t capacity,
-                                                            std::int32_t request);
-std::int32_t coast_point_vector_reserve_capacity_00baf450(std::int32_t capacity,
-                                                          std::int32_t request);
-std::int32_t coast_segment_vector_push_capacity_00baf350(std::int32_t size, std::int32_t capacity);
-std::int32_t coast_ptr_vector_push_capacity_00baf3e0(std::int32_t size, std::int32_t capacity);
-std::int32_t coast_point_vector_push_capacity_00bafc00(std::int32_t size, std::int32_t capacity);
+// The native 0Ch growable array the coast code keeps its elements in.
+template <class T>
+struct CoastNativeVector {
+    T* data{nullptr};          // +0h
+    std::int32_t size{0};      // +4h
+    std::int32_t capacity{0};  // +8h
+};
+// Reserve, __thiscall(ECX vector, int request) RET 4, nothing returned: the request is floored at
+// 20h; when it exceeds the capacity, operator new 00BF55BE(request * element size), the live
+// elements copied dword by dword (each skipped when the destination is null), _free 00BF6989 on
+// the old data, then data and capacity stored. Elements 4 (00BAEEB0), 1Ch (00BAEFB0), 2Ch
+// (00BAF450) bytes.
+void coast_ptr_vector_reserve_00baeeb0(CoastHost& host, CoastNativeVector<std::uint32_t>& v,
+                                       std::int32_t request);
+void coast_segment_vector_reserve_00baefb0(CoastHost& host, CoastNativeVector<CoastSegment>& v,
+                                           std::int32_t request);
+void coast_point_vector_reserve_00baf450(CoastHost& host, CoastNativeVector<CoastPoint>& v,
+                                         std::int32_t request);
+// Push back, __thiscall(ECX vector, const T* value) RET 4, nothing returned: when size ==
+// capacity, the own reserve with capacity*2 (20h unless above it, signed JG); then the slot
+// data+size gets *value unless its address is null (the image's TEST), and size += 1.
+// 00BAF350 segments (reserve 00BAEFB0; a/b through the EH vector copy 00453ED0 with the Vec3
+// copy constructor 00414220, then +18h), 00BAF3E0 dwords (reserve 00BAEEB0), 00BAFC00 points
+// (reserve 00BAF450; a/b as 00BAF350, +18h..+20h FLD/FSTP, +24h/+28h dword moves).
+void coast_segment_vector_push_back_00baf350(CoastHost& host, CoastNativeVector<CoastSegment>& v,
+                                             const CoastSegment& value);
+void coast_ptr_vector_push_back_00baf3e0(CoastHost& host, CoastNativeVector<std::uint32_t>& v,
+                                         const std::uint32_t& value);
+void coast_point_vector_push_back_00bafc00(CoastHost& host, CoastNativeVector<CoastPoint>& v,
+                                           const CoastPoint& value);
 void coast_ptr_vector_resize_00baf070(std::vector<std::uint32_t>& v, std::int32_t size);
 // 00BB4B40 (0x39 bytes), __thiscall(ECX vector {data +0h, size +4h, capacity +8h},
 // const dword* value) RET 4: when size == capacity, 00BB46F0 reserve(capacity*2, or 1 when
