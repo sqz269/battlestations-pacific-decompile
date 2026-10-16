@@ -1,0 +1,395 @@
+{
+  "packet": "cc12_gui_white_getter_native_42",
+  "result": "whole_Original_body_native_differential_pass",
+  "created_utc": "2026-10-16T00:49:32.493803+00:00",
+  "source_commit": "7bbd1e4042fe9e74c634a5a6aeadcea819021345",
+  "original": {
+    "original_image": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "original_image_bytes": 12223752,
+    "original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "address": "00ab7060",
+    "bytes": 65,
+    "original_body_hex": "b801000000840548bef800752ef30f10054ca2d700090548bef800f30f110538bef800f30f11053cbef800f30f110540bef800f30f110544bef800b838bef800c3",
+    "original_body_sha256": "02f917d1afea24dd3e91ec91546b8d638a43ca2f7768a76058fdf329eb2a4c1c",
+    "pe_base_relocations": {
+      "stripped": true,
+      "directory_rva": 0,
+      "directory_bytes": 0
+    }
+  },
+  "whole_body_audit": {
+    "instruction_count": 11,
+    "instructions": {
+      "0": "b801000000 | mov eax, 1",
+      "5": "840548bef800 | test byte ptr [0xf8be48], al",
+      "11": "752e | jne 0xab709b",
+      "13": "f30f10054ca2d700 | movss xmm0, dword ptr [0xd7a24c]",
+      "21": "090548bef800 | or dword ptr [0xf8be48], eax",
+      "27": "f30f110538bef800 | movss dword ptr [0xf8be38], xmm0",
+      "35": "f30f11053cbef800 | movss dword ptr [0xf8be3c], xmm0",
+      "43": "f30f110540bef800 | movss dword ptr [0xf8be40], xmm0",
+      "51": "f30f110544bef800 | movss dword ptr [0xf8be44], xmm0",
+      "59": "b838bef800 | mov eax, 0xf8be38",
+      "64": "c3 | ret "
+    },
+    "fixups": [
+      {
+        "offset": 7,
+        "original": "00f8be48",
+        "target": "mask",
+        "destination": "&state.default_color_mask_00f8be48()",
+        "replacement": "012167e8",
+        "kind": "absolute_disp32"
+      },
+      {
+        "offset": 17,
+        "original": "00d7a24c",
+        "target": "one",
+        "destination": "probe-owned live const float (Original D7A24C word)",
+        "replacement": "00ff0000",
+        "kind": "absolute_disp32"
+      },
+      {
+        "offset": 23,
+        "original": "00f8be48",
+        "target": "mask",
+        "destination": "&state.default_color_mask_00f8be48()",
+        "replacement": "012167e8",
+        "kind": "absolute_disp32"
+      },
+      {
+        "offset": 31,
+        "original": "00f8be38",
+        "target": "white0",
+        "destination": "&state.default_color_00f8be38()[0]",
+        "replacement": "012167d8",
+        "kind": "absolute_disp32"
+      },
+      {
+        "offset": 39,
+        "original": "00f8be3c",
+        "target": "white1",
+        "destination": "&state.default_color_00f8be38()[1]",
+        "replacement": "012167dc",
+        "kind": "absolute_disp32"
+      },
+      {
+        "offset": 47,
+        "original": "00f8be40",
+        "target": "white2",
+        "destination": "&state.default_color_00f8be38()[2]",
+        "replacement": "012167e0",
+        "kind": "absolute_disp32"
+      },
+      {
+        "offset": 55,
+        "original": "00f8be44",
+        "target": "white3",
+        "destination": "&state.default_color_00f8be38()[3]",
+        "replacement": "012167e4",
+        "kind": "absolute_disp32"
+      },
+      {
+        "offset": 60,
+        "original": "00f8be38",
+        "target": "white0",
+        "destination": "&state.default_color_00f8be38()[0]",
+        "replacement": "012167d8",
+        "kind": "absolute_imm32_return"
+      }
+    ],
+    "fixup_count": 8,
+    "other_immediates": "EAX=1 remains byte-identical; JNZ +2E stays inside the copied body at offset 59; RET is retained at offset 64.",
+    "opaque_or_unsupported_relocations": 0,
+    "complete_65_bytes_copied": true,
+    "code_or_import_patches": 0,
+    "patches_target": "The exact canonical current Source state object cells plus one explicit probe-owned immutable float."
+  },
+  "execution": {
+    "command": [
+      "local/cc12_gui_white_getter_native_42/white_probe.exe",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "local\\cc12_gui_white_getter_native_42\\native_result.json"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS: whole Original 65B == current Source; full 48B backing, mask/white/return identity and sticky repeat.",
+    "scenario": "One nontrivial mask with bit0 clear and four stale unequal white words; same canonical Source cells restored between arms; immediate sticky repeat for each arm.",
+    "case_count": 1,
+    "native_calls": 2,
+    "source_calls": 2,
+    "backing": "game_native_gui_text_state() current singleton; all 12 member words cover its complete 48-byte Source object, checked before execution.",
+    "independent_expected": "Original D7A24C word verified as 3F800000; expected quartet is four copies of that word; expected mask is incoming|1; every adjacent word must equal incoming. This expectation does not call the Source method.",
+    "word_order": [
+      "aspect_E12FC0",
+      "vertical_E12FD4",
+      "shadow_E12FD8",
+      "shadow_E12FDC",
+      "shadow_E12FE0",
+      "shadow_E12FE4",
+      "white_F8BE38",
+      "white_F8BE3C",
+      "white_F8BE40",
+      "white_F8BE44",
+      "mask_F8BE48",
+      "blend_F8BE54"
+    ],
+    "immutable_one": {
+      "word": "3f800000",
+      "address": "00ff0000",
+      "normal_page_protection": 2,
+      "lifetime": "Dedicated 4096-byte VirtualAlloc backing; placement-new const float while readable; bind const volatile reference before protection; object stays alive until all calls finish.",
+      "sticky_protection": "PAGE_NOACCESS for the Original sticky call and separately for the current Source sticky call; PAGE_READONLY restored after each.",
+      "reference_safety": "The initial reference is bound while readable; forwarding the still-live object through its already-bound reference performs no value read. VirtualProtect does not end object lifetime or change its stored value.",
+      "end_of_lifetime": "PAGE_READONLY is restored after each sticky call, the word is checked again, and only then is storage released; no later reference use.",
+      "protection_transition_checks": "Both VirtualProtect old-protection results verify READONLY -> NOACCESS -> READONLY; final VirtualQuery verifies READONLY before storage release.",
+      "restored_readonly_before_lifetime_end": true,
+      "no_reload_native_and_source": true
+    },
+    "initial": [
+      "3faaaaab",
+      "3f400000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "3f400000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000"
+    ],
+    "incoming": [
+      "3faaaaab",
+      "3f400000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "3f400000",
+      "3e800000",
+      "c0200000",
+      "41140000",
+      "bf000000",
+      "a5a500a0",
+      "00000000"
+    ],
+    "original_after": [
+      "3faaaaab",
+      "3f400000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "3f400000",
+      "3f800000",
+      "3f800000",
+      "3f800000",
+      "3f800000",
+      "a5a500a1",
+      "00000000"
+    ],
+    "original_sticky": [
+      "3faaaaab",
+      "3f400000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "3f400000",
+      "3f800000",
+      "3f800000",
+      "3f800000",
+      "3f800000",
+      "a5a500a1",
+      "00000000"
+    ],
+    "source_after": [
+      "3faaaaab",
+      "3f400000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "3f400000",
+      "3f800000",
+      "3f800000",
+      "3f800000",
+      "3f800000",
+      "a5a500a1",
+      "00000000"
+    ],
+    "source_sticky": [
+      "3faaaaab",
+      "3f400000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "3f400000",
+      "3f800000",
+      "3f800000",
+      "3f800000",
+      "3f800000",
+      "a5a500a1",
+      "00000000"
+    ],
+    "returned_pointers": [
+      "012167d8",
+      "012167d8",
+      "012167d8",
+      "012167d8"
+    ],
+    "same_return_identity": true,
+    "adjacent_state_unchanged": true,
+    "all_other_mask_bits_preserved": true,
+    "source_object": "012167c0",
+    "code_copy": "023c0000",
+    "code_memory": "Allocate RW, copy entire body, patch only audited fields, change to RX, flush instruction cache; no runtime code changes between arms.",
+    "patched_body_hex": "b8010000008405e8672101752ef30f10050000ff000905e8672101f30f1105d8672101f30f1105dc672101f30f1105e0672101f30f1105e4672101b8d8672101c3",
+    "patched_body_sha256": "32e3c186bb2f316e930083c60a3ccd4391fffba56164b4baf7062746cef99cd3",
+    "runtime_fixups": [
+      {
+        "offset": 7,
+        "original": "00f8be48",
+        "replacement": "012167e8",
+        "kind": "absolute_disp32"
+      },
+      {
+        "offset": 17,
+        "original": "00d7a24c",
+        "replacement": "00ff0000",
+        "kind": "absolute_disp32"
+      },
+      {
+        "offset": 23,
+        "original": "00f8be48",
+        "replacement": "012167e8",
+        "kind": "absolute_disp32"
+      },
+      {
+        "offset": 31,
+        "original": "00f8be38",
+        "replacement": "012167d8",
+        "kind": "absolute_disp32"
+      },
+      {
+        "offset": 39,
+        "original": "00f8be3c",
+        "replacement": "012167dc",
+        "kind": "absolute_disp32"
+      },
+      {
+        "offset": 47,
+        "original": "00f8be40",
+        "replacement": "012167e0",
+        "kind": "absolute_disp32"
+      },
+      {
+        "offset": 55,
+        "original": "00f8be44",
+        "replacement": "012167e4",
+        "kind": "absolute_disp32"
+      },
+      {
+        "offset": 60,
+        "original": "00f8be38",
+        "replacement": "012167d8",
+        "kind": "absolute_imm32_return"
+      }
+    ],
+    "entire_byte_diff": {
+      "7": "48->e8",
+      "8": "be->67",
+      "9": "f8->21",
+      "10": "00->01",
+      "17": "4c->00",
+      "18": "a2->00",
+      "19": "d7->ff",
+      "23": "48->e8",
+      "24": "be->67",
+      "25": "f8->21",
+      "26": "00->01",
+      "31": "38->d8",
+      "32": "be->67",
+      "33": "f8->21",
+      "34": "00->01",
+      "39": "3c->dc",
+      "40": "be->67",
+      "41": "f8->21",
+      "42": "00->01",
+      "47": "40->e0",
+      "48": "be->67",
+      "49": "f8->21",
+      "50": "00->01",
+      "55": "44->e4",
+      "56": "be->67",
+      "57": "f8->21",
+      "58": "00->01",
+      "60": "38->d8",
+      "61": "be->67",
+      "62": "f8->21",
+      "63": "00->01"
+    },
+    "changed_bytes": 31,
+    "all_other_bytes_identical": true
+  },
+  "build": {
+    "command": "cmd.exe /d /s /c local\\cc12_gui_white_getter_native_42\\compile.cmd",
+    "exit_code": 0,
+    "environment": "Visual Studio 2026 Developer Command Prompt 18.6.1; vcvars32 x86; COFF dumper 14.51.36244.0.",
+    "compile_options": "/std:c++17 /O2 /EHsc /MD /W4 /WX",
+    "objects": [
+      "current_state.obj compiled from unchanged src/game_native_gui_text_state.cpp",
+      "white_probe.obj compiled from ignored white_probe.cpp"
+    ],
+    "link_options": "/MANIFEST:EMBED /DYNAMICBASE /NXCOMPAT; bcrypt.lib; safe white_probe.exe filename.",
+    "machine": "I386",
+    "embedded_manifest": "asInvoker",
+    "dynamic_crt_verified": "Source object DEFAULTLIB:MSVCRT and dynamic CRT imports.",
+    "imports": [
+      "bcrypt.dll",
+      "MSVCP140.dll",
+      "KERNEL32.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll"
+    ]
+  },
+  "sha256": {
+    "include/bsp/game_native_gui_text_state.hpp": "d8990cc2df091c2f7c9ebae511617113e7b1a47601667aa037682bb76c99d040",
+    "src/game_native_gui_text_state.cpp": "724279b67813f9ce9baf24fba9373f0d0bdfb07ee97c074b5329990aec81204f",
+    "local/cc12_gui_white_getter_native_42/audit.py": "f757f746d5ca94852e8eb9b7fc8b6351c0e07e06b47ca4ed50536a957b773ca1",
+    "local/cc12_gui_white_getter_native_42/audited_body.hpp": "1f554b09983f936e3e7e867be2afca194d6e511953c6c8b432fe9ad63c41b2b9",
+    "local/cc12_gui_white_getter_native_42/white_probe.cpp": "bb2e5e65a019b5d6d5fe8c819a85538047157d2edfd4978a30607881d9fe404b",
+    "local/cc12_gui_white_getter_native_42/compile.cmd": "821a5c4607629f3f702907a0613d8e97a96c5db89bc7292e6a7704e5d212d539",
+    "local/cc12_gui_white_getter_native_42/current_state.obj": "6722489953f68159762cd7f35c691da8241f58909b4293db59e2034033ef444f",
+    "local/cc12_gui_white_getter_native_42/white_probe.obj": "80b4f7bf98e0b61a86c301d5f3a68936bcfa0c6246484d5d2a93145325ced8ef",
+    "local/cc12_gui_white_getter_native_42/white_probe.exe": "32bf47ef8086c8aaf2322976e366a277bc98f3dfd983772f57e42fa72c0ffe29",
+    "local/cc12_gui_white_getter_native_42/instruction_audit.json": "2d2bdae79e150ba269d05cf17fca247ae1af6a27958a16fcda81bae4a0e10c7b",
+    "local/cc12_gui_white_getter_native_42/native_result.json": "f61be5d9bb6d1aaf68d4adf013e96b56eaa21cc1bbd0ab842540d1c4f6164e1f",
+    "local/cc12_gui_white_getter_native_42/compile.log": "b546d3c1a6548133e8018fff16f335eddbd101acf95cf3242c6252ff28f62f6f",
+    "local/cc12_gui_white_getter_native_42/run.log": "8c49fd1d7fe32dfb06fb527e12a72344392cee68c699caa98213a1cdee49ff31",
+    "local/cc12_gui_white_getter_native_42/embedded_manifest.xml": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+    "local/cc12_gui_white_getter_native_42/write_report.py": "a7c3eef854312f5fa1ccb1f6f793a9adab5ae31ce6b0bf829238134f9442808f"
+  },
+  "checks": {
+    "full_PE_hash_checked_before_and_after": true,
+    "runtime_PE_hash_and_full_body_check": true,
+    "entire_diff_independently_rechecked": true,
+    "Source_files_identical_to_recorded_Main_commit": true,
+    "production_Source_edits": false,
+    "Ghidra_mutations": false,
+    "Original_install_writes": false,
+    "audio_or_SDK_output_changes": false,
+    "game_launch": false,
+    "call_report_audit": "pass; JSON: 0 call rows, 0 failed. Markdown: 0 call claims, 0 failed; two expected warnings for data-cell accessors, which are not Ghidra functions.",
+    "git_diff_check": "pass"
+  },
+  "limits": [
+    "One concrete supported scalar scenario plus immediate sticky repeat; not exhaustive arbitrary inputs or concurrent-call proof.",
+    "Whole relocated Original 65-byte leaf executes natively in a manifested Win32 probe; the current Source method is separately compiled and compared.",
+    "Eight named absolute data operands are relocated to controlled Source/probe storage. Original fixed-VA startup, surrounding program and imports are not executed.",
+    "The current Source method retains its new C++ member API and explicit input reference; no binary drop-in ABI compatibility is claimed.",
+    "Full native Text activation/drawing, audio startup, game startup and gameplay remain outside this proof."
+  ]
+}
