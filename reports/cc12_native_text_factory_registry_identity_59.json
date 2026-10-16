@@ -1,0 +1,91 @@
+{
+  "packet": "cc12_native_text_factory_registry_identity_59",
+  "compiled_source_commit": "7e8390fecd4bfe6c46e0a9145517263d5a27d738",
+  "dependency_commit_56": "af6d934c2511f604219933e066cd3b00d3dfb33e",
+  "independent_source_review": {
+    "reviewer": "native_font_teardown_review_36",
+    "verdict": "pass_no_blocking_findings",
+    "source_commit": "7e8390fecd4bfe6c46e0a9145517263d5a27d738",
+    "checked": ["side-effect-free profile inspector", "null/foreign registry rejection before factory assignment", "unchanged host53 sticky admitted failure handling", "explicit live lifetime and serialized mutable publication contract"],
+    "extra_build_or_runtime_by_reviewer": false
+  },
+  "status": "exact_registry_admission_source_review_and_combined_build_passed_native_Text_not_activated",
+  "source_files": [
+    {
+      "path": "include/bsp/gui_text_runtime_factory.hpp",
+      "git_blob": "cbde84045f9c2085f6cc34b7e258f5def78e2b36",
+      "sha256": "14eed96de460d87cef6089e9c4582374b8aa3119e1a2e15f90ad2672b058b61e"
+    },
+    {
+      "path": "include/bsp/game_native_font_application.hpp",
+      "git_blob": "bd6bb4ebbe30d873a654a66e70b69af6e165fd71",
+      "sha256": "f819d8a38b49a6ff8ec3873dea65992366396c8d635e54301542c71ce0aee469"
+    },
+    {
+      "path": "src/game_native_font_application.cpp",
+      "git_blob": "692b370f822f5f21496ae95c4ed417dc353809b8",
+      "sha256": "31d143c3dc1dc9495cd87fdba0ecb67ad3d2494c9b47415746a47771cce5e424"
+    },
+    {
+      "path": "include/bsp/game_hosts_fonts.hpp",
+      "git_blob": "1f2aa930bce472c770707b116a4d030186c6e43e",
+      "sha256": "0b620d448e291bcf4a326c63f8c99624aa8c6a1ccbec8ef2604eb9ed5ef8878c"
+    },
+    {
+      "path": "include/bsp/gui_text_resource_names.hpp",
+      "git_blob": "8f31f397bb6f9a0d98286395d90ead69b61057e7",
+      "sha256": "517e8fe7c79b09c42d4f0af589e17f912e88c582e8cb322cef38260355ab2415"
+    },
+    {
+      "path": "src/gui_text_resource_names.cpp",
+      "git_blob": "85eb4303d096bc015727ba19a4ef5cdd324bd94b",
+      "sha256": "dca7270d9e38c6a6507c2c367221ff8f73e3caba67b4fe8fc1ea9a0f0fb7e57a"
+    },
+    {
+      "path": "include/bsp/game_native_text_application.hpp",
+      "git_blob": "b9d464b7379d9ccd9595bcae7b3434da7cf42906",
+      "sha256": "c3198f0073787c2ebd3d3d52010023ab1689123a1cd2830e0a263b1b7aa573b4"
+    },
+    {
+      "path": "src/game_hosts_text.cpp",
+      "git_blob": "a58bc5e3dabe1e1da6880feec0f7dbc3b2c8247f",
+      "sha256": "f64669351591fd48bdc1506bb62781ba5f632390a83f5714170e04dc46af8b88"
+    }
+  ],
+  "behavior": [
+    "Factory inspector follows its exact font-name registry profile",
+    "Inspection returns the same borrowed registry or current legacy publication without invoking the lazy getter",
+    "Null or foreign registry rejects before producer installs its factory pointer",
+    "Existing exact resources, factory identity, empty allocation checks and assignment ordering retained",
+    "Existing host admitted-bind catch makes rejection sticky; before-export/repeated/after-retirement admission remains unchanged"
+  ],
+  "build": {
+    "script": "./scripts/build.ps1",
+    "exit_code": 0,
+    "tests_passed": 3,
+    "tests_total": 3,
+    "ctest_seconds": 8.62
+  },
+  "new_tests_added": false,
+  "limits": [
+    "No new Original body reconstruction or Ghidra edits",
+    "No successful real Text factory binding or admitted-failure runtime execution",
+    "No native Text activation, new normal runtime or gameplay proof",
+    "Metadata identity does not freeze legacy publication; referents/cell and lookup association must remain valid through retirement"
+  ],
+  "prior_normal_regression_receipt": "reports/cc12_native_gui_combined_55.json",
+  "prior_post_Main_build": {
+    "source": "b6d06e954e82400740af3b2fccdf63ed34b6a28b",
+    "tests_passed": 3,
+    "ctest_seconds": 9.73,
+    "log": "local/cc12_native_gui_combined_55/post_main_build.txt",
+    "log_sha256": "5fca694e94cc3e1711f93a7e68b0d4de80f77d64a4b9ce208548a406ed528d68"
+  },
+  "evidence": {
+    "archive": "local\\cc12_native_text_factory_registry_identity_59\\evidence_family.zip",
+    "archive_sha256": "74aff3007a61c5dd392d9f2dc78c1451fc0016a18af47f2652902c3b69705577",
+    "manifest_sha256": "75a9d3b198e235da8daaf56d099a3b65fcbf1efa3eb4eac03af7fd6b6343a7ee",
+    "payloads": 18,
+    "payload_hashes_verified": true
+  }
+}
