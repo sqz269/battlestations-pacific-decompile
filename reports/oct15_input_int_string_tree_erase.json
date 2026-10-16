@@ -13,7 +13,7 @@
   "documentation": "docs/OCT15_INPUT_INT_STRING_TREE_ERASE.md",
   "source_sha256": "e92d08b28e44e8f089b1f1d276b3fccdb58436dae2e32587ad3a8ddeeb68d8fe",
   "header_sha256": "cea7c46fcc0b28ea2626a7bbc52a220c1ab10e8f8cad9631030eb4f5c82a50ee",
-  "documentation_sha256": "90fadb6259e36a02789bf65464494596a57171a551daff14af58e41e6c118575",
+  "documentation_sha256": "627bcfca028e2b5b1ee3d9053e3cdaef932d795c541addcf4c7f62ccf33c2753",
   "source_fingerprints": [
     {
       "path": "src/native_input_int_string_tree_erase.cpp",
@@ -29,9 +29,9 @@
     },
     {
       "path": "docs/OCT15_INPUT_INT_STRING_TREE_ERASE.md",
-      "bytes": 7529,
-      "sha256": "90fadb6259e36a02789bf65464494596a57171a551daff14af58e41e6c118575",
-      "LF_normalized_sha256": "90fadb6259e36a02789bf65464494596a57171a551daff14af58e41e6c118575"
+      "bytes": 9138,
+      "sha256": "627bcfca028e2b5b1ee3d9053e3cdaef932d795c541addcf4c7f62ccf33c2753",
+      "LF_normalized_sha256": "627bcfca028e2b5b1ee3d9053e3cdaef932d795c541addcf4c7f62ccf33c2753"
     }
   ],
   "functions": [
@@ -12369,5 +12369,154 @@
     "No Original heap/CRT/FH3/SEH/RTTI/faultdelivery identity or dropinOriginalbinaryABI proof; Source RET10h differsNativeRET0Ch.",
     "CurrentCpp owningexception and acceptedSBO/currentCRTnoexcept limits remain.",
     "Existing checks do not establish packetNative differential, applicationadoption or gamevalidation."
+  ],
+  "host_steps": [
+    {
+      "address": "0069ae58",
+      "native": "00bf6713",
+      "function": "0069ae50",
+      "kind": "call",
+      "scope": "read_only_support"
+    },
+    {
+      "address": "0069ae67",
+      "native": "00bf6713",
+      "function": "0069ae50",
+      "kind": "tail_jump",
+      "scope": "read_only_support"
+    },
+    {
+      "address": "006a0818",
+      "native": "00408720",
+      "function": "006a07d0",
+      "kind": "call",
+      "scope": "owned_whole_eraser"
+    },
+    {
+      "address": "006a082a",
+      "native": "00411700",
+      "function": "006a07d0",
+      "kind": "call",
+      "scope": "owned_whole_eraser"
+    },
+    {
+      "address": "006a0841",
+      "native": "00bf6885",
+      "function": "006a07d0",
+      "kind": "call",
+      "scope": "owned_whole_eraser"
+    },
+    {
+      "address": "006a084e",
+      "native": "0069ae50",
+      "function": "006a07d0",
+      "kind": "call",
+      "scope": "owned_whole_eraser"
+    },
+    {
+      "address": "006a08b0",
+      "native": "0069aae0",
+      "function": "006a07d0",
+      "kind": "call",
+      "scope": "owned_whole_eraser"
+    },
+    {
+      "address": "006a08d2",
+      "native": "0069aac0",
+      "function": "006a07d0",
+      "kind": "call",
+      "scope": "owned_whole_eraser"
+    },
+    {
+      "address": "006a0972",
+      "native": "0069c300",
+      "function": "006a07d0",
+      "kind": "call",
+      "scope": "owned_whole_eraser"
+    },
+    {
+      "address": "006a09a5",
+      "native": "0069a780",
+      "function": "006a07d0",
+      "kind": "call",
+      "scope": "owned_whole_eraser"
+    },
+    {
+      "address": "006a09c1",
+      "native": "0069c300",
+      "function": "006a07d0",
+      "kind": "call",
+      "scope": "owned_whole_eraser"
+    },
+    {
+      "address": "006a09d6",
+      "native": "0069a780",
+      "function": "006a07d0",
+      "kind": "call",
+      "scope": "owned_whole_eraser"
+    },
+    {
+      "address": "006a0a1f",
+      "native": "0069c300",
+      "function": "006a07d0",
+      "kind": "call",
+      "scope": "owned_whole_eraser"
+    },
+    {
+      "address": "006a0a39",
+      "native": "0069a780",
+      "function": "006a07d0",
+      "kind": "call",
+      "scope": "owned_whole_eraser"
+    },
+    {
+      "address": "006a0a50",
+      "native": "00419cc0",
+      "function": "006a07d0",
+      "kind": "call",
+      "scope": "owned_whole_eraser"
+    },
+    {
+      "address": "006a0a57",
+      "native": "00bd1510",
+      "function": "006a07d0",
+      "kind": "call",
+      "scope": "owned_whole_eraser"
+    },
+    {
+      "address": "006a0a5d",
+      "native": "00bf65ac",
+      "function": "006a07d0",
+      "kind": "call",
+      "scope": "owned_whole_eraser"
+    },
+    {
+      "address": "00c7f053",
+      "native": "004072d0",
+      "function": "00c7f050",
+      "kind": "tail_jump",
+      "scope": "owned_logical_completed_message_action"
+    },
+    {
+      "address": "00c7f05d",
+      "native": "00bf6b43",
+      "function": "00c7f058",
+      "kind": "tail_jump",
+      "scope": "read_only_support"
+    },
+    {
+      "address": "0041dd30",
+      "native": "00419cc0",
+      "function": "0041dd20",
+      "kind": "call",
+      "scope": "read_only_support"
+    },
+    {
+      "address": "0041dd37",
+      "native": "00bd1510",
+      "function": "0041dd20",
+      "kind": "call",
+      "scope": "read_only_support"
+    }
   ]
 }
