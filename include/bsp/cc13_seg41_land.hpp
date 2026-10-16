@@ -876,4 +876,144 @@ std::uint8_t* lua_trigger_construct_007506b0(std::uint8_t* trigger, const std::u
 void lua_trigger_set_callback_name_00750790(std::uint8_t* trigger, const std::uint8_t* name,
                                             const std::uint8_t* callback, TriggerHost& host);
 
+// ---------------------------------------------------------------------------
+// Telemetry / METRICSSESSION.
+// ---------------------------------------------------------------------------
+struct TelemetryHost {
+    virtual ~TelemetryHost() = default;
+    virtual void stream_write_00a4d610(std::uint32_t value, std::uint8_t* stream_04) = 0;  // __cdecl
+    // 00752900, ECX first, EDX last, push vector, push owner (callee pops).
+    virtual void destroy_range_00752900(std::uint32_t first, std::uint32_t last, std::uint8_t* vector,
+                                        std::uint8_t* owner) = 0;
+    virtual void free_00bf65ac(void* block) = 0;
+    // 00429F20 (cursor, header) reads an owned native string.
+    virtual void read_owned_string_00429f20(NativeBitCursor* cursor, std::uint8_t* header) = 0;
+};
+// 00751850, __thiscall(ECX stream, value) RET 4: 00A4D610(value, stream+4).
+void telemetry_stream_write_00751850(std::uint8_t* stream, std::uint32_t value, TelemetryHost& host);
+// 00752BF0, RET 4: t == E9h (SETZ).
+bool metrics_session_is_type_00752bf0(std::uint32_t type);
+// 00752C30, __thiscall(ECX message, stream) RET 4: type byte +10h (8 bits,
+// 00428C70), then 00429F20(stream+4, message+18h).
+void metrics_session_read_00752c30(std::uint8_t* message, NativeSessionReadStream& stream, TelemetryHost& host);
+// 00753530 / 007547A0 (__fastcall ECX object) and 00754A40 (__stdcall object,
+// RET 4): the vector at object+10h {first +14h, last +18h, end +1Ch}: when first
+// is set 00752900(first, last, vector, object) and free(first); zero the three.
+void telemetry_list_tidy_00753530(std::uint8_t* object, TelemetryHost& host);
+
+// ---------------------------------------------------------------------------
+// MMothership (class 09h, 12C8h bytes, primary vtable 00D01630; air-ops block
+// at +1188h, vtable 00D015C4).
+// ---------------------------------------------------------------------------
+struct MothershipHost {
+    virtual ~MothershipHost() = default;
+    virtual double owner_heading_50(std::uint8_t* node) = 0;  // [[holder+4]+7Ch] vtable+50h, x87
+    virtual double wrapped_angle_delta_00438b10(float a, float b) = 0;  // stdcall(a, b), x87
+    virtual void block_destruct_006ca410(std::uint8_t* block) = 0;
+    virtual void ship_base_destruct_0081f3a0(std::uint8_t* ship) = 0;
+    virtual void ship_init_pass_c_0081f980(std::uint8_t* ship) = 0;
+    virtual void ship_update_008255b0(std::uint8_t* ship, float dt) = 0;
+    virtual void block_update_006ba670(std::uint8_t* block, float dt) = 0;
+    virtual void ship_update_motion_00825f20(std::uint8_t* ship, float dt) = 0;
+    virtual void deck_update_006cdc70(std::uint8_t* deck, float dt) = 0;  // ECX ship+E78h
+    virtual bool block_may_follow_006ba6a0(std::uint8_t* block, std::uint32_t a, std::uint32_t b) = 0;
+    virtual bool ship_may_follow_008162b0(std::uint8_t* ship, std::uint32_t a, std::uint32_t b) = 0;
+    virtual int compare_00438e10(const char* a, const char* b) = 0;  // ECX a, EDX b
+    virtual bool ship_supports_command_00812b00(std::uint8_t* ship, const char* command) = 0;
+    virtual void ship_get_property_00815870(std::uint8_t* ship, std::uint32_t lua, std::uint32_t key) = 0;
+    virtual void block_get_property_006c6630(std::uint8_t* block, std::uint32_t lua, std::uint32_t key) = 0;
+    virtual void ship_reset_condition_0080e410(std::uint8_t* ship) = 0;
+    virtual void enter_section(void* section) = 0;  // [00CE2218] EnterCriticalSection
+    virtual void leave_section(void* section) = 0;  // [00CE2210] LeaveCriticalSection
+    virtual void ship_base_construct_0081ed40(std::uint8_t* ship, std::uint32_t row) = 0;
+    virtual void block_construct_006cac00(std::uint8_t* block, std::uint8_t* ship) = 0;
+    virtual double controller_speed_0092d730(std::uint8_t* controller) = 0;  // ECX [ship+1018h], x87
+    virtual void node_set_transform_38(std::uint8_t* node, const float* matrix) = 0;  // [ship+1284h] vtable+38h
+    virtual void* operator_new_00bf55be(std::size_t bytes) = 0;
+    virtual void memset_00bf79f0(void* destination, int value, std::size_t bytes) = 0;
+    virtual void set_vehicle_class_009553d0(std::uint8_t* unit, std::uint32_t vehicle_class) = 0;
+    virtual void ship_serialize_00818340(std::uint8_t* ship, ArchiveWriter& archive) = 0;
+    virtual void block_serialize_006c19d0(std::uint8_t* block, ArchiveWriter& archive) = 0;
+    virtual std::uint8_t* find_node_0071ad50(std::uint8_t* scene, const char* name) = 0;  // ECX scene
+    virtual const float* node_world_matrix_00b6db60(std::uint8_t* node) = 0;
+    virtual void matrix_set_004134f0(std::uint8_t* matrix, const float* source) = 0;
+    virtual void ship_update_00811ab0(std::uint8_t* ship, float dt) = 0;
+    virtual void holder_refresh_006bee40(std::uint8_t* holder, float dt) = 0;
+    virtual bool message_is_type_0c(const std::uint8_t* message, std::uint32_t type) = 0;
+    virtual void ship_vslot_220(std::uint8_t* ship, const std::uint8_t* message) = 0;
+    virtual void ship_vslot_224(std::uint8_t* ship, const std::uint8_t* message) = 0;
+    virtual void elevator_move_50(std::uint8_t* elevator, std::uint8_t flag, std::uint8_t* entity, float seconds) = 0;
+    virtual bool block_handle_message_006cd6c0(std::uint8_t* block, const std::uint8_t* message) = 0;
+    virtual bool ship_handle_message_00821e80(std::uint8_t* ship, const std::uint8_t* message) = 0;
+};
+// 00758090, __thiscall(ECX holder, float dt) RET 4: +88h = heading (rounded
+// float); acc +94h += dt (rounded); when acc > 0.2 ([00CE3D10] double of
+// 0.2f): r = 00438B10(heading, +90h); acc = 0; +8Ch = (r*0.5)/acc_old +
+// 0.5*+8Ch ([00D7A280] = 0.5; DC C9 / DE FA / DE C1 read from the bytes);
+// +90h = +88h.
+void air_ops_holder_step_00758090(std::uint8_t* holder, float dt, MothershipHost& host);
+// 00758150, __fastcall(ECX ship): vtables, block vtable 00D015C4, 006CA410(block), 0081F3A0.
+void mothership_destruct_00758150(std::uint8_t* ship, MothershipHost& host);
+// 00758210, __fastcall(ECX ship): 0081F980, then +11A8h = 1 (dword).
+void mothership_init_pass_c_00758210(std::uint8_t* ship, MothershipHost& host);
+// 00758240, __thiscall(ECX ship, float dt) RET 4: 008255B0(dt), 006BA670(ECX block, dt).
+void mothership_update_00758240(std::uint8_t* ship, float dt, MothershipHost& host);
+// 00758270, __thiscall(ECX ship, float dt) RET 4: 00825F20(dt), 006CDC70(ECX
+// ship+E78h, dt), 00758090(ECX [ship+EF8h], dt) when set.
+void mothership_update_motion_00758270(std::uint8_t* ship, float dt, MothershipHost& host);
+// 007582B0, __thiscall(ECX ship, a, b) RET 8 -> bool: block 006BA6A0(a, b) or ship 008162B0(a, b).
+bool mothership_may_follow_007582b0(std::uint8_t* ship, std::uint32_t a, std::uint32_t b, MothershipHost& host);
+// 007582F0, __thiscall(ECX ship, const char* command) RET 4 -> bool:
+// "attackmove" (00CECCA8) -> false; "launchairstrike" (00CF85E0) -> true; else
+// 00812B00 (00438E10 returns 0 on equality).
+bool mothership_supports_command_007582f0(std::uint8_t* ship, const char* command, MothershipHost& host);
+// 00758340, __thiscall(ECX ship, lua, key) RET 8: 00815870, then 006C6630(ECX block).
+void mothership_get_property_00758340(std::uint8_t* ship, std::uint32_t lua, std::uint32_t key, MothershipHost& host);
+// 00758370, __fastcall(ECX ship): 0080E410, then +11A5h = +11A4h = 0 (bytes).
+void mothership_reset_condition_00758370(std::uint8_t* ship, MothershipHost& host);
+// 007584B0, __fastcall(ECX block) -> bool: under the section +8 (Enter,
+// ++depth +18h; --depth, Leave; skipped when null) the 20-byte record vector
+// +A8h/+ACh is non-empty.
+bool air_ops_block_has_queue_records_007584b0(std::uint8_t* block, MothershipHost& host);
+// 00758550, __thiscall(ECX ship, row) RET 4 -> ship.
+std::uint8_t* mothership_construct_00758550(std::uint8_t* ship, std::uint32_t row, MothershipHost& host);
+// 00758630, __fastcall(ECX ship) -> bool: |+984h| > 0.05 ([00D7A270]) and
+// |0092D730()| > 1.0 and (007584B0(block) or +11C0h != 0). |x| is x > 0 ?
+// x : -0.0 - x ([00D7A208] = -0.0f).
+bool mothership_vslot228_00758630(std::uint8_t* ship, MothershipHost& host);
+// 007586D0, __thiscall(ECX ship, float dt) RET 4: copy the 4x4 at +1288h,
+// subtract dt * row 1 from row 3 (DE CA, D8 C9 from the bytes; products
+// rounded to float), [+1284h] vtable+38h(&copy).
+void mothership_step_elevator_frame_007586d0(std::uint8_t* ship, float dt, MothershipHost& host);
+// MOTHERSHIP_ELEVATOR_MOVE (87h, vtable 00D01870).
+// 00758B90, __thiscall(ECX message, entity, byte flag) RET 8.
+std::uint8_t* elevator_move_construct_00758b90(std::uint8_t* message, std::uint8_t* entity, std::uint8_t flag,
+                                               const NativeSessionMessageContext& ctx, SessionMessageHost& host);
+// 00758BF0, RET 4: t == 87h || 49h || 46h.
+bool elevator_move_is_type_00758bf0(std::uint32_t type);
+// 00758C20 / 00758C70: header, bools +1Ch, +22h, +23h, then the id +20h in 12
+// bits when +23h (the reader zeroes +20h otherwise).
+void elevator_move_write_00758c20(const std::uint8_t* message, NativeBitCursor* cursor, SessionMessageHost& host);
+void elevator_move_read_00758c70(std::uint8_t* message, NativeSessionReadStream& stream, SessionMessageHost& host);
+// 00758CF0, __fastcall(ECX message) -> the entity of id +20h when +23h, else 0.
+std::uint8_t* elevator_move_entity_00758cf0(const std::uint8_t* message, const EntityIdTable& ids);
+// 00758D30, __thiscall(ECX class, row) RET 4 -> ship: new 12C8h, memset,
+// 00758550, 009553D0(class), +354h = class.
+std::uint8_t* mothership_create_00758d30(std::uint32_t vehicle_class, std::uint32_t row, MothershipHost& host);
+// 00758DC0, __thiscall(ECX ship, archive) RET 4: +11A8h = 1, 00818340,
+// begin "_airBase", 006C19D0(block), end, begin "_motherShip", end.
+void mothership_serialize_00758dc0(std::uint8_t* ship, ArchiveWriter& archive, MothershipHost& host);
+// 00758E40, __fastcall(ECX ship): +1284h = 0071AD50(ECX [ship+360h] ?
+// [[ship+360h]+160h] : 0, "elevator_2"), then 004134F0(ECX +1288h, 00B6DB60(node)).
+void mothership_bind_elevator_node_00758e40(std::uint8_t* ship, MothershipHost& host);
+// 00758E80, __thiscall(ECX ship, float dt) RET 4: 00811AB0(dt), then
+// 006BEE40(ECX [ship+EF8h], dt) when set.
+void mothership_controller_refresh_00758e80(std::uint8_t* ship, float dt, MothershipHost& host);
+// 00758EB0, __thiscall(ECX ship, message) RET 4 -> bool: 72h / 74h ->
+// vtable+220h, 73h / 75h -> vtable+224h (tested 72h, 73h, 74h, 75h in that
+// order); 87h -> [ship+11C4h] vtable+50h(+22h, 00758CF0(msg), float([00F876B0]
+// - [msg+0Ch])); else the block 006CD6C0 then the ship 00821E80.
+bool mothership_handle_message_00758eb0(std::uint8_t* ship, const std::uint8_t* message, const EntityIdTable& ids,
+                                        const std::int32_t& tick_00f876b0, MothershipHost& host);
+
 }  // namespace bsp::cc13_seg41

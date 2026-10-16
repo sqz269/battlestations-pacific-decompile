@@ -239,6 +239,35 @@ Function and field names are hypotheses, not recovered symbols.
 | 00750660 | `squad_ordnance_trigger_create_00750660` | __cdecl() -> trigger | new 34h; inline base: +4/+8/+0Ch 0, +10h 0, +18h 2, +11h 1, +1Ch/+20h 0, +24h 0, +28h/+2Ch 0, +14h 1, vtable 00D005C0, +30h 0; null -> 0. |
 | 007506B0 | `lua_trigger_construct_007506b0` | __thiscall(ECX trigger, const name*, const callback*) RET 8 -> trigger | Base fields (+11h 1, +18h 2), vtable 00D00554, +1Ch = copy of name (and flag +24h), +28h = copy of callback (no flag), +14h = 1. |
 | 00750790 | `lua_trigger_set_callback_name_00750790` | __thiscall(ECX trigger, const name*, const callback*) RET 8 | Assign +1Ch from name when not the same object (0041DD40 + memcpy), flag +24h always copied; assign +28h from callback. |
+| 00751850 | `telemetry_stream_write_00751850` | __thiscall(ECX stream, value) RET 4 | 00A4D610(value, stream+4) (cdecl, ADD ESP 8). |
+| 00752BF0 | `metrics_session_is_type_00752bf0` | RET 4 -> bool | t == E9h (XOR/CMP/SETZ). |
+| 00752C30 | `metrics_session_read_00752c30` | __thiscall(ECX message, stream) RET 4 | 00428C70(stream+4, &+10h, 8) via read_native_u8_bits_00428c70; 00429F20(stream+4, message+18h) (host hook: the owned-string reader needs a pool context). |
+| 00753530 | `telemetry_list_tidy_00753530` | __fastcall(ECX object) RET (owner argument = the saved ECX) | 00753530: vector object+10h: 00752900(ECX first +14h, EDX last +18h, vector, object) + free 00BF65AC when first set; zero +14h..+1Ch. |
+| 007547A0 | `telemetry_list_tidy_00753530` | __fastcall(ECX object) RET (owner argument = the saved ECX) | 007547A0: vector object+10h: 00752900(ECX first +14h, EDX last +18h, vector, object) + free 00BF65AC when first set; zero +14h..+1Ch. |
+| 00754A40 | `telemetry_list_tidy_00753530` | __stdcall(object) RET 4 | 00754A40: vector object+10h: 00752900(ECX first +14h, EDX last +18h, vector, object) + free 00BF65AC when first set; zero +14h..+1Ch. |
+| 00758090 | `air_ops_holder_step_00758090` | __thiscall(ECX holder, float dt) RET 4 | x87 from the bytes: heading = [[holder+4]+7Ch] vtable+50h rounded to float -> +88h; acc = float(+94h + dt) -> +94h; acc > [00CE3D10] (0.2f widened) else return; r = 00438B10(heading, +90h) (stdcall); DC C9 (ST1 *= ST0: r*0.5 [00D7A280]), +94h = 0, DE FA (ST2 /= ST0: /acc), FMUL +8Ch by 0.5, DE C1 add, FSTP +8Ch; +90h = +88h. The C++ carries x87 values as doubles (MINOR: extended vs double rounding). |
+| 00758150 | `mothership_destruct_00758150` | __fastcall(ECX ship) RET | Eight vtables (00D01630 .. +72Ch 00D015E0), block +1188h vtable 00D015C4, 006CA410(ECX block), 0081F3A0. |
+| 00758210 | `mothership_init_pass_c_00758210` | __fastcall(ECX ship) RET | 0081F980, then dword +11A8h = 1. game_hosts_lua.cpp ~4154 lists it in its pass table. |
+| 00758240 | `mothership_update_00758240` | __thiscall(ECX ship, float dt) RET 4 | 008255B0(ECX ship, dt), 006BA670(ECX ship+1188h, dt). |
+| 00758270 | `mothership_update_motion_00758270` | __thiscall(ECX ship, float dt) RET 4 | 00825F20(dt), 006CDC70(ECX ship+E78h, dt), 00758090(ECX [ship+EF8h], dt) when set. Hosted as a motion-coverage row in game_hosts_units.cpp (no per-call body). |
+| 007582B0 | `mothership_may_follow_007582b0` | __thiscall(ECX ship, a, b) RET 8 -> bool | 006BA6A0(ECX block, a, b) true -> true, else 008162B0(ECX ship, a, b) != 0. |
+| 007582F0 | `mothership_supports_command_007582f0` | __thiscall(ECX ship, const char*) RET 4 -> bool | 00438E10(ECX cmd, EDX "attackmove" 00CECCA8) == 0 -> false; == "launchairstrike" (00CF85E0) -> true; else 00812B00(ECX ship, cmd) != 0. |
+| 00758340 | `mothership_get_property_00758340` | __thiscall(ECX ship, lua, key) RET 8 | 00815870(ECX ship, lua, key), then 006C6630(ECX ship+1188h, lua, key). |
+| 00758370 | `mothership_reset_condition_00758370` | __fastcall(ECX ship) RET | 0080E410, then bytes +11A5h and +11A4h = 0. |
+| 007584B0 | `air_ops_block_has_queue_records_007584b0` | __fastcall(ECX block) -> bool | Section [block+8]: Enter ([00CE2218]) and ++[s+18h] when set; count of the 20-byte records +A8h..+ACh (magic 66666667h, SAR 3) != 0; --depth and Leave ([00CE2210]). |
+| 00758550 | `mothership_construct_00758550` | __thiscall(ECX ship, row) RET 4 -> ship | 0081ED40(row); 006CAC00(ECX ship+1188h, ship); block vtable 00D015C4; eight vtables; +C4h = 9; +11A8h = 1. |
+| 00758630 | `mothership_vslot228_00758630` | __fastcall(ECX ship) -> bool | /+984h/ > [00D7A270] (0.05f widened) and /0092D730(ECX [ship+1018h])/ > 1.0f and (007584B0(block) or dword +11C0h != 0); /x/ = x > 0 ? x : [00D7A208] (-0.0f) - x. |
+| 007586D0 | `mothership_step_elevator_frame_007586d0` | __thiscall(ECX ship, float dt) RET 4 | Copy the 4x4 at +1288h; row3 -= dt*row1 (DE CA FMULP ST2 and D8 C9 FMUL ST0,ST1 read from the bytes; products stored as floats); [+1284h] vtable+38h(&copy). cc13_seg30.cpp calls it as a hook. |
+| 00758B90 | `elevator_move_construct_00758b90` | __thiscall(ECX message, entity, byte flag) RET 8 -> message | 0075B430(87h), header 0, delivery 1, +1Ch 0, vtable 00D01870, +23h = entity != 0, +22h = flag, +20h = id or 0. |
+| 00758BF0 | `elevator_move_is_type_00758bf0` | RET 4 -> bool | t == 87h // 49h // 46h. |
+| 00758C20 | `elevator_move_write_00758c20` | __thiscall(ECX message, cursor) RET 4 | 0075B480 header; bools +1Ch, +22h, +23h; word +20h in 12 bits when +23h. |
+| 00758C70 | `elevator_move_read_00758c70` | __thiscall(ECX message, stream) RET 4 | 0075B4C0 header; bools into +1Ch, +22h, +23h (stream+4); +23h: word 12 bits into +20h, else +20h = 0. |
+| 00758CF0 | `elevator_move_entity_00758cf0` | __fastcall(ECX message) -> entity | +23h == 0 -> 0; else the two-bank id table (00F89A10/0C/54/60/A8) entity of +20h. |
+| 00758D30 | `mothership_create_00758d30` | __thiscall(ECX class, row) RET 4 -> ship | new 12C8h, memset, 00758550, 009553D0(class), +354h = class (same body as 0074E540 with the size and constructor changed). |
+| 00758DC0 | `mothership_serialize_00758dc0` | __thiscall(ECX ship, archive) RET 4 | +11A8h = 1 first; 00818340; begin "_airBase" (00CF88BC), 006C19D0(ECX block, archive), end; begin "_motherShip" (00D01884), end. |
+| 00758E40 | `mothership_bind_elevator_node_00758e40` | __fastcall(ECX ship) RET | +1284h = 0071AD50(ECX [ship+360h] ? [[ship+360h]+160h] : 0, "elevator_2" 00D01890); 004134F0(ECX +1288h, 00B6DB60(ECX node)). |
+| 00758E80 | `mothership_controller_refresh_00758e80` | __thiscall(ECX ship, float dt) RET 4 | 00811AB0(dt), then 006BEE40(ECX [ship+EF8h], dt) when set. game_hosts_units.cpp models the holder re-frame it causes. |
+| 00758EB0 | `mothership_handle_message_00758eb0` | __thiscall(ECX ship, message) RET 4 -> bool | IsType (vtable+0Ch) 72h -> vtable+220h, 73h -> +224h, 74h -> +220h, 75h -> +224h (return 1); 87h -> [ship+11C4h] vtable+50h(byte +22h, 00758CF0(msg), CVTSI2SS([00F876B0] - [msg+0Ch])) (return 1); else 006CD6C0(ECX block, msg) true -> 1, else 00821E80(ECX ship, msg). |
 
 ## Existing code, recorded ledger-only
 
@@ -254,6 +283,11 @@ Function and field names are hypotheses, not recovered symbols.
 | 0074E190 | `kSensorCategoryPlane_0074e190` | XOR EAX,EAX; RET | cc13-seg41 verified: XOR EAX,EAX / RET; sensor_tables.hpp models it as SensorCategory::air (0). |
 | 0074E2B0 | `recon_slot_lists category switch` | MOV EAX,0Bh; RET | cc13-seg41 verified: 0074E2B0 is MOV EAX,0Bh / RET; recon_slot_lists.cpp returns 0Bh for this class. |
 | 0074E340 | `recon_slot_lists category switch` | MOV EAX,0Bh; RET | cc13-seg41 verified: 0074E340 is MOV EAX,0Bh / RET; recon_slot_lists.cpp returns 0Bh for this class. |
+| 007581F0 | `recon_slot_lists category switch` | XOR EAX,EAX; RET | cc13-seg41 verified: 007581F0 is XOR EAX,EAX / RET; recon_slot_lists.cpp returns 0 for MMothership. |
+| 007583A0 | `mothership_apply_failure_message` | __thiscall(ECX ship, message) RET 4 | cc13-seg41 verify-only: 72h -> byte +11A4h = 1, 74h -> +11A5h = 1, else 008198A0 (IsType vtable+0Ch); the physics lane's mothership_apply_failure_message writes deck block+1Ch/+1Dh (= unit+11A4h/+11A5h, block at +1188h). Matches; the application at the call (not the pump) is the host's labelled substitution. |
+| 007583F0 | `mothership_apply_failure_message` | __thiscall(ECX ship, message) RET 4 | cc13-seg41 verify-only: 73h -> +11A4h = 0, 75h -> +11A5h = 0, else 008137B0 (IsType vtable+0Ch); the physics lane's mothership_apply_failure_message writes deck block+1Ch/+1Dh (= unit+11A4h/+11A5h, block at +1188h). Matches; the application at the call (not the pump) is the host's labelled substitution. |
+| 00758750 | `mothership_failure_arm` | __thiscall(ECX ship, const key*, duration) RET 8 -> AL | cc13-seg41 verify-only: "RunwayFailure" via _stricmp on key+4 (null skipped) -> 72h message (vtable 00CF8B40, float +20h = [00CF8B3C]) routed by 0077C2A0(msg, 7, 0); "HangarFailure" via 00425850 -> 74h (vtable 00CF8B68); else 008132C0(key, duration). The duration is not read on the two arms. Matches the header's description. |
+| 00758890 | `mothership_failure_arm` | __thiscall(ECX ship, const key*, duration) RET 8 -> AL | cc13-seg41 verify-only: "RunwayFailure" via _stricmp on key+4 (null skipped) -> 72h message (vtable 00CF8B40, float +20h = [00CF8B3C]) routed by 0077C2A0(msg, 7, 0); "HangarFailure" via 00425850 -> 74h (vtable 00CF8B68); else 00827B90(key, duration). The duration is not read on the two arms. Matches the header's description. |
 
 ## Adoption notes for hosted code
 
@@ -284,14 +318,18 @@ host does, whether it is live in a normal mission, and the shared RNG
    DistanceTraveled as a boolean (00741827: UCOMISS against 0.0f, push
    through 00B66450). Not hosted; noted so a future host does not "fix" it.
 
-## Not reconstructed in this commit
+## Not reconstructed (skipped, with reasons)
 
-- 0073EBA0, 0073F1B0, 0073F6E0 (mesh-decal clip/contact/collect, 240-420
-  instructions of x87 geometry each): not attempted in this pass.
+- 0073EBA0 (mesh-decal triangle clip to box, 420 instructions), 0073F1B0
+  (triangle/sphere contact, 399) and 0073F6E0 (collect tree triangles, 238):
+  long x87 geometry bodies; not attempted within this packet's context budget.
+  Every DC-form operand would have to be read from the bytes.
 - 007482B0 (LandFort scene init + static body, 438 instructions): hosted by
-  cc9 (`game_hosts_units.cpp` ~6815, `hull_terrain_contact.cpp`); not
-  re-verified here.
-- 00748CC0 (LandFort load from the saved Lua table) and 0074D800 (LandVehicle
-  InitAll, effect setup): not attempted in this pass.
-- Telemetry (00751850, 00752BF0, 00752C30, 00753530, 007547A0, 00754A40) and
-  the mothership (00758090..00758EB0): next commit.
+  the gameplay lane (`game_hosts_units.cpp` ~6815, `hull_terrain_contact.cpp`,
+  `mmod_hull_convex_box.cpp`, packet cc9_hull_fort_contact); not re-verified
+  here, so no ledger record was added.
+- 00748CC0 (LandFort load from the saved Lua table): needs the Lua-reader
+  stack objects and the section index -> element conversion (0043F8E0); not
+  attempted.
+- 0074D800 (LandVehicle InitAll: gunnery AI, smoke effects per class anchor):
+  not attempted.

@@ -1383,6 +1383,263 @@ void lua_trigger_set_callback_name_00750790(std::uint8_t* trigger, const std::ui
     assign_string(trigger + 0x28, callback, host);
 }
 
+// ---- telemetry ---------------------------------------------------------------
+
+void telemetry_stream_write_00751850(std::uint8_t* stream, std::uint32_t value, TelemetryHost& host) {
+    host.stream_write_00a4d610(value, stream + 4);
+}
+
+bool metrics_session_is_type_00752bf0(std::uint32_t type) { return type == 0xE9; }
+
+void metrics_session_read_00752c30(std::uint8_t* message, NativeSessionReadStream& stream, TelemetryHost& host) {
+    read_native_u8_bits_00428c70(&stream.cursor_04, &at<std::uint8_t>(message, 0x10), 8);
+    host.read_owned_string_00429f20(&stream.cursor_04, message + 0x18);
+}
+
+void telemetry_list_tidy_00753530(std::uint8_t* object, TelemetryHost& host) {
+    std::uint8_t* vector = object + 0x10;
+    if (at<std::uint32_t>(vector, 4) != 0) {
+        host.destroy_range_00752900(at<std::uint32_t>(vector, 4), at<std::uint32_t>(vector, 8), vector, object);
+        host.free_00bf65ac(at<void*>(vector, 4));
+    }
+    at<std::uint32_t>(vector, 4) = 0;
+    at<std::uint32_t>(vector, 8) = 0;
+    at<std::uint32_t>(vector, 0xC) = 0;
+}
+
+// ---- MMothership ---------------------------------------------------------------
+
+void air_ops_holder_step_00758090(std::uint8_t* holder, float dt, MothershipHost& host) {
+    const float heading = static_cast<float>(host.owner_heading_50(at<std::uint8_t*>(at<std::uint8_t*>(holder, 4), 0x7C)));
+    at<float>(holder, 0x88) = heading;
+    const float acc = at<float>(holder, 0x94) + dt;  // FADD then FSTP float
+    at<float>(holder, 0x94) = acc;
+    if (!(static_cast<double>(acc) > 0.20000000298023224)) return;  // [00CE3D10]; JBE
+    const double r = host.wrapped_angle_delta_00438b10(heading, at<float>(holder, 0x90));
+    const double half = 0.5;  // [00D7A280]
+    const double scaled = r * half;                                  // DC C9: ST1 = ST1 * ST0
+    const float old_acc = at<float>(holder, 0x94);
+    at<float>(holder, 0x94) = 0.0f;
+    const double term = scaled / static_cast<double>(old_acc);       // DE FA: ST2 = ST2 / ST0
+    const double smooth = half * static_cast<double>(at<float>(holder, 0x8C));
+    at<float>(holder, 0x8C) = static_cast<float>(term + smooth);     // DE C1, FSTP float
+    at<float>(holder, 0x90) = at<float>(holder, 0x88);
+}
+
+namespace {
+void store_mothership_vtables(std::uint8_t* ship) {
+    at<std::uint32_t>(ship, 0x000) = 0x00D01630u;
+    at<std::uint32_t>(ship, 0x010) = 0x00D01614u;
+    at<std::uint32_t>(ship, 0x024) = 0x00D0160Cu;
+    at<std::uint32_t>(ship, 0x170) = 0x00D01608u;
+    at<std::uint32_t>(ship, 0x1E4) = 0x00D01600u;
+    at<std::uint32_t>(ship, 0x310) = 0x00D015E8u;
+    at<std::uint32_t>(ship, 0x38C) = 0x00D015E4u;
+    at<std::uint32_t>(ship, 0x72C) = 0x00D015E0u;
+}
+float abs_by_negative_zero(float x) { return x > 0.0f ? x : -0.0f - x; }  // [00D7A208] = -0.0f
+}  // namespace
+
+void mothership_destruct_00758150(std::uint8_t* ship, MothershipHost& host) {
+    store_mothership_vtables(ship);
+    at<std::uint32_t>(ship, 0x1188) = 0x00D015C4u;
+    host.block_destruct_006ca410(ship + 0x1188);
+    host.ship_base_destruct_0081f3a0(ship);
+}
+
+void mothership_init_pass_c_00758210(std::uint8_t* ship, MothershipHost& host) {
+    host.ship_init_pass_c_0081f980(ship);
+    at<std::uint32_t>(ship, 0x11A8) = 1;
+}
+
+void mothership_update_00758240(std::uint8_t* ship, float dt, MothershipHost& host) {
+    host.ship_update_008255b0(ship, dt);
+    host.block_update_006ba670(ship + 0x1188, dt);
+}
+
+void mothership_update_motion_00758270(std::uint8_t* ship, float dt, MothershipHost& host) {
+    host.ship_update_motion_00825f20(ship, dt);
+    host.deck_update_006cdc70(ship + 0xE78, dt);
+    if (std::uint8_t* holder = at<std::uint8_t*>(ship, 0xEF8); holder != nullptr) {
+        air_ops_holder_step_00758090(holder, dt, host);
+    }
+}
+
+bool mothership_may_follow_007582b0(std::uint8_t* ship, std::uint32_t a, std::uint32_t b, MothershipHost& host) {
+    if (host.block_may_follow_006ba6a0(ship + 0x1188, a, b)) return true;
+    return host.ship_may_follow_008162b0(ship, a, b);
+}
+
+bool mothership_supports_command_007582f0(std::uint8_t* ship, const char* command, MothershipHost& host) {
+    if (host.compare_00438e10(command, "attackmove") == 0) return false;      // 00CECCA8
+    if (host.compare_00438e10(command, "launchairstrike") == 0) return true;  // 00CF85E0
+    return host.ship_supports_command_00812b00(ship, command);
+}
+
+void mothership_get_property_00758340(std::uint8_t* ship, std::uint32_t lua, std::uint32_t key, MothershipHost& host) {
+    host.ship_get_property_00815870(ship, lua, key);
+    host.block_get_property_006c6630(ship + 0x1188, lua, key);
+}
+
+void mothership_reset_condition_00758370(std::uint8_t* ship, MothershipHost& host) {
+    host.ship_reset_condition_0080e410(ship);
+    at<std::uint8_t>(ship, 0x11A5) = 0;
+    at<std::uint8_t>(ship, 0x11A4) = 0;
+}
+
+bool air_ops_block_has_queue_records_007584b0(std::uint8_t* block, MothershipHost& host) {
+    std::uint8_t* section = at<std::uint8_t*>(block, 8);
+    if (section != nullptr) {
+        host.enter_section(section);
+        ++at<std::int32_t>(section, 0x18);
+    }
+    std::int32_t count = 0;
+    if (const auto first = at<std::uint32_t>(block, 0xA8); first != 0) {
+        count = static_cast<std::int32_t>(at<std::uint32_t>(block, 0xAC) - first) / 20;
+    }
+    const bool any = count != 0;
+    if (section != nullptr) {
+        --at<std::int32_t>(section, 0x18);
+        host.leave_section(section);
+    }
+    return any;
+}
+
+std::uint8_t* mothership_construct_00758550(std::uint8_t* ship, std::uint32_t row, MothershipHost& host) {
+    host.ship_base_construct_0081ed40(ship, row);
+    host.block_construct_006cac00(ship + 0x1188, ship);
+    at<std::uint32_t>(ship, 0x1188) = 0x00D015C4u;
+    store_mothership_vtables(ship);
+    at<std::uint32_t>(ship, 0x0C4) = 9;
+    at<std::uint32_t>(ship, 0x11A8) = 1;
+    return ship;
+}
+
+bool mothership_vslot228_00758630(std::uint8_t* ship, MothershipHost& host) {
+    const float roll = abs_by_negative_zero(at<float>(ship, 0x984));
+    if (!(static_cast<double>(roll) > 0.05000000074505806)) return false;  // [00D7A270]
+    const float speed = static_cast<float>(host.controller_speed_0092d730(at<std::uint8_t*>(ship, 0x1018)));
+    if (!(abs_by_negative_zero(speed) > 1.0f)) return false;  // [00D7A24C]
+    if (air_ops_block_has_queue_records_007584b0(ship + 0x1188, host)) return true;
+    return at<std::uint32_t>(ship, 0x11C0) != 0;
+}
+
+void mothership_step_elevator_frame_007586d0(std::uint8_t* ship, float dt, MothershipHost& host) {
+    float m[16];
+    for (int i = 0; i < 16; ++i) m[i] = at<float>(ship, 0x1288 + 4 * i);
+    const float d0 = m[4] * dt;  // DE CA then FSTP float
+    const float d1 = m[5] * dt;  // D8 C9
+    const float d2 = dt * m[6];  // FMUL float ptr
+    m[12] -= d0;
+    m[13] -= d1;
+    m[14] -= d2;
+    host.node_set_transform_38(at<std::uint8_t*>(ship, 0x1284), m);
+}
+
+std::uint8_t* elevator_move_construct_00758b90(std::uint8_t* message, std::uint8_t* entity, std::uint8_t flag,
+                                               const NativeSessionMessageContext& ctx, SessionMessageHost& host) {
+    message_head(message, 0x87, ctx);
+    at<std::uint16_t>(message, 0x18) = 0;
+    at<std::uint8_t>(message, 0x1A) = 0;
+    at<std::uint32_t>(message, 0x04) = 1;
+    at<std::uint8_t>(message, 0x1C) = 0;
+    store_profile(message, 0x00D01870u, host);
+    at<std::uint8_t>(message, 0x23) = entity != nullptr ? 1 : 0;
+    at<std::uint8_t>(message, 0x22) = flag;
+    at<std::uint16_t>(message, 0x20) = id_or_zero(entity);
+    return message;
+}
+
+bool elevator_move_is_type_00758bf0(std::uint32_t type) { return type == 0x87 || type == 0x49 || type == 0x46; }
+
+void elevator_move_write_00758c20(const std::uint8_t* message, NativeBitCursor* cursor, SessionMessageHost& host) {
+    host.write_header_0075b480(message, cursor);
+    write_native_bool_bit_004290b0(cursor, at<std::uint8_t>(message, 0x1C));
+    write_native_bool_bit_004290b0(cursor, at<std::uint8_t>(message, 0x22));
+    write_native_bool_bit_004290b0(cursor, at<std::uint8_t>(message, 0x23));
+    if (at<std::uint8_t>(message, 0x23) != 0) write_native_word_bits_00429120(cursor, at<std::uint16_t>(message, 0x20), 12);
+}
+
+void elevator_move_read_00758c70(std::uint8_t* message, NativeSessionReadStream& stream, SessionMessageHost& host) {
+    host.read_header_0075b4c0(message, stream);
+    NativeBitCursor* c = &stream.cursor_04;
+    read_native_bool_bit_00428d70(c, reinterpret_cast<bool*>(message + 0x1C));
+    read_native_bool_bit_00428d70(c, reinterpret_cast<bool*>(message + 0x22));
+    read_native_bool_bit_00428d70(c, reinterpret_cast<bool*>(message + 0x23));
+    if (at<std::uint8_t>(message, 0x23) != 0) {
+        read_native_word_bits_00428e30(c, &at<std::uint16_t>(message, 0x20), 12);
+        return;
+    }
+    at<std::uint16_t>(message, 0x20) = 0;
+}
+
+std::uint8_t* elevator_move_entity_00758cf0(const std::uint8_t* message, const EntityIdTable& ids) {
+    if (at<std::uint8_t>(message, 0x23) == 0) return nullptr;
+    return ids.entity(at<std::uint16_t>(message, 0x20));
+}
+
+std::uint8_t* mothership_create_00758d30(std::uint32_t vehicle_class, std::uint32_t row, MothershipHost& host) {
+    void* memory = host.operator_new_00bf55be(0x12C8);
+    host.memset_00bf79f0(memory, 0, 0x12C8);
+    std::uint8_t* ship =
+        memory != nullptr ? mothership_construct_00758550(static_cast<std::uint8_t*>(memory), row, host) : nullptr;
+    host.set_vehicle_class_009553d0(ship, vehicle_class);
+    at<std::uint32_t>(ship, 0x354) = vehicle_class;
+    return ship;
+}
+
+void mothership_serialize_00758dc0(std::uint8_t* ship, ArchiveWriter& archive, MothershipHost& host) {
+    at<std::uint32_t>(ship, 0x11A8) = 1;
+    host.ship_serialize_00818340(ship, archive);
+    archive.begin_04(0, "_airBase");  // 00CF88BC
+    host.block_serialize_006c19d0(ship + 0x1188, archive);
+    archive.end_08();
+    archive.begin_04(0, "_motherShip");  // 00D01884
+    archive.end_08();
+}
+
+void mothership_bind_elevator_node_00758e40(std::uint8_t* ship, MothershipHost& host) {
+    std::uint8_t* model = at<std::uint8_t*>(ship, 0x360);
+    std::uint8_t* scene = model != nullptr ? at<std::uint8_t*>(model, 0x160) : nullptr;
+    std::uint8_t* node = host.find_node_0071ad50(scene, "elevator_2");  // 00D01890
+    at<std::uint8_t*>(ship, 0x1284) = node;
+    host.matrix_set_004134f0(ship + 0x1288, host.node_world_matrix_00b6db60(node));
+}
+
+void mothership_controller_refresh_00758e80(std::uint8_t* ship, float dt, MothershipHost& host) {
+    host.ship_update_00811ab0(ship, dt);
+    if (std::uint8_t* holder = at<std::uint8_t*>(ship, 0xEF8); holder != nullptr) host.holder_refresh_006bee40(holder, dt);
+}
+
+bool mothership_handle_message_00758eb0(std::uint8_t* ship, const std::uint8_t* message, const EntityIdTable& ids,
+                                        const std::int32_t& tick_00f876b0, MothershipHost& host) {
+    if (host.message_is_type_0c(message, 0x72)) {
+        host.ship_vslot_220(ship, message);
+        return true;
+    }
+    if (host.message_is_type_0c(message, 0x73)) {
+        host.ship_vslot_224(ship, message);
+        return true;
+    }
+    if (host.message_is_type_0c(message, 0x74)) {
+        host.ship_vslot_220(ship, message);
+        return true;
+    }
+    if (host.message_is_type_0c(message, 0x75)) {
+        host.ship_vslot_224(ship, message);
+        return true;
+    }
+    if (host.message_is_type_0c(message, 0x87)) {
+        const float seconds = static_cast<float>(tick_00f876b0 - at<std::int32_t>(message, 0x0C));  // CVTSI2SS
+        std::uint8_t* elevator = at<std::uint8_t*>(ship, 0x11C4);
+        std::uint8_t* entity = elevator_move_entity_00758cf0(message, ids);
+        host.elevator_move_50(elevator, at<std::uint8_t>(message, 0x22), entity, seconds);
+        return true;
+    }
+    if (host.block_handle_message_006cd6c0(ship + 0x1188, message)) return true;
+    return host.ship_handle_message_00821e80(ship, message);
+}
+
 void record4c_resize_tail_0074be90(std::uint8_t* vector, std::uint32_t n, LandingShipHost& host) {
     std::uint8_t fill[0x4C];  // deliberately not initialised: the image copies stack garbage
     host.record4c_resize_0074ba20(vector, n, fill);
