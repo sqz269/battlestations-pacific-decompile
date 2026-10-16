@@ -5,6 +5,41 @@
 #include <stdexcept>
 
 namespace bsp {
+
+GuiTextFontRegistryAccess::GuiTextFontRegistryAccess(FontRegistryStartup* existing,
+    FontRegistryStartup** publication, SingletonLifetimeManager* lifetime) noexcept
+    : existing_(existing), publication_(publication), lifetime_(lifetime) {}
+
+GuiTextFontRegistryAccess GuiTextFontRegistryAccess::published_singleton(
+    FontRegistryStartup*& actual_publication, SingletonLifetimeManager& real_lifetime) noexcept {
+    return GuiTextFontRegistryAccess(nullptr, &actual_publication, &real_lifetime);
+}
+
+GuiTextFontRegistryAccess GuiTextFontRegistryAccess::borrowed_existing(
+    FontRegistryStartup& existing) noexcept {
+    return GuiTextFontRegistryAccess(&existing, nullptr, nullptr);
+}
+
+FontRegistryStartup* GuiTextFontRegistryAccess::get() const {
+    if (existing_) return existing_;
+    return get_font_registry_007371d0(*publication_, *lifetime_);
+}
+
+FontRegistryStartup* GuiTextFontRegistryAccess::existing_registry() const noexcept {
+    return existing_ ? existing_ : *publication_;
+}
+
+GuiTextFontNameServices::GuiTextFontNameServices(GuiTextResourceNameServices& names_in,
+    GuiTextFontRegistryAccess registry_in, NativeFontResourceOwners& fonts_in,
+    const volatile float& one_in) noexcept
+    : names(names_in), registry(registry_in), fonts(fonts_in), one_00d7a24c(one_in) {}
+
+GuiTextFontNameServices::GuiTextFontNameServices(GuiTextResourceNameServices& names_in,
+    FontRegistryStartup*& publication, SingletonLifetimeManager& lifetime,
+    NativeFontResourceOwners& fonts_in, const volatile float& one_in) noexcept
+    : GuiTextFontNameServices(names_in,
+        GuiTextFontRegistryAccess::published_singleton(publication, lifetime), fonts_in, one_in) {}
+
 namespace {
 void require(bool condition, const char* message) {
     if (!condition) throw std::logic_error(message);
@@ -60,8 +95,7 @@ bool set_gui_text_font_name_00ab8c30(GuiTextLifetime& lifetime,
     if (&text.font_name != &name) text.font_name = name;
     // Getter callbacks see the changed name. The subsequent lookup reads the
     // LIVE stored member, not the earlier source argument or compatibility copy.
-    auto* registry = get_font_registry_007371d0(services.published_registry_00f8bf44,
-        services.singleton_lifetime);
+    auto* registry = services.registry.get();
     require(registry != nullptr, "Text font lookup requires its actual registry owner");
     const auto* found = registry->find_font_00ac3570(text.font_name);
     if (found) {

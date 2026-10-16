@@ -519,13 +519,16 @@ bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& wid
 namespace bsp::game {
 namespace {
 // Actual canonical child ownership is delegated to the one deletion transport.
-// The non-ASCII CRT comparator remains a required current-locale binding.
+// Borrowed-cell mode requires its native-current comparator. Source-current
+// mode owns no CRT state and uses only its explicit comparison-view callback.
 class GameNativeTextContentCalls final : public GuiTextContentCalls {
 public:
     GameNativeTextContentCalls(GuiTextChildDeletion& children,
+        const GuiTextContentComparison& comparison,
         int (*compare)(const char16_t*, const char16_t*))
         : children_(children), compare_(compare) {
-        if (!compare_) throw std::invalid_argument("Native Text requires its current CRT locale comparer");
+        if (!comparison.uses_source_current() && !compare_)
+            throw std::invalid_argument("Native Text requires its current CRT locale comparer");
     }
     GuiTextGlyphChildCalls& glyph_child_calls() noexcept override { return children_; }
     void accept_detached_child(std::unique_ptr<GuiLayoutWidget> child) noexcept override {
@@ -535,6 +538,8 @@ public:
         children_.delete_text_child_virtual4(child, flags);
     }
     int compare_current_locale_00c0392a(const char16_t* left, const char16_t* right) override {
+        if (!compare_)
+            throw std::logic_error("Native-current Text comparer is not bound in Source-current mode");
         return compare_(left, right);
     }
 private:
@@ -578,15 +583,15 @@ struct GameNativeTextApplication::Impl {
         GameNativeTextApplicationBindings b)
         : log(log_in), renderer(renderer_in), binding(b),
           grid(renderer.game_grid_context()), layouts(renderer.section_layout_services()),
-          children(b.widgets, b.parenting), calls(children, b.compare_current_locale_00c0392a),
+          children(b.widgets, b.parenting),
+          calls(children, b.content_comparison, b.compare_current_locale_00c0392a),
           buffers{b.widgets, grid.graphics.streams.geometry, b.materials, b.parenting,
               grid.strings, renderer.publication_00f8d394(), b.material_vtable_00d5e520,
               &grid.graphics},
           shader{buffers, b.configuration_0109cf04},
           names{b.widgets, buffers.geometry.actual_owners()},
-          font_names{names, b.published_registry_00f8bf44, b.singleton_lifetime,
-              b.fonts, b.constructor.one_00d7a24c},
-          content{b.locale, b.locale_runtime, b.crt_locale_changed_0109de1c, buffers, calls},
+          font_names{names, b.font_registry, b.fonts, b.constructor.one_00d7a24c},
+          content{b.locale, b.locale_runtime, b.content_comparison, buffers, calls},
           nonempty{shader, b.parameters, layouts, b.style, b.fonts, b.blend_factor_00f8be54},
           single{b.fonts, grid.graphics.streams.mapping, buffers.geometry.actual_owners(),
               layouts, b.vertical_scale_00e12fd4},

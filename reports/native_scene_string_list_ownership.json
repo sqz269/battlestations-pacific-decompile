@@ -1,0 +1,819 @@
+{
+  "schema": "bsp.native-scene-string-list-ownership.v1",
+  "status": "whole_ordinary_successful_Source3_strict_object_pass_existing_build_pass_pending_Root_admission",
+  "packet": "cc12_scene_string_list_ownership_0094f270_0094f3e0_0094f540",
+  "Source_bodies_implemented": 3,
+  "Source_registered": false,
+  "Source_independent_review_pending": true,
+  "Source_Main_build_archive_pending": true,
+  "ledger_Source_credit_added": 0,
+  "original_whole_bodies": [
+    {
+      "begin": "0094F270",
+      "end_exclusive": "0094F2ED",
+      "bytes": 125,
+      "instructions": 38,
+      "sha256": "f72b3d87aedf085a01991e19cdf7feefc436213293747d291bb526ae1dfb1938",
+      "live_disk_listing_equal": true
+    },
+    {
+      "begin": "0094F3E0",
+      "end_exclusive": "0094F441",
+      "bytes": 97,
+      "instructions": 42,
+      "sha256": "e9b34551fe49bd8f55056fdd3d71bf50f15b7971f1a118409aae8b35f813a5be",
+      "live_disk_listing_equal": true
+    },
+    {
+      "begin": "0094F540",
+      "end_exclusive": "0094F55F",
+      "bytes": 31,
+      "instructions": 12,
+      "sha256": "c4eb96659e18d0e398ae24d21f240b5d382a9e6b45c8d5e5b8d8397684892af0",
+      "live_disk_listing_equal": true
+    }
+  ],
+  "interfaces": [
+    {
+      "address": "0094F270",
+      "declaration": "std::uint32_t append_native_scene_string_list_0094f270(void* actual_list12, void* actual_record8, std::uint32_t native_flags, NativeStringRawPoolContext& raw);",
+      "native_ABI": "ECX actual list12; stack record pointer at entryESP+4 and flag atentryESP+8; low byte read; ESI preserved; returns new count DWORD in EAX; RET8; private FS0 registration restored on normal return.",
+      "Source_ABI": "Ordinary C++ function with explicit retained raw context. No naked wrapper, original FS handler or native calling-convention identity claimed."
+    },
+    {
+      "address": "0094F3E0",
+      "declaration": "void clear_native_scene_string_list_0094f3e0(void* actual_list12, NativeStringRawPoolContext& raw);",
+      "native_ABI": "ECX list12; no stack inputs; plain RET, no semantic EAX result; EBX/EBP saved, ESI/EDI saved only on positive-count path.",
+      "Source_ABI": "Ordinary C++ explicit-context interface; not noexcept because genuine getter exceptions must not be translated into termination."
+    },
+    {
+      "address": "0094F540",
+      "declaration": "void retire_native_scene_string_list_0094f540(void* actual_list12, NativeStringRawPoolContext& raw);",
+      "native_ABI": "ECX list12; no stack inputs; ESI preserved; plain RET; no semantic EAX result.",
+      "Source_ABI": "Ordinary C++ explicit-context interface; retires elements and slot allocation only, not the 12-byte caller header; not noexcept."
+    }
+  ],
+  "ownership_schedules": {
+    "append": [
+      "Read current count+4 and capacity+8; call the existing growth only for equality, not >=. Growth publishes new capacity before allocating and handles its own late slot/count reads.",
+      "Test (native_flags &0xffu)!=0 after growth. Low byte0 copies; every low pattern1..255 adopts. All upper24 bits are ignored. Do not substitute a bool protocol that loses the specified input domain.",
+      "Adopt path captures the supplied pointer itself, including a null sentinel, with no header/data allocation and no pool operation. Ownership of a nonnull genuine raw8 record transfers to the list on successful slot publication; caller must not free it afterwards.",
+      "Copy path obtains a fresh genuine raw8 allocation, then invokes the accepted raw00426060 copy constructor with the actual borrowed source header. Do not use sizeof(NativeString), a host object constructor, a temporary header copy or a virtual storage adapter.",
+      "After growth/allocation/copy, read CURRENT count+4, then CURRENT slot base+0. Store the captured resulting record pointer at base+count*4, increment the DWORD count, then reread and return the stored new DWORD count. Do not capture list fields across reached providers."
+    ],
+    "clear": [
+      "Read signed count. For <=0 write count0 and return; the admitted valid domain uses nonnegative counts, while the observed negative branch remains documented rather than converted to a new diagnostic.",
+      "For each reached index, reload current slot base, capture raw8 record pointer and that exact slot address. A null record performs no release/free/store; it remains null.",
+      "For a nonnull record call raw0041DD20, then canonical-free the same captured raw8 header. Only after free returns write zero to the CAPTURED slot address; never recompute that address from a later slot-base read.",
+      "Increment index and reread CURRENT signed count for the loop comparison. Do not cache count/base for the entire loop or shrink count progressively.",
+      "On normal exit write count0. Leave capacity and the slot allocation live; spare slots are not traversed or initialized."
+    ],
+    "retire": [
+      "Call the new clear with the same actual raw12/context; after it returns reload CURRENT slots+0.",
+      "If nonnull, canonical-free that captured slot allocation and only then zero slots+0. Keep capacity unchanged; count has been reset by clear.",
+      "Do not destroy/free/zero the caller-owned raw12 header. After retirement append/growth is invalid until actual constructor reinitializes storage. Repeated retire on a still-live retired header is harmless in the admitted count0/slotsnull state."
+    ]
+  },
+  "admission_domain": [
+    "Target MSVC Win32. Actual caller-provided aligned readable/writable raw12 header with slots pointer+0,count DWORD/signed+4,capacity DWORD+8. It must come from genuine0094EFB0 storage and accepted subsequent growth/ownership operations, not a fabricated zeroed owner object.",
+    "Live storage requires 0<=count<=capacity<=0x3fffffff, with capacity at least64 and a multiple of64 as supplied by the nonwrapping constructor/grow chain; allocation is exactly4*capacity bytes and reached slots[0,count) are initialized. Empty constructed storage still has its genuine nonnull slot allocation.",
+    "If append sees count==capacity, oldcapacity<=0x3fffffbf is required for the accepted +64 growth. If count<capacity, the existing slot allocation must have room for one more pointer. Count+1 and all index*4/address additions must remain in range and accessible. No overflow, saturated-allocation, negative-count ownership, invalid-capacity or memory-pressure branch is admitted.",
+    "All owned raw8 headers and nonnull owned data allocations are uniquely owned and pairwise disjoint from the list header, slot allocation, temporary/private frame, and each other. Source copy may borrow a stable existing record but creates distinct owned output. Adoption must not duplicate an existing owned pointer or alias raw12/slots.",
+    "Every owned raw8 header comes from the matching current singleton_lifetime_allocate(object,8,8) heap contract and is freed once by canonical free. Header storage is not NativeStringStorage pooled data.",
+    "For nonnull data, length+1 is the exact original allocation size, nonwrapping and accessible. Sizes1..149 require the correct current canonical pool generation and size class; sizes>=150 require matching current CRT allocation/free provenance. Null data skips length and pool work on clear. No invented generation counter is introduced.",
+    "Use genuine real pool/manager publications and gate. The real small-return gate value is preserved and read by BD1510, never forced to zero; even disabled small returns still resolve the getter first. Required pool/manager/deletion bindings must already be valid or their genuine lazy creation must complete successfully.",
+    "No concurrent mutation, reentry, pool trim/drain/teardown, lifetime replacement, allocator new-handler side effects on these objects, faults, throws, access violations or failed allocations occur during an admitted operation. Small-buffer generation validity extends from allocation through final return, not merely through the individual call.",
+    "All reached providers return normally; positive requested storage is genuinely available. Current compiler and CRT conventions are explicit Source bindings. Flat Win32 address/ES and DF-clear preconditions of the accepted low-level storage/copy providers remain.",
+    "These are admission preconditions, not proposed new runtime checks or repairs. Implementation must retain the measured field-read/publication/free order and must not manufacture success for invalid storage."
+  ],
+  "flag_contract": {
+    "copy_low_bytes": [
+      0
+    ],
+    "adopt_low_bytes": "Every integer1..255, all 255 patterns; high24 bits ignored.",
+    "copy_input": "Valid readable actual raw8 source. If source length>0 its data provides the readable byte range; copy is independent of the source ownership. A borrowed existing list record can be a copy source if it remains live and disjoint from the storage being written/freed.",
+    "adopt_input": "Null sentinel or a genuine separately allocated unique current-heap raw8 header with exclusive ownership of its nonnull data. No existing slot/other owner may retain ownership of the transferred record. Stack, inline, synthetic and duplicate-owned headers are forbidden by the proposed admission contract."
+  },
+  "genuine_context": {
+    "required": "The exact retained NativeStringRawPoolContext object returned by bsp::game::game_native_string_process().raw_context(), prepared by the caller before the ownership operation.",
+    "lifetime": "GameNativeStringProcess is noncopyable and retained through a function-static heap pointer; its raw context references its permanent pool01090AA8, real small-return gate01090AA4 and manager01090AA0 cells. The context owns no buffers. All list elements must be retired before their required pool generation/lifecycle becomes invalid.",
+    "publications": [
+      "actual_published_01090aa8",
+      "actual_small_returns_disabled_01090aa4",
+      "actual_manager_publication_01090aa0"
+    ],
+    "avoid": [
+      "Do not create another context with stand-in publications/gate.",
+      "Do not call the process getter implicitly inside every ownership body; an adopt path that needs no pool must not gain an extra lazy process allocation.",
+      "Do not cache the pool across releases or bypass the mandatory00419CC0 call for large blocks or disabled small returns.",
+      "Do not route through NativeStringStorage or ActualNativeStringPoolStorage release noexcept adapters; call the accepted raw-context overload directly.",
+      "Do not add a synthetic global, TLS protocol, host interface, callback, separate singleton domain, or literal native handler address."
+    ]
+  },
+  "provider_bindings": [
+    {
+      "role": "full-list growth before append",
+      "Original": "0094F010",
+      "Source": "grow_native_scene_string_list_storage_0094f010(actual_list12)",
+      "dependency": "cc12_scene_string_list_storage_0094efb0_0094f010",
+      "status": "Storage Source87736664b93c is independently/primarily accepted, integrated, registered and Main build/archive passed; separately captured passed gate supersedes authoring-baseline pending wording."
+    },
+    {
+      "role": "copy-branch raw8 allocation",
+      "Original": "00BF681B",
+      "Source": "singleton_lifetime_allocate({SingletonAllocationKind::object, 8, 8})",
+      "status": "Existing current CRT malloc/new-handler/retry/throw Source binding; genuine raw eight-byte allocation, no NativeString wrapper or surrogate header."
+    },
+    {
+      "role": "raw8 copy construction",
+      "Original": "00426060",
+      "Source": "copy_construct_native_string_header_00426060(new_raw8, actual_source_header8, raw)",
+      "status": "Accepted actual-header raw-context composition. Clears destination length/data before identity; raw resize and late source guard/current destination length/source data/destination data reads retained. Existing current memmove/nonzero-copy policy remains qualified."
+    },
+    {
+      "role": "captured record data release",
+      "Original": "inline0041DD20-equivalent body in0094F3E0, with00419CC0 ->00BD1510",
+      "Source": "destroy_native_string_header_0041dd20(captured_raw8, raw)",
+      "status": "Accepted raw overload captures data first, only nonnull data reads length+1, resolves getter on every release, calls raw BD1510 and leaves header untouched."
+    },
+    {
+      "role": "owned raw8 free after data release",
+      "Original": "00BF65AC",
+      "Source": "singleton_lifetime_free(captured_raw8)",
+      "status": "Matching current CRT free only; no C++ NativeString destructor or second data release."
+    },
+    {
+      "role": "slot allocation free after clear",
+      "Original": "00BF6989 ->00BF65AC",
+      "Source": "singleton_lifetime_free(reloaded_slots)",
+      "status": "Same canonical current heap pairing as storage constructor/grow. Leave actual list12 allocation/lifetime to its real caller."
+    }
+  ],
+  "provider_status_override": {
+    "storage_Source_implemented_reviewed_integrated_registered": true,
+    "storage_Main_build_archive_passed": true,
+    "prior_pending_wording_superseded": true,
+    "separate_passed_gate": {
+      "gate": {
+        "actual": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\cc12_scene_string_list_storage_Main_validation.json",
+          "bytes": 12552,
+          "sha256": "0c4b04d946f0322c4b6c75155c88ebfd363dc06c0957ee0b069539939a87970e"
+        },
+        "frozen": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\precompile\\provider_Main_gate\\000_cc12_scene_string_list_storage_Main_validation.json",
+          "bytes": 12552,
+          "sha256": "0c4b04d946f0322c4b6c75155c88ebfd363dc06c0957ee0b069539939a87970e"
+        }
+      },
+      "current_Main_readiness": {
+        "actual": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\cc12_scene_string_list_ownership_readiness.json",
+          "bytes": 19611,
+          "sha256": "f5d1d039cf6488a5ad477bd9f702a71824650803bd2c1947fe623330f116d9de"
+        },
+        "frozen": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\precompile\\provider_Main_gate\\001_cc12_scene_string_list_ownership_readiness.json",
+          "bytes": 19611,
+          "sha256": "f5d1d039cf6488a5ad477bd9f702a71824650803bd2c1947fe623330f116d9de"
+        }
+      },
+      "Main_HEAD_at_capture": "1483ea04a23ab3171d8eb54542820e40f306cc97",
+      "provider_Source_equal_to_own_WT": true,
+      "own_WT_kept_at_reviewed_authoring_baseline": true,
+      "no_recompile_or_preflight_replay": true
+    },
+    "required_Main_build": {
+      "command": "./scripts/build.ps1",
+      "initial_chunk": "d7fa10",
+      "session": 35060,
+      "terminal_chunk": "18e399",
+      "exit_code": 0,
+      "configured_CTests_passed": 3,
+      "seconds": 9.59,
+      "before_commit": "682f3300d5151f3a2d5e194c81e6944bef36cb12",
+      "after_commit": "334756a5d1e17d5951c072f652dbabe9c5f21960",
+      "stable_inputs": 158,
+      "actual_known_compiler_inputs": 81,
+      "external_tool_pins": 64,
+      "additional_historical_author_tool_script_pins": 9,
+      "current_Main_provider_files": 4,
+      "qualification": "All81 known strict compiler dependencies rebound to Main.73 original tool entries include64 external tools and9 sealed historical author strict/audit scripts; those9 are retained at their real author paths and were not executed by this Main build. Additional current Main build configuration captured. No hermetic/full environment closure claim."
+    }
+  },
+  "current_CPP_guard": "Root accepts an explicitly separate current-C++ fresh-header guard: only copy-branch allocation(object,8,8), canonical-free only that captured fresh raw8 on a C++ construction exception, disarm after successful slot/count publication and return-count read. Never release copied data/adopted header/slots/raw12 through this guard. APIs remain potentially throwing. This policy is not private FH3/frame/unwind/fault equivalence; failure outcomes remain outside admission.",
+  "Original_EH_evidence": {
+    "handler": "00CA8CCB",
+    "handler_instructions": [
+      "MOV EAX,0x00DDCA34",
+      "JMP 0x00BF6B43"
+    ],
+    "raw_metadata": "00DDCA34",
+    "first_metadata_dwords": [
+      "19930522",
+      "00000001",
+      "00DDCA2C",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000001"
+    ],
+    "map": "00DDCA2C",
+    "map_dwords": [
+      "FFFFFFFF",
+      "00CA8CC0"
+    ],
+    "cleanup": "00CA8CC0",
+    "cleanup_range": [
+      "00CA8CC0",
+      "00CA8CCB"
+    ],
+    "cleanup_instructions": [
+      "MOV EAX,[EBP+8]",
+      "PUSH EAX",
+      "CALL 00BF65AC",
+      "POP ECX",
+      "RET"
+    ],
+    "interpretation": "FH3-shaped state0 -> -1 cleanup row, consistent with private handler. Cleanup visibly frees only the pointer read at private EBP+8. Dispatch/frame mapping to append saved argument slot and arbitrary failure/unwind behavior are NOT established.",
+    "byte_spans_disk_live_equal": true
+  },
+  "Original_EH_failure_boundary": {
+    "observed_append": "0094F270 installs FS0 registration with CA8CCB and initial state-1. Copy allocation result is saved into the original flag stack slot at0094F2AC; state0 is stored at0094F2B2 before the null/copy branch. Normal execution publishes slot/count then restores FS0 and RET8. State0 is not visibly reset before normal frame removal.",
+    "observed_cleanup": "CA8CCB loads EAX=DDCA34 and jumps BF6B43. Metadata begins19930522,1,DDCA2C. DDCA2C containsFFFFFFFF,CA8CC0. The11-byte5-instruction cleanup reads [EBP+8] and calls BF65AC only; no pooled-data destructor call appears there.",
+    "unproved": "Exact FH3 dispatcher interpretation, establisher/private EBP mapping to the overwritten append argument slot, state transition dispatch on every throw/fault, current exception/RTTI identity, nested/second failures, SEH behavior and cleanup ordering relative to partial slot/count publication remain unproved. The small observed cleanup is evidence of a header-free action, not complete private EH acceptance.",
+    "ordinary_CPP_recommendation": "Use ordinary current compiler EH; never install/call literalCA8CCB, invent a handler stub, or recreate a TLS/FS protocol. Keep ownership functions potentially throwing so raw getter failures are not silently converted to terminate. A local current-C++ raw8 allocation guard that frees only the fresh header on a C++ copy-construction exception and is released after successful publication/count-read is a separately labelled Source safety policy; it must not free a copied data buffer, adopted record, list slot allocation or list12 header. This is not proof of Original EH equivalence and requires Root review if chosen.",
+    "excluded_outcomes": [
+      "Original allocator-null branch that appends null after allocation failure; canonical current allocate returns nonnull or throws.",
+      "Growth allocation failure after capacity publication and any required rollback or leaked allocation behavior.",
+      "Copy/getter failure after new header or data allocation, including original private frame cleanup and partial resource ownership.",
+      "Pool-getter failure during clear and partial element retirement, or subsequent retire failure.",
+      "Fault/asynchronous-SEH paths at slot/count publication and after a pool/header free.",
+      "Full physical ABI/FH3/unwind/game compatibility."
+    ],
+    "admission": "Complete ordinary normal-control-flow Source bodies implemented under successful provider returns. No Original failure branch/private handler credit. Root selected the separately labelled current-C++ fresh-header guard."
+  },
+  "Original_evidence_reuse": {
+    "accepted_readonly_family": {
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringKeyListOwnershipContract01\\family_receipt.json",
+        "bytes": 32081,
+        "sha256": "002965e48c0269109dbec60f7992795dea3ec163a32867640501dfa62ed90346"
+      },
+      "total_files": 70,
+      "full_file_set_hashes_regular_readonly_single_link": true
+    },
+    "whole_Original": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringKeyListOwnershipContract01\\whole_Original.json",
+      "bytes": 30942,
+      "sha256": "26413d4133e4413085a452cfe2882cbc4a3fad7826b2b80eb336fd689963c219"
+    },
+    "Root_readiness": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\reports\\cc12_scene_string_list_ownership_readiness.json",
+      "bytes": 19605,
+      "sha256": "169d26dd7d8293596edc44ac46a6fb6d982bd515434bd79e563468289c552f6a"
+    },
+    "prior_evidence_reused_by_explicit_pins": true,
+    "no_new_Ghidra_queries_or_mutations": true
+  },
+  "strict_compiler": {
+    "attempts": 1,
+    "successful_attempts": 1,
+    "result": {
+      "stage": "strict_compile",
+      "started_utc": "2026-10-16T01:04:45.030234+00:00",
+      "command": [
+        "cmd.exe",
+        "/d",
+        "/c",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\compile_ownership.cmd"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15",
+      "finished_utc": "2026-10-16T01:04:46.737106+00:00",
+      "returncode": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\strict_compile.stdout.txt",
+        "bytes": 40,
+        "sha256": "b9a956f36336a390cd2ccd03c1814508da4bf1ee226c7a9ad2ead431c542fbbe"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\strict_compile.stderr.txt",
+        "bytes": 1100,
+        "sha256": "99293d4c30822e13210b8d92a36a6610f1f5cabddd9393a5016c04cc05a9b6b3"
+      },
+      "new_TU_registered": false
+    },
+    "command_file": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\compile_ownership.cmd",
+      "bytes": 464,
+      "sha256": "0ed3b41ab2d4eed3570056c6a96f357dc9595d8bdfe7220d76bdd1b15d0e7bd4"
+    },
+    "own_precompile": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\precompile_inputs.json",
+      "bytes": 108540,
+      "sha256": "72630811c08beb804c14327373ecb09e3e1170a8a0bd81f034e6612a676d663f"
+    },
+    "candidates_before_attempt": 132,
+    "tools_before_attempt": 71,
+    "providers_before_attempt": 17,
+    "build_configuration_before_attempt": 3,
+    "actual_compiler_inputs": 105,
+    "all_actual_inputs_equal_own_pre_pins": true,
+    "compiler_closure": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\compiler_declared_inputs.json",
+      "bytes": 100774,
+      "sha256": "d443e83bf1f7eed06c1245e59c2153073036a30cbe3a077bdd1bf22b4dc67a17"
+    },
+    "compiler_version": "MSVC19.51.36244.0, HostX86/x86, toolset14.51.36231",
+    "no_recompile": true,
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\native_scene_string_list_ownership.obj",
+      "bytes": 5332,
+      "sha256": "1c0c048795f06c7cd4e3ddf09832a8223ecf90219392543c8ed6260ba09fc857"
+    },
+    "existing_Main_frame_pointer_inputs": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\frame_pointer_inputs.json",
+      "bytes": 18333,
+      "sha256": "7c3b9ded3207119f34591c3db41f5edec822a8b589b630b9f7b8a9f44db55c66"
+    }
+  },
+  "complete_actual_COFF": {
+    "report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\complete_COFF.json",
+      "bytes": 132863,
+      "sha256": "e0e4984931b9fd597b818ec8ebe438c2d06d4d7b7958432e1710d2ef2f995eff"
+    },
+    "listing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\complete_COFF_listing.txt",
+      "bytes": 12198,
+      "sha256": "30bafe3e7a992cd734ce8abe09aebd336e6c486ff1c11147187d0abbe81596e7"
+    },
+    "contract_EH_GS_audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\COFF_contract_audit.json",
+      "bytes": 15034,
+      "sha256": "76e545ed5c0684601e2eb3022eb7e935c56d1072e4100985ced13a36d0391854"
+    },
+    "metadata": {
+      "sections": 21,
+      "primary_symbols": 48,
+      "auxiliary_slots": 21,
+      "total_symbol_slots": 69,
+      "string_table_bytes": 1553,
+      "string_count": 25,
+      "code_sections": 13,
+      "code_bytes": 564,
+      "decoded_instructions_including_padding": 230,
+      "code_relocations": 17,
+      "metadata_relocations": 4,
+      "CodeView": "Complete C13 subsection0xF1: S_OBJNAME0x1101 with actual output path; S_COMPILE3 0x113C with current compiler identity. Entire record payloads/alignment retained.",
+      "frame_debug": "Two complete16-byte .debug$F records relocate to guard destructor/disarm and carry matching14/7-byte function sizes; all trailing fields zero. These are debug records, not Original unwind maps.",
+      "directives": "   /FAILIFMISMATCH:\"_MSC_VER=1900\" /FAILIFMISMATCH:\"_ITERATOR_DEBUG_LEVEL=0\" /FAILIFMISMATCH:\"RuntimeLibrary=MD_DynamicRelease\" /DEFAULTLIB:\"msvcprt\" /FAILIFMISMATCH:\"_CRT_STDIO_ISO_WIDE_SPECIFIERS=0\" /alternatename:__Avx2WmemEnabled=__Avx2WmemEnabledWeakValue /FAILIFMISMATCH:\"annotate_string=0\" /FAILIFMISMATCH:\"annotate_vector=0\" /FAILIFMISMATCH:\"annotate_optional=0\" /DEFAULTLIB:\"MSVCRT\" /DEFAULTLIB:\"OLDNAMES\" ",
+      "checksum_section": "Complete168-byte .chks64:21 opaque checksum qwords retained; no behavioral credit.",
+      "unused_weak_BSS": "MSVC header emits4-byte COMDAT __Avx2WmemEnabledWeakValue and alternatename. No relocation reaches it, no static initializer and no new ownership publication.",
+      "complete_file_ranges": 31,
+      "unaccounted_bytes": 0,
+      "non_alignment_decoded_function_instructions_across_all_emitted_sections": 225,
+      "inline_template_COMDAT_qualification": "The225 includes emitted unused inline/template COMDAT functions; not a claim that all instructions are reachable from the three public APIs."
+    },
+    "public_bodies": [
+      {
+        "address": "0094F270",
+        "section": 12,
+        "bytes": 182,
+        "decoded_instructions": 63,
+        "relocations": [
+          {
+            "offset": 6,
+            "symbol_index": 58,
+            "symbol": "__ehhandler$?append_native_scene_string_list_0094f270@bsp@@YAIPAX0IAAUNativeStringRawPoolContext@1@@Z",
+            "type": 6,
+            "width": 4,
+            "field_hex": "00000000",
+            "raw_hex": "060000003a0000000600"
+          },
+          {
+            "offset": 21,
+            "symbol_index": 66,
+            "symbol": "___security_cookie",
+            "type": 6,
+            "width": 4,
+            "field_hex": "00000000",
+            "raw_hex": "15000000420000000600"
+          },
+          {
+            "offset": 65,
+            "symbol_index": 43,
+            "symbol": "?grow_native_scene_string_list_storage_0094f010@bsp@@YIXPAX@Z",
+            "type": 20,
+            "width": 4,
+            "field_hex": "00000000",
+            "raw_hex": "410000002b0000001400"
+          },
+          {
+            "offset": 101,
+            "symbol_index": 45,
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "type": 20,
+            "width": 4,
+            "field_hex": "00000000",
+            "raw_hex": "650000002d0000001400"
+          },
+          {
+            "offset": 119,
+            "symbol_index": 42,
+            "symbol": "?copy_construct_native_string_header_00426060@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@@Z",
+            "type": 20,
+            "width": 4,
+            "field_hex": "00000000",
+            "raw_hex": "770000002a0000001400"
+          },
+          {
+            "offset": 174,
+            "symbol_index": 56,
+            "symbol": "@__security_check_cookie@4",
+            "type": 20,
+            "width": 4,
+            "field_hex": "00000000",
+            "raw_hex": "ae000000380000001400"
+          }
+        ],
+        "normal_schedule": [
+          "0034 count then0037 capacity;003C equality-controlled growth call0040.",
+          "0045 tests actual low flag byte AFTER growth;0049 adopts every nonzero pattern.",
+          "004E/0056/005D exact request kind3/object,native8,host8;0064 canonical allocation.",
+          "0069 captures fresh header at EBP-20;006F arms current EH state0;0076 raw-context copy.",
+          "007B/0081 copy late count/base;0083 publish returned record.0088/008B adopt late count/base;008D publish supplied pointer.",
+          "0090 count reload,0093 increment,0094 count store,0097 return-count reload. No retained count/base across providers.",
+          "009D current FS chain restore;00AD current GS check;00B5 ordinary CDECL RET."
+        ]
+      },
+      {
+        "address": "0094F3E0",
+        "section": 14,
+        "bytes": 87,
+        "decoded_instructions": 39,
+        "relocations": [
+          {
+            "offset": 38,
+            "symbol_index": 44,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+            "type": 20,
+            "width": 4,
+            "field_hex": "00000000",
+            "raw_hex": "260000002c0000001400"
+          },
+          {
+            "offset": 44,
+            "symbol_index": 46,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "type": 20,
+            "width": 4,
+            "field_hex": "00000000",
+            "raw_hex": "2c0000002e0000001400"
+          }
+        ],
+        "normal_schedule": [
+          "000A signed count;000F <=0 exits through count0 path0050.",
+          "0012 current slots;0014 captured record;0017/001A captured slot address held in argument spill.",
+          "001D/001F null record skips destroy/free/slot store.",
+          "0025 raw destroy with actual context;002B canonical free same captured record;0030 saved slot reload;0036 zero captured slot.",
+          "003C current signed count is reloaded after providers;003F increments private index;0042 signed JL loop. Source increment/read order is equivalent in the admitted no-reentry/nonfaulting domain.",
+          "0046 or0050 sets count0; no capacity or slot-base store."
+        ]
+      },
+      {
+        "address": "0094F540",
+        "section": 18,
+        "bytes": 101,
+        "decoded_instructions": 41,
+        "relocations": [
+          {
+            "offset": 38,
+            "symbol_index": 44,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+            "type": 20,
+            "width": 4,
+            "field_hex": "00000000",
+            "raw_hex": "260000002c0000001400"
+          },
+          {
+            "offset": 44,
+            "symbol_index": 46,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "type": 20,
+            "width": 4,
+            "field_hex": "00000000",
+            "raw_hex": "2c0000002e0000001400"
+          },
+          {
+            "offset": 84,
+            "symbol_index": 46,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "type": 20,
+            "width": 4,
+            "field_hex": "00000000",
+            "raw_hex": "540000002e0000001400"
+          }
+        ],
+        "normal_schedule": [
+          "Compiler inlines the complete clear loop at0008..0045; same two provider calls/captured-slot sequence.",
+          "0045 count0 then004C late slots reload;004E/0050 null skips free/store.",
+          "0053 canonical free captured slots;005B zero slots;0064 ordinary RET. No capacity or list-header free."
+        ]
+      }
+    ],
+    "compiler_private_code": [
+      {
+        "section": 4,
+        "bytes": 14,
+        "instructions": 7,
+        "symbols": [
+          "??$read_field@H@?A0x49a15bd5@bsp@@YAHPBXI@Z"
+        ],
+        "Original_credit": 0
+      },
+      {
+        "section": 5,
+        "bytes": 14,
+        "instructions": 7,
+        "symbols": [
+          "??$read_field@I@?A0x49a15bd5@bsp@@YAIPBXI@Z"
+        ],
+        "Original_credit": 0
+      },
+      {
+        "section": 6,
+        "bytes": 14,
+        "instructions": 7,
+        "symbols": [
+          "??$read_field@PAX@?A0x49a15bd5@bsp@@YAPAXPBXI@Z"
+        ],
+        "Original_credit": 0
+      },
+      {
+        "section": 7,
+        "bytes": 17,
+        "instructions": 8,
+        "symbols": [
+          "??$write_field@I@?A0x49a15bd5@bsp@@YAXPAXII@Z"
+        ],
+        "Original_credit": 0
+      },
+      {
+        "section": 8,
+        "bytes": 17,
+        "instructions": 8,
+        "symbols": [
+          "??$write_field@PAX@?A0x49a15bd5@bsp@@YAXPAXI0@Z"
+        ],
+        "Original_credit": 0
+      },
+      {
+        "section": 9,
+        "bytes": 14,
+        "instructions": 7,
+        "symbols": [
+          "??0FreshHeaderGuard@?A0x49a15bd5@bsp@@QAE@PAX@Z"
+        ],
+        "Original_credit": 0
+      },
+      {
+        "section": 10,
+        "bytes": 14,
+        "instructions": 7,
+        "symbols": [
+          "??1FreshHeaderGuard@?A0x49a15bd5@bsp@@QAE@XZ"
+        ],
+        "Original_credit": 0
+      },
+      {
+        "section": 13,
+        "bytes": 52,
+        "instructions": 19,
+        "symbols": [
+          "__ehhandler$?append_native_scene_string_list_0094f270@bsp@@YAIPAX0IAAUNativeStringRawPoolContext@1@@Z",
+          "__unwindfunclet$?append_native_scene_string_list_0094f270@bsp@@YAIPAX0IAAUNativeStringRawPoolContext@1@@Z$0"
+        ],
+        "Original_credit": 0
+      },
+      {
+        "section": 15,
+        "bytes": 7,
+        "instructions": 2,
+        "symbols": [
+          "?disarm@FreshHeaderGuard@?A0x49a15bd5@bsp@@QAEXXZ"
+        ],
+        "Original_credit": 0
+      },
+      {
+        "section": 17,
+        "bytes": 31,
+        "instructions": 15,
+        "symbols": [
+          "?publish_record@?A0x49a15bd5@bsp@@YAIPAX0@Z"
+        ],
+        "Original_credit": 0
+      }
+    ],
+    "current_CPP_EH": {
+      "policy": "Root-selected copy-only actual fresh raw8 header guard. Compiler-generated current EH, never Original handler replication.",
+      "captured_header": "Append0069 stores allocated pointer at EBP-20, before state0 and raw copy; adopted path bypasses allocation/capture/state0.",
+      "normal_disarm": "Source disarm follows successful publication/return-count read. Optimizer removes the normal no-op guard destruction/disarm because no C++-throwing operation follows copy; current EH frame remains until normal FS unlink. No asynchronous/fault equivalence is claimed.",
+      "unwind_funclet": {
+        "section": 13,
+        "span": [
+          0,
+          8
+        ],
+        "action": "LEA ECX,[EBP-20]; tail-JMP real FreshHeaderGuard destructor."
+      },
+      "alignment": {
+        "section": 13,
+        "span": [
+          8,
+          13
+        ],
+        "bytes": "cccccccccc",
+        "executable_semantics": "Five unreachable INT3 alignment bytes; decoded but not part of either normal or handler entry path."
+      },
+      "destructor": {
+        "section": 10,
+        "span": [
+          0,
+          14
+        ],
+        "action": "Read captured guard pointer; null skip; otherwise canonical free once. No copied data destructor, pool call, adopted header, slots or raw12 release."
+      },
+      "handler": {
+        "section": 13,
+        "span": [
+          13,
+          52
+        ],
+        "code": "Two entry NOPs, load current establisher argument, two current GS checks, load relocated current FuncInfo, tail-JMP current ___CxxFrameHandler3."
+      },
+      "safe_handler_index": {
+        "section": 19,
+        "raw_symbol_index": 58,
+        "target_section": 13,
+        "target_offset": 13
+      },
+      "xdata": {
+        "section": 20,
+        "bytes": 44,
+        "unwind_map": {
+          "offset": 0,
+          "bytes": 8,
+          "state": 0,
+          "to_state": -1,
+          "action_symbol": "__unwindfunclet$?append_native_scene_string_list_0094f270@bsp@@YAIPAX0IAAUNativeStringRawPoolContext@1@@Z$0"
+        },
+        "FuncInfo": {
+          "offset": 8,
+          "bytes": 36,
+          "magic": "19930522",
+          "bbt_flags": 0,
+          "max_state": 1,
+          "unwind_map_symbol": "__unwindtable$?append_native_scene_string_list_0094f270@bsp@@YAIPAX0IAAUNativeStringRawPoolContext@1@@Z",
+          "try_block_count": 0,
+          "try_block_map": 0,
+          "ip_map_count": 0,
+          "ip_map": 0,
+          "exception_specification_list": 0,
+          "EHFlags": 1,
+          "EHFlags_definition": "FI_EHS_FLAG"
+        }
+      },
+      "GS": "Append loads current ___security_cookie; normal return checks it. Current EH handler checks both emitted cookie locations. No Original GS/EH credit.",
+      "reference_definitions": [
+        {
+          "actual": {
+            "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ehdata.h",
+            "bytes": 21203,
+            "sha256": "9b1a482479e67e9918726d803f157f00c41ac54f6eee42fb331752ad994940c3"
+          },
+          "frozen": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\analysis_definitions\\ehdata.h",
+            "bytes": 21203,
+            "sha256": "9b1a482479e67e9918726d803f157f00c41ac54f6eee42fb331752ad994940c3"
+          },
+          "role": "Postcompile interpretation reference, not a retroactive compiler input pin"
+        },
+        {
+          "actual": {
+            "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ehdata_values.h",
+            "bytes": 4353,
+            "sha256": "25f8c02e91f817a674808519f31b68106dd0afd5081086b2f8bb480f9235eabb"
+          },
+          "frozen": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\analysis_definitions\\ehdata_values.h",
+            "bytes": 4353,
+            "sha256": "25f8c02e91f817a674808519f31b68106dd0afd5081086b2f8bb480f9235eabb"
+          },
+          "role": "Postcompile interpretation reference, not a retroactive compiler input pin"
+        }
+      ],
+      "Original_private_EH_accepted": false,
+      "fault_unwind_executed": false
+    },
+    "no_object_execution": true,
+    "compiler_generated_Original_credit": 0
+  },
+  "normal_existing_repository_build": {
+    "attempts": 1,
+    "result": {
+      "stage": "normal_build",
+      "started_utc": "2026-10-16T01:05:01.670454+00:00",
+      "command": [
+        "powershell.exe",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15",
+      "finished_utc": "2026-10-16T01:23:04.270882+00:00",
+      "returncode": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\normal_build.stdout.txt",
+        "bytes": 93415,
+        "sha256": "e3efe498b1d6fd76809d6ac517b4e5aa34892bd382aca0f8c9bd30d29307c487"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListOwnershipSource01\\normal_build.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "new_TU_registered": false
+    },
+    "existing_checks": 2,
+    "CTest_seconds": 10.14,
+    "generated_core_project": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\build\\win32\\bsp_core.vcxproj",
+      "bytes": 433819,
+      "sha256": "d0e5b329fa633de6f1975ac49c61adb1ac0f43daa165cc0d0d94d15cbc7c3a42"
+    },
+    "new_TU_registered": false,
+    "qualification": "Existing baseline build/checks only; the new TU is absent, so no new ownership body is linked or executed."
+  },
+  "pending_application_bindings": [
+    {
+      "name": "candidate_actual_scene_property_bag_key_enumeration_008f3270",
+      "state": "Still blocked",
+      "contract": "Actual application caller must identify/provide its real output-header allocation/lifetime, constructor invocation, pass-to008F3270, adopted raw8 key producers, normal final clear/retire and header disposal schedule. An actual storage constructor alone proves none of this binding."
+    },
+    {
+      "name": "008F2B20 additional adopt caller",
+      "state": "Only prior sealed caller evidence; no application-owner admission",
+      "contract": "A separate upstream adopt producer schedule cannot be assumed from the list helper or its provisional symbol."
+    },
+    {
+      "name": "0094F1B0 /0094F180 sorting and00F89B75 role",
+      "state": "Unchanged separate blockers",
+      "contract": "No comparator/boundary repair, sort callback, private CRT/locale or canonical empty-data binding is solved by ownership helpers."
+    }
+  ],
+  "prior_family_preservation": {
+    "families": [
+      {
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringKeyComparatorReadiness01\\family_receipt.json",
+          "bytes": 26318,
+          "sha256": "5a8f8f1f5030f1232913b2595b1c4f3baedf486af20f3b26485b0da4e661a619"
+        },
+        "total_files": 60,
+        "full_file_set_hashes_regular_readonly_single_link": true
+      },
+      {
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringKeyComparatorBoundary01\\family_receipt.json",
+          "bytes": 17751,
+          "sha256": "36283d06282901d1b804fae02ff6ec588ba287998cf4a872ff30c0c95e13d7b5"
+        },
+        "total_files": 39,
+        "full_file_set_hashes_regular_readonly_single_link": true
+      },
+      {
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringKeyListOwnershipContract01\\family_receipt.json",
+          "bytes": 32081,
+          "sha256": "002965e48c0269109dbec60f7992795dea3ec163a32867640501dfa62ed90346"
+        },
+        "total_files": 70,
+        "full_file_set_hashes_regular_readonly_single_link": true
+      }
+    ],
+    "boundary_rollback_symbol_comment_uncertainty_unchanged": true
+  },
+  "prior_comparator_metadata_uncertainty": "The previous ignored-dry-run creation/guarded deletion and unavailable pre-create complete symbol/comment state remain preserved in the39-file boundary family. This read-only phase does not repair or erase that uncertainty.",
+  "no_shared_CMake_registry_ledger_Ghidra_writes": true,
+  "no_new_tests_probes_replay_or_new_body_execution": true,
+  "Original_ABI_compatible": false,
+  "Original_private_CRT_EH_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false,
+  "uncertainty": "Source names are hypotheses; successful raw ownership composition under the stated domain is distinct from native ABI, Original failure/private EH, real application caller closure and game behavior."
+}

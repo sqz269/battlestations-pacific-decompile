@@ -1,0 +1,2681 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_crt_lock_acquisition_readiness",
+  "status": "read_only_full_physical_readiness_frontier_no_new_Source_credit",
+  "base_main": "500c75be4",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source_ready": false,
+  "general_source_ready": false,
+  "parent_source_ready": false,
+  "Original_locale_TLS_errno_acquisition_runtime_closure_proved": false,
+  "new_source_functions": 0,
+  "address_claims": [],
+  "file_ownership": [
+    "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+  ],
+  "physical_bytes": 654,
+  "physical_instructions": 233,
+  "spans": [
+    {
+      "address": "00c11c21",
+      "end_exclusive": "00c11c52",
+      "physical_bytes": 49,
+      "physical_instructions": 20,
+      "role": "__lock",
+      "original_abi": "cdecl raw index word at entryESP+4;plain RET;no semantic result",
+      "bytes": "55 8b ec 8b 45 08 56 8d 34 c5 78 64 e1 00 83 3e 00 75 13 50 e8 24 ff ff ff 85 c0 59 75 08 6a 11 e8 c3 9d fe ff 59 ff 36 ff 15 18 22 ce 00 5e 5d c3",
+      "sha256": "b02c4573212abb78581b610296b1ae8a133d9790a58512b09ab646b4a78e2798",
+      "installed_PE_offset": 8461345,
+      "live_equals_installed_PE": true,
+      "live_receipt_sha256": "d00dc57d5abe41987e68e6e3c7aa8a93f0992c76bb69c805394b2a7944da91f9",
+      "coverage": "complete physical inspection only;no Source reconstruction credit",
+      "source_ready": false,
+      "current_formal_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "49",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c11c21"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c11c51"
+            },
+            "length": "49"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00c11b5e",
+      "end_exclusive": "00c11c18",
+      "physical_bytes": 186,
+      "physical_instructions": 62,
+      "role": "indexed initializer role hypothesis",
+      "original_abi": "one cdecl live index word,loaded after heap diagnostics;EAX zero/nonzero;native SEH4 frame",
+      "bytes": "6a 0c 68 78 36 e0 00 e8 96 60 ff ff 33 ff 47 89 7d e4 33 db 39 1d bc e1 09 01 75 18 e8 e9 3f ff ff 6a 1e e8 22 3e ff ff 68 ff 00 00 00 e8 c3 9e fe ff 59 59 8b 75 08 8d 34 f5 78 64 e1 00 39 1e 74 04 8b c7 eb 6e 6a 18 e8 6f 2c ff ff 59 8b f8 3b fb 75 0f e8 d4 df fe ff c7 00 0c 00 00 00 33 c0 eb 51 6a 0a e8 59 00 00 00 59 89 5d fc 39 1e 75 2c 68 a0 0f 00 00 57 e8 78 5a 00 00 59 59 85 c0 75 17 57 e8 e1 81 fe ff 59 e8 9e df fe ff c7 00 0c 00 00 00 89 5d e4 eb 0b 89 3e eb 07 57 e8 c6 81 fe ff 59 c7 45 fc fe ff ff ff e8 09 00 00 00 8b 45 e4 e8 2e 60 ff ff c3",
+      "sha256": "4867b1073c65694f072a11986820e398fd904ef4b392db165374ace232f1d8d9",
+      "installed_PE_offset": 8461150,
+      "live_equals_installed_PE": true,
+      "live_receipt_sha256": "c81f18a35b8c9c5b779eb59b446b142f4cc90b6f91496743394fbd3c045235fd",
+      "coverage": "complete physical inspection only;no Source reconstruction credit",
+      "source_ready": false,
+      "current_formal_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "186",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c11b5e"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c11c17"
+            },
+            "length": "186"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00c11a93",
+      "end_exclusive": "00c11adc",
+      "physical_bytes": 73,
+      "physical_instructions": 27,
+      "role": "__mtinitlocks",
+      "original_abi": "no arguments;plain RET;EAX0/1",
+      "bytes": "56 57 33 f6 bf c0 e1 09 01 83 3c f5 7c 64 e1 00 01 75 1e 8d 04 f5 78 64 e1 00 89 38 68 a0 0f 00 00 ff 30 83 c7 18 e8 95 5b 00 00 85 c0 59 59 74 0c 46 83 fe 24 7c d2 33 c0 40 5f 5e c3 83 24 f5 78 64 e1 00 00 33 c0 eb f1",
+      "sha256": "d0b673aecf3e98c1b52317938672a25f5a8022f1cb169eb5e662f4a7364c7450",
+      "installed_PE_offset": 8460947,
+      "live_equals_installed_PE": true,
+      "live_receipt_sha256": "f804dea77c898756fac16c570083535f097d47a43d4a2928b01db5d80ec7a6b2",
+      "coverage": "complete physical inspection only;no Source reconstruction credit",
+      "source_ready": false,
+      "current_formal_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "73",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c11a93"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c11adb"
+            },
+            "length": "73"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00c11adc",
+      "end_exclusive": "00c11b31",
+      "physical_bytes": 85,
+      "physical_instructions": 34,
+      "role": "lock deletion role hypothesis",
+      "original_abi": "no arguments;plain RET;no semantic result",
+      "bytes": "53 8b 1d 14 22 ce 00 56 be 78 64 e1 00 57 8b 3e 85 ff 74 13 83 7e 04 01 74 0d 57 ff d3 57 e8 c9 82 fe ff 83 26 00 59 83 c6 08 81 fe 98 65 e1 00 7c dc be 78 64 e1 00 5f 8b 06 85 c0 74 09 83 7e 04 01 75 03 50 ff d3 83 c6 08 81 fe 98 65 e1 00 7c e6 5e 5b c3",
+      "sha256": "64032497d794e8867257c558842da222f2a819d4f67d4855034d5a4edbf6ca40",
+      "installed_PE_offset": 8461020,
+      "live_equals_installed_PE": true,
+      "live_receipt_sha256": "d4d00804921007f355344af3b836d062eb8c08525c812368c323c5dbfc07a5d7",
+      "coverage": "complete physical inspection only;no Source reconstruction credit",
+      "source_ready": false,
+      "current_formal_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "85",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c11adc"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c11b30"
+            },
+            "length": "85"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00c0481a",
+      "end_exclusive": "00c0485a",
+      "physical_bytes": 64,
+      "physical_instructions": 24,
+      "role": "__malloc_crt",
+      "original_abi": "cdecl current size cell reread each retry;plain RET;EAX nullable allocation",
+      "bytes": "56 57 33 f6 ff 74 24 0c e8 f3 56 ff ff 8b f8 85 ff 59 75 27 39 05 30 de 09 01 76 1f 56 ff 15 30 22 ce 00 8d 86 e8 03 00 00 3b 05 30 de 09 01 76 03 83 c8 ff 83 f8 ff 8b f0 75 c9 8b c7 5f 5e c3",
+      "sha256": "252d545be22751a689e425676589db9a4707a7ed343d8cd8fd2268f00ec6a4b8",
+      "installed_PE_offset": 8407066,
+      "live_equals_installed_PE": true,
+      "live_receipt_sha256": "842f1b4f75e6d1d57c23fe89379a9c24f9efc8d9c2a3cf4652d8e340bcfc78c0",
+      "coverage": "complete physical inspection only;no Source reconstruction credit",
+      "source_ready": false
+    },
+    {
+      "address": "00c17653",
+      "end_exclusive": "00c17718",
+      "physical_bytes": 197,
+      "physical_instructions": 66,
+      "role": "___crtInitCritSecAndSpinCount physical envelope",
+      "original_abi": "two cdecl words;actual selected stdcall initializer cleans8;plain RET;EAX BOOL-like result;filter/handler use actual SEH4 frame",
+      "bytes": "6a 14 68 b8 37 e0 00 e8 a1 05 ff ff 33 ff 89 7d e4 ff 35 54 e4 09 01 e8 6f d9 fe ff 59 8b f0 3b f7 75 53 8d 45 e4 50 e8 33 44 fe ff 59 3b c7 74 0d 57 57 57 57 57 e8 2d ef fd ff 83 c4 14 83 7d e4 01 74 21 68 bc e1 d6 00 ff 15 5c 21 ce 00 3b c7 74 12 68 94 e1 d6 00 50 ff 15 f4 20 ce 00 8b f0 3b f7 75 05 be 43 76 c1 00 56 e8 a4 d8 fe ff 59 a3 54 e4 09 01 89 7d fc ff 75 0c ff 75 08 ff d6 89 45 e0 eb 2f 8b 45 ec 8b 00 8b 00 89 45 dc 33 c9 3d 17 00 00 c0 0f 94 c1 8b c1 c3 8b 65 e8 81 7d dc 17 00 00 c0 75 08 6a 08 ff 15 bc 22 ce 00 83 65 e0 00 c7 45 fc fe ff ff ff 8b 45 e0 e8 2e 05 ff ff c3",
+      "sha256": "60e624dd047a939340de897a25bdd15dd3b6d77b763d873c5459e1d233aa7a1f",
+      "installed_PE_offset": 8484435,
+      "live_equals_installed_PE": true,
+      "live_receipt_sha256": "940f1dea04c8318f84ca044076f73e26616da7aa73db46072c3777cf21ae9328",
+      "coverage": "complete physical inspection only;no Source reconstruction credit",
+      "source_ready": false,
+      "current_formal_body": {
+        "range_count": 3,
+        "returned_range_count": 3,
+        "address_count": "147",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c17653"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c1768d"
+            },
+            "length": "59"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c17691"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c176d8"
+            },
+            "length": "72"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c17708"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c17717"
+            },
+            "length": "16"
+          }
+        ]
+      }
+    }
+  ],
+  "host_steps": [
+    {
+      "site": "00c11c35",
+      "physical_envelope": "00c11c21",
+      "instruction": "call 0xc11b5e",
+      "bytes": "e8 24 ff ff ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11c35"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11c3a"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11c3a"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c11b5e"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c11b5e"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11c21"
+      },
+      "address": "00c11c35",
+      "native": "00c11b5e",
+      "function": "00c11c21",
+      "kind": "call"
+    },
+    {
+      "site": "00c11c41",
+      "physical_envelope": "00c11c21",
+      "instruction": "call 0xbfba09",
+      "bytes": "e8 c3 9d fe ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11c41"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11c46"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11c46"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bfba09"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bfba09"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11c21"
+      },
+      "address": "00c11c41",
+      "native": "00bfba09",
+      "function": "00c11c21",
+      "kind": "call"
+    },
+    {
+      "site": "00c11b65",
+      "physical_envelope": "00c11b5e",
+      "instruction": "call 0xc07c00",
+      "bytes": "e8 96 60 ff ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11b65"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11b6a"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11b6a"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c07c00"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c07c00"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11b5e"
+      },
+      "address": "00c11b65",
+      "native": "00c07c00",
+      "function": "00c11b5e",
+      "kind": "call"
+    },
+    {
+      "site": "00c11b7a",
+      "physical_envelope": "00c11b5e",
+      "instruction": "call 0xc05b68",
+      "bytes": "e8 e9 3f ff ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11b7a"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11b7f"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11b7f"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c05b68"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c05b68"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11b5e"
+      },
+      "address": "00c11b7a",
+      "native": "00c05b68",
+      "function": "00c11b5e",
+      "kind": "call"
+    },
+    {
+      "site": "00c11b81",
+      "physical_envelope": "00c11b5e",
+      "instruction": "call 0xc059a8",
+      "bytes": "e8 22 3e ff ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11b81"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11b86"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11b86"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c059a8"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c059a8"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11b5e"
+      },
+      "address": "00c11b81",
+      "native": "00c059a8",
+      "function": "00c11b5e",
+      "kind": "call"
+    },
+    {
+      "site": "00c11b8b",
+      "physical_envelope": "00c11b5e",
+      "instruction": "call 0xbfba53",
+      "bytes": "e8 c3 9e fe ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11b8b"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11b90"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11b90"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bfba53"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bfba53"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11b5e"
+      },
+      "address": "00c11b8b",
+      "native": "00bfba53",
+      "function": "00c11b5e",
+      "kind": "call"
+    },
+    {
+      "site": "00c11ba6",
+      "physical_envelope": "00c11b5e",
+      "instruction": "call 0xc0481a",
+      "bytes": "e8 6f 2c ff ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11ba6"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11bab"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11bab"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c0481a"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c0481a"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11b5e"
+      },
+      "address": "00c11ba6",
+      "native": "00c0481a",
+      "function": "00c11b5e",
+      "kind": "call"
+    },
+    {
+      "site": "00c11bb2",
+      "physical_envelope": "00c11b5e",
+      "instruction": "call 0xbffb8b",
+      "bytes": "e8 d4 df fe ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11bb2"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11bb7"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11bb7"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bffb8b"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bffb8b"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11b5e"
+      },
+      "address": "00c11bb2",
+      "native": "00bffb8b",
+      "function": "00c11b5e",
+      "kind": "call"
+    },
+    {
+      "site": "00c11bc3",
+      "physical_envelope": "00c11b5e",
+      "instruction": "call 0xc11c21",
+      "bytes": "e8 59 00 00 00",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11bc3"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11bc8"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11bc8"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c11c21"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c11c21"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11b5e"
+      },
+      "address": "00c11bc3",
+      "native": "00c11c21",
+      "function": "00c11b5e",
+      "kind": "call"
+    },
+    {
+      "site": "00c11bd6",
+      "physical_envelope": "00c11b5e",
+      "instruction": "call 0xc17653",
+      "bytes": "e8 78 5a 00 00",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11bd6"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11bdb"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11bdb"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c17653"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c17653"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11b5e"
+      },
+      "address": "00c11bd6",
+      "native": "00c17653",
+      "function": "00c11b5e",
+      "kind": "call"
+    },
+    {
+      "site": "00c11be2",
+      "physical_envelope": "00c11b5e",
+      "instruction": "call 0xbf9dc8",
+      "bytes": "e8 e1 81 fe ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11be2"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11be7"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11be7"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf9dc8"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf9dc8"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11b5e"
+      },
+      "address": "00c11be2",
+      "native": "00bf9dc8",
+      "function": "00c11b5e",
+      "kind": "call"
+    },
+    {
+      "site": "00c11be8",
+      "physical_envelope": "00c11b5e",
+      "instruction": "call 0xbffb8b",
+      "bytes": "e8 9e df fe ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11be8"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11bed"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11bed"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bffb8b"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bffb8b"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11b5e"
+      },
+      "address": "00c11be8",
+      "native": "00bffb8b",
+      "function": "00c11b5e",
+      "kind": "call"
+    },
+    {
+      "site": "00c11bfd",
+      "physical_envelope": "00c11b5e",
+      "instruction": "call 0xbf9dc8",
+      "bytes": "e8 c6 81 fe ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11bfd"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11c02"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11c02"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf9dc8"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf9dc8"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11b5e"
+      },
+      "address": "00c11bfd",
+      "native": "00bf9dc8",
+      "function": "00c11b5e",
+      "kind": "call"
+    },
+    {
+      "site": "00c11c0a",
+      "physical_envelope": "00c11b5e",
+      "instruction": "call 0xc11c18",
+      "bytes": "e8 09 00 00 00",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11c0a"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11c0f"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11c0f"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c11c18"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c11c18"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11b5e"
+      },
+      "address": "00c11c0a",
+      "native": "00c11c18",
+      "function": "00c11b5e",
+      "kind": "call"
+    },
+    {
+      "site": "00c11c12",
+      "physical_envelope": "00c11b5e",
+      "instruction": "call 0xc07c45",
+      "bytes": "e8 2e 60 ff ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11c12"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11c17"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11c17"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c07c45"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c07c45"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11b5e"
+      },
+      "address": "00c11c12",
+      "native": "00c07c45",
+      "function": "00c11b5e",
+      "kind": "call"
+    },
+    {
+      "site": "00c11ab9",
+      "physical_envelope": "00c11a93",
+      "instruction": "call 0xc17653",
+      "bytes": "e8 95 5b 00 00",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11ab9"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11abe"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11abe"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c17653"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c17653"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11a93"
+      },
+      "address": "00c11ab9",
+      "native": "00c17653",
+      "function": "00c11a93",
+      "kind": "call"
+    },
+    {
+      "site": "00c11afa",
+      "physical_envelope": "00c11adc",
+      "instruction": "call 0xbf9dc8",
+      "bytes": "e8 c9 82 fe ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11afa"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11aff"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11aff"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf9dc8"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf9dc8"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11adc"
+      },
+      "address": "00c11afa",
+      "native": "00bf9dc8",
+      "function": "00c11adc",
+      "kind": "call"
+    },
+    {
+      "site": "00c04822",
+      "physical_envelope": "00c0481a",
+      "instruction": "call 0xbf9f1a",
+      "bytes": "e8 f3 56 ff ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c04822"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c04827"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c04827"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf9f1a"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf9f1a"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c0481a"
+      },
+      "address": "00c04822",
+      "native": "00bf9f1a",
+      "function": "00c0481a",
+      "kind": "call"
+    },
+    {
+      "site": "00c1765a",
+      "physical_envelope": "00c17653",
+      "instruction": "call 0xc07c00",
+      "bytes": "e8 a1 05 ff ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c1765a"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c1765f"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c1765f"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c07c00"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c07c00"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c17653"
+      },
+      "address": "00c1765a",
+      "native": "00c07c00",
+      "function": "00c17653",
+      "kind": "call"
+    },
+    {
+      "site": "00c1766a",
+      "physical_envelope": "00c17653",
+      "instruction": "call 0xc04fde",
+      "bytes": "e8 6f d9 fe ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c1766a"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c1766f"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c1766f"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04fde"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04fde"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c17653"
+      },
+      "address": "00c1766a",
+      "native": "00c04fde",
+      "function": "00c17653",
+      "kind": "call"
+    },
+    {
+      "site": "00c1767a",
+      "physical_envelope": "00c17653",
+      "instruction": "call 0xbfbab2",
+      "bytes": "e8 33 44 fe ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c1767a"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c1767f"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c1767f"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bfbab2"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bfbab2"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c17653"
+      },
+      "address": "00c1767a",
+      "native": "00bfbab2",
+      "function": "00c17653",
+      "kind": "call"
+    },
+    {
+      "site": "00c17689",
+      "physical_envelope": "00c17653",
+      "instruction": "call 0xbf65bb",
+      "bytes": "e8 2d ef fd ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c17689"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "CALL_RETURN",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "CALL_TERMINATOR",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "default_fallthrough": null,
+        "effective_fallthrough": null,
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf65bb"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf65bb"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c17653"
+      },
+      "address": "00c17689",
+      "native": "00bf65bb",
+      "function": "00c17653",
+      "kind": "call"
+    },
+    {
+      "site": "00c176be",
+      "physical_envelope": "00c17653",
+      "instruction": "call 0xc04f67",
+      "bytes": "e8 a4 d8 fe ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c176be"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c176c3"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c176c3"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04f67"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04f67"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c17653"
+      },
+      "address": "00c176be",
+      "native": "00c04f67",
+      "function": "00c17653",
+      "kind": "call"
+    },
+    {
+      "site": "00c17712",
+      "physical_envelope": "00c17653",
+      "instruction": "call 0xc07c45",
+      "bytes": "e8 2e 05 ff ff",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c17712"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c17717"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c17717"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c07c45"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c07c45"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c17653"
+      },
+      "address": "00c17712",
+      "native": "00c07c45",
+      "function": "00c17653",
+      "kind": "call"
+    }
+  ],
+  "computed_transfers": [
+    {
+      "site": "00c11c49",
+      "physical_envelope": "00c11c21",
+      "instruction": "call dword ptr [0xce2218]",
+      "bytes": "ff 15 18 22 ce 00",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11c49"
+        },
+        "length": 6,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11c4f"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11c4f"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "0000015b"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11c21"
+      },
+      "actual_IAT_slot": "00ce2218",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "EnterCriticalSection"
+      }
+    },
+    {
+      "site": "00c11af7",
+      "physical_envelope": "00c11adc",
+      "instruction": "call ebx",
+      "bytes": "ff d3",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11af7"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11af9"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11af9"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "0000015a"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11adc"
+      },
+      "target_capture": "EBX loaded ONCE from actual CE2214 before both phases",
+      "actual_IAT_slot": "00ce2214",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "DeleteCriticalSection"
+      }
+    },
+    {
+      "site": "00c11b21",
+      "physical_envelope": "00c11adc",
+      "instruction": "call ebx",
+      "bytes": "ff d3",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11b21"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11b23"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11b23"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "0000015a"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c11adc"
+      },
+      "target_capture": "EBX loaded ONCE from actual CE2214 before both phases",
+      "actual_IAT_slot": "00ce2214",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "DeleteCriticalSection"
+      }
+    },
+    {
+      "site": "00c04837",
+      "physical_envelope": "00c0481a",
+      "instruction": "call dword ptr [0xce2230]",
+      "bytes": "ff 15 30 22 ce 00",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c04837"
+        },
+        "length": 6,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c0483d"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c0483d"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000161"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c0481a"
+      },
+      "actual_IAT_slot": "00ce2230",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "Sleep"
+      }
+    },
+    {
+      "site": "00c1769c",
+      "physical_envelope": "00c17653",
+      "instruction": "call dword ptr [0xce215c]",
+      "bytes": "ff 15 5c 21 ce 00",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c1769c"
+        },
+        "length": 6,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c176a2"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c176a2"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "0000012c"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c17653"
+      },
+      "actual_IAT_slot": "00ce215c",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "GetModuleHandleA"
+      }
+    },
+    {
+      "site": "00c176ac",
+      "physical_envelope": "00c17653",
+      "instruction": "call dword ptr [0xce20f4]",
+      "bytes": "ff 15 f4 20 ce 00",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c176ac"
+        },
+        "length": 6,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c176b2"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c176b2"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000112"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c17653"
+      },
+      "actual_IAT_slot": "00ce20f4",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress"
+      }
+    },
+    {
+      "site": "00c176d2",
+      "physical_envelope": "00c17653",
+      "instruction": "call esi",
+      "bytes": "ff d6",
+      "live_defined_instruction": true,
+      "typed_instruction": {
+        "address": {
+          "space": "ram",
+          "offset": "00c176d2"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c176d4"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c176d4"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c17643"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c17653"
+      },
+      "target_capture": "ESI retains decoded/resolved actual stdcall initializer;cache/fallback selection recorded below"
+    },
+    {
+      "site": "00c176fe",
+      "physical_envelope": "00c17653",
+      "instruction": "call dword ptr [0xce22bc]",
+      "bytes": "ff 15 bc 22 ce 00",
+      "live_defined_instruction": false,
+      "typed_instruction": null,
+      "typed_flow": null,
+      "formal_owner": null,
+      "limitation": "physical scope-handler call is not a defined Ghidra instruction or function-owned row;do not claim a typed live CALL",
+      "actual_IAT_slot": "00ce22bc",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "SetLastError"
+      }
+    }
+  ],
+  "transfer_summary": {
+    "physical_calls": 32,
+    "typed_defined_direct_calls": 24,
+    "typed_defined_computed_calls": 7,
+    "physical_only_handler_IAT_call": 1,
+    "all_32_sites_have_exact_read_only_typed_metadata_responses": true
+  },
+  "typed_captures": [
+    {
+      "path": "local/goal_oct15_crt_lock_acquisition_flow.json",
+      "sha256": "05a656dc738e276cc84df39fdbb9b083bf08379ae260ae46abf38f917720f70b",
+      "accepted_responses": 5,
+      "modification_number": "2894"
+    },
+    {
+      "path": "local/goal_oct15_crt_lock_acquisition_calls_flow.json",
+      "sha256": "034e0b393e89f4007aba546a2bc4968895c9b695ce27a380b94b9d5e910b2476",
+      "accepted_responses": 32,
+      "modification_number": "2907"
+    }
+  ],
+  "installed_PE_imports": {
+    "00ce2218": {
+      "dll": "KERNEL32.dll",
+      "name": "EnterCriticalSection"
+    },
+    "00ce2214": {
+      "dll": "KERNEL32.dll",
+      "name": "DeleteCriticalSection"
+    },
+    "00ce2230": {
+      "dll": "KERNEL32.dll",
+      "name": "Sleep"
+    },
+    "00ce22bc": {
+      "dll": "KERNEL32.dll",
+      "name": "SetLastError"
+    },
+    "00ce215c": {
+      "dll": "KERNEL32.dll",
+      "name": "GetModuleHandleA"
+    },
+    "00ce20f4": {
+      "dll": "KERNEL32.dll",
+      "name": "GetProcAddress"
+    }
+  },
+  "lock_schedule": [
+    "capture raw index then E16478+8*index modulo32;no sign/range check",
+    "initial descriptor load;zero calls actual C11B5E with captured index",
+    "initializer EAX test before POP;zero calls actual BFBA09(17)",
+    "any returning fatal continuation still reloads CURRENT descriptor and invokes actual EnterCriticalSection;no new check or semantic result"
+  ],
+  "initializer_schedule": [
+    "heap109E1BC test and real diagnostics/exit precede live index read;returning diagnostic path retained",
+    "capture descriptor address;existing descriptor returns1",
+    "actual nullable C0481A(24);NULL gets real errno and writes12 then returns0",
+    "nonnull calls real lock10;only after return arm state0",
+    "reload descriptor;raced publication frees captured allocation without errno update",
+    "otherwise genuine C17653(allocation,4000);failure frees captured allocation,errno12,resultlocal0;success publishes captured allocation",
+    "disarm state=-2 before real C11C18;CURRENT resultlocal read after unlock;real epilog"
+  ],
+  "bootstrap_schedule": [
+    "noarg C11A93 scans36 actual descriptors at E16478 with8-byte stride",
+    "for current secondword==1 publish current actual109E1C0 static24B slot BEFORE initializer",
+    "push current published pointer then advance static pointer24 BEFORE actual C17653(4000)",
+    "first failure clears only current descriptor;no rollback of earlier initialized locks;return0;otherwise1"
+  ],
+  "deletion_schedule": [
+    "capture actual DeleteCriticalSection IAT word ONCE before both phases",
+    "phase1 capture pointer;nonnull then read flag;flag!=1 deletes and frees CAPTURED pointer,AND-zero current descriptor before caller POP",
+    "phase2 reread current pointer;nonnull then read flag;flag==1 deletes pointer and leaves descriptor word unchanged",
+    "no invented allocation ownership or replacement heap"
+  ],
+  "nullable_malloc_schedule": [
+    "C0481A rereads original size cell on each malloc retry;captures returned allocation",
+    "on NULL read current109DE30;zero skips Sleep and returnsNULL",
+    "Sleep current delay initially0;then modulo delay+1000 against freshly read109DE30;larger becomesFFFFFFFF terminal",
+    "cannot substitute throwing operator-new service or nonnull-only allocation"
+  ],
+  "PE_bootstrap_data": {
+    "00e164c8": {
+      "bytes": "00 00 00 00 01 00 00 00",
+      "words": [
+        0,
+        1
+      ],
+      "kind": "installed PE initial data only;not running game/initialized lock state"
+    },
+    "00e164d8": {
+      "bytes": "00 00 00 00 01 00 00 00",
+      "words": [
+        0,
+        1
+      ],
+      "kind": "installed PE initial data only;not running game/initialized lock state"
+    },
+    "0109e1bc": {
+      "bytes": "00 00 00 00 00 00 00 00",
+      "words": [
+        0,
+        0
+      ],
+      "kind": "installed PE initial data only;not running game/initialized lock state"
+    },
+    "0109de30": {
+      "bytes": "00 00 00 00 00 00 00 00",
+      "words": [
+        0,
+        0
+      ],
+      "kind": "installed PE initial data only;not running game/initialized lock state"
+    },
+    "0109e454": {
+      "bytes": "00 00 00 00 00 00 00 00",
+      "words": [
+        0,
+        0
+      ],
+      "kind": "installed PE initial data only;not running game/initialized lock state"
+    }
+  },
+  "bootstrap_domain": "Lock10/E164C8 and lock12/E164D8 have PE descriptors{0,1};the secondword selects static bootstrap. A mapped page or zero pointer is not a runtime initialized/owned critical section. The acquisition/initializer lock10 cycle requires the real bootstrap owner.",
+  "C17653_formal_vs_physical": {
+    "physical_envelope": "[00C17653,00C17718),197B/66ops",
+    "formal_body": {
+      "range_count": 3,
+      "returned_range_count": 3,
+      "address_count": "147",
+      "complete": true,
+      "ranges": [
+        {
+          "start": {
+            "space": "ram",
+            "offset": "00c17653"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "00c1768d"
+          },
+          "length": "59"
+        },
+        {
+          "start": {
+            "space": "ram",
+            "offset": "00c17691"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "00c176d8"
+          },
+          "length": "72"
+        },
+        {
+          "start": {
+            "space": "ram",
+            "offset": "00c17708"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "00c17717"
+          },
+          "length": "16"
+        }
+      ]
+    },
+    "formal_body_bytes": 147,
+    "excluded_physical_bytes": 50,
+    "excluded_ranges": [
+      "[00C1768E,00C17691):3B returning-Watson ADD ESP,14h",
+      "[00C176D9,00C17708):47B actual scope filter and handler"
+    ],
+    "scope_address": "00e037b8",
+    "scope_bytes": "fe ff ff ff 00 00 00 00 cc ff ff ff 00 00 00 00 fe ff ff ff d9 76 c1 00 f0 76 c1 00",
+    "scope_words": [
+      4294967294,
+      0,
+      4294967244,
+      0,
+      4294967294,
+      12678873,
+      12678896
+    ],
+    "filter": "C176D9 loads actual exception record code through current native EBP-14h,stores EBP-24h,returns(code==C0000017)",
+    "handler": "C176F0 restores ESP from actual EBP-18h;retests captured code;conditional actual SetLastError(8);AND-zero actual result atEBP-20h;falls to common epilog",
+    "normal_schedule": "actual encoded109E454 -> full decoder;miss gets platform,real five-zero Watson on getter failure,real kernel32 resolution or actual C17643 fallback,full encoder then cache publication;arm state0 before late two argument reads;actual selected stdcall call;capture result;disarm then CURRENT result read and real epilog",
+    "no_noreturn_borrowed_from_name": true,
+    "scope_or_original_SEH_runtime_closure": false
+  },
+  "current_C11B5E_listing_correction": {
+    "prior": "CC12 readiness reported56 defined starts and6 missing starts after_free",
+    "current": "all62 defined live starts present throughC11C17;all186 live bytes equal PE",
+    "formerly_missing_present": [
+      "00c11be7",
+      "00c11be8",
+      "00c11bed",
+      "00c11bf3",
+      "00c11bf6",
+      "00c11c02"
+    ],
+    "old_listing_gap_blocker_stale": true,
+    "analysis_repair_by_this_audit": false,
+    "live_listing": "local/goal_oct15_crt_lock_initializer_live_listing.txt",
+    "live_listing_sha256": "111d46ee5977ab7b1392b53798fba08777f22f71134e1677b439ba4c1091b621",
+    "current_defined_instruction_starts": [
+      "00c11b5e",
+      "00c11b60",
+      "00c11b65",
+      "00c11b6a",
+      "00c11b6c",
+      "00c11b6d",
+      "00c11b70",
+      "00c11b72",
+      "00c11b78",
+      "00c11b7a",
+      "00c11b7f",
+      "00c11b81",
+      "00c11b86",
+      "00c11b8b",
+      "00c11b90",
+      "00c11b91",
+      "00c11b92",
+      "00c11b95",
+      "00c11b9c",
+      "00c11b9e",
+      "00c11ba0",
+      "00c11ba2",
+      "00c11ba4",
+      "00c11ba6",
+      "00c11bab",
+      "00c11bac",
+      "00c11bae",
+      "00c11bb0",
+      "00c11bb2",
+      "00c11bb7",
+      "00c11bbd",
+      "00c11bbf",
+      "00c11bc1",
+      "00c11bc3",
+      "00c11bc8",
+      "00c11bc9",
+      "00c11bcc",
+      "00c11bce",
+      "00c11bd0",
+      "00c11bd5",
+      "00c11bd6",
+      "00c11bdb",
+      "00c11bdc",
+      "00c11bdd",
+      "00c11bdf",
+      "00c11be1",
+      "00c11be2",
+      "00c11be7",
+      "00c11be8",
+      "00c11bed",
+      "00c11bf3",
+      "00c11bf6",
+      "00c11bf8",
+      "00c11bfa",
+      "00c11bfc",
+      "00c11bfd",
+      "00c11c02",
+      "00c11c03",
+      "00c11c0a",
+      "00c11c0f",
+      "00c11c12",
+      "00c11c17"
+    ]
+  },
+  "genuine_existing_providers": [
+    {
+      "addresses": [
+        "00c11b31",
+        "00c11c18"
+      ],
+      "status": "complete genuine canonical unlock and lock10 unlock helper;actual initialized/currently-owned descriptor required;not acquisition/bootstrap"
+    },
+    {
+      "addresses": [
+        "00c17643",
+        "00c17639"
+      ],
+      "status": "complete real InitializeCriticalSection no-spin primitive and already-encoded cache-word store;not whole dispatcher"
+    },
+    {
+      "addresses": [
+        "00c04fde",
+        "00c04f67",
+        "00bfbab2"
+      ],
+      "status": "complete current Source APIs with borrowed actual TLS/module gate/owning errno/invalid-handler contracts;no new callbacks allowed;not proof of Original TLS/PTD/startup closure"
+    },
+    {
+      "addresses": [
+        "00bf65bb"
+      ],
+      "status": "complete genuine canonical Watson entry;real APIs may return;canonical owner/frame/import prerequisites remain;do not invent noreturn"
+    },
+    {
+      "addresses": [
+        "00c07c45"
+      ],
+      "status": "complete native epilog primitive needs actual compiler frame/FS chain;does not supply prolog/scope/dispatcher owner"
+    },
+    {
+      "addresses": [
+        "00bffb8b"
+      ],
+      "status": "existing owning-CRT errno service fragment;Original C051B7 TLS/initialization transport remains unclosed"
+    },
+    {
+      "addresses": [
+        "00bf9f1a",
+        "00bf9dc8"
+      ],
+      "status": "only labelled host substitutions found;not complete Original malloc/free providers"
+    }
+  ],
+  "provider_source_pins": {
+    "src/native_crt_canonical_unlock.cpp": "b2203a3e0def66f513f5bd0d8846a7ac21bb7e066015cf7f426d6e71165c6097",
+    "include/bsp/native_crt_canonical_unlock.hpp": "161dce16976cc0c2bdc10495d5a3c733600cfc6e2d75dc07f1363e5710802cdf",
+    "src/native_crt_lock10_unlock_helper.cpp": "cab75f96d04559ee880d6465a723412a29ea1b82c4558d1967851b9b6bc13f2f",
+    "include/bsp/native_crt_lock10_unlock_helper.hpp": "df2d76d1a2846f2af9bfac6c23548c9c1828d61eff29aa599d2709b6a3dd939b",
+    "src/native_crt_critical_section_primitives.cpp": "404b1dc6f40dbd7762f10d5f97075c0545f66e7203653d15d36a9316839db8d6",
+    "include/bsp/native_crt_critical_section_primitives.hpp": "fd6703d4731b2e944bf7bed000cb833e563a0210a18934698f145dbee7138326",
+    "src/native_crt_pointer_decode.cpp": "7a689a80bea666aa0941662a1bbde17500c92d1f7fd671c364aa2b3e0bf365c7",
+    "include/bsp/native_crt_pointer_decode.hpp": "b1e901d739c07419b55441988bf42177b0e6ace3ef27ef1251ecb3b36fb48a7f",
+    "src/native_crt_pointer_decode_support.cpp": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37",
+    "include/bsp/native_crt_pointer_decode_support.hpp": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722",
+    "src/native_crt_libm_callback_registration.cpp": "cacc140a243569c0d0828a309cf84c079fa12e30b1fc5124e703c44ed1716c32",
+    "include/bsp/native_crt_libm_callback_registration.hpp": "96b1bf767f1b4de73a578f178de025f2c9199082e404ad3bf45e0ff695f58746",
+    "src/native_crt_osplatform_getter.cpp": "c1cddc1b6bc3781c40a8f3313ce602f10c80d7306c35b99545420758ed10cfba",
+    "include/bsp/native_crt_osplatform_getter.hpp": "70f8cfe604f464af3b9aa3e54f008beb546343d58f1c1e41b25b9fc64bb34f18",
+    "src/native_crt_canonical_failure.cpp": "6d8bee1d3ba2e0fbfff1fcaca03ca35b8a5f933ff6995419f100e220802dc7ce",
+    "include/bsp/native_crt_canonical_failure.hpp": "79cf028656e03fe079cac7ced740ce5ea8a5a81fc4a8a722850a15c8195c0472",
+    "src/native_crt_seh4_primitives.cpp": "2557fbce9dfc10e1deb7a4158bb7e9f31fcd62b5c22a8e1f67e66c836bf4fb95",
+    "include/bsp/native_crt_seh4_primitives.hpp": "def2584ce857931952278696a418e2b62a0d1b8a9f82cc61e82ae784cab28a86",
+    "src/legacy_crt_math.cpp": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce",
+    "include/bsp/legacy_crt_math.hpp": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+    "src/native_dyn_narrow_phase.cpp": "367307f34945bb3d15f1086ea0026e595ab5a92b855c9f722d20958ab0a30bb4",
+    "src/native_dyn_sap_lifetime.cpp": "89c8be58800b2a6e738fc8e626c7169de57fc11ae3b7676563e4bc19d8d7142b"
+  },
+  "pin_scope": "selected current Source/API identity and qualifications;not a new exhaustive provider body/runtime revalidation",
+  "real_remaining_dependencies": [
+    {
+      "entry": "00c11c21",
+      "needs": [
+        "00c11b5e whole indexed initializer",
+        "00bfba09 actual diagnostic/fatal transport including returning path",
+        "actual initialized/acquired descriptor lifetime"
+      ]
+    },
+    {
+      "entry": "00c11b5e",
+      "needs": [
+        "00c0481a nullable retry allocation",
+        "00bf9f1a Original malloc/heap/errno",
+        "00bf9dc8 Original free/lock4/SBH/heap",
+        "00bffb8b Original PTD errno transport",
+        "00c17653 full dispatch/filter/handler",
+        "00c11c21 lock10 bootstrap cycle",
+        "00c05b68/00c059a8/00bfba53 heap diagnostic/fatal route",
+        "00c07c00/native scope and genuine SEH4 owner"
+      ]
+    },
+    {
+      "entry": "00c11a93",
+      "needs": [
+        "00c17653 whole actual initializer and bootstrap ordering/lifetime"
+      ]
+    },
+    {
+      "entry": "00c11adc",
+      "needs": [
+        "00bf9dc8 real captured-allocation free",
+        "real lock descriptor/static owner lifetime"
+      ]
+    },
+    {
+      "entry": "00c0481a",
+      "needs": [
+        "00bf9f1a whole nullable Original malloc",
+        "actual109DE30 retry state",
+        "real Sleep import"
+      ]
+    },
+    {
+      "entry": "00c17653",
+      "needs": [
+        "all197 physical bytes including actual SEH filter/handler and returning Watson continuation",
+        "genuine C04FDE/C04F67/BFBAB2 transport bindings;Original TLS/errno closure separate",
+        "actual native prolog/scope/frame/filter/handler state and outcome",
+        "real encoded cache109E454 and actual resolved stdcall provider lifetime"
+      ]
+    }
+  ],
+  "smallest_remaining_closure": {
+    "ready_new_whole_Source_leaf": null,
+    "bounded_next_frontier": "whole C17653 dispatcher including actual no-memory filter/handler and returning Watson continuation, with genuine pointer/TLS/errno transport;or close named nullable Original malloc/free/fatal prerequisites first",
+    "reason": "all smaller directly useful unlock/no-spin leaves already have Source;each unreconstructed whole acquisition/bootstrap/deletion function still reaches named incomplete providers",
+    "forbidden_shortcuts": [
+      "preinitialized-only lock parent",
+      "nonnull-only initializer or throwing replacement malloc",
+      "new lock/PTD/global/callback owner",
+      "current SDK LocaleUpdate substitution",
+      "synthetic cached resolver or fastpath-only dispatcher"
+    ]
+  },
+  "ownership_observation": "six inspected function addresses and direct required helpers were unleased at bounded scout checks;this audit claims ONLY its one report file",
+  "prior_audit": {
+    "path": "reports/goal_oct15_crt_locale_provider_readiness.json",
+    "sha256": "a62bb37a61101bd84bd394443b60c24c47312ed497762e3f2059837e5fcd5927",
+    "scope": "reuse prior locale graph;no entire graph reread"
+  },
+  "validation": {
+    "report_call_verification": {
+      "command": "python tools/verify_report_calls.py reports/goal_oct15_crt_lock_acquisition_readiness.json",
+      "direct_rows_checked": 24,
+      "failed": 0,
+      "computed_rows_checked_separately_against_typed_metadata": 7,
+      "physical_only_scope_handler_IAT_call": 1,
+      "note": "Direct-call checker does not prove indirect imported service identity;actual PE import names and exact typed computed-flow rows are separately retained."
+    },
+    "new_tests": 0,
+    "builds": 0,
+    "Ghidra_writes": 0,
+    "Source_edits": 0,
+    "runtime_or_game_probes": 0
+  },
+  "qualification": "Read-only physical/native metadata and existing provider-contract audit. No new Source/address/ABI/runtime/Original allocator,locale,TLS,errno,SEH,faithful-startup or gameplay completion credit.",
+  "existing_incomplete_Source_boundaries": [
+    {
+      "address": "00bf9f1a",
+      "source": "src/native_dyn_narrow_phase.cpp",
+      "status": "existing_host_substitution_labelled;not whole Original malloc"
+    },
+    {
+      "address": "00bf9dc8",
+      "source": "src/native_dyn_sap_lifetime.cpp",
+      "status": "existing_host_substitution_labelled;not whole Original free"
+    },
+    {
+      "address": "00c07c00",
+      "source": null,
+      "status": "no complete Source indexed;genuine native prolog/frame owner remains open"
+    },
+    {
+      "address": "00bfba09",
+      "source": null,
+      "status": "no complete Source indexed;real diagnostic/fatal/returning transport remains open"
+    }
+  ]
+}
