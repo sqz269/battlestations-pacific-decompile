@@ -2136,6 +2136,7 @@ struct GameGunneryHost::Impl {
         plane_crash_blast = 27, // 0084BAD0's blast for a plane's crash shot (007C0910), key (plane, 0)
         torpedo_scan_phase = 28, // 00856132, -U(0, 1) into record+518h, stream 1, key (shot serial, 0)
         ship_breakup = 29,    // 00827B4D, the breakup roll against WreckChance, stream 1, key (unit, 0)
+        auto_target_phase = 30, // 009F6A8F, -U(0, 1) into the auto-target think countdown, stream 1, key (unit, 0)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -16592,6 +16593,10 @@ std::vector<GameGunneryHost::LiveTorpedo> GameGunneryHost::live_torpedoes() cons
 
 float GameGunneryHost::ship_ai_draw(std::size_t unit_index, float low, float high) {
     return impl_->draw(Impl::Draw::ship_ai_torpedo, unit_index, 0, low, high);
+}
+
+float GameGunneryHost::auto_target_phase_draw_009f6a8f(std::size_t unit_index) {
+    return impl_->draw(Impl::Draw::auto_target_phase, unit_index, 0, 0.0f, 1.0f);
 }
 
 bool GameGunneryHost::run_recon_pass_at_scene_load_004e059b() {

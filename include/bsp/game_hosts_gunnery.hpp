@@ -1308,6 +1308,11 @@ public:
     // generator every gunnery draw uses, in call order. BSP_GUNNERY_RNG_STREAMS=1:
     // its own generator keyed by (unit), a measurement substitution.
     float ship_ai_draw(std::size_t unit_index, float low, float high);
+    // 009F6A20 (BSP_WeaponDirector_AutoTargetConstruct) at 009F6A8F: 00BD2F10(ECX=1,
+    // 0.0f, 1.0f), negated into the auto-target think countdown, once per director.
+    // Default: the shared stream-1 generator. BSP_GUNNERY_RNG_STREAMS=1: its own
+    // generator keyed by (unit), a measurement substitution. Returns the draw.
+    float auto_target_phase_draw_009f6a8f(std::size_t unit_index);
     // Packet cc9_movie_interface_and_reseed: 00BD2FD0(stream, seed) as 005CD1A0
     // makes it (005CD1B0 stream 1 = 12345, 005CD1BC stream 0 = 54321).
     // SUBSTITUTION, labelled: the image seeds MT19937 (sgenrand, docs/RANDOM_STREAMS.md);
