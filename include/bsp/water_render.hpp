@@ -409,7 +409,7 @@ public:
     virtual ~OceanBeamHost() = default;
     virtual void refresh_camera_world_if_dirty() = 0;          // cam+5Ch bit 2 -> 00B6DB70
     virtual Float3 camera_position_120() = 0;
-    virtual void camera_trivial_00b6fc60() = 0;                // ECX = camera, empty body
+    virtual void camera_trivial_00b6fc60() = 0;                // native returns camera address + 1ACh; this call ignores it
     virtual void set_visibility_factor_00b6da70(float value) = 0;  // [beams+14h], recurse = 0
     // The first entry of the light list [[beams+14h]+170h]+18h; its +1E0h
     // vector. false = empty list (the native calls 00BF6713 and goes on).
