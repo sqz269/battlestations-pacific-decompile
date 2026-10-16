@@ -1,0 +1,704 @@
+# cc9-physics12 JM06 a4: jm06_s49_j6_s plus `attack "PlayerSub 01" "USTroopTransport 01"` every 1500 frames 13010-29010 and `torpedo ... at "USTroopTransport 01"` every 600 frames 14100-29000 (dead-target attacks are refused by the harness, 0f70e9dee)
+# generators: local\p12_j6attack.py then local\p12_j6gen.py (cc9-physics1 tree); OCEAN_WAVE_FIELD 38
+190 select "PlayerSub 01"
+200 moveto "PlayerSub 01" 1600 -3600
+5010 select "PlayerSub 01"
+5020 moveto "PlayerSub 01" 1300 -1500
+7000 select "PlayerSub 01"
+7001 torpedo "PlayerSub 01" at "USTroopTransport 01"
+7003 torpedo "PlayerSub 01" release
+7300 select "PlayerSub 01"
+7301 torpedo "PlayerSub 01" at "US Cargo Transport 01"
+7303 torpedo "PlayerSub 01" release
+7600 select "PlayerSub 01"
+7601 torpedo "PlayerSub 01" at "US Tanker 02"
+7603 torpedo "PlayerSub 01" release
+7900 select "PlayerSub 01"
+7901 torpedo "PlayerSub 01" at "US Tanker 03"
+7903 torpedo "PlayerSub 01" release
+8200 select "PlayerSub 01"
+8201 torpedo "PlayerSub 01" at "USTroopTransport 04"
+8203 torpedo "PlayerSub 01" release
+8500 select "PlayerSub 01"
+8501 torpedo "PlayerSub 01" at "USTroopTransport 01"
+8503 torpedo "PlayerSub 01" release
+8800 select "PlayerSub 01"
+8801 torpedo "PlayerSub 01" at "US Cargo Transport 01"
+8803 torpedo "PlayerSub 01" release
+9100 select "PlayerSub 01"
+9101 torpedo "PlayerSub 01" at "US Tanker 02"
+9103 torpedo "PlayerSub 01" release
+9400 select "PlayerSub 01"
+9401 torpedo "PlayerSub 01" at "US Tanker 03"
+9403 torpedo "PlayerSub 01" release
+9700 select "PlayerSub 01"
+9701 torpedo "PlayerSub 01" at "USTroopTransport 04"
+9703 torpedo "PlayerSub 01" release
+10000 select "PlayerSub 01"
+10001 torpedo "PlayerSub 01" at "USTroopTransport 01"
+10003 torpedo "PlayerSub 01" release
+10300 select "PlayerSub 01"
+10301 torpedo "PlayerSub 01" at "US Cargo Transport 01"
+10303 torpedo "PlayerSub 01" release
+10600 select "PlayerSub 01"
+10601 torpedo "PlayerSub 01" at "US Tanker 02"
+10603 torpedo "PlayerSub 01" release
+10900 select "PlayerSub 01"
+10901 torpedo "PlayerSub 01" at "US Tanker 03"
+10903 torpedo "PlayerSub 01" release
+11200 select "PlayerSub 01"
+11201 torpedo "PlayerSub 01" at "USTroopTransport 04"
+11203 torpedo "PlayerSub 01" release
+11500 select "PlayerSub 01"
+11501 torpedo "PlayerSub 01" at "USTroopTransport 01"
+11503 torpedo "PlayerSub 01" release
+11800 select "PlayerSub 01"
+11801 torpedo "PlayerSub 01" at "US Cargo Transport 01"
+11803 torpedo "PlayerSub 01" release
+12100 select "PlayerSub 01"
+12101 torpedo "PlayerSub 01" at "US Tanker 02"
+12103 torpedo "PlayerSub 01" release
+12400 select "PlayerSub 01"
+12401 torpedo "PlayerSub 01" at "US Tanker 03"
+12403 torpedo "PlayerSub 01" release
+12700 select "PlayerSub 01"
+12701 torpedo "PlayerSub 01" at "USTroopTransport 04"
+12703 torpedo "PlayerSub 01" release
+12990 select "PlayerSub 01"
+13000 moveto "PlayerSub 01" 800 -1500
+13000 select "PlayerSub 01"
+13001 torpedo "PlayerSub 01" at "USTroopTransport 01"
+13003 torpedo "PlayerSub 01" release
+13010 attack "PlayerSub 01" "USTroopTransport 01"
+14100 select "PlayerSub 01"
+14101 torpedo "PlayerSub 01" at "USTroopTransport 01"
+14103 torpedo "PlayerSub 01" release
+14510 attack "PlayerSub 01" "USTroopTransport 01"
+14700 select "PlayerSub 01"
+14701 torpedo "PlayerSub 01" at "USTroopTransport 01"
+14703 torpedo "PlayerSub 01" release
+15300 select "PlayerSub 01"
+15301 torpedo "PlayerSub 01" at "USTroopTransport 01"
+15303 torpedo "PlayerSub 01" release
+15900 select "PlayerSub 01"
+15901 torpedo "PlayerSub 01" at "USTroopTransport 01"
+15903 torpedo "PlayerSub 01" release
+16010 attack "PlayerSub 01" "USTroopTransport 01"
+16500 select "PlayerSub 01"
+16501 torpedo "PlayerSub 01" at "USTroopTransport 01"
+16503 torpedo "PlayerSub 01" release
+17100 select "PlayerSub 01"
+17101 torpedo "PlayerSub 01" at "USTroopTransport 01"
+17103 torpedo "PlayerSub 01" release
+17510 attack "PlayerSub 01" "USTroopTransport 01"
+17700 select "PlayerSub 01"
+17701 torpedo "PlayerSub 01" at "USTroopTransport 01"
+17703 torpedo "PlayerSub 01" release
+18300 select "PlayerSub 01"
+18301 torpedo "PlayerSub 01" at "USTroopTransport 01"
+18303 torpedo "PlayerSub 01" release
+18900 select "PlayerSub 01"
+18901 torpedo "PlayerSub 01" at "USTroopTransport 01"
+18903 torpedo "PlayerSub 01" release
+19010 attack "PlayerSub 01" "USTroopTransport 01"
+19500 select "PlayerSub 01"
+19501 torpedo "PlayerSub 01" at "USTroopTransport 01"
+19503 torpedo "PlayerSub 01" release
+20100 select "PlayerSub 01"
+20101 torpedo "PlayerSub 01" at "USTroopTransport 01"
+20103 torpedo "PlayerSub 01" release
+20510 attack "PlayerSub 01" "USTroopTransport 01"
+20700 select "PlayerSub 01"
+20701 torpedo "PlayerSub 01" at "USTroopTransport 01"
+20703 torpedo "PlayerSub 01" release
+20990 select "PlayerSub 01"
+21000 moveto "PlayerSub 01" 1500 -1100
+21300 select "PlayerSub 01"
+21301 torpedo "PlayerSub 01" at "USTroopTransport 01"
+21303 torpedo "PlayerSub 01" release
+21900 select "PlayerSub 01"
+21901 torpedo "PlayerSub 01" at "USTroopTransport 01"
+21903 torpedo "PlayerSub 01" release
+22010 attack "PlayerSub 01" "USTroopTransport 01"
+22500 select "PlayerSub 01"
+22501 torpedo "PlayerSub 01" at "USTroopTransport 01"
+22503 torpedo "PlayerSub 01" release
+23100 select "PlayerSub 01"
+23101 torpedo "PlayerSub 01" at "USTroopTransport 01"
+23103 torpedo "PlayerSub 01" release
+23510 attack "PlayerSub 01" "USTroopTransport 01"
+23700 select "PlayerSub 01"
+23701 torpedo "PlayerSub 01" at "USTroopTransport 01"
+23703 torpedo "PlayerSub 01" release
+24300 select "PlayerSub 01"
+24301 torpedo "PlayerSub 01" at "USTroopTransport 01"
+24303 torpedo "PlayerSub 01" release
+24900 select "PlayerSub 01"
+24901 torpedo "PlayerSub 01" at "USTroopTransport 01"
+24903 torpedo "PlayerSub 01" release
+25010 attack "PlayerSub 01" "USTroopTransport 01"
+25500 select "PlayerSub 01"
+25501 torpedo "PlayerSub 01" at "USTroopTransport 01"
+25503 torpedo "PlayerSub 01" release
+26100 select "PlayerSub 01"
+26101 torpedo "PlayerSub 01" at "USTroopTransport 01"
+26103 torpedo "PlayerSub 01" release
+26510 attack "PlayerSub 01" "USTroopTransport 01"
+26700 select "PlayerSub 01"
+26701 torpedo "PlayerSub 01" at "USTroopTransport 01"
+26703 torpedo "PlayerSub 01" release
+27300 select "PlayerSub 01"
+27301 torpedo "PlayerSub 01" at "USTroopTransport 01"
+27303 torpedo "PlayerSub 01" release
+27900 select "PlayerSub 01"
+27901 torpedo "PlayerSub 01" at "USTroopTransport 01"
+27903 torpedo "PlayerSub 01" release
+28010 attack "PlayerSub 01" "USTroopTransport 01"
+28500 select "PlayerSub 01"
+28501 torpedo "PlayerSub 01" at "USTroopTransport 01"
+28503 torpedo "PlayerSub 01" release
+29990 select "PlayerSub 01"
+30000 takehelm "PlayerSub 01" 0.3 300 -100 stop 1300
+34000 select "PlayerSub 01"
+34001 torpedo "PlayerSub 01" at "Lexington-class 01"
+34003 torpedo "PlayerSub 01" release
+34300 select "PlayerSub 01"
+34301 torpedo "PlayerSub 01" at "Lexington-class 01"
+34303 torpedo "PlayerSub 01" release
+34600 select "PlayerSub 01"
+34601 torpedo "PlayerSub 01" at "Lexington-class 01"
+34603 torpedo "PlayerSub 01" release
+34900 select "PlayerSub 01"
+34901 torpedo "PlayerSub 01" at "Lexington-class 01"
+34903 torpedo "PlayerSub 01" release
+35200 select "PlayerSub 01"
+35201 torpedo "PlayerSub 01" at "Lexington-class 01"
+35203 torpedo "PlayerSub 01" release
+35500 select "PlayerSub 01"
+35501 torpedo "PlayerSub 01" at "Lexington-class 01"
+35503 torpedo "PlayerSub 01" release
+35800 select "PlayerSub 01"
+35801 torpedo "PlayerSub 01" at "Lexington-class 01"
+35803 torpedo "PlayerSub 01" release
+36100 select "PlayerSub 01"
+36101 torpedo "PlayerSub 01" at "Lexington-class 01"
+36103 torpedo "PlayerSub 01" release
+36400 select "PlayerSub 01"
+36401 torpedo "PlayerSub 01" at "Lexington-class 01"
+36403 torpedo "PlayerSub 01" release
+36700 select "PlayerSub 01"
+36701 torpedo "PlayerSub 01" at "Lexington-class 01"
+36703 torpedo "PlayerSub 01" release
+37000 select "PlayerSub 01"
+37001 torpedo "PlayerSub 01" at "Lexington-class 01"
+37003 torpedo "PlayerSub 01" release
+37300 select "PlayerSub 01"
+37301 torpedo "PlayerSub 01" at "Lexington-class 01"
+37303 torpedo "PlayerSub 01" release
+37600 select "PlayerSub 01"
+37601 torpedo "PlayerSub 01" at "Lexington-class 01"
+37603 torpedo "PlayerSub 01" release
+37900 select "PlayerSub 01"
+37901 torpedo "PlayerSub 01" at "Lexington-class 01"
+37903 torpedo "PlayerSub 01" release
+38200 select "PlayerSub 01"
+38201 torpedo "PlayerSub 01" at "Lexington-class 01"
+38203 torpedo "PlayerSub 01" release
+38500 select "PlayerSub 01"
+38501 torpedo "PlayerSub 01" at "Lexington-class 01"
+38503 torpedo "PlayerSub 01" release
+38800 select "PlayerSub 01"
+38801 torpedo "PlayerSub 01" at "Lexington-class 01"
+38803 torpedo "PlayerSub 01" release
+39100 select "PlayerSub 01"
+39101 torpedo "PlayerSub 01" at "Lexington-class 01"
+39103 torpedo "PlayerSub 01" release
+39400 select "PlayerSub 01"
+39401 torpedo "PlayerSub 01" at "Lexington-class 01"
+39403 torpedo "PlayerSub 01" release
+39700 select "PlayerSub 01"
+39701 torpedo "PlayerSub 01" at "Lexington-class 01"
+39703 torpedo "PlayerSub 01" release
+40000 select "PlayerSub 01"
+40001 torpedo "PlayerSub 01" at "Lexington-class 01"
+40003 torpedo "PlayerSub 01" release
+40300 select "PlayerSub 01"
+40301 torpedo "PlayerSub 01" at "Lexington-class 01"
+40303 torpedo "PlayerSub 01" release
+40600 select "PlayerSub 01"
+40601 torpedo "PlayerSub 01" at "Lexington-class 01"
+40603 torpedo "PlayerSub 01" release
+40900 select "PlayerSub 01"
+40901 torpedo "PlayerSub 01" at "Lexington-class 01"
+40903 torpedo "PlayerSub 01" release
+41200 select "PlayerSub 01"
+41201 torpedo "PlayerSub 01" at "Lexington-class 01"
+41203 torpedo "PlayerSub 01" release
+41500 select "PlayerSub 01"
+41501 torpedo "PlayerSub 01" at "Lexington-class 01"
+41503 torpedo "PlayerSub 01" release
+41800 select "PlayerSub 01"
+41801 torpedo "PlayerSub 01" at "Lexington-class 01"
+41803 torpedo "PlayerSub 01" release
+42100 select "PlayerSub 01"
+42101 torpedo "PlayerSub 01" at "Lexington-class 01"
+42103 torpedo "PlayerSub 01" release
+42400 select "PlayerSub 01"
+42401 torpedo "PlayerSub 01" at "Lexington-class 01"
+42403 torpedo "PlayerSub 01" release
+42700 select "PlayerSub 01"
+42701 torpedo "PlayerSub 01" at "Lexington-class 01"
+42703 torpedo "PlayerSub 01" release
+43000 select "PlayerSub 01"
+43001 torpedo "PlayerSub 01" at "Lexington-class 01"
+43003 torpedo "PlayerSub 01" release
+43300 select "PlayerSub 01"
+43301 torpedo "PlayerSub 01" at "Lexington-class 01"
+43303 torpedo "PlayerSub 01" release
+43600 select "PlayerSub 01"
+43601 torpedo "PlayerSub 01" at "Lexington-class 01"
+43603 torpedo "PlayerSub 01" release
+43900 select "PlayerSub 01"
+43901 torpedo "PlayerSub 01" at "Lexington-class 01"
+43903 torpedo "PlayerSub 01" release
+44300 select "PlayerSub 01"
+44301 torpedo "PlayerSub 01" at "Fletcher-class 01"
+44303 torpedo "PlayerSub 01" release
+44750 select "PlayerSub 01"
+44751 torpedo "PlayerSub 01" at "Fletcher-class 02"
+44753 torpedo "PlayerSub 01" release
+45200 select "PlayerSub 01"
+45201 torpedo "PlayerSub 01" at "Fletcher-class 03"
+45203 torpedo "PlayerSub 01" release
+45650 select "PlayerSub 01"
+45651 torpedo "PlayerSub 01" at "Fletcher-class 04"
+45653 torpedo "PlayerSub 01" release
+46100 select "PlayerSub 01"
+46101 torpedo "PlayerSub 01" at "Fletcher-class 05"
+46103 torpedo "PlayerSub 01" release
+46550 select "PlayerSub 01"
+46551 torpedo "PlayerSub 01" at "Fletcher-class 01"
+46553 torpedo "PlayerSub 01" release
+47000 select "PlayerSub 01"
+47001 torpedo "PlayerSub 01" at "Fletcher-class 02"
+47003 torpedo "PlayerSub 01" release
+47450 select "PlayerSub 01"
+47451 torpedo "PlayerSub 01" at "Fletcher-class 03"
+47453 torpedo "PlayerSub 01" release
+47900 select "PlayerSub 01"
+47901 torpedo "PlayerSub 01" at "Fletcher-class 04"
+47903 torpedo "PlayerSub 01" release
+48350 select "PlayerSub 01"
+48351 torpedo "PlayerSub 01" at "Fletcher-class 05"
+48353 torpedo "PlayerSub 01" release
+48800 select "PlayerSub 01"
+48801 torpedo "PlayerSub 01" at "Fletcher-class 01"
+48803 torpedo "PlayerSub 01" release
+49250 select "PlayerSub 01"
+49251 torpedo "PlayerSub 01" at "Fletcher-class 02"
+49253 torpedo "PlayerSub 01" release
+49700 select "PlayerSub 01"
+49701 torpedo "PlayerSub 01" at "Fletcher-class 03"
+49703 torpedo "PlayerSub 01" release
+50150 select "PlayerSub 01"
+50151 torpedo "PlayerSub 01" at "Fletcher-class 04"
+50153 torpedo "PlayerSub 01" release
+50600 select "PlayerSub 01"
+50601 torpedo "PlayerSub 01" at "Fletcher-class 05"
+50603 torpedo "PlayerSub 01" release
+51050 select "PlayerSub 01"
+51051 torpedo "PlayerSub 01" at "Fletcher-class 01"
+51053 torpedo "PlayerSub 01" release
+51500 select "PlayerSub 01"
+51501 torpedo "PlayerSub 01" at "Fletcher-class 02"
+51503 torpedo "PlayerSub 01" release
+51950 select "PlayerSub 01"
+51951 torpedo "PlayerSub 01" at "Fletcher-class 03"
+51953 torpedo "PlayerSub 01" release
+52400 select "PlayerSub 01"
+52401 torpedo "PlayerSub 01" at "Fletcher-class 04"
+52403 torpedo "PlayerSub 01" release
+52850 select "PlayerSub 01"
+52851 torpedo "PlayerSub 01" at "Fletcher-class 05"
+52853 torpedo "PlayerSub 01" release
+53300 select "PlayerSub 01"
+53301 torpedo "PlayerSub 01" at "Fletcher-class 01"
+53303 torpedo "PlayerSub 01" release
+53750 select "PlayerSub 01"
+53751 torpedo "PlayerSub 01" at "Fletcher-class 02"
+53753 torpedo "PlayerSub 01" release
+54200 select "PlayerSub 01"
+54201 torpedo "PlayerSub 01" at "Fletcher-class 03"
+54203 torpedo "PlayerSub 01" release
+54650 select "PlayerSub 01"
+54651 torpedo "PlayerSub 01" at "Fletcher-class 04"
+54653 torpedo "PlayerSub 01" release
+55100 select "PlayerSub 01"
+55101 torpedo "PlayerSub 01" at "Fletcher-class 05"
+55103 torpedo "PlayerSub 01" release
+55550 select "PlayerSub 01"
+55551 torpedo "PlayerSub 01" at "Fletcher-class 01"
+55553 torpedo "PlayerSub 01" release
+56000 select "PlayerSub 01"
+56001 torpedo "PlayerSub 01" at "Fletcher-class 02"
+56003 torpedo "PlayerSub 01" release
+56450 select "PlayerSub 01"
+56451 torpedo "PlayerSub 01" at "Fletcher-class 03"
+56453 torpedo "PlayerSub 01" release
+56900 select "PlayerSub 01"
+56901 torpedo "PlayerSub 01" at "Fletcher-class 04"
+56903 torpedo "PlayerSub 01" release
+57350 select "PlayerSub 01"
+57351 torpedo "PlayerSub 01" at "Fletcher-class 05"
+57353 torpedo "PlayerSub 01" release
+57800 select "PlayerSub 01"
+57801 torpedo "PlayerSub 01" at "Fletcher-class 01"
+57803 torpedo "PlayerSub 01" release
+58250 select "PlayerSub 01"
+58251 torpedo "PlayerSub 01" at "Fletcher-class 02"
+58253 torpedo "PlayerSub 01" release
+58700 select "PlayerSub 01"
+58701 torpedo "PlayerSub 01" at "Fletcher-class 03"
+58703 torpedo "PlayerSub 01" release
+59150 select "PlayerSub 01"
+59151 torpedo "PlayerSub 01" at "Fletcher-class 04"
+59153 torpedo "PlayerSub 01" release
+59600 select "PlayerSub 01"
+59601 torpedo "PlayerSub 01" at "Fletcher-class 05"
+59603 torpedo "PlayerSub 01" release
+60050 select "PlayerSub 01"
+60051 torpedo "PlayerSub 01" at "Fletcher-class 01"
+60053 torpedo "PlayerSub 01" release
+60500 select "PlayerSub 01"
+60501 torpedo "PlayerSub 01" at "Fletcher-class 02"
+60503 torpedo "PlayerSub 01" release
+60950 select "PlayerSub 01"
+60951 torpedo "PlayerSub 01" at "Fletcher-class 03"
+60953 torpedo "PlayerSub 01" release
+61400 select "PlayerSub 01"
+61401 torpedo "PlayerSub 01" at "Fletcher-class 04"
+61403 torpedo "PlayerSub 01" release
+61850 select "PlayerSub 01"
+61851 torpedo "PlayerSub 01" at "Fletcher-class 05"
+61853 torpedo "PlayerSub 01" release
+62300 select "PlayerSub 01"
+62301 torpedo "PlayerSub 01" at "Fletcher-class 01"
+62303 torpedo "PlayerSub 01" release
+62750 select "PlayerSub 01"
+62751 torpedo "PlayerSub 01" at "Fletcher-class 02"
+62753 torpedo "PlayerSub 01" release
+63200 select "PlayerSub 01"
+63201 torpedo "PlayerSub 01" at "Fletcher-class 03"
+63203 torpedo "PlayerSub 01" release
+63650 select "PlayerSub 01"
+63651 torpedo "PlayerSub 01" at "Fletcher-class 04"
+63653 torpedo "PlayerSub 01" release
+64100 select "PlayerSub 01"
+64101 torpedo "PlayerSub 01" at "Fletcher-class 05"
+64103 torpedo "PlayerSub 01" release
+64550 select "PlayerSub 01"
+64551 torpedo "PlayerSub 01" at "Fletcher-class 01"
+64553 torpedo "PlayerSub 01" release
+65000 select "PlayerSub 01"
+65001 torpedo "PlayerSub 01" at "Fletcher-class 02"
+65003 torpedo "PlayerSub 01" release
+65450 select "PlayerSub 01"
+65451 torpedo "PlayerSub 01" at "Fletcher-class 03"
+65453 torpedo "PlayerSub 01" release
+65900 select "PlayerSub 01"
+65901 torpedo "PlayerSub 01" at "Fletcher-class 04"
+65903 torpedo "PlayerSub 01" release
+66350 select "PlayerSub 01"
+66351 torpedo "PlayerSub 01" at "Fletcher-class 05"
+66353 torpedo "PlayerSub 01" release
+66800 select "PlayerSub 01"
+66801 torpedo "PlayerSub 01" at "Fletcher-class 01"
+66803 torpedo "PlayerSub 01" release
+67250 select "PlayerSub 01"
+67251 torpedo "PlayerSub 01" at "Fletcher-class 02"
+67253 torpedo "PlayerSub 01" release
+67700 select "PlayerSub 01"
+67701 torpedo "PlayerSub 01" at "Fletcher-class 03"
+67703 torpedo "PlayerSub 01" release
+68150 select "PlayerSub 01"
+68151 torpedo "PlayerSub 01" at "Fletcher-class 04"
+68153 torpedo "PlayerSub 01" release
+68600 select "PlayerSub 01"
+68601 torpedo "PlayerSub 01" at "Fletcher-class 05"
+68603 torpedo "PlayerSub 01" release
+69050 select "PlayerSub 01"
+69051 torpedo "PlayerSub 01" at "Fletcher-class 01"
+69053 torpedo "PlayerSub 01" release
+69500 select "PlayerSub 01"
+69501 torpedo "PlayerSub 01" at "Fletcher-class 02"
+69503 torpedo "PlayerSub 01" release
+69950 select "PlayerSub 01"
+69951 torpedo "PlayerSub 01" at "Fletcher-class 03"
+69953 torpedo "PlayerSub 01" release
+70400 select "PlayerSub 01"
+70401 torpedo "PlayerSub 01" at "Fletcher-class 04"
+70403 torpedo "PlayerSub 01" release
+70850 select "PlayerSub 01"
+70851 torpedo "PlayerSub 01" at "Fletcher-class 05"
+70853 torpedo "PlayerSub 01" release
+71300 select "PlayerSub 01"
+71301 torpedo "PlayerSub 01" at "Fletcher-class 01"
+71303 torpedo "PlayerSub 01" release
+71750 select "PlayerSub 01"
+71751 torpedo "PlayerSub 01" at "Fletcher-class 02"
+71753 torpedo "PlayerSub 01" release
+72200 select "PlayerSub 01"
+72201 torpedo "PlayerSub 01" at "Fletcher-class 03"
+72203 torpedo "PlayerSub 01" release
+72650 select "PlayerSub 01"
+72651 torpedo "PlayerSub 01" at "Fletcher-class 04"
+72653 torpedo "PlayerSub 01" release
+73100 select "PlayerSub 01"
+73101 torpedo "PlayerSub 01" at "Fletcher-class 05"
+73103 torpedo "PlayerSub 01" release
+73550 select "PlayerSub 01"
+73551 torpedo "PlayerSub 01" at "Fletcher-class 01"
+73553 torpedo "PlayerSub 01" release
+74000 select "PlayerSub 01"
+74001 torpedo "PlayerSub 01" at "Fletcher-class 02"
+74003 torpedo "PlayerSub 01" release
+74450 select "PlayerSub 01"
+74451 torpedo "PlayerSub 01" at "Fletcher-class 03"
+74453 torpedo "PlayerSub 01" release
+74900 select "PlayerSub 01"
+74901 torpedo "PlayerSub 01" at "Fletcher-class 04"
+74903 torpedo "PlayerSub 01" release
+75350 select "PlayerSub 01"
+75351 torpedo "PlayerSub 01" at "Fletcher-class 05"
+75353 torpedo "PlayerSub 01" release
+75800 select "PlayerSub 01"
+75801 torpedo "PlayerSub 01" at "Fletcher-class 01"
+75803 torpedo "PlayerSub 01" release
+76250 select "PlayerSub 01"
+76251 torpedo "PlayerSub 01" at "Fletcher-class 02"
+76253 torpedo "PlayerSub 01" release
+76700 select "PlayerSub 01"
+76701 torpedo "PlayerSub 01" at "Fletcher-class 03"
+76703 torpedo "PlayerSub 01" release
+77150 select "PlayerSub 01"
+77151 torpedo "PlayerSub 01" at "Fletcher-class 04"
+77153 torpedo "PlayerSub 01" release
+77600 select "PlayerSub 01"
+77601 torpedo "PlayerSub 01" at "Fletcher-class 05"
+77603 torpedo "PlayerSub 01" release
+78050 select "PlayerSub 01"
+78051 torpedo "PlayerSub 01" at "Fletcher-class 01"
+78053 torpedo "PlayerSub 01" release
+78500 select "PlayerSub 01"
+78501 torpedo "PlayerSub 01" at "Fletcher-class 02"
+78503 torpedo "PlayerSub 01" release
+78950 select "PlayerSub 01"
+78951 torpedo "PlayerSub 01" at "Fletcher-class 03"
+78953 torpedo "PlayerSub 01" release
+79400 select "PlayerSub 01"
+79401 torpedo "PlayerSub 01" at "Fletcher-class 04"
+79403 torpedo "PlayerSub 01" release
+79850 select "PlayerSub 01"
+79851 torpedo "PlayerSub 01" at "Fletcher-class 05"
+79853 torpedo "PlayerSub 01" release
+80300 select "PlayerSub 01"
+80301 torpedo "PlayerSub 01" at "Fletcher-class 01"
+80303 torpedo "PlayerSub 01" release
+80750 select "PlayerSub 01"
+80751 torpedo "PlayerSub 01" at "Fletcher-class 02"
+80753 torpedo "PlayerSub 01" release
+81200 select "PlayerSub 01"
+81201 torpedo "PlayerSub 01" at "Fletcher-class 03"
+81203 torpedo "PlayerSub 01" release
+81650 select "PlayerSub 01"
+81651 torpedo "PlayerSub 01" at "Fletcher-class 04"
+81653 torpedo "PlayerSub 01" release
+82100 select "PlayerSub 01"
+82101 torpedo "PlayerSub 01" at "Fletcher-class 05"
+82103 torpedo "PlayerSub 01" release
+82550 select "PlayerSub 01"
+82551 torpedo "PlayerSub 01" at "Fletcher-class 01"
+82553 torpedo "PlayerSub 01" release
+83000 select "PlayerSub 01"
+83001 torpedo "PlayerSub 01" at "Fletcher-class 02"
+83003 torpedo "PlayerSub 01" release
+83450 select "PlayerSub 01"
+83451 torpedo "PlayerSub 01" at "Fletcher-class 03"
+83453 torpedo "PlayerSub 01" release
+83900 select "PlayerSub 01"
+83901 torpedo "PlayerSub 01" at "Fletcher-class 04"
+83903 torpedo "PlayerSub 01" release
+84350 select "PlayerSub 01"
+84351 torpedo "PlayerSub 01" at "Fletcher-class 05"
+84353 torpedo "PlayerSub 01" release
+84800 select "PlayerSub 01"
+84801 torpedo "PlayerSub 01" at "Fletcher-class 01"
+84803 torpedo "PlayerSub 01" release
+85250 select "PlayerSub 01"
+85251 torpedo "PlayerSub 01" at "Fletcher-class 02"
+85253 torpedo "PlayerSub 01" release
+85700 select "PlayerSub 01"
+85701 torpedo "PlayerSub 01" at "Fletcher-class 03"
+85703 torpedo "PlayerSub 01" release
+86150 select "PlayerSub 01"
+86151 torpedo "PlayerSub 01" at "Fletcher-class 04"
+86153 torpedo "PlayerSub 01" release
+86600 select "PlayerSub 01"
+86601 torpedo "PlayerSub 01" at "Fletcher-class 05"
+86603 torpedo "PlayerSub 01" release
+87050 select "PlayerSub 01"
+87051 torpedo "PlayerSub 01" at "Fletcher-class 01"
+87053 torpedo "PlayerSub 01" release
+87500 select "PlayerSub 01"
+87501 torpedo "PlayerSub 01" at "Fletcher-class 02"
+87503 torpedo "PlayerSub 01" release
+87950 select "PlayerSub 01"
+87951 torpedo "PlayerSub 01" at "Fletcher-class 03"
+87953 torpedo "PlayerSub 01" release
+88400 select "PlayerSub 01"
+88401 torpedo "PlayerSub 01" at "Fletcher-class 04"
+88403 torpedo "PlayerSub 01" release
+88850 select "PlayerSub 01"
+88851 torpedo "PlayerSub 01" at "Fletcher-class 05"
+88853 torpedo "PlayerSub 01" release
+89300 select "PlayerSub 01"
+89301 torpedo "PlayerSub 01" at "Fletcher-class 01"
+89303 torpedo "PlayerSub 01" release
+89750 select "PlayerSub 01"
+89751 torpedo "PlayerSub 01" at "Fletcher-class 02"
+89753 torpedo "PlayerSub 01" release
+90200 select "PlayerSub 01"
+90201 torpedo "PlayerSub 01" at "Fletcher-class 03"
+90203 torpedo "PlayerSub 01" release
+90650 select "PlayerSub 01"
+90651 torpedo "PlayerSub 01" at "Fletcher-class 04"
+90653 torpedo "PlayerSub 01" release
+91100 select "PlayerSub 01"
+91101 torpedo "PlayerSub 01" at "Fletcher-class 05"
+91103 torpedo "PlayerSub 01" release
+91550 select "PlayerSub 01"
+91551 torpedo "PlayerSub 01" at "Fletcher-class 01"
+91553 torpedo "PlayerSub 01" release
+92000 select "PlayerSub 01"
+92001 torpedo "PlayerSub 01" at "Fletcher-class 02"
+92003 torpedo "PlayerSub 01" release
+92450 select "PlayerSub 01"
+92451 torpedo "PlayerSub 01" at "Fletcher-class 03"
+92453 torpedo "PlayerSub 01" release
+92900 select "PlayerSub 01"
+92901 torpedo "PlayerSub 01" at "Fletcher-class 04"
+92903 torpedo "PlayerSub 01" release
+93350 select "PlayerSub 01"
+93351 torpedo "PlayerSub 01" at "Fletcher-class 05"
+93353 torpedo "PlayerSub 01" release
+93800 select "PlayerSub 01"
+93801 torpedo "PlayerSub 01" at "Fletcher-class 01"
+93803 torpedo "PlayerSub 01" release
+94250 select "PlayerSub 01"
+94251 torpedo "PlayerSub 01" at "Fletcher-class 02"
+94253 torpedo "PlayerSub 01" release
+94700 select "PlayerSub 01"
+94701 torpedo "PlayerSub 01" at "Fletcher-class 03"
+94703 torpedo "PlayerSub 01" release
+95150 select "PlayerSub 01"
+95151 torpedo "PlayerSub 01" at "Fletcher-class 04"
+95153 torpedo "PlayerSub 01" release
+95600 select "PlayerSub 01"
+95601 torpedo "PlayerSub 01" at "Fletcher-class 05"
+95603 torpedo "PlayerSub 01" release
+96050 select "PlayerSub 01"
+96051 torpedo "PlayerSub 01" at "Fletcher-class 01"
+96053 torpedo "PlayerSub 01" release
+96500 select "PlayerSub 01"
+96501 torpedo "PlayerSub 01" at "Fletcher-class 02"
+96503 torpedo "PlayerSub 01" release
+96950 select "PlayerSub 01"
+96951 torpedo "PlayerSub 01" at "Fletcher-class 03"
+96953 torpedo "PlayerSub 01" release
+97400 select "PlayerSub 01"
+97401 torpedo "PlayerSub 01" at "Fletcher-class 04"
+97403 torpedo "PlayerSub 01" release
+97850 select "PlayerSub 01"
+97851 torpedo "PlayerSub 01" at "Fletcher-class 05"
+97853 torpedo "PlayerSub 01" release
+98300 select "PlayerSub 01"
+98301 torpedo "PlayerSub 01" at "Fletcher-class 01"
+98303 torpedo "PlayerSub 01" release
+98750 select "PlayerSub 01"
+98751 torpedo "PlayerSub 01" at "Fletcher-class 02"
+98753 torpedo "PlayerSub 01" release
+99200 select "PlayerSub 01"
+99201 torpedo "PlayerSub 01" at "Fletcher-class 03"
+99203 torpedo "PlayerSub 01" release
+99650 select "PlayerSub 01"
+99651 torpedo "PlayerSub 01" at "Fletcher-class 04"
+99653 torpedo "PlayerSub 01" release
+100100 select "PlayerSub 01"
+100101 torpedo "PlayerSub 01" at "Fletcher-class 05"
+100103 torpedo "PlayerSub 01" release
+100550 select "PlayerSub 01"
+100551 torpedo "PlayerSub 01" at "Fletcher-class 01"
+100553 torpedo "PlayerSub 01" release
+101000 select "PlayerSub 01"
+101001 torpedo "PlayerSub 01" at "Fletcher-class 02"
+101003 torpedo "PlayerSub 01" release
+101450 select "PlayerSub 01"
+101451 torpedo "PlayerSub 01" at "Fletcher-class 03"
+101453 torpedo "PlayerSub 01" release
+101900 select "PlayerSub 01"
+101901 torpedo "PlayerSub 01" at "Fletcher-class 04"
+101903 torpedo "PlayerSub 01" release
+102350 select "PlayerSub 01"
+102351 torpedo "PlayerSub 01" at "Fletcher-class 05"
+102353 torpedo "PlayerSub 01" release
+102800 select "PlayerSub 01"
+102801 torpedo "PlayerSub 01" at "Fletcher-class 01"
+102803 torpedo "PlayerSub 01" release
+103250 select "PlayerSub 01"
+103251 torpedo "PlayerSub 01" at "Fletcher-class 02"
+103253 torpedo "PlayerSub 01" release
+103700 select "PlayerSub 01"
+103701 torpedo "PlayerSub 01" at "Fletcher-class 03"
+103703 torpedo "PlayerSub 01" release
+104150 select "PlayerSub 01"
+104151 torpedo "PlayerSub 01" at "Fletcher-class 04"
+104153 torpedo "PlayerSub 01" release
+104600 select "PlayerSub 01"
+104601 torpedo "PlayerSub 01" at "Fletcher-class 05"
+104603 torpedo "PlayerSub 01" release
+105050 select "PlayerSub 01"
+105051 torpedo "PlayerSub 01" at "Fletcher-class 01"
+105053 torpedo "PlayerSub 01" release
+105500 select "PlayerSub 01"
+105501 torpedo "PlayerSub 01" at "Fletcher-class 02"
+105503 torpedo "PlayerSub 01" release
+105950 select "PlayerSub 01"
+105951 torpedo "PlayerSub 01" at "Fletcher-class 03"
+105953 torpedo "PlayerSub 01" release
+106400 select "PlayerSub 01"
+106401 torpedo "PlayerSub 01" at "Fletcher-class 04"
+106403 torpedo "PlayerSub 01" release
+106850 select "PlayerSub 01"
+106851 torpedo "PlayerSub 01" at "Fletcher-class 05"
+106853 torpedo "PlayerSub 01" release
+107300 select "PlayerSub 01"
+107301 torpedo "PlayerSub 01" at "Fletcher-class 01"
+107303 torpedo "PlayerSub 01" release
+107750 select "PlayerSub 01"
+107751 torpedo "PlayerSub 01" at "Fletcher-class 02"
+107753 torpedo "PlayerSub 01" release
+108200 select "PlayerSub 01"
+108201 torpedo "PlayerSub 01" at "Fletcher-class 03"
+108203 torpedo "PlayerSub 01" release
+108650 select "PlayerSub 01"
+108651 torpedo "PlayerSub 01" at "Fletcher-class 04"
+108653 torpedo "PlayerSub 01" release
+109100 select "PlayerSub 01"
+109101 torpedo "PlayerSub 01" at "Fletcher-class 05"
+109103 torpedo "PlayerSub 01" release
+109550 select "PlayerSub 01"
+109551 torpedo "PlayerSub 01" at "Fletcher-class 01"
+109553 torpedo "PlayerSub 01" release
+110000 select "PlayerSub 01"
+110001 torpedo "PlayerSub 01" at "Fletcher-class 02"
+110003 torpedo "PlayerSub 01" release
