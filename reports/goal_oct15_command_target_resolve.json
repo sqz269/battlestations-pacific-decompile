@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_command_target_resolve",
+  "status": "whole_ordinary_Source_independently_reviewed_registered_build_pending",
+  "source_ready": false,
+  "whole_control_flow_source_available": true,
+  "source": "src/native_command_target_resolve.cpp",
+  "header": "include/bsp/native_command_target_resolve.hpp",
+  "documentation": "docs/GOAL_OCT15_COMMAND_TARGET_RESOLVE.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00521ea0",
+      "end_exclusive": "00521eee",
+      "native_bytes": 78,
+      "instructions": 23,
+      "hex": "803900750333c0c383790400753c0fb741020fb7c03b05109af8007d172b050c9af8008b15549af800c1e0048b44100c894104c32b05609af8008b15a89af800c1e0048b44100c8941048b4104c3",
+      "sha256": "a04bc6c38320dad595e7756b5fdc58ab935cfa0638b560c88d716fff6e8c24a9",
+      "live_equals_installed_PE": true,
+      "name": "resolve_native_command_target_00521ea0",
+      "native_name_retained": "BSP_CommandTarget_ResolveObject",
+      "original_abi": "ECX actualdescriptor;unusedEDX;plainRET;EAXrawDWORD",
+      "coverage": "whole ordinary actual-storage/current-global-cell Source"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0077d6bd",
+      "native": "00521ea0",
+      "function": "0077d600",
+      "kind": "call"
+    },
+    {
+      "address": "0077d6ed",
+      "native": "00521ea0",
+      "function": "0077d600",
+      "kind": "call"
+    },
+    {
+      "address": "0077d782",
+      "native": "00521ea0",
+      "function": "0077d600",
+      "kind": "call"
+    }
+  ],
+  "own_body_direct_calls": 0,
+  "own_body_computed_calls": 0,
+  "source_hashes": {
+    "src/native_command_target_resolve.cpp": "392afbc85cc68c09aab2dc7440ecd35378ae20979edeb459d12f3290cab07db3",
+    "include/bsp/native_command_target_resolve.hpp": "2f8df78edd6959286b050e45ac6522ec765afecb3a01631408f63b1dfe306363"
+  },
+  "actual_global_cells": [
+    "00f89a10",
+    "00f89a0c",
+    "00f89a54",
+    "00f89a60",
+    "00f89aa8"
+  ],
+  "native_schedule": [
+    "kindBYTE0 returns0 beforecache/id/globals",
+    "cacheDWORDtest then distinctcurrentcacheDWORDreturn ifnonzero",
+    "captureWORDid,signedcomparecurrentDWORDsplit;selectedcurrentbase subtraction beforecurrenttable read;alladdresses/index modulo32",
+    "lowbranchrawslotload/cachewrite/returncapturedslot",
+    "highbranchrawslotload/cachewrite/freshcacheDWORDreturn"
+  ],
+  "corrections": [
+    "Old Source is semantic index-only projection;actual kind/cache reads and branch-dependent result schedule were not implemented",
+    "Old comment end00521EEA precedes final3B MOV+RET;wholefunction is78B through00521EED"
+  ],
+  "qualification": [
+    "Bindingmetadata stable/disjoint;actualpayload aliases admitted with validreachedreads/writes",
+    "Actual current raw global cells/table storage must exist;no syntheticglobal/table/callback/guard/SDKhelper",
+    "Ordinary new Source interface;Original register/private/fault/binary ABI and game unproved"
+  ],
+  "abi_compatible": false,
+  "new_entry_executed": false,
+  "game_validated": false,
+  "new_tests": 0,
+  "independent_review": {
+    "reviewer": "allocation worker",
+    "result": "passed whole78B23ops and completeSource/header/doc;all raw read/write/width/wrap/branch-return schedules match",
+    "source_hashes": {
+      "src/native_command_target_resolve.cpp": "392afbc85cc68c09aab2dc7440ecd35378ae20979edeb459d12f3290cab07db3",
+      "include/bsp/native_command_target_resolve.hpp": "2f8df78edd6959286b050e45ac6522ec765afecb3a01631408f63b1dfe306363"
+    },
+    "no_Source_change_requested": true
+  },
+  "annotation": {
+    "status": "existing hypothesis name and full old comment retained;locked append saved and export refreshed",
+    "prior_values": "local/ghidra-annotations-20261016T013022Z.json"
+  }
+}
