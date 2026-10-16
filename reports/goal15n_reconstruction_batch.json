@@ -1,0 +1,645 @@
+{
+  "batch": "GOAL15N",
+  "status": "three_tagged_range_packets_29whole_cpp_functions_registered_build_and_full_executable_coff_identity_verified",
+  "validated_source_commit": "6cdddeda9749a8eeb9dcde1c06ef22363ea7b7fa",
+  "worker_commits": [
+    "8898e52544bc0ff0f5f8a5a63486b5a534f4c5a6",
+    "b7f850253d537f3001ae77cdc9acd491f986516e",
+    "14e2d9f001c37ffed4c4af380b5812e9649d68f5"
+  ],
+  "coverage": {
+    "whole_functions": 29,
+    "native_bytes_excluding_alignment": 131,
+    "instructions": 58,
+    "raw_dword_readers": 16,
+    "byte_readers": 1,
+    "unsigned_address_computations": 7,
+    "identities": 2,
+    "constants": 3,
+    "calls": 0,
+    "globals": 0,
+    "branches": 0,
+    "x87": 0,
+    "relocations": 0,
+    "masked_bytes": 0
+  },
+  "registered_full_coff_evidence": {
+    "status": "PASS",
+    "whole_functions": 29,
+    "whole_native_and_actual_comdat_bytes": 131,
+    "normalized_operands": 0,
+    "relocations": 0,
+    "proofs": [
+      {
+        "module": "native_tagged_leaf_b3_01",
+        "object": "build\\win32\\bsp_core.dir\\Release\\native_tagged_leaf_b3_01.obj",
+        "object_sha256": "4e6693dfacad190c83bfbb7b9269b138e2799e2ef8e973ef3799b1eaca292bab",
+        "functions": 8,
+        "bytes": 31,
+        "undefined_externals": [],
+        "routines": [
+          {
+            "address": "00b34300",
+            "symbol": "?native_tagged_b3_read_dword_00b34300@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_00b34300",
+            "whole_comdat_bytes": 3,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b01c3",
+            "sha256": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa"
+          },
+          {
+            "address": "00b34310",
+            "symbol": "?native_tagged_b3_read_dword_04_00b34310@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_04_00b34310",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4104c3",
+            "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f"
+          },
+          {
+            "address": "00b34320",
+            "symbol": "?native_tagged_b3_read_byte_0c_00b34320@bsp@@YIEPBX@Z",
+            "source": "native_tagged_b3_read_byte_0c_00b34320",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8a410cc3",
+            "sha256": "f82485647da88f1345396046db25899cbf8e6fe84b931a28e4691b98a1ca10b1"
+          },
+          {
+            "address": "00b34330",
+            "symbol": "?native_tagged_b3_read_dword_10_00b34330@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_10_00b34330",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4110c3",
+            "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62"
+          },
+          {
+            "address": "00b34340",
+            "symbol": "?native_tagged_b3_address_04_00b34340@bsp@@YIII@Z",
+            "source": "native_tagged_b3_address_04_00b34340",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8d4104c3",
+            "sha256": "4181cb1fec090d6487f323c8ce84a17ff37429613d7843b4f5f40f5eae266b77"
+          },
+          {
+            "address": "00b34350",
+            "symbol": "?native_tagged_b3_read_dword_20_00b34350@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_20_00b34350",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4120c3",
+            "sha256": "07ad3a50b1c271e07fb57fb47d2f0e77f3342d41bfa410990cb1320a45035fb2"
+          },
+          {
+            "address": "00b34360",
+            "symbol": "?native_tagged_b3_read_dword_14_00b34360@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_14_00b34360",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4114c3",
+            "sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96"
+          },
+          {
+            "address": "00b34370",
+            "symbol": "?native_tagged_b3_address_18_00b34370@bsp@@YIII@Z",
+            "source": "native_tagged_b3_address_18_00b34370",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8d4118c3",
+            "sha256": "8b91dec277a1e45d013282c013b573b4b19b5d0d9edca7cc20469f39bd16cb54"
+          }
+        ]
+      },
+      {
+        "module": "native_tagged_leaf_b3_02",
+        "object": "build\\win32\\bsp_core.dir\\Release\\native_tagged_leaf_b3_02.obj",
+        "object_sha256": "d632ed14c87a102ebb1160d18be8b1a0e55083cfee1ecb6f3bc7203f2b5b3c97",
+        "functions": 9,
+        "bytes": 44,
+        "undefined_externals": [],
+        "routines": [
+          {
+            "address": "00b343d0",
+            "symbol": "?native_tagged_b3_read_dword_84_00b343d0@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_84_00b343d0",
+            "whole_comdat_bytes": 7,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b8184000000c3",
+            "sha256": "383eb2f05c2c47ea282d677f4288504de6e0bda1e96028fea9c9ee5b539ee25f"
+          },
+          {
+            "address": "00b34450",
+            "symbol": "?native_tagged_b3_read_dword_04_00b34450@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_04_00b34450",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4104c3",
+            "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f"
+          },
+          {
+            "address": "00b34460",
+            "symbol": "?native_tagged_b3_read_dword_04_00b34460@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_04_00b34460",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4104c3",
+            "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f"
+          },
+          {
+            "address": "00b34470",
+            "symbol": "?native_tagged_b3_read_dword_04_00b34470@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_04_00b34470",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4104c3",
+            "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f"
+          },
+          {
+            "address": "00b34480",
+            "symbol": "?native_tagged_b3_read_dword_04_00b34480@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_04_00b34480",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4104c3",
+            "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f"
+          },
+          {
+            "address": "00b344a0",
+            "symbol": "?native_tagged_b3_read_dword_00b344a0@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_00b344a0",
+            "whole_comdat_bytes": 3,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b01c3",
+            "sha256": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa"
+          },
+          {
+            "address": "00b34500",
+            "symbol": "?native_tagged_b3_return_0a_00b34500@bsp@@YAIXZ",
+            "source": "native_tagged_b3_return_0a_00b34500",
+            "whole_comdat_bytes": 6,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "b80a000000c3",
+            "sha256": "07297dca94be1b975a5dc696b5976f205b84057995fa3d3fbb157101b1ae8098"
+          },
+          {
+            "address": "00b34510",
+            "symbol": "?native_tagged_b3_return_06_00b34510@bsp@@YAIXZ",
+            "source": "native_tagged_b3_return_06_00b34510",
+            "whole_comdat_bytes": 6,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "b806000000c3",
+            "sha256": "23334c82ef0133c65cc0394d318a2637276496cb9b99f6dd580d0ee4f6c9e7b5"
+          },
+          {
+            "address": "00b34520",
+            "symbol": "?native_tagged_b3_return_10_00b34520@bsp@@YAIXZ",
+            "source": "native_tagged_b3_return_10_00b34520",
+            "whole_comdat_bytes": 6,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "b810000000c3",
+            "sha256": "75f533bd3e59de2588c8f1901e45a3eea6688bc16b7ecaf3dcaf4d49cf4f3d49"
+          }
+        ]
+      },
+      {
+        "module": "native_tagged_leaf_b4_01",
+        "object": "build\\win32\\bsp_core.dir\\Release\\native_tagged_leaf_b4_01.obj",
+        "object_sha256": "b6d32835387e4e534ba2390dd8f4c8dde60ef43bc8b28f36eb3f0dc42489153b",
+        "functions": 12,
+        "bytes": 56,
+        "undefined_externals": [],
+        "routines": [
+          {
+            "address": "00b40000",
+            "symbol": "@bsp_tagged_b4_00b40000@4",
+            "source": "@bsp_tagged_b4_00b40000@4",
+            "whole_comdat_bytes": 7,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8d81b4010000c3",
+            "sha256": "98034b3685e0418ee3b69ca8d4073b4de1295d329ccc859fe818e15a859be9b0"
+          },
+          {
+            "address": "00b40010",
+            "symbol": "@bsp_tagged_b4_00b40010@4",
+            "source": "@bsp_tagged_b4_00b40010@4",
+            "whole_comdat_bytes": 7,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8d8184010000c3",
+            "sha256": "77b28446d2d2676f3b02204956048c4769346d34a7ea0537be36ddd4d9eb9c08"
+          },
+          {
+            "address": "00b40020",
+            "symbol": "@bsp_tagged_b4_00b40020@4",
+            "source": "@bsp_tagged_b4_00b40020@4",
+            "whole_comdat_bytes": 7,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8d8194010000c3",
+            "sha256": "e5f6e988a97a742ffccfe09eb7f8a5b8234bef417d6542e59f63f7ecd124cf2b"
+          },
+          {
+            "address": "00b40030",
+            "symbol": "@bsp_tagged_b4_00b40030@4",
+            "source": "@bsp_tagged_b4_00b40030@4",
+            "whole_comdat_bytes": 7,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8d81ec010000c3",
+            "sha256": "07026f8edb72fc765d6a7c893cad892cc53ad79c6c631ece12c8b461064a6709"
+          },
+          {
+            "address": "00b40070",
+            "symbol": "@bsp_tagged_b4_00b40070@4",
+            "source": "@bsp_tagged_b4_00b40070@4",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8d4108c3",
+            "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7"
+          },
+          {
+            "address": "00b40080",
+            "symbol": "@bsp_tagged_b4_00b40080@4",
+            "source": "@bsp_tagged_b4_00b40080@4",
+            "whole_comdat_bytes": 3,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b01c3",
+            "sha256": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa"
+          },
+          {
+            "address": "00b400a0",
+            "symbol": "@bsp_tagged_b4_00b400a0@4",
+            "source": "@bsp_tagged_b4_00b400a0@4",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4104c3",
+            "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f"
+          },
+          {
+            "address": "00b400d0",
+            "symbol": "@bsp_tagged_b4_00b400d0@4",
+            "source": "@bsp_tagged_b4_00b400d0@4",
+            "whole_comdat_bytes": 3,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8bc1c3",
+            "sha256": "58367ffa2a0179375018fa0f5c26da24391e42ebe0ed8fdda35a21fc7bdc396f"
+          },
+          {
+            "address": "00b400e0",
+            "symbol": "@bsp_tagged_b4_00b400e0@4",
+            "source": "@bsp_tagged_b4_00b400e0@4",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4104c3",
+            "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f"
+          },
+          {
+            "address": "00b40100",
+            "symbol": "@bsp_tagged_b4_00b40100@4",
+            "source": "@bsp_tagged_b4_00b40100@4",
+            "whole_comdat_bytes": 3,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b01c3",
+            "sha256": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa"
+          },
+          {
+            "address": "00b40130",
+            "symbol": "@bsp_tagged_b4_00b40130@4",
+            "source": "@bsp_tagged_b4_00b40130@4",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4110c3",
+            "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62"
+          },
+          {
+            "address": "00b40140",
+            "symbol": "@bsp_tagged_b4_00b40140@4",
+            "source": "@bsp_tagged_b4_00b40140@4",
+            "whole_comdat_bytes": 3,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8bc1c3",
+            "sha256": "58367ffa2a0179375018fa0f5c26da24391e42ebe0ed8fdda35a21fc7bdc396f"
+          }
+        ]
+      }
+    ]
+  },
+  "fresh_live_captures": {
+    "00b34300": {
+      "path": "local/goal15n_live_00b34300.txt",
+      "sha256": "65c0e52223b94ff86d5a86d22834479ce375d14f74073411eb708507e4f3bba7",
+      "captured_region_bytes": 116
+    },
+    "00b343d0": {
+      "path": "local/goal15n_live_00b343d0.txt",
+      "sha256": "de0ed1a0e3e3fd63ade6f82cd55f38039dc0a3b58a2ae76c15e10bc671cecd35",
+      "captured_region_bytes": 342
+    },
+    "00b40000": {
+      "path": "local/goal15n_live_00b40000.txt",
+      "sha256": "51a76e616a92e68841b1e132afd9bc123eaa289d6ab4309bdb279a5da825c9a4",
+      "captured_region_bytes": 323
+    }
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "all_passed": true,
+    "log": "local/goal15n_registered_build.log"
+  },
+  "runtime_fixture_added": false,
+  "runtime_fixture_reason": "Entire simple public executable sections exactly equal Native bodies; no new tests or runtime fixtures for these routine reads/arithmetic/constants",
+  "call_checks": {
+    "direct_call_sites": 0,
+    "reported_call_claims": 0,
+    "failed": 0,
+    "unchecked": 0,
+    "warnings": 0,
+    "log": "local/goal15n_call_checks.log"
+  },
+  "independent_review": {
+    "b3": "b3_leaf_review PASS pinned first2packets17functions75B, full executable section extents/offset0/exact fresh Native+PE+COFF/instruction operands/hashes; Source/discovery coverage inspected; no test/build/probe/verifier reruns",
+    "b4": "same reviewer PASS pinned12functions56B with full extents/exact Native+PE+COFF/hashes, no sourcecontractdefect; callerendpoint function:null inconclusive",
+    "artifacts": [
+      "local/goal15n_b3_review/review_summary.json",
+      "local/goal15n_b4_review/review_summary.json"
+    ],
+    "finding": "BothB3worker scripts originally sliced NativeSizeprefixes; actualstrictartifacts and independent+primary registeredproof verify complete extents/allnonemptyexecutable sections"
+  },
+  "discovery_and_timing": {
+    "b3_first": {
+      "discovery": {
+        "screening_candidates": 79,
+        "actual_complete_bodies_inspected": 11,
+        "verified_missing_qualified_complete_bodies": 8,
+        "deferred_other_families": [
+          "00b33e50",
+          "00b343b0",
+          "00b3ff30"
+        ],
+        "not_inspected": 68,
+        "candidate_index_alone_proves_missing": false,
+        "existing_complete_typed_or_raw_source_found": 0,
+        "existing_library_names_changed": 0
+      },
+      "effort": {
+        "qualification_and_implementation_start_utc": "2026-10-16T01:22:41.810640+00:00",
+        "measured_finish_utc": "2026-10-16T01:32:14.096079+00:00",
+        "elapsed_seconds": 572.285,
+        "measurement_start": "worktree creation, before first body qualification",
+        "pre_worktree_brief_and_memory_orientation": "short, not timed; excluded explicitly",
+        "qualification_and_implementation_to_initial_ready_seconds": 572.285,
+        "all_qualification_source_emission_check_seconds": 422.174,
+        "handoff_ready_utc": "2026-10-16T01:46:15.194156+00:00",
+        "wall_seconds_to_handoff_ready_including_parallel_baseline_build": 1413.384
+      }
+    },
+    "b3_second": {
+      "discovery": {
+        "remaining_uninspected_at_start": 68,
+        "actual_complete_bodies_inspected_this_packet": 16,
+        "complete_source_coverage_checks": 13,
+        "verified_missing_after_coverage_checks": 13,
+        "completed_source_bodies": 9,
+        "deferred_this_packet": 7,
+        "not_inspected_after_this_packet": 52,
+        "deferred": {
+          "00b343e0": "ECX plus stack input, RET4; separate Source boundary review",
+          "00b343f0": "actual absolute global00e13078 binding outside closed-leaf packet",
+          "00b34490": "actual absolute global0108fe94 binding outside closed-leaf packet",
+          "00b344c0": "11-byte zeroer; straightforward genuine C++ emits23/17 bytes, deferred",
+          "00b344d0": "11-byte zeroer, same family, deferred",
+          "00b344e0": "11-byte zeroer, same family, deferred",
+          "00b344f0": "11-byte zeroer, same family, deferred"
+        },
+        "cumulative_inventory": {
+          "initial_candidates": 79,
+          "actual_bodies_inspected": 27,
+          "completed_source_bodies": 17,
+          "deferred_bodies": 10,
+          "uninspected": 52
+        },
+        "candidate_index_alone_proves_missing": false,
+        "existing_library_names_changed": 0
+      },
+      "effort": {
+        "measurement_start_utc": "2026-10-16T01:48:27+00:00",
+        "measurement_start": "Main merge commit; all subsequent qualification/implementation and handoff preparation included",
+        "measured_finish_utc": "2026-10-16T01:57:53.448819+00:00",
+        "seconds_from_main_merge_to_ready": 566.449,
+        "seconds_from_main_merge_through_actual_source_emission_proof": 342.472,
+        "preceding_brief_and_merge_command_wall_seconds": 8.306,
+        "total_wall_seconds_estimate_including_preceding_commands": 574.755,
+        "start_estimate_limit": "merge commit time has one-second resolution; preceding command wall durations are measured tool durations",
+        "previous_cold_build_seconds": 1089.563,
+        "warm_build_seconds": 22.544,
+        "cold_to_warm_build_duration_ratio": 48.331,
+        "comparison_limit": "different packet and Main baseline; reused cache, no isolated causal benchmark"
+      }
+    },
+    "b4_first": {
+      "timing": {
+        "worktree_creation_utc": "2026-10-16T01:40:49.924353+00:00",
+        "first_source_creation_utc": "2026-10-16T01:44:16.198843+00:00",
+        "initial_orientation_and_qualification_to_first_source_seconds": 206.2744903564453,
+        "first_source_to_passing_whole_body_proof_seconds": 117.05027341842651,
+        "total_working_lower_bound_seconds": 1278.937941789627,
+        "lower_bound_note": "First available start is worktree creation; excludes the earlier initial brief/setup. First interval includes orientation and initial 20-body qualification; implementation interval includes remaining live xref/byte proof. Intervals overlap the separately measured baseline build.",
+        "strict_compile_seconds": 1.9542021751403809,
+        "proof_rerun_seconds": 2.5955586433410645,
+        "proof_rerun_note": "Rerun reused retained successful live queries after correcting hexdump parsing; this short value is not total implementation time.",
+        "baseline_receipt_total_working_lower_bound_seconds": 1278.937941789627,
+        "report_finalized_utc": "2026-10-16T02:02:08.862295+00:00",
+        "full_handoff_scope": "Total working lower bound includes orientation, qualification, implementation, proof, documentation, ledger/index work, waiting, read-only next-packet discovery and this baseline build receipt. Commit/lease-release and the earlier pre-worktree brief are additional."
+      },
+      "scope": {
+        "band": "00b40000..00b4ffff",
+        "screening_candidates": 81,
+        "bodies_inspected": 20,
+        "selected_whole_routines": 12,
+        "deferred_inspected": 8,
+        "unexamined": 61,
+        "missing_source_verified_for_selected": true,
+        "new_tests": 0,
+        "ghidra_mutations": 0,
+        "cmake_registered": false,
+        "baseline_build_covers_module": false,
+        "baseline_function_ledger_shard_sha256": "ff0f46a7dde7a10eb4b0ae775f8c23c4cbf6800f685fe1ce60b3cbccfac9900a",
+        "prior_source_search": {
+          "paths": [
+            "src/",
+            "include/",
+            "third_party/"
+          ],
+          "method": "case-insensitive exact hexadecimal address boundary regex; optional 0x / leading zero; no selected-address matches before edits",
+          "neighboring_coverage_review": [
+            "src/render_fx_cc13.cpp",
+            "docs/CC13_RENDER_1.md"
+          ],
+          "selected_lookup_function_records_before": 0,
+          "selected_lookup_fragment_records_before": 0
+        },
+        "uncertainty": "Descriptions are hypotheses; no recovered class or field semantics. No known xrefs does not prove unused. Live caller endpoint returned function:null and is inconclusive. No game runtime/caller integration or binary-replacement installation.",
+        "dispositions": [
+          {
+            "address": "00b40040",
+            "disposition": "deferred_x87",
+            "evidence": "full pseudocode float load/return; no arithmetic/ABI recovery attempted"
+          },
+          {
+            "address": "00b400f0",
+            "disposition": "deferred_absolute_global",
+            "evidence": "full pseudocode references DAT_0108fe90; dependency closure not established"
+          },
+          {
+            "address": "00b40120",
+            "disposition": "deferred_packet_cap",
+            "evidence": "full pseudocode screened only; missing source not established"
+          },
+          {
+            "address": "00b40150",
+            "disposition": "deferred_packet_cap",
+            "evidence": "full pseudocode screened only; missing source not established"
+          },
+          {
+            "address": "00b40160",
+            "disposition": "deferred_packet_cap",
+            "evidence": "full pseudocode screened only; missing source not established"
+          },
+          {
+            "address": "00b40170",
+            "disposition": "deferred_packet_cap",
+            "evidence": "full pseudocode screened only; missing source not established"
+          },
+          {
+            "address": "00b40180",
+            "disposition": "deferred_packet_cap",
+            "evidence": "full pseudocode screened only; missing source not established"
+          },
+          {
+            "address": "00b40190",
+            "disposition": "deferred_packet_cap",
+            "evidence": "full pseudocode screened only; missing source not established"
+          }
+        ]
+      }
+    },
+    "interpretation": "Historical worker measurements, not controlled benchmarks; different Main/packet inputs and cold/warm caches. Primary integration/queue time remains separate; workerbaseline builds excluded newSource"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved_under_write_locks": true,
+    "physical_prototypes": 29,
+    "names_comments_oldvalues_preserved": true,
+    "exports": {
+      "status": "PASS",
+      "addresses": [
+        "00b34300",
+        "00b34310",
+        "00b34320",
+        "00b34330",
+        "00b34340",
+        "00b34350",
+        "00b34360",
+        "00b34370",
+        "00b343d0",
+        "00b34450",
+        "00b34460",
+        "00b34470",
+        "00b34480",
+        "00b344a0",
+        "00b34500",
+        "00b34510",
+        "00b34520",
+        "00b40000",
+        "00b40010",
+        "00b40020",
+        "00b40030",
+        "00b40070",
+        "00b40080",
+        "00b400a0",
+        "00b400d0",
+        "00b400e0",
+        "00b40100",
+        "00b40130",
+        "00b40140"
+      ],
+      "count": 29
+    },
+    "snapshot_index": "forced saved snapshot and index refreshed after29 exports",
+    "type_scope": "Physical ECX-only one-word spellings or no-inputconstant cdecl; no recovered Original C++class/convention; uint32rawbits/ALwidth retained"
+  },
+  "source_sha256": {
+    "src\\native_tagged_leaf_b3_01.cpp": "88bc45c85f076ab772b5192240e7475fffb9d5e913e19c39c2eaa79a99813572",
+    "include\\bsp\\native_tagged_leaf_b3_01.hpp": "6ee1692fe2ff1a0e3ee89321ab4e6a11dc31a3635d800b9be646d85e3605c6f9",
+    "src\\native_tagged_leaf_b3_02.cpp": "e34106faa27235f5447d34812f3bb036b0940e5b060f36337282b14213fb3298",
+    "include\\bsp\\native_tagged_leaf_b3_02.hpp": "c5d81dda630a2adca48c8e3acc6a7688d70e5cc8dcef36e7d361bbf7a3f113b9",
+    "src\\native_tagged_leaf_b4_01.cpp": "52b1b87b122f29d37ab3ca934732491efdf5be5e4e64029776316f5e222d1c2d",
+    "include\\bsp\\native_tagged_leaf_b4_01.hpp": "55f5cbbc28d89530ec3c9011d8ce3a3697bcde0d13266777a3a822f98abbb38f"
+  },
+  "artifact_sha256": {
+    "local/goal15n_registered_proof.json": "bcca6721e83cd5202d724e8c771b39f5ecae8dfa0f94ef25a97437b5a00dc4a8",
+    "local/goal15n_registered_build.log": "e8d3c0619d579accb816fc4ba62eea1ec97460366a770bb09412de39c9034d6d",
+    "local/goal15n_exports.json": "80a797abbc16e70b82e43faeb0a3314a6928372da0c231e8e2952e36163d8cac",
+    "local/goal15n_exports.log": "976b80e24d5ba5eaa1be4dbf2385baa4737cd26d0a341a15a071df8a8af1c929",
+    "local/goal15n_call_checks.log": "d2faf231c084bd98db30e059e17a09b4bb88d1d62b7687649befa489c943504e",
+    "build/win32/Release/bsp_core.lib": "8c71ea4f28d5ad8fc96369dd8a5a035f2401131e5226d8a205628cef0920c37f",
+    "local/goal15h_annotations_00b34300.json": "0491a40891bd47bc09a03fcd82c65f3a39cd67121e3345e6a028fe7df7f269b9",
+    "local/goal15h_annotations_00b40000.json": "5a1f09f5058187c7ffa3a532f5610dea887e4e5991066b581ad4fdb5f1a3720c",
+    "local/ghidra-annotations-20261016T020127Z.json": "5154417d31d45d6ad2865cf3b809cb6d65707f4d183fbd1cfe24f83dfaeeb304",
+    "local/ghidra-annotations-20261016T021236Z.json": "2ddba99ddde27ab79d3534d5a8ebb56529683c8582aeab9359f12acab9024e9b",
+    "local/goal15n_b4_name_updates.log": "9cff2db71b2bc26193f56168d8aa162095903cd2c8119ee972f26fad929a2768",
+    "local/goal15n_b4_prototypes.json": "7f8afdc972cb2e6a819f35404472516bd90975d90c7837357ee1c9f897e445fc",
+    "local/goal15n_verify_registered.py": "6f6674812c501cd97ee4938dc36d6265d37ae4f157e6a7ad9663aaad10021f1d",
+    "local/goal15n_b4_names.py": "6c169c3a5abdbc46d75e32762fcd04a01ad002b7a6ece9af4f4ef6bc3c19bd06",
+    "local/goal15n_receipt.py": "ef04011c35e38554161b902786739ba8192876b0ccc19d480768dc691fd9fdab",
+    "reports/goal15m_tagged_leaf_b3_01.json": "706311ef2624367d4977f607dc4908f159c61a16535f94311fd25d83cc50d8fe",
+    "reports/goal15n_tagged_leaf_b3_02.json": "744b34993f870b2643261172e2af96859778560e20b30bd7f81010fe1ad5ad72",
+    "reports/goal15m_tagged_leaf_b4_01.json": "4747511d3c7dedc1199812cd83870347f999cf59bf00baf9003a94147c607ce4",
+    "local/goal15n_b3_review/review_summary.json": "a098c976b8c33b892f7cf9e1df475dc9dc60a3b86a0286549097de7ef3f09a08",
+    "local/goal15n_b4_review/review_summary.json": "fe600318c9c7c40152ffb1a3a4617995b960aaa49f284d84f1d284cbccbc2523"
+  },
+  "limits": [
+    "Readable backing required at actual load spans; no new guards or fake objects",
+    "No known xrefs or PEaddressliteral does not prove unused; B4callerfunction:null is inconclusive",
+    "No recovered owningclass/fieldmeaning/OriginalC++convention; names are observed-operation hypotheses",
+    "No linked-function address-identity/folding, installed replacement, dynamic caller/producer adoption, whole Native ABI or gameplay proof",
+    "Baseline worker tests do not establish newmodule inclusion; registered proof above is separate",
+    "48D2F0 custom formal annotation and whole traffic/layout/world/entity composition from prior batches remain open"
+  ],
+  "goal_status": "active; broad reconstruction and tagged sweep continue"
+}
