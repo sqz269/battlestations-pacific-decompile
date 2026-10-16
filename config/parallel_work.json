@@ -42506,7 +42506,7 @@
     {
       "id": "cc12_native_crt_memcmp_00c1ef55",
       "done": false,
-      "state": "whole_ordinary_readiness_primary_independent_accepted_corrected_Source_authorized_not_implemented",
+      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
       "source_ready": true,
       "function_addresses": [
         "00c1ef55"
@@ -42536,7 +42536,7 @@
         "sha256": "2512453ba5caa8930dacc29720403f71d384cc790e50537cb7e43b1f23636c57",
         "two_gap_bytes_not_owned": true
       },
-      "Main_gate": "pending_Source_author_peer_registration_build_actual_object_archive",
+      "Main_gate": "pending_normal_Main_build_and_independent_actual_variant_archive_review",
       "output_files": [
         "include/bsp/native_crt_memcmp.hpp",
         "src/native_crt_memcmp.cpp",
@@ -42546,7 +42546,11 @@
       "code_ranges": [
         "00c1ef55-00c20552",
         "00c20555-00c205d4"
-      ]
+      ],
+      "code_revision": "db612fba4193f7a76ea2dca23f27cb178afcd742",
+      "primary_review": "reports/cc12_native_crt_memcmp_primary_review.json",
+      "Main_build_gate": "pending",
+      "actual_compiler_archive_gate": "pending"
     },
     {
       "id": "cc12_native_crt_wcsncmp_00bfdcb7",

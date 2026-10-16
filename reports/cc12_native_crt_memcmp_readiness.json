@@ -1,11 +1,11 @@
 {
   "schema": "bsp.cc12.native_crt_memcmp.readiness.v1",
-  "status": "whole_ordinary_readiness_primary_independent_accepted_corrected_Source_authorized_not_implemented",
+  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
   "address": "00c1ef55",
   "Original_library_name": "_memcmp",
   "source_ready": true,
   "Source_authorized": true,
-  "Source_implemented": false,
+  "Source_implemented": true,
   "Source_credit": 0,
   "owned_ranges_half_open": [
     [
@@ -91,8 +91,11 @@
     "Approve private addressed scalar MOV16/MOV32 helpers with MSVC Win32 inline assembly over genuine possibly unaligned byte storage, plus explicit volatile unsigned BYTE reads. Fully initialize and zero-extend WORD16 results. Keep reads sequenced as separate operations and extract cached low BYTE from the actual prior DWORD value. No invented uint16/uint32 live-object/alignment/alias domain, SDK memcmp/memcpy wrapper, byte-only replacement, copied regions, new runtime validation/fallback/provider/global/TLS/errno/caller binding. Actual strict/Main object inspection must verify all load widths/orders/cache/branches and unexpected helper/vectorization absence.",
     "Worker owns only four Source files and its new local evidence family. Root owns CMake/registry/ledger/Ghidra/integration. One genuine strict compile with before input pins and full actual object review; no separate unregistered whole-worker baseline requested. No tests/probes/body execution. Source implementation, compiled artifact, Main archive and Original ABI/runtime/game proof remain separate gates."
   ],
-  "Main_gate": "pending_Source_author_peer_registration_build_actual_object_archive",
+  "Main_gate": "pending_normal_Main_build_and_independent_actual_variant_archive_review",
   "Original_ABI_compatible": false,
   "new_Source_body_executed": false,
-  "game_validated": false
+  "game_validated": false,
+  "Source_commit": "db612fba4193f7a76ea2dca23f27cb178afcd742",
+  "primary_review": "reports/cc12_native_crt_memcmp_primary_review.json",
+  "Main_registered": true
 }
