@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "packet": "cc12_native_crt_wcsncpy_readiness_oct16",
+  "status": "blocked_specialist_required",
+  "Source_ready": false,
+  "Source_authorized": false,
+  "Source_credit": 0,
+  "entry": "00BFAEEF",
+  "name": "_wcsncpy",
+  "coverage": "complete Original static body; no Source implementation",
+  "inclusive_end": "00BFAF2B",
+  "owned_bytes": 61,
+  "instruction_count": 31,
+  "body_sha256": "9789205272f4c057c2bc61d248b3465e80f51678077db71845ac3abb10ff9293",
+  "metadata_signature": "wchar_t * __cdecl _wcsncpy(wchar_t * _Dest, wchar_t * _Source, size_t _Count)",
+  "metadata_signature_is_not_raw_storage_or_ABI_proof": true,
+  "blocker": {
+    "kind": "incoming_DF_and_ES_padding_state",
+    "instructions": [
+      "00BFAF20 REP STOSD ES:EDI",
+      "00BFAF24 REP STOSW ES:EDI"
+    ],
+    "no_CLD_or_STD_in_body": true,
+    "decision": "Stop bounded readiness. No recovery, repair, narrower accepted contract, Source authorization, or whole-routine ordinary replacement is established here."
+  },
+  "arguments": {
+    "count": "DWORD count loaded once from original ESP+0C at entry, before either pointer home.",
+    "destination": "DWORD destination home original ESP+04 loaded once after PUSH ESI/PUSH EDI, copied to ESI before zero-count branch.",
+    "source": "DWORD source home original ESP+08 loaded once only on positive count at BFAEFF; zero count never reads source home.",
+    "return_value": "EAX receives captured ESI destination at BFAF28 on every normal return, independent of later pointer-home changes; borrowed actual pointer/null, no ownership transfer."
+  },
+  "count_zero": {
+    "destination_home_read": true,
+    "source_home_read": false,
+    "payload_reads": 0,
+    "payload_writes": 0,
+    "source_or_destination_storage_required": false,
+    "null_values": "Null destination and source values require no pointed storage; destination is returned. Physical native argument/return stack still exists."
+  },
+  "copy_phase": {
+    "read": "BFAF03 MOVZX EAX,WORD [EDX] through DS",
+    "write": "BFAF06 MOV WORD [EDI],AX through DS, before testing AX",
+    "progression": "Each copied WORD increments EDI twice and EDX twice before TEST AX. These INC instructions advance forward irrespective of incoming DF.",
+    "nonzero": "DEC ECX/JNZ after nonzero WORD. Exactly count nonzero WORDs exhaust count without an extra source read or padding.",
+    "zero": "Copied zero WORD takes JZ before count decrement. TEST/DEC at BFAF15/BFAF19 accounts for that already-copied WORD; remaining padding count r=count-c, with c copied WORDs including zero.",
+    "overlap": "Read current WORD before write current WORD, then advance. Genuine byte-level overlapping source/destination is not assumed disjoint: writes may change later reached source WORDs, including partial-byte overlap and the encountered zero position. No subsequent source reads after encountered zero."
+  },
+  "padding": {
+    "reached": "Only after a copied zero and positive remaining r=count-c. r=0 skips both REP instructions.",
+    "eax": "XOR EAX,EAX establishes DWORD zero.",
+    "counts": "SHR ECX,1 yields q=floor(r/2), CF=r&1; REP STOSD consumes q to ECX=0 without changing CF; ADC ECX,ECX then yields t=r&1; REP STOSW consumes t.",
+    "entry_positions": "Let P be the copy-phase EDI immediately after the copied zero. REP STOSD begins at offset P. With direction sign s=+1 for DF=0 or -1 for DF=1, its q stores have DWORD offsets P+s*4*j (j=0..q-1); REP STOSW begins at offset P+s*4*q and writes one WORD iff t=1. ES determines each padding destination interpretation; no DS/ES equality is established.",
+    "widths": "q DWORD stores followed by t WORD stores, not an established sequence of r WORD stores.",
+    "DF": "No CLD/STD. Incoming DF is not established or restored by this body; padding direction depends on it. Copy-phase MOV stores use DS, padding string stores ES.",
+    "scope": "Register-offset description of actual instructions only. No general physical alias/fault/segmentation contract or successful-storage proof is recovered."
+  },
+  "conditional_domain_notes": {
+    "not_accepted": "The following are handoff requirements, not a Source-ready or authorized subset.",
+    "storage": "Successful forward flat-ES projection would need actual live writable raw destination bytes for every reached WORD/DWORD store and actual readable raw source bytes for every reached WORD. Unaligned/interior storage and genuine input/output overlap must be assessed without inventing wchar_t object lifetime/alignment or ownership.",
+    "bounds": "All actual cursor increments and padding offsets must stay nonwrapping in their genuine allocation/one-past domain; no read at one-past. Positive count copies at most count WORDs and can finish without any source NUL. Do not assume a later NUL beyond the reached stop. No arbitrary INT_MAX count cap is justified here.",
+    "alias": "Own writes can change subsequent source reads. Any future stable-domain qualification must allow these ordered self-induced changes while excluding external mutation/concurrency/fault/MMIO/lifetime changes. Caller stack payload is distinct from native callee frame/home/saved-register/return protocol aliases, which are not recovered.",
+    "mechanism": "A future ordinary raw-storage API may need private addressed MOVZX16 read / MOV16 write primitives plus separately reviewed DWORD/WORD padding, conditional on specialist resolution of incoming DF/ES and the exact admitted state. No C++ implementation or compiler evidence exists here."
+  },
+  "caller_metadata": {
+    "indexed_callers": 1,
+    "label": "00770E50 BSP_WideString_Substring",
+    "callee_count": 0,
+    "caller_body_read": false,
+    "caller_or_application_promotion": false
+  },
+  "verification": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "installed_disk_equal_live": true,
+    "whole_typed_default_effective_flow": true,
+    "whole_body_read": true,
+    "whole_body_unread_ranges": [],
+    "listing_gap": false,
+    "control_flow_repair": false,
+    "autostart": "0",
+    "compiler_build_tests_probes_emulation_or_target_execution": false,
+    "Ghidra_mutation": false,
+    "checker": {
+      "receipt": "local/NativeCrtWcsncpyReadiness01/checker.receipt.json",
+      "scope": "Mechanical call-claim check only; not read/write, DF/ES, ABI or Source-readiness proof."
+    },
+    "checklist": "docs/WORKER_VERIFICATION_CHECKLIST.md"
+  },
+  "evidence": {
+    "folder": "local/NativeCrtWcsncpyReadiness01",
+    "body": "Original_body.bin",
+    "disk_pin": "Original_body_before.json",
+    "whole_listing": "whole_asm.stdout.bin",
+    "typed": "whole_typed_instructions.json",
+    "analysis": "whole_body_static_review.json",
+    "preservation": "preservation_before.json",
+    "inputs": "inputs_before.json",
+    "initial_preflight_failure": "a055f7; retained capture.py; correction capture_corrected_before.json"
+  },
+  "exclusions": [
+    "Source/C++/compiler/Main artifact credit",
+    "full Original physical ABI, incoming flags/segments contract",
+    "argument-home/private-frame alias protocols",
+    "fault/unwind/MMIO/concurrency equivalence",
+    "SDK wcsncpy/Unicode/locale identity",
+    "caller body/provider/game/startup/runtime proof"
+  ],
+  "next_gate": "Astra specialist bounded DF/ES/ordinary-state contract recovery for this exact 61-byte body. Root decides any future Source authorization; no automatic Source follows this report."
+}
