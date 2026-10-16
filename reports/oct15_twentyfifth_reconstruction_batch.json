@@ -1,0 +1,450 @@
+{
+  "batch": "oct15_twentyfifth_reconstruction_batch",
+  "status": "Source_integrated_Main_primary_both_owner_peers_Source_fixture_default_Win32_checked",
+  "components": [
+    {
+      "pin": "f3f4c75392fb7a0a1b6e7facab21ef3c9a0f05cf",
+      "report": "reports/oct15_native_dword_vector_insertn_owner.json",
+      "report_sha256": "263f13f85d2b08bc2627347287670ae1ee5031e5697988588cd3e649f993a7c2",
+      "artifacts": {
+        "src/native_dword_vector_insertn_owner.cpp": {
+          "integrator_sha256": "ab8e7ac8c2bdc9d3666b6c32bd4d218218d737d06b946e724eb045c340994489",
+          "Main_sha256": "ab8e7ac8c2bdc9d3666b6c32bd4d218218d737d06b946e724eb045c340994489",
+          "LF_frozen_blob_equal": true
+        },
+        "include/bsp/native_dword_vector_insertn_owner.hpp": {
+          "integrator_sha256": "54a9402070f71e0874a2292a4308bcb0981ba7703c4d2c0f9432f4cbd3cdd243",
+          "Main_sha256": "54a9402070f71e0874a2292a4308bcb0981ba7703c4d2c0f9432f4cbd3cdd243",
+          "LF_frozen_blob_equal": true
+        },
+        "docs/OCT15_NATIVE_DWORD_VECTOR_INSERTN_OWNER.md": {
+          "integrator_sha256": "414903fdbf8e592f4434d7a32e47e921a04a67ba8eb10884c5b9e88f7bd893dc",
+          "Main_sha256": "5ff164f80dc45bb79682b4a478ce9288f08b05b867ac586ab21d3df9bc33f8cb",
+          "LF_frozen_blob_equal": true
+        },
+        "reports/oct15_native_dword_vector_insertn_owner.json": {
+          "integrator_sha256": "263f13f85d2b08bc2627347287670ae1ee5031e5697988588cd3e649f993a7c2",
+          "Main_sha256": "21e67075c68ae889ac3f9eae91e76fac6f507bd13f06eb3e63c08936268faf21",
+          "LF_frozen_blob_equal": true
+        }
+      },
+      "owned_bytes": 636,
+      "owned_starts": 247,
+      "primary_checks": 18,
+      "Source_peer_checks": 22,
+      "actual_CMake_peer_checks": 22,
+      "primary_review": {
+        "checks": [
+          "All559B220 ordinary Native instructions,69B25 lexical catches and8B2 logical action reviewed; fresh636B247 owned+10B2 handler PE/live/currentstarts and148EH match.",
+          "Private owning copy precedes receiver begin read/count0; outer CurrentCpp cleanup begins after that read in Source and has no constructor-failure cleanup duplication.",
+          "Capacity and repeated CURRENT end-based size reads retain captured initialbegin and exact SAR4/wrapped DWORD arithmetic, unsigned bound and1.5x capacity selection.",
+          "Count0 still constructs/frees private fill; excesscount invokes COMPLETE actual owning length helper before receiver mutation.",
+          "Allocation uses SAME count actual16-byte service, then CURRENT begin capture; growth initializes completion to allocatedbase before transfer.",
+          "Prefix actualreturn publishes completion before counted fill; CURRENT suffixend read precedes post-FILL completion; suffixreturn is discarded.",
+          "Growth recomputes CURRENT size, destroys captured old range, RELOADS CURRENT begin for actualfree, then stores cap/end/begin in order.",
+          "Growth catch persists through oldcleanup/publication/commonnormalprivatefree; it destroys only allocatedbase..POSTFILLcompletion then frees allocatedbase and rethrows.",
+          "Short-tail state0 transfer precedes currentend reload/countrecalculation; state3 covers counted fill and Source end publication/endpoint capture.",
+          "Short catch reads CURRENT end and originalcount offset, destroys position+offset..CURRENTend+offset, rethrows without outerfree/end repair.",
+          "Short assigned fill is outside state3; long path stays outer-only, publishes ACTUAL transfer return before backwardswap/assignment.",
+          "Normal private cleanup captures CURRENT privatebegin once, conditionalfree without clear stores; outercatch calls actual4CDCE0 on CURRENT privateheader exactly once.",
+          "Entire actual CMake code1056B395 instructions read, including6B6 finalINT3padding; main+catches863B311, othersections193B84; all relocations resolve actual services/privatehelpers/security/runtime.",
+          "Actual Source192B EH has6states3tries with outer(0,4,5), growth(1,1,2), short(3,3,4); no noop/publicEBP/action/frame bridge.",
+          "Physical compiler state0 precedes firstbegin read and shortstate3/reset0 move across nonthrowing rawloads/stores; SourceCurrentCpp scopes hold, Originalfault/SEH/FH3 scope identity is explicitly unproved.",
+          "Full independent Source peer review passed22 scoped checks with freshNative and24 provider fingerprints; no findings.",
+          "One focused actual Source fixture passed zero/growth/spareshort/sparelong/valueorder/distinctownership/actual owningerror/cleanup; no Nativeexecution claim.",
+          "Twenty directprovider Source/header fingerprints and frozenCPP/header verified; newSource/privateframes/CRT/RTTI/ABI/game limits explicit and prior domains unchanged."
+        ],
+        "findings": [],
+        "actual_CMake_all_code_bytes": 1056,
+        "actual_CMake_all_starts": 395,
+        "alignment_INT3_bytes_and_starts": 6,
+        "actual_CMake_EH_bytes": 192,
+        "Native_EH_bytes": 148,
+        "compiler_motion_qualified": true
+      },
+      "Source_peer": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct15_dword_vector_insertn_owner_peer_review.json",
+        "sha256": "ce498975ea7c2ea8a8a4c73fb9b0313e4e0fcf376bfba09c5af77ef9da64489e",
+        "checks": 22,
+        "findings": [],
+        "scope": "Source and freshNative/providers; actualCOFF peer separate"
+      },
+      "actual_CMake_peer": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct15_dword_vector_insertn_actual_coff_peer_review.json",
+        "sha256": "d1a9be41601e589c61074f87fc4d6506a060ef8ba544f3a819fc6d5db499420b",
+        "executed_checks": 22,
+        "Source_or_behavior_findings": [],
+        "resolved_metadata_findings": [
+          {
+            "kind": "resolved_metadata_accounting",
+            "severity": "informational",
+            "finding": "Taskbrief/earlierRootmessage said7INT3; exactobject and Rootsaveddisassembly have6 trailingINT3 at359..35E.",
+            "resolution": "Root explicitly confirmed and corrected padding metadata to6;1056B395total unchanged, excludingpadding1050B389. NoSource/behavior finding or requestedSourcechange."
+          }
+        ],
+        "scope": "independently parsed exact actual I386 CMake object, all395 instructions, relocations and192B CppEH; no build/Native execution inferred"
+      },
+      "Source_fixture": {
+        "kind": "one_focused_Source_fixture",
+        "status": "passed",
+        "source_pin": "8180c34d839f8fd356ebfe50545f2a65585af388",
+        "machine": "0x14c",
+        "embedded_manifest_sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+        "embedded_asInvoker": true,
+        "files": {
+          "local\\dword_vector_insertn_probe.cpp": "2c3e7435d1ec2398260a13ec4d94982946c66f7202992139d33b284937cd8629",
+          "local\\run_dword_vector_insertn_probe.cmd": "7d3f77c0984641b8bd3c3d869ed69961f250ebea057a5a75c8ef1f6d7e5fd5cb",
+          "local\\dword_vector_insertn_probe.exe": "f36f28912c4cf79a3f9b79d78e1861dee0ae608574ca60d2254624416ba99179",
+          "local\\dword_vector_insertn_probe.obj": "e42b6badd3cbc4389bc65b19c816fde9a6211eda2c89b7e8229152ad0b10ba8c",
+          "local\\oct15_insertn_source_fixture.log": "f1df8a5b473afd8721200cb77e92a42e98aa766ac00b3d366aa0be2817b36d4e",
+          "build\\win32\\Release\\bsp_core.lib": "bbfd9361d31573b552353d0f9f508b747c16eb4ce5b0ac1a47194866479a2eff"
+        },
+        "source_runtime_only": true,
+        "Native_execution": false,
+        "Original_ABI_proven": false,
+        "game_validated": false
+      }
+    },
+    {
+      "pin": "d81dbfc2a256483f5a31b01a25669eb216be03ac",
+      "report": "reports/oct15_native_input_default_scalar_subtree.json",
+      "report_sha256": "d560d7e9b637069215ea208d2ca6b00cc7de3f496bb968625f06c1ef6ea0488d",
+      "artifacts": {
+        "src/native_input_default_scalar_subtree.cpp": {
+          "integrator_sha256": "f610bd48c247a4d193ed345f274bd6ffeb1098d4f6ebb00ea4c1f0296f35791f",
+          "Main_sha256": "f610bd48c247a4d193ed345f274bd6ffeb1098d4f6ebb00ea4c1f0296f35791f",
+          "LF_frozen_blob_equal": true
+        },
+        "include/bsp/native_input_default_scalar_subtree.hpp": {
+          "integrator_sha256": "48ff24253ae649e8274f3cc22029c4c2e0ae73a594e67dd165bb94a559a84d84",
+          "Main_sha256": "48ff24253ae649e8274f3cc22029c4c2e0ae73a594e67dd165bb94a559a84d84",
+          "LF_frozen_blob_equal": true
+        },
+        "docs/OCT15_NATIVE_INPUT_DEFAULT_SCALAR_SUBTREE.md": {
+          "integrator_sha256": "1be944932e1781d3809ca34efdbb3be62bd71f7cef0c721f0159d8e329eef2ee",
+          "Main_sha256": "1be944932e1781d3809ca34efdbb3be62bd71f7cef0c721f0159d8e329eef2ee",
+          "LF_frozen_blob_equal": true
+        },
+        "reports/oct15_native_input_default_scalar_subtree.json": {
+          "integrator_sha256": "d560d7e9b637069215ea208d2ca6b00cc7de3f496bb968625f06c1ef6ea0488d",
+          "Main_sha256": "d560d7e9b637069215ea208d2ca6b00cc7de3f496bb968625f06c1ef6ea0488d",
+          "LF_frozen_blob_equal": true
+        }
+      },
+      "owned_bytes": 53,
+      "owned_starts": 23,
+      "primary_checks": 8,
+      "primary_review": {
+        "path": "local/oct15_default_scalar_subtree_primary_review.json",
+        "sha256": "68a7e94fc456b51ed937c28201c5d8563922c69f54c999b72241610d4794f716",
+        "evidence": {
+          "pin": "d81dbfc2a256483f5a31b01a25669eb216be03ac",
+          "owned_bytes": 53,
+          "owned_starts": 23,
+          "reference_bytes": 53,
+          "reference_starts": 23,
+          "units": [
+            {
+              "address": "0069d3f0",
+              "bytes": 53,
+              "starts": 23,
+              "sha256": "12a842894059eebcef51d6ba58eff2b543b072b54e83d29adac0bce9666bc28a",
+              "PE_equals_live": true
+            },
+            {
+              "address": "00554f10",
+              "bytes": 53,
+              "starts": 23,
+              "sha256": "85fbf2336850f8662639b5d636e08415fed359a1b5c369833fc9c914aba88d76",
+              "PE_equals_live": true
+            }
+          ],
+          "host_steps": [
+            {
+              "address": "0069d407",
+              "native": "0069d3f0"
+            },
+            {
+              "address": "0069d40f",
+              "native": "00bf65ac"
+            },
+            {
+              "address": "00554f27",
+              "native": "00554f10"
+            },
+            {
+              "address": "00554f2f",
+              "native": "00bf65ac"
+            }
+          ],
+          "source_hashes": {
+            "src/native_input_default_scalar_subtree.cpp": "f610bd48c247a4d193ed345f274bd6ffeb1098d4f6ebb00ea4c1f0296f35791f",
+            "include/bsp/native_input_default_scalar_subtree.hpp": "48ff24253ae649e8274f3cc22029c4c2e0ae73a594e67dd165bb94a559a84d84",
+            "docs/OCT15_NATIVE_INPUT_DEFAULT_SCALAR_SUBTREE.md": "1be944932e1781d3809ca34efdbb3be62bd71f7cef0c721f0159d8e329eef2ee",
+            "reports/oct15_native_input_default_scalar_subtree.json": "d560d7e9b637069215ea208d2ca6b00cc7de3f496bb968625f06c1ef6ea0488d"
+          },
+          "provider_hashes": {
+            "src/native_input_int_subtrees.cpp": "a42030f5284b6b3dc3f62352d64f08a8bdceb87cc9d445f7ad468d95cd29fc9c",
+            "include/bsp/native_input_int_subtrees.hpp": "e4b32740b888f83614a100871c9a87a412da554decfb691c85362b3c9c4f11bf",
+            "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+            "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+          },
+          "checks": [
+            "Complete Source/header/docs, candidate/reference23 instructions each and allfive actualCMakeinstructions independently read.",
+            "Wholebody53B includes THREE-byte RET4 at422..424; earlier Root51B note was wrong and is corrected with provenance retained.",
+            "Fresh106PE/liveB46currentstarts and complete normalized53-byte bodies agree except verified free-callrel32; self-origin targets remain distinct.",
+            "Same opaqueTree/node passed to actual accepted554F10 rawservice; fixednil15/rightrecursion/CURRENTleftcapture/actualfree/capturedleftnil schedule closes.",
+            "No payload/header/count/linkwrites, catch/guard/model/callback/context/newprovider; sentinelnotfreed and rawvalidity/termination preconditions explicit.",
+            "Physical fastcallECX/unusedEDX/stacknode shape matches Sourcechild; canonicalEDX0/Sourcevoid/incidentalEAX/recursionorigin/frame/fault/ABI/game limits explicit.",
+            "ActualCMake11B5instructions balancedEBP/XOREDX/tailREL32 exactaccepted554F10/addend0 fullyread; no sourceorordinaryNativebyteidentity claim.",
+            "Immutablepin Source/header/report/docs and four current Mainprovider hashes verified; existing3checks scope qualified and no newtests."
+          ],
+          "actual_CMake_bytes": 11,
+          "actual_CMake_starts": 5,
+          "findings": []
+        }
+      }
+    }
+  ],
+  "scope": {
+    "ordinary_entries": [
+      "00698400",
+      "0069d3f0"
+    ],
+    "complete_ordinary_entries": 2,
+    "ordinary_bytes": 612,
+    "ordinary_starts": 243,
+    "lexical_catches": [
+      "0069856e",
+      "006985f7"
+    ],
+    "lexical_catch_bytes": 69,
+    "lexical_catch_starts": 25,
+    "logical_action": "00c7ec60",
+    "logical_action_bytes": 8,
+    "logical_action_starts": 2,
+    "distinct_owned_bytes_within_batch": 689,
+    "distinct_owned_starts_within_batch": 270,
+    "support_reference_handler_rawEH_and_compiled_Source_separate": true,
+    "no_global_unique_coverage_increment_over_prior_domains_claimed": true
+  },
+  "host_steps": [
+    {
+      "address": "00554f27",
+      "native": "00554f10"
+    },
+    {
+      "address": "00554f2f",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "0069842d",
+      "native": "00557590",
+      "kind": "call"
+    },
+    {
+      "address": "0069846c",
+      "native": "006978d0",
+      "kind": "call"
+    },
+    {
+      "address": "006984cd",
+      "native": "00696890",
+      "kind": "call"
+    },
+    {
+      "address": "006984f0",
+      "native": "006980e0",
+      "kind": "call"
+    },
+    {
+      "address": "00698500",
+      "native": "00698310",
+      "kind": "call"
+    },
+    {
+      "address": "0069851c",
+      "native": "006980e0",
+      "kind": "call"
+    },
+    {
+      "address": "00698542",
+      "native": "004d49b0",
+      "kind": "call"
+    },
+    {
+      "address": "0069854b",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "address": "00698579",
+      "native": "004d9e40",
+      "kind": "call"
+    },
+    {
+      "address": "0069857f",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "address": "0069858b",
+      "native": "00bf6885",
+      "kind": "call"
+    },
+    {
+      "address": "006985b3",
+      "native": "00698350",
+      "kind": "call"
+    },
+    {
+      "address": "006985d0",
+      "native": "00698310",
+      "kind": "call"
+    },
+    {
+      "address": "006985ed",
+      "native": "00698010",
+      "kind": "call"
+    },
+    {
+      "address": "0069860c",
+      "native": "004d9e40",
+      "kind": "call"
+    },
+    {
+      "address": "00698615",
+      "native": "00bf6885",
+      "kind": "call"
+    },
+    {
+      "address": "0069862b",
+      "native": "00698350",
+      "kind": "call"
+    },
+    {
+      "address": "00698639",
+      "native": "00698380",
+      "kind": "call"
+    },
+    {
+      "address": "00698649",
+      "native": "00698010",
+      "kind": "call"
+    },
+    {
+      "address": "00698659",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "address": "0069d407",
+      "native": "0069d3f0"
+    },
+    {
+      "address": "0069d40f",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00c7ec63",
+      "native": "004cdce0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c7ec6d",
+      "native": "00bf6b43",
+      "kind": "tail_jump"
+    }
+  ],
+  "primary_review_checks": 26,
+  "independent_owner_Source_peer_checks": 22,
+  "independent_owner_actual_CMake_peer_checks": 22,
+  "transfer_verification": {
+    "component_report_rows": 26,
+    "component_documentation_claims": 26,
+    "distinct_sites": 26,
+    "failed": 0,
+    "unchecked": 0,
+    "warnings": 0,
+    "log": "local/oct15_twentyfifth_transfers.log"
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "platform": "MSVC Win32 Release",
+    "tested_source_pin": "aa6344af1b8a81d109feffa57bfa45c362e7964d",
+    "default_registration": true,
+    "existing_suites": "3/3 passed",
+    "ctest_seconds": 14.95,
+    "log": "local/oct15_twentyfifth_union_build.log",
+    "log_sha256": "720b7e0b014baba4f873be60e50c62608149d74cb28846f3a13ef87befb22904",
+    "new_registered_tests": 0,
+    "focused_Source_fixtures": 1,
+    "Source_fixture_original_pin": "8180c34d839f8fd356ebfe50545f2a65585af388",
+    "fully_reviewed_owner_object_unchanged_in_final_union_build": true,
+    "owner_object_sha256": "ec92e03bf4ce44bb937930e840c460ac7ca0a6798bb902b4b50951abdd188095",
+    "Native_execution_of_new_routines": false,
+    "original_binary_ABI_proven": false,
+    "game_validated": false
+  },
+  "Ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "annotations_saved": 5,
+    "receipt": "local/ghidra-annotations-20261016T033551Z.json",
+    "receipt_sha256": "4e6b076b391f98156573c32154c463dcbf3cf1933b2eaabedfa9896db511ac5a",
+    "prior_comments_names_and_preimages_retained": true,
+    "affected_exports": 5,
+    "export_log": "local/oct15_twentyfifth_exports.log",
+    "export_log_sha256": "fcaf0e05583767bd5bdfdd91c63795a94f81311836cd322d98e1198043128dd9",
+    "snapshot": {
+      "log": "local/oct15_twentyfifth_snapshot.log",
+      "sha256": "b2668cf40b691596c8ae09af53fde9a5143decc1aa7738fed8bc788b53d20a86",
+      "status": "skipped_function_count_unchanged_76774_index_rebuilt"
+    }
+  },
+  "provider_fingerprints_equal_Main": {
+    "src/native_dword_vector_copy_construct.cpp": "4de974411b51e59d30cd1b5822439ef2dd87545f58e787ff46ef3b6df1ea5336",
+    "include/bsp/native_dword_vector_copy_construct.hpp": "ecf2b1d9cb256fef9047e0b8f235c88874177fe9b1d28e4d6cc1add1a53bf693",
+    "src/native_dword_vector_counted_fill.cpp": "fc71450ff7abafbe3584afc0af74f4ca3cd1444193afecc46417a0b5e11c7f70",
+    "include/bsp/native_dword_vector_counted_fill.hpp": "feef63d40f1d79acbab4dfd5d6dc4b3e512253fe3f88d8c47bc1e53bb2b50349",
+    "src/native_dword_vector_transfer_range.cpp": "eaaaa59dc2cdc7c47063b780dedf0c1438aae0af64053c8786fb22060f6efd00",
+    "include/bsp/native_dword_vector_transfer_range.hpp": "1e4ab82ceac31f32230ea1b7053726e2ddf76bc99a9fd053237c8546500cc69a",
+    "src/native_dword_vector_swap_backward.cpp": "8959b70f4bf56076c89f7935edac9a1b454cc8398e1f6dfc9a5ce72b0d63a811",
+    "include/bsp/native_dword_vector_swap_backward.hpp": "b194933dd1d672e4c1231581619c86f90f82c1be596e3787cda668e60849a720",
+    "src/native_dword_vector_fill_objects.cpp": "b37a5053a3991d5ec8f3d877643f8ff497ada210b3daf96865d2b755d60ad6d3",
+    "include/bsp/native_dword_vector_fill_objects.hpp": "1f3dd024f3879453a59a5d9b7d26d82411eef3f0d03e205b4e5187048169c5e8",
+    "src/native_word_vector_tidy.cpp": "5da425f344175e2fb4e143450d76c9184b6dfa83be36dc0c5b49b9c1d32dd998",
+    "include/bsp/native_word_vector_tidy.hpp": "76f071a110765cec357421060880e85e1213311f16d886a087439f6c26161079",
+    "src/native_nested_string_vector_allocation.cpp": "9751b35cfbb56897d25e9c7b75d5f91de6c39a3a9ccc927f8d13845ac820ef68",
+    "include/bsp/native_nested_string_vector_allocation.hpp": "b1bf1e71e63018c750b8252dc7a509de730a68e27c4cc9f2ea6d9c5e03ab7ca0",
+    "src/native_dword_vector_destroy_range.cpp": "809a56a3efba2e6aea9e76cb40871c491c2d7f03b495da3480c4076b73a8ab00",
+    "include/bsp/native_dword_vector_destroy_range.hpp": "0ba209d14c599cbe8bc325a96c7034e6be68172b498dfdcb3a09f7792825b792",
+    "src/native_dword_vector_header_allocation.cpp": "e2747d71450f364453492bfdd848981abea308db7b6a34a4d58d390e3481e543",
+    "include/bsp/native_dword_vector_header_allocation.hpp": "6f5a9a6d4a2a9fe08526cea08afd8e8b9dc266987b07c180bf30d4edfa84b771",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "src/native_input_int_subtrees.cpp": "a42030f5284b6b3dc3f62352d64f08a8bdceb87cc9d445f7ad468d95cd29fc9c",
+    "include/bsp/native_input_int_subtrees.hpp": "e4b32740b888f83614a100871c9a87a412da554decfb691c85362b3c9c4f11bf"
+  },
+  "corrections": [
+    "The earlier scalar51B note confused RET4 instruction start with its inclusive end. Full53B/23 through69D424 is verified and preserved.",
+    "Owner CMake trailingINT3 count corrected from7 to6 with independent proof;1056B395physical totals unchanged,1050B389 excludingpadding."
+  ],
+  "limits": [
+    "Source and raw/currentCpp/currentCRT interfaces do not establish original heap/newhandler/RTTI/FH3/SEH/fault/private-frame/register/argument-alias/binary ABI or game identity.",
+    "Owner Source EH is192B/sixstates/threetries; Native148B/fivestates/twotries plus cleanup action. Compiler state stores move across nonthrowing raw accesses; Originalfault scope parity unproved.",
+    "Growth retains post-FILL completion and state1 through common normalprivatefree; no rollback or suffix-end broadening. Scalar delegates accepted raw tree service with distinct recursive origin.",
+    "One focused fixture executes new Source branches and owning length error; no Native execution, arbitrary child-failure or memoryleak-freedom inference. Existing suites cover older math/tool behavior.",
+    "Old qualified/AV/typed models and correct library identities remain unchanged. No no-op/frame/provider/count bridge or fake cleanup."
+  ],
+  "coordination": {
+    "append_only_CMake_leases": false,
+    "actual_registry_conflicts_union_resolved": true,
+    "all_Source_headers_Main_physical_equal_and_metadata_LF_equal_frozen_blobs": true
+  },
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "independently verified after receipt publication; no self reference"
+  }
+}
