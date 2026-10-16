@@ -1,0 +1,1252 @@
+{
+  "packet": "goal15p_tagged_leaf_b4_03",
+  "generated_utc": "2026-10-16T02:50:08.496233+00:00",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "coff_sha256": "9ec45ab981f0b05c98c7a11f676d86167fe6c7113b5009d37b71e0c76fe12aec",
+  "strict_flags": "/nologo /std:c++20 /MD /O2 /W4 /WX /fp:strict /Gy /c /Iinclude",
+  "strict_compile_seconds": 3.109541893005371,
+  "evidence_and_compile_seconds": 3.896181583404541,
+  "whole_source_functions": 12,
+  "whole_source_executable_bytes": 109,
+  "exact_native_whole_functions": 8,
+  "exact_native_whole_bytes": 41,
+  "exact_native_whole_instructions": 18,
+  "semantic_source_only_functions": 4,
+  "all_referenced_native_body_bytes": 83,
+  "all_source_instructions": 36,
+  "coff_relocations": 0,
+  "nonempty_executable_sections": [
+    {
+      "index": 3,
+      "name": ".text$mn",
+      "size": 10,
+      "raw": 1331,
+      "reloc": 0,
+      "nrel": 0,
+      "characteristics": 1615859744
+    },
+    {
+      "index": 5,
+      "name": ".text$mn",
+      "size": 4,
+      "raw": 1367,
+      "reloc": 0,
+      "nrel": 0,
+      "characteristics": 1615859744
+    },
+    {
+      "index": 7,
+      "name": ".text$mn",
+      "size": 4,
+      "raw": 1397,
+      "reloc": 0,
+      "nrel": 0,
+      "characteristics": 1615859744
+    },
+    {
+      "index": 9,
+      "name": ".text$mn",
+      "size": 23,
+      "raw": 1427,
+      "reloc": 0,
+      "nrel": 0,
+      "characteristics": 1615859744
+    },
+    {
+      "index": 11,
+      "name": ".text$mn",
+      "size": 23,
+      "raw": 1476,
+      "reloc": 0,
+      "nrel": 0,
+      "characteristics": 1615859744
+    },
+    {
+      "index": 13,
+      "name": ".text$mn",
+      "size": 9,
+      "raw": 1525,
+      "reloc": 0,
+      "nrel": 0,
+      "characteristics": 1615859744
+    },
+    {
+      "index": 15,
+      "name": ".text$mn",
+      "size": 7,
+      "raw": 1560,
+      "reloc": 0,
+      "nrel": 0,
+      "characteristics": 1615859744
+    },
+    {
+      "index": 17,
+      "name": ".text$mn",
+      "size": 3,
+      "raw": 1593,
+      "reloc": 0,
+      "nrel": 0,
+      "characteristics": 1615859744
+    },
+    {
+      "index": 19,
+      "name": ".text$mn",
+      "size": 4,
+      "raw": 1622,
+      "reloc": 0,
+      "nrel": 0,
+      "characteristics": 1615859744
+    },
+    {
+      "index": 21,
+      "name": ".text$mn",
+      "size": 12,
+      "raw": 1652,
+      "reloc": 0,
+      "nrel": 0,
+      "characteristics": 1615859744
+    },
+    {
+      "index": 23,
+      "name": ".text$mn",
+      "size": 4,
+      "raw": 1690,
+      "reloc": 0,
+      "nrel": 0,
+      "characteristics": 1615859744
+    },
+    {
+      "index": 25,
+      "name": ".text$mn",
+      "size": 6,
+      "raw": 1720,
+      "reloc": 0,
+      "nrel": 0,
+      "characteristics": 1615859744
+    }
+  ],
+  "all_nonempty_executable_sections_accounted": true,
+  "functions": [
+    {
+      "address": "00b40120",
+      "coverage": "complete",
+      "evidence_state": "qualified_semantic_source_only",
+      "source_complete_under_backed_storage_contract": true,
+      "native_length": 10,
+      "native_hex": "8bc1c7401000000000c3",
+      "source_length": 10,
+      "source_hex": "c74110000000008bc1c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": false,
+      "coff_symbol": "@bsp_tagged_b4_00b40120@4",
+      "coff_section": 3,
+      "coff_section_size": 10,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 0x10], 0",
+          "hex": "c7411000000000"
+        },
+        {
+          "offset": 7,
+          "mnemonic": "mov",
+          "operands": "eax, ecx",
+          "hex": "8bc1"
+        },
+        {
+          "offset": 9,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "native_instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, ecx",
+          "hex": "8bc1"
+        },
+        {
+          "offset": 2,
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0x10], 0",
+          "hex": "c7401000000000"
+        },
+        {
+          "offset": 9,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40120 TRIV_body_00b40120",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15p_tagged_leaf_b4_03/00b40120_lookup.txt",
+      "registered_source_hex": "c74110000000008bc1c3",
+      "registered_whole_section_size": 10,
+      "registered_whole_section_equals_strict_section": true,
+      "semantic_contract": {
+        "behavior": "Write four zero bytes at backing+0x10; return the original backing address.",
+        "backing": "Writable byte span through +0x13; unaligned raw storage accepted; no external source buffer.",
+        "difference": "Native copies ECX to EAX before storing through EAX. Source stores through ECX then copies ECX to EAX. Return flags/memory/EAX agree on valid backing; EAX differs at a store fault."
+      },
+      "original_abi": "ECX sole consumed input; no EDX/incoming EAX/stack argument consumed; plain RET without callee argument cleanup. Per-entry EAX/ECX/EDX/flags are recorded in whole Native instructions and differences.",
+      "original_symbol": "TRIV_body_00b40120",
+      "original_machine_abi_claimed": false,
+      "original_fault_order_claimed": false
+    },
+    {
+      "address": "00b40150",
+      "coverage": "complete",
+      "evidence_state": "exact_native_whole_body",
+      "source_complete_under_backed_storage_contract": true,
+      "native_length": 6,
+      "native_hex": "b80e000000c3",
+      "source_length": 6,
+      "source_hex": "b80e000000c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": true,
+      "coff_symbol": "_bsp_tagged_b4_00b40150",
+      "coff_section": 25,
+      "coff_section_size": 6,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, 0xe",
+          "hex": "b80e000000"
+        },
+        {
+          "offset": 5,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "native_instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, 0xe",
+          "hex": "b80e000000"
+        },
+        {
+          "offset": 5,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40150 TRIV_body_00b40150",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15p_tagged_leaf_b4_03/00b40150_lookup.txt",
+      "registered_source_hex": "b80e000000c3",
+      "registered_whole_section_size": 6,
+      "registered_whole_section_equals_strict_section": true,
+      "semantic_contract": {
+        "behavior": "Exact whole-body instruction/operand identity; see routine table.",
+        "backing": "No input for constant 14; raw uint32 input for identity; otherwise actual readable storage through the recorded dword span."
+      },
+      "original_abi": "No consumed input; complete EAX=14; plain RET without callee argument cleanup.",
+      "original_symbol": "TRIV_body_00b40150",
+      "original_machine_abi_claimed": true,
+      "original_fault_order_claimed": false
+    },
+    {
+      "address": "00b40160",
+      "coverage": "complete",
+      "evidence_state": "exact_native_whole_body",
+      "source_complete_under_backed_storage_contract": true,
+      "native_length": 4,
+      "native_hex": "8b4104c3",
+      "source_length": 4,
+      "source_hex": "8b4104c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": true,
+      "coff_symbol": "@bsp_tagged_b4_00b40160@4",
+      "coff_section": 5,
+      "coff_section_size": 4,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 4]",
+          "hex": "8b4104"
+        },
+        {
+          "offset": 3,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "native_instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 4]",
+          "hex": "8b4104"
+        },
+        {
+          "offset": 3,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40160 TRIV_body_00b40160",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15p_tagged_leaf_b4_03/00b40160_lookup.txt",
+      "registered_source_hex": "8b4104c3",
+      "registered_whole_section_size": 4,
+      "registered_whole_section_equals_strict_section": true,
+      "semantic_contract": {
+        "behavior": "Exact whole-body instruction/operand identity; see routine table.",
+        "backing": "No input for constant 14; raw uint32 input for identity; otherwise actual readable storage through the recorded dword span."
+      },
+      "original_abi": "ECX sole consumed input; no EDX/incoming EAX/stack argument consumed; plain RET without callee argument cleanup. Per-entry EAX/ECX/EDX/flags are recorded in whole Native instructions and differences.",
+      "original_symbol": "TRIV_body_00b40160",
+      "original_machine_abi_claimed": true,
+      "original_fault_order_claimed": false
+    },
+    {
+      "address": "00b40170",
+      "coverage": "complete",
+      "evidence_state": "exact_native_whole_body",
+      "source_complete_under_backed_storage_contract": true,
+      "native_length": 4,
+      "native_hex": "8b4104c3",
+      "source_length": 4,
+      "source_hex": "8b4104c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": true,
+      "coff_symbol": "@bsp_tagged_b4_00b40170@4",
+      "coff_section": 7,
+      "coff_section_size": 4,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 4]",
+          "hex": "8b4104"
+        },
+        {
+          "offset": 3,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "native_instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 4]",
+          "hex": "8b4104"
+        },
+        {
+          "offset": 3,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40170 TRIV_body_00b40170",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15p_tagged_leaf_b4_03/00b40170_lookup.txt",
+      "registered_source_hex": "8b4104c3",
+      "registered_whole_section_size": 4,
+      "registered_whole_section_equals_strict_section": true,
+      "semantic_contract": {
+        "behavior": "Exact whole-body instruction/operand identity; see routine table.",
+        "backing": "No input for constant 14; raw uint32 input for identity; otherwise actual readable storage through the recorded dword span."
+      },
+      "original_abi": "ECX sole consumed input; no EDX/incoming EAX/stack argument consumed; plain RET without callee argument cleanup. Per-entry EAX/ECX/EDX/flags are recorded in whole Native instructions and differences.",
+      "original_symbol": "TRIV_body_00b40170",
+      "original_machine_abi_claimed": true,
+      "original_fault_order_claimed": false
+    },
+    {
+      "address": "00b40180",
+      "coverage": "complete",
+      "evidence_state": "qualified_semantic_source_only",
+      "source_complete_under_backed_storage_contract": true,
+      "native_length": 11,
+      "native_hex": "33c08901894104894108c3",
+      "source_length": 23,
+      "source_hex": "c7010000000033c0c7410400000000c7410800000000c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": false,
+      "coff_symbol": "@bsp_tagged_b4_00b40180@4",
+      "coff_section": 9,
+      "coff_section_size": 23,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": false,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], 0",
+          "hex": "c70100000000"
+        },
+        {
+          "offset": 6,
+          "mnemonic": "xor",
+          "operands": "eax, eax",
+          "hex": "33c0"
+        },
+        {
+          "offset": 8,
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], 0",
+          "hex": "c7410400000000"
+        },
+        {
+          "offset": 15,
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 8], 0",
+          "hex": "c7410800000000"
+        },
+        {
+          "offset": 22,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "native_instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "xor",
+          "operands": "eax, eax",
+          "hex": "33c0"
+        },
+        {
+          "offset": 2,
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], eax",
+          "hex": "8901"
+        },
+        {
+          "offset": 4,
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], eax",
+          "hex": "894104"
+        },
+        {
+          "offset": 7,
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 8], eax",
+          "hex": "894108"
+        },
+        {
+          "offset": 10,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40180 TRIV_body_00b40180",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15p_tagged_leaf_b4_03/00b40180_lookup.txt",
+      "registered_source_hex": "c7010000000033c0c7410400000000c7410800000000c3",
+      "registered_whole_section_size": 23,
+      "registered_whole_section_equals_strict_section": true,
+      "semantic_contract": {
+        "behavior": "Write zero dwords at offsets 0,4,8 in that order; return full EAX=0.",
+        "backing": "Twelve writable raw bytes; three disjoint four-byte destination spans; no external source buffer/alias input and no alignment/type narrowing.",
+        "difference": "Both actual forms write three dwords in order 0,4,8. Native XOR EAX occurs before all stores; Source immediate-zero stores have XOR EAX after the first store. Valid-backed memory/result/defined return flags agree; first-store fault EAX/flags differ."
+      },
+      "original_abi": "ECX sole consumed input; no EDX/incoming EAX/stack argument consumed; plain RET without callee argument cleanup. Per-entry EAX/ECX/EDX/flags are recorded in whole Native instructions and differences.",
+      "original_symbol": "TRIV_body_00b40180",
+      "original_machine_abi_claimed": false,
+      "original_fault_order_claimed": false
+    },
+    {
+      "address": "00b40190",
+      "coverage": "complete",
+      "evidence_state": "qualified_semantic_source_only",
+      "source_complete_under_backed_storage_contract": true,
+      "native_length": 11,
+      "native_hex": "33c08901894104894108c3",
+      "source_length": 23,
+      "source_hex": "c7010000000033c0c7410400000000c7410800000000c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": false,
+      "coff_symbol": "@bsp_tagged_b4_00b40190@4",
+      "coff_section": 11,
+      "coff_section_size": 23,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": false,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], 0",
+          "hex": "c70100000000"
+        },
+        {
+          "offset": 6,
+          "mnemonic": "xor",
+          "operands": "eax, eax",
+          "hex": "33c0"
+        },
+        {
+          "offset": 8,
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], 0",
+          "hex": "c7410400000000"
+        },
+        {
+          "offset": 15,
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 8], 0",
+          "hex": "c7410800000000"
+        },
+        {
+          "offset": 22,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "native_instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "xor",
+          "operands": "eax, eax",
+          "hex": "33c0"
+        },
+        {
+          "offset": 2,
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], eax",
+          "hex": "8901"
+        },
+        {
+          "offset": 4,
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], eax",
+          "hex": "894104"
+        },
+        {
+          "offset": 7,
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 8], eax",
+          "hex": "894108"
+        },
+        {
+          "offset": 10,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40190 TRIV_body_00b40190",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15p_tagged_leaf_b4_03/00b40190_lookup.txt",
+      "registered_source_hex": "c7010000000033c0c7410400000000c7410800000000c3",
+      "registered_whole_section_size": 23,
+      "registered_whole_section_equals_strict_section": true,
+      "semantic_contract": {
+        "behavior": "Write zero dwords at offsets 0,4,8 in that order; return full EAX=0.",
+        "backing": "Twelve writable raw bytes; three disjoint four-byte destination spans; no external source buffer/alias input and no alignment/type narrowing.",
+        "difference": "Both actual forms write three dwords in order 0,4,8. Native XOR EAX occurs before all stores; Source immediate-zero stores have XOR EAX after the first store. Valid-backed memory/result/defined return flags agree; first-store fault EAX/flags differ."
+      },
+      "original_abi": "ECX sole consumed input; no EDX/incoming EAX/stack argument consumed; plain RET without callee argument cleanup. Per-entry EAX/ECX/EDX/flags are recorded in whole Native instructions and differences.",
+      "original_symbol": "TRIV_body_00b40190",
+      "original_machine_abi_claimed": false,
+      "original_fault_order_claimed": false
+    },
+    {
+      "address": "00b40580",
+      "coverage": "complete",
+      "evidence_state": "exact_native_whole_body",
+      "source_complete_under_backed_storage_contract": true,
+      "native_length": 9,
+      "native_hex": "33c03941500f95c0c3",
+      "source_length": 9,
+      "source_hex": "33c03941500f95c0c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": true,
+      "coff_symbol": "@bsp_tagged_b4_00b40580@4",
+      "coff_section": 13,
+      "coff_section_size": 9,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "xor",
+          "operands": "eax, eax",
+          "hex": "33c0"
+        },
+        {
+          "offset": 2,
+          "mnemonic": "cmp",
+          "operands": "dword ptr [ecx + 0x50], eax",
+          "hex": "394150"
+        },
+        {
+          "offset": 5,
+          "mnemonic": "setne",
+          "operands": "al",
+          "hex": "0f95c0"
+        },
+        {
+          "offset": 8,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "native_instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "xor",
+          "operands": "eax, eax",
+          "hex": "33c0"
+        },
+        {
+          "offset": 2,
+          "mnemonic": "cmp",
+          "operands": "dword ptr [ecx + 0x50], eax",
+          "hex": "394150"
+        },
+        {
+          "offset": 5,
+          "mnemonic": "setne",
+          "operands": "al",
+          "hex": "0f95c0"
+        },
+        {
+          "offset": 8,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40580 TRIV_body_00b40580",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15p_tagged_leaf_b4_03/00b40580_lookup.txt",
+      "registered_source_hex": "33c03941500f95c0c3",
+      "registered_whole_section_size": 9,
+      "registered_whole_section_equals_strict_section": true,
+      "semantic_contract": {
+        "behavior": "Exact whole-body instruction/operand identity; see routine table.",
+        "backing": "No input for constant 14; raw uint32 input for identity; otherwise actual readable storage through the recorded dword span."
+      },
+      "original_abi": "ECX sole consumed input; no EDX/incoming EAX/stack argument consumed; plain RET without callee argument cleanup. Per-entry EAX/ECX/EDX/flags are recorded in whole Native instructions and differences.",
+      "original_symbol": "TRIV_body_00b40580",
+      "original_machine_abi_claimed": true,
+      "original_fault_order_claimed": false
+    },
+    {
+      "address": "00b40740",
+      "coverage": "complete",
+      "evidence_state": "exact_native_whole_body",
+      "source_complete_under_backed_storage_contract": true,
+      "native_length": 7,
+      "native_hex": "8b8188010000c3",
+      "source_length": 7,
+      "source_hex": "8b8188010000c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": true,
+      "coff_symbol": "@bsp_tagged_b4_00b40740@4",
+      "coff_section": 15,
+      "coff_section_size": 7,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x188]",
+          "hex": "8b8188010000"
+        },
+        {
+          "offset": 6,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "native_instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x188]",
+          "hex": "8b8188010000"
+        },
+        {
+          "offset": 6,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40740 TRIV_body_00b40740",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15p_tagged_leaf_b4_03/00b40740_lookup.txt",
+      "registered_source_hex": "8b8188010000c3",
+      "registered_whole_section_size": 7,
+      "registered_whole_section_equals_strict_section": true,
+      "semantic_contract": {
+        "behavior": "Exact whole-body instruction/operand identity; see routine table.",
+        "backing": "No input for constant 14; raw uint32 input for identity; otherwise actual readable storage through the recorded dword span."
+      },
+      "original_abi": "ECX sole consumed input; no EDX/incoming EAX/stack argument consumed; plain RET without callee argument cleanup. Per-entry EAX/ECX/EDX/flags are recorded in whole Native instructions and differences.",
+      "original_symbol": "TRIV_body_00b40740",
+      "original_machine_abi_claimed": true,
+      "original_fault_order_claimed": false
+    },
+    {
+      "address": "00b40850",
+      "coverage": "complete",
+      "evidence_state": "exact_native_whole_body",
+      "source_complete_under_backed_storage_contract": true,
+      "native_length": 3,
+      "native_hex": "8bc1c3",
+      "source_length": 3,
+      "source_hex": "8bc1c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": true,
+      "coff_symbol": "@bsp_tagged_b4_00b40850@4",
+      "coff_section": 17,
+      "coff_section_size": 3,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, ecx",
+          "hex": "8bc1"
+        },
+        {
+          "offset": 2,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "native_instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, ecx",
+          "hex": "8bc1"
+        },
+        {
+          "offset": 2,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40850 TRIV_body_00b40850",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15p_tagged_leaf_b4_03/00b40850_lookup.txt",
+      "registered_source_hex": "8bc1c3",
+      "registered_whole_section_size": 3,
+      "registered_whole_section_equals_strict_section": true,
+      "semantic_contract": {
+        "behavior": "Exact whole-body instruction/operand identity; see routine table.",
+        "backing": "No input for constant 14; raw uint32 input for identity; otherwise actual readable storage through the recorded dword span."
+      },
+      "original_abi": "ECX sole consumed input; no EDX/incoming EAX/stack argument consumed; plain RET without callee argument cleanup. Per-entry EAX/ECX/EDX/flags are recorded in whole Native instructions and differences.",
+      "original_symbol": "TRIV_body_00b40850",
+      "original_machine_abi_claimed": true,
+      "original_fault_order_claimed": false
+    },
+    {
+      "address": "00b40970",
+      "coverage": "complete",
+      "evidence_state": "exact_native_whole_body",
+      "source_complete_under_backed_storage_contract": true,
+      "native_length": 4,
+      "native_hex": "8b410cc3",
+      "source_length": 4,
+      "source_hex": "8b410cc3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": true,
+      "coff_symbol": "@bsp_tagged_b4_00b40970@4",
+      "coff_section": 19,
+      "coff_section_size": 4,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0xc]",
+          "hex": "8b410c"
+        },
+        {
+          "offset": 3,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "native_instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0xc]",
+          "hex": "8b410c"
+        },
+        {
+          "offset": 3,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40970 TRIV_body_00b40970",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15p_tagged_leaf_b4_03/00b40970_lookup.txt",
+      "registered_source_hex": "8b410cc3",
+      "registered_whole_section_size": 4,
+      "registered_whole_section_equals_strict_section": true,
+      "semantic_contract": {
+        "behavior": "Exact whole-body instruction/operand identity; see routine table.",
+        "backing": "No input for constant 14; raw uint32 input for identity; otherwise actual readable storage through the recorded dword span."
+      },
+      "original_abi": "ECX sole consumed input; no EDX/incoming EAX/stack argument consumed; plain RET without callee argument cleanup. Per-entry EAX/ECX/EDX/flags are recorded in whole Native instructions and differences.",
+      "original_symbol": "TRIV_body_00b40970",
+      "original_machine_abi_claimed": true,
+      "original_fault_order_claimed": false
+    },
+    {
+      "address": "00b40e80",
+      "coverage": "complete",
+      "evidence_state": "qualified_semantic_source_only",
+      "source_complete_under_backed_storage_contract": true,
+      "native_length": 10,
+      "native_hex": "8b41048b098d4481fcc3",
+      "source_length": 12,
+      "source_hex": "8b51048b018d049083c0fcc3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": false,
+      "coff_symbol": "@bsp_tagged_b4_00b40e80@4",
+      "coff_section": 21,
+      "coff_section_size": 12,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": false,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ecx + 4]",
+          "hex": "8b5104"
+        },
+        {
+          "offset": 3,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx]",
+          "hex": "8b01"
+        },
+        {
+          "offset": 5,
+          "mnemonic": "lea",
+          "operands": "eax, [eax + edx*4]",
+          "hex": "8d0490"
+        },
+        {
+          "offset": 8,
+          "mnemonic": "add",
+          "operands": "eax, -4",
+          "hex": "83c0fc"
+        },
+        {
+          "offset": 11,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "native_instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 4]",
+          "hex": "8b4104"
+        },
+        {
+          "offset": 3,
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ecx]",
+          "hex": "8b09"
+        },
+        {
+          "offset": 5,
+          "mnemonic": "lea",
+          "operands": "eax, [ecx + eax*4 - 4]",
+          "hex": "8d4481fc"
+        },
+        {
+          "offset": 9,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40e80 TRIV_body_00b40e80",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15p_tagged_leaf_b4_03/00b40e80_lookup.txt",
+      "registered_source_hex": "8b51048b018d049083c0fcc3",
+      "registered_whole_section_size": 12,
+      "registered_whole_section_equals_strict_section": true,
+      "semantic_contract": {
+        "behavior": "Read raw uint32 at +4 then 0; return (first+second*4-4) modulo 2^32 for all stored bit patterns.",
+        "backing": "Eight readable raw bytes, including unaligned storage. No writes; read order +4 then 0 is observed in both whole objects. No pointer interpretation of stored words.",
+        "difference": "Native loads +4 into EAX and 0 into ECX; preserves EDX/flags and returns via LEA. Source loads +4 into EDX and 0 into EAX, uses LEA+ADD -4, preserves ECX backing address, clobbers EDX and changes flags. Fault-time register states differ."
+      },
+      "original_abi": "ECX sole consumed input; no EDX/incoming EAX/stack argument consumed; plain RET without callee argument cleanup. Per-entry EAX/ECX/EDX/flags are recorded in whole Native instructions and differences.",
+      "original_symbol": "TRIV_body_00b40e80",
+      "original_machine_abi_claimed": false,
+      "original_fault_order_claimed": false
+    },
+    {
+      "address": "00b41030",
+      "coverage": "complete",
+      "evidence_state": "exact_native_whole_body",
+      "source_complete_under_backed_storage_contract": true,
+      "native_length": 4,
+      "native_hex": "8b4120c3",
+      "source_length": 4,
+      "source_hex": "8b4120c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": true,
+      "coff_symbol": "@bsp_tagged_b4_00b41030@4",
+      "coff_section": 23,
+      "coff_section_size": 4,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x20]",
+          "hex": "8b4120"
+        },
+        {
+          "offset": 3,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "native_instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x20]",
+          "hex": "8b4120"
+        },
+        {
+          "offset": 3,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b41030 TRIV_body_00b41030",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15p_tagged_leaf_b4_03/00b41030_lookup.txt",
+      "registered_source_hex": "8b4120c3",
+      "registered_whole_section_size": 4,
+      "registered_whole_section_equals_strict_section": true,
+      "semantic_contract": {
+        "behavior": "Exact whole-body instruction/operand identity; see routine table.",
+        "backing": "No input for constant 14; raw uint32 input for identity; otherwise actual readable storage through the recorded dword span."
+      },
+      "original_abi": "ECX sole consumed input; no EDX/incoming EAX/stack argument consumed; plain RET without callee argument cleanup. Per-entry EAX/ECX/EDX/flags are recorded in whole Native instructions and differences.",
+      "original_symbol": "TRIV_body_00b41030",
+      "original_machine_abi_claimed": true,
+      "original_fault_order_claimed": false
+    }
+  ],
+  "registered_coff": {
+    "path": "build/win32/bsp_core.dir/Release/native_tagged_leaf_b4_03.obj",
+    "sha256": "d624fc7e05aeb0b045bf807e3533674dbd1a2b3d317c55cd4523184c6ac6f2ff",
+    "all_nonempty_executable_sections_accounted": true,
+    "nonempty_executable_sections": [
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "size": 10,
+        "raw": 1351,
+        "reloc": 0,
+        "nrel": 0,
+        "characteristics": 1615859744
+      },
+      {
+        "index": 5,
+        "name": ".text$mn",
+        "size": 4,
+        "raw": 1387,
+        "reloc": 0,
+        "nrel": 0,
+        "characteristics": 1615859744
+      },
+      {
+        "index": 7,
+        "name": ".text$mn",
+        "size": 4,
+        "raw": 1417,
+        "reloc": 0,
+        "nrel": 0,
+        "characteristics": 1615859744
+      },
+      {
+        "index": 9,
+        "name": ".text$mn",
+        "size": 23,
+        "raw": 1447,
+        "reloc": 0,
+        "nrel": 0,
+        "characteristics": 1615859744
+      },
+      {
+        "index": 11,
+        "name": ".text$mn",
+        "size": 23,
+        "raw": 1496,
+        "reloc": 0,
+        "nrel": 0,
+        "characteristics": 1615859744
+      },
+      {
+        "index": 13,
+        "name": ".text$mn",
+        "size": 9,
+        "raw": 1545,
+        "reloc": 0,
+        "nrel": 0,
+        "characteristics": 1615859744
+      },
+      {
+        "index": 15,
+        "name": ".text$mn",
+        "size": 7,
+        "raw": 1580,
+        "reloc": 0,
+        "nrel": 0,
+        "characteristics": 1615859744
+      },
+      {
+        "index": 17,
+        "name": ".text$mn",
+        "size": 3,
+        "raw": 1613,
+        "reloc": 0,
+        "nrel": 0,
+        "characteristics": 1615859744
+      },
+      {
+        "index": 19,
+        "name": ".text$mn",
+        "size": 4,
+        "raw": 1642,
+        "reloc": 0,
+        "nrel": 0,
+        "characteristics": 1615859744
+      },
+      {
+        "index": 21,
+        "name": ".text$mn",
+        "size": 12,
+        "raw": 1672,
+        "reloc": 0,
+        "nrel": 0,
+        "characteristics": 1615859744
+      },
+      {
+        "index": 23,
+        "name": ".text$mn",
+        "size": 4,
+        "raw": 1710,
+        "reloc": 0,
+        "nrel": 0,
+        "characteristics": 1615859744
+      },
+      {
+        "index": 25,
+        "name": ".text$mn",
+        "size": 6,
+        "raw": 1740,
+        "reloc": 0,
+        "nrel": 0,
+        "characteristics": 1615859744
+      }
+    ],
+    "whole_source_bytes": 109,
+    "whole_source_sections": 12,
+    "strict_and_registered_function_sections_identical": true,
+    "registered_flags": "Release/Win32 VCXPROJ: MaxSpeed, MultiThreadedDLL, Level4, TreatWarningAsError, Strict floating point, stdcpp17."
+  },
+  "scope": {
+    "unique_inspected_bodies": 19,
+    "complete_source_bodies": 12,
+    "exact_native_bodies": 8,
+    "qualified_semantic_source_bodies": 4,
+    "new_tests": 0,
+    "ghidra_mutations": 0,
+    "cmake_registered": true,
+    "registration": "One appended cmake_language(DEFER DIRECTORY ... target_sources bsp_core PRIVATE src/native_tagged_leaf_b4_03.cpp); shared file not leased.",
+    "base_main": "97980d18209c2002ff07e821f81e20d9de5ec6d3",
+    "worker_merge": "32a5996dd1f68625d2d9c8d36bb306a18c4e9a13",
+    "original_function_shard_sha256": "7da923b47ea0c56ddb2fe9d0e5e94669a8f2a209cac2555f5cddb8b9f3cd8f50",
+    "coverage_search": "Exact optional-0x/leading-zero hexadecimal addresses over src/include/third_party plus fresh indexed function/fragment lookup and lease checks before selected Source edits.",
+    "dispositions": [
+      {
+        "address": "00b40040",
+        "state": "x87_source_not_qualified",
+        "gate": "Strict memcpy and direct float-return forms each emit 15-byte stack-mediated loads, clobber EAX and add memory accesses. Precision/x87 exception/fault semantics and original return typing remain unproved; no type contortion.",
+        "native_listing": "FLD m32real [ECX+0x1f8]; RET, seven bytes"
+      },
+      {
+        "address": "00b400f0",
+        "state": "genuine_global_provider_not_established",
+        "dependencies": [
+          "NativeRendererConstructionContext::state_definitions_0108fe90",
+          "NativeRendererDestructionContext::state_definitions_0108fe90",
+          "native_shader_state_definitions published actual-cell reference"
+        ],
+        "gate": "Existing constructor/destructor/shader contexts consume the actual published cell; this packet does not establish direct canonical provider/placement. No substitute global.",
+        "native_listing": "MOV EAX,[0108FE90]; RET"
+      },
+      {
+        "addresses": [
+          "00b401a0",
+          "00b401b0"
+        ],
+        "state": "complete_semantic_source_candidates_outside_packet_cap",
+        "source_handoff": "local/goal15p_tagged_leaf_b4_03/source_handoff.cpp",
+        "gate": "Raw-backed whole C++ forms retained; same contract/body as registered 40180/190. These named variants not independently registered, ledger-recorded, or claimed Native; failed prior typed-form objects retained."
+      },
+      {
+        "addresses": [
+          "00b40750",
+          "00b40780"
+        ],
+        "state": "x87_stack_copy_semantics_not_qualified",
+        "gate": "Actual [ESP+4] destination and RET4; sequential x87 FLD/FSTP copies. Overlap aliases, x87 exceptions and physical stack ABI cannot be replaced by pseudocode raw word copies."
+      },
+      {
+        "address": "00b40f10",
+        "state": "native_behavior_established_source_outside_packet_cap",
+        "gate": "Unsigned decrement and ADD flags known. No compiled Source body qualified within cap; do not silently replace ADD flags with DEC.",
+        "native_listing": "ADD dword[ECX+4],-1; RET, five bytes"
+      }
+    ],
+    "limitations": "Source interfaces/names are hypotheses. No known xrefs is not unused proof; function:null caller endpoint inconclusive. No game validation, replacement installation or caller integration."
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "module_registered_and_compiled": true,
+    "initial_eight_entry_registered_build": {
+      "exit_code": 0,
+      "ctests_passed": 2,
+      "log": "local/goal15p_tagged_leaf_b4_03/registered_build_initial_exact8.log",
+      "started_utc": "2026-10-16T02:46:26.041650+00:00",
+      "final_output_utc": "2026-10-16T02:47:17.339810+00:00",
+      "elapsed_seconds_to_final_output": 51.298160552978516
+    },
+    "final_twelve_entry_registered_build": {
+      "exit_code": 0,
+      "ctests_passed": 2,
+      "log": "local/goal15p_tagged_leaf_b4_03/registered_build_final.log",
+      "started_utc": "2026-10-16T02:48:33.127515+00:00",
+      "final_output_utc": "2026-10-16T02:49:01.594868+00:00",
+      "elapsed_seconds_to_final_output": 28.467353343963623
+    },
+    "repeat_reason": "Parent steering after initial build launch authorized four semantic Source additions; one final incremental registered build follows the new Source.",
+    "registered_vcxproj": "build/win32/bsp_core.vcxproj; module ClCompile entry and Release strict settings inspected."
+  },
+  "timing": {
+    "capture_before_brief_utc": "2026-10-16T02:30:01.834697+00:00",
+    "first_source_creation_utc": "2026-10-16T02:34:03.965143+00:00",
+    "orientation_initial_qualification_to_first_source_seconds": 242.13044571876526,
+    "first_source_to_final_passing_twelve_entry_proof_seconds": 964.5310897827148,
+    "final_strict_compile_seconds": 3.109541893005371,
+    "final_proof_rerun_seconds": 3.896181583404541,
+    "strict_compilations": 8,
+    "failed_strict_attempts": 6,
+    "successful_strict_compilations": 2,
+    "failed_artifact_folders": [
+      "attempt01_float_memcpy",
+      "attempt02_float_direct",
+      "attempt03_clear_return_order",
+      "attempt04_volatile_zero_stores",
+      "attempt05_direct_zero_stores",
+      "attempt06_unsigned_arithmetic"
+    ],
+    "total_working_lower_bound_seconds": 1698.866492509842,
+    "scope": "Capture before initial brief through this report includes all qualification, failed/successful strict attempts, scope steering, source changes, both overlapping registered builds, docs and ledger writes. Final index/check/commit/release handoff follows; earlier message/setup before capture is additional.",
+    "report_finalized_utc": "2026-10-16T02:56:46.108296+00:00"
+  },
+  "source_sha256": "2c14da119423368790ef3118d2e601e185e202045ab4cfaa7f8a60b266a1c010",
+  "header_sha256": "e5e0201df436a347149bd20b0863e3a7241b758a7ad92462b57c9c6136ff4515",
+  "evidence_artifacts": {
+    "directory": "local/goal15p_tagged_leaf_b4_03/",
+    "strict_verifier": "local/goal15p_b4_proof.py",
+    "registered_verifier": "local/goal15p_b4_registered_proof_generated.py",
+    "source_handoff": "local/goal15p_tagged_leaf_b4_03/source_handoff.cpp",
+    "retention": "Six failed full objects/listings retained, plus whole strict and registered proofs. Current-packet live byte/disassembly queries reused during successive compiles; live project/target checked before each batch."
+  },
+  "verification": {
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/goal15p_tagged_leaf_b4_03.json",
+      "exit_code": 0,
+      "call_rows_checked": 0,
+      "failed": 0
+    },
+    "document_calls": {
+      "command": "python tools/verify_report_calls.py docs/GOAL15P_TAGGED_LEAF_B4_03.md",
+      "exit_code": 0,
+      "addresses_cited": 19,
+      "call_claims_checked": 0,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "note": "All module entries are leaves; zero call rows is not additional runtime or callee coverage."
+  }
+}
