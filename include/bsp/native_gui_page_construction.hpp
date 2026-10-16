@@ -20,7 +20,8 @@ struct NativeGuiPageConstructionContext {
 // page allocation (128h pool slot) and all outstanding constructor resources.
 struct NativeGuiPageConstructionAcquired {
     enum class Phase { not_started, running, awaiting_lua_continuation, failed,
-        awaiting_reader_continuation }; // appended; existing values unchanged
+        awaiting_reader_continuation,
+        awaiting_properties_continuation }; // appended; existing values unchanged
     Phase phase{Phase::not_started};
     void* actual_page{};
     const void* actual_name{};

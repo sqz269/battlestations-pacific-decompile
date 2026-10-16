@@ -32,6 +32,8 @@ public:
     bool native_operation_interrupted() const noexcept {
         return phase_ == Phase::entered || phase_ == Phase::failed;
     }
+    // Metadata identity only; no raw owner read or provider invocation.
+    const NativeGuiPageConstructionAcquired* prefix_identity() const noexcept { return prefix_; }
     struct Observation {
         Phase phase;
         const void* actual_page;
