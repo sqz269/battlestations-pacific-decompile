@@ -1,9 +1,9 @@
 {
   "packet": "goal_oct15_crt_sbh_region_lookup",
-  "status": "whole_physical43B_ordinary_actual_storage_Source_independently_reviewed_plate_only_annotated_primary_build_pending_boundary_repair_NOT_PERFORMED",
+  "status": "whole_physical43B_ordinary_actual_storage_Source_reviewed_compiled_indexed_full_emitted_checked_boundary_repair_NOT_PERFORMED",
   "code_complete": true,
   "source_ready": true,
-  "readiness_gate": "Whole ordinary C++ Source complete at the actual canonical-state/live-parameter storage contract, with no missing native callees. Independent primary Source review/registered normal build pending. Ghidra analysis-boundary repair remains NOT PERFORMED and is not a functional Native dependency.",
+  "readiness_gate": "Whole ordinary actual-storage Source independently accepted and actual primary registered normal Win32 gate passed. SourceReady true for this43B algorithm only. Formal boundary repair remains NOT PERFORMED, separate from Source/build evidence; no Original heap/free/startup/runtime/ABI/game closure.",
   "source": "src/native_crt_sbh_region_lookup.cpp",
   "header": "include/bsp/native_crt_sbh_region_lookup.hpp",
   "documentation": "docs/GOAL_OCT15_CRT_SBH_REGION_LOOKUP.md",
@@ -310,7 +310,8 @@
     "guarded_driver": "local/goal_oct15_sbh_region_repair_driver.py",
     "guarded_driver_sha256": "cb417f03a60c40f2e3249aaf34d1d0192a2510b6be10dee00bc675692d79ca55",
     "execution_status": "NOT PERFORMED. Fixed transaction/driver retained as proposals only; no script policy change, restart, generic recreation, disassembly or Ghidra mutation was attempted.",
-    "future_application": "No automatic apply. Any future repair requires a permitted bounded capability, fresh exact preimages, coordinated ownership/write lock and primary-directed execution."
+    "future_application": "No automatic apply. Any future repair requires a permitted bounded capability, fresh exact preimages, coordinated ownership/write lock and primary-directed execution.",
+    "fixed_script_preimage_qualification": "Retained proposal uses historical pre-plate empty3Dcomment. Current3Dplate evidence is preserved separately; existing proposal/driver must NOT run unchanged or automatically. Any future permitted repair requires fresh complete comment/metadata preimages and primary-directed review."
   },
   "repair_transport": {
     "status": "CAPABILITY_UNAVAILABLE; metadata repair NOT PERFORMED, independent of ordinary actual-storage Source readiness",
@@ -347,8 +348,36 @@
       }
     },
     "repair": "NOT PERFORMED. Fresh post-plate typedmod4765 confirms formal18B+25B, botholdnames/false3Dthunk/4D CALL_RETURN unchanged. Source gate independent.",
-    "registration": "Pending primary after independent wholephysical Source review; does not depend on boundary repair.",
-    "build": "Pending later actual primary registered normal Win32 gate; no worker build authorized and prior mapper gate excluded.",
+    "registration": {
+      "performed_by": "primary integrator",
+      "project_source_count": 1,
+      "unique_archive_object": [
+        "bsp_core.dir\\Release\\native_crt_sbh_region_lookup.obj"
+      ],
+      "worker_CMake_change_or_queue": false
+    },
+    "build": {
+      "performed_by": "primary integrator, not worker",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "revision": "c606835ba8653eda14e67c47fbd2cdbb375f8ab6",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_region_combined_build.log",
+      "log_sha256": "d8fae58c7c107b1d72d35d65e01bfbdbee2cbe552f7b660b357c2f8788338ce5",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 13.98,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "immutable_receipt": "reports/goal_oct15_region_primary_review.json",
+      "immutable_receipt_sha256": "b018b949e7faf1da6c225fbe2dfd4ce17b0afb6a9bb5bd38e292b482f2f13c7f"
+    },
     "new_tests": 0,
     "new_entry_execution": false,
     "Original_ABI": false,
@@ -358,7 +387,19 @@
       "rows": 4,
       "failed": 0,
       "command": "python tools/verify_report_calls.py reports/goal_oct15_crt_sbh_region_lookup.json"
-    }
+    },
+    "existing_checks": {
+      "passed": 3,
+      "failed": 0,
+      "seconds": 13.98,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "scope": "Existing regression checks; native math differential seeds do not execute this new body."
+    },
+    "worker_build": false
   },
   "retained_read_only_receipts": [
     {
@@ -430,5 +471,36 @@
     "post_formal_typed": "local/goal_oct15_sbh_region_post_plate_formal_typed.json",
     "post_formal_typed_sha256": "63d6a52d96666514ef5ce57bd8183273352c54df34fa20241543c165e0013462",
     "post_formal_modification": "4765"
+  },
+  "emitted_review": {
+    "result": "PASSED full actual normal-build publicfunction and statichelper, independently inspected by worker and primary",
+    "retained_object": {
+      "path": "local\\goal_oct15_region_objects\\native_crt_sbh_region_lookup.obj",
+      "sha256": "dfbaf3666b376e5ab2cd198f398c103a6849c9cb61a666785a1a3935b98b5ced",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct15_region_objects\\native_crt_sbh_region_lookup.disasm.txt",
+      "symbols": "local\\goal_oct15_region_objects\\native_crt_sbh_region_lookup.symbols.txt"
+    },
+    "object_sha256": "dfbaf3666b376e5ab2cd198f398c103a6849c9cb61a666785a1a3935b98b5ced",
+    "disassembly_sha256": "0641ae1a6cf8340051a0d8c91ec196fb795a04277723147c3a1a36b126034f57",
+    "symbols_sha256": "b5b36cf2395b24767b6d6115e88c3e4f63b61131d5254a2cd652b6f07d80550e",
+    "public_function": "86B/36ops .text$mn0..55 inclusive; one positive external definition, zero calls/code relocations",
+    "uncalled_static_helper": "19B/10ops separateCOMDAT; rawloadSourceoperation, not an additional mapped Nativeprovider. Objecttotal105textB/46ops.",
+    "archive": {
+      "sha256_at_gate": "707566046eb120f88db93b2c96f144f34069c1634703ce7ca928e827ed633a1f",
+      "unique_identical_archive_bodies": 1,
+      "scope": "Immutable primary receipt, no forced executable reference/new execution."
+    },
+    "schedule": [
+      "09 selectsactualcountref;0C readsactualcount BEFORE0Eselectsbaseref/14actualbasewordread. PurecountLEA11 betweenactualglobalreads changes no payload-read schedule.",
+      "16 capturesDWORDwrappedend base+count*20;19CMP/1BJAE skipsloop onunsigneddescriptor>=end, includingemptyinterval withoutparameterbackingread.",
+      "20reloadsSourceparameter-backing pointer;23readsCURRENTactualparameterDWORD every reachediteration BEFORE31readsCURRENTdescriptor+C DWORD.",
+      "39subtractsmodDWORD;3C/41unsigned1MiBcomparison returnsrawdescriptor at50;43incrementsDWORDcursor20,46/48unsignedcomparison repeats;4A returnsnull.",
+      "Bothactualrawreads areinlineMOV operations; no SDK, callback, canonical-owner/provider call, invented guard or descriptor write."
+    ],
+    "private_frame_qualification": "Compiler reuses Sourceprivateargumenthome[EBP+8] at2B/2E as descriptor-wordaddress temporary, andFC/F8 private locals forrawvalues. These are Source bookkeeping, not Native actualparameter4 or originalframe aliases. Addedbindings/bookkeeping must stay stable/disjoint from reachedrawstorage. No Originalhome/privateframe/fault/ABI credit.",
+    "boundary_repair_credit": false,
+    "runtime_execution_credit": false
   }
 }

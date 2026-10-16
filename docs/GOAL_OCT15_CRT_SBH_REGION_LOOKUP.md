@@ -52,8 +52,12 @@ condition, not a missing native functional dependency: the full physical
 independently accepted the entire CPP/header against the complete assembly,
 including canonical volatile count/base references and the fresh raw argument
 read before the current descriptor word. The CPP/header hashes are unchanged.
-A later primary registered normal Win32 build remains pending; the mapper's
-earlier gate supplies no validation for this Source.
+The primary registered this Source once and ran `scripts/build.ps1` at
+`c606835ba8653eda14e67c47fbd2cdbb375f8ab6`. MSVC Release Win32 succeeded and
+all three existing checks passed in 13.98 seconds. The actual receipt is
+`reports/goal_oct15_region_primary_review.json`; the owned report pins its
+immutable receipt/log/archive/object hashes. The mapper's earlier gate supplies
+no region validation, and no worker build or new entry execution is claimed.
 
 A purpose-built, write-locked plate-only append at `00C11D3D` preserved the
 prior plate and left the full `00C11D61` inventory comment and both names
@@ -63,6 +67,28 @@ and CALL_RETURN override remain unchanged. The refreshed export still covers
 the formal 18-byte entry; it is not proof of a repaired 43-byte formal body.
 No rename, byte, instruction, prototype, body or flow write was performed.
 
-No worker CMake change, build or new test is authorized. General Original
-free/malloc, heap/bootstrap, SEH and runtime/gameplay closure remain false;
-see the separate free-readiness report.
+Full worker and primary inspection of the actual emitted object passed. The
+public function is 86 bytes / 36 instructions; an uncalled static raw-load
+helper is 19 bytes / 10 instructions, giving 105 text bytes in the object.
+That helper is a Source operation, not a second mapped Native provider. There
+are zero emitted calls and code relocations, one positive external public
+definition, and one identical archive body. Actual count read `0Ch` precedes
+actual base read `14h`; the intervening pure count LEA changes no payload-read
+schedule. Each reached loop reads the actual argument DWORD at `23h` before
+the current descriptor word at `31h`, with the exact unsigned end, 1 MiB and
+20-byte-stride behavior. The empty path skips both raw reads.
+
+The compiler reuses its Source private argument home `[EBP+8]` at `2Bh/2Eh`
+as an address temporary and uses private `-4/-8` cells for raw values. These
+stores concern Source bookkeeping, not the actual native argument cell or
+Original frame aliases. Supplied binding metadata must remain stable, and
+binding/bookkeeping storage must be disjoint from reached raw storage. No
+Original private-home, frame, fault or ABI identity is credited. The object
+SHA-256 is `dfbaf3666b376e5ab2cd198f398c103a6849c9cb61a666785a1a3935b98b5ced`.
+
+The retained repair transaction uses the historical pre-plate comment preimage
+and must not run unchanged or automatically. A future permitted repair needs
+fresh metadata/comment preimages and primary-directed review. No worker CMake
+change, build or new test was performed. General Original free/malloc,
+heap/bootstrap, SEH and runtime/gameplay closure remain false; see the separate
+free-readiness report. The boundary repair remains **NOT PERFORMED**.
