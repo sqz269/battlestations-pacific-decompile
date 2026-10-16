@@ -1,0 +1,1012 @@
+{
+  "packet": "goal16t_primary_integration",
+  "status": "independently_reviewed_complete_kernel_and_explicit_raw_frame_transfer_build_tested_Ghidra_saved",
+  "generated_utc": "2026-10-16T10:08:51.550882+00:00",
+  "validated_Source_commit": "244501f2999588f2e1e4a6d20652b2d374fcb926",
+  "Main_input": "f5229a95a28a2b3a314689453bb5c4e1abc288f2",
+  "counts": {
+    "new_complete_Native_addresses": 1,
+    "new_complete_Native_bytes": 204,
+    "new_Native_instructions": 59,
+    "new_Source_functions": 2,
+    "new_Source_executable_bytes": 221,
+    "private_kernel_bytes": 204,
+    "public_adapter_bytes": 17,
+    "adapter_instructions": 4,
+    "adapter_Native_address_credit": 0,
+    "exact_Native_to_kernel_entries_including_prior": 17,
+    "exact_Native_to_kernel_bytes_including_prior": 922,
+    "preserved_and_new_Source_modules": 14,
+    "whole_Source_executable_bytes": 5218,
+    "selected_unique_real_public_bindings": 35
+  },
+  "author_pin": "a5340ec811e202315ee818d27a1061971d2f83fd",
+  "author_git_report_sha256": "6080460c38b5aed42a92f7a5b82fa409c532632d538a38da7a0fbb569c62be76",
+  "author_working_report_sha256": "49ac2bd157a3cd3e9d9a654f22cf5f17ab0a81c68ff151a0cb8f6b785319b244",
+  "upstream_R_design": {
+    "design_sha256": "fe116c9771182cec1f504fc5e4235036885c47a8cd77d3866f48d2e19a80a0a4",
+    "receipt_sha256": "2a0b54ee286c7dbfa50ae98a029a27df6c6cf7c65a0cea1ef817a273472e923c",
+    "Native_sha256": "7953b12eaf2678a3aefd3a87eb5b178e74bea8e5cca2e1b1f375483755acb630"
+  },
+  "frozen_author": {
+    "handoff_sha256": "2ec0e0389984ff97a5f6a7082bbd0fce6fb5e1817d7229083247d562ac05834f",
+    "receipt_sha256": "bd67bd56396269074bd7afbb41d43b7fe573d88f0934bb67b06540d5ae2f6769",
+    "all_artifact_records_verified": 2485,
+    "all_artifact_bytes_verified": 342635662,
+    "selected_primary_copied_files": 44,
+    "selected_primary_copied_bytes": 94215636,
+    "primary_receipt": "local/goal16t_root/author_receipt.json",
+    "primary_receipt_sha256": "4f7e0e3cd8d1ee3db058c2a6f1c37b8d1d4f85072755b403a5e7e5037f16b346",
+    "prior_transitive_review_folders": "Immutable references retained in place; not recursively recopied or rehashed."
+  },
+  "independent_review": {
+    "path": "local/goal16t_root/review/review.json",
+    "sha256": "d82c7c658ac945b46a5a380725b25cdb41744e0b24a2a362bb918b613a595618",
+    "Root_receipt": "local/goal16t_root/review/receipt.json",
+    "Root_receipt_sha256": "4b5f9217b113949f2bc9487019d791dcb1c21d0e299cbe919fa44afb13e367ea",
+    "status": "READY",
+    "narrow_LEA_authorization": "T author brief explicitly permitted one three-byte LEA encoded with three emits plus named instruction comment. Independent review initially lacked that exception; primary confirmed exact documented8D0C36 operation. No semantic blocker, new universal byteidentity rule, Source correction or rebuild."
+  },
+  "current_whole_proof": {
+    "path": "local/goal16t_root/final_proof/proof.json",
+    "sha256": "a041b37c30d20668f08f63e4a412d54ee5002eda07dfdf41a4ec97ede7f75374",
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "archive": {
+      "sha256": "a62b218f88b4c883261b4c772acd47a80df789885b3a12ae1d209a34016eb151",
+      "parsed_actual_COFF_members": 2470,
+      "bindings": [
+        {
+          "module": "native_traffic_range_erase_16h",
+          "member_offset": 83856606,
+          "whole_member_bytes": 1919,
+          "member_sha256": "42d4ad593c98f1b6036defd907334957a938613d8dfa4e4f6aa08a894b26a79a",
+          "public_symbols": [
+            "?erase_native_traffic_pod18_range_0048e400@bsp@@YIPAXPAXI0I0IPBX@Z",
+            "?erase_native_traffic_dword_range_00489110@bsp@@YIPAXPAXI0I0IPBX@Z"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_traffic_pod18_helpers",
+          "member_offset": 36138198,
+          "whole_member_bytes": 1978,
+          "member_sha256": "c5c471f4a510bc6b6ccdc26acb597ad0885b4d093b316f041c46de27cb67f0dc",
+          "public_symbols": [
+            "?size_native_traffic_pod18_0047c4d0@bsp@@YIIPBX@Z",
+            "?copy_native_traffic_pod18_0047fc30@bsp@@YAPAXPBX0PAXIII@Z",
+            "?copy_uninitialized_native_traffic_pod18_004841a0@bsp@@YIPAXPBX0PAXIII@Z",
+            "?fill_n_uninitialized_native_traffic_pod18_00486be0@bsp@@YIXPAXIPBXIII@Z",
+            "?fill_n_native_traffic_pod18_dispatch_0048d2f0@bsp@@YIPAXIIPAXIPBX@Z",
+            "?copy_native_traffic_pod18_dispatch_00486850@bsp@@YAPAXPBX0PAX@Z"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_traffic_pointer_erase",
+          "member_offset": 83858586,
+          "whole_member_bytes": 1583,
+          "member_sha256": "7c52c0879fc85111d80b815d2858390c6c7373770d47acc179f3ef20dc4a803c",
+          "public_symbols": [
+            "?erase_native_traffic_pointer_range_00488ff0@bsp@@YIPAXPAX00I0IPBX@Z"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_invalid_parameter_noinfo_call",
+          "member_offset": 84225466,
+          "whole_member_bytes": 808,
+          "member_sha256": "2296a4e057ae6261aa09a83117676bf5c9ad79ff8ff26ea167988764d9224e7d",
+          "public_symbols": [
+            "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_tagged_sizes_bb_16j",
+          "member_offset": 36656984,
+          "whole_member_bytes": 1400,
+          "member_sha256": "fa99cc1165dffe64010cc56cb5afd626717eea36d42611463c8d278040a9f7d0",
+          "public_symbols": [
+            "@bsp_tagged_sizes_bb_16j_00bb40e0@4",
+            "@bsp_tagged_sizes_bb_16j_00bb41e0@4",
+            "@bsp_tagged_sizes_bb_16j_00bba220@4"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_tagged_leaf_bcbd_16k",
+          "member_offset": 36658444,
+          "whole_member_bytes": 2045,
+          "member_sha256": "a91946377dea4d89893aab4d02d288e8a68293291aa05fa3db08359438767889",
+          "public_symbols": [
+            "_bsp_tagged_bcbd_16k_00bc04b0",
+            "@bsp_tagged_bcbd_16k_00bc3030@4",
+            "@bsp_tagged_bcbd_16k_00bc3080@4",
+            "@bsp_tagged_bcbd_16k_00bc3100@4",
+            "@bsp_tagged_bcbd_16k_00bc7a60@4",
+            "_bsp_tagged_bcbd_16k_00bd1830"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_tagged_float_bc_16l",
+          "member_offset": 36707410,
+          "whole_member_bytes": 989,
+          "member_sha256": "72898570d00b6e22f439fe8d36d309d6a4af3dfa8a41412ad8665b8e98356333",
+          "public_symbols": [
+            "@bsp_tagged_float_bc_16l_00bc3010@4",
+            "@bsp_tagged_float_bc_16l_00bc7aa0@4",
+            "@bsp_tagged_float_bc_16l_00bc7ab0@4"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_pod8_range",
+          "member_offset": 40425186,
+          "whole_member_bytes": 1388,
+          "member_sha256": "9030b9081be87cf7fb4ac71d58ca3c0853e7fb0078cbfa32779d717984dc20e8",
+          "public_symbols": [
+            "?copy_native_pod8_range_00419960@bsp@@YIPAXPBX0PAXIII@Z",
+            "?fill_n_native_pod8_range_0041c7e0@bsp@@YIXPAXIPBXIII@Z",
+            "?fill_n_native_pod8_dispatch_0041e3c0@bsp@@YIPAXIIPAXIPBX@Z",
+            "?copy_native_pod8_dispatch_0041f4e0@bsp@@YIPAXIIPBX0PAX@Z"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_pod8_inplace_range",
+          "member_offset": 40438228,
+          "whole_member_bytes": 978,
+          "member_sha256": "3dcc61f05a7921d7839558396e58f70562d9f24fb8d1f26c1ee1f6f3643abf2e",
+          "public_symbols": [
+            "?fill_native_pod8_range_0041c680@bsp@@YAXPAXPBX1@Z",
+            "?copy_backward_native_pod8_range_0041dac0@bsp@@YAPAXPBX0PAX@Z"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_zlib_raw_reset_type_bc",
+          "member_offset": 35495872,
+          "whole_member_bytes": 1047,
+          "member_sha256": "232aef4bd1d04a39f80fc97a0fa3ad81c5f140cf936cdf10f0405ead8eb11de4",
+          "public_symbols": [
+            "@bsp_native_zlib_raw_reset_00bc9650@4",
+            "@bsp_native_zlib_raw_type_00bcee90@4"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_zlib_raw_adler32_bc",
+          "member_offset": 35498124,
+          "whole_member_bytes": 1003,
+          "member_sha256": "79c4899d938fbd793c353cf2e12df4cc027dc8b1c07fc8479e2e3544eea3e394",
+          "public_symbols": [
+            "@bsp_native_zlib_raw_adler32_00bcd720@12"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_resource_reader_references",
+          "member_offset": 38332912,
+          "whole_member_bytes": 2805,
+          "member_sha256": "5116f2a5bfc256cdf1a1fb8c43cdce440f8958009c7149b057cebb5b1879bf1a",
+          "public_symbols": [
+            "?release_native_structured_node_handle_00be9ed0@bsp@@YAXPAXAAVNativeAdoptedSubstreamDispatch@1@@Z",
+            "?release_native_resource_slot_00483850@bsp@@YAPAXPAXAAVNativeAdoptedSubstreamDispatch@1@@Z"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_adopted_substream",
+          "member_offset": 48037150,
+          "whole_member_bytes": 14699,
+          "member_sha256": "0afed1dae40466466d649e8b11b490bf94bf2b1b771c09b5e5534ed09d4aea52",
+          "public_symbols": [
+            "?callable_native_adopted_substream_dispatch@bsp@@YAAAVNativeAdoptedSubstreamDispatch@1@XZ"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        },
+        {
+          "module": "native_zlib_raw_pqdownheap_bc",
+          "member_offset": 35496980,
+          "whole_member_bytes": 1083,
+          "member_sha256": "4e30c25c807fa3081d7a2e241d8da9c4069386887e5d38b2ad6e7ef8750792da",
+          "public_symbols": [
+            "_bsp_native_zlib_pqdownheap_frame_00bcde90"
+          ],
+          "both_dictionaries_match": true,
+          "all_actual_COFF_public_providers_unique": true
+        }
+      ]
+    },
+    "new_complete_Source_module": {
+      "module": "native_zlib_raw_pqdownheap_bc",
+      "reference_sha256": "b13f1ee3d606933d4ace80f8221f5954a386967488ce3d619aeb0fc059fe9536",
+      "current_sha256": "4e30c25c807fa3081d7a2e241d8da9c4069386887e5d38b2ad6e7ef8750792da",
+      "complete_executable_sections": [
+        {
+          "section": 3,
+          "size": 204,
+          "hex": "518b904814000055568b7424108bacb0540b00008d0c363bca896c24080f8f9c000000537d348bb488580b00008bac88540b00000fb714b70fb71caf663bd3721275138a9406501400003a942850140000770383c1018b6c240c8bb488540b00000fb714af0fb71cb7663bd3722d75108a9428501400003a940650140000762d8b54241489b490540b00008b9048140000894c241403c93bca7e898b4c24145b5e89ac88540b00005d59c204008b5424145b5e89ac90540b00005d59c2040089acb0540b00005e5d59c20400",
+          "relocs": [],
+          "symbols": [
+            [
+              6,
+              ".text$mn",
+              0,
+              0,
+              3
+            ],
+            [
+              11,
+              "?pqdownheap_body@?A0xadcfbe6f@@YGXH@Z",
+              0,
+              32,
+              3
+            ]
+          ]
+        },
+        {
+          "section": 4,
+          "size": 17,
+          "hex": "8b4424048b7c24088b64240ce900000000",
+          "relocs": [
+            {
+              "offset": 13,
+              "type": 20,
+              "target": "?pqdownheap_body@?A0xadcfbe6f@@YGXH@Z",
+              "target_index": 11
+            }
+          ],
+          "symbols": [
+            [
+              8,
+              ".text$mn",
+              0,
+              0,
+              3
+            ],
+            [
+              10,
+              "_bsp_native_zlib_pqdownheap_frame_00bcde90",
+              0,
+              32,
+              2
+            ]
+          ]
+        }
+      ]
+    },
+    "new_complete_Source_metadata": {
+      "module": "native_zlib_raw_pqdownheap_bc",
+      "complete_kernel_bytes": 204,
+      "complete_adapter_bytes": 17,
+      "Source_functions": 2,
+      "all_relocations": [
+        {
+          "section": 4,
+          "offset": 13,
+          "type": 20,
+          "target": "?pqdownheap_body@?A0xadcfbe6f@@YGXH@Z",
+          "target_section": 3,
+          "target_value": 0
+        }
+      ],
+      "undefined_providers": [],
+      "extra_helpers": false,
+      "all_sections": [
+        {
+          "name": ".drectve",
+          "size": 47,
+          "raw": 220,
+          "reloc": 0,
+          "relocs": 0,
+          "flags": 1051136
+        },
+        {
+          "name": ".debug$S",
+          "size": 208,
+          "raw": 267,
+          "reloc": 0,
+          "relocs": 0,
+          "flags": 1108344896
+        },
+        {
+          "name": ".text$mn",
+          "size": 204,
+          "raw": 475,
+          "reloc": 0,
+          "relocs": 0,
+          "flags": 1615859744
+        },
+        {
+          "name": ".text$mn",
+          "size": 17,
+          "raw": 679,
+          "reloc": 696,
+          "relocs": 1,
+          "flags": 1615859744
+        },
+        {
+          "name": ".chks64",
+          "size": 40,
+          "raw": 706,
+          "reloc": 0,
+          "relocs": 0,
+          "flags": 2560
+        }
+      ],
+      "all_symbols": {
+        "0": {
+          "name": "@comp.id",
+          "value": 17141140,
+          "sec": -1,
+          "kind": 0,
+          "storage": 3
+        },
+        "1": {
+          "name": "@feat.00",
+          "value": 2147549585,
+          "sec": -1,
+          "kind": 0,
+          "storage": 3
+        },
+        "2": {
+          "name": ".drectve",
+          "value": 0,
+          "sec": 1,
+          "kind": 0,
+          "storage": 3
+        },
+        "4": {
+          "name": ".debug$S",
+          "value": 0,
+          "sec": 2,
+          "kind": 0,
+          "storage": 3
+        },
+        "6": {
+          "name": ".text$mn",
+          "value": 0,
+          "sec": 3,
+          "kind": 0,
+          "storage": 3
+        },
+        "8": {
+          "name": ".text$mn",
+          "value": 0,
+          "sec": 4,
+          "kind": 0,
+          "storage": 3
+        },
+        "10": {
+          "name": "_bsp_native_zlib_pqdownheap_frame_00bcde90",
+          "value": 0,
+          "sec": 4,
+          "kind": 32,
+          "storage": 2
+        },
+        "11": {
+          "name": "?pqdownheap_body@?A0xadcfbe6f@@YGXH@Z",
+          "value": 0,
+          "sec": 3,
+          "kind": 32,
+          "storage": 3
+        },
+        "12": {
+          "name": ".chks64",
+          "value": 0,
+          "sec": 5,
+          "kind": 0,
+          "storage": 3
+        }
+      },
+      "Source_only_adapter_noreturn": true,
+      "Original_no_return": false
+    },
+    "new_Native_entry": {
+      "address": "00bcde90",
+      "Native_bytes": 204,
+      "Source_bytes": 204,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "?pqdownheap_body@?A0xadcfbe6f@@YGXH@Z",
+      "instructions": [
+        {
+          "address": "00bcde90",
+          "hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00bcde91",
+          "hex": "8b9048140000",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x1448]"
+        },
+        {
+          "address": "00bcde97",
+          "hex": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00bcde98",
+          "hex": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00bcde99",
+          "hex": "8b742410",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "00bcde9d",
+          "hex": "8bacb0540b0000",
+          "mnemonic": "mov",
+          "operands": "ebp, dword ptr [eax + esi*4 + 0xb54]"
+        },
+        {
+          "address": "00bcdea4",
+          "hex": "8d0c36",
+          "mnemonic": "lea",
+          "operands": "ecx, [esi + esi]"
+        },
+        {
+          "address": "00bcdea7",
+          "hex": "3bca",
+          "mnemonic": "cmp",
+          "operands": "ecx, edx"
+        },
+        {
+          "address": "00bcdea9",
+          "hex": "896c2408",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 8], ebp"
+        },
+        {
+          "address": "00bcdead",
+          "hex": "0f8f9c000000",
+          "mnemonic": "jg",
+          "operands": "0xbcdf4f"
+        },
+        {
+          "address": "00bcdeb3",
+          "hex": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00bcdeb4",
+          "hex": "7d34",
+          "mnemonic": "jge",
+          "operands": "0xbcdeea"
+        },
+        {
+          "address": "00bcdeb6",
+          "hex": "8bb488580b0000",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [eax + ecx*4 + 0xb58]"
+        },
+        {
+          "address": "00bcdebd",
+          "hex": "8bac88540b0000",
+          "mnemonic": "mov",
+          "operands": "ebp, dword ptr [eax + ecx*4 + 0xb54]"
+        },
+        {
+          "address": "00bcdec4",
+          "hex": "0fb714b7",
+          "mnemonic": "movzx",
+          "operands": "edx, word ptr [edi + esi*4]"
+        },
+        {
+          "address": "00bcdec8",
+          "hex": "0fb71caf",
+          "mnemonic": "movzx",
+          "operands": "ebx, word ptr [edi + ebp*4]"
+        },
+        {
+          "address": "00bcdecc",
+          "hex": "663bd3",
+          "mnemonic": "cmp",
+          "operands": "dx, bx"
+        },
+        {
+          "address": "00bcdecf",
+          "hex": "7212",
+          "mnemonic": "jb",
+          "operands": "0xbcdee3"
+        },
+        {
+          "address": "00bcded1",
+          "hex": "7513",
+          "mnemonic": "jne",
+          "operands": "0xbcdee6"
+        },
+        {
+          "address": "00bcded3",
+          "hex": "8a940650140000",
+          "mnemonic": "mov",
+          "operands": "dl, byte ptr [esi + eax + 0x1450]"
+        },
+        {
+          "address": "00bcdeda",
+          "hex": "3a942850140000",
+          "mnemonic": "cmp",
+          "operands": "dl, byte ptr [eax + ebp + 0x1450]"
+        },
+        {
+          "address": "00bcdee1",
+          "hex": "7703",
+          "mnemonic": "ja",
+          "operands": "0xbcdee6"
+        },
+        {
+          "address": "00bcdee3",
+          "hex": "83c101",
+          "mnemonic": "add",
+          "operands": "ecx, 1"
+        },
+        {
+          "address": "00bcdee6",
+          "hex": "8b6c240c",
+          "mnemonic": "mov",
+          "operands": "ebp, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "00bcdeea",
+          "hex": "8bb488540b0000",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [eax + ecx*4 + 0xb54]"
+        },
+        {
+          "address": "00bcdef1",
+          "hex": "0fb714af",
+          "mnemonic": "movzx",
+          "operands": "edx, word ptr [edi + ebp*4]"
+        },
+        {
+          "address": "00bcdef5",
+          "hex": "0fb71cb7",
+          "mnemonic": "movzx",
+          "operands": "ebx, word ptr [edi + esi*4]"
+        },
+        {
+          "address": "00bcdef9",
+          "hex": "663bd3",
+          "mnemonic": "cmp",
+          "operands": "dx, bx"
+        },
+        {
+          "address": "00bcdefc",
+          "hex": "722d",
+          "mnemonic": "jb",
+          "operands": "0xbcdf2b"
+        },
+        {
+          "address": "00bcdefe",
+          "hex": "7510",
+          "mnemonic": "jne",
+          "operands": "0xbcdf10"
+        },
+        {
+          "address": "00bcdf00",
+          "hex": "8a942850140000",
+          "mnemonic": "mov",
+          "operands": "dl, byte ptr [eax + ebp + 0x1450]"
+        },
+        {
+          "address": "00bcdf07",
+          "hex": "3a940650140000",
+          "mnemonic": "cmp",
+          "operands": "dl, byte ptr [esi + eax + 0x1450]"
+        },
+        {
+          "address": "00bcdf0e",
+          "hex": "762d",
+          "mnemonic": "jbe",
+          "operands": "0xbcdf3d"
+        },
+        {
+          "address": "00bcdf10",
+          "hex": "8b542414",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 0x14]"
+        },
+        {
+          "address": "00bcdf14",
+          "hex": "89b490540b0000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + edx*4 + 0xb54], esi"
+        },
+        {
+          "address": "00bcdf1b",
+          "hex": "8b9048140000",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x1448]"
+        },
+        {
+          "address": "00bcdf21",
+          "hex": "894c2414",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x14], ecx"
+        },
+        {
+          "address": "00bcdf25",
+          "hex": "03c9",
+          "mnemonic": "add",
+          "operands": "ecx, ecx"
+        },
+        {
+          "address": "00bcdf27",
+          "hex": "3bca",
+          "mnemonic": "cmp",
+          "operands": "ecx, edx"
+        },
+        {
+          "address": "00bcdf29",
+          "hex": "7e89",
+          "mnemonic": "jle",
+          "operands": "0xbcdeb4"
+        },
+        {
+          "address": "00bcdf2b",
+          "hex": "8b4c2414",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x14]"
+        },
+        {
+          "address": "00bcdf2f",
+          "hex": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "00bcdf30",
+          "hex": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00bcdf31",
+          "hex": "89ac88540b0000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + ecx*4 + 0xb54], ebp"
+        },
+        {
+          "address": "00bcdf38",
+          "hex": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": "00bcdf39",
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx"
+        },
+        {
+          "address": "00bcdf3a",
+          "hex": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "00bcdf3d",
+          "hex": "8b542414",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 0x14]"
+        },
+        {
+          "address": "00bcdf41",
+          "hex": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "00bcdf42",
+          "hex": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00bcdf43",
+          "hex": "89ac90540b0000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + edx*4 + 0xb54], ebp"
+        },
+        {
+          "address": "00bcdf4a",
+          "hex": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": "00bcdf4b",
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx"
+        },
+        {
+          "address": "00bcdf4c",
+          "hex": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "00bcdf4f",
+          "hex": "89acb0540b0000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + esi*4 + 0xb54], ebp"
+        },
+        {
+          "address": "00bcdf56",
+          "hex": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00bcdf57",
+          "hex": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": "00bcdf58",
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx"
+        },
+        {
+          "address": "00bcdf59",
+          "hex": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ]
+    },
+    "old13_whole_Source_objects_byte_identical": true
+  },
+  "builds": {
+    "preliminary": {
+      "Main_input": "32c1012be9da4475f5512cf20a0f3c172c122c82",
+      "wall_seconds": 19.8324619,
+      "source_pin": "974fcfbfec364aea26f7b6be5d76d5e8d01c00bd",
+      "end_utc": "2026-10-16T09:52:00.2725008Z",
+      "start_utc": "2026-10-16T09:51:40.4400389Z",
+      "exit_code": 0,
+      "log": "local/goal16t_root/build.log"
+    },
+    "final": {
+      "Main_input": "f5229a95a28a2b3a314689453bb5c4e1abc288f2",
+      "start_utc": "2026-10-16T10:07:32.3381645Z",
+      "wall_seconds": 23.9829163,
+      "source_pin": "244501f2999588f2e1e4a6d20652b2d374fcb926",
+      "end_utc": "2026-10-16T10:07:56.3210808Z",
+      "log": "local/goal16t_root/final_build.log",
+      "exit_code": 0
+    },
+    "final_checks": "3/3 PASS; exact durations retained in final_build.log",
+    "actual_command_capture": "local/goal16t_root/final_compile_commands/selected.json",
+    "no_new_tests_or_probes": true
+  },
+  "Ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "write_lock": true,
+    "saved": true,
+    "retained_provisional_library_name": "pqdownheap__prov",
+    "Original_no_return": false,
+    "Original_prototype_unchanged": true,
+    "Original_standard_calling_convention_not_invented": true,
+    "Source_noreturn_not_applied_to_Original": true,
+    "old_values_and_comments": "local/goal16t_root/annotations.json",
+    "saved_typed_modification": "6866",
+    "affected_export_refreshed": true,
+    "snapshot_forced_and_index_refreshed": true
+  },
+  "actual_physical_contract": [
+    "PUSH ECX precedes first heap_len read, so its incoming bits can be observed through a backing/frame alias.",
+    "Initial heap capture and signed doubled-index CMP precede scratch overwrite; scratch write precedes signed JG.",
+    "Signed JGE at loop head reuses surviving CMP flags. Equality skips right-child path and does not reload scratch.",
+    "Right heap/frequency/depth read before left; unsigned WORD frequency and BYTE depth tie picks right when equal.",
+    "Cached root scratch reload occurs only on two-child route. Root frequency read before chosen-child frequency; root depth read before chosen-child depth.",
+    "Promotion reads actual index, writes heap, rereads heap_len, writes actual index slot, doubles selected child with DWORD wrap, signed compares and JLEs.",
+    "Fast-exit final heap write precedes every POP. Loop exits POP EBX/ESI before final heap write but POP EBP/ECX and RET afterward.",
+    "All three RET4 exits read the current real continuation; normal completion ESP=S+8 and ECX=current scratch word.",
+    "No assumed termination for malformed/wrapped indices or mutable aliases; no cap/guard/snapshot/transaction.",
+    "EAX backing and EDI tree untouched within kernel; EDX and final arithmetic flags remain path-specific; actual saved-cell values, not unconditional restored-register identities."
+  ],
+  "actual_frame": [
+    {
+      "offset": 4,
+      "name": "actual mutable index argument",
+      "reads": [
+        "00bcde99",
+        "00bcdf10",
+        "00bcdf2b",
+        "00bcdf3d"
+      ],
+      "writes": [
+        "00bcdf21",
+        "possible aliased heap stores"
+      ]
+    },
+    {
+      "offset": 0,
+      "name": "actual continuation word",
+      "reads": [
+        "selected RET4"
+      ],
+      "writes": [
+        "possible aliased heap stores"
+      ]
+    },
+    {
+      "offset": -4,
+      "name": "actual scratch",
+      "writes": [
+        "00bcde90 PUSH ECX",
+        "00bcdea9 cached EBP",
+        "possible aliased stores"
+      ],
+      "reads": [
+        "00bcdee6 two-child route only",
+        "final POP ECX"
+      ]
+    },
+    {
+      "offset": -8,
+      "name": "actual saved EBP",
+      "writes": [
+        "PUSH EBP",
+        "possible alias"
+      ],
+      "reads": [
+        "exit POP EBP"
+      ]
+    },
+    {
+      "offset": -12,
+      "name": "actual saved ESI",
+      "writes": [
+        "PUSH ESI",
+        "possible alias"
+      ],
+      "reads": [
+        "exit POP ESI"
+      ]
+    },
+    {
+      "offset": -16,
+      "name": "actual saved EBX only on loop path",
+      "writes": [
+        "PUSH EBX",
+        "possible alias"
+      ],
+      "reads": [
+        "loop-exit POP EBX"
+      ]
+    }
+  ],
+  "adapter_contract": {
+    "symbol": "_bsp_native_zlib_pqdownheap_frame_00bcde90",
+    "bytes": 17,
+    "instructions": 4,
+    "real_inputs": [
+      "backing",
+      "tree",
+      "actual kernel-entry stack address"
+    ],
+    "named_instructions": [
+      "MOV EAX,DWORD PTR [ESP+4]",
+      "MOV EDI,DWORD PTR [ESP+8]",
+      "MOV ESP,DWORD PTR [ESP+0Ch]",
+      "JMP genuine private Source pqdownheap_body"
+    ],
+    "physical_qualifications": [
+      "Three extra actual DWORD reads from public Source call frame before kernel entry. Each can fault in that order.",
+      "EAX/EDI/ESP assigned actual three inputs; ECX/EDX/EBX/EBP/ESI and flags unchanged by these four instructions.",
+      "No Source caller nonvolatile restoration or normal-return ABI is claimed; a separately established real continuation is required for future consumer adoption.",
+      "No copied index/scratch, shadow stack, fake provider/global/class, zero-initialized register, null/range guard or narrowed index/alias domain."
+    ],
+    "actual_binding": {
+      "adapter_section": 4,
+      "operand_offset": 13,
+      "relocation": {
+        "offset": 13,
+        "type": 20,
+        "symbol": "?pqdownheap_body@?A0xa91f0f31@@YGXH@Z",
+        "addend_hex": "00000000"
+      },
+      "resolved_defined_kernel_section": 3,
+      "resolved_kernel_offset": 0
+    },
+    "no_copied_index_or_scratch_or_synthetic_frame_or_continuation": true
+  },
+  "actual_CPU_state_notice": "Incoming ECX/EBP/ESI/EBX are not invented formal arguments, but their actual PUSH writes can affect aliased memory before later loads. Full initial CPU/memory state remains part of the physical equivalence envelope.",
+  "malformed_domain": "Every32-bit pointer/index/heap_len pattern, every WORD frequency/BYTE depth, signed/wrapped arithmetic and actual frame/backing/tree/depth/control aliases retain literal instructions. No termination/valid-return guarantee for malformed states, and no clamp/cap/snapshot/repair.",
+  "physical_limits": [
+    "No exact Original declaration/class/layout/version/compiler flag recovery.",
+    "Public adapter is a new control-transfer interface, not an ordinary returning C++ or drop-in Native ABI. Extra reads, frame selection, code/fault/return placement and ordinary caller cleanup are explicit differences.",
+    "All malformed index and memory bits retain actual machine operations; ordinary completion and termination are not promised for invalid or cyclic states.",
+    "No portable C++ memory/exception/continuation equivalence claim. Original SEH/unwind, absolute self/code aliases, full physical ABI, caller build_tree adoption and gameplay remain unproved.",
+    "No x87/SIMD; FP environment/FIP remains inherited, not normalized."
+  ],
+  "additional_limits": [
+    "No selected body/adapter invocation, measured fault, fixture, ordinary-return ABI, real continuation consumer, parent build_tree adoption, runtime unwind or game validation.",
+    "Kernel204-byte identity is strong evidence for this artifact, not a universal Source admission gate. Whole module221B includes217 fixed bytes and one real relocated4-byte JMP operand.",
+    "The known Native caller sites remain Native and are not redirected by this packet."
+  ],
+  "corrections": [
+    "Prescribed merge resolver unioned CMake/address/append-only reconstruction conflicts; primary verified only one added BC name/function row each and exact previous Source-registration multiset plus one new unit.",
+    "The three explicit8D0C36 LEA bytes are a narrow authorized named-operation encoding choice, recorded transparently, not a clipped or opaque Native body. No Source/compiler rejection or new execution occurred."
+  ],
+  "timing": {
+    "P_readiness_seconds": 943.721305,
+    "P_to_R_scheduling_gap_seconds": 722.278695,
+    "R_design_seconds": 782.503525,
+    "R_to_T_scheduling_gap_seconds": 122.496475,
+    "T_author_inclusive_seconds": 791.885724,
+    "full_P_to_T_handoff_seconds": 3362.885724,
+    "author_handoff": {
+      "P_readiness_seconds_separate": 943.721305,
+      "P_end_utc": "2026-10-16T09:04:03.721305+00:00",
+      "P_to_R_administrative_gap_seconds": 722.278695,
+      "R_design_start_utc": "2026-10-16T09:16:06+00:00",
+      "R_design_seconds_separate": 782.503525,
+      "R_release_hash_seal_utc": "2026-10-16T09:29:08.503525+00:00",
+      "R_to_T_dispatch_gap_seconds": 122.496475,
+      "implementation_start_utc": "2026-10-16T09:31:11+00:00",
+      "report_utc": "2026-10-16T09:40:54.388747+00:00",
+      "strict_and_normal_build_included": true,
+      "final_commit_release_hash_seal_endpoint": "local/zlib_bc_raw_pqdownheap/final_handoff.json",
+      "independent_review_integration_runtime_costs": "unperformed/separate",
+      "speedup_claim": false
+    },
+    "independent_review": {
+      "start_utc": "2026-10-16T09:37:11+00:00",
+      "sealed_utc": "2026-10-16T10:00:18.618478+00:00",
+      "inclusive_to_seal_seconds": 1387.618478,
+      "through_release_seconds": 1413,
+      "upstream_artifacts_verified": 2591,
+      "upstream_bytes_verified": 346649119,
+      "selected_primary_files_copied": 27,
+      "selected_primary_bytes_copied": 95414472
+    },
+    "scope": "Actual preservation/compiler/normalbuild/checks/metadata/corrections/commit/release/seal and primary integration/Ghidra/report overhead retained. Overlapping review/author intervals not summed serially; no measured throughput speedup claim."
+  },
+  "runtime": {
+    "new_tests": 0,
+    "new_probes": 0,
+    "selected_body_execution": false,
+    "dynamically_measured_faults": false,
+    "ordinary_Cpp_return_API": false,
+    "caller_or_parent_adoption": false,
+    "installed_binary_changed": false,
+    "game_validated": false
+  },
+  "remaining": [
+    "Custom Original formal declarations, zlib private layout/version/compiler flags remain unrecovered; chosen Source spellings are explicit new interface hypotheses.",
+    "Public adapter changes EAX/EDI/ESP from three real Source argument reads and jumps to genuine private kernel. It abandons its ordinary call frame; a real consumer continuation/register/stack protocol needs separate evidence.",
+    "All current kernel bytes match Native; extra adapter prefixes, Original absolute placement/code aliases/fault and return EIP, Native SEH/unwind/fullABI and parent/game adoption remain unproved.",
+    "U scan_tree228B has a closed MAX design and W implementation underway; V gen_bitlen529B/two ranges is read-only readiness. Neither receives this packet credit.",
+    "Continuing reconstruction goal remains active."
+  ]
+}

@@ -1,0 +1,11 @@
+# GOAL16T reconstruction batch
+
+One complete Native pqdownheap body covers **204 bytes / 59 instructions**. The Source module contains the whole private custom-register kernel plus a genuine 17-byte/four-instruction borrowed-frame transfer adapter: **two Source functions, 221 executable bytes, one Native address**. The adapter receives zero Native credit.
+
+Validated Source: `244501f2999588f2e1e4a6d20652b2d374fcb926`. The final normal MSVC Win32 build passes all three existing checks. The primary proof accounts for fourteen whole modules (5218 executable bytes), seventeen Native-to-kernel whole identities (922 bytes, including preserved work), thirty-five selected real public providers and both actual archive dictionaries. All thirteen prior whole Source objects remain byte-identical. [The batch report](../reports/goal16t_reconstruction_batch.json) records pins, hashes, complete extents, review, ABI and time.
+
+The kernel consumes EAX backing, EDI tree and the actual mutable index at entry ESP+4. It retains signed/wrapped index arithmetic, unsigned WORD frequencies/BYTE depths, incoming PUSH aliases, mutable scratch/saved/control cells, late bound/index reads and all three RET4 exits. The public cdecl/noreturn Source adapter reads three real arguments, loads EAX/EDI/ESP and JMPs the genuine private kernel. It supplies no copied frame, normal-return trampoline, fake owner/provider or domain clamp. A consumer must establish a real continuation and stack/register protocol separately.
+
+Independent review accepted the complete kernel/adapter/current Core binding and unchanged 2398 prior member payloads. The single explicitly encoded three-byte LEA has a named instruction comment and narrow author-brief permission; that clarification required no Source correction or rebuild. No selected body, fault or new test/probe executed.
+
+The correct provisional library name remains. Ghidra evidence comments were saved under the write lock with old values/comments preserved. Original no_return remains false and its unrecovered standard prototype remains unchanged; Source-only noreturn was not applied to Original. Export, snapshot and index were refreshed. Ordinary returning C++ ABI, absolute code/fault placement, full Original ABI/SEH/unwind, caller/parent adoption and game validation remain open. The reconstruction goal stays active.
