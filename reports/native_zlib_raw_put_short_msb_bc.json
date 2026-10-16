@@ -1,7 +1,7 @@
 {
   "packet": "GOAL16AQ",
-  "status": "strict_compile_passed_registered_normal_build_and_independent_review_pending",
-  "utc": "2026-10-16T13:11:32.969744+00:00",
+  "status": "normal_registered_build_and_static_artifact_passed_independent_review_pending",
+  "utc": "2026-10-16T13:18:05.608869+00:00",
   "Native": {
     "address": "00bcb1f0",
     "end": "00bcb216",
@@ -54,13 +54,30 @@
     "exit_code": 0,
     "attempt": 1
   },
-  "normal_build": null,
-  "independent_review": null,
+  "normal_build": {
+    "source_pin": "1d02928f3af62c659c369a2738bc9e71f9989dc1",
+    "Main_input": "0f57e25ee18f9d6babff8fd2612ca2d9e7a4cd40",
+    "start_utc": "2026-10-16T13:13:01.797566+00:00",
+    "end_utc": "2026-10-16T13:13:20.656644+00:00",
+    "wall_seconds": 18.88032579999708,
+    "exit_code": 0,
+    "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16aq_root\\author_build.log",
+    "observed_Main_at_build": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+    "provenance_correction": "Generic wrapper recorded observed Main HEAD, not incorporated base. Exact Source1d ancestry includes0f57, not observed3126; original result/log preserved. No Source/build changed."
+  },
+  "independent_review": {
+    "status": "pending",
+    "Source_credit_until_acceptance_and_publication": 0
+  },
   "Source_corrections": 0,
   "compiler_rejections": 0,
   "helper_corrections": [
     "Initial local AST parser call lacked Path binding; corrected before evidence capture.",
-    "CMake own new line normalized to existing DEFER DIRECTORY registry style before any configure; extra own blank removed; all prior lines preserved."
+    "CMake own new line normalized to existing DEFER DIRECTORY registry style before any configure; extra own blank removed; all prior lines preserved.",
+    "Generic copied build wrapper initially rejected the new author label before build; label updated, one actual normal build only.",
+    "Recorded observed Main3126 separately from actual incorporated Main0f57; original result/log preserved, Source/build unchanged.",
+    "A local patch context mismatch and PowerShell quoting rejection while adapting compile capture were corrected; no Source/compiler execution affected.",
+    "Imported whole-object model initially lacked re binding; corrected before artifact proof succeeded."
   ],
   "physical_contract": [
     "Entry actualSourceECX=B/EDX=V; prefix supplies Native EAX=B/ECX=fullV. Original consumes no incoming EDX or ESI/EDI value except its actual saves.",
@@ -75,6 +92,20 @@
   "body_execution": false,
   "new_tests_or_probes": false,
   "Ghidra_mutations": false,
-  "Root_metadata_before_normal_build_honestly_pending": true,
-  "speedup_claim": false
+  "Root_metadata_before_normal_build_honestly_pending": false,
+  "speedup_claim": false,
+  "actual_registered_proof": {
+    "path": "local\\goal16aq_root\\author_actual\\proof.json",
+    "sha256": "49616a2305e86dc8527a5776cc467f824f0282648f00ff1ba268514cd99fc7b5",
+    "actual_object_bytes": 758,
+    "actual_object_sha256": "4176be6e9274ba7755e13496942ab606ca18681899004d7d7623ece2b1946065",
+    "full_COFF_sha256": "a9abd74cf746635597de8c3d3654183674f4db3af2069b4ee5a72e6d1d12ddb9",
+    "Core_sha256": "260797522dd02082ce8529293503a1132b595cdc62422ffba38494aaa40959ff",
+    "both_complete_dictionary_entries": 83034,
+    "actual_COFF_members": 2494,
+    "all21prior_wholeobjects7245B_unchanged": true,
+    "selected22wholemodules7288B44publics": true,
+    "Source_keyed_compile_proof_sha256": "c569d398b68d55420a0e7d4a1e84bf45f6ddaa821e873b6efb8d08fa2e35bde6"
+  },
+  "normal_build_existing_checks": "3/3 PASS; reconstructed_math/native_math_differential/tool_tests; CTest7.27s; no selected body execution"
 }
