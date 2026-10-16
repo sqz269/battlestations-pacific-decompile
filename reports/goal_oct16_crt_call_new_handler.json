@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "packet": "goal_oct16_crt_call_new_handler",
-  "status": "primary_reviewed_additive_actual_raw_size_API_annotated_saved_exported_normal_combined_gate_pending",
+  "status": "complete_additive_raw_size_API_existing_qualified_codec_primary_review_normal_Win32_three_existing_checks_entire_COFF_old_body_unchanged_runtime_owner_open",
   "new_Original_functions": 0,
   "new_Source_APIs": 1,
   "mapped_Original_addresses": [
     "00c055b1"
   ],
   "general_Source_ready": false,
-  "qualified_Source_ready": false,
+  "qualified_Source_ready": true,
   "Original_entry_ABI_proved": false,
   "Original_runtime_heap_TLS_errno_handler_startup_SCC_closed": false,
   "source": "src/native_crt_new_handler.cpp",
@@ -18,7 +18,7 @@
   "prior_API_preserved": "invoke_native_crt_new_handler_00c055b1",
   "source_sha256": "7d086357ec4ee166c2007b63e6d586badd0055dc424da11d5b0200d974be01a8",
   "header_sha256": "0e005d5aef511ff7c38028bb3b112e73e7ffa10a0fff9d60264dfed51aa1e420",
-  "documentation_sha256": "eb9d461bd73f3616e9c409f183217c24749d95a5aedcbe877e5c0d3cd3b1b846",
+  "documentation_sha256": "0348653778dea29cc749d04dc7da6e9401ae6e520d6593ee66801219487adf8d",
   "original_library_name": "__callnewh",
   "original_abi": "cdecl oneDWORDsize argument atentryESP+4, caller-pop4/plainRET, fullEAX exact0/1. Current globalencodedhandler is decoded BEFORE any sizewordread; NULL skips sizeaccess. No local EH.",
   "Source_abi": "New cdecl(constvoid*actual_size_argument4,constNativeCrtPointerDecodeContext&,constvolatileuint32&actualencoded109DE44),3words/caller12. Stable backingpointer/refidentities, explicit reached rawDWORDstorage; not Originalentry/argument/outgoingslot/register/fault/SEH ABI.",
@@ -96,7 +96,20 @@
         "provenance": "Byteexact actualCMakeobject before later normal builds; original buildpath remains a historical build artifact identity."
       }
     },
-    "postbuild_old_public_body_independent_comparison": "pending normal combined wholeobject inspection against immutable oldactualCOFF, no workerbuild."
+    "postbuild_old_public_body_independent_comparison": {
+      "status": "PASS_exact45B_CODE_and_REL32identity",
+      "baseline_object": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\accepted_source53_crt_objects\\0266e6b2d3cfe7fc43822facfa18b1784b835731c1d964fff31908f52981259c.obj",
+      "baseline_object_sha256": "0266e6b2d3cfe7fc43822facfa18b1784b835731c1d964fff31908f52981259c",
+      "candidate_object": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct16_source_batch_objects\\native_crt_new_handler.obj",
+      "candidate_object_sha256": "5adba1574dbf31a4f42e63f01df55d7a160f86e7a0265d751c1af939d21d9fd3",
+      "body_sha256": "6ac42f98ee3c61151e8fb600a65a6de94fdbffc6d0d72ab87168113a7551b503",
+      "body_bytes": 45,
+      "body_instructions": 22,
+      "relocation_offset": 13,
+      "relocation_type": 20,
+      "relocation_target": "?native_crt_decode_pointer_00c04fde@bsp@@YAPAXPAXABUNativeCrtPointerDecodeContext@1@@Z",
+      "relative_symbol_index_and_section_number_not_abi": "Actual target/name/type/addend/bodybytes compared; metadata indices may differ."
+    }
   },
   "provider_Source_pins": {
     "src/native_crt_pointer_decode.cpp": "7a689a80bea666aa0941662a1bbde17500c92d1f7fd671c364aa2b3e0bf365c7",
@@ -203,7 +216,12 @@
     "after_capture": "local/goal_oct16_callnewh_after_comments.txt",
     "after_capture_sha256": "05c04f613ed0d048ec66d881572b0624c8b3509a660b9c31e8583984951a4543",
     "post_annotation_native_bytes_unchanged": true,
-    "export_refresh": "local/goal_oct16_callnewh_export_refresh.txt"
+    "export_refresh": "local/goal_oct16_callnewh_export_refresh.txt",
+    "final_gate_write_log": "local/ghidra-annotations-20261016T162242Z.json",
+    "final_gate_write_log_sha256": "8e4225dc0d846fce78c08a6a7536f57bd93ac15215a7b9f6142711c47e7f60ac",
+    "final_after_capture": "local/goal_oct16_callnewh_final_after_comments.txt",
+    "final_after_capture_sha256": "ee03c52a4f1e47b33828a846198c0e02d96c406919b67ccb81729900b2c549dc",
+    "final_gate_evidence_appended_saved_exported": true
   },
   "Source_ledger": {
     "same_original_address": "00c055b1",
@@ -214,7 +232,9 @@
     "prior_record": "local/goal_oct16_callnewh_prior_reconstruction_record.json",
     "prior_record_sha256": "a14003e213545d799d05bb9978e934764df25c0410be05b221be72aa893e7d1e",
     "name_shard": "config/names/00c00000.jsonl",
-    "reconstruction_shard": "config/reconstruction/00c00000.jsonl"
+    "reconstruction_shard": "config/reconstruction/00c00000.jsonl",
+    "final_additional_API_status": "qualified_whole_ordinary_rawsize_API_normal_Win32_existing_checks_entire_COFF_old_body_unchanged_runtime_owner_open",
+    "original_record_and_old_API_preserved": true
   },
   "validation": {
     "primary_review": {
@@ -223,15 +243,58 @@
       "final_HPP_sha256": "0e005d5aef511ff7c38028bb3b112e73e7ffa10a0fff9d60264dfed51aa1e420",
       "header_comment_clarification": "Requestedonlycommentclarification applied, noCPP/APIchange; explicitprivateargument/temporarybackingdisjointness and admittedrealalias/reentrancy/absentbackingNULLpath."
     },
-    "registered_normal_Win32_combined_gate": "pending primary; existingTUalreadyregistered,noCMakeappend",
-    "whole_object_review": "pending: allactualmethods+oldpublicbodyunchanged+newlateunalignedread/NULLskip/cdeclcall/fullnormalization",
+    "registered_normal_Win32_combined_gate": {
+      "revision": "d9e1fce24cc7b7475668db7d14245958ef0d5237",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct16_source_batch_combined_build.log",
+      "log_sha256": "a084341f15d21c301692e308e7b8cae03f50210f38aea7fd1cbdf6fd4c434d22",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 8.9,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "root_worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "root_receipt_observed_at_review": "reports/goal_oct16_source_batch_primary_review.json",
+      "root_receipt_observed_sha256": "2aaef161ee7d2583d27f9a8ff03fa9975241a82835cc324bc0b025bf7a8ab5c3",
+      "qualification": "Primary combinednormalgate, not a workerbuild. Existingchecks do not execute newhelper/nativehandler branches.",
+      "root_receipt_was_intermediate": true,
+      "source_behavior_and_log_hash_independently_pinned": true
+    },
+    "whole_object_review": {
+      "status": "independent_PASS_all_CODE_and_old_public_unchanged",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct16_source_batch_objects\\native_crt_new_handler.obj",
+      "object_sha256": "5adba1574dbf31a4f42e63f01df55d7a160f86e7a0265d751c1af939d21d9fd3",
+      "object_bytes": 1169,
+      "all_CODE_bytes": 97,
+      "all_CODE_instructions": 46,
+      "public_bodies": 2,
+      "relocations": 2,
+      "raw_API_bytes": 52,
+      "raw_API_instructions": 24,
+      "old_API_bytes": 45,
+      "old_API_instructions": 22,
+      "no_unclassified_file_gaps": true,
+      "review_receipt": "local/goal_oct16_callnewh_new_object_independent_review.json",
+      "review_receipt_sha256": "2863516762c71603fb06c3ad0c7c1dac7178338e0766d5e9b4fb8659dfb51d7c",
+      "read_only_parser": "local/goal_oct16_callnewh_coff_compare.py",
+      "parser_sha256": "060b78ccde3bc59c47252eea5ead8cc46f39d71dc89f99f73af1a35042f73e00",
+      "retained_archive_body_uniqueness": "Primary retained_actual_objects/unique_archive_objects receipt and explicitartifact message confirm exactone actual archivebody; workerindependently inspectedretainedCOFF itself."
+    },
     "worker_build": "notrun perexplicitprimaryinstruction",
     "new_tests": 0,
     "numeric_call_rows": {
       "checked": 8,
       "failed": 0
     },
-    "diff_check": "git diff --check and git diff --cached --check passed"
+    "diff_check": "git diff --check and git diff --cached --check passed",
+    "source_hashes_identical_to_tested_revision": true
   },
   "ownership": {
     "packet": "goal_oct16_crt_call_new_handler",
@@ -246,7 +309,8 @@
     "unused_proposed_new_Sourcepaths_released": true,
     "shared_registry_or_CMake_edits": false
   },
-  "source_ready": false,
+  "source_ready": true,
   "general_source_ready": false,
-  "source_ready_domain": "Pending normalgate: whole ordinaryactualstorage additiveAPI overexisting qualifiedcodeccontract;0newOriginalfunctions. No runtime/transitive/OriginalABIclosure."
+  "source_ready_domain": "Whole ordinary actual raw4B size-backing API over existing qualifiedcodec/currentnativeprovider admission;0newOriginalfunctions/1additionalSourceAPI. GeneralOriginalruntime/entryABI/SEH/owner/SCC/game remainunproved.",
+  "drain_status": "User requested finish ongoing work and pause. No next packet/work issued; retain current lease until primaryMainpublication then release and stop."
 }
