@@ -1,0 +1,622 @@
+{
+  "source_commit": "1e7f0a3d2",
+  "validated_combined_source_commit": "1e7f0a3d2",
+  "new_original_functions": 1,
+  "new_whole_original_function_bytes": 6,
+  "new_source_cell_accessor_interfaces": 1,
+  "whole_module_original_functions": 3,
+  "whole_module_original_function_bytes": 18,
+  "whole_module_cell_accessor_interfaces": 3,
+  "proofs": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16c_shader_definitions_reader\\strict.obj",
+      "sha256": "7cde4a5af2d48143772b215ee48dd5242906e1cb0de5b0fe96d96e6b263ef1c2",
+      "whole_executable_bytes": 36,
+      "whole_functions": 6,
+      "whole_data_bytes": 12,
+      "dynamic_initializer": false,
+      "undefined_externals": [],
+      "functions": [
+        {
+          "symbol": "?native_shader_register_limit_cell_00e13078@bsp@@YAACIXZ",
+          "whole_code": "b800000000c3",
+          "bytes": 6,
+          "relocation": {
+            "offset": 1,
+            "type": "IMAGE_REL_I386_DIR32",
+            "target": "?register_limit_storage_00e13078@?A0xed7ece16@bsp@@3IC",
+            "data_section": 15,
+            "data_symbol_offset": 0
+          },
+          "is_new_cell_accessor": true
+        },
+        {
+          "symbol": "?native_shader_register_limit_00b343f0@bsp@@YAIXZ",
+          "whole_code": "a100000000c3",
+          "bytes": 6,
+          "relocation": {
+            "offset": 1,
+            "type": "IMAGE_REL_I386_DIR32",
+            "target": "?register_limit_storage_00e13078@?A0xed7ece16@bsp@@3IC",
+            "data_section": 15,
+            "data_symbol_offset": 0
+          },
+          "is_new_cell_accessor": false
+        },
+        {
+          "symbol": "?native_shader_system_registry_cell_0108fe94@bsp@@YAACRAXXZ",
+          "whole_code": "b800000000c3",
+          "bytes": 6,
+          "relocation": {
+            "offset": 1,
+            "type": "IMAGE_REL_I386_DIR32",
+            "target": "?system_registry_storage_0108fe94@?A0xed7ece16@bsp@@3RAXA",
+            "data_section": 16,
+            "data_symbol_offset": 0
+          },
+          "is_new_cell_accessor": true
+        },
+        {
+          "symbol": "?native_shader_system_registry_00b34490@bsp@@YAPAXXZ",
+          "whole_code": "a100000000c3",
+          "bytes": 6,
+          "relocation": {
+            "offset": 1,
+            "type": "IMAGE_REL_I386_DIR32",
+            "target": "?system_registry_storage_0108fe94@?A0xed7ece16@bsp@@3RAXA",
+            "data_section": 16,
+            "data_symbol_offset": 0
+          },
+          "is_new_cell_accessor": false
+        },
+        {
+          "symbol": "?native_shader_state_definitions_cell_0108fe90@bsp@@YAACRAUNativeShaderStateDefinitionsStorage@1@XZ",
+          "whole_code": "b800000000c3",
+          "bytes": 6,
+          "relocation": {
+            "offset": 1,
+            "type": "IMAGE_REL_I386_DIR32",
+            "target": "?state_definitions_storage_0108fe90@?A0xed7ece16@bsp@@3RAUNativeShaderStateDefinitionsStorage@2@A",
+            "data_section": 16,
+            "data_symbol_offset": 4
+          },
+          "is_new_cell_accessor": true
+        },
+        {
+          "symbol": "?native_shader_state_definitions_00b400f0@bsp@@YAPAXXZ",
+          "whole_code": "a100000000c3",
+          "bytes": 6,
+          "relocation": {
+            "offset": 1,
+            "type": "IMAGE_REL_I386_DIR32",
+            "target": "?state_definitions_storage_0108fe90@?A0xed7ece16@bsp@@3RAUNativeShaderStateDefinitionsStorage@2@A",
+            "data_section": 16,
+            "data_symbol_offset": 4
+          },
+          "is_new_cell_accessor": false
+        }
+      ]
+    },
+    {
+      "path": "build\\win32\\bsp_core.dir\\Release\\native_shader_global_readers.obj",
+      "sha256": "1435f868463b487aea4770a5ea36d9f250f14fd12481c8fc4f533e474afc6c43",
+      "whole_executable_bytes": 36,
+      "whole_functions": 6,
+      "whole_data_bytes": 12,
+      "dynamic_initializer": false,
+      "undefined_externals": [],
+      "functions": [
+        {
+          "symbol": "?native_shader_register_limit_cell_00e13078@bsp@@YAACIXZ",
+          "whole_code": "b800000000c3",
+          "bytes": 6,
+          "relocation": {
+            "offset": 1,
+            "type": "IMAGE_REL_I386_DIR32",
+            "target": "?register_limit_storage_00e13078@?A0xed7ece16@bsp@@3IC",
+            "data_section": 15,
+            "data_symbol_offset": 0
+          },
+          "is_new_cell_accessor": true
+        },
+        {
+          "symbol": "?native_shader_register_limit_00b343f0@bsp@@YAIXZ",
+          "whole_code": "a100000000c3",
+          "bytes": 6,
+          "relocation": {
+            "offset": 1,
+            "type": "IMAGE_REL_I386_DIR32",
+            "target": "?register_limit_storage_00e13078@?A0xed7ece16@bsp@@3IC",
+            "data_section": 15,
+            "data_symbol_offset": 0
+          },
+          "is_new_cell_accessor": false
+        },
+        {
+          "symbol": "?native_shader_system_registry_cell_0108fe94@bsp@@YAACRAXXZ",
+          "whole_code": "b800000000c3",
+          "bytes": 6,
+          "relocation": {
+            "offset": 1,
+            "type": "IMAGE_REL_I386_DIR32",
+            "target": "?system_registry_storage_0108fe94@?A0xed7ece16@bsp@@3RAXA",
+            "data_section": 16,
+            "data_symbol_offset": 0
+          },
+          "is_new_cell_accessor": true
+        },
+        {
+          "symbol": "?native_shader_system_registry_00b34490@bsp@@YAPAXXZ",
+          "whole_code": "a100000000c3",
+          "bytes": 6,
+          "relocation": {
+            "offset": 1,
+            "type": "IMAGE_REL_I386_DIR32",
+            "target": "?system_registry_storage_0108fe94@?A0xed7ece16@bsp@@3RAXA",
+            "data_section": 16,
+            "data_symbol_offset": 0
+          },
+          "is_new_cell_accessor": false
+        },
+        {
+          "symbol": "?native_shader_state_definitions_cell_0108fe90@bsp@@YAACRAUNativeShaderStateDefinitionsStorage@1@XZ",
+          "whole_code": "b800000000c3",
+          "bytes": 6,
+          "relocation": {
+            "offset": 1,
+            "type": "IMAGE_REL_I386_DIR32",
+            "target": "?state_definitions_storage_0108fe90@?A0xed7ece16@bsp@@3RAUNativeShaderStateDefinitionsStorage@2@A",
+            "data_section": 16,
+            "data_symbol_offset": 4
+          },
+          "is_new_cell_accessor": true
+        },
+        {
+          "symbol": "?native_shader_state_definitions_00b400f0@bsp@@YAPAXXZ",
+          "whole_code": "a100000000c3",
+          "bytes": 6,
+          "relocation": {
+            "offset": 1,
+            "type": "IMAGE_REL_I386_DIR32",
+            "target": "?state_definitions_storage_0108fe90@?A0xed7ece16@bsp@@3RAUNativeShaderStateDefinitionsStorage@2@A",
+            "data_section": 16,
+            "data_symbol_offset": 4
+          },
+          "is_new_cell_accessor": false
+        }
+      ]
+    }
+  ],
+  "whole_actual_archive_member": "bsp_core.dir/Release/native_shader_global_readers.obj",
+  "archive_sha256": "439e47cdba7389d21db1323dc5d793e0368e60efc92372f5ec4af2b41370cd31",
+  "linked_whole_functions": [
+    {
+      "symbol": "?native_shader_register_limit_cell_00e13078@bsp@@YAACIXZ",
+      "va": "00401210",
+      "entire_body": "b800304000c3",
+      "actual_cell": "00403000"
+    },
+    {
+      "symbol": "?native_shader_register_limit_00b343f0@bsp@@YAIXZ",
+      "va": "00401200",
+      "entire_body": "a100304000c3",
+      "actual_cell": "00403000"
+    },
+    {
+      "symbol": "?native_shader_system_registry_cell_0108fe94@bsp@@YAACRAXXZ",
+      "va": "00401250",
+      "entire_body": "b8a8304000c3",
+      "actual_cell": "004030A8"
+    },
+    {
+      "symbol": "?native_shader_system_registry_00b34490@bsp@@YAPAXXZ",
+      "va": "00401240",
+      "entire_body": "a1a8304000c3",
+      "actual_cell": "004030A8"
+    },
+    {
+      "symbol": "?native_shader_state_definitions_cell_0108fe90@bsp@@YAACRAUNativeShaderStateDefinitionsStorage@1@XZ",
+      "va": "00401230",
+      "entire_body": "b8ac304000c3",
+      "actual_cell": "004030AC"
+    },
+    {
+      "symbol": "?native_shader_state_definitions_00b400f0@bsp@@YAPAXXZ",
+      "va": "00401220",
+      "entire_body": "a1ac304000c3",
+      "actual_cell": "004030AC"
+    }
+  ],
+  "registered_owner_bindings": [
+    {
+      "path": "build\\win32\\bsp_game.dir\\Release\\game_native_shader_process.obj",
+      "sha256": "5166c267ac6b405cd90fd27af5e9436bb5ab3b1c965b09632afe67dd72265bf7",
+      "actual_canonical_cell_call_relocations": [
+        {
+          "section": 9,
+          "offset": 236,
+          "type": 20
+        },
+        {
+          "section": 41,
+          "offset": 337,
+          "type": 20
+        }
+      ],
+      "scope": "Binding relocation proof only; not a new whole owner-body reconstruction/runtime claim"
+    },
+    {
+      "path": "build\\win32\\bsp_game.dir\\Release\\game_native_renderer_application.obj",
+      "sha256": "024ca46bed48c2719fda7f7f9ecc1ebdaac3807cfcb3d2eac82ce3d20f7c075c",
+      "actual_canonical_cell_call_relocations": [
+        {
+          "section": 417,
+          "offset": 136,
+          "type": 20
+        }
+      ],
+      "scope": "Binding relocation proof only; not a new whole owner-body reconstruction/runtime claim"
+    },
+    {
+      "path": "build\\win32\\bsp_game.dir\\Release\\game_native_renderer_application.obj",
+      "sha256": "024ca46bed48c2719fda7f7f9ecc1ebdaac3807cfcb3d2eac82ce3d20f7c075c",
+      "actual_canonical_cell_call_relocations": [
+        {
+          "section": 417,
+          "offset": 144,
+          "type": 20
+        }
+      ],
+      "scope": "Binding relocation proof only; not a new whole owner-body reconstruction/runtime claim"
+    }
+  ],
+  "native": [
+    {
+      "address": "00B343F0",
+      "bytes": "a17830e100c3",
+      "kind": "function"
+    },
+    {
+      "address": "00E13078",
+      "bytes": "4d000000",
+      "kind": "mutable_image_cell"
+    },
+    {
+      "address": "00B34490",
+      "bytes": "a194fe0801c3",
+      "kind": "function"
+    },
+    {
+      "address": "0108FE94",
+      "bytes": "00000000",
+      "kind": "mutable_image_cell"
+    },
+    {
+      "address": "00B400F0",
+      "bytes": "a190fe0801c3",
+      "kind": "function"
+    },
+    {
+      "address": "0108FE90",
+      "bytes": "00000000",
+      "kind": "mutable_image_cell"
+    }
+  ],
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source_hashes": {
+    "src/native_shader_global_readers.cpp": "cff32e5f4a160bda278245cbfb39cd6c8b5e0e20dd8d68a7af3cb38b6ee8977f",
+    "include/bsp/native_shader_global_readers.hpp": "31cd9ba3a202c73d8390b1d33a2a3718534795ae5eee5478d056cfd903ecde9d",
+    "include/bsp/game_native_shader_process.hpp": "af08e8675c0a3e6646ceb70d23f9522803c259f11561116dbf171404fc9b3cad",
+    "src/game_native_renderer_application.cpp": "83cd9ea6b2d1ea0149a7d2c086164fb65b27673b71587955ca1b233182cfda48"
+  },
+  "fixture": {
+    "exe_sha256": "f3f67db859fe63ba5555accea956fd7d8464019e863f1ee0b80beafb0c5c9e78",
+    "map_sha256": "199505f427956ede897ab269da93430621005ccdc2323d893ef7c7ba2fb35a10",
+    "source_sha256": "8780151539f351dcdb906eb0abbde32db3db5e106b7b7ec4ac7504200af682c8",
+    "result": "PASS real archive all3 early cells, typed definition publication and clear; prior readers preserved; no owner lifecycle/game execution",
+    "scope": "Real registered archive all three getters/cells before production owners; initial77/null/null, typed actual existing28h definition backing publication/clear, four all-bit scalar values and priorWpublication/cell address/restore checks. No production owner lifecycle, captured-Native code execution, Original cell placement, caller adoption or game runtime."
+  },
+  "layout": {
+    "class": "GameNativeRendererApplication::Impl",
+    "size": 9952,
+    "all57_member_offsets_identical": true,
+    "before": {
+      "header": "class bsp::game::GameNativeRendererApplication::Impl\tsize(9952):",
+      "members": [
+        " 0\t| log",
+        " 4\t| singletons",
+        " 8\t| lua_services",
+        "12\t| GameNativeVfsRawServices vfs",
+        "52\t| raw",
+        "56\t| CanonicalProfiles profiles",
+        "60\t| renderer",
+        "64\t| lua_publication",
+        "68\t| system_publication",
+        "72\t| definitions",
+        "76\t| entry_cache_publication",
+        "80\t| NativeRenderEntryCacheContext entry_cache",
+        "92\t| frame_flag",
+        "93\t| device_lost",
+        "96\t| time_bits",
+        "100\t| NativeRendererLuaOwnerContext lua",
+        "116\t| NativeRendererControlWorkerContext control",
+        "152\t| validation",
+        "156\t| NativeRenderActualOwnerRegistry owners",
+        "164\t| NativeEffectRecordStorageContext records",
+        "180\t| NativeEffectRegistryDestructionContext effects",
+        "204\t| NativeRenderResourceAccountingTables accounting",
+        "216\t| NativeRendererCacheCleanupContext textures",
+        "240\t| platform_events",
+        "244\t| NativeVertexDeclarationLoadingContext declaration_loading",
+        "288\t| NativeVertexDeclarationCacheContext declaration_cache",
+        "320\t| NativeVertexDeclarationRegistryLifetimeContext declarations",
+        "332\t| ?$array@E$0BA@ mode",
+        "348\t| ?$array@E$0EEM@ identifier",
+        "1448\t| ?$array@E$0HHA@ gather",
+        "3352\t| NativeRendererConstructorContext constructor",
+        "3420\t| DestructionGraph graph",
+        "4208\t| legacy_platform_focus_publication",
+        "4212\t| borrowed_platform_publication",
+        "4216\t| DeviceGraph devices",
+        "4616\t| TextureLoadingGraph texture_loading",
+        "4796\t| GameGridGraph game_grids",
+        "4920\t| NativeD3dx9Float16Import vertex_half",
+        "4924\t| GuiTextNativeLayoutServices section_layouts",
+        "4932\t| CameraGraph cameras",
+        "5060\t| NativeParticleRecordResizeContext particle_clock_records",
+        "5068\t| NativeParticleClockShutdownContext particle_clock_shutdown",
+        "5092\t| ShaderGraph shaders",
+        "5168\t| DescriptorGraph descriptors",
+        "5236\t| CompilerOwnersGraph compiler_owners",
+        "5444\t| EffectOwnersGraph effect_owners",
+        "5468\t| RenderResourcesGraph resources",
+        "9864\t| ShadowTargetGraph shadow",
+        "9916\t| ?$unique_ptr@UFrameGraph@?A0x6df78b5e@game@bsp@@U?$default_delete@UFrameGraph@?A0x6df78b5e@game@bsp@@@std@@ frames",
+        "9920\t| Phase phase",
+        "9924\t| retained_api",
+        "9928\t| retained_device",
+        "9932\t| device_generation",
+        "9936\t| observed_worker",
+        "9940\t| mesh_field_vfs",
+        "9944\t| ?$unique_ptr@UMeshFieldBinding@?A0x6df78b5e@game@bsp@@U?$default_delete@UMeshFieldBinding@?A0x6df78b5e@game@bsp@@@std@@ mesh_fields",
+        "9948\t| ?$unique_ptr@UNativeInstanceGeneratorContext@bsp@@U?$default_delete@UNativeInstanceGeneratorContext@bsp@@@std@@ instance_generator_context"
+      ],
+      "complete_block": [
+        "class bsp::game::GameNativeRendererApplication::Impl\tsize(9952):",
+        "\t+---",
+        " 0\t| log",
+        " 4\t| singletons",
+        " 8\t| lua_services",
+        "12\t| GameNativeVfsRawServices vfs",
+        "52\t| raw",
+        "56\t| CanonicalProfiles profiles",
+        "60\t| renderer",
+        "64\t| lua_publication",
+        "68\t| system_publication",
+        "72\t| definitions",
+        "76\t| entry_cache_publication",
+        "80\t| NativeRenderEntryCacheContext entry_cache",
+        "92\t| frame_flag",
+        "93\t| device_lost",
+        "  \t| <alignment member> (size=2)",
+        "96\t| time_bits",
+        "100\t| NativeRendererLuaOwnerContext lua",
+        "116\t| NativeRendererControlWorkerContext control",
+        "152\t| validation",
+        "156\t| NativeRenderActualOwnerRegistry owners",
+        "164\t| NativeEffectRecordStorageContext records",
+        "180\t| NativeEffectRegistryDestructionContext effects",
+        "204\t| NativeRenderResourceAccountingTables accounting",
+        "216\t| NativeRendererCacheCleanupContext textures",
+        "240\t| platform_events",
+        "244\t| NativeVertexDeclarationLoadingContext declaration_loading",
+        "288\t| NativeVertexDeclarationCacheContext declaration_cache",
+        "320\t| NativeVertexDeclarationRegistryLifetimeContext declarations",
+        "332\t| ?$array@E$0BA@ mode",
+        "348\t| ?$array@E$0EEM@ identifier",
+        "1448\t| ?$array@E$0HHA@ gather",
+        "3352\t| NativeRendererConstructorContext constructor",
+        "3420\t| DestructionGraph graph",
+        "4208\t| legacy_platform_focus_publication",
+        "4212\t| borrowed_platform_publication",
+        "  \t| <alignment member> (size=3)",
+        "4216\t| DeviceGraph devices",
+        "4616\t| TextureLoadingGraph texture_loading",
+        "4796\t| GameGridGraph game_grids",
+        "4920\t| NativeD3dx9Float16Import vertex_half",
+        "4924\t| GuiTextNativeLayoutServices section_layouts",
+        "4932\t| CameraGraph cameras",
+        "5060\t| NativeParticleRecordResizeContext particle_clock_records",
+        "5068\t| NativeParticleClockShutdownContext particle_clock_shutdown",
+        "5092\t| ShaderGraph shaders",
+        "5168\t| DescriptorGraph descriptors",
+        "5236\t| CompilerOwnersGraph compiler_owners",
+        "5444\t| EffectOwnersGraph effect_owners",
+        "5468\t| RenderResourcesGraph resources",
+        "9864\t| ShadowTargetGraph shadow",
+        "9916\t| ?$unique_ptr@UFrameGraph@?A0x6df78b5e@game@bsp@@U?$default_delete@UFrameGraph@?A0x6df78b5e@game@bsp@@@std@@ frames",
+        "9920\t| Phase phase",
+        "9924\t| retained_api",
+        "9928\t| retained_device",
+        "9932\t| device_generation",
+        "9936\t| observed_worker",
+        "9940\t| mesh_field_vfs",
+        "9944\t| ?$unique_ptr@UMeshFieldBinding@?A0x6df78b5e@game@bsp@@U?$default_delete@UMeshFieldBinding@?A0x6df78b5e@game@bsp@@@std@@ mesh_fields",
+        "9948\t| ?$unique_ptr@UNativeInstanceGeneratorContext@bsp@@U?$default_delete@UNativeInstanceGeneratorContext@bsp@@@std@@ instance_generator_context",
+        "\t+---"
+      ],
+      "sha256": "0a9097ddcbe6a99cec22445afd6290e2d078da292bae4507021587d9f4110d64"
+    },
+    "after": {
+      "header": "class bsp::game::GameNativeRendererApplication::Impl\tsize(9952):",
+      "members": [
+        " 0\t| log",
+        " 4\t| singletons",
+        " 8\t| lua_services",
+        "12\t| GameNativeVfsRawServices vfs",
+        "52\t| raw",
+        "56\t| CanonicalProfiles profiles",
+        "60\t| renderer",
+        "64\t| lua_publication",
+        "68\t| system_publication",
+        "72\t| definitions",
+        "76\t| entry_cache_publication",
+        "80\t| NativeRenderEntryCacheContext entry_cache",
+        "92\t| frame_flag",
+        "93\t| device_lost",
+        "96\t| time_bits",
+        "100\t| NativeRendererLuaOwnerContext lua",
+        "116\t| NativeRendererControlWorkerContext control",
+        "152\t| validation",
+        "156\t| NativeRenderActualOwnerRegistry owners",
+        "164\t| NativeEffectRecordStorageContext records",
+        "180\t| NativeEffectRegistryDestructionContext effects",
+        "204\t| NativeRenderResourceAccountingTables accounting",
+        "216\t| NativeRendererCacheCleanupContext textures",
+        "240\t| platform_events",
+        "244\t| NativeVertexDeclarationLoadingContext declaration_loading",
+        "288\t| NativeVertexDeclarationCacheContext declaration_cache",
+        "320\t| NativeVertexDeclarationRegistryLifetimeContext declarations",
+        "332\t| ?$array@E$0BA@ mode",
+        "348\t| ?$array@E$0EEM@ identifier",
+        "1448\t| ?$array@E$0HHA@ gather",
+        "3352\t| NativeRendererConstructorContext constructor",
+        "3420\t| DestructionGraph graph",
+        "4208\t| legacy_platform_focus_publication",
+        "4212\t| borrowed_platform_publication",
+        "4216\t| DeviceGraph devices",
+        "4616\t| TextureLoadingGraph texture_loading",
+        "4796\t| GameGridGraph game_grids",
+        "4920\t| NativeD3dx9Float16Import vertex_half",
+        "4924\t| GuiTextNativeLayoutServices section_layouts",
+        "4932\t| CameraGraph cameras",
+        "5060\t| NativeParticleRecordResizeContext particle_clock_records",
+        "5068\t| NativeParticleClockShutdownContext particle_clock_shutdown",
+        "5092\t| ShaderGraph shaders",
+        "5168\t| DescriptorGraph descriptors",
+        "5236\t| CompilerOwnersGraph compiler_owners",
+        "5444\t| EffectOwnersGraph effect_owners",
+        "5468\t| RenderResourcesGraph resources",
+        "9864\t| ShadowTargetGraph shadow",
+        "9916\t| ?$unique_ptr@UFrameGraph@?A0x6df78b5e@game@bsp@@U?$default_delete@UFrameGraph@?A0x6df78b5e@game@bsp@@@std@@ frames",
+        "9920\t| Phase phase",
+        "9924\t| retained_api",
+        "9928\t| retained_device",
+        "9932\t| device_generation",
+        "9936\t| observed_worker",
+        "9940\t| mesh_field_vfs",
+        "9944\t| ?$unique_ptr@UMeshFieldBinding@?A0x6df78b5e@game@bsp@@U?$default_delete@UMeshFieldBinding@?A0x6df78b5e@game@bsp@@@std@@ mesh_fields",
+        "9948\t| ?$unique_ptr@UNativeInstanceGeneratorContext@bsp@@U?$default_delete@UNativeInstanceGeneratorContext@bsp@@@std@@ instance_generator_context"
+      ],
+      "complete_block": [
+        "class bsp::game::GameNativeRendererApplication::Impl\tsize(9952):",
+        "\t+---",
+        " 0\t| log",
+        " 4\t| singletons",
+        " 8\t| lua_services",
+        "12\t| GameNativeVfsRawServices vfs",
+        "52\t| raw",
+        "56\t| CanonicalProfiles profiles",
+        "60\t| renderer",
+        "64\t| lua_publication",
+        "68\t| system_publication",
+        "72\t| definitions",
+        "76\t| entry_cache_publication",
+        "80\t| NativeRenderEntryCacheContext entry_cache",
+        "92\t| frame_flag",
+        "93\t| device_lost",
+        "  \t| <alignment member> (size=2)",
+        "96\t| time_bits",
+        "100\t| NativeRendererLuaOwnerContext lua",
+        "116\t| NativeRendererControlWorkerContext control",
+        "152\t| validation",
+        "156\t| NativeRenderActualOwnerRegistry owners",
+        "164\t| NativeEffectRecordStorageContext records",
+        "180\t| NativeEffectRegistryDestructionContext effects",
+        "204\t| NativeRenderResourceAccountingTables accounting",
+        "216\t| NativeRendererCacheCleanupContext textures",
+        "240\t| platform_events",
+        "244\t| NativeVertexDeclarationLoadingContext declaration_loading",
+        "288\t| NativeVertexDeclarationCacheContext declaration_cache",
+        "320\t| NativeVertexDeclarationRegistryLifetimeContext declarations",
+        "332\t| ?$array@E$0BA@ mode",
+        "348\t| ?$array@E$0EEM@ identifier",
+        "1448\t| ?$array@E$0HHA@ gather",
+        "3352\t| NativeRendererConstructorContext constructor",
+        "3420\t| DestructionGraph graph",
+        "4208\t| legacy_platform_focus_publication",
+        "4212\t| borrowed_platform_publication",
+        "  \t| <alignment member> (size=3)",
+        "4216\t| DeviceGraph devices",
+        "4616\t| TextureLoadingGraph texture_loading",
+        "4796\t| GameGridGraph game_grids",
+        "4920\t| NativeD3dx9Float16Import vertex_half",
+        "4924\t| GuiTextNativeLayoutServices section_layouts",
+        "4932\t| CameraGraph cameras",
+        "5060\t| NativeParticleRecordResizeContext particle_clock_records",
+        "5068\t| NativeParticleClockShutdownContext particle_clock_shutdown",
+        "5092\t| ShaderGraph shaders",
+        "5168\t| DescriptorGraph descriptors",
+        "5236\t| CompilerOwnersGraph compiler_owners",
+        "5444\t| EffectOwnersGraph effect_owners",
+        "5468\t| RenderResourcesGraph resources",
+        "9864\t| ShadowTargetGraph shadow",
+        "9916\t| ?$unique_ptr@UFrameGraph@?A0x6df78b5e@game@bsp@@U?$default_delete@UFrameGraph@?A0x6df78b5e@game@bsp@@@std@@ frames",
+        "9920\t| Phase phase",
+        "9924\t| retained_api",
+        "9928\t| retained_device",
+        "9932\t| device_generation",
+        "9936\t| observed_worker",
+        "9940\t| mesh_field_vfs",
+        "9944\t| ?$unique_ptr@UMeshFieldBinding@?A0x6df78b5e@game@bsp@@U?$default_delete@UMeshFieldBinding@?A0x6df78b5e@game@bsp@@@std@@ mesh_fields",
+        "9948\t| ?$unique_ptr@UNativeInstanceGeneratorContext@bsp@@U?$default_delete@UNativeInstanceGeneratorContext@bsp@@@std@@ instance_generator_context",
+        "\t+---"
+      ],
+      "sha256": "9107e2086961e7cc5d0371ac49a6d08e7853b974a5bc44c3fe86fcf56a5f30e0"
+    }
+  },
+  "existing_checks": 3,
+  "new_registered_tests": 0,
+  "batch": "GOAL16C",
+  "document": "docs/GOAL16C_SHADER_DEFINITIONS_READER.md",
+  "independent_review": {
+    "status": "READY",
+    "path": "local\\goal16c_shader_definitions_reader\\independent_review\\final_review.json",
+    "sha256": "6a20e5ca503954c1362e4456e3cecc82107dbb175d708247d46d9cbc66274b48",
+    "blocking_findings": [],
+    "complete_old_W_evidence_unchanged": true,
+    "full_production_ctor_and_all_cells_verified_statically": true,
+    "no_reviewer_target_execution": true
+  },
+  "ghidra_annotations": {
+    "program": "/battlestationspacific.exe",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "old_state": "local/goal15h_annotations_00b400f0.json",
+    "history": "local/ghidra-annotations-20261016T053252Z.json",
+    "saved_prototype": "00b400f0 get_shader_state_definitions_00b400f0  void * __cdecl get_shader_state_definitions_00b400f0(void)  body 00b400f0 - 00b400f5",
+    "typed_flow": {
+      "path": "local\\goal16c_shader_definitions_reader\\saved_typed_flow.json",
+      "sha256": "c3d7907a04d94332b14ffc3bfaf514c75d21b33752b2d36e6e714d4e320933a7"
+    },
+    "project_saved": true,
+    "exports_refreshed": true,
+    "snapshot_log": "local\\goal16c_shader_definitions_reader\\snapshot.log",
+    "index_log": "local\\goal16c_shader_definitions_reader\\index.log"
+  },
+  "timing": {
+    "full_inclusive_seconds": "unmeasured; qualification began before first packet clock",
+    "throughput_speedup_claimed": false
+  },
+  "original_image_cell_section": {
+    "address": "0108fe90",
+    "image_bytes": "00000000",
+    "section": ".data",
+    "section_virtual_address": "00a08000",
+    "section_raw_size": 65536,
+    "section_virtual_size": 2719452,
+    "section_writable": true,
+    "rva_delta": 2653840,
+    "loader_zero_tail": true,
+    "file_raw_address_present": false
+  }
+}
