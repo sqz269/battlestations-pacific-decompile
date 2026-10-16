@@ -51,7 +51,11 @@ installed x86 C:/Windows/SysWOW64/VCRUNTIME140.dll export at RVA161A0 was inspec
 count0 always reaches1669B, branches to166D0 and returns the destination without
 source/destination memory reads. Its file hash is recorded in the report. This is
 an installed-provider static check, not proof of a newly loaded process binding;
-the new adapter's emitted edge is a post-build check.
+the emitted adapter is five bytes E9 rel32 to external _memmove. The exact
+Win32 vcruntime.lib import member binds that symbol to VCRUNTIME140.dll.
+The constructor and adapter are compiled and archived; their unreferenced
+body is omitted from bsp_game.exe, so no new linked-entry or execution
+credit is claimed. No forced link or new test was added.
 
 ## Sole cleanup action
 
@@ -112,6 +116,14 @@ Guarded analysis/export verifies project C:/Users/sqz269/bsp.gpr and program
 /battlestationspacific.exe. Locked annotation preserves prior names/comments,
 records prior values, saves, refreshes owned exports and reads back evidence.
 The report holds exact189 owned original bytes, typed9transfer rows and provider
-hashes. Draft: registration/build wait for primary complete-Source review. No
-new routine tests, direct native-entry execution, binary ABI, application or game
-validation is claimed. General Source-ready stays false after a successful build.
+hashes. Primary independent review accepted the complete constructor and
+qualified cleanup action at e2a64dac7 without Source changes. Both reviewed
+Source hashes were asserted unchanged before recording acceptance. The
+primary registered this Source once and ran scripts/build.ps1 at
+1b43f15d71011cf545a6323c7b0951e86463d5fe: MSVC Release Win32 passed,
+with all three existing checks passing in 7.96 seconds. The primary log
+and receipt hashes are pinned in the report; no worker build is claimed.
+The emitted Win32 object occurs exactly once in the tested archive.
+Reviewed, built and provider Source hashes remain unchanged. No new
+routine tests, direct native-entry execution, binary ABI, application or
+game validation is claimed. General Source-ready remains false.
