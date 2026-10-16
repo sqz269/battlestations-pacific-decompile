@@ -1,0 +1,212 @@
+{
+  "packet": "cc12_native_text_clip_retention_57",
+  "baseline_commit": "f9dd0d899d2fd6082adfee779f5a843420574847",
+  "proof_level": "read-only current Source trace; no Original analysis or runtime proof",
+  "result": "native clip view already provided; semantic shared_ptr-retention requirement does not apply to current native Text path; actual page/ancestor/source lifetime remains a caller contract",
+  "providers": {
+    "native_clip": "register_native_gui_clip_parameters_00aa9f10",
+    "ancestor": "same GuiLayoutWidget self/parent nearest type16, canonical GuiWidgetOwnerRuntime owner",
+    "clip_fields": "gui_clip_box_parameter_sources returns existing GuiClipBoxTypeImplementation center_ec/border_f4 array references",
+    "clip_flag": "same widget extra_fields.clip_enabled_e8",
+    "aspect": "same live GuiTextClipRefreshServices/style aspect_ratio_00e12fc0 reference",
+    "material": "same NativeMaterialStorage/NativeMaterialReference/NativeMaterialParameterAccess",
+    "NativeMaterialEnvironment_identifier_exists": false,
+    "actual_material_contract": "NativeMaterialDestructionAccess",
+    "new_adapter_required": false
+  },
+  "path_separation": {
+    "semantic": "bind_gui_material_callbacks -> MaterialCloneState -> retain_widget shared_ptr acquisition; genuine same-owner ownership required there",
+    "current_native_text": "nonempty content and AB7A40 call native clip registration directly; style operations use actual owner domain/aspect/raw material access",
+    "callback_occurrence_check": "all src retain_widget/clip_box_sources invocations occur only in gui_material_binding.cpp",
+    "unused_semantic_callbacks": "may remain explicitly unprovided for native profile; no no-op/fake token is required or supplied"
+  },
+  "load_chronology": [
+    "unique child layout is allocated locally",
+    "create_widget_node enters canonical type construction before child transfer",
+    "set parent/transform parent, append both child lists",
+    "parent native node, constructed74",
+    "base properties and base publication",
+    "recursive child construction/properties",
+    "parent derived properties, ClipBox ACE650 initializes border width and ACE120 arrays",
+    "loaded78",
+    "root/script_table transferred late to unique page, page loaded callback, registry takes unique page"
+  ],
+  "clip_chronology": {
+    "registration_before_parent_derived_initialization": "permitted; parameter registration stores source addresses without reading values",
+    "mutation": "ClipBox properties_bound/update24 write same arrays in place; dispatch_gui_layout_finished24 has actual ClipBox arm",
+    "Text_current24": "dispatcher currently rejects Text; full-page composition not established",
+    "refresh": "main registration then live shadow registration then borrowed child70 continuation",
+    "continuation_retention": "no ownership/snapshot; owner identities and child membership must remain stable",
+    "inactive_clip": "updates cClip but leaves earlier center/border/aspect records unchanged",
+    "consumer": "native_material_constant_build reads selected source_08 records without cClip lifetime gate",
+    "lifetime_implication": "old ancestor must survive last real source consumer or replacement of each referencing record; cClip0/reparent alone does not close lifetime"
+  },
+  "native_Text_retention": {
+    "cursor_bind": "GuiTextRuntimeFactory::bind_retained_text_00b18a40 -> actual NativeGuiTextIdentityReference -> raw Text prefix+04 retained by native B18A40",
+    "count_is_real": true,
+    "companion_owns_cpp_layout_or_ancestor": false,
+    "zero_release": "same owner deleting transport through canonical actual registry",
+    "explicit_scalar_count_gate": false,
+    "count_gate_warning": "count>1 before ordinary cleanup may include an internal owned cursor retain; cannot replace Original explicit AB8EE0 semantics"
+  },
+  "storage_ownership": {
+    "page_registry": "vector<unique_ptr<GuiLayoutPage>>",
+    "page": "unique_ptr root plus script_table shared owner",
+    "layout": "unique_ptr children; raw parent and public transform/child storage",
+    "widget_runtime": "separate unique_ptr companion map; destructor rejects nonempty associations",
+    "page_reference_count": "metadata increment only; no release/deletion transport",
+    "shared_ptr_alias_warning": "alias over externally unique page/companion ownership cannot prevent explicit erase_tree, child removal or retirement"
+  },
+  "retirement_gap": {
+    "entry": "GuiWidgetOwnerRuntime::retire_tree whole-tree preflight",
+    "checked": "active operations and type before_host_tree_retirement hooks",
+    "not_checked": "material/source lifetime; Text has no host-tree count/lifetime override",
+    "sequence": "scene release, erase_tree, Text implementation/lifetime destruction, return_completed_allocation raw pool return and registry unbind",
+    "factory_pool_return_count_gated": false,
+    "consequence": "premature caller closure can invalidate borrowed parameter sources or external material-retained raw Text identity; no runtime occurrence claimed"
+  },
+  "failure_gap": {
+    "owner": "load_gui_page_00aa5840 local page/root/table and build_widget_children local child",
+    "failure_hook": "no-argument on_page_load_failed runs through LoadScope after later-created locals unwind",
+    "persistent_same_graph_retention_provided": false,
+    "result": "local teardown can precede failure hook; pending native lifetime can terminate rather than become a retained resumable load",
+    "font_host53": "export-gap guard protects parent graph, not loader-local unique ownership"
+  },
+  "minimal_followup": {
+    "kind": "separately owned persistent page-load/retirement operation; no new clip provider",
+    "files_requiring_coordination": [
+      "include/bsp/gui_layout_loader.hpp",
+      "src/gui_layout_loader.cpp",
+      "concrete native GUI host ownership",
+      "factory/retirement lifetime transport"
+    ],
+    "requirements": [
+      "own same page/root/script table/pending child before native entry while preserving native list-parent ordering",
+      "retain entered failure graph without rollback/replay and publish only completed page",
+      "keep canonical runtime, factory, ancestor fields and pending continuations alive",
+      "establish real last-consumer boundary before layout deletion; close external cursor-material retains before Text slot return",
+      "guard explicit tree/child/reparent mutation while borrowed sources are in use",
+      "then retire Text/layout, fonts via same empty factory, shared drain with registry/VFS/renderer metadata alive"
+    ],
+    "not_a_barrier": "GameNativeFrameJobApplication::retire_after_manager_drain retires bindings only after shared drain",
+    "implementation_in_57": "none; no small honest disjoint clip-file ownership patch identified"
+  },
+  "remaining_Original_evidence": [
+    "actual Original page/ancestor reference-release chain",
+    "full source-consumer and UI/worker/teardown scheduling",
+    "raw non-Text ClipBox/native widget count ownership is not represented by typed Source fields",
+    "complete native Text current24 composition is not established by existing dispatcher"
+  ],
+  "verification": {
+    "method": "bounded current method/constructor/load/retirement and occurrence inspection",
+    "new_tests": 0,
+    "runtime_runs": 0,
+    "builds": 0,
+    "source_mutations": 0,
+    "ghidra_mutations": 0,
+    "fake_factory_or_manager": false
+  },
+  "source_inputs": {
+    "src/game_hosts_text.cpp": {
+      "sha256": "d298a6c7164573445fe3e3501d972ca7791a1ca3c75429115bc7fd24bd569a8e",
+      "git_blob": "0624da0c137e814af43dcbd6dda2a6799758a659"
+    },
+    "include/bsp/game_native_text_application.hpp": {
+      "sha256": "751f51f0b099f43bef1c117fb52779992518ff172a1ca6073db2506a3cc48f1e",
+      "git_blob": "5f851d623d9ba3ccb08c3c70b104eb49e322d098"
+    },
+    "include/bsp/gui_text_clip_refresh.hpp": {
+      "sha256": "9672685d87875f5af428e5ca1822ee1ba76a8d6b643b8c50f1b5577c6341235d",
+      "git_blob": "200d506f3ec1eea26b186d2d5b91cd1ebcc166d8"
+    },
+    "src/gui_text_clip_refresh.cpp": {
+      "sha256": "1d58178c043be4fe182a9b6e0332aab4b257e460218178db88013c07b333cf26",
+      "git_blob": "12a363254ac8125be8f48aabf5534c680bcd0a9f"
+    },
+    "include/bsp/gui_native_clip_parameters.hpp": {
+      "sha256": "9e1dac453bb71e8b39be9f62b343596f30106a7760e1f1f1683a0025809b9dc5",
+      "git_blob": "77b1fe4cd2506f60e82de5a9615b25b468bdc8ba"
+    },
+    "src/gui_native_clip_parameters.cpp": {
+      "sha256": "7f7fecd6da9dfb5a07c8bc8bdcb9702dc94cfe989c4695e6092aadbf313af38a",
+      "git_blob": "c34860cc949f797f2273e4a223fe66d8ea20e4cd"
+    },
+    "include/bsp/gui_clip_box.hpp": {
+      "sha256": "59bd6209449492ca023206669e31ea5c2c4f21b662c65530b9a10476403457df",
+      "git_blob": "58842d2e83ca4039c37f2502e5e8311155a4d352"
+    },
+    "src/gui_clip_box.cpp": {
+      "sha256": "a2ee7d4a88035ec121d2f6f618a554cdd3207b32095ea43e8857386c2ab81807",
+      "git_blob": "5f1ed8d6449996db4424857a930b87e247e9ba82"
+    },
+    "include/bsp/gui_material_binding.hpp": {
+      "sha256": "9d6a380b2ea93fdf8910fa73733229c2a3bac0528f669bf8e655fc3e8f0cdafd",
+      "git_blob": "11dac330582d021b1fc73fc5b530b74501ab3549"
+    },
+    "src/gui_material_binding.cpp": {
+      "sha256": "de3312f993d3180fb7023c9869908a74134370c430bdb8844e20b1cadcac15e2",
+      "git_blob": "fe058317e88a81ba76160f4f7b66f23d3991c367"
+    },
+    "include/bsp/native_material_owner.hpp": {
+      "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+      "git_blob": "fee25270c9758390575b4b1500781fc1a7bccdf2"
+    },
+    "src/native_material_owner.cpp": {
+      "sha256": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+      "git_blob": "98c7c3495ec76c5a15b13de8c9bc869f7a601958"
+    },
+    "include/bsp/native_material_parameters.hpp": {
+      "sha256": "f7f512b1d9be499f1d5d750460a2a51f15628ae5bb30dd9242b675a2dae9e2a3",
+      "git_blob": "cab24e5d281f3747cbaf91e1ba53ab7773772105"
+    },
+    "src/native_material_parameters.cpp": {
+      "sha256": "b77dbb8ed134ae8d1f46f5eb331fc50b349ba6c80a2f21e38a95d6107bdf9f7b",
+      "git_blob": "c1e47f29391b7a4776e0dd1326f50aa33865a6f7"
+    },
+    "src/native_material_constant_build.cpp": {
+      "sha256": "f9eafa5e2cbcfd712262d2f3611cae11a5d8193ca6bce1f600639fb687fe491c",
+      "git_blob": "d8a7c103667555ecc18f363cc62b7ff34e8d8822"
+    },
+    "include/bsp/native_gui_text_identity.hpp": {
+      "sha256": "6de31247104e9d98b5b369846bd8c743058c14aeae8ce0520ce15fd3926335a6",
+      "git_blob": "002c6855b1de966a5a690fca0914971c4683a227"
+    },
+    "src/native_gui_text_identity.cpp": {
+      "sha256": "662d51258be8445f7adfce99e3796e9c2c10ade8d442e1c1cdb61ebd406b8928",
+      "git_blob": "131a978c9ca1e87ec3d94382fff07c5d0676144a"
+    },
+    "include/bsp/gui_text_runtime_factory.hpp": {
+      "sha256": "38d4dc64d03c5743c443c6d5adcc195e8936a203f4310c7f14ef406286428a93",
+      "git_blob": "4720e0d9fbba77ffb666f771836183386310edde"
+    },
+    "src/gui_text_runtime_factory.cpp": {
+      "sha256": "421ae70122d77605639d007e5fd05f0dbaa8e32b4322e121938ce9a0350ab48e",
+      "git_blob": "4534d41576c5b91ea62c7b0f6f857d44fc66ad07"
+    },
+    "include/bsp/gui_layout_loader.hpp": {
+      "sha256": "3ede9dc470a4d5a3285d1578483428b548025b0b2eba9ab6ecc79967b242d8b1",
+      "git_blob": "cfb05b906845ce4a1f8d9737acd2318bf9491096"
+    },
+    "src/gui_layout_loader.cpp": {
+      "sha256": "e0ca3e5052e26d80ca4b4d2c3c64e78b6c54f351bed0fe9474e08d10ba85fc56",
+      "git_blob": "141b5399154397e3dfae2a1e92343a54aaf7a3d1"
+    },
+    "include/bsp/gui_widget_owner.hpp": {
+      "sha256": "2acc8d633c6541a4c60263aa9f94d61826096f71b50c2644f1848e240c56389f",
+      "git_blob": "b051343705b24c9014e82bc2efdd105577d70e62"
+    },
+    "src/gui_widget_owner.cpp": {
+      "sha256": "36a974b52b5f3036c66d4afec46839edf864dc9158bcc766a6576fc8e6335132",
+      "git_blob": "79a11550d42126d8009bc506d566faf559f514fe"
+    },
+    "src/gui_layout_finished.cpp": {
+      "sha256": "9123cc7aa5283ee1282077f5df30026c1dccdb8a9d95f4ea66a976eb81c5d27b",
+      "git_blob": "00eaeb1ff6778643f7becbc746d9338e7947dfb0"
+    },
+    "include/bsp/game_native_frame_job_application.hpp": {
+      "sha256": "1a9765e5538dfac619229c16c337e8f48cc7dc7a40b763829b059d7b1df1f762",
+      "git_blob": "04de780fd8d298c9df22f220d159f30959623fa1"
+    }
+  },
+  "captured_utc": "2026-10-16T02:01:03.159183+00:00"
+}

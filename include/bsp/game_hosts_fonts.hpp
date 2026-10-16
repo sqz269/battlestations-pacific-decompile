@@ -44,8 +44,9 @@ public:
     // Before-export, repeated and after-retirement requests reject before any
     // producer/factory effects. No cancel, reset or replacement is provided.
     // Bind before creating any Text borrower; no second factory may borrow
-    // these resources. Exact registry-cell identity in Text bindings remains
-    // the caller's obligation, separate from this resource/factory association.
+    // these resources. The producer also checks the factory's current font
+    // lookup registry is this SAME host registry, without lazy publication.
+    // The caller keeps that owner/cell and lookup association valid afterward.
     // Retain the factory, registry, VFS and renderer through Text/font retirement
     // and shared drain. This adds no native Text activation or registry/global
     // publication; the existing registry() is only its borrowed host owner.

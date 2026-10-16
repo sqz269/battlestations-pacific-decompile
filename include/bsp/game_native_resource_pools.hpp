@@ -6,6 +6,7 @@
 #include "bsp/native_camera_pool.hpp"
 #include "bsp/native_model_pool.hpp"
 #include "bsp/native_group_pool.hpp"
+#include "bsp/directional_light_pool.hpp"
 
 #include <mutex>
 
@@ -13,7 +14,8 @@ namespace bsp::game {
 
 // Canonical source storage for the distinct 0108FFB0 camera, 0108FFF8 mesh, 010901D4 section
 // and 0109022C hierarchy pools, plus the separate 01090054 model and 0109008C
-// model-base node pools, 0108FF58 plain-node and 010902F4 group pools.
+// model-base node pools, 0108FF58 plain-node and 010902F4 group pools, and the
+// separate 01090154 directional-light pool.
 // All use the existing E188B4 allocator domain;
 // F8D3E4 remains a different material-parameter pool. Native startup owns
 // each real CRT exit callback.
@@ -32,6 +34,7 @@ public:
     int initialize_model_base_once_00cd7f20();
     int initialize_plain_node_once_00cd7d10();
     int initialize_group_once_00cd8460();
+    int initialize_directional_light_once_00cd8080();
     NativeCameraPool& camera_pool_0108ffb0();
     NativeMeshPool& mesh_pool_0108fff8();
     NativeMeshSectionPool& section_pool_010901d4();
@@ -46,6 +49,9 @@ public:
     // before CE0E20/CE0F00. These accessors do not construct either owner type.
     void* plain_node_pool_storage_0108ff58();
     NativeGroupPool& group_pool_010902f4();
+    // Explicit startup only; no light, scene/type identity or normal-host
+    // activation is implied. Return every payload slot before CRT CE0EB0.
+    DirectionalLightPool& directional_light_pool_01090154();
 
 private:
     friend GameNativeResourcePoolProcess& game_native_resource_pool_process();
@@ -91,6 +97,14 @@ private:
     StartupState group_state_{StartupState::unattempted};
     int plain_node_registration_status_{};
     int group_registration_status_{};
+
+    // Append the distinct canonical Source owner without moving existing
+    // process members. Its companion never performs native teardown on C++
+    // destruction; explicit CD8080 registers the one genuine CRT callback.
+    DirectionalLightPoolStorage directional_light_storage_01090154_{};
+    DirectionalLightPool directional_light_;
+    StartupState directional_light_state_{StartupState::unattempted};
+    int directional_light_registration_status_{};
 };
 
 // Construct the shared allocator owner and this process object before native

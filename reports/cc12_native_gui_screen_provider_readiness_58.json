@@ -1,0 +1,46 @@
+{
+  "packet": "cc12_native_gui_screen_provider_readiness_58",
+  "status": "read_only_method_and_domain_evidence_complete_one_source_packet60_proposed",
+  "merged_root": "f9dd0d899d2fd6082adfee779f5a843420574847",
+  "merge_exit": 0,
+  "ghidra": {"project": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe", "verified_before_batches": true, "mutations": false},
+  "methods": {
+    "directional_allocation": "Raw B7C4C0/B7C6B0 bodies and typed owner/reference exist; typed allocator semantic getter130 and typed destructor finish_node_base49 prevent raw runtime use",
+    "radius": "Complete existing gui_screen_root_radius_00ac5f00; D7A308 double ->BF7030->floatspill/reload->BF7420->CVTSI2SS; needs real CRT/current DWORD bindings",
+    "root_bounds": "Existing owner/raw B8E6C0 overloads; group identity and x87 forward FLD/FSTP behavior, not model-tail alias/memcpy",
+    "page_registration": "Existing complete raw AA52A0; requires actual88h manager and completed124h page, not GuiWidgetOwner/ScreenLayerState/normal ManagerState",
+    "visibility_hook": "F8BF4C real writers9874F6/989C0C; readsAC44A0/AC44BE; changed-only current7C then ECX=result,DL=visible callback; no current normal binding proved"
+  },
+  "common_domains": {
+    "ready_identity": ["renderer.camera_environment().nodes is SAME DestructionGraph nodes/scenes/attachments", "VFS raw_strings and canonical type counter/light/camera backing", "canonical camera pool0108FFB0, viewport registry/renderer publication/profiles", "camera_environment().crt and renderer.node_constants()"],
+    "light_type_admission_gap": "ActualSceneRuntime registry_type_token starts0; only object tokens later set to0/node/root; actual cLight token initialization/publication not established",
+    "normal_missing_compositions": ["Directional pool/static CD8080 process owner", "GuiCameraStoreMap choice/binding", "NativeGuiSceneEnvironment/weak-base adapter", "Concrete GuiScreenSceneNativeCalls", "Actual raw manager/completed page producer for AA52A0", "Live visibility hook cell/dispatch"],
+    "weak_pool_already_exists": "GameNativeWeakPoolProcess CD8A60/pool0109CE94; do not duplicate it",
+    "frontend_manager": "game_hosts_frontend.cpp475 returns small semantic ManagerState, not raw88h AA5D70 allocation",
+    "screen_semantic_admission_gap": "Shared constructor47 and ScreenString16 plus all names100..134 require semantic pool; camera allocation helper still chooses semantic constructor"
+  },
+  "separate_raw_pipeline": {
+    "complete_bodies": "native_light_lifetime.cpp full raw B7C5B0/B7C820 and NativeDirectionalLightStorageReference already implemented",
+    "architecture": "Explicit raw3Ch scene retirement, no DirectionalLightOwner/SceneAttachmentRuntime conversion",
+    "constraint": "Do not duplicate body/registry/tree or bind both companion kinds to one owner; packet60 closes typed graph only"
+  },
+  "proposed_next": {
+    "packet": "cc12_native_gui_raw_directional_lifetime_60",
+    "kind": "Typed Source raw-name constructor/destructor lifetime closure; not newly recovered Original body or normal Screen activation",
+    "files": ["include/bsp/directional_light_owner.hpp", "src/directional_light_owner.cpp", "include/bsp/directional_light_reference.hpp", "src/directional_light_reference.cpp", "docs/CC12_NATIVE_GUI_RAW_DIRECTIONAL_LIFETIME_60.md", "reports/cc12_native_gui_raw_directional_lifetime_60.json"],
+    "address_ranges": ["00b7c4c0..00b7c576", "00b7c6b0..00b7c6c9", "00b7c5b0..00b7c6aa", "00b7c820..00b7c846"],
+    "lease_conflicts": "Check/claim before any Source or annotation edit after Root approval",
+    "required_inputs": "SAME raw nodes/context, actual node constants and CE7820, supplied existing directional pool, actual phase predicates/shadow resolver/profiles; no fake process provider",
+    "entry_order": "B6F5A0 first, current one then base stores, current CE7820 after threezero stores, directional profile after complete base",
+    "preserve": "194..1A3,1B4..1C3,1DC..1EB and slabID1EC; typed-tail materialization preserves actual bytes",
+    "failure_frame": "Persistent acquired slot/constructor/tail/owner/scene/ref state before raw getter entry; one-shot prefix cleanup; no replay/rollback/live-slot return; metadata retention guard before drain",
+    "publication": "Same actual+4 and scene/attachment identity, one canonical DirectionalLightReference, no new retain/count; clear handoff ownership before terminal callback and no dead-record reads",
+    "read_only_reuse": ["raw construction kernels", "raw storage lifetime pipeline", "directional pool and static callbacks", "B6F5A0/raw node destruction"],
+    "excluded": ["ScreenString/store/manager changes", "normal renderer/VFS/type/pool startup changes", "CMake/game_main", "Native Text/Screen activation", "Ghidra body repair"],
+    "validation": "Canonical Win32 existing checks plus one focused actual raw string/directional retained-name/count/binding/pool-slot lifetime probe; no broad suites"
+  },
+  "packet58_validation": "Narrow source/ledger/Original pseudocode+assembly/xrefs evidence and JSON/diff checks; no new build/runtime/ABI proof",
+  "source_edits": false,
+  "normal_native_screen_or_text_activated": false,
+  "game_audio_settings_installation_changes": false
+}
