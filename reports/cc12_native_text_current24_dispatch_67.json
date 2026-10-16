@@ -1,0 +1,82 @@
+{
+  "packet": "cc12_native_text_current24_dispatch_67",
+  "status": "source_dispatch_admitted_reviewed_build_tested",
+  "parent": "a2b8a08c52d07e8ed84c2d0db242c282822d15b2",
+  "root_baseline": "f30e0bd9348c7d9273c0639c698a728ccfd4db55",
+  "completed_utc": "2026-10-16T02:28:06Z",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-native_crt_wcsicmp_locale_48",
+  "lease": {
+    "owner": "agent/native_crt_wcsicmp_locale_48",
+    "addresses": ["00a9e0a0", "00d5c6ec"],
+    "files": ["include/bsp/gui_layout_finished.hpp", "src/gui_layout_finished.cpp", "docs/CC12_NATIVE_TEXT_CURRENT24_DISPATCH_67.md", "reports/cc12_native_text_current24_dispatch_67.json"]
+  },
+  "evidence": {
+    "receipt": "reports/cc12_native_text_current24_readiness_65.json",
+    "verified_project": "C:/Users/sqz269/bsp.gpr",
+    "verified_program": "/battlestationspacific.exe",
+    "text_table": "00d5c6c8",
+    "slot24_address": "00d5c6ec",
+    "slot24_bytes": "a0e0a900",
+    "target": "00a9e0a0",
+    "complete_target_bytes": "c3",
+    "existing_body": "base_gui_layout_finished24_00a9e0a0",
+    "original_call_contract": "AA8710 terminal reload/tail-jump with ECX=same widget and no stack parameters; leaf ignores widget and defines no return value",
+    "source_is_original_vtable_or_abi": false
+  },
+  "source_change": {
+    "function": "dispatch_gui_layout_finished24",
+    "admission": "type3 Text with existing final GuiTextRuntimeImplementation only",
+    "destination": "existing common base-target call to base_gui_layout_finished24_00a9e0a0",
+    "cpp_added_lines": 4,
+    "cpp_include": "complete gui_text_runtime_factory.hpp type, private to cpp",
+    "header_changes": "two supported-table/profile comments only",
+    "other_cpp_text_equal_after_removing_exact_additions_and_normalizing_newlines": true,
+    "source_audit": "local/cc12_native_text_current24_dispatch_67_source_audit.json",
+    "preserved": ["owner/layout type tag match", "concrete companion match failure", "Screen/Group/Icon/FrameBox admissions", "ClipBox same-owner ACE120 update", "unsupported-type failure", "existing base RET body", "child-first terminal transform callback seam"],
+    "new_virtual_or_noop": false,
+    "factory_or_loader_edit": false,
+    "normal_activation": false,
+    "ghidra_or_ledger_mutation": false,
+    "cmake_change": false
+  },
+  "ordering_and_lifetime": {
+    "layout_pass": ["children first", "current position", "optional listener", "transform", "bounds", "current24"],
+    "loaded78": "unchanged separate AB6AA0 tail to AA7170 CURRENT60(false) then bounds",
+    "pending_operation_completed_by_change": false,
+    "required_borrows": "same runtime/owner/factory, layout child graph, script data, fonts/resources and clip sources through pending continuations and last actual consumer",
+    "failure_requirement": "retain entered failed graph; no replay, rollback or retirement permission from current24 success",
+    "legacy_loader_gap_closed": false,
+    "packet63_dependency": "separate loader-retention work, excluded from this fixed-baseline packet"
+  },
+  "review": {
+    "primary_complete_two_source_file_review": "PASS",
+    "packet65_read_only_evidence_review": "PASS",
+    "diff_whitespace": "PASS"
+  },
+  "build": {
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1",
+    "exit_code": 0,
+    "generator": "Visual Studio 18 2026",
+    "platform": "Win32",
+    "configuration": "Release",
+    "compiled_changed_translation_unit": "gui_layout_finished.cpp",
+    "log": "local/cc12_native_text_current24_dispatch_67_build.log",
+    "log_sha256": "12c9e574f159ba95bd7d2373e42f9d0c1a01d33bf4b93d80bf555432f62519c5",
+    "existing_tests": [
+      {"name": "reconstructed_math", "result": "PASS"},
+      {"name": "native_math_differential", "result": "PASS"},
+      {"name": "tool_tests", "result": "PASS"}
+    ],
+    "passed": 3,
+    "failed": 0,
+    "new_tests": 0,
+    "observed_warning": "LNK4006 spawn_request_id_matches in lua_binding_spawn.obj already defined in lua_spawn_new.obj; second definition ignored; unrelated files not changed"
+  },
+  "sha256": {
+    "include/bsp/gui_layout_finished.hpp": "177096f2c15b209ba569a0bda492f90afdcbb83d4ae0f429c38a4da26cc3d20c",
+    "src/gui_layout_finished.cpp": "49e31b0fdd50343ffd65d9629cdf23829608479ebd19b0f20be9ad309831e351",
+    "build/win32/Release/bsp_core.lib": "7dcc0f65169e5db6bac1b428ec2282ed91eac5a7975a230157cca106d1b4d5bc",
+    "build/win32/Release/bsp_game.exe": "1c9caf5474423636177753f517bf33809a61cfe56fcd0bfd6e73eaf6b16b02d9"
+  },
+  "proof_limits": ["typed Source companion projection", "no Original vtable or binary ABI replacement", "no normal native Text activation", "no full page load or native drawing execution", "no pending continuation completion", "no graph/clip-consumer ownership or ordinary failure-retirement closure"]
+}

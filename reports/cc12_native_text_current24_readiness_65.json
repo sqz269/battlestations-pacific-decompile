@@ -1,0 +1,72 @@
+{
+  "packet": "cc12_native_text_current24_readiness_65",
+  "status": "read_only_evidence_existing_body_dispatch_gap",
+  "baseline": "f30e0bd9348c7d9273c0639c698a728ccfd4db55",
+  "baseline_merge_exit_code": 0,
+  "observed_utc": "2026-10-16T02:22:53Z",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-native_crt_wcsicmp_locale_48",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "queries": "bsp.py ghidra wrappers verify the live project/program for each batch",
+    "mutations": false
+  },
+  "text_vtable": {
+    "address": "00d5c6c8",
+    "current24": {"address": "00d5c6ec", "bytes": "a0e0a900", "target": "00a9e0a0"},
+    "constructed74": {"address": "00d5c73c", "bytes": "0077ab00", "target": "00ab7700"},
+    "loaded78": {"address": "00d5c740", "bytes": "a06aab00", "target": "00ab6aa0"}
+  },
+  "current24_body": {
+    "address": "00a9e0a0",
+    "complete_bytes": "c3",
+    "instructions": ["RET"],
+    "original_call_contract": "AA8710 tail-jump with ECX=same widget and no stack parameters; leaf ignores ECX and defines no return value",
+    "existing_source": "base_gui_layout_finished24_00a9e0a0 in src/gui_layout_finished.cpp",
+    "source_is_original_abi": false,
+    "new_body_required": false
+  },
+  "ordering": {
+    "aa8710": ["same child list recursion in stored count/order", "current authored/widescreen position", "optional listener current1c", "AA7220 transform", "AA70E0 bounds", "reload current table and tail-jump current24 with same ECX"],
+    "aa8710_current24_tail": {"reload_table": "00aa87a1", "load_slot24": "00aa87a3", "restore_ecx": "00aa87a7", "tail_jump": "00aa87ab"},
+    "ab6aa0_loaded78": "complete 5-byte JMP AA7170; CURRENT type60(false), then AA70E0 bounds tail",
+    "aaa710_child": ["parent/list publication", "node parenting", "current74", "visitor descent", "current18 property reader including descendants", "visitor ascent", "current78"],
+    "source_child": ["publish same child and parent", "constructed74", "base properties", "descendants", "derived properties", "loaded78"],
+    "loaded78_is_current24": false
+  },
+  "actual_source_gap": {
+    "function": "dispatch_gui_layout_finished24",
+    "file": "src/gui_layout_finished.cpp",
+    "current_text_behavior": "unsupported-type exception",
+    "existing_final_companion": "GuiTextRuntimeImplementation",
+    "existing_transform_hook": "GuiLayoutFinishedHost::on_layout_finished",
+    "normal_host_activation_established": false
+  },
+  "failure_contract": {
+    "pending_text_destructor": "terminates rather than discard unfinished operations",
+    "retire_tree_preflight": "whole-tree active-operation/derived checks precede scene release",
+    "required_borrows": ["same canonical widget runtime and Text factory", "page/root/child layouts and list payloads", "script data", "font/resource owners", "clip source ancestors through last parameter consumer"],
+    "legacy_loader_gap_closed": false,
+    "packet63": "pending worker coordination only: opt-in same-unique-graph retention in required noexcept sticky failure sink before rethrow; not integrated/reviewed by packet65",
+    "current24_closes_lifetime_gap": false
+  },
+  "next_packet": {
+    "id": "cc12_native_text_current24_dispatch_67",
+    "approved_by_parent": true,
+    "source_files": ["include/bsp/gui_layout_finished.hpp", "src/gui_layout_finished.cpp"],
+    "change": "Admit type3 only for final GuiTextRuntimeImplementation and use existing base_gui_layout_finished24_00a9e0a0; complete runtime type include in cpp only",
+    "preserve": ["both type tag checks", "ClipBox update24_00ace120", "all existing profiles", "mismatch and unsupported failures", "existing child-first transform callback seam"],
+    "excluded": ["new no-op body", "factory/loader hook", "Ghidra mutation", "CMake", "normal activation"],
+    "verification": "narrow diff review, existing canonical MSVC Win32 build/checks; no dummy Text factory or switch-mirroring tests"
+  },
+  "source_sha256_at_review": {
+    "include/bsp/gui_layout_finished.hpp": "025878ebb6dcf57c8c40d89053aacb11458a56f15871fa6345b92938ca235389",
+    "src/gui_layout_finished.cpp": "9123cc7aa5283ee1282077f5df30026c1dccdb8a9d95f4ea66a976eb81c5d27b",
+    "include/bsp/gui_text_runtime_factory.hpp": "14eed96de460d87cef6089e9c4582374b8aa3119e1a2e15f90ad2672b058b61e",
+    "src/gui_text_runtime_factory.cpp": "421ae70122d77605639d007e5fd05f0dbaa8e32b4322e121938ce9a0350ab48e",
+    "src/gui_widget.cpp": "c59c3b3a8f6aad8bdd8ebf72c830df870ca8a491835d92e4f9e50b342e8a4fdf",
+    "src/gui_layout_loader.cpp": "e0ca3e5052e26d80ca4b4d2c3c64e78b6c54f351bed0fe9474e08d10ba85fc56"
+  },
+  "checks": {"source_changes": false, "build_run": false, "tests_run": false},
+  "proof_limits": ["typed Source companion projection only", "no Original vtable or binary replacement", "no normal native Text activation", "no page or native drawing execution", "no pending-operation completion", "no page/ancestor ownership or ordinary failure-retirement closure"]
+}
