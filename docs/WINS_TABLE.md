@@ -518,3 +518,36 @@ mechanism is in the cd761bb52 section above).
   | IJN08 `p9_i08_w` | failed 789.93 s (Game Over, entity HQ) | failed 789.93 s (unchanged) |
 
   The flip is faithful and stays ON; USN15 tl needs a re-plan (see the next re-time).
+- **Re-time on origin/main 25fbdcba0** (cc9-lua62, 2026-10-16). This main contains f9d36bb0e, eaf50b067 and the cc13
+  mission-picture wiring 7e2ac0fec (never paired before), plus the Codex font/text/frontend batches. Exe: tree build
+  (full `scripts/build.ps1`, tests pass) copied to `cc9-lua52\local\l62_rt\` (3ED7E2E69EE6). Reference env,
+  `--stop-after-end 40`. Logs `local\l62rt_<row>_<ref|j3>.log` with manifests; queue `local\l62_retime.ps1`, summary
+  `local\l62_rt_sum.py`, first moved death `local\l62_deathdiff.py <old> <new>`. "Was" is the 9228d13fe re-time
+  unless named.
+
+  | Row | Frames | Reference | 20,3 | Guard |
+  |---|---|---|---|---|
+  | USN02 `s36_u2_p7` | 16000 | completed 200.06 s | completed 205.06 s (was 200.06) | yes |
+  | LOMP06 `l50_l6_q6` | 16000 | completed 374.83 s (was 383.83) | completed 373.83 s (was 355.84) | yes |
+  | USN01 `p8_u1_i` | 26000 | completed 365.03 s | completed 360.04 s | yes |
+  | PRCP01 `p9_p01_k` | 30000 | completed 536.29 s | completed 800.68 s | yes |
+  | USN12 `g45_u12_e7` | 36000 | completed 1685.52 s (was 1675.51) | completed 1675.51 s | yes |
+  | LOMP10 `p3_l10_b` | 36000 | completed 1293.69 s (was 1003.43) | completed 1276.67 s (was 1245.64) | yes |
+  | BSM01 `p6_b1_a` | 40000 | EndMission 833.92 s | EndMission 875.91 s | yes |
+  | IJN18 `s46_i18_a` | 64000 | EndMission 2183.00 s (was 2162.98) | EndMission 2166.99 s | yes |
+  | IJN08 `p10_i08_z` | 100000 | completed 3006.81 s | completed 3947.73 s | yes |
+  | JM06 `s49_j6_s` | 120000 | completed 2144.97 s (= eaf50b067) | **no end** (as on 9228d13fe) | ref yes |
+  | JM08 `p6_j8_f` | 110000 | **failed 949.94 s** (was 940.94) | **no end** | - |
+  | ESMP08 `l61_e8_f` | 140000 | completed 6532.47 s (identical deaths) | 13/15 (identical deaths) | ref yes |
+  | USN15 `g46_u15_tl` | 144000 | **failed 1417.31 s** (Game Over) | **failed 1417.31 s** | - |
+
+  - IJN08 z reproduces physics10's 610dc9bfd times exactly on both conditions; it replaces w as the IJN08 row.
+  - The only new loss against the last re-time is USN15 tl, already recorded under eaf50b067. Against its win log
+    `cc9-gunnery36\local\g46_p2_u15tl.log`, the first moved death is Fletcher-class02 at 760.89 -> 761.94 s (killer
+    Nachi in both); Denver then dies at 1311.95 s instead of 779.93 s, and Yamashiro, Fuso and Ashigara survive. The
+    Japanese torpedo reload bound moved the Japanese torpedo timing, so the plan needs a re-plan (gunnery lane).
+  - JM08 f moves earlier than before: the first moved death is MainAirFieldEntity 01_sqn03|.-3 at 426.97 -> 429.87 s,
+    after the slot-4 launch at frame 8903 is now applied (was refused). It is being re-planned (next entries).
+  - JM06 s under 20,3 diverges from the 9228d13fe run at 168.11 s (Fletcher-class 09 sunk by PlayerSub 03 instead of
+    surviving); still no end (cc9-physics lane item).
+  - The other moves (LOMP10, LOMP06, USN12, IJN18) are timing only; every completion logged the guard.
