@@ -39,9 +39,25 @@ inventory comment and prior name, appended the bounded evidence, saved the
 project, and refreshed the affected shared export. Live comment readback
 confirmed preservation. The primary independently accepted the full 59-byte
 assembly and complete Source/header schedule, including both unsigned fallback
-intervals and the matched entry's current second-word read. Registration, the
-primary's normal Win32 build and existing checks remain pending. No new tests
-are added; an earlier unrelated primary build does not validate this mapper.
+intervals and the matched entry's current second-word read. The requested
+header-only clarification was accepted without changing the CPP.
+
+The primary registered this Source exactly once and ran `scripts/build.ps1` at
+`b594573593f5fcf2eddb02e2d777ab2eb2f27d62`. MSVC Release Win32 succeeded and
+all three existing checks passed in 8.76 seconds. The immutable receipt is
+`reports/goal_oct15_mapper_primary_review.json`; its receipt/log/archive hashes
+and exact command are retained in the owned report. No worker build or new
+tests are claimed, and an earlier unrelated build supplies no mapper credit.
+
+Full inspection of the actual retained object passed: the emitted function is
+75 bytes / 33 instructions, with one positive external definition and one
+identical archive body. It captures the error and added table binding, reads
+each reached first word at offset `10h`, and reads a matched current second
+word only at `45h`. The unsigned fallback emits CMP/SBB/AND/ADD, preserving the
+native result on the full DWORD domain. There are zero emitted calls, table
+writes or code relocations. The object SHA-256 is
+`fcaf892735453b5a50c1f4a1044fbcfba5e0572334bc5d332c5b2e15cf4f4291`.
+
 The added table binding and C++ signature have no drop-in
 Original ABI, original compiler-frame, fault/SEH or runtime execution credit.
 This mapper closes no Original heap, errno/PTD, lock/bootstrap or full `_free`
