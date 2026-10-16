@@ -8,6 +8,7 @@ namespace {
 // This is writable, constant-initialized storage, not a constant getter.
 volatile std::uint32_t register_limit_storage_00e13078{0x4dU};
 void* volatile system_registry_storage_0108fe94{};
+NativeShaderStateDefinitionsStorage* volatile state_definitions_storage_0108fe90{};
 
 } // namespace
 
@@ -25,6 +26,15 @@ void* volatile& native_shader_system_registry_cell_0108fe94() noexcept {
 
 void* __cdecl native_shader_system_registry_00b34490() noexcept {
     return system_registry_storage_0108fe94;
+}
+
+NativeShaderStateDefinitionsStorage* volatile&
+native_shader_state_definitions_cell_0108fe90() noexcept {
+    return state_definitions_storage_0108fe90;
+}
+
+void* __cdecl native_shader_state_definitions_00b400f0() noexcept {
+    return state_definitions_storage_0108fe90;
 }
 
 } // namespace bsp

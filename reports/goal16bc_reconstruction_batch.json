@@ -1,0 +1,81 @@
+{
+  "batch": "GOAL16B/C",
+  "validated_source_snapshot": "0468cb88110d5995801b9ca8d6b7483cfba33840",
+  "new_original_functions": 8,
+  "new_original_native_bytes": 13,
+  "exact_entire_native_body_count": 0,
+  "new_mapped_source_bytes": 27,
+  "new_source_only_cell_accessor_bytes": 6,
+  "entire_two_modules_source_bytes_including_existing_W": 57,
+  "new_registered_tests": 0,
+  "root_existing_checks": 3,
+  "objects": {
+    "native_tagged_leaf_b5_01": {
+      "sha256": "85df6b743f14867a343343e024dd5a053dbe3152b3a7866ede722323e1c4f290",
+      "whole_functions": 7,
+      "executable_bytes": 21,
+      "actual_unique_member": "bsp_core.dir/Release/native_tagged_leaf_b5_01.obj",
+      "whole_member_equals_registered": true
+    },
+    "native_shader_global_readers": {
+      "sha256": "1435f868463b487aea4770a5ea36d9f250f14fd12481c8fc4f533e474afc6c43",
+      "whole_functions": 6,
+      "executable_bytes": 36,
+      "actual_unique_member": "bsp_core.dir/Release/native_shader_global_readers.obj",
+      "whole_member_equals_registered": true
+    }
+  },
+  "actual_root_archive_sha256": "649efe755fac7a3b1644950e42b2a36f9ad633a20531e083732d12c27c3451aa",
+  "primary_independent_B5_review": {
+    "path": "local\\goal16b_root\\independent_review.json",
+    "sha256": "b4b0cf9b51648b18c9929ff6d638bc748c0ffe1c61dd2bc80cdbb84c76c75ee5",
+    "status": "READY"
+  },
+  "independent_C_review": {
+    "status": "READY",
+    "path": "local\\goal16c_shader_definitions_reader\\independent_review\\final_review.json",
+    "sha256": "6a20e5ca503954c1362e4456e3cecc82107dbb175d708247d46d9cbc66274b48",
+    "blocking_findings": [],
+    "complete_old_W_evidence_unchanged": true,
+    "full_production_ctor_and_all_cells_verified_statically": true,
+    "no_reviewer_target_execution": true
+  },
+  "worker_B5_author_pin": "d28c7026a6988cc3beefd90a1f45f67dbb2eef86",
+  "new_C_source_pin": "1e7f0a3d2",
+  "build": {
+    "path": "local\\goal16b_root\\registered_build.log",
+    "sha256": "d47aa343e36c0a99c4c43d289a6546a666c2b0e906b8b1fe054d86d34c78f15c"
+  },
+  "ghidra": {
+    "old_B5_state": "local/goal15h_annotations_00b540a0.json",
+    "B5_history": "local/ghidra-annotations-20261016T054704Z.json",
+    "old_C_state": "local/goal15h_annotations_00b400f0.json",
+    "C_history": "local/ghidra-annotations-20261016T053252Z.json",
+    "typed_flow": "local\\goal16b_root\\saved_typed_flow.json",
+    "sha256": "1c99dcc91e0ea671e36ccdf09fe8c1cd2dd0723ca661b243608f2873821eb7f7",
+    "project_saved": true,
+    "affected_exports_refreshed": 8,
+    "snapshot": "local/goal16b_root/snapshot.log",
+    "index": "local/goal16b_root/final_index.log"
+  },
+  "B5_author_timing": {
+    "inclusive_setup_to_handoff_seconds": 1554.648,
+    "full_fresh_build_seconds": 1036.1200392,
+    "full_primary_integration_time": "unmeasured",
+    "controlled_speedup_claimed": false
+  },
+  "limits": "Qualified RET0 instruction-fetch extent and canonical Source storage rebinding. No Original class/prototype/vtable recovery, Original fault/address identity, production owner lifecycle execution, binary/caller adoption or game validation.",
+  "call_verification": {
+    "path": "local/goal16b_root/call_checks.log",
+    "sha256": "f429c7253d6956cc1c6b812d76a07761d52c80c6ee216fe0b2fcf3aa0963d911",
+    "failures": 0,
+    "warnings": 0,
+    "outside_parser_sampled_deferred_closure_claims": 1,
+    "manual_fresh_callee_check": "00B51DD0 ->00B51D50/BF65AC;00B5FD70 ->BD30F0/BF65AC; deferred closures are not reconstructed by this packet."
+  },
+  "final_Main_input_delta": {
+    "path": "local/goal16b_root/main_input_delta.json",
+    "sha256": "c591f8f6d5123cba6d194a5c5797c22b324f17a679acb3e4a4eb733d8efcaae5",
+    "all399_registered_renderer_project_inputs_unchanged": true
+  }
+}
