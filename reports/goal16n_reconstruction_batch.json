@@ -1,9 +1,9 @@
 {
   "packet": "goal16n_primary_integration",
   "status": "independently_reviewed_reconstructed_build_tested_Ghidra_saved",
-  "generated_utc": "2026-10-16T09:17:35.653843+00:00",
-  "validated_Source_commit": "455bc88672d58a981bedfdaf5392851bc166bb31",
-  "Main_input": "12b6dda3f18045fea3ce3b18c1d057187b8ec47e",
+  "generated_utc": "2026-10-16T09:19:22.617152+00:00",
+  "validated_Source_commit": "2b9b840c2133fc384b5ab76cdae3d82425410cd1",
+  "Main_input": "3075833f591871662b03521fb254281ca15b54f5",
   "counts": {
     "new_complete_Native_entries": 2,
     "new_complete_Native_bytes": 201,
@@ -456,7 +456,7 @@
   },
   "primary_proof": {
     "path": "local/goal16n_root/final_proof/proof.json",
-    "sha256": "953c9473b9857c43f843ed0f826edfa1429879ec283467dbd241d18bb2b88a70",
+    "sha256": "173df8942ee405d311d3e934f8e92eba2851bf2d1fb5ed4fc5380b631b327041",
     "archive": {
       "sha256": "c6759f6ca917b871217322824f254f777be164468eed9ac09636217b2da90f7c",
       "parsed_actual_COFF_members": 2463,
@@ -608,7 +608,7 @@
       "end_utc": "2026-10-16T09:10:00.8782709Z",
       "start_utc": "2026-10-16T09:09:41.9677762Z"
     },
-    "final": {
+    "pre_metadata_Main_refresh": {
       "start_utc": "2026-10-16T09:16:56.3014842Z",
       "Main_input": "12b6dda3f18045fea3ce3b18c1d057187b8ec47e",
       "log": "local/goal16n_root/final_build.log",
@@ -616,6 +616,15 @@
       "source_pin": "455bc88672d58a981bedfdaf5392851bc166bb31",
       "wall_seconds": 18.0455209,
       "exit_code": 0
+    },
+    "final": {
+      "start_utc": "2026-10-16T09:18:51.1464834Z",
+      "end_utc": "2026-10-16T09:19:05.2747866Z",
+      "wall_seconds": 14.1283032,
+      "Main_input": "3075833f591871662b03521fb254281ca15b54f5",
+      "log": "local/goal16n_root/final_build.log",
+      "exit_code": 0,
+      "source_pin": "2b9b840c2133fc384b5ab76cdae3d82425410cd1"
     },
     "final_existing_checks": "3/3 PASS; exact durations retained in final_build.log",
     "final_compile_commands": "local/goal16n_root/final_compile_commands/selected.json"
