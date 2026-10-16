@@ -34,9 +34,10 @@ void* copy_construct_native_gui_frame_box_record_00ad0c60(
 
 namespace bsp {
 class NativeRenderActualOwners;
+class NativeGuiFrameBoxVectorCopyOperation;
 
 enum class NativeGuiFrameBoxRecordReleasePhase : std::uint8_t {
-    fresh, entered, returned, failed
+    fresh, entered, returned, failed, parent_catch_completed
 };
 
 // Explicit Source orchestration metadata, not an Original object/stack layout.
@@ -52,6 +53,9 @@ enum class NativeGuiFrameBoxRecordReleasePhase : std::uint8_t {
 // Destroying entered/failed metadata terminates without inspecting the graph;
 // fresh/returned destruction reads metadata only. This fail-closed rule is NEW
 // Source orchestration, not recovered Original destructor or FH3 behavior.
+// Only the whole138 parent can mark parent_catch_completed AFTER its genuine
+//119 returns. That terminal state permits metadata-only destruction, never
+// replay or graph cleanup; the parent preserves the preceding phase separately.
 class NativeGuiFrameBoxRecordReleaseOperation final {
 public:
     NativeGuiFrameBoxRecordReleaseOperation() noexcept = default;
@@ -78,6 +82,7 @@ public:
     bool failure_name_cleanup_entered() const noexcept { return failure_name_cleanup_entered_; }
     bool failure_name_cleanup_returned() const noexcept { return failure_name_cleanup_returned_; }
 private:
+    friend class NativeGuiFrameBoxVectorCopyOperation;
     friend void release_native_gui_frame_box_record_00ad0860(void*, NativeRenderActualOwners&,
         NativeStringRawPoolContext&, NativeGuiFrameBoxRecordReleaseOperation&);
     NativeGuiFrameBoxRecordReleasePhase phase_{};
@@ -229,7 +234,7 @@ void cleanup_native_gui_frame_box_vector_00ad2320(void* actual_header,
 
 namespace bsp {
 enum class NativeGuiFrameBoxRecordCopyPhase : std::uint8_t {
-    fresh, entered, returned, failed
+    fresh, entered, returned, failed, parent_catch_completed
 };
 
 // Explicit Source orchestration, not a Native object, owner or EH frame.
@@ -254,6 +259,9 @@ enum class NativeGuiFrameBoxRecordCopyPhase : std::uint8_t {
 // is a new Source lifetime obligation, not Native cleanup/FH3 behavior; it does
 // not release, count-gate or repair any graph. Diagnostics may hold stale
 // identities and must not be used to inspect already retired payloads.
+// Only whole138's parent can mark parent_catch_completed after its genuine119
+// returns. This is terminal Native-style abandonment, not recovery/reset; its
+// preceding phase remains in the parent's persistent diagnostic metadata.
 class NativeGuiFrameBoxRecordCopyOperation final {
 public:
     NativeGuiFrameBoxRecordCopyOperation(const void* first, const void* last,
@@ -287,6 +295,7 @@ public:
     const NativeRenderActualOwners* actual_owners_identity() const noexcept { return actual_owners_; }
     const NativeStringRawPoolContext* actual_strings_identity() const noexcept { return actual_strings_; }
 private:
+    friend class NativeGuiFrameBoxVectorCopyOperation;
     friend void* copy_native_gui_frame_box_uninitialized_range_00ad1910(
         const void*, const void*, void*, NativeStringRawPoolContext&,
         NativeRenderActualOwners&, NativeGuiFrameBoxRecordCopyOperation&);

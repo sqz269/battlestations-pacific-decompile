@@ -57,3 +57,21 @@ void* copy_construct_native_wide_string_header_004c8dd0(void* actual_header,
     const void* actual_source, NativeStringStorage& storage);
 
 } // namespace bsp
+
+namespace bsp {
+
+// Full 004C5E20[57B/24 starts], native ECX=dst, stack src, EAX=SAME dst, RET4.
+// Actual DWORD-aligned 8B headers/backing and the SAME retained string storage
+// are required; production borrows GameNativeStringProcess::strings().
+// Exact self identity returns before ANY header read, without initialization.
+// Otherwise resize using captured source length/preserve1, then reread CURRENT
+// source length. Only nonzero reads CURRENT source data THEN destination data
+// and streams WORDs through and including NUL, with no count bound or memcpy.
+// No new callback/owner, local cleanup/rollback or retry. Inherit real resize's
+// wrapping arithmetic, allocation/alias and Source release-noexcept limits.
+// Existing typed API/algorithm stays separate. This is a new Source ABI, not
+// Native thiscall/FH3/private-CRT identity or raw Text rebuild/layout closure.
+void* assign_native_wide_string_header_004c5e20(void* actual_header,
+    const void* actual_source, NativeStringStorage& storage);
+
+} // namespace bsp

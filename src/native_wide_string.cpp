@@ -134,3 +134,28 @@ void* copy_construct_native_wide_string_header_004c8dd0(void* actual_header,
 }
 
 } // namespace bsp
+
+namespace bsp {
+
+void* assign_native_wide_string_header_004c5e20(void* actual_header,
+    const void* actual_source, NativeStringStorage& storage) {
+    if (actual_header == actual_source) return actual_header; // 004C5E28
+    auto* const destination = static_cast<volatile std::uint32_t*>(actual_header);
+    const auto* const source = static_cast<const volatile std::uint32_t*>(actual_source);
+    const auto length = source[0]; // 004C5E2C, captured resize request
+    resize_native_wide_string_header_004c53e0(actual_header, storage, length, true);
+    if (source[0] != 0) { // 004C5E36, CURRENT after allocation/release callbacks
+        std::uintptr_t input = source[1]; // 004C5E3B, only after nonzero length
+        std::uintptr_t output = destination[1]; // 004C5E3E, after source data
+        std::uint16_t unit;
+        do {
+            unit = *reinterpret_cast<const volatile std::uint16_t*>(input);
+            *reinterpret_cast<volatile std::uint16_t*>(output) = unit;
+            input += 2u;
+            output += 2u;
+        } while (unit != 0); // 004C5E41..004C5E50, includes NUL
+    }
+    return actual_header;
+}
+
+} // namespace bsp
