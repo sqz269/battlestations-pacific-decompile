@@ -1,0 +1,316 @@
+{
+  "schema": "bsp.scene_string_list_ownership_Main_validation.v1",
+  "status": "whole_ordinary_explicit_context_Source_registered_Main3checks_actual_code_archive_identity_pass",
+  "required_Main_build": {
+    "command": "./scripts/build.ps1",
+    "initial_chunk": "0ad168",
+    "session": 11552,
+    "terminal_chunk": "89bf99",
+    "exit_code": 0,
+    "configured_CTests_passed": 3,
+    "seconds": 8.47,
+    "before_commit": "828b38acfbf282084ddf4dd9681c234e2c3b6e3f",
+    "after_commit": "828b38acfbf282084ddf4dd9681c234e2c3b6e3f",
+    "stable_inputs": 193,
+    "actual_known_compiler_inputs": 105,
+    "author_tool_support_entries": 71,
+    "historical_author_local_scripts": 5,
+    "current_Main_provider_entries": 17,
+    "frame_default_freshly_pinned": true,
+    "qualification": "All105 known strict compiler dependencies rebound to Main;71 tool/support entries include5 sealed historical author local scripts retained at their real paths, not executed by this Main build. Current17provider rebinding and v180 Win32 default property are explicit. No hermetic/full environment closure claim."
+  },
+  "before": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_scene_string_list_ownership_Main_build01\\before.DATA.json",
+    "bytes": 47728,
+    "sha256": "df0c9df9cb6f4ef69db6cd6dc2c8b61f3b21a9aad056118042fb3111c7a020be"
+  },
+  "after": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_scene_string_list_ownership_Main_build01\\after.DATA.json",
+    "bytes": 47256,
+    "sha256": "b42cda094f407e3cb26bbd467034f3e75ad38542f7a722317e3d8ecea896d609"
+  },
+  "original_build_tools": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_scene_string_list_ownership_Main_build01\\original_build_tools.DATA.json",
+    "bytes": 1375,
+    "sha256": "6010c970d73198dcf664b5486f5728b47a82736d43b5274c105a5fb3d6641fe7"
+  },
+  "complete_Main_inventory": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_string_list_ownership_integration_20261016\\Main_inventory.DATA.json",
+    "bytes": 79411,
+    "sha256": "2257496d2c7705ff36371acf1a836a42d3c6b53c447872617d70a0c6762fb404"
+  },
+  "complete_Main_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_string_list_ownership_integration_20261016\\Main_primary_archive.DATA.json",
+    "bytes": 870538,
+    "sha256": "f5979dcdee559cc8c5c4e90743157dd7cac01d09c28ba467723274d99105b183"
+  },
+  "all_symbols": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_string_list_ownership_integration_20261016\\Main_symbol_review.DATA.json",
+    "bytes": 10482,
+    "sha256": "90315af53e8d42e2ffb8237572aace673a4c718a3f44bd4530f95fc496a28ff2"
+  },
+  "registration": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_string_list_ownership_integration_20261016\\registration_verification.DATA.json",
+    "bytes": 393,
+    "sha256": "2bb51c0306f212289cb00e7b88ce13fab4c253f8d5700f61353d86611c2f43cc"
+  },
+  "artifacts": [
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_scene_string_list_ownership.obj",
+        "bytes": 5288,
+        "sha256": "36e32ee19a969d88c00fae8ed0605c0ce3eaf0790d89aed32c8723313db93406"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_scene_string_list_ownership_Main_build01\\frozen\\native_scene_string_list_ownership.obj",
+        "bytes": 5288,
+        "sha256": "36e32ee19a969d88c00fae8ed0605c0ce3eaf0790d89aed32c8723313db93406"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 93310442,
+        "sha256": "f8d90c99cd72113ece7b49ef66978c0f22ebcd7efa8204328426883de492d82d"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_scene_string_list_ownership_Main_build01\\frozen\\bsp_core.lib",
+        "bytes": 93310442,
+        "sha256": "f8d90c99cd72113ece7b49ef66978c0f22ebcd7efa8204328426883de492d82d"
+      }
+    }
+  ],
+  "code": {
+    "code_sections": 13,
+    "code_bytes": 564,
+    "decoded_rows": 230,
+    "alignment_INT3_bytes": 5,
+    "non_alignment_function_instructions": 225,
+    "public_API_instructions": 143,
+    "current_EH_guard_instructions": 21,
+    "other_emitted_helper_instructions": 61,
+    "code_relocations": 17,
+    "metadata_relocations": 4,
+    "frame_debug_type0007": "IMAGE_REL_I386_DIR32NB",
+    "unused_weak_CRT_BSS_bytes": 4,
+    "primary_symbols": 48,
+    "auxiliary_records": 21,
+    "exact_private_definition_target_pairs": {
+      "??$read_field@H@?A0x49a15bd5@bsp@@YAHPBXI@Z": "??$read_field@H@?A0xae954324@bsp@@YAHPBXI@Z",
+      "??$read_field@I@?A0x49a15bd5@bsp@@YAIPBXI@Z": "??$read_field@I@?A0xae954324@bsp@@YAIPBXI@Z",
+      "??$read_field@PAX@?A0x49a15bd5@bsp@@YAPAXPBXI@Z": "??$read_field@PAX@?A0xae954324@bsp@@YAPAXPBXI@Z",
+      "??$write_field@I@?A0x49a15bd5@bsp@@YAXPAXII@Z": "??$write_field@I@?A0xae954324@bsp@@YAXPAXII@Z",
+      "??$write_field@PAX@?A0x49a15bd5@bsp@@YAXPAXI0@Z": "??$write_field@PAX@?A0xae954324@bsp@@YAXPAXI0@Z",
+      "??0FreshHeaderGuard@?A0x49a15bd5@bsp@@QAE@PAX@Z": "??0FreshHeaderGuard@?A0xae954324@bsp@@QAE@PAX@Z",
+      "??1FreshHeaderGuard@?A0x49a15bd5@bsp@@QAE@XZ": "??1FreshHeaderGuard@?A0xae954324@bsp@@QAE@XZ",
+      "?disarm@FreshHeaderGuard@?A0x49a15bd5@bsp@@QAEXXZ": "?disarm@FreshHeaderGuard@?A0xae954324@bsp@@QAEXXZ",
+      "?publish_record@?A0x49a15bd5@bsp@@YAIPAX0@Z": "?publish_record@?A0xae954324@bsp@@YAIPAX0@Z"
+    },
+    "whole_object_debug_checksum_identity": false
+  },
+  "archive": {
+    "members": 2368,
+    "symbols_per_index": 82203,
+    "both_indices_equal": true,
+    "unique_object": {
+      "header_offset": 20000072,
+      "payload_offset": 20000132,
+      "raw_name": "/0",
+      "bytes": 5288,
+      "header_hex": "2f302020202020202020202020202020313739323131353834302020202020202020202020202020313030363636202035323838202020202020600a",
+      "sha256": "36e32ee19a969d88c00fae8ed0605c0ce3eaf0790d89aed32c8723313db93406"
+    },
+    "all_public_bindings": [
+      {
+        "symbol": "__Avx2WmemEnabledWeakValue",
+        "binding": [
+          "__Avx2WmemEnabledWeakValue",
+          20000072
+        ],
+        "section_hex": "",
+        "raw_size": 4,
+        "relocations": [],
+        "provider_sha256": "36e32ee19a969d88c00fae8ed0605c0ce3eaf0790d89aed32c8723313db93406"
+      },
+      {
+        "symbol": "?append_native_scene_string_list_0094f270@bsp@@YAIPAX0IAAUNativeStringRawPoolContext@1@@Z",
+        "binding": [
+          "?append_native_scene_string_list_0094f270@bsp@@YAIPAX0IAAUNativeStringRawPoolContext@1@@Z",
+          20000072
+        ],
+        "section_hex": "558bec6aff680000000064a1000000005083ec14a10000000033c58945f0535657508d45f464a3000000008b75088b7d0c8b5d148b4e048b46083bc875078bcee800000000807d1000753d8d45e4c745e40300000050c745e808000000c745ec08000000e8000000008945e0535750c745fc00000000e8000000008b560483c4108b0e890491eb088b4e048b06893c888b4604408946048b46048b4df464890d00000000595f5e5b8b4df033cde8000000008be55dc3",
+        "raw_size": 182,
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "field_hex": "00000000",
+            "symbol": "__ehhandler$?append_native_scene_string_list_0094f270@bsp@@YAIPAX0IAAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "offset": 21,
+            "type": 6,
+            "field_hex": "00000000",
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 65,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?grow_native_scene_string_list_storage_0094f010@bsp@@YIXPAX@Z"
+          },
+          {
+            "offset": 101,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "offset": 119,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?copy_construct_native_string_header_00426060@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "offset": 174,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "@__security_check_cookie@4"
+          }
+        ],
+        "provider_sha256": "36e32ee19a969d88c00fae8ed0605c0ce3eaf0790d89aed32c8723313db93406"
+      },
+      {
+        "symbol": "?clear_native_scene_string_list_0094f3e0@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+        "binding": [
+          "?clear_native_scene_string_list_0094f3e0@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+          20000072
+        ],
+        "section_hex": "558bec538b5d085633f68b430485c07e3f578b038b3cb08d04b089450885ff741bff750c57e80000000057e8000000008b450883c40cc700000000008b4304463bf07cce5f5ec74304000000005b5dc38973045e5b5dc3",
+        "raw_size": 87,
+        "relocations": [
+          {
+            "offset": 38,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "offset": 44,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          }
+        ],
+        "provider_sha256": "36e32ee19a969d88c00fae8ed0605c0ce3eaf0790d89aed32c8723313db93406"
+      },
+      {
+        "symbol": "?retire_native_scene_string_list_0094f540@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+        "binding": [
+          "?retire_native_scene_string_list_0094f540@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+          20000072
+        ],
+        "section_hex": "558bec56578b7d0833f68b470485c07e34538b078b1cb08d04b089450885db741bff750c53e80000000053e8000000008b450883c40cc700000000008b4704463bf07cce5bc74704000000008b0785c0740f50e80000000083c404c707000000005f5e5dc3",
+        "raw_size": 101,
+        "relocations": [
+          {
+            "offset": 38,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "offset": 44,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          },
+          {
+            "offset": 84,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          }
+        ],
+        "provider_sha256": "36e32ee19a969d88c00fae8ed0605c0ce3eaf0790d89aed32c8723313db93406"
+      }
+    ]
+  },
+  "current_CPP_EH_policy_and_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_string_list_ownership_integration_20261016\\early_EH_review.DATA.json",
+    "bytes": 3179,
+    "sha256": "78eba88566c7be069da2f5f28995d87c379299d07fd304fbbeb34bc2ded6bda9"
+  },
+  "metadata_terminology_correction": "Root's provisional early_EH_review called two frame-debug relocations SECREL. Independently parsed type0007 is IMAGE_REL_I386_DIR32NB; WinSDK winnt.h20475 confirms it, while SECREL is000B at20478. Root acknowledged and corrected its unsealed note. Numeric object records were always0007. No Source/object correction or recompilation is warranted.",
+  "provider_rebinding_qualifications": [
+    {
+      "relative_path": "reports/cc12_scene_string_list_ownership_readiness.json",
+      "author": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\reports\\cc12_scene_string_list_ownership_readiness.json",
+        "bytes": 19605,
+        "sha256": "169d26dd7d8293596edc44ac46a6fb6d982bd515434bd79e563468289c552f6a"
+      },
+      "Main": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\cc12_scene_string_list_ownership_readiness.json",
+        "bytes": 19611,
+        "sha256": "f5d1d039cf6488a5ad477bd9f702a71824650803bd2c1947fe623330f116d9de"
+      },
+      "reason": "Only storage dependency status/pending gate changed from registered pending to passed Main3checks/Core closure1483ea04a; full retained Source/contract unchanged. Author separately pins actual passed gate."
+    },
+    {
+      "relative_path": "config/target.json",
+      "author": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\config\\target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "Main": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\config\\target.json",
+        "bytes": 467,
+        "sha256": "83b26a388b77d3b817eafd6005f72a0d9b4137efc62ac8cbe17963ac18589533"
+      },
+      "reason": "Exact LF/CRLF-only JSON metadata."
+    }
+  ],
+  "contract": [
+    "Target MSVC Win32. Actual caller-provided aligned readable/writable raw12 header with slots pointer+0,count DWORD/signed+4,capacity DWORD+8. It must come from genuine0094EFB0 storage and accepted subsequent growth/ownership operations, not a fabricated zeroed owner object. Live storage requires 0<=count<=capacity<=0x3fffffff, with capacity at least64 and a multiple of64 as supplied by the nonwrapping constructor/grow chain; allocation is exactly4*capacity bytes and reached slots[0,count) are initialized. Empty constructed storage still has its genuine nonnull slot allocation. If append sees count==capacity, oldcapacity<=0x3fffffbf is required for the accepted +64 growth. If count<capacity, the existing slot allocation must have room for one more pointer. Count+1 and all index*4/address additions must remain in range and accessible. No overflow, saturated-allocation, negative-count ownership, invalid-capacity or memory-pressure branch is admitted. All owned raw8 headers and nonnull owned data allocations are uniquely owned and pairwise disjoint from the list header, slot allocation, temporary/private frame, and each other. Source copy may borrow a stable existing record but creates distinct owned output. Adoption must not duplicate an existing owned pointer or alias raw12/slots. Every owned raw8 header comes from the matching current singleton_lifetime_allocate(object,8,8) heap contract and is freed once by canonical free. Header storage is not NativeStringStorage pooled data. For nonnull data, length+1 is the exact original allocation size, nonwrapping and accessible. Sizes1..149 require the correct current canonical pool generation and size class; sizes>=150 require matching current CRT allocation/free provenance. Null data skips length and pool work on clear. No invented generation counter is introduced. Use genuine real pool/manager publications and gate. The real small-return gate value is preserved and read by BD1510, never forced to zero; even disabled small returns still resolve the getter first. Required pool/manager/deletion bindings must already be valid or their genuine lazy creation must complete successfully. No concurrent mutation, reentry, pool trim/drain/teardown, lifetime replacement, allocator new-handler side effects on these objects, faults, throws, access violations or failed allocations occur during an admitted operation. Small-buffer generation validity extends from allocation through final return, not merely through the individual call. All reached providers return normally; positive requested storage is genuinely available. Current compiler and CRT conventions are explicit Source bindings. Flat Win32 address/ES and DF-clear preconditions of the accepted low-level storage/copy providers remain. These are admission preconditions, not proposed new runtime checks or repairs. Implementation must retain the measured field-read/publication/free order and must not manufacture success for invalid storage. {\"append\": [\"Read current count+4 and capacity+8; call the existing growth only for equality, not >=. Growth publishes new capacity before allocating and handles its own late slot/count reads.\", \"Test (native_flags &0xffu)!=0 after growth. Low byte0 copies; every low pattern1..255 adopts. All upper24 bits are ignored. Do not substitute a bool protocol that loses the specified input domain.\", \"Adopt path captures the supplied pointer itself, including a null sentinel, with no header/data allocation and no pool operation. Ownership of a nonnull genuine raw8 record transfers to the list on successful slot publication; caller must not free it afterwards.\", \"Copy path obtains a fresh genuine raw8 allocation, then invokes the accepted raw00426060 copy constructor with the actual borrowed source header. Do not use sizeof(NativeString), a host object constructor, a temporary header copy or a virtual storage adapter.\", \"After growth/allocation/copy, read CURRENT count+4, then CURRENT slot base+0. Store the captured resulting record pointer at base+count*4, increment the DWORD count, then reread and return the stored new DWORD count. Do not capture list fields across reached providers.\"], \"clear\": [\"Read signed count. For <=0 write count0 and return; the admitted valid domain uses nonnegative counts, while the observed negative branch remains documented rather than converted to a new diagnostic.\", \"For each reached index, reload current slot base, capture raw8 record pointer and that exact slot address. A null record performs no release/free/store; it remains null.\", \"For a nonnull record call raw0041DD20, then canonical-free the same captured raw8 header. Only after free returns write zero to the CAPTURED slot address; never recompute that address from a later slot-base read.\", \"Increment index and reread CURRENT signed count for the loop comparison. Do not cache count/base for the entire loop or shrink count progressively.\", \"On normal exit write count0. Leave capacity and the slot allocation live; spare slots are not traversed or initialized.\"], \"retire\": [\"Call the new clear with the same actual raw12/context; after it returns reload CURRENT slots+0.\", \"If nonnull, canonical-free that captured slot allocation and only then zero slots+0. Keep capacity unchanged; count has been reset by clear.\", \"Do not destroy/free/zero the caller-owned raw12 header. After retirement append/growth is invalid until actual constructor reinitializes storage. Repeated retire on a still-live retired header is harmless in the admitted count0/slotsnull state.\"]} Root accepts an explicitly separate current-C++ fresh-header guard: only copy-branch allocation(object,8,8), canonical-free only that captured fresh raw8 on a C++ construction exception, disarm after successful slot/count publication and return-count read. Never release copied data/adopted header/slots/raw12 through this guard. APIs remain potentially throwing. This policy is not private FH3/frame/unwind/fault equivalence; failure outcomes remain outside admission. Genuine retained game_native_string_process raw_context only, no implicit body process getter or synthetic protocols. Whole normal-control-flow Source only; no Original physical ABI/privateFH3/fault/caller/application/startup/runtime/game closure. Application008F3270 incoming raw8 producer and actual output-header create/pass/retire remain named incomplete; comparator/sort/empty-role not solved.",
+    "Root whole HPP/108-line C++/complete documentation and previously whole3Original listings reviewed. Source normal-flow append/clear/retire behavior accepted; raw12/raw8/actual unique heap and pool generation preconditions are mandatory, never fabricated application owners. Volatile actual field accesses preserve measured late reads/publication and captured-slot cleanup; private index scheduling may differ within the nonfaulting serialized domain.",
+    "Exactly1strict5e9a5d/exit0 and1normalfac9eb/session59321->9fdc32/exit0;2existingchecks10.14s, TUunregistered/no selected-body execution. Fresh132candidate/71tool preflight closes all105 actual compiler inputs;all195sealedfiles/4Gitblobs/actual1193lineprefix/15fullrawtransportpairs verified. CurrentMain17producerrebinding15literal,oneRoot readiness metadata-only provider-gate advancement,oneexacttargetJSONEOL qualification. Noall17literal/environmenthermeticclaim.",
+    "Strict5332B/21sections/48primary+21aux69slots.13code564B contains230decodedrows including5CCalignmentbytes(section13[8,13));225nonalignmentfunctioninstructions includeunusedinline/templateCOMDATs, notallreachablefrom3APIs. Publiccurrentbodies182B63/87B39/101B41(retireinlinesclear);17code+4metadatarelocations. All symbols/aux/runtime-data/CodeView/frame-debug/directives/checksums/1553Bstringtable/ranges independently accounted; noOriginalinstructionidentitycredit.",
+    "Root chose separate current-C++ copy-only header guard. CurrentunwindfuncletLEA EBP-20 targets actual14Bguarddtor conditionalcanonicalfreeheaderonly;state0/maxstate1,44Bxdata,SafeSEHhandlerindex58,currentGSchecks/___CxxFrameHandler3. Optimizednormaldisarm/destructionremovedafternolaterC++throw; guardneverownsdata/adoptedheader/slots/raw12. OriginalCA8CCB/DDCA34/DDCA2C/CA8CC0privateframe/FH3/fault/unwindoutcomesunproved.",
+    "Numeric.metadata0x0007 is IMAGE_REL_I386_DIR32NB, not SECREL(0x000B). Root provisional note misnamed the already-correct numeric type; independentpeer and WinSDKwinnt.h20475/20478 corrected terminology, Source/object unchanged/no replay. Canonical report retains correction.",
+    "CurrentMain4observedCLcommandscontainO2/Ob2/Oy-;actualv180Win32Platform.Common.propsline22defaultsOmitFramePointers=falseandisfreshlypinned. NoextraCMakeframeoverrideorcompile. CurrentregisteredMainbuild/actualCoreidentitygatepassed;noOriginalphysicalABI/privateCRT/EH/fault/wholeclass/caller/application008F3270/comparator/sort/startup/runtime/gamecredit."
+  ],
+  "limits": [
+    "Current configured checks do not execute these selected bodies.",
+    "Only exact finite private field-helper/guard/publication symbol pairs differ; all code and nonvariable-data/metadata bytes, relocation fields/types and other names/symbol records/directives verified. Debug/checksum/whole-object identity excluded.",
+    "225nonalignmentinstructions includeunusedemittedCOMDATs; noOriginalinstructionretention orEH/fullABI/privateCRT/fault/caller/application/startup/runtime/gamecredit."
+  ],
+  "Original_ABI_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false,
+  "existing_Ghidra_functions_annotated": {
+    "addresses": [
+      "0094f270",
+      "0094f3e0",
+      "0094f540"
+    ],
+    "names": {
+      "0094f270": "BSP_StringKeyList_AppendOwnedHeader",
+      "0094f3e0": "BSP_StringKeyList_ClearOwnedHeaders",
+      "0094f540": "BSP_StringKeyList_RetireOwnedStorage"
+    },
+    "prior_values_journal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\ghidra-annotations-20261016T020139Z.json",
+      "bytes": 29050,
+      "sha256": "0ef15c8651a85400ef8dca021856efd73ebb6cb3706b12f99ce76ef1d3bbe995"
+    },
+    "project_saved": true,
+    "annotation_initial_chunk": "abdcf4",
+    "annotation_session": 52514,
+    "annotation_terminal_chunk": "eb710f",
+    "exports_refreshed": true,
+    "export_chunk": "fccc6f",
+    "qualification": "Supported existing-function annotation tool under write lock verified the configured project/program, applied ledger names/evidence, retained its actual before/after journal and saved. This is unrelated to unownedF180; no new function boundary experiment or private-EH repair."
+  }
+}

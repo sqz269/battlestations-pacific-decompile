@@ -41623,7 +41623,8 @@
       "worker": "string_key_comparator_readiness_oct15",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
-      "contract": "Function boundary remains absent. Supported inline scripts disabled; unowned-address documentation unavailable; direct create_function endpoint ignored dry_run:true. Guarded new43B function deletion restored count and all17 measured listing/flow/ownership states, but complete old symbols/comments were unavailable and pristine full rollback is not claimed. Preserve current bytes/instructions/CALL_RETURN; no more API experiments/restarts/script enablement or Source credit. List/empty-data/current-versus-privateCRT/qsort provider contracts remain separate blockers."
+      "contract": "Function boundary remains absent. Supported inline scripts disabled; unowned-address documentation unavailable; direct create_function endpoint ignored dry_run:true. Guarded new43B function deletion restored count and all17 measured listing/flow/ownership states, but complete old symbols/comments were unavailable and pristine full rollback is not claimed. Preserve current bytes/instructions/CALL_RETURN; no more API experiments/restarts/script enablement or Source credit. List/empty-data/current-versus-privateCRT/qsort provider contracts remain separate blockers.",
+      "provider_refresh_report": "reports/cc12_scene_string_list_sort_provider_refresh.json"
     },
     {
       "id": "cc12_scene_string_list_storage_0094efb0_0094f010",
@@ -41806,8 +41807,8 @@
     },
     {
       "id": "cc12_scene_string_list_ownership_0094f270_0094f3e0_0094f540",
-      "done": false,
-      "state": "whole_ordinary_explicit_context_Source_primary_peer_accepted_registered_Main_build_pending",
+      "done": true,
+      "state": "whole_ordinary_explicit_context_Source_registered_Main3checks_actual_code_archive_identity_pass",
       "source_ready": true,
       "function_addresses": [
         "0094f270",
@@ -41838,8 +41839,9 @@
       "provider_Main_gate": "constructor/growth Main3checks and selected Core identity passed",
       "code_revision": "86c6bd2436a76801641b36d30cede7ddcfd9390f",
       "primary_review": "reports/cc12_scene_string_list_ownership_primary_review.json",
-      "Main_build_gate": "pending",
-      "actual_compiler_archive_gate": "pending"
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_scene_string_list_ownership_Main_validation.json"
     },
     {
       "id": "goal_oct15_crt_ptd_unlock_helper",
@@ -42112,6 +42114,38 @@
       "Original_ABI_compatible": false,
       "new_entry_executed": false,
       "game_validated": false
+    },
+    {
+      "id": "cc12_scene_string_list_indexed_insert_0094f2f0",
+      "done": false,
+      "state": "whole_ordinary_indexed_insert_Source_ready_no_implementation",
+      "source_ready": true,
+      "function_addresses": [
+        "0094f2f0"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_string_list_indexed_insert.hpp",
+        "src/native_scene_string_list_indexed_insert.cpp",
+        "docs/NATIVE_SCENE_STRING_LIST_INDEXED_INSERT.md",
+        "reports/native_scene_string_list_indexed_insert.json"
+      ],
+      "depends_on": [
+        "cc12_scene_string_list_storage_0094efb0_0094f010",
+        "cc12_scene_string_list_ownership_0094f270_0094f3e0_0094f540"
+      ],
+      "readiness_report": "reports/cc12_scene_string_list_indexed_insert_readiness.json",
+      "missing_provider_addresses": [],
+      "named_incomplete_dependencies": [
+        "No actual direct caller/raw8 producer/actual-list12 construction-pass-retirement chain for0094F2F0 is present in current callers/xrefs evidence. Do not invent one or claim application/runtime adoption.",
+        "008F3270 actual output-header create/pass/retire and incoming raw8 producer binding remain independently blocked; no relationship to this entry was proven by fresh queries.",
+        "0094F180 comparator/unowned boundary, sort and distinct empty-data roles remain blocked/independent. Prior ignored-dry-run creation and guarded deletion incident cannot be erased: exact full old symbol/comment preimage is unavailable, even though prior byte/flow/ownership/count restoration was measured.",
+        "Full Original privateCRT/FH3/EH/fault/ABI, startup, runtime and gameplay remain separate. This packet provides bounded read-only evidence and an explicit ordinary contract only."
+      ],
+      "worker": "string_key_comparator_readiness_oct15",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "model_exception": "Reuse owning-list Source author/raw header guard/provider context and built worktree for privateEH/register evidence; readiness worker can independently review.",
+      "contract": "F309/F30C read current count and capacity. Grow0094F010 only when equal, never >=. The established growth publishes capacity+64 BEFORE allocation, reads current slots/count AFTER allocation, calls actual memcpy even for zero, reloads slots after copy, conditionally frees/clears old slots, then publishes new slots. Growth may invalidate borrowed slot-buffer addresses, not record allocations. F317 tests the incoming flag LOW BYTE AFTER any growth. Nonzero1..255 adopts the actual pointer loaded atF31E. Upper24 bits are ignored. Zero allocates EXACT8 bytes viaBF681B atF326; the pointer is saved over the incoming flag stack slot and EH state0 is armed after allocation returns. F332/F33C retains the native null-allocation branch: null becomes a null inserted sentinel. Current singleton_lifetime_allocate instead returns nonnull or throws; ordinary successful Source admission excludes allocation failure and makes no native null/OOM identity claim. For nonnull new raw8, load the actual source header argument atF33E and call00426060 with ECX=new raw8 and stack=actual borrowed source. Use the returned actual header as the record to publish. The accepted provider clears destination length/data before identity, resizes preserving from source length, then reads CURRENT source length guard/current destination length/source data/destination data. Raw context reaches00419CC0,BD1120 andBD1510; nonzero raw copies use current memmove, existing zero-copy omission remains qualified. F350 reads incoming signed index AFTER growth/allocation/copy. If negative, set0 and skip the upper-bound count read; otherwise read CURRENT count atF35C and clamp above-count index to that count with signed comparison. Do not clamp before provider calls. F365 reads CURRENT count again into the shift cursor. While cursor>clamped index signed, F370 reloads CURRENT slots for EACH iteration, reads slots[cursor-1], computes destination slots[cursor], decrements cursor, compares, then writes the captured pointer atF37E. Existing records are moved only as pointer values; do not allocate, copy strings, destroy them or substitute bulk memmove with a different observation schedule. F382 reloads CURRENT slots once more, F384 writes the selected record at slots[clamped index], and only THEN F387 increments CURRENT count+4 by1. Capacity changes only through prior growth. Existing element identity and order are preserved around the new element. EAX still holds the clamped index; normal epilogue restoresFS0 and saved registers. MSVC Win32 actual aligned writable live raw12 plus unique current-heap slots from accepted0094EFB0/0094F010, coherent0<=count<=capacity<=0x3fffffff, positive allocatable nonwrapping sizes and valid initialized reached slot bytes. For growth oldcapacity<=0x3fffffbf. Count+1 and every reached4*index/address are nonwrapping and within the retained/new slot allocation. Any signed32 input index and any DWORD flags are admitted within these valid-storage bounds. Record headers, list header, slots, backing buffers and private frame satisfy their necessary disjointness/ownership bounds; operations are serialized, DF clear/flatES for storage growth, no callback alias/reentry/concurrency/fault or pool teardown across the operation. Preserve late reads even within this ordinary domain. Do not admit callback mutation simply because individual providers preserve some late reads. Copy branch requires a nonnull readable coherent actual source raw8 with a live readable buffer for positive length, nonwrapping length+1 and successful pool capacity/resources; source header/buffer stays alive across growth and copy. Borrowing an existing element header for copying is permitted when lifetime/disjointness holds; the caller retains its source ownership. Adopt branch accepts a null sentinel or a uniquely owned genuine eight-byte header allocated by the matching current heap, whose nonnull data belongs to the same retained concrete raw pool/context generation. It must not already be owned by this list or another owner; no duplicate ownership is created. Ownership transfers only on successful slot publication. Before that publication the caller retains the adoption obligation. Successful copied raw8 becomes list-owned at slot publication; old record identity remains unchanged. The exact retained process context must outlive all dependent records, and list retirement must occur before the pool generation becomes invalid. Neither insertion nor slot storage retirement frees the caller's actual12-byte header. Use the same separately labelled current-C++ fresh-copy-header guard policy as accepted ownership Source3: only canonical-free the actually allocated raw8 on current copy exception, never data/adopted header/slots/raw12. Disarm only after final slot publication and current count increment; return captured clamped signed index, not a newly read count. No Original privateFH3/frame/fault/unwind equivalence. All signed32 index inputs andDWORDflags lowBYTE0copy/all1..255adopt/high24ignored. Clamp AFTER providers; negative input sets0 and skips upper-boundcountread; otherwise late currentcountclamp. Reloadcurrentcountforcursor; periterationcurrentbase/capturedsource/destination, decrementcursorbeforewrite; no bulkshift. Finalbase reload/slotpublish thenincrementcurrentcount. Newordinaryint32result exposes measuredclampedEAX only; noOriginallanguage/callerreturntypeclaim. No Current application/fakeowner/OriginalphysicalABI/privateCRT/EH/fault/startup/runtime/game closure. NoCString0041E870 path; no append0094F270 call. The readiness failure paragraph describes intended cleanup. Only actual handler/map/raw-header-free action from privateEBP+C is measured; privateFH3 dispatcher/establisher mapping and arbitrary throw/fault outcomes remain unproved. A future current-C++ copy-only header guard is a separate Source policy, with no Original EH identity credit."
     }
   ],
   "snapshot_after_analysis": {
