@@ -1,0 +1,1941 @@
+{
+  "packet": "cc12_native_font_tree_insert_readiness_170",
+  "status": "readiness_only_whole_AD4600_typed_Source_alias_ready_at_established_SDK_boundary",
+  "worker_baseline": "aaec11bb1c8f046b71fe7bf23d020e49df1b6b27",
+  "audited_published_Main": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+  "Main_merge_or_Source_refresh": false,
+  "Source_implementation_added": false,
+  "address_credit_added": false,
+  "Original": {
+    "Original": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "spans": [
+      {
+        "start": "00ad4600",
+        "end_exclusive": "00ad47ec",
+        "bytes": 492,
+        "physical_starts": 167,
+        "sha256": "429ce8488eaf484889e8f8f9e1918f2ad84fa841a7d67fd6bef06f20917ef969",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "direct_calls": [
+          {
+            "site": "00ad4643",
+            "target": "0x408720",
+            "offset": 67,
+            "operand_offset": 68,
+            "width": 4
+          },
+          {
+            "site": "00ad4655",
+            "target": "0x411700",
+            "offset": 85,
+            "operand_offset": 86,
+            "width": 4
+          },
+          {
+            "site": "00ad466c",
+            "target": "0xbf6885",
+            "offset": 108,
+            "operand_offset": 109,
+            "width": 4
+          },
+          {
+            "site": "00ad4684",
+            "target": "0xad4260",
+            "offset": 132,
+            "operand_offset": 133,
+            "width": 4
+          },
+          {
+            "site": "00ad4715",
+            "target": "0xad3f60",
+            "offset": 277,
+            "operand_offset": 278,
+            "width": 4
+          },
+          {
+            "site": "00ad4733",
+            "target": "0xad3fb0",
+            "offset": 307,
+            "operand_offset": 308,
+            "width": 4
+          },
+          {
+            "site": "00ad4761",
+            "target": "0xad3fb0",
+            "offset": 353,
+            "operand_offset": 354,
+            "width": 4
+          }
+        ],
+        "last_instruction": "ret 0x10"
+      },
+      {
+        "start": "0086ebe0",
+        "end_exclusive": "0086edcc",
+        "bytes": 492,
+        "physical_starts": 167,
+        "sha256": "377286b55cf3c98fbf4bb5e2d5a340e334f0c0f845ada3a92877eee0f112f7ad",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "direct_calls": [
+          {
+            "site": "0086ec23",
+            "target": "0x408720",
+            "offset": 67,
+            "operand_offset": 68,
+            "width": 4
+          },
+          {
+            "site": "0086ec35",
+            "target": "0x411700",
+            "offset": 85,
+            "operand_offset": 86,
+            "width": 4
+          },
+          {
+            "site": "0086ec4c",
+            "target": "0xbf6885",
+            "offset": 108,
+            "operand_offset": 109,
+            "width": 4
+          },
+          {
+            "site": "0086ec64",
+            "target": "0x86ab70",
+            "offset": 132,
+            "operand_offset": 133,
+            "width": 4
+          },
+          {
+            "site": "0086ecf5",
+            "target": "0x86a2f0",
+            "offset": 277,
+            "operand_offset": 278,
+            "width": 4
+          },
+          {
+            "site": "0086ed13",
+            "target": "0x869810",
+            "offset": 307,
+            "operand_offset": 308,
+            "width": 4
+          },
+          {
+            "site": "0086ed41",
+            "target": "0x869810",
+            "offset": 353,
+            "operand_offset": 354,
+            "width": 4
+          }
+        ],
+        "last_instruction": "ret 0x10"
+      },
+      {
+        "start": "00ad4260",
+        "end_exclusive": "00ad429f",
+        "bytes": 63,
+        "physical_starts": 20,
+        "sha256": "9e556d2a0fd01fb5b81fee494b4356208caed60a715bbb72816a259f61df4dcb",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "direct_calls": [
+          {
+            "site": "00ad4262",
+            "target": "0xbf681b",
+            "offset": 2,
+            "operand_offset": 3,
+            "width": 4
+          }
+        ],
+        "last_instruction": "ret 0x14"
+      },
+      {
+        "start": "0086ab70",
+        "end_exclusive": "0086abaf",
+        "bytes": 63,
+        "physical_starts": 20,
+        "sha256": "db4454cc0ca1b1697f659f8fcb2ebc8066732e82c94b942c6c15a1c39bb02d58",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "direct_calls": [
+          {
+            "site": "0086ab72",
+            "target": "0xbf681b",
+            "offset": 2,
+            "operand_offset": 3,
+            "width": 4
+          }
+        ],
+        "last_instruction": "ret 0x14"
+      },
+      {
+        "start": "00ad3f60",
+        "end_exclusive": "00ad3fae",
+        "bytes": 78,
+        "physical_starts": 30,
+        "sha256": "bfe2e0ce417eeb6e69580063c88eafeae8dc1059708aa6a157813eaac4fe6cca",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "direct_calls": [],
+        "last_instruction": "ret 4"
+      },
+      {
+        "start": "0086a2f0",
+        "end_exclusive": "0086a33e",
+        "bytes": 78,
+        "physical_starts": 30,
+        "sha256": "bfe2e0ce417eeb6e69580063c88eafeae8dc1059708aa6a157813eaac4fe6cca",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "direct_calls": [],
+        "last_instruction": "ret 4"
+      },
+      {
+        "start": "00ad3fb0",
+        "end_exclusive": "00ad4002",
+        "bytes": 82,
+        "physical_starts": 30,
+        "sha256": "2f89359fd0d0c768ce8a145086e6eccc83741c05575d6849e3db233447831059",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "direct_calls": [],
+        "last_instruction": "ret 4"
+      },
+      {
+        "start": "00869810",
+        "end_exclusive": "00869862",
+        "bytes": 82,
+        "physical_starts": 30,
+        "sha256": "2f89359fd0d0c768ce8a145086e6eccc83741c05575d6849e3db233447831059",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "direct_calls": [],
+        "last_instruction": "ret 4"
+      },
+      {
+        "start": "00ad4aa0",
+        "end_exclusive": "00ad4b5d",
+        "bytes": 189,
+        "physical_starts": 73,
+        "sha256": "bb07c88f802a6c649f9150ea85aef553116e6163233cabb55c1fa5dd2362b6cb",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "direct_calls": [
+          {
+            "site": "00ad4b00",
+            "target": "0xad4600",
+            "offset": 96,
+            "operand_offset": 97,
+            "width": 4
+          },
+          {
+            "site": "00ad4b22",
+            "target": "0xad4040",
+            "offset": 130,
+            "operand_offset": 131,
+            "width": 4
+          }
+        ],
+        "last_instruction": "ret 8"
+      },
+      {
+        "start": "00cb9388",
+        "end_exclusive": "00cb9392",
+        "bytes": 10,
+        "physical_starts": 2,
+        "sha256": "73f2f14ecb75dffc64865db915165ff6febbe1ea2eb109175553eaa5a00a694c",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "direct_calls": [],
+        "last_instruction": "jmp 0xbf6b43"
+      },
+      {
+        "start": "00c95c08",
+        "end_exclusive": "00c95c12",
+        "bytes": 10,
+        "physical_starts": 2,
+        "sha256": "dfa4a16a70ffd461a55521d9b2be1abd80ba8ae1fc676f2955fa0d85ea42392d",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "direct_calls": [],
+        "last_instruction": "jmp 0xbf6b43"
+      }
+    ],
+    "whole_aliases": [
+      {
+        "left": "00ad4600",
+        "right": "0086ebe0",
+        "whole_bytes": 492,
+        "physical_starts": 167,
+        "named_different_operand_rows": [
+          {
+            "left_site": "00ad4608",
+            "right_site": "0086ebe8",
+            "opcode": "push",
+            "operand_offset": 9,
+            "width": 4,
+            "resolved_operands": [
+              "0xcb9388",
+              "0xc95c08"
+            ]
+          },
+          {
+            "left_site": "00ad4643",
+            "right_site": "0086ec23",
+            "opcode": "call",
+            "operand_offset": 68,
+            "width": 4,
+            "resolved_operands": [
+              "0x408720",
+              "0x408720"
+            ]
+          },
+          {
+            "left_site": "00ad4655",
+            "right_site": "0086ec35",
+            "opcode": "call",
+            "operand_offset": 86,
+            "width": 4,
+            "resolved_operands": [
+              "0x411700",
+              "0x411700"
+            ]
+          },
+          {
+            "left_site": "00ad466c",
+            "right_site": "0086ec4c",
+            "opcode": "call",
+            "operand_offset": 109,
+            "width": 4,
+            "resolved_operands": [
+              "0xbf6885",
+              "0xbf6885"
+            ]
+          },
+          {
+            "left_site": "00ad4684",
+            "right_site": "0086ec64",
+            "opcode": "call",
+            "operand_offset": 133,
+            "width": 4,
+            "resolved_operands": [
+              "0xad4260",
+              "0x86ab70"
+            ]
+          },
+          {
+            "left_site": "00ad4715",
+            "right_site": "0086ecf5",
+            "opcode": "call",
+            "operand_offset": 278,
+            "width": 4,
+            "resolved_operands": [
+              "0xad3f60",
+              "0x86a2f0"
+            ]
+          },
+          {
+            "left_site": "00ad4733",
+            "right_site": "0086ed13",
+            "opcode": "call",
+            "operand_offset": 308,
+            "width": 4,
+            "resolved_operands": [
+              "0xad3fb0",
+              "0x869810"
+            ]
+          },
+          {
+            "left_site": "00ad4761",
+            "right_site": "0086ed41",
+            "opcode": "call",
+            "operand_offset": 354,
+            "width": 4,
+            "resolved_operands": [
+              "0xad3fb0",
+              "0x869810"
+            ]
+          }
+        ],
+        "all_other_bytes_identical": true
+      },
+      {
+        "left": "00ad4260",
+        "right": "0086ab70",
+        "whole_bytes": 63,
+        "physical_starts": 20,
+        "named_different_operand_rows": [
+          {
+            "left_site": "00ad4262",
+            "right_site": "0086ab72",
+            "opcode": "call",
+            "operand_offset": 3,
+            "width": 4,
+            "resolved_operands": [
+              "0xbf681b",
+              "0xbf681b"
+            ]
+          }
+        ],
+        "all_other_bytes_identical": true
+      },
+      {
+        "left": "00ad3f60",
+        "right": "0086a2f0",
+        "whole_bytes": 78,
+        "physical_starts": 30,
+        "named_different_operand_rows": [],
+        "all_other_bytes_identical": true
+      },
+      {
+        "left": "00ad3fb0",
+        "right": "00869810",
+        "whole_bytes": 82,
+        "physical_starts": 30,
+        "named_different_operand_rows": [],
+        "all_other_bytes_identical": true
+      }
+    ],
+    "handlers": [
+      {
+        "handler": "00cb9388",
+        "FuncInfo": "00df0984",
+        "dispatch": "0xbf6b43"
+      },
+      {
+        "handler": "00c95c08",
+        "FuncInfo": "00dc7b3c",
+        "dispatch": "0xbf6b43"
+      }
+    ],
+    "body_alias_bytes_per_side": 715,
+    "changed_operand_rows": 9,
+    "mistarget_diagnostic": "Initial0086f4a0 query resolved to interior of0086f3b0; not used as a provider or alias/call proof."
+  },
+  "EH": {
+    "rows": [
+      {
+        "handler": "00cb9388",
+        "handler_bytes": "b88409df00e9b1d7f3ff",
+        "FuncInfo": "00df0984",
+        "full_FuncInfo_bytes": "22059319010000007c09df00000000000000000000000000000000000000000001000000",
+        "FuncInfo_words": [
+          "19930522",
+          "00000001",
+          "00df097c",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "unwind_map": "00df097c",
+        "unwind_bytes": "ffffffff8093cb00",
+        "state0_next": -1,
+        "state0_action": "00cb9380",
+        "action_bytes": "8d4db0e948df74ff",
+        "action": "LEA ECX,[EBP-50h]; tail JMP4072D0",
+        "no_try_IP_or_extra_EH_maps": true
+      },
+      {
+        "handler": "00c95c08",
+        "handler_bytes": "b83c7bdc00e9310ff6ff",
+        "FuncInfo": "00dc7b3c",
+        "full_FuncInfo_bytes": "2205931901000000347bdc00000000000000000000000000000000000000000001000000",
+        "FuncInfo_words": [
+          "19930522",
+          "00000001",
+          "00dc7b34",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "unwind_map": "00dc7b34",
+        "unwind_bytes": "ffffffff005cc900",
+        "state0_next": -1,
+        "state0_action": "00c95c00",
+        "action_bytes": "8d4db0e9c81677ff",
+        "action": "LEA ECX,[EBP-50h]; tail JMP4072D0",
+        "no_try_IP_or_extra_EH_maps": true
+      }
+    ],
+    "full36_byte_FuncInfo_equal_except_resolved_unwind_pointer": true,
+    "one_effective_state0_to_minus1_string_action": true,
+    "same_EBP_minus50_string_and_4072D0_cleanup": true,
+    "same_BF6B43_handler_dispatch": true,
+    "comparison_named_operand_fields": 5,
+    "named_operand_fields": "handler FuncInfo+dispatch two, FuncInfo unwind-map one, unwind-map action one, action cleanup tail one",
+    "literal": {
+      "address_data": "00ce47bc",
+      "count": 19,
+      "bytes_including_NUL": 20,
+      "hex": "6d61702f7365743c543e20746f6f206c6f6e6700"
+    },
+    "same_Native_ThrowInfo": {
+      "address_data": "00d83f98",
+      "hex": "000000008017410000000000d43fd800"
+    },
+    "same_Native_length_error_profile": {
+      "address_data": "00d69260",
+      "first16_bytes": "c017410050154100b0bfd700f0124400"
+    },
+    "Source_boundary": "actual existing28h owning host length-error transport, not Native catch/RTTI/FH3/SEH equivalence"
+  },
+  "call_rows": [
+    {
+      "address": "00ad4643",
+      "native": "00408720",
+      "function": "00ad4600"
+    },
+    {
+      "address": "00ad4655",
+      "native": "00411700",
+      "function": "00ad4600"
+    },
+    {
+      "address": "00ad466c",
+      "native": "00bf6885",
+      "function": "00ad4600"
+    },
+    {
+      "address": "00ad4684",
+      "native": "00ad4260",
+      "function": "00ad4600"
+    },
+    {
+      "address": "00ad4715",
+      "native": "00ad3f60",
+      "function": "00ad4600"
+    },
+    {
+      "address": "00ad4733",
+      "native": "00ad3fb0",
+      "function": "00ad4600"
+    },
+    {
+      "address": "00ad4761",
+      "native": "00ad3fb0",
+      "function": "00ad4600"
+    },
+    {
+      "address": "00ad4262",
+      "native": "00bf681b",
+      "function": "00ad4260",
+      "source": "readiness-only actual node allocator or unsigned-WORD caller; no new Source credit"
+    },
+    {
+      "address": "00ad4b00",
+      "native": "00ad4600",
+      "function": "00ad4aa0",
+      "source": "readiness-only actual node allocator or unsigned-WORD caller; no new Source credit"
+    },
+    {
+      "address": "00ad4b22",
+      "native": "00ad4040",
+      "function": "00ad4aa0",
+      "source": "readiness-only actual node allocator or unsigned-WORD caller; no new Source credit"
+    },
+    {
+      "address": "00cb938d",
+      "native": "00bf6b43",
+      "function": "00cb9388",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb9383",
+      "native": "004072d0",
+      "function": "00cb9380",
+      "kind": "tail_jump"
+    }
+  ],
+  "whole_comparison": {
+    "body_pairs": 4,
+    "body_bytes_per_side": 715,
+    "body_instruction_starts_per_side": 247,
+    "changed_body_operand_fields": 9,
+    "EH_bytes_per_side": 62,
+    "EH_named_fields": 5,
+    "combined_bytes_per_side": 777,
+    "combined_named_fields": 14,
+    "all_other_bytes_identical": true
+  },
+  "provider_matrix": [
+    {
+      "Native": "AD4600",
+      "existing_source": "link_native_int_pointer_tree18_node_0086ebe0; native_effect_handle_acquisition.cpp",
+      "closure": "whole492B/167 body alias, shared actual repair template and same19-byte error; only distinct Source entry is absent"
+    },
+    {
+      "Native": "AD4260",
+      "existing_source": "allocate_native_int_pointer_tree18_node_0086ab70",
+      "closure": "whole63B/20 alias, same owningSDK18h allocate and pair DWORD copies; no payload retain"
+    },
+    {
+      "Native": "AD3F60/AD3FB0",
+      "existing_source": "actual naked rotate_left_0086a2f0 / rotate_right_00869810 plus distinct inlined left helper",
+      "closure": "whole78B/30 and82B/30 byte identities; no missing rotation/default callback"
+    },
+    {
+      "Native": "408720/411700/BF6885 + EH4072D0",
+      "existing_source": "actual SBO/legacy-exception code plus owning NativeHardwareLayoutTreeLengthError C++ transport",
+      "closure": "real constructors/copy/destruction and Source SDK allocator; Native catch/RTTI/FH3/SEH compatibility excluded"
+    },
+    {
+      "Native": "AD4AA0 caller",
+      "existing_source": "accepted168 AD4040 decrement; current signed86F930 is not this WORD caller",
+      "closure": "whole189B/73 caller readonly; initial conditionalWORD capture, reverse candidateWORD/currentWORD, samepair; no Source implementation claim"
+    },
+    {
+      "Native": "actual FontBASE/header/node/payload",
+      "existing_source": "genuine146/155 producer and caller-retained raw graph; separate payload20h",
+      "closure": "node18h !=glyph payload20h; no descriptor/data/image-owner facade, producer replacement or populated-load claim"
+    }
+  ],
+  "next_packet": {
+    "scope": "Source176 only distinct whole AD4600 direct alias; no AD4AA0",
+    "files": [
+      "include/bsp/native_font_tree_insert.hpp",
+      "src/native_font_tree_insert.cpp"
+    ],
+    "API": "NativeIntPointerTree18Iterator* __cdecl link_native_font_tree_node_00ad4600(void* actual_font_base, NativeIntPointerTree18Iterator* output8, uint8_t insert_left, void* parent, const NativeIntPointerTree18Pair* pair8)",
+    "body": "return actual existing link_native_int_pointer_tree18_node_0086ebe0 with same arguments",
+    "no_new_algorithm_or_service": true,
+    "required_domain": "genuine existing Source Iterator/Pair objects valid when reached, all4 copied key bytes defined, actual initialized sameSDK Font/head/node graph and independently retained payload/backing; no unrelated WORD-struct/descriptor cast",
+    "ABI": "ordinary Source cdecl; BOTH Native and Source private stack/argument/scratch aliases excluded; Native ECX/RET10h/register/fault/SEH/privateCRT timing not reproduced",
+    "failure": "actual owningSDK malloc/new-handler and C++ exception transport; retain graph through callbacks/failure; no nullsuccess, rollback, cleanup, retry or owner added"
+  },
+  "remaining_boundaries": [
+    "whole unsigned-WORD AD4AA0 and its honest WORD/pair typed transport remain separate",
+    "full raw Font load, populated graph/resource/registry production retention not established",
+    "Native private heap/encoded handlers/catch/RTTI/ThrowInfo/FH3/SEH/fault ABI not Source-ready or claimed"
+  ],
+  "source_pins": {
+    "worker_baseline": "aaec11bb1c8f046b71fe7bf23d020e49df1b6b27",
+    "audited_published_Main": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+    "no_Main_merge_or_Source_refresh": true,
+    "relevant_published_Source_equals_worker": true,
+    "sources": [
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\native_effect_handle_acquisition.hpp",
+        "sha256": "9148f95d14fbfc14ad6ed0ea25a4b1047975accc606af5995dcfd718e1b127af",
+        "bytes": 3375,
+        "Git_blob": "2a82cebab71e9f1fa2cb79775c72a89c95a30636",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "include/bsp/native_effect_handle_acquisition.hpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\native_effect_handle_acquisition.cpp",
+        "sha256": "3b7794d963c4885bbb818bd15d5592c487157863183e0f3db692d089893cef4a",
+        "bytes": 5736,
+        "Git_blob": "e94bf83c1972606b981dee0db701ef43333b9506",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "src/native_effect_handle_acquisition.cpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\detail\\native_tree_insert_storage.hpp",
+        "sha256": "c5eb00461d535b3c737e63a4286814e35c5427c883474d37b3cb6f67a2f8a8b9",
+        "bytes": 9079,
+        "Git_blob": "626561295a534877f0b58f70880b7bfc6d7f7f80",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "include/bsp/detail/native_tree_insert_storage.hpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\native_int_pointer_tree18_leaves.hpp",
+        "sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+        "bytes": 2447,
+        "Git_blob": "4ad334d57f4665e25a5719ec97ad65135b712d74",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "include/bsp/native_int_pointer_tree18_leaves.hpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\native_int_pointer_tree18_leaves.cpp",
+        "sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+        "bytes": 6965,
+        "Git_blob": "f4059b8973da839d78ee36a8ecb208b18f8a5378",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "src/native_int_pointer_tree18_leaves.cpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\native_hardware_layout_tree_insert.hpp",
+        "sha256": "ab22f0f87d42c9c6b4cb6823b28bfbff1098a21ec9ff917a9cf4be211163dbd4",
+        "bytes": 3313,
+        "Git_blob": "15ae209553dba6a639d7e7b0a38e23ce82680727",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "include/bsp/native_hardware_layout_tree_insert.hpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\native_hardware_layout_tree_insert.cpp",
+        "sha256": "82d040c12d2d84affb1a05e3880d273ce4f3471ee4e8cb88922a5213ad2ab802",
+        "bytes": 5048,
+        "Git_blob": "67aaab428bdc8ecbae58a0d1135a884ebf0a27a8",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "src/native_hardware_layout_tree_insert.cpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\native_legacy_exception_owner.hpp",
+        "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+        "bytes": 3232,
+        "Git_blob": "574905ddb640b9cd3edf3cfa70feef903c165b42",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "include/bsp/native_legacy_exception_owner.hpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\native_legacy_exception_owner.cpp",
+        "sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+        "bytes": 4352,
+        "Git_blob": "a0c7fc145166c2c668930f64bb79f07c06ccda13",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "src/native_legacy_exception_owner.cpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\native_legacy_sbo_string.hpp",
+        "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+        "bytes": 2115,
+        "Git_blob": "1ede441960632c9f604e8ade53c16c9c461d9830",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "include/bsp/native_legacy_sbo_string.hpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\native_legacy_sbo_string.cpp",
+        "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+        "bytes": 7772,
+        "Git_blob": "f8c0f47406710a7e078d7cf09c0529e3838665c5",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "src/native_legacy_sbo_string.cpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\singleton_lifetime.hpp",
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "bytes": 4372,
+        "Git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "include/bsp/singleton_lifetime.hpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\singleton_lifetime.cpp",
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "bytes": 13257,
+        "Git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "src/singleton_lifetime.cpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\native_allocator_base_default_constructor.hpp",
+        "sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+        "bytes": 1412,
+        "Git_blob": "ce8f0e917b347ea26d7c0f9cff4f74f87a5ce353",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "include/bsp/native_allocator_base_default_constructor.hpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\native_allocator_base_default_constructor.cpp",
+        "sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+        "bytes": 755,
+        "Git_blob": "641a411089f0234b6d5b52e96e8502ff042f18f5",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "src/native_allocator_base_default_constructor.cpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\native_allocator_base_cleanup.hpp",
+        "sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+        "bytes": 1632,
+        "Git_blob": "ec30818364a9edaf588724791d0415a63f2c3af6",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "include/bsp/native_allocator_base_cleanup.hpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\native_allocator_base_cleanup.cpp",
+        "sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+        "bytes": 894,
+        "Git_blob": "d09fc7699dacf7d3ea86cecc169469320591e65b",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "src/native_allocator_base_cleanup.cpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\native_allocator_base_copy_constructor.hpp",
+        "sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+        "bytes": 2013,
+        "Git_blob": "d8e2c482e40e13bbf259654d1cff272ba59ad9cb",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "include/bsp/native_allocator_base_copy_constructor.hpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\native_allocator_base_copy_constructor.cpp",
+        "sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+        "bytes": 2951,
+        "Git_blob": "cbf0c1a1b73387efa96c980223b237784a4fa53c",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "src/native_allocator_base_copy_constructor.cpp"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\cmake\\startup.cmake",
+        "sha256": "57f7528287dfd246466687335ae3e0a00e080e10a49f7c7ca39ffa45675c0abc",
+        "bytes": 269952,
+        "Git_blob": "b21b9d1d580d41a74cbee1a5c45f215ddc5db810",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": false,
+        "source_identity": "cmake/startup.cmake"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\config\\target.json",
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "bytes": 455,
+        "Git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "published_commit": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+        "local_HEAD_blob_equal": true,
+        "source_identity": "config/target.json"
+      }
+    ],
+    "reused168": [
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\reused168\\canonical\\provider_dumpbin.txt",
+        "sha256": "53a408d0f186af289ff9072605b41e7475219e6a1229e47cbc4cc01f63c3abdc",
+        "bytes": 110360,
+        "role": "immutable168 payload",
+        "source_identity": "local\\cc12_native_font_tree_iterator_168\\canonical\\provider_dumpbin.txt",
+        "manifest": "local\\cc12_native_font_tree_iterator_168\\artifact_manifest.json"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\reused168\\canonical\\native_effect_handle_acquisition.obj",
+        "sha256": "9d6b3274ab8479645b3108b19276f594155f2f408ca3e7bdeb928637f260fb63",
+        "bytes": 14286,
+        "role": "immutable168 payload",
+        "source_identity": "local\\cc12_native_font_tree_iterator_168\\canonical\\native_effect_handle_acquisition.obj",
+        "manifest": "local\\cc12_native_font_tree_iterator_168\\artifact_manifest.json"
+      },
+      {
+        "path": "local\\cc12_native_font_tree_insert_readiness_170\\reused168\\canonical\\CMakeCache.txt",
+        "sha256": "cd14c548bf6e29f01c92f7f7accd3df51ee7a020957c8d17c49c74b87bb2ba75",
+        "bytes": 19677,
+        "role": "immutable168 payload",
+        "source_identity": "local\\cc12_native_font_tree_iterator_168\\canonical\\CMakeCache.txt",
+        "manifest": "local\\cc12_native_font_tree_iterator_168\\artifact_manifest.json"
+      }
+    ]
+  },
+  "root_review": "Full54-lineDoc/realSource providers and independent715B+62B pairedOriginal/EH proof PASS beforeseal",
+  "read_only": {
+    "Source_CMake_ledger_Ghidra_mutations": false,
+    "new_build_tests_probes": false,
+    "body_execution": false,
+    "only_tracked_deliverables": [
+      "docs/CC12_NATIVE_FONT_TREE_INSERT_READINESS_170.md",
+      "reports\\cc12_native_font_tree_insert_readiness_170.json"
+    ]
+  },
+  "evidence": [
+    {
+      "path": "docs\\CC12_NATIVE_FONT_TREE_INSERT_READINESS_170.md",
+      "sha256": "185f2785237dcbc7092f0b258dc7865500ad4f1633ca41a8dfe5b5a7ac3758bb",
+      "bytes": 13062,
+      "role": "Root-reviewed final54-line readiness document"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\audit_eh_170.py",
+      "sha256": "c79a2d438e654db369b4a2738f470ac72ab3c352ea18234d7ccd831ffeb4cf1b",
+      "bytes": 3761,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\audit_native_170.py",
+      "sha256": "ee2fc2be7bb5b424b8b31ff6b321d53db5c17da4579da6b68e422fa46efda2fb",
+      "bytes": 4873,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00869810.console.txt",
+      "sha256": "0fee0cbb73571486bc310c790feb35a1cd1a8ae41651142c193ce29db0f2dcd3",
+      "bytes": 406,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00869810.txt",
+      "sha256": "0fee0cbb73571486bc310c790feb35a1cd1a8ae41651142c193ce29db0f2dcd3",
+      "bytes": 406,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00869810_target.json",
+      "sha256": "85f786102e837041b689429945fe5813080ca602bb4fa41a41dd12a105e318bb",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_0086a2f0.console.txt",
+      "sha256": "88e70fce9e95b6b630c4567f261272ea75277df183e601a57d53ead3b52c39b5",
+      "bytes": 377,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_0086a2f0.txt",
+      "sha256": "88e70fce9e95b6b630c4567f261272ea75277df183e601a57d53ead3b52c39b5",
+      "bytes": 377,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_0086a2f0_target.json",
+      "sha256": "85f786102e837041b689429945fe5813080ca602bb4fa41a41dd12a105e318bb",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_0086ab70.console.txt",
+      "sha256": "fbabbf267257e9c8418cde254420c215c3806ebdac92569edc87b5f21d96edd5",
+      "bytes": 304,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_0086ab70.txt",
+      "sha256": "fbabbf267257e9c8418cde254420c215c3806ebdac92569edc87b5f21d96edd5",
+      "bytes": 304,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_0086ab70_target.json",
+      "sha256": "85f786102e837041b689429945fe5813080ca602bb4fa41a41dd12a105e318bb",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_0086ebe0.console.txt",
+      "sha256": "aa0391fd7c285ea1f477ed274c66eaecaef46b4015ace30481702ec91fc02c2d",
+      "bytes": 2371,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_0086ebe0.txt",
+      "sha256": "aa0391fd7c285ea1f477ed274c66eaecaef46b4015ace30481702ec91fc02c2d",
+      "bytes": 2371,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_0086ebe0_target.json",
+      "sha256": "85f786102e837041b689429945fe5813080ca602bb4fa41a41dd12a105e318bb",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ad3f60.console.txt",
+      "sha256": "6650a5db197c74be4a75a99d57c5388081f547ed9a9545318049ae4fa7cb9cad",
+      "bytes": 377,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ad3f60.txt",
+      "sha256": "6650a5db197c74be4a75a99d57c5388081f547ed9a9545318049ae4fa7cb9cad",
+      "bytes": 377,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ad3f60_target.json",
+      "sha256": "85f786102e837041b689429945fe5813080ca602bb4fa41a41dd12a105e318bb",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ad3fb0.console.txt",
+      "sha256": "517eef0893e1307d3240364bb108081d687673c6717c217d47d63e8147cd0981",
+      "bytes": 406,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ad3fb0.txt",
+      "sha256": "517eef0893e1307d3240364bb108081d687673c6717c217d47d63e8147cd0981",
+      "bytes": 406,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ad3fb0_target.json",
+      "sha256": "85f786102e837041b689429945fe5813080ca602bb4fa41a41dd12a105e318bb",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ad4260.console.txt",
+      "sha256": "8bf806f231a03204dc469b8550b3485bb178e6324999a0e9182cf2e96bdfffed",
+      "bytes": 304,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ad4260.txt",
+      "sha256": "8bf806f231a03204dc469b8550b3485bb178e6324999a0e9182cf2e96bdfffed",
+      "bytes": 304,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ad4260_target.json",
+      "sha256": "85f786102e837041b689429945fe5813080ca602bb4fa41a41dd12a105e318bb",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ad4600.console.txt",
+      "sha256": "b3d5eb4162b57fa0d93520f53225f73cd3f4537e5e45993cd9aba60c748b5baf",
+      "bytes": 2371,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ad4600.txt",
+      "sha256": "b3d5eb4162b57fa0d93520f53225f73cd3f4537e5e45993cd9aba60c748b5baf",
+      "bytes": 2371,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ad4600_target.json",
+      "sha256": "85f786102e837041b689429945fe5813080ca602bb4fa41a41dd12a105e318bb",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ad4aa0.console.txt",
+      "sha256": "2be944b676bbfd05b05fd42fe0fec1119a48004db16295356d46f51ab13eab1c",
+      "bytes": 912,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ad4aa0.txt",
+      "sha256": "2be944b676bbfd05b05fd42fe0fec1119a48004db16295356d46f51ab13eab1c",
+      "bytes": 912,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ad4aa0_target.json",
+      "sha256": "85f786102e837041b689429945fe5813080ca602bb4fa41a41dd12a105e318bb",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00c95c00.console.txt",
+      "sha256": "d679acdd46b0d53fde3515670ed4313d759930fbddd5ecf76f3af0f5b061b56f",
+      "bytes": 45,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00c95c00.txt",
+      "sha256": "d679acdd46b0d53fde3515670ed4313d759930fbddd5ecf76f3af0f5b061b56f",
+      "bytes": 45,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00c95c00_target.json",
+      "sha256": "0ebd261631140015f005bda6f651cabb9d400a5b555b0dca054f3e43ce9afbdf",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00c95c08.console.txt",
+      "sha256": "9b18040645c653af1c8cef0966762e6cc4c348b4b57f8443ce65902c97bad9fc",
+      "bytes": 53,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00c95c08.txt",
+      "sha256": "9b18040645c653af1c8cef0966762e6cc4c348b4b57f8443ce65902c97bad9fc",
+      "bytes": 53,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00c95c08_target.json",
+      "sha256": "85f786102e837041b689429945fe5813080ca602bb4fa41a41dd12a105e318bb",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00cb9380.console.txt",
+      "sha256": "1730740d5b9bcb9275cd176afcdecb60eaad2a1dc9531fd2fe5b6c8cf425c009",
+      "bytes": 45,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00cb9380.txt",
+      "sha256": "1730740d5b9bcb9275cd176afcdecb60eaad2a1dc9531fd2fe5b6c8cf425c009",
+      "bytes": 45,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00cb9380_target.json",
+      "sha256": "0ebd261631140015f005bda6f651cabb9d400a5b555b0dca054f3e43ce9afbdf",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00cb9388.console.txt",
+      "sha256": "1dcd62481b44350cf08fc59ff035161f3a1bde84f6c7f5a24c8c6eb3dab0fe72",
+      "bytes": 53,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00cb9388.txt",
+      "sha256": "1dcd62481b44350cf08fc59ff035161f3a1bde84f6c7f5a24c8c6eb3dab0fe72",
+      "bytes": 53,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00cb9388_target.json",
+      "sha256": "85f786102e837041b689429945fe5813080ca602bb4fa41a41dd12a105e318bb",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ce47bc.console.txt",
+      "sha256": "3747bc0175129cd1828b16fb1709dc7d6661c47210334b73d4637baea0ad7039",
+      "bytes": 106,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ce47bc.txt",
+      "sha256": "3747bc0175129cd1828b16fb1709dc7d6661c47210334b73d4637baea0ad7039",
+      "bytes": 106,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00ce47bc_target.json",
+      "sha256": "0ebd261631140015f005bda6f651cabb9d400a5b555b0dca054f3e43ce9afbdf",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00d69260.console.txt",
+      "sha256": "f462295ca899b337768825e64ac8fd78552676a41e4e96959f8166781fc94e27",
+      "bytes": 77,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00d69260.txt",
+      "sha256": "f462295ca899b337768825e64ac8fd78552676a41e4e96959f8166781fc94e27",
+      "bytes": 77,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00d69260_target.json",
+      "sha256": "0ebd261631140015f005bda6f651cabb9d400a5b555b0dca054f3e43ce9afbdf",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00d83f98.console.txt",
+      "sha256": "5f10eb7cf49be13d180612759c9a896e0ab2fd816978195a8af6be39e102689f",
+      "bytes": 77,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00d83f98.txt",
+      "sha256": "5f10eb7cf49be13d180612759c9a896e0ab2fd816978195a8af6be39e102689f",
+      "bytes": 77,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00d83f98_target.json",
+      "sha256": "0ebd261631140015f005bda6f651cabb9d400a5b555b0dca054f3e43ce9afbdf",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00dc7b34.console.txt",
+      "sha256": "fbbbc4f66714fadf2b88cb710861b1e08ea3b3dc6c7ad136f6bc244ef9012630",
+      "bytes": 45,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00dc7b34.txt",
+      "sha256": "fbbbc4f66714fadf2b88cb710861b1e08ea3b3dc6c7ad136f6bc244ef9012630",
+      "bytes": 45,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00dc7b34_target.json",
+      "sha256": "0ebd261631140015f005bda6f651cabb9d400a5b555b0dca054f3e43ce9afbdf",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00dc7b3c.console.txt",
+      "sha256": "86b7815455a5fa5840f9b55920d17b16392fd65959389bc9ead77e1288826adf",
+      "bytes": 183,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00dc7b3c.txt",
+      "sha256": "86b7815455a5fa5840f9b55920d17b16392fd65959389bc9ead77e1288826adf",
+      "bytes": 183,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00dc7b3c_target.json",
+      "sha256": "85f786102e837041b689429945fe5813080ca602bb4fa41a41dd12a105e318bb",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00df097c.console.txt",
+      "sha256": "5375c625ec682ecbd973be7c942e6dfb93b022a8ce837cabf497b2b4067be805",
+      "bytes": 45,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00df097c.txt",
+      "sha256": "5375c625ec682ecbd973be7c942e6dfb93b022a8ce837cabf497b2b4067be805",
+      "bytes": 45,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00df097c_target.json",
+      "sha256": "0ebd261631140015f005bda6f651cabb9d400a5b555b0dca054f3e43ce9afbdf",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00df0984.console.txt",
+      "sha256": "4d7340e32f3ca615eef1fd765da97233b6fffe6f7ad6a3006c38a50b2347d9da",
+      "bytes": 183,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00df0984.txt",
+      "sha256": "4d7340e32f3ca615eef1fd765da97233b6fffe6f7ad6a3006c38a50b2347d9da",
+      "bytes": 183,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\bytes_00df0984_target.json",
+      "sha256": "85f786102e837041b689429945fe5813080ca602bb4fa41a41dd12a105e318bb",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\call_verification.txt",
+      "sha256": "5795680457d09e604644a51254886824dbd90663eb936e79bfb23e3bf05a3fd9",
+      "bytes": 89,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\call_verification_exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "bytes": 3,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\collect_170.py",
+      "sha256": "d57d260c0b6f204977fc231e7bda82db859d8dd74fe0454682c1b21fafcbcd65",
+      "bytes": 3228,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\disasm_00c95c00.console.txt",
+      "sha256": "1b17dedc0b87d9bca51901dadab2391aab359e88682fa088eea56fb24e647d54",
+      "bytes": 61,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\disasm_00c95c00.txt",
+      "sha256": "1b17dedc0b87d9bca51901dadab2391aab359e88682fa088eea56fb24e647d54",
+      "bytes": 61,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\disasm_00c95c00_target.json",
+      "sha256": "0ebd261631140015f005bda6f651cabb9d400a5b555b0dca054f3e43ce9afbdf",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\disasm_00c95c08.console.txt",
+      "sha256": "e1bca560d87b47e4934f952e5351c1aa04416c2b6bf70f56f9053537ea0b7bcd",
+      "bytes": 56,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\disasm_00c95c08.txt",
+      "sha256": "e1bca560d87b47e4934f952e5351c1aa04416c2b6bf70f56f9053537ea0b7bcd",
+      "bytes": 56,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\disasm_00c95c08_target.json",
+      "sha256": "85f786102e837041b689429945fe5813080ca602bb4fa41a41dd12a105e318bb",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\disasm_00cb9380.console.txt",
+      "sha256": "7647f773eb8add646ee16bbd7e17640f94ab567fd096cc4b2d74ec9650481dbf",
+      "bytes": 61,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\disasm_00cb9380.txt",
+      "sha256": "7647f773eb8add646ee16bbd7e17640f94ab567fd096cc4b2d74ec9650481dbf",
+      "bytes": 61,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\disasm_00cb9380_target.json",
+      "sha256": "0ebd261631140015f005bda6f651cabb9d400a5b555b0dca054f3e43ce9afbdf",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\disasm_00cb9388.console.txt",
+      "sha256": "c5ddb28b55804cc8bd15d41e5b22885719873b4285ad356f002cdeaa152bc1a1",
+      "bytes": 56,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\disasm_00cb9388.txt",
+      "sha256": "c5ddb28b55804cc8bd15d41e5b22885719873b4285ad356f002cdeaa152bc1a1",
+      "bytes": 56,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\disasm_00cb9388_target.json",
+      "sha256": "85f786102e837041b689429945fe5813080ca602bb4fa41a41dd12a105e318bb",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\eh1_references.json",
+      "sha256": "400c3c68f843ba478ba092e03d00943af510d27353da4419f4fa3d7602e1854e",
+      "bytes": 139,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\eh_audit.json",
+      "sha256": "0f2d2d2547cfba6869a144e5d780164f84e29f915d015f9bd7abb165b063035f",
+      "bytes": 2706,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\final\\CC12_NATIVE_FONT_TREE_INSERT_READINESS_170.md",
+      "sha256": "185f2785237dcbc7092f0b258dc7865500ad4f1633ca41a8dfe5b5a7ac3758bb",
+      "bytes": 13062,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\freeze_sources_170.py",
+      "sha256": "ec21b374d3b311b618273dfcfda06937c18b819910949323c7caeef03e2ec893",
+      "bytes": 2943,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\native_audit.json",
+      "sha256": "2f23250d336f5f645ca88da2e446496fb9b77fa605d0eb1c249e0517089070c2",
+      "bytes": 11752,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00869810.bin",
+      "sha256": "2f89359fd0d0c768ce8a145086e6eccc83741c05575d6849e3db233447831059",
+      "bytes": 82,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_0086a2f0.bin",
+      "sha256": "bfe2e0ce417eeb6e69580063c88eafeae8dc1059708aa6a157813eaac4fe6cca",
+      "bytes": 78,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_0086ab70.bin",
+      "sha256": "db4454cc0ca1b1697f659f8fcb2ebc8066732e82c94b942c6c15a1c39bb02d58",
+      "bytes": 63,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_0086ebe0.bin",
+      "sha256": "377286b55cf3c98fbf4bb5e2d5a340e334f0c0f845ada3a92877eee0f112f7ad",
+      "bytes": 492,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00ad3f60.bin",
+      "sha256": "bfe2e0ce417eeb6e69580063c88eafeae8dc1059708aa6a157813eaac4fe6cca",
+      "bytes": 78,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00ad3fb0.bin",
+      "sha256": "2f89359fd0d0c768ce8a145086e6eccc83741c05575d6849e3db233447831059",
+      "bytes": 82,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00ad4260.bin",
+      "sha256": "9e556d2a0fd01fb5b81fee494b4356208caed60a715bbb72816a259f61df4dcb",
+      "bytes": 63,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00ad4600.bin",
+      "sha256": "429ce8488eaf484889e8f8f9e1918f2ad84fa841a7d67fd6bef06f20917ef969",
+      "bytes": 492,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00ad4aa0.bin",
+      "sha256": "bb07c88f802a6c649f9150ea85aef553116e6163233cabb55c1fa5dd2362b6cb",
+      "bytes": 189,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00c95c00.bin",
+      "sha256": "b4389eb81ef6fbdf0377c10128a45580be646739eb99eb56929d1b02e31d68dd",
+      "bytes": 8,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00c95c08.bin",
+      "sha256": "dfa4a16a70ffd461a55521d9b2be1abd80ba8ae1fc676f2955fa0d85ea42392d",
+      "bytes": 10,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00cb9380.bin",
+      "sha256": "6217280e0286aaed08b8d1b8e50a50119845e26e53150d7f3f5418d6109725e8",
+      "bytes": 8,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00cb9388.bin",
+      "sha256": "73f2f14ecb75dffc64865db915165ff6febbe1ea2eb109175553eaa5a00a694c",
+      "bytes": 10,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00ce47bc.bin",
+      "sha256": "d9812c08dd702f493578cf64ef34c80bcb5acf24e29d246839c9ad664db812df",
+      "bytes": 20,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00d69260.bin",
+      "sha256": "08f3c11e1ccbb51976721666a5c92223e3a3d8bc189e433a1335000d6157bbd7",
+      "bytes": 16,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00d83f98.bin",
+      "sha256": "0fb86056d0dd63b9d5d9391ccdcf486f97d3557596015202ea2e40eb6bbae4f6",
+      "bytes": 16,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00dc7b34.bin",
+      "sha256": "481459016b17dba45bef96936382b015e397a2e8403502c50ccfb68175de8dda",
+      "bytes": 8,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00dc7b3c.bin",
+      "sha256": "c7dcfa85b477ef46a681b644dc3fb615e5c4f0dfdbb79b5604533314f4c0e0ca",
+      "bytes": 36,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00df097c.bin",
+      "sha256": "a0aae7216e85eb049082895b172090c4e25f9c425bd0ffd4f058bf1b3b28fd84",
+      "bytes": 8,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\original_00df0984.bin",
+      "sha256": "7f039154bb4bd40e3a9864f4778b6f28a0ae1a1ff432ebd19c207d8a981c6b62",
+      "bytes": 36,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\physical_00869810.txt",
+      "sha256": "67015b14145e9106dacbc0cae6c496cc5fd985485547079917dfb09c3696c727",
+      "bytes": 1306,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\physical_0086a2f0.txt",
+      "sha256": "373fc3b09f7a4117f3dfd458a5cc5ed899f3ab8d0fb470246f8e1e97b8043df2",
+      "bytes": 1278,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\physical_0086ab70.txt",
+      "sha256": "556b8fe5174d8e70cd4f212712cc479411164bb1eb4938200c806fb04041c887",
+      "bytes": 909,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\physical_0086ebe0.txt",
+      "sha256": "bbbde12660bb6e413fcd867f06c9db7284989e65734754efd58f732490b457d4",
+      "bytes": 7059,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\physical_00ad3f60.txt",
+      "sha256": "2f8810399aeb8e519833596d6187228bdcf90812d09d71eee2b67be88b15947b",
+      "bytes": 1278,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\physical_00ad3fb0.txt",
+      "sha256": "bde4436d606a4df813775be87e01d2c9d15c28a99814d4f27dfb7c1bb051a1e5",
+      "bytes": 1306,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\physical_00ad4260.txt",
+      "sha256": "6b8aa6b51eb806040a8b34bcd68108e0feef0ece31e20bd81c807c5d3daffd33",
+      "bytes": 909,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\physical_00ad4600.txt",
+      "sha256": "7c9f87d471bd2a41fe7c6f7daf5ee8e12765ef3e6fd97213781ac7f9e35b6301",
+      "bytes": 7059,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\physical_00ad4aa0.txt",
+      "sha256": "8200884051df946f5074860aa418c3310df01d37e30a4058bd005935b5267f26",
+      "bytes": 2777,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\physical_00c95c00.txt",
+      "sha256": "85652df786d589ec3df7e90341797d5b4de92fc1a21a62905bdaee237ffe7b6f",
+      "bytes": 81,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\physical_00c95c08.txt",
+      "sha256": "1d8a9574d6cb3221a55e593111995842d01d0152bb012a4eae6541953bcac90e",
+      "bytes": 85,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\physical_00cb9380.txt",
+      "sha256": "0c94c4ac7786687075e0fbc12f6801ebf6540e1592970e3d426b767cd6b129fc",
+      "bytes": 81,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\physical_00cb9388.txt",
+      "sha256": "bec971d70810f013861abcab531aaee57ce610735ca37d9122d6f312e7446d99",
+      "bytes": 85,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\prepare_receipt_170.py",
+      "sha256": "356e2cbd9c30d9e279ab95e07cf354192a7ddad72c9bc0da770fc29506f43e2b",
+      "bytes": 5701,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\proto.console.txt",
+      "sha256": "e9b65ffef65519761388cdb34ff3cdab26bc139e9c036131210ecab502607f88",
+      "bytes": 5513,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\proto.txt",
+      "sha256": "e9b65ffef65519761388cdb34ff3cdab26bc139e9c036131210ecab502607f88",
+      "bytes": 5513,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\proto_0086ebe0_0086ab70_0086a2f0_00869810_00cb9388_00c95c08.console.txt",
+      "sha256": "deeee11a6751724739241fbd77766e557f296326b090d85857217156e89b8a3a",
+      "bytes": 5435,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\proto_0086ebe0_0086ab70_0086a2f0_00869810_00cb9388_00c95c08.txt",
+      "sha256": "deeee11a6751724739241fbd77766e557f296326b090d85857217156e89b8a3a",
+      "bytes": 5435,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\proto_0086ebe0_0086ab70_0086a2f0_00869810_00cb9388_00c95c08_target.json",
+      "sha256": "85f786102e837041b689429945fe5813080ca602bb4fa41a41dd12a105e318bb",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\proto_actions.console.txt",
+      "sha256": "4b6a3d56ce13d0a78888517ce8163873ae1f0d43d488eeba33d4084f10cfd6af",
+      "bytes": 1436,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\proto_actions.txt",
+      "sha256": "4b6a3d56ce13d0a78888517ce8163873ae1f0d43d488eeba33d4084f10cfd6af",
+      "bytes": 1436,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\proto_actions_target.json",
+      "sha256": "0ebd261631140015f005bda6f651cabb9d400a5b555b0dca054f3e43ce9afbdf",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\proto_target.json",
+      "sha256": "1ef0d4dfa3c36a6f6542594ff2b8c890dcc248986e96958df04ef6f7ece85fee",
+      "bytes": 1337,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\cmake\\startup.cmake",
+      "sha256": "57f7528287dfd246466687335ae3e0a00e080e10a49f7c7ca39ffa45675c0abc",
+      "bytes": 269952,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\config\\target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\detail\\native_tree_insert_storage.hpp",
+      "sha256": "c5eb00461d535b3c737e63a4286814e35c5427c883474d37b3cb6f67a2f8a8b9",
+      "bytes": 9079,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\native_allocator_base_cleanup.hpp",
+      "sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+      "bytes": 1632,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\native_allocator_base_copy_constructor.hpp",
+      "sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+      "bytes": 2013,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\native_allocator_base_default_constructor.hpp",
+      "sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+      "bytes": 1412,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\native_effect_handle_acquisition.hpp",
+      "sha256": "9148f95d14fbfc14ad6ed0ea25a4b1047975accc606af5995dcfd718e1b127af",
+      "bytes": 3375,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\native_hardware_layout_tree_insert.hpp",
+      "sha256": "ab22f0f87d42c9c6b4cb6823b28bfbff1098a21ec9ff917a9cf4be211163dbd4",
+      "bytes": 3313,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\native_int_pointer_tree18_leaves.hpp",
+      "sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+      "bytes": 2447,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\native_legacy_exception_owner.hpp",
+      "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "bytes": 3232,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\native_legacy_sbo_string.hpp",
+      "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+      "bytes": 2115,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\include\\bsp\\singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\native_allocator_base_cleanup.cpp",
+      "sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+      "bytes": 894,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\native_allocator_base_copy_constructor.cpp",
+      "sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+      "bytes": 2951,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\native_allocator_base_default_constructor.cpp",
+      "sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+      "bytes": 755,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\native_effect_handle_acquisition.cpp",
+      "sha256": "3b7794d963c4885bbb818bd15d5592c487157863183e0f3db692d089893cef4a",
+      "bytes": 5736,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\native_hardware_layout_tree_insert.cpp",
+      "sha256": "82d040c12d2d84affb1a05e3880d273ce4f3471ee4e8cb88922a5213ad2ab802",
+      "bytes": 5048,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\native_int_pointer_tree18_leaves.cpp",
+      "sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+      "bytes": 6965,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\native_legacy_exception_owner.cpp",
+      "sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+      "bytes": 4352,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\native_legacy_sbo_string.cpp",
+      "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+      "bytes": 7772,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\published\\src\\singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "bytes": 13257,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\reused168\\canonical\\CMakeCache.txt",
+      "sha256": "cd14c548bf6e29f01c92f7f7accd3df51ee7a020957c8d17c49c74b87bb2ba75",
+      "bytes": 19677,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\reused168\\canonical\\native_effect_handle_acquisition.obj",
+      "sha256": "9d6b3274ab8479645b3108b19276f594155f2f408ca3e7bdeb928637f260fb63",
+      "bytes": 14286,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\reused168\\canonical\\provider_dumpbin.txt",
+      "sha256": "53a408d0f186af289ff9072605b41e7475219e6a1229e47cbc4cc01f63c3abdc",
+      "bytes": 110360,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00869810\\assembly.txt",
+      "sha256": "e95e9670606737b1a723d67348e395fb9a1d4e7fdb9f1a5dadfdc579e331d65d",
+      "bytes": 1058,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00869810\\decompiled.c",
+      "sha256": "3771bd9fbda559a7203c108be50142e092e54cd8777d49f91610fbe3a972906b",
+      "bytes": 1565,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00869810\\metadata.json",
+      "sha256": "56d6e36d80151dd346a37812ae6a9f08a1c4926863909dfd627539c6f9869df7",
+      "bytes": 279,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\0086a2f0\\assembly.txt",
+      "sha256": "5409ec75cf6d7d4e0c7af5be231f36ae042d8ebec09ce55742d7ae8ec2a56c9c",
+      "bytes": 1034,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\0086a2f0\\decompiled.c",
+      "sha256": "80efb39587104912982dc62d1208a3f58bee98a00f006cce4335db1e67a84fe4",
+      "bytes": 1566,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\0086a2f0\\metadata.json",
+      "sha256": "c9b6be7dd41130e9e716a12a6bc4b826d92958f643884e7a9c3af44c98579d91",
+      "bytes": 278,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\0086ab70\\assembly.txt",
+      "sha256": "a56c94c9a008353e25a2fb1e80a0c826cf7efd928525a2454fef5c67e31188fd",
+      "bytes": 702,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\0086ab70\\decompiled.c",
+      "sha256": "3a532e74038d62bcaf6afe2c70aa706a5951f72b183234c18150bcafa7bc9778",
+      "bytes": 1811,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\0086ab70\\metadata.json",
+      "sha256": "9434a0d0efde966be1477b40a1c48234b7c3d4995c26dea7e0447062266a5ca9",
+      "bytes": 280,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\0086ebe0\\assembly.txt",
+      "sha256": "14fa9069e3c2156a1812865c3b146b988220e3f0f559bfc6909279a08101468a",
+      "bytes": 5483,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\0086ebe0\\decompiled.c",
+      "sha256": "84aaa6c5d42949a7bef664742f2cc4f0096975f4f29d70da9259ae3d17225c05",
+      "bytes": 5349,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\0086ebe0\\metadata.json",
+      "sha256": "9aca1a8442cdc16de914fc123e87cdff713bed66b7ec3538d747ea40746b2b8f",
+      "bytes": 286,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00ad3f60\\assembly.txt",
+      "sha256": "8dc2eab4e48f0da3c0be4e0b8bcb555230eb39e31dc4174cd051db894bf675a5",
+      "bytes": 1034,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00ad3f60\\decompiled.c",
+      "sha256": "e120ca61f2ad23823912f74f53bb9de3d8959f9dabfa288a460535d6693bd12a",
+      "bytes": 739,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00ad3f60\\metadata.json",
+      "sha256": "d3669a9f14574986eeba37831e9eec1a7f1bb7adea0ff95307dd3029eb8ff748",
+      "bytes": 271,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00ad3fb0\\assembly.txt",
+      "sha256": "f992713d9dcf701b8beff612a9278f0699a161bca8d6fc5679595260c7d9b344",
+      "bytes": 1058,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00ad3fb0\\decompiled.c",
+      "sha256": "9cd9c006cf0b47e16d61da93c1723678dd6bf7ee22b49573617700793babec82",
+      "bytes": 737,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00ad3fb0\\metadata.json",
+      "sha256": "02ae401e0ff1288054c06d583bcde86c54a6e633507d2081e72374958d0746fd",
+      "bytes": 271,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00ad4260\\assembly.txt",
+      "sha256": "1fb73a238af6ded35d0a657284a47575b3ee261bbdc6936a60e6fc86861fd8ec",
+      "bytes": 702,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00ad4260\\decompiled.c",
+      "sha256": "e958f2ed89bbb6d40e598c5aa70c578fb7f90f4fe9bf558aade2d6605ebd605a",
+      "bytes": 503,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00ad4260\\metadata.json",
+      "sha256": "144789913807b30323bf5f6031477aa3e46d5a12c0feed08270c1e004f468e66",
+      "bytes": 272,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00ad4600\\assembly.txt",
+      "sha256": "3e823bdc08522eff480620cb20dbc0088e9e3e6e9f2aeebff1fb0cbc07697cef",
+      "bytes": 5483,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00ad4600\\decompiled.c",
+      "sha256": "66533331459e166a93093190645c477bb8eb65f050d3f4d6d6022e63c3d56f79",
+      "bytes": 3912,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00ad4600\\metadata.json",
+      "sha256": "122ab900c5b2749f27bb6f8fbcf0378d6d580c0315c8b599e5b5663271af2147",
+      "bytes": 270,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00ad4aa0\\assembly.txt",
+      "sha256": "e0a0de2c06eb53b924f7af1fd594bcfd81f30bee882748d774cac82f8e28df0b",
+      "bytes": 2148,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00ad4aa0\\decompiled.c",
+      "sha256": "726f040b5b63d5db389a860a2665628d241186bb7d6bc9065f0c2ac083351d3c",
+      "bytes": 1195,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\saved_exports\\00ad4aa0\\metadata.json",
+      "sha256": "3742e121ab1174c4992860f4e0d659b96e24d53ff211c7315196a76b667a12a2",
+      "bytes": 277,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\seal_170.py",
+      "sha256": "de8b5508eb55d18f4c025bfece05643a71d87eb819580cc975f6dcec1ccb3438",
+      "bytes": 4372,
+      "role": "sealed170 evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_insert_readiness_170\\source_pins.json",
+      "sha256": "cb996adf25b9201788b5d73c660a1a0b4bca35e42d6c516ea85b0d0e8a99c82d",
+      "bytes": 11929,
+      "role": "sealed170 evidence"
+    }
+  ],
+  "sealed_manifest": {
+    "path": "local\\cc12_native_font_tree_insert_readiness_170\\artifact_manifest.json",
+    "sha256": "8ded275de59b935ea74f1e4e6a51c5af0e57f998770ca75626316de3ed5740dd",
+    "bytes": 56458,
+    "role": "immutable170 manifest; report excluded"
+  },
+  "call_verification": {
+    "exit": 0,
+    "rows": 12,
+    "failed": 0,
+    "readiness_only": true
+  }
+}
