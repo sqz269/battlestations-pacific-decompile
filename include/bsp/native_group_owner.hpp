@@ -39,6 +39,10 @@ struct NativeGroupEnvironment {
     // Current native tables, at least22 DWORDs each; no default profile.
     const volatile std::uint32_t* vtable_00d634f8;
     const volatile std::uint32_t* vtable_00d62c88;
+    // Optional only for the existing semantic callers. A raw GUI page-root
+    // route requires the same persistent actual one/positive/negative cells
+    // used by the canonical node constructor; there is no inferred default.
+    const NativeNodeRawConstants* raw_node_constants{};
 };
 class NativeGroupOwner final {
 public:
@@ -69,6 +73,14 @@ public:
 
 // Complete existing raw constructor plus installation of actual group dispatch.
 void* construct_native_group_00b8f5e0(NativeGroupOwner&, const NativeString&);
+// Same complete constructor through the canonical runtime's raw string pool.
+// Header is forwarded unchanged. one/positive bound must be the SAME cells
+// as the group environment; the explicit negative bound is caller-owned.
+// Ordinary base-constructor exceptions have already consumed prefix cleanup;
+// the companion ends once, and the caller still owns the physical pool slot.
+// No FH3/SEH/raw-register ABI or enclosing caller cleanup frame is reproduced.
+void* construct_native_group_00b8f5e0(NativeGroupOwner&, const void* actual_name_header,
+    const NativeNodeRawConstants&);
 // ECX group, RET. Shrink count to0 WITHOUT clearing node+A0, free actual178,
 // then complete B6F440. Never releases174 or184. Leaves freed pointer/capacity.
 void destroy_native_group_00b8f680(NativeGroupOwner&);

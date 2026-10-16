@@ -237,6 +237,28 @@ void* construct_native_group_00b8f5e0(NativeGroupOwner& owner, const NativeStrin
     owner.phase = NativeGroupOwner::Phase::live;
     return &owner.storage.node;
 }
+void* construct_native_group_00b8f5e0(NativeGroupOwner& owner, const void* actual_name_header,
+    const NativeNodeRawConstants& constants) {
+    if (owner.phase != NativeGroupOwner::Phase::prepared)
+        throw std::logic_error("raw group construction requires an unused prepared slot");
+    auto& name_pool = owner.environment.nodes.require_raw_name_pool();
+    if (&constants.one_00d7a24c != &owner.environment.constants.one_00d7a24c ||
+        &constants.positive_bound_00ce4970 != &owner.environment.constants.bound_00ce4970)
+        throw std::logic_error("raw group requires the same actual node/group constant cells");
+    owner.phase = NativeGroupOwner::Phase::constructing;
+    try {
+        construct_native_group_00b8f5e0(&owner.storage.node, NativeGroupPool::slot_bytes,
+            actual_name_header, name_pool, constants);
+    } catch (...) {
+        // The raw B6F5A0 callee consumed its prefix cleanup exactly once.
+        // The derived tail contains no throwing operation after that returns.
+        end_tail(owner);
+        throw;
+    }
+    publish_group_phase(owner);
+    owner.phase = NativeGroupOwner::Phase::live;
+    return &owner.storage.node;
+}
 void destroy_native_group_00b8f680(NativeGroupOwner& owner) {
     require_live(owner);
     publish_group_phase(owner);
