@@ -42146,6 +42146,162 @@
       "reasoning_effort": "xhigh",
       "model_exception": "Reuse owning-list Source author/raw header guard/provider context and built worktree for privateEH/register evidence; readiness worker can independently review.",
       "contract": "F309/F30C read current count and capacity. Grow0094F010 only when equal, never >=. The established growth publishes capacity+64 BEFORE allocation, reads current slots/count AFTER allocation, calls actual memcpy even for zero, reloads slots after copy, conditionally frees/clears old slots, then publishes new slots. Growth may invalidate borrowed slot-buffer addresses, not record allocations. F317 tests the incoming flag LOW BYTE AFTER any growth. Nonzero1..255 adopts the actual pointer loaded atF31E. Upper24 bits are ignored. Zero allocates EXACT8 bytes viaBF681B atF326; the pointer is saved over the incoming flag stack slot and EH state0 is armed after allocation returns. F332/F33C retains the native null-allocation branch: null becomes a null inserted sentinel. Current singleton_lifetime_allocate instead returns nonnull or throws; ordinary successful Source admission excludes allocation failure and makes no native null/OOM identity claim. For nonnull new raw8, load the actual source header argument atF33E and call00426060 with ECX=new raw8 and stack=actual borrowed source. Use the returned actual header as the record to publish. The accepted provider clears destination length/data before identity, resizes preserving from source length, then reads CURRENT source length guard/current destination length/source data/destination data. Raw context reaches00419CC0,BD1120 andBD1510; nonzero raw copies use current memmove, existing zero-copy omission remains qualified. F350 reads incoming signed index AFTER growth/allocation/copy. If negative, set0 and skip the upper-bound count read; otherwise read CURRENT count atF35C and clamp above-count index to that count with signed comparison. Do not clamp before provider calls. F365 reads CURRENT count again into the shift cursor. While cursor>clamped index signed, F370 reloads CURRENT slots for EACH iteration, reads slots[cursor-1], computes destination slots[cursor], decrements cursor, compares, then writes the captured pointer atF37E. Existing records are moved only as pointer values; do not allocate, copy strings, destroy them or substitute bulk memmove with a different observation schedule. F382 reloads CURRENT slots once more, F384 writes the selected record at slots[clamped index], and only THEN F387 increments CURRENT count+4 by1. Capacity changes only through prior growth. Existing element identity and order are preserved around the new element. EAX still holds the clamped index; normal epilogue restoresFS0 and saved registers. MSVC Win32 actual aligned writable live raw12 plus unique current-heap slots from accepted0094EFB0/0094F010, coherent0<=count<=capacity<=0x3fffffff, positive allocatable nonwrapping sizes and valid initialized reached slot bytes. For growth oldcapacity<=0x3fffffbf. Count+1 and every reached4*index/address are nonwrapping and within the retained/new slot allocation. Any signed32 input index and any DWORD flags are admitted within these valid-storage bounds. Record headers, list header, slots, backing buffers and private frame satisfy their necessary disjointness/ownership bounds; operations are serialized, DF clear/flatES for storage growth, no callback alias/reentry/concurrency/fault or pool teardown across the operation. Preserve late reads even within this ordinary domain. Do not admit callback mutation simply because individual providers preserve some late reads. Copy branch requires a nonnull readable coherent actual source raw8 with a live readable buffer for positive length, nonwrapping length+1 and successful pool capacity/resources; source header/buffer stays alive across growth and copy. Borrowing an existing element header for copying is permitted when lifetime/disjointness holds; the caller retains its source ownership. Adopt branch accepts a null sentinel or a uniquely owned genuine eight-byte header allocated by the matching current heap, whose nonnull data belongs to the same retained concrete raw pool/context generation. It must not already be owned by this list or another owner; no duplicate ownership is created. Ownership transfers only on successful slot publication. Before that publication the caller retains the adoption obligation. Successful copied raw8 becomes list-owned at slot publication; old record identity remains unchanged. The exact retained process context must outlive all dependent records, and list retirement must occur before the pool generation becomes invalid. Neither insertion nor slot storage retirement frees the caller's actual12-byte header. Use the same separately labelled current-C++ fresh-copy-header guard policy as accepted ownership Source3: only canonical-free the actually allocated raw8 on current copy exception, never data/adopted header/slots/raw12. Disarm only after final slot publication and current count increment; return captured clamped signed index, not a newly read count. No Original privateFH3/frame/fault/unwind equivalence. All signed32 index inputs andDWORDflags lowBYTE0copy/all1..255adopt/high24ignored. Clamp AFTER providers; negative input sets0 and skips upper-boundcountread; otherwise late currentcountclamp. Reloadcurrentcountforcursor; periterationcurrentbase/capturedsource/destination, decrementcursorbeforewrite; no bulkshift. Finalbase reload/slotpublish thenincrementcurrentcount. Newordinaryint32result exposes measuredclampedEAX only; noOriginallanguage/callerreturntypeclaim. No Current application/fakeowner/OriginalphysicalABI/privateCRT/EH/fault/startup/runtime/game closure. NoCString0041E870 path; no append0094F270 call. The readiness failure paragraph describes intended cleanup. Only actual handler/map/raw-header-free action from privateEBP+C is measured; privateFH3 dispatcher/establisher mapping and arbitrary throw/fault outcomes remain unproved. A future current-C++ copy-only header guard is a separate Source policy, with no Original EH identity credit."
+    },
+    {
+      "id": "goal_oct15_scene_node_child_at",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_independently_reviewed_registered_Win32_three_checks_emitted_and_Main_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00467f30"
+      ],
+      "output_files": [
+        "src/native_scene_node_child_at.cpp",
+        "include/bsp/native_scene_node_child_at.hpp",
+        "docs/GOAL_OCT15_SCENE_NODE_CHILD_AT.md",
+        "reports/goal_oct15_scene_node_child_at.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "primary_review": "reports/goal_oct15_child_strchr_primary_review.json",
+      "code_revision": "b594573593f5fcf2eddb02e2d777ab2eb2f27d62",
+      "integrated_main_revision": "4d42e7ab62e2cbad24a0f91c4edbc19295f432ef",
+      "contract": "Whole41B17ops original-index-first/signedcount/head/current44link raw lookup;no callbacks/SDK/extra guards",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "normal_project_object_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_crt_strchr",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_independently_reviewed_registered_Win32_three_checks_emitted_and_Main_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00bf86f0"
+      ],
+      "output_files": [
+        "src/native_crt_strchr.cpp",
+        "include/bsp/native_crt_strchr.hpp",
+        "docs/GOAL_OCT15_CRT_STRCHR.md",
+        "reports/goal_oct15_crt_strchr.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "primary_review": "reports/goal_oct15_child_strchr_primary_review.json",
+      "code_revision": "b594573593f5fcf2eddb02e2d777ab2eb2f27d62",
+      "integrated_main_revision": "4d42e7ab62e2cbad24a0f91c4edbc19295f432ef",
+      "contract": "Whole195B89ops in2ranges,original byte/alignedDWORD/reread/mask algorithm;no SDK/calls/globals/locale substitute",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": true,
+      "normal_project_object_entry_executed": false,
+      "game_validated": false,
+      "focused_Original_and_Source_probe_pairs": 72,
+      "focused_probe_failures": 0,
+      "probe_scope": "valid padded buffers with4alignments/3templates/6needles;actualcallfreeOriginalrelocated206B vs compiledSource;not genericABI/fault/parentclosure"
+    },
+    {
+      "id": "goal_oct15_crt_os_error_map",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_independently_reviewed_registered_Win32_three_checks_emitted_and_Main_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00bffb50"
+      ],
+      "output_files": [
+        "src/native_crt_os_error_map.cpp",
+        "include/bsp/native_crt_os_error_map.hpp",
+        "docs/GOAL_OCT15_CRT_OS_ERROR_MAP.md",
+        "reports/goal_oct15_crt_os_error_map.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "primary_review": "reports/goal_oct15_mapper_primary_review.json",
+      "code_revision": "b594573593f5fcf2eddb02e2d777ab2eb2f27d62",
+      "integrated_main_revision": "4d42e7ab62e2cbad24a0f91c4edbc19295f432ef",
+      "contract": "Whole59B23ops captured error/progressive actual45-pair/currentmatchedvalue/unsignedwrapped fallback mapper;no errno/TLS/SDK substitute",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "normal_project_object_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_qualified_node_readiness",
+      "done": true,
+      "state": "bounded_read_only_actual_native_readiness_audit_completed_no_Source_credit",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [],
+      "output_files": [
+        "reports/goal_oct15_scene_qualified_node_readiness.json"
+      ],
+      "depends_on": [],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_scene_qualified_node_readiness.json",
+      "integrated_main_revision": "4d42e7ab62e2cbad24a0f91c4edbc19295f432ef",
+      "contract": "Whole201B90ops9CALLs qualified-name parent schedule/frame and genuine Original strnicmp/locale/errno dependencies;new ChildAt/Originalstrchr do not close parent",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_crt_malloc_readiness",
+      "done": true,
+      "state": "bounded_read_only_actual_native_readiness_audit_completed_no_Source_credit",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [],
+      "output_files": [
+        "reports/goal_oct15_crt_malloc_readiness.json"
+      ],
+      "depends_on": [],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json",
+      "integrated_main_revision": "4d42e7ab62e2cbad24a0f91c4edbc19295f432ef",
+      "contract": "Read-only308B117ops mallocfrontier plus181B75ops heapselector/owner;33truecallrows;actual lock/malloc/free/errno/PTD and getter failure SCCs;no newSource/heapownership credit",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_crt_free_readiness",
+      "done": true,
+      "state": "bounded_read_only_actual_native_readiness_audit_completed_no_Source_credit",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [],
+      "output_files": [
+        "reports/goal_oct15_crt_free_readiness.json"
+      ],
+      "depends_on": [],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_crt_free_readiness.json",
+      "integrated_main_revision": "4d42e7ab62e2cbad24a0f91c4edbc19295f432ef",
+      "contract": "Read-only whole free physical/SEH/current argument frontier;actual lock/errno/PTD/heap owner SCCs;C11B5E old missing-start blocker retracted;regionrepair proposal was UNAPPROVED at scout capture and separate subsequent packet owns any later repair",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_crt_invalid_handler_readiness",
+      "done": true,
+      "state": "bounded_read_only_actual_native_readiness_audit_completed_no_Source_credit",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [],
+      "output_files": [
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ],
+      "depends_on": [],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json",
+      "integrated_main_revision": "4d42e7ab62e2cbad24a0f91c4edbc19295f432ef",
+      "contract": "Read-only whole811B291ops invalid-handler/errno/PTD/getter-cache/nullablecalloc frontier;24true direct/tail and20computed transfers;finite genuine decoder/getter/handler and heap/lock SCCs require coordinated wholeSource work,not stubs/callback/SDK/selected-path substitutions",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
