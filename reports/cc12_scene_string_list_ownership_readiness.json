@@ -1,0 +1,245 @@
+{
+  "schema": "bsp.scene_string_list_ownership_readiness.v1",
+  "status": "whole_ordinary_successful_explicit_context_Source_ready_no_implementation",
+  "packet": "cc12_scene_string_list_ownership_0094f270_0094f3e0_0094f540",
+  "Source_ready": true,
+  "Source_implemented": false,
+  "Source_credit": 0,
+  "Root_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_string_list_storage_integration_20261016\\primary_ownership_plan.DATA.json",
+    "bytes": 24516,
+    "sha256": "87c2ec3628b473d8a0c2184690de0580754952455fe1e3867d60f7d4690d1cef"
+  },
+  "readonly_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringKeyListOwnershipContract01\\family_receipt.json",
+    "bytes": 32081,
+    "sha256": "002965e48c0269109dbec60f7992795dea3ec163a32867640501dfa62ed90346"
+  },
+  "whole_Original": [
+    {
+      "begin": "0094F270",
+      "end_exclusive": "0094F2ED",
+      "bytes": 125,
+      "instructions": 38,
+      "sha256": "f72b3d87aedf085a01991e19cdf7feefc436213293747d291bb526ae1dfb1938",
+      "live_disk_listing_equal": true
+    },
+    {
+      "begin": "0094F3E0",
+      "end_exclusive": "0094F441",
+      "bytes": 97,
+      "instructions": 42,
+      "sha256": "e9b34551fe49bd8f55056fdd3d71bf50f15b7971f1a118409aae8b35f813a5be",
+      "live_disk_listing_equal": true
+    },
+    {
+      "begin": "0094F540",
+      "end_exclusive": "0094F55F",
+      "bytes": 31,
+      "instructions": 12,
+      "sha256": "c4eb96659e18d0e398ae24d21f240b5d382a9e6b45c8d5e5b8d8397684892af0",
+      "live_disk_listing_equal": true
+    }
+  ],
+  "interfaces": [
+    {
+      "address": "0094F270",
+      "declaration": "std::uint32_t append_native_scene_string_list_0094f270(void* actual_list12, void* actual_record8, std::uint32_t native_flags, NativeStringRawPoolContext& raw);",
+      "native_ABI": "ECX actual list12; stack record pointer at entryESP+4 and flag atentryESP+8; low byte read; ESI preserved; returns new count DWORD in EAX; RET8; private FS0 registration restored on normal return.",
+      "Source_ABI": "Ordinary C++ function with explicit retained raw context. No naked wrapper, original FS handler or native calling-convention identity claimed."
+    },
+    {
+      "address": "0094F3E0",
+      "declaration": "void clear_native_scene_string_list_0094f3e0(void* actual_list12, NativeStringRawPoolContext& raw);",
+      "native_ABI": "ECX list12; no stack inputs; plain RET, no semantic EAX result; EBX/EBP saved, ESI/EDI saved only on positive-count path.",
+      "Source_ABI": "Ordinary C++ explicit-context interface; not noexcept because genuine getter exceptions must not be translated into termination."
+    },
+    {
+      "address": "0094F540",
+      "declaration": "void retire_native_scene_string_list_0094f540(void* actual_list12, NativeStringRawPoolContext& raw);",
+      "native_ABI": "ECX list12; no stack inputs; ESI preserved; plain RET; no semantic EAX result.",
+      "Source_ABI": "Ordinary C++ explicit-context interface; retires elements and slot allocation only, not the 12-byte caller header; not noexcept."
+    }
+  ],
+  "context": {
+    "required": "The exact retained NativeStringRawPoolContext object returned by bsp::game::game_native_string_process().raw_context(), prepared by the caller before the ownership operation.",
+    "lifetime": "GameNativeStringProcess is noncopyable and retained through a function-static heap pointer; its raw context references its permanent pool01090AA8, real small-return gate01090AA4 and manager01090AA0 cells. The context owns no buffers. All list elements must be retired before their required pool generation/lifecycle becomes invalid.",
+    "publications": [
+      "actual_published_01090aa8",
+      "actual_small_returns_disabled_01090aa4",
+      "actual_manager_publication_01090aa0"
+    ],
+    "avoid": [
+      "Do not create another context with stand-in publications/gate.",
+      "Do not call the process getter implicitly inside every ownership body; an adopt path that needs no pool must not gain an extra lazy process allocation.",
+      "Do not cache the pool across releases or bypass the mandatory00419CC0 call for large blocks or disabled small returns.",
+      "Do not route through NativeStringStorage or ActualNativeStringPoolStorage release noexcept adapters; call the accepted raw-context overload directly.",
+      "Do not add a synthetic global, TLS protocol, host interface, callback, separate singleton domain, or literal native handler address."
+    ]
+  },
+  "providers": [
+    {
+      "role": "full-list growth before append",
+      "Original": "0094F010",
+      "Source": "grow_native_scene_string_list_storage_0094f010(actual_list12)",
+      "dependency": "cc12_scene_string_list_storage_0094efb0_0094f010",
+      "status": "Pending Source commit87736664b93c7e128f69517527c495096c790868; header inspected. Root integration/admission remains required."
+    },
+    {
+      "role": "copy-branch raw8 allocation",
+      "Original": "00BF681B",
+      "Source": "singleton_lifetime_allocate({SingletonAllocationKind::object, 8, 8})",
+      "status": "Existing current CRT malloc/new-handler/retry/throw Source binding; genuine raw eight-byte allocation, no NativeString wrapper or surrogate header."
+    },
+    {
+      "role": "raw8 copy construction",
+      "Original": "00426060",
+      "Source": "copy_construct_native_string_header_00426060(new_raw8, actual_source_header8, raw)",
+      "status": "Accepted actual-header raw-context composition. Clears destination length/data before identity; raw resize and late source guard/current destination length/source data/destination data reads retained. Existing current memmove/nonzero-copy policy remains qualified."
+    },
+    {
+      "role": "captured record data release",
+      "Original": "inline0041DD20-equivalent body in0094F3E0, with00419CC0 ->00BD1510",
+      "Source": "destroy_native_string_header_0041dd20(captured_raw8, raw)",
+      "status": "Accepted raw overload captures data first, only nonnull data reads length+1, resolves getter on every release, calls raw BD1510 and leaves header untouched."
+    },
+    {
+      "role": "owned raw8 free after data release",
+      "Original": "00BF65AC",
+      "Source": "singleton_lifetime_free(captured_raw8)",
+      "status": "Matching current CRT free only; no C++ NativeString destructor or second data release."
+    },
+    {
+      "role": "slot allocation free after clear",
+      "Original": "00BF6989 ->00BF65AC",
+      "Source": "singleton_lifetime_free(reloaded_slots)",
+      "status": "Same canonical current heap pairing as storage constructor/grow. Leave actual list12 allocation/lifetime to its real caller."
+    }
+  ],
+  "schedules": {
+    "append": [
+      "Read current count+4 and capacity+8; call the existing growth only for equality, not >=. Growth publishes new capacity before allocating and handles its own late slot/count reads.",
+      "Test (native_flags &0xffu)!=0 after growth. Low byte0 copies; every low pattern1..255 adopts. All upper24 bits are ignored. Do not substitute a bool protocol that loses the specified input domain.",
+      "Adopt path captures the supplied pointer itself, including a null sentinel, with no header/data allocation and no pool operation. Ownership of a nonnull genuine raw8 record transfers to the list on successful slot publication; caller must not free it afterwards.",
+      "Copy path obtains a fresh genuine raw8 allocation, then invokes the accepted raw00426060 copy constructor with the actual borrowed source header. Do not use sizeof(NativeString), a host object constructor, a temporary header copy or a virtual storage adapter.",
+      "After growth/allocation/copy, read CURRENT count+4, then CURRENT slot base+0. Store the captured resulting record pointer at base+count*4, increment the DWORD count, then reread and return the stored new DWORD count. Do not capture list fields across reached providers."
+    ],
+    "clear": [
+      "Read signed count. For <=0 write count0 and return; the admitted valid domain uses nonnegative counts, while the observed negative branch remains documented rather than converted to a new diagnostic.",
+      "For each reached index, reload current slot base, capture raw8 record pointer and that exact slot address. A null record performs no release/free/store; it remains null.",
+      "For a nonnull record call raw0041DD20, then canonical-free the same captured raw8 header. Only after free returns write zero to the CAPTURED slot address; never recompute that address from a later slot-base read.",
+      "Increment index and reread CURRENT signed count for the loop comparison. Do not cache count/base for the entire loop or shrink count progressively.",
+      "On normal exit write count0. Leave capacity and the slot allocation live; spare slots are not traversed or initialized."
+    ],
+    "retire": [
+      "Call the new clear with the same actual raw12/context; after it returns reload CURRENT slots+0.",
+      "If nonnull, canonical-free that captured slot allocation and only then zero slots+0. Keep capacity unchanged; count has been reset by clear.",
+      "Do not destroy/free/zero the caller-owned raw12 header. After retirement append/growth is invalid until actual constructor reinitializes storage. Repeated retire on a still-live retired header is harmless in the admitted count0/slotsnull state."
+    ]
+  },
+  "domain": [
+    "Target MSVC Win32. Actual caller-provided aligned readable/writable raw12 header with slots pointer+0,count DWORD/signed+4,capacity DWORD+8. It must come from genuine0094EFB0 storage and accepted subsequent growth/ownership operations, not a fabricated zeroed owner object.",
+    "Live storage requires 0<=count<=capacity<=0x3fffffff, with capacity at least64 and a multiple of64 as supplied by the nonwrapping constructor/grow chain; allocation is exactly4*capacity bytes and reached slots[0,count) are initialized. Empty constructed storage still has its genuine nonnull slot allocation.",
+    "If append sees count==capacity, oldcapacity<=0x3fffffbf is required for the accepted +64 growth. If count<capacity, the existing slot allocation must have room for one more pointer. Count+1 and all index*4/address additions must remain in range and accessible. No overflow, saturated-allocation, negative-count ownership, invalid-capacity or memory-pressure branch is admitted.",
+    "All owned raw8 headers and nonnull owned data allocations are uniquely owned and pairwise disjoint from the list header, slot allocation, temporary/private frame, and each other. Source copy may borrow a stable existing record but creates distinct owned output. Adoption must not duplicate an existing owned pointer or alias raw12/slots.",
+    "Every owned raw8 header comes from the matching current singleton_lifetime_allocate(object,8,8) heap contract and is freed once by canonical free. Header storage is not NativeStringStorage pooled data.",
+    "For nonnull data, length+1 is the exact original allocation size, nonwrapping and accessible. Sizes1..149 require the correct current canonical pool generation and size class; sizes>=150 require matching current CRT allocation/free provenance. Null data skips length and pool work on clear. No invented generation counter is introduced.",
+    "Use genuine real pool/manager publications and gate. The real small-return gate value is preserved and read by BD1510, never forced to zero; even disabled small returns still resolve the getter first. Required pool/manager/deletion bindings must already be valid or their genuine lazy creation must complete successfully.",
+    "No concurrent mutation, reentry, pool trim/drain/teardown, lifetime replacement, allocator new-handler side effects on these objects, faults, throws, access violations or failed allocations occur during an admitted operation. Small-buffer generation validity extends from allocation through final return, not merely through the individual call.",
+    "All reached providers return normally; positive requested storage is genuinely available. Current compiler and CRT conventions are explicit Source bindings. Flat Win32 address/ES and DF-clear preconditions of the accepted low-level storage/copy providers remain.",
+    "These are admission preconditions, not proposed new runtime checks or repairs. Implementation must retain the measured field-read/publication/free order and must not manufacture success for invalid storage."
+  ],
+  "flags": {
+    "copy_low_bytes": [
+      0
+    ],
+    "adopt_low_bytes": "Every integer1..255, all 255 patterns; high24 bits ignored.",
+    "copy_input": "Valid readable actual raw8 source. If source length>0 its data provides the readable byte range; copy is independent of the source ownership. A borrowed existing list record can be a copy source if it remains live and disjoint from the storage being written/freed.",
+    "adopt_input": "Null sentinel or a genuine separately allocated unique current-heap raw8 header with exclusive ownership of its nonnull data. No existing slot/other owner may retain ownership of the transferred record. Stack, inline, synthetic and duplicate-owned headers are forbidden by the proposed admission contract."
+  },
+  "EH_evidence": {
+    "handler": "00CA8CCB",
+    "handler_instructions": [
+      "MOV EAX,0x00DDCA34",
+      "JMP 0x00BF6B43"
+    ],
+    "raw_metadata": "00DDCA34",
+    "first_metadata_dwords": [
+      "19930522",
+      "00000001",
+      "00DDCA2C",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000001"
+    ],
+    "map": "00DDCA2C",
+    "map_dwords": [
+      "FFFFFFFF",
+      "00CA8CC0"
+    ],
+    "cleanup": "00CA8CC0",
+    "cleanup_range": [
+      "00CA8CC0",
+      "00CA8CCB"
+    ],
+    "cleanup_instructions": [
+      "MOV EAX,[EBP+8]",
+      "PUSH EAX",
+      "CALL 00BF65AC",
+      "POP ECX",
+      "RET"
+    ],
+    "interpretation": "FH3-shaped state0 -> -1 cleanup row, consistent with private handler. Cleanup visibly frees only the pointer read at private EBP+8. Dispatch/frame mapping to append saved argument slot and arbitrary failure/unwind behavior are NOT established.",
+    "byte_spans_disk_live_equal": true
+  },
+  "EH_and_failure_boundary": {
+    "observed_append": "0094F270 installs FS0 registration with CA8CCB and initial state-1. Copy allocation result is saved into the original flag stack slot at0094F2AC; state0 is stored at0094F2B2 before the null/copy branch. Normal execution publishes slot/count then restores FS0 and RET8. State0 is not visibly reset before normal frame removal.",
+    "observed_cleanup": "CA8CCB loads EAX=DDCA34 and jumps BF6B43. Metadata begins19930522,1,DDCA2C. DDCA2C containsFFFFFFFF,CA8CC0. The11-byte5-instruction cleanup reads [EBP+8] and calls BF65AC only; no pooled-data destructor call appears there.",
+    "unproved": "Exact FH3 dispatcher interpretation, establisher/private EBP mapping to the overwritten append argument slot, state transition dispatch on every throw/fault, current exception/RTTI identity, nested/second failures, SEH behavior and cleanup ordering relative to partial slot/count publication remain unproved. The small observed cleanup is evidence of a header-free action, not complete private EH acceptance.",
+    "ordinary_CPP_recommendation": "Use ordinary current compiler EH; never install/call literalCA8CCB, invent a handler stub, or recreate a TLS/FS protocol. Keep ownership functions potentially throwing so raw getter failures are not silently converted to terminate. A local current-C++ raw8 allocation guard that frees only the fresh header on a C++ copy-construction exception and is released after successful publication/count-read is a separately labelled Source safety policy; it must not free a copied data buffer, adopted record, list slot allocation or list12 header. This is not proof of Original EH equivalence and requires Root review if chosen.",
+    "excluded_outcomes": [
+      "Original allocator-null branch that appends null after allocation failure; canonical current allocate returns nonnull or throws.",
+      "Growth allocation failure after capacity publication and any required rollback or leaked allocation behavior.",
+      "Copy/getter failure after new header or data allocation, including original private frame cleanup and partial resource ownership.",
+      "Pool-getter failure during clear and partial element retirement, or subsequent retire failure.",
+      "Fault/asynchronous-SEH paths at slot/count publication and after a pool/header free.",
+      "Full physical ABI/FH3/unwind/game compatibility."
+    ],
+    "admission": "Only the complete ordinary normal-control-flow bodies under successful provider returns are proposed. No failure branch or private handler credit is added; no code is supplied in this planning phase."
+  },
+  "Root_current_CPP_cleanup_policy": "Root accepts an explicitly separate current-C++ fresh-header guard: only copy-branch allocation(object,8,8), canonical-free only that captured fresh raw8 on a C++ construction exception, disarm after successful slot/count publication and return-count read. Never release copied data/adopted header/slots/raw12 through this guard. APIs remain potentially throwing. This policy is not private FH3/frame/unwind/fault equivalence; failure outcomes remain outside admission.",
+  "storage_dependency": {
+    "Source_commit": "87736664b93c7e128f69517527c495096c790868",
+    "Main_validation": "reports/cc12_scene_string_list_storage_Main_validation.json",
+    "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_build_pending",
+    "Source_reviewed_and_integrated_registered": true,
+    "Main_build_and_archive_pending": true,
+    "authoring_contract_ready": true,
+    "qualification": "Genuine provider Source/interfaces are independently and primarily accepted, integrated and registered. Its strict object passed; current Main build/archive closure remains pending and is required before final acceptance of this dependent ownership packet. Authoring may proceed in its isolated worktree without claiming provider Main closure."
+  },
+  "named_incomplete_dependencies": [
+    {
+      "name": "candidate_actual_scene_property_bag_key_enumeration_008f3270",
+      "state": "Still blocked",
+      "contract": "Actual application caller must identify/provide its real output-header allocation/lifetime, constructor invocation, pass-to008F3270, adopted raw8 key producers, normal final clear/retire and header disposal schedule. An actual storage constructor alone proves none of this binding."
+    },
+    {
+      "name": "008F2B20 additional adopt caller",
+      "state": "Only prior sealed caller evidence; no application-owner admission",
+      "contract": "A separate upstream adopt producer schedule cannot be assumed from the list helper or its provisional symbol."
+    },
+    {
+      "name": "0094F1B0 /0094F180 sorting and00F89B75 role",
+      "state": "Unchanged separate blockers",
+      "contract": "No comparator/boundary repair, sort callback, private CRT/locale or canonical empty-data binding is solved by ownership helpers."
+    }
+  ],
+  "prior_comparator_metadata_uncertainty": "The previous ignored-dry-run creation/guarded deletion and unavailable pre-create complete symbol/comment state remain preserved in the39-file boundary family. This read-only phase does not repair or erase that uncertainty.",
+  "Original_ABI_compatible": false,
+  "Original_private_CRT_EH_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false
+}
