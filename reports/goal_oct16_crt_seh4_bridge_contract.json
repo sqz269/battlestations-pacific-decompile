@@ -1,0 +1,2100 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct16_crt_seh4_bridge_contract",
+  "kind": "read-only whole-native bridge and bounded immediate-provider feasibility contract",
+  "status": "contract_complete_no_implementation_authorized",
+  "source_ready": false,
+  "original_bridge_source_ready": false,
+  "original_os_callback_ready": false,
+  "parent_prefix_locale_source_ready": false,
+  "new_source_functions": 0,
+  "addresses_claimed": [],
+  "owned_files": [
+    "reports/goal_oct16_crt_seh4_bridge_contract.json"
+  ],
+  "analysis_worktree_revision": "ea3b8b92bfd3afe4bd37786819b5f17c12978181",
+  "main_revision_at_final_readonly_sync": "c44ffae90ba918799c3833fe75a216c18eafeb89",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "scope": {
+    "whole_bridge": [
+      "00C07C00 __SEH_prolog4",
+      "00C07C90 __except_handler4",
+      "00C07C45 __SEH_epilog4"
+    ],
+    "bounded_whole_provider_extension": [
+      "00C16DD0 __IsNonwritableInCurrentImage",
+      "00C06AC8 ___DestructExceptionObject",
+      "their two exact scope tables and physically implied private filter/landing bytes"
+    ],
+    "immediate_provider_contract_only": [
+      "00BFE120",
+      "00C0DCB6",
+      "00C0DCCD",
+      "00C0DCE6",
+      "00C0DD00",
+      "00C16D50",
+      "00C16D80",
+      "00BF6AA6",
+      "00C07A75"
+    ],
+    "excluded": [
+      "No Source implementation or address lease",
+      "No Ghidra mutation/redefinition/flow repair/annotation/export",
+      "No synthetic OS callback, context argument, or process-global owner",
+      "No C++ EH dependency crawl beyond named terminate stop",
+      "No CMake, build, test, probe, or original-entry execution",
+      "No edit to the earlier prefix/locale, PTD, or free/lock reports"
+    ],
+    "drain_instruction": "Finish only this ongoing read-only report; image-guard Source remains a proposal. Release the report lease after primary integration acknowledgment, then stop."
+  },
+  "coverage": {
+    "typed_function_bytes": 726,
+    "typed_body_instruction_count_from_whole_local_decode": 235,
+    "physical_private_bytes_outside_typed_bodies": 40,
+    "physical_private_instruction_count": 15,
+    "whole_physical_code_bytes": 766,
+    "whole_physical_instruction_count": 250,
+    "scope_and_indirect_word_bytes": 60,
+    "all_826_code_and_data_bytes_live_equal_installed_PE": true,
+    "external_native_transfer_rows": 19,
+    "defined_typed_transfer_rows": 18,
+    "physical_only_transfer_rows": [
+      "00C06B17 JMP 00C07A75"
+    ],
+    "physical_internal_jumps_separately_retained": [
+      "00C07D73 -> 00C07D3B",
+      "00C07E21 -> 00C07D3B"
+    ],
+    "typed_range_credit": "Whole typed ranges are present for the five named functions. Four private filter/landing starts are currently undefined DataDB, not Ghidra instructions or functions; their exact physical bytes, scope-table pointers and complete local Capstone decoding are retained without redefining them."
+  },
+  "native_bodies": [
+    {
+      "name": "prolog",
+      "ranges": [
+        {
+          "start": "00C07C00",
+          "end_exclusive": "00C07C45",
+          "bytes": 69,
+          "hex": "68907cc00064ff35000000008b442410896c24108d6c24102be0535657a19055e1003145fc33c5508965e8ff75f88b45fcc745fcfeffffff8945f88d45f064a300000000c3",
+          "sha256": "bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd"
+        }
+      ],
+      "bytes": 69,
+      "instruction_count": 21,
+      "live_equals_PE": true
+    },
+    {
+      "name": "handler",
+      "ranges": [
+        {
+          "start": "00C07C90",
+          "end_exclusive": "00C07E26",
+          "bytes": 406,
+          "hex": "83ec14538b5c242055568b730833359055e100578b0683f8fec644241300c7442418010000008d7b10740d8b4e0403cf330c38e85864ffff8b4e0c8b460803cf330c38e84864ffff8b442428f64004660f851f0100008b6b0c83fdfe8b4c24308d54241c8944241c894c24208953fc745e8d446d008b4c861485c98d5c86108b038944241474168bd7e8985f000085c0c6442413017c447f4c8b44241483f8fe8be875cd807c24130074248b0683f8fe740d8b4e0403cf330c38e8d163ffff8b4e0c8b460803cf330c38e8c163ffff8b4424185f5e5d5b83c414c3c744241800000000ebc68b4c2428813963736de0752a833d18a6d6000074216818a6d600e83cf0000083c40485c074108b5424286a0152ff1518a6d60083c4088b4c242ce8325f00008b44242c39680c7413689055e100578bd58bc8e8345f00008b44242c8b4c241489480c8b0683f8fe740d8b4e0403cf330c38e83563ffff8b4e0c8b560803cf330c3ae82563ffff8b4b088bd7e9c85e0000837b0cfe0f8450ffffff689055e100578bcbbafeffffffe8df5e0000e915ffffff",
+          "sha256": "65317c11229687c1612e1755f3e9fc5d321024ae01c2e62bbf4083c516847a69"
+        }
+      ],
+      "bytes": 406,
+      "instruction_count": 125,
+      "live_equals_PE": true
+    },
+    {
+      "name": "epilog",
+      "ranges": [
+        {
+          "start": "00C07C45",
+          "end_exclusive": "00C07C59",
+          "bytes": 20,
+          "hex": "8b4df064890d00000000595f5f5e5b8be55d51c3",
+          "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411"
+        }
+      ],
+      "bytes": 20,
+      "instruction_count": 11,
+      "live_equals_PE": true
+    },
+    {
+      "name": "imageguard",
+      "ranges": [
+        {
+          "start": "00C16DD0",
+          "end_exclusive": "00C16E59",
+          "bytes": 137,
+          "hex": "558bec6afe683837e00068907cc00064a1000000005083ec08535657a19055e1003145f833c5508d45f064a3000000008965e8c745fc000000006800004000e83cffffff83c40485c074558b45082d00004000506800004000e852ffffff83c40885c0743b8b4024c1e81ff7d083e001c745fcfeffffff8b4df064890d00000000595f5e5b8be55dc3",
+          "sha256": "489ca9c1c05159c97cafe0704ab9bd4592f4e0874c407a4c232699bb86bebe16"
+        },
+        {
+          "start": "00C16E70",
+          "end_exclusive": "00C16E8B",
+          "bytes": 27,
+          "hex": "c745fcfeffffff33c08b4df064890d00000000595f5e5b8be55dc3",
+          "sha256": "ab46e67da4115aebf6a5313ddc6cb66c1c70f6ddaf8e4cf5951e10f55f884990"
+        }
+      ],
+      "bytes": 164,
+      "instruction_count": 57,
+      "live_equals_PE": true
+    },
+    {
+      "name": "imageguard_filter",
+      "ranges": [
+        {
+          "start": "00C16E59",
+          "end_exclusive": "00C16E6D",
+          "bytes": 20,
+          "hex": "8b45ec8b088b0133d23d050000c00f94c28bc2c3",
+          "sha256": "04f4ad34f0a1c7b3d693b8dc718a54f3b45305767df80f6cca1a0be15d6015a2"
+        }
+      ],
+      "bytes": 20,
+      "instruction_count": 8,
+      "live_equals_PE": true
+    },
+    {
+      "name": "imageguard_landing",
+      "ranges": [
+        {
+          "start": "00C16E6D",
+          "end_exclusive": "00C16E70",
+          "bytes": 3,
+          "hex": "8b65e8",
+          "sha256": "c54b733450b9ee1111ff00ec6bfed95f8c57c0708b35ad5b8365d321a417a747"
+        }
+      ],
+      "bytes": 3,
+      "instruction_count": 1,
+      "live_equals_PE": true
+    },
+    {
+      "name": "destructor",
+      "ranges": [
+        {
+          "start": "00C06AC8",
+          "end_exclusive": "00C06B0B",
+          "bytes": 67,
+          "hex": "6a0868c033e000e82c1100008b4d0885c9742a813963736de075228b411c85c0741b8b400485c074148365fc0050ff7118e8a8fffeffc745fcfeffffffe83b110000c3",
+          "sha256": "882bb4c1660a9983a7976d8ca3d4f313409a3db20d356ad54bbc06320b3fea0b"
+        }
+      ],
+      "bytes": 67,
+      "instruction_count": 21,
+      "live_equals_PE": true
+    },
+    {
+      "name": "destructor_filter",
+      "ranges": [
+        {
+          "start": "00C06B0B",
+          "end_exclusive": "00C06B14",
+          "bytes": 9,
+          "hex": "33c038450c0f95c0c3",
+          "sha256": "c96040d6ddc93df8c66f907b99fd2d074ec0441a548d5497b8d3166cc993ce90"
+        }
+      ],
+      "bytes": 9,
+      "instruction_count": 4,
+      "live_equals_PE": true
+    },
+    {
+      "name": "destructor_landing",
+      "ranges": [
+        {
+          "start": "00C06B14",
+          "end_exclusive": "00C06B1C",
+          "bytes": 8,
+          "hex": "8b65e8e9590f0000",
+          "sha256": "b23d9b76ae954f412f348fe3663d3d35eb044fd1307c83a1cf2a10354df5955c"
+        }
+      ],
+      "bytes": 8,
+      "instruction_count": 2,
+      "live_equals_PE": true
+    }
+  ],
+  "native_data": [
+    {
+      "name": "imageguard_scope_bytes",
+      "address": "00E03738",
+      "bytes": 28,
+      "hex": "feffffff00000000d8ffffff00000000feffffff596ec1006d6ec100",
+      "dwords": [
+        "FFFFFFFE",
+        "00000000",
+        "FFFFFFD8",
+        "00000000",
+        "FFFFFFFE",
+        "00C16E59",
+        "00C16E6D"
+      ],
+      "live_equals_PE": true
+    },
+    {
+      "name": "destructor_scope_bytes",
+      "address": "00E033C0",
+      "bytes": 28,
+      "hex": "feffffff00000000d8ffffff00000000feffffff0b6bc000146bc000",
+      "dwords": [
+        "FFFFFFFE",
+        "00000000",
+        "FFFFFFD8",
+        "00000000",
+        "FFFFFFFE",
+        "00C06B0B",
+        "00C06B14"
+      ],
+      "live_equals_PE": true
+    },
+    {
+      "name": "destructor_slot_bytes",
+      "address": "00D6A618",
+      "bytes": 4,
+      "hex": "c86ac000",
+      "dwords": [
+        "00C06AC8"
+      ],
+      "live_equals_PE": true
+    }
+  ],
+  "native_prolog_contract": {
+    "address": "00C07C00",
+    "whole": "69 bytes / 21 instructions / zero CALLs",
+    "abi": "Custom compiler helper. At entry ESP=S: [S]=helper continuation R, [S+4]=raw scope T, [S+8]=raw local-size N; the enclosing function return is [S+Ch]. No ordinary cdecl prototype supplies this contract.",
+    "derived_frame": "F=S+8; P=F-N-20h, all arithmetic modulo 2^32. Successful RET exits EBP=F, ESP=P, EAX=F-10h, actual FS:[0]=F-10h.",
+    "exact_order": [
+      "PUSH literal C07C90, then PUSH current DWORD FS:[0]. The handler is a published hardcoded code dependency even though the prolog has no CALL.",
+      "Read N from current [ESP+10h], overwrite that word with incoming EBP, form F there, then subtract captured N from ESP.",
+      "PUSH incoming EBX, ESI, EDI, in that order.",
+      "Read current DWORD E15590 once; XOR it into scope word [F-4]. XOR EAX with F and PUSH resulting saved EH cookie.",
+      "Write current ESP P to [F-18h]. PUSH copied helper continuation from [F-8]. Read encoded scope from [F-4], publish level=-2 at [F-4], then encoded scope at [F-8].",
+      "Form registration F-10h and publish through actual FS:[0] LAST. RET consumes the copied helper continuation."
+    ],
+    "frame_cells": [
+      [
+        "F+4",
+        "enclosing function continuation"
+      ],
+      [
+        "F+0",
+        "saved incoming EBP"
+      ],
+      [
+        "F-4",
+        "try level, initially -2"
+      ],
+      [
+        "F-8",
+        "scope pointer T XOR captured cookie C"
+      ],
+      [
+        "F-Ch",
+        "literal actual handler C07C90"
+      ],
+      [
+        "F-10h",
+        "previous FS link / registration start"
+      ],
+      [
+        "F-14h",
+        "exception-pointer slot, not initialized by prolog"
+      ],
+      [
+        "F-18h",
+        "saved ESP P"
+      ],
+      [
+        "F-N-14h",
+        "saved EBX"
+      ],
+      [
+        "F-N-18h",
+        "saved ESI"
+      ],
+      [
+        "F-N-1Ch",
+        "saved EDI"
+      ],
+      [
+        "F-N-20h",
+        "saved cookie C XOR F / P"
+      ]
+    ],
+    "qualification": "The separated-cell frame diagram describes a valid compiler layout (known caller N=14h); Native has no N>=8, stack-probe, alignment, overflow, collision, or zero-initialization guard. Exact ordered instructions remain authoritative for small/overlapping N. E15594 complement is not read. Scope encoding is plain XOR, not DecodePointer/EncodePointer.",
+    "register_flags": "ECX/EDX/EBX/ESI/EDI preserved, EBP/ESP/EAX/FS changed. Last arithmetic instruction XOR EAX,EBP sets CF=OF=0, SF/ZF/PF from C XOR F, AF undefined; subsequent MOV/PUSH/LEA/RET preserve flags. No cookie check occurs in this helper.",
+    "readiness": "NOT READY as ordinary Source or canonical prolog entry: real callable handler, coherent actual cookie/encoded tables, compiler frame, true FS chain, code transport and OS handler admission remain required."
+  },
+  "native_handler_contract": {
+    "address": "00C07C90",
+    "whole": "406 bytes / 125 instructions",
+    "abi": "cdecl OS-style four-word callback shape: [entry P+4]=exception record, +8=registration, +Ch=context, +10h=usual dispatcher context. Only first three are read by this body; the fourth cannot be stolen for a Source context argument. Normal plain RET leaves caller cleanup. Callback compatibility is not established by the Ghidra prototype alone.",
+    "local_frame": {
+      "D": "working ESP=P-24h after SUB 14h and saves EBX,EBP,ESI,EDI",
+      "cells": [
+        [
+          "D+0",
+          "saved EDI"
+        ],
+        [
+          "D+4",
+          "saved ESI"
+        ],
+        [
+          "D+8",
+          "saved EBP"
+        ],
+        [
+          "D+Ch",
+          "saved EBX"
+        ],
+        [
+          "D+13h",
+          "BYTE filter-invoked flag"
+        ],
+        [
+          "D+14h",
+          "saved current enclosing-level DWORD"
+        ],
+        [
+          "D+18h",
+          "disposition DWORD"
+        ],
+        [
+          "D+1Ch",
+          "published local exception-record word"
+        ],
+        [
+          "D+20h",
+          "published local context word"
+        ],
+        [
+          "D+28h",
+          "live incoming exception-record pointer slot"
+        ],
+        [
+          "D+2Ch",
+          "live incoming registration pointer slot"
+        ],
+        [
+          "D+30h",
+          "live incoming context pointer slot"
+        ]
+      ],
+      "cached": "ESI=T=DWORD[initial registration+8] XOR current E15590, cached once; EDI=F=initial registration+10h, cached once. EBX starts as registration then retains selected scope entry. EBP is current selected try level. Native alias effects on actual locals/arguments are not snapshots."
+    },
+    "scope_table": {
+      "header": [
+        "+0 GS cookie offset (skip only DWORD -2)",
+        "+4 GS cookie XOR offset",
+        "+8 EH cookie offset (always checked)",
+        "+Ch EH cookie XOR offset"
+      ],
+      "entry": "T+10h+12*level modulo2^32: +0 enclosing DWORD, +4 filter DWORD, +8 handler DWORD. Only level -2 stops. No range/cycle/count guard.",
+      "cookie_calls": "ECX=(F+xor_offset) XOR DWORD[F+cookie_offset], CALL actual BFE120 with NO stack argument. GS reads offset then XOR offset then frame cookie; EH reads XOR offset then offset then frame cookie. Header fields are current at each recheck; T/F remain cached; checker reads current fixed E15590.",
+      "init_order": "Initial T+0 GS offset read precedes disposition/filter-flag initialization. GS/EH initial validation precedes loading the exception argument or reading flags."
+    },
+    "dispatch_and_filter": [
+      "Reload current exception argument; read only BYTE[record+4], mask66h. Zero mask takes dispatch.",
+      "Capture initial registration try level. Reload current context argument, write the real two-word local EXCEPTION_POINTERS pair, publish its address through [initial registration-4], even when try level is already -2.",
+      "For a reached entry read filter first, then current enclosing DWORD into D+14h. A zero filter skips invocation and follows that captured enclosing value.",
+      "Nonzero filter: ECX=actual filter target, EDX=cached F, CALL genuine C0DCB6. It zeroes its required registers, establishes inherited EBP, calls the actual native funclet, preserves raw EAX/flags. Mark local BYTE flag=1 after the filter returns.",
+      "Signed filter EAX<0 stores disposition0 and rechecks cookies; EAX=0 follows CURRENT saved enclosing word D+14h; EAX>0 selects handler.",
+      "At -2, no filter-called flag means return without further checks. Otherwise recheck current cookie header fields before returning CURRENT D+18h. Do not normalize arbitrary reached alias-mutated disposition."
+    ],
+    "positive_filter": [
+      "Reload current exception argument; only code DWORD E06D7363 reaches destructor test.",
+      "Test CURRENT DWORD D6A618 nonnull; push ADDRESS D6A618 to C16DD0. On nonzero guard result, reload CURRENT exception argument, PUSH1 then exception pointer, CALL CURRENT DWORD[D6A618], caller ADD ESP8. No second null check and no cached target substitute.",
+      "Reload current registration argument into ECX, call genuine C0DCE6 global OS unwind.",
+      "Reload current registration argument; compare its CURRENT try level+C to selected EBP. If unequal, push actual cookie ADDRESS E15590 then cached F, ECX=current registration, EDX=selected level, CALL genuine C0DD00, which RET8 consumes the two words. Reload current registration argument again.",
+      "Reload CURRENT saved enclosing word D+14h and write current registration+C. Recheck GS/EH using current header fields with cached T/F.",
+      "Read CURRENT handler DWORD from retained scope entry EBX+8; EDX=cached F; physical JMP C0DCCD at C07E00 with dispatcher work stack D still present. It is not an ordinary CALL and does not execute the normal handler epilog."
+    ],
+    "unwind_flags": "BYTE flags&66h nonzero: initial registration try level -2 returns. Otherwise push actual cookie address then cached F, ECX=initial registration, EDX=-2, CALL C0DD00, then recheck cookies and return. No callback substitute for actual RtlUnwind/local native funclets.",
+    "normal_exit": "Load CURRENT D+18h into EAX; POP EDI/ESI/EBP/EBX; ADD ESP14h; RET. Stack-local pair publication, saved enclosing, incoming words and dynamic targets must retain their actual live schedules.",
+    "readiness": "NOT READY as general/canonical Source or actual OS callback. Five unique direct providers are now genuine; C16DD0 plus guarded actual destructor remain unclosed, and actual cookie/ScopeTable/frame/FS/code/SafeSEH callback transport is not created by those leaf Sources."
+  },
+  "existing_epilog_contract": {
+    "address": "00C07C45",
+    "whole": "20 bytes / 11 instructions",
+    "interface": "void __cdecl leave_native_crt_seh4_frame_00c07c45(); // naked custom-frame entry",
+    "header": "include/bsp/native_crt_seh4_primitives.hpp",
+    "source": "src/native_crt_seh4_primitives.cpp",
+    "entry": "EBP=F, [F-10h]=oldFS; entry ESP=P-4 holds helper continuation, [P]=saved cookie then saved EDI/ESI/EBX.",
+    "order": "Read oldFS then publish FS first; POP ECX continuation, POP EDI discard cookie, POP EDI/ESI/EBX restore; MOV ESP,EBP; POP EBP; PUSH ECX; RET. Exit ESP=F+4, ECX=helper continuation; EAX and arithmetic flags preserved.",
+    "limit": "An ordinary C++ CALL does not establish its inherited frame. It checks no cookie, constructs no owner, and repairs no invalid stack. Existing C4733 suppression admits its exact FS restoration, not a new OS handler."
+  },
+  "current_immediate_provider_inventory": [
+    {
+      "address": "00BFE120",
+      "native_name": "__security_check_cookie",
+      "current_source_status": "genuine complete canonical current variant",
+      "header": "include/bsp/native_crt_canonical_failure.hpp",
+      "source": "src/native_crt_canonical_failure.cpp",
+      "interface": "void __cdecl check_native_crt_canonical_cookie_00bfe120();",
+      "contract": "Raw ECX, no stack words; compare current fixed E15590; equality F3C3 preserves registers and actual CMP flags. Mismatch uses real canonical C185A4 failure path. Ordinary C++ call does not set ECX. Distinct borrowed-context Source variant is not the canonical interface."
+    },
+    {
+      "address": "00C0DCB6",
+      "native_name": "_EH4_CallFilterFunc",
+      "current_source_status": "genuine complete23B",
+      "header": "include/bsp/native_crt_seh4_primitives.hpp",
+      "source": "src/native_crt_seh4_primitives.cpp",
+      "interface": "int32_t __fastcall call_native_crt_eh4_filter_00c0dcb6(uintptr_t actual_filter, void* frame);",
+      "contract": "ECX actual target, EDX actual F. Save EBP/ESI/EDI/EBX; establish EBP=F; zero EAX/EBX/EDX/ESI/EDI, CALL actual ECX; restore saves; RET preserves filter EAX/flags. Requires native executable funclet and balanced stack, not std::function/host callback."
+    },
+    {
+      "address": "00C0DCCD",
+      "native_name": "_EH4_TransferToHandler",
+      "current_source_status": "genuine complete25B",
+      "header": "include/bsp/native_crt_seh4_handler_transfer.hpp",
+      "source": "src/native_crt_seh4_handler_transfer.cpp",
+      "interface": "void __fastcall transfer_native_crt_seh4_handler_00c0dccd(void* actual_handler, void* frame);",
+      "contract": "Native parent JMP supplies ECX target, EDX F and unchanged dispatcher ESP. Real NLG then final JMP target with ESI=target, EBP=F, EAX/EBX/ECX/EDX/EDI=0. A new C++ CALL adds a return word and does not match this stack; no C++ noreturn policy is substituted."
+    },
+    {
+      "address": "00C0DCE6",
+      "native_name": "_EH4_GlobalUnwind",
+      "current_source_status": "genuine complete26B plus real6B RtlUnwind import",
+      "header": "include/bsp/native_crt_global_unwind.hpp",
+      "source": "src/native_crt_global_unwind.cpp",
+      "interface": "void __fastcall global_unwind_native_crt_frame_00c0dce6(void* registration);",
+      "contract": "ECX actual registration. Real RtlUnwind import C2F25C uses actual target frame and own restoration TargetIp, null exception/return value; saves/restores required native frame/nonvolatiles. Needs real OS exception chain/context, not a synthetic unwind callback."
+    },
+    {
+      "address": "00C0DD00",
+      "native_name": "_EH4_LocalUnwind",
+      "current_source_status": "genuine complete23B",
+      "header": "include/bsp/native_crt_local_unwind_adapters.hpp",
+      "source": "src/native_crt_local_unwind_adapters.cpp",
+      "interface": "void __fastcall unwind_native_crt_eh4_local_00c0dd00(void* registration, uint32_t target, void* inherited_frame, const volatile uint32_t* cookie);",
+      "contract": "ECX registration, EDX target, [entryESP+4] F, +8 cookie address; establish EBP=F and call genuine C0DBC4 with actual cookie/registration/target; RET8. C0DBC4[144]/C0DC54[70] Sources already publish real FS and call real cookie/NLG/cleanup. No ordinary cleanup callback or implicit frame owner."
+    },
+    {
+      "address": "00C16DD0",
+      "native_name": "__IsNonwritableInCurrentImage",
+      "current_source_status": "missing whole Source; ordinary explicit-image proposal below",
+      "header": null,
+      "source": null,
+      "interface": null,
+      "contract": "164 typed bytes plus20B private AV filter and3B landing; fixed00400000 PE section test protected by actual SEH4. Existing PE primitives now genuine."
+    },
+    {
+      "address": "00C06AC8",
+      "native_name": "___DestructExceptionObject",
+      "current_source_status": "missing whole Source; genuine terminate remains missing",
+      "header": null,
+      "source": null,
+      "interface": null,
+      "contract": "Guarded indirect target at current D6A618; complete physical84B includes low-byte second-argument filter and terminate landing. Do not replace with SDK destructor, callback, or current terminate."
+    },
+    {
+      "address": "00C16D50",
+      "native_name": "__ValidateImageBase",
+      "current_source_status": "genuine complete41B",
+      "header": "include/bsp/native_crt_pe_image_queries.hpp",
+      "source": "src/native_crt_pe_image_queries.cpp",
+      "interface": "int32_t __cdecl validate_native_crt_image_base_00c16d50(const void* image_base);",
+      "contract": "Read actual image argument; WORD MZ first, then DWORD e_lfanew at+3Ch and wrapping add; DWORD PE signature then WORD optional magic atNT+18h. Each rejection short-circuits later reads; no bounds/SEH/page guard. EAX0/1, original raw register/flag effects."
+    },
+    {
+      "address": "00C16D80",
+      "native_name": "__FindPESection",
+      "current_source_status": "genuine complete66B",
+      "header": "include/bsp/native_crt_pe_image_queries.hpp",
+      "source": "src/native_crt_pe_image_queries.cpp",
+      "interface": "const void* __cdecl find_native_crt_pe_section_00c16d80(const void* image_base, uint32_t rva);",
+      "contract": "Read base/e_lfanew, WORD optional size BEFORE WORD section count. Count0 skips its stacked RVA read. Actual 40-byte headers: read VA, skip VirtualSize if RVA<VA, else read VirtualSize and test unsigned RVA<wrapped VA+size. First match or0; exact count/stride/wrap, no alignment/bounds/VirtualQuery/SEH."
+    },
+    {
+      "address": "00BF6AA6",
+      "native_name": "_CallMemberFunction0",
+      "current_source_status": "genuine complete7B",
+      "header": "include/bsp/native_crt_member_transfer.hpp",
+      "source": "src/native_crt_member_transfer.cpp",
+      "interface": "void __stdcall call_native_crt_member_function0_00bf6aa6(void* object, void* member_entry);",
+      "contract": "Two actual stack words. POP EAX continuation, POP ECX object, implicitly locked XCHG [ESP],EAX then JMP EAX actual executable member. Balanced RET resumes caller after consuming8 bytes; flags/nonvolatile/EDX preserved by adapter. No C++ pointer-to-member descriptor, host callback, null guard or exception owner."
+    },
+    {
+      "address": "00C07A75",
+      "native_name": "terminate",
+      "current_source_status": "named but no complete indexed/current Source",
+      "header": null,
+      "source": null,
+      "interface": null,
+      "contract": "Finite stop only: direct named children C04DE2 abort, C0522E getptd, C07C00/C07C45; own native frame/PTD/handler/failure policy required. No further body crawl or substitute. Landing atC06B17 is JMP, not CALL; do not assume an invented returning continuation."
+    },
+    {
+      "address": "00C16B4C",
+      "native_name": "__ValidateEH3RN AV filter",
+      "current_source_status": "genuine complete20B predicate precedent",
+      "header": "include/bsp/native_crt_eh3_filter.hpp",
+      "source": "src/native_crt_eh3_filter.cpp",
+      "interface": "int32_t __cdecl filter_native_crt_eh3_access_violation_00c16b4c();",
+      "contract": "Requires inherited original EBP; raw [EBP-14h]\u2192EXCEPTION_POINTERS\u2192record\u2192code, returns1 iff C0000005. Same code predicate as C16E59, different register allocation. Not an ordinary EXCEPTION_POINTERS argument function and not automatically callable from a new compiler filter frame."
+    }
+  ],
+  "source_inventory_counts": {
+    "handler_unique_direct_external_targets": 6,
+    "handler_direct_targets_with_genuine_Source_now": 5,
+    "handler_direct_missing_targets": [
+      "00C16DD0"
+    ],
+    "handler_guarded_indirect_missing_actual_target": "00C06AC8",
+    "prolog_hardcoded_missing_handler": "00C07C90",
+    "destructor_named_incomplete_immediate_provider": "00C07A75",
+    "ready_extra_primitives_for_new_image_API": [
+      "00C16D50",
+      "00C16D80"
+    ],
+    "genuine_epilog": "00C07C45"
+  },
+  "image_guard_whole_native_contract": {
+    "native_abi": "One-word cdecl: target ADDRESS at[entryESP+4]=[F+8]. Plain RET leaves that word to caller. EAX is exact0/1. Does not dereference the target object or inspect current OS protection.",
+    "physical": "187B/66ops =164 typed main in two ranges +20B/8op filter C16E59 +3B/1op landing C16E6D. Scope words atE03738 =[-2,0,-28h,0,-2,C16E59,C16E6D].",
+    "inline_native_frame": "PUSH EBP; F=entryESP-4; push level-2/scopeE03738/handlerC07C90/oldFS; reserve8; push EBX/ESI/EDI; read current E15590, XOR encoded scope atF-8, PUSH cookie XOR F atF-28; publish FS=F-10; save P=F-28 atF-18. Set level0 before the first Validate call. F-14 is uninitialized until real handler publishes exception pointers.",
+    "ordered_body": [
+      "Push literal00400000 and call genuine C16D50; caller clean4. If EAX0, do NOT read target argument; take false tail.",
+      "Only after validation succeeds, load CURRENT target DWORD[F+8] once; subtract literal00400000 modulo2^32; push captured RVA then literalbase; CALL genuine C16D80; caller clean8.",
+      "If section pointer0, take false tail. Otherwise load CURRENT DWORD[returned_section+24h] once; SHR31, NOT, AND1 gives exact inverse writable bit31.",
+      "Success: set level-2, read oldFS fromF-10, unlinkFS, POP ECX discard cookie, restore EDI/ESI/EBX, MOV ESP,F, restore EBP, RET with computed0/1.",
+      "Validation/no-section false: set level-2 FIRST, XOR EAX0, then same ordered FS/nonvolatile/frame restoration. No extra target-null, image-range, section-bound, address-alignment, section-count cap or page-protection guard."
+    ],
+    "filter": "C16E59: DWORD[EBP-14h]\u2192EAX; DWORD[EAX]\u2192ECX; DWORD[ECX]\u2192EAX; zeroEDX; CMP code,C0000005; SETE DL; EAX=EDX; RET. Three ordered raw word reads, exact1 for AV and0 for every other exception code. Flags retainCMP; inherited EBP/native OS pair required.",
+    "landing": "C16E6D: MOV ESP,[EBP-18h], then fall through atC16E70 to level=-2, EAX=0 and false epilog. AV recovery spans real validation, late target-cell read, section lookup and characteristics read only while state0. Other exceptions continue real search; faults in inactive prolog/epilog are not claimed caught.",
+    "full_physical_schedule": [
+      [
+        {
+          "address": "00C16DD0",
+          "size": 1,
+          "bytes": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00C16DD1",
+          "size": 2,
+          "bytes": "8bec",
+          "mnemonic": "mov",
+          "operands": "ebp, esp"
+        },
+        {
+          "address": "00C16DD3",
+          "size": 2,
+          "bytes": "6afe",
+          "mnemonic": "push",
+          "operands": "-2"
+        },
+        {
+          "address": "00C16DD5",
+          "size": 5,
+          "bytes": "683837e000",
+          "mnemonic": "push",
+          "operands": "0xe03738"
+        },
+        {
+          "address": "00C16DDA",
+          "size": 5,
+          "bytes": "68907cc000",
+          "mnemonic": "push",
+          "operands": "0xc07c90"
+        },
+        {
+          "address": "00C16DDF",
+          "size": 6,
+          "bytes": "64a100000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "00C16DE5",
+          "size": 1,
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00C16DE6",
+          "size": 3,
+          "bytes": "83ec08",
+          "mnemonic": "sub",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "00C16DE9",
+          "size": 1,
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00C16DEA",
+          "size": 1,
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00C16DEB",
+          "size": 1,
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00C16DEC",
+          "size": 5,
+          "bytes": "a19055e100",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [0xe15590]"
+        },
+        {
+          "address": "00C16DF1",
+          "size": 3,
+          "bytes": "3145f8",
+          "mnemonic": "xor",
+          "operands": "dword ptr [ebp - 8], eax"
+        },
+        {
+          "address": "00C16DF4",
+          "size": 2,
+          "bytes": "33c5",
+          "mnemonic": "xor",
+          "operands": "eax, ebp"
+        },
+        {
+          "address": "00C16DF6",
+          "size": 1,
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00C16DF7",
+          "size": 3,
+          "bytes": "8d45f0",
+          "mnemonic": "lea",
+          "operands": "eax, [ebp - 0x10]"
+        },
+        {
+          "address": "00C16DFA",
+          "size": 6,
+          "bytes": "64a300000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], eax"
+        },
+        {
+          "address": "00C16E00",
+          "size": 3,
+          "bytes": "8965e8",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 0x18], esp"
+        },
+        {
+          "address": "00C16E03",
+          "size": 7,
+          "bytes": "c745fc00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 4], 0"
+        },
+        {
+          "address": "00C16E0A",
+          "size": 5,
+          "bytes": "6800004000",
+          "mnemonic": "push",
+          "operands": "0x400000"
+        },
+        {
+          "address": "00C16E0F",
+          "size": 5,
+          "bytes": "e83cffffff",
+          "mnemonic": "call",
+          "operands": "0xc16d50"
+        },
+        {
+          "address": "00C16E14",
+          "size": 3,
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "00C16E17",
+          "size": 2,
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00C16E19",
+          "size": 2,
+          "bytes": "7455",
+          "mnemonic": "je",
+          "operands": "0xc16e70"
+        },
+        {
+          "address": "00C16E1B",
+          "size": 3,
+          "bytes": "8b4508",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp + 8]"
+        },
+        {
+          "address": "00C16E1E",
+          "size": 5,
+          "bytes": "2d00004000",
+          "mnemonic": "sub",
+          "operands": "eax, 0x400000"
+        },
+        {
+          "address": "00C16E23",
+          "size": 1,
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00C16E24",
+          "size": 5,
+          "bytes": "6800004000",
+          "mnemonic": "push",
+          "operands": "0x400000"
+        },
+        {
+          "address": "00C16E29",
+          "size": 5,
+          "bytes": "e852ffffff",
+          "mnemonic": "call",
+          "operands": "0xc16d80"
+        },
+        {
+          "address": "00C16E2E",
+          "size": 3,
+          "bytes": "83c408",
+          "mnemonic": "add",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "00C16E31",
+          "size": 2,
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00C16E33",
+          "size": 2,
+          "bytes": "743b",
+          "mnemonic": "je",
+          "operands": "0xc16e70"
+        },
+        {
+          "address": "00C16E35",
+          "size": 3,
+          "bytes": "8b4024",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [eax + 0x24]"
+        },
+        {
+          "address": "00C16E38",
+          "size": 3,
+          "bytes": "c1e81f",
+          "mnemonic": "shr",
+          "operands": "eax, 0x1f"
+        },
+        {
+          "address": "00C16E3B",
+          "size": 2,
+          "bytes": "f7d0",
+          "mnemonic": "not",
+          "operands": "eax"
+        },
+        {
+          "address": "00C16E3D",
+          "size": 3,
+          "bytes": "83e001",
+          "mnemonic": "and",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "00C16E40",
+          "size": 7,
+          "bytes": "c745fcfeffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 4], 0xfffffffe"
+        },
+        {
+          "address": "00C16E47",
+          "size": 3,
+          "bytes": "8b4df0",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "address": "00C16E4A",
+          "size": 7,
+          "bytes": "64890d00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "00C16E51",
+          "size": 1,
+          "bytes": "59",
+          "mnemonic": "pop",
+          "operands": "ecx"
+        },
+        {
+          "address": "00C16E52",
+          "size": 1,
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "00C16E53",
+          "size": 1,
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00C16E54",
+          "size": 1,
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "00C16E55",
+          "size": 2,
+          "bytes": "8be5",
+          "mnemonic": "mov",
+          "operands": "esp, ebp"
+        },
+        {
+          "address": "00C16E57",
+          "size": 1,
+          "bytes": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": "00C16E58",
+          "size": 1,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        },
+        {
+          "address": "00C16E70",
+          "size": 7,
+          "bytes": "c745fcfeffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 4], 0xfffffffe"
+        },
+        {
+          "address": "00C16E77",
+          "size": 2,
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00C16E79",
+          "size": 3,
+          "bytes": "8b4df0",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "address": "00C16E7C",
+          "size": 7,
+          "bytes": "64890d00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "00C16E83",
+          "size": 1,
+          "bytes": "59",
+          "mnemonic": "pop",
+          "operands": "ecx"
+        },
+        {
+          "address": "00C16E84",
+          "size": 1,
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "00C16E85",
+          "size": 1,
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00C16E86",
+          "size": 1,
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "00C16E87",
+          "size": 2,
+          "bytes": "8be5",
+          "mnemonic": "mov",
+          "operands": "esp, ebp"
+        },
+        {
+          "address": "00C16E89",
+          "size": 1,
+          "bytes": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": "00C16E8A",
+          "size": 1,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      [
+        {
+          "address": "00C16E59",
+          "size": 3,
+          "bytes": "8b45ec",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0x14]"
+        },
+        {
+          "address": "00C16E5C",
+          "size": 2,
+          "bytes": "8b08",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [eax]"
+        },
+        {
+          "address": "00C16E5E",
+          "size": 2,
+          "bytes": "8b01",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx]"
+        },
+        {
+          "address": "00C16E60",
+          "size": 2,
+          "bytes": "33d2",
+          "mnemonic": "xor",
+          "operands": "edx, edx"
+        },
+        {
+          "address": "00C16E62",
+          "size": 5,
+          "bytes": "3d050000c0",
+          "mnemonic": "cmp",
+          "operands": "eax, 0xc0000005"
+        },
+        {
+          "address": "00C16E67",
+          "size": 3,
+          "bytes": "0f94c2",
+          "mnemonic": "sete",
+          "operands": "dl"
+        },
+        {
+          "address": "00C16E6A",
+          "size": 2,
+          "bytes": "8bc2",
+          "mnemonic": "mov",
+          "operands": "eax, edx"
+        },
+        {
+          "address": "00C16E6C",
+          "size": 1,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      [
+        {
+          "address": "00C16E6D",
+          "size": 3,
+          "bytes": "8b65e8",
+          "mnemonic": "mov",
+          "operands": "esp, dword ptr [ebp - 0x18]"
+        }
+      ]
+    ],
+    "ordinary_Source_feasibility": "A whole new ordinary MSVC Win32 explicit-image/raw-target-cell interface can express the PE algorithm using the genuine41B/66B entries and real compiler/OS __try/__except AV-only transport. It must not publish C07C90, emulate FS in a C++ variable, install a synthetic callback, or reuse C16B4C without proving its inherited frame.",
+    "approval_status": "PROPOSAL ONLY. No address/file claim or implementation; user drain/pause forbids beginning it."
+  },
+  "image_guard_proposed_ordinary_interface_NOT_IMPLEMENTED": {
+    "proposed_header": "include/bsp/native_crt_nonwritable_image.hpp",
+    "proposed_source": "src/native_crt_nonwritable_image.cpp",
+    "proposed_doc": "docs/GOAL_OCT16_CRT_NONWRITABLE_IMAGE.md",
+    "proposed_report": "reports/goal_oct16_crt_nonwritable_image.json",
+    "api": "std::int32_t __cdecl is_nonwritable_native_crt_image_address_00c16dd0(const void* source_image_base, const void* actual_parameters4);",
+    "binding": "New ordinary two-argument API ONLY. source_image_base is one stable borrowed raw32 address value corresponding to Native literal00400000; it creates no module/global owner. actual_parameters4 stably binds a raw current four-byte target argument cell, possibly unaligned. No eager target read. Source bookkeeping is stable/disjoint; reached payload/header/cell aliases remain admitted. No native argument-home or private compiler-frame identity is claimed.",
+    "pseudocode_lines": [
+      "image = raw32(source_image_base); // address value only; no load from image or target cell here",
+      "__try {",
+      "  if (validate_native_crt_image_base_00c16d50(ptr32(image)) == 0) return 0;",
+      "  target = read_exact_unaligned_x86_DWORD(actual_parameters4); // first and only target-cell read, after Validate",
+      "  rva = uint32(target - image);",
+      "  section = find_native_crt_pe_section_00c16d80(ptr32(image), rva);",
+      "  if (section == nullptr) return 0;",
+      "  characteristics = read_exact_unaligned_x86_DWORD(ptr32(uint32(section) + 0x24));",
+      "  return (~(characteristics >> 31)) & 1;",
+      "} __except (exact_AV_code_predicate_from_REAL_OS_EXCEPTION_POINTERS(GetExceptionInformation())) {",
+      "  return 0;",
+      "}"
+    ],
+    "filter_policy": "The new __except expression receives the REAL compiler/OS EXCEPTION_POINTERS pair. The predicate reads its actual record pointer and actual DWORD code in order and returns1 exactly for C0000005,0 otherwise. No host callback, exception whitelist expansion, catch-all, SDK PE query, VirtualQuery, pre-validation, or snapshot guard. Native first [EBP-14h] frame read becomes actual compiler retrieval of its OS pair; that is an explicit new-frame transport difference, not Original funclet ABI credit.",
+    "provider_headers": [
+      "include/bsp/native_crt_pe_image_queries.hpp",
+      "include/bsp/native_crt_eh3_filter.hpp (predicate/frame evidence only, not an ordinary callable dependency)"
+    ],
+    "implementation_mechanics_if_later_authorized": "Use genuine naked Validate/FindSection interfaces; exactDWORD reads through Win32 x86 asm to avoid C++ alignment/alias narrowing; real MSVC __try/__except with trivial local storage and no invented OS handler/context. Existing AV filter cannot be called from a new ordinary frame just because its predicate matches. Compiler-supplied actual SEH runtime is an explicit current-runtime boundary.",
+    "no_claims": [
+      "No fixed00400000/current-module identity when a Source base is explicit",
+      "No original C07C90 callback or C07C00 private prolog Source completion",
+      "No code placement/ScopeTable address/SafeSEH identity",
+      "No exact flags/nonvolatile/stack/exception-filter raw-frame identity for the ordinary API",
+      "No native fault timing or original-entry execution/gameplay proof"
+    ],
+    "stop": "Primary whole contract review and explicit later authorization/lease required; current drain instruction allows only this report."
+  },
+  "destructor_whole_native_contract": {
+    "physical": "67B/21op typed main plus9B/4op filter C06B0B and8B/2op landing C06B14 =84B/27ops. Scope E033C0=[-2,0,-28h,0,-2,C06B0B,C06B14]. Four private starts are undefined in Ghidra; no redefinition was performed.",
+    "native_abi": "Actual guarded caller C07DA2 pushes DWORD1 then current exception-record pointer and cleans8. Native main plain RET; second stacked DWORD is not read by normal main but its LOW BYTE[EBP+Ch] is read by the filter. Pseudocode one-parameter prototype is incomplete for EH behavior. No semantic return-value claim; handler ignores EAX.",
+    "frame": "PUSH8, PUSH E033C0, CALL C07C00. Enclosing F=original entryESP-4; P=F-28; record slotF+8, flag slotF+Ch, try levelF-4 initially-2, exception-pair slotF-14, savedESP F-18. Real custom prolog/FS/cookie requirements remain.",
+    "ordered_main": [
+      "Load current record argument once into ECX; if null return through real epilog. Compare DWORD[ECX] withE06D7363; mismatch same exit.",
+      "Load DWORD[ECX+1Ch] once; if0 exit. Load DWORD[captured_throw_info+4] once as actual destructor target; if0 exit. No NumberParameters, magic, object, range or executable-address validation.",
+      "Only now arm state0 with AND DWORD[F-4],0. PUSH captured target; then load current DWORD[captured_record+18h] as actual object and PUSH it. The object load is inside protected state0, preceding target call.",
+      "CALL genuine BF6AA6; actual zero-argument member consumes8 stacked bytes on balanced return. Write level=-2, CALL genuine C07C45 then plainRET. No free/delete, no parameter cleanup substitute, no object ownership inference."
+    ],
+    "filter": "C06B0B XOR EAX0; CMP BYTE[F+Ch],AL; SETNE AL; RET. Reads CURRENT LOW BYTE of second actual argument only on reached filter; returns1 for any nonzero byte,0 otherwise, independent of exception code. Do not snapshot the flag before main or accept by fullDWORD !=0. Flags retainBYTE CMP.",
+    "landing": "C06B14 MOV ESP,[F-18h]; C06B17 physical JMP C07A75 terminate. No CALL continuation is pushed. No Source return/noreturn/fallback behavior can be invented for a missing provider; exact native post-transfer stack requirements remain unresolved.",
+    "scope_boundary": "Record/code/throw-info/destructor-target reads occur before state0 and are not caught by this function scope. Actual object-word load and actual member invocation occur while state0. Initial main guards cannot narrow the actual member fault/throw or current flag continuation.",
+    "full_physical_schedule": [
+      [
+        {
+          "address": "00C06AC8",
+          "size": 2,
+          "bytes": "6a08",
+          "mnemonic": "push",
+          "operands": "8"
+        },
+        {
+          "address": "00C06ACA",
+          "size": 5,
+          "bytes": "68c033e000",
+          "mnemonic": "push",
+          "operands": "0xe033c0"
+        },
+        {
+          "address": "00C06ACF",
+          "size": 5,
+          "bytes": "e82c110000",
+          "mnemonic": "call",
+          "operands": "0xc07c00"
+        },
+        {
+          "address": "00C06AD4",
+          "size": 3,
+          "bytes": "8b4d08",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp + 8]"
+        },
+        {
+          "address": "00C06AD7",
+          "size": 2,
+          "bytes": "85c9",
+          "mnemonic": "test",
+          "operands": "ecx, ecx"
+        },
+        {
+          "address": "00C06AD9",
+          "size": 2,
+          "bytes": "742a",
+          "mnemonic": "je",
+          "operands": "0xc06b05"
+        },
+        {
+          "address": "00C06ADB",
+          "size": 6,
+          "bytes": "813963736de0",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [ecx], 0xe06d7363"
+        },
+        {
+          "address": "00C06AE1",
+          "size": 2,
+          "bytes": "7522",
+          "mnemonic": "jne",
+          "operands": "0xc06b05"
+        },
+        {
+          "address": "00C06AE3",
+          "size": 3,
+          "bytes": "8b411c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x1c]"
+        },
+        {
+          "address": "00C06AE6",
+          "size": 2,
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00C06AE8",
+          "size": 2,
+          "bytes": "741b",
+          "mnemonic": "je",
+          "operands": "0xc06b05"
+        },
+        {
+          "address": "00C06AEA",
+          "size": 3,
+          "bytes": "8b4004",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [eax + 4]"
+        },
+        {
+          "address": "00C06AED",
+          "size": 2,
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00C06AEF",
+          "size": 2,
+          "bytes": "7414",
+          "mnemonic": "je",
+          "operands": "0xc06b05"
+        },
+        {
+          "address": "00C06AF1",
+          "size": 4,
+          "bytes": "8365fc00",
+          "mnemonic": "and",
+          "operands": "dword ptr [ebp - 4], 0"
+        },
+        {
+          "address": "00C06AF5",
+          "size": 1,
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00C06AF6",
+          "size": 3,
+          "bytes": "ff7118",
+          "mnemonic": "push",
+          "operands": "dword ptr [ecx + 0x18]"
+        },
+        {
+          "address": "00C06AF9",
+          "size": 5,
+          "bytes": "e8a8fffeff",
+          "mnemonic": "call",
+          "operands": "0xbf6aa6"
+        },
+        {
+          "address": "00C06AFE",
+          "size": 7,
+          "bytes": "c745fcfeffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 4], 0xfffffffe"
+        },
+        {
+          "address": "00C06B05",
+          "size": 5,
+          "bytes": "e83b110000",
+          "mnemonic": "call",
+          "operands": "0xc07c45"
+        },
+        {
+          "address": "00C06B0A",
+          "size": 1,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      [
+        {
+          "address": "00C06B0B",
+          "size": 2,
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00C06B0D",
+          "size": 3,
+          "bytes": "38450c",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [ebp + 0xc], al"
+        },
+        {
+          "address": "00C06B10",
+          "size": 3,
+          "bytes": "0f95c0",
+          "mnemonic": "setne",
+          "operands": "al"
+        },
+        {
+          "address": "00C06B13",
+          "size": 1,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      [
+        {
+          "address": "00C06B14",
+          "size": 3,
+          "bytes": "8b65e8",
+          "mnemonic": "mov",
+          "operands": "esp, dword ptr [ebp - 0x18]"
+        },
+        {
+          "address": "00C06B17",
+          "size": 5,
+          "bytes": "e9590f0000",
+          "mnemonic": "jmp",
+          "operands": "0xc07a75"
+        }
+      ]
+    ],
+    "whole_Source_ready": false,
+    "blockers": [
+      "Genuine C07A75 terminate including current real PTD/handler/abort policy remains missing",
+      "Original C07C00/C07C90/cookie/FS/funclet transport remains unclosed",
+      "Real native executable destructor target/object ABI must be preserved; generic callback or SDK terminate is not closure"
+    ]
+  },
+  "direct_and_guarded_native_transfer_rows": [
+    {
+      "owner": "handler",
+      "address": "00C07CC3",
+      "size": 5,
+      "bytes": "e85864ffff",
+      "mnemonic": "call",
+      "operands": "0xbfe120",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00bfe120"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00bfe120"
+        }
+      ],
+      "qualification": "Physical CALL and typed instruction agree."
+    },
+    {
+      "owner": "handler",
+      "address": "00C07CD3",
+      "size": 5,
+      "bytes": "e84864ffff",
+      "mnemonic": "call",
+      "operands": "0xbfe120",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00bfe120"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00bfe120"
+        }
+      ],
+      "qualification": "Physical CALL and typed instruction agree."
+    },
+    {
+      "owner": "handler",
+      "address": "00C07D19",
+      "size": 5,
+      "bytes": "e8985f0000",
+      "mnemonic": "call",
+      "operands": "0xc0dcb6",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c0dcb6"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c0dcb6"
+        }
+      ],
+      "qualification": "Physical CALL and typed instruction agree."
+    },
+    {
+      "owner": "handler",
+      "address": "00C07D4A",
+      "size": 5,
+      "bytes": "e8d163ffff",
+      "mnemonic": "call",
+      "operands": "0xbfe120",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00bfe120"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00bfe120"
+        }
+      ],
+      "qualification": "Physical CALL and typed instruction agree."
+    },
+    {
+      "owner": "handler",
+      "address": "00C07D5A",
+      "size": 5,
+      "bytes": "e8c163ffff",
+      "mnemonic": "call",
+      "operands": "0xbfe120",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00bfe120"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00bfe120"
+        }
+      ],
+      "qualification": "Physical CALL and typed instruction agree."
+    },
+    {
+      "owner": "handler",
+      "address": "00C07D8F",
+      "size": 5,
+      "bytes": "e83cf00000",
+      "mnemonic": "call",
+      "operands": "0xc16dd0",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c16dd0"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c16dd0"
+        }
+      ],
+      "qualification": "Physical CALL and typed instruction agree."
+    },
+    {
+      "owner": "handler",
+      "address": "00C07DA2",
+      "size": 6,
+      "bytes": "ff1518a6d600",
+      "mnemonic": "call",
+      "operands": "dword ptr [0xd6a618]",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "COMPUTED_CALL",
+      "effective_flow": "COMPUTED_CALL",
+      "default_targets": [],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c06ac8"
+        }
+      ],
+      "qualification": "Actual current indirect word; static effective target does not freeze the runtime word."
+    },
+    {
+      "owner": "handler",
+      "address": "00C07DAF",
+      "size": 5,
+      "bytes": "e8325f0000",
+      "mnemonic": "call",
+      "operands": "0xc0dce6",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c0dce6"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c0dce6"
+        }
+      ],
+      "qualification": "Physical CALL and typed instruction agree."
+    },
+    {
+      "owner": "handler",
+      "address": "00C07DC7",
+      "size": 5,
+      "bytes": "e8345f0000",
+      "mnemonic": "call",
+      "operands": "0xc0dd00",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c0dd00"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c0dd00"
+        }
+      ],
+      "qualification": "Physical CALL and typed instruction agree."
+    },
+    {
+      "owner": "handler",
+      "address": "00C07DE6",
+      "size": 5,
+      "bytes": "e83563ffff",
+      "mnemonic": "call",
+      "operands": "0xbfe120",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00bfe120"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00bfe120"
+        }
+      ],
+      "qualification": "Physical CALL and typed instruction agree."
+    },
+    {
+      "owner": "handler",
+      "address": "00C07DF6",
+      "size": 5,
+      "bytes": "e82563ffff",
+      "mnemonic": "call",
+      "operands": "0xbfe120",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00bfe120"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00bfe120"
+        }
+      ],
+      "qualification": "Physical CALL and typed instruction agree."
+    },
+    {
+      "owner": "handler",
+      "address": "00C07E00",
+      "size": 5,
+      "bytes": "e9c85e0000",
+      "mnemonic": "jmp",
+      "operands": "0xc0dccd",
+      "typed_instruction_defined": true,
+      "flow_override": "CALL_RETURN",
+      "default_flow": "UNCONDITIONAL_JUMP",
+      "effective_flow": "CALL_TERMINATOR",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c0dccd"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c0dccd"
+        }
+      ],
+      "qualification": "Physical JMP; saved CALL_RETURN override is retained, not repaired."
+    },
+    {
+      "owner": "handler",
+      "address": "00C07E1C",
+      "size": 5,
+      "bytes": "e8df5e0000",
+      "mnemonic": "call",
+      "operands": "0xc0dd00",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c0dd00"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c0dd00"
+        }
+      ],
+      "qualification": "Physical CALL and typed instruction agree."
+    },
+    {
+      "owner": "imageguard",
+      "address": "00C16E0F",
+      "size": 5,
+      "bytes": "e83cffffff",
+      "mnemonic": "call",
+      "operands": "0xc16d50",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c16d50"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c16d50"
+        }
+      ],
+      "qualification": "Physical CALL and typed instruction agree."
+    },
+    {
+      "owner": "imageguard",
+      "address": "00C16E29",
+      "size": 5,
+      "bytes": "e852ffffff",
+      "mnemonic": "call",
+      "operands": "0xc16d80",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c16d80"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c16d80"
+        }
+      ],
+      "qualification": "Physical CALL and typed instruction agree."
+    },
+    {
+      "owner": "destructor",
+      "address": "00C06ACF",
+      "size": 5,
+      "bytes": "e82c110000",
+      "mnemonic": "call",
+      "operands": "0xc07c00",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c07c00"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c07c00"
+        }
+      ],
+      "qualification": "Physical CALL and typed instruction agree."
+    },
+    {
+      "owner": "destructor",
+      "address": "00C06AF9",
+      "size": 5,
+      "bytes": "e8a8fffeff",
+      "mnemonic": "call",
+      "operands": "0xbf6aa6",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00bf6aa6"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00bf6aa6"
+        }
+      ],
+      "qualification": "Physical CALL and typed instruction agree."
+    },
+    {
+      "owner": "destructor",
+      "address": "00C06B05",
+      "size": 5,
+      "bytes": "e83b110000",
+      "mnemonic": "call",
+      "operands": "0xc07c45",
+      "typed_instruction_defined": true,
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c07c45"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c07c45"
+        }
+      ],
+      "qualification": "Physical CALL and typed instruction agree."
+    },
+    {
+      "owner": "destructor_landing",
+      "address": "00C06B17",
+      "size": 5,
+      "bytes": "e9590f0000",
+      "mnemonic": "jmp",
+      "operands": "0xc07a75",
+      "typed_instruction_defined": false,
+      "flow_override": null,
+      "default_flow": null,
+      "effective_flow": null,
+      "default_targets": [],
+      "effective_targets": [],
+      "qualification": "Physical live/PE JMP decoded locally; Ghidra has undefined DataDB, no typed instruction/body credit."
+    }
+  ],
+  "native_code_dependency_without_CALL": {
+    "prolog_push": "C07C00 PUSH C07C90",
+    "image_inline_push": "C16DDA PUSH C07C90",
+    "actual_indirect_slot": "D6A618 currently contains C06AC8 in both live memory and installed PE; Native re-reads current word after guard, not a frozen table target",
+    "scope_words": [
+      "E03738 -> C16E59/C16E6D",
+      "E033C0 -> C06B0B/C06B14"
+    ],
+    "existing_safeseh": "src/native_crt_seh4_safe_handler.asm declares C0DC54 nested handler only; it does not admit C07C90 or establish canonical code placement."
+  },
+  "shared_actual_native_state_design_boundary": {
+    "root_owned_only_proposal": "include/bsp/native_crt_actual_state.hpp and any owner/implementation remain primary design work; no new owner/default/current globals created here.",
+    "actual_requirements": [
+      "A single coherent current cookie domain E15590 matching already encoded scope words and saved frame cookies; E15594 complement and canonical failure globals belong to their real owner, not fresh defaults",
+      "Real per-thread FS chain and actual compiler stack/ScopeTable/native funclet transport",
+      "True callable handler and destructor code identities, real OS callback ABI/SafeSEH/relocation admission",
+      "Actual current indirect word D6A618 and image-base policy, not an immutable C++ function object",
+      "Real RtlUnwind and exact local-unwind/native cleanup domains; no C++ exception bridge standing in for those calls"
+    ],
+    "current_genuine_code_vs_owner": "Existing canonical cookie/checker/FS/local-unwind Sources provide real instruction-level providers in their documented domains. Their existence does not prove a fresh ordinary Source caller has the original frame, matching current encoded tables, or callable fixed-address targets.",
+    "forbidden_shortcuts": [
+      "Do not put added Source context into the fourth OS callback word or add a fifth Native argument",
+      "Do not return a synthetic handler disposition or omit C++-exception cleanup path",
+      "Do not reinterpret a passed RuntimeState as actual FS:[0] or supply fabricated current cookie defaults",
+      "Do not publish a generic callback under the hardcoded C07C90 address",
+      "Do not freeze live caller locals/arguments/dynamic targets or drop currently selected scope chains",
+      "Do not install a C++ global/thread_local shadow exception-list owner"
+    ],
+    "ordinary_API_boundary": "A new ordinary explicit-image helper using real current compiler/OS SEH can be honestly implemented without making the Original bridge ready. The named Original compiler helper/canonical OS entry still needs the real private ABI/code/context transport; no Source callback shim is approved."
+  },
+  "reused_prior_contracts_and_corrections": {
+    "current_prefix": "reports/goal_oct15_crt_prefix_locale_contract.json (96d6e7d83, now Main); unchanged",
+    "current_PTD": "reports/goal_oct15_crt_tls_ptd_owner_contract.json; unchanged",
+    "current_free_lock": "reports/goal_oct15_crt_free_lock_scc_contract.json; unchanged",
+    "older_frame_audit": "docs/NATIVE_CRT_SEH4_FRAME_BR.md and reports/native_crt_seh4_frame_br.json retain useful exact frame maps but their provider-availability frontier is stale.",
+    "availability_correction": "C0DCB6, C0DCCD, C0DCE6/real RtlUnwind, C0DD00/C0DBC4/C0DC54, canonical BFE120, PE Validate/FindSection, and member-transfer are now genuine complete Sources. C07C00/C07C90/C16DD0/C06AC8/C07A75 remain no whole Source. Thus this is a smaller real frontier than the older audit, without Original bridge closure credit.",
+    "decode_encode_extra_word": "native_crt_pointer_decode.hpp and native_crt_libm_callback_registration.hpp expose genuine raw first-word write/reload algorithms through new two-argument naked APIs with an added explicit context word. Native originals have one word. Those qualified added interfaces cannot be transplanted into an OS callback/private-frame entry.",
+    "service_distinctions": "LegacyCrtMathRuntime errno and SingletonLifetimeCallbacks invalid_parameter/module-gate services are borrowed/current runtime bindings, not genuine Original BFFB8B nullable PTD/fallback errno or BF66EF encoded-handler/Watson ownership. Existing decoder/TLS/global contracts do not make canonical handler/terminate transport complete.",
+    "parent_limits": "ASCII leaf closure and current SDK LocaleUpdate/callback possibilities do not complete BFAE6B/BFAD7B/9251F0 or the native locale/PTD/SEH runtime SCC. No selected-ASCII parent replacement or Source completion claimed."
+  },
+  "current_source_and_prior_report_pins": [
+    {
+      "path": "include/bsp/native_crt_seh4_primitives.hpp",
+      "sha256": "def2584ce857931952278696a418e2b62a0d1b8a9f82cc61e82ae784cab28a86"
+    },
+    {
+      "path": "src/native_crt_seh4_primitives.cpp",
+      "sha256": "2557fbce9dfc10e1deb7a4158bb7e9f31fcd62b5c22a8e1f67e66c836bf4fb95"
+    },
+    {
+      "path": "include/bsp/native_crt_canonical_failure.hpp",
+      "sha256": "79cf028656e03fe079cac7ced740ce5ea8a5a81fc4a8a722850a15c8195c0472"
+    },
+    {
+      "path": "src/native_crt_canonical_failure.cpp",
+      "sha256": "6d8bee1d3ba2e0fbfff1fcaca03ca35b8a5f933ff6995419f100e220802dc7ce"
+    },
+    {
+      "path": "include/bsp/native_crt_seh4_handler_transfer.hpp",
+      "sha256": "098c18b1c348a0db9fb68e29f2893dc51df121dcc9343b0d8e73b7c5a4d606e4"
+    },
+    {
+      "path": "src/native_crt_seh4_handler_transfer.cpp",
+      "sha256": "5f1cd7aa8c714d972c247155ebb8b8ab5ed48e85213a345b389ba03acf21dd3d"
+    },
+    {
+      "path": "include/bsp/native_crt_global_unwind.hpp",
+      "sha256": "416198e8393ecf46370e4ac9990dbcbb2b11bdc661ce74967ce882081b74232f"
+    },
+    {
+      "path": "src/native_crt_global_unwind.cpp",
+      "sha256": "26746d05694a9f1c888300aa2c15581e578a573d9f45c86fb99d72a65db90628"
+    },
+    {
+      "path": "include/bsp/native_crt_local_unwind_adapters.hpp",
+      "sha256": "85e1c8cbe7a905f1f3d82896a927a78a0efa9bf21dfb013cc6ac73c35d5de5fb"
+    },
+    {
+      "path": "src/native_crt_local_unwind_adapters.cpp",
+      "sha256": "147c127c1c8c08b1df4d32ba2e367a66d0b7e11f33c729711550bcea7e9bc287"
+    },
+    {
+      "path": "include/bsp/native_crt_seh4_nested_handler.hpp",
+      "sha256": "5b658002b2ac64d9c0c5b28a8175ddf590d1ed983b4ba22069bd48e03fde9aa4"
+    },
+    {
+      "path": "src/native_crt_seh4_nested_handler.cpp",
+      "sha256": "9dde54c3194b8cf432900252886912a8778f19f3361f21854c319cb383475286"
+    },
+    {
+      "path": "src/native_crt_seh4_safe_handler.asm",
+      "sha256": "d601359eb87666447aa8211e45644164dba2d9f44c192b3d594acb58ff13510c"
+    },
+    {
+      "path": "include/bsp/native_crt_pe_image_queries.hpp",
+      "sha256": "e17f8be40a45e8ee27af3f239549277902c5f95d36c8bbc29275e78502a20337"
+    },
+    {
+      "path": "src/native_crt_pe_image_queries.cpp",
+      "sha256": "0d5c2486c3dd6e424fe2c6b043c072c353186396c62bd32d3d213777e21b81ce"
+    },
+    {
+      "path": "include/bsp/native_crt_eh3_filter.hpp",
+      "sha256": "18da2ccbaf29ed9766a6a07cbb6ba05db23b94694332d03c1205ddafe1399e01"
+    },
+    {
+      "path": "src/native_crt_eh3_filter.cpp",
+      "sha256": "226b3f69b0748792d5aa68d72652a623b5838902d4cb676656793490550f7f84"
+    },
+    {
+      "path": "include/bsp/native_crt_member_transfer.hpp",
+      "sha256": "69430cc69598b4c64ce3e8ec965d9ff77506f048932d44d7cbf104fa2889ccb7"
+    },
+    {
+      "path": "src/native_crt_member_transfer.cpp",
+      "sha256": "66a04fa63552049fc92465034bf42e2b2197c519ac22cde3ea0945fc06a0222b"
+    },
+    {
+      "path": "include/bsp/native_crt_pointer_decode.hpp",
+      "sha256": "b1e901d739c07419b55441988bf42177b0e6ace3ef27ef1251ecb3b36fb48a7f"
+    },
+    {
+      "path": "src/native_crt_pointer_decode.cpp",
+      "sha256": "7a689a80bea666aa0941662a1bbde17500c92d1f7fd671c364aa2b3e0bf365c7"
+    },
+    {
+      "path": "include/bsp/native_crt_pointer_decode_support.hpp",
+      "sha256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722"
+    },
+    {
+      "path": "src/native_crt_pointer_decode_support.cpp",
+      "sha256": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37"
+    },
+    {
+      "path": "include/bsp/native_crt_libm_callback_registration.hpp",
+      "sha256": "96b1bf767f1b4de73a578f178de025f2c9199082e404ad3bf45e0ff695f58746"
+    },
+    {
+      "path": "src/native_crt_libm_callback_registration.cpp",
+      "sha256": "cacc140a243569c0d0828a309cf84c079fa12e30b1fc5124e703c44ed1716c32"
+    },
+    {
+      "path": "reports/goal_oct15_crt_prefix_locale_contract.json",
+      "sha256": "fcfe88b5b94e5893905b481b001e4db48584e6f2f08a917a3cc6c319b8ed9df8"
+    },
+    {
+      "path": "reports/goal_oct15_crt_tls_ptd_owner_contract.json",
+      "sha256": "e12e23739a6c4cca043f7785bba1d160639fd68093461ec58cb95d36d2c81982"
+    },
+    {
+      "path": "reports/goal_oct15_crt_free_lock_scc_contract.json",
+      "sha256": "c6a6271e999e397a492054288b260689f1e976705997468fd85c683eb6ae7aa6"
+    },
+    {
+      "path": "reports/native_crt_seh4_frame_br.json",
+      "sha256": "b9bbfd23915bf095fb243b8755a7219ec2a0e076af0849fe7ee02849b1005bb5"
+    },
+    {
+      "path": "docs/NATIVE_CRT_SEH4_FRAME_BR.md",
+      "sha256": "b5ecae68739761ca7c757757349d69e5d0bbc510aa9d246413edd94eb68f3df5"
+    }
+  ],
+  "evidence": {
+    "whole_retained_decode": {
+      "path": "local/goal_oct16_crt_seh4_bridge_verified.json",
+      "sha256": "552f197889cbb44fde43b03b6be6aa062ab9fcb0bb5be227f139fc3bafb7ce44",
+      "bytes": 139402
+    },
+    "retained_analysis_artifacts": [
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_action_typed_flow.json",
+        "sha256": "1fa653274048ff872fae566b00c9012559b2b28c72ed6023e507d6f6c53f4bf6",
+        "bytes": 13690
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_cheatsheet.txt",
+        "sha256": "4946cc9e1078067a865a73611bc46c30d6a74e47b8a892a7de7c85a168191183",
+        "bytes": 3336
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_destructor_actions_raw_asm.txt",
+        "sha256": "bd11dbb94f07c65e207d004157cf418701505ba49f6505f08984609cc9fe671b",
+        "bytes": 224
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_destructor_asm.txt",
+        "sha256": "f4375bb001a7fdfbd79ccbae811535192164b81ff2ff5b0342613b3c62faf7e8",
+        "bytes": 651
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_destructor_filter_asm.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_destructor_physical_bytes.txt",
+        "sha256": "072bb287303109e06ef3dced4b5b9edbf2375616ceb5eb65ee541050f27760d6",
+        "bytes": 414
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_destructor_pseudo.txt",
+        "sha256": "72a694c7b352be714969913cb2270a12cf11b26f1a01d83f22e68926185344e5",
+        "bytes": 579
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_destructor_scope_bytes.txt",
+        "sha256": "b826dc5a0ce0d869485f6583df4bf4c6ff19a738b835d5cd1840bf680d6029f3",
+        "bytes": 138
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_destructor_slot_bytes.txt",
+        "sha256": "16fa975245fe0777f016f7af9f14626f2985ecbe388b122e8a0d26da3dd36219",
+        "bytes": 29
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_epilog_bytes.txt",
+        "sha256": "57c35c851e5d4e5f32f7350c46f22763ce9ca0dae9ea5cb767102839b9cfcb35",
+        "bytes": 106
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_handler_asm_0.txt",
+        "sha256": "bd001268adaf19ed0fa4d443540888ded71602aec28da51624687c0efd76ead5",
+        "bytes": 2258
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_handler_asm_1.txt",
+        "sha256": "f794387769fbe61d881edb9ac8f39bab2735c0b829f87c4a9ab12944035c6f0b",
+        "bytes": 1855
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_handler_asm_2.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_handler_bytes.txt",
+        "sha256": "5be1c97b81ca9c57b32cf5096c9830d94583eb55f30360ec78a8c7370d77ddb7",
+        "bytes": 1962
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_handler_pseudo.txt",
+        "sha256": "d027e11b4c69c972c70e732b32e64e5d29f3efe84f8ebd41fa6e338471731997",
+        "bytes": 2345
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_imageguard_actions_raw_asm.txt",
+        "sha256": "5453042057d439b34bdda36e343f5466eaae7b5fc4f76e4e912d59e303d6fb00",
+        "bytes": 329
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_imageguard_asm_0.txt",
+        "sha256": "2bceb1ea6a98f2575614c9de650a60f4d67b2f2876d13df7b5d965d39a5745fa",
+        "bytes": 1559
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_imageguard_filter_asm.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_imageguard_physical_bytes.txt",
+        "sha256": "63a28b14a0fe5bd7e1346ad8ef94433f236fb67ab7eb41eda100d30b49b63a37",
+        "bytes": 904
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_imageguard_pseudo.txt",
+        "sha256": "f3546ef4970df0939792c1ff65b22d3bca287f88372740c36a8788a89c203efb",
+        "bytes": 836
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_imageguard_scope_bytes.txt",
+        "sha256": "6e244dcdd353118282ae11fab0784ed63905bfa2f80cd1dc13b3acdfe62580f8",
+        "bytes": 138
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_prolog_asm.txt",
+        "sha256": "ea847dfc9470fd7c7fbace0afdb29fbc22aeccfea8286fdf5992be460c4df95f",
+        "bytes": 688
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_prolog_bytes.txt",
+        "sha256": "83c71f0912fab43343fb78099fb665efe99839cddc24118989be5d09cf6e7e6d",
+        "bytes": 341
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_prolog_pseudo.txt",
+        "sha256": "473947a0fdf725685a7a33eefa7ca5edf2e6455e21956abde7879f0f7612707e",
+        "bytes": 821
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_provider_typed_flow.json",
+        "sha256": "e71127623f473cb9fda7e09b7bc1300d0594eaeef7e2eb0a01b419c1cafe38ac",
+        "bytes": 62939
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_report.py",
+        "sha256": "4abb25caa5a9b59fcf610f8c0afc1c9dd552017f688645fb1ef0d57fd3b03d8f",
+        "bytes": 36320
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_transfer_typed_flow.json",
+        "sha256": "cfe842ca98930fcf9bc2e3d36641881d8ae51d339f87d178852a674fd0328891",
+        "bytes": 124063
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_typed_flow.json",
+        "sha256": "56909b31b87b0911f64a6072efdd3e40a115aca0fb302d3e41b4d1d97871b307",
+        "bytes": 20278
+      },
+      {
+        "path": "local/goal_oct16_crt_seh4_bridge_verify.py",
+        "sha256": "205cd4dcb4523cb288ecaf6ab852895c58afff0ddaed1c0a2ab0ed1e58060fcf",
+        "bytes": 6276
+      }
+    ],
+    "typed_modification_numbers": [
+      "7025",
+      "7031",
+      "7033",
+      "7035"
+    ],
+    "project_guard": "Each live bsp ghidra batch verified bsp project C:/Users/sqz269/bsp.gpr and /battlestationspacific.exe before/after the read. Raw local decoder touches only installed PE/captured bytes.",
+    "nonmutation": "Read-only typed get_flow_metadata and bsp bytes/disasm/decompile only. Existing C07E00 CALL_RETURN saved override recorded but not changed. Action disasm requests returned no-function errors; exact physical bytes decoded locally without redefining their undefined DataDB starts.",
+    "representation_limits": "Entire Native assemblies were read for prolog,125-op handler in two bounded pages, epilog and57/21-op helper bodies. Main handler pseudocode capture was a bounded fragment, never credited as full. All private physical filters/landings decoded fully and tied to exact live scope pointers.",
+    "no_capability_bypass": "No inline Ghidra script, script-enable change, raw HTTP mutation, analysis repair, annotation, save, export or name/comment update was performed."
+  },
+  "verification": {
+    "all_owned_native_bytes_live_equal_PE": true,
+    "all_decoded_ranges_consume_exact_bytes": true,
+    "source_file_pins_recorded": 30,
+    "source_changes": 0,
+    "Ghidra_writes": 0,
+    "addresses_leased": 0,
+    "build_run": false,
+    "tests_run": false,
+    "probes_run": false,
+    "original_entries_executed": false,
+    "ABI_compatible": false,
+    "game_validated": false,
+    "limitations": [
+      "Static bytes/assembly/type metadata and current Source contracts only",
+      "No generic OS exception/filter/unwind/callback/stack/cookie/SafeSEH execution proof",
+      "No Original private frame, flags, fault timing, module placement, original CRT heap/TLS/locale or gameplay proof",
+      "Imageguard ordinary Source feasibility is a proposal, not implemented/source-ready credit",
+      "User pause: commit this report for primary metadata integration, then release its lease after acknowledgment and stop"
+    ]
+  }
+}
