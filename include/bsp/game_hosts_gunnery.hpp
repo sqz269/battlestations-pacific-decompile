@@ -1179,6 +1179,11 @@ public:
     // the units host's scaled delta. False when kDamageSmokeDrawsBound is off: the
     // caller keeps its record.
     bool damage_smoke_tick_008227e0(std::size_t unit_index, float delta);
+    // Packet s52_sink_draws: 00825F20's two ShipSystems spawners on a sinking ship
+    // for one motion step, 00933DA0 (grid) and/or 00933BB0 (spray); their stream-1
+    // draws are taken only when kShipSystemsSinkDrawsBound is on.
+    void ship_systems_sink_draws_00933da0_00933bb0(std::size_t unit_index,
+        bool grid_00933da0, bool spray_00933bb0);
     // unit+36Ch, the maximum health, for a writer outside this host: 006F38E0's
     // CommandBuilding level-up stores HP[level] / 100 * class HP there and leaves
     // the current health alone (SHIP_AI 169). No-op for an unbuilt index.

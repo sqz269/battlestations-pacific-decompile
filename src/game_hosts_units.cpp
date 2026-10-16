@@ -2117,6 +2117,7 @@ struct GameUnitSlot {
     // [EDI+518h], EDI = unit+310h, at 008263CE..008263DC) and the census of a
     // wreck's hull ends against KillDepth (008265EC..00826622).
     float sink_time_828{0.0f};
+    float sink_under_82c{0.0f};   // packet s52_sink_draws: both hull ends below 0 (00826656)
     // Packet cc9_sunk_hull_shape_flag8: 00826410..0082643B cleared mask bit 8 (the terrain
     // group) on every hull shape once sinkTime passed 60 s (00C47F60).
     bool sunk_terrain_mask_cleared{false};
@@ -3376,6 +3377,7 @@ struct GameUnitsHost::Impl {
         bsp::dyn_body_set_linear_damping_00c37e00(s.body, 0.5f);
         // 0082507E / 00825086.
         s.sink_time_828 = 0.0f;
+        s.sink_under_82c = 0.0f;
         s.sunk_terrain_mask_cleared = false;
         ++leak_redistributions;
         done("UnitInstance::wreck_sink_block_00824fe5", 0x00824fe5u);
@@ -35637,6 +35639,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // the rest of this tick's motion does not run.
                     host.record("UnitController::clear_hull_shape_fields", 0x0092bd30u);
                     continue;
+                }
+                // Packet s52_sink_draws. 00826645..0082666B: unit+82Ch += dt while both
+                // hull ends are below 0, else 0; then 00826673..0082668B 00933DA0
+                // while sinkTime < 30.0 and 00826693..008266AA 00933BB0 while +82Ch
+                // < 40.0, both on ECX = [unit+1018h] (ShipSystems).
+                if (0.0f > end_a && 0.0f > end_b) {
+                    slot.sink_under_82c += step_seconds;
+                } else {
+                    slot.sink_under_82c = 0.0f;
+                }
+                if (host.gunnery != nullptr) {
+                    host.gunnery->ship_systems_sink_draws_00933da0_00933bb0(index,
+                        slot.sink_time_828 < 30.0f, slot.sink_under_82c < 40.0f);
                 }
             }
         }
