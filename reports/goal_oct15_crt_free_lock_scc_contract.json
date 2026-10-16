@@ -1,0 +1,3141 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_crt_free_lock_scc_contract",
+  "kind": "report_only_finite_Original_runtime_joint_contract_preparation",
+  "status": "finite_contract_complete_no_new_Source_or_Original_readiness_claim",
+  "created_utc": "2026-10-16T04:52:39.856172+00:00",
+  "base_main": "7081f82404af7e5e744cdaaf7bff6c6c727f17c5",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "evidence_level": "Reused hash-pinned whole-body/native-byte/typed audits; fresh current-file pin comparisons and graph/contract derivation only. No new live Ghidra batch/export/Source/annotation/native execution.",
+  "source_ready": false,
+  "general_Original_free_Source_ready": false,
+  "Original_heap_lock_errno_TLS_SEH_startup_runtime_closure_proved": false,
+  "Source_credit": false,
+  "new_source_functions": [],
+  "native_address_claims": [],
+  "file_ownership": [
+    "reports/goal_oct15_crt_free_lock_scc_contract.json"
+  ],
+  "lease": {
+    "packet": "goal_oct15_crt_free_lock_scc_contract",
+    "scope": "one report; no native address/Source/registry/annotation ownership",
+    "ttl_hours": 4,
+    "retain_until_primary_integration": true
+  },
+  "scope": {
+    "explicit_family": [
+      "00bf9dc8",
+      "00c11c21",
+      "00c11b5e",
+      "00c11a93",
+      "00c11adc",
+      "00c0481a",
+      "00c17653"
+    ],
+    "reused_native_bytes": 787,
+    "reused_native_instructions": 277,
+    "whole_family_native_spans": [
+      {
+        "address": "00bf9dc8",
+        "physical_bytes": 133,
+        "physical_instructions": 44,
+        "ranges": [
+          {
+            "start": "00bf9dc8",
+            "end_inclusive": "00bf9e1d",
+            "bytes": 86,
+            "instructions": 29
+          },
+          {
+            "start": "00bf9e27",
+            "end_inclusive": "00bf9e55",
+            "bytes": 47,
+            "instructions": 15
+          }
+        ],
+        "sha256_concatenated_ranges": "590e80681d071dc2ed24dbab65191f6968c53ad873a6dab7a7c284af5f80c398",
+        "original_abi": "cdecl one pointer DWORD; caller cleanup; plain RET; no semantic EAX promise; live no_return=false",
+        "coverage": "Whole main body in two ranges; separate9B BF9E1E excluded; reused audited live=PE proof.",
+        "evidence_report": "reports/goal_oct15_crt_free_readiness.json"
+      },
+      {
+        "address": "00c11c21",
+        "end_exclusive": "00c11c52",
+        "physical_bytes": 49,
+        "physical_instructions": 20,
+        "role": "__lock",
+        "original_abi": "cdecl raw index word at entryESP+4;plain RET;no semantic result",
+        "sha256": "b02c4573212abb78581b610296b1ae8a133d9790a58512b09ab646b4a78e2798",
+        "coverage": "complete physical inspection only;no Source reconstruction credit",
+        "current_formal_body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "49",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c11c21"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c11c51"
+              },
+              "length": "49"
+            }
+          ]
+        },
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "address": "00c11b5e",
+        "end_exclusive": "00c11c18",
+        "physical_bytes": 186,
+        "physical_instructions": 62,
+        "role": "indexed initializer role hypothesis",
+        "original_abi": "one cdecl live index word,loaded after heap diagnostics;EAX zero/nonzero;native SEH4 frame",
+        "sha256": "4867b1073c65694f072a11986820e398fd904ef4b392db165374ace232f1d8d9",
+        "coverage": "complete physical inspection only;no Source reconstruction credit",
+        "current_formal_body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "186",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c11b5e"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c11c17"
+              },
+              "length": "186"
+            }
+          ]
+        },
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "address": "00c11a93",
+        "end_exclusive": "00c11adc",
+        "physical_bytes": 73,
+        "physical_instructions": 27,
+        "role": "__mtinitlocks",
+        "original_abi": "no arguments;plain RET;EAX0/1",
+        "sha256": "d0b673aecf3e98c1b52317938672a25f5a8022f1cb169eb5e662f4a7364c7450",
+        "coverage": "complete physical inspection only;no Source reconstruction credit",
+        "current_formal_body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "73",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c11a93"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c11adb"
+              },
+              "length": "73"
+            }
+          ]
+        },
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "address": "00c11adc",
+        "end_exclusive": "00c11b31",
+        "physical_bytes": 85,
+        "physical_instructions": 34,
+        "role": "lock deletion role hypothesis",
+        "original_abi": "no arguments;plain RET;no semantic result",
+        "sha256": "64032497d794e8867257c558842da222f2a819d4f67d4855034d5a4edbf6ca40",
+        "coverage": "complete physical inspection only;no Source reconstruction credit",
+        "current_formal_body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "85",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c11adc"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c11b30"
+              },
+              "length": "85"
+            }
+          ]
+        },
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "address": "00c0481a",
+        "end_exclusive": "00c0485a",
+        "physical_bytes": 64,
+        "physical_instructions": 24,
+        "role": "__malloc_crt",
+        "original_abi": "cdecl current size cell reread each retry;plain RET;EAX nullable allocation",
+        "sha256": "252d545be22751a689e425676589db9a4707a7ed343d8cd8fd2268f00ec6a4b8",
+        "coverage": "complete physical inspection only;no Source reconstruction credit",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "address": "00c17653",
+        "end_exclusive": "00c17718",
+        "physical_bytes": 197,
+        "physical_instructions": 66,
+        "role": "___crtInitCritSecAndSpinCount physical envelope",
+        "original_abi": "two cdecl words;actual selected stdcall initializer cleans8;plain RET;EAX BOOL-like result;filter/handler use actual SEH4 frame",
+        "sha256": "60e624dd047a939340de897a25bdd15dd3b6d77b763d873c5459e1d233aa7a1f",
+        "coverage": "complete physical inspection only;no Source reconstruction credit",
+        "current_formal_body": {
+          "range_count": 3,
+          "returned_range_count": 3,
+          "address_count": "147",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c17653"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c1768d"
+              },
+              "length": "59"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c17691"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c176d8"
+              },
+              "length": "72"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c17708"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c17717"
+              },
+              "length": "16"
+            }
+          ]
+        },
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      }
+    ],
+    "bounds": "Only already-audited direct bodies/provider Source and peer finite owner contract are reused. Named incomplete bodies are stop boundaries, not recursively decoded here.",
+    "finite_manifest_meaning": "Closed classification at the declared audited direct-edge boundary, not closed executable Original runtime, maximal native SCC/callgraph or enumeration of arbitrary dynamic handlers.",
+    "primary_owns_eventual_shared_headers_and_interfaces": true
+  },
+  "prior_audits": [
+    {
+      "path": "reports/goal_oct15_crt_free_readiness.json",
+      "sha256": "825191c9c52cf46952de87fcce4f4f65de556d5d397006e59938524b4f28f66a",
+      "scope": "unchanged current report; its native captures are reused, not newly acquired live"
+    },
+    {
+      "path": "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+      "sha256": "c09931130275eecf1bf5df680094352d42e82610eb0407e565f2dbc3d8417300",
+      "scope": "unchanged current report; its native captures are reused, not newly acquired live"
+    },
+    {
+      "path": "reports/goal_oct15_crt_malloc_readiness.json",
+      "sha256": "00c5d06d6553745b4addc290d9f5b961d19336fccea15a8aa22de4f7c082332d",
+      "scope": "unchanged current report; its native captures are reused, not newly acquired live"
+    },
+    {
+      "path": "reports/goal_oct15_crt_invalid_handler_readiness.json",
+      "sha256": "88b5508dc85ddf77ddcc933e254eaa081445d19784668e9c3502f0868634bc0d",
+      "scope": "unchanged current report; its native captures are reused, not newly acquired live"
+    },
+    {
+      "path": "reports/goal_oct15_crt_sbh_region_lookup.json",
+      "sha256": "734d60ceffcf7859855c07c4870c35484810a1c229669149c2ada7f3c74a6e21",
+      "scope": "unchanged current report; its native captures are reused, not newly acquired live"
+    },
+    {
+      "path": "reports/goal_oct15_crt_os_error_map.json",
+      "sha256": "98ae1523e6eec25951ede9ed6c4777cd17b632e288102e2a225f6b303346bebc",
+      "scope": "unchanged current report; its native captures are reused, not newly acquired live"
+    },
+    {
+      "path": "reports\\goal_oct15_crt_tls_ptd_owner_contract.json",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_allocate",
+      "commit": "073c940c5d1858176ff312966b7cc0a5fcf54dcd",
+      "sha256": "caa48290cfd2511a3e45a4dc92eab2042338c2148ec3e2d285c99d66372b43d1",
+      "scope": "peer finite TLS/PTD contract, not claimed integrated at this base"
+    },
+    {
+      "path": "reports\\goal_oct15_crt_startup_owner_readiness.json",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_allocate",
+      "commit": "11ea33c6e",
+      "sha256": "02711e100162f22de1d629155e40004b4d7c77270663f95b64c572f69d774166",
+      "scope": "peer accepted startup/cold owner audit, not Source-ready or claimed integrated here"
+    }
+  ],
+  "native_graph": {
+    "eight_function_core_lower_bound": [
+      "00bf9f1a",
+      "00bf9e56",
+      "00c11c21",
+      "00c11b5e",
+      "00c0481a",
+      "00bf9dc8",
+      "00bffb8b",
+      "00c051b7"
+    ],
+    "core_cycle": {
+      "cycle": [
+        "00bf9f1a",
+        "00bf9e56",
+        "00c11c21",
+        "00c11b5e",
+        "00c0481a",
+        "00bf9f1a"
+      ],
+      "physical_edge_sites": [
+        "00bf9f73",
+        "00bf9e73",
+        "00c11c35",
+        "00c11ba6",
+        "00c04822"
+      ],
+      "free_joins": {
+        "edges": [
+          "C11B5E->BF9DC8->C11C21",
+          "C11B5E->C11C21(index10)"
+        ],
+        "sites": [
+          "00c11be2",
+          "00c11bfd",
+          "00bf9de6",
+          "00c11bc3"
+        ]
+      },
+      "meaning": "actual conditional native call-cycle,not an assertion every execution recurses;no Source-ready independent malloc/lock packet before genuine whole provider closure"
+    },
+    "errno_PTD_free_join": {
+      "cycle": [
+        "00bf9dc8",
+        "00bffb8b",
+        "00c051b7",
+        "00bf9dc8"
+      ],
+      "physical_edge_sites": [
+        "00bf9e3a",
+        "00bffb8b",
+        "00c0521a"
+      ],
+      "actual_path": "free HeapFree-failure errno path;errno obtains actual PTD;actual TLS publication failure frees captured PTD allocation",
+      "additional_unexpanded_allocation_transport": "C051B7->C0485A atC051DB confirmed;callocimpl expansion not inferred or claimed in this bounded audit",
+      "peer_whole_body_evidence": "string_erase full BF9DC8 andC051B7 physical review;this audit independently confirmed exact5 shared call-site metadata rows"
+    },
+    "decoder_invalid_handler_cycles": [
+      {
+        "nodes": [
+          "00bf66ef",
+          "00c04fde",
+          "00c04efb",
+          "00bfbb61",
+          "00bf66ef"
+        ],
+        "sites": [
+          "00bf66f8",
+          "00c05023",
+          "00c04f11",
+          "00bfbb7c"
+        ],
+        "meaning": "invalid handler/decoder/module getter failure cycle"
+      },
+      {
+        "nodes": [
+          "00bffb8b",
+          "00c051b7",
+          "00c05070",
+          "00c04fde",
+          "00c04efb",
+          "00bfbb61",
+          "00bffb8b"
+        ],
+        "sites": [
+          "00bffb8b",
+          "00c051c7",
+          "00c05089",
+          "00c05023",
+          "00c04f11",
+          "00bfbb6c"
+        ],
+        "meaning": "errno/PTD/getter-cache/decoder/module getter failure cycle"
+      },
+      {
+        "nodes": [
+          "00bf9dc8",
+          "00bffb8b",
+          "00c051b7",
+          "00bf9dc8"
+        ],
+        "sites": [
+          "00bf9e3a",
+          "00bffb8b",
+          "00c0521a"
+        ],
+        "evidence": "published malloc audit plus peer whole-free review;free-site typed evidence retained there"
+      }
+    ],
+    "audited_17_function_SCC_lower_bound": [
+      "00bf66ef",
+      "00bf9dc8",
+      "00bf9e56",
+      "00bf9f1a",
+      "00bfbab2",
+      "00bfbb61",
+      "00bffb8b",
+      "00c0481a",
+      "00c04efb",
+      "00c04fde",
+      "00c05070",
+      "00c050f8",
+      "00c051b7",
+      "00c055b1",
+      "00c11b5e",
+      "00c11c21",
+      "00c17653"
+    ],
+    "derivation": "Tarjan on reused host_steps plus whole-free8 direct edges. Computed imports/selected code calls remain separate. Bogus C11D3D metadata flow is not a native call.",
+    "not_a_maximal_SCC_claim": true,
+    "new_whole_bodies_in_lower_bound": [
+      "00bf66ef",
+      "00bf9dc8",
+      "00bf9e56",
+      "00bf9f1a",
+      "00bffb8b",
+      "00c0481a",
+      "00c05070",
+      "00c050f8",
+      "00c051b7",
+      "00c055b1",
+      "00c11b5e",
+      "00c11c21",
+      "00c17653"
+    ],
+    "existing_operation_nodes_requiring_Original_composition": [
+      "00bfbab2",
+      "00bfbb61",
+      "00c04efb",
+      "00c04fde"
+    ],
+    "lifecycle_not_proved_cycle_members": [
+      "00c11a93",
+      "00c11adc",
+      "00c11964",
+      "00c119bf",
+      "00c053dc",
+      "00bfbdfb",
+      "00c050bb",
+      "00c05246"
+    ],
+    "calloc_membership_not_inferred": [
+      "00c0485a",
+      "00c1c50f"
+    ],
+    "audited_node_count": 44,
+    "audited_unique_edge_rows": 78,
+    "reused_direct_native_rows": [
+      {
+        "function": "00c11c21",
+        "site": "00c11c35",
+        "native": "00c11b5e",
+        "kind": "call",
+        "instruction": "call 0xc11b5e",
+        "bytes": "e8 24 ff ff ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c11c21",
+        "site": "00c11c41",
+        "native": "00bfba09",
+        "kind": "call",
+        "instruction": "call 0xbfba09",
+        "bytes": "e8 c3 9d fe ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c11b5e",
+        "site": "00c11b65",
+        "native": "00c07c00",
+        "kind": "call",
+        "instruction": "call 0xc07c00",
+        "bytes": "e8 96 60 ff ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c11b5e",
+        "site": "00c11b7a",
+        "native": "00c05b68",
+        "kind": "call",
+        "instruction": "call 0xc05b68",
+        "bytes": "e8 e9 3f ff ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c11b5e",
+        "site": "00c11b81",
+        "native": "00c059a8",
+        "kind": "call",
+        "instruction": "call 0xc059a8",
+        "bytes": "e8 22 3e ff ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c11b5e",
+        "site": "00c11b8b",
+        "native": "00bfba53",
+        "kind": "call",
+        "instruction": "call 0xbfba53",
+        "bytes": "e8 c3 9e fe ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c11b5e",
+        "site": "00c11ba6",
+        "native": "00c0481a",
+        "kind": "call",
+        "instruction": "call 0xc0481a",
+        "bytes": "e8 6f 2c ff ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c11b5e",
+        "site": "00c11bb2",
+        "native": "00bffb8b",
+        "kind": "call",
+        "instruction": "call 0xbffb8b",
+        "bytes": "e8 d4 df fe ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c11b5e",
+        "site": "00c11bc3",
+        "native": "00c11c21",
+        "kind": "call",
+        "instruction": "call 0xc11c21",
+        "bytes": "e8 59 00 00 00",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c11b5e",
+        "site": "00c11bd6",
+        "native": "00c17653",
+        "kind": "call",
+        "instruction": "call 0xc17653",
+        "bytes": "e8 78 5a 00 00",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c11b5e",
+        "site": "00c11be2",
+        "native": "00bf9dc8",
+        "kind": "call",
+        "instruction": "call 0xbf9dc8",
+        "bytes": "e8 e1 81 fe ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c11b5e",
+        "site": "00c11be8",
+        "native": "00bffb8b",
+        "kind": "call",
+        "instruction": "call 0xbffb8b",
+        "bytes": "e8 9e df fe ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c11b5e",
+        "site": "00c11bfd",
+        "native": "00bf9dc8",
+        "kind": "call",
+        "instruction": "call 0xbf9dc8",
+        "bytes": "e8 c6 81 fe ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c11b5e",
+        "site": "00c11c0a",
+        "native": "00c11c18",
+        "kind": "call",
+        "instruction": "call 0xc11c18",
+        "bytes": "e8 09 00 00 00",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c11b5e",
+        "site": "00c11c12",
+        "native": "00c07c45",
+        "kind": "call",
+        "instruction": "call 0xc07c45",
+        "bytes": "e8 2e 60 ff ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c11a93",
+        "site": "00c11ab9",
+        "native": "00c17653",
+        "kind": "call",
+        "instruction": "call 0xc17653",
+        "bytes": "e8 95 5b 00 00",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c11adc",
+        "site": "00c11afa",
+        "native": "00bf9dc8",
+        "kind": "call",
+        "instruction": "call 0xbf9dc8",
+        "bytes": "e8 c9 82 fe ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c0481a",
+        "site": "00c04822",
+        "native": "00bf9f1a",
+        "kind": "call",
+        "instruction": "call 0xbf9f1a",
+        "bytes": "e8 f3 56 ff ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c17653",
+        "site": "00c1765a",
+        "native": "00c07c00",
+        "kind": "call",
+        "instruction": "call 0xc07c00",
+        "bytes": "e8 a1 05 ff ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c17653",
+        "site": "00c1766a",
+        "native": "00c04fde",
+        "kind": "call",
+        "instruction": "call 0xc04fde",
+        "bytes": "e8 6f d9 fe ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c17653",
+        "site": "00c1767a",
+        "native": "00bfbab2",
+        "kind": "call",
+        "instruction": "call 0xbfbab2",
+        "bytes": "e8 33 44 fe ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c17653",
+        "site": "00c17689",
+        "native": "00bf65bb",
+        "kind": "call",
+        "instruction": "call 0xbf65bb",
+        "bytes": "e8 2d ef fd ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c17653",
+        "site": "00c176be",
+        "native": "00c04f67",
+        "kind": "call",
+        "instruction": "call 0xc04f67",
+        "bytes": "e8 a4 d8 fe ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00c17653",
+        "site": "00c17712",
+        "native": "00c07c45",
+        "kind": "call",
+        "instruction": "call 0xc07c45",
+        "bytes": "e8 2e 05 ff ff",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "function": "00bf9f1a",
+        "site": "00bf9f3d",
+        "native": "00c05b68",
+        "kind": "call",
+        "instruction": "call 0xc05b68",
+        "bytes": "e8 26 bc 00 00",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf9f1a",
+        "site": "00bf9f44",
+        "native": "00c059a8",
+        "kind": "call",
+        "instruction": "call 0xc059a8",
+        "bytes": "e8 5f ba 00 00",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf9f1a",
+        "site": "00bf9f4e",
+        "native": "00bfba53",
+        "kind": "call",
+        "instruction": "call 0xbfba53",
+        "bytes": "e8 00 1b 00 00",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf9f1a",
+        "site": "00bf9f73",
+        "native": "00bf9e56",
+        "kind": "call",
+        "instruction": "call 0xbf9e56",
+        "bytes": "e8 de fe ff ff",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf9f1a",
+        "site": "00bf9fa6",
+        "native": "00c055b1",
+        "kind": "call",
+        "instruction": "call 0xc055b1",
+        "bytes": "e8 06 b6 00 00",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf9f1a",
+        "site": "00bf9fb2",
+        "native": "00bffb8b",
+        "kind": "call",
+        "instruction": "call 0xbffb8b",
+        "bytes": "e8 d4 5b 00 00",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf9f1a",
+        "site": "00bf9fb9",
+        "native": "00bffb8b",
+        "kind": "call",
+        "instruction": "call 0xbffb8b",
+        "bytes": "e8 cd 5b 00 00",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf9f1a",
+        "site": "00bf9fc8",
+        "native": "00c055b1",
+        "kind": "call",
+        "instruction": "call 0xc055b1",
+        "bytes": "e8 e4 b5 00 00",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf9f1a",
+        "site": "00bf9fce",
+        "native": "00bffb8b",
+        "kind": "call",
+        "instruction": "call 0xbffb8b",
+        "bytes": "e8 b8 5b 00 00",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf9e56",
+        "site": "00bf9e5d",
+        "native": "00c07c00",
+        "kind": "call",
+        "instruction": "call 0xc07c00",
+        "bytes": "e8 9e dd 00 00",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf9e56",
+        "site": "00bf9e73",
+        "native": "00c11c21",
+        "kind": "call",
+        "instruction": "call 0xc11c21",
+        "bytes": "e8 a9 7d 01 00",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf9e56",
+        "site": "00bf9e7e",
+        "native": "00c12968",
+        "kind": "call",
+        "instruction": "call 0xc12968",
+        "bytes": "e8 e5 8a 01 00",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf9e56",
+        "site": "00bf9e8e",
+        "native": "00bf9e9c",
+        "kind": "call",
+        "instruction": "call 0xbf9e9c",
+        "bytes": "e8 09 00 00 00",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf9e56",
+        "site": "00bf9e96",
+        "native": "00c07c45",
+        "kind": "call",
+        "instruction": "call 0xc07c45",
+        "bytes": "e8 aa dd 00 00",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf9e9c",
+        "site": "00bf9e9e",
+        "native": "00c11b31",
+        "kind": "call",
+        "instruction": "call 0xc11b31",
+        "bytes": "e8 8e 7c 01 00",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00c055b1",
+        "site": "00c055b7",
+        "native": "00c04fde",
+        "kind": "call",
+        "instruction": "call 0xc04fde",
+        "bytes": "e8 22 fa ff ff",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00c11964",
+        "site": "00c11976",
+        "native": "00bfbab2",
+        "kind": "call",
+        "instruction": "call 0xbfbab2",
+        "bytes": "e8 37 a1 fe ff",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00c11964",
+        "site": "00c11985",
+        "native": "00bf65bb",
+        "kind": "call",
+        "instruction": "call 0xbf65bb",
+        "bytes": "e8 31 4c fe ff",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00c11964",
+        "site": "00c11991",
+        "native": "00bfbb61",
+        "kind": "call",
+        "instruction": "call 0xbfbb61",
+        "bytes": "e8 cb a1 fe ff",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00c11964",
+        "site": "00c119a0",
+        "native": "00bf65bb",
+        "kind": "call",
+        "instruction": "call 0xbf65bb",
+        "bytes": "e8 16 4c fe ff",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00c119bf",
+        "site": "00c119e2",
+        "native": "00c11964",
+        "kind": "call",
+        "instruction": "call 0xc11964",
+        "bytes": "e8 7d ff ff ff",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00c119bf",
+        "site": "00c119f6",
+        "native": "00c11cf5",
+        "kind": "call",
+        "instruction": "call 0xc11cf5",
+        "bytes": "e8 fa 02 00 00",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf9dc8",
+        "site": "00bf9de6",
+        "native": "00c11c21",
+        "kind": "call",
+        "instruction": null,
+        "bytes": null,
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf9dc8",
+        "site": "00bf9e3a",
+        "native": "00bffb8b",
+        "kind": "call",
+        "instruction": null,
+        "bytes": null,
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bffb8b",
+        "site": "00bffb8b",
+        "native": "00c051b7",
+        "kind": "call",
+        "instruction": null,
+        "bytes": null,
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00c051b7",
+        "site": "00c0521a",
+        "native": "00bf9dc8",
+        "kind": "call",
+        "instruction": null,
+        "bytes": null,
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00c051b7",
+        "site": "00c051db",
+        "native": "00c0485a",
+        "kind": "call",
+        "instruction": null,
+        "bytes": null,
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "function": "00bf66ef",
+        "site": "00bf66f8",
+        "native": "00c04fde",
+        "kind": "call",
+        "instruction": "call 0xc04fde",
+        "bytes": "e8 e1 e8 00 00",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00bf66ef",
+        "site": "00bf6707",
+        "native": "00c04ef3",
+        "kind": "call",
+        "instruction": "call 0xc04ef3",
+        "bytes": "e8 e7 e7 00 00",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00bf66ef",
+        "site": "00bf670e",
+        "native": "00bf65bb",
+        "kind": "tail_jump",
+        "instruction": "jmp 0xbf65bb",
+        "bytes": "e9 a8 fe ff ff",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00c051b7",
+        "site": "00c051c7",
+        "native": "00c05070",
+        "kind": "call",
+        "instruction": "call 0xc05070",
+        "bytes": "e8 a4 fe ff ff",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00c051b7",
+        "site": "00c051f5",
+        "native": "00c04fde",
+        "kind": "call",
+        "instruction": "call 0xc04fde",
+        "bytes": "e8 e4 fd ff ff",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00c051b7",
+        "site": "00c05204",
+        "native": "00c050f8",
+        "kind": "call",
+        "instruction": "call 0xc050f8",
+        "bytes": "e8 ef fe ff ff",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00c05070",
+        "site": "00c05089",
+        "native": "00c04fde",
+        "kind": "call",
+        "instruction": "call 0xc04fde",
+        "bytes": "e8 50 ff ff ff",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00c050f8",
+        "site": "00c050ff",
+        "native": "00c07c00",
+        "kind": "call",
+        "instruction": "call 0xc07c00",
+        "bytes": "e8 fc 2a 00 00",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00c050f8",
+        "site": "00c05126",
+        "native": "00c04efb",
+        "kind": "call",
+        "instruction": "call 0xc04efb",
+        "bytes": "e8 d0 fd ff ff",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00c050f8",
+        "site": "00c05177",
+        "native": "00c11c21",
+        "kind": "call",
+        "instruction": "call 0xc11c21",
+        "bytes": "e8 a5 ca 00 00",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00c050f8",
+        "site": "00c05196",
+        "native": "00c0190b",
+        "kind": "call",
+        "instruction": "call 0xc0190b",
+        "bytes": "e8 70 c7 ff ff",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00c050f8",
+        "site": "00c051a3",
+        "native": "00c051ae",
+        "kind": "call",
+        "instruction": "call 0xc051ae",
+        "bytes": "e8 06 00 00 00",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00c050f8",
+        "site": "00c051a8",
+        "native": "00c07c45",
+        "kind": "call",
+        "instruction": "call 0xc07c45",
+        "bytes": "e8 98 2a 00 00",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00c04fde",
+        "site": "00c05023",
+        "native": "00c04efb",
+        "kind": "call",
+        "instruction": "call 0xc04efb",
+        "bytes": "e8 d3 fe ff ff",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00c04efb",
+        "site": "00c04f11",
+        "native": "00bfbb61",
+        "kind": "call",
+        "instruction": "call 0xbfbb61",
+        "bytes": "e8 4b 6c ff ff",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00c04efb",
+        "site": "00c04f42",
+        "native": "00c05920",
+        "kind": "call",
+        "instruction": "call 0xc05920",
+        "bytes": "e8 d9 09 00 00",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00bfbb61",
+        "site": "00bfbb6c",
+        "native": "00bffb8b",
+        "kind": "call",
+        "instruction": "call 0xbffb8b",
+        "bytes": "e8 1a 40 00 00",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00bfbb61",
+        "site": "00bfbb7c",
+        "native": "00bf66ef",
+        "kind": "call",
+        "instruction": "call 0xbf66ef",
+        "bytes": "e8 6e ab ff ff",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00bfbab2",
+        "site": "00bfbabd",
+        "native": "00bffb8b",
+        "kind": "call",
+        "instruction": "call 0xbffb8b",
+        "bytes": "e8 c9 40 00 00",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00bfbab2",
+        "site": "00bfbacd",
+        "native": "00bf66ef",
+        "kind": "call",
+        "instruction": "call 0xbf66ef",
+        "bytes": "e8 1d ac ff ff",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00c0485a",
+        "site": "00c04868",
+        "native": "00c1c50f",
+        "kind": "call",
+        "instruction": "call 0xc1c50f",
+        "bytes": "e8 a2 7c 01 00",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "function": "00bf9dc8",
+        "native": "00c07c00",
+        "kind": "CALL",
+        "site": null,
+        "evidence_report": "reports/goal_oct15_crt_free_readiness.json",
+        "site_qualification": "Only two SCC join sites restated; other exact sites remain in the whole free audit/native receipt. No new typed row fabricated."
+      },
+      {
+        "function": "00bf9dc8",
+        "native": "00c11d3d",
+        "kind": "CALL",
+        "site": null,
+        "evidence_report": "reports/goal_oct15_crt_free_readiness.json",
+        "site_qualification": "Only two SCC join sites restated; other exact sites remain in the whole free audit/native receipt. No new typed row fabricated."
+      },
+      {
+        "function": "00bf9dc8",
+        "native": "00c11d68",
+        "kind": "CALL",
+        "site": null,
+        "evidence_report": "reports/goal_oct15_crt_free_readiness.json",
+        "site_qualification": "Only two SCC join sites restated; other exact sites remain in the whole free audit/native receipt. No new typed row fabricated."
+      },
+      {
+        "function": "00bf9dc8",
+        "native": "00bf9e1e",
+        "kind": "CALL",
+        "site": null,
+        "evidence_report": "reports/goal_oct15_crt_free_readiness.json",
+        "site_qualification": "Only two SCC join sites restated; other exact sites remain in the whole free audit/native receipt. No new typed row fabricated."
+      },
+      {
+        "function": "00bf9dc8",
+        "native": "00bffb50",
+        "kind": "CALL",
+        "site": null,
+        "evidence_report": "reports/goal_oct15_crt_free_readiness.json",
+        "site_qualification": "Only two SCC join sites restated; other exact sites remain in the whole free audit/native receipt. No new typed row fabricated."
+      },
+      {
+        "function": "00bf9dc8",
+        "native": "00c07c45",
+        "kind": "CALL",
+        "site": null,
+        "evidence_report": "reports/goal_oct15_crt_free_readiness.json",
+        "site_qualification": "Only two SCC join sites restated; other exact sites remain in the whole free audit/native receipt. No new typed row fabricated."
+      }
+    ],
+    "reused_computed_native_transfers": [
+      {
+        "site": "00c11c49",
+        "physical_envelope": "00c11c21",
+        "instruction": "call dword ptr [0xce2218]",
+        "bytes": "ff 15 18 22 ce 00",
+        "actual_IAT_slot": "00ce2218",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "site": "00c11af7",
+        "physical_envelope": "00c11adc",
+        "instruction": "call ebx",
+        "bytes": "ff d3",
+        "actual_IAT_slot": "00ce2214",
+        "target_capture": "EBX loaded ONCE from actual CE2214 before both phases",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "site": "00c11b21",
+        "physical_envelope": "00c11adc",
+        "instruction": "call ebx",
+        "bytes": "ff d3",
+        "actual_IAT_slot": "00ce2214",
+        "target_capture": "EBX loaded ONCE from actual CE2214 before both phases",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "site": "00c04837",
+        "physical_envelope": "00c0481a",
+        "instruction": "call dword ptr [0xce2230]",
+        "bytes": "ff 15 30 22 ce 00",
+        "actual_IAT_slot": "00ce2230",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "site": "00c1769c",
+        "physical_envelope": "00c17653",
+        "instruction": "call dword ptr [0xce215c]",
+        "bytes": "ff 15 5c 21 ce 00",
+        "actual_IAT_slot": "00ce215c",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "site": "00c176ac",
+        "physical_envelope": "00c17653",
+        "instruction": "call dword ptr [0xce20f4]",
+        "bytes": "ff 15 f4 20 ce 00",
+        "actual_IAT_slot": "00ce20f4",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "site": "00c176d2",
+        "physical_envelope": "00c17653",
+        "instruction": "call esi",
+        "bytes": "ff d6",
+        "target_capture": "ESI retains decoded/resolved actual stdcall initializer;cache/fallback selection recorded below",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "site": "00c176fe",
+        "physical_envelope": "00c17653",
+        "instruction": "call dword ptr [0xce22bc]",
+        "bytes": "ff 15 bc 22 ce 00",
+        "actual_IAT_slot": "00ce22bc",
+        "limitation": "physical scope-handler call is not a defined Ghidra instruction or function-owned row;do not claim a typed live CALL",
+        "evidence_report": "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      },
+      {
+        "site": "00bf9f92",
+        "physical_envelope": "00bf9f1a",
+        "instruction": "call ebx",
+        "bytes": "ff d3",
+        "actual_IAT_slot": "00ce20f8",
+        "target_capture": "EBX captures actual HeapAlloc IAT ONCE atBF9F29 before every valid-size retry",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "site": "00c055c5",
+        "physical_envelope": "00c055b1",
+        "instruction": "call eax",
+        "bytes": "ff d0",
+        "target_capture": "actual decoded registered cdecl new-handler,not arbitrary supplied callback;late original size word",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "site": "00c119d0",
+        "physical_envelope": "00c119bf",
+        "instruction": "call dword ptr [0xce208c]",
+        "bytes": "ff 15 8c 20 ce 00",
+        "actual_IAT_slot": "00ce208c",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "site": "00c11a06",
+        "physical_envelope": "00c119bf",
+        "instruction": "call dword ptr [0xce2090]",
+        "bytes": "ff 15 90 20 ce 00",
+        "actual_IAT_slot": "00ce2090",
+        "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json"
+      },
+      {
+        "site": "00bf6703",
+        "physical_envelope": "00bf66ef",
+        "instruction": "jmp eax",
+        "bytes": "ff e0",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c051b9",
+        "physical_envelope": "00c051b7",
+        "instruction": "call dword ptr [0xce2258]",
+        "bytes": "ff 15 58 22 ce 00",
+        "actual_IAT_slot": "00ce2258",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c051cc",
+        "physical_envelope": "00c051b7",
+        "instruction": "call eax",
+        "bytes": "ff d0",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c051fb",
+        "physical_envelope": "00c051b7",
+        "instruction": "call eax",
+        "bytes": "ff d0",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c0520b",
+        "physical_envelope": "00c051b7",
+        "instruction": "call dword ptr [0xce223c]",
+        "bytes": "ff 15 3c 22 ce 00",
+        "actual_IAT_slot": "00ce223c",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c05223",
+        "physical_envelope": "00c051b7",
+        "instruction": "call dword ptr [0xce22bc]",
+        "bytes": "ff 15 bc 22 ce 00",
+        "actual_IAT_slot": "00ce22bc",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c05077",
+        "physical_envelope": "00c05070",
+        "instruction": "call dword ptr [0xce20bc]",
+        "bytes": "ff 15 bc 20 ce 00",
+        "actual_IAT_slot": "00ce20bc",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c05098",
+        "physical_envelope": "00c05070",
+        "instruction": "call dword ptr [0xce20b4]",
+        "bytes": "ff 15 b4 20 ce 00",
+        "actual_IAT_slot": "00ce20b4",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c05109",
+        "physical_envelope": "00c050f8",
+        "instruction": "call dword ptr [0xce215c]",
+        "bytes": "ff 15 5c 21 ce 00",
+        "actual_IAT_slot": "00ce215c",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c0513d",
+        "physical_envelope": "00c050f8",
+        "instruction": "call ebx",
+        "bytes": "ff d3",
+        "actual_IAT_slot": "00ce20f4",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c0514d",
+        "physical_envelope": "00c050f8",
+        "instruction": "call ebx",
+        "bytes": "ff d3",
+        "actual_IAT_slot": "00ce20f4",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c0516f",
+        "physical_envelope": "00c050f8",
+        "instruction": "call dword ptr [0xce221c]",
+        "bytes": "ff 15 1c 22 ce 00",
+        "actual_IAT_slot": "00ce221c",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c04feb",
+        "physical_envelope": "00c04fde",
+        "instruction": "call esi",
+        "bytes": "ff d6",
+        "actual_IAT_slot": "00ce20bc",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c05002",
+        "physical_envelope": "00c04fde",
+        "instruction": "call esi",
+        "bytes": "ff d6",
+        "actual_IAT_slot": "00ce20bc",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c05004",
+        "physical_envelope": "00c04fde",
+        "instruction": "call eax",
+        "bytes": "ff d0",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c05017",
+        "physical_envelope": "00c04fde",
+        "instruction": "call dword ptr [0xce215c]",
+        "bytes": "ff 15 5c 21 ce 00",
+        "actual_IAT_slot": "00ce215c",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c05032",
+        "physical_envelope": "00c04fde",
+        "instruction": "call dword ptr [0xce20f4]",
+        "bytes": "ff 15 f4 20 ce 00",
+        "actual_IAT_slot": "00ce20f4",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c05040",
+        "physical_envelope": "00c04fde",
+        "instruction": "call eax",
+        "bytes": "ff d0",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c04f23",
+        "physical_envelope": "00c04efb",
+        "instruction": "call dword ptr [0xce215c]",
+        "bytes": "ff 15 5c 21 ce 00",
+        "actual_IAT_slot": "00ce215c",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      },
+      {
+        "site": "00c0487f",
+        "physical_envelope": "00c0485a",
+        "instruction": "call dword ptr [0xce2230]",
+        "bytes": "ff 15 30 22 ce 00",
+        "actual_IAT_slot": "00ce2230",
+        "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      }
+    ]
+  },
+  "finite_direct_provider_manifest": [
+    {
+      "entry": "00bf65bb",
+      "status": "genuine_existing_Source",
+      "contract": "Canonical Watson/hook code and real imports; actual cookie/failure/frame owner and returning calls.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00bf66ef",
+      "status": "whole_native_audited_Original_Source_incomplete",
+      "contract": "All branches require real shared state/providers and exact returning/error/cleanup paths; not a selected-path ready leaf.",
+      "direct_native_targets_in_audited_rows": [
+        "00bf65bb",
+        "00c04ef3",
+        "00c04fde"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00bf9dc8",
+      "status": "Original_Source_absent_labelled_host_substitution",
+      "contract": "Current native_dyn_* host malloc/free models do not implement Original heap/lock/errno transport.",
+      "direct_native_targets_in_audited_rows": [
+        "00bf9e1e",
+        "00bffb50",
+        "00bffb8b",
+        "00c07c00",
+        "00c07c45",
+        "00c11c21",
+        "00c11d3d",
+        "00c11d68"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00bf9e1e",
+      "status": "genuine_existing_Source",
+      "contract": "Canonical descriptor unlock/fixed-index helpers require actual initialized/currently-owned lock; no owner/bootstrap credit.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00bf9e56",
+      "status": "whole_native_audited_Original_Source_incomplete",
+      "contract": "All branches require real shared state/providers and exact returning/error/cleanup paths; not a selected-path ready leaf.",
+      "direct_native_targets_in_audited_rows": [
+        "00bf9e9c",
+        "00c07c00",
+        "00c07c45",
+        "00c11c21",
+        "00c12968"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00bf9e9c",
+      "status": "whole_native_helper_known_Source_absent",
+      "contract": "9B PUSH4/C11B31/POP/RET over acquired canonical lock4; include with allocator, not another leaf hunt.",
+      "direct_native_targets_in_audited_rows": [
+        "00c11b31"
+      ],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00bf9f1a",
+      "status": "Original_Source_absent_labelled_host_substitution",
+      "contract": "Current native_dyn_* host malloc/free models do not implement Original heap/lock/errno transport.",
+      "direct_native_targets_in_audited_rows": [
+        "00bf9e56",
+        "00bfba53",
+        "00bffb8b",
+        "00c055b1",
+        "00c059a8",
+        "00c05b68"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00bfba09",
+      "status": "named_incomplete_fatal_diagnostic_boundary",
+      "contract": "Whole actual diagnostic/termination route and any returning continuation still required. No invented noreturn/throw/abort/SDK exit.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00bfba53",
+      "status": "named_incomplete_fatal_diagnostic_boundary",
+      "contract": "Whole actual diagnostic/termination route and any returning continuation still required. No invented noreturn/throw/abort/SDK exit.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00bfbab2",
+      "status": "whole_current_operation_Source_exists_Original_direct_composition_open",
+      "contract": "Reuse code at actual TLS/module/raw-word contracts. Added contexts and owning errno/invalid-service seams do not close Original canonical transport or original argument/frame entry.",
+      "direct_native_targets_in_audited_rows": [
+        "00bf66ef",
+        "00bffb8b"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00bfbb61",
+      "status": "whole_current_operation_Source_exists_Original_direct_composition_open",
+      "contract": "Reuse code at actual TLS/module/raw-word contracts. Added contexts and owning errno/invalid-service seams do not close Original canonical transport or original argument/frame entry.",
+      "direct_native_targets_in_audited_rows": [
+        "00bf66ef",
+        "00bffb8b"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00bffb50",
+      "status": "genuine_existing_Source",
+      "contract": "Actual45 mutable pairs and unsigned fallbacks; no errno/TLS substitute.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00bffb8b",
+      "status": "whole_native_audited_Original_Source_incomplete",
+      "contract": "All branches require real shared state/providers and exact returning/error/cleanup paths; not a selected-path ready leaf.",
+      "direct_native_targets_in_audited_rows": [
+        "00c051b7"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00c0190b",
+      "status": "genuine_existing_Source",
+      "contract": "Actual locale references and InterlockedIncrement; locale create/destroy ownership separate.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c0481a",
+      "status": "whole_native_audited_Original_Source_incomplete",
+      "contract": "All branches require real shared state/providers and exact returning/error/cleanup paths; not a selected-path ready leaf.",
+      "direct_native_targets_in_audited_rows": [
+        "00bf9f1a"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00c0485a",
+      "status": "whole_native_audited_Source_absent",
+      "contract": "72B/26ops nullable retry; reread size/count each retry, push literal0 then size then count to C1C50F.",
+      "direct_native_targets_in_audited_rows": [
+        "00c1c50f"
+      ],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c04ef3",
+      "status": "genuine_existing_Source",
+      "contract": "Canonical Watson/hook code and real imports; actual cookie/failure/frame owner and returning calls.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c04efb",
+      "status": "whole_current_operation_Source_exists_Original_direct_composition_open",
+      "contract": "Reuse code at actual TLS/module/raw-word contracts. Added contexts and owning errno/invalid-service seams do not close Original canonical transport or original argument/frame entry.",
+      "direct_native_targets_in_audited_rows": [
+        "00bfbb61",
+        "00c05920"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00c04f67",
+      "status": "whole_current_operation_Source_exists_Original_direct_composition_open",
+      "contract": "Reuse code at actual TLS/module/raw-word contracts. Added contexts and owning errno/invalid-service seams do not close Original canonical transport or original argument/frame entry.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c04fde",
+      "status": "whole_current_operation_Source_exists_Original_direct_composition_open",
+      "contract": "Reuse code at actual TLS/module/raw-word contracts. Added contexts and owning errno/invalid-service seams do not close Original canonical transport or original argument/frame entry.",
+      "direct_native_targets_in_audited_rows": [
+        "00c04efb"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00c05070",
+      "status": "whole_native_audited_Original_Source_incomplete",
+      "contract": "All branches require real shared state/providers and exact returning/error/cleanup paths; not a selected-path ready leaf.",
+      "direct_native_targets_in_audited_rows": [
+        "00c04fde"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00c050f8",
+      "status": "whole_native_audited_Original_Source_incomplete",
+      "contract": "All branches require real shared state/providers and exact returning/error/cleanup paths; not a selected-path ready leaf.",
+      "direct_native_targets_in_audited_rows": [
+        "00c0190b",
+        "00c04efb",
+        "00c051ae",
+        "00c07c00",
+        "00c07c45",
+        "00c11c21"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00c051ae",
+      "status": "genuine_existing_Source",
+      "contract": "Canonical descriptor unlock/fixed-index helpers require actual initialized/currently-owned lock; no owner/bootstrap credit.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c051b7",
+      "status": "whole_native_audited_Original_Source_incomplete",
+      "contract": "All branches require real shared state/providers and exact returning/error/cleanup paths; not a selected-path ready leaf.",
+      "direct_native_targets_in_audited_rows": [
+        "00bf9dc8",
+        "00c0485a",
+        "00c04fde",
+        "00c05070",
+        "00c050f8"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00c055b1",
+      "status": "whole_native_audited_Original_Source_incomplete",
+      "contract": "All branches require real shared state/providers and exact returning/error/cleanup paths; not a selected-path ready leaf.",
+      "direct_native_targets_in_audited_rows": [
+        "00c04fde"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00c05920",
+      "status": "genuine_existing_Source",
+      "contract": "Actual raw comparator for real PE module gate; no synthetic module.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c059a8",
+      "status": "named_incomplete_fatal_diagnostic_boundary",
+      "contract": "Whole actual diagnostic/termination route and any returning continuation still required. No invented noreturn/throw/abort/SDK exit.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c05b68",
+      "status": "named_incomplete_fatal_diagnostic_boundary",
+      "contract": "Whole actual diagnostic/termination route and any returning continuation still required. No invented noreturn/throw/abort/SDK exit.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c07c00",
+      "status": "whole_native_prolog_audited_Source_absent",
+      "contract": "69B/21ops custom compiler stack/cookie/scope/FS0 transformation; ordinary C++ prolog or epilog alone is insufficient.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c07c45",
+      "status": "genuine_existing_Source",
+      "contract": "Custom frame epilog primitive requires genuine native frame; no prolog/dispatcher ownership.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c11964",
+      "status": "whole_heap_owner_audited_Source_absent",
+      "contract": "Actual platform selection/HeapCreate/SBHinit/HeapDestroy rollback with direct real failure transport and lifetime.",
+      "direct_native_targets_in_audited_rows": [
+        "00bf65bb",
+        "00bfbab2",
+        "00bfbb61"
+      ],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c119bf",
+      "status": "whole_heap_owner_audited_Source_absent",
+      "contract": "Actual platform selection/HeapCreate/SBHinit/HeapDestroy rollback with direct real failure transport and lifetime.",
+      "direct_native_targets_in_audited_rows": [
+        "00c11964",
+        "00c11cf5"
+      ],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c11a93",
+      "status": "whole_native_audited_Original_Source_incomplete",
+      "contract": "All branches require real shared state/providers and exact returning/error/cleanup paths; not a selected-path ready leaf.",
+      "direct_native_targets_in_audited_rows": [
+        "00c17653"
+      ],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c11adc",
+      "status": "whole_native_audited_Original_Source_incomplete",
+      "contract": "All branches require real shared state/providers and exact returning/error/cleanup paths; not a selected-path ready leaf.",
+      "direct_native_targets_in_audited_rows": [
+        "00bf9dc8"
+      ],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c11b31",
+      "status": "genuine_existing_Source",
+      "contract": "Canonical descriptor unlock/fixed-index helpers require actual initialized/currently-owned lock; no owner/bootstrap credit.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c11b5e",
+      "status": "whole_native_audited_Original_Source_incomplete",
+      "contract": "All branches require real shared state/providers and exact returning/error/cleanup paths; not a selected-path ready leaf.",
+      "direct_native_targets_in_audited_rows": [
+        "00bf9dc8",
+        "00bfba53",
+        "00bffb8b",
+        "00c0481a",
+        "00c059a8",
+        "00c05b68",
+        "00c07c00",
+        "00c07c45",
+        "00c11c18",
+        "00c11c21",
+        "00c17653"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00c11c18",
+      "status": "genuine_existing_Source",
+      "contract": "Canonical descriptor unlock/fixed-index helpers require actual initialized/currently-owned lock; no owner/bootstrap credit.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c11c21",
+      "status": "whole_native_audited_Original_Source_incomplete",
+      "contract": "All branches require real shared state/providers and exact returning/error/cleanup paths; not a selected-path ready leaf.",
+      "direct_native_targets_in_audited_rows": [
+        "00bfba09",
+        "00c11b5e"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00c11cf5",
+      "status": "genuine_existing_Source",
+      "contract": "Canonical SBH algorithm/init code exists, with same actual state/heap/reached extent/external lock4 contracts; do not duplicate.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c11d3d",
+      "status": "genuine_whole_physical_Source_formal_repair_pending",
+      "contract": "43B/14ops Source accepted/built. False18B thunk+25B interior/CALL_RETURN repair NOT PERFORMED; no missing algorithm.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c11d68",
+      "status": "genuine_existing_Source",
+      "contract": "Canonical SBH algorithm/init code exists, with same actual state/heap/reached extent/external lock4 contracts; do not duplicate.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c12968",
+      "status": "genuine_existing_Source",
+      "contract": "Canonical SBH algorithm/init code exists, with same actual state/heap/reached extent/external lock4 contracts; do not duplicate.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    },
+    {
+      "entry": "00c17653",
+      "status": "whole_native_audited_Original_Source_incomplete",
+      "contract": "All branches require real shared state/providers and exact returning/error/cleanup paths; not a selected-path ready leaf.",
+      "direct_native_targets_in_audited_rows": [
+        "00bf65bb",
+        "00bfbab2",
+        "00c04f67",
+        "00c04fde",
+        "00c07c00",
+        "00c07c45"
+      ],
+      "in_17_function_SCC_lower_bound": true
+    },
+    {
+      "entry": "00c1c50f",
+      "status": "finite_stop_boundary_not_whole_audited_Source_absent",
+      "contract": "286B observed envelope/direct pseudocode frontier only. Whole physical count/size/clear/handler/errno/lock/SBH schedule remains unaudited; do not infer SCC membership.",
+      "direct_native_targets_in_audited_rows": [],
+      "in_17_function_SCC_lower_bound": false
+    }
+  ],
+  "actual_state_contracts": {
+    "ownership": "Only nonowning bindings to the same real canonical CRT owner. No cloned globals, SDK/current-process heap, SDK errno/TLS, preinitialized-only subset or invented callback owner.",
+    "metadata": "Extra binding/reference identity stable/disjoint from reached actual payload, outgoing cells and private bookkeeping. Contents remain current/volatile; real reentrancy/native aliases must not be frozen into snapshots. Require only reached reads/writes, not whole skipped regions.",
+    "x86": "Raw DWORD pointer/code/index/result arithmetic wraps32 bits. Keep each actual width, signed/unsigned comparison and reached unaligned word access; no narrower C++ pointer/overflow/alignment domain.",
+    "heap": {
+      "existing_state": "NativeCrtSbhState, seven reference bindings, no owner",
+      "members": [
+        "void* volatile& actual_heap_0109e1bc",
+        "volatile uint32_t& actual_descriptor_count_0109ed64",
+        "volatile uint32_t& actual_descriptor_capacity_0109ed74",
+        "void* volatile& actual_descriptors_0109ed68",
+        "void* volatile& actual_allocation_rover_0109ed70",
+        "volatile uint32_t& actual_retained_empty_descriptor_0109e310",
+        "volatile uint32_t& actual_retained_empty_group_0109ed78"
+      ],
+      "other_words": {
+        "0109e1bc": {
+          "role": "current actual CRT heap HANDLE",
+          "PE_initial_DWORD": 0,
+          "qualification": "actual installed PE initial data only;not initialized running CRT state"
+        },
+        "0109ed7c": {
+          "role": "current selected heap kind",
+          "PE_initial_DWORD": 0,
+          "qualification": "actual installed PE initial data only;not initialized running CRT state"
+        },
+        "0109ed6c": {
+          "role": "current SBH threshold",
+          "PE_initial_DWORD": 0,
+          "qualification": "actual installed PE initial data only;not initialized running CRT state"
+        },
+        "0109e314": {
+          "role": "current new-handler mode",
+          "PE_initial_DWORD": 0,
+          "qualification": "actual installed PE initial data only;not initialized running CRT state"
+        },
+        "0109de44": {
+          "role": "current encoded registered new-handler",
+          "PE_initial_DWORD": 0,
+          "qualification": "actual installed PE initial data only;not initialized running CRT state"
+        }
+      },
+      "retry_0109de30": "current nullable retry limit",
+      "feature_0109eea4": "actual complete fill/memmove feature binding",
+      "owner": "Real C119BF heap lifetime and canonical SBH initialization, mapped PE zeros alone insufficient; external actual lock4 protects relevant SBH calls."
+    },
+    "locks": {
+      "descriptor_base": "00e16478",
+      "stride": 8,
+      "lifecycle_end_exclusive": "00e16598",
+      "lifecycle_count": 36,
+      "fields": {
+        "0": "current real CRITICAL_SECTION pointer",
+        "4": "current raw classification, compare1"
+      },
+      "raw_index": "E16478+8*capturedindex moduloDWORD, no sign/range/null check",
+      "bootstrap_slots": "Raw24B static stream begins0109e1c0 and advances only for reached flag1; publish pointer BEFORE initialization. Do not invent36-CS extent.",
+      "bootstrap_domain": "Lock10/E164C8 and lock12/E164D8 have PE descriptors{0,1};the secondword selects static bootstrap. A mapped page or zero pointer is not a runtime initialized/owned critical section. The acquisition/initializer lock10 cycle requires the real bootstrap owner."
+    },
+    "TLS_errno_module": {
+      "actual_PE_words": {
+        "0109dd64": {
+          "role": "encoded registered invalid handler",
+          "DWORD": 0,
+          "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+        },
+        "0109de38": {
+          "role": "encoded getter",
+          "DWORD": 0,
+          "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+        },
+        "0109de3c": {
+          "role": "encoded setter",
+          "DWORD": 0,
+          "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+        },
+        "00e15b00": {
+          "role": "actual getter TLS index",
+          "DWORD": 4294967295,
+          "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+        },
+        "00e15afc": {
+          "role": "actual PTD FLS/TLS index",
+          "DWORD": 4294967295,
+          "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+        },
+        "00e159e8": {
+          "role": "actual fallback errno word",
+          "DWORD": 12,
+          "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+        },
+        "0109dd84": {
+          "role": "actual OS platform word",
+          "DWORD": 0,
+          "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+        },
+        "0109dd90": {
+          "role": "actual winmajor word",
+          "DWORD": 0,
+          "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+        },
+        "00e162b0": {
+          "role": "current optional-locale fallback pointer",
+          "DWORD": 14770648,
+          "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+        }
+      },
+      "other_slots": {
+        "0109de34": "actual raw then encoded FLS/TLS allocator",
+        "0109de40": "actual raw then encoded FLS/TLS free",
+        "0109e454": "encoded critical-section initializer cache"
+      },
+      "PTD": {
+        "0": "threadid after publication/init",
+        "4": "minus1 BEFORE threadid",
+        "8": "per-thread errno",
+        "1f8": "current EncodePointer",
+        "1fc": "current DecodePointer"
+      },
+      "locale": "Actual E15CA8 ref object/current E162B0 and PTD+6C; genuine refs/destruction, no std::locale/thread_local replacement.",
+      "callables": "Real KERNEL32 module/export/PE gate and registered callable identity/lifetime; no synthetic resolver or substitute callback."
+    },
+    "failure": {
+      "cookie_pair": [
+        "00e15590",
+        "00e15594"
+      ],
+      "failure_block": "0109e568,324h",
+      "hook": "0109eea8",
+      "qualification": "Genuine canonical frame/import/cookie owner and returning Watson; no fabricated block/noreturn."
+    },
+    "actual_imports_from_audits": {
+      "00ce2218": {
+        "dll": "KERNEL32.dll",
+        "name": "EnterCriticalSection"
+      },
+      "00ce2214": {
+        "dll": "KERNEL32.dll",
+        "name": "DeleteCriticalSection"
+      },
+      "00ce2230": {
+        "dll": "KERNEL32.dll",
+        "name": "Sleep"
+      },
+      "00ce22bc": {
+        "dll": "KERNEL32.dll",
+        "name": "SetLastError"
+      },
+      "00ce215c": {
+        "dll": "KERNEL32.dll",
+        "name": "GetModuleHandleA"
+      },
+      "00ce20f4": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress"
+      },
+      "00ce20f8": {
+        "dll": "KERNEL32.dll",
+        "name": "HeapAlloc"
+      },
+      "00ce208c": {
+        "dll": "KERNEL32.dll",
+        "name": "HeapCreate"
+      },
+      "00ce2090": {
+        "dll": "KERNEL32.dll",
+        "name": "HeapDestroy"
+      },
+      "00ce20bc": {
+        "dll": "KERNEL32.dll",
+        "name": "TlsGetValue"
+      },
+      "00ce20b4": {
+        "dll": "KERNEL32.dll",
+        "name": "TlsSetValue"
+      },
+      "00ce2258": {
+        "dll": "KERNEL32.dll",
+        "name": "GetLastError"
+      },
+      "00ce223c": {
+        "dll": "KERNEL32.dll",
+        "name": "GetCurrentThreadId"
+      },
+      "00ce221c": {
+        "dll": "KERNEL32.dll",
+        "name": "InterlockedIncrement"
+      },
+      "00ce20fc": {
+        "dll": "KERNEL32.dll",
+        "name": "HeapFree"
+      }
+    },
+    "import_schedule": "Preserve each capture-once vs current IAT/handle reread. Genuine registered native dynamic calls are required transport, not permission for new substitute callbacks."
+  },
+  "whole_family_memory_and_argument_contracts": {
+    "00bf9dc8": {
+      "ABI": "cdecl one pointer word, plainRET, no semantic EAX",
+      "schedule": [
+        "Enter actual SEH prolog even for null; capture original pointer in ESI; null goes to epilog.",
+        "Current heapkind3: acquire canonical lock4, arm finally, find region, optionally run whole actual SBHfree; disarm then unlock4.",
+        "Nonzero captured region completes; miss rereads LIVE original parameter after unlock for HeapFree; other heapkind uses previously captured ESI.",
+        "HeapFree uses current heap withflags0; success completes.",
+        "Failure obtains errno pointer BEFORE GetLastError, then calls BFFB50 and stores EAX through captured errno pointer; epilog/plainRET."
+      ],
+      "live_argument": "After prolog capture ESI; NULL skips heap/state. Non-kind3 uses capturedESI. Kind3 fallback rereads CURRENT incoming pointer AFTER unlock, not cachedESI.",
+      "private": "N0Ch/scopeE02DF0; arm0 AFTER lock4, region result[EBP-1C], disarm-2 BEFORE BF9E1E; CURRENT result AFTER unlock. Only reached region call needs raw outgoing4 backing for existing provider API; C++ byvalue local is not Original frame.",
+      "cleanup": "Real unlock4 action, no added free/unpublish/errno rollback."
+    },
+    "00c11c21": {
+      "ABI": "cdecl captured raw index, plainRET, no semantic result",
+      "schedule": [
+        "capture raw index then E16478+8*index modulo32;no sign/range check",
+        "initial descriptor load;zero calls actual C11B5E with captured index",
+        "initializer EAX test before POP;zero calls actual BFBA09(17)",
+        "any returning fatal continuation still reloads CURRENT descriptor and invokes actual EnterCriticalSection;no new check or semantic result"
+      ],
+      "fatal": "BFBA09(17) may return; then reload CURRENT descriptor and actual EnterCriticalSection without new check."
+    },
+    "00c11b5e": {
+      "ABI": "cdecl LIVE index word, EAX0/1, plainRET, SEH4",
+      "schedule": [
+        "heap109E1BC test and real diagnostics/exit precede live index read;returning diagnostic path retained",
+        "capture descriptor address;existing descriptor returns1",
+        "actual nullable C0481A(24);NULL gets real errno and writes12 then returns0",
+        "nonnull calls real lock10;only after return arm state0",
+        "reload descriptor;raced publication frees captured allocation without errno update",
+        "otherwise genuine C17653(allocation,4000);failure frees captured allocation,errno12,resultlocal0;success publishes captured allocation",
+        "disarm state=-2 before real C11C18;CURRENT resultlocal read after unlock;real epilog"
+      ],
+      "private": "N0Ch/scopeE03678; default result1[EBP-1C] BEFORE heap check; ONLY read index AFTER diagnostics. Capture descriptor/candidate; arm0 AFTER lock10; disarm-2 BEFORE C11C18; CURRENT result AFTER unlock.",
+      "error": "Heap absent C05B68→C059A8(30)→BFBA53(255) with returning continuation. NULL candidate errno12/result0 without lock10. Race loser frees captured candidate without errno; init failure frees then errno12/result0."
+    },
+    "00c11a93": {
+      "ABI": "noargs/plainRET/EAX0or1",
+      "schedule": [
+        "noarg C11A93 scans36 actual descriptors at E16478 with8-byte stride",
+        "for current secondword==1 publish current actual109E1C0 static24B slot BEFORE initializer",
+        "push current published pointer then advance static pointer24 BEFORE actual C17653(4000)",
+        "first failure clears only current descriptor;no rollback of earlier initialized locks;return0;otherwise1"
+      ],
+      "failure": "Only current failed descriptor cleared, earlier static publications remain; no rollback."
+    },
+    "00c11adc": {
+      "ABI": "noargs/plainRET/no semantic result",
+      "schedule": [
+        "capture actual DeleteCriticalSection IAT word ONCE before both phases",
+        "phase1 capture pointer;nonnull then read flag;flag!=1 deletes and frees CAPTURED pointer,AND-zero current descriptor before caller POP",
+        "phase2 reread current pointer;nonnull then read flag;flag==1 deletes pointer and leaves descriptor word unchanged",
+        "no invented allocation ownership or replacement heap"
+      ],
+      "aliases": "DeleteCS import capturedONCE. Eachnonnull first-phase pointer captured; currentflag!=1 deletes/frees capture then zero CURRENTslot AFTER free. Fresh secondphase pointer/flag1 deletes, leaves pointer. No flagread onNULL or reset/heap destruction."
+    },
+    "00c0481a": {
+      "ABI": "cdecl LIVE size each retry/plainRET/nullableEAX",
+      "schedule": [
+        "C0481A rereads original size cell on each malloc retry;captures returned allocation",
+        "on NULL read current109DE30;zero skips Sleep and returnsNULL",
+        "Sleep current delay initially0;then modulo delay+1000 against freshly read109DE30;larger becomesFFFFFFFF terminal",
+        "cannot substitute throwing operator-new service or nonnull-only allocation"
+      ],
+      "failure": "NULL+currentlimit0 returnsNULL. Actual Sleep(delay initially0), wrapped +1000 vs freshlimit; FFFFFFFF termination. No throwing allocator."
+    },
+    "00c17653": {
+      "ABI": "cdecl2 LIVE words pointer/spin, plainRET/currentEAX; selected actual stdcall initializer RET8",
+      "normal": "Decode current cache; fallback actual platform/returningWatson/module/export; encode selected pointer/publishcache; arm0 BEFORE late current-spin then current-pointer pushes/CALL ESI. Capture result, disarm-2, CURRENTresult commonreturn.",
+      "private": "N14h/scopeE037B8; platform[F-1C], result[F-20], exceptioncode[F-24], ExceptionPointers[F-14], savedESP[F-18], state[F-4]. Filter reads CURRENT exceptionpointers→code and stores code; handler restores CURRENTsavedESP and conditionally SetLastError8 only if CURRENTcode stillC0000017, then zeroCURRENTresult.",
+      "coverage": {
+        "physical_envelope": "[00C17653,00C17718),197B/66ops",
+        "formal_body": {
+          "range_count": 3,
+          "returned_range_count": 3,
+          "address_count": "147",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c17653"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c1768d"
+              },
+              "length": "59"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c17691"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c176d8"
+              },
+              "length": "72"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c17708"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c17717"
+              },
+              "length": "16"
+            }
+          ]
+        },
+        "formal_body_bytes": 147,
+        "excluded_physical_bytes": 50,
+        "excluded_ranges": [
+          "[00C1768E,00C17691):3B returning-Watson ADD ESP,14h",
+          "[00C176D9,00C17708):47B actual scope filter and handler"
+        ],
+        "scope_address": "00e037b8",
+        "scope_bytes": "fe ff ff ff 00 00 00 00 cc ff ff ff 00 00 00 00 fe ff ff ff d9 76 c1 00 f0 76 c1 00",
+        "scope_words": [
+          4294967294,
+          0,
+          4294967244,
+          0,
+          4294967294,
+          12678873,
+          12678896
+        ],
+        "filter": "C176D9 loads actual exception record code through current native EBP-14h,stores EBP-24h,returns(code==C0000017)",
+        "handler": "C176F0 restores ESP from actual EBP-18h;retests captured code;conditional actual SetLastError(8);AND-zero actual result atEBP-20h;falls to common epilog",
+        "normal_schedule": "actual encoded109E454 -> full decoder;miss gets platform,real five-zero Watson on getter failure,real kernel32 resolution or actual C17643 fallback,full encoder then cache publication;arm state0 before late two argument reads;actual selected stdcall call;capture result;disarm then CURRENT result read and real epilog",
+        "no_noreturn_borrowed_from_name": true,
+        "scope_or_original_SEH_runtime_closure": false
+      },
+      "qualification": "Full197B includes returningWatson ADDESP20 plus filter/handler; no catchbadalloc/unconditionalSetLastError/ordinaryRAII OriginalSEH credit."
+    }
+  },
+  "prolog_cleanup_contract": {
+    "C07C00": "Custom69B/21op helper. S=entryESP,N=[S+8],T=[S+4],R=[S],F=S+8; enclosingreturn[F+4]. Push C07C90/priorFS0; overwrite oldNslot incomingEBP,setEBP=F,ESP-=N;pushEBX/ESI/EDI;readE15590ONCE;encodescope/pushcookie^F;P=F-N-20h saved[F-18];copyR,encodedscope[F-8],state-2[F-4];FS0=F-10;RETcopiedR. No probe/zero/validation. Whole audited, no complete prolog/dispatcher owner Source.",
+    "C07C45_signature": "void __cdecl leave_native_crt_seh4_frame_00c07c45(); // custom compiler-frame preconditions, not ordinary call",
+    "C07C45": "Requires EBP=F, exact helpercontinuation/cookie/saved registers/FS0. Unlink first/discardcookie/restore/RET ESP=F+4, preserveEAX/arithmeticflags. No prolog/dispatcher closure.",
+    "C0DCB6_signature": "int32_t __fastcall call_native_crt_eh4_filter_00c0dcb6(uintptr_t actual_native_filter_entry, void* actual_establisher_frame);",
+    "C0DCB6": "Real ECXfilter/EDXframe, saves4regs,setsEBP,zerosEAX/EBX/EDX/ESI/EDI then actualCALL ECX; preserve actualreturn EAX/flags. Requires real filter/scope/frame, no dispatcher substitute.",
+    "V6_scope_reused": {
+      "bytes": "fe ff ff ff 00 00 00 00 d4 ff ff ff 00 00 00 00 fe ff ff ff 00 00 00 00 9c 9e bf 00",
+      "words": [
+        4294967294,
+        0,
+        4294967252,
+        0,
+        4294967294,
+        0,
+        12557980
+      ],
+      "action": "00bf9e9c",
+      "qualification": "scope operand inspected;does not establish prolog/dispatcher/private-SEH/runtime closure"
+    },
+    "PTD_scopes_reused": [
+      {
+        "address": "00e032b0",
+        "bytes": 28,
+        "hex": "feffffff00000000d4ffffff00000000feffffff00000000ae51c000",
+        "sha256": "1325ba6aa93454c68cdc6ff6ade130f0e694c8ec667eb69beb4a8b60f1aa89e0",
+        "live_equals_pe": true,
+        "header_dwords": [
+          "fffffffe",
+          "00000000",
+          "ffffffd4",
+          "00000000"
+        ],
+        "states": [
+          {
+            "state": 0,
+            "enclosing": -2,
+            "filter": 0,
+            "handler": "00c051ae"
+          }
+        ]
+      },
+      {
+        "address": "00e032d0",
+        "bytes": 40,
+        "hex": "feffffff00000000d8ffffff00000000feffffff000000004f53c000feffffff000000005b53c000",
+        "sha256": "8711936bd1786ed2054172121ebad359c0e182339d5097186e05d045703ee452",
+        "live_equals_pe": true,
+        "header_dwords": [
+          "fffffffe",
+          "00000000",
+          "ffffffd8",
+          "00000000"
+        ],
+        "states": [
+          {
+            "state": 0,
+            "enclosing": -2,
+            "filter": 0,
+            "handler": "00c0534f"
+          },
+          {
+            "state": 1,
+            "enclosing": -2,
+            "filter": 0,
+            "handler": "00c0535b"
+          }
+        ]
+      }
+    ],
+    "free_init_cleanup": "FreeE02DF0 state0→BF9E1E lock4; initializerE03678 state0→C11C18 lock10; V6E02E10 state0→BF9E9C lock4; PTDE032B0 state0→C051AE lock12. Exact native frame/cell roles required, no implicit C++private aliases.",
+    "callback_private_correction": "C05246 scopeE032D0 actions C0534F/C0535B reload CURRENT[EBP+8] intoESI then fall into normal9B C05352/C0535E unlock13/12. Actual unwindactions12B/5ops each, not standalone normalfunctions.",
+    "remaining": "C07C90/C16EBE and actual exception/filter/FS/cookie owner, Original code/fault PCs/private parameter homes remain external gates. C++RAII/SEH model is not evidence of Original transport."
+  },
+  "existing_concrete_provider_interfaces": [
+    {
+      "header": "include/bsp/native_crt_sbh_free.hpp",
+      "signature": "void free_native_sbh_block_00c11d68(void* actual_descriptor, void* actual_payload, const NativeCrtSbhState& state, const volatile uint32_t& feature_word_0109eea4);",
+      "qualification": "Whole788B/259ops real state/heap/reached extents/external lock4 and existing memmove domain."
+    },
+    {
+      "header": "include/bsp/native_crt_sbh_region_lookup.hpp",
+      "signature": "void* find_native_crt_sbh_region_00c11d3d(const NativeCrtSbhState& state, const void* actual_parameter4);",
+      "qualification": "Whole43B/14ops physical; LIVE raw argument each reached iteration, empty avoids argumentread; formal repairpending independent."
+    },
+    {
+      "header": "include/bsp/native_crt_sbh_allocation.hpp",
+      "signatures": [
+        "void* allocate_native_sbh_block_00c12968(uint32_t requested_bytes, const NativeCrtSbhState& state);",
+        "void* allocate_native_sbh_region_00c1207c(const NativeCrtSbhState& state);",
+        "int32_t allocate_native_sbh_group_00c1212c(void* actual_descriptor);"
+      ],
+      "qualification": "Existing genuine canonical algorithms, Win32HeapAlloc/ReAlloc/VirtualAlloc, actual same state/heap/external lock4."
+    },
+    {
+      "header": "include/bsp/native_crt_canonical_sbh_initialization.hpp",
+      "signature": "uint32_t __cdecl initialize_native_crt_canonical_sbh_00c11cf5(uint32_t actual_threshold);",
+      "qualification": "One native word, actualcanonicalheap; delayedthreshold and null publication; creates noheap."
+    },
+    {
+      "headers": [
+        "include/bsp/native_crt_canonical_unlock.hpp",
+        "include/bsp/native_crt_free_unlock_helper.hpp",
+        "include/bsp/native_crt_lock10_unlock_helper.hpp",
+        "include/bsp/native_crt_ptd_unlock_helper.hpp"
+      ],
+      "signatures": [
+        "void __cdecl unlock_native_crt_canonical_00c11b31(int32_t actual_lock_index);",
+        "void __cdecl unlock_native_crt_free_lock4_00bf9e1e();",
+        "void __cdecl unlock_native_crt_initializer_lock10_00c11c18();",
+        "void unlock_native_crt_ptd_initialization_00c051ae();"
+      ],
+      "qualification": "Actual initialized/currently-owned canonicaldescriptor/CS; no bootstrap."
+    },
+    {
+      "header": "include/bsp/native_crt_critical_section_primitives.hpp",
+      "signatures": [
+        "int32_t __stdcall initialize_native_crt_critical_section_without_spin_00c17643(void* actual_critical_section, uint32_t ignored_spin);",
+        "uint32_t __cdecl store_native_crt_encoded_critical_section_initializer_00c17639(uint32_t encoded_word, volatile uint32_t& actual_word_0109e454);"
+      ],
+      "qualification": "ActualInitializeCS,return1/RET8, noexceptiontranslation. Storealreadyencoded; C17639 is NOT a native C17653 call edge just because operation may be reused."
+    },
+    {
+      "header": "include/bsp/native_crt_os_error_map.hpp",
+      "signature": "uint32_t map_native_crt_os_error_00bffb50(uint32_t error, const volatile uint32_t* actual_pairs90) noexcept;",
+      "qualification": "Actual45mutablepairs/progressivefirstwords/onlymatchedCURRENTsecondword and unsignedfallbacks; only reached storage."
+    },
+    {
+      "headers": [
+        "include/bsp/native_crt_pointer_decode.hpp",
+        "include/bsp/native_crt_libm_callback_registration.hpp"
+      ],
+      "signatures": [
+        "void* __cdecl native_crt_decode_pointer_00c04fde(void* original_argument, const NativeCrtPointerDecodeContext&);",
+        "void* __cdecl native_crt_encode_pointer_00c04f67(void* argument, const NativeCrtPointerEncodeContext&);"
+      ],
+      "qualification": "Full code but extra borrowedTLS/IAT/modulecontext; selectedprovider writes actualcalleeinputword/finalEAXreload; byvalueCppvariable not nativeoutgoinghome. Original direct owner/failure composition still needed."
+    },
+    {
+      "headers": [
+        "include/bsp/native_crt_pointer_decode_support.hpp",
+        "include/bsp/native_crt_osplatform_getter.hpp"
+      ],
+      "signatures": [
+        "int32_t native_crt_pointer_decode_module_gate_00c04efb(const NativeCrtPointerDecodeSupportContext&);",
+        "int32_t get_native_crt_winmajor_00bfbb61(uint32_t* output, const NativeCrtPointerDecodeSupportContext&);",
+        "int32_t get_native_crt_osplatform_00bfbab2(uint32_t* output, const NativeCrtPointerDecodeSupportContext&);",
+        "int32_t __cdecl native_crt_strcmp_00c05920(const char*, const char*) noexcept;"
+      ],
+      "qualification": "Full currentcode. SupportContext uses LegacyCrtMathRuntime owningerrno and SingletonLifetimeCallbacks invalidservice, NOT Original PTD/BF66EF closure; no hostcallback binding to claim ready."
+    },
+    {
+      "header": "include/bsp/native_crt_canonical_failure.hpp",
+      "signatures": [
+        "void __cdecl invoke_native_crt_canonical_watson_00bf65bb(const wchar_t* expression, const wchar_t* function, const wchar_t* file, uint32_t line, uintptr_t reserved);",
+        "void __cdecl clear_native_crt_canonical_debugger_hook_00c04ef3(uint32_t ignored);"
+      ],
+      "qualification": "Genuine canonicalcode/imports, unread5words/actualreturnabletail; actualcookie/failure/frameowner, noOriginalfaultPCcredit."
+    },
+    {
+      "headers": [
+        "include/bsp/native_crt_canonical_locale_reference.hpp",
+        "include/bsp/native_crt_memset.hpp"
+      ],
+      "signatures": [
+        "void __cdecl acquire_native_crt_canonical_locale_references_00c0190b(void* actual_locale_record);",
+        "void* __cdecl fill_native_crt_bytes_00bf79f0(void* destination, int fill, uint32_t byte_count, const volatile uint32_t& actual_feature_word_0109eea4);"
+      ],
+      "qualification": "Genuine ref/fillcode. PTD214h zeroing cannot call4argumentSource with3args or useSDKmemset; originalcaller/feature/CPU/domain remainrequired."
+    }
+  ],
+  "explicit_current_Source_seams": [
+    {
+      "addresses": [
+        "00c04fde",
+        "00c04f67"
+      ],
+      "status": "whole current Source pointer operations,with extra stable borrowed context/argument word and real TLS/IAT/module contracts;not original one-word callable entry or initialized FLS/PTD owner"
+    },
+    {
+      "addresses": [
+        "00c04efb",
+        "00bfbb61",
+        "00bfbab2"
+      ],
+      "status": "whole qualified current Source bodies;SupportContext uses owning errno and invalid-service callbacks,not complete direct Original failure transport"
+    },
+    {
+      "address": "00bffb8b",
+      "status": "owning-CRT errno service fragment;does not implement actual nullable PTD path"
+    },
+    {
+      "address": "00bf6713",
+      "status": "currentSDK invalid-noinfo Source policy;explicitly NOT actual BF66EF encoded-global/debugger-hook/handler/Watson transport"
+    },
+    {
+      "address": "00bf66ef",
+      "status": "no complete Source;existing abstract service/model callbacks elsewhere are not this body"
+    }
+  ],
+  "finite_unresolved_boundaries": {
+    "allocation": [
+      {
+        "address": "00bf9f1a",
+        "status": "only existing labelled host malloc substitution,not whole Original body"
+      },
+      {
+        "address": "00bf9e56",
+        "status": "no complete Source;actual lock4/native prolog/scope transport required despite complete SBH child"
+      },
+      {
+        "address": "00bf9e9c",
+        "status": "whole9B genuine ready helper over unchanged canonical unlock4;unassigned candidate,not a replacement for heap-owner investigation"
+      },
+      {
+        "address": "00c055b1",
+        "status": "no complete Source;actual encoded-handler/decode/current registered callback transport required;SDK_callnewh not a substitute"
+      },
+      {
+        "addresses": [
+          "00c11c21",
+          "00c11b5e",
+          "00c0481a",
+          "00bf9dc8"
+        ],
+        "status": "genuine whole core SCC providers remain,not stubs/forward declarations/selected-path admissions"
+      },
+      {
+        "addresses": [
+          "00bffb8b",
+          "00c051b7",
+          "00c0485a"
+        ],
+        "status": "Original owning errno/PTD/calloc allocation transport;current errno runtime fragment does not close this SCC"
+      },
+      {
+        "addresses": [
+          "00c05b68",
+          "00c059a8",
+          "00bfba53",
+          "00bfba09"
+        ],
+        "status": "actual heap diagnostic/fatal and potentially returning continuations remain"
+      },
+      {
+        "addresses": [
+          "00c07c00"
+        ],
+        "status": "genuine compiler prolog/frame/scope owner needed;existing epilog primitive alone insufficient"
+      }
+    ],
+    "fatal": {
+      "entries": [
+        "00c05b68",
+        "00c059a8",
+        "00bfba53",
+        "00bfba09"
+      ],
+      "require": "Whole actual providers including reached return continuations/currentargs; no inferred noreturn."
+    },
+    "calloc": [
+      {
+        "address": "00c05070",
+        "whole_inspected": true,
+        "source": "absent",
+        "need": "actual cache/global/TLS import and decoder owner;not cache-hit-only implementation"
+      },
+      {
+        "address": "00c0485a",
+        "whole_inspected": true,
+        "source": "absent",
+        "need": "whole nullable calloc retry;reaches C1C50F;passes third literal0 and rereads size/count each retry;real current retry-limit/Sleep"
+      },
+      {
+        "address": "00c1c50f",
+        "extent_observed": "[00C1C50F,00C1C62D),286B envelope",
+        "coverage": "pseudocode/direct dependency boundary only;not counted as full physical span or a Source-ready leaf",
+        "source": "no complete Source indexed",
+        "need": "whole Original calloc implementation;do not substitute SDKcalloc;SBH/lock/handler/errno/memset/provider paths require actual bodies"
+      },
+      {
+        "address": "00c050f8",
+        "whole_inspected": true,
+        "source": "absent",
+        "need": "actual two-word initialization,canonical locale ref and actual lock12/native prolog/scope owner"
+      },
+      {
+        "address": "00bf9dc8",
+        "coverage": "peer whole-free evidence and published audit reused",
+        "source": "only labelled host substitution",
+        "need": "whole real free/lock/heap/error transport"
+      }
+    ],
+    "heap_owner": {
+      "entries": [
+        "00c11964",
+        "00c119bf"
+      ],
+      "schedule": [
+        "one actual original stacked flag read BEFORE HeapCreate;flags=(flag==0),initial size1000h,maximum0",
+        "publish actual returned handle evenNULL to109E1BC;NULL returns0",
+        "capture heap-selector result and CMP3 BEFORE publishing that result to109ED7C;branch uses captured comparison,not a current-mode reread;only3 calls genuine canonical C11CF5(3F8)",
+        "on SBH failure reload CURRENT109E1BC for actual HeapDestroy,then AND-zero heap regardless API status and return0;selected heapkind not restored",
+        "all other success returns1;no fake host heap,shadow globals,extra rollback or currentSDKmalloc"
+      ],
+      "feasibility": {
+        "actual_ownership_algorithm_known": true,
+        "genuine_HeapCreate_HeapDestroy_and_canonical_SBH_init_available": true,
+        "genuinely_callback_free_Original_selector_ready": false,
+        "blocking_transport": "Existing BFBAB2/BFBB61 Source needs NativeCrtPointerDecodeSupportContext with LegacyCrtMathRuntime errno callback and SingletonLifetimeCallbacks invalid service. Actual BF66EF has no complete Source;BFFB8B remains OriginalPTD service boundary. Do not add callbacks or replace with SDK/current values.",
+        "current_SDK_invalid_parameter_wrapper": "BF6713 Source deliberately uses current SDK_noinfo;it does not implement actual BF66EF and cannot close these getters",
+        "smallest_genuine_owner_packet_proposal": [
+          "whole C11964 including both returning-Watson cleanup continuations",
+          "whole C119BF with original flag and actual canonical globals/HeapCreate/SBHinit/Destroy"
+        ],
+        "prerequisite": "close actual getter failure transport BF66EF and Original errno/PTD,or establish genuine direct owning-runtime transport without new callback/stub/substitution;retain all failure paths",
+        "conditional_proposed_files": [
+          "include/bsp/native_crt_heap_owner.hpp",
+          "src/native_crt_heap_owner.cpp",
+          "docs/GOAL_OCT15_CRT_HEAP_OWNER.md",
+          "reports/goal_oct15_crt_heap_owner.json"
+        ],
+        "Source_claim_or_authorization": false
+      }
+    },
+    "SEH": {
+      "entries": [
+        "00c07c00",
+        "00c07c90",
+        "00c16ebe"
+      ],
+      "require": "Actual prolog/dispatcher/filter/fault/frame/cookie owner, no epilog-only or ordinary-C++ substitution."
+    },
+    "TLS_PTDOwner": {
+      "entries": [
+        "00c053dc",
+        "00bfbdfb",
+        "00c050bb",
+        "00c05246"
+      ],
+      "peer_manifest": "Exact finite provider list/contracts in hash-pinned073c940c5, not reexpanded here."
+    },
+    "locale_cleanup": {
+      "entries": [
+        "00c0534f",
+        "00c0535b",
+        "00c05352",
+        "00c0535e",
+        "00c01991",
+        "00c017cb"
+      ],
+      "require": "Peer12Bprivateactions vs9Bnormalhelpers and actual locale/ref destruction; no wholeSource or transitive graph assumption."
+    },
+    "startup": {
+      "entry": "00bfd0dd",
+      "require": "Accepted physicalstartup not wholeapplication/IO/argv/env/cinit/atexit/shutdown/runtime Source proof."
+    },
+    "dynamic": {
+      "entries": [
+        "actual selected initializer",
+        "registered newhandler",
+        "registered invalidhandler",
+        "actual FLS/TLS providers",
+        "actual PTD encoders/decoders"
+      ],
+      "require": "Real ownednativecallable identity, convention/argument cells/module lifetime and reentrancy, not substitute callback injection or maximalgraph enumeration."
+    }
+  },
+  "peer_owner_contract": {
+    "path": "reports\\goal_oct15_crt_tls_ptd_owner_contract.json",
+    "commit": "073c940c5d1858176ff312966b7cc0a5fcf54dcd",
+    "sha256": "caa48290cfd2511a3e45a4dc92eab2042338c2148ec3e2d285c99d66372b43d1",
+    "shared_state": {
+      "future_owner": "Primary root only; proposed interface name ActualNativeState is planning terminology, no file defined here.",
+      "storage": "Bind actual mutable canonical words/records, actual IAT slots and module/table storage, not clones, seedednonnull state or a parallel std::thread_local owner. PE flags/NULL/FFFFFFFF are cold bootstrap facts only.",
+      "metadata": "If ordinary Source APIs use explicit bindings, binding identity/storage must remain stable/disjoint from actual argument/private scratch storage; do not freeze real global contents or forbid real provider reentrancy/mutations beyond already established provider contracts. Reached actual PTD/locale/critical-section/stack storage must support original width/order.",
+      "typed_fields": "DWORD pointer/code/index/BOOL, BYTE PTD+C8/+14B, real Win32 stdcall imports/callbacks. Actual IAT capture vs current reread schedule follows each native owner. No enum/nativeclass inference.",
+      "publication_phase": "State must represent raw→encoded provider slot phases and native partial initialization/failure state. A boolean ready flag/selected initialized subset is insufficient.",
+      "private_transport": "Original argument cells, writable codec word, queued OS arguments, SEH state and current-argument reloads need explicit representations or proven canonical entry thunks; extra C++ context/RAII alone does not prove Original SEH/stack/fault/register ABI."
+    },
+    "startup_schedule": {
+      "cold_mtinit": {
+        "entry": "00c053dc",
+        "whole_bytes": 388,
+        "whole_instructions": 109,
+        "source_ready": false,
+        "schedule": [
+          "GetModuleHandleA(KERNEL32.DLL), capture HMODULE. NULL calls actual C050BB rollback then returns0. NonNULL captures GetProcAddress IAT CE20F4 in ESI and resolves/publishes FlsAlloc→109DE34,FlsGetValue→109DE38,FlsSetValue→109DE3C,FlsFree→109DE40 in order, interleaving later pushes before earlier global stores as physical listing records.",
+          "Capture actual TlsSetValue IAT CE20B4 in ESI. If any current first3 slots isNULL or captured last resultNULL, overwrite getter with current TlsGetValue IAT, alloc with actual C0504C adapter, setter with captured TlsSetValue and free with current TlsFree IAT, in that order. No SDK FLS/TLS substitute, invented providers or extra success requirement.",
+          "Actual TlsAlloc; publish returned index E15B00 evenFFFFFFFF. IndexFFFFFFFF returns0 WITHOUT mtterm. Otherwise push current raw getter109DE38 then captured index into captured TlsSetValue. Failure returns0 WITHOUT mtterm; do not silently free or reset cache index.",
+          "Only cache publication success calls BFBDFB (__init_pointers). Then push current alloc109DE34→actual encoder; push CURRENT getter109DE38 BEFORE publishing encoded alloc; encode getter; push CURRENT setter BEFORE publishing encoded getter; encode setter; push CURRENT free BEFORE publishing encoded setter; encode free; clean4words then publish encoded free. Earlier encoded values do not replace future current reads.",
+          "Actual C11A93 initializes lock descriptors; zero→C050BB. Push actual callback C05246 BEFORE current encoded alloc109DE34/decode. Clean only decoder pointerword then CALL decoded allocator EAX, with callback still actual queued word. Publish returned E15AFC evenFFFFFFFF; invalid→C050BB.",
+          "Call real C0485A(1,214h), capture PTD in ESI, clean words; NULL→C050BB. Push captured PTD then current E15AFC BEFORE current encoded setter109DE3C/decode. Pop decoder pointerword and CALL actual setter. Failure→C050BB; no direct BF9DC8 PTD free or invented unpublished-pointer cleanup occurs in this owner.",
+          "Setter success publishes PTD before C050F8(PTD,0). After it returns invoke actual GetCurrentThreadId; write PTD+4=FFFFFFFF BEFORE PTD+0=capturedthreadid; return1. No startup init-once/thread-ID lock is present in these examined owners; PTD+0/+4 are actual thread record fields, not invented startup guards."
+        ],
+        "remaining_real_dependencies": [
+          "C050BB whole teardown",
+          "BFBDFB whole encoded-pointer owner",
+          "C04F67/C04FDE original entry composition over real TLS/PTD (existing Source adds context)",
+          "C11A93/C11ADC lock initialization/deletion with actual globals",
+          "C0485A/C1C50F and genuine heap/errno allocation SCC",
+          "C050F8 full initial PTD/locale owner",
+          "C05246 actual FLS callback cleanup; no indexed whole Source",
+          "real FLS/TLS stdcall functions and actual OS-owned indices"
+        ],
+        "bootstrap_order_implication": "Raw getter/index cache publication precedes the first real encoder call, and encoded pointer-slot initialization precedes lock bootstrap. Startup OS words are already published. This is the actual cold path that supplies decoder/lock prerequisites; selected preinitialized-parent assumptions cannot replace it. Failure paths still require the genuine jointly implemented CRT transports."
+      },
+      "encoded_pointers": {
+        "entry": "00bfbdfb",
+        "whole_bytes": 76,
+        "whole_instructions": 25,
+        "source_ready": false,
+        "schedule": "Call actual C04FD5 encoded-null once; capture ESI; push that captured word separately before each of8 actual calls C05560,C17639,BF65B1,C05CFB,C1752B,C17037,C16E8B,C07AF8. Then push actual BFBDCC to encoder C04F67, clean nine words total, publish returned encoded exit E15580, restore ESI and RET. No global null literal replaces the encoder result.",
+        "actual_immediate_setter_contracts": [
+          {
+            "entry": "00c05560",
+            "whole_bytes": 10,
+            "behavior": "Read actual stackword then store109DE44 new-handler slot,RET."
+          },
+          {
+            "entry": "00c17639",
+            "whole_bytes": 10,
+            "behavior": "Complete existing canonical actual encoded critical-section initializer slot store; no runtime initialized lock is created."
+          },
+          {
+            "entry": "00bf65b1",
+            "whole_bytes": 10,
+            "behavior": "Read actual stackword then store109DD64 invalid-handler slot,RET."
+          },
+          {
+            "entry": "00c05cfb",
+            "whole_bytes": 10,
+            "behavior": "Read actual stackword then store109E16C,RET."
+          },
+          {
+            "entry": "00c1752b",
+            "whole_bytes": 10,
+            "behavior": "Read actual stackword then store109E450,RET."
+          },
+          {
+            "entry": "00c17037",
+            "whole_bytes": 25,
+            "behavior": "Read actual stackword once; store109E43C,109E440,109E444,109E448 in order,RET."
+          },
+          {
+            "entry": "00c16e8b",
+            "whole_bytes": 1,
+            "behavior": "RET, does not read queued word."
+          },
+          {
+            "entry": "00c07af8",
+            "whole_bytes": 17,
+            "behavior": "Ignores queued encoded-null word; pushes fixed actual C07A75, encodes through C04F67, cleans own word, stores109E170,RET."
+          }
+        ],
+        "qualification": "Setters inspected through complete actual short listings, not their misleading transitive saved callgraph unions. Only C17639 is currently complete canonical Source among these setter entries. These short primitives are not credited as the whole startup/encoded-pointer owner."
+      },
+      "rollback": {
+        "entry": "00c050bb",
+        "whole_bytes": 61,
+        "whole_instructions": 16,
+        "source_ready": false,
+        "schedule": "Capture current E15AFC; if notFFFFFFFF push captured index before current encoded109DE40 decode, then CALL actual decoded free; regardless returned status publish E15AFC=FFFFFFFF. Capture CURRENT E15B00 only afterward; if notFFFFFFFF actual TlsFree(captured), then publish E15B00=FFFFFFFF regardlessBOOL. Finally tailJMP actual C11ADC lock deletion. No encoded provider-slot reset, heap destruction, direct PTD free or synthetic FLS callback invocation is added. If a real call throws/fails to return, later writes remain unreached."
+      }
+    },
+    "qualification": "Report-only contract; not new Source/Original ABI/runtime credit or ownership assignment."
+  },
+  "proposed_joint_partition_not_claimed": {
+    "primary": "Primary alone decides any eventual shared actual-state header and direct canonical errno/invalid/codec integration. No final interface/file instantiated here.",
+    "free_lock_stream": [
+      {
+        "files": [
+          "include/bsp/native_crt_original_free.hpp",
+          "src/native_crt_original_free.cpp"
+        ],
+        "addresses": [
+          "00bf9dc8"
+        ],
+        "reuse": [
+          "00c11d3d",
+          "00c11d68",
+          "00bf9e1e",
+          "00bffb50",
+          "00c07c45"
+        ]
+      },
+      {
+        "files": [
+          "include/bsp/native_crt_original_lock_lifetime.hpp",
+          "src/native_crt_original_lock_lifetime.cpp"
+        ],
+        "addresses": [
+          "00c11c21",
+          "00c11b5e",
+          "00c11a93",
+          "00c11adc",
+          "00c0481a"
+        ],
+        "reuse": [
+          "00c11b31",
+          "00c11c18",
+          "00c07c45"
+        ]
+      },
+      {
+        "files": [
+          "include/bsp/native_crt_original_critical_section_dispatch.hpp",
+          "src/native_crt_original_critical_section_dispatch.cpp"
+        ],
+        "addresses": [
+          "00c17653"
+        ],
+        "physical_actions": [
+          "00c176d9",
+          "00c176f0"
+        ],
+        "reuse": [
+          "00c17643",
+          "00c04fde",
+          "00c04f67",
+          "00bfbab2",
+          "00bf65bb",
+          "00c07c45"
+        ]
+      }
+    ],
+    "allocator_stream": "Keep BF9F1A/BF9E56/BF9E9C/C055B1, C0485A/C1C50F and C11964/C119BF in allocatorstream under freshscope. C1C50F needs wholeaudit first; no newclaim/implementation here.",
+    "TLS_PTDstream": "Use peer073c940c5 disjointgetter/lifetime/bootstrap filepartition. Root decides sharedBF66EF/codecownership; no overlapping workeredits.",
+    "capacity": "Primary+atmost3workers: free-lock, allocator, PTD-owner streams whileprimaryowns sharedtransport/dispatchercontracts. Not all proposedfiles independentreadyleaves.",
+    "phasing": "RealOSword/rawTLSgettercache publication precedes encoding; lock10/12bootstrap precedes lazyacquisition. Preserve partialfailure teardown. Actual mutuallyrecursive bodies may be dependency-pending drafts; no readybefore all reachedrealproviders delivered.",
+    "ownership": "Planningonly, no leases/Sourcewrites/renames/recoveredclasses. Recheck actualfile/addressleases before futurework."
+  },
+  "minimal_joint_work": {
+    "minimum_proved_coordinated_new_bodies": [
+      "00bf66ef",
+      "00bf9dc8",
+      "00bf9e56",
+      "00bf9f1a",
+      "00bffb8b",
+      "00c0481a",
+      "00c05070",
+      "00c050f8",
+      "00c051b7",
+      "00c055b1",
+      "00c11b5e",
+      "00c11c21",
+      "00c17653"
+    ],
+    "existing_operation_transport_seams": [
+      "00bfbab2",
+      "00bfbb61",
+      "00c04efb",
+      "00c04fde"
+    ],
+    "interpretation": "13 missing bodies plus4 existing-operation direct Original seams are jointly needed in this proved lower bound. Mutual recursion is finite work, not a permanent blocker. C04F67 and other existing genuine providers also remain actual dependencies.",
+    "not_yet_provider_complete": "No independently closed Original Source SCC is ready while callocimpl/fatal/prolog/dispatcher/locale/owners and dynamic native obligations remain. 17 is a lower bound, not minimal/maximal relative to unexpanded bodies.",
+    "gates": [
+      "Primary-approved same actual-state/import/direct errno-invalid-codec and outgoing/private-cell contract.",
+      "All reached whole genuine bodies, including live size/key/parameter reads, wrap/zero/error/returning-fatal paths, with no Source stubs/SDK replacements.",
+      "Exact lock arm/disarm/unwind/current-result schedules and owner lifetime; ordinary Source vs Original SEH/private ABI separated.",
+      "Real heap/TLS/locks cold publication/partial failure/teardown and actual native module/registered provider lifetime.",
+      "Future normal Win32 build/existing checks/byte/typed/full emitted review; Original frame/fault/runtime/game proof separate."
+    ]
+  },
+  "corrections": {
+    "C11B5E": "All62 current starts including C11BE7/BE8/BED/BF3/BF6/C11C02 verified; historical18B live-gap blocker RETRACTED, no repair by us. Actual Source dependency remains.",
+    "region": "Whole43B physical Source now genuine and published; false18B thunk+25B/CALL_RETURN boundary repair NOT PERFORMED. No bogus edge/rename/repair credit.",
+    "C17653": "197B physical,147B formal only; C176FE handler physical call was not defined/function-owned typedCALL in reused audit. No fresh typed claim."
+  },
+  "verified_current_provider_Source_pins": [
+    {
+      "path": "include/bsp/legacy_crt_math.hpp",
+      "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_canonical_failure.hpp",
+      "sha256": "79cf028656e03fe079cac7ced740ce5ea8a5a81fc4a8a722850a15c8195c0472",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_canonical_locale_reference.hpp",
+      "sha256": "fe9b3c9e075791cf44af4d40a043c264d73519c60ed72b06dcf7c16e9f3e6352",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_canonical_sbh_initialization.hpp",
+      "sha256": "20770571741fc8d5762b78a27b58476c86db9f5864783193dc489afe1a44ea9a",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json",
+        "current file pin; existing accepted provider only"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_canonical_unlock.hpp",
+      "sha256": "161dce16976cc0c2bdc10495d5a3c733600cfc6e2d75dc07f1363e5710802cdf",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_critical_section_primitives.hpp",
+      "sha256": "fd6703d4731b2e944bf7bed000cb833e563a0210a18934698f145dbee7138326",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_free_unlock_helper.hpp",
+      "sha256": "9cb0f84c8a7c4c08947f85c9cd2d354ee380135d35ef29be8cc842eb9b7b8753",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "current file pin; existing accepted provider only"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_libm_callback_registration.hpp",
+      "sha256": "96b1bf767f1b4de73a578f178de025f2c9199082e404ad3bf45e0ff695f58746",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_lock10_unlock_helper.hpp",
+      "sha256": "df2d76d1a2846f2af9bfac6c23548c9c1828d61eff29aa599d2709b6a3dd939b",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "current file pin; existing accepted provider only"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_memset.hpp",
+      "sha256": "82636e0cffb8c123053bd7e9778be85837d5f2bfae142bc8d788a089defcea1e",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_invalid_handler_readiness.json",
+        "current file pin; existing accepted provider only"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_os_error_map.hpp",
+      "sha256": "171c8174aa2c3b0f85042afbc29ffb234e2a05c1c0fc122fa42c7a1049e154fa",
+      "matches_current_file": true,
+      "provenance": [
+        "current file pin; existing accepted provider only"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_osplatform_getter.hpp",
+      "sha256": "70f8cfe604f464af3b9aa3e54f008beb546343d58f1c1e41b25b9fc64bb34f18",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_pointer_decode.hpp",
+      "sha256": "b1e901d739c07419b55441988bf42177b0e6ace3ef27ef1251ecb3b36fb48a7f",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_pointer_decode_support.hpp",
+      "sha256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_ptd_unlock_helper.hpp",
+      "sha256": "a71f8150e2fa5240273797c2a08f5dc735565bab0fa5eea390c98ee424d0e8cd",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_invalid_handler_readiness.json",
+        "current file pin; existing accepted provider only"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_sbh_allocation.hpp",
+      "sha256": "fdcaa8f9cc5debb28c12bb24464f71f34db09b1f235b2322cbf012ead01909a4",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json",
+        "current file pin; existing accepted provider only"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_sbh_free.hpp",
+      "sha256": "8523a3ebf37b07082f6a629750cb6284da2392e52c90fc8af0d552b4a63e951e",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json",
+        "current file pin; existing accepted provider only"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_sbh_region_lookup.hpp",
+      "sha256": "69923f4101ee323fa8d2276f684b4fbbf8269c904e2d051860c1f06d030506bc",
+      "matches_current_file": true,
+      "provenance": [
+        "current file pin; existing accepted provider only"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_sbh_state.hpp",
+      "sha256": "f1885df320b24d5f34da03b5fa527fcdb9b2d5190ccb6889ec2c324d17b30d58",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "current file pin; existing accepted provider only"
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_seh4_primitives.hpp",
+      "sha256": "def2584ce857931952278696a418e2b62a0d1b8a9f82cc61e82ae784cab28a86",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "src/legacy_crt_math.cpp",
+      "sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_crt_canonical_failure.cpp",
+      "sha256": "6d8bee1d3ba2e0fbfff1fcaca03ca35b8a5f933ff6995419f100e220802dc7ce",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_crt_canonical_locale_reference.cpp",
+      "sha256": "2b3c52296bf6295f09f423b7275cc4e5c74b0c25ab43b29e55def270215d1467",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_crt_canonical_sbh_initialization.cpp",
+      "sha256": "44ce326810241009bd9acf1280d7345d45e0d54755f0312800c27e7961cf199b",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_crt_canonical_unlock.cpp",
+      "sha256": "b2203a3e0def66f513f5bd0d8846a7ac21bb7e066015cf7f426d6e71165c6097",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_crt_critical_section_primitives.cpp",
+      "sha256": "404b1dc6f40dbd7762f10d5f97075c0545f66e7203653d15d36a9316839db8d6",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_crt_free_unlock_helper.cpp",
+      "sha256": "d61d134fc001427249f89fa6fa7842bff991e2afea83c2ad000a7483c4753b1b",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "current file pin; existing accepted provider only"
+      ]
+    },
+    {
+      "path": "src/native_crt_libm_callback_registration.cpp",
+      "sha256": "cacc140a243569c0d0828a309cf84c079fa12e30b1fc5124e703c44ed1716c32",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_crt_lock10_unlock_helper.cpp",
+      "sha256": "cab75f96d04559ee880d6465a723412a29ea1b82c4558d1967851b9b6bc13f2f",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "current file pin; existing accepted provider only"
+      ]
+    },
+    {
+      "path": "src/native_crt_memset.cpp",
+      "sha256": "d40837c0989ddb2e0958deec750c0b264e6475e8febaad590c5a4f35db55a0d9",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_crt_os_error_map.cpp",
+      "sha256": "ffb5b4aacda596c9607122b73f0aa512d1a043b85e1e157b2012fe8a02ef000e",
+      "matches_current_file": true,
+      "provenance": [
+        "current file pin; existing accepted provider only"
+      ]
+    },
+    {
+      "path": "src/native_crt_osplatform_getter.cpp",
+      "sha256": "c1cddc1b6bc3781c40a8f3313ce602f10c80d7306c35b99545420758ed10cfba",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_crt_pointer_decode.cpp",
+      "sha256": "7a689a80bea666aa0941662a1bbde17500c92d1f7fd671c364aa2b3e0bf365c7",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_crt_pointer_decode_support.cpp",
+      "sha256": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_crt_ptd_unlock_helper.cpp",
+      "sha256": "bed127cdf56c7e19b8ce0248e45779bfaf66fff9c83fb5d0deae4e08817cddbc",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_crt_sbh_allocation.cpp",
+      "sha256": "579963791173dd808d51683336edf5d1471593314659613183942cebed27191a",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_crt_sbh_free.cpp",
+      "sha256": "e3eeffb7ff77f8a52bdb74931958f6923ef36bc05e70e6f25d8b6708d0ebaaed",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_crt_sbh_region_lookup.cpp",
+      "sha256": "2e4c0957b3288a1fc57b3c3726d5e73918eee9b0ebb330d3036d60566cca198e",
+      "matches_current_file": true,
+      "provenance": [
+        "current file pin; existing accepted provider only"
+      ]
+    },
+    {
+      "path": "src/native_crt_seh4_primitives.cpp",
+      "sha256": "2557fbce9dfc10e1deb7a4158bb7e9f31fcd62b5c22a8e1f67e66c836bf4fb95",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_dyn_narrow_phase.cpp",
+      "sha256": "367307f34945bb3d15f1086ea0026e595ab5a92b855c9f722d20958ab0a30bb4",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_dyn_sap_lifetime.cpp",
+      "sha256": "89c8be58800b2a6e738fc8e626c7169de57fc11ae3b7676563e4bc19d8d7142b",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_lock_acquisition_readiness.json"
+      ]
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "matches_current_file": true,
+      "provenance": [
+        "reports/goal_oct15_crt_malloc_readiness.json",
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ]
+    }
+  ],
+  "verification": {
+    "input_reports_hashed": true,
+    "stored_prior_pin_comparisons": 79,
+    "unique_current_pinned_files": 43,
+    "all_prior_pins_match": true,
+    "new_live_Ghidra_queries": 0,
+    "new_Ghidra_mutations": 0,
+    "Source_changes": 0,
+    "new_exports": 0,
+    "new_builds": 0,
+    "new_tests": 0,
+    "native_execution": 0,
+    "JSON_parse": "passed; finite manifests/counts/false readiness gates asserted",
+    "diff_check": "passed: git diff --cached --check; final metadata-only status also rechecked"
+  },
+  "conclusion": "Finite actual shared-state/dependency/function contract for root-coordinated joint Original reconstruction. Genuine existing algorithms reusable; unresolved owner/error/private transport boundaries explicit. SourceReady and Original heap/free/lock/errno/TLS/SEH/runtime/game remain false."
+}
