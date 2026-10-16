@@ -40,7 +40,7 @@ counts, alignment and private frames remain separate.
 
 Default MSVC Win32 Source c3a85412535133e10bab58e0f5da0ae2219cc0d5 passed all three
 existing suites in12.95s. These cover older math/tools; no new test or
-Native execution was added. Independent bounded review is pending.
+Native execution was added. Independent Source/Native/actual CMake peer review passed22 checks, no findings.
 
 Source uses current SDK handler policy and different private frames/arguments.
 Original CRT/heap/handler/FH3/SEH/RTTI/fault/register/flags/binary ABI and game
