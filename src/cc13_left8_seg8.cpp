@@ -890,9 +890,11 @@ void traffic_manager_destruct_0049f0e0(Left8Host& host, Object manager) {
     });
 }
 
-// 0049F260 __fastcall(object), RET: when [+0Ch] is set, tail call 0049E560(object).
+// 0049F260 ECX = outer object, RET: load ECX = [outer+0Ch] once, then
+// conditionally tail-call 0049E560 with that CURRENT INNER receiver.
 void traffic_refresh_if_set_0049f260(Left8Host& host, Object object) {
-    if (at<std::uint32_t>(object, 0xc) != 0) host.traffic_layers_rebuild_0049e560(object);
+    const Object current = obj(at<std::uint32_t>(object, 0xc));
+    if (current != nullptr) host.traffic_layers_rebuild_0049e560(current);
 }
 
 // 0049F9B0 __fastcall(record), RET, EAX = record: the 4Ch traffic record

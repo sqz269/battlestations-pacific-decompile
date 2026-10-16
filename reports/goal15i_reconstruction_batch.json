@@ -1,0 +1,496 @@
+{
+  "batch": "GOAL15I",
+  "status": "integrated_source_registered_build_and_fixtures_verified",
+  "validated_source_commit": "481903ebf4c4bca3dd1866eddcd1fd196f1145a4",
+  "registered_modules": [
+    "src/native_avoid_bounds_include.cpp",
+    "src/native_avoid_clip_cleanup.cpp",
+    "src/native_avoid_zone_winding.cpp"
+  ],
+  "functions": [
+    {
+      "address": "00415010",
+      "physical_bytes": 127
+    },
+    {
+      "address": "004167c0",
+      "physical_bytes": 56
+    },
+    {
+      "address": "00412ef0",
+      "physical_bytes": 14
+    },
+    {
+      "address": "00412dc0",
+      "physical_bytes": 26
+    },
+    {
+      "address": "0041a200",
+      "physical_bytes": 729
+    },
+    {
+      "address": "00419260",
+      "physical_bytes": 117
+    },
+    {
+      "address": "00438b10",
+      "physical_bytes": 110
+    }
+  ],
+  "coverage": {
+    "complete_raw_entries": 7,
+    "modules": 3,
+    "physical_bytes": 1179,
+    "admitted_body_bytes": 1173,
+    "skipped_padding_bytes": 6,
+    "fixed_bytes_verified": 1095,
+    "verified_call_operands": 11,
+    "verified_readonly_data_operands": 10
+  },
+  "analysis_only": {
+    "addresses": [
+      "0041ccd0",
+      "0041d1e0"
+    ],
+    "receipt": "reports/goal15i_avoid_construction_readiness.json",
+    "new_parent_source": false,
+    "peer_review": "Bounds and construction contracts reviewed independently; actual interleaved world load order corrected before integration"
+  },
+  "byte_proof": {
+    "bounds": {
+      "object": "build\\win32\\bsp_core.dir\\Release\\native_avoid_bounds_include.obj",
+      "sha256": "58b54cef537e592ffe6384099e50b642cef876d33e70c3566e22e35afb0333f7",
+      "exact_coff_live_disk_bytes": 127,
+      "masked_operands": 0,
+      "owned_relocations": 0,
+      "limits": "literal Source body evidence; no Native stack-address/object/FP-environment/game compatibility claim"
+    },
+    "cleanup": {
+      "pass": true,
+      "bytes": 96,
+      "fixed_bytes": 84,
+      "call_operands": 3,
+      "command": "python ../battlestations-pacific-decompile-goal15_pool_cleanup/local/goal15i_avoid_clip_cleanup/compare_bytes.py build/win32/bsp_core.dir/Release/native_avoid_clip_cleanup.obj",
+      "scope": "all COFF/live/installed-PE bytes and exact original targets, REL32 types, actual singleton_lifetime_free symbol verified"
+    },
+    "winding": {
+      "object": "build\\win32\\bsp_core.dir\\Release\\native_avoid_zone_winding.obj",
+      "object_sha256": "50d1ce208f577c5113d6b3ad43620548cd34154dd58d638cf9a1d182e6abb32a",
+      "functions": [
+        {
+          "address": "0041a200",
+          "symbol": "?derive_native_avoid_zone_0041a200@bsp@@YI_NPAX0I@Z",
+          "bytes": 729,
+          "fixed_bytes": 677,
+          "native_sha256": "04302f5576437740b73ec4f142dd8aac23ade12ed9075ceadaa665b83c1a16ad",
+          "coff_body_sha256": "a9626dd38d28e2bb0b65009df8e29eab6c098e1a05ab7ebb012934d9d75fe6a2",
+          "bindings": [
+            {
+              "offset": 194,
+              "role": "call",
+              "native_target": "00419260",
+              "source_symbol": "?reciprocal_length_native_vector2_00419260@bsp@@YIMPBMPAX@Z",
+              "source_section": 5,
+              "provider": "defined_actual_raw_Source"
+            },
+            {
+              "offset": 274,
+              "role": "data",
+              "native_target": "00ce3820",
+              "source_symbol": "?squared_length_cutoff_00ce3820@?A0x322b952b@bsp@@3_KB",
+              "source_section": 3,
+              "readonly": true,
+              "payload_hex": "bbbdd7d9df7cdb3d"
+            },
+            {
+              "offset": 289,
+              "role": "call",
+              "native_target": "00bf7030",
+              "source_symbol": "__CIsqrt",
+              "source_section": 0,
+              "provider": "genuine_current_UCRT_x87_external_service"
+            },
+            {
+              "offset": 381,
+              "role": "call",
+              "native_target": "00bf701a",
+              "source_symbol": "__CIatan2",
+              "source_section": 0,
+              "provider": "genuine_current_UCRT_x87_external_service"
+            },
+            {
+              "offset": 395,
+              "role": "data",
+              "native_target": "00ce3830",
+              "source_symbol": "?quarter_turn_00ce3830@?A0x322b952b@bsp@@3_KB",
+              "source_section": 3,
+              "readonly": true,
+              "payload_hex": "00000060fb21f93f"
+            },
+            {
+              "offset": 415,
+              "role": "data",
+              "native_target": "00ce3828",
+              "source_symbol": "?full_turn_00ce3828@?A0x322b952b@bsp@@3_KB",
+              "source_section": 3,
+              "readonly": true,
+              "payload_hex": "00000060fb211940"
+            },
+            {
+              "offset": 436,
+              "role": "call",
+              "native_target": "00bf701a",
+              "source_symbol": "__CIatan2",
+              "source_section": 0,
+              "provider": "genuine_current_UCRT_x87_external_service"
+            },
+            {
+              "offset": 450,
+              "role": "data",
+              "native_target": "00ce3830",
+              "source_symbol": "?quarter_turn_00ce3830@?A0x322b952b@bsp@@3_KB",
+              "source_section": 3,
+              "readonly": true,
+              "payload_hex": "00000060fb21f93f"
+            },
+            {
+              "offset": 470,
+              "role": "data",
+              "native_target": "00ce3828",
+              "source_symbol": "?full_turn_00ce3828@?A0x322b952b@bsp@@3_KB",
+              "source_section": 3,
+              "readonly": true,
+              "payload_hex": "00000060fb211940"
+            },
+            {
+              "offset": 497,
+              "role": "call",
+              "native_target": "00438b10",
+              "source_symbol": "?subtract_native_wrapped_angle_00438b10@bsp@@YGMMM@Z",
+              "source_section": 6,
+              "provider": "defined_actual_raw_Source"
+            },
+            {
+              "offset": 558,
+              "role": "call",
+              "native_target": "00419260",
+              "source_symbol": "?reciprocal_length_native_vector2_00419260@bsp@@YIMPBMPAX@Z",
+              "source_section": 5,
+              "provider": "defined_actual_raw_Source"
+            },
+            {
+              "offset": 641,
+              "role": "data",
+              "native_target": "00d7a218",
+              "source_symbol": "?zero_00d7a218@?A0x322b952b@bsp@@3IB",
+              "source_section": 3,
+              "readonly": true,
+              "payload_hex": "00000000"
+            },
+            {
+              "offset": 703,
+              "role": "call",
+              "native_target": "0041a200",
+              "source_symbol": "?derive_native_avoid_zone_0041a200@bsp@@YI_NPAX0I@Z",
+              "source_section": 4,
+              "provider": "defined_actual_raw_Source"
+            }
+          ]
+        },
+        {
+          "address": "00419260",
+          "symbol": "?reciprocal_length_native_vector2_00419260@bsp@@YIMPBMPAX@Z",
+          "bytes": 117,
+          "fixed_bytes": 113,
+          "native_sha256": "849731764d807ebf37050dfe0c941d1f1e2b40c7b333a95da105a02a185e4bba",
+          "coff_body_sha256": "540a9d6d0554c8b3b6c99a5e190c3bffebb1802457df9930cc40f02dc1352bc0",
+          "bindings": [
+            {
+              "offset": 55,
+              "role": "call",
+              "native_target": "00bf7030",
+              "source_symbol": "__CIsqrt",
+              "source_section": 0,
+              "provider": "genuine_current_UCRT_x87_external_service"
+            }
+          ]
+        },
+        {
+          "address": "00438b10",
+          "symbol": "?subtract_native_wrapped_angle_00438b10@bsp@@YGMMM@Z",
+          "bytes": 110,
+          "fixed_bytes": 94,
+          "native_sha256": "0327308c667025b3b21d8df0f905cfa41e63dd1e7fe7007c39d7028bd9bd173b",
+          "coff_body_sha256": "2fc1e0b6d25a02ef5ae3aacd5c75757ad1c5f30e9cfd1de5219295bdeba10c8a",
+          "bindings": [
+            {
+              "offset": 18,
+              "role": "data",
+              "native_target": "00ce3d18",
+              "source_symbol": "?negative_half_turn_00ce3d18@?A0x322b952b@bsp@@3_KB",
+              "source_section": 3,
+              "readonly": true,
+              "payload_hex": "00000060fb2109c0"
+            },
+            {
+              "offset": 28,
+              "role": "data",
+              "native_target": "00ce3828",
+              "source_symbol": "?full_turn_00ce3828@?A0x322b952b@bsp@@3_KB",
+              "source_section": 3,
+              "readonly": true,
+              "payload_hex": "00000060fb211940"
+            },
+            {
+              "offset": 67,
+              "role": "data",
+              "native_target": "00ce3d28",
+              "source_symbol": "?half_turn_00ce3d28@?A0x322b952b@bsp@@3_KB",
+              "source_section": 3,
+              "readonly": true,
+              "payload_hex": "00000060fb210940"
+            },
+            {
+              "offset": 79,
+              "role": "data",
+              "native_target": "00ce3828",
+              "source_symbol": "?full_turn_00ce3828@?A0x322b952b@bsp@@3_KB",
+              "source_section": 3,
+              "readonly": true,
+              "payload_hex": "00000060fb211940"
+            }
+          ]
+        }
+      ],
+      "total_bytes": 956,
+      "fixed_bytes": 884,
+      "bindings": 18,
+      "pass_all": true,
+      "limits": "Current CRT import identity/behavior is separate from Native private CRT identity; no game execution."
+    }
+  },
+  "validation": {
+    "build": "PASS scripts/build.ps1, MSVC Win32 Release",
+    "tests": {
+      "reconstructed_math": "PASS",
+      "native_math_differential": "PASS",
+      "tool_tests": "PASS"
+    },
+    "call_relationships": {
+      "bounds": 2,
+      "cleanup": 14,
+      "winding": 8,
+      "parent_readiness": 24,
+      "total_report_rows": 48,
+      "cleanup_markdown_claims": 16,
+      "failures": 0,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "new_tracked_tests": 0,
+    "archive_only_fixtures": {
+      "bounds": {
+        "receipt": "local\\goal15i_bounds_probe_result.json",
+        "receipt_sha256": "f46338f6573b16e86be4ebb8f3e1f34b3af329ae399f10dc6522d27dc9b5cd90",
+        "kind": "Source fixture linked against registered archive and real current services",
+        "manifest_embedded": true,
+        "exit_code": 0,
+        "stdout": "PASS Source raw bounds: alias reread after prior store and actual incoming point word reused for float spill\n",
+        "stderr": "",
+        "sha256": {
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_bounds\\bounds_probe.cpp": "bfbec4dd736db2488d3fc1f1ed58ed477eb0a506e69db800c72751da21846e1a",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_bounds_probe.obj": "857bc9131a4f31f8b2ef84163605a2e656a90058592a7ac546d2cc324c8b38ee",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_bounds_probe.exe": "9eccc3c3e2bbc420cabc0c2d728fe0c7179d7141082a488e544039a7bb62ebfb",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "83fa654c8f64fc66ccd88da26d50b8fadd50de4f594fcb1ac32e111c239647ec",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+        }
+      },
+      "cleanup": {
+        "receipt": "local\\goal15i_cleanup_probe_result.json",
+        "receipt_sha256": "3cf22ab84766c20250f2d2e3aea1720ce361dfa727cf06bda5ab303c165d2be8",
+        "kind": "Source fixture linked against registered archive and real current services",
+        "manifest_embedded": true,
+        "exit_code": 0,
+        "stdout": "Avoid clip cleanup Source composition: PASS (real records/count, retained array/metadata, current-cell free without reset, free-and-clear preserves trailing fields)\n",
+        "stderr": "",
+        "sha256": {
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_pool_cleanup\\local\\goal15i_avoid_clip_cleanup\\cleanup_probe.cpp": "bbfb6edce1b835e565c48b3f4bbd06fb4aedabd2f4b111fffc5b213eae5156fa",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_cleanup_probe.obj": "8fb995289276791ba2da6e2c368508aab977baefc548860fb37de814fe2b5879",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_cleanup_probe.exe": "b39594702468cb0b779d634999f20bc1b5fec87d12be33a27a37d50418694277",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "83fa654c8f64fc66ccd88da26d50b8fadd50de4f594fcb1ac32e111c239647ec",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+        }
+      },
+      "winding": {
+        "receipt": "local\\goal15i_winding_probe_result.json",
+        "receipt_sha256": "c45c2b59c287d3d368af2fe44be2ca87928513e7d73169ec76c3cb57c41e4aee",
+        "kind": "Source fixture linked against registered archive and real current services",
+        "manifest_embedded": true,
+        "exit_code": 0,
+        "stdout": "winding probe: failures=0; complete raw/current-CRT comparison, ownership, flag byte, wrap and FP checks\n",
+        "stderr": "",
+        "sha256": {
+          "J:\\PROG\\battlestations-pacific-decompile-goal15f_pod8\\local\\goal15i_avoid_winding\\winding_probe.cpp": "4ba332bdf59f15e44ede8a47ed0fa00d451b2eb59ea2f56b2673e0c361fd8a6a",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_winding_probe.obj": "e3fca20919d1104b4c94d7044a086293aeef4da59d2eaeb34f7a23bd0f6e70a1",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_winding_probe.exe": "455783070984d7fcc2a69611325b989bb300c6602ea3134a9fa5d06b820939f8",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "83fa654c8f64fc66ccd88da26d50b8fadd50de4f594fcb1ac32e111c239647ec",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+        }
+      }
+    },
+    "actual_winding_imports": [
+      {
+        "dll": "api-ms-win-crt-math-l1-1-0.dll",
+        "name": "_CIatan2"
+      },
+      {
+        "dll": "api-ms-win-crt-math-l1-1-0.dll",
+        "name": "_CIsqrt"
+      }
+    ]
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "physical_original_prototypes_corrected": 9,
+    "old_values_preserved": [
+      "local/goal15h_annotations_00415010.json",
+      "local/goal15h_annotations_0041a200.json"
+    ],
+    "names_and_existing_comments_preserved": true,
+    "save": "PASS",
+    "export_plan": {
+      "owned_source": [
+        "00415010",
+        "004167c0",
+        "00412ef0",
+        "00412dc0",
+        "0041a200",
+        "00419260",
+        "00438b10"
+      ],
+      "analysis_only": [
+        "0041ccd0",
+        "0041d1e0"
+      ],
+      "affected_exports": [
+        "00412dc0",
+        "00412ef0",
+        "00415010",
+        "00415970",
+        "004167c0",
+        "00419260",
+        "00419ab0",
+        "0041a1e0",
+        "0041a200",
+        "0041a540",
+        "0041aea0",
+        "0041b470",
+        "0041c490",
+        "0041ccd0",
+        "0041d150",
+        "0041d1e0",
+        "00422500",
+        "00423190",
+        "00424d00",
+        "00438b10",
+        "004f4520",
+        "004f4880",
+        "004f4b50",
+        "0059f7c0",
+        "006c0840",
+        "006c3b10",
+        "006c5c40",
+        "006c5e20",
+        "006c6020",
+        "00758090",
+        "00795180",
+        "007b11f0",
+        "007dcdd0",
+        "0093eae0",
+        "00996270",
+        "00996510",
+        "009a1fc0",
+        "009a2170",
+        "009a3cf0",
+        "009a4010",
+        "009a4940",
+        "009a5f50",
+        "009a8b20",
+        "009afaf0",
+        "009b21d0",
+        "009bee30",
+        "009bfee0",
+        "009c47d0",
+        "009c4f80",
+        "009c5180",
+        "009c58d0",
+        "009c62b0",
+        "009c8d40",
+        "009c9310",
+        "009de2f0",
+        "009df2d0",
+        "009eafc0",
+        "009fa620",
+        "009fa7e0",
+        "00abced0",
+        "00ba2ff0",
+        "00baa670",
+        "00baba50",
+        "00c5e130",
+        "00c5e150",
+        "00c5e15b",
+        "00c5e190"
+      ],
+      "count": 67,
+      "scope": "reviewed functions plus direct caller union; no invented interior functions"
+    },
+    "snapshot_and_index": "PASS saved project, forced snapshot and index refreshed after67 exports"
+  },
+  "artifacts": {
+    "inputs_sha256": {
+      "src\\native_avoid_bounds_include.cpp": "a1fe53c787198c573584018da9a3c14eb62a5efb5da090ca304e1e2fefbf28cf",
+      "include\\bsp\\native_avoid_bounds_include.hpp": "5ff8d5bd34d2c3563346aff6f41ac55503473340ec18ed53f189148aea6dbc37",
+      "src\\native_avoid_clip_cleanup.cpp": "98a5e05252776765c3e036a80dfd68a3981659c3ac83521d4d202cefe74621fe",
+      "include\\bsp\\native_avoid_clip_cleanup.hpp": "874ada556a42cd64963ea5eb66b3834d6eeaa0efabf0fa2c31403ad4ef4247b3",
+      "src\\native_avoid_zone_winding.cpp": "02e7d657ccd38f034299d3f80d071561afc1ea8977dcb272c857ab5d20127552",
+      "include\\bsp\\native_avoid_zone_winding.hpp": "133944192abcec399fea833048b9924ca53c6f87cc680bcdfa5e86d61842ef99"
+    },
+    "registered_objects_sha256": {
+      "build\\win32\\bsp_core.dir\\Release\\native_avoid_bounds_include.obj": "58b54cef537e592ffe6384099e50b642cef876d33e70c3566e22e35afb0333f7",
+      "build\\win32\\bsp_core.dir\\Release\\native_avoid_clip_cleanup.obj": "8ddfddee52ad0a79053f47ec270d5a3bf74c8d69ce5e4fc16ab7871fb8fdfc80",
+      "build\\win32\\bsp_core.dir\\Release\\native_avoid_zone_winding.obj": "50d1ce208f577c5113d6b3ad43620548cd34154dd58d638cf9a1d182e6abb32a"
+    },
+    "registered_archive_sha256": "83fa654c8f64fc66ccd88da26d50b8fadd50de4f594fcb1ac32e111c239647ec",
+    "build_log": "local/goal15i_registered_build.log",
+    "build_log_sha256": "536fb8271ce45dce56ca6fcaa348044946e1b8a515cd7dd0db8d862ae61098e5",
+    "winding_fixture_bytes_header_sha256": "962a8a57e1957f5d5d067c41fc80dd884aeff6ea00997794318950c183ae6191"
+  },
+  "separate_work": {
+    "0041a540": "Full1812-byte clipping Source remains a separate worker packet; not registered or counted in this batch"
+  },
+  "limits": [
+    "Source interfaces are not installed binary replacement ABI proof",
+    "Current linked CRT allocation/free and hidden-x87 math services are genuine; Native private CRT state/dispatch/exception identity remains incomplete",
+    "Captured-body winding fixture uses the same current CI services on both sides, not installed private CRT",
+    "No Native SEH/FH3 or frame/address identity proof",
+    "Bounded fixtures do not prove all alias/trap/exception states",
+    "No live game or gameplay validation"
+  ],
+  "publication_review": {
+    "source_inputs_and_registered_archive_unchanged": true,
+    "post_validation_changes": [
+      "docs/CC12_NATIVE_FONT_HOST_ADOPTION_36.md",
+      "docs/CC12_NATIVE_FONT_RUNTIME_REVIEW_36.md",
+      "reports/cc12_native_font_host_adoption_36.json",
+      "reports/cc12_native_font_runtime_review_36.json",
+      "reports/goal15i_reconstruction_batch.json"
+    ],
+    "main_metadata_base": "e4a8389ed17c09c70908a4c2a0efea9d59ae4e90",
+    "no_main_index_or_worktree_repair_performed_by_this_agent": true
+  }
+}

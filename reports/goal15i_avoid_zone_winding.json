@@ -1,0 +1,609 @@
+{
+  "packet": "goal15i_avoid_winding",
+  "worker": "agent/goal15f_pod8",
+  "utc": "2026-10-15T23:55:22.759758+00:00",
+  "source_base": "d321a74881fbbb64f498e6b4cd960712cbb68466",
+  "status": "complete_raw_x87_strict_coff_and_current_crt_fixture_verified_pending_primary_registration",
+  "source": "src/native_avoid_zone_winding.cpp",
+  "header": "include/bsp/native_avoid_zone_winding.hpp",
+  "documentation": "docs/GOAL15I_AVOID_ZONE_WINDING.md",
+  "functions": [
+    {
+      "address": "0041a200",
+      "end_inclusive": "0041a4d8",
+      "name": "derive_native_avoid_zone_0041a200",
+      "retained_native_name": "BSP_AvoidZone_DeriveCornerGeometryAndWinding",
+      "source": "src/native_avoid_zone_winding.cpp",
+      "header": "include/bsp/native_avoid_zone_winding.hpp",
+      "coverage": "complete_function",
+      "status": "complete_raw_x87_strict_coff_and_current_crt_fixture_verified_pending_primary_registration",
+      "physical_span_bytes": 729,
+      "original_abi": "ECX actual zone pointer;one stack DWORD with low-byte flag;AL bool;RET4;EAX high bits incidental",
+      "source_abi": "bool fastcall(void*,void*unused_edx,uint32 flagword);unused EDX is only Source adapter",
+      "semantics": "Complete geometry, alias-sensitive reloads, modulo-DWORD end, x87 spills/calls/stores, signed reversal and recursive flag0 pass;outer positive pass still AL0.",
+      "native_bytes_hex": "83ec440f57c053568bf18b46048b0e578b3e8d14813bfaf30f114424140f84ab020000558b460485c075048b16eb163b3e750d8b4e048b168d048a83c0fceb038d47fc8bd08b460485c075048b0eeb208b068b4e048d0c8883c1fc3bf9740f8b068b4e048d0c883bf974038d47048bc88b02d9008b1fd95c243cd940048b01f30f1000d95c2440d903f30f11442444f30f104004d95c2424d943048d4c2434d95c2428f30f11442448d9442424d864243cd95c2434d9442428d8642440d95c2438e89aefffffd95c2414d9442434d9442414d9c0decad9c9d95c242cd84c2438d95c2430d9442444d8642424d95c241cd9442448d8642428d95c2420d944241cd9442420dcc8d9c1decadec1d95c2414dd052038ce00d9442414dbf1ddd97619e80bcd7d00d95c2414d9442414d95c2414f30f10442414eb050f57c0ddd8f30f1143188b07d94018d95c2414d944241cd9442414d9c0defad9c9d95c241cd87c2420d95c2420d944241cd95808d9442420d9580cd9442430d944242ce899cc7d00d95c2414d9442414dc2d3038ce00d95c2414d9442414d9eedff1760cdc052838ce00d95c2414eb02ddd8d9442420d944241ce862cc7d00d95c2410d9442410dc2d3038ce00d95c2410d9442410d9eedff1760edc052838ce00d95c2410d9442410d944241483ec08d95c2404d91c24e81be701008b17d95a1c8b07d944242cd844241cd95c241cd9442430d8442420d95c2420d9442420d958108b0fd944241cd9e0d959148b2f8d5d108bcbe82eeeffffd95c2414d90383c704d9442414d9c0decad9c9d95c244cd84b04d95c2450d944244cd91bd9442450d95b048b5604d9451c8b06d84424188d0c903bf9d95c24180f85acfdfffff30f104424180f2f0518a2d7005d7646807c24540074348b460483e80133c985c07e1feb038d49008b168b1c828b3c8a891c8a8b16893c8283c10183e8013bc17fe66a008bcee83dfdffff5f5e32c05b83c444c204005f5eb0015b83c444c20400"
+    },
+    {
+      "address": "00419260",
+      "end_inclusive": "004192d4",
+      "name": "reciprocal_length_native_vector2_00419260",
+      "retained_native_name": "BSP_Vector2f_ReciprocalLength",
+      "source": "src/native_avoid_zone_winding.cpp",
+      "header": "include/bsp/native_avoid_zone_winding.hpp",
+      "coverage": "complete_function",
+      "status": "complete_raw_x87_strict_coff_and_current_crt_fixture_verified_pending_primary_registration",
+      "physical_span_bytes": 117,
+      "original_abi": "ECX actual two-float vector;no consumed EDX or stack input;ST0 result;RET",
+      "source_abi": "float fastcall(const float*,void*unused_edx);actual current UCRT _CIsqrt x87 service",
+      "semantics": "Complete square/sum/sqrt float spills and FUCOMIP/LAHF/TEST AH44/JP reciprocal-or-zero schedule;no borrowed CRT callbacks.",
+      "native_bytes_hex": "83ec08d901d95c2404d94104d91c24d90424d9442404dcc8d95c2404d9442404d9c1decad9c9d95c2404d8442404d95c2404d9442404e895dd7d00d95c2404d9442404d95c2404d9442404d9c0d9eed9c0d9cadfeaddd99ff6c4447a06ddd983c408c3ddd8d9e8def1d95c2404d944240483c408c3"
+    },
+    {
+      "address": "00438b10",
+      "end_inclusive": "00438b7d",
+      "name": "subtract_native_wrapped_angle_00438b10",
+      "retained_native_name": "BSP_Math_SubtractWrappedAngle",
+      "source": "src/native_avoid_zone_winding.cpp",
+      "header": "include/bsp/native_avoid_zone_winding.hpp",
+      "coverage": "complete_function",
+      "status": "complete_raw_x87_strict_coff_and_current_crt_fixture_verified_pending_primary_registration",
+      "physical_span_bytes": 110,
+      "original_abi": "two stack float words;ST0 result;RET8",
+      "source_abi": "float stdcall(float,float);complete literal x87 leaf",
+      "semantics": "Complete subtraction and repeated float-spilled x87 wraps with float-rounded double pi constants;no finite guard or loop bound.",
+      "native_bytes_hex": "d9442404d8642408d95c2404d9442404dd05183dce00dbf17225dd052838ce00eb04d9c9d9cadcc2d9cad95c2404d9442404d9c9dbf173eaddd8ddd9c20800ddd8dd05283dce00d9c9dbf176eddd052838ce00eb02d9c9dce9d9c9d95c2404d9442404dbf277eedddaddd8c20800"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0041a2c1",
+      "native": "00419260",
+      "function": "0041a200",
+      "source_symbol": "?reciprocal_length_native_vector2_00419260@bsp@@YIMPBMPAX@Z",
+      "provider": "defined_actual_raw_Source",
+      "contract": "Physical hidden-x87/raw ABI retained; current CRT external service where applicable."
+    },
+    {
+      "address": "0041a320",
+      "native": "00bf7030",
+      "function": "0041a200",
+      "source_symbol": "__CIsqrt",
+      "provider": "genuine_current_UCRT_x87_external_service",
+      "contract": "Physical hidden-x87/raw ABI retained; current CRT external service where applicable."
+    },
+    {
+      "address": "0041a37c",
+      "native": "00bf701a",
+      "function": "0041a200",
+      "source_symbol": "__CIatan2",
+      "provider": "genuine_current_UCRT_x87_external_service",
+      "contract": "Physical hidden-x87/raw ABI retained; current CRT external service where applicable."
+    },
+    {
+      "address": "0041a3b3",
+      "native": "00bf701a",
+      "function": "0041a200",
+      "source_symbol": "__CIatan2",
+      "provider": "genuine_current_UCRT_x87_external_service",
+      "contract": "Physical hidden-x87/raw ABI retained; current CRT external service where applicable."
+    },
+    {
+      "address": "0041a3f0",
+      "native": "00438b10",
+      "function": "0041a200",
+      "source_symbol": "?subtract_native_wrapped_angle_00438b10@bsp@@YGMMM@Z",
+      "provider": "defined_actual_raw_Source",
+      "contract": "Physical hidden-x87/raw ABI retained; current CRT external service where applicable."
+    },
+    {
+      "address": "0041a42d",
+      "native": "00419260",
+      "function": "0041a200",
+      "source_symbol": "?reciprocal_length_native_vector2_00419260@bsp@@YIMPBMPAX@Z",
+      "provider": "defined_actual_raw_Source",
+      "contract": "Physical hidden-x87/raw ABI retained; current CRT external service where applicable."
+    },
+    {
+      "address": "0041a4be",
+      "native": "0041a200",
+      "function": "0041a200",
+      "source_symbol": "?derive_native_avoid_zone_0041a200@bsp@@YI_NPAX0I@Z",
+      "provider": "defined_actual_raw_Source",
+      "contract": "Physical hidden-x87/raw ABI retained; current CRT external service where applicable."
+    },
+    {
+      "address": "00419296",
+      "native": "00bf7030",
+      "function": "00419260",
+      "source_symbol": "__CIsqrt",
+      "provider": "genuine_current_UCRT_x87_external_service",
+      "contract": "Physical hidden-x87/raw ABI retained; current CRT external service where applicable."
+    }
+  ],
+  "native_capture": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ranges": [
+      {
+        "address": "0041a200",
+        "length": 729,
+        "live_matches_installed_pe": true,
+        "sha256": "04302f5576437740b73ec4f142dd8aac23ade12ed9075ceadaa665b83c1a16ad",
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "0041a200",
+          "--length",
+          "729"
+        ]
+      },
+      {
+        "address": "00419260",
+        "length": 117,
+        "live_matches_installed_pe": true,
+        "sha256": "849731764d807ebf37050dfe0c941d1f1e2b40c7b333a95da105a02a185e4bba",
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00419260",
+          "--length",
+          "117"
+        ]
+      },
+      {
+        "address": "00438b10",
+        "length": 110,
+        "live_matches_installed_pe": true,
+        "sha256": "0327308c667025b3b21d8df0f905cfa41e63dd1e7fe7007c39d7028bd9bd173b",
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00438b10",
+          "--length",
+          "110"
+        ]
+      },
+      {
+        "address": "00ce3820",
+        "length": 24,
+        "live_matches_installed_pe": true,
+        "sha256": "577cdbad96c6819374cc96c2e84fbe731b1fbc1263f297ee964bb30f727336db",
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00ce3820",
+          "--length",
+          "24"
+        ]
+      },
+      {
+        "address": "00ce3d18",
+        "length": 24,
+        "live_matches_installed_pe": true,
+        "sha256": "a45459c8af742a148bf980255d89f223ae73fccdc27ab3e6b378b7106471d36a",
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00ce3d18",
+          "--length",
+          "24"
+        ]
+      },
+      {
+        "address": "00d7a218",
+        "length": 4,
+        "live_matches_installed_pe": true,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00d7a218",
+          "--length",
+          "4"
+        ]
+      }
+    ]
+  },
+  "coff": {
+    "object": "J:\\PROG\\battlestations-pacific-decompile-goal15f_pod8\\local\\goal15i_avoid_winding\\native_avoid_zone_winding.obj",
+    "object_sha256": "d4cb7e2145deddfaa063c0771dad8bf87a7cec72499e9bd4f74f6372e9c1f2ba",
+    "functions": [
+      {
+        "address": "0041a200",
+        "symbol": "?derive_native_avoid_zone_0041a200@bsp@@YI_NPAX0I@Z",
+        "bytes": 729,
+        "fixed_bytes": 677,
+        "native_sha256": "04302f5576437740b73ec4f142dd8aac23ade12ed9075ceadaa665b83c1a16ad",
+        "coff_body_sha256": "a9626dd38d28e2bb0b65009df8e29eab6c098e1a05ab7ebb012934d9d75fe6a2",
+        "bindings": [
+          {
+            "offset": 194,
+            "role": "call",
+            "native_target": "00419260",
+            "source_symbol": "?reciprocal_length_native_vector2_00419260@bsp@@YIMPBMPAX@Z",
+            "source_section": 5,
+            "provider": "defined_actual_raw_Source"
+          },
+          {
+            "offset": 274,
+            "role": "data",
+            "native_target": "00ce3820",
+            "source_symbol": "?squared_length_cutoff_00ce3820@?A0x76399d74@bsp@@3_KB",
+            "source_section": 3,
+            "readonly": true,
+            "payload_hex": "bbbdd7d9df7cdb3d"
+          },
+          {
+            "offset": 289,
+            "role": "call",
+            "native_target": "00bf7030",
+            "source_symbol": "__CIsqrt",
+            "source_section": 0,
+            "provider": "genuine_current_UCRT_x87_external_service"
+          },
+          {
+            "offset": 381,
+            "role": "call",
+            "native_target": "00bf701a",
+            "source_symbol": "__CIatan2",
+            "source_section": 0,
+            "provider": "genuine_current_UCRT_x87_external_service"
+          },
+          {
+            "offset": 395,
+            "role": "data",
+            "native_target": "00ce3830",
+            "source_symbol": "?quarter_turn_00ce3830@?A0x76399d74@bsp@@3_KB",
+            "source_section": 3,
+            "readonly": true,
+            "payload_hex": "00000060fb21f93f"
+          },
+          {
+            "offset": 415,
+            "role": "data",
+            "native_target": "00ce3828",
+            "source_symbol": "?full_turn_00ce3828@?A0x76399d74@bsp@@3_KB",
+            "source_section": 3,
+            "readonly": true,
+            "payload_hex": "00000060fb211940"
+          },
+          {
+            "offset": 436,
+            "role": "call",
+            "native_target": "00bf701a",
+            "source_symbol": "__CIatan2",
+            "source_section": 0,
+            "provider": "genuine_current_UCRT_x87_external_service"
+          },
+          {
+            "offset": 450,
+            "role": "data",
+            "native_target": "00ce3830",
+            "source_symbol": "?quarter_turn_00ce3830@?A0x76399d74@bsp@@3_KB",
+            "source_section": 3,
+            "readonly": true,
+            "payload_hex": "00000060fb21f93f"
+          },
+          {
+            "offset": 470,
+            "role": "data",
+            "native_target": "00ce3828",
+            "source_symbol": "?full_turn_00ce3828@?A0x76399d74@bsp@@3_KB",
+            "source_section": 3,
+            "readonly": true,
+            "payload_hex": "00000060fb211940"
+          },
+          {
+            "offset": 497,
+            "role": "call",
+            "native_target": "00438b10",
+            "source_symbol": "?subtract_native_wrapped_angle_00438b10@bsp@@YGMMM@Z",
+            "source_section": 6,
+            "provider": "defined_actual_raw_Source"
+          },
+          {
+            "offset": 558,
+            "role": "call",
+            "native_target": "00419260",
+            "source_symbol": "?reciprocal_length_native_vector2_00419260@bsp@@YIMPBMPAX@Z",
+            "source_section": 5,
+            "provider": "defined_actual_raw_Source"
+          },
+          {
+            "offset": 641,
+            "role": "data",
+            "native_target": "00d7a218",
+            "source_symbol": "?zero_00d7a218@?A0x76399d74@bsp@@3IB",
+            "source_section": 3,
+            "readonly": true,
+            "payload_hex": "00000000"
+          },
+          {
+            "offset": 703,
+            "role": "call",
+            "native_target": "0041a200",
+            "source_symbol": "?derive_native_avoid_zone_0041a200@bsp@@YI_NPAX0I@Z",
+            "source_section": 4,
+            "provider": "defined_actual_raw_Source"
+          }
+        ]
+      },
+      {
+        "address": "00419260",
+        "symbol": "?reciprocal_length_native_vector2_00419260@bsp@@YIMPBMPAX@Z",
+        "bytes": 117,
+        "fixed_bytes": 113,
+        "native_sha256": "849731764d807ebf37050dfe0c941d1f1e2b40c7b333a95da105a02a185e4bba",
+        "coff_body_sha256": "540a9d6d0554c8b3b6c99a5e190c3bffebb1802457df9930cc40f02dc1352bc0",
+        "bindings": [
+          {
+            "offset": 55,
+            "role": "call",
+            "native_target": "00bf7030",
+            "source_symbol": "__CIsqrt",
+            "source_section": 0,
+            "provider": "genuine_current_UCRT_x87_external_service"
+          }
+        ]
+      },
+      {
+        "address": "00438b10",
+        "symbol": "?subtract_native_wrapped_angle_00438b10@bsp@@YGMMM@Z",
+        "bytes": 110,
+        "fixed_bytes": 94,
+        "native_sha256": "0327308c667025b3b21d8df0f905cfa41e63dd1e7fe7007c39d7028bd9bd173b",
+        "coff_body_sha256": "2fc1e0b6d25a02ef5ae3aacd5c75757ad1c5f30e9cfd1de5219295bdeba10c8a",
+        "bindings": [
+          {
+            "offset": 18,
+            "role": "data",
+            "native_target": "00ce3d18",
+            "source_symbol": "?negative_half_turn_00ce3d18@?A0x76399d74@bsp@@3_KB",
+            "source_section": 3,
+            "readonly": true,
+            "payload_hex": "00000060fb2109c0"
+          },
+          {
+            "offset": 28,
+            "role": "data",
+            "native_target": "00ce3828",
+            "source_symbol": "?full_turn_00ce3828@?A0x76399d74@bsp@@3_KB",
+            "source_section": 3,
+            "readonly": true,
+            "payload_hex": "00000060fb211940"
+          },
+          {
+            "offset": 67,
+            "role": "data",
+            "native_target": "00ce3d28",
+            "source_symbol": "?half_turn_00ce3d28@?A0x76399d74@bsp@@3_KB",
+            "source_section": 3,
+            "readonly": true,
+            "payload_hex": "00000060fb210940"
+          },
+          {
+            "offset": 79,
+            "role": "data",
+            "native_target": "00ce3828",
+            "source_symbol": "?full_turn_00ce3828@?A0x76399d74@bsp@@3_KB",
+            "source_section": 3,
+            "readonly": true,
+            "payload_hex": "00000060fb211940"
+          }
+        ]
+      }
+    ],
+    "total_bytes": 956,
+    "fixed_bytes": 884,
+    "bindings": 18,
+    "pass_all": true,
+    "limits": "Current CRT import identity/behavior is separate from Native private CRT identity; no game execution."
+  },
+  "typed_metadata": {
+    "modification_number": "2334",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "project_name": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "functions": [
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "0041a200"
+        },
+        "name": "BSP_AvoidZone_DeriveCornerGeometryAndWinding",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 2,
+          "returned_range_count": 2,
+          "address_count": "726",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "0041a200"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "0041a49c"
+              },
+              "length": "669"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "0041a4a0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "0041a4d8"
+              },
+              "length": "57"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00419260"
+        },
+        "name": "BSP_Vector2f_ReciprocalLength",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "117",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00419260"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "004192d4"
+              },
+              "length": "117"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00438b10"
+        },
+        "name": "BSP_Math_SubtractWrappedAngle",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "110",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00438b10"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00438b7d"
+              },
+              "length": "110"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "derive_padding": {
+    "start": "0041a49d",
+    "end_inclusive": "0041a49f",
+    "bytes": "8d4900",
+    "predecessor_jump": "0041a49b",
+    "target": "0041a4a0",
+    "unexecuted": true
+  },
+  "actual_calls": {
+    "internal": "Defined full raw reciprocal/angle/recursive derive entries",
+    "external": [
+      "__CIatan2",
+      "__CIsqrt"
+    ],
+    "ordinary_double_bridge": false,
+    "callback_provider": false
+  },
+  "native_crt_boundary": {
+    "owned": false,
+    "reconstructed_by_import": false,
+    "entries": [
+      "00bf701a",
+      "00bf7030"
+    ],
+    "atan2_descriptor": "00e15c20",
+    "atan2_dispatch": "00c07ee0",
+    "native_bypass": "0109dd78",
+    "native_exception_boundary": "00c27489",
+    "source_policy": "Actual current x86 UCRT hidden-x87 service;Native private dispatch/state/errno/matherr/exception identity remains separate."
+  },
+  "caller_evidence": [
+    {
+      "callsite": "0041a4be",
+      "owner": "0041a200",
+      "flag": "DWORD0",
+      "result": "discarded;outer AL0"
+    },
+    {
+      "callsite": "0041d063",
+      "owner": "0041ccd0",
+      "flag": "DWORD1",
+      "result": "unconsumed",
+      "preceding_clip": "0041d053"
+    }
+  ],
+  "validation": {
+    "strict_compile": "PASS:/MD /O2 /W4 /WX /EHsc /fp:strict /permissive-;MSVC Win32",
+    "coff": "PASS:956 complete bytes;884 fixed bytes;18 actual call/data bindings;readonly payloads verified",
+    "focused_fixture": "PASS:2 full winding pairs+5 math pairs against complete captured Native bodies with same genuine current CI services;ownership/low-byte/wrap properties",
+    "fixture_result": "winding probe: failures=0; complete raw/current-CRT comparison, ownership, flag byte, wrap and FP checks",
+    "captured_game_bodies_executed_in_fixture": true,
+    "same_current_crt_on_both_fixture_sides": true,
+    "native_private_crt_executed": false,
+    "math_observation_mask": "result bits; x87 SW&383Fh (exceptions/TOP); CW",
+    "imports": [
+      "api-ms-win-crt-math-l1-1-0.dll!_CIatan2",
+      "api-ms-win-crt-math-l1-1-0.dll!_CIsqrt"
+    ],
+    "report_calls": "PASS:8 exact Native CALL rows checked,0 failed",
+    "repository_build": "PASS",
+    "repository_existing_ctests": 2,
+    "repository_existing_ctest_names": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "repository_existing_link_warning": "LNK4006 spawn_request_id_matches already defined in lua_spawn_new.obj;new winding module unregistered and unrelated",
+    "repository_build_covers_new_module": false,
+    "registered_archive": false,
+    "ghidra_mutation": false,
+    "game_validation": false,
+    "native_crt_identity": false,
+    "native_cxx_eh_identity": false,
+    "unmasked_fp_exceptions": false
+  },
+  "source_sha256": {
+    "src/native_avoid_zone_winding.cpp": "02e7d657ccd38f034299d3f80d071561afc1ea8977dcb272c857ab5d20127552",
+    "include/bsp/native_avoid_zone_winding.hpp": "133944192abcec399fea833048b9924ca53c6f87cc680bcdfa5e86d61842ef99"
+  },
+  "integration": {
+    "add_source": "src/native_avoid_zone_winding.cpp",
+    "compare": "python local/goal15i_avoid_winding/verify_coff.py --object <registered.obj> --output <receipt.json>",
+    "fixture": "local/goal15i_avoid_winding/probe_registered.cmd <actual bsp_core.lib>",
+    "ownership": "Only three Native entries and four outputs plus own appended ledger shards;existing typed records/names retained"
+  }
+}

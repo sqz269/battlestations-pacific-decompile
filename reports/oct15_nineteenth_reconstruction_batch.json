@@ -1,0 +1,546 @@
+{
+  "batch": "oct15_nineteenth_reconstruction_batch",
+  "status": "source_integrated_main_reviewed_win32_build_static_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "scope": {
+    "complete_ordinary_entries": [
+      "00557590",
+      "006a71b0"
+    ],
+    "ordinary_bytes": 1036,
+    "ordinary_starts": 305,
+    "lexical_catch": {
+      "entry": "00557654",
+      "bytes": 17,
+      "starts": 5
+    },
+    "logical_action": {
+      "entry": "00c7f580",
+      "bytes": 8,
+      "starts": 2
+    },
+    "distinct_owned_bytes": 1061,
+    "distinct_owned_starts": 312,
+    "supporting_reference_producer_handler_bytes_excluded": true
+  },
+  "components": [
+    {
+      "packet": "oct15_native_dword_vector_copy_construct",
+      "pin": "4cedeba6edda02b365a6752c5bfbdf52a68b12b8",
+      "owned_bytes": 213,
+      "owned_starts": 75,
+      "report": "reports/oct15_native_dword_vector_copy_construct.json",
+      "report_sha256": "9fcffbd88c2180b36f3780606eedd674fba2a565cbb28c33e469c961f95e3b3b",
+      "documentation": "docs/OCT15_NATIVE_DWORD_VECTOR_COPY_CONSTRUCT.md",
+      "source": "src/native_dword_vector_copy_construct.cpp",
+      "header": "include/bsp/native_dword_vector_copy_construct.hpp",
+      "primary_review": {
+        "path": "local/oct15_constructor_nineteenth_primary_review.json",
+        "sha256": "cc460d629978c17c7ad8e71c3c990375e27daab7cfbf922f5ff9cc912e79c628",
+        "evidence": {
+          "packet": "oct15_native_dword_vector_copy_construct",
+          "pin": "4cedeba6edda02b365a6752c5bfbdf52a68b12b8",
+          "review_type": "primary immutable Source/native review",
+          "checks": [
+            "Full Source/header and all70 ordinary plus5 lexical-catch native instructions reviewed against immutable pin.",
+            "Source count captures before ordered destination4/8/C clears; null initial begin skips end read; DWORD SAR2 and unsigned limit retained.",
+            "Zero count returns original destination; old destination backing is not freed or repaired.",
+            "Length and allocation calls occur after clears outside protected scope; no Buy or generic exception substitute.",
+            "Allocated begin/end/capacity publish before current source-end capture and current source-begin comparison outside try.",
+            "First diagnostic protected and captured end retained; saved first survives returning second diagnostic.",
+            "Current destination begin read after second diagnostic; full first plus duplicate masked dead metadata passed to actual copy.",
+            "Actual advanced output publishes destination end; semantic return is original destination and RET4 formals explicit.",
+            "Lexical catch tidies current destination header then barethrows; no saved-allocation rollback or fabricated native EBP helper.",
+            "Fresh223 PE/live bytes,77 current starts and88 EH bytes independently verified; two null unwind actions and one catch-all try retained.",
+            "Six accepted dependency Source/header hashes match Root; worker COFF/build evidence separate from original ABI/FH3/CRT/fault/game proof."
+          ],
+          "findings": [],
+          "owned_bytes": 213,
+          "owned_starts": 75,
+          "inspected_bytes": 223,
+          "inspected_starts": 77,
+          "EH_bytes": 88,
+          "fresh_units": [
+            {
+              "address": "00557590",
+              "bytes": 196,
+              "starts": 70,
+              "live_equals_PE": true,
+              "sha256": "fc049fe6c7110270e0d0e6324de98ae28f0cbf81c8578ba88ad358cb82e8025d"
+            },
+            {
+              "address": "00557654",
+              "bytes": 17,
+              "starts": 5,
+              "live_equals_PE": true,
+              "sha256": "f9a6f006c82cc25bafcc4ec605fd3dbeed658731154c68ea656e2cf203579dd1"
+            },
+            {
+              "address": "00c6d810",
+              "bytes": 10,
+              "starts": 2,
+              "live_equals_PE": true,
+              "sha256": "3c62a27cc34e90f25c33d69574d35d986bad487e77d98de18d8a37b00b098211"
+            }
+          ],
+          "fresh_current_capture": "local/oct15_constructor_nineteenth_current_starts.json",
+          "dependency_files_checked": [
+            "include/bsp/native_dword_vector_copy_primitives.hpp",
+            "src/native_dword_vector_copy_primitives.cpp",
+            "include/bsp/native_dword_vector_allocation.hpp",
+            "src/native_dword_vector_allocation.cpp",
+            "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+            "src/native_invalid_parameter_noinfo_call.cpp"
+          ],
+          "frozen_blobs": {
+            "src/native_dword_vector_copy_construct.cpp": {
+              "worktree_sha256": "4de974411b51e59d30cd1b5822439ef2dd87545f58e787ff46ef3b6df1ea5336",
+              "git_blob": "eb9252111b6a24fef0b6ec9ead05c6262f62a60e"
+            },
+            "include/bsp/native_dword_vector_copy_construct.hpp": {
+              "worktree_sha256": "ecf2b1d9cb256fef9047e0b8f235c88874177fe9b1d28e4d6cc1add1a53bf693",
+              "git_blob": "2deae09ff5e43e38f7e3916c2c5ebfd9e73e5d21"
+            },
+            "docs/OCT15_NATIVE_DWORD_VECTOR_COPY_CONSTRUCT.md": {
+              "worktree_sha256": "3ccb3012b6f43bd1217cc990c507220663dbf049ce8ce203d9761af73bd3e202",
+              "git_blob": "3f62e8757e6e18b8b8d176ddb3fcc60507390115"
+            },
+            "reports/oct15_native_dword_vector_copy_construct.json": {
+              "worktree_sha256": "9fcffbd88c2180b36f3780606eedd674fba2a565cbb28c33e469c961f95e3b3b",
+              "git_blob": "c83cc4311a8cc3d65c411dbe21b7c74169d45660"
+            }
+          },
+          "limits": "CurrentCpp/currentCRT/private-frame/fault/SEH/RTTI/binaryABI/game boundaries retained; no new native execution."
+        }
+      },
+      "raw_transfer_claims": 8
+    },
+    {
+      "packet": "oct15_input_device_tree_erase",
+      "pin": "8368dd3418cd39e75e8368d316cfb60d7ccd6a27",
+      "owned_bytes": 848,
+      "owned_starts": 237,
+      "report": "reports/oct15_input_device_tree_erase.json",
+      "report_sha256": "dffcbc3d36ff03ec2eef695f4f6ceffa92badf542b68240a8262004e0bbadc7c",
+      "documentation": "docs/OCT15_INPUT_DEVICE_TREE_ERASE.md",
+      "source": "src/native_input_device_tree_erase.cpp",
+      "header": "include/bsp/native_input_device_tree_erase.hpp",
+      "primary_review": {
+        "path": "local/oct15_eraser_nineteenth_primary_review.json",
+        "sha256": "82d06fb08175555fe99ec3bb98fb3502e8c1bfcb260a71f871b76e3ac33f0212",
+        "evidence": {
+          "packet": "oct15_input_device_tree_erase",
+          "pin": "8368dd3418cd39e75e8368d316cfb60d7ccd6a27",
+          "review_type": "primary immutable review",
+          "checks": [
+            "Full Source/header and all235 parent plus2 logical-action native instructions reviewed.",
+            "Nil99 test precedes owner diagnostics; only cap15/len0/inlinefirst0 initialized before exact27-byte assignment.",
+            "Completed-message guard arms only after assignment before existing411700/D6926C owning exception construction and throw.",
+            "EH state0 maps only to logical saved-message destruction; no try region or normal-path outer cleanup added.",
+            "Actual private8B iterator advances before topology; cached original removed node remains ownership target.",
+            "Simple replacement retains ordered current child/nil/parent/root/extrema reads and actual min/max calls.",
+            "Successor transplant retains current right/parent reads, immediate-right versus deep branches, final parent and color swap order.",
+            "Black fixup preserves exact sibling/nil/color branches and six actual rotations, with four sibling reloads and final two EAX discards.",
+            "Upward fixup captures current root and compares replacement before advancing parent; final nil replacement color store retained.",
+            "Pair cleanup targets original removed node+C after topology; throwing pair leaves free/count/output unreached with no rollback.",
+            "CurrentCRT free of original node precedes current count read; decrement applies to every nonzero unsigned DWORD.",
+            "Owner/output/advanced-node all captured before output owner then node stores; result is output pointer.",
+            "Original EBP tree register is translated to private volatile receiver without clobbering Source EBP.",
+            "Raw4B cdecl min/max and void fastcall rotation convention reviewed; typed throwing iterator/pair/free remain outside asm.",
+            "Added RawCtx changes Source stack inputs/RET10h versus originalRET0Ch explicitly; no binary ABI equivalence inferred.",
+            "Fresh1388 PE/live bytes and413 current starts independently checked;848 owned bytes/237 starts exclude reference windows.",
+            "Fresh285 EH/type/literal bytes independently checked including out_of_range28H copy441760/destructor4412B0 transport.",
+            "Accepted dependency fingerprints match Root; existing AV/full-range contracts remain separate and unchanged."
+          ],
+          "findings": [],
+          "owned_bytes": 848,
+          "owned_starts": 237,
+          "inspected_bytes": 1388,
+          "inspected_starts": 413,
+          "EH_type_literal_bytes": 285,
+          "fresh_units": [
+            {
+              "start": "006a71b0",
+              "bytes": 840,
+              "instructions": 235,
+              "role": "owned_whole",
+              "sha256": "d33d41e5aa4af1b37b51c19f703d7ab7afb34bac1ab82085af905e5075c6d94e"
+            },
+            {
+              "start": "00c7f580",
+              "bytes": 8,
+              "instructions": 2,
+              "role": "owned_whole",
+              "sha256": "830a7057277e0de6665d2972fc788ec9c2b09454eb8b32ef44763a8a0d37aea4"
+            },
+            {
+              "start": "00c7f588",
+              "bytes": 10,
+              "instructions": 2,
+              "role": "read_only_accepted_dependency_or_handler",
+              "sha256": "4133008d737a29d300faf1163ea4558c609646a5eb26a187e2b36ecf68506610"
+            },
+            {
+              "start": "00552340",
+              "bytes": 85,
+              "instructions": 30,
+              "role": "read_only_accepted_dependency_or_handler",
+              "sha256": "0ceddf9a78d4410192cef55d78946256b5d408b1baab99204ce85bc1008803da"
+            },
+            {
+              "start": "00553f00",
+              "bytes": 81,
+              "instructions": 30,
+              "role": "read_only_accepted_dependency_or_handler",
+              "sha256": "f47706234a3d5bf2b4b6431cb466316985120a0f69112ddc2308d481403cf83c"
+            },
+            {
+              "start": "005540c0",
+              "bytes": 56,
+              "instructions": 17,
+              "role": "read_only_accepted_dependency_or_handler",
+              "sha256": "2750086cc3613e24fb78e2aa46ab188e9ecef76f7edb9acdfcdf223e80de1e27"
+            },
+            {
+              "start": "00554100",
+              "bytes": 62,
+              "instructions": 22,
+              "role": "read_only_accepted_dependency_or_handler",
+              "sha256": "4e1843cb55dc9317cfb003f101fe9fe3700d78c62d2529b3e512d8367348d053"
+            },
+            {
+              "start": "00552c50",
+              "bytes": 31,
+              "instructions": 10,
+              "role": "read_only_accepted_dependency_or_handler",
+              "sha256": "0cbfe3133b77702a9fa4ee0d0a39ed634804bd734e1c03aa5337eb78ff8532d0"
+            },
+            {
+              "start": "00552c70",
+              "bytes": 30,
+              "instructions": 10,
+              "role": "read_only_accepted_dependency_or_handler",
+              "sha256": "de30d491c5f4c589cf9e3e9ef39b1d2ac471448fe1c82fcaef50bcce4cd33a95"
+            },
+            {
+              "start": "0055b8b0",
+              "bytes": 97,
+              "instructions": 29,
+              "role": "read_only_accepted_dependency_or_handler",
+              "sha256": "3551deb332952e54b6ccca81a76c5fb9dfffd4d50b45c148013fec995defd72d"
+            },
+            {
+              "start": "006a7b35",
+              "bytes": 33,
+              "instructions": 11,
+              "role": "read_only_ordinary_caller_window",
+              "sha256": "fc2345cb50766f750d808ed68d1b4830d7e4b5358ef8c8fa48266df90d0b1282"
+            },
+            {
+              "start": "0055bb61",
+              "bytes": 10,
+              "instructions": 2,
+              "role": "read_only_node_layout_producer",
+              "sha256": "b1e9f6eacb1e3e18a27f56c6fbd782134ad96cf8b4a3b9dcb5d411628c39c4fd"
+            },
+            {
+              "start": "0055bb85",
+              "bytes": 45,
+              "instructions": 13,
+              "role": "read_only_node_layout_producer",
+              "sha256": "381a513a578c5c8b9838571423e63e5c52e4d0b83b24c4d0366761b90e2629ce"
+            }
+          ],
+          "fresh_current_capture": "local/oct15_eraser_nineteenth_current_starts.json",
+          "dependency_files_checked": [
+            "src/native_input_device_tree_rotations.cpp",
+            "include/bsp/native_input_device_tree_rotations.hpp",
+            "src/native_input_device_record_destroy.cpp",
+            "include/bsp/native_input_device_record_destroy.hpp",
+            "src/native_input_keyboard_iterators.cpp",
+            "include/bsp/native_input_keyboard_iterators.hpp",
+            "src/frontend_seg16_24_28_cc13.cpp",
+            "include/bsp/frontend_seg16_24_28_cc13.hpp",
+            "include/bsp/ingame_gui_cc13.hpp",
+            "src/native_legacy_sbo_string.cpp",
+            "include/bsp/native_legacy_sbo_string.hpp",
+            "src/native_legacy_exception_owner.cpp",
+            "include/bsp/native_legacy_exception_owner.hpp",
+            "src/native_tree_out_of_range_exception.cpp",
+            "include/bsp/native_tree_out_of_range_exception.hpp",
+            "src/native_hardware_layout_tree.cpp",
+            "include/bsp/native_hardware_layout_tree.hpp",
+            "include/bsp/native_string.hpp",
+            "src/singleton_lifetime.cpp"
+          ],
+          "frozen_blobs": {
+            "src/native_input_device_tree_erase.cpp": {
+              "worktree_sha256": "900d25fdef248aa59d2ac017f26bdc4079c30255316daa9a187cf4611349005b",
+              "git_blob": "c6a53634aded5a5edd508ef488cfbd395326c161"
+            },
+            "include/bsp/native_input_device_tree_erase.hpp": {
+              "worktree_sha256": "a89dbab7ddc924686cc8bf7dfaaf6c5d0aee493e7cd749eaad3b6151895ac225",
+              "git_blob": "5288805cbac6b1ff5b79948e2ddaa02e13298569"
+            },
+            "docs/OCT15_INPUT_DEVICE_TREE_ERASE.md": {
+              "worktree_sha256": "cc3c7ebf5958fc671b5fcc2bbbdcf7f6e7f1b1b1b13a8bec5a235d526be30070",
+              "git_blob": "03d08461331d709e620835c1ecd8c09c6a58c421"
+            },
+            "reports/oct15_input_device_tree_erase.json": {
+              "worktree_sha256": "a5974de91fcec2c4d5785e13177f5eebacaeb3d96ca3369173bd1bda298fdcaf",
+              "git_blob": "d1f14ce17935d3479189949e3fb57e51f7d29819"
+            }
+          },
+          "limits": "RawCtx/CurrentCpp/currentCRT/privateframe/fault/SEH/RTTI/original binaryABI/game identity unproved; existing math suites are not new entry native execution."
+        }
+      },
+      "raw_transfer_claims": 25
+    }
+  ],
+  "source_files_sha256": {
+    "src/native_dword_vector_copy_construct.cpp": "4de974411b51e59d30cd1b5822439ef2dd87545f58e787ff46ef3b6df1ea5336",
+    "include/bsp/native_dword_vector_copy_construct.hpp": "ecf2b1d9cb256fef9047e0b8f235c88874177fe9b1d28e4d6cc1add1a53bf693",
+    "src/native_input_device_tree_erase.cpp": "900d25fdef248aa59d2ac017f26bdc4079c30255316daa9a187cf4611349005b",
+    "include/bsp/native_input_device_tree_erase.hpp": "a89dbab7ddc924686cc8bf7dfaaf6c5d0aee493e7cd749eaad3b6151895ac225"
+  },
+  "host_steps": [
+    {
+      "address": "005540c8",
+      "native": "00bf6713",
+      "function": "005540c0"
+    },
+    {
+      "address": "005540da",
+      "native": "00bf6713",
+      "function": "005540c0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "005575e3",
+      "native": "00556c20",
+      "function": "00557590"
+    },
+    {
+      "address": "005575ec",
+      "native": "00553260",
+      "function": "00557590"
+    },
+    {
+      "address": "0055760c",
+      "native": "00bf6713",
+      "function": "00557590"
+    },
+    {
+      "address": "0055761c",
+      "native": "00bf6713",
+      "function": "00557590"
+    },
+    {
+      "address": "00557637",
+      "native": "00555000",
+      "function": "00557590"
+    },
+    {
+      "address": "00557657",
+      "native": "004cb130",
+      "function": "00557654"
+    },
+    {
+      "address": "00557660",
+      "native": "00bf6885",
+      "function": "00557654"
+    },
+    {
+      "address": "0055b8d8",
+      "native": "0055b690",
+      "function": "0055b8b0"
+    },
+    {
+      "address": "0055b8f5",
+      "native": "00419cc0",
+      "function": "0055b8b0"
+    },
+    {
+      "address": "0055b8fc",
+      "native": "00bd1510",
+      "function": "0055b8b0"
+    },
+    {
+      "address": "0055bb66",
+      "native": "00bf681b",
+      "function": "0055bb40"
+    },
+    {
+      "address": "0055bb9d",
+      "native": "0055ba00",
+      "function": "0055bb40"
+    },
+    {
+      "address": "006a71f7",
+      "native": "00408720",
+      "function": "006a71b0"
+    },
+    {
+      "address": "006a7209",
+      "native": "00411700",
+      "function": "006a71b0"
+    },
+    {
+      "address": "006a7220",
+      "native": "00bf6885",
+      "function": "006a71b0"
+    },
+    {
+      "address": "006a7231",
+      "native": "005540c0",
+      "function": "006a71b0"
+    },
+    {
+      "address": "006a72a2",
+      "native": "00552c70",
+      "function": "006a71b0"
+    },
+    {
+      "address": "006a72cb",
+      "native": "00552c50",
+      "function": "006a71b0"
+    },
+    {
+      "address": "006a7392",
+      "native": "00553f00",
+      "function": "006a71b0"
+    },
+    {
+      "address": "006a73db",
+      "native": "00552340",
+      "function": "006a71b0"
+    },
+    {
+      "address": "006a7401",
+      "native": "00553f00",
+      "function": "006a71b0"
+    },
+    {
+      "address": "006a7424",
+      "native": "00552340",
+      "function": "006a71b0"
+    },
+    {
+      "address": "006a747d",
+      "native": "00553f00",
+      "function": "006a71b0"
+    },
+    {
+      "address": "006a74a1",
+      "native": "00552340",
+      "function": "006a71b0"
+    },
+    {
+      "address": "006a74b3",
+      "native": "0055b8b0",
+      "function": "006a71b0"
+    },
+    {
+      "address": "006a74bd",
+      "native": "00bf65ac",
+      "function": "006a71b0"
+    },
+    {
+      "address": "006a7b39",
+      "native": "005540c0",
+      "function": "006a7aa0"
+    },
+    {
+      "address": "006a7b47",
+      "native": "006a71b0",
+      "function": "006a7aa0"
+    },
+    {
+      "address": "00c6d815",
+      "native": "00bf6b43",
+      "function": "00c6d810",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c7f583",
+      "native": "004072d0",
+      "function": "00c7f580",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c7f58d",
+      "native": "00bf6b43",
+      "function": "00c7f588",
+      "kind": "tail_jump"
+    }
+  ],
+  "primary_review_checks": 29,
+  "native_transfer_verification": {
+    "component_report_rows": 33,
+    "component_markdown_claims": 33,
+    "distinct_sites": 33,
+    "failed": 0,
+    "unchecked": 0,
+    "warnings": 0,
+    "log": "local/oct15_nineteenth_final_transfers.log"
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "platform": "MSVC Win32 Release",
+    "tested_source_pin": "dcfadb3589ba9cf107ea5bb6e41b540130efc185",
+    "existing_suites": "3/3 passed",
+    "ctest_seconds": 7.51,
+    "log": "local/oct15_nineteenth_union_build.log",
+    "log_sha256": "aa84eecec05c0028bf1ba3bbf0cfa0b163c95e5953b689d47eba2e2e52565aae",
+    "new_tests": 0,
+    "new_entry_native_execution": false,
+    "original_binary_ABI_proven": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "function_annotation_count": 4,
+    "saved_project": true,
+    "old_comments_names_preimages_retained": true,
+    "annotation_receipts": [
+      {
+        "path": "local/ghidra-annotations-20261016T002652Z.json",
+        "sha256": "02bb7f28f2c86117a16e83bfc3b112e5625acbd39e1ca9ef16f4700e585ead27",
+        "entries": 4
+      }
+    ],
+    "forced_snapshot": {
+      "path": "local/oct15_nineteenth_snapshot.log",
+      "sha256": "b0516320ddbc91f7c46a781a488e8e9c4518df1d850522be30017ee30ea72618",
+      "internal": 76332,
+      "total": 76774
+    },
+    "affected_exports": {
+      "path": "local/oct15_nineteenth_exports.log",
+      "sha256": "3a7b0bcd95a126ecbacc7df0f49eaeaa78a910db099616c148eadc2636e812e3",
+      "count": 4
+    }
+  },
+  "behavior": [
+    "Constructor captures count before clearing destination and leaves length/allocation outside protected scope. Current source captures and returning diagnostics retain exact ordering; lexical catch tidies current header then rethrows.",
+    "Eraser checks nil before owner diagnostics, advances private iterator before topology mutation, preserves exact transplant/fixup order and actual min/max/rotations, destroys original payload before free, then reads current count and publishes captured output owner/node.",
+    "Only completed error-message cleanup is armed after assignment. Normal pair cleanup may propagate after topology changes; no outer rollback or key guard is added."
+  ],
+  "limits": [
+    "These explicit Source interfaces use accepted CurrentCpp/currentCRT and actual RawCtx services. Eraser adds a context argument and has Source RET10h versus original RET0Ch.",
+    "Original private frames/FH3/SEH/RTTI/heap/fault/flags/register ABI and game equivalence remain unproved. Compiled Source bytes and native owned bytes are counted separately.",
+    "Existing native math differential tests exercise older seeds. No new entry native execution or new fixture is claimed.",
+    "Existing AV/typed/callback/memmove_s interfaces and admitted full-selection prefix remain preserved. Whole range erasure, word-vector backward swaps, Tidy helpers and other range cores remain separate continuing packets."
+  ],
+  "main_integration": {
+    "source_pin": "dcfadb3589ba9cf107ea5bb6e41b540130efc185",
+    "all_four_source_header_fingerprints_equal_tested_tree": true,
+    "receipt_merge": "metadata only after Source validation"
+  },
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "method": "single push after receipt merge; independently verify remote main",
+    "exact_tip": "reported in final response and remote ref; not self-referenced"
+  }
+}
