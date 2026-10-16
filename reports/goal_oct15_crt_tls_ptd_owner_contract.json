@@ -1,0 +1,2591 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_crt_tls_ptd_owner_contract",
+  "kind": "report_only_finite_original_TLS_FLS_encoded_pointer_PTD_joint_owner_contract",
+  "source_ready": false,
+  "general_source_ready": false,
+  "Original_entry_ABI_proved": false,
+  "Original_SEH_proved": false,
+  "Original_startup_ownership_closed": false,
+  "new_source_functions": [],
+  "scope": {
+    "family": [
+      "00c053dc",
+      "00bfbdfb",
+      "00c050bb",
+      "00c05070",
+      "00c051b7",
+      "00c050f8",
+      "00c05246"
+    ],
+    "seven_main_spans_bytes": 1141,
+    "seven_main_spans_instructions": 352,
+    "callback_private_unwind_bytes": 24,
+    "callback_private_unwind_instructions": 10,
+    "nonoverlapping_total_bytes": 1165,
+    "nonoverlapping_total_instructions": 362,
+    "whole_families_read": "Six complete prior physical audits reused without graph recrawl; full C05246 main and two actual unwind-prefix actions newly inspected. Helpers9B each overlap the24B actions and are not doublecounted. Named provider frontiers below are not claimed fully transitive.",
+    "no_Source_address_ledger_Ghidra_or_CMake_writes": true,
+    "no_tests_or_build": true,
+    "shared_header_owner": "Primary root; no shared header/API/state implementation by this worker."
+  },
+  "baseline": {
+    "main": "6a75c1d0a2012a435f5c6be12f9cc2b68f19010a",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "new_typed_modification_number": 4793,
+    "live_query_project_check": "Every fresh CLI live batch used bsp.py ghidra project/program verification; current typed capture pins both.",
+    "ownership_check": "BFFB8B,C053DC,C05246 and existing encode/decode/support headers currently unleased at boundedcheck; only this report file claimed. Future Source work requires fresh disjoint leases; previousBFFB8Bforeignlease is no longer current."
+  },
+  "prior_evidence": [
+    {
+      "path": "reports/goal_oct15_crt_startup_owner_readiness.json",
+      "sha256": "02711e100162f22de1d629155e40004b4d7c77270663f95b64c572f69d774166"
+    },
+    {
+      "path": "reports/goal_oct15_crt_invalid_handler_readiness.json",
+      "sha256": "fdd0e6ca0b441d4619248ebd30a7be6dfdc4fe6034d03212e7f3eb3c7050ba8b"
+    },
+    {
+      "path": "reports/goal_oct15_crt_malloc_readiness.json",
+      "sha256": "c2456faa9350a3aa42fee96319148e797f112ce20d1bcf9db324371c9374ace1"
+    },
+    {
+      "path": "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+      "sha256": "c7bb6bfbd6135848c60357c6a5dc7e478087854991afbfac238db7d3c27ecf67"
+    }
+  ],
+  "whole_native_spans": [
+    {
+      "entry": "00c053dc",
+      "end_exclusive": "00c05560",
+      "bytes": 388,
+      "instructions": 109,
+      "sha256": "ea65c846b07e4839813a118c77401c03e6393be26912dbcbc179cf3536270244",
+      "installed_pe_offset": 8410076,
+      "source_ready": false,
+      "live_equals_installed_pe": true,
+      "evidence": "Whole physical audit reused, unchanged installed PE hash; no graph recrawl.",
+      "prior_report": "reports/goal_oct15_crt_startup_owner_readiness.json"
+    },
+    {
+      "entry": "00bfbdfb",
+      "end_exclusive": "00bfbe47",
+      "bytes": 76,
+      "instructions": 25,
+      "sha256": "aec0936af4af64b89f90ae8c76f31fbf985dff4822b39f334eb8c9083e388618",
+      "installed_pe_offset": 8371707,
+      "source_ready": false,
+      "live_equals_installed_pe": true,
+      "evidence": "Whole physical audit reused, unchanged installed PE hash; no graph recrawl.",
+      "prior_report": "reports/goal_oct15_crt_startup_owner_readiness.json"
+    },
+    {
+      "entry": "00c050bb",
+      "end_exclusive": "00c050f8",
+      "bytes": 61,
+      "instructions": 16,
+      "sha256": "d31142b23ce06ea0484d16362f78a6e5690970dedc076ac57a241fd40a906e70",
+      "installed_pe_offset": 8409275,
+      "source_ready": false,
+      "live_equals_installed_pe": true,
+      "evidence": "Whole physical audit reused, unchanged installed PE hash; no graph recrawl.",
+      "prior_report": "reports/goal_oct15_crt_startup_owner_readiness.json"
+    },
+    {
+      "entry": "00c05070",
+      "end_exclusive": "00c050a2",
+      "bytes": 50,
+      "instructions": 16,
+      "sha256": "c56216e301258d74d1f73f4e30645d811c2e7a3cda5bef15b09e94735394ba81",
+      "installed_pe_offset": 8409200,
+      "source_ready": false,
+      "live_equals_installed_pe": true,
+      "evidence": "Whole physical audit reused, unchanged installed PE hash; no graph recrawl.",
+      "prior_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+    },
+    {
+      "entry": "00c051b7",
+      "end_exclusive": "00c0522e",
+      "bytes": 119,
+      "instructions": 45,
+      "sha256": "ccbdbe41ce6650660cd55232a4c1dff2445bfafa036dc2d2e3f2c9c2df7d9a1e",
+      "installed_pe_offset": 8409527,
+      "source_ready": false,
+      "live_equals_installed_pe": true,
+      "evidence": "Whole physical audit reused, unchanged installed PE hash; no graph recrawl.",
+      "prior_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+    },
+    {
+      "entry": "00c050f8",
+      "end_exclusive": "00c051ae",
+      "bytes": 182,
+      "instructions": 49,
+      "sha256": "e289ed4df47dae16cea290c87591877b124ab95d041b8fdf6f0ebd51572ad342",
+      "installed_pe_offset": 8409336,
+      "source_ready": false,
+      "live_equals_installed_pe": true,
+      "evidence": "Whole physical audit reused, unchanged installed PE hash; no graph recrawl.",
+      "prior_report": "reports/goal_oct15_crt_invalid_handler_readiness.json"
+    },
+    {
+      "entry": "00c05246",
+      "end_exclusive": "00c0534f",
+      "bytes": 265,
+      "instructions": 92,
+      "sha256": "24b7ef42c675256329f7802f0f5d67735c1251680814a5978129c282717da11f",
+      "installed_pe_offset": 8409670,
+      "source_ready": false,
+      "live_equals_installed_pe": true,
+      "evidence": "New whole callback main body: saved92-op listing plus current live bytes and typed-call capture.",
+      "live_receipt": "local/goal_oct15_crt_tls_ptd_callback_live_bytes.txt"
+    }
+  ],
+  "callback_unwind_envelope": {
+    "start": "00c0534f",
+    "end_exclusive": "00c05367",
+    "bytes": 24,
+    "instructions": 10,
+    "sha256": "2c4d837104753b2c2c8940a52fd718c55b013332150766410d873b1270d8dc81",
+    "live_equals_pe": true,
+    "physical_only_undefined_prefix_entries": [
+      "00c0534f",
+      "00c0535b"
+    ],
+    "normal_helper_entries": [
+      "00c05352",
+      "00c0535e"
+    ],
+    "qualification": "No new private binary functions or analysis repair. Source guards could only be qualified mappings of actual armed-state actions, not Original SEH entry/frame/register equivalence."
+  },
+  "scope_tables": [
+    {
+      "address": "00e032b0",
+      "bytes": 28,
+      "hex": "feffffff00000000d4ffffff00000000feffffff00000000ae51c000",
+      "sha256": "1325ba6aa93454c68cdc6ff6ade130f0e694c8ec667eb69beb4a8b60f1aa89e0",
+      "live_equals_pe": true,
+      "header_dwords": [
+        "fffffffe",
+        "00000000",
+        "ffffffd4",
+        "00000000"
+      ],
+      "states": [
+        {
+          "state": 0,
+          "enclosing": -2,
+          "filter": 0,
+          "handler": "00c051ae"
+        }
+      ]
+    },
+    {
+      "address": "00e032d0",
+      "bytes": 40,
+      "hex": "feffffff00000000d8ffffff00000000feffffff000000004f53c000feffffff000000005b53c000",
+      "sha256": "8711936bd1786ed2054172121ebad359c0e182339d5097186e05d045703ee452",
+      "live_equals_pe": true,
+      "header_dwords": [
+        "fffffffe",
+        "00000000",
+        "ffffffd8",
+        "00000000"
+      ],
+      "states": [
+        {
+          "state": 0,
+          "enclosing": -2,
+          "filter": 0,
+          "handler": "00c0534f"
+        },
+        {
+          "state": 1,
+          "enclosing": -2,
+          "filter": 0,
+          "handler": "00c0535b"
+        }
+      ]
+    }
+  ],
+  "owner_and_entry_contracts": {
+    "00c053dc": {
+      "abi": "No native arguments; plain RET; EAX0/1; no Win32 LastError restoration. Two saved registers only on module-nonNULL path.",
+      "actual_parameter_backing": "No caller argument cells are needed; explicit outgoing-word backing is needed if Source claims observable original callee argument-slot writeback.",
+      "schedule_reused": [
+        "GetModuleHandleA(KERNEL32.DLL), capture HMODULE. NULL calls actual C050BB rollback then returns0. NonNULL captures GetProcAddress IAT CE20F4 in ESI and resolves/publishes FlsAlloc\u2192109DE34,FlsGetValue\u2192109DE38,FlsSetValue\u2192109DE3C,FlsFree\u2192109DE40 in order, interleaving later pushes before earlier global stores as physical listing records.",
+        "Capture actual TlsSetValue IAT CE20B4 in ESI. If any current first3 slots isNULL or captured last resultNULL, overwrite getter with current TlsGetValue IAT, alloc with actual C0504C adapter, setter with captured TlsSetValue and free with current TlsFree IAT, in that order. No SDK FLS/TLS substitute, invented providers or extra success requirement.",
+        "Actual TlsAlloc; publish returned index E15B00 evenFFFFFFFF. IndexFFFFFFFF returns0 WITHOUT mtterm. Otherwise push current raw getter109DE38 then captured index into captured TlsSetValue. Failure returns0 WITHOUT mtterm; do not silently free or reset cache index.",
+        "Only cache publication success calls BFBDFB (__init_pointers). Then push current alloc109DE34\u2192actual encoder; push CURRENT getter109DE38 BEFORE publishing encoded alloc; encode getter; push CURRENT setter BEFORE publishing encoded getter; encode setter; push CURRENT free BEFORE publishing encoded setter; encode free; clean4words then publish encoded free. Earlier encoded values do not replace future current reads.",
+        "Actual C11A93 initializes lock descriptors; zero\u2192C050BB. Push actual callback C05246 BEFORE current encoded alloc109DE34/decode. Clean only decoder pointerword then CALL decoded allocator EAX, with callback still actual queued word. Publish returned E15AFC evenFFFFFFFF; invalid\u2192C050BB.",
+        "Call real C0485A(1,214h), capture PTD in ESI, clean words; NULL\u2192C050BB. Push captured PTD then current E15AFC BEFORE current encoded setter109DE3C/decode. Pop decoder pointerword and CALL actual setter. Failure\u2192C050BB; no direct BF9DC8 PTD free or invented unpublished-pointer cleanup occurs in this owner.",
+        "Setter success publishes PTD before C050F8(PTD,0). After it returns invoke actual GetCurrentThreadId; write PTD+4=FFFFFFFF BEFORE PTD+0=capturedthreadid; return1. No startup init-once/thread-ID lock is present in these examined owners; PTD+0/+4 are actual thread record fields, not invented startup guards."
+      ],
+      "failure_edges": [
+        "ModuleNULL invokes C050BB then returns0.",
+        "TlsAllocFFFFFFFF or first raw-getter-cache TlsSetValueBOOL0 returns0 WITHOUT C050BB. Preserve published TLS index.",
+        "Lock bootstrap0, selected FLS/TLS allocatorFFFFFFFF, callocNULL, selected setterBOOL0 invoke C050BB then return0. No direct local-PTD free on setter failure.",
+        "Real initialization exception after PTD publication has no invented free/unpublish/rollback."
+      ],
+      "outgoing_cells_relative_entry_esp_E": [
+        "After EDI/ESI saves, steady ESP=E-8. Four sequential codec argument cells are E-0C,E-10,E-14,E-18; each is the actual first argument word writable by that encoder. Later next-slot PUSH precedes prior encoded-result publication. Clean all16 bytes only after fourth encoder.",
+        "FLS allocator callback C05246 atE-0C, encoded allocator atE-10; decoder plainRET leaves its argument, POP removes only E-10, then actual selected stdcall allocator consumes callback atE-0C.",
+        "PTD calloc count1 atE-10,size214h atE-0C; caller cleans8. Setter PTD atE-0C,index atE-10, encoded setter atE-14; decoder POP drops only E-14; selected stdcall setter consumes index/PTD.",
+        "Initializer optionalNULL atE-0C, captured PTD atE-10; actual cdecl C050F8, caller cleans8."
+      ]
+    },
+    "00bfbdfb": {
+      "abi": "No native arguments; plain RET; no semantic EAX result consumed by C053DC. Preserve savedESI.",
+      "schedule_reused": "Call actual C04FD5 encoded-null once; capture ESI; push that captured word separately before each of8 actual calls C05560,C17639,BF65B1,C05CFB,C1752B,C17037,C16E8B,C07AF8. Then push actual BFBDCC to encoder C04F67, clean nine words total, publish returned encoded exit E15580, restore ESI and RET. No global null literal replaces the encoder result.",
+      "actual_outgoing_cells": "With entryESP=E and savedESI atE-4, eight captured encoded-null helper argument cells accumulate E-8,E-0C,E-10,E-14,E-18,E-1C,E-20,E-24. Actual BFBDCC encoder argument atE-28 is written back by selected encoder. ADDESP24h cleans nine words, then current EAX publishes E15580. Do not reinterpret all9 as one actual native callframe.",
+      "encoded_null_entry": "Actual C04FD5 is noarg helper PUSH0/CALLC04F67/POPECX/RET; its temporary original argument word is distinct and writable. No literalNULL shortcut.",
+      "other_actual_global_publications": [
+        {
+          "entry": "00c05560",
+          "whole_bytes": 10,
+          "behavior": "Read actual stackword then store109DE44 new-handler slot,RET."
+        },
+        {
+          "entry": "00c17639",
+          "whole_bytes": 10,
+          "behavior": "Complete existing canonical actual encoded critical-section initializer slot store; no runtime initialized lock is created."
+        },
+        {
+          "entry": "00bf65b1",
+          "whole_bytes": 10,
+          "behavior": "Read actual stackword then store109DD64 invalid-handler slot,RET."
+        },
+        {
+          "entry": "00c05cfb",
+          "whole_bytes": 10,
+          "behavior": "Read actual stackword then store109E16C,RET."
+        },
+        {
+          "entry": "00c1752b",
+          "whole_bytes": 10,
+          "behavior": "Read actual stackword then store109E450,RET."
+        },
+        {
+          "entry": "00c17037",
+          "whole_bytes": 25,
+          "behavior": "Read actual stackword once; store109E43C,109E440,109E444,109E448 in order,RET."
+        },
+        {
+          "entry": "00c16e8b",
+          "whole_bytes": 1,
+          "behavior": "RET, does not read queued word."
+        },
+        {
+          "entry": "00c07af8",
+          "whole_bytes": 17,
+          "behavior": "Ignores queued encoded-null word; pushes fixed actual C07A75, encodes through C04F67, cleans own word, stores109E170,RET."
+        }
+      ]
+    },
+    "00c050bb": {
+      "abi": "No args, no semantic result; terminal JMP C11ADC supplies original caller return unchanged.",
+      "schedule_reused": "Capture current E15AFC; if notFFFFFFFF push captured index before current encoded109DE40 decode, then CALL actual decoded free; regardless returned status publish E15AFC=FFFFFFFF. Capture CURRENT E15B00 only afterward; if notFFFFFFFF actual TlsFree(captured), then publish E15B00=FFFFFFFF regardlessBOOL. Finally tailJMP actual C11ADC lock deletion. No encoded provider-slot reset, heap destruction, direct PTD free or synthetic FLS callback invocation is added. If a real call throws/fails to return, later writes remain unreached.",
+      "actual_outgoing_cells": "EntryESP=E. Captured current PTD index queued atE-4; encoded current free queued atE-8; real decoder sees that actual word atitsESP+4 and may overwrite it. POP drops only decoded-pointer word, selected stdcall free consumes earlier index. Later captured current cache index queued atE-4 for real TlsFree. Tail enters C11ADC with ESP=E.",
+      "non_atomic_effects": "Ignore real BOOL free results, publishFFFFFFFF after returning calls. A real FLS callback can mutate actual state; do not cache the later E15B00 read or skip final lock deletion. No encoded-slot clear, heap destroy, extra PTD free or cache rollback is added."
+    },
+    "00c05070": {
+      "abi": "No args; plainRET; EAX captured raw getter bits includingNULL; only ESI saved; no LastError restoration.",
+      "schedule_reused": "C05070 reads current getter TLSindex then real TlsGetValue;hit returns captured bits. Miss loads actual encoded109DE38 and real decoder,captures returned bits,then pushes them before CURRENT TLSindex reread and actual TlsSetValue;BOOL ignored and captured getter returned even on failed publication.",
+      "actual_outgoing_cells": "EntryESP=E, savedESI atE-4. Current cache index atE-8 goes to actual TlsGetValue. Miss pushes CURRENT encoded109DE38 atE-8 into actual decoder, then POP drops that decoder argument. Captured getter goes atE-8 before CURRENT cache index atE-0C; actual TlsSetValue consumes both. IgnoreBOOL and return captured getter even if publication fails.",
+      "null_or_failure": "No new NULL guard/SDK fallback/retry. Caller C051B7 invokes returned code unchecked; valid-callable Source domain and Original fault/ABI remain separate."
+    },
+    "00c051b7": {
+      "abi": "No args; plainRET; nullable PTD inEAX; capture original Win32 LastError before helper/provider calls and restore it on every returning path only. ESI/EDI saved.",
+      "schedule_reused": [
+        "real GetLastError captured before helpers;current PTD index PUSH occurs BEFORE C05070 getter selection;actual CALL returned getter has no new null guard",
+        "nonnull existing PTD returns through common LastError restore;NULL calls actual C0485A(1,214h);allocation failure also uses common restore",
+        "nonnull allocation and CURRENT index are pushed BEFORE current encoded setter is decoded;actual setter uses those captured words",
+        "setter success PUBLISHES actual PTD before real C050F8 initialization;then real GetCurrentThreadId,OR-minus1 toPTD+4 before PTD+0 threadid store",
+        "setter failure frees captured allocation then returnsNULL;initialization exceptions receive no invented free/unpublish/rollback",
+        "every returning path restores originally captured Win32 LastError;no catch synthesizes normal return after a provider exception"
+      ],
+      "actual_outgoing_cells": "EntryESP=E, savedESI/EDI make steadyESP=E-8. CURRENT PTDindex pushed atE-0C BEFORE C05070 noarg helper; CALL returned getter sees index atitsESP+4 and consumes4. calloc count1 atE-10,size214h atE-0C then caller POP2. Setter capturedPTD atE-0C,currentindex atE-10,currentencodedsetter atE-14; decoder POP only drops E-14, actual setter consumes index/PTD. Initoptional0 atE-0C,PTD atE-10, callerPOP2. Setterfailure pushes capturedPTD atE-0C into actual BF9DC8 thenPOP; no SDKfree. Common captured LastError pushed atE-0C into actual SetLastError, then return captured PTD.",
+      "failure_state": "AllocationNULL returnsNULL through error restore. SetterBOOL0 actualfree thenNULL. Setter success publishes PTD BEFORE C050F8; no exception cleanup or unpublish if initializer fails to return. No restore-on-unwind RAII is invented."
+    },
+    "00c050f8": {
+      "abi": "Actual cdecl2words: PTD atentryESP+4, optional locale at+8, plainRET; no semantic result. Native SEH4 prolog/scope; original argument cells remain live.",
+      "native_frame": "Let original callee entryESP=E and compiler EBP=F=E-4 after C07C00. Actual PTD is CURRENT[F+8], read only after GetModuleHandleA returns. Optional locale is CURRENT[F+0C], read only after actual lock12 returns/arm0. EBP-1C stores captured module; EBP-4 is state. Source backing must preserve reached actual argument cells; eager value-parameter capture is not full schedule.",
+      "schedule_reused": [
+        "actual prolog/scopeE032B0;real kernel32 module lookup precedes actual PTD pointer load",
+        "writes PTD+5C=E16840 and+14=1;only valid module+full gate path resolves EncodePointer/DecodePointer and writes+1F8/+1FC;other path does not preclear them",
+        "writes+70=1,BYTE+C8=43h,BYTE+14B=43h,+68=E15CA8;real InterlockedIncrement of actual E15CA8",
+        "actual lock12 returns BEFORE arm state0;only now read optional locale word and publish PTD+6C;NULL reloads actual current E162B0;fresh PTD+6C push to complete canonical locale-ref acquisition",
+        "disarm state=-2 BEFORE existing real C051AE unlock12 and actual epilog;no synthetic PTD,lock,locale or exception transport"
+      ],
+      "typed_store_footprint": "DWORD+5C,+14,+1F8/+1FC only reached resolution path,+70,+68,+6C; BYTE+C8=43h,BYTE+14B=43h. No blanket zeroing/encoding preclear/header projection. Resolve module before PTD load; capture real GetProcAddress IAT once intoEBX before two pointer resolutions. Captured module is reused across real gate call.",
+      "unwind": "ScopeE032B0 has1finally {-2,filter0,handlerC051AE}. Arm0 only AFTER real lock12 returns. Read optional locale/store+6C/fallback/current+6Cpush then canonicalC0190B. Disarm-2 BEFORE normal C051AEunlock. Private unwind is actual C051AE; if normal getter/unlock call throws after disarm no retry unlock. Real C++ guard mapping cannot establish Original FS/SEH continuation ABI."
+    },
+    "00c05246": {
+      "abi": "Actual FLS callback void __stdcall(void*), original word atentryESP+4; RET4. NULL is an actual path after prolog. Main265B92ops plus two12B/5-op physical unwind entries. No semantic EAX return.",
+      "native_frame": "EntryESP=E, compilerEBP F=E-4. PUSH8/PUSHE032D0/CALLC07C00. Capture CURRENT[F+8] intoESI AFTER prolog. Native main uses capturedESI PTD throughout; unwind prefixes separately reload CURRENT[F+8] intoESI. EBP-4state starts-2; no invented saved heap PTD cell.",
+      "ordered_lifetime": [
+        "NULL capturedPTD goes directly to actual epilog/RET4; no free/lock.",
+        "Read current PTD+24, test0, actual BF9DC8 ifnonzero; repeat separately +2C,+34,+3C,+44,+48. Each next field is read only after prior free returns. No pointer-slot clearing is performed.",
+        "Read current+5C; compare tofixedE16840; ifdifferent call BF9DC8 EVEN IFNULL. No newNULL test, shared-table projection or ownership inference.",
+        "Actual lock13; only afterreturn armstate0. Capture currentPTD+68 intoEDI. IfnonNULL actual InterlockedDecrement(capturedEDI). If result0 and capturedEDI!=fixedE15CA8, actual BF9DC8(capturedEDI). No later+68 reread. Disarm-2 then normal C05352 unlock13.",
+        "Actual lock12; onlyafterreturn armstate1. Capture currentPTD+6C intoEDI. IfnonNULL actual C01991(capturedEDI). Afterreturn compare same capturedEDI to CURRENT E162B0, thenfixedE161D8, then CURRENT DWORD[EDI]. Only noncurrent/nondefault/currentrefcount0 calls actual C017CB(capturedEDI). No early global/refcount capture or +6C reread.",
+        "Disarm-2 before normal C0535E unlock12. Actual BF9DC8(captured originalPTD ESI), then epilog/RET4; no postfreeclear, direct cache/indexunpublish or automatic unique_ptr destructor."
+      ],
+      "finally_entries": [
+        {
+          "physical_entry": "00c0534f",
+          "length": 12,
+          "instructions": 5,
+          "normal_entry": "00c05352",
+          "lock": 13,
+          "schedule": "MOVESI,CURRENT[F+8] then PUSH13/CALLcanonicalunlock/POP/RET. Initial3B currently no defined instruction/owner; normal9B helper is defined separately."
+        },
+        {
+          "physical_entry": "00c0535b",
+          "length": 12,
+          "instructions": 5,
+          "normal_entry": "00c0535e",
+          "lock": 12,
+          "schedule": "MOVESI,CURRENT[F+8] then PUSH12/CALLcanonicalunlock/POP/RET. Initial3B currently no defined instruction/owner; normal9B helper is defined separately."
+        }
+      ],
+      "failure_qualification": "Only actual armed lock cleanup is reached by its Original SEH. Preserve private argument read even though ordinary unlock does not consume reloadedESI; no C++ fault/register ABI claim. No catch/free/unpublish cleanup is inserted for earlier free calls or after normal disarm."
+    }
+  },
+  "actual_state_contracts": [
+    {
+      "address": "00e15b00",
+      "width": 4,
+      "role": "Actual OS TLS index used as cache of raw current getter code",
+      "read_contract": "Current value pushed before TlsGetValue; C05070 miss rereads only after decoder/captured getter; encoder/decoder push it before capturing actual TlsGetValue IAT and reread it for second lookup; mtterm captures it only after decoded PTD-index free returns.",
+      "write_contract": "C053DC publishes TlsAlloc return evenFFFFFFFF; C050BB publishesFFFFFFFF after actual TlsFree returns regardlessBOOL. No metadata-owned synthetic TLS index.",
+      "initial_PE_u32": 4294967295
+    },
+    {
+      "address": "00e15afc",
+      "width": 4,
+      "role": "Actual FLS/TLS PTD index",
+      "read_contract": "C051B7 pushes current index BEFORE C05070; encoder/decoder capture it after first actual getter-cache lookup and before second current cache-index lookup; setters capture current index BEFORE decode; C050BB captures before decode/free.",
+      "write_contract": "C053DC publishes actual selected allocator return evenFFFFFFFF; C050BB writesFFFFFFFF only after actual selected free returns.",
+      "initial_PE_u32": 4294967295
+    },
+    {
+      "address": "0109de34",
+      "width": 4,
+      "role": "Actual selected PTD-index allocator, raw then encoded",
+      "read_contract": "C053DC tests current published raw slot, pushes current slot to encoder; later current encoded slot decoded only AFTER C05246 callback word is queued.",
+      "write_contract": "GetProcAddress FlsAlloc result, or actual C0504C adapter on any lookup failure; later encoded result after current next-slot PUSH.",
+      "initial_PE_u32": 0
+    },
+    {
+      "address": "0109de38",
+      "width": 4,
+      "role": "Actual selected getter, raw then encoded",
+      "read_contract": "Raw current getter is pushed into real TLS cache before pointer initialization; encoder captures current getter after previous encoder returns but before encoded alloc store; C05070 cache miss pushes CURRENT encoded getter.",
+      "write_contract": "FlsGetValue result or actual TlsGetValue IAT word, then actual encoder result. Not a stable function-copy across init phases.",
+      "initial_PE_u32": 0
+    },
+    {
+      "address": "0109de3c",
+      "width": 4,
+      "role": "Actual selected PTD setter, raw then encoded",
+      "read_contract": "Each setter call queues captured PTD and current PTD index BEFORE reading/decode of this current slot.",
+      "write_contract": "FlsSetValue result or captured actual TlsSetValue IAT; later actual encoded result after next current free-slot PUSH.",
+      "initial_PE_u32": 0
+    },
+    {
+      "address": "0109de40",
+      "width": 4,
+      "role": "Actual selected PTD-index free, raw then encoded",
+      "read_contract": "C050BB captures PTD index first, pushes it, then pushes CURRENT encoded free into decoder, invokes returned real provider with earlier actual argument word.",
+      "write_contract": "FlsFree result or current TlsFree IAT, then actual encoder result; rollback does not reset this slot.",
+      "initial_PE_u32": 0
+    },
+    {
+      "address": "0109de44",
+      "width": 4,
+      "role": "Encoded actual new-handler slot",
+      "read_contract": "Actual allocator/new-handler provider owns subsequent reads; no new service callback binding.",
+      "write_contract": "BFBDFB->C05560 stores captured actual encoded-null word.",
+      "initial_PE_u32": 0
+    },
+    {
+      "address": "0109dd64",
+      "width": 4,
+      "role": "Encoded actual invalid-parameter handler slot",
+      "read_contract": "BF66EF selection from prior whole audit; do not replace with SingletonLifetime invalid_parameter(context).",
+      "write_contract": "BFBDFB->BF65B1 stores captured actual encoded-null word.",
+      "initial_PE_u32": 0
+    },
+    {
+      "address": "0109e454",
+      "width": 4,
+      "role": "Encoded actual critical-section initializer cache",
+      "read_contract": "Actual C17653 uses its real state/decoder contract, not a newly supplied initializer callback.",
+      "write_contract": "BFBDFB->C17639 stores captured encoded-null once; existing Source takes an added borrowed reference and is not Original one-word entry ABI.",
+      "initial_PE_u32": 0
+    },
+    {
+      "address": "00e15580",
+      "width": 4,
+      "role": "Encoded exit function slot",
+      "read_contract": "Actual exit owner uses real state; no new host exit service.",
+      "write_contract": "BFBDFB encodes actual BFBDCC and publishes actual encoder EAX after all8 prior helper calls. PE initially contains plain BFBDCC, not encoded runtime-ready state.",
+      "initial_PE_u32": 12565964
+    },
+    {
+      "address": "00e162b0",
+      "width": 4,
+      "role": "Actual current global locale pointer",
+      "read_contract": "C050F8 reads only after real lock12 and optional localeNULL store; C05246 compares captured per-thread locale to CURRENT global pointer only AFTER real C01991 release returns.",
+      "write_contract": "No write by these7 bodies. Its genuine owner/bootstrap remains external, not a synthetic seeded locale.",
+      "initial_PE_u32": 14770648
+    },
+    {
+      "address": "00e15ca8",
+      "width": 4,
+      "role": "Actual default multibyte record leading refcount",
+      "read_contract": "Address identity is stored as PTD+68; actual InterlockedIncrement/Decrement and default-identity comparison, never a substituted local refcount.",
+      "write_contract": "Real InterlockedIncrement in C050F8; captured-record decrement in C05246; default object ownership is external.",
+      "initial_PE_u32": 0
+    },
+    {
+      "address": "0109dd84",
+      "width": 4,
+      "role": "Actual OS platform",
+      "read_contract": "Original module gate/getter consumes current real word under prior failure/SCC contracts.",
+      "write_contract": "Genuine BFD0DD publishes after version query/free before __heap_init/__mtinit.",
+      "initial_PE_u32": 0
+    },
+    {
+      "address": "0109dd90",
+      "width": 4,
+      "role": "Actual OS major",
+      "read_contract": "Original module gate/getter consumes current real word, not modern SDK locale/OS fastpath assumption.",
+      "write_contract": "Genuine BFD0DD publishes before __mtinit.",
+      "initial_PE_u32": 0
+    }
+  ],
+  "other_encoded_sinks": "BFBDFB writes via genuine short helpers109E16C,109E450,109E43C/440/444/448; C07AF8 writes109E170 from encoded actualC07A75, ignoring queued encoded-null word; C16E8B consumes no queued word. Preserve8call schedule/actualoutgoingcells instead of synthesizing a new registry or batch initialization.",
+  "actual_IAT_contracts": {
+    "00ce215c": {
+      "dll": "KERNEL32.dll",
+      "name": "GetModuleHandleA"
+    },
+    "00ce20f4": {
+      "dll": "KERNEL32.dll",
+      "name": "GetProcAddress"
+    },
+    "00ce20b4": {
+      "dll": "KERNEL32.dll",
+      "name": "TlsSetValue"
+    },
+    "00ce20b0": {
+      "dll": "KERNEL32.dll",
+      "name": "TlsFree"
+    },
+    "00ce20b8": {
+      "dll": "KERNEL32.dll",
+      "name": "TlsAlloc"
+    },
+    "00ce20bc": {
+      "dll": "KERNEL32.dll",
+      "name": "TlsGetValue"
+    },
+    "00ce223c": {
+      "dll": "KERNEL32.dll",
+      "name": "GetCurrentThreadId"
+    },
+    "00ce2258": {
+      "dll": "KERNEL32.dll",
+      "name": "GetLastError"
+    },
+    "00ce22bc": {
+      "dll": "KERNEL32.dll",
+      "name": "SetLastError"
+    },
+    "00ce221c": {
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedIncrement"
+    },
+    "00ce2220": {
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedDecrement"
+    }
+  },
+  "dynamic_native_callbacks": [
+    {
+      "role": "FLS allocator",
+      "actual_source": "Current decoded109DE34 from real GetProcAddress(FlsAlloc) or actual C0504C fallback",
+      "ABI": "DWORD __stdcall(PFLS_CALLBACK_FUNCTION)",
+      "actual_argument": "C05246 native callback pointer queued BEFORE decoder; selected allocator can returnFFFFFFFF.",
+      "distinction": "Actual native/OS code pointer, not a new injected allocation service."
+    },
+    {
+      "role": "TLS/FLS getter",
+      "actual_source": "Current getter-cache TLS result or CURRENT109DE38 decode; actualFlsGetValue/TlsGetValue",
+      "ABI": "void* __stdcall(DWORD)",
+      "actual_argument": "Captured native PTD-index word; unchecked decoded getter CALL retained.",
+      "distinction": "No host-provided get_ptd/getter callback metadata or null guard."
+    },
+    {
+      "role": "TLS/FLS setter",
+      "actual_source": "Current decoded109DE3C; actualFlsSetValue/TlsSetValue",
+      "ABI": "BOOL __stdcall(DWORD,void*)",
+      "actual_argument": "Index and capturedPTD actual outgoing words are queued BEFORE decoder; no assumed nonzero BOOL.",
+      "distinction": "Actual OS TLS/FLS publication, not storing a synthetic PTD in a host container."
+    },
+    {
+      "role": "TLS/FLS index free",
+      "actual_source": "Current decoded109DE40; actualFlsFree/TlsFree",
+      "ABI": "BOOL __stdcall(DWORD)",
+      "actual_argument": "Captured index word queued BEFORE decode; callback/dynamic global effects preserved.",
+      "distinction": "This is not heapfree. C050BB later clears index regardless returnedBOOL."
+    },
+    {
+      "role": "Registered PTD FLS cleanup",
+      "actual_source": "Actual code entryC05246 passed by C053DC",
+      "ABI": "void __stdcall(void*) / RET4",
+      "actual_argument": "Raw actual callback argument includingNULL; maincaptures only afterprolog; actualfinallyreloads currentargument.",
+      "distinction": "No new cleanup callback introduced; actual native code remains a required real provider."
+    },
+    {
+      "role": "Pointer encoding/decoding",
+      "actual_source": "Actual current PTD+1F8/+1FC or actual GetProcAddress EncodePointer/DecodePointer path",
+      "ABI": "void* __stdcall(void*)",
+      "actual_argument": "Fresh current actual firstcallee argument word is pushed; selected result is written back to that ORIGINAL caller word then reloaded.",
+      "distinction": "Actual native OS transform; SDK EncodePointer shortcut, XOR codec or return-only wrapper would narrow behavior."
+    }
+  ],
+  "existing_Source_interfaces": {
+    "hashes": {
+      "include/bsp/native_crt_pointer_decode.hpp": "b1e901d739c07419b55441988bf42177b0e6ace3ef27ef1251ecb3b36fb48a7f",
+      "src/native_crt_pointer_decode.cpp": "7a689a80bea666aa0941662a1bbde17500c92d1f7fd671c364aa2b3e0bf365c7",
+      "include/bsp/native_crt_libm_callback_registration.hpp": "96b1bf767f1b4de73a578f178de025f2c9199082e404ad3bf45e0ff695f58746",
+      "src/native_crt_libm_callback_registration.cpp": "cacc140a243569c0d0828a309cf84c079fa12e30b1fc5124e703c44ed1716c32",
+      "include/bsp/native_crt_pointer_decode_support.hpp": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722",
+      "src/native_crt_pointer_decode_support.cpp": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37",
+      "include/bsp/legacy_crt_math.hpp": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+      "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "include/bsp/native_crt_critical_section_primitives.hpp": "fd6703d4731b2e944bf7bed000cb833e563a0210a18934698f145dbee7138326",
+      "src/native_crt_critical_section_primitives.cpp": "404b1dc6f40dbd7762f10d5f97075c0545f66e7203653d15d36a9316839db8d6",
+      "include/bsp/native_crt_tls_callback_adapter.hpp": "4adf4c420f42ed3706f5d182c65f2a28c337f87aec5b2947571cbe60c96a537f",
+      "src/native_crt_tls_callback_adapter.cpp": "da02ab237a0a2475947b466c19b01ab432d81378ddc298ccf389a143ea0a39e2"
+    },
+    "genuine_NativeCore": "Existing encode/decode110B routines preserve original TLS/index/provider reads, selected native stdcall calls and firstargument-slot writeback using naked Win32 assembly. They are genuine complete qualified algorithms, not analysis stubs.",
+    "extra_state_context": "Both APIs add stable second caller-cleaned context word: refs to actual mutable E15B00,E15AFC, actual current TlsGetValueIAT, module gate. Stable identities do not freeze referenced contents. Added word changes physical caller stack/entry ABI; not callable as Original one-word entry.",
+    "module_gate_services": "NativeCrtPointerDecodeSupportContext has actual borrowed OS words plus LegacyCrtMathRuntime::errno_location_00bffb8b() and SingletonLifetimeCallbacks::invalid_parameter(context). Actual current Source onfailure calls supplied errno accessor, writes22, then supplied invalid service(context). These borrowed service seams are NOT the actual Original direct BFFB8B/5word BF66EF transport.",
+    "canonical_composition_needed": [
+      "Keep existing qualified public APIs/NativeCore evidence. Add separately reviewed canonical/direct composition over primary-owned actual state and genuine named Originalerrno/handler functions, with actual raw5word invalid-handler and every returning path. Do not merely bind new host callbacks around missing Original code.",
+      "Root must choose/prove how Original noarg/onearg entries reach the actual state owner without adding a foreign native argument word or reading unreached metadata. A new Source interface may borrow state, but cannot claim unchanged Original stack/argument ABI.",
+      "Real selected-code calls remain typed actual function pointers. Actual IAT/state references are allowed provider bindings, not a generic replaceable callback interface. No CurrentSDKmalloc/calloc/_errno/_invalid_parameter/LocaleUpdate/EncodePointer substitution.",
+      "Codec writable original argument slot is a separate actual backing object from stable state metadata; nested queued OS arguments must survive decode calls and their writeback. Passing a local C++ value/returning pointer alone does not establish physical slot equivalence.",
+      "C17639 existing store adds borrowed DWORD& and nonalias-frame admission. Reuse the complete store behavior under its existing contract, but establish actual global109E454 canonical entry separately. Do not describe it as Original one-word Source already completed."
+    ],
+    "services_that_may_not_be_synthesized": [
+      "Native PTD/FLS state/index cache",
+      "heap ownership or seed PTD",
+      "lock descriptors/ownership",
+      "default locale/mbc records",
+      "encoded-null/new-handler/invalid-handler publications",
+      "errno TLS ownership",
+      "private compiler SEH4 frames/dispatcher"
+    ]
+  },
+  "primary_shared_state_requirements": {
+    "future_owner": "Primary root only; proposed interface name ActualNativeState is planning terminology, no file defined here.",
+    "storage": "Bind actual mutable canonical words/records, actual IAT slots and module/table storage, not clones, seedednonnull state or a parallel std::thread_local owner. PE flags/NULL/FFFFFFFF are cold bootstrap facts only.",
+    "metadata": "If ordinary Source APIs use explicit bindings, binding identity/storage must remain stable/disjoint from actual argument/private scratch storage; do not freeze real global contents or forbid real provider reentrancy/mutations beyond already established provider contracts. Reached actual PTD/locale/critical-section/stack storage must support original width/order.",
+    "typed_fields": "DWORD pointer/code/index/BOOL, BYTE PTD+C8/+14B, real Win32 stdcall imports/callbacks. Actual IAT capture vs current reread schedule follows each native owner. No enum/nativeclass inference.",
+    "publication_phase": "State must represent raw\u2192encoded provider slot phases and native partial initialization/failure state. A boolean ready flag/selected initialized subset is insufficient.",
+    "private_transport": "Original argument cells, writable codec word, queued OS arguments, SEH state and current-argument reloads need explicit representations or proven canonical entry thunks; extra C++ context/RAII alone does not prove Original SEH/stack/fault/register ABI."
+  },
+  "finite_provider_manifest": [
+    {
+      "entry": "00bf65b1",
+      "current_contract": "10B setter109DD64, no indexed whole Source."
+    },
+    {
+      "entry": "00bf66ef",
+      "current_contract": "Original36B encoded-handler selection and true tail calls audited; no complete Original implementation, no SDK _invalid_parameter_noinfo substitute."
+    },
+    {
+      "entry": "00bf9dc8",
+      "current_contract": "Whole Original free audited by peer; existing Source only labelled current host substitution. Genuine free/lock/errno stream remains joint prerequisite."
+    },
+    {
+      "entry": "00bfbb61",
+      "current_contract": "Complete60B getter Source, added context with LegacyCrtMathRuntime and SingletonLifetime services; genuine direct BFFB8B/BF66EF composition needed."
+    },
+    {
+      "entry": "00bfbdcc",
+      "current_contract": "Actual encoded exit target, not invoked by these7; genuine shutdown ownership not ready (priorstartup audit)."
+    },
+    {
+      "entry": "00bffb8b",
+      "current_contract": "Original19B errno body audited; complete actual PTD transport absent. Was foreign-leased earlier; currentleasecheck unleased; no claim here."
+    },
+    {
+      "entry": "00c017cb",
+      "current_contract": "Original locale destruction, no indexed complete Source. Direct callback child named, nested destruction dependencies explicitly unexpanded."
+    },
+    {
+      "entry": "00c0190b",
+      "current_contract": "Complete canonical134B actual locale ref-acquire Source; actual current record/InterlockedIncrement contracts required."
+    },
+    {
+      "entry": "00c01991",
+      "current_contract": "Original locale ref-release, no indexed complete Source. Direct callback child named but body/whole contract not expanded in this bounded prep."
+    },
+    {
+      "entry": "00c0485a",
+      "current_contract": "Whole72B26ops nullable calloc retry wrapper audited, no complete Source. Each retry pushes0 then CURRENT size then CURRENT count into C1C50F."
+    },
+    {
+      "entry": "00c04efb",
+      "current_contract": "Complete108B module-gate Source borrows owning errno/invalid handler support; not callback-free Original failure transport."
+    },
+    {
+      "entry": "00c04f67",
+      "current_contract": "Complete110B NativeCore existing Source with extra context; needs genuine canonical Original entry/state/failure composition."
+    },
+    {
+      "entry": "00c04fd5",
+      "current_contract": "Noarg encoded-null helper9B; whole known, no indexed complete Source. Must invoke genuine encoder and preserve writable temporary."
+    },
+    {
+      "entry": "00c04fde",
+      "current_contract": "Complete110B NativeCore existing Source with extra context; needs genuine canonical Original entry/state/failure composition."
+    },
+    {
+      "entry": "00c0504c",
+      "current_contract": "Complete9B genuine stdcall TlsAlloc adapter Source: ignoredFLS callbackword without read, actual TlsAlloc, RET4; not FLS cleanup/owner."
+    },
+    {
+      "entry": "00c051ae",
+      "current_contract": "Complete9B noarg unlock12 helper Source over real canonical unlock; qualified ordinary interface, not entire parent SEH."
+    },
+    {
+      "entry": "00c05352",
+      "current_contract": "Normal9B unlock13 helper freshly inspected, no Source. Real scope entry is preceding C0534F CURRENTarg\u2192ESI reload."
+    },
+    {
+      "entry": "00c0535e",
+      "current_contract": "Normal9B unlock12 helper freshly inspected, no Source. Real scope entry is preceding C0535B CURRENTarg\u2192ESI reload."
+    },
+    {
+      "entry": "00c05560",
+      "current_contract": "10B setter109DE44, no indexed whole Source."
+    },
+    {
+      "entry": "00c05cfb",
+      "current_contract": "10B setter109E16C, no indexed whole Source."
+    },
+    {
+      "entry": "00c07a75",
+      "current_contract": "Fixed actual EH-hook target encoded by C07AF8; body notexpanded here, no closure claim."
+    },
+    {
+      "entry": "00c07af8",
+      "current_contract": "17B actual C07A75 encoder/store109E170 owner, no indexed whole Source; not encoded-null store."
+    },
+    {
+      "entry": "00c07c00",
+      "current_contract": "Whole69B prolog inspected; no complete Original Source; private actualFS/cookie/frame dispatch required."
+    },
+    {
+      "entry": "00c07c45",
+      "current_contract": "Complete20B exact custom-frame epilog Source exists; actual valid frame/FS chain mandatory; no whole prolog/dispatcher inference."
+    },
+    {
+      "entry": "00c07c90",
+      "current_contract": "Original __except_handler4, no whole Source closure established by this task. Existing filter primitive/GS/cookie leaves do not implement full dispatcher."
+    },
+    {
+      "entry": "00c11a93",
+      "current_contract": "Whole73B27ops genuine lock bootstrap audited; no complete actual owner Source; peer/root contract stream."
+    },
+    {
+      "entry": "00c11adc",
+      "current_contract": "Whole85B34ops genuine lock deletion audited; no complete actual owner Source; peer/root contract stream."
+    },
+    {
+      "entry": "00c11b31",
+      "current_contract": "Complete canonical21B unlock Source; actual initialized and currentlyowned descriptor/criticalsection required, not synthesized state."
+    },
+    {
+      "entry": "00c11c21",
+      "current_contract": "Whole49B20ops actual lock acquisition audited; no complete actual owner Source; peer/root contract stream."
+    },
+    {
+      "entry": "00c16e8b",
+      "current_contract": "1B RET; queued word unread, no indexed whole Source."
+    },
+    {
+      "entry": "00c17037",
+      "current_contract": "25B setter109E43C/440/444/448, no indexed whole Source."
+    },
+    {
+      "entry": "00c1752b",
+      "current_contract": "10B setter109E450, no indexed whole Source."
+    },
+    {
+      "entry": "00c17639",
+      "current_contract": "Complete10B NativeCore store Source with added volatileDWORD& and explicit stable/nonalias-frame binding; NOT original one-word canonical entry."
+    },
+    {
+      "entry": "00c1c50f",
+      "current_contract": "286B Original calloc physical extent known, only pseudocode/direct frontier audited, whole physical/nativeABI/Source still unproved; do not infer no-fail/SDKcalloc/SBH-only implementation."
+    }
+  ],
+  "concrete_joint_work_partition": [
+    {
+      "proposed_owner": "primary",
+      "addresses": [
+        "00c04f67",
+        "00c04fde",
+        "00c04efb",
+        "00bfbb61",
+        "00bffb8b",
+        "00bf66ef"
+      ],
+      "files": [
+        "include/bsp/native_crt_actual_state.hpp",
+        "src/native_crt_actual_state.cpp",
+        "include/bsp/native_crt_canonical_pointer_transport.hpp",
+        "src/native_crt_canonical_pointer_transport.cpp"
+      ],
+      "work": "Own shared actual state/header and direct genuine failure/pointer-entry composition. ExistingqualifiedAPI files remain owned/reviewed separately; real Original BFFB8B body joins PTD getter family and BF66EF joins canonicalfailure code. Address/file leases must be split/rechecked before implementation; none claimed here."
+    },
+    {
+      "proposed_owner": "bootstrap_worker",
+      "addresses": [
+        "00c053dc",
+        "00bfbdfb",
+        "00c050bb",
+        "00c04fd5",
+        "00c05560",
+        "00bf65b1",
+        "00c05cfb",
+        "00c1752b",
+        "00c17037",
+        "00c16e8b",
+        "00c07af8"
+      ],
+      "files": [
+        "include/bsp/native_crt_tls_bootstrap_owner.hpp",
+        "src/native_crt_tls_bootstrap_owner.cpp"
+      ],
+      "work": "Whole cold initialization, encoded-pointer publication and teardown owner with actual uneven rollback/queued cells. Complete short direct setter providers as one owned bootstrap closure; reuse/genuinelycomposeC17639 without unleasedexistingSource edits."
+    },
+    {
+      "proposed_owner": "ptd_getter_worker",
+      "addresses": [
+        "00c05070",
+        "00c051b7"
+      ],
+      "files": [
+        "include/bsp/native_crt_ptd_getter_owner.hpp",
+        "src/native_crt_ptd_getter_owner.cpp"
+      ],
+      "work": "Whole current getter cache and lazy nullable PTD getter with exact LastError/decoded-function/latecurrentindex/readback/realallocation schedules; direct BFFB8B belongsprimarysharedinterface, not duplicated here."
+    },
+    {
+      "proposed_owner": "ptd_lifetime_worker",
+      "addresses": [
+        "00c050f8",
+        "00c05246",
+        "00c05352",
+        "00c0535e"
+      ],
+      "qualified_private_actions": [
+        "00c0534f",
+        "00c0535b"
+      ],
+      "files": [
+        "include/bsp/native_crt_ptd_record_lifetime.hpp",
+        "src/native_crt_ptd_record_lifetime.cpp"
+      ],
+      "work": "Whole initialization and real callback record cleanup over native8B/4B live argument backing. ReuseexistingC051AE/C0190B and actualcanonicalunlock. No whole-completion until real C01991/C017CB and armed private actions/SEH contracts are satisfied. Qualifiedprivateactions are not newly invented binary functions."
+    },
+    {
+      "proposed_owner": "existing_free_lock_stream_coordinated_by_primary",
+      "addresses": [
+        "00bf9dc8",
+        "00c11c21",
+        "00c11b5e",
+        "00c11a93",
+        "00c11adc",
+        "00c0481a",
+        "00c17653"
+      ],
+      "files": "Peer-owned future files/interfaces; no edits or overlapping claims by this worker.",
+      "work": "Whole genuine free/lock/allocation-errno transport, realcriticalsection initialization/delete and failurecontinuations. C0485A/C1C50F actualcalloc closure must be deliberately assigned byprimary; do not silently fold it into a borrowedhost allocator."
+    },
+    {
+      "proposed_owner": "future_locale_lifetime_and_SEH_closure_coordinated_by_primary",
+      "addresses": [
+        "00c01991",
+        "00c017cb",
+        "00c07c00",
+        "00c07c90"
+      ],
+      "files": "Unassigned; requires boundedwholechildcontracts and freshleases beforeSource.",
+      "work": "These direct Original dependencies remain named stops, not implementations supplied by callbacks, stubs or guessed refcount/free projections. Whole directchildcallee bodies and canonical SEH transport need evidence before completion."
+    }
+  ],
+  "joint_schedule_and_remaining_unknowns": {
+    "finite_cycles": "Actual audited allocator/lock/initializer and errno/PTD/free/decoder/invalid-handler cycles can be implemented together over real state, with directnamed functions and source order; cyclicity is not a reason to settle for selected initialized parents. This report does not infer unexplored C1C50F/C017CB descendants or a precise transitive SCC size.",
+    "must_define_before_Source_ready": [
+      "Primary shared actualstate and canonical entry mapping; currentqualifiedcontexts alone do not settleOriginalABI.",
+      "Whole actual C1C50F calloc implementation and reachedmemset nativefeature/ABI composition; noSDKcalloc/zeroed syntheticPTD.",
+      "Whole C01991 refrelease and C017CB locale destruction directprovider contracts; nesteddeps notexpandedhere.",
+      "Actual C07C00/C07C90 SEH4/prolog/dispatcher and actualunwindprefix frame mapping, not C++RAII generalparity.",
+      "Real heap/lock/errno/invalid-handler/fatal transports from coordinated SCC contracts.",
+      "StartupBFD0DD and real initiallocale/lock/TLS/provider population plus importedDLL/bootstrap/runtime ownership; thePE initial words are not proof of runtimeowner."
+    ],
+    "not_extra_assumptions": [
+      "AllNULL/indexFFFFFFFF/BOOL0 and returningrealprovider failurepaths retained; no nonNULL seeded subset.",
+      "No blanketreentrancy/concurrency ban beyond genuineprovider/storagecontracts. Rawcurrentreads/writes and actualcallbacks retainpossiblevalidmutations.",
+      "Nativecode registration/capture/lifetime and callableABI must actuallyhold at each reached indirectcall; Originalfault/register/x87/SEH equivalence remainsunproved.",
+      "No newcleanup on an unarmed region, no retrywhen normaldisarmedcleanup throws, and no invented rollback around publishedPTD orfailedinitialTLS cache."
+    ]
+  },
+  "ordered_native_memory_IO": {
+    "interpretation": "Complete per-main-body memory-operand instruction order from the exact installedPE spans already audited; Capstone access_bits1=read,2=write,3=read/write. Memory accesses throughcalls/providers are their separatelynamedcontracts, not flattened here. Original stackpush/call side effects remain in explicit outgoing-word contracts.",
+    "rows": [
+      {
+        "function_entry": "00c053dc",
+        "site": "00c053e2",
+        "instruction": "call dword ptr [0xce215c]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c053f8",
+        "instruction": "mov esi, dword ptr [0xce20f4]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c0540c",
+        "instruction": "mov dword ptr [0x109de34], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c05419",
+        "instruction": "mov dword ptr [0x109de38], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c05426",
+        "instruction": "mov dword ptr [0x109de3c], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c0542d",
+        "instruction": "cmp dword ptr [0x109de34], 0",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c05434",
+        "instruction": "mov esi, dword ptr [0xce20b4]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c0543a",
+        "instruction": "mov dword ptr [0x109de40], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c05441",
+        "instruction": "cmp dword ptr [0x109de38], 0",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c0544a",
+        "instruction": "cmp dword ptr [0x109de3c], 0",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c05457",
+        "instruction": "mov eax, dword ptr [0xce20bc]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c0545c",
+        "instruction": "mov dword ptr [0x109de38], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c05461",
+        "instruction": "mov eax, dword ptr [0xce20b0]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c05466",
+        "instruction": "mov dword ptr [0x109de34], 0xc0504c",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c05470",
+        "instruction": "mov dword ptr [0x109de3c], esi",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c05476",
+        "instruction": "mov dword ptr [0x109de40], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c0547b",
+        "instruction": "call dword ptr [0xce20b8]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c05484",
+        "instruction": "mov dword ptr [0xe15b00], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c0548f",
+        "instruction": "push dword ptr [0x109de38]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c054a5",
+        "instruction": "push dword ptr [0x109de34]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c054b0",
+        "instruction": "push dword ptr [0x109de38]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c054b6",
+        "instruction": "mov dword ptr [0x109de34], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c054c0",
+        "instruction": "push dword ptr [0x109de3c]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c054c6",
+        "instruction": "mov dword ptr [0x109de38], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c054d0",
+        "instruction": "push dword ptr [0x109de40]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c054d6",
+        "instruction": "mov dword ptr [0x109de3c], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c054e3",
+        "instruction": "mov dword ptr [0x109de40], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c054f6",
+        "instruction": "push dword ptr [0x109de34]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c05507",
+        "instruction": "mov dword ptr [0xe15afc], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c05523",
+        "instruction": "push dword ptr [0xe15afc]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c05529",
+        "instruction": "push dword ptr [0x109de3c]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c05545",
+        "instruction": "call dword ptr [0xce223c]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c0554b",
+        "instruction": "or dword ptr [esi + 4], 0xffffffff",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          3
+        ]
+      },
+      {
+        "function_entry": "00c053dc",
+        "site": "00c0554f",
+        "instruction": "mov dword ptr [esi], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00bfbdfb",
+        "site": "00bfbe40",
+        "instruction": "mov dword ptr [0xe15580], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c050bb",
+        "site": "00c050bb",
+        "instruction": "mov eax, dword ptr [0xe15afc]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c050bb",
+        "site": "00c050c6",
+        "instruction": "push dword ptr [0x109de40]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c050bb",
+        "site": "00c050d4",
+        "instruction": "or dword ptr [0xe15afc], 0xffffffff",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          3
+        ]
+      },
+      {
+        "function_entry": "00c050bb",
+        "site": "00c050db",
+        "instruction": "mov eax, dword ptr [0xe15b00]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c050bb",
+        "site": "00c050e6",
+        "instruction": "call dword ptr [0xce20b0]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c050bb",
+        "site": "00c050ec",
+        "instruction": "or dword ptr [0xe15b00], 0xffffffff",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          3
+        ]
+      },
+      {
+        "function_entry": "00c05070",
+        "site": "00c05071",
+        "instruction": "push dword ptr [0xe15b00]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05070",
+        "site": "00c05077",
+        "instruction": "call dword ptr [0xce20bc]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05070",
+        "site": "00c05083",
+        "instruction": "push dword ptr [0x109de38]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05070",
+        "site": "00c05092",
+        "instruction": "push dword ptr [0xe15b00]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05070",
+        "site": "00c05098",
+        "instruction": "call dword ptr [0xce20b4]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c051b7",
+        "site": "00c051b9",
+        "instruction": "call dword ptr [0xce2258]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c051b7",
+        "site": "00c051bf",
+        "instruction": "push dword ptr [0xe15afc]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c051b7",
+        "site": "00c051e9",
+        "instruction": "push dword ptr [0xe15afc]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c051b7",
+        "site": "00c051ef",
+        "instruction": "push dword ptr [0x109de3c]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c051b7",
+        "site": "00c0520b",
+        "instruction": "call dword ptr [0xce223c]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c051b7",
+        "site": "00c05211",
+        "instruction": "or dword ptr [esi + 4], 0xffffffff",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          3
+        ]
+      },
+      {
+        "function_entry": "00c051b7",
+        "site": "00c05215",
+        "instruction": "mov dword ptr [esi], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c051b7",
+        "site": "00c05223",
+        "instruction": "call dword ptr [0xce22bc]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c05109",
+        "instruction": "call dword ptr [0xce215c]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c0510f",
+        "instruction": "mov dword ptr [ebp - 0x1c], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c05112",
+        "instruction": "mov esi, dword ptr [ebp + 8]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c05115",
+        "instruction": "mov dword ptr [esi + 0x5c], 0xe16840",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c0511f",
+        "instruction": "mov dword ptr [esi + 0x14], edi",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c05134",
+        "instruction": "push dword ptr [ebp - 0x1c]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c05137",
+        "instruction": "mov ebx, dword ptr [0xce20f4]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c0513f",
+        "instruction": "mov dword ptr [esi + 0x1f8], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c0514a",
+        "instruction": "push dword ptr [ebp - 0x1c]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c0514f",
+        "instruction": "mov dword ptr [esi + 0x1fc], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c05155",
+        "instruction": "mov dword ptr [esi + 0x70], edi",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c05158",
+        "instruction": "mov byte ptr [esi + 0xc8], 0x43",
+        "memory_widths_bytes": [
+          1
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c0515f",
+        "instruction": "mov byte ptr [esi + 0x14b], 0x43",
+        "memory_widths_bytes": [
+          1
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c0516b",
+        "instruction": "mov dword ptr [esi + 0x68], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c0516f",
+        "instruction": "call dword ptr [0xce221c]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c0517d",
+        "instruction": "and dword ptr [ebp - 4], 0",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          3
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c05181",
+        "instruction": "mov eax, dword ptr [ebp + 0xc]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c05184",
+        "instruction": "mov dword ptr [esi + 0x6c], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c0518b",
+        "instruction": "mov eax, dword ptr [0xe162b0]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c05190",
+        "instruction": "mov dword ptr [esi + 0x6c], eax",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c05193",
+        "instruction": "push dword ptr [esi + 0x6c]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c050f8",
+        "site": "00c0519c",
+        "instruction": "mov dword ptr [ebp - 4], 0xfffffffe",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c05252",
+        "instruction": "mov esi, dword ptr [ebp + 8]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c0525d",
+        "instruction": "mov eax, dword ptr [esi + 0x24]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c0526b",
+        "instruction": "mov eax, dword ptr [esi + 0x2c]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c05279",
+        "instruction": "mov eax, dword ptr [esi + 0x34]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c05287",
+        "instruction": "mov eax, dword ptr [esi + 0x3c]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c05295",
+        "instruction": "mov eax, dword ptr [esi + 0x44]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c052a3",
+        "instruction": "mov eax, dword ptr [esi + 0x48]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c052b1",
+        "instruction": "mov eax, dword ptr [esi + 0x5c]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c052ca",
+        "instruction": "and dword ptr [ebp - 4], 0",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          3
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c052ce",
+        "instruction": "mov edi, dword ptr [esi + 0x68]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c052d6",
+        "instruction": "call dword ptr [0xce2220]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c052ef",
+        "instruction": "mov dword ptr [ebp - 4], 0xfffffffe",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c05303",
+        "instruction": "mov dword ptr [ebp - 4], 1",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c0530a",
+        "instruction": "mov edi, dword ptr [esi + 0x6c]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c05318",
+        "instruction": "cmp edi, dword ptr [0xe162b0]",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c05328",
+        "instruction": "cmp dword ptr [edi], 0",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          1
+        ]
+      },
+      {
+        "function_entry": "00c05246",
+        "site": "00c05334",
+        "instruction": "mov dword ptr [ebp - 4], 0xfffffffe",
+        "memory_widths_bytes": [
+          4
+        ],
+        "memory_access_bits": [
+          2
+        ]
+      }
+    ]
+  },
+  "direct_and_tail_calls": [
+    {
+      "address": "00c053ee",
+      "native": "00c050bb",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc050bb"
+    },
+    {
+      "address": "00c054a0",
+      "native": "00bfbdfb",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xbfbdfb"
+    },
+    {
+      "address": "00c054ab",
+      "native": "00c04f67",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc04f67"
+    },
+    {
+      "address": "00c054bb",
+      "native": "00c04f67",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc04f67"
+    },
+    {
+      "address": "00c054cb",
+      "native": "00c04f67",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc04f67"
+    },
+    {
+      "address": "00c054db",
+      "native": "00c04f67",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc04f67"
+    },
+    {
+      "address": "00c054e8",
+      "native": "00c11a93",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc11a93"
+    },
+    {
+      "address": "00c054fc",
+      "native": "00c04fde",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc04fde"
+    },
+    {
+      "address": "00c05515",
+      "native": "00c0485a",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc0485a"
+    },
+    {
+      "address": "00c0552f",
+      "native": "00c04fde",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc04fde"
+    },
+    {
+      "address": "00c0553e",
+      "native": "00c050f8",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc050f8"
+    },
+    {
+      "address": "00c05556",
+      "native": "00c050bb",
+      "function": "00c053dc",
+      "kind": "call",
+      "instruction": "call 0xc050bb"
+    },
+    {
+      "address": "00bfbdfc",
+      "native": "00c04fd5",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc04fd5"
+    },
+    {
+      "address": "00bfbe04",
+      "native": "00c05560",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc05560"
+    },
+    {
+      "address": "00bfbe0a",
+      "native": "00c17639",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc17639"
+    },
+    {
+      "address": "00bfbe10",
+      "native": "00bf65b1",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xbf65b1"
+    },
+    {
+      "address": "00bfbe16",
+      "native": "00c05cfb",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc05cfb"
+    },
+    {
+      "address": "00bfbe1c",
+      "native": "00c1752b",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc1752b"
+    },
+    {
+      "address": "00bfbe22",
+      "native": "00c17037",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc17037"
+    },
+    {
+      "address": "00bfbe28",
+      "native": "00c16e8b",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc16e8b"
+    },
+    {
+      "address": "00bfbe2e",
+      "native": "00c07af8",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc07af8"
+    },
+    {
+      "address": "00bfbe38",
+      "native": "00c04f67",
+      "function": "00bfbdfb",
+      "kind": "call",
+      "instruction": "call 0xc04f67"
+    },
+    {
+      "address": "00c050cc",
+      "native": "00c04fde",
+      "function": "00c050bb",
+      "kind": "call",
+      "instruction": "call 0xc04fde"
+    },
+    {
+      "address": "00c050f3",
+      "native": "00c11adc",
+      "function": "00c050bb",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xc11adc"
+    },
+    {
+      "address": "00c051c7",
+      "native": "00c05070",
+      "function": "00c051b7",
+      "kind": "call",
+      "instruction": "call 0xc05070"
+    },
+    {
+      "address": "00c051db",
+      "native": "00c0485a",
+      "function": "00c051b7",
+      "kind": "call",
+      "instruction": "call 0xc0485a"
+    },
+    {
+      "address": "00c051f5",
+      "native": "00c04fde",
+      "function": "00c051b7",
+      "kind": "call",
+      "instruction": "call 0xc04fde"
+    },
+    {
+      "address": "00c05204",
+      "native": "00c050f8",
+      "function": "00c051b7",
+      "kind": "call",
+      "instruction": "call 0xc050f8"
+    },
+    {
+      "address": "00c0521a",
+      "native": "00bf9dc8",
+      "function": "00c051b7",
+      "kind": "call",
+      "instruction": "call 0xbf9dc8"
+    },
+    {
+      "address": "00c05089",
+      "native": "00c04fde",
+      "function": "00c05070",
+      "kind": "call",
+      "instruction": "call 0xc04fde"
+    },
+    {
+      "address": "00c050ff",
+      "native": "00c07c00",
+      "function": "00c050f8",
+      "kind": "call",
+      "instruction": "call 0xc07c00"
+    },
+    {
+      "address": "00c05126",
+      "native": "00c04efb",
+      "function": "00c050f8",
+      "kind": "call",
+      "instruction": "call 0xc04efb"
+    },
+    {
+      "address": "00c05177",
+      "native": "00c11c21",
+      "function": "00c050f8",
+      "kind": "call",
+      "instruction": "call 0xc11c21"
+    },
+    {
+      "address": "00c05196",
+      "native": "00c0190b",
+      "function": "00c050f8",
+      "kind": "call",
+      "instruction": "call 0xc0190b"
+    },
+    {
+      "address": "00c051a3",
+      "native": "00c051ae",
+      "function": "00c050f8",
+      "kind": "call",
+      "instruction": "call 0xc051ae"
+    },
+    {
+      "address": "00c051a8",
+      "native": "00c07c45",
+      "function": "00c050f8",
+      "kind": "call",
+      "instruction": "call 0xc07c45"
+    },
+    {
+      "address": "00c0524d",
+      "native": "00c07c00",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xc07c00"
+    },
+    {
+      "address": "00c05265",
+      "native": "00bf9dc8",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xbf9dc8"
+    },
+    {
+      "address": "00c05273",
+      "native": "00bf9dc8",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xbf9dc8"
+    },
+    {
+      "address": "00c05281",
+      "native": "00bf9dc8",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xbf9dc8"
+    },
+    {
+      "address": "00c0528f",
+      "native": "00bf9dc8",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xbf9dc8"
+    },
+    {
+      "address": "00c0529d",
+      "native": "00bf9dc8",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xbf9dc8"
+    },
+    {
+      "address": "00c052ab",
+      "native": "00bf9dc8",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xbf9dc8"
+    },
+    {
+      "address": "00c052bc",
+      "native": "00bf9dc8",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xbf9dc8"
+    },
+    {
+      "address": "00c052c4",
+      "native": "00c11c21",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xc11c21"
+    },
+    {
+      "address": "00c052e9",
+      "native": "00bf9dc8",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xbf9dc8"
+    },
+    {
+      "address": "00c052f6",
+      "native": "00c05352",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xc05352"
+    },
+    {
+      "address": "00c052fd",
+      "native": "00c11c21",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xc11c21"
+    },
+    {
+      "address": "00c05312",
+      "native": "00c01991",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xc01991"
+    },
+    {
+      "address": "00c0532e",
+      "native": "00c017cb",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xc017cb"
+    },
+    {
+      "address": "00c0533b",
+      "native": "00c0535e",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xc0535e"
+    },
+    {
+      "address": "00c05341",
+      "native": "00bf9dc8",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xbf9dc8"
+    },
+    {
+      "address": "00c05347",
+      "native": "00c07c45",
+      "function": "00c05246",
+      "kind": "call",
+      "instruction": "call 0xc07c45"
+    },
+    {
+      "address": "00c05354",
+      "native": "00c11b31",
+      "function": "00c05352",
+      "kind": "call",
+      "instruction": "call 0xc11b31"
+    },
+    {
+      "address": "00c05360",
+      "native": "00c11b31",
+      "function": "00c0535e",
+      "kind": "call",
+      "instruction": "call 0xc11b31"
+    }
+  ],
+  "computed_transfers": [
+    {
+      "site": "00c053e2",
+      "instruction": "call dword ptr [0xce215c]",
+      "span": "mtinit",
+      "slot": "00ce215c",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetModuleHandleA"
+      },
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 6,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately."
+    },
+    {
+      "site": "00c05404",
+      "instruction": "call esi",
+      "span": "mtinit",
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "slot": "00ce20f4",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress"
+      },
+      "register_capture_site": "00c053f8"
+    },
+    {
+      "site": "00c05411",
+      "instruction": "call esi",
+      "span": "mtinit",
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "slot": "00ce20f4",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress"
+      },
+      "register_capture_site": "00c053f8"
+    },
+    {
+      "site": "00c0541e",
+      "instruction": "call esi",
+      "span": "mtinit",
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "slot": "00ce20f4",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress"
+      },
+      "register_capture_site": "00c053f8"
+    },
+    {
+      "site": "00c0542b",
+      "instruction": "call esi",
+      "span": "mtinit",
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "slot": "00ce20f4",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress"
+      },
+      "register_capture_site": "00c053f8"
+    },
+    {
+      "site": "00c0547b",
+      "instruction": "call dword ptr [0xce20b8]",
+      "span": "mtinit",
+      "slot": "00ce20b8",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "TlsAlloc"
+      },
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 6,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately."
+    },
+    {
+      "site": "00c05496",
+      "instruction": "call esi",
+      "span": "mtinit",
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "slot": "00ce20b4",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "TlsSetValue"
+      },
+      "register_capture_site": "00c05434"
+    },
+    {
+      "site": "00c05502",
+      "instruction": "call eax",
+      "span": "mtinit",
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "actual_selected_provider": "Decoded CURRENT 0109DE34, invoked stdcall with callback 00C05246 already pushed before decoder call; no extra Source context word in the Original."
+    },
+    {
+      "site": "00c05535",
+      "instruction": "call eax",
+      "span": "mtinit",
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "actual_selected_provider": "Decoded CURRENT 0109DE3C, invoked stdcall with captured PTD and current E15AFC queued before decode; no synthesized callback."
+    },
+    {
+      "site": "00c05545",
+      "instruction": "call dword ptr [0xce223c]",
+      "span": "mtinit",
+      "slot": "00ce223c",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "GetCurrentThreadId"
+      },
+      "containing_function": "00c053dc",
+      "defined_instruction_length": 6,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately."
+    },
+    {
+      "site": "00c050d2",
+      "instruction": "call eax",
+      "span": "mtterm",
+      "containing_function": "00c050bb",
+      "defined_instruction_length": 2,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately.",
+      "actual_selected_provider": "Decoded CURRENT 0109DE40, invoked stdcall with earlier captured E15AFC queued before decode."
+    },
+    {
+      "site": "00c050e6",
+      "instruction": "call dword ptr [0xce20b0]",
+      "span": "mtterm",
+      "slot": "00ce20b0",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "TlsFree"
+      },
+      "containing_function": "00c050bb",
+      "defined_instruction_length": 6,
+      "evidence": "Current typed instruction and installed PE; IAT identity from installed PE import directory. Register captures listed separately."
+    },
+    {
+      "site": "00c051b9",
+      "physical_envelope": "00c051b7",
+      "instruction": "call dword ptr [0xce2258]",
+      "bytes": "ff 15 58 22 ce 00",
+      "actual_IAT_slot": "00ce2258",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "GetLastError"
+      }
+    },
+    {
+      "site": "00c051cc",
+      "physical_envelope": "00c051b7",
+      "instruction": "call eax",
+      "bytes": "ff d0",
+      "target_domain": "actual getter returned by C05070;index was already captured/pushed BEFORE selecting getter"
+    },
+    {
+      "site": "00c051fb",
+      "physical_envelope": "00c051b7",
+      "instruction": "call eax",
+      "bytes": "ff d0",
+      "target_domain": "actual decoded registered FLS/TLS setter;captured index+allocation words were already pushed"
+    },
+    {
+      "site": "00c0520b",
+      "physical_envelope": "00c051b7",
+      "instruction": "call dword ptr [0xce223c]",
+      "bytes": "ff 15 3c 22 ce 00",
+      "actual_IAT_slot": "00ce223c",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "GetCurrentThreadId"
+      }
+    },
+    {
+      "site": "00c05223",
+      "physical_envelope": "00c051b7",
+      "instruction": "call dword ptr [0xce22bc]",
+      "bytes": "ff 15 bc 22 ce 00",
+      "actual_IAT_slot": "00ce22bc",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "SetLastError"
+      }
+    },
+    {
+      "site": "00c05077",
+      "physical_envelope": "00c05070",
+      "instruction": "call dword ptr [0xce20bc]",
+      "bytes": "ff 15 bc 20 ce 00",
+      "actual_IAT_slot": "00ce20bc",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "TlsGetValue"
+      }
+    },
+    {
+      "site": "00c05098",
+      "physical_envelope": "00c05070",
+      "instruction": "call dword ptr [0xce20b4]",
+      "bytes": "ff 15 b4 20 ce 00",
+      "actual_IAT_slot": "00ce20b4",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "TlsSetValue"
+      }
+    },
+    {
+      "site": "00c05109",
+      "physical_envelope": "00c050f8",
+      "instruction": "call dword ptr [0xce215c]",
+      "bytes": "ff 15 5c 21 ce 00",
+      "actual_IAT_slot": "00ce215c",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "GetModuleHandleA"
+      }
+    },
+    {
+      "site": "00c0513d",
+      "physical_envelope": "00c050f8",
+      "instruction": "call ebx",
+      "bytes": "ff d3",
+      "actual_IAT_slot": "00ce20f4",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress"
+      }
+    },
+    {
+      "site": "00c0514d",
+      "physical_envelope": "00c050f8",
+      "instruction": "call ebx",
+      "bytes": "ff d3",
+      "actual_IAT_slot": "00ce20f4",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress"
+      }
+    },
+    {
+      "site": "00c0516f",
+      "physical_envelope": "00c050f8",
+      "instruction": "call dword ptr [0xce221c]",
+      "bytes": "ff 15 1c 22 ce 00",
+      "actual_IAT_slot": "00ce221c",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "InterlockedIncrement"
+      }
+    },
+    {
+      "site": "00c052d6",
+      "instruction": "call dword ptr [0xce2220]",
+      "slot": "00ce2220",
+      "import_": {
+        "dll": "KERNEL32.dll",
+        "name": "InterlockedDecrement"
+      },
+      "containing_function": "00c05246",
+      "typed_defined": true
+    }
+  ],
+  "new_capture_receipts": [
+    {
+      "path": "local/goal_oct15_crt_tls_ptd_cleanup_flow.json",
+      "sha256": "7762f8bc49eac0c3cabdd3f27827bb97ddbffeadcf43c1a2cf96361d26e04f44"
+    },
+    {
+      "path": "local/goal_oct15_crt_tls_ptd_unwind_entries_flow.json",
+      "sha256": "141caa817ddcf4918a57413315a65cc8994b20dd00115ec4e67ab8c1e7744747"
+    },
+    {
+      "path": "local/goal_oct15_crt_tls_ptd_callback_live_bytes.txt",
+      "sha256": "fe55b3d3c77410cbedf7017999c037a6676f5c01301f9f03587d1be490886658"
+    },
+    {
+      "path": "local/goal_oct15_crt_tls_ptd_unwind_envelope_live_bytes.txt",
+      "sha256": "24c63dd5e4c166e8af602fcadc7ed3959061e69f615b38e50250d1958cd15b8c"
+    },
+    {
+      "path": "local/goal_oct15_crt_tls_ptd_init_scope_live_bytes.txt",
+      "sha256": "2fc7df3037b9e0a403cc26c82c33d9e8ac03bdb88bb6dd7a7b3cab0fd158270f"
+    },
+    {
+      "path": "local/goal_oct15_crt_tls_ptd_free_scope_live_bytes.txt",
+      "sha256": "2c811d02568f1e3a984374e20381b8995eed931d77a0e02942b7d6ca44d6c4ac"
+    }
+  ],
+  "verification": {
+    "all_source_general_flags_false": true,
+    "source_or_ledger_or_Ghidra_mutation": false,
+    "tests_or_build": "Not run: authorized report-only contract prep, noC++/CMake change.",
+    "direct_call_check": {
+      "checked": 55,
+      "failed": 0,
+      "command": "python tools/verify_report_calls.py reports/goal_oct15_crt_tls_ptd_owner_contract.json",
+      "qualification": "24 actual computed transfers retain typed/import/provider evidence separately; private undefined prefix entries are not numeric native function/call claims."
+    },
+    "diff_check": "git diff --check and git diff --cached --check passed",
+    "new_analysis_repair": false
+  },
+  "lease": "Only reports/goal_oct15_crt_tls_ptd_owner_contract.json, retained untilprimarypublication. Oldstartupreportlease released afterMain6a75c1d0a publication.",
+  "concrete_joint_work_partition_phasing": {
+    "capacity": "Primary plus at most3 workers, never all proposed partitions concurrently.",
+    "first_joint_wave": "Primary owns sharedActualNativeState, canonical/direct pointer+failure interfaces; bootstrap worker owns coldbootstrap file; free/lock worker owns existing coordinated stream; one PTD worker may own both disjoint getter and lifetime files. These Source packets stay dependency-pending until real mutuallyrecursive providers are delivered.",
+    "next_joint_wave": "Assign remaining locale destruction/reference and SEH transport closures deliberately after whole child contracts; do not stub or declare whole-ready in the meantime. Shared headers stay primary-owned throughout."
+  }
+}
