@@ -1,0 +1,229 @@
+{
+  "schema": "bsp.scene_string_list_storage_primary_review.v1",
+  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_build_pending",
+  "Source_commit": "87736664b93c7e128f69517527c495096c790868",
+  "Source": "src/native_scene_string_list_storage.cpp",
+  "header": "include/bsp/native_scene_string_list_storage.hpp",
+  "documentation": "docs/NATIVE_SCENE_STRING_LIST_STORAGE.md",
+  "functions": [
+    "construct_native_scene_string_list_storage_0094efb0",
+    "grow_native_scene_string_list_storage_0094f010"
+  ],
+  "primary_whole_Source_header_doc_Original_contract_read": true,
+  "primary_author_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_string_list_storage_integration_20261016\\primary_author_inputs.DATA.json",
+    "bytes": 204746,
+    "sha256": "ae83b32438757cede63fd715c1ea96ade38332de6f21efde43de56ecd1701cef"
+  },
+  "primary_peer_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_string_list_storage_integration_20261016\\primary_peer_inputs.DATA.json",
+    "bytes": 15912,
+    "sha256": "937bcd440514c6929b536510e7f7e8cdc27e745381e73c6d2457fc6353a92043"
+  },
+  "independent_review": {
+    "schema": "bsp.cc12.scene_string_list_storage.independent_review.v1",
+    "packet": "cc12_scene_string_list_storage_independent_review",
+    "status": "PASS_BOUNDED_ORDINARY_STORAGE_SOURCE_STATIC_COFF_AND_HISTORICAL_BUILD_EVIDENCE",
+    "own_uuid": "01a14209-0d00-7323-984d-1898301a31fa",
+    "author_commit": "87736664b93c7e128f69517527c495096c790868",
+    "review_Main_HEAD": "3df346c0ab1cf87f138bc91fa0bec0b4ecf220a3",
+    "Source_proposed_functions": 2,
+    "Root_registration_and_Main_admission_separate": true,
+    "Source_admission_credit": 0,
+    "defects": [],
+    "author_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\root_manifest.json",
+      "bytes": 207045,
+      "sha256": "ed7ad897f6f5a235e2120a59120a355f78b37cd0c3f3bd011ffda98b6c8548f4"
+    },
+    "all448_author_files_exact_self_only_readonly_regular_singlelink": true,
+    "four_literal_Git_blobs": [
+      {
+        "relative_path": "include/bsp/native_scene_string_list_storage.hpp",
+        "bytes": 2156,
+        "sha256": "c169e35a2bd8381a620086ddff93ced34871971dea50be6829ef7d301d82c6a2",
+        "git_blob": "d198b34f7001646adbb59e8180216c147f232914"
+      },
+      {
+        "relative_path": "src/native_scene_string_list_storage.cpp",
+        "bytes": 2104,
+        "sha256": "3873728564d2841cb9f533c55c590649abcddbc1c38f9e18e1f06f70538f57b4",
+        "git_blob": "52fd04411b6efffb10c6ed47578194c131b4d840"
+      },
+      {
+        "relative_path": "reports/native_scene_string_list_storage.json",
+        "bytes": 16709,
+        "sha256": "eb5e65fc050128a7a70d4f1c64c4d98e3b0785ca9005f34741188a3daae0d383",
+        "git_blob": "66a8f2dd8aa1bccb90672d9dd5c781f7242542a8"
+      },
+      {
+        "relative_path": "docs/NATIVE_SCENE_STRING_LIST_STORAGE.md",
+        "bytes": 5317,
+        "sha256": "b9fa1f5890cdf87cfb543b22cfba93293f43c462cc27046151a2f40950792e21",
+        "git_blob": "0921d17b77fe937e1d55bddf8fbaae37430e1860"
+      }
+    ],
+    "complete_object": {
+      "bytes": 1994,
+      "sections": 7,
+      "symbol_slots": 25,
+      "primary_symbols": 18,
+      "code_sections": 3,
+      "code_bytes": 188,
+      "instructions": 72,
+      "code_relocations": 7,
+      "metadata_relocations": 0,
+      "unaccounted_file_bytes": 0,
+      "native_body_bytes": 130,
+      "native_instructions": 52,
+      "native_literal_non_CALL_operand_bytes": 114,
+      "only_masked_CALL_operand_bytes": 16,
+      "private_CDECL_adapter_bytes": 58,
+      "private_adapter_instructions": 20,
+      "private_adapter_native_credit": 0,
+      "weak_unused_CRT_COMDAT_bytes": 4
+    },
+    "actual_compiler_closure": {
+      "actual_inputs": 81,
+      "fresh_corrected_candidates": 150,
+      "corrected_tools": 73,
+      "all_actual_dependencies_pre_pinned": true
+    },
+    "genuine_author_history": {
+      "uuid": "01a141fe-f239-7ee2-9d8b-0f538200f178",
+      "prefix": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeSceneStringListStorageSource01\\own_Source_rollout_prefix.jsonl",
+        "bytes": 1794062,
+        "sha256": "2941dcd4beeb0d8cd34da4f539f1639f14a0056d292a55bdc1f6b617eb5d84e9",
+        "lines": 597,
+        "Source_phase_start_line": 378
+      },
+      "strict_attempts": 2,
+      "strict_successes": 1,
+      "normal_builds": 1,
+      "existing_tests": 2,
+      "strict_failure": "C2488: naked declaration attributes only; original compiler returncode2, literal PowerShell transport exitcode1; rejected header bytes retained; corrected fresh preflight then pass",
+      "normal_build_chunks": [
+        "b922f7",
+        "a88087",
+        "cd8005",
+        "c036b5"
+      ]
+    },
+    "canonical_current_Main_provider_comparison": [
+      {
+        "relative_path": "include/bsp/singleton_lifetime.hpp",
+        "author_basis": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\include\\bsp\\singleton_lifetime.hpp",
+          "bytes": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        "current_Main": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\singleton_lifetime.hpp",
+          "bytes": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        "literal_equal": true
+      },
+      {
+        "relative_path": "src/singleton_lifetime.cpp",
+        "author_basis": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\src\\singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        "current_Main": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        "literal_equal": true
+      },
+      {
+        "relative_path": "include/bsp/game_entry.hpp",
+        "author_basis": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\include\\bsp\\game_entry.hpp",
+          "bytes": 5510,
+          "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+        },
+        "current_Main": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\game_entry.hpp",
+          "bytes": 5510,
+          "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+        },
+        "literal_equal": true
+      },
+      {
+        "relative_path": "include/bsp/system_time_constants.hpp",
+        "author_basis": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\include\\bsp\\system_time_constants.hpp",
+          "bytes": 4800,
+          "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+        },
+        "current_Main": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\system_time_constants.hpp",
+          "bytes": 4800,
+          "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+        },
+        "literal_equal": true
+      }
+    ],
+    "literal_qualifications": [
+      {
+        "kind": "historical normal build scope",
+        "detail": "One successful normal scripts/build.ps1 run and two existing CTests on author basis. New TU is unregistered, so no new-body linking/execution credit from that build. Strict compile supplies emission evidence."
+      },
+      {
+        "kind": "current Main build registration drift",
+        "detail": "CMakeLists.txt and scripts/build.ps1 equal author basis; cmake/startup.cmake changed through concurrent Main registrations and iterator registration relocation. All four actual canonical provider inputs remain literal equal. This review does not claim a current Main build or all build inputs equal the author basis.",
+        "diff": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\SceneStringListStorageIndependentReview01\\current_Main_startup_build_diff.patch",
+          "bytes": 6152,
+          "sha256": "cece7321141fa6f80c8a6de723ae5ca1b3110999c0e620f3dcd9f70135c0edfd"
+        }
+      },
+      {
+        "kind": "current Source runtime bindings",
+        "detail": "Canonical matching current malloc/free and actual current memcpy/GS/Win32 compiler services are explicit Source choices, with no historical private CRT/EH/full ABI identity."
+      }
+    ],
+    "ordinary_contract": {
+      "raw_header": "Actual aligned writable caller raw12: slots0/count4/cap8, no wrapper/class/vtable. Slots opaque4B.",
+      "constructor": "Stores cap64 before exact256 raw allocation; publishes slots then count0; returns same header/plainRET, leaves slots uninitialized.",
+      "growth": "Stores cap+64 BEFORE allocation, retains unsigned MUL/SETO/NEG/OR. After allocation reads CURRENT slots/count, forms count*4, calls real memcpy even countzero, reloads CURRENT slots after copy, conditionally canonical-free then clear0, finally captured newslots publication; count untouched. No new guard/copy skip/rollback/element cleanup.",
+      "allocator": "Private actual CDECL bridge constructs SingletonAllocationRequest objectkind3/native_bytes==host_bytes==exact input size, directly calls singleton_lifetime_allocate; own GS cookie and security check fully accounted, zero Native credit.",
+      "domain": "Only ordinary successful positive allocatable nonwrapping oldcap<=3FFFFFBFh, 0<=count<=oldcap, real constructor/accepted-growth storage in matching current heap, actual nonnull old/new allocations including zero-copy, initialized valid reached opaque bytes, header/old/new/private frame disjoint, flat ES/DF clear, no alias/reentry/mutation/concurrency/fault/throw/trim/teardown. Retained overflow instructions do not admit overflow/failure/unwind."
+    },
+    "prior_author13_seal_digests_unchanged": true,
+    "prior_reused_worktree_seals_preserved": 37,
+    "prior_iterator28_file_family_verified_unchanged": true,
+    "tracked_checkout_clean": true,
+    "no_Source_shared_registry_CMake_ledger_Ghidra_writes": true,
+    "no_compilation_build_tests_probes_target_execution": true,
+    "named_pending": [
+      "actual append0094F270 population",
+      "clear0094F3E0 element cleanup",
+      "retirement0094F540",
+      "application008F3270 actual create/pass/retire binding"
+    ],
+    "not_claimed": [
+      "Original complete register/flags/stack/binary ABI",
+      "Original private CRT/EH/fault/unwind identity",
+      "populated caller/class/list ownership or key-enumeration closure",
+      "application startup/native runtime/gameplay validation"
+    ]
+  },
+  "contract": [
+    "Only whole constructor0094EFB0 [0094EFB0,0094EFE1),49B18 and growth0094F010 [0094F010,0094F061),81B34. Actual caller-provided aligned writable raw12 header: slots pointer0, signed-count/DWORD4, capacity DWORD8; no class/vtable/new host or standalone container wrapper. Constructor storescapacity64 BEFORE genuine exact256-byte allocation, publishes slots then count0, leaves slots uninitialized and returns actualheader. Growth publishes wrapping capacity+64 BEFORE allocation; retain native unsignedMUL4/overflow saturation instructions, allocate exact size, capture CURRENT oldslots/count AFTER allocation, call genuine current memcpy withcount*4 even whenzero, reload oldslots aftercopy, conditionally canonical-free then clear0, finally publish capturednewslots; count untouched. Proposed independent naked fastcall entries: constructor void* actualECX returnheader/plainRET, growth actualECX/void/plainRET, no stack inputs; no semantic growthEAX claim. Bind BF55BE through genuine private CDECL size bridge to canonical singleton_lifetime_allocate with object/native_bytes==host_bytes; canonical singleton_lifetime_free and real current memcpy/#pragma function(memcpy); no new globals/callbacks/provider stubs. Ordinary successful nonthrowing serialized domain: genuine live constructor-produced raw12/uniquely owned matching-current-heap slot buffer and previous accepted growth, coherent0<=count<=oldcapacity, valid initialized reached opaque slot bytes, nonwrapping capacity+64 and4*newcapacity witholdcap<=3FFFFFBFh, positive allocatable sizes/resources, old/new/header/privateframe disjoint, valid flatES/DFclear, no alias/reentry/concurrency/fault/trim/teardown. Empty growth still calls memcpy with real nonnull old/new allocations; do not special-case it. Slots are opaque to storage helpers: no element ownership or retirement changes. Named pending actual append0094F270 population/clear0094F3E0/destructor0094F540 and actual008F3270 application create/pass/retire binding remain separate; no populated caller/class/list-owner/key-enumeration/Original privateCRT/EH/fullABI/startup/runtime/game admission. Source implementation only these2, not other3 or comparator/sort/empty-data roles.",
+    "Fresh corrected150-candidate/73-tool preflight closed all81 actual compiler inputs. Two actual strict attempts: initial C2488 naked-declaration failure with no object, then corrected fresh preflight and successful strict compile. Both literal invocations/results and rejected inputs retained. One normal unregistered build passed2 existing checks; neither selected body was executed.",
+    "Complete1994B strict COFF:7sections/18primary+7aux25slots,3code188B72instructions/7code relocs/0metadata relocs. Two native entries130B52 retain114literal bytes with only16CALLoperand bytes rebound. Genuine private58B20 CDECL size bridge constructs object-kind3/equalnativehost bytes and has current GS cookie/check; unused4B CRT weak BSS has no incoming relocation; no initializer. Full CodeView223B payload/OBJNAME[617,780)/COMPILE3[780,840)/zero pad[840,841), directives/stringtable/checksums/ranges independently accounted.",
+    "All448 author files/fourGit blobs/genuine597-line ownprefix/12exact embedded transport objects and independent18-file peer family verified by Root. Four current Main provider pins match literally. Historical worker startup.cmake drift is explicitly separate from the required registered current Main build.",
+    "Source is accepted for registration under the explicit ordinary successful raw-storage contract. Main build, actual selected Core archive identity and final reconstruction/name ledgers remain pending; no Original fullABI/privateCRT/EH/caller/listownership/application/startup/runtime/game credit."
+  ],
+  "Main_registered": true,
+  "Main_build": "pending",
+  "Original_ABI_compatible": false,
+  "Original_private_CRT_EH_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false
+}
