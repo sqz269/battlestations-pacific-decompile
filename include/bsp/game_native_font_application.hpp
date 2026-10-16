@@ -78,7 +78,10 @@ public:
         const std::string& language_path);
     // Export only after complete initial production. Before any Text factory
     // creates a borrower, bind that SAME factory below; no unrelated empty
-    // factory can authorize retirement of this resource collection.
+    // factory can authorize retirement of this resource collection. Binding
+    // also requires the factory's current font lookup registry to be this SAME
+    // stable registry; this metadata check never invokes a lazy getter. Keep
+    // its owner/cell alive and the lookup association valid through retirement.
     NativeFontResourceOwners& native_fonts();
     void bind_text_factory(GuiTextRuntimeFactory&);
     // Requires zero retained raw Text allocations in the bound factory. Actual

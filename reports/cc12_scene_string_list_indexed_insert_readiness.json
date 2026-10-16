@@ -1,0 +1,129 @@
+{
+  "schema": "bsp.scene_string_list_indexed_insert_readiness.v1",
+  "status": "whole_ordinary_indexed_insert_Source_ready_no_implementation",
+  "Source_ready": true,
+  "Source_implemented": false,
+  "Source_credit": 0,
+  "Root_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_string_list_indexed_insert_readiness_primary_20261016\\verified_inputs.DATA.json",
+    "bytes": 25968,
+    "sha256": "7ca870e95b55d15d474b5bcb8f097194ad92a2b062838819932e4c9cf9e76578"
+  },
+  "readonly_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_list_cstr_readiness_oct16\\local\\SceneStringListAdjacentAppendReadiness01\\family_receipt.json",
+    "bytes": 8950,
+    "sha256": "d4918fdcc7759f88b7a1e0ff280d3234e0ba0ca3957ed77cd457347cbc93ef09"
+  },
+  "whole_Original": {
+    "begin": "0094F2F0",
+    "end_exclusive": "0094F39F",
+    "bytes": 175,
+    "sha256": "787b9a3800948a0295a991348590d05e32ed940e7bbb308659ce27da45216f78",
+    "live_disk_equal": true,
+    "live_receipt": "entry_bytes.receipt.json",
+    "instructions": 61,
+    "listing_instruction_starts_equal": true,
+    "final_live_bytes_equal": true,
+    "original_hex": "64a1000000006aff68eb8cca00506489250000000053568bf18b46043b4608577505e8f9fcffff807c24240074068b7c241ceb2c6a08e8f0742a0083c4048944242485c0c744241400000000740e8b4c241c518bc8e8166dadffeb0233c08bf88b44242085c07d0433c0eb098b4e043bc17e028bc18b4e043bc87e168d6424008b168b5c8afc8d148a83e9013bc8891a7fee8b0e893c81834604018b4c240c5f5e64890d000000005b83c40cc20c00",
+    "direct_calls": [
+      {
+        "instruction": "0094F312",
+        "target": "0x94f010"
+      },
+      {
+        "instruction": "0094F326",
+        "target": "0xbf681b"
+      },
+      {
+        "instruction": "0094F345",
+        "target": "0x426060"
+      }
+    ]
+  },
+  "Original_ABI": {
+    "arguments": "ECX points to actual writable aligned raw12 list; incoming ESP+4 actual raw8 record pointer; ESP+8 signed32 insertion index; ESP+0Ch flags DWORD of which only low byte is tested.",
+    "return": "RET0Ch. EAX remains the clamped index used for the final slot store. Ghidra currently types the function void, and absent callers cannot prove a semantic return contract. Returning this mechanical EAX value in a proposed C++ API preserves the observed value without recovering a caller meaning.",
+    "preserved": "EBX,ESI,EDI saved/restored; EBP untouched. Private FS:[0] registration restored on normal exit. No complete flags, volatile-register, stack-image, privateCRT/SEH or binary ABI equivalence is inferred."
+  },
+  "raw_layout": {
+    "list12": "DWORD slots pointer+0, DWORD count+4, DWORD capacity+8; slots hold four-byte raw8 record pointers, including null sentinels. Count/index comparisons in this entry are signed where JGE/JLE/JG specify.",
+    "record8": "DWORD unsigned string length+0, char* data+4; actual eight-byte current-heap allocation for owned nonnull records. No vtable, NativeString lifetime, inline string or host wrapper.",
+    "caller_owner": "The actual12-byte header lifetime belongs to its genuine caller. Storage providers construct/grow the slot allocation but do not establish a populated owner or release the header."
+  },
+  "normal_schedule": [
+    "F309/F30C read current count and capacity. Grow0094F010 only when equal, never >=. The established growth publishes capacity+64 BEFORE allocation, reads current slots/count AFTER allocation, calls actual memcpy even for zero, reloads slots after copy, conditionally frees/clears old slots, then publishes new slots. Growth may invalidate borrowed slot-buffer addresses, not record allocations.",
+    "F317 tests the incoming flag LOW BYTE AFTER any growth. Nonzero1..255 adopts the actual pointer loaded atF31E. Upper24 bits are ignored. Zero allocates EXACT8 bytes viaBF681B atF326; the pointer is saved over the incoming flag stack slot and EH state0 is armed after allocation returns.",
+    "F332/F33C retains the native null-allocation branch: null becomes a null inserted sentinel. Current singleton_lifetime_allocate instead returns nonnull or throws; ordinary successful Source admission excludes allocation failure and makes no native null/OOM identity claim.",
+    "For nonnull new raw8, load the actual source header argument atF33E and call00426060 with ECX=new raw8 and stack=actual borrowed source. Use the returned actual header as the record to publish. The accepted provider clears destination length/data before identity, resizes preserving from source length, then reads CURRENT source length guard/current destination length/source data/destination data. Raw context reaches00419CC0,BD1120 andBD1510; nonzero raw copies use current memmove, existing zero-copy omission remains qualified.",
+    "F350 reads incoming signed index AFTER growth/allocation/copy. If negative, set0 and skip the upper-bound count read; otherwise read CURRENT count atF35C and clamp above-count index to that count with signed comparison. Do not clamp before provider calls.",
+    "F365 reads CURRENT count again into the shift cursor. While cursor>clamped index signed, F370 reloads CURRENT slots for EACH iteration, reads slots[cursor-1], computes destination slots[cursor], decrements cursor, compares, then writes the captured pointer atF37E. Existing records are moved only as pointer values; do not allocate, copy strings, destroy them or substitute bulk memmove with a different observation schedule.",
+    "F382 reloads CURRENT slots once more, F384 writes the selected record at slots[clamped index], and only THEN F387 increments CURRENT count+4 by1. Capacity changes only through prior growth. Existing element identity and order are preserved around the new element. EAX still holds the clamped index; normal epilogue restoresFS0 and saved registers."
+  ],
+  "providers": [
+    {
+      "Original": "0094F010",
+      "Source": "grow_native_scene_string_list_storage_0094f010(actual_list12)",
+      "qualification": "Accepted+registered/Main storage2; worktree source87736664 and Main reports explicitly reused/pinned. Current direct provider files literally match audited Main."
+    },
+    {
+      "Original": "00BF681B",
+      "Source": "singleton_lifetime_allocate({SingletonAllocationKind::object,8,8})",
+      "qualification": "Real raw8 current CRT malloc/new-handler retry/throw binding; current heap only, no Original private-CRT allocator identity."
+    },
+    {
+      "Original": "00426060",
+      "Source": "copy_construct_native_string_header_00426060(new_raw8,actual_source_header8,raw)",
+      "qualification": "Existing accepted actual-header raw-context overload; not NativeStringStorage, NativeString wrapper, copied/temporary/fake header or C-string constructor."
+    },
+    {
+      "Original": "00BF65AC",
+      "Source": "singleton_lifetime_free(allocated_raw8)",
+      "qualification": "Matching current CRT header-free provider. Native exceptional cleanup does not call0041DD20 and does not free a partially constructed string buffer separately."
+    },
+    {
+      "Original": "00419CC0/01090AA8/01090AA4/01090AA0",
+      "Source": "Explicit retained bsp::game::game_native_string_process().raw_context() prepared by caller",
+      "qualification": "Retained process pointer owns real publication/gate references; raw context owns no buffers. No implicit getter added to the insertion body, no stand-in context/global/TLS/host adapter; an adopt path must not gain a lazy process allocation."
+    }
+  ],
+  "domain": [
+    "MSVC Win32 actual aligned writable live raw12 plus unique current-heap slots from accepted0094EFB0/0094F010, coherent0<=count<=capacity<=0x3fffffff, positive allocatable nonwrapping sizes and valid initialized reached slot bytes. For growth oldcapacity<=0x3fffffbf. Count+1 and every reached4*index/address are nonwrapping and within the retained/new slot allocation. Any signed32 input index and any DWORD flags are admitted within these valid-storage bounds.",
+    "Record headers, list header, slots, backing buffers and private frame satisfy their necessary disjointness/ownership bounds; operations are serialized, DF clear/flatES for storage growth, no callback alias/reentry/concurrency/fault or pool teardown across the operation. Preserve late reads even within this ordinary domain. Do not admit callback mutation simply because individual providers preserve some late reads.",
+    "Copy branch requires a nonnull readable coherent actual source raw8 with a live readable buffer for positive length, nonwrapping length+1 and successful pool capacity/resources; source header/buffer stays alive across growth and copy. Borrowing an existing element header for copying is permitted when lifetime/disjointness holds; the caller retains its source ownership.",
+    "Adopt branch accepts a null sentinel or a uniquely owned genuine eight-byte header allocated by the matching current heap, whose nonnull data belongs to the same retained concrete raw pool/context generation. It must not already be owned by this list or another owner; no duplicate ownership is created. Ownership transfers only on successful slot publication. Before that publication the caller retains the adoption obligation.",
+    "Successful copied raw8 becomes list-owned at slot publication; old record identity remains unchanged. The exact retained process context must outlive all dependent records, and list retirement must occur before the pool generation becomes invalid. Neither insertion nor slot storage retirement frees the caller's actual12-byte header."
+  ],
+  "Source_packet": {
+    "condition": "Only after Root admits pending0094F3E0/0094F540 normal ownership retirement/context contract and explicitly authorizes this new single-entry packet; revalidate exact provider pins first. Readiness here grants no Source authorization.",
+    "addresses": [
+      "0094F2F0"
+    ],
+    "files": [
+      "include/bsp/native_scene_string_list_indexed_insert.hpp",
+      "src/native_scene_string_list_indexed_insert.cpp",
+      "docs/NATIVE_SCENE_STRING_LIST_INDEXED_INSERT.md",
+      "reports/native_scene_string_list_indexed_insert.json"
+    ],
+    "provisional_declaration": "std::int32_t insert_native_scene_string_list_indexed_0094f2f0(void* actual_list12, void* actual_record8, std::int32_t native_index, std::uint32_t native_flags, NativeStringRawPoolContext& raw);",
+    "return_policy": "The proposed signed32 return exposes the measured final EAX clamped index only. It does not claim a recovered original language-level return type or caller usage; primary review may choose void while documenting EAX if binary preservation is outside its interface.",
+    "implementation_constraints": "One whole ordinary actual-header body, explicit existing growth/current heap/raw copy providers, late signed clamp/current per-iteration slots reads and final slot-before-count publication. No new class, allocator, fallback context, CString path, bulk shift, vtable, synthetic owner or NativeString instance. No need to invoke append0094F270; indexed insertion is a sibling with its own complete61-instruction schedule. No new tests by default; future authorized Source work must have its own genuine strict/build/current-EH receipts."
+  },
+  "Root_guard_policy": "Use the same separately labelled current-C++ fresh-copy-header guard policy as accepted ownership Source3: only canonical-free the actually allocated raw8 on current copy exception, never data/adopted header/slots/raw12. Disarm only after final slot publication and current count increment; return captured clamped signed index, not a newly read count. No Original privateFH3/frame/fault/unwind equivalence.",
+  "Root_private_EH_qualification": "The readiness failure paragraph describes intended cleanup. Only actual handler/map/raw-header-free action from privateEBP+C is measured; privateFH3 dispatcher/establisher mapping and arbitrary throw/fault outcomes remain unproved. A future current-C++ copy-only header guard is a separate Source policy, with no Original EH identity credit.",
+  "Root_result_policy": "New Source exposure of measured clampedEAX only; no recovered language-level or caller semantics.",
+  "normal_ownership_Main_gate": {
+    "Main_validation": "reports/cc12_scene_string_list_ownership_Main_validation.json",
+    "status": "whole_ordinary_explicit_context_Source_registered_Main3checks_actual_code_archive_identity_pass"
+  },
+  "named_incomplete_dependencies": [
+    "No actual direct caller/raw8 producer/actual-list12 construction-pass-retirement chain for0094F2F0 is present in current callers/xrefs evidence. Do not invent one or claim application/runtime adoption.",
+    "008F3270 actual output-header create/pass/retire and incoming raw8 producer binding remain independently blocked; no relationship to this entry was proven by fresh queries.",
+    "0094F180 comparator/unowned boundary, sort and distinct empty-data roles remain blocked/independent. Prior ignored-dry-run creation and guarded deletion incident cannot be erased: exact full old symbol/comment preimage is unavailable, even though prior byte/flow/ownership/count restoration was measured.",
+    "Full Original privateCRT/FH3/EH/fault/ABI, startup, runtime and gameplay remain separate. This packet provides bounded read-only evidence and an explicit ordinary contract only."
+  ],
+  "historical_readiness": "Immutable29-file family was conditional on pending ownershipSource3; Root now independently admitted that dependency and required Main/Core gate passed. Historical four Root report pins remain references; current direct14Source/header providers were rechecked literally.",
+  "Original_ABI_compatible": false,
+  "Original_private_CRT_EH_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false
+}
