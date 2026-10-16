@@ -37,3 +37,38 @@ NativeIntPointerTree18Iterator* __cdecl link_native_font_tree_node_00ad4600(
     std::uint8_t insert_left, void* parent,
     const NativeIntPointerTree18Pair* pair8);
 } // namespace bsp
+
+namespace bsp {
+struct NativeIntPointerTree18InsertResult;
+
+// Whole AD4AA0[189B/73starts]: original ECX actual Font/tree BASE, stack
+// output/pair, EAX SAME output, RET8; no local EH. New ordinary Source ABI.
+// Reuses the genuine shared unique driver, actual168 predecessor and176 link.
+// BASE is opaque00/head04/unsigned element-count08, with genuine18h nodes;
+// it is not adjusted by8 and its element count supplies no lifetime barrier.
+//
+// Required objects are the existing actual Pair8 and Result12 types. All FOUR
+// pair-key bytes must be defined for the later allocator DWORD copy; preserve
+// the upperWORD preimage when producing a Font key. AD5055 alone writes only
+// the lowWORD. No WORD-struct/semantic Font cast or normalized pair is used.
+// Search captures unsigned incomingWORD once, only for a nonempty root, then
+// reads current nodeWORD each step. After real predecessor, read candidateWORD
+// BEFORE CURRENT incomingWORD. Pair remains live/current for the real allocator.
+// Publish volatile ownerDWORD/nodeDWORD/insertedBYTE; preserve output09..0B.
+//
+// Caller independently retains the actual initialized same-SDK Font/head/node
+// graph, pair/output and unowned glyph/resource backing through allocation,
+// new/invalid handlers and failure. Existing valid public-overlap/object-lifetime
+// contracts apply; exclude BOTH callees' private stack/argument/scratch aliases.
+// Externally serialize; valid current mutations keep all reached operands live.
+// The private cachedWORD/iterator and Source argument identities do not claim
+// Native private frame/register/argument-load order. SDK nonnull-or-throw and
+// length-error transport remain genuine Source boundaries, not Native CRT/heap/
+// encoded-handler/RTTI/FH3/SEH/fault ABI. No catch, mapped-value destruction,
+// cleanup, rollback, retry, owner, protective retain or extra count is added.
+// Whole Font loading, production admission and Native execution remain separate.
+NativeIntPointerTree18InsertResult* __cdecl
+insert_native_font_tree_unique_00ad4aa0(void* actual_font_base,
+    NativeIntPointerTree18InsertResult* actual_output12,
+    const NativeIntPointerTree18Pair* actual_pair8);
+} // namespace bsp
