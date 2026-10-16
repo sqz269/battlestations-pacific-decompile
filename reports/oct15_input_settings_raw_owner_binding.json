@@ -1,0 +1,1113 @@
+{
+  "packet": "oct15_native_input_settings_raw_owner_binding",
+  "status": "complete_ordinary_and_ten_logical_effect_fragments_current_cpp_build_fresh_transfers_and_legacy_peer_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_input_settings_lifetime.cpp",
+  "header": "include/bsp/native_input_settings_lifetime.hpp",
+  "documentation": "docs/OCT15_INPUT_SETTINGS_RAW_OWNER_BINDING.md",
+  "source_sha256": "e33175f2723e55b1469a6c5d9901777abc564c30c4ebfce714a14424dd9ee685",
+  "header_sha256": "0d9429e4036b6e43a5cf08329cdf0fdc42e49acc1d5b11899a4fe183c9e9ec16",
+  "baseline": {
+    "Source_start_Main": "70b20c1bbc488f552f708b2614fcf34ded741586",
+    "published_dependency_gate": "ee5a114ca91b6795e19bc84791d4867c008ea03b",
+    "accepted_plan_Main": "6591ed08d0908920a4e50d1173e8f95c2d988e48",
+    "explicit_authorized_Core_registration": "195ae7421af623898c1c219a757dd6173b40c851",
+    "registration_parent_Main": "0de0babc2eea5b49001ef50bc460cd08ac8639d3",
+    "registration_scope": "Existing band_0067_cc13.cpp registered inCore, game registration retained; Root authorized exact commit, not claimed published here. No CMake change authored in this packet."
+  },
+  "routines": [
+    {
+      "address": "006aa460",
+      "kind": "function",
+      "name": "destroy_native_raw_input_settings_006aa460",
+      "Native_name_preserved": "BSP_InputSettings_Destruct",
+      "coverage": "Whole480B169 ordinary effects only in provided NativeRawPool/Lua/currentCpp domain; ten logical fragments separate.",
+      "original_ABI": "ECXactualsettings, unconsumedEDX, noStack/plainRET/incidentalEAX",
+      "Source_ABI": "voidcdecl actualsettings/borrowedRawCtx/actualvolatilepublication:3semantic4B inputs/callerpop12",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c7f970",
+      "kind": "fragment",
+      "Native_name_preserved": "Unwind@00c7f970",
+      "name": "RawMembers_state0_00c7f970",
+      "coverage": "Complete logical action effects, not OriginalEBP/FS/FH3 callable function.",
+      "state": 0,
+      "previous": -1,
+      "offset": 0,
+      "effect": "private explicit volatile publication=nullptr; raw volatile DWORD[settings]=0x00ce3818",
+      "qualification": "Complete baseeffects, not call through nonvolatile uint32& helper. No cast, synthetic global, unregister/selfcheck or ownerfree.",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c7f978",
+      "kind": "fragment",
+      "Native_name_preserved": "Unwind@00c7f978",
+      "name": "RawMembers_state1_00c7f978",
+      "coverage": "Complete logical action effects, not OriginalEBP/FS/FH3 callable function.",
+      "state": 1,
+      "previous": 0,
+      "offset": 8,
+      "effect": "destroy_native_input_device_map_006aa420(settings+08,0,strings)",
+      "qualification": "Published5c whole-range binding; SourceRET4 vs NativeplainRET.",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c7f983",
+      "kind": "fragment",
+      "Native_name_preserved": "Unwind@00c7f983",
+      "name": "RawMembers_state2_00c7f983",
+      "coverage": "Complete logical action effects, not OriginalEBP/FS/FH3 callable function.",
+      "state": 2,
+      "previous": 1,
+      "offset": 20,
+      "effect": "destroy_native_string_header_vector_004324a0(settings+14,strings)",
+      "qualification": "Actual raw string-vector Tidy; Sourcecdecl vs NativeECX.",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c7f98e",
+      "kind": "fragment",
+      "Native_name_preserved": "Unwind@00c7f98e",
+      "name": "RawMembers_state3_00c7f98e",
+      "coverage": "Complete logical action effects, not OriginalEBP/FS/FH3 callable function.",
+      "state": 3,
+      "previous": 2,
+      "offset": 36,
+      "effect": "destroy_native_input_preset_tree_006a2b00(settings+24,0,strings)",
+      "qualification": "Published895 actual preset whole range/free/reset; SourceRET4.",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c7f999",
+      "kind": "fragment",
+      "Native_name_preserved": "Unwind@00c7f999",
+      "name": "RawMembers_state4_00c7f999",
+      "coverage": "Complete logical action effects, not OriginalEBP/FS/FH3 callable function.",
+      "state": 4,
+      "previous": 3,
+      "offset": 48,
+      "effect": "tidy_native_string_vector_group_vector_006a7960(settings+30,strings)",
+      "qualification": "RawCtx in SourceEDX; original EDX unconsumed; no private-frame identity.",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c7f9a4",
+      "kind": "fragment",
+      "Native_name_preserved": "Unwind@00c7f9a4",
+      "name": "RawMembers_state5_00c7f9a4",
+      "coverage": "Complete logical action effects, not OriginalEBP/FS/FH3 callable function.",
+      "state": 5,
+      "previous": 4,
+      "offset": 64,
+      "effect": "tidy_native_input_conflict_vector_006a1420(settings+40,0)",
+      "qualification": "No RawCtx; normal state5 failure retries CURRENT conflict header then state4 group, no rollback/double-cleanup suppression.",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c7f9af",
+      "kind": "fragment",
+      "Native_name_preserved": "Unwind@00c7f9af",
+      "name": "RawMembers_state6_00c7f9af",
+      "coverage": "Complete logical action effects, not OriginalEBP/FS/FH3 callable function.",
+      "state": 6,
+      "previous": 5,
+      "offset": 84,
+      "effect": "destroy_native_input_default_scalar_tree_006a1df0(settings+54,0)",
+      "qualification": "Published scalar whole range/free/reset; no RawCtx added.",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c7f9ba",
+      "kind": "fragment",
+      "Native_name_preserved": "Unwind@00c7f9ba",
+      "name": "RawMembers_state7_00c7f9ba",
+      "coverage": "Complete logical action effects, not OriginalEBP/FS/FH3 callable function.",
+      "state": 7,
+      "previous": 6,
+      "offset": 96,
+      "effect": "destroy_native_input_controller_tree_006a7040(settings+60,0,strings)",
+      "qualification": "Published8dac. Actual UNWIND target only; normal+60 is inline6A6A20/free/reset, not direct7040.",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c7f9c5",
+      "kind": "fragment",
+      "Native_name_preserved": "Unwind@00c7f9c5",
+      "name": "RawMembers_state8_00c7f9c5",
+      "coverage": "Complete logical action effects, not OriginalEBP/FS/FH3 callable function.",
+      "state": 8,
+      "previous": 7,
+      "offset": 108,
+      "effect": "destroy_native_input_device_map_006aa420(settings+6C,0,strings)",
+      "qualification": "Same actual device whole-range destructor as state1 at different offset.",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c7f9d0",
+      "kind": "fragment",
+      "Native_name_preserved": "Unwind@00c7f9d0",
+      "name": "RawMembers_state9_00c7f9d0",
+      "coverage": "Complete logical action effects, not OriginalEBP/FS/FH3 callable function.",
+      "state": 9,
+      "previous": 8,
+      "offset": 120,
+      "effect": "close_native_lua_state_00b669a0(actual Lua owner at settings+78)",
+      "qualification": "Actual storage/current Lua service; no fake callback/provider.",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "006aa460",
+      "address": "006aa494",
+      "native": "00b65e80",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa4a0",
+      "native": "00b669a0",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa4bd",
+      "native": "006a7aa0",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa4c6",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa4ee",
+      "native": "006a6a20",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa4f7",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa51d",
+      "native": "0069fe70",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa526",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa547",
+      "native": "0069eea0",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa550",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa579",
+      "native": "006a6ee0",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa582",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa5ab",
+      "native": "006a1aa0",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa5b4",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa5da",
+      "native": "00432050",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa5e3",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa60b",
+      "native": "006a7aa0",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa614",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "owned_ordinary",
+      "evidence": "Whole PE/live/currentstart; canonical row."
+    },
+    {
+      "function": "00c7f970",
+      "address": "00c7f973",
+      "native": "0069ba20",
+      "kind": "tail_jump",
+      "scope": "owned_logical_effect_fragment",
+      "evidence": "Physical E9/JMP despite saved CALL_RETURN override; no callable Source EBP helper."
+    },
+    {
+      "function": "00c7f978",
+      "address": "00c7f97e",
+      "native": "006aa420",
+      "kind": "tail_jump",
+      "scope": "owned_logical_effect_fragment",
+      "evidence": "Physical E9/JMP despite saved CALL_RETURN override; no callable Source EBP helper."
+    },
+    {
+      "function": "00c7f983",
+      "address": "00c7f989",
+      "native": "004324a0",
+      "kind": "tail_jump",
+      "scope": "owned_logical_effect_fragment",
+      "evidence": "Physical E9/JMP despite saved CALL_RETURN override; no callable Source EBP helper."
+    },
+    {
+      "function": "00c7f98e",
+      "address": "00c7f994",
+      "native": "006a2b00",
+      "kind": "tail_jump",
+      "scope": "owned_logical_effect_fragment",
+      "evidence": "Physical E9/JMP despite saved CALL_RETURN override; no callable Source EBP helper."
+    },
+    {
+      "function": "00c7f999",
+      "address": "00c7f99f",
+      "native": "006a7960",
+      "kind": "tail_jump",
+      "scope": "owned_logical_effect_fragment",
+      "evidence": "Physical E9/JMP despite saved CALL_RETURN override; no callable Source EBP helper."
+    },
+    {
+      "function": "00c7f9a4",
+      "address": "00c7f9aa",
+      "native": "006a1420",
+      "kind": "tail_jump",
+      "scope": "owned_logical_effect_fragment",
+      "evidence": "Physical E9/JMP despite saved CALL_RETURN override; no callable Source EBP helper."
+    },
+    {
+      "function": "00c7f9af",
+      "address": "00c7f9b5",
+      "native": "006a1df0",
+      "kind": "tail_jump",
+      "scope": "owned_logical_effect_fragment",
+      "evidence": "Physical E9/JMP despite saved CALL_RETURN override; no callable Source EBP helper."
+    },
+    {
+      "function": "00c7f9ba",
+      "address": "00c7f9c0",
+      "native": "006a7040",
+      "kind": "tail_jump",
+      "scope": "owned_logical_effect_fragment",
+      "evidence": "Physical E9/JMP despite saved CALL_RETURN override; no callable Source EBP helper."
+    },
+    {
+      "function": "00c7f9c5",
+      "address": "00c7f9cb",
+      "native": "006aa420",
+      "kind": "tail_jump",
+      "scope": "owned_logical_effect_fragment",
+      "evidence": "Physical E9/JMP despite saved CALL_RETURN override; no callable Source EBP helper."
+    },
+    {
+      "function": "00c7f9d0",
+      "address": "00c7f9d6",
+      "native": "00b669a0",
+      "kind": "tail_jump",
+      "scope": "owned_logical_effect_fragment",
+      "evidence": "Physical E9/JMP despite saved CALL_RETURN override; no callable Source EBP helper."
+    }
+  ],
+  "read_only_handler": {
+    "entry": "00c7f9db",
+    "site": "00c7f9e0",
+    "target": "00bf6b43",
+    "bytes": 10,
+    "starts": 2,
+    "Source_reconstructed": false,
+    "qualification": "Separate support; physical E9 despite saved override; runtime remains unimplemented."
+  },
+  "Native_scope": {
+    "owned_bytes": 587,
+    "owned_starts": 198,
+    "ordinary_bytes": 480,
+    "ordinary_starts": 169,
+    "logical_action_bytes": 107,
+    "logical_action_starts": 29,
+    "normal_CALLs": 18,
+    "logical_physical_tailJMPs": 10,
+    "support_handler_bytes": 10,
+    "support_handler_starts": 2,
+    "support_Lua_and_base_bytes": 75,
+    "support_Lua_and_base_starts": 25,
+    "all_current_starts": 225,
+    "all_PE_live_code_bytes": 672,
+    "raw_EH_unique_bytes": 116,
+    "frozen_previous_all_bytes_and_starts_equal": true,
+    "fresh_current_records_equal_prior_verified_starts": true,
+    "saved_flow_override_does_not_change_E9_opcode": true
+  },
+  "Native_EH": {
+    "FuncInfo_words": [
+      429065506,
+      10,
+      14339744,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "map": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": "00c7f970"
+      },
+      {
+        "state": 1,
+        "previous": 0,
+        "action": "00c7f978"
+      },
+      {
+        "state": 2,
+        "previous": 1,
+        "action": "00c7f983"
+      },
+      {
+        "state": 3,
+        "previous": 2,
+        "action": "00c7f98e"
+      },
+      {
+        "state": 4,
+        "previous": 3,
+        "action": "00c7f999"
+      },
+      {
+        "state": 5,
+        "previous": 4,
+        "action": "00c7f9a4"
+      },
+      {
+        "state": 6,
+        "previous": 5,
+        "action": "00c7f9af"
+      },
+      {
+        "state": 7,
+        "previous": 6,
+        "action": "00c7f9ba"
+      },
+      {
+        "state": 8,
+        "previous": 7,
+        "action": "00c7f9c5"
+      },
+      {
+        "state": 9,
+        "previous": 8,
+        "action": "00c7f9d0"
+      }
+    ],
+    "unique_bytes": 116,
+    "maxstate": 10,
+    "tries": 0,
+    "accounting": "36B FuncInfoDACE7C +80B mapDACEA0;44B lookahead overlaps8mapbytes. Handler/literals/vtable contents not promoted."
+  },
+  "Source_binding": {
+    "API": "void destroy_native_raw_input_settings_006aa460(void* settings, NativeStringRawPoolContext& strings, void* volatile& publication_00e198e8);",
+    "borrowed_inputs": [
+      "Actual reached settings owner/backing storage; raw wrapping DWORD offsets.",
+      "Caller-bound actual publication00E198E8 as void* volatile&; unconditional clear, no selfcomparison/unregister.",
+      "One matching actual NativeStringRawPoolContext& used unchanged by every actual raw member/range: NativeStringPoolStorage* volatile& actual_published_01090aa8; volatile uint32& actual_small_returns_disabled_01090aa4; void* volatile& actual_manager_publication_01090aa0. No storage/cell ownership transferred."
+    ],
+    "normal_stage_order": [
+      "first_lua",
+      "second_lua",
+      "device_6c",
+      "controller_60",
+      "scalar_54",
+      "conflict_40",
+      "group_30",
+      "preset_24",
+      "names_14",
+      "device_08"
+    ],
+    "normal_actual_providers": [
+      {
+        "Native": [
+          "00b65e80",
+          "00b669a0"
+        ],
+        "Source": "close_native_lua_state_00b669a0(NativeLuaStateStorage& at owner+78)",
+        "arguments": "Actual4C8B Lua owner; twice. Full29B comparison proves B65E80 equivalent effects; retain distinct Native identities. Captured state04, owns00 test, linked current lua_close then state04 clear. No classPcStorage adapter.",
+        "ABI": "Sourcecdecl reference vs NativeECX/plainRET",
+        "header": "include/bsp/native_lua_objects.hpp"
+      },
+      {
+        "Native": [
+          "006a7aa0"
+        ],
+        "Source": "erase_native_raw_input_device_tree_range_006a7aa0(tree,0,private8Boutput,tree,left,tree,head,strings)",
+        "arguments": "Two device trees+6C/+08. Actual raw owner/node formals and whole200B range, no admitted127B prefix/AV overload.",
+        "ABI": "SourceRET18 vs NativeRET14",
+        "header": "include/bsp/native_input_device_tree_range.hpp"
+      },
+      {
+        "Native": [
+          "006a6a20"
+        ],
+        "Source": "erase_native_input_controller_tree_range_006a6a20(tree,0,&output,first,last,strings)",
+        "arguments": "Distinct published trivial8B NativeInputControllerTreeIterator: first{tree,left},last{tree,head}; separate private output.",
+        "ABI": "SourceRET18 vs NativeRET14",
+        "header": "include/bsp/native_input_controller_tree_range.hpp"
+      },
+      {
+        "Native": [
+          "0069fe70"
+        ],
+        "Source": "erase_native_input_default_scalar_tree_range_0069fe70(tree,nullptr,private8Boutput,tree,left,tree,head)",
+        "arguments": "Actual seven raw formals; no RawCtx/old AV adapter.",
+        "ABI": "fastcall five stackedwords/RET14",
+        "header": "include/bsp/native_input_default_scalar_tree_range.hpp"
+      },
+      {
+        "Native": [
+          "0069eea0"
+        ],
+        "Source": "destroy_native_input_conflict_vector_header_range_0069eea0(first,last,member_header_bits,settings_bits)",
+        "arguments": "Two proved dead Native metadata words; no RawCtx. Frozen setup pushes savedowner then actualmember header; state5 unchanged.",
+        "ABI": "fastcall/RET8",
+        "header": "include/bsp/native_input_conflict_vector_tidy.hpp"
+      },
+      {
+        "Native": [
+          "006a6ee0"
+        ],
+        "Source": "destroy_native_string_vector_group_range_006a6ee0(first,last,member_header_bits,settings_bits,strings)",
+        "arguments": "Actual group range with matching RawCtx, two dead Native words; no storage/callback bridge.",
+        "ABI": "SourceRET0C vs NativeRET8",
+        "header": "include/bsp/native_string_vector_group_cleanup.hpp"
+      },
+      {
+        "Native": [
+          "006a1aa0"
+        ],
+        "Source": "erase_native_input_preset_tree_range_006a1aa0(tree,0,&output,first,last,strings)",
+        "arguments": "Distinct published trivial8B NativeInputPresetTreeIterator: first{tree,left},last{tree,head}; not controller/AV reinterpretation.",
+        "ABI": "SourceRET18 vs NativeRET14",
+        "header": "include/bsp/native_input_preset_tree_range.hpp"
+      },
+      {
+        "Native": [
+          "00432050"
+        ],
+        "Source": "destroy_native_string_header_range_00432050(first,last,strings)",
+        "arguments": "Actual8B pooled-string range, not old global_config/NativeStringStorage projection.",
+        "ABI": "Sourcecdecl3inputs vs NativeECX/EDX/two deadstackwords/RET8",
+        "header": "include/bsp/native_render_service_vector_cleanup.hpp"
+      },
+      {
+        "Native": [
+          "00bf65ac"
+        ],
+        "Source": "singleton_lifetime_free(CURRENT pointer)",
+        "arguments": "Capture CURRENT head/begin only after successful range; old begin controls vector branch, not the pointer freed.",
+        "ABI": "CurrentCRT/std::free noexcept service; original CRT/heap/fault identity unproved",
+        "header": "include/bsp/singleton_lifetime.hpp"
+      }
+    ],
+    "logical_actions": [
+      {
+        "state": 0,
+        "previous": -1,
+        "Native_action": "00c7f970",
+        "member_offset": 0,
+        "physical_E9_site": "00c7f973",
+        "actual_target": "0069ba20",
+        "planned_logical_effect": "private explicit volatile publication=nullptr; raw volatile DWORD[settings]=0x00ce3818",
+        "qualification": "Complete baseeffects, not call through nonvolatile uint32& helper. No cast, synthetic global, unregister/selfcheck or ownerfree."
+      },
+      {
+        "state": 1,
+        "previous": 0,
+        "Native_action": "00c7f978",
+        "member_offset": 8,
+        "physical_E9_site": "00c7f97e",
+        "actual_target": "006aa420",
+        "planned_logical_effect": "destroy_native_input_device_map_006aa420(settings+08,0,strings)",
+        "qualification": "Published5c whole-range binding; SourceRET4 vs NativeplainRET."
+      },
+      {
+        "state": 2,
+        "previous": 1,
+        "Native_action": "00c7f983",
+        "member_offset": 20,
+        "physical_E9_site": "00c7f989",
+        "actual_target": "004324a0",
+        "planned_logical_effect": "destroy_native_string_header_vector_004324a0(settings+14,strings)",
+        "qualification": "Actual raw string-vector Tidy; Sourcecdecl vs NativeECX."
+      },
+      {
+        "state": 3,
+        "previous": 2,
+        "Native_action": "00c7f98e",
+        "member_offset": 36,
+        "physical_E9_site": "00c7f994",
+        "actual_target": "006a2b00",
+        "planned_logical_effect": "destroy_native_input_preset_tree_006a2b00(settings+24,0,strings)",
+        "qualification": "Published895 actual preset whole range/free/reset; SourceRET4."
+      },
+      {
+        "state": 4,
+        "previous": 3,
+        "Native_action": "00c7f999",
+        "member_offset": 48,
+        "physical_E9_site": "00c7f99f",
+        "actual_target": "006a7960",
+        "planned_logical_effect": "tidy_native_string_vector_group_vector_006a7960(settings+30,strings)",
+        "qualification": "RawCtx in SourceEDX; original EDX unconsumed; no private-frame identity."
+      },
+      {
+        "state": 5,
+        "previous": 4,
+        "Native_action": "00c7f9a4",
+        "member_offset": 64,
+        "physical_E9_site": "00c7f9aa",
+        "actual_target": "006a1420",
+        "planned_logical_effect": "tidy_native_input_conflict_vector_006a1420(settings+40,0)",
+        "qualification": "No RawCtx; normal state5 failure retries CURRENT conflict header then state4 group, no rollback/double-cleanup suppression."
+      },
+      {
+        "state": 6,
+        "previous": 5,
+        "Native_action": "00c7f9af",
+        "member_offset": 84,
+        "physical_E9_site": "00c7f9b5",
+        "actual_target": "006a1df0",
+        "planned_logical_effect": "destroy_native_input_default_scalar_tree_006a1df0(settings+54,0)",
+        "qualification": "Published scalar whole range/free/reset; no RawCtx added."
+      },
+      {
+        "state": 7,
+        "previous": 6,
+        "Native_action": "00c7f9ba",
+        "member_offset": 96,
+        "physical_E9_site": "00c7f9c0",
+        "actual_target": "006a7040",
+        "planned_logical_effect": "destroy_native_input_controller_tree_006a7040(settings+60,0,strings)",
+        "qualification": "Published8dac. Actual UNWIND target only; normal+60 is inline6A6A20/free/reset, not direct7040."
+      },
+      {
+        "state": 8,
+        "previous": 7,
+        "Native_action": "00c7f9c5",
+        "member_offset": 108,
+        "physical_E9_site": "00c7f9cb",
+        "actual_target": "006aa420",
+        "planned_logical_effect": "destroy_native_input_device_map_006aa420(settings+6C,0,strings)",
+        "qualification": "Same actual device whole-range destructor as state1 at different offset."
+      },
+      {
+        "state": 9,
+        "previous": 8,
+        "Native_action": "00c7f9d0",
+        "member_offset": 120,
+        "physical_E9_site": "00c7f9d6",
+        "actual_target": "00b669a0",
+        "planned_logical_effect": "close_native_lua_state_00b669a0(actual Lua owner at settings+78)",
+        "qualification": "Actual storage/current Lua service; no fake callback/provider."
+      }
+    ],
+    "scope": "One private fixedstageORDER with two concrete operation sets. Rawhead/left orbegin beforelogicalstate; endafterstate/nonzero. Legacystate-before-helper access and oldoverloads preserved. Conflictstays5; no normal4.",
+    "base": "Explicit volatile publication0 BEFORE rawCE3818; no nonvolatileuint32& cast/newpublichelper/global/unregister/selfcomparison/ownerfree. State0 remains through guard completion; initial-1 remains.",
+    "exception_boundary": "Primary Cpp exceptions propagate; private noexcept guard decrements before each remaining actual member action. Secondary throw terminates with no remainingcleanup guarantee. No per-child noexcept adapter or NativeEBP/FH3/SEH identity.",
+    "normal_controller": "Inlineactual6A6A20/free/reset, never direct7040. Logicalaction7 alone composes actual7040.",
+    "Lua": "Actualowner78, complete B65E80/B669A0 equivalence, accepted NativeLuaStateStorage/currentLua helper twice; no classPcStorage adapter."
+  },
+  "legacy_preservation": {
+    "Source_receipt": {
+      "baseline": "70b20c1bbc488f552f708b2614fcf34ded741586",
+      "old_cpp_sha256": "6a15caebb247b850b5fdc2a9e295fb18a1cd461495b3a151cb9d636102d962ea",
+      "new_cpp_sha256": "e33175f2723e55b1469a6c5d9901777abc564c30c4ebfce714a14424dd9ee685",
+      "old_header_sha256": "61f04b6f72d64cc34ecb2b391e35c711cf8fd7daad50a8317c1eecb1426d2467",
+      "new_header_sha256": "0d9429e4036b6e43a5cf08329cdf0fdc42e49acc1d5b11899a4fe183c9e9ec16",
+      "preserved_exact_Source": {
+        "struct Members {": {
+          "sha256": "f47390c3822c58c11f35a6f49ae3b530d778409b70cbdc9771142b12c5e03ad2",
+          "unchanged": true
+        },
+        "void* construct_native_input_settings_006ab6b0(": {
+          "sha256": "d0e99106447a354faa1180aba3d6d780ef2530b4f7234abccaaca971286cf66d",
+          "unchanged": true
+        },
+        "void* get_native_input_settings_005547d0(": {
+          "sha256": "080e14f29d02aeae081515e6317ff23c21468ca53ce6c0924b94192030075209",
+          "unchanged": true
+        },
+        "void* scalar_delete_native_input_settings_006ab800(": {
+          "sha256": "300ea3bbf78107548716ccba1cca4d0e7ad3d166c7eeade8ba9bc41ab73ecc35",
+          "unchanged": true
+        }
+      },
+      "old_context_and_all_old_header_lines_preserved": true,
+      "shared_normal_order": "ten fixed calls, LegacyNormalOps and RawNormalOps only; no CMake change",
+      "no_original_fault_frame_ABI_claim": true,
+      "prefinal_cpp_sha256_before_Root_requested_state_fix": "9f3996304dd90846bf4c224749719a1a76a3f8afa7d63ac03f95c8f2ea975aac",
+      "Source_revision_note": "Only Root-requested removal of final RawMembers logicalstate=-1 after baseeffects; initial unarmed-1 and all preserved legacy bodies unchanged."
+    },
+    "old_object_sha256": "f653cdeb3534c11c1c3ff5ed8a336eda605121297ca7af5fc8f63600b4ddd268",
+    "Source_bodies": "Members,constructor,getter,scalar-delete bodies and oldContext/headerlines exact; no oldAPI caller rebinding.",
+    "old_code_sections": 19,
+    "byte_and_symbolic_equivalent": 16,
+    "namespace": "?A0xce074084 identity; no namespace rename needed",
+    "changed_sections": [
+      {
+        "symbol": "?destroy_native_input_settings_006aa460@bsp@@YAXPAXAAUNativeInputSettingsLifetimeContext@1@@Z",
+        "old_section": 20,
+        "old_bytes": 543,
+        "old_starts": 162,
+        "new_section": 34,
+        "new_bytes": 114,
+        "new_starts": 34,
+        "physical_bytes_equal": false,
+        "relocation_fields_zeroed_bytes_equal": false,
+        "symbolic_relocations_equal": false,
+        "byte_and_symbolic_equivalent": false
+      },
+      {
+        "symbol": "__ehhandler$?destroy_native_input_settings_006aa460@bsp@@YAXPAXAAUNativeInputSettingsLifetimeContext@1@@Z",
+        "old_section": 21,
+        "old_bytes": 42,
+        "old_starts": 16,
+        "new_section": 35,
+        "new_bytes": 42,
+        "new_starts": 16,
+        "physical_bytes_equal": false,
+        "relocation_fields_zeroed_bytes_equal": false,
+        "symbolic_relocations_equal": true,
+        "byte_and_symbolic_equivalent": false
+      },
+      {
+        "symbol": "?scalar_delete_native_input_settings_006ab800@bsp@@YAPAXPAXIAAUNativeInputSettingsLifetimeContext@1@@Z",
+        "old_section": 24,
+        "old_bytes": 39,
+        "old_starts": 17,
+        "new_section": 66,
+        "new_bytes": 133,
+        "new_starts": 42,
+        "physical_bytes_equal": false,
+        "relocation_fields_zeroed_bytes_equal": false,
+        "symbolic_relocations_equal": false,
+        "byte_and_symbolic_equivalent": false
+      }
+    ],
+    "changed_controlflow": "Legacydestroy543B162 ->114B34 plus539B175 shared order; handlercookie/frame offsets change. Unchangedscalar-delete Source now133B42 vs39B17 dueinliningwrapper: sameguard/order, flags&1free onlyafter success, selfreturn, primaryexceptionsskipownerfree. No privateframe/ABI/fault parity.",
+    "fixture": "Historical AQ probeSource/log missing in worker/Main/Root; no reproduction/rerun claimed. Existing3suites do not execute owner."
+  },
+  "provider_LF_fingerprints": {
+    "include/bsp/engine_services_cc13.hpp": {
+      "baseline_Git_blob_sha256": "8f6d185ce0342d4f9d75b3f7a2e9d379d49699ec78380e88cbd9b3afc24ebd4a",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/global_config.hpp": {
+      "baseline_Git_blob_sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_conflict_vector_tidy.hpp": {
+      "baseline_Git_blob_sha256": "5a5bd18021b66070fde3b9cb3bb5bad88b536cdb018695d4717bb2b455420fd9",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_controller_tree_destroy_instances.hpp": {
+      "baseline_Git_blob_sha256": "92cba5dc9d813e6f4c8d176922d4a65d82a172ff7c825140096ce462538323ab",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_controller_tree_erase.hpp": {
+      "baseline_Git_blob_sha256": "de4cf3f09015875738440254ec55dc91c0b52a30de85405bf4ddefe591fd95dc",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_controller_tree_range.hpp": {
+      "baseline_Git_blob_sha256": "a74c31d815ee767b6c9d403b0d6db942a3929114a3f2a8f672f6b9f58d651a37",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_default_scalar_tree_destroy.hpp": {
+      "baseline_Git_blob_sha256": "ed6233e72b7e699697f311e1ebcba75e5146b5c28bb33d5d9ef4bf617768edcf",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_default_scalar_tree_range.hpp": {
+      "baseline_Git_blob_sha256": "3459c9c076f499a2a087770fdebeca84894cb466ef511b6d9d5f945370a3c7de",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_device_map_cleanup.hpp": {
+      "baseline_Git_blob_sha256": "3710db8ca2a21501c2486ef53779226097ece3bbc999cd02b3924cccfcd292be",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_device_tree_range.hpp": {
+      "baseline_Git_blob_sha256": "0c093e04570eb8d630c742c7932e74aeb6e6d8acf47b5ca86ac9715a742eb79a",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_preset_tree_destroy.hpp": {
+      "baseline_Git_blob_sha256": "95e7688464050c7d1c3527852dcb6c8e65a3a6e6df1fdb93282ecbd0ce1ad65f",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_preset_tree_erase.hpp": {
+      "baseline_Git_blob_sha256": "5d1224d3cdde8dd5e9b25d59282df460a43b67b159427ff7b4bc45d202970615",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_preset_tree_range.hpp": {
+      "baseline_Git_blob_sha256": "d681826bf330af5f6d4b44e3afe0ac9a10bc0a1cb4107576a4667d8eda0ca504",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_settings_lifetime.hpp": {
+      "baseline_Git_blob_sha256": "61f04b6f72d64cc34ecb2b391e35c711cf8fd7daad50a8317c1eecb1426d2467",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_settings_startup.hpp": {
+      "baseline_Git_blob_sha256": "c4b150b7b268106691e6ae51161aa9c3cf1320db38d798a445cce595d750afef",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_settings_tables.hpp": {
+      "baseline_Git_blob_sha256": "0bb85f38b2d3241f1a926aa007ed941960119e2d926134fb96e868b6060cd5b7",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_settings_tree_cleanup.hpp": {
+      "baseline_Git_blob_sha256": "db6fdb5d7c26f1bd416693464823e29c97bce248e987da5d033d626b4603c875",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_settings_vector_storage.hpp": {
+      "baseline_Git_blob_sha256": "13d701666dd0fca926a5ae06c2bf2f426d9d1143c167d7dbdca3bf5614be9210",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_input_tree_destroy_instances.hpp": {
+      "baseline_Git_blob_sha256": "82ba95115f1cba7bd3c1f7ac9506820a821a0f3dc516ea9eef8fd1ba7a1b89ed",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_lua_objects.hpp": {
+      "baseline_Git_blob_sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_render_service_vector_cleanup.hpp": {
+      "baseline_Git_blob_sha256": "34035e6bef6840298913a0d50a25991a1567546dd576578dc5857d9e69174c80",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_string.hpp": {
+      "baseline_Git_blob_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_string_vector_group_cleanup.hpp": {
+      "baseline_Git_blob_sha256": "441160192885477773b2b642ea83a78e9d34f9fcadddea965e8f0c6c36229b01",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/native_string_vector_group_tidies.hpp": {
+      "baseline_Git_blob_sha256": "36afa89eeaa1fe38013b6efe6d1870cccea69efe1f308f33d601279e45d22f0d",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/settings_seg29_cc13.hpp": {
+      "baseline_Git_blob_sha256": "71eac28bfcc7cf1ffdecf63e96e342107450c69bf50a0fd7eabfbd19007a0946",
+      "equal_published_ee5_plan": true
+    },
+    "include/bsp/singleton_lifetime.hpp": {
+      "baseline_Git_blob_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "equal_published_ee5_plan": true
+    },
+    "src/engine_services_cc13.cpp": {
+      "baseline_Git_blob_sha256": "9a02ce304c1cec3466379a45972a434e658ea0e7c54d363cda51750cf55c8dde",
+      "equal_published_ee5_plan": true
+    },
+    "src/global_config.cpp": {
+      "baseline_Git_blob_sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_input_conflict_vector_tidy.cpp": {
+      "baseline_Git_blob_sha256": "8771f582d4094803a8f80d2c5c103bb791847fb3a9e924141940bad361f0e021",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_input_controller_tree_destroy_instances.cpp": {
+      "baseline_Git_blob_sha256": "fc492a1190cdff014fc1237c4e608e58636a03ad30410460df77cb93ecaf2a2a",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_input_controller_tree_range.cpp": {
+      "baseline_Git_blob_sha256": "724e9f34c6fb6fdd2178723b7715aa81a8cc756f8978a05ba36d4852bea46165",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_input_default_scalar_tree_destroy.cpp": {
+      "baseline_Git_blob_sha256": "f814b1bb4e711a070e9fe43732ea92a91a14c5e48d5e19d4d987f72a8fd538af",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_input_default_scalar_tree_range.cpp": {
+      "baseline_Git_blob_sha256": "3d2ac9c442f1250b1c1d2e97e9c6446a0b0b63d203f403db90bae1aa4a62991f",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_input_device_map_cleanup.cpp": {
+      "baseline_Git_blob_sha256": "79740f3a912cefcdc7ba80c9507a9d8b5dca0cbdf34d38ee0184b776d35b7e3c",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_input_device_tree_range.cpp": {
+      "baseline_Git_blob_sha256": "60d81ecb84cf21b128ab6e0a063ff9418d02c4fe8ad04457f006962f683492ac",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_input_preset_tree_destroy.cpp": {
+      "baseline_Git_blob_sha256": "09a4c68b92f31e05c38ce81de76a76463596ec6143a483e1565c813a104bc406",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_input_preset_tree_range.cpp": {
+      "baseline_Git_blob_sha256": "94d602d28239ee7f158191770a41ad076ce1e5eaf0842ac191079f323bd2d540",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_input_settings_lifetime.cpp": {
+      "baseline_Git_blob_sha256": "6a15caebb247b850b5fdc2a9e295fb18a1cd461495b3a151cb9d636102d962ea",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_input_settings_tree_cleanup.cpp": {
+      "baseline_Git_blob_sha256": "d8be9c5d9613ee258a06fe42a6696269a13a60f53a8a4e1d75aa2e4292feab30",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_input_settings_vector_storage.cpp": {
+      "baseline_Git_blob_sha256": "18076a91677d150d9e9fff82502718d355f3be58839c0c6003bc75035f38f9e5",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_input_tree_destroy_instances.cpp": {
+      "baseline_Git_blob_sha256": "cf00cd5cc70acb42decb572166c8d25259236c92ef3bdb546dae437087f04043",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_lua_objects.cpp": {
+      "baseline_Git_blob_sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_render_service_vector_cleanup.cpp": {
+      "baseline_Git_blob_sha256": "fd7c581522967ab66036064404d62838eba860ae93677314e4594c9628dd3d41",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_string.cpp": {
+      "baseline_Git_blob_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_string_vector_group_cleanup.cpp": {
+      "baseline_Git_blob_sha256": "fa96f5e3d3cb031eed4259d3785b8db89988876912abc3046f53eb9611016497",
+      "equal_published_ee5_plan": true
+    },
+    "src/native_string_vector_group_tidies.cpp": {
+      "baseline_Git_blob_sha256": "844b56e4c171bcefc0b37a4781ee8cb7cf14dabfb5d6e761f36c4c3873bd2ad4",
+      "equal_published_ee5_plan": true
+    },
+    "src/settings_seg29_cc13.cpp": {
+      "baseline_Git_blob_sha256": "7a882cf94ad8bc30120e0a953d7cb0af729d017593f31b1929205c266f43df24",
+      "equal_published_ee5_plan": true
+    },
+    "src/singleton_lifetime.cpp": {
+      "baseline_Git_blob_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "equal_published_ee5_plan": true
+    }
+  },
+  "verification": {
+    "default_build_command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_tests": {
+      "reconstructed_math": "passed0.21s",
+      "native_math_differential": "passed0.03s",
+      "tool_tests": "passed6.66s"
+    },
+    "total_seconds": 6.95,
+    "test_scope": "Only existing3; no ownerexecution/newtests/probes/nativeexecution.",
+    "initial_failure": "Initial9f3996 owner TU compiled, actual provider chain exposed existingCore linkclosure gap digit_spinner_step_0067df40 from frontend_seg16_24_28_cc13.obj. Failedlog retained; Root195 registers existing implementation, same defaultbuild thenpassed. No stub/unownedSource fix.",
+    "transfer_JSON": "28 checked,0failed",
+    "transfer_Markdown": "28checked,0failed,0unchecked,0warnings",
+    "git_diff_check": "passed",
+    "transfers_log_sha256": "5ee5dc27852a4e77e993d2bf81b79de25f94898572fdd36d09745f87443a8052",
+    "final_transfers_log_sha256": "5ee5dc27852a4e77e993d2bf81b79de25f94898572fdd36d09745f87443a8052"
+  },
+  "actual_CMake_COFF": {
+    "object": "build/win32/bsp_core.dir/Release/native_input_settings_lifetime.obj",
+    "sha256": "b16d49ee04286ebd2dceb05d6c331cec9ae0138a9864f3e9af69d8545a2ff973",
+    "counts": {
+      "executable_section_bytes": 5844,
+      "executable_marked_sections": 54,
+      "linear_Capstone_entries": 2123,
+      "embedded_data_bytes": 301,
+      "data_pseudo_entries_excluded": 150,
+      "code_including_NOP_INT3_bytes": 5543,
+      "code_entries_including_NOP_INT3": 1973,
+      "NOP_INT3_entries": 56,
+      "NOP_INT3_bytes": 63,
+      "all_relocations": 280,
+      "code_relocations": 201,
+      "embedded_data_relocations": 50,
+      "EH_relocations": 15,
+      "debug_frame_relocations": 14,
+      "nonpadding_code_bytes": 5480,
+      "nonpadding_code_entries": 1917
+    },
+    "checks": {
+      "passed": 32,
+      "failed": 0,
+      "total": 32
+    },
+    "review": "All54CODE-marked sections fullyreviewed with28noncode sections/all280relocations.301B embedded switch/indexdata explains150linear pseudoentries, not executable starts.1973realcode entries includes63B/56NOP/INT3 trap/patchpoint/alignment entries; othercode1917entries/5480B.",
+    "Cpp_EH": "Rawordinary52B/twostates/no tries:RawMembers unwind andstd_terminate. Guard36B/maxstate0/flags5. Distinct from Native116B/maxstate10. Compilerframe state0 beforeCFstamp andstate1 normalinlined dtor are currentCpp, not Originalrawfaultscope.",
+    "capture_schedule": "Rawtemplate compiledhead/left beforestates7/6/5/2/0, beginbefore3/1, conditionalendafterstate, conflict5unchanged; CURRENTfree after actualchild, orderedclears/base."
+  },
+  "ignored_evidence": {
+    "local/oct15_input_settings_raw_owner_binding_plan.json": {
+      "sha256": "00520619763bf4965d6db648e53704ad856f80e3c197b2234ffe7a6a52b65bed",
+      "bytes": 55082
+    },
+    "local/oct15_input_settings_whole_owner_closure_readiness.json": {
+      "sha256": "b9f2ef35ff0a9854e5109f4e513ecabeee89a52277fcadf0c84e7c54733b4d28",
+      "bytes": 183708
+    },
+    "local/oct15_controller_member_destroy_readiness.json": {
+      "sha256": "e92da7db21fd77abf7d2a75d367defe30937fbfb251f3d163f45f8795fcb5ad4",
+      "bytes": 179208
+    },
+    "local/oct15_input_settings_raw_owner_native_evidence.json": {
+      "sha256": "2d5409dc95d9b964b693d32e750d429f516d68f53d6541ccea2eadd2d71b52d2",
+      "bytes": 196852
+    },
+    "local/native_input_settings_lifetime_before_raw_binding.obj": {
+      "sha256": "f653cdeb3534c11c1c3ff5ed8a336eda605121297ca7af5fc8f63600b4ddd268",
+      "bytes": 13863
+    },
+    "local/oct15_input_settings_raw_owner_actual_COFF.json": {
+      "sha256": "a7d42ebecd0e0e82ef7a4543f58241ee6c03943ac58076617b91fa15258b38e3",
+      "bytes": 633196
+    },
+    "local/oct15_input_settings_raw_owner_actual_COFF_decoded.txt": {
+      "sha256": "fa85ad720229c40b4778137544e9b1a7956bb732d36323d34c9effe319b90a9b",
+      "bytes": 108541
+    },
+    "local/oct15_input_settings_raw_owner_COFF_audit.json": {
+      "sha256": "a0e204402f444ed79bb551b84efcfc4a7a61245794f26d71596f2e87da5edfab",
+      "bytes": 30150
+    },
+    "local/oct15_input_settings_raw_owner_legacy_COFF_comparison.json": {
+      "sha256": "9f60e8bace2daa2675d9b5b632a4f03df974642912446c0e8ae3edadd069af76",
+      "bytes": 8305
+    },
+    "local/oct15_input_settings_raw_owner_source_preservation.json": {
+      "sha256": "aa6a478100773edeccfcf2c7ed7448749771976a57f6bda1cfd6914e98b8e568",
+      "bytes": 1609
+    },
+    "local/oct15_input_settings_raw_owner_build_initial_failed.log": {
+      "sha256": "0c1aa7beda404c5a5f425701b66a96e2516105ee46e0caf90437ebb705a5bc9c",
+      "bytes": 7849
+    },
+    "local/oct15_input_settings_raw_owner_build_final.log": {
+      "sha256": "99782be1b385d551d988d6333b14aa61fe8f16dc832ab5ec831c611edc62a0ad",
+      "bytes": 3302
+    }
+  },
+  "preserved_prior_pins": [
+    "8dac2df252c66334377628deca225e1b82557984",
+    "42216bcbe31d639ff067f944ce23e3faf468e468",
+    "bb7b29e584fbd19dc88ff489af07ba855498216b",
+    "99894dbd3a674309b76a4b0251e2e19623873de5"
+  ],
+  "limits": [
+    "Wholeordinaryrecord only newCurrentCpp/providedNativeRawPool/Lua domain; tenactions logicaleffectfragments, not OriginalEBPfunctions; handler supportonly.",
+    "No OriginalCRT/heap/FH3/SEH/RTTI/EBP/FS/frame/register/flag/privateargument/incidentalEAX/binaryABI/fault/gameplay identity.",
+    "/EHsc/compilerEHstate movement does not prove hardwarefault cleanup scope. CurrentCRTfree noexcept/currentLua/nonlocalerrors/SDKdiagnostic continuation/rawpoolgetter exceptions retain accepted childlimits.",
+    "Oldconstructor/getter/scalar-delete/AVAPI domains unchanged; no applicationcaller wiring or promotion of oldfixtures. Historicalfixture missing/not rerun; existing3suites donot execute owner.",
+    "No defaultcontext/inventedglobal/storageconverter/callback/provider/model/typedwholeobject/countbridge/rollback/childnoexceptadapter or OriginalFSsimulation."
+  ],
+  "independent_legacy_peer": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_avoid_distance\\local\\oct16_raw_owner_legacy_independent_peer.json",
+    "sha256": "53ef42dca266f6d41a36cd2a868b6f903755244b8c26843a0d484da9ed22fc25",
+    "checks": 18,
+    "result": "PASS/no Source findings",
+    "scope": "IndependentSourcepreservation/oldnewobjects16of19+all4oldEHdata/3changedoldsections+539B175Legacyhelper andscalarEH67; no newRawpath behavioralpeer/fixture execution claim."
+  },
+  "ledger_appends": {
+    "normal_functions": 1,
+    "logical_fragments": 10,
+    "names_same_current_Native_identity": 11,
+    "handler_mutation": false
+  },
+  "owned_ledger_diff": {
+    "path": "local\\oct15_input_settings_raw_owner_owned_ledger_diff.json",
+    "sha256": "d2230522efa70a80915b817d8c164f4929a95d4b3f864e0b8c65397a96898b82",
+    "old_records_removed": 0,
+    "owned_addresses": 11,
+    "new_reconstruction_records": 11,
+    "correct_Native_names_and_all_prior_evidence_preserved": true,
+    "no_CMake_change": true
+  }
+}
