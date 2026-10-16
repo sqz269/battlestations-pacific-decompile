@@ -1,0 +1,3142 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "typed_capture_modification": "4763",
+  "typed_capture_sha256": "b190bfb8d3bca617cee4b03b21e1a15daf90af4cb120eba286584c65b6cc2bb9",
+  "routine_count": 22,
+  "native_body_bytes": 123,
+  "routines": [
+    {
+      "address": "00b33e50",
+      "size": 4,
+      "previous_ghidra_name": "TRIV_body_00b33e50",
+      "bytes": "8b4114c3",
+      "sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "8b4114",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x14]"
+        },
+        {
+          "offset": 3,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "4",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b33e50"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b33e53"
+            },
+            "length": "4"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [
+        {
+          "from": "00ba6b72",
+          "type": "UNCONDITIONAL_CALL",
+          "installed_pe_target_verified": true
+        },
+        {
+          "from": "00ba6b87",
+          "type": "UNCONDITIONAL_CALL",
+          "installed_pe_target_verified": true
+        },
+        {
+          "from": "00ba6bb1",
+          "type": "UNCONDITIONAL_CALL",
+          "installed_pe_target_verified": true
+        },
+        {
+          "from": "00b9e206",
+          "type": "UNCONDITIONAL_CALL",
+          "installed_pe_target_verified": true
+        },
+        {
+          "from": "00ba508d",
+          "type": "UNCONDITIONAL_CALL",
+          "installed_pe_target_verified": true
+        },
+        {
+          "from": "00ba5197",
+          "type": "UNCONDITIONAL_CALL",
+          "installed_pe_target_verified": true
+        }
+      ],
+      "symbol": "?native_tagged_b3_read_dword_14_00b33e50@bsp@@YIIPBX@Z",
+      "source_size": 4,
+      "source_bytes": "8b4114c3",
+      "source_sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "8b4114",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x14]"
+        },
+        {
+          "offset": 3,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 24,
+        "name": ".text$mn",
+        "size_of_raw_data": 4,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": true
+      },
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "classification": "complete_exact_whole_machine_entry",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_read_dword_14_00b33e50",
+      "namespace": "bsp",
+      "source_prototype": "std::uint32_t __fastcall bsp::native_tagged_b3_read_dword_14_00b33e50(const void* base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_read_dword_14_00b33e50",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Win32_entire_COMDAT_live_PE_byte_identity_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "EAX=dword[ECX+14h], ECX/EDX and flags preserved"
+    },
+    {
+      "address": "00b343b0",
+      "size": 10,
+      "previous_ghidra_name": "TRIV_body_00b343b0",
+      "bytes": "8a442404884174c20400",
+      "sha256": "9fac3f20b3a097a5394accf10f1cd3de9961448ce8ae8342f45ce8b18b29de6f",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "8a442404",
+          "mnemonic": "mov",
+          "operands": "al, byte ptr [esp + 4]"
+        },
+        {
+          "offset": 4,
+          "bytes": "884174",
+          "mnemonic": "mov",
+          "operands": "byte ptr [ecx + 0x74], al"
+        },
+        {
+          "offset": 7,
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "10",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b343b0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b343b9"
+            },
+            "length": "10"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [],
+      "symbol": "?native_tagged_b3_write_byte_74_00b343b0@bsp@@YIEPAXE@Z",
+      "source_size": 6,
+      "source_bytes": "8851748ac2c3",
+      "source_sha256": "45af214e3b7bee6a4d070ff6b3d6c0708d10097d5537b9ccab3624ece02b2b2a",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "885174",
+          "mnemonic": "mov",
+          "operands": "byte ptr [ecx + 0x74], dl"
+        },
+        {
+          "offset": 3,
+          "bytes": "8ac2",
+          "mnemonic": "mov",
+          "operands": "al, dl"
+        },
+        {
+          "offset": 5,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 26,
+        "name": ".text$mn",
+        "size_of_raw_data": 6,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": false
+      },
+      "live_equals_installed_pe_equals_actual_coff": false,
+      "classification": "complete_qualified_source",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_write_byte_74_00b343b0",
+      "namespace": "bsp",
+      "source_prototype": "std::uint8_t __fastcall bsp::native_tagged_b3_write_byte_74_00b343b0(void* base, std::uint8_t value) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_write_byte_74_00b343b0",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Source_qualified_whole_COFF_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_argument_cell_reads": [
+        {
+          "entry_esp_offset": 4,
+          "width": 1
+        }
+      ],
+      "original_stack_cleanup_bytes": 4,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "AL=stored value; incoming upper EAX preserved; flags preserved; Original language return type unknown",
+      "semantic_qualification": {
+        "kind": "complete store/result through new meaningful Source input interface",
+        "input_mapping": "Source ECX=Original ECX=base; Source DL value=Original 1-byte value at entryESP+4",
+        "memory_store": {
+          "base_offset": 116,
+          "width": 1,
+          "value": "mapped input"
+        },
+        "native_access_order": [
+          "read1 entryESP+4",
+          "store1 base+74h",
+          "return read4 entryESP"
+        ],
+        "source_access_order": [
+          "store1 base+74h",
+          "return read4 Source entryESP"
+        ],
+        "input_domain": "any valid writable 1-byte destination range and arbitrary uint8 input value; no extra alignment/class/nonalias/value validation",
+        "native_normal_return": "AL=stored value,ECX=base,EDX incoming preserved,flags preserved,ESP=entryESP+8",
+        "source_normal_return": "AL=stored value,ECX=base,EDX=Source entry bits preserved; DL carries new byte, upper24 are not a semantic input,flags preserved,ESP=entryESP+4",
+        "upper_eax": "incoming upper24 preserved in both whole bodies, not a semantic byte result",
+        "alias_and_fault_limits": "Original reads stack before store and defines AL before it; Source writes before defining AL; cleanup/physical stack-alias relationships/fault registers differ; no Original EDX input, dummy EDX parameter, SEH/dropin proof",
+        "proof": "complete actual instruction dataflow over every mapped input bit pattern; no unresolved provider"
+      }
+    },
+    {
+      "address": "00b3ff30",
+      "size": 3,
+      "previous_ghidra_name": "TRIV_body_00b3ff30",
+      "bytes": "8bc1c3",
+      "sha256": "58367ffa2a0179375018fa0f5c26da24391e42ebe0ed8fdda35a21fc7bdc396f",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "8bc1",
+          "mnemonic": "mov",
+          "operands": "eax, ecx"
+        },
+        {
+          "offset": 2,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "3",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3ff30"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3ff32"
+            },
+            "length": "3"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [],
+      "symbol": "?native_tagged_b3_identity_00b3ff30@bsp@@YIII@Z",
+      "source_size": 3,
+      "source_bytes": "8bc1c3",
+      "source_sha256": "58367ffa2a0179375018fa0f5c26da24391e42ebe0ed8fdda35a21fc7bdc396f",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "8bc1",
+          "mnemonic": "mov",
+          "operands": "eax, ecx"
+        },
+        {
+          "offset": 2,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 8,
+        "name": ".text$mn",
+        "size_of_raw_data": 3,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": true
+      },
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "classification": "complete_exact_whole_machine_entry",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_identity_00b3ff30",
+      "namespace": "bsp",
+      "source_prototype": "std::uint32_t __fastcall bsp::native_tagged_b3_identity_00b3ff30(std::uint32_t bits) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_identity_00b3ff30",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Win32_entire_COMDAT_live_PE_byte_identity_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "EAX=incoming ECX all32bits, ECX/EDX and flags preserved"
+    },
+    {
+      "address": "00b343e0",
+      "size": 13,
+      "previous_ghidra_name": "TRIV_body_00b343e0",
+      "bytes": "8b442404898184000000c20400",
+      "sha256": "5fec85386ac9a1306bbd20f1a1f26a3f85b83efce2f9b2b8ba25d32920e90b2b",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "offset": 4,
+          "bytes": "898184000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 0x84], eax"
+        },
+        {
+          "offset": 10,
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "13",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b343e0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b343ec"
+            },
+            "length": "13"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [],
+      "symbol": "?native_tagged_b3_write_dword_84_00b343e0@bsp@@YIIPAXI@Z",
+      "source_size": 9,
+      "source_bytes": "8991840000008bc2c3",
+      "source_sha256": "3abac5d32abfa530336c34de493231a30ddcd347ac5f4073aeea86db9dadac61",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "899184000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 0x84], edx"
+        },
+        {
+          "offset": 6,
+          "bytes": "8bc2",
+          "mnemonic": "mov",
+          "operands": "eax, edx"
+        },
+        {
+          "offset": 8,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 28,
+        "name": ".text$mn",
+        "size_of_raw_data": 9,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": false
+      },
+      "live_equals_installed_pe_equals_actual_coff": false,
+      "classification": "complete_qualified_source",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_write_dword_84_00b343e0",
+      "namespace": "bsp",
+      "source_prototype": "std::uint32_t __fastcall bsp::native_tagged_b3_write_dword_84_00b343e0(void* base, std::uint32_t value) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_write_dword_84_00b343e0",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Source_qualified_whole_COFF_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_argument_cell_reads": [
+        {
+          "entry_esp_offset": 4,
+          "width": 4
+        }
+      ],
+      "original_stack_cleanup_bytes": 4,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "EAX=stored value; flags preserved; Original language return type unknown",
+      "semantic_qualification": {
+        "kind": "complete store/result through new meaningful Source input interface",
+        "input_mapping": "Source ECX=Original ECX=base; Source EDX value=Original 4-byte value at entryESP+4",
+        "memory_store": {
+          "base_offset": 132,
+          "width": 4,
+          "value": "mapped input"
+        },
+        "native_access_order": [
+          "read4 entryESP+4",
+          "store4 base+84h",
+          "return read4 entryESP"
+        ],
+        "source_access_order": [
+          "store4 base+84h",
+          "return read4 Source entryESP"
+        ],
+        "input_domain": "any valid writable 4-byte destination range and arbitrary uint32 input value; no extra alignment/class/nonalias/value validation",
+        "native_normal_return": "EAX=stored value,ECX=base,EDX incoming preserved,flags preserved,ESP=entryESP+8",
+        "source_normal_return": "EAX=stored value,ECX=base,EDX=mapped new dword value preserved,flags preserved,ESP=entryESP+4",
+        "upper_eax": "all32bits defined by mapped value",
+        "alias_and_fault_limits": "Original reads stack before store and defines EAX before it; Source writes before defining EAX; cleanup/physical stack-alias relationships/fault registers differ; no Original EDX input, dummy EDX parameter, SEH/dropin proof",
+        "proof": "complete actual instruction dataflow over every mapped input bit pattern; no unresolved provider"
+      }
+    },
+    {
+      "address": "00b344c0",
+      "size": 11,
+      "previous_ghidra_name": "TRIV_body_00b344c0",
+      "bytes": "33c08901894104894108c3",
+      "sha256": "22ec8636684b69bbadce6e9517487a8cd3d19d95dad2fbe95c634a051bd92a0d",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "offset": 2,
+          "bytes": "8901",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], eax"
+        },
+        {
+          "offset": 4,
+          "bytes": "894104",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], eax"
+        },
+        {
+          "offset": 7,
+          "bytes": "894108",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 8], eax"
+        },
+        {
+          "offset": 10,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "11",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b344c0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b344ca"
+            },
+            "length": "11"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [],
+      "native_and_source_actual_store_trace": [
+        {
+          "offset": 0,
+          "width": 4,
+          "value": 0
+        },
+        {
+          "offset": 4,
+          "width": 4,
+          "value": 0
+        },
+        {
+          "offset": 8,
+          "width": 4,
+          "value": 0
+        }
+      ],
+      "symbol": "?native_tagged_b3_zero_three_dwords_00b344c0@bsp@@YIIPAX@Z",
+      "source_size": 23,
+      "source_bytes": "c7010000000033c0c7410400000000c7410800000000c3",
+      "source_sha256": "c9f18be6f64378ad886c3b490d3a9e0f6d40f821fa37b4c44eea7a169b403948",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "c70100000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], 0"
+        },
+        {
+          "offset": 6,
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "offset": 8,
+          "bytes": "c7410400000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], 0"
+        },
+        {
+          "offset": 15,
+          "bytes": "c7410800000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 8], 0"
+        },
+        {
+          "offset": 22,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 34,
+        "name": ".text$mn",
+        "size_of_raw_data": 23,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": false
+      },
+      "live_equals_installed_pe_equals_actual_coff": false,
+      "classification": "complete_qualified_source",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_zero_three_dwords_00b344c0",
+      "namespace": "bsp",
+      "source_prototype": "std::uint32_t __fastcall bsp::native_tagged_b3_zero_three_dwords_00b344c0(void* base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_zero_three_dwords_00b344c0",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Source_qualified_whole_COFF_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "EAX=0; ECX/EDX preserved; defined XOR32 flags, AF undefined",
+      "semantic_qualification": {
+        "kind": "complete ordered three-dword zero stores and normal EAX result",
+        "input_domain": "only twelve touched bytes need valid writable backing, with no alignment, typed-record, nonalias, guard or value restriction",
+        "native_and_source_actual_store_trace": [
+          {
+            "offset": 0,
+            "width": 4,
+            "value": 0
+          },
+          {
+            "offset": 4,
+            "width": 4,
+            "value": 0
+          },
+          {
+            "offset": 8,
+            "width": 4,
+            "value": 0
+          }
+        ],
+        "memory_reads_of_old_backing": [],
+        "no_SSE_or_wide_or_narrow_store_or_overstore": true,
+        "native_instruction_order": [
+          "XOR EAX,EAX",
+          "store4+0 EAX",
+          "store4+4 EAX",
+          "store4+8 EAX",
+          "RET"
+        ],
+        "source_instruction_order": [
+          "store4+0 immediate0",
+          "XOR EAX,EAX",
+          "store4+4 immediate0",
+          "store4+8 immediate0",
+          "RET"
+        ],
+        "normal_result_and_registers": "EAX0,ECX input/EDX incoming preserved in both; defined XOR32 flags agree, AF undefined in both",
+        "fault_and_abi_gap": "at first store Native EAX0/defined XOR flags already established, Source EAX/flags incoming; after first Source store its XOR establishes those defined normal effects; exact store widths/order do not prove full SEH/fault-state or Original ABI adoption",
+        "proof": "entire actual Native11B and Source23B operand/dataflow inspection; three independent four-byte immediate0 stores at0,4,8 and no other memory stores/provider"
+      }
+    },
+    {
+      "address": "00b344d0",
+      "size": 11,
+      "previous_ghidra_name": "TRIV_body_00b344d0",
+      "bytes": "33c08901894104894108c3",
+      "sha256": "22ec8636684b69bbadce6e9517487a8cd3d19d95dad2fbe95c634a051bd92a0d",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "offset": 2,
+          "bytes": "8901",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], eax"
+        },
+        {
+          "offset": 4,
+          "bytes": "894104",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], eax"
+        },
+        {
+          "offset": 7,
+          "bytes": "894108",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 8], eax"
+        },
+        {
+          "offset": 10,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "11",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b344d0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b344da"
+            },
+            "length": "11"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [],
+      "native_and_source_actual_store_trace": [
+        {
+          "offset": 0,
+          "width": 4,
+          "value": 0
+        },
+        {
+          "offset": 4,
+          "width": 4,
+          "value": 0
+        },
+        {
+          "offset": 8,
+          "width": 4,
+          "value": 0
+        }
+      ],
+      "symbol": "?native_tagged_b3_zero_three_dwords_00b344d0@bsp@@YIIPAX@Z",
+      "source_size": 23,
+      "source_bytes": "c7010000000033c0c7410400000000c7410800000000c3",
+      "source_sha256": "c9f18be6f64378ad886c3b490d3a9e0f6d40f821fa37b4c44eea7a169b403948",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "c70100000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], 0"
+        },
+        {
+          "offset": 6,
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "offset": 8,
+          "bytes": "c7410400000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], 0"
+        },
+        {
+          "offset": 15,
+          "bytes": "c7410800000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 8], 0"
+        },
+        {
+          "offset": 22,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 36,
+        "name": ".text$mn",
+        "size_of_raw_data": 23,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": false
+      },
+      "live_equals_installed_pe_equals_actual_coff": false,
+      "classification": "complete_qualified_source",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_zero_three_dwords_00b344d0",
+      "namespace": "bsp",
+      "source_prototype": "std::uint32_t __fastcall bsp::native_tagged_b3_zero_three_dwords_00b344d0(void* base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_zero_three_dwords_00b344d0",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Source_qualified_whole_COFF_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "EAX=0; ECX/EDX preserved; defined XOR32 flags, AF undefined",
+      "semantic_qualification": {
+        "kind": "complete ordered three-dword zero stores and normal EAX result",
+        "input_domain": "only twelve touched bytes need valid writable backing, with no alignment, typed-record, nonalias, guard or value restriction",
+        "native_and_source_actual_store_trace": [
+          {
+            "offset": 0,
+            "width": 4,
+            "value": 0
+          },
+          {
+            "offset": 4,
+            "width": 4,
+            "value": 0
+          },
+          {
+            "offset": 8,
+            "width": 4,
+            "value": 0
+          }
+        ],
+        "memory_reads_of_old_backing": [],
+        "no_SSE_or_wide_or_narrow_store_or_overstore": true,
+        "native_instruction_order": [
+          "XOR EAX,EAX",
+          "store4+0 EAX",
+          "store4+4 EAX",
+          "store4+8 EAX",
+          "RET"
+        ],
+        "source_instruction_order": [
+          "store4+0 immediate0",
+          "XOR EAX,EAX",
+          "store4+4 immediate0",
+          "store4+8 immediate0",
+          "RET"
+        ],
+        "normal_result_and_registers": "EAX0,ECX input/EDX incoming preserved in both; defined XOR32 flags agree, AF undefined in both",
+        "fault_and_abi_gap": "at first store Native EAX0/defined XOR flags already established, Source EAX/flags incoming; after first Source store its XOR establishes those defined normal effects; exact store widths/order do not prove full SEH/fault-state or Original ABI adoption",
+        "proof": "entire actual Native11B and Source23B operand/dataflow inspection; three independent four-byte immediate0 stores at0,4,8 and no other memory stores/provider"
+      }
+    },
+    {
+      "address": "00b344e0",
+      "size": 11,
+      "previous_ghidra_name": "TRIV_body_00b344e0",
+      "bytes": "33c08901894104894108c3",
+      "sha256": "22ec8636684b69bbadce6e9517487a8cd3d19d95dad2fbe95c634a051bd92a0d",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "offset": 2,
+          "bytes": "8901",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], eax"
+        },
+        {
+          "offset": 4,
+          "bytes": "894104",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], eax"
+        },
+        {
+          "offset": 7,
+          "bytes": "894108",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 8], eax"
+        },
+        {
+          "offset": 10,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "11",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b344e0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b344ea"
+            },
+            "length": "11"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [],
+      "native_and_source_actual_store_trace": [
+        {
+          "offset": 0,
+          "width": 4,
+          "value": 0
+        },
+        {
+          "offset": 4,
+          "width": 4,
+          "value": 0
+        },
+        {
+          "offset": 8,
+          "width": 4,
+          "value": 0
+        }
+      ],
+      "symbol": "?native_tagged_b3_zero_three_dwords_00b344e0@bsp@@YIIPAX@Z",
+      "source_size": 23,
+      "source_bytes": "c7010000000033c0c7410400000000c7410800000000c3",
+      "source_sha256": "c9f18be6f64378ad886c3b490d3a9e0f6d40f821fa37b4c44eea7a169b403948",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "c70100000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], 0"
+        },
+        {
+          "offset": 6,
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "offset": 8,
+          "bytes": "c7410400000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], 0"
+        },
+        {
+          "offset": 15,
+          "bytes": "c7410800000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 8], 0"
+        },
+        {
+          "offset": 22,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 38,
+        "name": ".text$mn",
+        "size_of_raw_data": 23,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": false
+      },
+      "live_equals_installed_pe_equals_actual_coff": false,
+      "classification": "complete_qualified_source",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_zero_three_dwords_00b344e0",
+      "namespace": "bsp",
+      "source_prototype": "std::uint32_t __fastcall bsp::native_tagged_b3_zero_three_dwords_00b344e0(void* base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_zero_three_dwords_00b344e0",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Source_qualified_whole_COFF_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "EAX=0; ECX/EDX preserved; defined XOR32 flags, AF undefined",
+      "semantic_qualification": {
+        "kind": "complete ordered three-dword zero stores and normal EAX result",
+        "input_domain": "only twelve touched bytes need valid writable backing, with no alignment, typed-record, nonalias, guard or value restriction",
+        "native_and_source_actual_store_trace": [
+          {
+            "offset": 0,
+            "width": 4,
+            "value": 0
+          },
+          {
+            "offset": 4,
+            "width": 4,
+            "value": 0
+          },
+          {
+            "offset": 8,
+            "width": 4,
+            "value": 0
+          }
+        ],
+        "memory_reads_of_old_backing": [],
+        "no_SSE_or_wide_or_narrow_store_or_overstore": true,
+        "native_instruction_order": [
+          "XOR EAX,EAX",
+          "store4+0 EAX",
+          "store4+4 EAX",
+          "store4+8 EAX",
+          "RET"
+        ],
+        "source_instruction_order": [
+          "store4+0 immediate0",
+          "XOR EAX,EAX",
+          "store4+4 immediate0",
+          "store4+8 immediate0",
+          "RET"
+        ],
+        "normal_result_and_registers": "EAX0,ECX input/EDX incoming preserved in both; defined XOR32 flags agree, AF undefined in both",
+        "fault_and_abi_gap": "at first store Native EAX0/defined XOR flags already established, Source EAX/flags incoming; after first Source store its XOR establishes those defined normal effects; exact store widths/order do not prove full SEH/fault-state or Original ABI adoption",
+        "proof": "entire actual Native11B and Source23B operand/dataflow inspection; three independent four-byte immediate0 stores at0,4,8 and no other memory stores/provider"
+      }
+    },
+    {
+      "address": "00b344f0",
+      "size": 11,
+      "previous_ghidra_name": "TRIV_body_00b344f0",
+      "bytes": "33c08901894104894108c3",
+      "sha256": "22ec8636684b69bbadce6e9517487a8cd3d19d95dad2fbe95c634a051bd92a0d",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "offset": 2,
+          "bytes": "8901",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], eax"
+        },
+        {
+          "offset": 4,
+          "bytes": "894104",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], eax"
+        },
+        {
+          "offset": 7,
+          "bytes": "894108",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 8], eax"
+        },
+        {
+          "offset": 10,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "11",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b344f0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b344fa"
+            },
+            "length": "11"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [],
+      "native_and_source_actual_store_trace": [
+        {
+          "offset": 0,
+          "width": 4,
+          "value": 0
+        },
+        {
+          "offset": 4,
+          "width": 4,
+          "value": 0
+        },
+        {
+          "offset": 8,
+          "width": 4,
+          "value": 0
+        }
+      ],
+      "symbol": "?native_tagged_b3_zero_three_dwords_00b344f0@bsp@@YIIPAX@Z",
+      "source_size": 23,
+      "source_bytes": "c7010000000033c0c7410400000000c7410800000000c3",
+      "source_sha256": "c9f18be6f64378ad886c3b490d3a9e0f6d40f821fa37b4c44eea7a169b403948",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "c70100000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], 0"
+        },
+        {
+          "offset": 6,
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "offset": 8,
+          "bytes": "c7410400000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], 0"
+        },
+        {
+          "offset": 15,
+          "bytes": "c7410800000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 8], 0"
+        },
+        {
+          "offset": 22,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 40,
+        "name": ".text$mn",
+        "size_of_raw_data": 23,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": false
+      },
+      "live_equals_installed_pe_equals_actual_coff": false,
+      "classification": "complete_qualified_source",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_zero_three_dwords_00b344f0",
+      "namespace": "bsp",
+      "source_prototype": "std::uint32_t __fastcall bsp::native_tagged_b3_zero_three_dwords_00b344f0(void* base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_zero_three_dwords_00b344f0",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Source_qualified_whole_COFF_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "EAX=0; ECX/EDX preserved; defined XOR32 flags, AF undefined",
+      "semantic_qualification": {
+        "kind": "complete ordered three-dword zero stores and normal EAX result",
+        "input_domain": "only twelve touched bytes need valid writable backing, with no alignment, typed-record, nonalias, guard or value restriction",
+        "native_and_source_actual_store_trace": [
+          {
+            "offset": 0,
+            "width": 4,
+            "value": 0
+          },
+          {
+            "offset": 4,
+            "width": 4,
+            "value": 0
+          },
+          {
+            "offset": 8,
+            "width": 4,
+            "value": 0
+          }
+        ],
+        "memory_reads_of_old_backing": [],
+        "no_SSE_or_wide_or_narrow_store_or_overstore": true,
+        "native_instruction_order": [
+          "XOR EAX,EAX",
+          "store4+0 EAX",
+          "store4+4 EAX",
+          "store4+8 EAX",
+          "RET"
+        ],
+        "source_instruction_order": [
+          "store4+0 immediate0",
+          "XOR EAX,EAX",
+          "store4+4 immediate0",
+          "store4+8 immediate0",
+          "RET"
+        ],
+        "normal_result_and_registers": "EAX0,ECX input/EDX incoming preserved in both; defined XOR32 flags agree, AF undefined in both",
+        "fault_and_abi_gap": "at first store Native EAX0/defined XOR flags already established, Source EAX/flags incoming; after first Source store its XOR establishes those defined normal effects; exact store widths/order do not prove full SEH/fault-state or Original ABI adoption",
+        "proof": "entire actual Native11B and Source23B operand/dataflow inspection; three independent four-byte immediate0 stores at0,4,8 and no other memory stores/provider"
+      }
+    },
+    {
+      "address": "00b3c4f0",
+      "size": 1,
+      "previous_ghidra_name": "TRIV_body_00b3c4f0",
+      "bytes": "c3",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "1",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3c4f0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3c4f0"
+            },
+            "length": "1"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [
+        {
+          "from": "00d61848",
+          "type": "DATA",
+          "installed_pe_target_verified": true
+        }
+      ],
+      "symbol": "?native_tagged_b3_noop_00b3c4f0@bsp@@YAXXZ",
+      "source_size": 3,
+      "source_bytes": "c20000",
+      "source_sha256": "b6cbececf1b07e74f37d57710c68c31f0b92cb08d51093252b321b07542e177b",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "c20000",
+          "mnemonic": "ret",
+          "operands": "0"
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 10,
+        "name": ".text$mn",
+        "size_of_raw_data": 3,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": false
+      },
+      "live_equals_installed_pe_equals_actual_coff": false,
+      "classification": "complete_qualified_source",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_noop_00b3c4f0",
+      "namespace": "bsp",
+      "source_prototype": "void __cdecl bsp::native_tagged_b3_noop_00b3c4f0() noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_noop_00b3c4f0",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Source_qualified_whole_COFF_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "no consumed result; all general registers/flags preserved",
+      "semantic_qualification": {
+        "kind": "same normal return state, different whole encoding",
+        "native_instruction": "RET",
+        "source_instruction": "RET0",
+        "normal_return": "read4 entryESP; EIP=return word,ESP=entryESP+4",
+        "general_registers_and_eflags": "unchanged in both",
+        "argument_cells_read": [],
+        "input_domain": "valid executable instruction and return-stack backing",
+        "remaining_gap": "code-fetch extent1B vs3B; no byte identity or Original adoption proof"
+      }
+    },
+    {
+      "address": "00b3c500",
+      "size": 1,
+      "previous_ghidra_name": "TRIV_body_00b3c500",
+      "bytes": "c3",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "1",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3c500"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3c500"
+            },
+            "length": "1"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [
+        {
+          "from": "00d6184c",
+          "type": "DATA",
+          "installed_pe_target_verified": true
+        }
+      ],
+      "symbol": "?native_tagged_b3_noop_00b3c500@bsp@@YAXXZ",
+      "source_size": 3,
+      "source_bytes": "c20000",
+      "source_sha256": "b6cbececf1b07e74f37d57710c68c31f0b92cb08d51093252b321b07542e177b",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "c20000",
+          "mnemonic": "ret",
+          "operands": "0"
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 12,
+        "name": ".text$mn",
+        "size_of_raw_data": 3,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": false
+      },
+      "live_equals_installed_pe_equals_actual_coff": false,
+      "classification": "complete_qualified_source",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_noop_00b3c500",
+      "namespace": "bsp",
+      "source_prototype": "void __cdecl bsp::native_tagged_b3_noop_00b3c500() noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_noop_00b3c500",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Source_qualified_whole_COFF_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "no consumed result; all general registers/flags preserved",
+      "semantic_qualification": {
+        "kind": "same normal return state, different whole encoding",
+        "native_instruction": "RET",
+        "source_instruction": "RET0",
+        "normal_return": "read4 entryESP; EIP=return word,ESP=entryESP+4",
+        "general_registers_and_eflags": "unchanged in both",
+        "argument_cells_read": [],
+        "input_domain": "valid executable instruction and return-stack backing",
+        "remaining_gap": "code-fetch extent1B vs3B; no byte identity or Original adoption proof"
+      }
+    },
+    {
+      "address": "00b3c510",
+      "size": 1,
+      "previous_ghidra_name": "TRIV_body_00b3c510",
+      "bytes": "c3",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "1",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3c510"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3c510"
+            },
+            "length": "1"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [
+        {
+          "from": "00d61850",
+          "type": "DATA",
+          "installed_pe_target_verified": true
+        }
+      ],
+      "symbol": "?native_tagged_b3_noop_00b3c510@bsp@@YAXXZ",
+      "source_size": 3,
+      "source_bytes": "c20000",
+      "source_sha256": "b6cbececf1b07e74f37d57710c68c31f0b92cb08d51093252b321b07542e177b",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "c20000",
+          "mnemonic": "ret",
+          "operands": "0"
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 14,
+        "name": ".text$mn",
+        "size_of_raw_data": 3,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": false
+      },
+      "live_equals_installed_pe_equals_actual_coff": false,
+      "classification": "complete_qualified_source",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_noop_00b3c510",
+      "namespace": "bsp",
+      "source_prototype": "void __cdecl bsp::native_tagged_b3_noop_00b3c510() noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_noop_00b3c510",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Source_qualified_whole_COFF_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "no consumed result; all general registers/flags preserved",
+      "semantic_qualification": {
+        "kind": "same normal return state, different whole encoding",
+        "native_instruction": "RET",
+        "source_instruction": "RET0",
+        "normal_return": "read4 entryESP; EIP=return word,ESP=entryESP+4",
+        "general_registers_and_eflags": "unchanged in both",
+        "argument_cells_read": [],
+        "input_domain": "valid executable instruction and return-stack backing",
+        "remaining_gap": "code-fetch extent1B vs3B; no byte identity or Original adoption proof"
+      }
+    },
+    {
+      "address": "00b3ccf0",
+      "size": 4,
+      "previous_ghidra_name": "TRIV_body_00b3ccf0",
+      "bytes": "8d4110c3",
+      "sha256": "108eb05660dfe1a041240deb6da273082575a75017fa45a5f13e0086c713bc3d",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "8d4110",
+          "mnemonic": "lea",
+          "operands": "eax, [ecx + 0x10]"
+        },
+        {
+          "offset": 3,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "4",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3ccf0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3ccf3"
+            },
+            "length": "4"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [
+        {
+          "from": "00d619b0",
+          "type": "DATA",
+          "installed_pe_target_verified": true
+        }
+      ],
+      "symbol": "?native_tagged_b3_address_10_00b3ccf0@bsp@@YIII@Z",
+      "source_size": 4,
+      "source_bytes": "8d4110c3",
+      "source_sha256": "108eb05660dfe1a041240deb6da273082575a75017fa45a5f13e0086c713bc3d",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "8d4110",
+          "mnemonic": "lea",
+          "operands": "eax, [ecx + 0x10]"
+        },
+        {
+          "offset": 3,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 6,
+        "name": ".text$mn",
+        "size_of_raw_data": 4,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": true
+      },
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "classification": "complete_exact_whole_machine_entry",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_address_10_00b3ccf0",
+      "namespace": "bsp",
+      "source_prototype": "std::uint32_t __fastcall bsp::native_tagged_b3_address_10_00b3ccf0(std::uint32_t bits) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_address_10_00b3ccf0",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Win32_entire_COMDAT_live_PE_byte_identity_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "EAX=(ECX+10h) modulo2^32, ECX/EDX and flags preserved; no memory backing required"
+    },
+    {
+      "address": "00b3d110",
+      "size": 11,
+      "previous_ghidra_name": "TRIV_body_00b3d110",
+      "bytes": "33c08901894104894108c3",
+      "sha256": "22ec8636684b69bbadce6e9517487a8cd3d19d95dad2fbe95c634a051bd92a0d",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "offset": 2,
+          "bytes": "8901",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], eax"
+        },
+        {
+          "offset": 4,
+          "bytes": "894104",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], eax"
+        },
+        {
+          "offset": 7,
+          "bytes": "894108",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 8], eax"
+        },
+        {
+          "offset": 10,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "11",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3d110"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3d11a"
+            },
+            "length": "11"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [],
+      "native_and_source_actual_store_trace": [
+        {
+          "offset": 0,
+          "width": 4,
+          "value": 0
+        },
+        {
+          "offset": 4,
+          "width": 4,
+          "value": 0
+        },
+        {
+          "offset": 8,
+          "width": 4,
+          "value": 0
+        }
+      ],
+      "symbol": "?native_tagged_b3_zero_three_dwords_00b3d110@bsp@@YIIPAX@Z",
+      "source_size": 23,
+      "source_bytes": "c7010000000033c0c7410400000000c7410800000000c3",
+      "source_sha256": "c9f18be6f64378ad886c3b490d3a9e0f6d40f821fa37b4c44eea7a169b403948",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "c70100000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], 0"
+        },
+        {
+          "offset": 6,
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "offset": 8,
+          "bytes": "c7410400000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], 0"
+        },
+        {
+          "offset": 15,
+          "bytes": "c7410800000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 8], 0"
+        },
+        {
+          "offset": 22,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 42,
+        "name": ".text$mn",
+        "size_of_raw_data": 23,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": false
+      },
+      "live_equals_installed_pe_equals_actual_coff": false,
+      "classification": "complete_qualified_source",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_zero_three_dwords_00b3d110",
+      "namespace": "bsp",
+      "source_prototype": "std::uint32_t __fastcall bsp::native_tagged_b3_zero_three_dwords_00b3d110(void* base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_zero_three_dwords_00b3d110",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Source_qualified_whole_COFF_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "EAX=0; ECX/EDX preserved; defined XOR32 flags, AF undefined",
+      "semantic_qualification": {
+        "kind": "complete ordered three-dword zero stores and normal EAX result",
+        "input_domain": "only twelve touched bytes need valid writable backing, with no alignment, typed-record, nonalias, guard or value restriction",
+        "native_and_source_actual_store_trace": [
+          {
+            "offset": 0,
+            "width": 4,
+            "value": 0
+          },
+          {
+            "offset": 4,
+            "width": 4,
+            "value": 0
+          },
+          {
+            "offset": 8,
+            "width": 4,
+            "value": 0
+          }
+        ],
+        "memory_reads_of_old_backing": [],
+        "no_SSE_or_wide_or_narrow_store_or_overstore": true,
+        "native_instruction_order": [
+          "XOR EAX,EAX",
+          "store4+0 EAX",
+          "store4+4 EAX",
+          "store4+8 EAX",
+          "RET"
+        ],
+        "source_instruction_order": [
+          "store4+0 immediate0",
+          "XOR EAX,EAX",
+          "store4+4 immediate0",
+          "store4+8 immediate0",
+          "RET"
+        ],
+        "normal_result_and_registers": "EAX0,ECX input/EDX incoming preserved in both; defined XOR32 flags agree, AF undefined in both",
+        "fault_and_abi_gap": "at first store Native EAX0/defined XOR flags already established, Source EAX/flags incoming; after first Source store its XOR establishes those defined normal effects; exact store widths/order do not prove full SEH/fault-state or Original ABI adoption",
+        "proof": "entire actual Native11B and Source23B operand/dataflow inspection; three independent four-byte immediate0 stores at0,4,8 and no other memory stores/provider"
+      }
+    },
+    {
+      "address": "00b3d4c0",
+      "size": 3,
+      "previous_ghidra_name": "TRIV_body_00b3d4c0",
+      "bytes": "c20400",
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "3",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3d4c0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3d4c2"
+            },
+            "length": "3"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [],
+      "symbol": "?native_tagged_b3_noop_pop04_00b3d4c0@bsp@@YGXI@Z",
+      "source_size": 3,
+      "source_bytes": "c20400",
+      "source_sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 18,
+        "name": ".text$mn",
+        "size_of_raw_data": 3,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": true
+      },
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "classification": "complete_exact_whole_machine_entry",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_noop_pop04_00b3d4c0",
+      "namespace": "bsp",
+      "source_prototype": "void __stdcall bsp::native_tagged_b3_noop_pop04_00b3d4c0(std::uint32_t opaque_word) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_noop_pop04_00b3d4c0",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Win32_entire_COMDAT_live_PE_byte_identity_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 4,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "no consumed result; all general registers/flags preserved",
+      "opaque_source_envelope": {
+        "chosen_stack_words": 1,
+        "original_reads_argument_cells": false,
+        "semantic_argument_types_or_receiver_recovered": false,
+        "limit": "one Source opaque word expresses RET4 cleanup only, not a recovered value parameter"
+      }
+    },
+    {
+      "address": "00b3d4d0",
+      "size": 3,
+      "previous_ghidra_name": "TRIV_body_00b3d4d0",
+      "bytes": "c20400",
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "3",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3d4d0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3d4d2"
+            },
+            "length": "3"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [],
+      "symbol": "?native_tagged_b3_noop_pop04_00b3d4d0@bsp@@YGXI@Z",
+      "source_size": 3,
+      "source_bytes": "c20400",
+      "source_sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 20,
+        "name": ".text$mn",
+        "size_of_raw_data": 3,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": true
+      },
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "classification": "complete_exact_whole_machine_entry",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_noop_pop04_00b3d4d0",
+      "namespace": "bsp",
+      "source_prototype": "void __stdcall bsp::native_tagged_b3_noop_pop04_00b3d4d0(std::uint32_t opaque_word) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_noop_pop04_00b3d4d0",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Win32_entire_COMDAT_live_PE_byte_identity_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 4,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "no consumed result; all general registers/flags preserved",
+      "opaque_source_envelope": {
+        "chosen_stack_words": 1,
+        "original_reads_argument_cells": false,
+        "semantic_argument_types_or_receiver_recovered": false,
+        "limit": "one Source opaque word expresses RET4 cleanup only, not a recovered value parameter"
+      }
+    },
+    {
+      "address": "00b3d4e0",
+      "size": 3,
+      "previous_ghidra_name": "TRIV_body_00b3d4e0",
+      "bytes": "32c0c3",
+      "sha256": "01cb47d078b4841b8408ec4fe278efa83115c6f6e101972987507d2b2b57dcf0",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "32c0",
+          "mnemonic": "xor",
+          "operands": "al, al"
+        },
+        {
+          "offset": 2,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "3",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3d4e0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3d4e2"
+            },
+            "length": "3"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [],
+      "symbol": "?native_tagged_b3_zero_byte_00b3d4e0@bsp@@YAEXZ",
+      "source_size": 3,
+      "source_bytes": "32c0c3",
+      "source_sha256": "01cb47d078b4841b8408ec4fe278efa83115c6f6e101972987507d2b2b57dcf0",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "32c0",
+          "mnemonic": "xor",
+          "operands": "al, al"
+        },
+        {
+          "offset": 2,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 30,
+        "name": ".text$mn",
+        "size_of_raw_data": 3,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": true
+      },
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "classification": "complete_exact_whole_machine_entry",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_zero_byte_00b3d4e0",
+      "namespace": "bsp",
+      "source_prototype": "std::uint8_t __cdecl bsp::native_tagged_b3_zero_byte_00b3d4e0() noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_zero_byte_00b3d4e0",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Win32_entire_COMDAT_live_PE_byte_identity_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "AL=0, full incoming upper EAX preserved; XOR8 defined flags, AF undefined"
+    },
+    {
+      "address": "00b3d500",
+      "size": 3,
+      "previous_ghidra_name": "TRIV_body_00b3d500",
+      "bytes": "32c0c3",
+      "sha256": "01cb47d078b4841b8408ec4fe278efa83115c6f6e101972987507d2b2b57dcf0",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "32c0",
+          "mnemonic": "xor",
+          "operands": "al, al"
+        },
+        {
+          "offset": 2,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "3",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3d500"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3d502"
+            },
+            "length": "3"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [
+        {
+          "from": "00d619c8",
+          "type": "DATA",
+          "installed_pe_target_verified": true
+        }
+      ],
+      "symbol": "?native_tagged_b3_zero_byte_00b3d500@bsp@@YAEXZ",
+      "source_size": 3,
+      "source_bytes": "32c0c3",
+      "source_sha256": "01cb47d078b4841b8408ec4fe278efa83115c6f6e101972987507d2b2b57dcf0",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "32c0",
+          "mnemonic": "xor",
+          "operands": "al, al"
+        },
+        {
+          "offset": 2,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 32,
+        "name": ".text$mn",
+        "size_of_raw_data": 3,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": true
+      },
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "classification": "complete_exact_whole_machine_entry",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_zero_byte_00b3d500",
+      "namespace": "bsp",
+      "source_prototype": "std::uint8_t __cdecl bsp::native_tagged_b3_zero_byte_00b3d500() noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_zero_byte_00b3d500",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Win32_entire_COMDAT_live_PE_byte_identity_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "AL=0, full incoming upper EAX preserved; XOR8 defined flags, AF undefined"
+    },
+    {
+      "address": "00b3dc80",
+      "size": 1,
+      "previous_ghidra_name": "TRIV_body_00b3dc80",
+      "bytes": "c3",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "1",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3dc80"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3dc80"
+            },
+            "length": "1"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [
+        {
+          "from": "00d61934",
+          "type": "DATA",
+          "installed_pe_target_verified": true
+        }
+      ],
+      "symbol": "?native_tagged_b3_noop_00b3dc80@bsp@@YAXXZ",
+      "source_size": 3,
+      "source_bytes": "c20000",
+      "source_sha256": "b6cbececf1b07e74f37d57710c68c31f0b92cb08d51093252b321b07542e177b",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "c20000",
+          "mnemonic": "ret",
+          "operands": "0"
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 16,
+        "name": ".text$mn",
+        "size_of_raw_data": 3,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": false
+      },
+      "live_equals_installed_pe_equals_actual_coff": false,
+      "classification": "complete_qualified_source",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_noop_00b3dc80",
+      "namespace": "bsp",
+      "source_prototype": "void __cdecl bsp::native_tagged_b3_noop_00b3dc80() noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_noop_00b3dc80",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Source_qualified_whole_COFF_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "no consumed result; all general registers/flags preserved",
+      "semantic_qualification": {
+        "kind": "same normal return state, different whole encoding",
+        "native_instruction": "RET",
+        "source_instruction": "RET0",
+        "normal_return": "read4 entryESP; EIP=return word,ESP=entryESP+4",
+        "general_registers_and_eflags": "unchanged in both",
+        "argument_cells_read": [],
+        "input_domain": "valid executable instruction and return-stack backing",
+        "remaining_gap": "code-fetch extent1B vs3B; no byte identity or Original adoption proof"
+      }
+    },
+    {
+      "address": "00b3dc90",
+      "size": 3,
+      "previous_ghidra_name": "TRIV_body_00b3dc90",
+      "bytes": "c20400",
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "3",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3dc90"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3dc92"
+            },
+            "length": "3"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [
+        {
+          "from": "00d61938",
+          "type": "DATA",
+          "installed_pe_target_verified": true
+        }
+      ],
+      "symbol": "?native_tagged_b3_noop_pop04_00b3dc90@bsp@@YGXI@Z",
+      "source_size": 3,
+      "source_bytes": "c20400",
+      "source_sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 22,
+        "name": ".text$mn",
+        "size_of_raw_data": 3,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": true
+      },
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "classification": "complete_exact_whole_machine_entry",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_noop_pop04_00b3dc90",
+      "namespace": "bsp",
+      "source_prototype": "void __stdcall bsp::native_tagged_b3_noop_pop04_00b3dc90(std::uint32_t opaque_word) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_noop_pop04_00b3dc90",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Win32_entire_COMDAT_live_PE_byte_identity_no_runtime",
+      "source_form": "ordinary_complete_cpp",
+      "original_register_input": [],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 4,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "no consumed result; all general registers/flags preserved",
+      "opaque_source_envelope": {
+        "chosen_stack_words": 1,
+        "original_reads_argument_cells": false,
+        "semantic_argument_types_or_receiver_recovered": false,
+        "limit": "one Source opaque word expresses RET4 cleanup only, not a recovered value parameter"
+      }
+    },
+    {
+      "address": "00b3e380",
+      "size": 5,
+      "previous_ghidra_name": "TRIV_body_00b3e380",
+      "bytes": "834104ffc3",
+      "sha256": "2cc1280db22513cb3b5f178092e36a97e79bf93b249591ffe48b38449b4c83bc",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "834104ff",
+          "mnemonic": "add",
+          "operands": "dword ptr [ecx + 4], -1"
+        },
+        {
+          "offset": 4,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "5",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3e380"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3e384"
+            },
+            "length": "5"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [],
+      "source_is_complete_named_assembly": true,
+      "symbol": "?native_tagged_b3_add_minus_one_dword_04_00b3e380@bsp@@YIXPAX@Z",
+      "source_size": 5,
+      "source_bytes": "834104ffc3",
+      "source_sha256": "2cc1280db22513cb3b5f178092e36a97e79bf93b249591ffe48b38449b4c83bc",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "834104ff",
+          "mnemonic": "add",
+          "operands": "dword ptr [ecx + 4], -1"
+        },
+        {
+          "offset": 4,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 3,
+        "name": ".text$mn",
+        "size_of_raw_data": 5,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": true
+      },
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "classification": "complete_exact_whole_machine_entry",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_add_minus_one_dword_04_00b3e380",
+      "namespace": "bsp",
+      "source_prototype": "void __fastcall bsp::native_tagged_b3_add_minus_one_dword_04_00b3e380(void* base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_add_minus_one_dword_04_00b3e380",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Win32_entire_COMDAT_live_PE_byte_identity_no_runtime",
+      "source_form": "complete_named_x86_assembly",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "no language result; general registers preserved; ADD-memory EFLAGS and one unlocked dword RMW",
+      "exact_rmw_contract": {
+        "backing": "one actual ECX input, operand dword[ECX+4]",
+        "entire_native_and_source_bytes": "834104ffc3",
+        "instructions": [
+          "ADD dword ptr[ECX+4],-1",
+          "RET"
+        ],
+        "old_value": "v arbitrary uint32",
+        "stored_result": "(v-1) modulo2^32",
+        "flags": {
+          "CF": "v!=0",
+          "AF": "(v&15)!=0",
+          "OF": "v==0x80000000",
+          "ZF": "result==0",
+          "SF": "result bit31",
+          "PF": "even parity of low result byte"
+        },
+        "DEC_difference": "DEC preserves incoming CF and has AF=((v&15)==0); both CF and AF can differ",
+        "memory_contract": "one actual unlocked4-byte ADD-memory RMW; no split read/store, LOCK, synchronization, extra guard or alignment/class constraint",
+        "source_justification": "literal named assembly necessary to retain actual flags and memory-RMW/fault boundary; no naked byte copy/helper or invented EAX return/EDX input",
+        "fault_and_abi_limit": "fixed whole instruction identity establishes same physical operand/register/flag effects under mapped ECX; Original class/language convention, indirect dispatch and game adoption remain unknown"
+      }
+    },
+    {
+      "address": "00b3e500",
+      "size": 5,
+      "previous_ghidra_name": "TRIV_body_00b3e500",
+      "bytes": "834104ffc3",
+      "sha256": "2cc1280db22513cb3b5f178092e36a97e79bf93b249591ffe48b38449b4c83bc",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "834104ff",
+          "mnemonic": "add",
+          "operands": "dword ptr [ecx + 4], -1"
+        },
+        {
+          "offset": 4,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "5",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3e500"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3e504"
+            },
+            "length": "5"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [],
+      "source_is_complete_named_assembly": true,
+      "symbol": "?native_tagged_b3_add_minus_one_dword_04_00b3e500@bsp@@YIXPAX@Z",
+      "source_size": 5,
+      "source_bytes": "834104ffc3",
+      "source_sha256": "2cc1280db22513cb3b5f178092e36a97e79bf93b249591ffe48b38449b4c83bc",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "834104ff",
+          "mnemonic": "add",
+          "operands": "dword ptr [ecx + 4], -1"
+        },
+        {
+          "offset": 4,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 4,
+        "name": ".text$mn",
+        "size_of_raw_data": 5,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": true
+      },
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "classification": "complete_exact_whole_machine_entry",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_add_minus_one_dword_04_00b3e500",
+      "namespace": "bsp",
+      "source_prototype": "void __fastcall bsp::native_tagged_b3_add_minus_one_dword_04_00b3e500(void* base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_add_minus_one_dword_04_00b3e500",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Win32_entire_COMDAT_live_PE_byte_identity_no_runtime",
+      "source_form": "complete_named_x86_assembly",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "no language result; general registers preserved; ADD-memory EFLAGS and one unlocked dword RMW",
+      "exact_rmw_contract": {
+        "backing": "one actual ECX input, operand dword[ECX+4]",
+        "entire_native_and_source_bytes": "834104ffc3",
+        "instructions": [
+          "ADD dword ptr[ECX+4],-1",
+          "RET"
+        ],
+        "old_value": "v arbitrary uint32",
+        "stored_result": "(v-1) modulo2^32",
+        "flags": {
+          "CF": "v!=0",
+          "AF": "(v&15)!=0",
+          "OF": "v==0x80000000",
+          "ZF": "result==0",
+          "SF": "result bit31",
+          "PF": "even parity of low result byte"
+        },
+        "DEC_difference": "DEC preserves incoming CF and has AF=((v&15)==0); both CF and AF can differ",
+        "memory_contract": "one actual unlocked4-byte ADD-memory RMW; no split read/store, LOCK, synchronization, extra guard or alignment/class constraint",
+        "source_justification": "literal named assembly necessary to retain actual flags and memory-RMW/fault boundary; no naked byte copy/helper or invented EAX return/EDX input",
+        "fault_and_abi_limit": "fixed whole instruction identity establishes same physical operand/register/flag effects under mapped ECX; Original class/language convention, indirect dispatch and game adoption remain unknown"
+      }
+    },
+    {
+      "address": "00b3e680",
+      "size": 5,
+      "previous_ghidra_name": "TRIV_body_00b3e680",
+      "bytes": "834104ffc3",
+      "sha256": "2cc1280db22513cb3b5f178092e36a97e79bf93b249591ffe48b38449b4c83bc",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "834104ff",
+          "mnemonic": "add",
+          "operands": "dword ptr [ecx + 4], -1"
+        },
+        {
+          "offset": 4,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "5",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3e680"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3e684"
+            },
+            "length": "5"
+          }
+        ]
+      },
+      "live_equals_installed_pe": true,
+      "live_xrefs": [],
+      "source_is_complete_named_assembly": true,
+      "symbol": "?native_tagged_b3_add_minus_one_dword_04_00b3e680@bsp@@YIXPAX@Z",
+      "source_size": 5,
+      "source_bytes": "834104ffc3",
+      "source_sha256": "2cc1280db22513cb3b5f178092e36a97e79bf93b249591ffe48b38449b4c83bc",
+      "source_instructions": [
+        {
+          "offset": 0,
+          "bytes": "834104ff",
+          "mnemonic": "add",
+          "operands": "dword ptr [ecx + 4], -1"
+        },
+        {
+          "offset": 4,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_symbol_offset": 0,
+      "coff_relocations": [],
+      "coff_executable_comdat": {
+        "index": 5,
+        "name": ".text$mn",
+        "size_of_raw_data": 5,
+        "characteristics": 1615859744,
+        "section_relocation_count": 0,
+        "whole_source_extent_accounted_for": true,
+        "whole_extent_equals_native": true
+      },
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "classification": "complete_exact_whole_machine_entry",
+      "coverage": "complete",
+      "source_name": "native_tagged_b3_add_minus_one_dword_04_00b3e680",
+      "namespace": "bsp",
+      "source_prototype": "void __fastcall bsp::native_tagged_b3_add_minus_one_dword_04_00b3e680(void* base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_add_minus_one_dword_04_00b3e680",
+      "name_interpretation": "operation hypothesis, not recovered symbol/class",
+      "status": "complete_registered_Win32_entire_COMDAT_live_PE_byte_identity_no_runtime",
+      "source_form": "complete_named_x86_assembly",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_argument_cell_reads": [],
+      "original_stack_cleanup_bytes": 0,
+      "original_return_address_read": {
+        "entry_esp_offset": 0,
+        "width": 4
+      },
+      "original_cpp_calling_convention": "unknown; whole actual input/result/cleanup established",
+      "source_interface_is_new": true,
+      "dropin_abi_or_game_proved": false,
+      "native_dependencies": [],
+      "named_but_incomplete_dependencies": [],
+      "original_result": "no language result; general registers preserved; ADD-memory EFLAGS and one unlocked dword RMW",
+      "exact_rmw_contract": {
+        "backing": "one actual ECX input, operand dword[ECX+4]",
+        "entire_native_and_source_bytes": "834104ffc3",
+        "instructions": [
+          "ADD dword ptr[ECX+4],-1",
+          "RET"
+        ],
+        "old_value": "v arbitrary uint32",
+        "stored_result": "(v-1) modulo2^32",
+        "flags": {
+          "CF": "v!=0",
+          "AF": "(v&15)!=0",
+          "OF": "v==0x80000000",
+          "ZF": "result==0",
+          "SF": "result bit31",
+          "PF": "even parity of low result byte"
+        },
+        "DEC_difference": "DEC preserves incoming CF and has AF=((v&15)==0); both CF and AF can differ",
+        "memory_contract": "one actual unlocked4-byte ADD-memory RMW; no split read/store, LOCK, synchronization, extra guard or alignment/class constraint",
+        "source_justification": "literal named assembly necessary to retain actual flags and memory-RMW/fault boundary; no naked byte copy/helper or invented EAX return/EDX input",
+        "fault_and_abi_limit": "fixed whole instruction identity establishes same physical operand/register/flag effects under mapped ECX; Original class/language convention, indirect dispatch and game adoption remain unknown"
+      }
+    }
+  ],
+  "packet": "goal15v_tagged_leaf_b3_06",
+  "utc": "2026-10-16T04:23:23.867363+00:00",
+  "object_path": "build\\win32\\bsp_core.dir\\Release\\native_tagged_leaf_b3_06.obj",
+  "object_provenance": "registered_cmake_release",
+  "coff_sha256": "8f357822a80540e3cb9e50f70468494289cb560e8ff38ab6caed8b3d2f93058f",
+  "coff_machine": 332,
+  "coff_undefined_externals": [],
+  "source_sha256": "0481ded591ff5fd2052617b0eb09f4f108033317111c633f39b0a1bf7669f9e5",
+  "header_sha256": "0300d37cffa730b93daafc87bd81b9d754b9a09f150299d8e5438caebd711be3",
+  "standalone_compiler_options": "/c /std:c++17 /MD /O2 /W4 /WX /EHsc /Iinclude",
+  "source_body_bytes": 183,
+  "exact_machine_functions": 11,
+  "semantic_qualified_functions": 11,
+  "nonempty_executable_sections": 22,
+  "all_executable_sections_fully_accounted_for": true,
+  "status": "complete_registered_Source_11exact_11qualified_no_runtime",
+  "source": "src/native_tagged_leaf_b3_06.cpp",
+  "header": "include/bsp/native_tagged_leaf_b3_06.hpp",
+  "evidence_doc": "docs/GOAL15V_TAGGED_LEAF_B3_06.md",
+  "pinned_main_base": "3c67d8580a060de0b0ff0f017374da6e6f6e1a84",
+  "prior_five_packet_files_unchanged": true,
+  "whole_module_native_equals_source": false,
+  "machine_identity": {
+    "functions": 11,
+    "native_bytes": 41,
+    "source_bytes": 41,
+    "ordinary_cpp_functions": 8,
+    "complete_named_assembly_functions": 3
+  },
+  "complete_semantic_qualified": {
+    "functions": 11,
+    "native_bytes": 82,
+    "source_bytes": 142,
+    "ordered_zeroers_with_first_store_fault_state_gap": 5,
+    "new_input_interfaces": 2,
+    "equivalent_return_state_different_encoding": 4
+  },
+  "standalone_strict_object": {
+    "sha256": "1f265b489ab5c8fb8355d6ebe4a1c66207b378edfc6e4f82ce81a52ea1e3caab",
+    "artifact": "local/goal15v_tagged_leaf_b3_06/leaf.obj",
+    "source_bytes": 183,
+    "all_entry_bytes_equal_registered_source": true
+  },
+  "registered_cmake_provenance": {
+    "cmake_object": "build\\win32\\bsp_core.dir\\Release\\native_tagged_leaf_b3_06.obj",
+    "preserved_object": "J:\\PROG\\battlestations-pacific-decompile-goal15m_tagged_b3\\local\\goal15v_tagged_leaf_b3_06\\cmake_leaf.obj",
+    "object_sha256": "8f357822a80540e3cb9e50f70468494289cb560e8ff38ab6caed8b3d2f93058f",
+    "preserved_copy_sha256": "8f357822a80540e3cb9e50f70468494289cb560e8ff38ab6caed8b3d2f93058f",
+    "compiler_command_source": "build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.command.1.tlog",
+    "compiler_command_artifact": "J:\\PROG\\battlestations-pacific-decompile-goal15m_tagged_b3\\local\\goal15v_tagged_leaf_b3_06\\cmake_compile_command.txt",
+    "compiler_command_sha256": "703b55e3746ec52ce70e74317fa9e0656d7dcaa6d58fd216c56cd79647d0fedc",
+    "required_actual_flags": [
+      "/O2",
+      "/MD",
+      "/W4",
+      "/WX"
+    ],
+    "core_library": "build/win32/Release/bsp_core.lib",
+    "core_library_member": "bsp_core.dir\\Release\\native_tagged_leaf_b3_06.obj",
+    "library_member_verified": true,
+    "core_library_sha256": "61398d6ba63e56673decf8dd237fc904656e9bdd221cb919478b59b2e44431c7",
+    "extracted_member_artifact": "J:\\PROG\\battlestations-pacific-decompile-goal15m_tagged_b3\\local\\goal15v_tagged_leaf_b3_06\\archive_leaf.obj",
+    "extracted_member_sha256": "8f357822a80540e3cb9e50f70468494289cb560e8ff38ab6caed8b3d2f93058f",
+    "archived_member_equals_actual_registered_object": true
+  },
+  "registration": {
+    "file": "cmake/startup.cmake",
+    "target": "bsp_core",
+    "own_line_only": true,
+    "shared_registry_whole_file_leased": false
+  },
+  "prior05_preservation": {
+    "manifest": "local/goal15v_tagged_leaf_b3_06/prior05/manifest.json",
+    "sha256": "dd62e7c197f4589de86fed9d43ac1b5495de348a8475a2ccdf835b350433e5f0",
+    "before_first_06_build": true,
+    "registered_object_sha256": "2d7aa29ba9826ac4fd006922cc27090202eb11bb8674d88ad696652a79bff6d4",
+    "full_core_archive_sha256": "89269b402fad408cca445270c11a6383ff858c09d50f8dd1fdf24e8dea950d89",
+    "all_preserved_hashes_rechecked": true
+  },
+  "discovery": {
+    "initial_unique_screening_inventory": 79,
+    "already_inspected_unique_bodies_at_start": 79,
+    "prior_deferred_at_start": 26,
+    "requalified_whole_bodies_this_packet": 22,
+    "new_unique_inventory_inspections": 0,
+    "actual_requalified_native_bytes": 123,
+    "source_coverage_checks": 22,
+    "verified_missing_complete_source_entries": 22,
+    "inspected": [
+      {
+        "address": "00b33e50",
+        "native_size": 4,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_exact_whole_machine_entry",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b343b0",
+        "native_size": 10,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_qualified_source",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b3ff30",
+        "native_size": 3,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_exact_whole_machine_entry",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b343e0",
+        "native_size": 13,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_qualified_source",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b344c0",
+        "native_size": 11,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_qualified_source",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b344d0",
+        "native_size": 11,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_qualified_source",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b344e0",
+        "native_size": 11,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_qualified_source",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b344f0",
+        "native_size": 11,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_qualified_source",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b3c4f0",
+        "native_size": 1,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_qualified_source",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b3c500",
+        "native_size": 1,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_qualified_source",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b3c510",
+        "native_size": 1,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_qualified_source",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b3ccf0",
+        "native_size": 4,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_exact_whole_machine_entry",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b3d110",
+        "native_size": 11,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_qualified_source",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b3d4c0",
+        "native_size": 3,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_exact_whole_machine_entry",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b3d4d0",
+        "native_size": 3,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_exact_whole_machine_entry",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b3d4e0",
+        "native_size": 3,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_exact_whole_machine_entry",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b3d500",
+        "native_size": 3,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_exact_whole_machine_entry",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b3dc80",
+        "native_size": 1,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_qualified_source",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b3dc90",
+        "native_size": 3,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_exact_whole_machine_entry",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b3e380",
+        "native_size": 5,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_exact_whole_machine_entry",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b3e500",
+        "native_size": 5,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_exact_whole_machine_entry",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      },
+      {
+        "address": "00b3e680",
+        "native_size": 5,
+        "native_body_coverage": "complete inspected",
+        "source_disposition": "complete_exact_whole_machine_entry",
+        "reason": "complete Source; exact/qualified class and remaining limits explicit"
+      }
+    ],
+    "remaining_deferred": {
+      "00b343f0": "actual absolute global00e13078 reader; actual-storage binding unresolved for closed Source module",
+      "00b34490": "actual absolute global0108fe94 reader; actual-storage binding unresolved for closed Source module",
+      "00b3d5e0": "whole85-byte SSE copy; destination entryESP+4, source entryESP+10h, two middle slots unread, local10h frame and RET10h; separate ABI/overlap/fault qualification",
+      "00b3ffa0": "FLD32 [ECX+18h] to ST0; separate x87 return/exception qualification"
+    },
+    "remaining_uninspected": 0,
+    "cumulative_inventory": {
+      "initial_candidates": 79,
+      "actual_bodies_inspected": 79,
+      "complete_source_entries": 75,
+      "native_body_bytes": 374,
+      "exact_entries": 57,
+      "exact_native_bytes": 235,
+      "semantic_qualified_entries": 18,
+      "semantic_qualified_native_bytes": 139,
+      "deferred_bodies": 4,
+      "uninspected": 0
+    },
+    "candidate_index_alone_proves_missing": false,
+    "existing_complete_typed_or_raw_source_found": 0,
+    "existing_library_names_changed": 0
+  },
+  "named_but_incomplete_dependencies": [],
+  "host_steps": [],
+  "incoming_native_call_evidence": [
+    {
+      "address": "00ba6b72",
+      "native": "00b33e50",
+      "function": "00ba5610",
+      "note": "incoming Native edge, not a call added to this closed Source module"
+    },
+    {
+      "address": "00ba6b87",
+      "native": "00b33e50",
+      "function": "00ba5610",
+      "note": "incoming Native edge, not a call added to this closed Source module"
+    },
+    {
+      "address": "00ba6bb1",
+      "native": "00b33e50",
+      "function": "00ba5610",
+      "note": "incoming Native edge, not a call added to this closed Source module"
+    },
+    {
+      "address": "00b9e206",
+      "native": "00b33e50",
+      "function": "00b9e170",
+      "note": "incoming Native edge, not a call added to this closed Source module"
+    },
+    {
+      "address": "00ba508d",
+      "native": "00b33e50",
+      "function": "00ba5030",
+      "note": "incoming Native edge, not a call added to this closed Source module"
+    },
+    {
+      "address": "00ba5197",
+      "native": "00b33e50",
+      "function": "00ba5030",
+      "note": "incoming Native edge, not a call added to this closed Source module"
+    }
+  ],
+  "existing_consumers": {
+    "00b9e170": "BSP_OceanCoverageRegion_ReadMaskTexture",
+    "00ba5030": "BSP_OceanWaveField_UploadHeightTexture",
+    "00ba5610": "BSP_OceanWaveField_InitializeRenderResources",
+    "new_binding_or_parent_adoption_claimed": false
+  },
+  "full_repository_build": {
+    "command": "./scripts/build.ps1",
+    "result": "passed",
+    "start_utc": "2026-10-16T04:21:24.3674840Z",
+    "end_utc": "2026-10-16T04:21:53.2288798Z",
+    "elapsed_seconds": 28.8613958,
+    "exit_code": 0,
+    "log": "local/goal15v_tagged_leaf_b3_06/build.log",
+    "registered_module_compiled_and_archived": true,
+    "ctest": {
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 13.86
+    }
+  },
+  "worker_verification_checklist": {
+    "body_and_boundary_checks": true,
+    "per_routine_coverage_explicit": true,
+    "field_meanings_not_invented": true,
+    "no_runtime_frame_claims": true,
+    "report_call_verification_logs": [
+      "local/goal15v_tagged_leaf_b3_06/verify_report_calls_json.log",
+      "local/goal15v_tagged_leaf_b3_06/verify_report_calls_doc.log"
+    ],
+    "report_call_verification_result": "reports/goal15v_tagged_leaf_b3_06.json: 6 call rows checked, 0 failed; docs/GOAL15V_TAGGED_LEAF_B3_06.md: 32 addresses cited, 6 call claims checked, 0 failed, 0 unchecked, 0 warnings"
+  },
+  "effort": {
+    "start_utc": "2026-10-16T04:13:36+00:00",
+    "start_basis": "first measured04:13:44UTC after7.519s initial brief; rounded inferred packet start with about1s clock precision",
+    "precommit_ready_utc": "2026-10-16T04:29:16.368445+00:00",
+    "qualification_to_precommit_seconds": 940.368,
+    "includes": "brief, pinned merge/union, prior05 archive preservation,22 full requalifications/caller inputs, Source searches, discarded byte prediction, strict+registered wholeCOFF, single warm build/checks, docs/ledger/review and waits",
+    "final_timing_artifact": "local/goal15v_tagged_leaf_b3_06/handoff_timing.json",
+    "final_timing_scope": "extends through commit, lease release and handoff preparation; excludes parent integration"
+  },
+  "runtime_fixture_added": false,
+  "new_tests_added": false,
+  "game_validated": false,
+  "installed": false,
+  "ghidra_mutation": false,
+  "caller_limit": "six direct Native callsites/seven data refs verified; absence of other refs never proves unused; production class/indirect dispatch/Original adoption unproved",
+  "reproduction": {
+    "compile_strict": "cmd.exe /d /c local\\goal15v_tagged_leaf_b3_06\\compile.cmd",
+    "audit_strict": "python local/goal15v_tagged_leaf_b3_06/audit.py",
+    "audit_registered": "python local/goal15v_tagged_leaf_b3_06/audit.py build/win32/bsp_core.dir/Release/native_tagged_leaf_b3_06.obj",
+    "artifact_root": "J:\\PROG\\battlestations-pacific-decompile-goal15m_tagged_b3\\local\\goal15v_tagged_leaf_b3_06"
+  }
+}
