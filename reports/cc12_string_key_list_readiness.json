@@ -1,0 +1,392 @@
+{
+  "schema": "bsp.cc12.string_key_list.primary_readiness.v1",
+  "Source_ready": [
+    "0094EFB0",
+    "0094F010"
+  ],
+  "Source_implemented": false,
+  "Source_credit": 0,
+  "packet": "cc12_scene_string_list_storage_0094efb0_0094f010",
+  "output_files": [
+    "include/bsp/native_scene_string_list_storage.hpp",
+    "src/native_scene_string_list_storage.cpp",
+    "reports/native_scene_string_list_storage.json",
+    "docs/NATIVE_SCENE_STRING_LIST_STORAGE.md"
+  ],
+  "contract": "Only whole constructor0094EFB0 [0094EFB0,0094EFE1),49B18 and growth0094F010 [0094F010,0094F061),81B34. Actual caller-provided aligned writable raw12 header: slots pointer0, signed-count/DWORD4, capacity DWORD8; no class/vtable/new host or standalone container wrapper. Constructor storescapacity64 BEFORE genuine exact256-byte allocation, publishes slots then count0, leaves slots uninitialized and returns actualheader. Growth publishes wrapping capacity+64 BEFORE allocation; retain native unsignedMUL4/overflow saturation instructions, allocate exact size, capture CURRENT oldslots/count AFTER allocation, call genuine current memcpy withcount*4 even whenzero, reload oldslots aftercopy, conditionally canonical-free then clear0, finally publish capturednewslots; count untouched. Proposed independent naked fastcall entries: constructor void* actualECX returnheader/plainRET, growth actualECX/void/plainRET, no stack inputs; no semantic growthEAX claim. Bind BF55BE through genuine private CDECL size bridge to canonical singleton_lifetime_allocate with object/native_bytes==host_bytes; canonical singleton_lifetime_free and real current memcpy/#pragma function(memcpy); no new globals/callbacks/provider stubs. Ordinary successful nonthrowing serialized domain: genuine live constructor-produced raw12/uniquely owned matching-current-heap slot buffer and previous accepted growth, coherent0<=count<=oldcapacity, valid initialized reached opaque slot bytes, nonwrapping capacity+64 and4*newcapacity witholdcap<=3FFFFFBFh, positive allocatable sizes/resources, old/new/header/privateframe disjoint, valid flatES/DFclear, no alias/reentry/concurrency/fault/trim/teardown. Empty growth still calls memcpy with real nonnull old/new allocations; do not special-case it. Slots are opaque to storage helpers: no element ownership or retirement changes. Named pending actual append0094F270 population/clear0094F3E0/destructor0094F540 and actual008F3270 application create/pass/retire binding remain separate; no populated caller/class/list-owner/key-enumeration/Original privateCRT/EH/fullABI/startup/runtime/game admission. Source implementation only these2, not other3 or comparator/sort/empty-data roles.",
+  "primary_whole5_Original_listings_raw12_and_provider_contract_read": true,
+  "family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\SceneStringKeyListReadiness01\\family_receipt.json",
+    "bytes": 71851,
+    "sha256": "d24ca866ee9c4b07d158c99b5d1726bedb47040be060d34dc653b7118b3fdd0d"
+  },
+  "primary_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_string_key_list_readiness_primary_20261016\\verified_inputs.DATA.json",
+    "bytes": 55388,
+    "sha256": "9e1bf418ed9f274a1b7355b8fabb4dd93befd52504204853ac42f82d0047d2df"
+  },
+  "readiness": {
+    "schema": "bsp.scene-string-key-list.readiness.v1",
+    "captured_utc": "2026-10-16T00:08:22.899829+00:00",
+    "scope": "READINESS ONLY for the actual owning string-list dependencies of key enumeration 008F3270; no implementation/admission/execution credit.",
+    "working_HEAD": "46a8674db41df9fa2b461469e5fd775252e91495",
+    "Source_ready": false,
+    "Source_implemented": false,
+    "new_Source_credit": 0,
+    "conclusion": "Finite concrete list Source packets are supported by whole native bodies and current canonical services. No concrete canonical Seg61Host/list producer is accepted in the inspected current Source, and no application caller binding for 008F3270 was established. Do not promote key enumeration readiness from these observations alone.",
+    "whole_Original": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\SceneStringKeyListReadiness01\\whole_Original.json",
+      "bytes": 5417,
+      "sha256": "ab5e5c0e2d6a8ff72295a39e8f53ed26f5abffd988998b3c81592c2fe629584f"
+    },
+    "Original_functions": [
+      {
+        "address": "0094F3E0",
+        "end_exclusive": "0094F441",
+        "bytes": 97,
+        "instructions": 42,
+        "sha256": "e9b34551fe49bd8f55056fdd3d71bf50f15b7971f1a118409aae8b35f813a5be",
+        "live_disk_bytes_equal": true,
+        "live_listing_and_disk_instruction_starts_equal": true,
+        "direct_calls": [
+          {
+            "site": "0094F40C",
+            "target": "0x419cc0"
+          },
+          {
+            "site": "0094F413",
+            "target": "0xbd1510"
+          },
+          {
+            "site": "0094F419",
+            "target": "0xbf65ac"
+          }
+        ],
+        "indirect_calls": [],
+        "x87": false,
+        "exports": []
+      },
+      {
+        "address": "0094F270",
+        "end_exclusive": "0094F2ED",
+        "bytes": 125,
+        "instructions": 38,
+        "sha256": "f72b3d87aedf085a01991e19cdf7feefc436213293747d291bb526ae1dfb1938",
+        "live_disk_bytes_equal": true,
+        "live_listing_and_disk_instruction_starts_equal": true,
+        "direct_calls": [
+          {
+            "site": "0094F290",
+            "target": "0x94f010"
+          },
+          {
+            "site": "0094F2A4",
+            "target": "0xbf681b"
+          },
+          {
+            "site": "0094F2C3",
+            "target": "0x426060"
+          }
+        ],
+        "indirect_calls": [],
+        "x87": false,
+        "exports": []
+      },
+      {
+        "address": "0094F010",
+        "end_exclusive": "0094F061",
+        "bytes": 81,
+        "instructions": 34,
+        "sha256": "f17ade025eca8f43fb2fbc62eda6318e629caa73471d0f7cbe9cb61aaf1ee59e",
+        "live_disk_bytes_equal": true,
+        "live_listing_and_disk_instruction_starts_equal": true,
+        "direct_calls": [
+          {
+            "site": "0094F02C",
+            "target": "0xbf55be"
+          },
+          {
+            "site": "0094F03F",
+            "target": "0xbf7680"
+          },
+          {
+            "site": "0094F04E",
+            "target": "0xbf6989"
+          }
+        ],
+        "indirect_calls": [],
+        "x87": false,
+        "exports": []
+      },
+      {
+        "address": "0094EFB0",
+        "end_exclusive": "0094EFE1",
+        "bytes": 49,
+        "instructions": 18,
+        "sha256": "2093f278bfaeb9b354b019e7a98265c02ee1916c0de87cb14154286b404e2601",
+        "live_disk_bytes_equal": true,
+        "live_listing_and_disk_instruction_starts_equal": true,
+        "direct_calls": [
+          {
+            "site": "0094EFCC",
+            "target": "0xbf55be"
+          }
+        ],
+        "indirect_calls": [],
+        "x87": false,
+        "exports": []
+      },
+      {
+        "address": "0094F540",
+        "end_exclusive": "0094F55F",
+        "bytes": 31,
+        "instructions": 12,
+        "sha256": "c4eb96659e18d0e398ae24d21f240b5d382a9e6b45c8d5e5b8d8397684892af0",
+        "live_disk_bytes_equal": true,
+        "live_listing_and_disk_instruction_starts_equal": true,
+        "direct_calls": [
+          {
+            "site": "0094F543",
+            "target": "0x94f3e0"
+          },
+          {
+            "site": "0094F54F",
+            "target": "0xbf6989"
+          }
+        ],
+        "indirect_calls": [],
+        "x87": false,
+        "exports": []
+      }
+    ],
+    "exact_representation": {
+      "actual_header": "12 bytes: +0 raw pointer to 4-byte slots; +4 signed count / wrapping DWORD updates; +8 capacity DWORD. No vtable or hidden +0 word.",
+      "slots": "Every slot is a pointer to a separately allocated native string record8: length DWORD+0, data pointer+4. This is not a vector of inline string records and not a checked DWORD-vector16 header.",
+      "ownership": "Adopt=true stores the supplied record pointer itself; clear owns and releases every nonnull stored record and its pooled data. Alias/duplicate ownership is not normalized. No capacity/count validity repair is added.",
+      "producer": "Whole 0094EFB0 writes capacity64 first, requests exactly256 raw bytes via00BF55BE->00BF681B, publishes returned slots at+0, then count0 at+4; returns the header. Slots are not initialized. This actual constructor is a producer contract, not evidence that an application caller reached it.",
+      "retire": "Whole0094F540 calls0094F3E0, then reloads slots+0; if nonnull, frees that current slots pointer via00BF6989 and writes slots+0=0 after free. Count is reset by clear; capacity is retained. No deletion or deallocation of the12-byte header is performed."
+    },
+    "contracts": {
+      "0094F3E0": {
+        "abi": "ECX=list12, no stacked inputs, plain RET. No semantic EAX result inferred.",
+        "schedule": [
+          "Read signed count; <=0 skips slot-base reads and writes count0.",
+          "For each nonnegative index, reload the current slot-base, capture slot address and record pointer; a null record skips all cleanup and the slot store.",
+          "For a nonnull record capture data+4; only nonnull data reads record length+0, forms length+1 with DWORD wrap, calls00419CC0, then00BD1510(pool,data,size,1).",
+          "Call00BF65AC for the captured record, then write0 to the previously captured slot.",
+          "Increment index, re-read the CURRENT signed count at the loop test, then unconditionally write count0 on normal completion. No backing-array free."
+        ],
+        "alias": "Captured slot/data/record survive reached provider calls; slot-base and count are not snapshotted across the loop. Reached raw reads/writes/releases must remain valid; no duplicate-record ownership guard.",
+        "Source": "Only existing Seg61Host abstraction in support_seg61_cc13; no derived canonical host found by bounded current Source search."
+      },
+      "0094F270": {
+        "abi": "ECX=list12; stacked record pointer and adopt byte; RET8; EAX=current post-increment count.",
+        "schedule": [
+          "Read count and capacity; grow ONLY on equality, including unusual bit patterns. No count>capacity fallback.",
+          "After growth returns, test the live stacked adopt low byte. Nonzero reads/stores the supplied record pointer without copying.",
+          "Zero adopts no ownership shortcut: request8 through00BF681B; null result stores a null entry, otherwise call00426060 with destination=allocation and source=stacked record pointer.",
+          "After the reached growth/allocation/copy, re-read current count and base for the slot store; then increment count as DWORD and re-read it for EAX.",
+          "Whole body installs FS/EH frameCA8CCB and restores normal FS state. No handler/funclet or binary exception-ABI acceptance is made."
+        ],
+        "Source": "Only Seg61Host prepare_list_entry/append. New Source must preserve reached late reads or state its physical argument/frame alias boundary explicitly; no fabricated callback/host accepted."
+      },
+      "0094F010": {
+        "abi": "ECX=list12, plain RET; no semantic EAX result inferred.",
+        "schedule": [
+          "Add64 to capacity DWORD and publish it BEFORE allocation.",
+          "Multiply CURRENT capacity by4 unsigned; allocation bytes saturate toFFFFFFFF on high-product overflow.",
+          "Call00BF55BE, which directly jumps to00BF681B.",
+          "Capture current slots and current count AFTER allocation, form count*4 with DWORD wrap, and call00BF7680 with the returned allocation, current slots, wrapped byte count.",
+          "After copy returns, reload current slots; conditionally free that current pointer via00BF6989 and write+0=0, then publish the captured new allocation. Count is untouched."
+        ],
+        "bounds": "No max-size/clamp, zero-copy guard, allocation rollback, count correction, typed pointer-count conversion or element destructor is present."
+      },
+      "0094EFB0": {
+        "abi": "ECX=list12, no stacked inputs, EAX=same header, RET.",
+        "Source": "Only Seg61Host constructor; concrete Source missing."
+      },
+      "0094F540": {
+        "abi": "ECX=list12, no stacked inputs, RET; no semantic EAX result.",
+        "Source": "Only Seg61Host destructor; concrete Source missing."
+      }
+    },
+    "actual_current_provider_bindings": [
+      {
+        "original": [
+          "00419CC0",
+          "00BD1510"
+        ],
+        "literal_Source": [
+          "native_string_pool_owner.cpp",
+          "native_string_pool_storage.cpp",
+          "native_string.cpp"
+        ],
+        "binding": "Borrow game_native_string_process().raw_context() and its retained01090AA0/01090AA8 publications and real01090AA4 gate. The accepted raw0041DD20 overload captures data/length+1 before a getter on EVERY nonnull release, then calls actual00BD1510. No cached pool, SizedStoragePool semantic projection, temporary context or new global is needed.",
+        "limits": "Current Source Windows/CRT and exception-domain qualifications remain; prior accepted functions gain no new credit."
+      },
+      {
+        "original": [
+          "00426060"
+        ],
+        "literal_Source": [
+          "native_pooled_string_substring.cpp"
+        ],
+        "binding": "Existing copy_construct_native_string_header_00426060 raw-context overload clears destination8 before identity check, resizes through raw pool, re-reads current headers, and performs its accepted copy boundary. Copy branch of append can call it directly with the same retained process raw context.",
+        "limits": "Copy helper Source does not imply string-list producer or append Source."
+      },
+      {
+        "original": [
+          "00BF55BE",
+          "00BF681B",
+          "00BF6989",
+          "00BF65AC"
+        ],
+        "literal_Source": [
+          "singleton_lifetime.cpp",
+          "singleton_lifetime.hpp"
+        ],
+        "binding": "Own whole live wrappers prove00BF55BE->00BF681B and00BF6989->00BF65AC->_free00BF9DC8. Current singleton_lifetime_allocate uses malloc/new-handler/retry/throw and explicit exact native/host bytes; singleton_lifetime_free uses current CRT free. Header slots require exact requested bytes, record copies require8. No allocator callback or custom host is necessary.",
+        "limits": "Current CRT/new-handler/throw domain is an explicit Source binding; Original private CRT, RTTI/FH3/SEH failure identity and native ABI are not proved."
+      },
+      {
+        "original": [
+          "00BF7680"
+        ],
+        "literal_Source": [
+          "support_seg61_cc13.cpp",
+          "native_pooled_string_substring.cpp"
+        ],
+        "binding": "Growth reaches actual CRT memcpy entry with a wrapped byte count, including zero. Typed metadata establishes its original whole library body869B. Keep library name and current CRT service boundary; do not replace it with the forward element-copy helpers or a template address-credit transfer.",
+        "limits": "No independent00BF7680 reconstruction/credit, exhaustive CRT overlap/fault equivalence or Native execution was performed. A future Source body must choose an explicit accepted current CRT binding and preserve reached call order."
+      }
+    ],
+    "DWORD_vector_distinction": {
+      "actual_list": "list12 has slots+0/count+4/capacity+8; separate owned8-byte records; growth is +64 slots and CRT byte copy.",
+      "helpers": "Current native_scene_dword_vector_push_back/insert and native_dword_vector_assign operate actual16-byte headers with opaque+0/begin+4/end+8/capacity_end+C and different growth/diagnostic/copy/retirement schedules. copy00555000/00696D40 is progressive DWORD copy with a null-output skip; tidy004CB130/00468840 resets+4/+8/+C and never performs record cleanup.",
+      "verdict": "No substitution or credit transfer. Shared current allocate/free services may be reused directly under their existing Source contracts."
+    },
+    "producer_and_callers": {
+      "own_queries": "append_callers,clear_callers,growth_callers,key_callers,key_xrefs,construct_callers,destroy_callers; exact raw outputs and genuine command receipts are retained.",
+      "positive": [
+        "0094F270 is called by008F3270 and008F2B20.",
+        "0094F3E0 is called by008F3270 and0094F540.",
+        "0094F010 is called by0094F270 and0094F2F0."
+      ],
+      "additional_user": "Whole live008F2B20 shows incomingECX retained as list, allocates8, initializes via0041E870 from its stacked C-string when nonnull, and calls0094F270(list,record,1). This proves another adopt-call contract only. No Source implementation, header construction/lifetime root, or map-key-output provenance is inferred from its provisional SceneSymbol name.",
+      "negative": "Current Ghidra returned no direct caller for008F3270,0094EFB0 or0094F540 and no reference to008F3270. These are bounded analysis observations, not proof of global unreachability, absence of indirect/inlined callers, or application integration.",
+      "current_Source": "Search under current src/include for the literal list entry names/addresses and Seg61Host derivation found only support_seg61_cc13.hpp/.cpp and internal abstract-host calls. No concrete Source caller owned a12-byte output header or supplied its normal retirement.",
+      "remaining": "Construct/grow/clear/append/retire concrete Source are finite. Application caller ownership of the real output header and its create/pass/retire schedule is NOT established. Do not invent a list owner or fresh standalone container and label it the native producer."
+    },
+    "proposed_disjoint_packets": [
+      {
+        "id": "candidate_actual_scene_string_list_storage",
+        "addresses": [
+          "0094EFB0",
+          "0094F010"
+        ],
+        "files": [
+          "include/bsp/native_scene_string_list_storage.hpp",
+          "src/native_scene_string_list_storage.cpp",
+          "reports/native_scene_string_list_storage.json",
+          "docs/NATIVE_SCENE_STRING_LIST_STORAGE.md"
+        ],
+        "dependencies": "Existing exact raw allocator/free and explicit current CRT copy boundary only.",
+        "candidate": true,
+        "currently_Source_ready": false,
+        "reason": "Whole bodies and contracts finite; Root must authorize Source, allocate fresh ownership, and review actual raw-storage interface and current CRT binding. No package registration or admission performed."
+      },
+      {
+        "id": "candidate_actual_scene_string_list_ownership",
+        "addresses": [
+          "0094F3E0",
+          "0094F270",
+          "0094F540"
+        ],
+        "files": [
+          "include/bsp/native_scene_string_list_ownership.hpp",
+          "src/native_scene_string_list_ownership.cpp",
+          "reports/native_scene_string_list_ownership.json",
+          "docs/NATIVE_SCENE_STRING_LIST_OWNERSHIP.md"
+        ],
+        "dependencies": "Candidate actual storage0094F010 plus existing raw pooled-string copy/release and retained process. Constructor output provenance must be explicit; no Seg61Host adapter.",
+        "candidate": true,
+        "currently_Source_ready": false,
+        "reason": "Whole bodies finite. Reached late reads, captured-slot cleanup, wrapping updates and append EH/private-frame limits require review; no implementation supplied."
+      },
+      {
+        "id": "key_enumeration_source_gate_only",
+        "addresses": [
+          "008F3270"
+        ],
+        "files": [],
+        "dependencies": [
+          "actual list storage/ownership candidates",
+          "separate008EEB10/008EEB60 iterator authors",
+          "separate0094F180 comparator/0094F1B0/F89B75 role review",
+          "actual caller-owned output-header construction/pass/retirement binding"
+        ],
+        "candidate": false,
+        "currently_Source_ready": false,
+        "reason": "No ownership of iterator/comparator addresses; no list producer or comparator/empty-role provenance manufactured. Key enumeration packet cannot be declared closed from these list observations alone."
+      }
+    ],
+    "blockers": {
+      "missing_actual_Source": [
+        "0094EFB0",
+        "0094F010",
+        "0094F270",
+        "0094F3E0",
+        "0094F540"
+      ],
+      "missing_new_canonical_allocator_or_pool": false,
+      "missing_actual_application_producer_binding": "Caller-owned list12 normal create/pass/retire schedule for008F3270 is not established in current Source or bounded caller queries.",
+      "independent_not_duplicated": [
+        "008EEB10",
+        "008EEB60",
+        "0094F180",
+        "0094F1B0/F89B75 canonical role"
+      ],
+      "register_ABI_or_listing_repair_needed_for_owned_core": false,
+      "qualification": "Pool register arguments were resolved by the clear whole listing; growth MUL overflow and all core call/return boundaries were inspected. Comparator listing repair belongs to its assigned Astra worker; none was performed here."
+    },
+    "controls": {
+      "no_Source_shared_registry_CMake_ledger_Ghidra_mutation": true,
+      "no_compile_build_replay_newtests_probes_or_target_execution": true,
+      "no_delegation": true,
+      "no_exports_or_Ghidra_annotations_written": true,
+      "Source_admission_credit": 0
+    },
+    "evidence": {
+      "current_input_pins": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\SceneStringKeyListReadiness01\\current_input_pins.json",
+        "bytes": 22574,
+        "sha256": "28c5bacd5b3eb951e01ccca4b38fb966590ce1d757f2715dd968135af4ad4bc7"
+      },
+      "current_Source_search": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\SceneStringKeyListReadiness01\\current_Source_search.receipt.json",
+        "bytes": 1024,
+        "sha256": "47fcfe7b865fee6f4be22deee88e486fe9124a463be531a3a15507a8627df11e"
+      },
+      "prior_seals_preserved": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\SceneStringKeyListReadiness01\\prior_seals_preserved.json",
+        "bytes": 801694,
+        "sha256": "d7a0f98be54c290ae5e28d817b2961934f57e2d6bf549cb2925d4c843aa6d204"
+      },
+      "whole_Original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\SceneStringKeyListReadiness01\\whole_Original.json",
+        "bytes": 5417,
+        "sha256": "ab5e5c0e2d6a8ff72295a39e8f53ed26f5abffd988998b3c81592c2fe629584f"
+      }
+    },
+    "limits": "Readiness and static/native-byte inspection only. No build, ABI-compatible replacement, Native differential execution, binary exception/fault/CRT identity, application startup, game or runtime validation."
+  },
+  "named_but_incomplete_dependencies": [
+    "0094F270 actual positive-list population/append",
+    "0094F3E0 actual element clear",
+    "0094F540 actual retirement",
+    "008F3270 actual application-owned output header binding",
+    "0094F180/0094F1B0/fallback/current comparison and qsort contracts"
+  ],
+  "Original_ABI_compatible": false,
+  "game_validated": false
+}
