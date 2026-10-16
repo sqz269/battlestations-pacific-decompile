@@ -1,0 +1,368 @@
+{
+  "packet": "cc12_native_wide_string_raw_copy101",
+  "kind": "whole actual-header raw copy Source",
+  "recorded_utc": "2026-10-16T05:34:08.891176+00:00",
+  "checked_baseline": "1e2ee9972c5a3ff96c1105cde298ce72e5663536",
+  "baseline_merge": "clean checked fast-forward exit0; old100 artifacts already captured by Root before reuse/build",
+  "analysis_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "batch_access": "bsp ghidra verifying existing project/program; no import/listing repair",
+    "installed_original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256_installed_original": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "Original_unchanged": true
+  },
+  "original": {
+    "entry": "0x004C8DD0",
+    "end_exclusive": "0x004C8E18",
+    "bytes": 72,
+    "instructions": 27,
+    "live_equals_Original_and100": true,
+    "sha256_live_and_original_bytes": "ac7781e8ff34bf2c8ac370839de0fd877b39cf3353b9b6c8ef868a1a87be3167",
+    "complete_listing_starts_equal_live_and_Original_decode": true,
+    "ABI": {
+      "input": "ECX actual destination8B; one stack DWORD actual source8B",
+      "output": "EAX SAME destination",
+      "return": "RET4 starts4C8E15 and ends4C8E18; preserves ESI/EDI",
+      "local_EH": "none"
+    }
+  },
+  "source_interface": {
+    "name": "copy_construct_native_wide_string_header_004c8dd0",
+    "header": "include/bsp/native_wide_string.hpp",
+    "source": "src/native_wide_string.cpp",
+    "signature": "void* (void* actual_header, const void* actual_source, NativeStringStorage& storage)",
+    "new_Cpp_ABI": true,
+    "Native_binary_ABI_replacement": false,
+    "scope": "ONLY whole72B helper; no Text copy/cursor/rebuild/factory/production admission"
+  },
+  "status": "complete actual raw-header normal body; strict Win32 compiled; registered existing TU canonical build and2/2 existing checks passed",
+  "calls": [
+    {
+      "function": "0x004C8DD0",
+      "address": "0x004C8DEE",
+      "native": "0x004C53E0",
+      "kind": "call",
+      "instruction": "call 0x4c53e0"
+    }
+  ],
+  "whole_body_schedule": [
+    {
+      "original_site": "4C8DD8",
+      "effect": "exact header identity compared; invariant pointer values"
+    },
+    {
+      "original_site": "4C8DDA",
+      "effect": "clear actual destination length"
+    },
+    {
+      "original_site": "4C8DE0",
+      "effect": "clear actual destination data, including self; no abandoned backing release"
+    },
+    {
+      "original_site": "4C8DE7",
+      "effect": "self skips all source/header data reads/resize and returns SAME zero header"
+    },
+    {
+      "original_site": "4C8DE9",
+      "effect": "capture source request length"
+    },
+    {
+      "original_site": "4C8DEE",
+      "effect": "genuine existing raw resize4C53E0 with preserve1, SAME borrowed actual storage"
+    },
+    {
+      "original_site": "4C8DF3",
+      "effect": "CURRENT source length after resize; zero skips data reads"
+    },
+    {
+      "original_site": "4C8DF8",
+      "effect": "nonzero captures CURRENT source data"
+    },
+    {
+      "original_site": "4C8DFB",
+      "effect": "then captures CURRENT destination data"
+    },
+    {
+      "original_site": "4C8E00..4C8E0F",
+      "effect": "volatile WORD load/store, captured-unit test, stream through NUL; no saved-count bound"
+    },
+    {
+      "original_site": "4C8E12..4C8E17",
+      "effect": "return SAME destination; Source uses different C++ argument/return stack ABI"
+    }
+  ],
+  "storage_and_lifetime": {
+    "required_domain": "SAME genuine retained existing NativeStringStorage; production caller binds existing GameNativeStringProcess::strings() ActualNativeStringPoolStorage",
+    "authentication_limit": "Existing NativeStringStorage& API does not authenticate provenance; exact real process/domain binding is caller obligation, no automatic getter/owner/default/validation is added",
+    "validity": "actual8B headers and reached backing valid through NUL, valid real allocation domain; retain headers/backing/storage through callback/unwind",
+    "ownership": "constructor overwrites only destination twoDWORD header, never adopts old or source data; self abandons prior backing without release; aliases remain raw storage, not owners",
+    "resize_provider": "existing resize_native_wide_string_header_004c53e0 actual-header body unchanged; no callback stand-in",
+    "failure": "no new catch/rollback/validation/local ownership; existing Source resize/storage allocation/release/noexcept contracts inherited, private/native exception origin equivalence unproved",
+    "caller_outer_EH": "future ABB303 call runs with outer state0 only; wideEC cleanup becomes armed only after helper returns; no new Text caller in101"
+  },
+  "optimized_code": {
+    "assembly": "local/native_wide_string_raw_copy_101.asm",
+    "helper_lines": [
+      402,
+      487
+    ],
+    "clear_store_lines": [
+      416,
+      420
+    ],
+    "emitted_identity_compare_line": 421,
+    "self_branch_line": 425,
+    "compare_difference": "Original CMP before clears; optimized Source CMP AFTER both clears, no intervening call. Identity invariant and same effects; explicit difference, not byte/order or Native flags/ABI equivalence.",
+    "real_resize_call_line": 437,
+    "current_source_length_test_line": 442,
+    "current_source_data_line": 447,
+    "current_destination_data_line": 451,
+    "no_hoisted_data_pointer_reads": true,
+    "WORD_read_line": 459,
+    "WORD_store_line": 470,
+    "captured_unit_NUL_test_line": 474,
+    "local_cursor_difference": "Compiler computes LEA cursor advances before store and uses [edx-2]; actual WORD read/store/NUL-test memory sequence preserved, no instruction identity claim",
+    "same_destination_return_line": 484,
+    "Source_RET0_line": 486
+  },
+  "preservation": {
+    "kind": "static append/source-preservation receipt, not a behavioral test",
+    "baseline": "1e2ee9972c5a3ff96c1105cde298ce72e5663536",
+    "owned_source_files": [
+      {
+        "path": "include/bsp/native_wide_string.hpp",
+        "baseline_sha256": "207a84235075d100fb22c7f0018d6cdef74f4711b19cb70da4cbb9c2a4cead33",
+        "current_sha256": "d9499a98a3379366390eac87f3b6bca7ebb452e8e19e96d3e7a354295c6e8bc0",
+        "old_complete_file_except_final_namespace_unchanged": true,
+        "append_before_final_namespace_only": true,
+        "added_lines": 14,
+        "deleted_lines": 0
+      },
+      {
+        "path": "src/native_wide_string.cpp",
+        "baseline_sha256": "c3bb1d825f59a9b2ce930d4b463d129ac0557a97cb4e26fbceefb01761456864",
+        "current_sha256": "319fd69f6ba6700dbcc3dec688166ad3a1492137e844299e8067fd067c130fd7",
+        "old_complete_file_except_final_namespace_unchanged": true,
+        "append_before_final_namespace_only": true,
+        "added_lines": 25,
+        "deleted_lines": 0
+      }
+    ],
+    "unchanged_typed_and85_93_files": [
+      {
+        "path": "include/bsp/engine_seg4_6_9_cc13.hpp",
+        "sha256": "358e895205c893aa9e7d4b268bd0d03e1df341b61788ed849508e86235396591"
+      },
+      {
+        "path": "src/engine_seg4_6_9_cc13.cpp",
+        "sha256": "4af61380112228106643c62f1f331df96ed18b67e47397f6f6bac7cfe0c3a9bc"
+      },
+      {
+        "path": "include/bsp/native_gui_text_storage_construct.hpp",
+        "sha256": "2263f0a5cf044e3040c7f3f024a8d9899df1e7f0277db512f4db7d59976510f7"
+      },
+      {
+        "path": "src/native_gui_text_storage_construct.cpp",
+        "sha256": "9cb60be1d88a03d4136ca9fe34243c8b980199192300456819bf2a46778a6200"
+      },
+      {
+        "path": "include/bsp/native_gui_text_default_storage.hpp",
+        "sha256": "39d2a14672dc90e8605c47fb267d59510639dc445d4caf28a48d79d172d89562"
+      },
+      {
+        "path": "src/native_gui_text_default_storage.cpp",
+        "sha256": "38e7aafba69bfe959bd3f45111c9e85074d646eaacfa6c718e2b1530c30b55d7"
+      }
+    ]
+  },
+  "compile": {
+    "command": "cl /nologo /c /std:c++17 /EHsc /MD /O2 /W4 /WX /fp:strict /FAs /Falocal/native_wide_string_raw_copy_101.asm /Iinclude src/native_wide_string.cpp /Folocal/native_wide_string_raw_copy_101.obj",
+    "exit": 0,
+    "source": {
+      "path": "src/native_wide_string.cpp",
+      "sha256": "319fd69f6ba6700dbcc3dec688166ad3a1492137e844299e8067fd067c130fd7"
+    },
+    "header": {
+      "path": "include/bsp/native_wide_string.hpp",
+      "sha256": "d9499a98a3379366390eac87f3b6bca7ebb452e8e19e96d3e7a354295c6e8bc0"
+    },
+    "object": {
+      "path": "local/native_wide_string_raw_copy_101.obj",
+      "sha256": "4affdeca4344f9df2fd25ca0512b4aeee407cc6673715b92f867e9396b682072"
+    },
+    "assembly": {
+      "path": "local/native_wide_string_raw_copy_101.asm",
+      "sha256": "68306c28ddb86ca8771b7f7e3b1b455017d06a307a6b6b80865ffad35cf24197"
+    },
+    "log": {
+      "path": "local/wide_copy101_strict_compile.log",
+      "sha256": "a421e3eb46feea068b32cc1a8437b6394c2626ccaae1d34ad9e94191be60ed59"
+    }
+  },
+  "canonical_build": {
+    "command": "./scripts/build.ps1",
+    "exit": 0,
+    "existing_registered_TU": "src/native_wide_string.cpp",
+    "TU_compiled_in_log": true,
+    "configured_checks": [
+      "reconstructed_math passed",
+      "tool_tests passed"
+    ],
+    "passed": 2,
+    "failed": 0,
+    "new_helper_behavior_exercised": false,
+    "native_fixture_configured": false,
+    "log": {
+      "path": "local/wide_copy101_existing_build.log",
+      "sha256": "2d235adb124853f6ca93b00887d249c3b78bd3e63af5a46950fe570e5579fcd7"
+    },
+    "registered_project": {
+      "path": "build/win32/bsp_core.vcxproj",
+      "sha256": "f7663d629b3b03ef1d3fd1da165065527239d5f99415a890e191888f12bed719"
+    },
+    "compiled_TU_object": {
+      "path": "build/win32/bsp_core.dir/Release/native_wide_string.obj",
+      "sha256": "cfde9423c74c5dee073ee201df8527790caef12225feeb3da2bf9668a452092c"
+    },
+    "executable": {
+      "path": "build/win32/Release/bsp_game.exe",
+      "sha256": "34f52f37aa4cd745385c3f64ace60b02ca0f914b44187ba89a1362bea01176b4"
+    }
+  },
+  "reused_receipt": {
+    "path": "reports/cc12_native_gui_text_copy_providers_readiness_100.json",
+    "sha256": "e2b8b09e470439b1200e76ce5b7e6eb3779d6e1a9d947461ffe1f8bbc1c5d774"
+  },
+  "publication": {
+    "owned_address_only": "004c8dd0",
+    "locked_annotation_tool": "tools/ghidra_annotate.py --apply --addresses 004c8dd0",
+    "prior_history": {
+      "path": "local/ghidra-annotations-20261016T053503Z.json",
+      "sha256": "fac2c44a5df460dbe2f4e00def9069b0fcc8e1129a5a61c1ab8327649e07b8a8"
+    },
+    "program_saved": true,
+    "prior_comments_live_checked_preserved": true,
+    "existing_descriptive_name_preserved": true,
+    "owned_export_refreshed": true,
+    "exports": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/004c8dd0/metadata.json",
+        "sha256": "2025f0e48f9685e01bb4444a7c47af82f6c048665e393e557bca702c6dcdd7e9"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/004c8dd0/decompiled.c",
+        "sha256": "753d846ab10a1e4009d2419c5d7baa506e1206ce6ed1cf5ebb23525cdd5e561e"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/004c8dd0/assembly.txt",
+        "sha256": "e34453e9df4cafaaaf8038f897c3a524a5604dc344f52a2bb3df802096470b19"
+      }
+    ],
+    "unique_raw_function_record": "copy_construct_native_wide_string_header_004c8dd0",
+    "old_typed_function_record_status_preserved": "BSP_WideString_CopyConstruct: reconstructed_build_tested",
+    "ledger_diff": {
+      "config/reconstruction/004c0000.jsonl": "+1/-0, old records unchanged",
+      "config/names/004c0000.jsonl": "+1/-1, append evidence keeps earlier text/name"
+    },
+    "index_rebuilt_after_records": true,
+    "final_artifact_manifest": "local/wide_copy101_final_artifact_manifest.json",
+    "no_future_build_before_integrator_capture": true
+  },
+  "local_artifacts": [
+    {
+      "path": "local/wide_copy101_baseline_merge.log",
+      "sha256": "2b2329b2e3122b73ad7baa71c576ae92551b3c14028c8d5c41ada366d9a6f3c9"
+    },
+    {
+      "path": "local/wide_copy101_live_proto.txt",
+      "sha256": "cdf71ea3106070a94cbc9f53c4544b8fb21fc40720688a0154bd7c56237329bf"
+    },
+    {
+      "path": "local/wide_copy101_live_bytes.txt",
+      "sha256": "a4b03a638b76843af2089025bfbc44702cac8b05510bdbcf9663239d880d5315"
+    },
+    {
+      "path": "local/wide_copy101_prior_ghidra_comments.json",
+      "sha256": "c5e84454de9cd2151bff613ee6ab7c323e40afbfe0580a559e620eadea6d6250"
+    },
+    {
+      "path": "local/wide_copy101_source_preservation_receipt.json",
+      "sha256": "a263d752568d4e5f586643d68397da38606a8f00e436924cb7b39b28cef2f856"
+    },
+    {
+      "path": "local/wide_copy101_prebuild_manifest.json",
+      "sha256": "a27e3de624b3de3f615b2f7a2e396d57bfed919c3894c1c9c74aebf5a6166347"
+    },
+    {
+      "path": "local/build_wide_copy101_report.py",
+      "sha256": "ea811f69546820e92fa4392ad1314813b5074793b4892b9844e8a451e4f1a310"
+    },
+    {
+      "path": "local/wide_copy101_report_call_verification.log",
+      "sha256": "c6f662fd7f33174931caf66ed5531666eb5c2232ae0a7cbf78eabc9244d3c61f"
+    },
+    {
+      "path": "local/ghidra-annotations-20261016T053503Z.json",
+      "sha256": "fac2c44a5df460dbe2f4e00def9069b0fcc8e1129a5a61c1ab8327649e07b8a8"
+    },
+    {
+      "path": "local/wide_copy101_ghidra_annotation.log",
+      "sha256": "536dd7e315c00d31bad811e01f3aae91ddaaf267d50d3f1f8cd32f141e98dda1"
+    },
+    {
+      "path": "local/wide_copy101_export_refresh.log",
+      "sha256": "f22e73a94df697fb2e889a0c832ca2d5fe6924e37b5fcfda2bdff6da92aea8b8"
+    },
+    {
+      "path": "local/wide_copy101_final_ghidra_comments.json",
+      "sha256": "2543f8a7279cc3ec080db52a3b8b84bd0d96634c375699398cb68afc26ff0e0f"
+    },
+    {
+      "path": "local/wide_copy101_ledger_add.log",
+      "sha256": "8ab3f7bfbf03d986a07ed14d46591c09c0c61864850fcdac548a0e40c2357800"
+    },
+    {
+      "path": "local/wide_copy101_prior_ledger_lookup.txt",
+      "sha256": "69ada289d8e07bfe24ab287051121df0e420a3d1239e9ec6dce53de20fad04cc"
+    },
+    {
+      "path": "local/wide_copy101_final_ledger_lookup.txt",
+      "sha256": "4aad2c8578cde32137c26a1b17b82271f7385d22ae05be3f680b3549b79967c4"
+    },
+    {
+      "path": "local/wide_copy101_index_refresh.log",
+      "sha256": "a40763e244daa54fbdc74a3b16c51e716b46e70d484e75a42c77834f811ecbcd"
+    },
+    {
+      "path": "local/add_wide_copy101_records.py",
+      "sha256": "1fb0709027adf1f881be1848e3c026808b7d4b014a782922c4edbd38e259d1e4"
+    },
+    {
+      "path": "local/seal_wide_copy101_receipt.py",
+      "sha256": "81b70f2d4ebb10f63d81922debd95bafbf86efd9dff1f9d5e1a31d8ed217a101"
+    }
+  ],
+  "validation": {
+    "root_Source_review": "PASS whole append-only diff against all27 Original instructions",
+    "root_optimized_review": "PASS lines402..487 including explicit CMP-after-clears difference, current captures/no hoist, streamingWORD and same return",
+    "report_call_rows_checked": 1,
+    "report_call_rows_failed": 0,
+    "new_test_cases": 0,
+    "ad_hoc_executable_probes": 0,
+    "raw_helper_executed": false,
+    "native_binary_FH3_ABI_proved": false,
+    "game_or_rendering_run": false
+  },
+  "owned_files": [
+    "include/bsp/native_wide_string.hpp",
+    "src/native_wide_string.cpp",
+    "docs/CC12_NATIVE_WIDE_STRING_RAW_COPY_101.md",
+    "reports/cc12_native_wide_string_raw_copy_101.json"
+  ],
+  "remaining": [
+    "raw Text cursor/rebuild/whole copy/factory and production admission stay separate",
+    "raw helper execution/native private ABI/gameplay proof is not supplied by Source/build/static receipts"
+  ],
+  "sealed_utc": "2026-10-16T05:36:50.843345+00:00"
+}
