@@ -2,6 +2,8 @@
 
 #include "bsp/game_settings.hpp"
 
+#include <cstring>
+
 namespace bsp {
 
 bool mission_entry_uses_player_count_arm(
@@ -119,7 +121,23 @@ bool run_mission_device_wait(const MissionDeviceWaitInputs& inputs, DeviceWaitLa
     if (!player_count_arm_may_enter(inputs.unbound_player_slots, inputs.game_field_624)) {
         return false; // 004dba3a
     }
-    host.dispatch_session_event(kMissionEntrySessionEventTag); // 004dba42..004dba8f
+    // 004dba3c..004dba4f: the stack message, base constructor, then the
+    // delivery word and the tag 0Ch vtable.
+    MissionEntrySessionMessage message;
+    host.construct_session_message_0075b430(
+        message, static_cast<std::uint32_t>(kMissionEntrySessionEventTag)); // 004dba42
+    std::memcpy(message.bytes + 0x04, &kMissionEntrySessionMessageDelivery, 4); // 004dba47
+    std::memcpy(message.bytes + 0x00, &kMissionEntrySessionMessageVtable, 4); // 004dba4f
+    host.broadcast_session_message_0076a9f0(message, nullptr); // 004dba57..004dba68, PUSH 0
+    // 004dba6d..004dba87: [session+188h] is read after the broadcast, and
+    // [session+18Ch] only when it is null; no guard on the result.
+    void* transport = host.session_transport_at(kSessionTransportOffset188);
+    // 004dba7d: the inlined destructor resets the vtable (no call).
+    std::memcpy(message.bytes + 0x00, &kMissionEntrySessionMessageBaseVtable, 4);
+    if (transport == nullptr) {
+        transport = host.session_transport_at(kSessionTransportOffset18C); // 004dba87
+    }
+    host.flush_session_peers_007848f0(transport); // 004dba8f
     host.enter_mission_state(); // 004dba96
     return true;
 }
