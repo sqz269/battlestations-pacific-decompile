@@ -1,7 +1,7 @@
 {
   "batch": "GOAL15I",
   "status": "integrated_source_registered_build_and_fixtures_verified",
-  "validated_source_commit": "12e0fdbffb8c8d89ade9c173ede8cf217abeb85b",
+  "validated_source_commit": "481903ebf4c4bca3dd1866eddcd1fd196f1145a4",
   "registered_modules": [
     "src/native_avoid_bounds_include.cpp",
     "src/native_avoid_clip_cleanup.cpp",
@@ -291,7 +291,7 @@
     "archive_only_fixtures": {
       "bounds": {
         "receipt": "local\\goal15i_bounds_probe_result.json",
-        "receipt_sha256": "01bae49ec2d1884a2fca590311980cb9ab6cb0e702ed603e39727e96d8608dbb",
+        "receipt_sha256": "f46338f6573b16e86be4ebb8f3e1f34b3af329ae399f10dc6522d27dc9b5cd90",
         "kind": "Source fixture linked against registered archive and real current services",
         "manifest_embedded": true,
         "exit_code": 0,
@@ -299,16 +299,16 @@
         "stderr": "",
         "sha256": {
           "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_bounds\\bounds_probe.cpp": "bfbec4dd736db2488d3fc1f1ed58ed477eb0a506e69db800c72751da21846e1a",
-          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_bounds_probe.obj": "bef563eece48ef84fd076eb4e65b97f1e402e7c6bef51b2fe8c49f7e93be39a9",
-          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_bounds_probe.exe": "3b1fdc16235316f5a7f16f86f4b798e25015082ca097b70bba304e0e38d14075",
-          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "56d8f86166fade0f359b85a76d17efa6b3df4d8a4510893383beddf0c8bb2af2",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_bounds_probe.obj": "857bc9131a4f31f8b2ef84163605a2e656a90058592a7ac546d2cc324c8b38ee",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_bounds_probe.exe": "9eccc3c3e2bbc420cabc0c2d728fe0c7179d7141082a488e544039a7bb62ebfb",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "83fa654c8f64fc66ccd88da26d50b8fadd50de4f594fcb1ac32e111c239647ec",
           "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
           "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
         }
       },
       "cleanup": {
         "receipt": "local\\goal15i_cleanup_probe_result.json",
-        "receipt_sha256": "a467841759e269a63a790df0c206a5ca5a63565f9616fb5417b46235b19ba1c1",
+        "receipt_sha256": "3cf22ab84766c20250f2d2e3aea1720ce361dfa727cf06bda5ab303c165d2be8",
         "kind": "Source fixture linked against registered archive and real current services",
         "manifest_embedded": true,
         "exit_code": 0,
@@ -316,16 +316,16 @@
         "stderr": "",
         "sha256": {
           "J:\\PROG\\battlestations-pacific-decompile-goal15_pool_cleanup\\local\\goal15i_avoid_clip_cleanup\\cleanup_probe.cpp": "bbfb6edce1b835e565c48b3f4bbd06fb4aedabd2f4b111fffc5b213eae5156fa",
-          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_cleanup_probe.obj": "ee2c61106461c729ae89ab6b2843b106651326d8652b65702f370b34cf868486",
-          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_cleanup_probe.exe": "c342e3ea36c11caa546794198370510946abc3dd30948754d64b9a8ec08509c2",
-          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "56d8f86166fade0f359b85a76d17efa6b3df4d8a4510893383beddf0c8bb2af2",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_cleanup_probe.obj": "8fb995289276791ba2da6e2c368508aab977baefc548860fb37de814fe2b5879",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_cleanup_probe.exe": "b39594702468cb0b779d634999f20bc1b5fec87d12be33a27a37d50418694277",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "83fa654c8f64fc66ccd88da26d50b8fadd50de4f594fcb1ac32e111c239647ec",
           "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
           "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
         }
       },
       "winding": {
         "receipt": "local\\goal15i_winding_probe_result.json",
-        "receipt_sha256": "4b4578e43e6dc903e79f533e0ccab2c8ee894a43c2a53459ed630870313a2e56",
+        "receipt_sha256": "c45c2b59c287d3d368af2fe44be2ca87928513e7d73169ec76c3cb57c41e4aee",
         "kind": "Source fixture linked against registered archive and real current services",
         "manifest_embedded": true,
         "exit_code": 0,
@@ -333,9 +333,9 @@
         "stderr": "",
         "sha256": {
           "J:\\PROG\\battlestations-pacific-decompile-goal15f_pod8\\local\\goal15i_avoid_winding\\winding_probe.cpp": "4ba332bdf59f15e44ede8a47ed0fa00d451b2eb59ea2f56b2673e0c361fd8a6a",
-          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_winding_probe.obj": "d6c9f0c2b6d7cc70560ebdd75492cd8ec316d5e773b1fa85362e55bc95d6e00e",
-          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_winding_probe.exe": "122758c5f903e6b29917b426bde78bdeec6b52a9b0cd09e96958074b957583c0",
-          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "56d8f86166fade0f359b85a76d17efa6b3df4d8a4510893383beddf0c8bb2af2",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_winding_probe.obj": "e3fca20919d1104b4c94d7044a086293aeef4da59d2eaeb34f7a23bd0f6e70a1",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15i_winding_probe.exe": "455783070984d7fcc2a69611325b989bb300c6602ea3134a9fa5d06b820939f8",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "83fa654c8f64fc66ccd88da26d50b8fadd50de4f594fcb1ac32e111c239647ec",
           "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
           "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
         }
@@ -449,7 +449,7 @@
       "count": 67,
       "scope": "reviewed functions plus direct caller union; no invented interior functions"
     },
-    "snapshot_and_index": "PASS saved project; snapshot2026-10-15 and index refreshed after67 exports"
+    "snapshot_and_index": "PASS saved project, forced snapshot and index refreshed after67 exports"
   },
   "artifacts": {
     "inputs_sha256": {
@@ -465,9 +465,9 @@
       "build\\win32\\bsp_core.dir\\Release\\native_avoid_clip_cleanup.obj": "8ddfddee52ad0a79053f47ec270d5a3bf74c8d69ce5e4fc16ab7871fb8fdfc80",
       "build\\win32\\bsp_core.dir\\Release\\native_avoid_zone_winding.obj": "50d1ce208f577c5113d6b3ad43620548cd34154dd58d638cf9a1d182e6abb32a"
     },
-    "registered_archive_sha256": "56d8f86166fade0f359b85a76d17efa6b3df4d8a4510893383beddf0c8bb2af2",
+    "registered_archive_sha256": "83fa654c8f64fc66ccd88da26d50b8fadd50de4f594fcb1ac32e111c239647ec",
     "build_log": "local/goal15i_registered_build.log",
-    "build_log_sha256": "c49f1571894561e167186401d48b5101ba2dcc076c0c0bc6fa12c69734809ef8",
+    "build_log_sha256": "536fb8271ce45dce56ca6fcaa348044946e1b8a515cd7dd0db8d862ae61098e5",
     "winding_fixture_bytes_header_sha256": "962a8a57e1957f5d5d067c41fc80dd884aeff6ea00997794318950c183ae6191"
   },
   "separate_work": {
