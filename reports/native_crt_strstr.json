@@ -1,6 +1,6 @@
 {
   "schema": "bsp.native_crt_strstr.source.v1",
-  "status": "whole_ordinary_Source_author_implemented_sole_two_TU_strict_PASS_Root_independent_Main_pending",
+  "status": "whole_ordinary_Source_primary_independent_strict_and_actual_Main_Core_accepted_build_and_existing_CTest_pass",
   "packet": "cc12_native_crt_strstr_00bf9440",
   "correct_Original_library_names": [
     "_strstr",
@@ -9,7 +9,7 @@
   "source_ready": true,
   "Source_authorized": true,
   "Source_implemented": true,
-  "Source_credit": 0,
+  "Source_credit": 1,
   "existing_provider_additional_credit": 0,
   "API": {
     "signature": "void* __cdecl bsp::find_native_crt_substring_00bf9440(const void* actual_haystack,const void* actual_needle)",
@@ -647,6 +647,36 @@
   },
   "call_rows": [],
   "mechanical_checker": {
+    "stage": "separately_admitted_integrator_phase",
+    "author_actual_invocations": 0,
+    "peer_actual_invocations": 0,
+    "admitted_integrator_actual_invocations": 1,
+    "actual_exit_code": 0,
+    "stdout_bytes": 167,
+    "stdout_sha256": "bcb7c1218ec018860952aa1b59fce86968ea23bf2a9b836c32e77728d513b385",
+    "report_call_rows": 0,
+    "DOC_cited_addresses": 7,
+    "DOC_call_claims": 0,
+    "failed": 0,
+    "unchecked": 0,
+    "warnings": 0,
+    "unmodified_checker_sha256": "f3f412b6f8eaeb6c4b212e34cca6a2567c2ed4015d0a942268d752911f6913ef",
+    "receipt": "local/cc12_sol_integrator_20261016/Source12_admitted_checker01/result.json",
+    "final_metadata_recheck": "Actual final metadata recheck invocation/results are external in local/cc12_sol_integrator_20261016/final_closure_execution/checkers; historical admitted count above is phase-specific, not the total integration count."
+  },
+  "unperformed": [
+    "Original physical Native ABI/caller replacement validation",
+    "selected body runtime, fault/EH/flag/DF/ES caller protocol and game validation"
+  ],
+  "no_activity": {
+    "shared_CMake_registry_ledger_Ghidra_Main_mutation": "not performed",
+    "push": "not performed",
+    "worker_whole_baseline": "not performed",
+    "new_tests_probes_emulation_selected_body_execution": "not performed",
+    "SDK_comparison": "not performed",
+    "live_Ghidra_query_repair_restart": "not performed"
+  },
+  "mechanical_checker_author_history": {
     "integrator": "/root/sol_reconstruction_integrator_oct16",
     "authorization": "Current explicit integration disposition: do NOT run live checker in author phase; integrator runs unmodified checker during its separately pinned integration phase.",
     "reason": "Current checker Live.__init__ always calls Client.verify(list_project_files/get_current_program_info), and markdown suffixes invoke get_function_by_address even with zero call claims. Preserve unchanged 12-clause gate and author no-live-Ghidra boundary.",
@@ -715,7 +745,7 @@
       }
     ]
   },
-  "unperformed": [
+  "author_phase_unperformed_history": [
     "Root and independent new Source/strict acceptance",
     "registered normal Main Win32 build and three existing CTest suites",
     "all actual caller/selected-provider/private-helper objects including any retained old provider object",
@@ -723,12 +753,69 @@
     "Core both archive indices and unique literal caller/provider binding",
     "runtime/Native physical ABI/caller/game validation"
   ],
-  "no_activity": {
-    "shared_CMake_registry_ledger_Ghidra_Main_mutation": "not performed",
-    "push": "not performed",
-    "worker_whole_baseline": "not performed",
-    "new_tests_probes_emulation_selected_body_execution": "not performed",
-    "SDK_comparison": "not performed",
-    "live_Ghidra_query_repair_restart": "not performed"
+  "integrator_closure": {
+    "primary_integrator": "/root/sol_reconstruction_integrator_oct16",
+    "stage": "whole_ordinary_Source_Main_composition_accepted",
+    "compiled_Main_HEAD": "6f0575fc802e895f70a9b6c341c4305a5a0d2b0f",
+    "normal_build_exit": 0,
+    "existing_CTest_suites": 3,
+    "existing_CTest_passed": 3,
+    "existing_CTest_seconds": 7.13,
+    "build_stdout_sha256": "c2edee51868adf8a46e58c1c76c7c6c5516393aa0b7373396a0fdac400f7ec17",
+    "build_result_sha256": "abe2b5aa9e82409d851c389ea381f0496a88286b97bf2d80b70f935f7d2caa03",
+    "caller_object": {
+      "bytes": 971,
+      "sha256": "b45448b6683f8926a895c0c03e715d5602dc0d6ab3138e1c37db5ae1f96fedf0",
+      "code_bytes": 201,
+      "instructions": 93,
+      "sections": 4,
+      "primary_symbols": 8,
+      "aux_symbols": 4
+    },
+    "retained_provider_object": {
+      "bytes": 1471,
+      "sha256": "55d9c62eb16c2e71b0f01d1baa312470a82e79f9f53460fc2889c00acc4be3ea",
+      "code_bytes": 230,
+      "instructions": 106,
+      "public_code_bytes": 194,
+      "public_instructions": 84,
+      "private_code_bytes": 36,
+      "private_instructions": 22,
+      "sections": 8,
+      "primary_symbols": 15,
+      "aux_symbols": 8,
+      "newly_compiled": false,
+      "mtime_ns": 1792118608157882500,
+      "source_and_header_unchanged": true
+    },
+    "Core": {
+      "bytes": 94397952,
+      "sha256": "4877162af59ff977a711056d59e96e01e75cf7b30aac604b6750c72596d999a7",
+      "all_members": 2503,
+      "COFF_members": 2500,
+      "first_index_bindings": 83072,
+      "second_index_bindings": 83072,
+      "whole_literal_binding_multisets_equal": true,
+      "selected_caller_header": 47657634,
+      "selected_provider_header": 47658666,
+      "selected_member_bytes_equal_actual_objects": true,
+      "selected_strong_definitions_unique_across_all_COFF_metadata": true
+    },
+    "strict_peer_manifest_sha256": "1f8b1727fa7063ff2d2f689d15ed5da685c3e59557db51cb5ffbbec3faf3a1ff",
+    "Main_peer_manifest_sha256": "cc0730c83948e583540e8a22c5d4bde32860d32031b1c5af137a45d27d0d9283",
+    "Main_peer_own_fresh_pairs": 46,
+    "Main_peer_own_prefix_sha256": "04991365eb44ec4a74ff1c45266a8bd88a6798b5f65f41d2a86fecf698f5d332",
+    "primary_review": "local/cc12_Source12_Readiness16_Main_20261016/primary_Main_review.DATA.json",
+    "primary_build_authentication": "local/cc12_Source12_Readiness16_Main_20261016/Main_build_provenance/authentication.DATA.json",
+    "final_integrator_evidence": "local/cc12_sol_integrator_20261016",
+    "actual_backing": "caller [EBP-10h,EBP-0Ch], eight bytes/four aligned; one ordinary call and ADD ESP4",
+    "actual_provider_private_home": "after full pointer/target/H capture, target BYTE reuses HIGH byte [EBP+0Bh] of incoming pointer home; private-home/control alias exclusion unchanged",
+    "whole_code_metadata_ABI_and_both_Core_indices_reviewed": true,
+    "build_warning": "Unrelated pre-existing LNK4006 spawn_request_id_matches duplicate in lua_binding_spawn.obj/lua_spawn_new.obj; both member bytes and selected indexed binding unchanged from frozen-before Core.",
+    "build_scope": "Normal build also compiled two predecessor TUs. Inner compiler-process count not inferred. Existing fixtures do not execute selected Source12 bodies.",
+    "unchanged_ordinary_domain": true,
+    "new_Source_functions": 1,
+    "existing_provider_additional_credit": 0,
+    "Native_physical_ABI_runtime_game_validation": false
   }
 }

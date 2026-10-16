@@ -6,9 +6,10 @@ default potentially throwing interface is
 It covers the whole ordinary contract of the 134-byte, 66-instruction Original
 range 00BF9440–00BF94C5, SHA-256
 `0aa74e3eadfb78899c55fa44b65c6aa4fd0cc653ad09eff41df06903fb03faa9`.
-The C++ name is descriptive. Source credit remains zero pending Root and
-independent review and the separate registered Main gates. Existing provider
-Source/header and its additional credit remain unchanged/zero.
+The C++ name is descriptive. One whole ordinary Source function is accepted
+after primary and independent strict/Main review, the registered Main build
+and all three existing CTest suites. Existing provider Source/header and its
+additional credit remain unchanged/zero.
 
 ## Ordered behavior
 
@@ -195,7 +196,9 @@ proof is not adopted. Two genuine schema-display AttributeErrors and capped
 preparation displays remain in this task's raw history; corrected bounded
 displays supplied the complete data. They were not compiler failures.
 
-The required unmodified report/doc call checker is pending the integrator. Its
+### Historical author phase, before integration
+
+The required unmodified report/doc call checker was pending the integrator. Its
 built-in Client.verify queries live project/program metadata and its suffix
 checks query function metadata even with zero call rows. The Sol integrator
 explicitly deferred it to a separately pinned integration phase to retain this
@@ -209,3 +212,45 @@ objects, both Core archive indices and unique literal bindings remain pending.
 An unchanged Main provider object may be retained from an earlier compile;
 its actual before snapshot, current Source identity, complete bytes/ABI and
 archive selection must be proved without calling it freshly compiled.
+
+## Integrator closure
+
+The separately admitted unmodified integrator checker passed: zero report call
+rows, seven cited DOC addresses, zero call claims, failures, unchecked claims or
+warnings. The author and both independent peer phases ran no checker. The
+author's no-live-Ghidra boundary and historical null result remain preserved.
+
+Registered Main `6f0575fc802e895f70a9b6c341c4305a5a0d2b0f` passed the normal
+Win32 build and all three existing CTest suites (7.13 seconds). This build also
+compiled two predecessor TUs. An unrelated pre-existing LNK4006 duplicate
+`spawn_request_id_matches` warning remains; its two Lua archive members and
+selected binding are byte-identical to the frozen-before Core.
+
+Both reviewers read every byte/instruction and all COFF metadata of actual Main
+caller (971-byte object, 201 code bytes/93 instructions) and retained provider
+(1471-byte object, 230 code bytes/106 instructions including all four private
+bodies). The provider's bytes and mtime match its before snapshot; it was not
+newly compiled. Current Source/header identity and historical compile-command
+metadata are preserved without inventing an earlier compiler receipt.
+
+The caller uses real eight-byte/four-aligned backing at [EBP-10h,EBP-0Ch] and
+one ordinary call with caller ADD ESP4. The actual provider captures the full
+pointer, target and H before reusing the HIGH byte [EBP+0Bh] of its incoming
+pointer home for target. The strict companion used a different private home
+byte. The unchanged private-home/control alias exclusion covers both.
+
+The entire 94,397,952-byte Core (SHA-256
+`4877162af59ff977a711056d59e96e01e75cf7b30aac604b6750c72596d999a7`)
+was scanned, including all 2503 members, 2500 COFF symbol tables and both full
+83,072-binding linker indices. Literal binding multisets match. The unique
+selected caller/provider payloads exactly equal the actual objects; the sole
+caller REL32 binds the one literal provider definition through both indices.
+The independent Main family has 990 sealed files, manifest
+`cc0730c83948e583540e8a22c5d4bde32860d32031b1c5af137a45d27d0d9283`;
+its 46 fresh pairs and complete unfiltered 993-line prefix were authenticated.
+
+One new whole ordinary Source function is credited. The provider receives no
+additional credit. The twelve-clause gate and raw ordinary domain are unchanged.
+This establishes no Original physical Native ABI, selected-body runtime,
+exception/fault/flag protocol or game validation. The final metadata commit is
+separate from the compiled commit; both C++ Source/header pairs are unchanged.
