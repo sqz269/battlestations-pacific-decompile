@@ -1,0 +1,97 @@
+{
+  "packet": "oct15_thirtieth_reconstruction_batch",
+  "status": "primary_reviewed_Source_integrated_default_Win32_checked",
+  "component": {
+    "pin": "84b56af9d4ca1427beda72a0adc90094e50ab8bc",
+    "report": "reports/oct15_native_input_controller_name_pair_destroy.json",
+    "artifacts": {
+      "src/native_input_controller_name_pair_destroy.cpp": "543b1363dd2163c5ad5e7010a899ae55fa4c0b0d6549937b7075a3fa03e0efce",
+      "include/bsp/native_input_controller_name_pair_destroy.hpp": "8e6461e97c8ff5550e07f2a4cb2fb5a73cddc7bfa9792673ad10e45cd5812246",
+      "docs/OCT15_NATIVE_INPUT_CONTROLLER_NAME_PAIR_DESTROY.md": "4048c84cefa82da8255e20d3665509c79ec176d2a1f1819f8d9e0a598c160a03",
+      "reports/oct15_native_input_controller_name_pair_destroy.json": "9d857066bc0d287f7b1a4268e0e7089e73bf230282703be6f4768d4dd5390865"
+    }
+  },
+  "scope": {
+    "complete_ordinary_entries": 1,
+    "address": "006a2bb0",
+    "ordinary_bytes": 143,
+    "ordinary_starts": 46,
+    "complete_logical_actions": 1,
+    "logical_address": "00c7f200",
+    "logical_bytes": 8,
+    "logical_starts": 2,
+    "readonly_handler_bytes": 10,
+    "readonly_EH_bytes": 44,
+    "global_unique_coverage_increment_claimed": false
+  },
+  "primary_review": {
+    "path": "local/oct15_controller_pair_primary_review.json",
+    "sha256": "21c9a90fb2a0c9d8b36d24318b379aa3ff707a158108f9aa7a78809b77d1ab96",
+    "checks": 14,
+    "provider_LF_files_equal_Main": 38,
+    "findings": []
+  },
+  "actual_CMake": {
+    "integrator_object_sha256": "c81abffc62b1f7217d2b714df29636561b8ff655f17124e13d01cdccd1d57f8c",
+    "reviewed_worker_object_sha256": "219172e40cc52f85b920fbee4dbe11ce60377dd8d2c576506a295ff8b53b98cf",
+    "code_bytes": 299,
+    "code_starts": 115,
+    "different_relocations": [
+      [
+        {
+          "offset": 4,
+          "type": 20,
+          "symbol": "??1PairKeyCleanup@?A0xac11163a@bsp@@QAE@XZ"
+        },
+        {
+          "offset": 4,
+          "type": 20,
+          "symbol": "??1PairKeyCleanup@?A0x98132940@bsp@@QAE@XZ"
+        }
+      ]
+    ],
+    "code_bytes_equal": true,
+    "only_explicit_anonymous_TU_symbol_bijection": true,
+    "EH44raw_and_relocations_equal": true,
+    "reviewed_physical_bytes": 299,
+    "reviewed_physical_instructions": 115,
+    "code_relocations": 12,
+    "data_relocations": 5,
+    "comparison_receipt": "local/oct15_controller_pair_object_comparison.json"
+  },
+  "validation": {
+    "tested_combined_Source": "dedb993659b9a0c8c39efc9af9c44e88e2e3ff34",
+    "default_MSVC_Win32": true,
+    "build_log": "local/oct15_thirtieth_union_build.log",
+    "build_log_sha256": "f9219da7967055c5f35ad986e61a9b5952f4ff8d938ed8d2132eb1e144cfee4f",
+    "existing_suites_passed": 3,
+    "ctest_seconds": 8.65,
+    "new_tests": 0,
+    "new_probes": 0,
+    "packet_Native_execution": false,
+    "report_rows": 6,
+    "Markdown_claims": 6,
+    "transfer_log": "local/oct15_thirtieth_transfers.log",
+    "saved_annotations": {
+      "path": "local/ghidra-annotations-20261016T051301Z.json",
+      "sha256": "fcac16d5528b65835334216a10c3090a9ff261ccc167a53d1c0dc3ded5b47fee",
+      "entries": 2,
+      "preimages_preserved": true
+    },
+    "refreshed_exports": 2,
+    "snapshot": "skipped unchanged76774functions",
+    "index": "rebuilt"
+  },
+  "limits": [
+    "Existing checks exercise older math/tool behavior, not this pair against Native game state.",
+    "SourcevoidRET4 addsborrowedRawCtx versusNativeplainRET/incidentalEAX; logicalactionexplicitpair+RawCtx versusNativeEBP-18.",
+    "Guard remainsarmed throughCURRENTdata4capture, then lexicalEHscopeends BEFOREnormalgetter. Normalfailure never retrieskeycleanup; armedcleanup usesCURRENTpair RawCtx41DD20.",
+    "CurrentCppnestedunwindfailure/termination,currentCRT/providerownership/privateframe/flags/fault/FH3SEHRTTI/heap/dropinABI/applicationadoption/game remainqualified.",
+    "Controllerparent/subtree/range/member/owner are outside this Source packet."
+  ],
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "verify independently after publishing; no self-reference"
+  }
+}
