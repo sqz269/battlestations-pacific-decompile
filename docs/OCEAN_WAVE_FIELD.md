@@ -1411,3 +1411,53 @@ target is refused (0f70e9dee), so in the reference, where Troop 01 dies at 388 s
 
 Generators: `local\p12_j6attack.py` (attack rotations) then `local\p12_j6gen.py` (a copy of cc9-ships49's
 `s49_j6gen.py`, the torpedo rotation).
+
+## 39. ESMP08 recall: the cascade is hosted; dead planes' landing records are not compacted (cc9-physics12, 2026-10-16; lead item 2)
+
+**The cascade.** In the image the order-2 recall (006CCDA0's state-3 arm) issues `land` 00E08FA0 through 0077D600 on
+the squadron (ECX = slot+28h). 0077D600 routes a ` Mv` message to the squadron's `vtable[160h]` 007F1940, which issues
+the land on the squadron's own director (+348h; cleared first when the message's +21h is set, else after its
+`vtable[34h]` accept). The members are not addressed: each member's attack task retires when its predicate sees the
+squadron command change (0099A4C0) and 0099A170's arm 0099A3DD installs `land` (SQUADRON_LAND_TASK 1). The host's
+recall arm calls `land_at_site_0099a3dd` per member, and the leader's call fans out to every member: in
+`cc9-lua52\local\l61_n_e8.log` every applied recall with live members logs `land command: ... 3 plane(s), 3 task(s)`
+(the exceptions are planes not airborne, `land task REFUSED ... not airborne`). So the land does reach the wingmen;
+nothing is bound for the cascade.
+
+**Why the slots stay in state 4 anyway** (`local\p12e8_ra.log`, plan `local\p11_e8_ra.txt`, this tree 25fbdcba0, no
+end at 140000 frames). The end-of-run `summary land task plane` lines show the recalled wingmen either dead in
+land/final (5F8) or alive in land/standby (5B8) for thousands of seconds. Chitose_sqn14|.-3 is the clear case: from
+881 s to the end it cycles standby -> begin -> final -> abort (263 state changes), and each final ends with the head's
+sequencer mode flapping 4 -> 3 -> 4 at 120-300 m with spacing 0.000/0.010, then abort at about 16 m. Its squadron mate
+Chitose_sqn14|.-2 died in final at 872.36 s (below), and `summary landing record Chitose_sqn14|.-2: mode=4 path=33.7`
+is still in Chitose's record list at the end. Inferred, not traced: 006C3F80's k loop counts that record (mode 4, +4h > 0, `landing_airborne`
+true for the wreck, its squadron link gone so the head skip does not apply), 70 m ahead of any survivor, so the
+survivor's spacing is 0 near the deck, its mode drops to 3 and final aborts, for ever.
+
+The image removes such records: **006C77E0** (`BSP_AirOpsBlock_CompactQueueRecords`, 006C77E0-006C7951, RET), the third
+sub-update of 006CDC70, erases under the block's lock every +A8h record whose plane is null or has +5Ch clear or +5Dh,
++60h or +5Eh set (006C788D-006C78B6), shifting the tail down. CC13_VER_15 2 lists it as not hosted, and
+game_hosts_script_orders.cpp says so at the queue call.
+
+**The binding (`kAirOpsQueueCompactBound`, game_hosts_units.cpp, committed OFF).** At the head of the queue tick in
+`run_landing_queue_006cd240`, every deck's `assignments` drop the records whose plane is gone, fails
+`unit_alive_and_visible` (0043F080's four bytes) or is dead by the host's +5Dh stand-in (plane_death_c3a / removed /
+gunnery dead, as the leg manager uses). LABELLED: the position (the image runs it before the site virtual, 006C64B0 and
+006C6540, none of which reads +A8h). Each erasure logs `landing sequencer: record of <plane> erased`.
+
+**The deck crash (not bound, recorded).** Chitose_sqn14|.-2's death at 872.36 s (`BSP_PLANE_RATE_TRACE`, `local\p12e8_ra_tr.log`):
+on final at A8 about 190 m and 31 m altitude its pitch-rate target jumps from 0.01 to 0.35 rad/s with the stick at
+full pull and the roll stick flipping between -1 and +1 every few steps; the nose rises to 1.15 rad, speed climbs from
+33 to 73 m/s, and the crash sweep finds Chitose. At the time Chitose_sqn34 was on the deck in its takeoff run (raised
+861.56 s, airborne 873.51 s), and the plane's `vehicle/terrain avoid` summary has plane=46 ship=6 ticks. The image's
+landing gate 006C3F80 asks the carrier site's vtable[30h] = 006D0530 `HasFreeRunway` (vtable 00CF8A58, slot
+00CF8A88; the host hardcodes the airfield's 006CF3F0 `true`), which fails only for an occupant within
+MinFreeRunwayLength (12 m in this installation's planeglobals.lua, 2024-10-29) of T; a plane on the launch spot is
+about 100 m past T, so 006D0530 would not have stopped this landing. Whether the image blocks a launch while a plane
+is on final was not found; open.
+
+**Predictions (before any ON run).** OFF: gameplay identical (nothing runs). ON: on rows where a plane in a landing
+queue dies (ESMP08 with the recall plans; any carrier row with deck crashes), its record is erased at the death, and
+survivors that cycled final -> abort land on a later pass: more `state 5F8 -> 620`, more `stowed plane stock return`
+sends and `slot_returns`, fewer 5B8 survivors at the end, and launches that continue later into ESMP08. Rows with no
+queue deaths: no erasures, gameplay identical (USN04 45000 control).
