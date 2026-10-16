@@ -1,9 +1,9 @@
 {
   "packet": "GOAL16AD",
   "status": "integrated_reviewed_build_and_static_artifact_verified",
-  "utc": "2026-10-16T11:32:38.045322+00:00",
-  "source_pin": "63a4bb7f42669c34a32cb1c7bd1909bdf9581cf9",
-  "Main_input": "28d884b161299605948b6d57486a206322a6a0cf",
+  "utc": "2026-10-16T11:53:50.171355+00:00",
+  "source_pin": "514b19058ede674a44a1c124f6632cc6f81bb632",
+  "Main_input": "a6f8752fd52585181e50b16c8914b53d17f179d9",
   "author_pin": "9f474fe7a2ed7238860e8c2382974f71aae940e7",
   "scope": {
     "Native_functions": 2,
@@ -464,13 +464,13 @@
   },
   "validation": {
     "normal_Win32_build": {
-      "source_pin": "63a4bb7f42669c34a32cb1c7bd1909bdf9581cf9",
-      "Main_input": "28d884b161299605948b6d57486a206322a6a0cf",
-      "start_utc": "2026-10-16T11:28:38.999406+00:00",
-      "end_utc": "2026-10-16T11:28:58.336553+00:00",
-      "wall_seconds": 19.36002899998857,
+      "source_pin": "514b19058ede674a44a1c124f6632cc6f81bb632",
+      "Main_input": "a6f8752fd52585181e50b16c8914b53d17f179d9",
+      "start_utc": "2026-10-16T11:50:30.749144+00:00",
+      "end_utc": "2026-10-16T11:50:50.183645+00:00",
+      "wall_seconds": 19.4581743000017,
       "exit_code": 0,
-      "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16ad_root\\final_build.log"
+      "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16ae_root\\final_build.log"
     },
     "existing_checks": "3/3 PASS; reconstructed_math/native_math_differential/tool_tests; no new tests/probes",
     "complete_module": {
@@ -525,13 +525,13 @@
       ]
     },
     "full_current_COFF": {
-      "path": "local\\goal16ad_root\\final_full_coff.json",
+      "path": "local\\goal16ad_root\\publication_full_coff.json",
       "sha256": "55fa6276e6eba80df77ae987b84d2fab5198e021e39169f6f783003538691f70",
       "bytes": 1082,
       "every_byte_accounted": true
     },
     "archive": {
-      "sha256": "2f2072440259a7322450e41e80d90756e77dea92869ecf19756de59978fe4705",
+      "sha256": "7862ed10d6b743972d0164bba5f713859ca113eb89052702aecda6aab8d29e06",
       "selected_whole_modules": 18,
       "complete_executable_bytes": 6453,
       "selected_unique_public_bindings_in_both_dictionaries": 40,
@@ -549,8 +549,8 @@
       "new_prefix_mapped_bytes": 232
     },
     "whole_proof": {
-      "path": "local\\goal16ad_root\\final_proof\\proof.json",
-      "sha256": "22eb28d421ca3f842eb6af2525906af544b93fcedea07d920099998bc7452776"
+      "path": "local\\goal16ad_root\\publication_proof\\proof.json",
+      "sha256": "69d9dc09894d0e8ca6e358e9c83d86e09a1f4ca29aa9bd7c956b416bfe7c4c83"
     }
   },
   "peer": {
@@ -585,7 +585,7 @@
     "AA_first_to_AD_author_final_seconds": 1691.057212,
     "independent_peer_inclusive_seconds": 950.194924,
     "root_initial_normal_build_seconds": 19.36002899998857,
-    "current_normal_build_seconds": 19.36002899998857,
+    "current_normal_build_seconds": 19.4581743000017,
     "overlapping_intervals_not_summed": true,
     "preflight_freezing_merges_helper_corrections_annotations_queue_and_publication_separate": true,
     "speedup_claim": false

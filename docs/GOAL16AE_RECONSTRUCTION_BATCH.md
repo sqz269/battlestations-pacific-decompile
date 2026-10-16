@@ -1,0 +1,11 @@
+# GOAL16AE gen_codes reconstruction batch
+
+The complete Native gen_codes__prov00BCF140 body is118B/44 instructions/five conditional branches. Its private Source body contains all118B; the genuine returning public cdecl CALL adapter adds22B/9 instructions. Two Source functions total140B/53 instructions; only one Native118B function receives credit.
+
+Independent MAX review accepted author `85d7c0875e843310ec1fc11234ebc24212d5e9a5` without a Source correction. Root normal Win32 build `514b19058ede674a44a1c124f6632cc6f81bb632` passed three existing checks in19.458s. Complete current COFF sections, symbol/aux/string/relocation/padding metadata, actual project/compile records and the real Core member were verified. The adapter's sole REL32 CALL operand+15 binds the defined private body; no unresolved helper/global or fake export exists. Both complete archive dictionaries uniquely resolve41 selected publics across19 whole modules6593B; all18 prior whole objects6453B remain byte unchanged.
+
+Actual SS:ESP indexed accesses, scratch/read/store ordering, partialSI, two WORD additions, DWORD increment/AX store, inline reversal, signed wrapping traversal and real saved/control/transport aliases remain explicit. Public/private/Original are returning-capable; raw aliases may redirect the inner RET or skip the adapter suffix. The Source CALL supplies its actual current frame, rather than a copied or borrowed Original frame. No universal safe-return/full ABI/fault/SEH/concurrency/caller/game claim follows.
+
+Ghidra evidence is saved under the write lock. Correct provisional name, old approximate128B inventory, original prototype and no_return=false remain unchanged; affected export and index are refreshed. New Source types were not applied as recovered Original types. No selected body, new test or probe was executed. Combined tracked Native coverage is23functions2227B:20 whole exact1466B, prior instruction mapping529B and prior two prefix/body mappings232B.
+
+The [batch report](../reports/goal16ae_reconstruction_batch.json) pins author/peer/Root evidence and separate clocks. Preparation, freezing, helper corrections, review wait, Main refresh and publication costs are retained separately; overlapping intervals are not summed and no measured speedup is claimed.
