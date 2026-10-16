@@ -1,0 +1,279 @@
+{
+  "batch": "GOAL15K",
+  "status": "complete_raw_parent_source_registered_build_and_archive_fixtures_verified",
+  "validated_source_commit": "2f4c86e1f3cad65352322fd54e73bf40e850442b",
+  "worker_commits": {
+    "constructor": "2f6ebe1d78d0ca7c46a749889d43db0d6e1f16ae",
+    "group_add": "1e272358043ab8afe9c957ceeecd50f8b0c88c25"
+  },
+  "registration_commit": "2f4c86e1f",
+  "complete_raw_entries": 2,
+  "registered_modules": [
+    "src/native_avoid_zone_construct.cpp",
+    "src/native_avoid_zone_group_add.cpp"
+  ],
+  "coverage": {
+    "native_physical_bytes": 1299,
+    "native_rows": 382,
+    "unlisted_padding_bytes": 0,
+    "branches": 34,
+    "direct_call_relocations": 22,
+    "readonly_data_relocations": 3,
+    "all25_relocation_addends_zero": true,
+    "constructor_fp_sse_rows": 81,
+    "literal_constructor_virtual_calls": 1,
+    "private_kernel_bytes": 1345,
+    "public_thunk_bytes": 36,
+    "whole_native_function_byte_equality_claim": false
+  },
+  "fresh_live_installed_pe": [
+    {
+      "address": "0041ccd0",
+      "bytes": 994,
+      "fresh_live_worker_capture_installed_pe_equal": true,
+      "sha256": "94cc108ebadce9dac8705d98d9db697191d509834451713d29d9259d8423efc1",
+      "full_capture": "local\\goal15k_constructor_live.txt"
+    },
+    {
+      "address": "0041d1e0",
+      "bytes": 305,
+      "fresh_live_worker_capture_installed_pe_equal": true,
+      "sha256": "82066e049b5d3f0d99dc9730ea6e1c8b9e816d473849d04b4b30a23cf3e2d864",
+      "full_capture": "local\\goal15k_group_live.txt"
+    }
+  ],
+  "registered_emitted_mapping": {
+    "constructor": {
+      "status": "PASS",
+      "object": "build\\win32\\bsp_core.dir\\Release\\native_avoid_zone_construct.obj",
+      "object_sha256": "00f485e12f3da4d1631d5e95a7240b4c732c2b1ae42a4586365b26469522643e",
+      "machine": "I386",
+      "native_sha256": "94cc108ebadce9dac8705d98d9db697191d509834451713d29d9259d8423efc1",
+      "native_bytes": 994,
+      "native_listed_instructions": 279,
+      "source_kernel_bytes": 1066,
+      "source_thunk_bytes": 18,
+      "instruction_kinds": {
+        "native_eh_or_frame_removed": 11,
+        "literal": 166,
+        "algorithm_cell_rebase": 43,
+        "actual_public_argument_cell": 8,
+        "current_source_phase": 1,
+        "branch": 24,
+        "genuine_provider": 14,
+        "source_literal_binding": 3,
+        "virtual_native_ebp": 6,
+        "actual_late_world_cell": 1,
+        "literal_virtual_call": 1,
+        "private_kernel_return": 1
+      },
+      "checked_branches": 24,
+      "checked_kernel_relocations": 17,
+      "all_checked_fp_operations": 81,
+      "literal_or_rebased_fp_operations": 81,
+      "virtual_ebp_fp_operations": 0,
+      "source_frame_bytes": 167,
+      "source_eh_max_state": 2,
+      "source_guard_unwind_actions": 1,
+      "source_guard_current_saved_receiver_verified": true,
+      "readonly_constant_bindings": [
+        {
+          "native_instruction": "0041cdc0",
+          "native_data": "00d7a260",
+          "symbol": "kConstructorNegativeOne",
+          "bytes": "000080bf",
+          "source_read_only": true
+        },
+        {
+          "native_instruction": "0041cedb",
+          "native_data": "00ce3880",
+          "symbol": "kConstructorSquaredDistance",
+          "bytes": "0000000000003940",
+          "source_read_only": true
+        },
+        {
+          "native_instruction": "0041cf34",
+          "native_data": "00d7a260",
+          "symbol": "kConstructorNegativeOne",
+          "bytes": "000080bf",
+          "source_read_only": true
+        }
+      ],
+      "source_sha256": {
+        "include\\bsp\\native_avoid_zone_construct.hpp": "a292882ce06233889894f2e079800ce71bd48afa2eab2eea75d6103ce3559551",
+        "src\\native_avoid_zone_construct.cpp": "7f6d24158812ed3eefc76e1af2102927961dea0c3c0689bbbb38bdebfce141fb"
+      },
+      "proof": "complete emitted Source mapping; not whole Native body/frame/FH3 equivalence"
+    },
+    "group_add": {
+      "status": "PASS",
+      "object": "build\\win32\\bsp_core.dir\\Release\\native_avoid_zone_group_add.obj",
+      "object_sha256": "6115f63fd36167246247727ee2877674e209ed15fa0514800de15c028fc2d629",
+      "native_bytes": 305,
+      "native_rows": 103,
+      "source_kernel_bytes": 279,
+      "source_thunk_bytes": 18,
+      "kinds": {
+        "native_eh_frame_removed": 11,
+        "literal": 68,
+        "actual_entity_cell_load": 1,
+        "genuine_provider": 7,
+        "branch": 10,
+        "actual_entity_cell_replace": 1,
+        "current_source_phase": 2,
+        "genuine_constructor_with_borrowed_cell_address": 1,
+        "private_kernel_return": 2
+      },
+      "checked_branches": 10,
+      "verified_kernel_call_relocations": 8,
+      "source_frame_bytes": 122,
+      "source_eh_max_state": 1,
+      "source_actual_guard_unwind_actions": 1,
+      "proof_limit": "complete emitted mapping only;constructor Source gate acceptance/actual fixture tracked separately;not Native FH3/frame/SEH/fullbyte/production identity"
+    }
+  },
+  "operand_audit": {
+    "receipt": "local/goal15k_registered_operands.json",
+    "sha256": "e2df275d47a7a891af6e849e1f2543c65b4996f7e98ea4d8750ad895f6b97ce9",
+    "exact_actual_symbols_and_readonly_native_valued_payloads": true
+  },
+  "validation": {
+    "build": "PASS scripts/build.ps1 MSVCWin32 Release",
+    "existing_ctests": {
+      "reconstructed_math": "PASS",
+      "native_math_differential": "PASS",
+      "tool_tests": "PASS"
+    },
+    "call_relationships": {
+      "constructor_report": 15,
+      "group_report": 10,
+      "constructor_markdown": 1,
+      "group_markdown": 2,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "new_tracked_tests": 0,
+    "archive_only_fixtures": {
+      "ctor": {
+        "receipt": "local/goal15k_ctor_probe_result.json",
+        "receipt_sha256": "8164a3914f79ef2b58ff3bc842a6614044dbbdf10b859ef59bb65ac5efae1757",
+        "kind": "Source fixture linked against registered archive and real current services",
+        "manifest_embedded": true,
+        "exit_code": 0,
+        "stdout": "PASS ctor real providers: actual path/layer cells, late world publication, strict25 filter, clip/winding, real saturated allocation failure and one-state array-only unwind\n",
+        "stderr": "",
+        "sha256": {
+          "J:\\PROG\\battlestations-pacific-decompile-goal15f_pod8\\local\\goal15j_avoid_constructor\\constructor_probe.cpp": "cb6a1a2e191e5c4d7b1014ca8f25bedb2c512b9e63cd8b6922a6f28de754b0d7",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15k_ctor_probe.obj": "372c86ee29f58a473852ddca02d1d8005cdce26aa36a0d8ca816aa73a45d000d",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15k_ctor_probe.exe": "d2acca0cd9cf2985011306a68c02f2b77b3504a1d1f22400fd703f53a76f5850",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "34b1c9db971ca842c80da3db2903384a10e7372f4637312d29a10fac96521993",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+        }
+      },
+      "group": {
+        "receipt": "local/goal15k_group_probe_result.json",
+        "receipt_sha256": "79c171b058d287b5d6b543b629372df41d2b08b87c106fe1b486800c51fdd8d8",
+        "kind": "Source fixture linked against registered archive and real current services",
+        "manifest_embedded": true,
+        "exit_code": 0,
+        "stdout": "PASS Source group-add real direct providers;fixture-only finite-kind/vtable ABI witness;actualargumentcell,current-unwind republication,AL44 association,growth,empty,latefailure\n",
+        "stderr": "",
+        "sha256": {
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_zone_leaf\\local\\goal15j_avoid_group_add\\group_add_probe.cpp": "80c9530177f34de7486b792229b9f2abe37b61dbddfe5ac3ebb6272cc6cf59b2",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15k_group_probe.obj": "2846963ef05be8adfe4a20534cac85894922db3840a31371099386a0a7b6793e",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15k_group_probe.exe": "d0ece1d9ba9d6108e88a79931ee09ff5cc9a0ee7a2eab686ed629ff78e06faa5",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "34b1c9db971ca842c80da3db2903384a10e7372f4637312d29a10fac96521993",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+          "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+        }
+      }
+    }
+  },
+  "fixture_scope": {
+    "constructor": [
+      "actual incoming path/layercell mutation and observable layerword count reuse",
+      "initiallynull real inputworldcell published during pointwork,then loadedlate",
+      "real dirtypose/currentSDK repair and pathreload",
+      "strict squared25 filter,actualclip/winding and rawrecords",
+      "genuine saturatedFFFFFFFF allocationfailure;arrayonly cleanup withcount/cap/pendingrecord behavior retained"
+    ],
+    "group": [
+      "real rawgetter beforekindcheck and actual incomingentityword replacement",
+      "genuineconstructor/clip/winding,growth0to2/spare/2to6 andoutsideworldempty cleanup",
+      "fixture-only finite Source-vtable0x47/0x44 AL routing andthreeancestor reload",
+      "real nestedbad_alloc with actualincomingword republished toalternateallocation;ctorfreesarray,parentfreesCURRENTword",
+      "postdisarm realgroupgrowth failure retainsconstructedzone/prepublishedcapacity"
+    ],
+    "predicate_boundary": "Caller-owned finite callable Source-vtable witness only;not recoveredNativepredicate,class,factory or productionpolicy"
+  },
+  "independent_reviews": {
+    "constructor": "zone_leaf_max independently checkedall994B/279rows,NativeCFGdepths,81FP,24branches,14CALL+3ROdata,43local+1phase rebases,8actualargcells,6virtualEBP lowerings,lateworldvalue andcurrent-savedreceiver guard;noSourcefinding",
+    "group_add": "pod8_max independently checkedall305B/103rows,68literalrows,10branches,8zeroaddendCALLs,actualentitycells,phases/EDXforwarding/returns/current-cellguard andfinalartifacthashes;noSourcefinding",
+    "primary": "ReviewedSourceinterfaces/wrappers/generation/actualargumentlowerings/guardlifetimes/fixture scope;correcteddocinitialpublicationorder;freshlivebytes,registeredmapping/operandaudit/build/archivefixtures verified"
+  },
+  "source_boundaries": {
+    "world": "BothSourceEDX values borrow actualworld-pointer-cellADDRESS;constructorreadsCURRENTvalueonlylate;groupforwardsaddressonly",
+    "ownership": "Ctorcurrent-savedreceiver arrayfree/zero0 only,phase0throughassociation;groupCURRENTentitywordfree onlyduringctor/countread then disarm;noextra rollback/pendingrecordguard",
+    "current_cpp_eh": {
+      "constructor": {
+        "guards": 1,
+        "max_state": 2,
+        "native_max_state": 1
+      },
+      "group": {
+        "guards": 1,
+        "max_state": 1,
+        "native_max_state": 1
+      }
+    },
+    "original_prototypes": "Existing correctedOriginalECX+path/layer orentitystack signatures preserved;SourceEDXexcluded"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "old_annotations": "local/goal15h_annotations_0041ccd0.json",
+    "primary_annotation_receipt": "local/ghidra-annotations-20261016T005048Z.json",
+    "saved": true,
+    "existing_names_comments_preserved": true,
+    "affected_exports": [
+      "0041ccd0",
+      "0041d1e0",
+      "00424d00"
+    ],
+    "snapshot_index": "pending final refresh"
+  },
+  "artifacts": {
+    "source_inputs_sha256": {
+      "src\\native_avoid_zone_construct.cpp": "7f6d24158812ed3eefc76e1af2102927961dea0c3c0689bbbb38bdebfce141fb",
+      "include\\bsp\\native_avoid_zone_construct.hpp": "a292882ce06233889894f2e079800ce71bd48afa2eab2eea75d6103ce3559551",
+      "src\\native_avoid_zone_group_add.cpp": "e9134d100906569f0039f031234e224841518707bfd62e2e1d3608762cfd4abc",
+      "include\\bsp\\native_avoid_zone_group_add.hpp": "b689a7f94562849985ad0fc04442b14e95d9243c27c952e43056cbb37cda5f11"
+    },
+    "registered_and_evidence_sha256": {
+      "build\\win32\\bsp_core.dir\\Release\\native_avoid_zone_construct.obj": "00f485e12f3da4d1631d5e95a7240b4c732c2b1ae42a4586365b26469522643e",
+      "build\\win32\\bsp_core.dir\\Release\\native_avoid_zone_group_add.obj": "6115f63fd36167246247727ee2877674e209ed15fa0514800de15c028fc2d629",
+      "build/win32/Release/bsp_core.lib": "34b1c9db971ca842c80da3db2903384a10e7372f4637312d29a10fac96521993",
+      "local/goal15k_registered_build.log": "94c5d34b0c3e279b175d10f2b052daf6a00094504c204a04ecdef8c559ebc70b",
+      "local/goal15k_ctor_registered_mapping.json": "91ef96f9c9dba69ef18454d4a12c748f0cd9d409f753d3e444adb8e15b3048b9",
+      "local/goal15k_group_registered_mapping.json": "4cd30fbcad5a57f9e6dabe1bd4d0bcc92e1984b85bea1d346a9d0f779ff53c6b",
+      "local/goal15k_registered_operands.json": "e2df275d47a7a891af6e849e1f2543c65b4996f7e98ea4d8750ad895f6b97ce9"
+    }
+  },
+  "separate_open_work": [
+    "raw mapnode/count/span helper packet",
+    "fullrawtraffic49E560 and exact reset/resize/settings providers",
+    "fullrawlayout004C71C0 andwhole1666Bwriter004D5BD0",
+    "canonicalworldcell/rawgame/authoredbounds productioncomposition",
+    "manager/factoryactualSourcebinding"
+  ],
+  "limits": [
+    "NoNativeFH3/SEH/frame/localaddress/privateCRT/RTTI/exception identity",
+    "Finite fixturevtable is not a Nativepredicate/factory provider",
+    "CompleteSourceinstructionmapping does not establish wholeNativebyte/ABI dropin equality",
+    "Boundedheap observations are not global noleak proof;Nativeunguarded pendingallocations deliberately retained",
+    "No productionworld/entityadoption,Native differentialexecution,deployment orlivegameplay proof"
+  ]
+}

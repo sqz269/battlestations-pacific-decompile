@@ -100,7 +100,8 @@ reset count/capacity, roll back association or guard a pending allocation. Norma
 return performs no ownership cleanup.
 
 Source has one current C++ guard referencing the working set. On unwind it tests
-the mapped phase and reloads the current saved-receiver word before calling
+the mapped phase and reloads the current saved-receiver word. The corresponding
+Native edge is `00C5E193 JMP 00412DC0`; the Source operation is
 `free_and_clear_native_avoid_pointer_00412dc0`. The emitted current compiler frame
 has maxState2 and one guard unwind action. Its extra state, cookie, frame addresses,
 and destructor's current C++ termination policy are explicit Source EH boundaries;
