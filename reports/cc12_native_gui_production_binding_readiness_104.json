@@ -1,0 +1,597 @@
+{
+  "packet": "cc12_native_gui_production_binding_readiness_104",
+  "status": "read_only_provider_matrix_required_capability_ready_production_graph_unresolved",
+  "created_utc": "2026-10-16T05:35:59.242503+00:00",
+  "source_commit": "567cdd8d864591eadec2c8f72b989d1b561c3e57",
+  "compared_main_commit": "44b08ee2f426ca45ec791e4c4d0804d9f809082d",
+  "documentation": "docs/CC12_NATIVE_GUI_PRODUCTION_BINDING_READINESS_104.md",
+  "lease_addresses": [
+    "004c12b0",
+    "00aa6540"
+  ],
+  "scope": {
+    "source_ghidra_ledger_cmake_main_changes": false,
+    "build_test_probe": false,
+    "new_native_body_or_profile_audit": false,
+    "fresh_native_queries": 0,
+    "tracked_outputs": [
+      "docs/CC12_NATIVE_GUI_PRODUCTION_BINDING_READINESS_104.md",
+      "reports/cc12_native_gui_production_binding_readiness_104.json"
+    ]
+  },
+  "prior_body_provenance": {
+    "92": "existing raw getter/constructor/essential producer chain readiness",
+    "99": "reviewed whole00736250 teardown transport, required current scalar provider, no activation"
+  },
+  "provider_matrix": [
+    {
+      "role": "shared_manager",
+      "state": "existing_real_provider",
+      "contract": "GameNativeStringProcess manager_01090aa0; GameSingletonHost same borrowed cell; null allowed, real getter may construct",
+      "source_evidence": [
+        "include/bsp/game_native_string_process.hpp:14",
+        "src/game_hosts_singletons.cpp:18",
+        "include/bsp/game_hosts_singletons.hpp:84"
+      ]
+    },
+    {
+      "role": "raw_strings",
+      "state": "existing_real_provider",
+      "contract": "same retained GameNativeStringProcess raw_context/pool/disabled/shared-manager authority",
+      "source_evidence": [
+        "include/bsp/game_native_string_process.hpp:28",
+        "src/game_native_string_process.cpp"
+      ]
+    },
+    {
+      "role": "canonical_words",
+      "state": "existing_real_provider",
+      "contract": "GameNativeReadOnlyData data_at actual RO words/table data, not code or mutable GUI cells",
+      "source_evidence": [
+        "include/bsp/game_native_readonly_data.hpp:38"
+      ]
+    },
+    {
+      "role": "actual_resources",
+      "state": "existing_borrowed_provider_lifetime_bound",
+      "contract": "GameNativeRendererApplication actual_owners registry; Source graph survives drain but later reset",
+      "source_evidence": [
+        "include/bsp/game_native_renderer_application.hpp:137",
+        "src/game_native_renderer_application.cpp:606",
+        "src/game_hosts.cpp:1924"
+      ]
+    },
+    {
+      "role": "gui_media_publications",
+      "state": "missing_production_authority",
+      "contract": "no sole process SourceF8BC5C/F8AEF8 owner/accessor; context refs are not storage; no admitted fixed mutable pages here",
+      "source_evidence": [
+        "include/bsp/native_platform_focus_owners.hpp:13",
+        "src/game_native_mutable_crt_data.cpp:28"
+      ]
+    },
+    {
+      "role": "platform_owners_context",
+      "state": "missing_production_builder",
+      "contract": "required same manager, separate GUI/media cells, actual half/one/resources; no scratch or aliased media substitute",
+      "source_evidence": [
+        "include/bsp/native_platform_focus_owners.hpp:13"
+      ]
+    },
+    {
+      "role": "native_gui_install",
+      "state": "missing_initialization_before_registration",
+      "contract": "optional deletion slot/realD5BFCC branch exist, no assignment; must install SAME GUI lifetime before first getter can register",
+      "source_evidence": [
+        "include/bsp/native_singleton_destruction.hpp:221",
+        "src/native_singleton_destruction.cpp:110",
+        "include/bsp/game_hosts_singletons.hpp:61"
+      ]
+    },
+    {
+      "role": "current_manager_scalar",
+      "state": "required_provider_not_production_installed",
+      "contract": "packet99 required nonnull same-owners current-profile callback, no production provider/caller; actual knownD5BFCC may delegate matchingAA6540",
+      "source_evidence": [
+        "include/bsp/native_gui_manager_publication.hpp",
+        "src/native_gui_manager_publication.cpp"
+      ]
+    },
+    {
+      "role": "manager_page_services",
+      "state": "required_real_provider_missing",
+      "contract": "AA6540/AA6340 existing schedule needs separate CURRENT page20 and page04 calls; no concrete NativeGuiPageLifetimeHost found",
+      "source_evidence": [
+        "include/bsp/native_gui_media_focus_lifetime.hpp:14",
+        "include/bsp/native_gui_media_focus_lifetime.hpp:47",
+        "src/native_gui_media_focus_lifetime.cpp:118"
+      ]
+    },
+    {
+      "role": "widget_layer_services",
+      "state": "required_real_providers_missing",
+      "contract": "pure borrowed interfaces have no concrete production subclasses; whole leaves are not an admitted populated graph",
+      "source_evidence": [
+        "include/bsp/native_gui_widget_lifetime.hpp:10",
+        "include/bsp/native_gui_layer_lifetime.hpp:12"
+      ]
+    },
+    {
+      "role": "frontend_projection",
+      "state": "incompatible_with_raw_storage",
+      "contract": "semantic owner.manager flag/projection cannot substitute for raw88h publication owner",
+      "source_evidence": [
+        "src/game_hosts_frontend.cpp:471"
+      ]
+    },
+    {
+      "role": "retained_shutdown",
+      "state": "existing_anchor_missing_gui_composition",
+      "contract": "host keeps renderer/VFS/Lua through shared drain then resets renderer; GUI context/pages failure and late-getter policy absent",
+      "source_evidence": [
+        "src/game_hosts.cpp:1885",
+        "src/game_hosts.cpp:1924",
+        "src/game_native_renderer_application.cpp:871"
+      ]
+    }
+  ],
+  "source_evidence": {
+    "audit": "local/cc12_native_gui_production_binding_readiness_104_audit.json",
+    "audit_sha256": "0ed04b5c254b2cc10b2e64104fd07769bb30b6b741ac4b17a51de6e1fc4a60e6",
+    "files": [
+      {
+        "path": "include/bsp/game_native_string_process.hpp",
+        "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+        "bytes": 4306,
+        "main_working_file_sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "src/game_native_string_process.cpp",
+        "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+        "bytes": 1407,
+        "main_working_file_sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "include/bsp/game_hosts_singletons.hpp",
+        "sha256": "b3ee9447cf553409d601560d65bb21c3cd11ddab68bfefe2050ae31540628cb3",
+        "bytes": 9372,
+        "main_working_file_sha256": "b3ee9447cf553409d601560d65bb21c3cd11ddab68bfefe2050ae31540628cb3",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "sha256": "0aa58574c6b127d2964d10147059794e2005c49d64a836960f04794cc81d2dc1",
+        "bytes": 9655,
+        "main_working_file_sha256": "0aa58574c6b127d2964d10147059794e2005c49d64a836960f04794cc81d2dc1",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "include/bsp/native_platform_focus_owners.hpp",
+        "sha256": "0738ee83b33d44ee79852f115e79515a85d653452d70fc920ab63e3675c51865",
+        "bytes": 4708,
+        "main_working_file_sha256": "0738ee83b33d44ee79852f115e79515a85d653452d70fc920ab63e3675c51865",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "sha256": "f76b238d2cdbdb95dc3c7400ae00799c4a3420df04ccf9fd181444ac3177c435",
+        "bytes": 20695,
+        "main_working_file_sha256": "f76b238d2cdbdb95dc3c7400ae00799c4a3420df04ccf9fd181444ac3177c435",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "sha256": "3897f7b7187f5e0b23f1030e5cf368784aa660ec6a8e8440389c1780ce8c7a1d",
+        "bytes": 27830,
+        "main_working_file_sha256": "3897f7b7187f5e0b23f1030e5cf368784aa660ec6a8e8440389c1780ce8c7a1d",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "include/bsp/native_gui_media_focus_lifetime.hpp",
+        "sha256": "fed651ac9f3e7f0853c4754dd180dc68b1e6432afc9fe64a327caa59e8b81412",
+        "bytes": 3213,
+        "main_working_file_sha256": "fed651ac9f3e7f0853c4754dd180dc68b1e6432afc9fe64a327caa59e8b81412",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "src/native_gui_media_focus_lifetime.cpp",
+        "sha256": "06744c0d69116b56681e74ed0f92d97a0b3d583455b66ea2d458a1a0cea0c749",
+        "bytes": 6502,
+        "main_working_file_sha256": "06744c0d69116b56681e74ed0f92d97a0b3d583455b66ea2d458a1a0cea0c749",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "include/bsp/native_gui_manager_publication.hpp",
+        "sha256": "c9d14692213cdf03306a1729c232be637833efd9004694c4a7dafc702264f7c8",
+        "bytes": 2830,
+        "main_working_file_sha256": null,
+        "same_as_current_main": false,
+        "packet99_component": true
+      },
+      {
+        "path": "src/native_gui_manager_publication.cpp",
+        "sha256": "3d6e77152d36b435dccf1b4d3dcc3b241d09dc953164337ac9a144de0f067fbe",
+        "bytes": 3442,
+        "main_working_file_sha256": null,
+        "same_as_current_main": false,
+        "packet99_component": true
+      },
+      {
+        "path": "include/bsp/native_gui_widget_lifetime.hpp",
+        "sha256": "f9fe331e898de066b05cde5aba9bae1bb5e0dfccdceedb9cb8c85a286be3d286",
+        "bytes": 4515,
+        "main_working_file_sha256": "f9fe331e898de066b05cde5aba9bae1bb5e0dfccdceedb9cb8c85a286be3d286",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "include/bsp/native_gui_layer_lifetime.hpp",
+        "sha256": "dbf0d44346d847bd4c2daa86b73cdb6ec175e2553ad113ef8bbeffc444f631dd",
+        "bytes": 4093,
+        "main_working_file_sha256": "dbf0d44346d847bd4c2daa86b73cdb6ec175e2553ad113ef8bbeffc444f631dd",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "include/bsp/native_gui_page_registry.hpp",
+        "sha256": "7e0da010910435fa93d2a9609da0573f600222f212e4f3e18ff0a473b8153e53",
+        "bytes": 1917,
+        "main_working_file_sha256": "7e0da010910435fa93d2a9609da0573f600222f212e4f3e18ff0a473b8153e53",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+        "bytes": 10071,
+        "main_working_file_sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "include/bsp/game_native_renderer_application.hpp",
+        "sha256": "3380643a25c0e27bc653440c8e79dd138bb68b495dac9f386d1e7e221ef467c0",
+        "bytes": 14808,
+        "main_working_file_sha256": "3380643a25c0e27bc653440c8e79dd138bb68b495dac9f386d1e7e221ef467c0",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "sha256": "592dc2200fe3e58750a0382856b78b6e88fabd970436794faf8073ee3626722a",
+        "bytes": 54548,
+        "main_working_file_sha256": "26bd27eda6ae864b13166ccd2fd1176f8a27b4006d7791d42d8346a703e91630",
+        "same_as_current_main": false,
+        "packet99_component": false
+      },
+      {
+        "path": "include/bsp/game_native_readonly_data.hpp",
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+        "bytes": 2713,
+        "main_working_file_sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+        "bytes": 3200,
+        "main_working_file_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "src/game_native_mutable_crt_data.cpp",
+        "sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+        "bytes": 10114,
+        "main_working_file_sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "sha256": "0def461fa9c4c0ef778179b0a0115c08a04cbce26e60ec53e55fd3d7582d8e47",
+        "bytes": 41884,
+        "main_working_file_sha256": "0def461fa9c4c0ef778179b0a0115c08a04cbce26e60ec53e55fd3d7582d8e47",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "sha256": "c33d647e332f75566313a855a24a2bcb50fc1c383fc74398f3cbe5429c2b762c",
+        "bytes": 150204,
+        "main_working_file_sha256": "c33d647e332f75566313a855a24a2bcb50fc1c383fc74398f3cbe5429c2b762c",
+        "same_as_current_main": true,
+        "packet99_component": false
+      },
+      {
+        "path": "src/game_hosts_frontend.cpp",
+        "sha256": "f070b50daac6be2afeb986edfcf3bbd737bb48b827c453bb9e897a04822cc247",
+        "bytes": 57199,
+        "main_working_file_sha256": "f070b50daac6be2afeb986edfcf3bbd737bb48b827c453bb9e897a04822cc247",
+        "same_as_current_main": true,
+        "packet99_component": false
+      }
+    ],
+    "reference_queries": [
+      {
+        "name": "page_provider",
+        "argv": [
+          "rg",
+          "-n",
+          "NativeGuiPageLifetimeHost",
+          "src",
+          "include/bsp",
+          "-g",
+          "*.cpp",
+          "-g",
+          "*.hpp"
+        ],
+        "exit_code": 0,
+        "lines": 6,
+        "log": "local/cc12_native_gui_production_binding_readiness_104_page_provider.log",
+        "sha256": "119bf0a5e94ef7efbc9a6f42e912e6430fb2b998e52d5553b8ad1678fadf1781",
+        "main_exit_code": 0,
+        "main_lines": 6,
+        "main_log": "local/cc12_native_gui_production_binding_readiness_104_page_provider_main.log",
+        "main_sha256": "119bf0a5e94ef7efbc9a6f42e912e6430fb2b998e52d5553b8ad1678fadf1781",
+        "same_reference_results_as_main": true
+      },
+      {
+        "name": "widget_provider",
+        "argv": [
+          "rg",
+          "-n",
+          "NativeGuiWidgetLifetimeBindings",
+          "src",
+          "include/bsp",
+          "-g",
+          "*.cpp",
+          "-g",
+          "*.hpp"
+        ],
+        "exit_code": 0,
+        "lines": 3,
+        "log": "local/cc12_native_gui_production_binding_readiness_104_widget_provider.log",
+        "sha256": "b6b3199aeb2c713809abe885fbf9ac1b67a51e2d6b51913d7377c4ce697d1831",
+        "main_exit_code": 0,
+        "main_lines": 3,
+        "main_log": "local/cc12_native_gui_production_binding_readiness_104_widget_provider_main.log",
+        "main_sha256": "b6b3199aeb2c713809abe885fbf9ac1b67a51e2d6b51913d7377c4ce697d1831",
+        "same_reference_results_as_main": true
+      },
+      {
+        "name": "layer_provider",
+        "argv": [
+          "rg",
+          "-n",
+          "NativeGuiLayerLifetimeBindings",
+          "src",
+          "include/bsp",
+          "-g",
+          "*.cpp",
+          "-g",
+          "*.hpp"
+        ],
+        "exit_code": 0,
+        "lines": 3,
+        "log": "local/cc12_native_gui_production_binding_readiness_104_layer_provider.log",
+        "sha256": "d6f8bebdc9a5e63df6a2558e0469432ed7cdb62d91d497801e2fe1b173418305",
+        "main_exit_code": 0,
+        "main_lines": 3,
+        "main_log": "local/cc12_native_gui_production_binding_readiness_104_layer_provider_main.log",
+        "main_sha256": "d6f8bebdc9a5e63df6a2558e0469432ed7cdb62d91d497801e2fe1b173418305",
+        "same_reference_results_as_main": true
+      },
+      {
+        "name": "owners_context",
+        "argv": [
+          "rg",
+          "-n",
+          "NativePlatformFocusOwnersContext",
+          "src",
+          "include/bsp",
+          "-g",
+          "*.cpp",
+          "-g",
+          "*.hpp"
+        ],
+        "exit_code": 0,
+        "lines": 33,
+        "log": "local/cc12_native_gui_production_binding_readiness_104_owners_context.log",
+        "sha256": "74470516b162fb7faaa21a44b0179d39bfc994cb681b526f65edb32fb7a020d0",
+        "main_exit_code": 0,
+        "main_lines": 26,
+        "main_log": "local/cc12_native_gui_production_binding_readiness_104_owners_context_main.log",
+        "main_sha256": "4d7b5248e889464dbf991472575497f6c09fe13df7e262b390fcf47dbdaa776c",
+        "same_reference_results_as_main": false
+      },
+      {
+        "name": "gui_delete_binding",
+        "argv": [
+          "rg",
+          "-n",
+          "\\bnative_gui\\b",
+          "src",
+          "include/bsp",
+          "-g",
+          "*.cpp",
+          "-g",
+          "*.hpp"
+        ],
+        "exit_code": 0,
+        "lines": 4,
+        "log": "local/cc12_native_gui_production_binding_readiness_104_gui_delete_binding.log",
+        "sha256": "0f5e82b9a6ddd8a9abfe88c3abcfa3007df4820bc4ade017b1feff6952256759",
+        "main_exit_code": 0,
+        "main_lines": 4,
+        "main_log": "local/cc12_native_gui_production_binding_readiness_104_gui_delete_binding_main.log",
+        "main_sha256": "0f5e82b9a6ddd8a9abfe88c3abcfa3007df4820bc4ade017b1feff6952256759",
+        "same_reference_results_as_main": true
+      },
+      {
+        "name": "gui_media_cells",
+        "argv": [
+          "rg",
+          "-n",
+          "actual_gui_00f8bc5c|actual_media_00f8aef8",
+          "src",
+          "include/bsp",
+          "-g",
+          "*.cpp",
+          "-g",
+          "*.hpp"
+        ],
+        "exit_code": 0,
+        "lines": 6,
+        "log": "local/cc12_native_gui_production_binding_readiness_104_gui_media_cells.log",
+        "sha256": "547eb752afc8dc742956e7ac37b53ad93b18c4077027cef31021894e63050962",
+        "main_exit_code": 0,
+        "main_lines": 5,
+        "main_log": "local/cc12_native_gui_production_binding_readiness_104_gui_media_cells_main.log",
+        "main_sha256": "ffc0b4480ab2bc1167215fadfb7202a3ed06b3e0af18ae33e086d452fd4e0494",
+        "same_reference_results_as_main": false
+      },
+      {
+        "name": "production_99_binding",
+        "argv": [
+          "rg",
+          "-n",
+          "NativeGuiManagerPublicationCalls|destroy_native_gui_manager_publication_00736250",
+          "src",
+          "include/bsp",
+          "-g",
+          "game*.cpp",
+          "-g",
+          "game*.hpp"
+        ],
+        "exit_code": 1,
+        "lines": 0,
+        "log": "local/cc12_native_gui_production_binding_readiness_104_production_99_binding.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "main_exit_code": 1,
+        "main_lines": 0,
+        "main_log": "local/cc12_native_gui_production_binding_readiness_104_production_99_binding_main.log",
+        "main_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "same_reference_results_as_main": true
+      },
+      {
+        "name": "fixed_mutable_pages",
+        "argv": [
+          "rg",
+          "-n",
+          "constexpr std::uintptr_t (first_page|second_page|zero_page)",
+          "src/game_native_mutable_crt_data.cpp"
+        ],
+        "exit_code": 0,
+        "lines": 3,
+        "log": "local/cc12_native_gui_production_binding_readiness_104_fixed_mutable_pages.log",
+        "sha256": "559c66162244863d83a89b4f5b8abb7d53d56a09ac15f9240614eb4f537eaf5d",
+        "main_exit_code": 0,
+        "main_lines": 3,
+        "main_log": "local/cc12_native_gui_production_binding_readiness_104_fixed_mutable_pages_main.log",
+        "main_sha256": "559c66162244863d83a89b4f5b8abb7d53d56a09ac15f9240614eb4f537eaf5d",
+        "same_reference_results_as_main": true
+      }
+    ],
+    "main_renderer_difference": "include native_shader_global_readers;system_publication borrows real0108FE94 instead of private field; actual_owners and drain/provider lifetime sections unchanged",
+    "relevant_renderer_regions": [
+      {
+        "name": "actual_owner_accessor",
+        "same_as_current_main": true,
+        "sha256": "a3c9c4908221b938165d812fd844bfdc9e5bb75dac85b22e6f1cd0308a580580"
+      },
+      {
+        "name": "deletion_installation",
+        "same_as_current_main": true,
+        "sha256": "018eab62331c9d8258ad620182a4816436a33d527eb1849a009d39fdbaeab1d9"
+      },
+      {
+        "name": "drain",
+        "same_as_current_main": true,
+        "sha256": "9f210e6059aa7b107e04bd0e5419da50ebdc910294a9a6e4f0e4b9fcce81a760"
+      }
+    ],
+    "packet99_worker_additions_not_assumed_main_registered": true,
+    "no_concrete_page_widget_layer_provider_or_native_gui_assignment_found": true,
+    "search_boundary": "bounded exact C++ type/member/symbol references in src/include, in both worker and current Main; Source definitions reviewed, not arbitrary profile inventory"
+  },
+  "authority_limits": {
+    "retained_process_cell_is_not_provider_graph_retention": true,
+    "null_gui_after_99_does_not_end_shared_drain_obligation": true,
+    "shared_manager_may_initially_be_null": true,
+    "empty_manager_validation_proves_populated_pages": false,
+    "mutable_owner_committed_pages": [
+      "00e15000",
+      "00e16000",
+      "0109e000"
+    ],
+    "gui_media_cells_in_those_pages": false,
+    "reservation_or_analysis_zero_establishes_source_publication_authority": false,
+    "source_process_publication_role_would_establish_original_fixed_VA_or_CRT_identity": false
+  },
+  "retention_schedule_required": [
+    "establish sole actual SourceGUI and distinct media cell authorities; shared process manager may be null",
+    "prepare stable same-domain strings, canonical word/resource, page and current scalar contexts before any GUI getter entry",
+    "install SAME native_gui deletion context before first possible GUI publication/registration",
+    "retain through explicit99 current unregister/scalar and every possible shared-manager GUI deletion",
+    "do not discard binding/context merely because current GUI cell became null",
+    "after entered failure retain unresolved entire graph and prevent unsupported replay/rebind/destruction",
+    "settle Source late-getter policy before destroying renderer/page providers; permanent cells alone are insufficient"
+  ],
+  "next_packet_proposal": {
+    "kind": "required_real_provider_Source_composition_capability_only_not_production_activation",
+    "files": [
+      "include/bsp/game_native_gui_manager_domain.hpp",
+      "src/game_native_gui_manager_domain.cpp",
+      "include/bsp/game_native_string_process.hpp",
+      "src/game_native_string_process.cpp",
+      "include/bsp/game_hosts_singletons.hpp",
+      "src/game_hosts_singletons.cpp"
+    ],
+    "ownership": "sole process-owned declared GUI and separate media Source authorities; domain borrows them/sharedmanager, owns no parallel raw manager or publication global",
+    "api_plan": "explicit noncopyable stable GameNativeGuiManagerDomain prepared with real page provider, actual renderer registry/canonical words and same process strings; install before explicit getter exposure; Source99 borrows SAME owners/current scalar domain",
+    "preflight": "valid quiescent real authority and no unhandled earlier entry; same host/process manager identity; distinct honest media authority; reference/null checks do not prove graph provenance",
+    "scalar": "current reached profile/table0 target; only admitted knownD5BFCC delegates SAME actualAA6540 lifetime; no cached receiver/default/arbitrary callableVA",
+    "requires": [
+      "genuine NativeGuiPageLifetimeHost over same actual graph, never empty-only/no-op host",
+      "stable canonical/resources/strings/callback/table metadata through whole drain/failure",
+      "explicit post-drain and late-getter Source admission limits before providers can die"
+    ],
+    "no_automatic_getter_or_registration_during_prepare": true,
+    "no_Source_implementation_authorized_by104": true,
+    "fresh_task_and_leases_required": true,
+    "production_ready": false
+  },
+  "precise_production_blockers": [
+    "actual concrete current scalar/page dispatch over an admitted populated raw graph",
+    "same-domain registration/resource ordering and retained contexts through normal/fallback/failure drain",
+    "post-drain/late-getter limits tied to renderer/page/resource lifetime"
+  ],
+  "validation": {
+    "source_hash_integrity": "passed23files",
+    "bounded_reference_queries": 8,
+    "call_site_verifier": "not applicable:0newOriginalcallrows; zero-row run would add no provider proof",
+    "build_test_probe_native_execution": "not run/read-only",
+    "source_composition_or_runtime_tested": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "limits": [
+    "Source provider readiness snapshot only; prior Native body proof remains in92/99.",
+    "A required-provider binder is a capability until real populated pages/current dispatch and late lifetime are established.",
+    "No new private globals, default/no-op callbacks, typed raw-storage casts, proof tokens or count/rollback rules are endorsed.",
+    "Existing Source CRT/Win32 authorities do not establish Original CRT/TLS/heap or fixed-VA ABI."
+  ]
+}
