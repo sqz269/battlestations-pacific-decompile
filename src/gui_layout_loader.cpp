@@ -3,6 +3,7 @@
 
 #include <cctype>
 #include <cstdlib>
+#include <stdexcept>
 
 namespace bsp {
 namespace {
@@ -790,6 +791,181 @@ GuiLayoutPage* load_gui_page_00aa5840(
     auto* registered = registry.register_00aa52a0(std::move(page));
     scope.complete = true;
     return registered;
+}
+
+GuiLayoutPage* GuiPageRegistry::register_retained_00aa52a0(
+    std::unique_ptr<GuiLayoutPage>& page) {
+    if (!page) throw std::invalid_argument("Retained page registration requires its owning page");
+    std::size_t index = 0;
+    while (index != pages_.size() && pages_[index]->priority <= page->priority) ++index;
+    if (pages_.size() == pages_.max_size())
+        throw std::length_error("Retained page registry has no insertion capacity");
+    // No ownership moves until allocation succeeds. The remaining vector
+    // shifts/insertion move unique_ptrs without throwing or invoking callbacks.
+    pages_.reserve(pages_.size() + 1);
+    auto* const stored = page.get();
+    pages_.insert(pages_.begin() + static_cast<std::ptrdiff_t>(index), std::move(page));
+    return stored;
+}
+
+struct GuiRetainedPageLoadOperation::Impl {
+    GuiPageRegistry& registry;
+    GuiLayoutHost& host;
+    std::string name;
+    std::string model_path; // Callback argument storage survives entered failure.
+    std::int32_t screen_flag;
+    bool add_reference;
+    GuiRetainedPageLoadPhase phase{GuiRetainedPageLoadPhase::prepared};
+    bool host_entered{};
+    std::exception_ptr failed;
+    // Pending child dies before page/table storage in the only safe, pre-entry
+    // destruction case. Entered failed operations never destroy either graph.
+    std::unique_ptr<GuiLayoutPage> page;
+    std::unique_ptr<GuiLayoutWidget> pending_child;
+
+    Impl(GuiPageRegistry& registry_in, GuiLayoutHost& host_in, const std::string& name_in,
+        std::int32_t screen_flag_in, bool add_reference_in)
+        : registry(registry_in), host(host_in), name(name_in), screen_flag(screen_flag_in),
+          add_reference(add_reference_in) {}
+
+    const GuiTable& own_empty_properties() {
+        auto empty = std::make_shared<const GuiTable>();
+        page->retained_property_tables.push_back(empty);
+        return *empty;
+    }
+
+    void build_children(const GuiTable& table, GuiLayoutWidget& parent) {
+        for (const auto& entry : table.named) {
+            const auto type = gui_widget_type_for_key_00aa2490(entry.first);
+            if (type == GuiWidgetType::None) continue;
+            if (parent.children.size() == parent.children.max_size() ||
+                parent.transform.children.size() == parent.transform.children.max_size())
+                throw std::length_error("Retained widget child list has no insertion capacity");
+            parent.children.reserve(parent.children.size() + 1);
+            parent.transform.children.reserve(parent.transform.children.size() + 1);
+            pending_child = std::make_unique<GuiLayoutWidget>();
+            pending_child->key = entry.first;
+            pending_child->type = type;
+            pending_child->transform.type_id = static_cast<std::int32_t>(type);
+            // The persistent operation already owns this layout if native type
+            // construction publishes a before_destroy callback and then throws.
+            pending_child->node_id = host.create_widget_node(*pending_child);
+            pending_child->parent = &parent;
+            pending_child->transform.parent = &parent.transform;
+            auto& stored = *pending_child;
+            parent.transform.children.push_back(&stored.transform);
+            parent.children.push_back(std::move(pending_child));
+            host.set_node_parent(stored.node_id, parent.node_id);
+            host.on_widget_constructed(stored);
+            if (entry.second.is_table()) {
+                const auto& body = *entry.second.table();
+                stored.source = &body;
+                host.on_widget_before_properties(stored, body);
+                bind_widget_properties_00aaa710(body, stored, false,
+                    host.widescreen_enabled(), host.crt_sse2_conversion());
+                host.on_widget_base_properties_bound(stored, body);
+                build_children(body, stored);
+                host.on_widget_properties_bound(stored, body);
+            } else {
+                const auto& empty = own_empty_properties();
+                host.on_widget_before_properties(stored, empty);
+                bind_widget_properties_00aaa710(empty, stored, false,
+                    host.widescreen_enabled(), host.crt_sse2_conversion());
+                host.on_widget_base_properties_bound(stored, empty);
+                host.on_widget_properties_bound(stored, empty);
+            }
+            host.on_widget_loaded(stored);
+        }
+    }
+
+    GuiLayoutPage* run() {
+        if (auto* existing = registry.find_00aa3140(name)) {
+            if (add_reference) ++existing->reference_count;
+            phase = GuiRetainedPageLoadPhase::complete;
+            return existing;
+        }
+        page = std::make_unique<GuiLayoutPage>();
+        page->name = name;
+        page->screen_flag = static_cast<std::uint8_t>(screen_flag);
+        page->root = std::make_unique<GuiLayoutWidget>();
+        auto& root = *page->root;
+        root.key = name;
+        root.type = GuiWidgetType::Screen;
+        root.transform.type_id = static_cast<std::int32_t>(GuiWidgetType::Screen);
+        model_path = gui_page_model_path_00aa5840(name);
+        host_entered = true; // Before the first VFS/model/native callback.
+        phase = GuiRetainedPageLoadPhase::entered;
+        if (host.vfs_name_exists(model_path))
+            page->model_backed = host.instantiate_page_model(model_path);
+        root.node_id = host.create_page_root_node(root, page->model_backed, page->screen_flag);
+        page->script_table = host.evaluate_page_script(name);
+        if (page->script_table) {
+            // The SAME whole evaluated table owns every nested body. This
+            // additional anchor also survives root's destructor callback.
+            page->retained_property_tables.push_back(page->script_table);
+            const auto& table = *page->script_table;
+            page->script_evaluated = true;
+            root.source = &table;
+            host.on_widget_before_properties(root, table);
+            bind_widget_properties_00aaa710(table, root, true,
+                host.widescreen_enabled(), host.crt_sse2_conversion());
+            if (const auto* priority = table.find("Priority"))
+                gui_lua_store_value_00bd63b0(*priority,
+                    gui_lua_field(GuiLuaFieldType::Int, &page->priority), nullptr,
+                    host.crt_sse2_conversion());
+            host.on_widget_base_properties_bound(root, table);
+            build_children(table, root);
+            host.on_widget_properties_bound(root, table);
+        } else {
+            const auto& empty = own_empty_properties();
+            host.on_widget_before_properties(root, empty);
+            bind_widget_properties_00aaa710(empty, root, true,
+                host.widescreen_enabled(), host.crt_sse2_conversion());
+            host.on_widget_base_properties_bound(root, empty);
+            host.on_widget_properties_bound(root, empty);
+        }
+        host.on_page_loaded(*page);
+        auto* const registered = registry.register_retained_00aa52a0(page);
+        phase = GuiRetainedPageLoadPhase::complete;
+        return registered;
+    }
+};
+
+GuiRetainedPageLoadOperation::GuiRetainedPageLoadOperation(GuiPageRegistry& registry,
+    GuiLayoutHost& host, const std::string& name, std::int32_t screen_flag, bool add_reference)
+    : impl_(std::make_unique<Impl>(registry, host, name, screen_flag, add_reference)) {}
+GuiRetainedPageLoadOperation::~GuiRetainedPageLoadOperation() noexcept {
+    if (requires_process_retention()) std::terminate();
+}
+GuiRetainedPageLoadObservation GuiRetainedPageLoadOperation::observation() const noexcept {
+    const auto& op = *impl_;
+    return {op.phase, op.host_entered, op.page.get(),
+        op.page ? op.page->root.get() : nullptr, op.pending_child.get(),
+        op.page ? op.page->script_table.get() : nullptr,
+        op.page ? op.page->retained_property_tables.size() : 0};
+}
+bool GuiRetainedPageLoadOperation::requires_process_retention() const noexcept {
+    return impl_->host_entered && impl_->phase != GuiRetainedPageLoadPhase::complete;
+}
+const std::exception_ptr& GuiRetainedPageLoadOperation::failure() const noexcept {
+    return impl_->failed;
+}
+GuiLayoutPage* load_gui_page_retained_00aa5840(GuiPageRegistry& registry, GuiLayoutHost& host,
+    GuiRetainedPageLoadFailureSink& sink, const std::string& name,
+    std::int32_t screen_flag, bool add_reference) {
+    if (sink.interrupted_)
+        throw std::logic_error("Retained page host cannot replay after an entered load failure");
+    auto operation = std::unique_ptr<GuiRetainedPageLoadOperation>(
+        new GuiRetainedPageLoadOperation(registry, host, name, screen_flag, add_reference));
+    try {
+        return operation->impl_->run();
+    } catch (...) {
+        operation->impl_->failed = std::current_exception();
+        operation->impl_->phase = GuiRetainedPageLoadPhase::failed;
+        if (operation->requires_process_retention()) sink.interrupted_ = true;
+        sink.retain_failed_load(std::move(operation));
+        throw;
+    }
 }
 
 }  // namespace bsp

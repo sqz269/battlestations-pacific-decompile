@@ -45,6 +45,9 @@ public:
         Admission& operator=(Admission&&) noexcept;
         void cancel() noexcept;
         explicit operator bool() const noexcept { return registry_ != nullptr; }
+        // Metadata identity only, not installed/reserved-state validation.
+        // Inactive, moved or consumed admissions have no record identity.
+        const Storage* storage_identity() const noexcept { return registry_ ? storage_ : nullptr; }
         // Validate before a native allocation. Invalid/moved/consumed admission
         // throws without modifying the token, registry or native storage.
         NativeViewportRegistry& require_registry() const;

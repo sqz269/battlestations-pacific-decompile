@@ -1,0 +1,116 @@
+{
+  "packet": "cc12_native_gui_page_camera_integration_68",
+  "compiled_source_commit": "19c78db1798e9a33c43bb83ff38da386ce35b0b5",
+  "status": "retained_loader_raw_registered_camera_and_Text_current24_source_reviewed_combined_build_and_existing_normal_runtime_passed_no_native_activation",
+  "packets": [
+    {
+      "packet": 63,
+      "worker_commit": "63faa0b54cbe81ca677a3f51cb78e7d8ebc71968",
+      "primary_source_review": "pass",
+      "unchanged_worker_sources": [
+        {
+          "path": "include/bsp/gui_layout_loader.hpp",
+          "git_blob": "b16407b8bd24f8aa066ec6bc6aa708da0d552b52",
+          "sha256": "0497e95cef5f88058d2a93c76cc4c4729b88e74f06aa19b81c992f94d26c8790"
+        },
+        {
+          "path": "src/gui_layout_loader.cpp",
+          "git_blob": "f36c65efd1b0743e436f551165dd9923fd7c711b",
+          "sha256": "9622ac2c7b4495026e484ab32245cc3a42dca51e575912cb81b87358ba940fcf"
+        }
+      ]
+    },
+    {
+      "packet": 66,
+      "worker_commit": "9c43e904dc6a32aec1d0142fd69a7b06c6f3f7d8",
+      "primary_source_review": "pass",
+      "unchanged_worker_sources": [
+        {
+          "path": "include/bsp/gui_camera_store_owner.hpp",
+          "git_blob": "75264818591ed24607e9edd67fa54a2bd904a439",
+          "sha256": "6a6f2b7dc4fddff6e1c7b3d816f2b9703e7afb19652431c01f9188d50288c073"
+        },
+        {
+          "path": "src/gui_camera_store_owner.cpp",
+          "git_blob": "c6a597406028d02433c2b0ca0e11a225a49ad1e1",
+          "sha256": "ab064dcccc09e492ebea516c78454d2003ed8cf641183e0201f98e96f3ee50a3"
+        },
+        {
+          "path": "include/bsp/native_viewport_registry.hpp",
+          "git_blob": "da7e8a658aa25ebbaf8f8e9271345a89cb0accea",
+          "sha256": "87db0f0a52558628412795fff953c28fecea5eda91fbc79588c2e6d817187f16"
+        }
+      ]
+    },
+    {
+      "packet": 67,
+      "worker_commit": "14598b9753952c046353d9bae24bf3b1c85cc466",
+      "primary_source_review": "pass",
+      "unchanged_worker_sources": [
+        {
+          "path": "include/bsp/gui_layout_finished.hpp",
+          "git_blob": "23dd265b55d29149f3942c4e323cde30057abfbf",
+          "sha256": "177096f2c15b209ba569a0bda492f90afdcbb83d4ae0f429c38a4da26cc3d20c"
+        },
+        {
+          "path": "src/gui_layout_finished.cpp",
+          "git_blob": "f89e9e5dff4168b5c57bab0eb582ac6a1c39e27f",
+          "sha256": "49e31b0fdd50343ffd65d9629cdf23829608479ebd19b0f20be9ad309831e351"
+        }
+      ]
+    }
+  ],
+  "build": {
+    "script": "./scripts/build.ps1",
+    "exit_code": 0,
+    "tests_passed": 3,
+    "tests_total": 3,
+    "ctest_seconds": 13.97,
+    "frozen_inputs": 103
+  },
+  "worker_source_cases": {
+    "63": "One throwing GuiLayoutHost Source fixture retains same operation/root/pending child/tables; cleanup0, legacy hook0, future entry blocked; fflush/_Exit0, not native retirement",
+    "66": "One actual raw-string/camera pool and installed viewport record Source lifetime case; same count1/2/1/0, viewport retained through camera, terminal retirement, quiescent forget/name cleanup/slot reuse; controlled renderer and CRT policy",
+    "67": "No new test; live verified Text slot targets already recovered one-byte RET, concrete type admission only"
+  },
+  "runtime": {
+    "case": "runtime_01",
+    "exe_sha256": "730f8f7550783e28c42c66605eb2c7008e8b41eebb803d29876e736e9aa71443",
+    "exit_code": 0,
+    "resolution": [
+      800,
+      600
+    ],
+    "ticks": 2,
+    "presents": 1,
+    "presents_skipped": 1,
+    "native_fonts": 6,
+    "sprite_text_glyph_quads": 55,
+    "fonts_retired_before_41_slot_shared_drain": true,
+    "renderer_worker_joined": true,
+    "final_COM": {
+      "device": 0,
+      "api": 0
+    },
+    "screenshot_visually_inspected": true,
+    "native_Text_or_Screen_drawing_activated": false,
+    "retained_loader_raw_camera_or_native_Text24_route_activated": false,
+    "gameplay_validated": false,
+    "launcher_checkout_HEAD_is_not_compiler_provenance": true
+  },
+  "limits": [
+    "63 opt-in path is Source ownership transport; real native host, successful native publication, nested failure runtime and normal retirement remain unproved",
+    "66 retains metadata after interruption; recovered callees may already consume/end cleanup states, so no reserved/live record or native liveness promise",
+    "Native count/pool/view and controlled service case is not actual D3D/Original CRT selector or FH3 fault equivalence",
+    "Normal screenshot/runtime exercises existing legacy loader and sprite bridge; no full native page activation or Original ABI/gameplay proof"
+  ],
+  "original_installed_exe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "original_unchanged_after_run": true,
+  "evidence": {
+    "archive": "local\\cc12_native_gui_page_camera_integration_68\\evidence_family.zip",
+    "archive_sha256": "dbd841ed1d82ccb9a4910b5da6041d4053cc1cabbca096edd9710264a517d9a0",
+    "manifest_sha256": "a55c8ad93d63498b55776cc0848bbcb6b38a4f8ad0e45ede05455790dfd565d5",
+    "payloads": 119,
+    "payload_hashes_verified": true
+  }
+}

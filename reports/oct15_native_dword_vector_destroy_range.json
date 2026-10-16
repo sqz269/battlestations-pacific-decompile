@@ -1,0 +1,1361 @@
+{
+  "packet": "oct15_native_dword_vector_destroy_range",
+  "worker": "agent/oct15_avoid_distance",
+  "created_utc": "2026-10-16T01:37:39.496609+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis": true,
+  "Ghidra_mutation": false,
+  "source": "src/native_dword_vector_destroy_range.cpp",
+  "header": "include/bsp/native_dword_vector_destroy_range.hpp",
+  "documentation": "docs/OCT15_NATIVE_DWORD_VECTOR_DESTROY_RANGE.md",
+  "owned_addresses": [
+    "004d49b0",
+    "004d9e40"
+  ],
+  "source_sha256": {
+    "src/native_dword_vector_destroy_range.cpp": "809a56a3efba2e6aea9e76cb40871c491c2d7f03b495da3480c4076b73a8ab00",
+    "include/bsp/native_dword_vector_destroy_range.hpp": "0ba209d14c599cbe8bc325a96c7034e6be68172b498dfdcb3a09f7792825b792"
+  },
+  "functions": [
+    {
+      "address": "004d49b0",
+      "kind": "whole_ordinary_function",
+      "native_name_preserved": "STL_inst_004d49b0",
+      "implementation": "destroy_native_dword_vector_header_range_004d49b0",
+      "source_api": "void __fastcall destroy_native_dword_vector_header_range_004d49b0(void* first, const void* last, uint32_t unused_metadata0, uint32_t unused_metadata1);",
+      "new_name_is_hypothesis": true,
+      "native_abi": "ECXfirst,EDXlast,two ignored physical stackmetadata words;RET8.",
+      "native_return": "Empty retains ambient EAX; otherwise last captured-null backing or incidental void-free residue.",
+      "Source_return": "void; no semantic ambient EAX result/input.",
+      "coverage": "complete54B/25instructions",
+      "schedule": [
+        "Capture last before first; compare captured endpoints; empty skips every header load/free/store.",
+        "Capture DWORD[current+4] once; if nonzero actual currentCRTfree that captured pointer.",
+        "Then unconditional ordered volatileDWORD clears at+4,+8,+0Ch; no direct+0 access or null-current skip.",
+        "Native wrapping32-bit current+10h and equality against fixed last, forward."
+      ],
+      "local_EH": null,
+      "extra_guards_or_rollback": false
+    },
+    {
+      "address": "004d9e40",
+      "kind": "whole_ordinary_function",
+      "native_name_preserved": "STL_TagDispatch_004d9e40",
+      "implementation": "destroy_native_dword_vector_header_range_dispatch_004d9e40",
+      "source_api": "void __stdcall destroy_native_dword_vector_header_range_dispatch_004d9e40(void* first, const void* last);",
+      "new_name_is_hypothesis": true,
+      "native_abi": "Two physical stacked inputs first,last;RET8. IncomingECX is pushed only as dead metadata, not an owner dereference.",
+      "native_schedule": "Read stacklast twice before dead pushes; push capturedlast then ambientECX; read first afterpushes; invoke core;RET8.",
+      "Source_dead_metadata": "Both child stackmetadata words canonically zero, with explicit private-frame/dead-register qualification; no semantic owner/input invented.",
+      "native_return": "Empty retains initiallast in EAX; nonempty incidental core/free residue.",
+      "Source_return": "void",
+      "coverage": "complete22B/7instructions",
+      "local_EH": null
+    }
+  ],
+  "calls": [
+    {
+      "address": "004d49c8",
+      "native": "00bf65ac",
+      "function": "004d49b0",
+      "kind": "call"
+    },
+    {
+      "address": "004d9e4e",
+      "native": "004d49b0",
+      "function": "004d9e40",
+      "kind": "call"
+    }
+  ],
+  "native_proof": {
+    "utc": "2026-10-16T01:36:20.699081+00:00",
+    "read_only": true,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "typed_capture": "local\\oct15_native_dword_vector_destroy_range_typed_flow.json",
+    "typed_capture_sha256": "34cffe32389a8a45945015c16cae0b7910ba3f1c6cbae0cf4ff50abd06e20940",
+    "typed_capture_modification": "3167",
+    "installed_PE": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "capstone": "5.0.7",
+    "units": [
+      {
+        "entry": "004d49b0",
+        "byte_count": 54,
+        "instruction_count": 25,
+        "raw_hex": "53568bda8bf13bf374275733ff8d49008b46043bc7740950e8df1b720083c404897e04897e08897e0c83c6103bf375e05f5e5bc20800",
+        "sha256": "0b0cf5dd95a4c58091d690158c6f53d2e2feed4e8f0f1538863a7a24065a1d27",
+        "PE_equals_live": true,
+        "current_starts_equal_full_Capstone": true,
+        "unchanged_since_frozen_readiness": true,
+        "typed_body": {
+          "entry": {
+            "space": "ram",
+            "offset": "004d49b0"
+          },
+          "name": "STL_inst_004d49b0",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "54",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "004d49b0"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "004d49e5"
+                },
+                "length": "54"
+              }
+            ]
+          }
+        },
+        "instructions": [
+          {
+            "site": "004d49b0",
+            "length": 1,
+            "raw_hex": "53",
+            "mnemonic": "push",
+            "operands": "ebx"
+          },
+          {
+            "site": "004d49b1",
+            "length": 1,
+            "raw_hex": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "site": "004d49b2",
+            "length": 2,
+            "raw_hex": "8bda",
+            "mnemonic": "mov",
+            "operands": "ebx, edx"
+          },
+          {
+            "site": "004d49b4",
+            "length": 2,
+            "raw_hex": "8bf1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "site": "004d49b6",
+            "length": 2,
+            "raw_hex": "3bf3",
+            "mnemonic": "cmp",
+            "operands": "esi, ebx"
+          },
+          {
+            "site": "004d49b8",
+            "length": 2,
+            "raw_hex": "7427",
+            "mnemonic": "je",
+            "operands": "0x4d49e1"
+          },
+          {
+            "site": "004d49ba",
+            "length": 1,
+            "raw_hex": "57",
+            "mnemonic": "push",
+            "operands": "edi"
+          },
+          {
+            "site": "004d49bb",
+            "length": 2,
+            "raw_hex": "33ff",
+            "mnemonic": "xor",
+            "operands": "edi, edi"
+          },
+          {
+            "site": "004d49bd",
+            "length": 3,
+            "raw_hex": "8d4900",
+            "mnemonic": "lea",
+            "operands": "ecx, [ecx]"
+          },
+          {
+            "site": "004d49c0",
+            "length": 3,
+            "raw_hex": "8b4604",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 4]"
+          },
+          {
+            "site": "004d49c3",
+            "length": 2,
+            "raw_hex": "3bc7",
+            "mnemonic": "cmp",
+            "operands": "eax, edi"
+          },
+          {
+            "site": "004d49c5",
+            "length": 2,
+            "raw_hex": "7409",
+            "mnemonic": "je",
+            "operands": "0x4d49d0"
+          },
+          {
+            "site": "004d49c7",
+            "length": 1,
+            "raw_hex": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "site": "004d49c8",
+            "length": 5,
+            "raw_hex": "e8df1b7200",
+            "mnemonic": "call",
+            "operands": "0xbf65ac"
+          },
+          {
+            "site": "004d49cd",
+            "length": 3,
+            "raw_hex": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "site": "004d49d0",
+            "length": 3,
+            "raw_hex": "897e04",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 4], edi"
+          },
+          {
+            "site": "004d49d3",
+            "length": 3,
+            "raw_hex": "897e08",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 8], edi"
+          },
+          {
+            "site": "004d49d6",
+            "length": 3,
+            "raw_hex": "897e0c",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0xc], edi"
+          },
+          {
+            "site": "004d49d9",
+            "length": 3,
+            "raw_hex": "83c610",
+            "mnemonic": "add",
+            "operands": "esi, 0x10"
+          },
+          {
+            "site": "004d49dc",
+            "length": 2,
+            "raw_hex": "3bf3",
+            "mnemonic": "cmp",
+            "operands": "esi, ebx"
+          },
+          {
+            "site": "004d49de",
+            "length": 2,
+            "raw_hex": "75e0",
+            "mnemonic": "jne",
+            "operands": "0x4d49c0"
+          },
+          {
+            "site": "004d49e0",
+            "length": 1,
+            "raw_hex": "5f",
+            "mnemonic": "pop",
+            "operands": "edi"
+          },
+          {
+            "site": "004d49e1",
+            "length": 1,
+            "raw_hex": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "site": "004d49e2",
+            "length": 1,
+            "raw_hex": "5b",
+            "mnemonic": "pop",
+            "operands": "ebx"
+          },
+          {
+            "site": "004d49e3",
+            "length": 3,
+            "raw_hex": "c20800",
+            "mnemonic": "ret",
+            "operands": "8"
+          }
+        ],
+        "transfers": [
+          {
+            "site": "004d49c8",
+            "operation": "call",
+            "target": "0xbf65ac"
+          }
+        ],
+        "raw_live_bytes": "004d49b0  53 56 8b da 8b f1 3b f3 74 27 57 33 ff 8d 49 00  SV....;.t'W3..I.\n004d49c0  8b 46 04 3b c7 74 09 50 e8 df 1b 72 00 83 c4 04  .F.;.t.P...r....\n004d49d0  89 7e 04 89 7e 08 89 7e 0c 83 c6 10 3b f3 75 e0  .~..~..~....;.u.\n004d49e0  5f 5e 5b c2 08 00  _^[...\n",
+        "raw_current_listing": "004d49b0: PUSH EBX \n004d49b1: PUSH ESI \n004d49b2: MOV EBX,EDX \n004d49b4: MOV ESI,ECX \n004d49b6: CMP ESI,EBX \n004d49b8: JZ 0x004d49e1 \n004d49ba: PUSH EDI \n004d49bb: XOR EDI,EDI \n004d49bd: LEA ECX,[ECX] \n004d49c0: MOV EAX,dword ptr [ESI + 0x4] \n004d49c3: CMP EAX,EDI \n004d49c5: JZ 0x004d49d0 \n004d49c7: PUSH EAX \n004d49c8: CALL 0x00bf65ac \n004d49cd: ADD ESP,0x4 \n004d49d0: MOV dword ptr [ESI + 0x4],EDI \n004d49d3: MOV dword ptr [ESI + 0x8],EDI \n004d49d6: MOV dword ptr [ESI + 0xc],EDI \n004d49d9: ADD ESI,0x10 \n004d49dc: CMP ESI,EBX \n004d49de: JNZ 0x004d49c0 \n004d49e0: POP EDI \n004d49e1: POP ESI \n004d49e2: POP EBX \n004d49e3: RET 0x8 \n"
+      },
+      {
+        "entry": "004d9e40",
+        "byte_count": 22,
+        "instruction_count": 7,
+        "raw_hex": "8b4424088b54240850518b4c240ce85dabffffc20800",
+        "sha256": "fdb7dcafcbd1e1daf08098cba1554e5b48eac8473f1dc9999d9dc24fd79b46c9",
+        "PE_equals_live": true,
+        "current_starts_equal_full_Capstone": true,
+        "unchanged_since_frozen_readiness": true,
+        "typed_body": {
+          "entry": {
+            "space": "ram",
+            "offset": "004d9e40"
+          },
+          "name": "STL_TagDispatch_004d9e40",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "22",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "004d9e40"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "004d9e55"
+                },
+                "length": "22"
+              }
+            ]
+          }
+        },
+        "instructions": [
+          {
+            "site": "004d9e40",
+            "length": 4,
+            "raw_hex": "8b442408",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esp + 8]"
+          },
+          {
+            "site": "004d9e44",
+            "length": 4,
+            "raw_hex": "8b542408",
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [esp + 8]"
+          },
+          {
+            "site": "004d9e48",
+            "length": 1,
+            "raw_hex": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "site": "004d9e49",
+            "length": 1,
+            "raw_hex": "51",
+            "mnemonic": "push",
+            "operands": "ecx"
+          },
+          {
+            "site": "004d9e4a",
+            "length": 4,
+            "raw_hex": "8b4c240c",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esp + 0xc]"
+          },
+          {
+            "site": "004d9e4e",
+            "length": 5,
+            "raw_hex": "e85dabffff",
+            "mnemonic": "call",
+            "operands": "0x4d49b0"
+          },
+          {
+            "site": "004d9e53",
+            "length": 3,
+            "raw_hex": "c20800",
+            "mnemonic": "ret",
+            "operands": "8"
+          }
+        ],
+        "transfers": [
+          {
+            "site": "004d9e4e",
+            "operation": "call",
+            "target": "0x4d49b0"
+          }
+        ],
+        "raw_live_bytes": "004d9e40  8b 44 24 08 8b 54 24 08 50 51 8b 4c 24 0c e8 5d  .D$..T$.PQ.L$..]\n004d9e50  ab ff ff c2 08 00  ......\n",
+        "raw_current_listing": "004d9e40: MOV EAX,dword ptr [ESP + 0x8] \n004d9e44: MOV EDX,dword ptr [ESP + 0x8] \n004d9e48: PUSH EAX \n004d9e49: PUSH ECX \n004d9e4a: MOV ECX,dword ptr [ESP + 0xc] \n004d9e4e: CALL 0x004d49b0 \n004d9e53: RET 0x8 \n"
+      }
+    ],
+    "distinct_owned_byte_count": 76,
+    "distinct_owned_instruction_count": 32,
+    "full_normal_bodies": true,
+    "local_EH_actions": [],
+    "method": "Approved bsp.py ghidra typed-flow/bytes/disasm; offline PE32 and Capstone comparisons. No analysis/repair/mutation."
+  },
+  "native_proof_capture": "local\\oct15_native_dword_vector_destroy_range_native_proof.json",
+  "native_proof_sha256": "dda280ac25bf5b864816b8b557968dd8a8c82c2ef1f297591e768013f0e668ce",
+  "fresh_native_coverage": {
+    "distinct_owned_bytes": 76,
+    "distinct_owned_current_starts": 32,
+    "normal_ranges": 2,
+    "catch_or_action_scopes": 0,
+    "all_body_bytes_and_starts_checked": true
+  },
+  "accepted_readiness": {
+    "path": "local\\oct15_dword_vector_header_range_destroy_readiness.json",
+    "sha256": "572395ee0599b71b09b3041257617e6c5a7251f860d253958ecfbdac7805151f",
+    "unchanged": true,
+    "additional_fresh_reference_and_raw_context_coverage": "278bytes/105starts separate from76ownedB/32starts; includes accepted provider references,698380 and unlisted6982B0 raw context, not extra Source ownership."
+  },
+  "actual_binding": {
+    "direct_native_child": "00BF65AC _free",
+    "direct_Source_provider": "bsp::singleton_lifetime_free(void*) noexcept",
+    "provider_body": "src/singleton_lifetime.cpp: current std::free(pointer)",
+    "provider_source_hashes": [
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "working_file_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "HEAD_blob_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "current_Main_blob_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "working_equals_HEAD_blob_after_CRLF_normalization": true,
+        "HEAD_equals_current_Main": true
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "working_file_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "HEAD_blob_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "current_Main_blob_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "working_equals_HEAD_blob_after_CRLF_normalization": true,
+        "HEAD_equals_current_Main": true
+      }
+    ],
+    "no_callbacks_hooks_typed_count_bridge": true,
+    "no_new_allocation_model_or_temporary_header": true,
+    "accepted_layout_evidence": "Accepted557590 pin4cedeba6 owns16B raw header with opaque0 and4/8/Cstorage; source hashes recorded in immutable readiness, no new constructor byte coverage claimed."
+  },
+  "representation_and_aliasing": {
+    "storage": "raw DWORD accesses; no synthesized typed vector or object constructor",
+    "arithmetic": "sizeof(uintptr_t)==4; unsigned current+=10h preserves native32-bit wrap/equality",
+    "untouched_words": "No direct load/store of opaque+0",
+    "ordered_effects": "Each volatile load/free/ordered-store completes before next row; progressive alias effects remain visible, no snapshot",
+    "admitted_domain": [
+      "Every reached nonempty header valid/writable through free and three stores.",
+      "Nonzero captured backing belongs to admitted current CRT.",
+      "Forward wrapping32-bit equality range terminates through valid storage.",
+      "Private stack/header/free aliases and undefined faults not promoted to a C++ guarantee."
+    ],
+    "x87_or_NaN": "No x87/float operations; DWORD representation is preserved where read and untouchedopaque0 is not evaluated."
+  },
+  "historical_correction": {
+    "requested_006982b0": "No live function/instruction; raw88B37starts is unlisted erase-range context, not destruction. No Source/repair.",
+    "stale_00698380_edge": "Full accepted64B29starts has only actual6981C0 transfer; stale6982B0 edge rejected.",
+    "prior_input_configuration_adapter": "src/native_input_configuration_owner.cpp internal destroy_checked_dword_rows is consumed-contract Source only; unchanged, not promoted or refactored.",
+    "other_workstreams": "No Source69EEA0/6A1420 or parent6AA460, no whole4DC1C0/4DCA30, no697FD0 ownership."
+  },
+  "comment_preimages": "local/oct15_native_dword_vector_destroy_range_comment_preimages.json",
+  "comment_preimages_sha256": "68e1ebf68fa090c07e327122623f53eab6608a4bfb6a5892a734d363efe74c15",
+  "validation": {
+    "build": {
+      "status": "passed",
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "configuration": "MSVC Release Win32",
+      "accepted_Main_base": "b6d06e954e82400740af3b2fccdf63ed34b6a28b",
+      "source_sha256": {
+        "src/native_dword_vector_destroy_range.cpp": "809a56a3efba2e6aea9e76cb40871c491c2d7f03b495da3480c4076b73a8ab00",
+        "include/bsp/native_dword_vector_destroy_range.hpp": "0ba209d14c599cbe8bc325a96c7034e6be68172b498dfdcb3a09f7792825b792"
+      },
+      "registration": "local/oct15_native_dword_vector_destroy_range_registration.json",
+      "registration_sha256": "ee475d1396351bef7ca7f1c88dd137c5d103a2d5d6b38139ec6376cad8589f99",
+      "registration_lease_released_before_build": true,
+      "log": "local\\oct15_native_dword_vector_destroy_range_build.log",
+      "log_sha256": "07bcea4ddf1ce3f33f44dd49b0d699746e734c2929e85730e2b88b7624ee99e6",
+      "warning_codes": {
+        "LNK4006": 1
+      },
+      "warning_note": "Existing LNK4006 spawn_request_id_matches duplicate in lua_binding_spawn.obj/lua_spawn_new.obj; outside this packet."
+    },
+    "existing_suites": {
+      "status": "passed",
+      "count": 3,
+      "failed": 0,
+      "total_seconds": 7.99,
+      "results": [
+        {
+          "name": "reconstructed_math",
+          "seconds": 0.24,
+          "passed": true
+        },
+        {
+          "name": "native_math_differential",
+          "seconds": 0.04,
+          "passed": true
+        },
+        {
+          "name": "tool_tests",
+          "seconds": 7.65,
+          "passed": true
+        }
+      ],
+      "new_tests_added": false,
+      "new_API_fixture_or_native_game_proof": false
+    },
+    "emitted_Source_COFF": {
+      "method": "Complete direct COFF i386 section/symbol/relocation parse plus Capstone x86-32. Exact IMAGE_REL_I386_REL32 symbol and zero raw addend, not decoded placeholder addresses.",
+      "parser_source": "local/oct15_native_dword_vector_insert_append_coff.py",
+      "parser_source_sha256": "85b4ce51167c57e50b79d2466c2b4733432c9da4f9a2e30608ffe5a4e9832def",
+      "parser_extracted_prefix_sha256": "06ca2e6a22425d2edc3c827e3f1c244559f95bb7db7c95a7fd66b4c2d5484285",
+      "object": "build/win32/bsp_core.dir/Release/native_dword_vector_destroy_range.obj",
+      "object_sha256": "f4cf72588804602ad0a15f5381747657fcbe3d4dc0b8b0e17c7ff42e35a40901",
+      "archive": "local/oct15_native_dword_vector_destroy_range_evidence/native_dword_vector_destroy_range.obj",
+      "machine": "IMAGE_FILE_MACHINE_I386",
+      "functions": [
+        {
+          "name": "destroy_native_dword_vector_header_range_004d49b0",
+          "symbol": {
+            "name": "?destroy_native_dword_vector_header_range_004d49b0@bsp@@YIXPAXPBXII@Z",
+            "value": 0,
+            "section": 4,
+            "type": 32,
+            "storage": 2
+          },
+          "section": ".text$mn",
+          "bytes": "56578bfa8bf13bf77432660f1f4400008b460485c0740950e80000000083c404c7460400000000c7460800000000c7460c0000000083c6103bf775d45f5ec20800",
+          "code_bytes": 65,
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "offset": 1,
+              "bytes": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "offset": 2,
+              "bytes": "8bfa",
+              "mnemonic": "mov",
+              "operands": "edi, edx"
+            },
+            {
+              "offset": 4,
+              "bytes": "8bf1",
+              "mnemonic": "mov",
+              "operands": "esi, ecx"
+            },
+            {
+              "offset": 6,
+              "bytes": "3bf7",
+              "mnemonic": "cmp",
+              "operands": "esi, edi"
+            },
+            {
+              "offset": 8,
+              "bytes": "7432",
+              "mnemonic": "je",
+              "operands": "0x3c"
+            },
+            {
+              "offset": 10,
+              "bytes": "660f1f440000",
+              "mnemonic": "nop",
+              "operands": "word ptr [eax + eax]"
+            },
+            {
+              "offset": 16,
+              "bytes": "8b4604",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esi + 4]"
+            },
+            {
+              "offset": 19,
+              "bytes": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "offset": 21,
+              "bytes": "7409",
+              "mnemonic": "je",
+              "operands": "0x20"
+            },
+            {
+              "offset": 23,
+              "bytes": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "offset": 24,
+              "bytes": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x1d"
+            },
+            {
+              "offset": 29,
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 32,
+              "bytes": "c7460400000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 4], 0"
+            },
+            {
+              "offset": 39,
+              "bytes": "c7460800000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 8], 0"
+            },
+            {
+              "offset": 46,
+              "bytes": "c7460c00000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 0xc], 0"
+            },
+            {
+              "offset": 53,
+              "bytes": "83c610",
+              "mnemonic": "add",
+              "operands": "esi, 0x10"
+            },
+            {
+              "offset": 56,
+              "bytes": "3bf7",
+              "mnemonic": "cmp",
+              "operands": "esi, edi"
+            },
+            {
+              "offset": 58,
+              "bytes": "75d4",
+              "mnemonic": "jne",
+              "operands": "0x10"
+            },
+            {
+              "offset": 60,
+              "bytes": "5f",
+              "mnemonic": "pop",
+              "operands": "edi"
+            },
+            {
+              "offset": 61,
+              "bytes": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 62,
+              "bytes": "c20800",
+              "mnemonic": "ret",
+              "operands": "8"
+            }
+          ],
+          "relocations": [
+            {
+              "offset": 25,
+              "kind": 20,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "target_section": 0,
+              "target_value": 0,
+              "raw_addend": 0
+            }
+          ],
+          "returns": [
+            {
+              "offset": 62,
+              "bytes": "c20800",
+              "mnemonic": "ret",
+              "operands": "8"
+            }
+          ]
+        },
+        {
+          "name": "destroy_native_dword_vector_header_range_dispatch_004d9e40",
+          "symbol": {
+            "name": "?destroy_native_dword_vector_header_range_dispatch_004d9e40@bsp@@YGXPAXPBX@Z",
+            "value": 0,
+            "section": 6,
+            "type": 32,
+            "storage": 2
+          },
+          "section": ".text$mn",
+          "bytes": "558bec568b7508578b7d0c3bf7742d908b460485c0740950e80000000083c404c7460400000000c7460800000000c7460c0000000083c6103bf775d45f5e5dc20800",
+          "code_bytes": 66,
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "bytes": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "bytes": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "offset": 4,
+              "bytes": "8b7508",
+              "mnemonic": "mov",
+              "operands": "esi, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 7,
+              "bytes": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "offset": 8,
+              "bytes": "8b7d0c",
+              "mnemonic": "mov",
+              "operands": "edi, dword ptr [ebp + 0xc]"
+            },
+            {
+              "offset": 11,
+              "bytes": "3bf7",
+              "mnemonic": "cmp",
+              "operands": "esi, edi"
+            },
+            {
+              "offset": 13,
+              "bytes": "742d",
+              "mnemonic": "je",
+              "operands": "0x3c"
+            },
+            {
+              "offset": 15,
+              "bytes": "90",
+              "mnemonic": "nop",
+              "operands": ""
+            },
+            {
+              "offset": 16,
+              "bytes": "8b4604",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esi + 4]"
+            },
+            {
+              "offset": 19,
+              "bytes": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "offset": 21,
+              "bytes": "7409",
+              "mnemonic": "je",
+              "operands": "0x20"
+            },
+            {
+              "offset": 23,
+              "bytes": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "offset": 24,
+              "bytes": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x1d"
+            },
+            {
+              "offset": 29,
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 32,
+              "bytes": "c7460400000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 4], 0"
+            },
+            {
+              "offset": 39,
+              "bytes": "c7460800000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 8], 0"
+            },
+            {
+              "offset": 46,
+              "bytes": "c7460c00000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 0xc], 0"
+            },
+            {
+              "offset": 53,
+              "bytes": "83c610",
+              "mnemonic": "add",
+              "operands": "esi, 0x10"
+            },
+            {
+              "offset": 56,
+              "bytes": "3bf7",
+              "mnemonic": "cmp",
+              "operands": "esi, edi"
+            },
+            {
+              "offset": 58,
+              "bytes": "75d4",
+              "mnemonic": "jne",
+              "operands": "0x10"
+            },
+            {
+              "offset": 60,
+              "bytes": "5f",
+              "mnemonic": "pop",
+              "operands": "edi"
+            },
+            {
+              "offset": 61,
+              "bytes": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 62,
+              "bytes": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 63,
+              "bytes": "c20800",
+              "mnemonic": "ret",
+              "operands": "8"
+            }
+          ],
+          "relocations": [
+            {
+              "offset": 25,
+              "kind": 20,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "target_section": 0,
+              "target_value": 0,
+              "raw_addend": 0
+            }
+          ],
+          "returns": [
+            {
+              "offset": 63,
+              "bytes": "c20800",
+              "mnemonic": "ret",
+              "operands": "8"
+            }
+          ]
+        }
+      ],
+      "code_bytes": 131,
+      "instruction_starts": 47,
+      "no_local_CPP_EH_metadata": true,
+      "source_sha256": {
+        "src/native_dword_vector_destroy_range.cpp": "809a56a3efba2e6aea9e76cb40871c491c2d7f03b495da3480c4076b73a8ab00",
+        "include/bsp/native_dword_vector_destroy_range.hpp": "0ba209d14c599cbe8bc325a96c7034e6be68172b498dfdcb3a09f7792825b792"
+      },
+      "focused_checks": {
+        "machine_and_symbols": "i386 external fastcall4 core and stdcall2 dispatcher symbols; each ends RET8.",
+        "core_capture_order": "0002MOV EDI,EDX captures last before0004MOV ESI,ECX first; compare0006 and JE0008->003C skip all header/free/store work on equality.",
+        "source_input_shape": "Core never reads either ignoredmetadata stackword. CMake stdcall dispatcher balancedEBP frame, first[EBP+8] at0004 and last[EBP+0Ch] at0008, two original stacked inputs/RET8. No semantic owner. Source stackcapture/frame/deadmetadata differ from native under explicit qualification.",
+        "single_capture_conditional_actual_free": "0010MOV EAX,[ESI+4] exactly once pervisit;0013TESTEAX;0015JE0020 skips0017PUSHEAX/0018 actual singleton_lifetime_free relocation;001DADDESP4.",
+        "unconditional_ordered_clears": "0020 MOVDWORD[ESI+4],0;0027 MOVDWORD[ESI+8],0;002E MOVDWORD[ESI+0Ch],0. Both returning paths join before first store.",
+        "wrap_and_forward_equality": "0035 ADDESI10h;0038 CMPESI,EDI;003A JNE0010. Captured end remains EDI. No signed range guard, null-header skip, count bridge or direct opaque+0 access.",
+        "dispatcher_composition": "CMake inlines Source core: dispatcher66B/25starts, same44B loop0010..003B and actualfree rel32symbol as core65B/22starts. Canonical deadmetadata are eliminated under inlining; no fake callee/noop.",
+        "no_EH_callbacks_or_extra_cleanup": "No local C++EH/try/catch/unwindtable symbols; each codebody has exactly one actualfree reference; no header hooks/callbacks/pool/rollback/no-op or extraelement provider.",
+        "coverage_boundary": "Actual CMake131B/47 complete emitted starts, full symbols/relocations/dumpbin, exactcore and loop comparison to authorizedadhoc; buildexisting3/3passed7.99s. No new API-specific fixture or original binaryABI/game proof.",
+        "adhoc_vs_CMake": "Entire fastcallcore code/relocation identical; stdcall prologue/epilogue differs, complete cleanup-loop bytes/actualprovider identical. BothactualentryRET8 with correct decoratedcallingconvention."
+      },
+      "dumpbin": {
+        "local/oct15_native_dword_vector_destroy_range_coff.asm": "d007799b7012cb679cbd53e948a5b8048eb1bf84f28e05f95d6c46a253086fed",
+        "local/oct15_native_dword_vector_destroy_range_coff.relocations.txt": "3a8d15c30dcd052f2933a1a31e10893d84e123eb29c62c22cad364dc437a862e",
+        "local/oct15_native_dword_vector_destroy_range_coff.symbols.txt": "7f295611b0fe15a2ab8a0a4886228d86cc551dd44b8da8a5c8543c00a6b600c5"
+      },
+      "limits": "Current Source calling shapes and emitted effects only; not original CRT/private-frame/FH3/SEH/fault/incidental EAX/flags/drop-in ABI/game proof. Existing suites do not exercise these new APIs specifically.",
+      "scope": "Actual configured CMake Release Win32 object from required ./scripts/build.ps1; all three existing suites passed.",
+      "comparison_to_authorized_adhoc": {
+        "capture": "local\\oct15_native_dword_vector_destroy_range_adhoc_coff.json",
+        "sha256": "6c1db2c64a8ddbc5c19b566af378363a7501f663f03cd6454ddb30a66a4ce647",
+        "core_entire65B_22starts_and_relocations_identical": true,
+        "dispatcher_loop0010_to003b_inclusive_and_actualfree_relocation_identical": true,
+        "actual_dispatcher": "66B/25starts: EBP frame, first[EBP+8], last[EBP+0Ch], equalityJE003C, one alignmentNOP; same44B loop; POPEBP beforeRET8.",
+        "adhoc_dispatcher": "65B/22starts: ESP-relative first/last capture, no EBP frame; same44B loop/target.",
+        "private_frame_difference_is_not_native_ABI_equivalence": true
+      },
+      "configured_CMake_compile_settings": [
+        {
+          "condition": "'$(Configuration)|$(Platform)'=='Release|Win32'",
+          "settings": {
+            "AdditionalOptions": "%(AdditionalOptions) /external:I \"J:/PROG/battlestations-pacific-decompile-oct15_avoid_distance/build/win32/_deps/dxsdk_d3dx-src/build/native/include\"",
+            "LanguageStandard": "stdcpp17",
+            "Optimization": "MaxSpeed",
+            "RuntimeLibrary": "MultiThreadedDLL",
+            "DebugInformationFormat": "\n      "
+          }
+        }
+      ]
+    },
+    "transfer_checks": {
+      "status": "passed",
+      "command": "python tools/verify_report_calls.py reports/oct15_native_dword_vector_destroy_range.json docs/OCT15_NATIVE_DWORD_VECTOR_DESTROY_RANGE.md",
+      "report_rows": 2,
+      "Markdown_claims": 2,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "log": "local\\oct15_native_dword_vector_destroy_range_call_checks.log",
+      "log_sha256": "fa653a868abce6a741f037bd95381e346c24d0d6bcb4c63faef975b82d3a5736"
+    },
+    "git_diff_check": {
+      "status": "passed_staged_and_working",
+      "commands": [
+        "git diff --cached --check",
+        "git diff --check"
+      ]
+    },
+    "primary_review": {
+      "status": "early_full_Source_header_review_passed_no_findings; immutable_pin_and_emitted_code_review_pending",
+      "reviewer": "/root",
+      "utc": "2026-10-16T01:38:41.682902+00:00",
+      "reviewed_sha256": {
+        "src/native_dword_vector_destroy_range.cpp": "809a56a3efba2e6aea9e76cb40871c491c2d7f03b495da3480c4076b73a8ab00",
+        "include/bsp/native_dword_vector_destroy_range.hpp": "0ba209d14c599cbe8bc325a96c7034e6be68172b498dfdcb3a09f7792825b792"
+      },
+      "scope": "Full Source/header vs complete native schedule; capture conditionalfree and orderedvolatileclears, +10/equality, canonical deadmetadata and void/EAX limits.",
+      "early_Source_native_checks": 8
+    },
+    "new_tests_added": false,
+    "adhoc_object_only": {
+      "method": "Complete direct COFF i386 section/symbol/relocation parse plus Capstone x86-32. Exact IMAGE_REL_I386_REL32 symbol and zero raw addend, not decoded placeholder addresses.",
+      "parser_source": "local/oct15_native_dword_vector_insert_append_coff.py",
+      "parser_source_sha256": "85b4ce51167c57e50b79d2466c2b4733432c9da4f9a2e30608ffe5a4e9832def",
+      "parser_extracted_prefix_sha256": "c8fe70c07543ef5286322c6a9b32b004cbc70363ae55b67e3a56b980070bc3ec",
+      "object": "local/native_dword_vector_destroy_range_probe.obj",
+      "object_sha256": "7e799444de7b14346273afc01dbb2774ac82ce0bafdd2e3964e6abe18f00785a",
+      "archive": "local/oct15_native_dword_vector_destroy_range_evidence/native_dword_vector_destroy_range_probe.obj",
+      "machine": "IMAGE_FILE_MACHINE_I386",
+      "functions": [
+        {
+          "name": "destroy_native_dword_vector_header_range_004d49b0",
+          "symbol": {
+            "name": "?destroy_native_dword_vector_header_range_004d49b0@bsp@@YIXPAXPBXII@Z",
+            "value": 0,
+            "section": 4,
+            "type": 32,
+            "storage": 2
+          },
+          "section": ".text$mn",
+          "bytes": "56578bfa8bf13bf77432660f1f4400008b460485c0740950e80000000083c404c7460400000000c7460800000000c7460c0000000083c6103bf775d45f5ec20800",
+          "code_bytes": 65,
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "offset": 1,
+              "bytes": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "offset": 2,
+              "bytes": "8bfa",
+              "mnemonic": "mov",
+              "operands": "edi, edx"
+            },
+            {
+              "offset": 4,
+              "bytes": "8bf1",
+              "mnemonic": "mov",
+              "operands": "esi, ecx"
+            },
+            {
+              "offset": 6,
+              "bytes": "3bf7",
+              "mnemonic": "cmp",
+              "operands": "esi, edi"
+            },
+            {
+              "offset": 8,
+              "bytes": "7432",
+              "mnemonic": "je",
+              "operands": "0x3c"
+            },
+            {
+              "offset": 10,
+              "bytes": "660f1f440000",
+              "mnemonic": "nop",
+              "operands": "word ptr [eax + eax]"
+            },
+            {
+              "offset": 16,
+              "bytes": "8b4604",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esi + 4]"
+            },
+            {
+              "offset": 19,
+              "bytes": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "offset": 21,
+              "bytes": "7409",
+              "mnemonic": "je",
+              "operands": "0x20"
+            },
+            {
+              "offset": 23,
+              "bytes": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "offset": 24,
+              "bytes": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x1d"
+            },
+            {
+              "offset": 29,
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 32,
+              "bytes": "c7460400000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 4], 0"
+            },
+            {
+              "offset": 39,
+              "bytes": "c7460800000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 8], 0"
+            },
+            {
+              "offset": 46,
+              "bytes": "c7460c00000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 0xc], 0"
+            },
+            {
+              "offset": 53,
+              "bytes": "83c610",
+              "mnemonic": "add",
+              "operands": "esi, 0x10"
+            },
+            {
+              "offset": 56,
+              "bytes": "3bf7",
+              "mnemonic": "cmp",
+              "operands": "esi, edi"
+            },
+            {
+              "offset": 58,
+              "bytes": "75d4",
+              "mnemonic": "jne",
+              "operands": "0x10"
+            },
+            {
+              "offset": 60,
+              "bytes": "5f",
+              "mnemonic": "pop",
+              "operands": "edi"
+            },
+            {
+              "offset": 61,
+              "bytes": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 62,
+              "bytes": "c20800",
+              "mnemonic": "ret",
+              "operands": "8"
+            }
+          ],
+          "relocations": [
+            {
+              "offset": 25,
+              "kind": 20,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "target_section": 0,
+              "target_value": 0,
+              "raw_addend": 0
+            }
+          ],
+          "returns": [
+            {
+              "offset": 62,
+              "bytes": "c20800",
+              "mnemonic": "ret",
+              "operands": "8"
+            }
+          ]
+        },
+        {
+          "name": "destroy_native_dword_vector_header_range_dispatch_004d9e40",
+          "symbol": {
+            "name": "?destroy_native_dword_vector_header_range_dispatch_004d9e40@bsp@@YGXPAXPBX@Z",
+            "value": 0,
+            "section": 6,
+            "type": 32,
+            "storage": 2
+          },
+          "section": ".text$mn",
+          "bytes": "568b742408578b7c24103bf7742e66908b460485c0740950e80000000083c404c7460400000000c7460800000000c7460c0000000083c6103bf775d45f5ec20800",
+          "code_bytes": 65,
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "offset": 1,
+              "bytes": "8b742408",
+              "mnemonic": "mov",
+              "operands": "esi, dword ptr [esp + 8]"
+            },
+            {
+              "offset": 5,
+              "bytes": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "offset": 6,
+              "bytes": "8b7c2410",
+              "mnemonic": "mov",
+              "operands": "edi, dword ptr [esp + 0x10]"
+            },
+            {
+              "offset": 10,
+              "bytes": "3bf7",
+              "mnemonic": "cmp",
+              "operands": "esi, edi"
+            },
+            {
+              "offset": 12,
+              "bytes": "742e",
+              "mnemonic": "je",
+              "operands": "0x3c"
+            },
+            {
+              "offset": 14,
+              "bytes": "6690",
+              "mnemonic": "nop",
+              "operands": ""
+            },
+            {
+              "offset": 16,
+              "bytes": "8b4604",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esi + 4]"
+            },
+            {
+              "offset": 19,
+              "bytes": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "offset": 21,
+              "bytes": "7409",
+              "mnemonic": "je",
+              "operands": "0x20"
+            },
+            {
+              "offset": 23,
+              "bytes": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "offset": 24,
+              "bytes": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x1d"
+            },
+            {
+              "offset": 29,
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 32,
+              "bytes": "c7460400000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 4], 0"
+            },
+            {
+              "offset": 39,
+              "bytes": "c7460800000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 8], 0"
+            },
+            {
+              "offset": 46,
+              "bytes": "c7460c00000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 0xc], 0"
+            },
+            {
+              "offset": 53,
+              "bytes": "83c610",
+              "mnemonic": "add",
+              "operands": "esi, 0x10"
+            },
+            {
+              "offset": 56,
+              "bytes": "3bf7",
+              "mnemonic": "cmp",
+              "operands": "esi, edi"
+            },
+            {
+              "offset": 58,
+              "bytes": "75d4",
+              "mnemonic": "jne",
+              "operands": "0x10"
+            },
+            {
+              "offset": 60,
+              "bytes": "5f",
+              "mnemonic": "pop",
+              "operands": "edi"
+            },
+            {
+              "offset": 61,
+              "bytes": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 62,
+              "bytes": "c20800",
+              "mnemonic": "ret",
+              "operands": "8"
+            }
+          ],
+          "relocations": [
+            {
+              "offset": 25,
+              "kind": 20,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "target_section": 0,
+              "target_value": 0,
+              "raw_addend": 0
+            }
+          ],
+          "returns": [
+            {
+              "offset": 62,
+              "bytes": "c20800",
+              "mnemonic": "ret",
+              "operands": "8"
+            }
+          ]
+        }
+      ],
+      "code_bytes": 130,
+      "instruction_starts": 44,
+      "no_local_CPP_EH_metadata": true,
+      "source_sha256": {
+        "src/native_dword_vector_destroy_range.cpp": "809a56a3efba2e6aea9e76cb40871c491c2d7f03b495da3480c4076b73a8ab00",
+        "include/bsp/native_dword_vector_destroy_range.hpp": "0ba209d14c599cbe8bc325a96c7034e6be68172b498dfdcb3a09f7792825b792"
+      },
+      "focused_checks": {
+        "machine_and_symbols": "i386 external fastcall4 core and stdcall2 dispatcher symbols; each ends RET8.",
+        "core_capture_order": "0002MOV EDI,EDX captures last before0004MOV ESI,ECX first; compare0006 and JE0008->003C skip all header/free/store work on equality.",
+        "source_input_shape": "Core never reads either ignored metadata stackword. Dispatcher reads first after one callee-save push at0001[ESP+8], then last after two at0006[ESP+10h]; normal two stacked inputs/RET8. Source stack read order/private frame differs from native and is explicitly qualified.",
+        "single_capture_conditional_actual_free": "0010MOV EAX,[ESI+4] exactly once pervisit;0013TESTEAX;0015JE0020 skips0017PUSHEAX/0018 actual singleton_lifetime_free relocation;001DADDESP4.",
+        "unconditional_ordered_clears": "0020 MOVDWORD[ESI+4],0;0027 MOVDWORD[ESI+8],0;002E MOVDWORD[ESI+0Ch],0. Both returning paths join before first store.",
+        "wrap_and_forward_equality": "0035 ADDESI10h;0038 CMPESI,EDI;003A JNE0010. Captured end remains EDI. No signed range guard, null-header skip, count bridge or direct opaque+0 access.",
+        "dispatcher_composition": "Optimizer inlines the exact Source core into stdcall dispatcher: each65B/22starts, identical loop bytes0010..0040 and identical actualfree rel32symbol. Dead canonical metadata disappear under inlining; no fake helper or public private-frame ABI added.",
+        "no_EH_callbacks_or_extra_cleanup": "No local C++EH/try/catch/unwindtable symbols; each codebody has exactly one actualfree reference; no header hooks/callbacks/pool/rollback/no-op or extraelement provider.",
+        "coverage_boundary": "Adhoc130B/44 complete emitted starts plus full symbol/relocation/dumpbin captures; later CMake object and existing three suites still required."
+      },
+      "dumpbin": {
+        "local/oct15_native_dword_vector_destroy_range_adhoc_coff.asm": "76f94ee6d404e72d5547fee58e79e523ca1f7fe8e3b69186ecdddbc9ebb0e3e3",
+        "local/oct15_native_dword_vector_destroy_range_adhoc_coff.relocations.txt": "bd645063315a4f2fc7b5f87b26b4100f5e1044f3caa0a2f4c6d48cfeafd40236",
+        "local/oct15_native_dword_vector_destroy_range_adhoc_coff.symbols.txt": "45f5a9cfdb391554fe6a0bc636347784f7ba8896211c4058853c6bf83e29e2c5"
+      },
+      "limits": "Current Source calling shapes and emitted effects only; not original CRT/private-frame/FH3/SEH/fault/incidental EAX/flags/drop-in ABI/game proof. Existing suites do not exercise these new APIs specifically.",
+      "scope": "Explicitly authorized ad hoc optimized object-only /c compile; not the CMake build or test-suite result.",
+      "compile": {
+        "command": "Launch-VsDevShell.ps1 -Arch x86 -HostArch x64 -SkipAutomaticLocation -NoLogo; cl /nologo /c /O2 /EHsc /std:c++20 /Iinclude /Folocal/native_dword_vector_destroy_range_probe.obj src/native_dword_vector_destroy_range.cpp",
+        "compiler": "MSVC19.51.36244 Hostx64/x86",
+        "log": "local/oct15_native_dword_vector_destroy_range_adhoc_compile.log",
+        "log_sha256": "564194230eb9c1b5621eccaa163632a60cce0e9907e16340ce94ff75860994bb",
+        "exit_code": 0,
+        "executable_created": false,
+        "build_or_suite_claim": false
+      }
+    },
+    "adhoc_object_capture": {
+      "path": "local\\oct15_native_dword_vector_destroy_range_adhoc_coff.json",
+      "sha256": "6c1db2c64a8ddbc5c19b566af378363a7501f663f03cd6454ddb30a66a4ce647"
+    },
+    "emitted_Source_capture": {
+      "path": "local\\oct15_native_dword_vector_destroy_range_coff.json",
+      "sha256": "dbac8c6d586d4fd3b45edd3d4b119c30628b0acbb1b75ad3746573e4ed748522"
+    },
+    "index": {
+      "status": "rebuilt_after_address_ledger_edits",
+      "command": "python tools/bsp.py index --if-stale"
+    },
+    "frozen_early_review_hashes_match_built_object": true,
+    "packet_lease_retained": "oct15_native_dword_vector_destroy_range",
+    "CMake_registration_lease_released": "oct15_native_dword_vector_destroy_range_cmake"
+  },
+  "limits": [
+    "New CurrentCpp/CRT services, not original allocator/FH3/SEH/fault or game equivalence.",
+    "No drop-in ABI or original private frame alias validation; void Source excludes incidental EAX/flags.",
+    "No local EH; parent exception scopes/actions remain caller-owned.",
+    "No Source readiness or ownership promotion of whole parent algorithms."
+  ],
+  "documentation_sha256": "9838fedd1543e276b6d53d2ce789a91393eebb9a9ebd82d7d1880205e00ea1b3",
+  "finalized_utc": "2026-10-16T02:00:59.570687+00:00"
+}

@@ -1,0 +1,97 @@
+{
+  "packet": "cc12_native_screen_constructor_readiness_69",
+  "status": "read_only_original_and_source_audit_complete_next_script_continuation_72_conditionally_approved",
+  "requested_root": "f025c2315d3e370a7730839e898cad438a4e3d70",
+  "worker_merge": "dd434c96459fe74ac8c4afc7db16c5df0356068d",
+  "merge_exit_code": 0,
+  "document": "docs/CC12_NATIVE_SCREEN_CONSTRUCTOR_READINESS_69.md",
+  "ownership": {
+    "written": ["docs/CC12_NATIVE_SCREEN_CONSTRUCTOR_READINESS_69.md", "reports/cc12_native_screen_constructor_readiness_69.json"],
+    "source_mutation": false,
+    "ghidra_mutation": false,
+    "ledger_mutation": false,
+    "cmake_or_normal_activation": false
+  },
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_live_batches": true,
+    "tools": ["bsp.py lookup/callees/docs-for", "bsp.py show pseudocode", "bsp.py show --asm", "bsp.py show --asm --live for EH funclets", "bsp.py ghidra proto/bytes"],
+    "parent": {
+      "range": "[00ac6600,00ac6879)",
+      "bytes": 633,
+      "instructions": 162,
+      "abi": "ECX actual124h page; stack actual8h name-header pointer / actual node pointer / share-scene DWORD slot (low byte meaningful); EAX same page; RET0C at AC6876",
+      "argument_evidence": ["AC662C name ESP+508", "AC66A4 byte ESP+510", "AC66AB node ESP+50C and AC670F AA6720", "AA593F/40/41 pushes flag/node/name, AA5944 calls parent"],
+      "live_ghidra_prototype": "undefined(void), stale and not authoritative",
+      "current_raw_frontier": "[AC6600,AC6714), awaiting_lua_continuation/EH1, not finished page"
+    },
+    "source_snapshots": [
+      {"path": "include/bsp/native_gui_page_construction.hpp", "git_blob": "2fc7bc3a3ec5ee169c213bc8c9ddea93354fa37d"},
+      {"path": "src/native_gui_page_construction.cpp", "git_blob": "ae178d527b036dca7fddfe7a23333573e0876822"},
+      {"path": "include/bsp/native_lua_objects.hpp", "git_blob": "05f2faddc5a19c66efc3b18faef0a7c3301258be"},
+      {"path": "src/native_lua_reader.cpp", "git_blob": "6afa19cf20c03c8f509624b793d2c62edaa1da47"}
+    ],
+    "actual_literals": {"D5CB18": "interface/", "CFD2C8": ".lua", "D5CB64": "_Common", "D5CB24": "GuiScreen"},
+    "parent_eh": {
+      "handler": "CB8A93..CB8A9D: MOV EAX,DEFA98; JMP BF6B43",
+      "map": "DEFA98 maxState7/unwindMap DEFABC",
+      "states": [
+        {"state": 0, "previous": -1, "action": "CB8A40: saved page -> AA9730"},
+        {"state": 1, "previous": 0, "action": "CB8A4B: page+100 -> 41DD20"},
+        {"state": 2, "previous": 1, "action": "CB8A5C: actual4C8h owner -> B669A0"},
+        {"state": 3, "previous": 2, "action": "CB8A67: reused path8h -> 41DD20"},
+        {"state": 4, "previous": 2, "action": "CB8A72: SAME path8h -> 41DD20"},
+        {"state": 5, "previous": 2, "action": "CB8A7D: reader -> 441A20"},
+        {"state": 6, "previous": 2, "action": "CB8A88: reader -> 410600, CE374C base store only"}
+      ],
+      "limit": "evidence of Original state map, not an implementation of native FH3 or permission to replay cleanup after interrupted Lua C frames"
+    }
+  },
+  "ready_genuine_source": [
+    {"entry": "AA9390/AA6720", "status": "actual widget base and SAME raw node binding used by existing prefix"},
+    {"entry": "AA9730", "source": "src/native_gui_widget_lifetime.cpp:132", "status": "complete raw schedule; fresh prefix cleanup supported with real required bindings, no pool/name cleanup"},
+    {"entry": "B66BD0/B6A020", "source": "native_lua_objects/native_lua_bootstrap", "status": "actual4C8h NativeLuaStateStorage and raw construct/open with real bootstrap inputs"},
+    {"entry": "B69D40/B66CA0", "source": "native_lua_file_loading", "status": "actual Lua owner file/override path; real VFS/DoFile services required"},
+    {"entry": "B67980/4425C0/BD8E20/BD7A20/441A20", "source": "native_lua_objects/native_lua_reader", "status": "actual14h tracked objects and reader, bounded successful raw vector domain"},
+    {"entry": "B6D890", "status": "genuine raw root propagation on SAME node/scene domain"},
+    {"entry": "B669A0", "status": "actual raw owner close; not a general interrupted-Lua restoration contract"},
+    {"entry": "GameNativeLuaServices", "status": "existing live process globals/fundamentals/VFS binding with Activation, bootstrap and files providers"}
+  ],
+  "first_missing_raw_callee": {
+    "root_assignment": "packet71, independent former63 worker",
+    "functions": [
+      {"range": "[AC5600,AC576E)", "bytes": 366, "abi": "ECX actual OUT header; stack BY-VALUE8h name consumed by callee; EAX out; RET8"},
+      {"range": "[AC5770,AC57D2)", "bytes": 98, "abi": "ECX actual page; stack actual out; EAX out; RET4; copies page+100 to consumed by-value name"}
+    ],
+    "current_source": "std::string path and GuiLeafHost wrapper only, no actual header/pool/EH path",
+    "reusable_dependencies": ["raw resize/41E870/41DD20", "raw concat4261A0 in native_physical_file_date", "SAME NativeStringRawPoolContext", "actual literal pointers"],
+    "path_eh": "CB8899 -> DEF83C, maxState5/map DEF860; state0 output-bit cleanup CB8880, state1 by-value input CB8860, state2/3/4 suffix/prefix/join CB8868/70/78; output bit armed only after second concat returns",
+    "coordination": "exact ABI/EH evidence sent to Root and71 worker; no69 claims or Source edits overlap71"
+  },
+  "later_named_incomplete_dependencies": [
+    {"entry": "D5BE38+18 = AC4C50", "status": "raw whole property body absent; GuiScreenLayerImplementation::before_properties is semantic projection"},
+    {"entry": "AAA710", "status": "raw prefix+interaction covers [AAA710,AAACD4); enumeration/children/epilogue still missing"},
+    {"entry": "AA52A0", "status": "ready raw registry body requires completed actual124h page; cannot publish this prefix/script stage"},
+    {"entry": "AC5480/AA38F0", "status": "raw retirement independently audited by70; outside69/72 scope"}
+  ],
+  "proposed_next_parent_packet": {
+    "number": 72,
+    "root_status": "approved in principle after69 closes, subject to real agreed71 API and concrete frame/lifetime proposal before edit",
+    "range": "[AC6714,AC67CC)",
+    "bytes": 184,
+    "new_sources": ["include/bsp/native_gui_page_script_continuation.hpp", "src/native_gui_page_script_continuation.cpp"],
+    "minimal_existing_sources": ["include/bsp/native_gui_page_construction.hpp: append awaiting_reader_continuation without renumbering old Phase values; stale-comment correction", "src/native_gui_page_construction.cpp: stale missing-AA9730 comment only"],
+    "analysis_ownership": ["AC6600 continuation [AC6714,AC67CC)", "parent EH CB8A40..CB8A9D and DEFA98/DEFABC read-only evidence; no CRT body duplication"],
+    "api_shape": "existing prefix acquired record + caller-retained NativeGuiPageScriptContinuation + context borrowing SAME string/raw-path domains, actual Lua bootstrap/file services and actual Common literal",
+    "backing": "REAL uninitialized NativeLuaStateStorage4C8h, SAME8h path output, exact by-value name and71 nested failure/cleanup frames; no padded callable object/std::string/copy owner",
+    "order": ["B66BD0 -> state2 -> B6A020(mask65)", "41E870 Common by-value ->71 AC5600 -> state3 -> B69D40(flag0) -> state2 before one-shot path return", "71 AC5770(page+100) -> state4 -> B69D40(flag0) -> state2 before one-shot path return"],
+    "normal_return": "AC67CC/EH2, Lua remains OPEN, prefix awaits reader continuation, page unfinished and unpublishable",
+    "interruption": "sticky metadata-only retention; actual owner/headers/consumed states preserved; no invented restoration/retry/unconditional close or whole-parent native EH equivalence",
+    "dependencies": ["packet71 real APIs/implementation", "existing raw Lua/services and SAME application VFS/string lifetime", "current raw page prefix"],
+    "excluded": ["AC4C50/AAA710 calls", "page publication", "loader/current24", "camera/directional bodies", "normal activation/CMake/main"],
+    "future_validation": "canonical build and one focused genuine-service script-stage case; no broad suite or completed-page claim"
+  },
+  "stale_notes_to_correct_only_in_future_owned_packet": ["AC6600 old argument prose and AA5931 callsite", "live Ghidra undefined(void) prototype", "prefix comments saying AA9730 body is missing", "old GuiScreen literal D5CB20 vs actual D5CB24"],
+  "validation": {"new_tests": false, "new_build": false, "new_runtime_or_drawing": false, "method": "bounded current source/ledger plus verified Original listing/bytes and caller/EH evidence"}
+}

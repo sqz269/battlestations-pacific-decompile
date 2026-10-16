@@ -1,0 +1,1444 @@
+{
+  "batch": "oct15_twentysecond_reconstruction_batch",
+  "status": "source_integrated_main_primary_reviewed_default_win32_build_and_static_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "scope": {
+    "complete_ordinary_entries": [
+      "004d49b0",
+      "004d9e40",
+      "006980e0",
+      "00698350",
+      "0069eea0",
+      "006a1420",
+      "006a0770",
+      "006a1230"
+    ],
+    "ordinary_entries": 8,
+    "ordinary_bytes": 532,
+    "ordinary_starts": 208,
+    "lexical_catch": {
+      "entry": "0069816e",
+      "bytes": 39,
+      "starts": 15
+    },
+    "logical_actions": {
+      "entries": [
+        "00c7ec30",
+        "00c7ec38"
+      ],
+      "bytes": 25,
+      "starts": 9,
+      "effects": "actual privateempty-header cleanup plus qualified inert literalRET action; not public Native EBP helpers"
+    },
+    "distinct_owned_bytes_within_batch": 596,
+    "distinct_owned_starts_within_batch": 232,
+    "supporting_bodies_producers_rawEH_and_compiled_Source_counted_separately": true,
+    "no_global_unique_coverage_increment_over_prior_typed_AV_domains_claimed": true
+  },
+  "components": [
+    {
+      "packet": "oct15_native_dword_vector_transfer_range",
+      "pin": "d0533ca68f373842c62b249a392dc36978d43163",
+      "owned_bytes": 280,
+      "owned_starts": 104,
+      "source": "src/native_dword_vector_transfer_range.cpp",
+      "header": "include/bsp/native_dword_vector_transfer_range.hpp",
+      "report": "reports/oct15_native_dword_vector_transfer_range.json",
+      "report_sha256": "4c47bc21271622d0ed8cd0e360b68d2aba9ada1c32be0a2ee86506fd9c0b38d9",
+      "documentation": "docs/OCT15_NATIVE_DWORD_VECTOR_TRANSFER_RANGE.md",
+      "primary_checks": 14,
+      "primary_review": {
+        "path": "local/oct15_transfer_twentysecond_primary_review.json",
+        "sha256": "22d3a0a4326e8d8b14b725d11d08b360f35303d007c451c63fdbc1f78290aada",
+        "evidence": {
+          "packet": "oct15_native_dword_vector_transfer_range",
+          "pin": "d0533ca68f373842c62b249a392dc36978d43163",
+          "review_type": "primary Source and independent fresh Native review",
+          "checks": [
+            "Complete Source/header and all104 ownedNative instructions reviewed; logicalactions/catch remain nonordinary with explicit Source scopes.",
+            "Privateemptyheader initializesonly4/8/C; actual557590 constructsnonnulloutput from CURRENT privateempty, not publicsource.",
+            "Nulloutput skips only constructor; subsequent rawpublicswap accesses still occur, no nullfallback.",
+            "Each4/8/C pair loads source thenoutput and storesoutput thensource before nextpair; no snapshot/copybacking substitute.",
+            "Outputcursor advances BEFORE finalsourcecapacitystore; completedoutput publishes afterswap and input advancesafterward.",
+            "Normalprivatebegin capturedconditionalactualfree stays insideprefixtry whiletemporarycleanuparmed; disarmonlyafterfreereturns.",
+            "Current noexceptrawfree provider limitation explicit; no throwingadapter/claimednativefree-originEH equivalence.",
+            "Catch capturesinitial/completedend, loadsownerbitsONLYnonempty, tidiescompletedprefix forward viaactualD29D0 thenbarethrow.",
+            "Outer exceptional scope invokesactual CURRENT privateheaderCDCE0afterprefixcatch; no normaltidy/reset replaces literalfree.",
+            "InertC7EC38 effectelidedonlyvalidprivateframe/literal401130RET and full5stateEHproof; no publicEBP/noophelper.",
+            "Core fastcallfirstECX/lastEDX+4stack/RET10 returnsadvancedoutput; dispatcherstdcall3/RET0C returns ACTUAL coreEAX.",
+            "Canonicaldeadowner/tag0 and duplicateoutputbits qualified; actualconstructor/tidy/freeproviders retained, no semanticownerinvented.",
+            "Exact112B FuncInfo/try/catch/unwind DWORDs prove guardednormalfree and exceptionaltemporarycleanup states.",
+            "Fresh291PE/livebytes107currentstarts including11B3support; owned280B104 remains separate. Providerhashes equal Main."
+          ],
+          "findings": [],
+          "fresh_bytes": 291,
+          "fresh_starts": 107,
+          "owned_bytes": 280,
+          "owned_starts": 104,
+          "fresh_units": [
+            {
+              "address": "006980e0",
+              "bytes": 142,
+              "starts": 51,
+              "sha256": "2f4dffd9b1b8dba22b1da9b4045e4664e9e315fb1edf7953b60afd076ca1b72b",
+              "PE_equals_live": true
+            },
+            {
+              "address": "00698198",
+              "bytes": 37,
+              "starts": 15,
+              "sha256": "4d59fefcbcb6e7343de614922661a666fe0d6a6c551c50d6a0c8f122a4de0ba4",
+              "PE_equals_live": true
+            },
+            {
+              "address": "0069816e",
+              "bytes": 15,
+              "starts": 6,
+              "sha256": "55fac7e9e625de07c217f6fc0a816573dfcbbf6c013f7bd23063d7d0ea5ae98b",
+              "PE_equals_live": true
+            },
+            {
+              "address": "00698180",
+              "bytes": 24,
+              "starts": 9,
+              "sha256": "b1a62c0f3b1e325de3d00dc7a778bdac4bc2b922490e8e0502454e475d7aec1f",
+              "PE_equals_live": true
+            },
+            {
+              "address": "00698350",
+              "bytes": 37,
+              "starts": 14,
+              "sha256": "6cc6c9d8b554c27f4ae5c54d0f6c39a1c71011c08915cd3210e16133391b9061",
+              "PE_equals_live": true
+            },
+            {
+              "address": "00c7ec30",
+              "bytes": 8,
+              "starts": 2,
+              "sha256": "e36aa569bb3cac400629077fbf42639caf8553de28c0c2e2f9ca236793f2bed6",
+              "PE_equals_live": true
+            },
+            {
+              "address": "00c7ec38",
+              "bytes": 17,
+              "starts": 7,
+              "sha256": "60e5331cb308ed601765c98a291fd220e179c0fb8fd8f9fe5974197bcd4de4d5",
+              "PE_equals_live": true
+            },
+            {
+              "address": "00c7ec49",
+              "bytes": 10,
+              "starts": 2,
+              "sha256": "ad05b75b5616fa42576a05395e707b5ea9871aa9337ab275ea2b1b4d0fcb3e7f",
+              "PE_equals_live": true
+            },
+            {
+              "address": "00401130",
+              "bytes": 1,
+              "starts": 1,
+              "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+              "PE_equals_live": true
+            }
+          ],
+          "fresh_listing": [
+            {
+              "address": "006980e0",
+              "instruction": "push ebp"
+            },
+            {
+              "address": "006980e1",
+              "instruction": "mov ebp, esp"
+            },
+            {
+              "address": "006980e3",
+              "instruction": "push -1"
+            },
+            {
+              "address": "006980e5",
+              "instruction": "push 0xc7ec49"
+            },
+            {
+              "address": "006980ea",
+              "instruction": "mov eax, dword ptr fs:[0]"
+            },
+            {
+              "address": "006980f0",
+              "instruction": "push eax"
+            },
+            {
+              "address": "006980f1",
+              "instruction": "mov dword ptr fs:[0], esp"
+            },
+            {
+              "address": "006980f8",
+              "instruction": "sub esp, 0x24"
+            },
+            {
+              "address": "006980fb",
+              "instruction": "push ebx"
+            },
+            {
+              "address": "006980fc",
+              "instruction": "push esi"
+            },
+            {
+              "address": "006980fd",
+              "instruction": "mov esi, dword ptr [ebp + 8]"
+            },
+            {
+              "address": "00698100",
+              "instruction": "push edi"
+            },
+            {
+              "address": "00698101",
+              "instruction": "mov edi, ecx"
+            },
+            {
+              "address": "00698103",
+              "instruction": "xor ecx, ecx"
+            },
+            {
+              "address": "00698105",
+              "instruction": "mov dword ptr [ebp - 0x10], esp"
+            },
+            {
+              "address": "00698108",
+              "instruction": "mov dword ptr [ebp - 0x14], edx"
+            },
+            {
+              "address": "0069810b",
+              "instruction": "mov dword ptr [ebp - 0x18], esi"
+            },
+            {
+              "address": "0069810e",
+              "instruction": "mov dword ptr [ebp - 0x2c], ecx"
+            },
+            {
+              "address": "00698111",
+              "instruction": "mov dword ptr [ebp - 0x28], ecx"
+            },
+            {
+              "address": "00698114",
+              "instruction": "mov dword ptr [ebp - 0x24], ecx"
+            },
+            {
+              "address": "00698117",
+              "instruction": "mov dword ptr [ebp - 4], ecx"
+            },
+            {
+              "address": "0069811a",
+              "instruction": "mov bl, 1"
+            },
+            {
+              "address": "0069811c",
+              "instruction": "cmp edi, dword ptr [ebp - 0x14]"
+            },
+            {
+              "address": "0069811f",
+              "instruction": "mov byte ptr [ebp - 4], bl"
+            },
+            {
+              "address": "00698122",
+              "instruction": "je 0x698198"
+            },
+            {
+              "address": "00698124",
+              "instruction": "mov dword ptr [ebp - 0x1c], esi"
+            },
+            {
+              "address": "00698127",
+              "instruction": "mov dword ptr [ebp - 0x20], esi"
+            },
+            {
+              "address": "0069812a",
+              "instruction": "cmp esi, ecx"
+            },
+            {
+              "address": "0069812c",
+              "instruction": "mov byte ptr [ebp - 4], 2"
+            },
+            {
+              "address": "00698130",
+              "instruction": "je 0x69813f"
+            },
+            {
+              "address": "00698132",
+              "instruction": "lea eax, [ebp - 0x30]"
+            },
+            {
+              "address": "00698135",
+              "instruction": "push eax"
+            },
+            {
+              "address": "00698136",
+              "instruction": "mov ecx, esi"
+            },
+            {
+              "address": "00698138",
+              "instruction": "call 0x557590"
+            },
+            {
+              "address": "0069813d",
+              "instruction": "xor ecx, ecx"
+            },
+            {
+              "address": "0069813f",
+              "instruction": "mov edx, dword ptr [edi + 4]"
+            },
+            {
+              "address": "00698142",
+              "instruction": "mov eax, dword ptr [esi + 4]"
+            },
+            {
+              "address": "00698145",
+              "instruction": "mov dword ptr [esi + 4], edx"
+            },
+            {
+              "address": "00698148",
+              "instruction": "mov dword ptr [edi + 4], eax"
+            },
+            {
+              "address": "0069814b",
+              "instruction": "mov edx, dword ptr [edi + 8]"
+            },
+            {
+              "address": "0069814e",
+              "instruction": "mov eax, dword ptr [esi + 8]"
+            },
+            {
+              "address": "00698151",
+              "instruction": "mov dword ptr [esi + 8], edx"
+            },
+            {
+              "address": "00698154",
+              "instruction": "mov dword ptr [edi + 8], eax"
+            },
+            {
+              "address": "00698157",
+              "instruction": "mov edx, dword ptr [edi + 0xc]"
+            },
+            {
+              "address": "0069815a",
+              "instruction": "mov eax, dword ptr [esi + 0xc]"
+            },
+            {
+              "address": "0069815d",
+              "instruction": "mov dword ptr [esi + 0xc], edx"
+            },
+            {
+              "address": "00698160",
+              "instruction": "add esi, 0x10"
+            },
+            {
+              "address": "00698163",
+              "instruction": "mov dword ptr [edi + 0xc], eax"
+            },
+            {
+              "address": "00698166",
+              "instruction": "mov dword ptr [ebp + 8], esi"
+            },
+            {
+              "address": "00698169",
+              "instruction": "add edi, 0x10"
+            },
+            {
+              "address": "0069816c",
+              "instruction": "jmp 0x69811c"
+            },
+            {
+              "address": "00698198",
+              "instruction": "mov eax, dword ptr [ebp - 0x2c]"
+            },
+            {
+              "address": "0069819b",
+              "instruction": "cmp eax, ecx"
+            },
+            {
+              "address": "0069819d",
+              "instruction": "je 0x6981a8"
+            },
+            {
+              "address": "0069819f",
+              "instruction": "push eax"
+            },
+            {
+              "address": "006981a0",
+              "instruction": "call 0xbf65ac"
+            },
+            {
+              "address": "006981a5",
+              "instruction": "add esp, 4"
+            },
+            {
+              "address": "006981a8",
+              "instruction": "mov ecx, dword ptr [ebp - 0xc]"
+            },
+            {
+              "address": "006981ab",
+              "instruction": "pop edi"
+            },
+            {
+              "address": "006981ac",
+              "instruction": "mov eax, esi"
+            },
+            {
+              "address": "006981ae",
+              "instruction": "pop esi"
+            },
+            {
+              "address": "006981af",
+              "instruction": "mov dword ptr fs:[0], ecx"
+            },
+            {
+              "address": "006981b6",
+              "instruction": "pop ebx"
+            },
+            {
+              "address": "006981b7",
+              "instruction": "mov esp, ebp"
+            },
+            {
+              "address": "006981b9",
+              "instruction": "pop ebp"
+            },
+            {
+              "address": "006981ba",
+              "instruction": "ret 0x10"
+            },
+            {
+              "address": "0069816e",
+              "instruction": "mov esi, dword ptr [ebp - 0x18]"
+            },
+            {
+              "address": "00698171",
+              "instruction": "mov edi, dword ptr [ebp + 8]"
+            },
+            {
+              "address": "00698174",
+              "instruction": "cmp esi, edi"
+            },
+            {
+              "address": "00698176",
+              "instruction": "je 0x69818f"
+            },
+            {
+              "address": "00698178",
+              "instruction": "mov ebx, dword ptr [ebp + 0xc]"
+            },
+            {
+              "address": "0069817b",
+              "instruction": "jmp 0x698180"
+            },
+            {
+              "address": "00698180",
+              "instruction": "push esi"
+            },
+            {
+              "address": "00698181",
+              "instruction": "mov ecx, ebx"
+            },
+            {
+              "address": "00698183",
+              "instruction": "call 0x4d29d0"
+            },
+            {
+              "address": "00698188",
+              "instruction": "add esi, 0x10"
+            },
+            {
+              "address": "0069818b",
+              "instruction": "cmp esi, edi"
+            },
+            {
+              "address": "0069818d",
+              "instruction": "jne 0x698180"
+            },
+            {
+              "address": "0069818f",
+              "instruction": "push 0"
+            },
+            {
+              "address": "00698191",
+              "instruction": "push 0"
+            },
+            {
+              "address": "00698193",
+              "instruction": "call 0xbf6885"
+            },
+            {
+              "address": "00698350",
+              "instruction": "push ecx"
+            },
+            {
+              "address": "00698351",
+              "instruction": "mov edx, dword ptr [esp + 0x10]"
+            },
+            {
+              "address": "00698355",
+              "instruction": "mov byte ptr [esp], 0"
+            },
+            {
+              "address": "00698359",
+              "instruction": "mov eax, dword ptr [esp]"
+            },
+            {
+              "address": "0069835c",
+              "instruction": "push eax"
+            },
+            {
+              "address": "0069835d",
+              "instruction": "mov eax, dword ptr [esp + 0x14]"
+            },
+            {
+              "address": "00698361",
+              "instruction": "push edx"
+            },
+            {
+              "address": "00698362",
+              "instruction": "mov edx, dword ptr [esp + 0x14]"
+            },
+            {
+              "address": "00698366",
+              "instruction": "push ecx"
+            },
+            {
+              "address": "00698367",
+              "instruction": "mov ecx, dword ptr [esp + 0x14]"
+            },
+            {
+              "address": "0069836b",
+              "instruction": "push eax"
+            },
+            {
+              "address": "0069836c",
+              "instruction": "call 0x6980e0"
+            },
+            {
+              "address": "00698371",
+              "instruction": "pop ecx"
+            },
+            {
+              "address": "00698372",
+              "instruction": "ret 0xc"
+            },
+            {
+              "address": "00c7ec30",
+              "instruction": "lea ecx, [ebp - 0x30]"
+            },
+            {
+              "address": "00c7ec33",
+              "instruction": "jmp 0x4cdce0"
+            },
+            {
+              "address": "00c7ec38",
+              "instruction": "mov eax, dword ptr [ebp - 0x1c]"
+            },
+            {
+              "address": "00c7ec3b",
+              "instruction": "push eax"
+            },
+            {
+              "address": "00c7ec3c",
+              "instruction": "mov ecx, dword ptr [ebp - 0x20]"
+            },
+            {
+              "address": "00c7ec3f",
+              "instruction": "push ecx"
+            },
+            {
+              "address": "00c7ec40",
+              "instruction": "call 0x401130"
+            },
+            {
+              "address": "00c7ec45",
+              "instruction": "add esp, 8"
+            },
+            {
+              "address": "00c7ec48",
+              "instruction": "ret "
+            },
+            {
+              "address": "00c7ec49",
+              "instruction": "mov eax, 0xdaba60"
+            },
+            {
+              "address": "00c7ec4e",
+              "instruction": "jmp 0xbf6b43"
+            },
+            {
+              "address": "00401130",
+              "instruction": "ret "
+            }
+          ],
+          "fresh_CALLs": [
+            {
+              "address": "00698138",
+              "native": "00557590"
+            },
+            {
+              "address": "006981a0",
+              "native": "00bf65ac"
+            },
+            {
+              "address": "00698183",
+              "native": "004d29d0"
+            },
+            {
+              "address": "00698193",
+              "native": "00bf6885"
+            },
+            {
+              "address": "0069836c",
+              "native": "006980e0"
+            },
+            {
+              "address": "00c7ec40",
+              "native": "00401130"
+            }
+          ],
+          "fresh_external_JMPs": [
+            {
+              "address": "00c7ec33",
+              "native": "004cdce0",
+              "kind": "tail_jump"
+            },
+            {
+              "address": "00c7ec4e",
+              "native": "00bf6b43",
+              "kind": "tail_jump"
+            }
+          ],
+          "EH": {
+            "address": "00daba3c",
+            "bytes": 112,
+            "sha256": "74a87f850e9b8a2991559caa69b5734db7317d0dc7b0350651387bf785283379",
+            "DWORDs": [
+              64,
+              0,
+              0,
+              6914414,
+              1,
+              3,
+              4,
+              1,
+              14334524,
+              429065506,
+              5,
+              14334596,
+              1,
+              14334540,
+              0,
+              0,
+              0,
+              1,
+              4294967295,
+              13102128,
+              0,
+              0,
+              1,
+              13102136,
+              1,
+              0,
+              0,
+              0
+            ],
+            "PE_equals_live": true
+          },
+          "current_starts_capture": "local/oct15_transfer_twentysecond_current_starts.json",
+          "provider_fingerprints": {
+            "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+            "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+            "include/bsp/native_dword_vector_copy_construct.hpp": "ecf2b1d9cb256fef9047e0b8f235c88874177fe9b1d28e4d6cc1add1a53bf693",
+            "src/native_dword_vector_copy_construct.cpp": "4de974411b51e59d30cd1b5822439ef2dd87545f58e787ff46ef3b6df1ea5336",
+            "include/bsp/native_word_vector_tidy.hpp": "76f071a110765cec357421060880e85e1213311f16d886a087439f6c26161079",
+            "src/native_word_vector_tidy.cpp": "5da425f344175e2fb4e143450d76c9184b6dfa83be36dc0c5b49b9c1d32dd998"
+          },
+          "reviewed_files_sha256": {
+            "src/native_dword_vector_transfer_range.cpp": "eaaaa59dc2cdc7c47063b780dedf0c1438aae0af64053c8786fb22060f6efd00",
+            "include/bsp/native_dword_vector_transfer_range.hpp": "1e4ab82ceac31f32230ea1b7053726e2ddf76bc99a9fd053237c8546500cc69a",
+            "reports/oct15_native_dword_vector_transfer_range.json": "4c47bc21271622d0ed8cd0e360b68d2aba9ada1c32be0a2ee86506fd9c0b38d9",
+            "docs/OCT15_NATIVE_DWORD_VECTOR_TRANSFER_RANGE.md": "8e4b54c6e0a232af0be5c416db73f8af3242a19f5cc3e8984c490e92218d893f"
+          },
+          "limits": "Source/currentCpp/currentCRT/privateframe only; no new Native execution/originalABI/game proof."
+        }
+      },
+      "transfer_claims": 14
+    },
+    {
+      "packet": "oct15_native_dword_vector_destroy_range",
+      "pin": "c563c8ef4577557dfe97cf4cec4bbffbb92a93dc",
+      "owned_bytes": 76,
+      "owned_starts": 32,
+      "source": "src/native_dword_vector_destroy_range.cpp",
+      "header": "include/bsp/native_dword_vector_destroy_range.hpp",
+      "report": "reports/oct15_native_dword_vector_destroy_range.json",
+      "report_sha256": "3ff2d71a7777571ddc5fd2b879e0ebff00d2d8816f23e0b3d139988b45a2c806",
+      "documentation": "docs/OCT15_NATIVE_DWORD_VECTOR_DESTROY_RANGE.md",
+      "primary_checks": 8,
+      "primary_review": {
+        "path": "local/oct15_destroy_twentysecond_primary_review.json",
+        "sha256": "a9ed868e4d09327028a8d6ee0d32035b6b4bf4885595273d306717f74db1088a",
+        "evidence": {
+          "packet": "oct15_native_dword_vector_destroy_range",
+          "pin": "c563c8ef4577557dfe97cf4cec4bbffbb92a93dc",
+          "review_type": "primary Source and independent fresh Native review",
+          "checks": [
+            "Complete Source/header and all32 Native instructions reviewed; both ordinary entries cover76B.",
+            "Equal endpoints skip all header work; captured last stays fixed and current advances by wrapped DWORD10h until equality.",
+            "Each currentbegin is captured once and conditionally freed through actual currentCRT service; no nullheader skip.",
+            "Ordered volatile4/8/C clears follow actualfree; no opaque0 access/header snapshot/extra cleanup or rollback.",
+            "Core fastcall2register+2deadstack/RET8 and dispatcher stdcall2/RET8 retain physical consumed-input shape.",
+            "Dispatcher dead ambientECX and duplicatedlast metadata are qualified canonical0; Sourcevoid excludes incidentalNativeEAX.",
+            "No localEH/provider/countbridge/callback/container substitution; currentCRT/fault/privateframe/ABI/game limits explicit.",
+            "Fresh76PE/livebytes32currentstarts and all ownedCALL operands match; acceptedfree Source/header hashes equal Main."
+          ],
+          "findings": [],
+          "fresh_bytes": 76,
+          "fresh_starts": 32,
+          "owned_bytes": 76,
+          "owned_starts": 32,
+          "fresh_units": [
+            {
+              "address": "004d49b0",
+              "bytes": 54,
+              "starts": 25,
+              "sha256": "0b0cf5dd95a4c58091d690158c6f53d2e2feed4e8f0f1538863a7a24065a1d27",
+              "PE_equals_live": true
+            },
+            {
+              "address": "004d9e40",
+              "bytes": 22,
+              "starts": 7,
+              "sha256": "fdb7dcafcbd1e1daf08098cba1554e5b48eac8473f1dc9999d9dc24fd79b46c9",
+              "PE_equals_live": true
+            }
+          ],
+          "fresh_listing": [
+            {
+              "address": "004d49b0",
+              "instruction": "push ebx"
+            },
+            {
+              "address": "004d49b1",
+              "instruction": "push esi"
+            },
+            {
+              "address": "004d49b2",
+              "instruction": "mov ebx, edx"
+            },
+            {
+              "address": "004d49b4",
+              "instruction": "mov esi, ecx"
+            },
+            {
+              "address": "004d49b6",
+              "instruction": "cmp esi, ebx"
+            },
+            {
+              "address": "004d49b8",
+              "instruction": "je 0x4d49e1"
+            },
+            {
+              "address": "004d49ba",
+              "instruction": "push edi"
+            },
+            {
+              "address": "004d49bb",
+              "instruction": "xor edi, edi"
+            },
+            {
+              "address": "004d49bd",
+              "instruction": "lea ecx, [ecx]"
+            },
+            {
+              "address": "004d49c0",
+              "instruction": "mov eax, dword ptr [esi + 4]"
+            },
+            {
+              "address": "004d49c3",
+              "instruction": "cmp eax, edi"
+            },
+            {
+              "address": "004d49c5",
+              "instruction": "je 0x4d49d0"
+            },
+            {
+              "address": "004d49c7",
+              "instruction": "push eax"
+            },
+            {
+              "address": "004d49c8",
+              "instruction": "call 0xbf65ac"
+            },
+            {
+              "address": "004d49cd",
+              "instruction": "add esp, 4"
+            },
+            {
+              "address": "004d49d0",
+              "instruction": "mov dword ptr [esi + 4], edi"
+            },
+            {
+              "address": "004d49d3",
+              "instruction": "mov dword ptr [esi + 8], edi"
+            },
+            {
+              "address": "004d49d6",
+              "instruction": "mov dword ptr [esi + 0xc], edi"
+            },
+            {
+              "address": "004d49d9",
+              "instruction": "add esi, 0x10"
+            },
+            {
+              "address": "004d49dc",
+              "instruction": "cmp esi, ebx"
+            },
+            {
+              "address": "004d49de",
+              "instruction": "jne 0x4d49c0"
+            },
+            {
+              "address": "004d49e0",
+              "instruction": "pop edi"
+            },
+            {
+              "address": "004d49e1",
+              "instruction": "pop esi"
+            },
+            {
+              "address": "004d49e2",
+              "instruction": "pop ebx"
+            },
+            {
+              "address": "004d49e3",
+              "instruction": "ret 8"
+            },
+            {
+              "address": "004d9e40",
+              "instruction": "mov eax, dword ptr [esp + 8]"
+            },
+            {
+              "address": "004d9e44",
+              "instruction": "mov edx, dword ptr [esp + 8]"
+            },
+            {
+              "address": "004d9e48",
+              "instruction": "push eax"
+            },
+            {
+              "address": "004d9e49",
+              "instruction": "push ecx"
+            },
+            {
+              "address": "004d9e4a",
+              "instruction": "mov ecx, dword ptr [esp + 0xc]"
+            },
+            {
+              "address": "004d9e4e",
+              "instruction": "call 0x4d49b0"
+            },
+            {
+              "address": "004d9e53",
+              "instruction": "ret 8"
+            }
+          ],
+          "fresh_CALLs": [
+            {
+              "address": "004d49c8",
+              "native": "00bf65ac"
+            },
+            {
+              "address": "004d9e4e",
+              "native": "004d49b0"
+            }
+          ],
+          "fresh_external_JMPs": [],
+          "EH": null,
+          "current_starts_capture": "local/oct15_destroy_twentysecond_current_starts.json",
+          "provider_fingerprints": {
+            "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+            "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+          },
+          "reviewed_files_sha256": {
+            "src/native_dword_vector_destroy_range.cpp": "809a56a3efba2e6aea9e76cb40871c491c2d7f03b495da3480c4076b73a8ab00",
+            "include/bsp/native_dword_vector_destroy_range.hpp": "0ba209d14c599cbe8bc325a96c7034e6be68172b498dfdcb3a09f7792825b792",
+            "reports/oct15_native_dword_vector_destroy_range.json": "3ff2d71a7777571ddc5fd2b879e0ebff00d2d8816f23e0b3d139988b45a2c806",
+            "docs/OCT15_NATIVE_DWORD_VECTOR_DESTROY_RANGE.md": "9838fedd1543e276b6d53d2ce789a91393eebb9a9ebd82d7d1880205e00ea1b3"
+          },
+          "limits": "Source/currentCpp/currentCRT/privateframe only; no new Native execution/originalABI/game proof."
+        }
+      },
+      "transfer_claims": 2
+    },
+    {
+      "packet": "oct15_native_input_conflict_vector_tidy",
+      "pin": "4dd3e4108d9b1038343b5a4e1a9648f350900137",
+      "owned_bytes": 115,
+      "owned_starts": 46,
+      "source": "src/native_input_conflict_vector_tidy.cpp",
+      "header": "include/bsp/native_input_conflict_vector_tidy.hpp",
+      "report": "reports/oct15_native_input_conflict_vector_tidy.json",
+      "report_sha256": "179acd5e238085978b3a9bd0d488b49ada43013863ba7ef0c3a24364d38aa2d9",
+      "documentation": "docs/OCT15_NATIVE_INPUT_CONFLICT_VECTOR_TIDY.md",
+      "primary_checks": 10,
+      "primary_review": {
+        "path": "local/oct15_conflict_twentysecond_primary_review.json",
+        "sha256": "ffb704bc5a45b77f66818f5a44952d47001041075378da25552beead1c701c72",
+        "evidence": {
+          "packet": "oct15_native_input_conflict_vector_tidy",
+          "pin": "4dd3e4108d9b1038343b5a4e1a9648f350900137",
+          "review_type": "primary Source and independent fresh Native review",
+          "checks": [
+            "Complete Source/header and all46 Native instructions reviewed; two ordinary entries cover115B.",
+            "Range endpoint equality skips allheader reads; capturedbegin conditionalactualfree precedes ordered4/8/C clears.",
+            "Range +10h unsigned equality traversal has no headernullskip/opaque0access/extra guard or rollback.",
+            "Tidy capturesfirstbegin once; zero skips currentend/rangecall/outerfree but still clears4/8/C.",
+            "Nonzero initialbegin capturescurrentend, delegatesactualrange, then RELOADS currentouterbegin for unconditionalfree, including nowzero.",
+            "Outer ordered4/8/C clears follow currentouterfree; range/free aliases retain native progression.",
+            "Corefastcall2register+2deadstack/RET8 andTidyfastcallheader/unusedEDX/plainRET preserve consumed-input interfaces.",
+            "Nativeprivate PUSH ECX containsKNOWN headerbits; both childmetadata words unconsumed, canonical0 qualification explicit.",
+            "Sourcevoid/currentCpp/currentCRT limits retain incidentalEAX/FH3/SEH/fault/frame/ABI/game uncertainty; oldtypeddomains preserved.",
+            "Fresh115PE/livebytes46currentstarts and allCALL operands match; actualfree Source/header hashes equal Main."
+          ],
+          "findings": [],
+          "fresh_bytes": 115,
+          "fresh_starts": 46,
+          "owned_bytes": 115,
+          "owned_starts": 46,
+          "fresh_units": [
+            {
+              "address": "0069eea0",
+              "bytes": 54,
+              "starts": 25,
+              "sha256": "b7fbe0920d1de9e9e9c2e9f6055065b7a6cbc69ce294355ee4be9d3b78ca6eee",
+              "PE_equals_live": true
+            },
+            {
+              "address": "006a1420",
+              "bytes": 61,
+              "starts": 21,
+              "sha256": "9ca3b060f863a1d85aee3f3540483dab054844e919b9d6523f9e7c231f10d617",
+              "PE_equals_live": true
+            }
+          ],
+          "fresh_listing": [
+            {
+              "address": "0069eea0",
+              "instruction": "push ebx"
+            },
+            {
+              "address": "0069eea1",
+              "instruction": "push esi"
+            },
+            {
+              "address": "0069eea2",
+              "instruction": "mov ebx, edx"
+            },
+            {
+              "address": "0069eea4",
+              "instruction": "mov esi, ecx"
+            },
+            {
+              "address": "0069eea6",
+              "instruction": "cmp esi, ebx"
+            },
+            {
+              "address": "0069eea8",
+              "instruction": "je 0x69eed1"
+            },
+            {
+              "address": "0069eeaa",
+              "instruction": "push edi"
+            },
+            {
+              "address": "0069eeab",
+              "instruction": "xor edi, edi"
+            },
+            {
+              "address": "0069eead",
+              "instruction": "lea ecx, [ecx]"
+            },
+            {
+              "address": "0069eeb0",
+              "instruction": "mov eax, dword ptr [esi + 4]"
+            },
+            {
+              "address": "0069eeb3",
+              "instruction": "cmp eax, edi"
+            },
+            {
+              "address": "0069eeb5",
+              "instruction": "je 0x69eec0"
+            },
+            {
+              "address": "0069eeb7",
+              "instruction": "push eax"
+            },
+            {
+              "address": "0069eeb8",
+              "instruction": "call 0xbf65ac"
+            },
+            {
+              "address": "0069eebd",
+              "instruction": "add esp, 4"
+            },
+            {
+              "address": "0069eec0",
+              "instruction": "mov dword ptr [esi + 4], edi"
+            },
+            {
+              "address": "0069eec3",
+              "instruction": "mov dword ptr [esi + 8], edi"
+            },
+            {
+              "address": "0069eec6",
+              "instruction": "mov dword ptr [esi + 0xc], edi"
+            },
+            {
+              "address": "0069eec9",
+              "instruction": "add esi, 0x10"
+            },
+            {
+              "address": "0069eecc",
+              "instruction": "cmp esi, ebx"
+            },
+            {
+              "address": "0069eece",
+              "instruction": "jne 0x69eeb0"
+            },
+            {
+              "address": "0069eed0",
+              "instruction": "pop edi"
+            },
+            {
+              "address": "0069eed1",
+              "instruction": "pop esi"
+            },
+            {
+              "address": "0069eed2",
+              "instruction": "pop ebx"
+            },
+            {
+              "address": "0069eed3",
+              "instruction": "ret 8"
+            },
+            {
+              "address": "006a1420",
+              "instruction": "push ecx"
+            },
+            {
+              "address": "006a1421",
+              "instruction": "push esi"
+            },
+            {
+              "address": "006a1422",
+              "instruction": "mov esi, ecx"
+            },
+            {
+              "address": "006a1424",
+              "instruction": "mov ecx, dword ptr [esi + 4]"
+            },
+            {
+              "address": "006a1427",
+              "instruction": "test ecx, ecx"
+            },
+            {
+              "address": "006a1429",
+              "instruction": "je 0x6a1445"
+            },
+            {
+              "address": "006a142b",
+              "instruction": "mov eax, dword ptr [esp + 4]"
+            },
+            {
+              "address": "006a142f",
+              "instruction": "mov edx, dword ptr [esi + 8]"
+            },
+            {
+              "address": "006a1432",
+              "instruction": "push eax"
+            },
+            {
+              "address": "006a1433",
+              "instruction": "push esi"
+            },
+            {
+              "address": "006a1434",
+              "instruction": "call 0x69eea0"
+            },
+            {
+              "address": "006a1439",
+              "instruction": "mov ecx, dword ptr [esi + 4]"
+            },
+            {
+              "address": "006a143c",
+              "instruction": "push ecx"
+            },
+            {
+              "address": "006a143d",
+              "instruction": "call 0xbf65ac"
+            },
+            {
+              "address": "006a1442",
+              "instruction": "add esp, 4"
+            },
+            {
+              "address": "006a1445",
+              "instruction": "mov dword ptr [esi + 4], 0"
+            },
+            {
+              "address": "006a144c",
+              "instruction": "mov dword ptr [esi + 8], 0"
+            },
+            {
+              "address": "006a1453",
+              "instruction": "mov dword ptr [esi + 0xc], 0"
+            },
+            {
+              "address": "006a145a",
+              "instruction": "pop esi"
+            },
+            {
+              "address": "006a145b",
+              "instruction": "pop ecx"
+            },
+            {
+              "address": "006a145c",
+              "instruction": "ret "
+            }
+          ],
+          "fresh_CALLs": [
+            {
+              "address": "0069eeb8",
+              "native": "00bf65ac"
+            },
+            {
+              "address": "006a1434",
+              "native": "0069eea0"
+            },
+            {
+              "address": "006a143d",
+              "native": "00bf65ac"
+            }
+          ],
+          "fresh_external_JMPs": [],
+          "EH": null,
+          "current_starts_capture": "local/oct15_conflict_twentysecond_current_starts.json",
+          "provider_fingerprints": {
+            "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+            "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+          },
+          "reviewed_files_sha256": {
+            "src/native_input_conflict_vector_tidy.cpp": "8771f582d4094803a8f80d2c5c103bb791847fb3a9e924141940bad361f0e021",
+            "include/bsp/native_input_conflict_vector_tidy.hpp": "5a5bd18021b66070fde3b9cb3bb5bad88b536cdb018695d4717bb2b455420fd9",
+            "reports/oct15_native_input_conflict_vector_tidy.json": "179acd5e238085978b3a9bd0d488b49ada43013863ba7ef0c3a24364d38aa2d9",
+            "docs/OCT15_NATIVE_INPUT_CONFLICT_VECTOR_TIDY.md": "ab630dd7ef8bff6863b3aeee2515c1d54736f3784844eb53aae09afb59b49d84"
+          },
+          "limits": "Source/currentCpp/currentCRT/privateframe only; no new Native execution/originalABI/game proof."
+        }
+      },
+      "transfer_claims": 6
+    },
+    {
+      "packet": "oct15_native_input_preset_key_subtree",
+      "pin": "2aa9d2285fe7daefb9c519e5cc9a4047c3350e1c",
+      "owned_bytes": 82,
+      "owned_starts": 34,
+      "source": "src/native_input_preset_key_subtree.cpp",
+      "header": "include/bsp/native_input_preset_key_subtree.hpp",
+      "report": "reports/oct15_native_input_preset_key_subtree.json",
+      "report_sha256": "725e0b0222da3f45651a20c3528d03cbbfbf1e288eb008f9fd42c67bbe1cf43b",
+      "documentation": "docs/OCT15_NATIVE_INPUT_PRESET_KEY_SUBTREE.md",
+      "primary_checks": 10,
+      "primary_review": {
+        "report_checks": [
+          "Whole82B/34starts Native body and full Source/header reviewed;2Ch/nil29 layout is distinct from28h/nil25 leaves.",
+          "Nilentry skipsallwork; rightrecursion forwards opaque tree and precedes all current key/node effects.",
+          "Keydata+10 capturedonce BEFORE currentleft0; nullkey stillcapturesleft but skips length/getter/return.",
+          "Only nonnullkey readsCURRENTlength+C and wraps+1; capturedkey/size surviveactualgetter sideeffects.",
+          "Directraw419CC0 beforeBD1510 for EVERY nonnullkey, including large/disabledsmallreturns; no caching or noexceptstoragebridge.",
+          "Capturedleft survives pool/getter effects; actualcurrentnodefree precedes capturedleftnil29 read.",
+          "No key/mapped/head/count writes, nullnodeguard, rollback, cleanup or localEH; priorchild/pool effects retained on failure.",
+          "ActualRawCtx publication/manager/shutdown refs and currentCRT providers are composed; getter failures escape before currentfree.",
+          "Source addsborrowedcontextRET8 vsNativeRET4 and canonical unusedEDX0; originalframes/ABI/FH3/SEH/fault/game remain qualified.",
+          "Fresh82PE/livebytes34currentstarts/fourCALLtargets,7Mainproviderhashes and independentpeerreviewpass; existingtypeddomains unchanged."
+        ],
+        "peer": {
+          "reviewer": "/root/avoid_distance",
+          "status": "passed_no_findings",
+          "scope": "FullSource/header and all34Nativeinstructions; independentPE82B/all4transfers and7providerhashes checked. Subsequent Source change only renamed MASMreserved parameter offset to byte_offset, fixing compile without behavior change.",
+          "build_or_runtime": false
+        },
+        "actual_CMake_objects": {
+          "path": "local/oct15_preset_actual_cmake_object_comparison.json",
+          "sha256": "63482aba8cd18f31c28e7de410092b0f11646248741d0c6f624a2d39a675823e",
+          "scope": "CompleteactualCMake cores separately inspected; preset202B/71instructions andclear67B/20. Probeencodingsdiffer, no byteidentityclaim. Defaultbuild uses sameSource and settings; finalcombinedbatchbuild recordedseparately."
+        }
+      },
+      "transfer_claims": 4
+    },
+    {
+      "packet": "oct15_native_input_preset_tree_clear",
+      "pin": "2aa9d2285fe7daefb9c519e5cc9a4047c3350e1c",
+      "owned_bytes": 43,
+      "owned_starts": 16,
+      "source": "src/native_input_preset_tree_clear.cpp",
+      "header": "include/bsp/native_input_preset_tree_clear.hpp",
+      "report": "reports/oct15_native_input_preset_tree_clear.json",
+      "report_sha256": "d47a6c7705d83416922c13552d8bd7ee6cf0dd5383002bc06a3d0eed047a99e1",
+      "documentation": "docs/OCT15_NATIVE_INPUT_PRESET_TREE_CLEAR.md",
+      "primary_checks": 7,
+      "primary_review": {
+        "report_checks": [
+          "Whole43B/16Nativeinstructions and fullSource/header reviewed.",
+          "Initialhead/root captures precede actualsamebatchsubtree; no alternatecontainer/guard/extraEH.",
+          "Afterchildheadreload/rootreset,secondheadcaptureBEFOREcountzero/leftreset,thirdheadreload/rightreset preserveexactaliases.",
+          "Subtreefailure escapes beforeanyreset; no normalcleanup/rollback or fallback.",
+          "BorrowedRawCtx addsSourceRET4 versusNativeplainRET; canonicalunusedEDX0/originalABI/fault/game remainqualified.",
+          "Fresh43PE/livebytes16currentstarts and soleactualCALLoperandmatch; samebatchdependenciesfingerprinted.",
+          "Optimizedobject67B/20starts passes7focusedCOFFchecks; fullcombinedCMake remainsrequired."
+        ],
+        "peer": {
+          "reviewer": "/root/avoid_distance",
+          "status": "passed_no_findings",
+          "scope": "FullSource/header and all16Nativeinstructions; independentPE43B/hash/currentstarts, samebatchproviderfingerprints and soletransfer checked. Exactthree postchildheadreloads/alias schedule reviewed.",
+          "build_or_runtime": false
+        },
+        "actual_CMake_objects": {
+          "path": "local/oct15_preset_actual_cmake_object_comparison.json",
+          "sha256": "63482aba8cd18f31c28e7de410092b0f11646248741d0c6f624a2d39a675823e",
+          "scope": "CompleteactualCMake cores separately inspected; preset202B/71instructions andclear67B/20. Probeencodingsdiffer, no byteidentityclaim. Defaultbuild uses sameSource and settings; finalcombinedbatchbuild recordedseparately."
+        }
+      },
+      "transfer_claims": 1
+    }
+  ],
+  "source_files_sha256": {
+    "src/native_dword_vector_transfer_range.cpp": "eaaaa59dc2cdc7c47063b780dedf0c1438aae0af64053c8786fb22060f6efd00",
+    "include/bsp/native_dword_vector_transfer_range.hpp": "1e4ab82ceac31f32230ea1b7053726e2ddf76bc99a9fd053237c8546500cc69a",
+    "src/native_dword_vector_destroy_range.cpp": "809a56a3efba2e6aea9e76cb40871c491c2d7f03b495da3480c4076b73a8ab00",
+    "include/bsp/native_dword_vector_destroy_range.hpp": "0ba209d14c599cbe8bc325a96c7034e6be68172b498dfdcb3a09f7792825b792",
+    "src/native_input_conflict_vector_tidy.cpp": "8771f582d4094803a8f80d2c5c103bb791847fb3a9e924141940bad361f0e021",
+    "include/bsp/native_input_conflict_vector_tidy.hpp": "5a5bd18021b66070fde3b9cb3bb5bad88b536cdb018695d4717bb2b455420fd9",
+    "src/native_input_preset_key_subtree.cpp": "17002b55e183dce38b6a27fc6b4327d501d9f4af062a205af11fc08366f490fb",
+    "include/bsp/native_input_preset_key_subtree.hpp": "6a926dc0396f0766937129923c55bb65cf4adb259fa8eb6551da618ba11bc861",
+    "src/native_input_preset_tree_clear.cpp": "421a5dd71ae4e95f7e4181949c7894a085e7a85c69430a925afede9afba0d3ba",
+    "include/bsp/native_input_preset_tree_clear.hpp": "210bc3233b8ae971ce9cd0af186dd5154be6d5de2ec196e1ff043db2ac8e67c4"
+  },
+  "host_steps": [
+    {
+      "address": "004d49c8",
+      "native": "00bf65ac",
+      "function": "004d49b0",
+      "kind": "call"
+    },
+    {
+      "address": "004d9e4e",
+      "native": "004d49b0",
+      "function": "004d9e40",
+      "kind": "call"
+    },
+    {
+      "function": "006980e0",
+      "address": "00698138",
+      "native": "00557590"
+    },
+    {
+      "function": "0069816e",
+      "address": "00698183",
+      "native": "004d29d0"
+    },
+    {
+      "function": "0069816e",
+      "address": "00698193",
+      "native": "00bf6885"
+    },
+    {
+      "function": "006980e0",
+      "address": "006981a0",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00698350",
+      "address": "0069836c",
+      "native": "006980e0"
+    },
+    {
+      "function": "00698400",
+      "address": "006984cd",
+      "native": "00696890"
+    },
+    {
+      "function": "00698400",
+      "address": "006984f0",
+      "native": "006980e0"
+    },
+    {
+      "function": "00698400",
+      "address": "00698500",
+      "native": "00698310"
+    },
+    {
+      "function": "00698400",
+      "address": "0069851c",
+      "native": "006980e0"
+    },
+    {
+      "function": "00698400",
+      "address": "006985b3",
+      "native": "00698350"
+    },
+    {
+      "function": "00698400",
+      "address": "0069862b",
+      "native": "00698350"
+    },
+    {
+      "address": "0069eeb8",
+      "native": "00bf65ac",
+      "kind": "call",
+      "function": "0069EEA0"
+    },
+    {
+      "address": "006a0787",
+      "native": "006a0770",
+      "function": "006a0770"
+    },
+    {
+      "address": "006a079f",
+      "native": "00419cc0",
+      "function": "006a0770"
+    },
+    {
+      "address": "006a07a6",
+      "native": "00bd1510",
+      "function": "006a0770"
+    },
+    {
+      "address": "006a07ac",
+      "native": "00bf65ac",
+      "function": "006a0770"
+    },
+    {
+      "address": "006a123c",
+      "native": "006a0770",
+      "function": "006a1230"
+    },
+    {
+      "address": "006a1434",
+      "native": "0069eea0",
+      "kind": "call",
+      "function": "006A1420"
+    },
+    {
+      "address": "006a143d",
+      "native": "00bf65ac",
+      "kind": "call",
+      "function": "006A1420"
+    },
+    {
+      "address": "006aa547",
+      "native": "0069eea0",
+      "kind": "call",
+      "function": "006AA460"
+    },
+    {
+      "address": "006aa550",
+      "native": "00bf65ac",
+      "kind": "call",
+      "function": "006AA460"
+    },
+    {
+      "address": "00c7ec33",
+      "native": "004cdce0",
+      "kind": "tail_jump",
+      "function": "00c7ec30"
+    },
+    {
+      "function": "00c7ec38",
+      "address": "00c7ec40",
+      "native": "00401130"
+    },
+    {
+      "address": "00c7ec4e",
+      "native": "00bf6b43",
+      "kind": "tail_jump",
+      "function": "00c7ec49"
+    },
+    {
+      "address": "00c7f9aa",
+      "native": "006a1420",
+      "kind": "tail_jump",
+      "function": "00C7F9A4"
+    }
+  ],
+  "primary_review_checks": 49,
+  "native_transfer_verification": {
+    "component_report_rows": 27,
+    "component_markdown_claims": 27,
+    "distinct_sites": 27,
+    "failed": 0,
+    "unchecked": 0,
+    "warnings": 0,
+    "log": "local/oct15_twentysecond_final_transfers.log"
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "platform": "MSVC Win32 Release",
+    "tested_source_pin": "3184eefb210fd8f1b542a933e551b3d14a4e0c26",
+    "default_registration": true,
+    "temporary_local_overlay_removed": true,
+    "existing_suites": "3/3 passed",
+    "ctest_seconds": 12.89,
+    "log": "local/oct15_twentysecond_union_build.log",
+    "log_sha256": "e7daf7a5820db261771e23d08c310633d1bc7d4433c974b2330590e89e9ee3f4",
+    "new_tests": 0,
+    "new_entry_Native_execution": false,
+    "original_binary_ABI_proven": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "annotations_saved": 11,
+    "annotation_receipts": [
+      {
+        "path": "local/ghidra-annotations-20261016T023230Z.json",
+        "sha256": "d5ecf6c0851d6ea4da2542260b7ef3d1f934cf61a285b959d038382c1bf9899b",
+        "entries": 11
+      }
+    ],
+    "preimages_and_prior_comments_retained": true,
+    "forced_snapshot": {
+      "path": "local/oct15_twentysecond_snapshot.log",
+      "sha256": "60553bf983ce2a47fbc010415c66cb3d511f3bc7fd0d1f7d367a6d4dcf844424",
+      "internal": 76332,
+      "total": 76774
+    },
+    "affected_exports": {
+      "path": "local/oct15_twentysecond_exports.log",
+      "sha256": "b5e9ada028158c737f97d2c9c5c08beeea8e05e833718d6a975f5eea666da537",
+      "count": 11
+    }
+  },
+  "behavior": [
+    "Ownership transfer constructs from private empty header, then swaps only4/8/C with exact alias order and output advance before final source-capacity store. Prefix catch remains active through normal privatebegin free; private cleanup stays armed until it returns.",
+    "Range destruction and conflict tidy preserve captured inner free, ordered clears and equality stepping. Conflict tidy reloads CURRENT outerbegin after range before unconditional outerfree. Its saved private word contains known incoming header bits, correcting an inherited uninitialized-word hypothesis.",
+    "Preset subtree captures keypointer before left, then conditional CURRENT length/getter/return. Nodefree precedes captured-left nil29 read; mapped payload stays untouched. Clear repeats three distinct postchild head captures around ordered root/count/left/right resets."
+  ],
+  "limits": [
+    "Explicit new Source/rawpool/currentCpp/currentCRT interfaces and private frames do not establish original globals/heap/CRT/FH3/SEH/RTTI/fault/register/argument-alias/binary ABI or game identity. Actual accepted noexcept providers retain their exception boundaries.",
+    "Preset addedcontext changes SourceRET8/RET4 versus NativeRET4/plainRET. Other Sourcevoid interfaces qualify incidental native EAX; deadmetadata canonicalization is limited to proved unconsumed inputs.",
+    "Optimized standalone probes and actual CMake objects are separate artifacts. Compiler private-frame differences are explicitly reviewed; no unsupported byteidentity or originalABI claim. Existing math differential tests cover older seeds, not these new entries.",
+    "Prior typed/AV/Hook/callback domains and identities are preserved. No fake providers, storage/count bridges, noop action helpers, new guards or rollback. No global cumulative Native-coverage increment inferred."
+  ],
+  "coordination": {
+    "append_only_registry_policy": "Current docs/COORDINATION.md93-95 excludes CMake/ledger append-only registries from leases; local appends and actual union resolution used. Earlier inherited gate wording corrected; actual occupied publication/build coordination respected.",
+    "all_ten_source_header_hashes_equal_Main": true
+  },
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "independently verified and reported after receipt publication; not self-referenced"
+  }
+}
