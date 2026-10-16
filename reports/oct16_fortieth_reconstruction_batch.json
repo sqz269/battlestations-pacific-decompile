@@ -1,0 +1,102 @@
+{
+  "packet": "oct16_fortieth_reconstruction_batch",
+  "status": "primary_accepted_whole_CRT_memcpy_Source_integrated_default_Win32_checked",
+  "component_pin": "fe6f68c599408b2e782cc7151e50dc710fd633aa",
+  "report": "reports/oct16_native_crt_memcpy_bf7680.json",
+  "scope": {
+    "whole_ordinary_entries": 1,
+    "address": "00bf7680",
+    "defined_Native_bytes": 711,
+    "Native_instructions": 247,
+    "typed_ranges": 22,
+    "physical_span": 869,
+    "readonly_inline_table_bytes": 120,
+    "padding_bytes": 38,
+    "readonly_provider_and_reference_not_promoted": true
+  },
+  "primary": {
+    "receipt": "local/oct16_native_crt_memcpy_primary.json",
+    "sha256": "ef3eee6cc3b642a009716ba838f808338b0cce44a5d3ddf2d35951420d885c63",
+    "checks": 28,
+    "findings": [],
+    "provider_LF_fingerprints": 6,
+    "eight_selector_domains_cases": 38,
+    "fresh_PE_live_units": [
+      {
+        "address": "00bf7680",
+        "defined_bytes": 711,
+        "starts": 247,
+        "span_bytes": 869,
+        "sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
+        "PE_live_equal": true
+      },
+      {
+        "address": "00c0c82b",
+        "defined_bytes": 227,
+        "starts": 94,
+        "span_bytes": 227,
+        "sha256": "4d0f6655ca465138392aaa5eb7f25e3ceb3112ccd61328fb8cfdfd6519863235",
+        "PE_live_equal": true
+      },
+      {
+        "address": "00c0c7a4",
+        "defined_bytes": 129,
+        "starts": 35,
+        "span_bytes": 135,
+        "sha256": "9e2d48d460a06c1923eddd855566386a388be278cc781390079b72c01be13738",
+        "PE_live_equal": true
+      },
+      {
+        "address": "00bf87e0",
+        "defined_bytes": 711,
+        "starts": 247,
+        "span_bytes": 869,
+        "sha256": "20a42c529f48a960faf6a65a969c01f22ea16d71ce20070ee6dbd79a86b5a427",
+        "PE_live_equal": true
+      }
+    ],
+    "family_exact_operand_fields": 17,
+    "family_exact_table_DWORDs": 30,
+    "family_unmasked_equal_code_bytes": 643,
+    "family_equal_padding_bytes": 38
+  },
+  "compiled": {
+    "Root_object_sha256": "f28293149cf741f93c058c38467568768309c5a3b0e59928b17604449f3aa2b7",
+    "worker_object_sha256": "e5756d480e0a811def5a6df4fafa5306fdb2af2a4254ab90ef8c6360cf1b1187",
+    "all988code_bytes_316instructions_and1symbolicREL32_exact_equal_worker": true,
+    "full_samebuild_BF87_code_and_symbolic_relocation_equal": true,
+    "public_symbol_bijection": [
+      "copy_native_crt_bytes_00bf7680",
+      "move_native_crt_bytes_00bf87e0"
+    ],
+    "no_helpers_padding_EH_table_or_literaldata": true
+  },
+  "verification": {
+    "combined_tested_commit": "7b0fcef617a73205d99aed8f27f0c07f0dafa1ec",
+    "default_build_exit": 0,
+    "existing_suites_passed": 3,
+    "seconds": 7.27,
+    "build_log_sha256": "dcb1e1e268400e96405f49faa1974aaa7e41c58734858fa3fb92ad90adbe3bbe",
+    "JSON_transfer_rows": 3,
+    "Markdown_transfer_claims": 3,
+    "saved_annotations": 1,
+    "annotation_receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\ghidra-annotations-20261016T074057Z.json",
+    "annotation_sha256": "b3688f8e8f6f598b2102faba4c94c03ed199af949e7622cff26429411383692a",
+    "refreshed_exports": 1,
+    "exports_sha256": "e3c5687c5891f878f66a5f21f8b0851bb35908e7f71a27457205284bebb3bd67"
+  },
+  "limits": [
+    "Fourth actualcanonicalfeatureRef is a Source interface argument; Nativecaller12 vsSource16. Native feature value/lifetime not established by PEzero",
+    "Native 16indexed transfers become eightboundedladders; exactflags/table/code/privateframes/faultPC not preserved",
+    "Full materialcopy schedule andactualvector tail reviewed; noNativeexecution/runtime/game or original ABI claim",
+    "Existing3suites do not exercise this leaf",
+    "Full valid buffer access order retained; selector ladders changeflags/table accesses; backwardfault mayexposeDF1",
+    "Actualcanonicalfeature provider lifetime/runtime truth and selectedSSE2 CPU/OS requirements belong tocaller; no default feature cell or CPU writer introduced",
+    "No Source constructor/caller/application promotion; no new tests/probes or game execution"
+  ],
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Verified separately after publication"
+  }
+}
