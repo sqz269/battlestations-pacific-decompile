@@ -1,0 +1,555 @@
+{
+  "schema_version": 1,
+  "packet": "native_gui_script_paths_71",
+  "recorded_at_utc": "2026-10-16T03:04:24.193349+00:00",
+  "classification": "Complete existing Original raw-header pair through new explicit Source context/persistent-frame interface; not a binary replacement ABI",
+  "root_anchor": "19c78db1798e9a33c43bb83ff38da386ce35b0b5",
+  "worker_baseline": "19c78db1798e9a33c43bb83ff38da386ce35b0b5",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_font_retirement_review36",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "verified_client": "Every BSP live batch calls Client.verify for project/program/language/base; pseudocode read before assembly; no import or body repair",
+  "original_binary": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256_before": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha256_after": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "untouched": true
+  },
+  "original_ranges": [
+    {
+      "start": "00ac5600",
+      "end_exclusive": "00ac576e",
+      "bytes": 366,
+      "sha256": "7796570c30ace47b59a92e75f43e7b22856436a72f2c1a6b226e334819239d9c",
+      "live_equals_disk_after_annotations": true
+    },
+    {
+      "start": "00ac5770",
+      "end_exclusive": "00ac57d2",
+      "bytes": 98,
+      "sha256": "d376a56514bceed6418c555d127d767f59681e606563e3492128705b8282ae88",
+      "live_equals_disk_after_annotations": true
+    },
+    {
+      "start": "00cb8860",
+      "end_exclusive": "00cb88a3",
+      "bytes": 67,
+      "sha256": "45e168f50a6bb6f2f530caa9cf72b8ac038f7cef380ef59f24b07a13f4d2822a",
+      "live_equals_disk_after_annotations": true
+    },
+    {
+      "start": "00def83c",
+      "end_exclusive": "00def888",
+      "bytes": 76,
+      "sha256": "8275ebf2b87d4be888e27a13b03b2df50c643ace2541709e241201656fde6420",
+      "live_equals_disk_after_annotations": true
+    },
+    {
+      "start": "00d5cb18",
+      "end_exclusive": "00d5cb23",
+      "bytes": 11,
+      "sha256": "79047f32fd1db4525f09171fb58ac31f7577f708aa6e0c7a206e326ed577764b",
+      "live_equals_disk_after_annotations": true
+    },
+    {
+      "start": "00cfd2c8",
+      "end_exclusive": "00cfd2cd",
+      "bytes": 5,
+      "sha256": "332e39fc7ad8e4624d2c02f4438500cfe6f5eca924c5e700237b636829b4f5ca",
+      "live_equals_disk_after_annotations": true
+    }
+  ],
+  "functions": [
+    {
+      "address": "00ac5600",
+      "name": "compose_native_gui_script_path_00ac5600",
+      "source": "src/native_gui_script_paths.cpp",
+      "header": "include/bsp/native_gui_script_paths.hpp",
+      "status": "reconstructed_actual_raw_body_direct_win32_build_and_bounded_normal_relocated_probe_passed",
+      "end_exclusive": "00ac576e",
+      "native_bytes": 366,
+      "original_abi": "ECX actual OUT8h header; stack BY-VALUE raw8h name consumed by callee; EAX out; RET8",
+      "evidence": "CC12 packet71. Descriptive name, not a recovered symbol. Corrects older semantic projection/ECX-name interpretation: AC561A saves ECX as output; raw input is the by-value8h stack header. Whole live/disk-equal366B body with required borrowed actual D5CB18/CFD2C8 literal views and SAME NativeStringRawPoolContext. Real41DD40/4261A0/419CC0/BD1510 providers, normal cached prefix pointer versus EH live header reloads, input consumption and output arm only after concat2 preserved. DEF860 map and CB8860..CB88A3 verified. Explicit caller-owned one-attempt Source frames retain failed state; no destructor refusal, retry, fake pool, std::string shortcut, or new Original address credit. Direct strict /MD Win32 compilation and one normal relocated pair case passed over real Source raw providers; no private FH3, cleanup-double-exception, binary replacement ABI, production activation or gameplay proof. docs/CC12_NATIVE_GUI_SCRIPT_PATHS_71.md; reports/cc12_native_gui_script_paths_71.json."
+    },
+    {
+      "address": "00ac5770",
+      "name": "compose_native_gui_layer_script_path_00ac5770",
+      "source": "src/native_gui_script_paths.cpp",
+      "header": "include/bsp/native_gui_script_paths.hpp",
+      "status": "reconstructed_actual_raw_body_direct_win32_build_and_bounded_normal_relocated_probe_passed",
+      "end_exclusive": "00ac57d2",
+      "native_bytes": 98,
+      "original_abi": "ECX actual page; stack actual OUT8h header; EAX out; RET4",
+      "evidence": "CC12 packet71. Descriptive name, not a recovered symbol. Complete98B raw wrapper: clear actual local8h copy; raw41DD40 current page+100 length; reread page length after resize, then copied count/source data/destination data for BF7680 overlap-safe copy; transfer SAME by-value header to actual AC5600. No invented pre-transfer wrapper EH cleanup. Persistent Source wrapper+nested frame exposes one-attempt transfer/consumed state and caller retention contract without destructor refusal. One normal relocated whole wrapper+callee case passed over real Source raw providers, including output identity/bytes, unchanged page header, normal return order, stack balance and FS restore; no private Native EH/ABI/production/gameplay claim. Existing semantic wrapper remains a separate projection, not this lifetime. docs/CC12_NATIVE_GUI_SCRIPT_PATHS_71.md; reports/cc12_native_gui_script_paths_71.json."
+    }
+  ],
+  "new_original_address_credit": 0,
+  "raw_bodies_implemented": 2,
+  "semantic_projections_changed": false,
+  "source_identities": [
+    {
+      "path": "include/bsp/native_gui_script_paths.hpp",
+      "bytes": 5121,
+      "sha256": "6a42ad475751a4f4dbc4aaef535acd2f10665847b61d13b9fda7b02b47b9e69d",
+      "git_blob": "949763d75780c9cf5f2446f2c64c0ce4ad0a0fac"
+    },
+    {
+      "path": "src/native_gui_script_paths.cpp",
+      "bytes": 8192,
+      "sha256": "482117fb0ebacc8c712ee7ddcc574456813eb3619f64d35da53fb254dc144c68",
+      "git_blob": "2288261cb510f935e19b2ecbcfd7c63584b5644c"
+    }
+  ],
+  "contracts": {
+    "required_context": "SAME NativeStringRawPoolContext and actual D5CB18/CFD2C8 byte views; no globals/default literals/new pool/semantic shortcut",
+    "fresh_admission": "Fresh frame checked before raw ownership/effects; caller retains input ownership on this preflight rejection",
+    "adoption": "Exact supplied by-value8h input header consumed after admission; wrapper passes its SAME copied header to nested frame",
+    "normal_cleanup": "joined current data -> prefix cached data/current size -> suffix current data/size -> input current data/size; consume action before potentially throwing getter",
+    "output": "Armed only after concat2 returns; unwind clears bit before reading output pointer; normal Source handoff disarms metadata without output stores",
+    "eh_map": {
+      "handler": "00cb8899",
+      "funcinfo": "00def83c",
+      "max_state": 5,
+      "unwind_table": "00def860",
+      "entries": [
+        [
+          0,
+          -1,
+          "00cb8880"
+        ],
+        [
+          1,
+          0,
+          "00cb8860"
+        ],
+        [
+          2,
+          1,
+          "00cb8868"
+        ],
+        [
+          3,
+          2,
+          "00cb8870"
+        ],
+        [
+          4,
+          3,
+          "00cb8878"
+        ]
+      ]
+    },
+    "eh_header_arguments": {
+      "input": "EBP+04",
+      "suffix": "EBP-24",
+      "prefix": "EBP-1C",
+      "joined": "EBP-14",
+      "output": "EBP-28 after clearing EBP-2C bit1"
+    },
+    "cpp_cleanup_throw": "New cleanup exception escapes with its action already consumed and remaining lower state retained; no retry or Native private FH3/double-exception equivalence",
+    "frame_lifetime": "Caller-owned persistent noncopyable Source frames; no implicit cleanup or destructor refusal. Caller must retain same frame/borrowed domain after entered failure; enclosing owner guards complete graph",
+    "retention_predicate": "entered or failed, even if remaining state is -1; a just-consumed action may have thrown before block return",
+    "wrapper_failure": "No invented pre-transfer local cleanup and no repeated nested input cleanup",
+    "serialization": "Externally serialize calls and raw-domain mutation; private frame aliases/stack byte parity excluded",
+    "target_guard": "Explicit _MSC_VER/_WIN32/_M_IX86 preprocessor guard and sizeof(void*)==4 assertion",
+    "source_abi": "Context/frame/preflight/residency/handoff metadata are added Source contracts, not Original parameters/allocation/stack observations"
+  },
+  "build": {
+    "canonical_existing": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "ctests_passed": 3,
+      "ctests_failed": 0,
+      "seconds": 14.01,
+      "new_translation_unit_registered": false,
+      "note": "Root owns CMake registration; canonical build alone does not compile the new unit"
+    },
+    "new_unit_direct": {
+      "compile_exit_code": 0,
+      "flags": [
+        "/std:c++17",
+        "/O2",
+        "/MD",
+        "/EHsc",
+        "/W4",
+        "/WX"
+      ],
+      "target": "MSVC Win32 x86",
+      "explicit_guards_present": true
+    }
+  },
+  "focused_probe": {
+    "case_count": 1,
+    "scenario": "Page71 nonempty normal wrapper -> compose, Source versus whole relocated Original pair",
+    "scope": "Both bodies use SAME constructed actual raw Source owner/publication fixture, literal byte copies and real raw Source providers; not full Original callee graph or game publications",
+    "compile_exit_code": 0,
+    "exit_code": 0,
+    "manifest": {
+      "resource": "RT_MANIFEST/1",
+      "execution_level": "asInvoker",
+      "ui_access": "false",
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    "compile_flags": [
+      "/std:c++17",
+      "/O2",
+      "/Oy-",
+      "/MD",
+      "/EHsc",
+      "/W4",
+      "/WX"
+    ],
+    "link_flags": [
+      "/MANIFEST:EMBED",
+      "/INCREMENTAL:NO"
+    ],
+    "libraries": [
+      "local/cc12_native_gui_script_paths_71.obj",
+      "bsp_core.lib",
+      "bsp_lua511.lib",
+      "bsp_zlib121.lib",
+      "user32.lib",
+      "d3d9.lib",
+      "advapi32.lib",
+      "shell32.lib",
+      "powrprof.lib"
+    ],
+    "callsite_patch_groups": {
+      "0041dd40": [
+        "00ac563e",
+        "00ac5677",
+        "00ac57a2"
+      ],
+      "00bf7680": [
+        "00ac5659",
+        "00ac5692",
+        "00ac57b7"
+      ],
+      "004261a0": [
+        "00ac56ad",
+        "00ac56bf"
+      ],
+      "00419cc0": [
+        "00ac56e4",
+        "00ac5704",
+        "00ac5729",
+        "00ac574d"
+      ],
+      "00bd1510": [
+        "00ac56eb",
+        "00ac570b",
+        "00ac5730",
+        "00ac5754"
+      ],
+      "00ac5600": [
+        "00ac57c5"
+      ]
+    },
+    "absolute_operand_patches": [
+      {
+        "operand": "00ac5603",
+        "expected": "00cb8899",
+        "replacement": "unexpected-EH rejection, never FH3 emulation"
+      },
+      {
+        "operand": "00ac5654",
+        "expected": "00cfd2c8",
+        "replacement": "SAME fixture suffix literal bytes"
+      },
+      {
+        "operand": "00ac568d",
+        "expected": "00d5cb18",
+        "replacement": "SAME fixture prefix literal bytes"
+      }
+    ],
+    "all_patches_audited_before_replacement": true,
+    "rel32_sites": 17,
+    "absolute_sites": 3,
+    "normal_original_return_sizes": [
+      17,
+      11,
+      5,
+      7
+    ],
+    "native_eh_executed": false,
+    "result": "PASS normal_case=1 Original_bodies=2 raw_provider_Source=1 same_pool_context_literals=1 actual8h_adoption=1 output_bytes_identity=1 page_name_unchanged=1 Original_returns=17,11,5,7 stack_balanced=1 FS_restored=1 audited_rel32=17 audited_absolute=3 Native_EH_executed=0 production_activation=0",
+    "initial_link_note": "Real advapi32/shell32/powrprof dependencies added after initial missing-system-symbol link result; no provider stub or production Source repair"
+  },
+  "annotations": {
+    "tool": "tools/ghidra_annotate.py --apply --addresses 00AC5600 00AC5770",
+    "write_lock": true,
+    "old_values_saved_before_writes": true,
+    "history": {
+      "path": "local/ghidra-annotations-20261016T025940Z.json",
+      "bytes": 4439,
+      "sha256": "a73efc4d21ec8f1b2f5d5b169ce7c1945f009126c247fe7df5cccb333980ffe3"
+    },
+    "names_preserved": [
+      "BSP_GuiScreen_ComposeScriptPath",
+      "BSP_GuiLayer_ComposeScriptPath"
+    ],
+    "comments_appended_preserving_previous": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "read_only_eh_ranges_unmodified": true,
+    "no_prototype_or_body_repair": true
+  },
+  "ledger_shards": [
+    "config/names/00ac0000.jsonl",
+    "config/reconstruction/00ac0000.jsonl"
+  ],
+  "artifacts": [
+    {
+      "path": "local/cc12_native_gui_script_paths_71_build.log",
+      "bytes": 6817,
+      "sha256": "0f15d3f474ce64c3b913f14cf5348d0600b76951e92a2483a48fc9f6ea847455"
+    },
+    {
+      "path": "local/cc12_native_gui_script_paths_71_probe.cpp",
+      "bytes": 12122,
+      "sha256": "38f306c9aae1452c3f8c139ce5714d04b362901efc686d8e154eb7ae319992bf"
+    },
+    {
+      "path": "local/cc12_native_gui_script_paths_71_probe.exe",
+      "bytes": 223232,
+      "sha256": "f2cbf490dce9f5cc77de91bc3220c84c6c74a6efb51f9d40e1dd694982eb7625"
+    },
+    {
+      "path": "local/cc12_native_gui_script_paths_71_probe.obj",
+      "bytes": 18163,
+      "sha256": "7069429ab7f41327be970d8a67b03094e26f52287aaa6a9b7fcfe0ef8e8186c8"
+    },
+    {
+      "path": "local/cc12_native_gui_script_paths_71.obj",
+      "bytes": 15793,
+      "sha256": "d6b01105b3a155a561b9804714290cae22cdc94761fab06b61e707f5e160ad73"
+    },
+    {
+      "path": "local/cc12_native_gui_script_paths_71_probe.log",
+      "bytes": 294,
+      "sha256": "770561cbc3d795441cb289733fa2cda83423f5b52ddaaec137a27d1942396a0b"
+    },
+    {
+      "path": "local/cc12_native_gui_script_paths_71_compile.log",
+      "bytes": 72,
+      "sha256": "96c2412465ac455b39aa62f1b5723bc3363325bb776f00fbb7920b807e62a6e8"
+    },
+    {
+      "path": "local/cc12_native_gui_script_paths_71_ledger_5600.json",
+      "bytes": 1464,
+      "sha256": "8229fe36ae73ede434d47c200c34bc736c85fe19f740953cd7eef49d5c88da26"
+    },
+    {
+      "path": "local/cc12_native_gui_script_paths_71_ledger_5770.json",
+      "bytes": 1351,
+      "sha256": "6abefde2d1798888f92ce7f0a80eef19017f1c7bb0be3adae43585cb9a7569a9"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 93501736,
+      "sha256": "3c672579a81bdd5158f2964d5b5bd21c8dcfed5ced3e13545d8e549fbe72d131"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455680,
+      "sha256": "390dd5c886faa883a168c4cc60fb1c8b19dcdef4db779ca93a35608ca53c7c67"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72058,
+      "sha256": "f12ba334bd0d1379a526ab834667754b3ad3d2688afd57fdc20530f266b641b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ac5600\\decompiled.c",
+      "bytes": 4249,
+      "sha256": "e1356612eb44f8a42fe183bd67a3d470ac9a838c6e775081eb819cffe5689937"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ac5600\\assembly.txt",
+      "bytes": 3234,
+      "sha256": "d622a576db543c99c190d9098e2ea44cb3f04a096f2ee4cc4f129262a1a74902"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ac5770\\decompiled.c",
+      "bytes": 2181,
+      "sha256": "94a92bd4f0fc208f1043c41413d392aaec98fc52fb5dd549f61d259ef8237625"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ac5770\\assembly.txt",
+      "bytes": 950,
+      "sha256": "83f3b6b2c32d6b374834610f7d49b1ce9fcc5375f68e056cb3ad8e07af9df475"
+    }
+  ],
+  "documentation": {
+    "path": "docs/CC12_NATIVE_GUI_SCRIPT_PATHS_71.md",
+    "bytes": 8265,
+    "sha256": "67924c7efd481f7b0ac21dd00c38222375b426ee50c7c14b309aa86b6346a61e"
+  },
+  "not_claimed": [
+    "private Native FH3/SEH/cleanup-double-exception equivalence",
+    "Original binary replacement ABI",
+    "empty/alias/mutating-publication/failure-case runtime coverage",
+    "full Original callee graph differential",
+    "automatic fail-closed frame destruction",
+    "CMake registration of new Source",
+    "AC6600/Lua continuation execution",
+    "game production publications or native Text activation",
+    "gameplay proof"
+  ],
+  "unchanged": [
+    "CMake/main/game_hosts/game_main",
+    "AC6600 and GuiLayoutLoader/semantic wrappers",
+    "other Source",
+    "game/audio/settings",
+    "Original installation"
+  ],
+  "call_steps": [
+    {
+      "address": "00ac563e",
+      "native": "0041dd40",
+      "function": "00ac5600"
+    },
+    {
+      "address": "00ac5659",
+      "native": "00bf7680",
+      "function": "00ac5600"
+    },
+    {
+      "address": "00ac5677",
+      "native": "0041dd40",
+      "function": "00ac5600"
+    },
+    {
+      "address": "00ac5692",
+      "native": "00bf7680",
+      "function": "00ac5600"
+    },
+    {
+      "address": "00ac56ad",
+      "native": "004261a0",
+      "function": "00ac5600"
+    },
+    {
+      "address": "00ac56bf",
+      "native": "004261a0",
+      "function": "00ac5600"
+    },
+    {
+      "address": "00ac56e4",
+      "native": "00419cc0",
+      "function": "00ac5600"
+    },
+    {
+      "address": "00ac56eb",
+      "native": "00bd1510",
+      "function": "00ac5600"
+    },
+    {
+      "address": "00ac5704",
+      "native": "00419cc0",
+      "function": "00ac5600"
+    },
+    {
+      "address": "00ac570b",
+      "native": "00bd1510",
+      "function": "00ac5600"
+    },
+    {
+      "address": "00ac5729",
+      "native": "00419cc0",
+      "function": "00ac5600"
+    },
+    {
+      "address": "00ac5730",
+      "native": "00bd1510",
+      "function": "00ac5600"
+    },
+    {
+      "address": "00ac574d",
+      "native": "00419cc0",
+      "function": "00ac5600"
+    },
+    {
+      "address": "00ac5754",
+      "native": "00bd1510",
+      "function": "00ac5600"
+    },
+    {
+      "address": "00ac57a2",
+      "native": "0041dd40",
+      "function": "00ac5770"
+    },
+    {
+      "address": "00ac57b7",
+      "native": "00bf7680",
+      "function": "00ac5770"
+    },
+    {
+      "address": "00ac57c5",
+      "native": "00ac5600",
+      "function": "00ac5770"
+    }
+  ],
+  "eh_tail_steps": [
+    {
+      "address": "00cb8863",
+      "native": "0041dd20",
+      "function": "00cb8860",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb886b",
+      "native": "0041dd20",
+      "function": "00cb8868",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb8873",
+      "native": "0041dd20",
+      "function": "00cb8870",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb887b",
+      "native": "0041dd20",
+      "function": "00cb8878",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb8893",
+      "native": "0041dd20",
+      "function": "00cb8880",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb889e",
+      "native": "00bf6b43",
+      "function": "00cb8899",
+      "kind": "tail_jump"
+    }
+  ],
+  "independent_source_reviews": {
+    "root": "PASS whole hpp/cpp ordering plus landed target-guard/lifetime-comment changes",
+    "worker69": {
+      "verdict": "PASS",
+      "header_blob": "949763d75780c9cf5f2446f2c64c0ce4ad0a0fac",
+      "cpp_blob": "2288261cb510f935e19b2ecbcfd7c63584b5644c",
+      "scope": "ABI/EH/static Source schedules; not Native EH runtime equivalence"
+    }
+  },
+  "report_call_verifier": {
+    "command": "python tools/verify_report_calls.py reports/cc12_native_gui_script_paths_71.json",
+    "expected_direct_calls": 17,
+    "expected_eh_tail_jumps": 6,
+    "exit_code": 0,
+    "checked": 23,
+    "failed": 0
+  }
+}

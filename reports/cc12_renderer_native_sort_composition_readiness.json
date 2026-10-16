@@ -1,0 +1,124 @@
+{
+  "schema": "bsp_cc12_renderer_native_sort_primary_readiness_v1",
+  "utc": "2026-10-16T03:28:19.118934+00:00",
+  "status": "conditional_compatible_subset_only_unqualified_existing_caller_composition_blocked",
+  "Source_ready": false,
+  "Source_authorized": false,
+  "Source_implemented": false,
+  "Source_credit": 0,
+  "functions": [
+    "00B27D80",
+    "00B1FFD0"
+  ],
+  "worker_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\RendererNativeSortCompositionReadiness01\\root_manifest.json",
+    "bytes": 5684,
+    "sha256": "0f627708d2d22ab37cd99a6defa7ea3fd26fcf14e0287844e1e14a788e229b4b"
+  },
+  "worker_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\RendererNativeSortCompositionReadiness01\\readiness.json",
+    "bytes": 9987,
+    "sha256": "78805481da0a8a7397c5db147a651bda6ee5f45b8106f79a1c742613e48722ca"
+  },
+  "primary_verification": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_renderer_native_sort_readiness_primary_20261016\\verified_receipts.DATA.json",
+    "bytes": 9260,
+    "sha256": "9736ea3dc396ecf32a0b67eaba0d7684e6f26a0e29820ede874c426ffc90b641"
+  },
+  "primary_review": {
+    "whole_Original_owned_instructions_read": 98,
+    "owned_bytes": 267,
+    "all_original_disk_bytes_starts_sizes_independently_decoded": true,
+    "whole_current_renderer_enumeration_Source_read": true,
+    "targeted_constructor_cleanup_provider_reads": true,
+    "current_Main_inputs_21_literal_and_one_exact_LF_CRLF_report_only": true,
+    "algebraic_nonimplication_independently_checked": true
+  },
+  "kernel_state_at_review": "Four-file valid-input Source and actual strict object provisionally primary/peer reviewed in worker checkout; final author/peer/Main registration-build-artifact admission pending. This is not an available registered caller provider yet.",
+  "current_caller_change": "None; current std::qsort and all existing caller domains remain unchanged.",
+  "not_a_runtime_bug_claim": "Counterexamples concern what current constraints mathematically imply; no actual D3D mode values or execution were observed.",
+  "limits": [
+    "No Source contract narrowing, invented maximum D3D value/count, fake provider/callback/context, runtime filter, or kernel scope broadening.",
+    "No new compile/build/tests/probes/body execution or Ghidra mutation; no new Source, ABI, runtime, startup or game credit."
+  ],
+  "qsort_call": {
+    "function": "00B27D80",
+    "address": "00B27E68",
+    "native": "00BFC350",
+    "cleanup": "00B27E6D ADD ESP,10h",
+    "read_order": [
+      "00B27E59 current renderer+20 countDWORD ->ECX",
+      "00B27E5C current renderer+1C data ->EDX"
+    ],
+    "push_order": [
+      "00B27E5F genuine00B1FFD0",
+      "00B27E64 literal8",
+      "00B27E66 capturedcount",
+      "00B27E67 capturedbase"
+    ],
+    "logical_tuple": "actual current base, actual captured unsignedDWORD count, width8, genuine cdecl compare_native_resolution_pairs_00b1ffd0",
+    "unconditional": true,
+    "Source_currently_std_qsort": true
+  },
+  "layout": {
+    "header": "Actual renderer+1C=data,+20=count,+24=signed capacity; stride8 raw pair values, two DWORDs width0/height4; comparator receives actual row address, not header/pointee/wrapper",
+    "alignment": "DWORD alignment4 suffices; malloc-produced ordinary storage alignment and stride8 preserve it; all8 callback-reached row bytes must be initialized; no object/vtable/owning field introduced",
+    "byte_relocatable": "Pairs contain only opaque DWORD values; byte exchanges introduce no element ownership/lifecycle action. Actual allocation must be plain heap storage, not a volatile/MMIO/aliasing protocol; existing volatile read views do not establish an MMIO contract."
+  },
+  "actual_producer_lifecycle": {
+    "constructor": "construct_native_renderer_00b32410 zeros owner+1C/+20/+24 at B3244F/52/55, uses actual Direct3DCreate9(20h) stored+1990, and calls enumerator at B3285C with borrowed context scratch; no substitute provider required",
+    "application": "Existing GameNativeRendererApplication::construct allocates actual1D94h owner; Impl owns alignas4 10h mode scratch and passes mode.data() through its retained constructor context. Existing code evidence only; this task did not run startup or observe D3D modes.",
+    "allocation": "reserve_native_resolution_pairs_008d4750 clamps signed requested>=1; if signed capacity insufficient, canonical singleton_lifetime_allocate({object,requested*8,requested*8}) uses current malloc/new-handler domain. Current count/base pair copy, then current old base canonical-free BEFORE replacement/capacity publication. Count is retained. Success/valid extents/nonwrapping geometry are caller obligations, not new guards.",
+    "enumeration": "Capture GetAdapterModeCount once; each iteration reload current realCOM interface/table. Accept HRESULT exactly0, then unsignedwidth>=640 and unsignedheight>=480. Exact-pair search suppresses new duplicates; count/cap equality-only growth, then reload count/base, conditional row writes and incrementCURRENTcount. Existing vector is never cleared.",
+    "retirement": "Existing destroy_native_renderer_resolution_pairs_008d4e60 drains count then canonical-frees data; constructor unwind case1 uses it on owner+1C. Sorting must finish while owner/allocation/API/context remain live, before cleanup, concurrent mutation or teardown. No lifetime is manufactured by this readiness."
+  },
+  "small_counts": {
+    "zero": "Unconditional call remains. Width8 and genuine nonnull comparator satisfy validation preconditions; count0 may pass null base (fresh constructor case), or retained genuine live allocation. Kernel does not read/write rows, call comparator or form count-1/extent.",
+    "one": "Requires actual nonnull genuine base and valid producer storage, width8/comparator valid; kernel returns without element access/callback/helper/extent. No invalid-base admission follows from early return.",
+    "producer_qualification": "Fresh constructor0 plus ordinary successful first reserve/append supplies these geometries; arbitrary preexisting/invalid raw headers and teardown states are not proved by the caller."
+  },
+  "mathematical_subset": {
+    "extent": "For n>=2 require one actual live writable contiguous allocation covering8*n bytes, alln rows valid/trivially byte-relocatable, endpoint base+8*n representable without32bit wrap. Require8*n<=INT32_MAX, hence n<=0x0FFFFFFF (268435455); native code has no such new guard.",
+    "ordering": "Retain genuine wrapped-difference comparator. Its actual logical values must independently establish stable coherent strict weak ordering. A sufficient, not necessary, subset is maxWidth-minWidth<=0x7FFFFFFF and, for EACH equal-width group, maxHeight-minHeight<=0x7FFFFFFF in nonwrapping unsigned arithmetic. Then signs equal ordinary unsigned lexicographic width/height ordering. This is a future admission condition, not a claim about actual D3D modes or a proposed runtime filter.",
+    "lifetime_and_callback": "Sameactualallocation, aligned valid current rows and compatible actual cdecl callback; no mutation except kernel byte exchanges, callback/reentry/throws/faults/concurrency/orderingchange/lifetimechange/teardown. Preserve current count-before-base capture and actual callback identity. Do not add wrappers/copiedkeys/synthetic pivots or alter tuple/caller contracts."
+  },
+  "mathematical_nonimplication": {
+    "antisymmetry": "Allowed DWORD widths00000280h and80000280h, height000001E0h, each pass current minimum filters. Wrapped subtraction in BOTH directions is80000000h interpreted negative; strict-weak-order antisymmetry fails.",
+    "transitivity": "Allowed widthvaluesA=00000280h,B=60000280h,C=C0000280h with height1E0h: cmp(A,B)=-60000000h,cmp(B,C)=-60000000h,cmp(C,A)=-40000000h, forming a cycle.",
+    "evidence_limit": "These are algebraic counterexamples to what the source constraints imply, not tests/probes, invented/observed real D3D modes or executed comparator results."
+  },
+  "proved_vs_required": [
+    {
+      "condition": "genuine tuple, callback layout/cdecl/purity",
+      "Source_proves": "Exact unconditional width8 tuple and pure two-DWORD comparator; fresh constructor has actual scratch and concrete allocation/free route.",
+      "not_proved": "Coherent ordering of arbitrary accepted/retained values, valid storage under arbitrary raw callers, external serialization or all allocation resources."
+    },
+    {
+      "condition": "ordering",
+      "Source_proves": "Only unsigned minwidth640/minheight480 on newly appended modes; exact pair dedup for new rows.",
+      "not_proved": "No maximum span, circular-order coherence, inherited-row ordering invariant or runtime domain check. Minima and dedup do not imply strict weak ordering."
+    },
+    {
+      "condition": "bounds/geometry",
+      "Source_proves": "DWORD field/arithmetic/load/store schedule and canonical reserve path.",
+      "not_proved": "No n<=0FFFFFFF,8*n<=INT32MAX,nonwrappingendpoint or actual allocationextent invariant for every accepted input; unsigned modecount has no upper bound and oldvector is retained."
+    },
+    {
+      "condition": "current native kernel gate",
+      "Source_proves": "Only authorized readiness/partial valid-input API contract.",
+      "not_proved": "Kernel Source implementation, independent admission, Main registration/build/archive/symbol proof or actual integration with this renderer."
+    }
+  ],
+  "blockers": [
+    "Establish real producer/domain evidence or separately authorized explicit contract for comparator coherent strict weak ordering over ALL final rows, including preexisting ones; do not assume real D3D ranges or replace comparator.",
+    "Establish actual final count/extent/nonwrapping sameallocation geometry and stable ownership/callback domain required by the conservative kernel; current raw header and modecount code do not prove it universally.",
+    "Complete the separately authorized kernel Source/independent review/Main actualartifact registration/admission; readiness alone is not an available registered provider."
+  ],
+  "safe_future_scope": "Only a separately justified bounded ordinary caller composition, replacing current std::qsort with the admitted kernel and the SAME base/count/8/genuine comparator/readorder. No source change authorized here; all unqualified current-caller domains remain blocked.",
+  "exclusions": [
+    "No new D3D mode limits, filtered modes, wrapper/container/provider/context/callback, source contract narrowing or kernel-scope broadening",
+    "No validation-failure/errno/TLS/privateCRT/EH/fullABI/instruction/fault-ordering identity",
+    "No claim for scene callers/comparators, application startup, runtime or gameplay",
+    "Historical fixture/real-D3D reports are pinned context only, not current all-mode or new-kernel execution proof"
+  ]
+}

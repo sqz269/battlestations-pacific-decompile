@@ -1,0 +1,512 @@
+{
+  "packet": "oct15_native_dword_vector_insertn_owner",
+  "status": "whole_source_default_Win32_Source_fixture_both_independent_reviews_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_dword_vector_insertn_owner.cpp",
+  "header": "include/bsp/native_dword_vector_insertn_owner.hpp",
+  "documentation": "docs/OCT15_NATIVE_DWORD_VECTOR_INSERTN_OWNER.md",
+  "source_sha256": {
+    "src/native_dword_vector_insertn_owner.cpp": "ab8e7ac8c2bdc9d3666b6c32bd4d218218d737d06b946e724eb045c340994489",
+    "include/bsp/native_dword_vector_insertn_owner.hpp": "54a9402070f71e0874a2292a4308bcb0981ba7703c4d2c0f9432f4cbd3cdd243"
+  },
+  "tested_source_pin": "8180c34d839f8fd356ebfe50545f2a65585af388",
+  "native_blocks": [
+    {
+      "address": "00698400",
+      "bytes": 366,
+      "starts": 141,
+      "sha256": "3ab889721d323895d82e16e6f54af3fe60cd6c75e5969b9faff1f80d6c9086f6",
+      "scope": "parent_code",
+      "PE_equals_live": true
+    },
+    {
+      "address": "00698590",
+      "bytes": 103,
+      "starts": 41,
+      "sha256": "3ce9bcc69147d7189e1312377174d38716aa6edbb2c1317a65e9faccb1bdb672",
+      "scope": "parent_code",
+      "PE_equals_live": true
+    },
+    {
+      "address": "0069861a",
+      "bytes": 90,
+      "starts": 38,
+      "sha256": "2073cf791dc173d7d467ea1845f4ccacc5b992f6d582878fcc7cedd51b266b80",
+      "scope": "parent_code",
+      "PE_equals_live": true
+    },
+    {
+      "address": "0069856e",
+      "bytes": 34,
+      "starts": 12,
+      "sha256": "1e87598b9a503ba49ec511b8ad3840368605f408f7c037aa18a8c80f271ce5f2",
+      "scope": "parent_code",
+      "PE_equals_live": true
+    },
+    {
+      "address": "006985f7",
+      "bytes": 35,
+      "starts": 13,
+      "sha256": "254bbe46be56467a5bd8768b1f3070a600f2bffad10e961908e97d55a811fc08",
+      "scope": "parent_code",
+      "PE_equals_live": true
+    },
+    {
+      "address": "00c7ec60",
+      "bytes": 8,
+      "starts": 2,
+      "sha256": "bbd46a7a15cf18ee15d6c16a2b2b81a9a5350f93829407cc3f263388bd8c963f",
+      "scope": "parent_code",
+      "PE_equals_live": true
+    },
+    {
+      "address": "00c7ec68",
+      "bytes": 10,
+      "starts": 2,
+      "sha256": "c1e37c475a7e64a826b3f54dbb62fbfb2f7383dd9a0d5c3ed72bcf96aa77c456",
+      "scope": "parent_handler_support",
+      "PE_equals_live": true
+    }
+  ],
+  "evidence_accounting": {
+    "whole_ordinary_bytes": 559,
+    "whole_ordinary_starts": 220,
+    "lexical_catches_bytes": 69,
+    "lexical_catches_starts": 25,
+    "logical_action_bytes": 8,
+    "logical_action_starts": 2,
+    "distinct_owned_bytes": 636,
+    "distinct_owned_starts": 247,
+    "handler_support_bytes": 10,
+    "handler_support_starts": 2,
+    "Native_EH_bytes": 148,
+    "no_global_unique_coverage_increment_claimed": true
+  },
+  "host_steps": [
+    {
+      "address": "0069842d",
+      "native": "00557590",
+      "kind": "call"
+    },
+    {
+      "address": "0069846c",
+      "native": "006978d0",
+      "kind": "call"
+    },
+    {
+      "address": "006984cd",
+      "native": "00696890",
+      "kind": "call"
+    },
+    {
+      "address": "006984f0",
+      "native": "006980e0",
+      "kind": "call"
+    },
+    {
+      "address": "00698500",
+      "native": "00698310",
+      "kind": "call"
+    },
+    {
+      "address": "0069851c",
+      "native": "006980e0",
+      "kind": "call"
+    },
+    {
+      "address": "00698542",
+      "native": "004d49b0",
+      "kind": "call"
+    },
+    {
+      "address": "0069854b",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "address": "006985b3",
+      "native": "00698350",
+      "kind": "call"
+    },
+    {
+      "address": "006985d0",
+      "native": "00698310",
+      "kind": "call"
+    },
+    {
+      "address": "006985ed",
+      "native": "00698010",
+      "kind": "call"
+    },
+    {
+      "address": "0069862b",
+      "native": "00698350",
+      "kind": "call"
+    },
+    {
+      "address": "00698639",
+      "native": "00698380",
+      "kind": "call"
+    },
+    {
+      "address": "00698649",
+      "native": "00698010",
+      "kind": "call"
+    },
+    {
+      "address": "00698659",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "address": "00698579",
+      "native": "004d9e40",
+      "kind": "call"
+    },
+    {
+      "address": "0069857f",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "address": "0069858b",
+      "native": "00bf6885",
+      "kind": "call"
+    },
+    {
+      "address": "0069860c",
+      "native": "004d9e40",
+      "kind": "call"
+    },
+    {
+      "address": "00698615",
+      "native": "00bf6885",
+      "kind": "call"
+    },
+    {
+      "address": "00c7ec63",
+      "native": "004cdce0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c7ec6d",
+      "native": "00bf6b43",
+      "kind": "tail_jump"
+    }
+  ],
+  "original_abi": {
+    "registers": "ECX receiver; incoming EDX unconsumed (including by initial ctor)",
+    "physical_stack_words": [
+      "unused iterator-owner bits atEBP+8",
+      "position atEBP+C",
+      "unsigned count atEBP+10",
+      "const fill-header pointer atEBP+14"
+    ],
+    "return": "RET10h; no semantic EAX, actual sole caller698940 discards it and computes output iterator independently",
+    "proposed_Source": "void __fastcall insert_native_dword_vector_header_count_00698400(void* receiver,uint32_t unused_edx,uint32_t unused_owner_bits,void* position,uint32_t count,const void* fill)"
+  },
+  "ordered_contracts": {
+    "original_entry_ABI": {
+      "registers": "ECX receiver; incoming EDX unconsumed (including by initial ctor)",
+      "physical_stack_words": [
+        "unused iterator-owner bits atEBP+8",
+        "position atEBP+C",
+        "unsigned count atEBP+10",
+        "const fill-header pointer atEBP+14"
+      ],
+      "return": "RET10h; no semantic EAX, actual sole caller698940 discards it and computes output iterator independently",
+      "proposed_Source": "void __fastcall insert_native_dword_vector_header_count_00698400(void* receiver,uint32_t unused_edx,uint32_t unused_owner_bits,void* position,uint32_t count,const void* fill)"
+    },
+    "initial_copy_and_bounds": [
+      "Actual557590 constructs owning private16B fill header atEBP-28 from CURRENT value before first receiver+4 load and BEFORE count0. Opaque private+0 is unspecified/unowned.",
+      "After constructor succeeds, load receiver+4, compare to0, then arm state0 at698439. No parent temporary cleanup on constructor failure; child owns it. Native faults before arming are outside CurrentCpp proof.",
+      "Initial capacity is0 if captured begin0; otherwise SAR4(wrapped receiver+C minus captured begin). Count0 still releases the private copy normally.",
+      "Size is0 if captured begin0; otherwise SAR4(wrapped CURRENT receiver+8 minus captured begin). Unsigned compare count against0FFFFFFF-size; actual length helper on excess.",
+      "Repeat current end-based size reads for capacity comparison. Growth uses oldcapacity+(oldcapacity>>1) if within0FFFFFFF, otherwise0, then max against newly reread size+count; no extra host-size guard or count bridge."
+    ],
+    "growth": [
+      "Actual696890 sees computed element count inECX and explicit EDX0. Allocation failure is still state0: only private fill cleanup, no new-base cleanup.",
+      "After allocation, reread receiver+4. Save newbase intoEBP+14 and initial completion intoEBP+10; install state1 before first transfer.",
+      "Transfer [CURRENT begin,position) into newbase. Save its actual EAX as completion BEFORE counted fill from private value.",
+      "Save counted-fill independent EAX as completion BEFORE suffix transfer. Reread receiver+8 for suffix end; transfer [position,CURRENT end) after inserted objects.",
+      "Suffix EAX is discarded. Completion remains POST-FILL, not suffix end. Reread current begin/end to compute final size+count.",
+      "If current begin nonzero, pass captured begin plus freshly loaded end to actual4D49B0 with receiver/progress only as dead metadata. Then RELOAD receiver+4 after destruction and free that current pointer.",
+      "Publish capacity, end, begin in that order from saved allocated base/computed counts. State1 is NOT reset.",
+      "Common normal private-begin captured free remains inside growth try/state1. If native cleanup throws there, growth catch still uses saved newbase and POST-FILL completion even after header publication; do not invent rollback or broaden completion to suffix."
+    ],
+    "growth_catch": [
+      "69856E captures saved completionEBP+10 and allocated newbaseEBP+14; owner context from saved receiverEBP-14 is unconsumed metadata only.",
+      "Actual4D9E40 destroys [newbase,saved_completion), then free the captured newbase, then native BF6885(0,0). Source bare rethrow only at CurrentCpp boundary.",
+      "Catch state2 previous0 leads to C7EC60 CURRENT private-header tidy afterward. Child failed construction/transfer cleanup is not duplicated."
+    ],
+    "short_tail": [
+      "Capture old receiver end at698590, position at698593, and save old endEBP-18 before comparing unsigned SAR4(end-position) with count.",
+      "For tail<count, save count<<4 byte offset inEBP+14. Transfer [position,captured_old_end) to position+offset via698350; discard result.",
+      "Reload CURRENT receiver+8, recompute tailSAR4(current_end-position), and counted-fill count minus that fresh tail at current end. Install state3 immediately before that child call.",
+      "On fill success, ignore EAX, add saved offset to CURRENT receiver+8, then reload new end and subtract offset to capture assigned-fill endpoint.",
+      "Reset state0 at6985E6 BEFORE cdecl698010 assigns private fill into [position,captured_newend-offset). Assignment failure does not roll back published end or clean transferred tail."
+    ],
+    "short_tail_catch": [
+      "6985F7 reloads saved receiver and CURRENT receiver+8 at catch time, computes count<<4 from originalEBP+10, and destroys [position+offset,current_end+offset) through4D9E40.",
+      "No outer allocation free/end repair/rollback. Counted-fill child already cleans its own failed partial prefix; bare rethrow then state4->0 private-header tidy."
+    ],
+    "long_tail": [
+      "For tail>=count, selected tail start=captured_old_end-(count<<4). Transfer that tail into captured_old_end; publish ACTUAL transfer EAX to receiver+8 immediately.",
+      "Backward swap [position,selected_tail_start) into saved old end through698380. Its independently rounded EAX is ignored.",
+      "Assign private fill into [position,position+saved_offset) through698010. Both cdecl frames are removed together by ADD ESP18h; new Source private-call frames differ.",
+      "State0 throughout these operations: failure gets only private-header cleanup after any child cleanup, with no parent range rollback."
+    ],
+    "normal_private_cleanup": [
+      "All paths capture private+4 once and conditionally literal-free it at698659. There is no normal Tidy or zero store and no early state disable.",
+      "Keep private cleanup armed THROUGH normal free; disable only after return. Growth reaches it in state1; count0/long/short-after-assignment reach it in state0.",
+      "Current accepted free is noexcept, so escaping native free-origin exceptions/SEH are unproved even with correct lexical Source scopes.",
+      "Unwind C7EC60 LEAs CURRENT private headerEBP-28 to actual4CDCE0. No public EBP helper, fake owner/header allocator, generic callback or FH3 frame overlay."
+    ],
+    "alias_limits": "All public captured pointers and CURRENT reload schedules are required. No self guard, endpoint/null validation, snapshot, typed vector/array model, modern insert, or ownership rollback. New Source private stack/opaque0 and dead metadata have explicit qualifications."
+  },
+  "decoded_Native_EH": {
+    "FuncInfo": "00dabacc",
+    "magic": "19930522",
+    "maxstate": 5,
+    "unwind_map": "00dabb18",
+    "unwind_states": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": "00c7ec60"
+      },
+      {
+        "state": 1,
+        "previous": 0,
+        "action": "00000000"
+      },
+      {
+        "state": 2,
+        "previous": 0,
+        "action": "00000000"
+      },
+      {
+        "state": 3,
+        "previous": 0,
+        "action": "00000000"
+      },
+      {
+        "state": 4,
+        "previous": 0,
+        "action": "00000000"
+      }
+    ],
+    "try_records": [
+      {
+        "address": "00dabaf0",
+        "low": 1,
+        "high": 1,
+        "catch_high": 2,
+        "count": 1,
+        "descriptor": "00dababc",
+        "handler": "0069856e"
+      },
+      {
+        "address": "00dabb04",
+        "low": 3,
+        "high": 3,
+        "catch_high": 4,
+        "count": 1,
+        "descriptor": "00dabaac",
+        "handler": "006985f7"
+      }
+    ],
+    "catch_descriptors": [
+      {
+        "address": "00dababc",
+        "adjectives": "00000040",
+        "type": 0,
+        "displacement": 0,
+        "handler": "0069856e"
+      },
+      {
+        "address": "00dabaac",
+        "adjectives": "00000040",
+        "type": 0,
+        "displacement": 0,
+        "handler": "006985f7"
+      }
+    ],
+    "IP_map_and_expected_type_list": 0,
+    "EH_flags": 1,
+    "raw_bytes": 148,
+    "normal_state_stores": [
+      {
+        "site": "00698439",
+        "state": 0,
+        "meaning": "after private ctor returns and initial receiver begin is read"
+      },
+      {
+        "site": "006984ec",
+        "state": 1,
+        "meaning": "before growth transfer; not reset through old cleanup, publication or normal temp free"
+      },
+      {
+        "site": "006985cc",
+        "state": 3,
+        "meaning": "before short-tail counted fill"
+      },
+      {
+        "site": "006985e6",
+        "state": 0,
+        "meaning": "after short success end publication, before assigned fill"
+      }
+    ]
+  },
+  "provider_fingerprints": {
+    "src/native_dword_vector_copy_construct.cpp": "4de974411b51e59d30cd1b5822439ef2dd87545f58e787ff46ef3b6df1ea5336",
+    "include/bsp/native_dword_vector_copy_construct.hpp": "ecf2b1d9cb256fef9047e0b8f235c88874177fe9b1d28e4d6cc1add1a53bf693",
+    "src/native_dword_vector_counted_fill.cpp": "fc71450ff7abafbe3584afc0af74f4ca3cd1444193afecc46417a0b5e11c7f70",
+    "include/bsp/native_dword_vector_counted_fill.hpp": "feef63d40f1d79acbab4dfd5d6dc4b3e512253fe3f88d8c47bc1e53bb2b50349",
+    "src/native_dword_vector_transfer_range.cpp": "eaaaa59dc2cdc7c47063b780dedf0c1438aae0af64053c8786fb22060f6efd00",
+    "include/bsp/native_dword_vector_transfer_range.hpp": "1e4ab82ceac31f32230ea1b7053726e2ddf76bc99a9fd053237c8546500cc69a",
+    "src/native_dword_vector_swap_backward.cpp": "8959b70f4bf56076c89f7935edac9a1b454cc8398e1f6dfc9a5ce72b0d63a811",
+    "include/bsp/native_dword_vector_swap_backward.hpp": "b194933dd1d672e4c1231581619c86f90f82c1be596e3787cda668e60849a720",
+    "src/native_dword_vector_fill_objects.cpp": "b37a5053a3991d5ec8f3d877643f8ff497ada210b3daf96865d2b755d60ad6d3",
+    "include/bsp/native_dword_vector_fill_objects.hpp": "1f3dd024f3879453a59a5d9b7d26d82411eef3f0d03e205b4e5187048169c5e8",
+    "src/native_word_vector_tidy.cpp": "5da425f344175e2fb4e143450d76c9184b6dfa83be36dc0c5b49b9c1d32dd998",
+    "include/bsp/native_word_vector_tidy.hpp": "76f071a110765cec357421060880e85e1213311f16d886a087439f6c26161079",
+    "src/native_nested_string_vector_allocation.cpp": "9751b35cfbb56897d25e9c7b75d5f91de6c39a3a9ccc927f8d13845ac820ef68",
+    "include/bsp/native_nested_string_vector_allocation.hpp": "b1bf1e71e63018c750b8252dc7a509de730a68e27c4cc9f2ea6d9c5e03ab7ca0",
+    "src/native_dword_vector_destroy_range.cpp": "809a56a3efba2e6aea9e76cb40871c491c2d7f03b495da3480c4076b73a8ab00",
+    "include/bsp/native_dword_vector_destroy_range.hpp": "0ba209d14c599cbe8bc325a96c7034e6be68172b498dfdcb3a09f7792825b792",
+    "src/native_dword_vector_header_allocation.cpp": "e2747d71450f364453492bfdd848981abea308db7b6a34a4d58d390e3481e543",
+    "include/bsp/native_dword_vector_header_allocation.hpp": "6f5a9a6d4a2a9fe08526cea08afd8e8b9dc266987b07c180bf30d4edfa84b771",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "fresh_native_and_COFF_audit": {
+    "path": "local/oct15_insertn_owner_native_coff_audit.json",
+    "sha256": "ea24babb9d13cb4746a6e32a4f5b13be359ba715daaa1502a88bf228f4672ada"
+  },
+  "actual_CMake_COFF": {
+    "object": "build/win32/bsp_core.dir/Release/native_dword_vector_insertn_owner.obj",
+    "object_sha256": "ec92e03bf4ce44bb937930e840c460ac7ca0a6798bb902b4b50951abdd188095",
+    "all_code_bytes": 1056,
+    "all_instruction_starts": 395,
+    "alignment_INT3_padding_bytes_starts": 6,
+    "main_and_catches_bytes": 863,
+    "main_and_catches_starts": 311,
+    "other_sections_bytes": 193,
+    "other_sections_starts": 84,
+    "EH_capture": "local/oct15_insertn_owner_actual_CMake_EH.json",
+    "EH_capture_sha256": "c9c703aa829ec05c2c6f0ff7905742f5b765475befb14384600ec617a29505de",
+    "EH_bytes": 192,
+    "original_EH_identity_claimed": false,
+    "physical_EH_motion_qualification": "Physical compiler state0 precedes firstbegin read and shortstate3/reset0 move across nonthrowing rawloads/stores; SourceCurrentCpp scopes hold, Originalfault/SEH/FH3 scope identity is explicitly unproved.",
+    "excluding_alignment_padding_bytes": 1050,
+    "excluding_alignment_padding_starts": 389,
+    "archived_object": "local/oct15_insertn_owner_evidence/native_dword_vector_insertn_owner.obj",
+    "archived_object_sha256": "ec92e03bf4ce44bb937930e840c460ac7ca0a6798bb902b4b50951abdd188095"
+  },
+  "primary_review": {
+    "checks": [
+      "All559B220 ordinary Native instructions,69B25 lexical catches and8B2 logical action reviewed; fresh636B247 owned+10B2 handler PE/live/currentstarts and148EH match.",
+      "Private owning copy precedes receiver begin read/count0; outer CurrentCpp cleanup begins after that read in Source and has no constructor-failure cleanup duplication.",
+      "Capacity and repeated CURRENT end-based size reads retain captured initialbegin and exact SAR4/wrapped DWORD arithmetic, unsigned bound and1.5x capacity selection.",
+      "Count0 still constructs/frees private fill; excesscount invokes COMPLETE actual owning length helper before receiver mutation.",
+      "Allocation uses SAME count actual16-byte service, then CURRENT begin capture; growth initializes completion to allocatedbase before transfer.",
+      "Prefix actualreturn publishes completion before counted fill; CURRENT suffixend read precedes post-FILL completion; suffixreturn is discarded.",
+      "Growth recomputes CURRENT size, destroys captured old range, RELOADS CURRENT begin for actualfree, then stores cap/end/begin in order.",
+      "Growth catch persists through oldcleanup/publication/commonnormalprivatefree; it destroys only allocatedbase..POSTFILLcompletion then frees allocatedbase and rethrows.",
+      "Short-tail state0 transfer precedes currentend reload/countrecalculation; state3 covers counted fill and Source end publication/endpoint capture.",
+      "Short catch reads CURRENT end and originalcount offset, destroys position+offset..CURRENTend+offset, rethrows without outerfree/end repair.",
+      "Short assigned fill is outside state3; long path stays outer-only, publishes ACTUAL transfer return before backwardswap/assignment.",
+      "Normal private cleanup captures CURRENT privatebegin once, conditionalfree without clear stores; outercatch calls actual4CDCE0 on CURRENT privateheader exactly once.",
+      "Entire actual CMake code1056B395 instructions read, including6B6 finalINT3padding; main+catches863B311, othersections193B84; all relocations resolve actual services/privatehelpers/security/runtime.",
+      "Actual Source192B EH has6states3tries with outer(0,4,5), growth(1,1,2), short(3,3,4); no noop/publicEBP/action/frame bridge.",
+      "Physical compiler state0 precedes firstbegin read and shortstate3/reset0 move across nonthrowing rawloads/stores; SourceCurrentCpp scopes hold, Originalfault/SEH/FH3 scope identity is explicitly unproved.",
+      "Full independent Source peer review passed22 scoped checks with freshNative and24 provider fingerprints; no findings.",
+      "One focused actual Source fixture passed zero/growth/spareshort/sparelong/valueorder/distinctownership/actual owningerror/cleanup; no Nativeexecution claim.",
+      "Twenty directprovider Source/header fingerprints and frozenCPP/header verified; newSource/privateframes/CRT/RTTI/ABI/game limits explicit and prior domains unchanged."
+    ],
+    "findings": [],
+    "actual_CMake_all_code_bytes": 1056,
+    "actual_CMake_all_starts": 395,
+    "alignment_INT3_bytes_and_starts": 6,
+    "actual_CMake_EH_bytes": 192,
+    "Native_EH_bytes": 148,
+    "compiler_motion_qualified": true
+  },
+  "independent_Source_peer": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct15_dword_vector_insertn_owner_peer_review.json",
+    "sha256": "ce498975ea7c2ea8a8a4c73fb9b0313e4e0fcf376bfba09c5af77ef9da64489e",
+    "checks": 22,
+    "findings": [],
+    "scope": "Source and freshNative/providers; actualCOFF peer separate"
+  },
+  "independent_actual_COFF_peer": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct15_dword_vector_insertn_actual_coff_peer_review.json",
+    "sha256": "d1a9be41601e589c61074f87fc4d6506a060ef8ba544f3a819fc6d5db499420b",
+    "executed_checks": 22,
+    "Source_or_behavior_findings": [],
+    "resolved_metadata_findings": [
+      {
+        "kind": "resolved_metadata_accounting",
+        "severity": "informational",
+        "finding": "Taskbrief/earlierRootmessage said7INT3; exactobject and Rootsaveddisassembly have6 trailingINT3 at359..35E.",
+        "resolution": "Root explicitly confirmed and corrected padding metadata to6;1056B395total unchanged, excludingpadding1050B389. NoSource/behavior finding or requestedSourcechange."
+      }
+    ],
+    "scope": "independently parsed exact actual I386 CMake object, all395 instructions, relocations and192B CppEH; no build/Native execution inferred"
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "platform": "MSVC Win32 Release defaultCMake",
+    "existing_suites": "3/3 passed",
+    "ctest_seconds": 13.79,
+    "log": "local/oct15_insertn_owner_initial_build.log",
+    "log_sha256": "f8bd86952de3f90871c76c27d8fb197f315f3fe7274d3954a576ce70c1288f98",
+    "new_registered_tests": 0,
+    "focused_Source_fixtures": 1,
+    "fixture": {
+      "kind": "one_focused_Source_fixture",
+      "status": "passed",
+      "source_pin": "8180c34d839f8fd356ebfe50545f2a65585af388",
+      "machine": "0x14c",
+      "embedded_manifest_sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+      "embedded_asInvoker": true,
+      "files": {
+        "local\\dword_vector_insertn_probe.cpp": "2c3e7435d1ec2398260a13ec4d94982946c66f7202992139d33b284937cd8629",
+        "local\\run_dword_vector_insertn_probe.cmd": "7d3f77c0984641b8bd3c3d869ed69961f250ebea057a5a75c8ef1f6d7e5fd5cb",
+        "local\\dword_vector_insertn_probe.exe": "f36f28912c4cf79a3f9b79d78e1861dee0ae608574ca60d2254624416ba99179",
+        "local\\dword_vector_insertn_probe.obj": "e42b6badd3cbc4389bc65b19c816fde9a6211eda2c89b7e8229152ad0b10ba8c",
+        "local\\oct15_insertn_source_fixture.log": "f1df8a5b473afd8721200cb77e92a42e98aa766ac00b3d366aa0be2817b36d4e",
+        "build\\win32\\Release\\bsp_core.lib": "bbfd9361d31573b552353d0f9f508b747c16eb4ce5b0ac1a47194866479a2eff"
+      },
+      "source_runtime_only": true,
+      "Native_execution": false,
+      "Original_ABI_proven": false,
+      "game_validated": false
+    },
+    "fixture_receipt": "local/oct15_insertn_source_fixture_receipt.json",
+    "fixture_receipt_sha256": "faf909c08fb92628a529e60f2c6f5c9120f878e1fc6688596601e57a40cdfeba",
+    "fixture_source": "#include \"bsp/native_dword_vector_insertn_owner.hpp\"\n#include \"bsp/native_dword_vector_outer_tidy.hpp\"\n#include \"bsp/native_word_vector_tidy.hpp\"\n#include \"bsp/native_singleton_vector_allocation.hpp\"\n#include <array>\n#include <cstdint>\n#include <cstdio>\n#include <cstdlib>\n#include <set>\n#include <stdexcept>\n#include <vector>\n\nstruct Header { std::uint32_t opaque, begin, end, capacity; };\nstatic_assert(sizeof(Header) == 16 && sizeof(void*) == 4);\nusing Pair = std::array<std::uint32_t, 2>;\nstatic std::uint32_t bits(const void* p) {\n    return static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(p));\n}\nstatic void* pointer(std::uint32_t p) { return reinterpret_cast<void*>(p); }\nstatic void require(bool value, const char* message) {\n    if (!value) throw std::runtime_error(message);\n}\nstatic void check(const Header& h, const Header& fill,\n    const std::vector<Pair>& expected) {\n    require(h.opaque == 0x12345678u, \"outer opaque word changed\");\n    require((h.end - h.begin) / 16u == expected.size(), \"wrong logical count\");\n    require(h.end <= h.capacity, \"end exceeds capacity\");\n    std::set<std::uint32_t> owned;\n    auto* rows = static_cast<const Header*>(pointer(h.begin));\n    for (std::size_t i = 0; i != expected.size(); ++i) {\n        const auto& row = rows[i];\n        require(row.begin && row.end == row.begin + 8u &&\n            row.capacity == row.end, \"wrong inner extent\");\n        require(row.begin != fill.begin && owned.insert(row.begin).second,\n            \"backing ownership aliased\");\n        const auto* words = static_cast<const std::uint32_t*>(pointer(row.begin));\n        require(words[0] == expected[i][0] && words[1] == expected[i][1],\n            \"wrong logical values/order\");\n    }\n}\nint main() {\n    try {\n        auto* value = static_cast<std::uint32_t*>(std::malloc(8));\n        require(value != nullptr, \"fixture allocation failed\");\n        value[0] = 77; value[1] = 88;\n        Header fill{0xabcdef01u, bits(value), bits(value) + 8u, bits(value) + 8u};\n        Header h{0x12345678u, 0, 0, 0};\n        std::vector<Pair> expected;\n        auto insert = [&](std::size_t index, std::uint32_t count) {\n            bsp::insert_native_dword_vector_header_count_00698400(\n                &h, 0, 0, pointer(h.begin + static_cast<std::uint32_t>(index * 16u)),\n                count, &fill);\n        };\n        insert(0, 0); check(h, fill, expected);\n        require(h.begin == 0 && h.capacity == 0, \"zero insertion allocated outer backing\");\n        insert(0, 2); expected = {{77,88},{77,88}}; check(h, fill, expected);\n        require(h.capacity - h.begin == 32u, \"first growth capacity differs\");\n\n        // Supply spare raw header backing, independently of the insertion code.\n        auto* spare = std::realloc(pointer(h.begin), 8u * sizeof(Header));\n        require(spare != nullptr, \"fixture reserve failed\");\n        h.begin = bits(spare); h.end = h.begin + 32u; h.capacity = h.begin + 128u;\n        insert(2, 1); expected.push_back({77,88}); check(h, fill, expected);\n        value[0] = 99; value[1] = 100;\n        insert(1, 1); expected = {{77,88},{99,100},{77,88},{77,88}};\n        check(h, fill, expected);\n        value[0] = 55; value[1] = 66;\n        insert(3, 3); expected = {{77,88},{99,100},{77,88},{55,66},{55,66},{55,66},{77,88}};\n        check(h, fill, expected);\n        value[0] = 33; value[1] = 44;\n        insert(2, 2); expected = {{77,88},{99,100},{33,44},{33,44},{77,88},{55,66},{55,66},{55,66},{77,88}};\n        check(h, fill, expected);\n        require(h.capacity - h.begin == 192u, \"1.5x growth capacity differs\");\n        insert(4, 0); check(h, fill, expected);\n\n        const Header before = h;\n        bool actual_error = false;\n        try { insert(0, 0x10000000u); }\n        catch (const bsp::NativeSingletonVectorLengthError&) { actual_error = true; }\n        require(actual_error, \"wrong owning length-error boundary\");\n        require(h.begin == before.begin && h.end == before.end &&\n            h.capacity == before.capacity, \"overflow changed public extent\");\n        check(h, fill, expected);\n        require(value[0] == 33 && value[1] == 44 && fill.opaque == 0xabcdef01u,\n            \"fill storage was modified\");\n        bsp::tidy_native_dword_vector_outer_storage_004dc1c0(&h, 0);\n        bsp::tidy_native_word_vector_storage_004cdce0(&fill);\n        require(h.begin == 0 && h.end == 0 && h.capacity == 0 && fill.begin == 0,\n            \"actual cleanup did not clear storage\");\n        std::puts(\"PASS: one Source fixture: zero, growth, spare short/long, values/ownership, actual owning length error, cleanup\");\n        return 0;\n    } catch (const std::exception& e) {\n        std::fprintf(stderr, \"FAIL: %s\\n\", e.what()); return 1;\n    } catch (...) {\n        std::fputs(\"FAIL: unexpected exception\\n\", stderr); return 2;\n    }\n}\n",
+    "new_Native_execution": false,
+    "original_binary_ABI_proven": false,
+    "game_validated": false
+  },
+  "read_only_control_plan": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct15_dword_vector_insertn_source_control_plan.json",
+    "sha256": "c55477d1b9ab99f5cdad70f364edcca2a0af41d3e85da0474a1235c2bd926ac9",
+    "prior_readiness_preserved": true
+  },
+  "preservation": {
+    "correct_library_identity": "STL_Vector_InsertN_WordVector16_00698400",
+    "earlier_Source_domains_unchanged": true,
+    "Main_original_installation_unchanged": true
+  },
+  "limits": [
+    "Admitted valid accessible rawstorage, compatible currentCRT allocations and finite child traversals required; no newvalidation/repair/rollback.",
+    "Newfastcall interface/void excludes NativeincidentalEAX, ambientdeadtag/register/flags and original privateargument/frame aliases.",
+    "Original heap/newhandler/staticCRT/RTTI/FH3/SEH/fault/nestedcleanup failure/binaryABI/game compatibility unproved; current accepted noexcept free retains its real boundary.",
+    "Existingmath/tool suites do not test this owner. Focusedfixture executes reconstructedSource only and does not prove Nativecoverage, arbitrarychild failure or memoryleak freedom.",
+    "Compiler EH/state moves across rawloads/stores are recorded. Full Nativefunction/catch/action coverage does not imply physicalSourceFH3 equivalence."
+  ]
+}

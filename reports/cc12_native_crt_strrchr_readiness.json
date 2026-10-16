@@ -1,0 +1,56 @@
+{
+  "schema": "bsp_cc12_native_crt_strrchr_primary_readiness_v1",
+  "utc": "2026-10-16T03:42:09.702849+00:00",
+  "source_ready": true,
+  "Source_authorized": true,
+  "Source_implemented": false,
+  "Source_credit": 0,
+  "coverage": "whole_ordinary_domain_new_Source_interface",
+  "packet": "cc12_native_crt_strrchr_00bf87b0",
+  "worker_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strrchr_readiness_oct16\\local\\NativeCrtStrrchrReadiness01\\root_manifest.json",
+    "bytes": 7946,
+    "sha256": "9ebd4a1d065a1a79102e146f048083c22e2ae980eb046f20faa7e68278f506cc"
+  },
+  "worker_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strrchr_readiness_oct16\\local\\NativeCrtStrrchrReadiness01\\readiness.json",
+    "bytes": 8277,
+    "sha256": "a2d7f20568b6a7bbd5bfd3fe3da6ba3c12a957c89090f46c657a6ababd916370"
+  },
+  "primary_verification": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_crt_strrchr_readiness_primary_20261016\\verified_receipts.DATA.json",
+    "bytes": 731,
+    "sha256": "17c2d5016b896aeca0ed76ecda5926708106d6938ef39cf42df297256fe94e67"
+  },
+  "primary_specialist_review": "Root/Astra read all23 originalinstructions via supported liveCLI23b4fc: ordinarycdecl DFclear/flatES precondition, explicitSTD then every normalreturnCLD, lowintBYTE and two scans plusfinal repeatedbyte read recovered. No flag/register/stack/segment or compilerfaultABI identity claim.",
+  "future_interface": "char* __cdecl find_native_crt_last_character_00bf87b0(char* actual_string, int character);",
+  "future_files": [
+    "include/bsp/native_crt_strrchr.hpp",
+    "src/native_crt_strrchr.cpp",
+    "docs/NATIVE_CRT_STRRCHR.md",
+    "reports/native_crt_strrchr.json"
+  ],
+  "ordinary_domain": {
+    "pointer": "Genuine actual passed pointer to live byte storage; a first NUL exists in the same readable allocation at offset L; every byte from zero through L is readable for the whole invocation.",
+    "extent": "The ordinary 32-bit scan extent and its NUL-inclusive count do not wrap; normal flat ES addressing and cdecl entry DF=0 hold. Null, unterminated, dangling, inaccessible or wrapping storage is outside the defined ordinary contract, without adding a native guard or fallback.",
+    "character": "Every MSVC Win32 int value is admitted. Native MOV AL,[EBP+0xc] selects exactly the low eight bits; model conversion as unsigned-byte modulo 256 before byte equality. No locale or Unicode interpretation.",
+    "aliases": "The returned address is an alias into the actual passed storage, including its actual terminator. No copy, invented backing buffer, owner, host, global or context is permitted. Stable overlaps with other readable storage are admitted; no input writes occur. Native argument homes, payload aliases and typed argument values must remain stable. Fault, concurrent mutation and volatile/MMIO observation protocols are outside this ordinary semantic contract.",
+    "read_width": "All payload reads are one BYTE; no alignment requirement, word overread, read beyond first NUL, or read before base is needed.",
+    "no_hidden_dependencies": "No direct/indirect calls, globals, allocation, locale/TLS hooks or unresolved-call stubs. ES/DF are stated native ABI assumptions rather than new API parameters."
+  },
+  "ordered_semantics": [
+    "Load the native pointer argument first. With AL=0, ECX=0xffffffff and entry DF=0, read actual storage s[0],s[1],...,s[L] in ascending order, including the first NUL, independently of searched character.",
+    "The ADD/NEG counter sequence produces L+1; SUB EDI,1 selects the actual first-NUL address. Load the low byte of the native int argument only now, then STD.",
+    "Read actual storage s[L],s[L-1],... in descending order until the first matching byte or until all L+1 bytes were inspected. That first backward match is the highest matching offset. The native backward SCASB can transiently form base-1 even for an empty string; it does not dereference that transient address.",
+    "ADD EDI,1 repairs the postscan pointer. Always perform the extra BYTE comparison at the repaired address. This rereads the matching byte, or s[0] after a full no-match scan. Preserve that extra read in a future Source body.",
+    "Return the genuine actual-storage address for a match, including the terminator when low(character)==0; return null otherwise. Both branch outcomes run CLD before restoring EDI/EBP and plain RET."
+  ],
+  "safe_lowering": "Implement both passes using bounded unsigned offsets/counts over the actual string. Form pointers only for reached offsets 0..L and for the genuine result; do not form a C++ before-begin pointer when backward scanning offset zero or an empty string. Retain the unconditional repaired-address final read.",
+  "algorithm_requirement": "Explicit forward NUL-inclusive byte scan, then backward terminal-inclusive byte search and final repeated comparison. No SDK strrchr/strlen/search replacement or single-forward-last-match substitution.",
+  "future_gates": [
+    "One fresh strictMSVCWin32compile with actualsource/compiler/toolinput closure pinned before invocation and wholeCOFF evidence; no replay/newtests/probes/bodyexecution.",
+    "No separate unregistered-worker baseline requested; required normal Mainbuild after registration with existing3checks and actualobject/archive/symbol inspection by Root.",
+    "Exactly4Sourcefiles only; fresh address/filelease; correctlibraryname _strrchr retained; noOriginalcallers/ABI/EH/fault/runtime/gamepromotion."
+  ],
+  "checker_coverage": "Call-free leaf; workerlivecheckeractually0rows0failed, which is notsemanticproof. Root independentlyread and decoded completeOriginalbody."
+}

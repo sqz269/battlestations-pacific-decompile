@@ -76,8 +76,8 @@ AC6718 constructs owner, AC6723 arms state2, AC672B opens mask65. Then:
 
 1. Push obfuscation0, construct BY-VALUE8h `_Common` name using41E870 and actual
    D5CB64; AC5600 consumes that header and writes the caller's raw path temp.
-2. Arm state3, run B69D40(flag0). Set state2 BEFORE capturing/releasing the
-   path's nonnull pointer through current pool getter/BD1510. Consume exactly
+2. Arm state3, run B69D40(flag0). Capture the current path data BEFORE state2;
+   then set state2 before CURRENT length+1 and pool getter/BD1510. Consume exactly
    once; a throwing getter is not a reason to retry stale header contents.
 3. AC5770 copies actual page+100 into its by-value name and writes SAME path
    temp. Arm state4, run B69D40(flag0), then state2 BEFORE the second path return.
