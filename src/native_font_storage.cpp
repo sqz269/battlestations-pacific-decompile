@@ -94,3 +94,47 @@ void* construct_native_font_storage_00ad55c0(void* actual_font,
     }
 }
 } // namespace bsp
+
+namespace bsp {
+__declspec(noinline) void* __cdecl find_native_font_glyph_iterator_00ad4540(
+    void* actual_font, void* actual_output8,
+    const volatile std::uint16_t& actual_key) {
+    static_assert(sizeof(void*) == 4 && sizeof(std::uintptr_t) == 4,
+        "AD4540 raw lookup requires Win32 pointer widths");
+    const auto tree = reinterpret_cast<std::uintptr_t>(actual_font);
+    auto candidate = *reinterpret_cast<const volatile std::uint32_t*>(tree + 4u);
+    auto node = *reinterpret_cast<const volatile std::uint32_t*>(candidate + 4u);
+    if (*reinterpret_cast<const volatile std::uint8_t*>(node + 0x15u) == 0) {
+        const auto captured_key = actual_key;
+        do {
+            const auto node_key =
+                *reinterpret_cast<const volatile std::uint16_t*>(node + 0x0cu);
+            if (node_key < captured_key) {
+                node = *reinterpret_cast<const volatile std::uint32_t*>(node + 8u);
+            } else {
+                candidate = node;
+                node = *reinterpret_cast<const volatile std::uint32_t*>(node);
+            }
+        } while (*reinterpret_cast<const volatile std::uint8_t*>(node + 0x15u) == 0);
+    }
+    const auto current_head =
+        *reinterpret_cast<const volatile std::uint32_t*>(tree + 4u);
+    auto chosen = current_head;
+    if (candidate != current_head) {
+        const auto final_key = actual_key;
+        const auto candidate_key =
+            *reinterpret_cast<const volatile std::uint16_t*>(candidate + 0x0cu);
+        if (final_key >= candidate_key) chosen = candidate;
+    }
+    const auto output = reinterpret_cast<std::uintptr_t>(actual_output8);
+    *reinterpret_cast<volatile std::uint32_t*>(output) = tree;
+    *reinterpret_cast<volatile std::uint32_t*>(output + 4u) = chosen;
+    return actual_output8;
+}
+
+void* __cdecl find_native_font_glyph_iterator_00ad4370(void* actual_font,
+    void* actual_output8, const volatile std::uint16_t& actual_key) {
+    return find_native_font_glyph_iterator_00ad4540(
+        actual_font, actual_output8, actual_key);
+}
+} // namespace bsp
