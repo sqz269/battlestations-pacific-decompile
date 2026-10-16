@@ -22,4 +22,17 @@ extern "C" __declspec(noreturn) void __cdecl
 bsp_native_zlib_copy_block_frame_00bcf040(
     void* backing, std::uint32_t length, const void* bytes,
     void* kernel_entry_stack) noexcept;
+
+// Additional returning Source interface: ECX=backing, EDX=bytes, actual
+// DWORD[T+4]=length, DWORD[T+8]=raw_header. The real current return is moved
+// into the consumed length cell C=T+4; C+4 stays the mutable header/count.
+// The same complete body and whole AD provider then execute on this frame.
+// Intact RET4 normally leaves T+12. Raw aliases may corrupt saves, header,
+// count or continuation; no universal safe return/nonvolatile guarantee is
+// implied. Prefix stack accesses/ADD flags, DS/SS and Source code/return
+// placement alter fault prefixes. This is no recovered Original fastcall,
+// full ABI/SEH proof or parent adoption; the existing transfer remains valid.
+extern "C" void __fastcall bsp_native_zlib_copy_block_00bcf040(
+    void* backing, const void* bytes, std::uint32_t length,
+    std::uint32_t raw_header) noexcept;
 #endif

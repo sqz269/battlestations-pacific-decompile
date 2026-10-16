@@ -81,3 +81,22 @@ bsp_native_zlib_copy_block_frame_00bcf040(
         jmp copy_block_body
     }
 }
+
+// Genuine returning Source protocol. T is this entry's actual ESP; consume
+// length at T+4 as C's mutable continuation, leaving actual raw_header at C+4.
+// The body overwrites the temporary C-8 and old return C-4 saves before its
+// first backing read. No return address remains protected through the body.
+extern "C" __declspec(naked) void __fastcall
+bsp_native_zlib_copy_block_00bcf040(
+    void*, const void*, std::uint32_t, std::uint32_t) noexcept {
+    __asm {
+        mov eax, ecx
+        mov ecx, dword ptr [esp + 4]
+        push ebx
+        mov ebx, dword ptr [esp + 4]
+        mov dword ptr [esp + 8], ebx
+        pop ebx
+        add esp, 4
+        jmp copy_block_body
+    }
+}
