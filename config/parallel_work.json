@@ -42534,6 +42534,36 @@
         "two_gap_bytes_not_owned": true
       },
       "Main_gate": "pending_Source_author_peer_registration_build_actual_object_archive"
+    },
+    {
+      "id": "cc12_native_crt_wcsncmp_00bfdcb7",
+      "done": false,
+      "state": "whole_ordinary_readiness_primary_peer_accepted_Source_authorized_not_implemented",
+      "source_ready": true,
+      "function_addresses": [
+        "00bfdcb7"
+      ],
+      "files": [
+        "include/bsp/native_crt_wcsncmp.hpp",
+        "src/native_crt_wcsncmp.cpp",
+        "docs/NATIVE_CRT_WCSNCMP.md",
+        "reports/native_crt_wcsncmp.json"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [],
+      "readiness": "reports/cc12_native_crt_wcsncmp_readiness.json",
+      "contract": [
+        "New target-specific MSVC Win32 ordinary interface: int __cdecl bsp::compare_native_crt_wide_prefix_00bfdcb7(const void* actual_left, const void* actual_right, unsigned int count). Keep correct Original library name _wcsncmp. Pointers/int/count32bits, BYTE8bits, little-endian unsigned WORD16 code units. No Unicode scalar/surrogate/normalization/casefold/locale/collation semantics.",
+        "Count0 accepts any pointer values including null and returns0 before payload reads. Positive count requires genuine live determinate stable storage for ALL actually reached two-byte reads, including BOTH final WORD rereads. Do not require an entire count-sized extent when an earlier mismatch/LHS zero stops. Reached reads wholly inside the actual allocation; reached pointer advances/endpoints within or one past it and nonwrapping. No dereference of one-past, arbitrary signed count cap, padding, initial alignment, or typed wchar/uint16 ownership condition.",
+        "Stable identical and overlapping input regions are allowed. Original DEC at00BFDCCA writes its own by-value count argument home each visited iteration. A new typed API uses ordinary unsigned local count state; Original mutable argument-home/stack alias protocols and their writes/fault behavior are explicitly outside equivalence. Do not fabricate an argument block, native stack identity or Source parameter binding to that home.",
+        "After positive-count entry, decrement unsigned remaining BEFORE preliminary payload reads. If the new remaining is0, go directly to the final pair. Thus original count1 has exactly the final LHS WORD then RHS WORD reads, no preliminary pair.",
+        "When remaining is nonzero, read current LHS WORD. If zero, skip preliminary RHS and go to final pair. Otherwise read current RHS WORD for equality. On mismatch go to final pair. Only equal nonzero preliminary values advance each actual pointer by2 and repeat.",
+        "Every positive-count exit always freshly reads current LHS WORD then current RHS WORD, including after preliminary LHS zero or mismatch. Subtract zero-extended integer16 values in signed32: exact result [-65535,65535], not normalized sign or signed16 subtraction. Normal last-count position has final pair only; LHS-zero position has LHS/preliminary then LHS/RHS final; mismatch has LHS/RHS preliminary then LHS/RHS final.",
+        "Approve private addressed MOVZX WORD16 helper with MSVC Win32 inline assembly over genuine possibly unaligned raw byte storage, returning a fully initialized zero-extended32bit value. Spell reads as separate sequenced operations and preserve final rereads; actual strict/Main objects must verify widths, order, short circuit and unsigned decrement before loads. No invented typed WORD object or portable ISO alias/lifetime claim.",
+        "No SDK wcsncmp/memcpy/search, byte-only substitution, copied storage, validation/fallback/provider/global/TLS/caller binding. Exclude invalid reached reads, wrapping advances, mutable/indeterminate payload, lifetime changes, concurrency, MMIO/volatile observation and faults. Preserve Original RHS-before-LHS pointer-home-load fact in documentation, without claiming new compiler physical home/fault order or stack/register/flag/segment/EH/binary ABI/runtime/game identity.",
+        "Worker owns only four Source files and local evidence; Root owns registration/ledger/Ghidra/Main. One genuine strict compile with actual before input pins and complete actual code/data/symbol/relocation/metadata review. No separate unregistered whole-worker baseline requested, no tests/probes/body execution; Root registered Main build and actual Main object/archive gates remain pending."
+      ],
+      "Main_gate": "pending_Source_author_peer_registration_build_actual_object_archive"
     }
   ],
   "snapshot_after_analysis": {
