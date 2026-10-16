@@ -42389,17 +42389,11 @@
     },
     {
       "id": "cc12_native_crt_memchr_00bfa700",
-      "done": false,
-      "state": "whole_ordinary_readiness_primary_peer_accepted_Source_authorized_not_implemented",
+      "done": true,
+      "state": "whole_ordinary_Source_Main3checks_independent_actual_frame_variant_archive_pass",
       "source_ready": true,
       "function_addresses": [
         "00bfa700"
-      ],
-      "files": [
-        "include/bsp/native_crt_memchr.hpp",
-        "src/native_crt_memchr.cpp",
-        "docs/NATIVE_CRT_MEMCHR.md",
-        "reports/native_crt_memchr.json"
       ],
       "depends_on": [],
       "prerequisite_packets": [],
@@ -42413,7 +42407,22 @@
         "Use bounded unsigned count/offset/pointer state; no integer underflow-based out-of-region accesses, before-base pointers, pointer subtraction, new runtime validation, SDK memchr/memcpy/search substitute, fallback, provider, global or caller binding. Read-only payload aliases are admitted; returned pointer borrows original owner lifetime. Mutation, concurrency, faults, invalid positive-count storage and volatile/MMIO observation protocols are outside this ordinary domain.",
         "No Source compiler flag/segment/stack/register-home parameters or physical Original ABI/EH/fault/runtime equivalence. No new tests/probes/body execution. Worker owns only the four Source files; Root owns registration, ledger, annotation and Main integration."
       ],
-      "Main_gate": "pending_future_Source_author_peer_registration_build_actual_object_archive"
+      "Main_gate": "pass",
+      "output_files": [
+        "include/bsp/native_crt_memchr.hpp",
+        "src/native_crt_memchr.cpp",
+        "docs/NATIVE_CRT_MEMCHR.md",
+        "reports/native_crt_memchr.json"
+      ],
+      "code_ranges": [
+        "00bfa700-00bfa7ac"
+      ],
+      "code_revision": "f33c39c8a17fd1719616529fcc6bb4083ce6a22b",
+      "primary_review": "reports/cc12_native_crt_memchr_primary_review.json",
+      "Main_build_gate": "pass_3_existing_CTests",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_native_crt_memchr_Main_validation.json",
+      "whole_ordinary_function_credit": 1
     },
     {
       "id": "goal_oct15_crt_sbh_region_lookup",
@@ -42502,12 +42511,6 @@
       "function_addresses": [
         "00c1ef55"
       ],
-      "files": [
-        "include/bsp/native_crt_memcmp.hpp",
-        "src/native_crt_memcmp.cpp",
-        "docs/NATIVE_CRT_MEMCMP.md",
-        "reports/native_crt_memcmp.json"
-      ],
       "depends_on": [],
       "prerequisite_packets": [],
       "readiness": "reports/cc12_native_crt_memcmp_readiness.json",
@@ -42533,7 +42536,17 @@
         "sha256": "2512453ba5caa8930dacc29720403f71d384cc790e50537cb7e43b1f23636c57",
         "two_gap_bytes_not_owned": true
       },
-      "Main_gate": "pending_Source_author_peer_registration_build_actual_object_archive"
+      "Main_gate": "pending_Source_author_peer_registration_build_actual_object_archive",
+      "output_files": [
+        "include/bsp/native_crt_memcmp.hpp",
+        "src/native_crt_memcmp.cpp",
+        "docs/NATIVE_CRT_MEMCMP.md",
+        "reports/native_crt_memcmp.json"
+      ],
+      "code_ranges": [
+        "00c1ef55-00c20552",
+        "00c20555-00c205d4"
+      ]
     },
     {
       "id": "cc12_native_crt_wcsncmp_00bfdcb7",
@@ -42542,12 +42555,6 @@
       "source_ready": true,
       "function_addresses": [
         "00bfdcb7"
-      ],
-      "files": [
-        "include/bsp/native_crt_wcsncmp.hpp",
-        "src/native_crt_wcsncmp.cpp",
-        "docs/NATIVE_CRT_WCSNCMP.md",
-        "reports/native_crt_wcsncmp.json"
       ],
       "depends_on": [],
       "prerequisite_packets": [],
@@ -42563,7 +42570,16 @@
         "No SDK wcsncmp/memcpy/search, byte-only substitution, copied storage, validation/fallback/provider/global/TLS/caller binding. Exclude invalid reached reads, wrapping advances, mutable/indeterminate payload, lifetime changes, concurrency, MMIO/volatile observation and faults. Preserve Original RHS-before-LHS pointer-home-load fact in documentation, without claiming new compiler physical home/fault order or stack/register/flag/segment/EH/binary ABI/runtime/game identity.",
         "Worker owns only four Source files and local evidence; Root owns registration/ledger/Ghidra/Main. One genuine strict compile with actual before input pins and complete actual code/data/symbol/relocation/metadata review. No separate unregistered whole-worker baseline requested, no tests/probes/body execution; Root registered Main build and actual Main object/archive gates remain pending."
       ],
-      "Main_gate": "pending_Source_author_peer_registration_build_actual_object_archive"
+      "Main_gate": "pending_Source_author_peer_registration_build_actual_object_archive",
+      "output_files": [
+        "include/bsp/native_crt_wcsncmp.hpp",
+        "src/native_crt_wcsncmp.cpp",
+        "docs/NATIVE_CRT_WCSNCMP.md",
+        "reports/native_crt_wcsncmp.json"
+      ],
+      "code_ranges": [
+        "00bfdcb7-00bfdceb"
+      ]
     }
   ],
   "snapshot_after_analysis": {

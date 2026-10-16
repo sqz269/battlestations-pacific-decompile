@@ -1,0 +1,1083 @@
+{
+  "packet": "cc12_native_gui_text_raw_default93",
+  "kind": "whole raw default constructor and genuine 16B pointer-vector tidy Source; new Source ABI",
+  "recorded_utc": "2026-10-16T05:05:49.864147+00:00",
+  "reviewed_root_baseline": "d78abe18e173be64f2b2ef9a487741d8846a1301",
+  "checked_merge": "clean fast-forward, checked exit0 before work",
+  "analysis_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "batch_access": "bsp ghidra wrappers verify the existing project/program; no import",
+    "installed_original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256_installed_original": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "installed_original_unchanged": true
+  },
+  "function_contracts": [
+    {
+      "entry": "0x00AB9650",
+      "end_exclusive": "0x00AB98EF",
+      "bytes": 671,
+      "instructions": 123,
+      "ABI": {
+        "input": "ECX same fresh actual 1F4-byte destination; no stack arguments",
+        "output": "EAX same destination",
+        "return": "RET at AB98EE; preserves ESI",
+        "EH": "FH3 handler CB809C, FuncInfo DEEE88, seven-state unwind map DEEEAC; saved owner EBP-20 in funclets"
+      },
+      "live_bytes_match_installed_original": true,
+      "complete_live_listing_starts_match_original_decode": true,
+      "sha256_live_and_original_bytes": "36224703ecd780748bfbb4a21ccb90ee39ab4287c17fbc673f50e8d68ca41af5"
+    },
+    {
+      "entry": "0x005D6CF0",
+      "end_exclusive": "0x005D6D1A",
+      "bytes": 42,
+      "instructions": 13,
+      "ABI": {
+        "input": "ECX actual 16-byte vector header; no stack arguments",
+        "output": "no defined useful return",
+        "return": "RET at 5D6D19; preserves ESI",
+        "notes": "allocator+0 untouched; capture begin+4 once, free nonnull, ALWAYS zero +4/+8/+C"
+      },
+      "live_bytes_match_installed_original": true,
+      "complete_live_listing_starts_match_original_decode": true,
+      "sha256_live_and_original_bytes": "88851700cb9a664e65bc51a291dbae0a874569c69e22c65344cde23229eb1e3d"
+    }
+  ],
+  "calls": [
+    {
+      "function": "0x00AB9650",
+      "address": "0x00AB9671",
+      "native": "0x00AA9390",
+      "kind": "call",
+      "instruction": "call 0xaa9390"
+    },
+    {
+      "function": "0x00AB9650",
+      "address": "0x00AB98D8",
+      "native": "0x00AB8530",
+      "kind": "call",
+      "instruction": "call 0xab8530"
+    },
+    {
+      "function": "0x005D6CF0",
+      "address": "0x005D6CFB",
+      "native": "0x00BF65AC",
+      "kind": "call",
+      "instruction": "call 0xbf65ac"
+    },
+    {
+      "function": "0x00CB8040",
+      "address": "0x00CB8043",
+      "native": "0x00AA9730",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "0x00CB8048",
+      "address": "0x00CB8051",
+      "native": "0x00436430",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "0x00CB8056",
+      "address": "0x00CB805F",
+      "native": "0x0041DD20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "0x00CB8064",
+      "address": "0x00CB806D",
+      "native": "0x005D6CF0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "0x00CB8072",
+      "address": "0x00CB807B",
+      "native": "0x00436430",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "0x00CB8080",
+      "address": "0x00CB8089",
+      "native": "0x0041DD20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "0x00CB808E",
+      "address": "0x00CB8097",
+      "native": "0x0041DD20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "0x00CB809C",
+      "address": "0x00CB80A1",
+      "native": "0x00BF6B43",
+      "kind": "tail_jump"
+    }
+  ],
+  "source_interfaces": {
+    "default": "construct_native_gui_text_default_storage_00ab9650",
+    "helper": "tidy_native_gui_text_pointer_vector_005d6cf0",
+    "scope": "Same actual raw destination AA9390(type3), derived defaults, genuine whole AB8530, return SAME destination; no copy/factory/activation",
+    "native_binary_ABI_replaced": false,
+    "raw_vector_domain": "SAME Source CRT malloc/free provenance, allocator+0 preserved; no std::vector or semantic element cleanup; native CRT ABI excluded"
+  },
+  "status": "complete raw normal-body reconstruction; Source C++ seven-state cleanup projection; strict Win32 compiled; existing isolated baseline checks passed",
+  "ordered_actual_field_stores": [
+    {
+      "site": "0x00AB9678",
+      "offset": "0x000",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi], 0xd5c6c8",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi], 14010056\t\t; 00d5c6c8H"
+    },
+    {
+      "site": "0x00AB9682",
+      "offset": "0x0EC",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0xec], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+236], 0"
+    },
+    {
+      "site": "0x00AB9688",
+      "offset": "0x0F0",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0xf0], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+240], 0"
+    },
+    {
+      "site": "0x00AB968E",
+      "offset": "0x0F4",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0xf4], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+244], 0"
+    },
+    {
+      "site": "0x00AB9694",
+      "offset": "0x0F8",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0xf8], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+248], 0"
+    },
+    {
+      "site": "0x00AB96A5",
+      "offset": "0x100",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x100], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+256], 0"
+    },
+    {
+      "site": "0x00AB96AB",
+      "offset": "0x104",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x104], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+260], 0"
+    },
+    {
+      "site": "0x00AB96B1",
+      "offset": "0x108",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x108], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+264], 0"
+    },
+    {
+      "site": "0x00AB96B7",
+      "offset": "0x10C",
+      "bytes": 4,
+      "instruction": "movss dword ptr [esi + 0x10c], xmm1",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+268], 0"
+    },
+    {
+      "site": "0x00AB96BF",
+      "offset": "0x110",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x110], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+272], 0"
+    },
+    {
+      "site": "0x00AB96C5",
+      "offset": "0x114",
+      "bytes": 4,
+      "instruction": "movss dword ptr [esi + 0x114], xmm1",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+276], 0"
+    },
+    {
+      "site": "0x00AB96CD",
+      "offset": "0x118",
+      "bytes": 1,
+      "instruction": "mov byte ptr [esi + 0x118], al",
+      "optimized_source_instruction": "mov\tBYTE PTR [esi+280], 0"
+    },
+    {
+      "site": "0x00AB96D3",
+      "offset": "0x15C",
+      "bytes": 1,
+      "instruction": "mov byte ptr [esi + 0x15c], al",
+      "optimized_source_instruction": "mov\tBYTE PTR [esi+348], 0"
+    },
+    {
+      "site": "0x00AB96D9",
+      "offset": "0x160",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x160], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+352], 0"
+    },
+    {
+      "site": "0x00AB96DF",
+      "offset": "0x164",
+      "bytes": 4,
+      "instruction": "movss dword ptr [esi + 0x164], xmm0",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+356], eax"
+    },
+    {
+      "site": "0x00AB96E9",
+      "offset": "0x0FC",
+      "bytes": 1,
+      "instruction": "mov byte ptr [esi + 0xfc], cl",
+      "optimized_source_instruction": "mov\tBYTE PTR [esi+252], 1"
+    },
+    {
+      "site": "0x00AB96F5",
+      "offset": "0x168",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x168], edx",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+360], eax"
+    },
+    {
+      "site": "0x00AB9701",
+      "offset": "0x16C",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x16c], edx",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+364], eax"
+    },
+    {
+      "site": "0x00AB970D",
+      "offset": "0x170",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x170], edx",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+368], eax"
+    },
+    {
+      "site": "0x00AB9719",
+      "offset": "0x174",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x174], edx",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+372], eax"
+    },
+    {
+      "site": "0x00AB971F",
+      "offset": "0x178",
+      "bytes": 4,
+      "instruction": "movss dword ptr [esi + 0x178], xmm1",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+376], 0"
+    },
+    {
+      "site": "0x00AB9727",
+      "offset": "0x17C",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x17c], 2",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+380], 2"
+    },
+    {
+      "site": "0x00AB9731",
+      "offset": "0x180",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x180], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+384], 0"
+    },
+    {
+      "site": "0x00AB9737",
+      "offset": "0x184",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x184], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+388], 0"
+    },
+    {
+      "site": "0x00AB973D",
+      "offset": "0x188",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x188], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+392], 0"
+    },
+    {
+      "site": "0x00AB9743",
+      "offset": "0x18C",
+      "bytes": 4,
+      "instruction": "movss dword ptr [esi + 0x18c], xmm1",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+396], 0"
+    },
+    {
+      "site": "0x00AB974B",
+      "offset": "0x190",
+      "bytes": 4,
+      "instruction": "movss dword ptr [esi + 0x190], xmm1",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+400], 0"
+    },
+    {
+      "site": "0x00AB9753",
+      "offset": "0x198",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x198], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+408], 0"
+    },
+    {
+      "site": "0x00AB9759",
+      "offset": "0x19C",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x19c], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+412], 0"
+    },
+    {
+      "site": "0x00AB975F",
+      "offset": "0x1A0",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x1a0], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+416], 0"
+    },
+    {
+      "site": "0x00AB9765",
+      "offset": "0x1A4",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x1a4], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+420], 0"
+    },
+    {
+      "site": "0x00AB976B",
+      "offset": "0x1A8",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x1a8], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+424], 0"
+    },
+    {
+      "site": "0x00AB9771",
+      "offset": "0x1AC",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x1ac], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+428], 0"
+    },
+    {
+      "site": "0x00AB9777",
+      "offset": "0x1B0",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x1b0], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+432], 0"
+    },
+    {
+      "site": "0x00AB977D",
+      "offset": "0x1B4",
+      "bytes": 1,
+      "instruction": "mov byte ptr [esi + 0x1b4], al",
+      "optimized_source_instruction": "mov\tBYTE PTR [esi+436], 0"
+    },
+    {
+      "site": "0x00AB9783",
+      "offset": "0x1C0",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x1c0], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+448], 0"
+    },
+    {
+      "site": "0x00AB9789",
+      "offset": "0x1C4",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x1c4], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+452], 0"
+    },
+    {
+      "site": "0x00AB978F",
+      "offset": "0x1C8",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x1c8], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+456], 0"
+    },
+    {
+      "site": "0x00AB9795",
+      "offset": "0x1CC",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x1cc], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+460], 0"
+    },
+    {
+      "site": "0x00AB97AB",
+      "offset": "0x1EC",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x1ec], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+492], 0"
+    },
+    {
+      "site": "0x00AB97C1",
+      "offset": "0x11C",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x11c], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+284], ecx"
+    },
+    {
+      "site": "0x00AB97C7",
+      "offset": "0x1F0",
+      "bytes": 1,
+      "instruction": "mov byte ptr [esi + 0x1f0], cl",
+      "optimized_source_instruction": "mov\tBYTE PTR [esi+496], 1"
+    },
+    {
+      "site": "0x00AB97E5",
+      "offset": "0x120",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x120], ecx",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+288], ecx"
+    },
+    {
+      "site": "0x00AB97EB",
+      "offset": "0x124",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x124], edx",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+292], ecx"
+    },
+    {
+      "site": "0x00AB97F6",
+      "offset": "0x1D0",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x1d0], 0xffffffff",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+464], -1"
+    },
+    {
+      "site": "0x00AB9800",
+      "offset": "0x1D8",
+      "bytes": 4,
+      "instruction": "movss dword ptr [esi + 0x1d8], xmm0",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+472], edx"
+    },
+    {
+      "site": "0x00AB9808",
+      "offset": "0x128",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x128], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+296], edx"
+    },
+    {
+      "site": "0x00AB9822",
+      "offset": "0x12C",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x12c], ecx",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+300], edx"
+    },
+    {
+      "site": "0x00AB9832",
+      "offset": "0x130",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x130], edx",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+304], edx"
+    },
+    {
+      "site": "0x00AB9842",
+      "offset": "0x134",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x134], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+308], edx"
+    },
+    {
+      "site": "0x00AB985C",
+      "offset": "0x13C",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x13c], edx",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+316], edx"
+    },
+    {
+      "site": "0x00AB9862",
+      "offset": "0x138",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x138], ecx",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+312], edx"
+    },
+    {
+      "site": "0x00AB9884",
+      "offset": "0x140",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x140], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+320], edx"
+    },
+    {
+      "site": "0x00AB988A",
+      "offset": "0x144",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x144], ecx",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+324], edx"
+    },
+    {
+      "site": "0x00AB989A",
+      "offset": "0x14C",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x14c], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+332], 0"
+    },
+    {
+      "site": "0x00AB98AA",
+      "offset": "0x148",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x148], edx",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+328], edx"
+    },
+    {
+      "site": "0x00AB98BA",
+      "offset": "0x150",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x150], ecx",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+336], 0"
+    },
+    {
+      "site": "0x00AB98CA",
+      "offset": "0x154",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x154], edx",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+340], 0"
+    },
+    {
+      "site": "0x00AB98D2",
+      "offset": "0x158",
+      "bytes": 4,
+      "instruction": "mov dword ptr [esi + 0x158], eax",
+      "optimized_source_instruction": "mov\tDWORD PTR [esi+344], eax"
+    }
+  ],
+  "derived_byte_coverage": {
+    "vtable_000": "D5C6C8 after completed base",
+    "zero_dwords": [
+      "0EC",
+      "0F0",
+      "0F4",
+      "0F8",
+      "100",
+      "104",
+      "108",
+      "110",
+      "160",
+      "180",
+      "184",
+      "188",
+      "198",
+      "19C",
+      "1A0",
+      "1A4",
+      "1A8",
+      "1AC",
+      "1B0",
+      "1C0",
+      "1C4",
+      "1C8",
+      "1CC",
+      "1EC"
+    ],
+    "positive_zero_float_words": [
+      "10C",
+      "114",
+      "178",
+      "18C",
+      "190",
+      "14C",
+      "150",
+      "154"
+    ],
+    "byte_zero": [
+      "118",
+      "15C",
+      "1B4"
+    ],
+    "byte_one": [
+      "0FC",
+      "1F0"
+    ],
+    "word_17C": 2,
+    "word_1D0": "FFFFFFFF",
+    "shadow_offset_164": "one MOVSS load of D5C5C0 before+100 defaults; Original word3D4CCCCD",
+    "shadow_color_168_174": "four independent current E12FD8/DC/E0/E4 DWORD loads in order; Original {0,0,0,3F400000}",
+    "state_normal_11C_128": "capture CE3E18 (3F333333) once, D7A24C (3F800000) once, then normalRGB three copies and one alpha",
+    "state_focus_12C_138": "captured one in all four words",
+    "state_selected_13C_148": "captured one in all four words",
+    "state_disabled_14C_158": "positive-zero RGB, late CE3800 MOVSS alpha (Original3F000000)",
+    "font_scale_1D8": "same captured D7A24C word",
+    "derived_bytes_written": 217,
+    "derived_bytes_unwritten": 47,
+    "unwritten_ranges": [
+      {
+        "start": "0x0FD",
+        "end_exclusive": "0x100"
+      },
+      {
+        "start": "0x119",
+        "end_exclusive": "0x11C"
+      },
+      {
+        "start": "0x15D",
+        "end_exclusive": "0x160"
+      },
+      {
+        "start": "0x194",
+        "end_exclusive": "0x198"
+      },
+      {
+        "start": "0x1B5",
+        "end_exclusive": "0x1C0"
+      },
+      {
+        "start": "0x1D4",
+        "end_exclusive": "0x1D8"
+      },
+      {
+        "start": "0x1DC",
+        "end_exclusive": "0x1EC"
+      },
+      {
+        "start": "0x1F1",
+        "end_exclusive": "0x1F4"
+      }
+    ],
+    "base_tail_E4_EC": "also untouched; AA9390 writes through E0, not E4..EB",
+    "pool_trailer_1F4": "not Text payload; never initialize/copy/clear it"
+  },
+  "ordered_loads_and_states": [
+    "AA9390 reads the borrowed live D7A24C at its own early AA93BF and post-sentinel AA944E points, no default-level snapshot",
+    "AB9678 D5C6C8 stamp, then AB967E outer state0, then EC/F0/F4/F8 clear",
+    "AB969D current D5C5C0 DWORD capture before +100 defaults, used at+164",
+    "E12FD8/DC/E0/E4 physical DWORD load then store168/16C/170/174 separately, no early quartet/FP conversion",
+    "AB979B current CE3E18 capture then AB97A3 current D7A24C capture, distinct from both base reads",
+    "state6 after RGB124, before1D0/1D8 and remaining MISColors",
+    "13C before138; AB987C current CE3800 capture before140/144;14C zero before148 captured one",
+    "AB98D8 calls genuine85 using complete caller-held graph; no typed Text projection or fake sections callback"
+  ],
+  "native_eh_map": {
+    "constructor": "default",
+    "funcinfo": "0x00DEEE88",
+    "unwind_map": "0x00DEEEAC",
+    "magic": "0x19930522",
+    "max_state": 7,
+    "try_blocks": 0,
+    "eh_flags": 1,
+    "live_bytes_match_original": true,
+    "map": [
+      {
+        "state": 0,
+        "next_state": -1,
+        "action": "0x00CB8040"
+      },
+      {
+        "state": 1,
+        "next_state": 0,
+        "action": "0x00CB8048"
+      },
+      {
+        "state": 2,
+        "next_state": 1,
+        "action": "0x00CB8056"
+      },
+      {
+        "state": 3,
+        "next_state": 2,
+        "action": "0x00CB8064"
+      },
+      {
+        "state": 4,
+        "next_state": 3,
+        "action": "0x00CB8072"
+      },
+      {
+        "state": 5,
+        "next_state": 4,
+        "action": "0x00CB8080"
+      },
+      {
+        "state": 6,
+        "next_state": 5,
+        "action": "0x00CB808E"
+      }
+    ]
+  },
+  "eh_live_receipts": {
+    "funcinfo_and_map": {
+      "start": "0x00DEEE88",
+      "bytes": 92,
+      "sha256": "ffda5d6eae48640feffda394be4e2eee904e21c8edc2accd6d1120075dc84843",
+      "live_equals_original": true
+    },
+    "unwind_helpers_and_handler": {
+      "start": "0x00CB8040",
+      "end_exclusive": "0x00CB80A6",
+      "bytes": 102,
+      "sha256": "c2590964b41df7e59bc8f533ef45286298e9175e36014ce74f36d4231b447c9d",
+      "live_equals_original": true
+    },
+    "helper_contracts": [
+      {
+        "constructor": "default",
+        "entry": "0x00CB8040",
+        "end_exclusive": "0x00CB8048",
+        "bytes": 8,
+        "sha256_live_and_original_bytes": "d3b40179e7c11ec2fd5fa1aa1ddfa4107f55ff2f88b1b5fb591fe0776688f4cf",
+        "assembly": [
+          "00cb8040: mov ecx, dword ptr [ebp - 0x20]",
+          "00cb8043: jmp 0xaa9730"
+        ]
+      },
+      {
+        "constructor": "default",
+        "entry": "0x00CB8048",
+        "end_exclusive": "0x00CB8056",
+        "bytes": 14,
+        "sha256_live_and_original_bytes": "7f55fee91a4515da5f3351ce84db2ce4dca8c39ada7035ebdee55bac42df6f00",
+        "assembly": [
+          "00cb8048: mov ecx, dword ptr [ebp - 0x20]",
+          "00cb804b: add ecx, 0xec",
+          "00cb8051: jmp 0x436430"
+        ]
+      },
+      {
+        "constructor": "default",
+        "entry": "0x00CB8056",
+        "end_exclusive": "0x00CB8064",
+        "bytes": 14,
+        "sha256_live_and_original_bytes": "de57c7f3ad68a2631d273cc31db637b580687e5b6818344d532a07901b6f4b3a",
+        "assembly": [
+          "00cb8056: mov ecx, dword ptr [ebp - 0x20]",
+          "00cb8059: add ecx, 0xf4",
+          "00cb805f: jmp 0x41dd20"
+        ]
+      },
+      {
+        "constructor": "default",
+        "entry": "0x00CB8064",
+        "end_exclusive": "0x00CB8072",
+        "bytes": 14,
+        "sha256_live_and_original_bytes": "fcbc4f165f2ea0124c520adb2c0d46bb1009bdb3f13bc7fa88d6bdc77bdf0dd6",
+        "assembly": [
+          "00cb8064: mov ecx, dword ptr [ebp - 0x20]",
+          "00cb8067: add ecx, 0x194",
+          "00cb806d: jmp 0x5d6cf0"
+        ]
+      },
+      {
+        "constructor": "default",
+        "entry": "0x00CB8072",
+        "end_exclusive": "0x00CB8080",
+        "bytes": 14,
+        "sha256_live_and_original_bytes": "966f48c65477fc36222cfe5ee87deadb65cb243330fd56cec8da57d9d83aed3d",
+        "assembly": [
+          "00cb8072: mov ecx, dword ptr [ebp - 0x20]",
+          "00cb8075: add ecx, 0x1a4",
+          "00cb807b: jmp 0x436430"
+        ]
+      },
+      {
+        "constructor": "default",
+        "entry": "0x00CB8080",
+        "end_exclusive": "0x00CB808E",
+        "bytes": 14,
+        "sha256_live_and_original_bytes": "8301aeaf7a0df1b52dfafeee903edfa3206a16a8a8199e7c85a6bfcde61f4a1c",
+        "assembly": [
+          "00cb8080: mov ecx, dword ptr [ebp - 0x20]",
+          "00cb8083: add ecx, 0x1c0",
+          "00cb8089: jmp 0x41dd20"
+        ]
+      },
+      {
+        "constructor": "default",
+        "entry": "0x00CB808E",
+        "end_exclusive": "0x00CB809C",
+        "bytes": 14,
+        "sha256_live_and_original_bytes": "70fc9a08f32139b4645a573d3a56e8dc7d35578e49969846bad8cd5972e4aa89",
+        "assembly": [
+          "00cb808e: mov ecx, dword ptr [ebp - 0x20]",
+          "00cb8091: add ecx, 0x1c8",
+          "00cb8097: jmp 0x41dd20"
+        ]
+      },
+      {
+        "constructor": "default",
+        "entry": "0x00CB809C",
+        "end_exclusive": "0x00CB80A6",
+        "bytes": 10,
+        "sha256_live_and_original_bytes": "0f06d3e5c4e5a0e30a275d0055683fdd787996a16d2b1465c0a5f7429f905a7c",
+        "assembly": [
+          "00cb809c: mov eax, 0xdeee88",
+          "00cb80a1: jmp 0xbf6b43"
+        ]
+      }
+    ]
+  },
+  "cleanup": {
+    "reverse_order": [
+      "state6 narrow1C8/41DD20",
+      "state5 narrow1C0/41DD20",
+      "state4 wide1A4/436430",
+      "state3 actual vector194/5D6CF0",
+      "state2 narrowF4/41DD20",
+      "state1 wideEC/436430",
+      "state0 baseAA9730"
+    ],
+    "state_advance": "next state stored and consumed-action bit recorded before each provider call",
+    "base_entry_failure": "outer state remains -1; AA9390 performs its OWN genuine prefix unwind",
+    "sections_failure": "Source C++ exception projects outer state6 cleanup regardless of85 failure-boundary enum; nested completed creators and graph remain retained independently",
+    "provider_call_origin_caveat": "85 provider_call is a SOURCE boundary marker, NOT proof of Original/native exception origin; nested host metadata failures may be unobservable",
+    "cleanup_failure": "terminate, preserving consumed-action/active-site diagnostics; do not retry or discover a graph from ended widget fields",
+    "base_profile_effect": "AA9730 first stamps D5C130; its current AA8320 class query need not recognize Text. Do not infer Shadow creator retirement",
+    "excluded": [
+      "AB8250 success Text destructor",
+      "extra Shadow rollback",
+      "pool slot return",
+      "replay",
+      "native FH3/private exception ABI"
+    ]
+  },
+  "preflight": {
+    "before_effects": "context/provider identity and caller-region disjointness checked BEFORE entered marker/AA9390; no unconstructed188/4C access",
+    "writes_disjoint": [
+      "raw Text1F4",
+      "outer frame",
+      "outer acquisition including whole85 acquisition",
+      "85 frame",
+      "initialized local4DWORD backing",
+      "prepared recursive parenting frame"
+    ],
+    "borrowed_graph": "same existing GameNativeGuiTextState; mutable DWORD cells; same genuine models/material/geometry owners, canonical node registry, raw Node mode, string process, parent services, current renderer and live release function-cell",
+    "raw_string_authentication": "c.sections.strings == existing string_process.raw_context(); actual.strings == string_process.strings(); effects.strings and construction strings share actual.strings",
+    "state_word_authentication": "one cell is the SAME node_constants.one cell; shadow quartet from retained existing state only",
+    "provenance_limit": "Transitive backing/current-target validity, CRT-domain provenance, callback targets and independent owner/registry lifetimes remain genuine provider contracts. References/aliases do not become owners",
+    "one_shot": "fresh aggregate graph, stable initialized backing, entered failure sticky and nonretryable; caller retains all services/acquisitions/completed creators before callback and through cleanup"
+  },
+  "optimized_assembly_inspection": {
+    "ordered_store_receipt": "local/text93_ordered_store_receipt.json",
+    "all_59_width_offset_pairs_match_original": true,
+    "shadow_capture_store_pairs_asm_lines": [
+      1404,
+      1435
+    ],
+    "shadow_MOV_only_helper_asm_lines": [
+      1869,
+      1904
+    ],
+    "normal_then_one_capture_asm_lines": [
+      1498,
+      1512
+    ],
+    "state6_asm_lines": [
+      1533,
+      1535
+    ],
+    "disabled_capture_before140_asm_lines": [
+      1570,
+      1582
+    ],
+    "cleanup_dispatch_asm_lines": [
+      2470,
+      2673
+    ],
+    "vector_tidy_asm_lines": [
+      1222,
+      1265
+    ],
+    "not_proof_of_native_ABI_or_execution": true
+  },
+  "compile": {
+    "command": "cl /nologo /c /std:c++17 /EHsc /MD /O2 /W4 /WX /fp:strict /FAs /Falocal/native_gui_text_default_storage_93.asm /Iinclude src/native_gui_text_default_storage.cpp /Folocal/native_gui_text_default_storage_93.obj",
+    "exit": 0,
+    "source_sha256": "38e7aafba69bfe959bd3f45111c9e85074d646eaacfa6c718e2b1530c30b55d7",
+    "header_sha256": "39d2a14672dc90e8605c47fb267d59510639dc445d4caf28a48d79d172d89562",
+    "object": {
+      "path": "local/native_gui_text_default_storage_93.obj",
+      "sha256": "7643108d7a4569029953e6bfa5b3ae4845991458c7698a5042ebaaa997890e3b"
+    },
+    "assembly": {
+      "path": "local/native_gui_text_default_storage_93.asm",
+      "sha256": "6111b4873f974cd491898eddc0589530a9df87a910dface028204187cb5bc728"
+    },
+    "log": {
+      "path": "local/text93_strict_compile.log",
+      "sha256": "782a523e77bf3ef4e080534bda3cdb8762e6b917ecc0fdf91b4f890c7ecd305e"
+    }
+  },
+  "existing_build": {
+    "command": "./scripts/build.ps1",
+    "exit": 0,
+    "configured_checks": 2,
+    "checks": [
+      "reconstructed_math passed",
+      "tool_tests passed"
+    ],
+    "new_93_TU_registered": false,
+    "registration_limit": "Worker baseline includes Root85 registration; this NEW93 TU is strict-compiled separately and Root registers/links it later",
+    "native_fixture_configured": false,
+    "log": {
+      "path": "local/text93_existing_build.log",
+      "sha256": "4e0aa58589e48fc7a09ddac08b3638364934ae2b378d647429bb8790a44c6ddf"
+    },
+    "baseline_executable": {
+      "path": "build/win32/Release/bsp_game.exe",
+      "sha256": "8f1683f0824a1e54233c5475fcc559184ca67d6421b553f4de71ee628c67929a"
+    }
+  },
+  "publication": {
+    "Ghidra": {
+      "owned_addresses_only": [
+        "00ab9650",
+        "005d6cf0"
+      ],
+      "tool": "tools/ghidra_annotate.py --apply --addresses 00ab9650 005d6cf0",
+      "write_lock": true,
+      "prior_history": {
+        "path": "local/ghidra-annotations-20261016T050747Z.json",
+        "sha256": "410cb46a0c23fb5959be346c5aa10903a88924ed4654777f688865d60da4c3da"
+      },
+      "saved_program": true,
+      "prior_comments_preserved_checked_against_live_final_comments": true,
+      "existing_names_preserved": true,
+      "export_refreshed": true,
+      "exports": [
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00ab9650/metadata.json",
+          "sha256": "40b70cbb433dc67164703b96580a77b2baaa2e9458ca26b7b52615193eede3e4"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00ab9650/decompiled.c",
+          "sha256": "f7a1ac2485063edce1c214f7702f8708c909a72a5d4d31381ab4ed8efad354c4"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00ab9650/assembly.txt",
+          "sha256": "e1ce487b311f69edbc6137d3da4c649f83b2abd011967a74239072d221e3cdb5"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/005d6cf0/metadata.json",
+          "sha256": "03dfbd3ff0bd9be71b44e00be354804d12f8fe9eeed1ad172bc30311c580c0d4"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/005d6cf0/decompiled.c",
+          "sha256": "15e0468d6ba86d3afaae5308f44b5898ae3a6c5cf7448e84bdcc1ed4dcdfe521"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/005d6cf0/assembly.txt",
+          "sha256": "3ff489ec65697815c9d80609bd7784bd528445fd85fff3e26b77f8711dfaf47d"
+        }
+      ]
+    },
+    "ledger": {
+      "new_unique_function_names": [
+        "construct_native_gui_text_default_storage_00ab9650",
+        "tidy_native_gui_text_pointer_vector_005d6cf0"
+      ],
+      "old_reconstruction_rows_unchanged": true,
+      "diff_counts": {
+        "config/reconstruction/005d0000.jsonl": "+1/-0",
+        "config/reconstruction/00ab0000.jsonl": "+1/-0",
+        "config/names/005d0000.jsonl": "+1/-0",
+        "config/names/00ab0000.jsonl": "+1/-1, append evidence preserving earlier text"
+      },
+      "index_rebuilt_after_records": true
+    },
+    "final_artifact_manifest": "local/text93_final_artifact_manifest.json",
+    "no_build_after_sealing": true
+  },
+  "local_evidence": [
+    {
+      "path": "local/text93_live_proto.txt",
+      "sha256": "7496fe8b1fd454e909411bb67c0e299373242ae0d60670d1179b726088f223c6"
+    },
+    {
+      "path": "local/text93_prior_ghidra_comments.txt",
+      "sha256": "1f162d7e4aad064d5a7a781acd0660d0610dbc8733c293192c8980fab1923d75"
+    },
+    {
+      "path": "local/text93_default_disasm.txt",
+      "sha256": "479d9f0ce36b5b4e265d83b5a35c8404f59a728697a545c7dffa74db6112e441"
+    },
+    {
+      "path": "local/text93_default_bytes.txt",
+      "sha256": "c2ad6bd2d010a0eea2e2c08ba40accef0dcf52f945f486348a1f3828ab884ad0"
+    },
+    {
+      "path": "local/text93_vector_disasm.txt",
+      "sha256": "b537e109eeb0d460c0bbe5532bced45cdfd497c73b6f9d4c4b4e22321d2435e9"
+    },
+    {
+      "path": "local/text93_vector_bytes.txt",
+      "sha256": "a2ac9c0fa411c60a9440319603423c2e00aa1c1b4119ecb79d76fb0498bcff7c"
+    },
+    {
+      "path": "local/text93_default_eh_bytes.txt",
+      "sha256": "2839a59cb65d5252d0c88341a174d5012cd2a726c2762c0b6eee1e7ca23c9193"
+    },
+    {
+      "path": "local/text93_default_unwind_bytes.txt",
+      "sha256": "bb6fc29e0213fba5922672e56ca0738dbad7e1ea3a4e566e94e581ae316033ef"
+    },
+    {
+      "path": "local/text93_ordered_store_receipt.json",
+      "sha256": "bf934841a8d24e88d5b3d50a3469f0bc14a09fa4b1f7b11af46f5603c1ef2b9d"
+    },
+    {
+      "path": "local/text93_report_call_verification.log",
+      "sha256": "d82d21f437abdf3ddf804fe541a41ef09c0ba575474ed06ef9891affc61968ea"
+    },
+    {
+      "path": "local/text93_ghidra_annotation.log",
+      "sha256": "f07fb69adbc46dcca49d331784eabe0c1d5faa11d979dd2d263f9b9280df557e"
+    },
+    {
+      "path": "local/ghidra-annotations-20261016T050747Z.json",
+      "sha256": "410cb46a0c23fb5959be346c5aa10903a88924ed4654777f688865d60da4c3da"
+    },
+    {
+      "path": "local/text93_final_ghidra_comments.json",
+      "sha256": "c525d66ced7ff70d68588c1745af7ec389ef3c4e9bfa7a1241add0f8a9976c4f"
+    },
+    {
+      "path": "local/text93_final_ghidra_comments.log",
+      "sha256": "f828ebdbf9b565e250a4525122dc6bb13cadf5835031e4fe17fa37c72342fa6f"
+    },
+    {
+      "path": "local/output/ghidra-comments-00ab9650-005d6cf0-220848.txt",
+      "sha256": "c525d66ced7ff70d68588c1745af7ec389ef3c4e9bfa7a1241add0f8a9976c4f"
+    },
+    {
+      "path": "local/text93_export_refresh.log",
+      "sha256": "a1bbb655eeddf7290d934671b9d77f0e3aa2fcc629a4164b89d0b46bf3c76e68"
+    },
+    {
+      "path": "local/text93_ledger_add.log",
+      "sha256": "2eb781c7fbfe81c4432e12bebaff960da4453a46ede9d020dbfaa2d6d7069eb1"
+    },
+    {
+      "path": "local/text93_index_refresh.log",
+      "sha256": "d5b7d6dd51e78002d999fd5d417cad1e249cf668c0123df6cb7b68dda35b6957"
+    },
+    {
+      "path": "local/build_text93_report.py",
+      "sha256": "1675e9c54c4dd3ccd2e10c5adfacca6dfc045caa284f851f513e466a045ffe05"
+    },
+    {
+      "path": "local/add_text93_records.py",
+      "sha256": "be9bf14cd1d07885f9e22b6727754de2f8d7b877b702eb9701e4ca911e413064"
+    },
+    {
+      "path": "local/seal_text93_receipt.py",
+      "sha256": "511c479aad95fbff11e06f95296a482fd40824f3cbe8c43a9a77311f1845f388"
+    }
+  ],
+  "validation": {
+    "new_test_cases": 0,
+    "report_call_rows_checked": 11,
+    "report_call_rows_failed": 0,
+    "root_first_source_review": "PASS of entire header/CPP, all59 stores, preflight, state boundaries, seven cleanups and genuine vector helper, against independently inspected Original123 instructions",
+    "raw_constructor_executed": false,
+    "native_binary_ABI_proved": false,
+    "game_or_rendering_run": false,
+    "root_final_optimized_assembly_review": "PASS: four separate raw MOV shadow capture/store pairs, current normal/one, state6 after normal124, disabled before140, consumed-before-call reverse cleanup and conditional free/always-clear vector schedule"
+  },
+  "owned_files": [
+    "include/bsp/native_gui_text_default_storage.hpp",
+    "src/native_gui_text_default_storage.cpp",
+    "docs/CC12_NATIVE_GUI_TEXT_RAW_DEFAULT_93.md",
+    "reports/cc12_native_gui_text_raw_default_93.json"
+  ],
+  "remaining": [
+    "Root TU registration and combined integration check",
+    "Native FH3/private exception ABI and actual raw execution/game proof",
+    "ABB2C0 raw copy, AA1380 raw factory and normal native Text activation remain separate packets"
+  ],
+  "sealed_utc": "2026-10-16T05:10:45.044706+00:00"
+}

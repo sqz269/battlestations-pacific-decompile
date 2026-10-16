@@ -1,0 +1,732 @@
+{
+  "packet": "cc12_native_gui_manager_producer_readiness_92",
+  "status": "read_only_ready_existing_producer_missing_publication_teardown_and_production_admission",
+  "created_utc": "2026-10-16T05:09:19.408359+00:00",
+  "source_commit": "d741afbe16d598c660c17717c00e7c9a17684840",
+  "documentation": "docs/CC12_NATIVE_GUI_MANAGER_PRODUCER_READINESS_92.md",
+  "lease_addresses": [
+    "004c12b0",
+    "00736250"
+  ],
+  "scope": {
+    "tracked_outputs": [
+      "docs/CC12_NATIVE_GUI_MANAGER_PRODUCER_READINESS_92.md",
+      "reports/cc12_native_gui_manager_producer_readiness_92.json"
+    ],
+    "source_changes": false,
+    "ghidra_mutations": false,
+    "ledger_changes": false,
+    "cmake_or_main_changes": false,
+    "builds_or_tests": false,
+    "original_execution": false
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "evidence": {
+    "every_live_query_via_verified_bsp_wrapper": true,
+    "audit": "local/cc12_native_gui_manager_producer_readiness_92_audit.json",
+    "audit_sha256": "1d75fdafd751d01d31a7331ff15c3c8fc7f596b996f8712c25119b2f1eab1bf1",
+    "range_count": 23,
+    "bytes_checked": 1173,
+    "ranges": [
+      {
+        "role": "getter",
+        "start": "004c12b0",
+        "end_exclusive": "004c1370",
+        "bytes": 192,
+        "sha256": "7d2554e9a125d67a8f18cc6a652e6914189ce00982f3c08f2f1dc9b72a892a6a",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_004c12b0.log",
+        "instructions": 51
+      },
+      {
+        "role": "constructor",
+        "start": "00aa5d70",
+        "end_exclusive": "00aa5e19",
+        "bytes": 169,
+        "sha256": "5343e5b7be77fa95c33c97a324bf886dcdc1563604656dd2949c5deb574ef2ff",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00aa5d70.log",
+        "instructions": 53
+      },
+      {
+        "role": "tree_allocator",
+        "start": "00aa2920",
+        "end_exclusive": "00aa2957",
+        "bytes": 55,
+        "sha256": "39db00ace271389eceed0b4e7edc00526489169701825ea0765b44db0874a07f",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00aa2920.log",
+        "instructions": 17
+      },
+      {
+        "role": "list_allocator",
+        "start": "00aa2820",
+        "end_exclusive": "00aa283a",
+        "bytes": 26,
+        "sha256": "6c773e1a884f5800a43d116a58e664a355a56f73aa957e29f409ff65bd3af01b",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00aa2820.log",
+        "instructions": 11
+      },
+      {
+        "role": "base_publication_clear",
+        "start": "00aa0ff0",
+        "end_exclusive": "00aa1001",
+        "bytes": 17,
+        "sha256": "3ca44671ba89ce480f95b4660ff0b1b7ad6604ec6a6aa7c30f51e542352cdc78",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00aa0ff0.log",
+        "instructions": 3
+      },
+      {
+        "role": "singleton_getter",
+        "start": "00415350",
+        "end_exclusive": "004153b9",
+        "bytes": 105,
+        "sha256": "f960f1a64ba2027c9dd3473717cdfc58270ffd4b2efe37c550fa0112399e6aa6",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00415350.log",
+        "instructions": 29
+      },
+      {
+        "role": "singleton_constructor",
+        "start": "00bd0960",
+        "end_exclusive": "00bd09b0",
+        "bytes": 80,
+        "sha256": "a327dd6728cd67142f5b53513e6662c18fd9b6a4ad5fcbc157bf1f0e38aba60d",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00bd0960.log",
+        "instructions": 24
+      },
+      {
+        "role": "explicit_gui_shutdown",
+        "start": "00736250",
+        "end_exclusive": "007362f4",
+        "bytes": 164,
+        "sha256": "daba44e8e98ad5941e93384a91310875fc263123e7ee719f809d92bbcf1c79df",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00736250.log",
+        "instructions": 44
+      },
+      {
+        "role": "global_manager_destructor",
+        "start": "008f7d20",
+        "end_exclusive": "008f7d47",
+        "bytes": 39,
+        "sha256": "cefd1be0d2bf2830143c5d363d1892897475416acd80acfde5f4028e5f4c2a79",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_008f7d20.log",
+        "instructions": 12
+      },
+      {
+        "role": "winmain_manager_drain_window",
+        "start": "008f8449",
+        "end_exclusive": "008f846d",
+        "bytes": 36,
+        "sha256": "4de3ef4fd1b00a85ac99d497a01100db1865d12c9077a0c8db86c2f57c0e52fc",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_008f8449.log",
+        "instructions": 9
+      },
+      {
+        "role": "getter_actions_handler",
+        "start": "00c64f20",
+        "end_exclusive": "00c64f3d",
+        "bytes": 29,
+        "sha256": "fb5131b9616775804d665a07432ec407deccba66e64f784d41f3817810d373e8",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00c64f20.log",
+        "instructions": 9
+      },
+      {
+        "role": "getter_unwind_funcinfo",
+        "start": "00d8d548",
+        "end_exclusive": "00d8d57c",
+        "bytes": 52,
+        "sha256": "fcb686d118ea98b74527267689c7c3bf7139da6c958299fe8bcdd260d6269f4f",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00d8d548.log"
+      },
+      {
+        "role": "constructor_actions_handler",
+        "start": "00cb7260",
+        "end_exclusive": "00cb7293",
+        "bytes": 51,
+        "sha256": "2b37ea766dd5c6c2f64ec5a83db06c89b0ba4d15eff4adad96ebbacf1a0f1799",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00cb7260.log",
+        "instructions": 13
+      },
+      {
+        "role": "constructor_unwind_funcinfo",
+        "start": "00deda80",
+        "end_exclusive": "00dedac4",
+        "bytes": 68,
+        "sha256": "ff2a8e85600c742384f7ee862c333e39d01783144407a45afb349702ab0122fa",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00deda80.log"
+      },
+      {
+        "role": "gui_shutdown_action_handler",
+        "start": "00c85ec0",
+        "end_exclusive": "00c85ed2",
+        "bytes": 18,
+        "sha256": "adf860f533deb2f795f8bd4f758712d0eb6a46707fca4127fa445f2912bbf28d",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00c85ec0.log",
+        "instructions": 4
+      },
+      {
+        "role": "gui_shutdown_unwind_funcinfo",
+        "start": "00db52c0",
+        "end_exclusive": "00db52ec",
+        "bytes": 44,
+        "sha256": "eb39989a7f7db15426ceeaec8674c29c2258e74a7fdf7cfa000e3e925b82b443",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00db52c0.log"
+      },
+      {
+        "role": "derived_slot_zero",
+        "start": "00d5bfcc",
+        "end_exclusive": "00d5bfd0",
+        "bytes": 4,
+        "sha256": "6a8b3632f5b363df44baffc55411eed5a450c3ef0bdd7671cbf952c4fe031b10",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00d5bfcc.log"
+      },
+      {
+        "role": "base_slot_zero",
+        "start": "00ce3818",
+        "end_exclusive": "00ce381c",
+        "bytes": 4,
+        "sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00ce3818.log"
+      },
+      {
+        "role": "guard_profile",
+        "start": "00ce37fc",
+        "end_exclusive": "00ce3800",
+        "bytes": 4,
+        "sha256": "8b12438c84805d12f163f8d7b8976a71222f4b4cc6a4be870696607611839f82",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00ce37fc.log"
+      },
+      {
+        "role": "half_bits",
+        "start": "00ce3800",
+        "end_exclusive": "00ce3804",
+        "bytes": 4,
+        "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00ce3800.log"
+      },
+      {
+        "role": "one_bits",
+        "start": "00d7a24c",
+        "end_exclusive": "00d7a250",
+        "bytes": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "live_equals_installed_pe": true,
+        "image_storage": "file_backed",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00d7a24c.log"
+      },
+      {
+        "role": "initial_gui_publication",
+        "start": "00f8bc5c",
+        "end_exclusive": "00f8bc60",
+        "bytes": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "live_equals_installed_pe": true,
+        "image_storage": "PE_virtual_zero_fill",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_00f8bc5c.log"
+      },
+      {
+        "role": "initial_manager_publication",
+        "start": "01090aa0",
+        "end_exclusive": "01090aa4",
+        "bytes": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "live_equals_installed_pe": true,
+        "image_storage": "PE_virtual_zero_fill",
+        "verified_bsp_wrapper_log": "local/cc12_native_gui_manager_producer_readiness_92_live_01090aa0.log"
+      }
+    ],
+    "direct_calls": [
+      {
+        "address": "004c12d6",
+        "native": "00415350",
+        "function": "004c12b0"
+      },
+      {
+        "address": "004c130f",
+        "native": "00bf681b",
+        "function": "004c12b0"
+      },
+      {
+        "address": "004c1326",
+        "native": "00aa5d70",
+        "function": "004c12b0"
+      },
+      {
+        "address": "004c1339",
+        "native": "00415350",
+        "function": "004c12b0"
+      },
+      {
+        "address": "004c1347",
+        "native": "00bd0c30",
+        "function": "004c12b0"
+      },
+      {
+        "address": "00aa5da0",
+        "native": "00aa2920",
+        "function": "00aa5d70"
+      },
+      {
+        "address": "00aa5ddf",
+        "native": "00aa2820",
+        "function": "00aa5d70"
+      },
+      {
+        "address": "00aa2922",
+        "native": "00bf681b",
+        "function": "00aa2920"
+      },
+      {
+        "address": "00aa2822",
+        "native": "00bf681b",
+        "function": "00aa2820"
+      },
+      {
+        "address": "00415371",
+        "native": "00bf681b",
+        "function": "00415350"
+      },
+      {
+        "address": "0041538a",
+        "native": "00bd0960",
+        "function": "00415350"
+      },
+      {
+        "address": "00bd0991",
+        "native": "00bd0600",
+        "function": "00bd0960"
+      },
+      {
+        "address": "00bd0996",
+        "native": "00bd1860",
+        "function": "00bd0960"
+      },
+      {
+        "address": "00736272",
+        "native": "00415350",
+        "function": "00736250"
+      },
+      {
+        "address": "007362a6",
+        "native": "00415350",
+        "function": "00736250"
+      },
+      {
+        "address": "007362b4",
+        "native": "00bcfca0",
+        "function": "00736250"
+      },
+      {
+        "address": "008f7d2d",
+        "native": "00bd0400",
+        "function": "008f7d20"
+      },
+      {
+        "address": "008f7d33",
+        "native": "00bf65ac",
+        "function": "008f7d20"
+      },
+      {
+        "address": "007382da",
+        "native": "00736250",
+        "function": "00737f30"
+      }
+    ],
+    "indirect_calls": [
+      {
+        "function": "004c12b0",
+        "site": "004c12ef",
+        "operand": "dword ptr [0xce2218]"
+      },
+      {
+        "function": "004c12b0",
+        "site": "004c1355",
+        "operand": "dword ptr [0xce2210]"
+      },
+      {
+        "function": "00736250",
+        "site": "0073628b",
+        "operand": "dword ptr [0xce2218]"
+      },
+      {
+        "function": "00736250",
+        "site": "007362c9",
+        "operand": "eax"
+      },
+      {
+        "function": "00736250",
+        "site": "007362de",
+        "operand": "dword ptr [0xce2210]"
+      }
+    ],
+    "source_sha256": {
+      "include/bsp/native_platform_focus_owners.hpp": "0738ee83b33d44ee79852f115e79515a85d653452d70fc920ab63e3675c51865",
+      "src/native_platform_focus_owners.cpp": "efff43cee498b710d53d4b2380e4ae89791dc578371d35b2be29327b0fedfe73",
+      "include/bsp/native_singleton_publication.hpp": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "src/native_singleton_publication.cpp": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "src/native_singleton_vector_reserve_construct.cpp": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "src/native_singleton_vector_registration_wrappers.cpp": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "src/native_singleton_removal_reorder.cpp": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2",
+      "src/native_singleton_destruction.cpp": "3897f7b7187f5e0b23f1030e5cf368784aa660ec6a8e8440389c1780ce8c7a1d",
+      "include/bsp/native_singleton_destruction.hpp": "f76b238d2cdbdb95dc3c7400ae00799c4a3420df04ccf9fd181444ac3177c435",
+      "include/bsp/native_gui_media_focus_lifetime.hpp": "fed651ac9f3e7f0853c4754dd180dc68b1e6432afc9fe64a327caa59e8b81412",
+      "src/native_gui_media_focus_lifetime.cpp": "06744c0d69116b56681e74ed0f92d97a0b3d583455b66ea2d458a1a0cea0c749",
+      "include/bsp/native_gui_layer_lifetime.hpp": "dbf0d44346d847bd4c2daa86b73cdb6ec175e2553ad113ef8bbeffc444f631dd",
+      "src/native_gui_layer_lifetime.cpp": "d6d789179cd68cbd1bf66a6ebf2b1aeb4c2c29fc03155b3be335ebfdb22cf7d0",
+      "include/bsp/native_gui_camera_store_map.hpp": "3682a1f8dcd0a195f2c3f0840207d52e353fd7f03f98790e37a57ad73b4b8340",
+      "src/native_gui_camera_store_map.cpp": "99228166520cfa04a782500d5de7b272f9545bc4cfc8f8110bb813d1b0afe39d",
+      "include/bsp/game_native_string_process.hpp": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+      "src/game_native_string_process.cpp": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+      "src/game_hosts_singletons.cpp": "0aa58574c6b127d2964d10147059794e2005c49d64a836960f04794cc81d2dc1",
+      "src/game_hosts_frontend.cpp": "f070b50daac6be2afeb986edfcf3bbd737bb48b827c453bb9e897a04822cc247"
+    },
+    "initial_cell_note": "F8BC5C and01090AA0 match loader virtual zero-fill in the analysis image; neither has file-backed data or establishes a running publication owner.",
+    "exports_refreshed_read_only": [
+      "004c12b0",
+      "00aa5d70",
+      "00736250",
+      "00415350",
+      "00bd0960",
+      "008f7d20"
+    ],
+    "raw_publication_xrefs": [
+      [
+        "00aa0ff0",
+        "WRITE"
+      ],
+      [
+        "004c12c5",
+        "READ"
+      ],
+      [
+        "004c1301",
+        "READ"
+      ],
+      [
+        "004c1334",
+        "WRITE"
+      ],
+      [
+        "004c133e",
+        "READ"
+      ],
+      [
+        "004c135b",
+        "READ"
+      ],
+      [
+        "00736268",
+        "READ"
+      ],
+      [
+        "0073629d",
+        "READ"
+      ],
+      [
+        "007362ab",
+        "READ"
+      ],
+      [
+        "007362b9",
+        "READ"
+      ],
+      [
+        "007362cb",
+        "WRITE"
+      ],
+      [
+        "00aa1f78",
+        "WRITE"
+      ],
+      [
+        "00aa6487",
+        "WRITE"
+      ]
+    ]
+  },
+  "existing_providers": [
+    {
+      "entry": "004c12b0",
+      "symbol": "get_native_gui_manager_004c12b0",
+      "source": "src/native_platform_focus_owners.cpp",
+      "coverage": "whole_raw_source_existing",
+      "abi": "Original no consumed args; EAX borrowed publication; RET. Source adds required borrowed context.",
+      "schedule": "first capture fast return; first manager section capture; enter/depth then state0; current cell recheck;88h allocation then state1; constructor; disarm allocation before publish; second manager before current registration argument; depth/Leave; final cell reload"
+    },
+    {
+      "entry": "00aa5d70",
+      "symbol": "construct_native_gui_manager_00aa5d70",
+      "source": "src/native_platform_focus_owners.cpp",
+      "coverage": "whole_raw_source_existing",
+      "abi": "ECX initialized raw88h allocation; EAX original receiver; RET.",
+      "unassigned_owner_bytes": 71,
+      "does_not_establish_other_runtime_field_readiness": true
+    },
+    {
+      "entries": [
+        "00aa2920",
+        "00aa2820",
+        "00aa0ff0",
+        "0041da80",
+        "004c8020",
+        "00aa5260"
+      ],
+      "source": "src/native_platform_focus_owners.cpp",
+      "coverage": "existing_whole_raw_helpers_and_fixed_whole_tree_range_cleanup"
+    },
+    {
+      "entry": "00415350",
+      "source": "src/native_singleton_publication.cpp",
+      "coverage": "whole_raw_borrowed_actual_01090AA0",
+      "allocator": "same_owning_Source_CRT_singleton_lifetime_allocate",
+      "native_crt_identity_claimed": false,
+      "atexit_call_present": false,
+      "explicit_getter_lock": false
+    },
+    {
+      "entry": "00bd0960",
+      "source": "src/native_singleton_vector_reserve_construct.cpp",
+      "coverage": "whole_raw_source_existing",
+      "schedule": "offset0 untouched;zero4/8/C; realBD0600reserve256 then realBD1860section at10; failureBD0220",
+      "atexit_call_present": false
+    },
+    {
+      "entry": "00bd0600",
+      "source": "src/native_singleton_vector_reserve_construct.cpp",
+      "coverage": "whole_raw_source_existing"
+    },
+    {
+      "entry": "00bd1860",
+      "source": "src/native_renderer_worker_lifetime.cpp",
+      "coverage": "whole_raw_actual_Win32_tracked_section_existing"
+    },
+    {
+      "entries": [
+        "00bd0c30",
+        "00bd0bc0"
+      ],
+      "source": "src/native_singleton_vector_registration_wrappers.cpp",
+      "coverage": "whole_raw_source_existing",
+      "reference_increment": false,
+      "deduplication": false,
+      "internal_lock": false
+    },
+    {
+      "entry": "00bcfca0",
+      "source": "src/native_singleton_removal_reorder.cpp",
+      "coverage": "whole_raw_source_existing",
+      "schedule": "null matching registration slot; preserve vector length"
+    },
+    {
+      "entry": "00411ee0",
+      "source": "src/native_diagnostic_sink_lifetime.cpp",
+      "coverage": "whole_raw_actual_guard_existing"
+    },
+    {
+      "entry": "00aa4b30",
+      "source": "src/native_gui_camera_store_map.cpp",
+      "coverage": "whole_raw_source89_existing",
+      "scene_or_camera_reference_release": false
+    }
+  ],
+  "exception_schedules": [
+    {
+      "entry": "004c12b0",
+      "handler": "00c64f33",
+      "funcinfo": "00d8d558",
+      "unwind_map": "00d8d548",
+      "states": [
+        {
+          "from": 1,
+          "to": 0,
+          "action": "00c64f28",
+          "behavior": "free captured allocation EBP-18 through BF65AC"
+        },
+        {
+          "from": 0,
+          "to": -1,
+          "action": "00c64f20",
+          "behavior": "guard EBP-14 to411EE0"
+        }
+      ],
+      "allocation_cleanup_disarmed_before_publication_and_registration": true
+    },
+    {
+      "entry": "00aa5d70",
+      "handler": "00cb7289",
+      "funcinfo": "00dedaa0",
+      "unwind_map": "00deda80",
+      "states": [
+        {
+          "from": 3,
+          "to": 2,
+          "action": "00cb727e",
+          "behavior": "owner+2C canonical release41DA80"
+        },
+        {
+          "from": 2,
+          "to": 1,
+          "action": "00cb7273",
+          "behavior": "owner+14 vector4C8020"
+        },
+        {
+          "from": 1,
+          "to": 0,
+          "action": "00cb7268",
+          "behavior": "owner+8 treeAA5260"
+        },
+        {
+          "from": 0,
+          "to": -1,
+          "action": "00cb7260",
+          "behavior": "AA0FF0 clears current GUI publication then stamps captured owner CE3818"
+        }
+      ]
+    },
+    {
+      "entry": "00736250",
+      "handler": "00c85ec8",
+      "funcinfo": "00db52c8",
+      "unwind_map": "00db52c0",
+      "states": [
+        {
+          "from": 0,
+          "to": -1,
+          "action": "00c85ec0",
+          "behavior": "guard EBP-14 to411EE0"
+        }
+      ],
+      "no_clear_after_escaping_unregister_or_scalar_failure": true
+    }
+  ],
+  "producer_ownership": {
+    "getter_return_is_borrowed": true,
+    "getter_addref": false,
+    "owner_allocation_domain": "same owning Source CRT as raw singleton manager/store/tree; not Original CRT heap",
+    "publication_cell_and_captured_section_lifetime_required": true,
+    "raw_constructor_does_not_initialize_entire_runtime_manager": true,
+    "no_gui_getter_or_constructor_atexit_registration": true,
+    "explicit_gui_shutdown_caller": "00737f30 site007382DA",
+    "gui_shutdown_data_reference_found": false,
+    "global_manager_wrapper_008f7d20_live_xrefs": 0,
+    "global_manager_wrapper_atexit_installation_established": false,
+    "winmain_explicit_drain": "008F8449..008F846D: current01090AA0; BD0400;free captured manager;clear01090AA0"
+  },
+  "production_admission": {
+    "existing_real_process_provider": "GameNativeStringProcess retained01090AA0 authority borrowed by GameSingletonHost",
+    "missing": [
+      "retained actual F8BC5C Source publication authority and PlatformFocusOwnersContext builder",
+      "native_gui deletion binding installed before first GUI registration",
+      "concrete actual current-page20/04 providers over same GUI domain",
+      "concrete layer manager/remove plus current scene/table0 bindings"
+    ],
+    "search_scope": "src/include C++ at the recorded source commit; exact context/type/member/symbol searches plus defining source review",
+    "native_gui_assignment_found": false,
+    "native_layer_or_page_provider_subclass_found": false,
+    "frontend_getter": "src/game_hosts_frontend.cpp typed owner.manager constructed flag/projection; cannot cast or substitute for raw88h owner",
+    "aa6340_aa6540": "existing whole schedules with explicit partial populated-page provider domain; not newly reconstructed",
+    "default_or_private_replacement_owner_allowed": false,
+    "activation_ready": false
+  },
+  "next_packet_proposal": {
+    "candidate": "separate_Source99_not_assigned_by92",
+    "entry": "00736250",
+    "end_exclusive": "007362f4",
+    "bytes": 164,
+    "instructions": 44,
+    "original_abi": "no consumed args; void; RET; FH3 state0 captured guard cleanup",
+    "files": [
+      "include/bsp/native_gui_manager_publication.hpp",
+      "src/native_gui_manager_publication.cpp"
+    ],
+    "api_proposal": "void destroy_native_gui_manager_publication_00736250(NativePlatformFocusOwnersContext&,NativeGuiManagerPublicationCalls&)",
+    "required_calls_view": "nondefault real current scalar-zero dispatcher, matching actual GUI lifetime context and current profile/table/target; no arbitrary callable numeric VAs or assumed fixed D5BFCC receiver",
+    "reuse": [
+      "get_native_singleton_manager_00415350",
+      "unregister_native_singleton_object_00bcfca0",
+      "actual Win32 section enter/leave and+18depth",
+      "destroy_native_singleton_guard_00411ee0",
+      "scalar_delete_native_gui_manager_00aa6540_fragment only for explicitly admitted currentD5BFCC domain"
+    ],
+    "schedule": "initial null exit; first getter/capturedsection; enter/depth/state0; recheckpub; second getter BEFORE current pub argument; unregister; reloadpub; current scalar0(1);clearpub AFTER return; captureddepth/Leave",
+    "source_exception_limit": "ordinary C++ cleanup state0; cleanup escape terminates; no Native FH3/SEH/privateframe/ABI claim",
+    "closes": "missing raw explicit publication teardown transport only",
+    "does_not_close": [
+      "actual Source publication ownership",
+      "production admission/activation",
+      "complete current-page dispatch",
+      "Native CRT ownership",
+      "populated GUI graph retirement"
+    ],
+    "fresh_lease_and_task_required": true
+  },
+  "verification": {
+    "live_disk_byte_audit": "passed23ranges1173bytes; PE virtual zero-fill explicitly distinguished",
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/cc12_native_gui_manager_producer_readiness_92.json",
+      "expected_rows": 19,
+      "result": "passed",
+      "checked_rows": 19,
+      "failed_rows": 0,
+      "exit_code": 0,
+      "log": "local/cc12_native_gui_manager_producer_readiness_92_report_calls.log",
+      "basis": "actual tools/verify_report_calls.py invocation; exact captured one-line result"
+    },
+    "build": "not run: read-only packet",
+    "tests": "not run: read-only packet",
+    "original_execution": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "indirect_calls_not_verified_by_direct_call_checker": true
+  },
+  "limits": [
+    "Static and current Source readiness only; no native execution or runtime success.",
+    "Bounded producer/essential lifetime chain, not all GUI/render-world services.",
+    "Source owning CRT/Win32 provider identity is explicit and differs from Original CRT/TLS ownership.",
+    "Two zero analysis-image publication cells do not provide actual Source authorities.",
+    "Existing raw ctor leaves71bytes untouched; complete storage admission cannot be inferred from an incomplete prefix or typed companion.",
+    "No no-op providers, fake allocations, new publication/global, extra retain/count, or automatic Source activation."
+  ]
+}

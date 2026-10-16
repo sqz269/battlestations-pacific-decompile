@@ -1,0 +1,388 @@
+{
+  "packet": "native_gui_frame_box_raw_default_96",
+  "status": "whole_default_reconstructed_strict_win32_compiled_one_genuine_normal_adapter_comparison_existing_checks_pass_unregistered",
+  "reviewed_root_baseline": "d78abe18e173be64f2b2ef9a487741d8846a1301",
+  "worker_merge_head_before_packet": "6c9f6e1a1707e9b61568c0ea00435a70601a976a",
+  "original": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged": true
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "wrapper_verifies_each_query": true
+  },
+  "function": {
+    "address": "00ad2600",
+    "end_exclusive": "00ad2698",
+    "bytes": 152,
+    "instructions": 31,
+    "name_preserved": "BSP_GuiFrameBox_Construct",
+    "original_abi": "ECX actual fresh destination; EAX same identity; RET",
+    "source_api": "void* construct_native_gui_frame_box_default_00ad2600(void*, NativeGuiFrameBoxDefaultBindings&)",
+    "new_source_abi_not_binary_replacement": true,
+    "legacy_semantic_fragment_retained": true
+  },
+  "calls": [
+    {
+      "address": "00ad261b",
+      "native": "00aa9390",
+      "function": "00ad2600",
+      "kind": "call",
+      "arguments": "ECX same actual destination; stack type18",
+      "source": "real existing construct_native_gui_widget_base_00aa9390"
+    },
+    {
+      "address": "00cb92a3",
+      "native": "00aa9730",
+      "function": "00cb92a0",
+      "kind": "tail_jump",
+      "scope": "unarmed state0 EH cleanup descriptor only; not executed by probe or synthesized in Source"
+    },
+    {
+      "address": "00cb92ad",
+      "native": "00bf6b43",
+      "function": "00cb92a8",
+      "kind": "tail_jump",
+      "scope": "native private FH3 handler; unentered/unproven"
+    }
+  ],
+  "bindings": {
+    "required_borrowed_const_volatile_dword_refs": [
+      "actual_one_00d7a24c",
+      "actual_frame_x_00d5d11c",
+      "actual_frame_y_00d5d10c"
+    ],
+    "implicit_defaults_or_owner": false,
+    "metadata_lifetime": "live/stable and disjoint from destination/callee scratch",
+    "actual_cells_lifetime": "live, same genuine scalar/provider domain, disjoint destination, externally serialized",
+    "destination": "caller-owned fresh DWORD-aligned actual raw storage covering at least11C bytes",
+    "preconditions_not_dynamic_guards": true
+  },
+  "ordered_stores": [
+    [
+      "capture X",
+      "after real base; before vptr"
+    ],
+    [
+      "00",
+      "DWORD D5D130"
+    ],
+    [
+      "ec",
+      "WORD FFFF"
+    ],
+    [
+      "f4/f8/fc",
+      "DWORD zeros"
+    ],
+    [
+      "100",
+      "BYTE one"
+    ],
+    [
+      "104/108",
+      "DWORD zeros"
+    ],
+    [
+      "10c/110",
+      "same captured X DWORD bits"
+    ],
+    [
+      "capture Y",
+      "after both X stores"
+    ],
+    [
+      "114/118",
+      "same captured Y DWORD bits"
+    ]
+  ],
+  "unwritten_preimages": [
+    "ee..ef padding",
+    "f0..f3 vector allocator/proxy",
+    "101..103 padding",
+    "all base-unwritten bytes",
+    "caller hidden pool word11c..11f"
+  ],
+  "bit_domain": {
+    "actual_one_bits": "3f800000",
+    "actual_x_bits": "3d6eee95",
+    "actual_y_bits": "3d9f498c",
+    "observed_values_are_not_default_implementation": true,
+    "native_movss_and_source_dword_moves_preserve_bits_without_fp_conversion": true,
+    "signaling_nan_runtime_case_performed": false
+  },
+  "failure": {
+    "native_initial_state": -1,
+    "native_state0_never_armed": true,
+    "native_handler": "00cb92a8",
+    "native_info": "00df084c",
+    "native_map": "00df0844",
+    "map0": {
+      "to_state": -1,
+      "cleanup": "00cb92a0 -> 00aa9730"
+    },
+    "only_throwing_cpp_callee_under_supported_storage_domain": "real base AA9390",
+    "source_additional_catch_state_arm_basecleanup_slotreturn_or_replay": false,
+    "native_private_fh3_seh_or_cleanup_equivalence_proven": false
+  },
+  "verification": {
+    "canonical_worker_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "ctests_passed": 3,
+      "ctests_failed": 0,
+      "ctest_seconds": 9.06,
+      "new_unit_unregistered": true,
+      "note": "existing build/checks; new unit compiled separately"
+    },
+    "fresh_strict_object": {
+      "command_file": "local\\cc12_native_gui_frame_box_raw_default_96\\compile.cmd",
+      "exit_code": 0,
+      "target": "MSVC Win32",
+      "flags": [
+        "/MD",
+        "/EHsc",
+        "/std:c++20",
+        "/O2",
+        "/Gy",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/permissive-"
+      ],
+      "final_header_used": true,
+      "inspection": {
+        "base_call": "0f",
+        "x_dword_load": "1a",
+        "vptr_dword_store": "21",
+        "frame_id_word_store": "27",
+        "vector_zero_dword_stores": [
+          "30",
+          "3a",
+          "44"
+        ],
+        "dirty_byte_store": "4e",
+        "shader_zero_dword_stores": [
+          "55",
+          "5f"
+        ],
+        "same_x_dword_stores": [
+          "69",
+          "6f"
+        ],
+        "y_dword_load": "78",
+        "same_y_dword_stores": [
+          "7a",
+          "80"
+        ],
+        "return": "88",
+        "only_call_relocation": "construct_native_gui_widget_base_00aa9390",
+        "no_floating_point_instructions": true
+      },
+      "source_object_bytes": 137
+    },
+    "one_normal_probe": {
+      "command_file": "local\\cc12_native_gui_frame_box_raw_default_96\\probe.cmd",
+      "executable": "local\\cc12_native_gui_frame_box_raw_default_96\\frame_box_probe.exe",
+      "target": "MSVC Win32 /MD",
+      "embedded_manifest_resource_type": 24,
+      "embedded_manifest_sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+      "exit_code": 0,
+      "fixture": "real existing Source AA9390 shared by whole relocated Original default body and current new Source function; actual-bit borrowed volatile scalar views",
+      "whole_original_bytes": 152,
+      "raw_buffers_bytes": 288,
+      "only_normalized_interval": "68..6b actual distinct sentinel pointer",
+      "checks": [
+        "same returned identity",
+        "native ESP balance",
+        "type18",
+        "creator count1",
+        "D5D130 stamp",
+        "genuine distinct self-linked base sentinels",
+        "all other120h raw bytes equal",
+        "unwritten derived/allocator/padding/hidden preimages",
+        "exact X/Y bits"
+      ],
+      "normal_relocations": [
+        {
+          "site": "00ad261b",
+          "operand_offset": "1c",
+          "kind": "relative call",
+          "original_target": "00aa9390",
+          "replacement": "bridge to SAME genuine Source AA9390(type18)"
+        },
+        {
+          "site": "00ad2620",
+          "operand_offset": "24",
+          "kind": "absolute scalar address",
+          "original_target": "00d5d11c",
+          "replacement": "borrowed volatile fixture cell initialized with actual bits"
+        },
+        {
+          "site": "00ad2672",
+          "operand_offset": "76",
+          "kind": "absolute scalar address",
+          "original_target": "00d5d10c",
+          "replacement": "borrowed volatile fixture cell initialized with actual bits"
+        }
+      ],
+      "native_handler_literal_unchanged_and_unentered": true,
+      "fixture_cleanup": "only genuine empty base allocations; no full FrameBox retirement proof"
+    }
+  },
+  "limits": [
+    "new explicit Source API is not Original binary replacement ABI",
+    "one normal comparison uses shared Source base and does not independently prove Original base or Native CRT",
+    "native private FH3, failures, SEH, signaling-NaN runtime and full retirement not proven",
+    "no raw copy/factory/vector/rebuild/hook implementation or activation",
+    "no gameplay/visual/native Text activation claim",
+    "no CMake/Main Source edit; integrator registers new unit later"
+  ],
+  "annotations": {
+    "address_only": "00ad2600",
+    "prior_name_preserved": "BSP_GuiFrameBox_Construct",
+    "history": "local\\ghidra-annotations-20261016T050358Z.json",
+    "history_sha256": "ed887e32b75c20058c3726bc0c227cae3ef40d6e46376f3266407f7b03d8d9cc",
+    "write_lock_save_export_refresh_index": true,
+    "old_comments_and_old_ledger_fragment_retained": true
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_gui_frame_box_factory.hpp",
+      "git_blob": "7c958748409edaaa24859a6378e05a4356253496",
+      "sha256": "5d396b347e986349ecf29dca0dfc7fb8c9a1d749bc774c1992dd8e6d18f014b1"
+    },
+    {
+      "path": "src/native_gui_frame_box_factory.cpp",
+      "git_blob": "f3bef7534f07f024a73bf9cd13345a70eb20d1d8",
+      "sha256": "51f869267de233f5a642b32462d9eb0bcde932cdaebb4ac39e968aaf7eb238a4"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_base_storage.hpp",
+      "git_blob": "61c72c99fab59f5c86da392495d7bae5381607cf",
+      "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab"
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5",
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d"
+    },
+    {
+      "path": "include/bsp/native_gui_text_identity.hpp",
+      "git_blob": "002c6855b1de966a5a690fca0914971c4683a227",
+      "sha256": "6de31247104e9d98b5b369846bd8c743058c14aeae8ce0520ce15fd3926335a6"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "git_blob": "cc52e7a9083065af6b1d451fd84ca4fa559d084a",
+      "sha256": "f9fe331e898de066b05cde5aba9bae1bb5e0dfccdceedb9cb8c85a286be3d286"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "git_blob": "2d571930d3446b33b745fccdca3e32e8c31d46a1",
+      "sha256": "f5f10d603694dfbb354b92bc4627dfc0fd687724fc51d49de5c51f53c813c3b6"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "git_blob": "41d4bd970057f9cf9dd3c9c6d88527ce27ebbf01",
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "git_blob": "2718cee01c292f0f641606cd965c3d6a3ec638b3",
+      "sha256": "eb3c7f83231a2a8184041a981bcd912733b5f12801d0bba2345d1ad0e69c3d79"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "git_blob": "e6b999000e1fbd40284cd8bcb0588d3c5903f295",
+      "sha256": "9c0ee655a8396aec6000d897bfee7c1bd3171e90b67b46ccecde1e9a7134647d"
+    }
+  ],
+  "native_byte_proofs": [
+    {
+      "address": "00ad2600",
+      "length": 152,
+      "sha256": "0273c092ec8965f527d401e2e3a551e27cd570226244dcbaeb4855d9867da63c",
+      "hex": "6aff68a892cb0064a100000000506489250000000051566a128bf1e8706dfdfff30f10051cd1d5008b4c2408c70630d1d50066c786ec000000ffff33c08986f40000008986f80000008986fc000000c6860001000001898604010000898608010000f30f11860c010000f30f118610010000f30f10050cd1d500f30f118614010000f30f1186180100008bc65e64890d0000000083c410c3",
+      "live_equals_installed": true
+    },
+    {
+      "address": "00d5d11c",
+      "length": 4,
+      "sha256": "ff90c9ced066406d2794a86f9df54063cb073a07605b03ba869e437b503d717c",
+      "hex": "95ee6e3d",
+      "live_equals_installed": true
+    },
+    {
+      "address": "00d5d10c",
+      "length": 4,
+      "sha256": "c6873b66cd3b98db0292f6ce26f1861c3ee756806c9aa19c8d22fe5715c5f11b",
+      "hex": "8c499f3d",
+      "live_equals_installed": true
+    },
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "hex": "0000803f",
+      "live_equals_installed": true
+    },
+    {
+      "address": "00cb92a8",
+      "length": 10,
+      "sha256": "74d7a4871905ca405c8be2fcb387ca42151cb069203bfdf2ffae9e641bdd7996",
+      "hex": "b84c08df00e991d8f3ff",
+      "live_equals_installed": true
+    },
+    {
+      "address": "00df084c",
+      "length": 36,
+      "sha256": "d920819838d8a70952c1838d8a1558f7e98a43c2ea9b881a506d32c22388d8e9",
+      "hex": "22059319010000004408df00000000000000000000000000000000000000000001000000",
+      "live_equals_installed": true
+    },
+    {
+      "address": "00df0844",
+      "length": 8,
+      "sha256": "de91244d1c646759b10eb87eb1752657d7b70abaf02bf60eb30e8d8136a1efd8",
+      "hex": "ffffffffa092cb00",
+      "live_equals_installed": true
+    },
+    {
+      "address": "00cb92a0",
+      "length": 8,
+      "sha256": "8bde3f66622b6a808844da9ed2795ddcbf98aafdefde0486bf12c2d89276b3f8",
+      "hex": "8b4df0e98804dfff",
+      "live_equals_installed": true
+    }
+  ],
+  "documentation": {
+    "path": "docs\\CC12_NATIVE_GUI_FRAME_BOX_RAW_DEFAULT_96.md",
+    "sha256": "6423bd0e77b8dcf26605e9addc30e1e44249d24b1fb06cee77634b40bd2e5b79"
+  },
+  "artifact_manifest": {
+    "path": "local\\cc12_native_gui_frame_box_raw_default_96\\manifest.json",
+    "sha256": "40610505ff145bb5144767bc1a1f664b2e5ba77aec092ccbbecb357694cffd43",
+    "source_inputs": 10,
+    "artifacts": 24,
+    "sealed_no_future_build_before_capture": true
+  },
+  "validation": {
+    "no_source_changes_outside_owned_two_new_files": true,
+    "no_new_repository_tests": true,
+    "no_cmake_main_or_unowned_ghidra_mutations": true,
+    "report_call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/cc12_native_gui_frame_box_raw_default_96.json docs/CC12_NATIVE_GUI_FRAME_BOX_RAW_DEFAULT_96.md",
+      "exit_code": 0,
+      "native_call_rows_checked": 3,
+      "documentation_call_claims_checked": 1,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "source_and_artifact_hashes_revalidated": 34,
+    "installed_original_hash_revalidated": true
+  }
+}
