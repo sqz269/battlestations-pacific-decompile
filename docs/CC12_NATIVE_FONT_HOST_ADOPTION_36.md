@@ -4,6 +4,8 @@ Normal `GameFontHost` now uses `GameNativeFontApplication` on the application's 
 
 The tested Source is **`a53cd233266d3494fb952acbae24b0ea87e736c9`**. The host change is `b596d6ba4`, sprite bridge `88f60d172`, and independent lifetime review `1655f581b`. See the [machine receipt](../reports/cc12_native_font_host_adoption_36.json) and [lifetime review](CC12_NATIVE_FONT_HOST_RETIREMENT_REVIEW_36.md).
 
+The [independent runtime audit](CC12_NATIVE_FONT_RUNTIME_REVIEW_36.md), commit `70f01dd93`, verified the frozen artifacts, both captures/receipts, cleanup ordering and unchanged original executable without a blocking integrity discrepancy. It did not add test runs or expand the evidence scope.
+
 ## Ownership and failure behavior
 
 The producer uses the recovered GFX → alpha → DAT order. Each stable registry row borrows its producer's `NativeFontResources`; adoption consumes the sole decoded `FontData` allocation and both returned actual image references. Startup checks the descriptor/row/operation identities, completed production, absent semantic owner and empty transferred input slots. It does not call `native_fonts()` or bind a native Text factory in this packet.
@@ -19,6 +21,8 @@ Future native Text integration must retire Text allocations, retain their **same
 ## Evidence
 
 `./scripts/build.ps1` passed on the combined Source: MSVC Win32 and all three existing suites, **8.77 s** for CTest. These math/native-math/tool suites do not test font drawing. The runtime executable, map, relevant objects, 17 source files and test log were frozen as 32 hash-checked inputs before launch.
+
+After integrating the newer Main, Source **`9a727abac038bd190076942cd6c72913fcf5eefb`** passed the same canonical build and three suites (**7.46 s**), then a fresh two-tick native-font/sprite/effect run exited 0 with 55 glyph quads and ordered retirement/final COM `0/0`. All 17 original font-related Source inputs were byte-identical. The newer executable, changed core/CMake inputs and receipts were frozen as 41 inputs. This supplementary run retains the same evidence limits. Its separate 51-payload archive is `local/cc12_native_font_combined_39/evidence_family.zip`, SHA-256 **`9e48cf10c7e4dc8054ae8453d4f21afe39aacb1fdaa44b02967d883c71be8b02`**; every payload hash was verified. The original archive below remains unchanged.
 
 Two fresh runs used the frozen executable, real installed assets/providers, private windowed settings and the serialized launcher. Both returned **0**, loaded six native fonts, kept the same descriptors/registry with zero semantic font owners, and retired fonts before native drain. GFX identities demonstrate two shared glyph images; all six rows share the same actual alpha image. All image profiles were `D61948`. The DAT glyph counts were 116 for the two Viper descriptors and 207 for the four Arial descriptors.
 
