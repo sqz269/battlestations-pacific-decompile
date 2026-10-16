@@ -29,8 +29,26 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE = ROOT / 'tools/progress_board_template.html'
 INDEX = ROOT / 'local/bsp_index.sqlite'
-TARGET = 13987  # inventory point estimate of hand-reconstruction work (reports/library_inventory/SUMMARY.md)
 STEP = 2 * 3600
+
+# The target is game code only, counted live from the function list: every non-funclet function except the
+# blocks reports/library_inventory/SUMMARY.md excludes (stock MSVC CRT/STL runtime, import thunks, static
+# initializers, stock Lua 5.1.1 and zlib 1.2.1, telemetry/pipe-IPC stub candidates) and the tag categories
+# for stock or compiler-generated code. In-house Mit/Dyn physics, trivial game bodies and RTTI slots stay in.
+NON_GAME_RANGES = [
+    (0x00bf55be, 0x00c2ddd0), (0x00c2ddd0, 0x00c2f3e0), (0x00cc893b, 0x00ce2000),  # CRT/STL, import thunks, initializers
+    (0x00a60870, 0x00a7772f), (0x00c2f3e0, 0x00c3018f), (0x00bc94d0, 0x00bcf910),  # Lua main block, loadlib.c, zlib
+    (0x00a4d610, 0x00a5de34), (0x0094cab0, 0x0094ec00), (0x00a5de34, 0x00a607e8), (0x00750820, 0x00758000),  # telemetry, IPC, metrics
+]
+NON_GAME_TAGS = {'lua511', 'zlib121', 'crt_unmatched', 'static_init', 'block_telemetry', 'block_telemetry_tmpl',
+                 'block_pipe_ipc', 'block_metrics_wrapper'}
+NON_GAME_TAG_PREFIXES = ('stl_', 'cg_', 'tmpl_')
+
+
+def is_game(addr, tag):
+    if any(lo <= addr < hi for lo, hi in NON_GAME_RANGES):
+        return False
+    return not (tag and (tag in NON_GAME_TAGS or tag.startswith(NON_GAME_TAG_PREFIXES)))
 
 # Category per partition segment, keyed by the segment's start address so a re-partition cannot
 # silently relabel a band. Segments whose start is not listed fall back to keyword matching.
@@ -230,6 +248,8 @@ def build(now=None):
         if a not in union or v[0] < union[a][0]:
             union[a] = v
     names_first = first_names(passes)
+    game = {a: is_game(a, v[1]) for a, v in funcs.items()}
+    game_union = {a: v for a, v in union.items() if game.get(a)}
 
     seg_rows = db.execute('select id, start, end, keywords from segments order by id').fetchall()
     seg_cat, segments, fallback = {}, [], []
@@ -244,9 +264,9 @@ def build(now=None):
         seg_cat[sid] = cat
         rows = by_seg.get(sid, [])
         total = len(rows)
-        tagged = sum(1 for a, v in rows if v[1])
+        tagged = sum(1 for a, v in rows if not game[a])
         done = sum(1 for a, v in rows if a in union)
-        done_pool = sum(1 for a, v in rows if a in union and not v[1])
+        done_pool = sum(1 for a, v in rows if a in union and game[a])
         pool = total - tagged
         by_h = collections.Counter(union[a][1] for a, v in rows if a in union)
         segments.append(dict(
@@ -265,6 +285,7 @@ def build(now=None):
     funcs_series = cumulative(union, addr_cat, grid)
     names_series = cumulative(names_first, addr_cat, grid)
     ledger_total = cumulative(ledger_first, addr_cat, grid)['total']
+    game_total = cumulative(game_union, addr_cat, grid)['total']
     fe, frag_total, i, n = sorted(frag_first.values()), [], 0, 0
     for t in grid:
         while i < len(fe) and fe[i] <= t:
@@ -312,10 +333,15 @@ def build(now=None):
         head=git('rev-parse', '--short', 'main').strip(), t0=t0, now=now,
         categories=[dict(key=k, label=l, segments=[s['id'] for s in segments if s['cat'] == k]) for k, l in CATEGORIES],
         segments=segments, grid=grid, funcs=funcs_series, names=names_series, ledger_total=ledger_total, frag_total=frag_total,
+        game_total=game_total,
         commits=sorted(hourly.items()), milestones=milestones, tags=dict(tags.most_common()),
         passes=passes.rows, tag_names=tag_names, fn=fn,
         kpi=dict(functions=len(union), ledger_functions=len(ledger_first), fragments=len(frag_first), names=len(names_first),
-                 tags=sum(tags.values()), target=TARGET, pool_remaining=sum(s['remaining'] for s in segments),
+                 tags=sum(tags.values()), excluded=sum(1 for g in game.values() if not g),
+                 target=sum(game.values()), game_done=len(game_union),
+                 game_rate24=sum(1 for v in game_union.values() if v[0] >= now - 86400),
+                 game_outside=sum(1 for a, g in game.items() if g and funcs[a][0] is None),
+                 pool_remaining=sum(s['remaining'] for s in segments),
                  rate24=sum(1 for v in union.values() if v[0] >= now - 86400),
                  names24=sum(1 for v in names_first.values() if v[0] >= now - 86400),
                  codex=sum(1 for v in union.values() if v[1] == 'codex'), claude=sum(1 for v in union.values() if v[1] == 'claude'),
