@@ -811,13 +811,21 @@ void landscape_destruct_008828e0(
 // __thiscall(ECX = landscape, const NativeString* file_path), RET 4.
 // Releases previous terrain (008826F0), extracts basename `F` after the last `\` or `/`
 // (unused), builds `terrain/<file_path>_heightmap.tdt`, `"NULL"`, `terrain/<file_path>_colormap.dds`,
-// and `models/terrain/<file_path>.mmod`, constructs heightfield at `+3D0h` (00ADD290), and branches
-// on VFS existence of `models/terrain/<F>.mmod` (00882EFB).
+// constructs heightfield at `+3D0h` (00ADD290), builds `models/terrain/<file_path>.mmod` and
+// branches on its VFS existence (00882EFB).
+// Corrected 2026-10-16 (cc13-fix7, audit fixes2 XF5): +41Ch is now written (007188A0) and
+// +420h comes from [+41Ch]->vslot8(0, 1.0f); the attach is 00ADE820 with file_path and
+// &self+74h; 007135C0 gets [+420h]; hull actors (00C5D580) are pushed into +364h; the
+// tdt load is 00ADDA60 with its last two floats; foliage is 00ADAC90(file_path); 00881600
+// gets [+3D0h]->vslot40(); the world extents are read here, not passed in (00882AC0 has
+// one stack argument, RET 4). Simplifications: the stack strings are std::string; the
+// NxActorDesc for a hull is built by the host from the values listed at
+// create_hull_actor_00c5d580; the grid-cell loop (00883507..008839E2) is still the earlier
+// host model (cell lookup and descriptor in get_grid_cell_00adea70 /
+// create_grid_cell_physics_body_00c31aa0).
 void landscape_load_terrain_00882ac0(
     LandscapeState& self,
     const std::string& file_path,
-    float world_size_x,
-    float world_size_z,
     LandscapeHost& host) {
     host.release_terrain_008826f0(self);
     self.has_model_3e1 = false;
@@ -840,25 +848,40 @@ void landscape_load_terrain_00882ac0(
     const std::string tdt_path = "terrain/" + file_path + "_heightmap.tdt";
     const std::string null_tag = "NULL";
     const std::string dds_path = "terrain/" + file_path + "_colormap.dds";
+    self.height_field_3d0 =
+        host.create_height_field_00add290(file_path, host.game_terrain_context_19ec());
     const std::string mmod_path = "models/terrain/" + file_path + ".mmod";
 
-    self.height_field_3d0 = host.create_height_field_00add290(file_path);
-
     if (!host.vfs_file_exists(mmod_path)) {
-        host.load_tdt_00adead0(
+        // 00883A1B..00883A7D: x87 FSUB then FSTP float of each extent; 255.0f is the float
+        // at 00CEDD44 (bytes 00 00 7F 43).
+        const LandscapeWorldBox box = host.world_box_e188a8();
+        host.load_tdt_00adda60(
             self.height_field_3d0,
             tdt_path,
             null_tag,
             dds_path,
-            world_size_x,
-            world_size_z);
+            box.f_7124 - box.f_7130,
+            box.f_7128 - box.f_711c,
+            0.0f,
+            255.0f);
     } else {
-        self.generated_model_420 = host.load_terrain_mmod_007188a0(self, mmod_path);
-        host.attach_model_to_height_field_00aded10(
+        // 00882F03..00882F49 builds the same path again into a second string, and
+        // 00882FA2..00882FB7 copies its text into a third (null data reads 00F878E8) for
+        // 007188A0. All three hold `models/terrain/<file_path>.mmod`.
+        const std::string mmod_again = "models/terrain/" + file_path + ".mmod";
+        self.model_resource_41c = host.load_model_resource_007188a0(mmod_again);
+        // 00882FFA..0088300E: FLD1 / FSTP [ESP] / PUSH 0 / CALL [vtable+8], no null test.
+        self.generated_model_420 =
+            host.model_resource_instantiate_vslot8(self.model_resource_41c, 0, 1.0f);
+        const LandscapeWorldBox box = host.world_box_e188a8();
+        host.attach_model_00ade820(
             self.height_field_3d0,
+            file_path,
             self.generated_model_420,
-            world_size_x,
-            world_size_z);
+            box.f_7124 - box.f_7130,
+            box.f_7128 - box.f_711c,
+            &self.entity_matrix_74);
         // 00883062..008830BE (cc13-fixes2): only with an ocean scene at [[00E188A8]+19F0h]:
         // the render node root->vslot10(6, 0) into +3CCh, 00B6D890(node, 0), the scene's wave
         // field ([scene+A8h]) 00BA1370(node), then 00882420 on the render root (vslot40()
@@ -872,17 +895,26 @@ void landscape_load_terrain_00882ac0(
             landscape_apply_ocean_wave_damp_00882420(
                 self.height_field_3d0->get_terrain_render_root_vslot40(), host);
         }
-        self.has_model_3e1 = true;
-        self.unit_part_instance_418 = host.create_unit_part_instance_007135c0(self);
-        if (self.generated_model_420 != nullptr) {
-            for (LandscapeConvexHull* hull : self.generated_model_420->convex_hulls) {
-                if (hull != nullptr && hull->kind == 0) {
-                    if (!self.world_pose_valid) {
-                        host.refresh_world_pose_00414db0(self);
-                    }
-                    (void)host.create_hull_physics_body_00c31aa0(self, hull);
-                }
+        self.has_model_3e1 = true;                                    // 008830C8
+        self.unit_part_instance_418 =
+            host.create_unit_part_instance_007135c0(self, self.generated_model_420);
+        // 008830FA..00883502: walks [+420h]+50h..+54h with no null test on the model or on
+        // an element; only hulls with [hull+8] == 0 get an actor.
+        for (LandscapeConvexHull* hull : self.generated_model_420->convex_hulls) {
+            if (hull->kind != 0) {
+                continue;                                             // 00883252 JNZ
             }
+            if (!self.world_pose_valid) {
+                host.refresh_world_pose_00414db0(self);               // 00883378
+            }
+            // 00883388 00C336C0(&self+CCh), then 0088338D..008833F1 adds hull+14h..+1Ch to
+            // the descriptor's translation.
+            Mat4x4 pose = self.world_matrix_cc;
+            pose.m[12] += hull->local_offset.x;
+            pose.m[13] += hull->local_offset.y;
+            pose.m[14] += hull->local_offset.z;
+            void* actor = host.create_hull_actor_00c5d580(self, hull, pose);
+            host.pointer_vector_push_back_004216b0(self.vec_368, actor);  // 008834B4
         }
         const int cells_x = host.get_grid_cells_x_00adac30(self.height_field_3d0);
         const int cells_z = host.get_grid_cells_z_00adac40(self.height_field_3d0);
@@ -898,14 +930,19 @@ void landscape_load_terrain_00882ac0(
                         static_cast<float>(step_x),
                         static_cast<float>(step_z),
                         cell);
-                    self.grid_bodies_374.push_back(body);
+                    // 0088392A..00883984: inline push_back into the +374h vector (00420830
+                    // when full).
+                    self.vec_378.push_back(body);
                 }
             }
         }
     }
 
-    host.load_foliage_default_00b75ce0(self.height_field_3d0);
-    landscape_bind_terrain_material_params_00881600(self.generated_model_420);
+    // 00883A82..00883AA8, both branches: 00ADAC90(ECX = hf, &file_path), then 00881600 on
+    // the render root [+3D0h]->vslot40(), not on +420h.
+    host.load_foliage_default_00adac90(self.height_field_3d0, file_path);
+    landscape_bind_terrain_material_params_00881600(
+        self.height_field_3d0->get_terrain_render_root_vslot40());
 }
 
 // 00883BB0 BSP_Landscape_InitAttachTerrain
@@ -918,8 +955,6 @@ void landscape_load_terrain_00882ac0(
 // attaches to SpatialIndex (0098BA10), and registers decal owner (00740FE0).
 void landscape_init_attach_terrain_00883bb0(
     LandscapeState& self,
-    float world_size_x,
-    float world_size_z,
     LandscapeHost& host) {
     self.terrain_render_node_3cc = nullptr;
     self.coast_mesh_3d4 = nullptr;
@@ -942,8 +977,7 @@ void landscape_init_attach_terrain_00883bb0(
         }
     }
 
-    landscape_load_terrain_00882ac0(
-        self, self.file_path_3c4, world_size_x, world_size_z, host);
+    landscape_load_terrain_00882ac0(self, self.file_path_3c4, host);
 
     if (self.scene_load_mode == 1) {
         if (self.shallow_water_handle_42c != 0u) {

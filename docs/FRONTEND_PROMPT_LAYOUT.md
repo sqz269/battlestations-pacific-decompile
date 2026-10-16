@@ -68,8 +68,12 @@ background+18h, group+38h and listener+10h. Entry performs this sequence:
 
 1. If screen+3Ch is set, call background virtual+34h(true). A clear flag skips it.
 2. Recursively find and bind `Gamertag_Text`, `Message_Text`, `Options_Listbox`,
-   `Yes_Text`, `No_Text`, `Accept_Text`, `Checkpoint_Text`, in that order, under
-   root+14h. Each binding is written before releasing its temporary NativeString.
+   `Yes_Text`, `No_Text`, `Accept_Text`, `Checkpoint_Text`, in that order. The
+   parent is reloaded from the screen before each `00AA7E00`: the first two search
+   root+14h, `Options_Listbox` searches group+38h (`005314C2`), and the four button
+   texts search the just-bound Options_Listbox at +24h (`0053152F..00531676`).
+   (Corrected 2026-10-16, cc13-fix7; earlier text and code searched root+14h for
+   all seven.) Each binding is written before releasing its temporary NativeString.
 3. Find `background_Icon`, call its virtual+34h(screen+288h), release the key and
    clear +288h. Show the navigation widget through virtual+34h(true), then call
    group virtual+84h with whether `00e198c4` is nonnull.
