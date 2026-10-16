@@ -1,0 +1,906 @@
+{
+  "packet": "cc12_native_gui_frame_box_constructed_storage147",
+  "kind": "whole actual raw FrameBox constructed hook with genuine providers; Source interface, not activation",
+  "recorded_utc": "2026-10-16T10:53:53.915457+00:00",
+  "checked_baseline": "9f81f799522c920d35123b7b0ecc3890f75f995b",
+  "scope": {
+    "owned_address": "0x00ACF8F0",
+    "owned_range": "0x00ACF8F0-0x00ACF9A8",
+    "owned_files": [
+      "include/bsp/native_gui_frame_box_constructed_storage.hpp",
+      "src/native_gui_frame_box_constructed_storage.cpp",
+      "docs/CC12_NATIVE_GUI_FRAME_BOX_CONSTRUCTED_STORAGE_147.md",
+      "reports/cc12_native_gui_frame_box_constructed_storage_147.json"
+    ],
+    "only_owned_AC_name_and_raw_function_ledger_rows": true,
+    "existing_Source_CMake_and_old_typed_statuses_unchanged": true,
+    "not_whole_FrameBox_copy_or_AD0D80": true
+  },
+  "analysis_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "all_live_batches": "verifying BSP wrappers; no reimport/body repair",
+    "Original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "Original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "whole_Original": {
+    "entry": "0x00ACF8F0",
+    "end_exclusive": "0x00ACF9A8",
+    "bytes": 184,
+    "instruction_starts": 57,
+    "hex": "64 a1 00 00 00 00 6a ff 68 68 90 cb 00 50 64 89 25 00 00 00 00 83 ec 10 53 8b d9 80 7b 74 00 75 66 56 57 8b 7b 4c b9 bc 00 00 00 e8 40 42 0a 00 89 44 24 0c 85 c0 c7 44 24 24 00 00 00 00 74 0b 8b c8 e8 39 44 0a 00 8b f0 eb 02 33 f6 d9 05 60 a2 d7 00 83 ec 08 d9 54 24 04 8b cf d9 1c 24 56 6a 00 c7 44 24 34 ff ff ff ff e8 11 58 0a 00 8d 46 04 50 ff 15 20 22 ce 00 85 c0 75 08 8b 16 8b 02 8b ce ff d0 5f 5e 0f 57 c0 8d 4c 24 08 51 8b cb f3 0f 11 44 24 0c f3 0f 11 44 24 10 f3 0f 11 44 24 14 e8 28 84 fd ff 8b 4c 24 14 5b 64 89 0d 00 00 00 00 83 c4 1c c3",
+    "sha256": "f48cc12e7449fff4beb647138a65a61110b4665cadde3cb2c93667e9edf40881",
+    "live_equals_disk_and142_listing": true,
+    "listing": [
+      "00acf8f0: mov eax, dword ptr fs:[0]",
+      "00acf8f6: push -1",
+      "00acf8f8: push 0xcb9068",
+      "00acf8fd: push eax",
+      "00acf8fe: mov dword ptr fs:[0], esp",
+      "00acf905: sub esp, 0x10",
+      "00acf908: push ebx",
+      "00acf909: mov ebx, ecx",
+      "00acf90b: cmp byte ptr [ebx + 0x74], 0",
+      "00acf90f: jne 0xacf977",
+      "00acf911: push esi",
+      "00acf912: push edi",
+      "00acf913: mov edi, dword ptr [ebx + 0x4c]",
+      "00acf916: mov ecx, 0xbc",
+      "00acf91b: call 0xb73b60",
+      "00acf920: mov dword ptr [esp + 0xc], eax",
+      "00acf924: test eax, eax",
+      "00acf926: mov dword ptr [esp + 0x24], 0",
+      "00acf92e: je 0xacf93b",
+      "00acf930: mov ecx, eax",
+      "00acf932: call 0xb73d70",
+      "00acf937: mov esi, eax",
+      "00acf939: jmp 0xacf93d",
+      "00acf93b: xor esi, esi",
+      "00acf93d: fld dword ptr [0xd7a260]",
+      "00acf943: sub esp, 8",
+      "00acf946: fst dword ptr [esp + 4]",
+      "00acf94a: mov ecx, edi",
+      "00acf94c: fstp dword ptr [esp]",
+      "00acf94f: push esi",
+      "00acf950: push 0",
+      "00acf952: mov dword ptr [esp + 0x34], 0xffffffff",
+      "00acf95a: call 0xb75170",
+      "00acf95f: lea eax, [esi + 4]",
+      "00acf962: push eax",
+      "00acf963: call dword ptr [0xce2220]",
+      "00acf969: test eax, eax",
+      "00acf96b: jne 0xacf975",
+      "00acf96d: mov edx, dword ptr [esi]",
+      "00acf96f: mov eax, dword ptr [edx]",
+      "00acf971: mov ecx, esi",
+      "00acf973: call eax",
+      "00acf975: pop edi",
+      "00acf976: pop esi",
+      "00acf977: xorps xmm0, xmm0",
+      "00acf97a: lea ecx, [esp + 8]",
+      "00acf97e: push ecx",
+      "00acf97f: mov ecx, ebx",
+      "00acf981: movss dword ptr [esp + 0xc], xmm0",
+      "00acf987: movss dword ptr [esp + 0x10], xmm0",
+      "00acf98d: movss dword ptr [esp + 0x14], xmm0",
+      "00acf993: call 0xaa7dc0",
+      "00acf998: mov ecx, dword ptr [esp + 0x14]",
+      "00acf99c: pop ebx",
+      "00acf99d: mov dword ptr fs:[0], ecx",
+      "00acf9a4: add esp, 0x1c",
+      "00acf9a7: ret"
+    ]
+  },
+  "Native_EH": {
+    "unwind_action": "0x00CB9060",
+    "action_target": "0x00B72F70",
+    "action_owner": "captured EBP-1C raw allocation",
+    "handler_entry": "0x00CB9068",
+    "handler_tail_jmp": "0x00CB906D",
+    "FuncInfo": "0x00DF03D4",
+    "unwind_map": "0x00DF03CC",
+    "code_hex": "8b 4d e4 e9 08 9f eb ff b8 d4 03 df 00 e9 d1 da f3 ff",
+    "map_and_FuncInfo_hex": "ff ff ff ff 60 90 cb 00 22 05 93 19 01 00 00 00 cc 03 df 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00",
+    "single_state": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "0x00CB9060"
+      }
+    ],
+    "live_equals_disk": true,
+    "ctor_only_not_setter_cleanup": true
+  },
+  "Original_ABI": "ECX actual widget/no arguments/plainRET ACF9A7; preserves EBX, conditional ESI/EDI; EAX unspecified. Source context/frame/acquired and C++ EH are not private Native ABI/FH3/SEH/IAT.",
+  "current_schedule": [
+    "Pure context/known-region preflight reads no widget74/4C/profile/count.",
+    "Current BYTE74 gate; only zero captures CURRENT widget4C BEFORE actual B73B60/B73D70 factory.",
+    "Combined real factory owns ctor state0/B72F70 once; caller never duplicates its raw return.",
+    "After factory current D7A260 FLD -> FST second scalar -> FSTP first scalar -> volatile state-1 -> real B75170(capturedModel,0,newmesh,...). No4C reload before setter.",
+    "Null allocation still reaches B75170 then required later Source null-access boundary; no early null success.",
+    "After setter CURRENT CE2220 capture; guard before creator exchange, consume creator before decrement. Only zero captures current raw mesh00 and current genuine D62D60[0], requires BD30E0 then genuine canonical terminal/no second decrement.",
+    "Zero/nozero return touches only independent release metadata; final XORPS/three MOVSS zeros and genuine whole AA7DC0 run regardless of initial gate.",
+    "AA7220 consumes earlier captured target/current receiver through concrete bridge; bridge requires B6DB10 then calls whole132. No new receiver00/38 read, Group40/world40 generalization or lazy mapping."
+  ],
+  "actual_composition": {
+    "allocation_constructor": "existing GuiNativeGeometryOwners::create_native_mesh_00b73b60; SAME actual BCh/C0h pool, raw constructor and canonical NativeMeshReference",
+    "model": "resolve captured identity in SAME actual registry to live NativeModelReference/NativeModelOwner with SAME supplied environment; call real whole B75170",
+    "position": "whole AA7DC0 -> whole AA7220 -> concrete captured-target132 bridge; whole AA70E0/current model/geometry/element0 and borrowed D7A280",
+    "constants": "preheld genuine data_at aliases for D7A24C/D7A208/D7A260/D7A280/CE4ADC/CE4970/D62D60/D62DE8/D62C88; values remain reached reads, not Source snapshots",
+    "mutable_y_scale": "explicit LIVE E12FC4 cell in position bindings; real producer provenance, current value, lifetime/disjointness remain caller binding. No default0.75/global owner.",
+    "mapped_profile_owner_identity": "132 exposes no owner-identity getter; profiles must have been constructed from this SAME retained data service; exact binding/lifetime is caller proof",
+    "mesh_environment_identity": "geometry actual_owners/constants can be checked; SAME held mesh environment/pool/profile/string graph is caller proof where no getter exists",
+    "no_old_fragment_reuse": "old construct_and_associate74_fragment adds setter catch creator release absent Native; old typed bodies/statuses preserved, no Native credit for new glue"
+  },
+  "frame_and_lifetime": {
+    "known_writable_regions": "full120h FrameBox incl hidden11C trailer; outer frame/acquired,4DWORD locals,476B transform scratch and16B bounds mutually separate/disjoint from known borrowed regions",
+    "private_frame_projection": "locals rawslot/xyz and two float spills are caller persistent Source backing; combined provider has its own ctor acquisition/frame, not Native private EH ABI",
+    "before_callbacks": "WHOLE actual widget/model/mesh/pools/registry/node/parent/child/data/bridge/import/scalar/recursive backing and creator graph retained independently with transitive disjointness proof",
+    "diagnostics": "trivially destructible public records are not owners or immutable capabilities; no reset/assignment/replay after entry. Raw aliases cannot keep ended storage alive.",
+    "bounds_current_storage": "after transform, current gate/model/geometry/element0 and dimensions obey genuine AA70E0 supplied-storage contracts; no empty/default bounds provider",
+    "raw_lifetime_exclusion": "caller serializes lifetime/slot reuse and excludes forced scalar/ancestor/provider-domain destruction during active hook; count held is not a barrier"
+  },
+  "failure_contract": {
+    "Native_cleanup": "only constructor state0 ->-1 rawslot B72F70; no normal setter/position unwind action or completed-creator release",
+    "delegated_constructor": "combined factory alone performs ctor-failure return; raw_slot clears only after successful return; recorded remaining rawslot on that established cleanup path terminates as nested escape, never replay",
+    "Source_origin_limit": "provider_call/native_site/Model phase do not prove Native exception origin. Pre-list metadata or completed-creator bind failure retain the provider graph; no invented Native raw return.",
+    "entered_failure": "sticky failed acquisition retains captured Model metadata, mesh/provider creators/publications, frames/contexts and already-consumed release progress. No destructor/creator rollback, Text/FrameBox retirement, widget pool return or raw rediscovery.",
+    "zero_policy": "preterminal profile/registry Source errors can escape with already-zero consumed diagnostics retained. Canonical NativeMeshReference terminal is noexcept/terminating; its failure cannot unwind into hook cleanup.",
+    "provider_boundaries": "SDK heap/atomic/string/noexcept and ordinary C++ EH retain existing provider limits, not Original arbitrary exception/SEH/x87 fault or IAT/register ABI equivalence"
+  },
+  "calls": [
+    {
+      "function": "0x00ACF8F0",
+      "address": "0x00ACF91B",
+      "kind": "call",
+      "instruction": "call 0xb73b60",
+      "native": "0x00B73B60"
+    },
+    {
+      "function": "0x00ACF8F0",
+      "address": "0x00ACF932",
+      "kind": "call",
+      "instruction": "call 0xb73d70",
+      "native": "0x00B73D70"
+    },
+    {
+      "function": "0x00ACF8F0",
+      "address": "0x00ACF95A",
+      "kind": "call",
+      "instruction": "call 0xb75170",
+      "native": "0x00B75170"
+    },
+    {
+      "function": "0x00ACF8F0",
+      "address": "0x00ACF993",
+      "kind": "call",
+      "instruction": "call 0xaa7dc0",
+      "native": "0x00AA7DC0"
+    }
+  ],
+  "indirect_call_instructions": [
+    {
+      "function": "0x00ACF8F0",
+      "address": "0x00ACF963",
+      "kind": "call",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "function": "0x00ACF8F0",
+      "address": "0x00ACF973",
+      "kind": "call",
+      "instruction": "call eax"
+    }
+  ],
+  "optimized": {
+    "Root_full_Source_Original_optimized_review": "PASS",
+    "listing": {
+      "path": "local/native_gui_frame_box_constructed_storage_147.asm",
+      "sha256": "a47ecbcfc733d41c4a90538fc8487c706731db09931e1293d0e09e61e38bf377"
+    },
+    "ranges": {
+      "bridge_constructor": [
+        1468,
+        1478
+      ],
+      "bridge": [
+        1488,
+        1528
+      ],
+      "whole_main_and_catches": [
+        1590,
+        2127
+      ],
+      "preflight": [
+        2919,
+        3517
+      ],
+      "captured_Model": [
+        3603,
+        3688
+      ],
+      "x87_arguments": [
+        3701,
+        3768
+      ],
+      "zero_position": [
+        3776,
+        3810
+      ],
+      "release_mesh": [
+        3824,
+        3996
+      ]
+    },
+    "whole_COFF": {
+      "path": "local/frame_box_constructed147_coff_complete.json",
+      "sha256": "87d923343f43f6f67d68f8646be2e164859ebfe27e7fc2981c72a56e73ed1c6a"
+    },
+    "all_object_section_bytes_and_relocations_frozen": true,
+    "no_byte_register_ABI_equivalence_claim": true
+  },
+  "validation": {
+    "strict_compile": "PASS MSVC Win32 C++17 /EHsc /MD /O2 /W4 /WX /fp:strict,0diagnostics",
+    "initial_strict_failure": "missing direct include of existing NativeTextureSurfaceReferenceIncrement type; own header fixed; failed log retained. Final Source recompiled after explicit SAME data-service comment.",
+    "canonical_build": {
+      "result": "PASS",
+      "script": "scripts/build.ps1",
+      "existing_checks_passed": 2,
+      "failed": 0,
+      "unrelated_warning": "existing LNK4006 spawn_request_id_matches duplicate in lua_binding_spawn.obj/lua_spawn_new.obj; second ignored",
+      "new_TU_registered_built_linked_or_executed": false,
+      "qualification": "Root150 owns newTUregistration/combinedlink; baselinechecks are not147 executionproof"
+    },
+    "no_new_tests_probes_raw_execution_or_game_production_activation": true,
+    "live_direct_calls": {
+      "checked": 4,
+      "failed": 0,
+      "receipt": {
+        "path": "local/frame_box_constructed147_report_call_verification.txt",
+        "sha256": "a418f42512032a931c908a2b12b3cdfb1769a680683dceb5e49542bd9e4a9a8f"
+      },
+      "limit": "all four whole-hook direct sites; two indirect instructions/EH proof separate; not execution or ABI proof"
+    },
+    "Root_full_Source_Original_optimized_EH_doc_review": "PASS"
+  },
+  "frozen_actual_provider_sources": [
+    {
+      "source": {
+        "path": "include/bsp/gui_native_geometry.hpp",
+        "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/include/bsp/gui_native_geometry.hpp",
+        "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf"
+      },
+      "baseline_git_blob": "6d2c181bb30aeb29dc21f3fb70e797bfc54da139"
+    },
+    {
+      "source": {
+        "path": "src/gui_native_geometry.cpp",
+        "sha256": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/src/gui_native_geometry.cpp",
+        "sha256": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf"
+      },
+      "baseline_git_blob": "b60d0c7fd032e7f146980d91c6fb578690517b43"
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_mesh_owner.hpp",
+        "sha256": "f0f4b0d87721717033e823aee5494a280481c6b4a02a7fd2bea51970b46d5636"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/include/bsp/native_mesh_owner.hpp",
+        "sha256": "f0f4b0d87721717033e823aee5494a280481c6b4a02a7fd2bea51970b46d5636"
+      },
+      "baseline_git_blob": "e07733e92317d2e38e48a14e9c9121ba0342dab6"
+    },
+    {
+      "source": {
+        "path": "src/native_mesh_owner.cpp",
+        "sha256": "8725dee8119cf400bf58464d6dd2dcb6771502b6edd8f527f65ec3f3c7fe40fe"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/src/native_mesh_owner.cpp",
+        "sha256": "8725dee8119cf400bf58464d6dd2dcb6771502b6edd8f527f65ec3f3c7fe40fe"
+      },
+      "baseline_git_blob": "148a586af9e2cc2ce8a64c0d7705852797d4634c"
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_mesh_pool.hpp",
+        "sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/include/bsp/native_mesh_pool.hpp",
+        "sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52"
+      },
+      "baseline_git_blob": "34df6ce0a243638edb7d89a3892cd137fa3fe881"
+    },
+    {
+      "source": {
+        "path": "src/native_mesh_pool.cpp",
+        "sha256": "4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/src/native_mesh_pool.cpp",
+        "sha256": "4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44"
+      },
+      "baseline_git_blob": "373f83c8773e9ed940c6e7f79fd33b5c9ba8078f"
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_model_owner.hpp",
+        "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/include/bsp/native_model_owner.hpp",
+        "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e"
+      },
+      "baseline_git_blob": "e43819d121cfa9f6c7d51691c39b04f6d954ea4c"
+    },
+    {
+      "source": {
+        "path": "src/native_model_owner.cpp",
+        "sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/src/native_model_owner.cpp",
+        "sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a"
+      },
+      "baseline_git_blob": "b959a8d937bdab01f9013f2cbd7e28ad320a0090"
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_render_context.hpp",
+        "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/include/bsp/native_render_context.hpp",
+        "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516"
+      },
+      "baseline_git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808"
+    },
+    {
+      "source": {
+        "path": "src/native_render_context.cpp",
+        "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/src/native_render_context.cpp",
+        "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43"
+      },
+      "baseline_git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c"
+    },
+    {
+      "source": {
+        "path": "include/bsp/render_command_queue.hpp",
+        "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/include/bsp/render_command_queue.hpp",
+        "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+      },
+      "baseline_git_blob": "4f0f5ca5a87b59f7d05349a36619a4459e874e8d"
+    },
+    {
+      "source": {
+        "path": "src/render_command_queue.cpp",
+        "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/src/render_command_queue.cpp",
+        "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02"
+      },
+      "baseline_git_blob": "2dfed2bf3b6b07fd6e1560ccf98287171e07134e"
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_gui_widget_position.hpp",
+        "sha256": "fd7397b1af7ba72bc335703507d4013e78298126ab8d8be5816794bcbcd40512"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/include/bsp/native_gui_widget_position.hpp",
+        "sha256": "fd7397b1af7ba72bc335703507d4013e78298126ab8d8be5816794bcbcd40512"
+      },
+      "baseline_git_blob": "929216cd0afb675271dd0385b809a7612a39ca2f"
+    },
+    {
+      "source": {
+        "path": "src/native_gui_widget_position.cpp",
+        "sha256": "674336c5043078be5e3ed0398f83999da3f783435a5767f7ce2abcd14142e6b6"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/src/native_gui_widget_position.cpp",
+        "sha256": "674336c5043078be5e3ed0398f83999da3f783435a5767f7ce2abcd14142e6b6"
+      },
+      "baseline_git_blob": "d6b37f61f34ab15547ecaeaf47d99ca1f3147b05"
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_gui_widget_transform.hpp",
+        "sha256": "7ce3ccf33392eeff3e603aa43edd941a94d5cdb23d655d70a722bdb60773354d"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/include/bsp/native_gui_widget_transform.hpp",
+        "sha256": "7ce3ccf33392eeff3e603aa43edd941a94d5cdb23d655d70a722bdb60773354d"
+      },
+      "baseline_git_blob": "2c5c6575ee34f29be8585b680b8085799e67bce7"
+    },
+    {
+      "source": {
+        "path": "src/native_gui_widget_transform.cpp",
+        "sha256": "8f2bbaa84a9b44d90ce4ae89ccdc616118b7a358fb3be90220573ac3ef7eafad"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/src/native_gui_widget_transform.cpp",
+        "sha256": "8f2bbaa84a9b44d90ce4ae89ccdc616118b7a358fb3be90220573ac3ef7eafad"
+      },
+      "baseline_git_blob": "22580dc3ab8ec1a633b15794fe8bc7750d98cd26"
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_gui_widget_bounds.hpp",
+        "sha256": "d7d8349042c5b76045a4472d790793ab63f1711506cc2996aba65af5f978d9b5"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/include/bsp/native_gui_widget_bounds.hpp",
+        "sha256": "d7d8349042c5b76045a4472d790793ab63f1711506cc2996aba65af5f978d9b5"
+      },
+      "baseline_git_blob": "35d4c30bdbe7da31f5510f6cb093bcb799ace244"
+    },
+    {
+      "source": {
+        "path": "src/native_gui_widget_bounds.cpp",
+        "sha256": "547b9d6965797e0a29640449452b84f8ad78c6112d02a4e1af66be2bfd9cbc1f"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/src/native_gui_widget_bounds.cpp",
+        "sha256": "547b9d6965797e0a29640449452b84f8ad78c6112d02a4e1af66be2bfd9cbc1f"
+      },
+      "baseline_git_blob": "6b3b651987b72f4f79d5fc7129031de582bdc293"
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_node_raw_transform.hpp",
+        "sha256": "99460e5aa96bac3ef0255146992d7e002e2ec5adf07ab71788221ad10c75d4de"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/include/bsp/native_node_raw_transform.hpp",
+        "sha256": "99460e5aa96bac3ef0255146992d7e002e2ec5adf07ab71788221ad10c75d4de"
+      },
+      "baseline_git_blob": "fe8ca945cbddcf071e37b5ee7ade2080942490e2"
+    },
+    {
+      "source": {
+        "path": "src/native_node_raw_transform.cpp",
+        "sha256": "092fa6a47756bf5a8a3a18dfbbaecf468898b3c91bc5ee5235bba5a7f078e16c"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/src/native_node_raw_transform.cpp",
+        "sha256": "092fa6a47756bf5a8a3a18dfbbaecf468898b3c91bc5ee5235bba5a7f078e16c"
+      },
+      "baseline_git_blob": "cb27dc6bebf4e551e72d003868e57211b2615d40"
+    },
+    {
+      "source": {
+        "path": "include/bsp/game_native_readonly_data.hpp",
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/include/bsp/game_native_readonly_data.hpp",
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+      },
+      "baseline_git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3"
+    },
+    {
+      "source": {
+        "path": "src/game_native_readonly_data.cpp",
+        "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/src/game_native_readonly_data.cpp",
+        "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+      },
+      "baseline_git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e"
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_node_destruction.hpp",
+        "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/include/bsp/native_node_destruction.hpp",
+        "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833"
+      },
+      "baseline_git_blob": "d84edd297c4dfb43cb0b5aa630676fb1b245eedc"
+    },
+    {
+      "source": {
+        "path": "src/native_node_destruction.cpp",
+        "sha256": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/src/native_node_destruction.cpp",
+        "sha256": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269"
+      },
+      "baseline_git_blob": "471b67cac72f5a45fb6a4789f82d7533fd72f6c9"
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_gui_text_cursor_storage.hpp",
+        "sha256": "6390d87dc74496b95cbe593cd224b16371be2c286c2a9c9b402a6a6256d89d45"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/include/bsp/native_gui_text_cursor_storage.hpp",
+        "sha256": "6390d87dc74496b95cbe593cd224b16371be2c286c2a9c9b402a6a6256d89d45"
+      },
+      "baseline_git_blob": "c2efd0e4a228d141bc1157e01ab66d7a79c6a7e5"
+    },
+    {
+      "source": {
+        "path": "src/native_gui_text_cursor_storage.cpp",
+        "sha256": "414baa76914e2afb8321ccc8fccbce550639a1c72b1fc441bc0ec408f0f8becb"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/src/native_gui_text_cursor_storage.cpp",
+        "sha256": "414baa76914e2afb8321ccc8fccbce550639a1c72b1fc441bc0ec408f0f8becb"
+      },
+      "baseline_git_blob": "9c14060c9def7cba51567a3af2da7bd4893a396e"
+    },
+    {
+      "source": {
+        "path": "include/bsp/native_texture_surface_getter.hpp",
+        "sha256": "958bab84aaa61abb9cceeb290805bf51faec2010543f46ace4b28385fb182d87"
+      },
+      "frozen": {
+        "path": "local/frame_box_constructed147_inputs/sources/include/bsp/native_texture_surface_getter.hpp",
+        "sha256": "958bab84aaa61abb9cceeb290805bf51faec2010543f46ace4b28385fb182d87"
+      },
+      "baseline_git_blob": "99dea4ccdfb98725c3ded24718de5243f1401a28"
+    }
+  ],
+  "Root142_immutable_snapshot": {
+    "prefix": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_state_readiness_integration_145\\workers\\142_manifest",
+    "manifest_sha256": "b3cf0f105754351f6b6eda7c0530d8efbb4ece66181eb14076804cc600241265",
+    "all_verified_items": 89,
+    "frozen_selected": [
+      {
+        "snapshot_relative_path": "local/cc12_native_gui_frame_box_copy_storage_142/manifest.json",
+        "frozen": {
+          "path": "local/frame_box_constructed147_inputs/Root145_142/local/cc12_native_gui_frame_box_copy_storage_142/manifest.json",
+          "sha256": "b3cf0f105754351f6b6eda7c0530d8efbb4ece66181eb14076804cc600241265"
+        }
+      },
+      {
+        "snapshot_relative_path": "local/cc12_native_gui_frame_box_copy_storage_142/00cb9060_listing.txt",
+        "frozen": {
+          "path": "local/frame_box_constructed147_inputs/Root145_142/local/cc12_native_gui_frame_box_copy_storage_142/00cb9060_listing.txt",
+          "sha256": "ffbaebb1bb52103d334813301670bb9b855bc6e9ad0550cb2f6aa6af0b98a5c2"
+        }
+      },
+      {
+        "snapshot_relative_path": "local/cc12_native_gui_frame_box_copy_storage_142/cb9068_listing.txt",
+        "frozen": {
+          "path": "local/frame_box_constructed147_inputs/Root145_142/local/cc12_native_gui_frame_box_copy_storage_142/cb9068_listing.txt",
+          "sha256": "090a6969328f5e7a66b507e24d9f7ab2bcaca0c1ac9eabc3440090f94323d4cf"
+        }
+      },
+      {
+        "snapshot_relative_path": "local/cc12_native_gui_frame_box_copy_storage_142/df03cc_bytes.txt",
+        "frozen": {
+          "path": "local/frame_box_constructed147_inputs/Root145_142/local/cc12_native_gui_frame_box_copy_storage_142/df03cc_bytes.txt",
+          "sha256": "90b4616df81754cf311015c56661cdd9b4d27337bbebe26856bdd29272c0a0f8"
+        }
+      },
+      {
+        "snapshot_relative_path": "local/cc12_native_gui_frame_box_copy_storage_142/df03d4_bytes.txt",
+        "frozen": {
+          "path": "local/frame_box_constructed147_inputs/Root145_142/local/cc12_native_gui_frame_box_copy_storage_142/df03d4_bytes.txt",
+          "sha256": "e3afef13188c347c19855b52d198d5a739a5a83ca44d5699c3aabb4c43fbb48a"
+        }
+      },
+      {
+        "snapshot_relative_path": "local/cc12_native_gui_frame_box_copy_storage_142/exports/00acf8f0/assembly.txt",
+        "frozen": {
+          "path": "local/frame_box_constructed147_inputs/Root145_142/local/cc12_native_gui_frame_box_copy_storage_142/exports/00acf8f0/assembly.txt",
+          "sha256": "1aba9cbe2825dc935778cb3033cddf6137aada43c2e20bf46b412ca0b78ed149"
+        }
+      },
+      {
+        "snapshot_relative_path": "local/cc12_native_gui_frame_box_copy_storage_142/exports/00acf8f0/decompiled.c",
+        "frozen": {
+          "path": "local/frame_box_constructed147_inputs/Root145_142/local/cc12_native_gui_frame_box_copy_storage_142/exports/00acf8f0/decompiled.c",
+          "sha256": "62c82c407919dbbb98da703c924c1a3cfa8fd18952f25bdb3c77d85a058ec12a"
+        }
+      },
+      {
+        "snapshot_relative_path": "local/cc12_native_gui_frame_box_copy_storage_142/exports/00acf8f0/metadata.json",
+        "frozen": {
+          "path": "local/frame_box_constructed147_inputs/Root145_142/local/cc12_native_gui_frame_box_copy_storage_142/exports/00acf8f0/metadata.json",
+          "sha256": "b37f9014874a74b0876899016a757f264fceac1304d20854d92bf2a8fac38424"
+        }
+      },
+      {
+        "snapshot_relative_path": "local/cc12_native_gui_frame_box_copy_storage_142/native_bytes.json",
+        "frozen": {
+          "path": "local/frame_box_constructed147_inputs/Root145_142/local/cc12_native_gui_frame_box_copy_storage_142/native_bytes.json",
+          "sha256": "3cbaa893d75d4c09574e8b87418c11fd5e02fd14967f30eb0f8525b55bc13191"
+        }
+      },
+      {
+        "snapshot_relative_path": "local/cc12_native_gui_frame_box_copy_storage_142/verified_backend.txt",
+        "frozen": {
+          "path": "local/frame_box_constructed147_inputs/Root145_142/local/cc12_native_gui_frame_box_copy_storage_142/verified_backend.txt",
+          "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+        }
+      }
+    ]
+  },
+  "pre_annotation_exports": [
+    {
+      "path": "local/frame_box_constructed147_inputs/00acf8f0_assembly.txt",
+      "sha256": "1aba9cbe2825dc935778cb3033cddf6137aada43c2e20bf46b412ca0b78ed149"
+    },
+    {
+      "path": "local/frame_box_constructed147_inputs/00acf8f0_decompiled.c",
+      "sha256": "62c82c407919dbbb98da703c924c1a3cfa8fd18952f25bdb3c77d85a058ec12a"
+    },
+    {
+      "path": "local/frame_box_constructed147_inputs/00acf8f0_metadata.json",
+      "sha256": "b37f9014874a74b0876899016a757f264fceac1304d20854d92bf2a8fac38424"
+    }
+  ],
+  "before_canonical_build": [
+    {
+      "path": "local/frame_box_constructed147_inputs/before_build/build/win32/bsp_core.vcxproj",
+      "sha256": "e7f4a5eafaf03469f68f0669564ebf39bb46570dce6715c456e8d6673bec42fb"
+    },
+    {
+      "path": "local/frame_box_constructed147_inputs/before_build/build/win32/Release/bsp_core.lib",
+      "sha256": "4d3ba2c7dcf4c1dfcd764342ae59a22c4d3f1bcc87ba5465fa38ec3f17a7a291"
+    },
+    {
+      "path": "local/frame_box_constructed147_inputs/before_build/build/win32/Release/bsp_game.exe",
+      "sha256": "65a70eed2fb067f63c2d440492040df676d59db849f74186e91527fe5d0c9d8e"
+    },
+    {
+      "path": "local/frame_box_constructed147_inputs/before_build/build/win32/Testing/Temporary/LastTest.log",
+      "sha256": "03f61c67a9037c640d777690a6ced17f4e338a38963b333d0d08ef99e18f5ad9"
+    }
+  ],
+  "final_Source_and_baseline_build_copies": [
+    {
+      "path": "local/frame_box_constructed147_final/native_gui_frame_box_constructed_storage.hpp",
+      "sha256": "53accddfc423a112174fefd70cfe7188eee9262ff32a4c8a3136d687f12e2c63"
+    },
+    {
+      "path": "local/frame_box_constructed147_final/native_gui_frame_box_constructed_storage.cpp",
+      "sha256": "3997dd79e9b64322e2ccf4eac52d49312a3c59b05cf890c8c01f702a0b0c0cc1"
+    },
+    {
+      "path": "local/frame_box_constructed147_final/baseline_bsp_core.vcxproj",
+      "sha256": "a8c2db215a910bd25e38fa20bdbbf2dd343f0190167bbed891fdcd32963f269f"
+    },
+    {
+      "path": "local/frame_box_constructed147_final/baseline_bsp_core.lib",
+      "sha256": "d080423387bbe1fe51115808c4807a7819cb2092d2c892d18f0789305c03545c"
+    },
+    {
+      "path": "local/frame_box_constructed147_final/baseline_bsp_game.exe",
+      "sha256": "28c219495243f272f857dc8b4dd116e40f418adc56f7203fd41d1f9e4d87ecf1"
+    },
+    {
+      "path": "local/frame_box_constructed147_final/baseline_LastTest.log",
+      "sha256": "e764177306cdc163ab4cccf4c674950a55fcf55006903d96005b95219e66e89a"
+    }
+  ],
+  "reused_receipts": [
+    {
+      "path": "reports/cc12_native_gui_frame_box_copy_storage_142.json",
+      "sha256": "086e715274a42e8c3a017732ea8da6a7f71d84f1e896796b4ae82eb58aa1c0ab"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_cursor_storage_137.json",
+      "sha256": "1df132251f5eef294f4ebb253218a2ae14b952c7417a7a86dce9affd7fcd64f0"
+    },
+    {
+      "path": "reports/cc12_native_node_mapped_raw_transform_132.json",
+      "sha256": "56780f11cfc9c5433efc35cefefc08cc7f5d039d1f0eba082c0db77870e9d741"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/frame_box_constructed147_baseline_merge.log",
+      "sha256": "57d1a571f70605b0cc152e65bb433383d23b7753eff5ee59261a39cfea3fe78a"
+    },
+    {
+      "path": "local/freeze_frame_box_constructed147_inputs.py",
+      "sha256": "bef68065ee94bf1649a40a21713b505778d63bc038869b6d8ed8157e878461fe"
+    },
+    {
+      "path": "local/frame_box_constructed147_inputs_manifest.json",
+      "sha256": "2d874ccb17e0bce0fcb2695f7981e0536e3f3171a01ed2435721a5455f1ef634"
+    },
+    {
+      "path": "local/frame_box_constructed147_live_bytes.txt",
+      "sha256": "72a72617f434024a47ed471396800fe646e8f09519af9930ddfdd2707848a725"
+    },
+    {
+      "path": "local/frame_box_constructed147_live_proto.txt",
+      "sha256": "4f7903ad45abd612ad352c279db89e8ffb4d1072f9428b81e120ec0172fd55ac"
+    },
+    {
+      "path": "local/frame_box_constructed147_EH_live_bytes.txt",
+      "sha256": "549858d7b5eec82e10be27dda64d4e3938a7140da57ed4a6bcc732e173c5bfc1"
+    },
+    {
+      "path": "local/frame_box_constructed147_EH_map_live_bytes.txt",
+      "sha256": "bf86a37e224a7bfcdda660522dab9bcf911a28bf934015679f9f1027b46836dc"
+    },
+    {
+      "path": "local/frame_box_constructed147_strict_compile.cmd",
+      "sha256": "a7a241d87f5d20dc76af4c74953d50df9bdbea67e62e396d2f26bdfaafd0a97e"
+    },
+    {
+      "path": "local/frame_box_constructed147_strict_compile.log",
+      "sha256": "eeb4d8860676fef873ac50bf24e3d9258645682faef261791d7ed93943f95b79"
+    },
+    {
+      "path": "local/frame_box_constructed147_initial_missing_type_include.log",
+      "sha256": "b0a5323fa0096b1ececc7cefe3d5634bcfa883517c13e7c6d9f6d950d2f04359"
+    },
+    {
+      "path": "local/native_gui_frame_box_constructed_storage_147.obj",
+      "sha256": "384bd18beca9d03facae13bf7293a0ac1300c84f2cc3cb45cc89c57cb9542635"
+    },
+    {
+      "path": "local/native_gui_frame_box_constructed_storage_147.asm",
+      "sha256": "a47ecbcfc733d41c4a90538fc8487c706731db09931e1293d0e09e61e38bf377"
+    },
+    {
+      "path": "local/extract_frame_box_constructed147_coff.py",
+      "sha256": "26d9a1c0fccd20cf2e6158178eb67e57d12c475ab7fcb2cfa748f1a27b417f6f"
+    },
+    {
+      "path": "local/frame_box_constructed147_coff_complete.json",
+      "sha256": "87d923343f43f6f67d68f8646be2e164859ebfe27e7fc2981c72a56e73ed1c6a"
+    },
+    {
+      "path": "local/frame_box_constructed147_existing_canonical_build.log",
+      "sha256": "0bf402ae1ea151dbd5ca7be398c5e9acf0117aec9061943105718c4010621089"
+    },
+    {
+      "path": "local/frame_box_constructed147_root_review.txt",
+      "sha256": "4a9748a1a410d8afc3fcea85dc875398d9af723484a3ed34457ca4a76df8c0c1"
+    },
+    {
+      "path": "local/build_frame_box_constructed147_report.py",
+      "sha256": "a7e0cc1f0959e3861c037d628a1e912bfa71b8b9f337117acafc6a58647a30fa"
+    },
+    {
+      "path": "local/frame_box_constructed147_report_call_verification.txt",
+      "sha256": "a418f42512032a931c908a2b12b3cdfb1769a680683dceb5e49542bd9e4a9a8f"
+    },
+    {
+      "path": "local/add_frame_box_constructed147_records.py",
+      "sha256": "41200086b20f74d1b0ce20a91d34bdb17f0493a454ad3092c8c8171126c035ce"
+    },
+    {
+      "path": "local/frame_box_constructed147_prior_lookup.txt",
+      "sha256": "e2010ba5d4c1c04ee8c444fd4587eb0ae73a97af4cc5283ac284848830d99b14"
+    },
+    {
+      "path": "local/frame_box_constructed147_final_lookup.txt",
+      "sha256": "09f9178e81b6fff71d5730e400737a061f01a646f1c7d2e81fec09ae29a04589"
+    },
+    {
+      "path": "local/frame_box_constructed147_ledger_add.log",
+      "sha256": "d8232211cab543da6cb1b2a920f457cb317303e7c47c7ef7263997d50315d51e"
+    },
+    {
+      "path": "local/frame_box_constructed147_ledger_before_proof.json",
+      "sha256": "0c1851cb88190503e703c328dfba16439673b8d6552d30a89060bafdc06d642d"
+    },
+    {
+      "path": "local/frame_box_constructed147_owned_ledger_diff.patch",
+      "sha256": "e8ea86066933690b1fd0ff45781e823337c30d3965ff04d3fbd5b157cf85d449"
+    },
+    {
+      "path": "local/frame_box_constructed147_owned_ledger_records.json",
+      "sha256": "154c6d04ed05860705234cd0a725b2d409bb9175dff95b431324e6c396f77789"
+    },
+    {
+      "path": "local/frame_box_constructed147_prior_ghidra_comments.json",
+      "sha256": "4ce6329c79bd83eade46a0934cb50f3d8ec6372e92cec8910019f0fce815fca2"
+    },
+    {
+      "path": "local/frame_box_constructed147_prior_ghidra_comments_capped.log",
+      "sha256": "6b826b4acc1a53042e80cd61c9d56a9b5f56b696e75de5710500baf2c85bdd11"
+    },
+    {
+      "path": "local/frame_box_constructed147_final_ghidra_comments.json",
+      "sha256": "26c9a88872b3fc7d2ec1c1581770306515c964d7b159fc7725277f862b31bc95"
+    },
+    {
+      "path": "local/frame_box_constructed147_final_ghidra_comments_capped.log",
+      "sha256": "89724a9a28e973a6b0b334945760911e6b8e63e408550c9038229b1584d7931b"
+    },
+    {
+      "path": "local/frame_box_constructed147_ghidra_annotation.log",
+      "sha256": "9205b49b8bb80b86b116d282932cd8b920a02ab3277542bc3ac3c3f5f56a731b"
+    },
+    {
+      "path": "local/frame_box_constructed147_ghidra_annotation_history.json",
+      "sha256": "b4d5c8fb4a58f4eb6b434ef08bcf01f934d58c2114343ebf936628fd6de0257c"
+    },
+    {
+      "path": "local/frame_box_constructed147_ghidra_export.log",
+      "sha256": "c5d0d243b799b4199ecb491e2eb3d2b9a434fbf5016881450c3cac3918d912ae"
+    },
+    {
+      "path": "local/frame_box_constructed147_index.log",
+      "sha256": "bcb53a18b53a41e6406ebc1bfaf22837a37ea410c618b043b2e7990055a79fee"
+    },
+    {
+      "path": "local/frame_box_constructed147_metadata_preservation.json",
+      "sha256": "270a2de94bdfededde4f2faedf14378182c062d3d507beba863c7810fba90bf0"
+    },
+    {
+      "path": "local/seal_frame_box_constructed147_receipt.py",
+      "sha256": "47860f5f006619371d309bec8650a32e5df314078e2c0fc3e2356a699d398977"
+    }
+  ],
+  "still_downstream": [
+    "Root150 TUregistration/combined integration",
+    "whole raw FrameBox copy AD27A0",
+    "current80 canonical AD0D80/B148 work",
+    "runtime producer/production admission/activation"
+  ],
+  "final_artifact_manifest": "local/frame_box_constructed147_final_artifact_manifest.json",
+  "annotations_and_ledger": {
+    "owned_address": "00acf8f0",
+    "locked_saved_and_refreshed": true,
+    "old_name_comments_and_typed_statuses_preserved": true,
+    "no_body_repair_or_new_Ghidra_body": true,
+    "records": {
+      "path": "local/frame_box_constructed147_owned_ledger_records.json",
+      "sha256": "154c6d04ed05860705234cd0a725b2d409bb9175dff95b431324e6c396f77789"
+    },
+    "proof": {
+      "path": "local/frame_box_constructed147_metadata_preservation.json",
+      "sha256": "270a2de94bdfededde4f2faedf14378182c062d3d507beba863c7810fba90bf0"
+    },
+    "refreshed_exports": [
+      {
+        "path": "local/frame_box_constructed147_refreshed_exports/assembly.txt",
+        "sha256": "1aba9cbe2825dc935778cb3033cddf6137aada43c2e20bf46b412ca0b78ed149"
+      },
+      {
+        "path": "local/frame_box_constructed147_refreshed_exports/decompiled.c",
+        "sha256": "08a1346762226948b876387d2c819557ebee7ccde5fbc26a050b1bc2b2c4abbc"
+      },
+      {
+        "path": "local/frame_box_constructed147_refreshed_exports/metadata.json",
+        "sha256": "573e48416523669b85d65876e35d1fff3c2e28fe885e82245c49485a090cc7c6"
+      }
+    ]
+  },
+  "documentation": {
+    "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_CONSTRUCTED_STORAGE_147.md",
+    "sha256": "4fb09aac8b3dd93a8aa417cdce02cef78df9b3a344d5fa364b8b9a6079411de4"
+  },
+  "sealed_utc": "2026-10-16T10:58:27.986084+00:00",
+  "reviewed_final_Source_pins": [
+    {
+      "path": "include/bsp/native_gui_frame_box_constructed_storage.hpp",
+      "sha256": "53accddfc423a112174fefd70cfe7188eee9262ff32a4c8a3136d687f12e2c63"
+    },
+    {
+      "path": "src/native_gui_frame_box_constructed_storage.cpp",
+      "sha256": "3997dd79e9b64322e2ccf4eac52d49312a3c59b05cf890c8c01f702a0b0c0cc1"
+    }
+  ]
+}

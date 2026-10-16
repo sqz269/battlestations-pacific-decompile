@@ -35,3 +35,18 @@ namespace bsp {
 std::uint16_t __fastcall native_gui_frame_box_current_state_bits_00ad26d0(
     const void* actual_frame_box) noexcept;
 } // namespace bsp
+
+namespace bsp {
+// Whole AD2750,69B/24 starts: Native ECX receiver, signed WORD stack index,
+// EAX raw 2Ch record address, RET4. This two-argument C++ interface is cdecl.
+// Borrow live aligned actual storage through any Source CRT handler. Capture
+// F4 first; null skips F8. Otherwise compare the sign-extended index UNSIGNED
+// against signed wrapped(F8-F4)/44. The genuine BF6713 Source gateway may
+// throw/terminate/return; after a return, reload CURRENT F4 once and form the
+// saved index's wrapping 32-bit record address without another range check.
+// No record dereference, ownership, typed overlay or range_error substitution.
+// The SDK handler and value-argument boundary do not prove Native private CRT,
+// stack/fault timing, register ABI, original placement or caller adoption.
+void* native_gui_frame_box_state_record_00ad2750(
+    const void* actual_frame_box, std::int16_t index);
+} // namespace bsp

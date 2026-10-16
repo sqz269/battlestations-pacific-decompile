@@ -1,0 +1,350 @@
+{
+  "packet": "cc12_native_gui_frame_box_storage_integration_150",
+  "status": "reviewed_registered_combined_win32_build_existing_tests_static_link_pass",
+  "compiled_commit": "b249f4f400aa7d8e0e40633a4c641aee58784b4f",
+  "workers": {
+    "146": {
+      "commit": "2de9c0e016183b39cbf3c38c4b1d17b6b658a5cf",
+      "source_paths": [
+        "include/bsp/native_font_storage.hpp",
+        "src/native_font_storage.cpp"
+      ],
+      "root_complete_Source_API_optimized_doc_review": "PASS",
+      "strict_win32_cpp17_compile": "PASS",
+      "worker_existing_checks": "3/3; new TU unregistered",
+      "manifest_sha256": "57cf00b6229c033fd55ded8b5491e582e4852891b406a0cb173a91f504c00aed",
+      "canonical_effect44_bytes_match_Original": true,
+      "captured_artifact_refs": 43,
+      "captured_manifest_artifact_refs": 86
+    },
+    "147": {
+      "commit": "f4b96e04d2c6c9a8731d1debe49b86f48af945ba",
+      "source_paths": [
+        "include/bsp/native_gui_frame_box_constructed_storage.hpp",
+        "src/native_gui_frame_box_constructed_storage.cpp"
+      ],
+      "root_complete_Source_API_optimized_doc_review": "PASS",
+      "strict_win32_cpp17_compile": "PASS",
+      "worker_existing_checks": "2/2; new TU unregistered",
+      "manifest_sha256": "60e85f39b581e8263ddd828a27176c0cde8784f9450a9d4469f4469c0e1fd2c6",
+      "concrete_bridge_additional_Native_body_credit": 0,
+      "all27_lower_provider_inputs_unchanged": true,
+      "captured_artifact_refs": 121,
+      "captured_manifest_artifact_refs": 122
+    },
+    "149": {
+      "commit": "c4eb47ef367a1eefb408bed36723c6e4626d7b24",
+      "source_paths": [
+        "include/bsp/native_gui_frame_box_factory.hpp",
+        "src/native_gui_frame_box_factory.cpp"
+      ],
+      "root_complete_Source_API_optimized_doc_review": "PASS",
+      "strict_win32_cpp17_compile": "PASS",
+      "manifest_sha256": "fbd3baba5f9b8d79dc878bc120707d738687404b8a5cfcf693e587af2fb681aa",
+      "all3_old_canonical_functions_and_ordered_symbolic_relocations_identical": true,
+      "whole_old_Source_prefixes_preserved": 2,
+      "strict_bytes": 69,
+      "canonical_bytes": 71,
+      "exact_Native_byte_identity": false,
+      "captured_artifact_refs": 3,
+      "captured_manifest_artifact_refs": 26
+    }
+  },
+  "readiness": {
+    "148": {
+      "commit": "25202372782fc580768578af4e8ac92c281f8f14",
+      "root_complete_doc_review": "PASS with final handler-entry clarification CB9128/CB912D",
+      "own_manifest_artifacts_captured": 143,
+      "manifest_sha256": "3915ff3abe49b519902203eb7ee3b4bda9b29393a3f0d4dea27a3953528ea89f",
+      "selected_direct_call_rows_independently_verified": 40,
+      "new_Source_body_credit": 0,
+      "Native_execution": false
+    }
+  },
+  "source": [
+    {
+      "packet": "146",
+      "path": "include/bsp/native_font_storage.hpp",
+      "git_blob": "80af13f594b861c6110edbac3c31176108fd3809",
+      "sha256": "549766e720e6f4b40568abacc1692522bc03b8ab6faccfb610ed30f12c8a5398",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "146",
+      "path": "src/native_font_storage.cpp",
+      "git_blob": "c99e83b4cfac4742425b8d3dfea9b5f6b8c90376",
+      "sha256": "24f16c93d82a4ddd908d833a648544b60de57a3b7fae53a0af03eb23bd28035e",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "147",
+      "path": "include/bsp/native_gui_frame_box_constructed_storage.hpp",
+      "git_blob": "a795e1271a0d206ff033794ca79c5d25ee7c3f15",
+      "sha256": "3dc47a86b2249ccbf0d499fe8144307c1efad42f9a7ecae5c2fbc3e9c0a7fec8",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "147",
+      "path": "src/native_gui_frame_box_constructed_storage.cpp",
+      "git_blob": "9280b269b6ecf9114b6ed1f0fe42e4cfed4bc3c2",
+      "sha256": "6747e90c88152960cc80961eaa4c4c90999a08e51e0d771674f00a7e646eb6d9",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "149",
+      "path": "include/bsp/native_gui_frame_box_factory.hpp",
+      "git_blob": "854035e884f4d4417ad9889ac40ed92a7d77e5d0",
+      "sha256": "51c9ecc3f14973a9f21cc1de52a05b9d34c0f522f7fbba3cbb77eb187e773853",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "149",
+      "path": "src/native_gui_frame_box_factory.cpp",
+      "git_blob": "c69ff3ef7d612a3d42840e5dab5d755301ea870d",
+      "sha256": "46124772e8af548dbd39ddf60800fa5dbb2a78efd18052c10bf85a0588a17532",
+      "unchanged_from_reviewed_worker": true
+    }
+  ],
+  "retained_lower_sources": [
+    {
+      "path": "include/bsp/gui_native_geometry.hpp",
+      "git_blob": "6d2c181bb30aeb29dc21f3fb70e797bfc54da139",
+      "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "src/gui_native_geometry.cpp",
+      "git_blob": "b60d0c7fd032e7f146980d91c6fb578690517b43",
+      "sha256": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "include/bsp/native_mesh_owner.hpp",
+      "git_blob": "e07733e92317d2e38e48a14e9c9121ba0342dab6",
+      "sha256": "f0f4b0d87721717033e823aee5494a280481c6b4a02a7fd2bea51970b46d5636",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "src/native_mesh_owner.cpp",
+      "git_blob": "148a586af9e2cc2ce8a64c0d7705852797d4634c",
+      "sha256": "8725dee8119cf400bf58464d6dd2dcb6771502b6edd8f527f65ec3f3c7fe40fe",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "include/bsp/native_mesh_pool.hpp",
+      "git_blob": "34df6ce0a243638edb7d89a3892cd137fa3fe881",
+      "sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "src/native_mesh_pool.cpp",
+      "git_blob": "373f83c8773e9ed940c6e7f79fd33b5c9ba8078f",
+      "sha256": "4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "git_blob": "e43819d121cfa9f6c7d51691c39b04f6d954ea4c",
+      "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "git_blob": "b959a8d937bdab01f9013f2cbd7e28ad320a0090",
+      "sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "git_blob": "4f0f5ca5a87b59f7d05349a36619a4459e874e8d",
+      "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "src/render_command_queue.cpp",
+      "git_blob": "2dfed2bf3b6b07fd6e1560ccf98287171e07134e",
+      "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_position.hpp",
+      "git_blob": "929216cd0afb675271dd0385b809a7612a39ca2f",
+      "sha256": "fd7397b1af7ba72bc335703507d4013e78298126ab8d8be5816794bcbcd40512",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "src/native_gui_widget_position.cpp",
+      "git_blob": "d6b37f61f34ab15547ecaeaf47d99ca1f3147b05",
+      "sha256": "674336c5043078be5e3ed0398f83999da3f783435a5767f7ce2abcd14142e6b6",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_transform.hpp",
+      "git_blob": "2c5c6575ee34f29be8585b680b8085799e67bce7",
+      "sha256": "7ce3ccf33392eeff3e603aa43edd941a94d5cdb23d655d70a722bdb60773354d",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "src/native_gui_widget_transform.cpp",
+      "git_blob": "22580dc3ab8ec1a633b15794fe8bc7750d98cd26",
+      "sha256": "8f2bbaa84a9b44d90ce4ae89ccdc616118b7a358fb3be90220573ac3ef7eafad",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_bounds.hpp",
+      "git_blob": "35d4c30bdbe7da31f5510f6cb093bcb799ace244",
+      "sha256": "d7d8349042c5b76045a4472d790793ab63f1711506cc2996aba65af5f978d9b5",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "src/native_gui_widget_bounds.cpp",
+      "git_blob": "6b3b651987b72f4f79d5fc7129031de582bdc293",
+      "sha256": "547b9d6965797e0a29640449452b84f8ad78c6112d02a4e1af66be2bfd9cbc1f",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "include/bsp/native_node_raw_transform.hpp",
+      "git_blob": "fe8ca945cbddcf071e37b5ee7ade2080942490e2",
+      "sha256": "99460e5aa96bac3ef0255146992d7e002e2ec5adf07ab71788221ad10c75d4de",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "src/native_node_raw_transform.cpp",
+      "git_blob": "cb27dc6bebf4e551e72d003868e57211b2615d40",
+      "sha256": "092fa6a47756bf5a8a3a18dfbbaecf468898b3c91bc5ee5235bba5a7f078e16c",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "include/bsp/native_node_destruction.hpp",
+      "git_blob": "d84edd297c4dfb43cb0b5aa630676fb1b245eedc",
+      "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "src/native_node_destruction.cpp",
+      "git_blob": "471b67cac72f5a45fb6a4789f82d7533fd72f6c9",
+      "sha256": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_cursor_storage.hpp",
+      "git_blob": "c2efd0e4a228d141bc1157e01ab66d7a79c6a7e5",
+      "sha256": "6390d87dc74496b95cbe593cd224b16371be2c286c2a9c9b402a6a6256d89d45",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "src/native_gui_text_cursor_storage.cpp",
+      "git_blob": "9c14060c9def7cba51567a3af2da7bd4893a396e",
+      "sha256": "414baa76914e2afb8321ccc8fccbce550639a1c72b1fc441bc0ec408f0f8becb",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "include/bsp/native_texture_surface_getter.hpp",
+      "git_blob": "99dea4ccdfb98725c3ded24718de5243f1401a28",
+      "sha256": "958bab84aaa61abb9cceeb290805bf51faec2010543f46ace4b28385fb182d87",
+      "matches_147_reviewed_baseline": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "git_blob": "4984c27fa603fe05a308d701c54dafba6110de7e",
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "git_blob": "bf2a25c5f28d9eb10d37f7099faf9adaabb0a97d",
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b"
+    }
+  ],
+  "root_reviewed_provider_deltas": [],
+  "root_build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "checks": "3/3",
+    "seconds": 8.02,
+    "warnings": [
+      "Existing untouched Lua spawn_request_id_matches LNK4006 duplicate; second definition ignored"
+    ]
+  },
+  "static_link": {
+    "compiled_commit": "b249f4f400aa7d8e0e40633a4c641aee58784b4f",
+    "build_and_minimal_main_exit_code": 0,
+    "raw_function_bodies_executed": false,
+    "explicit_worker_object_linked": false,
+    "kind": "Three new function addresses and unexecuted concrete bridge-link adapter force actual Core allocator/hook/getter/bridge constructor and dispatch; main executes none of these bodies",
+    "PE32_asInvoker": true,
+    "exe_sha256": "b1c46a168bf8cf5523c0f1f1b654eb04cb937fdf96f9e2e6381d5798141f7904",
+    "libraries": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "3f30b5ac8405378068709cccf045566d8f88ac6387a43e87fd120b8138de1e8e"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "sha256": "e6ebb089df7828a43ecdd6e705dddb4cea95b38ffe1fabbd47152fec8834db30"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "sha256": "838261efe3cdd86663e25ecbcd9e825ee51203e71491954864316d4d0dfb6062"
+      }
+    ],
+    "canonical_additional_objects": []
+  },
+  "root_source_and_header_inputs_copied": 143,
+  "archive": {
+    "path": "local/cc12_native_gui_frame_box_storage_integration_150/evidence_family.zip",
+    "sha256": "6d3338307f9749ebf214ee0333e6ec83a1f173c91fa2d9fab1b68eb5ccf1075c",
+    "payload_count": 744,
+    "manifest": "local/cc12_native_gui_frame_box_storage_integration_150/manifest.json",
+    "manifest_sha256": "8431751cc7497054dada46ef0a174c15bf064328e1b9b0b6fe0942b8f40d7029",
+    "all_archived_payload_hashes_rechecked": true,
+    "nested_worker_manifests_included": true
+  },
+  "original_input_proof": {
+    "path": "local/cc12_native_gui_frame_box_storage_integration_150/root_original_input_proof.json",
+    "sha256": "a7fb4f8805a6c371665cb8a7de09910f73eb32224656148394edaedca44496f9",
+    "checked_spans": 3,
+    "status": "PASS"
+  },
+  "limits": [
+    "Whole raw Font constructor/registry/load/retirement and actual owner composition remain separate work",
+    "147 requires genuine existing Model/mesh/pool/registry and independent caller-held whole graph; SAME held mapped data/explicit live y-scale provenance is caller proof, no production owner supplied",
+    "149 new cdecl value ABI and stack/index/pure-integer instruction scheduling differ from Native; actual Source SDK invalid-parameter policy is not private CRT identity",
+    "148 remains readonly Sourcefalse: whole AD0D80 still needs actual raw7C geometry, raw50 color and raw clip/retained receiver contracts despite existing genuine material/renderer/stream/layout providers",
+    "Copied-Text producer admission/rebuild, actual caller adoption, Original address placement/private ABI and game/visual/runtime behavior remain unproved",
+    "All3 existing Root checks and manifested actual-Core link passed; no raw reconstructed body or bridge-link adapter was executed"
+  ]
+}
