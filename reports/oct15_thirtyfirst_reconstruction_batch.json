@@ -1,0 +1,170 @@
+{
+  "packet": "oct15_thirtyfirst_reconstruction_batch",
+  "status": "primary_and_subtree_peer_accepted_Source_integrated_default_Win32_checked",
+  "components": [
+    {
+      "label": "preset",
+      "pin": "95d44131805d76daa056511149b86363a932ae87",
+      "report": "reports/oct15_input_preset_tree_erase.json",
+      "artifacts": {
+        "src/native_input_preset_tree_erase.cpp": "10f4e003bc45c7c822f51167d89a80c6a0a3667e41bc6ebe52323eed00a21e76",
+        "include/bsp/native_input_preset_tree_erase.hpp": "5d1224d3cdde8dd5e9b25d59282df460a43b67b159427ff7b4bc45d202970615",
+        "docs/OCT15_INPUT_PRESET_TREE_ERASE.md": "f7c90bdc961a97968c6bfc1164ea34f3d8dd9de825ad2f8239fc9f08ab9032ae",
+        "reports/oct15_input_preset_tree_erase.json": "23b36d4b27a6e669e159cf6524fc60d2779c63e3d65d74de462b5949039b98cf"
+      },
+      "ordinary_bytes": 716,
+      "ordinary_starts": 241,
+      "logical_bytes": 8,
+      "logical_starts": 2,
+      "primary_review": {
+        "path": "local/oct15_preset_eraser_primary_review.json",
+        "sha256": "564003ea5ac24dd9d81736f755ea883babbb603261b2a249810b92a16771748f",
+        "checks": 14
+      }
+    },
+    {
+      "label": "leaves",
+      "pin": "bb7b29e584fbd19dc88ff489af07ba855498216b",
+      "report": "reports/oct15_input_controller_tree_leaves.json",
+      "artifacts": {
+        "src/native_input_controller_tree_leaves.cpp": "4a4456b91a47206d1d26867b20bea80aadf8f74825bf523fbc6c1310e75d8ecf",
+        "include/bsp/native_input_controller_tree_leaves.hpp": "98e29e1b6577563e25d6b7472c0444e13f90e1e2e37fa2990460163e1abb38ac",
+        "docs/OCT15_INPUT_CONTROLLER_TREE_LEAVES.md": "61da3805d9ba78a5dd3ca98d6a56226c6bf31754fcd8770d30b23f3045e53cda",
+        "reports/oct15_input_controller_tree_leaves.json": "036ceddfdb69d02dc41e0010065e37c7192a09b403c33c5a4e745ebbf11543d2"
+      },
+      "ordinary_bytes": 311,
+      "ordinary_starts": 118,
+      "logical_bytes": 0,
+      "logical_starts": 0,
+      "primary_review": {
+        "path": "local/oct15_controller_leaves_primary_review.json",
+        "sha256": "ee25129dd691490b6fc2d32edb67d25d7398cab07f85ff5797ae82d42b2f28c2",
+        "checks": 12
+      }
+    },
+    {
+      "label": "subtree",
+      "pin": "d289422f91c534dcfb3521a1267ef4dd540a176d",
+      "report": "reports/oct15_native_input_controller_subtree.json",
+      "artifacts": {
+        "src/native_input_controller_subtree.cpp": "c3ffcaa7748b447c9abde72dc4c08e3471bc9c08fde5bdcdc7db974a8a24b321",
+        "include/bsp/native_input_controller_subtree.hpp": "3bbe2c15c4a839e45f3488f657f6734f5a8d6c18e0a44b82a1bbb22b4884e97b",
+        "docs/OCT15_NATIVE_INPUT_CONTROLLER_SUBTREE.md": "7b87aa3429430ee39e1de1529e82afd85aefa1e54e035301d53942f5635b5db1",
+        "reports/oct15_native_input_controller_subtree.json": "a8f5d86a1a3964ff103c37c2e20f9a90ef9ca98da5c4fa50c1b6e3884ba6e15d"
+      },
+      "ordinary_bytes": 104,
+      "ordinary_starts": 41,
+      "logical_bytes": 0,
+      "logical_starts": 0,
+      "primary_review": {
+        "checks": 14,
+        "peer": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct15_controller_subtree_independent_peer.json",
+          "sha256": "a2ba9aac07844220c72a6d7e520b209e5ad18b5be948f595b587ffaa59fd455a",
+          "checks": 18,
+          "findings": [],
+          "reviewed_pin": "f9d3833e6baf74e67221c94713450e24d921794e"
+        },
+        "Source_pin": "f9d3833e6baf74e67221c94713450e24d921794e",
+        "final_metadata_pin": "d289422f91c534dcfb3521a1267ef4dd540a176d"
+      }
+    }
+  ],
+  "scope": {
+    "complete_ordinary_entries": 8,
+    "complete_logical_actions": 1,
+    "ordinary_bytes": 1131,
+    "ordinary_starts": 400,
+    "logical_bytes": 8,
+    "logical_starts": 2,
+    "distinct_owned_bytes_within_batch": 1139,
+    "distinct_owned_starts_within_batch": 402,
+    "excluded_max_gap_bytes": 3,
+    "readonly_handler_bytes": 10,
+    "readonly_preset_EH_literal_bytes": [
+      44,
+      28
+    ],
+    "global_unique_coverage_increment_claimed": false
+  },
+  "review": {
+    "primary_checks": 40,
+    "independent_subtree_peer_checks": 18,
+    "actual_CMake_bytes": 1610,
+    "actual_CMake_instructions": 638,
+    "final_objects": {
+      "preset": {
+        "integrator_object_sha256": "00d0e57ae0fc4d04eca6bb7bcd2d96cd33f7dbe96081b188d3b1180b8999b647",
+        "reviewed_worker_object_sha256": "c435bff7f4b473d9b7c29a076078df8873e897f0c265ddd99ed7408a7f00aaa3",
+        "all_code_bytes_equal": true,
+        "all_code_and_EH_symbolic_relocations_equal_after_explicit_private_TU_mapping": true,
+        "mapping": {
+          "?A0xb7f6c33b": "?A0x3c647cb5"
+        },
+        "code_bytes": 1026,
+        "physical_instructions": 384
+      },
+      "leaves": {
+        "integrator_object_sha256": "5a4af9566d3ccb6bcc0c74b5f0ed55a9d3e36628688c570c4e86f058a03a1bfa",
+        "reviewed_worker_object_sha256": "a8cd884558dc5d747e7735d4b3de94ad01f5f288f1b431d21efcf9a843d6761d",
+        "all_code_bytes_equal": true,
+        "all_code_and_EH_symbolic_relocations_equal_after_explicit_private_TU_mapping": true,
+        "mapping": {},
+        "code_bytes": 394,
+        "physical_instructions": 168
+      },
+      "subtree": {
+        "integrator_object_sha256": "401aa305c3d16b57aa39a5c97de985c3ba221bc4d08978bd275c46f44e1b9385",
+        "full_object_unchanged_from_18_check_independent_peer": true,
+        "code_bytes": 190,
+        "physical_instructions": 86
+      }
+    },
+    "object_comparison_receipt": "local/oct15_batch31_final_object_comparison.json"
+  },
+  "validation": {
+    "tested_combined_Source": "d289422f91c534dcfb3521a1267ef4dd540a176d",
+    "default_MSVC_Win32": true,
+    "build_log": "local/oct15_thirtyfirst_union_build.log",
+    "build_log_sha256": "369764e5a4a83835db5c7aba99051df12224ae98155ef0af64929a65e7262c69",
+    "existing_suites_passed": 3,
+    "ctest_seconds": 9.24,
+    "new_tests": 0,
+    "new_probes": 0,
+    "Native_packet_execution": false,
+    "report_rows": 25,
+    "Markdown_claims": 25,
+    "transfer_log": "local/oct15_thirtyfirst_transfers.log",
+    "annotations": {
+      "path": "local/ghidra-annotations-20261016T052818Z.json",
+      "sha256": "04f30e9495a832b791115151833a4bd88870c6d4b8a4159f3b6a4b5c418e5090",
+      "entries": 9,
+      "preimages_preserved": true
+    },
+    "earlier_subtree_annotation": "local/ghidra-annotations-20261016T052300Z.json",
+    "refreshed_exports": 9,
+    "snapshot": "skipped unchanged76774functions",
+    "index": "rebuilt"
+  },
+  "coordination": {
+    "two_real_CMake_append_conflicts_union_resolved": true,
+    "registry_leases": false,
+    "only_owned_files_staged": true,
+    "subtree_initial_records_and_peer_updates_preserved": true,
+    "worker_frozen_artifacts_unchanged": true,
+    "historical_worker_primary_pending_wording": "Retained in immutable worker reports; final primary acceptance is recorded here."
+  },
+  "limits": [
+    "Existing suites cover older math/tool behavior, not these entries against Native state.",
+    "Preset eraser uses real fixednil29/color28 andactualRawCtx41DD20keyheader+C; normalkeycleanupfailure occurs aftertopology beforeoriginalfree/count/output. No mapped20cleanup/normalkeyguard.",
+    "Controller fiveleaves usefixednil21/currentSDKdiagnostic andpreservecaptured/current successor/rotation order; no runtimeoffset/nil19delegate.",
+    "Controller subtree capturesCURRENTleft afterrightrecursion beforeactualpair(original+C),freeoriginalonlyaftersuccess; clearretainsheadreloads andfailureprogress.",
+    "SourceextraRawCtx/RET10eraser/RET8subtree/RET4clear/semanticvoid versusNativeABIqualified; CurrentCpp/currentCRT/providerownership/privateframes/flags/FH3SEHRTTI/fault/heap/binaryABI/gameunproved.",
+    "No controllerparent/range/member/configurationowner orpresetrange/member promotion. No globaluniqueNativecoverageincrement."
+  ],
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Independently verify after publishing; no self-reference"
+  }
+}
