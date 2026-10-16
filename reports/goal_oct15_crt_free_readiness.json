@@ -1,0 +1,220 @@
+{
+  "packet": "goal_oct15_crt_free_readiness",
+  "status": "bounded_read_only_Original_free_frontier_and_independent_primitives",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "general_Original_free_Source_ready": false,
+  "Source_credit": false,
+  "claim": "Evidence-only dependency/readiness report; no implementation of free or its missing providers, no selected fast path, SDKfree substitution, callback or graph-derived Source credit.",
+  "free": {
+    "address": "00bf9dc8",
+    "current_native_name": "_free",
+    "abi": "cdecl one pointer DWORD; caller cleanup; plain RET; no semantic EAX promise; live no_return=false",
+    "ranges": [
+      {
+        "start": "00bf9dc8",
+        "end_inclusive": "00bf9e1d",
+        "bytes": 86,
+        "instructions": 29
+      },
+      {
+        "start": "00bf9e27",
+        "end_inclusive": "00bf9e55",
+        "bytes": 47,
+        "instructions": 15
+      }
+    ],
+    "bytes": 133,
+    "instructions": 44,
+    "sha256_concatenated_ranges": "590e80681d071dc2ed24dbab65191f6968c53ad873a6dab7a7c284af5f80c398",
+    "contiguous_142B_window_includes_separate_9B_helper": true,
+    "whole_142B_window_live_PE_equal": true,
+    "whole_142B_sha256": "d5bec1353d11880b9ac19e7aa0648037b7000906a0c9ba7754084429d0735955",
+    "direct_calls": [
+      "00c07c00",
+      "00c11c21",
+      "00c11d3d",
+      "00c11d68",
+      "00bf9e1e",
+      "00bffb8b",
+      "00bffb50",
+      "00c07c45"
+    ],
+    "imports": {
+      "00ce20fc": "HeapFree",
+      "00ce2258": "GetLastError"
+    },
+    "globals": {
+      "0109ed7c": "current heap kind; compare3",
+      "0109e1bc": "current actual heap handle",
+      "00e02df0": "scope operand passed to prolog"
+    },
+    "live_schedule": [
+      "Enter actual SEH prolog even for null; capture original pointer in ESI; null goes to epilog.",
+      "Current heapkind3: acquire canonical lock4, arm finally, find region, optionally run whole actual SBHfree; disarm then unlock4.",
+      "Nonzero captured region completes; miss rereads LIVE original parameter after unlock for HeapFree; other heapkind uses previously captured ESI.",
+      "HeapFree uses current heap withflags0; success completes.",
+      "Failure obtains errno pointer BEFORE GetLastError, then calls BFFB50 and stores EAX through captured errno pointer; epilog/plainRET."
+    ],
+    "existing_host_substitution": "native_dyn_sap_lifetime.cpp NativeDynSapLifetimeCalls::sap_free_00bf9dc8 is explicitly host substitution, not complete actual Originalfree."
+  },
+  "complete_existing_genuine_primitives": [
+    {
+      "address": "00c11d68",
+      "source": "src/native_crt_sbh_free.cpp",
+      "extent": "788B/259ops",
+      "qualification": "Whole real canonical SBH state algorithm, actual bootstrap/mapped extents/external lock4 and complete memmove feature binding required."
+    },
+    {
+      "address": "00bf9e1e",
+      "source": "src/native_crt_free_unlock_helper.cpp",
+      "extent": "9B/4ops",
+      "qualification": "Fixed4 cleanup over real canonical unlock; actual acquired descriptor required."
+    },
+    {
+      "address": "00c11c18",
+      "source": "src/native_crt_lock10_unlock_helper.cpp",
+      "extent": "9B/4ops",
+      "qualification": "Fixed10 cleanup over real canonical unlock; actual acquired descriptor required."
+    },
+    {
+      "address": "00c11b31",
+      "source": "src/native_crt_canonical_unlock.cpp",
+      "qualification": "Actual initialized/acquired canonical CRT descriptor required; no bootstrap owner."
+    },
+    {
+      "address": "00c07c45",
+      "source": "src/native_crt_seh4_primitives.cpp",
+      "qualification": "Complete custom compiler-frame primitive; exact valid native frame required; not ordinary C++ cleanup."
+    },
+    {
+      "addresses": [
+        "00c12968",
+        "00c1207c",
+        "00c1212c"
+      ],
+      "source": "src/native_crt_sbh_allocation.cpp",
+      "qualification": "Whole canonical SBH algorithms already exist; sibling independently verified. Actual heap/state/bootstrap/external lock4 required."
+    },
+    {
+      "address": "00c11cf5",
+      "qualification": "Canonical SBH initialization already complete, requires an actual heap; not Original heap startup ownership."
+    }
+  ],
+  "genuine_actual_SCCs": [
+    {
+      "path": [
+        "00bf9dc8",
+        "00c11c21",
+        "00c11b5e",
+        "00bf9dc8"
+      ],
+      "evidence": "Initializer frees candidate atC11BE2 andC11BFD; actual assembly, not inferred stale graph."
+    },
+    {
+      "path": [
+        "00c11c21",
+        "00c11b5e",
+        "00c11c21"
+      ],
+      "evidence": "Initializer acquires canonical lock10 atC11BC3; absent descriptor reenters initializer."
+    },
+    {
+      "path": [
+        "00bf9dc8",
+        "00bffb8b",
+        "00c051b7",
+        "00bf9dc8"
+      ],
+      "evidence": "errno invokes PTD, whose TLS-publication failure frees candidate atC0521A."
+    },
+    {
+      "path": [
+        "00c11b5e",
+        "00c0481a",
+        "00bf9f1a",
+        "00bf9e56",
+        "00c11c21"
+      ],
+      "evidence": "Initializer actual allocationC11BA6; C0481A actual nullable retry invokes malloc atC04822; malloc/V6 lock edge independently verified by allocator sibling."
+    }
+  ],
+  "named_incomplete_frontier": [
+    "C11C21 whole49B20ops lock acquisition: missing actual initializer/fatal paths; cannot assume initialized descriptor.",
+    "C11B5E whole186B62ops initializer: actual malloc retry, lock10, C17653 real initialization dispatch, candidate free, errno, heap diagnostics and exit; current live listing is complete.",
+    "C0481A whole64B24ops nullable allocation retry and BF9F1A/BF9E56 fullOriginalheap provider chain.",
+    "BFBA09 actual fatal path and C05B68/C059A8/BFBA53 heap-absent diagnostics/exit, retaining returning continuations.",
+    "BFFB8B existing fragment borrows real owning-CRT service; Original C051B7 whole119B45ops PTD/calloc/decoded TLS services and state not Source-complete.",
+    "C07C00 actual prolog, scope/handler/SEH transport and exact Original runtime frame ownership not completed by current epilog primitive.",
+    "Actual Original heap/heap-kind cells, canonical CRT lock seed/lifetime, TLS/process startup owners; mapped data pages do not prove initialized callable state."
+  ],
+  "live_gap_retraction": {
+    "historical_claim": "Old initializer readiness doc reported18B/six missingstarts afterfree.",
+    "current_result": "RETRACTED. All62 starts are currently present. No repair performed by this scout or allocator sibling.",
+    "published_correction": "d2455de reports/goal_oct15_crt_lock_acquisition_readiness.json",
+    "exact_rechecked_sites": [
+      "00c11be7 POP ECX",
+      "00c11be8 CALL00bffb8b",
+      "00c11bed MOV[EAX],12",
+      "00c11bf3 MOV[EBP-1C],EBX",
+      "00c11bf6 JMP00c11c03",
+      "00c11c02 POP ECX"
+    ],
+    "read_only_typed_modification": 3203,
+    "local_evidence": [
+      "local/goal_oct15_free_initializer_exact_live_starts.json",
+      "local/goal_oct15_free_initializer_typed_recheck.json"
+    ]
+  },
+  "independent_ready_mapper": {
+    "address": "00bffb50",
+    "report": "reports/goal_oct15_crt_os_error_map.json",
+    "extent": "59B23ops",
+    "qualification": "Independent primitive only; no generalOriginalfreeSourceReady credit."
+  },
+  "region_lookup_proposal_UNAPPROVED": {
+    "addresses": [
+      "00c11d3d",
+      "00c11d61"
+    ],
+    "whole_extent": "43B14ops C11D3D..C11D67; no actual calls",
+    "whole_live_PE_equal": true,
+    "sha256": "efe92ed21d91a645a4868b949361c61fea2c0a4c75201b12f07e6537cd6252fd",
+    "actual_incoming_call_sites": [
+      "00bf9df1",
+      "00bfdd47",
+      "00bfdd97",
+      "00c07baa"
+    ],
+    "schedule": "Capture count109ED64 before base109ED68, wrapend=base+count*20; unsignedcurrent<capturedend; readLIVEparameter4 only reachediteration; wrapped unsigned(parameter-currentdescriptor.regionbase+C)<100000h; returndescriptor or0.",
+    "proposed_Source": "find_native_crt_sbh_region_00c11d3d(const NativeCrtSbhState&,const volatile uint32_t& actual_parameter4); Source binding not Original ABI.",
+    "native_ABI": "Entry3D cdecl1DWORD/plainRET/EAXpointer; entry61 is observed interior register-state entry, not an independently inferred standard API.",
+    "current_typed_metadata": "Atmod3203 entry3D owns18B3D..4E and is thunk to61; entry61 owns25B4F..67 including loop.",
+    "flow_audit": "C11D4D actual/default UNCONDITIONAL_JUMP, effective CALL_TERMINATOR; typed InstructionDB. Onlyxref to61 is this misclassified JMP.",
+    "proposed_files": [
+      "include/bsp/native_crt_sbh_region_lookup.hpp",
+      "src/native_crt_sbh_region_lookup.cpp",
+      "docs/GOAL_OCT15_CRT_SBH_REGION_LOOKUP.md",
+      "reports/goal_oct15_crt_sbh_region_lookup.json"
+    ],
+    "gate": "Primary exact typed/physical/xref review and explicit ownership/repair authorization required. No claim, Source, metadata change or repair is authorized/performed.",
+    "local_evidence": [
+      "local/goal_oct15_original_free_ready_leaf_typed.json",
+      "local/goal_oct15_sbh_region_lookup_flow_audit.json"
+    ]
+  },
+  "validation_limits": {
+    "new_Source_for_free": false,
+    "address_or_Ghidra_changes_for_free_or_region": false,
+    "new_tests": 0,
+    "new_build": false,
+    "new_execution": false,
+    "Original_ABI": false,
+    "faithful_Original_startup": false,
+    "game_validated": false
+  }
+}
