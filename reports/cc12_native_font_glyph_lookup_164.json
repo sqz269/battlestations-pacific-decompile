@@ -1,0 +1,935 @@
+{
+  "packet": "cc12_native_font_glyph_lookup_164",
+  "preparation_baseline": "715f8a78bbe97b1f2bad83630f55f5f293541446",
+  "final_Source_build_baseline": "f51ffe7eb4a2d3ea2f88fd5a38d567987a09c0ed",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48",
+  "status": "whole_actual_raw_WORD_lookup_and_identical_alias_strict_Core_build_existing_checks",
+  "Source_files": [
+    "include/bsp/native_font_storage.hpp",
+    "src/native_font_storage.cpp"
+  ],
+  "receipt_files": [
+    "docs/CC12_NATIVE_FONT_GLYPH_LOOKUP_164.md",
+    "reports/cc12_native_font_glyph_lookup_164.json"
+  ],
+  "ownership": "exact two addresses/unique receipts; queued Source files until published159 seal/release; fresh Source lease/exact39-file refresh/released temporary lease before literal append",
+  "Original": {
+    "Original": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "spans": [
+      {
+        "start": "00ad4540",
+        "end_exclusive": "00ad45ad",
+        "bytes": 109,
+        "physical_starts": 39,
+        "sha256": "3ef5fa2954b729e45b6a2cfbf1576e6669455d3168f9090ccb931a22ac2ae9f9",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "direct_calls": 0,
+        "indirect_calls": 0,
+        "local_EH": false,
+        "return": "EAX same output; RET8"
+      },
+      {
+        "start": "00ad4370",
+        "end_exclusive": "00ad43dd",
+        "bytes": 109,
+        "physical_starts": 39,
+        "sha256": "3ef5fa2954b729e45b6a2cfbf1576e6669455d3168f9090ccb931a22ac2ae9f9",
+        "live_equals_disk": true,
+        "saved_listing_starts_equal": true,
+        "direct_calls": 0,
+        "indirect_calls": 0,
+        "local_EH": false,
+        "return": "EAX same output; RET8"
+      }
+    ],
+    "whole_bytes_identical_aliases": true,
+    "call_rows": []
+  },
+  "calls": [],
+  "Source_API": {
+    "implementation": "find_native_font_glyph_iterator_00ad4540",
+    "alias": "find_native_font_glyph_iterator_00ad4370",
+    "signature": "void* __cdecl (void* actual_font,void* actual_output8,const volatile uint16_t& actual_key)",
+    "required_borrowed_real_operands": true,
+    "Original_ABI": "ECX tree; stack output/key pointer; EAX SAME output; RET8",
+    "ordinary_Source_ABI_new": true,
+    "one_noinline_real_body_distinct_tail_alias": true,
+    "Source_alias_is_Original_thunk_claim": false,
+    "provider_callbacks_globals_defaults_containers_added": false
+  },
+  "access_order": [
+    "CURRENT head Font04 then root head04/nilBYTE15",
+    "only nonnil root: actual keyWORD once, unsigned nodeWORD0C traversal with current links/nil",
+    "CURRENT head reload after scan",
+    "only candidate!=currenthead: CURRENT keyWORD then candidateWORD0C in that sequence",
+    "all input reads before SAMEFont ownerDWORD output00 then chosenNodeDWORD output04; return SAMEoutput"
+  ],
+  "unread_fields": [
+    "Font00",
+    "count08",
+    "color14",
+    "payload10",
+    "descriptor/name",
+    "unreached key/candidate values"
+  ],
+  "key_value_read_on_genuine_empty_tree": false,
+  "allocation_or_validation_or_local_EH_or_cleanup_added": false,
+  "strict_and_canonical_entries": {
+    "strict": {
+      "00ad4540": {
+        "symbol": "?find_native_font_glyph_iterator_00ad4540@bsp@@YAPAXPAX0ADG@Z",
+        "bytes": 94,
+        "physical_starts": 37,
+        "sha256": "f60ed2d1172a7afca07338b28b0196f0837aaa40c2ad40f661e1a548996dc54f",
+        "relocations": [],
+        "path": "local\\cc12_native_font_glyph_lookup_164\\strict_00ad4540.bin"
+      },
+      "00ad4370": {
+        "symbol": "?find_native_font_glyph_iterator_00ad4370@bsp@@YAPAXPAX0ADG@Z",
+        "bytes": 5,
+        "physical_starts": 1,
+        "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+        "relocations": [
+          {
+            "offset": 1,
+            "type": 20,
+            "symbol": "?find_native_font_glyph_iterator_00ad4540@bsp@@YAPAXPAX0ADG@Z"
+          }
+        ],
+        "path": "local\\cc12_native_font_glyph_lookup_164\\strict_00ad4370.bin"
+      }
+    },
+    "canonical": {
+      "00ad4540": {
+        "symbol": "?find_native_font_glyph_iterator_00ad4540@bsp@@YAPAXPAX0ADG@Z",
+        "bytes": 94,
+        "physical_starts": 40,
+        "sha256": "098fc2f63ac3d40c0bcfce1ad60590eb4dbe2aa39bc525bd34bebde4160f024d",
+        "relocations": [],
+        "path": "local\\cc12_native_font_glyph_lookup_164\\canonical_00ad4540.bin"
+      },
+      "00ad4370": {
+        "symbol": "?find_native_font_glyph_iterator_00ad4370@bsp@@YAPAXPAX0ADG@Z",
+        "bytes": 9,
+        "physical_starts": 4,
+        "sha256": "6483857ca6f34b6c4d2ef0db1b9d66e9e9c835f7891b83e94c720c45361d5ae5",
+        "relocations": [
+          {
+            "offset": 5,
+            "type": 20,
+            "symbol": "?find_native_font_glyph_iterator_00ad4540@bsp@@YAPAXPAX0ADG@Z"
+          }
+        ],
+        "path": "local\\cc12_native_font_glyph_lookup_164\\canonical_00ad4370.bin"
+      }
+    },
+    "canonical159": {
+      "00ad4540": {
+        "symbol": "?find_native_font_glyph_iterator_00ad4540@bsp@@YAPAXPAX0ADG@Z",
+        "bytes": 94,
+        "physical_starts": 40,
+        "sha256": "098fc2f63ac3d40c0bcfce1ad60590eb4dbe2aa39bc525bd34bebde4160f024d",
+        "relocations": [],
+        "path": "local\\cc12_native_font_glyph_lookup_164\\canonical159_00ad4540.bin"
+      },
+      "00ad4370": {
+        "symbol": "?find_native_font_glyph_iterator_00ad4370@bsp@@YAPAXPAX0ADG@Z",
+        "bytes": 9,
+        "physical_starts": 4,
+        "sha256": "6483857ca6f34b6c4d2ef0db1b9d66e9e9c835f7891b83e94c720c45361d5ae5",
+        "relocations": [
+          {
+            "offset": 5,
+            "type": 20,
+            "symbol": "?find_native_font_glyph_iterator_00ad4540@bsp@@YAPAXPAX0ADG@Z"
+          }
+        ],
+        "path": "local\\cc12_native_font_glyph_lookup_164\\canonical159_00ad4370.bin"
+      }
+    }
+  },
+  "old_code_preservation": [
+    {
+      "mode": "strict",
+      "before_object": "local\\cc12_native_font_glyph_lookup_164\\reused155\\strict.obj",
+      "before_sha256": "b91a76597ac021d2b367a56e573f2581d16fc092b38254091c06270715b332d6",
+      "after_object": "local\\cc12_native_font_glyph_lookup_164\\strict.obj",
+      "after_sha256": "f1dbe941d4f59ac8e8f7bedd173adb633a54d9ca00f5cbfc819eb01f85e10f87",
+      "old_code_COMDATs": [
+        {
+          "symbol": "?allocate_native_font_tree_head_00ad42c0@bsp@@YAPAXXZ",
+          "bytes": 108,
+          "physical_starts": 29,
+          "sha256": "1a6b55f0dcfec6a8c2b89f0138c68acd6b235258dc8f5adcd8d90017632fffdd",
+          "relocations": [
+            {
+              "offset": 4,
+              "type": 6,
+              "symbol": "___security_cookie"
+            },
+            {
+              "offset": 42,
+              "type": 20,
+              "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+            },
+            {
+              "offset": 100,
+              "type": 20,
+              "symbol": "@__security_check_cookie@4"
+            }
+          ],
+          "path": "local\\cc12_native_font_glyph_lookup_164\\strict_old_0.bin"
+        },
+        {
+          "symbol": "?construct_native_font_storage_00ad55c0@bsp@@YAPAXPAXABUNativeFontConstructorArguments@1@AAVGameNativeStringProcess@game@1@@Z",
+          "bytes": 356,
+          "physical_starts": 116,
+          "sha256": "2defd6ec6fe61ac1bf1d8455271ebfc517a5269594068300e5c106fe3bb31eb8",
+          "relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "symbol": "__ehhandler$?construct_native_font_storage_00ad55c0@bsp@@YAPAXPAXABUNativeFontConstructorArguments@1@AAVGameNativeStringProcess@game@1@@Z"
+            },
+            {
+              "offset": 21,
+              "type": 6,
+              "symbol": "___security_cookie"
+            },
+            {
+              "offset": 84,
+              "type": 20,
+              "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+            },
+            {
+              "offset": 203,
+              "type": 20,
+              "symbol": "?copy_construct_native_string_header_00426060@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@@Z"
+            },
+            {
+              "offset": 292,
+              "type": 20,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 302,
+              "type": 6,
+              "symbol": "__imp__terminate"
+            },
+            {
+              "offset": 330,
+              "type": 20,
+              "symbol": "?destroy_native_int_pointer_tree18_0086fde0@bsp@@YIXPAX@Z"
+            },
+            {
+              "offset": 346,
+              "type": 20,
+              "symbol": "__CxxThrowException@8"
+            }
+          ],
+          "path": "local\\cc12_native_font_glyph_lookup_164\\strict_old_1.bin"
+        },
+        {
+          "symbol": "__ehhandler$?construct_native_font_storage_00ad55c0@bsp@@YAPAXPAXABUNativeFontConstructorArguments@1@AAVGameNativeStringProcess@game@1@@Z",
+          "bytes": 39,
+          "physical_starts": 12,
+          "sha256": "8b65f3b96faf763cee46992f6834295aea04e217a0ca907b48c4eaaf3b4179e3",
+          "relocations": [
+            {
+              "offset": 15,
+              "type": 20,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 25,
+              "type": 20,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 30,
+              "type": 6,
+              "symbol": "__ehfuncinfo$?construct_native_font_storage_00ad55c0@bsp@@YAPAXPAXABUNativeFontConstructorArguments@1@AAVGameNativeStringProcess@game@1@@Z"
+            },
+            {
+              "offset": 35,
+              "type": 20,
+              "symbol": "___CxxFrameHandler3"
+            }
+          ],
+          "path": "local\\cc12_native_font_glyph_lookup_164\\strict_old_2.bin"
+        },
+        {
+          "symbol": "?raw_context@GameNativeStringProcess@game@bsp@@QAEAAUNativeStringRawPoolContext@3@XZ",
+          "bytes": 4,
+          "physical_starts": 2,
+          "sha256": "bf9a4d01d1b8c2260962ee739fe4b6a547d3450d9b40041673ef71f673ba9bf7",
+          "relocations": [],
+          "path": "local\\cc12_native_font_glyph_lookup_164\\strict_old_3.bin"
+        }
+      ],
+      "all_old_code_bytes_and_ordered_symbolic_relocations_equal": true
+    },
+    {
+      "mode": "canonical",
+      "before_object": "local\\cc12_native_font_glyph_lookup_164\\reused155\\canonical_after\\native_font_storage.obj",
+      "before_sha256": "49215564910d6e12b2ed183489ef4728402b6bb9d778c795966d516692f7e436",
+      "after_object": "local\\cc12_native_font_glyph_lookup_164\\canonical_after\\native_font_storage.obj",
+      "after_sha256": "9a29d3766eb3364ae1fbce8c19bb1a48c38ece75bfeb85dac77e7340b684f22b",
+      "old_code_COMDATs": [
+        {
+          "symbol": "?allocate_native_font_tree_head_00ad42c0@bsp@@YAPAXXZ",
+          "bytes": 107,
+          "physical_starts": 32,
+          "sha256": "8f85969c977a1f88d8d602304b9df19a5219ea7bf77d8abcf735c40bd364786f",
+          "relocations": [
+            {
+              "offset": 7,
+              "type": 6,
+              "symbol": "___security_cookie"
+            },
+            {
+              "offset": 42,
+              "type": 20,
+              "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+            },
+            {
+              "offset": 99,
+              "type": 20,
+              "symbol": "@__security_check_cookie@4"
+            }
+          ],
+          "path": "local\\cc12_native_font_glyph_lookup_164\\canonical_old_0.bin"
+        },
+        {
+          "symbol": "?construct_native_font_storage_00ad55c0@bsp@@YAPAXPAXABUNativeFontConstructorArguments@1@AAVGameNativeStringProcess@game@1@@Z",
+          "bytes": 356,
+          "physical_starts": 116,
+          "sha256": "2defd6ec6fe61ac1bf1d8455271ebfc517a5269594068300e5c106fe3bb31eb8",
+          "relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "symbol": "__ehhandler$?construct_native_font_storage_00ad55c0@bsp@@YAPAXPAXABUNativeFontConstructorArguments@1@AAVGameNativeStringProcess@game@1@@Z"
+            },
+            {
+              "offset": 21,
+              "type": 6,
+              "symbol": "___security_cookie"
+            },
+            {
+              "offset": 84,
+              "type": 20,
+              "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+            },
+            {
+              "offset": 203,
+              "type": 20,
+              "symbol": "?copy_construct_native_string_header_00426060@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@@Z"
+            },
+            {
+              "offset": 292,
+              "type": 20,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 302,
+              "type": 6,
+              "symbol": "__imp__terminate"
+            },
+            {
+              "offset": 330,
+              "type": 20,
+              "symbol": "?destroy_native_int_pointer_tree18_0086fde0@bsp@@YIXPAX@Z"
+            },
+            {
+              "offset": 346,
+              "type": 20,
+              "symbol": "__CxxThrowException@8"
+            }
+          ],
+          "path": "local\\cc12_native_font_glyph_lookup_164\\canonical_old_1.bin"
+        },
+        {
+          "symbol": "__ehhandler$?construct_native_font_storage_00ad55c0@bsp@@YAPAXPAXABUNativeFontConstructorArguments@1@AAVGameNativeStringProcess@game@1@@Z",
+          "bytes": 39,
+          "physical_starts": 12,
+          "sha256": "8b65f3b96faf763cee46992f6834295aea04e217a0ca907b48c4eaaf3b4179e3",
+          "relocations": [
+            {
+              "offset": 15,
+              "type": 20,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 25,
+              "type": 20,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 30,
+              "type": 6,
+              "symbol": "__ehfuncinfo$?construct_native_font_storage_00ad55c0@bsp@@YAPAXPAXABUNativeFontConstructorArguments@1@AAVGameNativeStringProcess@game@1@@Z"
+            },
+            {
+              "offset": 35,
+              "type": 20,
+              "symbol": "___CxxFrameHandler3"
+            }
+          ],
+          "path": "local\\cc12_native_font_glyph_lookup_164\\canonical_old_2.bin"
+        },
+        {
+          "symbol": "?raw_context@GameNativeStringProcess@game@bsp@@QAEAAUNativeStringRawPoolContext@3@XZ",
+          "bytes": 4,
+          "physical_starts": 2,
+          "sha256": "bf9a4d01d1b8c2260962ee739fe4b6a547d3450d9b40041673ef71f673ba9bf7",
+          "relocations": [],
+          "path": "local\\cc12_native_font_glyph_lookup_164\\canonical_old_3.bin"
+        }
+      ],
+      "all_old_code_bytes_and_ordered_symbolic_relocations_equal": true
+    },
+    {
+      "mode": "canonical159",
+      "before_object": "local\\cc12_native_font_glyph_lookup_164\\root159\\native_font_storage.obj",
+      "before_sha256": "c38568b82527cd0ae5e3cf723fc492376c5578987aad9b3f0754904ea23f495c",
+      "after_object": "local\\cc12_native_font_glyph_lookup_164\\canonical_after\\native_font_storage.obj",
+      "after_sha256": "9a29d3766eb3364ae1fbce8c19bb1a48c38ece75bfeb85dac77e7340b684f22b",
+      "old_code_COMDATs": [
+        {
+          "symbol": "?allocate_native_font_tree_head_00ad42c0@bsp@@YAPAXXZ",
+          "bytes": 107,
+          "physical_starts": 32,
+          "sha256": "8f85969c977a1f88d8d602304b9df19a5219ea7bf77d8abcf735c40bd364786f",
+          "relocations": [
+            {
+              "offset": 7,
+              "type": 6,
+              "symbol": "___security_cookie"
+            },
+            {
+              "offset": 42,
+              "type": 20,
+              "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+            },
+            {
+              "offset": 99,
+              "type": 20,
+              "symbol": "@__security_check_cookie@4"
+            }
+          ],
+          "path": "local\\cc12_native_font_glyph_lookup_164\\canonical159_old_0.bin"
+        },
+        {
+          "symbol": "?construct_native_font_storage_00ad55c0@bsp@@YAPAXPAXABUNativeFontConstructorArguments@1@AAVGameNativeStringProcess@game@1@@Z",
+          "bytes": 356,
+          "physical_starts": 116,
+          "sha256": "2defd6ec6fe61ac1bf1d8455271ebfc517a5269594068300e5c106fe3bb31eb8",
+          "relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "symbol": "__ehhandler$?construct_native_font_storage_00ad55c0@bsp@@YAPAXPAXABUNativeFontConstructorArguments@1@AAVGameNativeStringProcess@game@1@@Z"
+            },
+            {
+              "offset": 21,
+              "type": 6,
+              "symbol": "___security_cookie"
+            },
+            {
+              "offset": 84,
+              "type": 20,
+              "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+            },
+            {
+              "offset": 203,
+              "type": 20,
+              "symbol": "?copy_construct_native_string_header_00426060@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@@Z"
+            },
+            {
+              "offset": 292,
+              "type": 20,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 302,
+              "type": 6,
+              "symbol": "__imp__terminate"
+            },
+            {
+              "offset": 330,
+              "type": 20,
+              "symbol": "?destroy_native_int_pointer_tree18_0086fde0@bsp@@YIXPAX@Z"
+            },
+            {
+              "offset": 346,
+              "type": 20,
+              "symbol": "__CxxThrowException@8"
+            }
+          ],
+          "path": "local\\cc12_native_font_glyph_lookup_164\\canonical159_old_1.bin"
+        },
+        {
+          "symbol": "__ehhandler$?construct_native_font_storage_00ad55c0@bsp@@YAPAXPAXABUNativeFontConstructorArguments@1@AAVGameNativeStringProcess@game@1@@Z",
+          "bytes": 39,
+          "physical_starts": 12,
+          "sha256": "8b65f3b96faf763cee46992f6834295aea04e217a0ca907b48c4eaaf3b4179e3",
+          "relocations": [
+            {
+              "offset": 15,
+              "type": 20,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 25,
+              "type": 20,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 30,
+              "type": 6,
+              "symbol": "__ehfuncinfo$?construct_native_font_storage_00ad55c0@bsp@@YAPAXPAXABUNativeFontConstructorArguments@1@AAVGameNativeStringProcess@game@1@@Z"
+            },
+            {
+              "offset": 35,
+              "type": 20,
+              "symbol": "___CxxFrameHandler3"
+            }
+          ],
+          "path": "local\\cc12_native_font_glyph_lookup_164\\canonical159_old_2.bin"
+        },
+        {
+          "symbol": "?raw_context@GameNativeStringProcess@game@bsp@@QAEAAUNativeStringRawPoolContext@3@XZ",
+          "bytes": 4,
+          "physical_starts": 2,
+          "sha256": "bf9a4d01d1b8c2260962ee739fe4b6a547d3450d9b40041673ef71f673ba9bf7",
+          "relocations": [],
+          "path": "local\\cc12_native_font_glyph_lookup_164\\canonical159_old_3.bin"
+        }
+      ],
+      "all_old_code_bytes_and_ordered_symbolic_relocations_equal": true
+    }
+  ],
+  "all4_old_code_sections_include_both_constructor_catches": true,
+  "complete146_155_Source_prefixes_unchanged": true,
+  "strict_vs_Core_byte_equality_claimed": false,
+  "local_draft": {
+    "separately_frozen_before_Source_handoff": true,
+    "strict_compile_exit": 0,
+    "CPP_bytes_identical_final": true,
+    "header_change_after_installation": "only new appended comment clarifies BOTH callee private storage exclusions; old prefixes/declarations/algorithm unchanged"
+  },
+  "canonical_Release_settings": {
+    "AdditionalIncludeDirectories": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include;J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\build\\win32\\_deps\\lua511-src\\src;J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\build\\win32\\_deps\\zlib121-src;%(AdditionalIncludeDirectories)",
+    "AdditionalOptions": "%(AdditionalOptions) /external:I \"J:/PROG/battlestations-pacific-decompile-native_crt_wcsicmp_locale_48/build/win32/_deps/dxsdk_d3dx-src/build/native/include\"",
+    "AssemblerListingLocation": "$(IntDir)",
+    "BasicRuntimeChecks": "Default",
+    "BufferSecurityCheck": "",
+    "CallingConvention": "",
+    "ExceptionHandling": "Sync",
+    "ExternalWarningLevel": "TurnOffAllWarnings",
+    "FloatingPointModel": "Strict",
+    "ForceConformanceInForLoopScope": "",
+    "InlineFunctionExpansion": "AnySuitable",
+    "LanguageStandard": "stdcpp17",
+    "MinimalRebuild": "",
+    "Optimization": "MaxSpeed",
+    "PrecompiledHeader": "NotUsing",
+    "RemoveUnreferencedCodeData": "",
+    "RuntimeLibrary": "MultiThreadedDLL",
+    "SupportJustMyCode": "",
+    "TreatWChar_tAsBuiltInType": "",
+    "TreatWarningAsError": "true",
+    "UseFullPaths": "false",
+    "WarningLevel": "Level4",
+    "PreprocessorDefinitions": "%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"",
+    "ObjectFileName": "$(IntDir)",
+    "DebugInformationFormat": "\n      ",
+    "ScanSourceForModuleDependencies": "false"
+  },
+  "actual_canonical_frame_pointer_option": "/Oy-",
+  "validation": {
+    "strict_production_compile_exit": 0,
+    "worker_build_exit": 0,
+    "actual_Core_TU_registered_and_compiled": true,
+    "existing_checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "passed": 3,
+    "failed": 0,
+    "seconds": 7.69,
+    "new_tests": 0,
+    "behavior_probes": 0,
+    "lookup_body_execution": false,
+    "full_Source_Original_strict_Core_and_document_Root_review": "PASS",
+    "report_call_verifier": {
+      "rows_checked": 0,
+      "failed": 0,
+      "meaning": "both Original functions have no calls; whole39-instruction/operand review, not zero-row success, supplies behavior evidence",
+      "log": {
+        "path": "local\\cc12_native_font_glyph_lookup_164\\report_call_verifier.log",
+        "sha256": "c03b1af572464775cfd7bacf2a29f4d75d71071c270dec43059108d1deb608ef",
+        "bytes": 79,
+        "role": "zero-row direct-call verifier output"
+      }
+    }
+  },
+  "caller_domain": {
+    "raw_storage": "genuine initialized Font BASE/head/nodes, valid Source key WORD reference and aligned writable output8, retained through reached accesses; same existing SDK/retained graph obligations",
+    "valid_public_overlap": "all reads before owner-then-node writes; caller accepts overwritten output-region graph bytes",
+    "BOTH_Native_and_Source_callee_private_stack_argument_scratch_alias_excluded": true,
+    "Source_reference_validity_even_unread_empty_arm_required": true,
+    "external_serialization_required": true,
+    "no_ownership_or_counter_or_retry_or_failure_policy_added": true
+  },
+  "limits": [
+    "ordinary new Source ABI/raw MSVC Win32 object/alias domain, not Native register/private-frame/fault/binary ABI",
+    "no invalid/unread/misaligned key address converted to a valid Source reference",
+    "no populated tree/payload producer, whole AD4C30 load/Font retirement/descriptor cast or normal activation claim",
+    "no function/body or gameplay execution proof; no new tests/probes"
+  ],
+  "annotation": {
+    "only_owned_entries": [
+      "00ad4540",
+      "00ad4370"
+    ],
+    "records": [
+      {
+        "address": "00ad4540",
+        "library_role_name_retained": "STL_Tree_LboundU16_00ad4540",
+        "prior_comment_preserved": true,
+        "before": {
+          "path": "local\\cc12_native_font_glyph_lookup_164\\before_comments_00ad4540.json",
+          "bytes": 147,
+          "sha256": "1b73c925191c8bd16bdeaa0d4580f2d9d023f67cc1316b94caeb9caa12716683",
+          "role": "preexisting name/comment"
+        },
+        "after": {
+          "path": "local\\cc12_native_font_glyph_lookup_164\\after_comments_00ad4540.json",
+          "bytes": 1400,
+          "sha256": "db2dfb208b253ce828f7fc71e1f5b29bc7fc42f80be5033c330bd53f995a1e63",
+          "role": "appended whole actual-input Source evidence"
+        }
+      },
+      {
+        "address": "00ad4370",
+        "library_role_name_retained": "STL_Tree_LboundU16_00ad4370",
+        "prior_comment_preserved": true,
+        "before": {
+          "path": "local\\cc12_native_font_glyph_lookup_164\\before_comments_00ad4370.json",
+          "bytes": 147,
+          "sha256": "2d6426836449537e66371aafff8a34c5ee24f59c719152e6d11a1ae9b7f9cb74",
+          "role": "preexisting name/comment"
+        },
+        "after": {
+          "path": "local\\cc12_native_font_glyph_lookup_164\\after_comments_00ad4370.json",
+          "bytes": 1400,
+          "sha256": "e97f773f421430a1f28d2723ae409fb91b9b0eb783c5a14359dd6058642ed358",
+          "role": "appended whole actual-input Source evidence"
+        }
+      }
+    ],
+    "history": {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\ghidra-annotations-20261016T121515Z.json",
+      "bytes": 2969,
+      "sha256": "b3f54dc2cef0d95cfea734d02caa1ba767c3cc88d6c571565c5fc978aa931cc9",
+      "role": "locked prior name/comment history"
+    },
+    "locked_tool": "tools/ghidra_annotate.py --apply --addresses 00ad4540 00ad4370",
+    "project_saved": true,
+    "forced_exports_refreshed": true,
+    "whole_Original_after_bytes_and_listing_starts_unchanged": true
+  },
+  "ledgers": [
+    {
+      "kind": "names",
+      "prior_owned": [],
+      "current_owned": [
+        {
+          "address": "00ad4370",
+          "name": "STL_Tree_LboundU16_00ad4370",
+          "evidence": "Packet 164: whole [00ad4370,00ad43dd) raw unsigned-WORD lookup,109 bytes/39 starts, BYTE-identical AD4540/AD4370 bodies, no calls/localEH. Original ECX Font/tree BASE, stack output8/key pointer, EAX same output, RET8. Source required actual Font/output8/live const-volatile WORD cell: conditional initial key capture, unsigned traversal, CURRENT head reload, conditional CURRENT final key before candidate-key load, owner DWORD then node DWORD output after all inputs. One real AD4540 Source implementation; AD4370 distinct tail alias to its actual symbol (strict5B/Core9B), not an Original thunk. Complete146/155 prefixes and all old4codeCOMDAT bytes/ordered relocs retained within strict/Core configurations. Required Source reference validity and genuine retained raw graph, valid public overlap only; BOTH Native and Source callee private stack/argument/scratch alias excluded. New ordinary Source cdecl ABI; no allocator/default/provider, count/payload access, owner, cleanup, Native fault/register/private-frame ABI or runtime claim; whole raw Font load remains open. Existing library-role name retained. docs/CC12_NATIVE_FONT_GLYPH_LOOKUP_164.md; reports/cc12_native_font_glyph_lookup_164.json."
+        },
+        {
+          "address": "00ad4540",
+          "name": "STL_Tree_LboundU16_00ad4540",
+          "evidence": "Packet 164: whole [00ad4540,00ad45ad) raw unsigned-WORD lookup,109 bytes/39 starts, BYTE-identical AD4540/AD4370 bodies, no calls/localEH. Original ECX Font/tree BASE, stack output8/key pointer, EAX same output, RET8. Source required actual Font/output8/live const-volatile WORD cell: conditional initial key capture, unsigned traversal, CURRENT head reload, conditional CURRENT final key before candidate-key load, owner DWORD then node DWORD output after all inputs. One real AD4540 Source implementation; AD4370 distinct tail alias to its actual symbol (strict5B/Core9B), not an Original thunk. Complete146/155 prefixes and all old4codeCOMDAT bytes/ordered relocs retained within strict/Core configurations. Required Source reference validity and genuine retained raw graph, valid public overlap only; BOTH Native and Source callee private stack/argument/scratch alias excluded. New ordinary Source cdecl ABI; no allocator/default/provider, count/payload access, owner, cleanup, Native fault/register/private-frame ABI or runtime claim; whole raw Font load remains open. Existing library-role name retained. docs/CC12_NATIVE_FONT_GLYPH_LOOKUP_164.md; reports/cc12_native_font_glyph_lookup_164.json."
+        }
+      ],
+      "unowned_lines_unchanged": true
+    },
+    {
+      "kind": "reconstruction",
+      "prior_owned": [],
+      "current_owned": [
+        {
+          "address": "00ad4370",
+          "name": "find_native_font_glyph_iterator_00ad4370",
+          "source": "src/native_font_storage.cpp",
+          "header": "include/bsp/native_font_storage.hpp",
+          "status": "whole_raw_unsigned_WORD_lookup_strict_win32_Core_build_existing_checks",
+          "original_range": "00ad4370-00ad43dd",
+          "original_bytes": 109,
+          "original_instruction_starts": 39,
+          "original_abi": "ECX actual tree/Font BASE, stack output8/key pointer, EAX SAME output, RET8; no calls/localEH",
+          "source_abi": "new ordinary __cdecl(actual_font,actual_output8,const volatile uint16_t& actual_key)",
+          "evidence": "Packet 164: whole [00ad4370,00ad43dd) raw unsigned-WORD lookup,109 bytes/39 starts, BYTE-identical AD4540/AD4370 bodies, no calls/localEH. Original ECX Font/tree BASE, stack output8/key pointer, EAX same output, RET8. Source required actual Font/output8/live const-volatile WORD cell: conditional initial key capture, unsigned traversal, CURRENT head reload, conditional CURRENT final key before candidate-key load, owner DWORD then node DWORD output after all inputs. One real AD4540 Source implementation; AD4370 distinct tail alias to its actual symbol (strict5B/Core9B), not an Original thunk. Complete146/155 prefixes and all old4codeCOMDAT bytes/ordered relocs retained within strict/Core configurations. Required Source reference validity and genuine retained raw graph, valid public overlap only; BOTH Native and Source callee private stack/argument/scratch alias excluded. New ordinary Source cdecl ABI; no allocator/default/provider, count/payload access, owner, cleanup, Native fault/register/private-frame ABI or runtime claim; whole raw Font load remains open. Existing library-role name retained. docs/CC12_NATIVE_FONT_GLYPH_LOOKUP_164.md; reports/cc12_native_font_glyph_lookup_164.json.",
+          "report": "reports/cc12_native_font_glyph_lookup_164.json",
+          "abi_compatible": false,
+          "game_validated": false,
+          "kind": "function"
+        },
+        {
+          "address": "00ad4540",
+          "name": "find_native_font_glyph_iterator_00ad4540",
+          "source": "src/native_font_storage.cpp",
+          "header": "include/bsp/native_font_storage.hpp",
+          "status": "whole_raw_unsigned_WORD_lookup_strict_win32_Core_build_existing_checks",
+          "original_range": "00ad4540-00ad45ad",
+          "original_bytes": 109,
+          "original_instruction_starts": 39,
+          "original_abi": "ECX actual tree/Font BASE, stack output8/key pointer, EAX SAME output, RET8; no calls/localEH",
+          "source_abi": "new ordinary __cdecl(actual_font,actual_output8,const volatile uint16_t& actual_key)",
+          "evidence": "Packet 164: whole [00ad4540,00ad45ad) raw unsigned-WORD lookup,109 bytes/39 starts, BYTE-identical AD4540/AD4370 bodies, no calls/localEH. Original ECX Font/tree BASE, stack output8/key pointer, EAX same output, RET8. Source required actual Font/output8/live const-volatile WORD cell: conditional initial key capture, unsigned traversal, CURRENT head reload, conditional CURRENT final key before candidate-key load, owner DWORD then node DWORD output after all inputs. One real AD4540 Source implementation; AD4370 distinct tail alias to its actual symbol (strict5B/Core9B), not an Original thunk. Complete146/155 prefixes and all old4codeCOMDAT bytes/ordered relocs retained within strict/Core configurations. Required Source reference validity and genuine retained raw graph, valid public overlap only; BOTH Native and Source callee private stack/argument/scratch alias excluded. New ordinary Source cdecl ABI; no allocator/default/provider, count/payload access, owner, cleanup, Native fault/register/private-frame ABI or runtime claim; whole raw Font load remains open. Existing library-role name retained. docs/CC12_NATIVE_FONT_GLYPH_LOOKUP_164.md; reports/cc12_native_font_glyph_lookup_164.json.",
+          "report": "reports/cc12_native_font_glyph_lookup_164.json",
+          "abi_compatible": false,
+          "game_validated": false,
+          "kind": "function"
+        }
+      ],
+      "unowned_lines_unchanged": true
+    }
+  ],
+  "references": [
+    {
+      "path": "docs\\CC12_NATIVE_FONT_GLYPH_LOOKUP_164.md",
+      "bytes": 10687,
+      "sha256": "69a646447dca2615bdce2b26b23ac5b15040d8b7034a15ef1e228f31863ffb5c",
+      "role": "full reviewed result and storage/ABI/overlap/validation limits"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\before_inputs.json",
+      "bytes": 8027,
+      "sha256": "ca0c51eca9e812726aa41e2cd817ef8f70281cb3feb39406479d1bfcd2092f71",
+      "role": "before155 literal Source/Git/object/seal preservation"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\Source_handoff.json",
+      "bytes": 1100,
+      "sha256": "081abe29ad6b3e8b6e7fa1dbfdeb83412bc7558a8354903558a2593adeab2837",
+      "role": "fair Source lease/published159 refresh and initial copied draft phase"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\native_audit.json",
+      "bytes": 1118,
+      "sha256": "6b501408ce6edc1fbfe39fd09f79620b47ca089e8a4b07cc035b53384bc11a3b",
+      "role": "both complete109B/39 physical bodies, exact aliases/no calls/current bytes"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\object_audit.json",
+      "bytes": 17057,
+      "sha256": "0c5457a20f15c4771dac169a695c251c98b9572b08dd6d74d45e76ee70426619",
+      "role": "all old4 codeCOMDAT/ordered reloc preservation and actual strict/Core new functions"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\draft_audit.json",
+      "bytes": 4510,
+      "sha256": "1d5fd625029abd1bd3cbdd92489b813d752e33474ef820a44651ad1f18ce57ba",
+      "role": "separately labeled pre-handoff local-draft proof"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\root159\\provenance.json",
+      "bytes": 527,
+      "sha256": "c221ac99ace35988ed3923ddb0f4bd3c4286996161009da707e0c39a0e23ada8",
+      "role": "verified immutable Root159 actual canonical object entry"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\strict.asm",
+      "bytes": 25434,
+      "sha256": "4ecb98ae7954fa3b4402cd2e25b93aa77c210237b20b52c4628957680fec8598",
+      "role": "complete final strict94B scan/5B alias and all old code"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\strict_dumpbin.txt",
+      "bytes": 27077,
+      "sha256": "17ab7db2c9059ee521af23c7a0f3fa8f51221811ca58ac344214ba4946a18427",
+      "role": "all final strict object instructions/symbols/relocations"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\canonical_00ad4540_physical.txt",
+      "bytes": 1295,
+      "sha256": "1fded4b1460535e30b345cea73255f6a1a6d7cfea3e17680d5ffad6c9a2220b0",
+      "role": "complete actual Core94B/40-start scan"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\canonical_00ad4370_physical.txt",
+      "bytes": 95,
+      "sha256": "8e551a83e93e0da0cfbb64886ebf311c8e1e06a6b4dafe63d6b30916c9cfdf08",
+      "role": "complete actual Core9B/four-start tail alias"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\build.log",
+      "bytes": 3672,
+      "sha256": "e3d9a299d9138bd1ad19318621c4d2bfce307b63e5a55b936bb0e9659fd90f07",
+      "role": "one required actual registered Core build and3existing checks"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\canonical_after\\LastTest.log",
+      "bytes": 2478,
+      "sha256": "b245ecb6d6a4925d2f606df1bc6d47c3e72f6c16171915cc061fc44784f1a4de",
+      "role": "existing checks detail"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\canonical_after\\CL.command.1.tlog",
+      "bytes": 4782138,
+      "sha256": "2195df6ba52ce5f325f8f69b006dc185de0c0c79ad960b518630b7a651d5e2e7",
+      "role": "actual Core /Oy- compilation command"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\reconstruction_records.json",
+      "bytes": 3941,
+      "sha256": "4646f6038ac59451c056386905ac7bc0e2f56e6ea2d66ff47fdcfdac7853a0fa",
+      "role": "exact two appended owned function rows"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\final_source\\include\\bsp\\native_font_storage.hpp",
+      "bytes": 4737,
+      "sha256": "3d62ca18439d3b83b586f9aae1d14e84108280386d88d85532a4f3a8fc92eeb9",
+      "role": "final actual Source; complete146/155 prefixes preserved",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_font_storage.hpp"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\final_source\\src\\native_font_storage.cpp",
+      "bytes": 6829,
+      "sha256": "760c148ed5d3bbdb6ddb40781893251caf646dbab18755b3bb8af5c46a5279ce",
+      "role": "final actual Source; complete146/155 prefixes preserved",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_font_storage.cpp"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\shared_before\\00ad4540\\assembly.txt",
+      "bytes": 1263,
+      "sha256": "874bb716b8da05440a6d4efa155d6166689ff5d0922009a3693767ebe2b83e22",
+      "role": "privately copied before shared export"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\shared_before\\00ad4540\\decompiled.c",
+      "bytes": 974,
+      "sha256": "5fcb00cb05b9a7df8bb64235933d6450c9cd41682e2914de85fc42d30bc5f04a",
+      "role": "privately copied before shared export"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\shared_before\\00ad4540\\metadata.json",
+      "bytes": 274,
+      "sha256": "30f86fe9ed1063a43a202bdd073a1197285573449fac743a04cc844e7fc4ab22",
+      "role": "privately copied before shared export"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\shared_before\\00ad4370\\assembly.txt",
+      "bytes": 1263,
+      "sha256": "6887df035c7c880f0320adc6984fecd486b9f9e19eb5b73b4a820cc3ce6affdb",
+      "role": "privately copied before shared export"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\shared_before\\00ad4370\\decompiled.c",
+      "bytes": 974,
+      "sha256": "b4316fd9d1688a7de1081049cbb91ebceec320c676b1fbf09660de0755c26421",
+      "role": "privately copied before shared export"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\shared_before\\00ad4370\\metadata.json",
+      "bytes": 274,
+      "sha256": "f2e68f6683c1430c598741c4eda08ff3cc0a0a7789b2ad8821b79e43c1b982b5",
+      "role": "privately copied before shared export"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\shared_after\\00ad4540\\assembly.txt",
+      "bytes": 1263,
+      "sha256": "874bb716b8da05440a6d4efa155d6166689ff5d0922009a3693767ebe2b83e22",
+      "role": "privately copied after shared export"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\shared_after\\00ad4540\\decompiled.c",
+      "bytes": 2255,
+      "sha256": "e524254dee52a8c06fac5fd891948f686a8114a2eabe9f923334882e8852453b",
+      "role": "privately copied after shared export"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\shared_after\\00ad4540\\metadata.json",
+      "bytes": 274,
+      "sha256": "dc822e29ea653110d023bb36a4cc3c1b4867890d8e90e2840c2e85a9d8395406",
+      "role": "privately copied after shared export"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\shared_after\\00ad4370\\assembly.txt",
+      "bytes": 1263,
+      "sha256": "6887df035c7c880f0320adc6984fecd486b9f9e19eb5b73b4a820cc3ce6affdb",
+      "role": "privately copied after shared export"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\shared_after\\00ad4370\\decompiled.c",
+      "bytes": 2255,
+      "sha256": "d5bbdf13a8dff135e35f214fbee85a954712df1734c5122923e195d57913a788",
+      "role": "privately copied after shared export"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\shared_after\\00ad4370\\metadata.json",
+      "bytes": 274,
+      "sha256": "e780a01feb01eb99b38c5a929b774b3627c596a304617c235a2788d8be39ffd2",
+      "role": "privately copied after shared export"
+    }
+  ],
+  "artifact_manifest": {
+    "path": "local\\cc12_native_font_glyph_lookup_164\\artifact_manifest.json",
+    "sha256": "e62624e1d90c8b20bae9d4f9a6fd76ab4eae1dff7100e7fa95d59cf4545ed43a",
+    "bytes": 62173,
+    "role": "immutable full evidence inventory"
+  },
+  "compiled_user_headers": [
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\compiled_headers\\include\\bsp\\singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372,
+      "role": "actual unchanged user header input to compiled module",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\singleton_lifetime.hpp",
+      "baseline_Git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\compiled_headers\\include\\bsp\\game_native_string_process.hpp",
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+      "bytes": 4306,
+      "role": "actual unchanged user header input to compiled module",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\game_native_string_process.hpp",
+      "baseline_Git_blob": "30bbfe627b4ea7b4f453ec68422363c35479a3a8"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\compiled_headers\\include\\bsp\\native_int_pointer_tree18_erase.hpp",
+      "sha256": "86571aedc38dc363aad43efffc8e7d23525181f505885ae72c8fd17a8e99df96",
+      "bytes": 2369,
+      "role": "actual unchanged user header input to compiled module",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_int_pointer_tree18_erase.hpp",
+      "baseline_Git_blob": "df3e2d216a12a16feb04d57db1002daf00833c9a"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\compiled_headers\\include\\bsp\\native_pooled_string_substring.hpp",
+      "sha256": "6243c6ba8acb0e1b7f0358a456d6e65ac1b9303cc79b1f1dfd5be01d05b985ff",
+      "bytes": 2047,
+      "role": "actual unchanged user header input to compiled module",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_pooled_string_substring.hpp",
+      "baseline_Git_blob": "5567cf0b90182b39790a5379be8d23c5b6d6b371"
+    },
+    {
+      "path": "local\\cc12_native_font_glyph_lookup_164\\compiled_headers\\include\\bsp\\native_string_pool_storage.hpp",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "bytes": 2805,
+      "role": "actual unchanged user header input to compiled module",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_string_pool_storage.hpp",
+      "baseline_Git_blob": "d2d48f7cca8e08a76c98c10f2bdab9bca5cdb165"
+    }
+  ]
+}
