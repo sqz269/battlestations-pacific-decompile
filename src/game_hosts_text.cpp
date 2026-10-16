@@ -7,6 +7,8 @@
 #include "bsp/gui_text_native_layout.hpp"
 #include "bsp/native_game_grid.hpp"
 #include "bsp/native_platform_load_messages.hpp"
+#include "bsp/native_font_resources.hpp"
+#include "bsp/native_renderer_binding_getters.hpp"
 
 #include "bsp/font_data.hpp"
 #include "bsp/font_geometry.hpp"
@@ -22,9 +24,12 @@
 #include "bsp/locale_text_lookup.hpp"
 
 #include <array>
+#include <atomic>
+#include <cstddef>
 #include <cstring>
 #include <cwctype>
 #include <exception>
+#include <new>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -78,6 +83,62 @@ std::string ascii_fold(const std::u16string& text, std::size_t limit) {
         out.push_back(unit >= 0x20 && unit < 0x7F ? static_cast<char>(unit) : '?');
     }
     return out;
+}
+
+// The native arm borrows the sole decoded allocation, including later metric
+// changes. A present but retired/mismatched native association cannot fall back
+// to a semantic copy. Registry descriptors, fonts and actual images stay stable
+// throughout layout/drawing; every GameTextRun must retire before its font.
+const FontData* borrow_font_data(const FontRegistryOwnedFont* owned) noexcept {
+    if (owned == nullptr) return nullptr;
+    if (const auto* native = owned->native_resources) {
+        if (!native->live() || &native->descriptor() != &owned->descriptor) return nullptr;
+        return &native->data();
+    }
+    return owned->resources ? &owned->resources->data : nullptr;
+}
+
+IDirect3DTexture9* borrow_font_sheet(const FontRegistryOwnedFont& owned,
+    std::string& error) {
+    if (owned.native_resources == nullptr)
+        return owned.resources && owned.resources->gfx ? owned.resources->gfx->texture()
+            : nullptr;
+    const auto& native = *owned.native_resources;
+    if (!native.live() || &native.descriptor() != &owned.descriptor) {
+        error = "font has no live canonical native resource association";
+        return nullptr;
+    }
+    void* const raw = native.data().space_lf_glyph.gfx_texture_18;
+    if (raw == nullptr) return nullptr;
+    if ((reinterpret_cast<std::uintptr_t>(raw) & 3u) != 0) {
+        error = "font glyph sheet has an unaligned actual owner";
+        return nullptr;
+    }
+    // Resolve through the SAME canonical registry before accessing the image.
+    // Its companion must borrow this raw owner's live +04, never a second
+    // counter. Registry lookup is metadata only and does not retain anything.
+    try {
+        auto& companion = native.actual_owners().resolve_actual(raw);
+        auto* const actual_count = std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(
+            static_cast<std::byte*>(raw) + 4));
+        if (&companion.reference_count != actual_count || actual_count->load() <= 0) {
+            error = "font glyph sheet has no live actual reference count";
+            return nullptr;
+        }
+        std::uint32_t profile;
+        std::memcpy(&profile, raw, sizeof(profile));
+        if (profile != 0x00d61948u) {
+            error = "the sprite text bridge requires an actual 2D glyph sheet";
+            return nullptr;
+        }
+        // The established D61948/B3CEA0 leaf reads this owner's actual +10
+        // IDirect3DTexture9*. No raw vtable is called, COM wrapper constructed,
+        // AddRef performed or second font/image ownership association created.
+        return static_cast<IDirect3DTexture9*>(native_texture_get_com_00b3cea0(raw));
+    } catch (const std::exception& exception) {
+        error = exception.what();
+        return nullptr;
+    }
 }
 
 // LocaleTextRuntimeHost for 00a9f4b0's two live dependencies.
@@ -142,7 +203,7 @@ public:
         owned_ = owner_.fonts.registry().find_font_00ac3570(name);
         owner_.log.implemented("GuiText::find_font", "00ab8c30");
         run_.font_name = name;
-        run_.font_resolved = owned_ != nullptr && owned_->resources != nullptr;
+        run_.font_resolved = borrow_font_data(owned_) != nullptr;
         if (owned_ == nullptr) return nullptr;
         return &owned_->descriptor;
     }
@@ -268,8 +329,7 @@ private:
     }
 
     const FontData* font_data() const noexcept {
-        if (owned_ == nullptr || owned_->resources == nullptr) return nullptr;
-        return &owned_->resources->data;
+        return borrow_font_data(owned_);
     }
 
     GameTextHost::Impl& owner_;
@@ -345,10 +405,16 @@ bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& wid
     }
 
     const FontRegistryOwnedFont* owned = binding.owned();
-    const FontData& font = owned->resources->data;
-    run.sheet = owned->resources->gfx ? owned->resources->gfx->texture() : nullptr;
+    const FontData* const decoded = borrow_font_data(owned);
+    if (decoded == nullptr) {
+        run.error = "font resources retired before glyph geometry";
+        ++host.summary.runs_failed;
+        return false;
+    }
+    const FontData& font = *decoded;
+    run.sheet = borrow_font_sheet(*owned, run.error);
     if (run.sheet == nullptr) {
-        run.error = "font " + run.font_name + " has no glyph sheet texture";
+        if (run.error.empty()) run.error = "font " + run.font_name + " has no glyph sheet texture";
         ++host.summary.runs_failed;
         return false;
     }

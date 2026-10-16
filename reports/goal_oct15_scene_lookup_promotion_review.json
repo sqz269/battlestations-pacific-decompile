@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_lookup_promotion_review",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 7,
+  "private_source_cleanup_actions": 3,
+  "native_bytes": 1209,
+  "native_instructions": 424,
+  "spans": [
+    {
+      "address": "00469690",
+      "native_bytes": 277,
+      "instructions": 94,
+      "scope": "complete ordinary raw Source at currentSDK boundary",
+      "live_equals_installed": true,
+      "sha256": "994bae6b73ba582b96b28015d9ffac981ff6277bddb1135460b02b7c72a06d00"
+    },
+    {
+      "address": "00468660",
+      "native_bytes": 84,
+      "instructions": 30,
+      "scope": "complete ordinary raw Source at currentSDK boundary",
+      "live_equals_installed": true,
+      "sha256": "0cd7dffe6bce8f61fdcf9782dea8b60e9b20cdb11f54f538debec90360df8ba4"
+    },
+    {
+      "address": "00467ee0",
+      "native_bytes": 74,
+      "instructions": 27,
+      "scope": "complete ordinary raw Source at currentSDK boundary",
+      "live_equals_installed": true,
+      "sha256": "77b4ac25e1f29adf5a69e7749d370bf2238c377a0539f263909c17c551c74bc6"
+    },
+    {
+      "address": "008f2260",
+      "native_bytes": 375,
+      "instructions": 123,
+      "scope": "whole parent control flow at bounded property-map provider admission;general source_ready=false",
+      "live_equals_installed": true,
+      "sha256": "7b0295606bec49517eadd28efd0e1dbfa487b7437a0be1348bfd829c58de782a"
+    },
+    {
+      "address": "00ca4770",
+      "native_bytes": 8,
+      "instructions": 2,
+      "scope": "qualified Source cleanup guard mapping;no private binary entry credit",
+      "live_equals_installed": true,
+      "sha256": "3d1930b63ff6b64ce6ea7b8431e747659730d752b7e0c67b069e7628f0df4aaa"
+    },
+    {
+      "address": "00ca4778",
+      "native_bytes": 8,
+      "instructions": 2,
+      "scope": "qualified Source cleanup guard mapping;no private binary entry credit",
+      "live_equals_installed": true,
+      "sha256": "f19e96822ebb973784c133d2d4e43da47a92c334cf5153c7b63d62aec79988b1"
+    },
+    {
+      "address": "004693c0",
+      "native_bytes": 178,
+      "instructions": 56,
+      "scope": "whole constructor control flow at bounded duplicate provider admission;general source_ready=false",
+      "live_equals_installed": true,
+      "sha256": "86ec9c0b30a61c7b8889b5a8ad17bfb3abfdbb5a2a5e6d6235e80f4521bdb719"
+    },
+    {
+      "address": "00c61ad0",
+      "native_bytes": 11,
+      "instructions": 3,
+      "scope": "qualified current saved-this cleanup mapping;no private binary entry credit",
+      "live_equals_installed": true,
+      "sha256": "e87513a061f5061b0fea37b0224fe991592f1ad8ea127ec32f921f7c4b02c6c4"
+    },
+    {
+      "address": "0043b760",
+      "native_bytes": 89,
+      "instructions": 39,
+      "scope": "whole property hash raw access schedule at qualified currentSDK ASCII/C-locale boundary",
+      "live_equals_installed": true,
+      "sha256": "3f92060d0b946ebf8440f1edb1b763ea9cc898f2950e34a9a9da297fcb32455f"
+    },
+    {
+      "address": "0043b8b0",
+      "native_bytes": 105,
+      "instructions": 48,
+      "scope": "whole property lookup raw access/output-alias schedule at qualified currentSDK boundary",
+      "live_equals_installed": true,
+      "sha256": "be85d862f57d3ffbcd558f9e00282d6aa313ec36b7b069afb9e50a128b465145"
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct15_scene_class_name_lookup.json",
+    "reports/goal_oct15_scene_name_hash_lookup.json",
+    "reports/goal_oct15_scene_property_bag_find.json",
+    "reports/goal_oct15_scene_hidden_record_construct.json",
+    "reports/goal_oct15_property_lookup_raw_io.json"
+  ],
+  "typed_transfer_rows_checked": 50,
+  "typed_transfer_rows_failed": 0,
+  "independent_reviews": [
+    "Lookup review and actual emitted-object evidence: reports/goal_oct15_scene_lookup_primary_review.json and two packet reports",
+    "Primary full123-op property parent and both2-op actions reviewed after exact dot/no-dot cleanup-order correction; Source and header unchanged from independent review",
+    "Primary full56-op constructor and3-op action reviewed against whole Source/header; exact late argument/store/copy schedule and sole current saved-this cleanup retained",
+    "Primary full87-op raw property provider Source/header reviewed after explicit modulo32 cursor correction; captured hash/output-alias/current node/query access order retained, enum/publication bodies unchanged"
+  ],
+  "source_hashes": {
+    "src/native_scene_class_name_lookup.cpp": "d43fdfb3f98fab644bf89df4ad405561bbe9699a65f3eca8d349504d4ef7ecfe",
+    "include/bsp/native_scene_class_name_lookup.hpp": "ae8cd105437d431dfd3427053cb0ca3a7a94a1d999b6dc314fd23440a8724a5c",
+    "src/native_scene_name_hash_lookup.cpp": "818e5b812f84c71dc54447dd62e3739c78900faf1abf5684cb5b41d1e467dae3",
+    "include/bsp/native_scene_name_hash_lookup.hpp": "b8283e180ee5693ff3c5707a84374253ff9c223c6f9778e655e2c726405213dd",
+    "src/native_scene_property_bag_find.cpp": "5867c1029e850797b21956b163020ae37d7ca116f9c558683aa89bb2f2ab9b07",
+    "include/bsp/native_scene_property_bag_find.hpp": "e478b3f070f7420db0e6619a8b1329e2acfd8cd1339b60c1bd82ae8a065ec945",
+    "src/native_scene_hidden_entity_record_construct.cpp": "cfd0d4a1b06e1a91154040c8b490906e933585804272d1a4e1fc1d398c554062",
+    "include/bsp/native_scene_hidden_entity_record_construct.hpp": "1c48c5bf4f8bdc452f2fcae68f9c7a18522330b8ac9126cadfbdbf4ee2d5e36b",
+    "src/native_enum_dictionary_lookup.cpp": "615ef3184a139338fd6314ef30f961ba0ccefe5d073976e5fdb1f03c8c365575",
+    "include/bsp/native_enum_dictionary_lookup.hpp": "4d5a68361b07ea5cba1722c813d70f7bc84682d35d81b4eecfe025c0829543a4"
+  },
+  "combined_build": {
+    "revision": "1b43f15d71011cf545a6323c7b0951e86463d5fe",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_scene_lookup_promotion_combined_build.log",
+    "log_sha256": "95b7787d7912df5d586f0f6ac7376fb26c0568e9f6b4d4202966502ee6f89842",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 7.96,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+    "scope": "existing regression checks; native math seeds do not execute these new bodies"
+  },
+  "project_source_counts": {
+    "native_scene_class_name_lookup": 1,
+    "native_scene_name_hash_lookup": 1,
+    "native_scene_property_bag_find": 1,
+    "native_scene_hidden_entity_record_construct": 1,
+    "native_enum_dictionary_lookup": 1
+  },
+  "unique_archive_objects": {
+    "native_scene_class_name_lookup": [
+      "bsp_core.dir\\Release\\native_scene_class_name_lookup.obj"
+    ],
+    "native_scene_name_hash_lookup": [
+      "bsp_core.dir\\Release\\native_scene_name_hash_lookup.obj"
+    ],
+    "native_scene_property_bag_find": [
+      "bsp_core.dir\\Release\\native_scene_property_bag_find.obj"
+    ],
+    "native_scene_hidden_entity_record_construct": [
+      "bsp_core.dir\\Release\\native_scene_hidden_entity_record_construct.obj"
+    ],
+    "native_enum_dictionary_lookup": [
+      "bsp_core.dir\\Release\\native_enum_dictionary_lookup.obj"
+    ]
+  },
+  "archive_sha256": "85b8f1792edd217fb41fe494e87d09f80435332ba854b89c6d239e249aef8823",
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "New explicit raw/live-frame/currentCRT Source APIs,not Original register/private-stack/argument-home/heap/FH3/fault ABI identity",
+    "The cleanup is a canonical Source guard mapping,not a new private-frame binary entry",
+    "Existing math differential seeds do not execute these new bodies; no application or game proof",
+    "Property map original locale/raw-admission closure and all101 caller obligations remain unproved; parent remains qualified"
+  ],
+  "scope": "Combined latest-main normal build gate; three raw lookup entries, two qualified raw property providers, qualified property and constructor parents, and three Source cleanup mappings. Does not broaden the parent/provider admissions.",
+  "general_property_parent_source_ready": false,
+  "general_constructor_source_ready": false,
+  "general_property_provider_source_ready": false
+}

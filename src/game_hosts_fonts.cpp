@@ -1,5 +1,8 @@
 #include "bsp/game_hosts_fonts.hpp"
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/game_native_font_application.hpp"
+#include "bsp/game_native_renderer_application.hpp"
+#include "bsp/native_font_resources.hpp"
 #include "bsp/font_registry_startup.hpp"
 #include "bsp/fingerprint_payload.hpp"
 #include "bsp/gui_startup.hpp"
@@ -8,49 +11,23 @@
 #include <stdexcept>
 
 namespace bsp::game {
-namespace {
-class FontImageImports {
-public:
-    FontImageImports() {
-        module_ = LoadLibraryExW(L"d3dx9_40.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
-        if (!module_) throw std::runtime_error("Cannot load font D3DX9 image imports");
-        FARPROC address = GetProcAddress(module_, "D3DXGetImageInfoFromFileInMemory");
-        static_assert(sizeof(read_info) == sizeof(address));
-        std::memcpy(&read_info, &address, sizeof(read_info));
-        address = GetProcAddress(module_, "D3DXCreateTextureFromFileInMemoryEx");
-        static_assert(sizeof(create) == sizeof(address));
-        std::memcpy(&create, &address, sizeof(create));
-        if (!read_info || !create) {
-            FreeLibrary(module_);
-            module_ = nullptr;
-            throw std::runtime_error("Font D3DX9 image export missing");
-        }
-    }
-    ~FontImageImports() { if (module_) FreeLibrary(module_); }
-    FontImageImports(const FontImageImports&) = delete;
-    FontImageImports& operator=(const FontImageImports&) = delete;
-    ReadImageInfoFromMemory read_info{};
-    CreateTextureFromMemory create{};
-private:
-    HMODULE module_{};
-};
-}
-
 struct GameFontHost::Impl {
     GameHostLog& log;
     GameVfsHost& vfs;
     GameScriptHost& scripts;
-    IDirect3DDevice9& device;
-    std::uint32_t mip_reduction;
-    FontImageImports imports;
     FontRegistryStartup fonts;
+    GameNativeFontApplication native;
+    bool native_retirement_attempted{};
+    bool native_retired{};
+    bool native_failed{};
     FingerprintPayload fingerprint;
     std::size_t opens{};
     bool initialized{};
 
     Impl(GameHostLog& log_in, GameVfsHost& vfs_in, GameScriptHost& scripts_in,
-        IDirect3DDevice9& device_in, std::uint32_t mip)
-        : log(log_in), vfs(vfs_in), scripts(scripts_in), device(device_in), mip_reduction(mip) {}
+        GameNativeRendererApplication& renderer)
+        : log(log_in), vfs(vfs_in), scripts(scripts_in),
+          native(log_in, renderer, vfs_in, fonts) {}
 
     bool read(const std::string& requested, std::shared_ptr<MemoryStream>& stream,
         std::string& error) {
@@ -77,8 +54,8 @@ struct GameFontHost::Impl {
 };
 
 GameFontHost::GameFontHost(GameHostLog& log, GameVfsHost& vfs, GameScriptHost& scripts,
-    IDirect3DDevice9& device, std::uint32_t mip_reduction)
-    : impl_(std::make_unique<Impl>(log, vfs, scripts, device, mip_reduction)) {}
+    GameNativeRendererApplication& renderer)
+    : impl_(std::make_unique<Impl>(log, vfs, scripts, renderer)) {}
 GameFontHost::~GameFontHost() = default;
 
 void GameFontHost::initialize(const std::string& language_font_path) {
@@ -91,25 +68,35 @@ void GameFontHost::load_descriptors_00ac3910(const std::string& root,
     const std::string& descriptor, const std::string& language_font_path) {
     auto& host = *impl_;
     if (host.initialized) throw std::logic_error("Application font startup already completed");
-    const FontStreamResolver streams = [&host](const std::string& name,
-        std::shared_ptr<MemoryStream>& stream, std::string& error) {
-        return host.read(name, stream, error);
-    };
-    const FontRegistryResourceLoader load = [&host, &streams](const FontDescriptor& descriptor,
-        const std::string& root, const std::string& language_path,
-        std::unique_ptr<FontResources>& result, std::string& error) {
-        return load_font_resources_from_streams_00ad4c30_fragment(host.device,
-            host.imports.read_info, host.imports.create, streams, descriptor, root,
-            language_path, host.mip_reduction, result, error);
-    };
-    std::string error;
-    if (!host.fonts.load_lua_descriptors_00ac3910(host.scripts.files(), host.scripts.globals(),
-            load, root, descriptor, language_font_path, error))
-        throw std::runtime_error("Font registry startup: " + error);
-    host.log.implemented("Phase 7 font registry resources", "00ac3910");
-    host.log.notef("fonts owned=%zu resource_opens=%zu mip_reduction=%u",
-        host.fonts.fonts().size(), host.opens, host.mip_reduction);
-    host.initialized = true;
+    if (host.native_failed || host.native_retirement_attempted || host.native_retired)
+        throw std::logic_error("Native font host cannot load after an interrupted or retired operation");
+    try {
+        host.native.load_descriptors_00ac3910(host.scripts.files(), host.scripts.globals(),
+            root, descriptor, language_font_path);
+        const auto& rows = host.fonts.fonts();
+        if (host.native.produced_fonts() != rows.size())
+            throw std::runtime_error("Native font producer/registry count mismatch");
+        for (std::size_t i = 0; i < rows.size(); ++i) {
+            const auto& row = *rows[i];
+            const auto& op = host.native.operation(i);
+            if (row.resources || !row.native_resources || !row.native_resources->live() ||
+                op.phase != GameNativeFontLoadPhase::complete ||
+                op.descriptor != &row.descriptor || op.published != row.native_resources ||
+                op.decoded || op.unpublished || op.gfx || op.alpha ||
+                op.gfx_name_live || op.alpha_name_live)
+                throw std::runtime_error("Native font registry must borrow its sole completed producer");
+        }
+        host.initialized = true;
+        host.log.implemented("Phase 7 font registry resources", "00ac3910");
+        host.log.notef("font descriptors loaded: %zu native resources; same_registry=1 "
+            "same_descriptors=1 semantic_resources=0 image_refs=transferred dat_allocations=sole",
+            rows.size());
+    } catch (...) {
+        // Also latch preflight and post-production failures outside the producer.
+        // Neither may authorize replay or rollback of acquired native state.
+        host.native_failed = true;
+        throw;
+    }
 }
 
 void GameFontHost::preload_fingerprint_payload_00be9760() {
@@ -126,7 +113,34 @@ void GameFontHost::preload_fingerprint_payload_00be9760() {
         host.fingerprint.decoded() ? 1 : 0);
 }
 
+void GameFontHost::retire_native_fonts() {
+    auto& host = *impl_;
+    if (host.native_retired) return;
+    if (host.native_failed || host.native_retirement_attempted)
+        throw std::logic_error("Native font host cannot replay an interrupted operation");
+    host.native_retirement_attempted = true; // Before every callee preflight.
+    try {
+        const auto count = host.native.produced_fonts();
+        host.native.retire_fonts();
+        for (const auto& row : host.fonts.fonts()) {
+            if (row->native_resources || row->resources)
+                throw std::runtime_error("Native font retirement left a registry resource binding");
+        }
+        host.native_retired = true;
+        host.log.notef("native font host retired: fonts=%zu registry_bindings=cleared "
+            "sprite_borrowers=closed before_device_release=1 before_shared_drain=1", count);
+    } catch (...) {
+        host.native_failed = true;
+        throw;
+    }
+}
+bool GameFontHost::native_operation_interrupted() const noexcept {
+    const auto& host = *impl_;
+    return host.native_failed ||
+        (host.native_retirement_attempted && !host.native_retired) ||
+        (!host.native.ready() && host.native.requires_process_retention());
+}
 FontRegistryStartup& GameFontHost::registry() noexcept { return impl_->fonts; }
 const FingerprintPayload& GameFontHost::fingerprint() const noexcept { return impl_->fingerprint; }
-std::size_t GameFontHost::resource_opens() const noexcept { return impl_->opens; }
+std::size_t GameFontHost::resource_opens() const noexcept { return impl_->opens + impl_->native.produced_fonts(); }
 }
