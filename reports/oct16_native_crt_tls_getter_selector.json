@@ -1,0 +1,345 @@
+{
+  "packet": "oct16_native_crt_tls_getter_selector",
+  "status": "complete_ordinary_Source_in_explicit_actual_borrowed_context_domain_runtime_open",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "published_baseline": "9f81f799522c920d35123b7b0ecc3890f75f995b",
+  "source": "src/native_crt_tls_getter_selector.cpp",
+  "header": "include/bsp/native_crt_tls_getter_selector.hpp",
+  "documentation": "docs/OCT16_NATIVE_CRT_TLS_GETTER_SELECTOR.md",
+  "source_sha256": "04988820a0774e61bf65b32bc78a2c768c8c5344db701d19380c5aef85f8cc61",
+  "header_sha256": "2f14cd789a46fd4773e4afadba3e5f1640acab53d13ada18228765d66f9be14d",
+  "documentation_sha256": "1e220edec92cb85c4e305bc8c56ab60152811246895d274ff9fd0d8067f25fc3",
+  "routines": [
+    {
+      "address": "00c05070",
+      "name": "select_native_crt_ptd_getter_00c05070",
+      "saved_name_preserved": "LIBCRT_unmatched_00c05070",
+      "descriptive_name_provisional": true,
+      "coverage": "whole50B16 within supplied actual context only; no concrete CRT/TLS/errno/handler/locale owner",
+      "original_abi": "No stacked/ECX/EDX semantic inputs; saves/restores ESI; plainRET; EAX raw pointer; no LastError preservation.",
+      "Source_abi": "void* __cdecl(const NativeCrtPointerDecodeContext&,const volatile uint32& actual109DE38,NativeCrtActualTlsSetValue const volatile& actualCE20B4); caller-pop12 vsNative0; added refs/private frame qualified.",
+      "local_EH": false
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00c05070",
+      "address": "00c05077",
+      "native": "TlsGetValue through actual IAT00ce20bc",
+      "kind": "indirect_call",
+      "scope": "owned ordinary",
+      "proof": "Actual PE Kernel32 import/current memory CALL/live bytes; not numeric function-entry claim"
+    },
+    {
+      "function": "00c05070",
+      "address": "00c05089",
+      "native": "00c04fde",
+      "kind": "call",
+      "scope": "owned ordinary",
+      "contract": "actual published decoder with SAME context; outgoing first-word writeback discarded"
+    },
+    {
+      "function": "00c05070",
+      "address": "00c05098",
+      "native": "TlsSetValue through actual IAT00ce20b4",
+      "kind": "indirect_call",
+      "scope": "owned ordinary",
+      "proof": "Actual PE Kernel32 import/current memory CALL/live bytes; BOOL ignored"
+    }
+  ],
+  "contract": {
+    "schedule": [
+      "Capture CURRENT E15B00 before getter IAT, then actual getter(index).",
+      "Nonnull cached result returns before encoded/decoder/setter access.",
+      "Miss reads CURRENT encoded109DE38; actual C04FDE with same existing context; Native POP discards outgoing-word writeback; capture returned pointer.",
+      "Reread CURRENT E15B00, then current actual CE20B4; setter(index,captured pointer); ignoreBOOL and return captured pointer even null."
+    ],
+    "bindings": "Actual reference identities remain valid/stable while their values stay current. Real Win32 stdcall IAT alias, not a generic injectable provider.",
+    "runtime_open": [
+      "Existing module-gate LegacyCrtMathRuntime errno/SingletonLifetimeCallbacks invalid services remain supplied.",
+      "PTD/TLS bootstrap, allocation/publication/initializer/locale/encoded-handler owners remain incomplete.",
+      "No concrete NativeCrtStricmpCallees or dummy locale override."
+    ],
+    "failure": "No catch/cleanup/translation/rollback/guard/retry/noexcept. Actual child behavior propagates. Original private argument/register/save-frame aliases are outside new Source ABI."
+  },
+  "Native_scope": {
+    "owned": {
+      "bytes": 50,
+      "instruction_starts": 16,
+      "CALLs": 3,
+      "ranges": [
+        [
+          "00c05070",
+          "00c050a1"
+        ]
+      ],
+      "SHA256": "c56216e301258d74d1f73f4e30645d811c2e7a3cda5bef15b09e94735394ba81"
+    },
+    "bounded_producer": {
+      "bytes": 15,
+      "instruction_starts": 4,
+      "range": [
+        "00c051bf",
+        "00c051cd"
+      ],
+      "SHA256": "730263ecfaaed38ee5d254ee682bea611c198af168ecc60c9427ac6b41c8c34f",
+      "scope": "Separate read-only setup/return-use window, not whole parent Source"
+    },
+    "data_bindings": {
+      "00ce20bc": {
+        "bytes": 4,
+        "hex": "0e78a000",
+        "SHA256": "477dd9af5e09b4681ff8bc3e387ced2ea9a492850605a397b899ed1c84856e55",
+        "PE_live_equal": true,
+        "PE_evidence": "PE raw bytes",
+        "dll": "KERNEL32.dll",
+        "name": "TlsGetValue"
+      },
+      "00ce20b4": {
+        "bytes": 4,
+        "hex": "2878a000",
+        "SHA256": "a81f1f21b683872c6cf46e74460ad4740f0c3f638b40e5d2c2f0d6a7cf8e3225",
+        "PE_live_equal": true,
+        "PE_evidence": "PE raw bytes",
+        "dll": "KERNEL32.dll",
+        "name": "TlsSetValue"
+      },
+      "00e15b00": {
+        "bytes": 4,
+        "hex": "ffffffff",
+        "SHA256": "ad95131bc0b799c0b1af477fb14fcf26a6a9f76079e48bf090acb7e8367bfd0e",
+        "PE_live_equal": true,
+        "PE_evidence": "PE raw bytes"
+      },
+      "0109de38": {
+        "bytes": 4,
+        "hex": "00000000",
+        "SHA256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "PE_live_equal": true,
+        "PE_evidence": "PE-defined zero virtual tail, not file-backed bytes"
+      }
+    },
+    "native_audit": "local/oct16_native_crt_tls_getter_selector_native_audit.json",
+    "native_audit_SHA256": "9c95a9120c37f1fb3dcbe2554cdccc058a064fb9432399e62b5efb19a063d628"
+  },
+  "provider_LF_fingerprints": {
+    "include/bsp/native_crt_pointer_decode.hpp": {
+      "LF_SHA256": "b1e901d739c07419b55441988bf42177b0e6ace3ef27ef1251ecb3b36fb48a7f",
+      "published_blob": "b9b1e4b1975cbeda22067389db353be66d02c558",
+      "published_equal": true
+    },
+    "src/native_crt_pointer_decode.cpp": {
+      "LF_SHA256": "7a689a80bea666aa0941662a1bbde17500c92d1f7fd671c364aa2b3e0bf365c7",
+      "published_blob": "8a2d2aa4782fe2e93df56095a083e30ff2b080fd",
+      "published_equal": true
+    },
+    "include/bsp/native_crt_pointer_decode_support.hpp": {
+      "LF_SHA256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722",
+      "published_blob": "bcae19bf50c96b7fe86b17cb09ffc21854310228",
+      "published_equal": true
+    },
+    "src/native_crt_pointer_decode_support.cpp": {
+      "LF_SHA256": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37",
+      "published_blob": "56d131ca84a42dde7e5239876377b292217e6fbb",
+      "published_equal": true
+    },
+    "include/bsp/native_crt_canonical_failure.hpp": {
+      "LF_SHA256": "79cf028656e03fe079cac7ced740ce5ea8a5a81fc4a8a722850a15c8195c0472",
+      "published_blob": "065b06124d6dc3b8cef1bfec1b896ad3507ca6e4",
+      "published_equal": true
+    },
+    "src/native_crt_canonical_failure.cpp": {
+      "LF_SHA256": "6d8bee1d3ba2e0fbfff1fcaca03ca35b8a5f933ff6995419f100e220802dc7ce",
+      "published_blob": "ed403681598ff28a0520c951d25f7eec26137f4d",
+      "published_equal": true
+    },
+    "include/bsp/native_crt_watson_failure.hpp": {
+      "LF_SHA256": "a46a37f7b069bcd2dd68696de222922ac04da572d456255af851d945263c4432",
+      "published_blob": "5333ef0603ca15f7238aeeefc312e42062b7bf7d",
+      "published_equal": true
+    },
+    "src/native_crt_watson_failure.cpp": {
+      "LF_SHA256": "20e77ac28cf945d47302576c923e6ccc83043dfeae817349ddd434658ae3ae2b",
+      "published_blob": "f49e4ad5930b7164bbe06f47cd29a82094c76d6d",
+      "published_equal": true
+    },
+    "include/bsp/game_native_mutable_crt_data.hpp": {
+      "LF_SHA256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "published_blob": "ec1a1c9c2a7359031b4b77c2b86ba12cd6f3420e",
+      "published_equal": true
+    },
+    "src/game_native_mutable_crt_data.cpp": {
+      "LF_SHA256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "published_blob": "2c0d73f8164a8b0d4cbbc499801935d1f28c213a",
+      "published_equal": true
+    },
+    "include/bsp/legacy_crt_math.hpp": {
+      "LF_SHA256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+      "published_blob": "eb8164ff1355a7221a8382542d3ac571cf10c0b9",
+      "published_equal": true
+    },
+    "src/legacy_crt_math.cpp": {
+      "LF_SHA256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce",
+      "published_blob": "07b661262a647a34056055ad7f16457a5ca3d915",
+      "published_equal": true
+    },
+    "include/bsp/singleton_lifetime.hpp": {
+      "LF_SHA256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "published_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "published_equal": true
+    },
+    "src/singleton_lifetime.cpp": {
+      "LF_SHA256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "published_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "published_equal": true
+    },
+    "include/bsp/native_crt_libm_callback_registration.hpp": {
+      "LF_SHA256": "96b1bf767f1b4de73a578f178de025f2c9199082e404ad3bf45e0ff695f58746",
+      "published_blob": "0216d275a923e61b8c7542915440fccafec27e25",
+      "published_equal": true
+    },
+    "src/native_crt_libm_callback_registration.cpp": {
+      "LF_SHA256": "cacc140a243569c0d0828a309cf84c079fa12e30b1fc5124e703c44ed1716c32",
+      "published_blob": "29b1720b56c6c87883aa907ae68beb78ce04af5f",
+      "published_equal": true
+    },
+    "include/bsp/native_crt_stricmp.hpp": {
+      "LF_SHA256": "f09ff088480b1db82a49dc5d185956062fd5118e3cb7b70e008c04726a59b92f",
+      "published_blob": "5744ec041f3292e4f03f54084ee774f1bd902bb6",
+      "published_equal": true
+    },
+    "src/native_crt_stricmp.cpp": {
+      "LF_SHA256": "e706069c71de1de114a98ed21cc37832fc0a3f1c00bb52ef8992e2f7422d1c8d",
+      "published_blob": "bcf4db4d62e597a98919db01f4517179606414af",
+      "published_equal": true
+    },
+    "include/bsp/native_crt_memset.hpp": {
+      "LF_SHA256": "82636e0cffb8c123053bd7e9778be85837d5f2bfae142bc8d788a089defcea1e",
+      "published_blob": "1daac39b2a08df4764a084f9f31144933d5c0733",
+      "published_equal": true
+    },
+    "src/native_crt_memset.cpp": {
+      "LF_SHA256": "d40837c0989ddb2e0958deec750c0b264e6475e8febaad590c5a4f35db55a0d9",
+      "published_blob": "1cd7eee18f59e50f00a248688a2d7ca7251cd636",
+      "published_equal": true
+    }
+  },
+  "actual_CMake_COFF": {
+    "object": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\build\\win32\\bsp_core.dir\\Release\\native_crt_tls_getter_selector.obj",
+    "object_SHA256": "76aec0d3d5ca850b891493a0711c65c9c22d09fb9673094a70dbc28a79e5abd0",
+    "object_bytes": 950,
+    "CODE_bytes": 60,
+    "instructions": 32,
+    "code_sections": 1,
+    "relocations": 1,
+    "direct_child": "native_crt_decode_pointer_00c04fde",
+    "IAT_indirect_calls": 2,
+    "helpers": 0,
+    "EH_data": 0,
+    "BSS": 0,
+    "padding": 0,
+    "other_sections": {
+      ".drectve": 47,
+      ".debug$S": 212,
+      ".chks64": 32
+    },
+    "review_checks": [
+      "One complete actual CMake CODE section60B32; all instructions decoded and fully read.",
+      "One actual REL32 binds published native_crt_decode_pointer_00c04fde; no SDK/default helper.",
+      "Initial current index value+09 precedes current getter IAT value+0F and call+11.",
+      "Cached nonnull branch+15 jumps directly+39; no encoded/decoder/setter read.",
+      "Miss alone reads encoded argument reference+17 and current encoded word+1C.",
+      "Decoder outgoing original-word argument+1E discarded by caller cleanup+26; no caller-variable writeback.",
+      "Decoded pointer captured ESI+29; current index value reread+2B before setter IAT load+32.",
+      "Setter receives current index/captured pointer at call+34; BOOL ignored, captured pointer restored EAX+36.",
+      "Source ESI save miss-only+1A/restore+38; cached arm skips it; nonvolatile/stack balance inspected.",
+      "Plain RET+3B leaves three added Source references for caller-pop12; Native has no incoming args.",
+      "All four sections read: directives47B, debug212B, CODE60B, checksum32B; no EH/data/BSS/padding/helper code.",
+      "No catch, cleanup, retry, global initialization, LastError wrapper or noexcept adapter emitted."
+    ],
+    "audit": "local/oct16_native_crt_tls_getter_selector_actual_COFF.json",
+    "audit_SHA256": "1511f4705376da743bc7fa476b39eee8650093b61558647eed2dba2dafbdb34f",
+    "decoded": "local/oct16_native_crt_tls_getter_selector_actual_COFF_decoded.txt",
+    "decoded_SHA256": "12eab868e080403db446816d8290c1bb3b8a12c01a48c76c8eeeb72ce61d067d"
+  },
+  "verification": {
+    "default_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "passed": 3,
+      "failed": 0,
+      "seconds": 8.36,
+      "log": "local/oct16_native_crt_tls_getter_selector_build.log",
+      "log_SHA256": "ab43ce69fd8c2da2771266843365acec5257c0b37e5ffee03ab2e27399e59d84",
+      "existing_suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "scope": "Existing suites do not directly exercise this new API; no new tests/probes/native execution.",
+      "warning": "Existing unrelated LNK4006 duplicate spawn_request_id_matches."
+    },
+    "JSON_calls": {
+      "direct_checked": 1,
+      "failed": 0,
+      "IAT_indirect_reported_unchecked_by_this_tool": 2,
+      "exit_code": 0,
+      "all_three_actual_transfers_independently_current_typed_and_PE_checked": true
+    },
+    "Markdown_calls": {
+      "checked": 1,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "exit_code": 0
+    },
+    "index": {
+      "rebuilt_if_stale": true,
+      "exit_code": 0
+    },
+    "diff_check": {
+      "exit_code": 0
+    }
+  },
+  "preservation": {
+    "CurrentSDK_and_existing_helpers_unchanged": true,
+    "secure_object_immutable_mapping": {
+      "original_path": "build\\win32\\bsp_core.dir\\Release\\native_crt_secure_memmove.obj",
+      "immutable_copy": "local\\oct16_secure_memmove_original_before_tls_getter.obj",
+      "SHA256": "2c8796be76e4ba53b644d7d6d4ba96f9c95f1e889434d0b3c94487e84a8b4c84",
+      "bytes": 971,
+      "secure_Source_commit": "8f857d8cdf4424c327f18c0ad270c3f35208e7d6",
+      "frozen_receipt": "local/oct16_native_crt_secure_memmove_frozen_pin.json",
+      "frozen_receipt_SHA256": "54a2d369683573650d2d290b644d2d4a0cb60686b2258d7b815d14e4cf74c58c",
+      "scope": "Verified byte-identical immutable original actual CMake COFF copy before subsequent normal build can overwrite original build-path; original frozen receipt is unchanged; no new compile"
+    },
+    "mapping": "local/oct16_secure_memmove_original_before_tls_getter.json",
+    "mapping_SHA256": "53012693d0dc32d9bc757aa41478a9518d3e1a988ced6d3ec5d238b605c97d11",
+    "Root_corrected13_readiness": "6b11ab6393cde855e0bfd75560af90f0e0791987e61dbcc53ac79339b433bcca",
+    "no_Ghidra_write": true,
+    "no_Main_or_push": true
+  },
+  "limits": [
+    "Source/build/COFF static checks only; suites do not execute new API.",
+    "Original private argument/register/flag/frame aliases, raw faults/FH3/SEH, Original CRT/runtime/heap/binary ABI and game remain unproved.",
+    "No defaults/bootstrap inferred from saved PE/BSS values."
+  ],
+  "primary_review": {
+    "scope": "Root immutable preliminary15; final frozen-pin acceptance pending",
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_tls_getter_primary.json",
+    "SHA256": "ca7216d21ed3d233e840af1b97f18fd691c97d9d98040707684fc18c2f1a1f7f",
+    "checks": 15,
+    "findings": []
+  },
+  "owned_ledger_and_registration_diff": {
+    "name_address": "00c05070",
+    "function_address": "00c05070",
+    "one_new_name_evidence_record": true,
+    "one_new_whole_function_record": true,
+    "existing_names_comments_prototypes_not_mutated": true,
+    "old_records_removed": 0,
+    "Core_append": "src/native_crt_tls_getter_selector.cpp",
+    "registrations_added": 1
+  }
+}

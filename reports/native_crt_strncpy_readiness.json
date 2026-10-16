@@ -1,0 +1,263 @@
+{
+  "schema": 1,
+  "packet": "cc12_native_crt_strncpy_readiness_oct16",
+  "entry": "00BF9280",
+  "original_name": "_strncpy",
+  "classification": "Whole Original ordinary raw-copy and zero-padding readiness recommendation; new API hypothesis only",
+  "source_ready": true,
+  "source_authorized": false,
+  "source_credit": 0,
+  "readiness_recommendation": "Bounded Source gate may be considered after independent review; no unresolved provider/control-flow/hidden-register blocker in selected body.",
+  "base": "d2178969c5d14fc9cb941572ea98115603afe08a",
+  "Original": {
+    "inclusive_range": [
+      "00BF9280",
+      "00BF93A3"
+    ],
+    "bytes": 292,
+    "instructions": 109,
+    "body_sha256": "22006e25651e484a1c6be63bde03c539bb04291083659ef03adadd480f32d18e",
+    "installed_PE_file_offset": 8360576,
+    "saved_signature": "char * __cdecl _strncpy(char * _Dest, char * _Source, size_t _Count)",
+    "live_proto": {
+      "basic_blocks": 35,
+      "edges": 56,
+      "param_count": 3,
+      "call_count": 0
+    },
+    "whole_disk_live_bytes_listing_agreement": true
+  },
+  "lease_timing": {
+    "entry_claim": "f0c34b",
+    "range_claim": "79f2fc",
+    "body_pin": "87dc6f",
+    "separate_local": "3e004c",
+    "order": "Supported proto51edd7 discovered whole bounds. Actual sequential range claim completed before selected body pin/listing/bytes/typed reads; no invented inner completion timestamp."
+  },
+  "ordinary_contract": {
+    "platform": "MSVC Win32, little-endian BYTE8, unsigned int32 and pointer32, ordinary flat data addressing; no portable ISO C++ physical identity claim",
+    "proposed_API": "void* __cdecl bsp::copy_native_crt_padded_bytes_00bf9280(void* actual_destination, const void* actual_source, unsigned int count)",
+    "exception_specification": "Default potentially throwing; no noexcept claim",
+    "zero_count": "All unsigned32 count patterns admitted. Zero reads count home, saves EDI, branches, reads destination home and returns that genuine pointer. It never reads source home or either payload; any/null pointers are admitted.",
+    "positive_count": "Destination provides the entire count-byte region of genuine live writable raw storage. Initial destination values need be determinate only where actually read through a source alias. Only actually reached source BYTE or complete DWORD windows must be genuine live readable determinate storage. No full unused source NUL extent is required; no NUL is required if copying exhausts count. A reached DWORD may include up to three later in-count bytes beyond the first NUL, all of which must be readable determinate bytes.",
+    "cursor_extent": "All actual source/destination advances by 1 or 4 are nonwrapping32 and remain within or at one-past their same actual live allocation. Never dereference one-past. Include source advance before destination store and terminal advances; no signed-distance/INT_MAX cap or pointer subtraction.",
+    "aliases": "Raw unaligned/interior/subrange/caller-stack storage and input/destination overlap are admitted when all reached accesses and advances satisfy the contract. Destination is writable; a distinct source may be read-only. No restrict or nonoverlap promise. Source bytes may change only through this call's own destination writes; later loads observe these self-induced changes. No immutable initial-source snapshot or memmove semantics is promised.",
+    "stability": "No faults, asynchronous mutation, concurrency, MMIO, lifetime changes or unusual segment protocols. Exclude Original private callee frame, argument homes and saved-register self-alias; ordinary caller-stack storage remains admitted. Private native-home mutation and physical fault/flag/register/stack/segment identity are outside the new interface.",
+    "return": "Return the genuine original destination pointer, including null for count0/null destination, with no ownership/access-permission transfer. Original reloads its destination argument home at all exits; a new saved genuine pointer is valid only under the home/private-frame alias exclusion."
+  },
+  "ordered_schedule": [
+    {
+      "stage": "entry/zero",
+      "sites": [
+        "00BF9280",
+        "00BF9284",
+        "00BF9287",
+        "00BF931F",
+        "00BF9323",
+        "00BF9324"
+      ],
+      "description": "Read count DWORD home before PUSH EDI/test; count0 branches directly to destination-home return. No source-home or payload read. Positive path then saves ESI/EBX; source home is read at9291 before destination home at929B. No argument-home writes."
+    },
+    {
+      "stage": "source-alignment BYTE peel",
+      "sites": [
+        "00BF92AC",
+        "00BF92AE",
+        "00BF92B1",
+        "00BF92B3",
+        "00BF92B6",
+        "00BF92B9",
+        "00BF92BB",
+        "00BF92BD",
+        "00BF92BF",
+        "00BF92C7"
+      ],
+      "description": "While actual source is not4aligned: load exactly one unsigned BYTE; actual source+1; store the saved BYTE; actual destination+1; decrement remaining; return on count exhaustion before NUL test. A copied NUL with remaining>0 enters padding. Otherwise test new source alignment and repeat, or copy remaining to EBX and form word-count ECX=remaining>>2. At most3 peel bytes if neither earlier stop occurs."
+    },
+    {
+      "stage": "full aligned source DWORD",
+      "sites": [
+        "00BF932F",
+        "00BF9334",
+        "00BF9336",
+        "00BF9338",
+        "00BF933B",
+        "00BF933D",
+        "00BF933F",
+        "00BF9342",
+        "00BF9347"
+      ],
+      "description": "For each complete4-byte residual block, read one DWORD into first word at9334; compute uint32 ((first+0x7efefeff)^~first)&0x81010100; unconditionally read exactly the same source DWORD again at933D, even when candidate mask is zero; actual source+4 before mask branch. No payload write occurs between the two reads, hence they agree in the ordinary domain. This is not candidate-only reread."
+    },
+    {
+      "stage": "DWORD candidate/store",
+      "sites": [
+        "00BF9349",
+        "00BF934D",
+        "00BF9351",
+        "00BF9359",
+        "00BF9361",
+        "00BF9365",
+        "00BF936B",
+        "00BF936F",
+        "00BF9375",
+        "00BF9379",
+        "00BF937B",
+        "00BF9325",
+        "00BF9327",
+        "00BF932A"
+      ],
+      "description": "Mask0 stores the second word in one exact DWORD write, actual destination+4, decrements positive word count. Nonzero mask tests second-word lanes low-to-high in registers only. No lane NUL also stores second word (including rejecting high-byte0x80 false candidate). First NUL lane0 stores0; lane1 stores second&0xff; lane2 stores second&0xffff; lane3 stores second unchanged. Each is one DWORD store, possibly unaligned, with no BYTE reread or lane stores. NUL word then actual destination+4 and word-count-- before padding."
+    },
+    {
+      "stage": "BYTE residual copy",
+      "sites": [
+        "00BF92CE",
+        "00BF92D3",
+        "00BF92D5",
+        "00BF92D8",
+        "00BF92DA",
+        "00BF92DD",
+        "00BF92DF",
+        "00BF92E1",
+        "00BF9318"
+      ],
+      "description": "Initial aligned count1..3 or post-word residual remaining&3 uses exactly one BYTE read, source+1, saved BYTE store, destination+1. Test NUL before decrementing residual. Nonzero decrements/repeats; NUL decrements once at9318 and pads only positive remainder. All count-exhaustion and copied-NUL paths retain exact cursor/store order."
+    },
+    {
+      "stage": "padding after peel NUL",
+      "sites": [
+        "00BF92EE",
+        "00BF92F6",
+        "00BF92F8",
+        "00BF92FB",
+        "00BF9304",
+        "00BF930C",
+        "00BF930E"
+      ],
+      "description": "No more source reads or source advances. With AL0 and positive remaining, write BYTE0 and destination+1/count-- until destination4aligned or exhausted. Then save remaining in EBX and form word count remaining>>2. If wordcount0, EBX is1..3 and BYTE padding follows."
+    },
+    {
+      "stage": "DWORD and final BYTE padding",
+      "sites": [
+        "00BF937D",
+        "00BF9380",
+        "00BF9382",
+        "00BF9387",
+        "00BF9389",
+        "00BF938B",
+        "00BF938E",
+        "00BF9393",
+        "00BF9396",
+        "00BF9313",
+        "00BF9315",
+        "00BF9318"
+      ],
+      "description": "Write each remaining complete block as one DWORD0, destination+4, positive word-count--. After words, EBX&3 controls exact BYTE0 residual writes, each followed by destination+1 and decrement. Tail-copy NUL reaches the same BYTE padding loop after accounting for its copied NUL. No further source read. Full-word padding need not be destination aligned on the copied-DWORD-NUL path."
+    }
+  ],
+  "zero_detection": {
+    "formula": "uint32 ((w + 0x7efefeffU) ^ ~w) & 0x81010100U; modulo2^32 arithmetic",
+    "carry_derivation": "For input bytes b0..b3 low-to-high, carry c1=(b0!=0), c2=(b1+254+c1>=256), c3=(b2+254+c2>=256). Candidate bits8,16,24 are respectively !c1,!c2,!c3. Any zero in b0..b2 therefore sets a candidate bit; a carry loss propagated through lower byte1 also remains a candidate.",
+    "high_lane": "If all low3 bytes are nonzero then c3=1, and bit31 is set exactly when high byte is0 or0x80. If c3=0 a lower candidate already exists. Thus mask0 proves all4 lanes nonzero, and the only no-zero false candidate has high byte0x80. Register lane tests reject it. This is static arithmetic derivation, not enumeration, tests, emulation, SDK comparison or body execution.",
+    "read_schedule": "Both actual DWORD reads are unconditional before the candidate branch. Preserve them even for mask0 and false candidates; no external stability assumption may erase the second read in Source."
+  },
+  "prospective_Source_mechanism": {
+    "hypothesis_only": true,
+    "Root_authorization_required": true,
+    "byte_access": "Separately sequenced volatile unsigned BYTE loads/stores over genuine raw storage with genuine cursor+1, preserving source advance before destination write. Avoid typed char signedness assumptions and all extra final rereads.",
+    "word_access": "Proposed private target-specific MSVC Win32 addressed MOV32 raw load and addressed MOV32 raw store primitives. Load returns fully initialized uint32; store accepts uint32. The load must be called twice unconditionally at the same actual4aligned source address before source+4. Store must support the actual possibly unaligned destination. No invented live uint32 object, alignment for destination, memcpy, SDK/provider, fake context, fallback, global/TLS/table or runtime guard. A later Source gate must approve this mechanism and inspect every emitted public/private helper/inlined load/store and path.",
+    "state": "Bounded unsigned32 counts/word counts and genuine BYTE cursors; fixed uint32 register arithmetic and masks, ordinary saved destination pointer. No array/aggregate, bitmap, table, switch, runtime helper or introduced GS-buffer mechanism is needed.",
+    "compiler_gate": "No compilation performed here. Future strict Win32 object must independently prove widths/order, unconditional duplicate word loads, unaligned DWORD stores, exact BYTE padding and all helpers/calls/metadata/providers. Static/readiness evidence is not ABI/runtime/game proof."
+  },
+  "register_ABI": {
+    "cdecl": "Saved signature consistent with three native32 byvalue argument homes. Caller removes args; only RET, no RET immediate. This is not proof of a drop-in replacement.",
+    "count": "Unsigned32, logical SHR2 and low2 remainder; no signed comparisons/cap. Positive word count always decremented from>=1; BYTE counts stop at0. Allbitpatterns have the stated genuine-storage/nonwrapping trace domain.",
+    "registers": "Positive path saves/restores EDI/ESI/EBX; count0 saves/restores onlyEDI. EAX returns destination; ECX/EDX/EAX are local volatile state. No hidden register input, x87, no-return, tail-transfer, call or flow repair observed.",
+    "homes": "Count home first, positive source home before destination home; final native destination-home reload. Home/private-frame/saved-register alias protocols excluded; new saved destination pointer is not Original home identity.",
+    "segments": "All selected payload MOVs use ordinary default DS addressing, stack operations ordinary SS. No string/REP/ES operand, segment override, DF-sensitive opcode, CLD/STD, SSE/CPUID/dispatch, provider/global/TLS dependency or external branch. No exotic segment/physical fault/flag/register protocol claim."
+  },
+  "metadata": {
+    "whole_typed": "complete_selected_typed_review.json",
+    "batches": [
+      64,
+      45
+    ],
+    "modification": "6870",
+    "all_instruction_lengths_owners_complete_body_agree": true,
+    "flow_override": "NONE",
+    "default_effective_equal": true,
+    "all28_branch_targets_internal": true,
+    "no_direct_calls": true,
+    "no_thunk": true,
+    "no_return_false": true,
+    "no_data_windows": true,
+    "caller_index_count": 13,
+    "caller_labels_only": true,
+    "no_caller_provider_bodies_read": true
+  },
+  "evidence": {
+    "own_family": "local/NativeCrtStrncpyReadiness01",
+    "body": "Original_body.bin",
+    "disk_inventory": "complete_selected_disk_inventory.json",
+    "typed": [
+      "typed_flow_1.json",
+      "typed_flow_2.json"
+    ],
+    "source_of_truth": "Actual assembly/disk/live/typed; pseudocode incorrectly widens the BYTE peel/tail reads, and its C++ types are not adopted.",
+    "preservation": "1384 prior sealed files/38families,1166 old working files and134 predecessor current inputs preserved; current297 CRTbaseline allliteralGit and134 freshcurrent inputs. Preserve literal bytes/hash/mtime and qualify three old CRLF-only Git differences.",
+    "provenance": "Only new readiness14 own actual paired tool records authenticated to entire original source prefix and exact line+byte slices. No predecessor tool records or compiler proof adopted. Sealing call/result and later readonly/handoff receipts remain outside the sealed paired prefix when not yet complete."
+  },
+  "failures": [
+    {
+      "receipt": "eccc53",
+      "kind": "preparation",
+      "detail": "Fresh checkout had no local parent. F.mkdir without parents failed WinError3 before tool creation. Actual correction527664 created owned parent using parents=True, then freshly pinned the real tool before first execution. No missing history recreated."
+    },
+    {
+      "receipt": "1010bc",
+      "kind": "writer-tool preparation",
+      "detail": "Nested creator triple quoting failed before writer creation."
+    },
+    {
+      "receipt": "1627df",
+      "kind": "writer-tool preparation",
+      "detail": "Extractor missed custom_tool_call/input; assertion0 before writer creation."
+    },
+    {
+      "receipt": "29f6e3",
+      "kind": "writer-tool preparation",
+      "detail": "Extractor also matched its in-flight recovery; assertion2 before writer creation."
+    },
+    {
+      "receipt": "0ee30b",
+      "kind": "writer-tool preparation",
+      "detail": "Actual current intended writer syntax check found a mismatched closing brace before file creation. Corrected genuine writer source; no report-body execution or missing history recreated."
+    }
+  ],
+  "qualifications": [
+    "No Source authorization/implementation/compiler/build/baseline/test/probe/emulation/body execution/SDK comparison/Ghidra mutation/shared metadata/Main mutation/push.",
+    "Initial proto --lines40 displayed40of61 lines; omitted21 hash-list lines are not adopted. Whole body metadata independently covers every109 instruction and complete single range.",
+    "Mechanical call checker is required, but zero call rows proves no semantics.",
+    "No Original physical ABI, flags, registers, home, stack, segment, EH, fault, caller or game proof."
+  ],
+  "proposed_source_packet": {
+    "id": "cc12_native_crt_strncpy_00bf9280",
+    "addresses": [
+      "00BF9280"
+    ],
+    "ranges": [
+      "00BF9280-00BF93A3"
+    ],
+    "output_files": [
+      "include/bsp/native_crt_strncpy.hpp",
+      "src/native_crt_strncpy.cpp",
+      "docs/NATIVE_CRT_STRNCPY.md",
+      "reports/native_crt_strncpy.json"
+    ],
+    "authorized": false
+  },
+  "actual_history": {
+    "contract_clarification": "After the first successful checker, review removed an unnecessary initial-destination-determinacy phrase. Writable uninitialized destination bytes are admitted when not read; determinate values are required at actually reached source reads, including aliases. Original writer and first checker remain genuine retained stages; corrected outputs are independently rechecked."
+  }
+}
