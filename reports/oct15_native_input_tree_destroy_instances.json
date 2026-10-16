@@ -1,0 +1,412 @@
+{
+  "packet": "oct15_native_input_tree_destroy_instances",
+  "status": "complete_ordinary_source_build_tested_current_cpp_crt_boundary",
+  "utc": "2026-10-16T05:48:27.900720+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "accepted_published_Main_baseline": "44b08ee2f426ca45ec791e4c4d0804d9f809082d",
+  "source": "src/native_input_tree_destroy_instances.cpp",
+  "header": "include/bsp/native_input_tree_destroy_instances.hpp",
+  "documentation": "docs/OCT15_NATIVE_INPUT_TREE_DESTROY_INSTANCES.md",
+  "source_sha256": {
+    "src/native_input_tree_destroy_instances.cpp": "cf00cd5cc70acb42decb572166c8d25259236c92ef3bdb546dae437087f04043",
+    "include/bsp/native_input_tree_destroy_instances.hpp": "82ba95115f1cba7bd3c1f7ac9506820a821a0f3dc516ea9eef8fd1ba7a1b89ed",
+    "docs/OCT15_NATIVE_INPUT_TREE_DESTROY_INSTANCES.md": "4e31f10c5837fd64136ba0f80fdc849ba11e801e1d786ba4c2f72dfb2f19c84d"
+  },
+  "routines": [
+    {
+      "address": "006a0d60",
+      "library_identity_preserved": "STL_Tree_Destroy_006a0d60",
+      "name": "destroy_native_input_default_scalar_tree_006a0d60",
+      "source": "src/native_input_tree_destroy_instances.cpp",
+      "header": "include/bsp/native_input_tree_destroy_instances.hpp",
+      "status": "complete_ordinary_source_build_tested_current_cpp_crt_boundary",
+      "native_body": {
+        "start": "006a0d60",
+        "end_inclusive": "006a0d93",
+        "defined_bytes": 52,
+        "current_starts": 23,
+        "ranges": 1,
+        "gaps": 0
+      },
+      "original_ABI": {
+        "ECX": "actual12B tree",
+        "EDX": "unconsumed",
+        "stack_words": [],
+        "RET": "plain",
+        "EAX": "DWORD0 before publicstores",
+        "local_EH": "none"
+      },
+      "Source_ABI": {
+        "return": "uint32zero",
+        "convention": "fastcall",
+        "inputs": "tree,unused_edx",
+        "RET": "plain"
+      },
+      "actual_range": "0069fe70",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "006a14e0",
+      "library_identity_preserved": "STL_Tree_Destroy_006a14e0",
+      "name": "destroy_native_input_default_scalar_tree_006a14e0",
+      "source": "src/native_input_tree_destroy_instances.cpp",
+      "header": "include/bsp/native_input_tree_destroy_instances.hpp",
+      "status": "complete_ordinary_source_build_tested_current_cpp_crt_boundary",
+      "native_body": {
+        "start": "006a14e0",
+        "end_inclusive": "006a1513",
+        "defined_bytes": 52,
+        "current_starts": 23,
+        "ranges": 1,
+        "gaps": 0
+      },
+      "original_ABI": {
+        "ECX": "actual12B tree",
+        "EDX": "unconsumed",
+        "stack_words": [],
+        "RET": "plain",
+        "EAX": "DWORD0 before publicstores",
+        "local_EH": "none"
+      },
+      "Source_ABI": {
+        "return": "uint32zero",
+        "convention": "fastcall",
+        "inputs": "tree,unused_edx",
+        "RET": "plain"
+      },
+      "actual_range": "0069fe70",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "006a21c0",
+      "library_identity_preserved": "STL_Tree_Destroy_006a21c0",
+      "name": "destroy_native_input_int_string_tree_006a21c0",
+      "source": "src/native_input_tree_destroy_instances.cpp",
+      "header": "include/bsp/native_input_tree_destroy_instances.hpp",
+      "status": "complete_ordinary_source_build_tested_current_cpp_crt_boundary",
+      "native_body": {
+        "start": "006a21c0",
+        "end_inclusive": "006a21f3",
+        "defined_bytes": 52,
+        "current_starts": 23,
+        "ranges": 1,
+        "gaps": 0
+      },
+      "original_ABI": {
+        "ECX": "actual12B tree",
+        "EDX": "unconsumed",
+        "stack_words": [],
+        "RET": "plain",
+        "EAX": "DWORD0 before publicstores",
+        "local_EH": "none"
+      },
+      "Source_ABI": {
+        "return": "uint32zero",
+        "convention": "fastcall",
+        "inputs": "tree,unused_edx,borrowedRawCtx&",
+        "RET": "4"
+      },
+      "actual_range": "006a1b70",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "006a24f0",
+      "library_identity_preserved": "STL_Tree_Destroy_006a24f0",
+      "name": "destroy_native_input_int_string_tree_006a24f0",
+      "source": "src/native_input_tree_destroy_instances.cpp",
+      "header": "include/bsp/native_input_tree_destroy_instances.hpp",
+      "status": "complete_ordinary_source_build_tested_current_cpp_crt_boundary",
+      "native_body": {
+        "start": "006a24f0",
+        "end_inclusive": "006a2523",
+        "defined_bytes": 52,
+        "current_starts": 23,
+        "ranges": 1,
+        "gaps": 0
+      },
+      "original_ABI": {
+        "ECX": "actual12B tree",
+        "EDX": "unconsumed",
+        "stack_words": [],
+        "RET": "plain",
+        "EAX": "DWORD0 before publicstores",
+        "local_EH": "none"
+      },
+      "Source_ABI": {
+        "return": "uint32zero",
+        "convention": "fastcall",
+        "inputs": "tree,unused_edx,borrowedRawCtx&",
+        "RET": "4"
+      },
+      "actual_range": "006a1b70",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "006a2b70",
+      "library_identity_preserved": "STL_Tree_Destroy_006a2b70",
+      "name": "destroy_native_input_int_string_tree_006a2b70",
+      "source": "src/native_input_tree_destroy_instances.cpp",
+      "header": "include/bsp/native_input_tree_destroy_instances.hpp",
+      "status": "complete_ordinary_source_build_tested_current_cpp_crt_boundary",
+      "native_body": {
+        "start": "006a2b70",
+        "end_inclusive": "006a2ba3",
+        "defined_bytes": 52,
+        "current_starts": 23,
+        "ranges": 1,
+        "gaps": 0
+      },
+      "original_ABI": {
+        "ECX": "actual12B tree",
+        "EDX": "unconsumed",
+        "stack_words": [],
+        "RET": "plain",
+        "EAX": "DWORD0 before publicstores",
+        "local_EH": "none"
+      },
+      "Source_ABI": {
+        "return": "uint32zero",
+        "convention": "fastcall",
+        "inputs": "tree,unused_edx,borrowedRawCtx&",
+        "RET": "4"
+      },
+      "actual_range": "006a1b70",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "006a0d60",
+      "address": "006a0d76",
+      "native": "0069fe70",
+      "kind": "call",
+      "scope": "owned",
+      "evidence": "Whole52B PE/live body, exact current start and resolved E8; canonical row only."
+    },
+    {
+      "function": "006a0d60",
+      "address": "006a0d7f",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "owned",
+      "evidence": "Whole52B PE/live body, exact current start and resolved E8; canonical row only."
+    },
+    {
+      "function": "006a14e0",
+      "address": "006a14f6",
+      "native": "0069fe70",
+      "kind": "call",
+      "scope": "owned",
+      "evidence": "Whole52B PE/live body, exact current start and resolved E8; canonical row only."
+    },
+    {
+      "function": "006a14e0",
+      "address": "006a14ff",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "owned",
+      "evidence": "Whole52B PE/live body, exact current start and resolved E8; canonical row only."
+    },
+    {
+      "function": "006a21c0",
+      "address": "006a21d6",
+      "native": "006a1b70",
+      "kind": "call",
+      "scope": "owned",
+      "evidence": "Whole52B PE/live body, exact current start and resolved E8; canonical row only."
+    },
+    {
+      "function": "006a21c0",
+      "address": "006a21df",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "owned",
+      "evidence": "Whole52B PE/live body, exact current start and resolved E8; canonical row only."
+    },
+    {
+      "function": "006a24f0",
+      "address": "006a2506",
+      "native": "006a1b70",
+      "kind": "call",
+      "scope": "owned",
+      "evidence": "Whole52B PE/live body, exact current start and resolved E8; canonical row only."
+    },
+    {
+      "function": "006a24f0",
+      "address": "006a250f",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "owned",
+      "evidence": "Whole52B PE/live body, exact current start and resolved E8; canonical row only."
+    },
+    {
+      "function": "006a2b70",
+      "address": "006a2b86",
+      "native": "006a1b70",
+      "kind": "call",
+      "scope": "owned",
+      "evidence": "Whole52B PE/live body, exact current start and resolved E8; canonical row only."
+    },
+    {
+      "function": "006a2b70",
+      "address": "006a2b8f",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "owned",
+      "evidence": "Whole52B PE/live body, exact current start and resolved E8; canonical row only."
+    },
+    {
+      "function": "006a1df0",
+      "address": "006a1e06",
+      "native": "0069fe70",
+      "kind": "call",
+      "scope": "read_only_scalar_reference",
+      "evidence": "Whole52B PE/live body, exact current start and resolved E8; canonical row only."
+    },
+    {
+      "function": "006a1df0",
+      "address": "006a1e0f",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "read_only_scalar_reference",
+      "evidence": "Whole52B PE/live body, exact current start and resolved E8; canonical row only."
+    }
+  ],
+  "contracts": {
+    "capture": "head(tree+4) then head.left, unconditionally; same owners/capturedendpoints/privateignored8B output to actual fullrange.",
+    "actual_ranges": "Scalar whole69FE70 has no RawCtx; int/string whole6A1B70 has real8Bcarrier+borrowedRawCtx.",
+    "post_success": "Reload CURRENT head for currentCRTfree; head0 before count0; return DWORD0.",
+    "exceptions": "Child failure propagates after itsprogress before wrapperfree/stores; no ownEH/guard/retry/rollback/payloadcleanup. Currentfree noexcept.",
+    "new_Source": "Canonical childunusedEDX0; compiler/private pushes/frames differ. Native EAXzero before publicstores, emittedSource afterstores: semantic return only."
+  },
+  "accepted_published_provider_LF_blob_sha256": {
+    "src/native_input_default_scalar_tree_destroy.cpp": "f814b1bb4e711a070e9fe43732ea92a91a14c5e48d5e19d4d987f72a8fd538af",
+    "include/bsp/native_input_default_scalar_tree_destroy.hpp": "ed6233e72b7e699697f311e1ebcba75e5146b5c28bb33d5d9ef4bf617768edcf",
+    "src/native_input_default_scalar_tree_range.cpp": "3d2ac9c442f1250b1c1d2e97e9c6446a0b0b63d203f403db90bae1aa4a62991f",
+    "include/bsp/native_input_default_scalar_tree_range.hpp": "3459c9c076f499a2a087770fdebeca84894cb466ef511b6d9d5f945370a3c7de",
+    "src/native_input_int_string_tree_range.cpp": "f60e51ce99db26e353ebe09110c47df780a0a5ae1c18c7f6e12f12515146d09a",
+    "include/bsp/native_input_int_string_tree_range.hpp": "0743c36a40f3f6805dfd9eaefb10bc00261a2247f59d972d8ba3979a68d61efc",
+    "src/native_input_int_string_tree_erase.cpp": "e92d08b28e44e8f089b1f1d276b3fccdb58436dae2e32587ad3a8ddeeb68d8fe",
+    "include/bsp/native_input_int_string_tree_erase.hpp": "cea7c46fcc0b28ea2626a7bbc52a220c1ab10e8f8cad9631030eb4f5c82a50ee",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+  },
+  "provider_hash_note": "Only physicalCRLF-toLF normalization for publishedGit provideridentity; raw Native/COFF equality is unnormalized.",
+  "prior_provenance": "Established STL names and all earlier AV/typed/narrow storage Source/fixtures retained. No publicreference6A1DF0delegate/genericKind/model/provider/callback/parent/unwind promotion.",
+  "limits": [
+    "Valid reached actualtree/head/node storage, currentCRT and borrowedpoolownership.",
+    "Unsigned32 wrapping rawvolatileDWORDs; private stack/argument/register/flags differ.",
+    "Original heap/CRT/FH3/RTTI/SEH/fault/cleanupfailure/binaryABI/game equivalence unproved.",
+    "Existing suites do not execute newentries; no newtests/probes/nativeexecution."
+  ],
+  "CMake_registration": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_input_tree_destroy_instances.cpp)",
+  "verification": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "target": "MSVC Win32",
+      "log": "local\\oct15_native_input_tree_destroy_instances_build.log",
+      "log_sha256": "e7f0000471e7da7337a23aeb195c1f24a695cf45b11b87805be87f108aa94800",
+      "existing_suites": [
+        {
+          "name": "reconstructed_math",
+          "result": "pass",
+          "seconds": 0.23
+        },
+        {
+          "name": "native_math_differential",
+          "result": "pass",
+          "seconds": 0.04
+        },
+        {
+          "name": "tool_tests",
+          "result": "pass",
+          "seconds": 8.65
+        }
+      ],
+      "total_seconds": 8.98,
+      "new_tests": 0,
+      "scope": "Existing suites do not execute these new destroy instances; no probe/Native/game/ABI validation."
+    },
+    "native": {
+      "owned_bytes": 260,
+      "owned_starts": 115,
+      "owned_CALLs": 10,
+      "reference_bytes": 52,
+      "reference_starts": 23,
+      "reference_CALLs": 2,
+      "all_exact_current_starts": 138,
+      "gaps": 0,
+      "all_PE_live_equal": true,
+      "only_two_proved_E8_operands_normalized": true
+    },
+    "COFF": {
+      "path": "local\\oct15_native_input_tree_destroy_instances_coff.json",
+      "sha256": "0012b457ecfb130191b19b378cd280a4863780eebc9063e8fed07e351b0943a7",
+      "object_sha256": "3c612cbc3bc7ed43c0ea77b4e8ccea0c91424cc4b77aae40bfb103031abb7440",
+      "object_bytes": 3228,
+      "total_code_bytes": 375,
+      "total_instruction_count": 159,
+      "public_bytes": 325,
+      "public_starts": 133,
+      "helper_bytes": 50,
+      "helper_starts": 26,
+      "code_REL32": 10,
+      "noncode_relocations": 0,
+      "padding_NOP_or_INT3": 0,
+      "checks_passed": 12,
+      "review_complete": true
+    },
+    "native_transfer_check": {
+      "status": "pass",
+      "rows_checked": 12,
+      "owned_rows": 10,
+      "read_only_reference_rows": 2,
+      "failed": 0,
+      "log": "local/oct15_native_input_tree_destroy_instances_report_calls.txt",
+      "log_sha256": "6f3609b3d3702107ba11377e0ce7a6a466dcd856f64fbcd29a4b96e8bde3d5fc"
+    },
+    "Markdown_transfer_check": {
+      "status": "pass",
+      "claims_checked": 12,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "log": "local/oct15_native_input_tree_destroy_instances_markdown_calls.txt",
+      "log_sha256": "d87d48b0c97fcaf3a10f69780606d9bc3c828a0a00299d4b5bc9f0667d36598a"
+    },
+    "git_diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "scope": "Seven owned paths; five names plus five wholefunction records, zero old records removed; exactly one localCMake append."
+    },
+    "new_tests_or_probes": 0,
+    "index_if_stale_exit_code": 0
+  },
+  "ignored_native_evidence": "local/oct15_native_input_tree_destroy_instances_evidence.json",
+  "ignored_native_evidence_sha256": "173ca9afb29235e03972888b7faed0a4d90d9861093731b8bff7623899d3fb77",
+  "Source_COFF": {
+    "path": "local\\oct15_native_input_tree_destroy_instances_coff.json",
+    "sha256": "0012b457ecfb130191b19b378cd280a4863780eebc9063e8fed07e351b0943a7",
+    "object_sha256": "3c612cbc3bc7ed43c0ea77b4e8ccea0c91424cc4b77aae40bfb103031abb7440",
+    "object_bytes": 3228,
+    "total_code_bytes": 375,
+    "total_instruction_count": 159,
+    "public_bytes": 325,
+    "public_starts": 133,
+    "helper_bytes": 50,
+    "helper_starts": 26,
+    "code_REL32": 10,
+    "noncode_relocations": 0,
+    "padding_NOP_or_INT3": 0,
+    "checks_passed": 12,
+    "review_complete": true,
+    "object_path": "build/win32/bsp_core.dir/Release/native_input_tree_destroy_instances.obj"
+  }
+}
