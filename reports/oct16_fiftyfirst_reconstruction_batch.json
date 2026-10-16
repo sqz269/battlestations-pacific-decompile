@@ -1758,10 +1758,6 @@
       38,
       20
     ],
-    "padding": [
-      7,
-      7
-    ],
     "relocations": 24,
     "CODE_and_symbolic_relocations_equal_worker": false,
     "whole_object_identity_claimed": false,
@@ -1787,7 +1783,19 @@
     "immutable_object_copy": {
       "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\object_archive\\sha256\\1b14948dd04a00ad3d500e4ffb15da1b32a4f9f8dc0467218a9402e8e9e393f2.obj",
       "sha256": "1b14948dd04a00ad3d500e4ffb15da1b32a4f9f8dc0467218a9402e8e9e393f2"
-    }
+    },
+    "INT3_padding": [
+      5,
+      5
+    ],
+    "handler_entry_NOP_instructions": [
+      2,
+      2
+    ],
+    "CODE_excluding_all_seven": [
+      462,
+      163
+    ]
   },
   "compiler_qualifications": [
     "Source state-1 atED precedes raw OWNER/NODE/DATA F4/F6/F9 despite Source guard semantics through captures; nonthrowing loads excluded byEHsc; noOriginalrawfaultscope proof.",
