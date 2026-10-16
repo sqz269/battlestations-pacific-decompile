@@ -42505,8 +42505,8 @@
     },
     {
       "id": "cc12_native_crt_memcmp_00c1ef55",
-      "done": false,
-      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
       "source_ready": true,
       "function_addresses": [
         "00c1ef55"
@@ -42536,7 +42536,7 @@
         "sha256": "2512453ba5caa8930dacc29720403f71d384cc790e50537cb7e43b1f23636c57",
         "two_gap_bytes_not_owned": true
       },
-      "Main_gate": "pending_normal_Main_build_and_independent_actual_variant_archive_review",
+      "Main_gate": "pass",
       "output_files": [
         "include/bsp/native_crt_memcmp.hpp",
         "src/native_crt_memcmp.cpp",
@@ -42549,13 +42549,15 @@
       ],
       "code_revision": "db612fba4193f7a76ea2dca23f27cb178afcd742",
       "primary_review": "reports/cc12_native_crt_memcmp_primary_review.json",
-      "Main_build_gate": "pending",
-      "actual_compiler_archive_gate": "pending"
+      "Main_build_gate": "pass_3_existing_CTests",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_native_crt_memcmp_Main_validation.json",
+      "whole_ordinary_function_credit": 1
     },
     {
       "id": "cc12_native_crt_wcsncmp_00bfdcb7",
-      "done": false,
-      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
       "source_ready": true,
       "function_addresses": [
         "00bfdcb7"
@@ -42574,7 +42576,7 @@
         "No SDK wcsncmp/memcpy/search, byte-only substitution, copied storage, validation/fallback/provider/global/TLS/caller binding. Exclude invalid reached reads, wrapping advances, mutable/indeterminate payload, lifetime changes, concurrency, MMIO/volatile observation and faults. Preserve Original RHS-before-LHS pointer-home-load fact in documentation, without claiming new compiler physical home/fault order or stack/register/flag/segment/EH/binary ABI/runtime/game identity.",
         "Worker owns only four Source files and local evidence; Root owns registration/ledger/Ghidra/Main. One genuine strict compile with actual before input pins and complete actual code/data/symbol/relocation/metadata review. No separate unregistered whole-worker baseline requested, no tests/probes/body execution; Root registered Main build and actual Main object/archive gates remain pending."
       ],
-      "Main_gate": "pending_normal_Main_build_and_independent_actual_variant_archive_review",
+      "Main_gate": "pass",
       "output_files": [
         "include/bsp/native_crt_wcsncmp.hpp",
         "src/native_crt_wcsncmp.cpp",
@@ -42586,13 +42588,15 @@
       ],
       "code_revision": "c590710ae230135ead4f96979a915e00483cc4a4",
       "primary_review": "reports/cc12_native_crt_wcsncmp_primary_review.json",
-      "Main_build_gate": "pending",
-      "actual_compiler_archive_gate": "pending"
+      "Main_build_gate": "pass_3_existing_CTests",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_native_crt_wcsncmp_Main_validation.json",
+      "whole_ordinary_function_credit": 1
     },
     {
       "id": "cc12_native_crt_wcschr_00bfd6c1",
-      "done": false,
-      "state": "whole_ordinary_Original_readiness_primary_peer_pass_Source_authorized_compiler_Main_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
       "source_ready": true,
       "function_addresses": [
         "00bfd6c1"
@@ -42617,6 +42621,86 @@
         "Approve private addressed MOVZX WORD16 helper with MSVC Win32 inlineassembly over genuine rawbyte storage, fullyinitializing zeroextended32bit output. Spell terminalNUL reread as separate sequencedoperation. No typedwideobject lifetime/alias assumption or portableISOclaim. Actual entire strict/Main objects mustverify accesswidth, readorder, NULonlyreread, branches/bounds, symbol/metadata/call/provider closure.",
         "No SDKwcschr/memcpy/search, byte-only/dwordsubstitute, provider/global/TLS/fallback/runtimevalidation/callerbinding. Exclude faults, mutation/concurrency, indeterminatebytes, lifetimechanges andMMIO/volatileobservationprotocols. PreserveOriginal pointerhome/targethome/order as evidence only; no physicalABI/register/stack/flags/segment/EH/instruction/bus/fault/runtime/gamecredit.",
         "Worker owns exactlyfourSource/header/doc/reportfiles plus ownnewlocalevidence. Root owns registration, ledgers/names, supported Ghidraannotation/export andMain. Before every Sourcewrite hold entry, entire34Brange andallfourfiles. One actual strictMSVCWin32compile with genuinebeforepins/actualdependencyclosure and wholeartifactreview; no separate unregisteredworkerbaseline, newtests/probes/bodyexecution. Root Mainbuild/actualvariant/archive andindependentSourcegates remain."
+      ],
+      "Main_gate": "pass",
+      "code_revision": "9d738703d1fb3c7f3a81a1842bd609d0433868e1",
+      "primary_review": "reports/cc12_native_crt_wcschr_primary_review.json",
+      "Main_build_gate": "pass_3_existing_CTests",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_native_crt_wcschr_Main_validation.json",
+      "whole_ordinary_function_credit": 1
+    },
+    {
+      "id": "cc12_native_crt_strcspn_00bf9a50",
+      "done": true,
+      "state": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
+      "source_ready": true,
+      "function_addresses": [
+        "00bf9a50"
+      ],
+      "code_ranges": [
+        "00bf9a50-00bf9a95"
+      ],
+      "output_files": [
+        "include/bsp/native_crt_strcspn.hpp",
+        "src/native_crt_strcspn.cpp",
+        "docs/NATIVE_CRT_STRCSPN.md",
+        "reports/native_crt_strcspn.json"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [],
+      "readiness": "reports/cc12_native_crt_strcspn_readiness.json",
+      "contract": [
+        "New MSVC Win32 default potentially throwing API: unsigned int __cdecl bsp::count_native_crt_prefix_excluding_00bf9a50(const void* actual_source,const void* actual_reject). Keep correct library name _strcspn. BYTE8, pointer/unsignedint32; no signed-char, Unicode/locale/codepage/case/collation interpretation.",
+        "MSVC Win32, BYTE8, pointer/unsigned int32. Read external data as unsigned BYTE values0..255; no signed-char, Unicode, locale, codepage, case or collation interpretation.",
+        "Require a finite genuine live stable determinate readable reject byte sequence through its first NUL. It is always completely read first, even for an empty source string. Require genuine live stable readable source bytes only through the first reached NUL or nonzero reject member. An earlier reject hit needs no unused later-NUL extent.",
+        "Each reached BYTE read lies in its actual allocation. Reject advances and source advances are nonwrapping and stay within or one past their corresponding allocation. Original advances source after every nonzero byte before membership, including a terminal hit; permit that one-past endpoint but never dereference it.",
+        "Admit unaligned byte addresses, interior regions and stable identical/overlapping/read-only source/reject aliases. No padding, typed WORD/DWORD input ownership or arbitrary signed-count cap. Inputs need not share an allocation with each other.",
+        "Use a genuine private zero-initialized256-bit bitmap. Read every reject BYTE exactly once in order through NUL; set bits only for nonzero reject bytes, including duplicate-bit writes without skipping external reads. Bit0 remains clear.",
+        "After reject NUL, read source BYTEs once in order. Test source NUL before membership; NUL returns current prefix count without advancing or reading bitmap. Nonzero advances the genuine source pointer by one before membership. First set bit returns the prefix count; an absent bit continues.",
+        "Return exact unsigned32 number of preceding nonzero nonmembers, excluding the terminal NUL/reject member. The finite nonwrapping ordinary prefix/count must fit unsigned32. No normalized sign, signed subtraction, pointer subtraction or arbitrary INT_MAX cap.",
+        "No payload writes, final rereads, scan after stop, source pre-read before reject completion, early empty-string/reject shortcut, copied input, SDK strcspn/memcpy/search, runtime validation, fallback, provider, global/TLS or caller binding.",
+        "Exclude faults, invalid/indeterminate reached bytes, mutation/concurrency, lifetime changes, MMIO/volatile protocols and native callee bitmap/frame/argument-home/saved-register self-alias protocols. Do not invent native scratch-block identity or a Source parameter for it. Ordinary caller-owned stack storage remains admissible when stable and disjoint from the callee frame; source/reject may still alias each other.",
+        "Approve separately sequenced volatile unsigned BYTE payload reads over genuine passed storage, plus genuine private8unsigned32 bitmap objects with bounded unsigned word index byte>>5 and mask1U<<(byte&31). Initialize all8words explicitly (volatile private words are permitted) to avoid an introduced SDK/memset/provider dependency. No portable physical-native-frame or scratch-identity claim. Strict/Main full artifact review must verify initialization, all bitmap accesses/index bounds, payload widths/read order/stops, exact unsignedcount, all frame/metadata/symbol/provider closure.",
+        "Worker owns exactly4Source/header/doc/reportfiles and new local evidence; Root owns registration/ledgers/names/supportedGhidraannotation/export/Main. Before any Sourcewrite claim entry, entire70Brange and all4files. One actual strictMSVCWin32compile with genuine freshbeforepins/actualdependencyclosure and whole strictobject review. No separate wholeworkerbaseline, newtests/probes/selectedbodyexecution/SDKcomparison. Root independentSource/compiler/normalMainactualvariant/archive gates remain."
+      ],
+      "Main_gate": "pass",
+      "code_revision": "bd126bbb32804ed9f6a854939b068ab12b71ac89",
+      "primary_review": "reports/cc12_native_crt_strcspn_primary_review.json",
+      "Main_build_gate": "pass_3_existing_CTests",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_native_crt_strcspn_Main_validation.json",
+      "whole_ordinary_function_credit": 1
+    },
+    {
+      "id": "cc12_native_crt_strpbrk_00bff1d0",
+      "done": false,
+      "state": "whole_ordinary_Original_readiness_primary_peer_pass_Source_authorized_compiler_Main_pending",
+      "source_ready": true,
+      "function_addresses": [
+        "00bff1d0"
+      ],
+      "code_ranges": [
+        "00bff1d0-00bff20f"
+      ],
+      "output_files": [
+        "include/bsp/native_crt_strpbrk.hpp",
+        "src/native_crt_strpbrk.cpp",
+        "docs/NATIVE_CRT_STRPBRK.md",
+        "reports/native_crt_strpbrk.json"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [],
+      "readiness": "reports/cc12_native_crt_strpbrk_readiness.json",
+      "contract": [
+        "New MSVC Win32 default potentially throwing API void* __cdecl bsp::find_native_crt_first_member_00bff1d0(void* actual_source,const void* actual_control). Keep correct Original library name _strpbrk. BYTE8, pointer/unsignedint32; unsigned byte values0..255, no Unicode/locale/codepage/case/signed-char interpretation.",
+        "Require genuine live stable determinate readable control bytes through finite first NUL, always read completely before any source payload even for empty source. Source needs only reached readable bytes through first NUL or first nonzero control member; early hit requires no unused later terminator or full string extent. No null guard/count-zero exception or runtime validation.",
+        "Admit raw unaligned/interior/prefix/read-only/identical/overlapping inputs and ordinary stable caller-owned stack byte regions. Each input has its own genuine allocation; actual reached advances do not wrap and stay within or one past it, including terminal nonzero source increment; never dereference one-past. No padding, typed wider input objects, signed cap or copied allocation.",
+        "Read every control BYTE once per visited position through NUL, set only nonzero control bits in a genuine private256bit bitmap; duplicate values retain all input reads and bit updates. Control NUL never sets bit0. Then read each reached source BYTE once. Explicit source NUL stop precedes membership and its own advance and returns null; nonzero advances actual cursor before membership. First member returns genuine saved current source pointer without payload reread; absent member continues. Empty control still scans source; overlap can read the same storage once in each separate phase.",
+        "Result is the actual borrowed first-member pointer or null, with no ownership/lifetime/access-permission transfer. Spell saved genuine current pointer and explicit cursor advance; no before-base transient pointer or pointer subtraction needed. Compiler scheduling of private cursor variables is not Original instruction/fault identity and must be explained in actual artifact review.",
+        "Approve separately sequenced volatile unsigned BYTE input reads plus eight separate genuine volatile unsigned32 scalar words explicitly initialized0. Use unsigned index byte>>5 and mask1U<<(byte&31), bounded binary branch selection of one actual private word. Avoid array/aggregate GS buffer, switch/table, helper function, compiler memset/provider. Each selected word and shift must be proven bounded by actual full object. No invented native scratch parameter or frame identity.",
+        "No SDK search/copy/strpbrk/memcpy, fallback, global/TLS/provider, validation, caller binding, or call to the new strcspn interface. No extra final read, after-stop read, early empty-input shortcut or input stores. Native frame/home/saved-register/private-bitmap alias protocols, faults, MMIO/volatile protocols, mutation/concurrency and lifetime changes excluded. No Original physicalABI/register/stack/flags/segment/EH/instruction/bus/fault/runtime/game credit.",
+        "Worker owns exactly4Source/header/doc/reportfiles and new local evidence. Root owns sharedregistration/ledgers/names/supportedGhidraannotation/export/Main. Before Sourcewrite claim entry, whole64Brange and4files. One sole strictMSVCWin32compile after genuinefresh beforepins/actualdependencyclosure, all code/sections/symbols/aux/strings/relocs/frame/provider review. Future normalMain/Oy- object/archive gate separate; no forcedmatchingcompile, workerbaseline, tests/probes/selectedbodyexecution/SDKcomparison."
       ],
       "Main_gate": "pending_Source_independent_strict_and_registered_Main_actual_variant_archive_review"
     }

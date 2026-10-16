@@ -28,3 +28,200 @@ void* copy_construct_native_gui_frame_box_record_00ad0c60(
     void* actual_destination, const void* actual_source,
     NativeStringRawPoolContext& actual_strings);
 } // namespace bsp
+
+
+#include <cstdint>
+
+namespace bsp {
+class NativeRenderActualOwners;
+
+enum class NativeGuiFrameBoxRecordReleasePhase : std::uint8_t {
+    fresh, entered, returned, failed
+};
+
+// Explicit Source orchestration metadata, not an Original object/stack layout.
+// Prepare this SAME persistent object outside the failing scope, with the full
+// actual record/resource/name/services graph already retained BEFORE entry.
+// It owns none of that graph. Access is externally serialized; metadata stays
+// live/stable and disjoint from record/resource/buffer/provider scratch storage.
+// Captured pointers are diagnostics only, possibly freed/reused after a terminal.
+// Phase flags mark Source scheduling, not Native instruction/exception origin.
+// zero_dispatch_entered includes registry lookup; normal_name_return_entered
+// covers getter+return, so the getter can fail before BD1510.
+// There is no reset, replay, rollback, count gate or graph-cleanup operation.
+// Destroying entered/failed metadata terminates without inspecting the graph;
+// fresh/returned destruction reads metadata only. This fail-closed rule is NEW
+// Source orchestration, not recovered Original destructor or FH3 behavior.
+class NativeGuiFrameBoxRecordReleaseOperation final {
+public:
+    NativeGuiFrameBoxRecordReleaseOperation() noexcept = default;
+    ~NativeGuiFrameBoxRecordReleaseOperation() noexcept;
+    NativeGuiFrameBoxRecordReleaseOperation(const NativeGuiFrameBoxRecordReleaseOperation&) = delete;
+    NativeGuiFrameBoxRecordReleaseOperation& operator=(const NativeGuiFrameBoxRecordReleaseOperation&) = delete;
+    NativeGuiFrameBoxRecordReleaseOperation(NativeGuiFrameBoxRecordReleaseOperation&&) = delete;
+    NativeGuiFrameBoxRecordReleaseOperation& operator=(NativeGuiFrameBoxRecordReleaseOperation&&) = delete;
+
+    NativeGuiFrameBoxRecordReleasePhase phase() const noexcept { return phase_; }
+    void* record_identity() const noexcept { return record_; }
+    void* captured_resource_identity() const noexcept { return resource_; }
+    bool resource_decremented() const noexcept { return resource_decremented_; }
+    std::int32_t count_after_decrement() const noexcept { return count_after_decrement_; }
+    bool zero_dispatch_entered() const noexcept { return zero_dispatch_entered_; }
+    bool zero_dispatch_returned() const noexcept { return zero_dispatch_returned_; }
+    bool resource_cleared() const noexcept { return resource_cleared_; }
+    bool name_action_armed() const noexcept { return name_action_armed_; }
+    bool name_action_consumed() const noexcept { return name_action_consumed_; }
+    void* captured_normal_name_identity() const noexcept { return name_data_; }
+    std::uint32_t captured_normal_name_size() const noexcept { return name_size_; }
+    bool normal_name_return_entered() const noexcept { return normal_name_return_entered_; }
+    bool normal_name_returned() const noexcept { return normal_name_returned_; }
+    bool failure_name_cleanup_entered() const noexcept { return failure_name_cleanup_entered_; }
+    bool failure_name_cleanup_returned() const noexcept { return failure_name_cleanup_returned_; }
+private:
+    friend void release_native_gui_frame_box_record_00ad0860(void*, NativeRenderActualOwners&,
+        NativeStringRawPoolContext&, NativeGuiFrameBoxRecordReleaseOperation&);
+    NativeGuiFrameBoxRecordReleasePhase phase_{};
+    void* record_{};
+    void* resource_{};
+    void* name_data_{};
+    std::int32_t count_after_decrement_{};
+    std::uint32_t name_size_{};
+    bool resource_decremented_{}, zero_dispatch_entered_{}, zero_dispatch_returned_{};
+    bool resource_cleared_{}, name_action_armed_{}, name_action_consumed_{};
+    bool normal_name_return_entered_{}, normal_name_returned_{};
+    bool failure_name_cleanup_entered_{}, failure_name_cleanup_returned_{};
+};
+
+// Whole AD0860 [AD0860,AD08DE): native ECX actual2Ch record, no stacked args,
+// RET. This explicit Source interface is NOT that private binary/exception ABI.
+// Actual storage/counts are live DWORD-aligned raw objects in the genuine helper
+// domain, not typed widget/projection owners. One operation per owning lifetime;
+// even a different fresh operation must not replay an interrupted/released record.
+//
+// Borrow the SAME renderer actual registry (via NativeRenderActualOwners) and
+// SAME NativeStringRawPoolContext/publication/gate/raw-manager cells. The ONLY
+// established zero family is a genuine completed canonical registered2D creator:
+// current D61948, actual slot00 BD30E0/slot04 B3F590, same texture context/pool.
+// This provenance is a caller domain precondition, not an arbitrary companion
+// adapter. Positive-count return performs no registry lookup. No new owner,
+// fallback terminal, fake profile, implicit retain or pool is supplied here.
+// All graph/services/cells and metadata outlive the applicable terminal/name
+// actions. Caller retains entered failure outside the unwinding scope; stale
+// record links/captured pointers are NOT ownership or healthy retry capability.
+//
+// Capture resource before arming name cleanup; decrement once, dispatch only
+// observed zero, clear record+0 ONLY in the captured-nonnull branch on success.
+// Capture normal name DATA before consuming its cleanup action, then CURRENT
+// length+1 before the real pool getter/return. The name header remains unchanged.
+// A resource-service escape consumes the action BEFORE genuine41DD20; cleanup
+// escape terminates. A normal getter escape never retries name cleanup.
+// Win32 atomic service/IAT identity and private Native FH3/double-exception ABI
+// are not claimed. Existing canonical Entry zero terminals are noexcept and
+// terminate on failure: those failures cannot unwind into the name action.
+void release_native_gui_frame_box_record_00ad0860(void* actual_record,
+    NativeRenderActualOwners& actual_owners, NativeStringRawPoolContext& actual_strings,
+    NativeGuiFrameBoxRecordReleaseOperation& operation);
+} // namespace bsp
+
+
+#include <cstddef>
+
+namespace bsp {
+enum class NativeGuiFrameBoxVectorTidyPhase : std::uint8_t {
+    fresh, entered, returned, failed
+};
+
+// Required preparation owns ONLY Source scheduling metadata, never a vector,
+// allocation, resource, registry, pool or retained graph. No default/copy/move.
+// Construct outside the failing scope, BEFORE entry/callbacks, over one stable
+// array of distinct fresh111 operations for the exact constructed2Ch range.
+// A null expected first uses null expected end and an empty span WITHOUT any
+// raw-header snapshot; actual null begin later skips the actual end read.
+// Known header/constructed-range/metadata regions and fresh phases are checked.
+// Constructor validation precedes its first metadata field store; this does
+// not restore object lifetimes or legalize invalid C++ placement.
+// Full backing extents, live storage, matching SDK heap, resource/provider/
+// scratch disjointness and independent ownership remain caller proofs.
+// Providers/external callbacks cannot mutate this operation or its prepared
+//111 metadata; only this engine and its direct111 calls advance that metadata.
+// Access is externally serialized. Captured pointers are diagnostics, possibly
+// stale after release/free. No reset, retry, rollback or automatic graph cleanup.
+// Entered/failed destruction terminates using metadata only; fresh/returned
+// destruction reads metadata only. These are explicit NEW Source rules, not
+// Original object/destructor/FH3 behavior. A different operation cannot replay
+// the same released/interrupted vector lifetime.
+class NativeGuiFrameBoxVectorTidyOperation final {
+public:
+    NativeGuiFrameBoxVectorTidyOperation(void* actual_header, void* expected_first,
+        void* expected_end, NativeGuiFrameBoxRecordReleaseOperation* fresh_records,
+        std::size_t record_count);
+    ~NativeGuiFrameBoxVectorTidyOperation() noexcept;
+    NativeGuiFrameBoxVectorTidyOperation(const NativeGuiFrameBoxVectorTidyOperation&) = delete;
+    NativeGuiFrameBoxVectorTidyOperation& operator=(const NativeGuiFrameBoxVectorTidyOperation&) = delete;
+    NativeGuiFrameBoxVectorTidyOperation(NativeGuiFrameBoxVectorTidyOperation&&) = delete;
+    NativeGuiFrameBoxVectorTidyOperation& operator=(NativeGuiFrameBoxVectorTidyOperation&&) = delete;
+
+    NativeGuiFrameBoxVectorTidyPhase phase() const noexcept { return phase_; }
+    void* header_identity() const noexcept { return header_; }
+    void* expected_first_identity() const noexcept { return expected_first_; }
+    void* expected_end_identity() const noexcept { return expected_end_; }
+    std::size_t prepared_record_count() const noexcept { return record_count_; }
+    void* captured_first_identity() const noexcept { return captured_first_; }
+    void* captured_end_identity() const noexcept { return captured_end_; }
+    bool end_captured() const noexcept { return end_captured_; }
+    void* cursor_identity() const noexcept { return cursor_; }
+    std::size_t completed_records() const noexcept { return completed_; }
+    void* free_identity() const noexcept { return free_identity_; }
+    bool free_entered() const noexcept { return free_entered_; }
+    bool free_returned() const noexcept { return free_returned_; }
+    bool header_cleared() const noexcept { return header_cleared_; }
+private:
+    friend void tidy_native_gui_frame_box_vector_00ad21b0(void*, NativeRenderActualOwners&,
+        NativeStringRawPoolContext&, NativeGuiFrameBoxVectorTidyOperation&);
+    void* const header_;
+    void* const expected_first_;
+    void* const expected_end_;
+    NativeGuiFrameBoxRecordReleaseOperation* const records_;
+    const std::size_t record_count_;
+    NativeGuiFrameBoxVectorTidyPhase phase_{};
+    void* captured_first_{};
+    void* captured_end_{};
+    void* cursor_{};
+    std::size_t completed_{};
+    void* free_identity_{};
+    bool end_captured_{}, free_entered_{}, free_returned_{}, header_cleared_{};
+};
+
+// Whole AD21B0 [AD21B0,AD21F6), ECX actual16B header, RET. AD2320 is the
+// existing undefined five-byte tail to it. These Source APIs add explicit
+// services/preparation; neither reproduces Original binary/private-EH ABI.
+// Header+0 is untouched; +4/+8/+C are actual raw DWORD cells, not std::vector.
+// Borrow SAME actual owners/strings and ONLY111's genuine registered2D family.
+// All records are successfully constructed owners; a failed103 record is NOT
+// eligible. AD1910 committed-prefix rollback is a separate unprovided caller.
+//
+// Caller independently retains the full graph, captured record backing, any
+// current matching SDK-free allocation, header and prepared metadata BEFORE
+// entry and through all applicable actions. Header/metadata cannot be inside
+// freed backing. Later header changes do not revoke captured range lifetime.
+// CURRENT header+4 after callbacks must be null or a valid std::free-compatible
+// Source allocation base; no Original/private/foreign heap or new/delete/pool
+// compatibility is inferred. Do not discover retention from container links.
+//
+// Fresh/identity/known-region/metadata preflight rejections precede raw effects
+// and leave the operation fresh. Then mark entered and capture begin once;
+// capture end ONLY for nonnull begin. Prepared-range mismatch is sticky entered
+// Source failure before any record callback, not an Original validation rule.
+// Forward111, advance ONLY after return; current begin reload then concrete
+// matching SDK free (even null), then +4/+8/+C zeros. No cached-begin extra free.
+// On any escaping C++ exception retain the failed operation/graph; do not retry
+// a record, free the buffer, or zero the header. Scheduling flags are not a
+// Native instruction/exception-origin claim. Inherit111's atomic/noexcept/
+// compiler-EH limits; SDK free and /EHsc do not supply Native CRT/FH3/SEH proof.
+void tidy_native_gui_frame_box_vector_00ad21b0(void* actual_header,
+    NativeRenderActualOwners& actual_owners, NativeStringRawPoolContext& actual_strings,
+    NativeGuiFrameBoxVectorTidyOperation& operation);
+void cleanup_native_gui_frame_box_vector_00ad2320(void* actual_header,
+    NativeRenderActualOwners& actual_owners, NativeStringRawPoolContext& actual_strings,
+    NativeGuiFrameBoxVectorTidyOperation& operation); // SAME operation, one attempt.
+} // namespace bsp

@@ -1,0 +1,94 @@
+{
+  "packet": "oct15_thirtyseventh_reconstruction_batch",
+  "status": "primary_accepted_Source_integrated_default_Win32_checked",
+  "component": {
+    "pin": "6d2398e8990046f318651c822afc406284aa2d8a",
+    "report": "reports/oct15_native_input_preset_tree_predecessor.json",
+    "frozen_artifacts": {
+      "src/native_input_preset_tree_predecessor.cpp": "1057060a3329dc67ad439d04969e3a18acf9ef04d7749d6c6025f4a1bba26577",
+      "include/bsp/native_input_preset_tree_predecessor.hpp": "d51916c2e5873cca0a3b6b890ecfcc777d2ce77abc046e33e3cc8baeb50ba33f",
+      "docs/OCT15_NATIVE_INPUT_PRESET_TREE_PREDECESSOR.md": "824ea252538d18853ef522f6ffe653aa097a76752a58c24d6e03673bbbb2243b",
+      "reports/oct15_native_input_preset_tree_predecessor.json": "f1e0db35026a9cc44bcdb0acdde50738b025285264b00d13f468963831e62c5c"
+    }
+  },
+  "scope": {
+    "ordinary_entries": 1,
+    "address": "0069aec0",
+    "defined_Native_bytes": 137,
+    "Native_instructions": 48,
+    "Native_alignment_LEA_bytes": 14,
+    "Native_alignment_LEA_instructions": 2,
+    "logical_actions_promoted": 0,
+    "global_unique_Native_coverage_increment_claimed": false
+  },
+  "review": {
+    "primary_checks": 14,
+    "primary_receipt": "local/oct15_preset_predecessor_primary.json",
+    "primary_receipt_sha256": "a7fdfa3e008ef38485ff4bbbef5ba8f7f1192485f915732351fe16edaff85a35",
+    "findings": [],
+    "provider_LF_files_equal_current_Main": 6,
+    "actual_CMake_code_bytes": 175,
+    "actual_CMake_instructions": 75,
+    "public": [
+      121,
+      48
+    ],
+    "helpers": [
+      54,
+      27
+    ],
+    "code_sections": 5,
+    "code_REL32": 2,
+    "debug_DIR32NB": 1,
+    "total_relocations": 3,
+    "EH_or_literal_data_relocations": 0,
+    "public_alignment_NOPs": 1,
+    "final_integrator_object_sha256": "fbb7b0f37cb711617f8327555bdbbe2913bd8aa4e97d2c3f9670180160df4e44",
+    "worker_object_sha256": "f10eeabfae506c255b36a37dcf7718d87c92db9b0a49e28f02181695462089b3",
+    "all_code_and_actual_symbolic_relocations_equal": true
+  },
+  "validation": {
+    "tested_combined_Source": "99240f3545da63d016cd7eec405240b89546f17b",
+    "default_MSVC_Win32": true,
+    "build_log": "local/oct15_batch37_final_build.txt",
+    "build_log_sha256": "53542414d6559fdce5a9c864f1b77433279c1b346cf99e02e55c39180724b129",
+    "existing_suites_passed": 3,
+    "ctest_seconds": 7.92,
+    "new_tests": 0,
+    "new_probes": 0,
+    "Native_packet_execution": false,
+    "JSON_transfer_rows": 3,
+    "Markdown_transfer_claims": 3,
+    "owned_CALLs": 1,
+    "owned_tail_JMPs": 2,
+    "transfer_log": "local/oct15_batch37_transfers.txt",
+    "annotation": {
+      "path": "local/ghidra-annotations-20261016T065955Z.json",
+      "sha256": "0b12909d40a0a7cb4a2378c6bb363eb0bd3daba912846cbb83351d58eead608b",
+      "saved_entries": 1,
+      "preimages_preserved": true
+    },
+    "refreshed_exports": 1,
+    "snapshot": "skipped unchanged76774functions",
+    "index": "rebuilt"
+  },
+  "coordination": {
+    "registry_leases": false,
+    "only_owned_files_staged": true,
+    "worker_frozen_files_unchanged": true,
+    "existing_STL_TreeIter_Dec_name_retained": true
+  },
+  "limits": [
+    "Existing suites exercise older math/tool behavior, not this new predecessor against Native game state.",
+    "Actual existing8Bpreset iterator and literalnil29; NativeECXiterator/unconsumedEDX/noStack/plainRET with incidentalEAX, Source semanticvoid.",
+    "Owner diagnostic mayreturn, then CURRENTnode loads; nilnode publishes capturedright BEFOREitsniltest; bothdiagnostic tails have no further store onreturn.",
+    "Climb reloadsCURRENTiteratornode beforeparent.left comparison, publishesparent beforeparent.parent read, then CURRENTnode.nil beforefinalparentstore. No payload, RawCtx, callback, context, guard, revalidation, catch, rollback or repair.",
+    "Three NativeSDK transfers become two generatedcodeREL32 references due sharedtail; thirdobjectrelocation is debugDIR32NB, not an extra codecallee.",
+    "OriginalSDK/CRT/privateframes/registerflags/FH3SEH/RTTI/fault/heap/binaryABI/game remain unproved. No hint/mapindex/owner promotion."
+  ],
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Verify separately after publication; no self-reference"
+  }
+}

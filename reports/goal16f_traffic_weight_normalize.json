@@ -1,0 +1,459 @@
+{
+  "packet": "goal16f_traffic_weight_normalize",
+  "status": "whole_instruction_mapped_source_registered_build_and_single_actual_frame_alias_fixture_verified_qualified_SDK",
+  "source": "src/native_traffic_weight_normalize.cpp",
+  "header": "include/bsp/native_traffic_weight_normalize.hpp",
+  "document": "docs/GOAL16F_TRAFFIC_WEIGHT_NORMALIZE.md",
+  "source_base": "e4605665f60c2c9622887d9360d1aee106de19d7",
+  "routines": [
+    {
+      "address": "0043ec30",
+      "name": "size_native_traffic_dwords_0043ec30",
+      "coverage": "complete",
+      "native_bytes": 19,
+      "Source_bytes": 19,
+      "native_instructions": 9,
+      "abi": "ECX actual raw header; no EDX or actual incoming stack argument; plain RET; chosen uint32 physical EAX Source result"
+    },
+    {
+      "address": "004809f0",
+      "name": "normalize_native_traffic_weights_004809f0",
+      "coverage": "complete",
+      "native_bytes": 154,
+      "Source_bytes": 150,
+      "native_instructions": 57,
+      "abi": "ECX actual raw header; no EDX or actual incoming stack argument; plain RET; chosen uint32 physical EAX Source result"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00480a00",
+      "native": "0043ec30",
+      "owner": "004809f0",
+      "Source_offset": 16,
+      "Source_operand_offset": 17,
+      "Source_symbol": "?size_native_traffic_dwords_0043ec30@bsp@@YIIPBX@Z"
+    },
+    {
+      "address": "00480a23",
+      "native": "00bf6713",
+      "owner": "004809f0",
+      "Source_offset": 47,
+      "Source_operand_offset": 48,
+      "Source_symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+    },
+    {
+      "address": "00480a3b",
+      "native": "0043ec30",
+      "owner": "004809f0",
+      "Source_offset": 71,
+      "Source_operand_offset": 72,
+      "Source_symbol": "?size_native_traffic_dwords_0043ec30@bsp@@YIIPBX@Z"
+    },
+    {
+      "address": "00480a48",
+      "native": "0043ec30",
+      "owner": "004809f0",
+      "Source_offset": 84,
+      "Source_operand_offset": 85,
+      "Source_symbol": "?size_native_traffic_dwords_0043ec30@bsp@@YIIPBX@Z"
+    },
+    {
+      "address": "00480a64",
+      "native": "00bf6713",
+      "owner": "004809f0",
+      "Source_offset": 112,
+      "Source_operand_offset": 113,
+      "Source_symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+    },
+    {
+      "address": "00480a7d",
+      "native": "0043ec30",
+      "owner": "004809f0",
+      "Source_offset": 137,
+      "Source_operand_offset": 138,
+      "Source_symbol": "?size_native_traffic_dwords_0043ec30@bsp@@YIIPBX@Z"
+    }
+  ],
+  "external_incoming_calls": [
+    {
+      "address": "004a3ba5",
+      "native": "004809f0",
+      "owner": "004a3610"
+    },
+    {
+      "address": "004a3c8d",
+      "native": "004809f0",
+      "owner": "004a3610"
+    },
+    {
+      "address": "004a4efb",
+      "native": "004809f0",
+      "owner": "004a4b70"
+    },
+    {
+      "address": "004a4fef",
+      "native": "004809f0",
+      "owner": "004a4b70"
+    },
+    {
+      "address": "004a599e",
+      "native": "004809f0",
+      "owner": "004a5850"
+    },
+    {
+      "address": "004aa0c5",
+      "native": "004809f0",
+      "owner": "004a9bd0"
+    },
+    {
+      "address": "004aa0cf",
+      "native": "004809f0",
+      "owner": "004a9bd0"
+    },
+    {
+      "address": "004aa0d9",
+      "native": "004809f0",
+      "owner": "004a9bd0"
+    },
+    {
+      "address": "00480acc",
+      "native": "0043ec30",
+      "owner": "00480a90"
+    },
+    {
+      "address": "00480b0e",
+      "native": "0043ec30",
+      "owner": "00480a90"
+    },
+    {
+      "address": "00a0cc5b",
+      "native": "0043ec30",
+      "owner": "00a0c650"
+    },
+    {
+      "address": "00a0ccab",
+      "native": "0043ec30",
+      "owner": "00a0c650"
+    },
+    {
+      "address": "00a0ccbe",
+      "native": "0043ec30",
+      "owner": "00a0c650"
+    },
+    {
+      "address": "00a0ccfd",
+      "native": "0043ec30",
+      "owner": "00a0c650"
+    }
+  ],
+  "provider_Native_call": {
+    "address": "00bf671a",
+    "native": "00bf66ef",
+    "owner": "00bf6713",
+    "Source_qualification": "genuine current SDK import instead of Native private body"
+  },
+  "evidence": {
+    "size_leaf": {
+      "raw_reads": [
+        "begin=[ECX+4] once",
+        "end=[ECX+8] only when begin is nonzero"
+      ],
+      "calculation": "DWORD-wrapped end-begin then signed SAR2; EAX is exposed as uint32 bits",
+      "result_registers": "EAX physical count bits; EDX loaded begin; ECX unchanged",
+      "stack": "no incoming words; no owned stack/data writes except RET; both exits plain RET",
+      "flags": "XOR or SAR instruction effects, including architectural undefined flags; no fabricated flag result"
+    },
+    "normalizer_frame": {
+      "entry": "S=entry ESP; PUSH ECX at S-4, PUSH ESI at S-8, PUSH EDI at S-12; ESI captures ECX",
+      "sum": "XORPS XMM0; MOVSS [S-4],XMM0 overwrites saved entry ECX with positive zero",
+      "late_reads": "Current begin/end are reloaded in each bounds check. After optional genuine returning diagnostic, begin is read again before element access. Each size leaf reads the current header; no bound snapshot. Index ADD and pointer arithmetic keep DWORD wrap. TEST/JBE skips each pass only for freshly read size zero. Unsigned index CMP/JC governs loops and diagnostic checks.",
+      "accumulation": "FLD m32real element; MOV ECX,ESI; FADD m32real actual S-4; ADD EDI,1; FSTP m32real actual S-4; size call; unsigned CMP/JC",
+      "division": "Reload begin; FLD m32real element; LEA captures destination before FDIV m32real actual S-4; MOV ECX,ESI; ADD EDI,1; FSTP m32real captured destination; size call; unsigned CMP/JC",
+      "exit": "POP EDI/ESI/ECX read CURRENT actual saved cells; ECX is current S-4, not necessarily incoming receiver or unchanged sum. Plain RET uses actual current return cell. EAX/EDX are final size-leaf outputs; final TEST/CMP supplies flags. EBX/EBP have no owned writes.",
+      "x87": "No synthesized ST0 return. Each completed nonfaulting own FLD has an FSTP; operations use temporary ST0. Lower stack, pending exceptions, FP environment and genuine diagnostic effects are external machine state, not initialized by Source. XMM0 initially zeroed; no promised final XMM0 after a diagnostic."
+    },
+    "provider": {
+      "Source_entry": "bsp::invoke_native_invalid_parameter_00bf6713()",
+      "Source_contract": "Actual public naked cdecl zero-semantic-argument entry calls selected SDK returning _invalid_parameter_noinfo(void); five physical zero words are unused padding, not invented API arguments. No fake provider/handler/global/guard/snapshot.",
+      "Native_extent": "00BF6713..00BF6722,16B9instructions; actual CALL00BF671A targets00BF66EF",
+      "Source_extent": "17B9instructions, IAT CALL FF15/DIR32 at operand9 rather than Native E8 operand8",
+      "actual_SDK_declaration": "Windows SDK10.0.26100.0/ucrt/corecrt.h:371; distinct noreturn API is line372",
+      "actual_import": "__imp___invalid_parameter_noinfo bound to api-ms-win-crt-runtime-l1-1-0.dll via real bsp_core:native_invalid_parameter_noinfo_call.obj; entire object exact prior Z bytes"
+    },
+    "fixture": {
+      "cases": 1,
+      "Source_runs": 1,
+      "captured_Native_parent_runs": 1,
+      "build_language": "C++17, actual bsp_core.lib only, /MANIFEST:EMBED",
+      "providers": "Actual archive size19 and diagnostic17, six rebased captured-Native154 CALL operands; diagnostic is statically linked and genuine but not executed",
+      "actual_alias": "data=[S-12,S): saved EDI float16777216, saved ESI float1, actual S-4 sum cell initially overwritten with0 by parent. No substituted locals or provider events.",
+      "observed": "First two accumulation spills round16777216+1 to16777216. Third element aliases current sum, producing33554432. Division stores0.5,2^-25,1 to saved EDI, saved ESI, sum. Actual final EDI3F000000/ESI33000000/ECX3F800000; EAX3; EDXactualdata; ESPdelta0. CW037F, SW0020, arithmetic flags masked8D5=44. Source and captured parent pass.",
+      "environment": "Fixture saves/restores FX state and uses FNINIT for this single case; Source installs no environment.",
+      "run_output": "One actual saved-cell/sum alias case: Source=PASS captured-Native154=PASS\neax=00000003 edx_delta=-16 ecx=3f800000 esi=33000000 edi=3f000000 words=3f000000,33000000,3f800000 esp_delta=0 cw=037f sw=0020 flags=00000246\neax=00000003 edx_delta=-16 ecx=3f800000 esi=33000000 edi=3f000000 words=3f000000,33000000,3f800000 esp_delta=0 cw=037f sw=0020 flags=00000246\n"
+    },
+    "preservation": {
+      "Z_pin": "e4605665f60c2c9622887d9360d1aee106de19d7",
+      "Z_receipt_artifacts": 131,
+      "all_Z_files": 134,
+      "actual_prior_registered_inputs": 14,
+      "F_readiness_handoff_sha256": "380f739faa727876c9da891f0410f65cc829474b5b12ef1a6fccb42c769705ff",
+      "Main_merge": "none; warm author base retained with Root authorization"
+    },
+    "build": {
+      "invocations": 2,
+      "initial": {
+        "start_utc": "2026-10-16T06:40:56.0805868Z",
+        "end_utc": "2026-10-16T06:41:15.4287016Z",
+        "elapsed_seconds": 19.3446022,
+        "result": "PASS",
+        "command": "./scripts/build.ps1",
+        "invocations": 1
+      },
+      "after_EOF_only_formatting": {
+        "start_utc": "2026-10-16T06:51:38.3734130Z",
+        "end_utc": "2026-10-16T06:51:57.3005875Z",
+        "elapsed_seconds": 18.924723,
+        "result": "PASS",
+        "command": "./scripts/build.ps1",
+        "invocations": 1
+      },
+      "elapsed_seconds_total": 38.2693252,
+      "initial_existing_checks": [
+        {
+          "name": "reconstructed_math",
+          "result": "PASS",
+          "seconds": 0.21
+        },
+        {
+          "name": "tool_tests",
+          "result": "PASS",
+          "seconds": 7.2
+        }
+      ],
+      "final_existing_checks": [
+        {
+          "name": "reconstructed_math",
+          "result": "PASS",
+          "seconds": 0.22
+        },
+        {
+          "name": "tool_tests",
+          "result": "PASS",
+          "seconds": 8.01
+        }
+      ],
+      "native_reference_seed": "not enabled in worker; Root three-check build separate",
+      "strict": "C++17 /MD /O2 /Gy /W4 /WX /fp:strict /EHsc; four invocations: one compiled ALIGN16 encoding rejected, one C2425 compilation rejected, direct LEA compile PASS, one EOF-only final refresh PASS; all retained",
+      "registered": "C++17 /O2 /Oy- /MD /W4 /WX /fp:strict /EHsc; two actual scripts/build.ps1 invocations, both PASS. No second runtime fixture or relink; whole final executable sections/all symbols/provider bindings equal original fixture archive inputs",
+      "formatting_provenance": {
+        "change": "Only trailing empty Source lines removed; no second runtime fixture or relink",
+        "fixture_actual_archive_sha256": "198f30d263789c25fcd9d37d2f5c5c30dd2c216532c3eba335d41f48ab49525d",
+        "final_current_archive_sha256": "5c3555528a60474e305fdfc2a652aa9eb4e61e0b373e48fc8ba8bfcff87213c5",
+        "whole_current_executable_code_equals_original_fixture_inputs": true,
+        "objects": [
+          {
+            "object": "native_traffic_weight_normalize",
+            "fixture_original_archive_object_sha256": "31401557108cb5a88dcac3fc92e262f9c14dc9dfc1cfa402c9c0a3b8d8f7ac4c",
+            "final_current_archive_object_sha256": "0942ba668de6c7d9a83f63596a364c39c63e9130873953a74af539c1ab075cd2",
+            "whole_executable_sections_and_all_relocations_equal": true,
+            "all_symbols_equal": true,
+            "fixture_original_archive_exact_unique_member_offset": 20053846,
+            "all_sections_before": [
+              {
+                "index": 1,
+                "name": ".drectve",
+                "size": 47,
+                "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab"
+              },
+              {
+                "index": 2,
+                "name": ".debug$S",
+                "size": 216,
+                "sha256": "6db98456b8a4a3b740dbd178eb1ae6c32ebd6bf62a185c81ecf46d2afeef435e"
+              },
+              {
+                "index": 3,
+                "name": ".text$mn",
+                "size": 150,
+                "sha256": "bae8e9941fb02759da03ca120e655ef7e42f6669910374e688eb5d9560bc0341"
+              },
+              {
+                "index": 4,
+                "name": ".text$mn",
+                "size": 19,
+                "sha256": "ae43e511423ed41f29d85edaf2f02b5a752e32ebbe45dd99456242b3c196c50d"
+              },
+              {
+                "index": 5,
+                "name": ".chks64",
+                "size": 40,
+                "sha256": "1add2452f25116d32133a35f8c2f862c8738b6ad81f5ee2653b01a71a43063d5"
+              }
+            ],
+            "all_sections_final": [
+              {
+                "index": 1,
+                "name": ".drectve",
+                "size": 47,
+                "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab"
+              },
+              {
+                "index": 2,
+                "name": ".debug$S",
+                "size": 216,
+                "sha256": "6db98456b8a4a3b740dbd178eb1ae6c32ebd6bf62a185c81ecf46d2afeef435e"
+              },
+              {
+                "index": 3,
+                "name": ".text$mn",
+                "size": 150,
+                "sha256": "bae8e9941fb02759da03ca120e655ef7e42f6669910374e688eb5d9560bc0341"
+              },
+              {
+                "index": 4,
+                "name": ".text$mn",
+                "size": 19,
+                "sha256": "ae43e511423ed41f29d85edaf2f02b5a752e32ebbe45dd99456242b3c196c50d"
+              },
+              {
+                "index": 5,
+                "name": ".chks64",
+                "size": 40,
+                "sha256": "1add2452f25116d32133a35f8c2f862c8738b6ad81f5ee2653b01a71a43063d5"
+              }
+            ]
+          },
+          {
+            "object": "native_invalid_parameter_noinfo_call",
+            "fixture_original_archive_object_sha256": "8abe91799c85b870663ba6e3e2a1d64307ab4486a26d967e0c75b0331664109c",
+            "final_current_archive_object_sha256": "8abe91799c85b870663ba6e3e2a1d64307ab4486a26d967e0c75b0331664109c",
+            "whole_executable_sections_and_all_relocations_equal": true,
+            "all_symbols_equal": true,
+            "fixture_original_archive_exact_unique_member_offset": 83622366,
+            "all_sections_before": [
+              {
+                "index": 1,
+                "name": ".drectve",
+                "size": 47,
+                "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab"
+              },
+              {
+                "index": 2,
+                "name": ".debug$S",
+                "size": 220,
+                "sha256": "436268cc1b72223ef6c4a27dbde3798ca207d540b3670cb263a9810f3b3ee9e2"
+              },
+              {
+                "index": 3,
+                "name": ".text$mn",
+                "size": 17,
+                "sha256": "5ce1b0b5bae89d755da82f6c71920d82e97057881429839cdba3a0c34adc24ad"
+              },
+              {
+                "index": 4,
+                "name": ".chks64",
+                "size": 32,
+                "sha256": "68591298f1dfda2c02facb4932b59d08e2f731ec678c44ebbcf55e902b151ea3"
+              }
+            ],
+            "all_sections_final": [
+              {
+                "index": 1,
+                "name": ".drectve",
+                "size": 47,
+                "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab"
+              },
+              {
+                "index": 2,
+                "name": ".debug$S",
+                "size": 220,
+                "sha256": "436268cc1b72223ef6c4a27dbde3798ca207d540b3670cb263a9810f3b3ee9e2"
+              },
+              {
+                "index": 3,
+                "name": ".text$mn",
+                "size": 17,
+                "sha256": "5ce1b0b5bae89d755da82f6c71920d82e97057881429839cdba3a0c34adc24ad"
+              },
+              {
+                "index": 4,
+                "name": ".chks64",
+                "size": 32,
+                "sha256": "68591298f1dfda2c02facb4932b59d08e2f731ec678c44ebbcf55e902b151ea3"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "whole_machine": {
+      "whole_Native_bytes": 173,
+      "whole_Native_instructions": 66,
+      "whole_strict_Source_bytes": 169,
+      "whole_registered_Source_bytes": 169,
+      "whole_Source_instructions": 66,
+      "Source_own_exec_sections": 2,
+      "public_symbol_offsets": [
+        0,
+        0
+      ],
+      "whole_instruction_operands_and_relative_branch_target_indices_match": true,
+      "qualified_LEA_encoding_shortening": 4,
+      "Native_fixed_bytes_excluding_CALL_operands": 149,
+      "Source_fixed_bytes_excluding_CALL_operands": 145,
+      "true_CALL_operands": 6,
+      "whole_registered_provider_exec_bytes": 17,
+      "provider_objects": 1,
+      "exact_whole_archive_members": 2,
+      "whole_linked_sections": 8,
+      "unselected_exec_sections": 4,
+      "fresh_live_installed_bytes": 13294,
+      "normalizer_incoming_calls": 8,
+      "size_leaf_incoming_calls": 10,
+      "registered_object_sha256": "0942ba668de6c7d9a83f63596a364c39c63e9130873953a74af539c1ab075cd2",
+      "strict_object_sha256": "404025a2f2b3e062f1621c9c409a6018ca7dad32047b9158fd5258f73debb3a4",
+      "archive_sha256": "5c3555528a60474e305fdfc2a652aa9eb4e61e0b373e48fc8ba8bfcff87213c5",
+      "fixture_sha256": "59749afd55d71672b96accc5d2464101b51229c38aef6cb31aa1546fafded961",
+      "diagnostic_provider_object_exact_Z_bytes": true,
+      "no_target_execution_by_this_static_audit": true
+    },
+    "Ghidra": "read-only; current project/program verified before full bytes and typed metadata; old prototypes/names/comments retained; no tag/name/comment/prototype/save mutations by author"
+  },
+  "corrections": [
+    {
+      "was": "Initial named ALIGN16 emitted a seven-byte multi-byte NOP",
+      "is": "Rejected; complete Source+strict object+assembly retained under rejected_align16; final direct named LEA emits3 bytes",
+      "evidence": "Native7-byte LEA vs Source3-byte LEA; all66 instruction operands and branch target indices mapped; no byte embedding"
+    },
+    {
+      "was": "Forward symbolic-label subtraction attempted to select a displacement encoding",
+      "is": "MSVC rejected C2425 non-constant second operand; retained Source under rejected_symbolic_displacement",
+      "evidence": "One rejected compilation; Source then restored direct LEA; final strict compilation and actual registered build pass"
+    },
+    {
+      "was": "Inline shell Python intended to append CMake registration",
+      "is": "Shell quoting rejected before any file write; registration done by exact ignored Python script",
+      "evidence": "SyntaxError unterminated string literal; CMake_one_append verified against original base"
+    },
+    {
+      "was": "Static map-origin assertion included MSVC map f function flag",
+      "is": "Parser now removes only the leading f flag; exact bsp_core object origins and actual operands independently verified",
+      "evidence": "audit.py; no Source/build/fixture modification or rerun"
+    },
+    {
+      "was": "Staged diff check reported extra blank Source lines at EOF; a chained shell command still committed provisional145ad2d73",
+      "is": "Removed only trailing empty lines; retained first complete emission/archive/build/fixture and original Source under pre_eof_formatting. Refreshed strict and registered build; no second runtime fixture or relink. Current whole executable sections, all symbols and all provider bindings equal original fixture archive inputs",
+      "evidence": "Final Source instruction bytes/operands/provider bindings are required identical to preformat code; all invocations/time retained; final pin follows formatting correction"
+    }
+  ],
+  "limits": [
+    "Source is a chosen current MSVC Win32 interface; no Original C++ class/template/declaration or semantic return type is recovered.",
+    "Native173B versus Source169B is a complete instruction mapping, not byte identity. Native7-byte LEA ESP,[ESP] is Source3-byte LEA; initial JBE displacement follows the four-byte shortening. Source code-fetch/instruction addresses, child return addresses, saved x87 FIP/fault addresses and stack cells containing code addresses follow Source placement. Raw return-slot/child-frame/header/data aliases can observe those different code addresses; no universal equal-initial-state or full Native physical ABI identity is claimed.",
+    "Genuine current SDK diagnostic policy and import are used. Original BF66EF encoded handler/debugger/Watson behavior, private CRT/FH3/RTTI, exception/fault/unwind identity and C++ exception propagation through the naked parent remain unproved.",
+    "One concrete fixture uses FNINIT in the fixture only and executes both passes with nonzero sum and actual saved-register/sum/data alias. Diagnostic return, empty/malformed/negative-size or wrapped ranges, zero-sum division, NaN/infinity/denormal, unmasked traps, alternate rounding/precision modes and deeper x87 stack states are not runtime tested.",
+    "No control-word/status/MXCSR/x87-stack repair or exceptional-value guard exists in Source. Literal FP opcodes and operand widths retain instruction-driven behavior; unexecuted FP cases have no invented payload/status/exception results.",
+    "Existing Left8bHost weights_normalize callback is an abstract orchestration boundary, not this physical provider. Other size consumers, whole physical parents, mutable global/header producers and game reachability/adoption remain OPEN. T/X/Z fixtures do not extend runtime proof into this parent."
+  ],
+  "runtime_game_validation": false
+}

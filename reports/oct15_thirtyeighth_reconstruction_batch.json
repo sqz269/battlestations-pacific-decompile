@@ -1,0 +1,101 @@
+{
+  "packet": "oct15_thirtyeighth_reconstruction_batch",
+  "status": "primary_accepted_Source_and_existing_Core_dependency_integrated_default_Win32_checked",
+  "component": {
+    "pin": "39da4e97365c625f9768fa6c027f22add0d83def",
+    "report": "reports/oct15_input_preset_temp_key_release.json",
+    "frozen_artifacts": {
+      "src/native_input_preset_temp_key_release.cpp": "553724d244c2984cefad49063f939687295a2d4b4c7f8b56eaaab1d1664e0a99",
+      "include/bsp/native_input_preset_temp_key_release.hpp": "d621cfec62095d28c6b6b65e945f05f2ab1f709e9f90290bf7ba26fc7270dbf0",
+      "docs/OCT15_INPUT_PRESET_TEMP_KEY_RELEASE.md": "8ba7da3949565cec38fb77f41157540aae4440ee462a5e60f709cf15f68b4e9f",
+      "reports/oct15_input_preset_temp_key_release.json": "58c3e86716d2c19dbc60653894accc0e29a54b2dd1664ebe424d2b1462a2ce1c"
+    }
+  },
+  "existing_Core_registration": {
+    "commit": "195ae7421af623898c1c219a757dd6173b40c851",
+    "report": "reports/oct16_core_band67_registration.json",
+    "report_sha256": "d76a0ac93a9022ef154a5b4e322843938a69f6f9dd0e7c4233d3f2944938f0b4",
+    "checks_passed": 8,
+    "new_Native_coverage": 0,
+    "actual_raw_owner_worker_link_closure_default_checks_passed": 3
+  },
+  "scope": {
+    "ordinary_entries": 1,
+    "address": "0069e090",
+    "defined_Native_bytes": 29,
+    "Native_instructions": 12,
+    "readonly_reference": [
+      29,
+      12
+    ],
+    "readonly_origin": [
+      8,
+      2
+    ],
+    "logical_actions_promoted": 0,
+    "global_unique_Native_coverage_increment_claimed": false
+  },
+  "review": {
+    "primary_checks": 14,
+    "primary_receipt": "local/oct16_preset_temp_key_primary.json",
+    "primary_receipt_sha256": "10ffea2138612732c92b2d5fd29b54977b31330b6f6254c3f074cb82f38513db",
+    "findings": [],
+    "provider_LF_files_equal_current_Main": 9,
+    "actual_CMake_code_bytes": 19,
+    "actual_CMake_instructions": 8,
+    "code_sections": 1,
+    "code_REL32": 1,
+    "noncode_relocations": 0,
+    "unused_uninitialized_BSS_bytes": 4,
+    "BSS_file_payload_bytes": 0,
+    "final_integrator_object_sha256": "6f7699b50f02d541c66da47f581770740bc678ebe682605ddbdf94f624449eee",
+    "worker_object_sha256": "4d6d7fd641a622993040b09f69dc338ec5f374e96d1db9f30f33380757f79316",
+    "all_code_and_actual_symbolic_relocations_equal": true
+  },
+  "validation": {
+    "tested_combined_Source": "b290c5b7f492c8b49902bf1464315b16746b29a1",
+    "default_MSVC_Win32": true,
+    "build_log": "local/oct16_batch38_final_build.txt",
+    "build_log_sha256": "a1ff01536fffc1fd886d4c3c17b37a1a5d8b94913cd87e419bd8886f4011752d",
+    "existing_suites_passed": 3,
+    "ctest_seconds": 8.08,
+    "new_tests": 0,
+    "new_probes": 0,
+    "Native_packet_execution": false,
+    "JSON_transfer_rows": 5,
+    "Markdown_transfer_claims": 5,
+    "owned_CALLs": 2,
+    "readonly_transfers": 3,
+    "transfer_log": "local/oct16_batch38_transfers.txt",
+    "annotation": {
+      "path": "local/ghidra-annotations-20261016T071500Z.json",
+      "sha256": "b3dac6368d4d77ca3dfe8e2c5e250395b47afd32042c74dbc3c5414478e65aa3",
+      "saved_entries": 1,
+      "preimages_preserved": true
+    },
+    "refreshed_exports": 1,
+    "snapshot": "skipped unchanged76774functions",
+    "index": "rebuilt"
+  },
+  "coordination": {
+    "actual_CMake_conflict_resolved_by_registry_union": 1,
+    "registry_leases": false,
+    "only_owned_files_staged": true,
+    "worker_frozen_files_unchanged": true,
+    "existing_BSP_name_retained": true,
+    "old_name_text_preimage_retained_with_offset_correction": true,
+    "old_generic_ordinary_record_preserved": true
+  },
+  "limits": [
+    "Existing suites exercise older math/tool behavior, not this new cleanup entry against Native game state.",
+    "Source directlyreuses REALpublished41DD20 RawCtxoverload; no Native41DD20CALL is invented. Native69E090 has actualgetter/returnCALLs, bodyequivalence21unmaskedB+8verifiedE8fields provesSourcebodyreuse.",
+    "NativeECXheader/noStack/plainRET/conditionalEAXresidue versusSourceborrowedRawCtxRET4/void; currentpool/manager/CRT/Cpp/privateframes/FH3SEH/fault/binaryABI/game remainqualified.",
+    "ExistinggenericNativeStringStorage noexceptwrapper remainsseparate; newRawgetterfailure maypropagate withprogress, andcallerownssecondarycleanup exception policy.",
+    "NoC7F100logicaleffect/publicEBPhelper/pair/hint/mapindex/6AA460owner promotion. Actualrawowner Source remainsisolatedunderreview; onlyitsrealCorelinkprerequisiteis published here."
+  ],
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Verify separately after publication; no self-reference"
+  }
+}

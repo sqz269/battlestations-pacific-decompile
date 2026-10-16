@@ -1,0 +1,54 @@
+{
+  "packet": "oct16_core_band67_registration",
+  "status": "existing_Core_dependency_registered_and_actual_raw_owner_link_closure_default_build_verified",
+  "registration_commit": "195ae7421af623898c1c219a757dd6173b40c851",
+  "change": "One existing band_0067_cc13.cpp TU added to bsp_core; game and conditional fixture registrations retained. No C++ Source/header edits.",
+  "reason": "Actual newRawowner build exposed unresolved frontend Core reference to existing digit_spinner_step definition, previously available only to game/conditional fixture targets. Same worker default build succeeds after this exact prerequisite. Prior Root successful builds are not retroactively declared broken.",
+  "existing_source": "src/band_0067_cc13.cpp",
+  "source_LF_sha256": "56e258bfef0f4eaeb8327b3eadd79d20202c41c857a62f630123bdea31631cbb",
+  "actual_object": "build/win32/bsp_core.dir/Release/band_0067_cc13.obj",
+  "object_sha256": "f69a1c6211a08d2a937b56bd255940829eee56a8be68eb13f0a16fe13dfef4ed",
+  "definition": {
+    "symbol": "?digit_spinner_step_0067df40@band_0067_cc13@bsp@@YAHAAHH@Z",
+    "section": 181,
+    "offset": 0,
+    "type": 32,
+    "storage": 2
+  },
+  "exact_symbol_in_actual_Core_archive_linker_index": true,
+  "MSBuild_compile_items": {
+    "bsp_core": [
+      "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\src\\band_0067_cc13.cpp"
+    ],
+    "bsp_game": [
+      "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\src\\band_0067_cc13.cpp"
+    ]
+  },
+  "root_default_build": {
+    "log": "local/oct16_core_band67_build.txt",
+    "sha256": "58673ca8969e9ab79b6330cef2f45e54518b58628cd49862df38490e946a8132",
+    "passed": 3,
+    "ctest_seconds": 7.36
+  },
+  "actual_raw_owner_worker_before": {
+    "log": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct15_input_settings_raw_owner_build_initial_failed.log",
+    "sha256": "0c1aa7beda404c5a5f425701b66a96e2516105ee46e0caf90437ebb705a5bc9c",
+    "result": "failed LNK2019 actual symbol"
+  },
+  "actual_raw_owner_worker_after": {
+    "log": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct15_input_settings_raw_owner_build_final.log",
+    "sha256": "99782be1b385d551d988d6333b14aa61fe8f16dc832ab5ec831c611edc62a0ad",
+    "result": "exit0/default3of3",
+    "ctest_seconds": 6.95,
+    "Source_prerequisite": "195ae7421af623898c1c219a757dd6173b40c851"
+  },
+  "checks_passed": 8,
+  "Native_coverage_added": 0,
+  "new_tests": 0,
+  "new_probes": 0,
+  "limits": [
+    "Registration and actual link/build proof only; no new Native behavior/ABI/game claim.",
+    "Rawowner Source itself remains under separate primary/peer review and is not published by this registration record.",
+    "Existing band helper reconstruction/source contracts remain inherited, not newly Native-tested."
+  ]
+}
