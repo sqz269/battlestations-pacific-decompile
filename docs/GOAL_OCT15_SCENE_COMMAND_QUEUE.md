@@ -41,3 +41,9 @@ introduced. The semantic result is void.
 Evidence and validation state are in
 reports/goal_oct15_scene_command_queue.json. The new entry is not executed by
 the existing math differential fixtures, and no game validation is claimed.
+
+The actual normal registered MSVC Release Win32 build at
+`efa7febae744d66c5665e61b64bf8c67d36ff3f6` passed all three enabled existing
+checks in 9.55 seconds. The retained emitted queue/guard/action and unique
+archive body were reviewed; the precise schedules and compiler-private
+differences are recorded in the report. No new entry execution or game proof.

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "packet": "goal_oct15_scene_command_queue",
-  "status": "whole_Source_independently_reviewed_registered_build_pending",
-  "source_ready": false,
+  "status": "whole_ordinary_actual_storage_Source_independently_reviewed_registered_Win32_build_and_emitted_schedule_verified",
+  "source_ready": true,
   "whole_control_flow_code_available": true,
   "source": "src/native_scene_command_queue.cpp",
   "header": "include/bsp/native_scene_command_queue.hpp",
@@ -108,13 +108,40 @@
   "game_validated": false,
   "annotation": {
     "status": "names and full old comments retained; locked evidence append applied; project saved; both exports refreshed and live readback confirmed",
-    "prior_values": "local/ghidra-annotations-20261016T010310Z.json"
+    "prior_values": "local/ghidra-annotations-20261016T010310Z.json",
+    "final_values_log": "local/ghidra-annotations-20261016T011541Z.json",
+    "final_readback": "local/goal_oct15_scene_command_queue_final_comments.json"
   },
   "validation": {
     "typed_transfer_rows": 4,
     "failed": 0,
-    "build": "pending actual normal combined registered build",
-    "new_tests": 0
+    "build": {
+      "revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_command_lifetime_combined_build.log",
+      "log_sha256": "8d982051dfaf99fea2dc0568e06ddba017eea931ad60c8f5e6ac9f0b63258653",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 9.55,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies"
+    },
+    "new_tests": 0,
+    "primary_review": "reports/goal_oct15_command_lifetime_primary_review.json",
+    "primary_review_sha256": "68ad058165cb0f832f60dd1adc78946bc4edd51b2f0ba3479c5604914d8f9e3e",
+    "documentation_call_claims": {
+      "checked": 4,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    }
   },
   "independent_review": {
     "reviewer": "allocation worker",
@@ -122,6 +149,28 @@
     "source_hashes": {
       "src/native_scene_command_queue.cpp": "981083b2241fa05cd9bd81e504bf27e3581abc368acc1d3cc584a51eeaad338e",
       "include/bsp/native_scene_command_queue.hpp": "f75a4441cc243bff76e9706f261fb817df6403d3fac6a833f45e0bf8e3c5e1a0"
+    }
+  },
+  "ordinary_Source_scope": "Whole actual-storage normal control flow at concrete current-service contracts;standalone cleanup qualified;Originalheap/FH3/SEH/privateABI/game unproved",
+  "emitted_object": {
+    "path": "local\\goal_oct15_command_lifetime_objects\\native_scene_command_queue.obj",
+    "sha256": "df019447d87ec050f67be5481bfd7c4118579132789d4eed445f246c07c6edb4",
+    "unique_identical_archive_bodies": 1,
+    "machine": "14c",
+    "disassembly": "local\\goal_oct15_command_lifetime_objects\\native_scene_command_queue.disasm.txt",
+    "symbols": "local\\goal_oct15_command_lifetime_objects\\native_scene_command_queue.symbols.txt",
+    "review": {
+      "result": "passed complete243B ordinary queue body,ordinary guard and standalone current-cell free action",
+      "schedule": [
+        "initial actualsaveddb store+60 before actual allocator call+77",
+        "allocation saved+84 then private guard armed+86 before any actual argument reads",
+        "targetread+94/commandread+97/outgoingtargetwrite+9D/ownerread+A0/outgoingcommandwrite+A2/outgoingownerwrite+A5",
+        "genuine raw constructor call+B7;returnedrecordretainedECX+BF",
+        "actual listargumentstore+C7 precedes disarm+CB and genuine raw insertion call+CF",
+        "ordinary guard tests armed,then CURRENTsavedcell doubleload+6/+8 before actualCRTfree+B",
+        "standalone action reads CURRENTsavedcell+6 then tailjumps actualCRTfree+C"
+      ],
+      "private_frame_limit": "Compiler ownEHstate0 precedes allocation while guardbool remains0;ordinary guard/stack/cdecl interface differs from OriginalFH3/thiscall/register/private-cell/fault identity"
     }
   }
 }
