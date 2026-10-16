@@ -1,0 +1,94 @@
+{
+  "packet": "oct15_thirtythird_reconstruction_batch",
+  "status": "primary_accepted_Source_integrated_default_Win32_checked",
+  "component": {
+    "pin": "42216bcbe31d639ff067f944ce23e3faf468e468",
+    "report": "reports/oct15_native_input_tree_destroy_instances.json",
+    "artifacts": {
+      "src/native_input_tree_destroy_instances.cpp": "cf00cd5cc70acb42decb572166c8d25259236c92ef3bdb546dae437087f04043",
+      "include/bsp/native_input_tree_destroy_instances.hpp": "82ba95115f1cba7bd3c1f7ac9506820a821a0f3dc516ea9eef8fd1ba7a1b89ed",
+      "docs/OCT15_NATIVE_INPUT_TREE_DESTROY_INSTANCES.md": "4e31f10c5837fd64136ba0f80fdc849ba11e801e1d786ba4c2f72dfb2f19c84d",
+      "reports/oct15_native_input_tree_destroy_instances.json": "1739e2ed12a7717932c010b3ca8e01d0061d185ff15df773ce679a8d68b748c8"
+    }
+  },
+  "scope": {
+    "complete_ordinary_entries": 5,
+    "addresses": [
+      "006a0d60",
+      "006a14e0",
+      "006a21c0",
+      "006a24f0",
+      "006a2b70"
+    ],
+    "distinct_owned_bytes_within_batch": 260,
+    "distinct_owned_starts_within_batch": 115,
+    "readonly_scalar_reference": [
+      52,
+      23
+    ],
+    "global_unique_coverage_increment_claimed": false
+  },
+  "review": {
+    "primary_checks": 16,
+    "primary_receipt": {
+      "path": "local/oct15_destroy_instances_final_primary.json",
+      "sha256": "aef42e950c945a9fe5d66edc5f7c133343b2d302faee1c6b54f498d983091107"
+    },
+    "provider_LF_files_equal_current_Main": 10,
+    "findings": [],
+    "actual_CMake_bytes": 375,
+    "actual_CMake_instructions": 159,
+    "physical_code_sections": 9,
+    "code_REL32": 10,
+    "noncode_relocations": 0,
+    "NOP_INT3_padding": 0,
+    "final_integrator_object_sha256": "0a6af0ff694005e3f7810d40c785700a4b44be1f401e36ef457563bde3b92790",
+    "reviewed_worker_object_sha256": "3c612cbc3bc7ed43c0ea77b4e8ccea0c91424cc4b77aae40bfb103031abb7440",
+    "all_code_bytes_and_actual_symbolic_relocations_equal": true
+  },
+  "validation": {
+    "tested_combined_Source": "82687b77178078e49e02cd03d3e8ba8500273461",
+    "default_MSVC_Win32": true,
+    "build_log": "local/oct15_thirtythird_union_build.log",
+    "build_log_sha256": "79918ef25f806ad9d3d5478d25e683f884020b58493ed93c8686c42b8cc1ba46",
+    "existing_suites_passed": 3,
+    "ctest_seconds": 9.88,
+    "new_tests": 0,
+    "new_probes": 0,
+    "Native_packet_execution": false,
+    "report_rows": 12,
+    "Markdown_claims": 12,
+    "owned_transfer_rows": 10,
+    "readonly_reference_rows": 2,
+    "transfer_log": "local/oct15_thirtythird_transfers.log",
+    "annotations": {
+      "path": "local/ghidra-annotations-20261016T055634Z.json",
+      "sha256": "1042d320806b8f4580c358c177e365a7efa6361c76c0a290bc69ecb676545515",
+      "entries": 5,
+      "preimages_preserved": true
+    },
+    "refreshed_exports": 5,
+    "snapshot": "skipped unchanged76774functions",
+    "index": "rebuilt"
+  },
+  "coordination": {
+    "worker_merge_conflicts": 0,
+    "new_whole_records": 5,
+    "old_whole_records_removed": 0,
+    "registry_leases": false,
+    "only_owned_files_staged": true,
+    "worker_frozen_artifacts_unchanged": true
+  },
+  "limits": [
+    "Existing suites exercise older math/tool behavior, not these five entries against Native game state.",
+    "Two scalar bodies retain publishedseven-word69FE70 interface withoutRawCtx; threeintstring bodies use actual6A1B70 real8Bcarrier+borrowedRawCtx/SourceRET4 versusNativeplainRET.",
+    "Allfivecaptureinitialhead/left thenactualrange; freeCURRENTpostchildhead,head0beforecount0,returnDWORD0; childfailurepreservespriorprogress andpreventstheseactions.",
+    "NativeEAX0beforepublicstoresversusSourceafterstores; privateframe/registerflags/CurrentCpp/currentCRT/RawCtxownership/FH3SEHRTTI/fault/heap/ABI/gameunproved.",
+    "No keyguard/rollback/newcontextforscalars/publicreferencebodydelegate/model/ownerorunwindpromotion. No globaluniqueNativecoverageincrement."
+  ],
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Independently verify after publication; no self-reference"
+  }
+}

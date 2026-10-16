@@ -8,6 +8,8 @@
 
 namespace bsp {
 
+struct NativeShaderStateDefinitionsStorage;
+
 // Canonical mutable Source storage for the actual Native DWORD at 00E13078.
 // Its image preimage is 0000004D. Constant initialization makes it available
 // before GameNativeShaderProcess is constructed, without allocating a process
@@ -28,5 +30,16 @@ void* volatile& native_shader_system_registry_cell_0108fe94() noexcept;
 // Return the current pointer bits without dereferencing, guarding or creating
 // a registry/renderer. Original Native placement and caller adoption unproved.
 void* __cdecl native_shader_system_registry_00b34490() noexcept;
+
+// The existing production registry owner and descriptor contexts borrow this
+// one live publication. Zero initialization precedes dynamic owner creation;
+// binding a reference preserves an earlier publication rather than resetting it.
+NativeShaderStateDefinitionsStorage* volatile&
+native_shader_state_definitions_cell_0108fe90() noexcept;
+
+// Whole 00B400F0..00B400F5: MOV EAX,[0108FE90]; RET, no consumed inputs.
+// Return the current pointer bits without dereferencing or creating an owner.
+// Source storage binding does not assert Original placement or caller adoption.
+void* __cdecl native_shader_state_definitions_00b400f0() noexcept;
 
 } // namespace bsp

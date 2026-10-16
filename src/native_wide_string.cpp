@@ -108,4 +108,29 @@ void destroy_native_wide_string_header_00436430(void* actual_header,
     }
 }
 
+void* copy_construct_native_wide_string_header_004c8dd0(void* actual_header,
+    const void* actual_source, NativeStringStorage& storage) {
+    auto* const destination = static_cast<volatile std::uint32_t*>(actual_header);
+    const auto* const source = static_cast<const volatile std::uint32_t*>(actual_source);
+    const bool same_header = actual_header == actual_source; // 004C8DD8
+    destination[0] = 0; // 004C8DDA, INCLUDING self identity
+    destination[1] = 0; // 004C8DE0; never return abandoned constructor preimage
+    if (!same_header) {
+        const auto length = source[0]; // 004C8DE9, request captured before resize
+        resize_native_wide_string_header_004c53e0(actual_header, storage, length, true);
+        if (source[0] != 0) { // 004C8DF3, CURRENT length after allocation callbacks
+            std::uintptr_t input = source[1]; // 004C8DF8, capture data only now
+            std::uintptr_t output = destination[1]; // 004C8DFB, after source data
+            std::uint16_t unit;
+            do {
+                unit = *reinterpret_cast<const volatile std::uint16_t*>(input);
+                *reinterpret_cast<volatile std::uint16_t*>(output) = unit;
+                input += 2u;
+                output += 2u;
+            } while (unit != 0); // 004C8E00..004C8E0F includes NUL, no count bound
+        }
+    }
+    return actual_header;
+}
+
 } // namespace bsp
