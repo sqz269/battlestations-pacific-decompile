@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_native_text_source_ucrt_comparisons_61",
+  "created_utc": "2026-10-16T02:14:43.211325+00:00",
+  "status": "explicit_current_owning_UCRT_Source_services_build_and_actual_locale_probe_passed",
+  "worker": "agent/native_crt_wcsicmp_locale_48",
+  "baseline": "7e8390fecd4bfe6c46e0a9145517263d5a27d738",
+  "Root_merge_exit_code": 0,
+  "owned_files": [
+    "include/bsp/game_hosts_text.hpp",
+    "src/game_hosts_text.cpp",
+    "docs/CC12_NATIVE_TEXT_SOURCE_UCRT_COMPARISONS_61.md",
+    "reports/cc12_native_text_source_ucrt_comparisons_61.json"
+  ],
+  "owned_Native_addresses": [],
+  "services": {
+    "narrow": "bsp::game::source_ucrt_text_name_comparer() noexcept returns actual &::_stricmp; exact GuiNativeNameCompare type assertion.",
+    "wide_profile": "bsp::game::source_ucrt_text_content_comparison() binds the required private stateless Source-current callback via packet 52 factory.",
+    "wide_body": "Actual original u16 pointers reach Source callback; TWO std::wstring value copies create real wchar_t objects, then final ::_wcsicmp uses owning UCRT current locale.",
+    "no_locale_query_at_profile_creation": true,
+    "no_cached_locale_result_Original_flag_or_private_CRT_types": true,
+    "no_default_binding_or_normal_host_activation": true
+  },
+  "type_and_input_contract": {
+    "target": "MSVC Win32; sizeof(void*)==4 and sizeof(int)==4",
+    "characters": "sizeof(char16_t)==2, sizeof(wchar_t)==2, wchar_t range0..FFFF; range construction value-converts all code units to real wchar_t objects.",
+    "narrow_ABI": "std::is_same_v<GuiNativeNameCompare,decltype(&::_stricmp)>",
+    "wide_pointer_boundary": "Source callback gets original pointers; UCRT gets typed copies. No Original pointer-forwarding claim.",
+    "inputs": "Stable valid null-free terminated input strings for the entire call; external locale serialization required.",
+    "allocation": "Two per-call temporary wstrings may allocate and throw ordinary C++ exceptions. No no-allocation or native fault/SEH equivalence.",
+    "invalid_inputs": "Wide conversion does not reproduce UCRT invalid-pointer handler behavior; outside admitted domain."
+  },
+  "existing_Source_search": {
+    "wide": "FontGeometryOwner has an internal value-copy/_wcsicmp use, not a reusable public UTF16 callback.",
+    "narrow": "Existing public compare_insensitive_00438e10 adds null/pointer fast paths; other raw wrappers are members/header-specific. Exposing actual CRT pointer avoids a duplicate wrapper."
+  },
+  "preservation": {
+    "existing_implementation_suffix_normalized_text_unchanged_from_Root": true,
+    "packet_56_font_names_initializer_exact": "font_names{names, b.font_registry, b.fonts, b.constructor.one_00d7a24c}",
+    "packet_59_registry_admission_preserved": true,
+    "packet_52_equality_seam_and_Source_callback_pointer_forwarding_unchanged": true,
+    "no_other_Source_layout_or_runtime_path_change": true
+  },
+  "actual_UCRT_probe": {
+    "passed": true,
+    "skipped": false,
+    "initial_lc_ctype": "C",
+    "selected_request": "English_United States.1252",
+    "accepted_lc_ctype": "English_United States.1252",
+    "earlier_callbacks": 2,
+    "wide_C_result": -32,
+    "wide_current_result": 0,
+    "narrow_C_result": -32,
+    "narrow_current_result": 0,
+    "actual_narrow_UCRT_pointer": true,
+    "profile_created_before_locale_changes": true,
+    "actual_UCRT_non_C_delta_observed": true,
+    "C_to_non_C_to_C_observed": true,
+    "initial_locale_restored": true,
+    "only_probe_process_locale_changed": true,
+    "Original_style_calls_not_used": true,
+    "full_GUI_or_normal_host_invoked": false
+  },
+  "probe_linkage": {
+    "production_Source": "src/game_hosts_text.cpp compiled as production_game_hosts_text.obj from the same owned Source",
+    "real_canonical_game_dependency_object_count": 140,
+    "libraries": [
+      "actual rebuilt bsp_core.lib",
+      "actual bsp_lua511.lib",
+      "actual bsp_zlib121.lib",
+      "real SDK import libraries"
+    ],
+    "flags": [
+      "/O2",
+      "/MD",
+      "/EHsc",
+      "/W4",
+      "/WX",
+      "/GL",
+      "/Gy",
+      "/Zc:inline",
+      "/LTCG",
+      "/OPT:REF",
+      "/OPT:ICF",
+      "/MANIFEST:EMBED",
+      "/SUBSYSTEM:CONSOLE"
+    ],
+    "no_unresolved_production_host_stubs": true,
+    "entry": "private probe main, not game WinMain",
+    "machine": "I386",
+    "embedded_asInvoker_manifest": true,
+    "actual_comparison_and_locale_imports_present": [
+      "_stricmp",
+      "_wcsicmp",
+      "setlocale"
+    ],
+    "imported_DLLs": [
+      "KERNEL32.dll",
+      "MSVCP140.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-utility-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll"
+    ],
+    "exe_sha256": "852f8511ab05a58af0b656c08798e7c12020eaef29e068eb0653cc2ae148f6a8",
+    "production_object_sha256": "cc4892a91bade9efeaaa28ee809f77b712094a5374d864819bedd284c9597c6a",
+    "private_artifacts": "local/cc12_native_text_source_ucrt_comparisons_61/{probe.cpp,build_probe.cmd,probe_link_inputs.py,actual_game_objects.rsp,production_game_hosts_text.obj,build_probe.log,probe_results.json,ucrt_compare_probe.exe,build_win32.log}"
+  },
+  "validation": {
+    "scripts_build_ps1_exit_code": 0,
+    "existing_ctest_passed": 3,
+    "existing_ctest_total": 3,
+    "existing_suites": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "build_log_sha256": "090a1f4d4b8e4d4cd86574fbd3d5d3b4c129636b12a34b0f7401b2998f7d941f",
+    "actual_owning_UCRT_locale_case_passed": true,
+    "locale_case_skipped": false,
+    "original_probe_process_LC_CTYPE_restored": true,
+    "system_locale_modified": false,
+    "primary_Source_review": "PASS complete two-file diff; unchanged since review",
+    "new_CMake_source_or_test_framework": false,
+    "Ghidra_or_Native_ledger_mutation": false,
+    "installation_audio_settings_or_normal_host_activation": false
+  },
+  "credit": {
+    "new_reconstructed_Original_functions": 0,
+    "Original_entry_ABI": false,
+    "Original_CRT_provider": false,
+    "Original_pointer_or_no_allocation_equivalence": false,
+    "non_C_Unicode_version_equivalence": false,
+    "full_GUI_or_game_validated": false
+  },
+  "limits": [
+    "Modern current owning-UCRT Source substitutions; actual Original CRT parents 46/48/49 remain separately bounded.",
+    "Two typed value copies are intentional; no character/PTD/locale object reinterpret_cast.",
+    "Only the private probe process changes/restores LC_CTYPE. Production code sets no locale.",
+    "Probe invokes explicit services and equality helper; no game WinMain, full GUI or normal Text composition."
+  ],
+  "source_sha256": {
+    "include/bsp/game_hosts_text.hpp": "5109cf052d8df1f2e3209846c12da037cdc2bc6cca10920060f28f7c4dec8b3c",
+    "src/game_hosts_text.cpp": "8e06d78bbe8541aec0219eaa32294567b86dd71ab448aa1641b217860a5904c3"
+  }
+}
