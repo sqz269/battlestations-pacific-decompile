@@ -1,0 +1,452 @@
+{
+  "goal": "GOAL16AZ",
+  "status": "StrictProducerReady_ActualRegisteredProviderPending",
+  "supersedes_unaccepted_candidate": "39b5afe38f25488c9a9b19ea2bca7ee75e4ceeeb",
+  "reason": "Review-derived repair of concrete raw cross-table values and current stock pair layout; not unrelated Source work.",
+  "scope": {
+    "candidate_Native_DATA_bytes": 2676,
+    "Native_functions": 0,
+    "Native_instructions": 0,
+    "Source_functions": 0,
+    "actual_strong_DATA_definitions": 4,
+    "accepted_DATA_function_credit": 0,
+    "coverage": {
+      "previous_AT_unaccepted_payload": 1644,
+      "additional_four_payload_arrays": 1004,
+      "three_original_intervening_spans": 28,
+      "intervening_named_bl_order": 19,
+      "intervening_observed_zero_spacing": 9,
+      "sum": 2676,
+      "nine_primary_table_bytes": 2588,
+      "all_named_array_bytes": 2607
+    }
+  },
+  "files": [
+    {
+      "path": "src/native_zlib_tree_descriptor_data_bc.cpp",
+      "bytes": 10113,
+      "sha256": "baac26de03583620631d51ae2f00917cf5b3738922a461dcbc0ec84ec1d9adf6"
+    },
+    {
+      "path": "include/bsp/native_zlib_tree_descriptor_data_bc.hpp",
+      "bytes": 5232,
+      "sha256": "6a9cd91a815f3ce3f75bbde107e6d630db34c4f8011164a2b7c7dd46e3618774"
+    },
+    {
+      "path": "docs/NATIVE_ZLIB_TREE_DESCRIPTOR_DATA_BC.md",
+      "bytes": 7355,
+      "sha256": "febd06cd5475f5703348d99d5f864dad1dcbc6e39fee3ebb2ed9e08b832782e1"
+    }
+  ],
+  "actual_new_variant_compile": {
+    "variant": "GOAL16AZ aggregate revision",
+    "attempt": 1,
+    "command": [
+      "cmd",
+      "/d",
+      "/c",
+      "local\\goal16az_region_revision\\strict_compile.cmd"
+    ],
+    "start_utc": "2026-10-16T15:19:32.162888+00:00",
+    "end_utc": "2026-10-16T15:19:33.936558+00:00",
+    "elapsed_seconds": 1.7736590999993496,
+    "returncode": 0,
+    "Source_sha256": "baac26de03583620631d51ae2f00917cf5b3738922a461dcbc0ec84ec1d9adf6",
+    "header_sha256": "6a9cd91a815f3ce3f75bbde107e6d630db34c4f8011164a2b7c7dd46e3618774",
+    "normal_registered_build_Core": "PENDING_ROOT_WARM_INTEGRATION",
+    "old_AT_first_strict": {
+      "elapsed_seconds": 1.4320416999980807,
+      "object_sha256": "4df40a309d2b9c6fe5b9b439fe001d80b0883fa19d5162666499a8958f0f6c2f",
+      "historical_only_not_added_to_current_time": true
+    }
+  },
+  "strict_object": {
+    "path": "local/goal16az_region_revision/strict_region_revision.obj",
+    "bytes": 3687,
+    "sha256": "07aada03c9aa3b72e022e12db6f321ead8d93ced7f160bc3ec1a15ba038da055"
+  },
+  "full_proof": {
+    "path": "local/goal16az_region_revision/strict_revision_proof.json",
+    "bytes": 12513,
+    "sha256": "3d3153a6931fad356002d84b56223356333ce79bcfaf56657a74d1a4d3b97cb1"
+  },
+  "full_COFF": {
+    "path": "local/goal16az_region_revision/strict_full_coff.json",
+    "bytes": 13238,
+    "sha256": "d6cca8ff39d90ed17e7a93e6fdb3eb6f80e6570bac8eea6a64de72c21ee792d9"
+  },
+  "byte_regions": {
+    "path": "local/goal16az_region_revision/strict_byte_regions.json",
+    "bytes": 1003,
+    "sha256": "9d415b64407dfb3b7e6d6ef974f8dc3829883647a94c870a7a98c15e85b3b8ec"
+  },
+  "whole_strict_result": {
+    "file_bytes": 3687,
+    "all_bytes_metadata_primary_aux_symbols_strings_relocations_padding_accounted": true,
+    "strong_DATA_definitions": [
+      {
+        "name": "_bsp_native_zlib_tree_ro_region_00d677c0",
+        "value": 0,
+        "section": 3,
+        "type": 0,
+        "storage": 2,
+        "aux": 0
+      },
+      {
+        "name": "_bsp_native_zlib_static_l_desc_00e1470c",
+        "value": 0,
+        "section": 4,
+        "type": 0,
+        "storage": 2,
+        "aux": 0
+      },
+      {
+        "name": "_bsp_native_zlib_static_d_desc_00e14720",
+        "value": 20,
+        "section": 4,
+        "type": 0,
+        "storage": 2,
+        "aux": 0
+      },
+      {
+        "name": "_bsp_native_zlib_static_bl_desc_00e14734",
+        "value": 40,
+        "section": 4,
+        "type": 0,
+        "storage": 2,
+        "aux": 0
+      }
+    ],
+    "RO_region": {
+      "size": 2616,
+      "section": ".rdata",
+      "symbol_value": 0,
+      "sha256": "2c08f5a908713badb206a5c98c07b95231feb8a4b751641fb2eb1666958d7b6b",
+      "whole_Native_bytes_equal": true,
+      "actual_section_alignment": 8,
+      "language_type_alignment": 4,
+      "members": [
+        {
+          "member": "extra_lbits",
+          "offset": 0,
+          "size": 116,
+          "count": 29,
+          "element_type": "int32",
+          "natural_alignment": 4,
+          "Native_start": "00D677C0",
+          "Native_end": "00D67833",
+          "sha256": "f8d7861760c88cc514f66095af0aed47ecba063adb65f47125ed07bcc2cf9842"
+        },
+        {
+          "member": "bl_order",
+          "offset": 116,
+          "size": 19,
+          "count": 19,
+          "element_type": "uint8",
+          "natural_alignment": 1,
+          "Native_start": "00D67834",
+          "Native_end": "00D67846",
+          "sha256": "111b15b20e0428a22eeaa1e54b0d3b008a7a3e79c8f7f4e783710f569e9cef15"
+        },
+        {
+          "member": "spacing_after_bl_order",
+          "offset": 135,
+          "size": 1,
+          "count": 1,
+          "element_type": "observed uint8",
+          "natural_alignment": 1,
+          "Native_start": "00D67847",
+          "Native_end": "00D67847",
+          "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+        },
+        {
+          "member": "extra_dbits",
+          "offset": 136,
+          "size": 120,
+          "count": 30,
+          "element_type": "int32",
+          "natural_alignment": 4,
+          "Native_start": "00D67848",
+          "Native_end": "00D678BF",
+          "sha256": "b23d510f520cb4ba8afa847f8a40e757c40cb6a55b237efa1ac6d3984911b114"
+        },
+        {
+          "member": "extra_blbits",
+          "offset": 256,
+          "size": 76,
+          "count": 19,
+          "element_type": "int32",
+          "natural_alignment": 4,
+          "Native_start": "00D678C0",
+          "Native_end": "00D6790B",
+          "sha256": "8fc498a953a183e1fe81a183ae59047435bb9b33d657c625fab03d38be19f92e"
+        },
+        {
+          "member": "spacing_before_static_ltree",
+          "offset": 332,
+          "size": 4,
+          "count": 4,
+          "element_type": "observed uint8",
+          "natural_alignment": 1,
+          "Native_start": "00D6790C",
+          "Native_end": "00D6790F",
+          "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        },
+        {
+          "member": "static_ltree",
+          "offset": 336,
+          "size": 1152,
+          "count": 288,
+          "element_type": "uint16 code/length pair",
+          "natural_alignment": 2,
+          "Native_start": "00D67910",
+          "Native_end": "00D67D8F",
+          "sha256": "36b8fda0bfb1d93a07326ee7cac8eb99ff1af237d234ffa3210f64d3eb774c38"
+        },
+        {
+          "member": "static_dtree",
+          "offset": 1488,
+          "size": 120,
+          "count": 30,
+          "element_type": "uint16 code/length pair",
+          "natural_alignment": 2,
+          "Native_start": "00D67D90",
+          "Native_end": "00D67E07",
+          "sha256": "9476220840d3ce82203b4a722e278773b1da458a22f49fcb9fc45b851df7d503"
+        },
+        {
+          "member": "dist_code",
+          "offset": 1608,
+          "size": 512,
+          "count": 512,
+          "element_type": "uint8",
+          "natural_alignment": 1,
+          "Native_start": "00D67E08",
+          "Native_end": "00D68007",
+          "sha256": "3e4fb5fe52bf269d6ee955711016291d6d327a4aac39b2464c53c6bd0d73242a"
+        },
+        {
+          "member": "length_code",
+          "offset": 2120,
+          "size": 256,
+          "count": 256,
+          "element_type": "uint8",
+          "natural_alignment": 1,
+          "Native_start": "00D68008",
+          "Native_end": "00D68107",
+          "sha256": "b9d4af390afc6a0f149b843d651cfebc1c4ec496a0263b72207836f9c525e1c4"
+        },
+        {
+          "member": "base_length",
+          "offset": 2376,
+          "size": 116,
+          "count": 29,
+          "element_type": "int32",
+          "natural_alignment": 4,
+          "Native_start": "00D68108",
+          "Native_end": "00D6817B",
+          "sha256": "7ddf88204e7e265240211841f0ab290a5e77ee4f9223eb2e39f9b89c30c41b9d"
+        },
+        {
+          "member": "spacing_before_base_dist",
+          "offset": 2492,
+          "size": 4,
+          "count": 4,
+          "element_type": "observed uint8",
+          "natural_alignment": 1,
+          "Native_start": "00D6817C",
+          "Native_end": "00D6817F",
+          "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        },
+        {
+          "member": "base_dist",
+          "offset": 2496,
+          "size": 120,
+          "count": 30,
+          "element_type": "int32",
+          "natural_alignment": 4,
+          "Native_start": "00D68180",
+          "Native_end": "00D681F7",
+          "sha256": "5961bf1fcf83803ce7775e15e9db8d21af741539b85ccfdd643f9e22cc7820d6"
+        }
+      ],
+      "extra_section_padding": 0,
+      "named_bl_order": 19,
+      "explicit_observed_spacing": 9
+    },
+    "mutable_descriptors": {
+      "section": ".data",
+      "size": 60,
+      "actual_offsets": [
+        0,
+        20,
+        40
+      ],
+      "adjacent_in_Native_order": true,
+      "padding": 0,
+      "language_adjacency_guarantee": false,
+      "actual_section_alignment": 4,
+      "symbolic60B_Native_comparison_equal": true,
+      "integer_tails": [
+        [
+          257,
+          286,
+          15
+        ],
+        [
+          0,
+          30,
+          15
+        ],
+        [
+          0,
+          19,
+          7
+        ]
+      ],
+      "true_null_combined40_without_relocation": true
+    },
+    "all5_DIR32": [
+      {
+        "section": 4,
+        "offset": 0,
+        "symbol_index": 8,
+        "symbol": "_bsp_native_zlib_tree_ro_region_00d677c0",
+        "type": 6,
+        "executable": false,
+        "kind": "IMAGE_REL_I386_DIR32",
+        "target_primary_record_hex": "000000000400000000000000030000000200",
+        "actual_addend": 336,
+        "target_is_real_defined_whole_aggregate": true
+      },
+      {
+        "section": 4,
+        "offset": 4,
+        "symbol_index": 8,
+        "symbol": "_bsp_native_zlib_tree_ro_region_00d677c0",
+        "type": 6,
+        "executable": false,
+        "kind": "IMAGE_REL_I386_DIR32",
+        "target_primary_record_hex": "000000000400000000000000030000000200",
+        "actual_addend": 0,
+        "target_is_real_defined_whole_aggregate": true
+      },
+      {
+        "section": 4,
+        "offset": 20,
+        "symbol_index": 8,
+        "symbol": "_bsp_native_zlib_tree_ro_region_00d677c0",
+        "type": 6,
+        "executable": false,
+        "kind": "IMAGE_REL_I386_DIR32",
+        "target_primary_record_hex": "000000000400000000000000030000000200",
+        "actual_addend": 1488,
+        "target_is_real_defined_whole_aggregate": true
+      },
+      {
+        "section": 4,
+        "offset": 24,
+        "symbol_index": 8,
+        "symbol": "_bsp_native_zlib_tree_ro_region_00d677c0",
+        "type": 6,
+        "executable": false,
+        "kind": "IMAGE_REL_I386_DIR32",
+        "target_primary_record_hex": "000000000400000000000000030000000200",
+        "actual_addend": 136,
+        "target_is_real_defined_whole_aggregate": true
+      },
+      {
+        "section": 4,
+        "offset": 44,
+        "symbol_index": 8,
+        "symbol": "_bsp_native_zlib_tree_ro_region_00d677c0",
+        "type": 6,
+        "executable": false,
+        "kind": "IMAGE_REL_I386_DIR32",
+        "target_primary_record_hex": "000000000400000000000000030000000200",
+        "actual_addend": 256,
+        "target_is_real_defined_whole_aggregate": true
+      }
+    ],
+    "known_raw_values": {
+      "extra_lbits_raw40": 2,
+      "dist_code_raw513": 1,
+      "base_length_raw40": 32
+    },
+    "old5array_names_removed_without_aliases_or_duplicate_storage": true,
+    "executable_bytes": 0,
+    "functions": 0,
+    "undefineds": [],
+    "weak_symbols": [],
+    "COMDATs": [],
+    "CRT_initializers": [],
+    "helpers": []
+  },
+  "evidence": {
+    "AX_receipt_sha256": "29f4b574030f9202532c34a9bf1b6699309eb7955ff36eba3dd0d9a15dd4671f",
+    "AX_manifest_sha256": "bca2d8c543e60a2eb3c21edfa03cd039cdcbe79f9e03e3779185d832228deb8a",
+    "Root_AX_acceptance_sha256": "a6022077acbf391707e12cbdc8afa8b1007223c4b0898950e6904570012550b9",
+    "Root_AX_auth_receipt": "a83213eb1c55fb75b25884d57f967e6bb3f4d3d3aa5a7ba91d9e8aac5e56b8ea",
+    "whole_static_RO_sha256": "2c08f5a908713badb206a5c98c07b95231feb8a4b751641fb2eb1666958d7b6b",
+    "whole_Native_descriptor_sha256": "dad11b10aed45032960b25fbd26be65ba5c50804a1a2efa3d926603b0af7b415",
+    "selected_small_refs_only": true,
+    "old_AP_AT_AX_seals_immutable": true,
+    "new_live_capture_required_for_new_question": false,
+    "no_recursive_Core_or_history_capture": true
+  },
+  "qualifications": [
+    "Grounded descriptive types/standard layout, not recovered Original public type/version/ABI.",
+    "One real const owner preserves complete within-region bytes and known raw2/1/32; ordinary out-of-array C++ indexing remains UB.",
+    "No fabricated guard, clamp, fake extern/alias/provider, runtime copy/snapshot/helper/constructor/opaque buffer.",
+    "Three mutable identities and pointer fields retained; their separate-global language adjacency is not guaranteed, actual strict offsets0/20/40 measured only.",
+    "Original absolute addresses/pointer bits, malformed aliases, out-of-region arbitrary scaled indexes/faults, const writes, protection/placement/fullABI/parents/game remain qualified.",
+    "Native initial RO .rdata40000040/RW .dataC0000040 is PE evidence, not live protection measurement.",
+    "No function/Native instruction/DATA acceptance credit, parent AN/_tr_init/AU adoption or runtime/game/performance claim."
+  ],
+  "normal_registered_provider": {
+    "status": "PENDING_ROOT_WARM_INTEGRATION",
+    "normal_build_run_here": false,
+    "target_registration": false,
+    "actual_registered_COFF": null,
+    "Core_member_and_hash": null,
+    "both_dictionaries": null,
+    "independent_acceptance": false,
+    "required": [
+      "Root exact Source registration and normal scripts/build.ps1/existing checks",
+      "actual C++17 command/project/compiled Source provenance and full registered COFF",
+      "actual four strong providers/five addends/RWRO/whole2676B/placement",
+      "unique Core member/all4 publics in both complete dictionaries and prior-provider preservation",
+      "independent DATA acceptance before credit/publication; separate parent work"
+    ]
+  },
+  "corrections_and_attempts": {
+    "new_variant_compile_attempts": 1,
+    "new_variant_compile_rejections": 0,
+    "new_variant_Source_corrections_after_compile": 0,
+    "recompiles": 0,
+    "failed_proof_steps": 0,
+    "proof_helper_refinement": "After first passing parse, replaced an inert condition with direct primary relocation target-record validation; data/Source/object unchanged.",
+    "old_AT_first_strict": {
+      "elapsed_seconds": 1.4320416999980807,
+      "object_sha256": "4df40a309d2b9c6fe5b9b439fe001d80b0883fa19d5162666499a8958f0f6c2f",
+      "historical_only_not_added_to_current_time": true
+    },
+    "old_strict_first_cost_or_previous_AX_design_cost_added": false
+  },
+  "boundaries": {
+    "exact4Gitfiles": true,
+    "CMake_shards_ledger_Ghidra_Main_cache_changes": 0,
+    "normal_builds_tests_probes_Native_or_selected_body_execution": 0,
+    "branch_not_refreshed_to_unpublished_Main": true,
+    "only2DATA_ranges_and_exact4files_output_leased": true
+  },
+  "clock": {
+    "first_observed_utc": "2026-10-16T15:17:06Z",
+    "report_snapshot_utc": "2026-10-16T15:24:30.748783+00:00",
+    "observed_through_report_seconds": 444.748783,
+    "final_inclusive_timing": "local/goal16az_region_revision/receipt.json",
+    "includes": "all setup/lease/AX authentication/review-derived Source repair/compile/proof/helper refinement/docs/report/commit/freeze/seal/verify/release/admin",
+    "pre_first_observed_dispatch_gap": "unmeasured",
+    "no_old_cost_sum_or_speedup_claim": true
+  }
+}
