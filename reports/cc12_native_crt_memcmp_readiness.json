@@ -1,0 +1,101 @@
+{
+  "schema": "bsp.cc12.native_crt_memcmp.readiness.v1",
+  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+  "address": "00c1ef55",
+  "Original_library_name": "_memcmp",
+  "source_ready": true,
+  "Source_authorized": true,
+  "Source_implemented": true,
+  "Source_credit": 0,
+  "owned_ranges_half_open": [
+    [
+      "00c1ef55",
+      "00c20553"
+    ]
+  ],
+  "owned_bytes": 5630,
+  "owned_instructions": 1934,
+  "body_sha256": "3dabfb134ec9deb63f1507db78629990a3a7de2b5a5e132bf83040370fdde551",
+  "fixed_data_dependency": {
+    "range_half_open": [
+      "00c20555",
+      "00c205d5"
+    ],
+    "bytes": 128,
+    "cases": 32,
+    "sha256": "2512453ba5caa8930dacc29720403f71d384cc790e50537cb7e43b1f23636c57",
+    "two_gap_bytes_not_owned": true
+  },
+  "calls": 0,
+  "author_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\NativeCrtMemcmpReadiness01\\root_manifest.json",
+    "bytes": 39908,
+    "sha256": "f42bacd487d438326937d29d91036131a93bc7826b61ce032b920b783ad4503f"
+  },
+  "peer_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memcmp_independent_oct16\\local\\NativeCrtMemcmpIndependentReview01\\root_manifest.json",
+    "bytes": 48764,
+    "sha256": "6e9d047d681cf7b3bb3b271c610a3b6ecc4f6d1b57d3f684129f0e0e9b56f5c8"
+  },
+  "Root_author_authentication": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_memcmp_readiness_primary_20261016\\verified_author.DATA.json",
+    "bytes": 2379,
+    "sha256": "4818ee5813b96919202d3d8038d243143e85cf8ed41896f0f4dfc37456a442f2"
+  },
+  "Root_peer_authentication": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_memcmp_readiness_primary_20261016\\verified_peer.DATA.json",
+    "bytes": 5471,
+    "sha256": "3f10e4a49e0092a837b90f1b802cf38214b452ff29786733d97ad4b3daa194b8"
+  },
+  "author_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\NativeCrtMemcmpReadiness01\\readiness_report.json",
+    "bytes": 13960,
+    "sha256": "590c6d12d5df6a1c3eefcdb2a3346b2d3df378e793ded11c28e73deb164dc89a"
+  },
+  "independent_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memcmp_independent_oct16\\local\\NativeCrtMemcmpIndependentReview01\\independent_review.json",
+    "bytes": 21688,
+    "sha256": "5778c1338249b9f5bad4d69e6094f065519db6b96083716afbf73f0c8e23c9ad"
+  },
+  "contract_correction": {
+    "id": "C1_ENDPOINT_DOMAIN",
+    "severity": "Required wording correction at Root Source gate",
+    "author_literal": "Each base+count endpoint is a valid one-past point in its actual allocation.",
+    "problem": "Taken literally this excludes valid prefixes and interior subranges whose requested endpoint is inside a larger allocation; Original supports these.",
+    "corrected": "Each requested endpoint is within or one past the same genuine live allocation; the entire requested [base,base+count) byte region is readable, determinate, stable and nonwrapping.",
+    "interpretation": "One-past may describe the requested region/view, but must not require the endpoint to equal the end of the enclosing allocation.",
+    "Root_agreed_correction": true,
+    "author_family_modified": false
+  },
+  "Root_review_scope": "Whole readiness report and all36DWORD/32tail descriptors reviewed; selected prologue/batch loop/WORD16/3-byte/short-count/normal-return rows read. Full1934rows read by authorAstra and separate independentAstra; Root does not claim to have personally reread all1934.",
+  "whole_Original_reviewers": [
+    "author_Astra",
+    "independent_Astra"
+  ],
+  "Source_packet": "cc12_native_crt_memcmp_00c1ef55",
+  "exact_future_files": [
+    "include/bsp/native_crt_memcmp.hpp",
+    "src/native_crt_memcmp.cpp",
+    "docs/NATIVE_CRT_MEMCMP.md",
+    "reports/native_crt_memcmp.json"
+  ],
+  "contract": [
+    "New ordinary target-specific MSVC Win32 interface: std::int32_t __cdecl bsp::compare_native_regions_00c1ef55(const void*, const void*, std::uint32_t) noexcept. Keep correct Original library name _memcmp. uint32 count and exact signed32 result -1/0/+1 from the first differing unsigned byte; NUL has no terminator role.",
+    "Count0 admits either or both null pointers and returns0 before payload access or endpoint arithmetic. Positive count requires both requested regions to be genuine live readable determinate stable bytes. Each requested endpoint is within OR one past the same enclosing allocation, permitting interior subranges and prefixes. Correct author C1 allocation-end wording; do not alter its sealed historical evidence. Actual32bit additions/advances must not wrap. No signed count cap, pointer subtraction, nonalias or initially aligned pointer requirement.",
+    "Read-only overlapping and identical input regions are allowed; no pointer-equality shortcut. Exclude mutation, indeterminate bytes, lifetime changes, concurrency, synchronization/volatile/MMIO protocols, guard-page/fault observation and nonflat segment environments. Payload read order is an ordinary semantic schedule, not Original physical argument-home/register/flags/instruction/bus/fault/EH/ABI identity.",
+    "Original initial count1..4 must use ascending BYTE pairs first then second, stopping at first difference. This is distinct from remaining count1..4 after a larger original count; do not merge their different load-width/order routes.",
+    "For initial count>=5, process unsigned remaining>=32 batches: eight ordered first-DWORD then second-DWORD pairs at offsets0,4,...,28. Only unequal words enter ascending byte fallbacks. Batch fallbacks reread the first BYTE as needed; pair order first then second except offset16 byte0 second then first. Stop immediately at the first unequal byte.",
+    "After complete equal batches, remaining is original count mod32 and current endpoints are base+consumed+remaining. Preserve every one of the32 actual table routes using the sealed per-block schedule. Tail DWORD offsets are -remaining,-remaining+4,... before its mod4 suffix. This fixed Original dispatch data is control evidence, not an external callback/global provider. Structured Source control is allowed if the complete payload schedule is identical.",
+    "Retain23 tail DWORD groups that cache the low BYTE from the prior first DWORD and load only the second BYTE at fallback lane0. Tail offsets -12,-9,-10,-31,-15 instead reread first BYTE0 and use second-before-first; -10 uses second-before-first at all4byte lanes. Together with batchoffset16 these are exactly9reversed fresh DWORD-fallback pairs. All other fresh pairs are first-before-second. Use the full retained descriptor addresses to audit all36blocks.",
+    "Tail mod0 has no suffix; mod1 reads final BYTE second then first. Mod2 reads first-WORD16 then second-WORD16 at end-2 and returns0 on equality; on inequality BYTE end-2 then end-1, each second-before-first as reached. Mod3 reads BYTE end-3 first-before-second, then end-2 and end-1 second-before-first, bypassing WORD16 equality. Preserve exact normalized magnitude and early exits.",
+    "Approve private addressed scalar MOV16/MOV32 helpers with MSVC Win32 inline assembly over genuine possibly unaligned byte storage, plus explicit volatile unsigned BYTE reads. Fully initialize and zero-extend WORD16 results. Keep reads sequenced as separate operations and extract cached low BYTE from the actual prior DWORD value. No invented uint16/uint32 live-object/alignment/alias domain, SDK memcmp/memcpy wrapper, byte-only replacement, copied regions, new runtime validation/fallback/provider/global/TLS/errno/caller binding. Actual strict/Main object inspection must verify all load widths/orders/cache/branches and unexpected helper/vectorization absence.",
+    "Worker owns only four Source files and its new local evidence family. Root owns CMake/registry/ledger/Ghidra/integration. One genuine strict compile with before input pins and full actual object review; no separate unregistered whole-worker baseline requested. No tests/probes/body execution. Source implementation, compiled artifact, Main archive and Original ABI/runtime/game proof remain separate gates."
+  ],
+  "Main_gate": "pending_normal_Main_build_and_independent_actual_variant_archive_review",
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "game_validated": false,
+  "Source_commit": "db612fba4193f7a76ea2dca23f27cb178afcd742",
+  "primary_review": "reports/cc12_native_crt_memcmp_primary_review.json",
+  "Main_registered": true
+}

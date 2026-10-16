@@ -42156,8 +42156,8 @@
     },
     {
       "id": "cc12_native_qsort_valid_input_kernel_00bfc350",
-      "done": false,
-      "state": "two_whole_normal_helpers_and_one_partial_valid_input_entry_Source_primary_peer_accepted_registered_Main_gate_pending",
+      "done": true,
+      "state": "two_whole_ordinary_helpers_and_partial_valid_input_qsort_entry_Main3checks_actual_object_archive_pass",
       "source_ready": true,
       "function_addresses": [
         "00bfc350",
@@ -42186,20 +42186,22 @@
       ],
       "Source_credit": 2,
       "Source_implemented": true,
-      "Main_gate": "pending_author_independent_review_registration_build_actual_artifacts",
+      "Main_gate": "pass",
       "code_revision": "2b8cd919605628680a4b975757a8ac794607566f",
       "primary_review": "reports/cc12_native_qsort_primary_review.json",
-      "Main_build_gate": "pending",
-      "actual_compiler_archive_gate": "pending",
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
       "Source_whole_helpers": 2,
       "Source_partial_entries": 1,
       "partial_projection_credit": 1,
-      "renderer_composition_readiness": "reports/cc12_renderer_native_sort_composition_readiness.json"
+      "renderer_composition_readiness": "reports/cc12_renderer_native_sort_composition_readiness.json",
+      "Main_validation": "reports/cc12_native_qsort_Main_validation.json",
+      "Ghidra_existing_function_evidence_saved": true
     },
     {
       "id": "cc12_native_crt_strrchr_00bf87b0",
-      "done": false,
-      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_Main3checks_independent_actual_frame_variant_archive_pass",
       "source_ready": true,
       "function_addresses": [
         "00bf87b0"
@@ -42221,11 +42223,13 @@
       "named_incomplete_dependencies": [
         "Actualcaller/applicationbinding, OriginalphysicalABI/register/flag/segment/fault/instruction/EH/runtime/gameequivalence are outside ordinarySourcecredit."
       ],
-      "Main_gate": "pending",
+      "Main_gate": "pass",
       "code_revision": "2f2baa1b9fc4c00ef51cc7a6230a9f5519a8fc4f",
       "primary_review": "reports/cc12_native_crt_strrchr_primary_review.json",
-      "Main_build_gate": "pending",
-      "actual_compiler_archive_gate": "pending"
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_native_crt_strrchr_Main_validation.json",
+      "Ghidra_existing_function_evidence_saved": true
     },
     {
       "id": "goal_oct15_scene_node_child_at",
@@ -42382,6 +42386,239 @@
       "Original_ABI_compatible": false,
       "new_entry_executed": false,
       "game_validated": false
+    },
+    {
+      "id": "cc12_native_crt_memchr_00bfa700",
+      "done": true,
+      "state": "whole_ordinary_Source_Main3checks_independent_actual_frame_variant_archive_pass",
+      "source_ready": true,
+      "function_addresses": [
+        "00bfa700"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [],
+      "readiness": "reports/cc12_native_crt_memchr_readiness.json",
+      "contract": [
+        "New MSVC Win32 ordinary typed interface over the genuine passed byte storage: void* __cdecl bsp::find_native_crt_byte_00bfa700(void*, int, unsigned int). Pointer/int/count widths are32bits, byte8bits, little endian. Keep correct Original library name _memchr.",
+        "Count0 accepts any pointer including null and returns null before payload reads or target conversion. Positive count requires a determinate readable stable requested region in one genuine live allocation. Endpoint may be within or one past that allocation, admitting interior subranges and prefixes. Actual32bit extent and pointer advances do not wrap. No NUL, padding, typed uint allocation, or initially aligned base requirement.",
+        "Every int selects its low8bits. Peel one BYTE at a time until actual address4alignment, returning first actual match or null on exhaustion. Read only complete in-range aligned DWORDs; no count overread. A DWORD may include later bytes after a first match within that DWORD.",
+        "Retain unsigned32 candidate ((x+0x7efefeff)^~x)&0x81010100, x=word^repeated_target. Zero candidate continues without reread. Nonzero candidate causes one actual same-DWORD reread and register-byte comparisons in ascending address order; reject false positives. Finish with0..3 ordered BYTE tail reads. Return actual borrowed first-match pointer or null; no extra final reread.",
+        "Approve target-specific private addressed MOV32 load helper using MSVC Win32 inline assembly over genuine byte storage, and volatile unsigned BYTE loads. This avoids inventing typed uint32 object lifetime/aliasing preconditions. The mechanism remains subject to actual strict/Main object verification of load widths, order and conditional reread. No ISO-portability or Original instruction/fault ABI claim.",
+        "Use bounded unsigned count/offset/pointer state; no integer underflow-based out-of-region accesses, before-base pointers, pointer subtraction, new runtime validation, SDK memchr/memcpy/search substitute, fallback, provider, global or caller binding. Read-only payload aliases are admitted; returned pointer borrows original owner lifetime. Mutation, concurrency, faults, invalid positive-count storage and volatile/MMIO observation protocols are outside this ordinary domain.",
+        "No Source compiler flag/segment/stack/register-home parameters or physical Original ABI/EH/fault/runtime equivalence. No new tests/probes/body execution. Worker owns only the four Source files; Root owns registration, ledger, annotation and Main integration."
+      ],
+      "Main_gate": "pass",
+      "output_files": [
+        "include/bsp/native_crt_memchr.hpp",
+        "src/native_crt_memchr.cpp",
+        "docs/NATIVE_CRT_MEMCHR.md",
+        "reports/native_crt_memchr.json"
+      ],
+      "code_ranges": [
+        "00bfa700-00bfa7ac"
+      ],
+      "code_revision": "f33c39c8a17fd1719616529fcc6bb4083ce6a22b",
+      "primary_review": "reports/cc12_native_crt_memchr_primary_review.json",
+      "Main_build_gate": "pass_3_existing_CTests",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_native_crt_memchr_Main_validation.json",
+      "whole_ordinary_function_credit": 1
+    },
+    {
+      "id": "goal_oct15_crt_sbh_region_lookup",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_independently_reviewed_registered_Win32_three_checks_and_full_emitted_reviewed_Main_publication_batch",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00c11d3d"
+      ],
+      "output_files": [
+        "src/native_crt_sbh_region_lookup.cpp",
+        "include/bsp/native_crt_sbh_region_lookup.hpp",
+        "docs/GOAL_OCT15_CRT_SBH_REGION_LOOKUP.md",
+        "reports/goal_oct15_crt_sbh_region_lookup.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "primary_review": "reports/goal_oct15_region_primary_review.json",
+      "code_revision": "c606835ba8653eda14e67c47fbd2cdbb375f8ab6",
+      "main_source_revision": "c606835ba8653eda14e67c47fbd2cdbb375f8ab6",
+      "contract": "Whole43B14ops actual count/base/capturedwrappedend/liveargument/currentdescriptor lookup;currentGhidra18Bthunk+25Bfalseinterior split remains unrepaired",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false,
+      "integrated_main_revision": "7081f82404af7e5e744cdaaf7bff6c6c727f17c5",
+      "Ghidra_boundary_repaired": false,
+      "physical_native_bytes": 43,
+      "physical_native_instructions": 14,
+      "current_formal_bytes": [
+        18,
+        25
+      ],
+      "false_interior_entry": "00c11d61",
+      "boundary_limit": "bridge script execution disabled;plateonlysaved/preservednames/comments;no body/flow/listing/policychange"
+    },
+    {
+      "id": "goal_oct15_crt_ascii_strnicmp",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_independently_reviewed_registered_Win32_three_checks_and_full_emitted_reviewed_Main_publication_batch",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00c15700"
+      ],
+      "output_files": [
+        "src/native_crt_ascii_strnicmp.cpp",
+        "include/bsp/native_crt_ascii_strnicmp.hpp",
+        "docs/GOAL_OCT15_CRT_ASCII_STRNICMP.md",
+        "reports/goal_oct15_crt_ascii_strnicmp.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "primary_review": "reports/goal_oct15_ascii_primary_review.json",
+      "code_revision": "12523a9f6fdc6a7645f02234ae81b44e8bee173b",
+      "main_source_revision": "12523a9f6fdc6a7645f02234ae81b44e8bee173b",
+      "contract": "Whole97B48ops OriginalASCIIcomparison;countfirst/zero-beforepointers/currentleftthenrightBYTEevenleftNUL/unsignedAZfold/exactsign;noSDK/locale/parentreplacement",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_crt_startup_owner_readiness",
+      "done": true,
+      "state": "bounded_read_only_whole_physical_startup_and_support_owner_audit_no_Source_credit",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [],
+      "output_files": [
+        "reports/goal_oct15_crt_startup_owner_readiness.json"
+      ],
+      "depends_on": [],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_crt_startup_owner_readiness.json",
+      "contract": "Whole480B156ops startup plus604B173ops supportingowners+40Bscope;48definedtruecallrows/21computed/3physical-onlyunownedcallskeptseparate;Originalheap/TLS/FLS/encodedpointer/lock/PTD/SEH/IO/application owners remain finite jointwork",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "cc12_native_crt_memcmp_00c1ef55",
+      "done": false,
+      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+      "source_ready": true,
+      "function_addresses": [
+        "00c1ef55"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [],
+      "readiness": "reports/cc12_native_crt_memcmp_readiness.json",
+      "contract": [
+        "New ordinary target-specific MSVC Win32 interface: std::int32_t __cdecl bsp::compare_native_regions_00c1ef55(const void*, const void*, std::uint32_t) noexcept. Keep correct Original library name _memcmp. uint32 count and exact signed32 result -1/0/+1 from the first differing unsigned byte; NUL has no terminator role.",
+        "Count0 admits either or both null pointers and returns0 before payload access or endpoint arithmetic. Positive count requires both requested regions to be genuine live readable determinate stable bytes. Each requested endpoint is within OR one past the same enclosing allocation, permitting interior subranges and prefixes. Correct author C1 allocation-end wording; do not alter its sealed historical evidence. Actual32bit additions/advances must not wrap. No signed count cap, pointer subtraction, nonalias or initially aligned pointer requirement.",
+        "Read-only overlapping and identical input regions are allowed; no pointer-equality shortcut. Exclude mutation, indeterminate bytes, lifetime changes, concurrency, synchronization/volatile/MMIO protocols, guard-page/fault observation and nonflat segment environments. Payload read order is an ordinary semantic schedule, not Original physical argument-home/register/flags/instruction/bus/fault/EH/ABI identity.",
+        "Original initial count1..4 must use ascending BYTE pairs first then second, stopping at first difference. This is distinct from remaining count1..4 after a larger original count; do not merge their different load-width/order routes.",
+        "For initial count>=5, process unsigned remaining>=32 batches: eight ordered first-DWORD then second-DWORD pairs at offsets0,4,...,28. Only unequal words enter ascending byte fallbacks. Batch fallbacks reread the first BYTE as needed; pair order first then second except offset16 byte0 second then first. Stop immediately at the first unequal byte.",
+        "After complete equal batches, remaining is original count mod32 and current endpoints are base+consumed+remaining. Preserve every one of the32 actual table routes using the sealed per-block schedule. Tail DWORD offsets are -remaining,-remaining+4,... before its mod4 suffix. This fixed Original dispatch data is control evidence, not an external callback/global provider. Structured Source control is allowed if the complete payload schedule is identical.",
+        "Retain23 tail DWORD groups that cache the low BYTE from the prior first DWORD and load only the second BYTE at fallback lane0. Tail offsets -12,-9,-10,-31,-15 instead reread first BYTE0 and use second-before-first; -10 uses second-before-first at all4byte lanes. Together with batchoffset16 these are exactly9reversed fresh DWORD-fallback pairs. All other fresh pairs are first-before-second. Use the full retained descriptor addresses to audit all36blocks.",
+        "Tail mod0 has no suffix; mod1 reads final BYTE second then first. Mod2 reads first-WORD16 then second-WORD16 at end-2 and returns0 on equality; on inequality BYTE end-2 then end-1, each second-before-first as reached. Mod3 reads BYTE end-3 first-before-second, then end-2 and end-1 second-before-first, bypassing WORD16 equality. Preserve exact normalized magnitude and early exits.",
+        "Approve private addressed scalar MOV16/MOV32 helpers with MSVC Win32 inline assembly over genuine possibly unaligned byte storage, plus explicit volatile unsigned BYTE reads. Fully initialize and zero-extend WORD16 results. Keep reads sequenced as separate operations and extract cached low BYTE from the actual prior DWORD value. No invented uint16/uint32 live-object/alignment/alias domain, SDK memcmp/memcpy wrapper, byte-only replacement, copied regions, new runtime validation/fallback/provider/global/TLS/errno/caller binding. Actual strict/Main object inspection must verify all load widths/orders/cache/branches and unexpected helper/vectorization absence.",
+        "Worker owns only four Source files and its new local evidence family. Root owns CMake/registry/ledger/Ghidra/integration. One genuine strict compile with before input pins and full actual object review; no separate unregistered whole-worker baseline requested. No tests/probes/body execution. Source implementation, compiled artifact, Main archive and Original ABI/runtime/game proof remain separate gates."
+      ],
+      "fixed_data_dependency": {
+        "range_half_open": [
+          "00c20555",
+          "00c205d5"
+        ],
+        "bytes": 128,
+        "cases": 32,
+        "sha256": "2512453ba5caa8930dacc29720403f71d384cc790e50537cb7e43b1f23636c57",
+        "two_gap_bytes_not_owned": true
+      },
+      "Main_gate": "pending_normal_Main_build_and_independent_actual_variant_archive_review",
+      "output_files": [
+        "include/bsp/native_crt_memcmp.hpp",
+        "src/native_crt_memcmp.cpp",
+        "docs/NATIVE_CRT_MEMCMP.md",
+        "reports/native_crt_memcmp.json"
+      ],
+      "code_ranges": [
+        "00c1ef55-00c20552",
+        "00c20555-00c205d4"
+      ],
+      "code_revision": "db612fba4193f7a76ea2dca23f27cb178afcd742",
+      "primary_review": "reports/cc12_native_crt_memcmp_primary_review.json",
+      "Main_build_gate": "pending",
+      "actual_compiler_archive_gate": "pending"
+    },
+    {
+      "id": "cc12_native_crt_wcsncmp_00bfdcb7",
+      "done": false,
+      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+      "source_ready": true,
+      "function_addresses": [
+        "00bfdcb7"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [],
+      "readiness": "reports/cc12_native_crt_wcsncmp_readiness.json",
+      "contract": [
+        "New target-specific MSVC Win32 ordinary interface: int __cdecl bsp::compare_native_crt_wide_prefix_00bfdcb7(const void* actual_left, const void* actual_right, unsigned int count). Keep correct Original library name _wcsncmp. Pointers/int/count32bits, BYTE8bits, little-endian unsigned WORD16 code units. No Unicode scalar/surrogate/normalization/casefold/locale/collation semantics.",
+        "Count0 accepts any pointer values including null and returns0 before payload reads. Positive count requires genuine live determinate stable storage for ALL actually reached two-byte reads, including BOTH final WORD rereads. Do not require an entire count-sized extent when an earlier mismatch/LHS zero stops. Reached reads wholly inside the actual allocation; reached pointer advances/endpoints within or one past it and nonwrapping. No dereference of one-past, arbitrary signed count cap, padding, initial alignment, or typed wchar/uint16 ownership condition.",
+        "Stable identical and overlapping input regions are allowed. Original DEC at00BFDCCA writes its own by-value count argument home each visited iteration. A new typed API uses ordinary unsigned local count state; Original mutable argument-home/stack alias protocols and their writes/fault behavior are explicitly outside equivalence. Do not fabricate an argument block, native stack identity or Source parameter binding to that home.",
+        "After positive-count entry, decrement unsigned remaining BEFORE preliminary payload reads. If the new remaining is0, go directly to the final pair. Thus original count1 has exactly the final LHS WORD then RHS WORD reads, no preliminary pair.",
+        "When remaining is nonzero, read current LHS WORD. If zero, skip preliminary RHS and go to final pair. Otherwise read current RHS WORD for equality. On mismatch go to final pair. Only equal nonzero preliminary values advance each actual pointer by2 and repeat.",
+        "Every positive-count exit always freshly reads current LHS WORD then current RHS WORD, including after preliminary LHS zero or mismatch. Subtract zero-extended integer16 values in signed32: exact result [-65535,65535], not normalized sign or signed16 subtraction. Normal last-count position has final pair only; LHS-zero position has LHS/preliminary then LHS/RHS final; mismatch has LHS/RHS preliminary then LHS/RHS final.",
+        "Approve private addressed MOVZX WORD16 helper with MSVC Win32 inline assembly over genuine possibly unaligned raw byte storage, returning a fully initialized zero-extended32bit value. Spell reads as separate sequenced operations and preserve final rereads; actual strict/Main objects must verify widths, order, short circuit and unsigned decrement before loads. No invented typed WORD object or portable ISO alias/lifetime claim.",
+        "No SDK wcsncmp/memcpy/search, byte-only substitution, copied storage, validation/fallback/provider/global/TLS/caller binding. Exclude invalid reached reads, wrapping advances, mutable/indeterminate payload, lifetime changes, concurrency, MMIO/volatile observation and faults. Preserve Original RHS-before-LHS pointer-home-load fact in documentation, without claiming new compiler physical home/fault order or stack/register/flag/segment/EH/binary ABI/runtime/game identity.",
+        "Worker owns only four Source files and local evidence; Root owns registration/ledger/Ghidra/Main. One genuine strict compile with actual before input pins and complete actual code/data/symbol/relocation/metadata review. No separate unregistered whole-worker baseline requested, no tests/probes/body execution; Root registered Main build and actual Main object/archive gates remain pending."
+      ],
+      "Main_gate": "pending_normal_Main_build_and_independent_actual_variant_archive_review",
+      "output_files": [
+        "include/bsp/native_crt_wcsncmp.hpp",
+        "src/native_crt_wcsncmp.cpp",
+        "docs/NATIVE_CRT_WCSNCMP.md",
+        "reports/native_crt_wcsncmp.json"
+      ],
+      "code_ranges": [
+        "00bfdcb7-00bfdceb"
+      ],
+      "code_revision": "c590710ae230135ead4f96979a915e00483cc4a4",
+      "primary_review": "reports/cc12_native_crt_wcsncmp_primary_review.json",
+      "Main_build_gate": "pending",
+      "actual_compiler_archive_gate": "pending"
+    },
+    {
+      "id": "cc12_native_crt_wcschr_00bfd6c1",
+      "done": false,
+      "state": "whole_ordinary_Original_readiness_primary_peer_pass_Source_authorized_compiler_Main_pending",
+      "source_ready": true,
+      "function_addresses": [
+        "00bfd6c1"
+      ],
+      "code_ranges": [
+        "00bfd6c1-00bfd6e2"
+      ],
+      "output_files": [
+        "include/bsp/native_crt_wcschr.hpp",
+        "src/native_crt_wcschr.cpp",
+        "docs/NATIVE_CRT_WCSCHR.md",
+        "reports/native_crt_wcschr.json"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [],
+      "readiness": "reports/cc12_native_crt_wcschr_readiness.json",
+      "contract": [
+        "New MSVC Win32 default potentially throwing API: void* __cdecl bsp::find_native_crt_wide_character_00bfd6c1(void* actual_string,int character). Keep correct Original library name _wcschr. BYTE8, pointer/int32, little-endian unsignedWORD16; target is low16 bits modulo65536. No Unicode scalar/surrogate/normalization/case/locale/collation semantics.",
+        "Require a finite first reached unit equal to targetlow16 or NUL. Every reached2byte read, including terminalNUL reread, lies wholly inside genuine live stable determinate readable byte storage in the same actual allocation. Earlier nonzero match needs no extent or laterNUL promise. Null/invalid input outside ordinary domain; no new validation guard.",
+        "Admit possiblyunaligned raw byte storage, prefixes/interior regions and stable readonly aliases. Actual reached advances by2 are nonwrapping and within or onepast same allocation; neverdereferenceonepast. No typed wchar/uint16 ownership, alignment, padding, signed-count cap or copied allocation.",
+        "Read exactly one WORD per visitedunit. Test NUL before nonzero target equality. Nonzero match returns its actual borrowed pointer without reread. Only unequal nonzero units advance2 andcontinue. NUL ALWAYS causes one fresh same-address WORD reread, includingtarget0, then comparethatvalue to low16target: pointer ifequal, nullotherwise. No afterNUL read or unconditional finalreread onnonzeromatch.",
+        "Approve private addressed MOVZX WORD16 helper with MSVC Win32 inlineassembly over genuine rawbyte storage, fullyinitializing zeroextended32bit output. Spell terminalNUL reread as separate sequencedoperation. No typedwideobject lifetime/alias assumption or portableISOclaim. Actual entire strict/Main objects mustverify accesswidth, readorder, NULonlyreread, branches/bounds, symbol/metadata/call/provider closure.",
+        "No SDKwcschr/memcpy/search, byte-only/dwordsubstitute, provider/global/TLS/fallback/runtimevalidation/callerbinding. Exclude faults, mutation/concurrency, indeterminatebytes, lifetimechanges andMMIO/volatileobservationprotocols. PreserveOriginal pointerhome/targethome/order as evidence only; no physicalABI/register/stack/flags/segment/EH/instruction/bus/fault/runtime/gamecredit.",
+        "Worker owns exactlyfourSource/header/doc/reportfiles plus ownnewlocalevidence. Root owns registration, ledgers/names, supported Ghidraannotation/export andMain. Before every Sourcewrite hold entry, entire34Brange andallfourfiles. One actual strictMSVCWin32compile with genuinebeforepins/actualdependencyclosure and wholeartifactreview; no separate unregisteredworkerbaseline, newtests/probes/bodyexecution. Root Mainbuild/actualvariant/archive andindependentSourcegates remain."
+      ],
+      "Main_gate": "pending_Source_independent_strict_and_registered_Main_actual_variant_archive_review"
     }
   ],
   "snapshot_after_analysis": {

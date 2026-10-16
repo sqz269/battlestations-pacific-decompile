@@ -1,0 +1,365 @@
+{
+  "packet": "native_gui_frame_box_record_copy_103",
+  "status": "whole_raw_record_copy_reconstructed_strict_win32_object_inspected_existing_checks_pass_no_new_runtime_unregistered",
+  "reviewed_root_baseline": "8ee08ac39bee984904e14775e84fc49f877fc733",
+  "worker_head_before_packet": "8ee08ac39bee984904e14775e84fc49f877fc733",
+  "original": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged": true
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "each_live_query_verified": true
+  },
+  "function": {
+    "address": "00ad0c60",
+    "end_exclusive": "00ad0cf6",
+    "native_bytes": 150,
+    "native_instruction_starts": 58,
+    "existing_name_preserved": "BSP_GuiRecord2C_CopyConstruct",
+    "name_is_existing_descriptive_hypothesis": true,
+    "original_abi": "ECX actual destination; stacked actual source; EAX same destination; RET4",
+    "new_source_api": "void* copy_construct_native_gui_frame_box_record_00ad0c60(void*, const void*, NativeStringRawPoolContext&)",
+    "source_api_is_not_original_binary_abi": true
+  },
+  "calls": [
+    {
+      "address": "00ad0c8d",
+      "native": "0041dd40",
+      "function": "00ad0c60",
+      "kind": "call",
+      "native_arguments": "ECX actual destination+4, stacked captured source length and preserve1",
+      "source": "real existing raw-pool resize overload"
+    },
+    {
+      "address": "00ad0ca3",
+      "native": "00bf7680",
+      "function": "00ad0c60",
+      "kind": "call",
+      "native_arguments": "current destination data, source data, current destination length",
+      "source": "existing Source overlap-admitting memmove boundary, zero-count invocation omitted after current reads"
+    }
+  ],
+  "dynamic_import": {
+    "site": "00ad0ce7",
+    "cell": "00ce221c",
+    "operation": "Win32 InterlockedIncrement(actual current resource+4)",
+    "source_operation": "same Win32 API intrinsic, emitted LOCK INC at primary+99",
+    "original_iat_or_abi_identity_claimed": false
+  },
+  "raw_layout": {
+    "record_bytes": 44,
+    "resource": "00 DWORD",
+    "name": "04 length,08 data actual8h header",
+    "x87_pairs": [
+      "0c",
+      "10",
+      "14",
+      "18"
+    ],
+    "dword_pairs": [
+      "1c",
+      "20",
+      "24",
+      "28"
+    ],
+    "semantic_projection_cast_or_owner": false
+  },
+  "source_body_order": [
+    "source resource capture",
+    "stable actual name-header identity comparison",
+    "resource store, then destination name length/data clears before self-header branch",
+    "real raw resize with captured source length and preserve=true",
+    "CURRENT source length guard after helper",
+    "CURRENT DESTINATION count then CURRENT source data then CURRENT destination data captures",
+    "nonzero-count memmove using existing Source boundary",
+    "four explicit ordered x87 FLD/FSTP pairs",
+    "four distinct interleaved current DWORD reads/stores",
+    "CURRENT destination resource reload then nonnull Win32 atomic AddRef",
+    "same identity return"
+  ],
+  "preconditions": {
+    "destination": "fresh DWORD-aligned actual2Ch storage",
+    "source": "valid live actual2Ch raw source",
+    "alias": "distinct record ranges cannot partially overlap; same-header only borrowed construction preimage, not duplicate owned lifetime; no owned destination buffer abandoned",
+    "pool": "SAME genuine NativeStringRawPoolContext publication01090AA8/gate01090AA4/actualmanager01090AA0",
+    "metadata": "context metadata/cell identities live and stable, disjoint destination/callee scratch; externally serialized",
+    "data_and_resources": "valid raw-helper byte-copy/allocation/buffer domain; actual resource/count alive, aligned and disjoint destination",
+    "fp": "actual current x87 control/status/stack supports four paired transfers; no default/reset",
+    "retention": "caller retains SAME partial record/source/context/resource graph before entry"
+  },
+  "failure": {
+    "native_local_eh": false,
+    "source_local_catch_ad0860_cleanup_rollback_reset": false,
+    "resource_addref_before_string_creation_succeeds": false,
+    "failed_record_has_new_acquired_resource_ref": false,
+    "apply_ad0860_to_failed_record_or_replay": false,
+    "raw_helper_getter_exceptions_propagate_without_rollback": true,
+    "internal_retention_owner_or_fail_closed_destructor": false,
+    "successful_retirement_closed": false
+  },
+  "verification": {
+    "canonical_worker_existing_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "existing_ctests_passed": 3,
+      "failed": 0,
+      "ctest_seconds": 9.46,
+      "new_unit_unregistered_and_not_exercised_by_these_checks": true
+    },
+    "fresh_direct_object": {
+      "command_file": "local\\cc12_native_gui_frame_box_record_copy_103\\compile.cmd",
+      "exit_code": 0,
+      "target": "MSVC Win32",
+      "flags": [
+        "/MD",
+        "/EHsc",
+        "/std:c++20",
+        "/O2",
+        "/Gy",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/permissive-"
+      ],
+      "final_source_header_used": true,
+      "primary_body_bytes": 163,
+      "inspection": {
+        "primary_source_body_bytes": 163,
+        "coff_section": 4,
+        "primary_source_sha256": "b6651db63e6cff680d11e36c9f5f7f33e4e1c2bbd43602876001a22feebcb831",
+        "x87_pairs": [
+          {
+            "offset": "62",
+            "mnemonic": "fld",
+            "operands": "dword ptr [edi + 0xc]"
+          },
+          {
+            "offset": "65",
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esi + 0xc]"
+          },
+          {
+            "offset": "68",
+            "mnemonic": "fld",
+            "operands": "dword ptr [edi + 0x10]"
+          },
+          {
+            "offset": "6b",
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esi + 0x10]"
+          },
+          {
+            "offset": "6e",
+            "mnemonic": "fld",
+            "operands": "dword ptr [edi + 0x14]"
+          },
+          {
+            "offset": "71",
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esi + 0x14]"
+          },
+          {
+            "offset": "74",
+            "mnemonic": "fld",
+            "operands": "dword ptr [edi + 0x18]"
+          },
+          {
+            "offset": "77",
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esi + 0x18]"
+          }
+        ],
+        "no_sse_transfer_or_fp_default_reset": true,
+        "resource_capture_store": [
+          "0e",
+          "11"
+        ],
+        "name_clears": [
+          "16",
+          "1d"
+        ],
+        "self_header_cmp_branch": [
+          "24",
+          "26"
+        ],
+        "raw_resize_call": "33",
+        "current_source_length": "38",
+        "current_dest_count_source_data_dest_data": [
+          "42",
+          "44",
+          "47"
+        ],
+        "source_memmove_call": "51",
+        "interleaved_dword_pairs": [
+          [
+            "7a",
+            "7d"
+          ],
+          [
+            "80",
+            "83"
+          ],
+          [
+            "86",
+            "89"
+          ],
+          [
+            "8c",
+            "8f"
+          ]
+        ],
+        "current_resource_reload": "92",
+        "win32_intrinsic_lock_increment": "99",
+        "return": "a2",
+        "native_cmp_before_stores_source_invariant_cmp_after_clears": true,
+        "source_increment_service_not_native_iat_abi_identity": true,
+        "local_catch_cleanup_rollback": false,
+        "new_translation_unit_registered": false,
+        "source_native_or_fixture_execution_performed": false,
+        "root_full_header_cpp_primary_object_review": "PASS"
+      }
+    },
+    "root_independent_review": "full header/CPP, all58 Native starts and entire optimized primary Source object PASS",
+    "no_new_test_fixture_probe_or_native_comparison": true
+  },
+  "emitted_differences": [
+    {
+      "native": "CMP AD0C72 before resource/header stores",
+      "source": "CMP primary+24 after header clears",
+      "supported_reason": "same stable pure pointer identities; self-header branch and relevant memory schedule preserved",
+      "private_flags_register_abi_claimed": false
+    },
+    {
+      "native": "imported increment at IAT CE221C",
+      "source": "Win32 API intrinsic LOCK INC primary+99",
+      "scope": "Source interlocked service behavior, not Original import dispatch or ABI identity"
+    }
+  ],
+  "limits": [
+    "new Source ABI, not drop-in Original entry",
+    "Source memmove overlap/zero-count/allocation domain boundary retained; no independent Native memcpy/CRT proof",
+    "no runtime signaling-NaN/control/status/trap equivalence case; exact paired x87 instructions statically inspected",
+    "no native/private ABI/FH3/SEH or failure runtime proof",
+    "no acquired-ref claim for failed record or successful retirement proof",
+    "no release/vector/tidy/factory, CMake/Main, activation/visual/gameplay change or proof"
+  ],
+  "annotations": {
+    "address_only": "00ad0c60",
+    "old_name_comments_and_rows_preserved": true,
+    "history": "local\\ghidra-annotations-20261016T053716Z.json",
+    "history_sha256": "48a58111adc307ab17ab719f26e3b0b9045fea295281d9e6bf52a6e7f517b175",
+    "locked_apply_saved_project_refreshed_exports_and_index": true
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "git_blob": "02575897789655a98197abf689d35830d30b27e5",
+      "sha256": "f7d7681547a5a644f6b65c895fa55f387904b18b50dcf054c5e1ec25b76af5d4"
+    },
+    {
+      "path": "src/native_gui_frame_box_records.cpp",
+      "git_blob": "2591722a4d19e9670ace79058f262b99d7e9d267",
+      "sha256": "ea28803cc5531fd4f449472c0b1f10474ed312f9098bd8864a4e170b3de672ce"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "git_blob": "d2d48f7cca8e08a76c98c10f2bdab9bca5cdb165",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "git_blob": "0e5d59593c47a3cdabaf1020adddc735141d28d3",
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "git_blob": "30bbfe627b4ea7b4f453ec68422363c35479a3a8",
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "git_blob": "1c660fa6417f9fbc277b821d0ad7d83587fcbed5",
+      "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "git_blob": "41d4bd970057f9cf9dd3c9c6d88527ce27ebbf01",
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "git_blob": "2718cee01c292f0f641606cd965c3d6a3ec638b3",
+      "sha256": "eb3c7f83231a2a8184041a981bcd912733b5f12801d0bba2345d1ad0e69c3d79"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "git_blob": "0d676e19e4b4053830565e9a56c67828c3f56885",
+      "sha256": "61a9c0e78b7e20588be8d927e4831f4f1049d383ce49a2b405535665a6b9d603"
+    }
+  ],
+  "prior_contract": [
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_COPY_PROVIDERS_READINESS_98.md",
+      "git_blob": "6707301cd5e5a89de7fb8a2e8aa079f86c10ee1f",
+      "sha256": "56ab226b40b72aab141b6a84ec9c5992446bcf339b32151c364e563bfb224269"
+    }
+  ],
+  "native_byte_proofs": [
+    {
+      "address": "00ad0c60",
+      "length": 150,
+      "sha256": "ae78fa30f0d9b14870746821c155cc9cd5250281c0fe0e59bed9eb9886703e2a",
+      "hex": "535556578b7c24148b078bf18d5e048d6f043bdd8906c70300000000c743040000000074268b4d006a01518bcbe8aed094ff837d000074138b138b45048b4b04525051e8d869120083c40cd9470c8d471cd95e0cd94710d95e10d94714d95e14d94718d95e188b1089561c8b4804894e208b50088956248b400c8946288b0685c0740a83c00450ff151c22ce005f8bc65e5d5bc20400",
+      "live_equals_installed": true
+    },
+    {
+      "address": "00ce221c",
+      "length": 4,
+      "sha256": "1dd5f9d7c8651bec3c86f5d6bd80b95d5822e70e3e21d07076a378beaaac9327",
+      "hex": "d056a000",
+      "live_equals_installed": true
+    }
+  ],
+  "same_frozen98_whole150B": true,
+  "documentation": {
+    "path": "docs\\CC12_NATIVE_GUI_FRAME_BOX_RECORD_COPY_103.md",
+    "sha256": "436504fdc86e90820176b8a738f6e0b4d6051a0d2bcaee88469d32da8b57bbb4"
+  },
+  "artifact_manifest": {
+    "path": "local\\cc12_native_gui_frame_box_record_copy_103\\manifest.json",
+    "sha256": "240d96846f58eebd02eca7b4e074a57ce26e57ae249ccfb480c0a4f34315908f",
+    "source_inputs": 11,
+    "prior_contract_docs": 1,
+    "artifacts": 17,
+    "sealed_no_rebuild_or_replacement_before_capture": true
+  },
+  "validation": {
+    "only_two_new_owned_source_files_and_owned_address_rows_changed": true,
+    "no_cmake_main_or_unowned_source_ghidra_mutation": true,
+    "no_new_test_fixture_or_probe": true,
+    "call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/cc12_native_gui_frame_box_record_copy_103.json docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_COPY_103.md",
+      "exit_code": 0,
+      "call_rows_checked": 2,
+      "documentation_call_claims_checked": 2,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "source_reference_doc_artifact_hashes_revalidated": 30,
+    "installed_original_hash_revalidated": true
+  }
+}

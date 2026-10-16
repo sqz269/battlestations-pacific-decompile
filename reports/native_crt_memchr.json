@@ -1,0 +1,397 @@
+{
+  "schema": "bsp.native_crt_memchr.source.v1",
+  "packet": "cc12_native_crt_memchr_00bfa700",
+  "status": "whole_ordinary_Source_strict_compiled_actual_COFF_reviewed_pending_Root_peer_registration_Main",
+  "address": "00bfa700",
+  "Original_library_name": "_memchr",
+  "owned_ranges_inclusive": [
+    [
+      "00bfa700",
+      "00bfa7ac"
+    ]
+  ],
+  "Original_bytes": 173,
+  "Original_instructions": 76,
+  "body_sha256": "4e96ec5152dff3c4648f00572c6ed10d221e170be7101db0a0a0d6fe9e7b503f",
+  "Source_gate": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\reports\\cc12_native_crt_memchr_readiness.json",
+    "bytes": 5842,
+    "sha256": "daca94cab7b38132786e97d9d5607f00e80f113639cd89bd963af88aab745772",
+    "mtime_ns": 1792125340698051500,
+    "observed_utc": "2026-10-16T04:44:35.683096+00:00",
+    "regular": true,
+    "links": 1
+  },
+  "new_API": "void* __cdecl bsp::find_native_crt_byte_00bfa700(void*, int, unsigned int)",
+  "source_files": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\include\\bsp\\native_crt_memchr.hpp",
+      "bytes": 1551,
+      "sha256": "ba62013f4f48d5b1b776b387585f9214f70a0b9df6fad02b2c050a5789379b5a",
+      "mtime_ns": 1792125422661563600,
+      "observed_utc": "2026-10-16T04:44:35.683645+00:00",
+      "regular": true,
+      "links": 1
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\src\\native_crt_memchr.cpp",
+      "bytes": 2433,
+      "sha256": "b5447169ceac5b7e09d5c4de383dae28215ff08bf170a02dec960417ea89875f",
+      "mtime_ns": 1792125422662063200,
+      "observed_utc": "2026-10-16T04:44:35.684379+00:00",
+      "regular": true,
+      "links": 1
+    }
+  ],
+  "whole_ordinary_Source_implemented": true,
+  "whole_Original_listing_reviewed": true,
+  "Original_calls": 0,
+  "contract": [
+    "MSVC Win32, little endian, 8-bit byte and 32-bit pointer/int/unsigned int. This is a new ordinary typed API.",
+    "Count zero admits any pointer including null, returns null before Source target conversion and before all payload reads. The strict object also branches before buffer/target argument-home loads.",
+    "Positive count requires stable determinate readable requested bytes in one actual live allocation; endpoint may be inside or one past it, admitting interior subranges/prefixes. Actual 32-bit extent and advances do not wrap.",
+    "All int values select low eight bits. No NUL/padding/initial alignment/typed Uint32 allocation, signed-count cap, pointer subtraction, before-base transient, runtime validation or new ownership condition.",
+    "Volatile BYTE peel to actual four-byte alignment. Complete aligned in-range DWORDs only. A DWORD can include later requested bytes beyond the first match.",
+    "For x=word^repeated_target retain unsigned32 ((x+0x7efefeff)^~x)&0x81010100. Zero candidate has no reread. Nonzero candidate rereads exactly the same DWORD once, then tests register lanes low-to-high, including rejecting the high-XOR-byte-0x80 false-positive class.",
+    "Finish with ordered zero-to-three BYTE tail; return genuine borrowed first-match pointer/null, with no final payload reread or payload writes. Stable read-only aliases admitted; result borrows owner lifetime.",
+    "No SDK search/memcpy/fallback/provider/global/Original caller binding. Mutation, concurrency, faults, invalid positive-count storage and volatile/MMIO protocols are outside this ordinary domain."
+  ],
+  "target_mechanism": {
+    "private_helper": "read_aligned_dword(const volatile unsigned char*)",
+    "operation": "MSVC Win32 addressed MOV eax,dword ptr [eax] over genuine passed byte storage; return through a compiler-managed unsigned temporary.",
+    "no_typed_dword_object_precondition": true,
+    "portable_ISO_claim": false,
+    "qualification": "Both actual inlined load sites and the additional unreferenced private helper were inspected; Main actual object remains a separate gate."
+  },
+  "Original_path_evidence": [
+    {
+      "sites": "00BFA700..00BFA719",
+      "behavior": "Count first, zero branch before buffer/target homes, actual alignment test."
+    },
+    {
+      "sites": "00BFA71B..00BFA72F",
+      "behavior": "BYTE peel and exhaustion/first-match exits; widened pseudocode rejected using whole listing."
+    },
+    {
+      "sites": "00BFA731..00BFA745",
+      "behavior": "Unsigned complete-word admission and repeated low target byte."
+    },
+    {
+      "sites": "00BFA762..00BFA77B",
+      "behavior": "Aligned DWORD and unsigned candidate filter."
+    },
+    {
+      "sites": "00BFA77D..00BFA793",
+      "behavior": "Candidate-only same-DWORD reread and ascending register-lane tests; false-positive continuation."
+    },
+    {
+      "sites": "00BFA75D..00BFA760;00BFA747..00BFA759",
+      "behavior": "Unsigned next-word gate and ordered residual BYTE tail."
+    },
+    {
+      "sites": "00BFA75B..00BFA75C;00BFA795..00BFA7AC",
+      "behavior": "Null/actual-match pointer exits without final payload reread."
+    }
+  ],
+  "static_math_and_bounds": {
+    "filter": "Accepted readiness static carry proof: no zero XOR lane is missed; the no-match high-XOR-byte-0x80 candidate is rejected by the same-word register-lane checks. No enumerator or body execution.",
+    "bounds": "BYTE accesses require positive residual; DWORD accesses require residual >=4 and actual alignment. Count and genuine pointer advances stay within requested extent/endpoint. No signed residual or underflow-based access.",
+    "uncertainty": "Original instruction/fault/register/flag/home identity is not asserted; behavior is confined to stable ordinary storage."
+  },
+  "evidence_family": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtMemchrSource01",
+    "root_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtMemchrSource01\\root_manifest.json",
+    "kind": "new_self_only_task_family_no_predecessor_receipt_chain",
+    "own_session_uuid": "01a142fd-fe6c-7220-ba6e-5c4436017779",
+    "own_agent_path": "/root/crt_memchr_source_oct16",
+    "raw_authentication": "raw_tool_authentication.json",
+    "prior_families_external_and_unchanged": [
+      {
+        "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strrchr_readiness_oct16\\local\\NativeCrtMemchrReadiness01\\root_manifest.json",
+        "files": 24,
+        "sha256": "ac5185f9b22f868b88aa46832eba86adb253ab90cb12aa8223bbd5761687fea9"
+      },
+      {
+        "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\NativeCrtMemchrIndependentReview01\\root_manifest.json",
+        "files": 8,
+        "sha256": "8f9746d592b0fdb623608b2131b53ac9a42b59ed22ba5fb8509e20d4b5c4d7e6"
+      }
+    ]
+  },
+  "strict_compile": {
+    "invocations": 1,
+    "exit_code": 0,
+    "failed_compiler_invocations": 0,
+    "started_utc": "2026-10-16T04:41:56.594001+00:00",
+    "finished_utc": "2026-10-16T04:41:56.722090+00:00",
+    "compiler_version": "19.51.36244.0",
+    "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+    "argv": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "/nologo",
+      "/Bv",
+      "/std:c++17",
+      "/O2",
+      "/W4",
+      "/WX",
+      "/permissive-",
+      "/EHsc",
+      "/MD",
+      "/c",
+      "/showIncludes",
+      "/sourceDependencies",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtMemchrSource01\\strict.dependencies.json",
+      "/FAcs",
+      "/FaJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtMemchrSource01\\strict.cod",
+      "/FoJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtMemchrSource01\\strict.obj",
+      "/IJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\include",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\src\\native_crt_memchr.cpp"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16",
+    "receipt": "strict.receipt.json",
+    "stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtMemchrSource01\\strict.stdout.bin",
+      "bytes": 150,
+      "sha256": "6be7fef2ae35dd1902703b7dcb494ec1a7410f2b3cd3746ce5cf2c2c28ac10d7",
+      "mtime_ns": 1792125716721308700,
+      "observed_utc": "2026-10-16T04:41:56.732448+00:00",
+      "regular": true,
+      "links": 1
+    },
+    "stderr": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtMemchrSource01\\strict.stderr.bin",
+      "bytes": 1100,
+      "sha256": "093f4120c607ff18ca2c386c3777d4a21ba19014118e189b4c2cfe2d361a4b1f",
+      "mtime_ns": 1792125716721808900,
+      "observed_utc": "2026-10-16T04:41:56.742019+00:00",
+      "regular": true,
+      "links": 1
+    },
+    "stderr_interpretation": "/Bv compiler-pass/version inventory only; no warning or error diagnostic.",
+    "environment": "compiler_environment.json",
+    "candidate_before_hashes": {
+      "file": "inputs_before.json",
+      "candidate_files": 9249,
+      "finished_utc": "2026-10-16T04:41:17.328815+00:00"
+    },
+    "actual_dependencies": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\src\\native_crt_memchr.cpp",
+        "bytes": 2433,
+        "sha256": "b5447169ceac5b7e09d5c4de383dae28215ff08bf170a02dec960417ea89875f",
+        "mtime_ns": 1792125422662063200,
+        "observed_utc": "2026-10-16T04:41:59.599710+00:00",
+        "regular": true,
+        "links": 1
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\include\\bsp\\native_crt_memchr.hpp",
+        "bytes": 1551,
+        "sha256": "ba62013f4f48d5b1b776b387585f9214f70a0b9df6fad02b2c050a5789379b5a",
+        "mtime_ns": 1792125422661563600,
+        "observed_utc": "2026-10-16T04:41:59.600388+00:00",
+        "regular": true,
+        "links": 1
+      }
+    ],
+    "actual_dependency_closure_prehashed_and_unchanged": true,
+    "actual_showIncludes_and_sourceDependencies_preserved": true,
+    "preparation_failures": [
+      {
+        "stage": "environment bootstrap attempt 1",
+        "cause": "Windows cmd quoting of a subprocess list argument containing quoted batch path; no compiler run.",
+        "retained": "environment_attempt01.receipt.json plus stdout/stderr; original result authenticated in own raw records."
+      },
+      {
+        "stage": "input preparation attempt 2",
+        "cause": "Peer root manifest uses files rather than members; preparation raised KeyError before inputs_before write. Fixed parser; no compiler run. Successful environment capture was regenerated for final before snapshot; not claimed as failed-attempt receipt.",
+        "retained": "Original current-task failure tool result in authenticated raw records."
+      }
+    ],
+    "no_compile_replay": true,
+    "no_worker_whole_build_requested": true,
+    "Main_registered_build_owned_by_Root": true
+  },
+  "actual_COFF": {
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\WholeNativeCrtMemchrSource01\\strict.obj",
+      "bytes": 1326,
+      "sha256": "83da982660ed525141ad29460028f44f71859bbf8d94b88f3cab02fe6eef6256",
+      "mtime_ns": 1792125716712809700,
+      "observed_utc": "2026-10-16T04:42:20.423708+00:00",
+      "regular": true,
+      "links": 1
+    },
+    "full_inventory": "object_inventory.json",
+    "dumpbin_receipt": "dumpbin.receipt.json",
+    "full_raw_dump": "dumpbin.stdout.bin",
+    "complete_code_listing": "strict.disasm.txt",
+    "machine": "014c",
+    "sections": [
+      {
+        "number": 1,
+        "name": ".drectve",
+        "bytes": 47,
+        "characteristics": "00100a00",
+        "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab",
+        "relocations": []
+      },
+      {
+        "number": 2,
+        "name": ".debug$S",
+        "bytes": 196,
+        "characteristics": "42100040",
+        "sha256": "46b69d5d6a4d129d0c147a5a7ba06d1292e80d73b223fd9ccd6e0dfb6a731a99",
+        "relocations": []
+      },
+      {
+        "number": 3,
+        "name": ".text$mn",
+        "bytes": 236,
+        "characteristics": "60501020",
+        "sha256": "bbbcac142e679598081f2eaa4717625a41ec89c59306b0541237e1bf80c14393",
+        "relocations": []
+      },
+      {
+        "number": 4,
+        "name": ".debug$F",
+        "bytes": 16,
+        "characteristics": "42101040",
+        "sha256": "b53f234435f03e50f26c5175bdd907e9e5bbb0f34da2857ccf0efd00a168f3bf",
+        "relocations": [
+          {
+            "offset": 0,
+            "symbol_index": 14,
+            "symbol": "?find_native_crt_byte_00bfa700@bsp@@YAPAXPAXHI@Z",
+            "type": 7
+          }
+        ]
+      },
+      {
+        "number": 5,
+        "name": ".text$mn",
+        "bytes": 15,
+        "characteristics": "60501020",
+        "sha256": "f664330568048443d44a2ec880d32a6a48db349bbc035cdab91401f87dc31711",
+        "relocations": []
+      },
+      {
+        "number": 6,
+        "name": ".debug$F",
+        "bytes": 16,
+        "characteristics": "42101040",
+        "sha256": "7e16bcb7fcaca682ab4fd79ecbbeea5e2686d17a133e943c98f6cbe0821dd464",
+        "relocations": [
+          {
+            "offset": 0,
+            "symbol_index": 15,
+            "symbol": "?read_aligned_dword@?A0x241bf953@bsp@@YAIPDE@Z",
+            "type": 7
+          }
+        ]
+      },
+      {
+        "number": 7,
+        "name": ".chks64",
+        "bytes": 56,
+        "characteristics": "00000a00",
+        "sha256": "d89d952192f665bd99b5ad8a5b3f07136d6ed43b736bfc2c14a5ffc6aa962035",
+        "relocations": []
+      }
+    ],
+    "public_body": {
+      "section": 3,
+      "bytes": 236,
+      "instructions": 97,
+      "code_relocations": 0
+    },
+    "unreferenced_private_helper": {
+      "section": 5,
+      "bytes": 15,
+      "instructions": 7,
+      "code_relocations": 0,
+      "payload_load": "section5+0x05 MOV eax,DWORD PTR [eax]",
+      "no_callers_or_code_relocations_in_this_object": true
+    },
+    "all_code_bytes": 251,
+    "all_code_instructions": 104,
+    "payload_loads_public": [
+      {
+        "section_offset": "3+0x23",
+        "width_bytes": 1,
+        "address": "[edx]",
+        "path": "Positive-count unaligned BYTE peel only."
+      },
+      {
+        "section_offset": "3+0x54",
+        "width_bytes": 4,
+        "address": "[eax], eax reloaded from current pointer home at +0x50",
+        "path": "Aligned residual >=4."
+      },
+      {
+        "section_offset": "3+0x75",
+        "width_bytes": 4,
+        "address": "[eax], same current pointer home reloaded at +0x71",
+        "path": "Nonzero candidate only; exactly one reread."
+      },
+      {
+        "section_offset": "3+0xb0",
+        "width_bytes": 1,
+        "address": "[edx]",
+        "path": "Positive zero-to-three residual tail."
+      }
+    ],
+    "control_flow_review": [
+      "Count home read at +0x05, test +0x0a, zero branch +0x0c to +0xbc before buffer home +0x12 and target low-byte home +0x16.",
+      "Actual-address low bits tested at +0x1e/+0x3b; peel load +0x23 and exhaustion branch +0x35.",
+      "Unsigned cmp residual,4 at +0x49 gates first DWORD; cmp +0xa6/jae +0xa9 gates later DWORDs. DWORD advance/subtract four at +0x9c/+0x9f.",
+      "Filter in +0x5e..+0x6a retains 0x7efefeff and 0x81010100 unsigned operations. Zero branch +0x6f goes directly +0x9c, skipping candidate reload +0x71/+0x75.",
+      "Candidate lane comparisons +0x7f,+0x88,+0x91,+0x98 are register-only and ascending. All-negative fallthrough reaches +0x9c, including filter false positives.",
+      "Tail residual test +0xab/+0xad precedes BYTE +0xb0; +0xb7/+0xba maintains positive residual. Returns use EDX or LEA EDX+1/+2/+3; null clears EAX. No final payload read.",
+      "Complete public body and complete unreferenced helper have no call, indirect jump, SSE, CPUID, search/DF/ES instruction, global reference or payload store. Stack spills are compiler output."
+    ],
+    "defined_external_symbols": [
+      "?find_native_crt_byte_00bfa700@bsp@@YAPAXPAXHI@Z"
+    ],
+    "undefined_external_symbols": [],
+    "public_binding": "Sole defined external is new C++ cdecl API. Original _memchr symbol is neither replaced nor called.",
+    "metadata_review": [
+      ".drectve 47 B: /DEFAULTLIB:MSVCRT /DEFAULTLIB:OLDNAMES from /MD, no search binding or undefined function.",
+      ".debug$S 196 B: CodeView C13 object-name/compiler record with strict.obj path and Microsoft compiler/version metadata.",
+      "Two .debug$F records 16 B each with sole DIR32NB function-address relocations. No code relocation.",
+      ".chks64 56 B: compiler section-checksum metadata. No runtime data section.",
+      "All 18 symbol records including auxiliary entries and the complete 100 B string table are inventoried; one public external, one static helper, static section/compiler feature symbols.",
+      "All raw section bytes, relocation records and symbol/auxiliary bytes are preserved. All 22 ASCII runs and zero UTF-16LE runs inventoried, including directives, object path, compiler name and symbols; one incidental printable checksum run."
+    ],
+    "strict_frame": "Public FPO: 8 local bytes, EBX/ESI/EDI saved, 10-byte prologue, 12 argument bytes, no EBP/SEH, plain ret. Helper FPO: 4 local bytes, no saved registers, 1-byte prologue, 4 argument bytes. Public stack spills can reuse a by-value argument home.",
+    "Main_frame_qualification": "Root Main /Oy- may produce EBP/frame changes; inspect that genuine actual variant. Do not force a matching strict recompile."
+  },
+  "validation": {
+    "report_call_checker": {
+      "command": [
+        "python",
+        "-B",
+        "tools/verify_report_calls.py",
+        "reports/native_crt_memchr.json",
+        "docs/NATIVE_CRT_MEMCHR.md"
+      ],
+      "actual_receipt": "report_call_checker.receipt.json",
+      "scope": "Call-claim consistency only. Zero rows is not semantic proof."
+    },
+    "new_tests": 0,
+    "probes": 0,
+    "SDK_comparison": false,
+    "new_Source_body_executed": false,
+    "fixture_tested": false,
+    "Original_ABI_compatible": false,
+    "Native_executed": false,
+    "game_validated": false,
+    "shared_registration_ledger_Ghidra_mutations": false,
+    "pending_Root_gates": [
+      "Independent Source/object review",
+      "Registration and annotations",
+      "Registered Main build",
+      "Actual Main object review/archive"
+    ]
+  }
+}

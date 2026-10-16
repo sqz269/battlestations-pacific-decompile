@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_ascii_primary_review",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 1,
+  "private_source_cleanup_actions": 0,
+  "native_bytes": 97,
+  "native_instructions": 48,
+  "spans": [
+    {
+      "address": "00c15700",
+      "native_bytes": 97,
+      "instructions": 48,
+      "scope": "whole Original call-free ASCII comparison,captured unsignedcount/pointers/currentorderedBYTEs/exactsign result",
+      "live_equals_installed": true,
+      "sha256": "01469a0f156d0e6e1410b416b139e0ae9ad9153685dc825252df05f6f6536e7c"
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct15_crt_ascii_strnicmp.json"
+  ],
+  "typed_transfer_rows_checked": 2,
+  "typed_transfer_rows_failed": 0,
+  "independent_reviews": [
+    "Primary independently reviewed all97B48ops and wholeSource/header;countfirst/zero-beforepointercells,leftpointerthenrightpointer,eachleftBYTEthenrightBYTEevenleftNUL,eitherNULskipsfold/counter,unsignedASCIIranges,capturedcounterdecrementonequality,raw-1/0/+1 matched",
+    "Primary requested and reviewed tiny MSVCx86 rawDWORDargumentload toretainunalignedreachedstoragewithouttypedalignment/aliasadmission;nootheralgorithm/APIchange"
+  ],
+  "source_hashes": {
+    "src/native_crt_ascii_strnicmp.cpp": "51d082becad3bd4f7c843aecb449057e358cb243450b7a6823e434fea64204d5",
+    "include/bsp/native_crt_ascii_strnicmp.hpp": "465f73bbf2f473151fa58c2462a3a8dc9c90eab155963c71f94c8f03a4f7ba58"
+  },
+  "combined_build": {
+    "revision": "12523a9f6fdc6a7645f02234ae81b44e8bee173b",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_ascii_combined_build.log",
+    "log_sha256": "f624ac2ae47e024262893892840ab393eaca945cd3d78d40304c5c221035ffd9",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 13.42,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+    "scope": "existing regression checks; native math seeds do not execute these new bodies"
+  },
+  "project_source_counts": {
+    "native_crt_ascii_strnicmp": 1
+  },
+  "unique_archive_objects": {
+    "native_crt_ascii_strnicmp": [
+      "bsp_core.dir\\Release\\native_crt_ascii_strnicmp.obj"
+    ]
+  },
+  "archive_sha256": "92206cb3959588684f265c25ee06fa37746da61be5007d883f594959780bc207",
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "New explicit raw/live-frame/currentCRT Source APIs,not Original register/private-stack/argument-home/heap/FH3/fault ABI identity",
+    "The cleanup is a canonical Source guard mapping,not a new private-frame binary entry",
+    "Existing math differential seeds do not execute these new bodies; no application or game proof",
+    "No new cleanup actions;common cleanup limitation is transitive boilerplate only",
+    "No new tests/probe/entryexecution;ordinary static/build/emittedproof only",
+    "Genuine whole ASCII leaf,not SDKstrnicmp or ASCII-only parentreplacement;fullOriginalBFAE6B/BFAD7B/locale/errno/invalidhandler/PTD and9251F0parent remain unclosed"
+  ],
+  "retained_emitted_objects": {
+    "native_crt_ascii_strnicmp": {
+      "path": "local\\goal_oct15_ascii_objects\\native_crt_ascii_strnicmp.obj",
+      "sha256": "3615f3481a3055797df6b4e00cc7857965015983998d51c77ec1c7121c4af073",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct15_ascii_objects\\native_crt_ascii_strnicmp.disasm.txt",
+      "symbols": "local\\goal_oct15_ascii_objects\\native_crt_ascii_strnicmp.symbols.txt"
+    }
+  },
+  "incoming_transfer_kinds": [
+    {
+      "site": "00bfae15",
+      "target": "00c15700",
+      "kind": "call"
+    },
+    {
+      "site": "00bfaead",
+      "target": "00c15700",
+      "kind": "tail_jump",
+      "metadata": "existingCALL_RETURNretained,actualJMPnotrewritten"
+    }
+  ]
+}

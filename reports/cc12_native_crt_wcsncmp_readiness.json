@@ -1,0 +1,73 @@
+{
+  "schema": "bsp.cc12.native_crt_wcsncmp.readiness.v1",
+  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+  "address": "00bfdcb7",
+  "Original_library_name": "_wcsncmp",
+  "source_ready": true,
+  "Source_authorized": true,
+  "Source_implemented": true,
+  "Source_credit": 0,
+  "owned_ranges_inclusive": [
+    [
+      "00bfdcb7",
+      "00bfdceb"
+    ]
+  ],
+  "owned_bytes": 53,
+  "owned_instructions": 26,
+  "body_sha256": "971cfb19ceeeeeff5d9b47a8eb83c1821a559f274979cfd27913f41932e226a2",
+  "calls": 0,
+  "Root_all26_Original_instructions_read": true,
+  "Root_Original_review_chunk": "8f2cdc",
+  "Root_count_home_boundary_review": "Confirmed DEC home before preliminary gate, local unsigned state allowed only in explicit ordinary domain excluding physical mutable-home alias protocols; final WORD pair always required. No new original argument-block identity invented.",
+  "author_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strrchr_readiness_oct16\\local\\NativeCrtWcsncmpReadiness01\\root_manifest.json",
+    "bytes": 7461,
+    "sha256": "d88a3a53f33f26c72c07ea7f4c3859b8e8135ad8a5516196ff31c669362c958c"
+  },
+  "peer_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\NativeCrtWcsncmpIndependentReview01\\root_manifest.json",
+    "bytes": 4438,
+    "sha256": "dd695bb748732eb9c1926307fae8c34c4e6258a5cd68d69018e85c5241ff1a8c"
+  },
+  "Root_authentication": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcsncmp_readiness_primary_20261016\\verified_families.DATA.json",
+    "bytes": 2537,
+    "sha256": "8fc6243e4f9d4adbeb844859f70d0d4b849c9463c3ae599f783104e49cf5acdb"
+  },
+  "author_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strrchr_readiness_oct16\\local\\NativeCrtWcsncmpReadiness01\\readiness.json",
+    "bytes": 9633,
+    "sha256": "f2c2e889eabd5cc39d02abcb322f245b7d70d7dead3f2bde2fd86eff4daf4c3a"
+  },
+  "independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\NativeCrtWcsncmpIndependentReview01\\independent_readiness_review.json",
+    "bytes": 12219,
+    "sha256": "01e1c930616adf514e45748e290ca44b2d73f4bfd12cfc95054591ab8660efc6"
+  },
+  "Source_packet": "cc12_native_crt_wcsncmp_00bfdcb7",
+  "exact_future_files": [
+    "include/bsp/native_crt_wcsncmp.hpp",
+    "src/native_crt_wcsncmp.cpp",
+    "docs/NATIVE_CRT_WCSNCMP.md",
+    "reports/native_crt_wcsncmp.json"
+  ],
+  "contract": [
+    "New target-specific MSVC Win32 ordinary interface: int __cdecl bsp::compare_native_crt_wide_prefix_00bfdcb7(const void* actual_left, const void* actual_right, unsigned int count). Keep correct Original library name _wcsncmp. Pointers/int/count32bits, BYTE8bits, little-endian unsigned WORD16 code units. No Unicode scalar/surrogate/normalization/casefold/locale/collation semantics.",
+    "Count0 accepts any pointer values including null and returns0 before payload reads. Positive count requires genuine live determinate stable storage for ALL actually reached two-byte reads, including BOTH final WORD rereads. Do not require an entire count-sized extent when an earlier mismatch/LHS zero stops. Reached reads wholly inside the actual allocation; reached pointer advances/endpoints within or one past it and nonwrapping. No dereference of one-past, arbitrary signed count cap, padding, initial alignment, or typed wchar/uint16 ownership condition.",
+    "Stable identical and overlapping input regions are allowed. Original DEC at00BFDCCA writes its own by-value count argument home each visited iteration. A new typed API uses ordinary unsigned local count state; Original mutable argument-home/stack alias protocols and their writes/fault behavior are explicitly outside equivalence. Do not fabricate an argument block, native stack identity or Source parameter binding to that home.",
+    "After positive-count entry, decrement unsigned remaining BEFORE preliminary payload reads. If the new remaining is0, go directly to the final pair. Thus original count1 has exactly the final LHS WORD then RHS WORD reads, no preliminary pair.",
+    "When remaining is nonzero, read current LHS WORD. If zero, skip preliminary RHS and go to final pair. Otherwise read current RHS WORD for equality. On mismatch go to final pair. Only equal nonzero preliminary values advance each actual pointer by2 and repeat.",
+    "Every positive-count exit always freshly reads current LHS WORD then current RHS WORD, including after preliminary LHS zero or mismatch. Subtract zero-extended integer16 values in signed32: exact result [-65535,65535], not normalized sign or signed16 subtraction. Normal last-count position has final pair only; LHS-zero position has LHS/preliminary then LHS/RHS final; mismatch has LHS/RHS preliminary then LHS/RHS final.",
+    "Approve private addressed MOVZX WORD16 helper with MSVC Win32 inline assembly over genuine possibly unaligned raw byte storage, returning a fully initialized zero-extended32bit value. Spell reads as separate sequenced operations and preserve final rereads; actual strict/Main objects must verify widths, order, short circuit and unsigned decrement before loads. No invented typed WORD object or portable ISO alias/lifetime claim.",
+    "No SDK wcsncmp/memcpy/search, byte-only substitution, copied storage, validation/fallback/provider/global/TLS/caller binding. Exclude invalid reached reads, wrapping advances, mutable/indeterminate payload, lifetime changes, concurrency, MMIO/volatile observation and faults. Preserve Original RHS-before-LHS pointer-home-load fact in documentation, without claiming new compiler physical home/fault order or stack/register/flag/segment/EH/binary ABI/runtime/game identity.",
+    "Worker owns only four Source files and local evidence; Root owns registration/ledger/Ghidra/Main. One genuine strict compile with actual before input pins and complete actual code/data/symbol/relocation/metadata review. No separate unregistered whole-worker baseline requested, no tests/probes/body execution; Root registered Main build and actual Main object/archive gates remain pending."
+  ],
+  "Main_gate": "pending_normal_Main_build_and_independent_actual_variant_archive_review",
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "game_validated": false,
+  "Source_commit": "c590710ae230135ead4f96979a915e00483cc4a4",
+  "primary_review": "reports/cc12_native_crt_wcsncmp_primary_review.json",
+  "Main_registered": true
+}

@@ -1,0 +1,480 @@
+{
+  "packet": "native_gui_clip_box_lifetime_readiness_88",
+  "generated_utc": "2026-10-16T04:26:13.909491+00:00",
+  "scope": "read-only actual raw ClipBox deletion and verified direct base callee; proposed Source plan only",
+  "published_source_baseline": "6647c210a528bea78d5a8e73ec023ba02749a801",
+  "worker_merge": "69ee77cf0f12f4af060761b2ff2141eac44d4485",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "verification": "each BSP live query verifies existing project/program before reads",
+    "mutations": false
+  },
+  "original": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged": true
+  },
+  "scalar": {
+    "entry": "00ACE620",
+    "exclusive_end": "00ACE646",
+    "bytes": 38,
+    "instructions": 12,
+    "last_instruction": "00ACE643 RET4 length3",
+    "original_abi": "ECX actual ClipBox; actual caller DWORD flags slot at entryESP+4; EAX saved identity; RET4",
+    "vtable_cell": {
+      "cell": "00D5D05C",
+      "target": "00ACE620"
+    },
+    "order": [
+      "ACE621 saveECXinESI",
+      "ACE623 stampD5D058",
+      "ACE629 directAA9730",
+      "ACE62E testLOWBYTE[ESP+8]&1 only AFTER base success",
+      "ACE635 push saved owner; ACE636 poolF8C13C; ACE63B directACE4A0 ifbit0",
+      "ACE640 return saved identity; ACE643 RET4"
+    ],
+    "actual_nondeleting_callee": "00AA9730",
+    "no_intervening_derived_body": true,
+    "no_own_eh_frame_or_failure_slot_return": true,
+    "no_reference_count_load_decrement_or_gate": true,
+    "no_derived_ec_108_cleanup": true,
+    "no_payload_access_after_pool_return": true
+  },
+  "base": {
+    "entry": "00AA9730",
+    "exclusive_end": "00AA99B9",
+    "bytes": 649,
+    "last_instruction": "00AA99B8 RET length1",
+    "instruction_count_live_proto_statistic": 203,
+    "instruction_count_full_live_listing": 204,
+    "instruction_count_full_disk_decode": 204,
+    "identical_instruction_starts_no_gap": true,
+    "metadata_count_discrepancy_repaired": false,
+    "provider": "destroy_native_gui_widget_base_00aa9730",
+    "schedule": [
+      "stampD5C130; armstate2 beforeAA8320 scene release",
+      "repeat current first child04(flags1), reload current count/list after callback; native child self-detach required",
+      "detach current parent/node links and remove actual parent list entries",
+      "release replacement main node and clear4C",
+      "timed current0(flags1); clear captured ORIGINAL element slot after callback; reload current counts/headers",
+      "state1 before final timed backing work; free backing/list nodes/sentinel",
+      "state-1 thenD5C104/BD30F0->CEB130"
+    ],
+    "preserved_or_stale": "referencecount04 unchanged; derivedEC..108 untouched; backing88 not generally cleared after free; retained slot is not restartable widget",
+    "no_widget_slot_return": true
+  },
+  "calls": [
+    {
+      "address": "00ACE629",
+      "native": "00AA9730",
+      "function": "00ACE620",
+      "kind": "call"
+    },
+    {
+      "address": "00ACE63B",
+      "native": "00ACE4A0",
+      "function": "00ACE620",
+      "kind": "call"
+    },
+    {
+      "address": "00AA9760",
+      "native": "00AA8320",
+      "function": "00AA9730",
+      "kind": "call"
+    },
+    {
+      "address": "00AA977A",
+      "native": "00BF6713",
+      "function": "00AA9730",
+      "kind": "call"
+    },
+    {
+      "address": "00AA9784",
+      "native": "00BF6713",
+      "function": "00AA9730",
+      "kind": "call"
+    },
+    {
+      "address": "00AA97B9",
+      "native": "00B6E680",
+      "function": "00AA9730",
+      "kind": "call"
+    },
+    {
+      "address": "00AA97C2",
+      "native": "00B6D890",
+      "function": "00AA9730",
+      "kind": "call"
+    },
+    {
+      "address": "00AA97D2",
+      "native": "00B6D940",
+      "function": "00AA9730",
+      "kind": "call"
+    },
+    {
+      "address": "00AA97DF",
+      "native": "00A9BD50",
+      "function": "00AA9730",
+      "kind": "call"
+    },
+    {
+      "address": "00AA97EE",
+      "native": "00B6DFA0",
+      "function": "00AA9730",
+      "kind": "call"
+    },
+    {
+      "address": "00AA9825",
+      "native": "00AA6F30",
+      "function": "00AA9730",
+      "kind": "call"
+    },
+    {
+      "address": "00AA98A3",
+      "native": "00BF55BE",
+      "function": "00AA9730",
+      "kind": "call"
+    },
+    {
+      "address": "00AA98E4",
+      "native": "00BF6989",
+      "function": "00AA9730",
+      "kind": "call"
+    },
+    {
+      "address": "00AA994C",
+      "native": "00BF6989",
+      "function": "00AA9730",
+      "kind": "call"
+    },
+    {
+      "address": "00AA9973",
+      "native": "00BF65AC",
+      "function": "00AA9730",
+      "kind": "call"
+    },
+    {
+      "address": "00AA9986",
+      "native": "00BF65AC",
+      "function": "00AA9730",
+      "kind": "call"
+    },
+    {
+      "address": "00AA99A1",
+      "native": "00BD30F0",
+      "function": "00AA9730",
+      "kind": "call"
+    },
+    {
+      "address": "00CB7403",
+      "native": "00AA6E10",
+      "function": "00CB7400",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00CB740E",
+      "native": "00A9BCE0",
+      "function": "00CB7408",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00CB741C",
+      "native": "00AA7F50",
+      "function": "00CB7413",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00CB7426",
+      "native": "00BF6B43",
+      "function": "00CB7421",
+      "kind": "tail_jump"
+    }
+  ],
+  "current_virtual_calls": [
+    {
+      "site": "00AA9797",
+      "receiver": "current first child",
+      "slot": "04",
+      "flags": 1,
+      "requires_native_self_detach": true
+    },
+    {
+      "site": "00AA986E",
+      "receiver": "current timed payload",
+      "slot": "00",
+      "flags": 1,
+      "post_action": "clear captured original pointer-array slot after return"
+    }
+  ],
+  "unwind": {
+    "handler": "00CB7421",
+    "info": "00DEDCA0",
+    "map": "00DEDC88",
+    "max_state": 3,
+    "states": [
+      {
+        "state": 2,
+        "next": 1,
+        "action": "00CB7413",
+        "receiver": "captured widget+88",
+        "provider": "00AA7F50",
+        "scope": "array backing only; no timed payload deletion"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "action": "00CB7408",
+        "receiver": "captured widget+64",
+        "provider": "00A9BCE0",
+        "scope": "list nodes/sentinel only; no child payload deletion"
+      },
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00CB7400",
+        "receiver": "captured widget",
+        "provider": "00AA6E10",
+        "scope": "ref-base stamps only; no count decrement or pool return"
+      }
+    ],
+    "normal_state_changes": [
+      {
+        "site": "00AA9758",
+        "state": 2
+      },
+      {
+        "site": "00AA9895",
+        "state": 1
+      },
+      {
+        "site": "00AA9993",
+        "state": -1
+      }
+    ],
+    "source_projection": "noexcept unwind_base remaining timed/list/ref stages; second cleanup exception terminates",
+    "scalar_after_base_exception": "flags not read and pool return not reached",
+    "private_native_fh3_seh_double_exception_equivalence": false
+  },
+  "pool": {
+    "native_free_entry": "00ACE4A0",
+    "exclusive_end": "00ACE508",
+    "bytes": 104,
+    "original_abi": "ECX sameF8C13C pool; stack same actual slot; RET4",
+    "owner": "GameNativeGuiWidgetPoolProcess<GuiClipBoxPoolTraits>",
+    "publication": "00F8C13C",
+    "payload": 268,
+    "stride": 272,
+    "slab_index_offset": 268,
+    "domain": "sameE188B4 through existing physical pool process",
+    "schedule": "lock; live hidden slab ID load; signed offset/110->WORD index; push free stack1100/update count1120/first-free; unlock",
+    "source_route": "free_gui_widget_pool_slot<T> -> existing SAME process.pool().free -> genuine shared return_slot engine",
+    "validity": "already initialized canonical process/header/slabs/domain must remain alive; valid outstanding same-pool slot is caller precondition; no foreign-slot/double-free guard or second pool",
+    "late_source_accessor_error": "incomplete startup rejection after base completion is entered failure, not healthy preflight or replay permission"
+  },
+  "retention": {
+    "before_entry": "whole partial graph/actual owners and service domains already retained outside destructible container links; callbacks cannot free active widget",
+    "after_state2_failure": "backing/list/ref cleanup does not finish remaining child/timed/derived payload destruction; scalar keeps raw slot but that alone does not retain all payloads",
+    "after_state1_failure": "list/ref cleanup only; earlier effects/unfinished backing state remain authoritative",
+    "flags0": "base ended, storage retained, no implicit reinitialization",
+    "flags1": "slot returned, saved address is identity only",
+    "no_replay_or_guessed_cleanup": true,
+    "no_automatic_owner_retention_or_fail_closed_frame_added": true
+  },
+  "required_domains": {
+    "context": "NativeGuiWidgetLifetimeContext",
+    "nodes": "SAME NativeNodeDestructionRuntime/canonical actual node attachments/owners and reached raw-name/VFS/renderer allocation services",
+    "cells": [
+      "live actual_base_table_00d5c130",
+      "initialized actual_base_lineage_00f8bc88[2]",
+      "live actual_text_descriptor_00f8be28"
+    ],
+    "bindings": [
+      "exact current table/class0C",
+      "child scene20",
+      "child scalar04(flags1), self-detach",
+      "timed scalar00(flags1)",
+      "parent list remove_all_A9BD50"
+    ],
+    "no_concrete_production_binding_subclass_found": true,
+    "material_boundary": "existing native-material clip registration borrows retained GuiWidgetOwner/ClipBox companion source addresses, adds no widget retain and cannot be cast onto raw83 slot; actual raw consumer lifetime is separate"
+  },
+  "source_plan": {
+    "suggested_packet": 90,
+    "proposal_only": true,
+    "whole_scalar_ready_under_existing_raw_base_supported_domain": true,
+    "full_populated_graph_production_retirement_ready": false,
+    "candidate_files": [
+      "include/bsp/native_gui_clip_box_factory.hpp",
+      "src/native_gui_clip_box_factory.cpp"
+    ],
+    "candidate_api": "void* delete_native_gui_clip_box_00ace620(void* actual_clip_box,const volatile std::uint32_t& actual_flags_slot,NativeGuiWidgetLifetimeContext&);",
+    "body": "stampD5D058; genuine rawAA9730; delayed lowbyte caller flags load; ifbit0 SAME initialized process pool return; saved identity return",
+    "no_wrapper_catch_retry_reset_fallback_or_count_gate": true,
+    "preconditions": "serialized caller; stable borrowed flags cell across callback changes; canonical initialized pool; existing raw base supported domains; graph retained before entry and entered failures never replayed",
+    "generic_helper_limit": "existing correct ClipBox callee/vtable/pool row accepts flags by value and abstract destructor host; it is not exact delayed live caller-slot binding",
+    "source_files_or_leases": "Root chooses after88 receipt review; no Source lease/edit here"
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_gui_clip_box_factory.hpp",
+      "git_blob": "065d5f5ba3747f4b6a3ce707abbc1a4b25ae3187",
+      "sha256": "6940c0f31ade03c32eda312438ef231cc4aa27b00c0830eb2de4f9a1636bc8fc"
+    },
+    {
+      "path": "src/native_gui_clip_box_factory.cpp",
+      "git_blob": "f4a5a8892999a9c416457c1805650a2288121d45",
+      "sha256": "cfc4ca8ae028035b8f1432172ded4e71d1c21e6d91b11e8754a073eaac1ffbf0"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "git_blob": "cc52e7a9083065af6b1d451fd84ca4fa559d084a",
+      "sha256": "f9fe331e898de066b05cde5aba9bae1bb5e0dfccdceedb9cb8c85a286be3d286"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "git_blob": "2d571930d3446b33b745fccdca3e32e8c31d46a1",
+      "sha256": "f5f10d603694dfbb354b92bc4627dfc0fd687724fc51d49de5c51f53c813c3b6"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_pools_cc13.hpp",
+      "git_blob": "759fba46de564d4d09549b0f3950bf2bbfc4f718",
+      "sha256": "fd2be32f59443f79787b5006a628b9d0f78597b4d4dff62d09dbc65831c1fed3"
+    },
+    {
+      "path": "src/native_gui_widget_pools_cc13.cpp",
+      "git_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3",
+      "sha256": "e9fa3a2f4e8d0f644d601aa974bab567f8cd36e5c9ea958ae06aacaca4b5e925"
+    },
+    {
+      "path": "src/native_material_pools.cpp",
+      "git_blob": "b488015a211952463ac5c1fb78e1f42a9aeca917",
+      "sha256": "52c0de304c861907c1799517e038e8383ca62829e12176eb1b48f406d163c95a"
+    },
+    {
+      "path": "include/bsp/gui_widgets_cc13.hpp",
+      "git_blob": "81088d8540ff25ed650ec6850738994ca3b0e06b",
+      "sha256": "e0f2e49f4ab9df474ce1d83e42f9196701b4713ab5faaa5e9b8c5c68f25afbba"
+    },
+    {
+      "path": "src/gui_widgets_cc13.cpp",
+      "git_blob": "407da2a0257f753ac97856c4fb5a347fc6cd8373",
+      "sha256": "6655f5b173ce995cd861db830fa83574114ab7b4685d6c737d14c01e7dee1920"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_base_storage.hpp",
+      "git_blob": "61c72c99fab59f5c86da392495d7bae5381607cf",
+      "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab"
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5",
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d"
+    },
+    {
+      "path": "include/bsp/gui_native_clip_parameters.hpp",
+      "git_blob": "77b1fe4cd2506f60e82de5a9615b25b468bdc8ba",
+      "sha256": "9e1dac453bb71e8b39be9f62b343596f30106a7760e1f1f1683a0025809b9dc5"
+    },
+    {
+      "path": "src/gui_native_clip_parameters.cpp",
+      "git_blob": "c34860cc949f797f2273e4a223fe66d8ea20e4cd",
+      "sha256": "7f7fecd6da9dfb5a07c8bc8bdcb9702dc94cfe989c4695e6092aadbf313af38a"
+    }
+  ],
+  "native_byte_proofs": [
+    {
+      "start": "00ACE620",
+      "bytes": 38,
+      "sha256": "dda6707ee61311907a995ae0f96243c798aaf6cc0d540d6195bd22b6f4831d2a",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00AA9730",
+      "bytes": 649,
+      "sha256": "1c898155d152bf421f0a0890a6db8ae9191a6c96387bded7a20c552f75caec49",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00ACE4A0",
+      "bytes": 104,
+      "sha256": "841d06bce3417d6f305ca6c00448138fc43da78d6b7b2b47c3be245791e270a7",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00DEDC88",
+      "bytes": 24,
+      "sha256": "c178018fe0a8a879a26133710ec552badbe6be3d95905d19ef70986ac30aa6b1",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00DEDCA0",
+      "bytes": 36,
+      "sha256": "1f13623de3b078c97a5fd4baef0e290e4958ea992246309355cb7687a4f8a8b3",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00CB7400",
+      "bytes": 8,
+      "sha256": "4d02bf8b3bbc84afeb6ea56c20074dbc2a188dfc8a2d49a8d684b5a7d2c1177c",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00CB7408",
+      "bytes": 11,
+      "sha256": "a58e8d7d1261e04fe560ccba70e948009eeba0660391315e79c1e553c73df74a",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00CB7413",
+      "bytes": 14,
+      "sha256": "32d7a0c6c85e37b0d89f76931531a804f07f06ce911d9e5df6d55d70821145e2",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00CB7421",
+      "bytes": 10,
+      "sha256": "4e45b42ee5727980559e1bdc0a81b9a41f2ab312b2a37def4a9e4497a26c4fa7",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00AA6E10",
+      "bytes": 11,
+      "sha256": "62b271d2007c7623d67b3b74b9c82e30af5c04bf35c3f0b839931b225fe6ab6b",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00BD30F0",
+      "bytes": 7,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00D5D058",
+      "bytes": 8,
+      "sha256": "0fb77a90c9d4ab6b630d6fbc9741b45f45f82996e6b13d2cf4d02fe03e16601d",
+      "live_equals_installed_disk": true
+    }
+  ],
+  "validation": {
+    "no_source_changes": true,
+    "no_ghidra_or_ledger_changes": true,
+    "no_cmake_or_main_changes": true,
+    "no_builds_or_tests": true,
+    "no_native_text_activation_or_runtime_game_abi_claim": true,
+    "call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/cc12_native_gui_clip_box_lifetime_readiness_88.json docs/CC12_NATIVE_GUI_CLIP_BOX_LIFETIME_READINESS_88.md",
+      "exit_code": 0,
+      "checked": 21,
+      "failed": 0,
+      "documentation_unchecked": 0,
+      "documentation_warnings": 0
+    }
+  },
+  "documentation": {
+    "path": "docs/CC12_NATIVE_GUI_CLIP_BOX_LIFETIME_READINESS_88.md",
+    "sha256": "2ca15862d16346462cb6f880b2250208b17e0ac395130e8286fe13b07f050c3b"
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "schema": "bsp.native_qsort_Main_validation.v1",
+  "status": "two_whole_ordinary_helpers_and_partial_valid_input_qsort_entry_Main3checks_actual_object_archive_pass",
+  "whole_ordinary_functions": 2,
+  "partial_entries": 1,
+  "whole_qsort_entry": false,
+  "complete_Main_inventory": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_qsort_integration_20261016\\Main_full_inventory.DATA.json",
+    "bytes": 19716,
+    "sha256": "1d1b5bc6b5763d746f56eac78784d53f29d476ae11af445eac878db4239abe01"
+  },
+  "strict_Main_code_comparison": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_qsort_integration_20261016\\Main_inventory.DATA.json",
+    "bytes": 64373,
+    "sha256": "bd3978be68d89fc6db29ae1b3965876bea6f3434d2686b98e7b965884d418abe"
+  },
+  "all_symbols": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_qsort_integration_20261016\\Main_symbol_review.DATA.json",
+    "bytes": 5223,
+    "sha256": "fe230b0b5eca0c639ca53e6380e36e302e0f604b30e420f008ee78b3e4c4b610"
+  },
+  "actual_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_qsort_integration_20261016\\Main_primary_archive.DATA.json",
+    "bytes": 881292,
+    "sha256": "0cdbb65bd0d496861d666eb9397e71669fa873883ead3b82b93db74a82e6d7e9"
+  },
+  "registration": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_qsort_integration_20261016\\registration_verification.DATA.json",
+    "bytes": 393,
+    "sha256": "527e502ab1ca5177a2c013c32785282fee08f2fa154f24c7c9b8cc477715bdb2"
+  },
+  "code": {
+    "bytes": 1368,
+    "decoded_rows": 424,
+    "sections": 3,
+    "relocations": 2,
+    "metadata_relocations": 0,
+    "unused_private_helper_COMDATs": 2,
+    "public_API_bindings": 1,
+    "exact_private_name_pairs": {
+      "?shortsort_bytes_00bfc2c0@?A0x5be09e6b@bsp@@YAXPAEIIIP6AHPBX1@Z@Z": "?shortsort_bytes_00bfc2c0@?A0xed80ce78@bsp@@YAXPAEIIIP6AHPBX1@Z@Z",
+      "?swap_bytes_00bfc290@?A0x5be09e6b@bsp@@YAXPAE0I@Z": "?swap_bytes_00bfc290@?A0xed80ce78@bsp@@YAXPAE0I@Z"
+    }
+  },
+  "metadata": "All2491 actual bytes accounted. Six sections/13primary+6aux19slots/226string bytes; 180B CodeView object/compiler records and opaque48B checksums reviewed. All code/runtime bytes literal to the previously fully reviewed strict object. Runtime symbol names differ only by the two explicit private namespace pairs; symbol-record comparison also qualifies the debug section length auxiliary. Object paths, headers, metadata and whole-object identity are not claimed equal. No blanket symbol normalization.",
+  "limits": "Entry excludes private CRT invalid-parameter/errno/TLS/EH paths; genuine valid inputs/callback, conservative nonwrapping extent and coherent ordering remain preconditions. No caller/renderer/scene/application composition or Original ABI/fault/runtime proof.",
+  "required_Main_build": {
+    "command": "./scripts/build.ps1",
+    "initial_chunk": "3ae492",
+    "session": 30450,
+    "terminal_chunk": "0bdb95",
+    "exit_code": 0,
+    "existing_CTests_passed": 3,
+    "seconds": 14.07,
+    "before_commit": "d1c74e2ecc0649bb769496aa8f0c237db1e0a693",
+    "after_commit": "d1c74e2ecc0649bb769496aa8f0c237db1e0a693",
+    "selected_stable_input_pins": 92,
+    "selected_declared_compiler_inputs": {
+      "qsort": 10,
+      "strrchr": 2
+    },
+    "qualification": "One combined actual incremental Main build after two preserved registration-race attempts. Selected objects compiled in actual attempt01 and reused unchanged by actual recovery builds; no claim of three fresh selected compilations. All known selected Source/compiler/SDK/frame defaults and historical support pins verified; no hermetic OS/environment or all-repository input closure claim."
+  },
+  "before": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_qsort_Main_build03\\before.DATA.json",
+    "bytes": 24475,
+    "sha256": "5e331d946f48a3208c2c20cb4e1fa4829b667eb6e448ac0a851ac6270958fffd"
+  },
+  "after": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_qsort_Main_build03\\after.DATA.json",
+    "bytes": 23741,
+    "sha256": "da9a31dfb12081d8f5d64f8b2110716b4641465bf83596968160235fe80fc801"
+  },
+  "original_build_tools": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_qsort_Main_build03\\original_build_tools.DATA.json",
+    "bytes": 3681,
+    "sha256": "eff32f9352dc3418c40f9b333751de37290b0240eb33b0542377e667ba5c2040"
+  },
+  "prior_actual_attempts": [
+    {
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_qsort_Main_build01\\original_build_tools.DATA.json",
+        "bytes": 26484,
+        "sha256": "e1bbd44efad779cda300aba246718f5e2e6154bfcbd8f38ffcfb877e835c1fe6"
+      },
+      "after": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_qsort_Main_build01\\failed_after.DATA.json",
+        "bytes": 3055,
+        "sha256": "77ec0341c64116ab7ed79f0595d89a8e33bc91953bc08cc713bcd7af94096637"
+      },
+      "qualification": "Actual exit1 from overlapping CMake reconfiguration after external registration mutation; not accepted closure."
+    },
+    {
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_qsort_Main_build02\\original_build_tools.DATA.json",
+        "bytes": 7715,
+        "sha256": "4f7a52407064c23ccee7e6d6d5aae565383e605dfdd5d7c0bce75f032d1a44e4"
+      },
+      "after": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_qsort_Main_build02\\drift_after.DATA.json",
+        "bytes": 3177,
+        "sha256": "6c6b959c6116d090239f44d5019a1ff2c2329ab7d956abbac9f5cc11d4abb2ac"
+      },
+      "qualification": "Actual exit0 and3CTest, but external tagged leaf registration changed during window; not accepted stable-input closure."
+    }
+  ],
+  "artifacts": [
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_qsort_kernel.obj",
+        "bytes": 2491,
+        "sha256": "7342dc42a6a37736ad42a89a9f36173843633b69e9697439d147ae1e641beb01"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_qsort_Main_build03\\frozen\\native_qsort_kernel.obj",
+        "bytes": 2491,
+        "sha256": "7342dc42a6a37736ad42a89a9f36173843633b69e9697439d147ae1e641beb01"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 93604322,
+        "sha256": "992074b5286843ed4af48e3c31e776b03813a2406e29740461845b495136a486"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_qsort_Main_build03\\frozen\\bsp_core.lib",
+        "bytes": 93604322,
+        "sha256": "992074b5286843ed4af48e3c31e776b03813a2406e29740461845b495136a486"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_crt_strrchr.obj",
+        "bytes": 763,
+        "sha256": "9f031ab9e23fca5acb716eaa619457a60fe17e78f16cc25bd2d0f97b4ded512d"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_qsort_Main_build03\\frozen\\native_crt_strrchr.obj",
+        "bytes": 763,
+        "sha256": "9f031ab9e23fca5acb716eaa619457a60fe17e78f16cc25bd2d0f97b4ded512d"
+      }
+    }
+  ],
+  "build_warning": "Existing unrelated LNK4006 duplicate spawn_request_id_matches; observed in all actual builds. No warning-clean whole-build claim.",
+  "Root_call_check_log": "local/cc12_native_qsort_integration_20261016/final_call_checks.log",
+  "new_Source_body_executed": false,
+  "Original_ABI_compatible": false,
+  "game_validated": false,
+  "existing_Ghidra_functions_annotated": {
+    "address_names": {
+      "00bf87b0": "_strrchr",
+      "00bfc290": "swap",
+      "00bfc2c0": "shortsort",
+      "00bfc350": "_qsort"
+    },
+    "prior_annotations_journal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\ghidra-annotations-20261016T042848Z.json",
+      "bytes": 3584,
+      "sha256": "e2b06c3f1b5105a24c1a9075a30c5b16d4bb94ff8a01cc8b5653a1e4ac7d79ee"
+    },
+    "actual_annotation_tools": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_qsort_integration_20261016\\actual_annotations_tools.DATA.json",
+      "bytes": 685,
+      "sha256": "435cceea9b064c871d676a83bf85e6e538f1a0910a334fd43e0fdcad74f3780c"
+    },
+    "actual_export_tools": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_qsort_integration_20261016\\actual_export_tools.DATA.json",
+      "bytes": 906,
+      "sha256": "6bb823cc81437b6ceb2ba8631b15c07640e3c9556a500e33b981dcad71d6067d"
+    },
+    "actual_annotation_chunk": "e23eff",
+    "actual_export_chunk": "dedba8",
+    "project_saved": true,
+    "exports_refreshed": true,
+    "library_names_preserved": true,
+    "qualification": "Supported existing-function annotate under write lock; before values journaled and existing comments preserved. No prototype/boundary/physical ABI repair."
+  },
+  "required_Root_call_checks": {
+    "actual_chunk": "4251db",
+    "exit_code": 0,
+    "qualification": "Four native call rows and four documentary call claims verified; call-free and Root summary zero-row results are not semantic/runtime proof.",
+    "verbatim_tool_output": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_oct15_orchestration_20261015\\qsort_strrchr_call_checker_raw_20261016\\actual_tool_output.utf8.bin",
+      "bytes": 848,
+      "sha256": "de7d3fcca28a7acfe3af50d31a168024dd91fb9c92ef2aa5b7cc8c4c6bb15568"
+    },
+    "authenticated_original_pair": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_oct15_orchestration_20261015\\qsort_strrchr_call_checker_raw_20261016\\raw_index.DATA.json",
+      "bytes": 2587,
+      "sha256": "4bc0062c8d8093f1a6271863c28f30648484ec166390af0eab77ae02ce78d459"
+    },
+    "earlier_normalized_text": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_qsort_integration_20261016\\final_call_checks.log",
+      "bytes": 836,
+      "sha256": "7c079d6d0a9d69e3c5a21ab773fa3686ce68961b0b93b4e5bd7ee35d973ed864"
+    },
+    "retention_correction": "Original actual4251db output848B uses12CRLF; earlier836B text copy normalized toLF. Results unchanged, no checker replay."
+  }
+}

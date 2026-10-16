@@ -1,0 +1,293 @@
+{
+  "packet": "native_gui_clip_box_delete_90",
+  "generated_utc": "2026-10-16T04:36:53.735721+00:00",
+  "source_baseline": "1c4fc481b4b2bfce78b68cf4158c84ada2d71df8",
+  "worker_merge": "f2c7c389a35d8791774c9fb5c29bab979f045ff3",
+  "scope": "whole scalar ACE620 only; existing83 Source unit appended, no all-type/host activation",
+  "original": {
+    "entry": "00ACE620",
+    "exclusive_end": "00ACE646",
+    "native_bytes": 38,
+    "native_instructions": 12,
+    "last_instruction": "00ACE643 RET4 length3",
+    "abi": "ECX actual ClipBox; caller stack DWORDflags slot; EAX saved actual identity; RET4",
+    "bytes_sha256": "dda6707ee61311907a995ae0f96243c798aaf6cc0d540d6195bd22b6f4831d2a",
+    "live_equals_installed_disk": true,
+    "executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "installation_unchanged": true
+  },
+  "calls": [
+    {
+      "address": "00ACE629",
+      "native": "00AA9730",
+      "function": "00ACE620"
+    },
+    {
+      "address": "00ACE63B",
+      "native": "00ACE4A0",
+      "function": "00ACE620"
+    }
+  ],
+  "source": {
+    "api": "void* delete_native_gui_clip_box_00ace620(void*,const volatile std::uint32_t& actual_flags_slot,NativeGuiWidgetLifetimeContext&);",
+    "file": "src/native_gui_clip_box_factory.cpp",
+    "header": "include/bsp/native_gui_clip_box_factory.hpp",
+    "schedule": [
+      "save actual identity",
+      "stampD5D058",
+      "genuine whole rawAA9730",
+      "ONLY afterbase success load flags LOWBYTE",
+      "ifbit0 return SAME actualF8C13C slot",
+      "return saved identity without post-free payload read"
+    ],
+    "new_explicit_cpp_binding_abi": true,
+    "native_binary_abi_replacement": false,
+    "no_reference_count_gate_decrement_derived_cleanup_wrapper_catch": true,
+    "no_pool_return_on_base_failure": true,
+    "flags_contract": "stable borrowed flags cell can be caller local/actual argument slot; disjoint active raw widget and other mutable provider/scratch storage that can be consumed/repurposed; intentional externally serialized callback updates observed afterbase; no private Nativeargument-address ABI promised",
+    "pool": {
+      "owner": "SAME initialized GameNativeGuiWidgetPoolProcess<GuiClipBoxPoolTraits>",
+      "publication": "00F8C13C",
+      "payload": 268,
+      "stride": 272,
+      "hidden_slab_id": 268,
+      "domain": "SAME E188B4 via existing physical process",
+      "new_pool_or_startup": false
+    },
+    "retention": "whole partial graph/owner metadata and services retained BEFOREentry; callee container unwind can remove discovery links without finishing child/timed payload destruction; retained rawslot is not healthy widget/replay permission",
+    "caller_obligations": [
+      "serialized callbacks/storage",
+      "real current profile/type/class/child/timed/parent-list bindings",
+      "canonical actual node/raw-name/VFS/renderer owner domains alive",
+      "same initialized pool/header/slabs/domain alive through return",
+      "no replay/reset/fallback cleanup after entered failure"
+    ],
+    "populated_production_bindings_still_required": true,
+    "native_text_or_normal_game_activation": false
+  },
+  "source_review": {
+    "reviewer": "Root independent full Source diff versus wholeACE620 assembly",
+    "verdict": "PASS; body correct, requested flags-comment refinement applied",
+    "final_hpp_blob": "0a667b09f9e80e03917a3ef3baecab7de5f88d57",
+    "final_cpp_blob": "39bd219c2dde4f3d3a085deed515840e7747f9ef",
+    "cpp_unchanged_after_review": true
+  },
+  "static_verification": {
+    "legacy_83_body_restored_exactly_after_removing_include_and_new_function": true,
+    "legacy_normalized_sha256": "cfc4ca8ae028035b8f1432172ded4e71d1c21e6d91b11e8754a073eaac1ffbf0",
+    "compiled_body_bytes": 48,
+    "compiled_offsets": {
+      "vtable_store": "0A",
+      "real_base_call": "10",
+      "flags_address_load": "15",
+      "only_flags_byte_payload_load": "1C",
+      "bit0_test": "1E",
+      "conditional_same_pool_call": "24",
+      "saved_identity_return": "2C",
+      "ret": "2F"
+    },
+    "read_limit": "flags payload BYTE only; DWORD load at15 reads pointer/reference address, not flags value",
+    "actual_native_abi_replacement": false,
+    "no_new_runtime_test": true
+  },
+  "validation": {
+    "canonical_worker_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "tests_passed": 3,
+      "tests_total": 3,
+      "seconds": 15.06,
+      "unit_already_registered": true,
+      "new_cpp_body_compiled": true,
+      "header_note": "flags contract comment clarified after this build; prototype/function code unchanged; fresh strict compile below used final header"
+    },
+    "fresh_strict_object": {
+      "command_file": "local/cc12_native_gui_clip_box_delete_90/compile.cmd",
+      "exit_code": 0,
+      "target": "MSVC Win32",
+      "flags": [
+        "/MD",
+        "/EHsc",
+        "/std:c++20",
+        "/O2",
+        "/Gy",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/permissive-",
+        "/FAsc"
+      ],
+      "assembly_inspected": true,
+      "final_header_compiled": true,
+      "initial_command_fix": "/Fa: assembly-output path spelling corrected to /Fa<path>; no Source fix required"
+    },
+    "new_tests_or_fake_provider_fixture": false,
+    "no_new_runtime_case": true,
+    "unproved": [
+      "deletion normal/failure runtime",
+      "Native FH3/SEH/double exception",
+      "full populated graph retirement",
+      "native Text/gameplay/activation",
+      "Original binary replacement ABI"
+    ]
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_gui_clip_box_factory.hpp",
+      "git_blob": "0a667b09f9e80e03917a3ef3baecab7de5f88d57",
+      "sha256": "38489268d189c7a248fb046557b1041bd4ec54c93966e5a13343223032db433f"
+    },
+    {
+      "path": "src/native_gui_clip_box_factory.cpp",
+      "git_blob": "39bd219c2dde4f3d3a085deed515840e7747f9ef",
+      "sha256": "d59e3045f84617b9b4787fc8cd9def14c15a04bc1fd8edf7ccf6c52f1bdfeee5"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "git_blob": "cc52e7a9083065af6b1d451fd84ca4fa559d084a",
+      "sha256": "f9fe331e898de066b05cde5aba9bae1bb5e0dfccdceedb9cb8c85a286be3d286"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "git_blob": "2d571930d3446b33b745fccdca3e32e8c31d46a1",
+      "sha256": "f5f10d603694dfbb354b92bc4627dfc0fd687724fc51d49de5c51f53c813c3b6"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_pools_cc13.hpp",
+      "git_blob": "759fba46de564d4d09549b0f3950bf2bbfc4f718",
+      "sha256": "fd2be32f59443f79787b5006a628b9d0f78597b4d4dff62d09dbc65831c1fed3"
+    },
+    {
+      "path": "src/native_gui_widget_pools_cc13.cpp",
+      "git_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3",
+      "sha256": "e9fa3a2f4e8d0f644d601aa974bab567f8cd36e5c9ea958ae06aacaca4b5e925"
+    },
+    {
+      "path": "src/native_material_pools.cpp",
+      "git_blob": "b488015a211952463ac5c1fb78e1f42a9aeca917",
+      "sha256": "52c0de304c861907c1799517e038e8383ca62829e12176eb1b48f406d163c95a"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "git_blob": "08703e47f2d43ae683a5bbf562dc2e2ba28da8cd",
+      "sha256": "8de96a039544ba34995fb29f147d5b6f7db74e52c543319a9911b72da5640ee4"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "local/cc12_native_gui_clip_box_delete_90/build.log",
+      "bytes": 3747,
+      "sha256": "1cafce327e34cc4062ad81f65a95ed262b5b4be844fdd29cb01ee1005ba227e7"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_delete_90/compile.cmd",
+      "bytes": 602,
+      "sha256": "d6b20af5d9161ce1ff91ce04fa4d1e3c432b7f93ce2e5be4fb98b1859a68e8ba"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_delete_90/compile.log",
+      "bytes": 33,
+      "sha256": "19ccf3f861b5920790de93106f65c6cfd6fa4e2d351152cc3a8cd59edfaf657e"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_delete_90/delete_body.asm",
+      "bytes": 1810,
+      "sha256": "d1d9073999544a803ab67c886098e12a205c1f5a38bd01ddac5b8e55d0cf6bf4"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_delete_90/ledger_00ace620.json",
+      "bytes": 1757,
+      "sha256": "54cbf599a884014436f2fbbd67dbca9f0b193757dae0142bcc8a4b6c3d7e5df7"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_delete_90/static_verification.json",
+      "bytes": 684,
+      "sha256": "6ed5cd22332c34a451cf9eadf7b977d54ef39f3f7bd44d1ffe8da833c0bffa1e"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_delete_90/strict.asm",
+      "bytes": 20330,
+      "sha256": "21e969c93dc7f0268cf163907b8fc6da9785adbfcf3c68d944c8752a0986a360"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_delete_90/strict.obj",
+      "bytes": 6075,
+      "sha256": "215b1a93f6bdd0adfa54a7cf3bd7db84337e3ca459e17eda5c23a13b3b584df4"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_delete_90/strict_dumpbin.txt",
+      "bytes": 24107,
+      "sha256": "71edd208aed5510fffd34a5f97df899b53c9ebaf170a0bdb5312dfb9c0898810"
+    },
+    {
+      "path": "local/ghidra-annotations-20261016T043430Z.json",
+      "bytes": 1942,
+      "sha256": "162587012eaf810eddfd691d095bac784f94160819898dcbbfd8a17561224b46"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 93671674,
+      "sha256": "1cceb7bfb60fc226d537dee8f007ea053f0884394d71a93c5e1cbb3c7016e526"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455680,
+      "sha256": "390dd5c886faa883a168c4cc60fb1c8b19dcdef4db779ca93a35608ca53c7c67"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72058,
+      "sha256": "f12ba334bd0d1379a526ab834667754b3ad3d2688afd57fdc20530f266b641b3"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_clip_box_factory.obj",
+      "bytes": 5925,
+      "sha256": "6c2449352f5d6873eb9e526ec732891083f1b7497bc300d9e957e00577c2ae40"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00ace620/decompiled.c",
+      "bytes": 509,
+      "sha256": "ead0246a2880a606e44c83f034506c48cca81dd3465b2485bfd452ce1bcc5422"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00ace620/assembly.txt",
+      "bytes": 312,
+      "sha256": "a2778f61a1321d8bf6441cc2053471600bf676f852b822cec22c4afad29e3601"
+    }
+  ],
+  "artifact_manifest": {
+    "path": "local/cc12_native_gui_clip_box_delete_90/manifest.json",
+    "sha256": "3b9a8620b293b29ef6b7376dedbd4234644f4102abf73b67612558bca4f2a2ed"
+  },
+  "annotations": {
+    "only_address": "00ACE620",
+    "tool": "ghidra_annotate.py --apply under existing write lock",
+    "name_and_earlier_comment_preserved": true,
+    "old_history": "local/ghidra-annotations-20261016T043430Z.json",
+    "project_saved": true,
+    "export_refreshed": true,
+    "index_refreshed": true,
+    "surrounding_callee_or_body_repairs": false
+  },
+  "ledgers": "only new ACE620 Source record added; existing generic record/status untouched; old name evidence prefix preserved",
+  "main_or_cmake_or_shared_registry_mutations": false,
+  "ghidra_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "verified_before_each_live_batch": true
+  },
+  "documentation": {
+    "path": "docs/CC12_NATIVE_GUI_CLIP_BOX_DELETE_90.md",
+    "sha256": "94d46a36b91d86184cb50f4bbd0e8f89f5724b7f339d08c6e5407c9837fa94ae"
+  },
+  "call_verifier": {
+    "command": "python tools/verify_report_calls.py reports/cc12_native_gui_clip_box_delete_90.json docs/CC12_NATIVE_GUI_CLIP_BOX_DELETE_90.md",
+    "exit_code": 0,
+    "checked": 2,
+    "failed": 0,
+    "documentation_unchecked": 0,
+    "documentation_warnings": 0
+  }
+}
