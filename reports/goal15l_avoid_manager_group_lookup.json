@@ -1,0 +1,946 @@
+{
+  "packet": "goal15l_avoid_manager_group_lookup",
+  "status": "complete_raw_source_exact66B_strict_and_golden_fixture_pass_pending_primary_registered_checks",
+  "source_checkout": "J:\\PROG\\battlestations-pacific-decompile-goal15_zone_leaf",
+  "base_commit": "9390f06de866a260ad25eb2fd93b1390394f7bd2",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "function": {
+    "address": "004120d0",
+    "end": "00412111",
+    "coverage": "complete",
+    "bytes": 66,
+    "instruction_count": 32,
+    "name": "lookup_native_avoid_manager_group_004120d0",
+    "reviewed_name_hypothesis": "BSP_AvoidZoneManager_GroupForLayerOrBelow_004120D0",
+    "live_original_prototype": "004120d0 BSP_AvoidZoneManager_GroupForLayerOrBelow_004120D0  undefined BSP_AvoidZoneManager_GroupForLayerOrBelow_004120D0(void)  body 004120d0 - 00412111",
+    "original_abi": {
+      "ecx": "actual raw manager",
+      "stack": [
+        "one signed layer DWORD"
+      ],
+      "result": "EAX borrowed current selected group pointer",
+      "cleanup": "RET4 on two paths",
+      "edx": "not an Original input"
+    },
+    "source_abi": "fastcall(actual_manager,unused_edx,int32_layer);ignoredEDX is Source-only",
+    "schema_reuse": {
+      "manager": "Cc13AvoidZoneManagerNative78h,slots+8,count+58",
+      "group": "Cc13AvoidZoneNativeGroup14h,signedkey+10"
+    },
+    "external_calls": [],
+    "globals": [],
+    "eh_actions": [],
+    "branches": 3,
+    "returns": [
+      "00412104",
+      "0041210f"
+    ],
+    "no_fp": true
+  },
+  "operation": {
+    "count": "single signed capture +58 before layer read",
+    "nonpositive": "current slot0 load without reading layer",
+    "positive": "actual incoming layer cell once atESP+14 after four pushes",
+    "scan": "raw slot pointer then key+10 withoutnullguard",
+    "exact": "first equality then current slot reload",
+    "fallback": "signedCMOVL last PHYSICAL key<layer index,initial0",
+    "loop": "DWORD index/slot increments and signedJL against captured count",
+    "exhaustion": "fresh manager+fallback*4+8 load",
+    "ownership": "borrowed/no changes or ownership/lock retention",
+    "no_repairs": "no null,capacity20,sorted-order or rollback guard"
+  },
+  "providers": [],
+  "native_caller_evidence": [
+    {
+      "address": "00417ece",
+      "native": "004120d0",
+      "caller": "00417e90",
+      "caller_name": "BSP_AvoidZoneManager_SegmentHit",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e8fda1ffff",
+      "prototype": "00417ece BSP_AvoidZoneManager_SegmentHit  undefined BSP_AvoidZoneManager_SegmentHit(void)  body 00417e90 - 00417eed",
+      "context": [
+        "00417eb5: movss xmm0, dword ptr [eax + 4]",
+        "00417eba: mov eax, dword ptr [esp + 0x20]",
+        "00417ebe: push eax",
+        "00417ebf: push edx",
+        "00417ec0: movss dword ptr [esp + 0x1c], xmm0",
+        "00417ec6: mov dword ptr [esp + 0x2c], 0",
+        "00417ece: call 0x4120d0",
+        "00417ed3: mov ecx, eax",
+        "00417ed5: call 0x4179d0"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "00417f2e",
+      "native": "004120d0",
+      "caller": "00417ef0",
+      "caller_name": "BSP_AvoidZoneManager_SegmentHitPoint",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e89da1ffff",
+      "prototype": "00417f2e BSP_AvoidZoneManager_SegmentHitPoint  undefined BSP_AvoidZoneManager_SegmentHitPoint(void)  body 00417ef0 - 00417f5b",
+      "context": [
+        "00417f15: movss xmm0, dword ptr [eax + 4]",
+        "00417f1a: mov eax, dword ptr [esp + 0x20]",
+        "00417f1e: push eax",
+        "00417f1f: push edx",
+        "00417f20: movss dword ptr [esp + 0x1c], xmm0",
+        "00417f26: mov dword ptr [esp + 0x2c], 0",
+        "00417f2e: call 0x4120d0",
+        "00417f33: mov ecx, eax",
+        "00417f35: call 0x4179d0"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "004224d8",
+      "native": "004120d0",
+      "caller": "004224c0",
+      "caller_name": "BSP_AvoidZoneSegmentList_RefillFromManager",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e8f3fbfeff",
+      "prototype": "004224d8 BSP_AvoidZoneSegmentList_RefillFromManager  undefined BSP_AvoidZoneSegmentList_RefillFromManager(void)  body 004224c0 - 004224f2",
+      "context": [
+        "004224c6: je 0x4224cd",
+        "004224c8: call 0x4158a0",
+        "004224cd: call 0x4218e0",
+        "004224d2: mov ecx, dword ptr [esi + 4]",
+        "004224d5: push ecx",
+        "004224d6: mov ecx, eax",
+        "004224d8: call 0x4120d0",
+        "004224dd: test eax, eax",
+        "004224df: je 0x4224ef"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "004232de",
+      "native": "004120d0",
+      "caller": "00423190",
+      "caller_name": "BSP_AvoidZone_EnsureCornerClearanceScale",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e8ededfeff",
+      "prototype": "004232de BSP_AvoidZone_EnsureCornerClearanceScale  undefined BSP_AvoidZone_EnsureCornerClearanceScale(void)  body 00423190 - 004234f8",
+      "context": [
+        "004232c9: lea ecx, [esp + 0x30]",
+        "004232cd: call 0x4158a0",
+        "004232d2: call 0x4218e0",
+        "004232d7: mov edx, dword ptr [esp + 0x34]",
+        "004232db: push edx",
+        "004232dc: mov ecx, eax",
+        "004232de: call 0x4120d0",
+        "004232e3: test eax, eax",
+        "004232e5: je 0x4232f7"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "00423c7c",
+      "native": "004120d0",
+      "caller": "00423c50",
+      "caller_name": "BSP_AvoidZoneManager_BuildDraftPhysicsForExistingGroup_00423C50",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e84fe4feff",
+      "prototype": "00423c7c BSP_AvoidZoneManager_BuildDraftPhysicsForExistingGroup_00423C50  undefined BSP_AvoidZoneManager_BuildDraftPhysicsForExistingGroup_00423C50(void)  body 00423c50 - 00424671",
+      "context": [
+        "00423c71: push ebx",
+        "00423c72: push esi",
+        "00423c73: mov esi, dword ptr [ebp + 8]",
+        "00423c76: push edi",
+        "00423c77: push esi",
+        "00423c78: mov dword ptr [esp + 0x60], ecx",
+        "00423c7c: call 0x4120d0",
+        "00423c81: cmp dword ptr [eax + 0x10], esi",
+        "00423c84: mov dword ptr [esp + 0x68], eax"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "006ac673",
+      "native": "004120d0",
+      "caller": "006ac5d0",
+      "caller_name": "FUN_006ac5d0",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e8585ad6ff",
+      "prototype": "006ac673 FUN_006ac5d0  undefined FUN_006ac5d0(void)  body 006ac5d0 - 006acb37",
+      "context": [
+        "006ac653: movss dword ptr [esi + 0x218], xmm0",
+        "006ac65b: movss xmm0, dword ptr [0xce3950]",
+        "006ac663: movss dword ptr [esi + 0x21c], xmm0",
+        "006ac66b: call 0x4218e0",
+        "006ac670: push edi",
+        "006ac671: mov ecx, eax",
+        "006ac673: call 0x4120d0",
+        "006ac678: mov edi, eax",
+        "006ac67a: test edi, edi"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "007abc3a",
+      "native": "004120d0",
+      "caller": "007abb30",
+      "caller_name": "BSP_MParatrooper_AdvanceInAir",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e89164c6ff",
+      "prototype": "007abc3a BSP_MParatrooper_AdvanceInAir  undefined BSP_MParatrooper_AdvanceInAir(void)  body 007abb30 - 007abff3",
+      "context": [
+        "007abc29: jne 0x7abcf5",
+        "007abc2f: push ebx",
+        "007abc30: push edi",
+        "007abc31: call 0x4218e0",
+        "007abc36: push 0",
+        "007abc38: mov ecx, eax",
+        "007abc3a: call 0x4120d0",
+        "007abc3f: mov ecx, eax",
+        "007abc41: movzx eax, word ptr [esi + 0x174]"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "0082add1",
+      "native": "004120d0",
+      "caller": "0082adc0",
+      "caller_name": "BSP_ShipClass_NavigationGroup570",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e8fa72beff",
+      "prototype": "0082add1 BSP_ShipClass_NavigationGroup570  undefined BSP_ShipClass_NavigationGroup570(void)  body 0082adc0 - 0082add7",
+      "context": [
+        "0082adc0: push esi",
+        "0082adc1: mov esi, ecx",
+        "0082adc3: call 0x4218e0",
+        "0082adc8: mov ecx, dword ptr [esi + 0x570]",
+        "0082adce: push ecx",
+        "0082adcf: mov ecx, eax",
+        "0082add1: call 0x4120d0",
+        "0082add6: pop esi",
+        "0082add7: ret "
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "00900897",
+      "native": "004120d0",
+      "caller": "008fff20",
+      "caller_name": "BSP_GunBot_HeadingAimTick",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e83418b1ff",
+      "prototype": "00900897 BSP_GunBot_HeadingAimTick  undefined BSP_GunBot_HeadingAimTick(void)  body 008fff20 - 0090099b",
+      "context": [
+        "00900882: shr edx, 2",
+        "00900885: test dl, 1",
+        "00900888: jne 0x900970",
+        "0090088e: call 0x4218e0",
+        "00900893: push 5",
+        "00900895: mov ecx, eax",
+        "00900897: call 0x4120d0",
+        "0090089c: test eax, eax",
+        "0090089e: je 0x9008f1"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "009e387b",
+      "native": "004120d0",
+      "caller": "009e3780",
+      "caller_name": "BSP_ShipAi_RequestPathPlan",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e850e8a2ff",
+      "prototype": "009e387b BSP_ShipAi_RequestPathPlan  undefined BSP_ShipAi_RequestPathPlan(void)  body 009e3780 - 009e3bfb",
+      "context": [
+        "009e386b: xorps xmm0, xmm0",
+        "009e386e: jmp 0x9e38de",
+        "009e3870: call 0x4218e0",
+        "009e3875: mov ecx, dword ptr [esi + 0x38]",
+        "009e3878: push ecx",
+        "009e3879: mov ecx, eax",
+        "009e387b: call 0x4120d0",
+        "009e3880: test eax, eax",
+        "009e3882: je 0x9e38e3"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "009ecdb8",
+      "native": "004120d0",
+      "caller": "009eca20",
+      "caller_name": "BSP_ShipAi_SelectNavigationLayer",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e81353a2ff",
+      "prototype": "009ecdb8 BSP_ShipAi_SelectNavigationLayer  undefined BSP_ShipAi_SelectNavigationLayer(void)  body 009eca20 - 009ed3d9",
+      "context": [
+        "009ecda2: mov ecx, eax",
+        "009ecda4: mov dword ptr [esi + 0x164], ecx",
+        "009ecdaa: call 0x4218e0",
+        "009ecdaf: mov edx, dword ptr [esi + 0x164]",
+        "009ecdb5: push edx",
+        "009ecdb6: mov ecx, eax",
+        "009ecdb8: call 0x4120d0",
+        "009ecdbd: lea ecx, [esp + 0x18]",
+        "009ecdc1: push ecx"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "009ecdfd",
+      "native": "004120d0",
+      "caller": "009eca20",
+      "caller_name": "BSP_ShipAi_SelectNavigationLayer",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e8ce52a2ff",
+      "prototype": "009ecdfd BSP_ShipAi_SelectNavigationLayer  undefined BSP_ShipAi_SelectNavigationLayer(void)  body 009eca20 - 009ed3d9",
+      "context": [
+        "009ecde7: cmp edi, dword ptr [esi + 0x164]",
+        "009ecded: mov dword ptr [esi + 0x164], edi",
+        "009ecdf3: jge 0x9ece12",
+        "009ecdf5: call 0x4218e0",
+        "009ecdfa: push edi",
+        "009ecdfb: mov ecx, eax",
+        "009ecdfd: call 0x4120d0",
+        "009ece02: lea ecx, [esp + 0x18]",
+        "009ece06: push ecx"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "009ece56",
+      "native": "004120d0",
+      "caller": "009eca20",
+      "caller_name": "BSP_ShipAi_SelectNavigationLayer",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e87552a2ff",
+      "prototype": "009ece56 BSP_ShipAi_SelectNavigationLayer  undefined BSP_ShipAi_SelectNavigationLayer(void)  body 009eca20 - 009ed3d9",
+      "context": [
+        "009ece44: mov edi, eax",
+        "009ece46: cmp edi, dword ptr [esi + 0x164]",
+        "009ece4c: jle 0x9ece12",
+        "009ece4e: call 0x4218e0",
+        "009ece53: push edi",
+        "009ece54: mov ecx, eax",
+        "009ece56: call 0x4120d0",
+        "009ece5b: lea edx, [esp + 0x18]",
+        "009ece5f: push edx"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "009ecf87",
+      "native": "004120d0",
+      "caller": "009eca20",
+      "caller_name": "BSP_ShipAi_SelectNavigationLayer",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e84451a2ff",
+      "prototype": "009ecf87 BSP_ShipAi_SelectNavigationLayer  undefined BSP_ShipAi_SelectNavigationLayer(void)  body 009eca20 - 009ed3d9",
+      "context": [
+        "009ecf6d: mov ecx, dword ptr [esi + 0x308]",
+        "009ecf73: mov dword ptr [esi + 0x310], ecx",
+        "009ecf79: call 0x4218e0",
+        "009ecf7e: mov edx, dword ptr [esi + 0x310]",
+        "009ecf84: push edx",
+        "009ecf85: mov ecx, eax",
+        "009ecf87: call 0x4120d0",
+        "009ecf8c: lea ecx, [esp + 0x20]",
+        "009ecf90: push ecx"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "009ecfcf",
+      "native": "004120d0",
+      "caller": "009eca20",
+      "caller_name": "BSP_ShipAi_SelectNavigationLayer",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e8fc50a2ff",
+      "prototype": "009ecfcf BSP_ShipAi_SelectNavigationLayer  undefined BSP_ShipAi_SelectNavigationLayer(void)  body 009eca20 - 009ed3d9",
+      "context": [
+        "009ecfb9: jge 0x9ecfe4",
+        "009ecfbb: mov dword ptr [esi + 0x310], eax",
+        "009ecfc1: call 0x4218e0",
+        "009ecfc6: mov ecx, dword ptr [esi + 0x310]",
+        "009ecfcc: push ecx",
+        "009ecfcd: mov ecx, eax",
+        "009ecfcf: call 0x4120d0",
+        "009ecfd4: lea edx, [esp + 0x20]",
+        "009ecfd8: push edx"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "009ed126",
+      "native": "004120d0",
+      "caller": "009eca20",
+      "caller_name": "BSP_ShipAi_SelectNavigationLayer",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e8a54fa2ff",
+      "prototype": "009ed126 BSP_ShipAi_SelectNavigationLayer  undefined BSP_ShipAi_SelectNavigationLayer(void)  body 009eca20 - 009ed3d9",
+      "context": [
+        "009ed111: mov ecx, eax",
+        "009ed113: call 0x4121a0",
+        "009ed118: call 0x4218e0",
+        "009ed11d: mov edx, dword ptr [esi + 0x30c]",
+        "009ed123: push edx",
+        "009ed124: mov ecx, eax",
+        "009ed126: call 0x4120d0",
+        "009ed12b: fld dword ptr [0xce3854]",
+        "009ed131: push 1"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "009ed1d6",
+      "native": "004120d0",
+      "caller": "009eca20",
+      "caller_name": "BSP_ShipAi_SelectNavigationLayer",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e8f54ea2ff",
+      "prototype": "009ed1d6 BSP_ShipAi_SelectNavigationLayer  undefined BSP_ShipAi_SelectNavigationLayer(void)  body 009eca20 - 009ed3d9",
+      "context": [
+        "009ed1c1: mov ecx, eax",
+        "009ed1c3: call 0x4121a0",
+        "009ed1c8: call 0x4218e0",
+        "009ed1cd: mov edx, dword ptr [esi + 0x30c]",
+        "009ed1d3: push edx",
+        "009ed1d4: mov ecx, eax",
+        "009ed1d6: call 0x4120d0",
+        "009ed1db: fld dword ptr [0xce3854]",
+        "009ed1e1: push 1"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "009ed26d",
+      "native": "004120d0",
+      "caller": "009eca20",
+      "caller_name": "BSP_ShipAi_SelectNavigationLayer",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e85e4ea2ff",
+      "prototype": "009ed26d BSP_ShipAi_SelectNavigationLayer  undefined BSP_ShipAi_SelectNavigationLayer(void)  body 009eca20 - 009ed3d9",
+      "context": [
+        "009ed25c: mov ecx, eax",
+        "009ed25e: call 0x4121b0",
+        "009ed263: mov edi, eax",
+        "009ed265: call 0x4218e0",
+        "009ed26a: push edi",
+        "009ed26b: mov ecx, eax",
+        "009ed26d: call 0x4120d0",
+        "009ed272: push ebx",
+        "009ed273: mov ecx, eax"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "009ed2a5",
+      "native": "004120d0",
+      "caller": "009eca20",
+      "caller_name": "BSP_ShipAi_SelectNavigationLayer",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e8264ea2ff",
+      "prototype": "009ed2a5 BSP_ShipAi_SelectNavigationLayer  undefined BSP_ShipAi_SelectNavigationLayer(void)  body 009eca20 - 009ed3d9",
+      "context": [
+        "009ed28f: jl 0x9ed250",
+        "009ed291: jmp 0x9ed374",
+        "009ed296: mov byte ptr [esi + 0x160], 1",
+        "009ed29d: call 0x4218e0",
+        "009ed2a2: push edi",
+        "009ed2a3: mov ecx, eax",
+        "009ed2a5: call 0x4120d0",
+        "009ed2aa: fld dword ptr [0xce3854]",
+        "009ed2b0: push 1"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "009ed388",
+      "native": "004120d0",
+      "caller": "009eca20",
+      "caller_name": "BSP_ShipAi_SelectNavigationLayer",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e8434da2ff",
+      "prototype": "009ed388 BSP_ShipAi_SelectNavigationLayer  undefined BSP_ShipAi_SelectNavigationLayer(void)  body 009eca20 - 009ed3d9",
+      "context": [
+        "009ed36e: fstp dword ptr [esi + 0x14c]",
+        "009ed374: mov edi, dword ptr [esi + 0x308]",
+        "009ed37a: call 0x4218e0",
+        "009ed37f: mov ecx, dword ptr [esi + 0x308]",
+        "009ed385: push ecx",
+        "009ed386: mov ecx, eax",
+        "009ed388: call 0x4120d0",
+        "009ed38d: mov ebx, eax",
+        "009ed38f: test ebx, ebx"
+      ],
+      "kind": "call"
+    },
+    {
+      "address": "0082adba",
+      "native": "004120d0",
+      "caller": "0082ada0",
+      "caller_name": "BSP_ShipClass_NavigationGroupAtDepth",
+      "physical_kind": "tail_jump",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e91173beff",
+      "prototype": "0082adba BSP_ShipClass_NavigationGroupAtDepth  undefined BSP_ShipClass_NavigationGroupAtDepth(void)  body 0082ada0 - 0082adbe",
+      "context": [
+        "0082ada3: call 0x4218e0",
+        "0082ada8: mov ecx, dword ptr [esp + 8]",
+        "0082adac: mov edx, dword ptr [esi + ecx*4 + 0x560]",
+        "0082adb3: pop esi",
+        "0082adb4: mov dword ptr [esp + 4], edx",
+        "0082adb8: mov ecx, eax",
+        "0082adba: jmp 0x4120d0"
+      ],
+      "kind": "tail_jump"
+    },
+    {
+      "address": "0042365e",
+      "native": "004120d0",
+      "caller": "00423640",
+      "caller_name": "BSP_AvoidZoneManager_GenerateGridPaths_00423640",
+      "physical_kind": "call",
+      "ghidra_reference_kind": "UNCONDITIONAL_CALL",
+      "opcode": "e86deafeff",
+      "prototype": "0042365e BSP_AvoidZoneManager_GenerateGridPaths_00423640  undefined BSP_AvoidZoneManager_GenerateGridPaths_00423640(void)  body 00423640 - 0042395f",
+      "context": [
+        "00423652: push ebp",
+        "00423653: push esi",
+        "00423654: push edi",
+        "00423655: push eax",
+        "00423656: mov dword ptr [esp + 0x24], ecx",
+        "0042365a: mov dword ptr [esp + 0x2c], eax",
+        "0042365e: call 0x4120d0",
+        "00423663: test eax, eax",
+        "00423665: mov esi, dword ptr [esp + 0x9c]"
+      ],
+      "kind": "call"
+    }
+  ],
+  "caller_census": {
+    "ghidra_reference_sites": 22,
+    "physical_e8_calls": 21,
+    "physical_e9_tail_jumps": 1,
+    "containing_functions": 13,
+    "correction": "Ghidra labels0082ADBA UNCONDITIONAL_CALL but installed opcodeE9 is physicaltailJMP;recordkindtail_jump"
+  },
+  "historical_api": {
+    "name": "avoid_zone_group_for_layer_004120d0",
+    "source": "src/avoid_zone_geometry.cpp",
+    "header": "include/bsp/avoid_zone_geometry.hpp",
+    "policy": "existinghostindexprojection/-1empty preserved;not raw provider",
+    "limits_not_modified": [
+      "oldendpoint119vsactual111",
+      "oldnever-null wordingnotOriginalguarantee"
+    ]
+  },
+  "byte_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "proto": "004120d0 BSP_AvoidZoneManager_GroupForLayerOrBelow_004120D0  undefined BSP_AvoidZoneManager_GroupForLayerOrBelow_004120D0(void)  body 004120d0 - 00412111",
+    "status": "ghidra: up  /battlestationspacific.exe",
+    "native_sha256": "e7bfe94286f9b95d8acf01ace7114597ebda41abd3936b28a91397fdf299011f",
+    "object_path": "J:\\PROG\\battlestations-pacific-decompile-goal15_zone_leaf\\local\\goal15l_avoid_manager_group_lookup\\native_avoid_manager_group_lookup.obj",
+    "object_sha256": "8839cbc709f23f3f5333d4e68bad801c9ff5ca44bc4213138ce0b4709c4365ba",
+    "object_bytes": 1364,
+    "source_symbol": "?lookup_native_avoid_manager_group_004120d0@bsp@@YIPAUCc13AvoidZoneNativeGroup@1@PAUCc13AvoidZoneManagerNative@1@PAXH@Z",
+    "source_section": 4,
+    "source_bytes": 66,
+    "source_sha256": "e7bfe94286f9b95d8acf01ace7114597ebda41abd3936b28a91397fdf299011f",
+    "relocations": [],
+    "masked_bytes": 0,
+    "fixed_bytes": 66,
+    "instructions": [
+      {
+        "address": "004120d0",
+        "source_offset": 0,
+        "bytes": "53",
+        "mnemonic": "push",
+        "operands": "ebx"
+      },
+      {
+        "address": "004120d1",
+        "source_offset": 1,
+        "bytes": "55",
+        "mnemonic": "push",
+        "operands": "ebp"
+      },
+      {
+        "address": "004120d2",
+        "source_offset": 2,
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "004120d3",
+        "source_offset": 3,
+        "bytes": "57",
+        "mnemonic": "push",
+        "operands": "edi"
+      },
+      {
+        "address": "004120d4",
+        "source_offset": 4,
+        "bytes": "8b7958",
+        "mnemonic": "mov",
+        "operands": "edi, dword ptr [ecx + 0x58]"
+      },
+      {
+        "address": "004120d7",
+        "source_offset": 7,
+        "bytes": "33ed",
+        "mnemonic": "xor",
+        "operands": "ebp, ebp"
+      },
+      {
+        "address": "004120d9",
+        "source_offset": 9,
+        "bytes": "33c0",
+        "mnemonic": "xor",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "004120db",
+        "source_offset": 11,
+        "bytes": "85ff",
+        "mnemonic": "test",
+        "operands": "edi, edi"
+      },
+      {
+        "address": "004120dd",
+        "source_offset": 13,
+        "bytes": "7e1d",
+        "mnemonic": "jle",
+        "operands": "0x4120fc"
+      },
+      {
+        "address": "004120df",
+        "source_offset": 15,
+        "bytes": "8b5c2414",
+        "mnemonic": "mov",
+        "operands": "ebx, dword ptr [esp + 0x14]"
+      },
+      {
+        "address": "004120e3",
+        "source_offset": 19,
+        "bytes": "8d7108",
+        "mnemonic": "lea",
+        "operands": "esi, [ecx + 8]"
+      },
+      {
+        "address": "004120e6",
+        "source_offset": 22,
+        "bytes": "8b16",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [esi]"
+      },
+      {
+        "address": "004120e8",
+        "source_offset": 24,
+        "bytes": "8b5210",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [edx + 0x10]"
+      },
+      {
+        "address": "004120eb",
+        "source_offset": 27,
+        "bytes": "3bd3",
+        "mnemonic": "cmp",
+        "operands": "edx, ebx"
+      },
+      {
+        "address": "004120ed",
+        "source_offset": 29,
+        "bytes": "7418",
+        "mnemonic": "je",
+        "operands": "0x412107"
+      },
+      {
+        "address": "004120ef",
+        "source_offset": 31,
+        "bytes": "0f4ce8",
+        "mnemonic": "cmovl",
+        "operands": "ebp, eax"
+      },
+      {
+        "address": "004120f2",
+        "source_offset": 34,
+        "bytes": "83c001",
+        "mnemonic": "add",
+        "operands": "eax, 1"
+      },
+      {
+        "address": "004120f5",
+        "source_offset": 37,
+        "bytes": "83c604",
+        "mnemonic": "add",
+        "operands": "esi, 4"
+      },
+      {
+        "address": "004120f8",
+        "source_offset": 40,
+        "bytes": "3bc7",
+        "mnemonic": "cmp",
+        "operands": "eax, edi"
+      },
+      {
+        "address": "004120fa",
+        "source_offset": 42,
+        "bytes": "7cea",
+        "mnemonic": "jl",
+        "operands": "0x4120e6"
+      },
+      {
+        "address": "004120fc",
+        "source_offset": 44,
+        "bytes": "8b44a908",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [ecx + ebp*4 + 8]"
+      },
+      {
+        "address": "00412100",
+        "source_offset": 48,
+        "bytes": "5f",
+        "mnemonic": "pop",
+        "operands": "edi"
+      },
+      {
+        "address": "00412101",
+        "source_offset": 49,
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "00412102",
+        "source_offset": 50,
+        "bytes": "5d",
+        "mnemonic": "pop",
+        "operands": "ebp"
+      },
+      {
+        "address": "00412103",
+        "source_offset": 51,
+        "bytes": "5b",
+        "mnemonic": "pop",
+        "operands": "ebx"
+      },
+      {
+        "address": "00412104",
+        "source_offset": 52,
+        "bytes": "c20400",
+        "mnemonic": "ret",
+        "operands": "4"
+      },
+      {
+        "address": "00412107",
+        "source_offset": 55,
+        "bytes": "8b448108",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [ecx + eax*4 + 8]"
+      },
+      {
+        "address": "0041210b",
+        "source_offset": 59,
+        "bytes": "5f",
+        "mnemonic": "pop",
+        "operands": "edi"
+      },
+      {
+        "address": "0041210c",
+        "source_offset": 60,
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "0041210d",
+        "source_offset": 61,
+        "bytes": "5d",
+        "mnemonic": "pop",
+        "operands": "ebp"
+      },
+      {
+        "address": "0041210e",
+        "source_offset": 62,
+        "bytes": "5b",
+        "mnemonic": "pop",
+        "operands": "ebx"
+      },
+      {
+        "address": "0041210f",
+        "source_offset": 63,
+        "bytes": "c20400",
+        "mnemonic": "ret",
+        "operands": "4"
+      }
+    ],
+    "native_hex": "535556578b795833ed33c085ff7e1d8b5c24148d71088b168b52103bd374180f4ce883c00183c6043bc77cea8b44a9085f5e5d5bc204008b4481085f5e5d5bc20400",
+    "live_equals_installed": true,
+    "coff_equals_entire_native": true,
+    "call_count": 0,
+    "branch_count": 3,
+    "return_sites": [
+      "00412104",
+      "0041210f"
+    ],
+    "golden_fixture_literal_matches": true
+  },
+  "fixture": {
+    "scope": "one ignored Golden whole-installed66B vs Sourcecurrentprocess;notwholegameABI",
+    "result": "PASS Golden installed66B: 7 signed-count/fallback/first-equality/last-physical/actual-argument-alias comparisons; unchanged manager and RET4 balance",
+    "comparisons": 7,
+    "cases": [
+      "count0/nullslot0",
+      "signednegativecount/rawslot0",
+      "firstduplicateequality",
+      "unsortedlastphysicalqualifier",
+      "noqualifierfallback0",
+      "signedextremekeys",
+      "groupkeyaliasesactualincominglayercell"
+    ],
+    "captures": [
+      "EAX raw pointer",
+      "actualargumentword",
+      "unchangedmanager",
+      "ESPbefore/afterRET4"
+    ],
+    "alias_qualification": "actualkeycell short-livedstackalias;otherwords overlap savedregister/return storage; no returnedpointer dereference or Nativefactory/objectclaim",
+    "genuine_storage": "currentmalloc/placementconstruction/free forordinarymanager/groups",
+    "providers": "none required byleaf;no substitute callbacks",
+    "flags": "/MD/O2/Oy-/W4/WX/fpstrict /link /MANIFEST:EMBED",
+    "mode": "localstrictobject overlay;primaryarchiveonlypending"
+  },
+  "verification": {
+    "strict_compile": "PASS",
+    "complete_live_installed_coff": "PASSall66BzeroRelocs/masking",
+    "golden_fixture": "PASS",
+    "report_calls": "PASS22unique rows including explicit tail_jump",
+    "doc_calls": "PASS2claims/0unchecked/0warnings",
+    "full_build": "primary-owned pending registration",
+    "registered_object": "primary-owned pending",
+    "registered_archive_fixture": "primary-owned pending"
+  },
+  "naming_uncertainty": "descriptive reviewedname hypothesis,notrecoveredsymbol;currentundefined(void) prototype awaitsprimary Originalonlyannotation",
+  "source_files": [
+    {
+      "path": "include/bsp/native_avoid_manager_group_lookup.hpp",
+      "bytes": 1310,
+      "sha256": "ac6e6172f59ed68023d2efe884f083b275c84e2d28406c297e17598cbb7575f3"
+    },
+    {
+      "path": "src/native_avoid_manager_group_lookup.cpp",
+      "bytes": 1682,
+      "sha256": "8d6fda160c02bc327d596bc110b8be3b8f1ba626d6c5324e2337e0c304c1e2ee"
+    },
+    {
+      "path": "docs/GOAL15L_AVOID_MANAGER_GROUP_LOOKUP.md",
+      "bytes": 6597,
+      "sha256": "47eec78e7646acff57fc86979f9205740421cf89f961ca0d5569c5046f033563"
+    }
+  ],
+  "reproduction_helpers": [
+    {
+      "path": "local/goal15l_avoid_manager_group_lookup/compile.cmd",
+      "bytes": 474,
+      "sha256": "6dc030ee4f4603f351152cd733977c02140e65f71557f06b15595b354df618ee"
+    },
+    {
+      "path": "local/goal15l_avoid_manager_group_lookup/verify_bytes.py",
+      "bytes": 3462,
+      "sha256": "2aecc16f26cfd53ea7cb9769ed3766e4b1880d4f64586a73b1c06dad45130225"
+    },
+    {
+      "path": "local/goal15l_avoid_manager_group_lookup/manager_group_lookup_probe.cpp",
+      "bytes": 5948,
+      "sha256": "5600e20f804089f957aed0516739536deb3408064dfb97893bd730b284a07fd7"
+    },
+    {
+      "path": "local/goal15l_avoid_manager_group_lookup/run_probe.cmd",
+      "bytes": 1052,
+      "sha256": "28f32f97d625865af940223c66e396321c5ff99bef3692b510e367467c035937"
+    },
+    {
+      "path": "local/goal15l_avoid_manager_group_lookup/write_report.py",
+      "bytes": 5493,
+      "sha256": "eac34cc3acd0c8a437045ddd616921ecac54ae85e4b92132ccfc1a03b5699fb4"
+    }
+  ],
+  "artifact_hashes": [
+    {
+      "path": "local/goal15l_avoid_manager_group_lookup/native_avoid_manager_group_lookup.obj",
+      "bytes": 1364,
+      "sha256": "8839cbc709f23f3f5333d4e68bad801c9ff5ca44bc4213138ce0b4709c4365ba"
+    },
+    {
+      "path": "local/goal15l_avoid_manager_group_lookup/native_avoid_manager_group_lookup.asm",
+      "bytes": 4012,
+      "sha256": "634f7b4ba839bfca9c0af3e7ca897399765781eb829447b84da12c2010f1b5d4"
+    },
+    {
+      "path": "local/goal15l_avoid_manager_group_lookup/manager_group_lookup_probe.exe",
+      "bytes": 11264,
+      "sha256": "1bd9bc629aa96678a8bc7a37c2b640d3240d27e1ed3177f875c901533d305820"
+    },
+    {
+      "path": "local/goal15l_avoid_manager_group_lookup/probe.log",
+      "bytes": 150,
+      "sha256": "3f8980c4cf02f6954a2dabc13645920e0d8a0e2056bbba005cf42eba1e850edf"
+    },
+    {
+      "path": "local/goal15l_avoid_manager_group_lookup/byte_receipt.json",
+      "bytes": 6778,
+      "sha256": "3fc7038341e22f96280502a09d3d3a96691e9e138ba53008dd975fe85ebfd065"
+    },
+    {
+      "path": "local/goal15l_avoid_manager_group_lookup/caller_contexts.json",
+      "bytes": 16652,
+      "sha256": "05eb20fe6c4a4994e8e918cc22990863f8e244c72c54018a732694fa9587f0c5"
+    }
+  ],
+  "remaining_limits": [
+    "caller423640 stillrequiresbindingcomposition;fastcalltypeisnotimplicitthiscallassignment",
+    "borrowedrawmemory validity and concurrentlifetime arecallercontracts",
+    "Nativeinstruction/faultaddresses/classfactory/productionadoption/wholegameABI/gameplayunproved",
+    "no sharedCMake/registry/Ghidra mutation;primary fullbuild/registeredchecks pending"
+  ]
+}
