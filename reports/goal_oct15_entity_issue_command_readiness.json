@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_entity_issue_command_readiness",
+  "status": "whole_native_read_only_audit;general_parent_Source_unclosed",
+  "source_ready": false,
+  "general_source_ready": false,
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "0077d600",
+      "end_exclusive": "0077d7ed",
+      "native_bytes": 493,
+      "instructions": 135,
+      "hex": "6aff68f89ec80064a100000000506489250000000083ec5c53558b6c2474568b74247cf30f104608668b06f30f1144241cf30f10460cf30f11442420f30f1046105766894424188b46048bf9668b4e0233db385c2418f30f11442428f30f10461466894c241a8944241cf30f1144242c0f84fd0000003bc3753f0fb7c13b05109af8007d152b050c9af8008b0d549af800c1e0048b44080ceb132b05609af8008b15a89af800c1e0048b44100c3bc38944241c0f84ba0000008d4c2418e8de47daff8b108bc88b425c6a0fffd084c00f849e0000008b55008b42048bcdffd0508d4c2414e88711caff8d4c2418e8ae47dafff30f10057475f8008b80d40900003bc3f30f11442420f30f10057875f800f30f11442424f30f10057c75f800f30f1144242866895c24188944241c750b885c241866895c241aeb11668b8874010000c64424180166894c241a8b4c24143bcb0f57c0f30f1144242c74178b4424106a0183c0015051e854c5c9ff8bc8e89d3d45008b45043b057c8fe00075098d4c2418e81947daff8b8f6c0100003bcb741b8b87840200003bc3740a3978140f95c03ac375075655e8e4e52a008b942484000000528d44241c50558d4c243ce80dc1ffff53538d4c2438518bcf899c2480000000e8c8eaffff8b4c246c5f5e5d5b64890d0000000083c468c20c00",
+      "sha256": "8cb90428fe1fc59ca513f4e04fe7a510fc18764a2aef2029b74ac24669acad65",
+      "live_equals_installed_PE": true,
+      "original_abi": "ECXentity;stackcommand/actualtarget24/flags;RET0Ch;semanticvoid;privateFH3/localdescriptor/temppooledheader/message60"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0077d6bd",
+      "native": "00521ea0",
+      "function": "0077d600",
+      "kind": "call"
+    },
+    {
+      "address": "0077d6e4",
+      "native": "0041e870",
+      "function": "0077d600",
+      "kind": "call"
+    },
+    {
+      "address": "0077d6ed",
+      "native": "00521ea0",
+      "function": "0077d600",
+      "kind": "call"
+    },
+    {
+      "address": "0077d767",
+      "native": "00419cc0",
+      "function": "0077d600",
+      "kind": "call"
+    },
+    {
+      "address": "0077d76e",
+      "native": "00bd1510",
+      "function": "0077d600",
+      "kind": "call"
+    },
+    {
+      "address": "0077d782",
+      "native": "00521ea0",
+      "function": "0077d600",
+      "kind": "call"
+    },
+    {
+      "address": "0077d7a7",
+      "native": "00a2bd90",
+      "function": "0077d600",
+      "kind": "call"
+    },
+    {
+      "address": "0077d7be",
+      "native": "007798d0",
+      "function": "0077d600",
+      "kind": "call"
+    },
+    {
+      "address": "0077d7d3",
+      "native": "0077c2a0",
+      "function": "0077d600",
+      "kind": "call"
+    }
+  ],
+  "computed_transfers": [
+    {
+      "site": "0077d6cb",
+      "instruction": "CALL EAX",
+      "target": "CURRENT resolvedobject.vtable+5Ch",
+      "abi": "actual __thiscall,ECXresolvedobject,stack0Fh,AL result"
+    },
+    {
+      "site": "0077d6dd",
+      "instruction": "CALL EAX",
+      "target": "CURRENT capturedcommand.vtable+4",
+      "abi": "actual __thiscall,ECXcapturedcommand,noarguments,EAX rawname"
+    }
+  ],
+  "typed_capture": {
+    "path": "local/goal_oct15_entity_issue_command_typed_flow.json",
+    "sha256": "f9e7696937ddfaaed7429879104b40f0ec6eedab56eb63e02097cd53902ca2cc"
+  },
+  "existing_source_evidence": {
+    "src/entity_orders.cpp": "EntityOrderHost and structured returned EntityOrderMessage projection;not rawparent/privatecell Source",
+    "src/session_message_dispatch.cpp": "SessionRouteInputs/decision/host execution;not actual general raw routing",
+    "src/native_unit_health_message.cpp": "Existing ordinary complete D2 flags4 route fragment explicitly leaves generic parent/transport unbound;cannot stand in for type58/override0 command message",
+    "src/cc13_seg70.cpp": "A2BD90 delegates actual dynamic slot24 through Seg70Host;not raw tail-transfer Source"
+  },
+  "existing_source_hashes": {
+    "src/entity_orders.cpp": "1c21bb48fa4ea34bc67e8d68a4be82ce5d6108e1c46aa3b7abf008cfa72b5d1a",
+    "src/session_message_dispatch.cpp": "7ceddcbc47b812a5a309e7970d3dbf62da7fc02c8346bbcf39deb6b1d9f97d4e",
+    "src/native_unit_health_message.cpp": "8878953c5d29c5b7c38cdce13da5cb4206803d1cd72a90263db61cc911738dfe",
+    "src/cc13_seg70.cpp": "47eb1a016e6cf4c39a2569e4f2792d40c18494d183987c35bb0450bcfb7b8a67"
+  },
+  "remaining_named_dependencies": [
+    "007798d0 actual60B message construction and0075b430 base state/providers",
+    "0077c2a0 whole general type58/flags0 actual message routing and real transports",
+    "00a2bd90 actual dynamic slot24 tail transfer;all actual dynamictarget bodies unproved",
+    "Actual current resolvedobject slot5C and command slot4 code;no invented callback/dynamicbody closure",
+    "OriginalFH3/localpooledheader/messageprivatecells/heap/fault transport"
+  ],
+  "related_new_provider": "reports/goal_oct15_command_target_resolve.json;separate leaf only;no parentcompletion credit",
+  "Ghidra_writes": false,
+  "parent_Source_edits": false,
+  "new_tests": 0,
+  "new_entry_executed": false,
+  "game_validated": false
+}
