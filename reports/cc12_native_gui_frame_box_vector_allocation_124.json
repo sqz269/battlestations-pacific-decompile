@@ -1,0 +1,326 @@
+{
+  "packet": "native_gui_frame_box_vector_allocation_124",
+  "status": "whole_raw_source_at_existing_current_sdk_boundary_strict_win32_object_and_existing_checks_passed_unregistered",
+  "baseline": "f7c371fad70b6190791f765c603e7d973e087590",
+  "source": {
+    "cpp": "src/native_gui_frame_box_vector_allocation.cpp",
+    "header": "include/bsp/native_gui_frame_box_vector_allocation.hpp",
+    "name": "allocate_native_gui_frame_box_records_00acef10",
+    "guard": "MSVC Win32; pointer/size_t widths4",
+    "api": "MSVC Win32 void* __fastcall(uint32_t count,void* unused_edx)",
+    "root_full_source_review": "PASS unchanged final blobs",
+    "root_complete_optimized_review": "PASS strict.asm186-239; unsigned limit, same request fields, real call/return and SDK throw"
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_by": "BSP wrappers and annotation Client.verify(); call verifier verifies its own batch"
+  },
+  "original": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged": true
+  },
+  "native": {
+    "address": "00acef10",
+    "end_exclusive": "00acef61",
+    "bytes": 81,
+    "physical_instruction_starts": 25,
+    "sha256": "efb354fac48e58e8f89f7eb51d3e88a92bfd21bcc7d1c4b10d5daabff668deab",
+    "live_equals_disk": true,
+    "equal_sealed126_bytes": true,
+    "name_preserved": "STL_allocator_allocate_00acef10",
+    "abi": "ECX unsigned count; EDX not consumed; no stack input; EAX raw allocation; plain RET. Private overflow exception/CRT ABI not reproduced.",
+    "schedule": [
+      "SUB ESP10; zero branch still multiplies/allocates0",
+      "positive unsigned FFFFFFFF/count >=2C; limit05D1745D",
+      "IMUL count*2C and actual BF681B call; normal EAX/raw pointer and plain RET",
+      "overflow null message slot/BF6340, D6923C profile, E03CC0 ThrowInfo/BF6885"
+    ],
+    "local_eh": "No local FS frame prologue/armed state in81B; private callee/runtime exception ABI not reproduced."
+  },
+  "calls": [
+    {
+      "address": "00acef1d",
+      "native": "00bf681b",
+      "function": "00acef10",
+      "kind": "call"
+    },
+    {
+      "address": "00acef45",
+      "native": "00bf6340",
+      "function": "00acef10",
+      "kind": "call"
+    },
+    {
+      "address": "00acef5c",
+      "native": "00bf6885",
+      "function": "00acef10",
+      "kind": "call"
+    }
+  ],
+  "source_schedule": {
+    "unsigned_limit": "05d1745d",
+    "max_product": "fffffffc",
+    "zero_bypasses_allocation": false,
+    "edx_consumed": false,
+    "bytes": "native32 count*2C, both native_bytes and host_bytes identical",
+    "kind": "SingletonAllocationKind::object",
+    "provider": "genuine singleton_lifetime_allocate",
+    "overflow": "already admitted current-SDK std::bad_alloc policy from raw4/8-byte allocators",
+    "local_cleanup_or_owner": false,
+    "fixed_native_code_invoked": false
+  },
+  "allocation_free_domain": {
+    "allocate": "Source std::malloc/_callnewh/retry/std::bad_alloc service",
+    "free": "singleton_lifetime_free -> std::free in SAME translation unit",
+    "only_admitted": "Exact-byte Source malloc-family buffers genuinely returned by this service.",
+    "packet119": "Separate constructed-span/fresh111 metadata/full-graph retention contract required; allocator does not supply it.",
+    "excluded": [
+      "Original/static CRT/foreign heaps",
+      "arbitrary new/new[]",
+      "pool/widget slots",
+      "raw names/string storage",
+      "resource pointers"
+    ],
+    "caller": "Own raw backing and wider partial graph before entry; allocator/new-handler lifetime remains external."
+  },
+  "strict_object": {
+    "fresh_compile": true,
+    "flags": "/MD /EHsc /std:c++17 /O2 /Gy /W4 /WX /fp:strict /permissive-",
+    "primary_symbol": "?allocate_native_gui_frame_box_records_00acef10@bsp@@YIPAXIPAX@Z",
+    "bytes": 91,
+    "sha256": "6c8c238a389bd55fbcb92b48e91e24a1e4f0e70a808a2bc67303361996b4594e",
+    "object_sha256": "3d7c076585b774a2e11182e8d4a770bbb7ee64ae5847bae17de4fbebb6d8d47f",
+    "relocations": [
+      {
+        "offset": 4,
+        "symbol": "___security_cookie",
+        "type": 6
+      },
+      {
+        "offset": 45,
+        "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "type": 20
+      },
+      {
+        "offset": 59,
+        "symbol": "@__security_check_cookie@4",
+        "type": 20
+      },
+      {
+        "offset": 71,
+        "symbol": "??0bad_alloc@std@@QAE@XZ",
+        "type": 20
+      },
+      {
+        "offset": 76,
+        "symbol": "__TI2?AVbad_alloc@std@@",
+        "type": 6
+      },
+      {
+        "offset": 86,
+        "symbol": "__CxxThrowException@8",
+        "type": 20
+      }
+    ],
+    "reviewed_offsets": {
+      "unsigned_cmp": "0e",
+      "unsigned_ja": "14",
+      "multiply44": "16",
+      "kind_object3": "19",
+      "native_bytes": "20",
+      "host_bytes": "24",
+      "allocation_call": "2c",
+      "plain_ret": "42",
+      "sdk_bad_alloc_ctor": "46",
+      "sdk_throwinfo": "4b",
+      "cpp_throw": "55"
+    },
+    "original_differences": [
+      "unsigned CMP/JA replaces Native DIV/ratio test",
+      "compiler security cookie",
+      "SDK bad_alloc/ThrowInfo/C++ EH",
+      "terminal int3"
+    ],
+    "source_function_executed": false
+  },
+  "canonical_build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_checks": "3/3",
+    "seconds": 7.93,
+    "new_tu_registered": false,
+    "new_tu_compiled_by_canonical_build": false,
+    "new_tu_executed_by_checks": false,
+    "fresh_separate_strict_compile_is_unit_compilation_proof": true,
+    "snapshot_libraries_role": "Existing canonical build context/dependencies; they do NOT contain the unregistered124 unit.",
+    "new_tests_or_probe": false
+  },
+  "limitations": [
+    "No Native D6923C/E03CC0/RTTI/FH3/SEH/static CRT/new-handler/heap identity",
+    "No original flags/register scratch/stack/fault schedule or identical binary ABI",
+    "No allocator Native differential or124 runtime execution",
+    "No AD1910/AD2230/AD1810 Source, vector copy/cleanup/owner/activation or gameplay claim",
+    "Historical manifests are history, not reinterpreted as current worktree snapshots"
+  ],
+  "annotation": {
+    "address": "00acef10",
+    "native_name_before": "STL_allocator_allocate_00acef10",
+    "native_name_after": "STL_allocator_allocate_00acef10",
+    "name_preserved": true,
+    "old_comment": "",
+    "old_comment_preserved_normalized": true,
+    "new_evidence_exported": true,
+    "history_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_font_retirement_review36\\local\\ghidra-annotations-20261016T074557Z.json",
+    "history_sha256": "99834bcd808d2818121769e17af3634957161569de150bbcac9e8248649716a2",
+    "mutation_tool": "ghidra_annotate.py --apply under coordination.ghidra_lock; old-value history; save_program",
+    "forced_export": true,
+    "only_owned_address_annotated": true,
+    "listing_or_function_boundary_repair": false
+  },
+  "ledger": {
+    "function_seed": "local\\cc12_native_gui_frame_box_vector_allocation_124\\ledger_function.json",
+    "name": "STL_allocator_allocate_00acef10",
+    "addresses": [
+      "00acef10"
+    ],
+    "shards": [
+      "config/names/00ac0000.jsonl",
+      "config/reconstruction/00ac0000.jsonl"
+    ],
+    "old_records_and_comments_preserved": true,
+    "listing_or_boundary_repair": false
+  },
+  "preservation": {
+    "baseline": "f7c371fad70b6190791f765c603e7d973e087590",
+    "preexisting_tracked_source_or_cmake_changes": [],
+    "existing_provider_and_records_inputs_equal126": true,
+    "registration_search": {
+      "command": [
+        "rg",
+        "-n",
+        "native_gui_frame_box_vector_allocation",
+        "CMakeLists.txt",
+        "cmake"
+      ],
+      "return_code": 1,
+      "stdout": "",
+      "stderr": ""
+    },
+    "new_tu_unregistered": true,
+    "canonical_build_does_not_compile_new_tu": true,
+    "unsigned_limit_math": "FFFFFFFF/2C=05D1745D; max admitted product FFFFFFFC",
+    "static_checks_only_not_function_execution": true
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_gui_frame_box_vector_allocation.hpp",
+      "sha256": "ffdd568922de5c01069d7589b1d94cea7959ba1ac196c9d05b6e82a512437de0",
+      "bytes": 1719,
+      "git_blob": "1254949650a4020c43d4178a381af46747f85e14"
+    },
+    {
+      "path": "src/native_gui_frame_box_vector_allocation.cpp",
+      "sha256": "56f9f5ec53c8c767b37e89390000028111474fba50916cc3387136f3da244167",
+      "bytes": 667,
+      "git_blob": "3958e8c7860862f8a433ad70643599ef26b66ae2"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372,
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "unchanged_from126": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "bytes": 13257,
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "unchanged_from126": true
+    },
+    {
+      "path": "include/bsp/native_string_vector_allocation.hpp",
+      "sha256": "9fd29ea6f06302a8f7189fc588afe34a5d09302230b2e19012c7a281cb5d8f46",
+      "bytes": 2796,
+      "git_blob": "3588a0880c0c2f103249f2755986cb79015ec791",
+      "unchanged_from126": true
+    },
+    {
+      "path": "src/native_string_vector_allocation.cpp",
+      "sha256": "4486768af5a066bc5366980f2dedb17dc09690f73b2eb5ba442e2d6e41f34625",
+      "bytes": 2413,
+      "git_blob": "daded215a5ed66c759d01008cc51fc16cc3006c0",
+      "unchanged_from126": true
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_allocation.hpp",
+      "sha256": "2910d0e12e3ecce6820cc1a083a3bfba9c5478fbbea9cdf9dc4c2926bdb0296a",
+      "bytes": 2149,
+      "git_blob": "182ba31dcb54f78b0aae4d42c69ce8e5a7ee4414",
+      "unchanged_from126": true
+    },
+    {
+      "path": "src/native_singleton_vector_allocation.cpp",
+      "sha256": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e",
+      "bytes": 1966,
+      "git_blob": "3d4ea10f5e6a8e0a9fe75db0b96ceffd3bdb73c7",
+      "unchanged_from126": true
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "sha256": "5c9792f00aa262fab4a0b49c73fa77a9e38f0d674c70a063c8d184a0625db4fc",
+      "bytes": 14082,
+      "git_blob": "d54db8c19480e7e6255540faea91f44b7e574590",
+      "unchanged_from126": true
+    },
+    {
+      "path": "src/native_gui_frame_box_records.cpp",
+      "sha256": "64750f2eb4cfb27dc728a1fc53faee968f5a9bf34914b504f9bff395e7fb00e2",
+      "bytes": 12961,
+      "git_blob": "1502c28ec32dc2dad589aae1dee6cc11658fc80f",
+      "unchanged_from126": true
+    }
+  ],
+  "historical_context": [
+    {
+      "historical_path": "docs/CC12_NATIVE_GUI_FRAME_BOX_VECTOR_COPY_READINESS_126.md",
+      "snapshot_path": "local\\cc12_native_gui_frame_box_vector_allocation_124\\historical_context\\CC12_NATIVE_GUI_FRAME_BOX_VECTOR_COPY_READINESS_126.md",
+      "sha256": "9c7f3fd83336d29b79eae3f97950e6ae4bc463c87cc2b6c60e5304502be6d2ef",
+      "context_only": true,
+      "listed_historical_manifest_paths_not_revalidated_as_current": true
+    },
+    {
+      "historical_path": "reports/cc12_native_gui_frame_box_vector_copy_readiness_126.json",
+      "snapshot_path": "local\\cc12_native_gui_frame_box_vector_allocation_124\\historical_context\\cc12_native_gui_frame_box_vector_copy_readiness_126.json",
+      "sha256": "ef6431ecea4f59ecd989185e6065a04f565b053940e85a7a38d7cca565389306",
+      "context_only": true,
+      "listed_historical_manifest_paths_not_revalidated_as_current": true
+    },
+    {
+      "historical_path": "local/cc12_native_gui_frame_box_vector_copy_readiness_126/manifest.json",
+      "snapshot_path": "local\\cc12_native_gui_frame_box_vector_allocation_124\\historical_context\\126_manifest.json",
+      "sha256": "7c5d95453107737d54d0e6d71c063e270b4f4ce38f994c48236bd59c2411f9a5",
+      "context_only": true,
+      "listed_historical_manifest_paths_not_revalidated_as_current": true
+    }
+  ],
+  "documentation": {
+    "path": "docs\\CC12_NATIVE_GUI_FRAME_BOX_VECTOR_ALLOCATION_124.md",
+    "sha256": "b29de4b12d299ea4c40cd51021935ae74e66f76b9f5243343ed824a16e628b2a"
+  },
+  "validation": {
+    "report_rows": 3,
+    "call_verifier_exit": 0,
+    "log": "local\\cc12_native_gui_frame_box_vector_allocation_124\\call_verification.log",
+    "scope": "Rows verified before final manifest metadata insertion; no call rows changed afterward."
+  },
+  "artifact_manifest": {
+    "path": "local\\cc12_native_gui_frame_box_vector_allocation_124\\manifest.json",
+    "sha256": "86113f2a9fec0fc8cdfda9933be00bbd35d5291650f9a2a0042a1c21981c2865",
+    "item_count": 45,
+    "total_bytes": 94618042,
+    "sealed_no_replacement_before_capture": true
+  }
+}

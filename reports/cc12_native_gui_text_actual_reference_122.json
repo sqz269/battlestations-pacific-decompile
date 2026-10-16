@@ -1,0 +1,680 @@
+{
+  "packet": "cc12_native_gui_text_actual_reference122",
+  "recorded_utc": "2026-10-16T07:51:52.630406+00:00",
+  "checked_baseline": "cf45d931368cd5cbdb32be2d1ba7cb80b977c9eb",
+  "status": "canonical actual raw Text borrowed-count/current-scalar Source implemented; strict Win32 compile and existing checks pass; new TU unregistered, no activation/runtime proof",
+  "scope": {
+    "owned_files": [
+      "include/bsp/native_gui_text_reference.hpp",
+      "src/native_gui_text_reference.cpp",
+      "docs/CC12_NATIVE_GUI_TEXT_ACTUAL_REFERENCE_122.md",
+      "reports/cc12_native_gui_text_actual_reference_122.json"
+    ],
+    "owned_addresses": [],
+    "new_Original_bodies_or_annotations": 0,
+    "existing_Source_CMake_ledger_unchanged": true,
+    "Source_names_are_interface_hypotheses_not_recovered_symbols": true
+  },
+  "analysis_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_batches_verified_by_bsp_wrappers": true,
+    "installed_Original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "Original_preserved": true
+  },
+  "Original_proof_reused_from121": {
+    "whole_bodies": [
+      {
+        "entry": "0x00AA9390",
+        "end_exclusive": "0x00AA9514",
+        "bytes": 388,
+        "instructions": 83,
+        "Original_ABI": "ECX same destination, stack type DWORD; EAX same destination; RET4; EBX/ESI/EDI preserved; recovered actual body has FH3 setup",
+        "complete_live_Original_bytes_equal": true,
+        "live_saved_Original_starts_match": true,
+        "sha256_live_and_Original_bytes": "42d9ee1432699517267e0978fed8b44f28dcdb1faac4e3be12d3f127ae06bbbc"
+      },
+      {
+        "entry": "0x00BD30E0",
+        "end_exclusive": "0x00BD30EE",
+        "bytes": 14,
+        "instructions": 7,
+        "Original_ABI": "ECX actual owner, no explicit stack arguments, plain RET; EAX/EDX scratch, no count decrement; nonnull current vslot04 receives pushed literal DWORD 1",
+        "complete_live_Original_bytes_equal": true,
+        "live_saved_Original_starts_match": true,
+        "sha256_live_and_Original_bytes": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+      }
+    ],
+    "bounded_prefix_count_table": [
+      {
+        "entry": "0x00AA93B5",
+        "end_exclusive": "0x00AA93BC",
+        "bytes": 7,
+        "kind": "initial-count instruction, also covered by whole AA9390 proof",
+        "sha256_live_and_Original_bytes": "615b708bd6c64cb8a35a2545093b45f1c17405bf28c7958f989df6125a4a1ae1"
+      },
+      {
+        "entry": "0x00AB9650",
+        "end_exclusive": "0x00AB967E",
+        "bytes": 46,
+        "instructions": 13,
+        "kind": "default-constructor prefix only; whole671B proof reused from93/84",
+        "sha256_live_and_Original_bytes": "2b37335cf4d854364351a645abf13f19f024a183cc0a60064e3e9f7d8ce81ffc"
+      },
+      {
+        "entry": "0x00D5C6C8",
+        "end_exclusive": "0x00D5C6D0",
+        "bytes": 8,
+        "kind": "two numeric dispatch DWORDs only; not a callable replacement table",
+        "words": [
+          "0x00BD30E0",
+          "0x00AB8EE0"
+        ],
+        "sha256_live_and_Original_bytes": "acfa7e16772e7ebae5f254fc5e25167e9d3cacb267d2097727d6a9a05614bc40"
+      }
+    ],
+    "scalar118": {
+      "entry": "0x00AB8EE0",
+      "end_exclusive": "0x00AB8F00",
+      "bytes": 32,
+      "instructions": 11,
+      "Original_ABI": "ECX SAME Text/stack flags DWORD; EAX SAME identity/RET4 atAB8EFD; ESI preserved; late LOW BYTE test",
+      "complete_live_Original_bytes_equal": true,
+      "live_saved_Original_starts_match": true,
+      "sha256_Original_and_live_bytes": "6c4abe4b629538eed67c9070b40b96532c19f2d78a8db49ecd0d9b309668cead"
+    },
+    "limit": "no new body export or annotation; complete prior evidence was captured before reuse"
+  },
+  "calls": [
+    {
+      "function": "0x00AA9390",
+      "address": "0x00AA9446",
+      "native": "0x00A9B720",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB9650",
+      "address": "0x00AB9671",
+      "native": "0x00AA9390",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8EE0",
+      "address": "0x00AB8EE3",
+      "native": "0x00AB8250",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8EE0",
+      "address": "0x00AB8EF5",
+      "native": "0x00AB75A0",
+      "kind": "call"
+    }
+  ],
+  "indirect_call_sites": [
+    {
+      "function": "0x00BD30E0",
+      "site": "0x00BD30EB",
+      "instruction": "call edx"
+    }
+  ],
+  "API": {
+    "bind": "bind_native_gui_text_reference(caller companion storage, SAME completed actual93 destination, context, persistent frame, explicit sized disposal)",
+    "context": "SAME registry, existing GameNativeReadOnlyData, genuine93 construction context/frame/acquired, genuine118 whole retirement context",
+    "frame": "persistent zero_flags DWORD plus fresh whole118 scalar Acquired, disjoint from complete raw1F8/companion/provider graph",
+    "observed_zero": "NativeGuiTextReference::release_zero_references() noexcept",
+    "direct": "NativeGuiTextReference::delete_current_scalar_00ab8ee0(const volatile uint32_t& actual caller flags)",
+    "Source_review_locations": {
+      "header": {
+        "primitive_inputs": [
+          12,
+          32
+        ],
+        "private_phase_and_operations": [
+          38,
+          87
+        ],
+        "complete_caller_retention_contract": [
+          89,
+          110
+        ]
+      },
+      "cpp": {
+        "known_borrowed_extents": [
+          38,
+          87
+        ],
+        "fresh_scalar": [
+          88,
+          97
+        ],
+        "all_preplacement_admission": [
+          102,
+          152
+        ],
+        "direct_flags_address_only": [
+          153,
+          164
+        ],
+        "placement_then_borrowed_count_constructor_and_bind": [
+          166,
+          181
+        ],
+        "success_only_destructor_current_selector_and_saved_completion": [
+          182,
+          196
+        ],
+        "current_zero_scalar_adapter_literal1_real118": [
+          197,
+          209
+        ],
+        "observed_zero_terminal": [
+          210,
+          224
+        ],
+        "ungated_direct_scalar_and_sticky_failure": [
+          225,
+          243
+        ]
+      }
+    },
+    "no_new_native_count_owner_retain_global_renderer_pool_typed_cast_or_default_callback": true
+  },
+  "admission": {
+    "before_placement_vptr_base_member_stores": true,
+    "known_regions": "raw1F8 including trailer, companion, persistent frame versus each other and supported context/service/global/profile/creator-diagnostic/frame/backing regions, actual pool/storage, sized disposal context",
+    "same_count": "borrow actual already-live atomic<int32_t> at raw+04; default optional owned count remains unconstructed",
+    "same93_completion": "same destination; successful base/derived/sections; EHstate6; no ended base/exception cleanup; real85 complete/failure-none",
+    "canonical_table": "existing data_at(D5C6C8,8) actual immutable Original-VA alias with current BD30E0/AB8EE0 selectors",
+    "registry": "same118 actual registry.bind definitive uniqueness/alias check; no native write/retain",
+    "constructor_failure": "ordinary base metadata destruction only; derived success-only destructor is not called; raw creator/count/frame untouched",
+    "caller_obligations": "fresh unconstructed companion backing; genuine producer/pool/slab/trailer provenance despite editable public diagnostics; full transitive backing/creator/context retention and disjointness, stable pure metadata services, distinct prepared recursive frames before callbacks"
+  },
+  "phase_protocol": {
+    "private_nonresettable": [
+      "bound",
+      "zero_dispatch",
+      "retiring",
+      "retired",
+      "failed"
+    ],
+    "reentry": "phase guard before raw access; only expected zero adapter can transition zero_dispatch to retiring",
+    "zero": [
+      "save completion metadata",
+      "consume zero_dispatch",
+      "same registry/actual0/current slot0",
+      "realBD30E0 fresh current profile capture",
+      "private adapter CURRENT slot4 capture",
+      "consume retiring",
+      "volatile DWORD1 write at reached frame",
+      "immediate real118 scalar call"
+    ],
+    "direct": [
+      "phase guard",
+      "save completion metadata",
+      "consume retiring",
+      "ADDRESS-only caller flags checks",
+      "same registry",
+      "CURRENT raw profile/current numeric4",
+      "real118 with actual flags address"
+    ],
+    "no_direct_count_read_gate_or_decrement": true,
+    "late_flags": "only real118 reads CURRENT LOW BYTE AFTER destructor; no flags value read/snapshot in this module",
+    "success": [
+      "real118 return",
+      "retired metadata phase",
+      "exact saved-key registry unbind without raw read",
+      "saved noexcept companion disposal LAST",
+      "direct returns saved result only"
+    ],
+    "direct_failure": "failed phase/rethrow only; binding, companion and all independent graph/frames/creators retained; no Scene retire/unbind/dispose/cleanup/retry",
+    "zero_failure": "failed phase then terminate; Source noexcept terminal policy, not Native EH equivalence"
+  },
+  "retention_and_limits": [
+    "borrowed addresses do not own/keep native objects alive; caller holds the full graph independently before callbacks/unwind and through explicit failure disposition",
+    "Native slot can already be pooled on return; serialized exclusion prevents slot reuse/new binding until metadata unbind; no count/profile/payload/trailer reads after scalar",
+    "flags0 still ends Text without native pool return; no synthetic later return or slot ownership",
+    "count-held1->2->1 cannot prevent forced directscalar/ancestor retirement; no protective retain; no bound raw118 bypass",
+    "current raw replacements require genuine already-retained creators/services/frames before publication; no adopted alias or dead-field discovery",
+    "preterminal external registry errors after decrement can escape with alreadyzero observation; no replay; terminal Source errors terminate",
+    "canonical nested effect zero is noexcept/terminating and cannot unwind into Text outercleanup; provider_call never establishes Native exception origin",
+    "required child/timed/ancestor/current virtual providers remain explicit; no production GUI admission, factory/copy activation, Native FH3/SEH/IAT/register ABI or runtime/game claim"
+  ],
+  "optimized": {
+    "listing": {
+      "path": "local/native_gui_text_reference_122.asm",
+      "sha256": "adb78908a077999ef1594e28b0a8f33c479a52db9b7ac8088792ebcd12b20391"
+    },
+    "ranges": {
+      "placement_preflight_before_all_base_vptr_member_stores_and_bind": [
+        2492,
+        2628
+      ],
+      "zero_entry_count0_current_profile_slot0_BD30E0_and_postsuccess_unbind_disposal": [
+        1946,
+        2128
+      ],
+      "direct_entry_addressonly_flags_preflight_current04_no_count_gate_failure_retention": [
+        2149,
+        2474
+      ],
+      "zero_adapter_current04_literal_DWORD1_immediately_before_real118": [
+        2760,
+        2848
+      ],
+      "common_current_volatile_numeric_selector_load": [
+        2858,
+        2892
+      ],
+      "metadata_only_finish_and_no_access_after_disposal": [
+        2929,
+        2992
+      ],
+      "pure_admission_whole_body": [
+        3905,
+        4403
+      ]
+    },
+    "worker_inspection": "preflight before first companion write; actual current selector reads; DWORD1 immediately before real118; no direct count read; saved completion and no raw/companion access after disposal",
+    "compiler_differences": "ordinary C++17 SDK/EH and host multiple-inheritance metadata; helpers inlined, Source extra checks; not Native instruction/ABI identity",
+    "Root_review": "PASS: entire Source/API and requested full optimized paths/selector/flags/store/completion/constructor-unwind review",
+    "Root_review_receipt": {
+      "path": "local/text_reference122_root_review.txt",
+      "sha256": "0aa7d41bc3285a41975c120f65106013ad6f833f71cb497f25039519d64a5ad2"
+    }
+  },
+  "compile": {
+    "command": "cl /c /std:c++17 /EHsc /MD /O2 /W4 /WX /fp:strict /FAs /Iinclude src/native_gui_text_reference.cpp",
+    "exit": 0,
+    "source": {
+      "path": "src/native_gui_text_reference.cpp",
+      "sha256": "1d494c7f670bed4478837423f598d698f8e86ddb832e04b8ca9b1311e221eae7"
+    },
+    "header": {
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "sha256": "38f58de520071568c6d394d7be20c482c2f962a5eb5462b49e5af9fb0eb21cf8"
+    },
+    "object": {
+      "path": "local/native_gui_text_reference_122.obj",
+      "sha256": "bee6b39e15cf5b8a32ced341e3a4d0e9145ba4492022a9d4acddd3cd32e54ed4"
+    },
+    "assembly": {
+      "path": "local/native_gui_text_reference_122.asm",
+      "sha256": "adb78908a077999ef1594e28b0a8f33c479a52db9b7ac8088792ebcd12b20391"
+    },
+    "log": {
+      "path": "local/text_reference122_strict_compile.log",
+      "sha256": "2937320fd76d21ca43f4727ae145848c1a4c2fc32ed3a02514f78705d56e1fbf"
+    }
+  },
+  "canonical_build": {
+    "command": "./scripts/build.ps1",
+    "exit": 0,
+    "passed": 2,
+    "failed": 0,
+    "checks": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "tool_cases": 21,
+    "log": {
+      "path": "local/text_reference122_existing_build.log",
+      "sha256": "4eb99664ac2ef652cc22250b23b4095a044ea69979d298f0c06987e5f88e220e"
+    },
+    "frozen_artifacts": [
+      {
+        "canonical_source_path": "build/win32/bsp_core.vcxproj",
+        "path": "local/text_reference122_build_evidence/bsp_core.vcxproj",
+        "sha256": "e7f4a5eafaf03469f68f0669564ebf39bb46570dce6715c456e8d6673bec42fb"
+      },
+      {
+        "canonical_source_path": "build/win32/Release/bsp_game.exe",
+        "path": "local/text_reference122_build_evidence/bsp_game.exe",
+        "sha256": "0f7cc850c72228b2a56400f0649b7aab01faa7fcfad1c4d48c2ec24337d11095"
+      },
+      {
+        "canonical_source_path": "build/win32/Testing/Temporary/LastTest.log",
+        "path": "local/text_reference122_build_evidence/LastTest.log",
+        "sha256": "db34f3b102e93c7293b2acafac0bed6d6eb95f78692b8e1127d55cd71c7200c0"
+      },
+      {
+        "canonical_source_path": "build/win32/bsp_core.dir/Release/game_native_readonly_data.obj",
+        "path": "local/text_reference122_build_evidence/game_native_readonly_data.obj",
+        "sha256": "25e58a73c3b63561f11149df046e92ff91ba009cfce4d1f86e5f7d63222cf3b0"
+      }
+    ],
+    "new122_TU_registered_or_linked": false,
+    "limit": "new TU separately strict compiled; Root owns registration/combined linkage/build; no new behavior test or raw execution"
+  },
+  "real_data_at_linkage_provider": {
+    "definition": "src/game_native_readonly_data.cpp",
+    "target": "bsp_core",
+    "registration": "cmake/startup.cmake:94",
+    "canonical_object": {
+      "path": "build/win32/bsp_core.dir/Release/game_native_readonly_data.obj",
+      "sha256": "25e58a73c3b63561f11149df046e92ff91ba009cfce4d1f86e5f7d63222cf3b0"
+    },
+    "frozen_object": {
+      "canonical_source_path": "build/win32/bsp_core.dir/Release/game_native_readonly_data.obj",
+      "path": "local/text_reference122_build_evidence/game_native_readonly_data.obj",
+      "sha256": "25e58a73c3b63561f11149df046e92ff91ba009cfce4d1f86e5f7d63222cf3b0"
+    },
+    "no_stub_duplicate_definition_or_architecture_change": true,
+    "force_reference_integration": "Root-only separate address linkage check may use real current canonical object/library; worker runs no probe"
+  },
+  "source_hashes": [
+    {
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "sha256": "38f58de520071568c6d394d7be20c482c2f962a5eb5462b49e5af9fb0eb21cf8"
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "sha256": "1d494c7f670bed4478837423f598d698f8e86ddb832e04b8ca9b1311e221eae7"
+    }
+  ],
+  "unchanged_existing_Source_and_config": [
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+    },
+    {
+      "path": "src/render_command_queue.cpp",
+      "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43"
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9"
+    },
+    {
+      "path": "include/bsp/native_gui_text_identity.hpp",
+      "sha256": "6de31247104e9d98b5b369846bd8c743058c14aeae8ce0520ce15fd3926335a6"
+    },
+    {
+      "path": "src/native_gui_text_identity.cpp",
+      "sha256": "662d51258be8445f7adfce99e3796e9c2c10ade8d442e1c1cdb61ebd406b8928"
+    },
+    {
+      "path": "include/bsp/gui_text_native_layout.hpp",
+      "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_base_storage.hpp",
+      "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab"
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d"
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "sha256": "39d2a14672dc90e8605c47fb267d59510639dc445d4caf28a48d79d172d89562"
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "sha256": "38e7aafba69bfe959bd3f45111c9e85074d646eaacfa6c718e2b1530c30b55d7"
+    },
+    {
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "sha256": "2263f0a5cf044e3040c7f3f024a8d9899df1e7f0277db512f4db7d59976510f7"
+    },
+    {
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "sha256": "9cb60be1d88a03d4136ca9fe34243c8b980199192300456819bf2a46778a6200"
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_children.hpp",
+      "sha256": "441e4a25ab536b115d87bdc2de81778eda2dc4d47f61faced68485f1cc4e8b11"
+    },
+    {
+      "path": "src/native_gui_text_glyph_children.cpp",
+      "sha256": "cf9454f0b8e09ccd1fc9eeb7250daca7cccab0ad6b25969fd511b09968018081"
+    },
+    {
+      "path": "include/bsp/native_gui_text_retirement.hpp",
+      "sha256": "2744353d2ae4c9041b2980360cdf3e499aae28cb1446519dc4ca7064e6e3a300"
+    },
+    {
+      "path": "src/native_gui_text_retirement.cpp",
+      "sha256": "60993aaade168fe8ec23468d787a61093c51b200a49e1a193663b560a0384bd3"
+    },
+    {
+      "path": "include/bsp/native_wide_string.hpp",
+      "sha256": "d9499a98a3379366390eac87f3b6bca7ebb452e8e19e96d3e7a354295c6e8bc0"
+    },
+    {
+      "path": "src/native_wide_string.cpp",
+      "sha256": "319fd69f6ba6700dbcc3dec688166ad3a1492137e844299e8067fd067c130fd7"
+    },
+    {
+      "path": "include/bsp/native_gui_scene_storage.hpp",
+      "sha256": "d816b2f0bcf0e0b47b895c3d999335b6f8253a66f1ae63055563578b6544407b"
+    },
+    {
+      "path": "src/native_gui_scene_storage.cpp",
+      "sha256": "c291544fa92b127f2e94c28b6072dc5a0ee6325e1e315e934e7b4567734e2935"
+    },
+    {
+      "path": "include/bsp/native_material_effect_owner.hpp",
+      "sha256": "197df420b08345803c36b5ef20cfaa725ccfa02c8ccc4a3fbfb76adada7bdedf"
+    },
+    {
+      "path": "src/native_material_effect_owner.cpp",
+      "sha256": "1a19bafced64bda09691cdbd0d7254ce000afb976144fb1cb01936377d16698b"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "sha256": "26bd27eda6ae864b13166ccd2fd1176f8a27b4006d7791d42d8346a703e91630"
+    },
+    {
+      "path": "include/bsp/gui_text_factory.hpp",
+      "sha256": "5aad1ef48c9c29b28ffd17178f20446ab8277508dd39a0b69cf23760adcfb657"
+    },
+    {
+      "path": "src/gui_text_factory.cpp",
+      "sha256": "bde7d1a4130a2ba7d71381143daa58c26d050200638bd7f4f8a60b35579b03c8"
+    },
+    {
+      "path": "include/bsp/native_material_owner.hpp",
+      "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+    },
+    {
+      "path": "src/native_material_owner.cpp",
+      "sha256": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "a1beec72b26c76601c1fa8e6355f39edc4abaa1104a1441b4d56bcdfc684ca5a"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "eb3c7f83231a2a8184041a981bcd912733b5f12801d0bba2345d1ad0e69c3d79"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    }
+  ],
+  "preserved121": {
+    "manifest": {
+      "path": "local/text_zero121_final_artifact_manifest.json",
+      "sha256": "e61cdbe36a10218e1cec3aa57534201a3db30a1170835d3f8f2a4ddd7b361e09"
+    },
+    "checked_files": 65,
+    "all_hashes_unchanged": true
+  },
+  "preserved118": {
+    "manifest": {
+      "path": "local/text_retirement118_final_artifact_manifest.json",
+      "sha256": "61c8f3494201376b89fb1c3c13842b4fe918686e6f1046e3f593c5a9f34e0889"
+    },
+    "packet_specific_files_checked": 99,
+    "all_hashes_unchanged": true,
+    "shared_old_build_artifacts": [
+      {
+        "prior_path": "build/win32/bsp_core.vcxproj",
+        "path": "local/text_reference122_before_build/build/win32/bsp_core.vcxproj",
+        "sha256": "e7f4a5eafaf03469f68f0669564ebf39bb46570dce6715c456e8d6673bec42fb"
+      },
+      {
+        "prior_path": "build/win32/Release/bsp_game.exe",
+        "path": "local/text_reference122_before_build/build/win32/Release/bsp_game.exe",
+        "sha256": "0f7cc850c72228b2a56400f0649b7aab01faa7fcfad1c4d48c2ec24337d11095"
+      },
+      {
+        "prior_path": "build/win32/Testing/Temporary/LastTest.log",
+        "path": "local/text_reference122_before_build/build/win32/Testing/Temporary/LastTest.log",
+        "sha256": "bcbdb6814d5eabd902af879da8b0d3d73de94eddb704d419f2848f44adac75fd"
+      }
+    ],
+    "limit": "Root captured118/121 before reuse; only shared canonical build output may regenerate, prior copies retained"
+  },
+  "reused_receipts": [
+    {
+      "path": "reports/cc12_native_gui_text_actual_zero_readiness_121.json",
+      "sha256": "39419d3d85cf505329bbf13c585df84eae59014857e01ea5ff12560be3b2cadb"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_retirement_118.json",
+      "sha256": "0c00dc6cf2c53dafb2307ed567358f40e80cc92e5d70bfcc1731bdded294cbb6"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_raw_default_93.json",
+      "sha256": "d9c89f153f299af3ff73463311639839fdd781dcaff1e5050843175619759b84"
+    }
+  ],
+  "frozen_Original_evidence": [
+    {
+      "path": "local/text_zero121_zero_live_bytes.txt",
+      "sha256": "1d70d9d639234f376753c69e736b613bbef917a14ca52c5d82dc737141237953"
+    },
+    {
+      "path": "local/text_zero121_zero_live_asm.txt",
+      "sha256": "5f9a40b5b603584bc8c6c63b45a0281f0aad26ef6c9809e5e2499588ee1da50e"
+    },
+    {
+      "path": "local/text_zero121_text_profile_live_bytes.txt",
+      "sha256": "0bc1e472b9fada018596175fcc483c6d826ae2084670b0506f814672c25dbbb7"
+    },
+    {
+      "path": "local/text_zero121_initial_count_store_live_bytes.txt",
+      "sha256": "278e8f595f381294307fdcfd46e413eb2b2e0f017665a8505c173dd9eb914737"
+    },
+    {
+      "path": "local/text_zero121_byte_and_source_proof.json",
+      "sha256": "e511a8954a9338e877169f8dc6f3e0f8dbd0ca7b7d0347bba8a2ea2f195f2a4f"
+    },
+    {
+      "path": "local/text_retirement118_export_evidence/00ab8ee0_assembly.txt",
+      "sha256": "db11be8adbe2b0396c535c31981ab778aaef9e285b84e4b8d8c861340c004151"
+    },
+    {
+      "path": "local/text_retirement118_export_evidence/00ab8250_assembly.txt",
+      "sha256": "50da668e1fa7bbd3df9db37c68a0a0604709a19f43d6010bca56fe99454bb92f"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/native_gui_text_reference_122.obj",
+      "sha256": "bee6b39e15cf5b8a32ced341e3a4d0e9145ba4492022a9d4acddd3cd32e54ed4"
+    },
+    {
+      "path": "local/native_gui_text_reference_122.asm",
+      "sha256": "adb78908a077999ef1594e28b0a8f33c479a52db9b7ac8088792ebcd12b20391"
+    },
+    {
+      "path": "local/text_reference122_strict_compile.cmd",
+      "sha256": "9662443c58a1930d0b0404c97b7fd1d53197d1e87d5023cf6409452926a5a6bc"
+    },
+    {
+      "path": "local/text_reference122_strict_compile.log",
+      "sha256": "2937320fd76d21ca43f4727ae145848c1a4c2fc32ed3a02514f78705d56e1fbf"
+    },
+    {
+      "path": "local/text_reference122_source_evidence/native_gui_text_reference.hpp",
+      "sha256": "38f58de520071568c6d394d7be20c482c2f962a5eb5462b49e5af9fb0eb21cf8"
+    },
+    {
+      "path": "local/text_reference122_source_evidence/native_gui_text_reference.cpp",
+      "sha256": "1d494c7f670bed4478837423f598d698f8e86ddb832e04b8ca9b1311e221eae7"
+    },
+    {
+      "path": "local/freeze_text_reference122_strict.py",
+      "sha256": "cb99fe4132a820e219bf556be62590657e54da73982090fc678e5f26f87bdd2e"
+    },
+    {
+      "path": "local/build_text_reference122_report.py",
+      "sha256": "24958fcaa473db5cf9061a0c1c583da05faa658fb63191a1f42718c6d9a60aa3"
+    },
+    {
+      "path": "local/text_reference122_strict_artifact_manifest.json",
+      "sha256": "62a0199a2f12c267229405fef270081b4256884361a4cfdd1bb9f0dba13b1b61"
+    },
+    {
+      "path": "local/text_reference122_root_review.txt",
+      "sha256": "0aa7d41bc3285a41975c120f65106013ad6f833f71cb497f25039519d64a5ad2"
+    },
+    {
+      "path": "local/text_reference122_source_and_preservation_proof.json",
+      "sha256": "62197ea71be152a44a9e83e22927130bd3891f2a8f00944ba28b333f9e83c0f1"
+    },
+    {
+      "path": "local/seal_text_reference122_receipt.py",
+      "sha256": "9dd8ec6606aade60367a1f6cd683ada14afccd989008f79b2cd01abf1adac70e"
+    },
+    {
+      "path": "local/text_reference122_report_call_verification.txt",
+      "sha256": "9359214d5c90516eec6634812d8091ee027a0c7b790e311b260503faeadfaa2c"
+    },
+    {
+      "path": "local/text_reference122_receipt_generation.log",
+      "sha256": "ab218e1347cdc1784802ac7ece74b14c5ec6c8a122de60b2e770036f14913559"
+    },
+    {
+      "path": "local/text_reference122_owned_scope_verification.txt",
+      "sha256": "03635703602828618357a21931ae0373ab539acb6d38d96db1e825ff6448bbfc"
+    }
+  ],
+  "validation": {
+    "strict_compile": "PASS",
+    "existing_canonical_checks": "2/2 PASS",
+    "live_call_rows": {
+      "checked": 4,
+      "failed": 0,
+      "limit": "lower Original direct rows only; current indirect route separately proved by prior whole bytes/table and final Source/optimized review",
+      "same_rows_after_final_metadata_update": true
+    },
+    "no_new_tests_behavior_probe_or_raw_execution": true,
+    "Root_full_Source_API_and_optimized_review": "PASS"
+  },
+  "final_artifact_manifest": {
+    "path": "local/text_reference122_final_artifact_manifest.json",
+    "hash_rule": "final manifest seals owned files and every directly referenced final artifact; own digest delivered separately to avoid circular hash"
+  },
+  "publication": "commit only four owned files; no addresses/ledger/Ghidra writes; release exact lease and wait for Root capture before reuse",
+  "sealed_utc": "2026-10-16T07:53:33.091873+00:00"
+}
