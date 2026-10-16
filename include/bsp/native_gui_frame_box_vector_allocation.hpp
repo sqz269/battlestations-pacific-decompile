@@ -33,3 +33,18 @@ void* __fastcall allocate_native_gui_frame_box_records_00acef10(
     std::uint32_t count, void* unused_edx);
 
 } // namespace bsp
+
+namespace bsp {
+
+// Complete 00AD1810..00AD1878: no incoming Native arguments, no normal return.
+// Whole normal bytes/resolved calls and physical EH/temporary actions match
+// 00BD0590 at the already accepted 00431F70 owning Source transport boundary.
+// Delegate that genuine service without another temporary, catch or payload.
+// It throws NativeSingletonVectorLengthError with its real 28h legacy storage,
+// message construction, copy/destruction and same Source allocation family.
+// Source C++ exception type/RTTI/CRT/EH replace Native BF6885/D83F98/FH3:
+// no Native catch, SEH, heap, private stack/register or fixed-VA ABI identity.
+// This helper admits no AD2230 rollback/ownership or production activation.
+[[noreturn]] void __cdecl throw_native_gui_frame_box_vector_length_error_00ad1810();
+
+} // namespace bsp

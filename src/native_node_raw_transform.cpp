@@ -1,5 +1,6 @@
 #include "bsp/native_node_raw_transform.hpp"
 #include "bsp/native_camera_matrix_copy.hpp"
+#include "bsp/game_native_readonly_data.hpp"
 #include "bsp/native_traceline_render.hpp"
 #include <stdexcept>
 
@@ -18,6 +19,32 @@ void store(void* p,U offset,U value) noexcept {
 void require(bool condition,const char* why) { if(!condition)throw std::invalid_argument(why); }
 }
 
+NativeNodeMappedRawTransformProfiles::NativeNodeMappedRawTransformProfiles(
+    const game::GameNativeReadOnlyData& data) {
+    constexpr U addresses[]={0x00d62c88,0x00d62de8,0x00d634f8};
+    const volatile U* aliases[]={
+        static_cast<const volatile U*>(data.data_at(addresses[0],0x40)),
+        static_cast<const volatile U*>(data.data_at(addresses[1],0x40)),
+        static_cast<const volatile U*>(data.data_at(addresses[2],0x40))};
+    // data_at checks existing held bands and returns the Original VA itself.
+    // Finish all availability/identity checks before storing the borrowed set.
+    for(U i=0;i<3;++i)
+        require(reinterpret_cast<U>(aliases[i])==addresses[i],
+            "mapped raw transform requires the genuine Original table aliases");
+    for(U i=0;i<3;++i)profiles_[i]=aliases[i];
+}
+
+struct NativeNodeMappedRawTransformAccess final {
+    static const volatile U* current_profile(
+        void* actual,const NativeNodeMappedRawTransformProfiles& profiles) {
+        const volatile U* current=read<const volatile U*>(actual);
+        require(current==profiles.profiles_[0] || current==profiles.profiles_[1] ||
+            current==profiles.profiles_[2],
+            "current actual A0 profile is outside the mapped raw transform family");
+        return current;
+    }
+};
+
 void __fastcall invalidate_raw_descendants_00b6da30(void* actual) {
     void* child=read<void*>(actual,0x34);
     while(child) {
@@ -32,28 +59,38 @@ void __fastcall invalidate_raw_descendants_00b6da30(void* actual) {
     }
 }
 namespace {
-void current_bounds_notification(void* actual,NativeTracelineRenderServices* profiles) {
-    require(profiles!=nullptr,"current actual A0 virtual3C requires its canonical profile resolver");
+void require_bounds_target(void* actual,NativeTracelineRenderServices* profiles,
+    const char* missing,const char* unsupported) {
+    require(profiles!=nullptr,missing);
     const volatile U* profile=profiles->profile(actual);
-    require(profile&&profile[0x3c/4]==0x00b6dbc0,
+    require(profile&&profile[0x3c/4]==0x00b6dbc0,unsupported);
+}
+void require_bounds_target(void* actual,const NativeNodeMappedRawTransformProfiles& profiles,
+    const char*,const char* unsupported) {
+    const volatile U* profile=NativeNodeMappedRawTransformAccess::current_profile(actual,profiles);
+    require(profile[0x3c/4]==0x00b6dbc0,unsupported);
+}
+template<class Profiles>
+void current_bounds_notification(void* actual,const Profiles& profiles) {
+    require_bounds_target(actual,profiles,
+        "current actual A0 virtual3C requires its canonical profile resolver",
         "current actual A0 virtual3C target is outside the observed native closure");
     notify_raw_bounds_00b6dbc0(actual,profiles);
 }
-}
-void __fastcall notify_raw_bounds_00b6dbc0(void* actual,NativeTracelineRenderServices* profiles) {
+template<class Profiles>
+void notify_raw_bounds_body(void* actual,const Profiles& profiles) {
     // The native JMP dispatch is a tail loop. Do not add host recursion here.
     for(;;) {
         store(actual,0x138,read<U>(actual,0x138)&0xffffffc3u);
         actual=read<void*>(actual,0xa0);
         if(!actual)return;
-        require(profiles!=nullptr,"current enclosing A0 virtual3C requires its canonical profile resolver");
-        const volatile U* profile=profiles->profile(actual);
-        require(profile&&profile[0x3c/4]==0x00b6dbc0,
+        require_bounds_target(actual,profiles,
+            "current enclosing A0 virtual3C requires its canonical profile resolver",
             "current enclosing A0 virtual3C target is outside the observed native closure");
     }
 }
-void __fastcall set_raw_local_matrix_00b6db10(void* actual,
-    NativeTracelineRenderServices* profiles,const void* source) {
+template<class Profiles>
+void set_raw_local_matrix_body(void* actual,const Profiles& profiles,const void* source) {
     copy_native_camera_matrix_004134f0(at(actual,0xb0),nullptr,source);
     if(read<std::uint8_t>(actual,0x5c)&0xau) {
         void* captured_attachment=read<void*>(actual,0xa0);
@@ -62,6 +99,23 @@ void __fastcall set_raw_local_matrix_00b6db10(void* actual,
         if(captured_attachment)current_bounds_notification(captured_attachment,profiles);
         if(read<void*>(actual,0x34))invalidate_raw_descendants_00b6da30(actual);
     }
+}
+}
+
+void __fastcall notify_raw_bounds_00b6dbc0(void* actual,NativeTracelineRenderServices* profiles) {
+    notify_raw_bounds_body(actual,profiles);
+}
+void __fastcall set_raw_local_matrix_00b6db10(void* actual,
+    NativeTracelineRenderServices* profiles,const void* source) {
+    set_raw_local_matrix_body(actual,profiles,source);
+}
+void __fastcall notify_raw_bounds_00b6dbc0(void* actual,
+    const NativeNodeMappedRawTransformProfiles& profiles) {
+    notify_raw_bounds_body(actual,profiles);
+}
+void __fastcall set_raw_local_matrix_00b6db10(void* actual,
+    const NativeNodeMappedRawTransformProfiles& profiles,const void* source) {
+    set_raw_local_matrix_body(actual,profiles,source);
 }
 
 } // namespace bsp
