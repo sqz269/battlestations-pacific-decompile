@@ -1,0 +1,95 @@
+{
+  "packet": "cc12_native_text_owner_readiness_36",
+  "status": "source_owner_readiness_assessed_concrete_integration_plan_ready",
+  "source_revision": "1f3bc258e116cadc3601c94af230bed5045f4bfb",
+  "report": "docs/CC12_NATIVE_TEXT_OWNER_READINESS_36.md",
+  "scope": "Read-only Source and existing evidence analysis; no source, ledger or Ghidra mutations; no build or runtime",
+  "ghidra": {
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "live_program_from_brief": "/battlestationspacific.exe",
+    "live_and_snapshot_function_count": 76773,
+    "queries": ["python tools/bsp.py brief", "python tools/bsp.py ghidra count", "ghidra proto CD71F0/CE0A80", "ghidra xrefs F8BE28/E12FC0/E12FD4/E12FD8/F8BE38/F8BE48/F8BE54", "show CD71F0/CE0A80/CD7210 pseudocode then assembly"],
+    "original_entries_reviewed": ["00cd71f0", "00ce0a80", "00cd7210"],
+    "mutations": false
+  },
+  "ready_authoritative_providers": {
+    "node_runtime": "renderer.camera_environment().nodes; same renderer DestructionGraph scenes/attachments/raw string domain",
+    "actual_owners": "renderer.actual_owners()",
+    "geometry_mapping_strings": "renderer.game_grid_context()",
+    "layout_and_half_import": ["renderer.section_layout_services()", "renderer.vertex_half_import()"],
+    "model_pool": "game_native_resource_pool_process().model_pool_01090054()",
+    "group_pool": "game_native_resource_pool_process().group_pool_010902f4()",
+    "counter": "vfs.native_owners().types()",
+    "type_storage": "vfs.native_types().light_types()/model_types()/group_types()",
+    "native_calls_and_parenting": "GuiNativeScene and its parenting(); one process callback binding",
+    "material_pool": "game_native_material_process().material_pool_00f8d3ac()",
+    "parameter_pool": "game_native_material_process().parameter_pool_00f8d3e4()",
+    "material_profile": "renderer.borrow_gui_material_destruction_profile_00d5e520()",
+    "text_pool_implementation": "NativeGuiTextPool explicit initialize_00ab77c0/destroy_00ab7420",
+    "effect_parent_composition": "game_native_gui_effect_probe.cpp:457-466",
+    "literal_and_readonly_constants": "GameNativeReadOnlyData::data_at for verified CE2000..E07B23 only"
+  },
+  "concrete_source_seams": [
+    {"location": "src/gui_widget_owner.cpp:404", "issue": "Primary create_model unconditionally requires semantic name pool; renderer canonical nodes use raw pool", "existing_api": "construct_native_model_00b75030 raw overload; typed actual_names adapter also exists"},
+    {"location": "src/gui_native_scene.cpp:84", "issue": "Plain page root create_group requires semantic pool", "existing_api": "gui_page_root.hpp raw group constructor plus NativeGroupOwner constructed-storage adoption"},
+    {"location": "src/gui_widget_owner.cpp:474-572", "issue": "Tracked AB8530 auxiliary supports actual_names adapter now, not raw model overload", "ready_domain": "models.actual_names = &grid.strings; ordinary returning getter and noexcept-release interface", "not_proved": "raw throwing-getter or FH3/SEH equivalence"},
+    {"location": "src/game_hosts_frontend.cpp:371-427", "issue": "Normal loader still synthesizes node IDs and leaves root/model/parent/74/78 unimplemented"},
+    {"location": "src/gui_type_dispatch.cpp final factory switch", "issue": "No Text arm; compose closure with native Text make_type and existing non-Text factory"}
+  ],
+  "missing_persistent_composition": [
+    "NativeModelEnvironment, NativeGroupEnvironment, their same-cell bootstrap adapters",
+    "GuiNativeScene, GuiWidgetOwnerEnvironment/Runtime and type-dispatch publication",
+    "One NativeGuiTextPoolStorage/companion on canonical E188B4 with explicit native startup/teardown",
+    "One shared NativeMaterialDestructionAccess/NativeMaterialParameterAccess and GuiMaterialBindingServices",
+    "Authoritative mutable GUI/Text globals and initialized lineage",
+    "Stable live locale mode/comparison/current Lua context and shared SSE2 services",
+    "Normal Screen scene/store/directional-light native calls for normal page loading"
+  ],
+  "genuine_evidence_gaps": {
+    "mutable_cells_without_production_owner": ["00e12fc0", "00e12fd4", "00e12fd8..00e12fe4", "00f8be38[4]", "00f8be48", "00f8be54", "00f8be28[3] initialized lineage"],
+    "readonly_mapping_cannot_supply": "E12F*/F8BE* are outside verified CE2000..E07B23 read-only data",
+    "semantic_retention_callback": "Current unique page ownership cannot provide GuiMaterialBindingServices.retain_widget token; native Text clip path does not call this callback",
+    "normal_startup_order": "Historical eager GuiFont probe effect acquisitions do not validate cold default guidefault.mshd then font-effect Text order"
+  },
+  "next_ready_original_packet": {
+    "entries": ["00cd71f0..00cd7205", "00ce0a80..00ce0a89", "00cd7210..00cd725e"],
+    "named_parent_prerequisite": "00aa8200 Element descriptor initializer; canonical root via BEA780",
+    "existing_helper": "gui_widgets_cc13.hpp:42-93 GuiTypeDescriptor/GuiTypeCounterHost/gui_type_initialize",
+    "assembly_correction": "CD7255 increments shared counter before CD7258 publishes F8BE28; pseudocode reverses these stores",
+    "scope": "Canonical explicit Text-pool CRT ownership plus process-backed real Text/Element lineage; no primary raw-model/group routing in this packet",
+    "mutable_scalar_followup": "Verify .data initial preimages/writers for E12FC0/E12FD4/E12FD8/F8BE54; existing ABB630 already owns lazy-white writes to F8BE38/F8BE48"
+  },
+  "lifetime_order": [
+    "Retire page/Text owners and pending child/copy/mapping work with all providers live",
+    "Retire native fonts while the bound same Text factory exists",
+    "Settle actual GUI models/groups and queued uses",
+    "One shared renderer/singleton drain",
+    "Close and destroy effect metadata while Text services exist, then sampler metadata",
+    "Destroy now-unborrowed Text metadata",
+    "Destroy empty widget/scene/environment metadata and explicitly destroy Text pool before allocator-list lifetime ends"
+  ],
+  "historical_probe": {
+    "receipt": "reports/cc12_native_gui_font_effect_startup_integration_14.json",
+    "source_revision": "d4edc832430c5e501a5f29c7115e8fc1d2d42da3",
+    "status": "PASS_BOUNDED_NATIVE_FONT_RESOURCES_AND_GUI_EFFECT_STARTUP",
+    "fonts": 6,
+    "glyph_records": 1060,
+    "unique_actual_images": 3,
+    "frames_presented": 119,
+    "shared_drain_observed": true,
+    "rerun_here": false,
+    "native_text_draw_validated": false
+  },
+  "validation": {
+    "source_and_evidence_review": true,
+    "json_parse": "passed",
+    "git_diff_check": "passed",
+    "cpp_changed": false,
+    "build_run": false,
+    "fixtures_run": false,
+    "native_text_constructed": false,
+    "native_text_drawing_validated": false,
+    "original_abi_compatible": false,
+    "gameplay_validated": false
+  }
+}

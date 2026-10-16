@@ -1766,6 +1766,31 @@ void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {
     std::_Exit(1);
 }
 
+void GameStartupHost::exit_if_native_fonts_interrupted() noexcept {
+    if (!fonts_ || !fonts_->native_operation_interrupted()) return;
+    try {
+        log_.note("native font load or retirement interrupted; retaining fonts/registry/Text/VFS/renderer graph until process exit");
+        log_.close();
+    } catch (...) { std::fputs("bsp_game: native fonts require process retention\n", stderr); }
+    std::_Exit(1);
+}
+
+void GameStartupHost::retire_native_fonts_before_drain() noexcept {
+    if (!fonts_) return;
+    // Current frontend owns sprite/CPU Text borrowers, not a bound native Text
+    // factory. A future native factory must survive until its fonts retire.
+    if (frontend_) {
+        try { log_.note("native fonts cannot retire while the frontend still borrows them"); log_.close(); }
+        catch (...) {}
+        std::_Exit(1);
+    }
+    try { fonts_->retire_native_fonts(); }
+    catch (...) {
+        exit_if_native_fonts_interrupted();
+        std::_Exit(1); // No guessed cleanup if a future preflight rejects closure.
+    }
+}
+
 void GameStartupHost::exit_if_native_gui_probe_incomplete() noexcept {
     if (!native_gui_probe_ || !native_gui_probe_->requires_process_retention()) return;
     try {
@@ -1817,6 +1842,7 @@ void GameStartupHost::close_native_shadow_after_drain() noexcept {
 }
 
 GameStartupHost::~GameStartupHost() {
+    exit_if_native_fonts_interrupted();
     exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
     exit_if_native_shadow_incomplete();
@@ -1844,6 +1870,7 @@ GameStartupHost::~GameStartupHost() {
     delete menu_;
     delete frontend_;
     frontend_ = nullptr;
+    retire_native_fonts_before_drain();
     // Retain sound callbacks, DLLs, VFS/Lua and lifetime publication cells
     // through the actual raw singleton drain, including exceptional startup.
     if (singletons_) {
@@ -2573,9 +2600,9 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     }
 
     if (!device_->device()) throw std::runtime_error("Font startup requires the renderer device");
-    //Constructor00b32769 initializes renderer+1D84 to zero. The later ApplyAll
-    //texture-detail setter is not bound by this startup path yet.
-    fonts_ = new GameFontHost(log_, *vfs_, *scripts_, *device_->device(), 0);
+    // Borrow the SAME native renderer/VFS/cache domain. Font images and the
+    // sole decoded DAT allocations now belong to the actual native producer.
+    fonts_ = new GameFontHost(log_, *vfs_, *scripts_, *native_renderer_);
 
     // Phase 7, 0073e13c: the whole of 0073bae0 through its reconstruction, which loads the
     // font descriptors, forces the fingerprint payload, creates the GUI manager and walks
@@ -2762,6 +2789,7 @@ void GameStartupHost::release_platform_window() noexcept {
 }
 
 void GameStartupHost::application_shutdown() {
+    exit_if_native_fonts_interrupted();
     exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
     exit_if_native_renderer_incomplete();
@@ -2848,10 +2876,12 @@ void GameStartupHost::application_shutdown() {
         summary_.text_quads = frontend.text_quads;
     }
     // The menu host holds the front-end host by reference, so it goes first.
+    if (device_) device_->set_overlay(nullptr);
     delete menu_;
     menu_ = nullptr;
     delete frontend_;
     frontend_ = nullptr;
+    retire_native_fonts_before_drain();
     if (device_ != nullptr) device_->release();
     // Native 0073830F is step 19 of the broader 00737F30 teardown. The other
     // recovered steps remain unbound above, but this explicit owner retirement
@@ -2866,6 +2896,7 @@ void GameStartupHost::application_destruct() {
 }
 
 void GameStartupHost::destroy_singleton_lifetime_manager() {
+    exit_if_native_fonts_interrupted();
     exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
     exit_if_native_renderer_incomplete();
@@ -2875,6 +2906,7 @@ void GameStartupHost::destroy_singleton_lifetime_manager() {
     exit_if_allocation_stats_failed();
     exit_if_particle_manager_failed();
     log_.implemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
+    retire_native_fonts_before_drain();
     prepare_native_platform_drain();
     if (native_renderer_) native_renderer_->drain_singletons();
     else singletons_->shutdown();

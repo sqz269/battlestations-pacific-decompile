@@ -1,0 +1,43 @@
+{
+  "packet": "goal15i_bounds_include",
+  "status": "complete_literal_source_strict_compile_exact_bytes_source_fixture_passed_pending_registered_build",
+  "function": {
+    "address": "00415010",
+    "name": "include_native_avoid_bounds_point_00415010",
+    "source": "src/native_avoid_bounds_include.cpp",
+    "header": "include/bsp/native_avoid_bounds_include.hpp",
+    "status": "complete_raw_source127B_strict_compile_exact_coff_live_disk_and_source_slot_alias_fixture_pending_registered_build",
+    "end_exclusive": "0041508f",
+    "native_bytes": 127,
+    "original_abi": "ECX raw bounds float4; stack pointfloat2; RET4; no semanticEAX; EDXSourceplaceholder notOriginal",
+    "evidence": "GOAL15I complete127B raw entry; ECX bounds, stacked point,RET4; capture point then reuse ACTUAL incoming point word for each x87 float spill; reload point before comparisons so aliases observe prior stores. All127 registered/standalone COFF-live-disk bytes can match without masks/relocations. Existing typed wrapper/private kernel uses a different private temporary slot and remains separate. Strict optimizedMDx86 compile and one raw Source alias/actual-argument-word fixture pass; registered build pending primary batch. docs/GOAL15I_AVOID_BOUNDS_INCLUDE.md reports/goal15i_avoid_bounds_include.json; names/NativeABI/floating environment/game boundaries qualified."
+  },
+  "calls": [],
+  "consumers": [
+    {
+      "address": "0041cfb9",
+      "native": "00415010",
+      "containing_function": "0041ccd0"
+    },
+    {
+      "address": "00423298",
+      "native": "00415010",
+      "containing_function": "00423190"
+    }
+  ],
+  "proof": {
+    "fixed_bytes": 127,
+    "masked_operands": 0,
+    "owned_relocations": 0,
+    "coff_live_installed_disk": "PASS",
+    "source_fixture": "PASS bounds{10,2,1,20},point=bounds+1 ->{2,2,2,20}; freshY sees earlier maxX store; caller captures40000000 from actual consumed incoming point word",
+    "strict_compile": "PASS Win32/MD/O2/W4/WX/permissive-/fp:strict",
+    "new_tracked_tests": 0,
+    "registered_archive": "pending primary batch"
+  },
+  "limits": [
+    "no Native frame/address/object ABI or installed gameplay proof",
+    "raw addresses and mutable caller control words require backing",
+    "ambient FPU state/traps preserved; one fixture does not cover all alias/environment/fault cases"
+  ]
+}

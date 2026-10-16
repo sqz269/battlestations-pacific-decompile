@@ -1,0 +1,1008 @@
+{
+  "packet": "oct15_input_device_tree_rotations",
+  "status": "complete_actual_ordered_nil99_rotations_win32_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_input_device_tree_rotations.cpp",
+  "header": "include/bsp/native_input_device_tree_rotations.hpp",
+  "documentation": "docs/OCT15_INPUT_DEVICE_TREE_ROTATIONS.md",
+  "routines": [
+    {
+      "address": "00552340",
+      "cpp_name": "rotate_native_input_device_tree_right_00552340",
+      "kind": "function",
+      "end": "00552394",
+      "coverage": "complete85B/30instructions",
+      "original_abi": "Native ECX actualtree; incomingEDX unused/overwritten; stackednode; RET4. EAX remains pivot on all normal exits, not a semantic result consumed by inspected callers. Source __fastcall retains tree/unusedEDX/stacknode roles but returns void and qualifies private frames/register saves/flags/residue; no binary-ABI claim."
+    },
+    {
+      "address": "00553f00",
+      "cpp_name": "rotate_native_input_device_tree_left_00553f00",
+      "kind": "function",
+      "end": "00553f50",
+      "coverage": "complete81B/30instructions",
+      "original_abi": "Native ECX actualtree; incomingEDX unused/overwritten; stackednode; RET4. EAX remains pivot on all normal exits, not a semantic result consumed by inspected callers. Source __fastcall retains tree/unusedEDX/stacknode roles but returns void and qualifies private frames/register saves/flags/residue; no binary-ABI claim."
+    }
+  ],
+  "source_fingerprints": {
+    "src/native_input_device_tree_rotations.cpp": "231cfb3ec0b2080b274acb12bbebacd5afed90ad12effee45f9f6a318adea415",
+    "include/bsp/native_input_device_tree_rotations.hpp": "137be90cdd3e57aa24f270b294c4fd657fd024097813d79043cca3a5c17ce04b"
+  },
+  "dependency_closure": {
+    "owned_native_calls": 0,
+    "owned_native_tail_child_jumps": 0,
+    "owned_local_EH": false,
+    "callbacks": 0,
+    "contexts": 0,
+    "allocators": 0,
+    "guards_added": 0,
+    "description": "Two allocation-free raw-memory leaves. No RawCtx, NativeStringStorage/noexcept bridge, arbitrary provider or generic direction abstraction is needed."
+  },
+  "layout": {
+    "tree": "DWORD+4 head; only captured head.root+4 may be replaced directly",
+    "node": "DWORD left0,parent4,right8; nil BYTE99h, color98 untouched",
+    "producer": "55BB61 pushes9Ch allocation,55BB66 operatornew;55BB8E/93/9A links,55BB97 pair=node+C before55BB9D constructor;55BBA5 color98,55BBAB nil99=0. Bounded layout evidence only, not approval of whole constructor Source."
+  },
+  "right_00552340": {
+    "ordered_schedule": [
+      "Capture node.left pivot; read pivot.right, store node.left, reread pivot.right AFTER the store; nil99 test; only nonnil child.parent=node.",
+      "Read CURRENT node.parent; publish pivot.parent; capture tree.head ONCE after that store, compare node with capturedhead.root. Root branch updates that capturedhead.root.",
+      "Nonroot reloads CURRENT node.parent; compare node with parent.right FIRST; write parent.right if equal, otherwise parent.left without an added left-side validation.",
+      "Final pivot.right=node then node.parent=pivot. No null/nil-start guard, allocator, callback or local catch."
+    ],
+    "native_return": "Three normal RET4 exits all retain EAXpivot; Source APIvoid does not promise it."
+  },
+  "left_00553f00": {
+    "ordered_schedule": [
+      "Capture node.right pivot; read pivot.left, store node.right, reread pivot.left AFTER the store; nil99 test; only nonnil child.parent=node.",
+      "Read CURRENT node.parent; publish pivot.parent; capture tree.head ONCE after that store, compare node with capturedhead.root. Root branch updates that capturedhead.root.",
+      "Nonroot reloads CURRENT node.parent; compare node with parent.left FIRST; write parent.left if equal, otherwise parent.right without an added right-side validation.",
+      "Final pivot.left=node then node.parent=pivot. Separate assembly body, not a mechanically generalized direction helper."
+    ],
+    "native_return": "Three normal RET4 exits all retain EAXpivot; no public Source result."
+  },
+  "alias_and_failure_contract": {
+    "accesses": "Inline assembly retains every reached raw4B/byte access and conditional write; pivot-child and node-parent rereads survive any earlier listed store/alias. No whole-node/header snapshot or compiler C++ alias collapse.",
+    "control_flow": "Source joins the final two ordered stores within each body. Native private ESI pop/three RET sites versus compiler frames/epilogues/flags/residue are qualified; actual memory order is retained.",
+    "required_storage": "Valid readable/writable reached node,pivot,child/sentinel,parent,head fields. No new consistency/null/ownership guard. Faults stop subsequent native instructions; Source hardware-fault/SEH/private-frame identity is not established.",
+    "CXX": "No owned native or Source child call, allocator or local EH cleanup. No throw conversion or blanket noexcept adapter is added."
+  },
+  "caller_windows": {
+    "scope": "Only six typed-envelope-contained6A71B0 fixup windows, not whole erase-one Source approval.",
+    "evidence": "PUSH node then ECXtree at each listed rotation. Red/near-child cases reload EAX sibling immediately afterward; final rotations continue to replacement color/pair cleanup without consuming pivot as semantic return. Both side-specific helpers match actual nil99 layout."
+  },
+  "native_evidence": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "typed_capture": "local/oct15_input_device_tree_rotations_typed.json",
+    "typed_modification": "2334",
+    "typed_functions": [
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00552340"
+        },
+        "name": "STL_Tree_Rotate_00552340",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "85",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00552340"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00552394"
+              },
+              "length": "85"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00553f00"
+        },
+        "name": "STL_Tree_Rotate_00553f00",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "81",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00553f00"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00553f50"
+              },
+              "length": "81"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "006a71b0"
+        },
+        "name": "STL_InputDeviceTree_EraseIterator_006A71B0",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "840",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "006a71b0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "006a74f7"
+              },
+              "length": "840"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "0055bb40"
+        },
+        "name": "STL_Tree_Buynode_InputDevicePair_0055bb40",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "135",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "0055bb40"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "0055bbc6"
+              },
+              "length": "135"
+            }
+          ]
+        }
+      }
+    ],
+    "spans": [
+      {
+        "entry": "00552340",
+        "start": "00552340",
+        "end_inclusive": "00552394",
+        "role": "owned_whole",
+        "bytes": 85,
+        "instructions": 30,
+        "sha256": "0ceddf9a78d4410192cef55d78946256b5d408b1baab99204ce85bc1008803da",
+        "hex": "8b5424048b02568b700889328b700880be990000000075038956048b72048970048b49043b51045e750c894104895008894204c204008b4a043b5108750c894108895008894204c204008901895008894204c20400",
+        "live_equals_PE": true
+      },
+      {
+        "entry": "00553f00",
+        "start": "00553f00",
+        "end_inclusive": "00553f50",
+        "role": "owned_whole",
+        "bytes": 81,
+        "instructions": 30,
+        "sha256": "f47706234a3d5bf2b4b6431cb466316985120a0f69112ddc2308d481403cf83c",
+        "hex": "8b5424048b4208568b308972088b3080be990000000075038956048b72048970048b49043b51045e750b8941048910894204c204008b4a043b11750a89018910894204c204008941088910894204c20400",
+        "live_equals_PE": true
+      },
+      {
+        "entry": "006a71b0",
+        "start": "006a7382",
+        "end_inclusive": "006a7399",
+        "role": "read_only_fixup_caller",
+        "bytes": 24,
+        "instructions": 6,
+        "sha256": "d7eb0b23c2e9bbbfd07e010971dd1ff35c39aed7b65f6d4ce71ba949aabb8b68",
+        "hex": "889898000000568bcdc6869800000000e869cbeaff8b4608",
+        "live_equals_PE": true
+      },
+      {
+        "entry": "006a71b0",
+        "start": "006a73cb",
+        "end_inclusive": "006a73e2",
+        "role": "read_only_fixup_caller",
+        "bytes": 24,
+        "instructions": 6,
+        "sha256": "0ac5762c77764b432af152c3960a54a8c2b60a855b0d12a551090cc52baa7750",
+        "hex": "889a98000000508bcdc6809800000000e860afeaff8b4608",
+        "live_equals_PE": true
+      },
+      {
+        "entry": "006a71b0",
+        "start": "006a73e3",
+        "end_inclusive": "006a7405",
+        "role": "read_only_fixup_caller",
+        "bytes": 35,
+        "instructions": 8,
+        "sha256": "383ff8d3b2e80c0de96107d08c4d589f6cb124ca1da669784887d4d72d37990d",
+        "hex": "8a8e98000000888898000000889e980000008b5008568bcd889a98000000e8facaeaff",
+        "live_equals_PE": true
+      },
+      {
+        "entry": "006a71b0",
+        "start": "006a7414",
+        "end_inclusive": "006a742a",
+        "role": "read_only_fixup_caller",
+        "bytes": 23,
+        "instructions": 6,
+        "sha256": "feb37cdb0f55310f82e7a6a981c943467d7cf8928c22fd1ed90e844bcb409ff9",
+        "hex": "889898000000568bcdc6869800000000e817afeaff8b06",
+        "live_equals_PE": true
+      },
+      {
+        "entry": "006a71b0",
+        "start": "006a746d",
+        "end_inclusive": "006a7483",
+        "role": "read_only_fixup_caller",
+        "bytes": 23,
+        "instructions": 6,
+        "sha256": "a6f4d4842282deea52dbf2b7c190cd2a743385cce7694cb0f9a98eadea34c4a0",
+        "hex": "889a98000000508bcdc6809800000000e87ecaeaff8b06",
+        "live_equals_PE": true
+      },
+      {
+        "entry": "006a71b0",
+        "start": "006a7484",
+        "end_inclusive": "006a74a5",
+        "role": "read_only_fixup_caller",
+        "bytes": 34,
+        "instructions": 8,
+        "sha256": "7439d93737c77744078b0f8ce1f93547b7bfd7291183eb565ba43259cd3268df",
+        "hex": "8a8e98000000888898000000889e980000008b10568bcd889a98000000e89aaeeaff",
+        "live_equals_PE": true
+      },
+      {
+        "entry": "0055bb40",
+        "start": "0055bb61",
+        "end_inclusive": "0055bb6a",
+        "role": "read_only_node_layout_producer",
+        "bytes": 10,
+        "instructions": 2,
+        "sha256": "b1e9f6eacb1e3e18a27f56c6fbd782134ad96cf8b4a3b9dcb5d411628c39c4fd",
+        "hex": "689c000000e8b0ac6900",
+        "live_equals_PE": true
+      },
+      {
+        "entry": "0055bb40",
+        "start": "0055bb85",
+        "end_inclusive": "0055bbb1",
+        "role": "read_only_node_layout_producer",
+        "bytes": 45,
+        "instructions": 13,
+        "sha256": "381a513a578c5c8b9838571423e63e5c52e4d0b83b24c4d0366761b90e2629ce",
+        "hex": "8b45088b4d0c8b551089068b4514894e04508d4e0c895608e85efeffff8a4d18888e98000000c6869900000000",
+        "live_equals_PE": true
+      }
+    ],
+    "owned_bytes": 166,
+    "owned_starts": 60,
+    "fresh_bytes": 384,
+    "fresh_starts": 115,
+    "starts_failed": 0,
+    "starts_capture": "local/oct15_input_device_tree_rotations_starts.json"
+  },
+  "owned_native_listing": [
+    {
+      "address": "00552340",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 4,
+      "hex": "8b542404",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [esp + 4]"
+    },
+    {
+      "address": "00552344",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 2,
+      "hex": "8b02",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [edx]"
+    },
+    {
+      "address": "00552346",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 1,
+      "hex": "56",
+      "mnemonic": "push",
+      "operands": "esi"
+    },
+    {
+      "address": "00552347",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "8b7008",
+      "mnemonic": "mov",
+      "operands": "esi, dword ptr [eax + 8]"
+    },
+    {
+      "address": "0055234a",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 2,
+      "hex": "8932",
+      "mnemonic": "mov",
+      "operands": "dword ptr [edx], esi"
+    },
+    {
+      "address": "0055234c",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "8b7008",
+      "mnemonic": "mov",
+      "operands": "esi, dword ptr [eax + 8]"
+    },
+    {
+      "address": "0055234f",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 7,
+      "hex": "80be9900000000",
+      "mnemonic": "cmp",
+      "operands": "byte ptr [esi + 0x99], 0"
+    },
+    {
+      "address": "00552356",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 2,
+      "hex": "7503",
+      "mnemonic": "jne",
+      "operands": "0x55235b"
+    },
+    {
+      "address": "00552358",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "895604",
+      "mnemonic": "mov",
+      "operands": "dword ptr [esi + 4], edx"
+    },
+    {
+      "address": "0055235b",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "8b7204",
+      "mnemonic": "mov",
+      "operands": "esi, dword ptr [edx + 4]"
+    },
+    {
+      "address": "0055235e",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "897004",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax + 4], esi"
+    },
+    {
+      "address": "00552361",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "8b4904",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [ecx + 4]"
+    },
+    {
+      "address": "00552364",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "3b5104",
+      "mnemonic": "cmp",
+      "operands": "edx, dword ptr [ecx + 4]"
+    },
+    {
+      "address": "00552367",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 1,
+      "hex": "5e",
+      "mnemonic": "pop",
+      "operands": "esi"
+    },
+    {
+      "address": "00552368",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 2,
+      "hex": "750c",
+      "mnemonic": "jne",
+      "operands": "0x552376"
+    },
+    {
+      "address": "0055236a",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "894104",
+      "mnemonic": "mov",
+      "operands": "dword ptr [ecx + 4], eax"
+    },
+    {
+      "address": "0055236d",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "895008",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax + 8], edx"
+    },
+    {
+      "address": "00552370",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "894204",
+      "mnemonic": "mov",
+      "operands": "dword ptr [edx + 4], eax"
+    },
+    {
+      "address": "00552373",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "c20400",
+      "mnemonic": "ret",
+      "operands": "4"
+    },
+    {
+      "address": "00552376",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "8b4a04",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [edx + 4]"
+    },
+    {
+      "address": "00552379",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "3b5108",
+      "mnemonic": "cmp",
+      "operands": "edx, dword ptr [ecx + 8]"
+    },
+    {
+      "address": "0055237c",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 2,
+      "hex": "750c",
+      "mnemonic": "jne",
+      "operands": "0x55238a"
+    },
+    {
+      "address": "0055237e",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "894108",
+      "mnemonic": "mov",
+      "operands": "dword ptr [ecx + 8], eax"
+    },
+    {
+      "address": "00552381",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "895008",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax + 8], edx"
+    },
+    {
+      "address": "00552384",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "894204",
+      "mnemonic": "mov",
+      "operands": "dword ptr [edx + 4], eax"
+    },
+    {
+      "address": "00552387",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "c20400",
+      "mnemonic": "ret",
+      "operands": "4"
+    },
+    {
+      "address": "0055238a",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 2,
+      "hex": "8901",
+      "mnemonic": "mov",
+      "operands": "dword ptr [ecx], eax"
+    },
+    {
+      "address": "0055238c",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "895008",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax + 8], edx"
+    },
+    {
+      "address": "0055238f",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "894204",
+      "mnemonic": "mov",
+      "operands": "dword ptr [edx + 4], eax"
+    },
+    {
+      "address": "00552392",
+      "function": "00552340",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "c20400",
+      "mnemonic": "ret",
+      "operands": "4"
+    },
+    {
+      "address": "00553f00",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 4,
+      "hex": "8b542404",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [esp + 4]"
+    },
+    {
+      "address": "00553f04",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "8b4208",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [edx + 8]"
+    },
+    {
+      "address": "00553f07",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 1,
+      "hex": "56",
+      "mnemonic": "push",
+      "operands": "esi"
+    },
+    {
+      "address": "00553f08",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 2,
+      "hex": "8b30",
+      "mnemonic": "mov",
+      "operands": "esi, dword ptr [eax]"
+    },
+    {
+      "address": "00553f0a",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "897208",
+      "mnemonic": "mov",
+      "operands": "dword ptr [edx + 8], esi"
+    },
+    {
+      "address": "00553f0d",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 2,
+      "hex": "8b30",
+      "mnemonic": "mov",
+      "operands": "esi, dword ptr [eax]"
+    },
+    {
+      "address": "00553f0f",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 7,
+      "hex": "80be9900000000",
+      "mnemonic": "cmp",
+      "operands": "byte ptr [esi + 0x99], 0"
+    },
+    {
+      "address": "00553f16",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 2,
+      "hex": "7503",
+      "mnemonic": "jne",
+      "operands": "0x553f1b"
+    },
+    {
+      "address": "00553f18",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "895604",
+      "mnemonic": "mov",
+      "operands": "dword ptr [esi + 4], edx"
+    },
+    {
+      "address": "00553f1b",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "8b7204",
+      "mnemonic": "mov",
+      "operands": "esi, dword ptr [edx + 4]"
+    },
+    {
+      "address": "00553f1e",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "897004",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax + 4], esi"
+    },
+    {
+      "address": "00553f21",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "8b4904",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [ecx + 4]"
+    },
+    {
+      "address": "00553f24",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "3b5104",
+      "mnemonic": "cmp",
+      "operands": "edx, dword ptr [ecx + 4]"
+    },
+    {
+      "address": "00553f27",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 1,
+      "hex": "5e",
+      "mnemonic": "pop",
+      "operands": "esi"
+    },
+    {
+      "address": "00553f28",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 2,
+      "hex": "750b",
+      "mnemonic": "jne",
+      "operands": "0x553f35"
+    },
+    {
+      "address": "00553f2a",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "894104",
+      "mnemonic": "mov",
+      "operands": "dword ptr [ecx + 4], eax"
+    },
+    {
+      "address": "00553f2d",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 2,
+      "hex": "8910",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax], edx"
+    },
+    {
+      "address": "00553f2f",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "894204",
+      "mnemonic": "mov",
+      "operands": "dword ptr [edx + 4], eax"
+    },
+    {
+      "address": "00553f32",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "c20400",
+      "mnemonic": "ret",
+      "operands": "4"
+    },
+    {
+      "address": "00553f35",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "8b4a04",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [edx + 4]"
+    },
+    {
+      "address": "00553f38",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 2,
+      "hex": "3b11",
+      "mnemonic": "cmp",
+      "operands": "edx, dword ptr [ecx]"
+    },
+    {
+      "address": "00553f3a",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 2,
+      "hex": "750a",
+      "mnemonic": "jne",
+      "operands": "0x553f46"
+    },
+    {
+      "address": "00553f3c",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 2,
+      "hex": "8901",
+      "mnemonic": "mov",
+      "operands": "dword ptr [ecx], eax"
+    },
+    {
+      "address": "00553f3e",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 2,
+      "hex": "8910",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax], edx"
+    },
+    {
+      "address": "00553f40",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "894204",
+      "mnemonic": "mov",
+      "operands": "dword ptr [edx + 4], eax"
+    },
+    {
+      "address": "00553f43",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "c20400",
+      "mnemonic": "ret",
+      "operands": "4"
+    },
+    {
+      "address": "00553f46",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "894108",
+      "mnemonic": "mov",
+      "operands": "dword ptr [ecx + 8], eax"
+    },
+    {
+      "address": "00553f49",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 2,
+      "hex": "8910",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax], edx"
+    },
+    {
+      "address": "00553f4b",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "894204",
+      "mnemonic": "mov",
+      "operands": "dword ptr [edx + 4], eax"
+    },
+    {
+      "address": "00553f4e",
+      "function": "00553f00",
+      "role": "owned_whole",
+      "size": 3,
+      "hex": "c20400",
+      "mnemonic": "ret",
+      "operands": "4"
+    }
+  ],
+  "native_transfers": [
+    {
+      "address": "006a7392",
+      "native": "00553f00",
+      "function": "006a71b0",
+      "scope": "read_only_fixup_caller"
+    },
+    {
+      "address": "006a73db",
+      "native": "00552340",
+      "function": "006a71b0",
+      "scope": "read_only_fixup_caller"
+    },
+    {
+      "address": "006a7401",
+      "native": "00553f00",
+      "function": "006a71b0",
+      "scope": "read_only_fixup_caller"
+    },
+    {
+      "address": "006a7424",
+      "native": "00552340",
+      "function": "006a71b0",
+      "scope": "read_only_fixup_caller"
+    },
+    {
+      "address": "006a747d",
+      "native": "00553f00",
+      "function": "006a71b0",
+      "scope": "read_only_fixup_caller"
+    },
+    {
+      "address": "006a74a1",
+      "native": "00552340",
+      "function": "006a71b0",
+      "scope": "read_only_fixup_caller"
+    },
+    {
+      "address": "0055bb66",
+      "native": "00bf681b",
+      "function": "0055bb40",
+      "scope": "read_only_node_layout_producer"
+    },
+    {
+      "address": "0055bb9d",
+      "native": "0055ba00",
+      "function": "0055bb40",
+      "scope": "read_only_node_layout_producer"
+    }
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "log": "local/oct15_input_device_tree_rotations_build.log",
+      "log_sha256": "254f0a078bd7a8cd2ca02badc3c56085d5e11a93505e4fd1fea7e325ebecd227",
+      "tests": [
+        {
+          "name": "reconstructed_math",
+          "passed": true,
+          "seconds": 0.23
+        },
+        {
+          "name": "native_math_differential",
+          "passed": true,
+          "seconds": 0.04
+        },
+        {
+          "name": "tool_tests",
+          "passed": true,
+          "seconds": 8.02
+        }
+      ],
+      "passed": 3,
+      "failed": 0,
+      "total_seconds": 8.35,
+      "limits": "Compilation/existing suites only; native_math validates existing seeds, not a new native rotation differential/game run.",
+      "preexisting_warning": "Unrelated existing LNK4006 spawn_request_id_matches duplicate definition; no new module warning."
+    },
+    "Source_COFF": {
+      "object": "build/win32/bsp_core.dir/Release/native_input_device_tree_rotations.obj",
+      "object_sha256": "210de0dd8aa5f4063d6385fa2fd1daee305dc2a70d538ea0fa168101ddfd4d9d",
+      "capture": "local/oct15_input_device_tree_rotations_coff.txt",
+      "capture_sha256": "2544011b66bff04bf23faa4ba0925056c04755586031a9110f735a0888a9cc43",
+      "Source_function_bytes": {
+        "right": 83,
+        "left": 81
+      },
+      "Source_returns": "BothRET4; native input roles retained, Sourcecompiler EBP/ECX-slot/ESI save frame differs. Void API does not promise EAXpivot residue/flags.",
+      "checks": [
+        "Original ECXtree preserved in private slot; node read from sole stacked input before target access; incomingEDX overwritten.",
+        "Both post-store pivot-child rereads emitted before nil99 test and conditional child.parent store.",
+        "CURRENT node.parent read then pivot.parent publication; tree.head captured once for root compare/update.",
+        "Nonroot reloads CURRENT node.parent; right rotation compares parent.right first, left rotation parent.left first.",
+        "Direction-specific final pivot-child then node.parent stores, followed by balanced ESI/EBP/stack restoration.",
+        "Zero calls, imports/relocations, local EH registration or new allocator/context/guard; separate bodies retain raw memory order."
+      ],
+      "findings": []
+    },
+    "native_transfer_check": {
+      "command": "python tools/verify_report_calls.py reports/oct15_input_device_tree_rotations.json docs/OCT15_INPUT_DEVICE_TREE_ROTATIONS.md",
+      "JSON_rows": 8,
+      "Markdown_claims": 8,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "owned_CALLs": 0
+    },
+    "primary_precommit_review": {
+      "receipt": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/oct15_rotations_eighteenth_primary_review.json",
+      "checks": 9,
+      "findings": 0,
+      "scope": "Primary independently checked166PE/liveB60currentstarts/full Source/header, zero owned CALLs, exact memory schedules and void/nativeEAX/private-frame qualifications. Final acceptance awaits immutable handoff."
+    },
+    "new_tests": 0,
+    "ghidra_mutations": false,
+    "pushes": 0
+  },
+  "preservation": {
+    "previous_cleanup_pin": "f3e4b13ba5f04ed4c40a3f7842d15ee1e8bf2652",
+    "old_AV_Source": "native_input_settings_tree_cleanup.cpp and existing other real domains untouched",
+    "not_promoted": [
+      "006A71B0 RawCtx erase-one",
+      "00C7F580 logical message action",
+      "ordinary006A7AA0 partial/range Source"
+    ]
+  },
+  "limits": [
+    "New Source interfaces preserve stated reached-storage schedules; matching input roles/RET4 do not establish native binary ABI, register/flag residue or original private-stack identity.",
+    "No currentCRT or pool model is invoked by these leaves. No native executable substitution, original fault/SEH or game validation is claimed by native inspection, COFF, compilation or existing fixtures.",
+    "Existing correct STL library names retained; descriptive C++ names remain hypotheses."
+  ],
+  "coordination": {
+    "packet_lease": "oct15_input_device_tree_rotations: two addresses/four files, retained for primary review",
+    "registration_lease": "oct15_input_device_tree_rotations_registration",
+    "successful_FIFO_claim": true,
+    "queue_jump": false,
+    "stable_dependency_baseline": "a52dcb3f5",
+    "merged_main": "d7c167f49396f36e3297bba3d0277aa455801648",
+    "build_base_HEAD": "d7c167f49396f36e3297bba3d0277aa455801648",
+    "merge": "Fast-forward; no conflict, resolver not invoked",
+    "registration": "One DEFER target_sources bsp_core src/native_input_device_tree_rotations.cpp append",
+    "CMake_released_before_build": true,
+    "reviewed_Source_header_hashes_unchanged": true
+  }
+}

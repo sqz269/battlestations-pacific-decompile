@@ -1,0 +1,218 @@
+{
+  "packet": "goal_oct15_scene_class_name_lookup",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "source_ready": true,
+  "source": "src/native_scene_class_name_lookup.cpp",
+  "header": "include/bsp/native_scene_class_name_lookup.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_CLASS_NAME_LOOKUP.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00469690",
+      "name": "find_native_scene_class_id_00469690",
+      "native_name_retained": "BSP_SceneDatabase_ClassNameToId",
+      "native_bytes": 277,
+      "instructions": 94,
+      "body_end_inclusive": "004697a4",
+      "original_abi": "ECXdatabase,EDXunused,one LIVE stackedCString pointer,RET4/EAXDWORDid-or0",
+      "coverage": "complete ordinary raw control flow with actual raw iterator/string/pool and currentSDK comparison providers",
+      "original_bytes_hex": "6aff68381bc60064a100000000506489250000000083ec145383c13456894c2410578d4c2414e8f5d4ffff8b442430508d4c2410e8a751fbff8b74241885f68b7c24108b5c240c0f84930000008d49008b460485c07505b86085e10085ff754e85c074108d50018a0883c00184c975f72bc2755785ff8b4e088b31c7442428ffffffff74136a0183c3015357e89f05fbff8bc8e8e87d76005f8bc65e5b8b4c241464890d0000000083c420c2040085c0750685db74beeb135057e870e8780083c40885c00f94c084c075a98d4c2414e89cd4ffff8b74241885f60f8570ffffff85ffc7442428ffffffff74136a0183c3015357e83805fbff8bc8e8817d76008b4c24205f5e33c05b64890d0000000083c420c20400",
+      "original_bytes_sha256": "994bae6b73ba582b96b28015d9ffac981ff6277bddb1135460b02b7c72a06d00",
+      "live_equals_installed_PE": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "004696b6",
+      "native": "00466bb0",
+      "function": "00469690",
+      "kind": "call"
+    },
+    {
+      "address": "004696c4",
+      "native": "0041e870",
+      "function": "00469690",
+      "kind": "call"
+    },
+    {
+      "address": "0046971c",
+      "native": "00419cc0",
+      "function": "00469690",
+      "kind": "call"
+    },
+    {
+      "address": "00469723",
+      "native": "00bd1510",
+      "function": "00469690",
+      "kind": "call"
+    },
+    {
+      "address": "0046974a",
+      "native": "00bf7fbf",
+      "function": "00469690",
+      "kind": "call"
+    },
+    {
+      "address": "0046975f",
+      "native": "00466c00",
+      "function": "00469690",
+      "kind": "call"
+    },
+    {
+      "address": "00469783",
+      "native": "00419cc0",
+      "function": "00469690",
+      "kind": "call"
+    },
+    {
+      "address": "0046978a",
+      "native": "00bd1510",
+      "function": "00469690",
+      "kind": "call"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "0046d46e",
+      "native": "00469690",
+      "function": "0046cf40",
+      "kind": "call"
+    },
+    {
+      "address": "0046d48d",
+      "native": "00469690",
+      "function": "0046cf40",
+      "kind": "call"
+    },
+    {
+      "address": "0046d4ac",
+      "native": "00469690",
+      "function": "0046cf40",
+      "kind": "call"
+    },
+    {
+      "address": "0046d4cb",
+      "native": "00469690",
+      "function": "0046cf40",
+      "kind": "call"
+    },
+    {
+      "address": "0046d4e6",
+      "native": "00469690",
+      "function": "0046cf40",
+      "kind": "call"
+    },
+    {
+      "address": "0046d501",
+      "native": "00469690",
+      "function": "0046cf40",
+      "kind": "call"
+    }
+  ],
+  "caller_scope": "Six representative true call sites in CF40 only; no exhaustive caller reconstruction claim",
+  "typed_metadata": {
+    "path": "local/goal_oct15_scene_class_name_lookup_typed.json",
+    "sha256": "ee9189481fcfca27d7878a7bd97af1fc6d51de5a5a9e808d876d4c190d77f541",
+    "endpoint": "get_flow_metadata",
+    "read_only": true,
+    "utc": "2026-10-15T23:30:49.737573+00:00",
+    "functions": [
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00469690"
+        },
+        "name": "BSP_SceneDatabase_ClassNameToId",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "277",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00469690"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "004697a4"
+              },
+              "length": "277"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "eh_evidence": {
+    "handler": "00c61b38",
+    "funcinfo": "00d891ac",
+    "funcinfo_bytes_hex": "2205931901000000a491d8000000000000000000000000000000000000000000",
+    "max_state": 1,
+    "unwind_map": "00d891a4",
+    "unwind_map_bytes_hex": "ffffffff301bc600",
+    "state0_action": "00c61b30",
+    "action": "LEA ECX,[EBP-20h];JMP0041DD20",
+    "normal_state": "Initial PUSH-1; only later state stores970B/9772 also-1; no arm in entire94-op body",
+    "source_cleanup": "No automatic guard; explicit normal release uses cached data/length only",
+    "private_action_coverage": false
+  },
+  "source_hashes": {
+    "src/native_scene_class_name_lookup.cpp": "d43fdfb3f98fab644bf89df4ad405561bbe9699a65f3eca8d349504d4ef7ecfe",
+    "include/bsp/native_scene_class_name_lookup.hpp": "ae8cd105437d431dfd3427053cb0ca3a7a94a1d999b6dc314fd23440a8724a5c"
+  },
+  "limits": [
+    "Valid reached raw/Cstring/pool storage and current SDK policy",
+    "Explicit stable/disjoint native frame role backings,not implicit compiler/native private-state aliases",
+    "No outer Source RAII cleanup or invented state0 arm",
+    "No nominal map,count/owner invariant or ASCII clamp",
+    "Original CRT,register/private/FH3/fault/mangling/binary ABI,new-entry differential,application/game proof open"
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "independent_review": {
+    "reviewer": "string_copy_x87",
+    "result": "passed all94 operations,whole Source/header/docs,actual raw constructor/pool and unarmed EH metadata",
+    "source_hashes": {
+      "src/native_scene_class_name_lookup.cpp": "d43fdfb3f98fab644bf89df4ad405561bbe9699a65f3eca8d349504d4ef7ecfe",
+      "include/bsp/native_scene_class_name_lookup.hpp": "ae8cd105437d431dfd3427053cb0ca3a7a94a1d999b6dc314fd23440a8724a5c"
+    }
+  },
+  "validation": {
+    "combined_build": {
+      "revision": "1c0025b07ae3c5627dc024d11e1db303efb9d32d",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_scene_lookup_combined_build.log",
+      "log_sha256": "c8ed57b16756599313847bc4739d05f2e6234168e2a942347efae999a58f6cd5",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 7.99,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies"
+    },
+    "typed_rows_passed": 14,
+    "new_tests": 0
+  },
+  "ghidra_annotation": {
+    "saved": true,
+    "function_name_retained": "BSP_SceneDatabase_ClassNameToId",
+    "prior_values": "local\\ghidra-annotations-20261015T234400Z.json",
+    "prior_values_sha256": "060ff82c950472d53f78b50e602eedc56d364061a073d72f130f66b08ab0f502",
+    "export_refreshed": true,
+    "live_comment_readback": true
+  }
+}

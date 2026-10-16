@@ -1,0 +1,301 @@
+{
+  "packet": "cc12_native_font_host_adoption_36",
+  "status": "normal_native_font_startup_sprite_borrow_and_retirement_build_and_live_checked",
+  "source_commit": "a53cd233266d3494fb952acbae24b0ea87e736c9",
+  "source_change_commit": "b596d6ba4",
+  "sprite_bridge_commit": "88f60d172",
+  "source_lifetime_review_commit": "1655f581b",
+  "addresses": [
+    "0073bae0",
+    "00ac3910",
+    "00ad4c30",
+    "00ad53a0"
+  ],
+  "source_files": [
+    "src/game_hosts_fonts.cpp",
+    "include/bsp/game_hosts_fonts.hpp",
+    "src/game_hosts.cpp",
+    "include/bsp/game_hosts.hpp",
+    "src/game_hosts_text.cpp",
+    "include/bsp/game_hosts_text.hpp",
+    "src/game_hosts_frontend.cpp"
+  ],
+  "ownership": {
+    "registry": "same stable GameFontHost registry",
+    "producer": "GameNativeFontApplication",
+    "metrics": "sole NativeFontResources FontData allocation",
+    "gfx_alpha": "transferred actual image references in canonical renderer cache/registry",
+    "sprite_texture_borrow": "D61948 + same actual count alias + B3CEA0 COM getter; no AddRef",
+    "shutdown": "close menu/frontend/sprite runs, retire native fonts, release device view, shared native drain, destroy metadata",
+    "failure": "external sticky attempt/failure state; no load/retire replay or guessed rollback",
+    "native_text_factory_exported": false
+  },
+  "native_abi": {
+    "loader": "Original ECX font, five stack string arguments, RET14h",
+    "source_boundary": "New C++ host/producer API; typed DAT/string/tree allocation and failure timing remain outside Original stream/SEH/pool ABI",
+    "retirement_boundary": "Existing AD53A0 typed payload/GFX/alpha fragment; raw font string/tree/sentinel tail not reconstructed"
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "log": "local/cc12_native_font_host_adoption_36/build_02.log",
+    "exit_code": 0,
+    "tests_passed": 3,
+    "test_seconds": 8.77,
+    "frozen_files": 32,
+    "note": "Existing math/native-math/tool suites do not validate font drawing; real runs provide bounded live evidence"
+  },
+  "runtime": [
+    {
+      "name": "runtime_01",
+      "exit_code": 0,
+      "seconds": 2.680921,
+      "source_commit": "a53cd233266d3494fb952acbae24b0ea87e736c9",
+      "log": "local\\cc12_native_font_host_adoption_36\\runtime_01\\runtime.log",
+      "log_sha256": "40616435f17bb6f2949f9f631a41f31c8b80aa67af86aef1772126f430de1462",
+      "launcher_manifest_sha256": "20fa94d36b1d27848e28560c60d0b50e6a10f788cdee594f2905210ee75f5999",
+      "frontend_png": "local\\cc12_native_font_host_adoption_36\\runtime_01\\frontend.png",
+      "frontend_png_sha256": "a69bec02dcd282faae1c350c099acedbd3ba74a3210a541dab3c49d04b534c34",
+      "font_rows": [
+        {
+          "name": "ViperTitle",
+          "glyphs": 116,
+          "gfx": "07A14D6C",
+          "alpha": "07A14DC0",
+          "profile": "00d61948"
+        },
+        {
+          "name": "Arial16",
+          "glyphs": 207,
+          "gfx": "07A14E14",
+          "alpha": "07A14DC0",
+          "profile": "00d61948"
+        },
+        {
+          "name": "Viper19",
+          "glyphs": 116,
+          "gfx": "07A14D6C",
+          "alpha": "07A14DC0",
+          "profile": "00d61948"
+        },
+        {
+          "name": "Arial20",
+          "glyphs": 207,
+          "gfx": "07A14E14",
+          "alpha": "07A14DC0",
+          "profile": "00d61948"
+        },
+        {
+          "name": "Arial15",
+          "glyphs": 207,
+          "gfx": "07A14E14",
+          "alpha": "07A14DC0",
+          "profile": "00d61948"
+        },
+        {
+          "name": "Arial18",
+          "glyphs": 207,
+          "gfx": "07A14E14",
+          "alpha": "07A14DC0",
+          "profile": "00d61948"
+        }
+      ],
+      "unique_gfx_images": 2,
+      "unique_alpha_images": 1,
+      "same_registry_and_descriptors": true,
+      "semantic_font_resources": 0,
+      "retired_before_shared_drain": true,
+      "registered_singleton_slots": 41,
+      "qualified_sampler_observations": 3,
+      "warm_post_no_fourth_observation": true,
+      "device_final_count": 0,
+      "api_final_count": 0,
+      "summaries": [
+        "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=800x600 frames_presented=1 presents_skipped=1 loop_finished=1 exit_code=0",
+        "summary vfs_ready=1 loose_mounts=3/3 package_scans=2 cachedload=1 probes=3/3",
+        "summary options_file=1 path=J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_font_host_adoption_36\\runtime_01\\personal\\Battlestations-Pacific\\options.txt language=englishauthentic resolution=800x600 fullscreen=0 vsync=1 antialias=8",
+        "summary input_scripts_ready=1 devices=4 input_names=16 controller_names=12 renderer_api_shared=1 locale_keys=6856 locale_files=1",
+        "summary fonts_loaded=6 font_resource_opens=7 fingerprint_defined_bytes=240",
+        "summary gui_resources=9 pages=5/5 widgets=29 widgets_with_texture=22",
+        "summary bridge_open=1 atlas=interface/textures/allbutingame_dxt1.ats atlas_items=678 textures=13 quads=61 frames=2",
+        "summary init_tail hardware_probe=1 stored_values=0 factories=4 parsers=8 pak_registry=1 pak_lock=1 decals=3",
+        "summary frontend title_init=1 press_start_slot=92 screens=0 screen_pages=3 pump_frames=2 enters=1 exits=0 commits=1",
+        "summary mainmenu press_start_frame=-1 injected=0 shell=0 manager=0 screen=0 step=PressStartPoll state=2",
+        "summary text bridge=1 widgets=2 runs=2 glyphs=55 quads=55",
+        "summary screenshot=1 frame=1 path=J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_font_host_adoption_36\\runtime_01\\frontend.png",
+        "host methods 123 concrete, 43 unimplemented",
+        "summary native renderer lost device: lost_polls=0 holds=0 recreations=0 create_failures=0 resets=1 reset_failures=0 faked_polls=0 hold_bound=1 (00B2ABD0/00B29670, packet cc9_d3d_device_lost)"
+      ]
+    },
+    {
+      "name": "runtime_02",
+      "exit_code": 0,
+      "seconds": 2.522278,
+      "source_commit": "a53cd233266d3494fb952acbae24b0ea87e736c9",
+      "log": "local\\cc12_native_font_host_adoption_36\\runtime_02\\runtime.log",
+      "log_sha256": "f53773bc24fd10621332c65a518054dbe54cfb62ba296c1879941c8763fe4de4",
+      "launcher_manifest_sha256": "588abb53cfed112c15925d57e14b0ddd47f842b7658f6ba6568d7112c4f45990",
+      "frontend_png": "local\\cc12_native_font_host_adoption_36\\runtime_02\\frontend.png",
+      "frontend_png_sha256": "f733e50fcd5e784530052a9a90dbaeba27467a78455849a446e1a1827a306989",
+      "font_rows": [
+        {
+          "name": "ViperTitle",
+          "glyphs": 116,
+          "gfx": "0ED35554",
+          "alpha": "0ED355A8",
+          "profile": "00d61948"
+        },
+        {
+          "name": "Arial16",
+          "glyphs": 207,
+          "gfx": "0ED355FC",
+          "alpha": "0ED355A8",
+          "profile": "00d61948"
+        },
+        {
+          "name": "Viper19",
+          "glyphs": 116,
+          "gfx": "0ED35554",
+          "alpha": "0ED355A8",
+          "profile": "00d61948"
+        },
+        {
+          "name": "Arial20",
+          "glyphs": 207,
+          "gfx": "0ED355FC",
+          "alpha": "0ED355A8",
+          "profile": "00d61948"
+        },
+        {
+          "name": "Arial15",
+          "glyphs": 207,
+          "gfx": "0ED355FC",
+          "alpha": "0ED355A8",
+          "profile": "00d61948"
+        },
+        {
+          "name": "Arial18",
+          "glyphs": 207,
+          "gfx": "0ED355FC",
+          "alpha": "0ED355A8",
+          "profile": "00d61948"
+        }
+      ],
+      "unique_gfx_images": 2,
+      "unique_alpha_images": 1,
+      "same_registry_and_descriptors": true,
+      "semantic_font_resources": 0,
+      "retired_before_shared_drain": true,
+      "registered_singleton_slots": 42,
+      "qualified_sampler_observations": 3,
+      "warm_post_no_fourth_observation": true,
+      "device_final_count": 0,
+      "api_final_count": 0,
+      "summaries": [
+        "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=800x600 frames_presented=7 presents_skipped=1 loop_finished=1 exit_code=0",
+        "summary vfs_ready=1 loose_mounts=3/3 package_scans=2 cachedload=1 probes=3/3",
+        "summary options_file=1 path=J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_font_host_adoption_36\\runtime_02\\personal\\Battlestations-Pacific\\options.txt language=englishauthentic resolution=800x600 fullscreen=0 vsync=1 antialias=8",
+        "summary input_scripts_ready=1 devices=4 input_names=16 controller_names=12 renderer_api_shared=1 locale_keys=6856 locale_files=1",
+        "summary fonts_loaded=6 font_resource_opens=7 fingerprint_defined_bytes=240",
+        "summary gui_resources=9 pages=6/6 widgets=34 widgets_with_texture=23",
+        "summary bridge_open=1 atlas=interface/textures/allbutingame_dxt1.ats atlas_items=678 textures=13 quads=14 frames=8",
+        "summary init_tail hardware_probe=1 stored_values=0 factories=4 parsers=8 pak_registry=1 pak_lock=1 decals=3",
+        "summary frontend title_init=1 press_start_slot=92 screens=7 screen_pages=4 pump_frames=8 enters=2 exits=1 commits=4",
+        "summary mainmenu press_start_frame=1 injected=1 shell=1 manager=1 screen=1 step=ScreenVisible state=5",
+        "summary text bridge=1 widgets=4 runs=2 glyphs=55 quads=9",
+        "summary screenshot=1 frame=5 path=J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_font_host_adoption_36\\runtime_02\\frontend.png",
+        "host methods 148 concrete, 74 unimplemented",
+        "summary native renderer lost device: lost_polls=0 holds=0 recreations=0 create_failures=0 resets=1 reset_failures=0 faked_polls=0 hold_bound=1 (00B2ABD0/00B29670, packet cc9_d3d_device_lost)"
+      ]
+    }
+  ],
+  "visual_review": {
+    "runtime_01": "800x600 frontend capture shows readable Viper19 title and login prompt",
+    "runtime_02": "Synthetic press-start reaches ScreenVisible; title remains readable but menu body is blank",
+    "capture_boundary": "Diagnostic frontend capture before native EndFrame, not evidence of complete native rendering"
+  },
+  "font_resource_opens_metric": "6 completed DAT reads + 1 fingerprint; image provider/cache opens excluded",
+  "installation": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged": true
+  },
+  "archive": {
+    "path": "local\\cc12_native_font_host_adoption_36\\evidence_family.zip",
+    "sha256": "f3784755c3130ae1724aa35b5187d8f59560a7b69ca2e17614d8450c0921c1a1",
+    "bytes": 5650083,
+    "payload_files": 52,
+    "payload_bytes": 18366295,
+    "manifest_sha256": "1de04c60b25c43d8a7b04518d2a07b6b976b6c7ba0dde4df322fc0e20ee72868",
+    "all_archived_payloads_hash_checked": true
+  },
+  "limitations": [
+    "Only Viper19 glyph drawing observed; all six fonts loaded but Arial glyph drawing unproved",
+    "Normal frontend still sprite/CPU Text; native Text buffer/section/font-material draw path remains unactivated",
+    "43 unimplemented methods in initial frontend run and 74 after synthetic menu transition",
+    "Menu body absent; no startup/menu/gameplay completion or binary ABI equivalence claim",
+    "No interrupted-load/retire runtime injection, destructive reload, reset/recreation or raw font owner ABI proof",
+    "Original installation and OS/D3DX provider binaries are external dependencies, not included in archive"
+  ],
+  "next": "CD71F0/CE0A80 Text pool and CD7210 live lineage with AA8200 prerequisite; canonical mutable GUI cells and primary raw model/group routing remain",
+  "combined_main_verification": {
+    "source_commit": "9a727abac038bd190076942cd6c72913fcf5eefb",
+    "build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "tests_passed": 3,
+      "test_seconds": 7.46,
+      "log": "local/cc12_native_font_host_adoption_36/build_03_combined.log"
+    },
+    "original_font_source_inputs_unchanged": [
+      "include/bsp/game_hosts.hpp",
+      "src/game_hosts.cpp",
+      "include/bsp/game_hosts_fonts.hpp",
+      "src/game_hosts_fonts.cpp",
+      "include/bsp/game_hosts_text.hpp",
+      "src/game_hosts_text.cpp",
+      "src/game_hosts_frontend.cpp",
+      "include/bsp/game_native_font_application.hpp",
+      "src/game_native_font_application.cpp",
+      "include/bsp/native_font_resources.hpp",
+      "src/native_font_resources.cpp",
+      "include/bsp/font_registry_startup.hpp",
+      "src/font_registry_startup.cpp",
+      "include/bsp/font_data.hpp",
+      "src/font_data.cpp",
+      "include/bsp/native_renderer_binding_getters.hpp",
+      "src/native_renderer_binding_getters.cpp"
+    ],
+    "frozen_inputs": 41,
+    "runtime_exit_code": 0,
+    "runtime_log": "local\\cc12_native_font_combined_39\\runtime_01\\runtime.log",
+    "runtime_log_sha256": "c33c903a1edf0e966a3f90168382728bde01c0e6cb09acff64c33b91e3d497ae",
+    "executable_sha256": "3c7b99be5ca63b19429b6d9a416817877aeea0b747265017785f1a4d8082fba5",
+    "native_fonts": 6,
+    "sprite_runs": 2,
+    "sprite_glyph_quads": 55,
+    "observed_font": "Viper19",
+    "font_retirement_before_native_drain": true,
+    "final_device_api_counts": [
+      0,
+      0
+    ],
+    "qualified_sampler_observations": 3,
+    "warm_post_observations": 3,
+    "unimplemented_methods": 43,
+    "limitations": "Same bounded sprite/normal native font scope; no new native Text/ABI/gameplay proof",
+    "archive": {
+      "path": "local\\cc12_native_font_combined_39\\evidence_family.zip",
+      "sha256": "9e48cf10c7e4dc8054ae8453d4f21afe39aacb1fdaa44b02967d883c71be8b02",
+      "bytes": 5274782,
+      "payload_files": 51,
+      "manifest_sha256": "25b815ad9a1523d79ba60eedf9fdd17cad06f37663d09e1d91e37bd60b758fcc",
+      "all_payloads_hash_checked": true
+    }
+  },
+  "independent_runtime_review": {
+    "commit": "70f01dd93",
+    "doc": "docs/CC12_NATIVE_FONT_RUNTIME_REVIEW_36.md",
+    "report": "reports/cc12_native_font_runtime_review_36.json",
+    "scope": "Original two runs and 32 frozen inputs; no blocking integrity issue"
+  }
+}

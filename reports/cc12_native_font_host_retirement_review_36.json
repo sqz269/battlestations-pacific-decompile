@@ -1,0 +1,103 @@
+{
+  "packet": "native_font_teardown_review_36",
+  "kind": "read_only_source_lifetime_review",
+  "base_commit": "1f3bc258e116cadc3601c94af230bed5045f4bfb",
+  "inspected_tree": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator",
+  "review_document": "docs/CC12_NATIVE_FONT_HOST_RETIREMENT_REVIEW_36.md",
+  "scope": {
+    "normal_host_adoption": "GameNativeFontApplication producer into same GameFontHost registry",
+    "current_text_borrower": "existing sprite GameTextHost",
+    "native_text_factory_installed": false,
+    "source_changes_by_reviewer": false,
+    "ledger_changes_by_reviewer": false,
+    "ghidra_queries_or_mutations_by_reviewer": false
+  },
+  "live_diff_review": {
+    "status": "source_lifetime_contract_pass_for_current_sprite_scope",
+    "remaining_blocking_lifetime_findings": 0,
+    "source_blobs": {
+      "include/bsp/game_hosts_fonts.hpp": "778dd15a8d63489fd599dfca87ebe2243ac0587f",
+      "src/game_hosts_fonts.cpp": "5445846b9d98fd3911a1dfd407a704f78ac00fe1",
+      "include/bsp/game_hosts.hpp": "b2c385f63616e482b4c6e284a022bfb162939e7a",
+      "src/game_hosts.cpp": "1c4b7f81718a45ea1a87fbd483b2bc3e1505f52e"
+    },
+    "confirmed": [
+      "Load entry rejects native_failed/native_retirement_attempted/native_retired",
+      "Callee load preflight and post-production validation exceptions latch host native_failed",
+      "Ready successful producer is not treated as interrupted merely because it requires retention until retire",
+      "Retirement attempt is latched before callee preflight; failure prevents replay",
+      "Successful repeated host retirement is metadata-only",
+      "Font producer is declared after registry and therefore destroyed first",
+      "Normal and fallback closure occur after frontend destruction and before raw drain",
+      "Explicit manager drain invokes closure and rejects surviving frontend",
+      "Normal shutdown removes overlay callback before deleting frontend"
+    ],
+    "limitations": [
+      "Verdict applies to recorded live uncommitted source blobs",
+      "Sprite bridge adaptation and build/runtime acceptance are independent",
+      "No concurrent frame/callback/reset safety established"
+    ]
+  },
+  "recommendation": {
+    "earliest_retirement": "after menu/frontend/sprite borrower destruction and callback quiescence; while renderer ready; before canonical raw singleton/VFS drain",
+    "normal_shutdown_base_site": "src/game_hosts.cpp:2854 before device_->release at2855",
+    "fallback_destructor_base_site": "src/game_hosts.cpp:1846 before raw drain1851",
+    "additional_drain_entry": "src/game_hosts.cpp:2868 destroy_singleton_lifetime_manager",
+    "preserve_through_drain": [
+      "retired native font producer and registry descriptor metadata",
+      "canonical renderer/cache/actual owners and publication contexts",
+      "same raw VFS bindings/strings/publications"
+    ],
+    "metadata_destruction_order": ["native font producer", "FontRegistryStartup descriptors"],
+    "host_retirement": "once-only successful close; completed repeat is metadata-only; failed attempt never replays"
+  },
+  "critical_findings": [
+    {
+      "id": "ready_is_retained",
+      "source": "src/game_native_font_application.cpp:222-224",
+      "finding": "Producer requires_process_retention is true after successful load until retirement; early font exit guard must distinguish ready from interrupted."
+    },
+    {
+      "id": "preflight_failure_needs_host_latch",
+      "source": "src/game_native_font_application.cpp:157-160,192-198",
+      "finding": "Preflight can throw before producer phase changes; latch host attempt/failure before calling so validation failure cannot replay."
+    },
+    {
+      "id": "native_destruction_requires_completed_retirement",
+      "source": "src/game_native_font_application.cpp:150-151; src/font_registry_startup.cpp:22-25",
+      "finding": "Producer and registry destructors terminate on retained native operations or remaining native associations; retain graph/no-unwind exit before either on interruption."
+    },
+    {
+      "id": "drain_is_hard_boundary",
+      "source": "src/game_native_renderer_application.cpp:629-631,871-891; src/game_hosts_singletons.cpp:169-170",
+      "finding": "Font domain validation requires ready renderer; raw drain retires renderer and VFS. Keeping allocated wrappers is insufficient for late font retirement."
+    },
+    {
+      "id": "sprite_borrowers_are_frontend_owned",
+      "source": "src/game_hosts_frontend.cpp:196-201,783-793; include/bsp/game_hosts_text.hpp:86",
+      "finding": "Sprite runs and copied bridge quads borrow the font COM sheet and are destroyed with frontend. Native Text factory is not installed in this packet."
+    },
+    {
+      "id": "future_factory_order_differs",
+      "source": "src/game_native_font_application.cpp:183-196; src/gui_text_runtime_factory.cpp:137-138,407-440",
+      "finding": "If native fonts are exported and a real Text factory is bound, retire Text/raw storage then fonts while SAME factory survives, then destroy factory."
+    }
+  ],
+  "reviewer_validation": {
+    "source_inspection": true,
+    "build_run": false,
+    "tests_run": false,
+    "runtime_run": false,
+    "visual_rendering_verified": false,
+    "failure_injection_run": false,
+    "original_abi_verified": false,
+    "new_tests_added": false
+  },
+  "native_source_limits": [
+    "New source composition; not AD4C30 original DAT transport/SEH/pool ABI equivalence",
+    "AD53A0 native string/tree/sentinel tail excluded from typed retirement",
+    "AD51D0 destructive reload unsupported",
+    "Sprite bridge adaptation does not activate native Text/material submission",
+    "Document review establishes no build/runtime/visual/ABI completion"
+  ]
+}

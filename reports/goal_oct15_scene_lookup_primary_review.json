@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_lookup_primary_review",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 3,
+  "private_source_cleanup_actions": 0,
+  "native_bytes": 435,
+  "native_instructions": 151,
+  "spans": [
+    {
+      "address": "00469690",
+      "native_bytes": 277,
+      "instructions": 94,
+      "scope": "complete ordinary raw Source at currentSDK service boundary",
+      "live_equals_installed": true,
+      "sha256": "994bae6b73ba582b96b28015d9ffac981ff6277bddb1135460b02b7c72a06d00"
+    },
+    {
+      "address": "00468660",
+      "native_bytes": 84,
+      "instructions": 30,
+      "scope": "complete ordinary raw Source at currentSDK service boundary",
+      "live_equals_installed": true,
+      "sha256": "0cd7dffe6bce8f61fdcf9782dea8b60e9b20cdb11f54f538debec90360df8ba4"
+    },
+    {
+      "address": "00467ee0",
+      "native_bytes": 74,
+      "instructions": 27,
+      "scope": "complete ordinary raw Source at currentSDK service boundary",
+      "live_equals_installed": true,
+      "sha256": "77b4ac25e1f29adf5a69e7749d370bf2238c377a0539f263909c17c551c74bc6"
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct15_scene_class_name_lookup.json",
+    "reports/goal_oct15_scene_name_hash_lookup.json"
+  ],
+  "typed_transfer_rows_checked": 22,
+  "typed_transfer_rows_failed": 0,
+  "independent_reviews": [
+    "Copy worker independently reviewed all94 operations and whole class-name Source/header/docs, actual constructor/pool, and unarmed native EH state",
+    "Primary independently reviewed all57 operations and whole hash-lookup Source/header, captured key and node/row results, exact iterator reloads and distinct native frame ranges"
+  ],
+  "source_hashes": {
+    "src/native_scene_class_name_lookup.cpp": "d43fdfb3f98fab644bf89df4ad405561bbe9699a65f3eca8d349504d4ef7ecfe",
+    "include/bsp/native_scene_class_name_lookup.hpp": "ae8cd105437d431dfd3427053cb0ca3a7a94a1d999b6dc314fd23440a8724a5c",
+    "src/native_scene_name_hash_lookup.cpp": "818e5b812f84c71dc54447dd62e3739c78900faf1abf5684cb5b41d1e467dae3",
+    "include/bsp/native_scene_name_hash_lookup.hpp": "b8283e180ee5693ff3c5707a84374253ff9c223c6f9778e655e2c726405213dd"
+  },
+  "combined_build": {
+    "revision": "1c0025b07ae3c5627dc024d11e1db303efb9d32d",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_scene_lookup_combined_build.log",
+    "log_sha256": "c8ed57b16756599313847bc4739d05f2e6234168e2a942347efae999a58f6cd5",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 7.99,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+    "scope": "existing regression checks; native math seeds do not execute these new bodies"
+  },
+  "project_source_counts": {
+    "native_scene_class_name_lookup": 1,
+    "native_scene_name_hash_lookup": 1
+  },
+  "unique_archive_objects": {
+    "native_scene_class_name_lookup": [
+      "bsp_core.dir\\Release\\native_scene_class_name_lookup.obj"
+    ],
+    "native_scene_name_hash_lookup": [
+      "bsp_core.dir\\Release\\native_scene_name_hash_lookup.obj"
+    ]
+  },
+  "archive_sha256": "39650ecfe90333f7fdcee9d925a8f4a956436e9d62a5d55b3a01df20ab787bea",
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "New explicit raw/live-frame/currentCRT Source APIs,not Original register/private-stack/argument-home/heap/FH3/fault ABI identity",
+    "Existing math differential seeds do not execute these new bodies; no application or game proof"
+  ]
+}
