@@ -1,0 +1,790 @@
+{
+  "packet": "oct15_native_input_string_tree_lower_bounds",
+  "status": "complete_whole_source_existing_CRT_parent_provided_callee_domain_build_tested_pending_primary",
+  "domain": "existing_CRT_parent_provided_callee_domain",
+  "concrete_Original_CRT_closure": false,
+  "utc": "2026-10-16T06:29:54.438671+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "authorization": "Root explicitly selected existing provided-callee domain; conditional ancestry gate resolved before Source; no new provider interface/default adapter.",
+  "published_gate": {
+    "published_Main": "be9d456136a32ae538e1e38e84404cc2882ed07f",
+    "required_ancestor": "2cc9f95f9cbe10577c5f669a60de77e5e0cff1ab",
+    "gate_met_before_Source": true
+  },
+  "source": "src/native_input_string_tree_lower_bounds.cpp",
+  "header": "include/bsp/native_input_string_tree_lower_bounds.hpp",
+  "documentation": "docs/OCT15_NATIVE_INPUT_STRING_TREE_LOWER_BOUNDS.md",
+  "source_sha256": "6ce5dbb10d94e21d430c0cb205dac028e27bae4c041df91cea1607ba9d8bfa30",
+  "header_sha256": "291fa7bafc2f5239119fd99ac3f36b68879cd7c3175e93c0f0e1cdbf517dffbb",
+  "documentation_sha256": "69636f057f91354740b240d3ffa14d2b141fcc7f5599085aa3013a6f662d7458",
+  "functions": [
+    {
+      "address": "0069ce30",
+      "name": "lower_bound_native_input_controller_tree_0069ce30",
+      "source": "src/native_input_string_tree_lower_bounds.cpp",
+      "header": "include/bsp/native_input_string_tree_lower_bounds.hpp",
+      "library_name": "STL_Tree_Lbound_StrKeyCI_N24_0069ce30",
+      "status": "complete_whole_source_existing_CRT_parent_provided_callee_domain_build_tested",
+      "domain": "existing_CRT_parent_provided_callee_domain",
+      "nil_offset": 33,
+      "evidence": "Hypothesis, not recovered symbol. Whole83B36, fixednil21/29 individualbody; NativeECXtree/EDXunused/onekeyheaderstackptr/EAXselectedNODE/RET4, NOTiterator/output; storedGhidraprotounspecified/notrepaired. Sourceaddsborrowedactual0109DE1Cref andEXISTINGNativeCrtStricmpCallees/RET0C; existing_CRT_parent_provided_callee_domain. ActualpublishedBF7FBF parent preserveszero/nonzero/errno/invalid/localecontracts; no concreteCRTclosure/newprovider/defaultadapter/443D00/currentstricmp/ascii-onlysubstitution. Nilrootbeforekeyreads/currentcount-highbit/datareadorder/signeddescent/candidate-beforeleft exact. Freshowned166PE/liveB72+readonly133B56/131currentqueries; actualCMake232B108/2REL32/allreviewed; defaultWin32existing3/3pass9.11s. docs/OCT15_NATIVE_INPUT_STRING_TREE_LOWER_BOUNDS.md;reports/oct15_native_input_string_tree_lower_bounds.json. CRTservices/locale/TLS/errno/handlerownership/privateframe/flags/fault/FH3SEHRTTI/OriginalABI/game unproved.",
+      "original_abi": "ECXtree/EDXunconsumed;one stackedkeyheaderptr;EAXselectedNODE;RET4. Sourceaddsactualcell/servicesrefsRET0Ch.",
+      "uncertainty": "Existing CRT parent PROVIDED-CALLEE DOMAIN only, no concrete Original CRT/locale/TLS/errno/invalid-handler closure. New Source extra references/private frames/registers/flags/fault/heap/FH3SEHRTTI/binaryABI/runtime/game identity unproved.",
+      "kind": "whole_ordinary_existing_CRT_parent_provided_callee_domain",
+      "bytes": 83,
+      "instruction_starts": 36
+    },
+    {
+      "address": "0069cdb0",
+      "name": "lower_bound_native_input_preset_tree_0069cdb0",
+      "source": "src/native_input_string_tree_lower_bounds.cpp",
+      "header": "include/bsp/native_input_string_tree_lower_bounds.hpp",
+      "library_name": "STL_Tree_Lbound_StrKeyCI_N2C_0069cdb0",
+      "status": "complete_whole_source_existing_CRT_parent_provided_callee_domain_build_tested",
+      "domain": "existing_CRT_parent_provided_callee_domain",
+      "nil_offset": 41,
+      "evidence": "Hypothesis, not recovered symbol. Whole83B36, fixednil21/29 individualbody; NativeECXtree/EDXunused/onekeyheaderstackptr/EAXselectedNODE/RET4, NOTiterator/output; storedGhidraprotounspecified/notrepaired. Sourceaddsborrowedactual0109DE1Cref andEXISTINGNativeCrtStricmpCallees/RET0C; existing_CRT_parent_provided_callee_domain. ActualpublishedBF7FBF parent preserveszero/nonzero/errno/invalid/localecontracts; no concreteCRTclosure/newprovider/defaultadapter/443D00/currentstricmp/ascii-onlysubstitution. Nilrootbeforekeyreads/currentcount-highbit/datareadorder/signeddescent/candidate-beforeleft exact. Freshowned166PE/liveB72+readonly133B56/131currentqueries; actualCMake232B108/2REL32/allreviewed; defaultWin32existing3/3pass9.11s. docs/OCT15_NATIVE_INPUT_STRING_TREE_LOWER_BOUNDS.md;reports/oct15_native_input_string_tree_lower_bounds.json. CRTservices/locale/TLS/errno/handlerownership/privateframe/flags/fault/FH3SEHRTTI/OriginalABI/game unproved.",
+      "original_abi": "ECXtree/EDXunconsumed;one stackedkeyheaderptr;EAXselectedNODE;RET4. Sourceaddsactualcell/servicesrefsRET0Ch.",
+      "uncertainty": "Existing CRT parent PROVIDED-CALLEE DOMAIN only, no concrete Original CRT/locale/TLS/errno/invalid-handler closure. New Source extra references/private frames/registers/flags/fault/heap/FH3SEHRTTI/binaryABI/runtime/game identity unproved.",
+      "kind": "whole_ordinary_existing_CRT_parent_provided_callee_domain",
+      "bytes": 83,
+      "instruction_starts": 36
+    }
+  ],
+  "fresh_native_proof": {
+    "path": "local/oct15_native_input_string_tree_lower_bounds_native_audit.json",
+    "sha256": "ddb85722e0a856a886d2e66f788c3da6eebe652235b7b581137309d9fae45e7d",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "units": [
+      {
+        "address": "0069ce30",
+        "bytes": 83,
+        "starts": 36,
+        "sha256": "dc230d37b1da6a05a3b9b1611b5d67f9b6e099964ef34a870cdc7a973b9d9ed5",
+        "raw_hex": "8b410453568b7004807e21008bd8753e578b7c2410837e0c0075088b07f7d81bc0eb15833f0074198b47048b4e105051e85ab1550083c40885c07d058b7608eb048bde8b36807e210074ca8bc35f5e5bc20400",
+        "PE_live_equal": true,
+        "typed_body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "83",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "0069ce30"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "0069ce82"
+              },
+              "length": "83"
+            }
+          ]
+        },
+        "Source_owned": true,
+        "fresh_PE_live_equal": true
+      },
+      {
+        "address": "0069cdb0",
+        "bytes": 83,
+        "starts": 36,
+        "sha256": "12ab58df763adcd1e5091e5fa4b0bf9370809ed701d876040838f81ca520c199",
+        "raw_hex": "8b410453568b7004807e29008bd8753e578b7c2410837e0c0075088b07f7d81bc0eb15833f0074198b47048b4e105051e8dab1550083c40885c07d058b7608eb048bde8b36807e290074ca8bc35f5e5bc20400",
+        "PE_live_equal": true,
+        "typed_body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "83",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "0069cdb0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "0069ce02"
+              },
+              "length": "83"
+            }
+          ]
+        },
+        "Source_owned": true,
+        "fresh_PE_live_equal": true
+      },
+      {
+        "address": "00bf7fbf",
+        "bytes": 80,
+        "starts": 32,
+        "raw_hex": "558bec5633f639351cde09017530397508751fe8b47b00005656565656c70016000000e808e7ffff83c414b8ffffff7feb1b39750c74dc5e5de9bafeffff56ff750cff7508e8e3feffff83c40c5e5dc3",
+        "sha256": "59368fa18343310b9ad2c79521361749d54ef8c2a78fd837a44be5ce67efaf6a",
+        "typed_body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "80",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00bf7fbf"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00bf800e"
+              },
+              "length": "80"
+            }
+          ]
+        },
+        "Source_owned": false,
+        "fresh_PE_live_equal": true
+      },
+      {
+        "address": "00bf7eb7",
+        "bytes": 53,
+        "starts": 24,
+        "raw_hex": "8b542408568b742408570fb6068d48bf4683f919770383c0200fb60a8d79bf4283ff19770383c12085c074043bc174da5f2bc15ec3",
+        "sha256": "7e5823046cef634a0ef6fed149abc1c7db3f092b8af301b9397e15696e25c086",
+        "typed_body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "53",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00bf7eb7"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00bf7eeb"
+              },
+              "length": "53"
+            }
+          ]
+        },
+        "Source_owned": false,
+        "fresh_PE_live_equal": true
+      }
+    ],
+    "owned_bytes": 166,
+    "owned_starts": 72,
+    "readonly_support_bytes": 133,
+    "readonly_support_starts": 56,
+    "comparison": {
+      "different_fixed_nil_displacements": [
+        10,
+        71
+      ],
+      "call_operand_bytes": [
+        49,
+        50,
+        51,
+        52
+      ],
+      "other_equal_bytes": 77,
+      "raw_bytes_preserved": true,
+      "no_runtime_offset_or_generic_delegate": true
+    },
+    "typed_capture": {
+      "path": "local/oct15_native_input_string_tree_lower_bounds_typed.json",
+      "sha256": "ffbe1a0668df599d7a23aade111a39dcd7fd566a835de8d17996d376709cd793",
+      "modification_number": "5426"
+    },
+    "current_starts": {
+      "path": "local/oct15_native_input_string_tree_lower_bounds_current_starts.json",
+      "sha256": "55e32c20df18bd9d98608dbf63926fb0eb15d259e7e30fc779c812758b382e21",
+      "queries": 131
+    },
+    "Root_inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct15_controller_lower_bound_readiness.json",
+        "sha256": "1add138aea5854ac9916fd9e4175845d8a4aea2ab14cc359ac65b954d8963866"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct15_controller_lower_bound_typed.json",
+        "sha256": "5f1e2baff747e0d11e0d3a6cad880d089e6b21fef6d90c371aad2b0747aef4eb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct15_controller_lower_bound_starts.json",
+        "sha256": "4388d7fa4637ddc4829b26350f7c06980032f33faa8894e174fbd1d2706f1766"
+      }
+    ]
+  },
+  "host_steps": [
+    {
+      "address": "0069ce60",
+      "native": "00bf7fbf",
+      "function": "0069ce30",
+      "kind": "call",
+      "scope": "owned_lower_bound"
+    },
+    {
+      "address": "0069cde0",
+      "native": "00bf7fbf",
+      "function": "0069cdb0",
+      "kind": "call",
+      "scope": "owned_lower_bound"
+    }
+  ],
+  "readonly_support_steps": [
+    {
+      "address": "00bf7fd2",
+      "native": "00bffb8b",
+      "function": "00bf7fbf",
+      "kind": "call",
+      "scope": "readonly_existing_CRT_parent_support"
+    },
+    {
+      "address": "00bf7fe2",
+      "native": "00bf66ef",
+      "function": "00bf7fbf",
+      "kind": "call",
+      "scope": "readonly_existing_CRT_parent_support"
+    },
+    {
+      "address": "00bf7ff8",
+      "native": "00bf7eb7",
+      "function": "00bf7fbf",
+      "kind": "tail_jump",
+      "scope": "readonly_existing_CRT_parent_support"
+    },
+    {
+      "address": "00bf8004",
+      "native": "00bf7eec",
+      "function": "00bf7fbf",
+      "kind": "call",
+      "scope": "readonly_existing_CRT_parent_support"
+    }
+  ],
+  "native_phase_contracts": [
+    "InitialH=tree4,root=H4,nil21/29 tested BEFOREanykey/headerread; emptynilroot returnscapturedH.",
+    "RetaincandidateH thenonnotless candidate=currentnodeBEFORECURRENTleft0; less choosesCURRENTright8; testnewnodenil afterdescent,headneverreloads.",
+    "CURRENTnodekeylenC0 -> CURRENTkeylen0; comparison -1iffkeylennonzero,else0; nonemptynode/emptykey takesleftwithoutdataread.",
+    "Bothnonempty captureCURRENTkeydata4 BEFORECURRENTnodedata10; callactualBF7FBF(leftnodedata,rightkeydata); signedresult<0right elsecandidate/left.",
+    "No pointer-null/stringlength-bound/owner/iteratorvalidation, keyguard, countwrite, payloadcleanup orlocalEH."
+  ],
+  "existing_parent_contract": {
+    "provider": "compare_native_crt_strings_00bf7fbf",
+    "header": "bsp/native_crt_stricmp.hpp",
+    "cell": "borrowed constvolatileint32& actual0109DE1C; sampledinsideparentonlywhenreached",
+    "services": "EXISTING NativeCrtStricmpCallees&;no newinterface/defaultadapter",
+    "zero": "valid->existingASCII;null->actualerrno22/invalidfivezero/INTMAXonlynormalreturn",
+    "nonzero": "BF7EECprovidedlocale withunchangedpointers/nullthirdarg, evenifinputsnull",
+    "not_closed": [
+      "Originallocale/TLS/errno/invalidhandlerownership",
+      "concreteBF7EECservices"
+    ],
+    "different_callee_not_used": "443D00/currentCRT header comparator"
+  },
+  "provider_fingerprints": {
+    "src/native_crt_stricmp.cpp": {
+      "physical_sha256": "e706069c71de1de114a98ed21cc37832fc0a3f1c00bb52ef8992e2f7422d1c8d",
+      "LF_sha256": "e706069c71de1de114a98ed21cc37832fc0a3f1c00bb52ef8992e2f7422d1c8d",
+      "published_Main_equal": true,
+      "scope": "existing_parent_or_ASCII_provider"
+    },
+    "include/bsp/native_crt_stricmp.hpp": {
+      "physical_sha256": "f09ff088480b1db82a49dc5d185956062fd5118e3cb7b70e008c04726a59b92f",
+      "LF_sha256": "f09ff088480b1db82a49dc5d185956062fd5118e3cb7b70e008c04726a59b92f",
+      "published_Main_equal": true,
+      "scope": "existing_parent_or_ASCII_provider"
+    },
+    "src/native_crt_ascii_stricmp.cpp": {
+      "physical_sha256": "3fe3b237b778e9500e30c11dbbb43f295c24915a2836bd097ceec04760125368",
+      "LF_sha256": "3fe3b237b778e9500e30c11dbbb43f295c24915a2836bd097ceec04760125368",
+      "published_Main_equal": true,
+      "scope": "existing_parent_or_ASCII_provider"
+    },
+    "include/bsp/native_crt_ascii_stricmp.hpp": {
+      "physical_sha256": "b62a16f1efbfc03d33e61eb33250885af5ccca224303f8f8cd959883dc97a3e9",
+      "LF_sha256": "b62a16f1efbfc03d33e61eb33250885af5ccca224303f8f8cd959883dc97a3e9",
+      "published_Main_equal": true,
+      "scope": "existing_parent_or_ASCII_provider"
+    },
+    "src/native_vfs_date_leaf_providers.cpp": {
+      "physical_sha256": "8a3615bec143538b10b50448e9e44948f3f36374b33cdc6878ad50de27f36559",
+      "LF_sha256": "8a3615bec143538b10b50448e9e44948f3f36374b33cdc6878ad50de27f36559",
+      "published_Main_equal": true,
+      "scope": "readonly_different_443D00_scope_not_called"
+    },
+    "include/bsp/native_vfs_date_leaf_providers.hpp": {
+      "physical_sha256": "ab6ba39ac240f79db04b7eb083eec54b58e27a93973c421d4fb03147b7a0a3e0",
+      "LF_sha256": "ab6ba39ac240f79db04b7eb083eec54b58e27a93973c421d4fb03147b7a0a3e0",
+      "published_Main_equal": true,
+      "scope": "readonly_different_443D00_scope_not_called"
+    }
+  },
+  "actual_CMake_COFF_review": {
+    "path": "local/oct15_native_input_string_tree_lower_bounds_cmake_coff_review.json",
+    "sha256": "4f6e9eb365f83774dd508fe821fab21a53e6968e08976f9d56f62cb8fdf32a99",
+    "frozen_object": "local/oct15_native_input_string_tree_lower_bounds_frozen.obj",
+    "object_sha256": "932ec2c70ad423bb109cfb8c7f07eb16cc59f0241ebd360fdfbb1e7b2edaeab6",
+    "code_bytes": 232,
+    "physical_instructions": 108,
+    "code_sections": 6,
+    "public_each": {
+      "bytes": 90,
+      "instructions": 41,
+      "RET": "0C"
+    },
+    "helpers": {
+      "bytes": 52,
+      "instructions": 26
+    },
+    "code_REL32": 2,
+    "data_relocations": 0,
+    "local_EH": false,
+    "padding_in_code": false,
+    "entire_code_helpers_data_relocations_returns_reviewed": true,
+    "sections": [
+      {
+        "number": 1,
+        "name": ".drectve",
+        "bytes": 47,
+        "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab",
+        "flags": "00100a00",
+        "functions": [],
+        "relocations": []
+      },
+      {
+        "number": 2,
+        "name": ".debug$S",
+        "bytes": 216,
+        "sha256": "c1763d2a6a3c9eed3dbccb764626a88c6235e5807d875f4e99e774a0bdc05f23",
+        "flags": "42100040",
+        "functions": [],
+        "relocations": []
+      },
+      {
+        "number": 3,
+        "name": ".text$mn",
+        "bytes": 15,
+        "sha256": "38c6b81a27b1cb686750da476220d441045b5bf9ebbc9961638af235d7191dc0",
+        "flags": "60501020",
+        "functions": [
+          {
+            "index": 23,
+            "name": "?controller_nil@?A0x07505108@bsp@@YA_NPBX@Z",
+            "value": 0,
+            "section": 3,
+            "type": 32,
+            "storage_class": 3,
+            "aux_count": 0
+          }
+        ],
+        "relocations": []
+      },
+      {
+        "number": 4,
+        "name": ".text$mn",
+        "bytes": 90,
+        "sha256": "71f12be01d9f0e8dc9150000fce27445cae87d4ee53c855d402eb69a21de8d18",
+        "flags": "60501020",
+        "functions": [
+          {
+            "index": 18,
+            "name": "?lower_bound_native_input_controller_tree_0069ce30@bsp@@YIPAXPAXIPBXADHAAVNativeCrtStricmpCallees@1@@Z",
+            "value": 0,
+            "section": 4,
+            "type": 32,
+            "storage_class": 2,
+            "aux_count": 0
+          }
+        ],
+        "relocations": [
+          {
+            "offset": 55,
+            "type": 20,
+            "symbol": "?compare_native_crt_strings_00bf7fbf@bsp@@YAHPBD0ADHAAVNativeCrtStricmpCallees@1@@Z",
+            "symbol_index": 20
+          }
+        ]
+      },
+      {
+        "number": 5,
+        "name": ".text$mn",
+        "bytes": 90,
+        "sha256": "e780ee65bc21e0d201a987f63d27ecf3459764144c77e870849b3f4c7fe6502e",
+        "flags": "60501020",
+        "functions": [
+          {
+            "index": 19,
+            "name": "?lower_bound_native_input_preset_tree_0069cdb0@bsp@@YIPAXPAXIPBXADHAAVNativeCrtStricmpCallees@1@@Z",
+            "value": 0,
+            "section": 5,
+            "type": 32,
+            "storage_class": 2,
+            "aux_count": 0
+          }
+        ],
+        "relocations": [
+          {
+            "offset": 55,
+            "type": 20,
+            "symbol": "?compare_native_crt_strings_00bf7fbf@bsp@@YAHPBD0ADHAAVNativeCrtStricmpCallees@1@@Z",
+            "symbol_index": 20
+          }
+        ]
+      },
+      {
+        "number": 6,
+        "name": ".text$mn",
+        "bytes": 8,
+        "sha256": "d5a2b635b0bbb254914f2641e4508361a0c95686c0422dcebeb3abbcca7f1d2b",
+        "flags": "60501020",
+        "functions": [
+          {
+            "index": 22,
+            "name": "?pointer@?A0x07505108@bsp@@YAPAXI@Z",
+            "value": 0,
+            "section": 6,
+            "type": 32,
+            "storage_class": 3,
+            "aux_count": 0
+          }
+        ],
+        "relocations": []
+      },
+      {
+        "number": 7,
+        "name": ".text$mn",
+        "bytes": 15,
+        "sha256": "b2702bdeb4a396b47cbf33fbde11bc9db1a22c0d17c84baeb2f97f9d540bbe8f",
+        "flags": "60501020",
+        "functions": [
+          {
+            "index": 24,
+            "name": "?preset_nil@?A0x07505108@bsp@@YA_NPBX@Z",
+            "value": 0,
+            "section": 7,
+            "type": 32,
+            "storage_class": 3,
+            "aux_count": 0
+          }
+        ],
+        "relocations": []
+      },
+      {
+        "number": 8,
+        "name": ".text$mn",
+        "bytes": 14,
+        "sha256": "968c17a0375a47c786e584c230018ee9ddbb72bfbd8b42d8ffe49fefcecff650",
+        "flags": "60501020",
+        "functions": [
+          {
+            "index": 21,
+            "name": "?word@?A0x07505108@bsp@@YAIPBXI@Z",
+            "value": 0,
+            "section": 8,
+            "type": 32,
+            "storage_class": 3,
+            "aux_count": 0
+          }
+        ],
+        "relocations": []
+      },
+      {
+        "number": 9,
+        "name": ".chks64",
+        "bytes": 72,
+        "sha256": "325d2b8ab58a380ca70e837465cd81ae49a93fa7b4ce44a7cb7b6979d363cdcf",
+        "flags": "00000a00",
+        "functions": [],
+        "relocations": []
+      }
+    ]
+  },
+  "compiled_scheduling": {
+    "both_public": "head5/root8/nilB/JNEF beforekeypointer12/count15/1A; keydata2B beforenodedata31;parentCALL36; signedJNS40;right42;candidate47beforeleft49;newnil4B;RET0C57.",
+    "shared_key_count": "Compileralwaysreadskeycount1A afternodecount15 acrossbothbranches;samepublicreadorder, privateflags/controlmaterializationunproved.",
+    "extra_args": "Source servicesptr28/cellptr2E are privateparameterloads; actualcellvalue readstaysinsideparent; Originalprivatehomes/ABI/faultscopeunproved.",
+    "frame": "AllSourceEBP compilerframes; noNativeframe emulation."
+  },
+  "static_review_checks": [
+    {
+      "id": 1,
+      "passed": true,
+      "evidence": "Fresh published ancestry containing2cc verified before Source; exact2address/4file lease and explicit provided-domain authorization."
+    },
+    {
+      "id": 2,
+      "passed": true,
+      "evidence": "All72 owned Native instructions independently read; RET4/onekeypointer/EAXnode ABI recovered despite unspecified stored prototypes."
+    },
+    {
+      "id": 3,
+      "passed": true,
+      "evidence": "Two individually fixed21/29 bodies; no generic algorithm/runtime nil/layout/Kind/model/callback/interface bridge."
+    },
+    {
+      "id": 4,
+      "passed": true,
+      "evidence": "Initialhead/root capture once; nilroot returnscapturedhead beforekeypointer/headerfield reads inactualCOFF."
+    },
+    {
+      "id": 5,
+      "passed": true,
+      "evidence": "CURRENTnodeC/key0 counts exact, including all high-bit nonzero values through NEG/SBB equivalence."
+    },
+    {
+      "id": 6,
+      "passed": true,
+      "evidence": "Nonemptynode/emptykey takesleftwithoutdata; bothnonemptykeydata4 capturedBEFOREnodedata10."
+    },
+    {
+      "id": 7,
+      "passed": true,
+      "evidence": "Only published BF7FBF parent Source called, nodeleft/keyright, same actualcell/services references."
+    },
+    {
+      "id": 8,
+      "passed": true,
+      "evidence": "Zero mode retainsvalidASCII andnullerrno22/fivezero invalid/INTMAX-after-normalreturn requirements."
+    },
+    {
+      "id": 9,
+      "passed": true,
+      "evidence": "Nonzero mode retains locale delegate withunchangednulls/nullthirdlocale; supplied CRT/TLS/errno/handler ownership remainsdomain."
+    },
+    {
+      "id": 10,
+      "passed": true,
+      "evidence": "Signedresult<0 readsCURRENTright8; otherwisecandidate=currentnodeBEFORECURRENTleft0;newniltestafterdescent/noheadreload."
+    },
+    {
+      "id": 11,
+      "passed": true,
+      "evidence": "No validation/countwrite/payloadcleanup/localEH/rollback; suppliedcalleeexceptionprogress retained."
+    },
+    {
+      "id": 12,
+      "passed": true,
+      "evidence": "Freshowned166B72+readonly133B56 exactPE/live/typed bodies andall131 currentstart/target queries agree."
+    },
+    {
+      "id": 13,
+      "passed": true,
+      "evidence": "FullactualCOFF232B108/6code sections/helpers/2REL32/noEH/datareloc/padding read; actualparentbinding andRET0C qualified."
+    },
+    {
+      "id": 14,
+      "passed": true,
+      "evidence": "All6 publishedproviderLF fingerprints equal; preserved443D00filesdifferentcallee/notcalled; no inventedglobal/defaultprovider."
+    },
+    {
+      "id": 15,
+      "passed": true,
+      "evidence": "DefaultMSVCWin32exit0/existing3of3pass9.11s; no newtests/probes/Nativeexecution."
+    },
+    {
+      "id": 16,
+      "passed": true,
+      "evidence": "All69priorfrozenartifacts unchanged; Source/status explicitlyprovided-domain; onlyownedledger/CMake append, noGhidra/push."
+    }
+  ],
+  "verification": {
+    "command": "./scripts/build.ps1",
+    "default_MSVC_Win32": true,
+    "exit_code": 0,
+    "existing_suites": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "passed": 3,
+    "failed": 0,
+    "ctest_seconds": 9.11,
+    "new_tests": 0,
+    "new_probes": 0,
+    "Native_execution": false,
+    "canonical_calls": {
+      "command": "python tools/verify_report_calls.py reports/oct15_native_input_string_tree_lower_bounds.json docs/OCT15_NATIVE_INPUT_STRING_TREE_LOWER_BOUNDS.md",
+      "exit_code": 0,
+      "JSON_rows_checked": 6,
+      "owned_rows": 2,
+      "readonly_existing_parent_support_rows": 4,
+      "JSON_failed": 0,
+      "Markdown_claims_checked": 2,
+      "Markdown_failed": 0,
+      "Markdown_unchecked": 0,
+      "Markdown_warnings": 0
+    }
+  },
+  "ledger": {
+    "names": [
+      {
+        "address": "0069ce30",
+        "name": "STL_Tree_Lbound_StrKeyCI_N24_0069ce30",
+        "previous_Ghidra_name": "STL_Tree_Lbound_StrKeyCI_N24_0069ce30",
+        "append_evidence": true,
+        "evidence": "Hypothesis, not recovered symbol. Whole83B36, fixednil21/29 individualbody; NativeECXtree/EDXunused/onekeyheaderstackptr/EAXselectedNODE/RET4, NOTiterator/output; storedGhidraprotounspecified/notrepaired. Sourceaddsborrowedactual0109DE1Cref andEXISTINGNativeCrtStricmpCallees/RET0C; existing_CRT_parent_provided_callee_domain. ActualpublishedBF7FBF parent preserveszero/nonzero/errno/invalid/localecontracts; no concreteCRTclosure/newprovider/defaultadapter/443D00/currentstricmp/ascii-onlysubstitution. Nilrootbeforekeyreads/currentcount-highbit/datareadorder/signeddescent/candidate-beforeleft exact. Freshowned166PE/liveB72+readonly133B56/131currentqueries; actualCMake232B108/2REL32/allreviewed; defaultWin32existing3/3pass9.11s. docs/OCT15_NATIVE_INPUT_STRING_TREE_LOWER_BOUNDS.md;reports/oct15_native_input_string_tree_lower_bounds.json. CRTservices/locale/TLS/errno/handlerownership/privateframe/flags/fault/FH3SEHRTTI/OriginalABI/game unproved."
+      },
+      {
+        "address": "0069cdb0",
+        "name": "STL_Tree_Lbound_StrKeyCI_N2C_0069cdb0",
+        "previous_Ghidra_name": "STL_Tree_Lbound_StrKeyCI_N2C_0069cdb0",
+        "append_evidence": true,
+        "evidence": "Hypothesis, not recovered symbol. Whole83B36, fixednil21/29 individualbody; NativeECXtree/EDXunused/onekeyheaderstackptr/EAXselectedNODE/RET4, NOTiterator/output; storedGhidraprotounspecified/notrepaired. Sourceaddsborrowedactual0109DE1Cref andEXISTINGNativeCrtStricmpCallees/RET0C; existing_CRT_parent_provided_callee_domain. ActualpublishedBF7FBF parent preserveszero/nonzero/errno/invalid/localecontracts; no concreteCRTclosure/newprovider/defaultadapter/443D00/currentstricmp/ascii-onlysubstitution. Nilrootbeforekeyreads/currentcount-highbit/datareadorder/signeddescent/candidate-beforeleft exact. Freshowned166PE/liveB72+readonly133B56/131currentqueries; actualCMake232B108/2REL32/allreviewed; defaultWin32existing3/3pass9.11s. docs/OCT15_NATIVE_INPUT_STRING_TREE_LOWER_BOUNDS.md;reports/oct15_native_input_string_tree_lower_bounds.json. CRTservices/locale/TLS/errno/handlerownership/privateframe/flags/fault/FH3SEHRTTI/OriginalABI/game unproved."
+      }
+    ],
+    "functions": [
+      {
+        "address": "0069ce30",
+        "name": "lower_bound_native_input_controller_tree_0069ce30",
+        "source": "src/native_input_string_tree_lower_bounds.cpp",
+        "header": "include/bsp/native_input_string_tree_lower_bounds.hpp",
+        "library_name": "STL_Tree_Lbound_StrKeyCI_N24_0069ce30",
+        "status": "complete_whole_source_existing_CRT_parent_provided_callee_domain_build_tested",
+        "domain": "existing_CRT_parent_provided_callee_domain",
+        "nil_offset": 33,
+        "evidence": "Hypothesis, not recovered symbol. Whole83B36, fixednil21/29 individualbody; NativeECXtree/EDXunused/onekeyheaderstackptr/EAXselectedNODE/RET4, NOTiterator/output; storedGhidraprotounspecified/notrepaired. Sourceaddsborrowedactual0109DE1Cref andEXISTINGNativeCrtStricmpCallees/RET0C; existing_CRT_parent_provided_callee_domain. ActualpublishedBF7FBF parent preserveszero/nonzero/errno/invalid/localecontracts; no concreteCRTclosure/newprovider/defaultadapter/443D00/currentstricmp/ascii-onlysubstitution. Nilrootbeforekeyreads/currentcount-highbit/datareadorder/signeddescent/candidate-beforeleft exact. Freshowned166PE/liveB72+readonly133B56/131currentqueries; actualCMake232B108/2REL32/allreviewed; defaultWin32existing3/3pass9.11s. docs/OCT15_NATIVE_INPUT_STRING_TREE_LOWER_BOUNDS.md;reports/oct15_native_input_string_tree_lower_bounds.json. CRTservices/locale/TLS/errno/handlerownership/privateframe/flags/fault/FH3SEHRTTI/OriginalABI/game unproved.",
+        "original_abi": "ECXtree/EDXunconsumed;one stackedkeyheaderptr;EAXselectedNODE;RET4. Sourceaddsactualcell/servicesrefsRET0Ch.",
+        "uncertainty": "Existing CRT parent PROVIDED-CALLEE DOMAIN only, no concrete Original CRT/locale/TLS/errno/invalid-handler closure. New Source extra references/private frames/registers/flags/fault/heap/FH3SEHRTTI/binaryABI/runtime/game identity unproved."
+      },
+      {
+        "address": "0069cdb0",
+        "name": "lower_bound_native_input_preset_tree_0069cdb0",
+        "source": "src/native_input_string_tree_lower_bounds.cpp",
+        "header": "include/bsp/native_input_string_tree_lower_bounds.hpp",
+        "library_name": "STL_Tree_Lbound_StrKeyCI_N2C_0069cdb0",
+        "status": "complete_whole_source_existing_CRT_parent_provided_callee_domain_build_tested",
+        "domain": "existing_CRT_parent_provided_callee_domain",
+        "nil_offset": 41,
+        "evidence": "Hypothesis, not recovered symbol. Whole83B36, fixednil21/29 individualbody; NativeECXtree/EDXunused/onekeyheaderstackptr/EAXselectedNODE/RET4, NOTiterator/output; storedGhidraprotounspecified/notrepaired. Sourceaddsborrowedactual0109DE1Cref andEXISTINGNativeCrtStricmpCallees/RET0C; existing_CRT_parent_provided_callee_domain. ActualpublishedBF7FBF parent preserveszero/nonzero/errno/invalid/localecontracts; no concreteCRTclosure/newprovider/defaultadapter/443D00/currentstricmp/ascii-onlysubstitution. Nilrootbeforekeyreads/currentcount-highbit/datareadorder/signeddescent/candidate-beforeleft exact. Freshowned166PE/liveB72+readonly133B56/131currentqueries; actualCMake232B108/2REL32/allreviewed; defaultWin32existing3/3pass9.11s. docs/OCT15_NATIVE_INPUT_STRING_TREE_LOWER_BOUNDS.md;reports/oct15_native_input_string_tree_lower_bounds.json. CRTservices/locale/TLS/errno/handlerownership/privateframe/flags/fault/FH3SEHRTTI/OriginalABI/game unproved.",
+        "original_abi": "ECXtree/EDXunconsumed;one stackedkeyheaderptr;EAXselectedNODE;RET4. Sourceaddsactualcell/servicesrefsRET0Ch.",
+        "uncertainty": "Existing CRT parent PROVIDED-CALLEE DOMAIN only, no concrete Original CRT/locale/TLS/errno/invalid-handler closure. New Source extra references/private frames/registers/flags/fault/heap/FH3SEHRTTI/binaryABI/runtime/game identity unproved."
+      }
+    ]
+  },
+  "registration": "Onebsp_coreappend; sharedregistriesnotleased.",
+  "frozen_artifacts": [
+    {
+      "path": "src/native_input_string_tree_lower_bounds.cpp",
+      "bytes": 3614,
+      "sha256": "6ce5dbb10d94e21d430c0cb205dac028e27bae4c041df91cea1607ba9d8bfa30",
+      "LF_normalized_sha256": "6ce5dbb10d94e21d430c0cb205dac028e27bae4c041df91cea1607ba9d8bfa30"
+    },
+    {
+      "path": "include/bsp/native_input_string_tree_lower_bounds.hpp",
+      "bytes": 2316,
+      "sha256": "291fa7bafc2f5239119fd99ac3f36b68879cd7c3175e93c0f0e1cdbf517dffbb",
+      "LF_normalized_sha256": "291fa7bafc2f5239119fd99ac3f36b68879cd7c3175e93c0f0e1cdbf517dffbb"
+    },
+    {
+      "path": "docs/OCT15_NATIVE_INPUT_STRING_TREE_LOWER_BOUNDS.md",
+      "bytes": 5058,
+      "sha256": "69636f057f91354740b240d3ffa14d2b141fcc7f5599085aa3013a6f662d7458",
+      "LF_normalized_sha256": "69636f057f91354740b240d3ffa14d2b141fcc7f5599085aa3013a6f662d7458"
+    },
+    {
+      "path": "local/oct15_native_input_string_tree_lower_bounds_native_audit.json",
+      "bytes": 40665,
+      "sha256": "ddb85722e0a856a886d2e66f788c3da6eebe652235b7b581137309d9fae45e7d",
+      "LF_normalized_sha256": "ddb85722e0a856a886d2e66f788c3da6eebe652235b7b581137309d9fae45e7d"
+    },
+    {
+      "path": "local/oct15_native_input_string_tree_lower_bounds_typed.json",
+      "bytes": 26089,
+      "sha256": "ffbe1a0668df599d7a23aade111a39dcd7fd566a835de8d17996d376709cd793",
+      "LF_normalized_sha256": "ffbe1a0668df599d7a23aade111a39dcd7fd566a835de8d17996d376709cd793"
+    },
+    {
+      "path": "local/oct15_native_input_string_tree_lower_bounds_current_starts.json",
+      "bytes": 20624,
+      "sha256": "55e32c20df18bd9d98608dbf63926fb0eb15d259e7e30fc779c812758b382e21",
+      "LF_normalized_sha256": "55e32c20df18bd9d98608dbf63926fb0eb15d259e7e30fc779c812758b382e21"
+    },
+    {
+      "path": "local/oct15_native_input_string_tree_lower_bounds_published_providers.json",
+      "bytes": 2197,
+      "sha256": "2f0b4975b0ff5f7e6a6d569dc79391804841c73a4de226abe1348e6b7ad36150",
+      "LF_normalized_sha256": "2f0b4975b0ff5f7e6a6d569dc79391804841c73a4de226abe1348e6b7ad36150"
+    },
+    {
+      "path": "local/oct15_native_input_string_tree_lower_bounds_cmake_coff_review.json",
+      "bytes": 27297,
+      "sha256": "4f6e9eb365f83774dd508fe821fab21a53e6968e08976f9d56f62cb8fdf32a99",
+      "LF_normalized_sha256": "c889a462f78ffd128740b83f5210aa20c3e8cae158a71dc030cd1f7d5de5d516"
+    },
+    {
+      "path": "local/oct15_native_input_string_tree_lower_bounds_cmake_coff_decoded.txt",
+      "bytes": 6354,
+      "sha256": "3b568e81ac90be409d36ce97226dfb7e89c5ca2125e34d0e3b6cba4789ae58b7",
+      "LF_normalized_sha256": "74cdd18511fafc02295b5fe47e3b2b294e4ec5456b4aed43606b1e3340d07802"
+    },
+    {
+      "path": "local/oct15_native_input_string_tree_lower_bounds_frozen.obj",
+      "bytes": 1897,
+      "sha256": "932ec2c70ad423bb109cfb8c7f07eb16cc59f0241ebd360fdfbb1e7b2edaeab6",
+      "LF_normalized_sha256": "932ec2c70ad423bb109cfb8c7f07eb16cc59f0241ebd360fdfbb1e7b2edaeab6"
+    },
+    {
+      "path": "local/oct15_native_input_string_tree_lower_bounds_build.log",
+      "bytes": 3573,
+      "sha256": "f3b54fbd7aa075bf4f0f488ffe7463b8710bb6d34d8e92367f723845bc542cba",
+      "LF_normalized_sha256": "7a766afc5c2aef05dabe86a8f700f72701c2159288480bd1f0e47f7d5d5a8256"
+    },
+    {
+      "path": "local/oct15_native_input_string_tree_lower_bounds_build_exit.txt",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "LF_normalized_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "local/oct15_native_input_string_tree_lower_bounds_ledger_records.json",
+      "bytes": 6107,
+      "sha256": "3d2565f0add52457b943755a987da6045299772d16c0df2e21c7874ba89a0aae",
+      "LF_normalized_sha256": "3d2565f0add52457b943755a987da6045299772d16c0df2e21c7874ba89a0aae"
+    }
+  ],
+  "preservation": [
+    {
+      "report": "reports/oct15_input_int_string_tree_erase.json",
+      "sha256": "6c704cc197738ccde0214be0b6a449f2d54a8aee2a5c1056838393789d82bcd8",
+      "frozen_artifact_count": 15,
+      "all_unchanged": true
+    },
+    {
+      "report": "reports/oct15_input_int_string_tree_range.json",
+      "sha256": "3b2d515cf6c1429ce410872e86985a48f3ab61c2ead060dcb21f1c23580d6f40",
+      "frozen_artifact_count": 13,
+      "all_unchanged": true
+    },
+    {
+      "report": "reports/oct15_native_input_controller_name_pair_destroy.json",
+      "sha256": "9d857066bc0d287f7b1a4268e0e7089e73bf230282703be6f4768d4dd5390865",
+      "frozen_artifact_count": 14,
+      "all_unchanged": true
+    },
+    {
+      "report": "reports/oct15_native_input_controller_tree_erase.json",
+      "sha256": "c6223451f5f6ab0941abc6669990e36b55e78bc180a5435493f1be2b623972dc",
+      "frozen_artifact_count": 14,
+      "all_unchanged": true
+    },
+    {
+      "report": "reports/oct15_native_input_controller_tree_range.json",
+      "sha256": "8c1a023100a559aaeb05a573be817ce463d21fb29245faa98047cc080b7b2212",
+      "frozen_artifact_count": 13,
+      "all_unchanged": true
+    }
+  ],
+  "out_of_scope": [
+    "BF7FBFadditionalSource",
+    "BF7EB7additionalSource",
+    "BF7EEC/errno/TLS/invalid concreteclosure",
+    "443D00substitution",
+    "existingAVtypedreplacement",
+    "Ghidramutation",
+    "newtests/probes/Nativeexecution",
+    "push"
+  ],
+  "limits": "Existing CRT parent PROVIDED-CALLEE DOMAIN only, no concrete Original CRT/locale/TLS/errno/invalid-handler closure. New Source extra references/private frames/registers/flags/fault/heap/FH3SEHRTTI/binaryABI/runtime/game identity unproved."
+}

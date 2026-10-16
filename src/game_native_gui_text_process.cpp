@@ -102,6 +102,43 @@ void GameNativeGuiTextProcess::initialize_types_once_00cd7210(
     type_state_ = State::returned;
 }
 
+void GameNativeGuiTextProcess::initialize_layer_type_once_00cd73f0(
+    TypeIdCounterLifetime& counter, LightTypeBootstrapStorage canonical_common_types) {
+    // Pure Source admission before native guard/name/parent/counter effects.
+    if (pool_state_ != State::returned || type_state_ != State::returned)
+        throw std::logic_error("GUI Layer type requires completed pool and Text type startup");
+    if (counter_ != &counter || root_ != &canonical_common_types.root_0109db84 ||
+        root_guard_ != &canonical_common_types.root_guard_0109db80)
+        throw std::logic_error("GUI Layer type cannot retarget its canonical root/counter domain");
+    if (layer_type_state_ == State::returned) return;
+    if (layer_type_state_ != State::unattempted)
+        throw std::logic_error("GUI Layer type startup cannot replay an entered initialization");
+    layer_type_state_ = State::threw;
+    CounterHost host(counter);
+    LightTypeBootstrap common(counter, canonical_common_types);
+    volatile auto& guard = layer_guard_00f8bf48_;
+    if (guard != 0) {
+        // Native simply returns on this guard. Within this Source owner's
+        // private loader-zero invariant, only returned metadata admits success.
+        throw std::logic_error("GUI Layer guard does not establish completed Source startup");
+    }
+    guard = 1;
+    volatile auto& layer = layer_00f8bf88_;
+    layer.native_name_address = 0x00d5cb0c;
+    initialize_element_00aa8200(element_00f8bc88_, element_guard_00f8bc80_, common, host);
+    const volatile auto& element = element_00f8bc88_;
+    // CD7414/CD7419 capture BOTH current words before CD741F/CD7424 stores.
+    const auto element_id = element.ids[0];
+    const auto root_id = element.ids[1];
+    layer.ids[1] = element_id;
+    layer.ids[2] = root_id;
+    volatile auto& actual_counter = host.counter();
+    const auto next_id = actual_counter.next_id_04;
+    actual_counter.next_id_04 = next_id + 1u;
+    layer.ids[0] = next_id; // CD7435 counter store precedes CD7438 publication.
+    layer_type_state_ = State::returned;
+}
+
 NativeGuiTextPool& GameNativeGuiTextProcess::pool_00f8bdf0() {
     std::lock_guard lock(pool_startup_mutex_);
     if (pool_state_ != State::returned)
@@ -121,8 +158,14 @@ const volatile std::uint32_t (&GameNativeGuiTextProcess::text_lineage_00f8be28()
     return text_00f8be28_.ids;
 }
 
+const volatile std::uint32_t (&GameNativeGuiTextProcess::layer_lineage_00f8bf88() const)[3] {
+    if (layer_type_state_ != State::returned)
+        throw std::logic_error("GUI Layer lineage requires complete same-domain CD73F0 startup");
+    return layer_00f8bf88_.ids;
+}
+
 bool GameNativeGuiTextProcess::native_operation_interrupted() const noexcept {
     return pool_state_ == State::threw || pool_state_ == State::retiring ||
-        type_state_ == State::threw;
+        type_state_ == State::threw || layer_type_state_ == State::threw;
 }
 } // namespace bsp::game
