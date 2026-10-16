@@ -1,0 +1,185 @@
+{
+  "packet": "cc12_native_gui_raw_camera_caller_66",
+  "status": "implemented_strict_win32_build_and_one_focused_production_source_lifetime_case_passed",
+  "requested_root": "2bbcd20d18c8c48c73f9615cb0a0b3cd718c58d7",
+  "worker_merge": "ff5e8916cf110baa79ab6c133cd465b1dbc2d7d0",
+  "document": "docs/CC12_NATIVE_GUI_RAW_CAMERA_CALLER_66.md",
+  "owned_sources": [
+    {
+      "path": "include/bsp/gui_camera_store_owner.hpp",
+      "git_blob": "75264818591ed24607e9edd67fa54a2bd904a439",
+      "sha256": "6a6f2b7dc4fddff6e1c7b3d816f2b9703e7afb19652431c01f9188d50288c073"
+    },
+    {
+      "path": "src/gui_camera_store_owner.cpp",
+      "git_blob": "c6a597406028d02433c2b0ca0e11a225a49ad1e1",
+      "sha256": "ab064dcccc09e492ebea516c78454d2003ed8cf641183e0201f98e96f3ee50a3"
+    },
+    {
+      "path": "include/bsp/native_viewport_registry.hpp",
+      "git_blob": "da7e8a658aa25ebbaf8f8e9271345a89cb0accea",
+      "sha256": "87db0f0a52558628412795fff953c28fecea5eda91fbc79588c2e6d817187f16"
+    }
+  ],
+  "original_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_batch": true,
+    "representations": [
+      "lookup",
+      "show pseudocode",
+      "show assembly entry/publication/return/destructor tail"
+    ],
+    "entries": [
+      {
+        "range": "[00b71a80,00b71cdc)",
+        "bytes": 604,
+        "abi": "ECX actual45Ch slot, stack raw8h name header, EAX same owner, RET4",
+        "evidence": "B71AA7 node; B71AD1 viewport; B71ADD publication180; state0/1/2 existing unwind; RET4 B71CD9"
+      },
+      {
+        "range": "[00b71f10,00b71fd2)",
+        "bytes": 194,
+        "abi": "ECX camera, RET",
+        "evidence": "release180/184/438 then B71FBA node; RET B71FD1"
+      },
+      {
+        "range": "[00b71fe0,00b72000)",
+        "bytes": 32,
+        "abi": "ECX owner, stack flags, EAX original slot, RET4",
+        "evidence": "complete destructor then flags low bit0 returns SAME pool slot through B711E0"
+      }
+    ],
+    "bodies_reimplemented": false,
+    "ghidra_mutations": false,
+    "ledger_mutations": false,
+    "pool_read_only_reuse": [
+      "B71770/0108FFB0",
+      "B711E0"
+    ],
+    "interface_limit": "new typed C++ Source composition, not Original caller/FH3/private exception ABI"
+  },
+  "composition": {
+    "actual_common_owner": "renderer.camera_environment() / node_constants() / viewport_registry()",
+    "normal_backing": "same VFS counter/types/raw string nodes; same canonical camera pool and installed viewport registry",
+    "raw_input": "forward exact caller header unchanged; require SAME nodes.require_raw_name_pool()",
+    "constants": "borrow actual NativeNodeRawConstants and camera environment constants; independently verify node/viewport SAME D7A24C reference",
+    "admission": "require registry == environment.viewport_views; derive actual Storage identity from validated token; require reserved phase",
+    "reference": "reuse NativeCameraReference and terminal retire_camera; actual+4/count1, no extra retain or second camera",
+    "unchanged": [
+      "semantic helper",
+      "camera construction/destruction bodies",
+      "registry cpp/state/map logic",
+      "ScreenString/store map/outer scene weak base",
+      "process pools/CMake/normal activation"
+    ]
+  },
+  "new_metadata_api": {
+    "inspector": "NativeViewportRegistry::Admission::storage_identity() const noexcept -> const Storage*",
+    "scope": "3-line registry header-only addition; no dereference/validation/mutation; null when inactive/moved/consumed",
+    "frame": "GuiCameraRawAllocation",
+    "copy_move_retry": "forbidden, single-use",
+    "retained_before_entry": [
+      "exact borrowed header",
+      "actual admission record identity",
+      "moved validated admission"
+    ],
+    "retained_after_entry": [
+      "acquired actual slot",
+      "completed prepared owner and scene binding",
+      "native constructor entry/return stage",
+      "reference before handoff"
+    ],
+    "predicate": "metadata-only externally serialized stage read, true during entry and after any entered failure",
+    "guard": "destructor terminates before Admission member destruction if interrupted",
+    "failure": "no caller rollback/native cleanup/slot return/retry; preserve all existing callee cleanup outcomes, not a promise of reserved/live phase or native liveness; host _Exit before outer manager/CRT/member drain",
+    "success": "clear header/slot/companion pointers before publication; keep borrowed record identity; no later provider/callback",
+    "caller_obligations": [
+      "persistent exact header bytes and caller temporary-name cleanup state/marker",
+      "actual viewport Storage through final release and explicit quiescent forget",
+      "pool/runtime/types/profiles/raw-name domain through terminal callbacks/shared drain"
+    ]
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "target": "MSVC Win32 Release",
+      "ctest_passed": 2,
+      "ctest_total": 2,
+      "tests": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "log": "local/cc12_native_gui_raw_camera_caller_66/build.log"
+    },
+    "focused_source_probe": {
+      "cases": 1,
+      "exit_code": 0,
+      "MD": true,
+      "manifest_embedded": true,
+      "source": "local/cc12_native_gui_raw_camera_caller_66/camera66_probe.cpp",
+      "log": "local/cc12_native_gui_raw_camera_caller_66/probe.log",
+      "checks": [
+        "actual raw-string/camera pools",
+        "counter-derived canonical types",
+        "same scene/lifetime bindings",
+        "actual reserved record/token identity and null consumed inspector",
+        "first viewport registered and same frame view",
+        "four current renderer parameter calls",
+        "exact borrowed-header independent name copy",
+        "actual +4 identity self1/retained2/logical1/terminal0 sequence",
+        "viewport live while camera retained",
+        "terminal registered viewport retirement",
+        "explicit quiescent record forget",
+        "exactly-once raw name return",
+        "same physical camera slot reuse",
+        "pool/list/string retirement",
+        "normal marker false"
+      ],
+      "controlled_services": [
+        "fixture renderer parameter identity/current dimensions",
+        "fixture CRT bypass policy plus existing legacy_crt_87except"
+      ],
+      "original_image_inputs": {
+        "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "image_base": "0x400000",
+        "constants": {
+          "0xd7a24c": "0x3f800000",
+          "0xce4970": "0x501502f9",
+          "0xce4adc": "0xd01502f9",
+          "0xce3d08": "0x42c80000",
+          "0xce7d20": "0x3f32b8c3",
+          "0xd0c5f8": "0x47435000",
+          "0xd5bd98": "0x3faaaaab",
+          "0xce77fc": "0x46ea6000",
+          "0xce3c88": "0x44000000"
+        }
+      },
+      "probe_sha256": "37cbc6281920ce3b6e987e784f32e3c14c7aa1913fc0693e712aa9b1143fa318",
+      "bsp_core_sha256": "0f9eb2059e16151cece03ad4896b9c1813ed4d2e6fc1a15f3870c12f121a94fd",
+      "evidence_sha256": {
+        "camera66_probe.cpp": "f910c0a6e0e3589b7224b6883e97c4da18a3d072a5bb8fc07f33112452f33668",
+        "prepare_probe_data.py": "4bc9fcef08407d20326048196b8d47824a8cd95be7a50b87308cd23eeb772c2e",
+        "run-probe.cmd": "46e49d2316070bdef982118a1f847884029dab0d3a4ce77c1eb39326a592d0a4",
+        "build.log": "7f01562d14268b976581c561b7ceeb490c36c1e18a57d06525ae1798e2212b70",
+        "probe.log": "073d8c378ad00302249fce30261d09cc9d1e117cc7a076e1bb419a29302e8d8c"
+      }
+    },
+    "diff_check": "git diff --check passed",
+    "source_review": "Root full three-file primary Source review PASS; existing Admission move/cancel/validation, owner preparation/scene admission, raw kernel local token and reference binding inspected; normal-case probe only"
+  },
+  "remaining": [
+    "Screen persistent raw name/camera caller frame",
+    "actual outer-scene weak-base/store composition",
+    "record quiescence/retirement adopted by actual future caller"
+  ],
+  "not_claimed": [
+    "Original factory/FH3/native private exception ABI",
+    "new relocated Original differential",
+    "production renderer/CRT-provider fixture substitution",
+    "normal D3D/Screen/Text activation or drawing",
+    "gameplay/audio/installation changes"
+  ]
+}
