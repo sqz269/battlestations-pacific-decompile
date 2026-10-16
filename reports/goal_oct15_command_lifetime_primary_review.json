@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_command_lifetime_primary_review",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 7,
+  "private_source_cleanup_actions": 4,
+  "native_bytes": 648,
+  "native_instructions": 237,
+  "spans": [
+    {
+      "address": "00c051ae",
+      "native_bytes": 9,
+      "instructions": 4,
+      "scope": "whole noarg canonical lock12 unlock helper",
+      "live_equals_installed": true,
+      "sha256": "2fd64db3a43cdc5147db5de2bbb04b4cd8468fd7b2f4722dd30ea23aeb06f1d4"
+    },
+    {
+      "address": "00468350",
+      "native_bytes": 87,
+      "instructions": 36,
+      "scope": "whole raw list insertion at current CRT allocator contract",
+      "live_equals_installed": true,
+      "sha256": "d545d2a63ba2e798604681b6251ca8b2aa6acf50b7690b772f4a47617c7cc552"
+    },
+    {
+      "address": "00469010",
+      "native_bytes": 119,
+      "instructions": 38,
+      "scope": "whole raw command-record destructor at current raw pool contracts",
+      "live_equals_installed": true,
+      "sha256": "36bc39c4ccaa3a93f05dc2de6413f4248e773b6a8aa1fa9ac64292c83af15470"
+    },
+    {
+      "address": "00c61a50",
+      "native_bytes": 11,
+      "instructions": 3,
+      "scope": "qualified current-saved-this command header cleanup",
+      "live_equals_installed": true,
+      "sha256": "e385aa3367707e9f669484ea8cd3c9a3a7eac61237f05ad544c196fbac8f7122"
+    },
+    {
+      "address": "00469b00",
+      "native_bytes": 30,
+      "instructions": 11,
+      "scope": "whole late BYTE bit0 scalar deletion at current CRT free",
+      "live_equals_installed": true,
+      "sha256": "1a41802a6c4cdf4a7ad8b33ed6bfc96d9b7fe471c90faa115b0965c3b89bcaf1"
+    },
+    {
+      "address": "0046a090",
+      "native_bytes": 35,
+      "instructions": 15,
+      "scope": "whole captured-slot/captured-record deletion and post-return zero",
+      "live_equals_installed": true,
+      "sha256": "8989b28e440d62ee6b864f6d0390dca06b72a3ffff8f27ec1e142aa7484b675f"
+    },
+    {
+      "address": "004690d0",
+      "native_bytes": 141,
+      "instructions": 56,
+      "scope": "whole constructor first discontiguous range",
+      "live_equals_installed": true,
+      "sha256": "ee92b6b7d7d1dbe4829c3d50029921ab101ece2e23194478cae73d861e1af63d"
+    },
+    {
+      "address": "00469160",
+      "native_bytes": 68,
+      "instructions": 29,
+      "scope": "whole constructor second discontiguous range; unreachable3B gap excluded",
+      "live_equals_installed": true,
+      "sha256": "160fae995d400aaf2e203703e151d60d9083668a75dd5ad33a80e529f24ff2b3"
+    },
+    {
+      "address": "00c61a70",
+      "native_bytes": 11,
+      "instructions": 3,
+      "scope": "qualified current-saved-record command header cleanup",
+      "live_equals_installed": true,
+      "sha256": "ded3a773d9d0e59fb61c830bd3c838fb06d2e9eaed6a5e7909dff2d0492663d6"
+    },
+    {
+      "address": "00c61a7b",
+      "native_bytes": 11,
+      "instructions": 3,
+      "scope": "qualified independently current-saved-record target header cleanup",
+      "live_equals_installed": true,
+      "sha256": "747e87ba8589da6137fdcc8b3f77e535414eaacaf8ca13dc085f9d62cdc77cae"
+    },
+    {
+      "address": "00469610",
+      "native_bytes": 115,
+      "instructions": 34,
+      "scope": "whole raw allocation/constructor/list queue composition",
+      "live_equals_installed": true,
+      "sha256": "1cd097b551514e0a76b846aa09d2159161b6ea688cc792e97cb450fac6cebe37"
+    },
+    {
+      "address": "00c61b10",
+      "native_bytes": 11,
+      "instructions": 5,
+      "scope": "qualified current-saved-allocation free cleanup",
+      "live_equals_installed": true,
+      "sha256": "345bac9300cbe461cf049b09fa600c41b1131d679cc1d6c57a885833ee89ad21"
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct15_crt_ptd_unlock_helper.json",
+    "reports/goal_oct15_scene_command_list_push_back.json",
+    "reports/goal_oct15_scene_command_record_destroy.json",
+    "reports/goal_oct15_scene_command_record_construct.json",
+    "reports/goal_oct15_scene_command_queue.json"
+  ],
+  "typed_transfer_rows_checked": 25,
+  "typed_transfer_rows_failed": 0,
+  "independent_reviews": [
+    "Primary independently reviewed full9B4ops unlock and real21B canonical provider;worker normal build and emitted9B body normalized relocation equality verified",
+    "Primary independently reviewed whole87B36ops insertion and wholeSource/header/allocator;lateparameterread,currenttail/count aliases and null-address8 path retained",
+    "Primary independently reviewed whole195B67ops destructor/delete/cleanup plus wholeSource/header and all actual raw providers;late flags and captured slot/record retained",
+    "Primary independently reviewed whole209B85ops discontiguous constructor plus both11B3op actions and wholeSource/header;liveargument/currentheader schedules and independently reread cleanup cells retained",
+    "Allocation worker independently reviewed whole115B34op queue plus11B5op action and completeSource/header/doc;exact explicit cells/outgoingwrites/target-list reuse/initialsaveddb/disarm-beforeinsert matched"
+  ],
+  "source_hashes": {
+    "src/native_crt_ptd_unlock_helper.cpp": "bed127cdf56c7e19b8ce0248e45779bfaf66fff9c83fb5d0deae4e08817cddbc",
+    "include/bsp/native_crt_ptd_unlock_helper.hpp": "a71f8150e2fa5240273797c2a08f5dc735565bab0fa5eea390c98ee424d0e8cd",
+    "src/native_scene_command_list_push_back.cpp": "5bc40f745ab16d5cea4e1ef26e77516a7f36b562c8ca6fe8594771248789f459",
+    "include/bsp/native_scene_command_list_push_back.hpp": "e26f3d822fb589aaec4d8fc1697dab6d1ebdfad3d87382afcc8130593a7d0781",
+    "src/native_scene_command_record_destroy.cpp": "b0bee8b49e3c529aef5ce711bf09d458b175b6eceed61c70d77b639ffec0e8af",
+    "include/bsp/native_scene_command_record_destroy.hpp": "16273d338e13cebb5987d45f004b8f91962a1205e566f414f1507750170cbe5c",
+    "src/native_scene_command_record_construct.cpp": "11fbe0e387349f85b42d33978e9b2279607c36d7ccbf7aa0e2774f75759f84a9",
+    "include/bsp/native_scene_command_record_construct.hpp": "1aa360155f04b2d29d6a1d746e059c45fd24bbe49c1f0e2dcca3b89c684adb14",
+    "src/native_scene_command_queue.cpp": "981083b2241fa05cd9bd81e504bf27e3581abc368acc1d3cc584a51eeaad338e",
+    "include/bsp/native_scene_command_queue.hpp": "f75a4441cc243bff76e9706f261fb817df6403d3fac6a833f45e0bf8e3c5e1a0"
+  },
+  "combined_build": {
+    "revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_command_lifetime_combined_build.log",
+    "log_sha256": "8d982051dfaf99fea2dc0568e06ddba017eea931ad60c8f5e6ac9f0b63258653",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 9.55,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+    "scope": "existing regression checks; native math seeds do not execute these new bodies"
+  },
+  "project_source_counts": {
+    "native_crt_ptd_unlock_helper": 1,
+    "native_scene_command_list_push_back": 1,
+    "native_scene_command_record_destroy": 1,
+    "native_scene_command_record_construct": 1,
+    "native_scene_command_queue": 1
+  },
+  "unique_archive_objects": {
+    "native_crt_ptd_unlock_helper": [
+      "bsp_core.dir\\Release\\native_crt_ptd_unlock_helper.obj"
+    ],
+    "native_scene_command_list_push_back": [
+      "bsp_core.dir\\Release\\native_scene_command_list_push_back.obj"
+    ],
+    "native_scene_command_record_destroy": [
+      "bsp_core.dir\\Release\\native_scene_command_record_destroy.obj"
+    ],
+    "native_scene_command_record_construct": [
+      "bsp_core.dir\\Release\\native_scene_command_record_construct.obj"
+    ],
+    "native_scene_command_queue": [
+      "bsp_core.dir\\Release\\native_scene_command_queue.obj"
+    ]
+  },
+  "archive_sha256": "59f20166ea49b3adb00bf1f3c16208f4bec28b5d3ccf41dd4682fc87331a75b4",
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "New explicit raw/live-frame/currentCRT Source APIs,not Original register/private-stack/argument-home/heap/FH3/fault ABI identity",
+    "The cleanup is a canonical Source guard mapping,not a new private-frame binary entry",
+    "Existing math differential seeds do not execute these new bodies; no application or game proof",
+    "Actual original parameter/saved/outgoing cells are explicit,including intentional parent target/listargument word reuse;no implicit private helper/register/return-frame aliases are inferred",
+    "Original encoded CRT handlers/heap/exception identity remain unproved;current genuine malloc/_callnewh/bad_alloc/free/memmove services used",
+    "No queue rollback after disarm-before-insertion;constructor/drain consumer/game readiness not implied"
+  ],
+  "unique_transfer_sites": 23,
+  "constructor_body_ranges": {
+    "listed_bytes": 209,
+    "envelope_bytes": 212,
+    "unreachable_gap": "0046915d..0046915f;excluded from Source coverage count",
+    "ops": 85
+  },
+  "ordinary_Source_scope": "whole actual-storage normal control flow at concrete unchanged current-service contracts;qualified cleanup mapping and Original ABI/heap/FH3/fault transport remain separate",
+  "retained_emitted_objects": {
+    "native_crt_ptd_unlock_helper": {
+      "path": "local\\goal_oct15_command_lifetime_objects\\native_crt_ptd_unlock_helper.obj",
+      "sha256": "386bdd1432fabead92aedeb895850f1615dfde9805624c2c05553adb060c33e8",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct15_command_lifetime_objects\\native_crt_ptd_unlock_helper.disasm.txt",
+      "symbols": "local\\goal_oct15_command_lifetime_objects\\native_crt_ptd_unlock_helper.symbols.txt"
+    },
+    "native_scene_command_list_push_back": {
+      "path": "local\\goal_oct15_command_lifetime_objects\\native_scene_command_list_push_back.obj",
+      "sha256": "ae10ecfb006f5a91cd70b2ca8c9372429c9d19f9514c61ab0562c431ab00fc63",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct15_command_lifetime_objects\\native_scene_command_list_push_back.disasm.txt",
+      "symbols": "local\\goal_oct15_command_lifetime_objects\\native_scene_command_list_push_back.symbols.txt"
+    },
+    "native_scene_command_record_destroy": {
+      "path": "local\\goal_oct15_command_lifetime_objects\\native_scene_command_record_destroy.obj",
+      "sha256": "302275b98813bbaa43c7bb028388600a353e1515454cf53068cad6850bb9a136",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct15_command_lifetime_objects\\native_scene_command_record_destroy.disasm.txt",
+      "symbols": "local\\goal_oct15_command_lifetime_objects\\native_scene_command_record_destroy.symbols.txt"
+    },
+    "native_scene_command_record_construct": {
+      "path": "local\\goal_oct15_command_lifetime_objects\\native_scene_command_record_construct.obj",
+      "sha256": "93de29c50ab2fd180d410ec428b916733aec87d96e2b6d22c1328d066a4265be",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct15_command_lifetime_objects\\native_scene_command_record_construct.disasm.txt",
+      "symbols": "local\\goal_oct15_command_lifetime_objects\\native_scene_command_record_construct.symbols.txt"
+    },
+    "native_scene_command_queue": {
+      "path": "local\\goal_oct15_command_lifetime_objects\\native_scene_command_queue.obj",
+      "sha256": "df019447d87ec050f67be5481bfd7c4118579132789d4eed445f246c07c6edb4",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct15_command_lifetime_objects\\native_scene_command_queue.disasm.txt",
+      "symbols": "local\\goal_oct15_command_lifetime_objects\\native_scene_command_queue.symbols.txt"
+    }
+  }
+}
