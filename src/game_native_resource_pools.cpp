@@ -17,6 +17,7 @@ namespace {
 static_assert(sizeof(void*) == 4 && sizeof(NativeMaterialParameterPoolStorage) == 0x38);
 static_assert(sizeof(NativeModelPoolStorage) == 0x38);
 static_assert(sizeof(NativeGroupPoolStorage) == 0x38);
+static_assert(sizeof(DirectionalLightPoolStorage) == 0x38);
 static_assert(sizeof(AllocatorListElement) == 0x0c && alignof(AllocatorListElement) <= 4);
 }
 
@@ -32,7 +33,9 @@ GameNativeResourcePoolProcess::GameNativeResourcePoolProcess()
       model_(game_native_physical_pool_process().allocator_list_domain_00e188b4(),
           model_storage_01090054_),
       group_(game_native_physical_pool_process().allocator_list_domain_00e188b4(),
-          group_storage_010902f4_) {
+          group_storage_010902f4_),
+      directional_light_(game_native_physical_pool_process().allocator_list_domain_00e188b4(),
+          directional_light_storage_01090154_) {
     // Binding takes an AllocatorListElement reference. Establish only that
     // trivial header's lifetime here; CD7F20/B6E980 later constructs the pool,
     // publishes the list links and initializes the real critical section.
@@ -199,6 +202,26 @@ NativeGroupPool& GameNativeResourcePoolProcess::group_pool_010902f4() {
     if (group_state_ != StartupState::returned)
         throw std::logic_error("resource group pool requires completed explicit startup");
     return group_;
+}
+
+int GameNativeResourcePoolProcess::initialize_directional_light_once_00cd8080() {
+    std::lock_guard lock(startup_mutex_);
+    if (directional_light_state_ == StartupState::returned)
+        return directional_light_registration_status_;
+    if (directional_light_state_ == StartupState::threw)
+        throw std::logic_error("resource directional-light pool startup previously threw");
+    directional_light_state_ = StartupState::threw;
+    bind_static_directional_light_pool_01090154(directional_light_);
+    directional_light_registration_status_ = initialize_static_directional_light_pool_00cd8080();
+    directional_light_state_ = StartupState::returned;
+    return directional_light_registration_status_;
+}
+
+DirectionalLightPool& GameNativeResourcePoolProcess::directional_light_pool_01090154() {
+    std::lock_guard lock(startup_mutex_);
+    if (directional_light_state_ != StartupState::returned)
+        throw std::logic_error("resource directional-light pool requires completed explicit startup");
+    return directional_light_;
 }
 
 } // namespace bsp::game

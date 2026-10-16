@@ -157,4 +157,48 @@ DirectionalLightReference* allocate_native_directional_light(
         throw;
     }
 }
+
+DirectionalLightRawAllocation::~DirectionalLightRawAllocation() {
+    if (native_operation_interrupted()) std::terminate();
+}
+DirectionalLightReference* allocate_native_directional_light(
+    DirectionalLightReferenceEnvironment& environment, DirectionalLightRawAllocation& frame,
+    const void* actual_name_header, const NativeNodeRawConstants& constants,
+    const volatile std::uint32_t& sixty_four) {
+    if (frame.stage_ != DirectionalLightRawAllocation::Stage::ready)
+        throw std::logic_error("raw directional allocation cannot reenter or replay a used frame");
+    if (!actual_name_header || !valid_profiles(environment.profiles) ||
+        !environment.directional_virtual_0c || !environment.light_virtual_0c ||
+        &environment.nodes.scenes != &environment.nodes.attachments.scenes)
+        throw std::invalid_argument("raw directional allocation requires actual header, profiles, predicates and shared runtimes");
+    auto& strings = environment.nodes.require_raw_name_pool(); // No getter/native effect.
+    frame.actual_name_header_ = actual_name_header;
+    frame.stage_ = DirectionalLightRawAllocation::Stage::pool_entered;
+    frame.actual_slot_ = environment.pool_01090154.allocate_raw_slot_00b7bac0();
+    if (!frame.actual_slot_) throw std::bad_alloc();
+    frame.stage_ = DirectionalLightRawAllocation::Stage::slot_acquired;
+    frame.stage_ = DirectionalLightRawAllocation::Stage::constructor_entered;
+    auto storage = construct_native_directional_light_00b7c6b0(frame.actual_slot_,
+        DirectionalLightPool::slot_bytes, frame.actual_name_header_, strings, constants, sixty_four);
+    frame.stage_ = DirectionalLightRawAllocation::Stage::constructor_returned;
+    frame.owner_ = new DirectionalLightOwner(storage, environment.pool_01090154,
+        environment.nodes, environment.directional_virtual_0c,
+        environment.light_virtual_0c, environment.shadow_owners);
+    frame.stage_ = DirectionalLightRawAllocation::Stage::owner_admitted;
+    environment.nodes.scenes.bind(frame.owner_->node.scene_attachment);
+    frame.stage_ = DirectionalLightRawAllocation::Stage::scene_bound;
+    frame.reference_ = new DirectionalLightReference(*frame.owner_, environment.profiles,
+        {nullptr, retire_allocated_companions});
+    auto* const result = frame.reference_;
+    // No callbacks/provider work after handoff. Clear ownership metadata before
+    // the caller can release the self reference and retire both companions.
+    frame.actual_name_header_ = nullptr;
+    frame.actual_slot_ = nullptr;
+    frame.owner_ = nullptr;
+    frame.reference_ = nullptr;
+    frame.stage_ = DirectionalLightRawAllocation::Stage::published;
+    return result;
+    // No catch/rollback: B6F5A0 consumes its own prefix cleanup exactly once.
+    // All later entered failures preserve this same frame until host fail-stop.
+}
 }
