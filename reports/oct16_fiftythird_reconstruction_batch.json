@@ -1,0 +1,92 @@
+{
+  "batch": 53,
+  "status": "integrator_reviewed_reconstructed_build_tested_pending_Main_publication",
+  "Source_pin": "c15c994d4eddc29081c1b3c4b74cbeb4bfc1ead8",
+  "tested_integrator_commit": "a4895c8cb195287f1ea0f7175183d622d52de54e",
+  "primary_final": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_newh_primary_frozen.json",
+    "sha256": "333ee6c76c98415aba449d49570e305b05ec9ca948828ffad7781133096806c9"
+  },
+  "primary_checks": 24,
+  "worker_frozen": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct16_native_crt_new_handler_frozen_pin.json",
+    "sha256": "29ddd176070563621588cfe0e301adfb0d4657baf6c25b0902c3f18fba0912f9"
+  },
+  "separate_worker_precommit": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct16_native_crt_new_handler_precommit.json",
+    "sha256": "c314ea5e0dc881e39e9ae950479509740ec2b8dba59150054ddaeb620676b695"
+  },
+  "annotation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct16_newh_annotation_receipt.json",
+    "sha256": "d5ab27412b363cc17700275337264681de51ee869e8a508fb32588bfa90a6f22"
+  },
+  "annotation_scope": "One address only; original stored prototype and existing function identity retained; comments preserved, project saved, exactly one whole export refreshed.",
+  "refreshed_exports": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c055b1\\assembly.txt",
+      "sha256": "efc59e7d5e92ec690db475961b9f7b8d71887dce6ca21d5582a42950abac791e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c055b1\\decompiled.c",
+      "sha256": "c0738b1f40b425d01327f7919e4513af7784c228edf57fd4a0b23fe7c0cd29af"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c055b1\\metadata.json",
+      "sha256": "a8661c7725d2b074ffa3fa0f6b1a07edaf9f59a71fa8e2e8c519692f917bb072"
+    }
+  ],
+  "frozen_quartet": {
+    "docs/OCT16_NATIVE_CRT_NEW_HANDLER.md": "6f0ef8a20e276191dd395b1e1925384523874090b1e5a334ca612bd7759e7970",
+    "include/bsp/native_crt_new_handler.hpp": "30d7e608299e659ea1b8c2cdea310c003f2d865c34235beb33b6b0ca9de725a3",
+    "reports/oct16_native_crt_new_handler.json": "8b3774856895081a2dadbb6035155ddca3d64ac755d088077471e4adbd581c63",
+    "src/native_crt_new_handler.cpp": "d7f29cd0d22f12b44d729ea32546a394fe6f0a18ac7c3fd0e9f7b92b3ae1254a"
+  },
+  "Native": [
+    34,
+    15
+  ],
+  "actual_integrator_COFF": {
+    "current_path_at_build": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_crt_new_handler.obj",
+    "sha256": "19358757be1a011700c8149da097c8629616587e14da8e8f7e08c0f229af2995",
+    "immutable_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\object_archive\\sha256\\19358757be1a011700c8149da097c8629616587e14da8e8f7e08c0f229af2995.obj",
+      "sha256": "19358757be1a011700c8149da097c8629616587e14da8e8f7e08c0f229af2995"
+    },
+    "CODE": [
+      45,
+      22
+    ],
+    "raw_CODE": "558bec8b4510ff750c8b0050e8000000008bc883c40885c975025dc38b450850ffd183c404f7d81bc0f7d85dc3",
+    "relocations": [
+      {
+        "offset": 13,
+        "type": 20,
+        "symbol": "?native_crt_decode_pointer_00c04fde@bsp@@YAPAXPAXABUNativeCrtPointerDecodeContext@1@@Z"
+      }
+    ],
+    "CODE_and_relocations_equal_accepted_worker": true,
+    "whole_object_metadata_qualified_separately": true
+  },
+  "normal_Win32": {
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\oct16_batch53_54_Main_build.txt",
+      "sha256": "1a4cabb4f642906348fbb39fd1962b0c1cc601ede17e9ce786a1b0e4eda3b598"
+    },
+    "existing_tests": "3/3 passed",
+    "new_bodies_executed_by_tests": false
+  },
+  "transfer_verification": {
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_batch53_transfers.txt",
+      "sha256": "082de6861498bc1f1ec598dd8954d8ad1369ae3cb3ad3293c1917559378f413e"
+    },
+    "direct_JSON_calls": 1,
+    "direct_MD_calls": 1,
+    "indirect_manual_proof": true
+  },
+  "limitations": [
+    "New three-argument caller12 Source interface differs from Native one argument/caller4. Original private outgoing-stack aliases, registers, flags, faults, FH3/SEH, genuine encoded-handler publication and CRT/TLS ownership remain unproved.",
+    "Static Source, object and build checks do not establish runtime or game validation. No new test, probe or Native execution was added."
+  ],
+  "historical_proof": "Immutable Root seals, worker frozen/precommit receipts, pre-build archives and mapping receipts remain historical evidence. Later object paths may advance; immutable copies identify prior accepted content."
+}
