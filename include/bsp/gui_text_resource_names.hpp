@@ -8,12 +8,44 @@ struct GuiTextResourceNameServices {
     GuiWidgetOwnerRuntime& widgets;
     NativeRenderActualOwners& actual_owners;
 };
+
+// Explicit Source registry access; neither profile owns the registry.
+// Legacy mode borrows the actual publication cell and real singleton manager,
+// preserving the existing getter's allocation/registration/callback behavior.
+// Borrowed-existing mode requires a live already-owned Source registry and
+// returns that SAME owner, without publication, allocation or registration.
+// It does not model Original singleton storage, ownership or ABI.
+class GuiTextFontRegistryAccess final {
+public:
+    static GuiTextFontRegistryAccess published_singleton(
+        FontRegistryStartup*& actual_publication, SingletonLifetimeManager& real_lifetime) noexcept;
+    static GuiTextFontRegistryAccess borrowed_existing(FontRegistryStartup&) noexcept;
+    FontRegistryStartup* get() const;
+    // Metadata only: return the borrowed owner or READ the current legacy cell.
+    // Never invoke the lazy getter, allocate, publish, register or lock. A null
+    // legacy cell remains null. Referents/cell must stay live and access must
+    // be externally serialized; this does not freeze a mutable publication.
+    FontRegistryStartup* existing_registry() const noexcept;
+
+private:
+    GuiTextFontRegistryAccess(FontRegistryStartup*, FontRegistryStartup**,
+        SingletonLifetimeManager*) noexcept;
+    FontRegistryStartup* existing_;
+    FontRegistryStartup** publication_;
+    SingletonLifetimeManager* lifetime_;
+};
+
 struct GuiTextFontNameServices {
     GuiTextResourceNameServices& names;
-    FontRegistryStartup*& published_registry_00f8bf44;
-    SingletonLifetimeManager& singleton_lifetime;
+    GuiTextFontRegistryAccess registry;
     NativeFontResourceOwners& fonts;
     const volatile float& one_00d7a24c;
+
+    GuiTextFontNameServices(GuiTextResourceNameServices&, GuiTextFontRegistryAccess,
+        NativeFontResourceOwners&, const volatile float&) noexcept;
+    // Preserve the previous five-argument brace/constructor call shape.
+    GuiTextFontNameServices(GuiTextResourceNameServices&, FontRegistryStartup*&,
+        SingletonLifetimeManager&, NativeFontResourceOwners&, const volatile float&) noexcept;
 };
 
 //00AB8E70..8ED6, ECX Text, name-header pointer stack, RET4 at8ED4/length3.
@@ -27,7 +59,7 @@ void set_gui_text_shader_name_00ab8e70(GuiTextLifetime&, const std::string&,
 
 //00AB8C30..8CD4, ECX Text, name-header pointer stack, RET4 at8CD2/length3.
 // Native length/current CRT equality early-out; changed path stores font_name,
-// invokes the EXISTING live singleton getter and stable owned-descriptor lookup,
+// invokes the selected registry access and stable owned-descriptor lookup,
 // validates the SAME actual font-resource association, publishes borrowed font,
 // then stores current descriptor alpha_texture_scale(+1C), or LIVE D7A24C for
 // a genuine lookup miss. Only then captures/releases/clears actual shader.
@@ -42,6 +74,12 @@ bool set_gui_text_font_name_00ab8c30(GuiTextLifetime&, const std::string&,
 // current host CRT comparison, live owners and registered actual shader profiles
 // are required. Native pooled-string layout/allocation callbacks and SEH are
 // not reproduced. Registry/descriptors/actual fonts must outlive every Text
-// borrowing them; FontRegistryStartup's compatibility vector/resources are
+// and retained callback/continuation borrowing them. The existing Source owner
+// remains responsible for borrowed-mode destruction; never register its member
+// registry with a replacement singleton manager. Legacy publication storage
+// and the real manager retain their existing getter lifetime requirements.
+// Profile access, publication changes and owner retirement are externally
+// serialized; the legacy cell is live state, not an immutable registry promise.
+// FontRegistryStartup's compatibility vector/resources are
 // never substituted for its stable descriptor or the actual FontData/images.
 } // namespace bsp
