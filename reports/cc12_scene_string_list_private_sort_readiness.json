@@ -4,7 +4,10 @@
   "source_ready": true,
   "Source_authorized": true,
   "Source_implemented": true,
-  "Source_credit": 2,
+  "Source_credit": {
+    "whole_ordinary_functions": 2,
+    "partial_entries": 1
+  },
   "coverage": "partial_valid_input_entry_projection",
   "decision": "Authorize only the ordinary valid-input byte-sort kernel; keep Original validation failure behavior and scene composition excluded.",
   "packet": "cc12_native_qsort_valid_input_kernel_00bfc350",
@@ -210,8 +213,11 @@
       "Existing scene std::qsort use is a known abstraction boundary; it is not edited or credited by this proposal. Other qsort callers remain graph context only."
     ]
   },
-  "status": "two_whole_normal_helpers_and_one_partial_valid_input_entry_Source_primary_peer_accepted_registered_Main_gate_pending",
+  "status": "ordinary_Source_Main_gate_closed_Original_ABI_runtime_unproved",
   "Source_partial_entries": 1,
   "partial_projection_credit": 1,
-  "Main_gate": "pending"
+  "Main_gate": "pending",
+  "Main_build_gate": "pass",
+  "actual_compiler_archive_gate": "pass",
+  "Main_validation": "reports/cc12_native_qsort_Main_validation.json"
 }

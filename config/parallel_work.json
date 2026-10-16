@@ -42156,8 +42156,8 @@
     },
     {
       "id": "cc12_native_qsort_valid_input_kernel_00bfc350",
-      "done": false,
-      "state": "two_whole_normal_helpers_and_one_partial_valid_input_entry_Source_primary_peer_accepted_registered_Main_gate_pending",
+      "done": true,
+      "state": "two_whole_ordinary_helpers_and_partial_valid_input_qsort_entry_Main3checks_actual_object_archive_pass",
       "source_ready": true,
       "function_addresses": [
         "00bfc350",
@@ -42186,20 +42186,22 @@
       ],
       "Source_credit": 2,
       "Source_implemented": true,
-      "Main_gate": "pending_author_independent_review_registration_build_actual_artifacts",
+      "Main_gate": "pass",
       "code_revision": "2b8cd919605628680a4b975757a8ac794607566f",
       "primary_review": "reports/cc12_native_qsort_primary_review.json",
-      "Main_build_gate": "pending",
-      "actual_compiler_archive_gate": "pending",
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
       "Source_whole_helpers": 2,
       "Source_partial_entries": 1,
       "partial_projection_credit": 1,
-      "renderer_composition_readiness": "reports/cc12_renderer_native_sort_composition_readiness.json"
+      "renderer_composition_readiness": "reports/cc12_renderer_native_sort_composition_readiness.json",
+      "Main_validation": "reports/cc12_native_qsort_Main_validation.json",
+      "Ghidra_existing_function_evidence_saved": true
     },
     {
       "id": "cc12_native_crt_strrchr_00bf87b0",
-      "done": false,
-      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_Main3checks_independent_actual_frame_variant_archive_pass",
       "source_ready": true,
       "function_addresses": [
         "00bf87b0"
@@ -42221,11 +42223,13 @@
       "named_incomplete_dependencies": [
         "Actualcaller/applicationbinding, OriginalphysicalABI/register/flag/segment/fault/instruction/EH/runtime/gameequivalence are outside ordinarySourcecredit."
       ],
-      "Main_gate": "pending",
+      "Main_gate": "pass",
       "code_revision": "2f2baa1b9fc4c00ef51cc7a6230a9f5519a8fc4f",
       "primary_review": "reports/cc12_native_crt_strrchr_primary_review.json",
-      "Main_build_gate": "pending",
-      "actual_compiler_archive_gate": "pending"
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_native_crt_strrchr_Main_validation.json",
+      "Ghidra_existing_function_evidence_saved": true
     },
     {
       "id": "goal_oct15_scene_node_child_at",
