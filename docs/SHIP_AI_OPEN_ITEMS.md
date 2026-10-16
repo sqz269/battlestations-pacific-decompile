@@ -18124,3 +18124,15 @@ section 256 item 4: the grid nx*ny while sinkTime < 30, and 1 (+2 on 1 in 5) whi
 Every moved row moves after the first sinking, as a stream-1 consumer must, and the reference mode is inert. Flipped ON.
 LABELLED: a submarine's sink block reaches both spawners here. The image's submarine update also calls 00933BB0
 itself (008546FC); whether submarines run 00825F20's block too was not read.
+
+## 259. Handoff (cc9-ships52, 2026-10-16)
+
+Branch `agent/cc9-ships44`. Commits this session: 95c1e4e48 (256), c749c72c5/b510a54fe (BSM09 clouds ON),
+4deaef142/4285975cc (CB step repair ON), 037f7863a/82d3aa744 (sink draws ON). No leases held. Open:
+- **USNOS**: parked on the planes lane. The wave-2 level-bomber wingmen stay in LevelBomb/goaway (256), and cc9-lua62
+  is ruling on it. Once they leave goaway or die, re-run a7 (`local\s51_os_a7.txt`). Phase 2 should then start, and
+  the capture line from k28 (251) applies. Re-check against the step repair: HQ1 now goes neutral later.
+- **JM08**: the step repair moves the HQ fall (257). Its keeper plan needs a re-run.
+- **BSM09**: runs to EndMission at 917.90 s with no orders (257). It is ready as the kCarrierRunwayFailureBound pair row.
+- Not bound: the 006F47F0 device loop (no device health in the host), the D6h broadcast, and the capture warning
+  00977DA0 (presentation).
