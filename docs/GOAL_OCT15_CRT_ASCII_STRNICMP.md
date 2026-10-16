@@ -76,8 +76,11 @@ qualified-node parent `009251F0` remains unclosed.
 Primary complete native behavior and entire CPP/header review passed. Its
 one requested raw DWORD admission adjustment uses the accepted tiny x86 load;
 the algorithm, BYTE payload reads, ABI interface and header are unchanged.
-Correct library identity and prior comments are archived; normal locked
-annotation/save/export/readback follows the reviewed draft. Root registration,
+Normal locked annotation preserved the correct library identity and every
+prior comment. Prior values are logged in
+`local/ghidra-annotations-20261016T042613Z.json`;the project was saved,export
+forced fresh,and name/old-library-comment/new-evidence readback verified in
+`local/goal_oct15_crt_ascii_strnicmp_after_comments.json`. Root registration,
 the actual normal Win32 gate,
 and emitted-object inspection remain pending. No worker CMake queue, build,
 probe, test framework, or new test is introduced. Static/build evidence does
