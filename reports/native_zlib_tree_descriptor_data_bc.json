@@ -1,6 +1,6 @@
 {
   "goal": "GOAL16AZ",
-  "status": "StrictProducerReady_ActualRegisteredProviderPending",
+  "status": "QualifiedRegisteredDATAReconstructedBuildAndIndependentlyReviewed",
   "supersedes_unaccepted_candidate": "39b5afe38f25488c9a9b19ea2bca7ee75e4ceeeb",
   "reason": "Review-derived repair of concrete raw cross-table values and current stock pair layout; not unrelated Source work.",
   "scope": {
@@ -9,7 +9,6 @@
     "Native_instructions": 0,
     "Source_functions": 0,
     "actual_strong_DATA_definitions": 4,
-    "accepted_DATA_function_credit": 0,
     "coverage": {
       "previous_AT_unaccepted_payload": 1644,
       "additional_four_payload_arrays": 1004,
@@ -19,7 +18,11 @@
       "sum": 2676,
       "nine_primary_table_bytes": 2588,
       "all_named_array_bytes": 2607
-    }
+    },
+    "accepted_Native_DATA_bytes": 2676,
+    "accepted_Native_functions": 0,
+    "accepted_Native_instructions": 0,
+    "accepted_Source_functions": 0
   },
   "files": [
     {
@@ -34,8 +37,8 @@
     },
     {
       "path": "docs/NATIVE_ZLIB_TREE_DESCRIPTOR_DATA_BC.md",
-      "bytes": 7355,
-      "sha256": "febd06cd5475f5703348d99d5f864dad1dcbc6e39fee3ebb2ed9e08b832782e1"
+      "bytes": 9231,
+      "sha256": "f1c18b14374621822dd083bcd985ba7b870802ee2c534aea017147fef38b3a77"
     }
   ],
   "actual_new_variant_compile": {
@@ -401,23 +404,57 @@
     "Three mutable identities and pointer fields retained; their separate-global language adjacency is not guaranteed, actual strict offsets0/20/40 measured only.",
     "Original absolute addresses/pointer bits, malformed aliases, out-of-region arbitrary scaled indexes/faults, const writes, protection/placement/fullABI/parents/game remain qualified.",
     "Native initial RO .rdata40000040/RW .dataC0000040 is PE evidence, not live protection measurement.",
-    "No function/Native instruction/DATA acceptance credit, parent AN/_tr_init/AU adoption or runtime/game/performance claim."
+    "2676 physical DATA bytes accepted with symbolic relocation; zero function/instruction credit. Parent adoption, Original full ABI/placement/fault behavior, runtime/game/performance remain unproved."
   ],
   "normal_registered_provider": {
-    "status": "PENDING_ROOT_WARM_INTEGRATION",
-    "normal_build_run_here": false,
-    "target_registration": false,
-    "actual_registered_COFF": null,
-    "Core_member_and_hash": null,
-    "both_dictionaries": null,
-    "independent_acceptance": false,
-    "required": [
-      "Root exact Source registration and normal scripts/build.ps1/existing checks",
-      "actual C++17 command/project/compiled Source provenance and full registered COFF",
-      "actual four strong providers/five addends/RWRO/whole2676B/placement",
-      "unique Core member/all4 publics in both complete dictionaries and prior-provider preservation",
-      "independent DATA acceptance before credit/publication; separate parent work"
-    ]
+    "status": "PASS_WITH_RECORDED_QUALIFICATIONS",
+    "Source_build_pin": "22ba4e74cb5422f78f78f6fc888a2da286c73a96",
+    "incorporated_Main": "5ff85bbf4e60166660566208a8335490dade08c4",
+    "normal_build": {
+      "source_pin": "22ba4e74cb5422f78f78f6fc888a2da286c73a96",
+      "Main_input": "5ff85bbf4e60166660566208a8335490dade08c4",
+      "observed_Main_at_build": "5ff85bbf4e60166660566208a8335490dade08c4",
+      "start_utc": "2026-10-16T15:31:31.706680+00:00",
+      "end_utc": "2026-10-16T15:31:50.297483+00:00",
+      "wall_seconds": 18.61329029999615,
+      "exit_code": 0,
+      "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16at_root\\registered_build.log"
+    },
+    "existing_checks": "3/3 PASS,7.93s",
+    "target_registration": true,
+    "exact_Source_header_equal_producer": true,
+    "actual_registered_COFF": {
+      "bytes": 3699,
+      "sha256": "b40c2ecbbec1a633f13cc43abe4ac14970a43a4a23092381330487594b97d8da",
+      "functions": 0,
+      "executable_bytes": 0,
+      "strong_DATA_definitions": 4,
+      "whole_aggregate_DIR32": 5,
+      "all_RO_bytes": 2616,
+      "all_RW_bytes_symbolically_compared": 60
+    },
+    "Core": {
+      "bytes": 94452410,
+      "sha256": "cf5a0c262dfeae05321327f64269e2f00d78ed5f6756a7d3985636100414e039",
+      "actual_COFF_members_parsed": 2505,
+      "first_dictionary_entries": 83083,
+      "second_dictionary_entries": 83083,
+      "both_full_dictionary_multisets_equal": true,
+      "all_names_point_to_actual_defined_members": true,
+      "unique_actual_whole_DATA_member": 35518450,
+      "four_unique_strong_DATA_symbols": [
+        "_bsp_native_zlib_static_bl_desc_00e14734",
+        "_bsp_native_zlib_static_d_desc_00e14720",
+        "_bsp_native_zlib_static_l_desc_00e1470c",
+        "_bsp_native_zlib_tree_ro_region_00d677c0"
+      ]
+    },
+    "all23_prior_AR_whole_objects_unchanged": true,
+    "actual_proof_sha256": "730073f1abde6e6342e42917c18afe030ad166b1e40e8deb98aadbde3c5a2474",
+    "compiler_proof_sha256": "1db15055903bbc608ca79daae8eed674bbf07a3943e77915038849adf19200b0",
+    "independent_acceptance": true,
+    "independent_Root_authentication_sha256": "5859f4c7ef761c020e1c16aa09ad6d0e72360419f4d9a7f812a8d5ea05754072",
+    "Root_producer_authentication_sha256": "c74dce40022d9ecc0b90c2d343cbc983dd9761cf866eacc8d619f1d7a377b59e"
   },
   "corrections_and_attempts": {
     "new_variant_compile_attempts": 1,
@@ -434,11 +471,15 @@
     "old_strict_first_cost_or_previous_AX_design_cost_added": false
   },
   "boundaries": {
-    "exact4Gitfiles": true,
-    "CMake_shards_ledger_Ghidra_Main_cache_changes": 0,
-    "normal_builds_tests_probes_Native_or_selected_body_execution": 0,
-    "branch_not_refreshed_to_unpublished_Main": true,
-    "only2DATA_ranges_and_exact4files_output_leased": true
+    "Source_header_unchanged_from_producer": true,
+    "Root_CMake_additions": 1,
+    "Root_DATA_fragment_records": 4,
+    "Native_function_or_instruction_credit": 0,
+    "Original_Ghidra_function_mutations": 0,
+    "selected_body_execution": false,
+    "new_tests": 0,
+    "new_probes": 0,
+    "full_ABI_fault_SEH_parent_runtime_game_proof": false
   },
   "clock": {
     "first_observed_utc": "2026-10-16T15:17:06Z",
@@ -448,5 +489,98 @@
     "includes": "all setup/lease/AX authentication/review-derived Source repair/compile/proof/helper refinement/docs/report/commit/freeze/seal/verify/release/admin",
     "pre_first_observed_dispatch_gap": "unmeasured",
     "no_old_cost_sum_or_speedup_claim": true
+  },
+  "producer_stage_history": {
+    "status": "StrictProducerReady_ActualRegisteredProviderPending",
+    "scope": {
+      "candidate_Native_DATA_bytes": 2676,
+      "Native_functions": 0,
+      "Native_instructions": 0,
+      "Source_functions": 0,
+      "actual_strong_DATA_definitions": 4,
+      "accepted_DATA_function_credit": 0,
+      "coverage": {
+        "previous_AT_unaccepted_payload": 1644,
+        "additional_four_payload_arrays": 1004,
+        "three_original_intervening_spans": 28,
+        "intervening_named_bl_order": 19,
+        "intervening_observed_zero_spacing": 9,
+        "sum": 2676,
+        "nine_primary_table_bytes": 2588,
+        "all_named_array_bytes": 2607
+      }
+    },
+    "files": [
+      {
+        "path": "src/native_zlib_tree_descriptor_data_bc.cpp",
+        "bytes": 10113,
+        "sha256": "baac26de03583620631d51ae2f00917cf5b3738922a461dcbc0ec84ec1d9adf6"
+      },
+      {
+        "path": "include/bsp/native_zlib_tree_descriptor_data_bc.hpp",
+        "bytes": 5232,
+        "sha256": "6a9cd91a815f3ce3f75bbde107e6d630db34c4f8011164a2b7c7dd46e3618774"
+      },
+      {
+        "path": "docs/NATIVE_ZLIB_TREE_DESCRIPTOR_DATA_BC.md",
+        "bytes": 7355,
+        "sha256": "febd06cd5475f5703348d99d5f864dad1dcbc6e39fee3ebb2ed9e08b832782e1"
+      }
+    ],
+    "normal_registered_provider": {
+      "status": "PENDING_ROOT_WARM_INTEGRATION",
+      "normal_build_run_here": false,
+      "target_registration": false,
+      "actual_registered_COFF": null,
+      "Core_member_and_hash": null,
+      "both_dictionaries": null,
+      "independent_acceptance": false,
+      "required": [
+        "Root exact Source registration and normal scripts/build.ps1/existing checks",
+        "actual C++17 command/project/compiled Source provenance and full registered COFF",
+        "actual four strong providers/five addends/RWRO/whole2676B/placement",
+        "unique Core member/all4 publics in both complete dictionaries and prior-provider preservation",
+        "independent DATA acceptance before credit/publication; separate parent work"
+      ]
+    },
+    "boundaries": {
+      "exact4Gitfiles": true,
+      "CMake_shards_ledger_Ghidra_Main_cache_changes": 0,
+      "normal_builds_tests_probes_Native_or_selected_body_execution": 0,
+      "branch_not_refreshed_to_unpublished_Main": true,
+      "only2DATA_ranges_and_exact4files_output_leased": true
+    },
+    "qualifications": [
+      "Grounded descriptive types/standard layout, not recovered Original public type/version/ABI.",
+      "One real const owner preserves complete within-region bytes and known raw2/1/32; ordinary out-of-array C++ indexing remains UB.",
+      "No fabricated guard, clamp, fake extern/alias/provider, runtime copy/snapshot/helper/constructor/opaque buffer.",
+      "Three mutable identities and pointer fields retained; their separate-global language adjacency is not guaranteed, actual strict offsets0/20/40 measured only.",
+      "Original absolute addresses/pointer bits, malformed aliases, out-of-region arbitrary scaled indexes/faults, const writes, protection/placement/fullABI/parents/game remain qualified.",
+      "Native initial RO .rdata40000040/RW .dataC0000040 is PE evidence, not live protection measurement.",
+      "No function/Native instruction/DATA acceptance credit, parent AN/_tr_init/AU adoption or runtime/game/performance claim."
+    ],
+    "clock": {
+      "first_observed_utc": "2026-10-16T15:17:06Z",
+      "report_snapshot_utc": "2026-10-16T15:24:30.748783+00:00",
+      "observed_through_report_seconds": 444.748783,
+      "final_inclusive_timing": "local/goal16az_region_revision/receipt.json",
+      "includes": "all setup/lease/AX authentication/review-derived Source repair/compile/proof/helper refinement/docs/report/commit/freeze/seal/verify/release/admin",
+      "pre_first_observed_dispatch_gap": "unmeasured",
+      "no_old_cost_sum_or_speedup_claim": true
+    }
+  },
+  "Root_costs": {
+    "normal_build_seconds": 18.61329029999615,
+    "all_preparation_authentication_review_metadata_queue_and_publication_costs_separate_not_zero": true,
+    "producer_old_and_current_clocks_preserved": true,
+    "overlapping_worker_clocks_not_summed": true,
+    "measured_speedup_claim": false
+  },
+  "required_report_call_check": {
+    "exit_code": 0,
+    "eligible_call_rows": 0,
+    "failed": 0,
+    "DATA_not_function_warnings": 8,
+    "explanation": "All eight warning locations are genuine DATA extents, intentionally recorded as fragments and never fabricated as functions. Zero eligible call rows are not independent DATA proof; BB whole-object/Core/compiler review provides that evidence."
   }
 }

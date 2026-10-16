@@ -1,11 +1,15 @@
 # GOAL16AZ: repair of the unpublished AT DATA candidate
 
-Status: `StrictProducerReady_ActualRegisteredProviderPending`. This review-derived
+Current status: `QualifiedRegisteredDATAReconstructedBuildAndIndependentlyReviewed`.
+Root accepted2676 physical DATA bytes with the qualifications below; function and
+instruction credit remain zero. The cold producer originally sealed status
+`StrictProducerReady_ActualRegisteredProviderPending`. This review-derived
 revision supersedes the unaccepted AT candidate39b5afe38f25488c9a9b19ea2bca7ee75e4ceeeb.
 It defines one authentic2616B const RO region and retains three mutable20B
 descriptors:2676 candidate Native DATA bytes, zero functions/instructions.
-Accepted DATA/function credit remains zero. Normal registration/build/checks and
-independent actual registered/Core provider acceptance are pending with Root.
+The cold producer assigned zero acceptance credit and left normal registration,
+build/checks and independent actual registered/Core acceptance to Root; the
+completed Root review is recorded below.
 
 ## Concrete repair and coverage
 
@@ -113,3 +117,9 @@ The new bundle local/goal16az_region_revision seals selected small AX refs,
 current Source/header/Git blobs/strict object/full proof; no old Core/history copy.
 Its receipt records all observed setup/repair/compile/proof/helper refinement/
 documentation/commit/seal/release overhead from15:17:06UTC. No speedup claim.
+
+## Root registered provider acceptance
+
+Exact producer Source/header were registered at `22ba4e74cb5422f78f78f6fc888a2da286c73a96`, incorporating Main `5ff85bbf4e60166660566208a8335490dade08c4`. Normal Win32 build passed in18.6132903s; all three existing checks passed in7.93s. The actual whole3699B object SHA256 `b40c2ecbbec1a633f13cc43abe4ac14970a43a4a23092381330487594b97d8da` has the same owned DATA and five genuine whole-aggregate fixups as the distinct strict3687B object. Both complete83083-binding Core dictionaries resolve four unique strong DATA definitions to the genuine full object. Root checked all2505 COFF symbol tables, both full dictionary multisets, and all23 previous AR whole objects unchanged.
+
+Independent final review is authenticated by Root receipt `5859f4c7ef761c020e1c16aa09ad6d0e72360419f4d9a7f812a8d5ea05754072`. Actual proof `730073f1abde6e6342e42917c18afe030ad166b1e40e8deb98aadbde3c5a2474` and compiler provenance `1db15055903bbc608ca79daae8eed674bbf07a3943e77915038849adf19200b0` retain the exact current build evidence. Acceptance covers2616 RO bytes plus60 mutable descriptor bytes using symbolic pointer relocation. It does not establish Original absolute addresses, global placement, out-of-region accesses, fault/protection behavior, full ABI, parent adoption or game behavior. No selected-body execution, new tests/probes or measured speedup claim. Earlier producer-stage statements and sealed artifacts describe that historical phase.
