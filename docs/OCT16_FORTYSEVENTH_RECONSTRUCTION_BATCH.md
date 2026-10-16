@@ -32,4 +32,4 @@ full name, comment prefix and prototype, saves the project, and refreshes its
 whole 91-byte/43-start export.
 
 The combined default MSVC Win32 build passes all three existing suites in
-7.87s. Whole ordinary Source uses the existing supplied-callee interface. No concrete Original errno/TLS/encoded-handler/locale initialization owner is supplied. Original ABI/private frames/registers/argument reloads/fault/SEH/FH3/DF/runtime/game identity remains unproved; existing suites do not execute this body.
+7.28s. Whole ordinary Source uses the existing supplied-callee interface. No concrete Original errno/TLS/encoded-handler/locale initialization owner is supplied. Original ABI/private frames/registers/argument reloads/fault/SEH/FH3/DF/runtime/game identity remains unproved; existing suites do not execute this body.
