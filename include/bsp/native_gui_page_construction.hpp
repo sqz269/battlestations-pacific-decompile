@@ -19,7 +19,8 @@ struct NativeGuiPageConstructionContext {
 // No destructor performs native cleanup. The caller owns the same raw 124h
 // page allocation (128h pool slot) and all outstanding constructor resources.
 struct NativeGuiPageConstructionAcquired {
-    enum class Phase { not_started, running, awaiting_lua_continuation, failed };
+    enum class Phase { not_started, running, awaiting_lua_continuation, failed,
+        awaiting_reader_continuation }; // appended; existing values unchanged
     Phase phase{Phase::not_started};
     void* actual_page{};
     const void* actual_name{};
@@ -44,12 +45,12 @@ void bind_native_gui_widget_node_00aa6720(void* actual_widget,
 // Original full ABI: ECX raw page, stack(name,node,share_scene_low_byte), RET0C.
 // +E4/+E8, page padding and the pool's +124 ID retain their existing bytes.
 //
-// Unimplemented continuation AC6714..AC6878 constructs/opens Lua, executes the
-// scripts, builds the raw reader, visits properties, propagates the node root
-// and tears down temporaries. Native failure from state0 needs full AA9730;
-// from state1 it first needs 41DD20(page+100). That raw destructor is still a
-// reconstruction frontier, so this prefix RETAINS state/resources on C++ error
-// and reports failed. It does not claim native unwind parity or add rollback.
+// Script continuation AC6714..AC67CB is a separate retained Source stage. The
+// remaining AC67CC..AC6878 builds the raw reader, visits properties, propagates
+// the node root and tears down temporaries. Native state0 cleanup needs the now
+// available full AA9730 plus genuine lifetime bindings; state1 first needs
+// 41DD20(page+100). This prefix still RETAINS state/resources on C++ error and
+// reports failed; availability of those callees adds no unwind/rollback here.
 // Do not return its pool slot while name/list/node obligations remain live.
 // AA9390's own failure cleanup remains the existing provider's responsibility.
 void initialize_native_gui_page_00ac6600_prefix(void* actual_page,
