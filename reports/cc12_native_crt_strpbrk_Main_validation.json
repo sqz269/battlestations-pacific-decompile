@@ -1,0 +1,92 @@
+{
+  "schema": "bsp.cc12.native_crt_strpbrk.Main_validation.v1",
+  "status": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
+  "Source_commit": "912935be2873bddc8555c03f3812ce46428f46da",
+  "Main_compiled_commit": "7c087ecd4076950b2eda86fea6a206c1c6459ce1",
+  "normal_Main_build": {
+    "command": "./scripts/build.ps1",
+    "actual_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_strpbrk_Main_build01\\actual_build_receipt.DATA.json",
+      "bytes": 700,
+      "sha256": "dcf57151bff2d8b61c40e342256380ae7cfedaa679da584397be7fda2065b412"
+    },
+    "actual_stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_strpbrk_Main_build01\\actual_stdout.bin",
+      "bytes": 4405,
+      "sha256": "7ed42dfa2ac7de180b867c3f699c84c646b0f983d59f754d3b364531b63db26a"
+    },
+    "Root_genuine_tool_provenance": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strpbrk_integration_20261016\\Root_Main_build_provenance\\authentication.DATA.json",
+      "bytes": 6394,
+      "sha256": "60f2a106ef955213a9ce74a7919fe6d08a2848decc11d2b960c0e395583f8923"
+    },
+    "initial_chunk": "3cc918",
+    "session": 30245,
+    "terminal_chunk": "008c65",
+    "exit_code": 0,
+    "existing_CTests_passed": 3,
+    "test_seconds": 7.73,
+    "recorded_inputs_unchanged": 5447,
+    "actual_selected_compiler_inputs": 2,
+    "before": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_strpbrk_Main_build01\\before.DATA.json",
+      "bytes": 1935072,
+      "sha256": "74bf1a13f9865f8ffd09389f8de7dd1db6fca38785e4ef802179fd72dc8e7815"
+    },
+    "after": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_strpbrk_Main_build01\\after.DATA.json",
+      "bytes": 9014,
+      "sha256": "408fc5b70b19b289946cc437f84724aa5cc457804c16f945910b2a720d42a0e3"
+    }
+  },
+  "Root_actual_Main_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strpbrk_integration_20261016\\Main_primary_review.DATA.json",
+    "bytes": 5716,
+    "sha256": "a52720e4081c68cb796ee0488620fe154042538ca41f764f7a68e874c38fb73e"
+  },
+  "independent_Main_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strpbrk_integration_20261016\\Main_peer_review.DATA.json",
+    "bytes": 1983,
+    "sha256": "380d2abe17054334d2fae5087d25433864142d0aaf2d543b2209c5d421f6f999"
+  },
+  "registration": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strpbrk_integration_20261016\\registration_verification.DATA.json",
+    "bytes": 603,
+    "sha256": "69b069dfd461470c0c900432123a5b9c380c8f6b9b203088bf550b950eb548c9"
+  },
+  "Root_required_Source_call_checker": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strpbrk_integration_20261016\\required_Root_Source_call_check.DATA.json",
+    "bytes": 598,
+    "sha256": "ed8293073a78a1f8d48aa9179f7f38e02c9dd4816427dca297d652b66b977e55"
+  },
+  "archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strpbrk_integration_20261016\\Main_primary_archive.DATA.json",
+    "bytes": 896328,
+    "sha256": "58119e51fdcadb77822d41af9be3e48a85835a1159f0a92ea8c6e7911ace469e"
+  },
+  "object": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_native_crt_strpbrk_Main_build01\\frozen\\native_crt_strpbrk.obj",
+    "bytes": 977,
+    "sha256": "904405ea8ed98624bbc93f2dfcf17cb822569e3975f83ff1c3a786e957b6ec0c"
+  },
+  "whole_ordinary_function_credit": 1,
+  "Source_credit": 1,
+  "strict_compiles": 1,
+  "Main_selected_compiles": 1,
+  "worker_baselines": 0,
+  "new_tests": 0,
+  "new_probes": 0,
+  "existing_linker_warning": "Unrelated existing LNK4006 duplicate spawn_request_id_matches retained.",
+  "qualifications": [
+    "Actual normal registered Main7c087ecd4 passed; later unrelated publications are not claimed rebuilt by this run.",
+    "5447 recorded compiler-family/selectedTU/tracked Main Source-build inputs unchanged at actual build exit; actual selected Source/header closure2 and /std:c++17 /O2 /W4 /WX /Oy- /EHsc /MD flags reviewed. No process-executable-path tracing or hermetic OS/loader claim.",
+    "Entire977B/278B103row Main object and metadata/frame/privateword selection/pointertrace reviewed separately from strict1131B302B99/FPO variant; no normalization or matching replay. Both82782symbol indices/all2452archiveheaders and unique977B member/public section binding independently reviewed.",
+    "Control reads throughNUL first, sourceNUL beforeadvance/membership, every nonzerocursor advance beforemembership, firstmember returns saved genuinecurrent without reread/subtract. Later compiler currentpointer save follows BYTE but samegenuinepointer under stable ordinary frame-excluded fault-free domain.",
+    "Eight explicitzeroed independent genuine uint32scalars, bounded unsignedBYTE/index/mask/CMOV selection, no helper/provider/cookie/global/table. Borrowed pointer transfers no lifetime/ownership/access permission.",
+    "Root required report/doc checker0callrows is not semantic proof. Author mkdir/tool-timing qualifications and Root static-reader/registration-helper corrections retained; no Source/artifact/compiler retry.",
+    "No selected new Source body execution, Original physical ABI/frame/home/bitmap/savedregalias/fault/MMIO/concurrency/lifetimeprotocol/caller/runtime/game proof. Default potentially throwing new typed API retained."
+  ],
+  "Original_ABI_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false
+}

@@ -1,0 +1,175 @@
+{
+  "schema": "bsp.native-crt-readiness.v1",
+  "status": "whole_Original_static_contract_recommendation_independent_review_pending",
+  "address": "00bf9840",
+  "Original_library_name": "_strspn",
+  "coverage": "complete",
+  "owned_range_inclusive": [
+    "00bf9840",
+    "00bf9885"
+  ],
+  "owned_bytes": 70,
+  "owned_instructions": 35,
+  "body_sha256": "f250758db89da8bace57e1367e10641e50922f3a0700fe1b70a6f2e6999f4f70",
+  "calls": [],
+  "routines": [
+    {
+      "address": "00bf9840",
+      "coverage": "complete",
+      "Original_name": "_strspn",
+      "calls": []
+    }
+  ],
+  "Source_ready_recommendation": true,
+  "Source_authorized": false,
+  "Source_gate_published": false,
+  "Source_implemented": false,
+  "Source_credit": 0,
+  "proposed_API": "unsigned int __cdecl bsp::count_native_crt_prefix_in_set_00bf9840(const void* actual_source, const void* actual_control)",
+  "default_potentially_throwing": true,
+  "contract": [
+    "Target MSVC Win32, unsigned BYTE8, pointer/unsigned int32; default potentially throwing new API. No Unicode, locale, case, codepage or signed-char interpretation.",
+    "Read the finite genuine live stable determinate readable control sequence completely through its first NUL before any source payload, including empty source. Each visited control BYTE is read once; only nonzero values set bits and duplicates retain reads/updates.",
+    "Then read each reached source BYTE once. Explicit source NUL stops before bitmap or its own pointer advance. Every nonzero byte advances the genuine source cursor before membership, including terminal nonmember; a set bit continues, a clear bit stops. Return exact unsigned32 count of preceding nonzero members, excluding the terminal byte.",
+    "Source needs only readable stable determinate bytes through a finite reached NUL or first nonzero nonmember, with no unused later terminator/full-string extent after early stop. Empty control still reads source; both pointers require their reached storage, with no null/count-zero exception.",
+    "Reached cursor advances are nonwrapping32bit and stay within/onepast the corresponding actual live allocation, including terminal nonzero source advance; never dereference onepast. Count fits unsigned32, no arbitrary INT_MAX cap or pointer subtraction.",
+    "Admit raw unaligned/interior/prefix/read-only/identical/overlapping inputs and stable ordinary caller-owned stack bytes; no padding or wider typed input objects. Overlap may visit one storage byte in both phases.",
+    "Exclude faults, invalid/indeterminate reached bytes, mutation/concurrency, MMIO/volatile protocols, lifetime changes and native callee bitmap/frame/home/saved-register self-alias or custom physical segment protocols. No fake native scratch identity/Source parameter.",
+    "Prospective mechanism only: ordered volatile unsigned BYTE inputs; eight separate genuine volatile unsigned32 scalar words with explicit zeros; byte>>5 index0..7, unsignedmask1U<<(byte&31), bounded binary selection of one actual private word. Retain explicit NUL-before-bitmap and nonzero source advance before membership. No array/aggregate GS buffer, switch/table/helper, SDK search/copy/provider/fallback, global/TLS, runtime guard or caller binding. Future actual compiler/artifact gates must verify all of this independently."
+  ],
+  "exact_Original_schedule": {
+    "prologue": "EBP frame, save ESI, XOR EAX and8zeroPUSHes create32privatebytes; high24 EAX stayszero through AL payload loads.",
+    "control_home": "00bf984e [EBP+0xc]",
+    "control_BYTE": "00bf9854 [EDX]; OR AL at9856, JZ9858 skips advance/BTS on NUL",
+    "control_nonzero": "EDX++ at985a before BTS DWORD[ESP],EAX at985d; repeat9854",
+    "source_home": "00bf9863 [EBP+8] after controlNUL",
+    "counter": "OR ECX,0xffffffff at9866 forces allones independent of incoming ECX; ADD ECX,1 at986c before each BYTE",
+    "source_BYTE": "00bf986f [ESI]; OR AL at9871, JZ9873 skips source advance/BT on NUL",
+    "source_nonzero": "ESI++ at9875 before BT DWORD[ESP],EAX at9878; JC987c repeats only member",
+    "result": "MOV EAX,ECX at987e gives exact preceding-member unsigned32 count; ADD ESP32, POP ESI, LEAVE, RET9885",
+    "bitmap": "EAX0..255, DWORD offset4*floor(byte/32) in0..28; all accesses within32privatebytes; bit0 never set; no final payload reread"
+  },
+  "blocker_review": {
+    "blockers": [],
+    "specialist_recovery_needed": false,
+    "calls": 0,
+    "global_data_references": 0,
+    "provider_dependency": false,
+    "indirect_controlflow": false,
+    "x87_SIMD": false,
+    "hidden_semantic_register_input": false,
+    "ECX_padding": "LEA ECX,[ECX] performs no read; later OR allones fixes count",
+    "DF_string_instruction_dependency": false,
+    "explicit_segment_override": false,
+    "segment_qualification": "Normal MSVC Win32 flat addressing; native physical DS/SS/frame identity and custom segment protocols excluded.",
+    "native_ABI": "Two stack pointer arguments, ordinary cdecl RET, EAX32 size_t/count; EBP and ESI restored, EBX/EDI untouched.",
+    "suspect_no_return_annotation": false
+  },
+  "proposed_Source_packet": {
+    "id": "cc12_native_crt_strspn_00bf9840",
+    "function_addresses": [
+      "00bf9840"
+    ],
+    "code_ranges": [
+      "00bf9840-00bf9885"
+    ],
+    "output_files": [
+      "include/bsp/native_crt_strspn.hpp",
+      "src/native_crt_strspn.cpp",
+      "docs/NATIVE_CRT_STRSPN.md",
+      "reports/native_crt_strspn.json"
+    ],
+    "authorization": "none; Root owns future gate/registry"
+  },
+  "indexed_context_only": {
+    "callers": [
+      {
+        "entry": "00585eb0",
+        "label": "BSP_NativeString_TrimLeftSet"
+      },
+      {
+        "entry": "00a06840",
+        "label": "BSP_AiDebug_ParseClassEquipmentList"
+      },
+      {
+        "entry": "00a072d0",
+        "label": "BSP_AiDebug_ParseClassList"
+      }
+    ],
+    "callees": 0,
+    "caller_bodies_read_or_promoted": false
+  },
+  "own_evidence": {
+    "static": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\NativeCrtStrspnReadiness01\\static_observation.json",
+      "bytes": 9962,
+      "sha256": "98b88ef138f749ded6e2b9fd8a5b6237118527cfe558ab1db69966372b3eddaa"
+    },
+    "body": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\NativeCrtStrspnReadiness01\\original_body.bin",
+      "bytes": 70,
+      "sha256": "f250758db89da8bace57e1367e10641e50922f3a0700fe1b70a6f2e6999f4f70"
+    },
+    "listing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\NativeCrtStrspnReadiness01\\listing.stdout.bin",
+      "bytes": 865,
+      "sha256": "fe6b99a85d42ea1f5351af7f75e870f9441cf931d38e73fb86f2882eedc23b75"
+    },
+    "live_bytes": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\NativeCrtStrspnReadiness01\\live_bytes.stdout.bin",
+      "bytes": 345,
+      "sha256": "5fc58cac174c625dec346c88ec0cd2aa7aad8ca15dc5c297e20e3dbefd30407a"
+    },
+    "pseudocode": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\NativeCrtStrspnReadiness01\\pseudocode.stdout.bin",
+      "bytes": 1418,
+      "sha256": "bf08d8952fb0fd673c4021b16bc409c02a11c74217c318c56f262b3c19659f88"
+    },
+    "callers": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\NativeCrtStrspnReadiness01\\callers.stdout.bin",
+      "bytes": 128,
+      "sha256": "2d57689fbe0233165098ba876e81384038771cd079bd883166814c5ddaa65030"
+    },
+    "callees": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\NativeCrtStrspnReadiness01\\callees.stdout.bin",
+      "bytes": 37,
+      "sha256": "67d49d41c175ec45c169efbce3c31ce4389491a7f75c4c421ed05b77e983dfad"
+    }
+  },
+  "timing": {
+    "before_named_input_files": 128,
+    "before_working_files": 290,
+    "before_sealed_files": 556,
+    "discovery_start": "2026-10-16T07:28:29.476969+00:00",
+    "whole_range_lease_completed": "2026-10-16T07:28:35.809232+00:00",
+    "body_pin_before_analysis": "2026-10-16T07:28:40.732321+00:00",
+    "all_live_batches": "Six supported bsp.py CLI batches, each Client.verify checks existing bsp project/program path/language/imagebase; autostart0, no import/restart/write.",
+    "analysis_tools": "Fresh capture/static tools pinned before either first use; later report/commit/seal tools have own current before-use stages."
+  },
+  "preservation": {
+    "Source5_commit": "912935be2873bddc8555c03f3812ce46428f46da",
+    "prior_sealed_files": 556,
+    "prior_families": 14,
+    "old_working_files": 16,
+    "new_baseline_CRT_working_files": 270,
+    "current_Source5_outputs": 4,
+    "all_actual_bytes_hash_mtime_preserved": true,
+    "no_moving_Main_merge": true,
+    "no_old_checkout_reset_merge_edit": true,
+    "no_global_saved_Ghidra_DB_immutability_claim": true,
+    "readiness_publication": "Only the2owned readiness outputs may change author branch head; Source5 source bytes and immutable evidence remain bound to its exact prior commit."
+  },
+  "mechanical_checker": "Run report/doc call checker before readiness commit; zero recognized call rows is not semantic proof.",
+  "evidence_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strpbrk_source_oct16\\local\\NativeCrtStrspnReadiness01",
+  "own_provenance": "Only new strspn task tool pairs authenticated to full own Original-session prefix; no Source5/earlier compiler or transport records adopted.",
+  "actual_failures": [],
+  "no_Source_compiler_baseline_tests_probes_bodyexecution_SDKcomparison_Ghidrawrites_or_shared_registry_metadata": true,
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "game_validated": false,
+  "remaining_gates": [
+    "Root independent readiness review",
+    "Root explicit future Source authorization",
+    "Future genuine strict compiler/complete artifact/normal Main variant gates"
+  ]
+}

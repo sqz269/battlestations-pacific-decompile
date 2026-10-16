@@ -1,0 +1,84 @@
+{
+  "packet": "oct15_thirtyninth_reconstruction_batch",
+  "status": "primary_accepted_raw_owner_Source_integrated_default_Win32_checked",
+  "component_pin": "09712ee0d99497f16ab1fd14b3cda8f70d7fa609",
+  "report": "reports/oct15_input_settings_raw_owner_binding.json",
+  "scope": {
+    "whole_ordinary_entries": 1,
+    "ordinary_address": "006aa460",
+    "ordinary_defined_Native_bytes": 480,
+    "ordinary_Native_instructions": 169,
+    "logical_cleanup_fragments": 10,
+    "fragment_defined_Native_bytes": 107,
+    "fragment_instructions": 29,
+    "handler_and_runtime_not_promoted": true
+  },
+  "primary": {
+    "local_receipt": "local/oct16_raw_input_settings_owner_primary.json",
+    "sha256": "5db864d750137675bad48c7209bd2cf2c54ccc651dd255d86cf8f69f8ff5f2f3",
+    "checks": 23,
+    "legacy_peer_checks": 18,
+    "frozen_peer_sha256": "53ef42dca266f6d41a36cd2a868b6f903755244b8c26843a0d484da9ed22fc25",
+    "providers_LF": 48,
+    "Native_primary": "local/oct15_input_settings_raw_owner_primary_native.json",
+    "Native_primary_sha256": "9fff29f99114e2060eb7f11f25edff19aad7b3ad72aca83a346a27f37a3b0b53",
+    "provider_baseline_qualification": "48 premerge published fingerprints verified; the two owner Source/header preimages are deliberately replaced by frozen hashes; all46 external provider fingerprints remain exact after integration."
+  },
+  "compiled": {
+    "worker_object_sha256": "b16d49ee04286ebd2dceb05d6c331cec9ae0138a9864f3e9af69d8545a2ff973",
+    "Root_object_sha256": "3d223f6d9b7285af16e443ceec59f22c704378792baf2e1e4c054dfff06733f2",
+    "Root_all54code_and7EH_sections_byte_and_symbolic_relocation_equal_worker": true,
+    "executable_section_bytes": 5844,
+    "executable_marked_sections": 54,
+    "linear_Capstone_entries": 2123,
+    "embedded_data_bytes": 301,
+    "data_pseudo_entries_excluded": 150,
+    "code_including_NOP_INT3_bytes": 5543,
+    "code_entries_including_NOP_INT3": 1973,
+    "NOP_INT3_entries": 56,
+    "NOP_INT3_bytes": 63,
+    "all_relocations": 280,
+    "code_relocations": 201,
+    "embedded_data_relocations": 50,
+    "EH_relocations": 15,
+    "debug_frame_relocations": 14,
+    "nonpadding_code_bytes": 5480,
+    "nonpadding_code_entries": 1917,
+    "explicit_TU_namespace_bijection": {
+      "?A0xf4360b2e": "?A0xce074084"
+    },
+    "all_mapped_function_definition_section_value_type_storage_sets_equal": true,
+    "symbolic_equivalence_qualification": "Exact offsets/types/addends and complete symbols after this single explicit worktree-specific TU anonymous namespace bijection; all machine code and EH raw bytes unmasked and exact."
+  },
+  "verification": {
+    "combined_tested_commit": "1d73b590599fd244cd1ce6a24cde86a14670f838",
+    "default_build_exit": 0,
+    "existing_suites_passed": 3,
+    "existing_suites_seconds": 7.64,
+    "build_log_sha256": "448bc7241f60e2a08f59c167fa822d9864604eb7544ebd4c0feb7c686ef5864c",
+    "JSON_transfer_rows": 28,
+    "Markdown_transfer_claims": 28,
+    "saved_annotations": 11,
+    "annotation_log": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\ghidra-annotations-20261016T073804Z.json",
+    "annotation_log_sha256": "dd304a3ebeae673c388e0facc28916e05c94f0044f5dad3d3dc3d86c1caa32ab",
+    "refreshed_exports": 11,
+    "export_log_sha256": "103e6aa682fd74440295deb6825cc0984d8ef0de7438c6b4047331fa726806cf"
+  },
+  "preservation": [
+    "Old lifetime APIs, caller bodies, context and constructor/getter/legacyguard Source preserved",
+    "16of19 old code sections and4oldEH data exact; changed legacy wrapper/handler/scalar code fully reviewed; original private frames not identical",
+    "Unrelated Main artifacts preserved; no new tests/probes or game edits"
+  ],
+  "limits": [
+    "Current Cpp source semantics and MSVC output reviewed; no OriginalABI/privateframe/SEH/FH3/rawfault or game equivalence",
+    "Existing suites do not execute new owner; historical owner fixture missing",
+    "Sourcecdecl3semanticinputs/callerpop12 versus NativeECXself/plainRET/incidentalEAX; no binary ABI claim",
+    "CurrentCpp guard decrementsstate before actualchild effects; publicationvolatile0 beforebase stamp. Native116B max10 EH is not reproduced by Cpp52B max2 metadata",
+    "Actual provider/CRT/heap/privateframe/fault/FH3SEH/game behavior remains qualified; no owner runtime validation or application wiring"
+  ],
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Verified separately after publication"
+  }
+}

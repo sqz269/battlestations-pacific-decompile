@@ -36,4 +36,16 @@ void* scalar_delete_native_input_settings_006ab800(
 // concrete source storage. The raw manager's deletion bindings
 // must borrow this same context through input_settings for CF81CC dispatch.
 // No original FH3, private-stack aliases, hardware-fault or gameplay proof.
+
+
+// Distinct actual RawCtx binding for whole006AA460 ordinary effects and ten
+// logical cleanup actions. Borrow only the actual string-pool context and
+// actual00E198E8 publication cell. Existing APIs/Context remain unchanged.
+// Sourcecdecl3inputs/caller-pop12 vs NativeECX/noStack/plainRET/incidentalEAX.
+// Primary C++ exceptions propagate; secondary guard cleanup exceptions
+// terminate. No original EBP/FS/FH3/SEH/fault/CRT/heap/binaryABI/game claim.
+struct NativeStringRawPoolContext;
+void __cdecl destroy_native_raw_input_settings_006aa460(
+    void* settings, NativeStringRawPoolContext& strings,
+    void* volatile& publication_00e198e8);
 } // namespace bsp
