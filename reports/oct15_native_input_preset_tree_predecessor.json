@@ -1,0 +1,336 @@
+{
+  "packet": "oct15_native_input_preset_tree_predecessor",
+  "status": "complete_whole_source_current_SDK_diagnostic_domain_build_tested",
+  "domain": "current_SDK_diagnostic_domain",
+  "utc": "2026-10-16T06:54:01.218261+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "authorization": "Root explicit Source authorization ONLY whole0069AEC0, one address/four files; no caller promotion.",
+  "published_gate": {
+    "Main": "d5e42e294d9925f78c8e42f17343717fcb366ef7",
+    "worker_base": "ee5a114ca91b6795e19bc84791d4867c008ea03b"
+  },
+  "source": "src/native_input_preset_tree_predecessor.cpp",
+  "header": "include/bsp/native_input_preset_tree_predecessor.hpp",
+  "documentation": "docs/OCT15_NATIVE_INPUT_PRESET_TREE_PREDECESSOR.md",
+  "source_sha256": "1057060a3329dc67ad439d04969e3a18acf9ef04d7749d6c6025f4a1bba26577",
+  "header_sha256": "d51916c2e5873cca0a3b6b890ecfcc777d2ce77abc046e33e3cc8baeb50ba33f",
+  "documentation_sha256": "824ea252538d18853ef522f6ffe653aa097a76752a58c24d6e03673bbbb2243b",
+  "functions": [
+    {
+      "address": "0069aec0",
+      "name": "decrement_native_input_preset_tree_iterator_0069aec0",
+      "library_name": "STL_TreeIter_Dec_0069aec0",
+      "source": "src/native_input_preset_tree_predecessor.cpp",
+      "header": "include/bsp/native_input_preset_tree_predecessor.hpp",
+      "status": "complete_whole_source_current_SDK_diagnostic_domain_build_tested",
+      "domain": "current_SDK_diagnostic_domain",
+      "nil_offset": 41,
+      "evidence": "Hypothesis, not recovered symbol; preserve established STL_TreeIter_Dec_0069aec0. Whole0069AEC0..0069AF48=137B48 including two7B alignmentLEAs. NativeECXreal8Biterator/EDXunconsumed/noStack/plainRET; EAXincidental varies by path, semanticvoid Source. Published presetcarrier owner0/node4, literalnil29/links0/4/8; volatile public reads/stores retain owner diagnostic thenCURRENTnode, capturedright publication beforetest, capturedmaxwalk, CURRENTnode/parentleft climb, parentstore beforeparentread, finalCURRENTnode niltest beforeparentstore. Both actualSDK diagnostic tails return without laterstore. ThreeNativeBF6713refs=1CALL+2tailJMP; direct existing currentSDK provider only. Fresh137PE/liveB48+readonly177B69/all118contexts; fullactualCMake175B75 with2codeREL32+1debugDIR32NB allreviewed. DefaultWin32 existing3/3pass7.78s. docs/OCT15_NATIVE_INPUT_PRESET_TREE_PREDECESSOR.md;reports/oct15_native_input_preset_tree_predecessor.json. No callbacks/RawCtx/payload/heap/locale/guard/EH/repair. SDKpolicy/privateframe/registerflags/OriginalFH3SEH/fault/ABI/runtime/game unproved.",
+      "original_abi": "ECX actual8Biterator; incomingEDXunconsumed; no stackedinputs; plainRET; incidental path-dependent EAX. Source semanticvoidfastcall has same no-stack footprint, not binaryABI proof.",
+      "uncertainty": "Current Windows SDK diagnostic policy only, not Original encoded-handler/debugger/Watson/fault/return-slot identity. Semantic void and canonical unused EDX/private compiler frames/registers/flags/FH3/SEH/ABI/runtime/game identity unproved; valid reached storage and finite walks required.",
+      "native_bytes": 137,
+      "native_instruction_starts": 48,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "137",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0069aec0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0069af48"
+            },
+            "length": "137"
+          }
+        ]
+      },
+      "raw_sha256": "d555a4caecc6ccb98d0341008772d65ddc54d481e143fe6b67b6d3414ffbe4c1"
+    }
+  ],
+  "fresh_native_proof": {
+    "artifact": "local/oct15_native_input_preset_tree_predecessor_native_audit.json",
+    "sha256": "9dbec6e3669fc537a32c2da731aaded074d2be04f2558683ebc13f6ad2f276cb",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "owned_bytes": 137,
+    "owned_starts": 48,
+    "readonly_bytes": 177,
+    "readonly_starts": 69,
+    "current_contexts": 118,
+    "encoded_edges": 29,
+    "typed": {
+      "path": "local/oct15_native_input_preset_tree_predecessor_typed.json",
+      "sha256": "64fb713aae2b1e6f1af58e747e51bd52f3b4f4a005fe807224caef4db82509f0"
+    },
+    "alignment": [
+      {
+        "address": "0069aef9",
+        "function": "0069aec0",
+        "size": 7,
+        "hex": "8da42400000000",
+        "mnemonic": "lea",
+        "operands": "esp, [esp]"
+      },
+      {
+        "address": "0069af19",
+        "function": "0069aec0",
+        "size": 7,
+        "hex": "8da42400000000",
+        "mnemonic": "lea",
+        "operands": "esp, [esp]"
+      }
+    ]
+  },
+  "host_steps": [
+    {
+      "address": "0069aec8",
+      "native": "00bf6713",
+      "function": "0069aec0",
+      "kind": "call",
+      "scope": "owned_whole_0069aec0"
+    },
+    {
+      "address": "0069aee3",
+      "native": "00bf6713",
+      "function": "0069aec0",
+      "kind": "tail_jump",
+      "scope": "owned_whole_0069aec0"
+    },
+    {
+      "address": "0069af3f",
+      "native": "00bf6713",
+      "function": "0069aec0",
+      "kind": "tail_jump",
+      "scope": "owned_whole_0069aec0"
+    }
+  ],
+  "readonly_support_scope": "Family00B7CEF0/wrappers0069C440,0069CF40/SDK00BF6713 only; no extra Source ownership.",
+  "native_phase_contracts": [
+    "Whole137B48 typed/PE/live, both seven-byte alignment LEAs included; full PE hash verified.",
+    "Every owned instruction and all readonly comparison/wrapper/SDK instructions independently read; all118 current contexts and29 encoded edges verified.",
+    "ECX real8B iterator, EDX unconsumed, no stacked inputs/plainRET; nonuniform EAX excludes a semantic result. Stored Ghidra unspecified prototype preserved.",
+    "Published real8B preset carrier reused; only volatile node4 stores, literal nil29, links0/4/8; no node/container model.",
+    "Owner null diagnostic precedes CURRENTnode reload; SDK may return, throw or terminate.",
+    "Nil-node captured right is published before captured-right nil test; diagnostic tail returns with no later actions.",
+    "Left maximum carries each captured right and publishes retained candidate once; no final-link reread or helper delegation.",
+    "Climb initial parent uses captured node; each CURRENTiterator.node precedes CURRENTparent.left; parent publication precedes next-parent read.",
+    "Final CURRENTnode nil test precedes final retained-parent store; diagnostic tail has no post-return store, including handler mutations."
+  ],
+  "provider_fingerprints": {
+    "include/bsp/native_input_preset_tree_erase.hpp": {
+      "physical_sha256": "5d1224d3cdde8dd5e9b25d59282df460a43b67b159427ff7b4bc45d202970615",
+      "LF_sha256": "5d1224d3cdde8dd5e9b25d59282df460a43b67b159427ff7b4bc45d202970615",
+      "published_Main_equal": true
+    },
+    "src/native_input_preset_tree_erase.cpp": {
+      "physical_sha256": "10f4e003bc45c7c822f51167d89a80c6a0a3667e41bc6ebe52323eed00a21e76",
+      "LF_sha256": "10f4e003bc45c7c822f51167d89a80c6a0a3667e41bc6ebe52323eed00a21e76",
+      "published_Main_equal": true
+    },
+    "include/bsp/native_invalid_parameter_noinfo_call.hpp": {
+      "physical_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "LF_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "published_Main_equal": true
+    },
+    "src/native_invalid_parameter_noinfo_call.cpp": {
+      "physical_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "LF_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "published_Main_equal": true
+    },
+    "include/bsp/native_resource_manager_trees.hpp": {
+      "physical_sha256": "f902776e422a0e7269b6df6bc84adc883a7875aac632e21416cf5e462590db7c",
+      "LF_sha256": "f902776e422a0e7269b6df6bc84adc883a7875aac632e21416cf5e462590db7c",
+      "published_Main_equal": true
+    },
+    "src/native_resource_manager_trees.cpp": {
+      "physical_sha256": "a6c64f744d5d4aff05f7485e9d399d63d7e29a7822927aa299ce261f29eedfd3",
+      "LF_sha256": "a6c64f744d5d4aff05f7485e9d399d63d7e29a7822927aa299ce261f29eedfd3",
+      "published_Main_equal": true
+    }
+  },
+  "actual_CMake_COFF_review": {
+    "object": "build/win32/bsp_core.dir/Release/native_input_preset_tree_predecessor.obj",
+    "object_sha256": "f10eeabfae506c255b36a37dcf7718d87c92db9b0a49e28f02181695462089b3",
+    "capture": "local/oct15_native_input_preset_tree_predecessor_cmake_coff_decoded.txt",
+    "capture_sha256": "a6a1dae3676385803022d6e6249135ac5ea983e4f4fb9e93b829ffd44db330ee",
+    "code_bytes": 175,
+    "instruction_count": 75,
+    "relocation_count": 3
+  },
+  "compiled_scheduling": [
+    "All175B75 actual CMake instructions read: public121B48, four private helpers54B27; physical generated counts kept separate from Native.",
+    "Generated owner diagnostic CALL at09; both Native tails share generated6F JMP. Two codeREL32 bind exact SDK provider; one debugDIR32NB is the third total relocation.",
+    "All noncode directives/debug/checksum bytes and relocations reviewed; MSVCRT/OLDNAMES retained; no EH/table/literal/data references. Single public alignment NOP at4F; all returns plainRET."
+  ],
+  "static_review_checks": {
+    "artifact": "local/oct15_native_input_preset_tree_predecessor_static_review.json",
+    "sha256": "b4b30db2026e680b97b53c8d860c807e2878a7670bbd7c017d178d1d100f5f38",
+    "passed": 15,
+    "findings": []
+  },
+  "verification": {
+    "command": "./scripts/build.ps1",
+    "default_MSVC_Win32": true,
+    "exit_code": 0,
+    "existing_suites": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "passed": 3,
+    "failed": 0,
+    "ctest_seconds": 7.78,
+    "new_tests": 0,
+    "new_probes": 0,
+    "Native_execution": false,
+    "canonical_calls": {
+      "command": "python tools/verify_report_calls.py reports/oct15_native_input_preset_tree_predecessor.json docs/OCT15_NATIVE_INPUT_PRESET_TREE_PREDECESSOR.md",
+      "exit_code": 0,
+      "JSON_rows_checked": 3,
+      "owned_rows": 3,
+      "readonly_rows": 0,
+      "JSON_failed": 0,
+      "Markdown_claims_checked": 3,
+      "Markdown_failed": 0,
+      "Markdown_unchecked": 0,
+      "Markdown_warnings": 0
+    },
+    "pre_existing_build_warning": {
+      "code": "LNK4006",
+      "symbol": "bsp::spawn_request_id_matches",
+      "objects": [
+        "lua_binding_spawn.obj",
+        "lua_spawn_new.obj"
+      ],
+      "prior_log": "local/oct15_native_input_string_tree_lower_bounds_build.log",
+      "new_leaf_compile_warnings": 0
+    }
+  },
+  "ledger": {
+    "names": [
+      {
+        "address": "0069aec0",
+        "name": "STL_TreeIter_Dec_0069aec0",
+        "previous_Ghidra_name": "STL_TreeIter_Dec_0069aec0",
+        "append_evidence": true,
+        "evidence": "Hypothesis, not recovered symbol; preserve established STL_TreeIter_Dec_0069aec0. Whole0069AEC0..0069AF48=137B48 including two7B alignmentLEAs. NativeECXreal8Biterator/EDXunconsumed/noStack/plainRET; EAXincidental varies by path, semanticvoid Source. Published presetcarrier owner0/node4, literalnil29/links0/4/8; volatile public reads/stores retain owner diagnostic thenCURRENTnode, capturedright publication beforetest, capturedmaxwalk, CURRENTnode/parentleft climb, parentstore beforeparentread, finalCURRENTnode niltest beforeparentstore. Both actualSDK diagnostic tails return without laterstore. ThreeNativeBF6713refs=1CALL+2tailJMP; direct existing currentSDK provider only. Fresh137PE/liveB48+readonly177B69/all118contexts; fullactualCMake175B75 with2codeREL32+1debugDIR32NB allreviewed. DefaultWin32 existing3/3pass7.78s. docs/OCT15_NATIVE_INPUT_PRESET_TREE_PREDECESSOR.md;reports/oct15_native_input_preset_tree_predecessor.json. No callbacks/RawCtx/payload/heap/locale/guard/EH/repair. SDKpolicy/privateframe/registerflags/OriginalFH3SEH/fault/ABI/runtime/game unproved."
+      }
+    ],
+    "functions": [
+      {
+        "address": "0069aec0",
+        "name": "decrement_native_input_preset_tree_iterator_0069aec0",
+        "library_name": "STL_TreeIter_Dec_0069aec0",
+        "source": "src/native_input_preset_tree_predecessor.cpp",
+        "header": "include/bsp/native_input_preset_tree_predecessor.hpp",
+        "status": "complete_whole_source_current_SDK_diagnostic_domain_build_tested",
+        "domain": "current_SDK_diagnostic_domain",
+        "nil_offset": 41,
+        "evidence": "Hypothesis, not recovered symbol; preserve established STL_TreeIter_Dec_0069aec0. Whole0069AEC0..0069AF48=137B48 including two7B alignmentLEAs. NativeECXreal8Biterator/EDXunconsumed/noStack/plainRET; EAXincidental varies by path, semanticvoid Source. Published presetcarrier owner0/node4, literalnil29/links0/4/8; volatile public reads/stores retain owner diagnostic thenCURRENTnode, capturedright publication beforetest, capturedmaxwalk, CURRENTnode/parentleft climb, parentstore beforeparentread, finalCURRENTnode niltest beforeparentstore. Both actualSDK diagnostic tails return without laterstore. ThreeNativeBF6713refs=1CALL+2tailJMP; direct existing currentSDK provider only. Fresh137PE/liveB48+readonly177B69/all118contexts; fullactualCMake175B75 with2codeREL32+1debugDIR32NB allreviewed. DefaultWin32 existing3/3pass7.78s. docs/OCT15_NATIVE_INPUT_PRESET_TREE_PREDECESSOR.md;reports/oct15_native_input_preset_tree_predecessor.json. No callbacks/RawCtx/payload/heap/locale/guard/EH/repair. SDKpolicy/privateframe/registerflags/OriginalFH3SEH/fault/ABI/runtime/game unproved.",
+        "original_abi": "ECX actual8Biterator; incomingEDXunconsumed; no stackedinputs; plainRET; incidental path-dependent EAX. Source semanticvoidfastcall has same no-stack footprint, not binaryABI proof.",
+        "uncertainty": "Current Windows SDK diagnostic policy only, not Original encoded-handler/debugger/Watson/fault/return-slot identity. Semantic void and canonical unused EDX/private compiler frames/registers/flags/FH3/SEH/ABI/runtime/game identity unproved; valid reached storage and finite walks required."
+      }
+    ]
+  },
+  "registration": "One bsp_core append; no shared registry leases.",
+  "frozen_artifacts": [
+    {
+      "path": "local/oct15_native_input_preset_tree_predecessor_native_audit.json",
+      "sha256": "9dbec6e3669fc537a32c2da731aaded074d2be04f2558683ebc13f6ad2f276cb"
+    },
+    {
+      "path": "local/oct15_native_input_preset_tree_predecessor_typed.json",
+      "sha256": "64fb713aae2b1e6f1af58e747e51bd52f3b4f4a005fe807224caef4db82509f0"
+    },
+    {
+      "path": "local/oct15_native_input_preset_tree_predecessor_current_starts.json",
+      "sha256": "71bea80951cf2fa5049364953b4c4699cdd016c4ed2689567741c4a316e0f9dd"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_input_preset_tree_predecessor.obj",
+      "sha256": "f10eeabfae506c255b36a37dcf7718d87c92db9b0a49e28f02181695462089b3"
+    },
+    {
+      "path": "local/oct15_native_input_preset_tree_predecessor_cmake_coff_review.json",
+      "sha256": "9615ae9a5dcff812eaa983462b54404b8f87ab5879bb720694c370b80d76a000"
+    },
+    {
+      "path": "local/oct15_native_input_preset_tree_predecessor_cmake_coff_decoded.txt",
+      "sha256": "a6a1dae3676385803022d6e6249135ac5ea983e4f4fb9e93b829ffd44db330ee"
+    },
+    {
+      "path": "local/oct15_native_input_preset_tree_predecessor_static_review.json",
+      "sha256": "b4b30db2026e680b97b53c8d860c807e2878a7670bbd7c017d178d1d100f5f38"
+    },
+    {
+      "path": "local/oct15_native_input_preset_tree_predecessor_ledger_records.json",
+      "sha256": "d60a64da25195b0ecc88e77d4d44eaa8cc25b15c2f398fd7e12c6f3f2849f1e1"
+    },
+    {
+      "path": "local/oct15_native_input_preset_tree_predecessor_build.log",
+      "sha256": "f5fd244a4eac9e08416c389419d63bdaa6cda1dc3243ec99c0d6d1ddefa45950"
+    },
+    {
+      "path": "local/oct15_native_input_preset_tree_predecessor_build_exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "local/oct15_preset_tree_predecessor_readiness.json",
+      "sha256": "f5eeb86223447f8ca88419359f465b4ce33affa5a068a372103716e96d3b4ca8"
+    },
+    {
+      "path": "local/oct15_preset_tree_predecessor_full_native_audit.json",
+      "sha256": "2563b1c3f2216d0fcf719a46d4417e573d88ccd5efa8855b2c99b5a138e26df6"
+    },
+    {
+      "path": "local/oct15_native_input_preset_tree_predecessor_call_verification.txt",
+      "sha256": "377171f78da770c9d896cd1cd1c41b1b7c272fdfb928682531eb8e67f7c5a81e"
+    }
+  ],
+  "preservation": [
+    {
+      "report": "reports/oct15_input_int_string_tree_erase.json",
+      "sha256": "6c704cc197738ccde0214be0b6a449f2d54a8aee2a5c1056838393789d82bcd8",
+      "artifacts_unchanged": 15
+    },
+    {
+      "report": "reports/oct15_input_int_string_tree_range.json",
+      "sha256": "3b2d515cf6c1429ce410872e86985a48f3ab61c2ead060dcb21f1c23580d6f40",
+      "artifacts_unchanged": 13
+    },
+    {
+      "report": "reports/oct15_native_input_controller_name_pair_destroy.json",
+      "sha256": "9d857066bc0d287f7b1a4268e0e7089e73bf230282703be6f4768d4dd5390865",
+      "artifacts_unchanged": 14
+    },
+    {
+      "report": "reports/oct15_native_input_controller_tree_erase.json",
+      "sha256": "c6223451f5f6ab0941abc6669990e36b55e78bc180a5435493f1be2b623972dc",
+      "artifacts_unchanged": 14
+    },
+    {
+      "report": "reports/oct15_native_input_controller_tree_range.json",
+      "sha256": "8c1a023100a559aaeb05a573be817ce463d21fb29245faa98047cc080b7b2212",
+      "artifacts_unchanged": 13
+    },
+    {
+      "report": "reports/oct15_native_input_string_tree_lower_bounds.json",
+      "sha256": "280f5bd86a5e193b21f42a24f7c3d3e55dd8c15e44fff6cf3691a7e47e2dd9eb",
+      "artifacts_unchanged": 13
+    }
+  ],
+  "out_of_scope": [
+    "wrappers",
+    "hint/insertion/map-index callers",
+    "nil19 family callback Source",
+    "Ghidra annotation/mutation",
+    "push"
+  ],
+  "limits": "Current Windows SDK diagnostic policy only, not Original encoded-handler/debugger/Watson/fault/return-slot identity. Semantic void and canonical unused EDX/private compiler frames/registers/flags/FH3/SEH/ABI/runtime/game identity unproved; valid reached storage and finite walks required."
+}
