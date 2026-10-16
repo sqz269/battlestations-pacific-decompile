@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct16_crt_call_new_handler",
+  "status": "primary_reviewed_additive_actual_raw_size_API_annotated_saved_exported_normal_combined_gate_pending",
+  "new_Original_functions": 0,
+  "new_Source_APIs": 1,
+  "mapped_Original_addresses": [
+    "00c055b1"
+  ],
+  "general_Source_ready": false,
+  "qualified_Source_ready": false,
+  "Original_entry_ABI_proved": false,
+  "Original_runtime_heap_TLS_errno_handler_startup_SCC_closed": false,
+  "source": "src/native_crt_new_handler.cpp",
+  "header": "include/bsp/native_crt_new_handler.hpp",
+  "documentation": "docs/GOAL_OCT16_CRT_CALL_NEW_HANDLER.md",
+  "Source_API": "call_native_crt_new_handler_00c055b1",
+  "prior_API_preserved": "invoke_native_crt_new_handler_00c055b1",
+  "source_sha256": "7d086357ec4ee166c2007b63e6d586badd0055dc424da11d5b0200d974be01a8",
+  "header_sha256": "0e005d5aef511ff7c38028bb3b112e73e7ffa10a0fff9d60264dfed51aa1e420",
+  "documentation_sha256": "eb9d461bd73f3616e9c409f183217c24749d95a5aedcbe877e5c0d3cd3b1b846",
+  "original_library_name": "__callnewh",
+  "original_abi": "cdecl oneDWORDsize argument atentryESP+4, caller-pop4/plainRET, fullEAX exact0/1. Current globalencodedhandler is decoded BEFORE any sizewordread; NULL skips sizeaccess. No local EH.",
+  "Source_abi": "New cdecl(constvoid*actual_size_argument4,constNativeCrtPointerDecodeContext&,constvolatileuint32&actualencoded109DE44),3words/caller12. Stable backingpointer/refidentities, explicit reached rawDWORDstorage; not Originalentry/argument/outgoingslot/register/fault/SEH ABI.",
+  "whole_native_body": {
+    "address": "00c055b1",
+    "end_exclusive": "00c055d3",
+    "bytes": 34,
+    "instructions": 15,
+    "bytes_hex": "ff 35 44 de 09 01 e8 22 fa ff ff 85 c0 59 74 0f ff 74 24 04 ff d0 85 c0 59 74 04 33 c0 40 c3 33 c0 c3",
+    "sha256": "ee46ba523d066e7aa16ef3d636e1869ecfeab38fec0c26e9b02266b6e44f42e1",
+    "installed_pe_offset": 8410545,
+    "live_equals_installed_pe": true,
+    "instructions_in_order": [
+      "00c055b1 push dword ptr [0x109de44]",
+      "00c055b7 call 0xc04fde",
+      "00c055bc test eax, eax",
+      "00c055be pop ecx",
+      "00c055bf je 0xc055d0",
+      "00c055c1 push dword ptr [esp + 4]",
+      "00c055c5 call eax",
+      "00c055c7 test eax, eax",
+      "00c055c9 pop ecx",
+      "00c055ca je 0xc055d0",
+      "00c055cc xor eax, eax",
+      "00c055ce inc eax",
+      "00c055cf ret ",
+      "00c055d0 xor eax, eax",
+      "00c055d2 ret "
+    ]
+  },
+  "Source_contract": {
+    "schedule": [
+      "Read actual current volatile encoded109DE44 exactlyonce.",
+      "Call existing genuine native_crt_decode_pointer_00c04fde with SAME qualified context; captureactualreturn. No SDKdecode/newprovider.",
+      "DecodedNULL returns0 without reading any sizebackingbyte.",
+      "Nonnull performs one uncheckedx86 DWORDread of CURRENT actual_size_argument4 backing, includingunalignedstorage.",
+      "Invoke actual decoded int32 __cdecl(uint32) handler with capturedword; return fullsignedint32 result!=0?1:0, retainingallnonzero bitpatterns."
+    ],
+    "domain": "Added binding/bookkeeping including compiler-private argument/temporary backing remains valid/stable and disjoint from reached actual size/native cells. Real native contents retain admitted aliasing/reentrancy/mutation. DecodedNULL permits null/absent backing; only nonnull handler requires4readablebytes and actualcallablecompatiblecode. No guards/normalization/SDK/defaultowner.",
+    "propagation": "No catch/noexcept/retry/cleanup/lock/errno/LastErrorrepair. No new std::new_handler policy or genericcallbackfield. Decoder/handler sideeffects and failures propagate under their existing contracts.",
+    "decoder_slot": "Existingdecoder writes its own actual firstcallee argument word on selectedtransform paths then returnscurrentword. Parentusesreturnedpointer/discards temporary; addedcontext/physicalslot/metadataqualification remains open."
+  },
+  "existing_Source_provenance": {
+    "commit": "c15c994d4eddc29081c1b3c4b74cbeb4bfc1ead8",
+    "report": "reports/oct16_native_crt_new_handler.json",
+    "report_sha256": "8b3774856895081a2dadbb6035155ddca3d64ac755d088077471e4adbd581c63",
+    "prior_CPP_sha256": "d7f29cd0d22f12b44d729ea32546a394fe6f0a18ac7c3fd0e9f7b92b3ae1254a",
+    "prior_HPP_sha256": "30d7e608299e659ea1b8c2cdea310c003f2d865c34235beb33b6b0ca9de725a3",
+    "historical_report_immutable": true,
+    "existing_API": "Valueparameterword latevolatileload, completequalifiedwholebody alreadypublished; this packet broadens sizebackinginterfaceonly.",
+    "old_public_method_raw_Source_unchanged": true,
+    "old_public_method_raw_Source_sha256": "4a035e0c3e90cdcfcb045def3f32eb83e4b77aa247877ed5b87bca3512bd00bc",
+    "old_public_method_raw_bytes": 879,
+    "old_actual_CMake_COFF": {
+      "path": "local\\oct16_native_crt_new_handler_actual_COFF.json",
+      "SHA256": "96ccf5e59ba1991e0a9d94b151229c79a14f65c4b8815a2fe6292c731e0a8faf",
+      "object": "build\\win32\\bsp_core.dir\\Release\\native_crt_new_handler.obj",
+      "object_SHA256": "0266e6b2d3cfe7fc43822facfa18b1784b835731c1d964fff31908f52981259c",
+      "object_bytes": 915,
+      "CODE_bytes": 45,
+      "CODE_instructions": 22,
+      "relocations": 1,
+      "static_checks": 15,
+      "no_CODE_padding_helpers_EH_BSS_runtime_data": true,
+      "decoded_text": {
+        "path": "local/oct16_native_crt_new_handler_actual_COFF_decoded.txt",
+        "SHA256": "fdc0e74012da498479d79662e75cf6694eb7e40129e626575078e743b9345b5d"
+      },
+      "schedule": "returnedECX+11 beforeADD8+13; nullJNE+18 skipsSourceword; late[EBP+8]+1C onlynonnull; actualhandlerCALL ECX+20; callerADD4+22; NEG/SBB/NEG exact0or1.",
+      "read_only_content_addressed_archive": {
+        "path": "local\\accepted_source53_crt_objects\\0266e6b2d3cfe7fc43822facfa18b1784b835731c1d964fff31908f52981259c.obj",
+        "SHA256": "0266e6b2d3cfe7fc43822facfa18b1784b835731c1d964fff31908f52981259c",
+        "bytes": 915,
+        "read_only": true,
+        "provenance": "Byteexact actualCMakeobject before later normal builds; original buildpath remains a historical build artifact identity."
+      }
+    },
+    "postbuild_old_public_body_independent_comparison": "pending normal combined wholeobject inspection against immutable oldactualCOFF, no workerbuild."
+  },
+  "provider_Source_pins": {
+    "src/native_crt_pointer_decode.cpp": "7a689a80bea666aa0941662a1bbde17500c92d1f7fd671c364aa2b3e0bf365c7",
+    "include/bsp/native_crt_pointer_decode.hpp": "b1e901d739c07419b55441988bf42177b0e6ace3ef27ef1251ecb3b36fb48a7f",
+    "src/native_crt_pointer_decode_support.cpp": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37",
+    "include/bsp/native_crt_pointer_decode_support.hpp": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722"
+  },
+  "runtime_qualifications": [
+    "NativeCrtPointerDecodeContext retainsactualcurrentTLSindices, actualcurrentTlsGetValueIATbinding and actualPTD/nativegetter/DecodePointerstate withvalidreachedstorage/callableABI.",
+    "Existingmodulegate SupportContext stillborrows LegacyCrtMathRuntime errno accessor and SingletonLifetime invalidservice; those qualifiedinterfaces do not closeOriginalfailure/PTD/errno/handlertransport.",
+    "Encodedhandler publication/ownership, TLS/FLS/PTD/defaultlocale/heap/lock/bootstrap and actualOriginalSCC remainunproved. No Originalcanonicalentry/privateframe/fault/register/SEH/FH3/fullABI/game claim."
+  ],
+  "direct_and_incoming_calls": [
+    {
+      "address": "00c055b7",
+      "native": "00c04fde",
+      "function": "00c055b1",
+      "kind": "call"
+    },
+    {
+      "address": "00bf9fa6",
+      "native": "00c055b1",
+      "function": "00bf9f1a",
+      "kind": "call"
+    },
+    {
+      "address": "00bf9fc8",
+      "native": "00c055b1",
+      "function": "00bf9f1a",
+      "kind": "call"
+    },
+    {
+      "address": "00c1c5e2",
+      "native": "00c055b1",
+      "function": "00c1c50f",
+      "kind": "call"
+    },
+    {
+      "address": "00bf6826",
+      "native": "00c055b1",
+      "function": "00bf681b",
+      "kind": "call"
+    },
+    {
+      "address": "00bfde4d",
+      "native": "00c055b1",
+      "function": "00bfdcec",
+      "kind": "call"
+    },
+    {
+      "address": "00bfdec6",
+      "native": "00c055b1",
+      "function": "00bfdcec",
+      "kind": "call"
+    },
+    {
+      "address": "00bfdeb6",
+      "native": "00c055b1",
+      "function": "00bfdcec",
+      "kind": "call"
+    }
+  ],
+  "computed_transfer": {
+    "site": "00c055c5",
+    "function": "00c055b1",
+    "instruction": "CALL EAX",
+    "actual_target_domain": "actualreturneddecoded int32 __cdecl(uint32) code; latecurrentrawsizeword; fullEAXzero/nonzero normalization.",
+    "typed_instruction_confirmed": true
+  },
+  "incoming_attribution": "7actualincomingCALLsites from4 currentformalowners. BFDE4D/BFDEB6/BFDEC6 belongBFDCEC, not inferredBFDE30. This packet doesnot implementorautomaticallyadmitallcallers viaSourceAPI.",
+  "typed_captures": [
+    {
+      "path": "local/goal_oct16_crt_call_new_handler_flow.json",
+      "sha256": "23ff91706a32f69a85405b8b3319f068e5dba3acc20abe61926d18b6d08cfdff",
+      "responses": 3,
+      "project_program": "C:/Users/sqz269/bsp.gpr /battlestationspacific.exe",
+      "modification_numbers": [
+        "7025"
+      ]
+    },
+    {
+      "path": "local/goal_oct16_crt_call_new_handler_incoming_flow.json",
+      "sha256": "368cccad19860bf1c216ca4d5f7c208f374be1711434e102354441ccc0c0c677",
+      "responses": 7,
+      "project_program": "C:/Users/sqz269/bsp.gpr /battlestationspacific.exe",
+      "modification_numbers": [
+        "7029"
+      ]
+    }
+  ],
+  "live_bytes_receipt": {
+    "path": "local/goal_oct16_crt_call_new_handler_live_bytes.txt",
+    "sha256": "b0fd724c9b991f2f2ea227a6adbeb307af86113a0422d2a8adee5e10a573a995"
+  },
+  "annotation": {
+    "status": "applied_after_primary_review_through_ghidra_annotate_write_lock_saved_and_exports_refreshed",
+    "library_name": "__callnewh",
+    "prior_name_unchanged": true,
+    "entire_captured_prior_comment_preserved": true,
+    "prior_capture": "local/goal_oct16_crt_call_new_handler_prior_comments.txt",
+    "prior_capture_sha256": "6f84ec8afaed8e014c8781bbcf618b18abeeb6c6e71f0e39c4069e5e8d61ad55",
+    "write_log": "local/ghidra-annotations-20261016T160521Z.json",
+    "write_log_sha256": "e86a1f01b6d8f437e4987bca2a7ed6c344495ae265c0204bc14db833165391fc",
+    "after_capture": "local/goal_oct16_callnewh_after_comments.txt",
+    "after_capture_sha256": "05c04f613ed0d048ec66d881572b0624c8b3509a660b9c31e8583984951a4543",
+    "post_annotation_native_bytes_unchanged": true,
+    "export_refresh": "local/goal_oct16_callnewh_export_refresh.txt"
+  },
+  "Source_ledger": {
+    "same_original_address": "00c055b1",
+    "existing_record_name_unchanged": "invoke_native_crt_new_handler_00c055b1",
+    "existing_fields_preserved": "All prior fields retained; evidence appended; additional_Source_interfaces holds newrawAPI with gatependingstatus. No second function record or Originalcompletion.",
+    "new_Original_functions": 0,
+    "additional_Source_APIs": 1,
+    "prior_record": "local/goal_oct16_callnewh_prior_reconstruction_record.json",
+    "prior_record_sha256": "a14003e213545d799d05bb9978e934764df25c0410be05b221be72aa893e7d1e",
+    "name_shard": "config/names/00c00000.jsonl",
+    "reconstruction_shard": "config/reconstruction/00c00000.jsonl"
+  },
+  "validation": {
+    "primary_review": {
+      "status": "passed_whole34B15_native_and_entire_CPP_HPP",
+      "accepted_CPP_sha256": "7d086357ec4ee166c2007b63e6d586badd0055dc424da11d5b0200d974be01a8",
+      "final_HPP_sha256": "0e005d5aef511ff7c38028bb3b112e73e7ffa10a0fff9d60264dfed51aa1e420",
+      "header_comment_clarification": "Requestedonlycommentclarification applied, noCPP/APIchange; explicitprivateargument/temporarybackingdisjointness and admittedrealalias/reentrancy/absentbackingNULLpath."
+    },
+    "registered_normal_Win32_combined_gate": "pending primary; existingTUalreadyregistered,noCMakeappend",
+    "whole_object_review": "pending: allactualmethods+oldpublicbodyunchanged+newlateunalignedread/NULLskip/cdeclcall/fullnormalization",
+    "worker_build": "notrun perexplicitprimaryinstruction",
+    "new_tests": 0,
+    "numeric_call_rows": {
+      "checked": 8,
+      "failed": 0
+    },
+    "diff_check": "git diff --check and git diff --cached --check passed"
+  },
+  "ownership": {
+    "packet": "goal_oct16_crt_call_new_handler",
+    "address": "00c055b1",
+    "files": [
+      "include/bsp/native_crt_new_handler.hpp",
+      "src/native_crt_new_handler.cpp",
+      "docs/GOAL_OCT16_CRT_CALL_NEW_HANDLER.md",
+      "reports/goal_oct16_crt_call_new_handler.json"
+    ],
+    "coordination_broadcast": 651,
+    "unused_proposed_new_Sourcepaths_released": true,
+    "shared_registry_or_CMake_edits": false
+  },
+  "source_ready": false,
+  "general_source_ready": false,
+  "source_ready_domain": "Pending normalgate: whole ordinaryactualstorage additiveAPI overexisting qualifiedcodeccontract;0newOriginalfunctions. No runtime/transitive/OriginalABIclosure."
+}

@@ -26,4 +26,29 @@ std::int32_t __cdecl invoke_native_crt_new_handler_00c055b1(
     return result != 0 ? 1 : 0;
 }
 
+std::int32_t __cdecl call_native_crt_new_handler_00c055b1(
+    const void* actual_size_argument4,
+    const NativeCrtPointerDecodeContext& actual_decode_context,
+    const volatile std::uint32_t& actual_encoded_new_handler_0109de44) {
+    const std::uint32_t encoded = actual_encoded_new_handler_0109de44;
+    void* const decoded = native_crt_decode_pointer_00c04fde(
+        reinterpret_cast<void*>(static_cast<std::uintptr_t>(encoded)),
+        actual_decode_context);
+    if (decoded == nullptr) return 0;
+
+    // One native-width x86 read, reached only after decoder return/nonNULL.
+    // Inline assembly retains unaligned/raw storage without C++ typed-load
+    // alignment or alias assumptions and adds no validation/fault translation.
+    std::uint32_t actual_size;
+    __asm {
+        mov eax, actual_size_argument4
+        mov eax, dword ptr [eax]
+        mov actual_size, eax
+    }
+    using ActualInstalledHandler = std::int32_t (__cdecl*)(std::uint32_t);
+    const auto actual_handler = reinterpret_cast<ActualInstalledHandler>(decoded);
+    const std::int32_t result = actual_handler(actual_size);
+    return result != 0 ? 1 : 0;
+}
+
 } // namespace bsp
