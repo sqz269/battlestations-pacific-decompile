@@ -1,4 +1,5 @@
 #include "bsp/native_renderer_constructor.hpp"
+#include "bsp/native_shader_global_readers.hpp"
 #include "bsp/native_render_entry_cache.hpp"
 #include "bsp/native_renderer_base_lifetime.hpp"
 #include "bsp/native_render_cache_construction.hpp"
@@ -331,7 +332,8 @@ struct GameNativeRendererApplication::Impl {
     CanonicalProfiles profiles;
     void* volatile renderer{};
     void* volatile lua_publication{};
-    void* volatile system_publication{};
+    // Preserve the Win32 slot while borrowing the one live Native-global cell.
+    void* volatile& system_publication{native_shader_system_registry_cell_0108fe94()};
     NativeShaderStateDefinitionsStorage* volatile definitions{};
     void* volatile entry_cache_publication{};
     NativeRenderEntryCacheContext entry_cache;
