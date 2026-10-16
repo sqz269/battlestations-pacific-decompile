@@ -518,10 +518,11 @@ void land_fort_set_effect_anchor_00745130(std::uint8_t* effect, const float* anc
     host.set_transform_34(at<std::uint8_t*>(effect, 0x110), &at<float>(effect, 0xD0));  // 007451BC
 }
 
-void save_reader_read_observer_ref_007453c0(void* reader, std::uint32_t* out, std::uint32_t a2, std::uint32_t,
-                                            SaveReaderHost& host) {
-    host.read_10(reader, out, a2);  // 007453E6
-    *out = 4;                       // 007453EF: the local tag the image initialised to 4
+void save_reader_read_observer_ref_007453c0(void* reader, std::uint32_t key_tag, std::uint32_t key_value,
+                                            std::uint32_t* out, SaveReaderHost& host) {
+    std::uint32_t local = 0;
+    host.read_10(reader, key_tag, key_value, 4, &local);  // 007453E6, value {4, &local}
+    *out = local;                                         // 007453EF
 }
 
 void land_fort_serialize_007455f0(std::uint8_t* fort, ArchiveWriter& archive, FortArchiveHost& host) {

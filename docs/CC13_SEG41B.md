@@ -36,12 +36,11 @@ shared RNG 00BD2F10.
 - 00748CC0: when "section" is absent, the image's int slot still holds a stack address written
   earlier in the frame (00748D67), so 0043F8E0 is called with that value; the C++ starts the slot
   at 0, so for an absent key it asks for element 0. Saved games always write the key with "gazdi".
-- 00748CC0 calls 007453C0 through a hook. `cc13_seg41::save_reader_read_observer_ref_007453c0`
-  (src/cc13_seg41_land.cpp) misreads the callee: after `CALL [vtable+10h]` (which pops the 8-byte
-  key and the 8-byte {4, &local} value, RET 10h), `[esp+10h]` is the third stack argument, so the
-  body is `reader->vtable[10h](key {a1, a2}, {4, &local}); *a3 = local`. That reconstruction writes
-  4 through its first argument instead, which at this call site is the key tag 0. Reported to the
-  lead; not edited here (not in this packet's files).
+- 00748CC0 calls `cc13_seg41::save_reader_read_observer_ref_007453c0` (src/cc13_seg41_land.cpp)
+  directly; `LandFortLoadHost` derives from its `SaveReaderHost`, whose `read_10` is the reader's own
+  vtable[10h]. Until cc13-fix5 (2026-10-16) the call went through a hook because that function
+  misread the callee (it wrote 4 through the key tag); it now does
+  `reader->vtable[10h](key {a1, a2}, {4, &local}); *a3 = local`.
 - 0074D800: the definition reference is taken with InterlockedIncrement before 008687C0 (the callee
   owns it); a null `operator new` result still reaches the gunnery vtable[4] call, as in the image.
 - 0073EBA0 / 0073F1B0 / 0073F6E0: dead in this image (0073F6E0 is referenced only by itself, 0073F1B0

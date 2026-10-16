@@ -81,12 +81,8 @@ int ai_set_target_weight_weight_slot(int argument_count) noexcept {
 int ai_class_index_from_name(const std::string& name,
                              const char* const* table,
                              int table_count) noexcept {
-    if (table == nullptr) {
-        return kAiClassNameNotFound;
-    }
     for (int index = 0; index < table_count; ++index) {
-        const char* entry = table[index];
-        if (entry != nullptr && std::strcmp(name.c_str(), entry) == 0) {
+        if (std::strcmp(name.c_str(), table[index]) == 0) {
             return index;
         }
     }
@@ -244,15 +240,28 @@ int lua_binding_ai_set_target_weight(LuaBindingArgumentReader& args,
                                      LuaBindingAiHost& host) {
     AiTargetWeightRule rule{};
 
-    // Each class argument is an integer or a name: 00B660A0 decides, and the
-    // string path falls back to -1 when the 97-entry table has no match.
-    rule.subject_was_integer = !args.is_string(0);
-    if (rule.subject_was_integer) {
-        rule.subject_class = args.get_integer(0);
+    // Each class argument is an integer or a name: 00B660A0 decides. A name is
+    // copied out of 00B662B0 into a NativeString (00419CA0 gives "" for null) and
+    // looked up in the 97-entry table at 00E0CD80; a miss leaves -1. The
+    // was-integer bytes are frame [esp+5Dh]/[esp+5Eh]: 0 for a name (00A385EB,
+    // 00A3876B), 1 for an integer (00A38646 and the matching target store).
+    if (args.is_string(0)) {                                        // 00A384EE
+        rule.subject_class = ai_class_index_from_name(
+            args.get_string(0), host.ai_class_name_table_00e0cd80(),
+            kAiClassNameTableCount);                                // 00A38537, 00A385A0
+        rule.subject_was_integer = false;
+    } else {
+        rule.subject_class = args.get_integer(0);                   // 00A3862C
+        rule.subject_was_integer = true;
     }
-    rule.target_was_integer = !args.is_string(1);
-    if (rule.target_was_integer) {
+    if (args.is_string(1)) {                                        // 00A38665
+        rule.target_class = ai_class_index_from_name(
+            args.get_string(1), host.ai_class_name_table_00e0cd80(),
+            kAiClassNameTableCount);                                // 00A386B1
+        rule.target_was_integer = false;
+    } else {
         rule.target_class = args.get_integer(1);
+        rule.target_was_integer = true;
     }
 
     rule.flag = args.get_boolean(2);

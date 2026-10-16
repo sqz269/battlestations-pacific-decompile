@@ -300,8 +300,14 @@ maintaining a copy.
 - `exitzone` (`00975340`). Unless it is exiting, it appends `enter`. When the entity, or a
   kind-0Fh plane's `+9D4h` owner, is the controlled unit, it also appends `player`, and `ship`
   for kind 6.
-- `confirmship` / `confirmplane` + order (`00975540`), with `player` appended for `land` or
-  `retreat` when entity `+3CCh == 1`.
+- `00975540` is no longer an id rule but the whole constructor,
+  `construct_confirm_warning_00975540` (cc13-fix5, 2026-10-16). It runs the entity-warning base
+  `00973BA0` (`construct_entity_warning_base_00973ba0` in engine_seg49_64_78_cc13.cpp) and stores
+  vtables `00D1B380` (+0h) and `00D1B368` (+6Ch). It then sets the id at +4h: `confirmship` for
+  kind 6; for kind 18h, `confirmplane` + order (when non-empty), and `player` when the order
+  matches `land` or `retreat` under `00425850` (a `WarningSubjectHost` hook) and entity
+  `+3CCh == 1`. The NativeString resize/memcpy/append/release steps become std::string operations
+  on `WarningObject::id`. The other constructors listed above are still id rules only.
 
 **Hit feedback** (`0096EF60`, `0096E8F0`), called from the `hit` channel:
 - `+174h = clock + 0.25`.

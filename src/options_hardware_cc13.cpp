@@ -1,4 +1,5 @@
 #include "bsp/options_hardware_cc13.hpp"
+#include "bsp/engine_seg49_64_78_cc13.hpp"
 
 #include <cstring>
 #include <utility>
@@ -298,18 +299,27 @@ std::string warning_id_exit_zone_00975340(WarningSubjectHost& host, WarningEntit
     return id;
 }
 
-std::string warning_id_confirm_00975540(WarningSubjectHost& host, WarningEntity entity,
-    std::string_view order)
+cc13_seg49_64_78::WarningObject& construct_confirm_warning_00975540(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host, WarningSubjectHost& subject, WarningEntity entity,
+    const std::string& order)
 {
-    if (host.is_kind_5c(entity, 6)) return "confirmship";  // 0097557F, 00D1B44C
-    if (!host.is_kind_5c(entity, 0x18)) return {};         // 009755C5
-    std::string id = "confirmplane";                       // 00D1B43C
-    id += order;
-    const std::string text(order);
-    const bool land_or_retreat = _stricmp(text.c_str(), "land") == 0 ||
-        _stricmp(text.c_str(), "retreat") == 0;            // 00975620, 00975633
-    if (land_or_retreat && host.field_3cc(entity) == 1) id += "player"; // 0097563C
-    return id;
+    // 00975568: the pushed 0 is the base's ignored second argument.
+    cc13_seg49_64_78::construct_entity_warning_base_00973ba0(w, host, const_cast<void*>(entity));
+    w.vtable = 0x00D1B380;                                   // 0097556D
+    w.word_6c = 0x00D1B368;                                  // 00975573
+    if (subject.is_kind_5c(entity, 6)) {                     // 0097558B
+        w.id = "confirmship";                                // 0097559A, 009755B3, 00D1B44C
+        return w;
+    }
+    if (!subject.is_kind_5c(entity, 0x18)) return w;         // 009755C9
+    w.id = "confirmplane";                                   // 009755DE, 00D1B43C
+    if (!order.empty()) w.id += order;                       // 009755F7, 0097560B
+    if (!subject.native_string_equals_ci_00425850(order, "land") &&      // 00975620, 00CFB614
+        !subject.native_string_equals_ci_00425850(order, "retreat"))     // 00975633, 00CFB5D4
+        return w;
+    if (subject.field_3cc(entity) != 1) return w;            // 0097563C
+    w.id += "player";                                        // 0097564E..00975683, 00D199D0
+    return w;
 }
 
 void post_friendly_fire_warning_0096e8f0(WarningHitFeedbackState& state, float clock,

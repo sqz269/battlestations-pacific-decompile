@@ -77,8 +77,9 @@ void land_convoy_post_load_init_00742c10(Object convoy, LandConvoyInitHost& host
 // as the ADDRESS of element [section] of the master's +344h pointer vector (0 for -1) },
 // then "gameUnit" visited by the weapon director +74Ch, then the repair-zone slot +72Ch.
 // ---------------------------------------------------------------------------
-struct LandFortLoadHost {
-    virtual ~LandFortLoadHost() = default;
+// read_10 (from SaveReaderHost) is the reader's own vtable[10h], reached through
+// cc13_seg41's save_reader_read_observer_ref_007453c0.
+struct LandFortLoadHost : cc13_seg41::SaveReaderHost {
     // 0095E5B0 BSP_Unit_ReadCommonLuaProperties(ECX = fort).
     virtual void unit_read_common_lua_properties_0095e5b0(Object fort) = 0;
     // 009238A0 SEntity_GetSavedEntityLuaData(ECX = entity)(LuaObject* out), RET 4.
@@ -92,10 +93,6 @@ struct LandFortLoadHost {
     virtual void lua_reader_read_00bd6830(LuaSlot* reader, TaggedValue key, TaggedValue value) = 0;
     virtual void lua_reader_leave_00bd7a20(LuaSlot* reader) = 0;
     virtual void lua_reader_destruct_00441a20(LuaSlot* reader) = 0;
-    // 007453C0 (ECX = reader)(key by value, dword* out), RET 0Ch: reader vtable[10h](key,
-    // {4, &local}) then *out = local. A hook, not a call to cc13_seg41's
-    // save_reader_read_observer_ref_007453c0, whose argument model is wrong (see the doc).
-    virtual void reader_read_object_ref_007453c0(LuaSlot* reader, TaggedValue key, std::uint32_t* out) = 0;
     // The reader's own vtable[4](key) RET 8 and vtable[8](), ECX = reader.
     virtual void reader_vfunc_4(LuaSlot* reader, TaggedValue key) = 0;
     virtual void reader_vfunc_8(LuaSlot* reader) = 0;
