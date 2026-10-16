@@ -223,3 +223,19 @@ The pair is available for integration review as a bounded static readiness
 contract. Source/API authorization and all Source/Native credit remain zero;
 the caller's control, classification, special-value and invalid-pointer providers
 remain separate gates. Leases remain held for integrator disposition.
+
+## Integrator readiness admission
+
+Primary review authenticated the author's 62 actual pairs and complete Original
+prefix, all sealed evidence and the separately unsealed outer inventory. The
+invalid first post-seal PowerShell readback is preserved and explicitly rejected;
+the corrected terminating whole-byte readback passed. All 217 bytes/78 typed
+instructions and physical x87/overlapping-stack behavior were reviewed. The
+separately admitted unmodified integrator checker passed both call rows and
+both DOC claims with zero failures, unchecked claims or warnings.
+
+This accepts readiness evidence only. Source-ready/authorization and Source/Native
+credit remain false/zero. The nested setter is not a second member of the original
+seven outer frexp providers; no seven-to-five subtraction follows from this pair.
+Overall frexp Source remains blocked. Main's C++ build is Source12 evidence and
+does not provide compiled or runtime proof for these readiness-only bodies.

@@ -80,16 +80,42 @@
     }
   ],
   "call_sites": [
-    {"address": "00C13012", "native": "00C12EB0", "route": "normalized_subnormal", "argument_bytes": 12, "integer_argument": 0},
-    {"address": "00C13027", "native": "00C12EB0", "route": "nonzero_exponent_or_raw_zero_fallback", "argument_bytes": 12, "integer_argument": 0}
+    {
+      "address": "00C13012",
+      "native": "00C12EB0",
+      "route": "normalized_subnormal",
+      "argument_bytes": 12,
+      "integer_argument": 0
+    },
+    {
+      "address": "00C13027",
+      "native": "00C12EB0",
+      "route": "nonzero_exponent_or_raw_zero_fallback",
+      "argument_bytes": 12,
+      "integer_argument": 0
+    }
   ],
   "physical_abi": {
-    "entry_stack": {"0": "return address u32", "+4": "eight-byte binary64 input", "+12": "u32 output pointer for finite provider; u32 exponent adjustment for setter"},
+    "entry_stack": {
+      "0": "return address u32",
+      "+4": "eight-byte binary64 input",
+      "+12": "u32 output pointer for finite provider; u32 exponent adjustment for setter"
+    },
     "incoming_x87_value_consumed": false,
     "result": "One additional x87 ST(0) on ordinary completed execution; EAX also has the physical values recorded below",
     "cleanup": "plain RET; caller removes12 argument bytes",
-    "preserved_both": ["EBP via save/restore", "EBX untouched", "ESI untouched", "EDI untouched"],
-    "finite_clobbers": ["EAX", "EDX", "EFLAGS", "ECX except equality/zero route"],
+    "preserved_both": [
+      "EBP via save/restore",
+      "EBX untouched",
+      "ESI untouched",
+      "EDI untouched"
+    ],
+    "finite_clobbers": [
+      "EAX",
+      "EDX",
+      "EFLAGS",
+      "ECX except equality/zero route"
+    ],
     "finite_EAX": "output pointer reloaded from [EBP+0x10] before final store",
     "finite_EDX": "exponent on every completed route; no incoming EDX dependency",
     "finite_ECX_zero_route": "unchanged from entry",
@@ -98,7 +124,11 @@
     "setter_ECX": "R & 0xffff800f, where R=DWORD[EBP+0x0e]",
     "setter_EAX": "(((uint32(e)+0x3fe) mod2^32)<<4 mod2^32) OR (R&0xffff800f)",
     "setter_final_integer_flags": "OR flags: CF=OF=0; SF/ZF/PF from EAX; AF undefined",
-    "finite_final_integer_flag_writers": {"zero": "XOR EDX,EDX", "normal_or_special": "SUB EDX,0x3fe", "subnormal": "ADD ESP,0xc"},
+    "finite_final_integer_flag_writers": {
+      "zero": "XOR EDX,EDX",
+      "normal_or_special": "SUB EDX,0x3fe",
+      "subnormal": "ADD ESP,0xc"
+    },
     "finite_frame": "F=entryESP-4; no local allocation; call args F-12..F-1",
     "nested_setter_frame": "P=F-20; local8 bytes P-8..P-1 = F-28..F-21",
     "maximum_finite_entry_stack_depth_bytes": 32,
@@ -109,10 +139,31 @@
     "finite_subnormal_mutation": "Per iteration SHL own highDWORD; optional OR highDWORD carry1 from old low bit31; SHL own lowDWORD; DEC EDX. Then AND highWORD0xffef and optional OR highWORD0x8000.",
     "finite_call_input": "three zero pushes reserve12 bytes; FSTP m64 writes first8; zero third argument retained",
     "setter": "read e; FLD m64 input; MOV ECX rawDWORD[EBP+E]; FSTP localm64; integer ADD/SHL/AND/OR; write local highWORD; FLD localm64",
-    "output": {"site": "00C13044", "kind": "MOV", "width_bytes": 4, "reads_old_output": false, "pointer_reload_site": "00C13041", "after_x87_result": true, "before_epilogue": true, "null_check": false},
+    "output": {
+      "site": "00C13044",
+      "kind": "MOV",
+      "width_bytes": 4,
+      "reads_old_output": false,
+      "pointer_reload_site": "00C13041",
+      "after_x87_result": true,
+      "before_epilogue": true,
+      "null_check": false
+    },
     "overlapping_loads": [
-      {"site": "00C1302C", "frame": "finite provider", "width_bytes": 4, "contents": "input high2 + output-pointer low2", "effective_exponent": "(rawDWORD>>4)&0x7ff; pointer bits discarded"},
-      {"site": "00C12EBB", "frame": "setter", "width_bytes": 4, "contents": "input high2 + integer-exponent low2", "effect": "ECX preserves upper16; only final AX stored to local highWORD"}
+      {
+        "site": "00C1302C",
+        "frame": "finite provider",
+        "width_bytes": 4,
+        "contents": "input high2 + output-pointer low2",
+        "effective_exponent": "(rawDWORD>>4)&0x7ff; pointer bits discarded"
+      },
+      {
+        "site": "00C12EBB",
+        "frame": "setter",
+        "width_bytes": 4,
+        "contents": "input high2 + integer-exponent low2",
+        "effect": "ECX preserves upper16; only final AX stored to local highWORD"
+      }
     ],
     "outer_caller_overlap_is_distinct": "Accepted _frexp has input high2 + saved-control-token low2 in its own frame",
     "no_alias_precondition_invented": true,
@@ -120,17 +171,36 @@
   },
   "finite_algorithm": {
     "zero_test": "FLDZ; FCOM m64; FNSTSW AX; TEST AH,0x44; JP nonzero_or_unordered",
-    "signed_zero": {"positive_zero": "+0 result; exponent0", "negative_zero": "+0 result; exponent0", "input_argument_mutated": false},
-    "normal": {"biased_exponent": "b in1..2046", "output_exponent": "b-1022", "exponent_range": [-1021, 1024], "result": "original sign/fraction with exponent field1022", "input_argument_mutated": false},
+    "signed_zero": {
+      "positive_zero": "+0 result; exponent0",
+      "negative_zero": "+0 result; exponent0",
+      "input_argument_mutated": false
+    },
+    "normal": {
+      "biased_exponent": "b in1..2046",
+      "output_exponent": "b-1022",
+      "exponent_range": [
+        -1021,
+        1024
+      ],
+      "result": "original sign/fraction with exponent field1022",
+      "input_argument_mutated": false
+    },
     "subnormal": {
       "sign_test": "FCOMP0 vs input; EAX1 for negative and0 for positive; pops zero",
       "initial_EDX": -1021,
       "fraction": "F unsigned nonzero52-bit fraction; h=highest set bit in0..51; k=52-h",
-      "shift_iterations_range": [1, 52],
+      "shift_iterations_range": [
+        1,
+        52
+      ],
       "termination": "first reached bit52; all lower bits shift toward it and a nonzero F necessarily reaches it",
       "fraction_after_loop": "(F<<k)&(2^52-1), after clearing bit52",
       "output_exponent": "-1021-k",
-      "exponent_range": [-1073, -1022],
+      "exponent_range": [
+        -1073,
+        -1022
+      ],
       "sign": "original sign shifted out, then restored by WORD OR if EAX1",
       "intermediate": "exponent-zero fraction, possibly signed zero for a power of two",
       "input_argument_mutated": true,
@@ -179,7 +249,13 @@
       "url": "https://cdrdv2-public.intel.com/843827/253665-sdm-vol-1-dec-24.pdf",
       "sha256": "2df6ae80aad83945c4879ef702b863ccbacaf5467e5ea079f1d7261e69ebc315",
       "physical_before_use_copy": "local/NativeCrtFrexpFiniteProviderReadinessSol02/inputs_before/intel_253665_sdm_vol1_dec24.pdf",
-      "sections": ["4.8.3.5", "4.9.1.5", "8.5.1", "8.5.2", "8.5.5"],
+      "sections": [
+        "4.8.3.5",
+        "4.9.1.5",
+        "8.5.1",
+        "8.5.2",
+        "8.5.5"
+      ],
       "role": "conditional architectural instruction semantics; no SDK/host implementation comparison or native proof"
     }
   },
@@ -196,8 +272,16 @@
     "finite_call": "nonnull original output pointer from EDI; original input FLD before integer classification; allocate8 through two ECX pushes, FSTP argument",
     "control_home": "private original pointer home overwritten with saved token; outer rawDWORD[EBP+E] straddles highinput2/tokenlow2",
     "finite_return": "ST0 FSTP localbinary64 before restore provider, then FLD localbinary64 after it",
-    "control_request_not_mapping": ["0x133f", "0xffff"],
-    "other_provider_gates": ["classifier code mapping", "control token/mask mapping and restore", "special-value providers", "invalid-pointer/error-handler providers"]
+    "control_request_not_mapping": [
+      "0x133f",
+      "0xffff"
+    ],
+    "other_provider_gates": [
+      "classifier code mapping",
+      "control token/mask mapping and restore",
+      "special-value providers",
+      "invalid-pointer/error-handler providers"
+    ]
   },
   "evidence": {
     "family": "local/NativeCrtFrexpFiniteProviderReadinessSol02/evidence",
@@ -215,8 +299,18 @@
     "final_decoder_ordlookup_files_pinned_before_use": 8,
     "no_hermetic_or_os_wide_claim": true,
     "initial_administration_qualifier": "Main tools copied before worktree-add. Initial exact-base brief/lease setup preceded family creation; some cached bytecode was physically pinned only afterward. All substantive rerun sources/modules were pinned before use.",
-    "external_predecessor": {"files": 121, "changed": 0, "sealed": false, "body_conclusions_adopted": false, "parent_snapshot_manifest_sha256": "3e59bae67647e1d60a0ed6cd3ba8d2876acc82c47e47f76c590908dc3f08d780", "old_helper_sha256": "e2228dde5983f0774eb561012c0e43b2758b0ccbaf0c26668c94eef5c0cdf7ce", "execution_labels_recreated": false},
-    "manifest_exclusions": ["manifest.json only"],
+    "external_predecessor": {
+      "files": 121,
+      "changed": 0,
+      "sealed": false,
+      "body_conclusions_adopted": false,
+      "parent_snapshot_manifest_sha256": "3e59bae67647e1d60a0ed6cd3ba8d2876acc82c47e47f76c590908dc3f08d780",
+      "old_helper_sha256": "e2228dde5983f0774eb561012c0e43b2758b0ccbaf0c26668c94eef5c0cdf7ce",
+      "execution_labels_recreated": false
+    },
+    "manifest_exclusions": [
+      "manifest.json only"
+    ],
     "seal_invocation": "in flight when own-prefix transport capture is made; later receipt remains outside immutable family"
   },
   "validation": {
@@ -237,5 +331,27 @@
     "Whole _frexp remains gated by its other classification/control/special/error providers.",
     "Invalid memory, stack faults and arbitrary exception-handler continuation do not guarantee ordinary output/depth or return."
   ],
-  "ownership": "Retain exact body/output/local-family leases until integrator disposition; no Main integration or push by worker"
+  "ownership": "Retain exact body/output/local-family leases until integrator disposition; no Main integration or push by worker",
+  "integrator_acceptance": {
+    "stage": "readiness_evidence_accepted_only",
+    "author_commit": "7cfe9f05245106e43aec37ad57fea227d76e3c8a",
+    "inner_manifest_sha256": "035375ea8718d6dbcd2a07a0710ed0866a771b3106687510917233cd9ac3ceda",
+    "outer_unsealed_inventory_sha256": "1b9ca6ae0349418f10e72ac026a0ffb2b58424fd09832807ce439677a0107537",
+    "whole_217_bytes_78_typed_instructions_reviewed": true,
+    "corrected_real_postseal_readback_accepted": true,
+    "invalid_earlier_readback_retained": true,
+    "author_own_pairs": 62,
+    "integrator_admitted_checker_exit": 0,
+    "integrator_admitted_checker_stdout_sha256": "224b971261698fad097c924f4c967de3f3d38bd858b0ae01cbb73c5ccfb15b3e",
+    "integrator_checker_call_rows": 2,
+    "integrator_checker_DOC_claims": 2,
+    "integrator_checker_failed": 0,
+    "primary_review": "local/cc12_sol_integrator_20261016/Readiness16_primary_review.DATA.json",
+    "Source_authorized": false,
+    "source_ready": false,
+    "Source_credit": 0,
+    "Native_credit": 0,
+    "outer_frexp_Source": "blocked; nested setter is not a second member of the original seven providers",
+    "Main_CXX_build_attribution": false
+  }
 }
