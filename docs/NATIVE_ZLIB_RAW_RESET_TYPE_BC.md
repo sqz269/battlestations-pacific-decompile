@@ -73,7 +73,8 @@ Raw types and formal declarations are provisional, not Original C++ recovery.
 No x87/SIMD instruction occurs; inherited FP state and x87 FIP are unchanged.
 All effective-address arithmetic is x86 wrapping arithmetic, with no invented
 alignment or range restriction. Ordinary completion requires actually reached
-data/stack/control cells to be backed; invalid accesses retain measured faults.
+data/stack/control cells to be backed. Identical fault-capable instructions retain
+the static fault-prefix schedule; no faults were dynamically measured.
 
 Whole instruction identity proves the current artifact's register/flags/storage
 and fault-prefix schedule. It does not place Source at Original code addresses,
