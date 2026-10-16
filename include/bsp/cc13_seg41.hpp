@@ -89,6 +89,8 @@ void destroy_00737bd0(DwordVector& v, VectorMemory& memory);
 void destroy_007402d0(DwordVector& v, VectorMemory& memory);
 void destroy_00740310(DwordVector& v, VectorMemory& memory);
 void destroy_007403f0(DwordVector& v, VectorMemory& memory);
+// 007400A0 -> 0073EA40.
+void destroy_007400a0(DwordVector& v, VectorMemory& memory);
 struct AppPointerResize {
     virtual ~AppPointerResize() = default;
     virtual void resize_00735f30(DwordVector& v, std::int32_t n) = 0;

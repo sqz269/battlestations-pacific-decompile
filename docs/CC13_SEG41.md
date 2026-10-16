@@ -97,6 +97,7 @@ Function and field names are hypotheses, not recovered symbols.
 | 0073FEF0 | `release_ref_00736050` | __fastcall(ECX slot) -> EAX slot | 0073FEF0: identical body to 00736050: when *slot, InterlockedDecrement([00CE2220]) on +4 and vtable slot 0 (ECX object, no stack args) at zero, then *slot=0. |
 | 0073FF20 | `release_ref_00736050` | __fastcall(ECX slot) -> EAX slot | 0073FF20: identical body to 00736050: when *slot, InterlockedDecrement([00CE2220]) on +4 and vtable slot 0 (ECX object, no stack args) at zero, then *slot=0. |
 | 0073FF50 | `decal_batch_ensure_vertex_capacity_0073ff50` | __stdcall(record, count) RET 8 -> base vertex | No stream (section+4Ch==0): device[00F8D394]+5Ch(count+n,1,format [[def+14h]+8]), 00B85B80 append, cap=slot20, release, return 0. Else when cap<base+n: new buffer, lock both slot10(0,0,0) (Ghidra dropped one argument of the first), memcpy stride(slot24 -> +CCh)*count, unlock old then new, 00B86550 clear, 00B85B80 append, cap, release; returns base. |
+| 007400A0 | `destroy_007400a0` | __fastcall(ECX vector) RET | resize 0073EA40(0) then free(data) through 00BF6989. |
 | 007400C0 | `erase_value_007400c0` | __thiscall(ECX vector, const dword* value) RET 4 -> bool | Find the first equal element, swap-erase it. |
 | 00740140 | `list_clear_00740140` | __fastcall(ECX list {.., head +4, size +8}) RET | Relink head to itself, size 0, free every node (00BF65AC) comparing against the re-read head, free the head, head=0. |
 | 007401B0 | `decal_definition_destruct_007401b0` | __fastcall(ECX definition) RET | Release +18h, +1Ch, +14h in that order (InterlockedDecrement + slot 0), then return the name storage (data +4, len+1) through 00419CC0/00BD1510. |
@@ -279,6 +280,7 @@ Function and field names are hypotheses, not recovered symbols.
 | 0073FA70 | `publish_startup_singleton_00af06a0` | __fastcall(ECX system) -> system | cc13-seg41: 0073FA70 is the singleton register template (vtable 00CFF218, global 00E1AEA0); the hosted GameDecalTable::run (game_hosts_init_tail.cpp) models it through publish_startup_singleton_00af06a0 with kDecalSystemBase_0073fa70. Matches the listing. |
 | 00746320 | `GameShipAiHost::Impl (landfort fire roll)` | __fastcall(ECX fort) RET | cc13-seg41 verify-only (cc9 host): the extend path (00BD2F10 stream 0, keep the max) matches. Mismatches noted for adoption: the image first stops/releases the smoke +744h (00867B10, +9=1) which the host skips; the effect index uses 00BD2FC0(ECX 0) u32 % count of class+144h where the host draws 00BD2F10(0, 0, 1) - same stream, equal advance only if 00BD2F10 consumes one 00BD2FC0 step. |
 | 00749210 | `kVehicleClassStructureFieldSchema` | __thiscall(ECX class, lua) (schema) | cc13-seg41 checked the stored offsets against 00749210: ExplosionEfx +13Ch, SmokeFireEfx +160h, SmokeFireChanceMul +164h, DurationMin +168h, DurationMax +16Ch, CapturePost +174h, SecondaryExplosionChanceMul +170h, FakedType +178h, MapIcon +17Ch, Fortress +175h, DamageModelChangeDelay +138h. Schema model, not a per-call reconstruction. |
+| 0074D4A0 | `kVehicleClassStructureFieldSchema` | __thiscall(ECX class, lua) (schema) | cc13-seg41 checked the stored offsets against 0074D4A0: ExplosionEfx +138h, Wreck +13Ch (0 when absent), Smoke +14Ch. Schema model, not a per-call reconstruction. |
 | 0074DD50 | `kSensorCategoryLandVehicle_0074dd50` | MOV EAX,1; RET | cc13-seg41 verified: the body is MOV EAX,1 / RET; sensor_tables.hpp models it as SensorCategory::surface (1). |
 | 0074E190 | `kSensorCategoryPlane_0074e190` | XOR EAX,EAX; RET | cc13-seg41 verified: XOR EAX,EAX / RET; sensor_tables.hpp models it as SensorCategory::air (0). |
 | 0074E2B0 | `recon_slot_lists category switch` | MOV EAX,0Bh; RET | cc13-seg41 verified: 0074E2B0 is MOV EAX,0Bh / RET; recon_slot_lists.cpp returns 0Bh for this class. |
@@ -328,6 +330,10 @@ host does, whether it is live in a normal mission, and the shared RNG
   the gameplay lane (`game_hosts_units.cpp` ~6815, `hull_terrain_contact.cpp`,
   `mmod_hull_convex_box.cpp`, packet cc9_hull_fort_contact); not re-verified
   here, so no ledger record was added.
+- 00742C10 (LandConvoy cache parent and placement law, 308 instructions):
+  only its 00742C70 decision is modelled (`land_and_structures.hpp`
+  `land_convoy_uses_world_pose_law_00742c70`); the full body was not
+  attempted, so no record was added.
 - 00748CC0 (LandFort load from the saved Lua table): needs the Lua-reader
   stack objects and the section index -> element conversion (0043F8E0); not
   attempted.

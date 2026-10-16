@@ -114,6 +114,10 @@ void destroy_007403f0(DwordVector& v, VectorMemory& memory) {
     resize_0073fda0(v, 0, memory);
     memory.free_00bf6989(v.data_00);
 }
+void destroy_007400a0(DwordVector& v, VectorMemory& memory) {
+    resize_0073ea40(v, 0, memory);  // 007400A5
+    memory.free_00bf6989(v.data_00);
+}
 void destroy_00737810(DwordVector& v, AppPointerResize& resize, VectorMemory& memory) {
     resize.resize_00735f30(v, 0);       // 00737815
     memory.free_00bf6989(v.data_00);    // 0073781D
