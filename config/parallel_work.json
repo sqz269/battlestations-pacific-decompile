@@ -42493,6 +42493,77 @@
       "Original_ABI_compatible": false,
       "new_entry_executed": false,
       "game_validated": false
+    },
+    {
+      "id": "cc12_native_crt_memcmp_00c1ef55",
+      "done": false,
+      "state": "whole_ordinary_readiness_primary_independent_accepted_corrected_Source_authorized_not_implemented",
+      "source_ready": true,
+      "function_addresses": [
+        "00c1ef55"
+      ],
+      "files": [
+        "include/bsp/native_crt_memcmp.hpp",
+        "src/native_crt_memcmp.cpp",
+        "docs/NATIVE_CRT_MEMCMP.md",
+        "reports/native_crt_memcmp.json"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [],
+      "readiness": "reports/cc12_native_crt_memcmp_readiness.json",
+      "contract": [
+        "New ordinary target-specific MSVC Win32 interface: std::int32_t __cdecl bsp::compare_native_regions_00c1ef55(const void*, const void*, std::uint32_t) noexcept. Keep correct Original library name _memcmp. uint32 count and exact signed32 result -1/0/+1 from the first differing unsigned byte; NUL has no terminator role.",
+        "Count0 admits either or both null pointers and returns0 before payload access or endpoint arithmetic. Positive count requires both requested regions to be genuine live readable determinate stable bytes. Each requested endpoint is within OR one past the same enclosing allocation, permitting interior subranges and prefixes. Correct author C1 allocation-end wording; do not alter its sealed historical evidence. Actual32bit additions/advances must not wrap. No signed count cap, pointer subtraction, nonalias or initially aligned pointer requirement.",
+        "Read-only overlapping and identical input regions are allowed; no pointer-equality shortcut. Exclude mutation, indeterminate bytes, lifetime changes, concurrency, synchronization/volatile/MMIO protocols, guard-page/fault observation and nonflat segment environments. Payload read order is an ordinary semantic schedule, not Original physical argument-home/register/flags/instruction/bus/fault/EH/ABI identity.",
+        "Original initial count1..4 must use ascending BYTE pairs first then second, stopping at first difference. This is distinct from remaining count1..4 after a larger original count; do not merge their different load-width/order routes.",
+        "For initial count>=5, process unsigned remaining>=32 batches: eight ordered first-DWORD then second-DWORD pairs at offsets0,4,...,28. Only unequal words enter ascending byte fallbacks. Batch fallbacks reread the first BYTE as needed; pair order first then second except offset16 byte0 second then first. Stop immediately at the first unequal byte.",
+        "After complete equal batches, remaining is original count mod32 and current endpoints are base+consumed+remaining. Preserve every one of the32 actual table routes using the sealed per-block schedule. Tail DWORD offsets are -remaining,-remaining+4,... before its mod4 suffix. This fixed Original dispatch data is control evidence, not an external callback/global provider. Structured Source control is allowed if the complete payload schedule is identical.",
+        "Retain23 tail DWORD groups that cache the low BYTE from the prior first DWORD and load only the second BYTE at fallback lane0. Tail offsets -12,-9,-10,-31,-15 instead reread first BYTE0 and use second-before-first; -10 uses second-before-first at all4byte lanes. Together with batchoffset16 these are exactly9reversed fresh DWORD-fallback pairs. All other fresh pairs are first-before-second. Use the full retained descriptor addresses to audit all36blocks.",
+        "Tail mod0 has no suffix; mod1 reads final BYTE second then first. Mod2 reads first-WORD16 then second-WORD16 at end-2 and returns0 on equality; on inequality BYTE end-2 then end-1, each second-before-first as reached. Mod3 reads BYTE end-3 first-before-second, then end-2 and end-1 second-before-first, bypassing WORD16 equality. Preserve exact normalized magnitude and early exits.",
+        "Approve private addressed scalar MOV16/MOV32 helpers with MSVC Win32 inline assembly over genuine possibly unaligned byte storage, plus explicit volatile unsigned BYTE reads. Fully initialize and zero-extend WORD16 results. Keep reads sequenced as separate operations and extract cached low BYTE from the actual prior DWORD value. No invented uint16/uint32 live-object/alignment/alias domain, SDK memcmp/memcpy wrapper, byte-only replacement, copied regions, new runtime validation/fallback/provider/global/TLS/errno/caller binding. Actual strict/Main object inspection must verify all load widths/orders/cache/branches and unexpected helper/vectorization absence.",
+        "Worker owns only four Source files and its new local evidence family. Root owns CMake/registry/ledger/Ghidra/integration. One genuine strict compile with before input pins and full actual object review; no separate unregistered whole-worker baseline requested. No tests/probes/body execution. Source implementation, compiled artifact, Main archive and Original ABI/runtime/game proof remain separate gates."
+      ],
+      "fixed_data_dependency": {
+        "range_half_open": [
+          "00c20555",
+          "00c205d5"
+        ],
+        "bytes": 128,
+        "cases": 32,
+        "sha256": "2512453ba5caa8930dacc29720403f71d384cc790e50537cb7e43b1f23636c57",
+        "two_gap_bytes_not_owned": true
+      },
+      "Main_gate": "pending_Source_author_peer_registration_build_actual_object_archive"
+    },
+    {
+      "id": "cc12_native_crt_wcsncmp_00bfdcb7",
+      "done": false,
+      "state": "whole_ordinary_readiness_primary_peer_accepted_Source_authorized_not_implemented",
+      "source_ready": true,
+      "function_addresses": [
+        "00bfdcb7"
+      ],
+      "files": [
+        "include/bsp/native_crt_wcsncmp.hpp",
+        "src/native_crt_wcsncmp.cpp",
+        "docs/NATIVE_CRT_WCSNCMP.md",
+        "reports/native_crt_wcsncmp.json"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [],
+      "readiness": "reports/cc12_native_crt_wcsncmp_readiness.json",
+      "contract": [
+        "New target-specific MSVC Win32 ordinary interface: int __cdecl bsp::compare_native_crt_wide_prefix_00bfdcb7(const void* actual_left, const void* actual_right, unsigned int count). Keep correct Original library name _wcsncmp. Pointers/int/count32bits, BYTE8bits, little-endian unsigned WORD16 code units. No Unicode scalar/surrogate/normalization/casefold/locale/collation semantics.",
+        "Count0 accepts any pointer values including null and returns0 before payload reads. Positive count requires genuine live determinate stable storage for ALL actually reached two-byte reads, including BOTH final WORD rereads. Do not require an entire count-sized extent when an earlier mismatch/LHS zero stops. Reached reads wholly inside the actual allocation; reached pointer advances/endpoints within or one past it and nonwrapping. No dereference of one-past, arbitrary signed count cap, padding, initial alignment, or typed wchar/uint16 ownership condition.",
+        "Stable identical and overlapping input regions are allowed. Original DEC at00BFDCCA writes its own by-value count argument home each visited iteration. A new typed API uses ordinary unsigned local count state; Original mutable argument-home/stack alias protocols and their writes/fault behavior are explicitly outside equivalence. Do not fabricate an argument block, native stack identity or Source parameter binding to that home.",
+        "After positive-count entry, decrement unsigned remaining BEFORE preliminary payload reads. If the new remaining is0, go directly to the final pair. Thus original count1 has exactly the final LHS WORD then RHS WORD reads, no preliminary pair.",
+        "When remaining is nonzero, read current LHS WORD. If zero, skip preliminary RHS and go to final pair. Otherwise read current RHS WORD for equality. On mismatch go to final pair. Only equal nonzero preliminary values advance each actual pointer by2 and repeat.",
+        "Every positive-count exit always freshly reads current LHS WORD then current RHS WORD, including after preliminary LHS zero or mismatch. Subtract zero-extended integer16 values in signed32: exact result [-65535,65535], not normalized sign or signed16 subtraction. Normal last-count position has final pair only; LHS-zero position has LHS/preliminary then LHS/RHS final; mismatch has LHS/RHS preliminary then LHS/RHS final.",
+        "Approve private addressed MOVZX WORD16 helper with MSVC Win32 inline assembly over genuine possibly unaligned raw byte storage, returning a fully initialized zero-extended32bit value. Spell reads as separate sequenced operations and preserve final rereads; actual strict/Main objects must verify widths, order, short circuit and unsigned decrement before loads. No invented typed WORD object or portable ISO alias/lifetime claim.",
+        "No SDK wcsncmp/memcpy/search, byte-only substitution, copied storage, validation/fallback/provider/global/TLS/caller binding. Exclude invalid reached reads, wrapping advances, mutable/indeterminate payload, lifetime changes, concurrency, MMIO/volatile observation and faults. Preserve Original RHS-before-LHS pointer-home-load fact in documentation, without claiming new compiler physical home/fault order or stack/register/flag/segment/EH/binary ABI/runtime/game identity.",
+        "Worker owns only four Source files and local evidence; Root owns registration/ledger/Ghidra/Main. One genuine strict compile with actual before input pins and complete actual code/data/symbol/relocation/metadata review. No separate unregistered whole-worker baseline requested, no tests/probes/body execution; Root registered Main build and actual Main object/archive gates remain pending."
+      ],
+      "Main_gate": "pending_Source_author_peer_registration_build_actual_object_archive"
     }
   ],
   "snapshot_after_analysis": {

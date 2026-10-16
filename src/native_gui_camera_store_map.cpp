@@ -1,5 +1,6 @@
 #include "bsp/native_gui_camera_store_map.hpp"
 #include "bsp/native_int_pointer_tree18_leaves.hpp"
+#include "bsp/native_int_pointer_tree18_erase.hpp"
 #include "bsp/gui_text_type_dispatch.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstdlib>
@@ -21,6 +22,19 @@ volatile Word& word(void* p, std::size_t offset = 0) noexcept {
     return *reinterpret_cast<volatile Word*>(at(p, offset));
 }
 void validate(bool value) { if (!value) _invalid_parameter_noinfo(); }
+// Verified whole004254B0 is C3. This is its actual empty body, not a callback
+// substitute for unresolved logging. Callers still evaluate all native inputs.
+__declspec(naked) void __cdecl camera_store_diagnostic_004254b0(const char*, ...) {
+    __asm { ret }
+}
+struct CameraStoreRemoveFrame {
+    NativeIntPointerTree18Iterator iterator_00;
+    // The initial end is this SAME output.node word until final erase writes
+    // its result. output.owner remains uninitialized, as in the Original local.
+    NativeIntPointerTree18Iterator output_08;
+};
+static_assert(sizeof(CameraStoreRemoveFrame) == 0x10);
+static_assert(offsetof(CameraStoreRemoveFrame, output_08) == 8);
 bool matches(const void* stored, const void* wanted) noexcept {
     bool result;
     __asm {
@@ -83,6 +97,55 @@ void __fastcall rotate_native_gui_camera_store_right_00aa1080(
 void __fastcall rotate_native_gui_camera_store_left_00aa2180(
     void* tree, void* unused_edx, void* pivot) {
     rotate_left_native_int_pointer_tree18_0086a2f0(tree, unused_edx, pivot);
+}
+void* __fastcall erase_native_gui_camera_store_iterator_00aa46b0(
+    void* tree, void* unused_edx, void* output, void* owner, void* node) {
+    return erase_native_int_pointer_tree18_iterator_0086e8a0(
+        tree, unused_edx, output, owner, node);
+}
+void remove_native_gui_camera_store_00aa4b30(void* manager, void* requested,
+    const NativeGuiCameraStoreRemoveLiterals& literals) {
+    camera_store_diagnostic_004254b0(literals.remove_format_00d5bf80, requested);
+    void* const captured_head = pointer(manager, 0x0c);
+    void* const tree = at(manager, 8);
+    void* cursor = pointer(captured_head);
+    void* owner = tree;
+    CameraStoreRemoveFrame frame;
+    put_pointer(&frame.output_08, 4, captured_head);
+    put_pointer(&frame.iterator_00, 0, owner);
+    put_pointer(&frame.iterator_00, 4, cursor);
+    for (;;) {
+        validate(owner && owner == tree);
+        if (cursor == pointer(&frame.output_08, 4)) return;
+        validate(owner != nullptr);
+        validate(cursor != pointer(owner, 4));
+        if (pointer(cursor, 0x10) != requested) {
+            advance_native_gui_camera_store_iterator_004bda70(&frame.iterator_00);
+            cursor = pointer(&frame.iterator_00, 4);
+            owner = pointer(&frame.iterator_00);
+            continue;
+        }
+        validate(cursor != pointer(owner, 4));
+        void* const current_store = pointer(cursor, 0x10);
+        void* const camera = pointer(current_store, 0x18);
+        const auto& name = native_node_name_00b6d800(
+            *static_cast<const NativeNodeStorage*>(camera));
+        const auto* const current_name = static_cast<const char*>(pointer(&name, 4));
+        const char* const name_data = current_name ? current_name : literals.empty_00f8bc60;
+        validate(cursor != pointer(owner, 4));
+        void* const logged_store = pointer(cursor, 0x10);
+        camera_store_diagnostic_004254b0(literals.removed_format_00d5bf54,
+            logged_store, name_data);
+        validate(cursor != pointer(owner, 4));
+        void* const current_payload = pointer(cursor, 0x10);
+        if (current_payload) {
+            singleton_lifetime_free(current_payload);
+            put_pointer(cursor, 0x10, nullptr);
+        }
+        erase_native_gui_camera_store_iterator_00aa46b0(
+            tree, nullptr, &frame.output_08, owner, cursor);
+        return;
+    }
 }
 void* allocate_native_gui_camera_store_tree_node_00aa2960(
     void* left, void* parent, void* right,
