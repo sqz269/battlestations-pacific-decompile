@@ -182,7 +182,26 @@ public:
     virtual void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes,
                                                   std::int32_t flag) = 0;
 
+    // ---- lens effect (unit view) ----
+    // 00452BD0 BSP_LensFlare_UpdateFromCamera, __thiscall(flare 00E081A0, float, float zoom), RET 8.
+    virtual void lens_flare_update_from_camera_00452bd0(void* flare, float dt, float zoom) = 0;
+    // 00452B80 BSP_LensFlare_SetEnabled, __thiscall(flare, char), RET 4.
+    virtual void lens_flare_set_enabled_00452b80(void* flare, std::uint8_t on) = 0;
+    // 00452B00 BSP_LensFlare_PowResponse, __thiscall(flare, float), RET 4.
+    virtual void lens_flare_pow_response_00452b00(void* flare, float x) = 0;
+    // 00B6DB70 BSP_Transform_RefreshWorldMatrix, ECX = node.
+    virtual void transform_refresh_world_00b6db70(void* node) = 0;
+    // 00B0D020 BSP_RenderService_SetLensEffect, __thiscall(service [00F8D39C], int, a, b, c, d, e), RET 18h.
+    virtual void render_service_set_lens_effect_00b0d020(void* service, std::int32_t enabled, float a, float b,
+                                                         float c, float d, float e) = 0;
+    // 0051F050 BSP_HudBinoculars_TurnMover: ECX mover, EDX byte* view flag, stack (dt, zoom), RET 8.
+    virtual void hud_binoculars_turn_mover_0051f050(void* mover, std::uint8_t* flag, float dt, float zoom) = 0;
+
     // ---- image globals (stores and loads go through these references) ----
+    // Storage of a data-section image global by its address (used for
+    // function-local statics such as 00E19810..00E19830 and objects such as
+    // the lens flare 00E081A0 and the render service pointer 00F8D39C).
+    virtual void* image_global(std::uint32_t address) = 0;
     // 00E188D8: the selected (controlled) unit.
     virtual void* global_00e188d8() = 0;
     // 00F876A4: the game clock (float seconds).
@@ -267,6 +286,12 @@ public:
     virtual void* global_object_00f8752c() = 0;
     virtual const char* empty_string_00f87528() = 0;
     virtual std::int32_t crt_atexit_00bf6ff5(std::uint32_t function_address) = 0;
+    // 00867B10 BSP_PointEffect_StopChildren, ECX = effect.
+    virtual void point_effect_stop_children_00867b10(void* effect) = 0;
+    // 004CC760 BSP_ReferencePointerRange_Release: ECX first, EDX last, two stack words, RET 8.
+    virtual void reference_pointer_range_release_004cc760(void* first, void* last, void* vector, void* owner) = 0;
+    // 0081C980 STL_DestroyRangeRefPtrPair: ECX first, EDX last, two stack words, RET 8.
+    virtual void destroy_range_ref_ptr_pair_0081c980(void* first, void* last, void* vector, void* owner) = 0;
     // IAT 00CE221C InterlockedIncrement (stdcall), returns the new value.
     virtual std::int32_t interlocked_increment_00ce221c(volatile std::int32_t* value) = 0;
     // 00815370 BSP_EffectGroup_SetScalar, __thiscall(group, float), RET 4.
@@ -594,6 +619,10 @@ void cc13_sweepB_unit_apply_controlled_effect_scalar_0081c830(void* unit, void* 
 // side record (+0Ch of the element) and set that record's +14h to 999.
 void cc13_sweepB_list_entries_mark_999_0081af80(void* owner, Cc13SweepBHost& host);
 
+// 0081EC00 BSP_UnitSubObject10A0_Destruct(sub): stops every effect of the
+// 8-byte reference vector +8h, then destroys the vectors +18h and +8h.
+void cc13_sweepB_unit_subobject_10a0_destruct_0081ec00(void* sub, Cc13SweepBHost& host);
+
 // 00827820: 1 when the unit's +114Ch exceeds the game settings' +464h.
 bool cc13_sweepB_unit_field114c_exceeds_setting_00827820(const void* unit, Cc13SweepBHost& host);
 
@@ -648,6 +677,9 @@ void cc13_sweepB_movcam_clear_path_records_0079c830(void* camera, Cc13SweepBHost
 // 00798C50 BSP_HudMovieCamera_ForwardToTrackModifiers(camera, value): both
 // tracks (+2A4h, +328h) through 00797E40.
 void cc13_sweepB_movie_camera_forward_modifiers_00798c50(void* camera, float value, Cc13SweepBHost& host);
+
+// 006515B0 BSP_HudUnitView_UpdateLensEffect(view, dt).
+void cc13_sweepB_hud_unit_view_update_lens_effect_006515b0(void* view, float dt, Cc13SweepBHost& host);
 
 // 005A2650 BSP_HudMapScreen_SetSpeakingUnit(screen, unit, fallback, flag).
 void cc13_sweepB_hud_map_set_speaking_unit_005a2650(void* screen, void* unit, void* fallback, bool flag,

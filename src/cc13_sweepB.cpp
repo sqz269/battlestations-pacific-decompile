@@ -1338,6 +1338,51 @@ void cc13_sweepB_list_entries_mark_999_0081af80(void* owner, Cc13SweepBHost& hos
     }
 }
 
+// 0081EC00 BSP_UnitSubObject10A0_Destruct (hypothesis). ABI: __thiscall(ECX
+// sub), RET. Callers 0081F3A0, 00822660 and two unwind funclets. Evidence
+// 0081EC00..0081ED14:
+// - vtable 00D09624 into +0h.
+// - vector +8h (first +0Ch, last +10h, 8-byte elements): for i < size
+//   (re-read each step): when element i's pointer is non-null (the image's
+//   NEG/SBB/TEST 00E186ECh bool idiom), 00867B10(pointer) and pointer+9h = 1.
+// - vector +18h: when first +1Ch is set, 004CC760(first, last +20h, &vector,
+//   sub) and operator delete(first); +1Ch/+20h/+24h = 0.
+// - vector +8h: when first is set, 0081C980(first, last, &vector, sub) and
+//   operator delete(first); +0Ch/+10h/+14h = 0.
+// The secure-SCL index checks (00BF6713) cannot fire; EH 00C91276 not modelled.
+void cc13_sweepB_unit_subobject_10a0_destruct_0081ec00(void* sub, Cc13SweepBHost& host) {
+    cc13_sweepB_at<std::uint32_t>(sub, 0x0) = 0x00D09624u;  // image vtable address
+    for (std::uint32_t i = 0;; ++i) {
+        auto* first = cc13_sweepB_at<std::uint8_t*>(sub, 0xC);
+        if (first == nullptr) break;
+        const auto size = static_cast<std::uint32_t>((cc13_sweepB_at<std::uint8_t*>(sub, 0x10) - first) / 8);
+        if (i >= size) break;
+        void* effect = cc13_sweepB_at<void*>(first, i * 8u);
+        if (effect != nullptr) {
+            host.point_effect_stop_children_00867b10(effect);
+            cc13_sweepB_at<std::uint8_t>(effect, 0x9) = 1;
+        }
+    }
+    void* vector18 = static_cast<std::uint8_t*>(sub) + 0x18;
+    if (cc13_sweepB_at<void*>(sub, 0x1C) != nullptr) {
+        host.reference_pointer_range_release_004cc760(cc13_sweepB_at<void*>(sub, 0x1C), cc13_sweepB_at<void*>(sub, 0x20),
+                                                      vector18, sub);
+        host.crt_operator_delete_00bf65ac(cc13_sweepB_at<void*>(sub, 0x1C));
+    }
+    cc13_sweepB_at<std::uint32_t>(sub, 0x1C) = 0;
+    cc13_sweepB_at<std::uint32_t>(sub, 0x20) = 0;
+    cc13_sweepB_at<std::uint32_t>(sub, 0x24) = 0;
+    void* vector8 = static_cast<std::uint8_t*>(sub) + 0x8;
+    if (cc13_sweepB_at<void*>(sub, 0xC) != nullptr) {
+        host.destroy_range_ref_ptr_pair_0081c980(cc13_sweepB_at<void*>(sub, 0xC), cc13_sweepB_at<void*>(sub, 0x10),
+                                                 vector8, sub);
+        host.crt_operator_delete_00bf65ac(cc13_sweepB_at<void*>(sub, 0xC));
+    }
+    cc13_sweepB_at<std::uint32_t>(sub, 0xC) = 0;
+    cc13_sweepB_at<std::uint32_t>(sub, 0x10) = 0;
+    cc13_sweepB_at<std::uint32_t>(sub, 0x14) = 0;
+}
+
 // 00827820 (hypothesis; ledger FUN_00827820). ABI: __thiscall(ECX unit), RET,
 // EAX 0/1. Byte census: unreferenced. Evidence 00827820..00827843: settings =
 // 00424C40(); 1 when unit+114Ch > settings+464h (FCOMIP; NaN gives 0).
@@ -1553,6 +1598,61 @@ void cc13_sweepB_movcam_clear_path_records_0079c830(void* camera, Cc13SweepBHost
 void cc13_sweepB_movie_camera_forward_modifiers_00798c50(void* camera, float value, Cc13SweepBHost& host) {
     host.movie_track_forward_modifiers_00797e40(static_cast<std::uint8_t*>(camera) + 0x2A4, value);
     host.movie_track_forward_modifiers_00797e40(static_cast<std::uint8_t*>(camera) + 0x328, value);
+}
+
+// 006515B0 BSP_HudUnitView_UpdateLensEffect (hypothesis).
+// ABI: __thiscall(ECX view)(float dt), RET 4. Caller 00651800.
+// Evidence 006515B0..00651754 (disk bytes):
+// - When +2Ch is non-null: mode +74h == 1 -> 00452BD0(flare 00E081A0, dt,
+//   +5Ch). Otherwise node = [+2Ch]+1BCh, refreshed through 00B6DB70 unless
+//   node+5Ch bit 1 is set; when 0 > node+124h: the function-local statics
+//   00E19810..00E19820 are set once (guard 00E19830 bit 0) from five
+//   00424C40() calls (+5A8h, +5A4h, +5A0h, +59Ch, +598h into 00E19810,
+//   00E19814, 00E19818, 00E1981C, 00E19820), then 00B0D020([00F8D39C], 1,
+//   [E19820], [E1981C], [E19818], [E19810], [E19814]) and 00452B00(flare,
+//   100.0f (00CE3D08)); else 00452B80(flare, 0).
+// - Always: 0051F050(ECX = [+2Ch] (also when null), EDX = view+78h, dt, +5Ch).
+// EH 00C7AEDE not modelled.
+void cc13_sweepB_hud_unit_view_update_lens_effect_006515b0(void* view, float dt, Cc13SweepBHost& host) {
+    void* flare = host.image_global(0x00E081A0u);
+    void* object = cc13_sweepB_at<void*>(view, 0x2C);
+    if (object != nullptr) {
+        if (cc13_sweepB_at<std::int32_t>(view, 0x74) == 1) {
+            host.lens_flare_update_from_camera_00452bd0(flare, dt, cc13_sweepB_at<float>(view, 0x5C));
+        } else {
+            void* node = cc13_sweepB_at<void*>(object, 0x1BC);
+            if ((cc13_sweepB_at<std::uint8_t>(node, 0x5C) & 2u) == 0) host.transform_refresh_world_00b6db70(node);
+            if (0.0f > cc13_sweepB_at<float>(node, 0x124)) {
+                auto& guard = *static_cast<std::uint32_t*>(host.image_global(0x00E19830u));
+                auto global = [&](std::uint32_t address) -> float& {
+                    return *static_cast<float*>(host.image_global(address));
+                };
+                if ((guard & 1u) == 0) {
+                    guard |= 1u;
+                    void* s1 = host.game_settings_get_00424c40();
+                    void* s2 = host.game_settings_get_00424c40();
+                    void* s3 = host.game_settings_get_00424c40();
+                    void* s4 = host.game_settings_get_00424c40();
+                    void* s5 = host.game_settings_get_00424c40();
+                    global(0x00E19820u) = cc13_sweepB_at<float>(s5, 0x598);
+                    global(0x00E1981Cu) = cc13_sweepB_at<float>(s4, 0x59C);
+                    global(0x00E19818u) = cc13_sweepB_at<float>(s3, 0x5A0);
+                    global(0x00E19814u) = cc13_sweepB_at<float>(s2, 0x5A4);
+                    global(0x00E19810u) = cc13_sweepB_at<float>(s1, 0x5A8);
+                }
+                host.render_service_set_lens_effect_00b0d020(*static_cast<void**>(host.image_global(0x00F8D39Cu)), 1,
+                                                             global(0x00E19820u), global(0x00E1981Cu),
+                                                             global(0x00E19818u), global(0x00E19810u),
+                                                             global(0x00E19814u));
+                host.lens_flare_pow_response_00452b00(flare, 100.0f);
+            } else {
+                host.lens_flare_set_enabled_00452b80(flare, 0);
+            }
+        }
+    }
+    host.hud_binoculars_turn_mover_0051f050(cc13_sweepB_at<void*>(view, 0x2C),
+                                            static_cast<std::uint8_t*>(view) + 0x78, dt,
+                                            cc13_sweepB_at<float>(view, 0x5C));
 }
 
 // 005A3EF0 BSP_Node_FindChildByName_005a3ef0 (hypothesis; it sets a factor on
