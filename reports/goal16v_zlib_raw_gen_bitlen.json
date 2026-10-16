@@ -1,0 +1,812 @@
+{
+  "goal": "GOAL16X implementation of accepted GOAL16V readiness",
+  "packet": "zlib_bc_raw_gen_bitlen",
+  "status": "READY_WHOLE_144_INSTRUCTION_MAPPING_REGISTERED_CORE_VERIFIED",
+  "source": "src/native_zlib_raw_gen_bitlen_bc.cpp",
+  "header": "include/bsp/native_zlib_raw_gen_bitlen_bc.hpp",
+  "document": "docs/GOAL16V_ZLIB_RAW_GEN_BITLEN.md",
+  "source_sha256": "0d6225fc20e997e0bf6ae7e512277ff23f4751d7fa582ee6cd46b9269d5958c1",
+  "header_sha256": "33e0d3dfcbe3f8e498b638cd0710f62e2a527332f0a866a5a1f1d5ace633a48a",
+  "new_Native_addresses": 1,
+  "new_Native_bytes": 529,
+  "new_Native_instructions": 144,
+  "Source_functions": 2,
+  "Source_whole_executable_bytes": 543,
+  "Source_whole_instructions": 148,
+  "adapter_additional_Native_credit": 0,
+  "entries": [
+    {
+      "address": "00bcdf60",
+      "name": "gen_bitlen__prov",
+      "coverage": "complete",
+      "Native_ranges": [
+        {
+          "start": "00bcdf60",
+          "end_inclusive": "00bce0a9",
+          "bytes": 330,
+          "instructions": 86,
+          "sha256": "f5f3639f31d225abf2dd067fd117f85a6c091c04f68157fe2c9d2254b65f1167"
+        },
+        {
+          "start": "00bce0b0",
+          "end_inclusive": "00bce176",
+          "bytes": 199,
+          "instructions": 58,
+          "sha256": "45fcb13af03f2021d24177c47a8b771d04171ec9a46e6e4631a0e07544b1ccf7"
+        }
+      ],
+      "Native_bytes": 529,
+      "Native_instructions": 144,
+      "private_Source_kernel_bytes": 526,
+      "private_Source_instructions": 144,
+      "whole_body_instruction_mapping": true,
+      "unqualified_byte_identity_claim": false,
+      "Original_inputs": "EAX backing, ECX descriptor, no actual stack arguments or incomingEDX data input",
+      "Original_no_return": false,
+      "cleanup": "one plainRET; normalESP=entryS+4",
+      "Original_formal_CXX_ABI": "unrecovered; no fakefastcall or Source-noreturn annotation"
+    }
+  ],
+  "unowned_six_byte_hole": {
+    "range": "00bce0aa..00bce0af",
+    "Native_bytes": "8d9b00000000",
+    "instruction": "LEA EBX,[EBX] alignment, not owned",
+    "copied_to_Source": false,
+    "Source_or_Native_credit": 0,
+    "Original_listing_repaired": false
+  },
+  "full_instruction_mapping": {
+    "Native_instructions": 144,
+    "Source_instructions": 144,
+    "all_register_memory_width_segment_addresssize_immediate_control_operands_equal": true,
+    "all18branch_destinations_mapped_by_instruction_index": true,
+    "changed_encodings": [
+      {
+        "index": 32,
+        "Native_address": "00bcdfe1",
+        "Native_bytes": "0f8d88010000",
+        "Native_instruction": "jge 0xbce16f",
+        "Source_offset": 129,
+        "Source_bytes": "0f8d7f010000",
+        "Source_instruction": "jge 0x206"
+      },
+      {
+        "index": 80,
+        "Native_address": "00bce090",
+        "Native_bytes": "0f84d9000000",
+        "Native_instruction": "je 0xbce16f",
+        "Source_offset": 304,
+        "Source_bytes": "0f84d0000000",
+        "Source_instruction": "je 0x206"
+      },
+      {
+        "index": 85,
+        "Native_address": "00bce0a8",
+        "Native_bytes": "eb06",
+        "Native_instruction": "jmp 0xbce0b0",
+        "Source_offset": 328,
+        "Source_bytes": "eb00",
+        "Source_instruction": "jmp 0x14a"
+      },
+      {
+        "index": 94,
+        "Native_address": "00bce0d2",
+        "Native_bytes": "66818448340b0000ffff",
+        "Native_instruction": "add word ptr [eax + ecx*2 + 0xb34], 0xffff",
+        "Source_offset": 364,
+        "Source_bytes": "66838448340b0000ff",
+        "Source_instruction": "add word ptr [eax + ecx*2 + 0xb34], -1"
+      },
+      {
+        "index": 96,
+        "Native_address": "00bce0e5",
+        "Native_bytes": "668106ffff",
+        "Native_instruction": "add word ptr [esi], 0xffff",
+        "Source_offset": 382,
+        "Source_bytes": "668306ff",
+        "Source_instruction": "add word ptr [esi], -1"
+      },
+      {
+        "index": 99,
+        "Native_address": "00bce0ef",
+        "Native_bytes": "7fbf",
+        "Native_instruction": "jg 0xbce0b0",
+        "Source_offset": 391,
+        "Source_bytes": "7fc1",
+        "Source_instruction": "jg 0x14a"
+      },
+      {
+        "index": 102,
+        "Native_address": "00bce0f7",
+        "Native_bytes": "7476",
+        "Native_instruction": "je 0xbce16f",
+        "Source_offset": 399,
+        "Source_bytes": "7475",
+        "Source_instruction": "je 0x206"
+      },
+      {
+        "index": 104,
+        "Native_address": "00bce0fd",
+        "Native_bytes": "8d4900",
+        "Native_instruction": "lea ecx, [ecx]",
+        "Source_offset": 405,
+        "Source_bytes": "8d09",
+        "Source_instruction": "lea ecx, [ecx]"
+      }
+    ],
+    "actual_effective_WORD_immediates": "Native imm16FFFF and Source signextendedimm8FF both equalFFFF16, sameADD flags/RMW width.",
+    "size_explanation": "Omit unowned6B gap from physical535B span; twoWORDADD immediates shorten1B each and executedLEA shortens1B. Owned529B->526B. Five relative branches adapt to layout; eight changed encodedinstructions total.",
+    "no_raw_embedded_instruction_shortcuts": true,
+    "mapping_artifacts": [
+      "strict_mapping.json",
+      "registered_mapping.json"
+    ]
+  },
+  "chosen_public_Source_interface": "extern \"C\" __declspec(noreturn) void __cdecl bsp_native_zlib_gen_bitlen_frame_00bcdf60(void* backing,const void* descriptor,void* kernel_entry_stack) noexcept;",
+  "adapter": {
+    "bytes": 17,
+    "instructions": 4,
+    "named_instructions": [
+      "MOV EAX,DWORD PTR [ESP+4]",
+      "MOV ECX,DWORD PTR [ESP+8]",
+      "MOV ESP,DWORD PTR [ESP+0Ch]",
+      "JMP defined private Source complete gen_bitlen register kernel"
+    ],
+    "actual_binding": {
+      "adapter_section": 4,
+      "operand_offset": 13,
+      "relocation": {
+        "offset": 13,
+        "type": 20,
+        "symbol": "?gen_bitlen_body@?A0xba0b0f3a@@YAXXZ",
+        "addend_hex": "00000000"
+      },
+      "defined_private_section": 3,
+      "defined_private_offset": 0
+    },
+    "real_inputs": [
+      "backing",
+      "descriptor",
+      "actual Source kernel-entry ESP"
+    ],
+    "no_copied_frame_local_or_synthetic_continuation": true,
+    "Source_only_noreturn": true,
+    "Original_no_return": false,
+    "extra_prefix": "Three actual Source argument reads/MOV state changes/JMP before privateSUBESP20h, not Original prefixes. OthersGPR/flags unchanged.",
+    "not_an_ordinary_returning_CXX_API": true
+  },
+  "descriptor_order": [
+    "DWORD[descriptor+4] max_code",
+    "DWORD[descriptor+0] tree",
+    "DWORD[descriptor+8] auxiliary pointer",
+    "DWORD[auxiliary+4] extra pointer",
+    "DWORD[auxiliary+0] optional static tree",
+    "DWORD[auxiliary+8] base",
+    "DWORD[auxiliary+10h] max_length"
+  ],
+  "actual_frame": [
+    {
+      "F_offset": "10",
+      "S_address": "-20",
+      "contents": "actual scan index; initialized573 on entered pass, RMW decremented and reloaded later"
+    },
+    {
+      "F_offset": "14",
+      "S_address": "-1c",
+      "contents": "actual first-pass heap cursor, ADD4 per iteration"
+    },
+    {
+      "F_offset": "18",
+      "S_address": "-18",
+      "contents": "overflow0 then actual DWORD ADD1; later read into EBP"
+    },
+    {
+      "F_offset": "1c",
+      "S_address": "-14",
+      "contents": "captured max_length, later remaining rebuilt leaf count"
+    },
+    {
+      "F_offset": "20",
+      "S_address": "-10",
+      "contents": "first-pass remaining count, later correction count cursor pointer"
+    },
+    {
+      "F_offset": "24",
+      "S_address": "-0c",
+      "contents": "captured max_code"
+    },
+    {
+      "F_offset": "28",
+      "S_address": "-08",
+      "contents": "captured extra_base"
+    },
+    {
+      "F_offset": "2c",
+      "S_address": "-04",
+      "contents": "extra pointer, then max_length-1, then saved rebuild heap cursor"
+    }
+  ],
+  "saved_cells": {
+    "EBX": "S-24h",
+    "EBP": "S-28h",
+    "ESI": "S-2Ch",
+    "EDI": "S-30h"
+  },
+  "eight_ordered_zero_DWORDs": [
+    "backing+0b34",
+    "+0b38",
+    "+0b3c",
+    "+0b40",
+    "+0b44",
+    "+0b48",
+    "+0b4c",
+    "+0b50"
+  ],
+  "twelve_memory_RMWs": [
+    {
+      "address": "00bce020",
+      "offset": 192,
+      "bytes": "8344241801",
+      "mnemonic": "add",
+      "operands": "dword ptr [esp + 0x18], 1"
+    },
+    {
+      "address": "00bce036",
+      "offset": 214,
+      "bytes": "66838448340b000001",
+      "mnemonic": "add",
+      "operands": "word ptr [eax + ecx*2 + 0xb34], 1"
+    },
+    {
+      "address": "00bce05c",
+      "offset": 252,
+      "bytes": "0188a0160000",
+      "mnemonic": "add",
+      "operands": "dword ptr [eax + 0x16a0], ecx"
+    },
+    {
+      "address": "00bce070",
+      "offset": 272,
+      "bytes": "0190a4160000",
+      "mnemonic": "add",
+      "operands": "dword ptr [eax + 0x16a4], edx"
+    },
+    {
+      "address": "00bce07a",
+      "offset": 282,
+      "bytes": "8344241404",
+      "mnemonic": "add",
+      "operands": "dword ptr [esp + 0x14], 4"
+    },
+    {
+      "address": "00bce07f",
+      "offset": 287,
+      "bytes": "836c242001",
+      "mnemonic": "sub",
+      "operands": "dword ptr [esp + 0x20], 1"
+    },
+    {
+      "address": "00bce0d2",
+      "offset": 34,
+      "bytes": "66818448340b0000ffff",
+      "mnemonic": "add",
+      "operands": "word ptr [eax + ecx*2 + 0xb34], 0xffff"
+    },
+    {
+      "address": "00bce0dc",
+      "offset": 44,
+      "bytes": "66838448360b000002",
+      "mnemonic": "add",
+      "operands": "word ptr [eax + ecx*2 + 0xb36], 2"
+    },
+    {
+      "address": "00bce0e5",
+      "offset": 53,
+      "bytes": "668106ffff",
+      "mnemonic": "add",
+      "operands": "word ptr [esi], 0xffff"
+    },
+    {
+      "address": "00bce115",
+      "offset": 101,
+      "bytes": "836c241001",
+      "mnemonic": "sub",
+      "operands": "dword ptr [esp + 0x10], 1"
+    },
+    {
+      "address": "00bce13f",
+      "offset": 143,
+      "bytes": "01a8a0160000",
+      "mnemonic": "add",
+      "operands": "dword ptr [eax + 0x16a0], ebp"
+    },
+    {
+      "address": "00bce14c",
+      "offset": 156,
+      "bytes": "836c241c01",
+      "mnemonic": "sub",
+      "operands": "dword ptr [esp + 0x1c], 1"
+    }
+  ],
+  "critical_order_flags_alias_conditions": [
+    "RootWORD0 store occurs before heap_max reload, allowing alias effects.",
+    "Node/max_code CMP precedes treeWORD store; subsequent JG uses pre-store flags.",
+    "First iteration uses captured maximum register; later iterations reload actual max local.",
+    "Extra-table pointer and base/maximum/max_code locals are real mutable cells, not snapshots.",
+    "Static tree pointer is captured into EBP and only tested before actual optional WORD read; no fabricated canonical table.",
+    "Overflow is tested only for zero before entering do-correction, including negative/malformed counts; later signedJG uses subtract2/TEST.",
+    "WordADD FFFFh is retained rather than DEC, preserving all fault/register/flag prefixes.",
+    "Correction count[max] pointer can become stale relative to reloaded max length under aliases.",
+    "Actual rebuild heap cursor reload happens only on unequal-length branch after opt_lenRMW.",
+    "Final arithmetic flags come from ADD ESP20h, not earlier CMP/TEST. Saved registers POP actual possibly modified cells."
+  ],
+  "physical_effects": "All seven phases/144 instructions retained: actual local reuse, interleaved saves/captures, heap_max reload after rootWORD0, signed andwrapped comparisons/counts, narrowWORD/DWORD RMWs, optional captured static pointer, conditional extra/cursor reloads, negative nonzerooverflow do-loop and unbounded backwardWORD search, partialregister/low32IMUL, actualPOP/return cells and finalADDESP flags. No snapshot/guard/cap/class/global/canonical provider/domain narrowing.",
+  "malformed_domain": "Every raw32bit pointer/index/bound/count and WORD/table pattern is admitted; aliases can fault or fail toterminate. No repaired valid-topology/positive-bound assumption.",
+  "results": "EAX backing unchanged; ECX/EDX path-dependent incidental outputs; actual saved cells restored in order; final ESPadd flags and actual return cell remain observed. No semantic C++ return type recovered. Inherited FP/FIP not normalized.",
+  "Native_CALLs": [],
+  "external_providers": [],
+  "absolute_Native_JMP_or_CALL": false,
+  "writable_globals": 0,
+  "extra_helpers": 0,
+  "undefined_symbols": 0,
+  "all_relocations": 1,
+  "strict": {
+    "status": "PASS",
+    "Native_bytes": 529,
+    "Native_instructions": 144,
+    "Source_kernel_bytes": 526,
+    "Source_kernel_instructions": 144,
+    "adapter_bytes": 17,
+    "adapter_instructions": 4,
+    "entire_module_bytes": 543,
+    "entire_module_instructions": 148,
+    "mapped_instruction_count": 144,
+    "changed_encoding_instruction_count": 8,
+    "changed_encodings": [
+      {
+        "index": 32,
+        "Native_address": "00bcdfe1",
+        "Native_bytes": "0f8d88010000",
+        "Native_instruction": "jge 0xbce16f",
+        "Source_offset": 129,
+        "Source_bytes": "0f8d7f010000",
+        "Source_instruction": "jge 0x206"
+      },
+      {
+        "index": 80,
+        "Native_address": "00bce090",
+        "Native_bytes": "0f84d9000000",
+        "Native_instruction": "je 0xbce16f",
+        "Source_offset": 304,
+        "Source_bytes": "0f84d0000000",
+        "Source_instruction": "je 0x206"
+      },
+      {
+        "index": 85,
+        "Native_address": "00bce0a8",
+        "Native_bytes": "eb06",
+        "Native_instruction": "jmp 0xbce0b0",
+        "Source_offset": 328,
+        "Source_bytes": "eb00",
+        "Source_instruction": "jmp 0x14a"
+      },
+      {
+        "index": 94,
+        "Native_address": "00bce0d2",
+        "Native_bytes": "66818448340b0000ffff",
+        "Native_instruction": "add word ptr [eax + ecx*2 + 0xb34], 0xffff",
+        "Source_offset": 364,
+        "Source_bytes": "66838448340b0000ff",
+        "Source_instruction": "add word ptr [eax + ecx*2 + 0xb34], -1"
+      },
+      {
+        "index": 96,
+        "Native_address": "00bce0e5",
+        "Native_bytes": "668106ffff",
+        "Native_instruction": "add word ptr [esi], 0xffff",
+        "Source_offset": 382,
+        "Source_bytes": "668306ff",
+        "Source_instruction": "add word ptr [esi], -1"
+      },
+      {
+        "index": 99,
+        "Native_address": "00bce0ef",
+        "Native_bytes": "7fbf",
+        "Native_instruction": "jg 0xbce0b0",
+        "Source_offset": 391,
+        "Source_bytes": "7fc1",
+        "Source_instruction": "jg 0x14a"
+      },
+      {
+        "index": 102,
+        "Native_address": "00bce0f7",
+        "Native_bytes": "7476",
+        "Native_instruction": "je 0xbce16f",
+        "Source_offset": 399,
+        "Source_bytes": "7475",
+        "Source_instruction": "je 0x206"
+      },
+      {
+        "index": 104,
+        "Native_address": "00bce0fd",
+        "Native_bytes": "8d4900",
+        "Native_instruction": "lea ecx, [ecx]",
+        "Source_offset": 405,
+        "Source_bytes": "8d09",
+        "Source_instruction": "lea ecx, [ecx]"
+      }
+    ],
+    "all_instruction_operands_widths_segments_effective_immediates_branch_targets_equal": true,
+    "Source_functions": [
+      {
+        "index": 10,
+        "name": "_bsp_native_zlib_gen_bitlen_frame_00bcdf60",
+        "value": 0,
+        "section": 4,
+        "type": 32,
+        "storage": 2,
+        "aux": 0
+      },
+      {
+        "index": 11,
+        "name": "?gen_bitlen_body@?A0xba0b0f3a@@YAXXZ",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 3,
+        "aux": 0
+      }
+    ],
+    "one_actual_private_JMP": {
+      "adapter_section": 4,
+      "operand_offset": 13,
+      "relocation": {
+        "offset": 13,
+        "type": 20,
+        "symbol": "?gen_bitlen_body@?A0xba0b0f3a@@YAXXZ",
+        "addend_hex": "00000000"
+      },
+      "defined_private_section": 3,
+      "defined_private_offset": 0
+    },
+    "object_bytes": 1380,
+    "object_sha256": "2fd5e73b10ff08d78c46915173268642c9f2394a37f17aeb20f1c7f93ce4a634"
+  },
+  "registered": {
+    "status": "PASS",
+    "Native_bytes": 529,
+    "Native_instructions": 144,
+    "Source_kernel_bytes": 526,
+    "Source_kernel_instructions": 144,
+    "adapter_bytes": 17,
+    "adapter_instructions": 4,
+    "entire_module_bytes": 543,
+    "entire_module_instructions": 148,
+    "mapped_instruction_count": 144,
+    "changed_encoding_instruction_count": 8,
+    "changed_encodings": [
+      {
+        "index": 32,
+        "Native_address": "00bcdfe1",
+        "Native_bytes": "0f8d88010000",
+        "Native_instruction": "jge 0xbce16f",
+        "Source_offset": 129,
+        "Source_bytes": "0f8d7f010000",
+        "Source_instruction": "jge 0x206"
+      },
+      {
+        "index": 80,
+        "Native_address": "00bce090",
+        "Native_bytes": "0f84d9000000",
+        "Native_instruction": "je 0xbce16f",
+        "Source_offset": 304,
+        "Source_bytes": "0f84d0000000",
+        "Source_instruction": "je 0x206"
+      },
+      {
+        "index": 85,
+        "Native_address": "00bce0a8",
+        "Native_bytes": "eb06",
+        "Native_instruction": "jmp 0xbce0b0",
+        "Source_offset": 328,
+        "Source_bytes": "eb00",
+        "Source_instruction": "jmp 0x14a"
+      },
+      {
+        "index": 94,
+        "Native_address": "00bce0d2",
+        "Native_bytes": "66818448340b0000ffff",
+        "Native_instruction": "add word ptr [eax + ecx*2 + 0xb34], 0xffff",
+        "Source_offset": 364,
+        "Source_bytes": "66838448340b0000ff",
+        "Source_instruction": "add word ptr [eax + ecx*2 + 0xb34], -1"
+      },
+      {
+        "index": 96,
+        "Native_address": "00bce0e5",
+        "Native_bytes": "668106ffff",
+        "Native_instruction": "add word ptr [esi], 0xffff",
+        "Source_offset": 382,
+        "Source_bytes": "668306ff",
+        "Source_instruction": "add word ptr [esi], -1"
+      },
+      {
+        "index": 99,
+        "Native_address": "00bce0ef",
+        "Native_bytes": "7fbf",
+        "Native_instruction": "jg 0xbce0b0",
+        "Source_offset": 391,
+        "Source_bytes": "7fc1",
+        "Source_instruction": "jg 0x14a"
+      },
+      {
+        "index": 102,
+        "Native_address": "00bce0f7",
+        "Native_bytes": "7476",
+        "Native_instruction": "je 0xbce16f",
+        "Source_offset": 399,
+        "Source_bytes": "7475",
+        "Source_instruction": "je 0x206"
+      },
+      {
+        "index": 104,
+        "Native_address": "00bce0fd",
+        "Native_bytes": "8d4900",
+        "Native_instruction": "lea ecx, [ecx]",
+        "Source_offset": 405,
+        "Source_bytes": "8d09",
+        "Source_instruction": "lea ecx, [ecx]"
+      }
+    ],
+    "all_instruction_operands_widths_segments_effective_immediates_branch_targets_equal": true,
+    "Source_functions": [
+      {
+        "index": 10,
+        "name": "_bsp_native_zlib_gen_bitlen_frame_00bcdf60",
+        "value": 0,
+        "section": 4,
+        "type": 32,
+        "storage": 2,
+        "aux": 0
+      },
+      {
+        "index": 11,
+        "name": "?gen_bitlen_body@?A0xba0b0f3a@@YAXXZ",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 3,
+        "aux": 0
+      }
+    ],
+    "one_actual_private_JMP": {
+      "adapter_section": 4,
+      "operand_offset": 13,
+      "relocation": {
+        "offset": 13,
+        "type": 20,
+        "symbol": "?gen_bitlen_body@?A0xba0b0f3a@@YAXXZ",
+        "addend_hex": "00000000"
+      },
+      "defined_private_section": 3,
+      "defined_private_offset": 0
+    },
+    "object_bytes": 1408,
+    "object_sha256": "c2d98c1b8c4fbae44b1c9d562028b18efa1f516c968525d26a1cf9dee8f6511d"
+  },
+  "actual_unique_whole_archive": {
+    "sha256": "cd827f9fecf3a9d68210e047bbad20d6595b5bcb6eace34af997b952519f4076",
+    "bytes": 93618716,
+    "unique_whole_registered_member": {
+      "header_offset": 20054778,
+      "bytes": 1408,
+      "sha256": "c2d98c1b8c4fbae44b1c9d562028b18efa1f516c968525d26a1cf9dee8f6511d",
+      "archive_name": "/0"
+    },
+    "all_archive_headers": 2403,
+    "both_full_dictionaries": [
+      {
+        "directory": 1,
+        "offset": 8,
+        "bytes": 10043447,
+        "sha256": "0af264d8b8007c20a778eb077f0344a13b0e532b6643230ee4719643a9ee398b",
+        "symbol_count": 82475,
+        "member_count": null,
+        "all_indexes_and_offsets_validated": true,
+        "public_unique_occurrences": 1,
+        "public_symbol_index": 0,
+        "unique_whole_member_offset": 20054778,
+        "private_kernel_not_fictitious_export": true
+      },
+      {
+        "directory": 2,
+        "offset": 10043516,
+        "bytes": 9888101,
+        "sha256": "f342c5be907d373a7ebed02babe5d4aca1c58ee2c32b211faa3dc76f30bcd14d",
+        "symbol_count": 82475,
+        "member_count": 2400,
+        "all_indexes_and_offsets_validated": true,
+        "public_unique_occurrences": 1,
+        "public_symbol_index": 82451,
+        "unique_whole_member_offset": 20054778,
+        "private_kernel_not_fictitious_export": true
+      }
+    ],
+    "all_prior_whole_object_files_unchanged": 2399,
+    "all_prior_whole_archive_payloads_unchanged": 2399,
+    "new_whole_payload_count": 1
+  },
+  "actual_registered_compile_commands": [
+    {
+      "source_marker": "^J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\SRC\\NATIVE_ZLIB_RAW_GEN_BITLEN_BC.CPP",
+      "command": "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-goal15z_traffic_resize/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\SRC\\NATIVE_ZLIB_RAW_GEN_BITLEN_BC.CPP"
+    }
+  ],
+  "all_sections_metadata_aux_strings_code_data_accounted": true,
+  "fresh_Native_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "base": "00400000",
+    "typed_modification": "6866",
+    "both_complete_live_installed_V_ranges_equal": true,
+    "Original_no_return": false,
+    "no_thunk": true,
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "current_stock_comparison": {
+    "whole_Source_lines": [
+      490,
+      567
+    ],
+    "Source_sha256": "829e3e5f82392d3991027a36bda3b5aa1947fdb2b9a31a5a467267491c747b3d",
+    "whole_actual_compiled_section_bytes": 482,
+    "whole_actual_compiled_section_instructions": 144,
+    "actual_section_relocations": [],
+    "whole_physical_reuse": false,
+    "actual_trees_object_sha256": "f91e9e7875a57d16d6edf3f13aae8dc9df2b53af1f54fff97ab2f45d265c9fca",
+    "actual_stock_library_sha256": "4e1122c8f0997abbc5115baef5381d7ae143f4427168876f995e2617f5ebcb29",
+    "actual_entire_unique_member": {
+      "offset": 8856,
+      "name": "/70",
+      "bytes": 14806
+    },
+    "both_real_directories_validated": true,
+    "private_symbol_not_public_export": true,
+    "differences": [
+      "cdecl2stack/EBP versus EAX/ECX/no actualstack",
+      "XORPS writesXMM0; two16B MOVUPS stores versus eight ordered NativeDWORD stores",
+      "Different frame/capture/storage/flags/fault schedules; instruction-count equality is insufficient"
+    ],
+    "current_fetched_version": "zlib1.2.1 is current Source context, not recovered Original version/layout/compiler flags"
+  },
+  "dependencies": {
+    "Native_callees": [],
+    "external_function_providers_required": [],
+    "globals_required": [],
+    "real_data": "All descriptor/backing/tree/extra/static pointers and values come from actual caller raw storage; no fake class/owner/provider or hidden canonical global.",
+    "named_but_incomplete_parent": "build_tree00bcf1c0, xref00bcf396; metadata only, no parent body/parameter/adoption closure inspected or claimed.",
+    "caller_and_data_producers_outside_packet": true
+  },
+  "proposed_Root_Original_metadata": {
+    "retain_current_provisional_name": "gen_bitlen__prov",
+    "no_return": false,
+    "custom_physical_inputs": "EAX rawbacking,ECX rawdescriptor; no actualstackargs; not fakefastcall",
+    "cleanup_bytes": 0,
+    "return": "plainRET, EAX backing incidental; ECX/EDX path-specific. No semantic C++ return declaration recovered.",
+    "comments": "SourceNR3inputframeadapter is new only; privateOriginal return and twoBodyRanges retained. Physical529B/144 with mapped Source526+17; explicitcode/fault/return/frame/EH/runtime limitations.",
+    "apply": "Root only after review, preserve old prototype/comments/tags. No author Ghidra mutation."
+  },
+  "limits": [
+    "New Source interface is a real raw borrowed-frame transfer, not an ordinary returningC++API or capturedOriginalframe.",
+    "No Original class/layout/version/formal convention/compiler flag recovery. Existing stock482B is algorithm evidence, not physical delegation.",
+    "Mapped data/ALU/control instructioneffects do not equate absolute instruction/fetch/code aliases/fault/return addresses, NativeSEH/unwind/fullABI or portableC++semantics.",
+    "No selectedbody/adapter invocation, measuredfault, actualcontinuationconsumer, parentbuild_tree adoption, game/runtime proof.",
+    "No x87/SIMD/string instruction normalizes inherited FP/FIP."
+  ],
+  "normal_build": {
+    "command": "./scripts/build.ps1",
+    "start_utc": "2026-10-16T10:21:39.422076+00:00",
+    "end_utc": "2026-10-16T10:21:57.848906+00:00",
+    "elapsed_seconds": 18.426832000011927,
+    "terminal_exit_code": 0,
+    "invocations": 1
+  },
+  "strict_compile": {
+    "start_utc": "2026-10-16T10:20:07.894225+00:00",
+    "end_utc": "2026-10-16T10:20:09.364767+00:00",
+    "elapsed_seconds": 1.4705399999947986,
+    "exit_code": 0,
+    "invocations": 1
+  },
+  "checks": {
+    "passed": 2,
+    "failed": 0,
+    "reconstructed_math_seconds": 0.22,
+    "tool_tests_seconds": 7.31,
+    "total_seconds": 7.57
+  },
+  "Source_forms_attempted": 1,
+  "strict_invocations": 1,
+  "normal_build_invocations": 1,
+  "compiler_or_Source_rejections": 0,
+  "new_tests": 0,
+  "probes": 0,
+  "native_execution": false,
+  "game_validated": false,
+  "Ghidra_or_Main_writes": false,
+  "warnings": "Existing unrelated LNK4006 spawn duplicate retained; no selected Source compiler warning/rejection.",
+  "preservation": {
+    "immutable_V_T_seals": {
+      "T": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-goal15z_traffic_resize\\local\\zlib_bc_raw_pqdownheap",
+        "receipt_sha256": "bd67bd56396269074bd7afbb41d43b7fe573d88f0934bb67b06540d5ae2f6769",
+        "HANDOFF_sha256": "c8aaab3574c3e2a13244bcfa6ba45a65a8051000f0c13891ef0ec415e3cce87d",
+        "artifacts_already_frozen_by_primary_not_rehashed_or_copied": 2485
+      },
+      "V": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-goal15z_traffic_resize\\local\\goal16v_gen_bitlen_readiness",
+        "receipt_sha256": "97d5fc98b8e38000a648d14dc34ccc8b5c704e19c30924f94c7e69064e212530",
+        "HANDOFF_sha256": "1992aeae3a7ee197fc2d78c5252e7da9802401c76419477ec059c0f57222b8c4",
+        "artifacts_already_frozen_by_primary_not_rehashed_or_copied": 39
+      }
+    },
+    "no_transitive_P_R_T_or_V_review_copy_or_rehash": true,
+    "preSource_current_objects_frozen_once": 2399,
+    "preSource_Core_project_tlogs_LastTest_CMake_frozen_once": true,
+    "tlog_files": 11,
+    "all2399prior_whole_objects_and_payloads_unchanged": true
+  },
+  "path_absence_before_Source": [
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile-goal15z_traffic_resize",
+      "ref": "HEAD",
+      "pin": "a5340ec811e202315ee818d27a1061971d2f83fd",
+      "all_four_absent": true
+    },
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator",
+      "ref": "HEAD",
+      "pin": "4b83dce27ee99ea75ea72ba0497ca4eaf098dcb8",
+      "all_four_absent": true
+    },
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile",
+      "ref": "HEAD",
+      "pin": "f5229a95a28a2b3a314689453bb5c4e1abc288f2",
+      "all_four_absent": true
+    },
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile",
+      "ref": "origin/main",
+      "pin": "048d7dd5f4f23596fee17a3c9ae1564ce9f47edf",
+      "all_four_absent": true
+    }
+  ],
+  "Source_coverage_before_writing": "No selected src/include body; actualstock private482B differs, acceptedV gives fullSource/providerevidence.",
+  "correct_provisional_name_retained": "gen_bitlen__prov",
+  "timing": {
+    "V_inclusive_readiness_seconds_separate": 1189.256575,
+    "V_handoff_release_hash_seal_utc": "2026-10-16T10:05:51.256575+00:00",
+    "V_to_X_dispatch_admin_gap_seconds": 620.743425,
+    "implementation_start_utc": "2026-10-16T10:16:12+00:00",
+    "report_utc": "2026-10-16T10:28:08.759465+00:00",
+    "strict_normal_build_times_included_not_added_twice": true,
+    "final_commit_release_hash_endpoint": "local/zlib_bc_raw_gen_bitlen/final_handoff.json",
+    "prior_P_R_T_and_Root_review_integration_runtime": "separate costs/proofs",
+    "speedup_claim": false
+  },
+  "evidence_artifact_sha256": {
+    "preservation.json": "c9cd0cee35508e1bcef4bb5dfdf671bc30cd37ae90a622a19756cf7d314cc07b",
+    "native_capture.json": "570445231d53ebab47a65d4494b475c1813f2971a5143a395a9c20e0956c9e8e",
+    "Source_transcription.json": "5f53b348fd4f6f80de33f2b772a47dd596d8b04ee88765c0b4049f80482ab544",
+    "strict_compile_clock.json": "a9e9f3dc8536a733498b3b45442167c7462bb47f0f665198a3a192b0bddf2f0a",
+    "build_clock.json": "18a2bfea7093128b20b4ea8d74db958ff7068b828e7c6e635ba71bc38ec188c2",
+    "build.txt": "a2eefb8addebf3a879a5ff32297b4d8bc4331b41da6197223436aa66fcad0a8a",
+    "strict_mapping.json": "2fb8dce0315830fecc6a03f8469c8a3fd5acbff1b3dd722d0bbc29a05d7514a5",
+    "registered_mapping.json": "4c3cbe1e30b57d382ffdabc4dfcfd6fd580731956d6df610fc6029ad11554998",
+    "strict_whole_coff.json": "74347b62b6c4dc52fd724039110673779fd4008e4e658015a6c2bf6d57f06320",
+    "registered_whole_coff.json": "42392704174e31f20cd72c527713a307218e2b8bcf55639dc4090dd145f7c55a",
+    "actual_archive_proof.json": "9a42e34e7a9012731a4b21c8e0e3d87dcd740fdf3e52b38f69d2b07a183c1688",
+    "emission.json": "2d6819a318acf63d2bade26dbd6e49f0d44aeb76ca134aad9400a0f69c6eb493"
+  }
+}
