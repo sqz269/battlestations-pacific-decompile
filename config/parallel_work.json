@@ -43130,6 +43130,66 @@
         "outer_frexp_Source": "blocked; nested setter is not a second member of the original seven providers",
         "Main_CXX_build_attribution": false
       }
+    },
+    {
+      "id": "goal_oct15_crt_tls_ptd_owner_contract",
+      "done": true,
+      "state": "integrated_bounded_report_only_contract_primary_review_passed",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [],
+      "output_files": [
+        "reports/goal_oct15_crt_tls_ptd_owner_contract.json"
+      ],
+      "depends_on": [],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_crt_tls_ptd_owner_contract.json",
+      "primary_review": "reports/goal_oct16_contract_primary_review.json",
+      "contract": "55 actual transfers; shared current state and ordered TLS/PTD owner actions; no Original owner/runtime closure",
+      "new_Original_functions": 0,
+      "new_Source_code": 0,
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_crt_prefix_locale_contract",
+      "done": true,
+      "state": "integrated_bounded_report_only_contract_primary_review_passed",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [],
+      "output_files": [
+        "reports/goal_oct15_crt_prefix_locale_contract.json"
+      ],
+      "depends_on": [],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_crt_prefix_locale_contract.json",
+      "primary_review": "reports/goal_oct16_contract_primary_review.json",
+      "contract": "40 actual transfers; current argument and locale cells; incomplete provider ownership remains explicit",
+      "new_Original_functions": 0,
+      "new_Source_code": 0,
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_crt_free_lock_scc_contract",
+      "done": true,
+      "state": "integrated_bounded_report_only_contract_primary_review_passed",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [],
+      "output_files": [
+        "reports/goal_oct15_crt_free_lock_scc_contract.json"
+      ],
+      "depends_on": [],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_crt_free_lock_scc_contract.json",
+      "primary_review": "reports/goal_oct16_contract_primary_review.json",
+      "contract": "72 actual transfers; six further named edges lack sites; seventeen-node SCC is a lower bound, not maximal closure",
+      "new_Original_functions": 0,
+      "new_Source_code": 0,
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
