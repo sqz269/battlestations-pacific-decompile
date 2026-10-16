@@ -1,0 +1,41 @@
+{
+  "schema": "bsp.cc12.native_crt_strstr.primary_readiness.v1",
+  "status": "whole_Original_static_readiness_interior_tail_contract_blocked",
+  "worker_commit": "92dd9abf1be35bf91cb09711cf1ddaf8ca76a1ca",
+  "Source_ready": false,
+  "Source_authorized": false,
+  "Source_credit": 0,
+  "whole_Original_static_evidence_accepted": true,
+  "Root_primary_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strstr_readiness_primary_20261016\\primary_inputs.DATA.json",
+    "bytes": 4512,
+    "sha256": "4e89ffaca6a8a7a5c1202fc50e3b595d70881c30977bbcc444a9731cc2e1233a"
+  },
+  "canonical_doc": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\docs\\NATIVE_CRT_STRSTR_READINESS.md",
+    "bytes": 6684,
+    "sha256": "c4eed872934eb211a0c6135661919ed572989025c38cb3c3569c17e3947dfb50"
+  },
+  "canonical_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\reports\\native_crt_strstr_readiness.json",
+    "bytes": 10165,
+    "sha256": "bf177c2f3edb4276d4073ced7850e03690b8c631562e42ef5e21a3ed8dd8749d"
+  },
+  "exact_interior_tail": {
+    "site": "00bf94b4",
+    "target": "00bf86f6",
+    "kind": "unconditional_interior_tail",
+    "EAX": "zero_extend(nonzero needle BYTE0)",
+    "ECX": "supplied needle pointer",
+    "EDX": "entry_EDX high16 | zeroDH | BYTE0",
+    "ESP": "entryESP, original return and homes intact",
+    "flags": "XOR EAX,EAX CF0 OF0 SF0 ZF1 PF1 AFundefined",
+    "restored": "ESI EBX EDI; EBP unchanged; DF/segments unchanged"
+  },
+  "blockers": [
+    "Register-prepared numeric tail destination BF86F6 is not a Ghidra function start; enclosing metadata BF86F0 _strchr does not authenticate an entry ABI or provider service. Do not redirect to BF86F0, rename, repair, decode provider or invent an SDK/context wrapper.",
+    "Astra must recover exact interior-entry register/stack/home/preservation/return/error/failure and access-extent/DF/segment contract before any whole Source gate. Caller/provider bodies remain unread here.",
+    "Whole ordinary raw-storage domain and return identity across all paths remain unapproved. Any later contract must preserve the real reached-byte trace, cached/reloaded state, precompare+2 cursor geometry and no post-stop payload. No artificial padding/full unused terminator, signed cap, nonoverlap or fake object/ownership precondition can replace that work."
+  ],
+  "qualification": "Root and independent Astra accept whole134B/66-instruction evidence only. Outgoing prefix registers/stack/flags do not recover the interior provider contract. No authorized local-path projection, Source, compiler, Original physical ABI/caller/runtime/game proof or Source credit. Author91 and peer30 seals remain unchanged; no provider body expansion."
+}

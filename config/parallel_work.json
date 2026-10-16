@@ -42789,6 +42789,67 @@
       "actual_compiler_archive_gate": "pass",
       "Main_validation": "reports/cc12_native_crt_wcscspn_Main_validation.json",
       "whole_ordinary_function_credit": 1
+    },
+    {
+      "id": "cc12_native_crt_wcsncpy_00bfaeef",
+      "done": false,
+      "state": "whole_conditional_ordinary_Original_primary_specialist_peer_pass_Source_authorized_compiler_Main_pending",
+      "source_ready": true,
+      "function_addresses": [
+        "00bfaeef"
+      ],
+      "code_ranges": [
+        "00bfaeef-00bfaf2b"
+      ],
+      "output_files": [
+        "include/bsp/native_crt_wcsncpy.hpp",
+        "src/native_crt_wcsncpy.cpp",
+        "docs/NATIVE_CRT_WCSNCPY.md",
+        "reports/native_crt_wcsncpy.json"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [],
+      "readiness": "reports/cc12_native_crt_wcsncpy_readiness.json",
+      "contract": [
+        "New default potentially throwing MSVCWin32 void* __cdecl bsp::copy_native_crt_wide_units_00bfaeef(void* actual_destination,const void* actual_source,unsigned int count). Target byte8/pointer32/unsigned32/littleendian; arbitrary unsignedWORD16 units, no Unicode/locale/ownership semantics. Correct Original libraryname _wcsncpy retained; descriptiveSource name a hypothesis.",
+        "Explicit supplied ordinary domain: incomingDF=0, ordinary flatDS/ES map the same live linear storage with compatible access rights. Those conditions are not recovered Original/caller entry facts. ExcludeDF1/unequalorNonflatsegments; do not silently CLD, repair, validate or bridge them.",
+        "Capture original destination value for return on every normal path. Count is unrestricted unsigned32, no INTMAX/signedcap/stringlength guard. Count0 performs no Source/dest payload read/write or cursor advance; ordinary null/unaddressed payload pointer values permitted. New by-value argument semantics do not claim Original skips sourcehome binding; native/new private argument-home protocols excluded.",
+        "Positivecount: read exactly one unsignedWORD16 through actualSource, then write that captured lowWORD to actualDestination; no prefetch, widerread, source snapshot, restrict/nonoverlap or SDK copy contract. Advance DESTINATION bytecursor +1 then+1 FIRST, then SOURCE bytecursor+1 then+1, including terminalnonzero/copiedzero, then test capturedWORD forzero. This corrects sealedAstra14 Source-first prose/pseudocode; preserve its immutable evidence, do not claim erroneous literalorder correct.",
+        "For capturednonzero decrement unsignedremaining once and continue onlyifremaining nonzero; count exhaustion performs no extraSource read. For copiedzero decrement remaining once to r=count-c where c includeszero; r0 returns. Padding performs q=r>>1 exact sequential forwardDWORDzero stores, eachfollowedby4byteDestadvance, then t=r&1 exactWORDzero store if1 followedby2byteDestadvance. q0 suppressesDWORDaccess; padding neverreadsSource. No WORDfill/memset substitution, split/coalesced stores, or extra unusedNUL reads.",
+        "Actualoverlap/self-inducedlaterSource changes incloddbyteoffsets/identity are admitted. Every reached WORDread needs2genuine live determinate readable bytes; every reached WORD/DWORDwrite needs2/4genuine live writable ordinary bytes. Rawunaligned/interior/callerstack permitted, no fakewchar/uint16/uint32typedobject lifetime or alignment assumption. Each actualbyteadvance nonwrapping withinoronepast sameactualallocation, even terminaldeadcursor advances; no onepastaccess or inventedunusedpadding/SourceNUL extent.",
+        "Exclude Original/new calleeprivateframe/argumenthome/savedreg/return/control/scratch/privateprimitive input-outputblock/selfmodifying aliases. Ordinary callerstack buffers elsewhere remain admitted. Exclude faults/partialprogress observation/MMIO/externalconcurrentmutation/lifetimeormapping changes/asynchronousrestart protocol. Stable ordinary fullwidth-addressable domain only; no physicalOriginalflags/register/frame/home/segment/ABI/caller/runtime/game identity.",
+        "Concrete provisional mechanism: three private target-specific addressed primitives over genuine rawbyteaddresses, e.g. noninlinedcdecl MSVCx86asm wrappers. LOAD_U16 fullyinitializesaddressEDX thenMOVZX EAX,WORD and fullydefined32result; STORE_U16 fullyinitializesaddressEDX/capturedvalueECX thenMOV WORD,CX; STORE_ZERO_U32 fullyinitializesaddressEDX/wholeEAX0 thenMOV DWORD,EAX. No typedunalignedpayloadlvalues, SDK/memcpy/memset/global/TLS/unresolvedprovider/table/fallback/runtimeguard. Exactregisterchoices mayvary ifcomplete actualdefinedinput/result/privateABI proof supports them.",
+        "Separate complete primitive operations retain readbeforepairedwrite and allsubsequent overlap-sensitive payloadordering. No memorybarrier/clobber/alias guarantee is presumed from noinline, inlineasm or source sequencing alone. Source must preserve statedcursor/order/domain requirements; compilerprivateframe/count representation maydiffer only underqualifiedordinaryboundary, never waiveOriginalterminalnonwrap preconditions or assertphysicalprivateprotocol identity.",
+        "Onlyfour canonical Source/header/doc/report outputs after entry/full61B/4filelease in isolated fresh exactpublishedgate checkout. Genuinely fresh currentphysicalSource/header/compiler/support/headercandidate/toolpins before firstuse, one genuine strictHostX86/x86 /std:c++17 /O2 /W4 /WX /permissive- /fp:strict /EHsc /MD compile plus actualdependency closure and allcurrenthashmtime/preservation/Gitliteral qualifications. No trial/matching recompile, workerbaseline/newtests/probes/emulation/selectedbodyexecution/SDKcomparison/Ghidra/sharedmetadata/Main/push.",
+        "Future acceptance mustreview ENTIREactualpublic/allprivatehelpers/code/metadata/symbolaux/strings/relocations/internalproviderbindings/frame/callee-save/stackcleanup/DF/result initialization and ALLpayload paths/widths/order, count0/count exhaustion/earlyzero/q0/r0/odd-evenpadding/alias/cursor arithmetic. Root+independent strictSource/object then separate actualnormalregisteredMain Win32/Core/botharchiveindices/uniqueactualmember/allhelper/privateABI/peer gates. Uncompiledproposal is not emittedproof; compiler failure/mismatch stops forRoot disposition, no fabricatedsuccess. Sourcecredit remains0 untilMainclosure."
+      ],
+      "Main_gate": "pending_Source_independent_strict_and_registered_Main_allhelper_frame_closure_Core_archive_peer"
+    },
+    {
+      "id": "cc12_native_crt_strstr_readiness_oct16",
+      "done": true,
+      "state": "whole_Original_static_readiness_interior_tail_contract_blocked",
+      "source_ready": false,
+      "source_authorized": false,
+      "Source_credit": 0,
+      "function_addresses": [
+        "00bf9440"
+      ],
+      "code_ranges": [
+        "00bf9440-00bf94c5"
+      ],
+      "output_files": [
+        "docs/NATIVE_CRT_STRSTR_READINESS.md",
+        "reports/native_crt_strstr_readiness.json",
+        "reports/cc12_native_crt_strstr_readiness.json"
+      ],
+      "depends_on": [],
+      "readiness": "reports/cc12_native_crt_strstr_readiness.json",
+      "contract": [
+        "Whole134B/66-instruction static readiness complete only; Source blocked by register-prepared JMP00BF94B4 to interior00BF86F6.",
+        "Exact captured outgoing state is not provider behavior; no callable cdecl/SDK substitution or projection.",
+        "Later separately scoped/leased interior-entry contract recovery required; no current provider/caller body expansion."
+      ]
     }
   ],
   "snapshot_after_analysis": {
