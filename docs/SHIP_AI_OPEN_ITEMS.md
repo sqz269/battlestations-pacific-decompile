@@ -18085,3 +18085,24 @@ sus_prog.exe. OFF dies at about 45 s (startup failed), so BSM09 cannot be paired
 max/1200 per second and airfield/shipyard masters max/360. USNOS: HQ1's neutralize (1689.75 s OFF) moves later or does
 not happen, depending on NH's damage rate; garrison guns recover between hits, so capture-post kill times move.
 JM08: the HQ health line and the CheckHQ failure time move.
+**Measured; flipped ON.** Pairs: OFF = tree at 4deaef142 (`local\s52_r0_*`), ON = `local\s52_rp` (pair_export
+4deaef142 with the switch flipped, `local\s52_r1_*`). Reference env.
+| row | OFF | ON | pair_diff |
+|---|---|---|---|
+| USNOS a7 72000 fr | HQ1 neutral 1797.30 s | HQ1 neutral 1841.55 s; steps=216000 | 3 |
+| JM08 l51_j8_b3 40000 fr | Headquarter 01 neutral 1418.00, failed 1418.31 s | neutral 1143.45, failed 1144.04 s; garrison heals 8.27 M (349 members, InferiorRange 100000) | 3 |
+USNOS moves as predicted: NH's fire is spread over a healing HQ1. The first other death to move is Cargo4 at 1735 -> 1748 s.
+JM08's HQ starts above its level-0 12000 (health rises toward the level-raised max, 15889 at 900 s). But its first damage
+comes about 200 s earlier and from more hitters (`local\s52_hqhp.py`: 203 hits by 1100 s ON against 160 by 1400 s
+OFF), so it falls sooner. The first moved deaths are garrison houses healing under the Nevada/San Francisco
+bombardment from 207 s (`local\s52_deathdiff.py`), and the HQ assault time follows from those. The heal mechanism matches
+006F7360/006F47F0, so the switch is flipped. JM08 keeper plans must be re-checked against it.
+
+**Item 5, LandFort StartFire 00746320: no stream gap, effect presentation only.** 00BD2F10 -> 00BD2E60 and 00BD2FC0 ->
+00BA2C20 each consume exactly one 00BA2C20 step of the selected stream (00BD2E91 / 00BD2FC7). The host's stream-0 stand-in
+(GameGunneryHost::death_mode_draw_00bd2f10) advances its generator once per call, so the effect-pick draw at 007463C1
+keeps the stream position. Only the discarded value differs (u32 % count against a float). The +744h smoke release at
+00746338..00746384 has no producer for a capture building here: +744h is written only by 007465E0 (the death arm) and
+the D1h handler. 008689C0 is BSP_PointEffect_Create, a particle effect. The host keeps the gameplay part of +740h, the
+burning flag that 00745BE0's timer and secondary-explosion arm read, and the effect object itself has no gameplay reader
+found. Nothing bound.

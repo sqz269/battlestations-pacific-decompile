@@ -853,7 +853,10 @@ inline constexpr float kCommandBuildingRepairLevel[4] = {1.00f, 1.10f, 1.20f, 1.
 // no device carries health here. Recorded. A 1Bh garrison fort whose vt+204h
 // answers 45h/46h takes the airfield/shipyard rate in the image; LABELLED: here
 // only IsKindOf(45h/46h) picks them. False: buildings never regenerate (before).
-inline constexpr bool kCommandBuildingStepRepairBound = false;
+// ON by section 257: USNOS a7 72000 fr moves (HQ1 neutral 1797.30 -> 1841.55 s);
+// JM08 l51_j8_b3 40000 fr moves (349 garrison houses heal; the HQ falls at
+// 1143.45 instead of 1418.00 s). Mechanism matches; JM08 plans need re-checking.
+inline constexpr bool kCommandBuildingStepRepairBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
