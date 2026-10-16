@@ -42595,8 +42595,8 @@
     },
     {
       "id": "cc12_native_crt_wcschr_00bfd6c1",
-      "done": false,
-      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
       "source_ready": true,
       "function_addresses": [
         "00bfd6c1"
@@ -42622,11 +42622,13 @@
         "No SDKwcschr/memcpy/search, byte-only/dwordsubstitute, provider/global/TLS/fallback/runtimevalidation/callerbinding. Exclude faults, mutation/concurrency, indeterminatebytes, lifetimechanges andMMIO/volatileobservationprotocols. PreserveOriginal pointerhome/targethome/order as evidence only; no physicalABI/register/stack/flags/segment/EH/instruction/bus/fault/runtime/gamecredit.",
         "Worker owns exactlyfourSource/header/doc/reportfiles plus ownnewlocalevidence. Root owns registration, ledgers/names, supported Ghidraannotation/export andMain. Before every Sourcewrite hold entry, entire34Brange andallfourfiles. One actual strictMSVCWin32compile with genuinebeforepins/actualdependencyclosure and wholeartifactreview; no separate unregisteredworkerbaseline, newtests/probes/bodyexecution. Root Mainbuild/actualvariant/archive andindependentSourcegates remain."
       ],
-      "Main_gate": "pending_normal_Main_build_and_independent_actual_variant_archive_review",
+      "Main_gate": "pass",
       "code_revision": "9d738703d1fb3c7f3a81a1842bd609d0433868e1",
       "primary_review": "reports/cc12_native_crt_wcschr_primary_review.json",
-      "Main_build_gate": "pending",
-      "actual_compiler_archive_gate": "pending"
+      "Main_build_gate": "pass_3_existing_CTests",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_native_crt_wcschr_Main_validation.json",
+      "whole_ordinary_function_credit": 1
     },
     {
       "id": "cc12_native_crt_strcspn_00bf9a50",
@@ -42661,6 +42663,38 @@
         "Exclude faults, invalid/indeterminate reached bytes, mutation/concurrency, lifetime changes, MMIO/volatile protocols and native callee bitmap/frame/argument-home/saved-register self-alias protocols. Do not invent native scratch-block identity or a Source parameter for it. Ordinary caller-owned stack storage remains admissible when stable and disjoint from the callee frame; source/reject may still alias each other.",
         "Approve separately sequenced volatile unsigned BYTE payload reads over genuine passed storage, plus genuine private8unsigned32 bitmap objects with bounded unsigned word index byte>>5 and mask1U<<(byte&31). Initialize all8words explicitly (volatile private words are permitted) to avoid an introduced SDK/memset/provider dependency. No portable physical-native-frame or scratch-identity claim. Strict/Main full artifact review must verify initialization, all bitmap accesses/index bounds, payload widths/read order/stops, exact unsignedcount, all frame/metadata/symbol/provider closure.",
         "Worker owns exactly4Source/header/doc/reportfiles and new local evidence; Root owns registration/ledgers/names/supportedGhidraannotation/export/Main. Before any Sourcewrite claim entry, entire70Brange and all4files. One actual strictMSVCWin32compile with genuine freshbeforepins/actualdependencyclosure and whole strictobject review. No separate wholeworkerbaseline, newtests/probes/selectedbodyexecution/SDKcomparison. Root independentSource/compiler/normalMainactualvariant/archive gates remain."
+      ],
+      "Main_gate": "pending_Source_independent_strict_and_registered_Main_actual_variant_archive_review"
+    },
+    {
+      "id": "cc12_native_crt_strpbrk_00bff1d0",
+      "done": false,
+      "state": "whole_ordinary_Original_readiness_primary_peer_pass_Source_authorized_compiler_Main_pending",
+      "source_ready": true,
+      "function_addresses": [
+        "00bff1d0"
+      ],
+      "code_ranges": [
+        "00bff1d0-00bff20f"
+      ],
+      "output_files": [
+        "include/bsp/native_crt_strpbrk.hpp",
+        "src/native_crt_strpbrk.cpp",
+        "docs/NATIVE_CRT_STRPBRK.md",
+        "reports/native_crt_strpbrk.json"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [],
+      "readiness": "reports/cc12_native_crt_strpbrk_readiness.json",
+      "contract": [
+        "New MSVC Win32 default potentially throwing API void* __cdecl bsp::find_native_crt_first_member_00bff1d0(void* actual_source,const void* actual_control). Keep correct Original library name _strpbrk. BYTE8, pointer/unsignedint32; unsigned byte values0..255, no Unicode/locale/codepage/case/signed-char interpretation.",
+        "Require genuine live stable determinate readable control bytes through finite first NUL, always read completely before any source payload even for empty source. Source needs only reached readable bytes through first NUL or first nonzero control member; early hit requires no unused later terminator or full string extent. No null guard/count-zero exception or runtime validation.",
+        "Admit raw unaligned/interior/prefix/read-only/identical/overlapping inputs and ordinary stable caller-owned stack byte regions. Each input has its own genuine allocation; actual reached advances do not wrap and stay within or one past it, including terminal nonzero source increment; never dereference one-past. No padding, typed wider input objects, signed cap or copied allocation.",
+        "Read every control BYTE once per visited position through NUL, set only nonzero control bits in a genuine private256bit bitmap; duplicate values retain all input reads and bit updates. Control NUL never sets bit0. Then read each reached source BYTE once. Explicit source NUL stop precedes membership and its own advance and returns null; nonzero advances actual cursor before membership. First member returns genuine saved current source pointer without payload reread; absent member continues. Empty control still scans source; overlap can read the same storage once in each separate phase.",
+        "Result is the actual borrowed first-member pointer or null, with no ownership/lifetime/access-permission transfer. Spell saved genuine current pointer and explicit cursor advance; no before-base transient pointer or pointer subtraction needed. Compiler scheduling of private cursor variables is not Original instruction/fault identity and must be explained in actual artifact review.",
+        "Approve separately sequenced volatile unsigned BYTE input reads plus eight separate genuine volatile unsigned32 scalar words explicitly initialized0. Use unsigned index byte>>5 and mask1U<<(byte&31), bounded binary branch selection of one actual private word. Avoid array/aggregate GS buffer, switch/table, helper function, compiler memset/provider. Each selected word and shift must be proven bounded by actual full object. No invented native scratch parameter or frame identity.",
+        "No SDK search/copy/strpbrk/memcpy, fallback, global/TLS/provider, validation, caller binding, or call to the new strcspn interface. No extra final read, after-stop read, early empty-input shortcut or input stores. Native frame/home/saved-register/private-bitmap alias protocols, faults, MMIO/volatile protocols, mutation/concurrency and lifetime changes excluded. No Original physicalABI/register/stack/flags/segment/EH/instruction/bus/fault/runtime/game credit.",
+        "Worker owns exactly4Source/header/doc/reportfiles and new local evidence. Root owns sharedregistration/ledgers/names/supportedGhidraannotation/export/Main. Before Sourcewrite claim entry, whole64Brange and4files. One sole strictMSVCWin32compile after genuinefresh beforepins/actualdependencyclosure, all code/sections/symbols/aux/strings/relocs/frame/provider review. Future normalMain/Oy- object/archive gate separate; no forcedmatchingcompile, workerbaseline, tests/probes/selectedbodyexecution/SDKcomparison."
       ],
       "Main_gate": "pending_Source_independent_strict_and_registered_Main_actual_variant_archive_review"
     }

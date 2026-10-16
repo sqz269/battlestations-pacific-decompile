@@ -9,6 +9,12 @@
 #include <type_traits>
 
 namespace bsp::gui_widgets_cc13 {
+
+__declspec(noinline) bool native_gui_layer_is_kind_of_00aa38b0(
+    const volatile std::uint32_t (&actual_lineage_00f8bf88)[3], std::uint32_t id) noexcept {
+    return gui_type_is_kind_of(actual_lineage_00f8bf88, id);
+}
+
 using gui_manager_cc13::name_less_00aa2420;
 namespace {
 
