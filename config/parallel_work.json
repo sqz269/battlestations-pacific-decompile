@@ -41836,6 +41836,190 @@
       "model_exception": "Append private exception registration/state and register-boundary evidence; reuse existing Astra planner.",
       "contract": "Target MSVC Win32. Actual caller-provided aligned readable/writable raw12 header with slots pointer+0,count DWORD/signed+4,capacity DWORD+8. It must come from genuine0094EFB0 storage and accepted subsequent growth/ownership operations, not a fabricated zeroed owner object. Live storage requires 0<=count<=capacity<=0x3fffffff, with capacity at least64 and a multiple of64 as supplied by the nonwrapping constructor/grow chain; allocation is exactly4*capacity bytes and reached slots[0,count) are initialized. Empty constructed storage still has its genuine nonnull slot allocation. If append sees count==capacity, oldcapacity<=0x3fffffbf is required for the accepted +64 growth. If count<capacity, the existing slot allocation must have room for one more pointer. Count+1 and all index*4/address additions must remain in range and accessible. No overflow, saturated-allocation, negative-count ownership, invalid-capacity or memory-pressure branch is admitted. All owned raw8 headers and nonnull owned data allocations are uniquely owned and pairwise disjoint from the list header, slot allocation, temporary/private frame, and each other. Source copy may borrow a stable existing record but creates distinct owned output. Adoption must not duplicate an existing owned pointer or alias raw12/slots. Every owned raw8 header comes from the matching current singleton_lifetime_allocate(object,8,8) heap contract and is freed once by canonical free. Header storage is not NativeStringStorage pooled data. For nonnull data, length+1 is the exact original allocation size, nonwrapping and accessible. Sizes1..149 require the correct current canonical pool generation and size class; sizes>=150 require matching current CRT allocation/free provenance. Null data skips length and pool work on clear. No invented generation counter is introduced. Use genuine real pool/manager publications and gate. The real small-return gate value is preserved and read by BD1510, never forced to zero; even disabled small returns still resolve the getter first. Required pool/manager/deletion bindings must already be valid or their genuine lazy creation must complete successfully. No concurrent mutation, reentry, pool trim/drain/teardown, lifetime replacement, allocator new-handler side effects on these objects, faults, throws, access violations or failed allocations occur during an admitted operation. Small-buffer generation validity extends from allocation through final return, not merely through the individual call. All reached providers return normally; positive requested storage is genuinely available. Current compiler and CRT conventions are explicit Source bindings. Flat Win32 address/ES and DF-clear preconditions of the accepted low-level storage/copy providers remain. These are admission preconditions, not proposed new runtime checks or repairs. Implementation must retain the measured field-read/publication/free order and must not manufacture success for invalid storage. {\"append\": [\"Read current count+4 and capacity+8; call the existing growth only for equality, not >=. Growth publishes new capacity before allocating and handles its own late slot/count reads.\", \"Test (native_flags &0xffu)!=0 after growth. Low byte0 copies; every low pattern1..255 adopts. All upper24 bits are ignored. Do not substitute a bool protocol that loses the specified input domain.\", \"Adopt path captures the supplied pointer itself, including a null sentinel, with no header/data allocation and no pool operation. Ownership of a nonnull genuine raw8 record transfers to the list on successful slot publication; caller must not free it afterwards.\", \"Copy path obtains a fresh genuine raw8 allocation, then invokes the accepted raw00426060 copy constructor with the actual borrowed source header. Do not use sizeof(NativeString), a host object constructor, a temporary header copy or a virtual storage adapter.\", \"After growth/allocation/copy, read CURRENT count+4, then CURRENT slot base+0. Store the captured resulting record pointer at base+count*4, increment the DWORD count, then reread and return the stored new DWORD count. Do not capture list fields across reached providers.\"], \"clear\": [\"Read signed count. For <=0 write count0 and return; the admitted valid domain uses nonnegative counts, while the observed negative branch remains documented rather than converted to a new diagnostic.\", \"For each reached index, reload current slot base, capture raw8 record pointer and that exact slot address. A null record performs no release/free/store; it remains null.\", \"For a nonnull record call raw0041DD20, then canonical-free the same captured raw8 header. Only after free returns write zero to the CAPTURED slot address; never recompute that address from a later slot-base read.\", \"Increment index and reread CURRENT signed count for the loop comparison. Do not cache count/base for the entire loop or shrink count progressively.\", \"On normal exit write count0. Leave capacity and the slot allocation live; spare slots are not traversed or initialized.\"], \"retire\": [\"Call the new clear with the same actual raw12/context; after it returns reload CURRENT slots+0.\", \"If nonnull, canonical-free that captured slot allocation and only then zero slots+0. Keep capacity unchanged; count has been reset by clear.\", \"Do not destroy/free/zero the caller-owned raw12 header. After retirement append/growth is invalid until actual constructor reinitializes storage. Repeated retire on a still-live retired header is harmless in the admitted count0/slotsnull state.\"]} Root accepts an explicitly separate current-C++ fresh-header guard: only copy-branch allocation(object,8,8), canonical-free only that captured fresh raw8 on a C++ construction exception, disarm after successful slot/count publication and return-count read. Never release copied data/adopted header/slots/raw12 through this guard. APIs remain potentially throwing. This policy is not private FH3/frame/unwind/fault equivalence; failure outcomes remain outside admission. Genuine retained game_native_string_process raw_context only, no implicit body process getter or synthetic protocols. Whole normal-control-flow Source only; no Original physical ABI/privateFH3/fault/caller/application/startup/runtime/game closure. Application008F3270 incoming raw8 producer and actual output-header create/pass/retire remain named incomplete; comparator/sort/empty-role not solved.",
       "provider_Main_gate": "constructor/growth Main3checks and selected Core identity passed"
+    },
+    {
+      "id": "goal_oct15_crt_ptd_unlock_helper",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_reviewed_annotated_normal_Win32_three_checks_emitted_schedule_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00c051ae"
+      ],
+      "output_files": [
+        "src/native_crt_ptd_unlock_helper.cpp",
+        "include/bsp/native_crt_ptd_unlock_helper.hpp",
+        "docs/GOAL_OCT15_CRT_PTD_UNLOCK_HELPER.md",
+        "reports/goal_oct15_crt_ptd_unlock_helper.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "ordinary_source_functions": 1,
+      "qualified_cleanup_action_mappings": 0,
+      "evidence_report": "reports/goal_oct15_crt_ptd_unlock_helper.json",
+      "primary_review": "reports/goal_oct15_command_lifetime_primary_review.json",
+      "code_revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+      "integrated_main_revision": "638f686c80ea7ed4248b9187e3ecfdafc138010f",
+      "contract": "Complete noarg lock12 helper via real unchanged canonical unlock21B. PTD/FLS/locale/fatal/SEH parent readiness is not implied.",
+      "Original_runtime_gaps": [
+        "Original heap/encoded handler/exception identity where current CRT is reached",
+        "Original register/private argument/FH3/SEH/fault and binary-entry identity",
+        "Actual new-entry execution and game/consumer validation"
+      ],
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_command_list_push_back",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_reviewed_annotated_normal_Win32_three_checks_emitted_schedule_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00468350"
+      ],
+      "output_files": [
+        "src/native_scene_command_list_push_back.cpp",
+        "include/bsp/native_scene_command_list_push_back.hpp",
+        "docs/GOAL_OCT15_SCENE_COMMAND_LIST_PUSH_BACK.md",
+        "reports/goal_oct15_scene_command_list_push_back.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "ordinary_source_functions": 1,
+      "qualified_cleanup_action_mappings": 0,
+      "evidence_report": "reports/goal_oct15_scene_command_list_push_back.json",
+      "primary_review": "reports/goal_oct15_command_lifetime_primary_review.json",
+      "code_revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+      "integrated_main_revision": "638f686c80ea7ed4248b9187e3ecfdafc138010f",
+      "contract": "Complete actual12B command-list insertion via existing genuine current CRT allocation service. Late parameter and current tail/count raw aliases retained.",
+      "Original_runtime_gaps": [
+        "Original heap/encoded handler/exception identity where current CRT is reached",
+        "Original register/private argument/FH3/SEH/fault and binary-entry identity",
+        "Actual new-entry execution and game/consumer validation"
+      ],
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_command_record_destroy",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_reviewed_annotated_normal_Win32_three_checks_emitted_schedule_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00469010",
+        "00c61a50",
+        "00469b00",
+        "0046a090"
+      ],
+      "output_files": [
+        "src/native_scene_command_record_destroy.cpp",
+        "include/bsp/native_scene_command_record_destroy.hpp",
+        "docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md",
+        "reports/goal_oct15_scene_command_record_destroy.json"
+      ],
+      "depends_on": [
+        "native_pooled_string_cleanup_lower"
+      ],
+      "source_ready": true,
+      "ordinary_source_functions": 3,
+      "qualified_cleanup_action_mappings": 1,
+      "evidence_report": "reports/goal_oct15_scene_command_record_destroy.json",
+      "primary_review": "reports/goal_oct15_command_lifetime_primary_review.json",
+      "code_revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+      "integrated_main_revision": "638f686c80ea7ed4248b9187e3ecfdafc138010f",
+      "contract": "Complete actual command-record destruction/scalar-delete/pointer-slot-delete;current pooled providers and actual current CRT free. Late BYTE bit0 and captured slot/record schedules retained;standalone saved-cell action qualified.",
+      "Original_runtime_gaps": [
+        "Original heap/encoded handler/exception identity where current CRT is reached",
+        "Original register/private argument/FH3/SEH/fault and binary-entry identity",
+        "Actual new-entry execution and game/consumer validation"
+      ],
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_command_record_construct",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_reviewed_annotated_normal_Win32_three_checks_emitted_schedule_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "004690d0",
+        "00c61a70",
+        "00c61a7b"
+      ],
+      "output_files": [
+        "src/native_scene_command_record_construct.cpp",
+        "include/bsp/native_scene_command_record_construct.hpp",
+        "docs/GOAL_OCT15_SCENE_COMMAND_RECORD_CONSTRUCT.md",
+        "reports/goal_oct15_scene_command_record_construct.json"
+      ],
+      "depends_on": [
+        "native_pooled_string_actual_resize",
+        "native_pooled_string_cleanup_lower"
+      ],
+      "source_ready": true,
+      "ordinary_source_functions": 1,
+      "qualified_cleanup_action_mappings": 2,
+      "evidence_report": "reports/goal_oct15_scene_command_record_construct.json",
+      "primary_review": "reports/goal_oct15_command_lifetime_primary_review.json",
+      "code_revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+      "integrated_main_revision": "638f686c80ea7ed4248b9187e3ecfdafc138010f",
+      "contract": "Complete actual command-record constructor via real raw resize/destruction and genuine current SDK memmove;command-before-owner,late target,current headers and independently reloaded ordered cleanup cells retained. Standalone cleanup actions qualified;compiler removes early nonthrowing guard state and supplies no Original fault/FH3 boundary.",
+      "Original_runtime_gaps": [
+        "Original heap/encoded handler/exception identity where current CRT is reached",
+        "Original register/private argument/FH3/SEH/fault and binary-entry identity",
+        "Actual new-entry execution and game/consumer validation"
+      ],
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_command_queue",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_reviewed_annotated_normal_Win32_three_checks_emitted_schedule_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00469610",
+        "00c61b10"
+      ],
+      "output_files": [
+        "src/native_scene_command_queue.cpp",
+        "include/bsp/native_scene_command_queue.hpp",
+        "docs/GOAL_OCT15_SCENE_COMMAND_QUEUE.md",
+        "reports/goal_oct15_scene_command_queue.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_command_record_construct",
+        "goal_oct15_scene_command_list_push_back"
+      ],
+      "source_ready": true,
+      "ordinary_source_functions": 1,
+      "qualified_cleanup_action_mappings": 1,
+      "evidence_report": "reports/goal_oct15_scene_command_queue.json",
+      "primary_review": "reports/goal_oct15_command_lifetime_primary_review.json",
+      "code_revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+      "integrated_main_revision": "638f686c80ea7ed4248b9187e3ecfdafc138010f",
+      "contract": "Complete raw parent queue through concrete constructor and insertion. Explicit outgoing constructor/list cell reuse,initial saved database beforeallocation,late parameter capture and disarm-before-insertion retained;no insertion rollback. Standalone CURRENTsavedallocation cleanup qualified.",
+      "Original_runtime_gaps": [
+        "Original heap/encoded handler/exception identity where current CRT is reached",
+        "Original register/private argument/FH3/SEH/fault and binary-entry identity",
+        "Actual new-entry execution and game/consumer validation"
+      ],
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {

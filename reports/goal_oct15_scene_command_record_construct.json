@@ -7,7 +7,7 @@
   "source": "src/native_scene_command_record_construct.cpp",
   "header": "include/bsp/native_scene_command_record_construct.hpp",
   "documentation": "docs/GOAL_OCT15_SCENE_COMMAND_RECORD_CONSTRUCT.md",
-  "status": "whole_actual_storage_source_reviewed_qualified_actions_annotated_build_pending",
+  "status": "whole_actual_storage_source_ready_win32_build_tested_with_qualified_cleanup_actions",
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
   "routines": [
     {
@@ -232,20 +232,70 @@
       "include/bsp/native_scene_command_record_construct.hpp": "1aa360155f04b2d29d6a1d746e059c45fd24bbe49c1f0e2dcca3b89c684adb14"
     },
     "primary_whole_source_review": {
-      "status": "passed complete constructor, both actions, Source/header; no implementation mismatch",
+      "status": "passed complete constructor, both actions, Source/header; later header metadata wording inspected and accepted",
       "reviewed_cpp_sha256": "11fbe0e387349f85b42d33978e9b2279607c36d7ccbf7aa0e2774f75759f84a9",
       "reviewed_header_sha256": "91c872159229203dbc1c60ccfd3b4157d5c45688dd8b37342974cad8b8a6d3bb",
       "current_cpp_unchanged": true,
       "current_header_sha256": "1aa360155f04b2d29d6a1d746e059c45fd24bbe49c1f0e2dcca3b89c684adb14",
-      "header_comment_clarification_only": "stable bound addresses separated from disjoint Source/context metadata; declarations/guards/contract unchanged; exact previous-header reconstruction hash asserted"
+      "header_comment_clarification_only": "stable bound addresses separated from disjoint Source/context metadata; declarations/guards/contract unchanged; exact previous-header reconstruction hash asserted",
+      "current_header_comment_clarification_accepted": true,
+      "source_and_header_hashes_asserted_unchanged_at_tested_revision": true
     },
-    "cmake_registration": "primary combined registration/build instructed; no worker registry queue or append",
-    "strict_win32_build_and_existing_ctest": "pending",
-    "compiled_object_review": "pending",
+    "cmake_registration": "passed exact primary unique registration; worker never queued/appended; Source once in generated project and one exact archive body",
+    "strict_win32_build_and_existing_ctest": "passed actual primary scripts/build.ps1 at efa7febae744d66c5665e61b64bf8c67d36ff3f6; MSVC Release Win32,3 enabled existing CTests,0 failed,9.55s; no duplicate worker build",
+    "compiled_object_review": {
+      "status": "passed complete retained constructor, helpers, current saved-cell actions and ordered ordinary unwind inspection",
+      "tested_revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct15_command_lifetime_objects\\native_scene_command_record_construct.obj",
+      "object_bytes": 5841,
+      "object_sha256": "93de29c50ab2fd180d410ec428b916733aec87d96e2b6d22c1328d066a4265be",
+      "machine": "14c",
+      "unique_identical_archive_bodies": 1,
+      "disassembly": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct15_command_lifetime_objects\\native_scene_command_record_construct.disasm.txt",
+      "disassembly_sha256": "417744dc58c9b9df196e932b9243e2c200f33986648958a97f067404b47a601d",
+      "symbols": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct15_command_lifetime_objects\\native_scene_command_record_construct.symbols.txt",
+      "symbols_sha256": "e596bb59f770274d7232166dd9edf64e262d5f9a3ffaeefe4fcda04a10a3582a",
+      "inspection_tool": "retained dumpbin14.29.30159.0 output over exact actual MSVC Win32 object; no compiler-version inference",
+      "constructor": "Both saved stores+45/+47; command header zero+49/+4F,target zero+56/+5C; current command+63 BEFORE current owner+66; actual guard state1+72 BEFORE ownerstore+79; inline volatile bytewalks+85/+C4; preserve0 raw resize+96/+D5; current data+9B/+DA and conditional current length+A5/+E4; genuine SDK boundary+AC/+E9. Current target slot read+B7 AFTER first resize/copy. EAX captured record+F1,no normal member cleanup.",
+      "sdk_helper": "single actual JMP _memmove at+0; no new zero-count/null guard and real external symbol resolution",
+      "ordered_cleanup": "Compiler unwind funclet tails to RecordCleanup destructor. State1 check+4,advance state0+0F,current saved-word load+17,add0Ch+19,real raw destroy+1D; on return state0 check+25,advance-1+30,independent current saved-word reload+38,add4+3A,destroy+3E. Standalone public actions each load current saved word+6,add own offset+8,tail raw destructor+0F.",
+      "early_state_qualification": "Compiler eliminates Source guard state0 assignment across nonthrowing header stores and arms emitted C++ EH at+68 before real providers. This does not establish native header-fault,exact EH state/flags/register/private-frame/FH3/SEH equivalence. Source state ordering and current-provider C++ unwind scope remain qualified separately."
+    },
     "new_tests": false,
     "packet_native_differential": "not run",
     "game_validation": "not run",
-    "native_transfer_rows": "7 JSON rows and7 Markdown claims passed;0failed/unchecked/warnings after unreachable-gap wording qualification"
+    "native_transfer_rows": "7 JSON rows and7 Markdown claims passed;0failed/unchecked/warnings after unreachable-gap wording qualification",
+    "build_receipt": {
+      "revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_command_lifetime_combined_build.log",
+      "log_sha256": "8d982051dfaf99fea2dc0568e06ddba017eea931ad60c8f5e6ac9f0b63258653",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 9.55,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "primary_tree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "receipt": "reports/goal_oct15_command_lifetime_primary_review.json",
+      "receipt_sha256": "68ad058165cb0f832f60dd1adc78946bc4edd51b2f0ba3479c5604914d8f9e3e",
+      "source_header_and_all_six_provider_hashes_match_own_primary_and_tested_revision": true,
+      "project_source_count": 1,
+      "unique_identical_archive_bodies": 1,
+      "unique_archive_objects": [
+        "bsp_core.dir\\Release\\native_scene_command_record_construct.obj"
+      ],
+      "archive_sha256": "59f20166ea49b3adb00bf1f3c16208f4bec28b5d3ccf41dd4682fc87331a75b4",
+      "worker_duplicate_build": false,
+      "warning": "retained unrelated LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj; no packet compile warning in actual log"
+    },
+    "source_unchanged_since_draft": "33e4b245171d8bd9d38a9558d8d729cf70c26af1; no Source/header/registration changes in this validation update"
   },
   "limits": [
     "New ordinary actual-storage interface; Original register/stack/mangling/private frame/binary ABI unproved.",
