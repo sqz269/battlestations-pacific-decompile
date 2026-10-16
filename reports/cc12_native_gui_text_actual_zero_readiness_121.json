@@ -1,0 +1,499 @@
+{
+  "packet": "cc12_native_gui_text_actual_zero_readiness121",
+  "recorded_utc": "2026-10-16T07:26:28.472799+00:00",
+  "checked_baseline": "3b85cae6eb88a4637683af9c4d54b2644aa72d77",
+  "scope": "READ-ONLY actual raw Text count-zero/current-scalar binding readiness; no body duplication or production admission",
+  "analysis_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_batches_verified_by_bsp_wrappers": true,
+    "installed_Original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "Original_preserved": true
+  },
+  "status": "smallest canonical raw Text binding provider is missing but ready for a bounded explicit-domain Source packet; no Source authorized in121",
+  "first_missing_provider": "canonical companion borrowing SAME actual Text+04 and SAME registry, binding current genuine D5C6C8 alias to real118 scalar with persistent flags/frame and post-success-only retirement",
+  "lower_native_body_blocker_in_the_admitted_domain": null,
+  "whole_live_Original_bodies": [
+    {
+      "entry": "0x00AA9390",
+      "end_exclusive": "0x00AA9514",
+      "bytes": 388,
+      "instructions": 83,
+      "Original_ABI": "ECX same destination, stack type DWORD; EAX same destination; RET4; EBX/ESI/EDI preserved; recovered actual body has FH3 setup",
+      "complete_live_Original_bytes_equal": true,
+      "live_saved_Original_starts_match": true,
+      "sha256_live_and_Original_bytes": "42d9ee1432699517267e0978fed8b44f28dcdb1faac4e3be12d3f127ae06bbbc"
+    },
+    {
+      "entry": "0x00BD30E0",
+      "end_exclusive": "0x00BD30EE",
+      "bytes": 14,
+      "instructions": 7,
+      "Original_ABI": "ECX actual owner, no explicit stack arguments, plain RET; EAX/EDX scratch, no count decrement; nonnull current vslot04 receives pushed literal DWORD 1",
+      "complete_live_Original_bytes_equal": true,
+      "live_saved_Original_starts_match": true,
+      "sha256_live_and_Original_bytes": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+    }
+  ],
+  "bounded_live_fragments": [
+    {
+      "entry": "0x00AA93B5",
+      "end_exclusive": "0x00AA93BC",
+      "bytes": 7,
+      "kind": "initial-count instruction, also covered by whole AA9390 proof",
+      "sha256_live_and_Original_bytes": "615b708bd6c64cb8a35a2545093b45f1c17405bf28c7958f989df6125a4a1ae1"
+    },
+    {
+      "entry": "0x00AB9650",
+      "end_exclusive": "0x00AB967E",
+      "bytes": 46,
+      "instructions": 13,
+      "kind": "default-constructor prefix only; whole671B proof reused from93/84",
+      "sha256_live_and_Original_bytes": "2b37335cf4d854364351a645abf13f19f024a183cc0a60064e3e9f7d8ce81ffc"
+    },
+    {
+      "entry": "0x00D5C6C8",
+      "end_exclusive": "0x00D5C6D0",
+      "bytes": 8,
+      "kind": "two numeric dispatch DWORDs only; not a callable replacement table",
+      "words": [
+        "0x00BD30E0",
+        "0x00AB8EE0"
+      ],
+      "sha256_live_and_Original_bytes": "acfa7e16772e7ebae5f254fc5e25167e9d3cacb267d2097727d6a9a05614bc40"
+    }
+  ],
+  "calls": [
+    {
+      "function": "0x00AA9390",
+      "address": "0x00AA9446",
+      "native": "0x00A9B720",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB9650",
+      "address": "0x00AB9671",
+      "native": "0x00AA9390",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8EE0",
+      "address": "0x00AB8EE3",
+      "native": "0x00AB8250",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8EE0",
+      "address": "0x00AB8EF5",
+      "native": "0x00AB75A0",
+      "kind": "call"
+    }
+  ],
+  "indirect_call_sites": [
+    {
+      "function": "0x00BD30E0",
+      "site": "0x00BD30EB",
+      "instruction": "call edx"
+    }
+  ],
+  "reused118_scalar_Original_proof": {
+    "entry": "0x00AB8EE0",
+    "end_exclusive": "0x00AB8F00",
+    "bytes": 32,
+    "instructions": 11,
+    "Original_ABI": "ECX SAME Text/stack flags DWORD; EAX SAME identity/RET4 atAB8EFD; ESI preserved; late LOW BYTE test",
+    "complete_live_Original_bytes_equal": true,
+    "live_saved_Original_starts_match": true,
+    "sha256_Original_and_live_bytes": "6c4abe4b629538eed67c9070b40b96532c19f2d78a8db49ecd0d9b309668cead"
+  },
+  "initial_count": {
+    "actual_store": "0x00AA93B5",
+    "value": 1,
+    "same_destination_base_type": 3,
+    "default_call": "0x00AB9671",
+    "default_Text_stamp": "0x00AB9678",
+    "Source_lifetime": "real AA9390 placement-constructs NativeGuiTextIdentityPrefix with actual atomic+04=1; default93 reuses SAME destination, not a typed companion",
+    "limits": "constructor callbacks may alter count; derive no admission value from old initial1; successful93 completion keeps its recorded native_eh_state6"
+  },
+  "current_dispatch": {
+    "profile": "0x00D5C6C8",
+    "slot0": "0x00BD30E0",
+    "slot4": "0x00AB8EE0",
+    "Original_zero_schedule": [
+      "null-test ECX",
+      "CURRENT DWORD [ECX]",
+      "CURRENT DWORD [table+4]",
+      "PUSH literal1",
+      "CALL captured target",
+      "RET"
+    ],
+    "no_count_gate_or_decrement_in_BD30E0_or_AB8EE0": true,
+    "numeric_profile_provider": "borrow existing initialized game::GameNativeReadOnlyData::data_at(D5C6C8,8); same mapped Original-VA alias, no copied table/new mapper/default",
+    "existing_D5_band_use": "renderer existing profiles(D5E534) uses same D50000 64KB mapped band; absence is prebinding failure, not fallback",
+    "existing_BD30E0_Source": "invoke_native_ref_counted_delete_00bd30e0 already captures current profile and passes scalar flags1; required adapter still resolves actual current slot4"
+  },
+  "provider_comparison": [
+    {
+      "provider": "RenderCommandReference borrowed-count ctor",
+      "usable": true,
+      "contract": "borrow SAME atomic<int32_t> at actual+04; default owned-count ctor forbidden; no reset/retain/native credit"
+    },
+    {
+      "provider": "NativeRenderActualOwnerRegistry bind/prepare/publish/unbind and observed release",
+      "usable": true,
+      "contract": "same118 actual-owner registry; decrement first, resolve only on observed zero, dispatch no second decrement; host-only unbind after success"
+    },
+    {
+      "provider": "NativeGuiTextIdentityReference",
+      "usable": false,
+      "contract": "requires real GuiWidgetOwner and typed deletion; cannot cast the raw93 payload into it"
+    },
+    {
+      "provider": "GuiTextNativeLayoutReference",
+      "usable": false,
+      "contract": "actual hardware-layout identity D62AF4/B60770, not Text D5C6C8/AB8EE0"
+    },
+    {
+      "provider": "NativeGuiSceneReference",
+      "usable": "pattern only",
+      "contract": "scene family D62D48/B72580 and catch-retire/unbind-on-failure policy must not be copied"
+    },
+    {
+      "provider": "NativeMaterialEffectReference",
+      "usable": "pattern only",
+      "contract": "borrowed actual count, current numeric selectors, noexcept zero terminal, post-success-only disposal; different effect bodies cannot accept Text"
+    },
+    {
+      "provider": "real85/93/113/118 graph and scalar pool return",
+      "usable": true,
+      "contract": "same actual raw identity, existing services/context/pool/slab/trailer; no new owner/fake callback/typed projection"
+    }
+  ],
+  "next_Source_API_plan": {
+    "native_addresses_to_reimplement": [],
+    "new_provider": "one canonical raw Text RenderCommandReference plus current-scalar adapter and explicit completion/failure phase",
+    "required_before_binding": [
+      "already completed genuine93 SAME raw destination, actual live+04 atomic, caller-retained producer/context/creator/slot provenance",
+      "SAME118 actual-owner registry, exact mapped D5C6C8 alias, SAME real118 graph and actual Text pool/slab/trailer",
+      "fresh persistent one-shot scalar Acquired and stable volatile DWORD flags callframe; full transitive backing/context/frame disjointness and retention",
+      "explicit post-success noexcept companion-disposal operation; all reached recursive children/timed providers already genuine and distinct prepared frames"
+    ],
+    "observed_zero_entry": [
+      "require canonical bound phase, observed actual count0 and current Text profile/current slot0BD30E0; no second decrement",
+      "enter dispatch phase before callbacks; reuse genuine BD30E0 helper; required adapter captures CURRENT slot4AB8EE0 from SAME alias",
+      "write literal DWORD1 into required stable prepared flags callframe immediately before genuine118 scalar; old initialized1 is not proof",
+      "real118 reads only CURRENT LOW BYTE from that flags address AFTER destructor; do not snapshot flags early"
+    ],
+    "direct_current04_entry": [
+      "separate coordinated entry to current AB8EE0 using actual stable caller flags address; NO count gate or decrement",
+      "phase rejects reentry before raw reads; allow only expected nested scalar adapter in observed-zero dispatch",
+      "direct Raw118 bypass while canonical companion is bound is excluded; binding is not a scalar/ancestor/lifetime barrier"
+    ],
+    "successful_completion": [
+      "only after real118 returns, retire phase, unbind exact metadata key/reference without reading ended raw storage, then dispose companion last",
+      "capture completion/disposal metadata before calls and do not access companion after disposal",
+      "serialize exclusion of Native slot reuse/registry rebind through post-scalar unbind; actual pool return may already have happened",
+      "flags0 ends Text lifetime without pool return; preserve caller slot disposition, do not synthesize later cleanup"
+    ],
+    "escaping_direct_failure": [
+      "sticky failed phase with retained canonical companion/registry diagnostics and all independent creator/frame/context/backing obligations",
+      "NO unbind/disposal/retry/reset/raw-field rediscovery/automatic creator or pool cleanup; retained metadata is not permission to decrement ended+04",
+      "reached cleanup may end widget lifetime; exclude further Native count/virtual access and provide separate explicit failure disposition"
+    ],
+    "noexcept_boundary": "RenderCommandReference zero terminal is Source noexcept: errors after entering it terminate; Original BD30E0 has no local EH and is not thereby proven Native-noexcept. Preterminal registry/identity failure after decrement can escape with alreadyzero diagnostics. Direct scalar Source errors may escape and retain failed graph; existing nested effect zero terminal terminates."
+  },
+  "count_and_replacement_limits": [
+    "caller-held creator1 -> material retain2 -> matching material release1 does not prevent forced current04 or ancestor retirement; do not add protective retain",
+    "current profile/target and118 fields remain live reads at reached sites; initial provenance or metadata snapshots cannot replace them",
+    "all callback-published replacement creators/providers need independent retained graph ownership before exposure; no implicit adoption of raw pointer fields",
+    "ended slot/profile/count/pool lifetime cannot be inspected after successful scalar or replayed after failed retirement",
+    "body closure does not supply current child/timed virtual providers, Text factory/copy/production admission, Native FH3/SEH/IAT/register ABI or runtime proof"
+  ],
+  "source_hashes": [
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+    },
+    {
+      "path": "src/render_command_queue.cpp",
+      "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43"
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9"
+    },
+    {
+      "path": "include/bsp/native_gui_text_identity.hpp",
+      "sha256": "6de31247104e9d98b5b369846bd8c743058c14aeae8ce0520ce15fd3926335a6"
+    },
+    {
+      "path": "src/native_gui_text_identity.cpp",
+      "sha256": "662d51258be8445f7adfce99e3796e9c2c10ade8d442e1c1cdb61ebd406b8928"
+    },
+    {
+      "path": "include/bsp/gui_text_native_layout.hpp",
+      "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_base_storage.hpp",
+      "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab"
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d"
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "sha256": "39d2a14672dc90e8605c47fb267d59510639dc445d4caf28a48d79d172d89562"
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "sha256": "38e7aafba69bfe959bd3f45111c9e85074d646eaacfa6c718e2b1530c30b55d7"
+    },
+    {
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "sha256": "2263f0a5cf044e3040c7f3f024a8d9899df1e7f0277db512f4db7d59976510f7"
+    },
+    {
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "sha256": "9cb60be1d88a03d4136ca9fe34243c8b980199192300456819bf2a46778a6200"
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_children.hpp",
+      "sha256": "441e4a25ab536b115d87bdc2de81778eda2dc4d47f61faced68485f1cc4e8b11"
+    },
+    {
+      "path": "src/native_gui_text_glyph_children.cpp",
+      "sha256": "cf9454f0b8e09ccd1fc9eeb7250daca7cccab0ad6b25969fd511b09968018081"
+    },
+    {
+      "path": "include/bsp/native_gui_text_retirement.hpp",
+      "sha256": "2744353d2ae4c9041b2980360cdf3e499aae28cb1446519dc4ca7064e6e3a300"
+    },
+    {
+      "path": "src/native_gui_text_retirement.cpp",
+      "sha256": "60993aaade168fe8ec23468d787a61093c51b200a49e1a193663b560a0384bd3"
+    },
+    {
+      "path": "include/bsp/native_wide_string.hpp",
+      "sha256": "d9499a98a3379366390eac87f3b6bca7ebb452e8e19e96d3e7a354295c6e8bc0"
+    },
+    {
+      "path": "src/native_wide_string.cpp",
+      "sha256": "319fd69f6ba6700dbcc3dec688166ad3a1492137e844299e8067fd067c130fd7"
+    },
+    {
+      "path": "include/bsp/native_gui_scene_storage.hpp",
+      "sha256": "d816b2f0bcf0e0b47b895c3d999335b6f8253a66f1ae63055563578b6544407b"
+    },
+    {
+      "path": "src/native_gui_scene_storage.cpp",
+      "sha256": "c291544fa92b127f2e94c28b6072dc5a0ee6325e1e315e934e7b4567734e2935"
+    },
+    {
+      "path": "include/bsp/native_material_effect_owner.hpp",
+      "sha256": "197df420b08345803c36b5ef20cfaa725ccfa02c8ccc4a3fbfb76adada7bdedf"
+    },
+    {
+      "path": "src/native_material_effect_owner.cpp",
+      "sha256": "1a19bafced64bda09691cdbd0d7254ce000afb976144fb1cb01936377d16698b"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "sha256": "26bd27eda6ae864b13166ccd2fd1176f8a27b4006d7791d42d8346a703e91630"
+    },
+    {
+      "path": "include/bsp/gui_text_factory.hpp",
+      "sha256": "5aad1ef48c9c29b28ffd17178f20446ab8277508dd39a0b69cf23760adcfb657"
+    },
+    {
+      "path": "src/gui_text_factory.cpp",
+      "sha256": "bde7d1a4130a2ba7d71381143daa58c26d050200638bd7f4f8a60b35579b03c8"
+    },
+    {
+      "path": "include/bsp/native_material_owner.hpp",
+      "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+    },
+    {
+      "path": "src/native_material_owner.cpp",
+      "sha256": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc"
+    }
+  ],
+  "reused_receipts": [
+    {
+      "path": "reports/cc12_native_gui_text_material_owner_readiness_106.json",
+      "sha256": "6a730b47c4dd8aee1a4b6b3d1cd3a0d557a55f417089722a3702f1502629c2a2"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_retirement_readiness_109.json",
+      "sha256": "6ecf29e11134ce53aa8cf4358f88bcbe65cd4e44d0871a559acf50e926922d4e"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_retirement_118.json",
+      "sha256": "0c00dc6cf2c53dafb2307ed567358f40e80cc92e5d70bfcc1731bdded294cbb6"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_raw_sections_85.json",
+      "sha256": "670803ccbec611ee44b63c277b5ecb414e50a467370f329979aa78afa846afc7"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_raw_default_93.json",
+      "sha256": "d9c89f153f299af3ff73463311639839fdd781dcaff1e5050843175619759b84"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_glyph_children_113.json",
+      "sha256": "28da47d45876f5ea8326350ceb9eb684eecc1eebabb0a11d891b813ace610c80"
+    }
+  ],
+  "frozen_export_evidence": [
+    {
+      "path": "local/text_zero121_export_evidence/00aa9390_metadata.json",
+      "sha256": "1cb9d9351dc1e82f82e9654f23c17ce3d8b8f20524b996090198271d123c2d8b"
+    },
+    {
+      "path": "local/text_zero121_export_evidence/00aa9390_decompiled.c",
+      "sha256": "54b8ef1b2643c523f09d678f2c886d1fc016d446994776e39419e9af0a6e0627"
+    },
+    {
+      "path": "local/text_zero121_export_evidence/00aa9390_assembly.txt",
+      "sha256": "eb6975f0c418623eefe9876b018b18380d6ad88dda9e8e3f464aeb3f13cfdc26"
+    },
+    {
+      "path": "local/text_zero121_export_evidence/00bd30e0_metadata.json",
+      "sha256": "1eadc0cea2c085e88935b96d486713ed2ca5fcd69aead1ce1c8f3cff9dca3c73"
+    },
+    {
+      "path": "local/text_zero121_export_evidence/00bd30e0_decompiled.c",
+      "sha256": "b5e8eb68d36768baaa5a8f812942b06323b218c3ba228146987c0fac17e662fa"
+    },
+    {
+      "path": "local/text_zero121_export_evidence/00bd30e0_assembly.txt",
+      "sha256": "53fc03d47ff635d7d7ab8e625692a0ac42fdca6060d3fcb5e5bc1599c3fe5563"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/build_text_zero121_report.py",
+      "sha256": "5e404a505fc3597d54667c68df71f52e08a2affd5ec7caa2d62d7f59b7d564d9"
+    },
+    {
+      "path": "local/text_zero121_initial_and_zero_live_proto.txt",
+      "sha256": "05f0fa2c7725b804a76f25ba7b0a34d0a1e265c6ce912e304f52b96670290617"
+    },
+    {
+      "path": "local/text_zero121_text_profile_live_bytes.txt",
+      "sha256": "0bc1e472b9fada018596175fcc483c6d826ae2084670b0506f814672c25dbbb7"
+    },
+    {
+      "path": "local/text_zero121_zero_live_bytes.txt",
+      "sha256": "1d70d9d639234f376753c69e736b613bbef917a14ca52c5d82dc737141237953"
+    },
+    {
+      "path": "local/text_zero121_zero_live_asm.txt",
+      "sha256": "5f9a40b5b603584bc8c6c63b45a0281f0aad26ef6c9809e5e2499588ee1da50e"
+    },
+    {
+      "path": "local/text_zero121_base_live_bytes.txt",
+      "sha256": "ae8cf3d17c3b7339afbd9221939817cb1c31ddf1de3aa13d2da95db412b309c2"
+    },
+    {
+      "path": "local/text_zero121_base_live_asm.txt",
+      "sha256": "2c5ba5249e6346169abffa6a3197693e3a118257b31794d8175e635092b8e0a7"
+    },
+    {
+      "path": "local/text_zero121_default_prefix_live_bytes.txt",
+      "sha256": "56981f5a734b1c449edb946dfff2b2ac6fdfcc976c364ccc12ce4aa88d27cb0c"
+    },
+    {
+      "path": "local/text_zero121_initial_count_store_live_bytes.txt",
+      "sha256": "278e8f595f381294307fdcfd46e413eb2b2e0f017665a8505c173dd9eb914737"
+    },
+    {
+      "path": "local/text_zero121_default_context.json",
+      "sha256": "587f01f065a90088ebcf2fad6bb5e97aace0425c910531520128a204f4bf9432"
+    },
+    {
+      "path": "local/text_zero121_default_context.log",
+      "sha256": "5f427925d983b2faa4e21fa66f6e39b56c2ce0f619c2d5db8fc0112811644c82"
+    },
+    {
+      "path": "local/text_zero121_provider_inventory.txt",
+      "sha256": "e17088624be9c3b7b72df3817840c4d0d54743185c0d15fcf1a46aa130edfcea"
+    },
+    {
+      "path": "local/text_zero121_byte_and_source_proof.json",
+      "sha256": "e511a8954a9338e877169f8dc6f3e0f8dbd0ca7b7d0347bba8a2ea2f195f2a4f"
+    },
+    {
+      "path": "local/text_zero121_receipt_generation.log",
+      "sha256": "db2e14dcece56e0a8701449a89c5077177aa97ac3ac85f365785fe82460609cc"
+    },
+    {
+      "path": "local/text_zero121_report_call_verification.txt",
+      "sha256": "69669028a60c5db1faadaa141eab9e05c2233dcd76ab5b4c9416e7b5b7390c4a"
+    },
+    {
+      "path": "local/seal_text_zero121_receipt.py",
+      "sha256": "ff8fdf6527efbb02107e772791b5d81bfdf5250c5118eb3be0570b1d0056fedd"
+    },
+    {
+      "path": "local/text_zero121_owned_scope_verification.txt",
+      "sha256": "c9c8386130677fd27ece0068cb381eff99e62ea6af6c25d947a948533126301e"
+    }
+  ],
+  "validation": {
+    "static_byte_and_source_proof": "PASS",
+    "live_direct_call_rows": {
+      "checked": 4,
+      "failed": 0,
+      "proof_limit": "direct rows only; whole byte/listing and current table prove the separately recorded indirect route"
+    },
+    "build_test_probe_or_raw_execution": "none, read-only packet",
+    "no_Source_CMake_ledger_or_Ghidra_mutation": true,
+    "all33_Source_hashes_equal_checked_baseline": true,
+    "frozen118_artifacts_preserved": {
+      "manifest": {
+        "path": "local/text_retirement118_final_artifact_manifest.json",
+        "sha256": "61c8f3494201376b89fb1c3c13842b4fe918686e6f1046e3f593c5a9f34e0889"
+      },
+      "checked_files": 102,
+      "all_hashes_unchanged": true,
+      "previously_captured_by_Root": true
+    }
+  },
+  "owned_files": [
+    "docs/CC12_NATIVE_GUI_TEXT_ACTUAL_ZERO_READINESS_121.md",
+    "reports/cc12_native_gui_text_actual_zero_readiness_121.json"
+  ],
+  "final_artifact_manifest": {
+    "path": "local/text_zero121_final_artifact_manifest.json",
+    "hash_rule": "manifest seals final report/doc and all referenced artifacts; own hash sent separately to avoid a circular digest"
+  },
+  "publication": "commit only owned doc/report, release exact lease, wait for Root capture before worktree reuse",
+  "sealed_utc": "2026-10-16T07:26:36.018638+00:00"
+}

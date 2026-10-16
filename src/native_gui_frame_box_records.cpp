@@ -139,3 +139,136 @@ void release_native_gui_frame_box_record_00ad0860(void* record,
     }
 }
 } // namespace bsp
+
+
+#include <limits>
+
+namespace bsp {
+namespace {
+struct TidyKnownRegion {
+    std::uintptr_t first, last;
+};
+TidyKnownRegion tidy_known_region(const volatile void* identity, std::size_t bytes) {
+    const auto first = reinterpret_cast<std::uintptr_t>(identity);
+    if ((bytes != 0 && first == 0) || bytes > (std::numeric_limits<std::uintptr_t>::max)() - first)
+        throw std::invalid_argument("raw vector tidy region is null or wraps");
+    return {first, first + bytes};
+}
+bool tidy_overlap(TidyKnownRegion left, TidyKnownRegion right) noexcept {
+    return left.first != left.last && right.first != right.last &&
+        left.first < right.last && right.first < left.last;
+}
+bool tidy_contains(TidyKnownRegion region, std::uintptr_t point) noexcept {
+    return region.first <= point && point < region.last;
+}
+struct TidyKnownRegions {
+    TidyKnownRegion header, records, metadata, operation;
+};
+TidyKnownRegions tidy_validate_preparation(const NativeGuiFrameBoxVectorTidyOperation& operation,
+    void* header, void* first, void* last,
+    NativeGuiFrameBoxRecordReleaseOperation* records, std::size_t record_count) {
+    const auto begin = reinterpret_cast<std::uintptr_t>(first);
+    const auto end = reinterpret_cast<std::uintptr_t>(last);
+    if ((reinterpret_cast<std::uintptr_t>(header) & 3u) != 0 || (begin & 3u) != 0 ||
+        (end & 3u) != 0 || end < begin || (begin == 0 && end != 0) ||
+        (end - begin) % 0x2cu != 0 || (end - begin) / 0x2cu != record_count ||
+        record_count > (std::numeric_limits<std::size_t>::max)() / sizeof(records[0]) ||
+        (reinterpret_cast<std::uintptr_t>(records) % alignof(NativeGuiFrameBoxRecordReleaseOperation)) != 0)
+        throw std::invalid_argument("raw vector tidy requires an exact aligned constructed span");
+    const TidyKnownRegions known{tidy_known_region(header, 0x10),
+        tidy_known_region(first, end - begin),
+        tidy_known_region(records, record_count * sizeof(records[0])),
+        tidy_known_region(&operation, sizeof(operation))};
+    const TidyKnownRegion regions[]{known.header, known.records, known.metadata, known.operation};
+    for (std::size_t i = 0; i != 4; ++i) {
+        for (std::size_t j = i + 1; j != 4; ++j) {
+            if (tidy_overlap(regions[i], regions[j]))
+                throw std::invalid_argument("raw vector tidy known regions overlap");
+        }
+    }
+    if (begin != 0 && (tidy_contains(known.header, begin) ||
+        tidy_contains(known.metadata, begin) || tidy_contains(known.operation, begin)))
+        throw std::invalid_argument("raw vector tidy backing aliases prepared metadata/header");
+    for (std::size_t i = 0; i != record_count; ++i) {
+        if (records[i].phase() != NativeGuiFrameBoxRecordReleasePhase::fresh)
+            throw std::logic_error("raw vector tidy requires fresh per-record operations");
+    }
+    return known;
+}
+void tidy_validate_service_region(TidyKnownRegions known, const volatile void* identity,
+    std::size_t bytes) {
+    const auto service = tidy_known_region(identity, bytes);
+    if (tidy_overlap(service, known.header) || tidy_overlap(service, known.records) ||
+        tidy_overlap(service, known.metadata) || tidy_overlap(service, known.operation))
+        throw std::invalid_argument("raw vector tidy service metadata overlaps known regions");
+}
+} // namespace
+
+NativeGuiFrameBoxVectorTidyOperation::NativeGuiFrameBoxVectorTidyOperation(void* header,
+    void* first, void* last, NativeGuiFrameBoxRecordReleaseOperation* records, std::size_t record_count)
+    : header_((tidy_validate_preparation(*this, header, first, last, records, record_count), header)),
+      expected_first_(first), expected_end_(last), records_(records), record_count_(record_count) {}
+NativeGuiFrameBoxVectorTidyOperation::~NativeGuiFrameBoxVectorTidyOperation() noexcept {
+    if (phase_ == NativeGuiFrameBoxVectorTidyPhase::entered ||
+        phase_ == NativeGuiFrameBoxVectorTidyPhase::failed)
+        std::terminate();
+}
+
+void tidy_native_gui_frame_box_vector_00ad21b0(void* header,
+    NativeRenderActualOwners& owners, NativeStringRawPoolContext& strings,
+    NativeGuiFrameBoxVectorTidyOperation& operation) {
+    if (operation.phase_ != NativeGuiFrameBoxVectorTidyPhase::fresh || header != operation.header_)
+        throw std::logic_error("raw vector tidy requires its fresh exact-header operation");
+    const auto known = tidy_validate_preparation(operation, header,
+        operation.expected_first_, operation.expected_end_, operation.records_, operation.record_count_);
+    tidy_validate_service_region(known, &owners, sizeof(NativeRenderActualOwners));
+    tidy_validate_service_region(known, &strings, sizeof(strings));
+    tidy_validate_service_region(known, &strings.actual_published_01090aa8, sizeof(void*));
+    tidy_validate_service_region(known, &strings.actual_small_returns_disabled_01090aa4, sizeof(Word));
+    tidy_validate_service_region(known, &strings.actual_manager_publication_01090aa0, sizeof(void*));
+    operation.phase_ = NativeGuiFrameBoxVectorTidyPhase::entered;
+    try {
+        auto* const first = reinterpret_cast<std::byte*>(
+            static_cast<std::uintptr_t>(word(header, 4)));
+        operation.captured_first_ = first;
+        operation.cursor_ = first;
+        if (first != operation.expected_first_)
+            throw std::invalid_argument("raw vector tidy captured begin differs from preparation");
+        if (first != nullptr) {
+            auto* const last = reinterpret_cast<std::byte*>(
+                static_cast<std::uintptr_t>(word(header, 8)));
+            operation.captured_end_ = last;
+            operation.end_captured_ = true;
+            if (last != operation.expected_end_)
+                throw std::invalid_argument("raw vector tidy captured end differs from preparation");
+            auto* cursor = first;
+            while (cursor != last) {
+                release_native_gui_frame_box_record_00ad0860(cursor, owners, strings,
+                    operation.records_[operation.completed_]);
+                cursor += 0x2c;
+                operation.cursor_ = cursor;
+                ++operation.completed_;
+            }
+            auto* const current = reinterpret_cast<void*>(
+                static_cast<std::uintptr_t>(word(header, 4)));
+            operation.free_identity_ = current;
+            operation.free_entered_ = true;
+            singleton_lifetime_free(current);
+            operation.free_returned_ = true;
+        }
+        word(header, 4) = 0;
+        word(header, 8) = 0;
+        word(header, 0xc) = 0;
+        operation.header_cleared_ = true;
+        operation.phase_ = NativeGuiFrameBoxVectorTidyPhase::returned;
+    } catch (...) {
+        operation.phase_ = NativeGuiFrameBoxVectorTidyPhase::failed;
+        throw;
+    }
+}
+void cleanup_native_gui_frame_box_vector_00ad2320(void* header,
+    NativeRenderActualOwners& owners, NativeStringRawPoolContext& strings,
+    NativeGuiFrameBoxVectorTidyOperation& operation) {
+    tidy_native_gui_frame_box_vector_00ad21b0(header, owners, strings, operation);
+}
+} // namespace bsp
