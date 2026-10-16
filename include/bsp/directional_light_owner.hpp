@@ -32,6 +32,15 @@ NativeLightStorageView construct_native_light_00b7c4c0(void* actual_slot,
     std::size_t slot_bytes, const NativeString&, SizedStoragePool&);
 NativeLightStorageView construct_native_directional_light_00b7c6b0(void* actual_slot,
     std::size_t slot_bytes, const NativeString&, SizedStoragePool&);
+// Actual-header/current-cell route over the existing raw constructor kernels.
+// Materializes the SAME typed tail only after the raw body returns, preserving
+// every byte. No header copy/cleanup, slot allocation or runtime admission.
+NativeLightStorageView construct_native_light_00b7c4c0(void* actual_slot,
+    std::size_t slot_bytes, const void* actual_name_header, NativeStringRawPoolContext&,
+    const NativeNodeRawConstants&, const volatile std::uint32_t& sixty_four_00ce7820);
+NativeLightStorageView construct_native_directional_light_00b7c6b0(void* actual_slot,
+    std::size_t slot_bytes, const void* actual_name_header, NativeStringRawPoolContext&,
+    const NativeNodeRawConstants&, const volatile std::uint32_t& sixty_four_00ce7820);
 
 // Stable external companion. Every rendering field is a reference to the same
 // raw tail used by destruction and LightSceneRetention. The shadow resolver
