@@ -1,0 +1,297 @@
+{
+  "packet": "oct16_native_crt_new_handler",
+  "status": "complete_whole_Source_supplied_actual_context_build_existing_checks_full_COFF_reviewed_runtime_ownership_open",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "published_baseline": "92a14c97874ee9b499f3296d0355ce27868de19a",
+  "baseline_qualification": "Root permitted isolated released92 baseline; 31 providerLFs match published92/1c. After explicit Main543release562, successful queued CMake gate claim preceded one canonicalCore append; gate released before defaultbuild. No unpublishedMain/foreignsync consumed.",
+  "source": "src/native_crt_new_handler.cpp",
+  "header": "include/bsp/native_crt_new_handler.hpp",
+  "documentation": "docs/OCT16_NATIVE_CRT_NEW_HANDLER.md",
+  "source_sha256": "d7f29cd0d22f12b44d729ea32546a394fe6f0a18ac7c3fd0e9f7b92b3ae1254a",
+  "header_sha256": "30d7e608299e659ea1b8c2cdea310c003f2d865c34235beb33b6b0ca9de725a3",
+  "documentation_sha256": "6f0ef8a20e276191dd395b1e1925384523874090b1e5a334ca612bd7759e7970",
+  "routines": [
+    {
+      "address": "00c055b1",
+      "name": "invoke_native_crt_new_handler_00c055b1",
+      "original_library_name_preserved": "__callnewh",
+      "coverage": "Whole34B15 in supplied actual decode-context domain; defaultWin32 threeexistingchecks/fullactualCOFF reviewed. Concrete runtime ownership remains open.",
+      "original_abi": "cdecl(uint32 size), one stacked word/plainRET/caller4, EAXexact0/1, ECX/EDX/flags incidental; null decoded pointer skips size load. No local EH.",
+      "Source_abi": "int32 __cdecl(uint32 requested,const NativeCrtPointerDecodeContext&,constvolatile uint32&actualEncoded109DE44); caller12 vsNative4; late volatile read of own Source parameter word only."
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00c055b1",
+      "address": "00c055b7",
+      "native": "00c04fde",
+      "kind": "call",
+      "scope": "owned ordinary",
+      "contract": "Use actual returned pointer, same existing decode context; discard outgoing original argument-word writeback"
+    },
+    {
+      "function": "00c055b1",
+      "address": "00c055c5",
+      "native": "actual decoded cdecl handler via EAX",
+      "kind": "indirect_call",
+      "scope": "owned ordinary",
+      "contract": "late size word, actual int32(uint32), callerPOP4; anynonzero=>1"
+    }
+  ],
+  "contract": {
+    "schedule": [
+      "Read CURRENT encoded109DE44; actual C04FDE with SAME context.",
+      "Capture actual decoded return, discard outgoing argument-slot writeback. Native TEST before POP; no by-value local writeback model.",
+      "Null skips size read/handler invocation, return0.",
+      "Nonnull: explicit volatile read of NEW Source requested parameter word, call actual cdecl size handler, normalize anynonzero1."
+    ],
+    "inputs": "One requested32-bit value plus two borrowed references; no injected generic callback/provider/owner/global/default; actual compatible handler ABI and stable binding identities required.",
+    "exceptions": "No catch, cleanup, errno, lock, retry, LastError repair, rollback or noexcept; actual supplied callee behavior propagates.",
+    "runtime_open": "Encoded handler publication/ownership, concrete CRT/TLS/errno/invalid/locale/bootstrap and inherited module-gate services remain open."
+  },
+  "Native_scope": {
+    "owned_bytes": 34,
+    "owned_current_starts": 15,
+    "owned_CALLs": 2,
+    "direct": 1,
+    "indirect": 1,
+    "range": [
+      "00c055b1",
+      "00c055d2"
+    ],
+    "SHA256": "ee46ba523d066e7aa16ef3d636e1869ecfeab38fec0c26e9b02266b6e44f42e1",
+    "encoded_cell": {
+      "address": "0109de44",
+      "bytes": 4,
+      "bytes_hex": "00000000",
+      "SHA256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "PE_zero_virtual_tail_equal_live": true,
+      "qualification": "Saved-analysis evidence only; no default initialized handler/owner inferred."
+    },
+    "own_EH": false
+  },
+  "provider_LF_fingerprints": {
+    "include/bsp/game_native_mutable_crt_data.hpp": {
+      "LF_SHA256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "published92_and1c_equal": true
+    },
+    "include/bsp/legacy_crt_math.hpp": {
+      "LF_SHA256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+      "published92_and1c_equal": true
+    },
+    "include/bsp/native_crt_canonical_failure.hpp": {
+      "LF_SHA256": "79cf028656e03fe079cac7ced740ce5ea8a5a81fc4a8a722850a15c8195c0472",
+      "published92_and1c_equal": true
+    },
+    "include/bsp/native_crt_canonical_unlock.hpp": {
+      "LF_SHA256": "161dce16976cc0c2bdc10495d5a3c733600cfc6e2d75dc07f1363e5710802cdf",
+      "published92_and1c_equal": true
+    },
+    "include/bsp/native_crt_libm_callback_registration.hpp": {
+      "LF_SHA256": "96b1bf767f1b4de73a578f178de025f2c9199082e404ad3bf45e0ff695f58746",
+      "published92_and1c_equal": true
+    },
+    "include/bsp/native_crt_memset.hpp": {
+      "LF_SHA256": "82636e0cffb8c123053bd7e9778be85837d5f2bfae142bc8d788a089defcea1e",
+      "published92_and1c_equal": true
+    },
+    "include/bsp/native_crt_pointer_decode.hpp": {
+      "LF_SHA256": "b1e901d739c07419b55441988bf42177b0e6ace3ef27ef1251ecb3b36fb48a7f",
+      "published92_and1c_equal": true
+    },
+    "include/bsp/native_crt_pointer_decode_support.hpp": {
+      "LF_SHA256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722",
+      "published92_and1c_equal": true
+    },
+    "include/bsp/native_crt_sbh_allocation.hpp": {
+      "LF_SHA256": "fdcaa8f9cc5debb28c12bb24464f71f34db09b1f235b2322cbf012ead01909a4",
+      "published92_and1c_equal": true
+    },
+    "include/bsp/native_crt_sbh_state.hpp": {
+      "LF_SHA256": "f1885df320b24d5f34da03b5fa527fcdb9b2d5190ccb6889ec2c324d17b30d58",
+      "published92_and1c_equal": true
+    },
+    "include/bsp/native_crt_seh4_primitives.hpp": {
+      "LF_SHA256": "def2584ce857931952278696a418e2b62a0d1b8a9f82cc61e82ae784cab28a86",
+      "published92_and1c_equal": true
+    },
+    "include/bsp/native_crt_small_block_heap_init.hpp": {
+      "LF_SHA256": "00d6988a7ca75d5dc4b3e42e98b233c0da0301359b2b4a4acfa6209ba3d3cea6",
+      "published92_and1c_equal": true
+    },
+    "include/bsp/native_crt_stricmp.hpp": {
+      "LF_SHA256": "f09ff088480b1db82a49dc5d185956062fd5118e3cb7b70e008c04726a59b92f",
+      "published92_and1c_equal": true
+    },
+    "include/bsp/native_crt_watson_failure.hpp": {
+      "LF_SHA256": "a46a37f7b069bcd2dd68696de222922ac04da572d456255af851d945263c4432",
+      "published92_and1c_equal": true
+    },
+    "include/bsp/native_dyn_narrow_phase.hpp": {
+      "LF_SHA256": "fa3f6390cadbb1e23954f58524215a0cd67fb69a5c9921f2cf95deff72a926db",
+      "published92_and1c_equal": true
+    },
+    "include/bsp/singleton_lifetime.hpp": {
+      "LF_SHA256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "published92_and1c_equal": true
+    },
+    "src/game_native_mutable_crt_data.cpp": {
+      "LF_SHA256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "published92_and1c_equal": true
+    },
+    "src/legacy_crt_math.cpp": {
+      "LF_SHA256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce",
+      "published92_and1c_equal": true
+    },
+    "src/native_crt_canonical_failure.cpp": {
+      "LF_SHA256": "6d8bee1d3ba2e0fbfff1fcaca03ca35b8a5f933ff6995419f100e220802dc7ce",
+      "published92_and1c_equal": true
+    },
+    "src/native_crt_canonical_unlock.cpp": {
+      "LF_SHA256": "b2203a3e0def66f513f5bd0d8846a7ac21bb7e066015cf7f426d6e71165c6097",
+      "published92_and1c_equal": true
+    },
+    "src/native_crt_libm_callback_registration.cpp": {
+      "LF_SHA256": "cacc140a243569c0d0828a309cf84c079fa12e30b1fc5124e703c44ed1716c32",
+      "published92_and1c_equal": true
+    },
+    "src/native_crt_memset.cpp": {
+      "LF_SHA256": "d40837c0989ddb2e0958deec750c0b264e6475e8febaad590c5a4f35db55a0d9",
+      "published92_and1c_equal": true
+    },
+    "src/native_crt_pointer_decode.cpp": {
+      "LF_SHA256": "7a689a80bea666aa0941662a1bbde17500c92d1f7fd671c364aa2b3e0bf365c7",
+      "published92_and1c_equal": true
+    },
+    "src/native_crt_pointer_decode_support.cpp": {
+      "LF_SHA256": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37",
+      "published92_and1c_equal": true
+    },
+    "src/native_crt_sbh_allocation.cpp": {
+      "LF_SHA256": "579963791173dd808d51683336edf5d1471593314659613183942cebed27191a",
+      "published92_and1c_equal": true
+    },
+    "src/native_crt_seh4_primitives.cpp": {
+      "LF_SHA256": "2557fbce9dfc10e1deb7a4158bb7e9f31fcd62b5c22a8e1f67e66c836bf4fb95",
+      "published92_and1c_equal": true
+    },
+    "src/native_crt_small_block_heap_init.cpp": {
+      "LF_SHA256": "247cf968d945af420f44ea89f3a2d96ba16a88923fb0d00cfe445cd959c887ca",
+      "published92_and1c_equal": true
+    },
+    "src/native_crt_stricmp.cpp": {
+      "LF_SHA256": "e706069c71de1de114a98ed21cc37832fc0a3f1c00bb52ef8992e2f7422d1c8d",
+      "published92_and1c_equal": true
+    },
+    "src/native_crt_watson_failure.cpp": {
+      "LF_SHA256": "20e77ac28cf945d47302576c923e6ccc83043dfeae817349ddd434658ae3ae2b",
+      "published92_and1c_equal": true
+    },
+    "src/native_dyn_narrow_phase.cpp": {
+      "LF_SHA256": "367307f34945bb3d15f1086ea0026e595ab5a92b855c9f722d20958ab0a30bb4",
+      "published92_and1c_equal": true
+    },
+    "src/singleton_lifetime.cpp": {
+      "LF_SHA256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "published92_and1c_equal": true
+    }
+  },
+  "prebuild_preservation": {
+    "path": "local/oct16_native_crt_new_handler_prior_objects.json",
+    "SHA256": "4f232ba55af80233c49c2bedeac879c0f8f3dc9bf1c9237372e120da20a5d774"
+  },
+  "Root_preliminary": {
+    "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_newh_primary_readiness.json": {
+      "SHA256": "26a347bce77067591d6e79932fb65b651d9d7be3e4ce6d4778be3302017d5143",
+      "checks": 8,
+      "scope": "Readiness/Source only; actual registered CMake build/object/frozen pin pending."
+    },
+    "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_newh_primary_source_review.json": {
+      "SHA256": "74afdf631301f1b7565dc98d87d8a90cbb5c2f88376b66a8cd51025c86b82fa7",
+      "checks": 8,
+      "scope": "Readiness/Source only; actual registered CMake build/object/frozen pin pending."
+    },
+    "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/oct16_newh_primary.json": {
+      "SHA256": "d77a759cfee6aa7e1d52d8ea2a88b1c4b25eda19ca5eb5441fd7414be75d9bef",
+      "checks": 16,
+      "scope": "Independent fullSource/actualCMake45B22/4sections/soleREL32+actualindirect/31providers; finalownedmetadata/frozenpin acceptance pending."
+    }
+  },
+  "verification": {
+    "default_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "log": "local\\oct16_native_crt_new_handler_build.log",
+      "log_SHA256": "42c5fc098e2b072a0b7aba8339ffe66bda780b7b3752cbf9f67e032078503f7a",
+      "existing_suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "passed": 3,
+      "failed": 0,
+      "CTest_total_seconds": 7.99,
+      "new_tests_probes_Native_execution": false
+    },
+    "actual_CMake_COFF": "PASS15staticchecks; all45B22CODE/1REL32+decodedindirect,4sections/noEH/runtimeData/BSS/helpers/CODEpadding/gaps",
+    "transfer_verifier": {
+      "JSON": "1directchecked/0failed;1actualdecodedindirectexplicitlyunchecked",
+      "Markdown": "1checked/0failed/0unchecked/0warnings",
+      "manual_indirect_proof": "NativeCALL EAX@C055C5 fullbytes/currenttyped; actualSourceCALL ECX+20/fullCODEreview"
+    },
+    "index_diff": "index --if-stale exit0; git diff --check exit0. Exact owned staged delta is independently sealed in distinct precommit/final receipts.",
+    "new_tests_probes_Native_execution": false,
+    "Ghidra_writes": false
+  },
+  "limits": [
+    "Complete whole Source in supplied actual context, defaultbuild/existing3suite/staticCOFF checked; no direct execution of newhandler.",
+    "Source3arg/private-frame/volatile parameter access is not Original1arg/outgoing-slot/register/flag/fault/FH3/SEH/binary ABI parity.",
+    "No actual runtime/handler/TLS/heap ownership or game validation.",
+    "Native malloc/V6/SBH/unwind Source excluded; old CurrentSDK/admitted APIs preserved."
+  ],
+  "Native_evidence": {
+    "path": "local\\oct16_native_crt_new_handler_native_audit.json",
+    "SHA256": "5baa3460b809a4dca5c2547e21dca8d81f9f62ffdb2b9e12c44111594b6a37f3",
+    "current_instruction_starts_verified": 15,
+    "final_PE_live_bytes_equal": true
+  },
+  "actual_CMake_COFF": {
+    "path": "local\\oct16_native_crt_new_handler_actual_COFF.json",
+    "SHA256": "96ccf5e59ba1991e0a9d94b151229c79a14f65c4b8815a2fe6292c731e0a8faf",
+    "object": "build\\win32\\bsp_core.dir\\Release\\native_crt_new_handler.obj",
+    "object_SHA256": "0266e6b2d3cfe7fc43822facfa18b1784b835731c1d964fff31908f52981259c",
+    "object_bytes": 915,
+    "CODE_bytes": 45,
+    "CODE_instructions": 22,
+    "relocations": 1,
+    "static_checks": 15,
+    "no_CODE_padding_helpers_EH_BSS_runtime_data": true,
+    "decoded_text": {
+      "path": "local/oct16_native_crt_new_handler_actual_COFF_decoded.txt",
+      "SHA256": "fdc0e74012da498479d79662e75cf6694eb7e40129e626575078e743b9345b5d"
+    },
+    "schedule": "returnedECX+11 beforeADD8+13; nullJNE+18 skipsSourceword; late[EBP+8]+1C onlynonnull; actualhandlerCALL ECX+20; callerADD4+22; NEG/SBB/NEG exact0or1.",
+    "read_only_content_addressed_archive": {
+      "path": "local\\accepted_source53_crt_objects\\0266e6b2d3cfe7fc43822facfa18b1784b835731c1d964fff31908f52981259c.obj",
+      "SHA256": "0266e6b2d3cfe7fc43822facfa18b1784b835731c1d964fff31908f52981259c",
+      "bytes": 915,
+      "read_only": true,
+      "provenance": "Byteexact actualCMakeobject before later normal builds; original buildpath remains a historical build artifact identity."
+    }
+  },
+  "canonical_Core_registration": {
+    "path": "cmake\\startup.cmake",
+    "before_SHA256": "ec8c1007c275d58833d1a9ff88575fba3f36227b8a9a22e2147be3fc39a28456",
+    "after_SHA256": "2c9a66d4a7a7fd16e889cd2ea3d307541812fa7be2c65edb95a2c74e44541bca",
+    "line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_crt_new_handler.cpp)",
+    "mutation_gate": "oct16_native_crt_new_handler_registration successful claim before mutation",
+    "UTC": "2026-10-16T12:42:03.678186+00:00",
+    "baseline": "92a14c97874ee9b499f3296d0355ce27868de19a"
+  },
+  "historical_preparation": {
+    "path": "local/oct16_native_crt_new_handler_preparation.json",
+    "SHA256": "cba304b8bd107906b7f0579a9b6f88231dc71a54bb81ff3090624e9a6fb0aa9e",
+    "scope": "Immutableprebuildsnapshot; no longer currentbuildstatus. Retained unchanged."
+  }
+}
