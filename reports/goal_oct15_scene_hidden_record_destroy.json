@@ -1,0 +1,191 @@
+{
+  "packet": "goal_oct15_scene_hidden_record_destroy",
+  "status": "whole_raw_control_flow_independently_reviewed_qualified_cleanup_registered_build_pending",
+  "source_ready": false,
+  "general_source_ready": false,
+  "code_complete": true,
+  "source": "src/native_scene_hidden_entity_record_destroy.cpp",
+  "header": "include/bsp/native_scene_hidden_entity_record_destroy.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_DESTROY.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00469300",
+      "name": "destroy_native_scene_hidden_entity_record_00469300",
+      "native_name_retained": "BSP_SceneHiddenEntityRecord_Destruct",
+      "native_bytes": 152,
+      "instructions": 53,
+      "original_abi": "ECXrecord,no stackedargs,plainRET;Sourceactualsavedthis4/rawpoolcontext",
+      "coverage": "whole raw control-flow code at stated callable-slot/hostCRT and qualified cleanup admission;generalSourceReadyfalse",
+      "live_equals_installed_PE": true,
+      "original_bytes_hex": "6aff68bb1ac60064a100000000506489250000000051568bf15789742408c7064056ce008b4e0433ff3bcf897c2414740b8b018b106a01ffd2897e048b46083bc7740c50e840d6780083c404897e088b460c3bc7740c50e82dd6780083c404897e0c8b46583bc7c7442414ffffffff74168b76546a0183c6015650e84009fbff8bc8e8898176008b4c240c5f5e64890d0000000083c410c3",
+      "sha256": "79d1e7eedc77c35749606f877a10d3cae8f9d418136bd9d9c4a50e301d9f77d6"
+    },
+    {
+      "address": "004693a0",
+      "name": "delete_native_scene_hidden_entity_record_004693a0",
+      "native_name_retained": "BSP_SceneHiddenEntityRecord_DeletingDestructor",
+      "native_bytes": 30,
+      "instructions": 11,
+      "original_abi": "ECXrecord,one LIVE stackedflagword,RET4/EAXcapturedrecordbits",
+      "coverage": "whole raw control-flow code at stated callable-slot/hostCRT and qualified cleanup admission;generalSourceReadyfalse",
+      "live_equals_installed_PE": true,
+      "original_bytes_hex": "568bf1e858fffffff644240801740956e8f7d1780083c4048bc65ec20400",
+      "sha256": "2a9626e366ffa181cef2b20d776619b3ecfb75a6d9e58e8f71b9d1e666d77bd2"
+    },
+    {
+      "address": "00c61ab0",
+      "name": "unwind_native_scene_hidden_entity_record_00c61ab0",
+      "native_name_retained": "Unwind@00c61ab0",
+      "native_bytes": 11,
+      "instructions": 3,
+      "original_abi": "EBPframe,CURRENT[EBP-10]+54,tailJMP41DD20;qualified Source mapping only",
+      "coverage": "whole raw control-flow code at stated callable-slot/hostCRT and qualified cleanup admission;generalSourceReadyfalse",
+      "live_equals_installed_PE": true,
+      "original_bytes_hex": "8b4df083c154e965c27bff",
+      "sha256": "c8d86d0a65fc6435545b16cc08da15a120009ce88890ba22b84677d66bf064bc"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00469344",
+      "native": "00bf6989",
+      "function": "00469300",
+      "kind": "call"
+    },
+    {
+      "address": "00469357",
+      "native": "00bf6989",
+      "function": "00469300",
+      "kind": "call"
+    },
+    {
+      "address": "0046937b",
+      "native": "00419cc0",
+      "function": "00469300",
+      "kind": "call"
+    },
+    {
+      "address": "00469382",
+      "native": "00bd1510",
+      "function": "00469300",
+      "kind": "call"
+    },
+    {
+      "address": "004693a3",
+      "native": "00469300",
+      "function": "004693a0",
+      "kind": "call"
+    },
+    {
+      "address": "004693b0",
+      "native": "00bf65ac",
+      "function": "004693a0",
+      "kind": "call"
+    },
+    {
+      "address": "00c61ab6",
+      "native": "0041dd20",
+      "function": "00c61ab0",
+      "kind": "tail_jump"
+    }
+  ],
+  "indirect_transfer": {
+    "site": "00469337",
+    "function": "00469300",
+    "instruction": "CALL EDX",
+    "target": "actual current bag vtable slot0;no resolved target credit",
+    "abi": "__thiscall,ECXcapturedbag,stacked1,ignoredresult",
+    "typed_flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "COMPUTED_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": true,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "COMPUTED_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": true,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00469339"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00469339"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": []
+    }
+  },
+  "typed_metadata": {
+    "path": "local/goal_oct15_scene_hidden_record_destroy_typed.json",
+    "sha256": "4de179e487b1b28fb45b974050fb06e4783514b67ed7abfdde878b11ab717d82",
+    "endpoint": "get_flow_metadata",
+    "read_only": true,
+    "utc": "2026-10-16T00:19:53.499808+00:00"
+  },
+  "eh_evidence": {
+    "handler": "00c61abb",
+    "funcinfo": "00d890f4",
+    "funcinfo_bytes_hex": "2205931901000000ec90d8000000000000000000000000000000000000000000",
+    "max_state": 1,
+    "unwind_map": "00d890ec",
+    "unwind_map_bytes_hex": "ffffffffb01ac600",
+    "state0_action": "00c61ab0",
+    "arm": "after bag capture469324,before dispatch469337",
+    "normal_disarm": "469367 after header.data read469362,before header.length469371",
+    "source_transport": "qualified canonical C++ guard mapping,notOriginalFH3/SEH/privateframe"
+  },
+  "source_hashes": {
+    "src/native_scene_hidden_entity_record_destroy.cpp": "8e5cf22b41be55c26f5323cad7b07e23a8b0d8be3dc762830146235df0a94e25",
+    "include/bsp/native_scene_hidden_entity_record_destroy.hpp": "00b0bf1ac65afcbee0b806a0028625ba67ab4f991f7e2c58c0980a99acd4e4ce"
+  },
+  "provider_hashes": {
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+    "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+    "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+  },
+  "limits": [
+    "Valid reached raw storage,distinct actual native role regions,stable/disjoint Source metadata",
+    "Actual current vtable slot must be callable under native thiscall contract;alltargets/constructedSource-vtable compatibility unproved",
+    "Matching currentCRT heap/free service admission;Original free/heap/TLS/handler/failuretransport unproved",
+    "Implicit Source/native private argument/register/FH3/FS/spill/fault aliases and Original binaryABI remain unproved",
+    "No native new-entry fixture,consumer readiness or game validation"
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "new_tests": 0,
+  "independent_review": {
+    "reviewer": "string_allocate",
+    "result": "passed whole193B/67ops and complete Source/header;actual providers read;compiled virtualcall ABI inspection pending",
+    "source_hashes": {
+      "src/native_scene_hidden_entity_record_destroy.cpp": "8e5cf22b41be55c26f5323cad7b07e23a8b0d8be3dc762830146235df0a94e25",
+      "include/bsp/native_scene_hidden_entity_record_destroy.hpp": "00b0bf1ac65afcbee0b806a0028625ba67ab4f991f7e2c58c0980a99acd4e4ce"
+    }
+  },
+  "annotation": {
+    "saved": true,
+    "prior_values": "local\\ghidra-annotations-20261016T002136Z.json",
+    "prior_values_sha256": "1d68581bbd01c033651826b57a29d8c5d5b3ebcb1f9ac25d9f4dce5cb3a85f64",
+    "names_preserved": true,
+    "exports_refreshed": true,
+    "live_comments_readback": true
+  }
+}
