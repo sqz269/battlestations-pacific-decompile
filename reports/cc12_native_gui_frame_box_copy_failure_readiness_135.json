@@ -1,0 +1,494 @@
+{
+  "packet": "cc12_native_gui_frame_box_copy_failure_readiness_135",
+  "status": "read_only_complete_parent_requires_separate_terminal_metadata_contract",
+  "baseline": "16cc2177ce2151f7f8dc3840936ccd20ece99bb0",
+  "source_parent_ready_as_is": false,
+  "native_no_leak_or_strong_guarantee_required_for_faithful_parent_free": false,
+  "finding": "Original current-header catch/free may orphan failed-name allocations. Existing128/111 fail-closed metadata has no parent-only terminal disposition; this is Source orchestration, not Native behavior or a user restriction.",
+  "original": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "fresh_live_disk_listing_bodies": 9,
+    "fresh_live_disk_bytes": 949,
+    "reused98_disk_spans": 27,
+    "reused98_disk_bytes": 1226
+  },
+  "calls": [
+    {
+      "address": "00ad22e9",
+      "native": "00ad1910",
+      "function": "00ad2230",
+      "kind": "call"
+    },
+    {
+      "address": "00ad2309",
+      "native": "00ad21b0",
+      "function": "00ad2306",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1957",
+      "native": "00ad0c60",
+      "function": "00ad1910",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1976",
+      "native": "00ad0860",
+      "function": "00ad196a",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0c8d",
+      "native": "0041dd40",
+      "function": "00ad0c60",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0ca3",
+      "native": "00bf7680",
+      "function": "00ad0c60",
+      "kind": "call"
+    },
+    {
+      "address": "0041dd83",
+      "native": "00419cc0",
+      "function": "0041dd40",
+      "kind": "call"
+    },
+    {
+      "address": "0041dd90",
+      "native": "00bd1120",
+      "function": "0041dd40",
+      "kind": "call"
+    },
+    {
+      "address": "0041ddb1",
+      "native": "00bf7680",
+      "function": "0041dd40",
+      "kind": "call"
+    },
+    {
+      "address": "0041ddc9",
+      "native": "00419cc0",
+      "function": "0041dd40",
+      "kind": "call"
+    },
+    {
+      "address": "0041ddd0",
+      "native": "00bd1510",
+      "function": "0041dd40",
+      "kind": "call"
+    },
+    {
+      "address": "00419ce6",
+      "native": "00415350",
+      "function": "00419cc0",
+      "kind": "call"
+    },
+    {
+      "address": "00419d1f",
+      "native": "00bf681b",
+      "function": "00419cc0",
+      "kind": "call"
+    },
+    {
+      "address": "00419d36",
+      "native": "00bd1480",
+      "function": "00419cc0",
+      "kind": "call"
+    },
+    {
+      "address": "00419d49",
+      "native": "00415350",
+      "function": "00419cc0",
+      "kind": "call"
+    },
+    {
+      "address": "00419d57",
+      "native": "00bd0c30",
+      "function": "00419cc0",
+      "kind": "call"
+    },
+    {
+      "address": "00bd1131",
+      "native": "00bf9f1a",
+      "function": "00bd1120",
+      "kind": "call"
+    },
+    {
+      "address": "00bd0c3b",
+      "native": "00bf6713",
+      "function": "00bd0c30",
+      "kind": "call"
+    },
+    {
+      "address": "00bf9fa6",
+      "native": "00c055b1",
+      "function": "00bf9f1a",
+      "kind": "call"
+    },
+    {
+      "address": "00bf9fc8",
+      "native": "00c055b1",
+      "function": "00bf9f1a",
+      "kind": "call"
+    },
+    {
+      "address": "00bf671a",
+      "native": "00bf66ef",
+      "function": "00bf6713",
+      "kind": "call"
+    }
+  ],
+  "parent_order": [
+    "Null initial source begin means initial count0 without an end read; otherwise signed wrapped DWORD difference divided44, then unsigned limit.",
+    "Destination+4/+8/+C clear before count/limit branches; count0 returns. AD1810 transport is peer-owned and not duplicated.",
+    "Real allocator may invoke current services; publish begin/end/capacity, then cache CURRENT Source end; two returning invalid-parameter calls can mutate current fields.",
+    "Capture CURRENT Source first after the prescribed checks; preserve cached last and current destination begin; helper return alone publishes destination end.",
+    "Catch tidies CURRENT destination header and rethrows. Empty current range avoids a second prefix cleanup; current changed ranges require real independent constructed/not-retired records."
+  ],
+  "resize_throw_ownership": [
+    {
+      "stage": "before replacement acquisition",
+      "ordinary_services": "Real lazy manager/pool allocation, construction, registration, current new-handler/invalid-parameter services.",
+      "state": "103 copied resource not yet acquired; name cleared initially, but callbacks can change current headers. Partial independently published services can survive."
+    },
+    {
+      "stage": "replacement acquired before destination publication",
+      "ordinary_services": "CURRENT old-data nonnull causes a second real419CC0 before BD1510, including large/free or disabled-gate return.",
+      "state": "Getter escape can lose the replacement held only in a resize local; callback-installed old name can also remain. No raw rollback or replacement receipt."
+    },
+    {
+      "stage": "after successful publication",
+      "ordinary_services": "No further modeled user callback in the qualified byte-copy/x87/DWORD/Interlocked valid domain.",
+      "state": "Source ordinary-C++ model is not private Native FH3/SEH/FP/invalid-backing exception-origin proof."
+    }
+  ],
+  "actual_callbacks": {
+    "native_malloc": "BF9F1A failure/new-mode and oversize paths reach C055B1; it decodes current0109DE44 and CALLs EAX(size).",
+    "native_invalid_parameter": "BF6713 calls BF66EF; it decodes current0109DD64 and tail-jumps selected handler or fatal path.",
+    "raw_getter": "Existing actual manager/pool implementations reach current SDK malloc/_callnewh and actual SDK invalid-parameter registration services. Publication cells identify one domain; they do not freeze their values.",
+    "sdk_evidence_limit": "Local10.0.26100.0 selected SDK Source only; no loaded-DLL or Original static-CRT identity.",
+    "small_pool": "Real ring/bump/critical-section path adds no ordinary C++ allocation callback, but storage/capacity/section and OS limits remain.",
+    "no_default_or_noop_provider": true
+  },
+  "rollback_and_cleanup": {
+    "failed103": "Never pass the failed record to111: 103 has no completed final resource acquisition on name-creation failure.",
+    "prefix111": "Each returned child advances rollback. Ordinary lookup/name-getter escape leaves sticky current child and may replace the first C++ exception; canonical noexcept terminal or nested cleanup escape can terminate.",
+    "name_action": "Consumed before getter+return, or before41DD20 on resource-service escape; returned header remains stale, no retry.",
+    "private_eh": "Native FH3/double-exception behavior is not established by Source catch/rethrow.",
+    "tidy119": "Current range forward, then CURRENT begin matching Source SDK free evenNULL, then three stores; no speculative old-buffer free or cleanup of failed103."
+  },
+  "domain_assessment": {
+    "strong_guarantee_proved": false,
+    "callbacks_absent_or_headers_stable_proved": false,
+    "vacuous_no_throw_example": "Prepublished stable pool, valid small names and copy/FP/count backing remove ordinary103 throw points; this does not dispose an actually failed128.",
+    "faithful_orphaning": "A genuine returned Native-style catch/free may intentionally leave name allocations, unreleased prefix ownership or an old substituted vector orphaned. A Source no-leak requirement is not imposed.",
+    "current_range_condition": "No failed103 or already-retired rollback record may be included in a Source111 tidy span. End==begin is the narrow empty-range witness, not an unconditional callback-invariant assumption.",
+    "heap": "119 free only matches Source124/currentSDK malloc-family returned buffers, not Original/private/foreign heaps."
+  },
+  "smallest_later_source_packet": {
+    "scope": "Whole AD2230 in a separate parent TU plus a narrowly reviewed records-metadata access/terminal extension; no135 edits.",
+    "providers": "Same genuine raw strings/render owners, actual valid current Source/destination backing, matching Source SDK allocator/free, persistent preprepared111/128/119 metadata.",
+    "preparation": "Metadata outside retired buffers, prepared before callbacks; current copied range after allocator/validation callbacks fits initial allocated capacity and prepared record metadata. Extra Source preparation exceptions need explicit retention; they are not Native-origin observations.",
+    "terminal_rule": "Only after genuine returned current-header tidy/free, parent-only transition may permit metadata-only destruction of failed128 and affected reached111 diagnostics. Preserve identities/status, forbid reset/replay/fresh retries/dereference/automatic graph cleanup; describe terminal abandonment, not ownership recovery.",
+    "unreached_terminal": "Unsupported current tidy range, preparation failure, cleanup escape or terminal termination cannot authorize that disposition; existing fail-closed guards and real independent graph/service lifetimes remain.",
+    "missing_genuine_resize_body": false,
+    "still_unresolved": "Arbitrary callback/current-header states and private Original CRT/FH3 identity remain outside the qualified Source composition."
+  },
+  "unchanged_source_inputs": [
+    {
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/include/bsp/native_gui_frame_box_records.hpp",
+      "bytes": 20426,
+      "sha256": "cf1c69eef2e2c25e5d377dcf6faec3921f94ce53c32b660d7c37926c9117842c",
+      "git_blob": "d4a00185dde78044c3387d291b2b490641cdb71f"
+    },
+    {
+      "path": "src/native_gui_frame_box_records.cpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/src/native_gui_frame_box_records.cpp",
+      "bytes": 20199,
+      "sha256": "2c5f95a919411884df592c961257fced2a8541668b8ad038464e35b2fed62b4c",
+      "git_blob": "642d53741ed0b01e7976e01003b1d9c65aecc038"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/include/bsp/native_string_pool_owner.hpp",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "git_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/src/native_string_pool_owner.cpp",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "git_blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/include/bsp/native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "git_blob": "d2d48f7cca8e08a76c98c10f2bdab9bca5cdb165"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/src/native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "git_blob": "0e5d59593c47a3cdabaf1020adddc735141d28d3"
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/include/bsp/native_singleton_publication.hpp",
+      "bytes": 2293,
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "git_blob": "efb55fd128088fa594c8f4c71a26017b9023c5ce"
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/src/native_singleton_publication.cpp",
+      "bytes": 4127,
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "git_blob": "2478972b6f3df07e9fb6c66e7ac04eebafa69bb8"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/include/bsp/native_singleton_vector_reserve_construct.hpp",
+      "bytes": 1845,
+      "sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "git_blob": "658de06b21b30d7733ba2c4836371a05c44c377a"
+    },
+    {
+      "path": "src/native_singleton_vector_reserve_construct.cpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/src/native_singleton_vector_reserve_construct.cpp",
+      "bytes": 3731,
+      "sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "git_blob": "e1e3c2b5e4c1eca61f6a3033a649eab2b85e0ff6"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "git_blob": "9379a2a6cd97f13fabc2554b0b539363b85a5da2"
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/src/native_singleton_vector_registration_wrappers.cpp",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "git_blob": "4096dfcf1c693f3c509c8db5f1cfb621e523b0d0"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_insert_count.hpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/include/bsp/native_singleton_vector_insert_count.hpp",
+      "bytes": 1212,
+      "sha256": "df4cc0dd530b7741fdc790b57f086d495730d905f043780e04513582056c8e12",
+      "git_blob": "4ec0f890d585d67eed4dc0d2ecbc529d7b9e8f19"
+    },
+    {
+      "path": "src/native_singleton_vector_insert_count.cpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/src/native_singleton_vector_insert_count.cpp",
+      "bytes": 5712,
+      "sha256": "12961e35b1189704bf7f1de55fbdeb6f406688cfadf9256f8729fd72a0a870ac",
+      "git_blob": "90bbb053c22fdce2e898bea3d875b8745468d4bc"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_allocation.hpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/include/bsp/native_singleton_vector_allocation.hpp",
+      "bytes": 2149,
+      "sha256": "2910d0e12e3ecce6820cc1a083a3bfba9c5478fbbea9cdf9dc4c2926bdb0296a",
+      "git_blob": "182ba31dcb54f78b0aae4d42c69ce8e5a7ee4414"
+    },
+    {
+      "path": "src/native_singleton_vector_allocation.cpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/src/native_singleton_vector_allocation.cpp",
+      "bytes": 1966,
+      "sha256": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e",
+      "git_blob": "3d4ea10f5e6a8e0a9fe75db0b96ceffd3bdb73c7"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/include/bsp/native_render_context.hpp",
+      "bytes": 10071,
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/src/native_render_context.cpp",
+      "bytes": 11471,
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/include/bsp/game_native_string_process.hpp",
+      "bytes": 4306,
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+      "git_blob": "30bbfe627b4ea7b4f453ec68422363c35479a3a8"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/src/game_native_string_process.cpp",
+      "bytes": 1407,
+      "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+      "git_blob": "1c660fa6417f9fbc277b821d0ad7d83587fcbed5"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_vector_allocation.hpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/include/bsp/native_gui_frame_box_vector_allocation.hpp",
+      "bytes": 1719,
+      "sha256": "ffdd568922de5c01069d7589b1d94cea7959ba1ac196c9d05b6e82a512437de0",
+      "git_blob": "1254949650a4020c43d4178a381af46747f85e14"
+    },
+    {
+      "path": "src/native_gui_frame_box_vector_allocation.cpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/src/native_gui_frame_box_vector_allocation.cpp",
+      "bytes": 667,
+      "sha256": "56f9f5ec53c8c767b37e89390000028111474fba50916cc3387136f3da244167",
+      "git_blob": "3958e8c7860862f8a433ad70643599ef26b66ae2"
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "bytes": 1471,
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "git_blob": "4984c27fa603fe05a308d701c54dafba6110de7e"
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/src/native_invalid_parameter_noinfo_call.cpp",
+      "bytes": 1089,
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "git_blob": "bf2a25c5f28d9eb10d37f7099faf9adaabb0a97d"
+    },
+    {
+      "path": "include/bsp/native_crt_vector_copy.hpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/include/bsp/native_crt_vector_copy.hpp",
+      "bytes": 1569,
+      "sha256": "fbbe9588430ad0dbdbca984fcfb19e36a9e83cf0a903a16c0226685f9ee0dc76",
+      "git_blob": "aee27ed580e587d3432d588c82a1051734f2ac90"
+    },
+    {
+      "path": "src/native_crt_vector_copy.cpp",
+      "copy": "local/cc12_native_gui_frame_box_copy_failure_readiness_135/source_inputs/src/native_crt_vector_copy.cpp",
+      "bytes": 4811,
+      "sha256": "70123af959c1015e81fc495c2db74162eabfe4e5ee252211baaba2d85241ad71",
+      "git_blob": "fad4bf1f07369d270d3db1acf8bba55bf966bbf1"
+    }
+  ],
+  "historical_receipts": [
+    {
+      "path": "local\\cc12_native_gui_frame_box_copy_failure_readiness_135\\history\\cc12_native_gui_frame_box_copy_providers_readiness_98.json",
+      "sha256": "4348b74320557797d5c0a04457eeaf7b1966e3a18fa3dadd9aecdf9bfc8826fd",
+      "role": "Frozen historical receipt; not all recorded paths represent current Source."
+    },
+    {
+      "path": "local\\cc12_native_gui_frame_box_copy_failure_readiness_135\\history\\cc12_native_gui_frame_box_record_copy_103.json",
+      "sha256": "f2a3f1d66b6940e4233a5251946866f6f9111b19a369bd091d127d03f0b0b4e0",
+      "role": "Frozen historical receipt; not all recorded paths represent current Source."
+    },
+    {
+      "path": "local\\cc12_native_gui_frame_box_copy_failure_readiness_135\\history\\cc12_native_gui_frame_box_record_release_111.json",
+      "sha256": "444f6fb83476d7c1daf42ab72444b44cf4ca7703c33679604c594642ed419132",
+      "role": "Frozen historical receipt; not all recorded paths represent current Source."
+    },
+    {
+      "path": "local\\cc12_native_gui_frame_box_copy_failure_readiness_135\\history\\cc12_native_gui_frame_box_vector_tidy_119.json",
+      "sha256": "112a87012b17a4db79f1c055829275c7f00a60d814d6bcbeb52f9bcfc59803d8",
+      "role": "Frozen historical receipt; not all recorded paths represent current Source."
+    },
+    {
+      "path": "local\\cc12_native_gui_frame_box_copy_failure_readiness_135\\history\\cc12_native_gui_frame_box_vector_allocation_124.json",
+      "sha256": "ca1b78c4cc05034f189039616ec8ba00988b0cf26ed3531c5d1fc42bc0c0a905",
+      "role": "Frozen historical receipt; not all recorded paths represent current Source."
+    },
+    {
+      "path": "local\\cc12_native_gui_frame_box_copy_failure_readiness_135\\history\\cc12_native_gui_frame_box_vector_copy_readiness_126.json",
+      "sha256": "ef6431ecea4f59ecd989185e6065a04f565b053940e85a7a38d7cca565389306",
+      "role": "Frozen historical receipt; not all recorded paths represent current Source."
+    },
+    {
+      "path": "local\\cc12_native_gui_frame_box_copy_failure_readiness_135\\history\\cc12_native_gui_frame_box_uninitialized_copy_128.json",
+      "sha256": "f02166161fc51a880e77c8de4465893e404969ca2ee73cb9f244d1d9a41b98d9",
+      "role": "Frozen historical receipt; not all recorded paths represent current Source."
+    }
+  ],
+  "evidence": [
+    {
+      "path": "local\\cc12_native_gui_frame_box_copy_failure_readiness_135\\native_proof.json",
+      "sha256": "9fd32e0229e551c0010ce323c92fc61f529bd5c1abf700775867c2b0cb869617"
+    },
+    {
+      "path": "local\\cc12_native_gui_frame_box_copy_failure_readiness_135\\native_export_inputs.json",
+      "sha256": "0376af485631617e9f7727d62fb0092e5ccdbbe942fa8fb3ebeb30919d1c5c48"
+    },
+    {
+      "path": "local\\cc12_native_gui_frame_box_copy_failure_readiness_135\\source_inputs.json",
+      "sha256": "88a6df6610c8c1777c24cb71bc7b885b4f539b3328b070c1f6da62e06462e0ee"
+    },
+    {
+      "path": "local\\cc12_native_gui_frame_box_copy_failure_readiness_135\\sdk_inputs.json",
+      "sha256": "57a82c893fa960872897208352b9b3af787c64a1a075cc1d7575be27983cfd36"
+    },
+    {
+      "path": "local\\cc12_native_gui_frame_box_copy_failure_readiness_135\\scope_proof.json",
+      "sha256": "4c19dc674affa99bb3dcb5c7b824c9ab9198c950987ce85fd0026efbca8d7692"
+    }
+  ],
+  "documentation": "docs/CC12_NATIVE_GUI_FRAME_BOX_COPY_FAILURE_READINESS_135.md",
+  "verification": {
+    "report_call_verifier": "passed; complete output in frozen verification.log",
+    "source_or_ghidra_or_ledger_mutation": false,
+    "build_test_probe_native_execution": false,
+    "prior_sealed_families_modified_or_rerun": false,
+    "return_code": 0,
+    "command": [
+      "C:\\ProgramData\\miniconda3\\python.exe",
+      "tools/verify_report_calls.py",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_font_retirement_review36\\reports\\cc12_native_gui_frame_box_copy_failure_readiness_135.json",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_font_retirement_review36\\docs\\CC12_NATIVE_GUI_FRAME_BOX_COPY_FAILURE_READINESS_135.md"
+    ]
+  },
+  "artifact_manifest": {
+    "path": "local\\cc12_native_gui_frame_box_copy_failure_readiness_135\\manifest.json",
+    "sha256": "aac38ce833ab12ad73977acb909051597b1d5e0a99ea7a3ba86bdccbee2f901a",
+    "artifacts": 84,
+    "total_bytes": 666171
+  },
+  "documentation_sha256": "a8d23bad37fad69764fb199559744b3924184b5d2d7aac10c5fa3dc1f5210191"
+}
