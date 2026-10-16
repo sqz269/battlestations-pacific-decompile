@@ -325,6 +325,41 @@ struct SweepCHost {
     // assignment); the stack argument passes through.
     virtual void node_assign_name_00b6f960(void* node, const void* name) = 0;
 
+    // 00AB5C60, __thiscall(ECX = icon): the GUI icon base constructor.
+    virtual void gui_icon_construct_00ab5c60(void* icon) = 0;
+    // 00B64470, __fastcall(ECX = out matrix, EDX = translation, first, second), RET 8 -> out:
+    // compose a matrix from the two stack vectors (GuiModel passes the rotation copy first and the
+    // scale second) and the translation.
+    virtual void* matrix_compose_00b64470(void* out, const float* translation, const float* first,
+                                          const float* second) = 0;
+    // [object]->vtable[38h](ECX = object, matrix*); [object]->vtable[88h](ECX = object);
+    // [object]->vtable[80h](ECX = object, state).
+    virtual void object_vslot_38(void* object, void* matrix) = 0;
+    virtual void object_vslot_88(void* object) = 0;
+    virtual void object_vslot_80(void* object, std::int32_t state) = 0;
+    // 00AA7220, __thiscall(ECX = widget): the widget's position-changed refresh.
+    virtual void gui_widget_position_changed_00aa7220(void* widget) = 0;
+    // [00CE221C] InterlockedIncrement(&counter).
+    virtual std::int32_t interlocked_increment_00ce221c(std::int32_t* counter) = 0;
+
+    // --- segments 90, 91 ---
+    // 00B17AF0, __thiscall(ECX = pool 0109022C, slot), RET 4: return an 88-byte pool slot.
+    virtual void native_pool_return_00b17af0(std::uint32_t pool, void* slot) = 0;
+    // Item array growth / clear, __thiscall(ECX = array, n), RET 4: 00B872F0 and 00B87350 grow
+    // to n, 00B873C0 and 00B87410 resize to n (0 clears).
+    virtual void resource_item_array_reserve_00b872f0(void* array, std::int32_t n) = 0;
+    virtual void hierarchy_item_array_reserve_00b87350(void* array, std::int32_t n) = 0;
+    virtual void resource_item_array_resize_00b873c0(void* array, std::int32_t n) = 0;
+    virtual void hierarchy_item_array_resize_00b87410(void* array, std::int32_t n) = 0;
+    // 00B887D0, __thiscall(ECX = dst string, const src*), RET 4: the resource name copy.
+    virtual void resource_name_copy_00b887d0(void* dst, const void* src) = 0;
+    // 00B89F20, __thiscall(ECX = new 3Ch block, resource), RET 4 -> instance.
+    virtual void* resource_instance_construct_00b89f20(void* block, void* resource) = 0;
+    // 00B71930, __fastcall(ECX = size) -> block; 00B71A80, __thiscall(ECX = block, arg), RET 4 ->
+    // camera.
+    virtual void* camera_pool_allocate_00b71930(std::uint32_t size) = 0;
+    virtual void* camera_construct_00b71a80(void* block, std::uint32_t arg) = 0;
+
     // [object]->vtable[0](ECX = object, one stack dword), reached by a tail jump.
     virtual std::uint32_t object_vslot_00(void* object, std::uint32_t arg) = 0;
 };
@@ -596,6 +631,43 @@ void gui_clip_box_type_id_init_00acea20(SweepCHost& host, void* descriptor);
 void* gui_clip_box_type_id_init_return_00acea70(SweepCHost& host, void* descriptor);
 void gui_frame_box_type_id_init_00ad0780(SweepCHost& host, void* descriptor);
 void* gui_frame_box_type_id_init_return_00ad07d0(SweepCHost& host, void* descriptor);
+// 00ACC4A0, __thiscall(ECX = model): release the ref pointer +F0h, then +ECh = 0.
+void gui_model_release_refs_00acc4a0(SweepCHost& host, void* model);
+// 00ACBEC0, __thiscall(ECX = model, const float scale[3], const float euler[3]), RET 8.
+void gui_model_set_transform_vectors_00acbec0(SweepCHost& host, void* model, const float* scale,
+                                              const float* euler);
+// 00ACF1D0, __thiscall(ECX = frame box, const float position[2]), RET 4.
+void gui_frame_box_set_position_00acf1d0(SweepCHost& host, void* box, const float* position);
+// 00AD0680, __thiscall(ECX = frame box, state, texture), RET 8.
+void gui_frame_box_set_state_texture_00ad0680(SweepCHost& host, void* box, std::uint32_t state,
+                                              void* texture);
+// 00AD0D00, __thiscall(ECX = dst record, const src record*), RET 4 -> dst: the 2Ch-byte record
+// assignment.
+void* gui_record_2c_assign_00ad0d00(SweepCHost& host, void* dst, const void* src);
+// 00AD2D50, __thiscall(ECX = icon) -> icon: the AnimIcon constructor.
+void* gui_anim_icon_construct_00ad2d50(SweepCHost& host, void* icon);
+// Segment 90: factories and resource items.
+void* plain_node_factory_destruct_00b87170(void* factory);
+void* model_factory_destruct_00b871a0(void* factory);
+void* group_factory_destruct_00b871d0(void* factory);
+void* plain_node_factory_scalar_delete_00b87180(SweepCHost& host, void* factory, std::uint32_t flags);
+void* model_factory_scalar_delete_00b871b0(SweepCHost& host, void* factory, std::uint32_t flags);
+void* group_factory_scalar_delete_00b871e0(SweepCHost& host, void* factory, std::uint32_t flags);
+void return_native_88_byte_pool_slot_00b876f0(SweepCHost& host, void* slot);
+void resource_item_array_push_back_00b87710(SweepCHost& host, void* array, const std::uint32_t* item);
+void hierarchy_item_array_push_back_00b87750(SweepCHost& host, void* array, const std::uint32_t* item);
+void resource_item_array_clear_00b877f0(SweepCHost& host, void* array);
+void hierarchy_item_array_clear_00b87800(SweepCHost& host, void* array);
+void* resource_node_copy_construct_00b88b00(SweepCHost& host, void* node, const void* src);
+void* resource_node_construct_from_00b88cb0(SweepCHost& host, void* node, const std::uint32_t* key,
+                                            const void* name);
+void* resource_node_construct_00b88d00(SweepCHost& host, void* node, std::uint32_t a,
+                                       std::uint32_t b, std::uint32_t c, const void* keyed_name,
+                                       std::uint8_t flag);
+void* resource_create_instance_00b89fe0(SweepCHost& host, void* resource);
+void* camera_pool_create_camera_00b8a200(SweepCHost& host, std::uint32_t arg);
+// Segment 91: 00B999A0, __thiscall(ECX = plane {n, d}, const float3*), RET 4 -> ST0.
+float plane_signed_distance_00b999a0(const void* plane, const float* point);
 // The pointer-table growth (data +0h, count +4h, capacity +8h), one shape at four addresses.
 void pointer_table_grow_00aace40(SweepCHost& host, void* table);
 void pointer_table_grow_00acbe50(SweepCHost& host, void* table);

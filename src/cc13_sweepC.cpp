@@ -1623,6 +1623,246 @@ void* gui_frame_box_type_id_init_return_00ad07d0(SweepCHost& host, void* descrip
     return descriptor;
 }
 
+// 00ACC4A0-00ACC4DA: the +F0h ref-pointer release (as 0096C4A0), then +ECh = 0 unconditionally.
+void gui_model_release_refs_00acc4a0(SweepCHost& host, void* model) {
+    refptr_reset(host, model, 0xF0);
+    at<std::uint32_t>(model, 0xEC) = 0;
+}
+
+// 00ACBEC0-00ACBF6A, RET 8. +F4h..+FCh = scale, +100h..+108h = euler (float copies). A frame
+// block holds {euler copy from +100h..+108h, 0, 0, 0}; 00B64470(ECX = frame matrix, EDX = the
+// three zeros, the euler copy, this+F4h) composes the matrix and [+ECh]->vtable[38h](matrix)
+// takes it (the vtable read from the +ECh object before the compose).
+void gui_model_set_transform_vectors_00acbec0(SweepCHost& host, void* model, const float* scale,
+                                              const float* euler) {
+    at<float>(model, 0xF4) = scale[0];
+    at<float>(model, 0xF8) = scale[1];
+    at<float>(model, 0xFC) = scale[2];
+    at<float>(model, 0x100) = euler[0];
+    at<float>(model, 0x104) = euler[1];
+    at<float>(model, 0x108) = euler[2];
+    float block[6] = {at<float>(model, 0x100), at<float>(model, 0x104), at<float>(model, 0x108),
+                      0.0f, 0.0f, 0.0f};
+    alignas(4) std::uint8_t matrix[0x40];
+    void* const out = host.matrix_compose_00b64470(matrix, &block[3], &block[0],
+                                                   static_cast<const float*>(add(model, 0xF4)));
+    host.object_vslot_38(ptr(model, 0xEC), out);
+}
+
+// 00ACF1D0-00ACF24E, RET 4 (vtable 00D5D160 slot). +18h/+1Ch = position (float copies),
+// 00AA7220(box); when the state word +ECh is not FFFFh, i = its sign-extended value: the
+// checked index into the 2Ch-byte records at +F4h..+F8h (00BF6713 when the begin is null or i is
+// at or past the count, unsigned compare), record i +0Ch/+10h = position, then box->vtable[88h]().
+void gui_frame_box_set_position_00acf1d0(SweepCHost& host, void* box, const float* position) {
+    at<float>(box, 0x18) = position[0];
+    at<float>(box, 0x1C) = position[1];
+    host.gui_widget_position_changed_00aa7220(box);
+    const std::uint16_t word = at<std::uint16_t>(box, 0xEC);
+    if (word == 0xFFFF) return;
+    const auto index = static_cast<std::int32_t>(static_cast<std::int16_t>(word));
+    const auto begin = at<std::int32_t>(box, 0xF4);
+    if (begin == 0 ||
+        static_cast<std::uint32_t>(index) >=
+            static_cast<std::uint32_t>((at<std::int32_t>(box, 0xF8) - begin) / 0x2C)) {
+        host.invalid_iterator_00bf6713();
+    }
+    void* const record = add(ptr(box, 0xF4), static_cast<std::size_t>(index) * 0x2C);
+    at<float>(record, 0x0C) = position[0];
+    at<float>(record, 0x10) = position[1];
+    host.object_vslot_88(box);
+}
+
+// 00AD0680-00AD070F, RET 8. Checked index of `state` into the +F4h records (as above); record
+// word 0 takes the texture as a ref pointer: when it differs, store, add-ref the new non-null one
+// (InterlockedIncrement +4h) and release the old non-null one (decrement, vtable[0] at zero).
+// Then, when state equals the sign-extended +ECh word, box->vtable[80h](state).
+void gui_frame_box_set_state_texture_00ad0680(SweepCHost& host, void* box, std::uint32_t state,
+                                              void* texture) {
+    const auto begin = at<std::int32_t>(box, 0xF4);
+    if (begin == 0 ||
+        state >= static_cast<std::uint32_t>((at<std::int32_t>(box, 0xF8) - begin) / 0x2C)) {
+        host.invalid_iterator_00bf6713();
+    }
+    void* const record = add(ptr(box, 0xF4), static_cast<std::size_t>(state) * 0x2C);
+    void* const old = ptr(record, 0x00);
+    if (old != texture) {
+        at<void*>(record, 0x00) = texture;
+        if (texture != nullptr) host.interlocked_increment_00ce221c(&at<std::int32_t>(texture, 0x04));
+        if (old != nullptr && host.interlocked_decrement_00ce2220(&at<std::int32_t>(old, 0x04)) == 0) {
+            host.refcounted_destroy_vslot_00(old);
+        }
+    }
+    if (static_cast<std::int32_t>(state) ==
+        static_cast<std::int32_t>(static_cast<std::int16_t>(at<std::uint16_t>(box, 0xEC)))) {
+        host.object_vslot_80(box, static_cast<std::int32_t>(state));
+    }
+}
+
+// 00AD0D00-00AD0D75, RET 4 -> dst. +0h dword copy; the NativeString at +4h assigned unless it is
+// the source's own (0041DD40(len, 1) then the CRT memcpy for the new length when the source is
+// non-empty); +0Ch..+18h float copies; +1Ch..+28h dword copies.
+void* gui_record_2c_assign_00ad0d00(SweepCHost& host, void* dst, const void* src_const) {
+    void* const src = const_cast<void*>(src_const);
+    at<std::uint32_t>(dst, 0x00) = at<std::uint32_t>(src, 0x00);
+    void* const d = add(dst, 0x04);
+    void* const s = add(src, 0x04);
+    if (d != s) {
+        host.native_string_resize_0041dd40(d, at<std::uint32_t>(s, 0x00), 1);
+        if (at<std::uint32_t>(s, 0x00) != 0) {
+            std::memcpy(ptr(d, 0x04), ptr(s, 0x04), at<std::uint32_t>(d, 0x00));
+        }
+    }
+    for (std::size_t off = 0x0C; off <= 0x18; off += 4) at<float>(dst, off) = at<float>(src, off);
+    for (std::size_t off = 0x1C; off <= 0x28; off += 4) {
+        at<std::uint32_t>(dst, off) = at<std::uint32_t>(src, off);
+    }
+    return dst;
+}
+
+// 00AD2D50-00AD2D96 -> icon. 00AB5C60(icon); +140h..+142h bytes = 1; vtable 00D5BCE0; +138h =
+// 30.0f (00CE38C8); +13Ch = 0; +60h = 0Ch.
+void* gui_anim_icon_construct_00ad2d50(SweepCHost& host, void* icon) {
+    host.gui_icon_construct_00ab5c60(icon);
+    at<std::uint8_t>(icon, 0x140) = 1;
+    at<std::uint8_t>(icon, 0x141) = 1;
+    at<std::uint8_t>(icon, 0x142) = 1;
+    at<std::uint32_t>(icon, 0x00) = 0x00D5BCE0u;
+    at<float>(icon, 0x138) = 30.0f;
+    at<std::uint32_t>(icon, 0x13C) = 0;
+    at<std::uint32_t>(icon, 0x60) = 0x0C;
+    return icon;
+}
+
+// ---------------------------------------------------------------------------
+// Segments 90, 91.
+// ---------------------------------------------------------------------------
+
+// 00B87170 / 00B871A0 / 00B871D0: MOV EAX,ECX; [EAX] = the factory vtable; RET.
+void* plain_node_factory_destruct_00b87170(void* factory) {
+    at<std::uint32_t>(factory, 0) = 0x00D63210u;
+    return factory;
+}
+void* model_factory_destruct_00b871a0(void* factory) {
+    at<std::uint32_t>(factory, 0) = 0x00D63218u;
+    return factory;
+}
+void* group_factory_destruct_00b871d0(void* factory) {
+    at<std::uint32_t>(factory, 0) = 0x00D63220u;
+    return factory;
+}
+
+namespace {
+// 00B87180 / 00B871B0 / 00B871E0 (one shape): vtable 00D63208 (the base), operator delete
+// (00BF65AC) when flags bit 0 is set; RET 4 -> this.
+void* factory_scalar_delete(SweepCHost& host, void* factory, std::uint32_t flags) {
+    at<std::uint32_t>(factory, 0) = 0x00D63208u;
+    if ((flags & 1u) != 0) host.operator_delete_00bf65ac(factory);
+    return factory;
+}
+
+// 00B87710 / 00B87750 (one shape, differing in the growth call): count +4h == capacity +8h ->
+// grow to max(capacity + 10h, 10h) (signed); then data[count] = *item (skipped for a null
+// address) and count += 1.
+void item_array_push_back(SweepCHost& host, void* array, const std::uint32_t* item, bool hierarchy) {
+    std::int32_t capacity = at<std::int32_t>(array, 0x08);
+    if (at<std::int32_t>(array, 0x04) == capacity) {
+        capacity += 0x10;
+        if (capacity <= 0x10) capacity = 0x10;
+        if (hierarchy) {
+            host.hierarchy_item_array_reserve_00b87350(array, capacity);
+        } else {
+            host.resource_item_array_reserve_00b872f0(array, capacity);
+        }
+    }
+    auto* const slot = static_cast<std::uint32_t*>(ptr(array, 0x00)) + at<std::int32_t>(array, 0x04);
+    if (slot != nullptr) *slot = *item;
+    at<std::int32_t>(array, 0x04) += 1;
+}
+}  // namespace
+
+void* plain_node_factory_scalar_delete_00b87180(SweepCHost& host, void* factory, std::uint32_t flags) {
+    return factory_scalar_delete(host, factory, flags);
+}
+void* model_factory_scalar_delete_00b871b0(SweepCHost& host, void* factory, std::uint32_t flags) {
+    return factory_scalar_delete(host, factory, flags);
+}
+void* group_factory_scalar_delete_00b871e0(SweepCHost& host, void* factory, std::uint32_t flags) {
+    return factory_scalar_delete(host, factory, flags);
+}
+
+// 00B876F0: PUSH ECX, ECX = 0109022C, CALL 00B17AF0, RET: the incoming ECX is the slot.
+void return_native_88_byte_pool_slot_00b876f0(SweepCHost& host, void* slot) {
+    host.native_pool_return_00b17af0(0x0109022Cu, slot);
+}
+
+void resource_item_array_push_back_00b87710(SweepCHost& host, void* array, const std::uint32_t* item) {
+    item_array_push_back(host, array, item, false);
+}
+void hierarchy_item_array_push_back_00b87750(SweepCHost& host, void* array, const std::uint32_t* item) {
+    item_array_push_back(host, array, item, true);
+}
+
+// 00B877F0 / 00B87800: PUSH 0, CALL 00B873C0 / 00B87410 with ECX = the array, RET.
+void resource_item_array_clear_00b877f0(SweepCHost& host, void* array) {
+    host.resource_item_array_resize_00b873c0(array, 0);
+}
+void hierarchy_item_array_clear_00b87800(SweepCHost& host, void* array) {
+    host.hierarchy_item_array_resize_00b87410(array, 0);
+}
+
+// 00B88B00, RET 4 -> node: +0h = src+0h; 00B887D0(ECX = node+4h, src+4h).
+void* resource_node_copy_construct_00b88b00(SweepCHost& host, void* node, const void* src) {
+    at<std::uint32_t>(node, 0x00) = *static_cast<const std::uint32_t*>(src);
+    host.resource_name_copy_00b887d0(add(node, 0x04), static_cast<const std::uint8_t*>(src) + 4);
+    return node;
+}
+
+// 00B88CB0, RET 8 -> node: +0h = *key; 00B887D0(ECX = node+4h, name).
+void* resource_node_construct_from_00b88cb0(SweepCHost& host, void* node, const std::uint32_t* key,
+                                            const void* name) {
+    at<std::uint32_t>(node, 0x00) = *key;
+    host.resource_name_copy_00b887d0(add(node, 0x04), name);
+    return node;
+}
+
+// 00B88D00, RET 14h -> node: +0h/+4h/+8h = a/b/c; +0Ch = keyed_name+0h; 00B887D0(ECX = node+10h,
+// keyed_name+4h); +20h = flag; +21h = 0.
+void* resource_node_construct_00b88d00(SweepCHost& host, void* node, std::uint32_t a,
+                                       std::uint32_t b, std::uint32_t c, const void* keyed_name,
+                                       std::uint8_t flag) {
+    at<std::uint32_t>(node, 0x00) = a;
+    at<std::uint32_t>(node, 0x04) = b;
+    at<std::uint32_t>(node, 0x08) = c;
+    at<std::uint32_t>(node, 0x0C) = *static_cast<const std::uint32_t*>(keyed_name);
+    host.resource_name_copy_00b887d0(add(node, 0x10), static_cast<const std::uint8_t*>(keyed_name) + 4);
+    at<std::uint8_t>(node, 0x20) = flag;
+    at<std::uint8_t>(node, 0x21) = 0;
+    return node;
+}
+
+// 00B89FE0 -> instance or 0: 00BF681B(3Ch); non-null -> 00B89F20(ECX = block, resource).
+void* resource_create_instance_00b89fe0(SweepCHost& host, void* resource) {
+    void* const block = host.operator_new_00bf681b(0x3C);
+    return block != nullptr ? host.resource_instance_construct_00b89f20(block, resource) : nullptr;
+}
+
+// 00B8A200, RET 4 -> camera or 0: 00B71930(ECX = 458h); non-null -> 00B71A80(ECX = block, arg).
+void* camera_pool_create_camera_00b8a200(SweepCHost& host, std::uint32_t arg) {
+    void* const block = host.camera_pool_allocate_00b71930(0x458);
+    return block != nullptr ? host.camera_construct_00b71a80(block, arg) : nullptr;
+}
+
+// 00B999A0, RET 4 -> ST0. s = float(p.y*n.y + p.x*n.x + p.z*n.z) (x87 sum, FSTP float), then
+// float(s - plane+0Ch). The products are exact in double; the two sums can round differently
+// from the extended sum only by a double rounding before the float store.
+float plane_signed_distance_00b999a0(const void* plane, const float* point) {
+    const auto* const n = static_cast<const float*>(plane);
+    const double sum = static_cast<double>(point[1]) * n[1] + static_cast<double>(point[0]) * n[0] +
+                       static_cast<double>(point[2]) * n[2];
+    const float s = static_cast<float>(sum);
+    return static_cast<float>(static_cast<double>(s) - static_cast<double>(n[3]));
+}
+
 // 00AACE40, 00ACBE50, 00ACD250, 00ACEFC0: one 35-instruction shape (address-stripped compare).
 void pointer_table_grow_00aace40(SweepCHost& host, void* table) { pointer_table_grow(host, table); }
 void pointer_table_grow_00acbe50(SweepCHost& host, void* table) { pointer_table_grow(host, table); }

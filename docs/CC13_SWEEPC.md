@@ -37,12 +37,12 @@ in .text, .rdata and .data) with a positive control in the same run, as each row
 
 ## Counts
 
-- Reconstructed (src/cc13_sweepC.cpp, build-tested): 126
-- Existing implementations recorded (ledger-only): 63
-- Unreferenced (ledger-only): 13
-- Vendor, compiler-generated or not a function (name only): 13
+- Reconstructed (src/cc13_sweepC.cpp, build-tested): 149
+- Existing implementations recorded (ledger-only): 75
+- Unreferenced (ledger-only): 21
+- Vendor, compiler-generated or not a function (name only): 14
 - cc9 lane (skipped): 2
-- Skipped or deferred: 24
+- Skipped or deferred: 41
 
 ## Adoption notes (gameplay hosts not edited)
 
@@ -71,7 +71,7 @@ in .text, .rdata and .data) with a positive control in the same run, as each row
   `00CF8900` (006CE8CF).
 
 
-## Reconstructed (src/cc13_sweepC.cpp, build-tested) (126)
+## Reconstructed (src/cc13_sweepC.cpp, build-tested) (149)
 
 | Address | Seg | Name | Status | Original ABI | Evidence |
 |---|---|---|---|---|---|
@@ -195,14 +195,37 @@ in .text, .rdata and .data) with a positive control in the same run, as each row
 | `00AA9350` | 77 | BSP_GuiElement_TypeIdInitReturn | reconstructed_build_tested | __thiscall(ECX = descriptor) -> descriptor, RET | gui_element_type_id_init_return_00aa9350: guard 00F8BC80, +8h = "cGuiElement" (00D5C124), 00BEA780(ECX = 0109DB84), +4h = [0109DB84], +0h = next id (006FAC20 counter +4h, incremented). Unreferenced (census; docs/CC13_GUI_2.md). |
 | `00AACE40` | 77 | BSP_PointerTable_Grow_00aace40 | reconstructed_build_tested | __thiscall(ECX = table), RET | pointer_table_grow_00aace40: capacity 2c + 2, new block (00BF55BE), copy with the null-destination test, free (00BF6989) the old non-null block. Unreferenced (census total 0); same 35-instruction shape as 00ACBE50/00ACD250/00ACEFC0. |
 | `00ACBE50` | 79 | BSP_PointerTable_Grow_00acbe50 | reconstructed_build_tested | __thiscall(ECX = table), RET | pointer_table_grow_00acbe50: the shared pointer-table growth shape. Unreferenced (census total 0). |
+| `00ACBEC0` | 79 | BSP_GuiModel_SetTransformVectors | reconstructed_build_tested | __thiscall(ECX = model, const float scale[3], const float euler[3]), RET 8 | gui_model_set_transform_vectors_00acbec0: +F4h..+FCh scale, +100h..+108h euler; 00B64470(ECX = frame matrix, EDX = three zeros, euler copy, this+F4h); [+ECh]->vtable[38h](matrix). One caller 00ACCD41 (census); previously a hook (gui_widgets_cc13). |
+| `00ACC4A0` | 79 | TMPL_RefPtrReset_00acc4a0 | reconstructed_build_tested | __thiscall(ECX = model), RET | gui_model_release_refs_00acc4a0: release +F0h (InterlockedDecrement, vtable[0] at zero, +F0h = 0 when it was set), then +ECh = 0. Unreferenced (census total 0); small, reconstructed. |
 | `00ACD250` | 79 | BSP_PointerTable_Grow_00acd250 | reconstructed_build_tested | __thiscall(ECX = table), RET | pointer_table_grow_00acd250: the shared pointer-table growth shape. Unreferenced (census total 0). |
 | `00ACEA20` | 79 | BSP_GuiClipBox_TypeIdInit | reconstructed_build_tested | __thiscall(ECX = descriptor), RET | gui_clip_box_type_id_init_00acea20: guard 00F8C138, +0Ch = "cGuiClipBox" (00D5D0E4), 00AA8200(ECX = 00F8BC88), +4h/+8h = [00F8BC88]/[00F8BC8C], +0h = next id. Unreferenced (docs/CC13_HUD_AND_WIDGETS.md, census). |
 | `00ACEA70` | 79 | BSP_GuiClipBox_TypeIdInitReturn | reconstructed_build_tested | __thiscall(ECX = descriptor) -> descriptor, RET | gui_clip_box_type_id_init_return_00acea70: as 00ACEA20, answering the descriptor. Unreferenced. |
 | `00ACEFC0` | 79 | BSP_PointerTable_Grow_00acefc0 | reconstructed_build_tested | __thiscall(ECX = table), RET | pointer_table_grow_00acefc0: the shared pointer-table growth shape. Unreferenced (census total 0). |
+| `00ACF1D0` | 79 | BSP_GuiFrameBox_SetPosition | reconstructed_build_tested | __thiscall(ECX = frame box, const float pos[2]), RET 4 | gui_frame_box_set_position_00acf1d0: +18h/+1Ch = pos; 00AA7220; state word +ECh != FFFFh -> checked index into the 2Ch records at +F4h, record +0Ch/+10h = pos, vtable[88h](). Vtable 00D5D160 slot (census). |
+| `00AD0680` | 79 | BSP_GuiFrameBox_SetStateTexture | reconstructed_build_tested | __thiscall(ECX = frame box, state, texture), RET 8 | gui_frame_box_set_state_texture_00ad0680: checked index; record word 0 ref-pointer assign (add-ref new, release old); state == (int16)+ECh -> vtable[80h](state). One caller (census). |
 | `00AD0780` | 79 | BSP_GuiFrameBox_TypeIdInit | reconstructed_build_tested | __thiscall(ECX = descriptor), RET | gui_frame_box_type_id_init_00ad0780: guard 00F8C184, +0Ch = 00D5D120 (the FrameBox class name), the same base copy and id. Unreferenced. |
 | `00AD07D0` | 79 | BSP_GuiFrameBox_TypeIdInitReturn | reconstructed_build_tested | __thiscall(ECX = descriptor) -> descriptor, RET | gui_frame_box_type_id_init_return_00ad07d0: as 00AD0780, answering the descriptor. Unreferenced. |
+| `00AD0D00` | 79 | BSP_GuiRecord2C_Assign | reconstructed_build_tested | __thiscall(ECX = dst, const src*), RET 4 -> dst | gui_record_2c_assign_00ad0d00: +0h copy, NativeString assign at +4h (0041DD40 then CRT memcpy), +0Ch..+18h float copies, +1Ch..+28h dword copies. Five callers (census; called from STL algorithm instantiations as the element assignment). Previously a hook (gui_widgets_cc13.cpp 960). |
+| `00AD2D50` | 79 | BSP_GuiAnimIcon_Construct | reconstructed_build_tested | __thiscall(ECX = icon) -> icon, RET | gui_anim_icon_construct_00ad2d50: 00AB5C60; +140h..+142h = 1; vtable 00D5BCE0; +138h = 30.0f (00CE38C8); +13Ch = 0; +60h = 0Ch. One caller 00AA239D. |
+| `00B87170` | 90 | BSP_PlainNodeFactory_Destruct | reconstructed_build_tested | __thiscall(ECX = factory) -> EAX, RET | plain_node_factory_destruct_00b87170: vtable 00D63210. Unreferenced (census total 0). |
+| `00B87180` | 90 | BSP_PlainNodeFactory_ScalarDelete | reconstructed_build_tested | __thiscall(ECX = factory, flags), RET 4 -> EAX | plain_node_factory_scalar_delete_00b87180: vtable 00D63208, 00BF65AC when flags bit 0. One reference (census). Same shape as 00B871B0/00B871E0. |
+| `00B871A0` | 90 | BSP_ModelFactory_Destruct | reconstructed_build_tested | __thiscall(ECX = factory) -> EAX, RET | model_factory_destruct_00b871a0: vtable 00D63218. Unreferenced (census). |
+| `00B871B0` | 90 | BSP_ModelFactory_ScalarDelete | reconstructed_build_tested | __thiscall(ECX = factory, flags), RET 4 -> EAX | model_factory_scalar_delete_00b871b0: the shared scalar-delete shape. One reference. |
+| `00B871D0` | 90 | BSP_GroupFactory_Destruct | reconstructed_build_tested | __thiscall(ECX = factory) -> EAX, RET | group_factory_destruct_00b871d0: vtable 00D63220. Unreferenced (census). |
+| `00B871E0` | 90 | BSP_GroupFactory_ScalarDelete | reconstructed_build_tested | __thiscall(ECX = factory, flags), RET 4 -> EAX | group_factory_scalar_delete_00b871e0: the shared scalar-delete shape. One reference. |
+| `00B876F0` | 90 | BSP_ReturnNative88BytePoolSlot_Forward | reconstructed_build_tested | __fastcall(ECX = slot), RET | return_native_88_byte_pool_slot_00b876f0: PUSH ECX, ECX = 0109022C, CALL 00B17AF0. Unreferenced (census total 0). |
+| `00B87710` | 90 | BSP_ResourceItemArray_PushBack_Unreferenced | reconstructed_build_tested | __thiscall(ECX = array, const item*), RET 4 | resource_item_array_push_back_00b87710: full -> 00B872F0(max(cap + 10h, 10h)); data[count] = *item (null-address test kept); count += 1. Unreferenced (census). |
+| `00B87750` | 90 | BSP_HierarchyItemArray_PushBack_Unreferenced | reconstructed_build_tested | __thiscall(ECX = array, const item*), RET 4 | hierarchy_item_array_push_back_00b87750: the same shape with 00B87350. Unreferenced (census). |
+| `00B877F0` | 90 | BSP_ResourceItemArray_Clear | reconstructed_build_tested | __thiscall(ECX = array), RET | resource_item_array_clear_00b877f0: 00B873C0(0). Unreferenced (census). |
+| `00B87800` | 90 | BSP_HierarchyItemArray_Clear | reconstructed_build_tested | __thiscall(ECX = array), RET | hierarchy_item_array_clear_00b87800: 00B87410(0). Unreferenced (census). |
+| `00B88B00` | 90 | BSP_ResourceNode_CopyConstruct | reconstructed_build_tested | __thiscall(ECX = node, const src*), RET 4 -> node | resource_node_copy_construct_00b88b00: +0h = src+0h, 00B887D0(node+4h, src+4h). Unreferenced (census). |
+| `00B88CB0` | 90 | BSP_ResourceNode_ConstructFrom | reconstructed_build_tested | __thiscall(ECX = node, const key*, const name*), RET 8 -> node | resource_node_construct_from_00b88cb0: +0h = *key, 00B887D0(node+4h, name). Unreferenced (census). |
+| `00B88D00` | 90 | BSP_ResourceNode_Construct | reconstructed_build_tested | __thiscall(ECX = node, a, b, c, const keyed name*, byte), RET 14h -> node | resource_node_construct_00b88d00: +0h/+4h/+8h = a/b/c, +0Ch = keyed+0h, 00B887D0(node+10h, keyed+4h), +20h = byte, +21h = 0. Unreferenced (census). |
+| `00B89FE0` | 90 | BSP_Resource_CreateInstance | reconstructed_build_tested | __thiscall(ECX = resource) -> EAX, RET | resource_create_instance_00b89fe0: 00BF681B(3Ch), non-null -> 00B89F20(ECX = block, resource), else 0. One caller. |
+| `00B8A200` | 90 | BSP_CameraPool_CreateCamera | reconstructed_build_tested | (arg), RET 4 -> EAX | camera_pool_create_camera_00b8a200: 00B71930(ECX = 458h), non-null -> 00B71A80(ECX = block, arg), else 0. Two callers. |
+| `00B999A0` | 91 | BSP_Plane_SignedDistance | reconstructed_build_tested | __thiscall(ECX = plane, const float3*), RET 4 -> ST0 | plane_signed_distance_00b999a0: float(p.y n.y + p.x n.x + p.z n.z) then float(s - plane+0Ch). Unreferenced (census total 0); post_effects_cc13.hpp / scene_graph2_cc13.hpp name it only. |
 
-## Existing implementations recorded (ledger-only) (63)
+## Existing implementations recorded (ledger-only) (75)
 
 | Address | Seg | Name | Status | Original ABI | Evidence |
 |---|---|---|---|---|---|
@@ -269,8 +292,20 @@ in .text, .rdata and .data) with a positive control in the same run, as each row
 | `00A8A980` | 74 | BSP_ShadowTargetExtents_Construct | existing_implementation_located_not_reverified | __thiscall(ECX = owner, width, height), RET 8 -> owner | construct_native_shadow_target_extents_00a8a980 (native_shadow_depth_target_owner.cpp 147). Located; not re-verified in this sweep. |
 | `00A8FF30` | 74 | BSP_ShadowDepthTarget_CreateResources | existing_implementation_located_not_reverified | __thiscall(ECX = target, byte enable), RET 4 | create_native_shadow_depth_target_00a8ff30 (native_shadow_depth_target_owner.cpp 172). Located; not re-verified in this sweep. |
 | `00A8FFF0` | 74 | BSP_ShadowDepthTarget_Destroy | existing_implementation_located_not_reverified | __thiscall(ECX = target), RET | destroy_native_shadow_depth_target_00a8fff0 (native_shadow_depth_target_owner.cpp 206). Located; not re-verified in this sweep. |
+| `00ADA420` | 81 | BSP_Node_AccumulateModelBox | existing_host_substitution_labelled | (48 instructions) | BSP_Node_AccumulateModelBox: game_hosts_scene_contents.cpp 1482 takes +68h/+70h from it (LABELLED SUBSTITUTION there). Not re-verified line by line in this sweep. |
+| `00ADA890` | 81 | BSP_TerrainHeightField_SplitIndex | existing_host_substitution_labelled | (45 instructions) | BSP_TerrainHeightField_SplitIndex (slot 44h): tile = index >> 5, local = index - tile*32, the last tile's column 32 one past the end; folded into game_hosts_scene_contents.cpp 3086. Not re-verified line by line. |
+| `00ADE500` | 81 | BSP_TerrainHeightField_LoadForModel | existing_host_substitution_labelled | (103 instructions) | BSP_TerrainHeightField_LoadForModel: the +3D0h height field at pass A (game_hosts_scene_contents.cpp 1482, LABELLED SUBSTITUTION for +68h/+70h). Not re-verified line by line. |
+| `00ADFD70` | 81 | BSP_TerrainTile_ReadU16Block | existing_host_substitution_labelled | (50 instructions) | BSP_TerrainTile_ReadU16Block: the U16 chunk into a 33x33 block (game_hosts_scene_contents.cpp 1359). Not re-verified line by line. |
+| `00ADFEB0` | 81 | BSP_TerrainTile_ReadChunks | existing_host_substitution_labelled | (229 instructions) | BSP_TerrainTile_ReadChunks: chunk tags compared without case (game_hosts_scene_contents.cpp 1343-1360; F32/U8 skipped there, labelled). Not re-verified line by line. |
+| `00AEADE0` | 81 | FUN_00aeade0 | existing_host_substitution_labelled | (not exported) | Tile walker builder part (game_hosts_scene_contents.cpp 4124: the 54h-byte walker from 00AEB770/00AEADE0, only the first 10h initialised). Not re-verified line by line. |
+| `00AEAE70` | 81 | FUN_00aeae70 | existing_host_substitution_labelled | (not exported) | The 48h-byte cell walker copy (game_hosts_scene_contents.cpp 3988). Not re-verified line by line. |
+| `00AEAFA0` | 81 | FUN_00aeafa0 | existing_host_substitution_labelled | (not exported) | The edge-sample lerp by +28h (game_hosts_scene_contents.cpp 4069, vsub_cell_edge_00aec090). Not re-verified line by line. |
+| `00AEB770` | 81 | FUN_00aeb770 | existing_host_substitution_labelled | (not exported) | Node +124h read into the tile walker (game_hosts_scene_contents.cpp 4256). Not re-verified line by line. |
+| `00AEB7E0` | 81 | FUN_00aeb7e0 | existing_host_substitution_labelled | (not exported) | dy (double) over the 2-D length (float): vsub_slope (game_hosts_scene_contents.cpp 3977). Not re-verified line by line. |
+| `00AEB890` | 81 | FUN_00aeb890 | existing_host_substitution_labelled | (not exported) | The segment end points copied into the walker (game_hosts_scene_contents.cpp 3977, 4257). Not re-verified line by line. |
+| `00AEBB90` | 81 | FUN_00aebb90 | existing_host_substitution_labelled | __thiscall(segment, value, axis, unused), RET 0Ch (not exported) | The upper bound of the segment on one axis (game_hosts_scene_contents.cpp 3940-3950, with 00AEBA00). Not re-verified line by line. |
 
-## Unreferenced (ledger-only) (13)
+## Unreferenced (ledger-only) (21)
 
 | Address | Seg | Name | Status | Original ABI | Evidence |
 |---|---|---|---|---|---|
@@ -287,8 +322,16 @@ in .text, .rdata and .data) with a positive control in the same run, as each row
 | `00A2D580` | 70 | BSP_AiDebug_GroupMembersOverlay | unreferenced_dead_chain_recorded | (214 instructions) | BSP_AiDebug_GroupMembersOverlay: only caller 00A3109E inside the dead root 00A31000. Not reconstructed. |
 | `00A2F6F0` | 70 | BSP_AiGroup_DescribeDebug | unreferenced_dead_chain_recorded | (1763 instructions) | BSP_AiGroup_DescribeDebug: only caller 00A3116B inside the dead root 00A31000. Not reconstructed. |
 | `00A31000` | 70 | BSP_AiDebug_GroupOverlay | unreferenced_no_caller_recorded | (435 instructions) | BSP_AiDebug_GroupOverlay: the root of the dead debug-text chain; no rel32 and no absolute dword (census; positive control 00A2CDD0 found its caller in the same run). game_hosts_ai.cpp 1029 names the chain only. Large, not reconstructed. |
+| `00AD1590` | 79 | BSP_GuiFrameBox_SetStateTexturePath | unreferenced_no_caller_recorded | (80 instructions) | BSP_GuiFrameBox_SetStateTexturePath: no rel32 and no absolute dword (census; positive control 00AD0D00 found 5 callers in the same run). Ledger-only. |
+| `00ADC930` | 81 | BSP_TerrainVisibilityGroup_BuildFromSource_Provisional | unreferenced_no_caller_recorded | (619 instructions) | BSP_TerrainVisibilityGroup_BuildFromSource_Provisional: no rel32 and no absolute dword (census; positive controls 00ADA420/00ADFD70 found callers in the same run). Large; ledger-only. |
+| `00AE32A0` | 81 | FUN_00ae32a0 | unreferenced_no_caller_recorded | (not exported) | No rel32 and no absolute dword (census, same run). Ledger-only. |
+| `00AEB740` | 81 | FUN_00aeb740 | unreferenced_no_caller_recorded | (not exported) | No rel32 and no absolute dword (census, same run). Ledger-only. |
+| `00AEBDB0` | 81 | FUN_00aebdb0 | unreferenced_no_caller_recorded | (not exported) | No rel32 and no absolute dword (census, same run). Ledger-only. |
+| `00AED0E0` | 81 | FUN_00aed0e0 | unreferenced_no_caller_recorded | (not exported) | No rel32 and no absolute dword (census, same run). Ledger-only. |
+| `00B1F3C0` | 83 | BSP_RenderCommand_CreateAndQueueInstanceGroup | unreferenced_no_caller_recorded | (94 instructions) | BSP_RenderCommand_CreateAndQueueInstanceGroup: no rel32 and no absolute dword (census). Ledger-only. |
+| `00B20010` | 83 | BSP_D3D9Renderer_HasAdapterMode | unreferenced_no_caller_recorded | (53 instructions) | BSP_D3D9Renderer_HasAdapterMode: no rel32 and no absolute dword (census). Ledger-only. |
 
-## Vendor, compiler-generated or not a function (name only) (13)
+## Vendor, compiler-generated or not a function (name only) (14)
 
 | Address | Seg | Name | Status | Original ABI | Evidence |
 |---|---|---|---|---|---|
@@ -305,6 +348,7 @@ in .text, .rdata and .data) with a positive control in the same run, as each row
 | `00A6EF60` | 73 | luaH_next | vendor_lua_out_of_scope | cdecl(L, t, key) | luaH_next, Lua 5.1.1 runtime (docs/CC13_EMBEDDED_LUA_LIBRARY.md). Vendor library, out of scope; name only. |
 | `00A77E40` | 73 | BSP_StreamedDialogPhysicalPair_VectorDeletingDtor | compiler_generated_out_of_scope | __thiscall(ECX = pair, flags), RET 4 | The compiler-generated vector deleting destructor of the 8-byte physical pair (flag 2: 00BF7C6E over the array with 00A77D10, flag 1: operator delete; else 00A77D10 and delete). Compiler/CRT pattern, no caller or vtable dword (census); name only. |
 | `00A99180` | 74 | BSP_JoystickObject_VectorDeletingDtor | compiler_generated_out_of_scope | __thiscall(ECX = object, flags), RET 4 | The compiler-generated vector deleting destructor of a 1Ch-byte joystick object (00BF7C6E with element dtor 00A99160, operator delete; the scalar arm releases the NativeString and deletes). No caller or vtable dword (census). Name only. |
+| `00B6A390` | 87 | BSP_LuaObject_WriteLuaSourceText | vendor_luaplus_probable_out_of_scope | (1832 instructions) | BSP_LuaObject_WriteLuaSourceText: a recursive Lua table-to-source writer with a std::sort over keys and "[n]"/"true"/"false" emitters, in the LuaPlus-family object layer of segment 87 (docs/CC13_SEG87.md, which skipped it). Its shape matches the LuaPlus DumpObject family; no version string confirms the vendor, so this is probable. Out of scope as Lua-runtime-adjacent; name only. |
 
 ## cc9 lane (skipped) (2)
 
@@ -313,7 +357,7 @@ in .text, .rdata and .data) with a positive control in the same run, as each row
 | `00957740` | 62 | BSP_Aim_ResolveRayToWorldPoint | skipped_cc9_lane | __thiscall (x87 ray/range clamp, 335 instructions) | BSP_Aim_ResolveRayToWorldPoint: x87 gunnery, substituted by the gunnery host's seat handler (game_hosts_gunnery.cpp 13144-13160, 2697); cc9 gunnery lane, skipped as instructed. |
 | `00957BD0` | 62 | FUN_00957bd0 | skipped_cc9_lane | __thiscall (x87 seat segment query, 1296 bytes) | The seat segment query; substituted by game_hosts_gunnery.cpp 13179; cc9 gunnery lane, skipped as instructed. |
 
-## Skipped or deferred (24)
+## Skipped or deferred (41)
 
 | Address | Seg | Name | Status | Original ABI | Evidence |
 |---|---|---|---|---|---|
@@ -341,3 +385,20 @@ in .text, .rdata and .data) with a positive control in the same run, as each row
 | `00A97140` | 74 | BSP_TextListenerBase_Destroy | skipped_deferred | __thiscall(ECX = listener) (71 instructions) | BSP_TextListenerBase_Destroy; frontend_seg15_22_cc13.cpp 1916 calls it through a hook. Deferred. |
 | `00A97260` | 74 | BSP_TextListenerBase_Construct | skipped_deferred | __thiscall(ECX = listener) (42 instructions) | BSP_TextListenerBase_Construct; frontend and multi-menu screens call it through hooks. Deferred. |
 | `00A9F0B0` | 75 | BSP_StringMapNodePool_Allocate | skipped_deferred | (110 instructions) | BSP_StringMapNodePool_Allocate; two callers. Deferred in this sweep. |
+| `00ACB9B0` | 79 | BSP_GuiGrid_SetCellCount | skipped_deferred | (179 instructions) | BSP_GuiGrid_SetCellCount; gui_widgets_cc13.cpp 530 reaches it through a hook. Deferred (docs/CC13_HUD_AND_WIDGETS.md handoff item 3 covers the grid containers). |
+| `00ACD8E0` | 79 | BSP_GuiSoundRefPtr_CopyAssign_00acd8e0 | skipped_deferred | (98 instructions) | BSP_GuiSoundRefPtr_CopyAssign; gui_widgets_cc13.cpp 480 hook. Deferred. |
+| `00ACD9E0` | 79 | BSP_GuiSound_Assign | skipped_deferred | (98 instructions) | BSP_GuiSound_Assign; gui_widgets_cc13.cpp 481 hook. Deferred. |
+| `00ACE6D0` | 79 | BSP_GuiClipBox_DescribeProperties | skipped_deferred | __thiscall(ECX = clip box, sink), RET 4 (41 instructions) | BSP_GuiClipBox_DescribeProperties (vtable 00D5D074): 00AAAED0 base, then a by-value property descriptor checked by 00BD5680 before sink->vtable[0Ch]; the by-value layout was not resolved here. Deferred. |
+| `00AD0290` | 79 | BSP_GuiFrameBox_DescribeProperties | skipped_deferred | (321 instructions) | BSP_GuiFrameBox_DescribeProperties. Deferred (size). |
+| `00AD1A80` | 79 | BSP_GuiFrameBox_VisitChildPaths | skipped_deferred | (311 instructions) | BSP_GuiFrameBox_VisitChildPaths; gui_manager_cc13.hpp names it. Deferred (size). |
+| `00AD51D0` | 79 | BSP_FontRegistry_ReplacePath | skipped_deferred | (119 instructions) | BSP_FontRegistry_ReplacePath; font_registry_startup.hpp / font_resources.hpp name it. Deferred. |
+| `00ADA240` | 80 | BSP_TerrainHeightField_SegmentHit | skipped_deferred | (139 instructions) | BSP_TerrainHeightField_SegmentHit; foliage_setup_cc13 and game_hosts_scene_contents name it (16 hits). Deferred; not re-verified against the scene-contents host in this sweep. |
+| `00ADD290` | 81 | BSP_TerrainHeightField_Construct | skipped_deferred | (103 instructions) | BSP_TerrainHeightField_Construct; scene contents and landscape_lua_seg55_argon name it. Deferred. |
+| `00ADE820` | 81 | BSP_TerrainHeightField_AttachModel | skipped_deferred | (165 instructions) | BSP_TerrainHeightField_AttachModel; scene contents and ocean_coverage_regions name it. Deferred. |
+| `00AED100` | 81 | FUN_00aed100 | skipped_deferred | (not exported) | One caller; not read in this sweep. Deferred. |
+| `00B1B400` | 82 | BSP_SamplerLoader_LoadWithOptions | skipped_deferred | (not exported) | BSP_SamplerLoader_LoadWithOptions; two callers. Deferred. |
+| `00B1BD20` | 82 | BSP_LuaGlobals_SetFieldsNamedByStringEntries | skipped_deferred | (132 instructions) | BSP_LuaGlobals_SetFieldsNamedByStringEntries; one caller. Deferred. |
+| `00B65AC0` | 86 | BSP_Vector3f_TransformByMatrix3 | skipped_deferred | (53 instructions) | BSP_Vector3f_TransformByMatrix3: x87; one caller; cc13_seg87.hpp / post_effects_cc13.hpp name it. Deferred (needs an x87 operand-direction pass). |
+| `00B83F30` | 89 | BSP_Camera_RenderToFrameTargets_Provisional | skipped_large | (564 instructions) | BSP_Camera_RenderToFrameTargets_Provisional: skipped as in docs/CC13_SEG87.md (renderer vtable composition with by-value string temporaries). |
+| `00B848C0` | 89 | BSP_Camera_SaveScreenshotBmp_Provisional | skipped_large | (146 instructions) | BSP_Camera_SaveScreenshotBmp_Provisional: skipped as in docs/CC13_SEG87.md. |
+| `00B84A90` | 89 | BSP_Camera_SaveScreenshotBmp2_Provisional | skipped_large | (135 instructions) | BSP_Camera_SaveScreenshotBmp2_Provisional: skipped as in docs/CC13_SEG87.md (no caller per census). |
