@@ -1,0 +1,374 @@
+{
+  "schema": "bsp.cc12.string_key_comparator.primary_readiness.v1",
+  "Source_ready": false,
+  "Source_implemented": false,
+  "Source_credit": 0,
+  "Ghidra_repaired": false,
+  "primary_review": "Whole43B14 callback and candidate boundaries reviewed; only separate function-boundary/ABI metadata work is authorized after refreshing live bytes/ownership/flow.",
+  "sealed_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringKeyComparatorReadiness01\\family_receipt.json",
+    "bytes": 26318,
+    "sha256": "5a8f8f1f5030f1232913b2595b1c4f3baedf486af20f3b26485b0da4e661a619"
+  },
+  "primary_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_string_key_comparator_readiness_primary_20261015\\verified_inputs.DATA.json",
+    "bytes": 21273,
+    "sha256": "30dbea38662cef80c4c536b879abd26608d28d87e51b2b4f839ff33ccd83d485"
+  },
+  "readiness": {
+    "schema": "bsp.scene-string-key-sort-callback.readiness.v1",
+    "created_utc": "2026-10-15T23:55:22.586976+00:00",
+    "packet": "cc12_string_key_sort_callback_readiness",
+    "Source_ready": false,
+    "Source_implemented": false,
+    "new_Source_credit": 0,
+    "Ghidra_repaired": false,
+    "scope": "Read-only Original and current Source readiness. No compilation, build, tests, probes, target execution, Ghidra mutation, shared metadata edit, or Source implementation.",
+    "original_callback": {
+      "begin": "0094F180",
+      "end_exclusive": "0094F1AB",
+      "bytes": 43,
+      "instructions": 14,
+      "sha256": "6642a84136c7429cb52b322dd89022b5951cb83b6f34059b5f0a0aaa60bae50e",
+      "hex": "8b4424088b008b400485c07505b8759bf8008b4c24048b098b490485c97505b9759bf8008bd0e9659caeff",
+      "disk_location": {
+        "section": ".text",
+        "rva": "0054F180",
+        "file_offset": 5566848,
+        "file_backed_bytes": 43,
+        "zero_fill_bytes": 0
+      },
+      "live_disk_equal": true,
+      "decoded": [
+        {
+          "address": "0094F180",
+          "length": 4,
+          "hex": "8b442408",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 8]"
+        },
+        {
+          "address": "0094F184",
+          "length": 2,
+          "hex": "8b00",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [eax]"
+        },
+        {
+          "address": "0094F186",
+          "length": 3,
+          "hex": "8b4004",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [eax + 4]"
+        },
+        {
+          "address": "0094F189",
+          "length": 2,
+          "hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0094F18B",
+          "length": 2,
+          "hex": "7505",
+          "mnemonic": "jne",
+          "operands": "0x94f192"
+        },
+        {
+          "address": "0094F18D",
+          "length": 5,
+          "hex": "b8759bf800",
+          "mnemonic": "mov",
+          "operands": "eax, 0xf89b75"
+        },
+        {
+          "address": "0094F192",
+          "length": 4,
+          "hex": "8b4c2404",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 4]"
+        },
+        {
+          "address": "0094F196",
+          "length": 2,
+          "hex": "8b09",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ecx]"
+        },
+        {
+          "address": "0094F198",
+          "length": 3,
+          "hex": "8b4904",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ecx + 4]"
+        },
+        {
+          "address": "0094F19B",
+          "length": 2,
+          "hex": "85c9",
+          "mnemonic": "test",
+          "operands": "ecx, ecx"
+        },
+        {
+          "address": "0094F19D",
+          "length": 2,
+          "hex": "7505",
+          "mnemonic": "jne",
+          "operands": "0x94f1a4"
+        },
+        {
+          "address": "0094F19F",
+          "length": 5,
+          "hex": "b9759bf800",
+          "mnemonic": "mov",
+          "operands": "ecx, 0xf89b75"
+        },
+        {
+          "address": "0094F1A4",
+          "length": 2,
+          "hex": "8bd0",
+          "mnemonic": "mov",
+          "operands": "edx, eax"
+        },
+        {
+          "address": "0094F1A6",
+          "length": 5,
+          "hex": "e9659caeff",
+          "mnemonic": "jmp",
+          "operands": "0x438e10"
+        }
+      ],
+      "all_14_listing_starts_match_disk": true,
+      "all_14_instructions_unowned": true,
+      "tail_flow": {
+        "flow_override": "CALL_RETURN",
+        "default_flow": {
+          "name": "UNCONDITIONAL_JUMP",
+          "is_call": false,
+          "is_jump": true,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "CALL_TERMINATOR",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "default_fallthrough": null,
+        "effective_fallthrough": null,
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00438e10"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00438e10"
+          }
+        ]
+      },
+      "padding_after": {
+        "begin": "0094F1AB",
+        "end_exclusive": "0094F1B0",
+        "bytes": 5,
+        "hex": "cccccccccc",
+        "no_instruction_at_first_padding": true
+      },
+      "internal_branches": [
+        {
+          "site": "0094F18B",
+          "target": "0x94f192"
+        },
+        {
+          "site": "0094F19D",
+          "target": "0x94f1a4"
+        }
+      ],
+      "direct_tail_target": "00438E10",
+      "direct_calls": [],
+      "indirect_calls": []
+    },
+    "sort_context": {
+      "begin": "0094F1B0",
+      "end_exclusive": "0094F1D6",
+      "bytes": 38,
+      "instructions": 13,
+      "sha256": "f7b6430022493611dab98355ee46daaa7702e5684e7bf1e0d8e65604eab5e050",
+      "live_disk_equal": true
+    },
+    "provenance": {
+      "Original": "Original.json",
+      "own_uuid": "01a141f7-3190-7442-8b48-a8d9c546336d",
+      "raw_CLI_receipts": 23,
+      "raw_selected_tool_receipts": 12,
+      "own_rollout_prefix": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\SceneStringKeyComparatorReadiness01\\own_rollout_prefix.jsonl",
+        "bytes": 600718,
+        "sha256": "a2955a21dae56e5fa3c809b2011c49aaaf423f25ae3732ae2844f47c11ef5039",
+        "lines": 171
+      },
+      "inputs": "input_pins.json",
+      "prior_family": "prior_family_audit.json"
+    },
+    "derived_behavior": [
+      "0094F180 loads second stack argument at entry ESP+8 first, dereferences its 4-byte slot to a string-header pointer, then loads header+4. A null data pointer becomes literal 00F89B75.",
+      "0094F192 then loads first stack argument at entry ESP+4, dereferences its slot and header+4. A null data pointer becomes the same literal 00F89B75.",
+      "0094F1A4 places right character pointer in EDX; left character pointer is already ECX. 0094F1A6 E9 tail jump enters 00438E10; no stack adjustment occurs in the callback.",
+      "00438E10 returns EAX=0 for pointer identity, -1 for null left, +1 for null right; otherwise calls 00BF7FBF with pushed right then left and returns its exact signed result. The callback does not clamp the comparison result.",
+      "0094F1B0 receives actual list in ECX and flag low byte at entry ESP+4. Nonzero selects 0094F130; zero selects 0094F180. It passes array=list+0, count=list+4, size=4 and selected callback to 00BFC350, removes 16 argument bytes, and RET4.",
+      "The inherited sealed 008F3270 readiness observes a nonzero outer sort flag calling 0094F1B0 with literal zero, so this callback is the relevant case-insensitive branch. No property value or Lua serialization behavior is established."
+    ],
+    "original_ABI": {
+      "callback": "int __cdecl(const void* left_slot, const void* right_slot), two 32-bit stack argument addresses at entry ESP+4/+8; signed order returned in EAX. Evidence: Original slot dereferences, no stack cleanup in callback, plain RET in 00438E10; private qsort callback CALL at 00BFC44B followed by ADD ESP,8 at 00BFC452.",
+      "tail_provider": "00438E10 uses ECX=left chars, EDX=right chars, EAX result, plain RET; compatible with two-pointer __fastcall but saved prototype remains undefined(void). No third stack argument or object receiver is inferred.",
+      "register_effects": "Callback itself writes EAX/ECX/EDX and flags only; no EBX/ESI/EDI/EBP save is needed by this 14-instruction adapter. Full CRT clobber/unwind behavior is not independently recovered here.",
+      "unwind": "No callback-local EH frame, stack allocation, x87 operation or local cleanup instruction. Original private CRT fault, invalid-parameter, locale and unwind behavior remains outside this readiness proof."
+    },
+    "target_layout": {
+      "list": "Actual Win32 list header: array pointer +0, count +4, capacity +8 from existing producer context; sort directly reads only +0/+4.",
+      "element": "4-byte array slot containing a pointer to a native string header. Callback loads only header+4 character-data pointer; header+0 length is ignored. Prior sealed caller readiness establishes owning 8-byte headers, not this callback alone.",
+      "preconditions": "Both slot addresses and both string-header pointers must be valid. Only null character-data fields are replaced. No null slot/header tolerance, synthetic zeroed list, deep-copy operation or length-bound comparison may be inferred.",
+      "evaluation_order": "Right slot/header/data read precedes left slot/header/data read. Both data pointers pass through the exact same fallback address when null.",
+      "fallback": {
+        "address": "00F89B75",
+        "saved_image_byte": "00",
+        "disk": {
+          "section": ".data",
+          "rva": "00B89B75",
+          "file_offset": null,
+          "file_backed_bytes": 0,
+          "zero_fill_bytes": 1
+        },
+        "note": "Live means saved Ghidra program memory, not a running game. Zero-fill/current saved byte does not establish actual current process role or lifetime."
+      }
+    },
+    "current_Source_providers": [
+      {
+        "address": "0094F180",
+        "file": "src/support_seg61_cc13.cpp",
+        "symbol": "string_list_compare_insensitive_0094f180",
+        "status": "existing Win32-layout helper, not accepted canonical actual-list callback closure",
+        "facts": "Dereferences slots/header+4, substitutes local kEmptyString, and calls the new-ABI compare_insensitive_00438e10. No physical original callback or canonical 00F89B75 binding is supplied."
+      },
+      {
+        "address": "0094F1B0",
+        "file": "src/support_seg61_cc13.cpp",
+        "symbol": "string_list_sort_0094f1b0",
+        "status": "ledger reconstructed_build_tested; CMake registered",
+        "facts": "Calls std::qsort with linked host CRT and existing helper callbacks. That historic label is not current original private CRT, tie-order, ABI or runtime proof."
+      },
+      {
+        "address": "00438E10",
+        "file": "src/entity_identity.cpp",
+        "symbol": "compare_insensitive_00438e10",
+        "status": "concrete existing helper with new Source ABI; ledger backfilled from Source",
+        "facts": "Pointer identity/null ordering followed by current linked _stricmp. Header explicitly says new Source ABI; no exact original private CRT/locale result or register-entry equivalence claim."
+      },
+      {
+        "address": "00BF7FBF",
+        "file": "src/native_settings_choices.cpp",
+        "symbol": "NativeSettingsChoiceCalls::compare_language_00bf7fbf",
+        "status": "existing_host_substitution_labelled for another caller",
+        "facts": "Concrete default forwards to current _stricmp. Its header explicitly leaves original CRT locale/invalid-input behavior unestablished. It is not a canonical admitted callback dependency merely because its address label matches."
+      },
+      {
+        "address": "00BFC350",
+        "status": "private Original _qsort; no reconstructed provider returned by capped exact ledger query",
+        "facts": "Support helper substitutes std::qsort. Bounded Original listing proves callback stack ABI and validator/shortsort calls, not a complete CRT reconstruction."
+      },
+      {
+        "addresses": [
+          "0094F3E0",
+          "0094F270",
+          "0094F010"
+        ],
+        "file": "src/support_seg61_cc13.cpp",
+        "status": "existing list clear/adopt/grow helpers depend on abstract Seg61Host",
+        "facts": "Current tracked Source search finds Seg61Host only in its definition and implementation file, no concrete binding. Actual canonical list producer, heap/pool and ownership closure remain inherited blockers; no synthetic host created."
+      }
+    ],
+    "private_CRT_observations": {
+      "compare": "Live decompile of 00BF7FBF branches on DAT_0109DE1C. Zero routes nonnull strings to ___ascii_stricmp; nonzero calls __stricmp_l with null locale. Invalid-input path uses 00BFFB8B and 00BF66EF. Library identification is Visual Studio 2005 Release. Exact helper addresses are preserved in raw callees receipt.",
+      "sort": "00BFC350 validates base/count, element size and callback; uses 00BFC2C0 shortsort for small partitions and calls comparator indirectly at 00BFC44B, then pops 8 bytes. No full private CRT behavior or runtime validation performed."
+    },
+    "finite_blockers": [
+      {
+        "id": "B1",
+        "kind": "analysis_metadata",
+        "detail": "No Ghidra function owns any of the 14 callback instructions. Existing CALL_RETURN override at 0094F1A6 must be preserved/reviewed. This is a missing function-boundary issue, not missing instructions or wrong raw bytes."
+      },
+      {
+        "id": "B2",
+        "kind": "actual_object_and_data_binding",
+        "detail": "No accepted canonical actual string-list producer/clear/adopt/grow host closure and no established actual 00F89B75 fallback role/lifetime. Existing saved image zero and local kEmptyString are insufficient for that binding."
+      },
+      {
+        "id": "B3",
+        "kind": "comparison_provider_contract",
+        "detail": "00438E10 behavior/new-ABI helper exists, but exact Original register entry plus 00BF7FBF private CRT locale/invalid-input semantics are not admitted for this native callback. A deliberate caller-qualified Source contract needs review; neither locale nor host behavior may be silently selected."
+      },
+      {
+        "id": "B4",
+        "kind": "sort_callback_provider_contract",
+        "detail": "00BFC350 private qsort and its callback integration are not concrete canonical Source providers. std::qsort cannot establish original physical callback, tie ordering, validation, failure/unwind or runtime parity from name equality."
+      }
+    ],
+    "separate_candidate_packet": {
+      "id": "cc12_string_key_comparator_function_boundary_0094f180",
+      "kind": "reviewed Ghidra function-boundary and ABI annotation only",
+      "ready_for_primary_review": true,
+      "executed": false,
+      "entry": "0094F180",
+      "body_inclusive": [
+        "0094F180",
+        "0094F1AA"
+      ],
+      "body_bytes": 43,
+      "instructions": 14,
+      "exclude": [
+        "padding 0094F1AB..0094F1AF",
+        "next function 0094F1B0",
+        "tail provider body 00438E10..00438E31",
+        "sibling callback 0094F130"
+      ],
+      "evidence": "Exact live/disk bytes, all 14 typed instruction starts, no containing functions, two internal forward JNE edges, one terminal tail target and sort callback-address data references.",
+      "preserve": "Existing instructions, old comments/symbols, all existing flow metadata, especially 0094F1A6 CALL_RETURN. No indiscriminate flow clear or disassembly, and no claiming the target provider as part of this function body.",
+      "candidate_prototype": "int __cdecl comparator(const void* left_slot, const void* right_slot); descriptive name provisional, not a recovered symbol.",
+      "gates": [
+        "Refresh live bytes and all 14 typed ownership/flow states before any change because other harnesses change the shared database.",
+        "Claim explicit function range and annotation/ledger output ownership; use coordination write lock for every mutation.",
+        "Record previous state (no function at/containing entry, current flow override/comments), apply only reviewed function/prototype/evidence changes, save project and refresh affected export after annotation.",
+        "If 00438E10 register-prototype repair is desired, separately claim/review that address; its Source implementation is not permission to rewrite saved ABI metadata."
+      ],
+      "credit": "No Source/build/fixture/ABI/game credit from metadata repair. B2-B4 remain; no Source packet proposed."
+    },
+    "qualifications": [
+      "Live evidence refers to the saved Ghidra image, not a running game.",
+      "Disk bytes and saved-image bytes agree only for explicitly measured spans.",
+      "Ghidra modification numbers differ between query batches due shared analysis activity; each typed batch validated internal consistency. No whole-session frozen-database claim.",
+      "Prior 51-file readiness family was rehashed without mutation. Its broader caller/provider blockers are inherited context, not fresh complete analysis of 008F3270.",
+      "Source search is bounded to current tracked checkout; external unmerged streams are not ruled out.",
+      "Failed qsort query at non-instruction 00BFC410 is retained; subsequent zero-based listing established actual callback call site 00BFC44B."
+    ]
+  },
+  "repair_authorization": {
+    "packet": "cc12_string_key_comparator_function_boundary_0094f180",
+    "body": [
+      "0094F180",
+      "0094F1AA"
+    ],
+    "preserve": "Existing14 instructions and CALL_RETURN at0094F1A6; all symbols/comments/other flow and provider00438E10 unchanged.",
+    "candidate_prototype": "int __cdecl(const void* left_slot,const void* right_slot)",
+    "Source_credit": 0
+  },
+  "Original_ABI_compatible": false,
+  "game_validated": false
+}

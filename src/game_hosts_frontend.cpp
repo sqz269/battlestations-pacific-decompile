@@ -5,6 +5,7 @@
 #include "bsp/d3d9_texture.hpp"
 #include "bsp/fingerprint_payload.hpp"
 #include "bsp/font_registry_startup.hpp"
+#include "bsp/native_font_resources.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_fonts.hpp"
 #include "bsp/game_hosts_text.hpp"
@@ -657,7 +658,8 @@ void GameFrontendHost::run_font_and_gui_startup_0073bae0(const std::string& lang
             font->descriptor.data_file.c_str(), font->descriptor.gfx_file.c_str(),
             font->descriptor.alpha_texture.c_str(),
             static_cast<double>(font->descriptor.scale_ratio),
-            font->descriptor.uppercase_only ? 1 : 0, font->resources ? 1 : 0);
+            font->descriptor.uppercase_only ? 1 : 0,
+            font->resources || (font->native_resources && font->native_resources->live()) ? 1 : 0);
     }
     host.log.notef("gui startup language_font_path=%s fonts=%zu resources=%zu stores=%zu "
         "manager=%p", result.language_font_path.empty() ? "(none)"

@@ -1,0 +1,971 @@
+{
+  "packet": "goal_oct15_scene_hidden_record_construct",
+  "status": "whole_native_code_build_tested_qualified_cleanup_bounded_duplicate_admission_general_source_ready_false",
+  "source_ready": false,
+  "general_source_ready": false,
+  "code_complete": true,
+  "bounded_current_code_usable": true,
+  "source": "src/native_scene_hidden_entity_record_construct.cpp",
+  "header": "include/bsp/native_scene_hidden_entity_record_construct.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "GuardedCLI verifies expectedproject/program/x86/imagebasebeforelivebatches",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "annotation": "Applied under shared write lock with prior names/comments recorded; final project saved, both exports refreshed, native names and final qualified evidence read back"
+  },
+  "readiness": {
+    "existing_reconstruction": "Seg6Host semanticprojection retained;no existingactualrawconstructor/action Source",
+    "direct_code_providers_present": true,
+    "no_missing_callee_stub": true,
+    "broad_constructor_or_C550_general_readiness": false,
+    "duplicate_provider": {
+      "source": "src/native_string_duplicate.cpp",
+      "coverage": "literalwhole57B/30ops;boundedcurrentSourceadmission",
+      "admitted": "null or livecontiguousnonwrappingNULtext;normalcurrentcanonicalallocation/disjointcopy",
+      "unadmitted": [
+        "forcedallocationfailure",
+        "newhandler/reentry",
+        "nakedframeexceptionunwind",
+        "OriginalprivateCRT/EH",
+        "classownership/lifecycle"
+      ],
+      "whole_constructor_code_does_not_expand_admission": true
+    }
+  },
+  "routines": [
+    {
+      "address": "004693c0",
+      "name": "construct_native_scene_hidden_entity_record_004693c0",
+      "native_name_preserved": "BSP_SceneHiddenEntityRecord_Construct",
+      "body_end_inclusive": "00469471",
+      "native_bytes": 178,
+      "instructions": 56,
+      "coverage": "whole_native_normal_control_flow_code_bounded_duplicate_admission_general_Source_ready_false",
+      "original_abi": "ECXrecord;6LIVE stackwords;RET18h/EAXcapturedrecord;Sourceexplicit24+savedthis4/context",
+      "original_bytes_hex": "6aff68db1ac60064a10000000050648925000000005153568bf1578d7e54c7064056ce008974240cc70700000000c74704000000008b4424208b4c2428c744241800000000894604e833fafcff8b4c2424894608e827fafcff8b4c242c8b542430894e10528d4e1489460ce8c0a0faff8b5c24343bfb74248b036a01508bcfe8fc48fbff833b0074138b0f8b53048b4704515250e827e2780083c40c8b4c24105f8bc65e5b64890d0000000083c410c21800",
+      "original_bytes_sha256": "86ec9c0b30a61c7b8889b5a8ad17bfb3abfdbb5a2a5e6d6235e80f4521bdb719",
+      "live_equals_installed_PE": true,
+      "code_complete": true,
+      "source_ready": false
+    },
+    {
+      "address": "00c61ad0",
+      "name": "unwind_native_scene_hidden_entity_record_00c61ad0",
+      "native_name_preserved": "Unwind@00c61ad0",
+      "body_end_inclusive": "00c61ada",
+      "native_bytes": 11,
+      "instructions": 3,
+      "coverage": "qualified_whole_cleanup_action_mapping_not_OriginalFH3_transport_or_general_Source_ready",
+      "original_abi": "NativeEBPframe/CURRENT[EBP-10]+54/tailJMP41DD20;Sourceexplicitsavedthis4/rawpoolcontext",
+      "original_bytes_hex": "8b4df083c154e945c27bff",
+      "original_bytes_sha256": "e87513a061f5061b0fea37b0224fe991592f1ad8ea127ec32f921f7c4b02c6c4",
+      "live_equals_installed_PE": true,
+      "code_complete": true,
+      "source_ready": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00469408",
+      "native": "00438e40",
+      "function": "004693c0",
+      "kind": "call",
+      "contract": "Capturednamepointer;bagpublicationbeforecall;ECXtext/plainRET/EAXcopy;boundedcurrentprovider"
+    },
+    {
+      "address": "00469414",
+      "native": "00438e40",
+      "function": "004693c0",
+      "kind": "call",
+      "contract": "ClasspointercapturedBEFOREname8publication;ECXtext/plainRET/EAXcopy;boundedcurrentprovider"
+    },
+    {
+      "address": "0046942b",
+      "native": "004134f0",
+      "function": "004693c0",
+      "kind": "call",
+      "contract": "ECXrecord14;pushcapturedmatrixpointer;RET4;exact103Bx87provider"
+    },
+    {
+      "address": "0046943f",
+      "native": "0041dd40",
+      "function": "004693c0",
+      "kind": "call",
+      "contract": "Selfheaderskip;CURRENTparentlen;PUSH1,PUSHlen;RET8;realrawpoolcontext"
+    },
+    {
+      "address": "00469454",
+      "native": "00bf7680",
+      "function": "004693c0",
+      "kind": "call",
+      "contract": "Rereadparentlen;CURRENTdestlen,srcdata,destdata;PUSHdestlen,srcdata,destdata;ADDesp0C;overlapcapablecurrentSDKbinding"
+    },
+    {
+      "address": "00c61ad6",
+      "native": "0041dd20",
+      "function": "00c61ad0",
+      "kind": "tail_jump",
+      "contract": "CURRENTsavedthis4+54;soletailcleanup;no bag/rawname/recordfree"
+    },
+    {
+      "address": "0046c62b",
+      "native": "004693c0",
+      "function": "0046c550",
+      "kind": "call",
+      "contract": "6PUSHwords;clonebagpushedlast;RET18h;nonnullallocatedreceiver"
+    },
+    {
+      "address": "0046cbdd",
+      "native": "004693c0",
+      "function": "0046c550",
+      "kind": "call",
+      "contract": "6PUSHwords;clonebagpushedlast;RET18h;nonnullallocatedreceiver"
+    },
+    {
+      "address": "0046d6f4",
+      "native": "004693c0",
+      "function": "0046cf40",
+      "kind": "call",
+      "contract": "6PUSHwordsincludingparentheader/localmatrix;RET18h;capturedallocatedreceiver"
+    }
+  ],
+  "typed_metadata": {
+    "endpoint": "get_flow_metadata",
+    "read_only": true,
+    "modification_number": "2334",
+    "capture_sha256": "233355c43e04f647ba810d4a455f914e249f2c70fc509e475746fdfd86cd46f6",
+    "functions": [
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "004693c0"
+        },
+        "name": "BSP_SceneHiddenEntityRecord_Construct",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "178",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "004693c0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00469471"
+              },
+              "length": "178"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00c61ad0"
+        },
+        "name": "Unwind@00c61ad0",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "11",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c61ad0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c61ada"
+              },
+              "length": "11"
+            }
+          ]
+        }
+      }
+    ],
+    "rows": [
+      {
+        "address": "00469408",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00469408"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "function_containing": {
+          "space": "ram",
+          "offset": "004693c0"
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "0046940d"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "0046940d"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00438e40"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00438e40"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00469414",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00469414"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "function_containing": {
+          "space": "ram",
+          "offset": "004693c0"
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00469419"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00469419"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00438e40"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00438e40"
+            }
+          ]
+        }
+      },
+      {
+        "address": "0046942b",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "0046942b"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "function_containing": {
+          "space": "ram",
+          "offset": "004693c0"
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00469430"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00469430"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "004134f0"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "004134f0"
+            }
+          ]
+        }
+      },
+      {
+        "address": "0046943f",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "0046943f"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "function_containing": {
+          "space": "ram",
+          "offset": "004693c0"
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00469444"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00469444"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "0041dd40"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "0041dd40"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00469454",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00469454"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "function_containing": {
+          "space": "ram",
+          "offset": "004693c0"
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00469459"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00469459"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf7680"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf7680"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00c61ad6",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c61ad6"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "function_containing": {
+          "space": "ram",
+          "offset": "00c61ad0"
+        },
+        "instruction_flow": {
+          "flow_override": "CALL_RETURN",
+          "default_flow": {
+            "name": "UNCONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CALL_TERMINATOR",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "0041dd20"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "0041dd20"
+            }
+          ]
+        }
+      },
+      {
+        "address": "0046c62b",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "0046c62b"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "function_containing": {
+          "space": "ram",
+          "offset": "0046c550"
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "0046c630"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "0046c630"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "004693c0"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "004693c0"
+            }
+          ]
+        }
+      },
+      {
+        "address": "0046cbdd",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "0046cbdd"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "function_containing": {
+          "space": "ram",
+          "offset": "0046c550"
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "0046cbe2"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "0046cbe2"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "004693c0"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "004693c0"
+            }
+          ]
+        }
+      },
+      {
+        "address": "0046d6f4",
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "0046d6f4"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "function_containing": {
+          "space": "ram",
+          "offset": "0046cf40"
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "0046d6f9"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "0046d6f9"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "004693c0"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "004693c0"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "raw_frame": {
+    "incoming24_offsets": {
+      "0": "bag",
+      "4": "class",
+      "8": "name",
+      "c": "party",
+      "10": "matrix",
+      "14": "parentheader"
+    },
+    "saved_this4": "Distinct actual[EBP-10h] cell;PUSHECX93D5 thenstore93E4;CURRENTreadbycleanup",
+    "metadata": "Stable/disjoint;providedpayload/recordmayaliasactualcells;implicitSource/nativeprivate-state/outgoingargumenthomesexcluded",
+    "cleanup_arm": "state0aftercurrentbag/namecapture,beforebagstore/firstdup",
+    "cleanup_disarm": "normalcompletiononly;CppguardnotoriginalFH3stateregistration",
+    "no_cleanup": [
+      "rawname8",
+      "rawclassC",
+      "bag4",
+      "recordallocation"
+    ]
+  },
+  "vtable_representation": {
+    "native_word": "00ce5640",
+    "kind": "verifiedliteralrawtag/borrowedoriginalimageword",
+    "evidence": "Native93DEMOVdwordptr[ESI],00CE5640;existingSeg6rawWordstoreconvention",
+    "Source_vtable_owner_or_callable_binding": false,
+    "virtual_dispatch_ABI_credit": false
+  },
+  "actual_matrix_provider": {
+    "address": "004134f0",
+    "complete_bytes": 103,
+    "instructions": 35,
+    "end_inclusive": "00413556",
+    "end_exclusive": "00413557",
+    "current_COFF_no_relocations_full_native_PE_and_live_equal": true,
+    "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+    "schedule": "16sequentialFLD/FSTP,no finiteguard/snapshot/CWreset;ambientFPoperationsretained;physicalFIP/fault/SEH unbound"
+  },
+  "sdk_copy": {
+    "Source_only_adapter": "copy_current_crt_bytes nakedcdeclJMP realSDKmemmove;noNativecredit",
+    "installed_file": "C:\\Windows\\SysWOW64\\VCRUNTIME140.dll",
+    "installed_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+    "machine": "014c",
+    "export_rva": "000161a0",
+    "forwarder": null,
+    "zero_path": "Count0cannotenterbackwardoverlapbranch;161C0CMP0,20/JB1669B;1669BANDcount,1F/JE166D0;166D0loadsreturneddst/pops/RET;nodatareads",
+    "installed_zero_path_checked": true,
+    "new_emitted_edge": {
+      "kind": "static_source_only_adapter_COFF_and_actual_toolchain_SDK_import_binding",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\build\\win32\\bsp_core.dir\\Release\\native_scene_hidden_entity_record_construct.obj",
+      "object_sha256": "a2e550a66e3eceac779cfe0eca13a8c691cbb136616ac751224e6a3b8e906588",
+      "machine": "014c",
+      "adapter_symbol": "?copy_current_crt_bytes@?A0xcfcc8c35@bsp@@YAPAXPAXPBXI@Z",
+      "adapter_bytes": "e900000000",
+      "adapter_relocation": "offset1 IMAGE_REL_I386_REL32 -> external _memmove",
+      "constructor_symbol": "?construct_native_scene_hidden_entity_record_004693c0@bsp@@YAPAXPAXABUNativeSceneHiddenRecordConstructFrame@1@AAUNativeStringRawPoolContext@1@@Z",
+      "constructor_adapter_relocation_count": 1,
+      "import_library": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+      "import_library_sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c",
+      "exact_import_member_hex": "0000ffff00004c01ea154fcc1a000000470008005f6d656d6d6f766500564352554e54494d453134302e646c6c00",
+      "import_symbol": "_memmove",
+      "import_DLL": "VCRUNTIME140.dll",
+      "executable": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\build\\win32\\Release\\bsp_game.exe",
+      "executable_sha256": "e28843fb5c9b1dcb6b73cb010b5a7b1ea546b20c30c09f7213f29f77de1d2a03",
+      "existing_executable_memmove_import": [
+        "VCRUNTIME140.dll",
+        "memmove",
+        272835744
+      ],
+      "constructor_linked_image_matches": 0,
+      "linked_new_entry_or_adapter_claim": false,
+      "limit": "Compiled/archive object only; unreferenced constructor is omitted from executable; no linked new-entry or execution credit",
+      "direct_entry_execution": false,
+      "original_helper_frame_identity": false
+    },
+    "qualification": "ExistingprimaryexeimportsVCRUNTIME140.dll/noapp-localDLL;staticinstalledprovidercheck,notnewloadedprocess/originalCRTidentity"
+  },
+  "provider_Source_hashes": {
+    "src/native_camera_matrix_copy.cpp": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d",
+    "include/bsp/native_camera_matrix_copy.hpp": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a",
+    "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+    "src/native_string_duplicate.cpp": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0",
+    "include/bsp/native_string_duplicate.hpp": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477"
+  },
+  "source_hashes": {
+    "src/native_scene_hidden_entity_record_construct.cpp": {
+      "bytes_sha256": "cfd0d4a1b06e1a91154040c8b490906e933585804272d1a4e1fc1d398c554062",
+      "normalized_lf_sha256": "cfd0d4a1b06e1a91154040c8b490906e933585804272d1a4e1fc1d398c554062"
+    },
+    "include/bsp/native_scene_hidden_entity_record_construct.hpp": {
+      "bytes_sha256": "1c48c5bf4f8bdc452f2fcae68f9c7a18522330b8ac9126cadfbdbf4ee2d5e36b",
+      "normalized_lf_sha256": "1c48c5bf4f8bdc452f2fcae68f9c7a18522330b8ac9126cadfbdbf4ee2d5e36b"
+    }
+  },
+  "validation": {
+    "complete_owned_native_bytes": 189,
+    "complete_owned_instructions": 59,
+    "live_equals_installed_PE": true,
+    "native_ctor_calls": 5,
+    "qualified_action_tail_JMPs": 1,
+    "incoming_calls": 3,
+    "typed_rows": 9,
+    "all_native_body_and_incoming_setups_read": true,
+    "cleanup_map_read": "D89120FuncInfo->D89118{FFFFFFFF,C61AD0}",
+    "report_calls": "9 true native CALL/JMP rows checked,0 failed; documentation22 addresses/9 claims/0 failed/unchecked/warnings",
+    "build": {
+      "revision": "1b43f15d71011cf545a6323c7b0951e86463d5fe",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_scene_lookup_promotion_combined_build.log",
+      "log_sha256": "95b7787d7912df5d586f0f6ac7376fb26c0568e9f6b4d4202966502ee6f89842",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 7.96,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "actual_tree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "worker_build_run": false,
+      "worker_build_superseded_by_explicit_primary_combined_build": true,
+      "receipt": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\reports\\goal_oct15_scene_lookup_promotion_review.json",
+      "receipt_sha256": "f0b155ff80513996ebcb98471ad68c532e3e955d50089b5bc1368cd560c84523"
+    },
+    "registration": {
+      "source_inclusion_count": 1,
+      "unique_object": [
+        "bsp_core.dir\\Release\\native_scene_hidden_entity_record_construct.obj"
+      ],
+      "registered_by": "primary_integrator",
+      "build_revision": "1b43f15d71011cf545a6323c7b0951e86463d5fe"
+    },
+    "new_tests": 0,
+    "direct_new_entry_execution": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "application_adoption": false,
+    "cleanup_typed_override": "NativeE9JMP atC61AD6 has preservedCALL_RETURN override;defaultUNCONDITIONAL_JUMP/effectiveCALL_TERMINATOR;noflow/prototyperepair",
+    "independent_primary_review": {
+      "reviewed_commit": "e2a64dac7",
+      "result": "passed_no_Source_changes_requested",
+      "scope": "Complete178B56opconstructor+11B3opaction; allcaptures/stores/reloads/soleCURRENTsavedthiscleanup; borrowedCE5640andrawadapterqualifications",
+      "reviewed_normalized_lf_sha256": {
+        "src/native_scene_hidden_entity_record_construct.cpp": "cfd0d4a1b06e1a91154040c8b490906e933585804272d1a4e1fc1d398c554062",
+        "include/bsp/native_scene_hidden_entity_record_construct.hpp": "1c48c5bf4f8bdc452f2fcae68f9c7a18522330b8ac9126cadfbdbf4ee2d5e36b"
+      },
+      "hashes_asserted_unchanged_before_receipt": true,
+      "general_source_ready": false
+    },
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\build\\win32\\Release\\bsp_core.lib",
+      "sha256": "85b8f1792edd217fb41fe494e87d09f80435332ba854b89c6d239e249aef8823",
+      "exact_matching_object_members": 1
+    },
+    "reviewed_and_built_Source_provider_hashes_asserted_unchanged": true,
+    "current_SDK_adapter_static_check": "E9rel32external_memmove in emittedCOFF; exactx86vcruntime.libimportmember->VCRUNTIME140.dll; installedzero-countpathreview; no forcedlink/newentryexecution",
+    "final_locked_annotation_save_export_readback": true
+  },
+  "limits": [
+    "GeneralSource-readyfalse evenafterbuild;do notinflateboundedduplicateprovider/consumer/parentadmission",
+    "Normalconstructor andqualifiedcleanup action areseparateclaims;OriginalFH3handler/state/privatealiases/secondarycleanupthrows unproved",
+    "NoSnapshot/stdstring/Hostcallback/finiteFPguard/newowner/rawname-bag-recordcleanup added",
+    "Actual103Bmatrixproviderreused;SDKoverlapcopyadapterhaszeroNativecredit/currentpolicyonly",
+    "NoOriginalbinaryABI/nativeentrydifferential/application/gameproof",
+    "Newconstructor/privateadapter compiled and archived; unreferenced body omitted from bsp_game.exe; no linked newentry/execution credit"
+  ],
+  "annotation_prior_values": [
+    {
+      "address": "004693c0",
+      "before": {
+        "address": "004693c0",
+        "function_name": "BSP_SceneHiddenEntityRecord_Construct",
+        "comment": "[BSP reconstruction 004693c0]\nHypothesis, not a recovered symbol. __thiscall on the 5Ch block operator new returns at 0046D68C, RET 18h, args (PropertyBag*, const char* className, const char* name, int party, const float frame[16], const NativeString* parentName). Writes the vftable 00CE5640 at 004693DE, the bag at 00469405, strdup(name) at 00469411 into +8h and strdup(className) at 00469428 into +0Ch through 00438E40, the party at 00469421, the 16 floats through BSP_Matrix_Copy4x4X87 at 0046942B, and the parent name into the NativeString at +54h at 0046943F/00469454. This is the producer that settles the record layout: +8h and +0Ch are two independent owned char*, not one NativeString. docs/SCENE_RECORD_MAP.md, packet cc2_scene_record_map."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00c61ad0",
+      "before": {
+        "address": "00c61ad0",
+        "function_name": "Unwind@00c61ad0"
+      },
+      "status": "applied"
+    }
+  ],
+  "annotation_final_prior_logs": [
+    {
+      "path": "local\\ghidra-annotations-20261015T235902Z.json",
+      "sha256": "3f6014b8ea121184088bf0aed0207def5b29075cf07c8693c776d86902e3f269",
+      "prior_values": [
+        {
+          "address": "004693c0",
+          "before": {
+            "address": "004693c0",
+            "function_name": "BSP_SceneHiddenEntityRecord_Construct",
+            "comment": "[BSP reconstruction 004693c0]\nHypothesis, not a recovered symbol. __thiscall on the 5Ch block operator new returns at 0046D68C, RET 18h, args (PropertyBag*, const char* className, const char* name, int party, const float frame[16], const NativeString* parentName). Writes the vftable 00CE5640 at 004693DE, the bag at 00469405, strdup(name) at 00469411 into +8h and strdup(className) at 00469428 into +0Ch through 00438E40, the party at 00469421, the 16 floats through BSP_Matrix_Copy4x4X87 at 0046942B, and the parent name into the NativeString at +54h at 0046943F/00469454. This is the producer that settles the record layout: +8h and +0Ch are two independent owned char*, not one NativeString. docs/SCENE_RECORD_MAP.md, packet cc2_scene_record_map.\n\n[BSP reconstruction 004693c0] update\nHypothesis, not a recovered symbol. __thiscall on the 5Ch block operator new returns at 0046D68C, RET 18h, args (PropertyBag*, const char* className, const char* name, int party, const float frame[16], const NativeString* parentName). Writes the vftable 00CE5640 at 004693DE, the bag at 00469405, strdup(name) at 00469411 into +8h and strdup(className) at 00469428 into +0Ch through 00438E40, the party at 00469421, the 16 floats through BSP_Matrix_Copy4x4X87 at 0046942B, and the parent name into the NativeString at +54h at 0046943F/00469454. This is the producer that settles the record layout: +8h and +0Ch are two independent owned char*, not one NativeString. docs/SCENE_RECORD_MAP.md, packet cc2_scene_record_map. | Complete178B/56op CODE onlywithqualifiedaction/currentproviders;generalSource-readyFALSE. Actualrecord/live24args/savedthis4;nativeCE5640literalrawtagnotSourcevtable;latebag-name/class-before-name-store/party-frame-before-class-store/parentaftermatrix;self54skip/resize-reread/destlen-srcdata-destdatacopy. Realexact103Bx87/rawpoolresize-destroy/boundedduplicate438E40/currentSDKoverlapcopy,notHost/stub. Whole189BlivePE/9typedtransfers; duplicate normal/nonwrapping/disjointadmission inherited;failure/newhandler/reentry/privateunwind unproved. Source src/native_scene_hidden_entity_record_construct.cpp;lockedannotation/save/export/readback andreview/registration/buildpending;noABI/game/generalparentclosure. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md"
+          },
+          "after": {
+            "address": "004693c0",
+            "name": "BSP_SceneHiddenEntityRecord_Construct",
+            "evidence": "Hypothesis, not a recovered symbol. __thiscall on the 5Ch block operator new returns at 0046D68C, RET 18h, args (PropertyBag*, const char* className, const char* name, int party, const float frame[16], const NativeString* parentName). Writes the vftable 00CE5640 at 004693DE, the bag at 00469405, strdup(name) at 00469411 into +8h and strdup(className) at 00469428 into +0Ch through 00438E40, the party at 00469421, the 16 floats through BSP_Matrix_Copy4x4X87 at 0046942B, and the parent name into the NativeString at +54h at 0046943F/00469454. This is the producer that settles the record layout: +8h and +0Ch are two independent owned char*, not one NativeString. docs/SCENE_RECORD_MAP.md, packet cc2_scene_record_map. | Complete178B/56op CODE onlywithqualifiedaction/currentproviders;generalSource-readyFALSE. Actualrecord/live24args/savedthis4;nativeCE5640literalrawtagnotSourcevtable;latebag-name/class-before-name-store/party-frame-before-class-store/parentaftermatrix;self54skip/resize-reread/destlen-srcdata-destdatacopy. Realexact103Bx87/rawpoolresize-destroy/boundedduplicate438E40/currentSDKoverlapcopy,notHost/stub. Whole189BlivePE/9typedtransfers; duplicate normal/nonwrapping/disjointadmission inherited;failure/newhandler/reentry/privateunwind unproved. Source src/native_scene_hidden_entity_record_construct.cpp;lockedannotation/save/export/readback andreview/registration/buildpending;noABI/game/generalparentclosure. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md | Whole native code and qualified cleanup mapping independently reviewed at e2a64dac7; Source/header/provider hashes unchanged. Primary scripts/build.ps1 MSVC Release Win32 at 1b43f15d71011cf545a6323c7b0951e86463d5fe passed all3 existing checks7.96s; unique registered/archive object. Source-only adapter emitted E9rel32->_memmove, exact x86 SDK import and installed zero path checked; unreferenced new body not linked/executed. GeneralSourceReadyFALSE: inherited duplicate normal/nonwrapping/disjoint admission; failure/newhandler/reentry/privateunwind/OriginalFH3/ABI/game unproved. Complete189BlivePE59ops/9typed rows; locked annotations preserve native names/prior comments. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md | Whole native code and qualified cleanup mapping independently reviewed at e2a64dac7; Source/header/provider hashes unchanged. Primary scripts/build.ps1 MSVC Release Win32 at 1b43f15d71011cf545a6323c7b0951e86463d5fe passed all3 existing checks7.96s; unique registered/archive object. Source-only adapter emitted E9rel32->_memmove, exact x86 SDK import and installed zero path checked; unreferenced new body not linked/executed. GeneralSourceReadyFALSE: inherited duplicate normal/nonwrapping/disjoint admission; failure/newhandler/reentry/privateunwind/OriginalFH3/ABI/game unproved. Complete189BlivePE59ops/9typed rows; locked annotations preserve native names/prior comments. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md"
+          },
+          "status": "applied"
+        },
+        {
+          "address": "00c61ad0",
+          "before": {
+            "address": "00c61ad0",
+            "function_name": "Unwind@00c61ad0",
+            "comment": "[BSP reconstruction 00c61ad0]\nComplete11B/3op CODE onlywithqualifiedaction/currentproviders;generalSource-readyFALSE. CURRENTexplicit[EBP-10]savedthis4+54 tailcleanup41DD20;no rawname/bag/recordfree;qualifiedactionnotOriginalFH3identity. Realexact103Bx87/rawpoolresize-destroy/boundedduplicate438E40/currentSDKoverlapcopy,notHost/stub. Whole189BlivePE/9typedtransfers; duplicate normal/nonwrapping/disjointadmission inherited;failure/newhandler/reentry/privateunwind unproved. Source src/native_scene_hidden_entity_record_construct.cpp;lockedannotation/save/export/readback andreview/registration/buildpending;noABI/game/generalparentclosure. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md"
+          },
+          "after": {
+            "address": "00c61ad0",
+            "name": "Unwind@00c61ad0",
+            "evidence": "Complete11B/3op CODE onlywithqualifiedaction/currentproviders;generalSource-readyFALSE. CURRENTexplicit[EBP-10]savedthis4+54 tailcleanup41DD20;no rawname/bag/recordfree;qualifiedactionnotOriginalFH3identity. Realexact103Bx87/rawpoolresize-destroy/boundedduplicate438E40/currentSDKoverlapcopy,notHost/stub. Whole189BlivePE/9typedtransfers; duplicate normal/nonwrapping/disjointadmission inherited;failure/newhandler/reentry/privateunwind unproved. Source src/native_scene_hidden_entity_record_construct.cpp;lockedannotation/save/export/readback andreview/registration/buildpending;noABI/game/generalparentclosure. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md | Whole native code and qualified cleanup mapping independently reviewed at e2a64dac7; Source/header/provider hashes unchanged. Primary scripts/build.ps1 MSVC Release Win32 at 1b43f15d71011cf545a6323c7b0951e86463d5fe passed all3 existing checks7.96s; unique registered/archive object. Source-only adapter emitted E9rel32->_memmove, exact x86 SDK import and installed zero path checked; unreferenced new body not linked/executed. GeneralSourceReadyFALSE: inherited duplicate normal/nonwrapping/disjoint admission; failure/newhandler/reentry/privateunwind/OriginalFH3/ABI/game unproved. Complete189BlivePE59ops/9typed rows; locked annotations preserve native names/prior comments. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md"
+          },
+          "status": "applied"
+        }
+      ]
+    },
+    {
+      "path": "local\\ghidra-annotations-20261015T235918Z.json",
+      "sha256": "1b63b78a5ead70cb45143426db224a9612e35a4d1bf0613b0a8bc83f0b442eec",
+      "prior_values": [
+        {
+          "address": "004693c0",
+          "before": {
+            "address": "004693c0",
+            "function_name": "BSP_SceneHiddenEntityRecord_Construct",
+            "comment": "[BSP reconstruction 004693c0]\nHypothesis, not a recovered symbol. __thiscall on the 5Ch block operator new returns at 0046D68C, RET 18h, args (PropertyBag*, const char* className, const char* name, int party, const float frame[16], const NativeString* parentName). Writes the vftable 00CE5640 at 004693DE, the bag at 00469405, strdup(name) at 00469411 into +8h and strdup(className) at 00469428 into +0Ch through 00438E40, the party at 00469421, the 16 floats through BSP_Matrix_Copy4x4X87 at 0046942B, and the parent name into the NativeString at +54h at 0046943F/00469454. This is the producer that settles the record layout: +8h and +0Ch are two independent owned char*, not one NativeString. docs/SCENE_RECORD_MAP.md, packet cc2_scene_record_map.\n\n[BSP reconstruction 004693c0] update\nHypothesis, not a recovered symbol. __thiscall on the 5Ch block operator new returns at 0046D68C, RET 18h, args (PropertyBag*, const char* className, const char* name, int party, const float frame[16], const NativeString* parentName). Writes the vftable 00CE5640 at 004693DE, the bag at 00469405, strdup(name) at 00469411 into +8h and strdup(className) at 00469428 into +0Ch through 00438E40, the party at 00469421, the 16 floats through BSP_Matrix_Copy4x4X87 at 0046942B, and the parent name into the NativeString at +54h at 0046943F/00469454. This is the producer that settles the record layout: +8h and +0Ch are two independent owned char*, not one NativeString. docs/SCENE_RECORD_MAP.md, packet cc2_scene_record_map. | Complete178B/56op CODE onlywithqualifiedaction/currentproviders;generalSource-readyFALSE. Actualrecord/live24args/savedthis4;nativeCE5640literalrawtagnotSourcevtable;latebag-name/class-before-name-store/party-frame-before-class-store/parentaftermatrix;self54skip/resize-reread/destlen-srcdata-destdatacopy. Realexact103Bx87/rawpoolresize-destroy/boundedduplicate438E40/currentSDKoverlapcopy,notHost/stub. Whole189BlivePE/9typedtransfers; duplicate normal/nonwrapping/disjointadmission inherited;failure/newhandler/reentry/privateunwind unproved. Source src/native_scene_hidden_entity_record_construct.cpp;lockedannotation/save/export/readback andreview/registration/buildpending;noABI/game/generalparentclosure. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md\n\n[BSP reconstruction 004693c0] update\nHypothesis, not a recovered symbol. __thiscall on the 5Ch block operator new returns at 0046D68C, RET 18h, args (PropertyBag*, const char* className, const char* name, int party, const float frame[16], const NativeString* parentName). Writes the vftable 00CE5640 at 004693DE, the bag at 00469405, strdup(name) at 00469411 into +8h and strdup(className) at 00469428 into +0Ch through 00438E40, the party at 00469421, the 16 floats through BSP_Matrix_Copy4x4X87 at 0046942B, and the parent name into the NativeString at +54h at 0046943F/00469454. This is the producer that settles the record layout: +8h and +0Ch are two independent owned char*, not one NativeString. docs/SCENE_RECORD_MAP.md, packet cc2_scene_record_map. | Complete178B/56op CODE onlywithqualifiedaction/currentproviders;generalSource-readyFALSE. Actualrecord/live24args/savedthis4;nativeCE5640literalrawtagnotSourcevtable;latebag-name/class-before-name-store/party-frame-before-class-store/parentaftermatrix;self54skip/resize-reread/destlen-srcdata-destdatacopy. Realexact103Bx87/rawpoolresize-destroy/boundedduplicate438E40/currentSDKoverlapcopy,notHost/stub. Whole189BlivePE/9typedtransfers; duplicate normal/nonwrapping/disjointadmission inherited;failure/newhandler/reentry/privateunwind unproved. Source src/native_scene_hidden_entity_record_construct.cpp;lockedannotation/save/export/readback andreview/registration/buildpending;noABI/game/generalparentclosure. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md | Whole native code and qualified cleanup mapping independently reviewed at e2a64dac7; Source/header/provider hashes unchanged. Primary scripts/build.ps1 MSVC Release Win32 at 1b43f15d71011cf545a6323c7b0951e86463d5fe passed all3 existing checks7.96s; unique registered/archive object. Source-only adapter emitted E9rel32->_memmove, exact x86 SDK import and installed zero path checked; unreferenced new body not linked/executed. GeneralSourceReadyFALSE: inherited duplicate normal/nonwrapping/disjoint admission; failure/newhandler/reentry/privateunwind/OriginalFH3/ABI/game unproved. Complete189BlivePE59ops/9typed rows; locked annotations preserve native names/prior comments. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md | Whole native code and qualified cleanup mapping independently reviewed at e2a64dac7; Source/header/provider hashes unchanged. Primary scripts/build.ps1 MSVC Release Win32 at 1b43f15d71011cf545a6323c7b0951e86463d5fe passed all3 existing checks7.96s; unique registered/archive object. Source-only adapter emitted E9rel32->_memmove, exact x86 SDK import and installed zero path checked; unreferenced new body not linked/executed. GeneralSourceReadyFALSE: inherited duplicate normal/nonwrapping/disjoint admission; failure/newhandler/reentry/privateunwind/OriginalFH3/ABI/game unproved. Complete189BlivePE59ops/9typed rows; locked annotations preserve native names/prior comments. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md"
+          },
+          "after": {
+            "address": "004693c0",
+            "name": "BSP_SceneHiddenEntityRecord_Construct",
+            "evidence": "Hypothesis, not a recovered symbol. __thiscall on the 5Ch block operator new returns at 0046D68C, RET 18h, args (PropertyBag*, const char* className, const char* name, int party, const float frame[16], const NativeString* parentName). Writes the vftable 00CE5640 at 004693DE, the bag at 00469405, strdup(name) at 00469411 into +8h and strdup(className) at 00469428 into +0Ch through 00438E40, the party at 00469421, the 16 floats through BSP_Matrix_Copy4x4X87 at 0046942B, and the parent name into the NativeString at +54h at 0046943F/00469454. This is the producer that settles the record layout: +8h and +0Ch are two independent owned char*, not one NativeString. docs/SCENE_RECORD_MAP.md, packet cc2_scene_record_map. | Complete178B/56op CODE onlywithqualifiedaction/currentproviders;generalSource-readyFALSE. Actualrecord/live24args/savedthis4;nativeCE5640literalrawtagnotSourcevtable;latebag-name/class-before-name-store/party-frame-before-class-store/parentaftermatrix;self54skip/resize-reread/destlen-srcdata-destdatacopy. Realexact103Bx87/rawpoolresize-destroy/boundedduplicate438E40/currentSDKoverlapcopy,notHost/stub. Whole189BlivePE/9typedtransfers; duplicate normal/nonwrapping/disjointadmission inherited;failure/newhandler/reentry/privateunwind unproved. Source src/native_scene_hidden_entity_record_construct.cpp;lockedannotation/save/export/readback andreview/registration/buildpending;noABI/game/generalparentclosure. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md | Whole native code and qualified cleanup mapping independently reviewed at e2a64dac7; Source/header/provider hashes unchanged. Primary scripts/build.ps1 MSVC Release Win32 at 1b43f15d71011cf545a6323c7b0951e86463d5fe passed all3 existing checks7.96s; unique registered/archive object. Source-only adapter emitted E9rel32->_memmove, exact x86 SDK import and installed zero path checked; unreferenced new body not linked/executed. GeneralSourceReadyFALSE: inherited duplicate normal/nonwrapping/disjoint admission; failure/newhandler/reentry/privateunwind/OriginalFH3/ABI/game unproved. Complete189BlivePE59ops/9typed rows; locked annotations preserve native names/prior comments. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md"
+          },
+          "status": "applied"
+        },
+        {
+          "address": "00c61ad0",
+          "before": {
+            "address": "00c61ad0",
+            "function_name": "Unwind@00c61ad0",
+            "comment": "[BSP reconstruction 00c61ad0]\nComplete11B/3op CODE onlywithqualifiedaction/currentproviders;generalSource-readyFALSE. CURRENTexplicit[EBP-10]savedthis4+54 tailcleanup41DD20;no rawname/bag/recordfree;qualifiedactionnotOriginalFH3identity. Realexact103Bx87/rawpoolresize-destroy/boundedduplicate438E40/currentSDKoverlapcopy,notHost/stub. Whole189BlivePE/9typedtransfers; duplicate normal/nonwrapping/disjointadmission inherited;failure/newhandler/reentry/privateunwind unproved. Source src/native_scene_hidden_entity_record_construct.cpp;lockedannotation/save/export/readback andreview/registration/buildpending;noABI/game/generalparentclosure. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md\n\n[BSP reconstruction 00c61ad0] update\nComplete11B/3op CODE onlywithqualifiedaction/currentproviders;generalSource-readyFALSE. CURRENTexplicit[EBP-10]savedthis4+54 tailcleanup41DD20;no rawname/bag/recordfree;qualifiedactionnotOriginalFH3identity. Realexact103Bx87/rawpoolresize-destroy/boundedduplicate438E40/currentSDKoverlapcopy,notHost/stub. Whole189BlivePE/9typedtransfers; duplicate normal/nonwrapping/disjointadmission inherited;failure/newhandler/reentry/privateunwind unproved. Source src/native_scene_hidden_entity_record_construct.cpp;lockedannotation/save/export/readback andreview/registration/buildpending;noABI/game/generalparentclosure. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md | Whole native code and qualified cleanup mapping independently reviewed at e2a64dac7; Source/header/provider hashes unchanged. Primary scripts/build.ps1 MSVC Release Win32 at 1b43f15d71011cf545a6323c7b0951e86463d5fe passed all3 existing checks7.96s; unique registered/archive object. Source-only adapter emitted E9rel32->_memmove, exact x86 SDK import and installed zero path checked; unreferenced new body not linked/executed. GeneralSourceReadyFALSE: inherited duplicate normal/nonwrapping/disjoint admission; failure/newhandler/reentry/privateunwind/OriginalFH3/ABI/game unproved. Complete189BlivePE59ops/9typed rows; locked annotations preserve native names/prior comments. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md"
+          },
+          "after": {
+            "address": "00c61ad0",
+            "name": "Unwind@00c61ad0",
+            "evidence": "Complete11B/3op CODE onlywithqualifiedaction/currentproviders;generalSource-readyFALSE. CURRENTexplicit[EBP-10]savedthis4+54 tailcleanup41DD20;no rawname/bag/recordfree;qualifiedactionnotOriginalFH3identity. Realexact103Bx87/rawpoolresize-destroy/boundedduplicate438E40/currentSDKoverlapcopy,notHost/stub. Whole189BlivePE/9typedtransfers; duplicate normal/nonwrapping/disjointadmission inherited;failure/newhandler/reentry/privateunwind unproved. Source src/native_scene_hidden_entity_record_construct.cpp;lockedannotation/save/export/readback andreview/registration/buildpending;noABI/game/generalparentclosure. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md | Whole native code and qualified cleanup mapping independently reviewed at e2a64dac7; Source/header/provider hashes unchanged. Primary scripts/build.ps1 MSVC Release Win32 at 1b43f15d71011cf545a6323c7b0951e86463d5fe passed all3 existing checks7.96s; unique registered/archive object. Source-only adapter emitted E9rel32->_memmove, exact x86 SDK import and installed zero path checked; unreferenced new body not linked/executed. GeneralSourceReadyFALSE: inherited duplicate normal/nonwrapping/disjoint admission; failure/newhandler/reentry/privateunwind/OriginalFH3/ABI/game unproved. Complete189BlivePE59ops/9typed rows; locked annotations preserve native names/prior comments. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_CONSTRUCT.md"
+          },
+          "status": "applied"
+        }
+      ]
+    }
+  ]
+}

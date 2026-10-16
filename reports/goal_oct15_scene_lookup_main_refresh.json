@@ -1,0 +1,35 @@
+{
+  "packet": "goal_oct15_scene_lookup_main_refresh",
+  "status": "latest_Main_production_changes_merged_normal_Win32_all3_existing_checks_passed",
+  "primary_receipt": "reports/goal_oct15_scene_lookup_promotion_review.json",
+  "primary_receipt_sha256": "f0b155ff80513996ebcb98471ad68c532e3e955d50089b5bc1368cd560c84523",
+  "qualified_provider_and_parent_admissions_unchanged": true,
+  "source_hashes": {
+    "src/native_scene_class_name_lookup.cpp": "d43fdfb3f98fab644bf89df4ad405561bbe9699a65f3eca8d349504d4ef7ecfe",
+    "include/bsp/native_scene_class_name_lookup.hpp": "ae8cd105437d431dfd3427053cb0ca3a7a94a1d999b6dc314fd23440a8724a5c",
+    "src/native_scene_name_hash_lookup.cpp": "818e5b812f84c71dc54447dd62e3739c78900faf1abf5684cb5b41d1e467dae3",
+    "include/bsp/native_scene_name_hash_lookup.hpp": "b8283e180ee5693ff3c5707a84374253ff9c223c6f9778e655e2c726405213dd",
+    "src/native_scene_property_bag_find.cpp": "5867c1029e850797b21956b163020ae37d7ca116f9c558683aa89bb2f2ab9b07",
+    "include/bsp/native_scene_property_bag_find.hpp": "e478b3f070f7420db0e6619a8b1329e2acfd8cd1339b60c1bd82ae8a065ec945",
+    "src/native_scene_hidden_entity_record_construct.cpp": "cfd0d4a1b06e1a91154040c8b490906e933585804272d1a4e1fc1d398c554062",
+    "include/bsp/native_scene_hidden_entity_record_construct.hpp": "1c48c5bf4f8bdc452f2fcae68f9c7a18522330b8ac9126cadfbdbf4ee2d5e36b",
+    "src/native_enum_dictionary_lookup.cpp": "615ef3184a139338fd6314ef30f961ba0ccefe5d073976e5fdb1f03c8c365575",
+    "include/bsp/native_enum_dictionary_lookup.hpp": "4d5a68361b07ea5cba1722c813d70f7bc84682d35d81b4eecfe025c0829543a4"
+  },
+  "combined_build": {
+    "revision": "36883d0e41434958c2b2261421c82ae917ac0b71",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_scene_lookup_main_refresh_build.log",
+    "log_sha256": "078857c3d0412ffed9c4cdcd39d25ad76bf80782399b11fcaf3a9431325e4ae6",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 8.44
+  },
+  "archive_sha256": "6bcba07fa38fda23dac4542faa4b63e4a5bafa6fab267e8fc03c9da1780b68b9",
+  "production_delta_after_tested_revision": [],
+  "abi_compatible": false,
+  "new_entry_executed": false,
+  "game_validated": false
+}

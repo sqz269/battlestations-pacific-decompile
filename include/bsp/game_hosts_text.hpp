@@ -83,7 +83,9 @@ struct GameTextRun {
     float measured_height{0.0f};
     float vertical_offset{0.0f};
     float color[4]{1.0f, 1.0f, 1.0f, 1.0f};
-    IDirect3DTexture9* sheet{nullptr};  // the font's own glyph sheet, borrowed
+    // The font's existing COM glyph sheet, borrowed without AddRef. Destroy or
+    // clear this run before native font retirement or glyph-sheet replacement.
+    IDirect3DTexture9* sheet{nullptr};
     std::vector<GameTextQuad> quads;
     std::string error;  // set when the run produced nothing
 };
@@ -103,6 +105,9 @@ struct GameTextSummary {
 
 // The text half of the sprite bridge. One instance for the run; it borrows the font
 // registry (for the glyph sheets and the decoded DAT metrics) and the locale tables.
+// Native rows use their same canonical NativeFontResources allocation and actual
+// 2D image; legacy semantic rows remain supported. This host and all produced
+// GameTextRuns must retire before fonts or their actual owner registry/device.
 class GameTextHost {
 public:
     GameTextHost(GameHostLog& log, GameFontHost& fonts, LocaleTables& locale);
