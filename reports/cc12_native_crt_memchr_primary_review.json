@@ -1,0 +1,45 @@
+{
+  "schema": "bsp.cc12.native_crt_memchr.primary.v1",
+  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+  "Source_commit": "f33c39c8a17fd1719616529fcc6bb4083ce6a22b",
+  "Source": "src/native_crt_memchr.cpp",
+  "header": "include/bsp/native_crt_memchr.hpp",
+  "documentation": "docs/NATIVE_CRT_MEMCHR.md",
+  "Original_name_retained": "_memchr",
+  "whole_ordinary_functions": 1,
+  "primary_author": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_memchr_integration_20261016\\primary_author_inputs.DATA.json",
+    "bytes": 2533,
+    "sha256": "435e657972d9a68373115afa4b51ec5c4f88e9639fdb3c64ffa45c3eb4bf325f"
+  },
+  "primary_peer": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_memchr_integration_20261016\\primary_peer_inputs.DATA.json",
+    "bytes": 2741,
+    "sha256": "c2f1815149ae11fc655067fc76edc3590671fa62139a014a1c13b2a5a73a613b"
+  },
+  "Root_full_Source_object_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_memchr_integration_20261016\\primary_Source_object_review.DATA.json",
+    "bytes": 2774,
+    "sha256": "ee48cd5f93d810a8983e40f2371a2fc930bda6db7a297ffe4ad162bf60428456"
+  },
+  "strict_compiles": 1,
+  "precompiler_failures": 2,
+  "actual_compiler_inputs": 2,
+  "before_candidates": 9249,
+  "worker_baselines": 0,
+  "Main_registered": true,
+  "Main_build": "pending",
+  "actual_compiler_archive_gate": "pending",
+  "contract": [
+    "New MSVC Win32 ordinary typed interface over the genuine passed byte storage: void* __cdecl bsp::find_native_crt_byte_00bfa700(void*, int, unsigned int). Pointer/int/count widths are32bits, byte8bits, little endian. Keep correct Original library name _memchr.",
+    "Count0 accepts any pointer including null and returns null before payload reads or target conversion. Positive count requires a determinate readable stable requested region in one genuine live allocation. Endpoint may be within or one past that allocation, admitting interior subranges and prefixes. Actual32bit extent and pointer advances do not wrap. No NUL, padding, typed uint allocation, or initially aligned base requirement.",
+    "Every int selects its low8bits. Peel one BYTE at a time until actual address4alignment, returning first actual match or null on exhaustion. Read only complete in-range aligned DWORDs; no count overread. A DWORD may include later bytes after a first match within that DWORD.",
+    "Retain unsigned32 candidate ((x+0x7efefeff)^~x)&0x81010100, x=word^repeated_target. Zero candidate continues without reread. Nonzero candidate causes one actual same-DWORD reread and register-byte comparisons in ascending address order; reject false positives. Finish with0..3 ordered BYTE tail reads. Return actual borrowed first-match pointer or null; no extra final reread.",
+    "Approve target-specific private addressed MOV32 load helper using MSVC Win32 inline assembly over genuine byte storage, and volatile unsigned BYTE loads. This avoids inventing typed uint32 object lifetime/aliasing preconditions. The mechanism remains subject to actual strict/Main object verification of load widths, order and conditional reread. No ISO-portability or Original instruction/fault ABI claim.",
+    "Use bounded unsigned count/offset/pointer state; no integer underflow-based out-of-region accesses, before-base pointers, pointer subtraction, new runtime validation, SDK memchr/memcpy/search substitute, fallback, provider, global or caller binding. Read-only payload aliases are admitted; returned pointer borrows original owner lifetime. Mutation, concurrency, faults, invalid positive-count storage and volatile/MMIO observation protocols are outside this ordinary domain.",
+    "No Source compiler flag/segment/stack/register-home parameters or physical Original ABI/EH/fault/runtime equivalence. No new tests/probes/body execution. Worker owns only the four Source files; Root owns registration, ledger, annotation and Main integration."
+  ],
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "game_validated": false
+}

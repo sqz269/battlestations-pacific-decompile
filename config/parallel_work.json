@@ -42390,7 +42390,7 @@
     {
       "id": "cc12_native_crt_memchr_00bfa700",
       "done": false,
-      "state": "whole_ordinary_readiness_primary_peer_accepted_Source_authorized_not_implemented",
+      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
       "source_ready": true,
       "function_addresses": [
         "00bfa700"
@@ -42407,7 +42407,7 @@
         "Use bounded unsigned count/offset/pointer state; no integer underflow-based out-of-region accesses, before-base pointers, pointer subtraction, new runtime validation, SDK memchr/memcpy/search substitute, fallback, provider, global or caller binding. Read-only payload aliases are admitted; returned pointer borrows original owner lifetime. Mutation, concurrency, faults, invalid positive-count storage and volatile/MMIO observation protocols are outside this ordinary domain.",
         "No Source compiler flag/segment/stack/register-home parameters or physical Original ABI/EH/fault/runtime equivalence. No new tests/probes/body execution. Worker owns only the four Source files; Root owns registration, ledger, annotation and Main integration."
       ],
-      "Main_gate": "pending_future_Source_author_peer_registration_build_actual_object_archive",
+      "Main_gate": "pending_normal_Main_build_and_independent_actual_variant_archive_review",
       "output_files": [
         "include/bsp/native_crt_memchr.hpp",
         "src/native_crt_memchr.cpp",
@@ -42416,7 +42416,11 @@
       ],
       "code_ranges": [
         "00bfa700-00bfa7ac"
-      ]
+      ],
+      "code_revision": "f33c39c8a17fd1719616529fcc6bb4083ce6a22b",
+      "primary_review": "reports/cc12_native_crt_memchr_primary_review.json",
+      "Main_build_gate": "pending",
+      "actual_compiler_archive_gate": "pending"
     },
     {
       "id": "goal_oct15_crt_sbh_region_lookup",
