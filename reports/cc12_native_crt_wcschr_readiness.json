@@ -1,0 +1,65 @@
+{
+  "schema": "bsp.cc12.native_crt_wcschr.readiness.v1",
+  "status": "whole_ordinary_Original_readiness_primary_peer_pass_Source_authorized_compiler_Main_pending",
+  "address": "00bfd6c1",
+  "Original_library_name": "_wcschr",
+  "source_ready": true,
+  "Source_authorized": true,
+  "Source_implemented": false,
+  "Source_credit": 0,
+  "owned_range_inclusive": [
+    "00bfd6c1",
+    "00bfd6e2"
+  ],
+  "owned_bytes": 34,
+  "owned_instructions": 14,
+  "body_sha256": "e4b72b2afb31591ec009972ea1f43046210cdb6eee393458328393a9c29f915e",
+  "calls": [],
+  "author_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\NativeCrtWcschrReadiness01\\root_manifest.json",
+    "bytes": 13039,
+    "sha256": "ccc6e6a7796efad90d2d7afd751a52b6893cf2071b8e5b2b06749f0c277fc59d"
+  },
+  "peer_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\NativeCrtWcschrIndependentReview01\\root_manifest.json",
+    "bytes": 6462,
+    "sha256": "9f6909a5440755c80906eb4a752b8181101834837a7272fa37a3b5dc01372298"
+  },
+  "author_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memchr_source_oct16\\local\\NativeCrtWcschrReadiness01\\readiness.json",
+    "bytes": 10560,
+    "sha256": "ccf35b8caecf49d4a7b5aa8eeacb66a1ee591b6e950723ccc7788ef7e825662d"
+  },
+  "independent_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\NativeCrtWcschrIndependentReview01\\readiness_recommendation.json",
+    "bytes": 13653,
+    "sha256": "c09e339727f5b6ce60ddb134a45341399850b4018accbab1336aa1f022bc88a4"
+  },
+  "Root_family_authentication": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcschr_readiness_primary_20261016\\verified_families.DATA.json",
+    "bytes": 5686,
+    "sha256": "679d1cefdd7df908d79f05039353424b56556025f9a87e69fa05da6837b88c07"
+  },
+  "Root_review_scope": "All14retainedOriginalrows, completecontract/payloadread/NULreread/mechanism/ABIexclusions; all40author+13peerfiles and8+8genuineownpairs,113currentpins checked. Author andindependentpeer separately verified existingbsp.gpr/program wholelive/disk body. Rootuses retainedlisting/currentinputhashes, no newGhidrawrites or bodyexecution.",
+  "Source_packet": "cc12_native_crt_wcschr_00bfd6c1",
+  "exact_future_files": [
+    "include/bsp/native_crt_wcschr.hpp",
+    "src/native_crt_wcschr.cpp",
+    "docs/NATIVE_CRT_WCSCHR.md",
+    "reports/native_crt_wcschr.json"
+  ],
+  "contract": [
+    "New MSVC Win32 default potentially throwing API: void* __cdecl bsp::find_native_crt_wide_character_00bfd6c1(void* actual_string,int character). Keep correct Original library name _wcschr. BYTE8, pointer/int32, little-endian unsignedWORD16; target is low16 bits modulo65536. No Unicode scalar/surrogate/normalization/case/locale/collation semantics.",
+    "Require a finite first reached unit equal to targetlow16 or NUL. Every reached2byte read, including terminalNUL reread, lies wholly inside genuine live stable determinate readable byte storage in the same actual allocation. Earlier nonzero match needs no extent or laterNUL promise. Null/invalid input outside ordinary domain; no new validation guard.",
+    "Admit possiblyunaligned raw byte storage, prefixes/interior regions and stable readonly aliases. Actual reached advances by2 are nonwrapping and within or onepast same allocation; neverdereferenceonepast. No typed wchar/uint16 ownership, alignment, padding, signed-count cap or copied allocation.",
+    "Read exactly one WORD per visitedunit. Test NUL before nonzero target equality. Nonzero match returns its actual borrowed pointer without reread. Only unequal nonzero units advance2 andcontinue. NUL ALWAYS causes one fresh same-address WORD reread, includingtarget0, then comparethatvalue to low16target: pointer ifequal, nullotherwise. No afterNUL read or unconditional finalreread onnonzeromatch.",
+    "Approve private addressed MOVZX WORD16 helper with MSVC Win32 inlineassembly over genuine rawbyte storage, fullyinitializing zeroextended32bit output. Spell terminalNUL reread as separate sequencedoperation. No typedwideobject lifetime/alias assumption or portableISOclaim. Actual entire strict/Main objects mustverify accesswidth, readorder, NULonlyreread, branches/bounds, symbol/metadata/call/provider closure.",
+    "No SDKwcschr/memcpy/search, byte-only/dwordsubstitute, provider/global/TLS/fallback/runtimevalidation/callerbinding. Exclude faults, mutation/concurrency, indeterminatebytes, lifetimechanges andMMIO/volatileobservationprotocols. PreserveOriginal pointerhome/targethome/order as evidence only; no physicalABI/register/stack/flags/segment/EH/instruction/bus/fault/runtime/gamecredit.",
+    "Worker owns exactlyfourSource/header/doc/reportfiles plus ownnewlocalevidence. Root owns registration, ledgers/names, supported Ghidraannotation/export andMain. Before every Sourcewrite hold entry, entire34Brange andallfourfiles. One actual strictMSVCWin32compile with genuinebeforepins/actualdependencyclosure and wholeartifactreview; no separate unregisteredworkerbaseline, newtests/probes/bodyexecution. Root Mainbuild/actualvariant/archive andindependentSourcegates remain."
+  ],
+  "approved_private_target_mechanism": "MSVCWin32addressedMOVZX16, fullyinitialized32bitoutput; explicitNULonlysameWORDreread",
+  "Main_gate": "pending_Source_independent_strict_and_registered_Main_actual_variant_archive_review",
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "game_validated": false
+}
