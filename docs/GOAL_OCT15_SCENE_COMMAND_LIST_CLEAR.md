@@ -78,5 +78,7 @@ Guarded analysis verifies C:/Users/sqz269/bsp.gpr and program
 report retains five true transfers, both incoming setups, original ABI,
 provider hashes and prior native annotation values. Correct native name and
 comments are preserved with locked save/export/readback. Complete primary
-Source review precedes the primary combined registration/build; there is no
-worker CMake queue, worker build, new test or native-entry execution claim.
+Source review accepted f480f28a8 without changes; accepted Source and provider
+hashes were asserted unchanged. The primary will merge/register at its queued
+turn and supply the actual combined normal MSVC Win32 gate. There is no worker
+CMake queue, worker build, new test or native-entry execution claim.

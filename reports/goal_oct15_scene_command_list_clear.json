@@ -1,9 +1,9 @@
 {
   "packet": "goal_oct15_scene_command_list_clear",
-  "status": "whole_ordinary_raw_storage_Code_primary_Source_review_and_combined_build_pending",
+  "status": "whole_ordinary_raw_storage_Code_primary_reviewed_primary_registered_build_pending",
   "code_complete": true,
   "source_ready": false,
-  "readiness_gate": "pendingprimarycompleteSource_review_and_registered_normal_build",
+  "readiness_gate": "complete_primary_review_passed_pending_actual_primary_registered_normal_build",
   "source": "src/native_scene_command_list_clear.cpp",
   "header": "include/bsp/native_scene_command_list_clear.hpp",
   "documentation": "docs/GOAL_OCT15_SCENE_COMMAND_LIST_CLEAR.md",
@@ -160,14 +160,25 @@
     "typed_rows": 5,
     "all_body_callees_producer_incoming_setups_read": true,
     "build": "pending_primary_combined_normal_MSVC_Win32",
-    "registration": "primarywillregisterafterreview;noworkerCMakequeue",
+    "registration": "primaryqueuedturnwillregister;noworkerCMakequeue",
     "new_tests": 0,
     "worker_build_run": false,
     "direct_new_entry_execution": false,
     "abi_compatible": false,
     "game_validated": false,
     "application_adoption": false,
-    "report_calls": "5typedtrueCALL/JMProwschecked,0failed;docs8addresses5claims0failed/unchecked/warnings"
+    "report_calls": "5typedtrueCALL/JMProwschecked,0failed;docs8addresses5claims0failed/unchecked/warnings",
+    "independent_primary_review": {
+      "reviewed_commit": "f480f28a8",
+      "result": "passed_no_Source_change",
+      "scope": "Whole110B43ops asm+completeSource/header;capturedrecord/node8zero,currentprev/branch-specificnext,freshnexttest/nexttarget/prev,countdecrement/capturednodefree/currentcount-headinclaliases",
+      "accepted_normalized_lf_sha256": {
+        "src/native_scene_command_list_clear.cpp": "97770e53d5e1cd9e577a88327022ecc6fc986ae64c5013855c60ab8d3dc31205",
+        "include/bsp/native_scene_command_list_clear.hpp": "c5fced97aa4b04f40d676fbb4a65f7b2e1a8392534a5d5f57df87829aff03377"
+      },
+      "hashes_asserted_unchanged": true
+    },
+    "accepted_Source_provider_hashes_unchanged": true
   },
   "limits": [
     "WholeordinarycurrentrawstorageSourceonly;childCppcleanup/currentCRTqualified;noOriginalheap/FH3/SEH/privateABI/gameproof",
