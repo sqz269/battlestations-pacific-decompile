@@ -42,6 +42,7 @@ same point with the same arguments.
 | 20 | 0059D7B0 | BSP_InterfaceView_DrawGroundOrtho | __thiscall(view) RET, tail JMP 0093D250 | Look-at from (+54Ch, 10000, +550h) down to (+54Ch, 0, +550h), up (0,0,1), into camera +10h; ortho (-w/2, w/2, -h/2, h/2, 1, 15000); shadow box min (x-w, 0, z-h) / max (x+w, 4500, z+h) to 00A8E860(00B7AAB0([+18h]), [+10h], &min, &max); then 0093D250(view+8h). |
 | 21 | 005CCE70 | BSP_HudEngineMovieScreen_Register | __thiscall(screen) RET | 004F71D0, loads `GUI_movie`, binds `up_Icon` / `down_Icon` (each name a temporary native string), +1Ch = 0.14f or 0.18f by [[0109CF04]+0Dh]. |
 | 22 | 005D20A0 | BSP_MultiErrorScreen_LayoutButtons | __thiscall(screen) RET | Measures the shown buttons (+114h / 960), spreads them across the +2Ch widget's width with equal gaps (00AA78D0 per shown button). |
+| 23 | 005EC250 | BSP_MultiModeSelectorScreen_RefreshMapList | __thiscall(screen) RET | In state 3: resets the scene record when out of range (004C6890), clears and hides the map list, commits the other screen ([00E19698]), rebuilds the command bar with five empty labels (0054B530, 15 dwords), and copies the four selector bytes into the lobby block game+1FF0h (+2Ch/+2Dh one-based). |
 | 26 | 00638C60 | BSP_HudMarker_ProjectOffscreenArrow | __fastcall(world, x*)(y*, angle*) RET 8 | View-space point via 00B6FCB0 / 004142E0; vy = v.y*4/3; angle = atan2(vy, v.x); margins from 00E197C8 and 00E197D0/00E197D8 (by [[0109CF04]+0Dh]); side-edge or top/bottom-edge placement as the two branches of the image. |
 | 26 | 00640A20 | BSP_InGameHudMarkers_UpdateLeadMarker | __thiscall(markers)(target) RET 4 | For an enemy target in range of the controlled gun unit, places a lead marker at the projected 00901C20 intercept point (marker pool +90h / +A0h, created with 0063E950 when needed) and fades it by the screen distance to the target (d2 * 384, capped at 1). The unit's vslot 34h is its velocity getter (RET 4); this resolves the "vtable +34h outputs" left open by docs/CC13_FE_10.md. |
 | 26 | 00642960 | BSP_InGameHudMarkers_AddSquadronMemberMarkers | __thiscall(markers)(squadron, flag, a3, a4, a5) RET 14h | Unless the squadron lead is at (or within 1e-10 squared of) the controlled unit, builds a marker per member through 00642040: emphasised for flight leaders (flag set) or the selected member (flag clear). |
@@ -75,7 +76,7 @@ same point with the same arguments.
 
 ## cc9 lane (skipped again, no record)
 
-- 0077C160, 0077C540 (seg 43): inside the cc9 unit/formation range 00778820..0077D270.
+- 0077B280, 0077C160, 0077C540 (seg 43): inside the cc9 unit/formation range 00778820..0077D270.
 - 0077D3F0, 0077D7F0, 0077F7B0, 0077F5E0, 0077FAD0 (seg 43): docs/CC13_GP_0071_0078.md "Names for cc9".
 - 0077FE80, 00780DB0 (seg 43): docs/CC13_CAM_2.md "Gameplay state, left alone" (entity
   replication; multiplayer scoring).
@@ -95,3 +96,28 @@ same point with the same arguments.
 
 - 0059D4A0 BSP_HudMapIcon_PlaceWidget (seg 20): for anchor modes other than 0 and 1 the position
   local is never written before it is passed to 00AA8240 (docs/CC13_SEG20.md); no faithful C++.
+
+## Not reached in this pass (no record)
+
+The rest of docs/CC13_SWEEPB.md's list, minus everything above. Instruction counts as there.
+
+- seg 15: 00528240 (553), 00529D70 (277), 0052A100 (271), 0052A470 (281), 0052A860 (215), 0052B080 (273), 0052BB10 (347), 0052C1B0 (368), 00534870 (241), 00536310 (382), 00536A90 (989), 00538F80 (1560), 0053BCC0 (501), 0053EE00 (310), 0053F2D0 (864)
+- seg 16: 00547480 (265), 00547A20 (258)
+- seg 18: 0056D660 (234)
+- seg 19: 0056D9A0 (237), 0056DD80 (421), 0056F320 (1061), 00570300 (324), 00578580 (198)
+- seg 20: 00583E50 (198), 00585C50 (174), 0058CE30 (243), 00593CA0 (355), 00597870 (1081), 005987F0 (259), 005A1C60 (435), 005A2340 (251), 005A2730 (399), 005A2C30 (429), 005A3210 (257), 005A3610 (174), 005A3830 (186), 005A3BF0 (229), 005A4200 (494), 005A6AD0 (734), 005A7550 (315), 005A7C20 (651), 005A8600 (678), 005A8F50 (173), 005A91E0 (405), 005A9770 (345), 005A9DB0 (868), 005AAC00 (239), 005ADDA0 (5027), 005B25D0 (424), 005B2D70 (532), 005B3470 (1316), 005B45C0 (1465), 005BE240 (804), 005C0BD0 (190), 005C4080 (259), 005C4D40 (371)
+- seg 21: none left.
+- seg 22: 005D18A0 (509), 005D26D0 (618), 005D43C0 (370), 005D73A0 (1155), 005DB050 (4159), 005DF510 (1391)
+- seg 23: 005E0DB0 (219), 005E12A0 (359), 005E1CF0 (265), 005E2750 (630), 005E3290 (194), 005E3580 (1024), 005E7B10 (1206), 005E9BE0 (297), 005EA030 (193), 005EADC0 (1138), 005EBDD0 (331), 005EE520 (387), 005F0CD0 (676), 005F24D0 (633), 005F3B50 (421), 005F65C0 (572), 005FA0F0 (723), 006003A0 (1017)
+- seg 24: 0060ABD0 (1578)
+- seg 25: 006113A0 (244), 00611770 (227), 00614320 (219), 00616C70 (314), 00617470 (255), 006179D0 (1139), 006191A0 (720), 0061B0F0 (576)
+- seg 26: 00621C60 (569), 00623710 (631), 00626C50 (275), 00627960 (291), 00637080 (312), 0063C110 (404), 0063C620 (838), 0063D1E0 (863), 00640D70 (615), 00641910 (340), 00642040 (641), 00642C20 (321), 0064AE20 (244), 00650450 (191), 00652C80 (348)
+- seg 27: 0065BF00 (259), 0065D220 (657), 0065FBF0 (431), 00660B10 (545), 00661240 (562), 00668770 (261), 006697E0 (258), 0066A8A0 (253), 00670020 (267), 00671D60 (255), 00673A10 (259), 00674B80 (1212), 0067F4D0 (1222)
+- seg 28: 0068BC80 (231)
+- seg 29: 006B9450 (818)
+- seg 31: 006D5220 (910)
+- seg 32: 006DE5C0 (354)
+- seg 43: 00776930 (1125)
+- seg 44: 007884D0 (1179), 00789560 (928), 0078A430 (729)
+- seg 46: 007A5110 (547), 007A5A00 (498), 007A7200 (231), 007A74F0 (469), 007A84D0 (225), 007A87B0 (345), 007A8DA0 (315), 007A91A0 (1815), 007ADD70 (252)
+- seg 51: 0081E350 (144; cited by cc9's docs/GUNNERY_OPEN_ITEMS.md, check with cc9), 00822C20 (2069), 00824B60 (470)

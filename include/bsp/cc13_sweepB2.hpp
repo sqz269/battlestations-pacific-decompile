@@ -334,6 +334,22 @@ public:
     // 00A9C8F0 (list box select index), __thiscall(listbox, int), RET 4.
     virtual void listbox_select_00a9c8f0(void* listbox, std::int32_t index) = 0;
 
+    // ---- multiplayer mode selector (005EC250) ----
+    // 004C6890 BSP_Game_SelectSceneRecord, __thiscall(game, int), RET 4.
+    virtual void game_select_scene_record_004c6890(void* game, std::int32_t index) = 0;
+    // 004F83B0 BSP_FrontEndScreen_CommitVisibility, ECX = screen.
+    virtual void frontend_screen_commit_visibility_004f83b0(void* screen) = 0;
+    // Screen vtable slot +18h, no stack arguments.
+    virtual void screen_vcall_18(void* screen) = 0;
+    // One (command byte, label, placement) triple of 0054B530.
+    struct CommandTriple {
+        std::uint32_t command;
+        const void* label;
+        std::uint32_t placement;
+    };
+    // 0054B530 BSP_MainMenuCommandBar_Rebuild, __thiscall(bar)(five triples, 15 dwords), RET 3Ch.
+    virtual void command_bar_rebuild_0054b530(void* bar, const CommandTriple* triples) = 0;
+
     // ---- HUD marker screen (4Dh) ----
     // 004B4B00 BSP_Game_GetControlledVehicle (no stack arguments), EAX.
     virtual void* game_controlled_vehicle_004b4b00() = 0;
@@ -450,6 +466,11 @@ void cc13_sweepB2_hud_engine_movie_screen_register_005cce70(void* screen, Cc13Sw
 
 // 005D20A0 BSP_MultiErrorScreen_LayoutButtons(screen).
 void cc13_sweepB2_multi_error_layout_buttons_005d20a0(void* screen, Cc13SweepB2Host& host);
+
+// ---- segment 23 ----
+
+// 005EC250 BSP_MultiModeSelectorScreen_RefreshMapList(screen).
+void cc13_sweepB2_mode_selector_refresh_map_list_005ec250(void* screen, Cc13SweepB2Host& host);
 
 // ---- segment 26 ----
 

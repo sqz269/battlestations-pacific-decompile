@@ -670,6 +670,69 @@ void cc13_sweepB2_multi_error_layout_buttons_005d20a0(void* screen, Cc13SweepB2H
 }
 
 // ===========================================================================
+// Segment 23
+// ===========================================================================
+
+// 005EC250 BSP_MultiModeSelectorScreen_RefreshMapList (hypothesis, ledger name).
+// ABI: __thiscall(ECX screen), RET. Callers 005EC5B0, 005ECD80, 005ED450
+// (hosts: include/bsp/frontend_screens_cc13.hpp, src/frontend_menus.cpp, as
+// hooks). Evidence: disk bytes 005EC250..005EC4B7.
+// - Only when +F8h == 3. count = the 434h-byte records of [[00E198AC]+5Ch]+24h
+//   (data +28h, end +2Ch; 0 when data is null); [game+60Ch] >= count (unsigned)
+//   -> 004C6890(game, 0).
+// - +F8h = 0, +FCh = 5.0f (00CE3850); 00A9C7C0([+A8h], -1); [+A8h] vslot 60h(0);
+//   byte [[+A8h]+77h] = 1; [+A8h] vslot 34h(0).
+// - s = [00E19698]: bytes +4h/+5h = 1, 004F83B0(s), s vslot 18h().
+// - Five empty native strings s1..s5 (0041E870 with 00CE3A0C, in that order);
+//   0054B530([00E1930C], {0, &s5, 0}, {0, &s4, 1}, {0, &s3, 1}, {0, &s2, 2},
+//   {0, &s1, 1}); the strings' data released s5 first, s1 last (length + 1).
+// - game+1FF0h: +27h = byte +E4h, +29h = byte +E8h, +2Ch = byte +ECh + 1,
+//   +2Dh = byte +F0h + 1.
+// EH frame 00C756D8 (states 0..4, the strings) is not modelled.
+void cc13_sweepB2_mode_selector_refresh_map_list_005ec250(void* screen, Cc13SweepB2Host& host) {
+    if (at<std::int32_t>(screen, 0xF8) != 3) return;
+    std::uint8_t* records = static_cast<std::uint8_t*>(at<void*>(image_pointer(host, 0x00E198AC), 0x5C)) + 0x24;
+    std::uint32_t count = 0;
+    if (at<std::uint8_t*>(records, 0x4) != nullptr) {
+        count = static_cast<std::uint32_t>((at<std::uint8_t*>(records, 0x8) - at<std::uint8_t*>(records, 0x4)) / 0x434);
+    }
+    void* game = host.global_00e188a8();
+    if (at<std::uint32_t>(game, 0x60C) >= count) host.game_select_scene_record_004c6890(game, 0);
+    at<std::int32_t>(screen, 0xF8) = 0;
+    at<float>(screen, 0xFC) = 5.0f;
+    host.listbox_select_index_00a9c7c0(at<void*>(screen, 0xA8), -1);
+    host.widget_vcall_60(at<void*>(screen, 0xA8), 0);
+    at<std::uint8_t>(at<void*>(screen, 0xA8), 0x77) = 1;
+    host.widget_vcall_34_set_visible(at<void*>(screen, 0xA8), 0);
+    void* other = image_pointer(host, 0x00E19698);
+    at<std::uint8_t>(other, 0x4) = 1;
+    at<std::uint8_t>(other, 0x5) = 1;
+    host.frontend_screen_commit_visibility_004f83b0(other);
+    host.screen_vcall_18(other);
+
+    Cc13SweepBNativeString strings[5];
+    const char* empty = static_cast<const char*>(host.image_global(0x00CE3A0C));
+    for (auto& s : strings) {
+        s = {0, nullptr};
+        host.native_string_assign_0041e870(&s, empty);
+    }
+    const Cc13SweepB2Host::CommandTriple triples[5] = {
+        {0, &strings[4], 0}, {0, &strings[3], 1}, {0, &strings[2], 1}, {0, &strings[1], 2}, {0, &strings[0], 1}};
+    host.command_bar_rebuild_0054b530(image_pointer(host, 0x00E1930C), triples);
+    for (int k = 4; k >= 0; --k) {
+        if (strings[k].data != nullptr) {
+            host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), strings[k].data,
+                                                  strings[k].length + 1, 1);
+        }
+    }
+    std::uint8_t* lobby = static_cast<std::uint8_t*>(host.global_00e188a8()) + 0x1FF0;
+    at<std::uint8_t>(lobby, 0x27) = at<std::uint8_t>(screen, 0xE4);
+    at<std::uint8_t>(lobby, 0x29) = at<std::uint8_t>(screen, 0xE8);
+    at<std::uint8_t>(lobby, 0x2C) = static_cast<std::uint8_t>(at<std::uint8_t>(screen, 0xEC) + 1);
+    at<std::uint8_t>(lobby, 0x2D) = static_cast<std::uint8_t>(at<std::uint8_t>(screen, 0xF0) + 1);
+}
+
+// ===========================================================================
 // Segment 26
 // ===========================================================================
 
