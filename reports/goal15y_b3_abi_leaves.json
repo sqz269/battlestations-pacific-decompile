@@ -1,0 +1,877 @@
+{
+  "packet": "goal15y_b3_abi_leaves",
+  "scope_started_utc": "2026-10-16T04:34:47+00:00",
+  "clock_scope": "First explicit clock capture immediately before initial brief; dispatcher timestamp, if recovered, supersedes this.",
+  "warm_worktree": "J:\\PROG\\battlestations-pacific-decompile-goal15q_b4_x87",
+  "base_pin": "d1c74e2ecc0649bb769496aa8f0c237db1e0a693",
+  "source_file_sha256": {
+    "src/native_tagged_abi_leaf_b3_01.cpp": "805141fffb8f85f40f2e26236e972654da2e8958c525da8c761c46afd6d66eef",
+    "include/bsp/native_tagged_abi_leaf_b3_01.hpp": "6d30477793786aa27147395eab7a0cf1d0a308b8a01825d210f3d5356ff28181"
+  },
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "fresh_typed_capture": "local/goal15y_b3_abi_leaves/typed_flow.json",
+  "typed_summary": {
+    "accepted": true,
+    "rows": [
+      {
+        "address": "00b3ffa0",
+        "complete": true,
+        "program": {
+          "path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": {
+            "space": "ram",
+            "offset": "00400000"
+          },
+          "default_address_space": "ram",
+          "project": {
+            "name": "bsp",
+            "location": "/C:/Users/sqz269/",
+            "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+          }
+        },
+        "functions": [
+          {
+            "entry": {
+              "space": "ram",
+              "offset": "00b3ffa0"
+            },
+            "name": "TRIV_body_00b3ffa0",
+            "no_return": false,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null,
+            "body": {
+              "range_count": 1,
+              "returned_range_count": 1,
+              "address_count": "4",
+              "complete": true,
+              "ranges": [
+                {
+                  "start": {
+                    "space": "ram",
+                    "offset": "00b3ffa0"
+                  },
+                  "end_inclusive": {
+                    "space": "ram",
+                    "offset": "00b3ffa3"
+                  },
+                  "length": "4"
+                }
+              ]
+            }
+          }
+        ],
+        "modification_before": "4886",
+        "modification_after": "4886"
+      },
+      {
+        "address": "00b3d5e0",
+        "complete": true,
+        "program": {
+          "path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": {
+            "space": "ram",
+            "offset": "00400000"
+          },
+          "default_address_space": "ram",
+          "project": {
+            "name": "bsp",
+            "location": "/C:/Users/sqz269/",
+            "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+          }
+        },
+        "functions": [
+          {
+            "entry": {
+              "space": "ram",
+              "offset": "00b3d5e0"
+            },
+            "name": "TRIV_body_00b3d5e0",
+            "no_return": false,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null,
+            "body": {
+              "range_count": 1,
+              "returned_range_count": 1,
+              "address_count": "85",
+              "complete": true,
+              "ranges": [
+                {
+                  "start": {
+                    "space": "ram",
+                    "offset": "00b3d5e0"
+                  },
+                  "end_inclusive": {
+                    "space": "ram",
+                    "offset": "00b3d634"
+                  },
+                  "length": "85"
+                }
+              ]
+            }
+          }
+        ],
+        "modification_before": "4886",
+        "modification_after": "4886"
+      }
+    ]
+  },
+  "installed_pe": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "machine": "I386",
+    "timestamp": 1245831434
+  },
+  "functions": [
+    {
+      "address": "00b3ffa0",
+      "name": "bsp_tagged_abi_b3_00b3ffa0",
+      "coverage": "complete",
+      "native_end": "00b3ffa3",
+      "native_length": 4,
+      "native_hex": "d94118c3",
+      "installed_file_offset": 7602080,
+      "live_installed_whole_body_equal": true,
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "4",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3ffa0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3ffa3"
+            },
+            "length": "4"
+          }
+        ]
+      },
+      "original_ghidra_name": "TRIV_body_00b3ffa0",
+      "source": "src/native_tagged_abi_leaf_b3_01.cpp",
+      "original_semantic_class_prototype_unknown": true,
+      "source_interface": "float __fastcall(const void* backing)",
+      "native_physical_binding": "ECX sole actual input, FLD m32real [ECX+18h] to ST0; RET",
+      "live_xrefs": "No references found to address: 00b3ffa0 TRIV_body_00b3ffa0"
+    },
+    {
+      "address": "00b3d5e0",
+      "name": "bsp_tagged_abi_b3_00b3d5e0",
+      "coverage": "complete",
+      "native_end": "00b3d634",
+      "native_length": 85,
+      "native_hex": "83ec108b442420f30f1000f30f110424f30f1040048b0c24f30f11442404f30f1040088b542404f30f11442408f30f10400c8b44241489088b4c2408895004f30f1144240c8b54240c89480889500c83c410c21000",
+      "installed_file_offset": 7591392,
+      "live_installed_whole_body_equal": true,
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "85",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b3d5e0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b3d634"
+            },
+            "length": "85"
+          }
+        ]
+      },
+      "original_ghidra_name": "TRIV_body_00b3d5e0",
+      "source": "src/native_tagged_abi_leaf_b3_01.cpp",
+      "original_semantic_class_prototype_unknown": true,
+      "source_interface": "void* __stdcall(void* destination, uint32 physical_unread_word08, uint32 physical_unread_word0c, const void* source)",
+      "native_physical_binding": "Entry ESP+4 actual destination; entry ESP+10h actual source; +8/+Ch not directly read; actual local10h scratch; RET10h; no incoming EAX/ECX/EDX value consumed",
+      "live_xrefs": "No references found to address: 00b3d5e0 TRIV_body_00b3d5e0"
+    }
+  ],
+  "strict": {
+    "flags": "/nologo /std:c++20 /MD /O2 /W4 /WX /fp:strict /Gy /c /Iinclude",
+    "seconds": 3.4826625999994576,
+    "coff": {
+      "path": "local\\goal15y_b3_abi_leaves\\strict_module.obj",
+      "sha256": "0857e91ca2ec364452889f02df5f340eaa2f7f641bcea8ca813a6028353fcf2d",
+      "size": 897,
+      "machine": "I386",
+      "all_nonempty_executable_sections_accounted": true,
+      "executable_bytes": 89,
+      "executable_relocations": 0,
+      "nonempty_executable_sections": [
+        {
+          "index": 3,
+          "name": ".text$mn",
+          "size": 4,
+          "raw_offset": 451,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744
+        },
+        {
+          "index": 4,
+          "name": ".text$mn",
+          "size": 85,
+          "raw_offset": 455,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744
+        }
+      ],
+      "functions": [
+        {
+          "address": "00b3ffa0",
+          "symbol": "@bsp_tagged_abi_b3_00b3ffa0@4",
+          "symbol_offset": 0,
+          "section": 3,
+          "whole_executable_section_size": 4,
+          "whole_executable_section_hex": "d94118c3",
+          "instructions": [
+            {
+              "address": "00b3ffa0",
+              "hex": "d94118",
+              "mnemonic": "fld",
+              "operands": "dword ptr [ecx + 0x18]"
+            },
+            {
+              "address": "00b3ffa3",
+              "hex": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ]
+        },
+        {
+          "address": "00b3d5e0",
+          "symbol": "_bsp_tagged_abi_b3_00b3d5e0@16",
+          "symbol_offset": 0,
+          "section": 4,
+          "whole_executable_section_size": 85,
+          "whole_executable_section_hex": "83ec108b442420f30f1000f30f110424f30f1040048b0c24f30f11442404f30f1040088b542404f30f11442408f30f10400c8b44241489088b4c2408895004f30f1144240c8b54240c89480889500c83c410c21000",
+          "instructions": [
+            {
+              "address": "00b3d5e0",
+              "hex": "83ec10",
+              "mnemonic": "sub",
+              "operands": "esp, 0x10"
+            },
+            {
+              "address": "00b3d5e3",
+              "hex": "8b442420",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esp + 0x20]"
+            },
+            {
+              "address": "00b3d5e7",
+              "hex": "f30f1000",
+              "mnemonic": "movss",
+              "operands": "xmm0, dword ptr [eax]"
+            },
+            {
+              "address": "00b3d5eb",
+              "hex": "f30f110424",
+              "mnemonic": "movss",
+              "operands": "dword ptr [esp], xmm0"
+            },
+            {
+              "address": "00b3d5f0",
+              "hex": "f30f104004",
+              "mnemonic": "movss",
+              "operands": "xmm0, dword ptr [eax + 4]"
+            },
+            {
+              "address": "00b3d5f5",
+              "hex": "8b0c24",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [esp]"
+            },
+            {
+              "address": "00b3d5f8",
+              "hex": "f30f11442404",
+              "mnemonic": "movss",
+              "operands": "dword ptr [esp + 4], xmm0"
+            },
+            {
+              "address": "00b3d5fe",
+              "hex": "f30f104008",
+              "mnemonic": "movss",
+              "operands": "xmm0, dword ptr [eax + 8]"
+            },
+            {
+              "address": "00b3d603",
+              "hex": "8b542404",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [esp + 4]"
+            },
+            {
+              "address": "00b3d607",
+              "hex": "f30f11442408",
+              "mnemonic": "movss",
+              "operands": "dword ptr [esp + 8], xmm0"
+            },
+            {
+              "address": "00b3d60d",
+              "hex": "f30f10400c",
+              "mnemonic": "movss",
+              "operands": "xmm0, dword ptr [eax + 0xc]"
+            },
+            {
+              "address": "00b3d612",
+              "hex": "8b442414",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esp + 0x14]"
+            },
+            {
+              "address": "00b3d616",
+              "hex": "8908",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax], ecx"
+            },
+            {
+              "address": "00b3d618",
+              "hex": "8b4c2408",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [esp + 8]"
+            },
+            {
+              "address": "00b3d61c",
+              "hex": "895004",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 4], edx"
+            },
+            {
+              "address": "00b3d61f",
+              "hex": "f30f1144240c",
+              "mnemonic": "movss",
+              "operands": "dword ptr [esp + 0xc], xmm0"
+            },
+            {
+              "address": "00b3d625",
+              "hex": "8b54240c",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [esp + 0xc]"
+            },
+            {
+              "address": "00b3d629",
+              "hex": "894808",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 8], ecx"
+            },
+            {
+              "address": "00b3d62c",
+              "hex": "89500c",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0xc], edx"
+            },
+            {
+              "address": "00b3d62f",
+              "hex": "83c410",
+              "mnemonic": "add",
+              "operands": "esp, 0x10"
+            },
+            {
+              "address": "00b3d632",
+              "hex": "c21000",
+              "mnemonic": "ret",
+              "operands": "0x10"
+            }
+          ]
+        }
+      ],
+      "undefined_external_symbols": [],
+      "all_section_relocations": 0
+    }
+  },
+  "prior_b4_preservation": {
+    "prior_pin": "e85d913c829fe1c13b850c052cec683415aa52a2",
+    "files": [
+      {
+        "path": "include/bsp/native_tagged_x87_leaf_b4_01.hpp",
+        "size": 654,
+        "sha256": "f19c257a93b304fcca60cbf1b4b434846ea995a627435f46d1bb7cfbaefb52c1",
+        "retained": "local\\goal15y_b3_abi_leaves\\prior_b4\\include\\bsp\\native_tagged_x87_leaf_b4_01.hpp"
+      },
+      {
+        "path": "src/native_tagged_x87_leaf_b4_01.cpp",
+        "size": 504,
+        "sha256": "e433ce3dd82435c7efdd126af41a3243498326d8bbc69b9345403f51d128e86e",
+        "retained": "local\\goal15y_b3_abi_leaves\\prior_b4\\src\\native_tagged_x87_leaf_b4_01.cpp"
+      },
+      {
+        "path": "docs/GOAL15Q_TAGGED_X87_B4_01.md",
+        "size": 5886,
+        "sha256": "5b6ae720a9d0532c63f4b3b08ca7bf0f87946a624c102089c285139641f36de8",
+        "retained": "local\\goal15y_b3_abi_leaves\\prior_b4\\docs\\GOAL15Q_TAGGED_X87_B4_01.md"
+      },
+      {
+        "path": "reports/goal15q_tagged_x87_b4_01.json",
+        "size": 14863,
+        "sha256": "c387d32df17ef5f0c7c7842a5eb16dfacc4ae52d86cdaa3489069f9f72cb895a",
+        "retained": "local\\goal15y_b3_abi_leaves\\prior_b4\\reports\\goal15q_tagged_x87_b4_01.json"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 256128,
+        "sha256": "a1cda1f1cc38e4c289c65e8e717e62efda1ba981333a10570e50555533d48120",
+        "retained": "local\\goal15y_b3_abi_leaves\\prior_b4\\cmake\\startup.cmake"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_tagged_x87_leaf_b4_01.obj",
+        "size": 702,
+        "sha256": "ab884131e619d1b21b01aac5601231a565eba054bbd363d66567bb47d6356dc9",
+        "retained": "local\\goal15y_b3_abi_leaves\\prior_b4\\build\\win32\\bsp_core.dir\\Release\\native_tagged_x87_leaf_b4_01.obj"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 93507096,
+        "sha256": "6e07f481252d3a535e0760b70fffa15728132b9fb7eb039242ffb5dfe94d38d4",
+        "retained": "local\\goal15y_b3_abi_leaves\\prior_b4\\build\\win32\\Release\\bsp_core.lib"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "size": 394006,
+        "sha256": "cd1a268564cf290baa47b06d19a36f8e2adf9510c0b3462a06249ebc567bf2a3",
+        "retained": "local\\goal15y_b3_abi_leaves\\prior_b4\\build\\win32\\bsp_core.vcxproj"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.command.1.tlog",
+        "size": 4111856,
+        "sha256": "869098c2d5750b00e2a635bfc211bc36487fabba2ca499e35e43038d9da32b00",
+        "retained": "local\\goal15y_b3_abi_leaves\\prior_b4\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.command.1.tlog"
+      },
+      {
+        "path": "local/goal15q_tagged_x87_b4_01/strict_module.obj",
+        "size": 686,
+        "sha256": "cc4385a0fec82d8193e5cbd8407ba5036c85eb6a4a34ba1b4e30818f8dd0793e",
+        "retained": "local\\goal15y_b3_abi_leaves\\prior_b4\\local\\goal15q_tagged_x87_b4_01\\strict_module.obj"
+      },
+      {
+        "path": "local/goal15q_tagged_x87_b4_01/strict_module.asm",
+        "size": 854,
+        "sha256": "b6a08f34c4d5647a602b34ba4285e4dd0e4c308e08a07ace2de48e27c7abbb88",
+        "retained": "local\\goal15y_b3_abi_leaves\\prior_b4\\local\\goal15q_tagged_x87_b4_01\\strict_module.asm"
+      },
+      {
+        "path": "local/goal15q_tagged_x87_b4_01/strict_compile.cmd",
+        "size": 459,
+        "sha256": "6c9a72c8d0cd802b2ec7637447bb359441fcedda3602493a10c7139905765a92",
+        "retained": "local\\goal15y_b3_abi_leaves\\prior_b4\\local\\goal15q_tagged_x87_b4_01\\strict_compile.cmd"
+      },
+      {
+        "path": "local/goal15q_tagged_x87_b4_01/strict_compile.log",
+        "size": 34,
+        "sha256": "01d98c99e200a9d9de37d60b067b4c20beec5cf33cbd010b12d5763f955a0950",
+        "retained": "local\\goal15y_b3_abi_leaves\\prior_b4\\local\\goal15q_tagged_x87_b4_01\\strict_compile.log"
+      },
+      {
+        "path": "local/goal15q_tagged_x87_b4_01/registered_build.log",
+        "size": 94233,
+        "sha256": "a9e0b7f8c696de341297ae921f60abad45a1b32f827ac4ea257689b657d7facf",
+        "retained": "local\\goal15y_b3_abi_leaves\\prior_b4\\local\\goal15q_tagged_x87_b4_01\\registered_build.log"
+      },
+      {
+        "path": "local/goal15q_x87_verify.py",
+        "size": 11223,
+        "sha256": "e71a9b5949a7edd40ac19bb9d5a9fc9ee6656409fac9c9be2b700bf3fb7ec2b8",
+        "retained": "local\\goal15y_b3_abi_leaves\\prior_b4\\local\\goal15q_x87_verify.py"
+      },
+      {
+        "path": "local/goal15q_x87_finalize.py",
+        "size": 5880,
+        "sha256": "fa46703f37617780d517a67cddeaaff18363913348d450fe172e75d89fa649f7",
+        "retained": "local\\goal15y_b3_abi_leaves\\prior_b4\\local\\goal15q_x87_finalize.py"
+      }
+    ],
+    "missing": []
+  },
+  "rejected_current_source_forms": [],
+  "source_api_qualification": {
+    "x87_float_return_is_source_interface_hypothesis": true,
+    "sse_stdcall_is_physical_envelope_not_recovered_semantic_prototype": true,
+    "middle_words_are_explicit_actual_unread_cleanup_cells": true,
+    "no_original_receiver_or_class_assumed": true,
+    "no_fake_edx_or_adapter": true
+  },
+  "machine_effects": {
+    "x87": "Single FLD pushes ST0 with inherited x87 masks/status/control, exception and load fault semantics. GPR/EFLAGS untouched except normal RET ESP/EIP effects; no reset/wait/store/frame. Absolute FIP and fault instruction address depend on placement.",
+    "sse": "MOVSS reads/writes and actual local scratch occur in Native instruction order. EAX captured destination; ECX scratch+8 after destination0 write; EDX scratch+0Ch after last MOVSS scratch store; XMM0 low32 last source read and high96 cleared by legacy load. No incoming EAX/ECX/EDX consumed. Final ADD ESP,10h defines arithmetic EFLAGS; RET consumes actual return cell and16-byte envelope. No x87 operation or MXCSR/control reset."
+  },
+  "qualification": {
+    "complete_source_functions": 2,
+    "complete_source_bytes": 89,
+    "complete_source_instructions": 23,
+    "strict_whole_body_identity": true,
+    "registered_build": true,
+    "abi_adoption": false,
+    "game_validated": false,
+    "ghidra_mutations": false,
+    "deployment": false,
+    "fp_exception_mode_runtime_validation": false,
+    "registered_whole_body_identity": true,
+    "actual_archive_provider_verified": true,
+    "one_targeted_source_alias_fixture_passed": true,
+    "source_entry_physical_binding_verified": true,
+    "original_cxx_calling_convention_unknown": true,
+    "semantic_prototype_recovered": false
+  },
+  "old_documentation": "local/goal15y_b3_abi_leaves/old_documentation.json",
+  "caller_uncertainty": "No xrefs reported for either entry; D5E0 callers endpoint function:null is inconclusive and does not prove unused.",
+  "registered_build": {
+    "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1",
+    "started_utc": "2026-10-16T04:43:46.477924+00:00",
+    "completed_utc": "2026-10-16T04:44:28.121006+00:00",
+    "seconds": 41.579613800000516,
+    "exit_code": 0,
+    "log": "local/goal15y_b3_abi_leaves/registered_build.log",
+    "coff": {
+      "path": "build\\win32\\bsp_core.dir\\Release\\native_tagged_abi_leaf_b3_01.obj",
+      "sha256": "0f3d87e9ad3732f988443dc2c50aa0b0a9e6e154f64b0365ffdcd408e8d9182a",
+      "size": 917,
+      "machine": "I386",
+      "all_nonempty_executable_sections_accounted": true,
+      "executable_bytes": 89,
+      "executable_relocations": 0,
+      "nonempty_executable_sections": [
+        {
+          "index": 3,
+          "name": ".text$mn",
+          "size": 4,
+          "raw_offset": 471,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744
+        },
+        {
+          "index": 4,
+          "name": ".text$mn",
+          "size": 85,
+          "raw_offset": 475,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744
+        }
+      ],
+      "functions": [
+        {
+          "address": "00b3ffa0",
+          "symbol": "@bsp_tagged_abi_b3_00b3ffa0@4",
+          "symbol_offset": 0,
+          "section": 3,
+          "whole_executable_section_size": 4,
+          "whole_executable_section_hex": "d94118c3",
+          "instructions": [
+            {
+              "address": "00b3ffa0",
+              "hex": "d94118",
+              "mnemonic": "fld",
+              "operands": "dword ptr [ecx + 0x18]"
+            },
+            {
+              "address": "00b3ffa3",
+              "hex": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ]
+        },
+        {
+          "address": "00b3d5e0",
+          "symbol": "_bsp_tagged_abi_b3_00b3d5e0@16",
+          "symbol_offset": 0,
+          "section": 4,
+          "whole_executable_section_size": 85,
+          "whole_executable_section_hex": "83ec108b442420f30f1000f30f110424f30f1040048b0c24f30f11442404f30f1040088b542404f30f11442408f30f10400c8b44241489088b4c2408895004f30f1144240c8b54240c89480889500c83c410c21000",
+          "instructions": [
+            {
+              "address": "00b3d5e0",
+              "hex": "83ec10",
+              "mnemonic": "sub",
+              "operands": "esp, 0x10"
+            },
+            {
+              "address": "00b3d5e3",
+              "hex": "8b442420",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esp + 0x20]"
+            },
+            {
+              "address": "00b3d5e7",
+              "hex": "f30f1000",
+              "mnemonic": "movss",
+              "operands": "xmm0, dword ptr [eax]"
+            },
+            {
+              "address": "00b3d5eb",
+              "hex": "f30f110424",
+              "mnemonic": "movss",
+              "operands": "dword ptr [esp], xmm0"
+            },
+            {
+              "address": "00b3d5f0",
+              "hex": "f30f104004",
+              "mnemonic": "movss",
+              "operands": "xmm0, dword ptr [eax + 4]"
+            },
+            {
+              "address": "00b3d5f5",
+              "hex": "8b0c24",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [esp]"
+            },
+            {
+              "address": "00b3d5f8",
+              "hex": "f30f11442404",
+              "mnemonic": "movss",
+              "operands": "dword ptr [esp + 4], xmm0"
+            },
+            {
+              "address": "00b3d5fe",
+              "hex": "f30f104008",
+              "mnemonic": "movss",
+              "operands": "xmm0, dword ptr [eax + 8]"
+            },
+            {
+              "address": "00b3d603",
+              "hex": "8b542404",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [esp + 4]"
+            },
+            {
+              "address": "00b3d607",
+              "hex": "f30f11442408",
+              "mnemonic": "movss",
+              "operands": "dword ptr [esp + 8], xmm0"
+            },
+            {
+              "address": "00b3d60d",
+              "hex": "f30f10400c",
+              "mnemonic": "movss",
+              "operands": "xmm0, dword ptr [eax + 0xc]"
+            },
+            {
+              "address": "00b3d612",
+              "hex": "8b442414",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esp + 0x14]"
+            },
+            {
+              "address": "00b3d616",
+              "hex": "8908",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax], ecx"
+            },
+            {
+              "address": "00b3d618",
+              "hex": "8b4c2408",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [esp + 8]"
+            },
+            {
+              "address": "00b3d61c",
+              "hex": "895004",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 4], edx"
+            },
+            {
+              "address": "00b3d61f",
+              "hex": "f30f1144240c",
+              "mnemonic": "movss",
+              "operands": "dword ptr [esp + 0xc], xmm0"
+            },
+            {
+              "address": "00b3d625",
+              "hex": "8b54240c",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [esp + 0xc]"
+            },
+            {
+              "address": "00b3d629",
+              "hex": "894808",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 8], ecx"
+            },
+            {
+              "address": "00b3d62c",
+              "hex": "89500c",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0xc], edx"
+            },
+            {
+              "address": "00b3d62f",
+              "hex": "83c410",
+              "mnemonic": "add",
+              "operands": "esp, 0x10"
+            },
+            {
+              "address": "00b3d632",
+              "hex": "c21000",
+              "mnemonic": "ret",
+              "operands": "0x10"
+            }
+          ]
+        }
+      ],
+      "undefined_external_symbols": [],
+      "all_section_relocations": 0
+    },
+    "project_entry": {
+      "Include": "J:\\PROG\\battlestations-pacific-decompile-goal15q_b4_x87\\src\\native_tagged_abi_leaf_b3_01.cpp"
+    },
+    "release_settings": {
+      "AdditionalIncludeDirectories": "J:\\PROG\\battlestations-pacific-decompile-goal15q_b4_x87\\include;J:\\PROG\\battlestations-pacific-decompile-goal15q_b4_x87\\build\\win32\\_deps\\lua511-src\\src;J:\\PROG\\battlestations-pacific-decompile-goal15q_b4_x87\\build\\win32\\_deps\\zlib121-src;%(AdditionalIncludeDirectories)",
+      "AdditionalOptions": "%(AdditionalOptions) /external:I \"J:/PROG/battlestations-pacific-decompile-goal15q_b4_x87/build/win32/_deps/dxsdk_d3dx-src/build/native/include\"",
+      "AssemblerListingLocation": "$(IntDir)",
+      "BasicRuntimeChecks": "Default",
+      "BufferSecurityCheck": null,
+      "CallingConvention": null,
+      "ExceptionHandling": "Sync",
+      "ExternalWarningLevel": "TurnOffAllWarnings",
+      "FloatingPointModel": "Strict",
+      "ForceConformanceInForLoopScope": null,
+      "InlineFunctionExpansion": "AnySuitable",
+      "LanguageStandard": "stdcpp17",
+      "MinimalRebuild": null,
+      "Optimization": "MaxSpeed",
+      "PrecompiledHeader": "NotUsing",
+      "RemoveUnreferencedCodeData": null,
+      "RuntimeLibrary": "MultiThreadedDLL",
+      "SupportJustMyCode": null,
+      "TreatWChar_tAsBuiltInType": null,
+      "TreatWarningAsError": "true",
+      "UseFullPaths": "false",
+      "WarningLevel": "Level4",
+      "PreprocessorDefinitions": "%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"",
+      "ObjectFileName": "$(IntDir)",
+      "DebugInformationFormat": "\n      ",
+      "ScanSourceForModuleDependencies": "false"
+    },
+    "strict_registered_complete_executable_sections_equal": true,
+    "existing_test_lines": [
+      "1/2 Test #1: reconstructed_math ...............   Passed    0.33 sec",
+      "2/2 Test #2: tool_tests .......................   Passed   13.80 sec",
+      "100% tests passed, 0 tests failed out of 2",
+      "Total Test time (real) =  14.19 sec"
+    ],
+    "archive": {
+      "path": "build\\win32\\Release\\bsp_core.lib",
+      "sha256": "bdf5ce3e8942d7abfdcbedeea181a3dcc0ab7f2e0351ec0980db1fdb5f9fe709",
+      "size": 93641518,
+      "retained": "local/goal15y_b3_abi_leaves/registered_bsp_core.lib",
+      "member": {
+        "header_offset": 36581522,
+        "raw_name": "/18356",
+        "start": 36581582,
+        "size": 917,
+        "name": "bsp_core.dir\\Release\\native_tagged_abi_leaf_b3_01.obj"
+      },
+      "member_sha256": "0f3d87e9ad3732f988443dc2c50aa0b0a9e6e154f64b0365ffdcd408e8d9182a",
+      "member_bytes_equal_actual_registered_object": true,
+      "linker_directory_unique_providers": {
+        "@bsp_tagged_abi_b3_00b3ffa0@4": [
+          36581522
+        ],
+        "_bsp_tagged_abi_b3_00b3d5e0@16": [
+          36581522
+        ]
+      }
+    }
+  },
+  "targeted_alias_fixture": {
+    "source": "local/goal15y_b3_abi_leaves/alias_fixture.cpp",
+    "archive_linked": "bdf5ce3e8942d7abfdcbedeea181a3dcc0ab7f2e0351ec0980db1fdb5f9fe709",
+    "compile_seconds": 3.4103786000050604,
+    "run_seconds": 0.735453300003428,
+    "compile_flags": "/nologo /std:c++20 /MD /Od /Oy- /W4 /WX /fp:strict /EHsc /Iinclude /link /MANIFEST:EMBED",
+    "result": {
+      "pass": true,
+      "before_esp": 7337652,
+      "after_esp": 7337652,
+      "destination": 7337624,
+      "eax": 7337624,
+      "ecx": 8392862,
+      "edx": 4290847557,
+      "source": [
+        8392862,
+        2139095041,
+        1,
+        4290847557
+      ],
+      "observed": [
+        8392862,
+        4290847557,
+        8392862,
+        4290847557
+      ],
+      "xmm0": [
+        4290847557,
+        0,
+        0,
+        0
+      ]
+    },
+    "concrete_risk": "D=callee scratch+8 overwrites scratch third word before it is read; last scratch store overwrites destination second word. source[0] is the actual return label to keep the overlapping return-cell write valid.",
+    "scope": "One Source fixture against the actual registered archive. Confirms this stack-alias trace,16-byte cleanup,EAX/ECX/EDX and XMM0 observation. No Original-address execution, game, x87, fault, control/MXCSR or mode-wide validation.",
+    "embedded_manifest_verified": true,
+    "linked_executable_contains_unique_complete_sse_body": true,
+    "executable_sha256": "6981f24f7eb989ad5c08e2170bf8eace2b8d0b7726ef84481406204931eb762b",
+    "fixture_source_sha256": "34533ecc5033d2dc8bea3316f75d36c5d3f3a45888d605412750006ce7604c94",
+    "retained_rejected_attempt": {
+      "reason": "MSVC C4740 /WX: flow in or out of inline asm suppresses global optimization; Source module unaffected",
+      "artifacts": [
+        {
+          "path": "local\\goal15y_b3_abi_leaves\\fixture_attempt01_O2\\alias_fixture.cpp",
+          "sha256": "34533ecc5033d2dc8bea3316f75d36c5d3f3a45888d605412750006ce7604c94"
+        },
+        {
+          "path": "local\\goal15y_b3_abi_leaves\\fixture_attempt01_O2\\alias_compile.cmd",
+          "sha256": "827239e8d82c08122223ef372c9e6c3a423c1e7ab8f5361453ac0c4a46b7a42e"
+        },
+        {
+          "path": "local\\goal15y_b3_abi_leaves\\fixture_attempt01_O2\\alias_compile.log",
+          "sha256": "b60085c81aac42e60ae6377dd6c75a92613739bb9146c68cb50aedca04685f48"
+        }
+      ]
+    }
+  },
+  "source_compile_version": "; Listing generated by Microsoft (R) Optimizing Compiler Version 19.51.36244.0 ",
+  "checklist": {
+    "path": "docs/WORKER_VERIFICATION_CHECKLIST.md",
+    "complete_typed_extents": true,
+    "calls": 0,
+    "layout": "Only actual addressed cells; no class/semantic layout recovered",
+    "report_call_checker": "0 call rows,0 failures",
+    "doc_call_checker": "0 call claims,0 failures,0 unchecked,0 warnings"
+  },
+  "precommit_review_completed_utc": "2026-10-16T04:50:00.462947+00:00",
+  "precommit_elapsed_seconds": 913.462962,
+  "ghidra_annotation_deferred_to_integrator": true,
+  "no_new_routine_test_suite": true,
+  "full_clock_scope": "Initial brief/preservation/one pinned merge, fresh live/PE/typed qualification, Source/API and overlap/fault review, strict compile, one warm build+existing tests, rejected fixture attempt and successful targeted fixture, archive/providers/provenance, docs/report, ledgers/index and final review. Commit/release/handoff end is recorded separately.",
+  "prior_b4_source_unchanged_after_merge": {
+    "include/bsp/native_tagged_x87_leaf_b4_01.hpp": true,
+    "src/native_tagged_x87_leaf_b4_01.cpp": true
+  }
+}
