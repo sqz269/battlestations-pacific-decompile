@@ -25,3 +25,13 @@ struct NativeGuiFrameBoxDefaultBindings {
 void* construct_native_gui_frame_box_default_00ad2600(
     void* actual_destination, NativeGuiFrameBoxDefaultBindings& bindings);
 } // namespace bsp
+
+namespace bsp {
+// Whole 00AD26D0..00AD26D8: MOV AX,[ECX+ECh]; RET (8 bytes/two starts).
+// Borrow a live DWORD-aligned actual FrameBox; return its current WORD bits.
+// No semantic GuiFrameBox overlay or signed conversion is used. Win32 fastcall
+// carries the one argument in ECX and returns the bits in AX. Original address
+// placement, caller adoption and runtime execution are not established here.
+std::uint16_t __fastcall native_gui_frame_box_current_state_bits_00ad26d0(
+    const void* actual_frame_box) noexcept;
+} // namespace bsp
