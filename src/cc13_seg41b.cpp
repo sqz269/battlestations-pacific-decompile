@@ -135,8 +135,9 @@ void land_fort_load_saved_state_00748cc0(Object fort, LandFortLoadHost& host) {
         host.lua_reader_enter_00bd8e20(&reader, {0, dword_of("_landFort")});  // 00748D35, 00CFF3A0
         if (host.lua_reader_has_key_00bd5eb0(&reader, {0, dword_of("gazdi")})) {  // 00748D55, 00CFF398
             host.lua_reader_enter_00bd8e20(&reader, {0, dword_of("gazdi")});      // 00748D78
-            host.reader_read_object_ref_007453c0(&reader, {0, dword_of("ID")},
-                                                 &at<std::uint32_t>(fort, 0x738));  // 00748D9E, 00CE59B4
+            cc13_seg41::save_reader_read_observer_ref_007453c0(&reader, 0, dword_of("ID"),
+                                                               &at<std::uint32_t>(fort, 0x738),
+                                                               host);  // 00748D9E, 00CE59B4
             // The image's slot [esp+8] holds a stale stack address when "section" is absent;
             // modelled as 0 (see the doc).
             std::int32_t section = 0;

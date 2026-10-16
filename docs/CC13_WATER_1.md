@@ -140,6 +140,19 @@ keep them behind an OFF switch with a comment recording that the image shares st
    - The MSAR CRC-32 chain starts from the literal 61746973h.
 5. **Possible overflow.** 00BA5240 sizes its index buffer as H*W*2 but writes (H-1)*(2W+1)
    indices. Whether that overruns depends on the factory's size unit.
+   - Fixed by cc13-fix5 (2026-10-16): `ocean_wave_field_projected_grid_00ba5240` used to return
+     the UVs and indices as data. It now takes the wave field and an `OceanProjectedGridHost` and
+     makes every call at the image's point. In order: geometry 00B74640, 00B73C10, and 00B73B70(0);
+     release of the old +124h and its clear; renderer vtable 38h/5Ch/60h; the vertex and index
+     buffer lock/unlock; 00B85EE0/00B857F0; draw-section +8h..+18h; 00B864C0, 00B85B80 twice
+     (+124h, then 00BA7080 on +2BCh), 00B86650 and 00B73C60; then both releases. The new +124h is
+     stored. The UV and strip math is unchanged.
+   - Also fixed by cc13-fix5: 00BB4B40 is now `pak_archive_registry_slots_push_back_00bb4b40`. It
+     is the whole push_back: reserve through `reserve_native_pak_registry_slots_00bb46f0` when full
+     (capacity*2, 1 when that is <= 1), the element store (skipped only for a null slot address,
+     as in the image) and size += 1. It was previously only the capacity calculation. The coast
+     vector `*_push_capacity` helpers next to it (00BAF350, 00BAF3E0, 00BAFC00) have the same
+     shape and were not audited here.
 6. **Possible wrong names (not renamed).**
    - 00BBC690 `BSP_WaterTextureSource_GetDescriptor` is a runtime type-token test on 0109E9D4.
    - 00BC6430 `BSP_RefCountedRecord_Construct` is the cloud puff constructor (vtable 00D64940).

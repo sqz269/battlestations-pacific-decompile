@@ -357,16 +357,23 @@ struct EffectAnchorHost {
 };
 void land_fort_set_effect_anchor_00745130(std::uint8_t* effect, const float* anchor, EffectAnchorHost& host);
 
-// 007453C0, __thiscall(ECX reader, dword* out, a2, a3) RET 0Ch:
-// reader->vtable[10h](out, a2), then *out = 4. The image builds a local
-// {4, &self, &self} record whose address it never passes, so only the 4 is
-// observable; a3 is not read.
+// 007453C0, __thiscall(ECX reader, key_tag, key_value, dword* out) RET 0Ch
+// (the first two stack dwords are an 8-byte {tag, value} key passed by value):
+// reader->vtable[10h](key{key_tag, key_value}, value{4, &local}) RET 10h,
+// then *out = local. Listing 007453C0-007453F2: the value record is built at
+// [esp] with tag 4 and a pointer to the dword slot at [esp+8]; after the
+// callee pops 10h, [esp+10h] is the third stack argument (out) and [esp] is
+// the local. The local starts out holding a stack address (MOV [ESP+8],ESP);
+// the callee is expected to overwrite it, and that initial value is not
+// modelled.
 struct SaveReaderHost {
     virtual ~SaveReaderHost() = default;
-    virtual void read_10(void* reader, std::uint32_t* out, std::uint32_t a2) = 0;
+    // The reader's own vtable[10h](key by value, value by value), ECX = reader, RET 10h.
+    virtual void read_10(void* reader, std::uint32_t key_tag, std::uint32_t key_value, std::uint32_t value_tag,
+                         void* value) = 0;
 };
-void save_reader_read_observer_ref_007453c0(void* reader, std::uint32_t* out, std::uint32_t a2, std::uint32_t a3,
-                                            SaveReaderHost& host);
+void save_reader_read_observer_ref_007453c0(void* reader, std::uint32_t key_tag, std::uint32_t key_value,
+                                            std::uint32_t* out, SaveReaderHost& host);
 
 // 007455F0, __thiscall(ECX fort, archive) RET 4: 0095BB10 (the unit part),
 // then "_landFort" { ["gazdi"] = master +738h (tag 4); ["section"] = index of
