@@ -139,6 +139,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_strrchr
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_strspn.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_wcschr.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_wcscspn.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_wcsncpy.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_wcsncmp.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_damageable_class_armour_fragment.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_damageable_class_back_row_selection_fragment.cpp)
