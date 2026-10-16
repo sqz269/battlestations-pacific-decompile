@@ -3021,11 +3021,14 @@ constexpr double kSceneGenerateObjectYawSentinelCeiling = 6.283185307179586;
 // (bsm_09:1102-1173), GenerateObject on 72 `Cloud` (3Dh) rows. 0046DB4B calls
 // descriptor[1] = 004E9E40 for them, which reads CloudType and builds a cloud
 // through the manager [[00E188A8]+21D0h] vtable[8] (docs/ENTITY_IDENTITY.md
-// part 3): presentation, NOT reconstructed here, and no unit. No script reads
+// part 3): presentation and no unit; src/entity_identity.cpp models the body,
+// but this host has no cloud manager to create into, so it is not called. No script reads
 // the result. True: the row is marked spawned and the call returns nothing.
 // False: the row goes to create_unit_from_scene_record_0046db4b, which makes a
 // unit with no creator and throws at its observer tables (the run dies).
-constexpr bool kGenerateObjectRecordOnlyCreatorBound = false;
+// ON by section 257: USN01 control gameplay identical (s52_c0_u1 / s52_c1_u1);
+// BSM09 runs past luaIntroMovie7 to its EndMission at 917.90 s (s52_c1_b9).
+constexpr bool kGenerateObjectRecordOnlyCreatorBound = true;
 unsigned long long g_generate_object_record_only = 0;
 
 // CORRECTED by packet cc8_spawn_new_route. 00888760 BSP_LuaObject_ReadVector3
