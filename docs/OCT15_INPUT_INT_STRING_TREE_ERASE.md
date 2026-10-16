@@ -42,17 +42,46 @@ does not project nodes into a host container or route to nil15/99 providers.
 | `006A0A78..0A9B` | Capture CURRENT private owner, output pointer, and CURRENT advanced private node before the first output store; store owner then node, return output. |
 
 The normal inline payload is proved equivalent here to accepted
-`destroy_native_string_header_0041dd20(removed+10h, RawCtx&)`: capture data14
-once; if nonnull read current length10, wrap `+1`, call actual 419CC0 getter,
+`destroy_native_string_header_0041dd20` on the header at removed+10h and RawCtx:
+capture data14
+once; if nonnull read current length10, wrap `+1`, resolve actual 419CC0 getter,
 then return the captured block through BD1510. No header write or intervening
 left-child capture occurs in this span. This is Source composition of the inline
-effect, not a claim that Native calls 41DD20. Getter failure propagates after
+effect. No Native 41DD20 transfer exists in the parent. Getter failure propagates after
 transplant/rebalance and before original-node free, count and output. There is
 no normal key cleanup guard, rollback or retry, including on getter failure.
 
 The RawCtx borrows actual 01090AA8 pool, 01090AA4 small-return gate and 01090AA0
 manager publication. It uses the existing actual pool/getter/CRT services.
 Existing RawCtx, AV, typed and subtree providers remain unchanged.
+
+The following are actual Native direct transfers. Read-only support rows retain
+accepted helper or EH-handler evidence; Source scope remains the whole eraser
+and the logical completed-message action.
+
+| Scope | Function | Native transfer |
+| --- | --- | --- |
+| Read-only support | `0069AE50` | `0069AE58 CALL 00BF6713` |
+| Read-only support | `0069AE50` | `0069AE67 JMP 00BF6713` |
+| Owned whole eraser | `006A07D0` | `006A0818 CALL 00408720` |
+| Owned whole eraser | `006A07D0` | `006A082A CALL 00411700` |
+| Owned whole eraser | `006A07D0` | `006A0841 CALL 00BF6885` |
+| Owned whole eraser | `006A07D0` | `006A084E CALL 0069AE50` |
+| Owned whole eraser | `006A07D0` | `006A08B0 CALL 0069AAE0` |
+| Owned whole eraser | `006A07D0` | `006A08D2 CALL 0069AAC0` |
+| Owned whole eraser | `006A07D0` | `006A0972 CALL 0069C300` |
+| Owned whole eraser | `006A07D0` | `006A09A5 CALL 0069A780` |
+| Owned whole eraser | `006A07D0` | `006A09C1 CALL 0069C300` |
+| Owned whole eraser | `006A07D0` | `006A09D6 CALL 0069A780` |
+| Owned whole eraser | `006A07D0` | `006A0A1F CALL 0069C300` |
+| Owned whole eraser | `006A07D0` | `006A0A39 CALL 0069A780` |
+| Owned whole eraser | `006A07D0` | `006A0A50 CALL 00419CC0` |
+| Owned whole eraser | `006A07D0` | `006A0A57 CALL 00BD1510` |
+| Owned whole eraser | `006A07D0` | `006A0A5D CALL 00BF65AC` |
+| Owned logical action | `00C7F050` | `00C7F053 JMP 004072D0` |
+| Read-only support | `00C7F058` | `00C7F05D JMP 00BF6B43` |
+| Read-only support | `0041DD20` | `0041DD30 CALL 00419CC0` |
+| Read-only support | `0041DD20` | `0041DD37 CALL 00BD1510` |
 
 ## Completed-message cleanup and exception boundary
 
