@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "goal_oct15_scene_command_queue",
-  "status": "whole_Source_independent_review_and_registered_build_pending",
+  "status": "whole_Source_independently_reviewed_registered_build_pending",
   "source_ready": false,
   "whole_control_flow_code_available": true,
   "source": "src/native_scene_command_queue.cpp",
@@ -115,5 +115,13 @@
     "failed": 0,
     "build": "pending actual normal combined registered build",
     "new_tests": 0
+  },
+  "independent_review": {
+    "reviewer": "allocation worker",
+    "result": "passed complete115B34ops+11B5ops and wholeSource/header/doc; exactframecoords/target-listwordreuse and allocation/latecapture/disarm schedules matched",
+    "source_hashes": {
+      "src/native_scene_command_queue.cpp": "981083b2241fa05cd9bd81e504bf27e3581abc368acc1d3cc584a51eeaad338e",
+      "include/bsp/native_scene_command_queue.hpp": "f75a4441cc243bff76e9706f261fb817df6403d3fac6a833f45e0bf8e3c5e1a0"
+    }
   }
 }
