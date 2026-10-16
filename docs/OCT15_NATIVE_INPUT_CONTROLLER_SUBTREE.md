@@ -43,3 +43,9 @@ borrowed RawCtx/provider ownership, current CRT, private frames, flags, faults,
 heap, FH3/SEH/RTTI, binary ABI and game equivalence remain unproved. The pair
 and its populated AV/typed projections remain unchanged. Controller parent,
 range, member and configuration owner are outside this packet.
+
+Independent review of frozen f9d3833e6 passed all 18 focused checks with no
+findings. It independently verified full Native bodies, 104 PE/live bytes,
+actual CMake 190B/86 instructions, four relocations and 40 provider LF hashes.
+The Source and header remain identical to that reviewed pin. The peer receipt
+SHA256 is a2ba9aac07844220c72a6d7e520b209e5ad18b5be948f595b587ffaa59fd455a.
