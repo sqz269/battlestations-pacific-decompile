@@ -3,8 +3,8 @@
   "utc": "2026-10-16T03:11:10.286538+00:00",
   "source_ready": true,
   "Source_authorized": true,
-  "Source_implemented": false,
-  "Source_credit": 0,
+  "Source_implemented": true,
+  "Source_credit": 2,
   "coverage": "partial_valid_input_entry_projection",
   "decision": "Authorize only the ordinary valid-input byte-sort kernel; keep Original validation failure behavior and scene composition excluded.",
   "packet": "cc12_native_qsort_valid_input_kernel_00bfc350",
@@ -33,16 +33,7 @@
     "bytes": 18304,
     "sha256": "883fc93f22c2a5fe71b7237c4a66833a7574e3139817b0824be24e304799f3d1"
   },
-  "primary_review": {
-    "all_five_body_owned_instructions_read": 325,
-    "owned_bytes": 905,
-    "independent_Capstone_owned_instruction_starts_sizes_and_span_hashes": true,
-    "all36_retained_stdout_receipts_and29_input_pins_verified": true,
-    "readiness_provenance_complete_pairs": 33,
-    "readiness_sealing_invocation_pending_at_cutoff": 1,
-    "scope_provenance_complete_pairs": 14,
-    "no_global_saved_database_stability_claim": true
-  },
+  "primary_review": "reports/cc12_native_qsort_primary_review.json",
   "original_coverage": [
     {
       "role": "qsort",
@@ -218,5 +209,9 @@
       "Actual008F3270 create/pass/sort/retire ownership and application lifetime remain unproved.",
       "Existing scene std::qsort use is a known abstraction boundary; it is not edited or credited by this proposal. Other qsort callers remain graph context only."
     ]
-  }
+  },
+  "status": "two_whole_normal_helpers_and_one_partial_valid_input_entry_Source_primary_peer_accepted_registered_Main_gate_pending",
+  "Source_partial_entries": 1,
+  "partial_projection_credit": 1,
+  "Main_gate": "pending"
 }
