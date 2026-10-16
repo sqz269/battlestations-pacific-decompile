@@ -42,6 +42,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURC
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_render_resource_init.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_render_resource_init_continuation.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_system_constant_registry.cpp")
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_traffic_pointer_erase.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/platform_control_messages.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/platform_renderer_activation.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/window_close_transport.cpp")
@@ -2163,4 +2164,5 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/unit_message_arms.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/unit_neighbour_fields.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_math_tests PRIVATE src/launch_ver_cc13.cpp src/script_natives_fix5_cc13.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_qsort_kernel.cpp)
 cmake_language(DEFER CALL include "${CMAKE_SOURCE_DIR}/cmake/native_data_placement.cmake")

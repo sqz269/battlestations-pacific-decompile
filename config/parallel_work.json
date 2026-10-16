@@ -42157,7 +42157,7 @@
     {
       "id": "cc12_native_qsort_valid_input_kernel_00bfc350",
       "done": false,
-      "state": "primary_reviewed_partial_valid_input_kernel_Source_ready",
+      "state": "two_whole_normal_helpers_and_one_partial_valid_input_entry_Source_primary_peer_accepted_registered_Main_gate_pending",
       "source_ready": true,
       "function_addresses": [
         "00bfc350",
@@ -42184,9 +42184,17 @@
         "No std::qsort/std::sort substitution, fake callback, copied pivot, recursion, dynamic worklist, extra runtime guards, depth fallback, callback mutation/reentry/throws, fault/volatile/MMIO/overlap support.",
         "No Original private CRT/EH/full ABI, optimized instruction/fault ordering, startup, runtime or game validation credit."
       ],
-      "Source_credit": 0,
-      "Source_implemented": false,
-      "Main_gate": "pending_author_independent_review_registration_build_actual_artifacts"
+      "Source_credit": 2,
+      "Source_implemented": true,
+      "Main_gate": "pending_author_independent_review_registration_build_actual_artifacts",
+      "code_revision": "2b8cd919605628680a4b975757a8ac794607566f",
+      "primary_review": "reports/cc12_native_qsort_primary_review.json",
+      "Main_build_gate": "pending",
+      "actual_compiler_archive_gate": "pending",
+      "Source_whole_helpers": 2,
+      "Source_partial_entries": 1,
+      "partial_projection_credit": 1,
+      "renderer_composition_readiness": "reports/cc12_renderer_native_sort_composition_readiness.json"
     },
     {
       "id": "cc12_native_crt_strrchr_00bf87b0",
