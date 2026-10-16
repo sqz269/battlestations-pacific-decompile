@@ -1,0 +1,623 @@
+{
+  "packet": "native_gui_frame_box_record_release_111",
+  "status": "whole_raw_record_release_reconstructed_canonical_registered2d_domain_one_shot_source_metadata_strict_win32_existing_checks_no_new_runtime",
+  "reviewed_root_baseline": "d251a7b85c5c8ab6be9eed7ed7df55c58af1aa06",
+  "baseline_merge_exit_code": 0,
+  "worker_head_before_source": "d251a7b85c5c8ab6be9eed7ed7df55c58af1aa06",
+  "original": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged": true
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "every_live_mutation_export_batch_verified": true
+  },
+  "function": {
+    "address": "00ad0860",
+    "end_exclusive": "00ad08de",
+    "native_bytes": 126,
+    "native_instruction_starts": 42,
+    "whole_body_sha256": "5e96ab380ada5815df5ce8ce7611ba1f9695126612c335867cda66eb4a51a805",
+    "live_equals_installed_and_prior98": true,
+    "existing_name_preserved": "BSP_GuiTextureRef_Release_00ad0860",
+    "name_is_existing_descriptive_hypothesis": true,
+    "original_abi": "ECX actual2Ch record; no stacked arguments; RET; no semantic EAX promise",
+    "new_source_api": "void release_native_gui_frame_box_record_00ad0860(void*, NativeRenderActualOwners&, NativeStringRawPoolContext&, NativeGuiFrameBoxRecordReleaseOperation&)",
+    "source_api_is_not_original_binary_or_private_exception_abi": true
+  },
+  "calls": [
+    {
+      "address": "00ad08c1",
+      "native": "00419cc0",
+      "function": "00ad0860",
+      "kind": "call",
+      "source": "genuine raw native_string_pool_get_or_create_00419cc0 using same actual publication/raw manager; previously captured normal data/size"
+    },
+    {
+      "address": "00ad08c8",
+      "native": "00bd1510",
+      "function": "00ad0860",
+      "kind": "call",
+      "source": "genuine return_native_string_pool_00bd1510 with captured data/size and actual live gate; unused Native third stacked word is not a new Source parameter"
+    }
+  ],
+  "dynamic_import": {
+    "site": "00ad0890",
+    "cell": "00ce2220",
+    "operation": "InterlockedDecrement(actual captured resource+4)",
+    "source_service": "one Win32 InterlockedDecrement; optimized sole LOCK XADD(-1) then DEC old count",
+    "original_iat_or_private_abi_identity_claimed": false
+  },
+  "zero_dispatch": {
+    "site": "00ad08a0",
+    "native": "current actual resource profile, current table slot00, no stack flags",
+    "source": "dispatch_native_render_actual_owner_zero(actual_owners,captured_resource)",
+    "decrements_again": false,
+    "nonnull_nonzero_result_performs_registry_lookup": false,
+    "only_proven_domain": "110 genuine completed canonical registered2D creator; D61948/BD30E0/B3F590, same registry/context/pool",
+    "domain_is_explicit_caller_provenance_precondition_not_arbitrary_adapter_validation": true,
+    "new_owner_companion_profile_fallback_or_virtual_adapter": false,
+    "terminal_noexcept_limit": "existing Entry terminal exceptions terminate; they cannot unwind into this record name action",
+    "escaping_service_errors": "lookup/identity errors before Entry terminal can throw after count already reached zero"
+  },
+  "body_order": [
+    "fresh persistent operation admission before raw reads",
+    "phase entered",
+    "capture resource before persistent Source name-action arm",
+    "captured-nonnull only: one actual+04 decrement; zero-only service when result0; clear record+0 only after success",
+    "capture CURRENT name DATA before consuming persistent action",
+    "nonnull name only: CURRENT length+1 (DWORD wrap), real419CC0, realBD1510",
+    "no name-header clear, no resource payload read after terminal",
+    "phase returned"
+  ],
+  "persistent_operation": {
+    "type": "NativeGuiFrameBoxRecordReleaseOperation",
+    "noncopyable": true,
+    "nonmovable": true,
+    "private_state_read_only_diagnostics": true,
+    "phases": [
+      "fresh",
+      "entered",
+      "returned",
+      "failed"
+    ],
+    "source_scheduling_flags_not_native_instruction_or_exception_origin": true,
+    "zero_dispatch_entered_includes_registry_lookup": true,
+    "normal_name_return_entered_includes_getter_and_return_getter_may_fail_first": true,
+    "caller_prepared_outside_failing_scope_with_full_graph_retained_before_entry": true,
+    "metadata_live_stable_disjoint_from_raw_payload_and_provider_scratch": true,
+    "captured_pointers_are_diagnostics_not_owning_or_retry_capabilities": true,
+    "destructor": "entered/failed terminate with metadata-only access; fresh/returned access metadata only",
+    "destructor_refusal_is_new_source_orchestration_not_original_behavior": true,
+    "owns_or_repairs_graph_or_adds_count_gate": false,
+    "reset_retry_rollback_or_automatic_graph_cleanup": false
+  },
+  "failure": {
+    "entered_failure": "sticky failed phase; exact external graph, metadata and applicable services remain live",
+    "resource_service_escape": "consume name action before genuine41DD20 on live record+4; rethrow original C++ service exception after successful name cleanup",
+    "cleanup_escape": "explicit nested catch terminates without retry",
+    "normal_name_getter_escape": "action already consumed; no repeated41DD20/getter/name return",
+    "resource_clear_on_service_escape": false,
+    "resource_count_rollback": false,
+    "header_returned_but_not_zeroed": true,
+    "replay_using_same_or_different_fresh_metadata_allowed": false,
+    "source_exception_boundary": "/EHsc C++ exception handling only; not SEH/faulting dead storage/privateNativeFH3 equivalence"
+  },
+  "reused_original_eh": {
+    "prior": "98 frozen contract",
+    "handler": "00cb90bb",
+    "function_info": "00df043c",
+    "max_state": 1,
+    "unwind_map": "00df0434",
+    "state0_action": "00cb90b0: live record+4 -> genuine41DD20",
+    "new_handler_funclet_reconstruction_or_private_fh3_equivalence": false
+  },
+  "verification": {
+    "strict_object": {
+      "command_file": "local\\cc12_native_gui_frame_box_record_release_111\\compile.cmd",
+      "log": "local\\cc12_native_gui_frame_box_record_release_111\\compile.log",
+      "exit_code": 0,
+      "flags": "MSVC Win32 /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /permissive-",
+      "release_comdat_bytes_including_catches_padding": 323,
+      "metadata_destructor_bytes": 17,
+      "optimized_body_and_catch_slices_independently_reviewed_by_root": "PASS",
+      "offsets": {
+        "fresh_check": "2e",
+        "phase_entered": "3d",
+        "compiler_internal_cpp_eh_state": "40",
+        "resource_capture": "47",
+        "persistent_action_arm": "4c",
+        "sole_lock_xadd": "57",
+        "win32_new_count_dec": "5c",
+        "zero_only_helper": "6e",
+        "nonnull_only_resource_clear": "7a",
+        "name_data_capture": "84",
+        "persistent_action_consumed": "8a",
+        "current_name_length": "94",
+        "real_pool_getter": "a7",
+        "real_pool_return": "b8",
+        "returned_phase": "c4",
+        "cleanup_failure_terminate": "d9",
+        "failed_phase": "104",
+        "failure_action_consumed": "112",
+        "genuine41dd20": "121",
+        "rethrow": "138"
+      },
+      "explicit_limit": "compiler internal C++ EH state+40 is before resource capture+47, explicit persistent Source action+4C follows capture; not exact Native FH3/SEH state schedule"
+    },
+    "canonical_build": {
+      "command": "./scripts/build.ps1",
+      "log": "local\\cc12_native_gui_frame_box_record_release_111\\build.log",
+      "exit_code": 0,
+      "existing_checks_passed": 3,
+      "existing_checks_total": 3,
+      "ctest_seconds": 8.51,
+      "existing_checks_execute_this_release_path": false,
+      "unit_already_registered_from103_no_cmake_edit": true
+    },
+    "source103_preserved": {
+      "complete_file_byte_prefixes": [
+        {
+          "path": "include/bsp/native_gui_frame_box_records.hpp",
+          "preserved_prefix_bytes": 1826,
+          "preserved_prefix_sha256": "f7d7681547a5a644f6b65c895fa55f387904b18b50dcf054c5e1ec25b76af5d4",
+          "appended_bytes": 5958,
+          "source103_prefix_unchanged": true,
+          "final_sha256": "7fda96a5d5a84c7a81c7800c8cf408ca01637edb49cfb518d9b19d58cc460e40",
+          "final_git_blob": "947455320f487e2a5e9c39c0925417bbd0e408af"
+        },
+        {
+          "path": "src/native_gui_frame_box_records.cpp",
+          "preserved_prefix_bytes": 2795,
+          "preserved_prefix_sha256": "ea28803cc5531fd4f449472c0b1f10474ed312f9098bd8864a4e170b3de672ce",
+          "appended_bytes": 3092,
+          "source103_prefix_unchanged": true,
+          "final_sha256": "8d551e86bf287a02fab2a3b5d2e836d9314b9d8a0fc1e6a026b84aa949b4ee4a",
+          "final_git_blob": "c14af2a01a84a87606d240dd3c414f49c3ccde60"
+        }
+      ],
+      "optimized163B_code": {
+        "equal": true,
+        "bytes": 163,
+        "sha256": "b6651db63e6cff680d11e36c9f5f7f33e4e1c2bbd43602876001a22feebcb831"
+      }
+    },
+    "new_tests_fixtures_probes_or_relocated_original_execution": false,
+    "native_runtime_gameplay_native_crt_private_abi_or_graph_retirement_proof": false,
+    "no_tidy_vector_factory_rebuild_activation_or_main_cmake_changes": true,
+    "call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/cc12_native_gui_frame_box_record_release_111.json docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_RELEASE_111.md",
+      "exit_code": 0,
+      "call_rows_checked": 2,
+      "documentation_call_claims_checked": 2,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "source_reference_doc_artifact_hashes_revalidated": 48,
+    "installed_original_hash_revalidated": true
+  },
+  "annotations": {
+    "address": "00ad0860",
+    "existing_name_preserved": true,
+    "prior_comment_preserved_with_export_formatting": true,
+    "new_source_evidence_present_in_forced_export": true,
+    "applied_under_annotation_tool_write_lock": true,
+    "old_values_recorded_before_apply": "local/ghidra-annotations-20261016T062218Z.json",
+    "save_completed": true,
+    "forced_export_command": "python tools/bsp.py ghidra export 00ad0860 --force",
+    "function_count_or_original_bytes_changed": false
+  },
+  "ledger": {
+    "unique_new_raw_function_record": "local\\cc12_native_gui_frame_box_record_release_111\\ledger_entry.json",
+    "names_evidence_appended_existing_name_and_text_preserved": true,
+    "older_reconstruction_records_preserved": true,
+    "only_address": "00ad0860",
+    "owned_shards": [
+      "config/names/00ad0000.jsonl",
+      "config/reconstruction/00ad0000.jsonl"
+    ]
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "sha256": "7fda96a5d5a84c7a81c7800c8cf408ca01637edb49cfb518d9b19d58cc460e40",
+      "bytes": 7784
+    },
+    {
+      "path": "src/native_gui_frame_box_records.cpp",
+      "sha256": "8d551e86bf287a02fab2a3b5d2e836d9314b9d8a0fc1e6a026b84aa949b4ee4a",
+      "bytes": 5887
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "bytes": 10071
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "bytes": 11471
+    },
+    {
+      "path": "include/bsp/native_texture_loading_cache.hpp",
+      "sha256": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+      "bytes": 11040
+    },
+    {
+      "path": "src/native_texture_loading_cache.cpp",
+      "sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "bytes": 42965
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "bytes": 3247
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+      "bytes": 11544
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "bytes": 8771
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "bytes": 9121
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "bytes": 5893
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "bytes": 8443
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "bytes": 2805
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "bytes": 5103
+    },
+    {
+      "path": "scripts/build.ps1",
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "bytes": 1820
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "a1beec72b26c76601c1fa8e6355f39edc4abaa1104a1441b4d56bcdfc684ca5a",
+      "bytes": 261929
+    }
+  ],
+  "prior_contracts": [
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_COPY_PROVIDERS_READINESS_98.md",
+      "sha256": "56ab226b40b72aab141b6a84ec9c5992446bcf339b32151c364e563bfb224269",
+      "bytes": 11204,
+      "contract_reused_not_reaudited": true
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_COPY_103.md",
+      "sha256": "436504fdc86e90820176b8a738f6e0b4d6051a0d2bcaee88469d32da8b57bbb4",
+      "bytes": 7053,
+      "contract_reused_not_reaudited": true
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_RELEASE_READINESS_110.md",
+      "sha256": "b76937ebe80d1520fa29c7d02f7d1da0b9d4d10341d2f95df550f143c1b5af21",
+      "bytes": 9179,
+      "contract_reused_not_reaudited": true
+    }
+  ],
+  "artifact_manifest": {
+    "path": "local/cc12_native_gui_frame_box_record_release_111/manifest.json",
+    "sha256": "06f8559a972740b690c11fb2efacc2dd85be1c8aa1ca583185c2037845ffd173",
+    "items": 48,
+    "source_inputs": 16,
+    "total_bytes": 95018205,
+    "sealed_no_rebuild_or_replacement_before_integrator_capture": true
+  },
+  "evidence_hashes": [
+    {
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "sha256": "7fda96a5d5a84c7a81c7800c8cf408ca01637edb49cfb518d9b19d58cc460e40",
+      "bytes": 7784,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/native_gui_frame_box_records.cpp",
+      "sha256": "8d551e86bf287a02fab2a3b5d2e836d9314b9d8a0fc1e6a026b84aa949b4ee4a",
+      "bytes": 5887,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "bytes": 10071,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "bytes": 11471,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "include/bsp/native_texture_loading_cache.hpp",
+      "sha256": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+      "bytes": 11040,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/native_texture_loading_cache.cpp",
+      "sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "bytes": 42965,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "bytes": 3247,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+      "bytes": 11544,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "bytes": 8771,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "bytes": 9121,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "bytes": 5893,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "bytes": 8443,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "bytes": 2805,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "bytes": 5103,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "bytes": 1820,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "a1beec72b26c76601c1fa8e6355f39edc4abaa1104a1441b4d56bcdfc684ca5a",
+      "bytes": 261929,
+      "role": "reviewed_source_input"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_COPY_PROVIDERS_READINESS_98.md",
+      "sha256": "56ab226b40b72aab141b6a84ec9c5992446bcf339b32151c364e563bfb224269",
+      "bytes": 11204,
+      "role": "prior_contract_reused_not_reaudited"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_COPY_103.md",
+      "sha256": "436504fdc86e90820176b8a738f6e0b4d6051a0d2bcaee88469d32da8b57bbb4",
+      "bytes": 7053,
+      "role": "prior_contract_reused_not_reaudited"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_RELEASE_READINESS_110.md",
+      "sha256": "b76937ebe80d1520fa29c7d02f7d1da0b9d4d10341d2f95df550f143c1b5af21",
+      "bytes": 9179,
+      "role": "prior_contract_reused_not_reaudited"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_RELEASE_111.md",
+      "sha256": "69c4046dc894c6d0e40b4687b9d2e2e6d4ecaa76ac8fdf838fd2a5c8005810e7",
+      "bytes": 7927,
+      "role": "documentation"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "55899cb4a14d610f54920910775d6aa5715e6dad10b61bd158871aacca8b7f99",
+      "bytes": 93842064,
+      "role": "built_library"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "sha256": "390dd5c886faa883a168c4cc60fb1c8b19dcdef4db779ca93a35608ca53c7c67",
+      "bytes": 455680,
+      "role": "built_library"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "sha256": "f12ba334bd0d1379a526ab834667754b3ad3d2688afd57fdc20530f266b641b3",
+      "bytes": 72058,
+      "role": "built_library"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/annotation_history.json",
+      "sha256": "6f60679a4c4596bdc8310120890afdc318c80c0416d693bb8844c6da9be43d30",
+      "bytes": 2508,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/annotation_proof.json",
+      "sha256": "ebe56cde2f7850a0e469163c69a3a7e7baf3c780e769b058edd69cb561d79b5b",
+      "bytes": 488,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/append_source.py",
+      "sha256": "1ed36d2e854e99bc73837d4d7e14ae142040a93dca0580b0bee349905dc03e88",
+      "bytes": 9880,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/audit_native.py",
+      "sha256": "bab7c4c558ce4ccaa6546a647a16c1d86f655ea6f9228c1fb3ad98243f69a9bd",
+      "bytes": 2551,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/build.log",
+      "sha256": "c1a26fe2497431cf2f5b78ba6cc7ca16064d177957577f982304ff249486d57d",
+      "bytes": 3382,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/call_verifier.log",
+      "sha256": "71e215b95bc7edf3423a071d95975124edc6e00749c7af9f557ccaaceddf0d6a",
+      "bytes": 311,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/compile.cmd",
+      "sha256": "13f8f560d282719be845e4f31258522e629518482444c74580bb783d66b6f4c0",
+      "bytes": 641,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/compile.log",
+      "sha256": "9f0abf4b001a8c8aaf365b0651597aaad440745c8e4e471c3976513158556d3d",
+      "bytes": 34,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/copy_source.bin",
+      "sha256": "b6651db63e6cff680d11e36c9f5f7f33e4e1c2bbd43602876001a22feebcb831",
+      "bytes": 163,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/ghidra_assembly.txt",
+      "sha256": "742f2a93381f250ad52bfb588735769c75148c33203b5998808c9f8e0ab95063",
+      "bytes": 1166,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/ghidra_decompiled.c",
+      "sha256": "4ca6dfb6bbac39fb8f2e09fe21329631d455bd50d0755d1fae3f02b1e1dd15e3",
+      "bytes": 3133,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/inspect_object.py",
+      "sha256": "cf98035648fd2123ed05051932a2738c2d9da78d30d4ddf50bc798ab1cfaf209",
+      "bytes": 3320,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/ledger_entry.json",
+      "sha256": "a7f46ae6816070911aaf576ba8c072617eabfef7c1bc343467bf0a44f357346f",
+      "bytes": 2531,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/metadata_destructor_source.bin",
+      "sha256": "d006448c5253446acf2f9e167850b8da4413cd2b19be217bf4733bcfc53b75f9",
+      "bytes": 17,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/native_proof.json",
+      "sha256": "1e3bae5db09445bce586bd1325ea891a45ebdba715245ed25c5591020a40c609",
+      "bytes": 7162,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/record_ledger.py",
+      "sha256": "1e6fee6874bee6372d985088f5b0fe31dfe46de1c2ff9b5e27942c66688e9187",
+      "bytes": 3038,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/release_source.bin",
+      "sha256": "6729bbbe106a2e13ef53f25e4250559f082e6125bf236f1353ad584de32e7a8c",
+      "bytes": 323,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/seal_evidence.py",
+      "sha256": "b52356121dd11ff36700b7ee4c3c36c0aa90423a085db503955e7824bbf314d4",
+      "bytes": 3499,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/source_append_proof.json",
+      "sha256": "627120219b1eb6df2b0277ec62f277c8f932b358133325809f2bfa595c54b7b0",
+      "bytes": 865,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/static_inspection.json",
+      "sha256": "d864f5459fd7f9fc05b50e5273b616d1597359b3bd3c1487445c40647706e74b",
+      "bytes": 21543,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/strict.asm",
+      "sha256": "92dda5c3e74371f06410b257c2bbac5a8b530a4e34c131d215b635fd6cf1ea49",
+      "bytes": 45751,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/strict.obj",
+      "sha256": "4a994c5a2f5e6007e88425a49dbbc007d14092a934c4c2b2feb4b5746525aa70",
+      "bytes": 12997,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/strict_dumpbin.txt",
+      "sha256": "47b297f298c28f230f428c865649d3d346f3e2204cdf7a52117cea98ffeaafde",
+      "bytes": 62627,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/write_doc.py",
+      "sha256": "6f12d7402a75b3489032ef1254a3f236401b7334f36646948a83f5f9e675acb8",
+      "bytes": 8572,
+      "role": "sealed_source_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_record_release_111/write_report.py",
+      "sha256": "b1ddead3cafed92b930dd93a9153f57ddbf176c30005e17c6603e41fbcac2f79",
+      "bytes": 8644,
+      "role": "sealed_source_evidence"
+    }
+  ]
+}
