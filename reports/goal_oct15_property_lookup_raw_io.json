@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_property_lookup_raw_io",
+  "status": "whole_ordered_raw_IO_at_existing_qualified_current_CRT_boundary_Win32_checked",
+  "source_ready": false,
+  "whole_control_flow_source_available": true,
+  "unrestricted_original_provider_admission_proved": false,
+  "source": "src/native_enum_dictionary_lookup.cpp",
+  "header": "include/bsp/native_enum_dictionary_lookup.hpp",
+  "documentation": "docs/GOAL_OCT15_PROPERTY_LOOKUP_RAW_IO.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "0043b760",
+      "end_exclusive": "0043b7b9",
+      "instruction_bytes": 89,
+      "instruction_count": 39,
+      "coverage": "whole body at qualified existing current CRT boundary",
+      "cpp_symbol": "native_property_key_bucket_0043b760",
+      "original_abi": "one stacked actual8B header;RET4;EAX DWORDbucket;no incoming ECX/EDX argument",
+      "bytes": "8b 44 24 04 53 55 8b 68 04 56 8b 30 57 8b fe 83 cf 20 c1 ef 05 85 ed 75 05 bd e4 77 e1 00 3b f7 8b de 72 29 0f be 45 00 50 e8 c0 da 7b 00 0f b6 c0 8b ce c1 e1 05 8b d6 03 c1 c1 ea 02 03 c2 2b df 83 c4 04 33 f0 83 c5 01 3b df 73 d7 5f 8b c6 5e 5d 83 e0 3f 5b c2 04 00",
+      "sha256": "3f92060d0b946ebf8440f1edb1b763ea9cc898f2950e34a9a9da297fcb32455f",
+      "live_disk_equal": true,
+      "installed_pe_file_offset": 243552,
+      "live_byte_receipt": "local/goal_oct15_property_lookup_raw_io_hash_bytes.txt"
+    },
+    {
+      "address": "0043b8b0",
+      "end_exclusive": "0043b919",
+      "instruction_bytes": 105,
+      "instruction_count": 48,
+      "coverage": "whole body at qualified existing current CRT boundary",
+      "cpp_symbol": "find_native_property_map_node_0043b8b0 raw overload",
+      "original_abi": "ECX actualmap;stack query-header and bucket-output pointers;RET8;EAX borrowed node/null",
+      "bytes": "53 8b 5c 24 08 56 57 53 8b f1 e8 a1 fe ff ff 8b 4c 24 14 89 01 8b 7c 86 08 85 ff 74 44 55 8b 2b 39 2f 75 2d 8b 77 04 85 f6 75 05 be e4 77 e1 00 8b cb e8 b9 e3 fd ff 3b c6 74 1d 85 c0 74 12 85 f6 74 0e 56 50 e8 c5 c6 7b 00 83 c4 08 85 c0 74 07 8b 7f 0c 85 ff 75 c8 5d 8b c7 5f 5e 5b c2 08 00 8b c7 5f 5e 5b c2 08 00",
+      "sha256": "be85d862f57d3ffbcd558f9e00282d6aa313ec36b7b069afb9e50a128b465145",
+      "live_disk_equal": true,
+      "installed_pe_file_offset": 243888,
+      "live_byte_receipt": "local/goal_oct15_property_lookup_raw_io_lookup_bytes.txt"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0043b789",
+      "native": "00bf924e",
+      "function": "0043b760",
+      "contract": "signed BYTE/int;lowAL consumed;caller ADD ESP,4",
+      "kind": "call"
+    },
+    {
+      "address": "0043b8ba",
+      "native": "0043b760",
+      "function": "0043b8b0",
+      "contract": "stack actualquery;RET4;captured EAXbucket",
+      "kind": "call"
+    },
+    {
+      "address": "0043b8e2",
+      "native": "00419ca0",
+      "function": "0043b8b0",
+      "contract": "ECX currentquery;whole13B data+4/fallback expanded in Source",
+      "kind": "call"
+    },
+    {
+      "address": "0043b8f5",
+      "native": "00bf7fbf",
+      "function": "0043b8b0",
+      "contract": "query/node strings;caller ADD ESP,8;only zero consumed",
+      "kind": "call"
+    },
+    {
+      "address": "008f22d4",
+      "native": "0043b8b0",
+      "function": "008f2260",
+      "contract": "dot bag+4/header/actual parameter bucket;RET8",
+      "kind": "call"
+    },
+    {
+      "address": "008f237b",
+      "native": "0043b8b0",
+      "function": "008f2260",
+      "contract": "no-dot bag+4/header/actual parameter bucket;RET8",
+      "kind": "call"
+    }
+  ],
+  "source_sha256": "615ef3184a139338fd6314ef30f961ba0ccefe5d073976e5fdb1f03c8c365575",
+  "header_sha256": "4d5a68361b07ea5cba1722c813d70f7bc84682d35d81b4eecfe025c0829543a4",
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "preserved_source_regions": {
+    "enum_bucket_helper": "57647f94367a32c79810c3f9d8424cff866cc9e95df4bd350eace7a6d3ccd2dd",
+    "enum_lookup_helper": "fe8b6b271ca375d0e61563ef1ebf996656d4dac3ff944ad3f0174bdffcce5f23",
+    "enum_public_services": "df4c5b531a6a04221361d0865cd54b675db310b439026786f055e8981a22c923",
+    "property_publication_fragment": "b56780c6baf0174970032103d91453bd55c2b4691e5ac3e15de31145e24e97e5"
+  },
+  "admission": {
+    "retained": [
+      "valid reached ordinary-C++ Win32 DWORD/BYTE storage/alignment/lifetime",
+      "stable/disjoint binding metadata;actual payload aliases admitted",
+      "readable reached hash samples and actual NUL-terminated CRT comparison spans",
+      "existing sampled-byte ASCII/current-C-locale ctype qualification",
+      "genuine distinct actual fallback-role bindings and real current SDK CRT"
+    ],
+    "removed_nominal_restrictions": [
+      "correct bucketing",
+      "recorded length equals strlen",
+      "NUL-free payload",
+      "nonnull data required whenever recorded length nonzero",
+      "globally constant borrowed payload fields",
+      "nonaliasing bucket output"
+    ],
+    "no_added_guards_or_normalization": true,
+    "no_original_locale_fastpath_added": true,
+    "unrestricted_negative_byte_locale_parity": false,
+    "all_incoming_callers_proved": false
+  },
+  "native_schedule": [
+    "header.data capture before header.length;volatile signed BYTE per sample;modulo address+1",
+    "capture hash;write actual output4;head uses captured hash without output reload",
+    "nonnull head then fresh one-time currentquery.length capture",
+    "current node.length;current node.data before current query.data;pointeridentity before null gates/CRT",
+    "current node.next reload after compare failure;captured query length retained"
+  ],
+  "current_crt_boundary": {
+    "sdk_toupper_source": "C:\\Program Files (x86)\\Windows Kits\\10\\Source\\10.0.26100.0\\ucrt\\convert\\tolower_toupper.cpp",
+    "sdk_toupper_source_sha256": "12234b0df83f5b9d15e0787e5f4bbbcd8312aa1d3ec4f81607eeb1795e17774e",
+    "sdk_stricmp_source": "C:\\Program Files (x86)\\Windows Kits\\10\\Source\\10.0.26100.0\\ucrt\\string\\stricmp.cpp",
+    "sdk_stricmp_source_sha256": "c305a4ad6c98d98b1458a2af50f955abd314f1ae282c8b1ec0aba534c274f1f2",
+    "original_toupper_wrapper": "BF924E39B checks109DE1C;changed branch delegates signed int/null locale to BF9136;B760 only consumes AL",
+    "concrete_gap": "Original BF9136 has no EOF shortcut;in single-byte locale signed -1 writes errno2A before LCMapStringA. SDK common_tox_l returnsEOF before locale/errno. No assumed result-byte or side-effect equivalence.",
+    "named_unimplemented_original_transport": [
+      "00bf7e24 LocaleUpdate/TLS/update",
+      "00bf9136 toupper_l",
+      "00bf7eec stricmp_l",
+      "00bf94fa tolower_l",
+      "00bfd45a isleadbyte_l",
+      "00c0f7c5 isctype_l",
+      "00c04331 crtLCMapStringA"
+    ],
+    "qualification": "CurrentSDK genuine imports retained;Original locale/TLS/tables/Win32 mapping/errno parity unproved"
+  },
+  "prior_annotations": [
+    {
+      "address": "0043b760",
+      "annotation": {
+        "address": "0043b760",
+        "function_name": "BSP_PropertyKey_ComputeBucket",
+        "comment": "[BSP reconstruction 0043b760]\nWhole ordinary raw Source loads actualheader data+4 before length+0, selects explicit E177E4 string fallback, signed-byte genuine CRT toupper, unsigned step=(length|20)>>5 and consecutive cursor+1, moduloDWORD recurrence/mask3F. Fresh property-only Original89B+genuine OriginalCRT39B/Source thirteen comparisons passed on actual current rawpool/string producers; zero Source callee hooks; pre/post22selectedinputs equal and461 compilerinputpins checked. Initial-zero Original locale/current C locale and valid closed ASCII/null-only-empty domain; no nonzero locale, map/fallbackrecord owner, general lifetime, Original entry ABI or gameplay proof."
+      }
+    },
+    {
+      "address": "0043b8b0",
+      "annotation": {
+        "address": "0043b8b0",
+        "function_name": "BSP_PropertyMap_FindBorrowedKeyNode",
+        "comment": "[BSP reconstruction 0043b8b0]\nWhole105B/48instruction Original lookup recovered. Ordinary Source hashes unconditionally, publishes bucket before head, caches query length on nonempty chain, checks length/data identity/null/real stricmp, follows genuine+C links and returns first borrowed mutable node; mapped+8/page+10 untouched. Explicit stable valid coherent finite closed ASCII/C-locale/raw-header/fallback/borrowed-lifetime domain. Whole current195B/87instruction compiler schedule documented: query length before data during inlining, permitted stable-memory load motion, no invalid-memory fault/read-trace identity claim. Genuine current hash92B/data accessor19B/comparator50B and actual toupper/stricmp imports retained. Primary independently rehashed731 artifacts/674 physical copies,7 complete Original dependency ranges, preserved13 old module functions/relocations and actual current/worker whole archives/members. MSVC Win32 and3 existing checks pass; no new Source/Original/lookup/CRT fixture execution, original locale/policy, whole map owner/cleanup, ABI, app link/startup/gameplay claim."
+      }
+    }
+  ],
+  "annotation": {
+    "status": "PASS locked annotation;existing names/comments preserved;original project saved;both exports refreshed",
+    "prior_values_log": "local\\ghidra-annotations-20261015T235321Z.json",
+    "prior_values_log_sha256": "9c382ff5023d9a3d59893232e2e5ec4db552914dd6437f21ab2c3b461a49255a",
+    "project_saved": true,
+    "exports_refreshed": true
+  },
+  "source_registration": "existing registered translation unit reused;no CMake append or queue",
+  "independent_review": {
+    "reviewer": "primary /root",
+    "reviewed_revision": "eb6f4dcd5",
+    "result": "PASS complete39+48ops plus13B accessor/Source/header after explicit wrapping cursor correction",
+    "source_sha256": "615ef3184a139338fd6314ef30f961ba0ccefe5d073976e5fdb1f03c8c365575",
+    "header_sha256": "4d5a68361b07ea5cba1722c813d70f7bc84682d35d81b4eecfe025c0829543a4",
+    "unchanged_hashes_asserted": true,
+    "qualification": "Existing currentSDK ASCII/C-locale ctype boundary retained;Original negative-byte/changed-locale/errno/TLS/general readiness unproved"
+  },
+  "validation": {
+    "build": {
+      "command": "scripts/build.ps1",
+      "revision": "eb6f4dcd5",
+      "platform": "MSVC Win32",
+      "result": "PASS",
+      "exit_code": 0,
+      "log": "local/goal_oct15_property_lookup_raw_io_corrected_build.log",
+      "log_sha256": "68642087addc92b326c974e41e9437a81db1417925ba2f0f3e04ed5bda0a5200",
+      "warnings": [
+        "existing unrelated LNK4006 duplicate spawn_request_id_matches"
+      ]
+    },
+    "superseded_draft_build": {
+      "revision": "25ae14594",
+      "exit_code": 0,
+      "enabled_existing_ctests": 2,
+      "passed": 2,
+      "seconds": 8.09
+    },
+    "new_tests": 0,
+    "report_call_verification": "PASS6 typed rows and6 documentation claims;0failures/unchecked/warnings",
+    "emitted_object_schedule": {
+      "raw_lookup": {
+        "code_bytes": 199,
+        "instruction_count": 89,
+        "code_sha256": "d314f0a4ec984cd31b2987ec1e69a502226f2c238f2527013a9f8278a668972a"
+      },
+      "property_hash": {
+        "code_bytes": 94,
+        "instruction_count": 42,
+        "code_sha256": "13183c68e818099d26e083b79d9e476fe98c8cfad370d49a9400a9060f5f7f9b"
+      },
+      "result": "PASS complete emitted hash/rawlookup bodies inspected;head uses captured ESI bucket,never reloads output",
+      "object": "local/goal_oct15_property_lookup_raw_io_corrected.obj",
+      "object_sha256": "70b7bc42561465236a3b5c5f7f2e99ac1e5ba93c27fee7228229b6d382df2884",
+      "dump": "local/goal_oct15_property_lookup_raw_io_object.txt",
+      "dump_sha256": "25a76a00f5dfb8617a5ead776c75be6b4e8e2857ff5c5c582fdea53a0dc06073",
+      "raw_lookup_offsets": {
+        "output_store": "63",
+        "head_captured_bucket_index": "68",
+        "query_length": "70",
+        "node_data": "7E",
+        "query_data": "83",
+        "stricmp_call": "9D",
+        "current_next": "A9"
+      },
+      "imports": [
+        "__imp__toupper",
+        "__imp___stricmp"
+      ],
+      "private_frame_home_identity_proved": false
+    },
+    "original_abi_compatible": false,
+    "native_differential_fixture": false,
+    "game_validated": false,
+    "existing_ctests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "seconds": 7.46,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "optional_native_differential_enabled": false
+    },
+    "diff_check": "PASS"
+  },
+  "qualification": "Whole194B control flow and exact raw IO at stated existing currentSDK ASCII/C-locale boundary. GeneralSourceReadyfalse;Original negative-byte/locale/errno/TLS/privateABI,all-callers,fault/SEH,unaligned identity,native differential and game proof remain unproved."
+}
