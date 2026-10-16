@@ -1,0 +1,128 @@
+{
+  "schema": 1,
+  "packet": "cc12_native_crt_seed_store_readiness_oct16",
+  "status": "whole_leaf_static_readiness_blocked_on_named_provider",
+  "Original_name_retained": "LIBCRT_unmatched_00bf98c2",
+  "address": "00BF98C2",
+  "whole_range": [
+    "00BF98C2",
+    "00BF98CE"
+  ],
+  "Original_bytes": 13,
+  "Original_instructions": 4,
+  "Original_body_sha256": "aa37c46e09d61c3a280049a8d32f5ca9dfa65493811bc2b5eb5f15c88781dbc2",
+  "Source_ready": false,
+  "Source_authorized": false,
+  "Source_implemented": false,
+  "Source_credit": 0,
+  "readiness_only": true,
+  "discovery": {
+    "entry_claim_receipt": "401295",
+    "metadata_bounds_receipt": "69edea",
+    "whole_range_lease_receipt": "57be1c",
+    "body_before_receipt": "86940d",
+    "order": "Entry-only discovery first; exact full range claimed and full disk body pinned before substantive analysis."
+  },
+  "source_commit_before": "f75a55096ddb8f83238a7c13cd4fdd06c996904e",
+  "current_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16",
+  "whole_Original": {
+    "hex": "e867b900008b4c2404894814c3",
+    "disk_live_indexed_listing_agree": true,
+    "typed_flow_file": "leaf_typed_flow.json",
+    "typed_modification": "6361",
+    "flow_override": "NONE at all four instructions",
+    "no_return": false,
+    "thunk": false,
+    "one_contiguous_range": true,
+    "normal_local_path": "CALL; post-return DWORD argument-home read; exact DWORD pointer-relative write; RET",
+    "no_listing_or_ABI_repair_performed": true
+  },
+  "calls": [
+    {
+      "address": "00BF98C2",
+      "native": "00C0522E",
+      "kind": "direct_call",
+      "name": "__getptd",
+      "established": "Encoded rel32 and live listing/typed target agree; named service semantics unresolved."
+    }
+  ],
+  "leaf_access_schedule": [
+    "CALL writes the four-byte return offset to the actual native stack under ordinary Win32 flat stack assumptions, then transfers to __getptd. Provider body and side effects are outside this packet.",
+    "Only after a normal provider return with expected stack restoration: MOV ECX,DWORD [ESP+4] reads all 32 argument bits. No argument payload load precedes the provider call.",
+    "MOV DWORD [EAX+0x14],ECX writes exactly four bytes. There is no local null check, bounds guard, value mask, previous-field read, repeat store or arithmetic transformation.",
+    "RET consumes the actual stack return offset, with no immediate stack-argument cleanup. EAX is unchanged after the call; ECX holds the loaded DWORD. Logical return type remains unestablished."
+  ],
+  "register_and_storage_scope": {
+    "own_registers": "EAX provider output used as address; ECX receives incoming DWORD; ESP participates in CALL/argument addressing/RET. No incoming ECX/EAX value is consumed before the provider.",
+    "own_flags": "No flags-dependent branch or leaf flags modification outside provider; provider flags effects unresolved.",
+    "own_segments": "No explicit segment override; ESP uses normal SS and EAX address normal DS. Ordinary Win32 flat-segment/32-bit-stack domain only; no arbitrary segment descriptor identity.",
+    "own_other": "No local x87, SSE, string/REP, DF-sensitive instruction, global/TLS cell, allocation, bitmap, local stack buffer, jump table or separate runtime helper. Named provider may have such dependencies; not closed here.",
+    "raw_store": "Exact native DWORD store permits raw storage interpretation under actual x86 access rules. No aligned uint32_t object, fake context type or SDK layout is invented."
+  },
+  "named_provider": {
+    "address": "00C0522E",
+    "name": "__getptd",
+    "saved_prototype": "_ptiddata __cdecl __getptd(void)",
+    "saved_body": "00C0522E..00C05245; metadata only, no body read",
+    "indexed_callers": 43,
+    "indexed_callee_labels": [
+      "00BFBA09 __amsg_exit",
+      "00C051B7 LIBCRT_unmatched_00c051b7"
+    ],
+    "reconstruction_ledger_record_shown": false,
+    "Source_binding_approved": false,
+    "existing_named_docs": "Limited first-entry metadata only; explicitly no returned pointer/service/layout/ownership/return guarantee.",
+    "other_harness_scope": "goal_oct15_crt_tls_ptd_owner_contract remains separate; no provider/SCC range or files claimed."
+  },
+  "interpretation": {
+    "provisional": "Writes an incoming 32-bit value into a provider-associated word at +0x14. Seed/srand interpretation is plausible from adjacency/labels but not authenticated; no rename or SDK substitution.",
+    "typed_API_hypothesis": "void __cdecl bsp::store_native_crt_context_word_00bf98c2(unsigned int value)",
+    "typed_API_qualification": "New default-potentially-throwing API hypothesis only, deliberately no physical Original ABI/return claim. No Source packet/file implementation or provider/context parameter authorized; final return/interface awaits provider closure.",
+    "ordinary_domain": "If later admitted: genuine stable writable reached raw bytes in a real allocation, nonwrapping offsets, valid lifetime/write permission and validated provider ownership/thread contract. Native private-frame/home aliases, fault protocols, MMIO, concurrent mutation and lifetime changes excluded. No source implementation or runtime validation selected."
+  },
+  "blockers": [
+    "Authenticate the actual named __getptd return contract, including normal return versus failure, termination, exceptions and error-state preservation/effects.",
+    "Establish a genuine live writable returned allocation, provenance and extent covering returned pointer + 0x14 through +0x17, with nonwrapping address arithmetic and a permitted exact DWORD write.",
+    "Establish exclusive or otherwise valid write ownership, object/storage lifetime, initialization policy, thread identity/TLS association, reentrancy and concurrency rules.",
+    "Authenticate provider ABI: no native stack arguments for this call, expected stack restoration, returned EAX meaning, volatile/nonvolatile preservation, segment/stack assumptions and failure paths.",
+    "Resolve the leaf logical return contract and its saved undefined(void) prototype against the post-provider incoming DWORD argument read; no prototype or listing repair is authorized here.",
+    "Retain after-provider argument-home timing and explicitly scope out provider/callee-frame, argument-home or private-stack self-alias protocols before choosing an ordinary by-value C++ interface."
+  ],
+  "caller_scope": {
+    "indexed_label_only": "005987F0 BSP_MainMenuScreen_Enter",
+    "incoming_xref": "005988B9 UNCONDITIONAL_CALL",
+    "caller_body_read_or_promoted": false
+  },
+  "input_preservation": {
+    "sealed": 718,
+    "working": 578,
+    "current_Source6_outputs": 4,
+    "new_current_tool_pins": 133,
+    "fresh_before": "inputs_before.json",
+    "full_before": "preservation_before.json",
+    "later_external_stage": "external_inputs_observed_after_reads.json",
+    "project_scope": "Supported CLI verifies existing bsp/project, exact program path, x86 language and image base every live batch. Typed capture additionally authenticates marker path and modification 6361; no whole-project immutability claim."
+  },
+  "actual_preparation_history": [
+    {
+      "receipt": "5bd70c",
+      "exit": 1,
+      "action": "Initial bounded lookup",
+      "reason": "Fresh W6 local index absent; supported index --if-stale then built successfully, no Ghidra analysis/repair/import."
+    },
+    {
+      "receipt": "e28c16",
+      "exit": 1,
+      "action": "Read-only rg for tool implementation paths",
+      "reason": "Two guessed tool paths absent; actual paths found by rg --files. Original stderr preserved in own tool records; no unavailable bytes synthesized."
+    }
+  ],
+  "exclusions": [
+    "No C++/Source/compiler/build/baseline/tests/probes/target execution/SDK comparison",
+    "No Ghidra writes/import/restart/repair, shared registry/CMake/ledger/name changes or push",
+    "No original physical ABI, fault/register/stack/segment/EH identity, runtime/game or caller validation",
+    "No synthetic owner/context/global/thread_local/SDK srand or isolated-store Source credit"
+  ],
+  "evidence_family": "local/NativeCrtSeedStoreReadiness01",
+  "provenance": "Own new current-task tool invocation/result pairs only, authenticated to full original own session prefix. External input snapshots are labeled inputs, never own prior transport/compile evidence."
+}
