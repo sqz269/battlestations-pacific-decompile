@@ -1,0 +1,238 @@
+{
+  "packet": "oct15_native_input_preset_key_subtree",
+  "status": "whole_native_source_authored_fresh_bytes_and_current_starts_checked_pending_win32_review",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_input_preset_key_subtree.cpp",
+  "header": "include/bsp/native_input_preset_key_subtree.hpp",
+  "documentation": "docs/OCT15_NATIVE_INPUT_PRESET_KEY_SUBTREE.md",
+  "source_sha256": "17002b55e183dce38b6a27fc6b4327d501d9f4af062a205af11fc08366f490fb",
+  "header_sha256": "6a926dc0396f0766937129923c55bb65cf4adb259fa8eb6551da618ba11bc861",
+  "native_blocks": [
+    {
+      "address": "006a0770",
+      "bytes": 82,
+      "instruction_count": 34,
+      "sha256": "5f371072a87e793d220aad976b2c42b09df393028736a9d57bfa226e9cf9eb9d",
+      "bytes_hex": "5356578b7c2410807f29008bd98bf7753b8b4608508bcbe8e4ffffff8b4f1085c98b3674168b470c6a0183c0015051e81c95d7ff8bc8e8650d530057e8fb5d550083c404807e29008bfe74c55f5e5bc20400",
+      "coverage": "whole ordinary entry",
+      "live_equals_PE": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "006a0787",
+      "native": "006a0770",
+      "function": "006a0770"
+    },
+    {
+      "address": "006a079f",
+      "native": "00419cc0",
+      "function": "006a0770"
+    },
+    {
+      "address": "006a07a6",
+      "native": "00bd1510",
+      "function": "006a0770"
+    },
+    {
+      "address": "006a07ac",
+      "native": "00bf65ac",
+      "function": "006a0770"
+    }
+  ],
+  "provider_fingerprints": {
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+    "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+    "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "native_current_starts": {
+    "path": "local/oct15_preset_key_subtree_current_starts.json",
+    "starts": 34,
+    "all_match": true
+  },
+  "native_listing": [
+    {
+      "address": "006a0770",
+      "instruction": "push ebx"
+    },
+    {
+      "address": "006a0771",
+      "instruction": "push esi"
+    },
+    {
+      "address": "006a0772",
+      "instruction": "push edi"
+    },
+    {
+      "address": "006a0773",
+      "instruction": "mov edi, dword ptr [esp + 0x10]"
+    },
+    {
+      "address": "006a0777",
+      "instruction": "cmp byte ptr [edi + 0x29], 0"
+    },
+    {
+      "address": "006a077b",
+      "instruction": "mov ebx, ecx"
+    },
+    {
+      "address": "006a077d",
+      "instruction": "mov esi, edi"
+    },
+    {
+      "address": "006a077f",
+      "instruction": "jne 0x6a07bc"
+    },
+    {
+      "address": "006a0781",
+      "instruction": "mov eax, dword ptr [esi + 8]"
+    },
+    {
+      "address": "006a0784",
+      "instruction": "push eax"
+    },
+    {
+      "address": "006a0785",
+      "instruction": "mov ecx, ebx"
+    },
+    {
+      "address": "006a0787",
+      "instruction": "call 0x6a0770"
+    },
+    {
+      "address": "006a078c",
+      "instruction": "mov ecx, dword ptr [edi + 0x10]"
+    },
+    {
+      "address": "006a078f",
+      "instruction": "test ecx, ecx"
+    },
+    {
+      "address": "006a0791",
+      "instruction": "mov esi, dword ptr [esi]"
+    },
+    {
+      "address": "006a0793",
+      "instruction": "je 0x6a07ab"
+    },
+    {
+      "address": "006a0795",
+      "instruction": "mov eax, dword ptr [edi + 0xc]"
+    },
+    {
+      "address": "006a0798",
+      "instruction": "push 1"
+    },
+    {
+      "address": "006a079a",
+      "instruction": "add eax, 1"
+    },
+    {
+      "address": "006a079d",
+      "instruction": "push eax"
+    },
+    {
+      "address": "006a079e",
+      "instruction": "push ecx"
+    },
+    {
+      "address": "006a079f",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "006a07a4",
+      "instruction": "mov ecx, eax"
+    },
+    {
+      "address": "006a07a6",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "006a07ab",
+      "instruction": "push edi"
+    },
+    {
+      "address": "006a07ac",
+      "instruction": "call 0xbf65ac"
+    },
+    {
+      "address": "006a07b1",
+      "instruction": "add esp, 4"
+    },
+    {
+      "address": "006a07b4",
+      "instruction": "cmp byte ptr [esi + 0x29], 0"
+    },
+    {
+      "address": "006a07b8",
+      "instruction": "mov edi, esi"
+    },
+    {
+      "address": "006a07ba",
+      "instruction": "je 0x6a0781"
+    },
+    {
+      "address": "006a07bc",
+      "instruction": "pop edi"
+    },
+    {
+      "address": "006a07bd",
+      "instruction": "pop esi"
+    },
+    {
+      "address": "006a07be",
+      "instruction": "pop ebx"
+    },
+    {
+      "address": "006a07bf",
+      "instruction": "ret 4"
+    }
+  ],
+  "evidence": [
+    "Native key pointer is captured before left; conditional current length read follows left and precedes getter. The captured key pointer and left survive pool/getter effects.",
+    "Right recurse before key work; only nonnull key resolves actual getter and pool return, including large/disabled-small returns. Current node free precedes captured-left nil test.",
+    "Direct actual getter/return/free composition avoids a second key pointer read or noexcept string-storage adapter; no key/mapped/head/count writes, guard, rollback or extra cleanup.",
+    "Native nilBYTE29 and2Ch node differ from prior28h/nil25 key/vector leaves; no mapped-vector destruction is added."
+  ],
+  "limits": [
+    "Explicit borrowed RawCtx adds a Source stackword: RET8 versus original RET4. Canonical unconsumed recursive EDX0, Source frames and helper ABIs do not prove original ABI/register/flags/privateframe/FH3/SEH/RTTI/fault/heap/CRT or game equivalence.",
+    "Actual getter C++ failures escape, leaving preceding effects. Current pool-return and singleton-free services retain noexcept boundaries; no native fault/exception transport proof is inferred.",
+    "Only valid reached actual nodes/publication cells and matching currentCRT ownership are covered. Existing typed/AV/InputSettings projections remain separate."
+  ],
+  "validation": {
+    "new_tests": 0,
+    "native_runtime": false,
+    "game_validated": false,
+    "optimized_object_review": {
+      "path": "local/oct15_preset_key_subtree_coff.json",
+      "sha256": "12d417f5494d784d2d4e8e872dbb8835ed8c1a34dd6c17c2f2b3ff9f23ea354b",
+      "checks": 10,
+      "core_bytes": 220,
+      "core_instructions": 68,
+      "scope": "Adhoc optimizedI386 object, not CMake/runtime/native execution."
+    },
+    "independent_peer_review": {
+      "reviewer": "/root/avoid_distance",
+      "status": "passed_no_findings",
+      "scope": "FullSource/header and all34Nativeinstructions; independentPE82B/all4transfers and7providerhashes checked. Subsequent Source change only renamed MASMreserved parameter offset to byte_offset, fixing compile without behavior change.",
+      "build_or_runtime": false
+    }
+  },
+  "primary_checks": [
+    "Whole82B/34starts Native body and full Source/header reviewed;2Ch/nil29 layout is distinct from28h/nil25 leaves.",
+    "Nilentry skipsallwork; rightrecursion forwards opaque tree and precedes all current key/node effects.",
+    "Keydata+10 capturedonce BEFORE currentleft0; nullkey stillcapturesleft but skips length/getter/return.",
+    "Only nonnullkey readsCURRENTlength+C and wraps+1; capturedkey/size surviveactualgetter sideeffects.",
+    "Directraw419CC0 beforeBD1510 for EVERY nonnullkey, including large/disabledsmallreturns; no caching or noexceptstoragebridge.",
+    "Capturedleft survives pool/getter effects; actualcurrentnodefree precedes capturedleftnil29 read.",
+    "No key/mapped/head/count writes, nullnodeguard, rollback, cleanup or localEH; priorchild/pool effects retained on failure.",
+    "ActualRawCtx publication/manager/shutdown refs and currentCRT providers are composed; getter failures escape before currentfree.",
+    "Source addsborrowedcontextRET8 vsNativeRET4 and canonical unusedEDX0; originalframes/ABI/FH3/SEH/fault/game remain qualified.",
+    "Fresh82PE/livebytes34currentstarts/fourCALLtargets,7Mainproviderhashes and independentpeerreviewpass; existingtypeddomains unchanged."
+  ]
+}

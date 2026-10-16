@@ -1,0 +1,141 @@
+{
+  "packet": "oct15_native_input_preset_tree_clear",
+  "status": "whole_native_source_authored_fresh_bytes_and_current_starts_checked_pending_combined_win32_review",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_input_preset_tree_clear.cpp",
+  "header": "include/bsp/native_input_preset_tree_clear.hpp",
+  "documentation": "docs/OCT15_NATIVE_INPUT_PRESET_TREE_CLEAR.md",
+  "source_sha256": "421a5dd71ae4e95f7e4181949c7894a085e7a85c69430a925afede9afba0d3ba",
+  "header_sha256": "210bc3233b8ae971ce9cd0af186dd5154be6d5de2ec196e1ff043db2ac8e67c4",
+  "native_blocks": [
+    {
+      "address": "006a1230",
+      "bytes": 43,
+      "instruction_count": 16,
+      "sha256": "be269913efa23f7b370b2563bd35b2c9de26d2ed8048012b61b6499f4afbf38e",
+      "bytes_hex": "568bf18b46048b4804518bcee82ff5ffff8b46048940048b4604c746080000000089008b76048976085ec3",
+      "coverage": "whole ordinary entry",
+      "live_equals_PE": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "006a123c",
+      "native": "006a0770",
+      "function": "006a1230"
+    }
+  ],
+  "same_batch_dependency_fingerprints": {
+    "src/native_input_preset_key_subtree.cpp": "17002b55e183dce38b6a27fc6b4327d501d9f4af062a205af11fc08366f490fb",
+    "include/bsp/native_input_preset_key_subtree.hpp": "6a926dc0396f0766937129923c55bb65cf4adb259fa8eb6551da618ba11bc861"
+  },
+  "same_batch_dependency_status": "Root preset-key subtree authored, peer and optimizedobject checked; not yet Mainintegrated or CMakebuildchecked. This entry cannot close until that dependency is accepted.",
+  "native_current_starts": {
+    "path": "local/oct15_preset_tree_clear_current_starts.json",
+    "starts": 16,
+    "all_match": true
+  },
+  "native_listing": [
+    {
+      "address": "006a1230",
+      "instruction": "push esi"
+    },
+    {
+      "address": "006a1231",
+      "instruction": "mov esi, ecx"
+    },
+    {
+      "address": "006a1233",
+      "instruction": "mov eax, dword ptr [esi + 4]"
+    },
+    {
+      "address": "006a1236",
+      "instruction": "mov ecx, dword ptr [eax + 4]"
+    },
+    {
+      "address": "006a1239",
+      "instruction": "push ecx"
+    },
+    {
+      "address": "006a123a",
+      "instruction": "mov ecx, esi"
+    },
+    {
+      "address": "006a123c",
+      "instruction": "call 0x6a0770"
+    },
+    {
+      "address": "006a1241",
+      "instruction": "mov eax, dword ptr [esi + 4]"
+    },
+    {
+      "address": "006a1244",
+      "instruction": "mov dword ptr [eax + 4], eax"
+    },
+    {
+      "address": "006a1247",
+      "instruction": "mov eax, dword ptr [esi + 4]"
+    },
+    {
+      "address": "006a124a",
+      "instruction": "mov dword ptr [esi + 8], 0"
+    },
+    {
+      "address": "006a1251",
+      "instruction": "mov dword ptr [eax], eax"
+    },
+    {
+      "address": "006a1253",
+      "instruction": "mov esi, dword ptr [esi + 4]"
+    },
+    {
+      "address": "006a1256",
+      "instruction": "mov dword ptr [esi + 8], esi"
+    },
+    {
+      "address": "006a1259",
+      "instruction": "pop esi"
+    },
+    {
+      "address": "006a125a",
+      "instruction": "ret "
+    }
+  ],
+  "evidence": [
+    "Initial currenthead/currentroot capture precedes actualsubtree. Exception stops before anyreset, preserving prior effects.",
+    "Afterchild rereadhead/rootreset, rereadhead BEFORE treecountzero and capturedheadleftreset, then rereadhead/currentrightreset. No headcache/combinedstores/substituteclear."
+  ],
+  "limits": [
+    "RawCtx adds a Source stackword/RET4 versus originalplainRET; consumed actualtree/header accesses remain raw and ordered.",
+    "Source/privateframe/currentCpp/currentCRT only. No originalABI/FH3/SEH/RTTI/fault/register/CRT/game proof; no new Native/runtime test. Existing typed/AV domains retained."
+  ],
+  "validation": {
+    "new_tests": 0,
+    "native_runtime": false,
+    "game_validated": false,
+    "optimized_object_review": {
+      "path": "local/oct15_preset_tree_clear_coff.json",
+      "sha256": "a5b12f53e8552479e56c16ce295c87d6debf86cde5f92237ad8b219589a24918",
+      "checks": 7,
+      "core_bytes": 67,
+      "core_instructions": 20,
+      "scope": "Adhoc optimizedI386 object, not CMake/runtime/native execution."
+    },
+    "independent_peer_review": {
+      "reviewer": "/root/avoid_distance",
+      "status": "passed_no_findings",
+      "scope": "FullSource/header and all16Nativeinstructions; independentPE43B/hash/currentstarts, samebatchproviderfingerprints and soletransfer checked. Exactthree postchildheadreloads/alias schedule reviewed.",
+      "build_or_runtime": false
+    }
+  },
+  "primary_checks": [
+    "Whole43B/16Nativeinstructions and fullSource/header reviewed.",
+    "Initialhead/root captures precede actualsamebatchsubtree; no alternatecontainer/guard/extraEH.",
+    "Afterchildheadreload/rootreset,secondheadcaptureBEFOREcountzero/leftreset,thirdheadreload/rightreset preserveexactaliases.",
+    "Subtreefailure escapes beforeanyreset; no normalcleanup/rollback or fallback.",
+    "BorrowedRawCtx addsSourceRET4 versusNativeplainRET; canonicalunusedEDX0/originalABI/fault/game remainqualified.",
+    "Fresh43PE/livebytes16currentstarts and soleactualCALLoperandmatch; samebatchdependenciesfingerprinted.",
+    "Optimizedobject67B/20starts passes7focusedCOFFchecks; fullcombinedCMake remainsrequired."
+  ]
+}
