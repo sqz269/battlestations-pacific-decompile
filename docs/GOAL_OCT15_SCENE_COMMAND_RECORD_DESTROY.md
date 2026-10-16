@@ -103,5 +103,8 @@ Guarded analysis checks C:/Users/sqz269/bsp.gpr and program
 /battlestationspacific.exe. The report retains full live/installed bytes,
 typed transfer rows, actual provider hashes and prior annotation values.
 Locked annotation/save/export/readback and primary complete-Source review
-precede registration and the normal MSVC Win32 build. No new tests, native
-entry execution, application adoption or game validation is claimed.
+passed. The primary accepted draft5d6eceae9 with unchanged Source hashes and
+will register it at the earlier integrator turn and provide the combined normal
+MSVC Win32 gate. The redundant worker registration was unqueued; no worker
+build or CMake change is claimed. No new tests, native entry execution,
+application adoption or game validation is claimed.

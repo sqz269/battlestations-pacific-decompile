@@ -1,10 +1,10 @@
 {
   "packet": "goal_oct15_scene_command_record_destroy",
-  "status": "whole_ordinary_actual_storage_Code_with_qualified_cleanup_action_review_and_build_pending",
+  "status": "whole_ordinary_actual_storage_Code_primary_reviewed_qualified_cleanup_primary_registration_build_pending",
   "code_complete": true,
   "ordinary_normal_code_complete": true,
   "source_ready": false,
-  "readiness_gate": "pending_independent_primary_Source_review_and_normal_registered_build",
+  "readiness_gate": "primary_Source_review_passed;pending_actual_primary_registered_normal_build",
   "source": "src/native_scene_command_record_destroy.cpp",
   "header": "include/bsp/native_scene_command_record_destroy.hpp",
   "documentation": "docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md",
@@ -244,14 +244,25 @@
     "owned_native_calls": 8,
     "qualified_action_tail_JMPs": 1,
     "additional_external_incoming_calls": 1,
-    "build": "pendingprimaryreview",
-    "registration": "notqueuedpendingprimaryreview",
+    "build": "pending_actual_primary_combined_normal_MSVC_Win32;no_worker_build",
+    "registration": "worker_registration_unqueued_at_primary_instruction;primary_will_register_at_earlier_integrator_turn",
     "new_tests": 0,
     "direct_new_entry_execution": false,
     "abi_compatible": false,
     "game_validated": false,
     "application_adoption": false,
-    "report_calls": "10uniquerowschecked,0failed;docs18addresses10claims0failed/unchecked/warnings"
+    "report_calls": "10uniquerowschecked,0failed;docs18addresses10claims0failed/unchecked/warnings",
+    "independent_primary_review": {
+      "reviewed_commit": "5d6eceae9",
+      "result": "passed_no_Source_changes_requested",
+      "scope": "Complete195B67ops+wholeSource/header+actualrawproviderreview;bothsavedstores/target-arm-length-get-return/freshcommand-disarm-length/lateBYTEbit0/capturedslot-recordfree-zero",
+      "reviewed_normalized_lf_sha256": {
+        "src/native_scene_command_record_destroy.cpp": "b0bee8b49e3c529aef5ce711bf09d458b175b6eceed61c70d77b639ffec0e8af",
+        "include/bsp/native_scene_command_record_destroy.hpp": "16273d338e13cebb5987d45f004b8f91962a1205e566f414f1507750170cbe5c"
+      },
+      "hashes_asserted_unchanged": true
+    },
+    "accepted_Source_provider_hashes_unchanged": true
   },
   "limits": [
     "OrdinaryactualstorageSourceonly;qualifiedseparatecleanupmappingnotOriginalFH3/SEH/privateframe/heapidentity",
