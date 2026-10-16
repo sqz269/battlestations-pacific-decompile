@@ -1,0 +1,94 @@
+{
+  "schema": "bsp_native_crt_strrchr_v1",
+  "packet": "cc12_native_crt_strrchr_00bf87b0",
+  "coverage": "whole_ordinary_domain_new_Source_interface",
+  "source_authorized": true,
+  "worker_source_implemented": true,
+  "main_registered": false,
+  "source_gate": "reports/cc12_native_crt_strrchr_readiness.json at Main 1e57eb5e5",
+  "routine": {
+    "entry": "00BF87B0",
+    "native_name": "_strrchr",
+    "preserve_existing_correct_name": true,
+    "native_signature": "char * __cdecl _strrchr(char * _Str, int _Ch)",
+    "source_signature": "char* __cdecl bsp::find_native_crt_last_character_00bf87b0(char* actual_string, int character)",
+    "coverage": "complete ordinary domain",
+    "body_ranges_inclusive": [["00BF87B0", "00BF87DC"]],
+    "body_bytes": 45,
+    "instructions": 23,
+    "direct_calls": 0,
+    "original_body_sha256": "0b599ea33c0e50b515a59dc8e4f453f040752c0a3af01afa77f3695f7753ba12"
+  },
+  "files": [
+    "include/bsp/native_crt_strrchr.hpp",
+    "src/native_crt_strrchr.cpp",
+    "docs/NATIVE_CRT_STRRCHR.md",
+    "reports/native_crt_strrchr.json"
+  ],
+  "ordinary_contract": {
+    "storage": "Genuine passed live storage in one readable allocation through its first NUL at offset L; NUL-inclusive count L+1 and 32-bit extent do not wrap; arguments and storage stay stable. Stable readable aliases admitted; successful pointer borrows the same allocation.",
+    "character": "Every MSVC Win32 int is admitted; unsigned-byte conversion after the forward pass selects low eight bits.",
+    "read_schedule": "Read BYTEs 0..L ascending including NUL; convert target; read BYTEs L..first backward match or zero descending; unconditionally reread that reached match/base BYTE before returning.",
+    "result": "Genuine pointer to highest matching offset, including first NUL when target low byte is zero; null when absent.",
+    "source_safety": "Volatile unsigned-byte payload view retains Source reads; bounded unsigned 32-bit offset/count state never forms a before-begin pointer, including empty strings. No word overread or read beyond NUL.",
+    "native_abi_evidence": "Pointer DWORD at EBP+8 loaded before first scan; target BYTE at EBP+12 later; entry DF=0 and flat ES; STD before backward scan; both normal outcomes join CLD; EDI/EBP restored; raw EAX pointer/zero and plain RET/caller cleanup.",
+    "excluded_protocols": "Invalid/null/unterminated/dangling/inaccessible/wrapping storage, mutation, faults, concurrency and volatile/MMIO protocols; no new guard or recovery."
+  },
+  "dependencies": [],
+  "host_steps": [],
+  "implementation_boundary": "New potentially-throwing-by-default typed Source API, explicitly __cdecl and MSVC Win32; static assertions require pointer/int/offset widths four. No SDK string/search substitute, single-pass shortcut, provider/host/context/global/locale/TLS, argument-home adapter, Source DF parameter, unresolved stub or original caller/application binding.",
+  "prior_phase_evidence": {
+    "role": "external immutable readiness evidence; not own Source-phase compilation or raw provenance",
+    "root": "J:/PROG/battlestations-pacific-decompile-cc12_crt_strrchr_readiness_oct16/local/NativeCrtStrrchrReadiness01/root_manifest.json",
+    "sha256": "9ebd4a1d065a1a79102e146f048083c22e2ae980eb046f20faa7e68278f506cc"
+  },
+  "validation": {
+    "worker_strict_compile": {
+      "result": "passed one fresh invocation; no replay",
+      "actual_exec_chunk": "3ffbb3",
+      "compiler": "MSVC 19.51.36244, frozen private Hostx64/x86 compiler actually executed",
+      "flags": ["/nologo", "/Bv", "/std:c++17", "/O2", "/W4", "/WX", "/permissive-", "/EHsc", "/MD", "/c", "/showIncludes", "/sourceDependencies"],
+      "precompile_pins": "local/WholeNativeCrtStrrchrSource01/precompile_pins.json",
+      "precompile_pins_sha256": "84635912b4abd67f03f724900e382d76b20a65cdea0ae240d14126a138c9b94c",
+      "frozen_inputs": 81,
+      "frozen_compiler_files": 72,
+      "actual_source_header_readonly_and_unchanged": true,
+      "dependency_closure": "actual Source plus this local header only; no SDK/system includes",
+      "object": "local/WholeNativeCrtStrrchrSource01/native_crt_strrchr.strict.obj",
+      "object_bytes": 913,
+      "object_sha256": "7395b26ec91eb0198f3d8aab79837e8eea387dbe0984fb8321a48d4962dbf20c",
+      "exit_code": 0
+    },
+    "whole_current_coff_audit": {
+      "result": "complete static review",
+      "all_sections": [".drectve", ".debug$S", ".text$mn", ".debug$F", ".chks64"],
+      "all_code_bytes": 64,
+      "all_code_instructions_including_unused_or_padding": 28,
+      "primary_symbols": 8,
+      "auxiliary_records": 5,
+      "string_table_bytes": 62,
+      "calls": 0,
+      "undefined_externals": 0,
+      "code_relocations": 0,
+      "eh_runtime_helpers": 0,
+      "directives_retained": ["/DEFAULTLIB:MSVCRT", "/DEFAULTLIB:OLDNAMES"],
+      "only_relocation": ".debug$F offset0 DIR32NB to this Source function symbol",
+      "metadata": ".debug$S compiler/object records; .debug$F FPO record (no SEH); .chks64 section checksums",
+      "evidence": "local/WholeNativeCrtStrrchrSource01/coff_audit.json and complete dumpbin ALL/DISASM stdout/stderr",
+      "instruction_review": "All five raw sections, every code instruction, every primary/auxiliary symbol record and complete strings/relocations/directives reviewed. Payload first-NUL scan, backward terminal-inclusive scan and unconditional final byte reread retained. Alignment NOP is not a memory read. Stable typed character evaluation does not establish original argument-home scheduling."
+    },
+    "live_call_checker": {
+      "result": "passed both final changed report and document before commit",
+      "recognized_rows_each": 0,
+      "failed_rows_each": 0,
+      "qualification": "Call-free leaf has no host call rows. Zero-row success is not semantic proof or caller/application binding.",
+      "evidence": "local/WholeNativeCrtStrrchrSource01/report_calls.stdout.bin"
+    },
+    "normal_main_build_and_existing_three_checks": "pending integrator after registration; no separate unregistered worker baseline requested",
+    "new_tests_probes_or_body_execution": "none",
+    "original_binary_abi_native_execution_gameplay": "not established",
+    "shared_registration_or_ledger_mutations": "none by worker",
+    "source_phase_evidence_family": "J:/PROG/battlestations-pacific-decompile-cc12_crt_strrchr_readiness_oct16/local/WholeNativeCrtStrrchrSource01/root_manifest.json",
+    "own_provenance": "This phase's completed genuine worker UUID tool invocations/results only, with authenticated original source prefix and line/byte bounds; prior readiness family remains external and is not current compilation provenance."
+  }
+}
