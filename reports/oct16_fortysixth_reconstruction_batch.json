@@ -1,0 +1,87 @@
+{
+  "packet": "oct16_fortysixth_reconstruction_batch",
+  "status": "primary_accepted_whole_comparator_supplied_callee_domain_default_Win32_checked",
+  "Source_pin": "378bd140dc3a72bde802e9c35735dd8559273f6b",
+  "frozen_quartet": {
+    "include/bsp/native_string_header_less_actual.hpp": "0797bd4280fa8e57b79bf74271890de3254d3c0d950e5a7cef7bf041874192b2",
+    "src/native_string_header_less_actual.cpp": "c0c2e1c035ecf7092acb4bb83586b63d94cf65e6607631fc71d35cd8b80b014a",
+    "docs/OCT16_NATIVE_STRING_HEADER_LESS_ACTUAL.md": "503ed236e9f2c7e20003182916bac710ee0bfd17e70763c8f29061ffd94a399f",
+    "reports/oct16_native_string_header_less_actual.json": "920b7f77f7941788fdedb47c82c30e1606b8d459f897e83b0899c57193ee0de7"
+  },
+  "scope": {
+    "whole_ordinary_entries": 1,
+    "Native": [
+      81,
+      31
+    ],
+    "owned_transfers": 1,
+    "old_CurrentCRT_API_preserved": true,
+    "whole_unique_hint_map_not_promoted": true
+  },
+  "primary": {
+    "receipt": "local/oct16_string_header_less_primary_frozen.json",
+    "sha256": "6d8632143e966953135c820491629edd580b9806e92bcd1a0e353d017ecf7a67",
+    "checks": 20,
+    "findings": [],
+    "unchanged_direct_provider_LF_fingerprints": 8,
+    "unchanged_prior_provider_LF_fingerprints": 24,
+    "immutable_preliminary_receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_string_header_less_primary.json",
+    "immutable_preliminary_sha256": "94c68b97b9f06415c9a4ef12cf5a87048bb44418972e603e2c91dd393d562c7e"
+  },
+  "compiled": {
+    "Root_object_sha256": "22aa61aac535005f70fbe9497545fab3d1db1667691cbad06301421ac5d5373f",
+    "worker_object_sha256": "b99f65de724bf1c8638a97161728c4ec68bbe82ca135a745e86d0e1bdcbfab34",
+    "both_CODE_raw_bytes_and_symbolic_relocations_equal": true,
+    "CODE": [
+      84,
+      37
+    ],
+    "public": [
+      70,
+      30
+    ],
+    "unreferenced_read_helper": [
+      14,
+      7
+    ],
+    "actual_BF7FBF_REL32": 1,
+    "local_EH_BSS_padding_tables_or_other_relocations": false,
+    "directives_bytes": 47,
+    "debug_bytes": 212,
+    "checksums_bytes": 40
+  },
+  "verification": {
+    "combined_tested_commit": "a360d695a0ad6cd57ba249d5db9eea8bb1f07fe0",
+    "default_build_exit": 0,
+    "existing_suites_passed": 3,
+    "seconds": 7.69,
+    "build_log": "local/oct16_batch46_final_build.txt",
+    "build_log_sha256": "2c370fa0472ef7fe9e1c9d0dc03db9aa63e8d8029973c1d47a6401be2ec7118d",
+    "JSON_transfer_rows": 1,
+    "Markdown_transfer_claims": 1,
+    "saved_annotations": 1,
+    "refreshed_exports": 1,
+    "closeout_receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_avoid_distance\\local\\oct16_string_header_less_closeout_receipt.json",
+    "closeout_receipt_sha256": "19b4f9f66f170987d5472bd431ea567b5271d4e64a47918d617010883d33940a",
+    "preimages": {
+      "path": "local\\ghidra-annotations-20261016T094014Z.json",
+      "sha256": "1598c47d7bee5f3a961750481861f9467948c37422f2bea5e58fa84cccd20296"
+    },
+    "export_log": {
+      "path": "local/oct16_string_header_less_exports.txt",
+      "sha256": "b5b493379dee09ed29ae0dc4b3fc0960326ac1b57c798fa8bab64f322d79844d"
+    },
+    "Original_full_prototype_output_unchanged": true,
+    "owned_registry_diffs_exact": true,
+    "one_Core_registration": true,
+    "append_registry_conflict_resolved_with_required_union_tool": true
+  },
+  "current_gate_update": "Preset fixup FBC0 is now published at108a4a24e. Frozen comparator docs captured its earlier pending state; unique/hint/map remain incomplete.",
+  "integration": "Initial bounded Source merge was clean; later Main sync conflicted only in cmake/startup.cmake and the required merge_resolve.py registry union resolved it. All old function records and name evidence prefixes retained. Source four-word RET10h versus Native two-word RET8/AL-only remains qualified.",
+  "limits": "Additional whole comparator in the existing supplied-callee domain. No concrete CRT/TLS/handler implementation or Original binary/privateframe/register/flags/fault/FH3/SEH/runtime/game closure. Old CurrentCRT API preserved; hint/unique remain incomplete. FBC0 was published at 108a4a24e after the frozen Source evidence was captured.",
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Verified separately after publication"
+  }
+}

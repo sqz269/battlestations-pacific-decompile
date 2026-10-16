@@ -1,0 +1,141 @@
+{
+  "schema": 1,
+  "packet": "cc12_native_crt_frexp_readiness_oct16",
+  "scope": "whole-entry readiness only",
+  "status": "blocked_on_external_contracts",
+  "Source_ready": false,
+  "Source_authorized": false,
+  "Source_credit": 0,
+  "source_ready": false,
+  "source_authorized": false,
+  "source_credit": 0,
+  "base_commit": "67cbe3623909f1d53decad0d929a617842107e07",
+  "branch": "agent/cc12_crt_frexp_readiness_oct16",
+  "entry": "00BFEF3B",
+  "name": "_frexp",
+  "recovered_library_prototype": "double __cdecl _frexp(double X, int* exponent)",
+  "body": {
+    "ranges_inclusive": [["00BFEF3B", "00BFF014"]],
+    "range_count": 1,
+    "bytes": 218,
+    "instructions": 86,
+    "direct_call_sites": 8,
+    "unique_direct_callees": 7,
+    "direct_jump_sites": 9,
+    "complete_contiguous_listing": true,
+    "typed_modification_number": "6658",
+    "flow_overrides": [],
+    "fallthrough_overrides": [],
+    "computed_branches": [],
+    "no_return_metadata": false,
+    "disk_live_equal": true,
+    "sha256": "c97625a587467103232361a0ff29245132e570ea35005fb102001ddf6ea2d3e2"
+  },
+  "identity": {
+    "project": "bsp",
+    "project_descriptor": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_per_analysis_batch": true,
+    "autostart": false,
+    "disk_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "disk_pe_scope": "Whole file read/preserved before discovery; only selected body and two precise data windows analyzed. Descriptor pin is not a whole Ghidra database snapshot."
+  },
+  "caller_metadata_only": [{"entry": "00A61AE0", "name": "math_frexp", "body_expanded": false}],
+  "physical_abi": {
+    "entry_stack": {"0": "return address u32", "+4": "input binary64, 8 bytes", "+12": "exponent pointer u32"},
+    "return": "x87 ST(0); plain RET, caller removes 12 argument bytes",
+    "preserved_registers_local": ["EBP", "EBX", "EDI", "ESI on non-null path"],
+    "volatile_registers_used": ["EAX", "ECX", "EFLAGS"],
+    "output_pointer_register": "EDI",
+    "captured_token_slot": "4-byte overwrite of original argument cell [EBP+0x10] with first control-provider EAX",
+    "classification_load": "MOV EAX,dword ptr [EBP+0x0e]: 4-byte overlapping load across input top 2 bytes and token low 2 bytes; only AX & 0x7ff0 influences comparison",
+    "all_floating_payload_memory_width_bytes": 8,
+    "ten_byte_memory_payload_accesses": 0,
+    "finite_result": "FSTP m64 [EBP-8] before restore-provider invocation, then FLD m64 [EBP-8] afterward",
+    "special_result": "Provider ST(0) returned without local binary64 result spill or explicit local restoration",
+    "aliasing": "No invented non-aliasing assumption. Original input reloads, output RMW, captured-token slot mutation and provider memory effects retain physical ordering.",
+    "unproved": ["provider register/stack/x87 ABI", "incoming x87 stack requirements", "exceptional unwinding", "accessible memory and original caller constraints"]
+  },
+  "classification": {
+    "raw_local_predicate": "((input_bits >> 48) & 0x7ff0) == 0x7ff0, through overlapping 4-byte load",
+    "initial_input_fld_precedes_predicate": true,
+    "finite_path_classes": ["normal", "subnormal", "+0", "-0"],
+    "special_path_classes": ["infinity", "quiet NaN encodings", "signaling NaN encodings"],
+    "special_output": "OR dword ptr [EDI],0xffffffff at 00BFEF90: 32-bit read/modify/write to -1 before classifier argument FSTP and provider entry; no LOCK prefix",
+    "classifier_input": "binary64 FLD/FSTP converted argument, not guaranteed original signaling NaN bits",
+    "classifier_return_signed_32": {
+      "1_or_2": "FLD 00E165A8 then common exception provider",
+      "3": "NaN-named provider with token and reloaded/stored input",
+      "less_equal_zero_or_greater_equal_four": "FLD original input, FADD 00D7A210, then common exception provider"
+    },
+    "classifier_code_to_ieee_class_mapping_established": false,
+    "finite_normalization_and_output_established": false,
+    "signed_zero_preservation_established": false,
+    "nan_payload_quieting_sign_propagation_established": false
+  },
+  "fp_environment": {
+    "first_control_boundary": ["0x133f", "0xffff"],
+    "finite_restore_boundary": ["captured EAX token", "0xffff"],
+    "local_control_or_status_register_operations": [],
+    "local_sse_mxcsr_operations": [],
+    "literal_to_actual_environment_mapping_established": false,
+    "special_restore_owner": "00C13658 or 00C1370A receives token; actual restoration unresolved",
+    "null_path": "No local control call or input FLD. Handler may fail/nonreturn; FLDZ only on observed normal fallthrough.",
+    "unresolved": ["precision", "rounding", "exception masks", "pending status", "trap delivery", "restoration on every path", "SSE coupling", "provider errno/TLS/callback ownership"]
+  },
+  "constants": [
+    {"va": "00E165A8", "length": 8, "bytes_le": "000000000000f8ff", "bits": "FFF8000000000000", "encoding": "binary64 negative quiet NaN", "disk_section": ".data", "disk_live_equal": true, "sha256": "2399fcd7f479a73c8d0600bb9ff95d8c0cf687e2e9653d2747d14a026f1c5997", "runtime_immutability_proved": false},
+    {"va": "00D7A210", "length": 8, "bytes_le": "000000000000f03f", "bits": "3FF0000000000000", "encoding": "binary64 +1", "disk_section": ".rdata", "disk_live_equal": true, "sha256": "6c3c396ed6b5c36dcae172271f462051b1266b851e92df3deea8ac65478fd712", "runtime_immutability_proved": false}
+  ],
+  "call_sites": [
+    {"address": "00BFEF4B", "native": "00BFFB8B", "function": "00BFEF3B", "name": "LIBCRT_unmatched_00bffb8b", "outgoing": "no explicit stack arguments; EAX used as writable 4-byte cell pointer", "provider_contract_complete": false},
+    {"address": "00BFEF5B", "native": "00BF66EF", "function": "00BFEF3B", "name": "LIBCRT_unmatched_00bf66ef", "outgoing": "five u32 zero arguments; before invocation *previous_EAX=0x16; after return FLDZ", "provider_contract_complete": false},
+    {"address": "00BFEF76", "native": "00C138A7", "function": "00BFEF3B", "name": "__ctrlfp", "outgoing": "+4=0x133f, +8=0xffff; capture EAX", "provider_contract_complete": false},
+    {"address": "00BFEF98", "native": "00C12F3E", "function": "00BFEF3B", "name": "__sptype", "outgoing": "+4=binary64 converted input; signed EAX result", "provider_contract_complete": false},
+    {"address": "00BFEFBA", "native": "00C13658", "function": "00BFEF3B", "name": "__handle_qnan1", "outgoing": "+4=0x17, +8=binary64 reloaded/stored input, +16=token; return ST(0)", "provider_contract_complete": false},
+    {"address": "00BFEFE9", "native": "00C1370A", "function": "00BFEF3B", "name": "__except1", "outgoing": "+4=8, +8=0x17, +12=binary64 reloaded/stored input, +20=binary64 prospective result, +28=token; return ST(0)", "provider_contract_complete": false},
+    {"address": "00BFEFF9", "native": "00C12F99", "function": "00BFEF3B", "name": "LIBCRT_unmatched_00c12f99", "outgoing": "+4=binary64 converted input, +12=original exponent pointer; consume ST(0) by FSTP m64", "provider_contract_complete": false},
+    {"address": "00BFF005", "native": "00C138A7", "function": "00BFEF3B", "name": "__ctrlfp", "outgoing": "+4=token, +8=0xffff; old finite-helper arguments remain until 20-byte cleanup", "provider_contract_complete": false}
+  ],
+  "blockers": [
+    {"id": "finite_provider", "entry": "00C12F99", "missing": "whole finite normalization, zero/subnormal/exponent output, physical ABI and environment side effects"},
+    {"id": "classification", "entry": "00C12F3E", "missing": "signed classifier code mapping and semantics after x87 FLD/FSTP conversion"},
+    {"id": "control", "entry": "00C138A7", "missing": "actual control-token/mask mapping, rounding/precision/status/trap behavior and restoration"},
+    {"id": "special_values", "entries": ["00C13658", "00C1370A"], "missing": "NaN/Inf results, payload quieting/propagation, exceptions, restore and error/callback behavior"},
+    {"id": "invalid_pointer_path", "entries": ["00BFFB8B", "00BF66EF"], "missing": "error cell identity/lifetime, handler behavior, exceptions or nonreturn and physical ABI"}
+  ],
+  "evidence": {
+    "family": "local/NativeCrtFrexpReadiness01/evidence",
+    "manifest": "local/NativeCrtFrexpReadiness01/evidence/manifest.json",
+    "seal_receipt": "local/NativeCrtFrexpReadiness01/seal_receipt.json",
+    "own_session_id": "01a1440a-1f89-7b50-8502-5b7d192c1a14",
+    "provenance": "Original-session full-prefix hash only; exact completed task-only tool invocation/result raw records plus offsets/hashes; no copied prefix/messages/reasoning",
+    "manifest_exclusions": ["manifest.json only"],
+    "family_file_policy": "read-only regular single-link members; no symlinks/reparse points",
+    "qualifiers": [
+      "Interpreter was first pinned after discovery/body/pseudocode invocations; do not claim pre-use interpreter pin for those stages.",
+      "disk_window.py first extraction preceded its late explicit pin; later invocations pin it before execution.",
+      "One outer assembly preparation failed on installed interpreter hard-link check before an inner subprocess started. Genuine raw failure retained, no fabricated inner timestamps/output.",
+      "The capture wrapper prints bounded previews; complete actual subprocess stdout/stderr are separate preserved files.",
+      "Sealing invocation is in flight at prefix capture; its later receipt is separate and not claimed as a completed pair inside the sealed family.",
+      "Prototype stdout contains bounded metadata prefixes; conclusions use positive visible signatures, exact selected-body listing and complete typed metadata, not omitted prototype fields."
+    ]
+  },
+  "validation": {
+    "call_verification_command": "python tools/verify_report_calls.py docs/NATIVE_CRT_FREXP_READINESS.md reports/native_crt_frexp_readiness.json",
+    "actual_receipt": "local/NativeCrtFrexpReadiness01/evidence/verify.result.json",
+    "actual_stdout": "local/NativeCrtFrexpReadiness01/evidence/verify.stdout.txt",
+    "expected_exact_sites_each_output": 8,
+    "zero_rows_not_semantic_proof": true,
+    "negative_proto_errors_can_exit_zero": true,
+    "compiler_or_build": false,
+    "new_tests_or_probes": false,
+    "original_execution_or_emulation": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "ghidra_writes": false,
+    "shared_metadata_changes": false
+  }
+}

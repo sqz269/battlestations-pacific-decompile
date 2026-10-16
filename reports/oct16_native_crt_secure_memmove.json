@@ -1,0 +1,332 @@
+{
+  "packet": "oct16_native_crt_secure_memmove",
+  "status": "complete_ordinary_Source_in_explicit_supplied_callee_domain_Original_runtime_open",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "published_baseline": "67cbe3623909f1d53decad0d929a617842107e07",
+  "source": "src/native_crt_secure_memmove.cpp",
+  "header": "include/bsp/native_crt_secure_memmove.hpp",
+  "documentation": "docs/OCT16_NATIVE_CRT_SECURE_MEMMOVE.md",
+  "source_sha256": "9d8d3427fe5f5d111b8004275ddd95ef5a9524cccb4d59ebf8b004d83027b26a",
+  "header_sha256": "87dd0694e63477665a70a91244462f96501bba4d45439db390693057dc5b5106",
+  "documentation_sha256": "2a2107ce97630cfabd47a1948e7e78eb184616b9eceaf66dfffb1f3975d5436d",
+  "routines": [
+    {
+      "address": "00bf67a7",
+      "name": "move_native_crt_secure_bytes_00bf67a7",
+      "original_library_name_preserved": "_memmove_s",
+      "coverage": "complete ordinary91B43 within explicitly supplied existing-callee domain; OriginalCRT/TLS/handler closure open",
+      "Native_bytes": 91,
+      "Native_instruction_starts": 43,
+      "original_abi": "cdecl(destination,destination_bytes,source,byte_count): four physical stack DWORDs at entryESP+4/+8/+C/+10; EBP+8/+C/+10/+14 after prolog; plainRET; caller removes16B; EAX errno_t bits0/16h/22h; preservesEBP/ESI/EDI, EBX untouched; ECX/EDX/flags volatile",
+      "Source_abi": "int32 __cdecl(D,uint32Dmax,S,uint32count,constvolatileuint32&actualFeature,NativeCrtStricmpCallees&); caller24B instead of Native16B",
+      "own_Native_EH": false,
+      "descriptive_Source_name_is_not_a_recovered_symbol": true
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00bf67a7",
+      "address": "00bf67ba",
+      "native": "00bffb8b",
+      "kind": "call",
+      "scope": "owned ordinary",
+      "contract": "existing borrowed actual errno_cell on null branch; wholeBFFB8B/TLS not promoted"
+    },
+    {
+      "function": "00bf67a7",
+      "address": "00bf67c9",
+      "native": "00bf66ef",
+      "kind": "call",
+      "scope": "owned ordinary",
+      "contract": "existing borrowed five-zero invalid_parameter; wholeBF66EF/handler not promoted"
+    },
+    {
+      "function": "00bf67a7",
+      "address": "00bf67df",
+      "native": "00bffb8b",
+      "kind": "call",
+      "scope": "owned ordinary",
+      "contract": "existing borrowed actual errno_cell on range branch; wholeBFFB8B/TLS not promoted"
+    },
+    {
+      "function": "00bf67a7",
+      "address": "00bf67f4",
+      "native": "00bf87e0",
+      "kind": "call",
+      "scope": "owned ordinary",
+      "contract": "actual published move_native_crt_bytes_00bf87e0 with same added canonicalfeature reference; pointerresult ignored"
+    }
+  ],
+  "contract": {
+    "control_schedule": [
+      {
+        "phase": "capture",
+        "sites": "67AA..67B3",
+        "effect": "Capture unsigned byte_count from EBP+14 into EAX before any destination/source/size read; EDI=0; branch count==0 directly to return-zero."
+      },
+      {
+        "phase": "zero",
+        "sites": "67FC..6801",
+        "effect": "No destination/source/destination-size load, buffer access, errno/invalid/memmove call or canonical feature-word read. Restore saved registers, plainRET0."
+      },
+      {
+        "phase": "null destination",
+        "sites": "67B5..67C9",
+        "effect": "Only after nonzero count, inspect CURRENT destination argument. Null takes EINVAL without reading source or destination_bytes; call BFFB8B, then setESI16h and write through returned actual errno pointer without added guard; push fiveEDIzeros and callBF66EF."
+      },
+      {
+        "phase": "null source",
+        "sites": "67D5..67D8",
+        "effect": "After nonnull destination inspect CURRENT source argument; null reuses EINVAL before size comparison. No destination clearing or buffer read/write is performed by the wrapper aside from the reached errno-cell write."
+      },
+      {
+        "phase": "size",
+        "sites": "67DA..67EB",
+        "effect": "Compare CURRENT unsigned destination_bytes against count captured at67AA. JNC admits >=; otherwise callBFFB8B, setECX22h, store actualerrno, copyESI=22h, then shared five-zero invalid call. Signed-negative count bits remain unsigned counts."
+      },
+      {
+        "phase": "invalid return",
+        "sites": "67C4..67D3",
+        "effect": "Five stacked DWORD zeros, callerADDESP14h; handler may return/throw/terminate. Normal return uses cachedESI16h/22h, independent of handlerEAX or latererrno changes. No memmove/validation retry or remaining operation after throw."
+      },
+      {
+        "phase": "success",
+        "sites": "67ED..67F9",
+        "effect": "Push capturedEAX count, reload CURRENT source argument and push, reload CURRENT destination argument and push; call actualBF87E0 with D/S/count. Source composition must pass actual canonical0109EEA4 reference as fourth child argument. Ignore childdestination return; normal return becomes0."
+      },
+      {
+        "phase": "exception/alias domain",
+        "effect": "No catch/rollback. An errno getter failure precedes the wrapper errno store; invalid-handler failure follows it; movement failure may follow partial child writes. Public buffer/errno aliases retain reached effects, but Native private argument/register/save-frame aliases, callee stack mutations and Original fault/SEH timing are outside the prospective new C++ ABI."
+      }
+    ],
+    "error_interface": "only existing errno_cell_00bffb8b and invalid_parameter_00bf66ef methods; locale method never invoked",
+    "concrete_runtime_gap": "No concrete implementation in src/include/tests; actual supplied CRT object and canonicalfeature reference required externally. No default adapter/subclass/callback/global owner/SDK fallback added.",
+    "incomplete_dependencies": [
+      {
+        "address": "00bf87e0",
+        "identity": "_memmove",
+        "status": "published complete qualified Source",
+        "binding": "move_native_crt_bytes_00bf87e0(D,S,uint32count,actual_feature_word_0109eea4)",
+        "contract": "Actual canonical stable constvolatileDWORD borrowed; read only after forward/count>=100h gates, then actual publishedC0C82B/C7A4 engines; requiresDF0, admitted valid nonwrapping extents avoiding active frames and actualSSE2 where reached. No hostmemmove fallback, feature default, count bridge or newly supplied provider."
+      },
+      {
+        "address": "00bffb8b",
+        "identity": "LIBCRT_unmatched_00bffb8b",
+        "status": "published fragment/service boundary only; wholeOriginalruntime notclosed",
+        "binding": "existing NativeCrtStricmpCallees::errno_cell_00bffb8b() -> volatileint32*",
+        "actual_body": "19B7: callC051B7; ifnonnull return pointer+8; else return00E159E8. No actual fallback cell/value/TLS ownership read or constructed here."
+      },
+      {
+        "address": "00bf66ef",
+        "identity": "LIBCRT_unmatched_00bf66ef",
+        "status": "named/tag-only ordinary Source gap; separate other-harness read-only readiness",
+        "binding": "existing NativeCrtStricmpCallees::invalid_parameter_00bf66ef(0,0,0,0,0)",
+        "actual_body": "36B14: readencodedhandlerDWORD109DD64; callC04FDE; decodednonnull restoresEBP/tailJMP EAX; decodedzero callsC04EF3(2), restoresEBP/tailJMP BF65BB. No ownRET; original five argument positions retained across compatible children, not copied/re-pushed by this body. Actual handler types/policy and private-frame mutations not proved by fivezero values."
+      },
+      {
+        "address": "00c051b7",
+        "identity": "LIBCRT_unmatched_00c051b7",
+        "status": "no wholeSource record from lookup; real per-thread-data/bootstrap dependency remainsopen; no child expansion in this pass"
+      },
+      {
+        "address": "00c04fde",
+        "identity": "BSP_CRT_DecodePointerCurrentState",
+        "status": "published complete context-bearing Source; its presence does not close BF66EF encoded-handler/runtime composition"
+      },
+      {
+        "address": "00c04ef3",
+        "identity": "BSP_Crt_ClearDebuggerHookState",
+        "status": "published bounded-borrowed and canonical variants; no new BF66EF binding claimed"
+      },
+      {
+        "address": "00bf65bb",
+        "identity": "__invoke_watson",
+        "status": "published borrowed and canonical Source variants; actual current-runtime/failure/tail/privateframe identity not supplied to BF66EF here"
+      },
+      {
+        "address": "00c0c82b/00c0c7a4",
+        "identity": "__VEC_memcpy/aligned128engine",
+        "status": "published complete actual vectorproviders reused only through acceptedBF87E0 admitted domain"
+      },
+      {
+        "address": "00bf67a7",
+        "identity": "_memmove_s",
+        "status": "This packet supplies the whole ordinary wrapper only for explicitly provided existingcallees; pre-existing CurrentSDK classmethod record remains separately qualified/unchanged."
+      }
+    ],
+    "oldSDK_interfaces_unchanged": true
+  },
+  "Native_scope": {
+    "ranges": [
+      [
+        "00bf67a7",
+        "00bf6801"
+      ]
+    ],
+    "defined_bytes": 91,
+    "current_starts": 43,
+    "CALLs": 4,
+    "distinct_targets": 3,
+    "Native_SHA256": "c4830b17566680e561e647a6a2c9c105c69377e05e0cb10957814fa6cbf43885",
+    "PE_live_equal": true,
+    "all_current_starts_confirmed": true,
+    "accepted_readiness": {
+      "path": "local/oct16_native_crt_secure_memmove_readiness.json",
+      "SHA256": "06112a26d58dc68192c3ce160774a86982e5d216e7c4c51eebe14ae8843f656f",
+      "checks": 22,
+      "support_scope": "55B21 separate read-only; not newly owned or promoted"
+    },
+    "source_packet_fresh_evidence": {
+      "path": "local/oct16_native_crt_secure_memmove_native_audit.json",
+      "SHA256": "835c9c52d99fc12073aed83119e275e3e004e00365fdc3b05ad000a7e997bed2"
+    },
+    "no_Ghidra_mutation": true
+  },
+  "provider_LF_fingerprints": {
+    "include/bsp/native_crt_memmove.hpp": "aba1275c66afdc0ec47e60f5575bdc432749df4df17ae84e269d6f0ac383030b",
+    "src/native_crt_memmove.cpp": "cac10f04aa1fc1443dc985c106b7de76465e5ee21ecc901f68cbc8a4fba7b997",
+    "include/bsp/native_crt_vector_copy.hpp": "fbbe9588430ad0dbdbca984fcfb19e36a9e83cf0a903a16c0226685f9ee0dc76",
+    "src/native_crt_vector_copy.cpp": "70123af959c1015e81fc495c2db74162eabfe4e5ee252211baaba2d85241ad71",
+    "include/bsp/native_crt_stricmp.hpp": "f09ff088480b1db82a49dc5d185956062fd5118e3cb7b70e008c04726a59b92f",
+    "src/native_crt_stricmp.cpp": "e706069c71de1de114a98ed21cc37832fc0a3f1c00bb52ef8992e2f7422d1c8d",
+    "include/bsp/legacy_crt_math.hpp": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+    "src/legacy_crt_math.cpp": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce",
+    "include/bsp/native_game_class_cleanup.hpp": "9be5dd2f28906897af1707d56a385bb1a597c6479037a7f0be71f5c13fcdfd76",
+    "src/native_game_class_cleanup.cpp": "b2bddd47b55db619fc2e2f345fce67a1c9d8f9c3af3d3a434a2937289bff877c",
+    "include/bsp/native_checked_dword_memmove_copy.hpp": "6dc093263daa1dceff40c3c6791203eee7b972bc95796d88c1ae78fe894c7bac",
+    "src/native_checked_dword_memmove_copy.cpp": "69f307ec54a52ab527c407603334b441462d952114b25ce461f23f6d847e66c2"
+  },
+  "actual_CMake_COFF": {
+    "object": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\build\\win32\\bsp_core.dir\\Release\\native_crt_secure_memmove.obj",
+    "object_SHA256": "2c8796be76e4ba53b644d7d6d4ba96f9c95f1e889434d0b3c94487e84a8b4c84",
+    "object_bytes": 971,
+    "CODE_bytes": 133,
+    "instructions": 60,
+    "CODE_sections": 1,
+    "CALLs": {
+      "errno_virtual_slot4": 2,
+      "invalid_virtual_slot8": 2,
+      "actual_movement_direct": 1,
+      "unused_locale": 0
+    },
+    "relocations": 1,
+    "data_relocations": 0,
+    "EH_bytes": 0,
+    "BSS_bytes": 0,
+    "padding_bytes": 0,
+    "helpers": 0,
+    "noncode_sections": {
+      ".drectve": 47,
+      ".debug$S": 204,
+      ".chks64": 32
+    },
+    "audit": {
+      "path": "local/oct16_native_crt_secure_memmove_actual_COFF.json",
+      "SHA256": "fc3751cb59ef9018c6211298a9301c1c56e2859bef931c250a6fb1d1ad86120e",
+      "full_code_data_relocation_review_checks": 14
+    },
+    "decoded_listing": {
+      "path": "local/oct16_native_crt_secure_memmove_actual_COFF_decoded.txt",
+      "SHA256": "96ed7c38293e96e458b3853edc52429be4643cd623ce9a664be66a911de72c2e"
+    },
+    "qualified_compiler_differences": [
+      "Four virtualcalls are existing supplied interface sites, not reconstructed BFFB8B/BF66EF bodies or concrete runtime implementations.",
+      "Native four-arg cdecl and Source six-arg cdecl are distinct. Source publicargs occupyEBP8/C/10/14/18/1C; no Originalprivateframe/register/stackalias/fault/SEH/FH3 claim.",
+      "Compiler keeps D/S inECX/EDX rather than Native successargument reloads. Three privatezero pushes precede each errno store; errno-public-write-before-handler still holds.",
+      "No localcleanup means no emittedCppEH; reached provider exceptions still propagate through the newCpp call boundary. No Originalexception/heap/TLS/invalidhandler or gameplay proof."
+    ]
+  },
+  "verification": {
+    "default_build": {
+      "command": "./scripts/build.ps1",
+      "target": "MSVC Win32 Release default",
+      "exit_code": 0,
+      "passed": 3,
+      "failed": 0,
+      "seconds": 7.77,
+      "existing_suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "log": "local/oct16_native_crt_secure_memmove_build.log",
+      "log_SHA256": "cd06245eb63e4d709d736db5c73a26fd1c75add443fadbd918c6bd1422dab9f5",
+      "scope": "existing suites do not execute new API; no newtests/probes/Nativeexecution",
+      "warning": "existing unrelated LNK4006 duplicate spawn_request_id_matches"
+    },
+    "JSON_calls": {
+      "checked": 4,
+      "failed": 0,
+      "owned": 4,
+      "exit": 0
+    },
+    "Markdown_calls": {
+      "checked": 4,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "owned": 4,
+      "exit": 0
+    },
+    "index": {
+      "if_stale_rebuilt": true,
+      "exit": 0
+    },
+    "diff_check": {
+      "exit": 0
+    }
+  },
+  "preservation": {
+    "accepted_readiness_SHA256": "06112a26d58dc68192c3ce160774a86982e5d216e7c4c51eebe14ae8843f656f",
+    "prior_c471_all7_immutable_blobs_and_current_quartet": true,
+    "all12_current_providers_match_readiness": true,
+    "all64_prior_provider_LF_fingerprints_unchanged": true,
+    "oldSDK_API_report_and_source_unchanged": true,
+    "historical_receipts": {
+      "local/oct16_input_settings_actual_table_loader_frontier.json": "6f7555040e0dd05788bdf71bedf9abf3132cf4f5454a2b19ad4cfcd92c404efb",
+      "local/oct16_input_settings_raw_constructor_readiness.json": "24f83ae50b1cbdec8b253414a8ca517e85c544294c18d5aade2ce98d884f56c0",
+      "local/oct16_input_tree_head_builders_frozen_pin.json": "c5b9fedafcf75adde42a25d542997b86c1ac0070dce8947487dc8499f9bc3afe",
+      "local/oct16_tree_head_builders_closeout_receipt.json": "db6bef1457a1f11d8c25697dde3ea4cb3ea4a39c400c71b7053daad40edea511",
+      "local/oct16_tree_head_builders_exports.txt": "f4c1e8b245bc91111ec592f5b93facdc0fd5cb3d5ebce67160bf744d62996271",
+      "local/oct16_checked_dword_memmove_copy_frozen_pin.json": "dc8bc6344b42f5aa8192eed93be7585973a73ce6abc3518d36ccb4111ec8c9eb",
+      "local/oct16_checked_dword_memmove_copy_closeout_receipt.json": "aef042b05bbe8d33e184ce2a9b3399a4a52757316b89ccc2d6991a1e5d59db35",
+      "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_checked_dword_copy_primary.json": "8c0cd9ecc4df0872c9400ee00902f34eef9448e2106b8f2a3bff61326c74386d",
+      "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_checked_dword_copy_primary_frozen.json": "147574140b21332f4973b2731cead61a2a6080f5566ae312f1e233048d009b66"
+    }
+  },
+  "limits": [
+    "Whole ordinary Source control is completed only in the explicitly supplied existing-callee domain. No concrete Original errno/TLS/handler implementation is supplied.",
+    "Original BFFB8B/C051B7 and BF66EF/encodedhandler/Watson runtime ownership remains open; existing fragment/tag/qualifiedchild records are not promoted.",
+    "Source uses six cdecl words with new argument/home/frame/register behavior versus Native four. Original private argument/register/save-frame aliases, flags, faults/SEH/FH3, heap integration, binary ABI and gameplay remain unproved.",
+    "Only reached public volatile errno/write-before-handler and validchild effects are claimed. Privatezero push scheduling and cached D/S differ in the compiled body.",
+    "Actual BF87E0 admittedDF0/nonwrapping/extents/frame-exclusion/actualfeature/vector/SSE2 preconditions apply where movement is reached. No SDK fallback or feature initializer exists.",
+    "BF66EF fivezero method arguments do not prove the full Original handler prototype or preservation across arbitrary Original providers.",
+    "Default compilation and three existing suites passed; they do not execute this API. No new tests/probes/Native execution were performed.",
+    "Four virtualcalls are existing supplied interface sites, not reconstructed BFFB8B/BF66EF bodies or concrete runtime implementations.",
+    "Native four-arg cdecl and Source six-arg cdecl are distinct. Source publicargs occupyEBP8/C/10/14/18/1C; no Originalprivateframe/register/stackalias/fault/SEH/FH3 claim.",
+    "Compiler keeps D/S inECX/EDX rather than Native successargument reloads. Three privatezero pushes precede each errno store; errno-public-write-before-handler still holds.",
+    "No localcleanup means no emittedCppEH; reached provider exceptions still propagate through the newCpp call boundary. No Originalexception/heap/TLS/invalidhandler or gameplay proof."
+  ],
+  "primary_review": {
+    "preliminary": "pending separate Root receipt; final immutable pin review remains separate",
+    "Ghidra_closeout": "not authorized before frozen Source acceptance"
+  },
+  "owned_ledger_and_registration_diff": {
+    "config/names/00bf0000.jsonl": {
+      "added": 1,
+      "removed": 0,
+      "only_owned_record_or_registration": true
+    },
+    "config/reconstruction/00bf0000.jsonl": {
+      "added": 1,
+      "removed": 0,
+      "only_owned_record_or_registration": true
+    },
+    "cmake/startup.cmake": {
+      "added": 1,
+      "removed": 0,
+      "only_owned_record_or_registration": true
+    }
+  }
+}
