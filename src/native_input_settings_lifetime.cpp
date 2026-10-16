@@ -1,4 +1,16 @@
 #include "bsp/native_input_settings_lifetime.hpp"
+#include "bsp/native_input_device_tree_range.hpp"
+#include "bsp/native_input_controller_tree_range.hpp"
+#include "bsp/native_input_default_scalar_tree_range.hpp"
+#include "bsp/native_input_conflict_vector_tidy.hpp"
+#include "bsp/native_string_vector_group_cleanup.hpp"
+#include "bsp/native_input_preset_tree_range.hpp"
+#include "bsp/native_render_service_vector_cleanup.hpp"
+#include "bsp/native_input_device_map_cleanup.hpp"
+#include "bsp/native_input_controller_tree_destroy_instances.hpp"
+#include "bsp/native_input_default_scalar_tree_destroy.hpp"
+#include "bsp/native_input_preset_tree_destroy.hpp"
+#include "bsp/native_string_vector_group_tidies.hpp"
 #include "bsp/global_config.hpp"
 #include "bsp/native_input_settings_vector_storage.hpp"
 #include "bsp/native_input_settings_tree_cleanup.hpp"
@@ -82,6 +94,187 @@ struct Members {
         }
     }
 };
+// Only the fixed normal operation order is shared. Legacy field access, guard
+// policy and overload selection remain in Members above.
+template<class Operations>
+void destroy_in_normal_order(Operations& operations) {
+    operations.first_lua();
+    operations.second_lua();
+    operations.device_6c();
+    operations.controller_60();
+    operations.scalar_54();
+    operations.conflict_40();
+    operations.group_30();
+    operations.preset_24();
+    operations.names_14();
+    operations.device_08();
+}
+
+struct LegacyNormalOps {
+    Members& members;
+    void first_lua() { members.close_lua(); }
+    void second_lua() { members.state=8; members.close_lua(); }
+    void device_6c() { members.state=7; members.tree(0x6c); }
+    void controller_60() { members.state=6; members.tree(0x60); }
+    void scalar_54() { members.state=5; members.tree(0x54); }
+    void conflict_40() { members.vector(0x40,members.settings); }
+    void group_30() { members.state=3; members.vector(0x30,members.settings); }
+    void preset_24() { members.state=2; members.tree(0x24); }
+    void names_14() { members.state=1; members.vector(0x14,members.settings); }
+    void device_08() { members.state=0; members.tree(8); }
+};
+
+Word raw_read(void* object, Word offset) noexcept {
+    return *static_cast<const volatile Word*>(at(object,offset));
+}
+void raw_write(void* object, Word offset, Word value) noexcept {
+    *static_cast<volatile Word*>(at(object,offset))=value;
+}
+void* raw_pointer(void* object, Word offset) noexcept {
+    return reinterpret_cast<void*>(raw_read(object,offset));
+}
+
+// Logical DACEA0 cleanup states, not the original EBP/FS/FH3 frame. No
+// per-child noexcept bridge: a secondary C++ cleanup exception terminates at
+// this guard's existing-language noexcept boundary.
+struct RawMembers {
+    void* settings;
+    NativeStringRawPoolContext& strings;
+    void* volatile& publication;
+    int state=-1;
+
+    ~RawMembers() noexcept {
+        while (state>0) {
+            const int member=state--;
+            destroy_member(member);
+        }
+        if (state==0) {
+            // Complete 69BA20 effects. Its old uint32& interface cannot bind
+            // this volatile publication cell. Keep state0 through both stores.
+            publication=nullptr;
+            raw_write(settings,0,0x00ce3818u);
+        }
+    }
+    void close_lua() {
+        // B65E80 and B669A0 have the same complete actual-storage effects.
+        close_native_lua_state_00b669a0(
+            *static_cast<NativeLuaStateStorage*>(at(settings,0x78)));
+    }
+    void destroy_member(int member) {
+        switch (member) {
+        case 9: close_lua(); break;
+        case 8: destroy_native_input_device_map_006aa420(at(settings,0x6c),0,strings); break;
+        case 7: destroy_native_input_controller_tree_006a7040(at(settings,0x60),0,strings); break;
+        case 6: destroy_native_input_default_scalar_tree_006a1df0(at(settings,0x54),0); break;
+        case 5: tidy_native_input_conflict_vector_006a1420(at(settings,0x40),0); break;
+        case 4: tidy_native_string_vector_group_vector_006a7960(at(settings,0x30),strings); break;
+        case 3: destroy_native_input_preset_tree_006a2b00(at(settings,0x24),0,strings); break;
+        case 2: destroy_native_string_header_vector_004324a0(at(settings,0x14),strings); break;
+        case 1: destroy_native_input_device_map_006aa420(at(settings,8),0,strings); break;
+        }
+    }
+};
+
+struct RawNormalOps {
+    RawMembers& members;
+
+    void first_lua() { members.state=9; members.close_lua(); }
+    void second_lua() { members.state=8; members.close_lua(); }
+
+    void finish_tree(void* tree) {
+        singleton_lifetime_free(raw_pointer(tree,4));
+        raw_write(tree,4,0);
+        raw_write(tree,8,0);
+    }
+    void device(Word offset, int next_state) {
+        void* const tree=at(members.settings,offset);
+        void* const head=raw_pointer(tree,4);
+        void* const left=raw_pointer(head,0);
+        Word output[2];
+        members.state=next_state; // Native head/left captures precede this.
+        erase_native_raw_input_device_tree_range_006a7aa0(
+            tree,0,output,tree,left,tree,head,members.strings);
+        finish_tree(tree);
+    }
+    void device_6c() { device(0x6c,7); }
+    void device_08() { device(8,0); }
+
+    void controller_60() {
+        void* const tree=at(members.settings,0x60);
+        void* const head=raw_pointer(tree,4);
+        void* const left=raw_pointer(head,0);
+        NativeInputControllerTreeIterator output;
+        const NativeInputControllerTreeIterator first{tree,left},last{tree,head};
+        members.state=6;
+        erase_native_input_controller_tree_range_006a6a20(
+            tree,0,&output,first,last,members.strings);
+        finish_tree(tree);
+    }
+    void scalar_54() {
+        void* const tree=at(members.settings,0x54);
+        void* const head=raw_pointer(tree,4);
+        void* const left=raw_pointer(head,0);
+        Word output[2];
+        members.state=5;
+        erase_native_input_default_scalar_tree_range_0069fe70(
+            tree,nullptr,output,tree,left,tree,head);
+        finish_tree(tree);
+    }
+    void preset_24() {
+        void* const tree=at(members.settings,0x24);
+        void* const head=raw_pointer(tree,4);
+        void* const left=raw_pointer(head,0);
+        NativeInputPresetTreeIterator output;
+        const NativeInputPresetTreeIterator first{tree,left},last{tree,head};
+        members.state=2;
+        erase_native_input_preset_tree_range_006a1aa0(
+            tree,0,&output,first,last,members.strings);
+        finish_tree(tree);
+    }
+    void clear_vector(void* header) {
+        raw_write(header,4,0);
+        raw_write(header,8,0);
+        raw_write(header,0x0c,0);
+    }
+    void conflict_40() {
+        void* const header=at(members.settings,0x40);
+        void* const first=raw_pointer(header,4);
+        // State5 is deliberately unchanged: failure retries this member.
+        if (first) {
+            void* const last=raw_pointer(header,8);
+            destroy_native_input_conflict_vector_header_range_0069eea0(
+                first,last,reinterpret_cast<Word>(header),
+                reinterpret_cast<Word>(members.settings));
+            singleton_lifetime_free(raw_pointer(header,4));
+        }
+        clear_vector(header);
+    }
+    void group_30() {
+        void* const header=at(members.settings,0x30);
+        void* const first=raw_pointer(header,4);
+        members.state=3;
+        if (first) {
+            void* const last=raw_pointer(header,8);
+            destroy_native_string_vector_group_range_006a6ee0(
+                first,last,reinterpret_cast<Word>(header),
+                reinterpret_cast<Word>(members.settings),members.strings);
+            singleton_lifetime_free(raw_pointer(header,4));
+        }
+        clear_vector(header);
+    }
+    void names_14() {
+        void* const header=at(members.settings,0x14);
+        void* const first=raw_pointer(header,4);
+        members.state=1;
+        if (first) {
+            void* const last=raw_pointer(header,8);
+            destroy_native_string_header_range_00432050(first,last,members.strings);
+            singleton_lifetime_free(raw_pointer(header,4));
+        }
+        clear_vector(header);
+    }
+};
+
 } // namespace
 
 void* construct_native_input_settings_006ab6b0(
@@ -123,21 +316,9 @@ void destroy_native_input_settings_006aa460(
     void* settings, NativeInputSettingsLifetimeContext& context) {
     write(settings,0,0x00cf81ccu);
     Members members{settings,context};
-    // B65E80 and B669A0 have the same actual close operation, but are two
-    // distinct native calls separated by a state transition.
-    members.close_lua();
-    members.state = 8; members.close_lua();
-    members.state = 7; members.tree(0x6c);
-    members.state = 6; members.tree(0x60);
-    members.state = 5; members.tree(0x54);
-    // The original keeps state5 here: a throwing range call would unwind
-    // through the complete pair-vector member before proceeding to groups.
-    members.vector(0x40,settings);
-    members.state = 3; members.vector(0x30,settings);
-    members.state = 2; members.tree(0x24);
-    members.state = 1; members.vector(0x14,settings);
-    members.state = 0; members.tree(8);
-    // Members performs the unconditional publication clear and base stamp.
+    LegacyNormalOps operations{members};
+    destroy_in_normal_order(operations);
+    // Members performs the unconditional publication clear/base stamp.
 }
 
 void* scalar_delete_native_input_settings_006ab800(
@@ -145,5 +326,18 @@ void* scalar_delete_native_input_settings_006ab800(
     destroy_native_input_settings_006aa460(settings,context);
     if ((flags & 1u) != 0) singleton_lifetime_free(settings);
     return settings;
+}
+
+
+// Complete480B ordinary effects with actual provided RawCtx services plus the
+// ten logical cleanup actions. These new arguments/private objects do not
+// preserve the original ECX/plainRET/FH3/SEH ABI or hardware-fault scopes.
+void __cdecl destroy_native_raw_input_settings_006aa460(
+    void* settings, NativeStringRawPoolContext& strings,
+    void* volatile& publication_00e198e8) {
+    RawMembers members{settings,strings,publication_00e198e8};
+    raw_write(settings,0,0x00cf81ccu);
+    RawNormalOps operations{members};
+    destroy_in_normal_order(operations);
 }
 } // namespace bsp
