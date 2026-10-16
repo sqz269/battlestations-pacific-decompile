@@ -11,8 +11,9 @@
     "header": "include/bsp/native_traffic_pointer_erase.hpp",
     "document": "docs/GOAL15P_TRAFFIC_POINTER_ERASE.md",
     "source_entry": "bsp::erase_native_traffic_pointer_range_00488ff0",
-    "retained_ghidra_name": "STL_inst_00488ff0",
-    "descriptive_source_name_is_hypothesis": true
+    "retained_ghidra_name": "STL_EraseDwordRange_00488ff0",
+    "descriptive_source_name_is_hypothesis": true,
+    "previous_generic_ghidra_name": "STL_inst_00488ff0"
   },
   "status": "reconstructed_whole_source_strict_registered_win32_and_focused_archive_fixture_tested",
   "original_abi": {
@@ -3628,5 +3629,13 @@
     "no whole parent/caller closure",
     "no x87/FP environment identity claim"
   ],
-  "evidence_directory": "local/goal15p_traffic_pointer_erase/"
+  "evidence_directory": "local/goal15p_traffic_pointer_erase/",
+  "primary_annotation": {
+    "operation_name": "STL_EraseDwordRange_00488ff0",
+    "hypothesis": "Observed operation name retains STL family identity, not a recovered Original symbol/class",
+    "physical_signature": "void* __thiscall(this auto ECX,out,first_owner,first,last_owner,last);5stackDWORDs,EAXout,RET14h",
+    "Source_only_unused_EDX_in_Original_prototype": false,
+    "auto_this_correction": "First API attempt transiently duplicated receiver; old state retained and corrected to one automatic ECX this plus exactly5stackwords before finalsave/exports",
+    "recent_thiscall_audit": "Other recent saved/live Original prototypes checked; no corresponding duplicate receiver found"
+  }
 }
