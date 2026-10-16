@@ -1,0 +1,2922 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_crt_invalid_handler_readiness",
+  "status": "read_only_finite_canonical_invalid_handler_errno_PTD_owner_SCC_frontier",
+  "base_main": "4d42e7ab6",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source_ready": false,
+  "general_source_ready": false,
+  "parent_source_ready": false,
+  "Original_handler_errno_PTD_TLS_heap_SEH_startup_runtime_closure_proved": false,
+  "new_source_functions": 0,
+  "address_claims": [],
+  "file_ownership": [
+    "reports/goal_oct15_crt_invalid_handler_readiness.json"
+  ],
+  "whole_physical_bytes": 811,
+  "whole_physical_instructions": 291,
+  "spans": [
+    {
+      "address": "00bf66ef",
+      "end_exclusive": "00bf6713",
+      "physical_bytes": 36,
+      "physical_instructions": 14,
+      "role": "actual invalid-handler transport",
+      "original_abi": "five caller-cleaned words are NOT READ here;real decoded-handler or canonical-Watson tail inherits original words/return;no semantic result",
+      "bytes": "55 8b ec ff 35 64 dd 09 01 e8 e1 e8 00 00 85 c0 59 74 03 5d ff e0 6a 02 e8 e7 e7 00 00 59 5d e9 a8 fe ff ff",
+      "sha256": "0e1f2416d2f25c96b8d07f18d401ef61528110d4b452a1b3a7336bb1cad0e4b3",
+      "live_equals_installed_PE": true,
+      "installed_PE_offset": 8349423,
+      "live_receipt_sha256": "0615b0db5ddd41ecf6e910179b77fa1ba741c83ba07b7c325dee59e53da713ba",
+      "current_formal_body_when_captured": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "36",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf66ef"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf6712"
+            },
+            "length": "36"
+          }
+        ]
+      },
+      "coverage": "whole physical inspection only;no new Source credit",
+      "source_ready": false
+    },
+    {
+      "address": "00bffb8b",
+      "end_exclusive": "00bffb9e",
+      "physical_bytes": 19,
+      "physical_instructions": 7,
+      "role": "actual errno location",
+      "original_abi": "noargs;plainRET;EAX actual PTD+8 or actual E159E8 fallback",
+      "bytes": "e8 27 56 00 00 85 c0 75 06 b8 e8 59 e1 00 c3 83 c0 08 c3",
+      "sha256": "84aca6584c13d6f07ced37568fc45be0c65f51583ba9a70f7cc98d62b2d94a5c",
+      "live_equals_installed_PE": true,
+      "installed_PE_offset": 8387467,
+      "live_receipt_sha256": "72d87e59eeb17eb9e2bf786dece5698f1bec49b8e5df364fb09a1b834f107977",
+      "current_formal_body_when_captured": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "19",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bffb8b"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bffb9d"
+            },
+            "length": "19"
+          }
+        ]
+      },
+      "coverage": "whole physical inspection only;no new Source credit",
+      "source_ready": false
+    },
+    {
+      "address": "00c051b7",
+      "end_exclusive": "00c0522e",
+      "physical_bytes": 119,
+      "physical_instructions": 45,
+      "role": "nullable PTD getter",
+      "original_abi": "noargs;plainRET;EAX nullable PTD;capture/restore actual Win32 LastError on every returning path",
+      "bytes": "56 57 ff 15 58 22 ce 00 ff 35 fc 5a e1 00 8b f8 e8 a4 fe ff ff ff d0 8b f0 85 f6 75 4e 68 14 02 00 00 6a 01 e8 7a f6 ff ff 8b f0 85 f6 59 59 74 3a 56 ff 35 fc 5a e1 00 ff 35 3c de 09 01 e8 e4 fd ff ff 59 ff d0 85 c0 74 18 6a 00 56 e8 ef fe ff ff 59 59 ff 15 3c 22 ce 00 83 4e 04 ff 89 06 eb 09 56 e8 a9 4b ff ff 59 33 f6 57 ff 15 bc 22 ce 00 5f 8b c6 5e c3",
+      "sha256": "ccbdbe41ce6650660cd55232a4c1dff2445bfafa036dc2d2e3f2c9c2df7d9a1e",
+      "live_equals_installed_PE": true,
+      "installed_PE_offset": 8409527,
+      "live_receipt_sha256": "1e49b26b517b114e8fce780560e783cc8eb218140a3826adae701e320aa2f0d3",
+      "current_formal_body_when_captured": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "119",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c051b7"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c0522d"
+            },
+            "length": "119"
+          }
+        ]
+      },
+      "coverage": "whole physical inspection only;no new Source credit",
+      "source_ready": false
+    },
+    {
+      "address": "00c05070",
+      "end_exclusive": "00c050a2",
+      "physical_bytes": 50,
+      "physical_instructions": 16,
+      "role": "actual getter cache",
+      "original_abi": "noargs;plainRET;EAX actual getter bits;ignore actual TlsSetValue BOOL",
+      "bytes": "56 ff 35 00 5b e1 00 ff 15 bc 20 ce 00 8b f0 85 f6 75 1b ff 35 38 de 09 01 e8 50 ff ff ff 59 8b f0 56 ff 35 00 5b e1 00 ff 15 b4 20 ce 00 8b c6 5e c3",
+      "sha256": "c56216e301258d74d1f73f4e30645d811c2e7a3cda5bef15b09e94735394ba81",
+      "live_equals_installed_PE": true,
+      "installed_PE_offset": 8409200,
+      "live_receipt_sha256": "2e85a38a8935dc5af1131036e1df0ac48b4c22c6916a5558a8929608e3592b47",
+      "current_formal_body_when_captured": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "50",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c05070"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c050a1"
+            },
+            "length": "50"
+          }
+        ]
+      },
+      "coverage": "whole physical inspection only;no new Source credit",
+      "source_ready": false
+    },
+    {
+      "address": "00c050f8",
+      "end_exclusive": "00c051ae",
+      "physical_bytes": 182,
+      "physical_instructions": 49,
+      "role": "actual PTD initialization",
+      "original_abi": "two cdecl words:actual PTD and optional locale;plainRET;no caller-used semantic result;actual native SEH4 frame",
+      "bytes": "6a 0c 68 b0 32 e0 00 e8 fc 2a 00 00 68 d0 9f d6 00 ff 15 5c 21 ce 00 89 45 e4 8b 75 08 c7 46 5c 40 68 e1 00 33 ff 47 89 7e 14 85 c0 74 2f e8 d0 fd ff ff 85 c0 74 26 68 c0 9f d6 00 ff 75 e4 8b 1d f4 20 ce 00 ff d3 89 86 f8 01 00 00 68 e0 9f d6 00 ff 75 e4 ff d3 89 86 fc 01 00 00 89 7e 70 c6 86 c8 00 00 00 43 c6 86 4b 01 00 00 43 b8 a8 5c e1 00 89 46 68 50 ff 15 1c 22 ce 00 6a 0c e8 a5 ca 00 00 59 83 65 fc 00 8b 45 0c 89 46 6c 85 c0 75 08 a1 b0 62 e1 00 89 46 6c ff 76 6c e8 70 c7 ff ff 59 c7 45 fc fe ff ff ff e8 06 00 00 00 e8 98 2a 00 00 c3",
+      "sha256": "e289ed4df47dae16cea290c87591877b124ab95d041b8fdf6f0ebd51572ad342",
+      "live_equals_installed_PE": true,
+      "installed_PE_offset": 8409336,
+      "live_receipt_sha256": "1f79cd11c1de8f8a6021512be51fe871a5c7547d319209397daca8fee5cc18b7",
+      "current_formal_body_when_captured": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "182",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c050f8"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c051ad"
+            },
+            "length": "182"
+          }
+        ]
+      },
+      "coverage": "whole physical inspection only;no new Source credit",
+      "source_ready": false
+    },
+    {
+      "address": "00c04fde",
+      "end_exclusive": "00c0504c",
+      "physical_bytes": 110,
+      "physical_instructions": 36,
+      "role": "actual pointer decoder",
+      "original_abi": "one original pointer word;plainRET;selected decoder writes same original arg slot then final EAX reload",
+      "bytes": "56 ff 35 00 5b e1 00 8b 35 bc 20 ce 00 ff d6 85 c0 74 21 a1 fc 5a e1 00 83 f8 ff 74 17 50 ff 35 00 5b e1 00 ff d6 ff d0 85 c0 74 08 8b 80 fc 01 00 00 eb 26 68 d0 9f d6 00 ff 15 5c 21 ce 00 8b f0 85 f6 74 23 e8 d3 fe ff ff 85 c0 74 1a 68 e0 9f d6 00 56 ff 15 f4 20 ce 00 85 c0 74 0a ff 74 24 08 ff d0 89 44 24 08 8b 44 24 08 5e c3",
+      "sha256": "eb47f22d9b2b8faa38544703069e34befb7aafc724f67b5d1e15fcf1058fcaa5",
+      "live_equals_installed_PE": true,
+      "installed_PE_offset": 8409054,
+      "live_receipt_sha256": "5fc3b4db1af35d09613b91a913ef15ffa9a03ccc609b549a0cd0876617c057bf",
+      "current_formal_body_when_captured": null,
+      "coverage": "whole physical inspection only;no new Source credit",
+      "source_ready": false
+    },
+    {
+      "address": "00c04efb",
+      "end_exclusive": "00c04f67",
+      "physical_bytes": 108,
+      "physical_instructions": 48,
+      "role": "actual module gate",
+      "original_abi": "noargs;plainRET;EAX0/1;getter status ignored;real current module and raw PE sections",
+      "bytes": "55 8b ec 51 51 53 56 33 f6 8d 45 fc 46 33 db 50 89 75 f8 89 5d fc e8 4b 6c ff ff 83 7d fc 05 59 7e 04 8b c6 eb 42 57 53 ff 15 5c 21 ce 00 8b 70 3c 03 f0 66 39 5e 06 0f b7 46 14 8d 7c 30 18 76 23 57 68 b8 9f d6 00 e8 d9 09 00 00 85 c0 59 59 74 0e 0f b7 46 06 43 83 c7 28 3b d8 72 e3 eb 04 83 65 f8 00 8b 45 f8 5f 5e 5b c9 c3",
+      "sha256": "41fb70b1def2a1805b37abce72aaaf2bc1239a6accf838a82a3b0ea92d5cda84",
+      "live_equals_installed_PE": true,
+      "installed_PE_offset": 8408827,
+      "live_receipt_sha256": "cb37dcd03228ae7db067fa0185e095584e5217d2742e130cb0486949279a2e56",
+      "current_formal_body_when_captured": null,
+      "coverage": "whole physical inspection only;no new Source credit",
+      "source_ready": false
+    },
+    {
+      "address": "00bfbb61",
+      "end_exclusive": "00bfbb9d",
+      "physical_bytes": 60,
+      "physical_instructions": 25,
+      "role": "actual winmajor getter",
+      "original_abi": "cdecl output pointer;plainRET;EAX0/22;null skips OSword;failure actual errno+invalid transport",
+      "bytes": "8b 44 24 04 56 33 f6 3b c6 75 1d e8 1a 40 00 00 56 56 56 56 56 c7 00 16 00 00 00 e8 6e ab ff ff 83 c4 14 6a 16 58 5e c3 39 35 84 dd 09 01 74 db 8b 0d 90 dd 09 01 89 08 33 c0 5e c3",
+      "sha256": "ae8c7e0db8242c255db52267491487b5e32f5f934b9bc1eaf0b832463dc6a3a0",
+      "live_equals_installed_PE": true,
+      "installed_PE_offset": 8371041,
+      "live_receipt_sha256": "777d497af4f6f005328d954f72eed91560f8ca6086630ea6680df00fb4814bdf",
+      "current_formal_body_when_captured": null,
+      "coverage": "whole physical inspection only;no new Source credit",
+      "source_ready": false
+    },
+    {
+      "address": "00bfbab2",
+      "end_exclusive": "00bfbae9",
+      "physical_bytes": 55,
+      "physical_instructions": 25,
+      "role": "actual osplatform getter",
+      "original_abi": "cdecl output pointer;plainRET;EAX0/22;capture current OSword once before success publication",
+      "bytes": "8b 4c 24 04 56 33 f6 3b ce 75 1d e8 c9 40 00 00 56 56 56 56 56 c7 00 16 00 00 00 e8 1d ac ff ff 83 c4 14 6a 16 58 5e c3 a1 84 dd 09 01 3b c6 74 da 89 01 33 c0 5e c3",
+      "sha256": "0f8a7f1d1ce56c8afa364d7cd692b0310ecbbef2c3ed08c54572b9a7d6ed4720",
+      "live_equals_installed_PE": true,
+      "installed_PE_offset": 8370866,
+      "live_receipt_sha256": "69684c846c1a7113f6634bbe4c73afd7baef3610acb4fac06a8314fbf36ee513",
+      "current_formal_body_when_captured": null,
+      "coverage": "whole physical inspection only;no new Source credit",
+      "source_ready": false
+    },
+    {
+      "address": "00c0485a",
+      "end_exclusive": "00c048a2",
+      "physical_bytes": 72,
+      "physical_instructions": 26,
+      "role": "nullable calloc retry wrapper",
+      "original_abi": "two cdecl live words reread size then count on every retry;passes literal0 third arg to actual C1C50F;plainRET;EAX nullable",
+      "bytes": "56 57 33 f6 6a 00 ff 74 24 14 ff 74 24 14 e8 a2 7c 01 00 8b f8 83 c4 0c 85 ff 75 27 39 05 30 de 09 01 76 1f 56 ff 15 30 22 ce 00 8d 86 e8 03 00 00 3b 05 30 de 09 01 76 03 83 c8 ff 83 f8 ff 8b f0 75 c1 8b c7 5f 5e c3",
+      "sha256": "8510de8da40b6dd9a305f73e8cdac8ebb085ae431b922d8e83be75d0a997ba44",
+      "live_equals_installed_PE": true,
+      "installed_PE_offset": 8407130,
+      "live_receipt_sha256": "ba4d1e4d3b01eb0447cb1c1dbf8b184dcc2bc6a3cc21563a5846f83e8ba67ade",
+      "current_formal_body_when_captured": null,
+      "coverage": "whole physical inspection only;no new Source credit",
+      "source_ready": false
+    }
+  ],
+  "host_steps": [
+    {
+      "site": "00bf66f8",
+      "physical_envelope": "00bf66ef",
+      "instruction": "call 0xc04fde",
+      "bytes": "e8 e1 e8 00 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00bf66fd"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00bf66fd"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04fde"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04fde"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00bf66ef"
+      },
+      "address": "00bf66f8",
+      "native": "00c04fde",
+      "function": "00bf66ef",
+      "kind": "call"
+    },
+    {
+      "site": "00bf6707",
+      "physical_envelope": "00bf66ef",
+      "instruction": "call 0xc04ef3",
+      "bytes": "e8 e7 e7 00 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00bf670c"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00bf670c"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04ef3"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04ef3"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00bf66ef"
+      },
+      "address": "00bf6707",
+      "native": "00c04ef3",
+      "function": "00bf66ef",
+      "kind": "call"
+    },
+    {
+      "site": "00bf670e",
+      "physical_envelope": "00bf66ef",
+      "instruction": "jmp 0xbf65bb",
+      "bytes": "e9 a8 fe ff ff",
+      "typed_flow": {
+        "flow_override": "CALL_RETURN",
+        "default_flow": {
+          "name": "UNCONDITIONAL_JUMP",
+          "is_call": false,
+          "is_jump": true,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "CALL_TERMINATOR",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "default_fallthrough": null,
+        "effective_fallthrough": null,
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf65bb"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf65bb"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00bf66ef"
+      },
+      "address": "00bf670e",
+      "native": "00bf65bb",
+      "function": "00bf66ef",
+      "kind": "tail_jump"
+    },
+    {
+      "site": "00bffb8b",
+      "physical_envelope": "00bffb8b",
+      "instruction": "call 0xc051b7",
+      "bytes": "e8 27 56 00 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00bffb90"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00bffb90"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c051b7"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c051b7"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00bffb8b"
+      },
+      "address": "00bffb8b",
+      "native": "00c051b7",
+      "function": "00bffb8b",
+      "kind": "call"
+    },
+    {
+      "site": "00c051c7",
+      "physical_envelope": "00c051b7",
+      "instruction": "call 0xc05070",
+      "bytes": "e8 a4 fe ff ff",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c051cc"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c051cc"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c05070"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c05070"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c051b7"
+      },
+      "address": "00c051c7",
+      "native": "00c05070",
+      "function": "00c051b7",
+      "kind": "call"
+    },
+    {
+      "site": "00c051db",
+      "physical_envelope": "00c051b7",
+      "instruction": "call 0xc0485a",
+      "bytes": "e8 7a f6 ff ff",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c051e0"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c051e0"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c0485a"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c0485a"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c051b7"
+      },
+      "address": "00c051db",
+      "native": "00c0485a",
+      "function": "00c051b7",
+      "kind": "call"
+    },
+    {
+      "site": "00c051f5",
+      "physical_envelope": "00c051b7",
+      "instruction": "call 0xc04fde",
+      "bytes": "e8 e4 fd ff ff",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c051fa"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c051fa"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04fde"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04fde"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c051b7"
+      },
+      "address": "00c051f5",
+      "native": "00c04fde",
+      "function": "00c051b7",
+      "kind": "call"
+    },
+    {
+      "site": "00c05204",
+      "physical_envelope": "00c051b7",
+      "instruction": "call 0xc050f8",
+      "bytes": "e8 ef fe ff ff",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05209"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05209"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c050f8"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c050f8"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c051b7"
+      },
+      "address": "00c05204",
+      "native": "00c050f8",
+      "function": "00c051b7",
+      "kind": "call"
+    },
+    {
+      "site": "00c0521a",
+      "physical_envelope": "00c051b7",
+      "instruction": "call 0xbf9dc8",
+      "bytes": "e8 a9 4b ff ff",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c0521f"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c0521f"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf9dc8"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf9dc8"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c051b7"
+      },
+      "address": "00c0521a",
+      "native": "00bf9dc8",
+      "function": "00c051b7",
+      "kind": "call"
+    },
+    {
+      "site": "00c05089",
+      "physical_envelope": "00c05070",
+      "instruction": "call 0xc04fde",
+      "bytes": "e8 50 ff ff ff",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c0508e"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c0508e"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04fde"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04fde"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c05070"
+      },
+      "address": "00c05089",
+      "native": "00c04fde",
+      "function": "00c05070",
+      "kind": "call"
+    },
+    {
+      "site": "00c050ff",
+      "physical_envelope": "00c050f8",
+      "instruction": "call 0xc07c00",
+      "bytes": "e8 fc 2a 00 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05104"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05104"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c07c00"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c07c00"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c050f8"
+      },
+      "address": "00c050ff",
+      "native": "00c07c00",
+      "function": "00c050f8",
+      "kind": "call"
+    },
+    {
+      "site": "00c05126",
+      "physical_envelope": "00c050f8",
+      "instruction": "call 0xc04efb",
+      "bytes": "e8 d0 fd ff ff",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c0512b"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c0512b"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04efb"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04efb"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c050f8"
+      },
+      "address": "00c05126",
+      "native": "00c04efb",
+      "function": "00c050f8",
+      "kind": "call"
+    },
+    {
+      "site": "00c05177",
+      "physical_envelope": "00c050f8",
+      "instruction": "call 0xc11c21",
+      "bytes": "e8 a5 ca 00 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c0517c"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c0517c"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c11c21"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c11c21"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c050f8"
+      },
+      "address": "00c05177",
+      "native": "00c11c21",
+      "function": "00c050f8",
+      "kind": "call"
+    },
+    {
+      "site": "00c05196",
+      "physical_envelope": "00c050f8",
+      "instruction": "call 0xc0190b",
+      "bytes": "e8 70 c7 ff ff",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c0519b"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c0519b"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c0190b"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c0190b"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c050f8"
+      },
+      "address": "00c05196",
+      "native": "00c0190b",
+      "function": "00c050f8",
+      "kind": "call"
+    },
+    {
+      "site": "00c051a3",
+      "physical_envelope": "00c050f8",
+      "instruction": "call 0xc051ae",
+      "bytes": "e8 06 00 00 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c051a8"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c051a8"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c051ae"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c051ae"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c050f8"
+      },
+      "address": "00c051a3",
+      "native": "00c051ae",
+      "function": "00c050f8",
+      "kind": "call"
+    },
+    {
+      "site": "00c051a8",
+      "physical_envelope": "00c050f8",
+      "instruction": "call 0xc07c45",
+      "bytes": "e8 98 2a 00 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c051ad"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c051ad"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c07c45"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c07c45"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c050f8"
+      },
+      "address": "00c051a8",
+      "native": "00c07c45",
+      "function": "00c050f8",
+      "kind": "call"
+    },
+    {
+      "site": "00c05023",
+      "physical_envelope": "00c04fde",
+      "instruction": "call 0xc04efb",
+      "bytes": "e8 d3 fe ff ff",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05028"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05028"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04efb"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04efb"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c04fde"
+      },
+      "address": "00c05023",
+      "native": "00c04efb",
+      "function": "00c04fde",
+      "kind": "call"
+    },
+    {
+      "site": "00c04f11",
+      "physical_envelope": "00c04efb",
+      "instruction": "call 0xbfbb61",
+      "bytes": "e8 4b 6c ff ff",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c04f16"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c04f16"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bfbb61"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bfbb61"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c04efb"
+      },
+      "address": "00c04f11",
+      "native": "00bfbb61",
+      "function": "00c04efb",
+      "kind": "call"
+    },
+    {
+      "site": "00c04f42",
+      "physical_envelope": "00c04efb",
+      "instruction": "call 0xc05920",
+      "bytes": "e8 d9 09 00 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c04f47"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c04f47"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c05920"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c05920"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c04efb"
+      },
+      "address": "00c04f42",
+      "native": "00c05920",
+      "function": "00c04efb",
+      "kind": "call"
+    },
+    {
+      "site": "00bfbb6c",
+      "physical_envelope": "00bfbb61",
+      "instruction": "call 0xbffb8b",
+      "bytes": "e8 1a 40 00 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00bfbb71"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00bfbb71"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bffb8b"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bffb8b"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00bfbb61"
+      },
+      "address": "00bfbb6c",
+      "native": "00bffb8b",
+      "function": "00bfbb61",
+      "kind": "call"
+    },
+    {
+      "site": "00bfbb7c",
+      "physical_envelope": "00bfbb61",
+      "instruction": "call 0xbf66ef",
+      "bytes": "e8 6e ab ff ff",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00bfbb81"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00bfbb81"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf66ef"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf66ef"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00bfbb61"
+      },
+      "address": "00bfbb7c",
+      "native": "00bf66ef",
+      "function": "00bfbb61",
+      "kind": "call"
+    },
+    {
+      "site": "00bfbabd",
+      "physical_envelope": "00bfbab2",
+      "instruction": "call 0xbffb8b",
+      "bytes": "e8 c9 40 00 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00bfbac2"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00bfbac2"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bffb8b"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bffb8b"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00bfbab2"
+      },
+      "address": "00bfbabd",
+      "native": "00bffb8b",
+      "function": "00bfbab2",
+      "kind": "call"
+    },
+    {
+      "site": "00bfbacd",
+      "physical_envelope": "00bfbab2",
+      "instruction": "call 0xbf66ef",
+      "bytes": "e8 1d ac ff ff",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00bfbad2"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00bfbad2"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf66ef"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf66ef"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00bfbab2"
+      },
+      "address": "00bfbacd",
+      "native": "00bf66ef",
+      "function": "00bfbab2",
+      "kind": "call"
+    },
+    {
+      "site": "00c04868",
+      "physical_envelope": "00c0485a",
+      "instruction": "call 0xc1c50f",
+      "bytes": "e8 a2 7c 01 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c0486d"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c0486d"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c1c50f"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c1c50f"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c0485a"
+      },
+      "address": "00c04868",
+      "native": "00c1c50f",
+      "function": "00c0485a",
+      "kind": "call"
+    }
+  ],
+  "computed_transfers": [
+    {
+      "site": "00bf6703",
+      "physical_envelope": "00bf66ef",
+      "instruction": "jmp eax",
+      "bytes": "ff e0",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_JUMP",
+          "is_call": false,
+          "is_jump": true,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_JUMP",
+          "is_call": false,
+          "is_jump": true,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": null,
+        "effective_fallthrough": null,
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00bf66ef"
+      },
+      "target_domain": "actual decoded registered invalid-handler;tail inherits untouched five words and caller return"
+    },
+    {
+      "site": "00c051b9",
+      "physical_envelope": "00c051b7",
+      "instruction": "call dword ptr [0xce2258]",
+      "bytes": "ff 15 58 22 ce 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c051bf"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c051bf"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "0000016b"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c051b7"
+      },
+      "actual_IAT_slot": "00ce2258",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "GetLastError"
+      }
+    },
+    {
+      "site": "00c051cc",
+      "physical_envelope": "00c051b7",
+      "instruction": "call eax",
+      "bytes": "ff d0",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c051ce"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c051ce"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c051b7"
+      },
+      "target_domain": "actual getter returned by C05070;index was already captured/pushed BEFORE selecting getter"
+    },
+    {
+      "site": "00c051fb",
+      "physical_envelope": "00c051b7",
+      "instruction": "call eax",
+      "bytes": "ff d0",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c051fd"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c051fd"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c051b7"
+      },
+      "target_domain": "actual decoded registered FLS/TLS setter;captured index+allocation words were already pushed"
+    },
+    {
+      "site": "00c0520b",
+      "physical_envelope": "00c051b7",
+      "instruction": "call dword ptr [0xce223c]",
+      "bytes": "ff 15 3c 22 ce 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05211"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05211"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000164"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c051b7"
+      },
+      "actual_IAT_slot": "00ce223c",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "GetCurrentThreadId"
+      }
+    },
+    {
+      "site": "00c05223",
+      "physical_envelope": "00c051b7",
+      "instruction": "call dword ptr [0xce22bc]",
+      "bytes": "ff 15 bc 22 ce 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05229"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05229"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000184"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c051b7"
+      },
+      "actual_IAT_slot": "00ce22bc",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "SetLastError"
+      }
+    },
+    {
+      "site": "00c05077",
+      "physical_envelope": "00c05070",
+      "instruction": "call dword ptr [0xce20bc]",
+      "bytes": "ff 15 bc 20 ce 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c0507d"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c0507d"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000104"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c05070"
+      },
+      "actual_IAT_slot": "00ce20bc",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "TlsGetValue"
+      }
+    },
+    {
+      "site": "00c05098",
+      "physical_envelope": "00c05070",
+      "instruction": "call dword ptr [0xce20b4]",
+      "bytes": "ff 15 b4 20 ce 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c0509e"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c0509e"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000102"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c05070"
+      },
+      "actual_IAT_slot": "00ce20b4",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "TlsSetValue"
+      }
+    },
+    {
+      "site": "00c05109",
+      "physical_envelope": "00c050f8",
+      "instruction": "call dword ptr [0xce215c]",
+      "bytes": "ff 15 5c 21 ce 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c0510f"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c0510f"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "0000012c"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c050f8"
+      },
+      "actual_IAT_slot": "00ce215c",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "GetModuleHandleA"
+      }
+    },
+    {
+      "site": "00c0513d",
+      "physical_envelope": "00c050f8",
+      "instruction": "call ebx",
+      "bytes": "ff d3",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c0513f"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c0513f"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000112"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c050f8"
+      },
+      "actual_IAT_slot": "00ce20f4",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress"
+      }
+    },
+    {
+      "site": "00c0514d",
+      "physical_envelope": "00c050f8",
+      "instruction": "call ebx",
+      "bytes": "ff d3",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c0514f"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c0514f"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000112"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c050f8"
+      },
+      "actual_IAT_slot": "00ce20f4",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress"
+      }
+    },
+    {
+      "site": "00c0516f",
+      "physical_envelope": "00c050f8",
+      "instruction": "call dword ptr [0xce221c]",
+      "bytes": "ff 15 1c 22 ce 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05175"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05175"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "0000015c"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c050f8"
+      },
+      "actual_IAT_slot": "00ce221c",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "InterlockedIncrement"
+      }
+    },
+    {
+      "site": "00c04feb",
+      "physical_envelope": "00c04fde",
+      "instruction": "call esi",
+      "bytes": "ff d6",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c04fed"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c04fed"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000104"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c04fde"
+      },
+      "actual_IAT_slot": "00ce20bc",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "TlsGetValue"
+      }
+    },
+    {
+      "site": "00c05002",
+      "physical_envelope": "00c04fde",
+      "instruction": "call esi",
+      "bytes": "ff d6",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05004"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05004"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000104"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c04fde"
+      },
+      "actual_IAT_slot": "00ce20bc",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "TlsGetValue"
+      }
+    },
+    {
+      "site": "00c05004",
+      "physical_envelope": "00c04fde",
+      "instruction": "call eax",
+      "bytes": "ff d0",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05006"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05006"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c04fde"
+      },
+      "target_domain": "actual unchecked getter returned by second real TLS query;captured PTD index already pushed"
+    },
+    {
+      "site": "00c05017",
+      "physical_envelope": "00c04fde",
+      "instruction": "call dword ptr [0xce215c]",
+      "bytes": "ff 15 5c 21 ce 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c0501d"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c0501d"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "0000012c"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c04fde"
+      },
+      "actual_IAT_slot": "00ce215c",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "GetModuleHandleA"
+      }
+    },
+    {
+      "site": "00c05032",
+      "physical_envelope": "00c04fde",
+      "instruction": "call dword ptr [0xce20f4]",
+      "bytes": "ff 15 f4 20 ce 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05038"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05038"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000112"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c04fde"
+      },
+      "actual_IAT_slot": "00ce20f4",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress"
+      }
+    },
+    {
+      "site": "00c05040",
+      "physical_envelope": "00c04fde",
+      "instruction": "call eax",
+      "bytes": "ff d0",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05042"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05042"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c04fde"
+      },
+      "target_domain": "actual selected stdcall DecodePointer provider;returned pointer overwrites original argument word"
+    },
+    {
+      "site": "00c04f23",
+      "physical_envelope": "00c04efb",
+      "instruction": "call dword ptr [0xce215c]",
+      "bytes": "ff 15 5c 21 ce 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c04f29"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c04f29"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "0000012c"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c04efb"
+      },
+      "actual_IAT_slot": "00ce215c",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "GetModuleHandleA"
+      }
+    },
+    {
+      "site": "00c0487f",
+      "physical_envelope": "00c0485a",
+      "instruction": "call dword ptr [0xce2230]",
+      "bytes": "ff 15 30 22 ce 00",
+      "typed_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c04885"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c04885"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000161"
+          }
+        ]
+      },
+      "formal_owner": {
+        "space": "ram",
+        "offset": "00c0485a"
+      },
+      "actual_IAT_slot": "00ce2230",
+      "installed_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "Sleep"
+      }
+    }
+  ],
+  "transfer_summary": {
+    "direct_calls": 23,
+    "direct_tail_jumps": 1,
+    "computed_calls": 19,
+    "computed_tail_jumps": 1,
+    "all44_transfer_starts_typed": true
+  },
+  "typed_captures": [
+    {
+      "path": "local/goal_oct15_crt_invalid_handler_flow.json",
+      "sha256": "a957bafc44e69392d0c80ecd5f3f4469f3dc13c9282583f874ed90d3ada3c47d",
+      "responses": 9,
+      "modification_number": "3629"
+    },
+    {
+      "path": "local/goal_oct15_crt_invalid_handler_calls_flow.json",
+      "sha256": "f1d860717c9a05cbc7eb4396fff8530743a9acd2730d55672a6fc3e46ef12320",
+      "responses": 44,
+      "modification_number": "3632"
+    },
+    {
+      "path": "local/goal_oct15_crt_invalid_handler_owner_sites_flow.json",
+      "sha256": "3e86aec72c57cb0de5245da7cc2855453fc3b19409c78dafd30dba3e44aa07dc",
+      "responses": 3,
+      "modification_number": "3632"
+    }
+  ],
+  "installed_PE_imports": {
+    "00ce20bc": {
+      "dll": "KERNEL32.dll",
+      "name": "TlsGetValue"
+    },
+    "00ce20b4": {
+      "dll": "KERNEL32.dll",
+      "name": "TlsSetValue"
+    },
+    "00ce2258": {
+      "dll": "KERNEL32.dll",
+      "name": "GetLastError"
+    },
+    "00ce223c": {
+      "dll": "KERNEL32.dll",
+      "name": "GetCurrentThreadId"
+    },
+    "00ce22bc": {
+      "dll": "KERNEL32.dll",
+      "name": "SetLastError"
+    },
+    "00ce215c": {
+      "dll": "KERNEL32.dll",
+      "name": "GetModuleHandleA"
+    },
+    "00ce20f4": {
+      "dll": "KERNEL32.dll",
+      "name": "GetProcAddress"
+    },
+    "00ce221c": {
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedIncrement"
+    },
+    "00ce2230": {
+      "dll": "KERNEL32.dll",
+      "name": "Sleep"
+    }
+  },
+  "actual_initial_PE_words": {
+    "0109dd64": {
+      "role": "encoded registered invalid handler",
+      "DWORD": 0,
+      "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+    },
+    "0109de38": {
+      "role": "encoded getter",
+      "DWORD": 0,
+      "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+    },
+    "0109de3c": {
+      "role": "encoded setter",
+      "DWORD": 0,
+      "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+    },
+    "00e15b00": {
+      "role": "actual getter TLS index",
+      "DWORD": 4294967295,
+      "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+    },
+    "00e15afc": {
+      "role": "actual PTD FLS/TLS index",
+      "DWORD": 4294967295,
+      "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+    },
+    "00e159e8": {
+      "role": "actual fallback errno word",
+      "DWORD": 12,
+      "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+    },
+    "0109dd84": {
+      "role": "actual OS platform word",
+      "DWORD": 0,
+      "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+    },
+    "0109dd90": {
+      "role": "actual winmajor word",
+      "DWORD": 0,
+      "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+    },
+    "00e162b0": {
+      "role": "current optional-locale fallback pointer",
+      "DWORD": 14770648,
+      "qualification": "installed PE initial data only,not running initialized/owned CRT state"
+    }
+  },
+  "invalid_handler_transport": [
+    "BF66EF itself reads NONE of the incoming five words;save EBP,load current encoded109DD64 and real decoder",
+    "test decoder EAX before POP;nonnull restores EBP then JMP EAX;original argument words/return slot are inherited rather than copied or eagerly read",
+    "NULL calls real canonical debugger-hook clear with2;callee actual AND-zero hook has no fabricated state;then restores EBP and JMP canonical Watson with original words",
+    "tail receiver can return directly to original caller;no noreturn claim,SDK invalid-noinfo substitution,generic callback injection or made-up semantic EAX"
+  ],
+  "errno_transport": "BFFB8B calls actual nullable PTD getter ONCE;nonnull EAX+8 modulo32,otherwise real fixed E159E8 fallback. Existing LegacyCrtMathRuntime fragment is an owning-service boundary,not this Original PTD implementation.",
+  "PTD_getter_schedule": [
+    "real GetLastError captured before helpers;current PTD index PUSH occurs BEFORE C05070 getter selection;actual CALL returned getter has no new null guard",
+    "nonnull existing PTD returns through common LastError restore;NULL calls actual C0485A(1,214h);allocation failure also uses common restore",
+    "nonnull allocation and CURRENT index are pushed BEFORE current encoded setter is decoded;actual setter uses those captured words",
+    "setter success PUBLISHES actual PTD before real C050F8 initialization;then real GetCurrentThreadId,OR-minus1 toPTD+4 before PTD+0 threadid store",
+    "setter failure frees captured allocation then returnsNULL;initialization exceptions receive no invented free/unpublish/rollback",
+    "every returning path restores originally captured Win32 LastError;no catch synthesizes normal return after a provider exception"
+  ],
+  "getter_cache_schedule": "C05070 reads current getter TLSindex then real TlsGetValue;hit returns captured bits. Miss loads actual encoded109DE38 and real decoder,captures returned bits,then pushes them before CURRENT TLSindex reread and actual TlsSetValue;BOOL ignored and captured getter returned even on failed publication.",
+  "PTD_initialization_schedule": [
+    "actual prolog/scopeE032B0;real kernel32 module lookup precedes actual PTD pointer load",
+    "writes PTD+5C=E16840 and+14=1;only valid module+full gate path resolves EncodePointer/DecodePointer and writes+1F8/+1FC;other path does not preclear them",
+    "writes+70=1,BYTE+C8=43h,BYTE+14B=43h,+68=E15CA8;real InterlockedIncrement of actual E15CA8",
+    "actual lock12 returns BEFORE arm state0;only now read optional locale word and publish PTD+6C;NULL reloads actual current E162B0;fresh PTD+6C push to complete canonical locale-ref acquisition",
+    "disarm state=-2 BEFORE existing real C051AE unlock12 and actual epilog;no synthetic PTD,lock,locale or exception transport"
+  ],
+  "actual_canonical_cycles": [
+    {
+      "nodes": [
+        "00bf66ef",
+        "00c04fde",
+        "00c04efb",
+        "00bfbb61",
+        "00bf66ef"
+      ],
+      "sites": [
+        "00bf66f8",
+        "00c05023",
+        "00c04f11",
+        "00bfbb7c"
+      ],
+      "meaning": "invalid handler/decoder/module getter failure cycle"
+    },
+    {
+      "nodes": [
+        "00bffb8b",
+        "00c051b7",
+        "00c05070",
+        "00c04fde",
+        "00c04efb",
+        "00bfbb61",
+        "00bffb8b"
+      ],
+      "sites": [
+        "00bffb8b",
+        "00c051c7",
+        "00c05089",
+        "00c05023",
+        "00c04f11",
+        "00bfbb6c"
+      ],
+      "meaning": "errno/PTD/getter-cache/decoder/module getter failure cycle"
+    },
+    {
+      "nodes": [
+        "00bf9dc8",
+        "00bffb8b",
+        "00c051b7",
+        "00bf9dc8"
+      ],
+      "sites": [
+        "00bf9e3a",
+        "00bffb8b",
+        "00c0521a"
+      ],
+      "evidence": "published malloc audit plus peer whole-free review;free-site typed evidence retained there"
+    }
+  ],
+  "SCC_interpretation": "Known conditional native call cycles. They are finite coordinated implementation frontiers,NOT a permanent blocker merely because mutual recursion exists. Implement real mutually recursive bodies over actual owners/providers;no stub declarations/SDK substitutions and no Source-ready credit before whole actual dependencies are supplied.",
+  "coupling_to_heap_and_lock": "C051B7 actual initC050F8 reaches module gate and lock12;actual setter failure reaches Originalfree;callocC0485A reaches named Originalcallocimpl. Published malloc audit proves the allocator/lock/initializer/nullable-allocation core and errno/free join. Reuse that bounded proof without rereading all heap bodies.",
+  "remaining_direct_PTD_frontier": [
+    {
+      "address": "00c05070",
+      "whole_inspected": true,
+      "source": "absent",
+      "need": "actual cache/global/TLS import and decoder owner;not cache-hit-only implementation"
+    },
+    {
+      "address": "00c0485a",
+      "whole_inspected": true,
+      "source": "absent",
+      "need": "whole nullable calloc retry;reaches C1C50F;passes third literal0 and rereads size/count each retry;real current retry-limit/Sleep"
+    },
+    {
+      "address": "00c1c50f",
+      "extent_observed": "[00C1C50F,00C1C62D),286B envelope",
+      "coverage": "pseudocode/direct dependency boundary only;not counted as full physical span or a Source-ready leaf",
+      "source": "no complete Source indexed",
+      "need": "whole Original calloc implementation;do not substitute SDKcalloc;SBH/lock/handler/errno/memset/provider paths require actual bodies"
+    },
+    {
+      "address": "00c050f8",
+      "whole_inspected": true,
+      "source": "absent",
+      "need": "actual two-word initialization,canonical locale ref and actual lock12/native prolog/scope owner"
+    },
+    {
+      "address": "00bf9dc8",
+      "coverage": "peer whole-free evidence and published audit reused",
+      "source": "only labelled host substitution",
+      "need": "whole real free/lock/heap/error transport"
+    }
+  ],
+  "already_canonical_or_genuine": [
+    {
+      "addresses": [
+        "00bf65bb",
+        "00c04ef3"
+      ],
+      "source": "src/native_crt_canonical_failure.cpp",
+      "status": "complete actual canonical Watson/debugger-hook clear;registered-state/real-import/frame contracts apply;no noreturn assumption"
+    },
+    {
+      "addresses": [
+        "00c0190b"
+      ],
+      "source": "src/native_crt_canonical_locale_reference.cpp",
+      "status": "complete original one-word locale ref acquisition;real InterlockedIncrement and actual records"
+    },
+    {
+      "addresses": [
+        "00c051ae",
+        "00c11b31",
+        "00c11c18"
+      ],
+      "status": "complete actual canonical unlock helpers/providers;no acquisition/bootstrap claim or new cleanup-only packet proposed"
+    },
+    {
+      "addresses": [
+        "00c07c45"
+      ],
+      "source": "src/native_crt_seh4_primitives.cpp",
+      "status": "complete actual native epilog primitive;does not supply prolog/dispatcher/frame owner"
+    },
+    {
+      "addresses": [
+        "00c05920"
+      ],
+      "source": "src/native_crt_pointer_decode_support.cpp",
+      "status": "complete raw comparator in module gate;no fake module/table provider"
+    },
+    {
+      "addresses": [
+        "00c12968",
+        "00c1207c",
+        "00c1212c",
+        "00c11d68",
+        "00c11cf5"
+      ],
+      "status": "complete bounded actual-state SBH/canonical initialization primitives;real owner/lock/domain needed;do not duplicate"
+    },
+    {
+      "addresses": [
+        "00bf79f0",
+        "00c0c965",
+        "00c0c90e"
+      ],
+      "source": "src/native_crt_memset.cpp",
+      "status": "complete qualified fill/vector primitives;BF79F0 Source has FOURTH actual-feature binding for>=256 zero fill. Original PTD214h clearing cannot blindly call that Source symbol with3args or replace with SDKmemset;actual feature/CPU/owner and whole Original caller composition required."
+    }
+  ],
+  "existing_interfaces_that_are_not_Original_transport_closure": [
+    {
+      "addresses": [
+        "00c04fde",
+        "00c04f67"
+      ],
+      "status": "whole current Source pointer operations,with extra stable borrowed context/argument word and real TLS/IAT/module contracts;not original one-word callable entry or initialized FLS/PTD owner"
+    },
+    {
+      "addresses": [
+        "00c04efb",
+        "00bfbb61",
+        "00bfbab2"
+      ],
+      "status": "whole qualified current Source bodies;SupportContext uses owning errno and invalid-service callbacks,not complete direct Original failure transport"
+    },
+    {
+      "address": "00bffb8b",
+      "status": "owning-CRT errno service fragment;does not implement actual nullable PTD path"
+    },
+    {
+      "address": "00bf6713",
+      "status": "currentSDK invalid-noinfo Source policy;explicitly NOT actual BF66EF encoded-global/debugger-hook/handler/Watson transport"
+    },
+    {
+      "address": "00bf66ef",
+      "status": "no complete Source;existing abstract service/model callbacks elsewhere are not this body"
+    }
+  ],
+  "startup_ownership_boundary": {
+    "actual_global_writes": [
+      {
+        "write_site": "00bfd185",
+        "global_word": "0109dd84",
+        "formal_function": "00bfd0dd"
+      },
+      {
+        "write_site": "00bfd190",
+        "global_word": "0109dd90",
+        "formal_function": "00bfd0dd"
+      }
+    ],
+    "owner": "___tmainCRTStartup [00BFD0DD,00BFD2BD),480B formal envelope",
+    "coverage": "only exact write xrefs/typed sites and parent boundary were inspected here;not a whole startup review or Source-ready leaf",
+    "no_standalone_owner_leaf_discovered": true,
+    "qualification": "Do not assume current OSword nonzero,fill it from SDK getters,or call a startup prefix complete. Real OS/TLS/FLS/heap initialization order remains owning startup work."
+  },
+  "meaningful_next_work": {
+    "new_whole_leaf_outside_known_SCC_ready": null,
+    "reason": "all directly useful canonical nonrecursive primitives found are already implemented;remaining actual error/PTD/owner functions reach the finite coupled graph",
+    "proposal": "joint genuine canonical transport work:BF66EF plus callback-free direct getter/decoder/module-gate/errno entry composition;whole C05070/C051B7/C050F8 and nullable-calloc/heap-lock providers over actual state. Preserve full returning/error/tail/frame schedules. Keep existing qualified APIs separate;close all named actual bodies rather than inventing generic callback implementations.",
+    "not_permanently_blocked_by_mutual_recursion": true,
+    "no_code_or_address_authorization_from_this_report": true
+  },
+  "source_pins": {
+    "src/native_crt_pointer_decode.cpp": "7a689a80bea666aa0941662a1bbde17500c92d1f7fd671c364aa2b3e0bf365c7",
+    "include/bsp/native_crt_pointer_decode.hpp": "b1e901d739c07419b55441988bf42177b0e6ace3ef27ef1251ecb3b36fb48a7f",
+    "src/native_crt_pointer_decode_support.cpp": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37",
+    "include/bsp/native_crt_pointer_decode_support.hpp": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722",
+    "src/native_crt_libm_callback_registration.cpp": "cacc140a243569c0d0828a309cf84c079fa12e30b1fc5124e703c44ed1716c32",
+    "include/bsp/native_crt_libm_callback_registration.hpp": "96b1bf767f1b4de73a578f178de025f2c9199082e404ad3bf45e0ff695f58746",
+    "src/native_crt_osplatform_getter.cpp": "c1cddc1b6bc3781c40a8f3313ce602f10c80d7306c35b99545420758ed10cfba",
+    "include/bsp/native_crt_osplatform_getter.hpp": "70f8cfe604f464af3b9aa3e54f008beb546343d58f1c1e41b25b9fc64bb34f18",
+    "src/legacy_crt_math.cpp": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce",
+    "include/bsp/legacy_crt_math.hpp": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+    "src/native_crt_canonical_failure.cpp": "6d8bee1d3ba2e0fbfff1fcaca03ca35b8a5f933ff6995419f100e220802dc7ce",
+    "include/bsp/native_crt_canonical_failure.hpp": "79cf028656e03fe079cac7ced740ce5ea8a5a81fc4a8a722850a15c8195c0472",
+    "src/native_crt_seh4_primitives.cpp": "2557fbce9dfc10e1deb7a4158bb7e9f31fcd62b5c22a8e1f67e66c836bf4fb95",
+    "include/bsp/native_crt_seh4_primitives.hpp": "def2584ce857931952278696a418e2b62a0d1b8a9f82cc61e82ae784cab28a86",
+    "src/native_crt_canonical_locale_reference.cpp": "2b3c52296bf6295f09f423b7275cc4e5c74b0c25ab43b29e55def270215d1467",
+    "include/bsp/native_crt_canonical_locale_reference.hpp": "fe9b3c9e075791cf44af4d40a043c264d73519c60ed72b06dcf7c16e9f3e6352",
+    "src/native_crt_canonical_unlock.cpp": "b2203a3e0def66f513f5bd0d8846a7ac21bb7e066015cf7f426d6e71165c6097",
+    "include/bsp/native_crt_canonical_unlock.hpp": "161dce16976cc0c2bdc10495d5a3c733600cfc6e2d75dc07f1363e5710802cdf",
+    "src/native_crt_ptd_unlock_helper.cpp": "bed127cdf56c7e19b8ce0248e45779bfaf66fff9c83fb5d0deae4e08817cddbc",
+    "include/bsp/native_crt_ptd_unlock_helper.hpp": "a71f8150e2fa5240273797c2a08f5dc735565bab0fa5eea390c98ee424d0e8cd",
+    "src/native_crt_sbh_allocation.cpp": "579963791173dd808d51683336edf5d1471593314659613183942cebed27191a",
+    "include/bsp/native_crt_sbh_allocation.hpp": "fdcaa8f9cc5debb28c12bb24464f71f34db09b1f235b2322cbf012ead01909a4",
+    "src/native_crt_sbh_free.cpp": "e3eeffb7ff77f8a52bdb74931958f6923ef36bc05e70e6f25d8b6708d0ebaaed",
+    "include/bsp/native_crt_sbh_free.hpp": "8523a3ebf37b07082f6a629750cb6284da2392e52c90fc8af0d552b4a63e951e",
+    "src/native_crt_canonical_sbh_initialization.cpp": "44ce326810241009bd9acf1280d7345d45e0d54755f0312800c27e7961cf199b",
+    "include/bsp/native_crt_canonical_sbh_initialization.hpp": "20770571741fc8d5762b78a27b58476c86db9f5864783193dc489afe1a44ea9a",
+    "src/native_crt_memset.cpp": "d40837c0989ddb2e0958deec750c0b264e6475e8febaad590c5a4f35db55a0d9",
+    "include/bsp/native_crt_memset.hpp": "82636e0cffb8c123053bd7e9778be85837d5f2bfae142bc8d788a089defcea1e",
+    "src/native_invalid_parameter_noinfo_call.cpp": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+    "include/bsp/native_invalid_parameter_noinfo_call.hpp": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
+  },
+  "pin_scope": "current concrete API/provider identity and limitations;not new whole runtime revalidation of all existing primitive bodies",
+  "prior_audits": [
+    {
+      "path": "reports/goal_oct15_crt_locale_provider_readiness.json",
+      "sha256": "a62bb37a61101bd84bd394443b60c24c47312ed497762e3f2059837e5fcd5927"
+    },
+    {
+      "path": "reports/goal_oct15_crt_lock_acquisition_readiness.json",
+      "sha256": "c7bb6bfbd6135848c60357c6a5dc7e478087854991afbfac238db7d3c27ecf67"
+    },
+    {
+      "path": "reports/goal_oct15_crt_malloc_readiness.json",
+      "sha256": "c2456faa9350a3aa42fee96319148e797f112ce20d1bcf9db324371c9374ace1"
+    }
+  ],
+  "ownership": {
+    "claimed_addresses": [],
+    "report_only": true,
+    "BF66EF_C051B7_C05070_C050F8": "unleased at bounded checks",
+    "BFFB8B": "held by agent/cc12_string_list_cstr_readiness_oct16:cc12_scene_string_list_private_sort_readiness_oct16 until2026-10-16T06:10;all work read-only;no bypass,claim or metadata write"
+  },
+  "inspection_correction": "An earlier small cycle query usedC0486C inside CALLC04868;that row was not used as a transfer start. Final exhaustive44-site capture uses decoded exact starts,plus corrected explicitC04868 capture;no analysis repair or Source evidence credit from the rejected interior query.",
+  "validation": {
+    "report_call_verification": {
+      "command": "python tools/verify_report_calls.py reports/goal_oct15_crt_invalid_handler_readiness.json",
+      "direct_call_rows": 23,
+      "direct_tail_rows": 1,
+      "checked": 24,
+      "failed": 0,
+      "computed_calls_separately_typed": 19,
+      "computed_tail_jumps_separately_typed": 1,
+      "import_identity": "installed PE import descriptors independently checked;actual runtime provider/owner lifetime remains required"
+    },
+    "Source_edits": 0,
+    "Ghidra_writes": 0,
+    "new_tests": 0,
+    "builds": 0,
+    "runtime_or_game_probes": 0
+  },
+  "qualification": "Read-only finite owner/SCC planning. All Source/general readiness remains false for this audit. No new Source,Original ABI/heap/handler/errno/PTD/TLS/FLS/SEH/startup/runtime/game completion credit,SDK replacement,new callback,synthetic owner or selected-path admission."
+}
