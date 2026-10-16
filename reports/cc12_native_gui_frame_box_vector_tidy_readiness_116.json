@@ -1,0 +1,428 @@
+{
+  "packet": "native_gui_frame_box_vector_tidy_readiness_116",
+  "status": "read_only_whole_tidy_engine_ready_over_genuine111_prepared_metadata_and_matching_sdk_buffer_domain_production_owner_unprovided",
+  "reviewed_root_baseline": "f5474e7daf0835b84724b4dae07f2b02f5c2c7dd",
+  "baseline_merge_exit_code": 0,
+  "original": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged": true
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "every_live_query_verified": true
+  },
+  "functions": [
+    {
+      "address": "00ad21b0",
+      "end_exclusive": "00ad21f6",
+      "native_bytes": 70,
+      "native_instruction_starts": 26,
+      "existing_name": "STL_Vector_TidyDestroy_00ad21b0",
+      "original_abi": "ECX actual16B header; no stack arguments; RET; no semantic EAX claim",
+      "local_eh": false
+    },
+    {
+      "address": "00ad2320",
+      "end_exclusive": "00ad2325",
+      "native_bytes": 5,
+      "native_instruction_starts": 1,
+      "original_abi": "raw tail preserving ECX actual header and caller stack",
+      "live_ghidra_function_defined": false,
+      "listing_repair": false
+    }
+  ],
+  "calls": [
+    {
+      "address": "00ad21c5",
+      "native": "00ad0860",
+      "function": "00ad21b0",
+      "kind": "call",
+      "receiver": "ECX current captured-range cursor before its2Ch advance"
+    },
+    {
+      "address": "00ad21d5",
+      "native": "00bf65ac",
+      "function": "00ad21b0",
+      "kind": "call",
+      "argument": "CURRENT header+4 reloaded after all record returns, not cached initial begin"
+    },
+    {
+      "address": "00ad2320",
+      "native": "00ad21b0",
+      "kind": "no_ghidra_function",
+      "instruction_kind": "tail_jump",
+      "evidence": "five live=disk bytes e98bfeffff independently decoded; verifier can check target entry only"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00ad2320",
+      "end": "00ad2324",
+      "end_inclusive": "00ad2324",
+      "reason": "five-byte undefined tail; no repair or function claim"
+    }
+  ],
+  "header": {
+    "bytes": 16,
+    "unread_unwritten": "00",
+    "begin": "04",
+    "end": "08",
+    "capacity_end": "0c",
+    "framebox_embedding": "f0",
+    "record_stride": "2c",
+    "typed_vector_cast": false
+  },
+  "exact_order": [
+    "capture initial begin+4",
+    "initial null: skip end read/destruction/free, then all zero stores",
+    "nonnull begin: capture end+8 once",
+    "forward actual cursor ->111; advance2Ch only after return; compare cached end",
+    "nonempty or empty nonnull range: reload CURRENT header+4 and free that value even if changed/null",
+    "only after free returns zero+4,+8,+C in order; never touch+0"
+  ],
+  "current_vs_captured": {
+    "iteration": "initial begin and cached end retained despite callback header mutations",
+    "free": "current header+4, which can differ from initial begin",
+    "ownership": "independent captured-buffer and current-free-buffer lifetimes before entry; no extra old-buffer free or header-derived ownership discovery"
+  },
+  "record_composition": {
+    "provider": "genuine release_native_gui_frame_box_record_00ad0860 from111",
+    "same_domains": "canonical actual render registry plus same raw string publication/gate/raw-manager cells",
+    "only_zero_family": "110/111 completed canonical registered2D family, not arbitrary adapter",
+    "prepared_metadata": "one distinct stable fresh111 operation per reached constructed record, all prepared before first callback",
+    "full_independent_graph_retained_before_entry": true,
+    "metadata_is_graph_owner": false,
+    "source111_blobs_unchanged": true
+  },
+  "failure": {
+    "native_progress": "cursor advances only after record return; raw header carries no completed frontier",
+    "record_escape": "no subsequent iteration, free or header zero; retain active failed111 operation and completed prefix diagnostics",
+    "completed_records": "may have freed resources/returned names; raw retained storage is not healthy ownership",
+    "replay_rollback_automatic_free_or_failed_record_release": false,
+    "ad1910_rollback": "only committed constructed prefix eligible; failed103 record resource pointer may not be acquired, so exclude it; not blanket full-header tidy",
+    "sdk_and_private_eh": "SDK free valid-block/noexcept domain; native surrounding FH3/double-exception and arbitrary SEH not proved"
+  },
+  "free_provider": {
+    "native": "00bf65ac existing _free library thunk; Original underlying heap body not recovered here",
+    "existing_source": "singleton_lifetime_free(void*) noexcept -> std::free",
+    "source": "src/singleton_lifetime.cpp:65",
+    "manager_or_owner_registration_required": false,
+    "admitted_buffer_domain": "proven compatible Source malloc-family block or null",
+    "unproved_domains": [
+      "Original/private CRT heap",
+      "foreign allocator",
+      "pool slot",
+      "C++ new/delete allocation compatibility"
+    ],
+    "raw_acef10_allocator_or_private_crt_completion": false
+  },
+  "proposed_source": {
+    "files": [
+      "include/bsp/native_gui_frame_box_records.hpp",
+      "src/native_gui_frame_box_records.cpp"
+    ],
+    "engine": "tidy_native_gui_frame_box_vector_00ad21b0(void*,NativeRenderActualOwners&,NativeStringRawPoolContext&,NativeGuiFrameBoxVectorTidyOperation&)",
+    "tail": "cleanup_native_gui_frame_box_vector_00ad2320(... SAME operation ...)",
+    "metadata": [
+      "exact header identity",
+      "prepared expected first/end",
+      "stable fresh111 operation span",
+      "active cursor/index",
+      "completed prefix",
+      "actual free identity",
+      "one-shot phase"
+    ],
+    "preparation_allocation_before_entry": true,
+    "finite_constructed_range_and_span_correspondence_is_caller_contract": true,
+    "preparation_validation_profile_is_new_source_orchestration": true,
+    "no_typed_cast_default_terminal_new_pool_or_framework": true,
+    "production_gap": "canonical raw FrameBox/vector allocation owner, retained graph handoff and per-record metadata preparation not composed",
+    "existing_gui_frameboxhost": "virtual forwarding seam only, not real raw implementation/owner",
+    "source_not_written_or_authorized_in116": true
+  },
+  "evidence": {
+    "native_receipt": "local\\cc12_native_gui_frame_box_vector_tidy_readiness_116\\native_bytes.json",
+    "source_receipt": "local\\cc12_native_gui_frame_box_vector_tidy_readiness_116\\source_evidence.json",
+    "spans": [
+      {
+        "address": "00ad21b0",
+        "end_exclusive": "00ad21f6",
+        "bytes": 70,
+        "instruction_starts": 26,
+        "sha256": "5083418ddba97f1d2991a951437f0e4d9a55f3f32b5e5bd03fddbd7cce05da1f",
+        "hex": "538bd9568b730485f67423578b7b083bf7740e8bcee896e6ffff83c62c3bf775f28b430450e8d243120083c4045f5ec7430400000000c7430800000000c7430c000000005bc3",
+        "live_equals_disk_and_prior98": true
+      },
+      {
+        "address": "00ad2320",
+        "end_exclusive": "00ad2325",
+        "bytes": 5,
+        "instruction_starts": 1,
+        "sha256": "802fcd9f71e8163e414d741c06fc3a6dface76964ddb19041b32f124b45d04b3",
+        "hex": "e98bfeffff",
+        "live_equals_disk_and_prior98": true
+      }
+    ],
+    "direct_call_rows": 2,
+    "raw_tail_target_verified_separately": true
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "sha256": "7fda96a5d5a84c7a81c7800c8cf408ca01637edb49cfb518d9b19d58cc460e40",
+      "bytes": 7784,
+      "git_blob": "947455320f487e2a5e9c39c0925417bbd0e408af"
+    },
+    {
+      "path": "src/native_gui_frame_box_records.cpp",
+      "sha256": "8d551e86bf287a02fab2a3b5d2e836d9314b9d8a0fc1e6a026b84aa949b4ee4a",
+      "bytes": 5887,
+      "git_blob": "c14af2a01a84a87606d240dd3c414f49c3ccde60"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372,
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "bytes": 13257,
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "include/bsp/gui_widgets_cc13.hpp",
+      "sha256": "2a889c7f79cdfa87e99283c4b0286eed4911845410425a38918cb39aeecb63b7",
+      "bytes": 92980,
+      "git_blob": "a69f853d6015aa99b2efaaa0bb71f497052c8292"
+    },
+    {
+      "path": "src/gui_widgets_cc13.cpp",
+      "sha256": "20312bdde0d2a577300c6431ea53a54aaaaf6c05c3c6670dc655c20864bb74da",
+      "bytes": 75116,
+      "git_blob": "4511ee034957d5d2322c36deae1ee9618ac847bb"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "bytes": 10071,
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "bytes": 11471,
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "bytes": 8771,
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "bytes": 9121,
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a"
+    }
+  ],
+  "prior_contracts": [
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_COPY_PROVIDERS_READINESS_98.md",
+      "sha256": "56ab226b40b72aab141b6a84ec9c5992446bcf339b32151c364e563bfb224269",
+      "bytes": 11204
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_COPY_103.md",
+      "sha256": "436504fdc86e90820176b8a738f6e0b4d6051a0d2bcaee88469d32da8b57bbb4",
+      "bytes": 7053
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_RELEASE_READINESS_110.md",
+      "sha256": "b76937ebe80d1520fa29c7d02f7d1da0b9d4d10341d2f95df550f143c1b5af21",
+      "bytes": 9179
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_RELEASE_111.md",
+      "sha256": "69c4046dc894c6d0e40b4687b9d2e2e6d4ecaa76ac8fdf838fd2a5c8005810e7",
+      "bytes": 7927
+    }
+  ],
+  "validation": {
+    "no_source_cmake_ledger_or_ghidra_mutation": true,
+    "no_build_test_probe_or_activation": true,
+    "no_original_modification": true,
+    "no_runtime_private_abi_crt_or_graph_retirement_proof": true,
+    "call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/cc12_native_gui_frame_box_vector_tidy_readiness_116.json docs/CC12_NATIVE_GUI_FRAME_BOX_VECTOR_TIDY_READINESS_116.md",
+      "exit_code": 0,
+      "call_rows_checked": 3,
+      "live_direct_rows": 2,
+      "raw_tail_target_entry_only_rows": 1,
+      "documentation_call_claims_checked": 2,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 1,
+      "expected_warning": "proposed Source cleanup tail suffix00ad2320 has no Ghidra function; bytes/target independently verified, no repair"
+    },
+    "source_reference_doc_artifact_hashes_revalidated": 24,
+    "installed_original_hash_revalidated": true
+  },
+  "artifact_manifest": {
+    "path": "local/cc12_native_gui_frame_box_vector_tidy_readiness_116/manifest.json",
+    "sha256": "f11d582b6cf27c8b5c9caaa1e168200c6632bdb6993892e5a6dcb3e282d6a72e",
+    "items": 24,
+    "total_bytes": 414667,
+    "sealed_no_replacement_before_integrator_capture": true
+  },
+  "evidence_hashes": [
+    {
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "sha256": "7fda96a5d5a84c7a81c7800c8cf408ca01637edb49cfb518d9b19d58cc460e40",
+      "bytes": 7784,
+      "role": "source_input"
+    },
+    {
+      "path": "src/native_gui_frame_box_records.cpp",
+      "sha256": "8d551e86bf287a02fab2a3b5d2e836d9314b9d8a0fc1e6a026b84aa949b4ee4a",
+      "bytes": 5887,
+      "role": "source_input"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372,
+      "role": "source_input"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "bytes": 13257,
+      "role": "source_input"
+    },
+    {
+      "path": "include/bsp/gui_widgets_cc13.hpp",
+      "sha256": "2a889c7f79cdfa87e99283c4b0286eed4911845410425a38918cb39aeecb63b7",
+      "bytes": 92980,
+      "role": "source_input"
+    },
+    {
+      "path": "src/gui_widgets_cc13.cpp",
+      "sha256": "20312bdde0d2a577300c6431ea53a54aaaaf6c05c3c6670dc655c20864bb74da",
+      "bytes": 75116,
+      "role": "source_input"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "bytes": 10071,
+      "role": "source_input"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "bytes": 11471,
+      "role": "source_input"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "bytes": 8771,
+      "role": "source_input"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "bytes": 9121,
+      "role": "source_input"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_COPY_PROVIDERS_READINESS_98.md",
+      "sha256": "56ab226b40b72aab141b6a84ec9c5992446bcf339b32151c364e563bfb224269",
+      "bytes": 11204,
+      "role": "prior_contract_not_reaudited"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_COPY_103.md",
+      "sha256": "436504fdc86e90820176b8a738f6e0b4d6051a0d2bcaee88469d32da8b57bbb4",
+      "bytes": 7053,
+      "role": "prior_contract_not_reaudited"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_RELEASE_READINESS_110.md",
+      "sha256": "b76937ebe80d1520fa29c7d02f7d1da0b9d4d10341d2f95df550f143c1b5af21",
+      "bytes": 9179,
+      "role": "prior_contract_not_reaudited"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RECORD_RELEASE_111.md",
+      "sha256": "69c4046dc894c6d0e40b4687b9d2e2e6d4ecaa76ac8fdf838fd2a5c8005810e7",
+      "bytes": 7927,
+      "role": "prior_contract_not_reaudited"
+    },
+    {
+      "path": "tools/bsp.py",
+      "sha256": "133e2cf3f24f0402f6ed7d0e1dd5148c678c7ca10722633d1ec6cdc9b693a9ff",
+      "bytes": 84752,
+      "role": "project_verifying_query_wrapper"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "bytes": 14518,
+      "role": "project_verifying_query_wrapper"
+    },
+    {
+      "path": "config/target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455,
+      "role": "project_verifying_query_wrapper"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_VECTOR_TIDY_READINESS_116.md",
+      "sha256": "1c4dbcb085b2f42ba430a9eebcd67210a80c604598a9f8ee3491c5e730d42781",
+      "bytes": 8427,
+      "role": "documentation"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_vector_tidy_readiness_116/audit_evidence.py",
+      "sha256": "473c55c3f0fa8c46cb83bf58b676a0fef528663422016f115f80a730db21dd14",
+      "bytes": 4034,
+      "role": "read_only_private_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_vector_tidy_readiness_116/call_verifier.log",
+      "sha256": "8067042ef12061f99000a3c306dbcef2b5715dcc653fc45f82871098d9aa7e44",
+      "bytes": 549,
+      "role": "read_only_private_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_vector_tidy_readiness_116/native_bytes.json",
+      "sha256": "af990b68c1bda368a65a2c22c5cb7455e4601d5479a168f927a3f69242dcad41",
+      "bytes": 5386,
+      "role": "read_only_private_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_vector_tidy_readiness_116/seal_evidence.py",
+      "sha256": "ea7a19350085bf72ff07a0bb1b2e45854433a06bcb1bac8d43f89a1ae265354a",
+      "bytes": 3334,
+      "role": "read_only_private_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_vector_tidy_readiness_116/source_evidence.json",
+      "sha256": "ab5efbed867c15578c2986b26a0c83d016113badd2cf3bae32a9f5309944e3f0",
+      "bytes": 3856,
+      "role": "read_only_private_evidence"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_vector_tidy_readiness_116/write_receipts.py",
+      "sha256": "edd64b4b391c08d3da4bc18bb563997971d381c2d668c41ec6f60b5122b31ce2",
+      "bytes": 15163,
+      "role": "read_only_private_evidence"
+    }
+  ]
+}
