@@ -1,0 +1,525 @@
+{
+  "packet": "cc12_native_font_word_unique_insert185",
+  "kind": "function",
+  "status": "whole_raw_Source_strict_win32_compiled_existing_worker_checks_root_reviewed",
+  "recorded_utc": "2026-10-16T14:41:03.347891+00:00",
+  "worker_import_HEAD": "e135d7001f38d38ebe84101bf8d96c337c91fe44",
+  "owned_address": "00ad4aa0",
+  "owned_range": "[00ad4aa0,00ad4b5d)",
+  "owned_files": [
+    "include/bsp/native_font_tree_insert.hpp",
+    "src/native_font_tree_insert.cpp",
+    "docs/CC12_NATIVE_FONT_WORD_UNIQUE_INSERT_185.md",
+    "reports/cc12_native_font_word_unique_insert_185.json"
+  ],
+  "Original": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "EXE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "bytes": 12223752
+    },
+    "bytes": 189,
+    "physical_starts": 73,
+    "exclusive_end": "00ad4b5d",
+    "direct_calls": 2,
+    "indirect_calls": 0,
+    "branches": 8,
+    "normal_RET8": [
+      "00ad4b1f",
+      "00ad4b5a"
+    ],
+    "no_local_EH_x87_SSE": true
+  },
+  "calls": [
+    {
+      "address": "00ad4b00",
+      "native": "00ad4600",
+      "function": "00ad4aa0",
+      "kind": "call"
+    },
+    {
+      "address": "00ad4b22",
+      "native": "00ad4040",
+      "function": "00ad4aa0",
+      "kind": "call"
+    }
+  ],
+  "ABI": {
+    "Original": "ECX actual Font/tree BASE; stack(output,pair), EAX SAME output, RET8",
+    "Source": "NativeIntPointerTree18InsertResult* __cdecl insert_native_font_tree_unique_00ad4aa0(void* actual_font_base, NativeIntPointerTree18InsertResult* actual_output12, const NativeIntPointerTree18Pair* actual_pair8)",
+    "provisional_types": "Ghidra types/library-role names are hypotheses; actual existing Source Pair8/Iterator8/Result12 are required objects, not recovered Original C++ symbols.",
+    "private_differences": [
+      "by-value Source argument identities versus Native private current stack-slot reads",
+      "owner-first Source iterator aggregate initialization versus Native node-before-owner",
+      "selected-parent assignment before comparator versus Native after CMP",
+      "Source private key-cache metadata and helper/frame/register placement",
+      "ordinary helper calling convention and compiler-internal register preservation"
+    ],
+    "Native_binary_private_register_frame_FH3_SEH_fault_ABI_proved": false
+  },
+  "storage": {
+    "BASE": "opaque00/head04/unsigned element-count08; no+8 receiver adjustment/refcount/lifetime barrier",
+    "nodes": "genuine18h: links00/04/08,keyDWORD0C,pointer10,colorBYTE14,nilBYTE15,untouched16/17",
+    "pair": "genuine existing Pair8; ALL4 keyDWORD bytes defined; upperWORD integer preimage preserved, not C++ padding or zero default",
+    "result": "genuine existing Result12; volatile same-type OWNER0 then NODE4 then insertedBYTE8;09..0B untouched",
+    "mapped_payload": "distinct20h glyph; copied pointer is unowned, never dereferenced/retained/released here"
+  },
+  "body_contract": [
+    "Capture incoming pair pointer; current head04/current root04/nilBYTE15. Empty root invokes no search WORD helper before genuine link.",
+    "Lazy first nonempty search call captures incoming unsignedWORD once (NativeAD4ABE); loopbackAD4ADE->AD4AC2 bypasses it, current nodeWORD0C reloads each descent.",
+    "Saved-left arm reloads current head04/leftmost00; equality links with literal LOWBYTE1, otherwise genuine168 predecessor and post-return current iterator node.",
+    "Final candidateWORDAD4B2B BEFORE CURRENTincomingWORDAD4B2F; unsigned candidate<incoming links with saved parent/direction, otherwise duplicate.",
+    "Shared generic driver uses actual168/176 bindings. Real176 returns SAME iterator, so driver ignores no arbitrary alternate result.",
+    "Real176/86EBE0 performs current count limit,18h allocation,current fullPairDWORD copy after new-handler, head/count reloads and repair with its established Source SDK exception transport.",
+    "Ordered volatile same-type owner/node/BYTE publication, no result-padding write or mapped-glyph cleanup."
+  ],
+  "WORD_transport": {
+    "helper": "private noinline read_font_word185, explicit MOVZX WORD PTR actual address",
+    "aliasing": "no incompatible uint16 lvalue/reference over int32 key, unrelated WORD-struct cast, signed86F930 call, normalized pairtemp or early DWORD key/value snapshot",
+    "final_statement_order": "candidate helper full statement, then current incoming helper full statement",
+    "not_numeric_Original_call_or_arbitrary_callback": true,
+    "no_live_x87": true
+  },
+  "actual_providers": [
+    {
+      "Native": "00ad4040",
+      "Source": "decrement_native_font_tree_iterator_00ad4040 -> real00869990",
+      "contract": "actual Iterator8 and real returning SDK invalid service/current partial iterator publications"
+    },
+    {
+      "Native": "00ad4600",
+      "Source": "link_native_font_tree_node_00ad4600 -> real0086ebe0",
+      "contract": "SAME BASE/output/LOWBYTE/parent/genuine Pair8; SAME iterator return"
+    },
+    {
+      "Native": "00ad4260",
+      "Source": "real0086ab70 allocation through link",
+      "contract": "owning sameSDK18h nonnull-or-throw allocation; current DWORD key/value after new-handler; no payload retain"
+    },
+    {
+      "Native": "00ad3f60/00ad3fb0",
+      "Source": "real0086a2f0/00869810 and established inline repair",
+      "contract": "current links/color/nil/header reloads; no new tree algorithm"
+    },
+    {
+      "Native": "00ad4600 limit arm",
+      "Source": "existing real SBO assignment/legacy exception/NativeHardwareLayoutTreeLengthError transport",
+      "contract": "CURRENT count08>=1FFFFFFEh, sole message cleanup; private Native CRT/RTTI/FH3 boundary unchanged"
+    },
+    {
+      "Native": "00ad42c0/00ad55c0",
+      "Source": "genuine146/155 Font/head construction",
+      "contract": "supplied initialized graph exists, not whole raw Font loader/registry ownership"
+    }
+  ],
+  "retention_failure_alias": {
+    "caller_independent_graph": "actual Font/head/all reached18h nodes, genuine pair/result, mapped payload/resource backing, sameSDK heap/new-handler/invalid-handler/length-exception services through callbacks and failure",
+    "valid_current_mutations": "external serialization and all later reached operands remain live; not arbitrary graph replacement/reentry equivalence",
+    "public_overlap": "only valid existing object/provider domain; unrelated typed-object overlap and BOTH Native/Source private stack/argument/scratch aliases excluded",
+    "no_local_catch_cleanup_rollback_retry_mapped_destruction_owner_or_extra_count": true,
+    "interrupted_graph": "retain handler/partial publication/allocation effects and independent payload ownership; never rediscover dead fields",
+    "Source_exception_domain": "actual SDK nonnull-or-throw and existing sole-message length-error cleanup; no null-success substitution",
+    "Native_heap_encoded_handler_catch_RTTI_ThrowInfo_FH3_SEH_fault_or_game_equivalence": false
+  },
+  "caller_frontier": {
+    "call": "00ad505e",
+    "Native_AD5055": "lowWORD store only; valueDWORD followsAD505A",
+    "required": "real Source caller must establish fully-defined Pair8 four-byte key preimage and preserve upperWORD when storing lowerWORD; do not zero-normalize",
+    "whole_AD4C30_loader_or_production_ready": false
+  },
+  "import_and_preservation": {
+    "target_published175": "5d2d049ef1bd5a18de44a6caa01d182257302925",
+    "own_exact4_import_commit": "e135d7001f38d38ebe84101bf8d96c337c91fe44",
+    "no_Main_merge_CMake_ledger_docs_foreign_Source_import": true,
+    "provider_blob_audit": {
+      "path": "local/font_word_unique_insert185/needed_provider_blob_audit.json",
+      "sha256": "7630616e3a0fc9cade5f3f33b3f8d27c7dc676860c35141480759bdad27ff55f"
+    },
+    "exact4_import_receipt": {
+      "path": "local/font_word_unique_insert185/exact4_import_receipt_before_commit.json",
+      "sha256": "34da347d68e99846cbdb786d3ea13d3b0d29775d263760fb2fc8761379020d96"
+    },
+    "Source_append_prefix_proof": {
+      "path": "local/font_word_unique_insert185/append_source_prefix_proof.json",
+      "sha256": "3bc5455b771d22f3076349a78d6e0f4e1ea37fd713e5d54961a21d097259ad43"
+    },
+    "old176_root_preservation": {
+      "path": "local/font_word_unique_insert185/old176_root_preservation.json",
+      "sha256": "9a48d8ccae50ae1acd13be6582ed5aae66dc27060697cd4a4777eb39416a0e40"
+    },
+    "all19_underlying_provider_blobs_unchanged": true,
+    "old1765B_and_complete_ordered_REL32_exact": true,
+    "Root175_actualCore9B_separately_frozen_not_worker_equality_claim": true,
+    "sealed180_family_unchanged": true,
+    "selected180_capture": {
+      "path": "local/font_word_unique_insert185/reused180_selected_capture.json",
+      "sha256": "ead0bba2f2a3145a1dee057b3cf44ecfe99a6399f92ad4597701258f27b16ddc"
+    }
+  },
+  "strict": {
+    "result": "PASS",
+    "only_one_fresh_compiler_invocation": true,
+    "options": "MSVC19.51.36244 Win32 C++17 /MD/EHsc/O2/Gy/W4/WX/fp:strict/permissive-; current /Iinclude only",
+    "command": {
+      "path": "local/font_word_unique_insert185/strict_compile.cmd",
+      "sha256": "6315bb11d75a9deceddfb37422d85cea3649d1b8c2a49114164cab9890191c02"
+    },
+    "log": {
+      "path": "local/font_word_unique_insert185/strict_compile.log",
+      "sha256": "253ecba50b05610036432d2da271e89ca60468befb812d8fdbd9eeef4f82aab9"
+    },
+    "object": {
+      "path": "local/font_word_unique_insert185/strict.obj",
+      "sha256": "13dce11b36c43a4e7eff34c09878fc7f1847b1163978d64400869feb7902d93f"
+    },
+    "listing": {
+      "path": "local/font_word_unique_insert185/strict.asm",
+      "sha256": "96683f3767f8c693153ce48fb3e8add4fc0ce1d894c1024dac4e6930334d41ce"
+    },
+    "dumpbin": {
+      "path": "local/font_word_unique_insert185/strict_dumpbin.txt",
+      "sha256": "30e1b93fd58694f58aac5b553c0a3a0c35d82e19df73ab08cc6d5d2a76157055"
+    },
+    "actual_Source_inventory": {
+      "path": "local/font_word_unique_insert185/actual_strict_Source_input_inventory.json",
+      "sha256": "1ca762273fd518d7f4984587822b7b8dc88c05dddb0e65d204a605f0e682c5d6"
+    },
+    "Source_inputs": [
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/include/bsp/native_effect_handle_acquisition.hpp",
+        "sha256": "9148f95d14fbfc14ad6ed0ea25a4b1047975accc606af5995dcfd718e1b127af",
+        "source_identity": "include/bsp/native_effect_handle_acquisition.hpp",
+        "Git_blob175": "2a82cebab71e9f1fa2cb79775c72a89c95a30636",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/src/native_effect_handle_acquisition.cpp",
+        "sha256": "3b7794d963c4885bbb818bd15d5592c487157863183e0f3db692d089893cef4a",
+        "source_identity": "src/native_effect_handle_acquisition.cpp",
+        "Git_blob175": "e94bf83c1972606b981dee0db701ef43333b9506",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/include/bsp/detail/native_tree_insert_storage.hpp",
+        "sha256": "c5eb00461d535b3c737e63a4286814e35c5427c883474d37b3cb6f67a2f8a8b9",
+        "source_identity": "include/bsp/detail/native_tree_insert_storage.hpp",
+        "Git_blob175": "626561295a534877f0b58f70880b7bfc6d7f7f80",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/include/bsp/native_int_pointer_tree18_leaves.hpp",
+        "sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+        "source_identity": "include/bsp/native_int_pointer_tree18_leaves.hpp",
+        "Git_blob175": "4ad334d57f4665e25a5719ec97ad65135b712d74",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/src/native_int_pointer_tree18_leaves.cpp",
+        "sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+        "source_identity": "src/native_int_pointer_tree18_leaves.cpp",
+        "Git_blob175": "f4059b8973da839d78ee36a8ecb208b18f8a5378",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/include/bsp/native_hardware_layout_tree_insert.hpp",
+        "sha256": "ab22f0f87d42c9c6b4cb6823b28bfbff1098a21ec9ff917a9cf4be211163dbd4",
+        "source_identity": "include/bsp/native_hardware_layout_tree_insert.hpp",
+        "Git_blob175": "15ae209553dba6a639d7e7b0a38e23ce82680727",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/src/native_hardware_layout_tree_insert.cpp",
+        "sha256": "82d040c12d2d84affb1a05e3880d273ce4f3471ee4e8cb88922a5213ad2ab802",
+        "source_identity": "src/native_hardware_layout_tree_insert.cpp",
+        "Git_blob175": "67aaab428bdc8ecbae58a0d1135a884ebf0a27a8",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/include/bsp/native_legacy_exception_owner.hpp",
+        "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+        "source_identity": "include/bsp/native_legacy_exception_owner.hpp",
+        "Git_blob175": "574905ddb640b9cd3edf3cfa70feef903c165b42",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/src/native_legacy_exception_owner.cpp",
+        "sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+        "source_identity": "src/native_legacy_exception_owner.cpp",
+        "Git_blob175": "a0c7fc145166c2c668930f64bb79f07c06ccda13",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/include/bsp/native_legacy_sbo_string.hpp",
+        "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+        "source_identity": "include/bsp/native_legacy_sbo_string.hpp",
+        "Git_blob175": "1ede441960632c9f604e8ade53c16c9c461d9830",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/src/native_legacy_sbo_string.cpp",
+        "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+        "source_identity": "src/native_legacy_sbo_string.cpp",
+        "Git_blob175": "f8c0f47406710a7e078d7cf09c0529e3838665c5",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/include/bsp/singleton_lifetime.hpp",
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "source_identity": "include/bsp/singleton_lifetime.hpp",
+        "Git_blob175": "4d10f6c53a3b9be4745776df443f340ea1769936",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/src/singleton_lifetime.cpp",
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "source_identity": "src/singleton_lifetime.cpp",
+        "Git_blob175": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/include/bsp/native_allocator_base_default_constructor.hpp",
+        "sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+        "source_identity": "include/bsp/native_allocator_base_default_constructor.hpp",
+        "Git_blob175": "ce8f0e917b347ea26d7c0f9cff4f74f87a5ce353",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/src/native_allocator_base_default_constructor.cpp",
+        "sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+        "source_identity": "src/native_allocator_base_default_constructor.cpp",
+        "Git_blob175": "641a411089f0234b6d5b52e96e8502ff042f18f5",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/include/bsp/native_allocator_base_cleanup.hpp",
+        "sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+        "source_identity": "include/bsp/native_allocator_base_cleanup.hpp",
+        "Git_blob175": "ec30818364a9edaf588724791d0415a63f2c3af6",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/src/native_allocator_base_cleanup.cpp",
+        "sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+        "source_identity": "src/native_allocator_base_cleanup.cpp",
+        "Git_blob175": "d09fc7699dacf7d3ea86cecc169469320591e65b",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/include/bsp/native_allocator_base_copy_constructor.hpp",
+        "sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+        "source_identity": "include/bsp/native_allocator_base_copy_constructor.hpp",
+        "Git_blob175": "d8e2c482e40e13bbf259654d1cff272ba59ad9cb",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/src/native_allocator_base_copy_constructor.cpp",
+        "sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+        "source_identity": "src/native_allocator_base_copy_constructor.cpp",
+        "Git_blob175": "cbf0c1a1b73387efa96c980223b237784a4fa53c",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/include/bsp/native_font_tree_iterator.hpp",
+        "sha256": "320944a570770e36abe06031cdd7d49a5ce0c30f17508de8431af6aff14e6094",
+        "source_identity": "include/bsp/native_font_tree_iterator.hpp",
+        "Git_blob175": "8374521e9377e90a32354ffa8facb751747d7a95",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/src/native_font_tree_iterator.cpp",
+        "sha256": "3146a01e523fdae67ab488e2d5f188c6983397b20219c18ccc4c6342084251eb",
+        "source_identity": "src/native_font_tree_iterator.cpp",
+        "Git_blob175": "beade65d3e80f635bea7039e4d6e624a664b77f1",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/include/bsp/native_font_storage.hpp",
+        "sha256": "3d62ca18439d3b83b586f9aae1d14e84108280386d88d85532a4f3a8fc92eeb9",
+        "source_identity": "include/bsp/native_font_storage.hpp",
+        "Git_blob175": "6e9244c9cfcebe4f2d59e85235f1302ddf0b0111",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/src/native_font_storage.cpp",
+        "sha256": "760c148ed5d3bbdb6ddb40781893251caf646dbab18755b3bb8af5c46a5279ce",
+        "source_identity": "src/native_font_storage.cpp",
+        "Git_blob175": "8200f5eb7004be352897f2b4baefa74138586fea",
+        "new185_append": false
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/include/bsp/native_font_tree_insert.hpp",
+        "sha256": "fc69a823183f2c8d208ff9597e249b3d0a0208f87396c828331c39b61149e00b",
+        "source_identity": "include/bsp/native_font_tree_insert.hpp",
+        "Git_blob175": "0f2159e4c10bb15ec17a714e9f618a33578cb17e",
+        "new185_append": true
+      },
+      {
+        "path": "local/font_word_unique_insert185/actual_strict_Source_inputs/src/native_font_tree_insert.cpp",
+        "sha256": "a9be07cfd1c44682ca561bb409d4c84b7cb4ef15e7991f2bf3df154c78905ef5",
+        "source_identity": "src/native_font_tree_insert.cpp",
+        "Git_blob175": "5a5adb9d2288343369aada6e86a62d3fbc9e0f25",
+        "new185_append": true
+      }
+    ],
+    "inventory_limit": "Scoped actual Source/Git inputs and command/log, not compiler-emitted complete SDK/include closure; no frozen include override or complete175 checkout claim."
+  },
+  "optimized": {
+    "complete_COFF": {
+      "path": "local/font_word_unique_insert185/coff_complete.json",
+      "sha256": "186a99c0168c15213fe4c1c5e3da0fbedf25967c710ede0f0c990caf510f6eb4"
+    },
+    "compact_index": {
+      "path": "local/font_word_unique_insert185/optimized_compact32/index.json",
+      "sha256": "e43aadffef2c654f2f533e71ed3cb73155ac4646ada4822f5db0e3780b2a9e74"
+    },
+    "converter": {
+      "path": "local/font_word_unique_insert185/inspect_coff185.py",
+      "sha256": "3a21ac9da06731fd575125e606bf7c7020ee98827c03485280577838583eb76e"
+    },
+    "parser": {
+      "path": "local/font_word_unique_insert185/extract_coff185.py",
+      "sha256": "b2f35e192c1fcb7d90856aad042698da6a61da53d81d9ab35f9ba2376f081caf"
+    },
+    "all_sections": 37,
+    "all_code_sections": 17,
+    "all_code_bytes": 861,
+    "all_instructions": 300,
+    "all_code_relocations": 21,
+    "all_relocations": 38,
+    "public185_body": "303B/105instructions; section21",
+    "critical_offsets": "main emptyJNE0023->006F; cacheloop0069->0025; finalcandidatehelper00C9 beforeincoming00D5; genuine86EBE0 calls0095/00F5; owner/node/BYTE stores00A9/AC/AF,0109/10C/10F,0120/122/126",
+    "same176_Source_wrapper_inlined_to_actual86EBE0": true,
+    "whole_Native_byte_identity_or_new_lower_body_credit": false
+  },
+  "canonical_worker_build": {
+    "build_exit": 0,
+    "existing_checks": 2,
+    "passed": 2,
+    "seconds": 7.11,
+    "tests": [
+      {
+        "name": "reconstructed_math",
+        "seconds": 0.2
+      },
+      {
+        "name": "tool_tests",
+        "seconds": 6.88
+      }
+    ],
+    "one_existing_worker_build": true,
+    "registration": {
+      "imported168_registered": false,
+      "imported176_and185_registered": false,
+      "CMake_literal_Source_paths_absent": {
+        "native_font_tree_iterator.cpp": true,
+        "native_font_tree_insert.cpp": true
+      }
+    },
+    "CMake_unchanged": true,
+    "no_new_tests_probes_or_body_execution": true,
+    "limit": "Mixed baseline worker build excludes these imported TUs; strict185 and future Root registered canonical proof are distinct.",
+    "command_receipt": {
+      "path": "local/font_word_unique_insert185/canonical_build_exit.json",
+      "sha256": "7e0f41dc4c4d0db001d4ce76a974452c03e58033eb510468d92fa5011dc9869b"
+    },
+    "log": {
+      "path": "local/font_word_unique_insert185/canonical_build.log",
+      "sha256": "090fbd9daebb581fce1349af124620782022473d0e50ac8bba6d125490387ad4"
+    },
+    "summary": {
+      "path": "local/font_word_unique_insert185/canonical_build_summary.json",
+      "sha256": "41a90ae12fd12dae28c3faf4c2ea224c1524f941a4cd17c2b3eeacefb74f61ba"
+    },
+    "script": {
+      "path": "scripts/build.ps1",
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    "unchanged_CMake": {
+      "path": "cmake/startup.cmake",
+      "sha256": "57f7528287dfd246466687335ae3e0a00e080e10a49f7c7ca39ffa45675c0abc"
+    }
+  },
+  "own_Source": {
+    "HPP": {
+      "path": "include/bsp/native_font_tree_insert.hpp",
+      "sha256": "fc69a823183f2c8d208ff9597e249b3d0a0208f87396c828331c39b61149e00b"
+    },
+    "CPP": {
+      "path": "src/native_font_tree_insert.cpp",
+      "sha256": "a9be07cfd1c44682ca561bb409d4c84b7cb4ef15e7991f2bf3df154c78905ef5"
+    }
+  },
+  "documentation": {
+    "path": "docs/CC12_NATIVE_FONT_WORD_UNIQUE_INSERT_185.md",
+    "sha256": "91e81af6a8e2857e42b981606098fd2ff25593506b500ddaf703de5a5ad6eb2a"
+  },
+  "annotation": {
+    "status": "complete",
+    "receipt": {
+      "path": "local/font_word_unique_insert185/annotation_receipt.json",
+      "sha256": "60a145e3298caedca55a65cd8970347c6e9edb4e0fdc6fbee62e2e9515fe8cfc"
+    },
+    "history": {
+      "path": "local/font_word_unique_insert185/annotation_history.json",
+      "sha256": "da0a430fdc6ae0a1cd666ce25edec836e7d70d013dc138774462f29e267f446a"
+    },
+    "before": {
+      "path": "local/font_word_unique_insert185/Ghidra_comments_before.txt",
+      "sha256": "1b0e28db87d07368be79a849373a3b6037282fb0082bfdaa50adfd2ede78e06d"
+    },
+    "after": {
+      "path": "local/font_word_unique_insert185/Ghidra_comments_after.txt",
+      "sha256": "ac3cb39d09a35b90b426c5ca548f55e3c0b760ea4e479b932e14cc55c7a63436"
+    },
+    "fresh189B": {
+      "path": "local/font_word_unique_insert185/Ghidra_body_bytes_after.txt",
+      "sha256": "2be944b676bbfd05b05fd42fe0fec1119a48004db16295356d46f51ab13eab1c"
+    }
+  },
+  "ledger": {
+    "status": "complete",
+    "receipt": {
+      "path": "local/font_word_unique_insert185/ledger_preservation_proof.json",
+      "sha256": "a2f79fd553acb47d9f7399e06a735045903ce4acc4f7df2371c912c5fb0a6ffd"
+    },
+    "diagnostic_history": {
+      "path": "local/font_word_unique_insert185/history/ledger_postcondition_note.txt",
+      "sha256": "da6af540d17ab8e51195675c542a91f5c9df7fa186198c99b52d4dacdcee2714"
+    },
+    "commands_run_once_no_replay": true
+  },
+  "Root_reviews": {
+    "status": "PASS",
+    "record": {
+      "path": "local/font_word_unique_insert185/Root_Source_optimized_Doc_reviews.json",
+      "sha256": "7708edce831ba48b106b49d0e9cf591877fe7d5a6b28841842390b4322ad7883"
+    },
+    "all_Source_optimized_provider_Doc_accepted": true
+  },
+  "receipt_acceptance": {
+    "status": "PASS",
+    "record": {
+      "path": "local/font_word_unique_insert185/Root_final_receipt_acceptance.json",
+      "sha256": "fde71c92a1470a169cdf90f25b38edbb5ac3702e58c2f7ca0d1068326ea912cd"
+    }
+  },
+  "call_verification": {
+    "status": "2_native_direct_rows_checked_0_failed",
+    "log": {
+      "path": "local/font_word_unique_insert185/report_call_verification.log",
+      "sha256": "b886b46a97a1e0aeceee565f62a15c79f09b122e98b10438532b475aa0ba052a"
+    },
+    "limit": "Static Native address receipt audit; no Source/Native execution or coverage substitute."
+  },
+  "final_manifest": {
+    "path": "local/font_word_unique_insert185/final_artifact_manifest.json",
+    "hash_omitted_to_avoid_cycle": true
+  },
+  "limits": {
+    "only_whole_AD4AA0_credit": true,
+    "no_shared_generic_helper_CMake_or_other_Source_edit_beyond_exact_needed_imports": true,
+    "no_new_tests_probes_Native_execution_ABI_or_production_claim": true
+  }
+}
