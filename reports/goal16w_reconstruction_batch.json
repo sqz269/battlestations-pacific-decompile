@@ -1,0 +1,255 @@
+{
+  "packet": "goal16w_primary_integration",
+  "status": "independently_reviewed_complete_kernel_and_explicit_borrowed_frame_transfer_build_tested_Ghidra_saved",
+  "generated_utc": "2026-10-16T10:29:15.656358+00:00",
+  "validated_Source_commit": "10230d42815cd29ecdf4d0158ddbd1ce97ab5103",
+  "Main_input": "44b1c0a6dbf24a09b2331e5e2945e30ab7545e9c",
+  "counts": {
+    "new_complete_Native_addresses": 1,
+    "new_complete_Native_bytes": 228,
+    "new_Native_instructions": 72,
+    "new_Source_functions": 2,
+    "new_Source_executable_bytes": 245,
+    "private_kernel_bytes": 228,
+    "public_adapter_bytes": 17,
+    "adapter_instructions": 4,
+    "adapter_Native_address_credit": 0,
+    "exact_Native_to_kernel_entries_including_prior": 18,
+    "exact_Native_to_kernel_bytes_including_prior": 1150,
+    "preserved_and_new_Source_modules": 15,
+    "whole_Source_executable_bytes": 5463,
+    "selected_unique_real_public_bindings": 36
+  },
+  "author_pin": "f4c2bae190044358c5911ba24560ee62c4b6bc9c",
+  "author_report_sha256": "44143118cae1cd1562c9115458209817e2f88c6cb38b324bae08a3112870091d",
+  "frozen_author": {
+    "handoff_sha256": "7b2ca8ff4098c9e82101132b4c675bc233fcb5eb77891deabe19abad67859e7f",
+    "manifest_sha256": "9d4609dd0b0bb30cb90424b1f713808cf0f7a44cd50fa60dbad8589272901830",
+    "verified_records": 113,
+    "verified_bytes": 337374340,
+    "selected_copied_records": 43,
+    "selected_copied_bytes": 168489845,
+    "receipt_path": "local\\goal16w_root\\author_receipt.json",
+    "receipt_sha256": "ecb07bc9642b7db2b4b7c297bed3fe406c2d9a3c202e1d7140820976a2dd972f",
+    "prior_transitive_seals": "References retained in place; not recursively copied or rehashed."
+  },
+  "independent_review": {
+    "status": "READY",
+    "path": "local\\goal16w_root\\review\\review.json",
+    "sha256": "5d2d6b8fd8e76c7876041829e9a9077be8da2d900d9dd8b47326393c72c9d568",
+    "primary_receipt_path": "local\\goal16w_root\\review\\receipt.json",
+    "primary_receipt_sha256": "62e2bc8a7df428486cf480f5b0d063330cda3b178b55cb1a11cfc7f1666decba",
+    "verified_artifacts": 183,
+    "verified_bytes": 339033545,
+    "start_utc": "2026-10-16T10:04:02+00:00",
+    "sealed_utc": "2026-10-16T10:23:14.172746+00:00",
+    "inclusive_seconds_to_seal": 1152.172746,
+    "through_release_seconds": 1182
+  },
+  "current_whole_proof": {
+    "path": "local\\goal16w_root\\final_proof\\proof.json",
+    "sha256": "e2eb7d45cb71896429dcd669a30ca7d7cb76f7d6cc13f96b5d9aa728cc8666b3",
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "Core_sha256": "e1e32762b1deed1d1fb39750dc541a181e6cbb41c9e70f1bd5012b078b830696",
+    "parsed_actual_COFF_members": 2471,
+    "all_fourteen_prior_whole_objects_byte_identical": true,
+    "all_fifteen_whole_modules_and_all_sections_symbols_aux_data_strings_relocations_checked": true,
+    "thirty_six_selected_publics_unique_in_actual_members_and_both_dictionaries": true,
+    "adapter_REL32_resolves_real_defined_private_Source_kernel": true
+  },
+  "build": {
+    "source_pin": "10230d42815cd29ecdf4d0158ddbd1ce97ab5103",
+    "Main_input": "44b1c0a6dbf24a09b2331e5e2945e30ab7545e9c",
+    "start_utc": "2026-10-16T10:25:53.101684+00:00",
+    "end_utc": "2026-10-16T10:26:12.292700+00:00",
+    "wall_seconds": 19.21320779999951,
+    "exit_code": 0,
+    "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16w_root\\final_build.log"
+  },
+  "final_checks": "3/3 PASS; exact output and durations retained in final_build.log",
+  "actual_compile_commands": "local\\goal16w_root\\final_compile_commands\\selected.json",
+  "Ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "saved": true,
+    "write_lock": true,
+    "old_values_and_comments": "local\\goal16w_root\\annotations.json",
+    "Original_name": "scan_tree",
+    "Original_no_return": false,
+    "Original_prototype_unchanged": true,
+    "Source_noreturn_not_applied_to_Original": true,
+    "export_snapshot_and_index_refreshed": true
+  },
+  "Original_physical_inputs": [
+    "EAX raw writable tree",
+    "ECX signed maxcode bits",
+    "actual DWORD backing at entry ESP+4"
+  ],
+  "public_interface": "extern C __declspec(noreturn) void __cdecl bsp_native_zlib_scan_tree_frame_00bce180(void* tree, std::int32_t max_code, void* kernel_entry_stack) noexcept",
+  "public_real_inputs": [
+    "tree DWORD address bits",
+    "signed maxcode all32 bits",
+    "actual kernel-entry ESP address"
+  ],
+  "adapter_schedule": [
+    "MOV EAX,DWORD PTR [ESP+4]",
+    "MOV ECX,DWORD PTR [ESP+8]",
+    "MOV ESP,DWORD PTR [ESP+0C]",
+    "JMP genuine private scan_tree_body symbol"
+  ],
+  "critical_semantics": [
+    "SUB8; PUSH EBX/EBP; actual backing read; PUSH ESI/EDI; initial unsigned WORD tree+2 read.",
+    "Previous-length=-1 precedes unconditional wrapped WORD FFFF sentinel, even signed-negative maxcode.",
+    "Nonnegative path writes wrapped maxcode+1 counter and overwrites real backing argument with cursor.",
+    "Next WORD read/cached before frequency RMWs; signed count comparisons and equality branches exact.",
+    "Raw length frequency+4*length+A74 and binsAB4/AB8/ABC use individual ordered un-LOCKed WORD ADD RMWs.",
+    "Aliased writes may alter actual previous-length/cursor/counter/saved/control cells and later reads or termination.",
+    "Advance DWORD cursor ADD4 before DWORD counter SUB1; JNZ uses that actual SUB result.",
+    "Actual saved-cell POP order EDI/ESI/EBP/EBX; final ADD ESP8 sets arithmetic flags; RET4 reads current continuation."
+  ],
+  "limits": [
+    "New public control-transfer interface only; no ordinary returning C++ call or parent adoption.",
+    "Actual caller supplies a genuine Source execution frame and continuation protocol; no fabricated continuation or frame copy.",
+    "Adapter adds three ordered stack reads and one JMP before the kernel, with additional fault prefixes.",
+    "Kernel includes all malformed input bit patterns, wrap, WORD/DWORD widths, signed branches and actual mutable frame aliases.",
+    "No canonical length15 clamp, null/bounds/alignment guard, termination repair, disjoint frame/storage or stack snapshot.",
+    "Incoming non-parameter CPU state is real and preserved by adapter where not explicitly assigned; PUSH values remain observable.",
+    "Absolute code/fault/return EIPs, current stack placement, instruction fetch and code/data/self-modification alias equivalence are unproved.",
+    "Dynamic faults, SEH/unwind, formal Original ABI/types/version/layout/compiler options, caller closure and game execution unproved.",
+    "Public Source noreturn is not Original no-return; Original and private kernel retain actual RET4/no_return=false."
+  ],
+  "primary_helper_corrections": [
+    "The first inherited proof retained the previous 17-entry/922-byte/328-instruction aggregate assertion. The prepared verifier was corrected to 18/1150/400; the same merged-source build then passed the complete proof. No Source change or additional build was needed."
+  ],
+  "timing": {
+    "author_handoff": {
+      "goal": "GOAL16W",
+      "status": "READY_FOR_INDEPENDENT_REVIEW",
+      "commit": "f4c2bae190044358c5911ba24560ee62c4b6bc9c",
+      "clean": true,
+      "only_lease_released": "goal16w_zlib_raw_scan_tree",
+      "lease_release": "released ['agent/goal16b_tagged_b5:goal16w_zlib_raw_scan_tree']",
+      "whole_Native_functions": 1,
+      "whole_Native_bytes": 228,
+      "whole_Native_instructions": 72,
+      "whole_Source_functions": 2,
+      "whole_Source_bytes": 245,
+      "whole_Source_instructions": 76,
+      "Original_name_retained": "scan_tree",
+      "Original_no_return": false,
+      "Source_only_public_noreturn": true,
+      "Source_sha256": "8397f5eba82be76826e134851b486810eddfc7b880219bcec904273bd7a8a722",
+      "header_sha256": "3d8cc6301d0b3990c991475efb1df33ec838c7bb5435b773a2b47db482705ba6",
+      "strict_object_sha256": "d204c28535347544be62a1c6ddf4c3d96d9c10da607f60b3ad7dc0b489cc04e6",
+      "actual_object_sha256": "0f026ec07bc347a2965570bd6f90ba44121646fb0e2d9f5ecf9f220bd3ab4250",
+      "actual_Core_sha256": "ca223a901b3cb970062ce94d4ee9f9692bf46988148f5794c728540128a7b287",
+      "actual_Core_member": "bsp_core.dir\\Release\\native_zlib_raw_scan_tree_bc.obj",
+      "actual_Core_member_header_offset": 20071650,
+      "actual_Core_member_size": 1107,
+      "report_sha256": "44143118cae1cd1562c9115458209817e2f88c6cb38b324bae08a3112870091d",
+      "prior_preservation_manifest_sha256": "8ffac1b32691555f8e7ce5591928e065149aeb7a3f545d0dc3ec011c6c9172fe",
+      "final_actual_manifest_sha256": "cd599afd5dfd115be0510fef96b047917110befc59ecd622d48c940dd78cc7d6",
+      "sealed_manifest_sha256": "9d4609dd0b0bb30cb90424b1f713808cf0f7a44cd50fa60dbad8589272901830",
+      "sealed_files": 113,
+      "sealed_bytes": 337374340,
+      "tracked_files": [
+        {
+          "path": "src/native_zlib_raw_scan_tree_bc.cpp",
+          "bytes": 3313,
+          "sha256": "8397f5eba82be76826e134851b486810eddfc7b880219bcec904273bd7a8a722"
+        },
+        {
+          "path": "include/bsp/native_zlib_raw_scan_tree_bc.hpp",
+          "bytes": 1046,
+          "sha256": "3d8cc6301d0b3990c991475efb1df33ec838c7bb5435b773a2b47db482705ba6"
+        },
+        {
+          "path": "docs/GOAL16U_ZLIB_RAW_SCAN_TREE.md",
+          "bytes": 10052,
+          "sha256": "01d4f245beb3c4a58e857ec1579726f1a8f31542af334006ffcbe77996f790c7"
+        },
+        {
+          "path": "reports/goal16u_zlib_raw_scan_tree.json",
+          "bytes": 111248,
+          "sha256": "44143118cae1cd1562c9115458209817e2f88c6cb38b324bae08a3112870091d"
+        },
+        {
+          "path": "cmake/startup.cmake",
+          "bytes": 261254,
+          "sha256": "164cddc97c2a123dc5a545632b856f04a57f7ead04d172b94e81a1aa7fbd0c36"
+        },
+        {
+          "path": "config/names/00bc0000.jsonl",
+          "bytes": 50489,
+          "sha256": "2c139672bf7ad00f15b8ba44bc70df79a6c4054bb075b9259ba657b055c0bd45"
+        },
+        {
+          "path": "config/reconstruction/00bc0000.jsonl",
+          "bytes": 97257,
+          "sha256": "c468ac9ff2ed10efc0f2ed95149da627c534eec8ed3069d77c557d4c38d72676"
+        }
+      ],
+      "prior_providers_preserved": 7,
+      "normal_warm_build": {
+        "started_utc": "2026-10-16T10:02:38.058598+00:00",
+        "completed_utc": "2026-10-16T10:02:56.835572+00:00",
+        "build_seconds": 18.777422800005297,
+        "exit_code": 0
+      },
+      "existing_checks_passed": 2,
+      "new_tests": 0,
+      "new_probes": 0,
+      "Native_execution": false,
+      "dynamic_faults_measured": false,
+      "Ghidra_writes": false,
+      "Original_full_ABI_caller_or_game_validation": false,
+      "historical_timings_separate": {
+        "P_readiness_seconds": 943.721305,
+        "U_design_to_seal_seconds": 619.275835,
+        "U_design_through_release_seconds": 644,
+        "U_administrative_envelope_seconds": 244.209856,
+        "U_to_W_scheduling_gap_notice": "Root dispatch/other-packet review and scheduling are separate from U and W; previous U release timestamp is rounded, so no spurious exact gap claimed."
+      },
+      "W_implementation_start_utc": "2026-10-16T09:57:43+00:00",
+      "W_final_handoff_checkpoint_utc": "2026-10-16T10:08:50.989074+00:00",
+      "W_author_inclusive_seconds_through_release_and_seal": 667.989079,
+      "includes": "All W setup, brief, lease/path/Source qualification, U seal verification/copy, once-only current preservation, fresh Native evidence, literal implementation/strict compile, command corrections, normal warm build/checks, whole strict/actual/code/data/symbol/aux/reloc/private binding/Core/both dictionaries/prior providers, docs/report/ledger/index, owned diff/commit/release and final seal work. Independent peer review and Root integration afterward separate.",
+      "speedup_claim": false,
+      "review_limits": [
+        "New public control-transfer interface only; no ordinary returning C++ call or parent adoption.",
+        "Actual caller supplies a genuine Source execution frame and continuation protocol; no fabricated continuation or frame copy.",
+        "Adapter adds three ordered stack reads and one JMP before the kernel, with additional fault prefixes.",
+        "Kernel includes all malformed input bit patterns, wrap, WORD/DWORD widths, signed branches and actual mutable frame aliases.",
+        "No canonical length15 clamp, null/bounds/alignment guard, termination repair, disjoint frame/storage or stack snapshot.",
+        "Incoming non-parameter CPU state is real and preserved by adapter where not explicitly assigned; PUSH values remain observable.",
+        "Absolute code/fault/return EIPs, current stack placement, instruction fetch and code/data/self-modification alias equivalence are unproved.",
+        "Dynamic faults, SEH/unwind, formal Original ABI/types/version/layout/compiler options, caller closure and game execution unproved.",
+        "Public Source noreturn is not Original no-return; Original and private kernel retain actual RET4/no_return=false."
+      ],
+      "Root_actions": "Independent review, then preserve previous Ghidra values and annotate scan_tree physical custom inputs/RET4 without changing Original no_return=false; integrate exact seven owned files. No author Main window or push."
+    },
+    "primary_integration_start_utc": "2026-10-16T10:17:20+00:00",
+    "primary_report_seal_utc": "2026-10-16T10:29:15.656358+00:00",
+    "primary_seconds_through_report": 715.656358,
+    "publication_commit_push_and_release": "Closed separately in ignored final publication receipt.",
+    "overlapping_author_review_intervals_not_summed_serially": true,
+    "measured_speedup_claim": false
+  },
+  "runtime": {
+    "new_tests": 0,
+    "new_probes": 0,
+    "selected_body_execution": false,
+    "dynamically_measured_faults": false,
+    "ordinary_Cpp_return_API": false,
+    "caller_or_parent_adoption": false,
+    "installed_binary_changed": false,
+    "game_validated": false
+  },
+  "remaining": [
+    "Actual Source continuation/stack/register protocol requires consumer evidence.",
+    "Original full ABI, code/current-stack placement, fault/return EIPs and SEH/unwind remain unproved.",
+    "Gen_bitlen and longest_match_fast receive no credit in this packet.",
+    "The reconstruction goal remains active."
+  ]
+}

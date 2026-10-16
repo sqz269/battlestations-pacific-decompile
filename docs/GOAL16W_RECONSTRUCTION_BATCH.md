@@ -1,0 +1,9 @@
+# GOAL16W reconstruction batch
+
+Reconstructs the complete `scan_tree` at **00BCE180..00BCE263: 228 bytes / 72 instructions**. Two Source functions contain its private register kernel and a 17-byte/four-instruction borrowed-frame transfer adapter, totaling **245 executable bytes**. The adapter adds no Native reconstruction credit.
+
+Validated Source: `10230d42815cd29ecdf4d0158ddbd1ce97ab5103`. The final normal MSVC Win32 build passes all three existing checks. The current archive proof covers fifteen whole modules (5463 executable bytes), eighteen Native-to-kernel whole identities (1150 bytes), thirty-six selected real public providers and both archive dictionaries. All fourteen prior whole objects remain byte-identical. [The batch report](../reports/goal16w_reconstruction_batch.json) records the evidence pins and hashes.
+
+The kernel consumes EAX tree, ECX signed max_code bits and the actual backing pointer at entry ESP+4. That argument cell later becomes the mutable cursor. The implementation preserves the unconditional sentinel write, wrapped/signed arithmetic, ordered WORD frequency updates, actual cursor/counter/saved/control aliases and final ADD ESP,8 flags. The public Source-only noreturn interface loads EAX/ECX/ESP from three real inputs and transfers to the genuine private Source kernel. A consumer must establish a real continuation and stack/register protocol separately.
+
+Independent review accepted the complete source, object and archive binding. Ghidra evidence comments were saved under the write lock, preserving the correct `scan_tree` name, old prototype/comments and Original no_return=false. The export, snapshot and index were refreshed. No new test, probe or selected body executed. Ordinary returning C++ ABI, Original placement/fault/SEH/full ABI, parent adoption and game validation remain open. The reconstruction goal stays active.
