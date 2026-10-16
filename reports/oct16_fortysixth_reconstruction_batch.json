@@ -51,12 +51,12 @@
     "checksums_bytes": 40
   },
   "verification": {
-    "combined_tested_commit": "7f9f4b224884ceb8549cceab3c1298ac47a41292",
+    "combined_tested_commit": "a360d695a0ad6cd57ba249d5db9eea8bb1f07fe0",
     "default_build_exit": 0,
     "existing_suites_passed": 3,
-    "seconds": 7.66,
-    "build_log": "local/oct16_batch46_build.txt",
-    "build_log_sha256": "b78da6bcaf2320afb93524d3edc88900550b2add7b6f6bfa56eb17b61e8de1ad",
+    "seconds": 7.69,
+    "build_log": "local/oct16_batch46_final_build.txt",
+    "build_log_sha256": "2c370fa0472ef7fe9e1c9d0dc03db9aa63e8d8029973c1d47a6401be2ec7118d",
     "JSON_transfer_rows": 1,
     "Markdown_transfer_claims": 1,
     "saved_annotations": 1,
@@ -74,11 +74,11 @@
     "Original_full_prototype_output_unchanged": true,
     "owned_registry_diffs_exact": true,
     "one_Core_registration": true,
-    "no_merge_conflict_resolution_required": true
+    "append_registry_conflict_resolved_with_required_union_tool": true
   },
   "current_gate_update": "Preset fixup FBC0 is now published at108a4a24e. Frozen comparator docs captured its earlier pending state; unique/hint/map remain incomplete.",
-  "integration": "Clean bounded Source merge; all old function records and name evidence prefixes retained. Compiler EBP/private argument load order and RET10h are new Source ABI, versus Native two words/RET8/AL-only.",
-  "limits": "Additional whole comparator in existing supplied-callee domain. No concrete CRT/TLS/handler implementation or Original binary/privateframe/register/flags/fault/FH3/SEH/runtime/game closure. OldCurrentCRT API and incompletehint/unique/FBC0 statuses preserved.",
+  "integration": "Initial bounded Source merge was clean; later Main sync conflicted only in cmake/startup.cmake and the required merge_resolve.py registry union resolved it. All old function records and name evidence prefixes retained. Source four-word RET10h versus Native two-word RET8/AL-only remains qualified.",
+  "limits": "Additional whole comparator in the existing supplied-callee domain. No concrete CRT/TLS/handler implementation or Original binary/privateframe/register/flags/fault/FH3/SEH/runtime/game closure. Old CurrentCRT API preserved; hint/unique remain incomplete. FBC0 was published at 108a4a24e after the frozen Source evidence was captured.",
   "publication": {
     "branch": "main",
     "remote": "origin",

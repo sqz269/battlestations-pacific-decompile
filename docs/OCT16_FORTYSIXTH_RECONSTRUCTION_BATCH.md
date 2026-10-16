@@ -21,13 +21,15 @@ BF7FBF relocation match worker bytes/symbols:84B37, split into public70B30
 and an uncalled14B7 read helper. There is no EH, BSS, weak datum, padding or
 table data. Compiler metadata is47B directives,212B debug and40B checksums.
 
-The clean merge needs no conflict resolution. Core registers the unit once;
+The initial Source merge was clean. Later Main synchronization required the
+repository merge_resolve.py registry union for cmake/startup.cmake. Core
+registers the unit once;
 one additional whole record preserves both older records and name evidence.
 One JSON and one Markdown transfer pass. One locked annotation saves full
 preimages/project and one forced export retains81B/31 instruction starts.
 
 The combined default MSVC Win32 build passes all three existing suites in
-7.66s. No new tests/probes or owned-body execution. Existing supplied
+7.69s. No new tests/probes or owned-body execution. Existing supplied
 callees are still an actual caller obligation, without a concrete CRT/TLS/
 handler implementation here. Original runtime/heap/FH3/SEH and gameplay remain
 unproved. FBC0 is now published at108a4a24e; the frozen comparator docs captured
