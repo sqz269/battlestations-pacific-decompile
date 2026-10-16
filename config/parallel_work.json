@@ -42153,6 +42153,40 @@
       "reused_cached_worktree": "agent/cc12_string_key_comparator_oct15",
       "context_replacement": "Original author reported5kremaining; replacementAstra/xhigh/forknone received sealed9-file plan and samebuiltworktree.",
       "Main_validation": "reports/cc12_scene_string_list_indexed_insert_Main_validation.json"
+    },
+    {
+      "id": "cc12_native_qsort_valid_input_kernel_00bfc350",
+      "done": false,
+      "state": "primary_reviewed_partial_valid_input_kernel_Source_ready",
+      "source_ready": true,
+      "function_addresses": [
+        "00bfc350",
+        "00bfc290",
+        "00bfc2c0"
+      ],
+      "output_files": [
+        "include/bsp/native_qsort_kernel.hpp",
+        "src/native_qsort_kernel.cpp",
+        "docs/NATIVE_QSORT_KERNEL.md",
+        "reports/native_qsort_kernel.json"
+      ],
+      "depends_on": [],
+      "readiness_report": "reports/cc12_scene_string_list_private_sort_readiness.json",
+      "worker": "string_list_indexed_insert_source_oct16",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "model_exception": "Existing Astra author reuses the exact private-qsort register/control-flow scope and cached worktree; Source changes only after primary scope approval.",
+      "coverage": "partial_valid_input_entry_projection",
+      "contract": "Implement only the exact ordinary valid-input kernel authorized by the readiness report: real compatible cdecl callback and actual writable byte elements; conservative count*width<=INT32_MAX with nonwrapping actual allocation; positive width, coherent strict weak ordering, no callback mutation/reentry/throw/fault/concurrency. Count0/1 have no element/callback work. Preserve all median/scan/live pivot/equality/shortsort/three byte-exchange schedules, signed distance comparison, equal-size branch, 30-entry LIFO arrays and smaller-child-first processing. Preserve correct library names. Use bounded offsets/wider signed differences to avoid C++ pointer UB without new runtime policies. No Source validation-failure plumbing or caller-composition promotion.",
+      "named_incomplete_dependencies": [
+        "No validation-failure/errno/invalid-parameter/TLS/Watson implementation or invented provider. Width/base/callback guards are preconditions of this Source API.",
+        "No promotion of scene0094F1B0, either scene comparator, F89B75 empty-data role, narrow provider binding,008F3270 producer/retirement, or other qsort callers.",
+        "No std::qsort/std::sort substitution, fake callback, copied pivot, recursion, dynamic worklist, extra runtime guards, depth fallback, callback mutation/reentry/throws, fault/volatile/MMIO/overlap support.",
+        "No Original private CRT/EH/full ABI, optimized instruction/fault ordering, startup, runtime or game validation credit."
+      ],
+      "Source_credit": 0,
+      "Source_implemented": false,
+      "Main_gate": "pending_author_independent_review_registration_build_actual_artifacts"
     }
   ],
   "snapshot_after_analysis": {

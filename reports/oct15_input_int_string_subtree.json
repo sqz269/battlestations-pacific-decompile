@@ -1,0 +1,992 @@
+{
+  "packet": "oct15_input_int_string_subtree",
+  "status": "complete_ordinary_raw_source_default_Win32_existing_suites_and_static_checked",
+  "utc": "2026-10-16T02:57:16.764640+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "accepted_published_Main": "d607aaa2510cbb6943d425bf278e291c46d5c9b1",
+  "source": "src/native_input_int_string_subtree.cpp",
+  "header": "include/bsp/native_input_int_string_subtree.hpp",
+  "documentation": "docs/OCT15_INPUT_INT_STRING_SUBTREE.md",
+  "source_sha256": "3ca0f41126b1890e0519a7c99961f3feab3a0e6bcf1bcb708837ab9ef835aa64",
+  "header_sha256": "fe1845af88810721748455447d9b4de861d8a5cce74568f0ce52a323ffba9009",
+  "documentation_sha256": "1baaac568fd91179954add5ccc935375e5bc80d4d761749748c683a286da4db8",
+  "original_library_identity": "STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0 retained; _Tree::_Erase(_Nodeptr) int-key instantiation name is a hypothesis, not a recovered symbol",
+  "native_blocks": [
+    {
+      "address": "006a0aa0",
+      "end_inclusive": "006a0af1",
+      "bytes": 82,
+      "instruction_count": 34,
+      "sha256": "1403136e9e1e615e56e2f5e7ecd7e5cf5e9f5c4e445cb974427d4fd769fb30dd",
+      "bytes_hex": "5356578b7c2410807f19008bd98bf7753b8b4608508bcbe8e4ffffff8b4f1485c98b3674168b47106a0183c0015051e8ec91d7ff8bc8e8350a530057e8cb5a550083c404807e19008bfe74c55f5e5bc20400",
+      "coverage": "whole current function body",
+      "live_equals_PE": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "006a0ab7",
+      "native": "006a0aa0",
+      "function": "006a0aa0"
+    },
+    {
+      "address": "006a0acf",
+      "native": "00419cc0",
+      "function": "006a0aa0"
+    },
+    {
+      "address": "006a0ad6",
+      "native": "00bd1510",
+      "function": "006a0aa0"
+    },
+    {
+      "address": "006a0adc",
+      "native": "00bf65ac",
+      "function": "006a0aa0"
+    }
+  ],
+  "native_typed_scope": {
+    "function": {
+      "entry": {
+        "space": "ram",
+        "offset": "006a0aa0"
+      },
+      "name": "STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "82",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "006a0aa0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "006a0af1"
+            },
+            "length": "82"
+          }
+        ]
+      }
+    },
+    "typed_modification": "3948",
+    "complete": true,
+    "verified_before": [
+      {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 5756,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 76774,
+        "symbol_count": 160558,
+        "data_type_count": 795,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    ],
+    "verified_after": [
+      {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 5756,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 76774,
+        "symbol_count": 160558,
+        "data_type_count": 795,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    ],
+    "capture": "local/oct15_input_int_string_subtree_typed.json",
+    "capture_sha256": "cc3c5df78cd0fd67a28564cf1e1baf4779c3cda7306493dd2bd9870c05696ebe"
+  },
+  "current_instruction_starts": [
+    "006a0aa0",
+    "006a0aa1",
+    "006a0aa2",
+    "006a0aa3",
+    "006a0aa7",
+    "006a0aab",
+    "006a0aad",
+    "006a0aaf",
+    "006a0ab1",
+    "006a0ab4",
+    "006a0ab5",
+    "006a0ab7",
+    "006a0abc",
+    "006a0abf",
+    "006a0ac1",
+    "006a0ac3",
+    "006a0ac5",
+    "006a0ac8",
+    "006a0aca",
+    "006a0acd",
+    "006a0ace",
+    "006a0acf",
+    "006a0ad4",
+    "006a0ad6",
+    "006a0adb",
+    "006a0adc",
+    "006a0ae1",
+    "006a0ae4",
+    "006a0ae8",
+    "006a0aea",
+    "006a0aec",
+    "006a0aed",
+    "006a0aee",
+    "006a0aef"
+  ],
+  "fresh_native_proof": {
+    "owned_PE_live_bytes": 82,
+    "owned_current_starts": 34,
+    "failed_starts": 0,
+    "readonly_producer_PE_live_bytes": 14,
+    "readonly_producer_current_starts": 5,
+    "all_inspected_PE_live_bytes": 96,
+    "all_inspected_current_starts": 39,
+    "local_EH": false,
+    "tail_jumps": false,
+    "all_owned_CALL_count": 4,
+    "readonly_producer_CALL_count": 1,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "original_abi": "Native ECX opaque tree only forwarded recursively, EDX unused, stacked node, RET4; no semantic result (EAX residue). New Source fastcall retains ECX/EDX slots and adds borrowed RawCtx after node: RET8. Recursive unusedEDX canonical0 is qualified; Native ambient register/private frame identity is not reproduced.",
+  "raw_layout": "Actual1Ch nodes: links0/4/8; int-key word+C semantic hypothesis; mapped pooled string length10h,data14h;color18h,nil19h. Direct volatile DWORD/byte access, no host node/pair overlay.",
+  "ordered_contract": [
+    "Initial current nil19 test; if real node read CURRENT right8 and recursively destroy it, forwarding opaque tree and borrowedRawCtx.",
+    "After recursion capture CURRENT string data14 BEFORE CURRENT left0. Capturedleft survives getter/return/current-node free.",
+    "Only nonnull captured data reads CURRENT length10+1 with DWORD wrap; invoke actual419CC0 raw-manager getter THEN actualBD1510 captured-pointer return even for large/free or disabled small returns.",
+    "Null data skips length/getter/return, still frees currentnode. Free original node, then inspect capturedleft nil19 and continue there. No header clears, count/reset, newguard, rollback, callback, storage bridge or localEH/noexcept.",
+    "Getter failure propagates after completed right subtree effects, before current-node free/left walk. Existing actual pool-return/free Source retain their current noexcept/CRT/Windows boundaries."
+  ],
+  "provider_fingerprints": {
+    "include/bsp/native_string.hpp": {
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "accepted_Main_blob_matches_LF": true,
+      "accepted_pin": "d607aaa2510cbb6943d425bf278e291c46d5c9b1"
+    },
+    "include/bsp/native_string_pool_owner.hpp": {
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "accepted_Main_blob_matches_LF": true,
+      "accepted_pin": "d607aaa2510cbb6943d425bf278e291c46d5c9b1"
+    },
+    "src/native_string_pool_owner.cpp": {
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "accepted_Main_blob_matches_LF": true,
+      "accepted_pin": "d607aaa2510cbb6943d425bf278e291c46d5c9b1"
+    },
+    "include/bsp/native_string_pool_storage.hpp": {
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "accepted_Main_blob_matches_LF": true,
+      "accepted_pin": "d607aaa2510cbb6943d425bf278e291c46d5c9b1"
+    },
+    "src/native_string_pool_storage.cpp": {
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "accepted_Main_blob_matches_LF": true,
+      "accepted_pin": "d607aaa2510cbb6943d425bf278e291c46d5c9b1"
+    },
+    "include/bsp/singleton_lifetime.hpp": {
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "accepted_Main_blob_matches_LF": true,
+      "accepted_pin": "d607aaa2510cbb6943d425bf278e291c46d5c9b1"
+    },
+    "src/singleton_lifetime.cpp": {
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "accepted_Main_blob_matches_LF": true,
+      "accepted_pin": "d607aaa2510cbb6943d425bf278e291c46d5c9b1"
+    }
+  },
+  "actual_provider_bindings": {
+    "00419cc0": "native_string_pool_get_or_create_00419cc0(context.actual_published_01090aa8,context.actual_manager_publication_01090aa0), accepted concrete raw manager overload; Source cdecl adds explicit borrowed publication references to Native no-argument getter.",
+    "00bd1510": "return_native_string_pool_00bd1510(pool,captured_data,wrapped_length_plus1,context.actual_small_returns_disabled_01090aa4); Native stacked unused tag1 is semantically dead, Source explicitly supplies actual live gate reference.",
+    "00bf65ac": "singleton_lifetime_free(original_node), accepted currentCRT std::free.",
+    "RawCtx": "NativeStringRawPoolContext owns no storage; references are actual01090AA8 pool publication,01090AA4 gate,01090AA0 manager publication. No new singleton/global/provider/model.",
+    "0041dd20": "NOT called: would reread data and move the required data-before-left capture."
+  },
+  "bounded_actual_producer": {
+    "role": "readonly bounded physical-argument producer support, not ownedSource",
+    "start": "006a1bb1",
+    "end_inclusive": "006a1bbe",
+    "bytes": 14,
+    "instruction_starts": 5,
+    "hex": "8b4e048b5104528bcee8e1eeffff",
+    "sha256": "810878eecc2e395cee4153836fcf99046b15dd362e1054ea44894acff964b0e9",
+    "PE_equals_live": true,
+    "current_start_queries": {
+      "006a1bb1": {
+        "address": "006a1bb1",
+        "instruction": "MOV ECX,dword ptr [ESI + 0x4]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1bb4": {
+        "address": "006a1bb4",
+        "instruction": "MOV EDX,dword ptr [ECX + 0x4]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1bb7": {
+        "address": "006a1bb7",
+        "instruction": "PUSH EDX",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "PUSH",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      },
+      "006a1bb8": {
+        "address": "006a1bb8",
+        "instruction": "MOV ECX,ESI",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "006a1bba": {
+        "address": "006a1bba",
+        "instruction": "CALL 0x006a0aa0",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "CALL",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      }
+    },
+    "host_steps": [
+      {
+        "address": "006a1bba",
+        "native": "006a0aa0",
+        "function": "006a1b70"
+      }
+    ]
+  },
+  "bounded_current_xrefs": "From 006a1329 in Catch_All@006a1322 [UNCONDITIONAL_CALL]\nFrom 006a0ab7 in STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0 [UNCONDITIONAL_CALL]\nFrom 006a1bba in STL_IntStringTree_EraseRange_N1C_006A1B70 [UNCONDITIONAL_CALL]\nFrom 006a126c in STL_Tree_Clear_006a1260 [UNCONDITIONAL_CALL]\n",
+  "preservation": {
+    "frozen_readiness": {
+      "path": "local\\oct15_input_controller_payload_cleanup_readiness.json",
+      "sha256": "72fb2163345c0e27c93bf616f2fb982dff7694671844451588f420bd5a2766f8",
+      "unchanged": true
+    },
+    "old_actual_AV_and_typed_Source": "native_input_settings_tree_cleanup.cpp/.hpp and their NativeStringStorage/fullpartial domains unchanged; no noexcept RawCtx adapter.",
+    "other_actual_scene_subtree": "0046AD10 RawCtx Source unchanged; its data10/lengthC offsets differ, so it is not delegated or biased.",
+    "excluded": "No6A1B70/6A2BB0/C7F200/6A62D0/6AA460 Source, metadata or ownership promotion; bounded producer/readiness support only.",
+    "Ghidra_mutation": false,
+    "push": false
+  },
+  "registration": {
+    "path": "cmake/startup.cmake",
+    "isolated_append": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_input_int_string_subtree.cpp)",
+    "shared_append_registry_lease": false,
+    "policy": "docs/COORDINATION.md93-95: never lease shared append-only CMake/ledger registries; appended one own line in isolated worktree.",
+    "accepted_Main_synced_before_append": true
+  },
+  "verification": {
+    "required_command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release",
+    "exit_code": 0,
+    "existing_suites": [
+      {
+        "name": "reconstructed_math",
+        "passed": true,
+        "seconds": 0.3
+      },
+      {
+        "name": "native_math_differential",
+        "passed": true,
+        "seconds": 0.06
+      },
+      {
+        "name": "tool_tests",
+        "passed": true,
+        "seconds": 13.46
+      }
+    ],
+    "existing_suite_count": 3,
+    "new_tests": 0,
+    "total_test_seconds": 13.91,
+    "build_elapsed_seconds": 91.2466197,
+    "build_log": "local/oct15_input_int_string_subtree_build.txt",
+    "build_log_sha256": "a17d718c751c14514732622066bfcaf5b1e51129b3f45d4088b3787986adfb63",
+    "test_scope": "Existing native differential seeds cover math, not this subtree; no runtime/game/binaryABI validation claimed.",
+    "coff_actual": {
+      "scope": "actual CMake Release object, not a substitute probe",
+      "utc": "2026-10-16T02:54:30.005126+00:00",
+      "object": "build\\win32\\bsp_core.dir\\Release\\native_input_int_string_subtree.obj",
+      "object_sha256": "60462965bc881367c05bf89deb7294d8eeab28f813ac93b0639f065d872a6710",
+      "capture": "local/oct15_input_int_string_subtree_cmake_coff.txt",
+      "capture_sha256": "a97fbc1406deade95a02645f5fe1093d334d962c404d4655f634e6f43289828c",
+      "machine": "014c",
+      "public_bytes": 116,
+      "public_instruction_starts": 48,
+      "all_object_code_bytes": 153,
+      "all_object_instruction_starts": 67,
+      "functions": [
+        {
+          "name": "?destroy_native_input_int_string_subtree_006a0aa0@bsp@@YIXPAXI0AAUNativeStringRawPoolContext@1@@Z",
+          "bytes": 116,
+          "instruction_starts": 48,
+          "hex": "558bec51568b7508894dfc807e1900755c53578b7d0c8b460833d25750e8000000008b46148b1e89450885c074298b450c8b7e10ff7008ff30e8000000008b4d0cff71048d4f0151ff750850e8000000008b7d0c83c41856e8000000008b4dfc83c404807b19008bf374ab5f5b5e8be55dc20800",
+          "sha256": "ba0cdf0508554878717ac42e2d1eb141d63a50f1dc01f4418d12216d626437e0",
+          "instructions": [
+            {
+              "offset": 0,
+              "size": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "size": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "size": 1,
+              "hex": "51",
+              "mnemonic": "push",
+              "operands": "ecx"
+            },
+            {
+              "offset": 4,
+              "size": 1,
+              "hex": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "offset": 5,
+              "size": 3,
+              "hex": "8b7508",
+              "mnemonic": "mov",
+              "operands": "esi, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 8,
+              "size": 3,
+              "hex": "894dfc",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 4], ecx"
+            },
+            {
+              "offset": 11,
+              "size": 4,
+              "hex": "807e1900",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [esi + 0x19], 0"
+            },
+            {
+              "offset": 15,
+              "size": 2,
+              "hex": "755c",
+              "mnemonic": "jne",
+              "operands": "0x6d"
+            },
+            {
+              "offset": 17,
+              "size": 1,
+              "hex": "53",
+              "mnemonic": "push",
+              "operands": "ebx"
+            },
+            {
+              "offset": 18,
+              "size": 1,
+              "hex": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "offset": 19,
+              "size": 3,
+              "hex": "8b7d0c",
+              "mnemonic": "mov",
+              "operands": "edi, dword ptr [ebp + 0xc]"
+            },
+            {
+              "offset": 22,
+              "size": 3,
+              "hex": "8b4608",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esi + 8]"
+            },
+            {
+              "offset": 25,
+              "size": 2,
+              "hex": "33d2",
+              "mnemonic": "xor",
+              "operands": "edx, edx"
+            },
+            {
+              "offset": 27,
+              "size": 1,
+              "hex": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "offset": 28,
+              "size": 1,
+              "hex": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "offset": 29,
+              "size": 5,
+              "hex": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x22"
+            },
+            {
+              "offset": 34,
+              "size": 3,
+              "hex": "8b4614",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esi + 0x14]"
+            },
+            {
+              "offset": 37,
+              "size": 2,
+              "hex": "8b1e",
+              "mnemonic": "mov",
+              "operands": "ebx, dword ptr [esi]"
+            },
+            {
+              "offset": 39,
+              "size": 3,
+              "hex": "894508",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp + 8], eax"
+            },
+            {
+              "offset": 42,
+              "size": 2,
+              "hex": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "offset": 44,
+              "size": 2,
+              "hex": "7429",
+              "mnemonic": "je",
+              "operands": "0x57"
+            },
+            {
+              "offset": 46,
+              "size": 3,
+              "hex": "8b450c",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 0xc]"
+            },
+            {
+              "offset": 49,
+              "size": 3,
+              "hex": "8b7e10",
+              "mnemonic": "mov",
+              "operands": "edi, dword ptr [esi + 0x10]"
+            },
+            {
+              "offset": 52,
+              "size": 3,
+              "hex": "ff7008",
+              "mnemonic": "push",
+              "operands": "dword ptr [eax + 8]"
+            },
+            {
+              "offset": 55,
+              "size": 2,
+              "hex": "ff30",
+              "mnemonic": "push",
+              "operands": "dword ptr [eax]"
+            },
+            {
+              "offset": 57,
+              "size": 5,
+              "hex": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x3e"
+            },
+            {
+              "offset": 62,
+              "size": 3,
+              "hex": "8b4d0c",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp + 0xc]"
+            },
+            {
+              "offset": 65,
+              "size": 3,
+              "hex": "ff7104",
+              "mnemonic": "push",
+              "operands": "dword ptr [ecx + 4]"
+            },
+            {
+              "offset": 68,
+              "size": 3,
+              "hex": "8d4f01",
+              "mnemonic": "lea",
+              "operands": "ecx, [edi + 1]"
+            },
+            {
+              "offset": 71,
+              "size": 1,
+              "hex": "51",
+              "mnemonic": "push",
+              "operands": "ecx"
+            },
+            {
+              "offset": 72,
+              "size": 3,
+              "hex": "ff7508",
+              "mnemonic": "push",
+              "operands": "dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 75,
+              "size": 1,
+              "hex": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "offset": 76,
+              "size": 5,
+              "hex": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x51"
+            },
+            {
+              "offset": 81,
+              "size": 3,
+              "hex": "8b7d0c",
+              "mnemonic": "mov",
+              "operands": "edi, dword ptr [ebp + 0xc]"
+            },
+            {
+              "offset": 84,
+              "size": 3,
+              "hex": "83c418",
+              "mnemonic": "add",
+              "operands": "esp, 0x18"
+            },
+            {
+              "offset": 87,
+              "size": 1,
+              "hex": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "offset": 88,
+              "size": 5,
+              "hex": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x5d"
+            },
+            {
+              "offset": 93,
+              "size": 3,
+              "hex": "8b4dfc",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp - 4]"
+            },
+            {
+              "offset": 96,
+              "size": 3,
+              "hex": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 99,
+              "size": 4,
+              "hex": "807b1900",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [ebx + 0x19], 0"
+            },
+            {
+              "offset": 103,
+              "size": 2,
+              "hex": "8bf3",
+              "mnemonic": "mov",
+              "operands": "esi, ebx"
+            },
+            {
+              "offset": 105,
+              "size": 2,
+              "hex": "74ab",
+              "mnemonic": "je",
+              "operands": "0x16"
+            },
+            {
+              "offset": 107,
+              "size": 1,
+              "hex": "5f",
+              "mnemonic": "pop",
+              "operands": "edi"
+            },
+            {
+              "offset": 108,
+              "size": 1,
+              "hex": "5b",
+              "mnemonic": "pop",
+              "operands": "ebx"
+            },
+            {
+              "offset": 109,
+              "size": 1,
+              "hex": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 110,
+              "size": 2,
+              "hex": "8be5",
+              "mnemonic": "mov",
+              "operands": "esp, ebp"
+            },
+            {
+              "offset": 112,
+              "size": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 113,
+              "size": 3,
+              "hex": "c20800",
+              "mnemonic": "ret",
+              "operands": "8"
+            }
+          ],
+          "relocations": [
+            {
+              "offset": 30,
+              "symbol": "?destroy_native_input_int_string_subtree_006a0aa0@bsp@@YIXPAXI0AAUNativeStringRawPoolContext@1@@Z",
+              "type": 20
+            },
+            {
+              "offset": 58,
+              "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+              "type": 20
+            },
+            {
+              "offset": 77,
+              "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+              "type": 20
+            },
+            {
+              "offset": 89,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "type": 20
+            }
+          ]
+        },
+        {
+          "name": "?is_nil@?A0x371d74d6@bsp@@YA_NPBX@Z",
+          "bytes": 15,
+          "instruction_starts": 7,
+          "hex": "558bec8b4508807819000f95c05dc3",
+          "sha256": "470a0b11f14773dd1b89187b396cf55a9eab41b948a4b535faf463add40a7435",
+          "instructions": [
+            {
+              "offset": 0,
+              "size": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "size": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "size": 3,
+              "hex": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "size": 4,
+              "hex": "80781900",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [eax + 0x19], 0"
+            },
+            {
+              "offset": 10,
+              "size": 3,
+              "hex": "0f95c0",
+              "mnemonic": "setne",
+              "operands": "al"
+            },
+            {
+              "offset": 13,
+              "size": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 14,
+              "size": 1,
+              "hex": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "relocations": []
+        },
+        {
+          "name": "?pointer@?A0x371d74d6@bsp@@YAPAXI@Z",
+          "bytes": 8,
+          "instruction_starts": 5,
+          "hex": "558bec8b45085dc3",
+          "sha256": "d5a2b635b0bbb254914f2641e4508361a0c95686c0422dcebeb3abbcca7f1d2b",
+          "instructions": [
+            {
+              "offset": 0,
+              "size": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "size": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "size": 3,
+              "hex": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "size": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 7,
+              "size": 1,
+              "hex": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "relocations": []
+        },
+        {
+          "name": "?word@?A0x371d74d6@bsp@@YAIPBXI@Z",
+          "bytes": 14,
+          "instruction_starts": 7,
+          "hex": "558bec8b4d0c8b45088b04085dc3",
+          "sha256": "968c17a0375a47c786e584c230018ee9ddbb72bfbd8b42d8ffe49fefcecff650",
+          "instructions": [
+            {
+              "offset": 0,
+              "size": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "size": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "size": 3,
+              "hex": "8b4d0c",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp + 0xc]"
+            },
+            {
+              "offset": 6,
+              "size": 3,
+              "hex": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 9,
+              "size": 3,
+              "hex": "8b0408",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [eax + ecx]"
+            },
+            {
+              "offset": 12,
+              "size": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 13,
+              "size": 1,
+              "hex": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "relocations": []
+        }
+      ],
+      "checks": [
+        "Actual CMake MSVCx86 object has116B/48start public fastcall body; two stack words node,RawCtx and RET8. Native original has only stacked node/RET4; EAX residue remains unmodeled by Sourcevoid.",
+        "Incoming opaqueECX is cached at EBP-4, forwarded unchanged to recursive self, and reloaded after free for next iteration. No dereference of opaque tree. Recursive EDX is explicitly zero and never read by child.",
+        "Initial current+19 byte test precedes right load/recursion; captured right+8 and borrowed context are pushed to self with proper RET8 cleanup.",
+        "After recursive call, raw data+14 load0x22 precedes raw left0 load0x25; data is privately spilled and currentnodeESI/capturedleftEBX survive all subsequent external calls.",
+        "The zero-data branch skips length load/getter/return, then still frees original node. Nonzero arm captures CURRENT length+10 at0x31 BEFORE getter0x39.",
+        "Optimizer emits wrapping captured-length+1 LEA at0x44 AFTER getter; length itself is already captured/nonvolatileEDI. This changes no reached-storage read or call order; flags/register/private-frame residue is not claimed.",
+        "Getter is the accepted raw-manager overload: pushes manager-reference[ctx8] then publication-reference[ctx0]. Its EAX feeds pool return; no fake singleton/provider or41DD20 relocation.",
+        "Pool return pushes live gate-reference[ctx4], wrapped captured length+1, captured data, returned pool. Four cdecl words plus prior two getter words are cleaned together by ADDESP18h.",
+        "Only four REL32 relocations occur, matching self,actual419CC0RawCtx overload,actualBD1510,currentCRTfree; every emitted CALL has a matching relocation and no tail/provider thunk is introduced.",
+        "OriginalnodeESI is passed to free and cdecl argument cleaned by ADDESP4; capturedleftEBX nil19 is read after free, then current=left and loop. No header clearing/count/guard/rollback/newlocalEH.",
+        "Compiler keeps EBP as its own frame. Actual Source data spill overwrites its private incoming-node slot, while originalnode remainsESI; no Native private-frame alias identity is claimed.",
+        "All three emitted private helpers are also reviewed: word14B/7starts is one volatileDWORDload; pointer8B/5starts is identitybits;is_nil15B/7starts reads byte19. They have no relocations/calls, and public body contains their inlined accesses.",
+        "Full actual object code153B/67starts and all4 relocations reviewed. No independent ad-hoc probe compiled or byte-equivalence comparison claimed.",
+        "Required default build passed existing3suites; differential suite is existing seededmath, not a differential test of this subtree or game execution."
+      ],
+      "findings": [],
+      "independent_probe": "none; only actual CMake object inspected"
+    },
+    "ad_hoc_probe": "none; no probe-vs-CMake byte-equivalence claim",
+    "transfer_checker": {
+      "command": "python tools/verify_report_calls.py reports/oct15_input_int_string_subtree.json docs/OCT15_INPUT_INT_STRING_SUBTREE.md",
+      "JSON_rows": 5,
+      "JSON_failed": 0,
+      "Markdown_claims": 4,
+      "Markdown_failed": 0,
+      "Markdown_unchecked": 0,
+      "Markdown_warnings": 0
+    },
+    "current_source_frozen_before_build_and_COFF_review": true
+  },
+  "uncertainty_and_limits": [
+    "Original register/EAX/flags residue, Native private argument slots/frames and compiler EH/SEH/RTTI/fault delivery are not recreated. New RawCtx changes calling convention/stack shape, so this is not a drop-in binary entry.",
+    "Actual CMake public body captures length BEFORE getter but emits wrapped+1 on the saved value AFTER getter; no reached-storage read or call moves. Original arithmetic flags/timing identity is unclaimed.",
+    "Provider-compatible allocations, actual publication cells and valid reached raw node/sentinel storage are required; no null/cycle/bounds guard, hostowner/count/header model, terminate adapter or rollback is invented.",
+    "Current C++ propagation/current CRT/current Windows/SDK behavior is qualified separately from the proven Native byte schedule. Source/build/COFF/static proof does not establish application adoption, game behavior or live ABI equivalence."
+  ],
+  "ledger": {
+    "names": "config/names/006a0000.jsonl",
+    "reconstruction": "config/reconstruction/006a0000.jsonl",
+    "only_address": "006a0aa0",
+    "name": "STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0",
+    "prior_name_and_evidence_preserved": true,
+    "kind": "whole function",
+    "source_record": "destroy_native_input_int_string_subtree_006a0aa0",
+    "index_refreshed": true
+  }
+}
