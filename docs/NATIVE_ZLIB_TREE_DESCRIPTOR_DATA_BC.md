@@ -1,107 +1,115 @@
-# GOAL16AT: zlib tree descriptor DATA producer
+# GOAL16AZ: repair of the unpublished AT DATA candidate
 
-Status: `StrictProducerReady_ActualRegisteredProviderPending`. This packet supplies
-eight complete Source DATA definitions corresponding to 1,644 Native bytes and
-zero functions or instructions. Accepted DATA credit is zero. Root must register
-the translation unit, run the normal warm build and existing checks, and review
-the actual registered object/Core providers before acceptance or publication.
+Status: `StrictProducerReady_ActualRegisteredProviderPending`. This review-derived
+revision supersedes the unaccepted AT candidate39b5afe38f25488c9a9b19ea2bca7ee75e4ceeeb.
+It defines one authentic2616B const RO region and retains three mutable20B
+descriptors:2676 candidate Native DATA bytes, zero functions/instructions.
+Accepted DATA/function credit remains zero. Normal registration/build/checks and
+independent actual registered/Core provider acceptance are pending with Root.
 
-The producer started from published Main
-`dcea22c446e3537a757f6bbfa3c9cf854f8e6772` in its clean isolated worktree.
-It changes only the Source/header, this document and the matching report. It adds
-no CMake registration, ledger record, Ghidra annotation, parent function or test.
-There was no normal build in this cold worktree; that required gate belongs to
-Root's explicitly coordinated warm integration.
+## Concrete repair and coverage
 
-## Owned data and initial representation
+AT's separate arrays matched their individual contents but did not retain the
+Native layout. AU's real scratch/output alias produces raw index40: Native
+extra_lbits+160 reaches extra_dbits[6]=2; old AT reaches extra_dbits[10]=4.
+The stock public maps also place length_code before dist_code, so raw distance
+index513 reads0 instead of Native length_code[1]=1. AX established the complete
+authentic region and these known nonfault differences. This revision preserves
+the real relative data instead of qualifying away the changed values.
 
-| Native inclusive range | Bytes | Complete Source definition |
+| Owned Native inclusive range | Bytes | Actual Source storage |
 |---|---:|---|
-| 00E1470C..00E1471F | 20 | `bsp_native_zlib_static_l_desc_00e1470c` |
-| 00E14720..00E14733 | 20 | `bsp_native_zlib_static_d_desc_00e14720` |
-| 00E14734..00E14747 | 20 | `bsp_native_zlib_static_bl_desc_00e14734` |
-| 00D677C0..00D67833 | 116 | `bsp_native_zlib_extra_lbits_00d677c0[29]` |
-| 00D67848..00D678BF | 120 | `bsp_native_zlib_extra_dbits_00d67848[30]` |
-| 00D678C0..00D6790B | 76 | `bsp_native_zlib_extra_blbits_00d678c0[19]` |
-| 00D67910..00D67D8F | 1152 | `bsp_native_zlib_static_ltree_00d67910[288]` |
-| 00D67D90..00D67E07 | 120 | `bsp_native_zlib_static_dtree_00d67d90[30]` |
+| 00D677C0..00D681F7 | 2616 | one `bsp_native_zlib_tree_ro_region_00d677c0` const object |
+| 00E1470C..00E1471F | 20 | mutable `bsp_native_zlib_static_l_desc_00e1470c` |
+| 00E14720..00E14733 | 20 | mutable `bsp_native_zlib_static_d_desc_00e14720` |
+| 00E14734..00E14747 | 20 | mutable `bsp_native_zlib_static_bl_desc_00e14734` |
 
-The header grounds a naturally aligned 20-byte Win32 descriptor: two 4-byte
-pointers at offsets 0/4, then three signed 32-bit integers at 8/12/16; alignment 4.
-Each code/length element has two unsigned 16-bit words at offsets 0/2, size 4,
-alignment 2. Standard layout, all offsets, sizes and alignments are compile-time
-assertions. These are descriptive Source types, not recovered Original public
-types, a deflate-state layout claim, or a claim about the Original zlib version.
+Coverage2676 = previous unaccepted1644 + four additional tables1004 + intervening
+spans28. The28 comprise the complete named bl_order19 and nine observed spacing
+bytes. No previously accepted1584B is duplicated. The old five standalone array
+declarations/definitions are removed, with no aliases, fake externs or duplicate
+storage. All arrays are real typed subobjects of the public aggregate.
 
-All three descriptors are actual mutable C-linkage objects. Their pointer fields
-remain mutable; only the pointed-to rooted tables are const. The literal descriptor
-refers to the complete 288-pair tree and 29-int extra-bits array, followed by
-`257,286,15`; the distance descriptor refers to the complete 30-pair tree and
-30-int array, followed by `0,30,15`; the bit-length descriptor has a real null tree
-pointer and the complete 19-int array, followed by `0,19,7`.
+## Grounded type and static initialization
 
-The five arrays have actual external const definitions and full typed literal
-initializers. No file-local stock symbol is declared as an invented provider.
-There are no image-pointer literals, external imports, weak aliases, getters,
-constructors, snapshots, runtime copies or initialization helpers. Native initial
-PE declarations are RW/non-executable `.data` for descriptors (`0xC0000040`) and
-RO/non-executable `.rdata` for tables (`0x40000040`). These observations and the
-stock rooted const declarations ground the Source mutability choices; they do
-not measure live page protection or prevent later Native protection changes.
+`NativeZlibTreeReadOnlyRegion` is standard-layout, size2616/alignment4. Its members
+are extra_lbits int32[29]@0; bl_order uint8[19]@116; observed spacing[1]@135;
+extra_dbits int32[30]@136; extra_blbits int32[19]@256; observed spacing[4]@332;
+static_ltree CodeWords[288]@336; static_dtree CodeWords[30]@1488;
+dist_code uint8[512]@1608; length_code uint8[256]@2120;
+base_length int32[29]@2376; observed spacing[4]@2492; base_dist int32[30]@2496.
+All nine spacing bytes are explicitly initialized observed zeros. The former
+20B span is bl_order19 plus one zero, not invented20B padding.
 
-## Measured strict producer
+CodeWords has uint16 code/length at0/2, size4/alignment2. The unchanged descriptive
+descriptor has two4B pointers at0/4 and three int32 fields8/12/16, size20/align4.
+The header asserts standard layout, every field offset, every complete member
+size, all aggregate/descriptor/codeword sizes and alignments, and Win32pointer4.
+No packing directive or implicit object padding supplies missing Native bytes.
+These are grounded new Source types, not recovered Original public types/version.
 
-The first compile passed: MSVC Win32 `/std:c++17 /MD /O2 /W4 /WX /fp:strict /Gy /c`,
-1.4320417 seconds including compiler-environment setup. The complete 2,911-byte
-COFF object has SHA-256
-`4df40a309d2b9c6fe5b9b439fe001d80b0883fa19d5162666499a8958f0f6c2f`.
-All eight public definitions are strong external DATA symbols. The object has
-zero executable bytes, function symbols, undefined or weak externals, COMDATs,
-`.CRT` sections or executable helpers.
+The real const owner uses full literal initializers from authenticated static
+bytes, with explicit external C linkage. Descriptors remain actual mutable
+C-linkage objects; pointer fields stay mutable pointers to const subobjects.
+They initialize directly to aggregate static_ltree/extra_lbits, static_dtree/
+extra_dbits and null/extra_blbits. Their tails stay257/286/15,0/30/15,0/19/7.
+There are no image-pointer literals, runtime copies/snapshots, constructors,
+getters, opaque buffers, imports, weak/selectany aliases or initialization helpers.
 
-Its 60-byte RW `.data` contains the three descriptors in Native order at offsets
-0/20/40, without padding. Five real `IMAGE_REL_I386_DIR32` relocations at offsets
-0/4/20/24/44 name the complete defined arrays with zero addends. The null cell at
-40 has no relocation; all integer tails match. Restoring only the five evidence
-Native pointer values to a comparison copy makes all 60 bytes equal. Source never
-uses those Original image pointers as initializer values.
+## Complete measured strict object
 
-Its RO `.rdata` contains the five tables at offsets 0/120/240/320/1472. Every one
-of the 1,584 table bytes matches the authenticated Native bytes. The section is
-1,592 bytes because of four zero alignment bytes at each of offsets 116 and 316;
-those eight bytes receive no Native DATA credit. The actual section alignment is
-8 for `.rdata` and 4 for `.data`; this does not change the asserted language type
-alignments. Native intervening gaps are not owned or reproduced as data.
+The revised variant passed its first MSVC Win32 compile:
+`/std:c++17 /MD /O2 /W4 /WX /fp:strict /Gy /c`,1.7736591s including environment
+setup. No Source/compiler rejection, Source correction after compile or recompile.
+Whole object3687B SHA256:
+`07aada03c9aa3b72e022e12db6f321ead8d93ced7f160bc3ec1a15ba038da055`.
 
-The remaining sections are `.drectve` (47 bytes of default-library metadata),
-`.debug$S` (224 bytes: object/compiler CodeView records and padding), and `.chks64`
-(40 bytes of compiler metadata). The complete header/section table, all raw
-sections, five relocation records, all primary/auxiliary symbols, complete string
-table and padding are recorded in the ignored strict proof. No bytes are omitted.
-One local proof assertion was corrected to use the parser's numeric header
-machine field; no Source, compiler command or object changed after the compile.
+Four strong external DATA symbols are the actual RO owner and three descriptors.
+RO .rdata is exactly2616B at symbol value0, byte-equal to all Native bytes,
+without extra section padding. Actual RO section alignment8 does not change the
+asserted language type alignment4. RW .data is exactly60B: descriptors at0/20/40
+in Native order without padding. Separate globals still lack a C++ adjacency
+guarantee; this is a measured strict-object result and needs registered recheck.
 
-## Evidence and remaining gates
+Five real I386_DIR32 fixups at .data offsets0/4/20/24/44 target the whole defined
+aggregate with actual addends336/0/1488/136/256. Combined40 is true null without
+relocation. Substituting only Native root+addend in a comparison copy makes all60
+descriptor bytes equal; Source does not initialize Original image pointers.
+Static raw reads at RO+160/+2121/+2536 produce2/1/32, as Native requires.
 
-AP's accepted design/Native data/stock Source proof is the evidence basis:
-Root AP receipt `898cfc7c93c1ed4cd7adb22e67def355b3cefe4c41bfc559e2591524a2ba69c9`;
-AP manifest `b06827ff7c34bc9e9f23145f45acce5a6bbc22445c3888ef935df0029e414e69`.
-The ignored `local/zlib_tree_descriptor_data_bc` bundle freezes only selected AP
-inputs, Source/header, exact compile command/log/result, the whole strict object,
-full COFF/data proof and this packet's handoff/seals. It does not recopy old Core
-archives or recursively freeze review histories. Its final receipt records full
-observed producer time through sealing/release, including setup and corrections.
+The other sections are .drectve47B default-library metadata, .debug$S200B complete
+object/compiler CodeView records and padding, and .chks6440B compiler metadata.
+Full header/section table, all raw bytes, relocation tables, primary/auxiliary
+symbols, string table and padding are accounted without overlapping regions.
+There are zero executable bytes/functions/undefineds/weak symbols/COMDATs/.CRT
+initializers/helpers. The proof directly checks relocation target primary records.
 
-Separate C++ globals have no language adjacency guarantee. The measured strict
-object preserves the Native 60-byte order, but actual registered/link placement
-must be rechecked. Source symbol addresses and pointer bits differ from the game;
-no Original storage identity or out-of-object adjacency is promised. Arbitrary
-raw descriptor aliases, invalid pointer representations, malformed accesses,
-out-of-range indexing and their faults are not proven equivalent by typed DATA
-initializers. No repair, reset or protection mechanism is added.
+## Evidence, limits and pending integration
 
-Normal target registration, actual C++17 project/command provenance, full actual
-COFF, unique Core member/eight strong providers in both complete archive
-dictionaries, placement and prior-provider preservation remain Root gates.
-AN's `init_block` and the 98-byte `_tr_init` parent are separate packets. There is
-no parent Source adoption, Original ABI, runtime, game or performance claim here.
+Accepted AX design Root SHAa6022077acbf391707e12cbdc8afa8b1007223c4b0898950e6904570012550b9
+and AX receipt29f4b574030f9202532c34a9bf1b6699309eb7955ff36eba3dd0d9a15dd4671f
+ground this repair. Fresh AX whole live/PE RO SHA2c08f5a908713badb206a5c98c07b95231feb8a4b751641fb2eb1666958d7b6b;
+descriptors SHAdad11b10aed45032960b25fbd26be65ba5c50804a1a2efa3d926603b0af7b415.
+All ten named arrays match the actual frozen stock DATA. The PE initially
+declares RO/nonW/nonX .rdata40000040 and RW/nonX .dataC0000040. These are initial
+declarations, not live protection measurements or an Original zlib-version claim.
+
+Ordinary C++ out-of-array indexing remains UB. Later raw consumers must use real
+owner storage and grounded effective-address offsets, without fabricated guards
+or clamps. Original absolute addresses/pointer bits, out-of-region arbitrary
+scaled indexes, malformed raw aliases/faults, writes to const storage, protection,
+placement, full ABI, parent adoption and game behavior remain qualified. This DATA
+repair does not close AU, AN, _tr_init, any caller or runtime behavior.
+
+This cold producer changes only these four files and its new ignored output.
+No Main refresh, CMake/ledger/Ghidra/cache edit, normal build, test, probe or
+Native execution occurred. Root will register/build in its genuine warm target,
+run existing checks, authenticate exact commands/Source and whole actual COFF,
+and independently prove unique Core member/all4 providers/both complete archive
+dictionaries/placement and prior preservation before credit/publication.
+Old AP/AT/AX seals remain intact. The old AT first strict1.4320417s/2911B object
+is historical only, not current acceptance evidence or an added timing cost.
+The new bundle local/goal16az_region_revision seals selected small AX refs,
+current Source/header/Git blobs/strict object/full proof; no old Core/history copy.
+Its receipt records all observed setup/repair/compile/proof/helper refinement/
+documentation/commit/seal/release overhead from15:17:06UTC. No speedup claim.

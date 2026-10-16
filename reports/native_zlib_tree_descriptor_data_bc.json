@@ -1,414 +1,452 @@
 {
-  "goal": "GOAL16AT",
+  "goal": "GOAL16AZ",
   "status": "StrictProducerReady_ActualRegisteredProviderPending",
+  "supersedes_unaccepted_candidate": "39b5afe38f25488c9a9b19ea2bca7ee75e4ceeeb",
+  "reason": "Review-derived repair of concrete raw cross-table values and current stock pair layout; not unrelated Source work.",
   "scope": {
-    "complete_DATA_ranges": 8,
-    "Native_DATA_bytes": 1644,
-    "descriptor_bytes": 60,
-    "rooted_table_bytes": 1584,
+    "candidate_Native_DATA_bytes": 2676,
     "Native_functions": 0,
     "Native_instructions": 0,
     "Source_functions": 0,
-    "Source_DATA_definitions": 8,
-    "accepted_DATA_credit": 0,
-    "accepted_function_credit": 0
+    "actual_strong_DATA_definitions": 4,
+    "accepted_DATA_function_credit": 0,
+    "coverage": {
+      "previous_AT_unaccepted_payload": 1644,
+      "additional_four_payload_arrays": 1004,
+      "three_original_intervening_spans": 28,
+      "intervening_named_bl_order": 19,
+      "intervening_observed_zero_spacing": 9,
+      "sum": 2676,
+      "nine_primary_table_bytes": 2588,
+      "all_named_array_bytes": 2607
+    }
   },
-  "base_published_Main": "dcea22c446e3537a757f6bbfa3c9cf854f8e6772",
   "files": [
     {
       "path": "src/native_zlib_tree_descriptor_data_bc.cpp",
-      "bytes": 5524,
-      "sha256": "d4b61795f172684b07a2d2adc7139f432d8e079c1f5128865d0d1c3d24fa5238"
+      "bytes": 10113,
+      "sha256": "baac26de03583620631d51ae2f00917cf5b3738922a461dcbc0ec84ec1d9adf6"
     },
     {
       "path": "include/bsp/native_zlib_tree_descriptor_data_bc.hpp",
-      "bytes": 2478,
-      "sha256": "4646499fd4ea7663ef7033bfed6b452f40312f584aef10b6b81474c8f85420b4"
+      "bytes": 5232,
+      "sha256": "6a9cd91a815f3ce3f75bbde107e6d630db34c4f8011164a2b7c7dd46e3618774"
     },
     {
       "path": "docs/NATIVE_ZLIB_TREE_DESCRIPTOR_DATA_BC.md",
-      "bytes": 6752,
-      "sha256": "cf4793697b0ad4b1f3b8d0288f171dff6752cd13dc0f4b0ad47a5f077c696189"
+      "bytes": 7355,
+      "sha256": "febd06cd5475f5703348d99d5f864dad1dcbc6e39fee3ebb2ed9e08b832782e1"
     }
   ],
-  "producer_output": "local/zlib_tree_descriptor_data_bc",
-  "normal_registration_and_build": {
-    "authorized_split": "Strict producer in cold own worktree; Root registers and normal-builds in genuine warm integration before acceptance.",
-    "CMake_modified": false,
-    "normal_build_run_here": false,
-    "CMakeCache_present_here": {
-      "build\\CMakeCache.txt": false,
-      "build\\win32\\CMakeCache.txt": false
-    },
-    "actual_registered_object": "PENDING",
-    "actual_Core_member": "PENDING",
-    "both_archive_dictionaries": "PENDING",
-    "existing_checks": "PENDING_ROOT_BUILD",
-    "Source_address_or_DATA_credit": 0
-  },
-  "strict": {
+  "actual_new_variant_compile": {
+    "variant": "GOAL16AZ aggregate revision",
+    "attempt": 1,
     "command": [
       "cmd",
       "/d",
       "/c",
-      "local\\zlib_tree_descriptor_data_bc\\strict_compile.cmd"
+      "local\\goal16az_region_revision\\strict_compile.cmd"
     ],
-    "start_utc": "2026-10-16T13:36:14.939524+00:00",
-    "end_utc": "2026-10-16T13:36:16.371579+00:00",
-    "elapsed_seconds": 1.4320416999980807,
+    "start_utc": "2026-10-16T15:19:32.162888+00:00",
+    "end_utc": "2026-10-16T15:19:33.936558+00:00",
+    "elapsed_seconds": 1.7736590999993496,
     "returncode": 0,
-    "log": "strict_compile.log",
-    "source_sha256": "d4b61795f172684b07a2d2adc7139f432d8e079c1f5128865d0d1c3d24fa5238",
-    "header_sha256": "4646499fd4ea7663ef7033bfed6b452f40312f584aef10b6b81474c8f85420b4",
-    "normal_build": "NOT_RUN; explicitly deferred to Root genuine warm integration",
-    "command_file": "local/zlib_tree_descriptor_data_bc/strict_compile.cmd",
-    "object": {
-      "path": "local/zlib_tree_descriptor_data_bc/strict_native_zlib_tree_descriptor_data_bc.obj",
-      "bytes": 2911,
-      "sha256": "4df40a309d2b9c6fe5b9b439fe001d80b0883fa19d5162666499a8958f0f6c2f"
-    },
-    "full_COFF": {
-      "path": "local/zlib_tree_descriptor_data_bc/strict_full_coff.json",
-      "bytes": 13731,
-      "sha256": "9089198772c9657fb18810422b89fc001caef6f783f360dc54411de4f62f3203"
-    },
-    "byte_regions": {
-      "path": "local/zlib_tree_descriptor_data_bc/strict_byte_regions.json",
-      "bytes": 1003,
-      "sha256": "0e632d5a7f64fd1f31298cbc4a475dd9e106b9bfe259b2725f5e0838fc4b8a69"
-    },
-    "DATA_proof": {
-      "path": "local/zlib_tree_descriptor_data_bc/strict_DATA_proof.json",
-      "bytes": 9472,
-      "sha256": "68586b5eabf86d603bc56144c5c11ef28d32da8ac2fcf86bcc8fe16db14a12c2"
+    "Source_sha256": "baac26de03583620631d51ae2f00917cf5b3738922a461dcbc0ec84ec1d9adf6",
+    "header_sha256": "6a9cd91a815f3ce3f75bbde107e6d630db34c4f8011164a2b7c7dd46e3618774",
+    "normal_registered_build_Core": "PENDING_ROOT_WARM_INTEGRATION",
+    "old_AT_first_strict": {
+      "elapsed_seconds": 1.4320416999980807,
+      "object_sha256": "4df40a309d2b9c6fe5b9b439fe001d80b0883fa19d5162666499a8958f0f6c2f",
+      "historical_only_not_added_to_current_time": true
     }
   },
-  "DATA_contract": {
-    "type_hypothesis": "Descriptive new Source types grounded in complete bytes and frozen stock field layout; no Original public type/version claim.",
-    "descriptor": {
-      "size": 20,
-      "alignment": 4,
-      "offsets": [
-        0,
-        4,
-        8,
-        12,
-        16
-      ],
-      "fields": [
-        "pointer to const code/length words",
-        "pointer to const int32 extra bits",
-        "int32 extra_base",
-        "int32 elements",
-        "int32 max_length"
-      ],
-      "all_three_objects_and_pointer_fields_mutable": true
-    },
-    "code_words": {
-      "size": 4,
-      "alignment": 2,
-      "offsets": [
-        0,
-        2
-      ],
-      "fields": [
-        "uint16 code",
-        "uint16 length"
-      ]
-    },
-    "static_asserts": "pointer size, standard layout, every field offset, both struct sizes/alignments",
-    "tables": [
+  "strict_object": {
+    "path": "local/goal16az_region_revision/strict_region_revision.obj",
+    "bytes": 3687,
+    "sha256": "07aada03c9aa3b72e022e12db6f321ead8d93ced7f160bc3ec1a15ba038da055"
+  },
+  "full_proof": {
+    "path": "local/goal16az_region_revision/strict_revision_proof.json",
+    "bytes": 12513,
+    "sha256": "3d3153a6931fad356002d84b56223356333ce79bcfaf56657a74d1a4d3b97cb1"
+  },
+  "full_COFF": {
+    "path": "local/goal16az_region_revision/strict_full_coff.json",
+    "bytes": 13238,
+    "sha256": "d6cca8ff39d90ed17e7a93e6fdb3eb6f80e6570bac8eea6a64de72c21ee792d9"
+  },
+  "byte_regions": {
+    "path": "local/goal16az_region_revision/strict_byte_regions.json",
+    "bytes": 1003,
+    "sha256": "9d415b64407dfb3b7e6d6ef974f8dc3829883647a94c870a7a98c15e85b3b8ec"
+  },
+  "whole_strict_result": {
+    "file_bytes": 3687,
+    "all_bytes_metadata_primary_aux_symbols_strings_relocations_padding_accounted": true,
+    "strong_DATA_definitions": [
       {
-        "symbol": "_bsp_native_zlib_extra_lbits_00d677c0",
-        "Native_start": "00D677C0",
-        "Native_end": "00D67833",
-        "size": 116,
-        "COFF_section": ".rdata",
-        "COFF_value": 0,
-        "Native_and_Source_bytes_equal": true,
-        "sha256": "f8d7861760c88cc514f66095af0aed47ecba063adb65f47125ed07bcc2cf9842"
+        "name": "_bsp_native_zlib_tree_ro_region_00d677c0",
+        "value": 0,
+        "section": 3,
+        "type": 0,
+        "storage": 2,
+        "aux": 0
       },
       {
-        "symbol": "_bsp_native_zlib_extra_dbits_00d67848",
-        "Native_start": "00D67848",
-        "Native_end": "00D678BF",
-        "size": 120,
-        "COFF_section": ".rdata",
-        "COFF_value": 120,
-        "Native_and_Source_bytes_equal": true,
-        "sha256": "b23d510f520cb4ba8afa847f8a40e757c40cb6a55b237efa1ac6d3984911b114"
+        "name": "_bsp_native_zlib_static_l_desc_00e1470c",
+        "value": 0,
+        "section": 4,
+        "type": 0,
+        "storage": 2,
+        "aux": 0
       },
       {
-        "symbol": "_bsp_native_zlib_extra_blbits_00d678c0",
-        "Native_start": "00D678C0",
-        "Native_end": "00D6790B",
-        "size": 76,
-        "COFF_section": ".rdata",
-        "COFF_value": 240,
-        "Native_and_Source_bytes_equal": true,
-        "sha256": "8fc498a953a183e1fe81a183ae59047435bb9b33d657c625fab03d38be19f92e"
+        "name": "_bsp_native_zlib_static_d_desc_00e14720",
+        "value": 20,
+        "section": 4,
+        "type": 0,
+        "storage": 2,
+        "aux": 0
       },
       {
-        "symbol": "_bsp_native_zlib_static_ltree_00d67910",
-        "Native_start": "00D67910",
-        "Native_end": "00D67D8F",
-        "size": 1152,
-        "COFF_section": ".rdata",
-        "COFF_value": 320,
-        "Native_and_Source_bytes_equal": true,
-        "sha256": "36b8fda0bfb1d93a07326ee7cac8eb99ff1af237d234ffa3210f64d3eb774c38"
-      },
-      {
-        "symbol": "_bsp_native_zlib_static_dtree_00d67d90",
-        "Native_start": "00D67D90",
-        "Native_end": "00D67E07",
-        "size": 120,
-        "COFF_section": ".rdata",
-        "COFF_value": 1472,
-        "Native_and_Source_bytes_equal": true,
-        "sha256": "9476220840d3ce82203b4a722e278773b1da458a22f49fcb9fc45b851df7d503"
+        "name": "_bsp_native_zlib_static_bl_desc_00e14734",
+        "value": 40,
+        "section": 4,
+        "type": 0,
+        "storage": 2,
+        "aux": 0
       }
     ],
-    "descriptors": [
-      {
-        "symbol": "_bsp_native_zlib_static_l_desc_00e1470c",
-        "size": 20,
-        "COFF_value": 0,
-        "Native_start": "00E1470C",
-        "COFF_section": ".data",
-        "strong_mutable_object": true
-      },
-      {
-        "symbol": "_bsp_native_zlib_static_d_desc_00e14720",
-        "size": 20,
-        "COFF_value": 20,
-        "Native_start": "00E14720",
-        "COFF_section": ".data",
-        "strong_mutable_object": true
-      },
-      {
-        "symbol": "_bsp_native_zlib_static_bl_desc_00e14734",
-        "size": 20,
-        "COFF_value": 40,
-        "Native_start": "00E14734",
-        "COFF_section": ".data",
-        "strong_mutable_object": true
-      }
-    ],
-    "real_DIR32_fixups": [
+    "RO_region": {
+      "size": 2616,
+      "section": ".rdata",
+      "symbol_value": 0,
+      "sha256": "2c08f5a908713badb206a5c98c07b95231feb8a4b751641fb2eb1666958d7b6b",
+      "whole_Native_bytes_equal": true,
+      "actual_section_alignment": 8,
+      "language_type_alignment": 4,
+      "members": [
+        {
+          "member": "extra_lbits",
+          "offset": 0,
+          "size": 116,
+          "count": 29,
+          "element_type": "int32",
+          "natural_alignment": 4,
+          "Native_start": "00D677C0",
+          "Native_end": "00D67833",
+          "sha256": "f8d7861760c88cc514f66095af0aed47ecba063adb65f47125ed07bcc2cf9842"
+        },
+        {
+          "member": "bl_order",
+          "offset": 116,
+          "size": 19,
+          "count": 19,
+          "element_type": "uint8",
+          "natural_alignment": 1,
+          "Native_start": "00D67834",
+          "Native_end": "00D67846",
+          "sha256": "111b15b20e0428a22eeaa1e54b0d3b008a7a3e79c8f7f4e783710f569e9cef15"
+        },
+        {
+          "member": "spacing_after_bl_order",
+          "offset": 135,
+          "size": 1,
+          "count": 1,
+          "element_type": "observed uint8",
+          "natural_alignment": 1,
+          "Native_start": "00D67847",
+          "Native_end": "00D67847",
+          "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+        },
+        {
+          "member": "extra_dbits",
+          "offset": 136,
+          "size": 120,
+          "count": 30,
+          "element_type": "int32",
+          "natural_alignment": 4,
+          "Native_start": "00D67848",
+          "Native_end": "00D678BF",
+          "sha256": "b23d510f520cb4ba8afa847f8a40e757c40cb6a55b237efa1ac6d3984911b114"
+        },
+        {
+          "member": "extra_blbits",
+          "offset": 256,
+          "size": 76,
+          "count": 19,
+          "element_type": "int32",
+          "natural_alignment": 4,
+          "Native_start": "00D678C0",
+          "Native_end": "00D6790B",
+          "sha256": "8fc498a953a183e1fe81a183ae59047435bb9b33d657c625fab03d38be19f92e"
+        },
+        {
+          "member": "spacing_before_static_ltree",
+          "offset": 332,
+          "size": 4,
+          "count": 4,
+          "element_type": "observed uint8",
+          "natural_alignment": 1,
+          "Native_start": "00D6790C",
+          "Native_end": "00D6790F",
+          "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        },
+        {
+          "member": "static_ltree",
+          "offset": 336,
+          "size": 1152,
+          "count": 288,
+          "element_type": "uint16 code/length pair",
+          "natural_alignment": 2,
+          "Native_start": "00D67910",
+          "Native_end": "00D67D8F",
+          "sha256": "36b8fda0bfb1d93a07326ee7cac8eb99ff1af237d234ffa3210f64d3eb774c38"
+        },
+        {
+          "member": "static_dtree",
+          "offset": 1488,
+          "size": 120,
+          "count": 30,
+          "element_type": "uint16 code/length pair",
+          "natural_alignment": 2,
+          "Native_start": "00D67D90",
+          "Native_end": "00D67E07",
+          "sha256": "9476220840d3ce82203b4a722e278773b1da458a22f49fcb9fc45b851df7d503"
+        },
+        {
+          "member": "dist_code",
+          "offset": 1608,
+          "size": 512,
+          "count": 512,
+          "element_type": "uint8",
+          "natural_alignment": 1,
+          "Native_start": "00D67E08",
+          "Native_end": "00D68007",
+          "sha256": "3e4fb5fe52bf269d6ee955711016291d6d327a4aac39b2464c53c6bd0d73242a"
+        },
+        {
+          "member": "length_code",
+          "offset": 2120,
+          "size": 256,
+          "count": 256,
+          "element_type": "uint8",
+          "natural_alignment": 1,
+          "Native_start": "00D68008",
+          "Native_end": "00D68107",
+          "sha256": "b9d4af390afc6a0f149b843d651cfebc1c4ec496a0263b72207836f9c525e1c4"
+        },
+        {
+          "member": "base_length",
+          "offset": 2376,
+          "size": 116,
+          "count": 29,
+          "element_type": "int32",
+          "natural_alignment": 4,
+          "Native_start": "00D68108",
+          "Native_end": "00D6817B",
+          "sha256": "7ddf88204e7e265240211841f0ab290a5e77ee4f9223eb2e39f9b89c30c41b9d"
+        },
+        {
+          "member": "spacing_before_base_dist",
+          "offset": 2492,
+          "size": 4,
+          "count": 4,
+          "element_type": "observed uint8",
+          "natural_alignment": 1,
+          "Native_start": "00D6817C",
+          "Native_end": "00D6817F",
+          "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        },
+        {
+          "member": "base_dist",
+          "offset": 2496,
+          "size": 120,
+          "count": 30,
+          "element_type": "int32",
+          "natural_alignment": 4,
+          "Native_start": "00D68180",
+          "Native_end": "00D681F7",
+          "sha256": "5961bf1fcf83803ce7775e15e9db8d21af741539b85ccfdd643f9e22cc7820d6"
+        }
+      ],
+      "extra_section_padding": 0,
+      "named_bl_order": 19,
+      "explicit_observed_spacing": 9
+    },
+    "mutable_descriptors": {
+      "section": ".data",
+      "size": 60,
+      "actual_offsets": [
+        0,
+        20,
+        40
+      ],
+      "adjacent_in_Native_order": true,
+      "padding": 0,
+      "language_adjacency_guarantee": false,
+      "actual_section_alignment": 4,
+      "symbolic60B_Native_comparison_equal": true,
+      "integer_tails": [
+        [
+          257,
+          286,
+          15
+        ],
+        [
+          0,
+          30,
+          15
+        ],
+        [
+          0,
+          19,
+          7
+        ]
+      ],
+      "true_null_combined40_without_relocation": true
+    },
+    "all5_DIR32": [
       {
         "section": 4,
         "offset": 0,
-        "symbol_index": 11,
-        "symbol": "_bsp_native_zlib_static_ltree_00d67910",
+        "symbol_index": 8,
+        "symbol": "_bsp_native_zlib_tree_ro_region_00d677c0",
         "type": 6,
         "executable": false,
         "kind": "IMAGE_REL_I386_DIR32",
-        "addend": 0,
-        "defined_whole_array_target": true,
-        "Native_pointer_evidence_only": "00D67910"
+        "target_primary_record_hex": "000000000400000000000000030000000200",
+        "actual_addend": 336,
+        "target_is_real_defined_whole_aggregate": true
       },
       {
         "section": 4,
         "offset": 4,
         "symbol_index": 8,
-        "symbol": "_bsp_native_zlib_extra_lbits_00d677c0",
+        "symbol": "_bsp_native_zlib_tree_ro_region_00d677c0",
         "type": 6,
         "executable": false,
         "kind": "IMAGE_REL_I386_DIR32",
-        "addend": 0,
-        "defined_whole_array_target": true,
-        "Native_pointer_evidence_only": "00D677C0"
+        "target_primary_record_hex": "000000000400000000000000030000000200",
+        "actual_addend": 0,
+        "target_is_real_defined_whole_aggregate": true
       },
       {
         "section": 4,
         "offset": 20,
-        "symbol_index": 12,
-        "symbol": "_bsp_native_zlib_static_dtree_00d67d90",
+        "symbol_index": 8,
+        "symbol": "_bsp_native_zlib_tree_ro_region_00d677c0",
         "type": 6,
         "executable": false,
         "kind": "IMAGE_REL_I386_DIR32",
-        "addend": 0,
-        "defined_whole_array_target": true,
-        "Native_pointer_evidence_only": "00D67D90"
+        "target_primary_record_hex": "000000000400000000000000030000000200",
+        "actual_addend": 1488,
+        "target_is_real_defined_whole_aggregate": true
       },
       {
         "section": 4,
         "offset": 24,
-        "symbol_index": 9,
-        "symbol": "_bsp_native_zlib_extra_dbits_00d67848",
+        "symbol_index": 8,
+        "symbol": "_bsp_native_zlib_tree_ro_region_00d677c0",
         "type": 6,
         "executable": false,
         "kind": "IMAGE_REL_I386_DIR32",
-        "addend": 0,
-        "defined_whole_array_target": true,
-        "Native_pointer_evidence_only": "00D67848"
+        "target_primary_record_hex": "000000000400000000000000030000000200",
+        "actual_addend": 136,
+        "target_is_real_defined_whole_aggregate": true
       },
       {
         "section": 4,
         "offset": 44,
-        "symbol_index": 10,
-        "symbol": "_bsp_native_zlib_extra_blbits_00d678c0",
+        "symbol_index": 8,
+        "symbol": "_bsp_native_zlib_tree_ro_region_00d677c0",
         "type": 6,
         "executable": false,
         "kind": "IMAGE_REL_I386_DIR32",
-        "addend": 0,
-        "defined_whole_array_target": true,
-        "Native_pointer_evidence_only": "00D678C0"
+        "target_primary_record_hex": "000000000400000000000000030000000200",
+        "actual_addend": 256,
+        "target_is_real_defined_whole_aggregate": true
       }
     ],
-    "null_cell_offset": 40,
-    "integer_tails": [
-      [
-        257,
-        286,
-        15
-      ],
-      [
-        0,
-        30,
-        15
-      ],
-      [
-        0,
-        19,
-        7
-      ]
-    ],
-    "descriptor_equivalence": "All60bytes equal after only5 genuine symbolic pointer fixups in a comparison copy; no Native image-pointer initializer.",
-    "stock_coverage": "Accepted AP proof: eight stock storage3/file-local objects cannot supply public externs; own eight actual storage2 strong definitions are required.",
-    "Native_initial_PE": {
-      "descriptor_section": ".data",
-      "descriptor_flags": "0xC0000040",
-      "table_section": ".rdata",
-      "table_flags": "0x40000040",
-      "live_memory_protection_measured": false
-    }
-  },
-  "whole_strict_COFF": {
-    "file_bytes": 2911,
-    "complete_file_accounted": true,
-    "all_sections": [
-      ".drectve",
-      ".debug$S",
-      ".rdata",
-      ".data",
-      ".chks64"
-    ],
-    "all_symbols_aux_strings_padding_recorded": true,
-    "strong_external_DATA_definitions": 8,
-    "relocations": 5,
+    "known_raw_values": {
+      "extra_lbits_raw40": 2,
+      "dist_code_raw513": 1,
+      "base_length_raw40": 32
+    },
+    "old5array_names_removed_without_aliases_or_duplicate_storage": true,
     "executable_bytes": 0,
-    "function_symbols": 0,
-    "undefined_externals": [],
-    "weak_externals": [],
+    "functions": 0,
+    "undefineds": [],
+    "weak_symbols": [],
     "COMDATs": [],
     "CRT_initializers": [],
-    "helpers": [],
-    "actual_descriptor_placement": {
-      "section": ".data",
-      "size": 60,
-      "offsets": [
-        0,
-        20,
-        40
-      ],
-      "padding_between_objects": 0,
-      "ordered_as_Native": true,
-      "Cxx_or_future_link_placement_guarantee": false
-    },
-    "actual_RO_table_offsets": [
-      0,
-      120,
-      240,
-      320,
-      1472
-    ],
-    "actual_rdata_section_bytes": 1592,
-    "complete_owned_table_bytes": 1584,
-    "separate_rdata_zero_padding": [
-      {
-        "offset": 116,
-        "bytes": 4,
-        "hex": "00000000",
-        "Native_DATA_credit": 0
-      },
-      {
-        "offset": 316,
-        "bytes": 4,
-        "hex": "00000000",
-        "Native_DATA_credit": 0
-      }
-    ],
-    "section_alignments": {
-      ".data": 4,
-      ".rdata": 8
-    },
-    "metadata_detail": "strict_DATA_proof.json and strict_full_coff.json; no checksum-algorithm/runtime claim"
+    "helpers": []
+  },
+  "evidence": {
+    "AX_receipt_sha256": "29f4b574030f9202532c34a9bf1b6699309eb7955ff36eba3dd0d9a15dd4671f",
+    "AX_manifest_sha256": "bca2d8c543e60a2eb3c21edfa03cd039cdcbe79f9e03e3779185d832228deb8a",
+    "Root_AX_acceptance_sha256": "a6022077acbf391707e12cbdc8afa8b1007223c4b0898950e6904570012550b9",
+    "Root_AX_auth_receipt": "a83213eb1c55fb75b25884d57f967e6bb3f4d3d3aa5a7ba91d9e8aac5e56b8ea",
+    "whole_static_RO_sha256": "2c08f5a908713badb206a5c98c07b95231feb8a4b751641fb2eb1666958d7b6b",
+    "whole_Native_descriptor_sha256": "dad11b10aed45032960b25fbd26be65ba5c50804a1a2efa3d926603b0af7b415",
+    "selected_small_refs_only": true,
+    "old_AP_AT_AX_seals_immutable": true,
+    "new_live_capture_required_for_new_question": false,
+    "no_recursive_Core_or_history_capture": true
   },
   "qualifications": [
-    "Separate strong C++ globals do not guarantee future adjacency. Strict object preserves0/20/40; registered/link placement must be remeasured.",
-    "Source pointer bits/addresses/neighbors differ from Original image. No Original storage identity, universal physical alias/out-of-range fault contract or full ABI.",
-    "Descriptor objects/pointer fields remain mutable. Rooted tables const is grounded in Native initial PE permissions and frozen stock declarations, not incidental constification.",
-    "Invalid pointer representations, arbitrary raw descriptor aliases, malformed accesses, later page-protection changes and game behavior remain qualified; no guards or repairs are added.",
-    "No Parent _tr_init/AN adoption, Original type/version/prototype, runtime execution, performance or speedup claim."
+    "Grounded descriptive types/standard layout, not recovered Original public type/version/ABI.",
+    "One real const owner preserves complete within-region bytes and known raw2/1/32; ordinary out-of-array C++ indexing remains UB.",
+    "No fabricated guard, clamp, fake extern/alias/provider, runtime copy/snapshot/helper/constructor/opaque buffer.",
+    "Three mutable identities and pointer fields retained; their separate-global language adjacency is not guaranteed, actual strict offsets0/20/40 measured only.",
+    "Original absolute addresses/pointer bits, malformed aliases, out-of-region arbitrary scaled indexes/faults, const writes, protection/placement/fullABI/parents/game remain qualified.",
+    "Native initial RO .rdata40000040/RW .dataC0000040 is PE evidence, not live protection measurement.",
+    "No function/Native instruction/DATA acceptance credit, parent AN/_tr_init/AU adoption or runtime/game/performance claim."
   ],
-  "evidence": {
-    "goal": "GOAL16AT",
-    "started_utc": "2026-10-16T13:31:00Z",
-    "base_pin": "dcea22c446e3537a757f6bbfa3c9cf854f8e6772",
-    "AP_original": "J:\\PROG\\battlestations-pacific-decompile-goal16a_b4_review\\local\\goal16ap_zlib_descriptor_owner_design",
-    "AP_Root_accepted_copy": "J:/PROG/battlestations-pacific-decompile-goal15_integrator/local/goal16at_root/AP_design",
-    "Root_AP_receipt_sha256": "898cfc7c93c1ed4cd7adb22e67def355b3cefe4c41bfc559e2591524a2ba69c9",
-    "AP_top_hashes": {
-      "DESIGN.md": "4de5a650525c8eb12c8ed8cee899b27bddfa8f901f793a9e534805a5b07f9721",
-      "readiness_report.json": "7559eb8d85a86f724bea0f8f3b47f0ea72147ff1626c98b77a43bea363fc046a",
-      "handoff.json": "1f70a78df40afb0f93c2960e112138fa7bc502cbcc4ec5a53440c58d65f5c49f",
-      "sealed_manifest.json": "b06827ff7c34bc9e9f23145f45acce5a6bbc22445c3888ef935df0029e414e69",
-      "receipt.json": "22858763c4a0d1d74824f8503b8063d2e4cbc1ad64fd4f9bae955da8da3cec81"
+  "normal_registered_provider": {
+    "status": "PENDING_ROOT_WARM_INTEGRATION",
+    "normal_build_run_here": false,
+    "target_registration": false,
+    "actual_registered_COFF": null,
+    "Core_member_and_hash": null,
+    "both_dictionaries": null,
+    "independent_acceptance": false,
+    "required": [
+      "Root exact Source registration and normal scripts/build.ps1/existing checks",
+      "actual C++17 command/project/compiled Source provenance and full registered COFF",
+      "actual four strong providers/five addends/RWRO/whole2676B/placement",
+      "unique Core member/all4 publics in both complete dictionaries and prior-provider preservation",
+      "independent DATA acceptance before credit/publication; separate parent work"
+    ]
+  },
+  "corrections_and_attempts": {
+    "new_variant_compile_attempts": 1,
+    "new_variant_compile_rejections": 0,
+    "new_variant_Source_corrections_after_compile": 0,
+    "recompiles": 0,
+    "failed_proof_steps": 0,
+    "proof_helper_refinement": "After first passing parse, replaced an inert condition with direct primary relocation target-record validation; data/Source/object unchanged.",
+    "old_AT_first_strict": {
+      "elapsed_seconds": 1.4320416999980807,
+      "object_sha256": "4df40a309d2b9c6fe5b9b439fe001d80b0883fa19d5162666499a8958f0f6c2f",
+      "historical_only_not_added_to_current_time": true
     },
-    "selected_count": 17,
-    "no_transitive_Core_or_history_capture": true,
-    "normal_registered_provider": "PENDING_ROOT_WARM_INTEGRATION",
-    "no_Source_credit": true,
-    "selected_AP_reference_count": 17,
-    "all_old_AP_and_review_outputs_immutable": true,
-    "no_transitive_history_or_Core_capture": true
+    "old_strict_first_cost_or_previous_AX_design_cost_added": false
   },
-  "corrections": {
-    "Source_compile_attempts": 1,
-    "Source_compile_rejections": 0,
-    "Source_corrections_after_compile": 0,
-    "local_proof_parser_attempt_1": {
-      "returncode": 1,
-      "failed_assertion": "obj['machine'] == 0x14c and not obj['bigobj']",
-      "reason": "Reused parser's top-level machine is formatted text, while its header.machine is the integer 332.",
-      "correction": "Use obj['header']['machine'] == 0x14c. No input/object/Source change."
-    }
+  "boundaries": {
+    "exact4Gitfiles": true,
+    "CMake_shards_ledger_Ghidra_Main_cache_changes": 0,
+    "normal_builds_tests_probes_Native_or_selected_body_execution": 0,
+    "branch_not_refreshed_to_unpublished_Main": true,
+    "only2DATA_ranges_and_exact4files_output_leased": true
   },
-  "producer_boundaries": {
-    "only_four_Git_files": true,
-    "Source_header_CMake_ledger_Ghidra_parent_elsewhere_unchanged": true,
-    "no_build_cache_mutation": true,
-    "new_tests": 0,
-    "tests_run_here": 0,
-    "probes": 0,
-    "Native_or_selected_body_execution": 0
-  },
-  "Root_remaining_gates": [
-    "Register exact Source in real target; run required scripts/build.ps1 and existing checks in warm Root checkout.",
-    "Independently authenticate actual project/C++17 command and compiled exact Source/header, then whole registered COFF and real8strong DATA definitions/5DIR32 fixups/permissions/placement.",
-    "Prove actual unique Core member/eight providers and both complete archive dictionaries, plus prior-provider preservation before any DATA credit/publication.",
-    "Handle DATA ledger/annotations under separate authorized ownership; never create a function record or count data as Native instructions.",
-    "Leave AN and98B/15instruction _tr_init parent separate."
-  ],
   "clock": {
-    "first_observed_utc": "2026-10-16T13:31:00Z",
-    "report_precommit_snapshot_utc": "2026-10-16T13:41:50.111164+00:00",
-    "observed_elapsed_through_report_seconds": 650.111164,
-    "includes": "brief/fetch/absence/lease/AP selection/Source generation/strict environment+compile/full proof/local parser correction/docs/report/admin; final seal/release remainder in local receipt",
-    "inclusive_final_clock": "local/zlib_tree_descriptor_data_bc/receipt.json plus final release notice",
+    "first_observed_utc": "2026-10-16T15:17:06Z",
+    "report_snapshot_utc": "2026-10-16T15:24:30.748783+00:00",
+    "observed_through_report_seconds": 444.748783,
+    "final_inclusive_timing": "local/goal16az_region_revision/receipt.json",
+    "includes": "all setup/lease/AX authentication/review-derived Source repair/compile/proof/helper refinement/docs/report/commit/freeze/seal/verify/release/admin",
     "pre_first_observed_dispatch_gap": "unmeasured",
-    "no_serial_summation_or_speedup_claim": true
+    "no_old_cost_sum_or_speedup_claim": true
   }
 }
