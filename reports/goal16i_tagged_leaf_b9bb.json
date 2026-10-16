@@ -1,0 +1,907 @@
+{
+  "packet": "goal16i_tagged_leaf_b9bb",
+  "status": "reconstructed_build_tested_pending_independent_review_and_Ghidra_integration",
+  "generated_utc": "2026-10-16T06:49:58.073306+00:00",
+  "source_commit": "3bdb1ee044eb99e7e002c4ad34232abb57aacccc",
+  "source_base": "6ba7840dbc06f840ecbaae94b4067ca987632b42",
+  "source": "src/native_tagged_leaf_b9bb_16i.cpp",
+  "header": "include/bsp/native_tagged_leaf_b9bb_16i.hpp",
+  "source_sha256": "1dbf66944de4e52ed55e41735302ac7e224bfcae54583070fe38a3bbe615d4d4",
+  "header_sha256": "1dd993c7fe931c4da589c0e3f282470db98b0544c8cd453411aead54bcd13c1b",
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "typed_modification_number": 5772
+  },
+  "discovery": {
+    "policy": "Screen indexed TRIV_ names in B9/BA/BB then whole Source/include address searches; all22 such candidates read in pseudocode, selected15 inspected in listing/complete fresh typed/live/disk bodies. Other tags in these bands remain unexamined.",
+    "candidates": 22,
+    "selected": 15,
+    "deferred": [
+      {
+        "address": "00b916f0",
+        "operation": "Read global010903E0",
+        "remaining": "Actual canonical storage owner/publication/provenance binding not established in this packet; no fake cells introduced."
+      },
+      {
+        "address": "00b91710",
+        "operation": "Read same global010903E0",
+        "remaining": "Actual canonical storage owner/publication/provenance binding not established in this packet; no fake cells introduced."
+      },
+      {
+        "address": "00b91720",
+        "operation": "Read global010903EC",
+        "remaining": "Actual canonical storage owner/publication/provenance binding not established in this packet; no fake cells introduced."
+      },
+      {
+        "address": "00b922e0",
+        "operation": "Read global0109042C; actual_current borrowed-reference publication fragment exists, canonical whole owner binding still outside this leaf packet",
+        "remaining": "Actual canonical storage owner/publication/provenance binding not established in this packet; no fake cells introduced."
+      },
+      {
+        "address": "00b922f0",
+        "operation": "Read global01090438",
+        "remaining": "Actual canonical storage owner/publication/provenance binding not established in this packet; no fake cells introduced."
+      },
+      {
+        "address": "00b9a330",
+        "operation": "Write global00E130BC zero; overlapping-symbol warning",
+        "remaining": "Actual canonical storage owner/publication/provenance binding not established in this packet; no fake cells introduced."
+      },
+      {
+        "address": "00bbe290",
+        "operation": "Read global01090910; existing type-info description is not the actual owner binding",
+        "remaining": "Actual canonical storage owner/publication/provenance binding not established in this packet; no fake cells introduced."
+      }
+    ],
+    "known_existing_Source_context": "Raw getters already occur as abstract Host callbacks or caller descriptions; these do not constitute standalone physical entry providers. Source/include address search retained in audit narrative, existing callers unchanged."
+  },
+  "counts": {
+    "complete_functions": 15,
+    "Native_bytes": 61,
+    "Source_bytes": 65,
+    "Native_instructions": 25,
+    "Source_instructions": 25,
+    "exact_whole_bodies": 13,
+    "exact_Native_bytes": 59,
+    "qualified_RET0_bodies": 2,
+    "qualified_Native_bytes": 2,
+    "qualified_Source_bytes": 6
+  },
+  "functions": [
+    {
+      "address": "00b94b20",
+      "name": "BSP_TaggedLeaf_NoOp_00b94b20",
+      "native_hex": "c3",
+      "native_bytes": 1,
+      "instructions": [
+        {
+          "address": "00b94b20",
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "1",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b94b20"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b94b20"
+            },
+            "length": "1"
+          }
+        ]
+      },
+      "old_name": "TRIV_body_00b94b20",
+      "source_symbol": "_bsp_tagged_b9bb_00b94b20",
+      "source_section": 21,
+      "source_hex": "c20000",
+      "source_bytes": 3,
+      "whole_body_exact": false,
+      "qualification": "Complete Source RET0 is3B versus complete Native RET1B. Both retire only return address and leave data/registers/flags/FP unchanged on ordinary completion. Source fetches two additional code bytes; codefetch faults, placement, Original formal declaration and full binary ABI/caller/game adoption unproved.",
+      "operation": "NoOp",
+      "physical_Original": "No data inputs consumed. RET retires return address plus 0 cleanup bytes / 0 unread physical stack DWORDs; registers, EFLAGS and x87 untouched on normal completion. Formal convention/declaration unrecovered.",
+      "Original_formal_declaration_recovered": false,
+      "Original_class_recovered": false,
+      "game_validated": false,
+      "status": "reconstructed_build_tested_complete_RET0_Source_interface"
+    },
+    {
+      "address": "00b96e50",
+      "name": "BSP_TaggedLeaf_NoOpPop04_00b96e50",
+      "native_hex": "c20400",
+      "native_bytes": 3,
+      "instructions": [
+        {
+          "address": "00b96e50",
+          "hex": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "3",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b96e50"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b96e52"
+            },
+            "length": "3"
+          }
+        ]
+      },
+      "old_name": "TRIV_body_00b96e50",
+      "source_symbol": "_bsp_tagged_b9bb_00b96e50@4",
+      "source_section": 23,
+      "source_hex": "c20400",
+      "source_bytes": 3,
+      "whole_body_exact": true,
+      "qualification": "exact_whole_body",
+      "operation": "NoOpPop04",
+      "physical_Original": "No data inputs consumed. RET retires return address plus 4 cleanup bytes / 1 unread physical stack DWORDs; registers, EFLAGS and x87 untouched on normal completion. Formal convention/declaration unrecovered.",
+      "Original_formal_declaration_recovered": false,
+      "Original_class_recovered": false,
+      "game_validated": false,
+      "status": "reconstructed_build_tested_complete_whole_native_COFF_identity"
+    },
+    {
+      "address": "00b9a1c0",
+      "name": "BSP_TaggedLeaf_NoOpPop04_00b9a1c0",
+      "native_hex": "c20400",
+      "native_bytes": 3,
+      "instructions": [
+        {
+          "address": "00b9a1c0",
+          "hex": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "3",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b9a1c0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b9a1c2"
+            },
+            "length": "3"
+          }
+        ]
+      },
+      "old_name": "TRIV_body_00b9a1c0",
+      "source_symbol": "_bsp_tagged_b9bb_00b9a1c0@4",
+      "source_section": 24,
+      "source_hex": "c20400",
+      "source_bytes": 3,
+      "whole_body_exact": true,
+      "qualification": "exact_whole_body",
+      "operation": "NoOpPop04",
+      "physical_Original": "No data inputs consumed. RET retires return address plus 4 cleanup bytes / 1 unread physical stack DWORDs; registers, EFLAGS and x87 untouched on normal completion. Formal convention/declaration unrecovered.",
+      "Original_formal_declaration_recovered": false,
+      "Original_class_recovered": false,
+      "game_validated": false,
+      "status": "reconstructed_build_tested_complete_whole_native_COFF_identity"
+    },
+    {
+      "address": "00b9a3d0",
+      "name": "BSP_TaggedLeaf_ReadDword00BC_00b9a3d0",
+      "native_hex": "8b81bc000000c3",
+      "native_bytes": 7,
+      "instructions": [
+        {
+          "address": "00b9a3d0",
+          "hex": "8b81bc000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0xbc]"
+        },
+        {
+          "address": "00b9a3d6",
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "7",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b9a3d0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b9a3d6"
+            },
+            "length": "7"
+          }
+        ]
+      },
+      "old_name": "TRIV_body_00b9a3d0",
+      "source_symbol": "@bsp_tagged_b9bb_00b9a3d0@4",
+      "source_section": 3,
+      "source_hex": "8b81bc000000c3",
+      "source_bytes": 7,
+      "whole_body_exact": true,
+      "qualification": "exact_whole_body",
+      "operation": "ReadDword00BC",
+      "physical_Original": "Only ECX raw backing consumed; one unaligned byte/dword read at wrapping ECX+offset; EAX or low AL result; plain RET. EDX/stack inputs unconsumed. Byte forms preserve incoming upper24 EAX bits and all8 loaded bits; no bool normalization.",
+      "Original_formal_declaration_recovered": false,
+      "Original_class_recovered": false,
+      "game_validated": false,
+      "status": "reconstructed_build_tested_complete_whole_native_COFF_identity"
+    },
+    {
+      "address": "00b9a4b0",
+      "name": "BSP_TaggedLeaf_ReadDword0014_00b9a4b0",
+      "native_hex": "8b4114c3",
+      "native_bytes": 4,
+      "instructions": [
+        {
+          "address": "00b9a4b0",
+          "hex": "8b4114",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x14]"
+        },
+        {
+          "address": "00b9a4b3",
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "4",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b9a4b0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b9a4b3"
+            },
+            "length": "4"
+          }
+        ]
+      },
+      "old_name": "TRIV_body_00b9a4b0",
+      "source_symbol": "@bsp_tagged_b9bb_00b9a4b0@4",
+      "source_section": 5,
+      "source_hex": "8b4114c3",
+      "source_bytes": 4,
+      "whole_body_exact": true,
+      "qualification": "exact_whole_body",
+      "operation": "ReadDword0014",
+      "physical_Original": "Only ECX raw backing consumed; one unaligned byte/dword read at wrapping ECX+offset; EAX or low AL result; plain RET. EDX/stack inputs unconsumed. Byte forms preserve incoming upper24 EAX bits and all8 loaded bits; no bool normalization.",
+      "Original_formal_declaration_recovered": false,
+      "Original_class_recovered": false,
+      "game_validated": false,
+      "status": "reconstructed_build_tested_complete_whole_native_COFF_identity"
+    },
+    {
+      "address": "00b9a500",
+      "name": "BSP_TaggedLeaf_ReadByte0010_00b9a500",
+      "native_hex": "8a4110c3",
+      "native_bytes": 4,
+      "instructions": [
+        {
+          "address": "00b9a500",
+          "hex": "8a4110",
+          "mnemonic": "mov",
+          "operands": "al, byte ptr [ecx + 0x10]"
+        },
+        {
+          "address": "00b9a503",
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "4",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00b9a500"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00b9a503"
+            },
+            "length": "4"
+          }
+        ]
+      },
+      "old_name": "TRIV_body_00b9a500",
+      "source_symbol": "@bsp_tagged_b9bb_00b9a500@4",
+      "source_section": 7,
+      "source_hex": "8a4110c3",
+      "source_bytes": 4,
+      "whole_body_exact": true,
+      "qualification": "exact_whole_body",
+      "operation": "ReadByte0010",
+      "physical_Original": "Only ECX raw backing consumed; one unaligned byte/dword read at wrapping ECX+offset; EAX or low AL result; plain RET. EDX/stack inputs unconsumed. Byte forms preserve incoming upper24 EAX bits and all8 loaded bits; no bool normalization.",
+      "Original_formal_declaration_recovered": false,
+      "Original_class_recovered": false,
+      "game_validated": false,
+      "status": "reconstructed_build_tested_complete_whole_native_COFF_identity"
+    },
+    {
+      "address": "00ba7170",
+      "name": "BSP_TaggedLeaf_ReadDword0008_00ba7170",
+      "native_hex": "8b4108c3",
+      "native_bytes": 4,
+      "instructions": [
+        {
+          "address": "00ba7170",
+          "hex": "8b4108",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 8]"
+        },
+        {
+          "address": "00ba7173",
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "4",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00ba7170"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00ba7173"
+            },
+            "length": "4"
+          }
+        ]
+      },
+      "old_name": "TRIV_body_00ba7170",
+      "source_symbol": "@bsp_tagged_b9bb_00ba7170@4",
+      "source_section": 9,
+      "source_hex": "8b4108c3",
+      "source_bytes": 4,
+      "whole_body_exact": true,
+      "qualification": "exact_whole_body",
+      "operation": "ReadDword0008",
+      "physical_Original": "Only ECX raw backing consumed; one unaligned byte/dword read at wrapping ECX+offset; EAX or low AL result; plain RET. EDX/stack inputs unconsumed. Byte forms preserve incoming upper24 EAX bits and all8 loaded bits; no bool normalization.",
+      "Original_formal_declaration_recovered": false,
+      "Original_class_recovered": false,
+      "game_validated": false,
+      "status": "reconstructed_build_tested_complete_whole_native_COFF_identity"
+    },
+    {
+      "address": "00ba7180",
+      "name": "BSP_TaggedLeaf_ReadDword0030_00ba7180",
+      "native_hex": "8b4130c3",
+      "native_bytes": 4,
+      "instructions": [
+        {
+          "address": "00ba7180",
+          "hex": "8b4130",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x30]"
+        },
+        {
+          "address": "00ba7183",
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "4",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00ba7180"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00ba7183"
+            },
+            "length": "4"
+          }
+        ]
+      },
+      "old_name": "TRIV_body_00ba7180",
+      "source_symbol": "@bsp_tagged_b9bb_00ba7180@4",
+      "source_section": 11,
+      "source_hex": "8b4130c3",
+      "source_bytes": 4,
+      "whole_body_exact": true,
+      "qualification": "exact_whole_body",
+      "operation": "ReadDword0030",
+      "physical_Original": "Only ECX raw backing consumed; one unaligned byte/dword read at wrapping ECX+offset; EAX or low AL result; plain RET. EDX/stack inputs unconsumed. Byte forms preserve incoming upper24 EAX bits and all8 loaded bits; no bool normalization.",
+      "Original_formal_declaration_recovered": false,
+      "Original_class_recovered": false,
+      "game_validated": false,
+      "status": "reconstructed_build_tested_complete_whole_native_COFF_identity"
+    },
+    {
+      "address": "00ba7190",
+      "name": "BSP_TaggedLeaf_ReadDword0044_00ba7190",
+      "native_hex": "8b4144c3",
+      "native_bytes": 4,
+      "instructions": [
+        {
+          "address": "00ba7190",
+          "hex": "8b4144",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x44]"
+        },
+        {
+          "address": "00ba7193",
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "4",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00ba7190"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00ba7193"
+            },
+            "length": "4"
+          }
+        ]
+      },
+      "old_name": "TRIV_body_00ba7190",
+      "source_symbol": "@bsp_tagged_b9bb_00ba7190@4",
+      "source_section": 13,
+      "source_hex": "8b4144c3",
+      "source_bytes": 4,
+      "whole_body_exact": true,
+      "qualification": "exact_whole_body",
+      "operation": "ReadDword0044",
+      "physical_Original": "Only ECX raw backing consumed; one unaligned byte/dword read at wrapping ECX+offset; EAX or low AL result; plain RET. EDX/stack inputs unconsumed. Byte forms preserve incoming upper24 EAX bits and all8 loaded bits; no bool normalization.",
+      "Original_formal_declaration_recovered": false,
+      "Original_class_recovered": false,
+      "game_validated": false,
+      "status": "reconstructed_build_tested_complete_whole_native_COFF_identity"
+    },
+    {
+      "address": "00bb8ff0",
+      "name": "BSP_TaggedLeaf_NoOpPop0C_00bb8ff0",
+      "native_hex": "c20c00",
+      "native_bytes": 3,
+      "instructions": [
+        {
+          "address": "00bb8ff0",
+          "hex": "c20c00",
+          "mnemonic": "ret",
+          "operands": "0xc"
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "3",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bb8ff0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bb8ff2"
+            },
+            "length": "3"
+          }
+        ]
+      },
+      "old_name": "TRIV_body_00bb8ff0",
+      "source_symbol": "_bsp_tagged_b9bb_00bb8ff0@12",
+      "source_section": 25,
+      "source_hex": "c20c00",
+      "source_bytes": 3,
+      "whole_body_exact": true,
+      "qualification": "exact_whole_body",
+      "operation": "NoOpPop0C",
+      "physical_Original": "No data inputs consumed. RET retires return address plus 12 cleanup bytes / 3 unread physical stack DWORDs; registers, EFLAGS and x87 untouched on normal completion. Formal convention/declaration unrecovered.",
+      "Original_formal_declaration_recovered": false,
+      "Original_class_recovered": false,
+      "game_validated": false,
+      "status": "reconstructed_build_tested_complete_whole_native_COFF_identity"
+    },
+    {
+      "address": "00bbb620",
+      "name": "BSP_TaggedLeaf_ZeroALPop10_00bbb620",
+      "native_hex": "32c0c21000",
+      "native_bytes": 5,
+      "instructions": [
+        {
+          "address": "00bbb620",
+          "hex": "32c0",
+          "mnemonic": "xor",
+          "operands": "al, al"
+        },
+        {
+          "address": "00bbb622",
+          "hex": "c21000",
+          "mnemonic": "ret",
+          "operands": "0x10"
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "5",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bbb620"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bbb624"
+            },
+            "length": "5"
+          }
+        ]
+      },
+      "old_name": "TRIV_body_00bbb620",
+      "source_symbol": "_bsp_tagged_b9bb_00bbb620@16",
+      "source_section": 26,
+      "source_hex": "32c0c21000",
+      "source_bytes": 5,
+      "whole_body_exact": true,
+      "qualification": "exact_whole_body",
+      "operation": "ZeroALPop10",
+      "physical_Original": "No data inputs consumed; four unread physical stack DWORDs retired by RET10h. XOR AL,AL clears only low8 EAX, preserves upper24 EAX, sets literal XOR arithmetic flags (AF undefined); no semantic bool/Original declaration inferred.",
+      "Original_formal_declaration_recovered": false,
+      "Original_class_recovered": false,
+      "game_validated": false,
+      "status": "reconstructed_build_tested_complete_whole_native_COFF_identity"
+    },
+    {
+      "address": "00bbb630",
+      "name": "BSP_TaggedLeaf_NoOp_00bbb630",
+      "native_hex": "c3",
+      "native_bytes": 1,
+      "instructions": [
+        {
+          "address": "00bbb630",
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "1",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bbb630"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bbb630"
+            },
+            "length": "1"
+          }
+        ]
+      },
+      "old_name": "TRIV_body_00bbb630",
+      "source_symbol": "_bsp_tagged_b9bb_00bbb630",
+      "source_section": 27,
+      "source_hex": "c20000",
+      "source_bytes": 3,
+      "whole_body_exact": false,
+      "qualification": "Complete Source RET0 is3B versus complete Native RET1B. Both retire only return address and leave data/registers/flags/FP unchanged on ordinary completion. Source fetches two additional code bytes; codefetch faults, placement, Original formal declaration and full binary ABI/caller/game adoption unproved.",
+      "operation": "NoOp",
+      "physical_Original": "No data inputs consumed. RET retires return address plus 0 cleanup bytes / 0 unread physical stack DWORDs; registers, EFLAGS and x87 untouched on normal completion. Formal convention/declaration unrecovered.",
+      "Original_formal_declaration_recovered": false,
+      "Original_class_recovered": false,
+      "game_validated": false,
+      "status": "reconstructed_build_tested_complete_RET0_Source_interface"
+    },
+    {
+      "address": "00bbce40",
+      "name": "BSP_TaggedLeaf_ReadDword0094_00bbce40",
+      "native_hex": "8b8194000000c3",
+      "native_bytes": 7,
+      "instructions": [
+        {
+          "address": "00bbce40",
+          "hex": "8b8194000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x94]"
+        },
+        {
+          "address": "00bbce46",
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "7",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bbce40"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bbce46"
+            },
+            "length": "7"
+          }
+        ]
+      },
+      "old_name": "TRIV_body_00bbce40",
+      "source_symbol": "@bsp_tagged_b9bb_00bbce40@4",
+      "source_section": 15,
+      "source_hex": "8b8194000000c3",
+      "source_bytes": 7,
+      "whole_body_exact": true,
+      "qualification": "exact_whole_body",
+      "operation": "ReadDword0094",
+      "physical_Original": "Only ECX raw backing consumed; one unaligned byte/dword read at wrapping ECX+offset; EAX or low AL result; plain RET. EDX/stack inputs unconsumed. Byte forms preserve incoming upper24 EAX bits and all8 loaded bits; no bool normalization.",
+      "Original_formal_declaration_recovered": false,
+      "Original_class_recovered": false,
+      "game_validated": false,
+      "status": "reconstructed_build_tested_complete_whole_native_COFF_identity"
+    },
+    {
+      "address": "00bbce50",
+      "name": "BSP_TaggedLeaf_ReadDword0008_00bbce50",
+      "native_hex": "8b4108c3",
+      "native_bytes": 4,
+      "instructions": [
+        {
+          "address": "00bbce50",
+          "hex": "8b4108",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 8]"
+        },
+        {
+          "address": "00bbce53",
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "4",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bbce50"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bbce53"
+            },
+            "length": "4"
+          }
+        ]
+      },
+      "old_name": "TRIV_body_00bbce50",
+      "source_symbol": "@bsp_tagged_b9bb_00bbce50@4",
+      "source_section": 17,
+      "source_hex": "8b4108c3",
+      "source_bytes": 4,
+      "whole_body_exact": true,
+      "qualification": "exact_whole_body",
+      "operation": "ReadDword0008",
+      "physical_Original": "Only ECX raw backing consumed; one unaligned byte/dword read at wrapping ECX+offset; EAX or low AL result; plain RET. EDX/stack inputs unconsumed. Byte forms preserve incoming upper24 EAX bits and all8 loaded bits; no bool normalization.",
+      "Original_formal_declaration_recovered": false,
+      "Original_class_recovered": false,
+      "game_validated": false,
+      "status": "reconstructed_build_tested_complete_whole_native_COFF_identity"
+    },
+    {
+      "address": "00bbce70",
+      "name": "BSP_TaggedLeaf_ReadByte0099_00bbce70",
+      "native_hex": "8a8199000000c3",
+      "native_bytes": 7,
+      "instructions": [
+        {
+          "address": "00bbce70",
+          "hex": "8a8199000000",
+          "mnemonic": "mov",
+          "operands": "al, byte ptr [ecx + 0x99]"
+        },
+        {
+          "address": "00bbce76",
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "typed_body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "7",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bbce70"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bbce76"
+            },
+            "length": "7"
+          }
+        ]
+      },
+      "old_name": "TRIV_body_00bbce70",
+      "source_symbol": "@bsp_tagged_b9bb_00bbce70@4",
+      "source_section": 19,
+      "source_hex": "8a8199000000c3",
+      "source_bytes": 7,
+      "whole_body_exact": true,
+      "qualification": "exact_whole_body",
+      "operation": "ReadByte0099",
+      "physical_Original": "Only ECX raw backing consumed; one unaligned byte/dword read at wrapping ECX+offset; EAX or low AL result; plain RET. EDX/stack inputs unconsumed. Byte forms preserve incoming upper24 EAX bits and all8 loaded bits; no bool normalization.",
+      "Original_formal_declaration_recovered": false,
+      "Original_class_recovered": false,
+      "game_validated": false,
+      "status": "reconstructed_build_tested_complete_whole_native_COFF_identity"
+    }
+  ],
+  "strict": {
+    "result": {
+      "start_utc": "2026-10-16T06:43:23.5445614Z",
+      "end_utc": "2026-10-16T06:43:25.0968135Z",
+      "seconds": 1.5482346,
+      "exit_code": 0,
+      "standard": "C++17"
+    },
+    "object_sha256": "4809ef0aafd9fe6c95076a9e1b7ac1180b82638deaf36f84ed987bfd6b7bb89c",
+    "flags": "/std:c++17 /MD /O2 /W4 /WX /fp:strict /Gy /c /Iinclude",
+    "whole_COFF": "local/goal16i_root/audit_strict.json",
+    "all15_executable_sections_accounted": true,
+    "executable_relocations": 0,
+    "undefined_externals": []
+  },
+  "registered": {
+    "object_sha256": "5139a3a4283db2fd705a4bf286621b4162d95dea24469d19175abdf42ad7fd29",
+    "whole_COFF": "local/goal16i_root/audit_registered.json",
+    "all15_complete_sections_equal_strict": true,
+    "actual_compiler_command": "local/goal16i_root/registered_compile_command.json",
+    "standard": "C++17"
+  },
+  "actual_archive": {
+    "sha256": "fa0d5e374b4ff2e91ad3935aeaa5e01bd2a3a6edd31fb694f761b1e34a88e92d",
+    "member_offset": 20080784,
+    "member_bytes": 3786,
+    "both_linker_dictionaries_bind_all15_symbols": true
+  },
+  "build": {
+    "started_utc": "2026-10-16T06:44:22.4515874Z",
+    "ended_utc": "2026-10-16T06:44:41.0371410Z",
+    "elapsed_seconds": 18.5826459,
+    "exit_code": 0,
+    "source_base": "6ba7840dbc06f840ecbaae94b4067ca987632b42",
+    "source_sha256": "1dbf66944de4e52ed55e41735302ac7e224bfcae54583070fe38a3bbe615d4d4"
+  },
+  "checks": [
+    "reconstructed_math",
+    "native_math_differential",
+    "tool_tests"
+  ],
+  "check_interval_seconds": 7.55,
+  "corrections": [
+    {
+      "kind": "initial_whole_identity_gate_rejection",
+      "retained": "local/goal16i_root/attempt01_naked_ret_zero",
+      "entire_emitted_bytes": 65,
+      "detail": "Bare MASM RET in naked cdecl zero-argument functions emits C20000, not C3. An ordinary C++ empty body also emits C20000. Preserve first whole65B attempt and both compiler/audit attempts; accept two complete meaningful Source RET0 interfaces under exact encoding/fetch qualification. No raw byte emission, compiler-option or fake-provider workaround."
+    },
+    {
+      "kind": "metadata_script_repair",
+      "detail": "Capstone formats offset8 as decimal rather than0x8; metadata script accepted both. Indexed lookup initially lagged the first six ledger additions; index refreshed, those existing records verified, remaining nine appended without duplicates. Source, objects and successful build unaffected. All overhead remains in inclusive clock."
+    }
+  ],
+  "evidence": {
+    "typed": "local/goal16i_root/typed_before.json",
+    "full_live_bytes": "local/goal16i_root/live_<address>.txt",
+    "whole_actual_archive": "local/goal16i_root/bsp_core.lib",
+    "full_strict_COFF": "local/goal16i_root/audit_strict.json",
+    "full_registered_COFF": "local/goal16i_root/audit_registered.json",
+    "unique_paths": "local/goal16i_root/path_check.json"
+  },
+  "scope": {
+    "new_tests": 0,
+    "Native_execution": false,
+    "new_fixture_or_probe_execution": false,
+    "game_execution": false,
+    "Ghidra_mutations_by_author": false,
+    "no_new_global_cells": true,
+    "no_abstract_provider_or_unresolved_calls": true,
+    "no_recovered_class_assumptions": true
+  },
+  "timing": {
+    "classification_start_conservative_floor_utc": "2026-10-16T06:36:00Z",
+    "clock_scope": "Includes index/wholeSource/pseudocode/listing/typed/live/PE qualification, two compiler/audit attempts, full build, metadata and final handoff; final elapsed recorded in ignored closing receipt. Conservative minute floor includes pre-recording time. No speedup inferred."
+  },
+  "remaining": [
+    "Independent expert review pending at author closure.",
+    "Primary Ghidra annotations/save/export/snapshot/index and Main integration pending.",
+    "Canonical global owner binding for seven deferred TRIV_ candidates not established; other non-TRIV tags unexamined.",
+    "Native/C++ full fault/binary ABI, Source code placement/extra fetch for two RET0 forms, formal declarations/classes, caller adoption and actual game validation unproved."
+  ]
+}

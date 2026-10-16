@@ -1,0 +1,244 @@
+{
+  "packet": "goal16xz_primary_integration",
+  "status": "independently_reviewed_complete_bodies_build_tested_Ghidra_saved",
+  "generated_utc": "2026-10-16T11:06:09.942184+00:00",
+  "validated_Source_commit": "8242d69e7050cb64400d3a453a1005fd08d6d8a0",
+  "Main_input": "8aaf1cbc62e209fc37913e06c7a2f1cff3b56fb8",
+  "counts": {
+    "new_complete_Native_addresses": 2,
+    "new_complete_Native_bytes": 727,
+    "new_Native_instructions": 218,
+    "new_Source_functions": 4,
+    "new_Source_executable_bytes": 754,
+    "new_Source_kernel_bytes": 724,
+    "new_adapter_bytes": 30,
+    "adapter_Native_credit": 0,
+    "complete_Native_addresses_including_prior": 20,
+    "complete_Native_bytes_including_prior": 1877,
+    "byte_identical_Native_entries_including_prior": 19,
+    "byte_identical_Native_bytes_including_prior": 1348,
+    "instruction_mapped_Native_entries": 1,
+    "instruction_mapped_Native_bytes": 529,
+    "whole_Source_modules": 17,
+    "whole_Source_executable_bytes": 6217,
+    "selected_unique_real_public_bindings": 38
+  },
+  "packets": [
+    {
+      "address": "00bcdf60",
+      "Source_commit": "28bfe19546d5fd7394669c0320953acfc106168f",
+      "Native_bytes": 529,
+      "Native_instructions": 144,
+      "Source_functions": 2,
+      "Source_executable_bytes": 543,
+      "adapter_bytes": 17,
+      "adapter_Native_credit": 0,
+      "author_receipt": {
+        "path": "local\\goal16x_root\\author_receipt.json",
+        "sha256": "49c2a18ebe808c9a98ed3d5a58914525c367603fdb26ba6c563974c41e2b43cd",
+        "verified_records": 2493,
+        "verified_bytes": 342958740,
+        "selected_copied_records": 56,
+        "selected_copied_bytes": 99538098
+      },
+      "peer_review": {
+        "path": "local\\goal16x_root\\review\\review.json",
+        "sha256": "8cfd2b58cd8eee370e2a900c951dac1d3414f145ed818966b2bcd3b7df1eaf38",
+        "status": "READY"
+      },
+      "peer_primary_receipt": {
+        "path": "local\\goal16x_root\\review\\receipt.json",
+        "sha256": "4c2dca77e1e9c2f7f85e780b086573c964e2257cb766f5c264f125e4d02a5add"
+      },
+      "peer_timing_and_freeze": {
+        "utc": "2026-10-16T10:50:40.822030+00:00",
+        "upstream_records_verified": 2574,
+        "upstream_bytes_verified": 346247872,
+        "selected_copied_bytes": 1962624,
+        "immutable_nested_artifacts_retained_in_place": true,
+        "review_start_utc": "2026-10-16T10:26:45+00:00",
+        "receipt_seal_utc": "2026-10-16T10:47:42.710892+00:00",
+        "peer_inclusive_seconds_through_receipt_seal": 1257.710892
+      },
+      "author_timing": {
+        "V_readiness_seconds_separate": 1189.256575,
+        "V_to_X_dispatch_admin_gap_seconds": 620.743425,
+        "implementation_start_utc": "2026-10-16T10:16:12+00:00",
+        "commit_release_hash_seal_utc": "2026-10-16T10:33:00.667980+00:00",
+        "X_implementation_inclusive_seconds": 1008.66798,
+        "V_through_X_inclusive_seconds": 2818.66798,
+        "strict_compile_seconds_included": 1.4705399999947986,
+        "normal_build_seconds_included": 18.426832000011927,
+        "all_preparation_freezes_docs_ledger_commit_release_included": true,
+        "Source_or_compiler_rejections": 0,
+        "prior_P_R_T_independent_review_Root_integration_runtime": "separate, not counted as this implementation",
+        "speedup_claim": false
+      }
+    },
+    {
+      "address": "00bcbb40",
+      "Source_commit": "425d761655b8c234341dd8721a121a446047dca7",
+      "Native_bytes": 198,
+      "Native_instructions": 74,
+      "Source_functions": 2,
+      "Source_executable_bytes": 211,
+      "adapter_bytes": 13,
+      "adapter_Native_credit": 0,
+      "author_receipt": {
+        "path": "local\\goal16z_root\\author_receipt.json",
+        "sha256": "802fa4962502b1ee8be88e8767a82b153449c205b44adcb7485a0a6e5998ea81",
+        "verified_records": 87,
+        "verified_bytes": 168968106,
+        "selected_copied_records": 35,
+        "selected_copied_bytes": 99299261
+      },
+      "peer_review": {
+        "path": "local\\goal16z_root\\review\\review_report.json",
+        "sha256": "844f8c3ddd634633e09b2e9a74d5a68ceaa504b90e74ceb34e92c0a97af02f4e",
+        "status": "READY"
+      },
+      "peer_primary_receipt": {
+        "path": "local\\goal16z_root\\review\\receipt.json",
+        "sha256": "2465215ecd30fd58626e4b31401a7ad6519cf41dc7e2af9a4a52e99a8956a4c4"
+      },
+      "peer_timing_and_freeze": {
+        "utc": "2026-10-16T10:53:40.218255+00:00",
+        "verified_records": 120,
+        "verified_bytes": 170889703,
+        "total_files_including_two_seals": 122,
+        "total_bytes_including_two_seals": 170916264,
+        "selected_copied_bytes": 228488,
+        "immutable_nested_artifacts_retained_in_place": true,
+        "observed_peer_seconds_through_release": 947,
+        "peer_seconds_through_seal": 927.689893,
+        "author_ISO_seconds": 534.290641,
+        "author_reported_seconds": 534.290646,
+        "microsecond_clock_qualification": "Reported elapsed versus ISO endpoints differ by five to seven microseconds; retained without changing author artifact."
+      },
+      "author_timing": {
+        "author_reported_seconds": 534.290646,
+        "author_exact_ISO_seconds": 534.290641,
+        "Y_design_seconds_to_seal": 554.515533,
+        "Y_to_Z_postseal_admin_and_scheduling_seconds": 220.484467,
+        "full_Y_first_through_Z_author_final_seconds_reported": 1309.290648,
+        "microsecond_clock_difference_retained": true
+      }
+    }
+  ],
+  "current_whole_proof": {
+    "path": "local\\goal16xz_root\\publication_proof\\proof.json",
+    "sha256": "71db6516896d252aaab4209b7004be85a676e67334d42e42e9962ec50a63ed88",
+    "Core_sha256": "2c2cab7ac575fe5eb411cc8fd3e98ac10c9e65f9fbe54b709b3d5a19de6c044d",
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "actual_COFF_members_parsed": 2477,
+    "all_fifteen_prior_whole_Source_objects_byte_identical": true,
+    "both_complete_archive_dictionaries_and_all_thirty_eight_selected_real_providers_checked": true,
+    "private_kernels_real_defined_bindings_not_invented_archive_exports": true
+  },
+  "current_full_COFF": {
+    "path": "local\\goal16xz_root\\publication_full_coff.json",
+    "sha256": "6e99de44d59ffdb67be6dc79e70afbdd07427938f4c1dd5a471e2ba56bdc3653",
+    "whole_object_bytes": [
+      1404,
+      1097
+    ],
+    "all_bytes_sections_symbols_aux_strings_metadata_relocations_and_padding_accounted": true,
+    "writable_global_sections": false,
+    "undefined_helpers": false,
+    "author_vs_primary_object_identity_not_claimed": "Current gen_bitlen object is1404B versus author1408B; source-path/debug metadata and anonymous-namespace identity differ. Whole code and relocation models agree after namespace-name normalization; every current metadata/aux/string/padding byte is separately accounted. Current longest_match_fast object is1097B."
+  },
+  "gen_bitlen_mapping": {
+    "path": "local\\goal16xz_root\\publication_proof\\gen_bitlen_instruction_map.json",
+    "sha256": "52a67d8bca83bada4a15e61c348cb8cfecfb442940c4bdce07b762dc34f23f69",
+    "Native_owned_ranges": [
+      "00bcdf60..00bce0a9",
+      "00bce0b0..00bce176"
+    ],
+    "unowned_six_byte_hole_omitted": true,
+    "whole_144_instruction_effect_and_18_branch_index_correspondences": true,
+    "eight_encoding_differences": "Two WORD ADD FFFF immediates use equivalent sign-extended FF; executed LEA shortens by one byte; five branches change with layout. No machine-byte identity or fetch/placement equivalence claim."
+  },
+  "longest_match_fast": {
+    "whole_Native_and_private_kernel_byte_identity": true,
+    "Native_bytes": 198,
+    "instructions": 74,
+    "two_actual_RET4_exits": true,
+    "partial_EDX_upper24_preserved": true,
+    "critical_order": "Header reads before PUSH EBP; byte0 CMP before PUSH EDI; match-first bytes0/1; skipbyte2 then scan-first scalar3..258 under raw wrapped unsigned bound. Cached lookahead CMP before match_start store, then clamp branch POP EDI before MOV EAX,ECX. Actual saved/control aliases retained."
+  },
+  "initial_build": {
+    "source_pin": "4e73d68218cbee377649034440811bdb5ddfc735",
+    "Main_input": "cd8a0a37725316495dcc8d17f1e64937cfa6fafd",
+    "start_utc": "2026-10-16T10:54:43.846112+00:00",
+    "end_utc": "2026-10-16T10:55:02.007868+00:00",
+    "wall_seconds": 18.184052900003735,
+    "exit_code": 0,
+    "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16xz_root\\final_build.log"
+  },
+  "current_build": {
+    "source_pin": "8242d69e7050cb64400d3a453a1005fd08d6d8a0",
+    "Main_input": "8aaf1cbc62e209fc37913e06c7a2f1cff3b56fb8",
+    "start_utc": "2026-10-16T11:04:47.338618+00:00",
+    "end_utc": "2026-10-16T11:05:09.126790+00:00",
+    "wall_seconds": 21.815100300009362,
+    "exit_code": 0,
+    "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16xz_root\\publication_build.log"
+  },
+  "existing_checks": "3/3 PASS in the recorded normal build log",
+  "actual_compile_commands": {
+    "path": "local\\goal16xz_root\\publication_compile_commands\\selected.json",
+    "sha256": "1a461a219c05184ff126561f12a2e9e01f0a8fd25552e008637de4eb94a3398e"
+  },
+  "Ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "old_values_and_comments": "local\\goal16xz_root\\annotations.json",
+    "saved": true,
+    "write_lock": true,
+    "Original_names_and_prototypes_unchanged": true,
+    "Original_no_return": false,
+    "Source_only_noreturn_not_applied_to_Original": true,
+    "affected_exports_snapshot_and_index_refreshed": true
+  },
+  "Source_interfaces": [
+    "gen_bitlen: genuine cdecl/noreturn(backing,descriptor,actualKernelEntryESP) loads EAX/ECX/ESP then JMPs real private plain-RET body.",
+    "longest_match_fast: genuine cdecl/noreturn(backing,actualKernelEntryESP) loads ESI/ESP then JMPs real private RET4 body; current_match remains actual S+4."
+  ],
+  "qualifications": [
+    "Chosen real Source frames and continuations are not copied or captured Original frames. Extra adapter argument reads/faults and Source transfers are explicit.",
+    "All raw pointer/index/count/descriptor/local/saved/control aliases and malformed signed/wrapping behavior remain admitted; no domain clamp, progress guard, fake global/provider, snapshot or owner is introduced.",
+    "Code/instruction-fetch/self-modification aliases, absolute code/fault/return EIPs, caller frame/continuation identity, formal Original ABI/layout/version, SEH/unwind and parent/game adoption remain unproved.",
+    "Existing stock private algorithm Source is retained separately; it is not this Native physical binding. New Source-only noreturn never changes Original return classification."
+  ],
+  "primary_helper_corrections": [
+    "The first isolated own COFF-reader invocation lacked its Path import; a standalone own driver fixed it before proof.",
+    "The new complete byte-accounting parser initially allowed debug$F but omitted actual debug$S; it was extended to account for the genuine CodeView metadata. No Source or build correction was required.",
+    "An apply_patch replacement used delete/add on the same path, which the tool rejected without mutation; the focused compiler-capture helper was added under a new filename."
+  ],
+  "timing": {
+    "X_primary_start_utc": "2026-10-16T10:34:27+00:00",
+    "Z_primary_start_utc": "2026-10-16T10:45:13+00:00",
+    "combined_batch_start_utc": "2026-10-16T10:52:30+00:00",
+    "report_seal_utc": "2026-10-16T11:06:09.942184+00:00",
+    "combined_seconds_through_report": 819.942184,
+    "overlap_not_summed_serially": true,
+    "publication_commit_push_release_receipt": "Closed separately in local/goal16xz_root/publication_receipt.json",
+    "measured_speedup_claim": false
+  },
+  "runtime": {
+    "new_tests": 0,
+    "new_probes": 0,
+    "selected_body_or_adapter_execution": false,
+    "dynamically_measured_faults": false,
+    "ordinary_returning_Cpp_API": false,
+    "caller_or_parent_adoption": false,
+    "Original_full_ABI_compatible": false,
+    "installed_binary_changed": false,
+    "game_validated": false
+  },
+  "remaining": [
+    "AA bitbuffer pair is separate implementation; AB gen_codes and AC copy_block are separate read-only designs. No credit here.",
+    "The continuing reconstruction goal remains active."
+  ]
+}

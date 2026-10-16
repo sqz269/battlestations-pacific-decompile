@@ -1,0 +1,603 @@
+{
+  "schema": 1,
+  "packet": "oct16_native_input_preset_tree_hint_insert",
+  "utc": "2026-10-16T11:07:07.989775+00:00",
+  "status": "whole_Source_actual_published_providers_default_Win32_build_tested_Original_ABI_unverified",
+  "scope": {
+    "whole_entry": "006a15e0",
+    "range": "006a15e0..006a17db inclusive",
+    "Native_bytes": 508,
+    "Native_instructions": 210,
+    "owned_entries": 1,
+    "owned_fragments": 0,
+    "Native_calls": 19,
+    "Native_RET10": 8,
+    "Source_lexical_calls": 19,
+    "Source_logical_exits": 8,
+    "emitted_child_calls": 18,
+    "emitted_RET20": 7,
+    "no_caller_or_action_promotion": true
+  },
+  "existing_name": {
+    "name": "STL_Tree_InsertHint_StrKeyCI_N2C_006a15e0",
+    "unchanged": true,
+    "evidence_preimages": {
+      "path": "local/oct16_preset_hint_ledger_preimages.json",
+      "sha256": "6cf57d522d7c4199ef3d9d50b298e7265d4b53a04a0b594b4b0866a69f2e7b3b"
+    },
+    "historical_projection": "Prior generic AV/index-contract Source, name comments and records retain their earlier domains; new distinct whole actual Source does not overwrite them."
+  },
+  "Source": {
+    "function": "bsp::insert_hint_native_input_preset_tree_006a15e0",
+    "source": "src/native_input_preset_tree_hint_insert.cpp",
+    "header": "include/bsp/native_input_preset_tree_hint_insert.hpp",
+    "source_sha256": "c2d1814511bbdf8f65d243765b145da3bad392d840f003ea77ea0268a588e8f1",
+    "header_sha256": "abd4ac127c2fd1ce60e3d4607338f888214901828bd0304ebaf0cc5f7238da3e",
+    "name_status": "Descriptive Source hypothesis; correct established STL library identity retained."
+  },
+  "ABI": {
+    "Native": "ECXtree, EDXunconsumed, stack(out8,hintOWNER,hintNODE,pair), RET10h, EAXactual output on eight ordinary exits; recovered from complete assembly, not invented from incomplete prototype.",
+    "Source": "Nine formal fastcall(real8Bout,byvalue8Bhint,pair,RawCtx&,actualfeatureRef,actuallocaleRef,existingCallees& plus ECXtree/deadEDX); eight physical stackDWORDs/RET20h; returns actual8B output. Actual CMake has seven physical returns after compiler path sharing.",
+    "private_storage": "Real NativeInputPresetTreeIterator8B from published preset erase header; real NativeInputPresetTreeInsertResult12B from published unique header reused as end8B or unique result. No flag/padding reads or synthetic Original frame/preimage parameter."
+  },
+  "ordered_effects": [
+    "Read count+8 before hint fields. Count0 reads private pair, CURRENT head+4, private output, then FBC0(direction1,head); childEAX ignored, retained output returned.",
+    "Nonempty CURRENT initialhead+4 then initialhead.left+0 precede original hintOWNER. Zero/mismatching owner invokes actual SDK; original hintNODE is read AFTER a returning diagnostic. Original owner/node remain distinct from mutable byvalue hint.",
+    "OriginalNODE==initialleft: less(pair,node+C); true inserts direction1 at originalnode and returns retained output. False reaches unique fallback.",
+    "Otherwise capture second CURRENT head BEFORE the second cached-owner diagnostic. Compare retained node/head BEFORE privatepair read; Source uses a private volatile predicate to preserve the compare/pair order, with spill/frame/flags differences qualified.",
+    "End arm: CURRENT head.rightmost read for less(rightmost+C,pair). On true reread CURRENT head.rightmost AFTER comparator and insert direction0; retained output returned. False reaches fallback.",
+    "Middle lesser arm: less(pair,originalnode+C); on true write mutable hintOWNER then NODE, actual predecessor mutates it. Read current predecessor for less(pred+C,pair). On true reread CURRENT predecessor after comparator; test pred.right.nil29. Nil inserts direction0 at currentpred, otherwise direction1 at originalnode. Failed predecessor ordering CONTINUES to greater comparison.",
+    "Greater arm: less(originalnode+C,pair). On true capture CURRENT head, reset mutable hintOWNER then NODE, initialize private end NODE before OWNER, actual successor then equality on real8B carriers. Read CURRENT successor AFTER equality even when equality is true; retain it across a reached less(pair,successor+C). If accepted, CURRENT originalnode.right.nil29 chooses direction0/originalnode or direction1/SAVEDsuccessor.",
+    "All seven FBC0 fast paths ignore childEAX and return their retained actual output. No extra private flag-upper-word input, entry-preimage promise or aggregate iterator snapshot is added.",
+    "Fallback passes real uninitialized12B private result to whole unique with same actual context/cells/callees. Consume actual returned pointer: load childOWNER -> read CURRENT private output -> store OWNER -> freshly read childNODE -> store NODE. Ignore insertedBYTE/three padding bytes. Aliasing and transitive child/provider writes are inherited.",
+    "No local catch, cleanup, key release, owner/default provider, guard, retry, revalidation, repair, rollback or noexcept; ordinary CurrentCpp child exceptions and diagnostic progress propagate."
+  ],
+  "Native_local_EH": "None in the complete entry. No action/catch/handler/FuncInfo owned or fabricated. Child CurrentCpp exceptions propagate without local rollback.",
+  "native_host_steps": [
+    {
+      "function": "006a15e0",
+      "address": "006a15ff",
+      "native": "0069fbc0",
+      "kind": "call",
+      "bytes": "e8bce5ffff",
+      "host": "bsp::insert_native_input_preset_tree_node_0069fbc0"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1620",
+      "native": "00bf6713",
+      "kind": "call",
+      "bytes": "e8ee505500",
+      "host": "bsp::invoke_native_invalid_parameter_00bf6713"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1639",
+      "native": "00443d00",
+      "kind": "call",
+      "bytes": "e8c226daff",
+      "host": "bsp::less_native_string_headers_with_callees_00443d00"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1651",
+      "native": "0069fbc0",
+      "kind": "call",
+      "bytes": "e86ae5ffff",
+      "host": "bsp::insert_native_input_preset_tree_node_0069fbc0"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a166d",
+      "native": "00bf6713",
+      "kind": "call",
+      "bytes": "e8a1505500",
+      "host": "bsp::invoke_native_invalid_parameter_00bf6713"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1687",
+      "native": "00443d00",
+      "kind": "call",
+      "bytes": "e87426daff",
+      "host": "bsp::less_native_string_headers_with_callees_00443d00"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a16a5",
+      "native": "0069fbc0",
+      "kind": "call",
+      "bytes": "e816e5ffff",
+      "host": "bsp::insert_native_input_preset_tree_node_0069fbc0"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a16bd",
+      "native": "00443d00",
+      "kind": "call",
+      "bytes": "e83e26daff",
+      "host": "bsp::less_native_string_headers_with_callees_00443d00"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a16d2",
+      "native": "0069aec0",
+      "kind": "call",
+      "bytes": "e8e997ffff",
+      "host": "bsp::decrement_native_input_preset_tree_iterator_0069aec0"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a16e2",
+      "native": "00443d00",
+      "kind": "call",
+      "bytes": "e81926daff",
+      "host": "bsp::less_native_string_headers_with_callees_00443d00"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1703",
+      "native": "0069fbc0",
+      "kind": "call",
+      "bytes": "e8b8e4ffff",
+      "host": "bsp::insert_native_input_preset_tree_node_0069fbc0"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1718",
+      "native": "0069fbc0",
+      "kind": "call",
+      "bytes": "e8a3e4ffff",
+      "host": "bsp::insert_native_input_preset_tree_node_0069fbc0"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1730",
+      "native": "00443d00",
+      "kind": "call",
+      "bytes": "e8cb25daff",
+      "host": "bsp::less_native_string_headers_with_callees_00443d00"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1750",
+      "native": "0069c0f0",
+      "kind": "call",
+      "bytes": "e89ba9ffff",
+      "host": "bsp::increment_native_input_preset_tree_iterator_0069c0f0"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a175e",
+      "native": "00699ef0",
+      "kind": "call",
+      "bytes": "e88d87ffff",
+      "host": "bsp::equal_native_input_preset_tree_iterators_00699ef0"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1772",
+      "native": "00443d00",
+      "kind": "call",
+      "bytes": "e88925daff",
+      "host": "bsp::less_native_string_headers_with_callees_00443d00"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a178f",
+      "native": "0069fbc0",
+      "kind": "call",
+      "bytes": "e82ce4ffff",
+      "host": "bsp::insert_native_input_preset_tree_node_0069fbc0"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a17a4",
+      "native": "0069fbc0",
+      "kind": "call",
+      "bytes": "e817e4ffff",
+      "host": "bsp::insert_native_input_preset_tree_node_0069fbc0"
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a17bd",
+      "native": "006a1050",
+      "kind": "call",
+      "bytes": "e88ef8ffff",
+      "host": "bsp::insert_unique_native_input_preset_tree_006a1050"
+    }
+  ],
+  "provider_contract": {
+    "same_actual_inputs": true,
+    "direct_children": {
+      "0069fbc0": "bsp::insert_native_input_preset_tree_node_0069fbc0",
+      "00443d00": "bsp::less_native_string_headers_with_callees_00443d00",
+      "00bf6713": "bsp::invoke_native_invalid_parameter_00bf6713",
+      "0069aec0": "bsp::decrement_native_input_preset_tree_iterator_0069aec0",
+      "0069c0f0": "bsp::increment_native_input_preset_tree_iterator_0069c0f0",
+      "00699ef0": "bsp::equal_native_input_preset_tree_iterators_00699ef0",
+      "006a1050": "bsp::insert_unique_native_input_preset_tree_006a1050"
+    },
+    "published_unique_gate": "1ab0ef5 in published baselinecd8a0a37725316495dcc8d17f1e64937cfa6fafd; previous readiness pending history stays immutable.",
+    "published_comparator_gate": "378bd140 published048d; provided comparator remains separate from old two-argument CurrentCRT Source.",
+    "published_FBC0_gate": "Actual published108a4a24e ancestry verified. Direction lowBYTE only; no private upperword preimage invented."
+  },
+  "evidence": {
+    "accepted_published_readiness": {
+      "path": "local/oct16_preset_hint_insert_full_readiness_published.json",
+      "sha256": "3202511647f0136420b21e45cb5716bf1737c27404181f5df3c3c2b942567602"
+    },
+    "Root_independent_readiness": {
+      "path": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/oct16_preset_hint_primary_readiness.json",
+      "sha256": "fa87c6091c88c086e8f8b06461eb53264126bda838d5365d319072060fc9d800"
+    },
+    "fresh_native": {
+      "path": "local/oct16_preset_hint_source_native_audit.json",
+      "sha256": "944aea4e209e328551efc79939cc417a44ea303ae760a514e6671cbd20873fa0"
+    },
+    "actual_CMake_COFF": {
+      "path": "local/oct16_preset_hint_actual_COFF_review.json",
+      "sha256": "4da52f874ce364ad5275d8e077106f80066a98cb1926bd701daf9d5e2f2193cb"
+    },
+    "code_accounting": {
+      "code_bytes": 771,
+      "instructions": 316,
+      "public_bytes": 698,
+      "public_instructions": 278,
+      "helper_bytes": 73,
+      "helper_instructions": 38,
+      "physical_RET20": 7,
+      "Native_RET10": 8,
+      "lexical_Source_exits": 8,
+      "Native_lexical_calls": 19,
+      "actual_child_REL32": 18,
+      "GS_REL32": 7,
+      "GS_DIR32": 1
+    },
+    "all_noncode": ".drectve47B/debug$S216B/chks6480B, zero noncode relocations; no BSS, weakdata, localEH, tables or padding."
+  },
+  "published_Main_baseline": {
+    "Source_checkout": "cd8a0a37725316495dcc8d17f1e64937cfa6fafd",
+    "provider_comparison_current_origin_Main": "8aaf1cbc62e209fc37913e06c7a2f1cff3b56fb8",
+    "ancestry_gate_proved": true
+  },
+  "providers": [
+    {
+      "path": "src/native_vfs_date_leaf_providers.cpp",
+      "physical_sha256": "8a3615bec143538b10b50448e9e44948f3f36374b33cdc6878ad50de27f36559",
+      "LF_sha256": "8a3615bec143538b10b50448e9e44948f3f36374b33cdc6878ad50de27f36559",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "include/bsp/native_vfs_date_leaf_providers.hpp",
+      "physical_sha256": "ab6ba39ac240f79db04b7eb083eec54b58e27a93973c421d4fb03147b7a0a3e0",
+      "LF_sha256": "ab6ba39ac240f79db04b7eb083eec54b58e27a93973c421d4fb03147b7a0a3e0",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "src/native_crt_stricmp.cpp",
+      "physical_sha256": "e706069c71de1de114a98ed21cc37832fc0a3f1c00bb52ef8992e2f7422d1c8d",
+      "LF_sha256": "e706069c71de1de114a98ed21cc37832fc0a3f1c00bb52ef8992e2f7422d1c8d",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "include/bsp/native_crt_stricmp.hpp",
+      "physical_sha256": "f09ff088480b1db82a49dc5d185956062fd5118e3cb7b70e008c04726a59b92f",
+      "LF_sha256": "f09ff088480b1db82a49dc5d185956062fd5118e3cb7b70e008c04726a59b92f",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "src/native_crt_ascii_stricmp.cpp",
+      "physical_sha256": "3fe3b237b778e9500e30c11dbbb43f295c24915a2836bd097ceec04760125368",
+      "LF_sha256": "3fe3b237b778e9500e30c11dbbb43f295c24915a2836bd097ceec04760125368",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "include/bsp/native_crt_ascii_stricmp.hpp",
+      "physical_sha256": "b62a16f1efbfc03d33e61eb33250885af5ccca224303f8f8cd959883dc97a3e9",
+      "LF_sha256": "b62a16f1efbfc03d33e61eb33250885af5ccca224303f8f8cd959883dc97a3e9",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "physical_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "LF_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "physical_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "LF_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "src/native_input_preset_iterator_equal.cpp",
+      "physical_sha256": "1056e9b67c6a038e9182017a1e7894709575c7f06ac6808f0cbd31225a2fdf04",
+      "LF_sha256": "1056e9b67c6a038e9182017a1e7894709575c7f06ac6808f0cbd31225a2fdf04",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "include/bsp/native_input_preset_iterator_equal.hpp",
+      "physical_sha256": "c6a408b7f557daab0e8882b048089854b96e5332a269650d36c14e086d0e86dd",
+      "LF_sha256": "c6a408b7f557daab0e8882b048089854b96e5332a269650d36c14e086d0e86dd",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "src/native_input_preset_tree_predecessor.cpp",
+      "physical_sha256": "1057060a3329dc67ad439d04969e3a18acf9ef04d7749d6c6025f4a1bba26577",
+      "LF_sha256": "1057060a3329dc67ad439d04969e3a18acf9ef04d7749d6c6025f4a1bba26577",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "include/bsp/native_input_preset_tree_predecessor.hpp",
+      "physical_sha256": "d51916c2e5873cca0a3b6b890ecfcc777d2ce77abc046e33e3cc8baeb50ba33f",
+      "LF_sha256": "d51916c2e5873cca0a3b6b890ecfcc777d2ce77abc046e33e3cc8baeb50ba33f",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "src/native_input_preset_tree_leaves.cpp",
+      "physical_sha256": "05db82735e65006410f798622cd856aa9fe163b3676afc151fcf9c86b2e12283",
+      "LF_sha256": "05db82735e65006410f798622cd856aa9fe163b3676afc151fcf9c86b2e12283",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "include/bsp/native_input_preset_tree_leaves.hpp",
+      "physical_sha256": "88785beefdae77cc9ee3efdb9b95a02988cfc08f352acc1525ec0d01bfcfddac",
+      "LF_sha256": "88785beefdae77cc9ee3efdb9b95a02988cfc08f352acc1525ec0d01bfcfddac",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "src/native_input_preset_tree_erase.cpp",
+      "physical_sha256": "10f4e003bc45c7c822f51167d89a80c6a0a3667e41bc6ebe52323eed00a21e76",
+      "LF_sha256": "10f4e003bc45c7c822f51167d89a80c6a0a3667e41bc6ebe52323eed00a21e76",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "include/bsp/native_input_preset_tree_erase.hpp",
+      "physical_sha256": "5d1224d3cdde8dd5e9b25d59282df460a43b67b159427ff7b4bc45d202970615",
+      "LF_sha256": "5d1224d3cdde8dd5e9b25d59282df460a43b67b159427ff7b4bc45d202970615",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "src/native_input_preset_node_factory.cpp",
+      "physical_sha256": "7a8359b1116d5c854211020816c7bac5c42764a8d8caa16f102ebc1c325774f9",
+      "LF_sha256": "7a8359b1116d5c854211020816c7bac5c42764a8d8caa16f102ebc1c325774f9",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "include/bsp/native_input_preset_node_factory.hpp",
+      "physical_sha256": "467b44ccd5cdd64c3a64f694b25bf711fe451600ea4fd08b0e9c40e79dda196e",
+      "LF_sha256": "467b44ccd5cdd64c3a64f694b25bf711fe451600ea4fd08b0e9c40e79dda196e",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "src/native_input_preset_pair_copy_construct.cpp",
+      "physical_sha256": "3b31823105a4eb75fe402e40edd069f5db968815d966571061b71989e476538e",
+      "LF_sha256": "3b31823105a4eb75fe402e40edd069f5db968815d966571061b71989e476538e",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "include/bsp/native_input_preset_pair_copy_construct.hpp",
+      "physical_sha256": "7eb86f8175741f3f9938f51ffb4e97949ec604bfaf4af9c1280cfa1445d91a67",
+      "LF_sha256": "7eb86f8175741f3f9938f51ffb4e97949ec604bfaf4af9c1280cfa1445d91a67",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "LF_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "physical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "LF_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "src/native_input_settings_tree_insertion.cpp",
+      "physical_sha256": "ebd83749d995ca16a7affcfd9bf0637383ccb172cd71e37d2ab5c26036b72ba4",
+      "LF_sha256": "ebd83749d995ca16a7affcfd9bf0637383ccb172cd71e37d2ab5c26036b72ba4",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "include/bsp/native_input_settings_tree_insertion.hpp",
+      "physical_sha256": "ec88bb50d0740576528362ae81c5afe73b1c9959752f4af1a29631ffe695ac70",
+      "LF_sha256": "ec88bb50d0740576528362ae81c5afe73b1c9959752f4af1a29631ffe695ac70",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "src/native_input_preset_tree_insert.cpp",
+      "physical_sha256": "2d0c990434d149baba51f1356491020c4579d74e29a2f7736d68d88090b29999",
+      "LF_sha256": "2d0c990434d149baba51f1356491020c4579d74e29a2f7736d68d88090b29999",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "include/bsp/native_input_preset_tree_insert.hpp",
+      "physical_sha256": "895e1fe0468b3248f5588b4784118b717130c1c1c77fc152b7907f25450fe2bc",
+      "LF_sha256": "895e1fe0468b3248f5588b4784118b717130c1c1c77fc152b7907f25450fe2bc",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "src/native_string_header_less_actual.cpp",
+      "physical_sha256": "c0c2e1c035ecf7092acb4bb83586b63d94cf65e6607631fc71d35cd8b80b014a",
+      "LF_sha256": "c0c2e1c035ecf7092acb4bb83586b63d94cf65e6607631fc71d35cd8b80b014a",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "include/bsp/native_string_header_less_actual.hpp",
+      "physical_sha256": "0797bd4280fa8e57b79bf74271890de3254d3c0d950e5a7cef7bf041874192b2",
+      "LF_sha256": "0797bd4280fa8e57b79bf74271890de3254d3c0d950e5a7cef7bf041874192b2",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": true
+    },
+    {
+      "path": "src/native_input_preset_tree_unique_insert.cpp",
+      "physical_sha256": "9c6c5a633fb9238da584cdf6da50f447ee2219bac0ace7671f6bcd8f652ec464",
+      "LF_sha256": "9c6c5a633fb9238da584cdf6da50f447ee2219bac0ace7671f6bcd8f652ec464",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": false
+    },
+    {
+      "path": "include/bsp/native_input_preset_tree_unique_insert.hpp",
+      "physical_sha256": "6960ecdf93a56fd4540a9c791a2f3cb0c3344eb40fa0e390c4420d1a9f67efe2",
+      "LF_sha256": "6960ecdf93a56fd4540a9c791a2f3cb0c3344eb40fa0e390c4420d1a9f67efe2",
+      "current_published_Main_LF_equal": true,
+      "prior28_LF_unchanged": false
+    }
+  ],
+  "provider_receipt": {
+    "path": "local/oct16_preset_hint_provider_fingerprints.json",
+    "sha256": "b9dc153cb110fe42ef78de39ad949803a695657778e39059410364b48a0cb403"
+  },
+  "preservation": {
+    "prior_objects": {
+      "path": "local/oct16_preset_hint_preserved_objects.json",
+      "sha256": "5b66791ea4872ac0127f16b33ae6cb9198ebddaad39f518e025dbf705961dbe3"
+    },
+    "unique_original_and_alternate_objects": {
+      "path": "local/oct16_preset_hint_unique_objects_preserved.json",
+      "sha256": "e7854fb33da1fee023ba1b248239f60c9f6137a4a9d74a68a529372f4090e966"
+    },
+    "both_int_worker_cited_paths_preserved": true,
+    "normal_incremental_build_only": true,
+    "immutable_prior_readiness": {
+      "hint": {
+        "path": "local/oct16_preset_hint_insert_full_readiness.json",
+        "sha256": "0c88f437682683379ec58eb73043f4188dcec8a7db7212828b3cd37104cb923b"
+      },
+      "published_hint": {
+        "path": "local/oct16_preset_hint_insert_full_readiness_published.json",
+        "sha256": "3202511647f0136420b21e45cb5716bf1737c27404181f5df3c3c2b942567602"
+      },
+      "map": {
+        "path": "local/oct16_preset_map_index_full_readiness.json",
+        "sha256": "9791c6e8e8e243e18163fc3ea20e19c597c740eab6da3b7b26756a83c01a6486"
+      }
+    },
+    "prior_comparator_frozen": {
+      "path": "local/oct16_native_string_header_less_actual_frozen_pin.json",
+      "sha256": "0ff06878bd1323c6ea5b63f17072b65566a717547b1c966af2e54c229b0fd7c8"
+    },
+    "prior_Root_comparator_seals": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/oct16_string_header_less_primary.json",
+        "sha256": "94c68b97b9f06415c9a4ef12cf5a87048bb44418972e603e2c91dd393d562c7e"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/oct16_string_header_less_primary_frozen.json",
+        "sha256": "6d8632143e966953135c820491629edd580b9806e92bcd1a0e353d017ecf7a67"
+      }
+    ],
+    "old_name_evidence_prefix_and_existing_reconstruction_records": "Address-owned append only; verified in precommit seal. No earlier Source files edited."
+  },
+  "validation": {
+    "default_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "configuration": "normal MSVC Win32 Release/default existing configuration",
+      "suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "passed": 3,
+      "failed": 0,
+      "CTest_seconds": 8.14,
+      "log": {
+        "path": "local/oct16_preset_hint_build.log",
+        "sha256": "49bb40cd9fac26fb9222b08023037e33e77bd63a4703d7e4e4d5d2860da01620"
+      },
+      "warning": "Existing LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn/lua_spawn_new; build and all existing tests pass."
+    },
+    "actual_COFF_checks": 13,
+    "Native_checks": "PE=live=prior508B, all210 current starts/all35 flows/all19 targets; retained identical-byte CFG shows all210 reachable/eight balancedRET10.",
+    "report_call_verifier": {
+      "state": "PASS",
+      "rows": 19,
+      "failed": 0,
+      "log": "local/oct16_preset_hint_final_call_verifier.txt",
+      "sha256": "b0070cbeac68ccc120def572841e1620dccbf4c87bbd9f79dae9cf8320a2bede"
+    },
+    "markdown_claim_verifier": {
+      "state": "PASS",
+      "claims": 19,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "git_diff_check": {
+      "state": "PASS",
+      "log": "local/oct16_preset_hint_diff_check.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "new_tests_or_probes": 0,
+    "Original_native_execution": false,
+    "fixture_or_game_validation": false
+  },
+  "primary_review": {
+    "state": "preliminary16PASS_no_findings_final_frozen_pin_acceptance_pending",
+    "preliminary": {
+      "path": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/oct16_hint_insert_primary.json",
+      "sha256": "abdd69c592a80aed656ab2d584213e5b8fdd84c00622c23a6ee457319e715ca3",
+      "checks": 16,
+      "findings": [],
+      "immutable": true
+    },
+    "final_seal": "Root will write a distinct immutable final seal after frozen-pin review; preliminary receipt remains unchanged."
+  },
+  "limits": [
+    "New Source fastcall interface has added borrowed RawCtx/actualfeature/actuallocale/existingCRTcallee inputs; it is not a drop-in Original binary ABI.",
+    "Actual valid address-backed raw Win32 storage must admit volatile DWORD/BYTE accesses and finite child walks. Source uses wrapping32 integer address arithmetic, existing real iterator/result carriers, and no host map, Node overlay or generic AV model.",
+    "Source passes canonical0 for unconsumed childEDX; no ambient dead-register identity. Source private parameter/local/predicate preloads, additional spill/GS checks, flags/registers/stack and frame aliases differ; fault/partial-write timing is not asserted.",
+    "Same actual RawCtx, borrowed0109EEA4, borrowed0109DE1C and existing NativeCrtStricmpCallees are required. The existing provided-CRT domain is not concrete locale/TLS/CRT-owner closure. No hoststricmp/default adapter/new callback/global or service substitution.",
+    "Provider owning-error transport/currentCRT allocation, SDK returning/throwing/terminating diagnostics and CurrentCpp exception domains remain inherited. Original FH3/SEH/RTTI/private frames/heap/locale/TLS/DF/runtime/game identity is unproved.",
+    "No whole-call output/padding entry-preimage guarantee: child/provider writes and overlapping aliases remain inherited, even though this body directly writes only the ordered output owner/node words.",
+    "Build/static Native/COFF evidence is not fixture, OriginalABI, Native execution or game validation. No new tests/probes/Native execution. Whole map-index006A1E70 and its action are separate unauthorized Source scope; existing AV/hook/typed APIs and records remain unchanged."
+  ],
+  "coverage": {
+    "entry": "006a15e0",
+    "kind": "whole_function",
+    "complete_normal_body": "006a15e0..006a17db inclusive",
+    "defined_bytes": 508,
+    "instruction_starts": 210,
+    "Native_returns": 8,
+    "all_normal_branches_and_calls": true,
+    "local_EH": "none",
+    "no_other_entry_or_fragment_promotion": true
+  },
+  "corrections": [
+    {
+      "was": "Early worker progress message said all8 emitted RET20; Root progress initially said19 actual child relocations. Neither had been frozen into a report.",
+      "is": "Native8RET10/eight logical Source exits; actual7RET20 and18 childREL32 after compiler path sharing. Total26 relocs=18childREL32+7GSREL32+1DIR32.",
+      "evidence": "Entire actual object parsed and all316instructions independently read by worker/Root; public offsets6D/DC/14B/1BF/259/27B/2B7."
+    }
+  ]
+}

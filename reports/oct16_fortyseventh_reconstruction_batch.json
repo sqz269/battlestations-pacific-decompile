@@ -1,0 +1,105 @@
+{
+  "packet": "oct16_fortyseventh_reconstruction_batch",
+  "status": "whole_ordinary_secure_move_primary_accepted_supplied_callee_domain_Win32_checked",
+  "Source_pin": "8f857d8cdf4424c327f18c0ad270c3f35208e7d6",
+  "frozen_quartet": {
+    "docs/OCT16_NATIVE_CRT_SECURE_MEMMOVE.md": "2a2107ce97630cfabd47a1948e7e78eb184616b9eceaf66dfffb1f3975d5436d",
+    "include/bsp/native_crt_secure_memmove.hpp": "87dd0694e63477665a70a91244462f96501bba4d45439db390693057dc5b5106",
+    "reports/oct16_native_crt_secure_memmove.json": "af82161122a1860b01799d93922cf5f2d2fd1cbac7ce51d75315569ba09e41b1",
+    "src/native_crt_secure_memmove.cpp": "9d8d3427fe5f5d111b8004275ddd95ef5a9524cccb4d59ebf8b004d83027b26a"
+  },
+  "scope": {
+    "whole_ordinary_entries": 1,
+    "Native": [
+      91,
+      43
+    ],
+    "owned_transfers": 4,
+    "old_CurrentSDK_interfaces_preserved": true
+  },
+  "primary": {
+    "receipt": "local\\oct16_secure_memmove_primary_frozen.json",
+    "sha256": "f810059b0de2fb97ad610ead9a8f9328aad3bebf4a70cef04c3acda46a93ce52",
+    "checks": 21,
+    "findings": [],
+    "preliminary_receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_secure_memmove_primary.json",
+    "preliminary_receipt_sha256": "d1a64e23b2eb6f8021ee7271adedf99a635329eea66a0700decf41fdb06b53ed",
+    "unchanged_provider_LF_fingerprints": 12
+  },
+  "compiled": {
+    "Root_object_sha256": "e89448d6e1efd877389da9e63adf4603dda0b358f3e3b362a0902870dcf665f1",
+    "worker_object_sha256": "2c8796be76e4ba53b644d7d6d4ba96f9c95f1e889434d0b3c94487e84a8b4c84",
+    "both_CODE_raw_bytes_and_symbolic_relocations_equal": true,
+    "CODE": [
+      133,
+      60
+    ],
+    "CODE_sections": 1,
+    "direct_BF87E0_REL32": 1,
+    "errno_virtual_calls_slot4": 2,
+    "invalid_virtual_calls_slot8": 2,
+    "locale_calls": 0,
+    "local_EH_BSS_padding_tables_helpers_or_data_relocations": false,
+    "noncode_bytes": {
+      "directives": 47,
+      "debug": 204,
+      "checksums": 32
+    }
+  },
+  "verification": {
+    "combined_tested_commit": "44d2a4526170327f4ae1037ac7332cea25b04abe",
+    "build_log": "local\\oct16_batch47_final_build.txt",
+    "build_log_sha256": "9d3dcb50c579654f6de643b1c44ad49be974cac3fcddb1d7b69ddbf5b875c7bd",
+    "default_build_exit": 0,
+    "existing_suites_passed": 3,
+    "seconds": 7.71,
+    "JSON_transfer_rows": 4,
+    "Markdown_transfer_claims": 4,
+    "saved_annotations": 1,
+    "refreshed_exports": 1,
+    "closeout_receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct16_native_crt_secure_memmove_closeout_receipt.json",
+    "closeout_receipt_sha256": "b589ff5d7d7489d9599652660af05a1cec41343b9378f8f2e5c1acbc40a609cd",
+    "preimages": {
+      "path": "local\\ghidra-annotations-20261016T100348Z.json",
+      "bytes": 866,
+      "SHA256": "641834fefd49102376bc1725d1c8f4f6d29bbfa15b391409bca3b75d5f452d5c"
+    },
+    "export_log": {
+      "path": "local\\oct16_native_crt_secure_memmove_exports.txt",
+      "bytes": 123,
+      "SHA256": "8492f8a320b483b4fd3b8ce85a3612b9692d024577433768ef4d29a65418b433"
+    },
+    "Original_full_prototype_output_unchanged": true,
+    "owned_registry_additions_exact_and_prior_records_preserved": true,
+    "one_Core_registration": true,
+    "actual_CMake_append_conflict_resolved_with_required_union_tool": true
+  },
+  "behavior": "Zero count returns before validation/callees/feature. Destination-null then source-null precedes unsigned capacity; volatile actual errno write of0x16 (22 decimal) or0x22 (34 decimal) precedes five-zero invalid call, cached literal returned only normally. Success invokes actual published BF87E0 with same feature reference and ignores pointer return. No clearing, cleanup, catch, retry or rollback.",
+  "Source_ABI": "Six caller-pop words/24B versus Native four/16B. Actual compiler keeps D/S registers, duplicates handler sites and pushes three private zero words before errno writes; public write-before-handler retained.",
+  "limits": "Whole ordinary Source uses the existing supplied-callee interface. No concrete Original errno/TLS/encoded-handler/locale initialization owner is supplied. Original ABI/private frames/registers/argument reloads/fault/SEH/FH3/DF/runtime/game identity remains unproved; existing suites do not execute this body.",
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Verified separately after publication"
+  },
+  "receipt_numeric_notation_clarification": "Immutable primary17/21 descriptive checks used hex shorthand 16/22; actual Source, Native and decoded COFF have 0x16 (22 decimal) for null pointers and 0x22 (34 decimal) for insufficient capacity. Those immutable artifacts remain unchanged.",
+  "runtime_frontier": {
+    "readiness": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct16_crt_error_runtime_binding_readiness.json",
+    "readiness_sha256": "1ec6c34c91e503e1f82768c58e00bf4d7c74bcb5d722d9273b62146ec1ca2c91",
+    "separate_addendum": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct16_crt_error_runtime_binding_readiness_addendum.json",
+    "separate_addendum_sha256": "2b5e02543aa68437c807b0ebfbfc8deaf990fb06743882d03e18346e0a1964c0",
+    "qualified_C05070_leaf_primary": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_tls_getter_primary_readiness_corrected.json",
+    "qualified_C05070_leaf_primary_sha256": "6b11ab6393cde855e0bfd75560af90f0e0791987e61dbcc53ac79339b433bcca",
+    "qualified_C05070_leaf_primary_checks": 13,
+    "concrete_runtime_or_instantiable_StricmpCallees_closed": false,
+    "exact_unclosed_owners": [
+      "00c050f8 thread-data initializer",
+      "00c0485a calloc wrapper and00c1c50f allocator implementation",
+      "00bf9dc8 actual free/heap closure",
+      "00c053dc TLS/encoded-slot startup",
+      "00bf7eec actual locale comparison"
+    ],
+    "additional_Source_or_Native_credit": 0,
+    "qualification": "Independent readiness preserves observed image words as analysis values, never runtime defaults. C05070 is only a separately proposed supplied-context leaf; current secure Source remains dependent on actual caller-provided CRT services."
+  }
+}

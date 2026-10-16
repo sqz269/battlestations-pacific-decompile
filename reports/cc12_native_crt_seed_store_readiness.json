@@ -1,0 +1,117 @@
+{
+  "status": "PASS_Root_readiness_Source_blocked",
+  "manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\local\\NativeCrtSeedStoreReadiness01\\root_manifest.json",
+    "bytes": 27111,
+    "sha256": "7559b50b3c525e1943be3e235cd262eb64f4dd6e6e8f4e6895453c882437eb9a"
+  },
+  "worker_commit": "17edaa4b363b83ba98cd79c86338b1309140540b",
+  "files": 99,
+  "own_pairs": 32,
+  "raw_records": 64,
+  "Original_prefix": {
+    "line_start": 1,
+    "line_end_inclusive": 2492,
+    "byte_start": 0,
+    "byte_end_exclusive": 7398529,
+    "bytes": 7398529,
+    "sha256": "f8908f2983eeb34748b779681ae8e7bd899228064177c65ea79cb97516a23bf3"
+  },
+  "current133freshinputs_hash_mtime_verified": true,
+  "Original_body": {
+    "utc": "2026-10-16T08:28:29.966934+00:00",
+    "stage": "Full discovered and leased body pinned before substantive analysis",
+    "entry": "00BF98C2",
+    "inclusive_end": "00BF98CE",
+    "bytes": 13,
+    "file_offset": 8362178,
+    "body_sha256": "aa37c46e09d61c3a280049a8d32f5ca9dfa65493811bc2b5eb5f15c88781dbc2",
+    "hex": "e867b900008b4c2404894814c3",
+    "installed_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "mtime_ns": 1720895268000000000,
+      "links": 1,
+      "readonly": false,
+      "observed_utc": "2026-10-16T08:28:29.973885+00:00"
+    },
+    "body": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\local\\NativeCrtSeedStoreReadiness01\\Original_body.bin",
+      "bytes": 13,
+      "sha256": "aa37c46e09d61c3a280049a8d32f5ca9dfa65493811bc2b5eb5f15c88781dbc2",
+      "mtime_ns": 1792139309966794900,
+      "links": 1,
+      "readonly": false,
+      "observed_utc": "2026-10-16T08:28:29.978189+00:00"
+    }
+  },
+  "Root_personal_reads": [
+    "629fa6 docbody and fourrow trace; cappedmissingparagraph readc642f7",
+    "0c47ac fullleaf schedule/provider/storage/blockers andraw13B"
+  ],
+  "source_ready": false,
+  "source_authorized": false,
+  "Source_credit": 0,
+  "Git_qualifications": [
+    {
+      "path": "docs/NATIVE_CRT_SEED_STORE_READINESS.md",
+      "Git_bytes": 6348,
+      "Git_sha256": "2c7bb2a1e98b88d0b28f2147e4af08a32607e74dc9b3e31adba5c9abbf322654",
+      "working": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\docs\\NATIVE_CRT_SEED_STORE_READINESS.md",
+        "bytes": 6348,
+        "sha256": "2c7bb2a1e98b88d0b28f2147e4af08a32607e74dc9b3e31adba5c9abbf322654"
+      },
+      "literal_equal": true,
+      "CRLF_only_when_nonliteral": false
+    },
+    {
+      "path": "reports/native_crt_seed_store_readiness.json",
+      "Git_bytes": 8361,
+      "Git_sha256": "ae7162fe529a39d3517a65f7be9ca081b52dc1b7822f64816a578593eeaa20b2",
+      "working": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\reports\\native_crt_seed_store_readiness.json",
+        "bytes": 8361,
+        "sha256": "ae7162fe529a39d3517a65f7be9ca081b52dc1b7822f64816a578593eeaa20b2"
+      },
+      "literal_equal": true,
+      "CRLF_only_when_nonliteral": false
+    }
+  ],
+  "leaf_access_schedule": [
+    "CALL writes the four-byte return offset to the actual native stack under ordinary Win32 flat stack assumptions, then transfers to __getptd. Provider body and side effects are outside this packet.",
+    "Only after a normal provider return with expected stack restoration: MOV ECX,DWORD [ESP+4] reads all 32 argument bits. No argument payload load precedes the provider call.",
+    "MOV DWORD [EAX+0x14],ECX writes exactly four bytes. There is no local null check, bounds guard, value mask, previous-field read, repeat store or arithmetic transformation.",
+    "RET consumes the actual stack return offset, with no immediate stack-argument cleanup. EAX is unchanged after the call; ECX holds the loaded DWORD. Logical return type remains unestablished."
+  ],
+  "blockers": [
+    "Authenticate the actual named __getptd return contract, including normal return versus failure, termination, exceptions and error-state preservation/effects.",
+    "Establish a genuine live writable returned allocation, provenance and extent covering returned pointer + 0x14 through +0x17, with nonwrapping address arithmetic and a permitted exact DWORD write.",
+    "Establish exclusive or otherwise valid write ownership, object/storage lifetime, initialization policy, thread identity/TLS association, reentrancy and concurrency rules.",
+    "Authenticate provider ABI: no native stack arguments for this call, expected stack restoration, returned EAX meaning, volatile/nonvolatile preservation, segment/stack assumptions and failure paths.",
+    "Resolve the leaf logical return contract and its saved undefined(void) prototype against the post-provider incoming DWORD argument read; no prototype or listing repair is authorized here.",
+    "Retain after-provider argument-home timing and explicitly scope out provider/callee-frame, argument-home or private-stack self-alias protocols before choosing an ordinary by-value C++ interface."
+  ],
+  "named_provider": {
+    "address": "00C0522E",
+    "name": "__getptd",
+    "saved_prototype": "_ptiddata __cdecl __getptd(void)",
+    "saved_body": "00C0522E..00C05245; metadata only, no body read",
+    "indexed_callers": 43,
+    "indexed_callee_labels": [
+      "00BFBA09 __amsg_exit",
+      "00C051B7 LIBCRT_unmatched_00c051b7"
+    ],
+    "reconstruction_ledger_record_shown": false,
+    "Source_binding_approved": false,
+    "existing_named_docs": "Limited first-entry metadata only; explicitly no returned pointer/service/layout/ownership/return guarantee.",
+    "other_harness_scope": "goal_oct15_crt_tls_ptd_owner_contract remains separate; no provider/SCC range or files claimed."
+  },
+  "qualification": "Seed/srand interpretation provisional, Originalname preserved. No provider/SCC/caller expansion or fakecontext/SDK/Source implementation. Exactfourinstructions normalpostprovider argumentread/store/rawDWORD scope only; physicalreturn/ABI/storageownership remainsopen.",
+  "schema": "bsp.cc12.native_crt_seed_store.primary_readiness.v1",
+  "Root_authentication": "cac714",
+  "Original_ABI_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false
+}

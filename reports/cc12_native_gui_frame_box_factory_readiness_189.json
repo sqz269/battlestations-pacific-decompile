@@ -1,0 +1,653 @@
+{
+  "packet": "cc12_native_gui_frame_box_factory_readiness_189",
+  "status": "whole_Native_factory_readiness_confirmed_bounded_Source_orchestration_pending",
+  "read_only": true,
+  "source_implemented": false,
+  "source_ready": false,
+  "new_Native_body_or_Source_credit": 0,
+  "candidate_next_packet": "Whole actual AA1A40 factory over real current providers plus narrow persistent metadata/slot disposition",
+  "candidate_has_unknown_Native_callee_blocker": false,
+  "worker_baseline": "fe1e6982b833a9078a538047fb73b0c1a0bcd49f",
+  "accepted184_commit": "fe1e6982b833a9078a538047fb73b0c1a0bcd49f",
+  "qualified175_provider_import_commit": "d3156dc0df32171c7e2c8bc6cabc6e514e8409d7",
+  "Main_merge_or_Root_working_Source_import": false,
+  "original": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "ghidra": {
+    "project": "bsp",
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "every_wrapper_verifies_project_program_language_imagebase": true,
+    "mutations": 0,
+    "annotation_ledger_listing_or_function_changes": 0
+  },
+  "functions": [
+    {
+      "address": "00aa1a40",
+      "exclusive_end": "00aa1ac4",
+      "native_bytes": 132,
+      "native_instruction_starts": 40,
+      "last_instruction": "00aa1ac3 RET1byte",
+      "name_preserved": "BSP_GuiFrameBox_AllocateAndConstruct",
+      "original_abi": "ECX optional actual source, saved ESI before allocation; EAX ctor result or0; RET no stack argument",
+      "existing_source": "src/gui_widgets_cc13.cpp generic real-pool factory delegates constructor host; not actual-storage factory closure",
+      "new_source": null
+    }
+  ],
+  "calls": [
+    {
+      "address": "00aa1a5e",
+      "native": "00ad0280",
+      "function": "00aa1a40",
+      "kind": "call"
+    },
+    {
+      "address": "00aa1a7a",
+      "native": "00ad27a0",
+      "function": "00aa1a40",
+      "kind": "call"
+    },
+    {
+      "address": "00aa1a9d",
+      "native": "00ad2600",
+      "function": "00aa1a40",
+      "kind": "call"
+    },
+    {
+      "address": "00cb6f83",
+      "native": "00acf8e0",
+      "function": "00cb6f80",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb6f8b",
+      "native": "00acf8e0",
+      "function": "00cb6f88",
+      "kind": "tail_jump"
+    }
+  ],
+  "call_scope": "3 whole-factory CALLs and2 exact outer unwind tails; historical pool routes are separately reused94 proofs, handler/runtime private ABI is not a new Source callee",
+  "schedule": {
+    "capture_source": "00aa1a57 before allocator callbacks",
+    "native_request": "ECX11C atAA1A59; AD0280 overwritesECX with canonicalpool",
+    "capture_slot": "00aa1a65 factorylocal [EBP-10]",
+    "copy_state": 0,
+    "default_state": 1,
+    "allocation_null": "Both arms return0 without construction or slotreturn",
+    "successful_ctor_result": "Return genuine EAX; no added hook/state/retain/registration"
+  },
+  "outer_EH": {
+    "handler_entry": "00cb6f90",
+    "handler_runtime_jmp": "00cb6f95",
+    "func_info": "00ded610",
+    "func_info_bytes": 36,
+    "max_state": 2,
+    "map": "00ded600",
+    "map_bytes": 16,
+    "actions": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00cb6f80",
+        "captured_slot": "[EBP-10]",
+        "tail": "00acf8e0"
+      },
+      {
+        "state": 1,
+        "next": -1,
+        "action": "00cb6f88",
+        "captured_slot": "[EBP-10]",
+        "tail": "00acf8e0"
+      }
+    ],
+    "allocation_escape_before_state_arm": true,
+    "no_count_material_gate_or_extra_destructor": true,
+    "only_after_selected_constructor_unwind_return": true,
+    "private_FH3_SEH_double_exception_equivalence": false
+  },
+  "native_proofs": [
+    {
+      "address": "00aa1a40",
+      "bytes": 132,
+      "kind": "factory",
+      "sha256": "873fe97644427b09b861847cf503a7b1022290c977868449e3dac4874963f809",
+      "fresh_live_equal_installed": true,
+      "instruction_starts": 40,
+      "exclusive_end": "00aa1ac4"
+    },
+    {
+      "address": "00ad2600",
+      "bytes": 152,
+      "kind": "reached_default",
+      "sha256": "0273c092ec8965f527d401e2e3a551e27cd570226244dcbaeb4855d9867da63c",
+      "fresh_live_equal_installed": true,
+      "instruction_starts": 31,
+      "exclusive_end": "00ad2698"
+    },
+    {
+      "address": "00cb6f80",
+      "bytes": 8,
+      "kind": "copy_slot_action",
+      "sha256": "bca36765adeee4df549528c8434dd198f4db82d3aaa93b40db996bbf923d2f18",
+      "fresh_live_equal_installed": true,
+      "instruction_starts": 2,
+      "exclusive_end": "00cb6f88"
+    },
+    {
+      "address": "00cb6f88",
+      "bytes": 8,
+      "kind": "default_slot_action",
+      "sha256": "c3584b965bbf12a92837d08569f187822e99135b0bce7d054754bd6af0f716ea",
+      "fresh_live_equal_installed": true,
+      "instruction_starts": 2,
+      "exclusive_end": "00cb6f90"
+    },
+    {
+      "address": "00cb6f90",
+      "bytes": 10,
+      "kind": "handler",
+      "sha256": "3d47bb9c6b3b9e97b4a7f07a26eae3db42c9f7319718a1a1b00d392ea33fa343",
+      "fresh_live_equal_installed": true,
+      "instruction_starts": 2,
+      "exclusive_end": "00cb6f9a"
+    },
+    {
+      "address": "00ded600",
+      "bytes": 16,
+      "kind": "unwind_map",
+      "sha256": "5eed339c724280b3eb5d9088213d6d22539923cef496e9d7ab9b435c7c557f71",
+      "fresh_live_equal_installed": true
+    },
+    {
+      "address": "00ded610",
+      "bytes": 36,
+      "kind": "func_info",
+      "sha256": "844d11b91a5dcccc64e964fff6610b3f471f89e1acf124003aacc3149f6f733d",
+      "fresh_live_equal_installed": true
+    }
+  ],
+  "pool": {
+    "publication": "00F8C188",
+    "not_pool_base": "00F8C18C",
+    "payload": 284,
+    "stride": 288,
+    "hidden_slab_index": 284,
+    "slots_per_slab": 16,
+    "slab_bytes": 4644,
+    "free_stack_offset": 4608,
+    "free_count_offset": 4640,
+    "native_selector": "AD0280/ACF8E0 both selectF8C188",
+    "native_stride_evidence": "ACF627 loads slot+11C; ACF637 IMUL38E38E39/SAR6 implements signed/120; AD0073 slab1224",
+    "source": "SAME genuine GameNativeGuiWidgetPoolProcess<GuiFrameBoxPoolTraits>, existing shared E188B4 domain; requires completed explicit startup, no new pool",
+    "fresh_pool_body_audit": false,
+    "historical94_pool_byte_proofs_reused_and_current_disk_hash_equal": true,
+    "Source_allocate": "NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::allocate -> allocate_slot shared engine",
+    "Source_return": "SAME NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::free -> return_slot shared engine",
+    "must_start_explicitly_before_factory": true,
+    "failed_allocator_not_repaired_or_replayable_by_factory": true
+  },
+  "existing_genuine_providers": [
+    {
+      "address": "00ad2600",
+      "provider": "construct_native_gui_frame_box_default_00ad2600",
+      "whole": true,
+      "bytes": 152,
+      "starts": 31,
+      "required_domain": "RealAA9390(type18), same borrowed one/X/Y cells, freshactual11C+hidden120slot, preserved unwritten bytes",
+      "does_not_publish163_or_run169_147_or_makeModel4C": true
+    },
+    {
+      "address": "00ad27a0",
+      "provider": "copy_native_gui_frame_box_storage_00ad27a0",
+      "whole_accepted184": true,
+      "genuine_callees": [
+        "00aa9520",
+        "00ad2230",
+        "00ad0d80",
+        "00acf8f0"
+      ],
+      "success_lifetime": "Persistent SAME184 operation holds canonical163+125/119contexts; cannot discard while bound",
+      "failure_lifetime": "failed_unwind_returned only after applicable genuine name/119/base returns and private163 metadata retirement"
+    },
+    {
+      "provider": "NativeGuiFrameBoxReference public completed constructor",
+      "default_adoption": "After genuine returned96, prepared same125/empty119/fresh111span/currentprofile/canonicalregistry/pool; added Source admission error retains constructed object",
+      "count_or_fields_are_not_completion_proof": true
+    }
+  ],
+  "failure_frontier": {
+    "material_path": "169 AD10FC -> real B18A40 storesBox/retain1 and incrementsactual04; later failure may preserve a credit/partial material",
+    "Native_outer_action": "Return captured slot anyway after callee unwind; no rollback or leakfree guarantee",
+    "after_slot_return": "Old Box identity cannot justify material release/count/125/zero/destructor access, even if mapped/reused",
+    "external_partial_graph": "Independently retain creators/acquisitions/frames/provider obligations under genuine contracts; addresses are not liveness",
+    "Source_prepare119_state0_boundary": "After138 success beforestate2, prepare error gets onlyAA9730; no inventedvectorcleanup",
+    "unsupported_escape": "Entered/failed184 or nonreturning cleanup does not permit slot recovery; Source termination/retention limits remain explicit"
+  },
+  "recommended_next_Source": {
+    "scope": "Only wholeAA1A40 plus narrowly necessary parent-private metadata slot-return disposition",
+    "files_proposed": [
+      "include/bsp/native_gui_frame_box_allocation_storage.hpp",
+      "src/native_gui_frame_box_allocation_storage.cpp"
+    ],
+    "API_proposed": "void* allocate_native_gui_frame_box_00aa1a40(const void* optional_source, NativeGuiFrameBoxFactoryOperation&)",
+    "required_operation": "Persistent nondefault/noncopy/nonmove, same initializedpool/defaultbindings/184services+frames/fresh111arrays, independently retained aligned138/184backing beforecallbacks",
+    "success": "Transport SAME live184+163; default can use existing explicit postreturn public163adoption",
+    "failure": "Only returned genuine184unwind -> SAMEpoolreturn once -> private metadata-only terminal record; no extra cleanup/count/material/slotaccess/reset/retry",
+    "no_generic_abandonment_fallback_callback_protective_retain_or_new_owner": true,
+    "Source_admission_preparation_CPP_EH_differences_explicit": true
+  },
+  "preservation": {
+    "sealed184_manifest_sha256": "c35b14fcc5439ca78f8599aeb2202e4ac9d92fd53841827fda1a60a1f46f803a",
+    "all628_sealed184_payloads_unchanged": true,
+    "old138_142_148_158_163_166_174_178_families_not_written_or_regenerated": true,
+    "no_Source_CMake_ledger_Ghidra_write_build_probe_test_or_target_body_execution": true,
+    "Original_unchanged": true
+  },
+  "validation": {
+    "fresh_live_spans": 7,
+    "fresh_live_bytes": 362,
+    "all_fresh_live_equal_installed": true,
+    "historical94_pool_spans_current_disk_equal": 3,
+    "current_Source_inputs": 30,
+    "tests_builds_probes_or_target_body_execution": 0,
+    "Root_full_doc_review": "PASS",
+    "call_and_direct_reference_verification": "PASS"
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_gui_frame_box_factory.hpp",
+      "bytes": 2939,
+      "sha256": "51c9ecc3f14973a9f21cc1de52a05b9d34c0f522f7fbba3cbb77eb187e773853",
+      "git_blob": "854035e884f4d4417ad9889ac40ed92a7d77e5d0",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/51c9ecc3f14973a9_native_gui_frame_box_factory.hpp"
+    },
+    {
+      "path": "src/native_gui_frame_box_factory.cpp",
+      "bytes": 3221,
+      "sha256": "46124772e8af548dbd39ddf60800fa5dbb2a78efd18052c10bf85a0588a17532",
+      "git_blob": "c69ff3ef7d612a3d42840e5dab5d755301ea870d",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/46124772e8af548d_native_gui_frame_box_factory.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_copy_storage.hpp",
+      "bytes": 9124,
+      "sha256": "df745b5f43c24c733ea70053b86f4f435f10edc24d8994b315a6043e4656bc38",
+      "git_blob": "792f3a71374330266b71566219f6056471d6c7d9",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/df745b5f43c24c73_native_gui_frame_box_copy_storage.hpp"
+    },
+    {
+      "path": "src/native_gui_frame_box_copy_storage.cpp",
+      "bytes": 15538,
+      "sha256": "c12ddd83446bfafdea1f7c0441199e3c9b75759c2a80ccea4bdb9cf2ab4bafcd",
+      "git_blob": "2059cd7387408c81b1ace05e6241841df9c816c8",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/c12ddd83446bfafd_native_gui_frame_box_copy_storage.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_identity.hpp",
+      "bytes": 6582,
+      "sha256": "3dcfc3e05964f5dc3b1637eb7340eafe103010c6d9fda06c462879cc2f57e079",
+      "git_blob": "c74e5f510d16a1c81cccb8ba601b36bb17b9781b",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/3dcfc3e05964f5dc_native_gui_frame_box_identity.hpp"
+    },
+    {
+      "path": "src/native_gui_frame_box_identity.cpp",
+      "bytes": 6912,
+      "sha256": "ed2f4cd928a2b36ab3b31204db7b30b1fd45d65d57b21dc25e7d33e2302e1566",
+      "git_blob": "ef9302b3cabf759b6a9203ccdee88da108e0376b",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/ed2f4cd928a2b36a_native_gui_frame_box_identity.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_lifetime.hpp",
+      "bytes": 4986,
+      "sha256": "17988ecd21d835c8d4fbcda035d32e0fde31fe3b24f9157230ac90f134f60994",
+      "git_blob": "a648821e312a89e4249752e8be88f2f615b82746",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/17988ecd21d835c8_native_gui_frame_box_lifetime.hpp"
+    },
+    {
+      "path": "src/native_gui_frame_box_lifetime.cpp",
+      "bytes": 7592,
+      "sha256": "a125c2ee90feea995e72dfce1910d6bb5b60d7dd0ff5856687a28b4c22ad8be8",
+      "git_blob": "02ea03259ba2669b0641b6347be9b30a9a2a8f3d",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/a125c2ee90feea99_native_gui_frame_box_lifetime.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_state_storage.hpp",
+      "bytes": 8790,
+      "sha256": "9c4f288d4035147a68f587da78c95d964e547e82aee4768093ab256587d097c5",
+      "git_blob": "4c706c0563601e99afafb2391c153b76d9fe7f7d",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/9c4f288d4035147a_native_gui_frame_box_state_storage.hpp"
+    },
+    {
+      "path": "src/native_gui_frame_box_state_storage.cpp",
+      "bytes": 33379,
+      "sha256": "8e1e8f5984d65251f9df2b9cc1c5bfd7255ec1e4f69b5ed0f739a66d3816bffe",
+      "git_blob": "d45538e259f4348712e6981dd4bae0802e739311",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/8e1e8f5984d65251_native_gui_frame_box_state_storage.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_vector_copy.hpp",
+      "bytes": 8026,
+      "sha256": "56ab72bffcd3efb90148d833dec6ce35865130c1b54cfd666e40cb7e389189bf",
+      "git_blob": "6e7b55d2d5c2ad8b1e36e74b17978e9b455f0126",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/56ab72bffcd3efb9_native_gui_frame_box_vector_copy.hpp"
+    },
+    {
+      "path": "src/native_gui_frame_box_vector_copy.cpp",
+      "bytes": 12346,
+      "sha256": "e8e6656c64d8855e8f9fb24581207c1d973afe6756a8570c234a3da398c1783c",
+      "git_blob": "148623cefcbae6a74e0e18bbd7c28f02816d0884",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/e8e6656c64d8855e_native_gui_frame_box_vector_copy.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "bytes": 21096,
+      "sha256": "990c015f2b0fc9cffc29436a69c9a52d057fcdb21c93c5f849a31e72d01235e4",
+      "git_blob": "b7e3a21570936d4a7479c919174ed13a56b4e60a",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/990c015f2b0fc9cf_native_gui_frame_box_records.hpp"
+    },
+    {
+      "path": "src/native_gui_frame_box_records.cpp",
+      "bytes": 20199,
+      "sha256": "2c5f95a919411884df592c961257fced2a8541668b8ad038464e35b2fed62b4c",
+      "git_blob": "642d53741ed0b01e7976e01003b1d9c65aecc038",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/2c5f95a919411884_native_gui_frame_box_records.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_base_storage.hpp",
+      "bytes": 1081,
+      "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab",
+      "git_blob": "61c72c99fab59f5c86da392495d7bae5381607cf",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/35748704f96ed477_native_gui_widget_base_storage.hpp"
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "bytes": 3008,
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+      "git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/4ddd5ab1ad4a2b81_native_gui_widget_base_storage.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_copy_storage.hpp",
+      "bytes": 1724,
+      "sha256": "dd3d8b700a9dda51037bf2722a893402ebd2ae3d3358ad83fd3358325f57d307",
+      "git_blob": "8867180c85381dcbd78e63dfb510ca5ba74a8ef2",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/dd3d8b700a9dda51_native_gui_widget_copy_storage.hpp"
+    },
+    {
+      "path": "src/native_gui_widget_copy_storage.cpp",
+      "bytes": 5636,
+      "sha256": "66f5f04b8e71d79eba7e1791e57924a2679ef630fa4bffc80bb0f8b22d9367ae",
+      "git_blob": "cdecd59b10e8617d2c2db3d67e17113658b9a62a",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/66f5f04b8e71d79e_native_gui_widget_copy_storage.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_pools_cc13.hpp",
+      "bytes": 12674,
+      "sha256": "fd2be32f59443f79787b5006a628b9d0f78597b4d4dff62d09dbc65831c1fed3",
+      "git_blob": "759fba46de564d4d09549b0f3950bf2bbfc4f718",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/fd2be32f59443f79_native_gui_widget_pools_cc13.hpp"
+    },
+    {
+      "path": "src/native_gui_widget_pools_cc13.cpp",
+      "bytes": 3180,
+      "sha256": "e9fa3a2f4e8d0f644d601aa974bab567f8cd36e5c9ea958ae06aacaca4b5e925",
+      "git_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/e9fa3a2f4e8d0f64_native_gui_widget_pools_cc13.cpp"
+    },
+    {
+      "path": "src/native_material_pools.cpp",
+      "bytes": 24320,
+      "sha256": "52c0de304c861907c1799517e038e8383ca62829e12176eb1b48f406d163c95a",
+      "git_blob": "b488015a211952463ac5c1fb78e1f42a9aeca917",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/52c0de304c861907_native_material_pools.cpp"
+    },
+    {
+      "path": "include/bsp/native_material_owner.hpp",
+      "bytes": 5986,
+      "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+      "git_blob": "fee25270c9758390575b4b1500781fc1a7bccdf2",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/e4583162e05d346f_native_material_owner.hpp"
+    },
+    {
+      "path": "src/native_material_owner.cpp",
+      "bytes": 9483,
+      "sha256": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+      "git_blob": "98c7c3495ec76c5a15b13de8c9bc869f7a601958",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/349fad1d983e763d_native_material_owner.cpp"
+    },
+    {
+      "path": "src/gui_widgets_cc13.cpp",
+      "bytes": 75116,
+      "sha256": "20312bdde0d2a577300c6431ea53a54aaaaf6c05c3c6670dc655c20864bb74da",
+      "git_blob": "4511ee034957d5d2322c36deae1ee9618ac847bb",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/20312bdde0d2a577_gui_widgets_cc13.cpp"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "bytes": 10071,
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/6c10dc5e62a3d68d_native_render_context.hpp"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "bytes": 11471,
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/89fed23e4c27fd57_native_render_context.cpp"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/366e5a64ac945473_target.json"
+    },
+    {
+      "path": "tools/bsp.py",
+      "bytes": 84752,
+      "sha256": "133e2cf3f24f0402f6ed7d0e1dd5148c678c7ca10722633d1ec6cdc9b693a9ff",
+      "git_blob": "87bf468735a7cb65b72b8daa4130ebf100f5d4cc",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/133e2cf3f24f0402_bsp.py"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "bytes": 14518,
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/66171a58aafde035_ghidra_export.py"
+    },
+    {
+      "path": "tools/verify_report_calls.py",
+      "bytes": 20467,
+      "sha256": "f3f412b6f8eaeb6c4b212e34cca6a2567c2ed4015d0a942268d752911f6913ef",
+      "git_blob": "72ff1e896ef495dc4eebc157f686486d55172713",
+      "frozen": "local/cc12_native_gui_frame_box_factory_readiness_189/inputs/f3f412b6f8eaeb6c_verify_report_calls.py"
+    }
+  ],
+  "doc": {
+    "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_FACTORY_READINESS_189.md",
+    "bytes": 12483,
+    "sha256": "5f479d97a4866f5394dc1cc5734822c76359a2cccea3ac6485fd76898db590a3"
+  },
+  "artifacts": [
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/backend.txt",
+      "bytes": 39,
+      "sha256": "80c724ed8328690aaaa502d9ad6954b39390cfb6e51d488c4eeade41ef707ad0"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/factory_proto.txt",
+      "bytes": 1158,
+      "sha256": "9e87970626f2f0aba22fdcc7319078ad83f16a682824d72bf3e767c59f0d0b20"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/default_proto.txt",
+      "bytes": 707,
+      "sha256": "10d7540cc7eb8d55a8d4703144541bb0412d01d8749ed803eeab9a264c0e29b3"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/factory_live_asm.txt",
+      "bytes": 1073,
+      "sha256": "ac1152e346449a69f0ac3b8b4a51b3bf33b809803f465f78d18becf1a6fcf95e"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/default_live_asm.txt",
+      "bytes": 1038,
+      "sha256": "f3a9c3d022e96cb8a989347e252b549cf3240a0e4ff6001f8232967137c30c5b"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/native_bytes.json",
+      "bytes": 16714,
+      "sha256": "87cdc6448b7b9aa86e031f8c390e8ebc7591046678765d403300e5284cf5fc81"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/pool_provenance.json",
+      "bytes": 7611,
+      "sha256": "3a701c764d8d911e112c0f4b8d8307e9fb5db2a190bb6eafcea0268f6c95c258"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/source_inputs.json",
+      "bytes": 11134,
+      "sha256": "9a4f47403b775cc7d807d8a64346b25513b98863e66128b333458ed1768b2f68"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/preservation.json",
+      "bytes": 350,
+      "sha256": "b1324ee2706b9d069c366349f3fe77657c423e8b9e32039856b02dde0cb7176d"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/history/report94.json",
+      "bytes": 21898,
+      "sha256": "b7814b187593d8ed8124ac1fd8cde3261c6d45e25992049af2cb5070e00daf9f"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/history/manifest184.json",
+      "bytes": 139826,
+      "sha256": "c35b14fcc5439ca78f8599aeb2202e4ac9d92fd53841827fda1a60a1f46f803a"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/history/report184.json",
+      "bytes": 17421,
+      "sha256": "ca663364affdd86e24f31b0aae19ff82f1f0d0f53a0006f208cc84e320e6b0f8"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/history/doc184.md",
+      "bytes": 12666,
+      "sha256": "77a478fa81d2654ca0a86e8e0f3c80e850c9d84742941659467b4fff62176861"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/live_00aa1a40.txt",
+      "bytes": 636,
+      "sha256": "0ce26598875e9f4a8fbb357cf219a80f624ffc6c01b02ad04e670af4570e81d1"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/00aa1a40.bin",
+      "bytes": 132,
+      "sha256": "873fe97644427b09b861847cf503a7b1022290c977868449e3dac4874963f809"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/live_00ad2600.txt",
+      "bytes": 728,
+      "sha256": "97f5b2d1d5a3eaf1e44f8c36cd8e3a2fd1965061d4ae5e59ab84546404786b18"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/00ad2600.bin",
+      "bytes": 152,
+      "sha256": "0273c092ec8965f527d401e2e3a551e27cd570226244dcbaeb4855d9867da63c"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/live_00cb6f80.txt",
+      "bytes": 44,
+      "sha256": "c5723e6bbd030ef1214a5c01d79ba0e48fd102192acdd11d59bfe6bfcfb693f2"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/00cb6f80.bin",
+      "bytes": 8,
+      "sha256": "bca36765adeee4df549528c8434dd198f4db82d3aaa93b40db996bbf923d2f18"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/live_00cb6f88.txt",
+      "bytes": 44,
+      "sha256": "3c8a9e8df3a6e53c272e74026020ad1a4daa214943f34352d6fa6d2c119d8c8f"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/00cb6f88.bin",
+      "bytes": 8,
+      "sha256": "c3584b965bbf12a92837d08569f187822e99135b0bce7d054754bd6af0f716ea"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/live_00cb6f90.txt",
+      "bytes": 52,
+      "sha256": "fdd8873abdc494f91497427d076abb2e0b6c452243f79ab5b9ad7e0fdc91f4f2"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/00cb6f90.bin",
+      "bytes": 10,
+      "sha256": "3d47bb9c6b3b9e97b4a7f07a26eae3db42c9f7319718a1a1b00d392ea33fa343"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/live_00ded600.txt",
+      "bytes": 76,
+      "sha256": "55da6ed70d94c1bc1804b9ced74cd1a44003d437059601d8661346ae40921885"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/00ded600.bin",
+      "bytes": 16,
+      "sha256": "5eed339c724280b3eb5d9088213d6d22539923cef496e9d7ab9b435c7c557f71"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/live_00ded610.txt",
+      "bytes": 180,
+      "sha256": "94ef1387f7aacf5a77c993bbba8a653ef565f55de841da18beb286aa457d1502"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/00ded610.bin",
+      "bytes": 36,
+      "sha256": "844d11b91a5dcccc64e964fff6610b3f471f89e1acf124003aacc3149f6f733d"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/root_review.json",
+      "bytes": 1163,
+      "sha256": "80e185ad405a5b0c669f15e5399f6a43a65ac7ce429a31f7278a884a5cac359f"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/call_verification.txt",
+      "bytes": 439,
+      "sha256": "5243e48bc92ac895ab421a61d0fa90700f0c66f6129341749f506d918cdd599d"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/verification_summary.json",
+      "bytes": 722,
+      "sha256": "31caf42ffc8a6503d6f7a59cdce1bd895b4caa59f574c007dcdef5930f8d444c"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_factory_readiness_189/verify_evidence.py",
+      "bytes": 5831,
+      "sha256": "1e2e406f59acb7cc80a970657e15a2f08ebafe7fe22ffd5f6b5a204d6bea7695"
+    }
+  ],
+  "private_manifest": {
+    "path": "local/cc12_native_gui_frame_box_factory_readiness_189/manifest.json",
+    "bytes": 15785,
+    "sha256": "a0023bbbc22976851b752fe08bb4a8554a99886c94931535624d6dd78c683117",
+    "item_count": 69,
+    "total_bytes": 722798,
+    "status": "sealed once; no post-seal regeneration"
+  },
+  "limits": [
+    "Read-only readiness, not implemented rawfactory or Native-body credit.",
+    "No allFrameBox input, unknown current-profile/Model/record family, general callback-range or heap closure.",
+    "No private EH/SEH/register replacement ABI, native/game execution or new tests/probes.",
+    "Source metadata scheduling and policy are not Native exception-origin proof.",
+    "Native slot return may orphan allocations/credits; no strong guarantee or later stale-identity cleanup is claimed."
+  ],
+  "direct_reference_check": {
+    "status": "PASS",
+    "Source_tool_config_refs": 30,
+    "artifact_refs": 31,
+    "doc_refs": 1
+  }
+}

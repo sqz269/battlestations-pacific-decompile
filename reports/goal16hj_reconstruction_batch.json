@@ -1,0 +1,281 @@
+{
+  "packet": "goal16hj_primary_integration",
+  "status": "independently_reviewed_reconstructed_build_tested_Ghidra_saved_for_Main_integration",
+  "generated_utc": "2026-10-16T07:55:18.125477+00:00",
+  "validated_Source_commit": "6f7937823df942d2bd1ed3b3e5e63f8ec88cae97",
+  "Main_input": "7c087ecd4076950b2eda86fea6a206c1c6459ce1",
+  "counts": {
+    "complete_functions": 5,
+    "Native_bytes": 251,
+    "Native_instructions": 104,
+    "Source_entry_bytes": 251,
+    "exact_whole_bodies": 3,
+    "exact_Native_bytes": 93,
+    "qualified_complete_bodies": 2,
+    "qualified_Native_bytes": 158,
+    "complete_Source_modules_in_primary_proof": 5,
+    "complete_Source_module_executable_bytes": 1124,
+    "H_entire_Source_module_bytes": 346,
+    "H_Source_SDK_bridge_and_COMDAT_bytes": 188,
+    "unchanged_supporting_Source_module_bytes": 685,
+    "J_entire_Source_module_bytes": 93
+  },
+  "entries": [
+    {
+      "address": "0048e400",
+      "packet": "GOAL16H",
+      "Native_bytes": 68,
+      "Source_entry_bytes": 68,
+      "instructions": 28,
+      "coverage": "complete",
+      "whole_body_exact": false,
+      "actual_Source_symbol": "?erase_native_traffic_pod18_range_0048e400@bsp@@YIPAXPAXI0I0IPBX@Z"
+    },
+    {
+      "address": "00489110",
+      "packet": "GOAL16H",
+      "Native_bytes": 90,
+      "Source_entry_bytes": 90,
+      "instructions": 37,
+      "coverage": "complete",
+      "whole_body_exact": false,
+      "actual_Source_symbol": "?erase_native_traffic_dword_range_00489110@bsp@@YIPAXPAXI0I0IPBX@Z"
+    },
+    {
+      "address": "00bb40e0",
+      "packet": "GOAL16J",
+      "Native_bytes": 31,
+      "Source_entry_bytes": 31,
+      "instructions": 13,
+      "coverage": "complete",
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_sizes_bb_16j_00bb40e0@4"
+    },
+    {
+      "address": "00bb41e0",
+      "packet": "GOAL16J",
+      "Native_bytes": 31,
+      "Source_entry_bytes": 31,
+      "instructions": 13,
+      "coverage": "complete",
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_sizes_bb_16j_00bb41e0@4"
+    },
+    {
+      "address": "00bba220",
+      "packet": "GOAL16J",
+      "Native_bytes": 31,
+      "Source_entry_bytes": 31,
+      "instructions": 13,
+      "coverage": "complete",
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_sizes_bb_16j_00bba220@4"
+    }
+  ],
+  "author_pins": {
+    "GOAL16H": "ff4f6b0d3da512726037e131b33865e1be146b39",
+    "GOAL16J": "5c8ed6e09e9e719d404518827383546e87c224cc"
+  },
+  "independent_reviews": [
+    {
+      "packet": "GOAL16H",
+      "path": "local/goal16h_root/review/review.json",
+      "sha256": "d1b85f59e666560fdba13b887e3a0ae4c4457089999c6ce584e592d9a8e2fba0",
+      "status": "READY",
+      "no_execution_by_reviewer": true
+    },
+    {
+      "packet": "GOAL16J",
+      "path": "local/goal16j_root/review/artifact_review.json",
+      "sha256": "26b2184ee70569f6447c90b7e61400cc1cdedd5331a06cf5f6d92d88ea1953fd",
+      "status": "READY",
+      "no_execution_by_reviewer": true
+    }
+  ],
+  "primary_validation": {
+    "final_build": {
+      "source_pin": "6f7937823df942d2bd1ed3b3e5e63f8ec88cae97",
+      "Main_input": "7c087ecd4076950b2eda86fea6a206c1c6459ce1",
+      "start_utc": "2026-10-16T07:51:24.6427413Z",
+      "exit_code": 0,
+      "end_utc": "2026-10-16T07:51:42.5442197Z",
+      "wall_seconds": 17.9014784,
+      "log": "local/goal16h_root/final_build.log"
+    },
+    "checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "earlier_combined_build": {
+      "start_utc": "2026-10-16T07:41:25.4997754Z",
+      "source_pin": "169408f758a645ae44ba02d4880c4cf5b22f2355",
+      "wall_seconds": 67.5866301,
+      "exit_code": 0,
+      "log": "local/goal16h_root/combined_build.log",
+      "end_utc": "2026-10-16T07:42:33.0864055Z"
+    },
+    "repeated_build_reason": "Foreign Main C++/registrations advanced after the isolated combined build; final build includes reserved publication input. No fixture or Native rerun by primary.",
+    "whole_instruction_and_module_proof": {
+      "path": "local/goal16h_root/final_proof/proof.json",
+      "sha256": "246d8758cf39de5b25c4845215d1325e9e70ebaba579f20fc3398c5a1a69984a"
+    },
+    "actual_final_archive": {
+      "sha256": "51c8ae3849ec480650be89b18e2a8b7044485a68612f21a8ee8c60151215a1b4",
+      "bindings": [
+        {
+          "module": "native_traffic_range_erase_16h",
+          "member_offset": 83646904,
+          "member_bytes": 1919,
+          "member_sha256": "42d4ad593c98f1b6036defd907334957a938613d8dfa4e4f6aa08a894b26a79a",
+          "all_public_symbols": [
+            "?erase_native_traffic_pod18_range_0048e400@bsp@@YIPAXPAXI0I0IPBX@Z",
+            "?erase_native_traffic_dword_range_00489110@bsp@@YIPAXPAXI0I0IPBX@Z"
+          ],
+          "both_real_linker_dictionaries_match": true,
+          "all_actual_COFF_providers_unique": true
+        },
+        {
+          "module": "native_traffic_pod18_helpers",
+          "member_offset": 36111950,
+          "member_bytes": 1978,
+          "member_sha256": "c5c471f4a510bc6b6ccdc26acb597ad0885b4d093b316f041c46de27cb67f0dc",
+          "all_public_symbols": [
+            "?size_native_traffic_pod18_0047c4d0@bsp@@YIIPBX@Z",
+            "?copy_native_traffic_pod18_0047fc30@bsp@@YAPAXPBX0PAXIII@Z",
+            "?copy_uninitialized_native_traffic_pod18_004841a0@bsp@@YIPAXPBX0PAXIII@Z",
+            "?fill_n_uninitialized_native_traffic_pod18_00486be0@bsp@@YIXPAXIPBXIII@Z",
+            "?fill_n_native_traffic_pod18_dispatch_0048d2f0@bsp@@YIPAXIIPAXIPBX@Z",
+            "?copy_native_traffic_pod18_dispatch_00486850@bsp@@YAPAXPBX0PAX@Z"
+          ],
+          "both_real_linker_dictionaries_match": true,
+          "all_actual_COFF_providers_unique": true
+        },
+        {
+          "module": "native_traffic_pointer_erase",
+          "member_offset": 83648884,
+          "member_bytes": 1583,
+          "member_sha256": "7c52c0879fc85111d80b815d2858390c6c7373770d47acc179f3ef20dc4a803c",
+          "all_public_symbols": [
+            "?erase_native_traffic_pointer_range_00488ff0@bsp@@YIPAXPAX00I0IPBX@Z"
+          ],
+          "both_real_linker_dictionaries_match": true,
+          "all_actual_COFF_providers_unique": true
+        },
+        {
+          "module": "native_invalid_parameter_noinfo_call",
+          "member_offset": 84015764,
+          "member_bytes": 808,
+          "member_sha256": "2296a4e057ae6261aa09a83117676bf5c9ad79ff8ff26ea167988764d9224e7d",
+          "all_public_symbols": [
+            "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+          ],
+          "both_real_linker_dictionaries_match": true,
+          "all_actual_COFF_providers_unique": true
+        },
+        {
+          "module": "native_tagged_sizes_bb_16j",
+          "member_offset": 36630736,
+          "member_bytes": 1400,
+          "member_sha256": "fa99cc1165dffe64010cc56cb5afd626717eea36d42611463c8d278040a9f7d0",
+          "all_public_symbols": [
+            "@bsp_tagged_sizes_bb_16j_00bb40e0@4",
+            "@bsp_tagged_sizes_bb_16j_00bb41e0@4",
+            "@bsp_tagged_sizes_bb_16j_00bba220@4"
+          ],
+          "both_real_linker_dictionaries_match": true,
+          "all_actual_COFF_providers_unique": true
+        }
+      ],
+      "parsed_actual_COFF_members": 2451
+    },
+    "registered_compile_commands_preserved": true,
+    "new_tests": 0,
+    "new_Native_or_fixture_execution": false
+  },
+  "Ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "old_functions_and_comments": "local/goal15h_annotations_0048e400.json",
+    "history": "local/ghidra-annotations-20261016T074546Z.json",
+    "saved": true,
+    "write_lock": true,
+    "existing_correct_library_names_preserved": true,
+    "Original_inputs_only": true,
+    "Source_unused_EDX_not_Original": true,
+    "saved_typed_modification": "6338",
+    "saved_functions": [
+      {
+        "address": "0048e400",
+        "name": "STL_inst_0048e400",
+        "body_bytes": 68,
+        "no_return": false,
+        "prototype": "Function: STL_inst_0048e400 at 0048e400\nSignature: void * __thiscall STL_inst_0048e400(void * this, void * out, uint first_metadata, void * first, uint last_metadata, void * last)\nEntry: 0048e400\nBody: 0048e400 - 0048e443"
+      },
+      {
+        "address": "00489110",
+        "name": "STL_inst_00489110",
+        "body_bytes": 90,
+        "no_return": false,
+        "prototype": "Function: STL_inst_00489110 at 00489110\nSignature: void * __thiscall STL_inst_00489110(void * this, void * out, uint first_metadata, void * first, uint last_metadata, void * last)\nEntry: 00489110\nBody: 00489110 - 00489169"
+      },
+      {
+        "address": "00bb40e0",
+        "name": "STL_Vector_Size_00bb40e0",
+        "body_bytes": 31,
+        "no_return": false,
+        "prototype": "Function: STL_Vector_Size_00bb40e0 at 00bb40e0\nSignature: int __fastcall STL_Vector_Size_00bb40e0(void * raw_header)\nEntry: 00bb40e0\nBody: 00bb40e0 - 00bb40fe"
+      },
+      {
+        "address": "00bb41e0",
+        "name": "STL_Vector_Size_00bb41e0",
+        "body_bytes": 31,
+        "no_return": false,
+        "prototype": "Function: STL_Vector_Size_00bb41e0 at 00bb41e0\nSignature: int __fastcall STL_Vector_Size_00bb41e0(void * raw_header)\nEntry: 00bb41e0\nBody: 00bb41e0 - 00bb41fe"
+      },
+      {
+        "address": "00bba220",
+        "name": "STL_Vector_Size_00bba220",
+        "body_bytes": 31,
+        "no_return": false,
+        "prototype": "Function: STL_Vector_Size_00bba220 at 00bba220\nSignature: int __fastcall STL_Vector_Size_00bba220(void * raw_header)\nEntry: 00bba220\nBody: 00bba220 - 00bba23e"
+      }
+    ],
+    "affected_exports_refreshed": true,
+    "snapshot_forced_and_index_refreshed": true
+  },
+  "contracts": {
+    "GOAL16H": "Both whole actual ECX raw-header entries have five stack DWORDs {out,first_metadata,first,last_metadata,last}, no Original EDX, late actualout EAX and RET14. Cached metadata precedes genuine returning diagnostic; actualfirst/last reread after it. Equal positions skip end/copy/publication. Non-equal current end feeds real POD18 dispatch/x87 or signed DWORD suffix/currentSDK bridge. Publication precedes currentout reload, then out+4 before out+0. All actual argument/saved-register/header/output aliases retained. Four real CALL relocations; no guard/snapshot/fake provider.",
+    "GOAL16J": "First DWORD+4 read once; zero excludes +8 read. Nonzero wrapped unsigned subtraction is bit-transferred to int32 and divided by36/20/24 with truncation toward zero. Independent mathematical proof covers every int32 including MIN. All93 whole bytes and physical load/flags/fault prefixes exactly equal Native."
+  },
+  "runtime_evidence": {
+    "GOAL16H": "Exactly one author DWORD negative-suffix/returning-SDK-handler/frame-argument alias case using whole captured90B and actual Core. Handler mutates actual metadata/first/last, header.end aliases actualout argument, negative suffix still publishes wrapped end redirecting lateout into arguments; cached metadata, post-handler rereads, final output values/EAX/RET14 checked. Store order is established statically, not a distinct fault/order runtime experiment. Two compile/run attempts of the SAME case: first observer PUSHFD overwrote a retired last cell; MOV-only observation moved before PUSHFD. Failed artifacts retained; Source/build unchanged. POD18 parent/x87/equal/zero/positive/errorcopy/other FP/fault/EH/parents unexecuted.",
+    "GOAL16J": "Static whole-body identities, arithmetic proof and actual-provider inspection; no execution."
+  },
+  "corrections": [
+    "H one fixture observer order repair only, complete rejected artifacts retained; no Source/build rerun.",
+    "J uncommitted owned name rows restored to correct existing STL_Vector_Size names before commit; old rows and guard rejection/correction log retained, no Ghidra change then.",
+    "J one relative-to-absolute wrapper path repair, no compiler rejection/recompile.",
+    "Primary first two isolated builds 17.6625216s then67.5866301s reflect Main advancement; final reserved build recorded separately. Overlapping worker/reviewer clocks are not summed."
+  ],
+  "timing": {
+    "H_author_inclusive_seconds": 1710.726216,
+    "J_author_readiness_seconds": 363,
+    "J_author_implementation_corrections_build_report_handoff_seconds": 534.052492,
+    "J_author_total_seconds": 897.052492,
+    "J_independent_review_seconds": 530.706517,
+    "H_review_receipt_through_sealing_seconds": 1072.707434,
+    "H_review_through_handoff_administration_seconds_approx": 1203.3,
+    "next_K_readiness_inclusive_seconds": 737.300032,
+    "scope": "Classification, dependency proof, compiler/correction, build, metadata, review and handoff overhead retained separately. No controlled throughput speedup or game-validation rate claimed."
+  },
+  "remaining": [
+    "H private CRT BF66EF/BFFB8B/BF87E0/Watson/debugger/FH3/RTTI/SEH and C++ exception propagation through naked parent are unproved; current genuine SDK bridge is not private BF67A7 equivalence.",
+    "Code placement/codefetch/return and private-frame aliases/fault addresses/x87 saved FIP/Original formal types/full binary ABI and caller/game adoption remain unproved even for exact entry bytes.",
+    "H larger495BA0/495C80 parents remain open on distinct4932E0/4935B0; analogous reconstructed functions do not substitute.",
+    "J12 deferred500B bodies contain actual IAT InterlockedDecrement plus virtual CALLs despite zero indexed callees; actual dynamic owner still unresolved.",
+    "K6 integer entries22B and L3 x87 getters12B are separate work; four existing whole Source kernels186B are reuse candidates, not newly authored bodies. Three raw identity stores and21zlib names remain separate.",
+    "The continuing reconstruction goal remains active."
+  ]
+}

@@ -1,0 +1,1868 @@
+{
+  "schema": "bsp.native-crt-memcmp.Source.v1",
+  "status": "whole_ordinary_Source_authored_strict_compiled_and_whole_object_reviewed_pending_Root_admission_Main_build",
+  "address": "00c1ef55",
+  "Original_library_name": "_memcmp",
+  "correct_library_name_preserved": true,
+  "Source_authorized": true,
+  "Source_implemented": true,
+  "Source_registered": false,
+  "Source_credit": 0,
+  "coverage": "whole_normal_valid_region_entry",
+  "whole_ordinary_function_candidate_count": 1,
+  "Original_owned_ranges_half_open": [
+    [
+      "00c1ef55",
+      "00c20553"
+    ]
+  ],
+  "Original_owned_bytes": 5630,
+  "Original_owned_instructions": 1934,
+  "omitted_owned_instructions": 0,
+  "omitted_owned_bytes": 0,
+  "fixed_data_dependency": {
+    "range_half_open": [
+      "00c20555",
+      "00c205d5"
+    ],
+    "bytes": 128,
+    "cases": 32,
+    "sha256": "2512453ba5caa8930dacc29720403f71d384cc790e50537cb7e43b1f23636c57",
+    "two_gap_bytes_not_owned": true
+  },
+  "fixed_table_use": "Original control evidence only. All32cases are represented by Source arithmetic routing; no Original-address runtime global is fabricated.",
+  "API": "std::int32_t __cdecl bsp::compare_native_regions_00c1ef55(const void* first, const void* second, std::uint32_t count) noexcept",
+  "Original_ABI": {
+    "calling_convention": "__cdecl",
+    "arguments": [
+      "[EBP+08] Buf1 pointer",
+      "[EBP+0C] Buf2 pointer",
+      "[EBP+10] uint32 size_t"
+    ],
+    "result": "EAX signed32",
+    "return_behavior": "RET without immediate; caller removes12 argument bytes",
+    "preserved": "EBP, ESI, EDI common prologue/epilogue; EBX saved/restored only larger-count route where used",
+    "flags": "Arithmetic status flags clobbered; DF untouched by this body",
+    "drop_in_replacement_established": false
+  },
+  "Original_ABI_compatible": false,
+  "interface_status": "New ordinary typed MSVC Win32 C++ interface. Original register/stack/flag/segment/instruction/bus/fault/EH identity is not established.",
+  "Root_scope": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\reports\\cc12_native_crt_memcmp_readiness.json",
+    "bytes": 8491,
+    "sha256": "27f82a05fe0bd5d5fd851ef2f51f5063ce21dd0149fd4c9db85ac97d7e4c33fe"
+  },
+  "accepted_contract": [
+    "New ordinary target-specific MSVC Win32 interface: std::int32_t __cdecl bsp::compare_native_regions_00c1ef55(const void*, const void*, std::uint32_t) noexcept. Keep correct Original library name _memcmp. uint32 count and exact signed32 result -1/0/+1 from the first differing unsigned byte; NUL has no terminator role.",
+    "Count0 admits either or both null pointers and returns0 before payload access or endpoint arithmetic. Positive count requires both requested regions to be genuine live readable determinate stable bytes. Each requested endpoint is within OR one past the same enclosing allocation, permitting interior subranges and prefixes. Correct author C1 allocation-end wording; do not alter its sealed historical evidence. Actual32bit additions/advances must not wrap. No signed count cap, pointer subtraction, nonalias or initially aligned pointer requirement.",
+    "Read-only overlapping and identical input regions are allowed; no pointer-equality shortcut. Exclude mutation, indeterminate bytes, lifetime changes, concurrency, synchronization/volatile/MMIO protocols, guard-page/fault observation and nonflat segment environments. Payload read order is an ordinary semantic schedule, not Original physical argument-home/register/flags/instruction/bus/fault/EH/ABI identity.",
+    "Original initial count1..4 must use ascending BYTE pairs first then second, stopping at first difference. This is distinct from remaining count1..4 after a larger original count; do not merge their different load-width/order routes.",
+    "For initial count>=5, process unsigned remaining>=32 batches: eight ordered first-DWORD then second-DWORD pairs at offsets0,4,...,28. Only unequal words enter ascending byte fallbacks. Batch fallbacks reread the first BYTE as needed; pair order first then second except offset16 byte0 second then first. Stop immediately at the first unequal byte.",
+    "After complete equal batches, remaining is original count mod32 and current endpoints are base+consumed+remaining. Preserve every one of the32 actual table routes using the sealed per-block schedule. Tail DWORD offsets are -remaining,-remaining+4,... before its mod4 suffix. This fixed Original dispatch data is control evidence, not an external callback/global provider. Structured Source control is allowed if the complete payload schedule is identical.",
+    "Retain23 tail DWORD groups that cache the low BYTE from the prior first DWORD and load only the second BYTE at fallback lane0. Tail offsets -12,-9,-10,-31,-15 instead reread first BYTE0 and use second-before-first; -10 uses second-before-first at all4byte lanes. Together with batchoffset16 these are exactly9reversed fresh DWORD-fallback pairs. All other fresh pairs are first-before-second. Use the full retained descriptor addresses to audit all36blocks.",
+    "Tail mod0 has no suffix; mod1 reads final BYTE second then first. Mod2 reads first-WORD16 then second-WORD16 at end-2 and returns0 on equality; on inequality BYTE end-2 then end-1, each second-before-first as reached. Mod3 reads BYTE end-3 first-before-second, then end-2 and end-1 second-before-first, bypassing WORD16 equality. Preserve exact normalized magnitude and early exits.",
+    "Approve private addressed scalar MOV16/MOV32 helpers with MSVC Win32 inline assembly over genuine possibly unaligned byte storage, plus explicit volatile unsigned BYTE reads. Fully initialize and zero-extend WORD16 results. Keep reads sequenced as separate operations and extract cached low BYTE from the actual prior DWORD value. No invented uint16/uint32 live-object/alignment/alias domain, SDK memcmp/memcpy wrapper, byte-only replacement, copied regions, new runtime validation/fallback/provider/global/TLS/errno/caller binding. Actual strict/Main object inspection must verify all load widths/orders/cache/branches and unexpected helper/vectorization absence.",
+    "Worker owns only four Source files and its new local evidence family. Root owns CMake/registry/ledger/Ghidra/integration. One genuine strict compile with before input pins and full actual object review; no separate unregistered whole-worker baseline requested. No tests/probes/body execution. Source implementation, compiled artifact, Main archive and Original ABI/runtime/game proof remain separate gates."
+  ],
+  "C1_correction": {
+    "id": "C1_ENDPOINT_DOMAIN",
+    "severity": "Required wording correction at Root Source gate",
+    "author_literal": "Each base+count endpoint is a valid one-past point in its actual allocation.",
+    "problem": "Taken literally this excludes valid prefixes and interior subranges whose requested endpoint is inside a larger allocation; Original supports these.",
+    "corrected": "Each requested endpoint is within or one past the same genuine live allocation; the entire requested [base,base+count) byte region is readable, determinate, stable and nonwrapping.",
+    "interpretation": "One-past may describe the requested region/view, but must not require the endpoint to equal the end of the enclosing allocation.",
+    "Root_agreed_correction": true,
+    "author_family_modified": false
+  },
+  "input_domain": {
+    "count_zero": "Any/null inputs admitted; return0 before payload loads or endpoint arithmetic.",
+    "positive_count": "Each genuine live allocation contains the entire requested readable, determinate, stable byte region. Each requested endpoint is within OR one past that allocation, admitting prefixes/interior subranges.",
+    "address_bounds": "Nonwrapping32-bit additions/advances; no signed count cap or pointer subtraction.",
+    "alias": "Identical/overlapping stable read-only regions admitted; no pointer-equality shortcut.",
+    "alignment": "Possibly unaligned genuine byte storage; no wide typed-object lifetime/alias/alignment invention.",
+    "excluded": "Mutation/lifetime changes, indeterminate bytes, concurrency, volatile/MMIO synchronization protocols, guard-page/fault observations and nonflat segment environments."
+  },
+  "exact_return": "Normalized signed32 -1,0,+1 selected by first differing unsigned byte. NUL has no special meaning.",
+  "Original_DWORD_Source_object_mapping": [
+    {
+      "Original_site": "00c1ef93",
+      "Original_word_reads": [
+        "00c1ef93",
+        "00c1ef95"
+      ],
+      "category": "batch",
+      "displacement": 0,
+      "Source_fallback_mode": "LR_all",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "0073",
+        "008c"
+      ],
+      "strict_fallback_start": "0180"
+    },
+    {
+      "Original_site": "00c1f01f",
+      "Original_word_reads": [
+        "00c1f01f",
+        "00c1f022"
+      ],
+      "category": "batch",
+      "displacement": 4,
+      "Source_fallback_mode": "LR_all",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "0073",
+        "008c"
+      ],
+      "strict_fallback_start": "0180"
+    },
+    {
+      "Original_site": "00c1f0af",
+      "Original_word_reads": [
+        "00c1f0af",
+        "00c1f0b2"
+      ],
+      "category": "batch",
+      "displacement": 8,
+      "Source_fallback_mode": "LR_all",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "0073",
+        "008c"
+      ],
+      "strict_fallback_start": "0180"
+    },
+    {
+      "Original_site": "00c1f13f",
+      "Original_word_reads": [
+        "00c1f13f",
+        "00c1f142"
+      ],
+      "category": "batch",
+      "displacement": 12,
+      "Source_fallback_mode": "LR_all",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "0073",
+        "008c"
+      ],
+      "strict_fallback_start": "0180"
+    },
+    {
+      "Original_site": "00c1f1cf",
+      "Original_word_reads": [
+        "00c1f1cf",
+        "00c1f1d2"
+      ],
+      "category": "batch",
+      "displacement": 16,
+      "Source_fallback_mode": "RL_first",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "0073",
+        "008c"
+      ],
+      "strict_fallback_start": "0142"
+    },
+    {
+      "Original_site": "00c1f25f",
+      "Original_word_reads": [
+        "00c1f25f",
+        "00c1f262"
+      ],
+      "category": "batch",
+      "displacement": 20,
+      "Source_fallback_mode": "LR_all",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "0073",
+        "008c"
+      ],
+      "strict_fallback_start": "0180"
+    },
+    {
+      "Original_site": "00c1f2ef",
+      "Original_word_reads": [
+        "00c1f2ef",
+        "00c1f2f2"
+      ],
+      "category": "batch",
+      "displacement": 24,
+      "Source_fallback_mode": "LR_all",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "0073",
+        "008c"
+      ],
+      "strict_fallback_start": "0180"
+    },
+    {
+      "Original_site": "00c1f37f",
+      "Original_word_reads": [
+        "00c1f37f",
+        "00c1f382"
+      ],
+      "category": "batch",
+      "displacement": 28,
+      "Source_fallback_mode": "LR_all",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "0073",
+        "008c"
+      ],
+      "strict_fallback_start": "0180"
+    },
+    {
+      "Original_site": "00c1f428",
+      "Original_word_reads": [
+        "00c1f428",
+        "00c1f42b"
+      ],
+      "category": "tail",
+      "displacement": -28,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1f4ab",
+      "Original_word_reads": [
+        "00c1f4ab",
+        "00c1f4ae"
+      ],
+      "category": "tail",
+      "displacement": -24,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1f53a",
+      "Original_word_reads": [
+        "00c1f53a",
+        "00c1f53d"
+      ],
+      "category": "tail",
+      "displacement": -20,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1f5c9",
+      "Original_word_reads": [
+        "00c1f5c9",
+        "00c1f5cc"
+      ],
+      "category": "tail",
+      "displacement": -16,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1f658",
+      "Original_word_reads": [
+        "00c1f658",
+        "00c1f65b"
+      ],
+      "category": "tail",
+      "displacement": -12,
+      "Source_fallback_mode": "RL_first",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "0230"
+    },
+    {
+      "Original_site": "00c1f6e8",
+      "Original_word_reads": [
+        "00c1f6e8",
+        "00c1f6eb"
+      ],
+      "category": "tail",
+      "displacement": -8,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1f777",
+      "Original_word_reads": [
+        "00c1f777",
+        "00c1f77a"
+      ],
+      "category": "tail",
+      "displacement": -4,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1f7fc",
+      "Original_word_reads": [
+        "00c1f7fc",
+        "00c1f7ff"
+      ],
+      "category": "tail",
+      "displacement": -29,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1f88b",
+      "Original_word_reads": [
+        "00c1f88b",
+        "00c1f88e"
+      ],
+      "category": "tail",
+      "displacement": -25,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1f91a",
+      "Original_word_reads": [
+        "00c1f91a",
+        "00c1f91d"
+      ],
+      "category": "tail",
+      "displacement": -21,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1f9a9",
+      "Original_word_reads": [
+        "00c1f9a9",
+        "00c1f9ac"
+      ],
+      "category": "tail",
+      "displacement": -17,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1fa38",
+      "Original_word_reads": [
+        "00c1fa38",
+        "00c1fa3b"
+      ],
+      "category": "tail",
+      "displacement": -13,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1fac7",
+      "Original_word_reads": [
+        "00c1fac7",
+        "00c1faca"
+      ],
+      "category": "tail",
+      "displacement": -9,
+      "Source_fallback_mode": "RL_first",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "0230"
+    },
+    {
+      "Original_site": "00c1fb57",
+      "Original_word_reads": [
+        "00c1fb57",
+        "00c1fb5a"
+      ],
+      "category": "tail",
+      "displacement": -5,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1fc08",
+      "Original_word_reads": [
+        "00c1fc08",
+        "00c1fc0b"
+      ],
+      "category": "tail",
+      "displacement": -30,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1fc97",
+      "Original_word_reads": [
+        "00c1fc97",
+        "00c1fc9a"
+      ],
+      "category": "tail",
+      "displacement": -26,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1fd26",
+      "Original_word_reads": [
+        "00c1fd26",
+        "00c1fd29"
+      ],
+      "category": "tail",
+      "displacement": -22,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1fdb5",
+      "Original_word_reads": [
+        "00c1fdb5",
+        "00c1fdb8"
+      ],
+      "category": "tail",
+      "displacement": -18,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1fe44",
+      "Original_word_reads": [
+        "00c1fe44",
+        "00c1fe47"
+      ],
+      "category": "tail",
+      "displacement": -14,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c1fed3",
+      "Original_word_reads": [
+        "00c1fed3",
+        "00c1fed6"
+      ],
+      "category": "tail",
+      "displacement": -10,
+      "Source_fallback_mode": "RL_all",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01b1"
+    },
+    {
+      "Original_site": "00c1ff63",
+      "Original_word_reads": [
+        "00c1ff63",
+        "00c1ff66"
+      ],
+      "category": "tail",
+      "displacement": -6,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c20028",
+      "Original_word_reads": [
+        "00c20028",
+        "00c2002b"
+      ],
+      "category": "tail",
+      "displacement": -31,
+      "Source_fallback_mode": "RL_first",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "0230"
+    },
+    {
+      "Original_site": "00c200b8",
+      "Original_word_reads": [
+        "00c200b8",
+        "00c200bb"
+      ],
+      "category": "tail",
+      "displacement": -27,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c20147",
+      "Original_word_reads": [
+        "00c20147",
+        "00c2014a"
+      ],
+      "category": "tail",
+      "displacement": -23,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c201d6",
+      "Original_word_reads": [
+        "00c201d6",
+        "00c201d9"
+      ],
+      "category": "tail",
+      "displacement": -19,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c20265",
+      "Original_word_reads": [
+        "00c20265",
+        "00c20268"
+      ],
+      "category": "tail",
+      "displacement": -15,
+      "Source_fallback_mode": "RL_first",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "0230"
+    },
+    {
+      "Original_site": "00c202f5",
+      "Original_word_reads": [
+        "00c202f5",
+        "00c202f8"
+      ],
+      "category": "tail",
+      "displacement": -11,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    },
+    {
+      "Original_site": "00c20384",
+      "Original_word_reads": [
+        "00c20384",
+        "00c20387"
+      ],
+      "category": "tail",
+      "displacement": -7,
+      "Source_fallback_mode": "cached_first_then_LR",
+      "strict_section": 11,
+      "strict_word_sites": [
+        "00dc",
+        "00f6"
+      ],
+      "strict_fallback_start": "01f1"
+    }
+  ],
+  "Original_all_32_tail_cases": [
+    {
+      "remainder": 0,
+      "table_slot": "00c20555",
+      "target": "00c1f7f4",
+      "ordered_DWORD_blocks": [],
+      "suffix": {
+        "kind": "none",
+        "span": []
+      },
+      "read_region_relative_to_one_past": [
+        0,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 1,
+      "table_slot": "00c20559",
+      "target": "00c1fbe6",
+      "ordered_DWORD_blocks": [],
+      "suffix": {
+        "kind": "one byte, right then left",
+        "span": [
+          -1,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -1,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 2,
+      "table_slot": "00c2055d",
+      "target": "00c1fff2",
+      "ordered_DWORD_blocks": [],
+      "suffix": {
+        "kind": "16-bit left/right equality; on unequal read byte -2 right/left then byte -1 right/left",
+        "span": [
+          -2,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -2,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 3,
+      "table_slot": "00c20561",
+      "target": "00c20413",
+      "ordered_DWORD_blocks": [],
+      "suffix": {
+        "kind": "byte -3 left/right then byte -2 right/left then byte -1 right/left; bypasses 16-bit equality load",
+        "span": [
+          -3,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -3,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 4,
+      "table_slot": "00c20565",
+      "target": "00c1f777",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -4,
+          "site": "00c1f777"
+        }
+      ],
+      "suffix": {
+        "kind": "none",
+        "span": []
+      },
+      "read_region_relative_to_one_past": [
+        -4,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 5,
+      "table_slot": "00c20569",
+      "target": "00c1fb57",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -5,
+          "site": "00c1fb57"
+        }
+      ],
+      "suffix": {
+        "kind": "one byte, right then left",
+        "span": [
+          -1,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -5,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 6,
+      "table_slot": "00c2056d",
+      "target": "00c1ff63",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -6,
+          "site": "00c1ff63"
+        }
+      ],
+      "suffix": {
+        "kind": "16-bit left/right equality; on unequal read byte -2 right/left then byte -1 right/left",
+        "span": [
+          -2,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -6,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 7,
+      "table_slot": "00c20571",
+      "target": "00c20384",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -7,
+          "site": "00c20384"
+        }
+      ],
+      "suffix": {
+        "kind": "byte -3 left/right then byte -2 right/left then byte -1 right/left; bypasses 16-bit equality load",
+        "span": [
+          -3,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -7,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 8,
+      "table_slot": "00c20575",
+      "target": "00c1f6e8",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -8,
+          "site": "00c1f6e8"
+        },
+        {
+          "displacement": -4,
+          "site": "00c1f777"
+        }
+      ],
+      "suffix": {
+        "kind": "none",
+        "span": []
+      },
+      "read_region_relative_to_one_past": [
+        -8,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 9,
+      "table_slot": "00c20579",
+      "target": "00c1fac7",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -9,
+          "site": "00c1fac7"
+        },
+        {
+          "displacement": -5,
+          "site": "00c1fb57"
+        }
+      ],
+      "suffix": {
+        "kind": "one byte, right then left",
+        "span": [
+          -1,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -9,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 10,
+      "table_slot": "00c2057d",
+      "target": "00c1fed3",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -10,
+          "site": "00c1fed3"
+        },
+        {
+          "displacement": -6,
+          "site": "00c1ff63"
+        }
+      ],
+      "suffix": {
+        "kind": "16-bit left/right equality; on unequal read byte -2 right/left then byte -1 right/left",
+        "span": [
+          -2,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -10,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 11,
+      "table_slot": "00c20581",
+      "target": "00c202f5",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -11,
+          "site": "00c202f5"
+        },
+        {
+          "displacement": -7,
+          "site": "00c20384"
+        }
+      ],
+      "suffix": {
+        "kind": "byte -3 left/right then byte -2 right/left then byte -1 right/left; bypasses 16-bit equality load",
+        "span": [
+          -3,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -11,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 12,
+      "table_slot": "00c20585",
+      "target": "00c1f658",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -12,
+          "site": "00c1f658"
+        },
+        {
+          "displacement": -8,
+          "site": "00c1f6e8"
+        },
+        {
+          "displacement": -4,
+          "site": "00c1f777"
+        }
+      ],
+      "suffix": {
+        "kind": "none",
+        "span": []
+      },
+      "read_region_relative_to_one_past": [
+        -12,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 13,
+      "table_slot": "00c20589",
+      "target": "00c1fa38",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -13,
+          "site": "00c1fa38"
+        },
+        {
+          "displacement": -9,
+          "site": "00c1fac7"
+        },
+        {
+          "displacement": -5,
+          "site": "00c1fb57"
+        }
+      ],
+      "suffix": {
+        "kind": "one byte, right then left",
+        "span": [
+          -1,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -13,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 14,
+      "table_slot": "00c2058d",
+      "target": "00c1fe44",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -14,
+          "site": "00c1fe44"
+        },
+        {
+          "displacement": -10,
+          "site": "00c1fed3"
+        },
+        {
+          "displacement": -6,
+          "site": "00c1ff63"
+        }
+      ],
+      "suffix": {
+        "kind": "16-bit left/right equality; on unequal read byte -2 right/left then byte -1 right/left",
+        "span": [
+          -2,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -14,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 15,
+      "table_slot": "00c20591",
+      "target": "00c20265",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -15,
+          "site": "00c20265"
+        },
+        {
+          "displacement": -11,
+          "site": "00c202f5"
+        },
+        {
+          "displacement": -7,
+          "site": "00c20384"
+        }
+      ],
+      "suffix": {
+        "kind": "byte -3 left/right then byte -2 right/left then byte -1 right/left; bypasses 16-bit equality load",
+        "span": [
+          -3,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -15,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 16,
+      "table_slot": "00c20595",
+      "target": "00c1f5c9",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -16,
+          "site": "00c1f5c9"
+        },
+        {
+          "displacement": -12,
+          "site": "00c1f658"
+        },
+        {
+          "displacement": -8,
+          "site": "00c1f6e8"
+        },
+        {
+          "displacement": -4,
+          "site": "00c1f777"
+        }
+      ],
+      "suffix": {
+        "kind": "none",
+        "span": []
+      },
+      "read_region_relative_to_one_past": [
+        -16,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 17,
+      "table_slot": "00c20599",
+      "target": "00c1f9a9",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -17,
+          "site": "00c1f9a9"
+        },
+        {
+          "displacement": -13,
+          "site": "00c1fa38"
+        },
+        {
+          "displacement": -9,
+          "site": "00c1fac7"
+        },
+        {
+          "displacement": -5,
+          "site": "00c1fb57"
+        }
+      ],
+      "suffix": {
+        "kind": "one byte, right then left",
+        "span": [
+          -1,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -17,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 18,
+      "table_slot": "00c2059d",
+      "target": "00c1fdb5",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -18,
+          "site": "00c1fdb5"
+        },
+        {
+          "displacement": -14,
+          "site": "00c1fe44"
+        },
+        {
+          "displacement": -10,
+          "site": "00c1fed3"
+        },
+        {
+          "displacement": -6,
+          "site": "00c1ff63"
+        }
+      ],
+      "suffix": {
+        "kind": "16-bit left/right equality; on unequal read byte -2 right/left then byte -1 right/left",
+        "span": [
+          -2,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -18,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 19,
+      "table_slot": "00c205a1",
+      "target": "00c201d6",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -19,
+          "site": "00c201d6"
+        },
+        {
+          "displacement": -15,
+          "site": "00c20265"
+        },
+        {
+          "displacement": -11,
+          "site": "00c202f5"
+        },
+        {
+          "displacement": -7,
+          "site": "00c20384"
+        }
+      ],
+      "suffix": {
+        "kind": "byte -3 left/right then byte -2 right/left then byte -1 right/left; bypasses 16-bit equality load",
+        "span": [
+          -3,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -19,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 20,
+      "table_slot": "00c205a5",
+      "target": "00c1f53a",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -20,
+          "site": "00c1f53a"
+        },
+        {
+          "displacement": -16,
+          "site": "00c1f5c9"
+        },
+        {
+          "displacement": -12,
+          "site": "00c1f658"
+        },
+        {
+          "displacement": -8,
+          "site": "00c1f6e8"
+        },
+        {
+          "displacement": -4,
+          "site": "00c1f777"
+        }
+      ],
+      "suffix": {
+        "kind": "none",
+        "span": []
+      },
+      "read_region_relative_to_one_past": [
+        -20,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 21,
+      "table_slot": "00c205a9",
+      "target": "00c1f91a",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -21,
+          "site": "00c1f91a"
+        },
+        {
+          "displacement": -17,
+          "site": "00c1f9a9"
+        },
+        {
+          "displacement": -13,
+          "site": "00c1fa38"
+        },
+        {
+          "displacement": -9,
+          "site": "00c1fac7"
+        },
+        {
+          "displacement": -5,
+          "site": "00c1fb57"
+        }
+      ],
+      "suffix": {
+        "kind": "one byte, right then left",
+        "span": [
+          -1,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -21,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 22,
+      "table_slot": "00c205ad",
+      "target": "00c1fd26",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -22,
+          "site": "00c1fd26"
+        },
+        {
+          "displacement": -18,
+          "site": "00c1fdb5"
+        },
+        {
+          "displacement": -14,
+          "site": "00c1fe44"
+        },
+        {
+          "displacement": -10,
+          "site": "00c1fed3"
+        },
+        {
+          "displacement": -6,
+          "site": "00c1ff63"
+        }
+      ],
+      "suffix": {
+        "kind": "16-bit left/right equality; on unequal read byte -2 right/left then byte -1 right/left",
+        "span": [
+          -2,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -22,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 23,
+      "table_slot": "00c205b1",
+      "target": "00c20147",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -23,
+          "site": "00c20147"
+        },
+        {
+          "displacement": -19,
+          "site": "00c201d6"
+        },
+        {
+          "displacement": -15,
+          "site": "00c20265"
+        },
+        {
+          "displacement": -11,
+          "site": "00c202f5"
+        },
+        {
+          "displacement": -7,
+          "site": "00c20384"
+        }
+      ],
+      "suffix": {
+        "kind": "byte -3 left/right then byte -2 right/left then byte -1 right/left; bypasses 16-bit equality load",
+        "span": [
+          -3,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -23,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 24,
+      "table_slot": "00c205b5",
+      "target": "00c1f4ab",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -24,
+          "site": "00c1f4ab"
+        },
+        {
+          "displacement": -20,
+          "site": "00c1f53a"
+        },
+        {
+          "displacement": -16,
+          "site": "00c1f5c9"
+        },
+        {
+          "displacement": -12,
+          "site": "00c1f658"
+        },
+        {
+          "displacement": -8,
+          "site": "00c1f6e8"
+        },
+        {
+          "displacement": -4,
+          "site": "00c1f777"
+        }
+      ],
+      "suffix": {
+        "kind": "none",
+        "span": []
+      },
+      "read_region_relative_to_one_past": [
+        -24,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 25,
+      "table_slot": "00c205b9",
+      "target": "00c1f88b",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -25,
+          "site": "00c1f88b"
+        },
+        {
+          "displacement": -21,
+          "site": "00c1f91a"
+        },
+        {
+          "displacement": -17,
+          "site": "00c1f9a9"
+        },
+        {
+          "displacement": -13,
+          "site": "00c1fa38"
+        },
+        {
+          "displacement": -9,
+          "site": "00c1fac7"
+        },
+        {
+          "displacement": -5,
+          "site": "00c1fb57"
+        }
+      ],
+      "suffix": {
+        "kind": "one byte, right then left",
+        "span": [
+          -1,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -25,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 26,
+      "table_slot": "00c205bd",
+      "target": "00c1fc97",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -26,
+          "site": "00c1fc97"
+        },
+        {
+          "displacement": -22,
+          "site": "00c1fd26"
+        },
+        {
+          "displacement": -18,
+          "site": "00c1fdb5"
+        },
+        {
+          "displacement": -14,
+          "site": "00c1fe44"
+        },
+        {
+          "displacement": -10,
+          "site": "00c1fed3"
+        },
+        {
+          "displacement": -6,
+          "site": "00c1ff63"
+        }
+      ],
+      "suffix": {
+        "kind": "16-bit left/right equality; on unequal read byte -2 right/left then byte -1 right/left",
+        "span": [
+          -2,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -26,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 27,
+      "table_slot": "00c205c1",
+      "target": "00c200b8",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -27,
+          "site": "00c200b8"
+        },
+        {
+          "displacement": -23,
+          "site": "00c20147"
+        },
+        {
+          "displacement": -19,
+          "site": "00c201d6"
+        },
+        {
+          "displacement": -15,
+          "site": "00c20265"
+        },
+        {
+          "displacement": -11,
+          "site": "00c202f5"
+        },
+        {
+          "displacement": -7,
+          "site": "00c20384"
+        }
+      ],
+      "suffix": {
+        "kind": "byte -3 left/right then byte -2 right/left then byte -1 right/left; bypasses 16-bit equality load",
+        "span": [
+          -3,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -27,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 28,
+      "table_slot": "00c205c5",
+      "target": "00c1f428",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -28,
+          "site": "00c1f428"
+        },
+        {
+          "displacement": -24,
+          "site": "00c1f4ab"
+        },
+        {
+          "displacement": -20,
+          "site": "00c1f53a"
+        },
+        {
+          "displacement": -16,
+          "site": "00c1f5c9"
+        },
+        {
+          "displacement": -12,
+          "site": "00c1f658"
+        },
+        {
+          "displacement": -8,
+          "site": "00c1f6e8"
+        },
+        {
+          "displacement": -4,
+          "site": "00c1f777"
+        }
+      ],
+      "suffix": {
+        "kind": "none",
+        "span": []
+      },
+      "read_region_relative_to_one_past": [
+        -28,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 29,
+      "table_slot": "00c205c9",
+      "target": "00c1f7fc",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -29,
+          "site": "00c1f7fc"
+        },
+        {
+          "displacement": -25,
+          "site": "00c1f88b"
+        },
+        {
+          "displacement": -21,
+          "site": "00c1f91a"
+        },
+        {
+          "displacement": -17,
+          "site": "00c1f9a9"
+        },
+        {
+          "displacement": -13,
+          "site": "00c1fa38"
+        },
+        {
+          "displacement": -9,
+          "site": "00c1fac7"
+        },
+        {
+          "displacement": -5,
+          "site": "00c1fb57"
+        }
+      ],
+      "suffix": {
+        "kind": "one byte, right then left",
+        "span": [
+          -1,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -29,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 30,
+      "table_slot": "00c205cd",
+      "target": "00c1fc08",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -30,
+          "site": "00c1fc08"
+        },
+        {
+          "displacement": -26,
+          "site": "00c1fc97"
+        },
+        {
+          "displacement": -22,
+          "site": "00c1fd26"
+        },
+        {
+          "displacement": -18,
+          "site": "00c1fdb5"
+        },
+        {
+          "displacement": -14,
+          "site": "00c1fe44"
+        },
+        {
+          "displacement": -10,
+          "site": "00c1fed3"
+        },
+        {
+          "displacement": -6,
+          "site": "00c1ff63"
+        }
+      ],
+      "suffix": {
+        "kind": "16-bit left/right equality; on unequal read byte -2 right/left then byte -1 right/left",
+        "span": [
+          -2,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -30,
+        0
+      ],
+      "no_access_outside_region": true
+    },
+    {
+      "remainder": 31,
+      "table_slot": "00c205d1",
+      "target": "00c20028",
+      "ordered_DWORD_blocks": [
+        {
+          "displacement": -31,
+          "site": "00c20028"
+        },
+        {
+          "displacement": -27,
+          "site": "00c200b8"
+        },
+        {
+          "displacement": -23,
+          "site": "00c20147"
+        },
+        {
+          "displacement": -19,
+          "site": "00c201d6"
+        },
+        {
+          "displacement": -15,
+          "site": "00c20265"
+        },
+        {
+          "displacement": -11,
+          "site": "00c202f5"
+        },
+        {
+          "displacement": -7,
+          "site": "00c20384"
+        }
+      ],
+      "suffix": {
+        "kind": "byte -3 left/right then byte -2 right/left then byte -1 right/left; bypasses 16-bit equality load",
+        "span": [
+          -3,
+          0
+        ]
+      },
+      "read_region_relative_to_one_past": [
+        -31,
+        0
+      ],
+      "no_access_outside_region": true
+    }
+  ],
+  "schedule_summary": {
+    "initial_1_to_4": "BYTE-only LR ascending, stops on first mismatch; separate from later small remainders.",
+    "batch": "Eight DWORD pairs LR at0,4,...,28; unequal words use ascending fresh-byte fallbacks, LR except+16lane0 RL.",
+    "cached_tail_groups": 23,
+    "uncached_tail_displacements": [
+      -12,
+      -9,
+      -10,
+      -31,
+      -15
+    ],
+    "reversed_fresh_DWORD_fallback_pairs": 9,
+    "suffix_mod0": "none",
+    "suffix_mod1": "final BYTE RL",
+    "suffix_mod2": "WORD16 LR; if unequal BYTE-2 RL then BYTE-1 RL",
+    "suffix_mod3": "BYTE-3 LR then BYTE-2 RL then BYTE-1 RL; bypass WORD16",
+    "no_overread": "All reached payload reads fit inside requested region under admitted bounds. Wide reads may include later in-range bytes before returning an earlier byte mismatch."
+  },
+  "Source_mechanism": {
+    "wide_loads": "Private addressed MSVC Win32 inline MOV DWORD/MOVZX WORD helpers; initialized uint32 results and actual genuine byte-address arguments.",
+    "byte_loads": "Explicit separate volatile unsigned BYTE reads, with cached lane0 extracted from the prior actual first DWORD where required.",
+    "direct_Original_calls": [],
+    "new_external_providers": [],
+    "new_validation": false,
+    "SDK_memcmp_or_memcpy": false,
+    "copied_regions": false,
+    "new_globals_or_TLS": false,
+    "caller_binding": false
+  },
+  "Source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\src\\native_crt_memcmp.cpp",
+    "bytes": 6550,
+    "sha256": "a54619f5134d873efbdfaf351a8989cf714cb6e25d89d2eee8ee7b328fb46985"
+  },
+  "header": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\include\\bsp\\native_crt_memcmp.hpp",
+    "bytes": 1578,
+    "sha256": "84ccb1c01ad9111e7a7479497908db84181d75a45c6be17f82e55d5bd9a37c70"
+  },
+  "validation": {
+    "strict_compiler_invocations": 1,
+    "strict_compiler_successes": 1,
+    "Source_corrections_after_compile": 0,
+    "version": "MSVC19.51.36244.0 Win32",
+    "flags": "/std:c++17 /MD /O2 /W4 /WX /permissive- /EHsc /Gy /GL-",
+    "explicit_Oy_override": false,
+    "strict_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeNativeCrtMemcmpSource01\\strict_compile.result.json",
+      "bytes": 10837,
+      "sha256": "6f22cefe8c721ad11419fce59e9be9c32bfb5806683397a21c5d797f3ced04f2"
+    },
+    "strict_transport": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeNativeCrtMemcmpSource01\\strict_transport_attempt2.result.json",
+      "bytes": 1261,
+      "sha256": "bd8a935bf7b077de86f8566dc3b4ef330c5484e992aa70e86ceb7be7fdc4139b"
+    },
+    "actual_dependency_closure": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeNativeCrtMemcmpSource01\\compiler_declared_inputs.json",
+      "bytes": 11838,
+      "sha256": "c5aad8482980fbb6277eb8deef9637d98fb3b4b6397f6cad1daffa43bc4da6e1"
+    },
+    "actual_declared_inputs": 10,
+    "actual_include_files": 9,
+    "showIncludes_matches_sourceDependencies": true,
+    "all_actual_inputs_pre_pinned": true,
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeNativeCrtMemcmpSource01\\native_crt_memcmp.obj",
+      "bytes": 3753,
+      "sha256": "505f8a0cd0bbf09fc3c7e5e81ed39d8a57781efebae49ff9e2de93c3a6c0467b"
+    },
+    "COFF_contract_audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeNativeCrtMemcmpSource01\\COFF_contract_audit.json",
+      "bytes": 35382,
+      "sha256": "968b362d231d1bc832cc6e2a120d537b30ed0b17ffe73c6bb5b11668be95c1df"
+    },
+    "complete_COFF": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeNativeCrtMemcmpSource01\\complete_COFF.json",
+      "bytes": 198495,
+      "sha256": "a55a6a0ef9799ea113c344ece236b5f4f163fcedb731ba63cc18fffabfc0b680"
+    },
+    "actual_code_sections": 8,
+    "actual_code_bytes": 1029,
+    "decoded_rows": 426,
+    "nonalignment_rows": 418,
+    "nonalignment_bytes": 991,
+    "public_code_bytes": 757,
+    "public_decoded_rows": 296,
+    "public_payload_read_sites": 29,
+    "total_payload_read_sites": 42,
+    "primary_symbols": 29,
+    "auxiliary_slots": 19,
+    "string_table_bytes": 461,
+    "code_relocations": 0,
+    "metadata_relocations": "8 IMAGE_REL_I386_DIR32NB(0007) FPO associations",
+    "unresolved_symbols": 0,
+    "new_body_executed": false,
+    "worker_baseline_builds": 0,
+    "tests_probes_SDK_comparison_or_game_execution": 0,
+    "required_report_doc_call_checks": "See local/WholeNativeCrtMemcmpSource01/final_call_checks.json for final byte-pinned results. Zero call rows supply no semantic proof.",
+    "object_sections_total": 19,
+    "GS_symbols_or_EH_tables": false
+  },
+  "corrections": {
+    "transport": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeNativeCrtMemcmpSource01\\precompile_transport_correction01.json",
+      "bytes": 2342,
+      "sha256": "da0f1f9b852254a613999956afff326db3259d15d372708479b623e7208d64f6"
+    },
+    "scope_language": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeNativeCrtMemcmpSource01\\audit_scope_clarification.json",
+      "bytes": 1396,
+      "sha256": "7ee0d0b4ca07463b7a4ed91bfe309aabdf2998061e29a6068548ec39c7736590"
+    },
+    "coordination": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeNativeCrtMemcmpSource01\\coordination_correction.json",
+      "bytes": 1110,
+      "sha256": "67af500e39deca3ae944969ca3da7fa111bd9bb50b07753cde58d069838e80ed"
+    },
+    "original_failed_transport_preserved": true,
+    "two_failed_correction_preparation_calls_preserved": true,
+    "late_file_and_range_lease_extension_not_retroactive": true,
+    "no_Source_or_compiler_replay": true
+  },
+  "external_Original_lineage": {
+    "author_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\NativeCrtMemcmpReadiness01\\root_manifest.json",
+      "bytes": 39908,
+      "sha256": "f42bacd487d438326937d29d91036131a93bc7826b61ce032b920b783ad4503f"
+    },
+    "independent_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_memcmp_independent_oct16\\local\\NativeCrtMemcmpIndependentReview01\\root_manifest.json",
+      "bytes": 48764,
+      "sha256": "6e9d047d681cf7b3bb3b271c610a3b6ecc4f6d1b57d3f684129f0e0e9b56f5c8"
+    },
+    "whole_author_semantics": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\NativeCrtMemcmpReadiness01\\whole_Original_semantics.json",
+      "bytes": 132681,
+      "sha256": "866384809d85b91287af115da7f411bd309063d8269b54e69c26d73bd2304b08"
+    },
+    "Root_gate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\reports\\cc12_native_crt_memcmp_readiness.json",
+      "bytes": 8491,
+      "sha256": "27f82a05fe0bd5d5fd851ef2f51f5063ce21dd0149fd4c9db85ac97d7e4c33fe"
+    },
+    "historical_author_C1_wording_not_rewritten": true,
+    "prior_phases_not_current_Source_tool_provenance": true
+  },
+  "own_Source_phase_evidence": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeNativeCrtMemcmpSource01",
+    "before_compile": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeNativeCrtMemcmpSource01\\precompile_inputs.json",
+      "bytes": 148577,
+      "sha256": "c44a31a03cfc9a71ee0e4b343ad065db1bfbb7f19a1b51f5c8a4ba65c7652d65"
+    },
+    "supplemental_before_compile": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeNativeCrtMemcmpSource01\\precompile_transport_correction01.json",
+      "bytes": 2342,
+      "sha256": "da0f1f9b852254a613999956afff326db3259d15d372708479b623e7208d64f6"
+    },
+    "transport_trace": "own_Source_tool_trace.jsonl",
+    "raw_receipts": "genuine_Source_tool_receipts.json",
+    "manifest": "root_manifest.json"
+  },
+  "direct_calls": [],
+  "remaining_gates": [
+    "Root and peer Source/object admission",
+    "Root registration",
+    "Normal registered Main build",
+    "Independent Main actual object and archive-member review; default /Oy- may differ from this strict object"
+  ],
+  "Original_instruction_or_bus_fault_EH_proven": false,
+  "runtime_or_game_validated": false,
+  "Ghidra_mutations": 0,
+  "descriptive_Source_names_are_hypotheses": true
+}

@@ -1,0 +1,11 @@
+# Actual FrameBox current-state WORD — packet144
+
+`native_gui_frame_box_current_state_bits_00ad26d0` reads the actual live FrameBox WORD at `+EC` and returns its raw16 bits. It uses the actual receiver, with no semantic `GuiFrameBox` overlay, signed extension, header initialization or count operation. Caller supplies live DWORD-aligned storage and lifetime exclusion; this leaf creates no ownership or publication.
+
+The whole Original function is `[AD26D0,AD26D8)`,8B/two starts: `MOV AX,[ECX+ECh]; RET`. Strict MSVC Win32 C++17 and the actual canonical Core object both emit exactly `66 8B 81 EC 00 00 00 C3`, with no relocation. In these inspected objects the argument is ECX, result AX, and upperEAX/EDX/flags stay untouched. C++ uses an explicit one-argument fastcall interface; Original placement, caller adoption, exception environment and runtime/drop-in use are not established by byte equality.
+
+The entire two old Source prefixes remain literal prefixes. Both existing canonical functions, including the compiler array helper, retain identical complete code and ordered symbolic relocations. Strict standalone and Core builds use different frame-pointer settings, so their unrelated constructor bodies are not compared across those configurations. The first standalone command failed before compilation because of `/Fa:` filename syntax; its command/log were retained, then the corrected strict invocation passed.
+
+The old ledger called this a no-function field projection. Fresh verified `bsp.gpr` / `/battlestationspacific.exe` proto/export queries identify an existing8B/two-start function. No function or listing was created/repaired. The established name and complete old comment were preserved; a locked annotation appended current evidence, recorded the preimage, saved the project and refreshed the owned export. The historical typed fragment remains; the new actual-storage Source row is distinct.
+
+Compiled Source commit `21fbf4e107130dff13f6cb0d53dff6baa5126f48` passed the normal MSVC Win32 build and all3/3 existing checks in7.62s. The existing factory TU was rebuilt in Core. No new test was added and this function was not executed. Combined145 records the manifested actual-Core address-only link separately. [Report](../reports/cc12_native_gui_frame_box_state_bits_144.json); frozen evidence `local/cc12_native_gui_frame_box_state_bits144/`.

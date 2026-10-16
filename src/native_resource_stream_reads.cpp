@@ -92,3 +92,25 @@ void* read_native_resource_string_00bf0510(void* reader,void* output,U* budget,N
     return output;
 }
 }
+
+namespace bsp {
+namespace {
+__declspec(noinline) std::uint16_t __cdecl word_scalar(void* stream,
+    std::uint32_t* actual, NativeResourceStreamReadContext& context) {
+    std::uint32_t slot = bits(actual);
+    const auto target = word(ptr(word(stream)), 0x24);
+    context.streams.source_read(target, stream, &slot, 2u, actual);
+    return static_cast<std::uint16_t>(slot);
+}
+} // namespace
+
+std::uint16_t __cdecl read_native_stream_word_slot40_00be4320(void* actual_stream,
+    std::uint32_t* optional_actual, NativeResourceStreamReadContext& same_reads) {
+    return word_scalar(actual_stream, optional_actual, same_reads);
+}
+
+std::uint16_t __cdecl read_native_stream_word_slot3c_00be4340(void* actual_stream,
+    std::uint32_t* optional_actual, NativeResourceStreamReadContext& same_reads) {
+    return word_scalar(actual_stream, optional_actual, same_reads);
+}
+} // namespace bsp

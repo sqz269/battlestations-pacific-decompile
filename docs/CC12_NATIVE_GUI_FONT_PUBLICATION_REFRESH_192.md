@@ -1,0 +1,9 @@
+# Latest Main integration verification (192)
+
+Sealed Source187 and readonly183/191 were refreshed from published Main `5ff85bbf4e60166660566208a8335490dade08c4`. The combined build at `35387013af079f63632ef48f51cc4fbc23af163f` passed3/3 existing checks in7.54s. All692 previously frozen files under src/ and include/ remain byte-identical, as does CMakeLists.txt. The startup.cmake merge adds five already-published registrations. All19 relevant Core objects preserve every code byte and ordered normalized symbolic relocation from reviewed187, and their actual current archive members match those objects. The manifested /MD PE32 address-only four-entry probe exits0 against the updated actual Core library; it invokes no new target body.
+
+Primary live verification of all12 added reports and12 documents found zero failed claims. Three unpaired prose lines are explicitly qualified:180/185 state the whole-body two-call count, independently proved from all189 bytes;182 names a genuine Source renderer provider without alleging a Native direct call pair. Raw indirect calls, whole-body completeness and provider/lifetime proof remain separately reviewed.
+
+This follow-up adds no Source body or Native credit and does not modify either earlier seal. Four whole entries are supplied by187; later Font-loader/factory/increment proposals remain readonly. The two foreign untracked Main files retain their bytes, size and modification time. No shared CMake/ledger registry lease or new test is used for this publication refresh. Static/build/link proof remains distinct from Native private ABI, populated runtime, visual or gameplay validation.
+
+Immutable archive: 59payloads, SHA256 `afbee3cc5bbde8c0d0bdc9612a44cdfafa5b5c83fc105c7633631bf57345a7f5`; manifest `a75e7907d4a2b41ab2e6ab14045ca4371c2aae2cf1f9efbc5d802cefd6de6ec0`.

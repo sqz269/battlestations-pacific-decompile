@@ -1,0 +1,2581 @@
+{
+  "packet": "cc12_native_font_raw_load_readiness_182",
+  "status": "READONLY_raw_parent_composition_open_only_two_WORD_leaves_next_Source186",
+  "baseline": {
+    "HEAD": "665669a78470514feaf71e41f203b21710efe764",
+    "audited_published_Main": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+    "accepted176": "665669a78470514feaf71e41f203b21710efe764",
+    "Main_merge_or_Source_refresh": false,
+    "accepted176_in_worker_but_not_audited_published_Main": true,
+    "readonly": "only unique182 doc/report tracked; no Source/CMake/ledger/Ghidra mutation/build/test/probe/execution",
+    "reused161_manifest_sha256": "caaf2e33bcd52d3ee78559ffde1efcd82b7f2df5f3e82b3e9023d3d432e25bca"
+  },
+  "Source_implementation_or_address_credit_added": false,
+  "Original": {
+    "Original": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "spans": [
+      {
+        "start": "00ad4c30",
+        "end_exclusive": "00ad5181",
+        "bytes": 1361,
+        "physical_starts": 469,
+        "sha256": "100ec30100b3ceb0ee99bee69e467cd86b55d282e7d62862bb1d84d0b99d363e",
+        "live_analysis_equals_installed_disk": true,
+        "listing_all_starts_equal": true,
+        "direct_calls": 38,
+        "indirect_calls": 16
+      },
+      {
+        "start": "00be4320",
+        "end_exclusive": "00be433b",
+        "bytes": 27,
+        "physical_starts": 10,
+        "sha256": "45f118e1a34545f12c5066b0a15c37bc07a24eafa7b753f04db5e871fd9df8ec",
+        "live_analysis_equals_installed_disk": true,
+        "listing_all_starts_equal": true,
+        "direct_calls": 0,
+        "indirect_calls": 1
+      },
+      {
+        "start": "00be4340",
+        "end_exclusive": "00be435b",
+        "bytes": 27,
+        "physical_starts": 10,
+        "sha256": "45f118e1a34545f12c5066b0a15c37bc07a24eafa7b753f04db5e871fd9df8ec",
+        "live_analysis_equals_installed_disk": true,
+        "listing_all_starts_equal": true,
+        "direct_calls": 0,
+        "indirect_calls": 1
+      }
+    ],
+    "AD4C30_ABI": "ECX actualAC-byteFont;stack root,DAT,GFX,alpha,language actual8Bheader pointers;RET14h; no semantic bool",
+    "invented_Ghidra_prototype_not_used": "undefined(void) remains unchanged",
+    "load38_direct_calls11_code_targets16_indirect_sites": true,
+    "direct_code_targets": [
+      "00419cc0",
+      "0041dd40",
+      "0041e870",
+      "004261a0",
+      "00ad4540",
+      "00ad4aa0",
+      "00bd1510",
+      "00bf65ac",
+      "00bf6713",
+      "00bf681b",
+      "00bf7680"
+    ],
+    "imported_CE2220_decrement": "indirect IAT site; callee graph also lists external import, not a twelfth direct code target",
+    "whole_load_equals_frozen161_and_fresh_live_analysis_and_installed_disk": true,
+    "running_game_or_Source_body_execution": false
+  },
+  "call_rows": [
+    {
+      "address": "00ad4c6d",
+      "native": "0041dd40",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4c84",
+      "native": "00bf7680",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4ca6",
+      "native": "004261a0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4cbc",
+      "native": "004261a0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4cee",
+      "native": "00419cc0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4cf5",
+      "native": "00bd1510",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4d12",
+      "native": "00419cc0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4d19",
+      "native": "00bd1510",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4d2c",
+      "native": "0041dd40",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4d41",
+      "native": "00bf7680",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4d57",
+      "native": "0041dd40",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4d6c",
+      "native": "00bf7680",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4d86",
+      "native": "0041dd40",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4d9b",
+      "native": "00bf7680",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4db5",
+      "native": "0041dd40",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4dca",
+      "native": "00bf7680",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4de4",
+      "native": "0041dd40",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4df9",
+      "native": "00bf7680",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4e15",
+      "native": "004261a0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4e52",
+      "native": "0041e870",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4e8c",
+      "native": "00419cc0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4e93",
+      "native": "00bd1510",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4eaa",
+      "native": "004261a0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4ec1",
+      "native": "004261a0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4ef0",
+      "native": "00419cc0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4ef7",
+      "native": "00bd1510",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4f14",
+      "native": "00419cc0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4f1b",
+      "native": "00bd1510",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad4f6a",
+      "native": "00bf681b",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad5025",
+      "native": "00ad4540",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad5036",
+      "native": "00bf6713",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad505e",
+      "native": "00ad4aa0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad5066",
+      "native": "00bf65ac",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad50dc",
+      "native": "00ad4540",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad50e9",
+      "native": "00bf6713",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad50f7",
+      "native": "00bf6713",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad5164",
+      "native": "00419cc0",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00ad516b",
+      "native": "00bd1510",
+      "function": "00ad4c30"
+    },
+    {
+      "address": "00cb93c3",
+      "native": "0041dd20",
+      "function": "00cb93c0",
+      "kind": "tail_jump",
+      "scope": "read-only whole load EH action"
+    },
+    {
+      "address": "00cb93cb",
+      "native": "0041dd20",
+      "function": "00cb93c8",
+      "kind": "tail_jump",
+      "scope": "read-only whole load EH action"
+    },
+    {
+      "address": "00cb93d3",
+      "native": "0041dd20",
+      "function": "00cb93d0",
+      "kind": "tail_jump",
+      "scope": "read-only whole load EH action"
+    },
+    {
+      "address": "00cb93db",
+      "native": "0041dd20",
+      "function": "00cb93d8",
+      "kind": "tail_jump",
+      "scope": "read-only whole load EH action"
+    },
+    {
+      "address": "00cb93e3",
+      "native": "0041dd20",
+      "function": "00cb93e0",
+      "kind": "tail_jump",
+      "scope": "read-only whole load EH action"
+    },
+    {
+      "address": "00cb93eb",
+      "native": "0041dd20",
+      "function": "00cb93e8",
+      "kind": "tail_jump",
+      "scope": "read-only whole load EH action"
+    },
+    {
+      "address": "00cb93f3",
+      "native": "0041dd20",
+      "function": "00cb93f0",
+      "kind": "tail_jump",
+      "scope": "read-only whole load EH action"
+    },
+    {
+      "address": "00cb93fd",
+      "native": "00bf6b43",
+      "function": "00cb93f8",
+      "kind": "tail_jump",
+      "scope": "read-only whole load handler"
+    }
+  ],
+  "indirect_call_sites": [
+    {
+      "site": "00ad4cd0",
+      "operand": "eax",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4e29",
+      "operand": "eax",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4e6e",
+      "operand": "edx",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4ed5",
+      "operand": "eax",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4f29",
+      "operand": "eax",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4f36",
+      "operand": "eax",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4f61",
+      "operand": "edx",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4f81",
+      "operand": "edx",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4f8e",
+      "operand": "edx",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4f9c",
+      "operand": "edx",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4faa",
+      "operand": "edx",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4fb8",
+      "operand": "edx",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4fc7",
+      "operand": "edx",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad4fea",
+      "operand": "eax",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad507d",
+      "operand": "dword ptr [0xce2220]",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00ad508d",
+      "operand": "eax",
+      "function": "00ad4c30"
+    },
+    {
+      "site": "00be4331",
+      "operand": "eax",
+      "function": "00be4320"
+    },
+    {
+      "site": "00be4351",
+      "operand": "eax",
+      "function": "00be4340"
+    }
+  ],
+  "call_row_scope": "38 whole loader direct sites plus7EH-action and1handler tail sites,46unique; WORD leaves use only indirect current24",
+  "EH": {
+    "reused_161": true,
+    "complete158_bytes": [
+      {
+        "start": "00cb93c0",
+        "bytes": 8,
+        "sha256": "7a61df46d26dcdffb5c8a9cae76ab8140a12bda3b8a1f72904a1715bef977513",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93c0.bin",
+        "current_installed_disk_equals_frozen161": true
+      },
+      {
+        "start": "00cb93c8",
+        "bytes": 8,
+        "sha256": "1c8461432ac7f863736a636ced1b4805db4eacea920458dea40eb96f8e4e85a4",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93c8.bin",
+        "current_installed_disk_equals_frozen161": true
+      },
+      {
+        "start": "00cb93d0",
+        "bytes": 8,
+        "sha256": "7ef3363787e624f8abaf4fb8e9493dd350130549ce05d053614be27b162ed1bd",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93d0.bin",
+        "current_installed_disk_equals_frozen161": true
+      },
+      {
+        "start": "00cb93d8",
+        "bytes": 8,
+        "sha256": "e6021c078e4f97f363278fa03f5647f88773b5a6e149a2366270d3ed967704f3",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93d8.bin",
+        "current_installed_disk_equals_frozen161": true
+      },
+      {
+        "start": "00cb93e0",
+        "bytes": 8,
+        "sha256": "52c0f28c88f6bf913e67d7218b79f0943c6eaeba95e263d3d0b5b4d783cbd551",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93e0.bin",
+        "current_installed_disk_equals_frozen161": true
+      },
+      {
+        "start": "00cb93e8",
+        "bytes": 8,
+        "sha256": "3e366ea8986505c3a87cfd39c20e228a44c8ffd29271b58a34655d92f41be6a5",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93e8.bin",
+        "current_installed_disk_equals_frozen161": true
+      },
+      {
+        "start": "00cb93f0",
+        "bytes": 8,
+        "sha256": "813521e495f3934a3bc801b820f8196d000cd1cd1b8ac0afefc187361273dc65",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93f0.bin",
+        "current_installed_disk_equals_frozen161": true
+      },
+      {
+        "start": "00cb93f8",
+        "bytes": 10,
+        "sha256": "a08f32f259e64235a43986e31b4d274a04b63e62359a64b97867ed0fb369b0fb",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93f8.bin",
+        "current_installed_disk_equals_frozen161": true
+      },
+      {
+        "start": "00df09d4",
+        "bytes": 36,
+        "sha256": "6f1f6da9d510b24d420c62118c7a14fd7dd05b49a5ecd3650b08d68d17f83c52",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00df09d4.bin",
+        "current_installed_disk_equals_frozen161": true
+      },
+      {
+        "start": "00df09f8",
+        "bytes": 56,
+        "sha256": "1c49fc073d1f6f165b6bad8fdb4a060b4e99c0d36512f138b7281f729d028a98",
+        "live_equals_disk": true,
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00df09f8.bin",
+        "current_installed_disk_equals_frozen161": true
+      }
+    ],
+    "full36_byte_FuncInfo_all56_map_bytes_seven8byte_actions_and10byte_handler": true,
+    "load_map": {
+      "handler": "00cb93f8",
+      "FuncInfo": "00df09d4",
+      "fields": [
+        429065506,
+        7,
+        14617080,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "map": "00df09f8",
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cb93c0",
+          "bytes8": "8d4db0e9584976ff",
+          "frame_operand": "ecx, [ebp - 0x50]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cb93c8",
+          "bytes8": "8d4dc0e9504976ff",
+          "frame_operand": "ecx, [ebp - 0x40]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 2,
+          "previous": 1,
+          "action": "00cb93d0",
+          "bytes8": "8d4db8e9484976ff",
+          "frame_operand": "ecx, [ebp - 0x48]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 3,
+          "previous": 0,
+          "action": "00cb93d8",
+          "bytes8": "8d4dc0e9404976ff",
+          "frame_operand": "ecx, [ebp - 0x40]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 4,
+          "previous": 0,
+          "action": "00cb93e0",
+          "bytes8": "8d4db8e9384976ff",
+          "frame_operand": "ecx, [ebp - 0x48]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 5,
+          "previous": 0,
+          "action": "00cb93e8",
+          "bytes8": "8d4dc8e9304976ff",
+          "frame_operand": "ecx, [ebp - 0x38]",
+          "target": "0041dd20"
+        },
+        {
+          "state": 6,
+          "previous": 5,
+          "action": "00cb93f0",
+          "bytes8": "8d4dc0e9284976ff",
+          "frame_operand": "ecx, [ebp - 0x40]",
+          "target": "0041dd20"
+        }
+      ]
+    },
+    "only_cleanup": "actual41DD20 current local raw string headers",
+    "no_automatic_image_stream_pending_payload_inserted_glyph_or_Font_release": true,
+    "future_Source_policy": "consume each cleanup before calls; no tidy replay after normal-return failure; retain independent failed operation; nested escape policy explicit",
+    "Native_FH3_private_frame_SEH_catch_RTTI_machine_unwind_equivalence": false
+  },
+  "raw_layout": {
+    "Font_bytes": 172,
+    "tree": "FontBASE opaque00/head04/count08, not GUI/font reference count",
+    "node_bytes": 24,
+    "node_fields": "links00/04/08,keyDWORD0C with lowWORD comparisons,payloadDWORD10,colorBYTE14,nilBYTE15;16/17 untouched",
+    "payload_bytes": 32,
+    "payload_fields": "four floatDWORDs00/04/08/0C,WORD10/12/14,unwritten16/17,GFX18,alpha1C",
+    "Font_name_headers_in_order": [
+      "38=root",
+      "40=language",
+      "20=DAT",
+      "30=GFX",
+      "28=alpha"
+    ],
+    "embedded_records": [
+      "4C all32bytes zero then CURRENTsignedheight/4 and owning images64/68",
+      "6C full32byte forwardREPMOVSD from mandatory0091 payload including padding/image slots",
+      "8C sixDWORDzero plus redundantWORD12zero then borrowedimagesA4/A8"
+    ],
+    "other_image_aliases": "regular payloads18/1C and fallback84/88 borrowed; no per-glyph retain",
+    "unwritten_Font_ranges": [
+      "00..03",
+      "16..17",
+      "49..4B"
+    ],
+    "blanket_zeroing_added": false
+  },
+  "chronology": [
+    {
+      "region": "4C4B..4D19",
+      "order": "GFX inputcopy beforestate0;capture root/currentrenderer beforetwo concats;language capture;table64 lateonSAMEreceiver;flags0;returnedimage capture;consume pathstates beforecurrentpoolreturns"
+    },
+    {
+      "region": "4D1E..4E01",
+      "order": "five CURRENT raw name assignments38,40,20,30,28;identity beforeheader reads;genuineresize preserve1;currentlength/data in actual individual inline order"
+    },
+    {
+      "region": "4E01..4E98",
+      "order": "CURRENTalphalength;nonempty captures renderer beforeconcat/table64after;empty constructs actualCE77A4white.tga then captures renderer/table64;savealpha beforecleanup"
+    },
+    {
+      "region": "4E98..4F4E",
+      "order": "CURRENTVFScapture beforetwo DATconcats,currenttable04late/openmode2;poolreturns;currentstream38count and40height withactualnull;signAX/currentFont18SSE/lowWORDstore14"
+    },
+    {
+      "region": "4F58..5017",
+      "order": "current40key;SDK20h;fourcurrent44calls each immediateFSTP32;current3CrawWORD10;current3CrawWORD12store then unsignedCURRENTscaleconvert/overwrite;current40rawWORD14store,CURRENTscale,images18/1C beforefinalscaled14store"
+    },
+    {
+      "region": "501B..5073",
+      "order": "capturedend beforeactual164;owner validation thencapturedendcompare;misswritepairWORD/value andcallAD4AA0;ignoreinsertionflag;duplicateinitiallookup SDKfree;noinitialtreeclear"
+    },
+    {
+      "region": "5079..5180",
+      "order": "CURRENTCE2220(stream04);zeroonlyCURRENTprofile/table0;nostreamreadafterterminal;specialrecords;consume0beforelastGFXcopycurrentpoolreturn"
+    }
+  ],
+  "provider_matrix": [
+    {
+      "files": [
+        "native_font_storage",
+        "native_font_tree_iterator",
+        "native_font_tree_insert"
+      ],
+      "actual": "146/155 whole rawctor/head/fulltreecleanup;164WORDlookup;168predecessor;176genuinewholelinkalias",
+      "remaining": "185 WORDunique not yetSource; separate raw20hpayloads and complete Font retirement"
+    },
+    {
+      "files": [
+        "native_string",
+        "native_pooled_string_substring",
+        "native_physical_file_date",
+        "game_native_string_process"
+      ],
+      "actual": "actual8B headers/rawcopy/resize/concat/assign/current419CC0,BD1510,41DD20 overSAMEretainedprocess",
+      "remaining": "wholeparent rawcapture/currentfield/state/individualinlineoperand transport; no semanticnoexceptstorage substitution"
+    },
+    {
+      "files": [
+        "native_texture_loading_cache",
+        "game_native_renderer_application",
+        "game_native_renderer_textures.inc"
+      ],
+      "actual": "realB319B0rawheaderwrapper/cache/image/actualresourceowners;SAMEactualcache/publication/existingrenderergraph",
+      "remaining": "correct earlyreceiver/latetable capture plusfresh persistentchildframes heldoutsidefailure;not fakeimage callback/newrenderer"
+    },
+    {
+      "files": [
+        "native_vfs_runtime_bindings",
+        "game_native_vfs_runtime",
+        "native_vfs_open_route"
+      ],
+      "actual": "capturedBDF310open_manager_entry(rawheader);source_read actualmemory/physical/adopted/inflater;knowncurrentzero_reference bodies",
+      "remaining": "explicitparentcurrentdecrementauthority and currentcapture/zero schedule;read_all/OpenedStream snapshots+automaticrelease notsubstituted"
+    },
+    {
+      "files": [
+        "native_resource_stream_reads",
+        "native_resource_value_reads",
+        "native_raw_scalar_reader"
+      ],
+      "actual": "broadrawDWORD4300 andbroadx87float4360 through actualdispatcher;othernarrowmemory/physicalfloat also real",
+      "remaining": "onlytwo identical rawWORD entries4320/4340;typedMemoryStream wordprojections do not implementactualrawstreamoperand"
+    },
+    {
+      "files": [
+        "font_data",
+        "native_font_resources",
+        "game_native_font_application",
+        "game_hosts_fonts",
+        "font_registry_startup"
+      ],
+      "actual": "genuineDATdecode/SSElogic,actualimages,unrelocatedFontData allocation,stableexactdescriptor/registryassociation andreal initialproducer",
+      "remaining": "semanticmap/descriptor/dataowner != ACrawFont/genuineindividuallySDKallocated20hpayloads;wholefileguards/scalesnapshot/prefixpaths differ"
+    },
+    {
+      "files": [
+        "singleton_lifetime",
+        "native_int_pointer_tree18_leaves",
+        "native_effect_handle_acquisition"
+      ],
+      "actual": "matchedSDKallocate/free,returninginvalidhandlerandrealowninglengthtransport,nodeallocator/repair",
+      "remaining": "actualretainedgraph andnonnullthrowdomain;noOriginalprivateCRT/RTTI/SEH or newcleanup inferred"
+    },
+    {
+      "files": [
+        "game_native_readonly_data"
+      ],
+      "actual": "genuineverified .rdata table/literal data_at role includingCE77A4 whenbandadmitted",
+      "remaining": "explicitlydoesnotresolveimports ormake mutable/callable providers;CURRENTCE2220cannotbecalledfromafileIATpreimage"
+    }
+  ],
+  "accepted180": {
+    "commit": "5e8a4dc97526dd0ce57df068b4082bd1774499be",
+    "Source_implemented": false,
+    "copied": [
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\accepted180\\cc12_native_font_word_unique_insert_readiness_180.json",
+        "sha256": "dcc85c26f233c525fffcf4e57ebe6336c90518886c878830ea4e38965fed7fb5",
+        "bytes": 28776,
+        "role": "Root-accepted sealed180 readiness only",
+        "peer_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_gui_text_constructor_readiness84\\reports\\cc12_native_font_word_unique_insert_readiness_180.json"
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\accepted180\\final_artifact_manifest.json",
+        "sha256": "b02539427ca6930bc797d11f2953226784f28067ca583f904da722846366e515",
+        "bytes": 118283,
+        "role": "Root-accepted sealed180 readiness only",
+        "peer_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_gui_text_constructor_readiness84\\local\\font_word_unique_insert180\\final_artifact_manifest.json"
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\accepted180\\Native_chronology_proof.json",
+        "sha256": "a370852920e4d9c0c63b8af5378d668406bb182c6cfd595ab815ea533784fe88",
+        "bytes": 9507,
+        "role": "Root-accepted sealed180 readiness only",
+        "peer_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_gui_text_constructor_readiness84\\local\\font_word_unique_insert180\\Native_chronology_proof.json"
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\accepted180\\CC12_NATIVE_FONT_WORD_UNIQUE_INSERT_READINESS_180.md",
+        "sha256": "546d3ee688924d8f005b950705322b3b19b77a0cb2e51f63ff91b658a716f5f8",
+        "bytes": 10024,
+        "role": "Root-accepted sealed180 readiness only",
+        "peer_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_gui_text_constructor_readiness84\\docs\\CC12_NATIVE_FONT_WORD_UNIQUE_INSERT_READINESS_180.md"
+      }
+    ],
+    "integration_state": "readinessaccepted/sealed, planned185 notimplementedorcreditedhere",
+    "proposed_API": "NativeIntPointerTree18InsertResult* __cdecl insert_native_font_tree_unique_00ad4aa0(void* actual_font_base, NativeIntPointerTree18InsertResult* output12, const NativeIntPointerTree18Pair* pair8)",
+    "operand_policy": "single conditional first-searchWORD capture;loopbackskipsreload;finalcandidateWORD beforeCURRENTincomingWORD;real168and176 SAMEpair"
+  },
+  "prepared_parent_transport": {
+    "still_open": true,
+    "not_an_impossibility_or_prohibition_policy": true,
+    "pair": "AD5055onlylowWORD;AD505ApayloadDWORD;callerpreparedgenuinefullydefinedPair8 preservesupperWORD;nozero-normalization/unrelatedWORDstructcast orprivateNativestackpreimageclaim",
+    "operation": "prepareoutsidefailingscope;realrawFont/head/nodes,actualheaderbacking,freshcachechildframes,pair/results,savedimage/stream/pendingobservations;metadataandindependentgraphretainedthroughinterruption",
+    "ignored_unique_result": "AD4C30doesnotinspectinsertflag;noinventedpostcallduplicatecleanup",
+    "pending_or_orphan_protocol": "onependingslotrequiresprovednormal-publicationcorrespondence;otherwisepreparedorphanretentionorboundedinputdomain neededwithoutnewNativefieldreads/latearrayallocation;notclosedhere",
+    "stream": "currentdecrementtargetborrowed;zerodispatchthroughactualcurrenttable;metadataoutlivesretirement;no retiredstorage read/retry",
+    "ABI": "ordinarySourceexplicitframe;BOTHNativeandSourceprivate stack/argument/scratch aliasesexcluded;validrawobjects,serializedactualauthorities,x87/SSEenvironment andcallbacklifetime required",
+    "production_or_full_Font_retirement_readiness": false
+  },
+  "next_Source186": {
+    "scope": "ONLYBE4320andBE4340rawWORDentries;onebody/distinctbyte-provenalias",
+    "files": [
+      "include/bsp/native_resource_stream_reads.hpp",
+      "src/native_resource_stream_reads.cpp"
+    ],
+    "APIs": [
+      "std::uint16_t __cdecl read_native_stream_word_slot40_00be4320(void* actual_stream, std::uint32_t* optional_actual, NativeResourceStreamReadContext& same_reads)",
+      "std::uint16_t __cdecl read_native_stream_word_slot3c_00be4340(void* actual_stream, std::uint32_t* optional_actual, NativeResourceStreamReadContext& same_reads)"
+    ],
+    "provider": "SAMEactualsame_reads.streams;actualNativeVfsRuntimeBindings source_read;noadditionalcallback/context/owner/default",
+    "body": "capturepointerbits;CURRENTvptr/slot24;one request2read into pointerseededslot;returnlowWORD;nozeroing/retry/shortreadguard/endian/signpolicy/localEH",
+    "whole27B_alias": true,
+    "original_ABI": "ECXstream,stackoptionalactual,AX,RET4;EAXupperbitsnotpromisedbyordinaryuint16Source",
+    "Source_limit": "validactualstream/optionalcount/backing/dispatcher throughcallandfailure;BOTHprivateframes/fault/NativeABIexcluded",
+    "preserve": "alloldDWORD/string/floatbodiesandtypedMemoryStreamAPI;noGenericcontextrewrite/newCMakeunit",
+    "Source_implemented_compiled_executed_here": false
+  },
+  "Original_profile_slot_identity_checks_disk_only": [
+    {
+      "profile": "00d642c0",
+      "disk_only_slots38_3C_40_44": [
+        "00be4300",
+        "00be4340",
+        "00be4320",
+        "00be4360"
+      ],
+      "scope": "unchanged installedOriginal; not running process/current publication proof"
+    },
+    {
+      "profile": "00d691b0",
+      "disk_only_slots38_3C_40_44": [
+        "00be4300",
+        "00be4340",
+        "00be4320",
+        "00be4360"
+      ],
+      "scope": "unchanged installedOriginal; not running process/current publication proof"
+    },
+    {
+      "profile": "00d68db0",
+      "disk_only_slots38_3C_40_44": [
+        "00be4300",
+        "00be4340",
+        "00be4320",
+        "00be4360"
+      ],
+      "scope": "unchanged installedOriginal; not running process/current publication proof"
+    },
+    {
+      "profile": "00d64400",
+      "disk_only_slots38_3C_40_44": [
+        "00be4300",
+        "00be4340",
+        "00be4320",
+        "00be4360"
+      ],
+      "scope": "unchanged installedOriginal; not running process/current publication proof"
+    }
+  ],
+  "source_pins": {
+    "worker_HEAD": "665669a78470514feaf71e41f203b21710efe764",
+    "audited_published_Main": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+    "no_Main_merge_or_Source_refresh": true,
+    "sources": [
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_font_storage.hpp",
+        "sha256": "3d62ca18439d3b83b586f9aae1d14e84108280386d88d85532a4f3a8fc92eeb9",
+        "bytes": 4737,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/native_font_storage.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "6e9244c9cfcebe4f2d59e85235f1302ddf0b0111",
+        "worker_Git_blob": "6e9244c9cfcebe4f2d59e85235f1302ddf0b0111",
+        "worker_file_sha256": "3d62ca18439d3b83b586f9aae1d14e84108280386d88d85532a4f3a8fc92eeb9",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_font_storage.cpp",
+        "sha256": "760c148ed5d3bbdb6ddb40781893251caf646dbab18755b3bb8af5c46a5279ce",
+        "bytes": 6829,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/native_font_storage.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "8200f5eb7004be352897f2b4baefa74138586fea",
+        "worker_Git_blob": "8200f5eb7004be352897f2b4baefa74138586fea",
+        "worker_file_sha256": "760c148ed5d3bbdb6ddb40781893251caf646dbab18755b3bb8af5c46a5279ce",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_font_tree_iterator.hpp",
+        "sha256": "320944a570770e36abe06031cdd7d49a5ce0c30f17508de8431af6aff14e6094",
+        "bytes": 1611,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/native_font_tree_iterator.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "8374521e9377e90a32354ffa8facb751747d7a95",
+        "worker_Git_blob": "8374521e9377e90a32354ffa8facb751747d7a95",
+        "worker_file_sha256": "320944a570770e36abe06031cdd7d49a5ce0c30f17508de8431af6aff14e6094",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_font_tree_iterator.cpp",
+        "sha256": "3146a01e523fdae67ab488e2d5f188c6983397b20219c18ccc4c6342084251eb",
+        "bytes": 533,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/native_font_tree_iterator.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "beade65d3e80f635bea7039e4d6e624a664b77f1",
+        "worker_Git_blob": "beade65d3e80f635bea7039e4d6e624a664b77f1",
+        "worker_file_sha256": "3146a01e523fdae67ab488e2d5f188c6983397b20219c18ccc4c6342084251eb",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_effect_handle_acquisition.hpp",
+        "sha256": "9148f95d14fbfc14ad6ed0ea25a4b1047975accc606af5995dcfd718e1b127af",
+        "bytes": 3375,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/native_effect_handle_acquisition.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "2a82cebab71e9f1fa2cb79775c72a89c95a30636",
+        "worker_Git_blob": "2a82cebab71e9f1fa2cb79775c72a89c95a30636",
+        "worker_file_sha256": "9148f95d14fbfc14ad6ed0ea25a4b1047975accc606af5995dcfd718e1b127af",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_effect_handle_acquisition.cpp",
+        "sha256": "3b7794d963c4885bbb818bd15d5592c487157863183e0f3db692d089893cef4a",
+        "bytes": 5736,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/native_effect_handle_acquisition.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "e94bf83c1972606b981dee0db701ef43333b9506",
+        "worker_Git_blob": "e94bf83c1972606b981dee0db701ef43333b9506",
+        "worker_file_sha256": "3b7794d963c4885bbb818bd15d5592c487157863183e0f3db692d089893cef4a",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\detail\\native_tree_insert_storage.hpp",
+        "sha256": "c5eb00461d535b3c737e63a4286814e35c5427c883474d37b3cb6f67a2f8a8b9",
+        "bytes": 9079,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/detail/native_tree_insert_storage.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "626561295a534877f0b58f70880b7bfc6d7f7f80",
+        "worker_Git_blob": "626561295a534877f0b58f70880b7bfc6d7f7f80",
+        "worker_file_sha256": "c5eb00461d535b3c737e63a4286814e35c5427c883474d37b3cb6f67a2f8a8b9",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_int_pointer_tree18_leaves.hpp",
+        "sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+        "bytes": 2447,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/native_int_pointer_tree18_leaves.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "4ad334d57f4665e25a5719ec97ad65135b712d74",
+        "worker_Git_blob": "4ad334d57f4665e25a5719ec97ad65135b712d74",
+        "worker_file_sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_int_pointer_tree18_leaves.cpp",
+        "sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+        "bytes": 6965,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/native_int_pointer_tree18_leaves.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "f4059b8973da839d78ee36a8ecb208b18f8a5378",
+        "worker_Git_blob": "f4059b8973da839d78ee36a8ecb208b18f8a5378",
+        "worker_file_sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_string.hpp",
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "bytes": 8771,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/native_string.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+        "worker_Git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+        "worker_file_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_string.cpp",
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "bytes": 9121,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/native_string.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+        "worker_Git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+        "worker_file_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_pooled_string_substring.hpp",
+        "sha256": "6243c6ba8acb0e1b7f0358a456d6e65ac1b9303cc79b1f1dfd5be01d05b985ff",
+        "bytes": 2047,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/native_pooled_string_substring.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "5567cf0b90182b39790a5379be8d23c5b6d6b371",
+        "worker_Git_blob": "5567cf0b90182b39790a5379be8d23c5b6d6b371",
+        "worker_file_sha256": "6243c6ba8acb0e1b7f0358a456d6e65ac1b9303cc79b1f1dfd5be01d05b985ff",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_pooled_string_substring.cpp",
+        "sha256": "7a18633cf114b21290f0c4ddfb9ec96d817f6a246a97ebfa05e9be3fdce9b8e1",
+        "bytes": 7580,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/native_pooled_string_substring.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "8b6f939f3b1988567ef67131e78dd6e238888dbb",
+        "worker_Git_blob": "8b6f939f3b1988567ef67131e78dd6e238888dbb",
+        "worker_file_sha256": "7a18633cf114b21290f0c4ddfb9ec96d817f6a246a97ebfa05e9be3fdce9b8e1",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_physical_file_date.hpp",
+        "sha256": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f",
+        "bytes": 5969,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/native_physical_file_date.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "bc6dd20dc002dbe5837d312babfc11d875ed46c9",
+        "worker_Git_blob": "bc6dd20dc002dbe5837d312babfc11d875ed46c9",
+        "worker_file_sha256": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_physical_file_date.cpp",
+        "sha256": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0",
+        "bytes": 18709,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/native_physical_file_date.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "3239fe3a61caf3f11d2c4f0cfb837cbf57b773d3",
+        "worker_Git_blob": "3239fe3a61caf3f11d2c4f0cfb837cbf57b773d3",
+        "worker_file_sha256": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\game_native_string_process.hpp",
+        "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+        "bytes": 4306,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/game_native_string_process.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "30bbfe627b4ea7b4f453ec68422363c35479a3a8",
+        "worker_Git_blob": "30bbfe627b4ea7b4f453ec68422363c35479a3a8",
+        "worker_file_sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\game_native_string_process.cpp",
+        "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+        "bytes": 1407,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/game_native_string_process.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "1c660fa6417f9fbc277b821d0ad7d83587fcbed5",
+        "worker_Git_blob": "1c660fa6417f9fbc277b821d0ad7d83587fcbed5",
+        "worker_file_sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\singleton_lifetime.hpp",
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "bytes": 4372,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/singleton_lifetime.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+        "worker_Git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+        "worker_file_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\singleton_lifetime.cpp",
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "bytes": 13257,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/singleton_lifetime.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+        "worker_Git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+        "worker_file_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\font_data.hpp",
+        "sha256": "f7a1f433fb7f0466873da79a6da0b45944df5965fbe756715682265afd257c49",
+        "bytes": 2515,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/font_data.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "1b04d267ef910dee68c99353c639cd6acdb8da99",
+        "worker_Git_blob": "1b04d267ef910dee68c99353c639cd6acdb8da99",
+        "worker_file_sha256": "f7a1f433fb7f0466873da79a6da0b45944df5965fbe756715682265afd257c49",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\font_data.cpp",
+        "sha256": "24ba9b6e37f798072ed06fc796b0dec560b3b500b4697b3b6634c7892a8717c1",
+        "bytes": 4612,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/font_data.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "89ed303bfd14c788d0ec8f419dbb34241986c072",
+        "worker_Git_blob": "89ed303bfd14c788d0ec8f419dbb34241986c072",
+        "worker_file_sha256": "24ba9b6e37f798072ed06fc796b0dec560b3b500b4697b3b6634c7892a8717c1",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\stream_scalars.hpp",
+        "sha256": "c452b3d075afdb4bd996d66789d21edc8acd2fd8f43c0df115bb6b3140ce6610",
+        "bytes": 756,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/stream_scalars.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "c0bcabb4173a905c7aadee4c963c17218ea40956",
+        "worker_Git_blob": "c0bcabb4173a905c7aadee4c963c17218ea40956",
+        "worker_file_sha256": "c452b3d075afdb4bd996d66789d21edc8acd2fd8f43c0df115bb6b3140ce6610",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\stream_scalars.cpp",
+        "sha256": "6a45363395b440800b08ba923e099ed4e701212a7b44315094cd187e7108d8a9",
+        "bytes": 729,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/stream_scalars.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "e97f3f3c86ffff31172857712521bf974fcefb2f",
+        "worker_Git_blob": "e97f3f3c86ffff31172857712521bf974fcefb2f",
+        "worker_file_sha256": "6a45363395b440800b08ba923e099ed4e701212a7b44315094cd187e7108d8a9",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_font_resources.hpp",
+        "sha256": "86b054ccf2ae873195e803e1d97d01c31247cf4e0e174c12bcfcaf8b150e7e48",
+        "bytes": 4298,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/native_font_resources.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "5fd7d4e25176f5ef8910a417e5b6ee380ead66aa",
+        "worker_Git_blob": "5fd7d4e25176f5ef8910a417e5b6ee380ead66aa",
+        "worker_file_sha256": "86b054ccf2ae873195e803e1d97d01c31247cf4e0e174c12bcfcaf8b150e7e48",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_font_resources.cpp",
+        "sha256": "8e61d9e701b0cc181749cdac04e45be5d4931da13bce2ceda28e90d3a5a9e26b",
+        "bytes": 6097,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/native_font_resources.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "5cf3fc746c8fbf6ae0954ed996131ad4d26f8181",
+        "worker_Git_blob": "5cf3fc746c8fbf6ae0954ed996131ad4d26f8181",
+        "worker_file_sha256": "8e61d9e701b0cc181749cdac04e45be5d4931da13bce2ceda28e90d3a5a9e26b",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\game_native_font_application.hpp",
+        "sha256": "f819d8a38b49a6ff8ec3873dea65992366396c8d635e54301542c71ce0aee469",
+        "bytes": 4863,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/game_native_font_application.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "bd6bb4ebbe30d873a654a66e70b69af6e165fd71",
+        "worker_Git_blob": "bd6bb4ebbe30d873a654a66e70b69af6e165fd71",
+        "worker_file_sha256": "f819d8a38b49a6ff8ec3873dea65992366396c8d635e54301542c71ce0aee469",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\game_native_font_application.cpp",
+        "sha256": "31d143c3dc1dc9495cd87fdba0ecb67ad3d2494c9b47415746a47771cce5e424",
+        "bytes": 12438,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/game_native_font_application.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "692b370f822f5f21496ae95c4ed417dc353809b8",
+        "worker_Git_blob": "692b370f822f5f21496ae95c4ed417dc353809b8",
+        "worker_file_sha256": "31d143c3dc1dc9495cd87fdba0ecb67ad3d2494c9b47415746a47771cce5e424",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\game_hosts_fonts.cpp",
+        "sha256": "90b1012cade7f668f9497124ee398d3bc363a6c2aa9f2fac1c79c8ac34d69064",
+        "bytes": 9211,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/game_hosts_fonts.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "17514530de1c33e593d0043b2e5701add0c27ebc",
+        "worker_Git_blob": "17514530de1c33e593d0043b2e5701add0c27ebc",
+        "worker_file_sha256": "90b1012cade7f668f9497124ee398d3bc363a6c2aa9f2fac1c79c8ac34d69064",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_resource_stream_reads.hpp",
+        "sha256": "a9705ea1d2ef8596131352c3f7b1bc6d97d821b1668c39ab35305d245b78113d",
+        "bytes": 2462,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/native_resource_stream_reads.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "e07f623b33671cc02635804f5f0a0bd1fcac9359",
+        "worker_Git_blob": "e07f623b33671cc02635804f5f0a0bd1fcac9359",
+        "worker_file_sha256": "a9705ea1d2ef8596131352c3f7b1bc6d97d821b1668c39ab35305d245b78113d",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_resource_stream_reads.cpp",
+        "sha256": "8947eba748ca262ca9e03360b8ae52aca7b6658b2651f8857b51a54cd82df493",
+        "bytes": 5073,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/native_resource_stream_reads.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "3c95f291f1fa40c0e43c5cb9d18492ffea601990",
+        "worker_Git_blob": "3c95f291f1fa40c0e43c5cb9d18492ffea601990",
+        "worker_file_sha256": "8947eba748ca262ca9e03360b8ae52aca7b6658b2651f8857b51a54cd82df493",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_resource_value_reads.hpp",
+        "sha256": "356e62eeea88164cbb13368edc4d658f6dc1de668bbc4aff449c5ceaf46ef3b1",
+        "bytes": 2656,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/native_resource_value_reads.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "bacdc921b472daca05246fa66a150722be102c07",
+        "worker_Git_blob": "bacdc921b472daca05246fa66a150722be102c07",
+        "worker_file_sha256": "356e62eeea88164cbb13368edc4d658f6dc1de668bbc4aff449c5ceaf46ef3b1",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_resource_value_reads.cpp",
+        "sha256": "fe7f023e59ef1a576f02b3fc84f0cb3cf8a8d0aba755b3534b80ad37ad6e9b9f",
+        "bytes": 4565,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/native_resource_value_reads.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "b95d5f1bf71d912f839da1ee3cc21f911063b21d",
+        "worker_Git_blob": "b95d5f1bf71d912f839da1ee3cc21f911063b21d",
+        "worker_file_sha256": "fe7f023e59ef1a576f02b3fc84f0cb3cf8a8d0aba755b3534b80ad37ad6e9b9f",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_raw_scalar_reader.hpp",
+        "sha256": "1d3973cb5f9bd52152a435d9b4c3a77de6393708d32a383485d000ed7c4bd330",
+        "bytes": 2827,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/native_raw_scalar_reader.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "0908b711c61d46fd7ac488df5b096f113cea00dd",
+        "worker_Git_blob": "0908b711c61d46fd7ac488df5b096f113cea00dd",
+        "worker_file_sha256": "1d3973cb5f9bd52152a435d9b4c3a77de6393708d32a383485d000ed7c4bd330",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_raw_scalar_reader.cpp",
+        "sha256": "8cca6aee313190f3bce7471658f4430076bf1e7df51d5a12375e4a001128cf4c",
+        "bytes": 6269,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/native_raw_scalar_reader.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "828e421d05c5e1997ef677b4defdfcbb18fe8bac",
+        "worker_Git_blob": "828e421d05c5e1997ef677b4defdfcbb18fe8bac",
+        "worker_file_sha256": "8cca6aee313190f3bce7471658f4430076bf1e7df51d5a12375e4a001128cf4c",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_adopted_substream.hpp",
+        "sha256": "c64950d42cf17d3c4da39fa7f99931e3e74b4ad3d968d00b8c25f1ddb0c0a8dd",
+        "bytes": 5667,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/native_adopted_substream.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "d51ce8e875ac0cc2894e28b1d9a0eca2d8a9c056",
+        "worker_Git_blob": "d51ce8e875ac0cc2894e28b1d9a0eca2d8a9c056",
+        "worker_file_sha256": "c64950d42cf17d3c4da39fa7f99931e3e74b4ad3d968d00b8c25f1ddb0c0a8dd",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_adopted_substream.cpp",
+        "sha256": "53d9dbf526516cedc063269deb23ce144add399bb54bb2aa7f693ced3d8767be",
+        "bytes": 10276,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/native_adopted_substream.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "ab9e7c20de71e5aca1038cad37c8fbdf42955627",
+        "worker_Git_blob": "ab9e7c20de71e5aca1038cad37c8fbdf42955627",
+        "worker_file_sha256": "53d9dbf526516cedc063269deb23ce144add399bb54bb2aa7f693ced3d8767be",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_vfs_runtime_bindings.hpp",
+        "sha256": "05e6f26c575e02312cf15596c30c4a98b21c6040591b431c7c77c7ba11530fe7",
+        "bytes": 6024,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/native_vfs_runtime_bindings.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "4813123521d1860bdb08235c5de4f281124237e7",
+        "worker_Git_blob": "4813123521d1860bdb08235c5de4f281124237e7",
+        "worker_file_sha256": "05e6f26c575e02312cf15596c30c4a98b21c6040591b431c7c77c7ba11530fe7",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_vfs_runtime_bindings.cpp",
+        "sha256": "e69777aaf6eba33658f9cb2d38aa0dba4995df07165cbf215bcd8e54becfd7a9",
+        "bytes": 14818,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/native_vfs_runtime_bindings.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "2285ff2795cbe5242af23c6669fcb050629c863c",
+        "worker_Git_blob": "2285ff2795cbe5242af23c6669fcb050629c863c",
+        "worker_file_sha256": "e69777aaf6eba33658f9cb2d38aa0dba4995df07165cbf215bcd8e54becfd7a9",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\game_native_vfs_runtime.hpp",
+        "sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad",
+        "bytes": 9565,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/game_native_vfs_runtime.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "21a0950349db25c464e2c7eaa058bcd90d0ea114",
+        "worker_Git_blob": "21a0950349db25c464e2c7eaa058bcd90d0ea114",
+        "worker_file_sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\game_native_vfs_runtime.cpp",
+        "sha256": "6ef792777a53881057f41d3638eca6a7931db3eb5304d7e68754a6e10f332d28",
+        "bytes": 35513,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/game_native_vfs_runtime.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "b9afed61eb31f8188b6ffc2268ac327b9f98c6c0",
+        "worker_Git_blob": "b9afed61eb31f8188b6ffc2268ac327b9f98c6c0",
+        "worker_file_sha256": "6ef792777a53881057f41d3638eca6a7931db3eb5304d7e68754a6e10f332d28",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\game_native_vfs_application.hpp",
+        "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f",
+        "bytes": 3022,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/game_native_vfs_application.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "a9d2ecefb12f656e5b43a56026234abefd34c670",
+        "worker_Git_blob": "a9d2ecefb12f656e5b43a56026234abefd34c670",
+        "worker_file_sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\game_native_vfs_application.cpp",
+        "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+        "bytes": 8470,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/game_native_vfs_application.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "32a441a593a381b649ccd89b71a6e4277e91401d",
+        "worker_Git_blob": "32a441a593a381b649ccd89b71a6e4277e91401d",
+        "worker_file_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_texture_loading_cache.hpp",
+        "sha256": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+        "bytes": 11040,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/native_texture_loading_cache.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "8fe84a0c76d3f0829c7d78bf05009f3fa6c760cd",
+        "worker_Git_blob": "8fe84a0c76d3f0829c7d78bf05009f3fa6c760cd",
+        "worker_file_sha256": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_texture_loading_cache.cpp",
+        "sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+        "bytes": 42965,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/native_texture_loading_cache.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "6c888799e2967e2118ac59ad61aa45deeebc059b",
+        "worker_Git_blob": "6c888799e2967e2118ac59ad61aa45deeebc059b",
+        "worker_file_sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\game_native_renderer_application.hpp",
+        "sha256": "3380643a25c0e27bc653440c8e79dd138bb68b495dac9f386d1e7e221ef467c0",
+        "bytes": 14808,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/game_native_renderer_application.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "f9257417f0ea9e30b5137b79a772bf8264c90283",
+        "worker_Git_blob": "f9257417f0ea9e30b5137b79a772bf8264c90283",
+        "worker_file_sha256": "3380643a25c0e27bc653440c8e79dd138bb68b495dac9f386d1e7e221ef467c0",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\game_native_renderer_application.cpp",
+        "sha256": "83cd9ea6b2d1ea0149a7d2c086164fb65b27673b71587955ca1b233182cfda48",
+        "bytes": 54779,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/game_native_renderer_application.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "18b3db511d73f7f2b3d2efd9375f667d278f0f28",
+        "worker_Git_blob": "18b3db511d73f7f2b3d2efd9375f667d278f0f28",
+        "worker_file_sha256": "83cd9ea6b2d1ea0149a7d2c086164fb65b27673b71587955ca1b233182cfda48",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\game_native_renderer_textures.inc",
+        "sha256": "e178152527c7b2b39a63608346c6cc555a0306cb05c53af83f2cc654146e824e",
+        "bytes": 2949,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/game_native_renderer_textures.inc",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "b4683f86e7199d5788a73d4cdd5a5abaf22347e3",
+        "worker_Git_blob": "b4683f86e7199d5788a73d4cdd5a5abaf22347e3",
+        "worker_file_sha256": "e178152527c7b2b39a63608346c6cc555a0306cb05c53af83f2cc654146e824e",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\font_registry_startup.hpp",
+        "sha256": "a2e52ffbc9dad37e429357f5d920e5b9aa281e7ac2db0085021057581f79e640",
+        "bytes": 6197,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/font_registry_startup.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "310b7201c277e6a94ffdcfa5bd2a0f397d6f98f7",
+        "worker_Git_blob": "310b7201c277e6a94ffdcfa5bd2a0f397d6f98f7",
+        "worker_file_sha256": "a2e52ffbc9dad37e429357f5d920e5b9aa281e7ac2db0085021057581f79e640",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_vfs_open_route.hpp",
+        "sha256": "a44d2136c797e355ae7c48683f8daddefa833608fd9afe8f78a012a91aabe67d",
+        "bytes": 3139,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/native_vfs_open_route.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "c7b8acb8c00ce90b365f80aa8d629ae620ea31eb",
+        "worker_Git_blob": "c7b8acb8c00ce90b365f80aa8d629ae620ea31eb",
+        "worker_file_sha256": "a44d2136c797e355ae7c48683f8daddefa833608fd9afe8f78a012a91aabe67d",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_vfs_open_route.cpp",
+        "sha256": "d3da49916fb3ed4a2cf79fc1465b39fa81cd41ba6a701b395d83c7a984e41be0",
+        "bytes": 11944,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/native_vfs_open_route.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "9ba5f3bdd372bc2c79a6d02e9b769d899835d799",
+        "worker_Git_blob": "9ba5f3bdd372bc2c79a6d02e9b769d899835d799",
+        "worker_file_sha256": "d3da49916fb3ed4a2cf79fc1465b39fa81cd41ba6a701b395d83c7a984e41be0",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\game_native_readonly_data.hpp",
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+        "bytes": 2713,
+        "role": "exact audited publishedSource",
+        "source_identity": "include/bsp/game_native_readonly_data.hpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+        "worker_Git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+        "worker_file_sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\game_native_readonly_data.cpp",
+        "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+        "bytes": 7167,
+        "role": "exact audited publishedSource",
+        "source_identity": "src/game_native_readonly_data.cpp",
+        "published_commit": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+        "Git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+        "worker_Git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+        "worker_file_sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+        "worker_equals_published_Git_blob": true
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\accepted176\\include\\bsp\\native_font_tree_insert.hpp",
+        "sha256": "fd37645bebbda1267a64eed3e2f5e208f8f9f321833af19fa74a1925e121201c",
+        "bytes": 2282,
+        "role": "accepted176 not in audited publishedMain",
+        "source_identity": "include/bsp/native_font_tree_insert.hpp",
+        "Git_blob": "0f2159e4c10bb15ec17a714e9f618a33578cb17e",
+        "accepted_commit": "665669a78470514feaf71e41f203b21710efe764",
+        "worker_file_sha256": "fd37645bebbda1267a64eed3e2f5e208f8f9f321833af19fa74a1925e121201c"
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\accepted176\\src\\native_font_tree_insert.cpp",
+        "sha256": "f1c0327793c4d5ab7ec84f4facd3cac3a13126492aa79fbb6a3f186a4af4f077",
+        "bytes": 898,
+        "role": "accepted176 not in audited publishedMain",
+        "source_identity": "src/native_font_tree_insert.cpp",
+        "Git_blob": "5a5adb9d2288343369aada6e86a62d3fbc9e0f25",
+        "accepted_commit": "665669a78470514feaf71e41f203b21710efe764",
+        "worker_file_sha256": "f1c0327793c4d5ab7ec84f4facd3cac3a13126492aa79fbb6a3f186a4af4f077"
+      }
+    ],
+    "sealed_references": [
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\seals\\cc12_native_font_tree_insert_176\\artifact_manifest.json",
+        "sha256": "3ba350e0568522bca55c2c55029a6df8c6ebdd2f470bdd0f7e9c73fc4f9d51d9",
+        "bytes": 69020,
+        "role": "accepted sealed family manifest; no regeneration",
+        "source_manifest": "local\\cc12_native_font_tree_insert_176\\artifact_manifest.json"
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\seals\\cc12_native_font_tree_iterator_168\\artifact_manifest.json",
+        "sha256": "1d686915201af0e7f95423668670b0b228eefdf9399104e2846fcbcaaef4c8f9",
+        "bytes": 28316,
+        "role": "accepted sealed family manifest; no regeneration",
+        "source_manifest": "local\\cc12_native_font_tree_iterator_168\\artifact_manifest.json"
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\seals\\cc12_native_font_glyph_lookup_164\\artifact_manifest.json",
+        "sha256": "e62624e1d90c8b20bae9d4f9a6fd76ab4eae1dff7100e7fa95d59cf4545ed43a",
+        "bytes": 62173,
+        "role": "accepted sealed family manifest; no regeneration",
+        "source_manifest": "local\\cc12_native_font_glyph_lookup_164\\artifact_manifest.json"
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\seals\\cc12_native_font_constructor_storage_155\\artifact_manifest.json",
+        "sha256": "5507a195f2bdb37dc3691e88f306e6a4cad20732347a316630f3e400f613407e",
+        "bytes": 79242,
+        "role": "accepted sealed family manifest; no regeneration",
+        "source_manifest": "local\\cc12_native_font_constructor_storage_155\\artifact_manifest.json"
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\seals\\cc12_native_font_constructor_storage_readiness_151\\artifact_manifest.json",
+        "sha256": "928c983d52ac80434dd9a8932eea71989939097ef91488dc60d0c89a0d5e1132",
+        "bytes": 75591,
+        "role": "accepted sealed family manifest; no regeneration",
+        "source_manifest": "local\\cc12_native_font_constructor_storage_readiness_151\\artifact_manifest.json"
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\seals\\cc12_native_font_tree_head_storage_146\\artifact_manifest.json",
+        "sha256": "57cf00b6229c033fd55ded8b5491e582e4852891b406a0cb173a91f504c00aed",
+        "bytes": 25008,
+        "role": "accepted sealed family manifest; no regeneration",
+        "source_manifest": "local\\cc12_native_font_tree_head_storage_146\\artifact_manifest.json"
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\inputs\\config\\target.json",
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "bytes": 455,
+        "role": "actual configuration or existing bounded scalar evidence"
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\inputs\\CMakeLists.txt",
+        "sha256": "eb3c7f83231a2a8184041a981bcd912733b5f12801d0bba2345d1ad0e69c3d79",
+        "bytes": 20832,
+        "role": "actual configuration or existing bounded scalar evidence"
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\inputs\\cmake\\startup.cmake",
+        "sha256": "6eb08dcd661fa623286761581ae5b278fc91da512626163db61016d3333078f5",
+        "bytes": 269348,
+        "role": "actual configuration or existing bounded scalar evidence"
+      },
+      {
+        "path": "local\\cc12_native_font_raw_load_readiness_182\\inputs\\docs\\STREAM_SCALAR_READERS.md",
+        "sha256": "249d58bff98e8038a5dd44d071c5b9501ef3eee1282f883d1e9472be7c643b3b",
+        "bytes": 6408,
+        "role": "actual configuration or existing bounded scalar evidence"
+      }
+    ],
+    "provider_source_deltas": []
+  },
+  "source_pin_scope": "50reachedpublishedproviderfiles +2underlyingROtable/literalservicefiles;all52matchworker;2accepted176filesseparate",
+  "validation": {
+    "Source_CMake_ledger_Ghidra_mutations": false,
+    "builds_tests_probes_body_execution": false,
+    "only_tracked_outputs": [
+      "docs/CC12_NATIVE_FONT_RAW_LOAD_READINESS_182.md",
+      "reports\\cc12_native_font_raw_load_readiness_182.json"
+    ],
+    "whole_static_byte_and_listing_checks": true,
+    "Source_provider_Git_blob_deltas": [],
+    "static_call_verification": {
+      "exit": 0,
+      "rows": 46,
+      "failed": 0,
+      "Ghidra_readonly": true,
+      "runtime_or_Source_execution": false
+    },
+    "full_Doc_next186_Root_review": "PASS full53lines andbothNativeWORDbodies beforeseal",
+    "final_machine_report_acceptance": "PASS before one-time seal"
+  },
+  "references": [
+    {
+      "path": "docs\\CC12_NATIVE_FONT_RAW_LOAD_READINESS_182.md",
+      "sha256": "d931125c5dfa7c6887796f57a858ad4341cc76ee6ef6e82a37c2314e930eb147",
+      "bytes": 13821,
+      "role": "Root-reviewed final53-line readiness"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\accepted176\\include\\bsp\\native_font_tree_insert.hpp",
+      "sha256": "fd37645bebbda1267a64eed3e2f5e208f8f9f321833af19fa74a1925e121201c",
+      "bytes": 2282,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\accepted176\\src\\native_font_tree_insert.cpp",
+      "sha256": "f1c0327793c4d5ab7ec84f4facd3cac3a13126492aa79fbb6a3f186a4af4f077",
+      "bytes": 898,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\accepted180\\cc12_native_font_word_unique_insert_readiness_180.json",
+      "sha256": "dcc85c26f233c525fffcf4e57ebe6336c90518886c878830ea4e38965fed7fb5",
+      "bytes": 28776,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\accepted180\\CC12_NATIVE_FONT_WORD_UNIQUE_INSERT_READINESS_180.md",
+      "sha256": "546d3ee688924d8f005b950705322b3b19b77a0cb2e51f63ff91b658a716f5f8",
+      "bytes": 10024,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\accepted180\\copy_integrity.json",
+      "sha256": "0f179096bf3598894999fcd3e9028de371e5b2c1f0f3dcdcb13c3170d84e7d69",
+      "bytes": 810,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\accepted180\\final_artifact_manifest.json",
+      "sha256": "b02539427ca6930bc797d11f2953226784f28067ca583f904da722846366e515",
+      "bytes": 118283,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\accepted180\\Native_chronology_proof.json",
+      "sha256": "a370852920e4d9c0c63b8af5378d668406bb182c6cfd595ab815ea533784fe88",
+      "bytes": 9507,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\audit_182.py",
+      "sha256": "4249bea6683335c514cb3734c04632702d98cb1dfc58241e62b647b2b5f2ebde",
+      "bytes": 5729,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\baseline_and_reuse.json",
+      "sha256": "1e1e9493e4dcb38891dc30377bda52f027e4b118ec465f1ef834a400d38e1b68",
+      "bytes": 20795,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\call_verification.txt",
+      "sha256": "6b0483a8c2043d0bded607b354ec27169d27f2fbaf04b51878a7dd5364725b89",
+      "bytes": 86,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\call_verification_exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "bytes": 3,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\callee_list.console.txt",
+      "sha256": "f375e563675645f475ec8eb6cf514b0168106b919dd43d5e8070a8544b4ad942",
+      "bytes": 425,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\callee_list.txt",
+      "sha256": "f375e563675645f475ec8eb6cf514b0168106b919dd43d5e8070a8544b4ad942",
+      "bytes": 425,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\callee_list_target.json",
+      "sha256": "3be353d7c487e582fce0a8e02c4664267a2cafc96fa1598ec9cfbffa4b1f1528",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\collect_182.py",
+      "sha256": "6b9c3bc0ea307938145be9818bc726bcb6b7f531191c46140e274769605a2ec5",
+      "bytes": 3490,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\current_bytes.console.txt",
+      "sha256": "89d756df7574801bc8e3675c12e2e83ab2304d6706c8e8df2944532ffdd17c2a",
+      "bytes": 6562,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\current_bytes.txt",
+      "sha256": "89d756df7574801bc8e3675c12e2e83ab2304d6706c8e8df2944532ffdd17c2a",
+      "bytes": 6562,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\current_bytes_target.json",
+      "sha256": "3be353d7c487e582fce0a8e02c4664267a2cafc96fa1598ec9cfbffa4b1f1528",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\current_disasm.console.txt",
+      "sha256": "8db16fb34228d873ec979c3490ee636723eacdd5448d4b2a8740dec0add1058f",
+      "bytes": 8699,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\current_disasm.txt",
+      "sha256": "6e0a4988e322f856de04b25bfd1b5b7c911845fb62eb27c48833655f8f3c779b",
+      "bytes": 14277,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\current_disasm_target.json",
+      "sha256": "3be353d7c487e582fce0a8e02c4664267a2cafc96fa1598ec9cfbffa4b1f1528",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\final\\CC12_NATIVE_FONT_RAW_LOAD_READINESS_182.md",
+      "sha256": "d931125c5dfa7c6887796f57a858ad4341cc76ee6ef6e82a37c2314e930eb147",
+      "bytes": 13821,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\freeze_sources_182.py",
+      "sha256": "002b741d8697972d97f9c0d0e88528bee3e4af7a8eede0d91601a2815973d660",
+      "bytes": 5684,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\inputs\\cmake\\startup.cmake",
+      "sha256": "6eb08dcd661fa623286761581ae5b278fc91da512626163db61016d3333078f5",
+      "bytes": 269348,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\inputs\\CMakeLists.txt",
+      "sha256": "eb3c7f83231a2a8184041a981bcd912733b5f12801d0bba2345d1ad0e69c3d79",
+      "bytes": 20832,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\inputs\\config\\target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\inputs\\docs\\STREAM_SCALAR_READERS.md",
+      "sha256": "249d58bff98e8038a5dd44d071c5b9501ef3eee1282f883d1e9472be7c643b3b",
+      "bytes": 6408,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\native_audit.json",
+      "sha256": "ef72e0e21b6f8cc980f0ed984b66d318f6fb47ca7333052229e47ec1875d0be3",
+      "bytes": 17180,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\original_00ad4c30.bin",
+      "sha256": "100ec30100b3ceb0ee99bee69e467cd86b55d282e7d62862bb1d84d0b99d363e",
+      "bytes": 1361,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\original_00be4320.bin",
+      "sha256": "45f118e1a34545f12c5066b0a15c37bc07a24eafa7b753f04db5e871fd9df8ec",
+      "bytes": 27,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\original_00be4340.bin",
+      "sha256": "45f118e1a34545f12c5066b0a15c37bc07a24eafa7b753f04db5e871fd9df8ec",
+      "bytes": 27,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\physical_00ad4c30.txt",
+      "sha256": "0581970d1cdf2ee6445a9103d535977a180104778cd3f2cfd322c39bc27e88cb",
+      "bytes": 18373,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\physical_00be4320.txt",
+      "sha256": "611c2e6d58b457086e7ae65aebccae131a07dc60579ee7136ab3425dda5091fe",
+      "bytes": 375,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\physical_00be4340.txt",
+      "sha256": "f3896887617b159d5798455477d08c00e260633c6a7f45ed299a18422a30f58c",
+      "bytes": 375,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\prepare_receipt_182.py",
+      "sha256": "e2046d331f944e449fad1748e3aa56e1b37c963a09a1d87f7c10005476caadb5",
+      "bytes": 11916,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\proto.console.txt",
+      "sha256": "b40e48adba5ea0865ec5d278da60a6ab8af630a210b514d8cbea60184f0e819b",
+      "bytes": 1867,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\proto.txt",
+      "sha256": "b40e48adba5ea0865ec5d278da60a6ab8af630a210b514d8cbea60184f0e819b",
+      "bytes": 1867,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\proto_target.json",
+      "sha256": "3be353d7c487e582fce0a8e02c4664267a2cafc96fa1598ec9cfbffa4b1f1528",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\detail\\native_tree_insert_storage.hpp",
+      "sha256": "c5eb00461d535b3c737e63a4286814e35c5427c883474d37b3cb6f67a2f8a8b9",
+      "bytes": 9079,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\font_data.hpp",
+      "sha256": "f7a1f433fb7f0466873da79a6da0b45944df5965fbe756715682265afd257c49",
+      "bytes": 2515,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\font_registry_startup.hpp",
+      "sha256": "a2e52ffbc9dad37e429357f5d920e5b9aa281e7ac2db0085021057581f79e640",
+      "bytes": 6197,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\game_native_font_application.hpp",
+      "sha256": "f819d8a38b49a6ff8ec3873dea65992366396c8d635e54301542c71ce0aee469",
+      "bytes": 4863,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\game_native_readonly_data.hpp",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "bytes": 2713,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\game_native_renderer_application.hpp",
+      "sha256": "3380643a25c0e27bc653440c8e79dd138bb68b495dac9f386d1e7e221ef467c0",
+      "bytes": 14808,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\game_native_string_process.hpp",
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+      "bytes": 4306,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\game_native_vfs_application.hpp",
+      "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f",
+      "bytes": 3022,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\game_native_vfs_runtime.hpp",
+      "sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad",
+      "bytes": 9565,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_adopted_substream.hpp",
+      "sha256": "c64950d42cf17d3c4da39fa7f99931e3e74b4ad3d968d00b8c25f1ddb0c0a8dd",
+      "bytes": 5667,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_effect_handle_acquisition.hpp",
+      "sha256": "9148f95d14fbfc14ad6ed0ea25a4b1047975accc606af5995dcfd718e1b127af",
+      "bytes": 3375,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_font_resources.hpp",
+      "sha256": "86b054ccf2ae873195e803e1d97d01c31247cf4e0e174c12bcfcaf8b150e7e48",
+      "bytes": 4298,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_font_storage.hpp",
+      "sha256": "3d62ca18439d3b83b586f9aae1d14e84108280386d88d85532a4f3a8fc92eeb9",
+      "bytes": 4737,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_font_tree_iterator.hpp",
+      "sha256": "320944a570770e36abe06031cdd7d49a5ce0c30f17508de8431af6aff14e6094",
+      "bytes": 1611,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_int_pointer_tree18_leaves.hpp",
+      "sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+      "bytes": 2447,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_physical_file_date.hpp",
+      "sha256": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f",
+      "bytes": 5969,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_pooled_string_substring.hpp",
+      "sha256": "6243c6ba8acb0e1b7f0358a456d6e65ac1b9303cc79b1f1dfd5be01d05b985ff",
+      "bytes": 2047,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_raw_scalar_reader.hpp",
+      "sha256": "1d3973cb5f9bd52152a435d9b4c3a77de6393708d32a383485d000ed7c4bd330",
+      "bytes": 2827,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_resource_stream_reads.hpp",
+      "sha256": "a9705ea1d2ef8596131352c3f7b1bc6d97d821b1668c39ab35305d245b78113d",
+      "bytes": 2462,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_resource_value_reads.hpp",
+      "sha256": "356e62eeea88164cbb13368edc4d658f6dc1de668bbc4aff449c5ceaf46ef3b1",
+      "bytes": 2656,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "bytes": 8771,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_texture_loading_cache.hpp",
+      "sha256": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+      "bytes": 11040,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_vfs_open_route.hpp",
+      "sha256": "a44d2136c797e355ae7c48683f8daddefa833608fd9afe8f78a012a91aabe67d",
+      "bytes": 3139,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\native_vfs_runtime_bindings.hpp",
+      "sha256": "05e6f26c575e02312cf15596c30c4a98b21c6040591b431c7c77c7ba11530fe7",
+      "bytes": 6024,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\include\\bsp\\stream_scalars.hpp",
+      "sha256": "c452b3d075afdb4bd996d66789d21edc8acd2fd8f43c0df115bb6b3140ce6610",
+      "bytes": 756,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\font_data.cpp",
+      "sha256": "24ba9b6e37f798072ed06fc796b0dec560b3b500b4697b3b6634c7892a8717c1",
+      "bytes": 4612,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\game_hosts_fonts.cpp",
+      "sha256": "90b1012cade7f668f9497124ee398d3bc363a6c2aa9f2fac1c79c8ac34d69064",
+      "bytes": 9211,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\game_native_font_application.cpp",
+      "sha256": "31d143c3dc1dc9495cd87fdba0ecb67ad3d2494c9b47415746a47771cce5e424",
+      "bytes": 12438,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\game_native_readonly_data.cpp",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "bytes": 7167,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\game_native_renderer_application.cpp",
+      "sha256": "83cd9ea6b2d1ea0149a7d2c086164fb65b27673b71587955ca1b233182cfda48",
+      "bytes": 54779,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\game_native_renderer_textures.inc",
+      "sha256": "e178152527c7b2b39a63608346c6cc555a0306cb05c53af83f2cc654146e824e",
+      "bytes": 2949,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\game_native_string_process.cpp",
+      "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+      "bytes": 1407,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\game_native_vfs_application.cpp",
+      "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "bytes": 8470,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\game_native_vfs_runtime.cpp",
+      "sha256": "6ef792777a53881057f41d3638eca6a7931db3eb5304d7e68754a6e10f332d28",
+      "bytes": 35513,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_adopted_substream.cpp",
+      "sha256": "53d9dbf526516cedc063269deb23ce144add399bb54bb2aa7f693ced3d8767be",
+      "bytes": 10276,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_effect_handle_acquisition.cpp",
+      "sha256": "3b7794d963c4885bbb818bd15d5592c487157863183e0f3db692d089893cef4a",
+      "bytes": 5736,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_font_resources.cpp",
+      "sha256": "8e61d9e701b0cc181749cdac04e45be5d4931da13bce2ceda28e90d3a5a9e26b",
+      "bytes": 6097,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_font_storage.cpp",
+      "sha256": "760c148ed5d3bbdb6ddb40781893251caf646dbab18755b3bb8af5c46a5279ce",
+      "bytes": 6829,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_font_tree_iterator.cpp",
+      "sha256": "3146a01e523fdae67ab488e2d5f188c6983397b20219c18ccc4c6342084251eb",
+      "bytes": 533,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_int_pointer_tree18_leaves.cpp",
+      "sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+      "bytes": 6965,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_physical_file_date.cpp",
+      "sha256": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0",
+      "bytes": 18709,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_pooled_string_substring.cpp",
+      "sha256": "7a18633cf114b21290f0c4ddfb9ec96d817f6a246a97ebfa05e9be3fdce9b8e1",
+      "bytes": 7580,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_raw_scalar_reader.cpp",
+      "sha256": "8cca6aee313190f3bce7471658f4430076bf1e7df51d5a12375e4a001128cf4c",
+      "bytes": 6269,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_resource_stream_reads.cpp",
+      "sha256": "8947eba748ca262ca9e03360b8ae52aca7b6658b2651f8857b51a54cd82df493",
+      "bytes": 5073,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_resource_value_reads.cpp",
+      "sha256": "fe7f023e59ef1a576f02b3fc84f0cb3cf8a8d0aba755b3534b80ad37ad6e9b9f",
+      "bytes": 4565,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "bytes": 9121,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_texture_loading_cache.cpp",
+      "sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "bytes": 42965,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_vfs_open_route.cpp",
+      "sha256": "d3da49916fb3ed4a2cf79fc1465b39fa81cd41ba6a701b395d83c7a984e41be0",
+      "bytes": 11944,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\native_vfs_runtime_bindings.cpp",
+      "sha256": "e69777aaf6eba33658f9cb2d38aa0dba4995df07165cbf215bcd8e54becfd7a9",
+      "bytes": 14818,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "bytes": 13257,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\published\\src\\stream_scalars.cpp",
+      "sha256": "6a45363395b440800b08ba923e099ed4e701212a7b44315094cd187e7108d8a9",
+      "bytes": 729,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\artifact_manifest.json",
+      "sha256": "caaf2e33bcd52d3ee78559ffde1efcd82b7f2df5f3e82b3e9023d3d432e25bca",
+      "bytes": 63205,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\bytes_00ad4c30.console.txt",
+      "sha256": "89d756df7574801bc8e3675c12e2e83ab2304d6706c8e8df2944532ffdd17c2a",
+      "bytes": 6562,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\bytes_00ad4c30.txt",
+      "sha256": "89d756df7574801bc8e3675c12e2e83ab2304d6706c8e8df2944532ffdd17c2a",
+      "bytes": 6562,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\bytes_00ad4c30_target.json",
+      "sha256": "9e7c2b0d466b6c3c6cb9047fd730023d1ca0bacc9e68a798fec2093edced7ec8",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\cc12_native_font_glyph_storage_readiness_161.json",
+      "sha256": "1f3c33c3ad62b2f62e80cc9e45661cd2f11e652f354d292435406bd98355b7df",
+      "bytes": 51032,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\CC12_NATIVE_FONT_GLYPH_STORAGE_READINESS_161.md",
+      "sha256": "c23ec881b4d327cfe73633cc8ffca9de1cf9d1e527e8c395b2a5b9ac1227d5b8",
+      "bytes": 13875,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93c0.bin",
+      "sha256": "7a61df46d26dcdffb5c8a9cae76ab8140a12bda3b8a1f72904a1715bef977513",
+      "bytes": 8,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93c0.console.txt",
+      "sha256": "51cdace986c108a6e3880d1088730e80b591454acd9eeec4017d58efd08e3786",
+      "bytes": 45,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93c0.txt",
+      "sha256": "51cdace986c108a6e3880d1088730e80b591454acd9eeec4017d58efd08e3786",
+      "bytes": 45,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93c0_target.json",
+      "sha256": "9e7c2b0d466b6c3c6cb9047fd730023d1ca0bacc9e68a798fec2093edced7ec8",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93c8.bin",
+      "sha256": "1c8461432ac7f863736a636ced1b4805db4eacea920458dea40eb96f8e4e85a4",
+      "bytes": 8,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93c8.console.txt",
+      "sha256": "c974b1e654f7633657451b5b4dd52390e70c8a4393a27d69cb8b90ffbfbde6b2",
+      "bytes": 45,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93c8.txt",
+      "sha256": "c974b1e654f7633657451b5b4dd52390e70c8a4393a27d69cb8b90ffbfbde6b2",
+      "bytes": 45,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93c8_target.json",
+      "sha256": "9e7c2b0d466b6c3c6cb9047fd730023d1ca0bacc9e68a798fec2093edced7ec8",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93d0.bin",
+      "sha256": "7ef3363787e624f8abaf4fb8e9493dd350130549ce05d053614be27b162ed1bd",
+      "bytes": 8,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93d0.console.txt",
+      "sha256": "e25a341a252ac60e9d4d634474143b522d732160dbde130c891d69a89df053c4",
+      "bytes": 45,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93d0.txt",
+      "sha256": "e25a341a252ac60e9d4d634474143b522d732160dbde130c891d69a89df053c4",
+      "bytes": 45,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93d0_target.json",
+      "sha256": "9e7c2b0d466b6c3c6cb9047fd730023d1ca0bacc9e68a798fec2093edced7ec8",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93d8.bin",
+      "sha256": "e6021c078e4f97f363278fa03f5647f88773b5a6e149a2366270d3ed967704f3",
+      "bytes": 8,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93d8.console.txt",
+      "sha256": "9d0cde8d36c83e351211c202e76f7c5c2e77b7328284ce56b1501dbba7455a75",
+      "bytes": 45,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93d8.txt",
+      "sha256": "9d0cde8d36c83e351211c202e76f7c5c2e77b7328284ce56b1501dbba7455a75",
+      "bytes": 45,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93d8_target.json",
+      "sha256": "9e7c2b0d466b6c3c6cb9047fd730023d1ca0bacc9e68a798fec2093edced7ec8",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93e0.bin",
+      "sha256": "52c0f28c88f6bf913e67d7218b79f0943c6eaeba95e263d3d0b5b4d783cbd551",
+      "bytes": 8,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93e0.console.txt",
+      "sha256": "3da3449e7c880d7b094a5644be6b5d8d0bcee4e5dfe4a52c256f568b28ea58c4",
+      "bytes": 45,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93e0.txt",
+      "sha256": "3da3449e7c880d7b094a5644be6b5d8d0bcee4e5dfe4a52c256f568b28ea58c4",
+      "bytes": 45,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93e0_target.json",
+      "sha256": "9e7c2b0d466b6c3c6cb9047fd730023d1ca0bacc9e68a798fec2093edced7ec8",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93e8.bin",
+      "sha256": "3e366ea8986505c3a87cfd39c20e228a44c8ffd29271b58a34655d92f41be6a5",
+      "bytes": 8,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93e8.console.txt",
+      "sha256": "a69201e50bf9856f8d606a3fee7843313682cf1c0e6b38f04e22fa9a695091a4",
+      "bytes": 45,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93e8.txt",
+      "sha256": "a69201e50bf9856f8d606a3fee7843313682cf1c0e6b38f04e22fa9a695091a4",
+      "bytes": 45,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93e8_target.json",
+      "sha256": "9e7c2b0d466b6c3c6cb9047fd730023d1ca0bacc9e68a798fec2093edced7ec8",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93f0.bin",
+      "sha256": "813521e495f3934a3bc801b820f8196d000cd1cd1b8ac0afefc187361273dc65",
+      "bytes": 8,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93f0.console.txt",
+      "sha256": "0ad0a2e3b0ea5e54dd9ac24fc7ea0ebe81fdd30879ada7c501ba6759cdd1bc4e",
+      "bytes": 45,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93f0.txt",
+      "sha256": "0ad0a2e3b0ea5e54dd9ac24fc7ea0ebe81fdd30879ada7c501ba6759cdd1bc4e",
+      "bytes": 45,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93f0_target.json",
+      "sha256": "9e7c2b0d466b6c3c6cb9047fd730023d1ca0bacc9e68a798fec2093edced7ec8",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93f8.bin",
+      "sha256": "a08f32f259e64235a43986e31b4d274a04b63e62359a64b97867ed0fb369b0fb",
+      "bytes": 10,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93f8.console.txt",
+      "sha256": "67f0696b163c02f35a8d3208f57819599f5a77f7e8148b84ab8ae70165d9b020",
+      "bytes": 53,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93f8.txt",
+      "sha256": "67f0696b163c02f35a8d3208f57819599f5a77f7e8148b84ab8ae70165d9b020",
+      "bytes": 53,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00cb93f8_target.json",
+      "sha256": "9e7c2b0d466b6c3c6cb9047fd730023d1ca0bacc9e68a798fec2093edced7ec8",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00df09d4.bin",
+      "sha256": "6f1f6da9d510b24d420c62118c7a14fd7dd05b49a5ecd3650b08d68d17f83c52",
+      "bytes": 36,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00df09d4.console.txt",
+      "sha256": "76be7bb2a83fe9dc28fb3e1e09dd56276d3e6a71ee8f6806330922983bbfb8e6",
+      "bytes": 183,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00df09d4.txt",
+      "sha256": "76be7bb2a83fe9dc28fb3e1e09dd56276d3e6a71ee8f6806330922983bbfb8e6",
+      "bytes": 183,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00df09d4_target.json",
+      "sha256": "9e7c2b0d466b6c3c6cb9047fd730023d1ca0bacc9e68a798fec2093edced7ec8",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00df09f8.bin",
+      "sha256": "1c49fc073d1f6f165b6bad8fdb4a060b4e99c0d36512f138b7281f729d028a98",
+      "bytes": 56,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00df09f8.console.txt",
+      "sha256": "9bcda3c7d4c23780dacbbee537754fbfdf50075b3deb615bcfcc31a2ca9fa7f1",
+      "bytes": 276,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00df09f8.txt",
+      "sha256": "9bcda3c7d4c23780dacbbee537754fbfdf50075b3deb615bcfcc31a2ca9fa7f1",
+      "bytes": 276,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\eh_00df09f8_target.json",
+      "sha256": "9e7c2b0d466b6c3c6cb9047fd730023d1ca0bacc9e68a798fec2093edced7ec8",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\load_EH.json",
+      "sha256": "84a72c0d0a06d1bdcee1cbe93cd63972bcb10c972fc2061bd9343a553bed295c",
+      "bytes": 1055,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\native_audit.json",
+      "sha256": "f63d584ed56640d27478d410af1406704df5ac21109916f912794d68627f5ee0",
+      "bytes": 18958,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\original_00ad4c30.bin",
+      "sha256": "100ec30100b3ceb0ee99bee69e467cd86b55d282e7d62862bb1d84d0b99d363e",
+      "bytes": 1361,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\physical_00ad4c30.txt",
+      "sha256": "0581970d1cdf2ee6445a9103d535977a180104778cd3f2cfd322c39bc27e88cb",
+      "bytes": 18373,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\saved_exports\\00ad4c30\\assembly.txt",
+      "sha256": "83873ce845599d1754572a9c476eaa14c8fdd5f0d37a1696ddce7ef55b3ad5ec",
+      "bytes": 13808,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\saved_exports\\00ad4c30\\decompiled.c",
+      "sha256": "a629ddc43c7e31dcf876e44892e361249ceb75ca4e389d93d64eeb27254a6a4d",
+      "bytes": 13058,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\saved_exports\\00ad4c30\\metadata.json",
+      "sha256": "e5b8120ee96558ec9a8d7c183f9f7a628c18cc66fc1609cdd2d2a6f86f251672",
+      "bytes": 280,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\white_literal.txt",
+      "sha256": "dafa28ae82efe76c56400f89a83ab78330a411ff7b706b30d4ba644e721a30eb",
+      "bytes": 53,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\reused161\\white_literal_target.json",
+      "sha256": "ddbec751153eba788df4dff4da4fae18e1e204e1b392e1e3fcff2df28d053b67",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\seal_182.py",
+      "sha256": "01c09acb8dceb712b1a29e3021c0aa4c94c8090a09d6cca3dc47731d3abb2689",
+      "bytes": 4900,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\seals\\cc12_native_font_constructor_storage_155\\artifact_manifest.json",
+      "sha256": "5507a195f2bdb37dc3691e88f306e6a4cad20732347a316630f3e400f613407e",
+      "bytes": 79242,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\seals\\cc12_native_font_constructor_storage_readiness_151\\artifact_manifest.json",
+      "sha256": "928c983d52ac80434dd9a8932eea71989939097ef91488dc60d0c89a0d5e1132",
+      "bytes": 75591,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\seals\\cc12_native_font_glyph_lookup_164\\artifact_manifest.json",
+      "sha256": "e62624e1d90c8b20bae9d4f9a6fd76ab4eae1dff7100e7fa95d59cf4545ed43a",
+      "bytes": 62173,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\seals\\cc12_native_font_tree_head_storage_146\\artifact_manifest.json",
+      "sha256": "57cf00b6229c033fd55ded8b5491e582e4852891b406a0cb173a91f504c00aed",
+      "bytes": 25008,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\seals\\cc12_native_font_tree_insert_176\\artifact_manifest.json",
+      "sha256": "3ba350e0568522bca55c2c55029a6df8c6ebdd2f470bdd0f7e9c73fc4f9d51d9",
+      "bytes": 69020,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\seals\\cc12_native_font_tree_iterator_168\\artifact_manifest.json",
+      "sha256": "1d686915201af0e7f95423668670b0b228eefdf9399104e2846fcbcaaef4c8f9",
+      "bytes": 28316,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\source_pins.json",
+      "sha256": "6a2e299d52de15f807a50c7541d6611b978c48388dc257bd5d3d616cca8ba232",
+      "bytes": 41611,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\word_4320_bytes.console.txt",
+      "sha256": "529fbb1d8095d610ee5764beb070eb4d223eae9c9da2102d387056d4f0c57c18",
+      "bytes": 134,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\word_4320_bytes.txt",
+      "sha256": "529fbb1d8095d610ee5764beb070eb4d223eae9c9da2102d387056d4f0c57c18",
+      "bytes": 134,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\word_4320_bytes_target.json",
+      "sha256": "64ea5efad995f4fc070b4127ed5e2a861887dd0f4aeaa80286c9efe763d784dd",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\word_4320_disasm.console.txt",
+      "sha256": "8604cecb71f4cc53d642f8f2ca0911a2f1ea25439fdf3c20b53aada9cd431527",
+      "bytes": 297,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\word_4320_disasm.txt",
+      "sha256": "8604cecb71f4cc53d642f8f2ca0911a2f1ea25439fdf3c20b53aada9cd431527",
+      "bytes": 297,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\word_4320_disasm_target.json",
+      "sha256": "64ea5efad995f4fc070b4127ed5e2a861887dd0f4aeaa80286c9efe763d784dd",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\word_4340_bytes.console.txt",
+      "sha256": "9bf2367f839df5345c90707eaaaa3800765ec9fd33ee73cdbf32c101b7bdddd6",
+      "bytes": 134,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\word_4340_bytes.txt",
+      "sha256": "9bf2367f839df5345c90707eaaaa3800765ec9fd33ee73cdbf32c101b7bdddd6",
+      "bytes": 134,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\word_4340_bytes_target.json",
+      "sha256": "64ea5efad995f4fc070b4127ed5e2a861887dd0f4aeaa80286c9efe763d784dd",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\word_4340_disasm.console.txt",
+      "sha256": "791ca5d5cf4ccea99483c7b73112f9fc8a45451e9b418fefec0f68694f27e462",
+      "bytes": 297,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\word_4340_disasm.txt",
+      "sha256": "791ca5d5cf4ccea99483c7b73112f9fc8a45451e9b418fefec0f68694f27e462",
+      "bytes": 297,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\word_4340_disasm_target.json",
+      "sha256": "64ea5efad995f4fc070b4127ed5e2a861887dd0f4aeaa80286c9efe763d784dd",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\word_proto.console.txt",
+      "sha256": "0820e0402af7acb179281564a4ec86c31437cc0b74b9d5947e16c918103bf86c",
+      "bytes": 1340,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\word_proto.txt",
+      "sha256": "0820e0402af7acb179281564a4ec86c31437cc0b74b9d5947e16c918103bf86c",
+      "bytes": 1340,
+      "role": "sealed182 evidence payload"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\word_proto_target.json",
+      "sha256": "64ea5efad995f4fc070b4127ed5e2a861887dd0f4aeaa80286c9efe763d784dd",
+      "bytes": 1337,
+      "role": "sealed182 evidence payload"
+    }
+  ],
+  "artifact_manifest": {
+    "path": "local\\cc12_native_font_raw_load_readiness_182\\artifact_manifest.json",
+    "sha256": "80488c6200ba87ec3cafe4b71ebbc9e4496ceed8fa64442672a0fa25d8e0e547",
+    "bytes": 66786,
+    "role": "immutable182 manifest; report excluded"
+  }
+}

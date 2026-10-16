@@ -1,0 +1,1370 @@
+{
+  "packet": "cc12_native_gui_frame_box_state_asm_review_174",
+  "status": "independent_bounded_assembly_correspondence_PASS_Root_full_reviewed_sealed",
+  "review_only": true,
+  "new_source_body_credit": false,
+  "whole_parent_proof": false,
+  "worker_baseline": "ed0616852d05e23405a533a8a453d952f737018a",
+  "scope": "All175 white-core Native instructions, eight x87 operations each in two record sequences, setup/epilogue and selected cached/current record/caller transport. No other169 Source/optimized/provider or failure graph proof.",
+  "input_pins": {
+    "worker_baseline": "ed0616852d05e23405a533a8a453d952f737018a",
+    "author_worktree": "J:/PROG/battlestations-pacific-decompile-cc12_native_gui_text_constructor_readiness84",
+    "author_head_at_capture": "bc70fbe0318a96b08abd35e8e1378cbd2e8bfbdd",
+    "items": [
+      {
+        "author_path": "J:/PROG/battlestations-pacific-decompile-cc12_native_gui_text_constructor_readiness84/include/bsp/native_gui_frame_box_state_storage.hpp",
+        "frozen": "local/cc12_native_gui_frame_box_state_asm_review_174/author_inputs/include/bsp/native_gui_frame_box_state_storage.hpp",
+        "bytes": 8305,
+        "sha256": "3756b45ae5422719940b13124cf30d2956cefbb72c86cfad43f9d5b171a1af34"
+      },
+      {
+        "author_path": "J:/PROG/battlestations-pacific-decompile-cc12_native_gui_text_constructor_readiness84/src/native_gui_frame_box_state_storage.cpp",
+        "frozen": "local/cc12_native_gui_frame_box_state_asm_review_174/author_inputs/src/native_gui_frame_box_state_storage.cpp",
+        "bytes": 34093,
+        "sha256": "1ac9c99f66c4066771ce83a0e658fc4fe36d412907488ed074f60ed19e5ee90a"
+      },
+      {
+        "author_path": "J:/PROG/battlestations-pacific-decompile-cc12_native_gui_text_constructor_readiness84/local/frame_box_state169/strict.obj",
+        "frozen": "local/cc12_native_gui_frame_box_state_asm_review_174/author_inputs/local/frame_box_state169/strict.obj",
+        "bytes": 46054,
+        "sha256": "1c2b2e3850625212f18554efc6ed2ced2e3e2a93602918a116c0a9b89de59a4e"
+      },
+      {
+        "author_path": "J:/PROG/battlestations-pacific-decompile-cc12_native_gui_text_constructor_readiness84/local/frame_box_state169/strict.asm",
+        "frozen": "local/cc12_native_gui_frame_box_state_asm_review_174/author_inputs/local/frame_box_state169/strict.asm",
+        "bytes": 232000,
+        "sha256": "919dec1ca51d413c8180cfdf59b013550e8b8913163c382ed90c5024e90c7083"
+      },
+      {
+        "author_path": "J:/PROG/battlestations-pacific-decompile-cc12_native_gui_text_constructor_readiness84/local/frame_box_state169/strict_compile.cmd",
+        "frozen": "local/cc12_native_gui_frame_box_state_asm_review_174/author_inputs/local/frame_box_state169/strict_compile.cmd",
+        "bytes": 365,
+        "sha256": "badbf97e00f84d4b7e5a0753cc24a5a64d42b5c40a8578e151504057c2be29d1"
+      },
+      {
+        "author_path": "J:/PROG/battlestations-pacific-decompile-cc12_native_gui_text_constructor_readiness84/local/frame_box_state169/strict_compile.log",
+        "frozen": "local/cc12_native_gui_frame_box_state_asm_review_174/author_inputs/local/frame_box_state169/strict_compile.log",
+        "bytes": 337,
+        "sha256": "dacaba26cb3522fcbbdaa04ac9fcf9b2d0c8cc333bcfcafc9cd1879ac08be8d9"
+      },
+      {
+        "author_path": "J:/PROG/battlestations-pacific-decompile-cc12_native_gui_text_constructor_readiness84/local/frame_box_state169/final_strict_pins.json",
+        "frozen": "local/cc12_native_gui_frame_box_state_asm_review_174/author_inputs/local/frame_box_state169/final_strict_pins.json",
+        "bytes": 833,
+        "sha256": "05335c95cff1992c7a28ab65e1b5ea7dcb6d0897459b9fea5b94b2efe28570ce"
+      },
+      {
+        "author_path": "J:/PROG/battlestations-pacific-decompile-cc12_native_gui_text_constructor_readiness84/local/frame_box_state169/accepted166_inputs.json",
+        "frozen": "local/cc12_native_gui_frame_box_state_asm_review_174/author_inputs/local/frame_box_state169/accepted166_inputs.json",
+        "bytes": 639,
+        "sha256": "9850beec3c14562c8a1a81a9a77219784c83a294f06d907b75b87b7e069bbcce"
+      }
+    ],
+    "dependency_boundary": "No compiler-emitted include closure exists. Historical draft_dependencies.json is not consumed; final command/log/pins and direct Source/COFF are pinned. No compile/preprocess/build executed.",
+    "author_correspondence_used_as_proof": false
+  },
+  "original": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "original": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "selected_scope_only_not_whole_parent_audit": true,
+    "spans": [
+      {
+        "role": "white_loop",
+        "address": "00ad12b0",
+        "exclusive_end": "00ad14fd",
+        "bytes": 589,
+        "sha256": "e57ccdfb309f402a1cc0b7fcb941113e2f75693423f720ffdd2651342c532e9e",
+        "instruction_starts": 175
+      },
+      {
+        "role": "first_x87",
+        "address": "00ad1172",
+        "exclusive_end": "00ad118a",
+        "bytes": 24,
+        "sha256": "7d6fe9161d8f42c7e4ba5509c6651fb5d9beb400d65ef6cb5bf8662e1d6df137",
+        "instruction_starts": 8
+      },
+      {
+        "role": "second_x87_with_private_call_setup",
+        "address": "00ad1268",
+        "exclusive_end": "00ad1283",
+        "bytes": 27,
+        "sha256": "4caacf247832c382793ddb44ae79b0a08d36bc4f60462d37da31b8decb3b0ee5",
+        "instruction_starts": 11
+      },
+      {
+        "role": "first_record_transport",
+        "address": "00ad1101",
+        "exclusive_end": "00ad118f",
+        "bytes": 142,
+        "sha256": "a56b22453e32259e945ea54fb9f2b50ac54597b3390b5a88a182ff614b6a3e26",
+        "instruction_starts": 40
+      },
+      {
+        "role": "second_record_and_white_setup",
+        "address": "00ad122d",
+        "exclusive_end": "00ad12b0",
+        "bytes": 131,
+        "sha256": "2b7126198bf77f64ba8f57c448a43d9761cca8dc1b6bfc31c4305289f1b892cd",
+        "instruction_starts": 40
+      }
+    ]
+  },
+  "current_live_byte_verification": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "rows": [
+      {
+        "role": "first_transport",
+        "address": "00ad1101",
+        "bytes": 142,
+        "sha256": "a56b22453e32259e945ea54fb9f2b50ac54597b3390b5a88a182ff614b6a3e26",
+        "live_equals_installed_original": true
+      },
+      {
+        "role": "second_transport_setup_and_white",
+        "address": "00ad122d",
+        "bytes": 720,
+        "sha256": "8b6cbf6e6cc4254ae3c213c8a55a357d3105917fd26e9e1957df600b6fef4b7d",
+        "live_equals_installed_original": true
+      },
+      {
+        "role": "actual_one",
+        "address": "00d7a24c",
+        "bytes": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "live_equals_installed_original": true
+      }
+    ],
+    "unique_byte_count": 866
+  },
+  "independent_parsers": "Actual installed PE parsed with pefile/Capstone and actual final COFF symbol/section/relocation tables decoded directly; no author correspondence/COFF-summary/index used as proof.",
+  "white": {
+    "native_first": "00ad12b0",
+    "native_exclusive_end": "00ad14fd",
+    "source_section": 74,
+    "source_first": 25,
+    "source_exclusive_end": 614,
+    "bytes": 589,
+    "instruction_starts": 175,
+    "all_core_bytes_equal": true,
+    "sha256": "e57ccdfb309f402a1cc0b7fcb941113e2f75693423f720ffdd2651342c532e9e",
+    "internal_branches": 19,
+    "relocations_in_core": 0,
+    "source_setup": [
+      {
+        "offset": 0,
+        "instruction": "push ebp"
+      },
+      {
+        "offset": 1,
+        "instruction": "mov ebp, esp"
+      },
+      {
+        "offset": 3,
+        "instruction": "push esi"
+      },
+      {
+        "offset": 4,
+        "instruction": "push edi"
+      },
+      {
+        "offset": 5,
+        "instruction": "mov esi, dword ptr [ebp + 8]"
+      },
+      {
+        "offset": 8,
+        "instruction": "mov eax, dword ptr [ebp + 0xc]"
+      },
+      {
+        "offset": 11,
+        "instruction": "mov edx, dword ptr [eax]"
+      },
+      {
+        "offset": 13,
+        "instruction": "mov eax, dword ptr [ebp + 0x10]"
+      },
+      {
+        "offset": 16,
+        "instruction": "movss xmm0, dword ptr [eax]"
+      },
+      {
+        "offset": 20,
+        "instruction": "mov eax, 2"
+      }
+    ],
+    "source_epilogue": [
+      {
+        "offset": 614,
+        "instruction": "pop edi"
+      },
+      {
+        "offset": 615,
+        "instruction": "pop esi"
+      },
+      {
+        "offset": 616,
+        "instruction": "pop ebp"
+      },
+      {
+        "offset": 617,
+        "instruction": "ret "
+      }
+    ]
+  },
+  "white_physical_schedule": [
+    "ESIactualstream, EAXinitial2, EDXcapturedpackedDWORD, XMM0capturedone;9 blocks indicesEAX-2..+6, ADD9/CMP54 yields6groups/54vertices.",
+    "Each block current34 signedJL; packed path currentstride0C/currentbase08 then DWORDstore; negative path current38/3C/40/44 individually interleaved with MOVSSstores.",
+    "Native packed[ESP+10]/absoluteD7A24C/EAX2/noop vs Sourceborrowedpacked/onepointer loads/EAX2 and ordinaryhelper stack/save/return are explicit ABI/setup boundaries."
+  ],
+  "record_helpers": [
+    {
+      "role": "first_record_helper",
+      "x87_operations": 8,
+      "mapping": [
+        {
+          "native": "00ad1172",
+          "source_coff_offset": 8,
+          "native_instruction": "fld dword ptr [edi + 0x14]",
+          "source_instruction": "fld dword ptr [eax + 0x14]",
+          "normalized_form": {
+            "mnemonic": "fld",
+            "operands": [
+              {
+                "size": 4,
+                "kind": "mem",
+                "segment": null,
+                "base": "eax",
+                "index": null,
+                "scale": 1,
+                "displacement": 20
+              }
+            ]
+          }
+        },
+        {
+          "native": "00ad1175",
+          "source_coff_offset": 11,
+          "native_instruction": "fstp dword ptr [ebp + 0x20]",
+          "source_instruction": "fstp dword ptr [edx + 0x20]",
+          "normalized_form": {
+            "mnemonic": "fstp",
+            "operands": [
+              {
+                "size": 4,
+                "kind": "mem",
+                "segment": null,
+                "base": "edx",
+                "index": null,
+                "scale": 1,
+                "displacement": 32
+              }
+            ]
+          }
+        },
+        {
+          "native": "00ad1178",
+          "source_coff_offset": 14,
+          "native_instruction": "fld dword ptr [edi + 0x18]",
+          "source_instruction": "fld dword ptr [eax + 0x18]",
+          "normalized_form": {
+            "mnemonic": "fld",
+            "operands": [
+              {
+                "size": 4,
+                "kind": "mem",
+                "segment": null,
+                "base": "eax",
+                "index": null,
+                "scale": 1,
+                "displacement": 24
+              }
+            ]
+          }
+        },
+        {
+          "native": "00ad117b",
+          "source_coff_offset": 17,
+          "native_instruction": "fstp dword ptr [ebp + 0x24]",
+          "source_instruction": "fstp dword ptr [edx + 0x24]",
+          "normalized_form": {
+            "mnemonic": "fstp",
+            "operands": [
+              {
+                "size": 4,
+                "kind": "mem",
+                "segment": null,
+                "base": "edx",
+                "index": null,
+                "scale": 1,
+                "displacement": 36
+              }
+            ]
+          }
+        },
+        {
+          "native": "00ad117e",
+          "source_coff_offset": 20,
+          "native_instruction": "fld dword ptr [edi + 0xc]",
+          "source_instruction": "fld dword ptr [eax + 0xc]",
+          "normalized_form": {
+            "mnemonic": "fld",
+            "operands": [
+              {
+                "size": 4,
+                "kind": "mem",
+                "segment": null,
+                "base": "eax",
+                "index": null,
+                "scale": 1,
+                "displacement": 12
+              }
+            ]
+          }
+        },
+        {
+          "native": "00ad1181",
+          "source_coff_offset": 23,
+          "native_instruction": "fstp dword ptr [ebp + 0x18]",
+          "source_instruction": "fstp dword ptr [edx + 0x18]",
+          "normalized_form": {
+            "mnemonic": "fstp",
+            "operands": [
+              {
+                "size": 4,
+                "kind": "mem",
+                "segment": null,
+                "base": "edx",
+                "index": null,
+                "scale": 1,
+                "displacement": 24
+              }
+            ]
+          }
+        },
+        {
+          "native": "00ad1184",
+          "source_coff_offset": 26,
+          "native_instruction": "fld dword ptr [edi + 0x10]",
+          "source_instruction": "fld dword ptr [eax + 0x10]",
+          "normalized_form": {
+            "mnemonic": "fld",
+            "operands": [
+              {
+                "size": 4,
+                "kind": "mem",
+                "segment": null,
+                "base": "eax",
+                "index": null,
+                "scale": 1,
+                "displacement": 16
+              }
+            ]
+          }
+        },
+        {
+          "native": "00ad1187",
+          "source_coff_offset": 29,
+          "native_instruction": "fstp dword ptr [ebp + 0x1c]",
+          "source_instruction": "fstp dword ptr [edx + 0x1c]",
+          "normalized_form": {
+            "mnemonic": "fstp",
+            "operands": [
+              {
+                "size": 4,
+                "kind": "mem",
+                "segment": null,
+                "base": "edx",
+                "index": null,
+                "scale": 1,
+                "displacement": 28
+              }
+            ]
+          }
+        }
+      ],
+      "native_other_instructions": [],
+      "source_setup_epilogue": [
+        {
+          "offset": 0,
+          "instruction": "mov edx, dword ptr [esp + 4]"
+        },
+        {
+          "offset": 4,
+          "instruction": "mov eax, dword ptr [esp + 8]"
+        },
+        {
+          "offset": 32,
+          "instruction": "ret "
+        }
+      ]
+    },
+    {
+      "role": "second_record_helper",
+      "x87_operations": 8,
+      "mapping": [
+        {
+          "native": "00ad1268",
+          "source_coff_offset": 19,
+          "native_instruction": "fld dword ptr [eax - 8]",
+          "source_instruction": "fld dword ptr [eax - 8]",
+          "normalized_form": {
+            "mnemonic": "fld",
+            "operands": [
+              {
+                "size": 4,
+                "kind": "mem",
+                "segment": null,
+                "base": "eax",
+                "index": null,
+                "scale": 1,
+                "displacement": -8
+              }
+            ]
+          }
+        },
+        {
+          "native": "00ad126c",
+          "source_coff_offset": 22,
+          "native_instruction": "fstp dword ptr [ebp + 0x18]",
+          "source_instruction": "fstp dword ptr [edx + 0x18]",
+          "normalized_form": {
+            "mnemonic": "fstp",
+            "operands": [
+              {
+                "size": 4,
+                "kind": "mem",
+                "segment": null,
+                "base": "edx",
+                "index": null,
+                "scale": 1,
+                "displacement": 24
+              }
+            ]
+          }
+        },
+        {
+          "native": "00ad1270",
+          "source_coff_offset": 25,
+          "native_instruction": "fld dword ptr [eax - 4]",
+          "source_instruction": "fld dword ptr [eax - 4]",
+          "normalized_form": {
+            "mnemonic": "fld",
+            "operands": [
+              {
+                "size": 4,
+                "kind": "mem",
+                "segment": null,
+                "base": "eax",
+                "index": null,
+                "scale": 1,
+                "displacement": -4
+              }
+            ]
+          }
+        },
+        {
+          "native": "00ad1275",
+          "source_coff_offset": 28,
+          "native_instruction": "fstp dword ptr [ebp + 0x1c]",
+          "source_instruction": "fstp dword ptr [edx + 0x1c]",
+          "normalized_form": {
+            "mnemonic": "fstp",
+            "operands": [
+              {
+                "size": 4,
+                "kind": "mem",
+                "segment": null,
+                "base": "edx",
+                "index": null,
+                "scale": 1,
+                "displacement": 28
+              }
+            ]
+          }
+        },
+        {
+          "native": "00ad1278",
+          "source_coff_offset": 31,
+          "native_instruction": "fld dword ptr [eax]",
+          "source_instruction": "fld dword ptr [eax]",
+          "normalized_form": {
+            "mnemonic": "fld",
+            "operands": [
+              {
+                "size": 4,
+                "kind": "mem",
+                "segment": null,
+                "base": "eax",
+                "index": null,
+                "scale": 1,
+                "displacement": 0
+              }
+            ]
+          }
+        },
+        {
+          "native": "00ad127a",
+          "source_coff_offset": 33,
+          "native_instruction": "fstp dword ptr [ebp + 0x20]",
+          "source_instruction": "fstp dword ptr [edx + 0x20]",
+          "normalized_form": {
+            "mnemonic": "fstp",
+            "operands": [
+              {
+                "size": 4,
+                "kind": "mem",
+                "segment": null,
+                "base": "edx",
+                "index": null,
+                "scale": 1,
+                "displacement": 32
+              }
+            ]
+          }
+        },
+        {
+          "native": "00ad127d",
+          "source_coff_offset": 36,
+          "native_instruction": "fld dword ptr [eax + 4]",
+          "source_instruction": "fld dword ptr [eax + 4]",
+          "normalized_form": {
+            "mnemonic": "fld",
+            "operands": [
+              {
+                "size": 4,
+                "kind": "mem",
+                "segment": null,
+                "base": "eax",
+                "index": null,
+                "scale": 1,
+                "displacement": 4
+              }
+            ]
+          }
+        },
+        {
+          "native": "00ad1280",
+          "source_coff_offset": 39,
+          "native_instruction": "fstp dword ptr [ebp + 0x24]",
+          "source_instruction": "fstp dword ptr [edx + 0x24]",
+          "normalized_form": {
+            "mnemonic": "fstp",
+            "operands": [
+              {
+                "size": 4,
+                "kind": "mem",
+                "segment": null,
+                "base": "edx",
+                "index": null,
+                "scale": 1,
+                "displacement": 36
+              }
+            ]
+          }
+        }
+      ],
+      "native_other_instructions": [
+        {
+          "address": "00ad126b",
+          "instruction": "push eax"
+        },
+        {
+          "address": "00ad126f",
+          "instruction": "push esi"
+        },
+        {
+          "address": "00ad1273",
+          "instruction": "mov ecx, ebp"
+        }
+      ],
+      "source_setup_epilogue": [
+        {
+          "offset": 0,
+          "instruction": "mov ecx, dword ptr [esp + 8]"
+        },
+        {
+          "offset": 4,
+          "instruction": "add ecx, 0x14"
+        },
+        {
+          "offset": 7,
+          "instruction": "mov dword ptr [esp + 8], ecx"
+        },
+        {
+          "offset": 11,
+          "instruction": "mov edx, dword ptr [esp + 4]"
+        },
+        {
+          "offset": 15,
+          "instruction": "mov eax, dword ptr [esp + 8]"
+        },
+        {
+          "offset": 42,
+          "instruction": "mov eax, ecx"
+        },
+        {
+          "offset": 44,
+          "instruction": "ret "
+        }
+      ]
+    }
+  ],
+  "caller_dataflow": {
+    "parent_coff_section": 93,
+    "first_record": "Cachedindex and post-invalid-handler currentF4 form pointer; actualCOFF+740 saves[EBP+6C], +743 reads resource, realtexture+75F, savedpointerpush+767 and firsthelper+76B. CurrentFPpayload reads happen after texture callback, no firstrecord rediscovery.",
+    "second_record": "Post-first-helper currentBox74/+100/EC at+798/+7BD/+7CA, actualACE_C40+7E7, direct returnedrecord to helper+7F8. Returned exactrecord+14 goesECX+803 then sizeargpush+855 to realgeometry+85A.",
+    "white_entry": "Onlyaftergeometryreturn, +871 passes capturedactualstream, samecurrentpackedlocals0 backing and actualone view. Source profile/admission/metadata/callframe differences remain explicit.",
+    "symbolic_calls": [
+      {
+        "call_offset": 1887,
+        "operand_offset": 1888,
+        "target_symbol": "?set_native_material_texture_00b189f0@bsp@@YAXAAUNativeMaterialStorage@1@IPAXAAVNativeRenderActualOwners@1@@Z",
+        "window": "caller_075f.txt"
+      },
+      {
+        "call_offset": 1899,
+        "operand_offset": 1900,
+        "target_symbol": "?copy_first_record@?A0x9b9fe066@bsp@@YAXPAXPBX@Z",
+        "window": "caller_076b.txt"
+      },
+      {
+        "call_offset": 1936,
+        "operand_offset": 1937,
+        "target_symbol": "?set_native_material_texture_00b189f0@bsp@@YAXAAUNativeMaterialStorage@1@IPAXAAVNativeRenderActualOwners@1@@Z",
+        "window": "caller_0790.txt"
+      },
+      {
+        "call_offset": 2023,
+        "operand_offset": 2024,
+        "target_symbol": "?native_gui_state_vector_record_00acec40@bsp@@YAPAXPBXI@Z",
+        "window": "caller_07e7.txt"
+      },
+      {
+        "call_offset": 2040,
+        "operand_offset": 2041,
+        "target_symbol": "?copy_second_record@?A0x9b9fe066@bsp@@YAPAXPAX0@Z",
+        "window": "caller_07f8.txt"
+      },
+      {
+        "call_offset": 2138,
+        "operand_offset": 2139,
+        "target_symbol": "?write_native_gui_frame_box_geometry_00acf9b0@bsp@@YAXPAX0PBXABVNativeGuiFrameBoxGeometryContext@1@AAVNativeGuiFrameBoxGeometryFrame@1@@Z",
+        "window": "caller_085a.txt"
+      },
+      {
+        "call_offset": 2161,
+        "operand_offset": 2162,
+        "target_symbol": "?fill_white@?A0x9b9fe066@bsp@@YAXPAXPDI1@Z",
+        "window": "caller_0871.txt"
+      }
+    ]
+  },
+  "calls": [
+    {
+      "address": "00ad1158",
+      "native": "00bf6713",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad116d",
+      "native": "00b189f0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1260",
+      "native": "00acec40",
+      "function": "00ad0d80",
+      "kind": "call"
+    }
+  ],
+  "indirect_native_sites_not_direct_edge_claims": [
+    "00ad1289 currentBoxvptr7C",
+    "00ad129a currentBoxvptr7C"
+  ],
+  "coff_roots_independently_parsed": [
+    {
+      "role": "first_record_helper",
+      "symbol": "?copy_first_record@?A0x9b9fe066@bsp@@YAXPAXPBX@Z",
+      "section": 66,
+      "bytes": 33,
+      "sha256": "436e6dfb066c4d2f12379da09e1c10d5fb592515166bbc9aad25ed7f3ead2e07",
+      "instruction_starts": 11,
+      "relocations": []
+    },
+    {
+      "role": "second_record_helper",
+      "symbol": "?copy_second_record@?A0x9b9fe066@bsp@@YAPAXPAX0@Z",
+      "section": 68,
+      "bytes": 45,
+      "sha256": "caa8571da207f1adb1cc5f9550eb4cd66d92bb7a6482db55eeba4f0684560fe3",
+      "instruction_starts": 15,
+      "relocations": []
+    },
+    {
+      "role": "white_helper",
+      "symbol": "?fill_white@?A0x9b9fe066@bsp@@YAXPAXPDI1@Z",
+      "section": 74,
+      "bytes": 618,
+      "sha256": "ddaf83980192890e6b71fc8040a61ef90daa96f5b7a7e608bb7b41e71c53fe77",
+      "instruction_starts": 189,
+      "relocations": []
+    },
+    {
+      "role": "parent_engine",
+      "symbol": "?rebuild_native_gui_frame_box_state_storage_00ad0d80@bsp@@YAXPAXAAUNativeGuiFrameBoxStateStorageFrame@1@AAUNativeGuiFrameBoxStateStorageContext@1@AAUNativeGuiFrameBoxStateStorageAcquired@1@@Z",
+      "section": 93,
+      "bytes": 3224,
+      "sha256": "8b6096608601fafbb286b519ec4a31f3ca777febdf555621650d26146389c448",
+      "instruction_starts": 861,
+      "relocations": [
+        {
+          "offset": 11,
+          "kind": 6,
+          "target_symbol": "__ehhandler$?rebuild_native_gui_frame_box_state_storage_00ad0d80@bsp@@YAXPAXAAUNativeGuiFrameBoxStateStorageFrame@1@AAUNativeGuiFrameBoxStateStorageContext@1@AAUNativeGuiFrameBoxStateStorageAcquired@1@@Z"
+        },
+        {
+          "offset": 32,
+          "kind": 6,
+          "target_symbol": "___security_cookie"
+        },
+        {
+          "offset": 75,
+          "kind": 20,
+          "target_symbol": "?preflight@?A0x9b9fe066@bsp@@YA?AUViews@12@PAXAAUNativeGuiFrameBoxStateStorageFrame@2@AAUNativeGuiFrameBoxStateStorageContext@2@AAUNativeGuiFrameBoxStateStorageAcquired@2@@Z"
+        },
+        {
+          "offset": 217,
+          "kind": 20,
+          "target_symbol": "?gui_model_geometry_00b74640@bsp@@YAPAXABUNativeModelTailStorage@1@I@Z"
+        },
+        {
+          "offset": 250,
+          "kind": 20,
+          "target_symbol": "?native_mesh_vertex_stream_count_00b72b20@bsp@@YAIPBX@Z"
+        },
+        {
+          "offset": 295,
+          "kind": 20,
+          "target_symbol": "?construct_native_string_header_0041e870@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@PBD@Z"
+        },
+        {
+          "offset": 392,
+          "kind": 20,
+          "target_symbol": "?load_native_renderer_vertex_declaration_00b317e0@bsp@@YAPAXPAXPBXAAUNativeVertexDeclarationCacheContext@1@@Z"
+        },
+        {
+          "offset": 423,
+          "kind": 20,
+          "target_symbol": "?register_native_declaration_reference@GuiNativeGeometryOwners@bsp@@QAEXAAUGuiNativeDeclarationAcquired@2@AAUNativeVertexDeclarationLoadingContext@2@@Z"
+        },
+        {
+          "offset": 440,
+          "kind": 20,
+          "target_symbol": "?normal_name_return@?A0x9b9fe066@bsp@@YAXIAAUNativeGuiFrameBoxStateStorageFrame@2@AAUNativeGuiFrameBoxStateStorageContext@2@AAUNativeGuiFrameBoxStateStorageAcquired@2@I@Z"
+        },
+        {
+          "offset": 523,
+          "kind": 20,
+          "target_symbol": "?create_native_vertex_from_captured_renderer_5c@bsp@@YAPAXPAXIII0AAUNativeStreamCloneServices@1@AAUNativeStreamCloneAcquired@1@@Z"
+        },
+        {
+          "offset": 556,
+          "kind": 20,
+          "target_symbol": "?set_native_mesh_vertex_stream_00b73bb0@bsp@@YAXAAUNativeMeshStorage@1@AAVNativeRenderActualOwners@1@HPAX@Z"
+        },
+        {
+          "offset": 600,
+          "kind": 20,
+          "target_symbol": "??$release@X@?A0x9b9fe066@bsp@@YAXAAPAXP6GJPCJ@ZAAUNativeGuiFrameBoxStateStorageRelease@1@AAUNativeGuiFrameBoxStateStorageContext@1@@Z"
+        },
+        {
+          "offset": 640,
+          "kind": 20,
+          "target_symbol": "??$release@X@?A0x9b9fe066@bsp@@YAXAAPAXP6GJPCJ@ZAAUNativeGuiFrameBoxStateStorageRelease@1@AAUNativeGuiFrameBoxStateStorageContext@1@@Z"
+        },
+        {
+          "offset": 667,
+          "kind": 20,
+          "target_symbol": "?native_mesh_vertex_stream_unchecked_00b73260@bsp@@YAPAXPBXI@Z"
+        },
+        {
+          "offset": 743,
+          "kind": 20,
+          "target_symbol": "?lock_native_logical_vertex_stream_00b49980@bsp@@YIPAXPAXAAUNativeLogicalBufferMappingContext@1@IIE@Z"
+        },
+        {
+          "offset": 778,
+          "kind": 20,
+          "target_symbol": "?native_mesh_section_count_00b72b40@bsp@@YAIPBX@Z"
+        },
+        {
+          "offset": 817,
+          "kind": 20,
+          "target_symbol": "?create_native_section_00533fa0@GuiNativeGeometryOwners@bsp@@QAEPAUNativeMeshSectionStorage@2@AAUGuiNativeSectionAcquired@2@@Z"
+        },
+        {
+          "offset": 860,
+          "kind": 20,
+          "target_symbol": "?construct_native_string_header_0041e870@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@PBD@Z"
+        },
+        {
+          "offset": 897,
+          "kind": 20,
+          "target_symbol": "?unequal_native_string_headers_00449af0@bsp@@YA_NPBX0@Z"
+        },
+        {
+          "offset": 953,
+          "kind": 20,
+          "target_symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+        },
+        {
+          "offset": 974,
+          "kind": 20,
+          "target_symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+        },
+        {
+          "offset": 1093,
+          "kind": 20,
+          "target_symbol": "?construct_native_string_header_0041e870@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@PBD@Z"
+        },
+        {
+          "offset": 1173,
+          "kind": 20,
+          "target_symbol": "?create_native_material_from_effect_cache_00535320@bsp@@YAPAUNativeMaterialStorage@1@PBXAAVNativeMaterialSlotPool@1@AAVNativeRenderActualOwners@1@AAUNativeMaterialEffectCacheContext@1@AAUNativeMaterialFactoryAcquired@1@@Z"
+        },
+        {
+          "offset": 1213,
+          "kind": 20,
+          "target_symbol": "?register_native_material_creator@GuiNativeGeometryOwners@bsp@@QAEXAAUNativeMaterialFactoryAcquired@2@AAUNativeMaterialDestructionAccess@2@PDI@Z"
+        },
+        {
+          "offset": 1241,
+          "kind": 20,
+          "target_symbol": "?normal_name_return@?A0x9b9fe066@bsp@@YAXIAAUNativeGuiFrameBoxStateStorageFrame@2@AAUNativeGuiFrameBoxStateStorageContext@2@AAUNativeGuiFrameBoxStateStorageAcquired@2@I@Z"
+        },
+        {
+          "offset": 1266,
+          "kind": 20,
+          "target_symbol": "?gui_geometry_element_00b732c0@bsp@@YAPAXPBXH@Z"
+        },
+        {
+          "offset": 1458,
+          "kind": 20,
+          "target_symbol": "?parameter@?A0x9b9fe066@bsp@@YAXPBDII_NHIIIPAXAAUNativeGuiFrameBoxStateStorageFrame@2@AAUNativeGuiFrameBoxStateStorageContext@2@AAUNativeGuiFrameBoxStateStorageAcquired@2@@Z"
+        },
+        {
+          "offset": 1501,
+          "kind": 20,
+          "target_symbol": "?parameter@?A0x9b9fe066@bsp@@YAXPBDII_NHIIIPAXAAUNativeGuiFrameBoxStateStorageFrame@2@AAUNativeGuiFrameBoxStateStorageContext@2@AAUNativeGuiFrameBoxStateStorageAcquired@2@@Z"
+        },
+        {
+          "offset": 1544,
+          "kind": 20,
+          "target_symbol": "?parameter@?A0x9b9fe066@bsp@@YAXPBDII_NHIIIPAXAAUNativeGuiFrameBoxStateStorageFrame@2@AAUNativeGuiFrameBoxStateStorageContext@2@AAUNativeGuiFrameBoxStateStorageAcquired@2@@Z"
+        },
+        {
+          "offset": 1587,
+          "kind": 20,
+          "target_symbol": "?parameter@?A0x9b9fe066@bsp@@YAXPBDII_NHIIIPAXAAUNativeGuiFrameBoxStateStorageFrame@2@AAUNativeGuiFrameBoxStateStorageContext@2@AAUNativeGuiFrameBoxStateStorageAcquired@2@@Z"
+        },
+        {
+          "offset": 1622,
+          "kind": 20,
+          "target_symbol": "??0NativeGuiWidgetClipOperation@bsp@@QAE@PAXAAUNativeMaterialStorage@1@AAUNativeGuiWidgetClipBindings@1@@Z"
+        },
+        {
+          "offset": 1664,
+          "kind": 20,
+          "target_symbol": "?register_native_gui_widget_clip_storage_00aa9f10@bsp@@YAXPAXAAUNativeMaterialStorage@1@AAUNativeGuiWidgetClipBindings@1@AAVNativeGuiWidgetClipOperation@1@@Z"
+        },
+        {
+          "offset": 1702,
+          "kind": 20,
+          "target_symbol": "?set_native_material_parameter_owner_00b18a40@bsp@@YAXAAUNativeMaterialStorage@1@PAXEAAVNativeRenderActualOwners@1@@Z"
+        },
+        {
+          "offset": 1835,
+          "kind": 20,
+          "target_symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+        },
+        {
+          "offset": 1888,
+          "kind": 20,
+          "target_symbol": "?set_native_material_texture_00b189f0@bsp@@YAXAAUNativeMaterialStorage@1@IPAXAAVNativeRenderActualOwners@1@@Z"
+        },
+        {
+          "offset": 1900,
+          "kind": 20,
+          "target_symbol": "?copy_first_record@?A0x9b9fe066@bsp@@YAXPAXPBX@Z"
+        },
+        {
+          "offset": 1937,
+          "kind": 20,
+          "target_symbol": "?set_native_material_texture_00b189f0@bsp@@YAXAAUNativeMaterialStorage@1@IPAXAAVNativeRenderActualOwners@1@@Z"
+        },
+        {
+          "offset": 2024,
+          "kind": 20,
+          "target_symbol": "?native_gui_state_vector_record_00acec40@bsp@@YAPAXPBXI@Z"
+        },
+        {
+          "offset": 2041,
+          "kind": 20,
+          "target_symbol": "?copy_second_record@?A0x9b9fe066@bsp@@YAPAXPAX0@Z"
+        },
+        {
+          "offset": 2139,
+          "kind": 20,
+          "target_symbol": "?write_native_gui_frame_box_geometry_00acf9b0@bsp@@YAXPAX0PBXABVNativeGuiFrameBoxGeometryContext@1@AAVNativeGuiFrameBoxGeometryFrame@1@@Z"
+        },
+        {
+          "offset": 2162,
+          "kind": 20,
+          "target_symbol": "?fill_white@?A0x9b9fe066@bsp@@YAXPAXPDI1@Z"
+        },
+        {
+          "offset": 2232,
+          "kind": 20,
+          "target_symbol": "?unlock_native_logical_vertex_stream_00b49a80@bsp@@YIXPAXAAUNativeLogicalBufferMappingContext@1@@Z"
+        },
+        {
+          "offset": 2269,
+          "kind": 20,
+          "target_symbol": "?recompose_native_gui_widget_transform_00aa7220@bsp@@YAXPAXAAUNativeGuiWidgetTransformScratch@1@AAUNativeGuiWidgetTransformBindings@1@@Z"
+        },
+        {
+          "offset": 2316,
+          "kind": 20,
+          "target_symbol": "?set_native_mesh_section_material_00b864c0@bsp@@YAXAAUNativeMeshSectionStorage@1@AAVNativeRenderActualOwners@1@PAX@Z"
+        },
+        {
+          "offset": 2456,
+          "kind": 20,
+          "target_symbol": "?dispatch_native_render_actual_owner_zero@bsp@@YAXAAVNativeRenderActualOwners@1@PAX@Z"
+        },
+        {
+          "offset": 2513,
+          "kind": 20,
+          "target_symbol": "?rebuild_native_mesh_section_vertex_layout_00b865a0@bsp@@YAXAAUNativeMeshSectionStorage@1@AAVNativeRenderActualOwners@1@PAXAAVNativeMeshSectionLayoutServices@1@@Z"
+        },
+        {
+          "offset": 2552,
+          "kind": 20,
+          "target_symbol": "?append_native_mesh_draw_section_00b73c60@bsp@@YAXAAUNativeMeshStorage@1@PAX@Z"
+        },
+        {
+          "offset": 2676,
+          "kind": 20,
+          "target_symbol": "?dispatch_native_render_actual_owner_zero@bsp@@YAXAAVNativeRenderActualOwners@1@PAX@Z"
+        },
+        {
+          "offset": 2756,
+          "kind": 20,
+          "target_symbol": "?set_native_gui_widget_color_storage_00aa6870@bsp@@YAXPAXPBX@Z"
+        },
+        {
+          "offset": 2818,
+          "kind": 20,
+          "target_symbol": "?cleanup@?A0x9b9fe066@bsp@@YAXAAUNativeGuiFrameBoxStateStorageFrame@2@AAUNativeGuiFrameBoxStateStorageContext@2@AAUNativeGuiFrameBoxStateStorageAcquired@2@@Z"
+        },
+        {
+          "offset": 2830,
+          "kind": 20,
+          "target_symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 2835,
+          "kind": 6,
+          "target_symbol": "??_C@_0DN@ICLHGJKO@Raw?5FrameBox?5renderer38?5requires@"
+        },
+        {
+          "offset": 2843,
+          "kind": 20,
+          "target_symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 2848,
+          "kind": 6,
+          "target_symbol": "__TI3?AVinvalid_argument@std@@"
+        },
+        {
+          "offset": 2857,
+          "kind": 20,
+          "target_symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 2862,
+          "kind": 6,
+          "target_symbol": "??_C@_0CG@JDNFAEND@Unsupported?5current?5renderer38?5t@"
+        },
+        {
+          "offset": 2870,
+          "kind": 20,
+          "target_symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 2875,
+          "kind": 6,
+          "target_symbol": "__TI3?AVinvalid_argument@std@@"
+        },
+        {
+          "offset": 2884,
+          "kind": 20,
+          "target_symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 2889,
+          "kind": 6,
+          "target_symbol": "??_C@_0DN@IHIPAOKM@Raw?5FrameBox?5renderer5C?5requires@"
+        },
+        {
+          "offset": 2897,
+          "kind": 20,
+          "target_symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 2902,
+          "kind": 6,
+          "target_symbol": "__TI3?AVinvalid_argument@std@@"
+        },
+        {
+          "offset": 2911,
+          "kind": 20,
+          "target_symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 2916,
+          "kind": 6,
+          "target_symbol": "??_C@_0EJ@BPNEEAMK@Raw?5FrameBox?5mapping?5requires?5th@"
+        },
+        {
+          "offset": 2924,
+          "kind": 20,
+          "target_symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 2929,
+          "kind": 6,
+          "target_symbol": "__TI3?AVinvalid_argument@std@@"
+        },
+        {
+          "offset": 2938,
+          "kind": 20,
+          "target_symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 2943,
+          "kind": 6,
+          "target_symbol": "??_C@_0CE@MLBONOKJ@Unsupported?5current?5stream10?5tar@"
+        },
+        {
+          "offset": 2951,
+          "kind": 20,
+          "target_symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 2956,
+          "kind": 6,
+          "target_symbol": "__TI3?AVinvalid_argument@std@@"
+        },
+        {
+          "offset": 2965,
+          "kind": 20,
+          "target_symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 2970,
+          "kind": 6,
+          "target_symbol": "??_C@_0DL@HGAEKIFE@Raw?5FrameBox?5geometry?5requires?5i@"
+        },
+        {
+          "offset": 2978,
+          "kind": 20,
+          "target_symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 2983,
+          "kind": 6,
+          "target_symbol": "__TI3?AVinvalid_argument@std@@"
+        },
+        {
+          "offset": 2992,
+          "kind": 20,
+          "target_symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 2997,
+          "kind": 6,
+          "target_symbol": "??_C@_0CG@FADPACCG@Unsupported?5current?5FrameBox7C?5t@"
+        },
+        {
+          "offset": 3005,
+          "kind": 20,
+          "target_symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 3010,
+          "kind": 6,
+          "target_symbol": "__TI3?AVinvalid_argument@std@@"
+        },
+        {
+          "offset": 3019,
+          "kind": 20,
+          "target_symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 3024,
+          "kind": 6,
+          "target_symbol": "??_C@_0EI@BPHPMLFG@Raw?5FrameBox?5unlock?5requires?5its@"
+        },
+        {
+          "offset": 3032,
+          "kind": 20,
+          "target_symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 3037,
+          "kind": 6,
+          "target_symbol": "__TI3?AVinvalid_argument@std@@"
+        },
+        {
+          "offset": 3046,
+          "kind": 20,
+          "target_symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 3051,
+          "kind": 6,
+          "target_symbol": "??_C@_0CE@JGPCIPKF@Unsupported?5current?5stream14?5tar@"
+        },
+        {
+          "offset": 3059,
+          "kind": 20,
+          "target_symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 3064,
+          "kind": 6,
+          "target_symbol": "__TI3?AVinvalid_argument@std@@"
+        },
+        {
+          "offset": 3073,
+          "kind": 20,
+          "target_symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 3078,
+          "kind": 6,
+          "target_symbol": "??_C@_0DI@KBAKMIPJ@Raw?5FrameBox?5color?5requires?5its?5@"
+        },
+        {
+          "offset": 3086,
+          "kind": 20,
+          "target_symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 3091,
+          "kind": 6,
+          "target_symbol": "__TI3?AVinvalid_argument@std@@"
+        },
+        {
+          "offset": 3100,
+          "kind": 20,
+          "target_symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 3105,
+          "kind": 6,
+          "target_symbol": "??_C@_0CG@JNOECNAL@Unsupported?5current?5FrameBox50?5t@"
+        },
+        {
+          "offset": 3113,
+          "kind": 20,
+          "target_symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 3118,
+          "kind": 6,
+          "target_symbol": "__TI3?AVinvalid_argument@std@@"
+        },
+        {
+          "offset": 3127,
+          "kind": 20,
+          "target_symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 3132,
+          "kind": 6,
+          "target_symbol": "??_C@_0DH@MLIOFCBO@Raw?5FrameBox?5release?5requires?5on@"
+        },
+        {
+          "offset": 3140,
+          "kind": 20,
+          "target_symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 3145,
+          "kind": 6,
+          "target_symbol": "__TI3?AVinvalid_argument@std@@"
+        },
+        {
+          "offset": 3154,
+          "kind": 20,
+          "target_symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 3159,
+          "kind": 6,
+          "target_symbol": "??_C@_0DH@MLIOFCBO@Raw?5FrameBox?5release?5requires?5on@"
+        },
+        {
+          "offset": 3167,
+          "kind": 20,
+          "target_symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 3172,
+          "kind": 6,
+          "target_symbol": "__TI3?AVinvalid_argument@std@@"
+        },
+        {
+          "offset": 3181,
+          "kind": 20,
+          "target_symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 3186,
+          "kind": 6,
+          "target_symbol": "??_C@_0EL@OMBDDODD@Native?5null?5section?1material?5der@"
+        },
+        {
+          "offset": 3197,
+          "kind": 20,
+          "target_symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 3202,
+          "kind": 6,
+          "target_symbol": "__TI3?AVinvalid_argument@std@@"
+        },
+        {
+          "offset": 3214,
+          "kind": 20,
+          "target_symbol": "__CxxThrowException@8"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "independent_white175_operands_registers_widths_order_branches_checked": true,
+    "white589_full_raw_bytes_equal": true,
+    "white_core_relocations": 0,
+    "white_internal_branches": 19,
+    "x87_ops_per_helper": 8,
+    "source_mutations": 0,
+    "ghidra_ledger_cmake_mutations": 0,
+    "builds_tests_probes_native_or_source_body_execution": 0,
+    "author_source_and_object_frozen_and_unchanged": true,
+    "compiler_dependency_closure_available": false,
+    "frozen166_remains_unchanged": true,
+    "Root_full_receipt_review": "PASS, complete25-lineDoc and independent parsers/proofsummary; section93/privateargumentframe qualification accepted",
+    "call_reference_verifier": {
+      "report_rows": 3,
+      "doc_claims": 2,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    }
+  },
+  "artifacts": [
+    {
+      "path": "local/cc12_native_gui_frame_box_state_asm_review_174/input_pins.json",
+      "bytes": 3741,
+      "sha256": "e91e2efc1c5a7f0819f5fcac77ded362e9f84f934e843143f6b50605f7a30935"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_state_asm_review_174/original_pins.json",
+      "bytes": 1588,
+      "sha256": "bc9886819457edccdc3f35ec31df35b36bfde0562a71ecaeb821e3c6590c2943"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_state_asm_review_174/live_byte_verification.json",
+      "bytes": 901,
+      "sha256": "2341e6df9fcb32c855b230dbdf6bec036e0f7c3725a27a466e2572c0b67ad293"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_state_asm_review_174/helper_correspondence.json",
+      "bytes": 117077,
+      "sha256": "3871c3310d65fe8e98e1b81b06d52debd67e6c92d73dc236515b3e7be8a25354"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_state_asm_review_174/proof_summary.json",
+      "bytes": 12787,
+      "sha256": "c4425832aa9266746d4958626be53bd591c66cc87836486dd01286577e9db883"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_state_asm_review_174/coff/index.json",
+      "bytes": 28769,
+      "sha256": "a76ec00f4983f2fdf34bf3eeb7ca2ab560e6ec7b3a68de939fe01f7e7f8092d6"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_state_asm_review_174/caller_sites.json",
+      "bytes": 1512,
+      "sha256": "94ae374e1aa2f3c9468ea24e79666f1eb154f4f17366c544f0d6c0e2ee878a9c"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_state_asm_review_174/white_loop.bin",
+      "bytes": 589,
+      "sha256": "e57ccdfb309f402a1cc0b7fcb941113e2f75693423f720ffdd2651342c532e9e"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_state_asm_review_174/coff/white_helper.bin",
+      "bytes": 618,
+      "sha256": "ddaf83980192890e6b71fc8040a61ef90daa96f5b7a7e608bb7b41e71c53fe77"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_state_asm_review_174/coff/first_record_helper.bin",
+      "bytes": 33,
+      "sha256": "436e6dfb066c4d2f12379da09e1c10d5fb592515166bbc9aad25ed7f3ead2e07"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_state_asm_review_174/coff/second_record_helper.bin",
+      "bytes": 45,
+      "sha256": "caa8571da207f1adb1cc5f9550eb4cd66d92bb7a6482db55eeba4f0684560fe3"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_state_asm_review_174/author_inputs/local/frame_box_state169/strict.obj",
+      "bytes": 46054,
+      "sha256": "1c2b2e3850625212f18554efc6ed2ced2e3e2a93602918a116c0a9b89de59a4e"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_state_asm_review_174/root_review.json",
+      "bytes": 435,
+      "sha256": "168ea65a0eedeaba6d7e393b1c0a5075074bcdf8f781663d48696012212073d9"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_state_asm_review_174/analysis_tool_versions.json",
+      "bytes": 863,
+      "sha256": "bb0e72ed2a6d5f5094f699e8dd0cc636c4224ab8f7a50aad6865a54edf021bc3"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_state_asm_review_174/call_verification.txt",
+      "bytes": 312,
+      "sha256": "d7860ba6c579a16550c68e999d77cd25bf874f58d9d3ad69cbb43f648d05b6a2"
+    }
+  ],
+  "private_manifest": {
+    "path": "local/cc12_native_gui_frame_box_state_asm_review_174/manifest.json",
+    "bytes": 19735,
+    "sha256": "42072fe5f3e4add3f968732ca2332370fbc0099e7a58f73919d9a568aa7badf9",
+    "item_count": 90,
+    "total_bytes": 665795
+  },
+  "limits": "Bounded static instruction/dataflow proof on169 actual valid completed-Box/provider/backing domain. No transitive build inventory reproduction, wholeAD0D80/privateABI/FH3/SEH/FPU-IP/fault/unwind/retirement/constructor-completion/runtime/activation proof."
+}

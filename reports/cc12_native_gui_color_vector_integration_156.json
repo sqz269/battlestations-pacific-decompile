@@ -1,0 +1,170 @@
+{
+  "packet": "cc12_native_gui_color_vector_integration_156",
+  "status": "reviewed_registered_combined_win32_build_existing_tests_static_link_pass",
+  "compiled_commit": "945e81690a56bba069530670aac6dce62159abc9",
+  "workers": {
+    "152": {
+      "commit": "8a0c2482d7e75fee0c61456fd365943bec08724e",
+      "source_paths": [
+        "include/bsp/native_gui_widget_color_storage.hpp",
+        "src/native_gui_widget_color_storage.cpp"
+      ],
+      "manifest_sha256": "47be57638c4decad846e86044db399f79a89223f115fa5e7d054d6938c44682d",
+      "root_complete_Source_API_optimized_doc_review": "PASS",
+      "strict_win32_cpp17_compile": "PASS",
+      "worker_existing_checks": "3/3; new TU unregistered",
+      "strict_bytes": 138,
+      "canonical_bytes": 140,
+      "prior_semantic_entry_unchanged": true,
+      "private_HasGeometry_extra_Native_address_credit": 0,
+      "unique_new_Native_address_credit": 0,
+      "captured_artifact_refs": 12,
+      "captured_manifest_artifact_refs": 129
+    },
+    "153": {
+      "commit": "bbb4b5e5bd27d9fb803bcaefd6518239b515f1d3",
+      "source_paths": [
+        "include/bsp/native_gui_state_vector_access.hpp",
+        "src/native_gui_state_vector_access.cpp"
+      ],
+      "manifest_sha256": "a36bf024770d68607c44f1a6e08b0754d424d03f2ad26c77314a4fe99bcf02cb",
+      "root_complete_Source_API_optimized_doc_review": "PASS",
+      "strict_win32_cpp17_compile": "PASS",
+      "strict_bytes": 59,
+      "canonical_bytes": 61,
+      "exact_Native_byte_identity": false,
+      "unique_new_Native_address_credit": 1,
+      "captured_artifact_refs": 3,
+      "captured_manifest_artifact_refs": 25
+    }
+  },
+  "readiness": {
+    "151": {
+      "commit": "bf4c7a70d04b2dac1267e004761ed2a9efaa31aa",
+      "root_complete_doc_review": "PASS",
+      "manifest_sha256": "928c983d52ac80434dd9a8932eea71989939097ef91488dc60d0c89a0d5e1132",
+      "own_manifest_artifact_refs_captured": 248,
+      "Root_selected_direct_calls_verified": 29,
+      "Root_exact_cleanup_pairs": 9,
+      "Root_cleanup_bytes_per_side": 1299,
+      "Root_validated_operand_rows": 25,
+      "paired_full_iterator_EH_maps_verified": true,
+      "new_Source_body_credit": 0
+    },
+    "154": {
+      "commit": "5964b5d7b1a390ff2b45e6b26d6ad130c9a955e5",
+      "root_complete_doc_review": "PASS with evidence/scope wording correction",
+      "manifest_sha256": "f839a42c716a8f9e57ebbb92b694277fa6374f78f4a313e075cc1c527034d475",
+      "own_manifest_artifacts_captured": 111,
+      "Root_selected_direct_calls_verified": 11,
+      "new_Source_body_credit": 0
+    }
+  },
+  "source": [
+    {
+      "packet": "152",
+      "path": "include/bsp/native_gui_widget_color_storage.hpp",
+      "git_blob": "68fc7ceb92c92a52712a4981a03a06fc9237343f",
+      "sha256": "c44b97890659d2bb6103367d03a8866d9bf4b394cf4ff46b5827fb96b6ae1ff7",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "152",
+      "path": "src/native_gui_widget_color_storage.cpp",
+      "git_blob": "5c416a1f15ba0703d1353739329ca7cdf819ae0b",
+      "sha256": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "153",
+      "path": "include/bsp/native_gui_state_vector_access.hpp",
+      "git_blob": "78d215ed167cece2453f97b8f860a2ed49e75c99",
+      "sha256": "5144b8e733b80c630486834e9c6bd704023e8a4d1ead61d47557cb5ef0b30e09",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "153",
+      "path": "src/native_gui_state_vector_access.cpp",
+      "git_blob": "dd1bbe8bd74d665c2c38bcf0409f05f42fa05bd8",
+      "sha256": "9dc5ff0a07b71be2b448570b5f8b41fe417885220607374a6f8ec8b42072676b",
+      "unchanged_from_reviewed_worker": true
+    }
+  ],
+  "retained_lower_sources": [
+    {
+      "path": "src/gui_widget_owner.cpp",
+      "git_blob": "79a11550d42126d8009bc506d566faf559f514fe",
+      "sha256": "36a974b52b5f3036c66d4afec46839edf864dc9158bcc766a6576fc8e6335132",
+      "matches_published_152_baseline": true
+    },
+    {
+      "path": "src/gui_material_binding.cpp",
+      "git_blob": "fe058317e88a81ba76160f4f7b66f23d3991c367",
+      "sha256": "de3312f993d3180fb7023c9869908a74134370c430bdb8844e20b1cadcac15e2",
+      "matches_published_152_baseline": true
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "git_blob": "bf2a25c5f28d9eb10d37f7099faf9adaabb0a97d",
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "matches_published_152_baseline": true
+    }
+  ],
+  "root_reviewed_provider_deltas": [],
+  "root_build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "checks": "3/3",
+    "seconds": 9.09,
+    "warnings": [
+      "Existing untouched Lua spawn_request_id_matches LNK4006 duplicate; second definition ignored"
+    ]
+  },
+  "static_link": {
+    "compiled_commit": "945e81690a56bba069530670aac6dce62159abc9",
+    "build_and_minimal_main_exit_code": 0,
+    "raw_function_bodies_executed": false,
+    "explicit_worker_object_linked": false,
+    "kind": "Two actual-storage APIs from actual final Core; main takes their addresses and executes neither reconstructed body",
+    "PE32_asInvoker": true,
+    "exe_sha256": "041cbd4b9432b58e36ac725c083cd86f6b1acf289224d7d9f3b9983c63948402",
+    "libraries": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "a3a2980ea9b023ba33b7cede6c845bfece532fc03de93051c472ab99f3b0544b"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "sha256": "e6ebb089df7828a43ecdd6e705dddb4cea95b38ffe1fabbd47152fec8834db30"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "sha256": "838261efe3cdd86663e25ecbcd9e825ee51203e71491954864316d4d0dfb6062"
+      }
+    ],
+    "canonical_additional_objects": []
+  },
+  "root_source_and_header_inputs_copied": 125,
+  "archive": {
+    "path": "local/cc12_native_gui_color_vector_integration_156/evidence_family.zip",
+    "sha256": "f012dc52eea7dd0edf0faf2cb300d1fb732c0bc5e78fafa4ddcf822681ee1393",
+    "payload_count": 859,
+    "manifest": "local/cc12_native_gui_color_vector_integration_156/manifest.json",
+    "manifest_sha256": "01e2d30c1b63136234e7348e96915f266ac02904b63b9c3dd1a9e69f403300f6",
+    "all_archived_payload_hashes_rechecked": true,
+    "nested_worker_manifests_included": true
+  },
+  "original_input_proof": {
+    "path": "local/cc12_native_gui_color_vector_integration_156/root_original_input_proof.json",
+    "sha256": "f0ac50e790996d5f144efc15bfe08b70f9f29123474f4995cb0f83c6ec1342e8",
+    "checked_spans": 2,
+    "status": "PASS"
+  },
+  "limits": [
+    "152 preserves prior semantic AA6870 and adds actual-storage entry; B74650 private projection adds zero Native-address credit; real valid Model-tail/mesh/material/noexcept and supported overlap/lifetime domain required",
+    "153 new cdecl value ABI and capture/pure-integer scheduling differ from Native ECX/stackDWORD/RET4; returning SDK CRT handler is not private CRT compatibility",
+    "151 and154 are readonly readiness with zero Source-body credit; Font constructor155 and texture-normalization157 are following independent work",
+    "Whole raw Font production/load/registry/retirement, FrameBox ACF260/ACF9B0/AD0D80 geometry/state composition, raw clip/retained receivers and normal Text activation remain open",
+    "Normal3/3 build plus manifested actual-Core address-only link prove no reconstructed body execution, Native private ABI/CRT/FH3/SEH, Original placement, caller adoption or game/visual/runtime behavior"
+  ]
+}

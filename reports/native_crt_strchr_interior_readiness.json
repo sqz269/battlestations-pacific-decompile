@@ -1,0 +1,217 @@
+{
+  "schema": "bsp.native_crt_strchr_interior_readiness.v1",
+  "packet": "cc12_native_crt_strchr_interior_readiness_oct16",
+  "status": "whole_provider_readiness_accepted_separate_strstr_Source_gate_authorized",
+  "readiness_only": true,
+  "Source_ready": true,
+  "Source_ready_recommendation": true,
+  "Source_ready_scope": "Positive recommendation for a separate whole 00BF9440 strstr Source gate under the explicit stable ordinary reached-storage and cursor domain. Root acceptance is not recorded by this packet; prior published strstr readiness remains unchanged.",
+  "Source_authorized": false,
+  "Source_implemented_by_this_packet": false,
+  "Source_credit": 0,
+  "existing_strchr_Original_credit": "unchanged; no duplicate reconstruction, discovery, function or instruction credit",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc12_crt_strchr_interior_readiness_oct16",
+  "branch": "agent/cc12_crt_strchr_interior_readiness_oct16",
+  "base": "a29bdee6b64409d277e51a492680945a7286f711",
+  "owner": "agent/cc12_crt_strchr_interior_readiness_oct16",
+  "Original_name_retained": "_strchr",
+  "normal_entry": "00bf86f0",
+  "interior_entry": {
+    "address": "00bf86f6",
+    "accepted_instruction_start": true,
+    "instruction_at_equals_containing": true,
+    "listing_kind": "InstructionDB",
+    "length": 1,
+    "bytes": "53",
+    "instruction": "PUSH EBX",
+    "function_at_query": null,
+    "containing_function": "00bf86f0",
+    "no_function_created": true,
+    "no_alternate_decode_or_listing_repair": true
+  },
+  "coverage": {
+    "whole_existing_saved_body_reviewed": true,
+    "ranges": [
+      {
+        "start": "00bf86e0",
+        "end_inclusive": "00bf86e4",
+        "bytes": 5,
+        "instructions": 3,
+        "sha256": "129f1135daa1b60c707996d1ed0561b8f4731388ee1f4732c0a27db4c5e3a907"
+      },
+      {
+        "start": "00bf86f0",
+        "end_inclusive": "00bf87ad",
+        "bytes": 190,
+        "instructions": 86,
+        "sha256": "1196a276dcfdd74f72de4e4d6889e8a22e5bc4b24104501e0b13ccc51d4a5f3f"
+      }
+    ],
+    "listed_bytes": 195,
+    "listed_instructions": 89,
+    "selected_concatenated_sha256": "22f27502570ab4aa937590c5aebf8c378db90379f04e561945d1db27bff36e8e",
+    "excluded_gap": {
+      "start": "00bf86e5",
+      "end_inclusive": "00bf86ef",
+      "bytes": 11,
+      "targeted_capture": false,
+      "decoded": false,
+      "instruction_credit": 0
+    },
+    "full_PE_read_qualification": "The complete installed file was read for hashing, PE headers, section bounds and disk mapping. Only the two selected saved body ranges were sliced as target code and decoded.",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "all_disk_live_saved_text_typed_starts_lengths_owners_match": true,
+    "all_default_effective_flows_targets_fallthroughs_match": true,
+    "all_flow_overrides": "NONE",
+    "all_nonreturn_branches_inside_saved_starts": true,
+    "native_call_instructions": 0,
+    "absolute_memory_operands": 0
+  },
+  "incoming_strstr_boundary": {
+    "evidence_origin": "EXTERNAL prior whole 134-byte/66-instruction strstr review, Root-published reports, author 91-file family and prior independent 30-file family",
+    "site": "00bf94b4",
+    "numeric_target": "00bf86f6",
+    "transfer": "unconditional interior tail; no new return address",
+    "notation": "S=entry ESP; H=DWORD SS:[S+4]; N=DWORD SS:[S+8]; b=actual nonzero needle[0] with needle[1]=0",
+    "EAX": "zero_extend(b)",
+    "ECX": "N; numerical equality to H is possible but is not a source binding",
+    "EDX": "entry_EDX high16 | b, with DH=0",
+    "stack": "ESP=S; original return address and both homes intact",
+    "preserved_incoming_registers": "ESI, EBX, EDI restored by strstr; EBP unchanged",
+    "incoming_arithmetic_flags": "CF=OF=SF=0, ZF=PF=1, AF undefined from XOR",
+    "qualification": "Prior records are not relabelled as new provider captures. The new task does not read caller or wider provider bodies."
+  },
+  "interior_contract": {
+    "input_EAX": "Full EAX must equal a zero-extended BYTE b. General provider contract admits 0..255; the established strstr tail uses 1..255. No arbitrary-upper-EAX contract is inferred.",
+    "binding_order": [
+      "BF86F6 writes incoming EBX to SS:[S-4] and sets ESP=S-4.",
+      "BF86F7 copies EAX to EBX; BF86F9 shifts EAX left eight.",
+      "BF86FC loads the source pointer DWORD from SS:[ESP+8]=SS:[S+4] into EDX.",
+      "Incoming ECX and EDX do not supply the scan pointer; no second argument home or needle byte is read by the interior provider."
+    ],
+    "normal_entry_difference": "The skipped normal-entry six bytes zero EAX then load AL from SS:[S+8]. A redirect to BF86F0 with strstr homes would search the low address byte of N, not needle[0].",
+    "payload_sites": [
+      {
+        "address": "00bf8708",
+        "width": "BYTE",
+        "operation": "unaligned prefix read at EDX into CL"
+      },
+      {
+        "address": "00bf8728",
+        "width": "DWORD",
+        "operation": "first aligned read at EDX into ECX"
+      },
+      {
+        "address": "00bf876a",
+        "width": "DWORD",
+        "operation": "actual candidate reread at EDX-4 into EAX"
+      }
+    ],
+    "payload_writes": 0,
+    "alignment_path": "Read BYTE, advance EDX by one, compare captured CL against BL before NUL. Match returns EDX-1 through pre-entry tail; nonmatching NUL returns zero; reaching alignment enters word loop.",
+    "word_path": {
+      "repeat": "Replicate b into all four EBX bytes; save EDI then ESI after prior EBX save.",
+      "expressions": "W=first DWORD; D=W XOR repeated_b; M=0x7EFEFEFF; T=W+M; U=D+M; C=(~D XOR U)&0x81010100; Z=(~W XOR T)&0x81010100, all DWORD arithmetic.",
+      "native_order": "Form both unmasked expressions, advance EDX by four, mask/test C, then mask/test Z only if C=0.",
+      "candidate": "C!=0 performs a distinct second DWORD read at EDX-4. Test its four captured lanes in address order, equality to b before zero for each lane. Native lane operations are AL, AH, SHR EAX,16, AL, AH. Match returns lane address; nonmatching zero returns zero; otherwise repeat.",
+      "no_candidate": "Z=0 repeats. Nonzero Z&0x01010100 returns zero. Otherwise nonzero T&0x80000000 repeats and zero returns zero. Preserve sign compensation."
+    },
+    "normal_return": {
+      "EAX": "raw matching address or zero",
+      "preserved": "EBX, ESI, EDI, EBP; segment registers and DF unchanged",
+      "scratch": "ECX, EDX and arithmetic flags are not incoming-state preservation promises",
+      "match_arithmetic_flags": "CF=OF=SF=0, ZF=PF=1, AF=0 from equal BYTE CMP",
+      "failure_arithmetic_flags": "CF=OF=SF=0, ZF=PF=1, AF undefined from XOR EAX,EAX",
+      "stack": "Unaligned exit restores EBX only; aligned exits restore ESI, EDI, EBX. Lane-three match pops ESI/EDI before LEA; other aligned match returns form EAX before those pops. ESP=S before plain RET, S+4 after; no argument cleanup.",
+      "return_target": "Existing SS:[S], directly to the original caller"
+    },
+    "DF_and_segments": "No string/REP/DF-sensitive instruction. ES is unused. DS addresses explicit payload, SS addresses home and stack; no segment register is written. Incoming arithmetic flags are overwritten before any condition that uses them.",
+    "dependencies": "No native call, callback, global/table window, TLS/locale, allocation, SSE/x87, SEH service or unresolved provider. Implicit private stack accesses and RET remain part of the native protocol.",
+    "faults": "No added guard, recovery, exception or error service. Fault/partial-progress/private-frame equivalence is outside the ordinary recommendation."
+  },
+  "whole_strstr_ordinary_domain": {
+    "memory": "Stable live determinate ordinary storage, flat DS/SS interpretation, valid only for genuinely reached BYTE or whole DWORD reads. Permit high-bit bytes, unaligned/interior addresses, read-only payload, H/N overlap and ordinary caller-owned stack buffers.",
+    "one_byte_needle": "Use the recovered native provider; every actual first aligned DWORD and candidate reread must be wholly readable, including reached bytes beyond NUL/match. Unaligned early returns do not require a DWORD or blanket padding.",
+    "empty_needle": "Return supplied source bits including null with no source payload/advance and no needle[1] read. Retain the prior observed metadata schedule without claiming a new physical argument-home ABI.",
+    "longer_needle": "Retain cached first two bytes, same-byte retry after second-byte mismatch, historical candidate identity, needle-zero-before-corresponding-source reads, and every accepted local success/failure branch.",
+    "cursor_geometry": "Nonwrapping 32-bit geometry within the actual allocation or one-past; no one-past dereference. Provider advances +1 after BYTE and +4 after first DWORD before stopping. Prior local strstr ESI+2 occurs after first extension source load but before comparison; partner source load precedes ECX+2 and comparison. Preserve those advances even when comparison fails or the next needle byte terminates; no unread partner byte is assumed readable merely because a cursor advances.",
+    "private_alias_boundary": "Exclude Original or proposed private argument-home/saved-register/return/scratch/call-frame alias protocols. Proposed binding/metadata is disjoint from reached payload. Ordinary caller stack buffers and H/N overlap remain admitted.",
+    "excluded_observations": "MMIO, concurrent mutation, invalid lifetime/mapping, faults/partial progress and private exception machinery. No ownership transfer, fictitious string object, full unused terminator extent, artificial padding, nonoverlap requirement, SDK substitution or signed cap.",
+    "DF_ES": "Original bodies add no DF-dependent traversal or ES requirement; any later emitted Source must satisfy its own declared ordinary compiler/calling environment.",
+    "return_identity": "Preserve raw supplied-source result for empty needle, historical local candidate result, interior-provider result for one-byte needle and zero failure; borrowed storage, no new ownership."
+  },
+  "existing_Source_revalidation": {
+    "source": "src/native_crt_strchr.cpp",
+    "source_sha256": "b1a42cf89eb2d6f99d995a279779857dd9e247d99cb7afc66c1b9162de5456b4",
+    "header": "include/bsp/native_crt_strchr.hpp",
+    "header_sha256": "6ae3c442d24614dbf80059f0b491dae4f5c9e6bdfdb2efb5fb253adb64c72ac1",
+    "current_hashes_match_existing_report": true,
+    "whole_source_and_header_reviewed_against_fresh_body": true,
+    "existing_interface": "find_native_crt_character_00bf86f0(const void* actual_parameters8): low value BYTE at backing+4 first, source pointer DWORD at backing+0 second",
+    "matched_behavior": "BYTE alignment path, first aligned DWORD, real candidate DWORD reread, captured lane order and match-before-NUL, both masks/sign compensation, raw return addresses/zero",
+    "pure_computation_difference": "Source computes candidate mask before cursor increment and forms zero expression only on no-candidate branch. Native forms both unmasked expressions first, then advances, masks/tests. Ordinary reached reads/results agree; no native instruction/flag ordering identity is claimed.",
+    "reuse_boundary": "Original strstr homes are not a valid existing-helper binding. Possible ordinary reuse needs genuine stable private two-word backing containing H and prepared b, disjoint from reached payload, and review of the complete future implementation. No adapter/API is implemented here.",
+    "historical_proof_qualification": "Existing normal-entry build, emitted object, fixture and primary-review reports were read as historical external evidence, not rerun or authenticated as new interior-entry composition/physical ABI proof. The current primary-review file is independently pinned; a historical doc hash is not substituted for it."
+  },
+  "ledger_routing": {
+    "origin": "Root-reported external existing-index lookup receipt 476d94",
+    "command": "python tools/bsp.py lookup 00bf86f0 --limit 4",
+    "reported_status": "whole_original_algorithm_source_reviewed_fixture_and_registered_build_passed",
+    "qualification": "Routing only; CLI fixed-width ledger evidence was truncated. No bulk ledger read or caller body was used. Own live typed/body proof supplies the native boundary evidence."
+  },
+  "remaining_gate": [
+    "Root must accept the positive conditional whole-strstr readiness recommendation before changing its prior canonical readiness decision.",
+    "Source implementation requires separate explicit authorization and a concrete interface/primitive/binding design preserving all paths and this provider service.",
+    "Any actual Source change must pass its applicable complete emitted-helper, dependency, access-order, result and normal integration gates; no current compiler/build/probe/test/ABI/game credit is supplied here."
+  ],
+  "verification": {
+    "static_only": true,
+    "accepted_capture_modification_numbers": {
+      "metadata01": "6878",
+      "owned_body02": "6881",
+      "all_flows04": "6884"
+    },
+    "counter_qualification": "Each accepted typed batch is internally stable. Different counters across batches do not establish global or cross-batch database immutability.",
+    "preserved_failures": [
+      "Preparation v1 incorrectly mapped one prior local task script into the new worktree; failed with FileNotFoundError. Script, pin and partial outputs retained.",
+      "Preparation v2 expected tool name functions.exec rather than the actual serialized exec name; assertion failed. Script, pins, partial outputs and path mapping retained. V3 authenticated the actual schemas.",
+      "all_flows03 completed 64 responses but Windows denied final atomic output rename. Pending target, accepted temporary file, command stderr and failed receipt retained. Neither substitutes for successful all_flows04, which repeated the identical supported explicit address requests into fresh paths.",
+      "One combined bounded reader output was capped by the tool; unseen omitted text was not adopted as evidence."
+    ],
+    "report_call_checker_scope": "Run against both new canonical outputs after writing. No fabricated callable row for interior BF86F6; exact interior start/branch ownership comes from typed and static evidence. Zero checker rows, if reported, do not prove semantics.",
+    "compiler_build_tests_probes_emulation_execution": "none",
+    "Ghidra_mutations": "none",
+    "Source_changes": "none",
+    "shared_metadata_Main_push": "none",
+    "caller_body_expansion": "none"
+  },
+  "preservation": {
+    "frozen_W7_HEAD": "eadc8ce2fe045440c7f347a1f11ec10ee482b34a",
+    "prior_sealed_families": 48,
+    "prior_sealed_files": 2871,
+    "prior_current_references": 13,
+    "prior_author_working_files": 875,
+    "prior_author_baseline_files": 289,
+    "prior_author_input_pins": 134,
+    "prior_author_stage_pins": 9,
+    "current_new_worktree_tool_pins": 88,
+    "current_runtime_pins": 181,
+    "selected_existing_input_pins": 9,
+    "qualification": "Before/after actual hashes, byte counts, file mtimes, sealed regular/single-link/read-only attributes and sealed directory mtimes are checked. Earlier semantic qualifications remain; integrity does not erase prior corrections."
+  },
+  "evidence_family": "local/NativeCrtStrchrInteriorReadiness01",
+  "evidence": {
+    "before_inputs": "local/NativeCrtStrchrInteriorReadiness01/tool_inputs_before.json",
+    "existing_inputs": "local/NativeCrtStrchrInteriorReadiness01/selected_existing_inputs_before.json",
+    "prior_authentication": "local/NativeCrtStrchrInteriorReadiness01/external_authentication_verification.json",
+    "whole_body_verification": "local/NativeCrtStrchrInteriorReadiness01/independent_selected_body_verification.json",
+    "root_manifest": "local/NativeCrtStrchrInteriorReadiness01/root_manifest.json",
+    "own_authentication": "local/NativeCrtStrchrInteriorReadiness01/own_authentication.json",
+    "provenance_qualification": "Complete paired own new-task execution records and full Original prefix are authenticated in the sealed family. Prior author and prior independent review records remain EXTERNAL. The in-flight seal and later independent verification remain separate receipts; no recursive self-authentication is claimed."
+  },
+  "Root_primary_review": "reports/cc12_native_crt_strchr_interior_primary_review.json",
+  "separate_strstr_Source_gate": "reports/cc12_native_crt_strstr_readiness.json",
+  "additional_existing_strchr_credit": 0
+}

@@ -42,3 +42,25 @@ void* read_native_resource_string_00bf0510(void* reader, void* output,
 // New source ABI: original private stack aliases, FH3/SEH/CRT identity and
 // hardware faults remain outside this interface. Storage must remain live.
 }
+
+namespace bsp {
+// Whole byte-identical BE4320[27B]/BE4340[27B]. Original ECX actual stream,
+// stacked optional actual-count pointer, AX low-word result, RET4. These new
+// ordinary __cdecl entries share one body through SAME same_reads.streams.
+// Capture the pointer's FULL DWORD bits as the initial four-byte read buffer;
+// capture CURRENT stream vptr then slot24, perform ONE read2, and return the
+// low WORD. Short-read tails retain pointer bits; null naturally seeds zero.
+// No sign extension, byte swap, retry, short-read guard or cleanup is added.
+//
+// Caller retains valid actual stream/vptr/table/backing, optional count object
+// when nonnull, and SAME genuine dispatcher/context through calls and failure.
+// The selected provider's existing storage/profile/exception domain applies;
+// no allocator, owner, default callback or numeric Native code call is added.
+// Externally serialize; BOTH Native and Source private stack/argument/scratch
+// aliases are excluded. Source ABI does not promise Native EAX high bits,
+// ECX/RET4/register/fault timing, private frames, FH3/SEH or runtime fidelity.
+std::uint16_t __cdecl read_native_stream_word_slot40_00be4320(void* actual_stream,
+    std::uint32_t* optional_actual, NativeResourceStreamReadContext& same_reads);
+std::uint16_t __cdecl read_native_stream_word_slot3c_00be4340(void* actual_stream,
+    std::uint32_t* optional_actual, NativeResourceStreamReadContext& same_reads);
+} // namespace bsp

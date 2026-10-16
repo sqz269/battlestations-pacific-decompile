@@ -1,0 +1,682 @@
+{
+  "packet": "cc12_native_gui_frame_box_raw_geometry_readiness154",
+  "kind": "bounded read-only actual FrameBox +7C geometry readiness",
+  "recorded_utc": "2026-10-16T11:20:12.606914+00:00",
+  "checked_baseline": "8aaf1cbc62e209fc37913e06c7a2f1cff3b56fb8",
+  "scope": {
+    "owned_files": [
+      "docs/CC12_NATIVE_GUI_FRAME_BOX_RAW_GEOMETRY_READINESS_154.md",
+      "reports/cc12_native_gui_frame_box_raw_geometry_readiness_154.json"
+    ],
+    "address_leases": [],
+    "no_Source_CMake_ledger_Ghidra_changes": true,
+    "no_build_tests_probes_execution": true,
+    "parallel_exclusions": [
+      "AA6870 packet152",
+      "ACEC40 packet153",
+      "AD55C0 and Font tree packet151"
+    ],
+    "not_whole_AD0D80_Text_copy_or_rebuild": true
+  },
+  "original": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_disk_compared_bytes": 2223,
+    "proof": {
+      "path": "local/frame_box_geometry154/Original_byte_instruction_call_proof.json",
+      "sha256": "927cf943f1425beac854ba75b5b04a79c07c7377fcf1805bd30125c7d19295a5"
+    }
+  },
+  "functions": [
+    {
+      "entry": "00acf9b0",
+      "end_exclusive": "00acff69",
+      "bytes": 1465,
+      "instruction_starts": 351,
+      "whole_live_bytes_match_installed_Original": true,
+      "body_sha256": "2c32795a906c3b644b9f51a02e7a1fc6a652e60bc728b8763d6ba9d6638e0fcc",
+      "binary": {
+        "path": "local/frame_box_geometry154/00acf9b0.bin",
+        "sha256": "2c32795a906c3b644b9f51a02e7a1fc6a652e60bc728b8763d6ba9d6638e0fcc"
+      },
+      "instructions": {
+        "path": "local/frame_box_geometry154/00acf9b0_instructions.json",
+        "sha256": "a30c172eeb7aab85b429cdc07dd910b03a44d7da6577171fe396b7ee1c9295ef"
+      },
+      "assembly": {
+        "path": "local/frame_box_geometry154/00acf9b0_compact_assembly.txt",
+        "sha256": "40a8ffed5224a04a388e066d4eac046b00affab4bb204aec6a5c0e6c6609a5b2"
+      },
+      "live_bytes": {
+        "path": "local/frame_box_geometry154_live_bytes_capped.log",
+        "sha256": "f05f13ce7e9e56412bbe82b8b1c438aed152bf6825ddf30e2e639a654adf7975"
+      },
+      "fresh_proto": {
+        "path": "local/frame_box_geometry154_live_proto.txt",
+        "sha256": "4a51efbd278a251f28d895f28195c9fde5b22ab67129fa44c2e61ba3848c0175"
+      }
+    },
+    {
+      "entry": "00acf260",
+      "end_exclusive": "00acf486",
+      "bytes": 550,
+      "instruction_starts": 170,
+      "whole_live_bytes_match_installed_Original": true,
+      "body_sha256": "f54a6e02a3aecaef7d3a3d6abdf1fca796953f0b77b88e4c964719a208536330",
+      "binary": {
+        "path": "local/frame_box_geometry154/00acf260.bin",
+        "sha256": "f54a6e02a3aecaef7d3a3d6abdf1fca796953f0b77b88e4c964719a208536330"
+      },
+      "instructions": {
+        "path": "local/frame_box_geometry154/00acf260_instructions.json",
+        "sha256": "07dc0bb332cd29af0ef7f47668b0a882a7792ee97c91fad7d6791a680c1c974f"
+      },
+      "assembly": {
+        "path": "local/frame_box_geometry154/00acf260_compact_assembly.txt",
+        "sha256": "3c929fda530288549355bbdbd302f6d0b5b7f0d63e2e32e4eed8d558917ebb65"
+      },
+      "live_bytes": {
+        "path": "local/frame_box_geometry154_rect_live_bytes.txt",
+        "sha256": "e631b737b1d7790801cde3ecb1cafebd78fc7f22112bb70d11627408ebe96f8f"
+      },
+      "fresh_proto": {
+        "path": "local/frame_box_geometry154_rect_live_proto.txt",
+        "sha256": "787b47806c7b5a158848825cea451a741a336279c83b22ea501a4b398a6f6aec"
+      }
+    },
+    {
+      "entry": "00aceb70",
+      "end_exclusive": "00acebd8",
+      "bytes": 104,
+      "instruction_starts": 36,
+      "whole_live_bytes_match_installed_Original": true,
+      "body_sha256": "9160109d71a26a9e56d6505ce09444d8a2b8e0e4f6d5f5e619b6d1308f68a070",
+      "binary": {
+        "path": "local/frame_box_geometry154/00aceb70.bin",
+        "sha256": "9160109d71a26a9e56d6505ce09444d8a2b8e0e4f6d5f5e619b6d1308f68a070"
+      },
+      "instructions": {
+        "path": "local/frame_box_geometry154/00aceb70_instructions.json",
+        "sha256": "77f93c9e1a7af9df78bdb9f8ec24013c80a45691c3c4e865110b5e75ced31d63"
+      },
+      "assembly": {
+        "path": "local/frame_box_geometry154/00aceb70_compact_assembly.txt",
+        "sha256": "b41239081ed6ffdab0c545b423be016757447c10da09c3fc81fb203a42a553a5"
+      },
+      "live_bytes": {
+        "path": "local/frame_box_geometry154_size_live_bytes.txt",
+        "sha256": "3095836c828f56a6ef95edc608e37b686efc9e7e1693630070d61ebdb5455142"
+      },
+      "fresh_proto": {
+        "path": "local/frame_box_geometry154_size_live_proto.txt",
+        "sha256": "1cea71c0beb1eb2c2c5418588962137d3acb9e7cdb281d9f6d0f516943ca3ed3"
+      }
+    }
+  ],
+  "calls": [
+    {
+      "address": "00acfa30",
+      "native": "00bf6713",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfa45",
+      "native": "00aceb70",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfbb9",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfc42",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfcc2",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfd3b",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfdaa",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfe19",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfe83",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acfef7",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    },
+    {
+      "address": "00acff5c",
+      "native": "00acf260",
+      "function": "00acf9b0",
+      "kind": "call"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "site": "00acf9c9",
+      "function": "00acf9b0",
+      "operand": "edx"
+    },
+    {
+      "site": "00aceb80",
+      "function": "00aceb70",
+      "operand": "edx"
+    },
+    {
+      "site": "00aceba5",
+      "function": "00aceb70",
+      "operand": "edx"
+    }
+  ],
+  "availability": {
+    "whole_actual_ACF9B0": false,
+    "smallest_ready_next_whole_body": "00aceb70",
+    "next_body_byte_count": 104,
+    "next_body_instruction_starts": 36,
+    "separate_missing_raw_rectangle_body": "00acf260",
+    "existing_typed_status_unchanged": true,
+    "new_Source_or_Native_credit": false
+  },
+  "current_read_schedule": [
+    {
+      "body": "00acf9b0",
+      "contract": "Current unsigned WORD +EC passed to captured current receiver+00/table+98; after return capture UV fields +1C/+20/+24/+28 and fresh signed WORD +EC. Capture current +F4 for count; null skips +F8; signed wrapping /44 then unsigned index compare. Returning BF6713 continues with current +F4 reload and saved index texture+0. UV and texture can come from different reached state records."
+    },
+    {
+      "body": "00acf9b0",
+      "contract": "ACEB70 result precedes current frame +10C/+110/+114/+118 and size inputs. One live E1301C x87 scalar scales top and bottom; no default. Retain Native x87 operations/spills including two double middle UV temporaries, later float re-roundings, and XMM3..7 private helper-preservation assumption. Size pointer and stream captures occur after prior callbacks at ACFA4A/ACFB38."
+    },
+    {
+      "body": "00acf9b0",
+      "contract": "Nine calls in TL/TR/BL/BR/top/left/right/bottom/center order. No local EH, ownership changes, model lookup, index/color stores, lock/unlock or rollback."
+    },
+    {
+      "body": "00acf260",
+      "contract": "Six expanded vertices TL/TR/BR/TL/BR/BL. Per vertex reload actual stream +08/+0C/+10 for position; after position stores capture current index, increment it, then reload +08/+0C/+28 for UV using saved old index. Preserve current source/header reads, 32-bit wrap, individual SSE/x87 spills and nonuniform x/y/z store order."
+    },
+    {
+      "body": "00aceb70",
+      "contract": "Current texture+00/current +48 width target; real width getter; unsigned FILD correction with CE3978; divide CEC380. Then CURRENT texture+00/current +4C height target is captured BEFORE width FSTP at ACEBA1; actual height call ACEBA5 follows width spill. Convert/divide CEF1B8; spill height; only then width and height FLD/FSTP sequential output stores. Return same output."
+    }
+  ],
+  "actual_existing_providers": [
+    {
+      "provider": "StateAt AD2750",
+      "source": "src/native_gui_frame_box_factory.cpp:46",
+      "contract": "Whole actual header/state record helper from149 exists, incl returning invalid-parameter/current begin semantics; canonical D5D130+98 points here."
+    },
+    {
+      "provider": "2D saved dimension leaves B3CE70/B3CE80",
+      "source": "src/native_texture_saved_dimensions.cpp:10,18",
+      "contract": "Whole raw naked fastcalls read actual +34/+38. D61948+48/+4C current numeric slots match. Older shadow descriptor +28/+2C wrappers are distinct."
+    },
+    {
+      "provider": "actual 2D producer B3F930",
+      "source": "src/native_texture_2d_owner.cpp:140",
+      "contract": "Real actual owner initializes saved +34/+38 under D61948; FrameBox records qualified 2D domain exists. Actual resource/pool/registry/provenance/lifetime remains required."
+    },
+    {
+      "provider": "map/unmap and stream/model services",
+      "source": "include/bsp/native_logical_buffer_mapping.hpp; include/bsp/native_mesh_buffer_fields.hpp; published148 actual_source_coverage",
+      "contract": "Real physical/logical/device/sync/mesh/Model providers already exist. Caller of7C must supply same actually mapped stream/backing; this body does not create or acquire them."
+    },
+    {
+      "provider": "actual Text/font mapped writers",
+      "source": "src/gui_text_geometry.cpp:49; src/font_geometry.cpp:77",
+      "contract": "Genuine raw stores, but snapshot FontGeometryLayout/capacity; four vertices plus six external WORD indices and Text/glyph-specific rules do not implement ACF260 six expanded vertices/current reload/store ordering."
+    },
+    {
+      "provider": "semantic FrameBox numeric/writer projections",
+      "source": "src/gui_framebox.cpp:98,211",
+      "contract": "Established typed reconstruction remains valid prior evidence, but is not an actual receiver/current virtual/map adapter; no duplicate credit or forced typed cast."
+    }
+  ],
+  "next_Source_contract": {
+    "body": "00aceb70",
+    "extent": "[00aceb70,00acebd8)",
+    "bytes": 104,
+    "instruction_starts": 36,
+    "Native_ABI": "ECX live output8; EDX actual texture; EAX same output; plain RET; preserves ESI/EDI",
+    "domain": "Genuine existing actual2D owner/profile D61948 with real saved +34/+38 getters, same retained already-initialized read-only data aliases/current numeric slots; explicit full actual graph/output/local/constants lifetime. No owner, copied table, lazy mapping, callback getter, fake fallback or early output store. Pure preflight may validate supported aliases but must not consume reached texture selectors/values. Preserve output/texture alias effects and delayed output publication.",
+    "constants": {
+      "00ce3978": "FLOAT 2^32 bytes 00 00 80 4f",
+      "00cec380": "DOUBLE 960 bytes 00 00 00 00 00 00 8e 40",
+      "00cef1b8": "DOUBLE 720 bytes 00 00 00 00 00 80 86 40"
+    },
+    "failure": "No Native cleanup/EH. Source admission or reached unsupported profile errors are added boundaries, not a Native virtual throw equivalence; entered effects/local backing retained without replay.",
+    "not_implemented_in_readonly154": true,
+    "future_x87_admission_boundary": "Root review guidance: width conversion/divide -> current height vptr/target capture -> width FSTP should be one audited x87 sequence; do not carry ST0 live across an ordinary throwing C++ admission call. Height admission/call follows the spill, retaining the captured target."
+  },
+  "remaining_ACF260_and_ACF9B0_contracts": {
+    "ACF260": "Separate whole550B raw writer over actual mapped stream; exact current header/index/source reloads, six expanded records, DWORD/SSE/x87 accesses and individual stores. No callback/no semantic array/index substitution.",
+    "ACF9B0": "Whole1465B caller composition still needs genuine ACEB70 and ACF260 plus exact current state98, E1301C live provenance, Native x87/SSE spills/order and private helper register assumptions. WholeAD0D80 and its ancestor/map/unmap/error/slot production admission remain separate.",
+    "mapped_storage": "Actual stream +08 base,+0C byte stride,+10 position byte offset,+28 UV offset. Each of54 usual nonalias vertices needs position12 and UV8 writable bytes, genuine map/device/sync/declaration backing held. Native arithmetic wraps32; no capacity validation is present. Aliasing header/counter/rectangles cannot be silently excluded; a bounded nonalias supported contract must be explicit and tied to actual provenance."
+  },
+  "ownership_failure_limits": [
+    "No new count/retain or resource ownership is acquired by the three audited bodies. Caller retains full stream/map/state/texture/service/output/private backing through callbacks and failures.",
+    "Valid supplied actual graph is not proof of normal runtime producer/activation; existing real producers are acknowledged but broad production graph is not claimed.",
+    "Returning BF6713 is not false-success/range clamp: current begin is reloaded and execution proceeds. No generic error callback substitutes the existing SDK gateway.",
+    "Ordinary MSVC x87/SSE compilation, SDK boundaries and C++ interface are not Original register ABI, Native FH3/SEH, private register preservation or game runtime proof.",
+    "No source/ledger/Ghidra mutation, build, new test, behavior probe, raw execution or complete AD0D80 claim."
+  ],
+  "source_inputs": [
+    {
+      "path": "include/bsp/gui_framebox.hpp",
+      "sha256": "ec5c437d8a2bfb51abf5b7dab2b69da05b6fc50fe74ef6fd26c3808c85e755a5",
+      "git_blob": "6a739abea827bc2db8dddeb8ca74f286fee8bab4",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/include/bsp/gui_framebox.hpp",
+        "sha256": "ec5c437d8a2bfb51abf5b7dab2b69da05b6fc50fe74ef6fd26c3808c85e755a5"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "src/gui_framebox.cpp",
+      "sha256": "d84dfa37d274a40e3ba574e6886d72a1f2fb7d12328bccecd8d091f32f347306",
+      "git_blob": "c9b53453ac13f3a4b4181727d27b132bfee12a75",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/src/gui_framebox.cpp",
+        "sha256": "d84dfa37d274a40e3ba574e6886d72a1f2fb7d12328bccecd8d091f32f347306"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_factory.hpp",
+      "sha256": "51c9ecc3f14973a9f21cc1de52a05b9d34c0f522f7fbba3cbb77eb187e773853",
+      "git_blob": "854035e884f4d4417ad9889ac40ed92a7d77e5d0",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/include/bsp/native_gui_frame_box_factory.hpp",
+        "sha256": "51c9ecc3f14973a9f21cc1de52a05b9d34c0f522f7fbba3cbb77eb187e773853"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "src/native_gui_frame_box_factory.cpp",
+      "sha256": "46124772e8af548dbd39ddf60800fa5dbb2a78efd18052c10bf85a0588a17532",
+      "git_blob": "c69ff3ef7d612a3d42840e5dab5d755301ea870d",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/src/native_gui_frame_box_factory.cpp",
+        "sha256": "46124772e8af548dbd39ddf60800fa5dbb2a78efd18052c10bf85a0588a17532"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "sha256": "990c015f2b0fc9cffc29436a69c9a52d057fcdb21c93c5f849a31e72d01235e4",
+      "git_blob": "b7e3a21570936d4a7479c919174ed13a56b4e60a",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/include/bsp/native_gui_frame_box_records.hpp",
+        "sha256": "990c015f2b0fc9cffc29436a69c9a52d057fcdb21c93c5f849a31e72d01235e4"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "src/native_gui_frame_box_records.cpp",
+      "sha256": "2c5f95a919411884df592c961257fced2a8541668b8ad038464e35b2fed62b4c",
+      "git_blob": "642d53741ed0b01e7976e01003b1d9c65aecc038",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/src/native_gui_frame_box_records.cpp",
+        "sha256": "2c5f95a919411884df592c961257fced2a8541668b8ad038464e35b2fed62b4c"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "include/bsp/native_texture_saved_dimensions.hpp",
+      "sha256": "79cd7e835c608dda30d3ada5dc46b8c9e09b066e9a284f18a12276ff4d770890",
+      "git_blob": "39895a3684f10935598ef4fec7dc1e4184f76249",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/include/bsp/native_texture_saved_dimensions.hpp",
+        "sha256": "79cd7e835c608dda30d3ada5dc46b8c9e09b066e9a284f18a12276ff4d770890"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "src/native_texture_saved_dimensions.cpp",
+      "sha256": "094040ca29e9d708254a8889c062bda42f15a7c6833b303c3dc37f6d72724483",
+      "git_blob": "81b8331d5740d2ec0606a3ec1e436b0795d7a850",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/src/native_texture_saved_dimensions.cpp",
+        "sha256": "094040ca29e9d708254a8889c062bda42f15a7c6833b303c3dc37f6d72724483"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "git_blob": "28ac6a6a771515dc54df56d630a91438b24fb2de",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/include/bsp/native_texture_2d_owner.hpp",
+        "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+      "git_blob": "65f5ff828bcfed5f544912349feeeb9167349359",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/src/native_texture_2d_owner.cpp",
+        "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "include/bsp/native_shadow_texture_access.hpp",
+      "sha256": "0819902d4b87e0958abbb7abefa61d4bb9ed2fd387fcf7f65da0d5c031768b0b",
+      "git_blob": "80ea8ceac477e680b85cf9ce2a4bed3b1ecf7e6a",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/include/bsp/native_shadow_texture_access.hpp",
+        "sha256": "0819902d4b87e0958abbb7abefa61d4bb9ed2fd387fcf7f65da0d5c031768b0b"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "src/native_shadow_texture_access.cpp",
+      "sha256": "89e255e913c5f0f89ae8fe4abc0d97a2ef04050ad47416163eb92c7d0ece0722",
+      "git_blob": "845179311bfb0cab0576f14071fff2b0ec78929b",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/src/native_shadow_texture_access.cpp",
+        "sha256": "89e255e913c5f0f89ae8fe4abc0d97a2ef04050ad47416163eb92c7d0ece0722"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "include/bsp/gui_text_geometry.hpp",
+      "sha256": "7d4b3486714d3a45535f4bdf4d9917f38911ca9e48dd587e9e0c0b796493c474",
+      "git_blob": "f720fafb0fd560e5bbac7e8a9b4341492b1478e9",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/include/bsp/gui_text_geometry.hpp",
+        "sha256": "7d4b3486714d3a45535f4bdf4d9917f38911ca9e48dd587e9e0c0b796493c474"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "src/gui_text_geometry.cpp",
+      "sha256": "dd01f286b70447b34bc892557d1c450b34392b217bd1aaa68cdf790358aa2f4d",
+      "git_blob": "6b6b9dee7372aeceea022620c3eb20e9301a5f29",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/src/gui_text_geometry.cpp",
+        "sha256": "dd01f286b70447b34bc892557d1c450b34392b217bd1aaa68cdf790358aa2f4d"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "include/bsp/font_geometry.hpp",
+      "sha256": "b9b9236915aefaf99f17cd103180db23ab5bbf6449fe73e84fe598577151a55b",
+      "git_blob": "f0c4c9fb1292aa4eab4b3a5dbe09317e076453fc",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/include/bsp/font_geometry.hpp",
+        "sha256": "b9b9236915aefaf99f17cd103180db23ab5bbf6449fe73e84fe598577151a55b"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "src/font_geometry.cpp",
+      "sha256": "43b33663a5b4ca8a4ccde11bd669bdbb108073335cbc9f37cc7619050865e2bd",
+      "git_blob": "04613704d457a6def494e6d1b09ec05f601b0109",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/src/font_geometry.cpp",
+        "sha256": "43b33663a5b4ca8a4ccde11bd669bdbb108073335cbc9f37cc7619050865e2bd"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "include/bsp/native_logical_buffer_mapping.hpp",
+      "sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0",
+      "git_blob": "56a4d6adc352e6432970a1172d5ea4a20f0dea98",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/include/bsp/native_logical_buffer_mapping.hpp",
+        "sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "src/native_logical_buffer_mapping.cpp",
+      "sha256": "6e9b61c4928f34705e12be655d0c8e6a72bca9210a9d9a2748e43054c55d3075",
+      "git_blob": "82403d816de34e8fd52a5b14cc62702460e0194c",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/src/native_logical_buffer_mapping.cpp",
+        "sha256": "6e9b61c4928f34705e12be655d0c8e6a72bca9210a9d9a2748e43054c55d3075"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "include/bsp/native_mesh_buffer_fields.hpp",
+      "sha256": "9986bb687f4743ec06a644a824dacc91e08b48754ab1bc99572c401dd60fd16a",
+      "git_blob": "89ee60f0dc74797c5034322bf9bdac20a2281d1c",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/include/bsp/native_mesh_buffer_fields.hpp",
+        "sha256": "9986bb687f4743ec06a644a824dacc91e08b48754ab1bc99572c401dd60fd16a"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "src/native_mesh_buffer_fields.cpp",
+      "sha256": "1a4cfda0124597bd48d7208fdbd974546951067e89f555534b098cf4465aaa50",
+      "git_blob": "ab5236be8b62c613fe07a0bccd371822c9cc9c9b",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/src/native_mesh_buffer_fields.cpp",
+        "sha256": "1a4cfda0124597bd48d7208fdbd974546951067e89f555534b098cf4465aaa50"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "include/bsp/native_logical_vertex_owner.hpp",
+      "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c",
+      "git_blob": "f2c5a72e46f030f049f370eda07de9594a5f3816",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/include/bsp/native_logical_vertex_owner.hpp",
+        "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "src/native_logical_vertex_owner.cpp",
+      "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba",
+      "git_blob": "be3c28943b8b96b9c2e6829fb93546654271de62",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/src/native_logical_vertex_owner.cpp",
+        "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "include/bsp/native_vertex_position_read.hpp",
+      "sha256": "5e5933b441f3806ab97fef05c8e409c967ad8925a451e99ef77dd19c35e6ef10",
+      "git_blob": "1b694e5e7a727f9c7e2ce3bf82569f0053b2f719",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/include/bsp/native_vertex_position_read.hpp",
+        "sha256": "5e5933b441f3806ab97fef05c8e409c967ad8925a451e99ef77dd19c35e6ef10"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "src/native_vertex_position_read.cpp",
+      "sha256": "17238c8326d7c223740e5b229cbc721641504c91fe5c48f9c8b2ef3bcf14b450",
+      "git_blob": "d27b8aca44716fe2ce03e164371b8c4da9d52a26",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/src/native_vertex_position_read.cpp",
+        "sha256": "17238c8326d7c223740e5b229cbc721641504c91fe5c48f9c8b2ef3bcf14b450"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/include/bsp/game_native_readonly_data.hpp",
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/src/game_native_readonly_data.cpp",
+        "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "include/bsp/gui_widget_owner.hpp",
+      "sha256": "2acc8d633c6541a4c60263aa9f94d61826096f71b50c2644f1848e240c56389f",
+      "git_blob": "b051343705b24c9014e82bc2efdd105577d70e62",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/include/bsp/gui_widget_owner.hpp",
+        "sha256": "2acc8d633c6541a4c60263aa9f94d61826096f71b50c2644f1848e240c56389f"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "src/gui_widget_owner.cpp",
+      "sha256": "36a974b52b5f3036c66d4afec46839edf864dc9158bcc766a6576fc8e6335132",
+      "git_blob": "79a11550d42126d8009bc506d566faf559f514fe",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/src/gui_widget_owner.cpp",
+        "sha256": "36a974b52b5f3036c66d4afec46839edf864dc9158bcc766a6576fc8e6335132"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "include/bsp/native_mesh_texture_field.hpp",
+      "sha256": "7d358c7a8cba0e80b37b5cb4fa0f04e4f292c34b630d18c40600530cd9429ce7",
+      "git_blob": "f63a27633a5dd4f7dac54ce56204eb21aaa9319d",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/include/bsp/native_mesh_texture_field.hpp",
+        "sha256": "7d358c7a8cba0e80b37b5cb4fa0f04e4f292c34b630d18c40600530cd9429ce7"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "src/native_mesh_texture_field.cpp",
+      "sha256": "a9db17ac15a9f00dae714ba41208bfdaf8e5cb40f5ee7d23651f76d183d2bb39",
+      "git_blob": "634768855b5b209fc3929d86d8da7083cbb7c314",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/providers/src/native_mesh_texture_field.cpp",
+        "sha256": "a9db17ac15a9f00dae714ba41208bfdaf8e5cb40f5ee7d23651f76d183d2bb39"
+      },
+      "scope": "targeted directly relevant provider; not a new whole-provider audit or Source credit"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RAW_STATE_READINESS_148.md",
+      "sha256": "9cb2ecd014ea869af79a4cf3f0e92ede553c09d34779ed49ec9f9d3d3b50b686",
+      "git_blob": "b16606a4d86ddae0def0adc16cc892f816e04aaa",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/reused_receipts/docs/CC12_NATIVE_GUI_FRAME_BOX_RAW_STATE_READINESS_148.md",
+        "sha256": "9cb2ecd014ea869af79a4cf3f0e92ede553c09d34779ed49ec9f9d3d3b50b686"
+      },
+      "scope": "published prior evidence; no broad re-export/reaudit"
+    },
+    {
+      "path": "reports/cc12_native_gui_frame_box_raw_state_readiness_148.json",
+      "sha256": "5b2fc45d4b3839f01c8d4f20ac2ebe0e3683c42348039a99de242b4c2c66a7e8",
+      "git_blob": "f70195a2c9cd26d4fee984b0d2d83addc324e81d",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/reused_receipts/reports/cc12_native_gui_frame_box_raw_state_readiness_148.json",
+        "sha256": "5b2fc45d4b3839f01c8d4f20ac2ebe0e3683c42348039a99de242b4c2c66a7e8"
+      },
+      "scope": "published prior evidence; no broad re-export/reaudit"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_STATE_AT_149.md",
+      "sha256": "bea3fd518f25b0e7e1d55c75927de0c0452233b7883100cb1eb0949bdec65002",
+      "git_blob": "0c406363dd2719512e9f8040b292a8ba75491528",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/reused_receipts/docs/CC12_NATIVE_GUI_FRAME_BOX_STATE_AT_149.md",
+        "sha256": "bea3fd518f25b0e7e1d55c75927de0c0452233b7883100cb1eb0949bdec65002"
+      },
+      "scope": "published prior evidence; no broad re-export/reaudit"
+    },
+    {
+      "path": "reports/cc12_native_gui_frame_box_state_at_149.json",
+      "sha256": "14605eeb740cd4a20e59e566928d1fa543742a929ac23dbc202ab91e4ed86b9a",
+      "git_blob": "4482efe4fa83d381a84727d3d5d4cd7ab92b839c",
+      "frozen_copy": {
+        "path": "local/frame_box_geometry154/reused_receipts/reports/cc12_native_gui_frame_box_state_at_149.json",
+        "sha256": "14605eeb740cd4a20e59e566928d1fa543742a929ac23dbc202ab91e4ed86b9a"
+      },
+      "scope": "published prior evidence; no broad re-export/reaudit"
+    }
+  ],
+  "preserved147": {
+    "path": "local/frame_box_geometry154/147_preservation_recheck.json",
+    "sha256": "c0073410574d96404fe01dd26063354242f0a6c2e1daffb7941c5ec79368c260"
+  },
+  "verification": {
+    "whole_Original_functions": "3/3 exact live-byte vs installed-Original comparison; 2119 body bytes, 557 starts",
+    "data": "104 live table/constant bytes also match Original; E1301C disk initial bytes recorded separately as mutable, not a fixed runtime value",
+    "report_calls": {
+      "checked": 11,
+      "failed": 0,
+      "scope": "all11 direct calls of whole ACF9B0; separate3 indirect sites are byte/current-table evidence, not direct-call verification",
+      "log": {
+        "path": "local/frame_box_geometry154_call_verification.log",
+        "sha256": "ceba86fd39ed7371ff68bdd79c41df02b7d3f5f6a6de01c2f94fa00795340794"
+      }
+    },
+    "no_build_test_probe": true,
+    "Root_full_doc_review": {
+      "status": "PASS",
+      "record": {
+        "path": "local/frame_box_geometry154_Root_doc_review.json",
+        "sha256": "480e3b7285457fd12d43d29d2baa58c98c67f27565192e742ca0019a56391085"
+      }
+    },
+    "all92_prior147_pins_unchanged_at_seal": true,
+    "no_build_tests_probes_or_mutations": true,
+    "frozen_diagnostic_tools": [
+      {
+        "path": "local/frame_box_geometry154/diagnostic_tools/tools/bsp.py",
+        "sha256": "133e2cf3f24f0402f6ed7d0e1dd5148c678c7ca10722633d1ec6cdc9b693a9ff"
+      },
+      {
+        "path": "local/frame_box_geometry154/diagnostic_tools/tools/verify_report_calls.py",
+        "sha256": "f3f412b6f8eaeb6c4b212e34cca6a2567c2ed4015d0a942268d752911f6913ef"
+      },
+      {
+        "path": "local/frame_box_geometry154/diagnostic_tools/tools/workspace.py",
+        "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+      }
+    ]
+  },
+  "documentation": {
+    "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RAW_GEOMETRY_READINESS_154.md",
+    "sha256": "9434cc2759ee1b47581514c6fffed905026644d50f670341bd3d39cb2c674573"
+  },
+  "artifact_manifest": "local/frame_box_geometry154_final_artifact_manifest.json"
+}

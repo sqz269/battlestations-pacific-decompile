@@ -1,0 +1,146 @@
+{
+  "packet": "cc12_native_gui_retirement_sections_integration_91",
+  "status": "reviewed_source_registered_win32_build_and_force_reference_link_checked_no_new_game_runtime",
+  "compiled_commit": "d78abe18e173be64f2b2ef9a487741d8846a1301",
+  "source": [
+    {
+      "packet": "85",
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "git_blob": "6e54e746ae3d36b65416198b0b2386ea0ad9ced1",
+      "sha256": "2263f0a5cf044e3040c7f3f024a8d9899df1e7f0277db512f4db7d59976510f7",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "85",
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "git_blob": "d6540adb2754bc92a07a785cb25e867909a904a4",
+      "sha256": "9cb60be1d88a03d4136ca9fe34243c8b980199192300456819bf2a46778a6200",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "89",
+      "path": "include/bsp/native_gui_camera_store_map.hpp",
+      "git_blob": "0fac7479cc9b8f767f02d059d7c8da59bbd8bc0e",
+      "sha256": "3682a1f8dcd0a195f2c3f0840207d52e353fd7f03f98790e37a57ad73b4b8340",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "89",
+      "path": "src/native_gui_camera_store_map.cpp",
+      "git_blob": "c0284067e27b5e72591573c8515e820f02d25b50",
+      "sha256": "99228166520cfa04a782500d5de7b272f9545bc4cfc8f8110bb813d1b0afe39d",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "90",
+      "path": "include/bsp/native_gui_clip_box_factory.hpp",
+      "git_blob": "0a667b09f9e80e03917a3ef3baecab7de5f88d57",
+      "sha256": "38489268d189c7a248fb046557b1041bd4ec54c93966e5a13343223032db433f",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "90",
+      "path": "src/native_gui_clip_box_factory.cpp",
+      "git_blob": "39bd219c2dde4f3d3a085deed515840e7747f9ef",
+      "sha256": "d59e3045f84617b9b4787fc8cd9def14c15a04bc1fd8edf7ccf6c52f1bdfeee5",
+      "unchanged_from_reviewed_worker": true
+    }
+  ],
+  "registration": "New raw Text section TU registered once in bsp_core; manager and ClipBox units already registered once",
+  "build": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctest_passed": 3,
+    "ctest_total": 3,
+    "ctest_seconds": 7.8,
+    "frozen_direct_source_and_transitive_header_inputs": 130,
+    "known_warning": "Unchanged existing LNK4006 spawn_request_id_matches duplicate in Lua objects"
+  },
+  "workers": {
+    "85": {
+      "commit": "f5926fce89ca2ab5c15f07697ad55f513abd51ac",
+      "live_call_rows": 33,
+      "failed": 0,
+      "captured_manifest_hashes": 8,
+      "extra_report_referenced_local_copies": 8,
+      "worker_configured_tests_passed": 2,
+      "worker_configured_tests_total": 2,
+      "worker_TU_registered": false,
+      "strict_optimized_object": "PASS"
+    },
+    "89": {
+      "commit": "d741afbe16d598c660c17717c00e7c9a17684840",
+      "live_call_rows": 25,
+      "failed": 0,
+      "captured_manifest_hashes": 26,
+      "worker_configured_tests_passed": 3,
+      "worker_configured_tests_total": 3,
+      "focused_case": "One real Source raw-tree/store creation and owning CRT HeapWalk case; second store/node removed, first survives, count2->1; reached-name-only camera fixture, no Native differential"
+    },
+    "90": {
+      "commit": "020024ef2d363f4174bd31e55d97192a657a0aa4",
+      "live_call_rows": 2,
+      "failed": 0,
+      "captured_manifest_hashes": 24,
+      "worker_configured_tests_passed": 3,
+      "worker_configured_tests_total": 3,
+      "compiled_flags_byte_after_base": "PASS; no new runtime case"
+    },
+    "87": {
+      "commit": "19e8adba08323fd0e15997b30d0abc96476d32dd",
+      "kind": "read_only_tree_erase_equivalence",
+      "live_call_rows": 14,
+      "failed": 0,
+      "captured_manifest_hashes": 50
+    },
+    "88": {
+      "commit": "bed2fdf6a0186aa0d3cdcde66815d79c3922861e",
+      "kind": "read_only_ClipBox_lifetime",
+      "live_call_rows": 21,
+      "failed": 0,
+      "captured_manifest_hashes": 14
+    }
+  },
+  "primary_review": {
+    "all_source_contracts_and_whole_Original_schedules": "PASS",
+    "optimized_x87_capture_and_material_data_state_length_order": "PASS",
+    "new_source_entry_points_force_linked_from_combined_core": "PASS",
+    "minimal_address_probe_exit_code": 0,
+    "raw_bodies_executed_by_link_probe": false
+  },
+  "artifact_capture": {
+    "path": "local/cc12_native_gui_retirement_sections_integration_91/evidence_family.zip",
+    "payload_count": 333,
+    "sha256": "266142e7078d765c81f1fd581be8d33a9668b1f66f9da75a7665878ddccb2905",
+    "manifest_sha256": "4c37a65f8f187fd6377f185f37c96aa85824f2d91839e2a50cae708fd4336e74",
+    "zip_integrity_and_every_payload_hash": "PASS",
+    "supplemental_worker_manifests": {
+      "path": "local/cc12_native_gui_retirement_sections_integration_91_supplement/worker_manifests.zip",
+      "sha256": "d5ca3b2b760bc5b318e693bbbbdabbdd9c0d8cdb7288c47c1d67e170256d05a3",
+      "payloads": [
+        {
+          "path": "83/manifest.json",
+          "sha256": "bdc59bf1f0eaa3bc7dc992512e43e57a466e4d94e988a9b177379f459387d2e2"
+        },
+        {
+          "path": "90/manifest.json",
+          "sha256": "3b9a8620b293b29ef6b7376dedbd4234644f4102abf73b67612558bca4f2a2ed"
+        }
+      ],
+      "reason": "Standalone worker manifests preserved separately; primary archive excludes files named manifest.json except its root manifest."
+    }
+  },
+  "original_installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "new_normal_game_runtime": false,
+  "native_text_activation": false,
+  "gameplay_validated": false,
+  "limits": [
+    "Raw Text default/copy/factory are separate from whole AB8530 sections.",
+    "Required canonical populated-widget/scene lifetime bindings and whole graph retention remain caller contracts; no concrete full production graph is supplied here.",
+    "Source provider_call is not proof of native exception origin.",
+    "Manager Source CRT case is not Original heap/CRT/FH3/private-frame ABI proof; free-clear-erase order is static Source/assembly evidence.",
+    "ClipBox deleting wrapper has no new normal/failure runtime case or count gate.",
+    "Static linkage and existing tests do not establish raw function execution, startup activation or gameplay."
+  ]
+}

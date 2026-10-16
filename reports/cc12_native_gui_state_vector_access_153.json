@@ -1,0 +1,78 @@
+{
+  "packet": "cc12_native_gui_state_vector_access_153",
+  "status": "whole_actual_storage_vector_accessor_strict_and_canonical_win32_build_existing_checks_pass_no_execution",
+  "compiled_commit": "945e81690a56bba069530670aac6dce62159abc9",
+  "source_commit": "bbb4b5e5bd27d9fb803bcaefd6518239b515f1d3",
+  "function": {
+    "address": "00acec40",
+    "name": "native_gui_state_vector_record_00acec40",
+    "source": "src/native_gui_state_vector_access.cpp",
+    "header": "include/bsp/native_gui_state_vector_access.hpp",
+    "status": "whole_actual_storage_vector_accessor_strict_and_canonical_win32_build_existing_checks_pass_no_execution",
+    "evidence": "CC12 Source153: whole59B/24starts raw vector+04/+08, captured begin/null-skip end, signed wrapped byte difference /44, unsigned DWORD index comparison, real BF6713 once then currentbegin reload/wrapped record address without recheck/payload access. Source C++cdecl value ABI and index/pure integer load scheduling differ from Native ECX/stackDWORD/RET4; Source SDK CRT policy not private CRT identity. Existing STL generic name replaced by descriptive hypothesis with old name/comment response in locked saved annotation history; no creation/repair, owner, typed overlay, Original placement/caller adoption or runtime claim.",
+    "original_abi": "ECX actual vector header; DWORD stack index; EAX raw record address; RET4. New two-argument C++cdecl Source API",
+    "native_bytes": 59,
+    "native_instruction_starts": 24,
+    "native_range": [
+      "00acec40",
+      "00acec7b"
+    ],
+    "docs": [
+      "docs/CC12_NATIVE_GUI_STATE_VECTOR_ACCESS_153.md"
+    ],
+    "reports": [
+      "reports/cc12_native_gui_state_vector_access_153.json"
+    ]
+  },
+  "proof": {
+    "Native_bytes": 59,
+    "Native_starts": 24,
+    "Original_code_sha256": "7f25970d910f8c4726ff778436d019dac44f902fcc59ef55f3ade688243e3f0a",
+    "strict_bytes": 59,
+    "strict_code_sha256": "6928b8ecbfe1bd175db7d1a42ecc66aa3ef8242e3a0c388423d67a62bf7c1f8b",
+    "relocations": [
+      [
+        44,
+        "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+        20
+      ]
+    ],
+    "execution": false,
+    "canonical": {
+      "bytes": 61,
+      "sha256": "a3ea833af3c339a598e11ba193ed65ded64b7cf67ff44987b3d7fa92a2039cf9",
+      "relocations": [
+        [
+          45,
+          "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+          20
+        ]
+      ]
+    }
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_gui_state_vector_access.hpp",
+      "sha256": "5144b8e733b80c630486834e9c6bd704023e8a4d1ead61d47557cb5ef0b30e09",
+      "git_blob": "78d215ed167cece2453f97b8f860a2ed49e75c99",
+      "copy": "local/cc12_native_gui_state_vector_access153/final_source/include/bsp/native_gui_state_vector_access.hpp"
+    },
+    {
+      "path": "src/native_gui_state_vector_access.cpp",
+      "sha256": "9dc5ff0a07b71be2b448570b5f8b41fe417885220607374a6f8ec8b42072676b",
+      "git_blob": "dd1bbe8bd74d665c2c38bcf0409f05f42fa05bd8",
+      "copy": "local/cc12_native_gui_state_vector_access153/final_source/src/native_gui_state_vector_access.cpp"
+    }
+  ],
+  "strict_compile": "PASS; first missing direct cstddef include attempt preserved",
+  "canonical_build": {
+    "checks": "3/3",
+    "seconds": 9.09,
+    "raw_function_executed": false
+  },
+  "final_artifact_manifest": {
+    "path": "local/cc12_native_gui_state_vector_access153/artifact_manifest.json",
+    "sha256": "a36bf024770d68607c44f1a6e08b0754d424d03f2ad26c77314a4fe99bcf02cb"
+  },
+  "documentation": "docs/CC12_NATIVE_GUI_STATE_VECTOR_ACCESS_153.md"
+}

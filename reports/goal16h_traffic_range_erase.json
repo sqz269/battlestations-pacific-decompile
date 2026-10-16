@@ -1,0 +1,201 @@
+{
+  "packet": "goal16h_traffic_range_erase",
+  "status": "whole_instruction_mapped_source_registered_build_and_single_actual_alias_fixture_verified_qualified_SDK",
+  "source": "src/native_traffic_range_erase_16h.cpp",
+  "header": "include/bsp/native_traffic_range_erase_16h.hpp",
+  "document": "docs/GOAL16H_TRAFFIC_RANGE_ERASE.md",
+  "source_base": "a123c8557d373cf743312a8d876de04821dc0723",
+  "routines": [
+    {
+      "address": "0048e400",
+      "name": "erase_native_traffic_pod18_range_0048e400",
+      "coverage": "complete",
+      "native_bytes": 68,
+      "source_bytes": 68,
+      "instructions": 28,
+      "abi": "ECX actual raw header, NO Original EDX; five actual stack DWORD cells {out,first_metadata,first,last_metadata,last}; EAX late physical out; RET14h. Source-only unusedEDX binds fastcall stack shape."
+    },
+    {
+      "address": "00489110",
+      "name": "erase_native_traffic_dword_range_00489110",
+      "coverage": "complete",
+      "native_bytes": 90,
+      "source_bytes": 90,
+      "instructions": 37,
+      "abi": "ECX actual raw header, NO Original EDX; five actual stack DWORD cells {out,first_metadata,first,last_metadata,last}; EAX late physical out; RET14h. Source-only unusedEDX binds fastcall stack shape."
+    }
+  ],
+  "calls": [
+    {
+      "address": "0048e413",
+      "native": "00bf6713",
+      "owner": "0048e400",
+      "Source_operand_offset": 20,
+      "Source_symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+    },
+    {
+      "address": "0048e42a",
+      "native": "00486850",
+      "owner": "0048e400",
+      "Source_operand_offset": 43,
+      "Source_symbol": "?copy_native_traffic_pod18_dispatch_00486850@bsp@@YAPAXPBX0PAX@Z"
+    },
+    {
+      "address": "00489123",
+      "native": "00bf6713",
+      "owner": "00489110",
+      "Source_operand_offset": 20,
+      "Source_symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+    },
+    {
+      "address": "0048914f",
+      "native": "00bf67a7",
+      "owner": "00489110",
+      "Source_operand_offset": 64,
+      "Source_symbol": "?move_traffic_erase_words@?A0xf5f448ad@bsp@@YAHPAXIPBXI@Z"
+    }
+  ],
+  "incoming_calls": [
+    {
+      "address": "00495c6c",
+      "native": "0048e400",
+      "owner": "00495ba0"
+    },
+    {
+      "address": "00495d24",
+      "native": "00489110",
+      "owner": "00495c80"
+    }
+  ],
+  "supporting_Native_calls": [
+    {
+      "address": "0048687e",
+      "native": "0047fc30",
+      "owner": "00486850",
+      "Source_symbol": "?copy_native_traffic_pod18_0047fc30@bsp@@YAPAXPBX0PAXIII@Z"
+    },
+    {
+      "address": "0048d314",
+      "native": "00486be0",
+      "owner": "0048d2f0",
+      "Source_symbol": "?fill_n_uninitialized_native_traffic_pod18_00486be0@bsp@@YIXPAXIPBXIII@Z"
+    },
+    {
+      "address": "00bf671a",
+      "native": "00bf66ef",
+      "owner": "00bf6713",
+      "qualification": "Native supporting body evidence; SDK policy does not reproduce private Native targets"
+    },
+    {
+      "address": "00bf67ba",
+      "native": "00bffb8b",
+      "owner": "00bf67a7",
+      "qualification": "Native supporting body evidence; SDK policy does not reproduce private Native targets"
+    },
+    {
+      "address": "00bf67c9",
+      "native": "00bf66ef",
+      "owner": "00bf67a7",
+      "qualification": "Native supporting body evidence; SDK policy does not reproduce private Native targets"
+    },
+    {
+      "address": "00bf67df",
+      "native": "00bffb8b",
+      "owner": "00bf67a7",
+      "qualification": "Native supporting body evidence; SDK policy does not reproduce private Native targets"
+    },
+    {
+      "address": "00bf67f4",
+      "native": "00bf87e0",
+      "owner": "00bf67a7",
+      "qualification": "Native supporting body evidence; SDK policy does not reproduce private Native targets"
+    },
+    {
+      "address": "00489003",
+      "native": "00bf6713",
+      "owner": "00488ff0",
+      "qualification": "Native supporting body evidence; SDK policy does not reproduce private Native targets"
+    },
+    {
+      "address": "0048902f",
+      "native": "00bf67a7",
+      "owner": "00488ff0",
+      "qualification": "Native supporting body evidence; SDK policy does not reproduce private Native targets"
+    }
+  ],
+  "evidence": {
+    "physical_schedule": "EntryS: pushEBX(POD)/EBP(DWORD), cache first metadata from actualS+8 before other pushes; TEST flags survive PUSH ESI/EDI and MOV EDI,ECX. Captured first!=0 AND captured first==CURRENT actualS+10h permits continuation, otherwise genuine returning diagnostic. Receiver is not compared to metadata. AFTER diagnostic load first fromS+Ch and last fromS+14h. Equal positions skip all header+8 read/copy/publication. Unequal positions read current header end. After child/newend publication, load actualCURRENT out fromS+4; POP EDI, storeout+4=capturedfirst, POP ESI, storeout+0=cachedmetadata, POP EBX/EBP, RET14h. Actual output/argument/saved/header/data cells may alias; no snapshot/guard/rollback/reordering.",
+    "POD18": "Whole68B28. Push destination(first), currentheaderend(last), capturedlast(first), call actual public cdecl48685086B35, ADD ESP0Ch, publish actualchildEAX. Dispatch reserves two uninitialized private DWORDs, clears ONLY each low byte, forwards SIX actual cells {first,last,destination,duplicateDestination,tag0,tag1} to actual47FC3077B30, ADD ESP18h. Kernel consumes firstthree, copies each of six words through FLD/FSTP32 in exact order per24B record until endpoint equality, with DWORD wrapping and no null/alignment/range/FP repair. Equal child endpoints skip pointed access, but dispatch still recomputes end with signed /24 magic2AAAAAAB product/SAR/sign correction/wrapped LEA multiply24. Do not substitute incidental cursor, integer copy, memmove or zeroed tags.",
+    "DWORD": "Whole90B37. For unequal first/last: wrapped(end-last), SAR2 signedcount, TEST; LEA count*4 retains flags; pushEBX, capture newend inEBX before copy; JLE skipscopy when count<=0 but still publishes wrappednewend. Positive count pushes {bytes,last,bytes,first}, invokes genuine four-argument SDK cdecl bridge, ADD ESP10h; ignores integererror and publishes capturednewend evenaftererrorreturn. Lateout load follows publication. Count0 unequal publishesfirst; equalpositions alone skip publication.",
+    "SDK": "Actual selected corecrt_memcpy_s.h:69..87 defines four-argument inline memmove_s. count0 returns0; validate destination, source, capacity; actual errno and returning _invalid_parameter_noinfo on errors; otherwise actual memmove. New local94B bridge and94B COMDAT each entirely retained with all five real relocations, equal complete code/relocations to actual old P SDK implementations. H bridge IATs checked against PE import table; memmove E8 goes to real FF25 thunk to VCRUNTIME140.dll memmove. errno/noinfo/handler APIs import from actual api-ms-win-crt-runtime. Existing BF67A7 Host abstraction is NOT used. Current diagnostic17B9 uses actual zero-arg returning declaration and five unused padding words, not five semantic arguments.",
+    "providers": "Entire actual POD18 object390B/six sections/157instructions matches all390Native bytes except two true CALL operands, real47FC30/486BE0 bindings. Needed dispatch/kernel163B65; other227B92 fully accounted. Entire actual diagnostic17B. Existing P278B is baseline comparison, not H callee. All three actual supporting objects685B unchanged whole raw bytes from pre-H. Whole new module346B plus supporting685B retained with every non-code section/symbol/relocation; four unique actual archive members and both MS linker directories uniquely bind ten public symbols. Only H/diagnostic/POD18 are selected H fixture archive modules.",
+    "linked": {
+      "code_contributions": 12,
+      "whole_code_bytes": 1471,
+      "retained_unselected_code_sections": 16,
+      "retained_unselected_code_bytes": 721,
+      "selected_DATA_sections": 5,
+      "whole_DATA_bytes": 331,
+      "selected_BSS_sections": 2,
+      "whole_BSS_bytes": 12,
+      "whole_selected_CODE_relocations": 45,
+      "whole_selected_DATA_relocations": 0,
+      "all_actual_selected_bytes_and_operands_equal_PE": true,
+      "whole_Golden90_present_in_PE_before_rebinding": true
+    },
+    "callers": "495BA0 whole216B91, oneHcall495C6C: oldendEDI captured before diagnostics, currentbegin written into actual second by-value POD18 cellR+Ch, out=R+8 actual first by-value cell; fivepushes/RET14H and parentRET1Ch. 495C80 whole179B78, oneHcall495D24: reserves uninitialized8B tempR-8/R-4, oldendEBP captured before diagnostics, currentbegin seeds onlytempword1, out=R-8; HRET14h, callerADD ESP8/RET8. Both whole caller setups/final restores captured; not executed or closed.",
+    "fixture": {
+      "cases": 1,
+      "compile_run_attempts": 2,
+      "first_attempt": "observer-order failure retained; Source unchanged",
+      "final": "PASS Source+capturedNative90",
+      "provider_provenance": "actual Core archive only, embedded manifest; Sourcepublic90 actualE8 operands20/64 resolve real diagnostic/internal SDK bridge; captured90 rebinds only those two actualtargets. Other public68 entry/realPODchildren statically linked via a nonexecuting address anchor. Real selected SDK thread-local handler installed/restored, no provider stub or substituted event callback.",
+      "actual_cells": "Q=before five pushes, S=Q-24; header=S-4=Q-28; header.end=S+4=Q-20 is actualoutarg. Firstmetadata cached0. Handler observes out11223344/firstmeta0/first11111111/secondmeta13579BDF/last22222222; mutates actual first/secondmetadataAABBCCDD, actualfirst=S+8=Q-16, actuallast11223348. Actualend11223344 minuslast givesSAR-1, bytesFFFFFFFC, newend=first-4=S+4. Publication rewrites actualoutarg to itsownaddress; lateoutEAX=S+4. Output+4 writes actualfirstmetacell=S+8; output+0 writes cached0 into actualoutarg/header.end, so finalheader.end=0 after output alias, not the intermediate publishedpointer. EAXQ-20, actualfirstQ-16, ECXFFFFFFFC, EDX11223348, RET14 ESPdelta0, flags286 observed.",
+      "scope": "Only one DWORD negative/nonpositive path and real returning diagnostic, no POD18/x87/positive-error-copy runtime inference.",
+      "output": "One actual argument/header alias case, signed suffix-1: Source=PASS captured-Native90=PASS\nhandler=1 preimages=1 eax_delta=-20 out0=00000000 out1_delta=-16 first_delta=-16 last=11223348 metadata=aabbccdd ecx=fffffffc edx=11223348 esp_delta=0 flags=00000286\nhandler=1 preimages=1 eax_delta=-20 out0=00000000 out1_delta=-16 first_delta=-16 last=11223348 metadata=aabbccdd ecx=fffffffc edx=11223348 esp_delta=0 flags=00000286\n"
+    },
+    "build": {
+      "start_utc": "2026-10-16T07:08:14.8863133Z",
+      "end_utc": "2026-10-16T07:08:32.7696921Z",
+      "elapsed_seconds": 17.8806058,
+      "result": "PASS",
+      "command": "./scripts/build.ps1",
+      "invocations": 1,
+      "strict": "One C++17 /MD /O2 /Gy /Oy- /W4 /WX /fp:strict /EHsc compilation PASS first attempt; whole346B own exec code identical to registered.",
+      "registered": "One scripts/build.ps1 normal warm invocation PASS; existing reconstructed_math0.21s/tool_tests7.35s. No new registered tests; worker Native reference seeds not enabled, Root3checks separate.",
+      "fixture": "One focused case, two probe compile/run attempts solely for observer repair; no Source/build rerun."
+    },
+    "timing": {
+      "implementation_start_utc": "2026-10-16T07:02:09Z",
+      "implementation_end": "final ignored receipt records through commit/release/sealing",
+      "independent_readiness_sealed_clock": {
+        "start_utc_floor": "2026-10-16T06:34:55+00:00",
+        "sealed_utc": "2026-10-16T06:47:54.880554+00:00",
+        "elapsed_seconds_including_setup_screening_corrections_provider_proof_docs_hashes": 779.880554,
+        "precision": "First tool UTC clock floored to second. Release/final-message overhead reported separately to Root.",
+        "build_test_probe_seconds": 0
+      },
+      "Root_reported_readiness_including_terminal_overhead_seconds": 792,
+      "not_added_into_throughput": "Readiness overlaps prior F author work. Separate readiness and implementation intervals retained; no sum as serial hourly throughput."
+    },
+    "preservation": "Before H writes/build, all391 F receipt artifacts/all395 F files and six actual prior registered inputs preserved; exact Fpin a123c8557d373cf743312a8d876de04821dc0723. All F/Z originals unchanged. Entire79-artifact H readiness directory frozen with exact handoff/readiness/receipt hashes.",
+    "Ghidra": "Fresh target-verified14 whole typed bodies1176B live=installed; old prototypes/names/comments saved; author no Ghidra/metadata writes or Main merge."
+  },
+  "corrections": [
+    {
+      "was": "First fixture observer PUSHFD overwrote the retired last-argument cell before recording it; Source and captured90 both failed only that observation",
+      "is": "Record all actual retired cells with MOV before PUSHFD; same one case passes. No Source/strict/registered build changes or reruns",
+      "evidence": "rejected_observer_order retains entire first probe Source/object/EXE/map/output/provider-library proof; final first/last/metadata/output/flags fields are all checked"
+    }
+  ],
+  "limits": [
+    "Owned whole Native158B/65 instructions map entire public Source158B/65 except four true E8 operands; entire new Source object346 executable B includes genuine SDK bridge94 and SDK COMDAT94. Not a158B prefix claim.",
+    "Source interfaces are chosen MSVC Win32 raw-storage envelopes; unused EDX is Source-only, never an Original input. No Original class/template/declaration or semantic metadata/owner type is recovered.",
+    "Source code/return/fault addresses, private child/SDK stack frames and saved x87 FIP follow actual Source placement. Return/child-frame/header/data aliases may observe them; no universal raw-state, Original fault/unwind or full physical ABI identity.",
+    "Genuine current SDK _invalid_parameter_noinfo/errno/memmove_s/memmove policy, not Original BF66EF/BFFB8B/BF87E0 private CRT, debugger/Watson/FH3/RTTI identity or C++ exception propagation through naked parents.",
+    "Only one DWORD negative-suffix/returning-handler/actual argument/header alias case executes, Source plus full captured90. POD18 parent/x87 copy, equal endpoints, zero suffix, positive/error SDK copies, other malformed/FP/control-mode/fault/EH paths and actual complete parent callers are unexecuted.",
+    "POD18 literal x87 FLD/FSTP32 word order and inherited environment are statically exact; no invented unexecuted NaN/denormal/control/status/lower-stack runtime results or whole-byte memcpy semantics.",
+    "Whole resize parents495BA0/495C80 remain OPEN on actual4932E0/4935B0 and their distinct unresolved failure/copy/fill/EH dependencies. T/X/R/Z analogous entries are different targets. LegacyLeft8bHost methods, larger physical parents and global/layout producers do not become complete physical providers or game adoption."
+  ],
+  "game_validation": false
+}

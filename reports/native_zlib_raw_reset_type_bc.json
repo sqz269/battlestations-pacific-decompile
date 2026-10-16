@@ -1,0 +1,2045 @@
+{
+  "goal": "GOAL16N",
+  "packet": "zlib_bc_raw_reset_type",
+  "status": "reconstructed_registered_win32_whole_body_coff_verified_pending_primary_review",
+  "source": "src/native_zlib_raw_reset_type_bc.cpp",
+  "header": "include/bsp/native_zlib_raw_reset_type_bc.hpp",
+  "source_sha256": "4c94ea5b88a5ef6b3f67e60ceaa4b45b534970fb00fadcdd76f6540fde5598ca",
+  "header_sha256": "2184ae387bbf5c6adee67b01fe5d952f74336467f3900fa8ac5c5e5336f86fb0",
+  "whole_source_functions": 2,
+  "whole_source_executable_bytes": 201,
+  "exact_native_whole_functions": 2,
+  "exact_native_whole_instructions": 65,
+  "entries": [
+    {
+      "address": "00bc9650",
+      "native_name": "inflateReset",
+      "native_body_end_inclusive": "00bc9694",
+      "native_body_bytes": "33d23bca74398b411c3bc274328950188951148951088951188d8828050000891089500489500c89502089502489503089503489486489484889484433c0c3b8feffffffc3",
+      "native_body_size": 69,
+      "native_instruction_count": 25,
+      "native_instructions": [
+        {
+          "address": "00bc9650",
+          "mnemonic": "xor",
+          "operands": "edx, edx",
+          "size": 2
+        },
+        {
+          "address": "00bc9652",
+          "mnemonic": "cmp",
+          "operands": "ecx, edx",
+          "size": 2
+        },
+        {
+          "address": "00bc9654",
+          "mnemonic": "je",
+          "operands": "0xbc968f",
+          "size": 2
+        },
+        {
+          "address": "00bc9656",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x1c]",
+          "size": 3
+        },
+        {
+          "address": "00bc9659",
+          "mnemonic": "cmp",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bc965b",
+          "mnemonic": "je",
+          "operands": "0xbc968f",
+          "size": 2
+        },
+        {
+          "address": "00bc965d",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0x18], edx",
+          "size": 3
+        },
+        {
+          "address": "00bc9660",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 0x14], edx",
+          "size": 3
+        },
+        {
+          "address": "00bc9663",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 8], edx",
+          "size": 3
+        },
+        {
+          "address": "00bc9666",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 0x18], edx",
+          "size": 3
+        },
+        {
+          "address": "00bc9669",
+          "mnemonic": "lea",
+          "operands": "ecx, [eax + 0x528]",
+          "size": 6
+        },
+        {
+          "address": "00bc966f",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax], edx",
+          "size": 2
+        },
+        {
+          "address": "00bc9671",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 4], edx",
+          "size": 3
+        },
+        {
+          "address": "00bc9674",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0xc], edx",
+          "size": 3
+        },
+        {
+          "address": "00bc9677",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0x20], edx",
+          "size": 3
+        },
+        {
+          "address": "00bc967a",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0x24], edx",
+          "size": 3
+        },
+        {
+          "address": "00bc967d",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0x30], edx",
+          "size": 3
+        },
+        {
+          "address": "00bc9680",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0x34], edx",
+          "size": 3
+        },
+        {
+          "address": "00bc9683",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0x64], ecx",
+          "size": 3
+        },
+        {
+          "address": "00bc9686",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0x48], ecx",
+          "size": 3
+        },
+        {
+          "address": "00bc9689",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0x44], ecx",
+          "size": 3
+        },
+        {
+          "address": "00bc968c",
+          "mnemonic": "xor",
+          "operands": "eax, eax",
+          "size": 2
+        },
+        {
+          "address": "00bc968e",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        },
+        {
+          "address": "00bc968f",
+          "mnemonic": "mov",
+          "operands": "eax, 0xfffffffe",
+          "size": 5
+        },
+        {
+          "address": "00bc9694",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00bcee90",
+      "native_name": "set_data_type",
+      "native_body_end_inclusive": "00bcef13",
+      "native_body_bytes": "0fb791a00000000fb781a400000003c20fb7919c00000003c20fb7919800000003c20fb7919400000003c20fb7919000000003c20fb7918c000000535633f65703c28d91a8000000bf790000008d49000fb71a03f383c20483ef0175f38d918c020000bf800000000fb71a03c383c20483ef0175f3c1ee023bc65f0f96c05e88411c5bc3",
+      "native_body_size": 132,
+      "native_instruction_count": 40,
+      "native_instructions": [
+        {
+          "address": "00bcee90",
+          "mnemonic": "movzx",
+          "operands": "edx, word ptr [ecx + 0xa0]",
+          "size": 7
+        },
+        {
+          "address": "00bcee97",
+          "mnemonic": "movzx",
+          "operands": "eax, word ptr [ecx + 0xa4]",
+          "size": 7
+        },
+        {
+          "address": "00bcee9e",
+          "mnemonic": "add",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bceea0",
+          "mnemonic": "movzx",
+          "operands": "edx, word ptr [ecx + 0x9c]",
+          "size": 7
+        },
+        {
+          "address": "00bceea7",
+          "mnemonic": "add",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bceea9",
+          "mnemonic": "movzx",
+          "operands": "edx, word ptr [ecx + 0x98]",
+          "size": 7
+        },
+        {
+          "address": "00bceeb0",
+          "mnemonic": "add",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bceeb2",
+          "mnemonic": "movzx",
+          "operands": "edx, word ptr [ecx + 0x94]",
+          "size": 7
+        },
+        {
+          "address": "00bceeb9",
+          "mnemonic": "add",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bceebb",
+          "mnemonic": "movzx",
+          "operands": "edx, word ptr [ecx + 0x90]",
+          "size": 7
+        },
+        {
+          "address": "00bceec2",
+          "mnemonic": "add",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bceec4",
+          "mnemonic": "movzx",
+          "operands": "edx, word ptr [ecx + 0x8c]",
+          "size": 7
+        },
+        {
+          "address": "00bceecb",
+          "mnemonic": "push",
+          "operands": "ebx",
+          "size": 1
+        },
+        {
+          "address": "00bceecc",
+          "mnemonic": "push",
+          "operands": "esi",
+          "size": 1
+        },
+        {
+          "address": "00bceecd",
+          "mnemonic": "xor",
+          "operands": "esi, esi",
+          "size": 2
+        },
+        {
+          "address": "00bceecf",
+          "mnemonic": "push",
+          "operands": "edi",
+          "size": 1
+        },
+        {
+          "address": "00bceed0",
+          "mnemonic": "add",
+          "operands": "eax, edx",
+          "size": 2
+        },
+        {
+          "address": "00bceed2",
+          "mnemonic": "lea",
+          "operands": "edx, [ecx + 0xa8]",
+          "size": 6
+        },
+        {
+          "address": "00bceed8",
+          "mnemonic": "mov",
+          "operands": "edi, 0x79",
+          "size": 5
+        },
+        {
+          "address": "00bceedd",
+          "mnemonic": "lea",
+          "operands": "ecx, [ecx]",
+          "size": 3
+        },
+        {
+          "address": "00bceee0",
+          "mnemonic": "movzx",
+          "operands": "ebx, word ptr [edx]",
+          "size": 3
+        },
+        {
+          "address": "00bceee3",
+          "mnemonic": "add",
+          "operands": "esi, ebx",
+          "size": 2
+        },
+        {
+          "address": "00bceee5",
+          "mnemonic": "add",
+          "operands": "edx, 4",
+          "size": 3
+        },
+        {
+          "address": "00bceee8",
+          "mnemonic": "sub",
+          "operands": "edi, 1",
+          "size": 3
+        },
+        {
+          "address": "00bceeeb",
+          "mnemonic": "jne",
+          "operands": "0xbceee0",
+          "size": 2
+        },
+        {
+          "address": "00bceeed",
+          "mnemonic": "lea",
+          "operands": "edx, [ecx + 0x28c]",
+          "size": 6
+        },
+        {
+          "address": "00bceef3",
+          "mnemonic": "mov",
+          "operands": "edi, 0x80",
+          "size": 5
+        },
+        {
+          "address": "00bceef8",
+          "mnemonic": "movzx",
+          "operands": "ebx, word ptr [edx]",
+          "size": 3
+        },
+        {
+          "address": "00bceefb",
+          "mnemonic": "add",
+          "operands": "eax, ebx",
+          "size": 2
+        },
+        {
+          "address": "00bceefd",
+          "mnemonic": "add",
+          "operands": "edx, 4",
+          "size": 3
+        },
+        {
+          "address": "00bcef00",
+          "mnemonic": "sub",
+          "operands": "edi, 1",
+          "size": 3
+        },
+        {
+          "address": "00bcef03",
+          "mnemonic": "jne",
+          "operands": "0xbceef8",
+          "size": 2
+        },
+        {
+          "address": "00bcef05",
+          "mnemonic": "shr",
+          "operands": "esi, 2",
+          "size": 3
+        },
+        {
+          "address": "00bcef08",
+          "mnemonic": "cmp",
+          "operands": "eax, esi",
+          "size": 2
+        },
+        {
+          "address": "00bcef0a",
+          "mnemonic": "pop",
+          "operands": "edi",
+          "size": 1
+        },
+        {
+          "address": "00bcef0b",
+          "mnemonic": "setbe",
+          "operands": "al",
+          "size": 3
+        },
+        {
+          "address": "00bcef0e",
+          "mnemonic": "pop",
+          "operands": "esi",
+          "size": 1
+        },
+        {
+          "address": "00bcef0f",
+          "mnemonic": "mov",
+          "operands": "byte ptr [ecx + 0x1c], al",
+          "size": 3
+        },
+        {
+          "address": "00bcef12",
+          "mnemonic": "pop",
+          "operands": "ebx",
+          "size": 1
+        },
+        {
+          "address": "00bcef13",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    }
+  ],
+  "original_abi_by_address": {
+    "00bc9650": "Only ECX is an actual input register; no stack argument reads; plain RET; EDX zeroed before tests. Formal fastcall/raw pointer/int32 return spelling is a new Source hypothesis, not recovered Original declaration. Success EAX=EDX=0, ECX=state+528h; final XOR flags CF/OF/SF=0,ZF/PF=1,AF undefined. Error EAX=-2, EDX=0, ECX original stream; last equal-to-zero CMP flags preserved. No x87/SIMD; inherited FP/FIP unchanged. No PUSH/POP; normal ESP+4.",
+    "00bcee90": "Only ECX backing is consumed as input; no actual stack arguments; plain RET; void Source result deliberately does not invent semantic EAX return. EBX/ESI/EDI saved after initial reads and restored from actual stack cells. ECX unchanged; EDX ends backing+48Ch modulo32; final flags are unsigned CMP bin versus ascii>>2 through POP/SETBE/MOV. EAX low8 replaced with0/1, upper24 retained, not a normalized whole-EAX bool. EBX/ESI/EDI POP actual cells; arbitrary store alias can affect later POP. No x87/SIMD, inherited FP/FIP unchanged; normal ESP+4."
+  },
+  "contracts_by_address": {
+    "00bc9650": {
+      "address": "00bc9650",
+      "Native_name": "inflateReset",
+      "Native_bytes": 69,
+      "Native_instructions": 25,
+      "status": "ready_for_separate_complete_physical_Source_implementation_and_actual_build_qualification",
+      "Source_interface": "extern \"C\" std::int32_t __fastcall bsp_native_zlib_raw_reset_00bc9650(void* stream_backing) noexcept;",
+      "physical_abi": "Only ECX is an actual input register; no stack argument reads; plain RET; EDX zeroed before tests. Formal fastcall/raw pointer/int32 return spelling is a new Source hypothesis, not recovered Original declaration.",
+      "operation": "Null ECX or null DWORD[ECX+1Ch] returns EAX=FFFFFFFEh. Success caches state pointer in EAX; write DWORD[state+18h]=0, DWORD[stream+14h]=0, DWORD[stream+8]=0, DWORD[stream+18h]=0; set ECX=state+528h modulo32 without reading that address; write DWORD[state+0,+4,+0Ch,+20h,+24h,+30h,+34h]=0 in that order; then DWORD[state+64h,+48h,+44h]=ECX in that order; XOR EAX,EAX returns0.",
+      "reads_stores_alias_faults": "Do not reload state after aliasing stores or gather zero writes into memcpy/memset. Preserve initial XOR EDX,EDX/CMP before first load, cached raw state, exact per-DWORD store order, pointer-value-only LEA, and flags/GPR prefix on each possible fault. No object extent or zlib struct ownership assumed; backing/actually reached cells supplied by caller.",
+      "register_flags_FP": "Success EAX=EDX=0, ECX=state+528h; final XOR flags CF/OF/SF=0,ZF/PF=1,AF undefined. Error EAX=-2, EDX=0, ECX original stream; last equal-to-zero CMP flags preserved. No x87/SIMD; inherited FP/FIP unchanged. No PUSH/POP; normal ESP+4.",
+      "dependencies": [],
+      "globals": [],
+      "callbacks": [],
+      "storage_owner": "caller-provided raw stream backing and its captured DWORD state-address value; no new global/provider/allocator or private class",
+      "known_callers": [
+        "00bbbe10 BSP_RawInflateStream_ResetDecoderAndCounters",
+        "00bc96a0 inflateInit2"
+      ],
+      "adoption": "Existing reconstructed stream code uses linked stock inflateReset; changing/adopting that caller is outside the proposed packet.",
+      "existing_Source": "Fetched inflate.c:103 and external _inflateReset in bsp_zlib121/inflate.obj exist, but whole actual section119B is cdecl with EBP stack argument and reorders state pointer stores before zero-field stores; Native69B uses ECX and different exact prefixes. Therefore no whole physical reuse binding.",
+      "implementation_gate": "Meaningful new C++ interfaces and genuine adapters are allowed. A complete literal MSVC Win32 body is a strong available path here, not a universal byte-identity policy. Qualify all whole Native/Source machine effects and any changed register/argument/stack/fault/flag behavior explicitly; prove whole strict17 + actual registered object and unique real Core provider/both dictionaries, normal build/existing checks. No Source-prefix clipping or unaccounted helper/adapter."
+    },
+    "00bcee90": {
+      "address": "00bcee90",
+      "Native_name": "set_data_type",
+      "Native_bytes": 132,
+      "Native_instructions": 40,
+      "status": "ready_for_separate_complete_physical_Source_implementation_and_actual_build_qualification",
+      "Source_interface": "extern \"C\" void __fastcall bsp_native_zlib_raw_type_00bcee90(void* state_backing) noexcept;",
+      "physical_abi": "Only ECX backing is consumed as input; no actual stack arguments; plain RET; void Source result deliberately does not invent semantic EAX return. EBX/ESI/EDI saved after initial reads and restored from actual stack cells.",
+      "operation": "Read unsigned WORDs at +A0h,+A4h,+9Ch,+98h,+94h,+90h,+8Ch in that exact order into bin sum. Sum121 unsigned WORDs from +A8h stepping4 into ascii; sum128 unsigned WORDs from +28Ch stepping4 into bin. SHR ascii2; unsigned CMP bin,ascii; SETBE AL; store exactly one BYTE[backing+1Ch]=AL (0 or1). EAX upper24 remain those of bin sum.",
+      "reads_stores_alias_faults": "Preserve initial seven read/add operations before PUSH EBX/PUSH ESI/XOR ESI/PUSH EDI and last initial add. Fixed loops read2-byte words, not snapshots or widened loads; exact scalar order, saved-cell faults/aliases, final POP/SETBE/POP/BYTE-store/POP schedule matter. No callback/global or typed private deflate-state class is required.",
+      "register_flags_FP": "ECX unchanged; EDX ends backing+48Ch modulo32; final flags are unsigned CMP bin versus ascii>>2 through POP/SETBE/MOV. EAX low8 replaced with0/1, upper24 retained, not a normalized whole-EAX bool. EBX/ESI/EDI POP actual cells; arbitrary store alias can affect later POP. No x87/SIMD, inherited FP/FIP unchanged; normal ESP+4.",
+      "all_bits": "All input WORD patterns admitted; bin at most135*65535 and ascii121*65535, so sums fit uint32, but emitted ADD/CMP/fault schedules still require proof. Address arithmetic remains wrapping32; every actually reached word/byte/stack/control cell must be admitted for ordinary completion.",
+      "dependencies": [],
+      "globals": [],
+      "callbacks": [],
+      "storage_owner": "caller-provided raw backing; field meanings descriptive only, not recovered Original layout/extent",
+      "known_callers": [
+        "00bcf720 _tr_flush_block"
+      ],
+      "adoption": "No parent compressor/caller adoption proposed.",
+      "existing_Source": "Fetched trees.c:1125 and private static _set_data_type in actual trees.obj exist, but234B actual cdecl body reads stack argument, pushes before initial data reads and uses caller argument slot for scratch. Native132B is ECX-bound; stock algorithm is not entire physical body reuse.",
+      "implementation_gate": "Same complete-effect, strict17/registered/Core/normal-build qualification gate as reset. Account for the entire132B/40-instruction Native body and full Source body including incidental EAX/flags, not merely numeric output. New genuine interfaces/adapters are allowed with their full effects and gaps disclosed; byte identity is not a universal project requirement."
+    }
+  },
+  "strict": {
+    "path": "local\\zlib_bc_raw_reset_type\\strict.obj",
+    "sha256": "666315a64312837851799d538f5273deb241ff1ef4c90dfd4ca89f07460ce653",
+    "machine": "IMAGE_FILE_MACHINE_I386",
+    "complete_sections": [
+      {
+        "index": 1,
+        "name": ".drectve",
+        "size": 47,
+        "raw_offset": 220,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1051136,
+        "bytes": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+        "relocation_entries": []
+      },
+      {
+        "index": 2,
+        "name": ".debug$S",
+        "size": 180,
+        "raw_offset": 267,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1108344896,
+        "bytes": "04000000f1000000a700000069000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d676f616c3136625f7461676765645f62355c6c6f63616c5c7a6c69625f62635f7261775f72657365745f747970655c7374726963742e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c65720000",
+        "relocation_entries": []
+      },
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "size": 69,
+        "raw_offset": 447,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "33d23bca74398b411c3bc274328950188951148951088951188d8828050000891089500489500c89502089502489503089503489486489484889484433c0c3b8feffffffc3",
+        "relocation_entries": []
+      },
+      {
+        "index": 4,
+        "name": ".text$mn",
+        "size": 132,
+        "raw_offset": 516,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "0fb791a00000000fb781a400000003c20fb7919c00000003c20fb7919800000003c20fb7919400000003c20fb7919000000003c20fb7918c000000535633f65703c28d91a8000000bf790000008d49000fb71a03f383c20483ef0175f38d918c020000bf800000000fb71a03c383c20483ef0175f3c1ee023bc65f0f96c05e88411c5bc3",
+        "relocation_entries": []
+      },
+      {
+        "index": 5,
+        "name": ".chks64",
+        "size": 40,
+        "raw_offset": 648,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 2560,
+        "bytes": "76f6abfb5648dec74682aa7a236fd0f27144660430f13189cfd169fd2420be580000000000000000",
+        "relocation_entries": []
+      }
+    ],
+    "complete_symbols": [
+      {
+        "index": 0,
+        "name": "@comp.id",
+        "offset": 17141140,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 1,
+        "name": "@feat.00",
+        "offset": 2147549585,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 2,
+        "name": ".drectve",
+        "offset": 0,
+        "section": 1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "2f0000000000000000000000000000000000"
+      },
+      {
+        "index": 4,
+        "name": ".debug$S",
+        "offset": 0,
+        "section": 2,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "b40000000000000000000000000000000000"
+      },
+      {
+        "index": 6,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 3,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "4500000000000000341d3631000001000000"
+      },
+      {
+        "index": 8,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 4,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "84000000000000003cebbd92000001000000"
+      },
+      {
+        "index": 10,
+        "name": "@bsp_native_zlib_raw_reset_00bc9650@4",
+        "offset": 0,
+        "section": 3,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 11,
+        "name": "@bsp_native_zlib_raw_type_00bcee90@4",
+        "offset": 0,
+        "section": 4,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 12,
+        "name": ".chks64",
+        "offset": 0,
+        "section": 5,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "280000000000000000000000000000000000"
+      }
+    ],
+    "symbol_table_offset": 688,
+    "symbol_table_entries_including_auxiliary": 14,
+    "symbol_table_sha256": "b6aa06571b414289b9a01b83b09ef05e04aaed3a6999f9a8b7c0a8ddf0596407",
+    "string_table_bytes": "4f000000406273705f6e61746976655f7a6c69625f7261775f72657365745f3030626339363530403400406273705f6e61746976655f7a6c69625f7261775f747970655f3030626365653930403400",
+    "functions": [
+      {
+        "address": "00bc9650",
+        "symbol": {
+          "index": 10,
+          "name": "@bsp_native_zlib_raw_reset_00bc9650@4",
+          "offset": 0,
+          "section": 3,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 3,
+        "whole_section_size": 69,
+        "whole_section_bytes": "33d23bca74398b411c3bc274328950188951148951088951188d8828050000891089500489500c89502089502489503089503489486489484889484433c0c3b8feffffffc3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "xor",
+            "operands": "edx, edx",
+            "size": 2
+          },
+          {
+            "offset": 2,
+            "mnemonic": "cmp",
+            "operands": "ecx, edx",
+            "size": 2
+          },
+          {
+            "offset": 4,
+            "mnemonic": "je",
+            "operands": "0x3f",
+            "size": 2
+          },
+          {
+            "offset": 6,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 0x1c]",
+            "size": 3
+          },
+          {
+            "offset": 9,
+            "mnemonic": "cmp",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 11,
+            "mnemonic": "je",
+            "operands": "0x3f",
+            "size": 2
+          },
+          {
+            "offset": 13,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x18], edx",
+            "size": 3
+          },
+          {
+            "offset": 16,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ecx + 0x14], edx",
+            "size": 3
+          },
+          {
+            "offset": 19,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ecx + 8], edx",
+            "size": 3
+          },
+          {
+            "offset": 22,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ecx + 0x18], edx",
+            "size": 3
+          },
+          {
+            "offset": 25,
+            "mnemonic": "lea",
+            "operands": "ecx, [eax + 0x528]",
+            "size": 6
+          },
+          {
+            "offset": 31,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax], edx",
+            "size": 2
+          },
+          {
+            "offset": 33,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 4], edx",
+            "size": 3
+          },
+          {
+            "offset": 36,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0xc], edx",
+            "size": 3
+          },
+          {
+            "offset": 39,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x20], edx",
+            "size": 3
+          },
+          {
+            "offset": 42,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x24], edx",
+            "size": 3
+          },
+          {
+            "offset": 45,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x30], edx",
+            "size": 3
+          },
+          {
+            "offset": 48,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x34], edx",
+            "size": 3
+          },
+          {
+            "offset": 51,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x64], ecx",
+            "size": 3
+          },
+          {
+            "offset": 54,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x48], ecx",
+            "size": 3
+          },
+          {
+            "offset": 57,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x44], ecx",
+            "size": 3
+          },
+          {
+            "offset": 60,
+            "mnemonic": "xor",
+            "operands": "eax, eax",
+            "size": 2
+          },
+          {
+            "offset": 62,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          },
+          {
+            "offset": 63,
+            "mnemonic": "mov",
+            "operands": "eax, 0xfffffffe",
+            "size": 5
+          },
+          {
+            "offset": 68,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00bcee90",
+        "symbol": {
+          "index": 11,
+          "name": "@bsp_native_zlib_raw_type_00bcee90@4",
+          "offset": 0,
+          "section": 4,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 4,
+        "whole_section_size": 132,
+        "whole_section_bytes": "0fb791a00000000fb781a400000003c20fb7919c00000003c20fb7919800000003c20fb7919400000003c20fb7919000000003c20fb7918c000000535633f65703c28d91a8000000bf790000008d49000fb71a03f383c20483ef0175f38d918c020000bf800000000fb71a03c383c20483ef0175f3c1ee023bc65f0f96c05e88411c5bc3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "movzx",
+            "operands": "edx, word ptr [ecx + 0xa0]",
+            "size": 7
+          },
+          {
+            "offset": 7,
+            "mnemonic": "movzx",
+            "operands": "eax, word ptr [ecx + 0xa4]",
+            "size": 7
+          },
+          {
+            "offset": 14,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 16,
+            "mnemonic": "movzx",
+            "operands": "edx, word ptr [ecx + 0x9c]",
+            "size": 7
+          },
+          {
+            "offset": 23,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 25,
+            "mnemonic": "movzx",
+            "operands": "edx, word ptr [ecx + 0x98]",
+            "size": 7
+          },
+          {
+            "offset": 32,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 34,
+            "mnemonic": "movzx",
+            "operands": "edx, word ptr [ecx + 0x94]",
+            "size": 7
+          },
+          {
+            "offset": 41,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 43,
+            "mnemonic": "movzx",
+            "operands": "edx, word ptr [ecx + 0x90]",
+            "size": 7
+          },
+          {
+            "offset": 50,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 52,
+            "mnemonic": "movzx",
+            "operands": "edx, word ptr [ecx + 0x8c]",
+            "size": 7
+          },
+          {
+            "offset": 59,
+            "mnemonic": "push",
+            "operands": "ebx",
+            "size": 1
+          },
+          {
+            "offset": 60,
+            "mnemonic": "push",
+            "operands": "esi",
+            "size": 1
+          },
+          {
+            "offset": 61,
+            "mnemonic": "xor",
+            "operands": "esi, esi",
+            "size": 2
+          },
+          {
+            "offset": 63,
+            "mnemonic": "push",
+            "operands": "edi",
+            "size": 1
+          },
+          {
+            "offset": 64,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 66,
+            "mnemonic": "lea",
+            "operands": "edx, [ecx + 0xa8]",
+            "size": 6
+          },
+          {
+            "offset": 72,
+            "mnemonic": "mov",
+            "operands": "edi, 0x79",
+            "size": 5
+          },
+          {
+            "offset": 77,
+            "mnemonic": "lea",
+            "operands": "ecx, [ecx]",
+            "size": 3
+          },
+          {
+            "offset": 80,
+            "mnemonic": "movzx",
+            "operands": "ebx, word ptr [edx]",
+            "size": 3
+          },
+          {
+            "offset": 83,
+            "mnemonic": "add",
+            "operands": "esi, ebx",
+            "size": 2
+          },
+          {
+            "offset": 85,
+            "mnemonic": "add",
+            "operands": "edx, 4",
+            "size": 3
+          },
+          {
+            "offset": 88,
+            "mnemonic": "sub",
+            "operands": "edi, 1",
+            "size": 3
+          },
+          {
+            "offset": 91,
+            "mnemonic": "jne",
+            "operands": "0x50",
+            "size": 2
+          },
+          {
+            "offset": 93,
+            "mnemonic": "lea",
+            "operands": "edx, [ecx + 0x28c]",
+            "size": 6
+          },
+          {
+            "offset": 99,
+            "mnemonic": "mov",
+            "operands": "edi, 0x80",
+            "size": 5
+          },
+          {
+            "offset": 104,
+            "mnemonic": "movzx",
+            "operands": "ebx, word ptr [edx]",
+            "size": 3
+          },
+          {
+            "offset": 107,
+            "mnemonic": "add",
+            "operands": "eax, ebx",
+            "size": 2
+          },
+          {
+            "offset": 109,
+            "mnemonic": "add",
+            "operands": "edx, 4",
+            "size": 3
+          },
+          {
+            "offset": 112,
+            "mnemonic": "sub",
+            "operands": "edi, 1",
+            "size": 3
+          },
+          {
+            "offset": 115,
+            "mnemonic": "jne",
+            "operands": "0x68",
+            "size": 2
+          },
+          {
+            "offset": 117,
+            "mnemonic": "shr",
+            "operands": "esi, 2",
+            "size": 3
+          },
+          {
+            "offset": 120,
+            "mnemonic": "cmp",
+            "operands": "eax, esi",
+            "size": 2
+          },
+          {
+            "offset": 122,
+            "mnemonic": "pop",
+            "operands": "edi",
+            "size": 1
+          },
+          {
+            "offset": 123,
+            "mnemonic": "setbe",
+            "operands": "al",
+            "size": 3
+          },
+          {
+            "offset": 126,
+            "mnemonic": "pop",
+            "operands": "esi",
+            "size": 1
+          },
+          {
+            "offset": 127,
+            "mnemonic": "mov",
+            "operands": "byte ptr [ecx + 0x1c], al",
+            "size": 3
+          },
+          {
+            "offset": 130,
+            "mnemonic": "pop",
+            "operands": "ebx",
+            "size": 1
+          },
+          {
+            "offset": 131,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      }
+    ],
+    "whole_executable_bytes": 201,
+    "nonempty_executable_sections": 2,
+    "executable_relocations": 0,
+    "total_relocations": 0,
+    "undefined_external_symbols": []
+  },
+  "registered": {
+    "path": "build\\win32\\bsp_core.dir\\Release\\native_zlib_raw_reset_type_bc.obj",
+    "sha256": "a58d72b3ffde08419e32b93c664d4da97724a889ee3ccda71f775f46ffa65a24",
+    "machine": "IMAGE_FILE_MACHINE_I386",
+    "complete_sections": [
+      {
+        "index": 1,
+        "name": ".drectve",
+        "size": 47,
+        "raw_offset": 220,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1051136,
+        "bytes": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+        "relocation_entries": []
+      },
+      {
+        "index": 2,
+        "name": ".debug$S",
+        "size": 208,
+        "raw_offset": 267,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1108344896,
+        "bytes": "04000000f1000000c200000084000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d676f616c3136625f7461676765645f62355c6275696c645c77696e33325c6273705f636f72652e6469725c52656c656173655c6e61746976655f7a6c69625f7261775f72657365745f747970655f62632e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c6572000000",
+        "relocation_entries": []
+      },
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "size": 69,
+        "raw_offset": 475,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "33d23bca74398b411c3bc274328950188951148951088951188d8828050000891089500489500c89502089502489503089503489486489484889484433c0c3b8feffffffc3",
+        "relocation_entries": []
+      },
+      {
+        "index": 4,
+        "name": ".text$mn",
+        "size": 132,
+        "raw_offset": 544,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "0fb791a00000000fb781a400000003c20fb7919c00000003c20fb7919800000003c20fb7919400000003c20fb7919000000003c20fb7918c000000535633f65703c28d91a8000000bf790000008d49000fb71a03f383c20483ef0175f38d918c020000bf800000000fb71a03c383c20483ef0175f3c1ee023bc65f0f96c05e88411c5bc3",
+        "relocation_entries": []
+      },
+      {
+        "index": 5,
+        "name": ".chks64",
+        "size": 40,
+        "raw_offset": 676,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 2560,
+        "bytes": "76f6abfb5648dec7ade8b3fd83411b0b7144660430f13189cfd169fd2420be580000000000000000",
+        "relocation_entries": []
+      }
+    ],
+    "complete_symbols": [
+      {
+        "index": 0,
+        "name": "@comp.id",
+        "offset": 17141140,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 1,
+        "name": "@feat.00",
+        "offset": 2147549585,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 2,
+        "name": ".drectve",
+        "offset": 0,
+        "section": 1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "2f0000000000000000000000000000000000"
+      },
+      {
+        "index": 4,
+        "name": ".debug$S",
+        "offset": 0,
+        "section": 2,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "d00000000000000000000000000000000000"
+      },
+      {
+        "index": 6,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 3,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "4500000000000000341d3631000001000000"
+      },
+      {
+        "index": 8,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 4,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "84000000000000003cebbd92000001000000"
+      },
+      {
+        "index": 10,
+        "name": "@bsp_native_zlib_raw_reset_00bc9650@4",
+        "offset": 0,
+        "section": 3,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 11,
+        "name": "@bsp_native_zlib_raw_type_00bcee90@4",
+        "offset": 0,
+        "section": 4,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 12,
+        "name": ".chks64",
+        "offset": 0,
+        "section": 5,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "280000000000000000000000000000000000"
+      }
+    ],
+    "symbol_table_offset": 716,
+    "symbol_table_entries_including_auxiliary": 14,
+    "symbol_table_sha256": "cb11fe0a08016b38a75b927ed9362be98c017f66acc3e8a099b6ac14da8b8758",
+    "string_table_bytes": "4f000000406273705f6e61746976655f7a6c69625f7261775f72657365745f3030626339363530403400406273705f6e61746976655f7a6c69625f7261775f747970655f3030626365653930403400",
+    "functions": [
+      {
+        "address": "00bc9650",
+        "symbol": {
+          "index": 10,
+          "name": "@bsp_native_zlib_raw_reset_00bc9650@4",
+          "offset": 0,
+          "section": 3,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 3,
+        "whole_section_size": 69,
+        "whole_section_bytes": "33d23bca74398b411c3bc274328950188951148951088951188d8828050000891089500489500c89502089502489503089503489486489484889484433c0c3b8feffffffc3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "xor",
+            "operands": "edx, edx",
+            "size": 2
+          },
+          {
+            "offset": 2,
+            "mnemonic": "cmp",
+            "operands": "ecx, edx",
+            "size": 2
+          },
+          {
+            "offset": 4,
+            "mnemonic": "je",
+            "operands": "0x3f",
+            "size": 2
+          },
+          {
+            "offset": 6,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 0x1c]",
+            "size": 3
+          },
+          {
+            "offset": 9,
+            "mnemonic": "cmp",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 11,
+            "mnemonic": "je",
+            "operands": "0x3f",
+            "size": 2
+          },
+          {
+            "offset": 13,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x18], edx",
+            "size": 3
+          },
+          {
+            "offset": 16,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ecx + 0x14], edx",
+            "size": 3
+          },
+          {
+            "offset": 19,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ecx + 8], edx",
+            "size": 3
+          },
+          {
+            "offset": 22,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ecx + 0x18], edx",
+            "size": 3
+          },
+          {
+            "offset": 25,
+            "mnemonic": "lea",
+            "operands": "ecx, [eax + 0x528]",
+            "size": 6
+          },
+          {
+            "offset": 31,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax], edx",
+            "size": 2
+          },
+          {
+            "offset": 33,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 4], edx",
+            "size": 3
+          },
+          {
+            "offset": 36,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0xc], edx",
+            "size": 3
+          },
+          {
+            "offset": 39,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x20], edx",
+            "size": 3
+          },
+          {
+            "offset": 42,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x24], edx",
+            "size": 3
+          },
+          {
+            "offset": 45,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x30], edx",
+            "size": 3
+          },
+          {
+            "offset": 48,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x34], edx",
+            "size": 3
+          },
+          {
+            "offset": 51,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x64], ecx",
+            "size": 3
+          },
+          {
+            "offset": 54,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x48], ecx",
+            "size": 3
+          },
+          {
+            "offset": 57,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x44], ecx",
+            "size": 3
+          },
+          {
+            "offset": 60,
+            "mnemonic": "xor",
+            "operands": "eax, eax",
+            "size": 2
+          },
+          {
+            "offset": 62,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          },
+          {
+            "offset": 63,
+            "mnemonic": "mov",
+            "operands": "eax, 0xfffffffe",
+            "size": 5
+          },
+          {
+            "offset": 68,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00bcee90",
+        "symbol": {
+          "index": 11,
+          "name": "@bsp_native_zlib_raw_type_00bcee90@4",
+          "offset": 0,
+          "section": 4,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 4,
+        "whole_section_size": 132,
+        "whole_section_bytes": "0fb791a00000000fb781a400000003c20fb7919c00000003c20fb7919800000003c20fb7919400000003c20fb7919000000003c20fb7918c000000535633f65703c28d91a8000000bf790000008d49000fb71a03f383c20483ef0175f38d918c020000bf800000000fb71a03c383c20483ef0175f3c1ee023bc65f0f96c05e88411c5bc3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "movzx",
+            "operands": "edx, word ptr [ecx + 0xa0]",
+            "size": 7
+          },
+          {
+            "offset": 7,
+            "mnemonic": "movzx",
+            "operands": "eax, word ptr [ecx + 0xa4]",
+            "size": 7
+          },
+          {
+            "offset": 14,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 16,
+            "mnemonic": "movzx",
+            "operands": "edx, word ptr [ecx + 0x9c]",
+            "size": 7
+          },
+          {
+            "offset": 23,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 25,
+            "mnemonic": "movzx",
+            "operands": "edx, word ptr [ecx + 0x98]",
+            "size": 7
+          },
+          {
+            "offset": 32,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 34,
+            "mnemonic": "movzx",
+            "operands": "edx, word ptr [ecx + 0x94]",
+            "size": 7
+          },
+          {
+            "offset": 41,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 43,
+            "mnemonic": "movzx",
+            "operands": "edx, word ptr [ecx + 0x90]",
+            "size": 7
+          },
+          {
+            "offset": 50,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 52,
+            "mnemonic": "movzx",
+            "operands": "edx, word ptr [ecx + 0x8c]",
+            "size": 7
+          },
+          {
+            "offset": 59,
+            "mnemonic": "push",
+            "operands": "ebx",
+            "size": 1
+          },
+          {
+            "offset": 60,
+            "mnemonic": "push",
+            "operands": "esi",
+            "size": 1
+          },
+          {
+            "offset": 61,
+            "mnemonic": "xor",
+            "operands": "esi, esi",
+            "size": 2
+          },
+          {
+            "offset": 63,
+            "mnemonic": "push",
+            "operands": "edi",
+            "size": 1
+          },
+          {
+            "offset": 64,
+            "mnemonic": "add",
+            "operands": "eax, edx",
+            "size": 2
+          },
+          {
+            "offset": 66,
+            "mnemonic": "lea",
+            "operands": "edx, [ecx + 0xa8]",
+            "size": 6
+          },
+          {
+            "offset": 72,
+            "mnemonic": "mov",
+            "operands": "edi, 0x79",
+            "size": 5
+          },
+          {
+            "offset": 77,
+            "mnemonic": "lea",
+            "operands": "ecx, [ecx]",
+            "size": 3
+          },
+          {
+            "offset": 80,
+            "mnemonic": "movzx",
+            "operands": "ebx, word ptr [edx]",
+            "size": 3
+          },
+          {
+            "offset": 83,
+            "mnemonic": "add",
+            "operands": "esi, ebx",
+            "size": 2
+          },
+          {
+            "offset": 85,
+            "mnemonic": "add",
+            "operands": "edx, 4",
+            "size": 3
+          },
+          {
+            "offset": 88,
+            "mnemonic": "sub",
+            "operands": "edi, 1",
+            "size": 3
+          },
+          {
+            "offset": 91,
+            "mnemonic": "jne",
+            "operands": "0x50",
+            "size": 2
+          },
+          {
+            "offset": 93,
+            "mnemonic": "lea",
+            "operands": "edx, [ecx + 0x28c]",
+            "size": 6
+          },
+          {
+            "offset": 99,
+            "mnemonic": "mov",
+            "operands": "edi, 0x80",
+            "size": 5
+          },
+          {
+            "offset": 104,
+            "mnemonic": "movzx",
+            "operands": "ebx, word ptr [edx]",
+            "size": 3
+          },
+          {
+            "offset": 107,
+            "mnemonic": "add",
+            "operands": "eax, ebx",
+            "size": 2
+          },
+          {
+            "offset": 109,
+            "mnemonic": "add",
+            "operands": "edx, 4",
+            "size": 3
+          },
+          {
+            "offset": 112,
+            "mnemonic": "sub",
+            "operands": "edi, 1",
+            "size": 3
+          },
+          {
+            "offset": 115,
+            "mnemonic": "jne",
+            "operands": "0x68",
+            "size": 2
+          },
+          {
+            "offset": 117,
+            "mnemonic": "shr",
+            "operands": "esi, 2",
+            "size": 3
+          },
+          {
+            "offset": 120,
+            "mnemonic": "cmp",
+            "operands": "eax, esi",
+            "size": 2
+          },
+          {
+            "offset": 122,
+            "mnemonic": "pop",
+            "operands": "edi",
+            "size": 1
+          },
+          {
+            "offset": 123,
+            "mnemonic": "setbe",
+            "operands": "al",
+            "size": 3
+          },
+          {
+            "offset": 126,
+            "mnemonic": "pop",
+            "operands": "esi",
+            "size": 1
+          },
+          {
+            "offset": 127,
+            "mnemonic": "mov",
+            "operands": "byte ptr [ecx + 0x1c], al",
+            "size": 3
+          },
+          {
+            "offset": 130,
+            "mnemonic": "pop",
+            "operands": "ebx",
+            "size": 1
+          },
+          {
+            "offset": 131,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      }
+    ],
+    "whole_executable_bytes": 201,
+    "nonempty_executable_sections": 2,
+    "executable_relocations": 0,
+    "total_relocations": 0,
+    "undefined_external_symbols": []
+  },
+  "actual_registered_target": {
+    "project_path": "build\\win32\\bsp_core.vcxproj",
+    "project_sha256": "35fb651096aafaec091012b1709904a0e4a935f237e7dae5fafa70f142488c80",
+    "LanguageStandard_values": [
+      "stdcpp17",
+      "stdcpp17",
+      "stdcpp17",
+      "stdcpp17"
+    ],
+    "configuration": "Release|Win32"
+  },
+  "archive": {
+    "path": "build\\win32\\Release\\bsp_core.lib",
+    "sha256": "53ada6c10d5dadba60a474f7d454a689495355108fa8120492dcbfb0436a75a2",
+    "member_name": "bsp_core.dir\\Release\\native_zlib_raw_reset_type_bc.obj",
+    "member_header_offset": 20071356,
+    "member_size": 1047,
+    "member_sha256": "a58d72b3ffde08419e32b93c664d4da97724a889ee3ccda71f775f46ffa65a24",
+    "unique_matches": 1,
+    "both_linker_dictionaries": [
+      {
+        "kind": "first_big_endian_symbol_dictionary",
+        "header_offset": 8,
+        "body_bytes": 10051280,
+        "body_sha256": "5b7289c8524057579bf11e4f40820c7c762853ec6b92a020d25e057a44121a50",
+        "symbol_count": 82598,
+        "all_offsets_resolve_real_archive_headers": true,
+        "selected": [
+          {
+            "symbol": "@bsp_native_zlib_raw_reset_00bc9650@4",
+            "dictionary_symbol_index": 0,
+            "real_member_header_offset": 20071356,
+            "real_member_name": "bsp_core.dir\\Release\\native_zlib_raw_reset_type_bc.obj",
+            "unique_symbol_occurrences": 1
+          },
+          {
+            "symbol": "@bsp_native_zlib_raw_type_00bcee90@4",
+            "dictionary_symbol_index": 1,
+            "real_member_header_offset": 20071356,
+            "real_member_name": "bsp_core.dir\\Release\\native_zlib_raw_reset_type_bc.obj",
+            "unique_symbol_occurrences": 1
+          }
+        ]
+      },
+      {
+        "kind": "second_little_endian_member_symbol_dictionary",
+        "header_offset": 10051348,
+        "body_bytes": 9895764,
+        "body_sha256": "95ee94bfb0e1b988bec10ae9af0e8b3ed7cc983a138c701ed1a720b641027acb",
+        "member_count": 2419,
+        "symbol_count": 82598,
+        "all_offsets_resolve_real_archive_headers": true,
+        "all_member_indexes_in_range": true,
+        "selected": [
+          {
+            "symbol": "@bsp_native_zlib_raw_reset_00bc9650@4",
+            "dictionary_symbol_index": 81675,
+            "one_based_member_index": 1,
+            "real_member_header_offset": 20071356,
+            "real_member_name": "bsp_core.dir\\Release\\native_zlib_raw_reset_type_bc.obj",
+            "unique_symbol_occurrences": 1
+          },
+          {
+            "symbol": "@bsp_native_zlib_raw_type_00bcee90@4",
+            "dictionary_symbol_index": 81676,
+            "one_based_member_index": 1,
+            "real_member_header_offset": 20071356,
+            "real_member_name": "bsp_core.dir\\Release\\native_zlib_raw_reset_type_bc.obj",
+            "unique_symbol_occurrences": 1
+          }
+        ]
+      }
+    ]
+  },
+  "all_executable_extents_accounted": true,
+  "all_code_symbol_offsets_zero": true,
+  "no_NativeSize_prefix_or_hidden_helper": true,
+  "code_relocations": 0,
+  "all_data_symbol_auxiliary_and_relocations_recorded": true,
+  "total_relocations": {
+    "strict": 0,
+    "registered": 0
+  },
+  "native_capture_target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "native_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "live_typed_ranges_complete_and_flow_NONE": true,
+  "Source_form": "Two meaningful ECX-only raw interfaces with literal readable MSVC32 instruction bodies. Literal schedule chosen before compilation to retain arbitrary backing/stack/return aliases, cache/load/store/flags/fault prefixes; not a universal byte-identity Source gate. Explicit8D4900 is measured three-byte LEA ECX,[ECX+0] padding, not a guessed operation. No helper adapter or fake private class/provider.",
+  "physical_qualifications": {
+    "reset": "Raw stream+1c state address cached once; nonzero tests precede ordered zero/stored-address writes; state+528 LEA does not dereference or impose object extent. Aliasing writes do not trigger state reload. Error EAX=-2,EDX0,ECX original, flags of last zero CMP; success EAX=EDX0,ECX=wrapped(state+528), final XOR flags. No hidden stack operations before plain RET.",
+    "type": "Read unsigned WORDs in exact Native schedule; seven loads before PUSH saves, last initial sum after PUSHs; text121 and other128 fixed finite scalar iterations, no snapshots/widened reads/early guards. Bin135*65535 and text121*65535 fit32bits for every WORD pattern; address additions wrap. CMP unsigned bin vs text>>2 drives SETBE AL, retains bin upper24EAX. EDX ends base+48c; ECX remains base. POP EDI/SETBE/POP ESI/BYTE[base+1c]/POP EBX is literal: normal callee-saved restoration can be modified by arbitrary backing/saved-cell alias, which is retained. Final flags stay CMP. No data-dependent nontermination; faults/control aliases may prevent normal return.",
+    "stack_fp_placement": "No consumed stack argument/EDX input. Plain RET uses actual current return cell. Raw type stack saves/reads/fault prefixes are retained; reset has none. No x87/SIMD/FIP changes. Code equality qualifies measured instruction effects, not identical Native/source mapped code or fault/return EIP addresses, Source/code aliases at Original absolute placement, Native SEH/runtime compatibility or Original full ABI."
+  },
+  "discovery": {
+    "author": "/root/b4_leaf_16a_review",
+    "handoff_sha256": "0d70e4ccecac5800ec29860892c79be9c6e85a559d0e5304dc23ee76a9342b17",
+    "report_sha256": "e3c10b6b596522cfede5d4c3082b2c2484d83e8cdca0a7887702511abc99a560",
+    "sealed_artifact_files": 124,
+    "sealed_artifact_bytes": 14765089,
+    "full_author_copy_files": 126,
+    "full_author_copy_bytes": 14799400,
+    "copy_provenance_sha256": "06b5c29b3a3a2a401104ddac400176343fbb52ff6a36e2ff890f484a2f506b07",
+    "screened_names": 21,
+    "whole_Native_inspected": 9,
+    "whole_Native_bytes": 927,
+    "whole_Native_instructions": 309,
+    "deferred_whole_functions": 7,
+    "deferred_whole_bytes": 726,
+    "uninspected_names": 12,
+    "exact_existing_Source_reuse_bindings": 0,
+    "new_selected_functions": 2,
+    "new_selected_Native_bytes": 201,
+    "stock_Source_coverage": {
+      "pinned_stock_archive_sha256": "94ded52040ee9dd1c70cc3b9f01da283803c28c1194a5a40659e8cf7545990e3",
+      "all_ten_C_units_topheaders_exact_tar_members": true,
+      "actual_target": "bsp_zlib121",
+      "actual_library_sha256": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7",
+      "actual_object_members": 10,
+      "public_functions_unique_both_dicts": 38,
+      "selected_public_APIs": 6,
+      "selected_private_static_helpers": 15,
+      "all21_named_current_Source_sections_different_Native_extent": true,
+      "Core_definitions_for_six_selected_public_APIs": 0,
+      "actual_consumer_link_projects": 10,
+      "Core_proof_input": "../goal16m_bd_source_reuse/frozen_Root/local/goal16h_root/final_proof/bsp_core.lib",
+      "Core_proof_input_sha256": "51c8ae3849ec480650be89b18e2a8b7044485a68612f21a8ee8c60151215a1b4"
+    },
+    "stock_Source_coverage_scope": "B4 sealed proof maps fetched zlib1.2.1 archive/tenCunits/tenobjects/separate bsp_zlib121.lib/38public functions in both dictionaries/consumer link chain at its explicit Root input pin. Two selected current Source sections119B/234B differ Native69B/132B, cdecl vsECX and ordered storage/stack effects. Correct library identity is retained but neither stock whole-API reuse nor Original callback/parent closure is promoted.",
+    "Original_fastcall_hypothesis": {
+      "status": "hypothesis_only",
+      "inference": "Original compilation with a default fastcall option such as MSVC /Gr could plausibly explain ECX-bound public functions and ECX/EDX callback call sites while the present stock target is cdecl. Explicit annotations or internal optimizer register promotion are other possibilities. No Original flags/toolchain/function-pointer typedef/version/layout are recovered from this observation; no experiments or rebuild performed.",
+      "primary_reference": "https://learn.microsoft.com/en-us/cpp/build/reference/gd-gr-gv-gz-calling-convention?view=msvc-170",
+      "reference_support": "Microsoft documents /Gr as selecting x86 fastcall except specified exclusions; this supports possibility, not a historical compiler-option identification."
+    },
+    "Original_version_layout_claim": false,
+    "readiness_qualification_read_before_code": true,
+    "current_Source_recheck": {
+      "sealed_whole_Source_coverage_read_before_code": "B4 Source_coverage/source_provider_proof/final handoff selected Source sections119B and234B and cdecl/stock link-chain qualifications; handed off at explicit immutable pins.",
+      "current_tracked_reference_recheck": [
+        {
+          "root": "J:\\PROG\\battlestations-pacific-decompile-goal16b_tagged_b5",
+          "ref": "HEAD",
+          "commit": "e6ccd941cca52e3634d6eb9e3ec046407bf82da7",
+          "stock_API_and_selected_address_Source_hits": [
+            "HEAD:src/native_raw_inflate_stream.cpp:37:    (void)inflateReset(static_cast<z_streamp>(pointer(owner, 0x28)));"
+          ]
+        },
+        {
+          "root": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator",
+          "ref": "HEAD",
+          "commit": "f833385d1024ae4d9c9c774724bb49a96978a43c",
+          "stock_API_and_selected_address_Source_hits": [
+            "HEAD:src/native_raw_inflate_stream.cpp:37:    (void)inflateReset(static_cast<z_streamp>(pointer(owner, 0x28)));"
+          ]
+        },
+        {
+          "root": "J:\\PROG\\battlestations-pacific-decompile",
+          "ref": "HEAD",
+          "commit": "4c0d4e967609dc18ed5c816b689288bf5d7ab859",
+          "stock_API_and_selected_address_Source_hits": [
+            "HEAD:src/native_raw_inflate_stream.cpp:37:    (void)inflateReset(static_cast<z_streamp>(pointer(owner, 0x28)));"
+          ]
+        },
+        {
+          "root": "J:\\PROG\\battlestations-pacific-decompile",
+          "ref": "origin/main",
+          "commit": "2f48232d4d90fd7dc781bff81682b2e8fe9ba2c0",
+          "stock_API_and_selected_address_Source_hits": [
+            "origin/main:src/native_raw_inflate_stream.cpp:37:    (void)inflateReset(static_cast<z_streamp>(pointer(owner, 0x28)));"
+          ]
+        }
+      ],
+      "qualification": "Only retained stock API use is present in pre-existing tracked Source; no prior selected raw ECX standalone body. This post-creation read-only recheck records current refs without rewriting earlier chronology; own new Source is untracked until commit and excluded from HEAD queries."
+    }
+  },
+  "path_absence_reverified_before_creation": [
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile-goal16b_tagged_b5",
+      "ref": "HEAD",
+      "commit": "e6ccd941cca52e3634d6eb9e3ec046407bf82da7",
+      "all_four_absent": true
+    },
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator",
+      "ref": "HEAD",
+      "commit": "3c898612367dfb009fc476ee48d0179640a48399",
+      "all_four_absent": true
+    },
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile",
+      "ref": "HEAD",
+      "commit": "4c0d4e967609dc18ed5c816b689288bf5d7ab859",
+      "all_four_absent": true
+    },
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile",
+      "ref": "origin/main",
+      "commit": "2f48232d4d90fd7dc781bff81682b2e8fe9ba2c0",
+      "all_four_absent": true
+    }
+  ],
+  "build": {
+    "started_utc": "2026-10-16T08:50:14.615092+00:00",
+    "completed_utc": "2026-10-16T08:50:33.440530+00:00",
+    "build_seconds": 18.82587160001276,
+    "exit_code": 0
+  },
+  "checks": {
+    "build_session": 73915,
+    "terminal_build_exit_code": 0,
+    "ctest_passed": 2,
+    "ctest_failed": 0,
+    "ctest_total_seconds": 7.99,
+    "names": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "new_tests": 0
+  },
+  "prior_provider_preservation": [
+    {
+      "packet": "16B",
+      "report": "reports/goal16b_tagged_leaf_b5_01.json",
+      "report_sha256": "38fbf9809c46003634c86c68db2bf3964fe69e1fb2ffe6ebb6ac4d9d65246ba6",
+      "source_header_pins_unchanged": true,
+      "unique_real_archive_members": 1,
+      "member_name": "bsp_core.dir\\Release\\native_tagged_leaf_b5_01.obj",
+      "member_header_offset": 35438148,
+      "member_size": 2236,
+      "member_sha256": "fe83ae50a82743c3a3914da44bff03f87d9f64c3085d4201e16d7574f689a54f",
+      "matches_prior_registered_actual_object": true,
+      "whole_source_functions": 7,
+      "whole_source_executable_bytes": 21
+    },
+    {
+      "packet": "16E",
+      "report": "reports/goal16e_tagged_leaf_b6_16e.json",
+      "report_sha256": "199b590225c514c44cee4e90cb33e40a604cd47b936e488fc6d722247940919a",
+      "source_header_pins_unchanged": true,
+      "unique_real_archive_members": 1,
+      "member_name": "bsp_core.dir\\Release\\native_tagged_leaf_b6_16e.obj",
+      "member_header_offset": 20078008,
+      "member_size": 1576,
+      "member_sha256": "7c6198ab8ddc07ba945b7cd507e3070e822431e369881f01a76fd97fa1668252",
+      "matches_prior_registered_actual_object": true,
+      "whole_source_functions": 4,
+      "whole_source_executable_bytes": 45
+    },
+    {
+      "packet": "16G",
+      "report": "reports/goal16g_tagged_leaf_b78.json",
+      "report_sha256": "3d1d9804c3224af48895f2d0f8787b0c09deabde39318aca3d5e7ca23e503d20",
+      "source_header_pins_unchanged": true,
+      "unique_real_archive_members": 1,
+      "member_name": "bsp_core.dir\\Release\\native_tagged_leaf_b78_16g.obj",
+      "member_header_offset": 20076030,
+      "member_size": 1917,
+      "member_sha256": "a8a6d5b6625fbe021d5a1a414ed9b97cdb0eb1969e18dfedcc31552c1cd9f48a",
+      "matches_prior_registered_actual_object": true,
+      "whole_source_functions": 7,
+      "whole_source_executable_bytes": 93
+    },
+    {
+      "packet": "16J",
+      "report": "reports/goal16j_tagged_sizes_bb.json",
+      "report_sha256": "d870089a7090b2427b467b9f0370776dc193362b7fef1731b6b4072887ab11a8",
+      "source_header_pins_unchanged": true,
+      "unique_real_archive_members": 1,
+      "member_name": "bsp_core.dir\\Release\\native_tagged_sizes_bb_16j.obj",
+      "member_header_offset": 20074570,
+      "member_size": 1400,
+      "member_sha256": "8a8596caf7f5293385e3e7a8ae393b57b3e570a24e8df77526a9cd7512162f27",
+      "matches_prior_registered_actual_object": true,
+      "whole_source_functions": 3,
+      "whole_source_executable_bytes": 93
+    },
+    {
+      "packet": "16K",
+      "report": "reports/goal16k_tagged_leaf_bcbd.json",
+      "report_sha256": "3e97ecef0a3c303b6e2da8a7e3b9b09475f62fb26dd7a2aa36aa656829bafbd6",
+      "source_header_pins_unchanged": true,
+      "unique_real_archive_members": 1,
+      "member_name": "bsp_core.dir\\Release\\native_tagged_leaf_bcbd_16k.obj",
+      "member_header_offset": 20072464,
+      "member_size": 2045,
+      "member_sha256": "33eec9ad9bd683513239a3031326839c90e135006bfac802c006fc88e9620acb",
+      "matches_prior_registered_actual_object": true,
+      "whole_source_functions": 6,
+      "whole_source_executable_bytes": 22
+    }
+  ],
+  "preservation": {
+    "provenance_path": "local/zlib_bc_raw_reset_type/frozen_prior/provenance.json",
+    "provenance_sha256": "d1ab853b4b69c9a5e97e16a2d7ad5a5c41458258d34780429df8c0ff539a9c8b",
+    "full_prior_files": 680,
+    "full_prior_bytes": 904355496,
+    "before_new_Source_compile_build": true,
+    "scope": "Full priorK/J/G/E/B5 local trees including nested freezes/readiness, current actual registered/strict objects and real Core/project/tlogs/Source/header/docs/reports/pre-N CMake. N full discovery separately copied with manifest before Source/build. Historical K current raw object remains unchanged."
+  },
+  "proposed_Root_Ghidra_annotations": [
+    {
+      "address": "00bc9650",
+      "retain_correct_library_name": "inflateReset",
+      "provisional_physical_prototype": "extern \"C\" std::int32_t __fastcall bsp_native_zlib_raw_reset_00bc9650(void* stream_backing) noexcept;",
+      "comment_proposal": "Null ECX or null DWORD[ECX+1Ch] returns EAX=FFFFFFFEh. Success caches state pointer in EAX; write DWORD[state+18h]=0, DWORD[stream+14h]=0, DWORD[stream+8]=0, DWORD[stream+18h]=0; set ECX=state+528h modulo32 without reading that address; write DWORD[state+0,+4,+0Ch,+20h,+24h,+30h,+34h]=0 in that order; then DWORD[state+64h,+48h,+44h]=ECX in that order; XOR EAX,EAX returns0. Do not reload state after aliasing stores or gather zero writes into memcpy/memset. Preserve initial XOR EDX,EDX/CMP before first load, cached raw state, exact per-DWORD store order, pointer-value-only LEA, and flags/GPR prefix on each possible fault. No object extent or zlib struct ownership assumed; backing/actually reached cells supplied by caller. Only ECX is an actual input register; no stack argument reads; plain RET; EDX zeroed before tests. Formal fastcall/raw pointer/int32 return spelling is a new Source hypothesis, not recovered Original declaration. Success EAX=EDX=0, ECX=state+528h; final XOR flags CF/OF/SF=0,ZF/PF=1,AF undefined. Error EAX=-2, EDX=0, ECX original stream; last equal-to-zero CMP flags preserved. No x87/SIMD; inherited FP/FIP unchanged. No PUSH/POP; normal ESP+4. Complete current strict17 and registered Win32 bodies/201B whole code, both archive dictionaries unique Core provider. Raw formal type/Original layout/version/default-fastcall option unresolved; no parent callbacks/API adoption or game validation.",
+      "apply": "Root only after independent review; save previous prototype/comment values, preserve correct library name."
+    },
+    {
+      "address": "00bcee90",
+      "retain_correct_library_name": "set_data_type",
+      "provisional_physical_prototype": "extern \"C\" void __fastcall bsp_native_zlib_raw_type_00bcee90(void* state_backing) noexcept;",
+      "comment_proposal": "Read unsigned WORDs at +A0h,+A4h,+9Ch,+98h,+94h,+90h,+8Ch in that exact order into bin sum. Sum121 unsigned WORDs from +A8h stepping4 into ascii; sum128 unsigned WORDs from +28Ch stepping4 into bin. SHR ascii2; unsigned CMP bin,ascii; SETBE AL; store exactly one BYTE[backing+1Ch]=AL (0 or1). EAX upper24 remain those of bin sum. Preserve initial seven read/add operations before PUSH EBX/PUSH ESI/XOR ESI/PUSH EDI and last initial add. Fixed loops read2-byte words, not snapshots or widened loads; exact scalar order, saved-cell faults/aliases, final POP/SETBE/POP/BYTE-store/POP schedule matter. No callback/global or typed private deflate-state class is required. Only ECX backing is consumed as input; no actual stack arguments; plain RET; void Source result deliberately does not invent semantic EAX return. EBX/ESI/EDI saved after initial reads and restored from actual stack cells. ECX unchanged; EDX ends backing+48Ch modulo32; final flags are unsigned CMP bin versus ascii>>2 through POP/SETBE/MOV. EAX low8 replaced with0/1, upper24 retained, not a normalized whole-EAX bool. EBX/ESI/EDI POP actual cells; arbitrary store alias can affect later POP. No x87/SIMD, inherited FP/FIP unchanged; normal ESP+4. Complete current strict17 and registered Win32 bodies/201B whole code, both archive dictionaries unique Core provider. Raw formal type/Original layout/version/default-fastcall option unresolved; no parent callbacks/API adoption or game validation.",
+      "apply": "Root only after independent review; save previous prototype/comment values, preserve correct library name."
+    }
+  ],
+  "correct_library_names_retained": [
+    "inflateReset",
+    "set_data_type"
+  ],
+  "new_tests": 0,
+  "no_Source_rejections_or_compiler_failures": true,
+  "ghidra_mutations": false,
+  "native_execution": false,
+  "game_validated": false,
+  "uncertainties": [
+    "New raw pointer/fastcall/int32/void Source spellings are meaningful interfaces, not recovered Original declarations or zlib private layouts/version. Literal observed offsets do not establish standard z_stream/deflate structure ownership.",
+    "Default-fastcall Original build is a hypothesis only; register optimization or explicit annotations remain possible. Existing stock callback cdecl/Native ECX+EDX differences and parent adoption are outside these call-free entry contracts.",
+    "Complete physical code effects are qualified for current MSVC32 artifact; mapping/code-address/fault EIP/Native SEH and runtime/game compatibility remain unproved. No backing canonical global, fake provider, stub or input-domain repair is introduced."
+  ],
+  "wall_clock": {
+    "first_discovery_clock_utc": "2026-10-16T08:20:15+00:00",
+    "discovery_seal_utc": "2026-10-16T08:37:52.870715+00:00",
+    "discovery_inclusive_seconds": 1057.870715,
+    "scheduling_administrative_gap_seconds": 436.129285,
+    "implementation_start_utc": "2026-10-16T08:45:09+00:00",
+    "report_checkpoint_utc": "2026-10-16T08:59:20.020917+00:00",
+    "implementation_seconds_through_report": 851.020917,
+    "full_inclusive_seconds_through_report": 2345.020917,
+    "warm_build_seconds_included": 18.82587160001276,
+    "includes": "Full B4 bounded discovery/Source/library/link-chain qualification and corrections, administrative/scheduling gap, author brief/lease/path checks, all full prior/N readiness copying/hashing, fresh Native bodies, instruction/alias/fault review, literal Source/strict compile, normal warm build/checks, full strict/actual extents/data/symbols/relocations/unique Core/both dictionaries, report/docs/name/function/index, commit/release and final handoff preparation. Final local receipt supplies complete author endpoint; peer review/integration afterwards separate.",
+    "final_handoff_artifact": "local/zlib_bc_raw_reset_type/final_handoff.json",
+    "speedup_claim": false
+  },
+  "evidence_artifact_sha256": {
+    "local\\zlib_bc_raw_reset_type\\archive_dicts.py": "f87609486b8e1ad20cf2a3b34ffd8f3024ea263a815f45db7272936c23859f39",
+    "local\\zlib_bc_raw_reset_type\\build.txt": "b03de56538430d62d9af31cde164e4683f10ae30757c680d5e172dd878acead0",
+    "local\\zlib_bc_raw_reset_type\\build_timing.json": "458857271088e666c311d80ddb90fb9695ef4d2bfdc0d26d6e3b6aa1e623db3b",
+    "local\\zlib_bc_raw_reset_type\\capture.py": "8f117ea0e93e9553aa7dc51d0409a56e3aca0ac85c3072cf6c772ef50a2319f5",
+    "local\\zlib_bc_raw_reset_type\\coff_proof.py": "30f5c73710866190f76e165eba71bc1f93fbf1093e85772057dab04d871be3eb",
+    "local\\zlib_bc_raw_reset_type\\compile_timing.json": "77d76eed5fb1db262ca3235896fec3cb5b887b330f0bd3e4fea695cefcca9ee6",
+    "local\\zlib_bc_raw_reset_type\\current_Source_coverage_recheck.json": "104ad14c44ac9397442bc865ce0d893a2f16abe9dade9ee8aa145bc90fb084a6",
+    "local\\zlib_bc_raw_reset_type\\discovery_B4_provenance.json": "06b5c29b3a3a2a401104ddac400176343fbb52ff6a36e2ff890f484a2f506b07",
+    "local\\zlib_bc_raw_reset_type\\ledger_log.txt": "ca2352c7df299c13e825cdec89898caa18ca539baa165e31f1bfe1de185f3955",
+    "local\\zlib_bc_raw_reset_type\\ledger_records.py": "2f80d3115e5a4caadd4e8dbf91ca95e2149ec30546de8bb3a10b989c3d578e34",
+    "local\\zlib_bc_raw_reset_type\\native_00bc9650.txt": "23c80229835eb3f244baa47d7b927d746c1ad6cd2556895a927b47e8b6bdf86e",
+    "local\\zlib_bc_raw_reset_type\\native_00bcee90.txt": "411947871a95c2ac2891ae5e0d789747d8ae278c39c485bf5fad713565b1aaff",
+    "local\\zlib_bc_raw_reset_type\\native_capture.json": "25cc22156ea476703b4030d9c8d850e215ccdd66d5438b3cd06a640ddefb3c06",
+    "local\\zlib_bc_raw_reset_type\\path_checks.json": "2a4834ff8fb43bf489d077610d8f5d1537354bfc3fb8acff237f64a6a5eb9c8b",
+    "local\\zlib_bc_raw_reset_type\\preserve_prior.py": "2b305aab8d88d75a0e95efb50ba72dda1b13cbe9cbdce3c2a1af12125dc57a6e",
+    "local\\zlib_bc_raw_reset_type\\run_build.py": "60dd4550218f62b229cc0a3148f66353506850c248df6357436705dddf481192",
+    "local\\zlib_bc_raw_reset_type\\strict.obj": "666315a64312837851799d538f5273deb241ff1ef4c90dfd4ca89f07460ce653",
+    "local\\zlib_bc_raw_reset_type\\strict_compile.cmd": "587005e5d3c0a10b4768d509341ce7df01b2f2799478397b409c6b04127b0e6b",
+    "local\\zlib_bc_raw_reset_type\\strict_compile.txt": "56478f7696a2f7c2f1b228c0384ce88ec8757a1854e91e56524b1dc0fa48c939",
+    "local\\zlib_bc_raw_reset_type\\strict_proof.json": "80fc65f13fc7f89277c7033a826e84946971b6dfea20200dbca2a8c281785ac7",
+    "local\\zlib_bc_raw_reset_type\\typed_flow.json": "ec1cd7e907da872b74254e0c14e5efcc11d5b7ab241021727952cc6c38095c6b",
+    "local\\zlib_bc_raw_reset_type\\typed_flow_cli.txt": "990efba9ebe6ce27c1d47a1849c8a3c7c14d45317bc5ff2b2b98ec093d31a569",
+    "local\\zlib_bc_raw_reset_type\\validate.py": "612e81b45d2d3a1835a40fe9e003878277f34d0d5d1f829b6bba2b8c68c506f6"
+  }
+}

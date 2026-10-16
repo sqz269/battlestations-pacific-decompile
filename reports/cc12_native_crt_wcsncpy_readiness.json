@@ -1,0 +1,64 @@
+{
+  "schema": "bsp.cc12.native_crt_wcsncpy.primary_readiness.v1",
+  "status": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
+  "worker_commit": "f634ee067ab98ac40da9f5d2cbfd5fefeb6b4643",
+  "Source_ready": true,
+  "Source_authorized": true,
+  "Source_credit": 1,
+  "whole_Original_static_evidence_accepted": true,
+  "Root_primary_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcsncpy_readiness_primary_20261016\\primary_specialist_inputs.DATA.json",
+    "bytes": 6350,
+    "sha256": "74e979e783f6033af6d745f6c6f46f1eedee6dbbb0af0b537e517e090476e5e7"
+  },
+  "canonical_doc": "docs/NATIVE_CRT_WCSNCPY_READINESS.md",
+  "canonical_report": "reports/native_crt_wcsncpy_readiness.json",
+  "qualification": "Readiness metadata only. No Source/compiler/build/ABI/caller/runtime/game credit. Frozen author and peer evidence preserved; later Root acceptance does not rewrite their point-in-time status.",
+  "source_ready": true,
+  "source_authorized": true,
+  "Source_implemented": true,
+  "Root_whole_Original_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcsncpy_readiness_primary_20261016\\primary_specialist_inputs.DATA.json",
+    "bytes": 6350,
+    "sha256": "74e979e783f6033af6d745f6c6f46f1eedee6dbbb0af0b537e517e090476e5e7"
+  },
+  "concrete_proposal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcsncpy_readiness_primary_20261016\\primary_proposal_inputs.DATA.json",
+    "bytes": 6779,
+    "sha256": "25d7987f61f787db3c9cde27f273adef00230dd7a36f8947552c333492d0febb"
+  },
+  "independent_proposal_peer": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcsncpy_readiness_primary_20261016\\primary_proposal_peer_inputs.DATA.json",
+    "bytes": 11021,
+    "sha256": "3825c45111296ee0b0998c6131684bfe6415a00801ca5d5da3e02a2157a95d12"
+  },
+  "frozen_proposal_factual_order_correction": "Frozenproposal incorrectly states SourceINCINC thenDestINCINC. ActualwholeOriginal8e50c9 is EDI destination+1,+1 atBF09/BF0A BEFORE EDX source+1,+1 atBF0B/BF0C. Preservefrozen14files; futurecanonicalgate/Source MUST use destination2 thenSource2. No payload access lies between those privatecursor advances and both sameallocation/nonwrap preconditions apply, so ordinary feasibility conclusion survives; no factualOriginalorder equivalence is claimed for erroneous text.",
+  "contract": [
+    "New default potentially throwing MSVCWin32 void* __cdecl bsp::copy_native_crt_wide_units_00bfaeef(void* actual_destination,const void* actual_source,unsigned int count). Target byte8/pointer32/unsigned32/littleendian; arbitrary unsignedWORD16 units, no Unicode/locale/ownership semantics. Correct Original libraryname _wcsncpy retained; descriptiveSource name a hypothesis.",
+    "Explicit supplied ordinary domain: incomingDF=0, ordinary flatDS/ES map the same live linear storage with compatible access rights. Those conditions are not recovered Original/caller entry facts. ExcludeDF1/unequalorNonflatsegments; do not silently CLD, repair, validate or bridge them.",
+    "Capture original destination value for return on every normal path. Count is unrestricted unsigned32, no INTMAX/signedcap/stringlength guard. Count0 performs no Source/dest payload read/write or cursor advance; ordinary null/unaddressed payload pointer values permitted. New by-value argument semantics do not claim Original skips sourcehome binding; native/new private argument-home protocols excluded.",
+    "Positivecount: read exactly one unsignedWORD16 through actualSource, then write that captured lowWORD to actualDestination; no prefetch, widerread, source snapshot, restrict/nonoverlap or SDK copy contract. Advance DESTINATION bytecursor +1 then+1 FIRST, then SOURCE bytecursor+1 then+1, including terminalnonzero/copiedzero, then test capturedWORD forzero. This corrects sealedAstra14 Source-first prose/pseudocode; preserve its immutable evidence, do not claim erroneous literalorder correct.",
+    "For capturednonzero decrement unsignedremaining once and continue onlyifremaining nonzero; count exhaustion performs no extraSource read. For copiedzero decrement remaining once to r=count-c where c includeszero; r0 returns. Padding performs q=r>>1 exact sequential forwardDWORDzero stores, eachfollowedby4byteDestadvance, then t=r&1 exactWORDzero store if1 followedby2byteDestadvance. q0 suppressesDWORDaccess; padding neverreadsSource. No WORDfill/memset substitution, split/coalesced stores, or extra unusedNUL reads.",
+    "Actualoverlap/self-inducedlaterSource changes incloddbyteoffsets/identity are admitted. Every reached WORDread needs2genuine live determinate readable bytes; every reached WORD/DWORDwrite needs2/4genuine live writable ordinary bytes. Rawunaligned/interior/callerstack permitted, no fakewchar/uint16/uint32typedobject lifetime or alignment assumption. Each actualbyteadvance nonwrapping withinoronepast sameactualallocation, even terminaldeadcursor advances; no onepastaccess or inventedunusedpadding/SourceNUL extent.",
+    "Exclude Original/new calleeprivateframe/argumenthome/savedreg/return/control/scratch/privateprimitive input-outputblock/selfmodifying aliases. Ordinary callerstack buffers elsewhere remain admitted. Exclude faults/partialprogress observation/MMIO/externalconcurrentmutation/lifetimeormapping changes/asynchronousrestart protocol. Stable ordinary fullwidth-addressable domain only; no physicalOriginalflags/register/frame/home/segment/ABI/caller/runtime/game identity.",
+    "Concrete provisional mechanism: three private target-specific addressed primitives over genuine rawbyteaddresses, e.g. noninlinedcdecl MSVCx86asm wrappers. LOAD_U16 fullyinitializesaddressEDX thenMOVZX EAX,WORD and fullydefined32result; STORE_U16 fullyinitializesaddressEDX/capturedvalueECX thenMOV WORD,CX; STORE_ZERO_U32 fullyinitializesaddressEDX/wholeEAX0 thenMOV DWORD,EAX. No typedunalignedpayloadlvalues, SDK/memcpy/memset/global/TLS/unresolvedprovider/table/fallback/runtimeguard. Exactregisterchoices mayvary ifcomplete actualdefinedinput/result/privateABI proof supports them.",
+    "Separate complete primitive operations retain readbeforepairedwrite and allsubsequent overlap-sensitive payloadordering. No memorybarrier/clobber/alias guarantee is presumed from noinline, inlineasm or source sequencing alone. Source must preserve statedcursor/order/domain requirements; compilerprivateframe/count representation maydiffer only underqualifiedordinaryboundary, never waiveOriginalterminalnonwrap preconditions or assertphysicalprivateprotocol identity.",
+    "Onlyfour canonical Source/header/doc/report outputs after entry/full61B/4filelease in isolated fresh exactpublishedgate checkout. Genuinely fresh currentphysicalSource/header/compiler/support/headercandidate/toolpins before firstuse, one genuine strictHostX86/x86 /std:c++17 /O2 /W4 /WX /permissive- /fp:strict /EHsc /MD compile plus actualdependency closure and allcurrenthashmtime/preservation/Gitliteral qualifications. No trial/matching recompile, workerbaseline/newtests/probes/emulation/selectedbodyexecution/SDKcomparison/Ghidra/sharedmetadata/Main/push.",
+    "Future acceptance mustreview ENTIREactualpublic/allprivatehelpers/code/metadata/symbolaux/strings/relocations/internalproviderbindings/frame/callee-save/stackcleanup/DF/result initialization and ALLpayload paths/widths/order, count0/count exhaustion/earlyzero/q0/r0/odd-evenpadding/alias/cursor arithmetic. Root+independent strictSource/object then separate actualnormalregisteredMain Win32/Core/botharchiveindices/uniqueactualmember/allhelper/privateABI/peer gates. Uncompiledproposal is not emittedproof; compiler failure/mismatch stops forRoot disposition, no fabricatedsuccess. Sourcecredit remains0 untilMainclosure."
+  ],
+  "Main_gate": "pass",
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "game_validated": false,
+  "Source_commit": "dd0a6c7b72554bd589be1a73d44af277c3fc77d5",
+  "primary_review": "reports/cc12_native_crt_wcsncpy_primary_review.json",
+  "canonical_report_erratum": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcsncpy_integration_20261016\\canonical_report_erratum.DATA.json",
+    "bytes": 3054,
+    "sha256": "bb4d5696f9be3ee2e9f0a90a84fb755116f4ebeaa614b70e6502452dd6d63bfd"
+  },
+  "Main_registered": true,
+  "Main_build": "pass_3_existing_CTests",
+  "actual_compiler_archive_gate": "pass",
+  "Main_validation": "reports/cc12_native_crt_wcsncpy_Main_validation.json"
+}

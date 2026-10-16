@@ -1,0 +1,399 @@
+{
+  "packet": "cc12_native_font_texture_integration_159",
+  "status": "reviewed_registered_combined_win32_build_existing_tests_static_link_pass",
+  "compiled_commit": "f9cad132e99442ad413ce638d1e637efcaddf3d9",
+  "workers": {
+    "155": {
+      "commit": "6c2ebb572a4723ab14fbd4dff78c3220e8e04a48",
+      "source_paths": [
+        "include/bsp/native_font_storage.hpp",
+        "src/native_font_storage.cpp"
+      ],
+      "manifest_sha256": "5507a195f2bdb37dc3691e88f306e6a4cad20732347a316630f3e400f613407e",
+      "root_complete_Source_API_optimized_doc_review": "PASS",
+      "strict_win32_cpp17_compile": "PASS",
+      "worker_existing_checks": "3/3; existing registered TU",
+      "strict_bytes": 356,
+      "prior_allocator_canonical_bytes": 107,
+      "exact_Native_byte_identity": false
+    },
+    "157": {
+      "commit": "42ca495fb93f3cdfa635f77ea5056b3181f4d7ef",
+      "source_paths": [
+        "include/bsp/native_gui_texture_normalization.hpp",
+        "src/native_gui_texture_normalization.cpp"
+      ],
+      "manifest_sha256": "a1f0d50dc185c8b88112712d87d17e3d87875b7d4b2b00a5b480a717779a6070",
+      "root_complete_Source_API_optimized_doc_review": "PASS including final Frame constructor fix",
+      "strict_win32_cpp17_compile": "PASS after final header fix",
+      "worker_existing_checks": "2/2 before header fix; new TU unregistered",
+      "exact_Native_byte_identity": false
+    },
+    "160": {
+      "commit": "88648bb7a37467c1dea43d0cad2ffcacfb2c21aa",
+      "source_paths": [
+        "include/bsp/native_gui_rectangle_writer.hpp",
+        "src/native_gui_rectangle_writer.cpp"
+      ],
+      "root_complete_Source_API_optimized_doc_review": "PASS",
+      "strict_win32_cpp17_compile": "PASS",
+      "strict_bytes": 550,
+      "canonical_bytes": 550,
+      "exact_all_Original_bytes": true,
+      "unique_new_Native_address_credit": 0,
+      "manifest_sha256": "0ae288571508b22224db1ebf720daa53251687f54ec1c98721a875c6fc5d8357"
+    }
+  },
+  "readiness": {
+    "158": {
+      "commit": "c6efa31639221eefb00a7e6b1ed2e16c2df0e5f4",
+      "root_complete_doc_review": "PASS",
+      "manifest_sha256": "c618a4e298ef99600b112389676f9ba0c029384a887423f4d851882356453c78",
+      "own_manifest_artifacts": 115,
+      "Root_selected_direct_calls_verified": 19,
+      "new_Source_body_credit": 0
+    },
+    "161": {
+      "commit": "715f8a78bbe97b1f2bad83630f55f5f293541446",
+      "root_complete_doc_review": "PASS",
+      "manifest_sha256": "caaf2e33bcd52d3ee78559ffde1efcd82b7f2df5f3e82b3e9023d3d432e25bca",
+      "own_manifest_refs_captured": 200,
+      "Root_selected_direct_calls_verified": 45,
+      "new_Source_body_credit": 0
+    }
+  },
+  "source": [
+    {
+      "packet": "155",
+      "path": "include/bsp/native_font_storage.hpp",
+      "git_blob": "4403ac9a6a0d235106dead9b4ef8e29f8e7ac839",
+      "sha256": "0d6f3312d31651e52692e98548554a82725201e8ffb2105d3c7e381d2c5d9446",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "155",
+      "path": "src/native_font_storage.cpp",
+      "git_blob": "5691747a4953ceb1695e892592f32682d4c17d96",
+      "sha256": "703e55f5be564e69fd40be9b120355c118bd3e11af37fb6fdc50b5fdf7c409ac",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "157",
+      "path": "include/bsp/native_gui_texture_normalization.hpp",
+      "git_blob": "fce3aec2598ae1f3d323844acc236f5ca9df3745",
+      "sha256": "33306028223a7d3f7b2a194facd8f55c1e0bfae08ab15d88fa5f3bff5fb26bb8",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "157",
+      "path": "src/native_gui_texture_normalization.cpp",
+      "git_blob": "aa8cab2ecc7b316851bb7fe7120c40e143a9f9c6",
+      "sha256": "271d375501300757bc267cf9530c9126edb04f4292a1bfbf1641f213df38f2a1",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "160",
+      "path": "include/bsp/native_gui_rectangle_writer.hpp",
+      "git_blob": "63c9c4329724e2ac51b194584ce8bc7e6d419b20",
+      "sha256": "68d82b664dc042ef20e62b1759852208582dcf05d59b866575fefd06d7262af1",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "160",
+      "path": "src/native_gui_rectangle_writer.cpp",
+      "git_blob": "373d3519797c9046c5bd1c32d5e921d13a560059",
+      "sha256": "7fbe2af2b170d909edaa503e2e3050c773868304ed918b2f0081247408c6bc35",
+      "unchanged_from_reviewed_worker": true
+    }
+  ],
+  "retained_lower_sources": [
+    {
+      "path": "include/bsp/terrain_particles_cc13.hpp",
+      "git_blob": "3bf996d12d53fa3905433c8d35c035400d6bd43e",
+      "sha256": "708064461209ff47f6ed9d42534515caf226956edad32057d0e095dc62b5a7fc",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/terrain_particles_cc13.cpp",
+      "git_blob": "c9cfbce834f6f8c0188f87dd09acd66a4f96ac7e",
+      "sha256": "99cde5ae6399f47f1cadb7749b084f1b439d4be285953d9bd66ae8e61db9c574",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/native_string.cpp",
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/native_pooled_string_substring.hpp",
+      "git_blob": "5567cf0b90182b39790a5379be8d23c5b6d6b371",
+      "sha256": "6243c6ba8acb0e1b7f0358a456d6e65ac1b9303cc79b1f1dfd5be01d05b985ff",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/native_pooled_string_substring.cpp",
+      "git_blob": "8b6f939f3b1988567ef67131e78dd6e238888dbb",
+      "sha256": "7a18633cf114b21290f0c4ddfb9ec96d817f6a246a97ebfa05e9be3fdce9b8e1",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "git_blob": "d2d48f7cca8e08a76c98c10f2bdab9bca5cdb165",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "git_blob": "0e5d59593c47a3cdabaf1020adddc735141d28d3",
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "git_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd",
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "git_blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "git_blob": "30bbfe627b4ea7b4f453ec68422363c35479a3a8",
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "git_blob": "1c660fa6417f9fbc277b821d0ad7d83587fcbed5",
+      "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/native_int_pointer_tree18_leaves.hpp",
+      "git_blob": "4ad334d57f4665e25a5719ec97ad65135b712d74",
+      "sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/native_int_pointer_tree18_leaves.cpp",
+      "git_blob": "f4059b8973da839d78ee36a8ecb208b18f8a5378",
+      "sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/native_int_pointer_tree18_erase.hpp",
+      "git_blob": "df3e2d216a12a16feb04d57db1002daf00833c9a",
+      "sha256": "86571aedc38dc363aad43efffc8e7d23525181f505885ae72c8fd17a8e99df96",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/native_int_pointer_tree18_erase.cpp",
+      "git_blob": "643f3b48171c1538d3d1ade5f9f23e8b0e76b14b",
+      "sha256": "0473413cc5ba9b528942ebdf732016da19a65d6f9a15cfae4c679eeafea61bbb",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_tree.hpp",
+      "git_blob": "fcf3a502d83351ce60b8a7348c6985fc8805f71e",
+      "sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/native_hardware_layout_tree.cpp",
+      "git_blob": "d9f714ecba374a12afbf61d2b33ee71baa15131b",
+      "sha256": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/native_font_resources.hpp",
+      "git_blob": "5fd7d4e25176f5ef8910a417e5b6ee380ead66aa",
+      "sha256": "86b054ccf2ae873195e803e1d97d01c31247cf4e0e174c12bcfcaf8b150e7e48",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/native_font_resources.cpp",
+      "git_blob": "5cf3fc746c8fbf6ae0954ed996131ad4d26f8181",
+      "sha256": "8e61d9e701b0cc181749cdac04e45be5d4931da13bce2ceda28e90d3a5a9e26b",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/font_registry_startup.hpp",
+      "git_blob": "310b7201c277e6a94ffdcfa5bd2a0f397d6f98f7",
+      "sha256": "a2e52ffbc9dad37e429357f5d920e5b9aa281e7ac2db0085021057581f79e640",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/font_registry_startup.cpp",
+      "git_blob": "dedc9fd12f96e07dc9c5f60f4a758f51205c5689",
+      "sha256": "5d0c57bf9a7612f9b23df7f39534bbdaf5eda0625987ce0019d81b9bbd393423",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/game_native_font_application.hpp",
+      "git_blob": "bd6bb4ebbe30d873a654a66e70b69af6e165fd71",
+      "sha256": "f819d8a38b49a6ff8ec3873dea65992366396c8d635e54301542c71ce0aee469",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/game_native_font_application.cpp",
+      "git_blob": "692b370f822f5f21496ae95c4ed417dc353809b8",
+      "sha256": "31d143c3dc1dc9495cd87fdba0ecb67ad3d2494c9b47415746a47771cce5e424",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/font_data.hpp",
+      "git_blob": "1b04d267ef910dee68c99353c639cd6acdb8da99",
+      "sha256": "f7a1f433fb7f0466873da79a6da0b45944df5965fbe756715682265afd257c49",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/font_data.cpp",
+      "git_blob": "89ed303bfd14c788d0ec8f419dbb34241986c072",
+      "sha256": "24ba9b6e37f798072ed06fc796b0dec560b3b500b4697b3b6634c7892a8717c1",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/native_texture_saved_dimensions.hpp",
+      "git_blob": "39895a3684f10935598ef4fec7dc1e4184f76249",
+      "sha256": "79cd7e835c608dda30d3ada5dc46b8c9e09b066e9a284f18a12276ff4d770890",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/native_texture_saved_dimensions.cpp",
+      "git_blob": "81b8331d5740d2ec0606a3ec1e436b0795d7a850",
+      "sha256": "094040ca29e9d708254a8889c062bda42f15a7c6833b303c3dc37f6d72724483",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "git_blob": "28ac6a6a771515dc54df56d630a91438b24fb2de",
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "git_blob": "65f5ff828bcfed5f544912349feeeb9167349359",
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "git_blob": "b7e3a21570936d4a7479c919174ed13a56b4e60a",
+      "sha256": "990c015f2b0fc9cffc29436a69c9a52d057fcdb21c93c5f849a31e72d01235e4",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/native_gui_frame_box_records.cpp",
+      "git_blob": "642d53741ed0b01e7976e01003b1d9c65aecc038",
+      "sha256": "2c5f95a919411884df592c961257fced2a8541668b8ad038464e35b2fed62b4c",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "include/bsp/gui_framebox.hpp",
+      "git_blob": "6a739abea827bc2db8dddeb8ca74f286fee8bab4",
+      "sha256": "ec5c437d8a2bfb51abf5b7dab2b69da05b6fc50fe74ef6fd26c3808c85e755a5",
+      "unchanged_from_reviewed_provider": true
+    },
+    {
+      "path": "src/gui_framebox.cpp",
+      "git_blob": "c9b53453ac13f3a4b4181727d27b132bfee12a75",
+      "sha256": "d84dfa37d274a40e3ba574e6886d72a1f2fb7d12328bccecd8d091f32f347306",
+      "unchanged_from_reviewed_provider": true
+    }
+  ],
+  "root_reviewed_provider_deltas": {
+    "canonical_review": "local/cc12_native_font_texture_integration_159/canonical_review.json",
+    "full_review": "PASS; all changed canonical bodies, all retained complete function/funclet roots and all550 Original writer bytes"
+  },
+  "root_build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "checks": "3/3",
+    "seconds": 7.09,
+    "warnings": [
+      "Existing untouched Lua spawn_request_id_matches LNK4006 duplicate; second definition ignored"
+    ]
+  },
+  "static_link": {
+    "compiled_commit": "f9cad132e99442ad413ce638d1e637efcaddf3d9",
+    "build_and_minimal_main_exit_code": 0,
+    "raw_function_bodies_executed": false,
+    "explicit_worker_object_linked": false,
+    "kind": "Three actual-storage APIs from actual final Core; main takes their addresses and executes no reconstructed body",
+    "PE32_asInvoker": true,
+    "exe_sha256": "5a63692e2599feda8bded52ad0036862b699c60e944f0bfd7f653fe45cd72dd0",
+    "libraries": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "a9be5d7fa5f017566c2ec8daad619f3d516fbedd2bb581b6b14b28fc8e8d1464"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "sha256": "e6ebb089df7828a43ecdd6e705dddb4cea95b38ffe1fabbd47152fec8834db30"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "sha256": "838261efe3cdd86663e25ecbcd9e825ee51203e71491954864316d4d0dfb6062"
+      }
+    ],
+    "canonical_additional_objects": []
+  },
+  "root_source_and_header_inputs_copied": 254,
+  "archive": {
+    "path": "local/cc12_native_font_texture_integration_159/evidence_family.zip",
+    "sha256": "f70e1b920a794e0c3475aeec6537c26b3743a6351b1e0d6ca7fd2261d5afe4de",
+    "payload_count": 1223,
+    "manifest": "local/cc12_native_font_texture_integration_159/manifest.json",
+    "manifest_sha256": "82d9c80d92e26bedded6e4b8150b01a75d185481b33a4963479dfa755d7b12af",
+    "all_archived_payload_hashes_rechecked": true,
+    "nested_worker_manifests_included": true
+  },
+  "original_input_proof": {
+    "path": "local/cc12_native_font_texture_integration_159/root_original_input_proof.json",
+    "sha256": "05e5d56ab09a8f9788fb1e2c880b6e5c9368d5b122bb9c7d245c826cc0d866d7",
+    "checked_spans": 3,
+    "status": "PASS"
+  },
+  "limits": [
+    "155 whole raw Font constructor retains146 full Source prefixes and107B canonical allocator/3 ordered relocations; ordinary C++ EH/private spill/state scheduling and SDK raw-string policy are not Native private EH/fault/CRT identity",
+    "157 admits genuine held texture2D profile/current slots and real saved dimensions with exact reviewed x87 scheduling, private stable context/frame, delayed output and sticky Source failures; no arbitrary texture target or Original ABI claim",
+    "160 literal naked whole550B body exactly matches strict and actual Core, preserves prior semantic entry with zero duplicate address credit; requires valid genuine live raw stream/backing and private-stack exclusion",
+    "158/161 are readonly readiness with zero Source-body credit; whole raw Font load/producer/retirement and FrameBoxACF9B0/AD0D80/rawclip/identity/productionactivation remain separate",
+    "Normal3/3 build and manifested actual-Core address-only link prove no reconstructed body execution, Original placement/caller adoption/privateABI/CRT/FH3/SEH or game/visual/runtime behavior"
+  ]
+}

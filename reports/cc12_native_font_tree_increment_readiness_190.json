@@ -1,0 +1,747 @@
+{
+  "packet": "cc12_native_font_tree_increment_readiness_190",
+  "status": "readiness_only_whole_alias_Source_next_review_accepted",
+  "baseline": {
+    "HEAD": "fbdf4874e738390cf7d12239d15d62692f01ed93",
+    "audited_published_Source": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+    "Main_merge_or_Source_refresh": false,
+    "accepted186_captured_but_Root_staging_not_Main_at_start": true,
+    "read_only_packet": true,
+    "no_Source_CMake_ledger_Ghidra_mutation_build_tests_probes_execution": true
+  },
+  "Source_implementation_or_address_credit_added": false,
+  "Original": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "spans": [
+    {
+      "start": "00ad40d0",
+      "end_exclusive": "00ad4133",
+      "bytes": 99,
+      "physical_starts": 38,
+      "sha256": "160153080f5041e40944132088fdc59f410fdffd9dba92eddf9c10cc48dfd5be",
+      "live_equals_installed_disk": true,
+      "normal_plain_RET_sites": [
+        "00ad410e",
+        "00ad4132"
+      ],
+      "local_EH_setup_or_FS_access": false
+    },
+    {
+      "start": "00869a20",
+      "end_exclusive": "00869a83",
+      "bytes": 99,
+      "physical_starts": 38,
+      "sha256": "7f5ec53d7913d19dc67199a6b3d7662b403322a55da6e33ec4458591d6aeee51",
+      "live_equals_installed_disk": true,
+      "normal_plain_RET_sites": [
+        "00869a5e",
+        "00869a82"
+      ],
+      "local_EH_setup_or_FS_access": false
+    }
+  ],
+  "call_rows": [
+    {
+      "function": "00ad40d0",
+      "address": "00ad40d8",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00ad40d0",
+      "address": "00ad40e7",
+      "native": "00bf6713",
+      "kind": "tail_jump"
+    }
+  ],
+  "indirect_calls": [],
+  "whole_alias_proof": {
+    "bytes_per_side": 99,
+    "starts_per_side": 38,
+    "all_outside_named_operand_fields_equal": true,
+    "complete_named_operand_fields": [
+      {
+        "offset": 9,
+        "bytes": 4,
+        "kind": "rel32 CALL operand",
+        "Font_site": "00ad40d8",
+        "provider_site": "00869a28",
+        "resolved_target": "00bf6713"
+      },
+      {
+        "offset": 24,
+        "bytes": 4,
+        "kind": "rel32 tail JMP operand",
+        "Font_site": "00ad40e7",
+        "provider_site": "00869a37",
+        "resolved_target": "00bf6713"
+      }
+    ],
+    "actual_differing_byte_offsets": [
+      9,
+      10,
+      11,
+      24,
+      25,
+      26
+    ],
+    "normalized_sha256": "336ce76be99ffc018e714c4cf72bc3bd91bc6a8147239b9987c166e01cfdb3e5",
+    "both_resolve_same_Original_BF6713_identity": true,
+    "local_EH_record_equivalence_needed": false,
+    "reason": "complete99B bodies only preserve ESI, perform raw loads/stores and CALL/tailJMP; no local FH3/prolog/handler/state; no payload or string temporary"
+  },
+  "Native_abi": {
+    "receiver": "ECX actual8B iterator owner0/node4",
+    "EDX": "not consumed on entry",
+    "stack_args": 0,
+    "semantic_result": null,
+    "ESI": "preserved",
+    "ordinary_return": "plain RET",
+    "nil_current": "POP ESI before tail JMP BF6713",
+    "local_EH": false,
+    "Ghidra_existing_undefined_void_signature_not_authoritative": true
+  },
+  "chronology": [
+    {
+      "site": "00ad40d3",
+      "operation": "read owner0 and, if null, callBF6713 atAD40D8"
+    },
+    {
+      "site": "00ad40dd",
+      "operation": "after returning validation, load CURRENT node4; test its nilBYTE15"
+    },
+    {
+      "site": "00ad40e7",
+      "operation": "nonnil test failed: ESI already restored; tailBF6713 returns directly if handler returns; no node write"
+    },
+    {
+      "site": "00ad40ec",
+      "operation": "capture current-node rightDWORD8 and test child nilBYTE15"
+    },
+    {
+      "site": "00ad40f5",
+      "operation": "real right subtree: traverse current leftDWORD0/nilBYTE15; selected minimum published atAD410A"
+    },
+    {
+      "site": "00ad410f",
+      "operation": "nil right: load current-node parentDWORD4 and test nil"
+    },
+    {
+      "site": "00ad4118",
+      "operation": "each parent step reloads CURRENT iterator.node4 before comparing parent.rightDWORD8"
+    },
+    {
+      "site": "00ad4120",
+      "operation": "on equality publish parent immediately, then read its parent and test nil"
+    },
+    {
+      "site": "00ad412e",
+      "operation": "publish reached parent on mismatch or nil; plain RET"
+    }
+  ],
+  "actual_provider": {
+    "published_whole_entry": "increment_native_int_pointer_tree18_00869a20",
+    "raw_naked_body_present": true,
+    "same_actual_Source_SDK_invalid_parameter_noinfo": true,
+    "other_existing_actual_reuses": [
+      "005531f0 input scalar increment",
+      "004bda70 camera-store increment"
+    ],
+    "no_new_algorithm_context_callback_global_or_owner_needed": true
+  },
+  "new_Source_proposal": {
+    "Source_not_implemented_in190": true,
+    "files": [
+      "include/bsp/native_font_tree_iterator.hpp",
+      "src/native_font_tree_iterator.cpp"
+    ],
+    "address_only": "00ad40d0",
+    "signature": "void __cdecl increment_native_font_tree_iterator_00ad40d0(NativeIntPointerTree18Iterator& actual_iterator)",
+    "body_plan": "direct increment_native_int_pointer_tree18_00869a20(&actual_iterator); no copy or cast",
+    "reuse_existing_compile_time_checks": "sizeof8 and owner0/node4 offsets0/4; actual type from native_effect_handle_acquisition.hpp",
+    "required_new_include": "bsp/native_int_pointer_tree18_leaves.hpp",
+    "existing_168_decrement_body_prefix_to_preserve": true,
+    "no_new_algorithm_owner_context_default_callback_validation_or_fixed_callable_VA": true,
+    "new_Source_ABI_not_Native_private_frame_or_volatile_register_equivalence": true,
+    "fresh_Source_lease_after_Root_integration_required": true,
+    "no_worker_CMake_or_registration_claim_from_old_CMake_snapshot": true
+  },
+  "storage_and_failure_contract": {
+    "actual_iterator": "same genuinely initialized8B NativeIntPointerTree18Iterator, not a descriptor/companion/temporary-copy cast",
+    "raw_Font_tree_provenance": "actual FontBASE header opaque0/head4/count8; links0/4/8 and nilBYTE15 in18h nodes; same real146/155 tree domain",
+    "read_no_key_pair_payload_color_count_or_reference_owner": true,
+    "no_alloc_free_ownership_or_reference_policy": true,
+    "owner_null_and_nil_node_preserve_diagnostics_not_preflighted_away": true,
+    "handler": "same actual Source SDK _invalid_parameter_noinfo, including installed returning handler; not Original CRT identity",
+    "retention": "caller independently retains actual iterator/node/owner graph/SDK-handler metadata through all reached calls and failure; externally serialized; each later operand remains live after valid handler changes",
+    "public_overlap": "only where real storage/object lifetimes and provider contracts remain valid",
+    "both_Native_and_new_Source_private_stack_argument_scratch_aliases_excluded": true,
+    "no_cleanup_rollback_or_replay_added": true,
+    "Native_heap_handler_FH3_SEH_fault_catch_RTTI_ABI_register_frame_or_game_equivalence": false
+  },
+  "downstream_frontier": {
+    "increment_only": true,
+    "known_Font_entries_still_separate": [
+      "00ad41f0 raw subtree erase",
+      "00ad47f0 iterator erase / misleading throw-only label",
+      "00ad4b60 range erase",
+      "00ad53a0 full raw Font retirement"
+    ],
+    "genuine_existing_callees_acknowledged": [
+      "0086aa60 subtree destruction",
+      "0086e8a0 iterator erase",
+      "0086ee50 range erase",
+      "0086fde0 whole tree cleanup"
+    ],
+    "next_erase_proof": "complete normal bodies/all callee operand relocations plus any nil/error temporary/local handler maps; do not infer alias from increment shape",
+    "real_partial_NativeFontResources_owner_acknowledged": "decoded-map clear then real GFX/alpha release; explicitly differs from raw Native delayed node release",
+    "no_raw_Font_retirement_or_whole_AD4C30_or_pair_upper_WORD_result_or_orphan_transport_closed": true,
+    "A188_AD4C30_not_queried_or_mutated": true
+  },
+  "Source_pins": [
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\native_font_tree_iterator.hpp",
+      "source_identity": "include/bsp/native_font_tree_iterator.hpp",
+      "sha256": "320944a570770e36abe06031cdd7d49a5ce0c30f17508de8431af6aff14e6094",
+      "bytes": 1611,
+      "HEAD_Git_blob": "8374521e9377e90a32354ffa8facb751747d7a95",
+      "published171_Git_blob": "8374521e9377e90a32354ffa8facb751747d7a95",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\src\\native_font_tree_iterator.cpp",
+      "source_identity": "src/native_font_tree_iterator.cpp",
+      "sha256": "3146a01e523fdae67ab488e2d5f188c6983397b20219c18ccc4c6342084251eb",
+      "bytes": 533,
+      "HEAD_Git_blob": "beade65d3e80f635bea7039e4d6e624a664b77f1",
+      "published171_Git_blob": "beade65d3e80f635bea7039e4d6e624a664b77f1",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\native_int_pointer_tree18_leaves.hpp",
+      "source_identity": "include/bsp/native_int_pointer_tree18_leaves.hpp",
+      "sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+      "bytes": 2447,
+      "HEAD_Git_blob": "4ad334d57f4665e25a5719ec97ad65135b712d74",
+      "published171_Git_blob": "4ad334d57f4665e25a5719ec97ad65135b712d74",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\src\\native_int_pointer_tree18_leaves.cpp",
+      "source_identity": "src/native_int_pointer_tree18_leaves.cpp",
+      "sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+      "bytes": 6965,
+      "HEAD_Git_blob": "f4059b8973da839d78ee36a8ecb208b18f8a5378",
+      "published171_Git_blob": "f4059b8973da839d78ee36a8ecb208b18f8a5378",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\native_effect_handle_acquisition.hpp",
+      "source_identity": "include/bsp/native_effect_handle_acquisition.hpp",
+      "sha256": "9148f95d14fbfc14ad6ed0ea25a4b1047975accc606af5995dcfd718e1b127af",
+      "bytes": 3375,
+      "HEAD_Git_blob": "2a82cebab71e9f1fa2cb79775c72a89c95a30636",
+      "published171_Git_blob": "2a82cebab71e9f1fa2cb79775c72a89c95a30636",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\native_input_scalar_tree_iterator.hpp",
+      "source_identity": "include/bsp/native_input_scalar_tree_iterator.hpp",
+      "sha256": "66f429acaceb01630e0d05fa578f1a26359757eb8f581d692a0efb8934259650",
+      "bytes": 2583,
+      "HEAD_Git_blob": "8f4f1ab733af74cf82d4dfbf0f07ab037ee2db4f",
+      "published171_Git_blob": "8f4f1ab733af74cf82d4dfbf0f07ab037ee2db4f",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\src\\native_input_scalar_tree_iterator.cpp",
+      "source_identity": "src/native_input_scalar_tree_iterator.cpp",
+      "sha256": "8a717044cd975de0f3b2021858b0f1bb8ea47c4c5050e03c08d0029604ee6246",
+      "bytes": 632,
+      "HEAD_Git_blob": "8ef89f7f41b5a84fad8cdd9282a4db400a0424e2",
+      "published171_Git_blob": "8ef89f7f41b5a84fad8cdd9282a4db400a0424e2",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\native_gui_camera_store_map.hpp",
+      "source_identity": "include/bsp/native_gui_camera_store_map.hpp",
+      "sha256": "3682a1f8dcd0a195f2c3f0840207d52e353fd7f03f98790e37a57ad73b4b8340",
+      "bytes": 7932,
+      "HEAD_Git_blob": "0fac7479cc9b8f767f02d059d7c8da59bbd8bc0e",
+      "published171_Git_blob": "0fac7479cc9b8f767f02d059d7c8da59bbd8bc0e",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\src\\native_gui_camera_store_map.cpp",
+      "source_identity": "src/native_gui_camera_store_map.cpp",
+      "sha256": "99228166520cfa04a782500d5de7b272f9545bc4cfc8f8110bb813d1b0afe39d",
+      "bytes": 11486,
+      "HEAD_Git_blob": "c0284067e27b5e72591573c8515e820f02d25b50",
+      "published171_Git_blob": "c0284067e27b5e72591573c8515e820f02d25b50",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\native_int_pointer_tree18_erase.hpp",
+      "source_identity": "include/bsp/native_int_pointer_tree18_erase.hpp",
+      "sha256": "86571aedc38dc363aad43efffc8e7d23525181f505885ae72c8fd17a8e99df96",
+      "bytes": 2369,
+      "HEAD_Git_blob": "df3e2d216a12a16feb04d57db1002daf00833c9a",
+      "published171_Git_blob": "df3e2d216a12a16feb04d57db1002daf00833c9a",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\src\\native_int_pointer_tree18_erase.cpp",
+      "source_identity": "src/native_int_pointer_tree18_erase.cpp",
+      "sha256": "0473413cc5ba9b528942ebdf732016da19a65d6f9a15cfae4c679eeafea61bbb",
+      "bytes": 11867,
+      "HEAD_Git_blob": "643f3b48171c1538d3d1ade5f9f23e8b0e76b14b",
+      "published171_Git_blob": "643f3b48171c1538d3d1ade5f9f23e8b0e76b14b",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\detail\\native_tree_insert_storage.hpp",
+      "source_identity": "include/bsp/detail/native_tree_insert_storage.hpp",
+      "sha256": "c5eb00461d535b3c737e63a4286814e35c5427c883474d37b3cb6f67a2f8a8b9",
+      "bytes": 9079,
+      "HEAD_Git_blob": "626561295a534877f0b58f70880b7bfc6d7f7f80",
+      "published171_Git_blob": "626561295a534877f0b58f70880b7bfc6d7f7f80",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\detail\\native_tree_subtree_storage.hpp",
+      "source_identity": "include/bsp/detail/native_tree_subtree_storage.hpp",
+      "sha256": "9b6e1fa23be9bbc784dfe7067fbee2acfd70387a7bc438e58ae811735ef0005f",
+      "bytes": 832,
+      "HEAD_Git_blob": "b358b10fca6e89915476daafd8af21beb8864915",
+      "published171_Git_blob": "b358b10fca6e89915476daafd8af21beb8864915",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\singleton_lifetime.hpp",
+      "source_identity": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372,
+      "HEAD_Git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "published171_Git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\src\\singleton_lifetime.cpp",
+      "source_identity": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "bytes": 13257,
+      "HEAD_Git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "published171_Git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\native_font_resources.hpp",
+      "source_identity": "include/bsp/native_font_resources.hpp",
+      "sha256": "86b054ccf2ae873195e803e1d97d01c31247cf4e0e174c12bcfcaf8b150e7e48",
+      "bytes": 4298,
+      "HEAD_Git_blob": "5fd7d4e25176f5ef8910a417e5b6ee380ead66aa",
+      "published171_Git_blob": "5fd7d4e25176f5ef8910a417e5b6ee380ead66aa",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\src\\native_font_resources.cpp",
+      "source_identity": "src/native_font_resources.cpp",
+      "sha256": "8e61d9e701b0cc181749cdac04e45be5d4931da13bce2ceda28e90d3a5a9e26b",
+      "bytes": 6097,
+      "HEAD_Git_blob": "5cf3fc746c8fbf6ae0954ed996131ad4d26f8181",
+      "published171_Git_blob": "5cf3fc746c8fbf6ae0954ed996131ad4d26f8181",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\cmake\\startup.cmake",
+      "source_identity": "cmake/startup.cmake",
+      "sha256": "6eb08dcd661fa623286761581ae5b278fc91da512626163db61016d3333078f5",
+      "bytes": 269348,
+      "HEAD_Git_blob": "fcbdb7917e4792232613e23253c42da1d5888f8f",
+      "published171_Git_blob": "0f9371f0eb0bc5f08c6abbcf437501bd1df0e957",
+      "same_reached_published_Source": false,
+      "scope": "old worker build registration only; not a body/provider delta"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\config\\target.json",
+      "source_identity": "config/target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455,
+      "HEAD_Git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "published171_Git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "same_reached_published_Source": true,
+      "scope": "unchanged actual Source/provider/config"
+    }
+  ],
+  "preserved_seals": [
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\artifact_manifest.json",
+      "sha256": "1d686915201af0e7f95423668670b0b228eefdf9399104e2846fcbcaaef4c8f9",
+      "bytes": 28316,
+      "role": "unchanged captured predecessor manifest; read/copy only"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\artifact_manifest.json",
+      "sha256": "80488c6200ba87ec3cafe4b71ebbc9e4496ceed8fa64442672a0fa25d8e0e547",
+      "bytes": 66786,
+      "role": "unchanged captured predecessor manifest; read/copy only"
+    },
+    {
+      "path": "local\\cc12_native_resource_stream_word_reads_186\\artifact_manifest.json",
+      "sha256": "9dc5cbe58d12e22588c9d3cde8322c4d66eefad3579d0b79029e807f550519c9",
+      "bytes": 55717,
+      "role": "unchanged captured predecessor manifest; read/copy only"
+    }
+  ],
+  "validation": {
+    "complete99B38_start_pair_only2_named_rel32_fields": true,
+    "current_genuine_provider_and_actual_reuses_inspected": true,
+    "all18_reached_Source_config_blobs_match_published171": true,
+    "old_worker_CMake_delta_explicit_not_a_body_delta": true,
+    "whole_Ghidra_typed_flow_flags_not_exposed": "flow wrapper gap output is diagnostic only; whole physical listings/bytes/returns/operands provide proof",
+    "Root_full_Doc_and_report_review": "PASS",
+    "report_call_verifier": "verifier.log / verifier_exit.txt; expected2 direct call/tail rows",
+    "Source_CMake_ledger_Ghidra_mutation_build_tests_probes_or_body_execution": false,
+    "new_Source_credit": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "references": [
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\audit.json",
+      "sha256": "8b8ef2e2dee7edf0d90ab21a93e6bb5497a3635977752d76d0c0bb7ae21b822b",
+      "bytes": 13885,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\audit_190.py",
+      "sha256": "9d76709c610a2bb2362ca7bfab7c53730582b5df175bc5938ed551559e694dc0",
+      "bytes": 7969,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\bytes_00869a20.console.txt",
+      "sha256": "86570c528b912d905ea1b1a640beabb243827ffab8e2ecb5b5c86a4b94fb3cc4",
+      "bytes": 487,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\bytes_00869a20.txt",
+      "sha256": "86570c528b912d905ea1b1a640beabb243827ffab8e2ecb5b5c86a4b94fb3cc4",
+      "bytes": 487,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\bytes_00869a20_target.json",
+      "sha256": "314c5e93628ca7889f695ea05a9406d53e15c5ae8094c16ee6307637fb3bfbc2",
+      "bytes": 1337,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\bytes_00ad40d0.console.txt",
+      "sha256": "801d59cb7fa9c4210e2924361f19ed21a22e583e090db268d3540ee22eb30963",
+      "bytes": 487,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\bytes_00ad40d0.txt",
+      "sha256": "801d59cb7fa9c4210e2924361f19ed21a22e583e090db268d3540ee22eb30963",
+      "bytes": 487,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\bytes_00ad40d0_target.json",
+      "sha256": "314c5e93628ca7889f695ea05a9406d53e15c5ae8094c16ee6307637fb3bfbc2",
+      "bytes": 1337,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\flow.console.txt",
+      "sha256": "2be75c7320cc55504786653d87bf8f984dc18c305ffb11058c530f754c6dabc4",
+      "bytes": 188,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\flow.txt",
+      "sha256": "2be75c7320cc55504786653d87bf8f984dc18c305ffb11058c530f754c6dabc4",
+      "bytes": 188,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\flow_target.json",
+      "sha256": "314c5e93628ca7889f695ea05a9406d53e15c5ae8094c16ee6307637fb3bfbc2",
+      "bytes": 1337,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\flow_whole.console.txt",
+      "sha256": "13272c1a67ce083e4fb4a9a1514001ba789284aa609f3e121f50ce1dc27690c1",
+      "bytes": 362,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\flow_whole.txt",
+      "sha256": "13272c1a67ce083e4fb4a9a1514001ba789284aa609f3e121f50ce1dc27690c1",
+      "bytes": 362,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\flow_whole_target.json",
+      "sha256": "314c5e93628ca7889f695ea05a9406d53e15c5ae8094c16ee6307637fb3bfbc2",
+      "bytes": 1337,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\ghidra_190.py",
+      "sha256": "62c17f7b326243cd2a2da70767e780e592c186c425f339a50b0a12abb25fe347",
+      "bytes": 1489,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\listing_00ad40d0.console.txt",
+      "sha256": "50c58d0c653fbaedec4f16f4b58234eb2aa1332b6b77a158f8f7f1c5882d692d",
+      "bytes": 1217,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\listing_00ad40d0.txt",
+      "sha256": "50c58d0c653fbaedec4f16f4b58234eb2aa1332b6b77a158f8f7f1c5882d692d",
+      "bytes": 1217,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\listing_00ad40d0_target.json",
+      "sha256": "314c5e93628ca7889f695ea05a9406d53e15c5ae8094c16ee6307637fb3bfbc2",
+      "bytes": 1337,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\make_report_190.py",
+      "sha256": "d0d7b5b1cbf5bb4ab675a44b2f2e6c9365e952f3f13e855da5a7d323d11e7062",
+      "bytes": 8109,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Original_00869a20.bin",
+      "sha256": "7f5ec53d7913d19dc67199a6b3d7662b403322a55da6e33ec4458591d6aeee51",
+      "bytes": 99,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Original_00ad40d0.bin",
+      "sha256": "160153080f5041e40944132088fdc59f410fdffd9dba92eddf9c10cc48dfd5be",
+      "bytes": 99,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\physical_00869a20.txt",
+      "sha256": "feb56cf0f77c80f8ee833e3a4ec6310dd1e63c8c41d0c092226870df5e28dada",
+      "bytes": 2215,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\physical_00ad40d0.txt",
+      "sha256": "5b93d5926525a7584d45a6b178caeb042a9f93fea787f077443410515134ae39",
+      "bytes": 2215,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\proto.console.txt",
+      "sha256": "2bcb1eeeaf75695b294b3a643801c42dd5c1a66a05a7a7c816952f644cc0ff86",
+      "bytes": 3189,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\proto.txt",
+      "sha256": "2bcb1eeeaf75695b294b3a643801c42dd5c1a66a05a7a7c816952f644cc0ff86",
+      "bytes": 3189,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\proto_target.json",
+      "sha256": "314c5e93628ca7889f695ea05a9406d53e15c5ae8094c16ee6307637fb3bfbc2",
+      "bytes": 1337,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\seal_190.py",
+      "sha256": "239f235e0d99ec8850a9021e2c1164d6aeb1bb4d7f8401b8b5f9897d706b9ed1",
+      "bytes": 3151,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\cmake\\startup.cmake",
+      "sha256": "6eb08dcd661fa623286761581ae5b278fc91da512626163db61016d3333078f5",
+      "bytes": 269348,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\config\\target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\detail\\native_tree_insert_storage.hpp",
+      "sha256": "c5eb00461d535b3c737e63a4286814e35c5427c883474d37b3cb6f67a2f8a8b9",
+      "bytes": 9079,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\detail\\native_tree_subtree_storage.hpp",
+      "sha256": "9b6e1fa23be9bbc784dfe7067fbee2acfd70387a7bc438e58ae811735ef0005f",
+      "bytes": 832,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\native_effect_handle_acquisition.hpp",
+      "sha256": "9148f95d14fbfc14ad6ed0ea25a4b1047975accc606af5995dcfd718e1b127af",
+      "bytes": 3375,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\native_font_resources.hpp",
+      "sha256": "86b054ccf2ae873195e803e1d97d01c31247cf4e0e174c12bcfcaf8b150e7e48",
+      "bytes": 4298,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\native_font_tree_iterator.hpp",
+      "sha256": "320944a570770e36abe06031cdd7d49a5ce0c30f17508de8431af6aff14e6094",
+      "bytes": 1611,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\native_gui_camera_store_map.hpp",
+      "sha256": "3682a1f8dcd0a195f2c3f0840207d52e353fd7f03f98790e37a57ad73b4b8340",
+      "bytes": 7932,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\native_input_scalar_tree_iterator.hpp",
+      "sha256": "66f429acaceb01630e0d05fa578f1a26359757eb8f581d692a0efb8934259650",
+      "bytes": 2583,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\native_int_pointer_tree18_erase.hpp",
+      "sha256": "86571aedc38dc363aad43efffc8e7d23525181f505885ae72c8fd17a8e99df96",
+      "bytes": 2369,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\native_int_pointer_tree18_leaves.hpp",
+      "sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+      "bytes": 2447,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\include\\bsp\\singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\src\\native_font_resources.cpp",
+      "sha256": "8e61d9e701b0cc181749cdac04e45be5d4931da13bce2ceda28e90d3a5a9e26b",
+      "bytes": 6097,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\src\\native_font_tree_iterator.cpp",
+      "sha256": "3146a01e523fdae67ab488e2d5f188c6983397b20219c18ccc4c6342084251eb",
+      "bytes": 533,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\src\\native_gui_camera_store_map.cpp",
+      "sha256": "99228166520cfa04a782500d5de7b272f9545bc4cfc8f8110bb813d1b0afe39d",
+      "bytes": 11486,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\src\\native_input_scalar_tree_iterator.cpp",
+      "sha256": "8a717044cd975de0f3b2021858b0f1bb8ea47c4c5050e03c08d0029604ee6246",
+      "bytes": 632,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\src\\native_int_pointer_tree18_erase.cpp",
+      "sha256": "0473413cc5ba9b528942ebdf732016da19a65d6f9a15cfae4c679eeafea61bbb",
+      "bytes": 11867,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\src\\native_int_pointer_tree18_leaves.cpp",
+      "sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+      "bytes": 6965,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\Source\\src\\singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "bytes": 13257,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\verifier.log",
+      "sha256": "329e7847f3a3cd13f47fc2137db563ba288e3ade98f68a11fed9a02d3b49a3cc",
+      "bytes": 91,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_increment_readiness_190\\verifier_exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "bytes": 3,
+      "role": "frozen190 read-only evidence"
+    },
+    {
+      "path": "docs\\CC12_NATIVE_FONT_TREE_INCREMENT_READINESS_190.md",
+      "sha256": "fb7d07b1ec8e4285cfc8d738696717387022764a1e9818e7c1be6e0b837b2846",
+      "bytes": 8482,
+      "role": "final190 Doc"
+    },
+    {
+      "path": "local\\cc12_native_font_tree_iterator_168\\artifact_manifest.json",
+      "sha256": "1d686915201af0e7f95423668670b0b228eefdf9399104e2846fcbcaaef4c8f9",
+      "bytes": 28316,
+      "role": "unchanged captured predecessor manifest; read/copy only"
+    },
+    {
+      "path": "local\\cc12_native_font_raw_load_readiness_182\\artifact_manifest.json",
+      "sha256": "80488c6200ba87ec3cafe4b71ebbc9e4496ceed8fa64442672a0fa25d8e0e547",
+      "bytes": 66786,
+      "role": "unchanged captured predecessor manifest; read/copy only"
+    },
+    {
+      "path": "local\\cc12_native_resource_stream_word_reads_186\\artifact_manifest.json",
+      "sha256": "9dc5cbe58d12e22588c9d3cde8322c4d66eefad3579d0b79029e807f550519c9",
+      "bytes": 55717,
+      "role": "unchanged captured predecessor manifest; read/copy only"
+    }
+  ],
+  "artifact_manifest": {
+    "path": "local\\cc12_native_font_tree_increment_readiness_190\\artifact_manifest.json",
+    "sha256": "37d03c43e199f5ff06df8085e91f47090aee7f6ea1d35e51efe05d50866b717d",
+    "bytes": 21102,
+    "role": "immutable190 manifest; report excluded"
+  }
+}

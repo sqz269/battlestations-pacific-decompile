@@ -1,0 +1,84 @@
+{
+  "packet": "oct16_fortyfourth_reconstruction_batch",
+  "status": "primary_accepted_whole_checked_copy_CurrentSDK_domain_default_Win32_checked",
+  "Source_pin": "c47124922258ff4edc3e43c4e966ebf3b7750aab",
+  "frozen_quartet": {
+    "docs/OCT16_CHECKED_DWORD_MEMMOVE_COPY.md": "042abc30bef3d5599c30224f2f5f163fe0fbf66b65114d90951e116c20806686",
+    "include/bsp/native_checked_dword_memmove_copy.hpp": "6dc093263daa1dceff40c3c6791203eee7b972bc95796d88c1ae78fe894c7bac",
+    "reports/oct16_checked_dword_memmove_copy.json": "ea246b4bdb76c5a855bb5a94f302fd0a4f0b5b11dadd3b2272f63250846bb470",
+    "src/native_checked_dword_memmove_copy.cpp": "69f307ec54a52ab527c407603334b441462d952114b25ce461f23f6d847e66c2"
+  },
+  "scope": {
+    "whole_ordinary_entries": 1,
+    "Native_owned_bytes": 48,
+    "Native_owned_instructions": 18,
+    "readonly_producer_CALL_bytes": 20,
+    "readonly_producer_CALLs": 4,
+    "Original_BF67A7_body_or_parents_not_promoted": true
+  },
+  "primary": {
+    "receipt": "local/oct16_checked_dword_copy_primary_frozen.json",
+    "sha256": "147574140b21332f4973b2731cead61a2a6080f5566ae312f1e233048d009b66",
+    "checks": 20,
+    "findings": [],
+    "unchanged_provider_LF_fingerprints": 64,
+    "immutable_preliminary_receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_checked_dword_copy_primary.json",
+    "immutable_preliminary_sha256": "8c0cd9ecc4df0872c9400ee00902f34eef9448e2106b8f2a3bff61326c74386d"
+  },
+  "compiled": {
+    "Root_object_sha256": "d09829167d61711996a2983da44057aaaac2b7a7ae01b58247c98855af59253d",
+    "worker_object_sha256": "60eb5665fa2522ccc496e5d05493f080bdb09869c08149f0de3441a353dec56a",
+    "all2_CODE_bytes_and_symbolic_relocations_equal": true,
+    "CODE_bytes": 191,
+    "instructions": 70,
+    "public": [
+      97,
+      37
+    ],
+    "SDK_helper_not_called_by_owned_public_body": [
+      94,
+      33
+    ],
+    "relocations": 8,
+    "errno_DIR32": 3,
+    "invalid_parameter_DIR32": 3,
+    "current_memmove_REL32": 2,
+    "directives_bytes": 47,
+    "compiler_debug_bytes": 212,
+    "checksums_bytes": 40,
+    "EH_BSS_padding_embedded_CODE_data": false
+  },
+  "verification": {
+    "combined_tested_commit": "9d95cfd439fbbecd633c1c3c49c9bfab6843b367",
+    "default_build_exit": 0,
+    "existing_suites_passed": 3,
+    "seconds": 7.7,
+    "build_log_sha256": "9dafb31d33bb89cff2c7ae6209bf8eecb0bfe7469334890423a938bb086a76de",
+    "JSON_transfer_rows": 5,
+    "Markdown_transfer_claims": 5,
+    "saved_annotations": 1,
+    "refreshed_exports": 1,
+    "closeout_receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct16_checked_dword_memmove_copy_closeout_receipt.json",
+    "closeout_receipt_sha256": "aef042b05bbe8d33e184ce2a9b3399a4a52757316b89ccc2d6991a1e5d59db35",
+    "preimages": {
+      "path": "local\\ghidra-annotations-20261016T090401Z.json",
+      "bytes": 717,
+      "SHA256": "342d45241d12c20d248abebda5c7acf02e2a8c864ee0f6b8684a8d9fae5a08f0"
+    },
+    "export_log": {
+      "path": "local\\oct16_checked_dword_memmove_copy_exports.txt",
+      "bytes": 123,
+      "SHA256": "883b91bf826731e15884d9d578376b9caefb3a9c71faccf48e82b331afd54bfb"
+    },
+    "owned_registry_diffs_exact": true,
+    "one_Core_registration": true,
+    "no_actual_append_conflict": true
+  },
+  "limits": "Current SDK secure move and new compiled frames/registers/flags/fault domain only. Original BF67A7 CRT validation/body identity, stack aliases, FH3/SEH, runtime and gameplay remain unproved.",
+  "integration": "Clean owned Source merge and subsequent Main merges. Tested after current Main ef70f95; both existing unrelated Main files are preserved at publication. No new tests, probes or owned-body execution.",
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Verified separately after publication"
+  }
+}

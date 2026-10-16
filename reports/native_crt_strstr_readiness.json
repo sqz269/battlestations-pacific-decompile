@@ -1,0 +1,171 @@
+{
+  "schema": 1,
+  "packet": "cc12_native_crt_strstr_readiness_oct16",
+  "status": "whole_selected_Original_static_evidence_specialist_register_ABI_boundary_Source_false",
+  "coverage": "complete selected Original bytes/listing/typed metadata; whole semantic/ordinary-domain contract unresolved",
+  "Original_name_retained": "_strstr",
+  "address": "00BF9440",
+  "whole_range": [
+    "00BF9440",
+    "00BF94C5"
+  ],
+  "Original_bytes": 134,
+  "Original_instructions": 66,
+  "Original_body_sha256": "0aa74e3eadfb78899c55fa44b65c6aa4fd0cc653ad09eff41df06903fb03faa9",
+  "Source_ready": false,
+  "Source_authorized": false,
+  "Source_implemented": false,
+  "Source_credit": 0,
+  "readiness_only": true,
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strstr_readiness_oct16",
+  "base": "108a4a24e4c262734ab1dee0f939f90f602359ee",
+  "owner": "agent/cc12_crt_strstr_readiness_oct16",
+  "discovery": {
+    "entry_claim": "e7db7b",
+    "separate_local_claim": "25a036",
+    "metadata_bounds": "54171c",
+    "whole_range_claim": "e30585",
+    "body_before": "3b004a",
+    "order": "Entry-only metadata discovery, then whole134B range lease, then full disk body pin before selected body bytes/listing/typed analysis."
+  },
+  "saved_prototype": "char * __cdecl _strstr(char * _Str, char * _SubStr)",
+  "prototype_qualification": "Metadata only, no SDK service or physical/native ABI identity inferred.",
+  "whole_selected_proof": {
+    "disk_live_bytes_listing_agree": true,
+    "typed_batches": [
+      64,
+      2
+    ],
+    "all_66_typed_rows": true,
+    "complete_contiguous_owner": true,
+    "modification": "6860",
+    "all_overrides": "NONE",
+    "default_effective_flow_equal": true,
+    "selected_call_instructions": 0,
+    "unresolved_external_tail_transfers": 1,
+    "no_thunk": true,
+    "no_return": false
+  },
+  "selected_facts": [
+    "Initial needle pointer home [entryESP+8] is read first; save EDI/EBX/ESI, then one BYTE needle[0] at BF9447. Source pointer home is loaded at BF9449 before the first needle test. Empty needle returns that supplied source pointer value at BF94C0, with no source payload read; null source is compatible with this local path.",
+    "Nonempty needle reads needle[1] BYTE at BF9451. If that byte is zero, the register-prepared interior-entry tail path is reached; it is not modeled as a callable SDK strchr or an accepted cdecl provider.",
+    "Selected local multi-byte path has nine BYTE payload read sites, no WORD/DWORD/SSE payload load. DWORD memory operands are native pointer homes; implicit PUSH/POP/RET accesses are native stack. No absolute global, constants/table window or ISA dispatch is encoded in selected body; none was read or leased as data.",
+    "First two nonzero needle bytes are cached in DL/DH. Local restart reloads native needle pointer home at BF945A. Source search loads precede ESI+1 before equality/NUL branches. Candidate-second-source BYTE is read at BF947E and ESI+1 precedes second-byte comparison.",
+    "Longer local comparisons test needle BYTE[ECX+2] for NUL before corresponding source read. BF9491 reads BYTE[ESI], then BF9493 advances ESI by2 BEFORE comparison; mismatch restarts before the skipped partner payload is read. If the next needle byte is nonzero, BF94A1 reads BYTE[ESI-1], then advances needle cursor ECX by2 before equality. These are factual selected accesses, not a complete ordinary-domain/algorithm proof.",
+    "Local failure sets EAX0; local success computes LEA EAX,[EDI-1], identifying the historical candidate address; empty needle returns original supplied source value. Borrowed pointer/ownership permissions and whole behavior of the interior-tail route remain unestablished until provider closure."
+  ],
+  "tail_observation": {
+    "site": "00BF94B4",
+    "kind": "register_prepared_interior_tail_transfer",
+    "encoded_target": "00BF86F6",
+    "bytes": "e93df2ffff",
+    "signed_rel32": -3523,
+    "next_offset": "00BF94B9",
+    "metadata_function_at_target": false,
+    "enclosing_candidate_entry": "00BF86F0",
+    "enclosing_candidate_name": "_strchr",
+    "provider_body_read": false,
+    "accepted_callable_cdecl_contract": false,
+    "preparation": "00BF94AD XOR EAX,EAX; POP ESI/EBX/EDI; 00BF94B2 MOV AL,DL; numeric tail transfer. EAX is 0..255 first needle BYTE, native caller stack restored. Further register/stack/return/extent/DF/segment/service ABI recovery belongs to Astra, not inferred here."
+  },
+  "call_checker_scope": "No address/native callable Native row is asserted for this known non-function-start target. Exact encoded interior-tail observation is explicit under site/encoded_target/kind and typed transport. Required metadata-only checker has zero callable rows, never semantics/provider closure proof.",
+  "payload_access": {
+    "BYTE_sites": [
+      "00BF9447",
+      "00BF9451",
+      "00BF945E",
+      "00BF946B",
+      "00BF947E",
+      "00BF948A",
+      "00BF9491",
+      "00BF949A",
+      "00BF94A1"
+    ],
+    "WORD_DWORD_SSE_payload_sites": 0,
+    "native_pointer_home_DWORD_sites": [
+      "00BF9440",
+      "00BF9449",
+      "00BF945A"
+    ],
+    "absolute_data_windows": [],
+    "targeted_data_or_table_reads": 0
+  },
+  "scope_and_domain": {
+    "proven_local_empty_needle": "One real live readable determinate needle BYTE0 required; if zero, no source payload, supplied source/null returned. Native pointer-home/frame behavior is not a new-interface physical binding.",
+    "other_local_observations": "Stable genuine reached BYTE storage may admit raw unaligned/interior/read-only/overlapping inputs and ordinary caller stack; no typed/aligned object is required by BYTE loads. No complete future Source contract is authorized.",
+    "extent_boundary": "Actual nonwrapping cursor/read geometry needs explicit recovery, including ESI+2 before comparison and later ESI-1 address. No padding/readability for skipped/unvisited bytes, full unused source/needle NUL, before-base pointer or fake object is asserted. No INTMAX cap or nonoverlap/ownership assumption is invented.",
+    "register_segments": "Locally ESP frame, EDI/EBX/ESI saves/restores; DL/DH needle cache, AL/AH byte comparisons. No selected x87/SSE/string/REP/explicit segment override or DF-sensitive instruction. Ordinary Win32 DS/SS interpretation only; provider DF/segment/register contract unknown.",
+    "exclusions": "Fault/MMIO/concurrency/lifetime/private-frame/home/savedreg alias protocols, physical ABI/register/flags/stack/EH/runtime/game/caller/provider proof not admitted."
+  },
+  "provider_metadata": {
+    "encoded_entry": "00BF86F6",
+    "no_function_start": true,
+    "enclosing_entry": "00BF86F0",
+    "retained_name": "_strchr",
+    "saved_prototype": "char * __cdecl _strchr(char * _Str, int _Val)",
+    "saved_body_span": "00BF86E0..00BF87AD; metadata only",
+    "exact_target_signature_unavailable": "get_function_signature: No function at address: 00bf86f6",
+    "provider_body_or_bytes_decoded": false,
+    "no_provider_address_lease": true
+  },
+  "callers": {
+    "indexed_count": 54,
+    "scope": "Labels only, no caller bodies or xref setup promoted."
+  },
+  "blockers": [
+    "Register-prepared numeric tail destination BF86F6 is not a Ghidra function start; enclosing metadata BF86F0 _strchr does not authenticate an entry ABI or provider service. Do not redirect to BF86F0, rename, repair, decode provider or invent an SDK/context wrapper.",
+    "Astra must recover exact interior-entry register/stack/home/preservation/return/error/failure and access-extent/DF/segment contract before any whole Source gate. Caller/provider bodies remain unread here.",
+    "Whole ordinary raw-storage domain and return identity across all paths remain unapproved. Any later contract must preserve the real reached-byte trace, cached/reloaded state, precompare+2 cursor geometry and no post-stop payload. No artificial padding/full unused terminator, signed cap, nonoverlap or fake object/ownership precondition can replace that work."
+  ],
+  "Source_API_or_packet_proposed": false,
+  "preservation": {
+    "old_sealed_files": 1293,
+    "old_families": 37,
+    "old_working": 875,
+    "old_literal_Git": 872,
+    "old_CRLF_only": 3,
+    "new_CRT_baseline": 289,
+    "new_literal_Git": 289,
+    "new_CRLF_only": 0,
+    "current_inputs": 134,
+    "no_old_checkout_edit_merge_reset": true,
+    "no_exports_junction": true,
+    "all_actual_bytes_hash_mtime_unchanged": true
+  },
+  "actual_history": {
+    "command_exit_failures": 0,
+    "target_signature_absence": {
+      "receipt": "f066e9",
+      "CLI_exit": 0,
+      "scope": "Exact interior target lacks a function signature; containing saved metadata returned. No repair/retry/provider-body query."
+    },
+    "initial_proto_display": {
+      "receipt": "54171c",
+      "CLI_exit": 0,
+      "scope": "CLI signature view explicitly omitted four final lines of hash-list metadata; unseen lines not adopted. Exact complete owner/length/flow read independently by two typed batches."
+    },
+    "natural_sessions": [
+      {
+        "stage": "current before baseline pins",
+        "initial": "9c8e54",
+        "completion": "2ecc0d",
+        "exit": 0
+      },
+      {
+        "stage": "supported local index",
+        "initial": "079bd6",
+        "completion": "c02404",
+        "exit": 0
+      }
+    ]
+  },
+  "evidence_family": "local/NativeCrtStrstrReadiness01",
+  "provenance": "New readiness13 own task-only paired exec records/full Original own-prefix authentication. Old Source9/other compiler/Root/peer transports remain external integrity inputs, never own proof.",
+  "exclusions": [
+    "No Source/compiler/baseline/build/tests/probes/emulation/targetbody execution/SDK comparison",
+    "No provider/caller/SCC/body expansion or Ghidra mutation/autostart/import/restart/repair/inline bridge",
+    "No shared registry/CMake/ledger/names/Main change or push"
+  ],
+  "verification": "Required metadata-only report/doc checker follows; no callable interior-provider contract is fabricated and zero rows do not prove semantics.",
+  "normal_lease": "Hold entry/full134Brange/two outputs for Root normal queued handoff; separate local family/preservation leases held."
+}

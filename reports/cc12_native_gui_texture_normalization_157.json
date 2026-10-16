@@ -1,0 +1,473 @@
+{
+  "packet": "cc12_native_gui_texture_normalization157",
+  "kind": "whole actual raw texture normalization with existing saved-dimension leaves",
+  "recorded_utc": "2026-10-16T11:34:30.831949+00:00",
+  "checked_baseline": "39c956a654c8d402fd687960e9cf141a83dcb150",
+  "published_dependency": "28d884b161299605948b6d57486a206322a6a0cf",
+  "scope": {
+    "owned_address": "00aceb70",
+    "owned_range": "[00aceb70,00acebd8)",
+    "owned_files": [
+      "include/bsp/native_gui_texture_normalization.hpp",
+      "src/native_gui_texture_normalization.cpp",
+      "docs/CC12_NATIVE_GUI_TEXTURE_NORMALIZATION_157.md",
+      "reports/cc12_native_gui_texture_normalization_157.json"
+    ],
+    "only_owned_AC_name_evidence_new_raw_reconstruction_row": true,
+    "no_CMake_or_existing_Source_changes": true,
+    "not_ACF260_or_ACF9B0": true
+  },
+  "original": {
+    "Original_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "Original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "fresh_body_live_disk_equal": true,
+    "reused154_body_equal": true,
+    "body_bytes": 104,
+    "instruction_starts": 36,
+    "entry": "00aceb70",
+    "end_exclusive": "00acebd8",
+    "body_sha256": "9160109d71a26a9e56d6505ce09444d8a2b8e0e4f6d5f5e619b6d1308f68a070",
+    "binary": {
+      "path": "local/texture_normalization157/Original_00aceb70.bin",
+      "sha256": "9160109d71a26a9e56d6505ce09444d8a2b8e0e4f6d5f5e619b6d1308f68a070"
+    },
+    "instructions": {
+      "path": "local/texture_normalization157/Original_00aceb70_instructions.json",
+      "sha256": "77f93c9e1a7af9df78bdb9f8ec24013c80a45691c3c4e865110b5e75ced31d63"
+    },
+    "scoped_indirect_calls": [
+      {
+        "site": "00aceb80",
+        "current_slot": "+48",
+        "admitted_table": "00d61948",
+        "target": "00b3ce70"
+      },
+      {
+        "site": "00aceba5",
+        "current_slot": "+4c",
+        "admitted_table": "00d61948",
+        "target": "00b3ce80"
+      }
+    ],
+    "direct_calls": [],
+    "reused154_tables_constants": [
+      {
+        "address": "00d61948",
+        "bytes": 80,
+        "hex": "e0 30 bd 00 90 f5 b3 00 90 fa b3 00 30 ce b3 00 40 ce b3 00 80 3e b3 00 90 3e b3 00 a0 ce b3 00 30 dd b3 00 90 dd b3 00 b0 d7 b3 00 90 e1 b3 00 80 fd b3 00 90 d5 b3 00 c0 d5 b3 00 50 ce b3 00 60 ce b3 00 90 ce b3 00 70 ce b3 00 80 ce b3 00",
+        "live154_disk_equal": true,
+        "reused_frozen_evidence": {
+          "path": "local/texture_normalization157/reused154_Texture2D_profile_live_bytes.txt",
+          "sha256": "0722495c8a8800a9a588c2a278f3d3bde61fee02fa286b1c075819bc4eed8a4d"
+        }
+      },
+      {
+        "address": "00ce3978",
+        "bytes": 4,
+        "hex": "00 00 80 4f",
+        "live154_disk_equal": true,
+        "reused_frozen_evidence": {
+          "path": "local/texture_normalization157/reused154_uint_bias_live_bytes.txt",
+          "sha256": "39d05326afb8963677e7d1b050237f9ec31bc30c6a6e1aead1e3cc108b374aa9"
+        }
+      },
+      {
+        "address": "00cec380",
+        "bytes": 8,
+        "hex": "00 00 00 00 00 00 8e 40",
+        "live154_disk_equal": true,
+        "reused_frozen_evidence": {
+          "path": "local/texture_normalization157/reused154_width_divisor_live_bytes.txt",
+          "sha256": "689eb318e1df94098ae6885dda527e60f92e9b1def1977305465a429c5cbd4e1"
+        }
+      },
+      {
+        "address": "00cef1b8",
+        "bytes": 8,
+        "hex": "00 00 00 00 00 80 86 40",
+        "live154_disk_equal": true,
+        "reused_frozen_evidence": {
+          "path": "local/texture_normalization157/reused154_height_divisor_live_bytes.txt",
+          "sha256": "a72cdc2285f998dc6a73c83182fee0031741b132b9fde2fd2f8c0a53052dae2d"
+        }
+      }
+    ],
+    "no_Original_code_invoked": true
+  },
+  "calls": [],
+  "Native_contract": {
+    "ABI": "ECX output8, EDX actual texture; EAX same output; RET at ACEBD7; ESI/EDI preserved; 8B stack scratch; no local EH",
+    "width": "CURRENT texture00/CURRENT table48; query; TEST/MOV integer into scratch+4/FILD signed; negative adds real FLOAT CE3978; divide real DOUBLE CEC380",
+    "bridge": "CURRENT height00/+4C target capture ACEB9A/9C BEFORE width FSTP ACEBA1; height CALL ACEBA5 after spill",
+    "height_output": "same signed-FILD/bias, divide real DOUBLE CEF1B8; reuse scratch+4 for height FLOAT; then width FLD/FSTP output0 and height FLD/FSTP output4; both queries/conversions finish before any output store",
+    "ownership": "No count, acquisition, cleanup, retain, catch, rollback or retry in Native body"
+  },
+  "Source_API": {
+    "entry": "normalize_gui_texture_size_00aceb70(output, actual_texture, profiles, frame)",
+    "profiles": "NativeGuiTextureNormalizationProfiles borrows genuine already initialized GameNativeReadOnlyData; actual D61948 span50h and real CE3978/CEC380/CEF1B8 aliases checked before context member stores. No receiver/query or lazy mapping.",
+    "frame": "Noncopyable one-shot private56B frame with40B Source diagnostics, untouched8B Native scratch, two separately captured current-height words. Source-only phases; not Native EH/lifetime authority.",
+    "known_regions": {
+      "frame": 56,
+      "profiles": 20,
+      "data_owner": 76,
+      "profile_alias": 80,
+      "uint_bias": 4,
+      "width_divisor": 8,
+      "height_divisor": 8,
+      "actual_texture": 80,
+      "output": 8,
+      "only_allowed_overlap": "actual texture and output; all other known pairwise ranges disjoint before entry"
+    },
+    "private_layout": "Frame+28h widthFLOAT; +2Ch integer then heightFLOAT; +30h/+34h captured current heightprofile/target. No blanket scratch initialization.",
+    "projection": "Capture CURRENT width raw profile/target, admit actual D61948/B3CE70, call real existing raw width leaf. One no-throw asm block converts/divides width, captures current height00/4C, spills width. Empty-x87 C++ captured-route admission then real height leaf; second no-throw asm block converts/divides/spills height and emits two output stores.",
+    "allowed_output_texture_alias": "Output8 may overwrite any actual texture bytes, including header/saved fields; no texture or table read follows output writes. Complete known frame/context/data/alias separation checked first.",
+    "failure": "Preflight failure leaves fresh frame unchanged; entered ordinary C++ failure sets failed_from/private failed phase and rethrows, with no raw cleanup or automatic ownership. No retry/reset/placement reuse or stale-field discovery. Hardware/FPU/SEH faults unclaimed.",
+    "opaque_obligations": "Genuine existing actual2D producer/provenance and current readable table through4C; independent qualified texture/resource/creator, output/map/backing, full contexts/data/aliases/private caller/callee backing lifetimes; serialized exclusion; all transitive aliases/placement proof beyond known regions remain caller obligations. Diagnostics are not tokens/owners.",
+    "frame_constructor": "User-provided empty noexcept constructor preserves uninitialized scratch/capture cells in both default/value initialization; diagnostics_{} initializes only Source metadata."
+  },
+  "actual_existing_providers": [
+    {
+      "provider": "B3CE70/B3CE80",
+      "source": "src/native_texture_saved_dimensions.cpp:10,18",
+      "contract": "Real whole4B naked fastcall getters read saved +34/+38; no new Native credit, no callback or numeric code invocation."
+    },
+    {
+      "provider": "B3F930 actual2D producer",
+      "source": "src/native_texture_2d_owner.cpp:140",
+      "contract": "Actual currentD61948 and saved extents; retain same independent creator/resource/pool graph. Descriptor+28/+2C helpers are separate."
+    },
+    {
+      "provider": "read-only data",
+      "source": "src/game_native_readonly_data.cpp:137",
+      "defining_canonical_target": "bsp_core",
+      "registration": "cmake/startup.cmake:98",
+      "contract": "data_at validates already-held band and returns original numeric VA itself; no lazy mapping or executable Original code."
+    }
+  ],
+  "strict_compile": {
+    "status": "PASS",
+    "command": {
+      "path": "local/texture_normalization157_strict_compile.cmd",
+      "sha256": "ba5aed38557e2bcdf18abfcf491ee39e5e996ca3faa0d984b1413d755426195a"
+    },
+    "log": {
+      "path": "local/texture_normalization157_strict_compile.log",
+      "sha256": "eb90e2837cc3d9934e2081dbc877e770e69345d3bb91e00f1eb2ffcf4446e782"
+    },
+    "object": {
+      "path": "local/native_gui_texture_normalization_157.obj",
+      "sha256": "6d1da09197a29a2f6ddacb62cf82884bc5c69475daf5fce23c13a99220fe7a05"
+    },
+    "assembly": {
+      "path": "local/native_gui_texture_normalization_157.asm",
+      "sha256": "7b9fddb168a8adb2f547a053eec32abae2dec60728f88c6e22d99ad68b4e4e00"
+    },
+    "coff_complete": {
+      "path": "local/texture_normalization157_coff_complete.json",
+      "sha256": "35260ef900bb7cb691066b2b618816b6a7de53dda70647e0ad8b131b12a997e4"
+    },
+    "flags": "MSVC Win32 C++17 /EHsc /MD /O2 /W4 /WX /fp:strict",
+    "linked_or_executed": false,
+    "initial_revision_history": {
+      "path": "local/texture_normalization157/initial_strict_revision/manifest.json",
+      "sha256": "5139b04b4cde37213a4c596b2a5528d612aad64c009e0a33eaf3870e40d032a9"
+    },
+    "header_fix_comparison": {
+      "path": "local/texture_normalization157_header_fix_strict_comparison.json",
+      "sha256": "7f314ae6ad58229d12328ebf794631b58aa047aae24c55a6ec06d29c3216d6ed"
+    },
+    "compact_optimized_index": {
+      "path": "local/texture_normalization157/optimized_compact/index.json",
+      "sha256": "5815b7365e73804437016975ec4e6714e2adbc768592480564dd65c142342717"
+    },
+    "final_inputs": [
+      {
+        "original_path": "include/bsp/native_gui_texture_normalization.hpp",
+        "frozen_copy": {
+          "path": "local/texture_normalization157/final_inputs/include/bsp/native_gui_texture_normalization.hpp",
+          "sha256": "33306028223a7d3f7b2a194facd8f55c1e0bfae08ab15d88fa5f3bff5fb26bb8"
+        }
+      },
+      {
+        "original_path": "src/native_gui_texture_normalization.cpp",
+        "frozen_copy": {
+          "path": "local/texture_normalization157/final_inputs/src/native_gui_texture_normalization.cpp",
+          "sha256": "271d375501300757bc267cf9530c9126edb04f4292a1bfbf1641f213df38f2a1"
+        }
+      },
+      {
+        "original_path": "cmake/startup.cmake",
+        "frozen_copy": {
+          "path": "local/texture_normalization157/final_inputs/cmake/startup.cmake",
+          "sha256": "1a2704ddc59bbd32aef71ebe1097ef08464830353eae20d4b0f730c418e90dcc"
+        }
+      },
+      {
+        "original_path": "scripts/build.ps1",
+        "frozen_copy": {
+          "path": "local/texture_normalization157/final_inputs/scripts/build.ps1",
+          "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+        }
+      },
+      {
+        "original_path": "tools/bsp.py",
+        "frozen_copy": {
+          "path": "local/texture_normalization157/final_inputs/tools/bsp.py",
+          "sha256": "133e2cf3f24f0402f6ed7d0e1dd5148c678c7ca10722633d1ec6cdc9b693a9ff"
+        }
+      },
+      {
+        "original_path": "tools/workspace.py",
+        "frozen_copy": {
+          "path": "local/texture_normalization157/final_inputs/tools/workspace.py",
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        }
+      },
+      {
+        "original_path": "tools/ledger.py",
+        "frozen_copy": {
+          "path": "local/texture_normalization157/final_inputs/tools/ledger.py",
+          "sha256": "de883bb8bcb4d364b2abbddd88f2a22936f3cda29c3233304172674fa5c06ba9"
+        }
+      },
+      {
+        "original_path": "tools/coordination.py",
+        "frozen_copy": {
+          "path": "local/texture_normalization157/final_inputs/tools/coordination.py",
+          "sha256": "14f416730a18e9d40a9775f2de7c05e9c951c54ebb7f3cbdbc039fb42a74e7f4"
+        }
+      },
+      {
+        "original_path": "tools/ghidra_export.py",
+        "frozen_copy": {
+          "path": "local/texture_normalization157/final_inputs/tools/ghidra_export.py",
+          "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685"
+        }
+      },
+      {
+        "original_path": "tools/ghidra_annotate.py",
+        "frozen_copy": {
+          "path": "local/texture_normalization157/final_inputs/tools/ghidra_annotate.py",
+          "sha256": "aa170c357bb5e4ff20f170d77230570cdf8a1b2ee53e9b322581e1770b296bf6"
+        }
+      },
+      {
+        "original_path": "tools/verify_report_calls.py",
+        "frozen_copy": {
+          "path": "local/texture_normalization157/final_inputs/tools/verify_report_calls.py",
+          "sha256": "f3f412b6f8eaeb6c4b212e34cca6a2567c2ed4015d0a942268d752911f6913ef"
+        }
+      }
+    ]
+  },
+  "optimized_review_ranges": {
+    "context_constructor": "341-439",
+    "public_forward": "449-454",
+    "check_regions": "1537-1650",
+    "width_and_current_height_capture_spill": "1683-1770",
+    "height_and_delayed_output": "1781-1860",
+    "preflight": "1873-1971",
+    "admit": "1982-2013",
+    "whole_run_and_Cpp_catch": "2029-2328"
+  },
+  "canonical_build": {
+    "status": "PASS",
+    "log": {
+      "path": "local/texture_normalization157_existing_canonical_build.log",
+      "sha256": "dcfe7578424a1e3e4a2c6fe6d8360c0c3009e17b137e33f8faf72a6b256014f5"
+    },
+    "exit_code": 0,
+    "existing_checks": "2/2: reconstructed_math0.21s/tool_tests8.00s; total8.25s",
+    "new_TU_registered": false,
+    "qualification": "Baseline/current-provider build only; newTU strict-compiled separately, no157 canonical linkage/execution claim. Primary owns registration.",
+    "existing_warning": "Unrelated LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj",
+    "timing": "Single baseline/provider run before final header-only constructor correction, while newTU unregistered; final strict repeated after correction, baseline not repeated."
+  },
+  "reviews": {
+    "Root_full_Source_API": "PASS; requested user-provided empty Frame constructor applied and final strict recompiled",
+    "Root_full_optimized": "PASS",
+    "Root_full_doc": "PASS",
+    "record": {
+      "path": "local/texture_normalization157_Root_final_reviews.json",
+      "sha256": "bcd6d137288468d587458092a8dbb3264c33d6211647854fe0502afe78c7a2a6"
+    }
+  },
+  "verification": {
+    "live_report_calls": {
+      "checked": 0,
+      "failed": 0,
+      "qualification": "Original has0 direct calls and2 indirect calls; zero is not coverage proof. Exact36 instructions/two sites/current numeric slots/real saved-dimension bindings separately pinned.",
+      "log": {
+        "path": "local/texture_normalization157_report_call_verification.txt",
+        "sha256": "83f8e9b565508e131a0365bb8c342a1d3f52faefed3c275d4ce986211c10b509"
+      }
+    },
+    "no_new_tests_probes_Original_execution": true,
+    "prior233_sealed_pins_unchanged": true,
+    "prior233_sealed_pins_unchanged_at_seal": true
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_texture_saved_dimensions.hpp",
+      "sha256": "79cd7e835c608dda30d3ada5dc46b8c9e09b066e9a284f18a12276ff4d770890",
+      "git_blob": "39895a3684f10935598ef4fec7dc1e4184f76249",
+      "frozen_copy": {
+        "path": "local/texture_normalization157/providers/include/bsp/native_texture_saved_dimensions.hpp",
+        "sha256": "79cd7e835c608dda30d3ada5dc46b8c9e09b066e9a284f18a12276ff4d770890"
+      }
+    },
+    {
+      "path": "src/native_texture_saved_dimensions.cpp",
+      "sha256": "094040ca29e9d708254a8889c062bda42f15a7c6833b303c3dc37f6d72724483",
+      "git_blob": "81b8331d5740d2ec0606a3ec1e436b0795d7a850",
+      "frozen_copy": {
+        "path": "local/texture_normalization157/providers/src/native_texture_saved_dimensions.cpp",
+        "sha256": "094040ca29e9d708254a8889c062bda42f15a7c6833b303c3dc37f6d72724483"
+      }
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "frozen_copy": {
+        "path": "local/texture_normalization157/providers/include/bsp/game_native_readonly_data.hpp",
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+      }
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "frozen_copy": {
+        "path": "local/texture_normalization157/providers/src/game_native_readonly_data.cpp",
+        "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+      }
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "git_blob": "28ac6a6a771515dc54df56d630a91438b24fb2de",
+      "frozen_copy": {
+        "path": "local/texture_normalization157/providers/include/bsp/native_texture_2d_owner.hpp",
+        "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc"
+      }
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+      "git_blob": "65f5ff828bcfed5f544912349feeeb9167349359",
+      "frozen_copy": {
+        "path": "local/texture_normalization157/providers/src/native_texture_2d_owner.cpp",
+        "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada"
+      }
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "sha256": "990c015f2b0fc9cffc29436a69c9a52d057fcdb21c93c5f849a31e72d01235e4",
+      "git_blob": "b7e3a21570936d4a7479c919174ed13a56b4e60a",
+      "frozen_copy": {
+        "path": "local/texture_normalization157/providers/include/bsp/native_gui_frame_box_records.hpp",
+        "sha256": "990c015f2b0fc9cffc29436a69c9a52d057fcdb21c93c5f849a31e72d01235e4"
+      }
+    },
+    {
+      "path": "src/native_gui_frame_box_records.cpp",
+      "sha256": "2c5f95a919411884df592c961257fced2a8541668b8ad038464e35b2fed62b4c",
+      "git_blob": "642d53741ed0b01e7976e01003b1d9c65aecc038",
+      "frozen_copy": {
+        "path": "local/texture_normalization157/providers/src/native_gui_frame_box_records.cpp",
+        "sha256": "2c5f95a919411884df592c961257fced2a8541668b8ad038464e35b2fed62b4c"
+      }
+    },
+    {
+      "path": "include/bsp/gui_framebox.hpp",
+      "sha256": "ec5c437d8a2bfb51abf5b7dab2b69da05b6fc50fe74ef6fd26c3808c85e755a5",
+      "git_blob": "6a739abea827bc2db8dddeb8ca74f286fee8bab4",
+      "frozen_copy": {
+        "path": "local/texture_normalization157/providers/include/bsp/gui_framebox.hpp",
+        "sha256": "ec5c437d8a2bfb51abf5b7dab2b69da05b6fc50fe74ef6fd26c3808c85e755a5"
+      }
+    },
+    {
+      "path": "src/gui_framebox.cpp",
+      "sha256": "d84dfa37d274a40e3ba574e6886d72a1f2fb7d12328bccecd8d091f32f347306",
+      "git_blob": "c9b53453ac13f3a4b4181727d27b132bfee12a75",
+      "frozen_copy": {
+        "path": "local/texture_normalization157/providers/src/gui_framebox.cpp",
+        "sha256": "d84dfa37d274a40e3ba574e6886d72a1f2fb7d12328bccecd8d091f32f347306"
+      }
+    }
+  ],
+  "own_Source": [
+    {
+      "path": "include/bsp/native_gui_texture_normalization.hpp",
+      "sha256": "33306028223a7d3f7b2a194facd8f55c1e0bfae08ab15d88fa5f3bff5fb26bb8"
+    },
+    {
+      "path": "src/native_gui_texture_normalization.cpp",
+      "sha256": "271d375501300757bc267cf9530c9126edb04f4292a1bfbf1641f213df38f2a1"
+    }
+  ],
+  "reused_readiness": {
+    "report": {
+      "path": "reports/cc12_native_gui_frame_box_raw_geometry_readiness_154.json",
+      "sha256": "16645d5e5bae169e962c7befd45c5719f4085e076bc131c434ee09fafda515ae"
+    },
+    "manifest": {
+      "path": "local/frame_box_geometry154_final_artifact_manifest.json",
+      "sha256": "f839a42c716a8f9e57ebbb92b694277fa6374f78f4a313e075cc1c527034d475"
+    }
+  },
+  "limits": [
+    "Supported qualified actual2D domain only, not broad texture/render owner production/admission.",
+    "Source phase/preflight/catch/metadata and ordinary SDK ABI are added boundaries, not Native ECX/EDX/private register/FPU fault/CRT/FH3/SEH identity.",
+    "Same x87 explicit arithmetic/capture/spill/store schedule on valid admitted inputs; no arbitrary FPU control/status/fault/runtime equivalence claim.",
+    "Original raw/semantic record and name preserved; no new Native credit for existing getters, no550B writer or1465B geometry closure.",
+    "No callbacks/defaults/new owner/counter/protective retain, COM/semantic casts, numeric Original call, lazy mapping, rollback/cleanup/replay or production activation."
+  ],
+  "documentation": {
+    "path": "docs/CC12_NATIVE_GUI_TEXTURE_NORMALIZATION_157.md",
+    "sha256": "ce376233717532dfc95e56916876f755d03fbc6e4f4e89317839b2679aadca44"
+  },
+  "final_artifact_manifest": "local/texture_normalization157_final_artifact_manifest.json",
+  "annotation": {
+    "owned_address": "00aceb70",
+    "existing_name_comment_preserved": true,
+    "only_owned_locked_annotate_project_save_refreshed_export": true,
+    "history": {
+      "path": "local/texture_normalization157_ghidra_annotation_history.json",
+      "sha256": "484c23e3da26f982a4c8a34f65bd2f0ea50458328e441b6c82387bc905520e41"
+    },
+    "log": {
+      "path": "local/texture_normalization157_ghidra_annotation.log",
+      "sha256": "4564f6c19c7db2851493963d6d96d524a600b0ffdeccc37c45a537c25e37a232"
+    },
+    "export_log": {
+      "path": "local/texture_normalization157_ghidra_export.log",
+      "sha256": "f08968fbb9475c5c4a5e4dc9487f239274b1b959c8944422bb18f4aae1c49c47"
+    },
+    "before": {
+      "path": "local/texture_normalization157_comments_before.txt",
+      "sha256": "25080b2abf39c769b7f9227ace55a1b328f31c1855495fdf922f5ecf9a00599b"
+    },
+    "after": {
+      "path": "local/texture_normalization157_comments_after.txt",
+      "sha256": "54322187fe9c32974de5b0ac206fc57a3e1d065b81495f1604bc7db53dd834de"
+    }
+  },
+  "ledger": {
+    "only_owned_address_name_evidence_new_raw_record": true,
+    "prior_semantic_row_status_and_nonowned_lines_unchanged": true,
+    "proof": {
+      "path": "local/texture_normalization157_ledger_preservation_proof.json",
+      "sha256": "79221e058685db60608ad89351d1f15b146506d1d2b3cd5e97633ec0c7e922f6"
+    },
+    "canonical_kind_initial_verification_correction": "Successful adds were not repeated; closure verifies canonical kind:function and preserved old records. Initial local verification failure retained.",
+    "log": {
+      "path": "local/texture_normalization157_ledger_add.log",
+      "sha256": "5580bf20aba3a84052fff5495ad0025acb80d65124dd16dd02acd266742bd876"
+    }
+  }
+}

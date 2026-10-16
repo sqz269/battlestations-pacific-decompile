@@ -1,0 +1,311 @@
+{
+  "packet": "cc12_native_gui_frame_box_copy_completion_readiness_178",
+  "status": "read_only_complete_bounded_constructor_follow_on_requires_parent_private_admission_and_post_EH_disposition",
+  "source_ready": false,
+  "source_implemented": false,
+  "native_body_credit": 0,
+  "bounded_constructor_Source_follow_on_design_ready": true,
+  "current_direct_API_composition_ready": false,
+  "finding": "No missing Native callee body remains for a bounded constructor-only composition after169 integration; current direct API composition needs explicit constructor-progress and post-EH metadata disposition.",
+  "baseline": "3126dfe94c79f3a5e70a25737bb10966b3c918aa",
+  "worker_HEAD_unchanged": "566b3d06693290d9500ae8e396fa016db465d2dd",
+  "baseline_acquisition": "git show snapshots only; no merge/checkout during shared build window",
+  "state169_published_at_baseline": false,
+  "state169_real_reviewed_candidate": [
+    {
+      "provenance": "Immutable174 final169 reviewedSource snapshot, not inferred published registration",
+      "path": "include/bsp/native_gui_frame_box_state_storage.hpp",
+      "frozen": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/reviewed169_inputs/include/bsp/native_gui_frame_box_state_storage.hpp",
+      "bytes": 8305,
+      "sha256": "3756b45ae5422719940b13124cf30d2956cefbb72c86cfad43f9d5b171a1af34"
+    },
+    {
+      "provenance": "Immutable174 final169 reviewedSource snapshot, not inferred published registration",
+      "path": "src/native_gui_frame_box_state_storage.cpp",
+      "frozen": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/reviewed169_inputs/src/native_gui_frame_box_state_storage.cpp",
+      "bytes": 34093,
+      "sha256": "1ac9c99f66c4066771ce83a0e658fc4fe36d412907488ed074f60ed19e5ee90a"
+    }
+  ],
+  "original": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_spans": 10,
+    "live_bytes": 337,
+    "independent_installed_PE_equal": true
+  },
+  "functions": [
+    {
+      "address": "00ad27a0",
+      "name_preserved": "BSP_GuiFrameBox_CopyConstruct",
+      "exclusive_end": "00ad2876",
+      "bytes": 214,
+      "instruction_starts": 53,
+      "original_abi": "ECX destination; stack source; EAX saved destination; RET4 atAD2873",
+      "handler_entry": "00cb92e4",
+      "func_info": "00df0888",
+      "unwind_map": "00df0870",
+      "normal_states": [
+        -1,
+        0,
+        2
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "address": "00ad27c4",
+      "native": "00aa9520",
+      "function": "00ad27a0",
+      "kind": "call"
+    },
+    {
+      "address": "00ad27f0",
+      "native": "00ad2230",
+      "function": "00ad27a0",
+      "kind": "call"
+    },
+    {
+      "address": "00ad285b",
+      "native": "00acf8f0",
+      "function": "00ad27a0",
+      "kind": "call"
+    },
+    {
+      "address": "00cb92c3",
+      "native": "00aa9730",
+      "function": "00cb92c0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb92df",
+      "native": "0041dd20",
+      "function": "00cb92d6",
+      "kind": "tail_jump"
+    }
+  ],
+  "indirect_current_slot": {
+    "site": "00ad2854",
+    "bytes": "ffd2",
+    "current_vptr_load": "00ad2849",
+    "current80_load": "00ad284b",
+    "data_cell": "00d5d1b0",
+    "canonical_target": "00ad0d80",
+    "qualification": "late dynamic edge/data binding; no direct CALL proof asserted"
+  },
+  "raw_undefined_tail": {
+    "site": "00cb92d1",
+    "bytes": "e94a90e1ff",
+    "target": "00ad2320",
+    "target_bytes": "e98bfeffff",
+    "target_of_tail": "00ad21b0",
+    "qualification": "raw byte/displacement evidence only; not a defined function/graph row"
+  },
+  "supported_domain_and_next_API": {
+    "conclusion": "No missing Native callee body remains for a bounded constructor-only composition after169 integration; current direct API composition needs explicit constructor-progress and post-EH metadata disposition.",
+    "source_implemented": false,
+    "native_body_credit": 0,
+    "completed_only_prose_is_user_policy": false,
+    "completed_only_prose_is_Native_impossibility_proof": false,
+    "stages": [
+      {
+        "stage": "before_base",
+        "native_state": -1,
+        "existing": "AA9520 prefix initializes actual+04=1; no FrameBox registry binding/125 preparation.",
+        "failure": "AA9520 owns its ref/list/timed cleanup; independent partial Model acquisitions remain retained."
+      },
+      {
+        "stage": "vector_call",
+        "native_state": 0,
+        "existing": "Whole138 AD2230, whole128 AD1910,103 current record copy and111/119 cleanup.",
+        "failure": "Parent base only; never a second vector tidy or failed103 release.138 Source preparation/range/SDK/EH limits remain."
+      },
+      {
+        "stage": "before_current80",
+        "native_state": 2,
+        "existing": "Base returned; vector returned;104/108 empty;100 and all4 x87-derived scalars written.",
+        "proposed": "Late placement119 over exact successful span, distinct fresh111 and parent-private163 publish using preprepared actual registry admission; persistent169 context only after companion lifetime starts.",
+        "not_proved": "No field/count/completion test, protective retain, arbitrary target or whole-copy completion."
+      },
+      {
+        "stage": "current80_and_hook",
+        "native_state": 2,
+        "existing": "Reviewed actual169 current80 body and published147 ACF8F0, real mapped132/clip166/color152 providers.",
+        "ordering": "CURRENT destination WORD EC zeroextend; CURRENT vptr/slot80; only after return BYTE74=0; then hook.",
+        "failure": "Real name then119 then AA9730; retain all entered service and creator/material-owner obligations, with consumed action metadata."
+      },
+      {
+        "stage": "after_constructor_unwind_returns",
+        "proposed": "Private parent-only163 metadata retirement/unbind from saved metadata; no graph/count/scalar/material/pool effects.",
+        "failure": "No such transition if cleanup escapes or did not complete. Never replay cleanup or infer safe later release from retained address."
+      }
+    ],
+    "binding_locators": {
+      "frame_box": {
+        "path": "src/native_gui_frame_box_identity.cpp",
+        "lines": "44-70,92-101,102-133",
+        "body": "binding_count validates same fresh exact119/profile/live+04; RenderCommandReference borrows it; ctor body registry.bind; no automatic FrameBox binding elsewhere in96/base125/vector138."
+      },
+      "base_prefix": {
+        "path": "src/native_gui_text_identity.cpp",
+        "lines": "15-21,46-48",
+        "body": "initialize_prefix sets actual references04 to1 and stamps base profiles; no registry bind."
+      },
+      "base_copy": {
+        "path": "src/native_gui_widget_copy_storage.cpp",
+        "lines": "59,89-110",
+        "body": "current model owner lookup/clone; adopt sole creator to4C; no FrameBox companion."
+      },
+      "separate_model_group": {
+        "paths": [
+          "src/native_model_owner.cpp:289-300",
+          "src/native_group_owner.cpp:303-312"
+        ],
+        "body": "Node companions require own live owner phases and bind own node runtimes, not Box construction completion."
+      },
+      "existing_capability": {
+        "path": "src/native_render_context.cpp",
+        "lines": "101-136",
+        "body": "prepare opaque key before construction; publish exact entry/SAME actual+04 without insertion/rehash/retain/callback after lock and validation."
+      },
+      "reviewed169": {
+        "path": "src/native_gui_frame_box_state_storage.cpp",
+        "lines": "116-118,595-603,680-710",
+        "body": "Same bound163 check;166 placement lifetime; B18A40 publication; retained creator graph and string-only cleanup after failure."
+      },
+      "destruction125": {
+        "path": "src/native_gui_frame_box_lifetime.cpp",
+        "lines": "48-85,94-132",
+        "body": "fresh exact119 validation; current name return; consumed-before119 and base actions; not an operation to repeat after ctor EH."
+      }
+    },
+    "proposed_files": [
+      "include/bsp/native_gui_frame_box_copy_storage.hpp",
+      "src/native_gui_frame_box_copy_storage.cpp",
+      "include/bsp/native_gui_frame_box_identity.hpp",
+      "src/native_gui_frame_box_identity.cpp",
+      "include/bsp/native_gui_frame_box_state_storage.hpp",
+      "src/native_gui_frame_box_state_storage.cpp",
+      "include/bsp/native_gui_frame_box_lifetime.hpp"
+    ],
+    "proposed_new_interface": "copy_native_gui_frame_box_storage_00ad27a0(actual_destination,actual_source,required_services,persistent_operation)",
+    "operation": "Nondefault,noncopy,nonmove,one-shot metadata with pre-retained graph/backing; preprepared registry capability and separate fresh111; late119/163/169-context placement before80; no generic abandonment or retries.",
+    "valid_after_failure": [
+      "Metadata-only diagnostics/parent-specific unbind only after genuine applicable constructor unwind returns.",
+      "Independent unrelated live creators may use real retirement protocols if all their own lifetime/alias/credit conditions still hold.",
+      "Real count-first nonzero credit release may avoid registry only with separately proven live atomic backing/exact credit accounting/nonzero outcome; this packet establishes no concrete such failure disposition."
+    ],
+    "not_established_after_failure": [
+      "No125/full destructor replay, used119/111 retry, zero dispatch into retired/unbound163 or destroyed-base profile.",
+      "No automatic material-owner revoke or material cleanup that may reach destructed Box.",
+      "No return/reuse of Box slot justified by raw address retention; outer AA1A40 remains separate.",
+      "No recovery of orphaned credits/names or private Native FH3/SEH identity."
+    ],
+    "important_boundaries": [
+      "Actual120 slot/11C payload/hidden11C preimage; same F8C188 initialized process and matching slot authority.",
+      "Original constructor creator credit and full reached graph survive active calls without added count/retain/gate.",
+      "Callbacks may change valid raw fields; late current target/range checks preserve existing supported-domain rejection/retention.",
+      "133 owns legacy Source exception transport;124/119 matching current SDK heap only;132 actual transform dispatch stays required.",
+      "C++ admission/preparation/cleanup software phases are not Native exception-origin proofs; noexcept zero/nested cleanup can terminate."
+    ]
+  },
+  "checks": {
+    "Source_CMake_metadata_Ghidra_mutations": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "Native_or_Source_body_execution": 0,
+    "new_agents": 0,
+    "Main_merges": 0,
+    "selected_Source_methods_reviewed": "exact named methods/constructors only, not a wholesale transitive body re-audit",
+    "Root_full_doc_review": "PASS",
+    "report_call_verification": "5 rows and5 doc calls,0 failed/unchecked/warnings"
+  },
+  "doc": {
+    "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_COPY_COMPLETION_READINESS_178.md",
+    "bytes": 13409,
+    "sha256": "273d8ea25452055d1285143326d2e8c7f56234922dce14e9e680144e1b9d4a93"
+  },
+  "artifacts": [
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/source_pins.json",
+      "bytes": 7728,
+      "sha256": "50c14cd7ebe5d8f1719b366cd42463755d0b3075e2f14f820b3abbc139087f3b"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/extra_source_pins.json",
+      "bytes": 2831,
+      "sha256": "d414c1038abbf32801a17c6cbd189e3ed9c88efb2d0883bd476244502d4caa4d"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/support_pins.json",
+      "bytes": 7143,
+      "sha256": "5662db0bc557838760447a6a4c08cdc74f45c489ffa9c45528e9ac5ac3d1777e"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/native_bytes.json",
+      "bytes": 4322,
+      "sha256": "5b82d0816d2f1b15e53d4657869d080b2c9d0cd1c04582e2b7546f1447d0509b"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/native_analysis.json",
+      "bytes": 1500,
+      "sha256": "5fd206d2d49e4cb5d216539b4356562052d8cac8be95096f8c1caa887a70f8fa"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/readiness_analysis.json",
+      "bytes": 6574,
+      "sha256": "03d378ec464ed8f21a3b7bebfce44955055b7e7b3592684c6288a15f8792b14a"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/capture_summary.json",
+      "bytes": 243,
+      "sha256": "75993e67b88ce104fe125459ecdb10bb5b807084b8d26b69e4d3bcef4b6baaba"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/copy_proto.txt",
+      "bytes": 826,
+      "sha256": "f10f60dbb09c9b2cd509940452733a904d8f0e5ed198dc6c095475ff94d80f9b"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/copy_constructor_disk_listing.txt",
+      "bytes": 2377,
+      "sha256": "476bc29601cdf2cf7d031a29b68820cc9fd5d36aaa53271749ff684d6bea72db"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/verified_backend.txt",
+      "bytes": 39,
+      "sha256": "80c724ed8328690aaaa502d9ad6954b39390cfb6e51d488c4eeade41ef707ad0"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/undefined_vector_cleanup_proto.txt",
+      "bytes": 126,
+      "sha256": "5b7102f69b1907d6c8a2cd8ca2f3535c707cc99a7481d44361062ca29154dc09"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/call_verification.txt",
+      "bytes": 600,
+      "sha256": "9676880484a12fdfc951048eb64c0294cd94eb5ed12fbd8d3101999c15ad9262"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/verification_summary.json",
+      "bytes": 839,
+      "sha256": "f704b8ed9da367457220a643588fc54f9d99f62403d2ac29e3eb6e26421f4ef3"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/root_review.json",
+      "bytes": 808,
+      "sha256": "ed96aaeb2ef29277b007aa72e5bf20f691b5a18d3794924ee5bc2a2c89a731f1"
+    }
+  ],
+  "private_manifest": {
+    "path": "local/cc12_native_gui_frame_box_copy_completion_readiness_178/manifest.json",
+    "bytes": 22397,
+    "sha256": "e4e41596ad6912bff018679a334653d97975f64b770edef9ccfc1be9b989c1cd",
+    "item_count": 92,
+    "total_bytes": 887139
+  },
+  "limits": "Read-only constructor readiness, zero new Source/Native body credit. New Source admission/private metadata transitions not implemented; factory/slot reuse/general failed graph retirement/private EH/ABI/gameplay/production activation not proved."
+}

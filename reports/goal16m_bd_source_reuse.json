@@ -1,0 +1,426 @@
+{
+  "packet": "GOAL16M",
+  "status": "READY_QUALIFIED_COMPLETE_SOURCE_REUSE_ASSOCIATIONS",
+  "author_base": "3825b0b29567da39813e21bffa1230f07b7117a2",
+  "Root_inputs_pin": "355324cabb770158b66fafae77819b6147a7c760",
+  "counts": {
+    "new_Native_address_bindings": 4,
+    "associated_complete_Native_bytes": 186,
+    "associated_Native_instructions": 76,
+    "new_Source_functions": 0,
+    "new_Source_code_bytes": 0,
+    "new_headers_wrappers_CMake_tests": 0
+  },
+  "associations": [
+    {
+      "address": "00bd3770",
+      "name": "copy_native_pod8_range_00419960",
+      "source_function": "copy_native_pod8_range_00419960",
+      "source": "src/native_pod8_range.cpp",
+      "header": "include/bsp/native_pod8_range.hpp",
+      "native_name": "STL_Pod8Range_UninitializedCopy_00bd3770",
+      "status": "complete_existing_source_reuse_actual_registered_coff_archive_verified_qualified_physical_abi_no_new_source",
+      "association_kind": "whole_function_source_reuse",
+      "source_reuse_of": "00419960",
+      "new_source_function": false,
+      "new_source_code_bytes": 0,
+      "native_body_bytes": 44,
+      "native_instruction_count": 17,
+      "physical_abi": "ECX first; EDX last; stack DWORDs destination,ignored0,ignored1,tag; six-word fastcall declaration, RET10h; normal ESP+14h",
+      "machine_effects": {
+        "abi": "ECX first; EDX last; stack DWORDs destination,ignored0,ignored1,tag; six-word fastcall declaration, RET10h; normal ESP+14h",
+        "entry_prefix": "CMP ECX,EDX precedes MOV EAX,[entryESP+4], so destination argument is read even for equal endpoints; empty path skips PUSH ESI and pointed accesses",
+        "iteration": "PUSH ESI once; seven-byte LEA ESP,[ESP+0] has no memory/flag effect. TEST current EAX destination; zero skips both source reads and stores. Otherwise MOV ESI,[ECX]; MOV [EAX],ESI; MOV ESI,[ECX+4]; MOV [EAX+4],ESI. ADD ECX,8; ADD EAX,8; CMP ECX,EDX; JNE",
+        "completion": "ordinary terminating trace: ECX==captured EDX last; EAX advances destination by 8 per iteration modulo32; EDX unchanged; ESI popped from actual saved cell; other nonstack GPRs unchanged",
+        "flags": "empty and ordinary successful final path return flags from equal CMP (CF/OF/SF/AF=0,ZF/PF=1). Nonfinal/fault prefixes preserve literal TEST/ADD/CMP schedule; MOV/PUSH/POP/RET do not alter flags",
+        "stack_alias": "destination captured once before data accesses; three metadata words are unread and only discarded by RET10h; return slot and saved ESI cell remain actual memory and may be changed by aliased stores"
+      },
+      "qualification": {
+        "alias_fault_domain": "Literal whole-body identity preserves all data/stack alias schedules, skipped reads, four-byte access widths, modulo32 arithmetic, nontermination and fault-prefix effects under corresponding machine entry states and instruction placement mapping. No nonoverlap, finite-count, aligned-pair or normal-value restriction is substituted. Meaningful normal C++ completion still requires the actually reached storage/control cells and return path; data stores can change saved registers or return slot, so unconditional callee-saved/return assertions are not made for such aliases.",
+        "FP": "All four bodies contain only integer/control/stack instructions; x87/SIMD data/status/control/tags/TOP/FIP are unchanged. There is no floating interpretation or SNaN domain restriction.",
+        "placement": "Instruction-relative schedule and bytes agree; absolute fault EIP, code placement, code/data/self-modification alias relations and external caller/SEH/runtime compatibility are not established. No drop-in or game claim.",
+        "hypothesis": "Existing STL descriptive names are retained; Source signatures bind the evidenced physical register/stack layout, not recovered Original template/class/formal return spellings."
+      },
+      "actual_provider": {
+        "offset": 40394606,
+        "name": "bsp_core.dir\\Release\\native_pod8_range.obj",
+        "size": 1388,
+        "sha256": "9030b9081be87cf7fb4ac71d58ca3c0853e7fb0078cbfa32779d717984dc20e8",
+        "symbols": [
+          "?copy_native_pod8_dispatch_0041f4e0@bsp@@YIPAXIIPBX0PAX@Z",
+          "?copy_native_pod8_range_00419960@bsp@@YIPAXPBX0PAXIII@Z",
+          "?fill_n_native_pod8_dispatch_0041e3c0@bsp@@YIPAXIIPAXIPBX@Z",
+          "?fill_n_native_pod8_range_0041c7e0@bsp@@YIXPAXIPBXIII@Z"
+        ]
+      },
+      "evidence": [
+        "docs/GOAL16M_BD_SOURCE_REUSE.md",
+        "reports/goal16m_bd_source_reuse.json",
+        "local/goal16m_bd_source_reuse/artifact_proof.json",
+        "local/goal16m_bd_source_reuse/native_capture.json"
+      ],
+      "Ghidra_writes": false,
+      "runtime_or_game_validated": false
+    },
+    {
+      "address": "00bd3a60",
+      "name": "fill_n_native_pod8_range_0041c7e0",
+      "source_function": "fill_n_native_pod8_range_0041c7e0",
+      "source": "src/native_pod8_range.cpp",
+      "header": "include/bsp/native_pod8_range.hpp",
+      "native_name": "STL_Pod8Range_UninitializedFillN_00bd3a60",
+      "status": "complete_existing_source_reuse_actual_registered_coff_archive_verified_qualified_physical_abi_no_new_source",
+      "association_kind": "whole_function_source_reuse",
+      "source_reuse_of": "0041c7e0",
+      "new_source_function": false,
+      "new_source_code_bytes": 0,
+      "native_body_bytes": 44,
+      "native_instruction_count": 17,
+      "physical_abi": "ECX destination; EDX uint32 count; stack DWORDs value,ignored0,ignored1,tag; six-word fastcall declaration, RET10h; normal ESP+14h; no semantic return",
+      "machine_effects": {
+        "abi": "ECX destination; EDX uint32 count; stack DWORDs value,ignored0,ignored1,tag; six-word fastcall declaration, RET10h; normal ESP+14h; no semantic return",
+        "entry_prefix": "TEST EDX,EDX clears CF, so JBE takes exactly count0; zero path leaves incoming EAX/ECX and does not read value slot or PUSH ESI. Nonzero loads EAX,[entryESP+4] before PUSH ESI",
+        "iteration": "seven-byte LEA ESP,[ESP+0]. TEST current ECX destination; zero skips both source reads and stores. Otherwise read ESI,[EAX]; store [ECX]; reread ESI,[EAX+4]; store [ECX+4]. SUB EDX,1; ADD ECX,8; TEST EDX,EDX; JA; source contents reread each iteration",
+        "completion": "ordinary nonzero count trace: EAX remains captured value pointer even if every store skipped; EDX=0; ECX advances 8*count modulo32; ESI popped from actual saved cell. Count has all uint32 patterns, no signed-count restriction",
+        "flags": "zero and ordinary final path flags from TEST zero: CF/OF/SF=0,ZF/PF=1,AF undefined. Earlier faults retain preceding TEST/SUB/ADD schedule, including ESI word0 before a second-read fault",
+        "stack_alias": "value pointer captured once; stack value slot may be overwritten later without a reread; metadata words unread. Aliased saved ESI/return cells affect actual POP/RET"
+      },
+      "qualification": {
+        "alias_fault_domain": "Literal whole-body identity preserves all data/stack alias schedules, skipped reads, four-byte access widths, modulo32 arithmetic, nontermination and fault-prefix effects under corresponding machine entry states and instruction placement mapping. No nonoverlap, finite-count, aligned-pair or normal-value restriction is substituted. Meaningful normal C++ completion still requires the actually reached storage/control cells and return path; data stores can change saved registers or return slot, so unconditional callee-saved/return assertions are not made for such aliases.",
+        "FP": "All four bodies contain only integer/control/stack instructions; x87/SIMD data/status/control/tags/TOP/FIP are unchanged. There is no floating interpretation or SNaN domain restriction.",
+        "placement": "Instruction-relative schedule and bytes agree; absolute fault EIP, code placement, code/data/self-modification alias relations and external caller/SEH/runtime compatibility are not established. No drop-in or game claim.",
+        "hypothesis": "Existing STL descriptive names are retained; Source signatures bind the evidenced physical register/stack layout, not recovered Original template/class/formal return spellings."
+      },
+      "actual_provider": {
+        "offset": 40394606,
+        "name": "bsp_core.dir\\Release\\native_pod8_range.obj",
+        "size": 1388,
+        "sha256": "9030b9081be87cf7fb4ac71d58ca3c0853e7fb0078cbfa32779d717984dc20e8",
+        "symbols": [
+          "?copy_native_pod8_dispatch_0041f4e0@bsp@@YIPAXIIPBX0PAX@Z",
+          "?copy_native_pod8_range_00419960@bsp@@YIPAXPBX0PAXIII@Z",
+          "?fill_n_native_pod8_dispatch_0041e3c0@bsp@@YIPAXIIPAXIPBX@Z",
+          "?fill_n_native_pod8_range_0041c7e0@bsp@@YIXPAXIPBXIII@Z"
+        ]
+      },
+      "evidence": [
+        "docs/GOAL16M_BD_SOURCE_REUSE.md",
+        "reports/goal16m_bd_source_reuse.json",
+        "local/goal16m_bd_source_reuse/artifact_proof.json",
+        "local/goal16m_bd_source_reuse/native_capture.json"
+      ],
+      "Ghidra_writes": false,
+      "runtime_or_game_validated": false
+    },
+    {
+      "address": "00bd3a30",
+      "name": "fill_native_pod8_range_0041c680",
+      "source_function": "fill_native_pod8_range_0041c680",
+      "source": "src/native_pod8_inplace_range.cpp",
+      "header": "include/bsp/native_pod8_inplace_range.hpp",
+      "native_name": "STL_Pod8Range_Fill_00bd3a30",
+      "status": "complete_existing_source_reuse_actual_registered_coff_archive_verified_qualified_physical_abi_no_new_source",
+      "association_kind": "whole_function_source_reuse",
+      "source_reuse_of": "0041c680",
+      "new_source_function": false,
+      "new_source_code_bytes": 0,
+      "native_body_bytes": 36,
+      "native_instruction_count": 15,
+      "physical_abi": "ordinary cdecl three stack pointers first,last,value; plain RET, normal ESP+4; caller retains three argument words; Source void result",
+      "machine_effects": {
+        "abi": "ordinary cdecl three stack pointers first,last,value; plain RET, normal ESP+4; caller retains three argument words; Source void result",
+        "entry_prefix": "MOV EAX,[entryESP+4] then MOV EDX,[entryESP+8] then CMP. Equal skips value-slot read and ESI save; incoming ECX remains unchanged. Nonempty captures ECX,[entryESP+0Ch] then PUSH ESI",
+        "iteration": "read ESI,[ECX]; store [EAX]; freshly read ESI,[ECX+4]; store [EAX+4]; ADD EAX,8; CMP EAX,EDX; JNE. No null skip, pair snapshot, pointer subtraction or numeric range guard",
+        "completion": "ordinary terminating trace EAX==captured last (incidental, not Source semantic return); EDX last; ECX captured value on nonempty path; actual saved ESI cell popped",
+        "flags": "empty and ordinary final path flags from equal CMP (CF/OF/SF/AF=0,ZF/PF=1). First and second stack faults retain their different register prefixes; second data read follows first store",
+        "stack_alias": "endpoints and nonempty value pointer captured before data loop; return/saved ESI cells remain actual mutable memory; no late argument rereads"
+      },
+      "qualification": {
+        "alias_fault_domain": "Literal whole-body identity preserves all data/stack alias schedules, skipped reads, four-byte access widths, modulo32 arithmetic, nontermination and fault-prefix effects under corresponding machine entry states and instruction placement mapping. No nonoverlap, finite-count, aligned-pair or normal-value restriction is substituted. Meaningful normal C++ completion still requires the actually reached storage/control cells and return path; data stores can change saved registers or return slot, so unconditional callee-saved/return assertions are not made for such aliases.",
+        "FP": "All four bodies contain only integer/control/stack instructions; x87/SIMD data/status/control/tags/TOP/FIP are unchanged. There is no floating interpretation or SNaN domain restriction.",
+        "placement": "Instruction-relative schedule and bytes agree; absolute fault EIP, code placement, code/data/self-modification alias relations and external caller/SEH/runtime compatibility are not established. No drop-in or game claim.",
+        "hypothesis": "Existing STL descriptive names are retained; Source signatures bind the evidenced physical register/stack layout, not recovered Original template/class/formal return spellings."
+      },
+      "actual_provider": {
+        "offset": 40407648,
+        "name": "bsp_core.dir\\Release\\native_pod8_inplace_range.obj",
+        "size": 978,
+        "sha256": "3dcc61f05a7921d7839558396e58f70562d9f24fb8d1f26c1ee1f6f3643abf2e",
+        "symbols": [
+          "?copy_backward_native_pod8_range_0041dac0@bsp@@YAPAXPBX0PAX@Z",
+          "?fill_native_pod8_range_0041c680@bsp@@YAXPAXPBX1@Z"
+        ]
+      },
+      "evidence": [
+        "docs/GOAL16M_BD_SOURCE_REUSE.md",
+        "reports/goal16m_bd_source_reuse.json",
+        "local/goal16m_bd_source_reuse/artifact_proof.json",
+        "local/goal16m_bd_source_reuse/native_capture.json"
+      ],
+      "Ghidra_writes": false,
+      "runtime_or_game_validated": false
+    },
+    {
+      "address": "00bd3bb0",
+      "name": "copy_backward_native_pod8_range_0041dac0",
+      "source_function": "copy_backward_native_pod8_range_0041dac0",
+      "source": "src/native_pod8_inplace_range.cpp",
+      "header": "include/bsp/native_pod8_inplace_range.hpp",
+      "native_name": "STL_Pod8Range_CopyBackward_00bd3bb0",
+      "status": "complete_existing_source_reuse_actual_registered_coff_archive_verified_qualified_physical_abi_no_new_source",
+      "association_kind": "whole_function_source_reuse",
+      "source_reuse_of": "0041dac0",
+      "new_source_function": false,
+      "new_source_code_bytes": 0,
+      "native_body_bytes": 62,
+      "native_instruction_count": 27,
+      "physical_abi": "ordinary cdecl three stack pointers first,last,destination_end; plain RET, normal ESP+4; caller retains argument words; EAX explicit address result",
+      "machine_effects": {
+        "abi": "ordinary cdecl three stack pointers first,last,destination_end; plain RET, normal ESP+4; caller retains argument words; EAX explicit address result",
+        "entry_prefix": "read last to ECX from entryESP+8, destination_end to EDX from entryESP+0Ch, PUSH ESI, then read first to ESI from currentESP+8. Compute EAX delta=last-first modulo32; SAR3 then three ADD doublings; PUSH EDI; EDI gets byte count, EAX=destination_end-byte count; CMP first,last before empty test",
+        "iteration": "nonempty sets EDX=destination_end-last modulo32. Read EDI,[old ECX-8] BEFORE SUB ECX,8 and CMP ECX,ESI; store [EDX+ECX],EDI; fresh read EDI,[ECX+4]; store [EDX+ECX+4],EDI; JNE uses that CMP because MOV leaves flags",
+        "arithmetic_all_bits": "For every uint32 delta, ((SAR32(delta,3))*8) mod2^32 equals delta&FFFFFFF8h, including negative signed interpretations and INT_MIN. EAX=destination_end-(delta&FFFFFFF8h) modulo32; no C++ signed pointer difference is evaluated",
+        "completion": "ordinary terminating trace ECX==captured first; nonempty EDX==destination_end-original_last bias; EAX result captured before loop. Actual saved EDI then ESI cells popped. Empty still executes both saves and address computation; returns destination_end",
+        "flags": "ordinary final flags from equal CMP (CF/OF/SF/AF=0,ZF/PF=1). Nonempty source-word0 fault precedes pointer decrement/CMP; a later store/read fault sees decremented ECX and CMP flags. JNE after stores uses same CMP flags",
+        "stack_alias": "first stack argument read occurs after ESI save; EDI save after computation. Source0 read before pointer decrement and before store0, then source1 reread after store0. Saved cells/return remain actual mutable memory"
+      },
+      "qualification": {
+        "alias_fault_domain": "Literal whole-body identity preserves all data/stack alias schedules, skipped reads, four-byte access widths, modulo32 arithmetic, nontermination and fault-prefix effects under corresponding machine entry states and instruction placement mapping. No nonoverlap, finite-count, aligned-pair or normal-value restriction is substituted. Meaningful normal C++ completion still requires the actually reached storage/control cells and return path; data stores can change saved registers or return slot, so unconditional callee-saved/return assertions are not made for such aliases.",
+        "FP": "All four bodies contain only integer/control/stack instructions; x87/SIMD data/status/control/tags/TOP/FIP are unchanged. There is no floating interpretation or SNaN domain restriction.",
+        "placement": "Instruction-relative schedule and bytes agree; absolute fault EIP, code placement, code/data/self-modification alias relations and external caller/SEH/runtime compatibility are not established. No drop-in or game claim.",
+        "hypothesis": "Existing STL descriptive names are retained; Source signatures bind the evidenced physical register/stack layout, not recovered Original template/class/formal return spellings."
+      },
+      "actual_provider": {
+        "offset": 40407648,
+        "name": "bsp_core.dir\\Release\\native_pod8_inplace_range.obj",
+        "size": 978,
+        "sha256": "3dcc61f05a7921d7839558396e58f70562d9f24fb8d1f26c1ee1f6f3643abf2e",
+        "symbols": [
+          "?copy_backward_native_pod8_range_0041dac0@bsp@@YAPAXPBX0PAX@Z",
+          "?fill_native_pod8_range_0041c680@bsp@@YAXPAXPBX1@Z"
+        ]
+      },
+      "evidence": [
+        "docs/GOAL16M_BD_SOURCE_REUSE.md",
+        "reports/goal16m_bd_source_reuse.json",
+        "local/goal16m_bd_source_reuse/artifact_proof.json",
+        "local/goal16m_bd_source_reuse/native_capture.json"
+      ],
+      "Ghidra_writes": false,
+      "runtime_or_game_validated": false
+    }
+  ],
+  "common_qualification": {
+    "alias_fault_domain": "Literal whole-body identity preserves all data/stack alias schedules, skipped reads, four-byte access widths, modulo32 arithmetic, nontermination and fault-prefix effects under corresponding machine entry states and instruction placement mapping. No nonoverlap, finite-count, aligned-pair or normal-value restriction is substituted. Meaningful normal C++ completion still requires the actually reached storage/control cells and return path; data stores can change saved registers or return slot, so unconditional callee-saved/return assertions are not made for such aliases.",
+    "FP": "All four bodies contain only integer/control/stack instructions; x87/SIMD data/status/control/tags/TOP/FIP are unchanged. There is no floating interpretation or SNaN domain restriction.",
+    "placement": "Instruction-relative schedule and bytes agree; absolute fault EIP, code placement, code/data/self-modification alias relations and external caller/SEH/runtime compatibility are not established. No drop-in or game claim.",
+    "hypothesis": "Existing STL descriptive names are retained; Source signatures bind the evidenced physical register/stack layout, not recovered Original template/class/formal return spellings."
+  },
+  "whole_objects": [
+    {
+      "source": "src/native_pod8_range.cpp",
+      "source_sha256": "f24d802b7f2ac36c3c27478b17efe3cc0176b25b61c59fd35a44797e92bd4de6",
+      "header": "include/bsp/native_pod8_range.hpp",
+      "header_sha256": "84e812fe99582b3defe6298472dd64f04248ae29efc6d6a87b600c2cb29c67f7",
+      "sha256": "9030b9081be87cf7fb4ac71d58ca3c0853e7fb0078cbfa32779d717984dc20e8",
+      "object_bytes": 1388,
+      "executable_sections": 4,
+      "executable_bytes": 175,
+      "instructions": 69,
+      "undefined_externals": [],
+      "all_relocations": [
+        {
+          "section": 3,
+          "name": ".text$mn",
+          "offset": 29,
+          "symbol_index": 14,
+          "target": "?copy_native_pod8_range_00419960@bsp@@YIPAXPBX0PAXIII@Z",
+          "type": 20,
+          "executable": true
+        },
+        {
+          "section": 5,
+          "name": ".text$mn",
+          "offset": 37,
+          "symbol_index": 15,
+          "target": "?fill_n_native_pod8_range_0041c7e0@bsp@@YIXPAXIPBXIII@Z",
+          "type": 20,
+          "executable": true
+        }
+      ],
+      "unique_archive_member": {
+        "offset": 40394606,
+        "name": "bsp_core.dir\\Release\\native_pod8_range.obj",
+        "size": 1388,
+        "sha256": "9030b9081be87cf7fb4ac71d58ca3c0853e7fb0078cbfa32779d717984dc20e8",
+        "symbols": [
+          "?copy_native_pod8_dispatch_0041f4e0@bsp@@YIPAXIIPBX0PAX@Z",
+          "?copy_native_pod8_range_00419960@bsp@@YIPAXPBX0PAXIII@Z",
+          "?fill_n_native_pod8_dispatch_0041e3c0@bsp@@YIPAXIIPAXIPBX@Z",
+          "?fill_n_native_pod8_range_0041c7e0@bsp@@YIXPAXIPBXIII@Z"
+        ]
+      }
+    },
+    {
+      "source": "src/native_pod8_inplace_range.cpp",
+      "source_sha256": "cf5d3bad3a6d75f31d0c43e8a3c8b423977de1d60b2172b7bedec849a2ee7730",
+      "header": "include/bsp/native_pod8_inplace_range.hpp",
+      "header_sha256": "087e6a8296e7d9fb62481117945ee564a22ced2545e37d73b94f4b512154480a",
+      "sha256": "3dcc61f05a7921d7839558396e58f70562d9f24fb8d1f26c1ee1f6f3643abf2e",
+      "object_bytes": 978,
+      "executable_sections": 2,
+      "executable_bytes": 98,
+      "instructions": 42,
+      "undefined_externals": [],
+      "all_relocations": [],
+      "unique_archive_member": {
+        "offset": 40407648,
+        "name": "bsp_core.dir\\Release\\native_pod8_inplace_range.obj",
+        "size": 978,
+        "sha256": "3dcc61f05a7921d7839558396e58f70562d9f24fb8d1f26c1ee1f6f3643abf2e",
+        "symbols": [
+          "?copy_backward_native_pod8_range_0041dac0@bsp@@YAPAXPBX0PAX@Z",
+          "?fill_native_pod8_range_0041c680@bsp@@YAXPAXPBX1@Z"
+        ]
+      }
+    }
+  ],
+  "full_object_extent_note": "273B/111instructions/6 existing public functions total; selected4 sections are186B/76ins; other2 existing wrappers87B/35ins have exactly2 REL32 calls to own existing kernels; no metadata relocations, undefined externals or extra helpers.",
+  "archive": {
+    "sha256": "51c8ae3849ec480650be89b18e2a8b7044485a68612f21a8ee8c60151215a1b4",
+    "size": 94003868,
+    "total_members": 2454,
+    "parsed_coff_members": 2451,
+    "other_object_members": [],
+    "selected_members": [
+      {
+        "offset": 40394606,
+        "name": "bsp_core.dir\\Release\\native_pod8_range.obj",
+        "size": 1388,
+        "sha256": "9030b9081be87cf7fb4ac71d58ca3c0853e7fb0078cbfa32779d717984dc20e8",
+        "symbols": [
+          "?copy_native_pod8_dispatch_0041f4e0@bsp@@YIPAXIIPBX0PAX@Z",
+          "?copy_native_pod8_range_00419960@bsp@@YIPAXPBX0PAXIII@Z",
+          "?fill_n_native_pod8_dispatch_0041e3c0@bsp@@YIPAXIIPAXIPBX@Z",
+          "?fill_n_native_pod8_range_0041c7e0@bsp@@YIXPAXIPBXIII@Z"
+        ]
+      },
+      {
+        "offset": 40407648,
+        "name": "bsp_core.dir\\Release\\native_pod8_inplace_range.obj",
+        "size": 978,
+        "sha256": "3dcc61f05a7921d7839558396e58f70562d9f24fb8d1f26c1ee1f6f3643abf2e",
+        "symbols": [
+          "?copy_backward_native_pod8_range_0041dac0@bsp@@YAPAXPBX0PAX@Z",
+          "?fill_native_pod8_range_0041c680@bsp@@YAXPAXPBX1@Z"
+        ]
+      }
+    ],
+    "actual_providers": {
+      "?copy_native_pod8_range_00419960@bsp@@YIPAXPBX0PAXIII@Z": [
+        40394606
+      ],
+      "?fill_n_native_pod8_range_0041c7e0@bsp@@YIXPAXIPBXIII@Z": [
+        40394606
+      ],
+      "?fill_n_native_pod8_dispatch_0041e3c0@bsp@@YIPAXIIPAXIPBX@Z": [
+        40394606
+      ],
+      "?copy_native_pod8_dispatch_0041f4e0@bsp@@YIPAXIIPBX0PAX@Z": [
+        40394606
+      ],
+      "?fill_native_pod8_range_0041c680@bsp@@YAXPAXPBX1@Z": [
+        40407648
+      ],
+      "?copy_backward_native_pod8_range_0041dac0@bsp@@YAPAXPBX0PAX@Z": [
+        40407648
+      ]
+    },
+    "both_linker_dictionaries_match_actual_definitions": true
+  },
+  "actual_registered_target_metadata": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\bsp_core.vcxproj",
+    "sha256": "290007707fc0bfefd5e997880f41d58aeb856cc2fb2b51126c5a740eaec8a343",
+    "captured_utc": "2026-10-16T08:12:39.715465+00:00",
+    "configuration": "Release|Win32",
+    "language_standard": "stdcpp17",
+    "both_existing_Source_files_in_target": true,
+    "new_CMake_or_Source_changes": false
+  },
+  "Native_capture": {
+    "sha256": "445e934e266808003655cfeffad9e6631b3975803cc35316517e156588dde9a7",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "typed_before_modification": "6343",
+    "typed_after_modification": "6345",
+    "typed_function_bodies_and_names_unchanged": true,
+    "installed_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "evidence_hashes": {
+    "freeze_manifest.json": "5e0c934194176028a0d9e09df1ab1ef3b7821b3182212ca5dce88a679465e231",
+    "artifact_proof.json": "591a26f2c760521ad3c88bb1d51648b579639a7c8edbe87a5a25c016a1b3f920",
+    "native_capture.json": "445e934e266808003655cfeffad9e6631b3975803cc35316517e156588dde9a7",
+    "ledger_before.json": "e2b93441a3e457b73131ec8ef263739092e6796f1c3a3790ce5539cd60166ecb",
+    "registration_metadata.json": "37653c60e3a79d5081108b4c3c88701ea09d0b87fb0a506d8ecd334b2ad7f1dd"
+  },
+  "discovery_vs_final": "K readiness contains older object hashes/member offsets. This packet uses independently frozen current Root objects and exact supplied validated H archive, not those discovery values; entire executable identities reconfirmed. Root provider Source is unchanged through K merge.",
+  "ledger": "four reviewed-name rows add/append evidence while preserving exact Ghidra/tag names and any old evidence; four new whole-function Source associations only; no prior reconstruction rows at selected addresses in worker/Root/Main before add. Existing reviewed-name rows were absent at all four selected addresses.",
+  "Ghidra_proposal": {
+    "apply": false,
+    "preserve_names": true,
+    "provisional_physical_comments": {
+      "00bd3770": {
+        "abi": "ECX first; EDX last; stack DWORDs destination,ignored0,ignored1,tag; six-word fastcall declaration, RET10h; normal ESP+14h",
+        "entry_prefix": "CMP ECX,EDX precedes MOV EAX,[entryESP+4], so destination argument is read even for equal endpoints; empty path skips PUSH ESI and pointed accesses",
+        "iteration": "PUSH ESI once; seven-byte LEA ESP,[ESP+0] has no memory/flag effect. TEST current EAX destination; zero skips both source reads and stores. Otherwise MOV ESI,[ECX]; MOV [EAX],ESI; MOV ESI,[ECX+4]; MOV [EAX+4],ESI. ADD ECX,8; ADD EAX,8; CMP ECX,EDX; JNE",
+        "completion": "ordinary terminating trace: ECX==captured EDX last; EAX advances destination by 8 per iteration modulo32; EDX unchanged; ESI popped from actual saved cell; other nonstack GPRs unchanged",
+        "flags": "empty and ordinary successful final path return flags from equal CMP (CF/OF/SF/AF=0,ZF/PF=1). Nonfinal/fault prefixes preserve literal TEST/ADD/CMP schedule; MOV/PUSH/POP/RET do not alter flags",
+        "stack_alias": "destination captured once before data accesses; three metadata words are unread and only discarded by RET10h; return slot and saved ESI cell remain actual memory and may be changed by aliased stores"
+      },
+      "00bd3a60": {
+        "abi": "ECX destination; EDX uint32 count; stack DWORDs value,ignored0,ignored1,tag; six-word fastcall declaration, RET10h; normal ESP+14h; no semantic return",
+        "entry_prefix": "TEST EDX,EDX clears CF, so JBE takes exactly count0; zero path leaves incoming EAX/ECX and does not read value slot or PUSH ESI. Nonzero loads EAX,[entryESP+4] before PUSH ESI",
+        "iteration": "seven-byte LEA ESP,[ESP+0]. TEST current ECX destination; zero skips both source reads and stores. Otherwise read ESI,[EAX]; store [ECX]; reread ESI,[EAX+4]; store [ECX+4]. SUB EDX,1; ADD ECX,8; TEST EDX,EDX; JA; source contents reread each iteration",
+        "completion": "ordinary nonzero count trace: EAX remains captured value pointer even if every store skipped; EDX=0; ECX advances 8*count modulo32; ESI popped from actual saved cell. Count has all uint32 patterns, no signed-count restriction",
+        "flags": "zero and ordinary final path flags from TEST zero: CF/OF/SF=0,ZF/PF=1,AF undefined. Earlier faults retain preceding TEST/SUB/ADD schedule, including ESI word0 before a second-read fault",
+        "stack_alias": "value pointer captured once; stack value slot may be overwritten later without a reread; metadata words unread. Aliased saved ESI/return cells affect actual POP/RET"
+      },
+      "00bd3a30": {
+        "abi": "ordinary cdecl three stack pointers first,last,value; plain RET, normal ESP+4; caller retains three argument words; Source void result",
+        "entry_prefix": "MOV EAX,[entryESP+4] then MOV EDX,[entryESP+8] then CMP. Equal skips value-slot read and ESI save; incoming ECX remains unchanged. Nonempty captures ECX,[entryESP+0Ch] then PUSH ESI",
+        "iteration": "read ESI,[ECX]; store [EAX]; freshly read ESI,[ECX+4]; store [EAX+4]; ADD EAX,8; CMP EAX,EDX; JNE. No null skip, pair snapshot, pointer subtraction or numeric range guard",
+        "completion": "ordinary terminating trace EAX==captured last (incidental, not Source semantic return); EDX last; ECX captured value on nonempty path; actual saved ESI cell popped",
+        "flags": "empty and ordinary final path flags from equal CMP (CF/OF/SF/AF=0,ZF/PF=1). First and second stack faults retain their different register prefixes; second data read follows first store",
+        "stack_alias": "endpoints and nonempty value pointer captured before data loop; return/saved ESI cells remain actual mutable memory; no late argument rereads"
+      },
+      "00bd3bb0": {
+        "abi": "ordinary cdecl three stack pointers first,last,destination_end; plain RET, normal ESP+4; caller retains argument words; EAX explicit address result",
+        "entry_prefix": "read last to ECX from entryESP+8, destination_end to EDX from entryESP+0Ch, PUSH ESI, then read first to ESI from currentESP+8. Compute EAX delta=last-first modulo32; SAR3 then three ADD doublings; PUSH EDI; EDI gets byte count, EAX=destination_end-byte count; CMP first,last before empty test",
+        "iteration": "nonempty sets EDX=destination_end-last modulo32. Read EDI,[old ECX-8] BEFORE SUB ECX,8 and CMP ECX,ESI; store [EDX+ECX],EDI; fresh read EDI,[ECX+4]; store [EDX+ECX+4],EDI; JNE uses that CMP because MOV leaves flags",
+        "arithmetic_all_bits": "For every uint32 delta, ((SAR32(delta,3))*8) mod2^32 equals delta&FFFFFFF8h, including negative signed interpretations and INT_MIN. EAX=destination_end-(delta&FFFFFFF8h) modulo32; no C++ signed pointer difference is evaluated",
+        "completion": "ordinary terminating trace ECX==captured first; nonempty EDX==destination_end-original_last bias; EAX result captured before loop. Actual saved EDI then ESI cells popped. Empty still executes both saves and address computation; returns destination_end",
+        "flags": "ordinary final flags from equal CMP (CF/OF/SF/AF=0,ZF/PF=1). Nonempty source-word0 fault precedes pointer decrement/CMP; a later store/read fault sees decremented ECX and CMP flags. JNE after stores uses same CMP flags",
+        "stack_alias": "first stack argument read occurs after ESI save; EDI save after computation. Source0 read before pointer decrement and before store0, then source1 reread after store0. Saved cells/return remain actual mutable memory"
+      }
+    },
+    "prototype_policy": "Project the corresponding evidenced canonical physical declaration at each BD entry, with explicit provisional formal spelling and unchanged correct names; only primary may apply under write lock."
+  },
+  "validation": {
+    "new_normal_build_needed": false,
+    "reason": "No C++/headers/CMake changes; full actual frozen Root registered objects and real archive proven directly",
+    "new_build_or_test_or_probe_execution": false,
+    "Native_or_game_execution": false,
+    "supplied_verifier_execution": false,
+    "Ghidra_writes": false
+  },
+  "timing": {
+    "first_utc": "2026-10-16T08:03:08+00:00",
+    "report_prepared_utc": "2026-10-16T08:12:39.730367+00:00",
+    "final_inclusive_clock": "post-commit sealed receipt includes all freeze/capture/qualification/metadata corrections/commit/freezing; independent acceptance later is separate",
+    "speedup_claim": false
+  }
+}

@@ -2,6 +2,7 @@
 #include "bsp/native_material_pools.hpp"
 #include "bsp/native_shader_compiler_lookups.hpp"
 #include "bsp/native_startup_shader_modes.hpp"
+#include "bsp/native_shader_global_readers.hpp"
 #include <mutex>
 #include <array>
 
@@ -42,7 +43,9 @@ private:
     NativeStartupShaderModeOperation mode_operation_;
     NativeShaderBinaryCacheStorage* volatile cache_{};
     char stream_empty_{};
-    volatile std::uint32_t register_limit_{77}; // Original image E13078 = 4D.
+    // Keep the Win32 member slot/offset while sharing the single live scalar.
+    // Early Native-style reads must not allocate/initialize this process.
+    volatile std::uint32_t& register_limit_{native_shader_register_limit_cell_00e13078()};
     std::array<char,format_scratch_bytes> format_scratch_{};
     char source_empty_{}; // Loader-zero 0108D6F2; distinct from E17654.
     // Preserve the old byte's offset; it is NOT an E17654 authority or alias.

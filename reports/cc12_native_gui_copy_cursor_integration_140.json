@@ -1,0 +1,584 @@
+{
+  "packet": "cc12_native_gui_copy_cursor_integration_140",
+  "status": "reviewed_registered_combined_win32_build_existing_tests_static_link_pass",
+  "compiled_commit": "6510358d33016f8fab77ca4997438ed91d2610b8",
+  "workers": {
+    "137": {
+      "commit": "2f86fe65c7a6e45b38c726b79e3a3cad7bc27a2a",
+      "source_paths": [
+        "include/bsp/native_gui_text_cursor_storage.hpp",
+        "src/native_gui_text_cursor_storage.cpp"
+      ],
+      "root_complete_Source_API_critical_optimized_and_doc_review": "PASS",
+      "strict_win32_cpp17_compile": "PASS",
+      "new_TU_registered_in_worker_baseline": false,
+      "worker_existing_checks": "2/2, new TU unregistered",
+      "manifest_artifacts_captured": 263,
+      "manifest_sha256": "e2d8a4728531b9863c5d635958039c56bee0cc3e2cbcf9998dcfc0724a1fa3d1",
+      "optimized_review": "Complete810-instruction main,116-instruction cleanup, all SSE/x87/name/four release helpers; pure preflight Source fully read, not every out-of-line validator instruction claimed"
+    },
+    "138": {
+      "commit": "f5483a599b1048fd140f62c7a60c35c7a6f55b33",
+      "source_paths": [
+        "include/bsp/native_gui_frame_box_records.hpp",
+        "include/bsp/native_gui_frame_box_vector_copy.hpp",
+        "src/native_gui_frame_box_vector_copy.cpp"
+      ],
+      "root_complete_Source_API_critical_optimized_and_doc_review": "PASS",
+      "strict_win32_cpp17_compile": "PASS",
+      "new_TU_registered_in_worker_baseline": false,
+      "worker_existing_checks": "3/3 in8.20s, new TU unregistered",
+      "manifest_artifacts_captured": 103,
+      "manifest_sha256": "200b344e56734540e55cc5ffc135658c59d6373320f99b2f930f7ad0fb06c2b1",
+      "preservation": "records.cpp byte unchanged; all25 prior emitted BSP bodies and ordered symbolic relocations identical; old layouts/enum numbers retained; appended private parent terminal transitions"
+    },
+    "139": {
+      "commit": "1beffbe14ae8de24471f295abd77766c899a724e",
+      "source_paths": [
+        "include/bsp/native_wide_string.hpp",
+        "src/native_wide_string.cpp"
+      ],
+      "root_complete_Source_API_critical_optimized_and_doc_review": "PASS",
+      "strict_win32_cpp17_compile": "PASS",
+      "new_TU_registered_in_worker_baseline": true,
+      "worker_existing_checks": "3/3 in7.77s, existing TU registered",
+      "manifest_artifacts_captured": 146,
+      "manifest_sha256": "67f0b391f29cf499d4dc7c7a927d9e5baeba616692488a581f75a92df9b1d598",
+      "preservation": "Both complete old Source prefixes unchanged; all9 old emitted functions and symbolic relocations identical"
+    }
+  },
+  "readiness": {
+    "136": {
+      "commit": "0ca0434edf4b30a7ef01d1b7cad150cd01baff88",
+      "root_complete_doc_review": "PASS",
+      "own_manifest_artifacts_captured": 237,
+      "manifest_sha256": "e3861d8922a1a9a2ece8b1c00b995440a5cbce5371670f2b75c9fdb0b1b2cd3a",
+      "native_body_execution": false
+    }
+  },
+  "source": [
+    {
+      "packet": "137",
+      "path": "include/bsp/native_gui_text_cursor_storage.hpp",
+      "git_blob": "c2efd0e4a228d141bc1157e01ab66d7a79c6a7e5",
+      "sha256": "6390d87dc74496b95cbe593cd224b16371be2c286c2a9c9b402a6a6256d89d45",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "137",
+      "path": "src/native_gui_text_cursor_storage.cpp",
+      "git_blob": "9c14060c9def7cba51567a3af2da7bd4893a396e",
+      "sha256": "414baa76914e2afb8321ccc8fccbce550639a1c72b1fc441bc0ec408f0f8becb",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "138",
+      "path": "include/bsp/native_gui_frame_box_records.hpp",
+      "git_blob": "b7e3a21570936d4a7479c919174ed13a56b4e60a",
+      "sha256": "990c015f2b0fc9cffc29436a69c9a52d057fcdb21c93c5f849a31e72d01235e4",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "138",
+      "path": "include/bsp/native_gui_frame_box_vector_copy.hpp",
+      "git_blob": "6e7b55d2d5c2ad8b1e36e74b17978e9b455f0126",
+      "sha256": "56ab72bffcd3efb90148d833dec6ce35865130c1b54cfd666e40cb7e389189bf",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "138",
+      "path": "src/native_gui_frame_box_vector_copy.cpp",
+      "git_blob": "148623cefcbae6a74e0e18bbd7c28f02816d0884",
+      "sha256": "e8e6656c64d8855e8f9fb24581207c1d973afe6756a8570c234a3da398c1783c",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "139",
+      "path": "include/bsp/native_wide_string.hpp",
+      "git_blob": "adc2b26e7375e6f94ae0b54653c5de5896a7bf36",
+      "sha256": "4ca6e5849827c4890ede11e4f4c3760fceff6b3eb4567c4f7f5fbb3e3f1acd55",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "139",
+      "path": "src/native_wide_string.cpp",
+      "git_blob": "f4a3e67bb3bf7b7b4d26d5c606ba37b2694110de",
+      "sha256": "66f2b3fec8b1f2b1bebccb9c50dfd22db9030c5a5855e927e457eb11a2086ab8",
+      "unchanged_from_reviewed_worker": true
+    }
+  ],
+  "retained_lower_sources": [
+    {
+      "path": "include/bsp/game_native_font_application.hpp",
+      "git_blob": "bd6bb4ebbe30d873a654a66e70b69af6e165fd71"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3"
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "git_blob": "f9257417f0ea9e30b5137b79a772bf8264c90283"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "git_blob": "30bbfe627b4ea7b4f453ec68422363c35479a3a8"
+    },
+    {
+      "path": "include/bsp/gui_native_geometry.hpp",
+      "git_blob": "6d2c181bb30aeb29dc21f3fb70e797bfc54da139"
+    },
+    {
+      "path": "include/bsp/gui_text_buffers.hpp",
+      "git_blob": "53911d9001f31d73ae706a5dc6cd350c27749cfd"
+    },
+    {
+      "path": "include/bsp/gui_text_native_layout.hpp",
+      "git_blob": "a1662c4b968404f5e717169af7df9112161ba1ac"
+    },
+    {
+      "path": "include/bsp/gui_text_native_renderer.hpp",
+      "git_blob": "45aff1d95bc11528ebff9dba43c5b8b402747f61"
+    },
+    {
+      "path": "include/bsp/gui_text_resource_names.hpp",
+      "git_blob": "8f31f397bb6f9a0d98286395d90ead69b61057e7"
+    },
+    {
+      "path": "include/bsp/native_camera_matrix_copy.hpp",
+      "git_blob": "4cee0aa171c5abcebc575b159710a76c643c5d42"
+    },
+    {
+      "path": "include/bsp/native_group_owner.hpp",
+      "git_blob": "36c18d3249b1d9adcf70f438aefeaa122c801568"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_vector_allocation.hpp",
+      "git_blob": "4f33ed96c5952ba2d6e73b39f80e25494fe6547b"
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "git_blob": "7d21a95b56921332498d9cf33cd03e047f157c0e"
+    },
+    {
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "git_blob": "1dafde7cd10809d808b9c047ab6b0bd37d906528"
+    },
+    {
+      "path": "include/bsp/native_gui_text_retirement.hpp",
+      "git_blob": "f7f4bc555417ffc82ef47114806c8f718e792b2e"
+    },
+    {
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "git_blob": "6e54e746ae3d36b65416198b0b2386ea0ad9ced1"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_construct.hpp",
+      "git_blob": "3c79439915fed6a1e08db973c990b556753e89ba"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_factory.hpp",
+      "git_blob": "846a368f139d929a674a3e58bd566bd9ef017526"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_fields.hpp",
+      "git_blob": "f61072b3669d3d559e674cbc1f982f5247795430"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_owner.hpp",
+      "git_blob": "e66c1d5f100a8e99851c680661d3ef79f1094b7b"
+    },
+    {
+      "path": "include/bsp/native_instance_collection.hpp",
+      "git_blob": "b5552cb8b527e4fe029418949e038db454604c1e"
+    },
+    {
+      "path": "include/bsp/native_instance_geometry.hpp",
+      "git_blob": "6d0527a7db3b093c91bfe52573cbb5388df58157"
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "git_blob": "4984c27fa603fe05a308d701c54dafba6110de7e"
+    },
+    {
+      "path": "include/bsp/native_logical_buffer_mapping.hpp",
+      "git_blob": "56a4d6adc352e6432970a1172d5ea4a20f0dea98"
+    },
+    {
+      "path": "include/bsp/native_logical_vertex_owner.hpp",
+      "git_blob": "f2c5a72e46f030f049f370eda07de9594a5f3816"
+    },
+    {
+      "path": "include/bsp/native_material_effect_cache.hpp",
+      "git_blob": "4ada9dcbf24678821c177e5e39ffd87c150c6dd0"
+    },
+    {
+      "path": "include/bsp/native_material_effect_loading.hpp",
+      "git_blob": "7a2ef08151bc5d0893b425225f9a2accc013c203"
+    },
+    {
+      "path": "include/bsp/native_material_factory.hpp",
+      "git_blob": "d20a4260470b56a53b44517ebb986976acea4800"
+    },
+    {
+      "path": "include/bsp/native_material_owner.hpp",
+      "git_blob": "fee25270c9758390575b4b1500781fc1a7bccdf2"
+    },
+    {
+      "path": "include/bsp/native_mesh_owner.hpp",
+      "git_blob": "e07733e92317d2e38e48a14e9c9121ba0342dab6"
+    },
+    {
+      "path": "include/bsp/native_mesh_pool.hpp",
+      "git_blob": "34df6ce0a243638edb7d89a3892cd137fa3fe881"
+    },
+    {
+      "path": "include/bsp/native_mesh_section.hpp",
+      "git_blob": "376c7d40d6b124f2b42d333604676ebe2834eac6"
+    },
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "git_blob": "e43819d121cfa9f6c7d51691c39b04f6d954ea4c"
+    },
+    {
+      "path": "include/bsp/native_model_pool.hpp",
+      "git_blob": "b7e5213b7c625594f02be828ca84137cf95adc0d"
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "git_blob": "888b44f3f32e67b930c840740cdabdea10283f1a"
+    },
+    {
+      "path": "include/bsp/native_node_parenting_storage.hpp",
+      "git_blob": "9fc250c04a032769217e67a5aea308bdf6babcae"
+    },
+    {
+      "path": "include/bsp/native_node_raw_transform.hpp",
+      "git_blob": "fe8ca945cbddcf071e37b5ee7ade2080942490e2"
+    },
+    {
+      "path": "include/bsp/native_node_visibility_factor.hpp",
+      "git_blob": "7558f743057f32c926a71246c823b7b4480df797"
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "git_blob": "5ee0a9b036a0acd04fe5a89e3faa8cd22552f200"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808"
+    },
+    {
+      "path": "include/bsp/native_render_resource_record.hpp",
+      "git_blob": "e3b9861ce7ea06e20da1cc64b4559770ed8b1f6d"
+    },
+    {
+      "path": "include/bsp/native_shader_global_readers.hpp",
+      "git_blob": "c30d745f3e55f6f81bc716070fb94a8d621bb976"
+    },
+    {
+      "path": "include/bsp/native_stream_clone.hpp",
+      "git_blob": "ce2e7741362f51544b91a798c3e96ca4c67d180e"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "git_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "git_blob": "d2d48f7cca8e08a76c98c10f2bdab9bca5cdb165"
+    },
+    {
+      "path": "include/bsp/native_traceline_render.hpp",
+      "git_blob": "0458953af335f5363ae3f1ab70dd85db9d275ff5"
+    },
+    {
+      "path": "include/bsp/native_vertex_declaration_cache.hpp",
+      "git_blob": "7d37a86057b18a38457e291e704a7fc9691cd3d6"
+    },
+    {
+      "path": "include/bsp/native_vertex_declaration_loading.hpp",
+      "git_blob": "dfe6048ebb96c4619821b2a6bd06467632a96704"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "src/game_native_font_application.cpp",
+      "git_blob": "692b370f822f5f21496ae95c4ed417dc353809b8"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "git_blob": "18b3db511d73f7f2b3d2efd9375f667d278f0f28"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "git_blob": "1c660fa6417f9fbc277b821d0ad7d83587fcbed5"
+    },
+    {
+      "path": "src/gui_native_geometry.cpp",
+      "git_blob": "b60d0c7fd032e7f146980d91c6fb578690517b43"
+    },
+    {
+      "path": "src/gui_text_buffers.cpp",
+      "git_blob": "94e485723f1303a6e15833b9e142d7982b7fe383"
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "git_blob": "2df50c70e9af956403bba76a2c43281d1f63c0ef"
+    },
+    {
+      "path": "src/gui_text_native_renderer.cpp",
+      "git_blob": "02a68b42f6d9f7cc81e9d66c90afe3794cedbe45"
+    },
+    {
+      "path": "src/gui_text_resource_names.cpp",
+      "git_blob": "85eb4303d096bc015727ba19a4ef5cdd324bd94b"
+    },
+    {
+      "path": "src/native_camera_matrix_copy.cpp",
+      "git_blob": "d0e2c74f342f4efabaa540e9da9ad7f048e6a816"
+    },
+    {
+      "path": "src/native_group_owner.cpp",
+      "git_blob": "0ac26fa2d4de01a4153260d3a08cf022ac220767"
+    },
+    {
+      "path": "src/native_gui_frame_box_records.cpp",
+      "git_blob": "642d53741ed0b01e7976e01003b1d9c65aecc038"
+    },
+    {
+      "path": "src/native_gui_frame_box_vector_allocation.cpp",
+      "git_blob": "615e0cd5e6ba064245df9b14c077d08685548710"
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "git_blob": "055cf00ff2019282886ee400230d1d0bf5a7a99a"
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "git_blob": "534e5353d82da296b0a9a49be1226d458837326d"
+    },
+    {
+      "path": "src/native_gui_text_retirement.cpp",
+      "git_blob": "839dc285c3d0f8e02af7e8fb30662809fe6eb9d0"
+    },
+    {
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "git_blob": "d6540adb2754bc92a07a785cb25e867909a904a4"
+    },
+    {
+      "path": "src/native_hardware_layout_construct.cpp",
+      "git_blob": "88fbd6a1da29f92ede10ce4b0f02b90bbd7189ff"
+    },
+    {
+      "path": "src/native_hardware_layout_factory.cpp",
+      "git_blob": "276e00d5309f2ebeb158d64f82104f622947d237"
+    },
+    {
+      "path": "src/native_hardware_layout_fields.cpp",
+      "git_blob": "0dfe093d0fc5e52e824d96afa39f21c8eeec528f"
+    },
+    {
+      "path": "src/native_hardware_layout_owner.cpp",
+      "git_blob": "b7453a5820799c42bd1bd66d23c517b9497d999d"
+    },
+    {
+      "path": "src/native_instance_collection.cpp",
+      "git_blob": "b1fa6d9d87b6e89251ba74de470b7fc56e507407"
+    },
+    {
+      "path": "src/native_instance_geometry.cpp",
+      "git_blob": "edf09965a186bbec8374235f8250c4e690ffd420"
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "git_blob": "bf2a25c5f28d9eb10d37f7099faf9adaabb0a97d"
+    },
+    {
+      "path": "src/native_logical_buffer_mapping.cpp",
+      "git_blob": "82403d816de34e8fd52a5b14cc62702460e0194c"
+    },
+    {
+      "path": "src/native_logical_vertex_owner.cpp",
+      "git_blob": "be3c28943b8b96b9c2e6829fb93546654271de62"
+    },
+    {
+      "path": "src/native_material_effect_cache.cpp",
+      "git_blob": "384dc8b78102836af4d98dea33481d9f1a8733b6"
+    },
+    {
+      "path": "src/native_material_effect_loading.cpp",
+      "git_blob": "79d39b865ca89e67c1a20f9a723d6390b75eb4a3"
+    },
+    {
+      "path": "src/native_material_factory.cpp",
+      "git_blob": "42910336c8f1516b477c75a1fe7ca96b47bae1b0"
+    },
+    {
+      "path": "src/native_material_owner.cpp",
+      "git_blob": "98c7c3495ec76c5a15b13de8c9bc869f7a601958"
+    },
+    {
+      "path": "src/native_mesh_owner.cpp",
+      "git_blob": "148a586af9e2cc2ce8a64c0d7705852797d4634c"
+    },
+    {
+      "path": "src/native_mesh_pool.cpp",
+      "git_blob": "373f83c8773e9ed940c6e7f79fd33b5c9ba8078f"
+    },
+    {
+      "path": "src/native_mesh_section.cpp",
+      "git_blob": "58454f0dde681da13d714fc6909f74f2290fcf63"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "git_blob": "b959a8d937bdab01f9013f2cbd7e28ad320a0090"
+    },
+    {
+      "path": "src/native_model_pool.cpp",
+      "git_blob": "8b28493c09c6809a05f4267cbb5f9cc6af760778"
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "git_blob": "6a0e74c4cb62f82ec0b1909a807f36b0297f72ab"
+    },
+    {
+      "path": "src/native_node_parenting_storage.cpp",
+      "git_blob": "a5a82c3d274d1af7f86efeb59a3939856212bb81"
+    },
+    {
+      "path": "src/native_node_raw_transform.cpp",
+      "git_blob": "cb27dc6bebf4e551e72d003868e57211b2615d40"
+    },
+    {
+      "path": "src/native_node_visibility_factor.cpp",
+      "git_blob": "c8c7227766bef0ccb77d47061bacc236e48e7514"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "git_blob": "bb26a9f52a9b694165a4b832db8a9dac735d1c52"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c"
+    },
+    {
+      "path": "src/native_render_resource_record.cpp",
+      "git_blob": "4e53a267ad75d98ef4962064da2c8e22d2d3fd8c"
+    },
+    {
+      "path": "src/native_shader_global_readers.cpp",
+      "git_blob": "38c42cabf31e8e382ecd74d7d808cbb5d26178c0"
+    },
+    {
+      "path": "src/native_stream_clone.cpp",
+      "git_blob": "b2a48e0066cb8f3d125b12d169d6b4302266db04"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "git_blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "git_blob": "0e5d59593c47a3cdabaf1020adddc735141d28d3"
+    },
+    {
+      "path": "src/native_traceline_render.cpp",
+      "git_blob": "63068bb68643c4ef65b6fd6fc62409bb1c7bdce0"
+    },
+    {
+      "path": "src/native_vertex_declaration_cache.cpp",
+      "git_blob": "27628144aaa05721aa6d2660581027b109a798f6"
+    },
+    {
+      "path": "src/native_vertex_declaration_loading.cpp",
+      "git_blob": "dd7270a16890be20e8646fe43b861b80efa547d8"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    }
+  ],
+  "root_reviewed_provider_deltas": [
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "worker_baseline_blob": "e140d45066695566eac7a59bdc7bd62799d3dc65",
+      "combined_blob": "18b3db511d73f7f2b3d2efd9375f667d278f0f28",
+      "already_published_commit": "1e7f0a3d2",
+      "root_review": "PASS: one member initializer now borrows the existing live Source state-definition publication cell instead of an isolated pointer; same constructor/descriptor contexts use that reference; genuine getter/storage Source read; no Original placement or caller-adoption claim"
+    }
+  ],
+  "root_build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "checks": "3/3",
+    "seconds": 7.83,
+    "warnings": [
+      "Existing Lua spawn_request_id_matches duplicate symbol LNK4006 in untouched lua_binding_spawn/lua_spawn_new objects; second definition ignored"
+    ]
+  },
+  "static_link": {
+    "compiled_commit": "6510358d33016f8fab77ca4997438ed91d2610b8",
+    "build_and_minimal_main_exit_code": 0,
+    "raw_function_bodies_executed": false,
+    "explicit_worker_object_linked": false,
+    "kind": "Three public function addresses from the actual combined Core; main calls no reconstructed body",
+    "PE32_asInvoker": true,
+    "exe_sha256": "09b901efda16b849d681aa43f7764b680554ddd80621e89d583afc5604d2f338",
+    "libraries": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "4070d5818b718c6057a5800b00045ac85877e21155752f22fed3a3e2742679d9"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "sha256": "e6ebb089df7828a43ecdd6e705dddb4cea95b38ffe1fabbd47152fec8834db30"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "sha256": "838261efe3cdd86663e25ecbcd9e825ee51203e71491954864316d4d0dfb6062"
+      }
+    ],
+    "canonical_additional_objects": []
+  },
+  "root_source_and_header_inputs_copied": 571,
+  "archive": {
+    "path": "local/cc12_native_gui_copy_cursor_integration_140/evidence_family.zip",
+    "sha256": "295ec470135597058cb61fc9d7b57a8dd523fcb2023f7e1ee9aaeaf2fb3b9474",
+    "payload_count": 1754,
+    "manifest": "local/cc12_native_gui_copy_cursor_integration_140/manifest.json",
+    "manifest_sha256": "0172f0ae9fd7f313efad9704105c1678b344fe5ee9d86bc81dc00f1bff8a2cf7",
+    "all_archived_payload_hashes_rechecked": true,
+    "nested_worker_manifests_included": true
+  },
+  "original_input_proof": {
+    "path": "local/cc12_native_gui_copy_cursor_integration_140/root_original_input_proof.json",
+    "sha256": "91730152bf50ec41a11a239d112294d5433a9edec0d07d7fa9d6f628b3cdc61e",
+    "checked_spans": 4,
+    "status": "PASS"
+  },
+  "limits": [
+    "The new cursor interface requires the same actual93 Text,122 canonical identity and independent full provider/creator/diagnostic graph; no production owner or lifetime is synthesized",
+    "Cursor preserves current renderer/profile/slot reads, SSE/x87 schedule, one captured final decrement entry and six consumed cleanup states; Source binding/admission bookkeeping does not prove Native fault origin",
+    "Vector parent supports independently prepared metadata and exact empty119 catch domain; genuine partial/published graphs and unsupported current ranges retain obligations without guessed cleanup or retry",
+    "Private parent terminal metadata follows only a genuine119 return; length/badalloc before allocation completes has no invented raw cleanup",
+    "Raw wide assignment uses actual8B headers and same existing string storage; exact self identity returns before reads, otherwise captured resize length then CURRENT length/DATA, WORDs through NUL",
+    "Existing lower objects, full raw fonts/glyph/index/layout bindings and production GUI activation remain distinct work; readiness136 is not Source credit",
+    "Source SDK allocation/exception and C++ EH interfaces do not establish Native private CRT/FH3/SEH/register ABI identity",
+    "Existing checks and manifested address-only linkage execute none of the three reconstructed bodies; no new behavioral/gameplay/visual validation claimed"
+  ]
+}
