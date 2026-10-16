@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "packet": "goal_oct15_scene_command_list_push_back",
-  "status": "whole_ordinary_source_reviewed_evidence_pending_combined_build",
-  "source_ready": false,
+  "status": "complete_ordinary_source_reviewed_annotated_primary_registered_Win32_three_checks_passed",
+  "source_ready": true,
   "whole_control_flow_source_available": true,
   "source": "src/native_scene_command_list_push_back.cpp",
   "header": "include/bsp/native_scene_command_list_push_back.hpp",
@@ -130,9 +130,29 @@
         "status": "applied"
       }
     ],
-    "export": "exports/bsp/functions/00468350/decompiled.c"
+    "export": "exports/bsp/functions/00468350/decompiled.c",
+    "final_validation_update": {
+      "prior_value_log": "local/ghidra-annotations-20261016T011529Z.json",
+      "changes": [
+        {
+          "address": "00468350",
+          "before": {
+            "address": "00468350",
+            "function_name": "BSP_SceneCommandList_PushBack",
+            "comment": "[BSP reconstruction 00468350]\nHypothesis, not a recovered symbol. __thiscall(header, void* record) on the {count +0h, head +4h, tail +8h} list at scene database +14Ch. operator new(0xC) for a {prev +0h, next +4h, record +8h} node, node->prev = old tail, node->record = the argument, then either old tail->next = node or head = node, tail = node, node->next = 0, count++. 0046a9f0 erases front to back through the same links, so the drain order at 0046aab0 is insertion order. docs/SCENE_DEFERRED_REFS.md.\n\n[BSP reconstruction 00468350] update\nHypothesis, not a recovered symbol. __thiscall(header, void* record) on the {count +0h, head +4h, tail +8h} list at scene database +14Ch. operator new(0xC) for a {prev +0h, next +4h, record +8h} node, node->prev = old tail, node->record = the argument, then either old tail->next = node or head = node, tail = node, node->next = 0, count++. 0046a9f0 erases front to back through the same links, so the drain order at 0046aab0 is insertion order. docs/SCENE_DEFERRED_REFS.md. | Whole ordinary raw Source src/native_scene_command_list_push_back.cpp covers [00468350,004683A7),87B/36ops: late original entryESP+4 backing after actual current-service allocation12 and conditional node zero stores; retain null address8 path, captured previous tail plus fresh nonempty current tail, ordered head/tail/next publications and fresh count increment. Ordered volatile DWORD accesses preserve reached aliases. Existing semantic Seg6Host Source unchanged. Primary full Source/provider review passed; combined registered Win32 gate pending. Current CRT service boundary, no Original heap/handler/exception/privateABI/game credit. docs/GOAL_OCT15_SCENE_COMMAND_LIST_PUSH_BACK.md."
+          },
+          "after": {
+            "address": "00468350",
+            "name": "BSP_SceneCommandList_PushBack",
+            "evidence": "Hypothesis, not a recovered symbol. __thiscall(header, void* record) on the {count +0h, head +4h, tail +8h} list at scene database +14Ch. operator new(0xC) for a {prev +0h, next +4h, record +8h} node, node->prev = old tail, node->record = the argument, then either old tail->next = node or head = node, tail = node, node->next = 0, count++. 0046a9f0 erases front to back through the same links, so the drain order at 0046aab0 is insertion order. docs/SCENE_DEFERRED_REFS.md. | Whole ordinary raw Source src/native_scene_command_list_push_back.cpp covers [00468350,004683A7),87B/36ops: late original entryESP+4 backing after actual current-service allocation12 and conditional node zero stores; retain null address8 path, captured previous tail plus fresh nonempty current tail, ordered head/tail/next publications and fresh count increment. Ordered volatile DWORD accesses preserve reached aliases. Existing semantic Seg6Host Source unchanged. Primary full Source/provider review passed; combined registered Win32 gate pending. Current CRT service boundary, no Original heap/handler/exception/privateABI/game credit. docs/GOAL_OCT15_SCENE_COMMAND_LIST_PUSH_BACK.md. | Final validation update: unchanged whole87B/36-op ordinary Source passed primary registered scripts/build.ps1 MSVC Win32 gate efa7febae744d66c5665e61b64bf8c67d36ff3f6, all3 existing checks9.55s; retained full emitted primary entry preserves late payload/currenttail/currentcount and publication schedule. Report goal_oct15_scene_command_list_push_back.json pins immutable combined receipt and exact unique archive object. Supersedes earlier build-pending statement only; Original heap/handler/exception/privateABI/game equivalence remains unproved."
+          },
+          "status": "applied"
+        }
+      ],
+      "locked_saved_exported": true
+    }
   },
-  "source_registration": "primary combined registration/build;no worker CMake queue",
+  "source_registration": "primary registered actual Source; no worker CMake queue or duplicate registration",
   "validation": {
     "independent_review": {
       "reviewer": "primary integrator",
@@ -141,7 +161,28 @@
       "header_sha256": "e26f3d822fb589aaec4d8fc1697dab6d1ebdfad3d87382afcc8130593a7d0781",
       "source_unchanged": true
     },
-    "build": "pending primary actual registered normal Win32 combined gate",
+    "build": {
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "receipt": "reports/goal_oct15_command_lifetime_primary_review.json",
+      "receipt_sha256": "68ad058165cb0f832f60dd1adc78946bc4edd51b2f0ba3479c5604914d8f9e3e",
+      "revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_command_lifetime_combined_build.log",
+      "log_sha256": "8d982051dfaf99fea2dc0568e06ddba017eea931ad60c8f5e6ac9f0b63258653",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 9.55,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "existing_checks_scope": "regression checks; native math seeds do not execute these new bodies"
+    },
     "report_call_verification": {
       "typed_rows": 2,
       "failed": 0,
@@ -151,7 +192,69 @@
     },
     "new_tests": 0,
     "native_differential_fixture": false,
-    "game_validated": false
+    "game_validated": false,
+    "primary_combined_build": {
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "receipt": "reports/goal_oct15_command_lifetime_primary_review.json",
+      "receipt_sha256": "68ad058165cb0f832f60dd1adc78946bc4edd51b2f0ba3479c5604914d8f9e3e",
+      "revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_command_lifetime_combined_build.log",
+      "log_sha256": "8d982051dfaf99fea2dc0568e06ddba017eea931ad60c8f5e6ac9f0b63258653",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 9.55,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "existing_checks_scope": "regression checks; native math seeds do not execute these new bodies"
+    },
+    "primary_emitted_object": {
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "path": "local/goal_oct15_command_lifetime_objects/native_scene_command_list_push_back.obj",
+      "sha256": "ae10ecfb006f5a91cd70b2ca8c9372429c9d19f9514c61ab0562c431ab00fc63",
+      "disassembly": "local/goal_oct15_command_lifetime_objects/native_scene_command_list_push_back.disasm.txt",
+      "disassembly_sha256": "07944ec48e85dfd75c0cb0e5279d3247547314784686f76acd5ae8ac04739059",
+      "symbols": "local/goal_oct15_command_lifetime_objects/native_scene_command_list_push_back.symbols.txt",
+      "symbols_sha256": "68f57661cf29c9ef54927f3321bb4b3b70cc0cbbdeebb9619a0d546443301585",
+      "public_symbol": "?push_back_native_scene_command_list_00468350@bsp@@YAXPAXPBX@Z",
+      "entry_text_size": 137,
+      "entry_text_sha256": "43756cca2d6dfb701d6157764c3db8b53527709efe16899430f73ef189c548bd",
+      "unique_identical_archive_bodies": 1,
+      "whole_entry_inspected": true,
+      "private_ABI_or_binary_entry_proved": false,
+      "ordered_raw_accesses": {
+        "allocator_call": "29h",
+        "nonnull_zero_stores": [
+          "37h:node+0",
+          "3Dh:node+4",
+          "44h:node+8"
+        ],
+        "late_parameter_read": "4Eh",
+        "payload_store": "53h",
+        "captured_tail_read": "56h",
+        "previous_store": "59h",
+        "branch_current_count_read": "5Bh",
+        "nonempty_current_tail_reload": "61h",
+        "nonempty_tail_next_store": "64h",
+        "empty_head_store": "69h",
+        "current_tail_publication": "6Ch",
+        "node_next_zero": "6Fh",
+        "final_current_count_read": "76h",
+        "final_wrapping_increment_and_store": [
+          "78h",
+          "79h"
+        ]
+      },
+      "native_body_byte_identity": false,
+      "extra_compiler_transport": "ordinary cdecl argument metadata, stack request object and security cookie; full emitted entry137B, no native private-frame/register/fault equivalence"
+    }
   },
   "qualification": "Whole raw control-flow Source within actual reached DWORD storage/current-service allocation contract. No Original heap/handler/exception identity, physical argument-home/register/fault/private ABI, caller/constructor closure or game claim. Legacy semantic Source unchanged."
 }
