@@ -81,3 +81,7 @@ Exact paths, all export-copy hashes, Native/object proofs and nonCODE comparison
 are in companion `oct16_Source56_batch_proposed.json`. Root target paths are
 `docs/OCT16_FIFTYSIXTH_RECONSTRUCTION_BATCH.md` and
 `reports/oct16_fiftysixth_reconstruction_batch.json`; this worker wrote neither.
+
+Final Main build at `71a270fc13a36191856c63cbd5921a576b544703`, based on released `e534a6c51640d7dd0b3530a68e6009dacb115989`, passed all three existing suites in 7.27s. Its actual CODE and symbolic relocations equal the accepted worker object. The final Main object and immutable copy are pinned separately in the batch JSON; earlier staging evidence remains historical. This is the prepublication build checkpoint.
+
+Both full Main Core linker indices (83076 bindings each) and all actual x86 definitions were checked. The four owned functions and canonical unlock provider are unique; owned member bytes equal actual normal-build objects. The full 94400936-byte Core archive is retained read-only by content hash. This proves archive membership and symbolic binding, not execution or Original binary ABI.
