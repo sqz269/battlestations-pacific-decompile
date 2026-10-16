@@ -1,0 +1,248 @@
+{
+  "status": "whole_ordinary_Original_readiness_primary_peer_pass_Source_authorized_compiler_Main_pending",
+  "manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\local\\NativeCrtWcscspnReadiness01\\root_manifest.json",
+    "bytes": 23064,
+    "sha256": "ffe1adc9d9474cfda60fc27e6117d4f94a0389557a5d6cc47555d2c0a9ab8056"
+  },
+  "worker_commit": "10d0320c5f7e3f2c0f40a922824f3b1efe230430",
+  "files": 82,
+  "own_pairs": 16,
+  "raw_records": 32,
+  "Original_prefix": {
+    "line_start": 1,
+    "line_end_inclusive": 2722,
+    "byte_start": 0,
+    "byte_end_exclusive": 7929178,
+    "bytes": 7929178,
+    "sha256": "e2542e6647a9f8387c161215046c8468d80fd65811fc630f0e274a5b4b4c4c96"
+  },
+  "current133freshinputs_hash_mtime_verified": true,
+  "preserved817sealed_580working_current_bytes_hash_mtime": true,
+  "Original_body": {
+    "utc": "2026-10-16T08:49:39.179134+00:00",
+    "stage": "Actual discovered and whole-range-leased body pin before substantive analysis",
+    "entry": "00C0382C",
+    "inclusive_end": "00C0386D",
+    "bytes": 66,
+    "file_offset": 8402988,
+    "body_sha256": "e037e5ab5bbdd6752199a09c4260f7360e99621783fd6e6ced2e68455f3512ff",
+    "hex": "8b44240466833800535657742b8b5c24140fb73b6685ff8bd374150fb7300fb7cf663bce741242420fb70a6685c975f140406683380075dc2b4424105f5ed1f85bc3",
+    "installed_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "mtime_ns": 1720895268000000000,
+      "links": 1,
+      "readonly": false,
+      "observed_utc": "2026-10-16T08:49:39.186716+00:00"
+    },
+    "body": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\local\\NativeCrtWcscspnReadiness01\\Original_body.bin",
+      "bytes": 66,
+      "sha256": "e037e5ab5bbdd6752199a09c4260f7360e99621783fd6e6ced2e68455f3512ff",
+      "mtime_ns": 1792140579178867400,
+      "links": 1,
+      "readonly": false,
+      "observed_utc": "2026-10-16T08:49:39.191529+00:00"
+    }
+  },
+  "Root_personal_reads": {
+    "pseudocode": "fa4363",
+    "all30ASM": "e60d84",
+    "whole_doc": [
+      "050b78",
+      "1faa5e",
+      "7f622d"
+    ],
+    "semantic_report": [
+      "1faa5e",
+      "c08bf7"
+    ]
+  },
+  "independent_disk_decode_30rows_and_all_typed_lengths_owners_flows_verified": true,
+  "source_ready": true,
+  "source_authorized": true,
+  "Source_credit": 0,
+  "Git_qualifications": [
+    {
+      "path": "docs/NATIVE_CRT_WCSCSPN_READINESS.md",
+      "Git_bytes": 8923,
+      "Git_sha256": "00df9b0946bd01bfe177c243989c3ca229bd8f746b7f73c430b7f34eb9ffd365",
+      "working": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\docs\\NATIVE_CRT_WCSCSPN_READINESS.md",
+        "bytes": 8923,
+        "sha256": "00df9b0946bd01bfe177c243989c3ca229bd8f746b7f73c430b7f34eb9ffd365"
+      },
+      "literal_equal": true,
+      "CRLF_only_when_nonliteral": false
+    },
+    {
+      "path": "reports/native_crt_wcscspn_readiness.json",
+      "Git_bytes": 12353,
+      "Git_sha256": "b13c10eaa3571535de2d3da4ac3fa6f50e4a37989a8c37ecdfe6940bf8d7486b",
+      "working": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\reports\\native_crt_wcscspn_readiness.json",
+        "bytes": 12353,
+        "sha256": "b13c10eaa3571535de2d3da4ac3fa6f50e4a37989a8c37ecdfe6940bf8d7486b"
+      },
+      "literal_equal": true,
+      "CRLF_only_when_nonliteral": false
+    }
+  ],
+  "contract": [
+    "New default potentially throwing MSVCWin32 unsigned int __cdecl bsp::count_native_crt_wide_prefix_excluding_00c0382c(const void* actual_source,const void* actual_control), pointer/unsignedint32, byte8/little-endian WORD16. Correct Original libraryname _wcscspn retained; descriptive API and size_t interpretation hypotheses, no Unicode scalar/locale/case/normalization.",
+    "First read exactly one sourceWORD NUL guard. Initial sourceNUL returns0 without any controlpayload/access or cursoradvance; no controlstorage required and controlmaybenull. Source always requires genuine first2bytes. Physicalcontrolargumenthome binding excluded from ordinarynewinterface.",
+    "Only after nonzero initialsourceguard, read firstcontrolWORD exactlyonce and cache throughout. Each sourceiteration tests cachedvalue/resets actualcontrolcursor. Cachedcontrol0 skips currentSourcevaluereread and alltailreads, but still scans allsourceguards to reachedNUL; no emptycontrolreturn0 shortcut.",
+    "For cachednonzero control, reread currentSourceWORD once and retain for this search. Compare cachedfirstcontrol then each reachedtailWORD. Each mismatch advances realcontrolcursor twice byonebyte then oneWORD read; tailNUL test before equality, nonzero compare, matchstops immediately. Never reload firstcontrolWORD; tailWORDs reread on nextsource search.",
+    "After unsuccessful search or cachedcontrol0, advance source twicebyonebyte and count oneunit; read nextsourceWORD guard, stopNUL beforeadvance/value-reread; nonzero restarts cachedcontroltest. A matchedsourceunit is not advanced/counted. Keep exact orderedexternalWORD reads and earlystop; privatecount timing only ordinary stable faultfree frameexcluded qualification.",
+    "Return exact32bit nativeSUB/SAR result with unsigned expression n|((n&0x40000000U)<<1), where n is traversedsourceunits. No signed pointer subtraction/conversion/shift, inventedINTMAX/signeddistancecap or promise giantallocations exist. Nativeoriginalsourcehome reload/physicalaliases excluded, not silently asserted reproduced.",
+    "Every actually reached guard/value/tailWORD has2genuine live stable determinate readable inrange bytes and a finite reached stop. Every actual byteadvance nonwrapping withinoronepast sameactualallocation, neveronepastread. No padding/fullunusedsourceNUL/controlterminator afterearlymatch. Arbitrary16bitcodeunits, rawunaligned/interior/prefix/read-only/inputoverlap/identity/ordinarycallerstack permitted; no fakewchar/uint16objectlifetime/alignment.",
+    "Exclude Originalornew calleeprivateframe/savedregister/returnaddress/argumenthome/blockselfalias, faults/MMIO/concurrentmutation/lifetimechange/segmentprotocol; ordinary Win32flatDS/SS32bitstack. No OriginalphysicalABI/caller/runtime/game credit.",
+    "Prospective mechanism only: private target-specific addressedMOVZX WORD16 helper over actualrawbyteaddresses, fullyinitialized zeroextendeduint32result; separatelysequenced actualhelpercalls preserve completeWORD schedule/cache/rereads; genuine bytecursors + freshunsignedunitcount. Source may use explicit MSVCWin32 inlineassembly for rawWORD primitive; no inventedwideobject cast/dereference, SDK/memcpy/provider/global/TLS/bitmap/table/runtimeguard/emptycontrolshortcut/fallback/callerbinding. Future actualstrict/Main artifacts must independently verify EVERYpublic/privatehelper byte, widths/order, allcalls/relocations/providerbindings, privateABI/frame/GS/metadata and boundedunsignedreturn.",
+    "Only4canonicalSource/header/doc/reportoutputs after entry/full66B/4filelease and fresh current beforepins. One genuine strictMSVCWin32 compile with actualSource/header dependency closure; Root+independentSource/wholeobject and separate actualnormalregisteredMain/Core/archive/peer gates. No matchingrecompile/workerbaseline/newtests/probes/bodyexecution/SDKcomparison or oldcompilerprovenance adoption."
+  ],
+  "access_schedule": [
+    {
+      "step": 1,
+      "sites": [
+        "00C0382C",
+        "00C03830"
+      ],
+      "effect": "Read native source pointer home, then exactly one unsigned WORD NUL guard at actual source. Source zero exits immediately: no control pointer-home/payload read or control cursor arithmetic."
+    },
+    {
+      "step": 2,
+      "sites": [
+        "00C03834",
+        "00C03835",
+        "00C03836",
+        "00C03837"
+      ],
+      "effect": "Original saves EBX/ESI/EDI after first source guard and before testing its preserved flags; native frame aliases are excluded from ordinary Source domain."
+    },
+    {
+      "step": 3,
+      "sites": [
+        "00C03839",
+        "00C0383D"
+      ],
+      "effect": "Only for initially nonzero source: load control pointer home once, read its first unsigned WORD once and retain it in EDI for every outer iteration."
+    },
+    {
+      "step": 4,
+      "sites": [
+        "00C03840",
+        "00C03843",
+        "00C03845"
+      ],
+      "effect": "Test cached first control WORD and reset real control cursor to control base each source iteration. Cached zero skips all source-value rereads and control-tail reads; source still advances/scans through NUL."
+    },
+    {
+      "step": 5,
+      "sites": [
+        "00C03847",
+        "00C0384A",
+        "00C0384D",
+        "00C03850"
+      ],
+      "effect": "For nonzero cached first control WORD, freshly reread current nonzero source WORD once, compare it with cached first control WORD. Match exits without advancing either cursor or rereading any payload."
+    },
+    {
+      "step": 6,
+      "sites": [
+        "00C03852",
+        "00C03853",
+        "00C03854",
+        "00C03857",
+        "00C0385A",
+        "00C0384D"
+      ],
+      "effect": "On mismatch advance control cursor twice by one byte, read one unsigned WORD, test zero before equality. Zero completes this unsuccessful search. Nonzero tail WORD compares against saved source value; match exits, otherwise repeats. Tail positions are freshly read again for each next source iteration, not cached."
+    },
+    {
+      "step": 7,
+      "sites": [
+        "00C0385C",
+        "00C0385D",
+        "00C0385E",
+        "00C03862"
+      ],
+      "effect": "After complete nonmatching control scan, or cached empty control: advance source cursor twice by one byte, increment logical traversed-unit count once, then read exactly one next-source WORD guard. Zero exits; nonzero restarts cached-control test. NUL itself is never advanced or source-value-reread."
+    },
+    {
+      "step": 8,
+      "sites": [
+        "00C03864",
+        "00C03868",
+        "00C03869",
+        "00C0386A",
+        "00C0386C",
+        "00C0386D"
+      ],
+      "effect": "Always reread native original-source pointer home for SUB, restore registers, SAR EAX by one, RET without immediate argument cleanup. New ordinary local counter/unsigned encoding can avoid pointer subtraction; no mutable argument-home/block identity is asserted."
+    }
+  ],
+  "exact_return": {
+    "traversed_code_units": "n",
+    "native": "uint32 SUB cursor-original-home, then x86 SAR by 1",
+    "unsigned_expression": "n | ((n & 0x40000000U) << 1)",
+    "mathematical_count_equal_only": "For n below 0x40000000; unrestricted genuine nonwrapping domain retained, no signed-distance/INT_MAX cap.",
+    "static_boundaries": [
+      {
+        "prefix_units": "0x3fffffff",
+        "SUB_byte_delta": "0x7ffffffe",
+        "signed_delta": 2147483646,
+        "SAR_1_bits": "0x3fffffff",
+        "new_unsigned_expression_bits": "0x3fffffff"
+      },
+      {
+        "prefix_units": "0x40000000",
+        "SUB_byte_delta": "0x80000000",
+        "signed_delta": -2147483648,
+        "SAR_1_bits": "0xc0000000",
+        "new_unsigned_expression_bits": "0xc0000000"
+      },
+      {
+        "prefix_units": "0x7fffffff",
+        "SUB_byte_delta": "0xfffffffe",
+        "signed_delta": -2,
+        "SAR_1_bits": "0xffffffff",
+        "new_unsigned_expression_bits": "0xffffffff"
+      }
+    ],
+    "extent_qualification": "No assumption that boundary-sized Win32 allocations exist; arithmetic only. Actual reached WORD/extents remain genuine and nonwrapping."
+  },
+  "proposed_Source": {
+    "packet": "cc12_native_crt_wcscspn_00c0382c",
+    "API": "unsigned int __cdecl bsp::count_native_crt_wide_prefix_excluding_00c0382c(const void* actual_source, const void* actual_control)",
+    "default_potentially_throwing": true,
+    "API_name_and_size_t_meaning_hypotheses": true,
+    "files": [
+      "include/bsp/native_crt_wcscspn.hpp",
+      "src/native_crt_wcscspn.cpp",
+      "docs/NATIVE_CRT_WCSCSPN.md",
+      "reports/native_crt_wcscspn.json"
+    ],
+    "mechanism": "Target-specific private addressed MOVZX WORD16 helper over actual raw byte storage, fully initialized zero-extended uint32 return. Separately sequenced helper invocations preserve all guard/value/tail rereads and cached first control WORD; genuine raw cursors advance two in-bounds bytes, fresh uint32 traversed count, final unsigned SAR encoding. No typed-wide object, SDK/memcpy/provider/global/TLS/bitmap/table/runtime validation/null guard/empty-control shortcut/fallback/caller binding.",
+    "approval": "Proposal only; future sole strict compiler/whole-object proof, Root/peer Source gate and normal Main integration remain separate. No C++ emitted."
+  },
+  "qualification": "Full66B Original ordinary raw-storage contract only. Source initialNUL bypasscontrol;cachedfirstcontrol/tail+source rereads;Nativeargumenthome/privateframeexcluded; exactunsignedSAR n|((n&40000000)<<1),noinventedcountcap. PrivateaddressedMOVZX16 mechanism is prospective, no fakewideobjectlifetime/alignment; all futureactualhelpers/compiler/Main gates separate. NoOriginalphysicalABI/caller/runtime/game or Sourceauthorization yet.",
+  "schema": "bsp.cc12.native_crt_wcscspn.primary_readiness.v1",
+  "Root_authentication": "4a57c6",
+  "independent_peer": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcscspn_readiness_primary_20261016\\primary_peer_inputs.DATA.json",
+    "bytes": 4345,
+    "sha256": "8b8c0a5fa8b9e2e468f4a91a4dab2cc8ab1e214bbdab1429bdd943bf62c39905"
+  },
+  "Original_ABI_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false,
+  "Source_authorized": true,
+  "Root_whole_Original_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcscspn_readiness_primary_20261016\\primary_evidence.DATA.json",
+    "bytes": 11386,
+    "sha256": "58c598908af79ce33c5a3aecbc23b0e924017f29b617324791302ed6f10a8538"
+  },
+  "Main_gate": "pending_Source_independent_strict_and_registered_Main_actual_variant_archive_review"
+}
