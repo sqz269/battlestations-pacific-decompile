@@ -1,0 +1,167 @@
+{
+  "packet": "cc12_native_gui_raw_directional_lifetime_60",
+  "status": "implemented_build_checked_focused_production_source_lifetime_checked",
+  "requested_root": "7e8390fecd4bfe6c46e0a9145517263d5a27d738",
+  "worker_merge": "503b26751ccb22057c19302205a2a1971bc92bf4",
+  "owned_sources": [
+    {
+      "path": "include/bsp/directional_light_owner.hpp",
+      "git_blob": "508224f7ce9f60d1cfa2d0809a13be82facbc981",
+      "sha256": "4fe116553ca8fc90bad6b92dfe27c25c8a4b1987d51c8ae1e973c2a69058174e"
+    },
+    {
+      "path": "src/directional_light_owner.cpp",
+      "git_blob": "647f06962a136e2b12d1008988b1ec89d47cde3b",
+      "sha256": "cdef14e4588a1457a028c81437d8e931cb6fa3d5187957abe534972b0f5e2f6f"
+    },
+    {
+      "path": "include/bsp/directional_light_reference.hpp",
+      "git_blob": "a8fa1e42f1f227e5b57a454bc0a2312fc1bc4ade",
+      "sha256": "53094d17deb4bc18e3413b46d925210be2664d457c20e6588a3c4303102d8b0b"
+    },
+    {
+      "path": "src/directional_light_reference.cpp",
+      "git_blob": "a3123eb5739b7c629848200c3cf3ce5f3c66a1db",
+      "sha256": "64318777e6dfb034cb99f2e78e7e6eaea498b1a91c6d6a9a1aafd8754664f76c"
+    }
+  ],
+  "document": "docs/CC12_NATIVE_GUI_RAW_DIRECTIONAL_LIFETIME_60.md",
+  "original": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_batch": true,
+    "interface_kind": "new typed C++ Source composition, not Original outer ABI/FH3",
+    "functions": [
+      {
+        "range": "[00b7c4c0,00b7c576)",
+        "bytes": 182,
+        "abi": "ECX owner; stack raw8h name; EAX same; RET4",
+        "reuse": "construct_native_light_raw_00b7c4c0; current one after B6F5A0; current CE7820 after zero1C4/1C8/1CC"
+      },
+      {
+        "range": "[00b7c6b0,00b7c6c9)",
+        "bytes": 25,
+        "abi": "ECX owner; stack raw8h name; EAX same; RET4",
+        "reuse": "construct_native_directional_light_raw_00b7c6b0; base return then D62FB0"
+      },
+      {
+        "range": "[00b7c5b0,00b7c6aa)",
+        "bytes": 250,
+        "abi": "ECX light; RET",
+        "reuse": "complete existing typed light body; direct returning B6F440 call at B7C693"
+      },
+      {
+        "range": "[00b7c820,00b7c846)",
+        "bytes": 38,
+        "abi": "ECX owner; stack flags; EAX original; RET4",
+        "reuse": "complete destructor then flags low bit0 returns SAME actual slot through B7B2F0"
+      }
+    ],
+    "representations": [
+      "bsp.py show pseudocode",
+      "bsp.py show --asm relevant complete constructor/deleting body and destructor tail"
+    ],
+    "new_ghidra_mutation": false,
+    "new_ledger_records": false
+  },
+  "composition": {
+    "raw_name": "borrow exact caller header and SAME nodes.require_raw_name_pool(); no input header copy or cleanup",
+    "constants": [
+      "borrowed current CE4970",
+      "borrowed current D7A24C",
+      "borrowed current CE4ADC",
+      "borrowed current CE7820"
+    ],
+    "tail": "materialize SAME trivial +174..1EB lifetime after raw kernel, snapshot/restore all78h bytes; slab1EC unchanged",
+    "destruction": "existing full light body selects existing throwing raw node destructor when runtime is raw",
+    "reference": "single canonical DirectionalLightReference borrows actual+4; no extra native retain/count or second companion",
+    "separate_raw_storage_pipeline": "unchanged; do not bind NativeDirectionalLightStorageReference on this same owner"
+  },
+  "failure_frame": {
+    "api": "DirectionalLightRawAllocation",
+    "single_use_immovable": true,
+    "preflight": "used frame/header/profiles/predicates/shared runtimes/raw-domain admission before native entry",
+    "retained": [
+      "exact borrowed input-header identity",
+      "actual acquired slot",
+      "constructor entry/return+tail state",
+      "completed owner companion",
+      "scene admission state",
+      "canonical reference before handoff"
+    ],
+    "caller_obligation": "enclosing persistent caller owns actual header bytes/unconsumed temporary-name cleanup and its own marker",
+    "predicate": "metadata only, externally serialized; true while entered/after failure; false ready/published",
+    "failure_action": "retain whole graph; no catch cleanup/unbind/slot-return/retry; host must _Exit before manager/CRT/member drain",
+    "destructor": "terminate if interrupted before losing frame metadata",
+    "success": "clear raw pointers before published state/return; existing terminal disposal, no retired-record access"
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "target": "MSVC Win32 Release",
+      "ctest_passed": 2,
+      "ctest_total": 2,
+      "tests": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "log": "local/cc12_native_gui_raw_directional_lifetime_60/build.log"
+    },
+    "focused_source_probe": {
+      "cases": 1,
+      "exit_code": 0,
+      "MD": true,
+      "manifest_embedded": true,
+      "source": "local/cc12_native_gui_raw_directional_lifetime_60/directional60_probe.cpp",
+      "log": "local/cc12_native_gui_raw_directional_lifetime_60/probe.log",
+      "checks": [
+        "actual raw-string/directional pool",
+        "counter-derived canonical types",
+        "same scene/lifetime bindings",
+        "exact borrowed-header independent name copy",
+        "unwritten tail sentinels and slab ID",
+        "actual +4 identity and self1/retained2/logical1/terminal0 sequence",
+        "retained name block",
+        "exactly-once raw name return",
+        "same slot reuse",
+        "pool/list/string retirement",
+        "normal marker false"
+      ],
+      "original_image_inputs": {
+        "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "image_base": "0x400000",
+        "constants": {
+          "0xd7a24c": "0x3f800000",
+          "0xce4970": "0x501502f9",
+          "0xce4adc": "0xd01502f9",
+          "0xce7820": "0x42800000"
+        }
+      },
+      "probe_sha256": "d8238b868d8a324d80d61ec6f6a8727383570958e38208df0e19314ae0c198df",
+      "bsp_core_sha256": "07fc5c9c15ca59f1875d727b77489446ea03145753aaaae828ebf76a6d506168",
+      "evidence_sha256": {
+        "directional60_probe.cpp": "5a215ec7df0c16dae119bd26f10426dfbfa1049e27735146cc9950fb8ce4bd43",
+        "prepare_probe_data.py": "25522ac87982fb70b2928d931650b6cc5d7997c7a9d9b9869cb666dd3e1d7e90",
+        "run-probe.cmd": "6d6ac00ccd5bc9e97f9e7a433db6f6c3d6d266b9b910cd13ff223f7da2a61f7a",
+        "build.log": "a41dcab697bc1c2687f9c7c7ab20b1cc464f866272e9eae9b0bd0eceac632379",
+        "probe.log": "aaedc7a0205fca58d5cebdd5d9ba4dfd79217bf01c9dec077d36c85db8d7b6ba"
+      }
+    },
+    "source_review": "Root primary Source review PASS: whole four-file diff, existing constructors and both pointer-vector admission paths; identity preflight limited to what has an independent expected owner",
+    "diff_check": "git diff --check passed"
+  },
+  "remaining": [
+    "normal host pool startup adoption is Root packet62/separate integration",
+    "Screen caller persistent name/cleanup frames and genuine scene cLight identity",
+    "camera/store/optional F8BF4C composition; no assumption null",
+    "production shadow owner required only if nonnull shadow can be installed"
+  ],
+  "not_claimed": [
+    "normal Screen/Text activation/drawing",
+    "new complete Original CRT/provider/ABI/FH3 domain",
+    "new relocated Original differential",
+    "native runtime/gameplay/audio/installation changes"
+  ]
+}

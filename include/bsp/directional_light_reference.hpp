@@ -74,4 +74,49 @@ struct DirectionalLightReferenceEnvironment {
 // this wrapper is a new C++ interface, not a recovered native factory ABI.
 DirectionalLightReference* allocate_native_directional_light(
     DirectionalLightReferenceEnvironment&, const NativeString&);
+
+// One caller-retained Source allocation frame, established BEFORE any name,
+// pool or native effect. The enclosing caller also retains the actual header
+// and its own unconsumed name-cleanup state; this frame only borrows its exact
+// address. Never copy/move/retry a frame or dispose its graph after interruption.
+// Metadata only, externally serialized (including reentry): the host must query
+// the predicate and fail-stop before manager/CRT drain. The destructor guards
+// accidental unwind before it could discard retained metadata. No rollback or
+// native cleanup is attempted, even when the node prefix cleaned itself once.
+class DirectionalLightRawAllocation final {
+public:
+    DirectionalLightRawAllocation() noexcept = default;
+    ~DirectionalLightRawAllocation();
+    DirectionalLightRawAllocation(const DirectionalLightRawAllocation&) = delete;
+    DirectionalLightRawAllocation& operator=(const DirectionalLightRawAllocation&) = delete;
+    enum class Stage { ready, pool_entered, slot_acquired, constructor_entered,
+        constructor_returned, owner_admitted, scene_bound, published };
+    Stage stage() const noexcept { return stage_; }
+    bool native_operation_interrupted() const noexcept {
+        return stage_ != Stage::ready && stage_ != Stage::published;
+    }
+private:
+    friend DirectionalLightReference* allocate_native_directional_light(
+        DirectionalLightReferenceEnvironment&, DirectionalLightRawAllocation&,
+        const void*, const NativeNodeRawConstants&, const volatile std::uint32_t&);
+    Stage stage_{Stage::ready};
+    const void* actual_name_header_{};
+    void* actual_slot_{};
+    DirectionalLightOwner* owner_{};
+    DirectionalLightReference* reference_{};
+};
+
+// Explicit raw domain: borrow SAME nodes.require_raw_name_pool() and actual
+// node constant/CE7820 cells. Header bytes are forwarded unchanged and its
+// enclosing name owner remains the caller's obligation. Preflight precedes
+// pool entry; every subsequent exception retains the frame/slot/companions.
+// Success transfers the single self reference and companion retirement to the
+// existing canonical lifetime runtime, adding no native retain or second owner.
+// Name/constants survive construction; pool/runtime/profiles and their raw
+// name domain survive terminal retirement. This is a typed Source composition
+// interface, not the Original factory/FH3 ABI.
+DirectionalLightReference* allocate_native_directional_light(
+    DirectionalLightReferenceEnvironment&, DirectionalLightRawAllocation&,
+    const void* actual_name_header, const NativeNodeRawConstants&,
+    const volatile std::uint32_t& sixty_four_00ce7820);
 }
