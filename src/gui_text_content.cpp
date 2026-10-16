@@ -14,25 +14,32 @@
 namespace bsp {
 static_assert(std::is_same_v<decltype(GuiTextWidget::shadowed), std::uint8_t>,
     "Text content requires the canonical raw shadow-enable byte");
-namespace {
-void require_text_owner(GuiTextContentBinding& binding, GuiWidgetOwnerRuntime& owners) {
-    if (binding.widget.layout().type != GuiWidgetType::Text ||
-        binding.widget.layout().transform.type_id != 3 ||
-        &owners.owner(binding.widget.layout()) != &binding.widget)
-        throw std::logic_error("Text content requires its canonical type3 GUI owner");
+
+GuiTextContentComparison::GuiTextContentComparison(
+    const volatile std::int32_t& actual_changed_cell) noexcept
+    : actual_changed_cell_(&actual_changed_cell), source_current_(nullptr),
+      source_context_(nullptr) {}
+
+GuiTextContentComparison::GuiTextContentComparison(
+    SourceCurrentCompare compare, void* context) noexcept
+    : actual_changed_cell_(nullptr), source_current_(compare), source_context_(context) {}
+
+GuiTextContentComparison GuiTextContentComparison::source_current(
+    SourceCurrentCompare compare, void* context) {
+    if (!compare)
+        throw std::invalid_argument("Source-current Text comparison requires its current comparer");
+    return GuiTextContentComparison(compare, context);
 }
-void require_native_text_domain(std::u16string_view text) {
-    if (text.size() > static_cast<std::size_t>((std::numeric_limits<std::int32_t>::max)()) ||
-        text.find(u'\0') != std::u16string_view::npos)
-        throw std::invalid_argument("Text content requires null-free native-length UTF16");
-}
-bool equal_content(const std::u16string& stored, const std::u16string& copied,
-    GuiTextContentEnvironment& e) {
+
+bool GuiTextContentComparison::equal_content(const std::u16string& stored,
+    const std::u16string& copied, GuiTextContentCalls& native_calls) const {
     //ABA921..ABA937 dispatches on wrapper lengths before calling the CRT.
     if (stored.empty()) return copied.empty();
     if (copied.empty()) return false;
-    if (e.crt_locale_changed_0109de1c != 0)
-        return e.calls.compare_current_locale_00c0392a(stored.c_str(), copied.c_str()) == 0;
+    if (source_current_)
+        return source_current_(source_context_, stored.c_str(), copied.c_str()) == 0;
+    if (*actual_changed_cell_ != 0)
+        return native_calls.compare_current_locale_00c0392a(stored.c_str(), copied.c_str()) == 0;
     //C03A74..C03AB2: terminated comparison, ASCII A..Z only; no length check
     //and no substitute Unicode/country locale mapping in this native arm.
     const auto fold = [](char16_t c) {
@@ -46,6 +53,19 @@ bool equal_content(const std::u16string& stored, const std::u16string& copied,
         if (left != right) return false;
         if (!left) return true;
     }
+}
+
+namespace {
+void require_text_owner(GuiTextContentBinding& binding, GuiWidgetOwnerRuntime& owners) {
+    if (binding.widget.layout().type != GuiWidgetType::Text ||
+        binding.widget.layout().transform.type_id != 3 ||
+        &owners.owner(binding.widget.layout()) != &binding.widget)
+        throw std::logic_error("Text content requires its canonical type3 GUI owner");
+}
+void require_native_text_domain(std::u16string_view text) {
+    if (text.size() > static_cast<std::size_t>((std::numeric_limits<std::int32_t>::max)()) ||
+        text.find(u'\0') != std::u16string_view::npos)
+        throw std::invalid_argument("Text content requires null-free native-length UTF16");
 }
 struct ActualSection {
     NativeMeshStorage* mesh;
@@ -202,7 +222,7 @@ GuiTextContentContinuation prepare_gui_text_content_00aba8d0_fragment(
     }
     require_native_text_domain(text.text);
     require_native_text_domain(copied);
-    if (equal_content(text.text, copied, e)) //00ABA921..00ABA94F
+    if (e.comparison.equal_content(text.text, copied, e.calls)) //00ABA921..00ABA94F
         return {GuiTextContentBranch::unchanged, {}, nullptr, nullptr};
 
     text.measured_width = 0.0f; //00ABA95C, before child callbacks
