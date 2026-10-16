@@ -1,0 +1,622 @@
+{
+  "packet": "oct15_native_dword_vector_header_allocation",
+  "status": "complete_actual_Source_build_checked_CurrentCpp_CRT_qualified_pending_immutable_primary_review",
+  "utc": "2026-10-16T02:41:42.835896+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "base_commit": "c979f0ec1ab99668e2ea6753ce43de4d78803515",
+  "source": "src/native_dword_vector_header_allocation.cpp",
+  "header": "include/bsp/native_dword_vector_header_allocation.hpp",
+  "documentation": "docs/OCT15_NATIVE_DWORD_VECTOR_HEADER_ALLOCATION.md",
+  "source_sha256": {
+    "src/native_dword_vector_header_allocation.cpp": "e2747d71450f364453492bfdd848981abea308db7b6a34a4d58d390e3481e543",
+    "include/bsp/native_dword_vector_header_allocation.hpp": "6f5a9a6d4a2a9fe08526cea08afd8e8b9dc266987b07c180bf30d4edfa84b771"
+  },
+  "provider_source_sha256": {
+    "include/bsp/native_nested_string_vector_allocation.hpp": "b1bf1e71e63018c750b8252dc7a509de730a68e27c4cc9f2ea6d9c5e03ab7ca0",
+    "src/native_nested_string_vector_allocation.cpp": "9751b35cfbb56897d25e9c7b75d5f91de6c39a3a9ccc927f8d13845ac820ef68",
+    "include/bsp/native_string_vector_allocation.hpp": "9fd29ea6f06302a8f7189fc588afe34a5d09302230b2e19012c7a281cb5d8f46",
+    "src/native_string_vector_allocation.cpp": "4486768af5a066bc5366980f2dedb17dc09690f73b2eb5ba442e2d6e41f34625",
+    "include/bsp/native_singleton_vector_allocation.hpp": "2910d0e12e3ecce6820cc1a083a3bfba9c5478fbbea9cdf9dc4c2926bdb0296a",
+    "src/native_singleton_vector_allocation.cpp": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e",
+    "include/bsp/native_legacy_sbo_string.hpp": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+    "src/native_legacy_sbo_string.cpp": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+    "include/bsp/native_legacy_exception_owner.hpp": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+    "src/native_legacy_exception_owner.cpp": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "routines": [
+    {
+      "address": "00696890",
+      "original_name": "STL_allocator_allocate_00696890",
+      "cpp_name": "allocate_native_dword_vector_header_storage_00696890",
+      "coverage": "complete81B/25 at accepted CurrentCpp raw allocation boundary",
+      "original_ABI": "ECX unsigned count, EDX unconsumed, no stack inputs, plain RET, raw EAX",
+      "Source_ABI": "void* __fastcall(uint32_t count,void* unused_edx)",
+      "binding": "allocate_native_nested_string_vector_00553300(SAME_count,unused_edx)",
+      "contract": "Zero still requests0 bytes. Unsigned positive count<=0FFFFFFF requests count*16, maximumFFFFFFF0 bytes; excess uses accepted Source std::bad_alloc. No typed pointer/count bridge or extra host limit."
+    },
+    {
+      "address": "006978d0",
+      "original_name": "STL_xlen_throw_006978d0",
+      "cpp_name": "throw_native_dword_vector_header_length_error_006978d0",
+      "coverage": "complete105B/23 via full accepted owning service",
+      "original_ABI": "No consumed input or normal return; native stack/FH3 frame is private",
+      "Source_ABI": "[[noreturn]] void __cdecl()",
+      "binding": "throw_native_nested_string_vector_length_error_00556c90()",
+      "contract": "Reuse COMPLETE helper. Actual1Ch SBO cap15/length0/NUL, counted18-character message, actual411700 owning28h payload, D69260 data word, nativeD83F98 transport at native boundary. No new std::length_error, extra temporary, wrapper cleanup or invented action."
+    },
+    {
+      "address": "00c7eba0",
+      "original_name": "Unwind@00c7eba0",
+      "cpp_name": "cleanup_native_dword_vector_header_length_message_00c7eba0",
+      "coverage": "complete8B/2 logical action at explicit existing-message Source interface",
+      "original_ABI": "Native LEA ECX,[EBP-50h]; JMP004072D0, selected only completed-message state0",
+      "Source_ABI": "void(NativeLegacySboStringStorage& completed_message) noexcept",
+      "binding": "native_legacy_sbo_string_destroy_004072d0(completed_message)",
+      "contract": "New explicit reference to existing completed1Ch storage replaces private-frame selection. No EBP overlay, fake ownership/destructor or added cleanup around full throwing delegate."
+    }
+  ],
+  "equivalence": [
+    {
+      "candidate": "00696890",
+      "accepted_reference": "00553300",
+      "bytes": 81,
+      "starts": 25,
+      "complete_bytes_equal_after_only_verified_relocations": true,
+      "calls_or_tail_targets_identical": [
+        {
+          "offset": 13,
+          "target": "00bf681b",
+          "instruction": "call"
+        },
+        {
+          "offset": 53,
+          "target": "00bf6340",
+          "instruction": "call"
+        },
+        {
+          "offset": 76,
+          "target": "00bf6885",
+          "instruction": "call"
+        }
+      ],
+      "handler_operand_differs": false
+    },
+    {
+      "candidate": "006978d0",
+      "accepted_reference": "00556c90",
+      "bytes": 105,
+      "starts": 23,
+      "complete_bytes_equal_after_only_verified_relocations": true,
+      "calls_or_tail_targets_identical": [
+        {
+          "offset": 56,
+          "target": "00408720",
+          "instruction": "call"
+        },
+        {
+          "offset": 77,
+          "target": "00411700",
+          "instruction": "call"
+        },
+        {
+          "offset": 100,
+          "target": "00bf6885",
+          "instruction": "call"
+        }
+      ],
+      "handler_operand_differs": true
+    },
+    {
+      "candidate": "00c7eba0",
+      "accepted_reference": "00c6d7b0",
+      "bytes": 8,
+      "starts": 2,
+      "complete_bytes_equal_after_only_verified_relocations": true,
+      "calls_or_tail_targets_identical": [
+        {
+          "offset": 3,
+          "target": "004072d0",
+          "instruction": "jmp"
+        }
+      ],
+      "handler_operand_differs": false
+    }
+  ],
+  "EH": {
+    "candidate": "00dab8cc",
+    "reference": "00d97b7c",
+    "bytes_each": 44,
+    "maxstate": 1,
+    "state0_previous": -1,
+    "candidate_action": "00c7eba0",
+    "reference_action": "00c6d7b0",
+    "no_try_catch_or_IP_map": true,
+    "flags": 1,
+    "message_chars": 18,
+    "literal_including_NUL_bytes": 19
+  },
+  "native_code": {
+    "owned_candidate": [
+      {
+        "address": "00696890",
+        "bytes": 81,
+        "sha256": "91decb712391daa43cd2bc83c35db77094dbd75ac9262ae2fcbb5defa452f0d2",
+        "disk_live_equal": true,
+        "instruction_count": 25
+      },
+      {
+        "address": "006978d0",
+        "bytes": 105,
+        "sha256": "d290c20b92de76866f2555b7c1a50e8b390077dee40a412ebb8ba0b55a28488f",
+        "disk_live_equal": true,
+        "instruction_count": 23
+      },
+      {
+        "address": "00c7eba0",
+        "bytes": 8,
+        "sha256": "713ad477db413d4dbf8a5424cec2b25f7b9bd0b8c66a4a0085ff0acb6722e72d",
+        "disk_live_equal": true,
+        "instruction_count": 2
+      }
+    ],
+    "candidate_handler_support": [
+      {
+        "address": "00c7eba8",
+        "bytes": 10,
+        "sha256": "401f387be17d5a05cc66a9df7942091fc3bddb8a6536bcd35d32297146dd8d3c",
+        "disk_live_equal": true,
+        "instruction_count": 2
+      }
+    ],
+    "accepted_references": [
+      {
+        "address": "00553300",
+        "bytes": 81,
+        "sha256": "69dd4683a970d933822e38610cea38a19e37b8d8a5bd6c06c76339f9966d3217",
+        "disk_live_equal": true,
+        "instruction_count": 25
+      },
+      {
+        "address": "00556c90",
+        "bytes": 105,
+        "sha256": "768493aae1a9906bb46a10f27dcbbe885509982ce8e208c4e0de2c74c2884e7e",
+        "disk_live_equal": true,
+        "instruction_count": 23
+      },
+      {
+        "address": "00c6d7b0",
+        "bytes": 8,
+        "sha256": "f70d424513b66fe455fb4c7ab087b6ca2e529e69aac8ba662b2b0bbaa37b00e9",
+        "disk_live_equal": true,
+        "instruction_count": 2
+      }
+    ],
+    "reference_handler_support": [
+      {
+        "address": "00c6d7b8",
+        "bytes": 10,
+        "sha256": "4aa87b34996476dfacc497aa7cfb209c580d11954cb2c9219ab652d047cca854",
+        "disk_live_equal": true,
+        "instruction_count": 2
+      }
+    ],
+    "bounded_unowned_producers": [
+      {
+        "address": "006984c9",
+        "bytes": 9,
+        "sha256": "734440fca6a02436c25007dac8fe383caf6fac694ccf38b23915463904dad73b",
+        "disk_live_equal": true,
+        "instruction_count": 3
+      },
+      {
+        "address": "00698461",
+        "bytes": 16,
+        "sha256": "351b4dd0abd8956a39479984a4c69e74fd6e9909a9e1609375aad2bb1101cc30",
+        "disk_live_equal": true,
+        "instruction_count": 5
+      }
+    ]
+  },
+  "evidence_accounting": {
+    "owned": {
+      "bytes": 194,
+      "starts": 50
+    },
+    "candidate_handler_support": {
+      "bytes": 10,
+      "starts": 2
+    },
+    "accepted_reference_bodies": {
+      "bytes": 194,
+      "starts": 50
+    },
+    "reference_handler_support": {
+      "bytes": 10,
+      "starts": 2
+    },
+    "bounded_unowned_producers": {
+      "bytes": 25,
+      "starts": 8
+    },
+    "total_code": {
+      "bytes": 433,
+      "starts": 112
+    },
+    "owned_EH_bytes": 44,
+    "reference_EH_bytes": 44,
+    "literal_including_NUL_bytes": 19
+  },
+  "accepted_dependency_status": [
+    {
+      "entries": [
+        "00553300",
+        "00556c90"
+      ],
+      "pin": "48990e6142209c94e5071cdea7b1144ceea3f2e6",
+      "status": "Primary accepted and integrated existing Source; exact physical source/header fingerprints match accepted blobs.",
+      "scope": "16-byte count/rawvoid allocation and full owning legacy helper, no string-pool or pointer-slot reinterpretation."
+    },
+    {
+      "entries": [
+        "00431f70"
+      ],
+      "status": "Existing accepted full owning error service reused by00556C90."
+    },
+    {
+      "entries": [
+        "004072d0"
+      ],
+      "status": "Existing complete logical actual destructor Source at current heap boundary; NativeLegacySboStringStorage is accepted1Ch storage type."
+    },
+    {
+      "entries": [
+        "00bf681b",
+        "00bf6340",
+        "00bf6885",
+        "00bf65ac"
+      ],
+      "status": "Original CRT identities remain qualified; accepted CurrentCpp allocation, bad_alloc, owning legacy exception/rethrow and free boundaries are used."
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00696890",
+      "address": "0069689d",
+      "native": "00bf681b",
+      "scope": "owned",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate."
+    },
+    {
+      "function": "00696890",
+      "address": "006968c5",
+      "native": "00bf6340",
+      "scope": "owned",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate."
+    },
+    {
+      "function": "00696890",
+      "address": "006968dc",
+      "native": "00bf6885",
+      "scope": "owned",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate."
+    },
+    {
+      "function": "006978d0",
+      "address": "00697908",
+      "native": "00408720",
+      "scope": "owned",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate."
+    },
+    {
+      "function": "006978d0",
+      "address": "0069791d",
+      "native": "00411700",
+      "scope": "owned",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate."
+    },
+    {
+      "function": "006978d0",
+      "address": "00697934",
+      "native": "00bf6885",
+      "scope": "owned",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate."
+    },
+    {
+      "function": "00553300",
+      "address": "0055330d",
+      "native": "00bf681b",
+      "scope": "reference",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate."
+    },
+    {
+      "function": "00553300",
+      "address": "00553335",
+      "native": "00bf6340",
+      "scope": "reference",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate."
+    },
+    {
+      "function": "00553300",
+      "address": "0055334c",
+      "native": "00bf6885",
+      "scope": "reference",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate."
+    },
+    {
+      "function": "00556c90",
+      "address": "00556cc8",
+      "native": "00408720",
+      "scope": "reference",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate."
+    },
+    {
+      "function": "00556c90",
+      "address": "00556cdd",
+      "native": "00411700",
+      "scope": "reference",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate."
+    },
+    {
+      "function": "00556c90",
+      "address": "00556cf4",
+      "native": "00bf6885",
+      "scope": "reference",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate."
+    },
+    {
+      "function": "00698400",
+      "address": "006984cd",
+      "native": "00696890",
+      "scope": "unowned_producer",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate."
+    },
+    {
+      "function": "00698400",
+      "address": "0069846c",
+      "native": "006978d0",
+      "scope": "unowned_producer",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate."
+    }
+  ],
+  "tail_steps": [
+    {
+      "function": "00c7eba0",
+      "address": "00c7eba3",
+      "native": "004072d0",
+      "scope": "owned",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate.",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00c7eba8",
+      "address": "00c7ebad",
+      "native": "00bf6b43",
+      "scope": "support",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate.",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00c6d7b0",
+      "address": "00c6d7b3",
+      "native": "004072d0",
+      "scope": "reference",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate.",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00c6d7b8",
+      "address": "00c6d7bd",
+      "native": "00bf6b43",
+      "scope": "reference_support",
+      "evidence": "Full PE/live body, exact current start and target; support/producer scope separate.",
+      "kind": "tail_jump"
+    }
+  ],
+  "producer_contracts": [
+    {
+      "site": "006984cd",
+      "target": "00696890",
+      "proof": "Full9B window6984C9 includes XOR EDX,EDX; MOV ECX,EBX computed header count; actual allocator CALL. No four-byte/count multiplication bridge.",
+      "scope": "Bounded unowned698400 only."
+    },
+    {
+      "site": "0069846c",
+      "target": "006978d0",
+      "proof": "Full16B window698461 contains max0FFFFFFF, subtraction, unsigned count comparison/branch and no-input length CALL.",
+      "scope": "Bounded unowned698400; parent remains unimplemented."
+    }
+  ],
+  "CMake_registration": {
+    "protocol": "COORDINATION93-95: local append-only, no registry lease/queue",
+    "file": "cmake/startup.cmake",
+    "line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_dword_vector_header_allocation.cpp)",
+    "own_append_count": 1
+  },
+  "prior_provenance": {
+    "readiness_path": "local/oct15_dword_vector_insertn_owner_readiness.json",
+    "readiness_sha256": "1e502a443827748f4c7b1b67cefb9980cee088ac9defc843f8ee59717624237b",
+    "old_STL_names_and_preimages": "Preserved; append evidence only.",
+    "prior_Source_Hook_typed_projections": "Unchanged; no parent698400 body or general insertion completion claimed."
+  },
+  "verification": {
+    "fresh_PE_live": true,
+    "full_equivalence": true,
+    "exact_current_starts": 112,
+    "raw_EH_and_literal": true,
+    "Source_types_and_fingerprints": true,
+    "report_transfers": {
+      "checked": 18,
+      "CALL": 14,
+      "JMP": 4,
+      "failed": 0
+    },
+    "Markdown_transfers": {
+      "checked": 18,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "MSVC_Win32_build": "scripts/build.ps1 exit0; default configuration, no overlay",
+    "Source_COFF": {
+      "passed": 6,
+      "failed": 0,
+      "all15_actual_bytes_and_3instructions_inspected": true
+    },
+    "new_tests": 0,
+    "packet_native_execution": false,
+    "game_execution": false,
+    "existing_suites": {
+      "passed": 3,
+      "failed": 0,
+      "total_seconds": 12.6,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "scope": "Existing suites, not direct new helper execution/native ABI/game proof."
+    },
+    "build_log": "local/oct15_dword_vector_header_allocation_build.log",
+    "build_log_sha256": "1ecb24d21f936b4923c5be8f4ab4a9f6a4cee2b36177181fdb7c3ec8da8ac6d2",
+    "final_native_refresh_utc": "2026-10-16T02:54:29.916264+00:00",
+    "providers_match_published_Main": "d607aaa2510cbb6943d425bf278e291c46d5c9b1",
+    "frozen_ignored_artifacts_sha256": {
+      "local/oct15_native_dword_vector_header_allocation_evidence.json": "12e89f4c1d599882354f4663c0c6d16fbdeb0068bb3c90da68868e62e9c3beab",
+      "local/oct15_dword_vector_header_allocation_coff.json": "690b643d03070117a8903b544de093006a33d6b3d61af5fb27d5496529bbd487",
+      "local/oct15_dword_vector_header_allocation_coff_dump.txt": "d6040e56e60089bfe5abf2babdc3bcf2676b2c32b20f8687c9463ea13e5dc524",
+      "local/oct15_dword_vector_header_allocation_build.log": "1ecb24d21f936b4923c5be8f4ab4a9f6a4cee2b36177181fdb7c3ec8da8ac6d2",
+      "local/oct15_dword_vector_header_allocation_call_checks.txt": "8b504d8560137667d9a652e6ba4b41e3a663e8cd1769058c4c1dbd73a66fc423",
+      "local/oct15_dword_vector_header_allocation_ledger_actions.json": "6b8c54cbb616efd57d124826b40985234ddbb304d5e8c070eb70c95b80aa8287"
+    },
+    "git_diff_check": "passed",
+    "owned_ledger_scope": "Three preserved existing names; two complete functions and one explicit-storage logical action at only00696890/006978d0/00c7eba0; prior records and tags retained."
+  },
+  "limits": [
+    "Accepted CurrentCpp allocator/free and owning exception boundaries, not original static CRT heap/new-handler/bad_alloc identity or native error RTTI/transport.",
+    "D6923C/E03CC0 allocator error and D69260/D83F98 legacy payload identities are native evidence; Source exception types/RTTI/FH3 replace original runtime identity.",
+    "New Source argument/reference/private frames do not reproduce native EBP, register/flags/spill aliases, SEH/fault or cleanup-failure behavior.",
+    "The full helper owns completed-message cleanup once. The separate explicit action is not a wrapper around that helper.",
+    "Build/static/COFF checks are separate from drop-in original binary ABI, native runtime and gameplay validation."
+  ],
+  "Source_COFF": {
+    "status": "passed",
+    "object": "build\\win32\\bsp_core.dir\\Release\\native_dword_vector_header_allocation.obj",
+    "object_sha256": "f73023bb5c811181d87a12da37d9b7989995f44bf59fba563ee13137246eea0c",
+    "dump_sha256": "d6040e56e60089bfe5abf2babdc3bcf2676b2c32b20f8687c9463ea13e5dc524",
+    "machine": "014c x86",
+    "functions": [
+      {
+        "section": 3,
+        "symbol": "?allocate_native_dword_vector_header_storage_00696890@bsp@@YIPAXIPAX@Z",
+        "bytes": 5,
+        "instruction_count": 1,
+        "bytes_hex": "e900000000",
+        "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "jmp",
+            "operands": "5",
+            "bytes_hex": "e900000000"
+          }
+        ],
+        "calls": [
+          {
+            "offset": 0,
+            "mnemonic": "jmp",
+            "relocation": {
+              "offset": 1,
+              "type": 20,
+              "symbol_index": 17,
+              "target": "?allocate_native_nested_string_vector_00553300@bsp@@YIPAXIPAX@Z"
+            }
+          }
+        ],
+        "internal_labels": []
+      },
+      {
+        "section": 5,
+        "symbol": "?cleanup_native_dword_vector_header_length_message_00c7eba0@bsp@@YAXAAUNativeLegacySboStringStorage@1@@Z",
+        "bytes": 5,
+        "instruction_count": 1,
+        "bytes_hex": "e900000000",
+        "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "jmp",
+            "operands": "5",
+            "bytes_hex": "e900000000"
+          }
+        ],
+        "calls": [
+          {
+            "offset": 0,
+            "mnemonic": "jmp",
+            "relocation": {
+              "offset": 1,
+              "type": 20,
+              "symbol_index": 16,
+              "target": "?native_legacy_sbo_string_destroy_004072d0@bsp@@YAXAAUNativeLegacySboStringStorage@1@@Z"
+            }
+          }
+        ],
+        "internal_labels": []
+      },
+      {
+        "section": 6,
+        "symbol": "?throw_native_dword_vector_header_length_error_006978d0@bsp@@YAXXZ",
+        "bytes": 5,
+        "instruction_count": 1,
+        "bytes_hex": "e900000000",
+        "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "jmp",
+            "operands": "5",
+            "bytes_hex": "e900000000"
+          }
+        ],
+        "calls": [
+          {
+            "offset": 0,
+            "mnemonic": "jmp",
+            "relocation": {
+              "offset": 1,
+              "type": 20,
+              "symbol_index": 18,
+              "target": "?throw_native_nested_string_vector_length_error_00556c90@bsp@@YAXXZ"
+            }
+          }
+        ],
+        "internal_labels": []
+      }
+    ],
+    "scope": "Complete actual emitted Source object, not a probe or Original binary frame/CRT exception replacement.",
+    "checks": [
+      "Complete actual Win32 CMake object has exactly3 function code sections, each5B/1 JMP instruction: all15B/3instructions read.",
+      "Allocator has identical fastcall(uint32_t,void*) Source signature and sole I386_REL32 tail to accepted00553300; no count scaling, zero shortcut, casts, stack adjustment or extra allocator body.",
+      "Full no-input noreturn cdecl helper has sole tail to accepted00556C90, without owning temporary, local EH/action or additional cleanup.",
+      "Completed-message action has SAME existing NativeLegacySboStringStorage& Source type as actual4072D0; sole tail, no frame-derived pointer, fake destructor or copied/new owned message.",
+      "Each wrapper has only the exact one expected REL32 target; actual child EAX/exception/cleanup behavior propagates directly, no callback/provider/count bridge.",
+      "Physical symbol types/targets and all emitted code prove new Source delegation only; no original FH3/SEH/private-frame/CRT/RTTI/binary ABI/game equivalence inferred."
+    ],
+    "checks_passed": 6,
+    "physical_code_bytes": 15,
+    "physical_instruction_count": 3
+  },
+  "Ghidra_mutations": false,
+  "ignored_native_evidence": "local/oct15_native_dword_vector_header_allocation_evidence.json",
+  "provider_integration_status": {
+    "accepted_Main_parent": "97980d18209c2002ff07e821f81e20d9de5ec6d3",
+    "all12_provider_files_equal_that_accepted_Main": true,
+    "unpublished_or_unaccepted_provider_bodies_consumed": false,
+    "own_current_packet": "New unpublished Source pending immutable primary review",
+    "parent698400": "Not authored/promoted; later explicit scope required."
+  },
+  "ignored_native_evidence_sha256": "12e89f4c1d599882354f4663c0c6d16fbdeb0068bb3c90da68868e62e9c3beab"
+}
