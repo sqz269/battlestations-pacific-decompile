@@ -1,0 +1,177 @@
+{
+  "packet": "cc12_native_font_text_binding_host_53",
+  "baseline_commit": "0f6c0a860ff85d50a200b1610d66db84cdb0cb1c",
+  "source_api": [
+    "GameFontHost::native_fonts()",
+    "GameFontHost::bind_text_factory(GuiTextRuntimeFactory&)"
+  ],
+  "scope": "Source host association and export-gap containment; no new Original body or native Text activation",
+  "binding_protocol": {
+    "initial_phase": "unexported",
+    "export_admission": "initialized descriptor production, native producer ready, no failed/retirement state, unexported",
+    "export_order": [
+      "set persistent export_pending",
+      "call irreversible producer native_fonts",
+      "cache exact resource owner pointer",
+      "return borrowed owner"
+    ],
+    "bind_admission": "same healthy ready producer, export_pending; reject all other phases before factory/producer effects",
+    "bind_order": [
+      "set persistent bind_entered",
+      "check exact exported owner and zero retained allocations",
+      "call existing producer bind_text_factory with same factory",
+      "set bound only after success"
+    ],
+    "admitted_exceptions": "both catch(...) paths set sticky native_failed; phase is never reset; no retry/cancel/replacement",
+    "foreign_or_nonempty_first_bind": "first admitted attempt fails terminally before producer binding/factory mutation",
+    "healthy_repeated_or_before_export_or_after_retire_request": "pure admission rejection; no state mutation",
+    "registry_cell_identity": "caller obligation, not attested by this resource-owner association",
+    "allocation_rule": "bind same actual factory before any Text allocation; no second factory may borrow collection"
+  },
+  "retention": {
+    "pending_and_entered_report_interrupted": true,
+    "sticky_failure_reports_interrupted": true,
+    "ordinary_ready_reports_interrupted": false,
+    "valid_bound_ready_reports_interrupted": false,
+    "successfully_retired_reports_interrupted": false,
+    "predicate_dereferences_vfs_or_factory": false,
+    "pending_retirement": "rejected before retirement attempt/callee; pending state remains",
+    "bound_retirement": "same factory must remain alive with zero retained allocations; existing producer validates and clears registry bindings",
+    "lifetime": "retire all Text/sprite borrowers; factory survives font retirement; producer/registry/VFS/renderer and future Text/effect metadata survive shared drain; producer destroyed before member registry"
+  },
+  "parent_guards_read_only": [
+    {
+      "path": "src/game_hosts.cpp",
+      "line": 1849,
+      "entry": "GameStartupHost::~GameStartupHost",
+      "position": "first guard before cleanup"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "line": 2827,
+      "entry": "application_shutdown",
+      "position": "first guard before shutdown/device effects"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "line": 2934,
+      "entry": "destroy_singleton_lifetime_manager",
+      "position": "before font retirement/shared drain"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "line": 1793,
+      "entry": "retire_native_fonts_before_drain catch",
+      "position": "interruption guard then unconditional exit fallback"
+    }
+  ],
+  "guard_behavior": "metadata check precedes wrapped diagnostics and _Exit(1), preserving native graph before manager/CRT cleanup",
+  "publication": {
+    "exposed": false,
+    "existing_registry_reference": "unchanged borrowed member",
+    "reason": "existing null getter branch heap-allocates/registers a registry and records private publication_ for deletion; host member must not be registered as that owner",
+    "remaining_dependency": "separate borrowed-existing-registry factory/binding profile with exact persistent cell identity/lifetime and no allocation/registration of member; canonical actual manager contract remains unprovided",
+    "legacy_manager_claim": false,
+    "dummy_cell_or_fake_manager": false
+  },
+  "verification": {
+    "mechanical_normal_path_comparison": {
+      "initialize_body_unchanged": true,
+      "descriptor_production_body_unchanged": true,
+      "fingerprint_body_unchanged": true,
+      "admitted_retirement_body_unchanged": true
+    },
+    "source_contract_review": "bounded transition/admission/exception/guard review; primary independently reviewed same live diff PASS",
+    "runtime_positive_bind": "not performed; future real composition proof",
+    "runtime_factory_constructor_failure": "not performed; pending-state containment established by Source call order",
+    "new_test_or_dummy_factory": false,
+    "canonical_build": {
+      "status": "passed",
+      "exit_code": 0,
+      "command": "./scripts/build.ps1",
+      "configuration": "Release Win32",
+      "log": "local/cc12_native_font_text_binding_host_53_build.log",
+      "log_sha256": "963ff0ca53de761238310c238c710c584a9de337d59d5cf757b6c8fc139c3caf",
+      "log_size": 6200,
+      "new_host_api_compiled_in_existing_game_hosts_fonts_unit": true,
+      "tests_passed": 3,
+      "tests_failed": 0,
+      "ctest_total_seconds": 9.64,
+      "tests": [
+        {
+          "name": "reconstructed_math",
+          "seconds": 0.26
+        },
+        {
+          "name": "native_math_differential",
+          "seconds": 0.05
+        },
+        {
+          "name": "tool_tests",
+          "seconds": 9.26
+        }
+      ],
+      "boundary": "existing tests and Source review; no executed positive native Text factory binding or constructor-failure case"
+    },
+    "source_hashes_rechecked_after_build": true
+  },
+  "source_inputs": {
+    "include/bsp/game_hosts_fonts.hpp": {
+      "sha256": "d0ba378c31910c2957410487920fa4f6bea56f1f9f0c41430250e234f758855d",
+      "git_blob": "ea14ba4320ee753509e775c1e0b065708feed57c"
+    },
+    "src/game_hosts_fonts.cpp": {
+      "sha256": "90b1012cade7f668f9497124ee398d3bc363a6c2aa9f2fac1c79c8ac34d69064",
+      "git_blob": "17514530de1c33e593d0043b2e5701add0c27ebc"
+    },
+    "include/bsp/game_native_font_application.hpp": {
+      "sha256": "451468346bde9b7c64b4aaaa2b11e029e2b46e31ded23dc417e8d3c8318c4865",
+      "git_blob": "7bc29d564ddd29ccbb7b05b054bc65ed24ef6a04"
+    },
+    "src/game_native_font_application.cpp": {
+      "sha256": "c253e892ea5344edaf4da2ea3f53c07f00a16c32a433c0036b9ef5fcbf14c519",
+      "git_blob": "61dd8c32677cb5eadd3676817cef87d67001d673"
+    },
+    "include/bsp/gui_text_runtime_factory.hpp": {
+      "sha256": "38d4dc64d03c5743c443c6d5adcc195e8936a203f4310c7f14ef406286428a93",
+      "git_blob": "4720e0d9fbba77ffb666f771836183386310edde"
+    },
+    "src/game_hosts.cpp": {
+      "sha256": "6838b1a5e72f002a39e7bf3957b40c2a4798fad6803e71f500b4db8fb7f36cbf",
+      "git_blob": "a9dbd6db939a085e27f3797194c25b269a215001"
+    },
+    "include/bsp/font_registry_startup.hpp": {
+      "sha256": "a2e52ffbc9dad37e429357f5d920e5b9aa281e7ac2db0085021057581f79e640",
+      "git_blob": "310b7201c277e6a94ffdcfa5bd2a0f397d6f98f7"
+    },
+    "src/font_registry_startup.cpp": {
+      "sha256": "5d0c57bf9a7612f9b23df7f39534bbdaf5eda0625987ce0019d81b9bbd393423",
+      "git_blob": "dedc9fd12f96e07dc9c5f60f4a758f51205c5689"
+    },
+    "include/bsp/game_native_text_application.hpp": {
+      "sha256": "7285572d8435bf469f32f514f1f34c7042269ee17e0620ded73f21354a26d190",
+      "git_blob": "9e6c4268689474ef4c9b043c3dc7f05b51e7b749"
+    },
+    "src/gui_text_resource_names.cpp": {
+      "sha256": "2479c9d8bbe99ffd5c69946c055767343daa59f6fb8889a8fb8a9bccd315fdac",
+      "git_blob": "2a855052567235b38fb914b325051b3d1c65394c"
+    }
+  },
+  "unchanged_scope": [
+    "game_hosts.cpp",
+    "game_main.cpp",
+    "CMake",
+    "Ghidra",
+    "ledger",
+    "Original installation",
+    "audio/settings",
+    "native font producer and sprite bridge bodies"
+  ],
+  "not_claimed": [
+    "complete Original ABI/SEH or new recovered Original function",
+    "registry publication or actual singleton-manager ownership",
+    "successful real native Text factory construction/binding at runtime",
+    "native Text drawing or full gameplay validation"
+  ],
+  "captured_utc": "2026-10-16T01:41:19.172380+00:00"
+}
