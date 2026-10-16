@@ -45,7 +45,11 @@ destination length, current source data, then current destination data.
 It copies that captured DESTINATION length, retaining overlap and a reached
 zero-count/null call through a Source-only x86 SDK memmove tail adapter.
 The adapter supplies current SDK transport, with no Original helper-frame
-identity or extra native reconstruction credit. Its emitted edge awaits build.
+identity or extra native reconstruction credit. Its emitted object contains exact E9 rel32 to external _memmove. The exact
+x86 vcruntime.lib import member binds that symbol to VCRUNTIME140.dll. The
+installed zero-path bytes remain unchanged. This constructor and adapter
+are compiled and archived but omitted as unreferenced executable code; no
+new linked-entry or execution credit, forced link or new test is claimed.
 
 | Native transfer | Role |
 | --- | --- |
@@ -92,16 +96,28 @@ whole parent code does not widen either admission.
 The matrix provider is the already accepted exact 103B raw x87 implementation.
 The original copy service is overlap-capable; the current SDK memmove binding
 retains that needed behavior. The prior constructor's installed x86 SDK
-zero-count-path review is hash-pinned, with a fresh emitted edge check pending.
+zero-count-path review is hash-pinned; the fresh emitted SDK edge is checked.
 Original FP instruction-address/fault identities and native differential
 execution are not claimed by compilation or the existing math checks.
+
+The emitted ordinary constructor has 234 bytes/83 instructions. Inspection
+confirms its actual raw capture/publication order, including class before party
+and destination length before source data before destination data. Its current
+compiler-private EH/armed writes occur before the bag-field load. Those private
+cells have no Original identity or fault/unwind credit; invalid memory and
+provider failure remain outside both inherited successful admissions.
 
 Guarded analysis verifies C:/Users/sqz269/bsp.gpr and program
 /battlestationspacific.exe. The report pins all 192 original live/installed
 bytes, 61 instructions, seven typed transfers, actual provider Source hashes,
 zero incoming references and the genuine one-action unwind table. Correct
-native names/comments will be preserved under the write lock, with prior
-values saved, project save, export refresh and readback. Draft registration and
-normal MSVC Win32 build follow primary complete-Source review. No new tests,
-Original binary ABI, native entry, application or game validation is claimed.
-General Source-ready remains false after a successful build.
+native names/comments were preserved under the write lock, with prior values
+saved, project save, export refresh and readback. Primary complete-Source review
+accepted 29e311064 without changes; both reviewed Source hashes were asserted
+unchanged. The primary registered this Source once and ran scripts/build.ps1 at
+efe9cc1079ab3aa1b854040ae00df88f7c5c53c4: MSVC Release Win32 passed, with all
+three existing checks passing in 7.51 seconds. The exact primary receipt/log
+hashes and unique archived Win32 object are pinned in the report. No worker
+build is claimed. Reviewed, built and both provider Source hashes remain
+unchanged. No new tests, Original binary ABI, native entry, application or
+game validation is claimed. General Source-ready remains false.

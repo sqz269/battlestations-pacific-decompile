@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_scene_hidden_record_copy_construct",
-  "status": "whole_native_code_with_qualified_cleanup_and_both_published_provider_admissions_build_pending",
+  "status": "whole_native_code_build_tested_qualified_cleanup_both_published_provider_admissions_general_source_ready_false",
   "source_ready": false,
   "general_source_ready": false,
   "code_complete": true,
@@ -15,7 +15,7 @@
     "image_base": "00400000",
     "installed_binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
     "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
-    "annotation": "AppliedunderwriteLock;priorvaluesretained;projectsaved;bothexportsrefreshed;nativenames/qualifiedevidencereadback"
+    "annotation": "FinalannotationunderwriteLock;allpriornames/commentsrecorded;projectsaved;bothexportsrefreshed;nativenames/finalqualifiedevidencereadback"
   },
   "readiness": {
     "actual_raw_gap": "OnlylegacySeg6Hostprojectionexisted;newactualrawSourceisdistinct",
@@ -230,7 +230,39 @@
       "installed_zero_path_checked": true,
       "qualification": "ExistingprimaryexeimportsVCRUNTIME140.dll/noapp-localDLL;staticinstalledprovidercheck,notnewloadedprocess/originalCRTidentity"
     },
-    "new_emitted_edge": "pendingpostbuildverification"
+    "new_emitted_edge": {
+      "kind": "static_source_only_adapter_COFF_and_actual_toolchain_SDK_import_binding",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\build\\win32\\bsp_core.dir\\Release\\native_scene_hidden_entity_record_copy_construct.obj",
+      "object_sha256": "0944e4a48dbb9a55075c84cfa62e41ed26347b0fc1262de10cf8c812a7583208",
+      "machine": "014c",
+      "adapter_symbol": "?copy_current_crt_bytes@?A0x9b5b8f81@bsp@@YAPAXPAXPBXI@Z",
+      "adapter_bytes": "e900000000",
+      "adapter_relocation": "offset1 IMAGE_REL_I386_REL32 -> external _memmove",
+      "constructor_symbol": "?copy_construct_native_scene_hidden_entity_record_00469240@bsp@@YAPAXPAXABUNativeSceneHiddenRecordCopyConstructFrame@1@AAUNativeStringRawPoolContext@1@AAVNativeScenePropertyCloneContext@1@@Z",
+      "constructor_adapter_relocation_count": 1,
+      "import_library": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+      "import_library_sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c",
+      "exact_import_member_hex": "0000ffff00004c01ea154fcc1a000000470008005f6d656d6d6f766500564352554e54494d453134302e646c6c00",
+      "import_symbol": "_memmove",
+      "import_DLL": "VCRUNTIME140.dll",
+      "executable": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\build\\win32\\Release\\bsp_game.exe",
+      "executable_sha256": "edeb9c2c8a99b577530f722df0b606f7ac8b5e01d95c242ea71c70fba9c13200",
+      "existing_executable_memmove_import": [
+        "VCRUNTIME140.dll",
+        "memmove",
+        272831648
+      ],
+      "constructor_linked_image_matches": 0,
+      "linked_new_entry_or_adapter_claim": false,
+      "limit": "Compiled/archive object only; unreferenced constructor is omitted from executable; no linked new-entry or execution credit",
+      "direct_entry_execution": false,
+      "original_helper_frame_identity": false
+    },
+    "installed_zero_path_reviewed_bytes_unchanged": {
+      "path": "C:\\Windows\\SysWOW64\\VCRUNTIME140.dll",
+      "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+      "entry_execution": false
+    }
   },
   "provider_Source_hashes": {
     "src/native_camera_matrix_copy.cpp": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d",
@@ -261,21 +293,79 @@
     "incoming_calls": 0,
     "typed_rows": 7,
     "complete_native_body_and_actual_callees_read": true,
-    "build": "pendingprimarycompleteSourcereview",
-    "registration": "notqueuedpendingprimaryreview",
+    "build": {
+      "revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_scene_lifetime_combined_build.log",
+      "log_sha256": "59383785678101132f0573cbbccadc1c340650ed126592a2235aeebb46addefe",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 7.51,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "actual_tree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "worker_build_run": false,
+      "worker_build_superseded_by_explicit_primary_combined_build": true,
+      "receipt": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\reports\\goal_oct15_scene_lifetime_primary_review.json",
+      "receipt_sha256": "223140ec88a529dcf71fe427623983e747e1821eb4e40053ac16aa1131dc8c9e"
+    },
+    "registration": {
+      "source_inclusion_count": 1,
+      "registered_by": "primary_integrator",
+      "build_revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+      "unique_object": [
+        "bsp_core.dir\\Release\\native_scene_hidden_entity_record_copy_construct.obj"
+      ]
+    },
     "new_tests": 0,
     "direct_new_entry_execution": false,
     "abi_compatible": false,
     "game_validated": false,
     "application_adoption": false,
     "report_calls": "7typednativeCALL/JMProwschecked,0failed",
-    "documentation_calls": "15addresses/7claims/0failed/unchecked/warnings"
+    "documentation_calls": "15addresses/7claims/0failed/unchecked/warnings",
+    "independent_primary_review": {
+      "reviewed_commit": "29e311064",
+      "result": "passed_no_Source_changes_requested",
+      "scope": "Whole181B58opconstructor+11B3opaction; allinitialsaved/vtag/zeros/lateSource/bag/arm/clone/freshstrings/class-before-party/matrix/parentcopy/current-savedcleanup match",
+      "reviewed_normalized_lf_sha256": {
+        "src/native_scene_hidden_entity_record_copy_construct.cpp": "e9d3928e4e9025a1e79fa57de2e44ea8b6f6a69b3991adef0106c03eaea70606",
+        "include/bsp/native_scene_hidden_entity_record_copy_construct.hpp": "deb9852cc0703dc4cea5ee95bbdfe1eb0b2ddbde8442a4d2d9f1269b0c81eb4f"
+      },
+      "hashes_asserted_unchanged": true,
+      "general_source_ready": false
+    },
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\build\\win32\\Release\\bsp_core.lib",
+      "sha256": "c91abbda1603ce489ca97de152d9858f4f03ab1d91546d52328d4c78ad1ddcb1",
+      "exact_matching_object_members": 1
+    },
+    "reviewed_built_Source_and_both_provider_hashes_unchanged": true,
+    "current_SDK_adapter_static_check": "COFF_E9rel32_external_memmove;exactWin32SDKimportmember;installedzero-pathbytesunchanged;noOriginalhelperframe_or_executioncredit",
+    "emitted_capture_order_review": {
+      "object_sha256": "0944e4a48dbb9a55075c84cfa62e41ed26347b0fc1262de10cf8c812a7583208",
+      "constructor_bytes": 234,
+      "constructor_instructions": 83,
+      "raw_schedule": "savedthis42/vtag44/savedthis4A/zeros4C+52/sourcecapture59/bag66/clone6A/name75/class80/classpublish8B/partyread8E/matrix9A/parent9F;destlenC0/srcdataC6/dstdataC9/copyCE",
+      "raw_observable_order_matches": true,
+      "private_guard_limit": "CurrentcompilerprivateEHstate/armedwrites5B+62precedebagload66;noOriginalprivatecell/fault/unwindidentitycredit;invalidmemory/providerfailureoutsideinheritedadmissions"
+    },
+    "final_locked_annotation_save_export_readback": true
   },
   "limits": [
     "GeneralSource-readyFALSEevenafterbuild;inheritBOTHcloneandduplicateadmissions",
     "WholeCODEdoesnotproveOriginalfailure/newhandler/reentry/privateFH3/SEH/secondarycleanupthrowpaths",
     "NoHostprojection/stub/callback/newgraphowner/validation/snapshot/finiteFPguard/extraheader-bag-name-recordfree",
-    "Existingactualx87provideronly;noNativeentrydifferential/ABI/application/gameclaim"
+    "Existingactualx87provideronly;noNativeentrydifferential/ABI/application/gameclaim",
+    "Newentry/privateadapter compiled and archived; unreferenced constructor omitted from executable; no linked-new-entry/execution credit",
+    "Currentcompilerprivateguardarmmaymovebeforebagload;notOriginalprivateEH/faulttransportidentity;onlyactualrawobservableread/writeschedulecredited"
   ],
   "annotation_prior_values": [
     {
@@ -305,5 +395,39 @@
       },
       "status": "applied"
     }
-  ]
+  ],
+  "annotation_final_prior_values": {
+    "path": "local\\ghidra-annotations-20261016T003147Z.json",
+    "sha256": "27c011911c0bcd6e29f034654448d590afb1514843b7698e6e7d03f02c9ceea4",
+    "prior_values": [
+      {
+        "address": "00469240",
+        "before": {
+          "address": "00469240",
+          "function_name": "BSP_SceneHiddenEntityRecord_CopyConstruct",
+          "comment": "[BSP reconstruction 00469240]\ncc13-mopup1: vtable 00CE5640 (BSP_SceneHiddenEntityRecord), copies the property bag, matrix and strings (0045 doc: scene record copy constructor)\n\n[BSP reconstruction 00469240] update\ncc13-mopup1: vtable 00CE5640 (BSP_SceneHiddenEntityRecord), copies the property bag, matrix and strings (0045 doc: scene record copy constructor) | Whole181B/58op CODE under BOTHpublishedactualclone8F41F0 and duplicate438E40 admissions;generalSourceReadyFALSE. LIVEinput4capturedaftersavedthis/vtable/headerzero;freshbag/name/class;classpublicationBEFOREpartyread;actualmatrixthenheaderresize/reread/DESTlencopy. BorrowedCE5640rawtag;real103Bx87/rawpool/clone/duplicate/currentSDKservices;192BlivePE61ops/7typedtransfers/noincomingrefs. Inheritedcanonicalstablefinitegraph/ASCII/payload/FP/success/nonwrapping/disjointlimits;failure/newhandler/reentry/privateunwind/ABI/gameunproved. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_COPY_CONSTRUCT.md"
+        },
+        "after": {
+          "address": "00469240",
+          "name": "BSP_SceneHiddenEntityRecord_CopyConstruct",
+          "evidence": "cc13-mopup1: vtable 00CE5640 (BSP_SceneHiddenEntityRecord), copies the property bag, matrix and strings (0045 doc: scene record copy constructor) | Whole181B/58op CODE under BOTHpublishedactualclone8F41F0 and duplicate438E40 admissions;generalSourceReadyFALSE. LIVEinput4capturedaftersavedthis/vtable/headerzero;freshbag/name/class;classpublicationBEFOREpartyread;actualmatrixthenheaderresize/reread/DESTlencopy. BorrowedCE5640rawtag;real103Bx87/rawpool/clone/duplicate/currentSDKservices;192BlivePE61ops/7typedtransfers/noincomingrefs. Inheritedcanonicalstablefinitegraph/ASCII/payload/FP/success/nonwrapping/disjointlimits;failure/newhandler/reentry/privateunwind/ABI/gameunproved. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_COPY_CONSTRUCT.md | Independentcomplete192B61opreviewof29e311064passed;reviewed/builtSourceandBOTHproviderhashesunchanged. Primaryscripts/build.ps1MSVCReleaseWin32atefe9cc1079ab3aa1b854040ae00df88f7c5c53c4passed3existingchecks7.51s;uniqueregistered/archiveCOFF. NewSDKadapterE9rel32->_memmove/exactWin32importbinding/installedzero-pathbyteschecked;compiledunreferencednewentryNOTlinked/executed. GeneralSourceReadyFALSEunderBOTHactual8F41F0cloneand438E40duplicateadmissions;failure/newhandler/reentry/privateFH3/OriginalABI/gameunproved. 192BlivePE61ops/7typedtransfers/zeroactualincomingrefs;soleCURRENTsavedthis+54cleanup. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_COPY_CONSTRUCT.md"
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c61a90",
+        "before": {
+          "address": "00c61a90",
+          "function_name": "Unwind@00c61a90",
+          "comment": "[BSP reconstruction 00c61a90]\nWhole11B/3op CODE under BOTHpublishedactualclone8F41F0 and duplicate438E40 admissions;generalSourceReadyFALSE. QualifiedCURRENTsavedthis4+54solepooledheadercleanup;notOriginalFH3;no bag/rawname/recordfree. BorrowedCE5640rawtag;real103Bx87/rawpool/clone/duplicate/currentSDKservices;192BlivePE61ops/7typedtransfers/noincomingrefs. Inheritedcanonicalstablefinitegraph/ASCII/payload/FP/success/nonwrapping/disjointlimits;failure/newhandler/reentry/privateunwind/ABI/gameunproved. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_COPY_CONSTRUCT.md"
+        },
+        "after": {
+          "address": "00c61a90",
+          "name": "Unwind@00c61a90",
+          "evidence": "Whole11B/3op CODE under BOTHpublishedactualclone8F41F0 and duplicate438E40 admissions;generalSourceReadyFALSE. QualifiedCURRENTsavedthis4+54solepooledheadercleanup;notOriginalFH3;no bag/rawname/recordfree. BorrowedCE5640rawtag;real103Bx87/rawpool/clone/duplicate/currentSDKservices;192BlivePE61ops/7typedtransfers/noincomingrefs. Inheritedcanonicalstablefinitegraph/ASCII/payload/FP/success/nonwrapping/disjointlimits;failure/newhandler/reentry/privateunwind/ABI/gameunproved. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_COPY_CONSTRUCT.md | Independentcomplete192B61opreviewof29e311064passed;reviewed/builtSourceandBOTHproviderhashesunchanged. Primaryscripts/build.ps1MSVCReleaseWin32atefe9cc1079ab3aa1b854040ae00df88f7c5c53c4passed3existingchecks7.51s;uniqueregistered/archiveCOFF. NewSDKadapterE9rel32->_memmove/exactWin32importbinding/installedzero-pathbyteschecked;compiledunreferencednewentryNOTlinked/executed. GeneralSourceReadyFALSEunderBOTHactual8F41F0cloneand438E40duplicateadmissions;failure/newhandler/reentry/privateFH3/OriginalABI/gameunproved. 192BlivePE61ops/7typedtransfers/zeroactualincomingrefs;soleCURRENTsavedthis+54cleanup. docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_COPY_CONSTRUCT.md"
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }
