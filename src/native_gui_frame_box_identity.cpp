@@ -8,6 +8,7 @@
 #include <limits>
 #include <new>
 #include <stdexcept>
+#include <utility>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native GUI FrameBox identity requires MSVC Win32.
@@ -100,7 +101,8 @@ NativeGuiFrameBoxReference::~NativeGuiFrameBoxReference() {
     // The borrowed RenderCommandReference destructor never reads its atomic.
 }
 bool NativeGuiFrameBoxReference::retired() const noexcept {
-    return phase_ == Phase::retired || phase_ == Phase::retired_after_failure;
+    return phase_ == Phase::retired || phase_ == Phase::retired_after_failure ||
+        phase_ == Phase::retired_after_copy_unwind;
 }
 void NativeGuiFrameBoxReference::retire(Phase phase) noexcept {
     phase_ = phase;
@@ -131,5 +133,17 @@ void NativeGuiFrameBoxReference::release_zero_references() noexcept {
     } catch (...) {
         std::terminate();
     }
+}
+
+NativeGuiFrameBoxReference::NativeGuiFrameBoxReference(void* identity,
+    NativeGuiFrameBoxIdentityContext& context,
+    NativeRenderActualOwnerRegistry::BindingAdmission&& admission)
+    : RenderCommandReference(binding_count(identity, context, this)),
+      identity_(identity), context_(context) {
+    context_.registry.publish(std::move(admission), *this);
+}
+void NativeGuiFrameBoxReference::retire_after_copy_unwind() noexcept {
+    if (phase_ != Phase::bound) std::terminate();
+    retire(Phase::retired_after_copy_unwind);
 }
 } // namespace bsp

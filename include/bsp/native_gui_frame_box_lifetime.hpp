@@ -14,6 +14,9 @@ template<class Traits> class NativeGuiWidgetPool;
 // Construct this context, the119 operation and its distinct fresh111 array
 // outside the parent's failing scope, BEFORE entry/callbacks, and retain them
 // independently with the SAME complete actual graph and candidate backing.
+// Whole184 may prepare this context after its real vector returns, before its
+// parent-private163 binding/current80 call. Preparing it does NOT admit invoking
+//125 during that active constructor or on a failed/destructed partial Box.
 struct NativeGuiFrameBoxLifetimeContext {
     NativeGuiWidgetLifetimeContext& widgets;
     NativeStringRawPoolContext& strings;

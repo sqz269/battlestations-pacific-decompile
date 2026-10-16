@@ -13,7 +13,8 @@ namespace game { class GameNativeStringProcess; }
 
 // Every service already exists in the SAME actual domain. This aggregate owns
 // no renderer/pool/widget/ancestor, count or callback implementation. The163
-// companion is admitted only after genuine complete FrameBox construction.
+// companion is admitted after genuine complete FrameBox construction, or only
+// through184's parent-private field-ready prepared admission before current80.
 struct NativeGuiFrameBoxStateStorageContext {
     GuiNativeGeometryOwners& geometry;
     NativeMaterialDestructionAccess& materials;
@@ -99,7 +100,12 @@ struct NativeGuiFrameBoxStateStorageAcquired {
 // incoming stack LOWWORD index, RET4. This is a new ordinary Source ABI.
 // The supplied completed actual120h slot/163 companion share the SAME actual
 // +04 and registry; no count gate/decrement/protective retain or typed widget
-// cast exists. Do not admit unfinished AD27A0 copies or constructor progress.
+// cast exists. The sole progress exception is184's private admission AFTER real
+// base/vector/name/scalars are ready and119/111 are prepared. It proves neither
+// whole-constructor completion nor125 admission during the active constructor.
+// Its creator credit/slot/full graph survive callbacks; failure leaves acquired
+// material Box credits/creators independently held through the parent's genuine
+// member unwind and metadata-only retirement. No arbitrary unfinished copy.
 //
 // Before entry retain the WHOLE independent actual Box/ancestor/Model/mesh/
 // material/effect/name/stream/map/device/layout/renderer/pool/provider graph,

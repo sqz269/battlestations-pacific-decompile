@@ -1,0 +1,439 @@
+{
+  "packet": "cc12_native_gui_frame_box_copy_storage_184",
+  "status": "whole_actual_storage_reconstructed_strict_compiled_existing_worker_checked_unregistered",
+  "source_ready": true,
+  "source_implemented": true,
+  "new_Native_body_credit": 1,
+  "native_activation": false,
+  "published_provider_commit": "5d2d049ef1bd5a18de44a6caa01d182257302925",
+  "worker_import_commit": "d3156dc0df32171c7e2c8bc6cabc6e514e8409d7",
+  "worker_qualified_mixed_baseline": true,
+  "Main_merges": 0,
+  "CMake_changed": false,
+  "scoped_import": {
+    "roots": 24,
+    "recursive_quoted_header_closure": 162,
+    "imported_files": 8,
+    "pairs": [
+      "169state",
+      "162geometry",
+      "160rectangle",
+      "157texture"
+    ],
+    "no_foreign_BC_zlib_ledger_docs_import": true,
+    "broad130path_queue_canceled": true
+  },
+  "original": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "fresh214B_live_equal_installed": true,
+    "historical178_337B_still_installed_equal": true
+  },
+  "functions": [
+    {
+      "address": "00ad27a0",
+      "name_preserved": "BSP_GuiFrameBox_CopyConstruct",
+      "source_name": "copy_native_gui_frame_box_storage_00ad27a0",
+      "source": "src/native_gui_frame_box_copy_storage.cpp",
+      "header": "include/bsp/native_gui_frame_box_copy_storage.hpp",
+      "exclusive_end": "00ad2876",
+      "native_bytes": 214,
+      "native_instruction_starts": 53,
+      "original_abi": "ECX actual destination; stack source; EAX saved identity; RET4 atAD2873",
+      "new_Source_ABI": "Ordinary explicit operation/services/frame API, not Native placement/stack/FH3/SEH/register replacement.",
+      "source_types_provisional_not_recovered_Native_UDTs": true,
+      "old_fragment_status_preserved": true,
+      "handler_entry": "00cb92e4",
+      "func_info": "00df0888",
+      "unwind_map": "00df0870",
+      "normal_states": [
+        -1,
+        0,
+        2
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "address": "00ad27c4",
+      "native": "00aa9520",
+      "function": "00ad27a0",
+      "kind": "call"
+    },
+    {
+      "address": "00ad27f0",
+      "native": "00ad2230",
+      "function": "00ad27a0",
+      "kind": "call"
+    },
+    {
+      "address": "00ad285b",
+      "native": "00acf8f0",
+      "function": "00ad27a0",
+      "kind": "call"
+    },
+    {
+      "address": "00cb92c3",
+      "native": "00aa9730",
+      "function": "00cb92c0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb92df",
+      "native": "0041dd20",
+      "function": "00cb92d6",
+      "kind": "tail_jump"
+    }
+  ],
+  "indirect80": {
+    "site": "00ad2854",
+    "current_vptr_read": "00ad2849",
+    "current_slot_read": "00ad284b",
+    "canonical_data_cell": "00d5d1b0",
+    "target": "00ad0d80",
+    "not_a_direct_CALL_row": true
+  },
+  "raw_tail": {
+    "site": "00cb92d1",
+    "target": "00ad2320",
+    "target_is_undefined_fivebyte_tail_to": "00ad21b0",
+    "not_a_defined_function_or_graph_edge": true,
+    "no_listing_or_function_creation": true
+  },
+  "protocol": {
+    "new_second_count_or_protective_retain": false,
+    "new_owner_default_or_callback": false,
+    "public163_completed_ctor_unchanged": true,
+    "old_enum_values_layout_preserved": true,
+    "append_terminal_value": 4,
+    "125_CPP_unchanged": true,
+    "119_from_returned138_128_metadata_without_early_header_read": true,
+    "late_private163_publish_then169_context_lifetime": true,
+    "prepare119_failure_before_state2": "Added Source error; parentstate0 invokes only genuineAA9730, no vector cleanup. Completed vector/child/orphan graph stays independently held.",
+    "unwind": "Consume2->1 before41DD20;1->0 beforeSAME119/AD2320;0->-1 beforeAA9730. Cleanup escape terminates under explicit C++ Source policy.",
+    "private_post_unwind": "Only after all applicable genuine actions return, metadata-only163 retire/unbind; no raw/count/scalar/material/slot effect.",
+    "dtor": "Own metadata only, including borrowed defaultbase with disengaged optional; external acquired/vector/clip/graph never destroyed.",
+    "failure_outlives_metadata": "External failed138/111/166/creators/materialBoxcredits/liveatomic/rawslot/provider obligations remain independently held; no125/zero/retry/reuse authority from retained address.",
+    "no_factory_or_general_failed_graph_recovery": true
+  },
+  "strict": {
+    "target": "MSVC Win32",
+    "flags": "/MD /EHsc /std:c++17 /O2 /Gy /W4 /WX /fp:strict /permissive-",
+    "actually_changed_CPP": [
+      "184copy",
+      "163identity",
+      "169state"
+    ],
+    "all_pass": true,
+    "attempt1": "C4324/WX before parent object emission; complete failed command/log retained; explicit new-operation3+1byte padding only correction.",
+    "actual_emitted_dependencies": true,
+    "actual_frozen_inputs": 446,
+    "actual_frozen_input_bytes": 134503404,
+    "not_complete_loaded_DLL_inventory": true,
+    "critical_compact_sections": 37,
+    "critical_bytes": 8014,
+    "critical_starts": 2230,
+    "all37_independently_rechecked_by_Root": true,
+    "object_pins": {
+      "copy": "af9d5907b6f9bf9fea3b6f4536bd998334e57c22175d17e1aa7b5825e06d376f",
+      "identity": "2b51fd9d94d9d065f418e54ecc360c35572660c52912ad5e7dd2a6056954365f",
+      "state": "513a6a49a518e0de3bb611ac994c922e7f13162765d2b93ccbbd6341e5395e04",
+      "baseline_identity": "1f2ab9ae9f9301117ae4d246e1df1c2e53bf78fc3b8ba4a42bc39d88b8b3ed7a",
+      "baseline_state": "1aef695046f9f54e16edbcb4ab97c3e605cd744462bca7d19900d1268be060d7",
+      "reviewed169": "1c2b2e3850625212f18554efc6ed2ced2e3e2a93602918a116c0a9b89de59a4e"
+    },
+    "old_physical_body_comparison": {
+      "identity_old_roots": 55,
+      "unchanged_code_reloc": 52,
+      "intended_phase4": 3,
+      "state_old_roots": 53,
+      "all_masked_code_equal": 53,
+      "unchanged_symbolic_reloc": 52,
+      "diagnostic_reloc_only": 1,
+      "174_unused_compiler_helper_already_absent_in_exact175": true,
+      "normalization": "Only relocation bytes mask; only anonymous namespace suffix normalizes in symbols."
+    }
+  },
+  "existing_worker_build": {
+    "command": "./scripts/build.ps1",
+    "runs": 1,
+    "exit_code": 0,
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 7.12,
+    "actual_generated_project_checked": true,
+    "registration": [
+      {
+        "path": "src/native_gui_frame_box_geometry.cpp",
+        "worker_startup_CMake_mentions": false,
+        "actual_generated_bsp_core_compile_item": false
+      },
+      {
+        "path": "src/native_gui_frame_box_state_storage.cpp",
+        "worker_startup_CMake_mentions": false,
+        "actual_generated_bsp_core_compile_item": false
+      },
+      {
+        "path": "src/native_gui_rectangle_writer.cpp",
+        "worker_startup_CMake_mentions": false,
+        "actual_generated_bsp_core_compile_item": false
+      },
+      {
+        "path": "src/native_gui_texture_normalization.cpp",
+        "worker_startup_CMake_mentions": false,
+        "actual_generated_bsp_core_compile_item": false
+      },
+      {
+        "path": "src/native_gui_frame_box_copy_storage.cpp",
+        "worker_startup_CMake_mentions": false,
+        "actual_generated_bsp_core_compile_item": false
+      },
+      {
+        "path": "src/native_gui_frame_box_identity.cpp",
+        "worker_startup_CMake_mentions": false,
+        "actual_generated_bsp_core_compile_item": false
+      },
+      {
+        "path": "src/native_gui_frame_box_lifetime.cpp",
+        "worker_startup_CMake_mentions": true,
+        "actual_generated_bsp_core_compile_item": true
+      }
+    ],
+    "qualification": "New184/identity163/imported169/162/160/157 unregistered.125 registered/CPP unchanged. Existing checks are not link/execution proof for the new bodies."
+  },
+  "annotation": {
+    "only_owned_address": "00ad27a0",
+    "name_preserved": true,
+    "old_comments_preserved_normalized": true,
+    "old_fragment_status_preserved": true,
+    "history_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_font_retirement_review36\\local\\ghidra-annotations-20261016T143807Z.json",
+    "history_sha256": "af574489ffc3981c57540ca26b8e3b568a074c05be5e4a24ef57bfa6e617da40",
+    "write_lock_history_save_forced_export": true,
+    "no_Ghidra_type_signature_or_listing_creation": true
+  },
+  "preservation": {
+    "immutable178_manifest_unchanged": true,
+    "all178_items_checked": 92,
+    "all178_337B_installed_spans_still_equal": true,
+    "fresh184_live214B_equal_installed": true,
+    "Original_hash_unchanged": true,
+    "native214_sha256": "2b64f96df8b99d3198a6f84a9b86765a5c038ab487a067bd7fac21e92a5a5da8",
+    "no_Main_merge_CMake_or_foreign_metadata_import": true,
+    "no_new_tests_probes_or_target_body_execution": true
+  },
+  "Root_full_Source_Native_provider_optimized_doc_review": "PASS",
+  "new_tests_probes_target_body_execution": 0,
+  "Source_activation_or_private_ABI_gameplay": false,
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_gui_frame_box_copy_storage.hpp",
+      "bytes": 9124,
+      "sha256": "df745b5f43c24c733ea70053b86f4f435f10edc24d8994b315a6043e4656bc38"
+    },
+    {
+      "path": "src/native_gui_frame_box_copy_storage.cpp",
+      "bytes": 15538,
+      "sha256": "c12ddd83446bfafdea1f7c0441199e3c9b75759c2a80ccea4bdb9cf2ab4bafcd"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_identity.hpp",
+      "bytes": 6582,
+      "sha256": "3dcfc3e05964f5dc3b1637eb7340eafe103010c6d9fda06c462879cc2f57e079"
+    },
+    {
+      "path": "src/native_gui_frame_box_identity.cpp",
+      "bytes": 6912,
+      "sha256": "ed2f4cd928a2b36ab3b31204db7b30b1fd45d65d57b21dc25e7d33e2302e1566"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_state_storage.hpp",
+      "bytes": 8790,
+      "sha256": "9c4f288d4035147a68f587da78c95d964e547e82aee4768093ab256587d097c5"
+    },
+    {
+      "path": "src/native_gui_frame_box_state_storage.cpp",
+      "bytes": 33379,
+      "sha256": "8e1e8f5984d65251f9df2b9cc1c5bfd7255ec1e4f69b5ed0f739a66d3816bffe"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_lifetime.hpp",
+      "bytes": 4986,
+      "sha256": "17988ecd21d835c8d4fbcda035d32e0fde31fe3b24f9157230ac90f134f60994"
+    },
+    {
+      "path": "src/native_gui_frame_box_lifetime.cpp",
+      "bytes": 7592,
+      "sha256": "a125c2ee90feea995e72dfce1910d6bb5b60d7dd0ff5856687a28b4c22ad8be8"
+    }
+  ],
+  "doc": {
+    "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_COPY_STORAGE_184.md",
+    "bytes": 12666,
+    "sha256": "77a478fa81d2654ca0a86e8e0f3c80e850c9d84742941659467b4fff62176861"
+  },
+  "artifacts": [
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/scoped_import_comparison.json",
+      "bytes": 66391,
+      "sha256": "f28b2d9ab4be86d4f3ff4d74a784a5189ea0245c839f34e504efefb30820c233"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/provider_import_commit.log",
+      "bytes": 670,
+      "sha256": "af755e3c3060824ddc6841907a1de1baa05aa66ba6e54212086ba74d6adbc306"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/strict_compile.cmd",
+      "bytes": 2720,
+      "sha256": "1d5051888e5751586f12442ea15fb7cfe3c42f629ddcc7d434c0786d47864ddc"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/strict_compile.log",
+      "bytes": 149,
+      "sha256": "6a11724dfa9afd578e1fe6746a0e9b0033ef2955de3ef118c0442449213b881c"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/strict_attempt01_compile.cmd",
+      "bytes": 2720,
+      "sha256": "1d5051888e5751586f12442ea15fb7cfe3c42f629ddcc7d434c0786d47864ddc"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/strict_attempt01_compile.log",
+      "bytes": 320,
+      "sha256": "9eee8d24ab3f98d23d27a357005de6d9d764727e2b0ec24d0ed2e6c4815e927a"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/copy.obj",
+      "bytes": 43916,
+      "sha256": "af9d5907b6f9bf9fea3b6f4536bd998334e57c22175d17e1aa7b5825e06d376f"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/identity.obj",
+      "bytes": 37122,
+      "sha256": "2b51fd9d94d9d065f418e54ecc360c35572660c52912ad5e7dd2a6056954365f"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/state.obj",
+      "bytes": 45782,
+      "sha256": "513a6a49a518e0de3bb611ac994c922e7f13162765d2b93ccbbd6341e5395e04"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/baseline_identity.obj",
+      "bytes": 34890,
+      "sha256": "1f2ab9ae9f9301117ae4d246e1df1c2e53bf78fc3b8ba4a42bc39d88b8b3ed7a"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/baseline_state.obj",
+      "bytes": 45791,
+      "sha256": "1aef695046f9f54e16edbcb4ab97c3e605cd744462bca7d19900d1268be060d7"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/compact50/index.json",
+      "bytes": 86698,
+      "sha256": "47e6ffa56882afdf75571512170389a24e52f56e2e48243772a021910d840668"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/function_size_table.json",
+      "bytes": 9039,
+      "sha256": "08f33364dfb2bbb02482539fa5a88dd1d593547f77d4d194396ee3133509b771"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/old_body_comparison.json",
+      "bytes": 62021,
+      "sha256": "de3894fa54af25356c4c2863c37ba3f4665924ddcedaff2771fdae9f2eeb78e9"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/actual_inputs.json",
+      "bytes": 263236,
+      "sha256": "124e246a5e7eb9fb52979bddaf4c504100031d47f1a8caa14fad68c8bffbfc39"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/worker_registration.json",
+      "bytes": 1824,
+      "sha256": "e155cf819e62892a5b5484461a5d176d10993a6b4d2e19d8d44be449159a4249"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/worker_build.log",
+      "bytes": 3383,
+      "sha256": "1eb82aa492aabb278af3aa68d4a7df4e93f1ab8a2bb0639b7cff534dcc112daf"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/preservation.json",
+      "bytes": 411,
+      "sha256": "87e1d518c187b238794f31233ef259a517e7a9f9d90066012562d728288c46b2"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/annotation_proof.json",
+      "bytes": 497,
+      "sha256": "9839c9a1217ab9455a7f950ac1f00d5b2b8b5a065e7837c792bfbc78c22727ad"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/annotation_history.json",
+      "bytes": 3076,
+      "sha256": "af574489ffc3981c57540ca26b8e3b568a074c05be5e4a24ef57bfa6e617da40"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/ledger_function.json",
+      "bytes": 3336,
+      "sha256": "45bd6414855b242ead85e4e048ff4cae941a65cbe08f12f7ce9996370cb91df8"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/exports_after/00ad27a0/decompiled.c",
+      "bytes": 3926,
+      "sha256": "f98d6919e3f97f02a46546660cb936cd7f5375f7b1e2ab1838aaecc6c8a040ad"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/exports_after/00ad27a0/assembly.txt",
+      "bytes": 1663,
+      "sha256": "29c8ebf9d571d4c0aa9e78443ccfebda9885040af3d8d42b14f52b2408bfd4fb"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/exports_after/00ad27a0/metadata.json",
+      "bytes": 276,
+      "sha256": "d30b02fa044392f75debafd758f1c31c867e02e0f541d76acc47f62b0ef9cf29"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/live_bytes_before.txt",
+      "bytes": 1024,
+      "sha256": "f4063b8c29ac99b76a92e59ea6f0b93e20e2e1685851a34024247965802ce61b"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/root_review.json",
+      "bytes": 1485,
+      "sha256": "95ad08c577312e85f7aa0ce8f4e98ae161017b786e02be485ea777a9859fe2d5"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/call_verification.txt",
+      "bytes": 434,
+      "sha256": "34b7b9e8cd9370fb1621979da489b3a4c30cf8bd53c925a11e7b3cd97aee4281"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/verification_summary.json",
+      "bytes": 1676,
+      "sha256": "4afbd421ae3cf1d005cf918a1eb556ed9107dc40e055196f31d2da9ac1cd35a4"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_184/verify_evidence.py",
+      "bytes": 8919,
+      "sha256": "7bb8a9d2ff39b7eb7677abff6dfb57a97af8c08bb7ccc1cfc7d45aa89ddb0de0"
+    }
+  ],
+  "direct_ref_check": {
+    "status": "PASS",
+    "source_refs": 8,
+    "doc_refs": 1,
+    "artifact_refs": 29,
+    "summary": "verification_summary.json"
+  },
+  "private_manifest": {
+    "path": "local/cc12_native_gui_frame_box_copy_storage_184/manifest.json",
+    "bytes": 139826,
+    "sha256": "c35b14fcc5439ca78f8599aeb2202e4ac9d92fd53841827fda1a60a1f46f803a",
+    "item_count": 628,
+    "total_bytes": 138161077,
+    "status": "sealed once; no post-seal regeneration"
+  },
+  "limits": "Qualified whole body over explicit genuine services/current valid-buffer graph domain. Source admission/metadata/SDK/FH3/SEH/hardware faults/private argument-frame/orphan disposition differ. No outerfactory/general recovery/populated production/runtime/binary ABI proof."
+}

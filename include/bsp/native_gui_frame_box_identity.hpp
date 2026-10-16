@@ -17,8 +17,9 @@ struct NativeGuiFrameBoxIdentityContext {
 };
 
 enum class NativeGuiFrameBoxIdentityPhase : std::uint8_t {
-    bound, destroying, retired, retired_after_failure
+    bound, destroying, retired, retired_after_failure, retired_after_copy_unwind
 };
+class NativeGuiFrameBoxCopyStorageOperation;
 
 // Source orchestration ONLY, admitted separately AFTER successful complete raw
 // FrameBox construction. Profile/count checks do NOT prove that completion,
@@ -77,6 +78,16 @@ public:
     bool retired() const noexcept;
 
 private:
+    friend class NativeGuiFrameBoxCopyStorageOperation;
+    // Only whole184's field-ready parent may publish this prepared capability.
+    // It borrows the SAME count; its original creator credit/slot/whole graph
+    // must survive the active constructor. This is not permission to invoke125
+    // on an unfinished copy, or a recovered completion/count test.
+    NativeGuiFrameBoxReference(void*, NativeGuiFrameBoxIdentityContext&,
+        NativeRenderActualOwnerRegistry::BindingAdmission&&);
+    // Called only AFTER184's full applicable genuine constructor unwind returns.
+    // Saved metadata only: no raw read, decrement, scalar/material/slot cleanup.
+    void retire_after_copy_unwind() noexcept;
     void* const identity_;
     NativeGuiFrameBoxIdentityContext& context_;
     NativeGuiFrameBoxIdentityPhase phase_{NativeGuiFrameBoxIdentityPhase::bound};
@@ -90,4 +101,9 @@ private:
 // as required by their contracts. Unbind never permits retry, count repair,
 // graph cleanup or destruction of entered/failed119. No actual B18A40 wrapper,
 // whole AD0D80, production host activation or Original binary ABI is added.
+// The private184 route is the only construction-progress exception to public
+// completed admission. Its new terminal phase preserves all old enum values
+// and layout. Ending that retired companion, INCLUDING its borrowed base, reads
+// metadata only; all partial graphs/material Box credits/actual atomic/slot and
+// external child obligations still require their independently held lifetimes.
 } // namespace bsp
