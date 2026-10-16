@@ -2167,3 +2167,4 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_mat
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_qsort_kernel.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_strrchr.cpp)
 cmake_language(DEFER CALL include "${CMAKE_SOURCE_DIR}/cmake/native_data_placement.cmake")
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_input_int_string_tree_erase.cpp)
