@@ -1,0 +1,1810 @@
+{
+  "packet": "oct15_input_device_tree_range",
+  "status": "whole_actual_RawCtx_range_erase_win32_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_input_device_tree_range.cpp",
+  "header": "include/bsp/native_input_device_tree_range.hpp",
+  "documentation": "docs/OCT15_INPUT_DEVICE_TREE_RANGE.md",
+  "routines": [
+    {
+      "address": "006a7aa0",
+      "end": "006a7b68",
+      "kind": "function",
+      "cpp_name": "erase_native_raw_input_device_tree_range_006a7aa0",
+      "coverage": "whole200definedB/76instructions in127B49+73B27 ranges;201B envelope contains undefined90padding7B1F, not promoted",
+      "original_abi": "Native ECXtree, unused incomingEDX, stacked output/firstowner/firstnode/lastowner/lastnode, RET14h/EAXoutput. Source __fastcall adds explicit RawCtx as sixth stacked input/RET18h, returns output. Native mutable argument-pair addresses versus new Source private8B iterator, compiler frames, helper ABIs, ambient registers/flags and faults remain qualified."
+    }
+  ],
+  "coverage_accounting": {
+    "whole_defined_bytes": 200,
+    "whole_starts": 76,
+    "envelope_bytes": 201,
+    "undefined_unpromoted_padding_bytes": 1,
+    "prior_preserved_prefix_bytes": 127,
+    "prior_preserved_prefix_starts": 49,
+    "newly_closed_partial_bytes": 73,
+    "newly_closed_partial_starts": 27,
+    "cumulative_unique_native_body_bytes": 200,
+    "qualification": "Whole entry now closes returning-diagnostic and full/partial schedule under new RawCtx Source interface. Prior127B admitted-prefix Source/API and real AV domains are preserved. Do not count overlapping prefix twice or report200 wholly new cumulative native bytes."
+  },
+  "source_fingerprints": {
+    "src/native_input_device_tree_range.cpp": "60d81ecb84cf21b128ab6e0a063ff9418d02c4fe8ad04457f006962f683492ac",
+    "include/bsp/native_input_device_tree_range.hpp": "0c093e04570eb8d630c742c7932e74aeb6e6d8acf47b5ca86ac9715a742eb79a"
+  },
+  "provider_fingerprints": {
+    "src/native_input_device_tree_erase.cpp": "900d25fdef248aa59d2ac017f26bdc4079c30255316daa9a187cf4611349005b",
+    "include/bsp/native_input_device_tree_erase.hpp": "a89dbab7ddc924686cc8bf7dfaaf6c5d0aee493e7cd749eaad3b6151895ac225",
+    "src/native_input_device_subtree.cpp": "09d75e5d63fb4a21d1e9a3fd383bfe1fc0a2409458be389dc60b1f8e8a5f253e",
+    "include/bsp/native_input_device_subtree.hpp": "e1982777351558bee4b8326110e92c8ef3815f8851989ded0e0ca1a5f9fc7d09",
+    "src/native_input_device_map_cleanup.cpp": "112daef5ffbc0c5da0ab87f17b4d6cf00ad9f251a0aa60beebfd85640730bfb9",
+    "include/bsp/native_input_device_map_cleanup.hpp": "64f28c88775f80dbe0de3f2ec6af5465072f1b619a4b99b54d09d3145bc8c314",
+    "src/native_input_keyboard_iterators.cpp": "39d826e01ea1afb98bf0acab5e257e8f29999ae2c53ee53730659d7abafcd3e4",
+    "include/bsp/native_input_keyboard_iterators.hpp": "4f7da41e38c8f4fedec43fc83b463e66b4f0e0aeb1cf4f2fd8e8419c6bbaebef",
+    "src/native_invalid_parameter_noinfo_call.cpp": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+    "include/bsp/native_invalid_parameter_noinfo_call.hpp": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+    "src/native_input_settings_tree_cleanup.cpp": "d8be9c5d9613ee258a06fe42a6696269a13a60f53a8a4e1d75aa2e4292feab30",
+    "include/bsp/native_input_settings_tree_cleanup.hpp": "db6fdb5d7c26f1bd416693464823e29c97bce248e987da5d033d626b4603c875",
+    "src/native_input_settings_lifetime.cpp": "6a15caebb247b850b5fdc2a9e295fb18a1cd461495b3a151cb9d636102d962ea",
+    "include/bsp/native_input_settings_lifetime.hpp": "61f04b6f72d64cc34ecb2b391e35c711cf8fd7daad50a8317c1eecb1426d2467",
+    "src/frontend_seg16_24_28_cc13.cpp": "0bb2e7af68f7c422f8a8af031abbd74788af3852c2f05c28434811dd4d27ed09",
+    "include/bsp/frontend_seg16_24_28_cc13.hpp": "c4578e272216dbfc5dcc6d4b8aec77c9ed6d71d408b11ee3d4be3c7bf0022613",
+    "include/bsp/ingame_gui_cc13.hpp": "578b9fd602530f0bce65b8b2771d22f772babd5aebb9fd5c94994f1f91917d4e",
+    "src/native_legacy_sbo_string.cpp": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+    "include/bsp/native_legacy_sbo_string.hpp": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+    "src/native_legacy_exception_owner.cpp": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+    "include/bsp/native_legacy_exception_owner.hpp": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+    "src/native_tree_out_of_range_exception.cpp": "5d95dbe3af41c5338706f0c77928cefc9cc13ee5e8ec0cd606fc0cd85a846844",
+    "include/bsp/native_tree_out_of_range_exception.hpp": "a35ad6906acf09d0814c5142856fe4c0adf91b86f3a8373eb8d26fb3adf11fcf",
+    "src/native_hardware_layout_tree.cpp": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6",
+    "include/bsp/native_hardware_layout_tree.hpp": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5",
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/native_input_keyboard_apply.hpp": "ec75a29772850bbbb67655a13c98dbbd7ef7670261d7bc15807c8659f3e036c1"
+  },
+  "accepted_blob_bindings": [
+    {
+      "path": "src/native_input_device_tree_erase.cpp",
+      "pin": "8368dd3418cd39e75e8368d316cfb60d7ccd6a27",
+      "worktree_sha256": "900d25fdef248aa59d2ac017f26bdc4079c30255316daa9a187cf4611349005b",
+      "LF_equals_accepted_blob": true
+    },
+    {
+      "path": "include/bsp/native_input_device_tree_erase.hpp",
+      "pin": "8368dd3418cd39e75e8368d316cfb60d7ccd6a27",
+      "worktree_sha256": "a89dbab7ddc924686cc8bf7dfaaf6c5d0aee493e7cd749eaad3b6151895ac225",
+      "LF_equals_accepted_blob": true
+    },
+    {
+      "path": "src/native_input_device_subtree.cpp",
+      "pin": "6a9cdda42b63ba4ec2a44313bac786aac3919613",
+      "worktree_sha256": "09d75e5d63fb4a21d1e9a3fd383bfe1fc0a2409458be389dc60b1f8e8a5f253e",
+      "LF_equals_accepted_blob": true
+    },
+    {
+      "path": "include/bsp/native_input_device_subtree.hpp",
+      "pin": "6a9cdda42b63ba4ec2a44313bac786aac3919613",
+      "worktree_sha256": "e1982777351558bee4b8326110e92c8ef3815f8851989ded0e0ca1a5f9fc7d09",
+      "LF_equals_accepted_blob": true
+    },
+    {
+      "path": "src/native_input_device_map_cleanup.cpp",
+      "pin": "f3e4b13ba5f04ed4c40a3f7842d15ee1e8bf2652",
+      "worktree_sha256": "112daef5ffbc0c5da0ab87f17b4d6cf00ad9f251a0aa60beebfd85640730bfb9",
+      "LF_equals_accepted_blob": true
+    },
+    {
+      "path": "include/bsp/native_input_device_map_cleanup.hpp",
+      "pin": "f3e4b13ba5f04ed4c40a3f7842d15ee1e8bf2652",
+      "worktree_sha256": "64f28c88775f80dbe0de3f2ec6af5465072f1b619a4b99b54d09d3145bc8c314",
+      "LF_equals_accepted_blob": true
+    }
+  ],
+  "original_abi_detail": {
+    "receiver": "ECX actualtree, incoming EDX unused/overwritten",
+    "stack": [
+      "output",
+      "first_owner",
+      "first_node",
+      "last_owner",
+      "last_node"
+    ],
+    "native_return": "EAX output; both exitsRET14h",
+    "physical_after_prologue": "SUBESP8+PUSH EBX/EBP/ESI/EDI => output[ESP+1C], firstowner20/firstnode24/lastowner28/lastnode2C; mutable current iterator is the adjacent original firstowner/node argument words. Private8B scratch receives erase-one output, which is ignored. Native EBP holds captured left/head, not a Source compiler-frame register.",
+    "new_Source_ABI": "Proposed FASTCALL tree/unusedEDX/five original stacked words + explicit RawCtx reference => six stacked inputs/RET18h, EAXoutput. Current helper calling conventions/private argument/iterator addresses/flags/register residue remain qualified."
+  },
+  "selection_and_full_path": [
+    {
+      "addresses": "006A7AA7..006A7AB8",
+      "contract": "Capture first_ownerEDI. TESTEDI precedes MOVreceiverESI; read CURRENTtree.head and capture its leftEBP BEFORE any first-owner diagnostic. If capturedEDI==0 skip owner-vs-treeCMP and call diagnostic; otherwise compare capturedEDI with cachedreceiver and call only on mismatch. The head/left reads occur even for zero/wrong owner."
+    },
+    {
+      "addresses": "006A7ABA..006A7AC5",
+      "contract": "Returning first-owner diagnostic precedes first_nodeEBX load from CURRENT first-node argument word. Compare that captured node with PREdiagnostic capturedleft. Unequal goes directlypartial; no lastowner/head selection read."
+    },
+    {
+      "addresses": "006A7AC7..006A7ADF",
+      "contract": "Only when firstnode==capturedleft, capture last_ownerEAX; TESTit, then capture CURRENTtree.headEBP BEFORE conditional owner-vs-treeCMP or diagnostic. After diagnostic returns compare CURRENT last_node word with that capturedhead. Even if handler changed currenthead/left, those captured comparisons stand."
+    },
+    {
+      "addresses": "006A7AE1..006A7AEA",
+      "contract": "Selectedfull branch reloads CURRENTtree.head then its CURRENTroot+4 and calls accepted actual6A7540(tree,unusedEDX,root,RawCtx). No extra count/null/consistency guard, no repeated selection and no owner precondition added after returning diagnostics."
+    },
+    {
+      "addresses": "006A7AEF..006A7B0A",
+      "contract": "After subtree succeeds: reloadhead and sethead.parent=head; reloadhead; clearCURRENTtree.count8; setthathead.left=head; reloadhead and sethead.right=head; reloadhead again and captureitsleft for result. Every reread/store retained; opaque0 has no direct cleanup store."
+    },
+    {
+      "addresses": "006A7B0C..006A7B1E",
+      "contract": "Capture output pointer, publish receiver owner before previouslycaptured currenthead.left node; EAXoutput/RET14h. Original stack pops betweenstores are privateframe evidence."
+    }
+  ],
+  "partial_path": [
+    {
+      "addresses": "006A7B20..006A7B2F",
+      "contract": "At each iteration TESTcachedcurrentownerEDI. Ifzero jumpdiagnostic WITHOUT reading last_owner. Otherwise compare it with CURRENT last_owner argument word; equal bypassesdiagnostic, mismatchcalls. Only AFTER any returningdiagnostic compare cachedcurrentnodeEBX with CURRENT last_node word. No receiver-owner check added inside this loop."
+    },
+    {
+      "addresses": "006A7B33..006A7B39",
+      "contract": "Equality exits after diagnostics; no earlyempty shortcut before selection/ownerchecks. Otherwise advance the ACTUAL mutable8B first-owner/node argument iterator BEFORE erase-one, using accepted provider-free5540C0. This is distinct from cachedEDI/EBX; no speculative node/owner refresh is inserted."
+    },
+    {
+      "addresses": "006A7B3E..006A7B47",
+      "contract": "Pass cached ORIGINALiterationnodeEBX and cachedownerEDI to accepted actual6A71B0; Source supplies the borrowed RawCtx explicitly. Output is private8B scratch. Eraser independently advances its own private iterator, transplants/rebalances, destroys pair, frees original node and decrements CURRENTcount. Do not replace it with subtree/scalar-delete/generic AV erase."
+    },
+    {
+      "addresses": "006A7B4C..006A7B54",
+      "contract": "Ignore eraser EAX and scratch output. Reload CURRENT mutable first_node intoEBX FIRST, then CURRENT first_owner intoEDI; loop. Do not use eraser-returned successor or snapshotend values."
+    },
+    {
+      "addresses": "006A7B56..006A7B68",
+      "contract": "On exit capture CURRENT output pointer; store cachedowner then cachednode; EAXoutput/RET14h. No key/node/count work after exit and no nullskip/rollback."
+    }
+  ],
+  "dependency_bindings": [
+    {
+      "native": "006A7540",
+      "status": "accepted complete actual RawCtx whole subtree",
+      "pin": "6a9cdda42b63ba4ec2a44313bac786aac3919613",
+      "Source": "destroy_native_input_device_subtree_006a7540(tree,unusedEDX,node,strings)",
+      "header": "include/bsp/native_input_device_subtree.hpp",
+      "effects": "Nil99/right recursion/currentleft-afterrecursion/pairnode+C/originalnodefree/capturedleft continuation. Pair owns key/member unwind. No treecount/reset/node-null guard. Normal getter failures propagate, secondary C++ unwind failure terminates in accepted CurrentCpp guards."
+    },
+    {
+      "native": "005540C0",
+      "status": "existing actual provider-free Source with CurrentSDK/privateframe qualification",
+      "Source": "advance_native_input_device_005540c0(NativeKeyboardTreeIterator*)",
+      "header": "include/bsp/native_input_keyboard_iterators.hpp",
+      "effects": "Actual8B owner0/node4, nil99, diagnostic/currentnode reloads and intermediate iterator publications. Immutable empty internal callbacks do not introduce a provider. OriginalBF66EF CRT dispatch/fault/frame identity excluded."
+    },
+    {
+      "native": "006A71B0",
+      "status": "accepted whole actual RawCtx eraser",
+      "pin": "8368dd3418cd39e75e8368d316cfb60d7ccd6a27",
+      "Source": "erase_native_input_device_tree_iterator_006a71b0(tree,unusedEDX,privateout,cachedowner,cachednode,strings)",
+      "header": "include/bsp/native_input_device_tree_erase.hpp",
+      "effects": "Exact originalnode/fixup/pair/free/currentcount/output ordering; node/free/count/outeroutput not committed if normal pair getter throws after topology edits. NativeRET0Ch/SourceRET10h distinction explicit. Rotationsf0 and actualminmax/pair3d/SBO/error dependencies fully accepted; no invented adapter needed."
+    },
+    {
+      "native": "00BF6713",
+      "status": "accepted whole16B native schedule mapped to qualified17B currentSDK Source",
+      "Source": "invoke_native_invalid_parameter_00bf6713()",
+      "header": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "effects": "Nakedcdecl/noarguments/noNoexcept/noNoreturn; XOREAX/five unused paddingPUSH0/currentSDK _invalid_parameter_noinfo/callerADDesp14/RET. Handler may return or throw under currentCRT policy. Five physical words are not fabricated semantic parameters; originalBF66EF callback decoding/Watson/runtime identity is not promoted."
+    }
+  ],
+  "admitted_prefix_boundary": {
+    "pin": "f3e4b13ba5f04ed4c40a3f7842d15ee1e8bf2652",
+    "service": "clear_native_input_device_tree_full_prefix_006a7aa0",
+    "scope": "Only127B6A7AA0..6A7B1E under explicit stable valid full-selection preconditions; actual subtree/currenthead resets/output are complete in that consumed domain.",
+    "do_not_reuse_as_whole": "Whole selection can be reached after returning diagnostics changed head/left/end argument storage. The admitted prefix has no actual diagnostic calls/partial path and repeats selection reads under its preconditions. Calling it after evaluating whole selection either repeats native reads or assumes stronger postdiagnostic conditions. Future whole Source should execute selection ONCE and directly compose accepted6A7540 plus exact postselection reset/output schedule; preserve the existing prefix unchanged."
+  },
+  "prior_real_AV_contract": {
+    "source": "src/native_input_settings_tree_cleanup.cpp",
+    "header": "include/bsp/native_input_settings_tree_cleanup.hpp",
+    "service": "erase_native_input_device_tree_range_006a7aa0(tree,output,first8B,last8B,NativeStringStorage&)",
+    "status": "Real existing complete actual full/partial algorithm and valid-owned-forward-range fixture domain preserved, not a placeholder/missing algorithm.",
+    "boundary": "NativeStringStorage virtualrelease is noexcept and caller-supplied logical first/last iterators are copied; structurally mutating release callbacks/privateframe/original CRT/EH identity are outside its established domain. It cannot be bridged into a propagating RawCtx whole exact-entry service or replace returning-diagnostic/capture/current-end schedule. No terminate adapter/provider/callback/overlay is needed or authorized."
+  },
+  "source_implementation": {
+    "input_reads": "Original Source output/firstowner/firstnode/lastowner/lastnode words are volatile parameters. No eager aggregate iterator/header/end snapshot. Assembly captures firstowner and initializes only current.owner; firstnode/current.node/cache initialized ONLY after first diagnostic. Lastowner/head read only on matchingfirstnode, lastnode after diagnostic. Loop CMPcurrentlastowner skipped when cachedowner0, CURRENTlastnode compared only after diagnostic.",
+    "private_iterator": "Actual NativeKeyboardTreeIterator is8B with owner0/node4. Source privatecurrent is formed progressively and stays distinct from cachedowner/node and ignored private8B eraseoutput. Original Native iterator is its mutable first argument words; original private argument/frame aliases are qualified, not reconstructed via an EBP reader/overlay.",
+    "calls": "Typed actual5540C0 advances mutablecurrent BEFORE typed actual8368 erase of cachednode/cachedowner. Eraser EAX and its scratch output are ignored; assembly reloads current.node THEN current.owner. Full branch directly composes actual6A7540 then exact repeated currenthead reset/output block. No admitted-prefix reentry or repeated selection.",
+    "result": "Full path captures currenthead.left BEFORE output-pointer read/store. Partial path captures outputpointer and cachedowner/node before first output store. Both publish owner then node and return output. Public reached output aliases preserved; Source privateframe identity qualified.",
+    "ambient_registers": "Native incomingEDX unused. Native full call leaves capturedroot inEDX; partial eraser call has scratchoutput address inEDX. Both accepted children ignore that physicalEDX; Source normalizes unusedEDX0 explicitly. Native min/max/rotation/pair dependencies stay inside accepted eraser. No invented semantic ambient tag.",
+    "guards_and_models": "No new guard, owner/count bridge, rollback, callbacks/providers, allocator/pool model, NativeStringStorage/noexcept adapter, local catch or cleanup action. Compiler EBP is not clobbered."
+  },
+  "EH_and_failure_policy": {
+    "target_local_EH": false,
+    "proof": "Complete76-start target has no FS registration, handler/FuncInfo reference/state assignment/cleanup action or exception table. Exactly6directcalls and2RET14h paths. Callee EH is owned by accepted subtree/eraser, not new target actions.",
+    "full_path_failure": "Subtree failure propagates immediately; subsequent head resets/count/output are not reached. Alreadyprocessed descendants/pair cleanup reflect accepted child progression; no rollback or extra cleanup.",
+    "partial_path_failure": "Iterator advance occurs before erasing cachednode. If iterator/eraser fails, no postcall iterator reload or outeroutput occurs. Eraser may leave topology changed before pair getter failure and skip originalfree/count/output; parent adds no guard/keycleanup.",
+    "diagnostic_failure": "Current SDK diagnostic may return, terminate or throw according to currentCRT; no fabricated noreturn/noexcept. Returning diagnostics retain exact pre/post captures and conditional CURRENT argument reads. Original runtime encoding/Watson/SEH/fault/catch-RTTI/privateframes remain distinct.",
+    "secondary_exception": "Accepted CurrentCpp pair/record/key unwind guards terminate on secondary C++ cleanup failure; no outer barecatch/noexcept RawCtx adapter or replacement exception introduced."
+  },
+  "bounded_real_callers": [
+    {
+      "function": "006A7BA0",
+      "call": "006A7BB6",
+      "Source_status": "accepted whole RawCtx mapdestructor in f3e4b13",
+      "selection": "CURRENTcapturedhead=tree.head; capturedfirst=head.left; owner tree twice; private8B output; stacked output/tree/first/tree/head. Validstableowned header selects admittedfull branch. After call freeCURRENTtree.head thenclear4/8/EAX0."
+    },
+    {
+      "function": "006AA3E0",
+      "call": "006AA3F6",
+      "Source_status": "accepted whole RawCtx mapdestructor in f3e4b13",
+      "selection": "Full52B/23-start decoded body equivalent to6A7BA0 after normalizing two rel32 operands; exact same targets/currentheadfree/orderedclear."
+    },
+    {
+      "function": "006AA420",
+      "call": "006AA436",
+      "Source_status": "accepted whole RawCtx mapdestructor in f3e4b13",
+      "selection": "Same whole52B/23-start normalized schedule and admittedfull selection as6A7BA0."
+    },
+    {
+      "function": "006AA460",
+      "call": "006AA4BD",
+      "Source_status": "existing complete normal lifetime fragment with manager-dispatch providers pending; not a new whole RawCtx parent approval",
+      "selection": "Receiver=self+6C, head=self+70 captured; first=head.left captured BEFORE pushes; owner twice, lastnodecapturedhead, privateout. State7 arm beforecall belongs to caller, not6A7AA0."
+    },
+    {
+      "function": "006AA460",
+      "call": "006AA60B",
+      "Source_status": "same broader lifetime fragment, unchanged",
+      "selection": "Receiver=self+8, head=self+C captured; first=head.left, owner twice/endcapturedhead/privateout. Caller stateBL==0 beforecall. SubsequentCURRENTheadfree/4then8clear outsidetarget. No caller EH/actions claimed."
+    }
+  ],
+  "bounded_caller_body_equivalence": {
+    "all_three52B_23starts": true,
+    "normalization": "Only two E8rel32 operandDWORDs zeroed; actual targetsequence6A7AA0/BF65AC verified.",
+    "sha256": "5389ba8e6d7ef09bc989b2a6a69d43c54ca9359b8d1df9d608d04ab7114fc53b"
+  },
+  "readiness": {
+    "accepted_receipt": "local/oct15_input_device_tree_range_readiness.json",
+    "sha256": "c5892805f2eac19637fdaea672ed188694b0775f0f83424a77eceade8c6624c7",
+    "blockers": [],
+    "parent_authorization": "Fresh single-address/four-file Source packet authorized only after primary reviewed exact readiness and accepted pins. Broader6AA460/manager lifetime Source not promoted."
+  },
+  "native_evidence": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "typed_capture": "local/oct15_input_device_tree_range_typed.json",
+    "typed_modification": "2731",
+    "typed_functions": [
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "006a7aa0"
+        },
+        "name": "STL_InputDeviceTree_EraseRange_006A7AA0",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 2,
+          "returned_range_count": 2,
+          "address_count": "200",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "006a7aa0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "006a7b1e"
+              },
+              "length": "127"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "006a7b20"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "006a7b68"
+              },
+              "length": "73"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "006a7540"
+        },
+        "name": "STL_InputDeviceTree_DestroySubtree_006A7540",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "161",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "006a7540"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "006a75e0"
+              },
+              "length": "161"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "005540c0"
+        },
+        "name": "STL_InputDeviceIterator_Next_005540C0",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 2,
+          "returned_range_count": 2,
+          "address_count": "118",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "005540c0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "005540f7"
+              },
+              "length": "56"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00554100"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "0055413d"
+              },
+              "length": "62"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "006a71b0"
+        },
+        "name": "STL_InputDeviceTree_EraseIterator_006A71B0",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "840",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "006a71b0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "006a74f7"
+              },
+              "length": "840"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00bf6713"
+        },
+        "name": "LIBCRT_unmatched_00bf6713",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "16",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00bf6713"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00bf6722"
+              },
+              "length": "16"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "006a7ba0"
+        },
+        "name": "STL_Tree_Destroy_006a7ba0",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "52",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "006a7ba0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "006a7bd3"
+              },
+              "length": "52"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "006aa3e0"
+        },
+        "name": "STL_Tree_Destroy_006aa3e0",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "52",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "006aa3e0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "006aa413"
+              },
+              "length": "52"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "006aa420"
+        },
+        "name": "STL_Tree_Destroy_006aa420",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "52",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "006aa420"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "006aa453"
+              },
+              "length": "52"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "006aa460"
+        },
+        "name": "BSP_InputSettings_Destruct",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "480",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "006aa460"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "006aa63f"
+              },
+              "length": "480"
+            }
+          ]
+        }
+      }
+    ],
+    "spans": [
+      {
+        "function": "006a7aa0",
+        "start": "006a7aa0",
+        "end_inclusive": "006a7b1e",
+        "bytes": 127,
+        "starts": 49,
+        "role": "owned_defined",
+        "hex": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e854ec54008b5c24243bdd75598b44242885c08b6e0474043bc67405e838ec5400396c242c753f8b4e048b5104528bcee851faffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c21400",
+        "sha256": "9b02891f4601a1921294473bb97a0eb3e02872bea205d90f0277c2ed38d54be1",
+        "live_equals_PE": true
+      },
+      {
+        "function": "006a7aa0",
+        "start": "006a7b20",
+        "end_inclusive": "006a7b68",
+        "bytes": 73,
+        "starts": 27,
+        "role": "owned_defined",
+        "hex": "85ff74063b7c24287405e8e4eb54003b5c242c74218d4c2420e882c5eaff53578d542418528bcee864f6ffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+        "sha256": "bebbf774703d1d48466162f3929ec69ef30bc90fc8e5e23c3b8bdb4b91aa4d77",
+        "live_equals_PE": true
+      },
+      {
+        "function": "006a7540",
+        "start": "006a7540",
+        "end_inclusive": "006a75e0",
+        "bytes": 161,
+        "starts": 51,
+        "role": "read_only_accepted_dependency",
+        "hex": "64a1000000006aff68a8f5c700506489250000000053558b6c241880bd990000000056578bd98bf575628d9b000000008b4608508bcbe8c5ffffff8b368d7d0c897c24208d4f08c744241800000000e8fc40ebff8b470485c0c7442418ffffffff74158b3f6a0183c7015750e80f27d7ff8bc8e8589f520055e8eeef540083c40480be99000000008bee74a48b4c24105f5e5d64890d000000005b83c40cc20400",
+        "sha256": "3fcd02079c518ccb5645fc66af7b7c8a642a3fb87338e463d990072fc5ccdf7a",
+        "live_equals_PE": true
+      },
+      {
+        "function": "005540c0",
+        "start": "005540c0",
+        "end_inclusive": "005540f7",
+        "bytes": 56,
+        "starts": 17,
+        "role": "read_only_accepted_dependency",
+        "hex": "568bf1833e007505e846266a008b460480b8990000000074065ee934266a008b480880b9990000000075278b0180b899000000007517eb08",
+        "sha256": "2750086cc3613e24fb78e2aa46ab188e9ecef76f7edb9acdfcdf223e80de1e27",
+        "live_equals_PE": true
+      },
+      {
+        "function": "005540c0",
+        "start": "00554100",
+        "end_inclusive": "0055413d",
+        "bytes": 62,
+        "starts": 22,
+        "role": "read_only_accepted_dependency",
+        "hex": "8bc88b0180b8990000000074f3894e045ec38b400480b89900000000751b8bff8b4e043b480875118946048bd08b420480b8990000000074e78946045ec3",
+        "sha256": "4e1843cb55dc9317cfb003f101fe9fe3700d78c62d2529b3e512d8367348d053",
+        "live_equals_PE": true
+      },
+      {
+        "function": "006a71b0",
+        "start": "006a71b0",
+        "end_inclusive": "006a74f7",
+        "bytes": 840,
+        "starts": 235,
+        "role": "read_only_accepted_dependency",
+        "hex": "64a1000000006aff6888f5c70050648925000000008b44241883ec4880b8990000000055568be9744c6a1b33f668e044ce008d4c2414c744242c0f00000089742428c644241800e82415d6ff8d44240c508d4c242c8974245ce8f2a4d6ff68a863d8008d4c242c51c74424306c92d600e860f65400538bd8578d4c246c895c2410e88aceeaff8b0380b8990000000074058b7b08eb1b8b530880ba990000000074048bf8eb0b8b4c24703bcb8b7908757480bf99000000008b730475038977048b45043958047505897804eb0b391e7504893eeb03897e088b5d048b033b442410751680bf990000000074048bc6eb078bcfe8c9b9eaff89038b5d048b4c2410394b080f858200000080bf990000000074078bc6894308eb728bcfe880b9eaff894308eb668948048b1389113b4b0875048bf1eb1d80bf99000000008b71047503897704893e8b43088941088b5308894a048b45043958047505894804eb0e8b4304391875048908eb038948088b43048941048a93980000008a81980000008891980000008883980000008b442410b3013898980000000f855f0100008b4d043b79040f844d0100008da42400000000389f980000000f853a0100008b063bf80f85950000008b460880b898000000007518889898000000568bcdc6869800000000e869cbeaff8b460880b899000000000f85a90000008b10389a98000000750f8b48083899980000000f84890000008b48083899980000007518889a98000000508bcdc6809800000000e860afeaff8b46088a8e98000000888898000000889e980000008b5008568bcd889a98000000e8facaeaffe99b00000080b898000000007517889898000000568bcdc6869800000000e817afeaff8b0680b89900000000751c8b5008389a9800000075248b08389998000000751ac68098000000008b55048bfe3b7a048b76040f85fffeffffeb438b083899980000007517889a98000000508bcdc6809800000000e87ecaeaff8b068a8e98000000888898000000889e980000008b10568bcd889a98000000e89aaeeaff889f980000008b4c241083c10ce8f843ebff8b44241050e8eaf054008b450883c40485c05f5b760683c0ff8945088b4c24648b4424608b54246889088b4c24505e8950045d64890d0000000083c454c20c00",
+        "sha256": "d33d41e5aa4af1b37b51c19f703d7ab7afb34bac1ab82085af905e5075c6d94e",
+        "live_equals_PE": true
+      },
+      {
+        "function": "00bf6713",
+        "start": "00bf6713",
+        "end_inclusive": "00bf6722",
+        "bytes": 16,
+        "starts": 9,
+        "role": "read_only_accepted_dependency",
+        "hex": "33c05050505050e8d0ffffff83c414c3",
+        "sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+        "live_equals_PE": true
+      },
+      {
+        "function": "006a7ba0",
+        "start": "006a7ba0",
+        "end_inclusive": "006a7bd3",
+        "bytes": 52,
+        "starts": 23,
+        "role": "read_only_complete_map_caller",
+        "hex": "83ec08568bf18b46048b08505651568d442414508bcee8e5feffff8b4e0451e8e8e9540083c40433c08946048946085e83c408c3",
+        "sha256": "72c073b85d74241c0305abf9f8875c62a06421bf52358e0765bd1fb979693fa2",
+        "live_equals_PE": true
+      },
+      {
+        "function": "006aa3e0",
+        "start": "006aa3e0",
+        "end_inclusive": "006aa413",
+        "bytes": 52,
+        "starts": 23,
+        "role": "read_only_complete_map_caller",
+        "hex": "83ec08568bf18b46048b08505651568d442414508bcee8a5d6ffff8b4e0451e8a8c1540083c40433c08946048946085e83c408c3",
+        "sha256": "12dc50eb9da467403c296996bc758076831344b545efb0d90b8de2d87b472a18",
+        "live_equals_PE": true
+      },
+      {
+        "function": "006aa420",
+        "start": "006aa420",
+        "end_inclusive": "006aa453",
+        "bytes": 52,
+        "starts": 23,
+        "role": "read_only_complete_map_caller",
+        "hex": "83ec08568bf18b46048b08505651568d442414508bcee865d6ffff8b4e0451e868c1540083c40433c08946048946085e83c408c3",
+        "sha256": "93aa27b91b7c06e084d984619b7f420400fadce4a13fcfd542558ad4fbac89e7",
+        "live_equals_PE": true
+      },
+      {
+        "function": "006aa460",
+        "start": "006aa4a5",
+        "end_inclusive": "006aa4d2",
+        "bytes": 46,
+        "starts": 18,
+        "role": "read_only_settings_caller_window",
+        "hex": "8b46708b088d7e6c505751578d442420508bcfc644243407e8ded5ffff8b470450e8e1c0540033db895f04895f08",
+        "sha256": "1972b9119fa2ee3164579e9bec4353b1bed35c6d13d1168904d1fdf6671410e8",
+        "live_equals_PE": true
+      },
+      {
+        "function": "006aa460",
+        "start": "006aa5f4",
+        "end_inclusive": "006aa622",
+        "bytes": 47,
+        "starts": 18,
+        "role": "read_only_settings_caller_window",
+        "hex": "8b460c8b088d7e08505751578d4c2420518bcf885c2434e890d4ffff8b570452e893bf54008b4c241c895f04895f08",
+        "sha256": "2b2f6f29cdf7d148fbe3a14934af39e084b4faad397d13f91bdb97f7c0ae0a57",
+        "live_equals_PE": true
+      }
+    ],
+    "owned_defined_bytes": 200,
+    "owned_starts": 76,
+    "envelope_bytes": 201,
+    "undefined_padding": {
+      "address": "006a7b1f",
+      "hex": "90",
+      "current_instruction": false,
+      "current_error": "No instruction at address",
+      "control_flow": "Full pathRET006A7B1C ends at7B1E; partial branches target7B20; no captured branch targets7B1F. Undefined nonexecuted padding; no repair/mutation performed.",
+      "fresh_PE_equals_live": true
+    },
+    "fresh_code_bytes": 1584,
+    "fresh_starts": 515,
+    "starts_failed": 0,
+    "owned_local_EH": false
+  },
+  "owned_native_listing": [
+    {
+      "address": "006a7aa0",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "83ec08",
+      "mnemonic": "sub",
+      "operands": "esp, 8"
+    },
+    {
+      "address": "006a7aa3",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 1,
+      "hex": "53",
+      "mnemonic": "push",
+      "operands": "ebx"
+    },
+    {
+      "address": "006a7aa4",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 1,
+      "hex": "55",
+      "mnemonic": "push",
+      "operands": "ebp"
+    },
+    {
+      "address": "006a7aa5",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 1,
+      "hex": "56",
+      "mnemonic": "push",
+      "operands": "esi"
+    },
+    {
+      "address": "006a7aa6",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 1,
+      "hex": "57",
+      "mnemonic": "push",
+      "operands": "edi"
+    },
+    {
+      "address": "006a7aa7",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 4,
+      "hex": "8b7c2420",
+      "mnemonic": "mov",
+      "operands": "edi, dword ptr [esp + 0x20]"
+    },
+    {
+      "address": "006a7aab",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "85ff",
+      "mnemonic": "test",
+      "operands": "edi, edi"
+    },
+    {
+      "address": "006a7aad",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "8bf1",
+      "mnemonic": "mov",
+      "operands": "esi, ecx"
+    },
+    {
+      "address": "006a7aaf",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "8b4604",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [esi + 4]"
+    },
+    {
+      "address": "006a7ab2",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "8b28",
+      "mnemonic": "mov",
+      "operands": "ebp, dword ptr [eax]"
+    },
+    {
+      "address": "006a7ab4",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "7404",
+      "mnemonic": "je",
+      "operands": "0x6a7aba"
+    },
+    {
+      "address": "006a7ab6",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "3bfe",
+      "mnemonic": "cmp",
+      "operands": "edi, esi"
+    },
+    {
+      "address": "006a7ab8",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "7405",
+      "mnemonic": "je",
+      "operands": "0x6a7abf"
+    },
+    {
+      "address": "006a7aba",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 5,
+      "hex": "e854ec5400",
+      "mnemonic": "call",
+      "operands": "0xbf6713"
+    },
+    {
+      "address": "006a7abf",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 4,
+      "hex": "8b5c2424",
+      "mnemonic": "mov",
+      "operands": "ebx, dword ptr [esp + 0x24]"
+    },
+    {
+      "address": "006a7ac3",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "3bdd",
+      "mnemonic": "cmp",
+      "operands": "ebx, ebp"
+    },
+    {
+      "address": "006a7ac5",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "7559",
+      "mnemonic": "jne",
+      "operands": "0x6a7b20"
+    },
+    {
+      "address": "006a7ac7",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 4,
+      "hex": "8b442428",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [esp + 0x28]"
+    },
+    {
+      "address": "006a7acb",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "85c0",
+      "mnemonic": "test",
+      "operands": "eax, eax"
+    },
+    {
+      "address": "006a7acd",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "8b6e04",
+      "mnemonic": "mov",
+      "operands": "ebp, dword ptr [esi + 4]"
+    },
+    {
+      "address": "006a7ad0",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "7404",
+      "mnemonic": "je",
+      "operands": "0x6a7ad6"
+    },
+    {
+      "address": "006a7ad2",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "3bc6",
+      "mnemonic": "cmp",
+      "operands": "eax, esi"
+    },
+    {
+      "address": "006a7ad4",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "7405",
+      "mnemonic": "je",
+      "operands": "0x6a7adb"
+    },
+    {
+      "address": "006a7ad6",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 5,
+      "hex": "e838ec5400",
+      "mnemonic": "call",
+      "operands": "0xbf6713"
+    },
+    {
+      "address": "006a7adb",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 4,
+      "hex": "396c242c",
+      "mnemonic": "cmp",
+      "operands": "dword ptr [esp + 0x2c], ebp"
+    },
+    {
+      "address": "006a7adf",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "753f",
+      "mnemonic": "jne",
+      "operands": "0x6a7b20"
+    },
+    {
+      "address": "006a7ae1",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "8b4e04",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [esi + 4]"
+    },
+    {
+      "address": "006a7ae4",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "8b5104",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [ecx + 4]"
+    },
+    {
+      "address": "006a7ae7",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 1,
+      "hex": "52",
+      "mnemonic": "push",
+      "operands": "edx"
+    },
+    {
+      "address": "006a7ae8",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "8bce",
+      "mnemonic": "mov",
+      "operands": "ecx, esi"
+    },
+    {
+      "address": "006a7aea",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 5,
+      "hex": "e851faffff",
+      "mnemonic": "call",
+      "operands": "0x6a7540"
+    },
+    {
+      "address": "006a7aef",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "8b4604",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [esi + 4]"
+    },
+    {
+      "address": "006a7af2",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "894004",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax + 4], eax"
+    },
+    {
+      "address": "006a7af5",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "8b4604",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [esi + 4]"
+    },
+    {
+      "address": "006a7af8",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 7,
+      "hex": "c7460800000000",
+      "mnemonic": "mov",
+      "operands": "dword ptr [esi + 8], 0"
+    },
+    {
+      "address": "006a7aff",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "8900",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax], eax"
+    },
+    {
+      "address": "006a7b01",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "8b4604",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [esi + 4]"
+    },
+    {
+      "address": "006a7b04",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "894008",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax + 8], eax"
+    },
+    {
+      "address": "006a7b07",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "8b4604",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [esi + 4]"
+    },
+    {
+      "address": "006a7b0a",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "8b08",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [eax]"
+    },
+    {
+      "address": "006a7b0c",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 4,
+      "hex": "8b44241c",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [esp + 0x1c]"
+    },
+    {
+      "address": "006a7b10",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 1,
+      "hex": "5f",
+      "mnemonic": "pop",
+      "operands": "edi"
+    },
+    {
+      "address": "006a7b11",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "8930",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax], esi"
+    },
+    {
+      "address": "006a7b13",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 1,
+      "hex": "5e",
+      "mnemonic": "pop",
+      "operands": "esi"
+    },
+    {
+      "address": "006a7b14",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 1,
+      "hex": "5d",
+      "mnemonic": "pop",
+      "operands": "ebp"
+    },
+    {
+      "address": "006a7b15",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "894804",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax + 4], ecx"
+    },
+    {
+      "address": "006a7b18",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 1,
+      "hex": "5b",
+      "mnemonic": "pop",
+      "operands": "ebx"
+    },
+    {
+      "address": "006a7b19",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "83c408",
+      "mnemonic": "add",
+      "operands": "esp, 8"
+    },
+    {
+      "address": "006a7b1c",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "c21400",
+      "mnemonic": "ret",
+      "operands": "0x14"
+    },
+    {
+      "address": "006a7b20",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "85ff",
+      "mnemonic": "test",
+      "operands": "edi, edi"
+    },
+    {
+      "address": "006a7b22",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "7406",
+      "mnemonic": "je",
+      "operands": "0x6a7b2a"
+    },
+    {
+      "address": "006a7b24",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 4,
+      "hex": "3b7c2428",
+      "mnemonic": "cmp",
+      "operands": "edi, dword ptr [esp + 0x28]"
+    },
+    {
+      "address": "006a7b28",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "7405",
+      "mnemonic": "je",
+      "operands": "0x6a7b2f"
+    },
+    {
+      "address": "006a7b2a",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 5,
+      "hex": "e8e4eb5400",
+      "mnemonic": "call",
+      "operands": "0xbf6713"
+    },
+    {
+      "address": "006a7b2f",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 4,
+      "hex": "3b5c242c",
+      "mnemonic": "cmp",
+      "operands": "ebx, dword ptr [esp + 0x2c]"
+    },
+    {
+      "address": "006a7b33",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "7421",
+      "mnemonic": "je",
+      "operands": "0x6a7b56"
+    },
+    {
+      "address": "006a7b35",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 4,
+      "hex": "8d4c2420",
+      "mnemonic": "lea",
+      "operands": "ecx, [esp + 0x20]"
+    },
+    {
+      "address": "006a7b39",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 5,
+      "hex": "e882c5eaff",
+      "mnemonic": "call",
+      "operands": "0x5540c0"
+    },
+    {
+      "address": "006a7b3e",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 1,
+      "hex": "53",
+      "mnemonic": "push",
+      "operands": "ebx"
+    },
+    {
+      "address": "006a7b3f",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 1,
+      "hex": "57",
+      "mnemonic": "push",
+      "operands": "edi"
+    },
+    {
+      "address": "006a7b40",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 4,
+      "hex": "8d542418",
+      "mnemonic": "lea",
+      "operands": "edx, [esp + 0x18]"
+    },
+    {
+      "address": "006a7b44",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 1,
+      "hex": "52",
+      "mnemonic": "push",
+      "operands": "edx"
+    },
+    {
+      "address": "006a7b45",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "8bce",
+      "mnemonic": "mov",
+      "operands": "ecx, esi"
+    },
+    {
+      "address": "006a7b47",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 5,
+      "hex": "e864f6ffff",
+      "mnemonic": "call",
+      "operands": "0x6a71b0"
+    },
+    {
+      "address": "006a7b4c",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 4,
+      "hex": "8b5c2424",
+      "mnemonic": "mov",
+      "operands": "ebx, dword ptr [esp + 0x24]"
+    },
+    {
+      "address": "006a7b50",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 4,
+      "hex": "8b7c2420",
+      "mnemonic": "mov",
+      "operands": "edi, dword ptr [esp + 0x20]"
+    },
+    {
+      "address": "006a7b54",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "ebca",
+      "mnemonic": "jmp",
+      "operands": "0x6a7b20"
+    },
+    {
+      "address": "006a7b56",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 4,
+      "hex": "8b44241c",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [esp + 0x1c]"
+    },
+    {
+      "address": "006a7b5a",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 2,
+      "hex": "8938",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax], edi"
+    },
+    {
+      "address": "006a7b5c",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 1,
+      "hex": "5f",
+      "mnemonic": "pop",
+      "operands": "edi"
+    },
+    {
+      "address": "006a7b5d",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 1,
+      "hex": "5e",
+      "mnemonic": "pop",
+      "operands": "esi"
+    },
+    {
+      "address": "006a7b5e",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 1,
+      "hex": "5d",
+      "mnemonic": "pop",
+      "operands": "ebp"
+    },
+    {
+      "address": "006a7b5f",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "895804",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax + 4], ebx"
+    },
+    {
+      "address": "006a7b62",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 1,
+      "hex": "5b",
+      "mnemonic": "pop",
+      "operands": "ebx"
+    },
+    {
+      "address": "006a7b63",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "83c408",
+      "mnemonic": "add",
+      "operands": "esp, 8"
+    },
+    {
+      "address": "006a7b66",
+      "function": "006a7aa0",
+      "role": "owned_defined",
+      "size": 3,
+      "hex": "c21400",
+      "mnemonic": "ret",
+      "operands": "0x14"
+    }
+  ],
+  "native_transfers": [
+    {
+      "address": "006a7aba",
+      "native": "00bf6713",
+      "function": "006a7aa0",
+      "scope": "owned_defined"
+    },
+    {
+      "address": "006a7ad6",
+      "native": "00bf6713",
+      "function": "006a7aa0",
+      "scope": "owned_defined"
+    },
+    {
+      "address": "006a7aea",
+      "native": "006a7540",
+      "function": "006a7aa0",
+      "scope": "owned_defined"
+    },
+    {
+      "address": "006a7b2a",
+      "native": "00bf6713",
+      "function": "006a7aa0",
+      "scope": "owned_defined"
+    },
+    {
+      "address": "006a7b39",
+      "native": "005540c0",
+      "function": "006a7aa0",
+      "scope": "owned_defined"
+    },
+    {
+      "address": "006a7b47",
+      "native": "006a71b0",
+      "function": "006a7aa0",
+      "scope": "owned_defined"
+    },
+    {
+      "address": "006a7576",
+      "native": "006a7540",
+      "function": "006a7540",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a758f",
+      "native": "0055b690",
+      "function": "006a7540",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a75ac",
+      "native": "00419cc0",
+      "function": "006a7540",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a75b3",
+      "native": "00bd1510",
+      "function": "006a7540",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a75b9",
+      "native": "00bf65ac",
+      "function": "006a7540",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "005540c8",
+      "native": "00bf6713",
+      "function": "005540c0",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "005540da",
+      "native": "00bf6713",
+      "function": "005540c0",
+      "scope": "read_only_accepted_dependency",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "006a71f7",
+      "native": "00408720",
+      "function": "006a71b0",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a7209",
+      "native": "00411700",
+      "function": "006a71b0",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a7220",
+      "native": "00bf6885",
+      "function": "006a71b0",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a7231",
+      "native": "005540c0",
+      "function": "006a71b0",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a72a2",
+      "native": "00552c70",
+      "function": "006a71b0",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a72cb",
+      "native": "00552c50",
+      "function": "006a71b0",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a7392",
+      "native": "00553f00",
+      "function": "006a71b0",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a73db",
+      "native": "00552340",
+      "function": "006a71b0",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a7401",
+      "native": "00553f00",
+      "function": "006a71b0",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a7424",
+      "native": "00552340",
+      "function": "006a71b0",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a747d",
+      "native": "00553f00",
+      "function": "006a71b0",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a74a1",
+      "native": "00552340",
+      "function": "006a71b0",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a74b3",
+      "native": "0055b8b0",
+      "function": "006a71b0",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a74bd",
+      "native": "00bf65ac",
+      "function": "006a71b0",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "00bf671a",
+      "native": "00bf66ef",
+      "function": "00bf6713",
+      "scope": "read_only_accepted_dependency"
+    },
+    {
+      "address": "006a7bb6",
+      "native": "006a7aa0",
+      "function": "006a7ba0",
+      "scope": "read_only_complete_map_caller"
+    },
+    {
+      "address": "006a7bbf",
+      "native": "00bf65ac",
+      "function": "006a7ba0",
+      "scope": "read_only_complete_map_caller"
+    },
+    {
+      "address": "006aa3f6",
+      "native": "006a7aa0",
+      "function": "006aa3e0",
+      "scope": "read_only_complete_map_caller"
+    },
+    {
+      "address": "006aa3ff",
+      "native": "00bf65ac",
+      "function": "006aa3e0",
+      "scope": "read_only_complete_map_caller"
+    },
+    {
+      "address": "006aa436",
+      "native": "006a7aa0",
+      "function": "006aa420",
+      "scope": "read_only_complete_map_caller"
+    },
+    {
+      "address": "006aa43f",
+      "native": "00bf65ac",
+      "function": "006aa420",
+      "scope": "read_only_complete_map_caller"
+    },
+    {
+      "address": "006aa4bd",
+      "native": "006a7aa0",
+      "function": "006aa460",
+      "scope": "read_only_settings_caller_window"
+    },
+    {
+      "address": "006aa4c6",
+      "native": "00bf65ac",
+      "function": "006aa460",
+      "scope": "read_only_settings_caller_window"
+    },
+    {
+      "address": "006aa60b",
+      "native": "006a7aa0",
+      "function": "006aa460",
+      "scope": "read_only_settings_caller_window"
+    },
+    {
+      "address": "006aa614",
+      "native": "00bf65ac",
+      "function": "006aa460",
+      "scope": "read_only_settings_caller_window"
+    }
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "log": "local/oct15_input_device_tree_range_build.log",
+      "log_sha256": "89cef47a1472296f7544a6bcf10fcbff7b4bb53829ebb2be242f4764fc7518b2",
+      "tests": [
+        {
+          "name": "reconstructed_math",
+          "passed": true,
+          "seconds": 0.24
+        },
+        {
+          "name": "native_math_differential",
+          "passed": true,
+          "seconds": 0.07
+        },
+        {
+          "name": "tool_tests",
+          "passed": true,
+          "seconds": 9.55
+        }
+      ],
+      "passed": 3,
+      "failed": 0,
+      "total_seconds": 9.93,
+      "limits": "Compilation/existing suites only; native_math validates existing exported seeds, not a new range native differential/injected ABI/fault/game run.",
+      "preexisting_warning": "Existing unrelated LNK4006 spawn_request_id_matches duplicate definition; no new module warning."
+    },
+    "Source_COFF": {
+      "object": "build/win32/bsp_core.dir/Release/native_input_device_tree_range.obj",
+      "object_sha256": "c8c84ac60c89753833e8848c0adf097f3dfded0fe1901d44339a3824b8b2cea3",
+      "capture": "local/oct15_input_device_tree_range_native_input_device_tree_range_coff.txt",
+      "capture_sha256": "50ae8813f57fc802a17b347698db66d32b4476e8769347953b49355a88247b5e",
+      "review_receipt": "local/oct15_input_device_tree_range_coff_review.json",
+      "checks": [
+        "357-byte Source parent, exactly six typed child calls, two RET18h outputs; no FS/EH registration/unwindfunclet/securitycookie/helper not in declared closure.",
+        "Compiler EBP frame never clobbered; EBX/ESI/EDI saved once and restored at both exits; private currentowner/node(-20/-1C), cachedowner/node(-C/-10), ignoredscratch(-28) are distinct.",
+        "Initial head/left at1A/1D precedes first diagnostic38. Firstnode[+10] sole read3D follows diagnostic; currentnode and cache formed then, no eager paircopy.",
+        "Firstnode mismatchbranch51 skips selectedlastowner read57. CURRENThead5F/capture62 precede lastdiagnostic7B; CURRENTlastnode80 follows. No premature endword reads.",
+        "Partial TESTcachedownerE9/JZEB skips CURRENTlastownerCMPED on zero. Diagnostic102 precedes cachednode/CURRENTlastnodeCMP10A, including emptyexit.",
+        "Typed privatecurrent advance11B uses sole cdeclpointer/callerADD4; cachednode/owner remain separate; typed eraser135 receives private8B output/owner/node/RawCtx and returns RET10h.",
+        "Eraser EAX and scratch fields ignored; currentnode13A/storecache13D precede currentowner140/storecache143; loopback146 retains currentendword rereads.",
+        "Fullroot captured from CURRENTtree.head/root93/96; actualsubtreeA7 gets ECXreceiver/EDX0/two stacked words and childRET8. No admitted-prefix call/repeatedselection.",
+        "Fullreset AF..CA retains all four head reloads, head.parent then count0/left then right then capturedresultleft; outputpointerCC and owner/node storesCF/D1 follow.",
+        "Partial outputpointer148, owner14B, node14E captured before owner151/node153 stores; outputargument is not read anywhere earlier.",
+        "SDKwrapper is cdeclzeroarg/RET with own five paddingPUSH0 and ADD14h; three caller sites add no fabricated args/cleanup. Child Source calling/stack conventions match actual emitted bodies.",
+        "Dead full-path lastowner/lastnode argument slots reused by compiler for root/result only after final selection; no later semantic endword reads on that terminating path. Native private argument/frame aliases, ambientflags/register residue and originalbinary/fault/runtime identities qualified."
+      ],
+      "findings": [],
+      "Source_bytes": 357,
+      "Source_instructions": 129,
+      "Source_calls": 6,
+      "Native_calls": 6,
+      "local_Source_EH_registration": false,
+      "returns": [
+        "18h",
+        "18h"
+      ],
+      "semantic_input_reads": {
+        "first_node": [
+          "3D"
+        ],
+        "selected_last_owner": [
+          "57"
+        ],
+        "selected_last_node": [
+          "80"
+        ],
+        "loop_last_owner": [
+          "ED"
+        ],
+        "loop_last_node": [
+          "10A"
+        ],
+        "output": [
+          "CC",
+          "148"
+        ]
+      },
+      "parameter_offsets": {
+        "output": 8,
+        "first_owner": 12,
+        "first_node": 16,
+        "last_owner": 20,
+        "last_node": 24,
+        "RawCtx": 28
+      },
+      "child_ABI_support": {
+        "subtree": {
+          "capture": "local/oct15_input_device_tree_range_native_input_device_subtree_coff.txt",
+          "capture_sha256": "8cbd8ffe5438504be6524b9824970e11b30e85d2fc11127c8c6ebb7938c59058",
+          "symbol": "?destroy_native_input_device_subtree_006a7540@bsp@@YIXPAXI0AAUNativeStringRawPoolContext@1@@Z",
+          "bytes": 130,
+          "returns": [
+            "8"
+          ]
+        },
+        "eraser": {
+          "capture": "local/oct15_input_device_tree_range_native_input_device_tree_erase_coff.txt",
+          "capture_sha256": "56436be9002acccf04fa9f561999c22e44e07e66d56b4cec42af67ad7a3f13f0",
+          "symbol": "?erase_native_input_device_tree_iterator_006a71b0@bsp@@YIPAXPAXI000AAUNativeStringRawPoolContext@1@@Z",
+          "bytes": 942,
+          "returns": [
+            "10h"
+          ]
+        },
+        "iterator": {
+          "capture": "local/oct15_input_device_tree_range_native_input_keyboard_iterators_coff.txt",
+          "capture_sha256": "6f3e36c01b71ee8b922c66b1bc73a843906187fe41da9a077460d56ceb169730",
+          "symbol": "?advance_native_input_device_005540c0@bsp@@YAXPAUNativeKeyboardTreeIterator@1@@Z",
+          "bytes": 45,
+          "returns": [
+            ""
+          ]
+        },
+        "diagnostic": {
+          "capture": "local/oct15_input_device_tree_range_native_invalid_parameter_noinfo_call_coff.txt",
+          "capture_sha256": "99d9ca3e1d8153eeb312422bee94982e389e33556a209682e3b5adefd7f672ba",
+          "symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+          "bytes": 17,
+          "returns": [
+            ""
+          ]
+        }
+      },
+      "physical_qualification": "Compiler EBP remains frame pointer. Original parameter-word/private-frame aliases, registers/flags/fault/native ABI identity remain qualified. Compiler reuses dead full-path lastowner/lastnode slots for root/result only after selection; terminating path performs no further semantic endword reads."
+    },
+    "native_transfer_check": {
+      "command": "python tools/verify_report_calls.py reports/oct15_input_device_tree_range.json docs/OCT15_INPUT_DEVICE_TREE_RANGE.md",
+      "JSON_rows": 38,
+      "Markdown_claims": 38,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "owned_CALLs": 6,
+      "read_only_support_rows": 32
+    },
+    "provider_revalidation_after_Main_merge": {
+      "fingerprints": 28,
+      "changed": 0,
+      "accepted_Source_header_blobs": 6,
+      "all_equal": true
+    },
+    "primary_precommit_review": {
+      "receipt": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/oct15_range_twentyfirst_primary_review.json",
+      "checks": 15,
+      "findings": 0,
+      "scope": "Primary read full Source/header/all76Native instructions, independently checked200definedPE/liveB76starts+unpromoted90gap/all6ownedCALLs/28currentproviderhashes; retained127/49 priorprefix versus73/27 incrementalpartial. Final acceptance awaits immutable pin/build/COFF evidence."
+    },
+    "new_tests": 0,
+    "Ghidra_mutations": false,
+    "pushes": 0
+  },
+  "limits": [
+    "Descriptive Source name is a hypothesis; correct STL_InputDeviceTree_EraseRange_006A7AA0 identity and prior comments/evidence remain.",
+    "Source RawCtx/currentCRT/CurrentCpp/helper ABI/privateframes/registers/flags/faults are explicit qualifications. No original FH3/SEH/RTTI/Watson/OSfault or native binary/game validation claim.",
+    "RawCtx borrows actual publication/gate/manager cells and propagates normal getter failures. Accepted secondary CurrentCpp cleanup failure termination stays in child guards; this parent adds none.",
+    "Build and existing fixtures do not establish native range differential/injected ABI/game coverage. Undefined90 padding7B1F is not promoted; prior127B prefix is not counted twice."
+  ],
+  "coordination": {
+    "packet_lease": "oct15_input_device_tree_range: one address/four files, retained for primary review",
+    "registration_lease": "oct15_input_device_tree_range_registration",
+    "successful_FIFO_claim": true,
+    "queue_jump": false,
+    "required_accepted_eraser": "8368dd3418cd39e75e8368d316cfb60d7ccd6a27",
+    "published_dependency_baseline": "14f9e8b64dacaeca684159d4a7b28956cdb34316",
+    "merged_Main_contains_required_pins": true,
+    "merged_main": "bc19bf1d75b22853168d3db218c1ddbb9caf6efd",
+    "build_base_HEAD": "bc19bf1d75b22853168d3db218c1ddbb9caf6efd",
+    "merge": "Fast-forward; no conflict/resolver not invoked",
+    "registration": "One DEFER target_sources bsp_core src/native_input_device_tree_range.cpp append",
+    "CMake_released_before_build": true,
+    "reviewed_Source_header_unchanged": true
+  }
+}
