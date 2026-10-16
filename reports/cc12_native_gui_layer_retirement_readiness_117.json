@@ -1,0 +1,532 @@
+{
+  "packet": "cc12_native_gui_layer_retirement_readiness_117",
+  "status": "read_only_raw_bodies_existing_production_authority_unclosed",
+  "baseline": {
+    "own_head": "153e0e120050efd8017c723f528e786e141a427d",
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48",
+    "baseline_retained_no_merge": true,
+    "prior114_captured_by_parent": true,
+    "scope_note": "113 is glyph-child AB80C0 only; no new Page adapter is inferred."
+  },
+  "conclusion": "No duplicate Layer body or capability-only binder is ready to add. First missing concrete prerequisite is the same retained GUI publication/manager/store authority and joined live actual provider graph, not the scalar/destructor/pool algorithms.",
+  "original": {
+    "exe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "exe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "ranges": [
+      {
+        "address": "00aa38f0",
+        "end_exclusive": "00aa390c",
+        "length": 28,
+        "role": "whole Layer scalar",
+        "instructions": 10,
+        "sha256": "287cd92828b3058c11d6633da53027c024884758a3e0853f76625099b768b103",
+        "live_equals_disk": true,
+        "artifact": "local/cc12_native_gui_layer_retirement_readiness_117_original_00aa38f0.bin"
+      },
+      {
+        "address": "00ac5480",
+        "end_exclusive": "00ac5555",
+        "length": 213,
+        "role": "whole Layer destructor",
+        "instructions": 59,
+        "sha256": "2cb0bad65eab265c6073b983ed4dd6ddbae9b949fa33981a8d9721a5515eb7f4",
+        "live_equals_disk": true,
+        "artifact": "local/cc12_native_gui_layer_retirement_readiness_117_original_00ac5480.bin"
+      },
+      {
+        "address": "00ac4c40",
+        "end_exclusive": "00ac4c4c",
+        "length": 12,
+        "role": "whole Layer pool wrapper",
+        "instructions": 4,
+        "sha256": "c768015a71b885ecf46db75403c4d26164e4b3cea6abd374d0cdde6df9b1ed43",
+        "live_equals_disk": true,
+        "artifact": "local/cc12_native_gui_layer_retirement_readiness_117_original_00ac4c40.bin"
+      },
+      {
+        "address": "00ac47f0",
+        "end_exclusive": "00ac485c",
+        "length": 108,
+        "role": "immediate Layer pool return",
+        "instructions": 36,
+        "sha256": "56511a3923bfd7e90bf00341e821748b0c1f86259eec9a37f64702bda2b7324b",
+        "live_equals_disk": true,
+        "artifact": "local/cc12_native_gui_layer_retirement_readiness_117_original_00ac47f0.bin"
+      }
+    ],
+    "range_count": 4,
+    "total_bytes": 361,
+    "indirect_boundaries": [
+      {
+        "site": "00ac54f1",
+        "function": "00ac5480",
+        "instruction": "CALL dword ptr [0x00ce2220]"
+      },
+      {
+        "site": "00ac5501",
+        "function": "00ac5480",
+        "instruction": "CALL EDX"
+      },
+      {
+        "site": "00ac47fa",
+        "function": "00ac47f0",
+        "instruction": "CALL dword ptr [0x00ce2218]"
+      },
+      {
+        "site": "00ac484f",
+        "function": "00ac47f0",
+        "instruction": "CALL dword ptr [0x00ce2210]"
+      }
+    ],
+    "scope": "Fresh verified Ghidra whole bodies matched unchanged Original file bytes; no Native execution."
+  },
+  "direct_call_rows": [
+    {
+      "address": "00aa38f3",
+      "native": "00ac5480",
+      "function": "00aa38f0"
+    },
+    {
+      "address": "00aa3901",
+      "native": "00ac4c40",
+      "function": "00aa38f0"
+    },
+    {
+      "address": "00ac54b4",
+      "native": "004c12b0",
+      "function": "00ac5480"
+    },
+    {
+      "address": "00ac54c2",
+      "native": "00aa4b30",
+      "function": "00ac5480"
+    },
+    {
+      "address": "00ac54d1",
+      "native": "00b72250",
+      "function": "00ac5480"
+    },
+    {
+      "address": "00ac552a",
+      "native": "00419cc0",
+      "function": "00ac5480"
+    },
+    {
+      "address": "00ac5531",
+      "native": "00bd1510",
+      "function": "00ac5480"
+    },
+    {
+      "address": "00ac5540",
+      "native": "00aa9730",
+      "function": "00ac5480"
+    },
+    {
+      "address": "00ac4c46",
+      "native": "00ac47f0",
+      "function": "00ac4c40"
+    }
+  ],
+  "original_abi": {
+    "AA38F0": "ECX actual Layer; one flags DWORD; destructor before TEST low BYTE[ESP+8],1; optional pool return; EAX original numeric identity; RET4. No count check/decrement.",
+    "AC5480": "ECX actual124h Layer; no stack args; plainRET; Native EH frame. Source raw pointer/context interface and ordinary C++ cleanup are not Native FH3/SEH/private frame ABI.",
+    "AC4C40": "ECX raw slot; PUSH ECX; ECX=F8BF50; callAC47F0; plainRET.",
+    "AC47F0": "ECX actual38h pool; stack raw slot; real critical-section calls, current trailer/table, WORD free index/count, RET4."
+  },
+  "ordering": {
+    "scalar": "Read current flags LOW BYTE only AFTER destructor returns; no slot return on destructor exception; identity only after possible free.",
+    "owned": "D5BE38 stamp and ownershipBYTE+F4 capture beforestate1; CURRENT manager getter BEFORE CURRENT F0 load/removal; CURRENT EC reload after removal; real rawB72250; ECclear only afterreturn.",
+    "shared": "CaptureEC; CURRENT CE2220 target/decrement SAME LONGscene+4; onlyzero CURRENT sceneprofile/table0/capturedterminal; ECclear afterward; no scene read afterterminal.",
+    "name_base": "Capturedata104 BEFOREstate0; captureCURRENTlength100+1 before419CC0; BD1510 captureddata/size; no normalheaderclear; state-1 BEFOREAA9730.",
+    "profiles": "Page20/04 resolved independently from CURRENT page profile. AC5480 stampsD5BE38; AA9730 stampsD5C130 before AA8320; later D5C104->BD30F0/CEB130. No frozen table or Layer-is-never-Text shortcut.",
+    "base": "Current child20 traversal; class-slot address before currentTextdescriptor then target; actual main/glyph nodes; currentfirstchild04(1) with real self-detachment; actualparentremoveAll; currenttimed0(1) then clearcapturedoriginalslot; no widget count gate."
+  },
+  "cleanup": {
+    "reused_proof": "docs/CC12_NATIVE_GUI_LAYER_LIFETIME_73.md:47; prior captured73/70 EH evidence, not a new helper-body audit.",
+    "native": "handlerCB8836; FuncInfoDEF7DC; mapDEF7CC; state1actionCB8828->41DD20(page+100), then state0actionCB8820->AA9730.",
+    "source": "state1 name thenbase; state0 baseonly; state-1 no repeat; cleanup failure terminate; no Scene/store rollback/restart. Source exception domains inherited, no NativeFH3/hardware/private-frame proof.",
+    "retention": "Keep exact rawslot/pool, current contexts/metadata, unresolved credits and all reached graph alive for disposition after entered failure."
+  },
+  "provider_matrix": [
+    {
+      "service": "Layer scalar/destructor/pool return",
+      "existing": [
+        "src/native_gui_layer_lifetime.cpp:56",
+        "src/native_gui_layer_lifetime.cpp:98",
+        "src/native_gui_layer_storage.cpp:48",
+        "src/native_material_pools.cpp:341"
+      ],
+      "state": "whole raw bodies already provided",
+      "gap": "No new algorithm/body required; admit only genuinely initialized same-pool actual raw storage."
+    },
+    {
+      "service": "Owned-arm SAME GUI manager/store authority",
+      "existing": [
+        "include/bsp/native_platform_focus_owners.hpp:13",
+        "src/native_platform_focus_owners.cpp:91",
+        "src/native_gui_camera_store_map.cpp"
+      ],
+      "state": "real getter/constructor/create/remove bodies exist over required references",
+      "gap": "FIRST unclosed prerequisite: genuine retained SAME F8BC5C publication/manager/store graph shared with producer and actual singleton deletion authority; no identified Source normal-host context/owner on this route."
+    },
+    {
+      "service": "Current raw GUI Scene0",
+      "existing": [
+        "include/bsp/native_gui_scene_storage.hpp:75",
+        "src/native_gui_scene_storage.cpp:261",
+        "src/native_gui_scene_storage.cpp:286",
+        "include/bsp/native_gui_scene_acquisition_storage.hpp:76"
+      ],
+      "state": "genuine NativeGuiSceneReference provider exists; not missing or semantic projection",
+      "gap": "Must use actual constructed raw24h scene/count+4, same registry/current D62D48 table and admitted companion; persistent context/frame/acquired outlive terminal. No direct raw deletion stranding metadata, no second decrement. noexcept terminal failures terminate."
+    },
+    {
+      "service": "Populated Scene current root tree",
+      "existing": [
+        "include/bsp/native_node_tree_retirement.hpp:28",
+        "include/bsp/native_node_tree_retirement.hpp:36",
+        "include/bsp/native_gui_scene_storage.hpp:14"
+      ],
+      "state": "raw retirement bodies and explicit current18/0/frame contracts exist",
+      "gap": "Prepared persistent recursive frames and genuine current providers in SAME registry still mandatory. Legacy camera/light terminals exclude still-attached raw3C nodes; complete populated graph not established."
+    },
+    {
+      "service": "Raw base/current child/timed/node service composition",
+      "existing": [
+        "src/native_gui_widget_lifetime.cpp:114",
+        "src/native_gui_widget_lifetime.cpp:136",
+        "include/bsp/native_gui_widget_lifetime.hpp:10",
+        "src/native_gui_widget_child_links.cpp:91",
+        "include/bsp/native_node_destruction.hpp:25"
+      ],
+      "state": "AA8320/AA9730/list/container/raw A9BD50 bodies exist",
+      "gap": "No identified concrete Layer/Widget binding subclass preparing actual current child/timed/profile/node companions. First child04(1) must genuinely self-detach; no manufactured loop progress or count gate."
+    },
+    {
+      "service": "Genuine raw page preimages",
+      "existing": [
+        "include/bsp/native_gui_page_default.hpp:10",
+        "src/native_gui_page_default.cpp:8"
+      ],
+      "state": "whole raw AA3840 normal body exists,105B",
+      "gap": "Leaves EC..FC and120..123 untouched; does not initialize reached F4/EC/F0. Pool allocation/default constructor alone is not a destruction-ready page; no zero-default stand-in."
+    },
+    {
+      "service": "Layer pool/slab/trailer lifetime",
+      "existing": [
+        "include/bsp/native_gui_layer_storage.hpp:13",
+        "src/native_gui_layer_storage.cpp:20",
+        "src/native_material_pools.cpp:152"
+      ],
+      "state": "one genuine Source F8BF50 role with real startup/allocator/slabs/return/trim",
+      "gap": "Explicit startup before allocation; exact same owner/slab/trailer; finish all payloads/callbacks before CE0AD0 slab destruction. Existing startup state does not reject post-teardown access. No normal-host startup call identified."
+    }
+  ],
+  "pool_authority": {
+    "same_owner": "GameNativeGuiLayerPoolProcess Source F8BF50 backing, SAME E188B4 allocator-list domain; Source role not fixed OriginalVA.",
+    "shape": {
+      "payload_bytes": 292,
+      "slot_bytes": 296,
+      "trailer_offset": 292,
+      "slots_per_slab": 32,
+      "slab_bytes": 9540,
+      "free_indices_offset": 9472,
+      "free_count_offset": 9536,
+      "free_count_operand_bits": 16
+    },
+    "return_schedule": "Enter pool+0C, nesting increment, CURRENT slot+124 slab index/CURRENT table+28, signedoffset/128h, WORD freelist write and WORD countincrement, lowerfirstFree+34, nestingdecrement/Leave.",
+    "admission": "Genuine slot from SAME initialized live pool; valid current trailer and table; no arbitrary124h heap block/another material pool slab. Payload not blanket-zeroed.",
+    "teardown": "CD73D0 explicit AC4D70 startup +CE0AD0 registration. CE0AD0 frees slabs without destroying Layer payloads; complete all uses before it. Retained storage/startup state does not authorize late returns.",
+    "ancestor_limit": "Raw count+4/zero/cClip does not supply unique Source-layout ownership or prove retirement of all material/ancestor field borrowers. No count>1 gate/dummy token/new policy inferred."
+  },
+  "source_hashes": [
+    {
+      "path": "include/bsp/native_gui_layer_lifetime.hpp",
+      "bytes": 4093,
+      "sha256": "dbf0d44346d847bd4c2daa86b73cdb6ec175e2553ad113ef8bbeffc444f631dd",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/include/bsp/native_gui_layer_lifetime.hpp"
+    },
+    {
+      "path": "src/native_gui_layer_lifetime.cpp",
+      "bytes": 4457,
+      "sha256": "d6d789179cd68cbd1bf66a6ebf2b1aeb4c2c29fc03155b3be335ebfdb22cf7d0",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/src/native_gui_layer_lifetime.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_layer_storage.hpp",
+      "bytes": 2878,
+      "sha256": "ac8aeee4c4c6b3a6d6fa014531e0de748ec56055ee4784247487f150189329f7",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/include/bsp/native_gui_layer_storage.hpp"
+    },
+    {
+      "path": "src/native_gui_layer_storage.cpp",
+      "bytes": 1816,
+      "sha256": "e7a11307686aff9dede6987f9036bbcc60dd02aac37e7c8f1a83ef256ef79258",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/src/native_gui_layer_storage.cpp"
+    },
+    {
+      "path": "include/bsp/native_material_pools.hpp",
+      "bytes": 10219,
+      "sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/include/bsp/native_material_pools.hpp"
+    },
+    {
+      "path": "src/native_material_pools.cpp",
+      "bytes": 24320,
+      "sha256": "52c0de304c861907c1799517e038e8383ca62829e12176eb1b48f406d163c95a",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/src/native_material_pools.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "bytes": 4515,
+      "sha256": "f9fe331e898de066b05cde5aba9bae1bb5e0dfccdceedb9cb8c85a286be3d286",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/include/bsp/native_gui_widget_lifetime.hpp"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "bytes": 8780,
+      "sha256": "f5f10d603694dfbb354b92bc4627dfc0fd687724fc51d49de5c51f53c813c3b6",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/src/native_gui_widget_lifetime.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_page_default.hpp",
+      "bytes": 991,
+      "sha256": "9ff585b8f10ef3cf6eda763e4060755a93f77d8838581b652b58de0949a3c3e5",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/include/bsp/native_gui_page_default.hpp"
+    },
+    {
+      "path": "src/native_gui_page_default.cpp",
+      "bytes": 1492,
+      "sha256": "b82529fef35ad993535aa832f3cccb7dea0ee224e13d3dcecad5cc080f366a94",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/src/native_gui_page_default.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_scene_storage.hpp",
+      "bytes": 6885,
+      "sha256": "d816b2f0bcf0e0b47b895c3d999335b6f8253a66f1ae63055563578b6544407b",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/include/bsp/native_gui_scene_storage.hpp"
+    },
+    {
+      "path": "src/native_gui_scene_storage.cpp",
+      "bytes": 13498,
+      "sha256": "c291544fa92b127f2e94c28b6072dc5a0ee6325e1e315e934e7b4567734e2935",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/src/native_gui_scene_storage.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_scene_acquisition_storage.hpp",
+      "bytes": 6418,
+      "sha256": "28f056840f9941d5ba87f914e74d7f3ead5274ff4d34773acaadc0aefbf6568a",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/include/bsp/native_gui_scene_acquisition_storage.hpp"
+    },
+    {
+      "path": "include/bsp/native_node_tree_retirement.hpp",
+      "bytes": 4571,
+      "sha256": "7826147682ef91780670172a270214c5f164ba92696f76c06ecc4d3e8387f07f",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/include/bsp/native_node_tree_retirement.hpp"
+    },
+    {
+      "path": "include/bsp/native_node_destruction.hpp",
+      "bytes": 5997,
+      "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/include/bsp/native_node_destruction.hpp"
+    },
+    {
+      "path": "include/bsp/native_platform_focus_owners.hpp",
+      "bytes": 4708,
+      "sha256": "0738ee83b33d44ee79852f115e79515a85d653452d70fc920ab63e3675c51865",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/include/bsp/native_platform_focus_owners.hpp"
+    },
+    {
+      "path": "src/native_platform_focus_owners.cpp",
+      "bytes": 10371,
+      "sha256": "efff43cee498b710d53d4b2380e4ae89791dc578371d35b2be29327b0fedfe73",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/src/native_platform_focus_owners.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_camera_store_map.hpp",
+      "bytes": 7932,
+      "sha256": "3682a1f8dcd0a195f2c3f0840207d52e353fd7f03f98790e37a57ad73b4b8340",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/include/bsp/native_gui_camera_store_map.hpp"
+    },
+    {
+      "path": "src/native_gui_camera_store_map.cpp",
+      "bytes": 11486,
+      "sha256": "99228166520cfa04a782500d5de7b272f9545bc4cfc8f8110bb813d1b0afe39d",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/src/native_gui_camera_store_map.cpp"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "bytes": 4306,
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/include/bsp/game_native_string_process.hpp"
+    },
+    {
+      "path": "include/bsp/native_gui_media_focus_lifetime.hpp",
+      "bytes": 3213,
+      "sha256": "fed651ac9f3e7f0853c4754dd180dc68b1e6432afc9fe64a327caa59e8b81412",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/include/bsp/native_gui_media_focus_lifetime.hpp"
+    },
+    {
+      "path": "src/native_gui_media_focus_lifetime.cpp",
+      "bytes": 6502,
+      "sha256": "06744c0d69116b56681e74ed0f92d97a0b3d583455b66ea2d458a1a0cea0c749",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/src/native_gui_media_focus_lifetime.cpp"
+    },
+    {
+      "path": "src/native_gui_page_registry.cpp",
+      "bytes": 4473,
+      "sha256": "e63d9d755850991af4939ea3fe8b7cdb5f6c8979168eaeb3dbe3250e583d52fe",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/src/native_gui_page_registry.cpp"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "bytes": 10071,
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/include/bsp/native_render_context.hpp"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_child_links.hpp",
+      "bytes": 4349,
+      "sha256": "88b5d1ef38f6a26acd595b867011cb8758d6f3d4fbf013ab52d37081c503ec62",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/include/bsp/native_gui_widget_child_links.hpp"
+    },
+    {
+      "path": "src/native_gui_widget_child_links.cpp",
+      "bytes": 5646,
+      "sha256": "764ab5a60741c5d2649d9f289bb871474ddd1301a1f21e6b86c30667d3aa47c3",
+      "copy": "local/cc12_native_gui_layer_retirement_readiness_117_source/src/native_gui_widget_child_links.cpp"
+    }
+  ],
+  "bounded_source_queries": [
+    {
+      "query": [
+        "rg",
+        "-n",
+        "NativeGuiLayerLifetimeBindings",
+        "include/bsp",
+        "src",
+        "-g",
+        "*.hpp",
+        "-g",
+        "*.cpp"
+      ],
+      "exit_code": 0,
+      "artifact": "local/cc12_native_gui_layer_retirement_readiness_117_source_query_layer_binding.log",
+      "limit": "Bounded tracked-route provider search, not proof against arbitrary aliases or external runtime providers."
+    },
+    {
+      "query": [
+        "rg",
+        "-n",
+        "NativeGuiWidgetLifetimeBindings",
+        "include/bsp",
+        "src",
+        "-g",
+        "*.hpp",
+        "-g",
+        "*.cpp"
+      ],
+      "exit_code": 0,
+      "artifact": "local/cc12_native_gui_layer_retirement_readiness_117_source_query_widget_binding.log",
+      "limit": "Bounded tracked-route provider search, not proof against arbitrary aliases or external runtime providers."
+    },
+    {
+      "query": [
+        "rg",
+        "-n",
+        "actual_gui_00f8bc5c|gui_00f8bc5c|NativePlatformFocusOwnersContext",
+        "include/bsp",
+        "src",
+        "-g",
+        "*.hpp",
+        "-g",
+        "*.cpp"
+      ],
+      "exit_code": 0,
+      "artifact": "local/cc12_native_gui_layer_retirement_readiness_117_source_query_gui_authority.log",
+      "limit": "Bounded tracked-route provider search, not proof against arbitrary aliases or external runtime providers."
+    },
+    {
+      "query": [
+        "rg",
+        "-n",
+        "initialize_once_00cd73d0",
+        "include/bsp",
+        "src",
+        "-g",
+        "*.hpp",
+        "-g",
+        "*.cpp"
+      ],
+      "exit_code": 0,
+      "artifact": "local/cc12_native_gui_layer_retirement_readiness_117_source_query_pool_startup.log",
+      "limit": "Bounded tracked-route provider search, not proof against arbitrary aliases or external runtime providers."
+    },
+    {
+      "query": [
+        "rg",
+        "-n",
+        "call_current_page_virtual_20|call_current_page_virtual_04",
+        "include/bsp",
+        "src",
+        "-g",
+        "*.hpp",
+        "-g",
+        "*.cpp"
+      ],
+      "exit_code": 0,
+      "artifact": "local/cc12_native_gui_layer_retirement_readiness_117_source_query_page_host.log",
+      "limit": "Bounded tracked-route provider search, not proof against arbitrary aliases or external runtime providers."
+    }
+  ],
+  "prior_evidence": [
+    {
+      "packet": "105/108",
+      "use": "Known D5BE38 slots and required live Layer query inputs, not re-audited."
+    },
+    {
+      "packet": "112/114",
+      "use": "Same-domain completed Layer lineage role; preserved captured114; no initializer audit/recovery repeated."
+    },
+    {
+      "packet": "73/76/89",
+      "use": "Existing raw Layer/Scene-release/store-removal bodies and their supplied-domain/controlled-service/empty-base-pool limits; no populated production claim."
+    }
+  ],
+  "next_packet": {
+    "source_body_candidate": null,
+    "ready_for_capability_binder": false,
+    "first_unclosed_prerequisite": "Genuine retained SAME F8BC5C GUI publication, same producer manager/store graph, real current deletion registration and lifetimes; join supported actual Scene/node/child/timed preparation and initialized same-pool rawpage.",
+    "not_a_solution": [
+      "new/private parallel manager or global",
+      "semantic GUI/layout/SceneResource cast",
+      "default-null scene/owned fields",
+      "capability-only required-callback wrapper",
+      "no-op terminal/ownership token",
+      "normal activation/count gate"
+    ],
+    "boundary": "Raw retirement is a provided-domain capability. Production authority and populated-page/ancestor lifetime closure remain unproved."
+  },
+  "verification": {
+    "call_map": {
+      "checked_rows": 9,
+      "failed_rows": 0,
+      "exit_code": 0,
+      "scope": "Whole owned scalar/destructor/pool-wrapper direct sites; indirect/current provider correctness and runtime not proved."
+    },
+    "source_or_cmake_changes": false,
+    "ledger_changes": false,
+    "ghidra_writes": false,
+    "build_run": false,
+    "tests_run": false,
+    "probe_run": false,
+    "native_execution": false,
+    "normal_activation": false
+  },
+  "document": {
+    "path": "docs/CC12_NATIVE_GUI_LAYER_RETIREMENT_READINESS_117.md",
+    "sha256": "57b08ea9348724305bc6f5c65eb778bb752c678fde43eed6ec8a6e4b51be1cc3"
+  },
+  "artifact_manifest": "local/cc12_native_gui_layer_retirement_readiness_117_artifact_manifest.json"
+}
