@@ -1,0 +1,352 @@
+{
+  "packet": "cc12_native_gui_frame_box_copy_storage_142",
+  "status": "read_only_complete_missing_whole_raw_current80_and_constructed_hook",
+  "source_ready": false,
+  "source_implemented": false,
+  "native_activation": false,
+  "baseline": "aa4d5609e84f0b9a7f2f32079358deb98746e0dd",
+  "dependency_merge_exit_code": 0,
+  "finding": "Genuine raw AA9520 and AD2230 are available. AD27A0 also requires current raw vptr+80 (canonical D5D130+80=AD0D80) and whole actual-widget ACF8F0; semantic implementations and partial geometry publications do not supply these contracts.",
+  "original": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_disk_spans": 14,
+    "live_disk_bytes": 574
+  },
+  "functions": [
+    {
+      "address": "00ad27a0",
+      "name_preserved": "BSP_GuiFrameBox_CopyConstruct",
+      "exclusive_end": "00ad2876",
+      "bytes": 214,
+      "instruction_starts": 53,
+      "original_abi": "ECX destination; stack source; EAX same destination; RET4 at AD2873",
+      "normal_eh_state_stores": [
+        -1,
+        0,
+        2
+      ],
+      "func_info": "00df0888",
+      "unwind_map": "00df0870"
+    },
+    {
+      "address": "00acf8f0",
+      "name_preserved": "BSP_GuiFrameBox_ConstructedHook",
+      "exclusive_end": "00acf9a8",
+      "bytes": 184,
+      "instruction_starts": 57,
+      "corrected_provisional_start_count": 60,
+      "original_abi": "ECX actual widget; RET",
+      "func_info": "00df03d4",
+      "unwind_map": "00df03cc"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00ad27c4",
+      "native": "00aa9520",
+      "function": "00ad27a0",
+      "kind": "call"
+    },
+    {
+      "address": "00ad27f0",
+      "native": "00ad2230",
+      "function": "00ad27a0",
+      "kind": "call"
+    },
+    {
+      "address": "00ad285b",
+      "native": "00acf8f0",
+      "function": "00ad27a0",
+      "kind": "call"
+    },
+    {
+      "address": "00acf91b",
+      "native": "00b73b60",
+      "function": "00acf8f0",
+      "kind": "call"
+    },
+    {
+      "address": "00acf932",
+      "native": "00b73d70",
+      "function": "00acf8f0",
+      "kind": "call"
+    },
+    {
+      "address": "00acf95a",
+      "native": "00b75170",
+      "function": "00acf8f0",
+      "kind": "call"
+    },
+    {
+      "address": "00acf993",
+      "native": "00aa7dc0",
+      "function": "00acf8f0",
+      "kind": "call"
+    },
+    {
+      "address": "00cb92c3",
+      "native": "00aa9730",
+      "function": "00cb92c0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb92df",
+      "native": "0041dd20",
+      "function": "00cb92d6",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb92e9",
+      "native": "00bf6b43",
+      "function": "00cb92e4",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb9063",
+      "native": "00b72f70",
+      "function": "00cb9060",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb906d",
+      "native": "00bf6b43",
+      "function": "00cb9068",
+      "kind": "tail_jump"
+    }
+  ],
+  "raw_tail_destination_evidence": {
+    "site": "00cb92d1",
+    "opcode": "e94a90e1ff",
+    "target": "00ad2320",
+    "source_funclet": "00cb92c8",
+    "destination_defined_in_ghidra": false,
+    "live_disk_bytes_verified": true,
+    "excluded_from_defined_function_call_checker": true,
+    "initial_checker_failure_preserved": "local/cc12_native_gui_frame_box_copy_storage_142/call_verification_initial_undefined_target.txt"
+  },
+  "indirect_dispatch_evidence": [
+    {
+      "site": "00ad2854",
+      "receiver": "current destination",
+      "slot": "80",
+      "canonical_profile": "00d5d130",
+      "actual_cell": "00d5d1b0",
+      "installed_target": "00ad0d80",
+      "current_profile_stability_proven": false,
+      "direct_call_edge_claimed": false
+    },
+    {
+      "site": "00acf963",
+      "service": "IAT CE2220 interlocked decrement; Source/IAT ABI not claimed"
+    },
+    {
+      "site": "00acf973",
+      "receiver": "created mesh after setter",
+      "slot": "00",
+      "flags_argument": false,
+      "observed_zero_required": true,
+      "arbitrary_terminal_admitted": false
+    }
+  ],
+  "unwind": {
+    "copy": [
+      {
+        "state": 0,
+        "to": -1,
+        "action": "00cb92c0",
+        "receiver": "saved destination"
+      },
+      {
+        "state": 1,
+        "to": 0,
+        "action": "00cb92c8",
+        "receiver": "saved destination+F0"
+      },
+      {
+        "state": 2,
+        "to": 1,
+        "action": "00cb92d6",
+        "receiver": "saved destination+104"
+      }
+    ],
+    "copy_state1_normally_armed": false,
+    "first_10c_x87_pair_under_state": 0,
+    "hook": [
+      {
+        "state": 0,
+        "to": -1,
+        "action": "00cb9060",
+        "receiver": "captured allocation"
+      }
+    ],
+    "hook_state_consumed_before_setter": true,
+    "source_fragment_host_catch_is_native_setter_cleanup": false
+  },
+  "storage": {
+    "pool_cell": "00f8c188",
+    "payload_bytes": 284,
+    "slot_bytes": 288,
+    "hidden_slab_id_offset": 284,
+    "slots_per_slab": 16,
+    "same_initialized_pool_required_for_pooled_destination": true,
+    "derived_preserved": [
+      "EE..EF",
+      "F0..F3 allocator proxy",
+      "101..103",
+      "11C..11F hidden slab ID"
+    ],
+    "direct_x87_pairs": [
+      "10C",
+      "110",
+      "114",
+      "118"
+    ],
+    "direct_literal_inputs": []
+  },
+  "existing_genuine_providers": [
+    {
+      "function": "00aa9520",
+      "files": [
+        "include/bsp/native_gui_widget_copy_storage.hpp",
+        "src/native_gui_widget_copy_storage.cpp"
+      ],
+      "qualification": "Same actual Model/string/clone/flags domain; independently retained Model acquisitions."
+    },
+    {
+      "function": "00ad2230",
+      "files": [
+        "include/bsp/native_gui_frame_box_vector_copy.hpp",
+        "src/native_gui_frame_box_vector_copy.cpp"
+      ],
+      "qualification": "138 current-range/prepared metadata domain; supported empty catch only; no failed103 replay."
+    },
+    {
+      "function": "00aa7dc0",
+      "files": [
+        "include/bsp/native_gui_widget_position.hpp",
+        "src/native_gui_widget_position.cpp"
+      ],
+      "qualification": "Whole normal raw body over required actual transform/bounds and borrowed half-cell services."
+    }
+  ],
+  "incomplete_providers": [
+    {
+      "function": "00ad0d80",
+      "canonical_slot": "D5D130+80",
+      "existing_source": "src/gui_framebox.cpp",
+      "existing_owner": "GuiFrameBoxTypeImplementation semantic state",
+      "raw_fragment": "publish_gui_native_section_fragment: AD150D..AD155C only",
+      "whole_raw_receiver_contract": false
+    },
+    {
+      "function": "00acf8f0",
+      "existing_source": "src/gui_native_geometry.cpp",
+      "raw_fragment": "construct_and_associate74_fragment: captured Model entry, Host setter catch cleanup",
+      "whole_raw_receiver_contract": false
+    }
+  ],
+  "retention_conditions": [
+    "Full same-domain raw source/destination/name/resource/Model/provider graph and all metadata live before entry.",
+    "138 returned catch state is distinct from Source preparation/unsupported catch failure; no invented outer cleanup on either.",
+    "After successful vector construction, any outer tidy needs independent fresh111 metadata for a proven current constructed span.",
+    "No failed103 destructor, double tidy, generic abandonment, retry/reset, exception-origin type test, or private FH3/SEH claim.",
+    "Ordinary111 escape can replace a C++ exception; canonical terminal noexcept may terminate; neither is Native private EH equivalence."
+  ],
+  "next_bounded_work": [
+    {
+      "kind": "read_only_provider_readiness",
+      "address": "00ad0d80",
+      "proposed_files": [
+        "include/bsp/native_gui_frame_box_state_storage.hpp",
+        "src/native_gui_frame_box_state_storage.cpp"
+      ],
+      "source_ready": false,
+      "requirement": "Whole actual raw current80 receiver/state/material/stream/layout schedule, not typed casts."
+    },
+    {
+      "kind": "whole_raw_hook_provider_plan_after_contract_review",
+      "address": "00acf8f0",
+      "proposed_files": [
+        "include/bsp/native_gui_frame_box_constructed_storage.hpp",
+        "src/native_gui_frame_box_constructed_storage.cpp"
+      ],
+      "source_ready": false,
+      "requirement": "Actual widget gate/current Model, genuine allocation/construction/setter/zero terminal, late scalar, actual position and persistent failure ownership."
+    }
+  ],
+  "baseline_changes": {
+    "mapped_transform132": "Concrete raw-node mapped-profile projection; not FrameBox current80.",
+    "length133": "Accepted Source length transport at currentSDK/431F70 boundary.",
+    "vector138_core_registered": true
+  },
+  "unchanged": {
+    "source": true,
+    "cmake": true,
+    "ledgers": true,
+    "ghidra_names_comments_analysis": true,
+    "frozen_current_inputs": 27,
+    "original_install": true
+  },
+  "verification": {
+    "native_bytes_live_disk": true,
+    "direct_calls": {
+      "report_rows": 12,
+      "doc_claims": 12,
+      "failures": 0,
+      "undefined_destination_edge_checked_separately": true,
+      "log": "local/cc12_native_gui_frame_box_copy_storage_142/call_verification.txt"
+    },
+    "builds_run": 0,
+    "tests_run": 0,
+    "probes_run": 0,
+    "runtime_or_gameplay_proven": false,
+    "private_native_abi_equivalence": false
+  },
+  "artifacts": [
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_COPY_STORAGE_142.md",
+      "sha256": "7bfdedb5d024053a5b7573d4edd3d86828e978e8f7c3874ef948556bcece3c6e",
+      "bytes": 9092
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_142/native_bytes.json",
+      "sha256": "3cbaa893d75d4c09574e8b87418c11fd5e02fd14967f30eb0f8525b55bc13191",
+      "bytes": 5505
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_142/source_inputs.json",
+      "sha256": "eab42b80e8176c9a63eca92a6d1641da58883ae1e25f1880b620fc7ce74786f0",
+      "bytes": 8817
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_142/unchanged_source.txt",
+      "sha256": "d9394733a18f34757e4698b56d5ce1904ee56225c0875d363d71e6f83ffa887b",
+      "bytes": 80
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_142/dependency_merge.log",
+      "sha256": "3875b651c26e419982e598f6b96e9bfc5bee457db9d45a8b5eaf53e6e07327f0",
+      "bytes": 10989
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_142/verified_backend.txt",
+      "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0",
+      "bytes": 40
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_copy_storage_142/collect_evidence.py",
+      "sha256": "536334a8407586247763d84644d1affc3ec9853ba51ffdd36839b9bcf0960e77",
+      "bytes": 7928
+    }
+  ],
+  "private_manifest": {
+    "path": "local/cc12_native_gui_frame_box_copy_storage_142/manifest.json",
+    "sha256": "b3cf0f105754351f6b6eda7c0530d8efbb4ece66181eb14076804cc600241265",
+    "item_count": 89,
+    "total_bytes": 917039
+  },
+  "limits": "Read-only readiness; no142 Source files or new body/ABI credit. Historical receipts remain historical."
+}
